@@ -1,0 +1,235 @@
+/* line 4, ../../sass/blog/screen.sass */
+.wrapper.social {
+  display: none;
+}
+
+/* line 9, ../../sass/blog/screen.sass */
+.textplugin_holder p > img {
+  padding: 0 10px 5px 0;
+}
+
+/* line 13, ../../sass/blog/screen.sass */
+#root {
+  background: white;
+}
+
+/* line 22, ../../sass/blog/screen.sass */
+.sidebar ul, .sidebar ol {
+  list-style-type: none;
+  margin: 0 0 9px 0px;
+}
+/* line 26, ../../sass/blog/screen.sass */
+.sidebar .widget {
+  padding: 0 0 5px 0;
+  margin: 0 0 5px 0;
+  border-bottom: 1px solid #d5d5d5;
+}
+/* line 30, ../../sass/blog/screen.sass */
+.sidebar h3 {
+  text-transform: none;
+  font-size: 110%;
+}
+/* line 38, ../../sass/blog/screen.sass */
+.sidebar .search img {
+  display: none;
+}
+/* line 42, ../../sass/blog/screen.sass */
+.sidebar #widget-tags ul > li {
+  float: left;
+  padding: 2px;
+}
+/* line 45, ../../sass/blog/screen.sass */
+.sidebar #widget-tags ul > li a {
+  padding: 2px;
+  background-color: #8fbe00;
+  line-height: 15px;
+  color: white;
+}
+/* line 50, ../../sass/blog/screen.sass */
+.sidebar #widget-tags ul > li a:hover {
+  color: black;
+}
+/* line 54, ../../sass/blog/screen.sass */
+.sidebar #widget-calendar table {
+  width: 100%;
+}
+/* line 56, ../../sass/blog/screen.sass */
+.sidebar #widget-calendar table caption {
+  padding: 3px 0 5px;
+}
+/* line 58, ../../sass/blog/screen.sass */
+.sidebar #widget-calendar table th {
+  padding: 3px 0 5px;
+  color: #5a5a5a;
+}
+/* line 61, ../../sass/blog/screen.sass */
+.sidebar #widget-calendar table tr > td {
+  padding: 3px 0;
+}
+/* line 64, ../../sass/blog/screen.sass */
+.sidebar #widget-calendar table tr > td.entry a {
+  padding: 2px;
+  background-color: #8fbe00;
+  color: white;
+}
+/* line 68, ../../sass/blog/screen.sass */
+.sidebar #widget-calendar table tr > td.entry a:hover {
+  color: black;
+}
+/* line 74, ../../sass/blog/screen.sass */
+.sidebar #widget-archives > ul > li > a {
+  font-weight: bold;
+}
+/* line 77, ../../sass/blog/screen.sass */
+.sidebar #widget-archives > ul > li ul {
+  padding-left: 20px;
+}
+
+/* line 84, ../../sass/blog/screen.sass */
+.blog.container {
+  padding: 0 10px 20px 0px;
+  width: 830px;
+}
+/* line 89, ../../sass/blog/screen.sass */
+.blog.container ul, .blog.container ol {
+  list-style-type: none;
+  margin: 0 0 9px 0px;
+}
+/* line 93, ../../sass/blog/screen.sass */
+.blog.container .textplugin_holder {
+  background: transparent !important;
+}
+/* line 95, ../../sass/blog/screen.sass */
+.blog.container .textplugin_holder * {
+  color: #333333 !important;
+  background-color: transparent !important;
+}
+/* line 99, ../../sass/blog/screen.sass */
+.blog.container h3 {
+  font-size: 130%;
+  line-height: 180%;
+}
+/* line 104, ../../sass/blog/screen.sass */
+.blog.container .search {
+  display: none;
+}
+/* line 107, ../../sass/blog/screen.sass */
+.blog.container .hentry {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+/* line 111, ../../sass/blog/screen.sass */
+.blog.container .hentry .entry-image a {
+  padding: 1px !important;
+}
+/* line 113, ../../sass/blog/screen.sass */
+.blog.container .hentry .entry-image a:hover {
+  background: transparent !important;
+}
+/* line 115, ../../sass/blog/screen.sass */
+.blog.container .hentry .entry-image a:hover img {
+  padding: 1px;
+  background: #8fbe00;
+}
+/* line 123, ../../sass/blog/screen.sass */
+.blog.container .hentry a {
+  text-decoration: underline;
+}
+/* line 129, ../../sass/blog/screen.sass */
+.blog.container .hentry .entry-image img {
+  clear: both;
+  width: 646px;
+  padding: 1px;
+}
+/* line 134, ../../sass/blog/screen.sass */
+.blog.container .hentry .entry-footer {
+  padding-top: 10px;
+  margin-top: 10px;
+  border-top: 1px solid #d5d5d5;
+  padding-left: 0px;
+}
+/* line 142, ../../sass/blog/screen.sass */
+.blog.container .hentry .entry-tags a {
+  padding: 2px 4px !important;
+  margin-right: -4px;
+  background-color: #8fbe00;
+  line-height: 18px;
+  color: white;
+  text-decoration: none;
+  color: white !important;
+}
+/* line 150, ../../sass/blog/screen.sass */
+.blog.container .hentry .entry-tags a:hover {
+  color: black !important;
+}
+
+/* line 154, ../../sass/blog/screen.sass */
+.entry-widgets {
+  background: #efefef;
+  padding: 10px 10px 0;
+}
+/* line 157, ../../sass/blog/screen.sass */
+.entry-widgets > div {
+  width: 210px;
+  float: left;
+}
+
+/* line 161, ../../sass/blog/screen.sass */
+#pingbacks {
+  display: none;
+}
+
+/* line 164, ../../sass/blog/screen.sass */
+#comments {
+  padding-top: 10px;
+  margin-top: 30px;
+  border-top: 1px solid #d5d5d5;
+  padding-left: 0px;
+}
+/* line 170, ../../sass/blog/screen.sass */
+#comments #comment-list .comment {
+  clear: both;
+  background: #fafafa;
+  padding: 10px;
+}
+/* line 173, ../../sass/blog/screen.sass */
+#comments #comment-list .comment:nth-child(2) {
+  background: #efefef;
+}
+/* line 176, ../../sass/blog/screen.sass */
+#comments #comment-list .comment img {
+  float: left;
+  width: 20px;
+  height: 20px;
+  padding-right: 10px;
+}
+
+/* line 184, ../../sass/blog/screen.sass */
+#comment-form {
+  background: transparent !important;
+}
+/* line 187, ../../sass/blog/screen.sass */
+#comment-form textarea {
+  width: 99%;
+}
+/* line 191, ../../sass/blog/screen.sass */
+#comment-form fieldset > div {
+  padding: 4px 0;
+  margin: 4px 0;
+}
+/* line 196, ../../sass/blog/screen.sass */
+#comment-form fieldset > div label {
+  display: block;
+  padding: 0 0 0 1px;
+  color: #5a5a5a;
+}
+/* line 200, ../../sass/blog/screen.sass */
+#comment-form fieldset > div input {
+  background: #fafafa;
+  padding: 2px;
+  width: 99%;
+}
+/* line 209, ../../sass/blog/screen.sass */
+#comment-form fieldset > div.error input, #comment-form fieldset > div.error textarea {
+  background-color: #fffc9d;
+}

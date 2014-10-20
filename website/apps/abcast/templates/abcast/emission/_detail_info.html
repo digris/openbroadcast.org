@@ -1,0 +1,97 @@
+{% load truncate i18n thumbnail arating_tags spurl %}
+<div class="span7 padded-h container_content">
+
+	<div class="page-header">
+		<h2>{{ object.name|truncate_chars_inner:40 }} <small>{{ object.get_type_display }}</small></h2>
+	</div>
+
+	<dl class="dl-horizontal main">
+
+		<dt>
+			{% trans "Scheduled by" %}:
+		</dt>
+		<dd>
+			<a href="{{ object.user.get_absolute_url }}">{% firstof object.user.username object.user %}</a>
+		</dd>
+
+        {% if object.content_object and object.content_object.user %}
+		<dt>
+			{% trans "Content" %}:
+		</dt>
+		<dd>
+			<a href="{{ object.content_object.get_absolute_url }}">{{ object.content_object.name }}</a>
+		</dd>
+        {% endif %}
+
+		<dt>
+			{% trans "Airplay channel" %}:
+		</dt>
+		<dd>
+            <a href="{{ object.channel.get_absolute_url }}">
+                {{ object.channel.name }}
+            </a>
+            {% if object.channel.station %}
+            <small> -
+                 <a href="{{ object.channel.station.get_absolute_url }}">
+                    {{ object.channel.station.name }}
+                </a>
+            </small>
+            {% endif %}
+		</dd>
+
+		<dt>
+			{% trans "Airplay date" %}:
+		</dt>
+		<dd>
+            <span>{{ object.time_start|date:"SHORT_DATETIME_FORMAT" }}</span> -
+            <span>{{ object.time_end|date:"SHORT_DATETIME_FORMAT" }}</span>
+		</dd>
+
+
+
+
+	</dl>
+
+
+
+
+
+	<dl class="dl-horizontal sub">
+
+		<dt>
+			{% trans "Created" %}:
+		</dt>
+        <dd>
+            <span>{{ object.created|date:"SHORT_DATETIME_FORMAT" }}</span>
+        </dd>
+
+		<dt>
+			{% trans "Last updated" %}:
+		</dt>
+        <dd>
+            <span>{{ object.updated|date:"SHORT_DATETIME_FORMAT" }}</span>
+        </dd>
+
+
+	</dl>
+
+</div>
+
+<div class="span2 padded-h padded-v">
+
+	<div class="image">
+
+		{% if object.content_object and object.content_object.main_image %}
+		<a href="{% thumbnail object.content_object.main_image 1200x1200 crop upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.content_object.main_image 172x172 crop upscale subject_location=object.content_object.main_image.subject_location %}" alt="Cover" /> </a>
+		{% else %}
+		<img src="/static/img/base/defaults/listview.artist.xl.png" alt="{% trans "No cover available" %}" />
+		{% endif %}
+	</div>
+
+	<div class="rating">
+        {% if object.content_object %}
+		{% rating_for_object object.content_object %}
+        {% endif %}
+	</div>
+
+</div>

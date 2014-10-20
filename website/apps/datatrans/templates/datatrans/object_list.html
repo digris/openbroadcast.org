@@ -1,0 +1,25 @@
+{% extends "datatrans/base.html" %}
+{% load i18n %}
+{% load adminmedia %}
+{% block title %}{% trans "Translations for" %} {{ model }} - {{ block.super }}{% endblock %}
+{% block breadcrumbs %}{{ block.super }} &rsaquo; {% trans "Translations for" %} {{ model }}{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <style>
+        tr.fieldname, tr.fieldname td {
+            padding-bottom: -2px;
+            border: none;
+        }
+        a.todo { font-weight: bold; color: #734 }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h1>{% trans "Translations for" %} {{ model }}</h1>
+    <ul>
+        {% for object in objects %}
+            <li><a {% if object.todo %}class="todo"{% endif %}href='{{ object.id }}'>{{ object }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,21 @@
+// (cms)plugin mixins
+
+@mixin site-messages($padding-outer, $padding-inner)
+  // structure: .messages > .wrapper > .item.message.<type> > .action|.container
+  .wrapper
+    div.message
+      padding: ($padding-outer / 2) $padding-outer
+      &:first-child
+        padding-top: $padding-outer 
+      &:last-child
+        padding-bottom: $padding-outer  
+    
+    div.action
+      padding: 0 $padding-inner 0 0
+      +icon-base()
+
+    div.container 
+      // padding: 0 10px 0 0
+      
+      
+

@@ -1,0 +1,101 @@
+{% load currency shop_tags vardump i18n truncate %}
+
+{% if cart_items %}
+
+<div class="wrapper cart left">
+
+
+
+
+	<h1 class="sizes m l right"><a href="{% url cart %}">{{ cart.total_quantity }} {% trans "Item" %}{{ cart.total_quantity|pluralize }} ({{ cart.total_price|currency }})</a></h1>
+	
+	<div class="clear"></div>
+	
+	<div class="sizes m l spacer">
+		<h2>&nbsp;</h2>	
+		<div class="empty-row">&nbsp;</div>
+	</div>
+	
+	<div class="sizes m l proceed right">
+		<a href="{% url checkout_selection %}" class="icon-container checkout button shop"><span class="icon"></span><span class="text">{% trans "Checkout" %}</span></a>
+	</div>
+	
+	<div class="clear"></div>
+	
+	<h1 class="sizes s hidden right"><a href="{% url cart %}">{{ cart.total_quantity }} {% trans "Item" %}{{ cart.total_quantity|pluralize }} ({{ cart.total_price|currency }})</a></h1>
+
+
+	<div class="sizes l" id="cart_overlay">
+		
+		<ul class="container product clear">
+			{% for item in cart_items %}
+	
+			<li class="item ">
+				<ul class="horizontal">
+					<li class="name"><h2><a href="{{item.product.get_absolute_url}}" class="icon-container medium-{{ item.product.medium|lower}}"><span class="icon"></span><span class="format">{{ item.product.format}}</span><span class="text">{{ item.product.name|truncate_chars:30 }}</span></a></h2></li>
+					<li class="more"><span class="quantity">({{ item.quantity }}x)</span></li>
+					<li class="price">{{ item.product.unit_price|currency }}</li>
+				</ul>
+			</li>
+			{% endfor %}
+		</ul>
+		
+		<ul class="container extra">
+			{% for extra_price_field in cart.extra_price_fields %}
+			<li  class="item">
+				<ul class="horizontal">
+					<li class="name">{{ extra_price_field.0 }}</li>
+					<li class="more">&nbsp;</li>
+					<li class="price">{{ extra_price_field.1|currency }}</li>
+				</ul>
+			</li>
+			{% endfor %}
+		</ul>
+		
+		<ul class="container total">
+			<li  class="item">
+				<ul class="horizontal">
+					<li class="name">{% trans "Total" %}</li>
+					<li class="more">&nbsp;</li>
+					<li class="price">{{ cart.total_price|currency }}</li>
+				</ul>
+			</li>
+		</ul>
+		
+		<div class="clear"></div>
+
+		<div class="proceed right"><a href="{% url checkout_selection %}" class="icon-container checkout button shop"><span class="icon"></span><span class="text">{% trans "Checkout" %}</span></a></div>
+		<div class="proceed space right"><a href="{% url cart %}" class="icon-container cart button shop"><span class="icon"></span><span class="text">{% trans "Your Cart" %}</span></a></div>
+		
+
+	</div>
+	
+	
+</div>
+
+
+
+
+
+{% else %}        
+
+<div class="wrapper cart empty left">
+
+
+
+	<h1 class="sizes m l right"><a href="{% url cart %}">{% trans "Shop" %}</a></h1>
+
+	<div class="clear"></div>
+
+	<div class="sizes m l spacer">
+		<h2>&nbsp;</h2>	
+		<div class="empty-row">&nbsp;</div>
+	</div>
+	
+	<div class="clear"></div>
+	
+	<div class="proceed right"><a href="{% url cart %}" class="icon-container cart button shop"><span class="icon"></span><span class="text">{% trans "Your Cart" %}</span></a></div>
+	
+</div>
+
+{% endif %}

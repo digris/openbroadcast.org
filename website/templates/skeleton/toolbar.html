@@ -1,0 +1,79 @@
+{% load menu_tags i18n notifications_tags activity_tags %}
+{% notifications_unread as unread_count %}
+
+
+	<div>
+		
+		<div class="navright">
+			
+			{% include "aplayer/_inline.html" %}
+
+
+
+			<div class="right">
+				
+				
+				
+				<!-- account section -->
+				<ul id="nav" class="horizontal unstyled nav-profile"> 
+			
+					{% if user.is_authenticated %}
+			        	<li><a href="{% url auth_logout %}?next=/"><i class="icon-signout"></i><span> {% trans 'Logout' %}</span></a></li>
+
+			        	<li><a href="{% url profiles-profile-detail user %}"><i class="icon-cog"></i><span> {% firstof user.get_full_name user.username %}</span></a></li>
+			        	
+			        	{% if user.is_staff %}
+						<li><a href="/admin/"><i class="icon-dashboard"></i> <span>{% trans 'Administration' %}</span></a></li>
+						{% endif %}
+						
+						<li><a href="{% url postman_inbox %}"><i class="icon-envelope-alt"></i><span> {% trans 'Messages' %} {{ postman_unread_count }}</span></a></li>
+
+                        {% comment %}
+						{% if user|user_stream_count > 0 %}
+						<li class="messages"><a href="#"><i class="icon-comment icon-white"></i> <span class="icon-label">{{ user|user_stream_count }}</span></a></li>
+						{% endif %}
+						{% endcomment %}
+						
+					{% else %}
+
+  						<li><a href="{% url socialauth_begin "twitter" %}?next={{ request.get_full_path }}"><i class="icon-twitter"></i></a></li>
+  						<li><a href="{% url socialauth_begin "facebook" %}?next={{ request.get_full_path }}"><i class="icon-facebook"></i></a></li>
+  						<li><a href="{% url socialauth_begin "google-oauth2" %}?next={{ request.get_full_path }}"><i class="icon-google-oauth2"></i></a></li>
+ 						<li><a href="{% url socialauth_begin "github" %}?next={{ request.get_full_path }}"><i class="icon-github"></i></a></li>
+
+ 					
+			        	<li><a title="Login" href="{% url auth_login %}?next={{ request.get_full_path }}" rel="modal:open"><i class="icon-signin"></i><span> {% trans 'Login' %}</span></a></li>
+						<li><a title="Register" href="{% url registration_register %}?next={{ request.get_full_path }}" rel="modal:open"><i class="icon-ok-sign"></i><span> {% trans 'Sign Up' %}</span></a></li>
+			    	{% endif %}
+			    </ul>
+				<!-- // account section -->
+					
+			</div>
+		</div>
+		<div class="navleft">
+			<div class="logo" style="float: left;">
+				<a href="/" style="color: #777777; font-weight: bold;">open broadcast</a>
+			</div>
+			<ul class="left navigation-main">
+				{% show_menu 0 1 100 100 "menu/navigation_main.html" %}
+			</ul>
+		</div>
+		<div class="clear"></div>
+	</div>
+	
+
+	{% if user.is_authenticated and user|user_stream_count > 0 %}
+
+	<div class="notification-holder">
+		{# user_stream user #}
+	</div>
+	
+	{% endif %}
+
+	
+	
+	
+	<div class="subnav">
+		{% show_menu 0 1 100 100 "menu/navigation_sub.html" %}
+	</div>
+	<div class="clear"></div>

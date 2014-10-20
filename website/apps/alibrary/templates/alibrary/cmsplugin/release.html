@@ -1,0 +1,62 @@
+{% load i18n thumbnail truncate %}
+
+
+<div class="container release row-fluid">
+	
+	<div class="span3">
+		<div class="wrapper">
+			<img src="{% thumbnail release.main_image 210x210 crop upscale subject_location=release.main_image.subject_location %}" width="210" height="210" />
+		</div>
+	</div>
+	
+	<div class="span8">
+		<div class="wrapper">
+			
+			<h1><a class="permalink" href="{{ release.get_absolute_url }}">{{ release.name|truncate_chars:50 }}</a></h1>
+				
+			{% for artist in release.get_artists %}
+			<h2 class=" subheading left">
+				{% if artist.join_phrase %}
+				{{ artist.join_phrase }}
+				{% endif %}
+				<a href="{{ artist.get_absolute_url }}">{{ artist.artist.name }}</a>
+				&nbsp;
+			</h2>
+			{% endfor %}
+			<div class="clear"></div>
+
+		    {% if columns == 3 %}
+				<ul class="info">
+					<li class="item">
+						<ul class="horizontal">
+							<li class="label">
+								{% trans "Releasedate" %}:
+							</li>
+							<li class="content">
+								<span class="base">{{ release.releasedate }}</span>
+							</li>
+						</ul>
+					</li>
+					
+					{% if release.catalognumber %}
+					<li class="item">
+						<ul class="horizontal">
+							<li class="label">
+								{% trans "Catalog Number" %}:
+							</li>
+							<li class="content">
+								<span class="base">{{ release.catalognumber }}</span>
+							</li>
+						</ul>
+					</li>
+					{% endif %}
+					
+		
+
+				</ul>
+			 {% endif %}   
+		    
+		</div>
+	</div>
+	
+</div>

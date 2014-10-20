@@ -1,0 +1,41 @@
+<div class="filter_context">
+
+	{% for item in filter.filterlist %}
+	{% include "alibrary/element/_filterbox.html" %}
+	{% endfor %}
+
+	<div class="box ">
+		<div class="boxtitle " id="filterbox-user">
+			<span class="noselection">Filter: User</span>
+			<!--
+			<span style="color: #888888;">(1)</span>
+			-->
+		</div>
+		<div style="" class="boxcontent" id="filterbox_holder-user">
+			<div class="boxitem plus">
+				<a id="filterbox_item-5294256" href="/content/library/releases?filter_user=5&amp;page=1" class="filterbox_item">Show my own additions only</a>
+			</div>
+			<div class="boxitem plus">
+				<a href="/content/library/releases?filter_user=&amp;page=1" class="search">By user: </a>
+				<input type="text" id="search_user" name="search_user" value="" size="16" class="blur boxitem_user" />
+			</div>
+		</div>
+	</div>
+	<div class="box ">
+		<div class="boxtitle " id="filterbox-various">
+			<span class="noselection">Filter: Various</span>
+			<!--
+			<span style="color: #888888;">(2)</span>
+			-->
+		</div>
+		<div style="" class="boxcontent" id="filterbox_holder-various">
+			<div class="boxitem plus">
+				<a id="filterbox_item-image_available" href="/content/library/releases?filter_various=image_available&amp;page=1" class="filterbox_item">Releases with Cover</a>
+			</div>
+			<div class="boxitem plus">
+				<a id="filterbox_item-image_missing" href="/content/library/releases?filter_various=image_missing&amp;page=1" class="filterbox_item">Releases without Cover</a>
+			</div>
+		</div>
+	</div>
+	<div class="boxend"></div>
+</div>

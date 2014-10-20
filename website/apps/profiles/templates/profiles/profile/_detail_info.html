@@ -1,0 +1,152 @@
+{% load truncate i18n thumbnail arating_tags spacify_tags %}
+<div class="span7 padded-h container_content">
+
+	<div class="page-header">
+		<h2>
+            {% firstof object.user.get_full_name|truncate_chars_inner:40  object.user.username %}
+            <small>
+                {% if object.city %}{{ object.city }}{% endif %}
+                {% if object.city and object.country %}, {% endif %}
+                {% if object.country %}{{ object.country }}{% endif %}
+            </small>
+        </h2>
+	</div>
+
+	<dl class="dl-horizontal main">
+		
+		<dt>
+			{% trans "Username" %}:
+		</dt>
+		<dd>
+			{{ object.user.username }}
+		</dd>
+
+        {% if object.pseudonym %}
+		<dt>
+			{% trans "Pseudonym" %}:
+		</dt>
+		<dd>
+			{{ object.pseudonym }}
+		</dd>
+		{% endif %}
+		
+		{% if object.mentor %}
+		<dt>
+			{% trans "Mentor" %}:
+		</dt>
+		<dd>
+			<ul class="unstyled">
+				<li>
+					<a href="{{ object.mentor.get_absolute_url }}">{% firstof object.mentor.get_full_name object.mentor.username %}</a>
+				</li>
+			</ul>
+		</dd>
+		{% endif %}
+		
+		{% if object.user.godchildren.count %}
+		<dt>
+			{% trans "Mentoring" %}:
+		</dt>
+		<dd>
+			<ul class="unstyled">
+				<li>
+				{% for profile in object.user.godchildren.all %}
+				<span>
+					<a href="{{ profile.user.get_absolute_url }}">{% firstof profile.user.get_full_name profile.user.username %}</a>{% if not forloop.last %}, {% endif %}
+				</span>
+				{% endfor %}
+				</li>
+			</ul>
+		</dd>
+		{% endif %}
+		
+		{% if object.get_groups.count %}
+		<dt>
+			{% trans "Access level" %}:
+		</dt>
+		<dd>
+			<ul class="unstyled">
+				<li>
+				{% for group in object.get_groups.all %}
+				<span>
+					{{ group }}{% if not forloop.last %}, {% endif %}
+				</span>
+				{% endfor %}
+				</li>
+			</ul>
+		</dd>
+		{% endif %}
+	
+
+        {% if object.link_set.all %}
+		<dt>
+			{% trans "Links" %}:
+		</dt>
+		<dd>
+			{% for link in object.link_set.all %}
+			<a href="{{ link.url }}">{% firstof link.title link.url %}</a>{% if not forloop.last %},{% endif %}
+			{% endfor %}
+			&nbsp;
+		</dd>
+        {% endif %}
+
+	</dl>
+
+
+	<dl class="dl-horizontal sub">
+
+		<dt>
+			{% trans "Edit History" %}:
+		</dt>
+		<dd>
+			
+			{% if object.user.date_joined %}
+			<span class="key">{% trans "Date joined" %}:</span> <span class="value">{{ object.user.date_joined|date:"SHORT_DATE_FORMAT" }}</span> |
+			{% endif %}
+			
+			{% if object.user.last_login %}
+			<span class="key">{% trans "Last login" %}:</span> <span class="value">{{ object.user.last_login|date:"SHORT_DATE_FORMAT" }}</span> |
+			{% endif %}
+			&nbsp;
+		</dd>
+
+        {% comment %}
+		<dt>
+			{% trans "Stats" %}:
+		</dt>
+		<dd>
+			<span class="value">173</span> <span class="key">{% trans "Plays" %}</span> /
+			<span class="value">28</span> <span class="key">{% trans "Downloads" %}</span>
+		</dd>
+		{% endcomment %}
+
+    {% if object.tags %}
+        <dt>
+            {% trans "Tags" %}:
+        </dt>
+        <dd>
+            {% for tag in object.tags %}
+                <span class="tag">{{ tag.name|spacify }}</span>
+            {% endfor %}
+        </dd>
+    {% endif %}
+
+	</dl>
+
+</div>
+
+<div class="span2 padded-h padded-v">
+
+	<div class="image">
+		{% if object.image %}
+		<a href="{% thumbnail object.image 1200x1200 crop upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.image 172x172 crop upscale subject_location=object.image.subject_location %}" alt="Cover" /> </a>
+		{% else %}
+		<img src="/static/img/base/defaults/listview.profile.xl.png" alt="{% trans "No image available" %}" />
+		{% endif %}
+	</div>
+
+	<div class="rating">
+		{% rating_for_object object %}
+	</div>
+
+</div>

@@ -1,0 +1,117 @@
+{% extends "layout_edit.html" %}
+
+{% load crispy_forms_tags dajaxice_templatetags sekizai_tags static %}
+
+{% load thumbnail i18n truncate %}
+
+{% block heading %} <!-- heading / icon (large one) -->
+    {% addtoblock "js-post" %}
+        <script type="text/javascript" src="{{ STATIC_URL }}selectable/js/jquery.dj.selectable.js"></script>
+    {% endaddtoblock %}
+    {% addtoblock "js-post" %}
+        <script type="text/javascript" src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}{% dajaxice_js_import %}{% endaddtoblock %}
+    {% addtoblock "js-post" %}
+        <script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>{% endaddtoblock %}
+
+
+    {% addtoblock "js-post" %}
+        <script>
+            $(function () {
+
+                $('.target-duration input:checked').parent().addClass("selected");
+                $('.target-duration input').css('display', 'none');
+                $('.target-duration input').live('change', function (e) {
+                    $('.target-duration label').removeClass('selected');
+                    $(this).parents('label').addClass('selected');
+                });
+
+
+                $('.weather input:checked').parent().addClass("selected");
+                $('.weather input').css('display', 'none');
+                $('.weather input').live('change', function (e) {
+                    //$('.weather label').removeClass('selected');
+                    $(this).parents('label').toggleClass('selected');
+                });
+
+
+                $('.seasons input:checked').parent().addClass("selected");
+                $('.seasons input').css('display', 'none');
+                $('.seasons input').live('change', function (e) {
+                    //$('.seasons label').removeClass('selected');
+                    $(this).parents('label').toggleClass('selected');
+                });
+
+
+                $('.dayparts input:checked').parents('li').addClass("selected");
+                $('.dayparts input').css('display', 'none');
+
+                $('.dayparts input').live('click', function (e) {
+                    $(this).parents('li').toggleClass('selected');
+                });
+
+            });
+        </script>
+    {% endaddtoblock %}
+
+
+    {% addtoblock "css" %}
+        <style>
+            fieldset.daypart,
+            fieldset.series,
+            fieldset.tagging {
+                display: none;
+            }
+        </style>
+    {% endaddtoblock %}
+
+
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+    <!-- heading / icon (large one) -->
+{% endblock %}
+
+{% block modnav %} <!-- start: intra-module navigation -->
+    <div id="modnav">
+        {% include "skeleton/modnav.html" %}
+    </div>
+    <!-- end: intra-module navigation -->
+{% endblock %}
+
+{% block inner %}
+    <div class="item_create" style="">
+        <div class="alert alert-info">
+            <strong>{% trans "Playlist creation" %}</strong>
+            {% trans "Bla Bla..." %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "alibrary/playlist/sidebar/_edit.html" %}
+{% endblock %}
+
+{% block form %}
+    <div class="item_inner">
+
+        <form class="form-horizontal form-compact form-playlist" method="post" enctype="multipart/form-data">
+
+            {{ form.management_form }}
+
+            {% crispy form %}
+            {% crispy action_form %}
+
+        </form>
+
+    </div>
+{% endblock %}
+
+{% block form_sidebar %}
+    <div class="sidebar form-sidebar holder">
+        {% with providers=object.get_lookup_providers %}
+            {% include "alibrary/form_lookup/_providers.html" %}
+        {% endwith %}
+    </div>
+{% endblock %}
+

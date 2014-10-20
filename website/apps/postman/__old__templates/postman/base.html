@@ -1,0 +1,68 @@
+{% extends "layout_base.html" %}
+{# extends "base.html" #}
+{% load url from future  %}
+{% load i18n %}{% load postman_tags sekizai_tags %}
+
+
+
+{% block heading %}
+<!-- heading / icon (large one) -->
+{% addtoblock "css" %}
+<link type="text/css" media="all" rel="stylesheet" href="{{ STATIC_URL }}postman/css/postman.css" />
+{% endaddtoblock %}
+
+<div id="heading">
+	{% with page_title="Messaging" %}
+	{% include "skeleton/heading.html" %}
+	{% endwith %}
+</div>
+<!-- heading / icon (large one) -->
+{% endblock %}
+
+{% block modnav %} <!-- start: intra-module navigation -->
+<div id="modnav">
+	<li>
+		<a href="{% url 'postman_inbox' %}">{% trans "Inbox" %}{% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a>
+	</li>
+	<li>
+		<a href="{% url 'postman_sent' %}">{% trans "Sent Messages" %}</a>
+	</li>
+	<!--
+	<li><a href="{% url 'postman_write' %}">{% trans "Write" %}</a></li>
+	-->
+	<li>
+		<a href="{% url 'postman_archives' %}">{% trans "Archives" %}</a>
+	</li>
+	<li>
+		<a href="{% url 'postman_trash' %}">{% trans "Trash" %}</a>
+	</li>
+</div>
+<!-- end: intra-module navigation -->
+{% endblock %}
+
+{% block postman_menu %}
+<ul id="postman_menu">
+	{% postman_unread as unread_count %}
+	<li>
+		<a href="{% url 'postman_inbox' %}">&raquo;&nbsp;{% trans "Inbox" %}{% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a>
+	</li>
+	<li>
+		<a href="{% url 'postman_sent' %}">&raquo;&nbsp;{% trans "Sent Messages" %}</a>
+	</li>
+
+	<!--
+	<li><a href="{% url 'postman_write' %}">&raquo;&nbsp;{% trans "Write" %}</a></li>
+	-->
+	<li>
+		<a href="{% url 'postman_archives' %}">&raquo;&nbsp;{% trans "Archives" %}</a>
+	</li>
+	<li>
+		<a href="{% url 'postman_trash' %}">&raquo;&nbsp;{% trans "Trash" %}</a>
+	</li>
+</ul>
+{% endblock %}
+
+{% block inner %}
+{% block content %}
+{% endblock %}
+{% endblock %}

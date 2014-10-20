@@ -1,0 +1,225 @@
+<div class="query">
+
+    <form class="form-horizontal">
+
+        <input class="query" type="text" value="{{ query }}">
+
+        <a class="pull-right search btn btn-primary" type="button">Search</a>
+
+    </form>
+
+</div>
+
+
+<div class="results" style="max-height: 400px; overflow: auto; width: 700px;">
+
+
+    {% if results.length < 1 %}
+
+        <p>
+            Sorry - but we could not find any results.
+        </p>
+    {% endif %}
+
+    {% for result in results %}
+
+        <div class="item result" data-uri="{{ result.uri }}">
+
+            {% if provider == "discogs" %}
+                <div class="row-fluid">
+
+                    <div class="span2">
+                        {% if  result.thumb %}
+                            <img src="{{ result.thumb }}">
+                        {% endif %}
+                    </div>
+
+
+                    <div class="span10">
+                        <strong>{{ result.title }}</strong>
+                        <ul class="unstyled">
+
+                            {% if item_type == "release" %}
+                            <li>
+
+                            <span class="value">
+                                <strong>{{ result.year }} | {{ result.country }}</strong>
+                            </span>
+                            </li>
+
+                            <li>
+                            <span class="title">
+                                Catalog #:
+                            </span>
+                            <span class="value">
+                                <strong>{{ result.catno }}</strong>
+                            </span>
+                            </li>
+
+                            <li>
+                            <span class="title">
+                                Format:
+                            </span>
+                            <span class="value">
+                                <strong>
+                                    {% for k in result.format %}
+                                        {{ k }} |
+                                    {% endfor %}
+                                </strong>
+                            </span>
+                            {% endif %}
+
+                            </li>
+
+                        </ul>
+                    </div>
+
+
+                </div>
+            {% endif %}
+
+            {% if provider == "musicbrainz" %}
+                <div class="row-fluid">
+
+                    <div class="span2">
+                        {% if  result.thumb %}
+                            <img src="/static/img/base/defaults/listview.release.xl.png" data-carchive_url="{{ result.thumb }}">
+                        {% endif %}
+                    </div>
+
+                    <div class="span10">
+
+
+
+                        {% if item_type == "release" %}
+                        <strong>{{ result.title }}</strong>
+                        <ul class="unstyled">
+
+                            <li>
+
+                            <span class="value">
+                                <strong>{{ result.date }} | {{ result.country }}</strong>
+                            </span>
+                            </li>
+
+                            {% if result["label-info"] %}
+                                {% for l in result["label-info"] %}
+                                    <li>
+
+                                        <span class="title">
+                                            Catalog #:
+                                        </span>
+                                        <span class="value">
+                                        <strong>{{ l["catalog-number"] }}</strong>
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
+
+
+                            <li>
+                            <span class="title">
+                                Barcode:
+                            </span>
+                            <span class="value">
+                                <strong>
+                                    {{ result.barcode }}
+
+                                </strong>
+                            </span>
+                            </li>
+
+                        </ul>
+                        {% endif %}
+
+
+
+                        {% if item_type == "artist" %}
+                        <strong>{{ result.name }} | {{ result.country }}</strong>
+                        <ul class="unstyled">
+
+
+                            <li>
+                            <span class="title">
+                                Type:
+                            </span>
+                            <span class="value">
+                                <strong>
+                                    {{ result.type }}
+
+                                </strong>
+                            </span>
+                            </li>
+
+                        </ul>
+                        {% endif %}
+
+
+
+                        {% if item_type == "label" %}
+                        <strong>{{ result.name }} | {{ result.country }}</strong>
+                        <ul class="unstyled">
+
+                            {% if result["life-span"]["begin"] %}
+                            <li>
+                            <span class="title">
+                                Dates:
+                            </span>
+                            <span class="value">
+                                {% if result["life-span"]["begin"] %}
+                                <strong>
+                                    * {{ result["life-span"]["begin"] }}
+                                </strong>
+                                {% endif %}
+                                {% if result["life-span"]["end"] %}
+                                <strong>
+                                    ✝ {{ result["life-span"]["end"] }}
+                                </strong>
+                                {% endif %}
+                            </span>
+                            </li>
+                            {% endif %}
+
+                        </ul>
+                        {% endif %}
+
+
+
+                        {% if item_type == "media" %}
+                        <strong>{{ result.title }}</strong> | <span>{{ result.length|ms2time }}</span>
+                        <ul class="unstyled">
+
+                            {% if result["artist-credit"] %}
+                            <li>
+                            <span class="title">
+                                Artist:
+                            </span>
+                            <span class="value">
+
+                                <strong>
+                                    {{ result["artist-credit"][0]["artist"]["name"] }}
+                                </strong>
+
+                            </span>
+                            </li>
+                            {% endif %}
+
+                        </ul>
+                        {% endif %}
+
+
+
+
+                    </div>
+
+
+                </div>
+            {% endif %}
+
+
+        </div>
+
+
+
+    {% endfor %}
+</div>

@@ -1,0 +1,63 @@
+<!--
+<ul class="unstyled">
+	<li><strong class="name"><a href="{{ object.absolute_url }}">{{ object.name|truncate_chars_inner(30) }}</a></strong><small class="pull-right">{{ object.type_display }}</small></li>
+	<li><a href="{{ object.user.absolute_url }}">{{ object.user.full_name }}</a></li>
+	<li>{{ object.time_start|format_datetime('time') }} - {{ object.time_end|format_datetime('time') }}</li>
+</ul>
+-->
+
+<section class="title">
+    <!--
+	<h3>{{ object.name }} <small class="pull-right">{{ object.type_display }}</small></h3>
+	-->
+	<h3>
+        <a href="{{ object.absolute_url }}">{{ object.name }}</a>
+        <small class="pull-right">
+            <a href="#" class="btn streamable popup" data-resource_uri="{{ api_url }}"><i class="icon-play"></i>&nbsp;&nbsp;Tune In</a>
+        </small>
+    </h3>
+	<ul class="unstyled">
+		<li>
+			<i class="icon-time"></i> {{ object.time_start|format_datetime('time') }} - {{ object.time_end|format_datetime('time') }}
+		</li>
+		{% if object.user_co %}
+		<li>
+			<i class="icon-user"></i>
+            <a href="{{ object.user_co.absolute_url }}">{{ object.user_co.username }}</a>
+
+            <a style="font-size: 16px;" href="#" onclick="$('section.description').toggle(200);" class="pull-right"><i class="icon-caret-down icon-large"></i></a>
+
+		</li>
+		{% endif %}
+	</ul>
+</section>
+
+<section class="description">
+
+
+    {% if object.content_object.main_image %}
+    <img src="{{ object.content_object.main_image }}" style="width: 50%;">
+    {% endif %}
+
+    <!--
+	<p>{{ object.content_object.description_html|shorten(200)|linebreaksbr}}</p>
+    -->
+    {% if object.content_object.description %}
+	<div class="description markdown-remove">{{ object.content_object.description_html}}</div>
+    {% endif %}
+	<!--
+	<a href="{{ object.content_object.absolute_url }}" class="pull-left">> Read more</a>
+	-->
+
+	<ul class="unstyled object-links">
+		<li>
+			<a href="{{ object.absolute_url }}">&gt; Emission details</a>
+		</li>
+		<li>
+			<a href="{{ object.content_object.absolute_url }}">&gt; Content details</a>
+		</li>
+	</ul>
+
+</section>
+
+

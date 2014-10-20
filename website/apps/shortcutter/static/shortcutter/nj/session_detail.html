@@ -1,0 +1,49 @@
+<div>
+	
+	{% for slot in object.slots %}
+	<div class="holder slot" style="width: {{ shotSize }}px;">
+		<div class="header"><h4>{{ slot.time }}</h4></div>
+		
+		{% for shot in slot.shots %}
+			<div class="holder shot">
+				<div class="box" style="width: {{ shotSize }}px; height: {{ shotSize }}px;">
+				{% if shot.image %}				
+					<img src="{{ shot.image }}" width="{{ shotSize - 10 }}"/>
+				{% else %}
+					<img src="/static/shortcutter/img/shot_placeholder.png" width="{{ shotSize - 10 }}"/>
+				{% endif %}
+				
+					<span class="caption caption fade-caption" style="width: {{ shotSize - 25 }}px; height: {{ shotSize - 25 }}px;">
+						<h3>Caption</h3>
+						<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
+						
+						<dl>
+							<dt>Created</dt>
+							<dd>{{ shot.created}}</dd>
+						</dl>
+						
+						<span class="datetime pull-right"></span>
+					</span>
+				
+				</div>
+			
+			<div class="meta shot">
+			<p>{{ shot.user.username }}
+				<span class="datetime pull-right">{{ shot.created}}</span>
+			</p>
+			</div>
+			
+			</div>
+			
+			{% if loop.last %}
+			<div style="clear: both;"></div>
+			{% endif %}
+			
+			
+		{% endfor %}
+		
+		
+	</div>
+	{% endfor %}
+	
+</div>

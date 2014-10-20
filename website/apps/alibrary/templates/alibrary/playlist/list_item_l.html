@@ -1,0 +1,164 @@
+{% load thumbnail i18n truncate display_tags arating_tags spurl calc %}
+
+<div class="list_body_row selectable clickable item playlist published {% if item.user == request.user %}owner{% endif %} view edit stream collect download"
+     id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}"
+     data-absolute_url="{{ item.get_absolute_url }}"
+     {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 200x200 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}>
+
+    <div class="wrapper_icon">
+
+        {% with object=item ct="playlist" %}
+            {% include "alibrary/element/_item_actions_primary.html" %}
+        {% endwith %}
+
+        <!-- type icons
+        <ul class="unstyled pull-right indicator">
+            <li><i class="icon-broadcast"></i></li>
+        </ul>
+         -->
+
+
+    </div>
+
+    <div class="spacer tag-cloud">
+
+        <ul class="tags unstyled horizontal">
+            {% for tag in item.tags|slice:":8" %}
+                <li class="{% if tag.pk in active_tags %}__active{% endif %}">{{ tag.name|truncate_chars_inner:10 }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    <div class="wrapper_info">
+
+        <div class="wrapper_inner">
+
+            <div class="list_body_item">
+                <ul class="title">
+                    <li class="bold">
+                        <a href="{{ item.get_absolute_url }}" title="{{ item.name }}">
+                            {{ item.name|truncate_chars_inner:24 }}
+                            {% if item.country %}({{ item.country }}){% endif %}
+                            {% topflop_for_object item %} </a>
+                    </li>
+                    <li>
+                        <a href="{{ item.user.get_absolute_url }}">{% firstof item.user.username item.user %}</a>
+
+                        {% url alibrary-playlist-list as playlist_list %}
+                        <a href="{% spurl path=playlist_list query="user={{ item.user.username }}" %}"
+                           title="{% trans "Only show playlists by" %} {% firstof item.user.username item.user %}"
+                           style="vertical-align: top;"><span class="filter icon"></span></a>
+
+
+                        <span class="pull-right">
+                            <span class="small">{{ item.get_type_display }}</span>
+                        </span>
+
+
+                    </li>
+
+
+                </ul>
+
+                <ul class="unstyled">
+                    <li>
+                        {{ item.duration|divide:1000|sec_to_time }}
+                        {% if item.target_duration %}
+                            <span class="small">{% trans "of" %} {{ item.target_duration|sec_to_time }}</span>
+                        {% endif %}
+
+                        {% comment %}
+                        <span class="small">{{ item.items.count }} {% trans "Tracks" %}</span>
+                        {% endcomment %}
+
+                        {% if item.type == 'broadcast' %}
+                        <span class="pull-right">
+                            <span class="small">{{ item.get_status_display }}</span>
+                        </span>
+                        {% endif %}
+
+                    </li>
+
+
+
+                </ul>
+
+
+            </div>
+
+            <div class="list_body_item links external">
+                <ul class="links external unstyled">
+                    {% for relation in item.relations.specific %}
+                        <li>
+                            <a href="{{ relation.url }}" class="skip-external"
+                               title="Show on {{ relation.get_service_display }}"><i
+                                    class="cicon-{{ relation.service }}"></i></a>
+                            <!--
+					<a href="{{ relation.url }}" class="skip-external" title="Show on {{ relation.get_service_display }}">{{ relation.service }}</a>
+					-->
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <div class="wrapper_action">
+
+
+        <ul class="unstyled action secondary horizontal clearfix">
+
+            <li>
+                <a href="#"
+                   class="{% if not perms.alibrary.downoad_media %} disabled{% endif %}"
+                   data-ct="playlist"
+                   data-id="{{ item.pk }}"
+                   data-action="download"
+                   title="{% trans "Download" %}">
+                    <i class="icon icon-download-alt"></i>
+                </a>
+            </li>
+
+            <li>
+                <a href="#"
+                   class="{% if not user.is_authenticated %} disabled{% endif %}"
+                   data-action="collect"
+                   title="{% trans "Add to playlist" %}">
+                    <i class="icon icon-plus"></i>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ item.get_edit_url }}"
+                   class="{% if user.is_authenticated and user == item.user %}{% else %} disabled{% endif %}"
+                   title="{% trans "Edit" %}">
+                    <i class="icon icon-edit"></i>
+                </a>
+            </li>
+
+            {% if perms.alibrary.schedule_playlist and item.type == "broadcast" and item.broadcast_status == 1 %}
+            <li>
+                <a href="{% url abcast-schedule-select-playlist  %}?playlist_id={{ item.pk }}&next={% url abcast-schedule %}"
+                   class="{% if not perms.alibrary.schedule_playlist or not item.type == "broadcast" or not item.broadcast_status == 1 %} disabled{% endif %}"
+                   data-action="schedule"
+                   data-ct="playlist"
+                   data-id="{{ item.id }}"
+                   data-uuid="{{ item.uuid }}"
+                   title="{% trans "Schedule" %}">
+                    <i class="icon icon-calendar"></i>
+                </a>
+            </li>
+            {% endif %}
+
+        </ul>
+
+    </div>
+</div>
+
+
+

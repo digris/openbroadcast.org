@@ -1,0 +1,6 @@
+{% if DEBUG %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/lib/nunjucks/nunjucks-dev.js"></script>
+{% else %}
+<script type="text/javascript" src="{{ STATIC_URL }}nunjucks/js/nunjucks.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}nunjucks/js/templates.js"></script>
+{% endif %}

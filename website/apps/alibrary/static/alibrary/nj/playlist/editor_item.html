@@ -1,0 +1,178 @@
+<div class="list_body_row item hoverable editable {{ object.uuid }} {{ object.item.content_type }} {% if readonly %} readonly{% endif %}"
+     data-updated="{{ object.updated }}"
+     data-resource_uri="{{ object.resource_uri }}"
+     data-uuid="{{ object.uuid }}"
+     data-id="{{ object.id }}"
+     id="playlist_item_{{ object.id }}">
+
+    <div class="row-fluid base">
+
+        <div class="span1 actions">
+
+            <ul class="unstyled">
+                <li>
+                    <a href="#" data-action="stop" class="visible-while-playing">
+                        &nbsp;&nbsp;<i class=" icon-stop icon-large"></i>
+                    </a>
+                    <a href="#" data-action="play" class="hidden-while-playing">
+                        &nbsp;&nbsp;<i class=" icon-play icon-large"></i>
+                    </a>
+                    <a href="#" data-action="pause" class="">
+                        &nbsp;&nbsp;<i class=" icon-pause icon-large"></i>
+                    </a>
+                </li>
+            </ul>
+            {% if not readonly %}
+                <!--
+                <span>{{ object.item.content_object.duration|ms2time }}</span>
+                -->
+                <span>{{ (object.item.content_object.duration - object.cue_in - object.cue_out)|ms2time }}</span>
+            {% endif %}
+        </div>
+
+        <div class="span3">
+            <ul class="unstyled">
+                <li class="bold">
+                    <a href="{{ object.item.content_object.absolute_url }}"
+                       title="{{ object.item.content_object.name }}">
+                        {{ object.item.content_object.name|shorten(30) }}
+                    </a>
+                </li>
+                <li class="small relations">
+
+                    {% if object.item.content_object.artist %}
+                        <span>
+						<a href="{{ object.item.content_object.artist.absolute_url }}"
+                           title="{{ object.item.content_object.artist.name }}">
+                            {{ object.item.content_object.artist.name }}
+                        </a>
+					</span> |
+                    {% endif %}
+
+                    {% if object.item.content_object.release %}
+                        <span>
+						<a href="{{ object.item.content_object.release.absolute_url }}"
+                           title="{{ object.item.content_object.release.name }}">
+                            {{ object.item.content_object.release.name }}
+                        </a>
+					</span> |
+                    {% endif %}
+
+
+                </li>
+            </ul>
+        </div>
+        <!---->
+        <div class="span1 fade-cue" style="width: 80px;">
+
+            <div class="row-fluid pull-right">
+
+                <div class="span11" style="margin-left: 0">
+
+                    {% if enable_crossfades %}
+
+                    {% if not readonly %}
+                        <input class="fade_cross" type="text" value="{{ object.fade_cross }}"/>
+                    {% endif %}
+
+                    <span>{{ object.fade_cross|ms2time }}</span><a class="editor preview"
+                                                                   data-preview="fade_cross"
+                                                                   href="#"><i class="icon-volume-up icon-small"></i></a>
+
+                    {% else %}
+                    <span>{{ object.fade_cross|ms2time }}</span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="span3 fade-cue">
+
+            <div class="row-fluid pull-right">
+
+                <div class="span6" style="margin-left: 0">
+
+                    {% if not readonly %}
+                        <input class="fade_in" type="text" value="{{ object.fade_in }}"/>
+                    {% endif %}
+
+                    <span>{{ object.fade_in|ms2time }}</span> <a class="editor preview" data-preview="fade_in" href="#"><i
+                        class="icon-volume-up icon-small"></i></a>
+
+                </div>
+                <div class="span6" style="margin-left: 0">
+
+                    {% if not readonly %}
+                        <input class="fade_out" type="text" value="{{ object.fade_out }}"/>
+                    {% endif %}
+
+                    <span>{{ object.fade_out|ms2time }}</span> <a class="editor preview"
+                                                                  data-preview="fade_out"
+                                                                  href="#"><i class="icon-volume-up icon-small"></i></a>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="span3 fade-cue">
+
+            <div class="row-fluid pull-right">
+
+                <div class="span6" style="margin-left: 0">
+
+                    {% if not readonly %}
+                        <input class="cue_in" type="text" value="{{ object.cue_in }}"/>
+                    {% endif %}
+                    <span>{{ object.cue_in|ms2time }}</span>
+                </div>
+                <div class="span6" style="margin-left: 0">
+
+                    {% if not readonly %}
+                        <input class="cue_out" type="text" value="{{ object.cue_out }}"/>
+                    {% endif %}
+
+                    <span>{{ object.cue_out|ms2time }}</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="span1 actions">
+
+            <ul class="unstyled">
+                <li>
+
+                    <a href="#" data-action="collect" class=" pull-right">
+                        &nbsp;&nbsp;<i class="icon-plus icon-large"></i>
+                    </a>
+
+                    {% if not readonly %}
+                        <a href="#" data-action="delete" class=" pull-right">
+                            <i class="icon-trash icon-large"></i>
+                        </a>
+                    {% endif %}
+
+
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+
+
+    <div class="row-fluid playhead">
+        <div class="span12">
+
+            <div class="waveform" id="playlist_item_waveform_{{ object.id }}"></div>
+
+        </div>
+
+    </div>
+
+
+</div>

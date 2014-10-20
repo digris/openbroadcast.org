@@ -1,0 +1,120 @@
+{% extends "datatrans/base.html" %}
+{% load i18n %}
+{% load adminmedia %}
+{% block title %}{% trans "Translations for" %} {{ model }} - {{ block.super }}{% endblock %}
+{% block breadcrumbs %}
+    {{ block.super }} 
+    &rsaquo; 
+    {% ifequal objects|length 1 %}
+        <a href='..'>{% trans "Translations for" %} {{ model }}</a>
+        &rsaquo; 
+        {% for object in objects %}{{ object.name }}{% endfor %}
+    {% else %}
+        {% trans "Translations for" %} {{ model }}
+    {% endifequal %}
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <style>
+        tr.fieldname, tr.fieldname td {
+            padding-bottom: -2px;
+            border: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+{% ifnotequal objects|length 1 %}
+<h1>{% trans "Translations for" %} {{ model }}</h1>
+{% endifnotequal %}
+<div style="width: 128px; position: fixed; right: 8px; top: 72px; border: 1px solid #CCC; padding: 8px; background: #FFF;">
+	{% blocktrans with progress.0 as percent and progress.1 as done and progress.2 as total %}Progress: {{ percent }}% ({{ done }}/{{ total }}){% endblocktrans %}
+	<div style="width: 64px; border: 1px solid #CCC; margin: 0; padding: 0;">
+	     <div style="margin: 0; padding: 0; width: {% widthratio progress.0 100 64 %}px; height: 12px; background: #ACE url({% admin_media_prefix %}img/admin/default-bg.gif) repeat-x;"></div>
+	</div>
+</div>
+<p>
+	{% if first_unedited %}
+	<a href="#section_{{ first_unedited.pk }}">{% trans "Jump to first to do" %}</a><br />
+	{% endif %}
+
+	{% for field in fields %}
+	<a href="#{{ field.name }}">{% blocktrans with field.verbose_name as field_verbose_name %}Jump to {{ field_verbose_name }} field{% endblocktrans %}</a><br />
+	{% endfor %}
+</p>
+<p>
+	<div style="width: 12px; height: 12px; border: 1px solid #CCC; float: left; margin-right: 4px;"></div>
+	<div style="float: left; height: 12px; margin-right: 16px;">{% trans "done" %}</div>
+	<div style="width: 12px; height: 12px; border: 1px solid #CCC; background: #DEF; float: left; margin-right: 4px;"></div>
+	<div style="float: left; height: 12px; margin-right: 16px;">{% trans "to do" %}</div>
+	<div style="width: 12px; height: 12px; border: 1px solid #CCC; background: #FED; float: left; margin-right: 4px;"></div>
+	<div style="float: left; height: 12px; margin-right: 4px;">{% trans "to do (fuzzy)" %}</div>
+	<div style="clear: both;"></div>
+</p>
+
+
+<form method="post" action=".">
+{% csrf_token %}
+{% for object in objects %}
+    <h2 id="{{ object.id }}">{{ object.name }}</h2>
+    <table style="border: 1px solid #ccc">
+        <tr>
+            <th></th>
+            <th>{{ original_language }}</th>
+            <th>{{ other_language }}</th>
+            <th>&nbsp;</th>
+        </tr>
+        {% for field in object.fields %}
+        {% if field.original.value %}
+        <tr class="fieldname"
+            id="section_{{ field.translation.pk }}" 
+            {% if not field.translation.edited %}
+                style="background: #def;"
+            {% else %}
+                {% if field.translation.fuzzy %}
+                    style="background: #fed;"
+                {% endif %}
+            {% endif %}
+        >
+            <td><a 
+                    href="#section_{{ field.translation.pk }}"
+                    title="{% trans "Link to this translation" %}"
+            >¶</a></td>
+            <td colspan="3">{{ field.verbose_name }}</td></tr>
+        <tr 
+            {% if not field.translation.edited %}
+                style="background: #def;"
+            {% else %}
+                {% if field.translation.fuzzy %}
+                    style="background: #fed;"
+                {% endif %}
+            {% endif %}
+        >
+            <th>&nbsp;</th>
+            <td>
+                <textarea readonly="readonly" cols="60" rows="6"
+                >{{ field.original.value }}</textarea>
+            </td>
+            <td>
+                <textarea 
+                    name="translation_{{ field.translation.pk }}"
+                    cols="60" rows="6"
+                >{% if field.translation.edited %}{{ field.translation.value }}{% endif %}</textarea>
+                <input type="checkbox" name="empty_{{ field.translation.pk }}" {% ifequal field.translation.value "" %}{% if field.translation.edited %}checked="checked"{% endif %}{% endifequal %} />
+                <span title="{% trans "tick this checkbox if the translation is deliberately empty" %}">{% trans "empty" %}</span>
+                <input type="checkbox" name="ignore_{{ field.translation.pk }}" {% ifequal field.translation.value field.original.value %}{% if field.translation.edited %}checked="checked"{% endif %}{% endifequal %} />
+                <span title="{% trans "keep this original or fuzzy" %}">{% trans "ignore" %}</span>
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+{% endfor %}
+
+<div class="submit-row" >
+    <input type="submit" value="{% trans "Save" %}" class="default" />
+</div>
+</form>
+
+{% endblock %}

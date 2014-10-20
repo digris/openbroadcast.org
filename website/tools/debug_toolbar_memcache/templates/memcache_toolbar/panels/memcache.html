@@ -1,0 +1,45 @@
+{% load i18n %}
+<h5>{% blocktrans with count as count and duration as duration %}{{ count }} calls in {{ duration }}ms{% endblocktrans %}</h5>
+<table style="display:table;table-layout:fixed;">
+    <col style='width:20px;' />
+    <col />
+    <col style='width:75px;' />
+    <thead>
+        <tr>
+            <th class="query" colspan="2">{% trans 'Query' %}</th>
+            <th class="time" style='white-space:nowrap;'>{% trans 'Time (ms)' %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for call in calls %}
+        <tr class="djDebugHoverable {% cycle 'djDebugOdd' 'djDebugEven' %}" id="memcacheMain_{{ forloop.counter }}">
+            <td class="toggle">
+                <a class="djToggleSwitch" data-toggle-id="{{ forloop.counter }}" data-toggle-open="+" data-toggle-close="-" href="javascript:void(0)">+</a>
+            </td>
+            <td><div><strong>{{ call.function|upper }}</strong> {{ call.args }}</div></td>
+            <td>{{ call.duration }}</td>
+        </tr>
+        <tr class="djUnselected djDebugHoverable {% cycle 'djDebugOdd' 'djDebugEven' %} djToggleDetails_{{ forloop.counter }}" id="sqlDetails_{{ forloop.counter }}">
+            <td colspan="3">
+                <div class="djSQLDetailsDiv">
+                    {% if call.stacktrace %}
+                        <pre class="stack">{{ call.stacktrace }}</pre>
+                    {% endif %}
+
+                    {% if call.template_info %}
+                        <table>
+                            {% for line in call.template_info.context %}
+                                <tr>
+                                    <td>{{ line.num }}</td>
+                                    <td><code style="font-family: monospace;{% if line.highlight %}background-color: lightgrey{% endif %}">{{ line.content }}</code></td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <p><strong>{{ call.template_info.name|default:"(unknown)" }}</strong></p>
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

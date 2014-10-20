@@ -1,0 +1,49 @@
+<script type="text/javascript">
+	$(document).ready(function () {
+	    $('.carousel').carousel({
+	        interval: 5000
+	    });
+	    $('.carousel').carousel('cycle');
+	});
+</script>
+
+<div class="clearfix"></div>
+
+<div class="container-fluid">
+	<div class="content">
+		<div class="row-fluid">
+		
+			<div id="carousel" style="padding: 0 45px;">
+				
+				<div id="myCarousel" class="carousel slide">
+					<div class="carousel-inner">
+						
+						{% for slide in image_list %}
+							<div class="item {% if forloop.first %}active{% endif %}">
+	                			<div class="span6">
+									<div class="slider">
+										<a href="#">
+											<img src="{{ MEDIA_URL }}{{ slide.image }}" alt="">
+										</a>
+									</div>
+								</div>
+	            				<div class="span6">
+									<div class="main_text">
+	                      				{{ slide.content }}
+									</div>
+								</div>
+	              			</div>
+						{% endfor %}
+						
+					</div>
+					
+					<a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                	<a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+                	
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+

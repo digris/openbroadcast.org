@@ -1,0 +1,10 @@
+{% load absolute %}
+{% for file in file_list %}
+----------------------------------------------------------------------------
+ - {{ file.item.name }} | {{ file.item.artist.name }}
+   {{ file.directory }}{{ file.filename }}
+   {% if file.item.license %}
+   License: {{ file.item.license.name }} {% if object.item.license.restricted %} [Restricted License] {% endif %}
+   {{ SITE_ROOT }}{{ file.item.license.get_absolute_url }}{% endif %}{% if forloop.last %}
+----------------------------------------------------------------------------{% endif %}
+{% endfor %}

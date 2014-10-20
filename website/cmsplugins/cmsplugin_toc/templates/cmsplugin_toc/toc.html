@@ -1,0 +1,42 @@
+{% load markup sekizai_tags i18n %}
+
+{% addtoblock "css" %}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cmsplugin_toc/css/toc.css">{% endaddtoblock %}
+
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}cmsplugin_toc/js/jquery.toc.js"></script>{% endaddtoblock %}
+
+{% addtoblock "js-post" %}
+
+    <script>
+        $(function () {
+            $('#cmsplugin_toc').toc({
+                'selectors': 'h2,h3',
+                'container': '.span9 .content.cms',
+                'smoothScrolling': true,
+                'prefix': 'toc',
+                'onHighlight': function (el) {
+                },
+                'highlightOnScroll': true,
+                'highlightOffset': 100,
+                'anchorName': function (i, heading, prefix) {
+                    return prefix + i;
+                },
+                'headerText': function (i, heading, $heading) {
+                    return $heading.text();
+                },
+                'itemClass': function (i, heading, $heading, prefix) {
+                    return $heading[0].tagName.toLowerCase();
+                }
+            });
+        })
+    </script>
+{% endaddtoblock %}
+
+<!--<h2>{% trans "Table Of Content" %}</h2>-->
+<div id="cmsplugin_toc">
+
+</div>
+
+
+<div>
+    {{ changelog|markdown|linebreaks }}
+</div>

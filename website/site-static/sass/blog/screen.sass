@@ -1,0 +1,210 @@
+
+$action-color: #8fbe00
+
+.wrapper.social
+  display: none
+  
+
+.textplugin_holder
+  p > img
+    padding: 0 10px 5px 0
+
+
+#root
+  background: white
+
+
+
+
+  
+.sidebar
+
+  ul, ol
+    list-style-type: none
+    margin: 0 0 9px 0px
+
+  .widget
+    padding: 0 0 5px 0
+    margin: 0 0 5px 0
+    border-bottom: 1px solid #d5d5d5
+  h3
+    // color: green !important
+    //font-size: 130%
+    //line-height: 180%
+    text-transform: none
+    font-size: 110%
+    
+  .search
+    img
+      display: none
+    
+  #widget-tags
+    ul > li
+      float: left
+      padding: 2px
+      a
+        padding: 2px
+        background-color: $action-color
+        line-height: 15px
+        color: #fff
+        &:hover
+          color: black
+          
+  #widget-calendar
+    table
+      width: 100%
+      caption
+        padding: 3px 0 5px
+      th
+        padding: 3px 0 5px
+        color: #5a5a5a
+      tr > td
+        padding: 3px 0
+        &.entry
+          a
+            padding: 2px
+            background-color: $action-color
+            color: #fff
+            &:hover
+              color: black
+              
+              
+  #widget-archives
+    > ul > li
+      > a
+        // font-size: 130%
+        font-weight: bold
+      ul
+        padding-left: 20px
+            
+        
+      
+
+  
+.blog.container
+  padding: 0 10px 20px 0px
+  
+  width: 830px
+  
+  ul, ol
+    list-style-type: none
+    margin: 0 0 9px 0px
+  
+  .textplugin_holder
+    background: transparent !important
+    *
+      color: #333 !important
+      background-color: transparent !important
+
+  h3
+    // color: green !important
+    font-size: 130%
+    line-height: 180%
+  
+  .search
+    display: none
+  
+  .hentry
+  
+  
+    .entry-image
+      a
+        padding: 1px !important
+        &:hover
+          background: transparent !important
+          img
+            padding: 1px
+            background: $action-color
+  
+  
+  
+    padding-bottom: 20px
+    margin-bottom: 20px
+    a
+      text-decoration: underline
+      
+      
+     
+    .entry-image
+      img
+        clear: both
+        width: 646px
+        padding: 1px
+        
+    .entry-footer
+      padding-top: 10px
+      margin-top: 10px
+      border-top: 1px solid #d5d5d5
+      padding-left: 0px
+      
+      
+    .entry-tags
+      a
+        padding: 2px 4px !important
+        margin-right: -4px
+        background-color: $action-color
+        line-height: 18px
+        color: #fff
+        text-decoration: none 
+        color: white !important
+        &:hover
+          color: black !important
+      
+      
+.entry-widgets
+  background: #efefef
+  padding: 10px 10px 0
+  > div
+    width: 210px
+    float: left
+  
+#pingbacks
+  display: none
+  
+#comments
+  padding-top: 10px
+  margin-top: 30px
+  border-top: 1px solid #d5d5d5
+  padding-left: 0px
+  #comment-list
+    .comment
+      clear: both
+      background: #fafafa
+      &:nth-child(2)
+        background: #efefef
+      padding: 10px
+      img
+        float: left
+        // display: none
+        width: 20px
+        height: 20px
+        padding-right: 10px
+ 
+  
+#comment-form
+  background: transparent !important
+  
+  textarea
+    width: 99%
+    
+  fieldset
+    > div
+      padding: 4px 0
+      margin: 4px 0
+      // border-bottom: 1px solid #d5d5d5
+      
+      label
+        display: block
+        padding: 0 0 0 1px
+        color: #5a5a5a
+      input
+        background: #fafafa
+        //border-bottom: 1px solid #333
+        padding: 2px
+        width: 99%
+        //position: relative
+        //left: 200px
+        
+      &.error
+        input, textarea
+          background-color: #fffc9d

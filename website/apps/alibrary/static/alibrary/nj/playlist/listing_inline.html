@@ -1,0 +1,70 @@
+
+
+	<div id="playlist_holder_{{ object.id }}" data-object_id="{{ object.id }}" class="playlist_holder " data-updated="{{ object.updated }}">
+
+		<div class="header">
+
+			<div class="right">
+				<a href="#" title="Remove" data-action="delete" class="action delete"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Remove"></a>
+			</div>
+
+			<div class="right">
+				<a href="#" title="Edit name" data-action="edit" class="action edit"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Edit name"></a>
+			</div>
+
+			<div class="right">
+				<a href="#playlist:393:mp3" title="Download" data-action="download" class="action downloadable queue"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Edit name"></a>
+			</div>
+
+			<div class="left name">
+				{{ object.name }}
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<div class="panel">
+
+			<div class="edit">
+				<div class="hint">
+					Enter the new name for the basket
+				</div>
+				<div class="input">
+					<input type="text" id="playlist_edit_name_{{ object.id }}" name="playlist_edit_name" value="{{ object.name }}">
+				</div>
+			</div>
+
+			<div class="convert">
+				<a href="{{ object.edit_url }}">Edit</a>
+				<!--<a href="{{ object.absolute_url }}">Detail</a>-->
+			</div>
+			<div class="duration">
+				{{ object.duration|ms2time }}
+				{{ object.target_duration }}000
+			</div>
+		</div>
+
+		<div class="list">
+			
+
+			{% for item in object.items %}
+
+			
+			
+			<div class="sidebar list item source ct-{{ item.item.content_type }}" data-resource_uri="{{ item.resource_uri }}">
+				<div class="right">
+					<a href="#" title="Remove" data-action="delete" class="action delete"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Remove"></a>
+				</div>
+				<div class="left">
+					<a href="#" title="Play" class="action play playable popup"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Play"></a>
+				</div>
+				<div class="left title">
+					<a href="{{ item.item.content_object.absolute_url }}" title="{{ item.item.content_object.name }}">{{ item.item.content_object.name|truncate_chars_inner(36) }}</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			
+			{% endfor %}
+			
+		</div>
+
+	</div>

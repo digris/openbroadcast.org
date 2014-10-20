@@ -1,0 +1,100 @@
+<section class="title">
+	<h3>{{ object.name }} <small class="pull-right">{{ object.type_display }}</small></h3>
+	<ul class="unstyled">
+		<li>
+			<i class="icon-time"></i> {{ object.time_start|format_datetime('time') }} - {{ object.time_end|format_datetime('time') }} | {{ object.time_start|format_datetime('date') }}
+		</li>
+		{% if object.user %}
+		<li>
+			<i class="icon-user"></i>
+            <a href="{{ object.user.absolute_url }}">{{ object.user.username }}</a>
+            <small>scheduler</small>
+		</li>
+		{% endif %}
+		{% if object.user_co %}
+		<li>
+			<i class="icon-user"></i>
+            <a href="{{ object.user_co.absolute_url }}">{{ object.user_co.username }}</a>
+            <small>creator</small>
+		</li>
+		{% endif %}
+	</ul>
+</section>
+
+<section class="description">
+
+
+    {% if object.content_object.main_image %}
+    <img src="{{ object.content_object.main_image }}" style="width: 50%;">
+    {% endif %}
+
+    <!--
+	<p>{{ object.content_object.description_html|shorten(200)|linebreaksbr}}</p>
+    -->
+    {% if object.content_object.description %}
+	<div class="description markdown-remove">{{ object.content_object.description_html}}</div>
+    {% endif %}
+	<!--
+	<a href="{{ object.content_object.absolute_url }}" class="pull-left">> Read more</a>
+	-->
+
+	<ul class="unstyled object-links">
+		<li>
+			<a href="{{ object.absolute_url }}">&gt; Emission details</a>
+		</li>
+		<li>
+			<a href="{{ object.content_object.absolute_url }}">&gt; Content details</a>
+		</li>
+	</ul>
+
+</section>
+
+
+{% if not readonly %}
+<section class="form">
+
+	<fieldset>
+		<label class="checkbox">
+			<input type="checkbox" class="edit-lock" {% if object.locked == 1 %}checked="checked"{% endif %}>
+			Lock editing </label>
+	</fieldset>
+	
+	<fieldset class="color">
+		<div class="controls">
+			
+			<label class="radio  theme-0">
+				<input type="radio" class="color" name="color" value="0" {% if object.color == 0 %}checked="checked"{% endif %}>
+			</label>
+			
+			<label class="radio theme-1">
+				<input type="radio" class="color" name="color" value="1" {% if object.color == 1 %}checked="checked"{% endif %}>
+			</label>
+			
+			<label class="radio theme-2">
+				<input type="radio" class="color" name="color" value="2" {% if object.color == 2 %}checked="checked"{% endif %}>
+			</label>
+			
+			<label class="radio theme-3">
+				<input type="radio" class="color" name="color" value="3" {% if object.color == 3 %}checked="checked"{% endif %}>
+			</label>
+			
+			<label class="radio theme-4">
+				<input type="radio" class="color" name="color" value="4" {% if object.color == 4 %}checked="checked"{% endif %}>
+			</label>
+
+		</div>
+	</fieldset>
+	
+
+	<div class="btn-toolbar">
+		<div class="btn-group pull-right">
+			<a data-action="cancel" class="btn btn-mini pull-right">Cancel</a>
+			{% if not object.locked %}
+			<a data-action="delete" class="btn btn-mini pull-right">Delete</a>
+			{% endif %}
+			<a data-action="save" class="btn btn-primary btn-mini pull-right">Save</a>
+		</div>
+	</div>
+
+</section>
+{% endif %}

@@ -1,0 +1,44 @@
+{% extends "layout_base.html" %}
+{% load spurl cache i18n truncate cache %}
+
+
+{% block heading %}
+<div id="heading">
+	{% include "skeleton/heading.html" %}
+</div>
+{% endblock %}
+
+
+{% block modnav %}
+<div id="modnav">
+	{% include "skeleton/modnav.html" %}
+</div>
+{% endblock %}
+
+
+{% block tagcloud %}{% endblock %}
+
+
+{% block searchbar %}{% endblock %}
+
+
+{% block inner %}
+
+<div>
+	{% block pre_body %}{% endblock %}
+</div>
+
+<div class="listview container {% block object_type %}{% endblock %} {{ list_style }}">
+	<div class="list_body">
+		{% block list_inner %}{% endblock %}
+	</div>
+</div>
+
+
+{% endblock %}
+
+
+{% block sidebar %}
+{# include "profiles/profile/sidebar/_list.html" #}
+{% endblock %}
+

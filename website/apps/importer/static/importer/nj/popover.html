@@ -1,0 +1,51 @@
+<div class="po-inline">
+
+    <div class="row-fluid">
+
+        <div class="span2">
+            {% if item.main_image %}
+                <img src="{{ item.main_image }}"/>
+            {% else %}
+                <img src="/static/img/base/defaults/listview.release.xl.png"/>
+            {% endif %}
+        </div>
+
+        {% if item.ct == "release" %}
+            <div class="span10">
+                <ul class="unstyled">
+                    <li><strong>{{ item.name }}</strong>
+                        {% if item.catalognumber %}{{ item.catalognumber }}{% endif %}
+                        <small class="pull-right">{{ item.releasedate }}</small>
+                    </li>
+                    {% if item.artist %}
+                        <li>{% for artist in item.artist %}{{ artist }}{% if not loop.last %},
+                        {% endif %}{% endfor %}</li>
+                    {% endif %}
+                    {% if item.label %}
+                        <li>{{ item.label.name }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+
+        {% if item.ct == "artist" %}
+            <div class="span10">
+                <ul class="unstyled">
+                    <li><strong>{{ item.name }}</strong>
+                        <small class="pull-right">{{ item.type }}</small>
+                    </li>
+                    {% if item.date_start %}*{{ item.date_start }}{% endif %}
+                    {% if item.date_end %}✝{{ item.date_end }}{% endif %}
+                </ul>
+            </div>
+        {% endif %}
+
+    </div>
+
+
+    <div class="alert alert-info">
+        <p>Track will be added to this item. If this is not desired, please choose "Force
+            Creation"</p>
+    </div>
+
+</div>

@@ -1,0 +1,44 @@
+{% load sekizai_tags verbatim i18n pushy_tags%}
+
+<!-----------------------------------------------------------------------------------------------------
+
+    LEGACY VERSION - SEE -NG FOR VALID ONE
+
+------------------------------------------------------------------------------------------------------>
+
+
+{% addtoblock "js-post" %}<script src="{{ STATIC_URL }}abcast/js/lib/jquery.countdown.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}<script src="{{ STATIC_URL }}abcast/js/on_air.js"></script>{% endaddtoblock %}
+{% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
+{% addtoblock "js-post" %}
+<script>
+	$(function(){
+
+		var abcast = abcast || {};
+		abcast.on_air = new OnAirApp();
+		abcast.on_air.api_url = "{% url api_dispatch_list resource_name='abcast/base' api_name='v1'%}on-air/";
+		abcast.on_air.init();
+
+	});
+</script>
+{% endaddtoblock %}
+
+<div class="on-air-container" id="on_air_app">
+	<div class="actions">
+		<ul class="unstyled horizontal pull-right">
+			<li class="">
+                <a href="#" class="streamable popup" data-resource_uri="{% url api_dispatch_list resource_name='abcast/channel' api_name='v1'%}1/"><i class="icon-play"></i> {% trans "Tune in" %}</a>
+            </li>
+		</ul>
+		<div class="clear"></div>
+	</div>
+	<div class="emission">
+
+	</div>
+	<div class="items">
+
+	</div>
+	<div>Next: <span class="countdown"></span></div>
+	
+</div>
+

@@ -1,0 +1,40 @@
+{% extends "registration/registration_base.html" %}
+
+{% load crispy_forms_tags i18n sekizai_tags webdesign %}
+
+{% block title %}Login{% endblock %}
+
+
+{% block content %}
+
+    <h4 style="margin-bottom: 20px;">{% trans "Login" %}</h4>
+
+    {# include 'registration/form_errors.html' #}
+    <form method="post"
+          class="form-horizontal"
+          action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
+        {% include 'registration/form_fields.html' %}
+
+
+        <ul style="margin-top: 20px;" class="unstyled">
+            <li>
+                <a href="{% url auth_password_reset %}">
+                    <i class="icon icon-double-angle-right"></i> {% trans "Forgot your password or username?" %}
+                </a>
+            </li>
+            <li>
+                <a href="{% url registration_register %}">
+                    <i class="icon icon-double-angle-right"></i> {% trans "Create a new account?" %}
+                </a>
+            </li>
+        </ul>
+
+        <input type="submit" class="btn btn-primary pull-right" value="> {% trans "Login" %}"/>
+        <input type="hidden" name="next" value="{{ next }}"/>
+        <div class="clear"></div>
+    </form>
+
+    {% include "registration/_social_auth.html" %}
+
+{% endblock %}
+

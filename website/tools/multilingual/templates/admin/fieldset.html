@@ -1,0 +1,30 @@
+{% load multilingual_tags %}
+<fieldset class="module aligned {{ fieldset.classes }}">
+  {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+  {% if fieldset.description %}<div class="description">{{ fieldset.description }}</div>{% endif %}
+  {% for line in fieldset %}
+      <div class="form-row{% if line.errors %} errors{% endif %} {% for field in line %}{{ field.field.name }} {% endfor %} ">
+      {{ field.name }}
+      {{ line.errors }}
+      {% for field in line %}
+          {{ field.field. }}
+          {% if field.is_checkbox %}
+              {{ field.field }}{{ field.label_tag }}
+          {% else %}
+          	  {% ifequal field.field.name "language_code" %}
+                  <input type="hidden" name="{{ field.field.html_name }}" 
+                  		 value="{{ forloop.parentloop.parentloop.parentloop.counter|language_for_id }}" />
+          	  {% else %}
+                  {{ field.label_tag }}
+                  {% if forloop.parentloop.parentloop.parentloop.counter|language_for_id|language_bidi %}
+                     <span style="direction: rtl; text-align: right;">{{ field.field }}</span>
+                  {% else %}
+                     <span style="direction: ltr; text-align: left;">{{ field.field }}</span>
+                  {% endif %}
+              {% endifequal %}
+          {% endif %}
+          {% if field.field.field.help_text %}<p class="help">{{ field.field.field.help_text|safe }}</p>{% endif %}
+      {% endfor %}
+      </div>
+  {% endfor %}
+</fieldset>

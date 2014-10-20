@@ -1,0 +1,66 @@
+<div class="list_body_row item hoverable media {{ object.uuid }} {{ object.item.content_type }}"
+     data-updated="{{ object.updated }}" data-resource_uri="{{ object.resource_uri }}" data-ct="media" data-uuid="{{ object.uuid }}"
+     data-id="{{ object.id }}" id="playlist_item_{{ object.id }}">
+
+
+    <div class="row-fluid playhead">
+        <div class="span12">
+
+            <div class="overlay primary">
+                <ul class="unstyled action">
+                    {% if perms.play %}
+                    <li class="square">
+                        <a href="#"
+                           class="playable popup"
+                           data-ct="media"
+                           data-resource_uri="{{ object.resource_uri }}"
+                           data-offset="0"
+                           data-mode="replace"
+                           title="Play">
+                            <i class="icon icon-play"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if perms.play %}
+                    <li class="square">
+                        <a href="#"
+                           class="playable popup"
+                           data-ct="media"
+                           data-resource_uri="{{ object.resource_uri }}"
+                           data-offset="0"
+                           data-mode="queue"
+                           title="Queue">
+                            <i class="icon icon-reorder"></i></a>
+
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </div>
+
+            <div class="overlay secondary">
+                <ul class="unstyled action">
+                    {% if perms.add %}
+
+                    <li>
+                        <a href="#"
+                           class=""
+                           data-action="collect"
+                           title="Add to playlist">
+                            <i class="icon icon-plus"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </div>
+
+
+            <div class="waveform" id="detail_player_waveform_{{ object.id }}"></div>
+
+        </div>
+
+    </div>
+
+</div>

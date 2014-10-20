@@ -1,0 +1,22 @@
+// Overrides for bootstrap mixins
+
+// Background Bar Colors for buttons and alerts
+=backgroundBar($lightColor, $darkColor)
+  // +gradient-vertical($lightColor, $darkColor)
+  background-color: $lightColor
+  border-color: $darkColor
+  // border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) fade-in(rgba(0, 0, 0, 0.1), 0.15)
+
+// Mixin for generating button backgrounds
+// ---------------------------------------
+=buttonBackground($lightColor, $darkColor)
+  // backgroundBar will set the background to a pleasing bldark of these, to support IE<=9
+  +backgroundBar($lightColor, $darkColor)
+  +reset-filter
+  // in these cases the gradient won't cover the background, so we override
+  &:hover, &:active, &.active, &.disabled, &[disabled]
+    background-color: $darkColor
+  // IE 7 + 8 can't handle box-shadow to show active, so we darken a bit ourselves
+  &:active,
+  &.active
+    background-color: darken($darkColor, 10%) #{"\9"}

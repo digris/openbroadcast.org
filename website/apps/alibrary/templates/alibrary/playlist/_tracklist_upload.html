@@ -1,0 +1,112 @@
+{% load sekizai_tags thumbnail i18n truncate verbatim value_from_settings straight_include %}
+
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/tmpl.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.iframe-transport.js">
+    </script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload.js">
+    </script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload-fp.js">
+    </script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload-ui.js">
+    </script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/locale.js">
+    </script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/main.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}alibrary/js/playlist.upload.js"></script>{% endaddtoblock %}
+
+
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}importer/js/importfile.js"></script>{% endaddtoblock %}
+
+
+{% addtoblock "css" %}<link rel="stylesheet" href="{{ STATIC_URL }}css/lib/multiuploader/jquery.fileupload-ui.css">{% endaddtoblock %}
+
+{% addtoblock "js-post" %}
+
+
+{% endaddtoblock %}
+
+
+
+{% addtoblock "js-post" %}
+    <script>
+
+        var uploader;
+        $(function () {
+
+            uploader = new PlaylistEditorUpload();
+            uploader.api_url = "{{ object.get_api_url }}";
+            uploader.fileupload_id = 'fileupload';
+            uploader.fileupload_options = {
+                maxFileSize: 1000000000, // 1000 MB
+                minFileSize: 200000,
+                acceptFileTypes: /(\.|\/)(mp3|aif?f|wav|avi|flac|mp4|ogg|m4a)$/i,
+                sequentialUploads: true,
+                limitConcurrentUploads: 1,
+                autoUpload: true
+                // dropZone: $('#playlist_editor_upload')
+            };
+            uploader.init();
+        });
+
+    </script>
+{% endaddtoblock %}
+
+<div class="info">
+    <p>{% trans "... or upload new music." %}<br>
+    {% trans "Either use the button below - or just drag'n'drop the files into the browser window." %}</p>
+</div>
+    <script id="template-upload" type="text/x-tmpl">
+        {% straight_include "importer/template-upload.html" %}
+    </script>
+
+    <!-- Not used a.t.m. -->
+    <script id="template-download" type="text/x-tmpl">
+        {% straight_include "importer/template-download.html" %}
+    </script>
+
+    <!-- The template to handle the ImportFiles -->
+    <script id="template-import" type="text/x-tmpl">
+        {% straight_include "importer/template-import.html" %}
+    </script>
+
+<div id="playlist_editor_upload" class="upload hoverable">
+    <div class="uploader">
+
+        <form id="fileupload"
+              action="{% url api_dispatch_list api_name="v1" resource_name="importfile" %}?import_session__uuid_key={{ object.uuid }}"
+              method="POST"
+              enctype="multipart/form-data">
+
+            <input type="hidden"
+                   id="import_api_url"
+                   value="{% url api_dispatch_list resource_name='import' api_name='v1' %}{{ object.id }}"/>
+
+            <div class="fileupload-buttonbar">
+
+	                <span class="btn btn-success fileinput-button">
+	                    <i class="icon-plus icon-white"></i>
+	                    <span> Add Files</span>
+	                    <input type="file" name="files[]" multiple>
+	                </span>
+            </div>
+
+            <!-- ?? -->
+            <table role="presentation" class="table table-striped table-condensed">
+                <tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
+            </table>
+        </form>
+    </div>
+
+
+</div>
+
+

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% load menu_tags esi %}
+
+{% block toolbar %}
+{% include "skeleton/toolbar.html" %}
+{# esi for user template 'skeleton/toolbar.html' timeout 1200 #}
+{% endblock %}
+
+{% block main %}
+<div class="row">
+	<section>
+		<div class="span9">
+			{% block tagcloud %}{% endblock %}
+			{% block searchbar %}{% endblock %}
+			{% block inner %}{% endblock %}
+		</div>
+
+		<div class="span3 sidebar">
+			{% block sidebar %}{% endblock %}
+		</div>
+
+	</section>
+</div>
+{% endblock %}

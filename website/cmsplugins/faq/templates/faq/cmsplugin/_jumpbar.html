@@ -1,0 +1,15 @@
+<div class="jumpbar">
+    <a id="{{ current_letter|upper }}"></a>
+    <ul class="unstyled horizontal">
+        {% for letter in atoz_index %}
+            <li>
+            {% if letter.count > 0 %}
+                <a href="#{{ letter.key }}">{{ letter.key  }}</a>
+            {% else %}
+                <span>{{ letter.key  }}</span>
+            {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+

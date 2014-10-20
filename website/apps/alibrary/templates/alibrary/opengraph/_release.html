@@ -1,0 +1,16 @@
+        {% load truncate i18n thumbnail url_tags %}
+
+        {% spaceless %}
+        <meta property="og:type" content="music.album"/>
+        <meta property="og:url" content="{% fullurl object.get_absolute_url %}"/>
+        <meta property="og:title" content="{{ object.name }}{% if object.get_artist_display %} - {{ object.get_artist_display }}{% endif %}"/>
+		{% if object.main_image %}
+            {% thumbnail object.main_image 300x300 crop upscale subject_location=object.main_image.subject_location as thumbnail_url %}
+            <meta property="og:image" content="{% fullurl thumbnail_url.url %}"/>
+        {% endif %}
+        <meta property="og:updated_time" content="{{ object.updated|date:'Y-m-d'}}"/>
+        {% if object.description %}
+        <meta property="og:description" content="{{ object.description|truncatewords:20 }}"/>
+        {% endif %}
+
+        {% endspaceless %}

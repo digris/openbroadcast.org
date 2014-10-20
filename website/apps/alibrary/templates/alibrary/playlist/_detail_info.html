@@ -1,0 +1,169 @@
+{% load truncate i18n thumbnail arating_tags alibrary_tags calc spacify_tags %}
+<div class="span7 padded-h container_content">
+
+	<div class="page-header">
+		<h2>{{ object.name|truncate_chars_inner:40 }}
+            <small>
+                {{ object.get_type_display }}
+                {% if object.type == 'broadcast' %}
+                    ({{ object.get_status_display }})
+                {% endif %}
+
+
+            </small>
+        </h2>
+	</div>
+
+	<dl class="dl-horizontal main">
+
+
+        {% if object.series %}
+		<dt>
+			{% trans "Series" %}:
+		</dt>
+		<dd>
+			{{ object.series }}{% if object.series_number %} #{{ object.series_number }}{% endif %}
+		</dd>
+        {% endif %}
+
+
+		<dt>
+			{% trans "Author" %}:
+		</dt>
+		<dd>
+			<a href="{{ object.user.get_absolute_url }}">{% firstof object.user.username object.user %}</a>
+		</dd>
+
+		<dt>
+			{% trans "Date Created" %}:
+		</dt>
+		<dd>
+			{{ object.created|date:"DATETIME_FORMAT" }}
+		</dd>
+
+		<dt>
+			{% trans "Last Updated" %}:
+		</dt>
+		<dd>
+			{{ object.updated|date:"DATETIME_FORMAT" }}
+		</dd>
+
+		<dt>
+			{% trans "Type" %}:
+		</dt>
+		<dd>
+			{{ object.get_type_display }}
+		</dd>
+
+	</dl>
+
+	<dl class="dl-horizontal sub">
+
+
+		<dt>{% trans "Duration" %}:</dt>
+		<dd>
+            {% if object.duration %}<small>{% trans "actual" %}:</small> {{ object.duration|msec_to_time }}{% endif %}
+            {% if object.target_duration %}<small>{% trans "target" %}:</small> {{ object.target_duration|sec_to_time }}{% endif %}
+        </dd>
+
+
+        {% if object.type == 'broadcast' and object.broadcast_status_messages %}
+        <dt>
+            {% trans "Issues" %}:
+        </dt>
+        <dd>
+            {% for message in object.broadcast_status_messages %}
+                <span class="tag_">{{ message }}</span>
+            {% endfor %}
+        </dd>
+        {% endif %}
+
+
+
+		{% if object.seasons.count > 0 %}
+		<dt>{% trans "Broadcast Seasons" %}:</dt>
+		<dd>{% m2m_inline object.seasons.all %}</dd>
+		{% endif %}
+
+		{% if object.weather.count > 0 %}
+		<dt>{% trans "Broadcast Weather" %}:</dt>
+		<dd>{% m2m_inline object.weather.all %}</dd>
+		{% endif %}
+
+
+		{% if object.dayparts.count > 0 %}
+		<dt>{% trans "Broadcast Dayparts" %}:</dt>
+		<dd>
+            {# dayparts_inline object #}
+            <div class="daypart-grid">
+            {% dayparts_grid object %}
+            </div>
+        <div class="clear"></div>
+        </dd>
+		{% endif %}
+		
+		{% comment %}
+		<dt>
+		{% trans "Edit History" %}:
+		</dt>
+		<dd>
+
+		{% if object.owner %}
+		<span class="key">{% trans "Added by" %}:</span> <span class="value"><a href="{{ object.owner.get_absolute_url }}">{{ object.owner }}</a></span> |
+		{% endif %}
+
+		{% if object.publisher %}
+		<span class="key">{% trans "Published by" %}:</span> <span class="value"><a href="#">{{ object.publisher }}</a></span> |
+		{% endif %}
+
+		{% if object.get_last_revision %}
+		<span class="key">{% trans "Last edit by" %}:</span> <span class="value"><a href="{{ object.get_last_revision.user.get_profile.get_absolute_url }}">{{ object.get_last_revision.user }}</a></span>
+		{% endif %}
+		&nbsp;
+		</dd>
+
+
+
+		<dt>
+			{% trans "Stats" %}:
+		</dt>
+		<dd>
+			<span class="value">{{ object.get_emissions.count }}</span> <span class="key">{% trans "Airplays" %}</span> | <span class="value">{{ object.get_emissions.count }}</span> <span class="key">{% trans "Plays" %}</span> | <span class="value">28</span> <span class="key">{% trans "Downloads" %}</span>
+		</dd>
+
+		{% endcomment %}
+
+    {% if object.tags %}
+        <dt>
+            {% trans "Tags" %}:
+        </dt>
+        <dd>
+            {% for tag in object.tags %}
+                <span class="tag">{{ tag.name|spacify }}</span>
+            {% endfor %}
+        </dd>
+    {% endif %}
+
+	</dl>
+
+
+
+
+
+</div>
+
+<div class="span2 padded-h padded-v">
+
+	<div class="image">
+		{% if object.main_image %}
+		<a href="{% thumbnail object.main_image 1200x1200 upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.main_image 172x172 crop upscale subject_location=object.main_image.subject_location %}" alt="Cover" /> </a>
+        {% else %}
+		<img src="/static/img/base/defaults/listview.playlist.xl.png" alt="{% trans "No cover available" %}" />
+		{% endif %}
+	</div>
+
+	<div class="rating">
+		{% rating_for_object object %}
+	</div>
+
+</div>

@@ -1,0 +1,35 @@
+<div 
+	class="hoverable chip fix {{ object.source }} emission theme-{{ object.color }}"
+	data-resource-uri={{ object.resource_uri }}
+	id="{{ object.uuid }}" 
+	data-tip="<div class='tooltip-emission'><strong><i class='icon-tasks'></i> {{ object.type }}</strong><br>{{ object.start }} - {{ object.end }}<br>scheduled by: {{ object.user.username|escape }}<div class='description markdown-remove'>{{ object.content_object.description_html|escape}}</div>{% if object.content_object.main_image %}<img src='{{ object.content_object.main_image }}' style='width: 200px;'>{% endif %}</div>"
+	style="top:{{ top }}px;left:-1px;width:100%;
+">
+
+
+	<dl class="cbrd" style="height:{{ height - 1 }}px;">
+		<dt style="">
+			
+			<a href="{{ object.content_object.absolute_url }}" data-resource_uri="{{ object.resource_uri }}">
+			{{ object.name|escape }}
+			</a>
+			
+			{% if object.playing %}
+			<i class="icon-bullhorn pull-right"></i>
+                asd
+			{% endif %}
+			
+			{% if object.locked %}
+			<i class="icon-lock pull-right"></i>
+			{% endif %}
+            {% if height > 20 %}
+            <div class="time">
+                <span>{{ object.start }} - {{ object.end }}</span>
+            </div>
+            {% endif %}
+
+		</dt>
+
+	</dl>
+	
+</div>

@@ -1,0 +1,37 @@
+
+
+<div class="shortcutter shortcuts">
+	
+	{% if object.title %}
+	<h2>{{ object.title }}</h2>
+	{% endif %}
+	
+	{% for shortcut in object.shortcuts.all %}
+	<div class="item hoverable linkable {% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+		<div class="row-fluid">
+			
+			{% if shortcut.key %}
+			<div class="col-left">
+
+				
+				<span><i class="icon-{{ shortcut.key }}"></i></span>
+				
+				
+			</div>
+			{% endif %}
+			
+			<div class="col-right">
+				<div class="inner">
+					<h4><a href="{{ shortcut.get_link }}" class="link-main">{{ shortcut.name }}</a></h4>
+					{{ shortcut.description_html|safe }}
+				</div>				
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	{% if forloop.counter|divisibleby:2 %}
+	<div class="clear"></div>
+	{% endif %}
+	{% endfor %}
+</div>
+<div class="clear"></div>

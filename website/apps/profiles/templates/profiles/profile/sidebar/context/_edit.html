@@ -1,0 +1,39 @@
+{% load i18n %}
+
+<div id="menu_context" class="menu_context">
+
+	<div class="set">
+		<ul class="unstyled">
+			<li class="link ">
+				<span class="left icon"> <a href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">{% trans "Back to Detail-View" %}</a> </span>
+				<span class="opt"></span>
+				<span class="clear"></span>
+			</li>
+			<li class="link ">
+				<span class="left icon"> <a href="{% url auth_password_change %}?next={{ object.get_edit_url }}" title="{% trans "Change password" %}">{% trans "Change password" %}</a> </span>
+				<span class="opt"></span>
+				<span class="clear"></span>
+			</li>
+		</ul>
+	</div>
+	
+
+	<div class="social-auth">
+		
+		<h4>{% trans "Connected accounts" %}</h4>
+		<ul class="unstyled connected">
+			{% for service in social_auth.associated %}
+			<li><i class="icon-{{ service.provider }}"></i><span class="service">{{ service|title }}</span><a class="pull-right" href="{% url socialauth_disconnect service.provider %}?next={{ request.get_full_path }}">{% trans "disconnect" %}</a></li>
+			{% endfor %}
+		</ul>
+		
+		<h4>{% trans "Available accounts" %}</h4>
+		<ul class="unstyled available">
+			{% for service in social_auth.not_associated %}
+			<li><i class="icon-{{ service }}"></i><span class="service">{{ service|title }}</span><a class="pull-right" href="{% url socialauth_begin service %}?next={{ request.get_full_path }}">{% trans "connect" %}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+
+	
+</div>

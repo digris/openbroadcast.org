@@ -1,0 +1,27 @@
+{% load i18n adv_cache %}
+{% cache 600 "pagination" request.get_full_path %}
+
+<p class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?{{ page_obj.previous_page_number.querystring }}" class="prev">&lsaquo;&lsaquo; {% trans "previous" %}</a>
+    {% else %}
+        <span class="disabled prev">&lsaquo;&lsaquo; {% trans " " %}</span>
+    {% endif %}
+    {% for page in page_obj.pages %}
+        {% if page %}
+            {% ifequal page page_obj.number %}
+                <span class="current page">{{ page }}</span>
+            {% else %}
+                <a href="?{{ page.querystring }}" class="page">{{ page }}</a>
+            {% endifequal %}
+        {% else %}
+            ...
+        {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+        <a href="?{{ page_obj.next_page_number.querystring }}" class="next">{% trans " " %} &rsaquo;&rsaquo;</a>
+    {% else %}
+        <span class="disabled next">{% trans "next" %} &rsaquo;&rsaquo;</span>
+    {% endif %}
+</p>
+{% endcache %}

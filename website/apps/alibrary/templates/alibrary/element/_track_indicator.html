@@ -1,0 +1,9 @@
+{% load alibrary_tags %}
+
+
+
+{% for m in item|quality_indicator %}
+<li class="indicator q{{ m }}">
+	<img src="/static/img/base/spacer.png" width="2" height="10" alt="Indicator" title="quality: {{ m }}" />
+</li>
+{% endfor %}

@@ -1,0 +1,17 @@
+{% load spurl i18n truncate %}
+
+{% for item in filter.filterlist %}
+
+	{% for filter_entry in item.entries %}
+	
+		{% spurl base=request.get_full_path active_mquery="{{ item.name }}={{ filter_entry.0 }}" as is_active %}
+		
+		{% if is_active %}		
+		<a href="{% spurl base=request.get_full_path remove_query_param="page" trigger_mquery="{{ item.name }}={{ filter_entry.0 }}" %}" class="lfilter">
+			<div>{% firstof item.label item.name %}: {{ filter_entry.0 }}<img border="0" src="/static/img/prototype/tag_remove.png"></div>
+		</a>
+		{% endif %}
+		
+	{% endfor %}
+
+{% endfor %}

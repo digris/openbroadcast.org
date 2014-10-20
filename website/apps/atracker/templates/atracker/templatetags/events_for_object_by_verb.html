@@ -1,0 +1,53 @@
+{% load i18n %}
+
+<div class="atracker event-list">
+
+    {% for event in events %}
+
+        <!--{% ifchanged %}<h3>{{ event.created|date:"Y" }}</h3>{% endifchanged %}-->
+
+        {% ifchanged %}<h4>{{ event.created|date:"F Y" }}</h4>{% endifchanged %}
+
+        <!-- actual entry -->
+
+        <ul class="event unstyled horizontal clearfix">
+
+            <li class="split-date">{{ event.created|date:"D d" }}</li>
+            <li class="split-date">{{ event.created|date:"H:i:s" }}</li>
+
+            <li class="type">{{ event.event_type.title }}</li>
+
+            <li class="user">
+            {% if request.user == event.user %}
+                {% trans "You" %}
+            {% else %}
+                <a href="{{ event.user.get_absolute_url }}">
+                {% firstof event.user.get_full_name event.user.username %}
+                </a>
+                {% endif %}
+            </li>
+
+            <li class="eco"><a href="{{ event.event_content_object.get_absolute_url }}">{{ event.event_content_object.name }}</a></li>
+
+        </ul>
+
+
+    {% endfor %}
+
+
+
+</div>
+
+
+<!--
+{% for event in events %}
+<tr>
+
+<td>{{ event.event_type.title }}</td>
+<td>{{ event.created }}</td>
+<td>{{ event.user }}</td>
+<td><a href="{{ event.content_object.get_absolute_url }}">{{ event.content_object.name }}</a></td>
+
+</tr>
+{% endfor %}
+-->

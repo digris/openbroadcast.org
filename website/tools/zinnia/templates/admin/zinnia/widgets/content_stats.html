@@ -1,0 +1,12 @@
+{% extends "admin/zinnia/widgets/base.html" %}
+{% load i18n zinnia_tags %}
+
+{% block module_id %}contents{% endblock %}
+
+{% block summary %}{% trans "Today" %}{% endblock %}
+
+{% block title %}{% trans "Today" %}{% endblock %}
+
+{% block content %}
+  {% zinnia_statistics "admin/zinnia/widgets/_content_stats.html" %}
+{% endblock %}

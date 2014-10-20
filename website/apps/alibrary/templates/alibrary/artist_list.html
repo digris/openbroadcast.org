@@ -1,0 +1,178 @@
+{% extends "layout_base.html" %}
+{% load spurl adv_cache hash_tags i18n truncate dajaxice_templatetags sekizai_tags %}
+
+{% block heading %}
+<!-- view specific scripts -->
+{% addtoblock "js-post" %}{% dajaxice_js_import %}{% endaddtoblock %}
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}alibrary/js/list.edit.js"></script>{% endaddtoblock %}
+
+{% addtoblock "js-post" %}
+    <script>
+    var list_edit = list_edit || {};
+    $(function(){
+       list_edit = new ListEditUi();
+       list_edit.init();
+    });
+    </script>
+{% endaddtoblock %}
+
+<!-- heading / icon (large one) -->
+<div id="heading">
+	{% include "skeleton/heading.html" %}
+</div>
+<!-- heading / icon (large one) -->
+{% endblock %}
+
+{% block modnav %}
+<!-- start: intra-module navigation -->
+<div id="modnav">
+	{% include "skeleton/modnav.html" %}
+</div>
+<!-- end: intra-module navigation -->
+{% endblock %}
+
+{% block tagcloud %}
+
+{% include "alibrary/element/_tagcloud.html" %}
+
+{% endblock %}
+
+
+{% block searchbar %}
+
+    {% with object=item ct="artist" %}
+        {% include "alibrary/element/_searchbar.html" %}
+    {% endwith %}
+
+{% endblock %}
+
+
+{% block inner %}
+
+<div class="listhead">
+
+    <div class="pagination-holder">
+        {% include "element/_pagination.html" %}
+    </div>
+
+	<div class="wrapper list_style">
+
+			<ul class="unstyled">
+				<li class="left">
+					<a href="{% spurl base=request.get_full_path set_query="list_style=s" %}" title="Set Style" class="action list_style s {% if list_style == "s" %}active{% endif %}"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Disply Type" /></a>
+				</li>
+                <!--
+				<li class="left">
+					<a href="{% spurl base=request.get_full_path set_query="list_style=m" %}" title="Set Style" class="action list_style m {% if list_style == "m" %}active{% endif %}"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Disply Type" /></a>
+				</li>
+				-->
+				<li class="left">
+					<a href="{% spurl base=request.get_full_path set_query="list_style=l" %}" title="Set Style" class="action list_style l {% if list_style == "l" %}active{% endif %}"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Disply Type" /></a>
+				</li><li class="clear"></li>
+			</ul>
+
+	</div>
+
+</div>
+<!-- end: listing header / paginator -->
+
+<!-- start: listing output -->
+<div class="listview container artists {{ list_style }}">
+
+	{% if list_style == "s" %}
+	<div class="list_header">
+		<div class="list_header_item c1">
+			&nbsp;
+		</div>
+		<div class="list_header_item c2 sortable {% if get.order_by == "name" %}active{% endif %} {{ get.direction }}">
+			<a href="{% spurl base=request.get_full_path set_query="order_by=name" toggle_query="direction=ascending,descending" %}" style="display: block;">{% trans "Name" %}</a>
+		</div>
+		<div class="list_header_item c3">
+			{% trans "Available" %}
+		</div>
+		<div class="list_header_item c4">
+			{% trans "External links" %}
+		</div>
+		<div class="list_header_item c5 sortable {% if get.order_by == "updated" %}active{% endif %} {{ get.direction }}">
+			<a href="{% spurl base=request.get_full_path set_query="order_by=updated" toggle_query="direction=ascending,descending" %}" style="display: block;">{% trans "Modified" %}</a>
+		</div>
+		<div class="list_header_item c6">
+		&nbsp;			
+		</div>
+	</div>
+	{% endif %}
+	
+	<div class="list_body">
+
+        {% hash_user_groups request.user as group_hash %}
+
+		{% for item in object_list %}
+
+		{# switching list styles #}
+		{% if list_style == "s" %}
+
+            {% cache 600 "artist_list_item_s" item.pk item.updated group_hash %}
+            {% include "alibrary/artist/list_item_s.html" %}
+            {% endcache %}
+
+		{% endif %}
+		
+		{% if list_style == "m" %}
+		{% include "alibrary/artist/list_item_m.html" %}
+		{% endif %}
+		
+		{% if list_style == "l" %}
+
+            {% cache 600 "artist_list_item_l" item.pk item.updated group_hash %}
+            {% include "alibrary/artist/list_item_l.html" %}
+            {% endcache %}
+
+		{% endif %}
+		
+		{% endfor %}
+
+
+	</div>
+</div>
+
+<!-- start: listing footer -->
+<div class="listview footer">
+	<div class="right ipp">
+
+		<ul class="unstyled horizontal">
+
+			{% spurl base=request.get_full_path active_query="ipp=12" as is_active %}
+			<li>
+				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=12" %}">12</a>
+			</li>
+
+			{% spurl base=request.get_full_path active_query="ipp=24" as is_active %}
+			<li>
+				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=24" %}">24</a>
+			</li>
+
+			{% spurl base=request.get_full_path active_query="ipp=36" as is_active %}
+			<li>
+				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=36" %}">36</a>
+			</li>
+
+		</ul>
+
+
+	</div>
+	<div id="control_selection" class="left control_selection">
+		<span>Selection:</span>
+		<a href="#selection:invert" class="action">Invert</a>&nbsp;<a href="#selection:all" class="action">All</a>&nbsp;<a href="#selection:clear" class="action">None</a>
+	</div>
+	<div class="clear">
+		&nbsp;
+	</div>
+</div>
+<!-- end: listing footer -->
+
+{% endblock %}
+
+{% block sidebar %}
+    {% include "alibrary/artist/sidebar/_list.html" %}
+{% endblock %}
+

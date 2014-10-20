@@ -1,0 +1,58 @@
+{% load sekizai_tags i18n %}
+
+{% addtoblock "js-post" %}
+    <script src="{{ STATIC_URL }}backfeed/js/backfeed.base.js"></script>
+{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script>
+        $(function () {
+            var backfeed = new BackfeedUi();
+            backfeed.post_url = '{% url backfeed-views-post %}';
+            backfeed.init();
+        })
+    </script>
+{% endaddtoblock %}
+
+
+<div class="backfeed hoverable">
+
+    <div class="wrapper">
+
+        <div class="toggle">
+            <a class="" href="#"><i class="icon icon-envelope"></i> <span class="title">{% trans "Feedback" %}</span><span
+                    class="right close">x</span></a>
+        </div>
+
+        <div class="content-holder">
+
+
+            <form id="backfeed_form">
+
+                <div>
+                    <input type="text" name="subject" placeholder="{% trans "Subject" %}"/>
+                    <textarea rows="5" name="message" placeholder="{% trans "Message" %}"></textarea>
+                </div>
+
+
+                <div>
+                    <a href="#" class="button tiny right submit"><i class="fa fa-reply"></i> Send</a>
+                </div>
+
+
+            </form>
+
+
+            <div id="backfeed_success" style="display: none;">
+                <p>{% trans "Thanks a lot for your feedback!" %}</p>
+            </div>
+
+            <div id="backfeed_errors" style="display: none;">
+                <p>{% trans "Errors occured while processing." %}</p>
+            </div>
+
+
+
+
+        </div>
+    </div>
+

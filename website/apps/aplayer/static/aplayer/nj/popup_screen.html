@@ -1,0 +1,95 @@
+<div class="row-fluid aplayer-information {{ object.source }}">
+    <div class="span8 information">
+        <div class="padded-x padded-y">
+
+
+            <h1><a class="parent_link" href="{{ object.absolute_url }}">{{ object.name|truncate_chars_inner(30) }}</a></h1>
+
+            <span><a class="parent_link" href="{{ object.artist.absolute_url }}">
+                {{ object.artist.name|truncate_chars_inner(30) }}</a></span>
+
+            <br>
+
+            <span>
+                <a class="parent_link" href="{{ object.release.absolute_url }}">
+                    {{ object.release.name|truncate_chars_inner(30) }}</a>
+
+                {% if object.release.releasedate %}
+                    <small> {{ object.release.releasedate }}</small>
+                {% endif %}
+
+            </span>
+
+
+        </div>
+    </div>
+
+    <div class="span4 image">
+        <div class="padded-x padded-y">
+
+            {% for image in object.images %}
+                <img class=" pull-right" id="" src="{{ image }}">
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>
+
+<div class="row-fluid aplayer-progress" id="progress_bar">
+
+
+    <!-- main wrapper -->
+    <div class="indicator playhead hoverable">
+
+        <!-- background layer (for hover/active/etc ? ) -->
+        <div class="background">
+
+            <!-- holder for indicator (animated transparent png-24 bg.image) -->
+            <div class="indicator">
+
+                <!-- holder for handler (animated transparent png-24 bg.image) -->
+                <div class="handler">
+
+                    <!-- actual waveform (transparent inner) -->
+                    <div class="waveform">
+
+                        <img data-href="{{ object.waveform_image }}" src="{{ object.waveform_image }}"
+                             style="width: 100%; height: 100%"/></img>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+    </div>
+
+    <div class="row-fluid aplayer-controls">
+        <div class="span6">
+            <ul class="horizontal unstyled">
+
+                <li class="prev">
+                    <a href="#prev" title="Previous"> <i class="icon-step-backward"></i> </a>
+                </li>
+
+                <li class="hidden-while-paused">
+                    <a href="#pause" title="Stop"> <i class="icon-pause"></i> </a>
+                </li>
+                <li class="hidden-while-playing hidden-while-buffering">
+                    <a href="#play" title="Play"> <i class="icon-play"></i> </a>
+                </li>
+
+                <li class="next">
+                    <a href="#next" title="Next"> <i class="icon-step-forward"></i> </a>
+                </li>
+
+            </ul>
+        </div>
+
+
+    </div>
+

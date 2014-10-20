@@ -1,0 +1,44 @@
+{% load i18n %}
+<html>
+	<head>
+		<title>{% block title %}{% trans "Data Translation" %}{% endblock %}</title>
+		<link rel="stylesheet" type="text/css" href="{% load adminmedia %}{% admin_media_prefix %}css/base.css" />
+		<link rel="stylesheet" type="text/css" href="{% load adminmedia %}{% admin_media_prefix %}css/dashboard.css" />
+		<link rel="stylesheet" type="text/css" href="{% load adminmedia %}{% admin_media_prefix %}css/forms.css" />
+        {% block extrahead %}{% endblock %}
+	</head>
+	<body class="{% block bodyclass %}{% endblock %}">
+		<div id="container">
+
+	    <div id="header">
+	        <div id="branding">
+	        	<h1 id="site-name">{% trans "Datatrans - Model Translation" %}</h1>
+	        </div>
+	        {% if user.is_authenticated and user.is_staff %}
+	        <div id="user-tools">{% trans 'Welcome,' %} <strong>{% if user.first_name %}{{ user.first_name|escape }}{% else %}{{ user.username }}{% endif %}</strong>. {% block userlinks %}<a href="/admin/">{% trans "Site administration" %}</a> / <a href="/admin/password_change/">{% trans 'Change password' %}</a> / <a href="/accounts/logout/">{% trans 'Log out' %}</a>{% endblock %}</div>
+	        {% endif %}
+	        {% block nav-global %}{% endblock %}
+	    </div>
+
+		<div class="breadcrumbs">{% block breadcrumbs %}<a href="{% url datatrans_model_list %}">{% trans 'Models' %}</a>{% endblock %}</div>
+
+		{% if messages %}
+        <ul class="messagelist">{% for message in messages %}<li>{{ message|escape }}</li>{% endfor %}</ul>
+        {% endif %}
+
+		<div id="content" class="{% block coltype %}colM{% endblock %}">
+	        {% block pretitle %}{% endblock %}
+	        {% block content_title %}{% if title %}<h1>{{ title|escape }}</h1>{% endif %}{% endblock %}
+	        {% block content %}
+	        {% block object-tools %}{% endblock %}
+	        {{ content }}
+	        {% endblock %}
+	        {% block sidebar %}{% endblock %}
+	        <br class="clear" />
+	    </div>
+
+	    {% block footer %}<div id="footer"></div>{% endblock %}</div>
+	</body>
+</html>
+
+

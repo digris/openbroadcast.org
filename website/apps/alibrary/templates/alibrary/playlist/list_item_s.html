@@ -1,0 +1,172 @@
+{% load thumbnail i18n truncate display_tags arating_tags alibrary_tags calc spurl %}
+
+
+<!-- list item s -->
+
+
+<div class="list_body_row selectable item playlist published {% if item.user == request.user %}owner{% endif %} view edit stream collect download"
+     id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}">
+
+    <div class="list_body_item c1 image_center_bg"
+         {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 36x36 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}>
+
+        {% with object=item ct="playlist" %}
+            {% include "alibrary/element/_item_actions_primary.html" %}
+        {% endwith %}
+
+    </div>
+    <div class="list_body_item c2">
+        <ul class="unstyled">
+            <li class="bold">
+                <a href="{{ item.get_absolute_url }}" title="{{ item.name }}">
+                    {{ item.name|truncate_chars_inner:24 }}
+                    {% topflop_for_object item %}
+                </a>
+            </li>
+
+
+            {% if item.series %}
+            <li>
+                <span>{{ item.series.name|truncate_chars_inner:24 }} </span>
+                {% if item.series_number %}
+                    <small>#{{ item.series_number }}</small>
+                {% endif %}
+            </li>
+
+            {% endif %}
+            <!--
+			<li class="small">
+				{% for tag in item.tags %}
+					<span>{{ tag }}</span>
+					{% if not forloop.last %}
+					|
+					{% endif %}
+				{% endfor %}
+
+			</li>
+            -->
+        </ul>
+    </div>
+    <div class="list_body_item c3">
+        <ul class="unstyled indicator">
+
+            <li>
+                <a href="{{ item.user.get_absolute_url }}">{% firstof item.user.username|truncate_chars_inner:16 item.user|truncate_chars_inner:16 %}</a>
+                {% url alibrary-playlist-list as playlist_list %}
+                <a href="{% spurl path=playlist_list query="user={{ item.user.username }}" %}"
+                   title="{% trans "Only show playlists by" %} {% firstof item.user.username item.user %}"
+                   style="vertical-align: top;"><span class="filter icon"></span></a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="list_body_item c4">
+        <ul class="unstyled">
+            <li>
+                {{ item.get_duration|divide:1000|sec_to_time }}
+                {% if item.target_duration %}
+                    <span class="small">{% trans "of" %} {{ item.target_duration|sec_to_time }}</span>
+                {% endif %}
+            </li>
+            <li class="small">
+                {{ item.items.count }} {% trans "Tracks" %}
+            </li>
+        </ul>
+    </div>
+    <div class="list_body_item c5 timestamps">
+
+        <ul class="unstyled">
+            <li>
+                {{ item.created|date:"SHORT_DATE_FORMAT" }}
+            </li>
+            <li class="small">
+                {{ item.updated|date:"SHORT_DATE_FORMAT" }}
+            </li>
+        </ul>
+
+
+    </div>
+
+    <!--
+	<div class="list_body_item c6">
+		<ul class="unstyled">
+			<li>
+				&nbsp;{{ item.releasedate|date:"SHORT_DATE_FORMAT" }}
+			</li>
+			<li class="small">
+				{% if  item.release_country %}
+				{{ item.release_country }}
+				{% endif %}
+			</li>
+		</ul>
+	</div>
+	-->
+
+    <div class="list_body_item c7">
+
+
+        <ul class="unstyled">
+            <li>
+                {{ item.get_type_display }}
+            </li>
+            {% if item.type == 'broadcast' %}
+            <li class="small">
+                {{ item.get_status_display }}
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+
+    <div class="list_body_item c8 action">
+
+
+        <ul class="unstyled action secondary horizontal">
+
+            <li>
+                <a href="#"
+                   class="{% if not perms.alibrary.downoad_media %} disabled{% endif %}"
+                   data-ct="playlist"
+                   data-id="{{ item.pk }}"
+                   data-action="download"
+                   title="{% trans "Download" %}">
+                    <i class="icon icon-download-alt"></i>
+                </a>
+            </li>
+
+            <li>
+                <a href="#"
+                   class="{% if not user.is_authenticated %} disabled{% endif %}"
+                   data-action="collect"
+                   title="{% trans "Add to playlist" %}">
+                    <i class="icon icon-plus"></i>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ item.get_edit_url }}"
+                   class="{% if user.is_authenticated and user == item.user %}{% else %} disabled{% endif %}"
+                   title="{% trans "Edit" %}">
+                    <i class="icon icon-edit"></i>
+                </a>
+            </li>
+
+            <li>
+                <a href="#"
+                   class="{% if not perms.alibrary.schedule_playlist or not item.type == "broadcast" or not item.broadcast_status == 1 %}  disabled{% endif %}"
+                   data-action="schedule"
+                   data-ct="playlist"
+                   data-id="{{ item.id }}"
+                   data-uuid="{{ item.uuid }}"
+                   title="{% trans "Schedule" %}">
+                    <i class="icon icon-calendar"></i>
+                </a>
+            </li>
+
+
+        </ul>
+
+    </div>
+
+
+</div>

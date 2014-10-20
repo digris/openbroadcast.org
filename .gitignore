@@ -1,0 +1,25 @@
+# ignore
+.DS_Store
+*.pyc
+.pydev*
+
+.idea
+
+*node_modules*
+
+tools/*/env
+env
+docs/
+website/local_settings.py
+website/smedia
+website/media
+website/temp
+website/logs
+website/static
+#website/site-static/css/*
+website/site-static/.sass-cache
+website/data.db
+website/static/CACHE
+website/cache/*
+
+

@@ -1,0 +1,232 @@
+// @import 'site/jonas-in-progress'
+
+// popup version
+$window-width: 100%
+$outer-padding: 10px
+
+$padding-inner: 10px
+
+$inner-width: auto
+
+// height has to be the same as image size
+$controls-height: 160px
+
+// loading overlay
+
+
+// main wrapper
+body.popup
+
+  background-color: #fff
+  
+  
+  // font colors
+  color: $black
+  a
+    &:link, &:visited
+      color: $black
+  
+    &:active, &:hover
+      // background-color: $color-user-action
+      // color: $color-base-fg
+  
+  
+  #overlay_container
+    color: $black
+    position: fixed
+    background-color: $white
+    width: 100%
+    height: 100%
+    z-index: 10
+    padding: 10px
+    top: 0
+    left: 0
+    
+    h1, h2, h3, h4, h5, h6
+      // font-size: 48px
+
+
+
+  .header
+    background-color: $white
+    position: fixed
+    width: 100%
+    left: 0
+    //top: 0
+    
+  .inner
+    margin-top: 220px
+    
+  .footer
+    position: fixed
+    width: 100%
+    left: 0
+    bottom: 0
+    background-color: $white
+    padding: $outer-padding
+    height: 40px
+    overflow: auto
+    
+    &.hover
+      height: 140px
+    
+  #aplayer_controls
+    width: 1px
+    height: 1px
+    top: 0
+    left: 0
+    
+  
+  .wrapper
+    > div
+      width: $window-width
+      margin: 0
+     
+  div.ajax-indicator
+    display: none
+    position: fixed
+    z-index: 9
+    background-color: green
+    top: 173px
+    right: 10px
+    width: 24px
+    height: 24px
+    background-image: url(#{$static-url}img/base/ajax-loader.l.invers.gif)
+    
+    
+  &.buffering
+    div.ajax-indicator
+      display: block 
+    
+  &.paused
+    .item.listing
+      &.active
+        background-color: #fff00f !important
+        text-decoration: blink
+
+  div.container.controls
+  
+    // background-color: $color-player-action // black if not set...
+    
+    height: $controls-height
+    width: $inner-width
+    // padding: $outer-padding
+
+  
+    div.container
+    
+      &.image
+        padding: 10px 0 0 0
+        height: $controls-height
+        width: $controls-height
+        .wrapper > img
+          display: none
+          &:first-child
+            display: block
+      
+      &.information
+        // min-width: 240px
+        overflow: hidden
+        color: white
+        width: 440px
+        height: $controls-height - $outer-padding
+        padding: $outer-padding 0 $outer-padding $outer-padding
+        
+        .wrapper
+          height: $controls-height - 36px - $outer-padding
+          h1, h2
+            // font-size: 36px
+          
+        .controls
+          height: 26px
+          //+icon-container()
+          // +icon-white16()
+          
+          ul > li
+            //width: 32px
+            //height: 32px
+            cursor: pointer
+            margin-right: 8px
+            padding: 3px 2px
+            > a
+              font-size: 16px
+              color: #ff00ff
+              display: block
+              //height: 32px
+              //width: 32px
+              &:hover
+                text-decoration: none
+                color: white
+                background-color: green
+            
+            background-image: url(#{$static-url}img/aplayer/icon32.sprite.png)
+            background-repeat: no-repeat
+            
+            &.play
+              background-position: 0px 0px
+            &.pause
+              background-position: -32px 0px
+            &.prev
+              background-position: -64px 0px
+            &.stop
+              background-position: -96px 0px
+            &.next
+              background-position: -128px 0px
+          
+          .icon-container span.expandable
+            display: none
+          
+          // hide state-dependant icons
+          .icon.track-stop, .icon.track-play
+            display: none
+
+  // show/hide buttons depending on state
+  &.playing, &.buffering
+    .icon.track-stop
+      display: block !important
+  &.idle, &.paused
+    .icon.track-play
+      display: block !important
+
+        
+      
+  div.listing.playlist
+    width: $inner-width
+    padding: 0 $outer-padding $outer-padding
+    div.item
+      +aplayer($inner-width, 600px, $inner-width, 51px)
+      margin: 2px 0 0 0 !important
+      //+icon-container()
+      
+      &:last-child
+        margin-bottom: 60px !important
+      
+      div.playhead
+        &.loading
+          *
+            background-color: transparent !important
+      div.background
+        display: none // hide waveforms for now
+        background-color: white
+
+
+      &.hover
+        background: green
+        div.background
+          //background-color: $color-player-action-light !important
+        
+        div.indicator
+        
+        div.handler
+          cursor: crosshair !important
+          background-image: url(#{$static-url}img/aplayer/playhead.handler.png) !important
+          background-repeat: no-repeat
+          
+          
+      &.active
+        div.background
+          //background-color: $color-player-action !important
+        
+        div.indicator
+          background-image: url(#{$static-url}img/aplayer/playhead.indicator.png)
+          background-repeat: no-repeat

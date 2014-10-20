@@ -1,0 +1,5 @@
+# api urls (copy-past for testing...)
+
+http://local.openbroadcast.org:8080/api/v1/library/release/?format=json&username=root&api_key=APIKEY
+
+http://local.openbroadcast.org:8080/api/v1/library/track/16559/?format=json&username=root&api_key=APIKEY

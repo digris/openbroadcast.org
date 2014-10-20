@@ -1,0 +1,34 @@
+{% load sekizai_tags calc %}
+
+{% addtoblock "js" %}<script type="text/javascript" src="{{ STATIC_URL }}js/lib/jwplayer/jwplayer-5.9.js"></script>{% endaddtoblock %}
+
+{% addtoblock "js-post" %}
+<script>
+    var yp_{{ object.pk }} = jwplayer("yp_{{ object.pk }}").setup({
+
+        file: "http://www.youtube.com/watch?v={{ video_id }}&hd=1",
+        image: "http://img.youtube.com/vi/{{ video_id }}/0.jpg",
+        
+        provider: "youtube",
+        controlbar: 'bottom',
+        stretching: "fill",
+        
+        height: {{ object.height }} + 20,
+        width: {{ object.width }},
+        skin: "{{ STATIC_URL }}swf/lib/jwplayer/skin_ulysses.zip",
+
+        modes: [
+            { type: "flash", src: "{{ STATIC_URL }}swf/lib/jwplayer/jwplayer-5.9.swf" },
+            { type: "html5" }
+        ]
+       
+    });
+</script>
+{% endaddtoblock %}
+
+<div class="wrapper youtube">
+	{% if object.name %}
+	<h2>{{ object.name }}</h2>
+	{% endif %}
+	<div id="yp_{{ object.pk }}" style="min-height: {{ object.height|add:20 }}px; text-align: center;" class="player jwp"><h3>Loading Player...</h3></div>
+</div>

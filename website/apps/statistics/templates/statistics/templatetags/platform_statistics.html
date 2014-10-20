@@ -1,0 +1,41 @@
+{% load cache %}
+
+<div class="statistics platform">
+    <h2>Platform Statistics</h2>
+    <p>
+        Objects created on the platform
+    </p>
+
+    <div class="stat">
+        <table style="width: 100%;" class="table-striped">
+            <thead>
+            <tr>
+                <th>
+                    &nbsp;
+                </th>
+                <th>
+                    Last 24 hours
+                </th>
+                <th>
+                    Last 7 days
+                </th>
+                <th>
+                    Total
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for stat in statistics %}
+                <tr>
+                    <td>{{ stat.name }}</td>
+                    <td style="text-align: right;">{{ stat.stats.num_day }}</td>
+                    <td style="text-align: right;">{{ stat.stats.num_week }}</td>
+                    <td style="text-align: right;">{{ stat.stats.num_total }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+</div>

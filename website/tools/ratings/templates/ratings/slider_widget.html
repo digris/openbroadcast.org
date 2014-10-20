@@ -1,0 +1,52 @@
+{% block parent %}{{ parent }}{% endblock %}
+
+{% block label %}
+    <span class="slider-label" id="{{ label_id }}">
+        {% if has_value %}{{ value }}{% else %}{{ default }}{% endif %}
+    </span>
+{% endblock %}
+
+{% block widget %}
+    <div class="slider" id="{{ slider_id }}"></div>
+{% endblock %}
+
+{% block delete %}
+    {% if can_delete_vote and has_value %}
+        <span class="slider-remove">
+            <a href="javascript:void(0)" id="{{ remove_id }}">Erase vote</a>
+        </span>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" charset="utf-8">
+        (function($) {
+            $(document).ready(function() {
+                var obj = $('#{{ slider_id }}');
+                var vote_form = obj.closest('form');
+                vote_form.find('[type=submit]').hide();
+                obj.slider({
+                    min: {{ min_value }}, 
+                    max: {{ max_value }},
+                    step: {{ step }},
+                    {% if has_value %}value: {{ value }},{% endif %}
+                    slide: function(e, ui) {
+                        vote_form.find('#{{ label_id }}').html(ui.value);
+                    },
+                    change: function(e, ui) {
+                        vote_form.find('#{{ parent_id }}').val(ui.value);
+                        vote_form.trigger('slider_change', [ui.value]);
+                        vote_form.find('[type=submit]').show();
+                    }
+                });
+                $('#{{ remove_id }}').click(function() {
+                    vote_form.find('#{{ parent_id }}').val(0);
+                    vote_form.find('#{{ label_id }}').html('{{ default }}')
+                    vote_form.trigger('slider_delete');
+                    vote_form.find('.slider-remove').hide();
+                })
+            })
+        })(jQuery);
+    </script>
+{% endblock %}
+

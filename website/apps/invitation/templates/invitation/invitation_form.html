@@ -1,0 +1,64 @@
+{% extends "invitation/base.html" %}
+{% load i18n webdesign %}
+
+{% block heading %}
+
+    <div id="heading">
+        {% with page_title="Invitation" %}
+            {% include "skeleton/heading.html" %}
+        {% endwith %}
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+<div class="listing menu_context">
+
+	<div class="page-header">
+		<h2>{% trans "Please note!" %} <small>!</small></h2>
+		<p>{% lorem 15 w random %}</p>
+		<p>{% lorem 7 w random %}</p>
+	</div>
+
+	<div>
+		<ul>
+            <li><a href="https://musicbrainz.org/doc/MusicBrainz_Picard">Read more about users and invitations</a></li>
+            <li>{% trans "If this all sounds too complicated, please don't hesitate to contact our" %} <a href="#">support</a></li>
+		</ul>
+	</div>
+
+</div>
+{% endblock %}
+
+{% block content %}
+
+    <!--
+	<div>
+
+        <div class="alert alert-warning">
+            <strong>{% trans "Please note!" %}</strong>
+            {% lorem 1 p %}
+
+            <ul>
+                <li><a href="https://musicbrainz.org/doc/MusicBrainz_Picard">Read more about users and invitations</a></li>
+                <li>{% trans "If this all sounds too complicated, please don't hesitate to contact our" %} <a href="#">support</a></li>
+            </ul>
+        </div>
+
+	</div>
+    -->
+
+
+    <form method="post" class="form-horizontal" action="" style="margin-top: 40px;">{% csrf_token %}
+
+        {% include 'invitation/form_fields.html' %}
+
+        <div class="actions">
+            <input type="submit"
+                   class="btn btn-primary pull-right"
+                   value="{% trans "Send invitation email" %}"/>
+        </div>
+    </form>
+
+
+{% endblock %}

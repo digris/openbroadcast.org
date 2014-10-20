@@ -1,0 +1,71 @@
+{% load truncate i18n thumbnail arating_tags %}
+<div class="span7 padded-h container_content">
+
+	<div class="page-header">
+		<h2>{{ object.name|truncate_chars_inner:40 }} <small>{{ object.city }}{% if object.city and object.country %}, {% endif %}{{ object.country }}</small></h2>
+	</div>
+
+	<dl class="dl-horizontal main">
+		
+		<dt>
+			{% trans "Website" %}:
+		</dt>
+		<dd>
+            <a href="{{ object.website }}">{{ object.website }}</a>
+		</dd>
+
+		
+		{% if object.channel_set.count %}
+		<dt>
+			{% trans "Channels" %}:
+		</dt>
+		<dd>
+			<ul class="unstyled">
+				<li>
+				{% for channel in object.channel_set.all %}
+				<span>
+                    {% if channel.has_scheduler %}
+					<a href="{% url abcast-schedule %}?channel_id={{ channel.pk }}">{{ channel.name }}</a>
+                    {%  else %}
+                    {{ channel.name }}
+                    {% endif %}
+                    {% if not forloop.last %}, {% endif %}
+				</span>
+				{% endfor %}
+				</li>
+			</ul>
+		</dd>
+		{% endif %}
+	
+        <!--
+		<dt>
+			{% trans "Links" %}:
+		</dt>
+		<dd>
+			{% for link in object.link_set.all %}
+			<a href="{{ link.url }}">{% firstof link.title link.url %}</a>{% if not forloop.last %},{% endif %}
+			{% endfor %}
+			&nbsp;
+		</dd>
+		-->
+
+	</dl>
+
+
+</div>
+
+<div class="span2 padded-h padded-v">
+
+	<div class="image">
+		{% if object.main_image %}
+		<a href="{% thumbnail object.main_image 1200x1200 crop upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.main_image 172x172 crop upscale subject_location=object.main_image.subject_location %}" alt="Cover" /> </a>
+		{% else %}
+		<img src="/static/img/base/defaults/listview.profile.xl.png" alt="{% trans "No image available" %}" />
+		{% endif %}
+	</div>
+
+	<div class="rating">
+		{% rating_for_object object %}
+	</div>
+
+</div>

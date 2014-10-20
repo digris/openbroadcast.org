@@ -1,0 +1,76 @@
+<tr class="item export {{ object.status_display }}" data-last_status="0" id="{{ object.uuid }}">
+    <td>
+
+        <i class="icon-refresh icon-spin visible-while-init"></i>
+        <i class="icon-download-alt visible-while-done"></i>
+        <i class="icon-ok-sign visible-while-downloaded"></i>
+        <i class="icon-refresh icon-spin visible-while-ready"></i>
+        <i class="icon-tasks visible-while-progress"></i>
+        <i class="icon-warning-sign icon-pulse visible-while-error"
+           {% if object.status_msg %}
+               title="{{ object.status_msg }}"
+           {% endif %}
+           ></i>
+
+    </td>
+
+
+    <td>
+        {{ object.filename }} <small>debug: {{ object.id }}</small>
+
+    </td>
+    <td>{{ object.created|format_datetime('datetime') }}</td>
+    <td>
+        {% if object.downloaded %}
+            {{ object.downloaded|format_datetime('datetime') }}
+        {% endif %}
+    </td>
+
+    <td>
+        {% if object.filesize %}
+            <div class="pull-right">
+                {{ object.formatted_filesize }}
+            </div>
+        {% endif %}
+    </td>
+    <td>
+
+        {% if object.status == 1 or object.status == 4%}
+        <a href="#" data-action="download"><i class="icon-download-alt"></i> Download</a>
+        {% endif %}
+    </td>
+    <td>
+
+
+        <div class="btn-group pull-right">
+            <button class="btn btn-mini btn-prrimary" data-toggle="dropdown">
+                Actions
+            </button>
+            <button class="btn btn-mini  btn-prrimary dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <!--
+                <li>
+                    <a href="{{ object.get_absolute_url }}"><i class="icon-edit"></i> Details</a>
+                </li>
+                -->
+                {% if object.status != 2 %}
+                <li>
+                    <a href="#" data-action="delete"><i class="icon-trash"></i>Delete</a>
+                </li>
+                {% else %}
+                    <li>...</li>
+                {% endif %}
+                <!--
+                <li class="divider"></li>
+                <li>
+                    <a href="#">Separated link</a>
+                </li>
+                -->
+            </ul>
+        </div>
+
+    </td>
+
+</tr>

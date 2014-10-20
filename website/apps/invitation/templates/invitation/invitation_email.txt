@@ -1,0 +1,8 @@
+{{ invitation.message }}
+
+
+http://{{ site }}{{ invitation.get_absolute_url }}
+
+--
+Einladung von {% firstof invitation.user.get_full_name invitation.user.username %}
+http://{{ site }}{{ invitation.user.get_absolute_url }}

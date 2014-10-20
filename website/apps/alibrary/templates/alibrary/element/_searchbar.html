@@ -1,0 +1,85 @@
+{% load spurl i18n truncate adv_cache hash_tags %}
+{% cache 600 "searchbar" request.get_full_path %}
+
+<div id="searchbar" class="searchbar hoverable" data-ct="{{ ct }}">
+
+    <div style="float: left;" class="search-input{% if get.q %} active{% endif %}">
+
+        <div class="inner">
+            <span>{% trans "Search" %}:</span>
+            <input type="text" id="searchbar_input"
+                   name="searchbar_input" placeholder="{% trans "Type to search" %}"
+                   value="{% if get.q %}{{ get.q }}{% endif %}" class="blur"/>
+            <a href="{% spurl base=request.get_full_path remove_query_param="q" %}"><i class="_icon icon-delete">&nbsp;</i></a>
+        </div>
+
+    </div>
+
+    <div style="padding: 4px 3px 0px;" class="search-clear pull-right">
+        {% if request.path != request.get_full_path %}
+            <a class="pull-right clear-search" href="{{ request.path }}" title="{% trans "Clear Search" %}">
+            <i class="icon icon-large icon-remove-sign"></i>
+
+            </a>
+        {% endif %}
+    </div>
+
+    <ul class="filter-bar unstyled horizontal">
+        {% for filter in relation_filter %}
+            <li>
+                <a href="{% spurl base=request.get_full_path remove_query_param="page" remove_query_param=filter.item_type %}"
+                   class="lfilter">
+                      {{ filter.label }}: {{ filter.item }}
+                      <i class="_icon icon-delete">&nbsp;</i>
+                </a></li>
+        {% endfor %}
+    </ul>
+
+    <ul class="filter-bar unstyled horizontal">
+        {% for item in filter.filterlist %}
+
+            {% if item.name == "releasedate" %}
+                {% comment %}hackish... no other way at the moment. sorry.{% endcomment %}
+
+                    {% if "releasedate=" in request.get_full_path %}
+                        <li>
+                            <a href="{% spurl base=request.get_full_path remove_query_param="page" remove_query_param=item.name %}"
+                               class="lfilter">
+                                {% firstof item.label item.name %}:
+                                {% if item.range_start %}{{ item.range_start|date:"Y" }}{% endif %}
+                                {% if item.range_start and item.range_end %} - {% endif %}
+                                {% if item.range_end %}{{ item.range_end|date:"Y" }}{% endif %}
+                                <!-- unfortunately no fitting icon... so hacking -->
+                                <i class="_icon icon-delete">&nbsp;</i>
+
+                            </a>
+                        </li>
+                    {% endif %}
+
+            {% else %}
+                {% for filter_entry in item.entries %}
+                    {% spurl base=request.get_full_path active_mquery="{{ item.name }}={{ filter_entry.0 }}" as is_active %}
+                    {% if is_active %}
+                        <li>
+                            <a href="{% spurl base=request.get_full_path remove_query_param="page" trigger_mquery="{{ item.name }}={{ filter_entry.0 }}" %}"
+                               class="lfilter">
+                                {% firstof item.label item.name %}: {{ filter_entry.0 }}
+                                <!-- unfortunately no fitting icon... so hacking -->
+                                <i class="_icon icon-delete">&nbsp;</i>
+
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+        {% endfor %}
+    </ul>
+
+    <div class="clear"></div>
+
+</div>
+
+<div id="autocomplete_holder" class="autocomplete holder"></div>
+
+{% endcache %}

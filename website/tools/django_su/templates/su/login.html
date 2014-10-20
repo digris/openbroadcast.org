@@ -1,0 +1,28 @@
+{% extends "admin/base_site.html" %}
+
+{% load i18n admin_static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    {% if form.need_jquery %}
+        {% include "su/media.libraries.html" %}
+        <script type="text/javascript" src="{{ STATIC_URL }}js/ajax_select.js"></script>
+        <link href="{{ STATIC_URL }}css/ajax_select.css" rel="stylesheet" type="text/css" href="style.css" media="all" />
+    {% endif %}
+    {{ form.media }}
+    <link href="{% static 'admin/css/forms.css' %}" type="text/css" rel="stylesheet">
+{% endblock %}
+
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+    <form action="." method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <div class="submit-row">
+            <input type="submit" name="submit" class="default" value="{% trans "Change Login" %}"/>
+        </div>
+    </form>
+{% endblock %}

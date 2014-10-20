@@ -1,0 +1,103 @@
+ul.tagit
+  // width: 40em
+  padding: 2px 5px
+  padding-left: 0px !important
+  overflow: auto
+  margin-left: 0
+  margin-right: 0
+  border-style: none
+  border-width: 1px
+  border-color: #C6C6C6
+  background: inherit
+  
+  li
+    display: block
+    float: left
+    margin: 2px 5px 0px 0
+    &.tagit-choice
+      padding: 0px 18px 0px 3px
+      position: relative
+      line-height: inherit
+    &.tagit-new
+      margin: 0 0 0 20px
+      padding: 0
+
+      input[type="text"]
+        color: #333333
+        background-color: white
+        border: 1px solid #ccc
+        padding: 0px 0px 0px 0px
+        margin: 2px 0 0 0
+        height: 20px
+      
+      
+    &.tagit-choice
+        
+
+      -moz-border-radius: 1px
+      border-radius: 1px
+      -webkit-border-radius: 1px
+      border: 1px solid $main-a
+      background: none
+      background-color: #DDFFD9
+      color: #555
+
+      // experimental - override
+      border: 1px solid #444
+      background: none
+      background-color: #333
+      color: #fff
+
+      font-weight: normal
+      a.tagit-label
+        cursor: pointer
+        text-decoration: none
+      .tagit-close
+        cursor: pointer
+        position: absolute
+        right: .1em
+        top: 50%
+        margin-top: -8px
+        .text-icon
+          display: none
+      input
+        display: block
+        float: left
+        margin: 2px 5px 2px 0
+      a.tagit-close
+        text-decoration: none
+      .tagit-close
+        right: .4em
+      .ui-icon
+        display: none
+      .tagit-close .text-icon
+        display: inline
+        font-family: arial, sans-serif
+        font-size: 16px
+        line-height: 16px
+        color: #777
+      &:hover, &.remove
+        background-color: #bbcef1
+        border-color: #6d95e0
+      a
+        &.tagLabel:hover, &.tagit-close .text-icon:hover
+        
+  input[type="text"]
+    -moz-box-sizing: border-box
+    -webkit-box-sizing: border-box
+    box-sizing: border-box
+    border: none
+    margin: 0
+    padding: 0
+    width: inherit
+    background-color: inherit
+    outline: none
+
+  input[type="text"]
+    color: #333333
+    background: none
+
+/* used for some custom themes that don't need image icons
+
+.ui-menu .ui-menu-item
+  list-style: outside none !important

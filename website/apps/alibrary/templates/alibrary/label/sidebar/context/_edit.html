@@ -1,0 +1,31 @@
+{% load i18n %}
+
+<div class="menu-context">
+
+    <div class="action-group">
+
+        <ul class="unstyled">
+
+
+            <li class="link">
+                <a class="hoverable" href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
+                    <i class="icon icon-angle-left"></i>
+                    <span>{% trans "Back to Detail-View" %}</span>
+                </a>
+            </li>
+
+
+            {% if perms.alibrary.change_label and user.is_staff %}
+            <li class="link">
+                <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}" title="{% trans "Administration view" %}">
+                    <i class="icon icon-lock"></i>
+                    <span>{% trans "Administration view" %}</span>
+                </a>
+            </li>
+            {% endif %}
+
+        </ul>
+
+    </div>
+
+</div>

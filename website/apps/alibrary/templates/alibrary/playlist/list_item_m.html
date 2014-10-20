@@ -1,0 +1,85 @@
+{% load thumbnail i18n truncate display_tags arating_tags spurl calc %}
+
+<div class="list_body_row selectable item playlist published {% if item.user == request.user %}owner{% endif %} view edit stream collect download" id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}">
+
+	<div class="list_body_item c1 image_center_bg" {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 54x54 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}>
+		<ul class="unstyled">
+			<li class="play">
+				<a href="{{ item.get_api_url }}#0#replace" title="Play" class="playable popup"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Play" /></a>
+			</li>
+		</ul>
+	</div>
+	<div class="list_body_item c2">
+		<ul class="unstyled">
+			<li class="bold">
+				<a href="{{ item.get_absolute_url }}" title="{{ item.name }}">
+				{{ item.name|truncate_chars_inner:24 }}
+				{% if item.country %}({{ item.country }}){% endif %}
+				{% topflop_for_object item %} </a>
+			</li>
+			
+			
+			
+			<li>
+				<a href="{{ item.user.get_absolute_url }}">{% firstof item.user.username item.user %}</a>
+			</li>
+			
+			<li class="small">
+				{{ item.get_type_display }} | {{ item.get_status_display }}
+			</li>
+			
+		</ul>
+	</div>
+
+	<div class="list_body_item c3">
+		<ul class="unstyled">
+			<li>
+				{{ item.duration|divide:1000|sec_to_time }}
+				{% if item.target_duration %}
+				<span class="small">{% trans "of" %} {{ item.target_duration|sec_to_time }}</span>
+				{% endif %}
+			</li>
+			<li class="small">
+				{{ item.items.count }} {% trans "Tracks" %}
+			</li>
+		</ul>
+	</div>
+
+	<div class="list_body_item c4 action">
+		<div class="inner_row top right">
+			<!-- Actions sub-view  -->
+		<div class="wrapper">
+			<div class="right">
+				<ul class="unstyled">
+					<li class="basket">
+						<a href="#" title="{% trans "Add to basket" %}" class="collectable"><img src="/static/img/base/spacer.png" width="16" height="16" alt="{% trans "Add to basket" %}" /></a>
+					</li>
+				</ul>
+			</div>
+			<div>
+				<ul class="unstyled">
+					<li class="download">
+						<a href="#release:{{ item.pk }}:mp3" title="{% trans "Download Release" %}" class="downloadable queue"><img src="/static/img/base/spacer.png" width="16" height="16" alt="{% trans "Download Release" %}" /></a>
+					</li>
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</div>
+		</div>
+		<div class="clear"></div>
+		<div class="inner_row bottom left">
+			<ul class="tags unstyled">
+				{% for tag in item.tags|slice:":8" %}
+				<li>{{ tag.name }}</li>
+				{% endfor %}
+			</ul>
+			<!--
+			<ul class="tags second_row">
+			</ul>
+			-->
+		</div>
+
+	</div>
+
+</div>
+

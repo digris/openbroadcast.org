@@ -1,0 +1,64 @@
+{% load truncate i18n thumbnail arating_tags spurl %}
+<div class="span12 padded-h container_content">
+
+    <div class="page-header">
+        <h2>{{ object.name|truncate_chars_inner:40 }}
+            <small>{% trans "License" %}</small>
+        </h2>
+    </div>
+
+
+    <dl class="dl-horizontal main">
+
+        {% if object.version %}
+        <dt>
+            {% trans "Version" %}:
+        </dt>
+        <dd>
+            {{ object.version }}
+        </dd>
+        {% endif %}
+
+        {% if object.link %}
+        <dt>
+            {% trans "URL" %}:
+        </dt>
+        <dd>
+           <a href="{{ object.link }}">{{ object.link }}</a>
+        </dd>
+        {% endif %}
+
+        <dt>
+            {% trans "Created" %}:
+        </dt>
+        <dd>
+            {{ object.created|date:"SHORT_DATE_FORMAT" }}
+        </dd>
+
+        <dt>
+            {% trans "Last Update" %}:
+        </dt>
+        <dd>
+            {{ object.updated|date:"SHORT_DATE_FORMAT" }}
+        </dd>
+
+    </dl>
+
+
+    <dl class="dl-horizontal license">
+
+
+        <dt>
+            {% trans "Icon" %}:
+        </dt>
+        <dd>
+
+            <a href="{{ object.get_license.get_absolute_url }}" title="License details"
+               class="dialog disabled-modal iconset iconset-license">{{ object.iconset_display }}</a>
+
+        </dd>
+
+
+    </dl>
+
+</div>

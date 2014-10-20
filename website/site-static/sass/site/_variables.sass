@@ -1,0 +1,169 @@
+// Variables.scss
+// Variables to customize the look and feel of Bootstrap
+// -----------------------------------------------------
+
+// GLOBAL VALUES
+// --------------------------------------------------
+$main-a: #00BB00
+$main-b: #6633CC
+
+$main-color: $main-a
+$main-color-b: $main-a
+$main-link-color: $main-b
+$main-inverse-color: #FFFFFF
+$main-content-background-color: #F5F5F5
+
+$selection-bg-color: #EEE6FF
+$active-bg-color: #E4FFE4
+
+
+// dimensions
+$width-maincontent: 1115px
+$width-sidebar: 225px
+$width-inner_content: 830px // TODO: remove
+$width-inner: 830px
+$footer_fix-height: 20px
+
+// paths
+$image_path: unquote("/static/img/prototype/")
+$picol16x: unquote("/static/img/icons/picol16x/")
+$img-path: '/static/img/prototype/'
+
+$static-url: '/static/'
+
+
+// Links
+$linkColor: $main-b !default
+$linkColorHover: darken($linkColor, 15) !default
+
+// Site
+$siteColor: #333333 !default
+$siteColorAlt: darken($siteColor, 15) !default
+
+// Grays
+$black: black !default
+$grayDarker: #222222 !default
+$grayDark: #333333 !default
+$gray: #555555 !default
+$grayLight: #cccccc !default
+$grayLighter: #eeeeee !default
+$grayLightest: #fafafa !default
+$white: white !default
+
+// Accent colors
+$blue: #049cdb !default
+$blueDark: #0064cd !default
+$green: $main-a !default
+$red: #9d261d !default
+$yellow: #ffc40d !default
+$orange: #f89406 !default
+$pink: #c3325f !default
+$purple: #7a43b6 !default
+
+// Typography
+$baseFontSize: 12px !default
+$baseFontFamily: "Helvetica Neue", Helvetica, Arial, sans-serif !default
+//$baseFontFamily: 'Lucida Console', Monaco, 'Courier New', Courier !default
+$baseLineHeight: 18px !default
+$textColor: $grayDark !default
+
+// Sizes headings
+$baseFontSizeH1: 22px
+$smallFontSizeH1: 16px
+$baseLineHeightH1: $baseLineHeight * 2
+
+$baseFontSizeH2: 18px
+$smallFontSizeH2: 15px
+$baseLineHeightH2: $baseLineHeight * 2
+
+$baseFontSizeH3: 16px
+$smallFontSizeH3: 13px
+$baseLineHeightH3: $baseLineHeight * 1.5
+
+$baseFontSizeH4: 14px
+$smallFontSizeH4: 11px
+$baseLineHeightH4: $baseLineHeight * 1
+
+
+
+
+// Buttons
+$primaryButtonBackground: $linkColor !default
+
+// Corners
+$baseRadiusSmall: 0px
+$baseRadiusMedium: 0px
+$baseRadiusLarge: 0px
+
+$basePadding: 15px
+
+// COMPONENT VARIABLES
+// --------------------------------------------------
+
+// Z-index master list
+// Used for a bird's eye view of components dependent on the z-axis
+// Try to avoid customizing these :)
+$zindexDropdown: 1000 !default
+$zindexPopover: 1010 !default
+$zindexTooltip: 1020 !default
+$zindexFixedNavbar: 1030 !default
+$zindexModalBackdrop: 1040 !default
+$zindexModal: 1050 !default
+
+// Sprite icons path
+$iconSpritePath: "../img/glyphicons-halflings.png"
+$iconWhiteSpritePath: "../img/glyphicons-halflings-white.png"
+
+// Input placeholder text color
+$placeholderText: $grayLight !default
+
+// Hr border color
+$hrBorder: $grayLighter !default
+
+// Navbar
+$navbarHeight: 40px !default
+$navbarBackground: $grayDarker !default
+$navbarBackgroundHighlight: $grayDark !default
+$navbarLinkBackgroundHover: transparent !default
+
+$navbarText: $grayLight !default
+$navbarLinkColor: $grayLight !default
+$navbarLinkColorHover: $white !default
+
+// Form states and alerts
+$warningText: #c09853 !default
+$warningBackground: #fcf8e3 !default
+$warningBorder: darken(adjust-hue($warningBackground, -10), 3%) !default
+
+$errorText: #ff743e !default
+$errorBackground: #ffeed4 !default
+$errorBorder: darken(adjust-hue($errorBackground, -10), 3%) !default
+
+$successText: $main-a !default
+$successBackground: #DDFFD9 !default
+$successBorder: darken(adjust-hue($successBackground, -10), 5%) !default
+
+$successTextAlt: $main-b !default
+$successBackgroundAlt: #f3f0fb !default
+$successBorderAlt: darken(adjust-hue($successBackgroundAlt, -10), 5%) !default
+
+$infoText: $main-a !default
+$infoBackground: #DDFFD9 !default
+$infoBorder: darken(adjust-hue($successBackground, -10), 5%) !default
+
+//$infoText: #7a7a7a !default
+//$infoBackground: #FFFCDE !default
+//$infoBorder: darken(adjust-hue($infoBackground, -10), 7%) !default
+
+// GRID
+// --------------------------------------------------
+
+// Default 940px grid
+$gridColumns: 12 !default
+$gridColumnWidth: 70px !default
+$gridGutterWidth: 25px !default
+$gridRowWidth: $gridColumns * $gridColumnWidth + $gridGutterWidth * ($gridColumns - 1)
+
+// Fluid grid
+$fluidGridColumnWidth: 6.383% !default
+$fluidGridGutterWidth: 2.128% !default

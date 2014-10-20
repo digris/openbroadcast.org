@@ -1,0 +1,33 @@
+// Reset the elements.
+@import "compass/reset";
+// Load configurables variables.
+@import "config/base";
+@import "config/solarized";
+// Load librairies configured.
+@import "susy";
+@import "compass";
+// Import the mixins
+@import "mixins/icons";
+@import "mixins/tag-cloud";
+@import "mixins/alert-box";
+@import "mixins/delimited-list";
+@import "mixins/slider-buttons";
+//
+// Combine the partials into a single screen stylesheet.
+// under the body.zinnia class to avoid interferences
+.zinnia {
+  @import "partials/page";
+  @import "partials/layouts";
+  @import "partials/themes";
+  @import "partials/forms";
+  @import "partials/interactions";
+  @import "partials/header";
+  @import "partials/footer";
+  @import "partials/breadcrumbs";
+  @import "partials/sidebar";
+  @import "partials/entry";
+  @import "partials/linkbacks";
+  @import "partials/paginator";
+  @import "partials/slider";
+  @import "partials/django-fixes";
+}

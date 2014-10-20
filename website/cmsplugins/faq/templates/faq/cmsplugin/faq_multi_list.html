@@ -1,0 +1,307 @@
+{% load i18n markup sekizai_tags %}
+
+{% addtoblock "js" %}
+        <script src="{{ STATIC_URL }}js/lib/jquery.highlight.js"></script>
+{% endaddtoblock %}
+
+
+{% if instance.two_columns %}
+
+<div class="faq-multi-list">
+
+    <div class="row">
+        {% for category in objects %}
+
+        <div class="col-xs-12 col-md-12 col-lg-6">
+            <section>
+
+                <h1>{{ category.name }}</h1>
+
+                <div class="index top">
+                    {% for faq in category.faq_set.all %}
+                    <div class="faq item">
+                        <h3><i class="fa fa-angle-down"></i> <a class="anchor" href="#{{ faq.question|slugify }}">{{
+                            faq.question }}</a></h3>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+
+        {% if forloop.counter|divisibleby:2 %}
+    </div>
+    <div class="row">
+        {% endif %}
+
+        {% endfor %}
+    </div>
+</div>
+
+<div class="faq-multi-list faq-answers">
+
+    <div class="row">
+        {% for category in objects %}
+
+        <div class="col-xs-12 col-md-12 col-lg-6">
+            <section>
+
+                <h2>{{ category.name }}
+                    <small class="pull-right"><a class="scroll-top" href="#"><i class="fa fa-chevron-up"></i></a>
+                    </small>
+                </h2>
+
+                <div class="index">
+                    {% for faq in category.faq_set.all %}
+                    <div id="{{ faq.question|slugify }}" class="faq item">
+                        <h3><i class="fa fa-angle-down"></i> <a href="#{{ faq.question|slugify }}">{{ faq.question
+                            }}</a></h3>
+                        {{ faq.answer|safe }}
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </section>
+        </div>
+
+        {% if forloop.counter|divisibleby:2 %}
+    </div>
+    <div class="row">
+        {% endif %}
+
+        {% endfor %}
+    </div>
+</div>
+
+{% else %}
+
+<!--
+<div class="faq-multi-list">
+
+
+    <section id="faq_search">
+        <input type="text" id="search" name="search" size="30"/>
+    </section>
+
+
+    {% for category in objects %}
+
+    <section class="faq cateqory" data-category="{{ category.name }}">
+
+        <h1>{{ category.name }}</h1>
+
+        <div class="index top">
+            {% for faq in category.faq_set.all %}
+            <div class="faq item">
+                <h3><i class="fa fa-angle-down"></i> <a href="#{{ faq.question|slugify }}">{{ faq.question }}</a></h3>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    {% endfor %}
+</div>
+-->
+
+<div class="faq-multi-list faq-answers">
+
+     <section id="faq_search">
+        <input type="text" id="search" name="search" size="30"/>
+    </section>
+
+
+    {% for category in objects %}
+
+    <section class="faq cateqory" data-category="{{ category.name }}">
+
+        <h2>{{ category.name }}</h2>
+
+        <div class="index">
+            {% for faq in category.faq_set.all %}
+            <div id="{{ faq.question|slugify }}" class="faq item">
+                <h3><i class="fa fa-angle-down"></i> <a href="#{{ faq.question|slugify }}">{{ faq.question }}</a></h3>
+                {{ faq.answer|safe }}
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    {% endfor %}
+</div>
+
+{% endif %}
+
+{% addtoblock "js" %}
+<script>
+    $(function () {
+
+        var $root = $('html, body');
+        //var $root = $('#skrollr-body');
+
+        var offset_top = 130;
+
+
+        // checked on load - scroll to anchor if any
+        if (window.location.hash) {
+            var href = window.location.hash;
+
+            $root.animate({
+                scrollTop: $(href).offset().top - 180
+            }, {
+                duration: 300,
+                //easing: "easeInOutQuad",
+                complete: function () {
+                    window.location.hash = href;
+                }
+            });
+
+            // maybe highlight?
+            $('.faq.item').removeClass('highlight');
+            var el = $(href);
+            el.addClass('highlight');
+        }
+
+        // detect history changes (for <> back)
+        $(window).on('hashchange', function (e) {
+            var href = window.location.hash;
+            try {
+                var top = $(href).offset().top - offset_top
+            } catch (e) {
+                var top = -offset_top
+            }
+
+            $root.animate({
+                scrollTop: top
+            }, {
+                duration: 300,
+                //easing: "easeInOutQuad",
+                complete: function () {
+                    window.location.hash = href;
+                }
+            });
+
+            // maybe highlight?
+            $('.faq.item').removeClass('highlight');
+            var el = $(href);
+            el.addClass('highlight');
+
+        });
+
+        // triggered on actual click
+
+        $('a.anchor').on('click', function (e) {
+
+            e.preventDefault();
+
+            var href = $.attr(this, 'href');
+
+            /*
+             $root.animate({
+             scrollTop: $(href).offset().top - offset_top
+             }, {
+             duration: 300,
+             easing: "easeInOutQuad",
+             complete: function() {
+             window.location.hash = href;
+             }
+             });
+             */
+
+            // maybe highlight?
+            $('.faq.item').removeClass('highlight');
+            var el = $(href);
+            el.addClass('highlight');
+
+            return false;
+
+        });
+
+        // triggered on actual click
+        /*
+         $('a.scroll-top').on('click', function(e){
+
+         e.preventDefault();
+
+         var href = $.attr(this, 'href');
+         $root.animate({
+         scrollTop: - offset_top
+         }, {
+         duration: 300,
+         //easing: "easeInOutQuad",
+         complete: function() {
+         window.location.hash = '';
+         }
+         });
+
+         $('.faq.item').removeClass('highlight');
+
+         return false;
+
+         });
+         */
+
+
+        // searching
+        var prev_query;
+        $("#faq_search input").focus();
+        $('#faq_search').on('keyup', 'input', function (e) {
+            var query = $(this).val().toLowerCase();
+            if (query == prev_query) {
+                 return;
+            }
+            prev_query = query;
+
+            if (query == "") {
+                $('.faq.cateqory').show();
+                $('.faq.item').show();
+                $('.faq.item').removeHighlight();
+                return;
+            }
+
+            if (query.length < 3) {
+                $('.faq.cateqory').show();
+                $('.faq.item').show();
+                $('.faq.item').removeHighlight();
+                return;
+            }
+
+            var searchwords = query.split(" ");
+
+            $('.faq.item').each(function (index) {
+                var found = true;
+
+                for (var i = 0; i < searchwords.length; i++) {
+                    if ($(this).text().toLowerCase().indexOf(searchwords[i]) == -1) {
+                        found = false;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+
+            });
+
+            $('.faq.item').removeHighlight();
+
+            for (var i = 0; i < searchwords.length; i++) {
+                if(searchwords[i].length > 3) {
+                    $('.faq.item').highlight(searchwords[i]);
+                }
+            }
+
+
+            $('.faq.cateqory').show();
+            $('.faq.cateqory').each(function (index) {
+                if ($('.faq.item:not(:hidden)', this).length == 0) {
+                    $(this).hide();
+                }
+            });
+        })
+
+
+    })
+</script>
+{% endaddtoblock %}

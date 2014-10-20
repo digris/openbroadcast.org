@@ -1,0 +1,115 @@
+<div class="on-air item" data-uuid="{{ object.uuid }}">
+
+
+    {% if object.release and object.release.main_image %}
+
+        <div class="image">
+            <a href="{{ object.absolute_url }}">
+                <img class="release" src="{{ object.release.main_image }}">
+                <img class="artist" src="{{ object.artist.main_image }}">
+            </a>
+        </div>
+
+    {% endif %}
+
+
+    <div class="information">
+
+        <div class="rating-inline pull-right">
+
+            <ul class="horizontal unstyled arating">
+
+                {% if authenticated %}
+                    <li>
+                        <a data-vote="{% if object.votes.user == -1 %}0{% else %}-1{% endif %}"
+                           class="vote-1{% if object.votes.user == -1 %} active{% endif %}"
+                           href="/en/vote/alibrary.media/{{ object.id }}/0/">
+                            <i class="icon-thumbs-down"></i>
+                            <span class="count">{{ object.votes.down }}</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a data-vote="{% if object.votes.user == 1 %}0{% else %}1{% endif %}"
+                           class="vote1{% if object.votes.user == 1 %} active{% endif %}"
+                           href="/en/vote/alibrary.media/{{ object.id }}/0/">
+                            <i class="icon-thumbs-up"></i>
+                            <span class="count">{{ object.votes.up }}</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                            <i class="icon-thumbs-down"></i>
+                            <span class="count">{{ object.votes.down }}</span>
+
+                    </li>
+
+                    <li>
+
+                            <i class="icon-thumbs-up"></i>
+                            <span class="count">{{ object.votes.up }}</span>
+                    </li>
+                {% endif %}
+
+
+            </ul>
+
+
+        </div>
+
+        <ul class="unstyled">
+            <li>
+                <h4 class="name"><a href="{{ object.absolute_url }}">{{ object.name|truncate_chars_inner(24) }}</a></h4>
+            </li>
+            <li>
+                <a data-target="artist" href="{{ object.artist.absolute_url }}">
+                    {{ object.artist.name|truncate_chars_inner(32) }}</a>
+            </li>
+            <li>
+                <a href="{{ object.release.absolute_url }}">{{ object.release.name|truncate_chars_inner(32) }}</a>
+            </li>
+
+            <li>
+                <a href="{{ object.release.label.absolute_url }}">{{ object.release.label.name|truncate_chars_inner(32) }}</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+
+<!--
+<div class="row-fluid" style="display: none;">
+
+	<div class="span3">
+		
+		{% if object.release %}
+		<img src="{{ object.release.main_image }}" width="54">
+		{% else %}
+		&nbsp;
+		{% endif %}
+		
+	</div>
+
+	<div class="span9">
+
+		<ul class="unstyled">
+			<li>
+				<span class="playing">
+				<i class="icon-headphones"></i>
+				</span>
+				<strong class="name"><a href="{{ object.absolute_url }}">{{ object.name|truncate_chars_inner(32) }}</a></strong>
+			</li>
+			<li>
+				<a href="{{ object.artist.absolute_url }}">{{ object.artist.name|truncate_chars_inner(32) }}</a>
+			</li>
+			<li>
+				<a href="{{ object.release.absolute_url }}">{{ object.release.name|truncate_chars_inner(32) }}</a>
+			</li>
+		</ul>
+
+	</div>
+
+</div>
+-->
+

@@ -1,0 +1,77 @@
+{% extends "layout_base.html" %}
+
+{% load truncate i18n thumbnail arating_tags wiki_tags disqus_tags comments sekizai_tags %}
+
+{% block heading %}
+    <!-- view specific scripts -->
+
+
+    {% addtoblock "js-post" %}
+        <script type="text/javascript" src="{{ STATIC_URL }}exporter/js/base.js"></script>
+    {% endaddtoblock %}
+
+    {% addtoblock "js-post" %}
+        <script>
+            var exporter = exporter || {};
+            $(function () {
+                exporter = new ExporterApp();
+                exporter.api_url = '{% url api_dispatch_list resource_name='export' api_name='v1'%}';
+                exporter.init();
+            });
+        </script>
+    {% endaddtoblock %}
+
+    <!-- heading / icon (large one) -->
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+    <!-- heading / icon (large one) -->
+{% endblock %}
+
+{% block modnav %} <!-- start: intra-module navigation -->
+    <div id="modnav">
+        {% include "skeleton/modnav.html" %}
+    </div>
+    <!-- end: intra-module navigation -->
+{% endblock %}
+
+{% block inner %}
+
+
+    <div class="alert alert-warning">
+        <strong>{% trans "Confirm delete" %}</strong>
+
+        <p>
+            {% trans "Are you sure you want do telete" %}"{{ object }}"?
+            <br>
+            {% trans "This cannot be undone once confirmed." %}
+
+        </p>
+
+        <form method="post">{% csrf_token %}
+            <button type="submit" class="btn btn-danger">
+                <i class="icon icon-trash"></i> {% trans "Delete" %} {{ object }}</button>
+        </form>
+    </div>
+
+
+
+    <div class="item_detail">
+
+        <section class="shaded">
+            <div class="row iteminfo release">
+                {% include "alibrary/playlist/_detail_info.html" %}
+            </div>
+        </section>
+
+
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block sidebar %}
+    {% include "alibrary/playlist/sidebar/_delete.html" %}
+{% endblock %}

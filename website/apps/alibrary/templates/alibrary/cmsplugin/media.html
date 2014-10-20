@@ -1,0 +1,102 @@
+{% load alibrary_tags markup %}
+
+
+{% if instance.headline %}
+
+	<h1>{{ media.name }}</h1>
+	{% if media.artist and media.artist.name %}
+	<h2><a href="{{ media.artist.get_absolute_url }}">{{ media.artist.name }}</a></h2>
+	{% endif %}
+{% endif %}
+
+
+{% with playlink=object.get_playlink %}
+
+{% load thumbnail ashop_tags sekizai_tags calc guardian_tags truncate asite_tags %}
+
+
+<div id="{{ media.uuid }}" data-duration="{{ media.get_duration }}" class="item playlist {{ media.uuid }}" itemscope itemtype="http://schema.org/MusicRecording" >
+
+	<div class="info" style="display: none;">
+		<!-- TODO: think about the playlink... -->
+		{% if playlink %}
+		<a href="{{ playlink }}" class="playable popup">PLAY!!</a>
+		{% else %}
+		<a href="/api/releases/{{ media.release.uuid }}/#{{ forloop.counter0 }}#replace" class="playable popup">PLAY!!</a>
+		{% endif %}
+
+	</div>
+	
+	
+		
+	
+	<!-- main wrapper -->
+	<div class="playhead loading">
+		
+		<!-- background layer (for hover/active/etc ? ) -->
+		<div class="background">
+			
+			<!-- holder for indicator (animated transparent png-24 bg.image) -->
+			<div class="indicator">
+				
+				<!-- holder for handler (animated transparent png-24 bg.image) -->
+				<div class="handler">
+					
+					<!-- actual waveform (transparent inner) -->
+					<div class="waveform">
+						
+						<!-- using unscaled image here, scaling rendered by browser -->
+						<img data-href="{{ media.get_waveform_image.url }}" src="{{ STATIC_URL }}img/base/px.black.png" width="{{ width }}" style="height: 100%;" />
+
+					</div>
+					
+				</div>
+				
+			</div>
+			
+		</div>
+		
+		<div class="information base">
+			
+			<div class="right icon-container indication">
+				<ul class="horizontal actions">
+
+
+
+
+				</ul>
+			</div>
+			
+			<div class="left icon-container">
+				{% if not instance.headline %}
+				<ul class="horizontal">
+					<li itemprop="name">{{ media.name|truncate_chars_inner:22 }}</li>
+					<meta itemprop="inAlbum" content="{{ release.name }}" />
+					<meta itemprop="url" content="http://{% base_url %}{{ release.get_absolute_url }}" />
+					<meta itemprop="duration" content="PT4M5S" />
+					<meta itemprop="copyrightYear" content="{{ release.releasedate|date:"Y" }}" />
+					<meta itemprop="image" content="http://{% base_url %}{% thumbnail release.main_image 512x512 crop upscale subject_location=release.main_image.subject_location %}" />
+					{% if media.artist and media.artist.name %}
+					<li> | <a href="{{ media.artist.get_absolute_url }}" itemprop="byArtist">{{ media.artist.name|truncate_chars_inner:22 }}</a></li>
+					{% endif %}
+				</ul>
+				{% endif %}
+			</div>
+			<div class="clear"></div>
+		</div>
+		
+	</div>	
+		
+
+	
+</div>
+
+{% endwith %}
+
+
+
+{% if object.description %}
+<div class="description">
+	{{ object.description|textile|parse_cuepoints }}
+</div>
+{% endif %}

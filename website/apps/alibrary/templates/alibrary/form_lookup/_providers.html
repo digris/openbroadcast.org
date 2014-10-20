@@ -1,0 +1,44 @@
+{% load i18n truncate %}
+
+
+
+<div id="lookup_providers" class="lookup provider listing">
+
+	<div class="page-header">
+		<h2>{% trans "Compare" %} <small>{% trans "with API-data" %}</small></h2>
+	</div>
+	
+	
+	{% for provider in providers %}
+	<div data-item_type="{{ ct }}" data-item_id="{{ object.pk }}" data-provider="{{ provider.key }}" class="item {% if provider.relation %}available{% else %}unavailable{% endif %} hoverable {% if provider.relation %}available{% endif %}">
+		
+		<div class="row-fluid ">
+			
+			<div class="span8">
+				<span class="name"><i class="icon-{{ provider.key }}"></i> {{ provider.name }}</span>
+			</div>
+			
+			<div class="span4">
+				
+				<ul class="unstyled">
+					{% if provider.relation %}
+					<li class="pull-right" style="float: right !important;">
+						<a class="action" title="{% trans "Reselect on" %} {{ provider.name }}" href="#">{% trans "Change" %} <i class="icon-exchange icon-white"></i></a>
+					</li>
+					{% else %}
+					<li class="pull-right" style="float: right !important;">
+						<a class="action" title="{% trans "Search on" %} {{ provider.name }}"  href="#">{% trans "Search" %} <i class="icon-search icon-white"></i></a>
+					</li>
+					{% endif %}
+				</ul>
+				
+			</div>
+		</div>
+
+	</div>
+	{% endfor %}
+	
+	
+	
+</div>
+

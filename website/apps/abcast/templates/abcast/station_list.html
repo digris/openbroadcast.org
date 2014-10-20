@@ -1,0 +1,100 @@
+{% extends "layout_base.html" %}
+{% load spurl cache i18n truncate cache %}
+
+{% block heading %}
+<!-- heading / icon (large one) -->
+<div id="heading">
+	{% include "skeleton/heading.html" %}
+</div>
+<!-- heading / icon (large one) -->
+{% endblock %}
+
+{% block modnav %}
+<!-- start: intra-module navigation -->
+<div id="modnav">
+	{% include "skeleton/modnav.html" %}
+</div>
+<!-- end: intra-module navigation -->
+{% endblock %}
+
+{% block tagcloud %}
+
+{% include "alibrary/element/_tagcloud.html" %}
+
+{% endblock %}
+
+
+{% block searchbar %}
+
+    {% with object=item ct="artist" %}
+        {% include "alibrary/element/_searchbar.html" %}
+    {% endwith %}
+
+{% endblock %}
+
+
+{% block inner %}
+
+<div class="listhead">
+	<div style="float: right;">
+		{% include "element/_pagination.html" %}
+	</div>
+</div>
+<!-- end: listing header / paginator -->
+
+<!-- start: listing output -->
+<div class="listview container profile m {{ list_style }}">
+
+
+
+
+	<div class="list_body">
+		
+		{% for item in object_list %}
+		
+		{# if list_style == "m" #}
+		{% include "abcast/station/_list_item_m.html" %}
+		{# endif #}
+
+		{% endfor %}
+
+	</div>
+</div>
+
+<!-- start: listing footer -->
+<div class="listview footer">
+	<div class="right ipp">
+
+		<ul class="unstyled horizontal">
+			{% spurl base=request.get_full_path active_query="ipp=12" as is_active %}
+			<li>
+				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=12" %}">12</a>
+			</li>
+			{% spurl base=request.get_full_path active_query="ipp=24" as is_active %}
+			<li>
+				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=24" %}">24</a>
+			</li>
+			{% spurl base=request.get_full_path active_query="ipp=36" as is_active %}
+			<li>
+				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=36" %}">36</a>
+			</li>
+		</ul>
+
+	</div>
+	
+	<!--
+	<div id="control_selection" class="left control_selection">
+		<span>Selection:</span>
+		<a href="#selection:invert" class="action">Invert</a>&nbsp;<a href="#selection:all" class="action">All</a>&nbsp;<a href="#selection:clear" class="action">None</a>
+	</div>
+	-->
+	<div class="clear">&nbsp;</div>
+</div>
+<!-- end: listing footer -->
+
+{% endblock %}
+
+{% block sidebar %}
+{% include "abcast/station/sidebar/_list.html" %}
+{% endblock %}
+

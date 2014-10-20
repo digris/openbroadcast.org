@@ -1,0 +1,66 @@
+// Page layout can be done using mixins applied to your semantic classes and IDs
+// For instance this layout defines a two column layout on pages with
+// a body id of "zinnia".
+//
+// The markup would look like:
+//    <div class="container">
+//      <div id="header"></div>
+//      <div id="content"></div>
+//      <div id="sidebar"></div>
+//      <div id="footer"></div>
+//    </div>
+//
+// and the layout would look like:
+//    +------------------------+
+//    |        #header         |
+//    +---------------+--------+
+//    |               |        |
+//    |   #content    |#sidebar|
+//    |               |        |
+//    +------------------------+
+//    |        #footer         |
+//    +------------------------+
+
+
+& {
+  .container {
+    @include container($total-columns, $screen-layout);
+    @include susy-grid-background;
+  }
+
+  #header, #footer {
+    clear: both;
+  }
+}
+
+
+@include at-breakpoint($screen-layout) {
+  $third: floor($total-columns / 3);
+
+  &, &.right-sidebar {
+    #content {
+      @include span-columns(2 * $third);
+    }
+
+    #sidebar {
+      @include span-columns($third omega);
+    }
+  }
+
+  &.left-sidebar {
+    #content {
+      @include span-columns(2 * $third omega);
+    }
+    #sidebar {
+      @include span-columns($third);
+    }
+  }
+  &.no-sidebar {
+    #content {
+      @include span-columns($total-columns);
+    }
+    #sidebar {
+      display: none;
+    }
+  }
+}

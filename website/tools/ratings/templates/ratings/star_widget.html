@@ -1,0 +1,40 @@
+{% block parent %}{% if not read_only %}{{ parent }}{% endif %}{% endblock %}
+
+{% block widget %}
+    {% if values %}
+        <div class="star-container" id="{{ star_id }}">
+            {% for current_value in values %}
+                <input type="radio" class="stardust{{ split }}" value="{{ current_value }}"{% if current_value == value %} checked="checked"{% endif %} />
+            {% endfor %} 
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {% if values %}
+        <script type="text/javascript" charset="utf-8">
+            (function($) {
+                $(document).ready(function() {
+                    var objects = $('#{{ star_id }} :radio.stardust');
+                    var vote_form = objects.closest('form');
+                    objects.rating({
+                        {% if read_only %}
+                            readOnly: true
+                        {% else %}
+                            callback: function(value, link) {
+                                if (value) {
+                                    vote_form.find('#{{ parent_id }}').val(value);
+                                    vote_form.trigger('star_change', [value]);
+                                } else {
+                                    vote_form.find('#{{ parent_id }}').val(0);
+                                    vote_form.trigger('star_delete');
+                                };  
+                            }
+                        {% endif %}
+                    });
+                    {% if not can_delete_vote and not read_only %}$('.rating-cancel').remove();{% endif %}
+                });
+            })(jQuery);
+        </script>
+    {% endif %}
+{% endblock %}

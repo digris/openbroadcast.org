@@ -1,0 +1,107 @@
+{% extends "layout_base.html" %}
+
+{% load truncate i18n thumbnail arating_tags wiki_tags sekizai_tags abcast_tags %}
+
+{% block heading %} <!-- heading / icon (large one) -->
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+    <!-- heading / icon (large one) -->
+{% endblock %}
+
+{% block modnav %} <!-- start: intra-module navigation -->
+    <div id="modnav">
+        {% include "skeleton/modnav.html" %}
+    </div>
+    <!-- end: intra-module navigation -->
+{% endblock %}
+
+{% block inner %}
+    <div class="item_detail" style="">
+
+        <section class="shaded">
+            <div class="row iteminfo release">
+                {% include "abcast/emission/_detail_info.html" %}
+            </div>
+        </section>
+
+        <div class="item_menu" id="item_menu">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#tracklist" data-toggle="tab">{% trans "Tracklist" %}</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="clear"></div>
+
+        <section class="tabbed item_inner">
+
+            <div class="tab-content">
+                <section class="tracklist">
+                    <h2>{% trans "Airplay date" %}: {{ object.time_start|date:"SHORT_DATETIME_FORMAT" }}</h2>
+
+                    <div class="tab-pane active" id="tracklist">
+
+                        <div class="listview container medias s">
+
+                            <div class="list_header"></div>
+
+                            <div class="list_body">
+                                {% for item in object.get_timestamped_media %}
+                                    {% if item.content_type.model == "media" %}
+                                        {% if item.is_future %}
+                                            <div class="item hidden-future">
+                                                <div class="inner icon">
+                                                    <i class="icon-question"></i>
+                                                </div>
+                                                <div class="inner"></div>
+                                                <div class="inner"></div>
+                                                <div class="inner"></div>
+                                                <div class="inner"></div>
+                                                <div class="inner"></div>
+                                            </div>
+                                        {% else %}
+                                            {% with item=item.content_object timestamp=item.timestamp %}
+                                                {% include "alibrary/media/_list_item_foreign_timestamp.html" %}
+                                            {% endwith %}
+                                        {% endif %}
+                                    {% endif %}
+
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+
+        </section>
+
+        <section class="comments on-site">
+            {% with object=object.content_object %}
+                {% include "element/chat/_object_comments.html" %}
+            {% endwith %}
+        </section>
+
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+    {# include "alibrary/artist/sidebar/_detail.html" #}
+
+    	<!-- inline "On Air" -->
+	{% on_air_inline %}
+
+    <!-- hackish, remove tune-in button -->
+    {% addtoblock "css" %}
+        <style>
+            #on_air_app > .actions {
+                display: none;
+            }
+        </style>
+    {% endaddtoblock %}
+
+{% endblock %}

@@ -1,0 +1,50 @@
+<div class="loader" style="width: {{ shotSize }}px; height: {{ shotSize }}px;">
+
+	<h1 class="indicator"><i class="icon-spinner icon-spin"></i></h1>
+
+</div>
+
+<div class="box" style="width: {{ shotSize }}px; height: {{ shotSize }}px;">
+
+	
+
+	{% if shot.image %}
+	<img src="{{ shot.image }}" width="{{ shotSize - 10 }}"/>
+	{% else %}
+	<img src="/static/shortcutter/img/shot_placeholder.png" width="{{ shotSize - 10 }}"/>
+	{% endif %}
+
+	{% if shot.status != 100 %}
+	<span class="caption caption fade-caption" style="width: {{ shotSize - 25 }}px; height: {{ shotSize - 25 }}px;">
+		<h3>{{ shot.user.username }}</h3>
+		
+		{% if shot.description %}
+		<blockquote>
+			{{ shot.description }}
+		</blockquote>
+		{% endif %}
+		<dl>
+			<dt>
+				Shot taken:
+			</dt>
+			<dd>
+				{{ shot.updated}}
+			</dd>
+			<dt>
+				uri: {{ shot.resource_uri}}
+			</dt>
+			<dd>
+				{% if shot.pos.lat %}
+				{{ shot.pos.lat }}
+				{{ shot.pos.lng }}
+				{% endif %}
+			</dd>
+		</dl>
+		<span class="datetime pull-right"></span>
+		
+	</span>
+	{% endif %}
+	
+	
+
+</div>

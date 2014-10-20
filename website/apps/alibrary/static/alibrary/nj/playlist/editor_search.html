@@ -1,0 +1,38 @@
+
+
+    <div class="listing">
+        {% for item in objects %}
+
+            <div class="item hoverable clearfix" data-resource_uri="{{ item.resource_uri }}">
+
+                <div class="">
+
+                    <div class="image">
+                        <img src="{{ item.main_image }}"/>
+                    </div>
+
+                    <div class="information">
+
+                        <span class="title">{{ item.name|highlight(meta.query) }}<small class="pull-right">{{ item.duration|ms2time }}</small></span>
+
+                        <div class="related">
+                            <ul class="unstyled horizontal">
+                                {% if item.artist %}
+                                    <li><small>by:</small> {{ item.artist|highlight(meta.query) }}</li>
+                                {% endif %}
+                                {% if item.release %}
+                                    <li><small>on:</small> {{ item.release|highlight(meta.query) }}</li>
+                                {% endif %}
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+    </div>
+

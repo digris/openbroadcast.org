@@ -1,0 +1,13 @@
+{% extends "error_base.html" %}
+{% load i18n %}
+
+{% block title %}Page not found{% endblock %}
+
+{% block body-class %}error-404{% endblock %}
+
+{% block content %}
+    <h1>We could not find the page requested.</h1>
+
+    <p>Sorry about that. Please try refreshing or contact our support if you think this page should exist.</p>
+    {{ block.super }}
+{% endblock %}

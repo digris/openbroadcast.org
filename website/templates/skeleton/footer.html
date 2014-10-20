@@ -1,0 +1,56 @@
+{% load ctype %}
+<p>
+	© openbroadcast.org {% now "Y" %} |
+	Renggerstrasse 31, CH-8038 Zurich, Switzerland
+</p>
+{% if DEBUG %}
+
+    <div id="debug_container" style="width: 100%; opacity: 0.6; font-size: 90%;">
+        <dl class="dl-horizontal">
+
+            {% if object and object.id %}
+            <dt>Object ID:</dt>
+            <dd>
+                {{ object.id }}
+                {%  if object.get_admin_url %}
+                | <a href="{{ object.get_admin_url }}">admin</a>
+                {% endif %}
+
+                {% if object.folder %}
+                <br>
+                    lsdakj
+                {% endif %}
+
+
+
+            </dd>
+            {% endif %}
+
+            {% if object and object.legacy_id %}
+            <dt>Legacy ID:</dt>
+            <dd>
+                {{ object.legacy_id }}
+
+                {% if object|ct_name_by_object|lower == 'release' %}
+                | <a href="http://openbroadcast.org/en/content/library/{{ object|ct_name_by_object|lower }}s/{{ object.legacy_id }}/detail.html">show legacy page</a>
+                {% endif %}
+                {% if object|ct_name_by_object|lower == 'artist' %}
+                | <a href="http://openbroadcast.org/en/content/library/{{ object|ct_name_by_object|lower }}s/{{ object.legacy_id }}.html">show legacy page</a>
+                {% endif %}
+                {% if object|ct_name_by_object|lower == 'label' %}
+                | <a href="http://openbroadcast.org/en/content/library/{{ object|ct_name_by_object|lower }}s/{{ object.legacy_id }}/releases.html">show legacy page</a>
+                {% endif %}
+                {% if object|ct_name_by_object|lower == 'track' %}
+                | <a href="http://openbroadcast.org/en/content/library/media/{{ object.legacy_id }}/detail.html">show legacy page</a>
+                {% endif %}
+
+
+
+
+            </dd>
+            {% endif %}
+
+        </dl>
+    </div>
+
+{% endif %}

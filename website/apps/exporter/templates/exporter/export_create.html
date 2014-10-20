@@ -1,0 +1,93 @@
+{% extends "base/generic.html" %}
+
+{% load i18n sekizai_tags verbatim dajaxice_templatetags crispy_forms_tags %}
+
+{% block object_type %}import{% endblock %}
+
+{% block list_inner %}
+
+{% addtoblock "js-post" %}
+<script type="text/javascript">
+$(document).ready(function() {
+	$(function () {
+	    'use strict';
+	
+	    // Initialize the jQuery File Upload widget:
+	    
+	    var upload_form = $('form#fileupload')
+	    
+	    upload_form.fileupload();
+	
+	    upload_form.fileupload('option', {
+	        maxFileSize: 1000000000, // 1000 MB
+	        minFileSize: 1000000,
+	        //acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+	        acceptFileTypes: /(\.|\/)(mp3|aif?f|wav|avi|jpe?g)$/i
+	    });
+	
+	
+	    // Load existing files:
+	    $.getJSON($('form#fileupload').prop('action'), function (files) {
+	        var fu = $('#fileupload').data('fileupload');
+	        fu._adjustMaxNumberOfFiles(-files.length);
+	        fu._renderDownload(files)
+	            .appendTo($('#fileupload .files'))
+	            .fadeIn(function () {
+	                // Fix for IE7 and lower:
+	                $(this).show();
+	            });
+	    });
+	    
+
+	    
+	    function get_import_files_interval() {
+	    	Dajaxice.exporter.get_import(get_import_files_callback);
+	    };
+	    function get_import_files_callback(data) {
+	    	console.log(data);
+	    	
+	    	for (var i in data) {
+	    		
+				var item = data[i];
+				
+				if(item.status > 0) {
+					$('#exportitem_' + item.id).hide(2000);
+				} else {
+					$('#exportitem_' + item.id).show(2000);
+				}
+	    		
+	    	};
+	    	
+	    	
+	    };
+	    //setInterval(get_import_files_interval, 2000);
+	    
+	    
+	    // Dajaxice.alibrary.api_lookup(self.api_lookup_callback, data);
+	
+		exporter.ui = new ExporterUi();
+		exporter.ui.init();
+	
+
+	
+	});
+});
+</script>
+{% endaddtoblock %}
+
+<section>
+	
+	<div class="page-header">
+		<h2>Upload <small>Add/Upload Files to the Export Queue</small></h2>
+	</div>
+
+	<div class="uploader">
+	{% crispy form %}
+    </div>
+
+</section>
+
+
+
+
+{% endblock %}

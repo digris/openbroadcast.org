@@ -1,0 +1,85 @@
+{% extends "account/base.html" %}
+
+
+{% load i18n allauth_tags crispy_forms_tags %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+
+
+
+
+
+{% block sidebarx %}
+{% if allauth.socialaccount_enabled  %}
+<h1>{% trans "Or Connect" %}</h1>
+<div class="socialaccount providers">
+	<ul class="unstyled">
+	{% include "socialaccount/snippets/provider_list.html" %}
+	</ul>
+
+</div>
+{% endif %}
+{% endblock %}
+
+
+
+{% block body %}
+
+<header class="xl-head subhead" id="overview">
+  <h1>{% trans "Sign Up" %}</h1>
+  <!--
+  <p class="lead">Dozens of reusable components are built into Bootstrap to provide navigation, alerts, popovers, and much more.</p>
+  -->
+</header>
+
+	{% if extra == "login_reason" %}
+	{% include "account/snippets/login_reason.html" %}
+	{% endif %}
+
+	<div class="alert alert-info">
+		<h4 class="alert-heading">{% trans "Already have an account?" %}</h4>
+		Then please <a href="{{ login_url }}">{% trans "sign in here" %}</a>.
+	</div>
+
+    {% if user.is_authenticated %}
+	<div class="alert">
+	  <a class="close" data-dismiss="alert">×</a>
+	  {% include "account/snippets/already_logged_in.html" %}		
+	</div>
+    {% else %}
+    
+
+	<form class="form-horizontal" id="signup_form" method="post" action="{% url account_signup %}">
+		
+		{% csrf_token %}
+		<fieldset class="inlineLabels">
+	  		{{ form|crispy }}
+	  
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">{% trans "Sign Up" %}</button>
+                <a class="btn btn-secondary" href="{% url account_reset_password %}">{% trans "Forgot Password?" %}</a>
+            </div>
+	  </fieldset>
+	  
+	</form>
+
+	<div class="dim">
+	    <h4 class=""><span class="asteriskField">*</span>{% trans "Required fields." %}</h4>
+	    <p>
+	    	{% trans "E-Mail is optional, but recommended. (To retrieve a new password in case you loose it...)" %} 
+	    </p>
+	</div>
+        
+       
+        
+    {% endif %}
+    
+    {% fbconnect %}
+    
+{% endblock %}
+
+

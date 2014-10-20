@@ -1,0 +1,27 @@
+<!-- start: youtube embedd -->
+<div class="wrapper">
+	<!--
+	{% if object.name %}
+	<h1>{{ object.name }}</h1>
+	{% endif %}
+	-->
+	<div class="iframe">
+
+		<object width='{{ object.width }}' height='{{ object.height }}'> 
+	    <param name='movie' value='http://www.youtube.com/embed/{{ video_id }}?rel=0'> 
+	    <param name='type' value='application/x-shockwave-flash'> 
+	    <param name='allowfullscreen' value='true'> 
+	    <param name='allowscriptaccess' value='always'> 
+	    <param name="wmode" value="opaque" />
+	    <embed width='{{ object.width }}' height='{{ object.height }}'
+	            src='http://www.youtube.com/embed/{{ video_id }}?rel=0'
+	            type='application/x-shockwave-flash'
+	            allowfullscreen='true'
+	            allowscriptaccess='always'
+	            wmode="opaque">
+	    </embed> 
+	    </object> 
+	
+	</div>
+</div>
+<!-- end: youtube embedd -->

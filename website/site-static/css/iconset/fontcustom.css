@@ -1,0 +1,72 @@
+/* 
+ * Font Custom: bare CSS
+ */
+
+@font-face {
+  font-family: "fontcustom";
+  src: url("fontcustom_db5c207e50843bf3473157a4bf96a4f2.eot");
+  src: url("fontcustom_db5c207e50843bf3473157a4bf96a4f2.eot?#iefix") format("embedded-opentype"),
+       url("fontcustom_db5c207e50843bf3473157a4bf96a4f2.woff") format("woff"),
+       url("fontcustom_db5c207e50843bf3473157a4bf96a4f2.ttf") format("truetype"),
+       url("fontcustom_db5c207e50843bf3473157a4bf96a4f2.svg#fontcustom") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.icon-bandcamp:before,
+.icon-broadcast:before,
+.icon-discogs:before,
+.icon-hex:before,
+.icon-lastfm-sign:before,
+.icon-lastfm:before,
+.icon-license-cc-by:before,
+.icon-license-cc-cc:before,
+.icon-license-cc-nc:before,
+.icon-license-cc-nd:before,
+.icon-license-cc-pd:before,
+.icon-license-cc-remix:before,
+.icon-license-cc-sa:before,
+.icon-license-cc-share:before,
+.icon-license-cc-zero:before,
+.icon-license-copyright:before,
+.icon-musicbrainz:before,
+.icon-satellite:before,
+.icon-schedule:before,
+.icon-soundcloud-sign:before,
+.icon-soundcloud:before,
+.icon-tree:before,
+.icon-wikipedia:before {
+  font-family: "fontcustom";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  text-decoration: inherit;
+}
+
+.icon-bandcamp:before { content: "\f100"; }
+.icon-broadcast:before { content: "\f101"; }
+.icon-discogs:before { content: "\f102"; }
+.icon-hex:before { content: "\f103"; }
+.icon-lastfm-sign:before { content: "\f104"; }
+.icon-lastfm:before { content: "\f105"; }
+.icon-license-cc-by:before { content: "\f106"; }
+.icon-license-cc-cc:before { content: "\f107"; }
+.icon-license-cc-nc:before { content: "\f108"; }
+.icon-license-cc-nd:before { content: "\f109"; }
+.icon-license-cc-pd:before { content: "\f10a"; }
+.icon-license-cc-remix:before { content: "\f10b"; }
+.icon-license-cc-sa:before { content: "\f10c"; }
+.icon-license-cc-share:before { content: "\f10d"; }
+.icon-license-cc-zero:before { content: "\f10e"; }
+.icon-license-copyright:before { content: "\f10f"; }
+.icon-musicbrainz:before { content: "\f110"; }
+.icon-satellite:before { content: "\f111"; }
+.icon-schedule:before { content: "\f112"; }
+.icon-soundcloud-sign:before { content: "\f113"; }
+.icon-soundcloud:before { content: "\f114"; }
+.icon-tree:before { content: "\f115"; }
+.icon-wikipedia:before { content: "\f116"; }

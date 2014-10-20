@@ -1,0 +1,51 @@
+<div class="result">
+
+	<div class="listing">
+		{% for item in objects %}
+		<div class="item hoverable" data-id="{{ item.id }}" data-name="{{ item.name }}" data-ct="{{ item.ct }}" data-resource_uri="{{ item.resource_uri }}">
+			
+			<div class="row-fluid">
+				
+				<div class="span3">
+					
+					{% if item.main_image %}
+					<img src="{{ item.main_image }}" />
+					{% else %}
+					<img src="/static/img/base/defaults/listview.{{ item.ct }}.xl.png" width="90" height="90" />
+					{% endif %}
+					
+				</div>
+				
+				<div class="span9">
+					
+					
+					
+					<!---->
+					<ul class="unstyled">
+						
+						<li><strong>{{ item.name|truncate_chars_inner(30)|highlight(meta.query) }}</strong>  <small class="pull-right">{{ item.releasedate }}</small></li>
+						<li>
+							<span>{{ item.user }}</span>
+							|
+							<span>{{ item.target_duration / 60 }} min</span>
+						</li>
+						<li><span>{{ item.tags|shorten(30) }}</span></li>
+						<!--
+						{% if item.ct == 'playlist' %}
+						{% for item in item.media %}
+						<li>
+						{{ item.name }}
+						</li>
+						{% endfor %}
+						{% endif %}
+						-->
+					</ul>
+					
+				</div>
+				
+			</div>
+
+		</div>
+		{% endfor %}
+	</div>
+</div>

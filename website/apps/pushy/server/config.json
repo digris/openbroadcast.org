@@ -1,0 +1,8 @@
+{
+    "port" : 8811,
+    "pattern" : "obp_pushy_*",
+    "redis": {
+        "host": "localhost",
+        "port": 6379
+    }
+}

@@ -1,0 +1,56 @@
+// inline player
+div#root
+  div.aplayer
+    //display: none
+    .information .wrapper
+      width: 260px
+      overflow: hidden
+    
+    h1
+      padding: $padding-inner/2 0 $padding-inner/2 0
+      //height: 24px
+    h2
+      padding: 0 0 15px 0
+      //height: 29px
+      
+    .progress
+      height: 12px
+      background-color: $color-player-action-light
+      margin: 0 0 0 0 
+  
+    .progress .indicator
+      height: 100%
+      border-right: 2px solid $color-player-action
+      padding: $padding-inner/2
+      
+    .controls
+      width: 100%
+      padding: 6px 0 $padding-inner/2  0
+      float: left
+      
+      ul.time
+        padding: 0 3px 0 0
+        > li
+          padding: 2px 0 0 2px
+          font-size: 90%
+      
+      ul
+        height: 16px
+        
+        > li
+          //+icon-white16()
+          &:hover
+            //+icon-black16()  
+  
+        .icon-container span.expandable
+          display: none
+        
+        // hide state-dependant icons
+        .icon.track-stop, .icon.track-play
+          display: none
+    
+    .activate
+      margin: $padding-inner/2 0 0 0
+      //+icon-white16() 
+      &:hover
+        //+icon-black16() 

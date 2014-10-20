@@ -1,0 +1,61 @@
+{% load i18n sekizai_tags %}
+
+{% addtoblock "js-post" %}
+<script>
+	$(function(){
+		$('ul.nav-profile .messages > a').live('click', function(e){
+			$('.notification-holder').toggle(100);
+		});
+	});		
+</script>
+{% endaddtoblock %}
+
+<div class="message-list">
+	{% for item in stream %}
+	
+	<div class="message hoverable linkable">
+		
+		
+		
+		<div class="row-fluid">
+			<div class="span12">
+				
+				{% if item.actor %}
+				
+					{% if item.actor == user %}
+					{% trans "You" %}
+					{% else %}
+					<a href="{{ item.actor.get_profile.get_absolute_url }}">{% firstof item.actor.get_full_name item.actor %}</a>
+					{% endif %} 
+				
+				{% endif %} 
+				
+				{{ item.verb }}
+				
+				<a class="link-main" href="{{ item.target.get_absolute_url }}" class="target">{{ item.target }}</a>
+			</div>
+
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span4">
+				<span>&nbsp;</span>
+			</div>
+			<div class="span8">
+				<small class="timestamp pull-right">{{ item.timestamp|date:"SHORT_DATETIME_FORMAT" }}</small>
+			</div>
+		</div>
+
+	</div>
+	
+	{% endfor %}
+	
+	<div class="actions">
+
+		<a class="btn btn btn-small" href="{% url actstream-action-list %}">More</a>
+
+		
+	</div>
+	
+</div>
+

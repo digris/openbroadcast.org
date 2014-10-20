@@ -1,0 +1,31 @@
+{% load i18n thumbnail truncate %}
+
+
+<div class="container release left hoverable">
+	<div class="boxed image left action-menu-handler hoverable">
+		<div class="wrapper">
+		{% if columns == 1 or columns == 2 %}
+			<img src="{% thumbnail object.main_image 310x310 crop upscale subject_location=object.main_image.subject_location %}" width="310" height="310" />
+		{% endif %}
+
+
+		{% if columns == 3 %}
+			<img src="{% thumbnail object.main_image 475x475 crop upscale subject_location=object.main_image.subject_location %}" width="475" height="475" />
+		{% endif %}
+		</div>
+	</div>
+	
+	<div class="boxed text artist container left ">
+		<div class="wrapper">
+			<h1><a class="permalink" href="{{ object.get_absolute_url }}">{{ object.name|truncate_chars:50 }}</a></h1>
+				
+
+		</div>
+	</div>
+	
+	<div class="clear"></div>
+</div>
+<!--
+{{ columns }}
+{{ width }}
+-->

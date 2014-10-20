@@ -1,0 +1,44 @@
+{% extends "datatrans/base.html" %}
+{% load i18n %}
+{% load adminmedia %}
+{% block title %}{% trans "Obsolete translations" %} - {{ block.super }}{% endblock %}
+{% block breadcrumbs %}{{ block.super }} &rsaquo; {% trans "Obsolete translations" %}{% endblock %}
+
+{% block content %}
+<h1>{% trans "Obsolete translations" %}</h1>
+{% if obsoletes %}
+	<p>
+		{% blocktrans with obsoletes.count as obsolete_count %}There are {{ obsolete_count }} obsolete messages.{% endblocktrans %}
+		{% blocktrans %}Please review them to see if you can reuse something,
+			and when done click the 'Remove all obsoletes' button to clean the KeyValue table.{% endblocktrans %}
+	</p>
+
+	<form method="post" action=".">{% csrf_token %}
+	<div class="submit-row" >
+		<input type="submit" value="{% trans "Remove all obsoletes" %}" class="default" />
+	</div>
+	<table>
+		<tr>
+			<th>{% trans "Obsolete message" %}</th>
+			<th>{% trans "Language" %}</th>
+		</tr>
+
+		{% for obsolete in obsoletes %}
+		<tr>
+			<td><textarea readonly="readonly" cols="80" rows="6">{{ obsolete.value }}</textarea></td>
+			<td>{{ obsolete.get_language_display }}</td>
+		</tr>
+		{% endfor %}
+
+	</table>
+
+	<div class="submit-row" >
+		<input type="submit" value="{% trans "Remove all obsoletes" %}" class="default" />
+	</div>
+	</form>
+{% else %}
+	<p>
+		<em>{% trans "There are no obsolete messages! Yay!" %}</em>
+	</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+<div class="object history">
+	{% for r in history|slice:":20" %}
+	<div class="item">
+		<ul class="unstyled horizontal">
+			<li class="created">{{ r.revision.date_created }}</li>
+			<li class="separator">&nbsp;|&nbsp;</li>
+			<li class="user"><a href="{{ r.revision.user.get_profile.get_absolute_url }}">{% firstof r.revision.user.get_full_name r.revision.user.username %}</a></li>
+		</ul>
+		<div class="clear"></div>
+        {% comment %}{% endcomment %}
+		<p>{{ r.revision.comment|urlize|linebreaksbr }}</p>
+        <p class="debug">
+            Revision PK: {{ r.revision.pk }}
+        </p>
+
+	</div>
+	{% endfor %}
+</div>

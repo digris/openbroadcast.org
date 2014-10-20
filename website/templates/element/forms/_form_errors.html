@@ -1,0 +1,17 @@
+{% load i18n form_errors %}
+<div class="form-errors">
+
+    <strong>{% trans "The operation could not be performed because one or more error(s) occurred." %}</strong>
+    <p>{% trans "Please resubmit the form after making the following changes" %}</p>
+
+
+    <dl class="dl-horizontal">
+        {% with form|nice_errors as qq %}
+            {% for error_name,desc in qq.items %}
+                <dt>{{ error_name }}</dt>
+                <dd>{{ desc }}</dd>
+            {% endfor %}
+        {% endwith %}
+    </dl>
+
+</div>

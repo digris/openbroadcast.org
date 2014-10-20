@@ -1,0 +1,82 @@
+{% extends old_template %}
+{% load i18n admin_modify adminmedia %}
+
+{% block extrahead %}
+{{ block.super }}
+
+<script type=text/javascript>
+function trigger_lang_button(e, url)
+{
+    if (MULTILINGUAL_NG_FORM_CHANGED)
+    {
+		var question = gettext("Are you sure you want to change tabs without saving the page first?");
+		var answer = confirm(question);
+	}
+	else
+	{
+		var answer = true;
+	}
+
+    if (answer)
+    {
+        window.location.href = url;
+    }
+}
+
+var MULTILINGUAL_NG_FORM_CHANGED = false;
+
+django.jQuery(document).ready(function(){
+     django.jQuery('input').change(function(){
+         MULTILINGUAL_NG_FORM_CHANGED=true;
+     });
+});
+</script>
+
+<style type="text/css">
+
+.language_button { 
+    font-weight:bold;
+    margin-bottom:-1px; 
+    border-color:#DDDDDD #AAAAAA #CCCCCC #DDDDDD !important; 
+    border:1px;  
+    background:white url({{ ADMIN_MEDIA_URL }}img/admin/nav-bg.gif) repeat-x scroll center bottom !important;
+}
+
+
+.language_button.selected { 
+    margin-bottom:-2px;
+    border-bottom:0px !important;
+    color:#fff;
+    background:#bcd2e9 !important;
+}
+
+.notfilled{
+    color: #808080 !important;
+}
+</style>
+
+
+{% endblock %}
+
+{% block breadcrumbs %}
+{% if not is_popup %}
+	<div class="breadcrumbs">
+	     <a href="../../../">{% trans "Home" %}</a> &rsaquo;
+	     <a href="../../">{{ app_label|capfirst|escape }}</a> &rsaquo; 
+	     {% if has_change_permission %}<a href="../">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %} &rsaquo; 
+	     {% if add %}{% trans "Add" %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+	</div>
+{% endif %}
+{% endblock %}
+{% block object-tools %}
+{{ block.super }}
+<div id="page_form_lang_tabs">
+	{% for code,name in LANGUAGE_CODES_AND_NAMES %}
+        <input type="button" onclick="trigger_lang_button(this,'./?language={{ code }}');"
+            class="language_button{% if code == current_language_code %} selected{% else %}{% if not code in filled_languages %} notfilled{% endif %}{% endif %}"
+            name="{{ code }}" value="{{ name }}" /> 
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block content_title %}{% if title %}<h1>{{ title }} ({% trans "language" %}: {{ current_language_code }})</h1>{% endif %}{% endblock %}

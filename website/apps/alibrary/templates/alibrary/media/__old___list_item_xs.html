@@ -1,0 +1,162 @@
+{% load calc i18n arating_tags %}
+
+<!--
+inline template, used in track display atg release sub-view
+ -->
+
+<div class="list_body_row selectable item media published {{ item.uuid }}" id="list_item_{{ item.id }}"
+     data-item_id="{{ item.id }}" data-id="{{ item.id }}" data-uuid="{{ item.uuid }}" data-ct="media">
+
+    <div class="list_body_item c1 action">
+
+        <ul class="unstyled horizontal action">
+
+
+            <li class="square">
+                <a href="#"
+                   class="playable popup{% if not perms.alibrary.play_media %} disabled{% endif %}"
+                   data-ct="release"
+                   data-resource_uri="{{ item.release.get_api_url }}"
+                   data-offset="{{ forloop.counter0 }}"
+                   data-mode="replace"
+                   title="{% trans "Play" %}">
+                    <i class="icon icon-play"></i>
+                </a>
+            </li>
+
+            <li class="square">
+                <a href="#"
+                   class="playable popup{% if not perms.alibrary.play_media %} disabled{% endif %}"
+                   data-ct="media"
+                   data-resource_uri="{{ item.get_api_url }}"
+                   data-offset="0"
+                   data-mode="queue"
+                   title="{% trans "Queue" %}">
+                    <i class="icon icon-reorder"></i></a>
+                </a>
+            </li>
+
+
+        </ul>
+
+    </div>
+
+    <div class="list_body_item c2">
+        {{ item.tracknumber }}
+    </div>
+
+    <div class="list_body_item c3 bold">
+
+        {% include "alibrary/element/_inline_link.html" %}
+
+        <ul class="__horizontal unstyled small">
+            {% for ea in item.extraartist_media.all %}
+                <li><a href="{{ ea.artist.get_absolute_url }}">{{ ea.artist.name }}</a>
+                    <small>[{{ ea.profession.name }}]</small>
+                </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+    <!-- Artist name -->
+    <div class="list_body_item c4">
+        {% with item=item.artist %}
+            {% include "alibrary/element/_inline_link.html" %}
+        {% endwith %}
+
+    </div>
+    <!-- Duration -->
+    <div class="list_body_item c5">
+        {{ item.duration_s|sec_to_time }}
+    </div>
+    <!-- Format / Bitrate -->
+    <div class="list_body_item c6">
+
+        {{ item.base_format|upper }} | {{ item.base_filesize|filesizeformat }}
+        <!--{{ item.master.sample_rate }} kbps-->
+    </div>
+    <!-- License -->
+
+    <div class="list_body_item c5 license {% if item.license %}{{ item.license.key }}{% endif %}">
+
+        <!--
+			<div class="rating">
+			{# rating_for_object item #}
+			</div>
+			-->
+
+        <div class="left license">
+            {% if item.license %}
+                <a href="{{ item.license.get_absolute_url }}" title="License details" class="dialog disabled-modal"><img
+                        src="/static/img/icons/transparent_16x16.png" width="48" height="24" alt="License"
+                        class="noborder"></a>
+            {% endif %}
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="list_body_item c8 action">
+
+        <ul class="unstyled action secondary horizontal">
+
+            <li>
+                <a href="#media:{{ item.pk }}:mp3"
+                   class="downloadable queue{% if not perms.alibrary.downoad_media %} disabled{% endif %}"
+                   data-ct="media"
+                   data-resource_uri="{{ item.get_api_url }}"
+                   title="{% trans "Download" %}">
+                    <i class="icon icon-download-alt"></i>
+                </a>
+            </li>
+
+            <li>
+                <a href="#"
+                   class="{% if not user.is_authenticated %} disabled{% endif %}"
+                   data-action="collect"
+                   title="{% trans "Add to playlist" %}">
+                    <i class="icon icon-plus"></i>
+                </a>
+            </li>
+
+        </ul>
+
+
+        <!-- Actions sub-view
+        <div class="wrapper">
+            <div class="right">
+                <ul>
+                    <li class="basket">
+                        <a href="#media:75206:default" title="Add to Basket" class="collectable"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Play"></a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <li class="download">
+                        <a href="#media:75206:mp3" title="Download Media" class="downloadable queue"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Play"></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </div>
+          -->
+
+
+    </div>
+
+
+    <!--
+	<div class="row-fluid extra-artists" style="clear: both;">
+		<div class="span4">&nbsp;</div>
+		<div class="span8">
+			<dl class="dl-horizontal">
+			{% for ea in item.extraartist_media.all %}
+			<dt>{{ ea.artist.name }}</dt>
+			<dd>{{ ea.profession.name }}</dd>
+			{% endfor %}
+			</dl>
+		</div>
+	</div>
+	-->
+
+</div>

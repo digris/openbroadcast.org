@@ -1,0 +1,40 @@
+
+	{% for (var i=0, result; result=o.results_musicbrainz[i]; i++) { %}
+	<div class="row-fluid result-set hoverable musicbrainz-tag mb_id-{%=result.mb_id%}">
+
+		<div class="span1">
+			<i class="icon icon-padded icon-musicbrainz"></i>
+		</div>
+
+		<div class="span8">
+			
+				<!-- ids -->
+				<input type="hidden" class="media-id" value="{%=result.media.mb_id%}">
+				<input type="hidden" class="release-id" value="{%=result.mb_id%}">
+				<input type="hidden" class="artist-id" value="{%=result.artist.mb_id%}">
+				
+				<!-- other data -->
+				<input type="hidden" class="releasedate" value="{%=result.releasedate%}">
+				<input type="hidden" class="catalognumber" value="{%=result.label.catalognumber%}">
+				<input type="hidden" class="name" value="{%=result.media.name%}">
+				<input type="hidden" class="artist" value="{%=result.artist.name%}">
+				<input type="hidden" class="release" value="{%=result.name%}">
+
+				<h5><a href="http://musicbrainz.org/recording/{%=result.media.mb_id%}">{%=result.media.name%}</a> by <a href="http://musicbrainz.org/artist/{%=result.artist.mb_id%}">{%=result.artist.name%}</a></h5>
+	
+				<a href="http://musicbrainz.org/release/{%=result.mb_id%}">{%=result.name%}</a> 
+				<ul class="unstyled">
+					<li>{%=result.country%} - {%=result.releasedate%}</li>
+					<li>{%=result.label.name%} - {%=result.label.catalognumber%}</li>
+				</ul>
+
+		</div>
+
+		<div class="span3">
+
+			<img src="{%=result.relations.discogs_image%}" width="90" height="90" />
+
+		</div>
+	</div>
+	{% } %}
+	

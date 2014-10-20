@@ -1,0 +1,38 @@
+{% extends "groups/base_groups.html" %}
+
+
+{% block title %}{{ topic }}{% endblock %}
+{% block body_class %}{{ block.super }} topics topic_detail{% endblock %}
+
+
+{% block group_title %}/ {{ topic }}{% endblock %}
+
+
+{% block content %}
+  {% load markup %}
+
+  {{ topic.description|markdown }}
+  <p class="byline">
+    Posted by <a href="{{ topic.user.get_absolute_url }}">{{ topic.user }}</a> {{ topic.created|timesince }} ago.
+    {% if topic.user == user %}
+    <a class="edit" href="{{ topic.get_edit_url }}">Edit</a>
+    {% endif %}
+  </p>
+
+  <div class="list">
+    {% for message in topic.messages.all %}
+      <div class="item">
+        {{ message.message|markdown }}
+        <p class="byline">Posted by <a href="{{ message.user.get_absolute_url }}">{{ message.user.username }}</a> on {{ message.created|timesince }} ago.
+          {% if message.user == user %}<a class="edit" href="{{ message.get_edit_url }}">Edit</a>{% endif %}</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <form action="{% url groups:message_create group.slug, topic.id %}?next={{ request.path }}" method="post">{% csrf_token %}
+    <p>{{ message_form.message }}</p>
+    <p class="submit">
+      <button type="submit" name="post" value="Post">Post</button>
+    </p>
+  </form>
+{% endblock %}

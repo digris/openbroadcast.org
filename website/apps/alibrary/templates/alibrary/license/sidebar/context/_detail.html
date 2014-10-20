@@ -1,0 +1,25 @@
+{% load i18n guardian_tags activity_tags ctype %}
+
+
+<div class="menu-context">
+
+
+    <div class="action-group">
+        <ul class="unstyled">
+
+
+            {% if perms.alibrary.change_license and user.is_staff %}
+            <li class="link">
+                <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}" title="{% trans "Administration view" %}">
+                    <i class="icon icon-lock"></i>
+                    <span>{% trans "Administration view" %}</span>
+                </a>
+            </li>
+            {% endif %}
+
+
+        </ul>
+    </div>
+
+
+</div>

@@ -1,0 +1,184 @@
+{% extends "layout_base.html" %}
+{% load spurl cache i18n truncate ctype cache activity_tags %}
+
+{% block heading %}
+<!-- heading / icon (large one) -->
+<div id="heading">
+	{% include "skeleton/heading.html" %}
+</div>
+<!-- heading / icon (large one) -->
+{% endblock %}
+
+{% block modnav %}
+<!-- start: intra-module navigation -->
+<div id="modnav">
+	{% include "skeleton/modnav.html" %}
+</div>
+<!-- end: intra-module navigation -->
+{% endblock %}
+
+{% block tagcloud %}
+
+{% include "alibrary/element/_tagcloud.html" %}
+
+{% endblock %}
+
+{% block searchbar %}
+{% comment %}
+<div class="searchbar">
+	<div class="tagbar">
+
+		{% include "alibrary/searchbar/_relation_filter.html" %}
+
+		{% include "alibrary/searchbar/_filterlist.html" %}
+
+		<div style="float: left;">
+			<input type="text" id="searchbar_input" name="searchbar_input" value="&lt; Search &gt;" class="blur" />
+		</div>
+
+		<div style="padding: 4px 3px 0px;" class="pull-right">
+			{% if request.path != request.get_full_path %}
+			<a class="pull-right clear-search" href="{{ request.path }}" title="{% trans "Clear Search" %}"> <img class="search_clear" src="/static/img/prototype/i_clearsearch.png" alt="Clear search" /> </a>
+			{% endif %}
+		</div>
+
+		<div class="clear"></div>
+	</div>
+</div>
+
+<div id="autocomplete_holder" class="autocomplete holder"></div>
+{% endcomment %}
+{% endblock %}
+
+{% block inner %}
+
+<div class="listhead">
+	<div style="float: right;">
+		{% include "element/_pagination.html" %}
+	</div>
+</div>
+<!-- end: listing header / paginator -->
+
+<!-- start: listing output -->
+<div class="listview container actions {{ list_style }}">
+
+	<table class="table table-condensed striped action">
+
+		<tbody>
+
+			{% for action in action_list %}
+			<tr>
+				<td>
+                    {% if action.target %}
+                        {% if action.target.classname == 'Media' %}
+                            Track
+                        {% else %}
+                             {{  action.target|ct_name_by_object|title }}
+                        {% endif %}
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                    <td>
+
+
+                    {% if action.actor %}
+
+                        {% if action.actor == user and 1 == 2 %}
+                        {% trans "You" %}
+                        {% else %}
+                        <a href="{{ action.actor.get_profile.get_absolute_url }}">{% firstof action.actor.get_full_name action.actor %}</a>
+                        {% endif %}
+
+                    {% endif %}
+
+                    {{ action.verb }}
+
+                    {% if action.target %}
+                        {% if action.target.username %}
+                            <a href="{{ action.target.get_absolute_url }}">"{% firstof action.target.get_full_name|truncate_chars_inner:60 action.target.username|truncate_chars_inner:60 %}"</a>
+                        {% else %}
+                            <a href="{{ action.target.get_absolute_url }}">"{{ action.target.name|truncate_chars_inner:60 }}"</a>
+                        {% endif %}
+                    {% endif %}
+				</td>
+
+				<td>
+                    {% comment %}<span class="pull-right">{{ action.timestamp|timesince }} {% trans "ago" %}</span>{% endcomment %}
+                    <span class="pull-right">{{ action.timestamp }} {% trans "ago" %}</span>
+                </td>
+			</tr>
+
+			{% endfor %}
+
+		</tbody>
+	</table>
+
+</div>
+
+<!-- start: listing footer -->
+<div class="listview footer">
+	<div class="right ipp">
+
+		<ul class="unstyled horizontal">
+			{% spurl base=request.get_full_path active_query="ipp=30" as is_active %}
+			<li>
+				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=30" %}">30</a>
+			</li>
+			{% spurl base=request.get_full_path active_query="ipp=60" as is_active %}
+			<li>
+				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=60" %}">60</a>
+			</li>
+			{% spurl base=request.get_full_path active_query="ipp=120" as is_active %}
+			<li>
+				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=120" %}">120</a>
+			</li>
+		</ul>
+
+	</div>
+
+	<div class="clear">
+		&nbsp;
+	</div>
+</div>
+<!-- end: listing footer -->
+
+{% endblock %}
+
+{% block sidebar %}
+{% comment %}
+<ul class="unstyled">
+
+	<p>
+		Your last actions:
+	</p>
+	{% for action in user_stream %}
+	<li>
+
+		{# display_timestamped_action action #}
+
+
+		<!---->
+		{% trans "You" %}
+		{{ action.verb }}
+		{% if action.action_object %}
+		<a href="{{ action.action_object.get_absolute_url }}">{{ action.action_object }}</a>
+		{% else %}
+		<a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
+		{% endif %}
+
+
+	</li>
+	{% endfor%}
+</ul>
+{% endcomment %}
+{# include "actstream/action/sidebar/_list.html" #}
+
+<div class="filter_context">
+	{% for item in filter.filterlist %}
+	{% include "actstream/element/_filterbox.html" %}
+	{% endfor %}
+	<div class="boxend"></div>
+</div>
+
+{% endblock %}
+

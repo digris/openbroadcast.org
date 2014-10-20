@@ -1,0 +1,8 @@
+{% for daypart in available_dayparts %}
+    {% ifchanged daypart.day %}
+        {% if not forloop.first %}</ul>{% endif %}
+        <ul class="unstyled"><li class="heading">{{ daypart.get_day_display }}</li>
+    {% endifchanged %}
+	<li class="daypart{%  if daypart in object_dayparts %} selected{% endif %}"><a href="#" title="{{ daypart.time_start|date:"H:i" }} - {{ daypart.time_end|date:"H:i"  }}"></a></li>
+    {% if forloop.last %}</ul>{% endif %}
+{% endfor %}

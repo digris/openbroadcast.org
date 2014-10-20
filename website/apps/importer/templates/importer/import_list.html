@@ -1,0 +1,228 @@
+{% extends "base/listing.html" %}
+
+{% load i18n webdesign sekizai_tags istats_tags %}
+
+{% block object_type %}import{% endblock %}
+
+
+{% block heading %} <!-- heading / icon (large one) -->
+    {% addtoblock "js-post" %}{% istats_scripts %}{% endaddtoblock %}
+
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+
+{% endblock %}
+
+
+{% block pre_list %}
+<section>
+	
+	<div class="page-header">
+		<h2>{% trans "Uploads" %} <small></small></h2>
+	</div>
+	<div>
+		<p>{% lorem 40 w %}.</p>
+		<p>{% lorem 9 w %}.</p>
+	</div>
+	
+	<div>
+		<a class="btn btn-primary btn" href="{% url importer-import-create %}">
+			<i class="icon-cloud-upload icon-white"></i>
+			<span> {% trans "Start Uploading" %}</span>
+		</a>
+	</div>
+	
+	
+</section>
+{% endblock %}
+
+{% block list_inner %}
+
+<table class="table table-condensed table-striped">
+	
+	<!--
+	<caption>
+		{% trans "Your Imports" %}
+	</caption>
+	-->
+
+	<thead>
+		<tr>
+			<th>{% trans "Status" %}</th>
+			<th>{% trans "Created" %}</th>
+			<th>{% trans "Notes" %}</th>
+			<!--<th>{% trans "Type" %}</th>-->
+			<th>{% trans "Stats" %}</th>
+			<th>{% trans "Actions" %}</th>
+		</tr>
+	</thead>
+
+	<tbody>
+
+		{% for object in object_list %}
+		<tr class="item {{ object.get_status_display|lower }}">
+			<td>
+
+				{% if object.status == 0 %}
+				<i class="icon-time" title="{{ object.get_status_display }}"></i>
+				{% endif %}
+
+				{% if object.status == 1 %}
+				<i class="icon-ok-sign" title="{{ object.get_status_display }}"></i>
+				{% endif %}
+
+				{% if object.status == 2 %}
+				<i class="icon-check" title="{{ object.get_status_display }}"></i>
+				{% endif %}
+
+				{% if object.status == 3 %}
+				<i class="icon-retweet" title="{{ object.get_status_display }}"></i>
+				{% endif %}
+
+				{% if object.status == 99 %}
+				<i class="icon-remove" title="{{ object.get_status_display }}"></i>
+				{% endif %}
+				
+				{# object.get_status_display #}
+				
+			</td>
+			
+			<td>
+                <a href="{{ object.get_absolute_url }}" title="{{ object.notes }}">
+                {{ object.created|date:'SHORT_DATETIME_FORMAT' }}
+                </a>
+			</td>
+
+            <td>
+                {% if  object.notes %}
+                {{ object.notes|truncatechars:64 }}
+                {% endif %}
+            </td>
+			
+			<!--
+			<td>{{ object.get_type_display }}</td>
+			-->
+			
+			<td>
+				
+				{% with stats=object.get_stats %}
+				
+				
+				<ul class="unstyled horizontal">
+					
+					<li style="width: 124px;">
+						{% trans "Total Files" %}: {{ object.files.count }} 
+					</li>
+					
+					{% if stats.ready.count > 0 %}
+					<li style="width: 44px;" rel="tooltip" class="tooltipable" title="{{ stats.ready.count }} {% trans "files ready for import" %}" >
+						<i class="icon-thumbs-up"></i> 
+						{{ stats.ready.count }}
+					</li>
+					{% endif %}
+					
+					{% if stats.done.count > 0 %}
+					<li style="width: 44px;" rel="tooltip" class="tooltipable" title="{{ stats.done.count }} {% trans "files completed" %}" >
+						<i class="icon-ok-sign"></i> 
+						{{ stats.done.count }}
+					</li>
+					{% endif %}
+					
+					{% if stats.duplicate.count > 0 %}
+					<li style="width: 44px;" rel="tooltip" class="tooltipable" title="{{ stats.duplicate.count }} {% trans "duplicates" %}" >
+						<i class="icon-copy"></i> 
+						{{ stats.duplicate.count }}
+					</li>
+					{% endif %}
+					
+					{% if stats.queued.count > 0 %}
+					<li style="width: 44px;" rel="tooltip" class="tooltipable" title="{{ stats.queued.count }} {% trans "in queue" %}" >
+						<i class="icon-tasks"></i> 
+						{{ stats.queued.count }}
+					</li>
+					{% endif %}
+					
+					{% if stats.error.count > 0 %}
+					<li style="width: 44px;" rel="tooltip" class="tooltipable" title="{{ stats.error.count }} {% trans "files with errors" %}" >
+						<i class="icon-thumbs-down"></i> 
+						{{ stats.error.count }}
+					</li>
+					{% endif %}
+
+				</ul>
+				
+				{% endwith %}
+				
+				<!--
+				<span>{% trans "Imported" %}</span>
+				<span>17</span>
+				<span>{% trans "Errors" %}</span>
+				<span>17</span>
+				-->
+			</td>
+			
+			<td class="">
+				
+			<div class="btn-group pull-right">
+				<button class="btn btn-mini btn-prrimary" data-toggle="dropdown">
+					{% trans "Actions" %}
+				</button>
+				<button class="btn btn-mini  btn-prrimary dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li>
+						<a href="{{ object.get_absolute_url }}"><i class="icon-edit"></i> {% trans "Details" %}</a>
+					</li>
+					<li>
+						<a href="#"><i class="icon-cloud-upload"></i> {% trans "Archive" %}</a>
+					</li>
+					<li>
+						<a class="transform-post reload" href="{{ object.get_delete_url }}"><i class="icon-trash"></i> {% trans "Delete" %}</a>
+					</li>
+					<!---->
+					<li class="divider"></li>
+                    <li>
+                        <span>&nbsp;{% trans "Created items"  %}</span>
+                    </li>
+					<li>
+						<a href="{% url alibrary-release-list %}?import={{ object.pk }}">{% trans "Releases"  %}</a>
+					</li>
+					<li>
+						<a href="{% url alibrary-artist-list %}?import={{ object.pk }}">{% trans "Artists"  %}</a>
+					</li>
+					<li>
+						<a href="{% url alibrary-media-list %}?import={{ object.pk }}">{% trans "Tracks"  %}</a>
+					</li>
+					<li>
+						<a href="{% url alibrary-label-list %}?import={{ object.pk }}">{% trans "Labels"  %}</a>
+					</li>
+
+				</ul>
+			</div>
+			</td>
+			
+			
+		</tr>
+		{% endfor %}
+
+	</tbody>
+
+</table>
+
+
+
+
+    <div>
+        <form action="{% url importer-import-delete-all %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-mini pull-right">{% trans "Clear all imports" %}</button>
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+{% include "importer/_import_list_sidebar.html" %}
+{% endblock %}

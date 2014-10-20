@@ -1,0 +1,29 @@
+<div class="summary item criteria duration {% if durations.error %}warning{% else %}success{% endif %}">
+    <span class="title">
+        {% if durations.error %}
+            <i class="icon-warning-sign"></i>
+        {% else %}
+            <i class="icon-check-sign"></i>
+        {% endif %}
+        Duration
+    </span>
+
+    {% if durations.error %}
+    <div class="row-fluid information">
+        <div class="span12">
+            <p>{{ durations.error }}</p>
+            <dl class="dl-horizontal">
+                <dt>Target</dt>
+                <dd>{{ durations.target|ms2time }}</dd>
+
+                <dt>Total</dt>
+                <dd>{{ durations.total|ms2time }}</dd>
+
+                <dt class="mark">Difference</dt>
+                <dd class="mark">{{ durations.difference|ms2time }}</dd>
+            </dl>
+        </div>
+    </div>
+    {% endif %}
+
+</div>

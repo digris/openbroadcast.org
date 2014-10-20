@@ -1,0 +1,206 @@
+{% extends "layout_edit.html" %}
+
+{% load i18n sekizai_tags verbatim dajaxice_templatetags straight_include mustache %}
+
+{% block object_type %}import{% endblock %}
+
+
+{% block heading %} <!-- heading / icon (large one) -->
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/tmpl.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.iframe-transport.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload-fp.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload-ui.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/locale.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/main.js"></script>{% endaddtoblock %}
+<div id="heading">
+	{% include "skeleton/heading.html" %}
+</div>
+<!-- heading / icon (large one) -->
+{% endblock %}
+
+{% block modnav %} <!-- start: intra-module navigation -->
+<div id="modnav">
+	{% include "skeleton/modnav.html" %}
+</div>
+<!-- end: intra-module navigation -->
+{% endblock %}
+
+{% block inner %}
+<div class="item_detail" style="">
+
+	<section>
+		<div class="row">
+			<div>&nbsp;</div>
+		</div>
+	</section>
+
+	<div class="clear"></div>
+
+</div>
+{% endblock %}
+
+
+{% block sidebar %}
+<div id="menu_context" class="menu_context">
+	<div class="set">
+		<ul class="unstyled">
+			
+			<li class="link ">
+				<span class="left icon"> <a href="{% url importer-import-list %}" title="{% trans "Back to Detail-View" %}">{% trans "Back to Imports" %}</a> </span>
+				<span class="opt"></span>
+				<span class="clear"></span>
+			</li>
+
+
+		</ul>
+	</div>
+</div>
+{% endblock %}
+
+
+{% block form %}
+
+{% addtoblock "js-head" %}
+<script type="text/javascript">
+	IMPORTFILE_API = "{% url api_dispatch_list api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}";
+	{% if data %}
+	app = {loaded: true};
+	{% endif %}
+</script>
+{% endaddtoblock %}
+
+
+{% addtoblock "js-post" %}<!--{% dajaxice_js_import %}-->{% endaddtoblock %}
+{% addtoblock "js-post" %}<!--<script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>-->{% endaddtoblock %}
+
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/base.js"></script>{% endaddtoblock %}
+
+
+
+{% addtoblock "css" %}<link rel="stylesheet" href="{{ STATIC_URL }}css/lib/multiuploader/jquery.fileupload-ui.css">{% endaddtoblock %}
+
+{% addtoblock "js-post" %}
+    <script type="text/html" id="tweetTemplate">
+      {% straight_include "importer/tweetTemplate.mustache" %}
+    </script>
+
+    <script type="text/html" id="listApp">
+      {% straight_include "importer/listApp.mustache" %}
+    </script>
+
+    <script type="text/html" id="detailApp">
+      {% straight_include "importer/detailApp.mustache" %}
+    </script>
+{% endaddtoblock %}
+
+{% addtoblock "js-post" %}
+<script type="text/javascript">
+
+$(document).ready(function() {
+	
+	
+	$(function () {
+
+		importer.ui = new ImporterUi();
+		importer.ui.api_url = "{% url api_dispatch_list resource_name='import' api_name='v1'%}{{ object.id }}";
+		importer.ui.fileupload_id = 'fileupload';
+		importer.ui.fileupload_options = {
+	        maxFileSize: 1000000000, // 1000 MB
+	        minFileSize: 200000,
+	        acceptFileTypes: /(\.|\/)(mp3|aif?f|wav|avi|flac|mp4|ogg|jpe?g)$/i,
+	        limitConcurrentUploads: 10
+	   };
+	   
+	   importer.ui.init();
+	
+
+	
+	});
+});
+</script>
+{% endaddtoblock %}
+
+
+<div class="item_inner">
+
+<section>
+	
+	<div class="page-header">
+		<h2>{% trans "Upload" %} <small>{% trans "Add/Upload Files to the Import Queue" %}</small></h2>
+	</div>
+	<div>
+		<p>{% trans "Either use the 'Add Files' button - or Drag and Drop the desired fils into the browser window." %}</p>
+	</div>
+
+	<div class="uploader">
+		
+		<form id="fileupload" action="{% url api_dispatch_list api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}" method="POST" enctype="multipart/form-data">
+    
+	        <input type="hidden" id="import_api_url"  value="{% url api_dispatch_list resource_name='import' api_name='v1'%}{{ object.id }}" />
+	        
+	        <div class="fileupload-buttonbar">
+
+	                <span class="btn btn-success fileinput-button">
+	                    <i class="icon-plus icon-white"></i>
+	                    <span> Add Files</span>
+	                    <input type="file" name="files[]" multiple>
+	                </span>&nbsp;&nbsp;
+	                <button type="submit" class="btn btn-primary start">
+	                    <i class="icon-upload icon-white"></i>
+	                    <span> Start upload</span>
+	                </button>&nbsp;&nbsp;
+
+	        </div>
+
+	        <table role="presentation" class="table table-striped table-condensed"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+	    </form>
+    </div>
+
+</section>
+
+<section class="importer-importfiles">
+	
+	<div class="page-header">
+		<h2>Review <small>your uploads and confirm additions</small></h2>
+	</div>
+
+	<div class="listing">
+		<div id="result_holder"></div>
+    </div>
+
+</section>
+
+</div>
+
+<script id="template-upload" type="text/x-tmpl">
+{% straight_include "importer/template-upload.html" %}
+</script>
+
+<!-- Not used a.t.m. -->
+<script id="template-download" type="text/x-tmpl">
+{% straight_include "importer/template-download.html" %}
+</script>
+
+<!-- The template to handle the ImportFiles -->
+<script id="template-import" type="text/x-tmpl">
+{% straight_include "importer/template-import.html" %}
+</script>
+
+<!-- The template to handle the musicbrainz results -->
+<script id="template-result-musicbrainz" type="text/x-tmpl">
+{% straight_include "importer/template-result-musicbrainz.html" %}
+</script>
+
+<script id="template-result-imported" type="text/x-tmpl">
+{% straight_include "importer/template-result-imported.html" %}
+</script>
+
+
+{% endblock %}
+
+{% block form_sidebar %}
+<div class="sidebar form-sidebar holder">
+	{% include "importer/form_import/_form_sidebar.html" %}
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+div.stepguide
+
+  &.guide
+    //background: red
+
+    h1
+      margin-bottom: 10px !important
+
+
+    .summary, .description
+      padding: 8px 0
+
+    .item.step
+      margin: 20px 0 40px
+      padding: 10px 0
+      //background: green
+
+      border-top: 2px solid #efefef
+
+
+      .image, .video
+        -moz-box-shadow: 2px 2px 6px 2px #ddd
+        -webkit-box-shadow: 2px 2px 6px 2px #ddd
+        box-shadow: 2px 2px 6px 2px #ddd
+        margin-bottom: 12px
+        > img
+        > .caption
+          background: #333
+          color: #eee
+          text-align: right
+          padding-right: 10px
+
+      .video
+        background: black
+
+
+      .hint
+        padding: 10px
+        margin-top: 20px
+
+        &.hint-info
+          border-left: 8px solid $main-a
+          background: $successBackground
+
+        &.hint-warning
+          border-left: 8px solid $yellow
+          background: $warningBackground
+
+        &.hint-critical
+          border-left: 8px solid $errorText
+          background: $errorBackground
+
+        &.hint-critical
+          border-left: 8px solid $red
+          background: $errorText
+          color: white
+          text-transform: uppercase

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px" height="1024px"
+	 viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
+	<g i:extraneous="self">
+		<g>
+			<path 
+				fill="#231F20" 
+				d="M1 452q-1 21 7.5 37.5t24.5 30.5q-9 15 -10 31.5t3.5 31.5t14 26.5t21.5 17.5q-6 34 6 58t35.5 38.5t56.5 20.5t69 6t72.5 -5t67.5 -14q20 -6 39 -14t38.5 -15t41 -10.5t45.5 0.5q-2 -39 -2.5 -85.5t1 -94t4 -92.5t7.5 -82q-22 -10 -35.5 -19.5t-24 -21t-22.5 -26 t-31 -33.5q-15 -17 -27.5 -27.5t-23 -20t-19.5 -19.5t-18 -26q-16 -29 -20.5 -65t-13.5 -68q0 -8 -7 -11q-20 -3 -35.5 3.5t-27.5 17.5t-19.5 25.5t-10.5 28.5q-6 33 1.5 59.5t19 50.5t22 47t11.5 48q-21 9 -51.5 9t-63.5 -1.5t-63.5 -1.5t-52 8.5t-29 29t5.5 59.5 q1 1 3.5 5.5t5 8.5t3.5 8l2 3q-11 11 -16 23t-5 20zM568 630q1 54 5 94q18 2 42 2.5t49.5 0t50 -1.5t44.5 -1q10 -38 16 -89t7.5 -106.5t-2 -112t-12.5 -105.5q-45 -3 -93.5 -3t-90.5 10q-6 38 -10 91t-5.5 110t-0.5 111zM617 650q0 -16 11 -27t27 -11q15 0 26 11t11 27 q0 15 -11 26t-26 11q-16 0 -27 -11t-11 -26z"/>
+
+		</g>
+	</g>
+
+</svg>
+

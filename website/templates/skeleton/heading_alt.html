@@ -1,0 +1,36 @@
+{% load cms_tags %}
+
+
+<div class="heading-container">
+
+    <div class="page-title">
+
+        <h1>
+
+
+            <div>open</div>
+            <div>broadcast<span class="extra">
+                –
+            {% if page_title %}
+                {{ page_title }}
+            {% else %}
+                {% page_attribute "page_title" %}
+            {% endif %}</span>
+            </div>
+        </h1>
+
+    </div>
+
+    <div class="global-search">
+        &nbsp;
+        {% comment %}
+        <form method="get" action="/search/" class="autocomplete-me">
+            <input type="text" id="id_q" name="q" autocomplete="off" placeholder="Global Search">
+            <input type="submit" value="Search!">
+        </form>
+        {% endcomment %}
+    </div>
+
+    <div class="clear"></div>
+
+</div>

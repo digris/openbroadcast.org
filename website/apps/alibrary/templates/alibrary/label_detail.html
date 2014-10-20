@@ -1,0 +1,252 @@
+{% extends "layout_base.html" %}
+
+{% load truncate i18n thumbnail arating_tags wiki_tags sekizai_tags alibrary_tags url_tags spurl %}
+
+{% block heading %}
+    <!-- view specific scripts -->
+
+
+    {% addtoblock "js-post" %}
+        <script type="text/javascript" src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
+
+    {% addtoblock "js-post" %}
+        <script>
+            var exporter = exporter || {};
+            $(function () {
+                exporter = new ExporterApp();
+                exporter.api_url = '{% url api_dispatch_list resource_name='export' api_name='v1'%}';
+                exporter.init();
+            });
+        </script>
+    {% endaddtoblock %}
+
+    <!-- heading / icon (large one) -->
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+    <!-- heading / icon (large one) -->
+{% endblock %}
+
+{% block modnav %} <!-- start: intra-module navigation -->
+<div id="modnav">
+	{% include "skeleton/modnav.html" %}
+</div>
+<!-- end: intra-module navigation -->
+{% endblock %}
+
+{% block inner %}
+<div class="item_detail" style="">
+
+	<section class="shaded">
+		<div class="row iteminfo release">
+			{% include "alibrary/label/_detail_info.html" %}
+		</div>
+	</section>
+
+	<div class="item_menu" id="item_menu">
+		<ul class="nav nav-tabs">
+			<li class="active">
+				<a href="#overview" data-toggle="tab">{% trans "Overview" %}</a>
+			</li>
+            {% if object.description %}
+                <li>
+                    <a href="#description" data-toggle="tab">{% trans "Description" %}</a>
+                </li>
+            {% endif %}
+            {% if object.distributors.count > 0 %}
+			<li>
+				<a href="#distribution" data-toggle="tab">{% trans "Distribution" %}</a>
+			</li>
+            {% endif %}
+			<li>
+				<a href="#history" data-toggle="tab">{% trans "Edit History" %}</a>
+			</li>
+		</ul>
+	</div>
+
+	<div class="clear"></div>
+
+	<section class="tabbed item_inner">
+
+		<div class="tab-content">
+
+			<div class="tab-pane active" id="overview" class="topflop">
+
+
+                {% comment %}
+				<section class="description">
+					<h2>{% trans "Label description" %}</h2>
+					<div class="description markdown padded-h">
+						{% wikify object.description %}
+					</div>
+			
+				</section>
+			    {% endcomment %}
+
+
+                <section class="top">
+                    {% url alibrary-release-list as release_list %}
+
+                    <h2>
+                        {% trans "Releases" %}
+                                    <span class="pull-right">
+                                        <a href="{% spurl path=release_list query="label={{ object.slug }}" %}">
+                                            <i class="icon-chevron-sign-right"></i>
+                                            {% trans "Show all" %} {{ object.release_label.count }} {% trans "releases on" %} {{ object.name }}
+                                        </a>
+                                    </span>
+                    </h2>
+
+                    <div class="listview container releases inner l">
+
+                        <div class="list_header"></div>
+
+                        <div class="list_body">
+
+                            {% for item in releases %}
+                                {% include "alibrary/release/list_item_l.html" %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </section>
+
+			</div>
+
+
+
+            <div class="tab-pane" id="description">
+
+                <section class="description">
+
+                    <h2>{% trans "Label description" %}</h2>
+
+                    <div class="description markdown padded-h">
+                        {% wikify object.description %}
+                    </div>
+                </section>
+
+            </div>
+
+			<div class="tab-pane" id="history">
+
+				<section class="history">
+
+					<h2>{% trans "Edit history" %}</h2>
+
+					{% include "alibrary/element/_object_history.html" %}
+				</section>
+
+			</div>
+
+			<div class="tab-pane" id="distribution">
+
+				<section class="distribution">
+
+					<h2>{% trans "Distribution" %}</h2>
+
+
+
+                    {% for dl in object.distributorlabel_set.all %}
+
+                    <h4>{{ dl.distributor }}</h4>
+
+
+                    {% if dl.distributor.address %}
+                    <dt>
+                        {% trans "Address" %}:
+                    </dt>
+                    <dd>
+                        <ul class="unstyled">
+                            {% if dl.distributor.address %}
+                            <li>{{ dl.distributor.address|linebreaksbr }}</li>
+                            {% endif %}
+                            {% if dl.distributor.country %}
+                            <li>{{ dl.distributor.country }}</li>
+                            {% endif %}
+                            {% if dl.distributor.phone %}
+                            <li>P: {{ dl.distributor.phone }}</li>
+                            {% endif %}
+                            {% if dl.distributor.fax %}
+                            <li>F: {{ dl.distributor.fax }}</li>
+                            {% endif %}
+                            {% if dl.distributor.email %}
+                            <li>{{ dl.distributor.email }}</li>
+                            {% endif %}
+                        </ul>
+                    </dd>
+                    {% endif %}
+
+                    <dt>
+                        {% trans "Countries" %}:
+                    </dt>
+                    <dd>
+                        <ul class="unstyled horizontal_">
+                            {% for country in dl.countries.all %}<li>{{ country }}{% if not forloop.last %}, {% endif %} &nbsp;</li>{% endfor %}
+                        </ul>
+                    </dd>
+
+
+                    <div class="clear"></div>
+                    <br>
+                    <br>
+
+                    {% endfor %}
+
+
+				</section>
+
+			</div>
+
+			
+		</div>
+
+	</section>
+
+	<section class="comments on-site">
+		{% include "element/chat/_object_comments.html" %}
+	</section>
+
+	
+
+	
+	
+	
+	
+	
+	
+	
+
+
+</div>
+
+{% endblock %}
+
+
+
+
+{% block sidebar %}
+
+    {% include "alibrary/label/sidebar/_detail.html" %}
+
+    <div class="listing relations" style="padding-top: 8px;">
+
+        <div class="page-header">
+            <h2>{% trans "Show/share on" %}
+                <small>{% trans "external links" %}</small>
+            </h2>
+
+            <div class="item social">
+                <div class="fb-like" data-href="{% fullurl %}" data-width="200" data-layout="button_count"
+                     data-show-faces="false" data-send="true"></div>
+            </div>
+
+        </div>
+
+        <div class="item relations">
+            {% all_relations_inline object %}
+        </div>
+
+    </div>
+
+{% endblock %}

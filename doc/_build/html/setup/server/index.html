@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. Server setup &mdash; obp 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="obp 0.0.1 documentation" href="../../index.html" />
+    <link rel="next" title="2.1. Overview" href="overview.html" />
+    <link rel="prev" title="1. Playout [a.k.a. pypo]" href="../../services/playout/installation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="overview.html" title="2.1. Overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../services/playout/installation.html" title="1. Playout [a.k.a. pypo]"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">obp 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="server-setup">
+<h1>2. Server setup<a class="headerlink" href="#server-setup" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">2.1. Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#vz-node-post-install">2.1.1. vz node post-install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#vz-nodes-post-clone">2.1.2. vz nodes post-clone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#etc-hosts">2.1.3. /etc/hosts/</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#vz-host">2.1.4. vz host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#vz-nodes">2.1.5. vz nodes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appserver.html">2.2. App Server(s)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appserver.html#main-application-server">2.2.1. Main Application Server</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="messaging.html">2.3. Messaging Server(s)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="messaging.html#main-messaging-server">2.3.1. Main Messaging Server</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="streaming.html">2.4. Streaming Server(s)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="streaming.html#main-streaming-server">2.4.1. Main Streaming Server</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="playout.html">2.5. Playout Server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="playout.html#master-stream-generation">2.5.1. Master Stream-generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="playout.html#basic-setup">2.5.2. Basic Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="playout.html#installing-liquidsoap-from-source">2.5.3. Installing Liquidsoap [from source]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="playout.html#installing-pypo">2.5.4. Installing pypo</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../../services/playout/installation.html"
+                        title="previous chapter">1. Playout [a.k.a. pypo]</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="next chapter">2.1. Overview</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/setup/server/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="overview.html" title="2.1. Overview"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../services/playout/installation.html" title="1. Playout [a.k.a. pypo]"
+             >previous</a> |</li>
+        <li><a href="../../index.html">obp 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+    </div>
+  </body>
+</html>

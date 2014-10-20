@@ -1,0 +1,470 @@
+{% extends "layout_base.html" %}
+
+{% load truncate i18n thumbnail arating_tags wiki_tags disqus_tags comments atracker_tags sekizai_tags calc url_tags alibrary_tags video_tags %}
+
+{% block heading %} <!-- heading / icon (large one) -->
+
+    {% addtoblock "js-post" %}
+        <script src="{{ STATIC_URL }}alibrary/js/lib/raphael-min.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}
+        <script src="{{ STATIC_URL }}aplayer/js/detail.js"></script>{% endaddtoblock %}
+
+    <!-- statistic tools -->
+    {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/statistics.js"></script>{% endaddtoblock %}
+
+    <!-- jqplot - TODO: maybe move to include -->
+    {% addtoblock "js-uncompressed" %}<script src="{{ STATIC_URL }}js/lib/flot-0.8.3/jquery.flot.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-uncompressed" %}<script src="{{ STATIC_URL }}js/lib/flot-0.8.3/jquery.flot.time.js"></script>{% endaddtoblock %}
+
+
+
+
+    {% addtoblock "js-post" %}
+        <script>
+            $(function () {
+
+                detail_player = new DetailPlayer;
+                detail_player.dom_id = 'aplayer_detail';
+                detail_player.api_url = '{{ object.get_api_url }}';
+
+                // passing permissions (only for display, handling of perms in api/views)
+                detail_player.perms = {
+                    'play': {% if perms.alibrary.play_media %}true{% else %}false{% endif %},
+                    'add': {% if user.is_authenticated %}true{% else %}false{% endif %}
+                }
+                detail_player.init();
+                window.detail_player = detail_player;
+
+                // initialize stats app
+                var stats = new StatisticApp;
+                stats.resource_uri = '{{ object.get_api_url }}';
+                // stats.dom_id = 'statistics_container'; // this is the default anyway
+
+                stats.init();
+
+                // trigger to actually _load_ the stats
+                $('a[data-toggle="tab"]').on('shown', function (e) {
+                    if($(e.target).attr('href') == '#statistics') {
+                        stats.show();
+                    }
+                })
+
+
+            });
+        </script>
+    {% endaddtoblock %}
+
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+    <!-- heading / icon (large one) -->
+{% endblock %}
+
+{% block modnav %} <!-- start: intra-module navigation -->
+    <div id="modnav">
+        {% include "skeleton/modnav.html" %}
+    </div>
+    <!-- end: intra-module navigation -->
+{% endblock %}
+
+{% block inner %}
+
+    <div class="item_detail" style="">
+
+    <section class="shaded">
+
+        <div class="row iteminfo release">
+            {% include "alibrary/media/_detail_info.html" %}
+        </div>
+
+        <div id="aplayer_detail" style="padding-left: 10px; margin-top: 10px;">
+            <p class="notice">{% trans "Loading player" %}</p>
+        </div>
+
+    </section>
+
+    <div class="item_menu" id="item_menu">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#overview_" data-toggle="tab">{% trans "Overview" %}</a>
+            </li>
+
+
+
+            {% if object.has_video %}
+                <li>
+                    <a href="#video" data-toggle="tab">{% trans "Video Clip" %}</a>
+                </li>
+            {% endif %}
+
+            {% if object.has_soundcloud %}
+                <li>
+                    <a href="#soundcloud" data-toggle="tab">{% trans "Soundcloud" %}</a>
+                </li>
+            {% endif %}
+
+            {% if object.appearances.count > 0 %}
+                <li>
+                    <a href="#appearance" data-toggle="tab">{% trans "Appearance" %}
+                        {% comment %}({{ object.appearances.count }}){% endcomment %}</a>
+                </li>
+            {% endif %}
+
+            {% if object.lyrics %}
+                <li>
+                    <a href="#lyrics" data-toggle="tab">{% trans "Lyrics" %}</a>
+                </li>
+            {% endif %}
+            <li>
+                <a href="#history" data-toggle="tab">{% trans "Edit History" %}</a>
+            </li>
+            <li>
+                <a href="#statistics" data-toggle="tab">{% trans "Statistics" %}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="clear"></div>
+
+    <section class="tabbed item_inner">
+
+    <div class="tab-content">
+
+    <div class="tab-pane active" id="overview_">
+
+        <section class="media">
+
+            <!--
+                        <h2>{% trans "Track" %}</h2>
+
+
+                        <div id="aplayer_detail__" style="background: white;">
+                            {% trans "Loading player" %}
+                        </div>
+                        -->
+
+            <!--
+                        <div id="waveform" style="background: #a5a5a5; width: 100%; height: 50px;">
+                            <img src="{{ object.get_waveform_url }}" style="height: 50px; width: 100%;"></img>
+                        </div>
+                        -->
+
+        </section>
+
+        {% if object.description %}
+            <section class="description">
+                <h2>{% trans "Track description" %}</h2>
+
+                <div class="description markdown padded-h">
+                    {% wikify object.description %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% if object.extraartist_media.count > 0 %}
+        <section>
+
+
+            <h2 style="margin-top: 20px;">{% trans "Credits & Credited Artists" %}</h2>
+
+
+            <ul class="__horizontal unstyled small">
+                {% for ea in object.extraartist_media.all %}
+                    <li>
+                        <a href="{{ ea.artist.get_absolute_url }}">{{ ea.artist.name }}</a>
+                        {% if ea.profession.name %}
+                        <small>[{{ ea.profession.name }}]</small>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+
+        </section>
+        {% endif %}
+
+
+        {% if object.echonest_id %}
+            <section class="analyse">
+                <h2>{% trans "Track analysis" %}</h2>
+
+                <table class=" table-condensed" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th>{% trans "Tempo" %} [BPM]</th>
+                        <th>{% trans "Loudness" %}</th>
+                        <th>{% trans "Key" %}</th>
+
+                        <th>{% trans "Danceability" %}</th>
+                        <th>{% trans "Energy" %}</th>
+                        <th>{% trans "Liveness" %}</th>
+                        <th>{% trans "Speechiness" %}</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="value">{{ object.tempo }}</td>
+                        <td class="value">{{ object.loudness }}</td>
+                        <td class="value">{{ object.key }}</td>
+
+                        <td class="bar">
+                            {% if object.danceability %}
+                                <div class="holder">
+                                    <div class="indicator" style="width: {{ object.danceability|multiply:100 }}%">
+                                        <span>{{ object.danceability|multiply:100|roundint }}%</span>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <span class="na">-</span>
+                            {% endif %}
+                        </td>
+
+                        <td class="bar">
+                            {% if object.energy %}
+                                <div class="holder">
+                                    <div class="indicator" style="width: {{ object.energy|multiply:100 }}%">
+                                        <span>{{ object.energy|multiply:100|roundint }}%</span>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <span class="na">-</span>
+                            {% endif %}
+                        </td>
+
+                        <td class="bar">
+                            {% if object.liveness %}
+                                <div class="holder">
+                                    <div class="indicator" style="width: {{ object.liveness|multiply:100 }}%">
+                                        <span>{{ object.liveness|multiply:100|roundint }}%</span>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <span class="na">-</span>
+                            {% endif %}
+                        </td>
+
+                        <td class="bar">
+                            {% if object.speechiness %}
+                                <div class="holder">
+                                    <div class="indicator" style="width: {{ object.speechiness|multiply:100 }}%">
+                                        <span>{{ object.speechiness|multiply:100|roundint }}%</span>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <span class="na">-</span>
+                            {% endif %}
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </section>
+        {% endif %}
+
+
+
+        <section class="file-properties">
+            <h2>{% trans "Audio Properties" %}</h2>
+
+
+            <table class=" table-condensed" style="width: 100%;">
+                <thead>
+                <tr>
+                    <th>{% trans "Format" %}</th>
+                    <th>{% trans "Filesize" %}</th>
+                    <th>{% trans "Samplerate" %}</th>
+                    <th>{% trans "Bitrate" %}</th>
+                    <th>{% trans "Filename" %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="value">{{ object.base_format|upper }}</td>
+                    <td class="value">{{ object.base_filesize|filesizeformat }}</td>
+                    <td class="value">{{ object.base_samplerate }}</td>
+                    <td class="value">{{ object.base_bitrate }}</td>
+                    <td class="value">{% if object.original_filename %}{{ object.original_filename }}{% endif %}</td>
+                </tr>
+                </tbody>
+            </table>
+
+
+        </section>
+
+
+    </div>
+
+    <div class="tab-pane" id="appearance">
+
+        <section class="appearance">
+
+            <h2>{% trans "Playlists using this track" %}</h2>
+
+            <div class="listview container playlist s">
+
+                <div class="list_body">
+
+                    {% with highlight=object extended=1 %}
+                        {% for item in object.appearances %}
+                            {% include "alibrary/playlist/list_item_s.html" %}
+                        {% endfor %}
+                    {% endwith %}
+                </div>
+            </div>
+
+
+        </section>
+
+    </div>
+
+
+
+
+
+    {% if object.has_video %}
+        <div class="tab-pane" id="video">
+
+            <section class="video">
+
+                <h2>{% trans "Video Clip" %}</h2>
+
+                {% for video in object.get_videos %}
+                    {% video_by_url video %}
+                {% endfor %}
+
+            </section>
+
+        </div>
+    {% endif %}
+
+
+
+    {% if object.has_soundcloud %}
+        <div class="tab-pane" id="soundcloud">
+
+            <section class="soundcloud">
+
+                <h2>{% trans "Soundcloud" %}</h2>
+
+
+                <div id="soundcloud_player">{% trans "Loading track from soundcloud..." %}</div>
+
+                {% addtoblock "js-uncompressed" %}
+                <script>
+                    $.getJSON('http://soundcloud.com/oembed?callback=?',
+                        {
+                            format: 'js',
+                            url: '{{ object.get_soundcloud }}',
+                            iframe: true,
+                            color: '00bb00'
+                        },
+                        function(data) {
+                            $('#soundcloud_player').html(data['html'])
+                        }
+                    )
+                </script>
+                {% endaddtoblock %}
+
+
+            </section>
+
+        </div>
+    {% endif %}
+
+
+    {% if object.lyrics %}
+        <div class="tab-pane" id="lyrics">
+
+            <section class="lyrics">
+
+                <h2>{% trans "Lyrics" %}</h2>
+
+                {{ object.lyrics|linebreaks }}
+
+            </section>
+
+        </div>
+    {% endif %}
+
+
+    <div class="tab-pane" id="history">
+
+        <section class="history">
+
+            <h2>{% trans "Edit history" %}</h2>
+
+            {% include "alibrary/element/_object_history.html" %}
+        </section>
+
+    </div>
+
+    <div class="tab-pane" id="statistics">
+
+        <section class="statistics">
+
+            <h2>{% trans "Statistics" %}</h2>
+
+            <div id="statistics_container" style="min-height: 240px;">
+                <div class="message">{% trans "Loading statistics" %}</div>
+                <!-- dynamic content -->
+            </div>
+            <div class="choices-container">
+                <ul class="unstyled pull-right" id="plot_choices"></ul>
+            </div>
+
+
+            <h2 style="margin-top: 24px;">{% trans "Airplays" %}</h2>
+
+            {% events_for_object_by_verb object "playout" %}
+
+
+            {% comment %}{% events_for_object object %}{% endcomment %}
+
+        </section>
+
+
+    </div>
+
+    </div>
+
+    </section>
+
+
+    <section class="comments on-site">
+        {% include "element/chat/_object_comments.html" %}
+    </section>
+
+    <section class="comments disqus">
+        {# disqus_show_comments #}
+    </section>
+
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+
+    {% include "alibrary/media/sidebar/_detail.html" %}
+
+    <div class="listing relations" style="padding-top: 8px;">
+
+    <div class="page-header">
+        <h2>{% trans "Show/share on" %}
+            <small>{% trans "external links" %}</small>
+        </h2>
+
+        <div class="item social">
+            <div class="fb-like" data-href="{% fullurl %}" data-width="200" data-layout="button_count"
+                 data-show-faces="false" data-send="true"></div>
+        </div>
+
+    </div>
+
+    <div class="item relations">
+        {% relations_inline object %}
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,41 @@
+
+		<div class="summary item target-duration {% if durations.error %}warning{% else %}success{% endif %}">
+			<span class="title">
+                {% if durations.error %}
+                    <i class="icon-warning-sign"></i>
+                {% else %}
+                    <i class="icon-check-sign"></i>
+                {% endif %}
+
+                Target Duration
+            </span>
+			
+			{% if durations.error %}
+			<div class="row-fluid information">
+				<div class="span12">
+					<p>{{ durations.error }}</p>
+					<dl class="dl-horizontal">
+						<dt>Target</dt>
+						<dd>{{ durations.target|ms2time }}</dd>
+						
+						<dt>Total</dt>
+						<dd>{{ durations.total|ms2time }}</dd>
+						
+						<dt>Difference</dt>
+						<dd>{{ durations.difference|ms2time }}</dd>
+					</dl>
+				</div>
+			</div>
+			{% endif %}
+			
+		</div>
+	
+		
+		<div class="summary item dayparts">
+			<span class="title"><i class="icon-check-sign"></i> Broadcast Dayparts</span>
+			<div class="row-fluid information">
+				<div class="span12">
+					<p>Please specify the best Broadcast Dayparts</p>
+				</div>
+			</div>
+		</div>

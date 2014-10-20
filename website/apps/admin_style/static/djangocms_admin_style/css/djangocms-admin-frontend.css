@@ -1,0 +1,8 @@
+#header, .breadcrumbs {
+  display: none; }
+
+.login #header {
+  display: block; }
+
+#container {
+  padding-top: 40px; }

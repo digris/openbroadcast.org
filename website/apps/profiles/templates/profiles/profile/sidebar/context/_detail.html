@@ -1,0 +1,77 @@
+{% load i18n guardian_tags ctype activity_tags mentor_tags %}
+
+{% get_obj_perms request.user for object as "object_perms" %}
+
+
+
+
+<div class="menu-context">
+
+
+    <div class="action-group">
+        <ul class="unstyled">
+
+
+            {% if user == object.user %}
+            <li class="link">
+                <a class="hoverable" href="{{ object.get_edit_url }}" title="{% trans "Edit" %}">
+                    <i class="icon icon-edit"></i>
+                    <span>{% trans "Edit" %}</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if user.is_staff %}
+            <li class="link">
+                <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}" title="{% trans "Administration view" %}">
+                    <i class="icon icon-lock"></i>
+                    <span>{% trans "Administration view" %}</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if user.is_staff %}
+            <li class="link">
+                <a class="hoverable" href="{% url loginas-user-login object.user.pk %}" title="{% trans "Login as user" %}">
+                    <i class="icon icon-key"></i>
+                    <span>{% trans "Login as user" %}</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if user.is_authenticated and not user == object.user %}
+            <li class="link">
+                <a class="hoverable" href="{% url postman_write object.user.username %}" title="{% trans "Send Message" %}">
+                    <i class="icon icon-envelope"></i>
+                    <span>{% trans "Send Message" %}</span>
+                </a>
+            </li>
+            {% endif %}
+
+
+            {% if user.is_authenticated and not user == object.user %}
+                <li class="link">
+                    <a class="hoverable" href="{% follow_all_url object.user %}?next={{ request.get_full_path }}" title="{% trans "Follow/unfollow" %}">
+                    {% if request.user|is_following:object.user %}
+                        <i class="icon icon-unlink"></i>
+                        <span>{% trans "Stop following" %} {{ object.user|ct_name_by_object }}</span>
+                    {% else %}
+                        <i class="icon icon-link"></i>
+                        <span>{% trans "Follow" %} {{ object.user|ct_name_by_object }}</span>
+                    {% endif %}
+                </a>
+                </li>
+            {% endif %}
+
+
+
+            {% mentor_for_user object user %}
+
+
+
+        </ul>
+    </div>
+
+
+</div>
+

@@ -1,0 +1,82 @@
+{% extends "layout_base.html" %}
+{% load spurl cache i18n truncate cache %}
+
+
+{% block heading %}
+<div id="heading">
+	{% include "skeleton/heading.html" %}
+</div>
+{% endblock %}
+
+
+{% block modnav %}
+<div id="modnav">
+	{% include "skeleton/modnav.html" %}
+</div>
+{% endblock %}
+
+
+{% block tagcloud %}
+<!-- TODO: Modularize TagCloud -->
+{% endblock %}
+
+
+{% block searchbar %}
+<div class="searchbar">
+	{% if tagcloud %}
+	<div class="tagbar"></div>
+	{% endif %}
+</div>
+<div id="autocomplete_holder" class="autocomplete holder"></div>
+{% endblock %}
+
+
+{% block inner %}
+
+<div>
+	{% block pre_list %}{% endblock %}
+</div>
+
+
+
+<div class="listhead">
+	<div style="float: right;">
+		{% include "element/_pagination.html" %}
+	</div>
+</div>
+
+<div class="listview container {% block object_type %}{% endblock %} {{ list_style }}">
+	<div class="list_body">
+		{% block list_inner %}{% endblock %}
+	</div>
+</div>
+
+
+
+<div class="listview footer">
+	<div class="right ipp">
+		<ul class="unstyled horizontal">
+			{% spurl base=request.get_full_path active_query="ipp=12" as is_active %}
+			<li>
+				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=12" %}">12</a>
+			</li>
+			{% spurl base=request.get_full_path active_query="ipp=24" as is_active %}
+			<li>
+				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=24" %}">24</a>
+			</li>
+			{% spurl base=request.get_full_path active_query="ipp=36" as is_active %}
+			<li>
+				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=36" %}">36</a>
+			</li>
+		</ul>
+	</div>
+	<div class="clear">&nbsp;</div>
+</div>
+
+{% endblock %}
+
+
+{% block sidebar %}
+{# include "profiles/profile/sidebar/_list.html" #}
+{% endblock %}
+

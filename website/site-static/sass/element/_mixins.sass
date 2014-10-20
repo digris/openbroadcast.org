@@ -1,0 +1,67 @@
+/* mixins.sass */
+
+/* input fields */
+
+/* bordered input (4-color) */
+
+@mixin shaded_input
+  border-top: 1px solid #335533
+  border-right: 1px solid #553355
+  border-bottom: 1px solid #553355
+  border-left: 1px solid #333333
+  width: 100%
+  padding: 1px 1px 1px 2px
+  text-align: left
+  color: #5a5a5a
+  background-color: #ffffff
+
+
+/* external links | aka relations */
+@mixin link_external
+
+  float: left
+  margin-right: 4px
+  a
+    // added
+    float: left
+    margin-right: 4px
+    // end added
+    height: 16px
+    width: 16px
+    display: block
+    background-image: url(/static/img/base/listview.iconset.links_external.png)
+    &:hover
+      background-position: 0 -16px
+    /* individual links (icon sprite)
+    &.discogs
+      background-position: 0 0
+      &:hover
+        background-position: 0 16px
+    &.wikipedia
+      background-position: -16px 0
+      &:hover
+        background-position: -16px 16px
+    &.lastfm
+      background-position: -32px 0
+      &:hover
+        background-position: -32px 16px
+    &.musicbrainz
+      background-position: -48px 0
+      &:hover
+        background-position: -48px 16px
+    &.soundcloud
+      background-position: -64px 0
+      &:hover
+        background-position: -64px 16px
+    &.facebook
+      background-position: -80px 0
+      &:hover
+        background-position: -80px 16px
+    &.youtube
+      background-position: -96px 0
+      &:hover
+        background-position: -96px 16px
+    &.myspace
+      background-position: -112px 0
+      &:hover
+        background-position: -112px 16px

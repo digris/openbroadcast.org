@@ -1,0 +1,12 @@
+{% extends "shop/base.html" %}
+
+{% load i18n %}
+
+
+{% block body %}
+<h1>Pay - {% trans "Paypal" %}</h1>
+
+{# TODO: switch this to form.render #}
+{{ form.sandbox }}
+
+{% endblock %}

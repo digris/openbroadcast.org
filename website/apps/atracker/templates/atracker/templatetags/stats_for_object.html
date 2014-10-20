@@ -1,0 +1,21 @@
+{% load i18n %}
+{% for type in statistics %}
+<li>
+<span class="value">{{ type.count }}</span>
+<span class="label_">
+	{% if type.title == "download" %}
+		{% trans "Downloads" %}
+	{% else %}{% if type.title == "stream" %}
+		{% trans "Plays" %}
+	{% else %}{% if type.title == "playout" %}
+		{% trans "Airplays" %}
+	{% else %}
+	{{ type.title }}
+	{% endif %}{% endif %}{% endif %}
+    {% if not forloop.last %}
+    |&nbsp;
+    {% endif %}
+</span>
+
+</li>
+{% endfor %}

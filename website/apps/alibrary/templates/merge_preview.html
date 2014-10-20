@@ -1,0 +1,52 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Confirm Merger{% endblock %}
+{% block content %}
+<div class="span-24">
+<h2>Important!</h2>
+<p>Please select which record you would like to keep. The selected record's information will be used,
+and all related information from the other records will be moved to it. The other records will be deleted.
+If you are unsure how to use this, please contact your supervisor or COMS Support. Changes made here cannot
+be reversed.</p>
+<hr />
+<form method="POST" action=".">{% csrf_token %}
+<table class="admin small no_actions">
+    <thead>
+        <tr>
+            <th>&nbsp;</th>
+            {% for row in display_table.0 %}
+            <th>{{ row }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in display_table %}
+        {% if forloop.counter0 != 0 %}
+        <tr class="{% cycle '' 'clarify' %}">
+            {% for cell in row %}
+            {% if forloop.first %}
+            <td><input type="radio" name="master" value="{{ cell }}"></td>
+            {% else %}
+            <td>{{ cell }}</td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+
+
+{# Request variables from Django Admin's handling of actions. #}
+{% for id in ids %}
+<input type="hidden" name="_selected_action" value="{{ id }}">
+{% endfor %}
+<input type="hidden" name="action" value="merge_selected">
+<input type="hidden" name="return_url" value="{{ return_url }}">
+
+    <input type="hidden" name="post" value="yes" />
+    <input type="submit" value="OK Go for it" />
+ 
+    </form>
+{% endblock %}

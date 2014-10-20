@@ -1,0 +1,8 @@
+<div id="fb-root"></div>
+
+<form id="_fb_login" method="post" action="{% url facebook_login %}">
+{% csrf_token %}
+<input type="hidden" name="next" value="" id="_fb_next_url"/>
+<input type="hidden" name="access_token" id="_fb_access_token"/>
+<input type="hidden" name="expires_in" id="_fb_expires_in"/>
+</form>

@@ -1,0 +1,197 @@
+{% extends "abcast/base.html" %}
+
+{% load spurl i18n truncate sekizai_tags pushy_tags %}
+
+
+{# block heading #}
+{% with page_title=channel.name %}
+    {{ block.super }}
+{% endwith %}
+{# endblock #}
+
+
+{% block modnav %}
+    {{ block.super }}
+{% endblock %}
+
+{% block content %}
+
+
+    {% include "abcast/layout/_calendar.html" %}
+
+    {% addtoblock "js-post" %}
+        <script type="text/javascript" src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-switch.js"></script>
+    {% endaddtoblock %}
+    {% addtoblock "css" %}
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/apps/scheduler.css">{% endaddtoblock %}
+
+    {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
+    {% addtoblock "js-post" %}
+        <script type="text/javascript" src="{{ STATIC_URL }}abcast/js/lib/datepicker/datepicker.js"></script>
+    {% endaddtoblock %}
+
+    {% addtoblock "js-post" %}
+        <script type="text/javascript" src="{{ STATIC_URL }}abcast/js/lib/jquery-collision.js"></script>
+    {% endaddtoblock %}
+    {% addtoblock "js-post" %}
+        <script type="text/javascript" src="{{ STATIC_URL }}abcast/js/scheduler.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}
+
+
+        <script type="text/javascript">
+
+
+            function get_monday(d) {
+                d = new Date(d);
+                var day = d.getDay(),
+                        diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+                return new Date(d.setDate(diff));
+            }
+            function days_between(date1, date2) {
+
+                // The number of milliseconds in one day
+                var ONE_DAY = 1000 * 60 * 60 * 24
+
+                // Convert both dates to milliseconds
+                var date1_ms = date1.getTime()
+                var date2_ms = date2.getTime()
+
+                // Calculate the difference in milliseconds
+                // var difference_ms = Math.abs(date1_ms - date2_ms)
+                var difference_ms = date1_ms - date2_ms
+
+                // Convert back to days and return
+                return Math.round(difference_ms / ONE_DAY)
+
+            }
+
+            function update_query_string(uri, key, value) {
+                var re = new RegExp("([?|&])" + key + "=.*?(&|#|$)", "i");
+                if (uri.match(re)) {
+                    return uri.replace(re, '$1' + key + "=" + value + '$2');
+                } else {
+                    var hash = '';
+                    var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+                    if (uri.indexOf('#') !== -1) {
+                        hash = uri.replace(/.*#/, '#');
+                        uri = uri.replace(/#.*/, '');
+                    }
+                    return uri + separator + key + "=" + value + hash;
+                }
+            }
+
+            $(function () {
+
+                scheduler.app = new SchedulerApp();
+
+                scheduler.app.readonly = {% if user.is_authenticated %}false{% else %}true{% endif %};
+
+                scheduler.app.range = [{% for date in days %}'{{ date|date:"Y-m-d" }}',{% endfor %}]
+                scheduler.app.api_url = "{% url api_dispatch_list resource_name='abcast/emission' api_name='v1'%}";
+                scheduler.app.channel_id = {{ channel.pk }};
+
+
+                scheduler.app.pph = '{{ pph }}';
+                scheduler.app.ppd = '{{ ppd }}';
+                scheduler.app.offset = '{{ offset }}';
+                scheduler.app.num_days = '{{ num_days }}';
+                scheduler.app.range_filter = '{{ range_filter }}';
+                scheduler.app.station_time = '{{ station_time }}';
+
+                scheduler.app.init();
+
+                scheduler.app.set_selection('playlist', '{{ selected_playlist.get_api_url }}');
+
+                try {
+                    var playlist_history = $.parseJSON('{{ playlist_history }}');
+                } catch (e) {
+                    var playlist_history = [];
+                }
+
+                scheduler.app.set_history(playlist_history);
+
+
+
+
+
+
+                $('#inline_calendar').DatePicker({
+                    flat: true,
+                    date: '{{ range_start|date:"Y-m-d" }}',
+                    current: '{{ range_start|date:"Y-m-d" }}',
+                    calendars: 1,
+                    starts: 1,
+                    onChange: function (formated, dates) {
+
+                        var range_start = new Date('{{ today|date:"Y-m-d" }}');
+                        var date_selected = new Date(formated);
+                        var new_offset = (days_between(get_monday(date_selected), range_start));
+                        var uri = update_query_string(document.location.href, 'days_offset', new_offset);
+                        document.location.href = uri;
+
+                    }
+                });
+
+
+            });
+
+        </script>
+    {% endaddtoblock %}
+
+
+    {% addtoblock "css" %}
+        <!-- override styles depending on range etc. -->
+        <style>
+            .wk-daynames th {
+                width: {{ ppd }}px;
+            }
+
+            .tg-gutter {
+                width: {{ ppd }}px;
+            }
+
+            .emission {
+                width: {{ ppd|add:1 }}px !important;
+            }
+
+            .ui-draggable-dragging {
+                width: {{ ppd }}px !important;
+            }
+        </style>
+    {% endaddtoblock %}
+
+
+{% endblock %}
+
+
+{% block sidebar %}
+
+
+    <div id="inline_calendar">
+
+    </div>
+
+
+    <!-- channel selector
+    <div id="channel_selection" class="holder-selection">
+        <h4>{% trans "Channel selection" %}</h4>
+        <ul class="unstyled">
+            {% for c in channels %}
+                <li class="channel {% if channel.pk == c.pk %}active{% endif %}">
+                    <ul class="unstyled hoverable">
+                        <li><a href="{% url abcast-schedule %}?channel_id={{ c.pk }}">{{ c.name }}</a></li>
+                        <li>{% trans "Station" %}: {{ c.station.name }}</li>
+                    </ul>
+
+
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    -->
+
+
+    {# block.super #}
+    <div id="container_selection" class="holder-selection"></div>
+{% endblock %}
+

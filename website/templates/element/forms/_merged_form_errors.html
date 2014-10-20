@@ -1,0 +1,11 @@
+{% load i18n form_errors %}
+<div class="form-errors">
+
+    <strong>{% trans "The operation could not be performed because one or more error(s) occurred." %}</strong>
+    <p>{% trans "Please resubmit the form after making the following changes" %}</p>
+
+
+    {{ form_errors }}
+
+
+</div>

@@ -1,0 +1,14 @@
+
+{% if avg_vote %}
+
+	{% if avg_vote > 0.5 %}
+		<span class="pull-right badge top">top -{{ downvotes }}/+{{ upvotes }}</span>
+	{% endif %}
+
+	{% if avg_vote < 0.5 %}
+		<span class="pull-right badge flop">flop -{{ downvotes }}/+{{ upvotes }}</span>
+	{% endif %}
+
+{% endif %}
+
+

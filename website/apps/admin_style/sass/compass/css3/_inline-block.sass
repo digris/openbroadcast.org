@@ -1,0 +1,14 @@
+@import _shared.sass
+
+// Provides a cross-browser method to implement `display: inline-block;`
+
+=inline-block
+  @if $legacy-support-for-ie
+    &
+      *display: inline
+  display: -moz-inline-box
+  -moz-box-orient: vertical
+  display: inline-block
+  vertical-align: middle
+  @if $legacy-support-for-ie
+    *vertical-align: auto

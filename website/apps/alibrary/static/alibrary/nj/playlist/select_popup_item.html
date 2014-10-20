@@ -1,0 +1,44 @@
+<div class="item hoverable playlist {{ item.uuid }}" data-id="{{ item.id }}" data-uuid="{{ item.uuid }}" data-name="{{ item.name }}"
+     data-resource_uri="{{ item.resource_uri }}">
+
+    <div class="row-fluid">
+
+        <div class="span2 image">
+
+            {% if item.main_image %}
+                <img src="{{ item.main_image }}"/>
+            {% else %}
+                <img src="/static/img/base/defaults/listview.playlist.xl.png"/>
+            {% endif %}
+
+        </div>
+
+        <div class="span10 information">
+
+            <ul class="unstyled">
+
+                <li>
+
+                    <strong><a class="" title="Click to visit detail page" href="{{ item.absolute_url }}">{{ item.name|truncate_chars_inner(30) }}</a></strong>
+
+                    <small class="pull-right">{{ item.item_count }} tracks | {{ item.duration|s2time }}</small>
+                </li>
+                <li>
+                    <!--
+                    <span class="number">{{ item.updated|format_datetime('date') }}</span>
+                    -->
+                    <span title="{{ item.d_tags }}">{{ item.d_tags|truncate_chars_inner(30) }}</span>
+
+
+                    <span class="collected pull-right"></span>
+
+
+                    <!--<span>{{ item.type }}</span>-->
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>

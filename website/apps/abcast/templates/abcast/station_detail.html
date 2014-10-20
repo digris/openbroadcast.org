@@ -1,0 +1,159 @@
+{% extends "layout_base.html" %}
+
+{% load truncate i18n thumbnail arating_tags wiki_tags sekizai_tags activity_tags %}
+
+{% block heading %}
+<!-- heading / icon (large one) -->
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}js/lib/bootstrap-tab.js"></script>
+{% endaddtoblock %}
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery.history.js"></script>{% endaddtoblock %}
+
+<div id="heading">
+	{% include "skeleton/heading.html" %}
+</div>
+<!-- heading / icon (large one) -->
+{% endblock %}
+
+{% block modnav %} <!-- start: intra-module navigation -->
+<div id="modnav">
+	{% include "skeleton/modnav.html" %}
+</div>
+<!-- end: intra-module navigation -->
+{% endblock %}
+
+{% block inner %}
+<div class="item_detail" style="">
+
+	<section class="shaded">
+		<div class="row iteminfo release">
+			{% include "abcast/station/_detail_info.html" %}
+		</div>
+	</section>
+
+	<div class="item_menu" id="item_menu">
+		<ul class="nav nav-tabs">
+			<li class="active">
+				<a href="#profile" data-toggle="tab">{% trans "Profile" %}</a>
+			</li>
+			<li>
+				<a href="#members" data-toggle="tab">{% trans "Members" %}</a>
+			</li>
+		</ul>
+	</div>
+
+	<div class="clear"></div>
+
+	<section class="tabbed item_inner">
+
+		<div class="tab-content">
+
+
+
+			<div class="tab-pane active" id="profile">
+
+				<section class="profile">
+					<h2>{% trans "Profile" %}</h2>
+					<div class="description markdown padded-h">
+						{% wikify object.description %}
+					</div>
+
+				</section>
+
+				<section class="profile information">
+
+					<h4>{% trans "Contact Information" %}</h4>
+
+					<dl class="dl-horizontal">
+
+						{% if object.address1 %}
+						<dt>{% trans "Address" %}</dt>
+						<dd>
+							<ul class="unstyled">
+
+								{% if object.address1 %}
+								<li>{{ object.address1 }}</li>
+								{% endif %}
+
+								{% if object.address2 %}
+								<li>{{ object.address2 }}</li>
+								{% endif %}
+
+								{% if object.zip or object.city %}
+								<li>{{ object.zip }} {{ object.city }}</li>
+								{% endif %}
+
+								{% if object.country %}
+								<li>{{ object.get_country_display }}</li>
+								{% endif %}
+
+							</ul>
+						</dd>
+						{% endif %}
+
+						{% if object.mobile %}
+						<dt>{% trans "Mobile" %}</dt>
+						<dd>{{ object.mobile }}</dd>
+						{% endif %}
+
+						{% if object.phone %}
+						<dt>{% trans "Phone" %}</dt>
+						<dd>{{ object.phone }}</dd>
+						{% endif %}
+
+						{% if object.fax %}
+						<dt>{% trans "Fax" %}</dt>
+						<dd>{{ object.fax }}</dd>
+						{% endif %}
+
+					</dl>
+
+				</section>
+
+
+
+
+			</div>
+
+
+
+
+			<div class="tab-pane" id="members">
+
+				<section class="profile">
+					<h2>{% trans "Station members" %}</h2>
+
+				</section>
+
+
+				<div class="listview container profile m">
+
+					<div class="list_body">
+
+                        {% for member in members %}
+
+
+                            {% with item=member.profile %}
+                            {% include "profiles/profile/_list_item_m.html" %}
+                            {% endwith %}
+
+                        {% endfor %}
+
+
+					</div>
+				</div>
+
+
+
+			</div>
+		</div>
+
+	</section>
+
+</div>
+
+{% endblock %}
+
+{% block sidebar %}
+{% include "abcast/station/sidebar/_detail.html" %}
+{% endblock %}
+

@@ -1,0 +1,72 @@
+{% load i18n %}
+
+<div id="import_summary" class="import summary listing">
+
+    {% comment %}
+    <!-- moved to client side rendering -->
+	<div class="page-header">
+		<h4>{% trans "Overview" %} <small>{% trans "Current Import" %}</small></h4>
+	</div>
+
+	<div class="summary item ready hoverable">
+		<strong><i class="icon-check-empty"></i> {% trans "Ready to import" %}</strong>
+		<div class="row-fluid ">
+			<div class="span3">
+				<span class="num-files">0</span> {% trans "files" %}
+			</div>
+			<div class="span9">
+				<button class=" pull-right btn btn-mini btn-primary start-import-all" type="button">{% trans "Import all" %}</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="summary item done hoverable">
+		<strong><i class="icon-check"></i> {% trans "Import completed" %} <a class="toggle" data-toggle="done" href="#"><i class="icon-angle-up pull-right"></i></a></strong>
+		<div class="row-fluid ">
+			<div class="span3">
+				<span class="num-files">0</span> {% trans "files" %}
+			</div>
+			<div class="span9">
+			</div>
+		</div>
+	</div>
+
+	<div class="summary item duplicate hoverable">
+		<strong><i class="icon-copy"></i> {% trans "Duplicates" %} <a class="toggle" data-toggle="duplicate" href="#"><i class="icon-angle-up pull-right"></i></a></strong>
+		<div class="row-fluid ">
+			<div class="span3">
+				<span class="num-files">0</span> {% trans "files" %}
+			</div>
+			<div class="span9">
+				
+			</div>
+		</div>
+	</div>
+
+	<div class="summary item warning hoverable">
+		<strong><i class="icon-question-sign"></i> {% trans "Information needed" %}</strong>
+		<div class="row-fluid ">
+			<div class="span3">
+				<span class="num-files">0</span> {% trans "files" %}
+			</div>
+			<div class="span9">
+				
+			</div>
+		</div>
+	</div>
+
+	<div class="summary item error hoverable">
+		<strong><i class="icon-warning-sign"></i> {% trans "Errors" %}</strong>
+		<div class="row-fluid ">
+			<div class="span3">
+				<span class="num-files">0</span> {% trans "files" %}
+			</div>
+			<div class="span9">
+				
+			</div>
+		</div>
+	</div>
+
+	{% endcomment %}
+
+</div>

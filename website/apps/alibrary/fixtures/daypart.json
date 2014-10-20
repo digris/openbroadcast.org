@@ -1,0 +1,492 @@
+[
+        {
+        "pk": 1,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "00:00:00",
+            "day": 0,
+            "time_end": "06:00:00"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "06:00:00",
+            "day": 0,
+            "time_end": "09:00:00"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "09:00:00",
+            "day": 0,
+            "time_end": "12:00:00"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "12:00:00",
+            "day": 0,
+            "time_end": "13:00:00"
+        }
+    },
+    {
+        "pk": 5,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "13:00:00",
+            "day": 0,
+            "time_end": "17:00:00"
+        }
+    },
+    {
+        "pk": 6,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "17:00:00",
+            "day": 0,
+            "time_end": "20:00:00"
+        }
+    },
+    {
+        "pk": 7,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "20:00:00",
+            "day": 0,
+            "time_end": "00:00:00"
+        }
+    },
+    {
+        "pk": 8,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "00:00:00",
+            "day": 1,
+            "time_end": "06:00:00"
+        }
+    },
+    {
+        "pk": 9,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "06:00:00",
+            "day": 1,
+            "time_end": "09:00:00"
+        }
+    },
+    {
+        "pk": 10,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "09:00:00",
+            "day": 1,
+            "time_end": "12:00:00"
+        }
+    },
+    {
+        "pk": 11,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "12:00:00",
+            "day": 1,
+            "time_end": "13:00:00"
+        }
+    },
+    {
+        "pk": 12,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "13:00:00",
+            "day": 1,
+            "time_end": "17:00:00"
+        }
+    },
+    {
+        "pk": 13,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "17:00:00",
+            "day": 1,
+            "time_end": "20:00:00"
+        }
+    },
+    {
+        "pk": 14,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "20:00:00",
+            "day": 1,
+            "time_end": "00:00:00"
+        }
+    },
+    {
+        "pk": 15,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "00:00:00",
+            "day": 2,
+            "time_end": "06:00:00"
+        }
+    },
+    {
+        "pk": 16,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "06:00:00",
+            "day": 2,
+            "time_end": "09:00:00"
+        }
+    },
+    {
+        "pk": 17,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "09:00:00",
+            "day": 2,
+            "time_end": "12:00:00"
+        }
+    },
+    {
+        "pk": 18,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "12:00:00",
+            "day": 2,
+            "time_end": "13:00:00"
+        }
+    },
+    {
+        "pk": 19,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "13:00:00",
+            "day": 2,
+            "time_end": "17:00:00"
+        }
+    },
+    {
+        "pk": 20,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "17:00:00",
+            "day": 2,
+            "time_end": "20:00:00"
+        }
+    },
+    {
+        "pk": 21,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "20:00:00",
+            "day": 2,
+            "time_end": "00:00:00"
+        }
+    },
+    {
+        "pk": 22,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "00:00:00",
+            "day": 3,
+            "time_end": "06:00:00"
+        }
+    },
+    {
+        "pk": 23,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "06:00:00",
+            "day": 3,
+            "time_end": "09:00:00"
+        }
+    },
+    {
+        "pk": 24,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "09:00:00",
+            "day": 3,
+            "time_end": "12:00:00"
+        }
+    },
+    {
+        "pk": 25,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "12:00:00",
+            "day": 3,
+            "time_end": "13:00:00"
+        }
+    },
+    {
+        "pk": 26,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "13:00:00",
+            "day": 3,
+            "time_end": "17:00:00"
+        }
+    },
+    {
+        "pk": 27,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "17:00:00",
+            "day": 3,
+            "time_end": "20:00:00"
+        }
+    },
+    {
+        "pk": 28,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "20:00:00",
+            "day": 3,
+            "time_end": "00:00:00"
+        }
+    },
+    {
+        "pk": 29,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "00:00:00",
+            "day": 4,
+            "time_end": "06:00:00"
+        }
+    },
+    {
+        "pk": 30,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "06:00:00",
+            "day": 4,
+            "time_end": "09:00:00"
+        }
+    },
+    {
+        "pk": 31,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "09:00:00",
+            "day": 4,
+            "time_end": "12:00:00"
+        }
+    },
+    {
+        "pk": 32,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "12:00:00",
+            "day": 4,
+            "time_end": "13:00:00"
+        }
+    },
+    {
+        "pk": 33,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "13:00:00",
+            "day": 4,
+            "time_end": "17:00:00"
+        }
+    },
+    {
+        "pk": 34,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "17:00:00",
+            "day": 4,
+            "time_end": "20:00:00"
+        }
+    },
+    {
+        "pk": 35,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "20:00:00",
+            "day": 4,
+            "time_end": "00:00:00"
+        }
+    },
+    {
+        "pk": 36,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "00:00:00",
+            "day": 5,
+            "time_end": "06:00:00"
+        }
+    },
+    {
+        "pk": 37,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "06:00:00",
+            "day": 5,
+            "time_end": "09:00:00"
+        }
+    },
+    {
+        "pk": 38,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "09:00:00",
+            "day": 5,
+            "time_end": "12:00:00"
+        }
+    },
+    {
+        "pk": 39,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "12:00:00",
+            "day": 5,
+            "time_end": "13:00:00"
+        }
+    },
+    {
+        "pk": 40,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "13:00:00",
+            "day": 5,
+            "time_end": "17:00:00"
+        }
+    },
+    {
+        "pk": 41,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "17:00:00",
+            "day": 5,
+            "time_end": "20:00:00"
+        }
+    },
+    {
+        "pk": 42,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "20:00:00",
+            "day": 5,
+            "time_end": "00:00:00"
+        }
+    },
+    {
+        "pk": 43,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "00:00:00",
+            "day": 6,
+            "time_end": "06:00:00"
+        }
+    },
+    {
+        "pk": 44,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "06:00:00",
+            "day": 6,
+            "time_end": "09:00:00"
+        }
+    },
+    {
+        "pk": 45,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "09:00:00",
+            "day": 6,
+            "time_end": "12:00:00"
+        }
+    },
+    {
+        "pk": 46,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "12:00:00",
+            "day": 6,
+            "time_end": "13:00:00"
+        }
+    },
+    {
+        "pk": 47,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "13:00:00",
+            "day": 6,
+            "time_end": "17:00:00"
+        }
+    },
+    {
+        "pk": 48,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "17:00:00",
+            "day": 6,
+            "time_end": "20:00:00"
+        }
+    },
+    {
+        "pk": 49,
+        "model": "alibrary.daypart",
+        "fields": {
+            "active": true,
+            "time_start": "20:00:00",
+            "day": 6,
+            "time_end": "00:00:00"
+        }
+    }
+]

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <style type="text/css" media="screen">
+        body {
+            background-color: #fff;
+            margin: 0;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .container {
+            margin: 50px auto 40px auto;
+            width: 600px;
+            text-align: center;
+        }
+
+        a {
+            color: #0B0;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        h1 {
+            letter-spacing: -1px;
+            line-height: 60px;
+            font-size: 32px;
+            color: #0B0;
+            margin: 0px;
+            text-shadow: 0 1px 0 #fff;
+            font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
+            font-weight: 200;
+        }
+
+        p {
+            color: rgba(0, 0, 0, 0.5);
+            margin: 10px 0 10px;
+            font-size: 18px;
+            font-weight: 200;
+            line-height: 1.6em;
+        }
+
+        ul {
+            list-style: none;
+            margin: 25px 0;
+            padding: 0;
+        }
+
+        li {
+            display: table-cell;
+            font-weight: bold;
+            width: 1%;
+        }
+
+        .logo {
+            display: inline-block;
+            margin-top: 35px;
+        }
+
+        .logo-img-2x {
+            display: none;
+        }
+
+        @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (   min--moz-device-pixel-ratio: 2), only screen and (     -o-min-device-pixel-ratio: 2/1), only screen and (        min-device-pixel-ratio: 2), only screen and (                min-resolution: 192dpi), only screen and (                min-resolution: 2dppx) {
+            .logo-img-1x {
+                display: none;
+            }
+
+            .logo-img-2x {
+                display: inline-block;
+            }
+        }
+
+        #suggestions {
+            margin-top: 35px;
+            color: #ccc;
+        }
+
+        #suggestions a {
+            color: #666666;
+            font-weight: 200;
+            font-size: 14px;
+            margin: 0 10px;
+        }
+
+    </style>
+</head>
+<body class="{% block body-class %}{% endblock %}">
+
+<div class="container">
+    {% block content %}{% endblock %}
+
+
+
+    <div id="suggestions">
+        <a href="mailto:support@openbroadcast.org">Contact Support</a> &mdash;
+        <a href="https://lab.hazelfire.com/projects/openbroadcast-ch/issues/new">Issue Tracker</a>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+Hi crew!
+
+a customer just placed a new order.
+
+
+{{ order.get_absolute_url }}
+
+-------------------------------------------------------------------
+# Order (Items)
+-------------------------------------------------------------------
+{% for item in order.items.all %}
+{{ item.quantity }}x	{{ item.product.name }} à {{ item.get_price }}			{{ item.line_total }}
+{% endfor %}
+-------------------------------------------------------------------
+SUBTOTAL:	{{ order.order_subtotal }}  
+TOTAL:		{{ order.order_total }}  
+
+-------------------------------------------------------------------
+# Billing Address
+-------------------------------------------------------------------
+{{ order.shipping_address_text }}
+
+-------------------------------------------------------------------
+# Shipping Address
+-------------------------------------------------------------------
+{{ order.billing_address_text }}
+
+

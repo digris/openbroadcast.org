@@ -1,0 +1,267 @@
+# Spanish translation for the Satchmo project.
+# Satchmo Translation Package
+# Copyright (C) 2008 Satchmo Project
+# This file is distributed under the same license as the Satchmo package.
+# Christian Hoeppner <hoeppner@gmail.com>, 2007.
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: Satchmo 0.5-pre\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-09-28 19:29+0000\n"
+"PO-Revision-Date: 2011-09-28 21:32\n"
+"Last-Translator: Andrea  de la Huerta <info@metamorfosys.de>\n"
+"Language-Team: Spanish <satchmo-users@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"X-Translated-Using: django-rosetta 0.6.1\n"
+
+#: admin.py:15 admin.py:24
+msgid "1 country was"
+msgstr "Un país fue"
+
+#: admin.py:17 admin.py:26
+#, python-format
+msgid "%s countries were"
+msgstr "%s países fueron"
+
+#: admin.py:18
+#, python-format
+msgid "%s successfully marked as active"
+msgstr "%s marcado(s) con éxito como activo(s)"
+
+#: admin.py:19
+msgid "Mark selected countries as active"
+msgstr "Marcar los países seleccionados como activos"
+
+#: admin.py:27
+#, python-format
+msgid "%s successfully marked as inactive"
+msgstr "%s marcado(s) con éxito como inactivo(s)"
+
+#: admin.py:28
+msgid "Mark selected countries as inactive"
+msgstr "Marcar los países seleccionados como inactivos"
+
+#: models.py:6
+msgid "Africa"
+msgstr "África"
+
+#: models.py:7
+msgid "North America"
+msgstr "América del Norte"
+
+#: models.py:8
+msgid "Europe"
+msgstr "Europa"
+
+#: models.py:9
+msgid "Asia"
+msgstr "Asia"
+
+#: models.py:10
+msgid "Oceania"
+msgstr "Oceanía"
+
+#: models.py:11
+msgid "South America"
+msgstr "América del Sur"
+
+#: models.py:12
+msgid "Antarctica"
+msgstr "Antártica"
+
+#: models.py:16
+msgid "Another"
+msgstr "Otro"
+
+#: models.py:17
+msgid "Island"
+msgstr "Isla"
+
+#: models.py:18
+msgid "Arrondissement"
+msgstr "Asentamiento"
+
+#: models.py:19
+msgid "Atoll"
+msgstr "Atolón"
+
+#: models.py:20
+msgid "Autonomous island"
+msgstr "Isla Autónoma"
+
+#: models.py:21
+msgid "Canton"
+msgstr "Cantón"
+
+#: models.py:22
+msgid "Commune"
+msgstr "Comuna"
+
+#: models.py:23
+msgid "County"
+msgstr "Condado"
+
+#: models.py:24
+msgid "Department"
+msgstr "Departamento"
+
+#: models.py:25
+msgid "Dependency"
+msgstr "Dependencia"
+
+#: models.py:26
+msgid "District"
+msgstr "Distrito"
+
+#: models.py:27
+msgid "Division"
+msgstr "División"
+
+#: models.py:28
+msgid "Emirate"
+msgstr "Emirato"
+
+#: models.py:29
+msgid "Governorate"
+msgstr "Gobernación"
+
+#: models.py:30
+msgid "Island council"
+msgstr "Consejo Insular de"
+
+#: models.py:31
+msgid "Island group"
+msgstr "Archipiélago"
+
+#: models.py:32
+msgid "Island region"
+msgstr "Región Insular"
+
+#: models.py:33
+msgid "Kingdom"
+msgstr "Reino"
+
+#: models.py:34
+msgid "Municipality"
+msgstr "Municipio"
+
+#: models.py:35
+msgid "Parish"
+msgstr "Parroquia"
+
+#: models.py:36
+msgid "Prefecture"
+msgstr "Prefectura"
+
+#: models.py:37
+msgid "Province"
+msgstr "Provincia"
+
+#: models.py:38
+msgid "Region"
+msgstr "Región"
+
+#: models.py:39
+msgid "Republic"
+msgstr "República"
+
+#: models.py:40
+#, fuzzy
+msgid "Sheading"
+msgstr "Sheading"
+
+#: models.py:41
+msgid "State"
+msgstr "Estado"
+
+#: models.py:42
+msgid "Subdivision"
+msgstr "Subdivisión"
+
+#: models.py:43
+msgid "Subject"
+msgstr "Tema"
+
+#: models.py:44
+msgid "Territory"
+msgstr "Territorio"
+
+#: models.py:53
+msgid "ISO alpha-2"
+msgstr "ISO alpha-2"
+
+#: models.py:54
+msgid "Official name (CAPS)"
+msgstr "Nombre oficial (MAY)"
+
+#: models.py:55
+msgid "Country name"
+msgstr "Nombre del país"
+
+#: models.py:56
+msgid "ISO alpha-3"
+msgstr "ISO alpha-3"
+
+#: models.py:57
+msgid "ISO numeric"
+msgstr "ISO numérico"
+
+#: models.py:58
+msgid "Country is active"
+msgstr "El país está activo"
+
+#: models.py:59
+msgid "Continent"
+msgstr "Continente"
+
+#: models.py:60 models.py:81
+msgid "Administrative Area"
+msgstr "Área Administrativa"
+
+#: models.py:63
+msgid "Country"
+msgstr "País"
+
+#: models.py:64
+msgid "Countries"
+msgstr "Países"
+
+#: models.py:76
+msgid "Admin Area name"
+msgstr "Nombre del Área Administrativa"
+
+#: models.py:77
+msgid "Postal Abbreviation"
+msgstr "Abreviatura postal"
+
+#: models.py:78
+msgid "Area is active"
+msgstr "El área está activa"
+
+#: models.py:82
+msgid "Administrative Areas"
+msgstr "Áreas Administrativas"
+
+#: templates/l10n/_language_selection_form.html:5
+msgid "Change language"
+msgstr "Cambiar de idioma"
+
+#: templates/l10n/_language_selection_form.html:11
+msgid "Change"
+msgstr "Cambiar"
+
+#: validators/aupostcode.py:13
+msgid "Invalid Australian postal code"
+msgstr "Código postal inválido en Australia"
+
+#: validators/capostcode.py:18
+msgid "Invalid postal code for Canada"
+msgstr "Código postal inválido en Canadá"
+
+#: validators/uspostcode.py:10
+msgid "Invalid ZIP code"
+msgstr "Código postal inválido"

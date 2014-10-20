@@ -1,0 +1,73 @@
+body
+  a.external
+    background-image: url(/static/img/base/link.external.png)
+    background-repeat: no-repeat
+    padding-left: 16px
+
+
+  &.tl-loading
+    .container.main
+      opacity: 0.8
+      *
+        color: #999 !important
+
+  // some typo overrides - just testing...
+  h1, h2, h3, h4
+    font-family: "quatro-slab"
+    font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif
+    //font-family: "Times New Roman", Times, serif
+    font-weight: 200
+    //font-style: italic
+    color: #5a5a5a
+
+  .subhead .icontitle
+    font-family: "quatro-slab"
+    font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif
+    //font-family: "Times New Roman", Times, serif
+    font-weight: 200
+    //font-style: italic
+
+
+
+.markdown
+  +markdown()
+
+
+
+// player haks / states
+
+body.loading-playlist
+  opacity: 0.2
+  cursor: wait
+
+
+
+// TODO: move to appropriate places
+
+#site_messages
+  position: fixed
+  width: 100%
+  bottom: 0
+  > .messages
+    > .alert
+      margin-bottom: 0
+      padding-bottom: 0
+      min-height: 60px
+      button
+        border: none
+        font-size: 200%
+        background: transparent
+
+
+      &.alert-success
+        border-top: 4px solid $successBorder
+
+
+// navigation typo hack
+.navleft li a
+  text-transform: uppercase
+.subnav li a
+  text-transform: uppercase
+.item_menu li a
+  text-transform: uppercase
+

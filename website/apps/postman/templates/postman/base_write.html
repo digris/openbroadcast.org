@@ -1,0 +1,28 @@
+{% extends "postman/base.html" %}
+{% load i18n crispy_forms_tags %}
+{% block extrahead %}{{ block.super }}{% endblock %}
+{% block content %}
+    <div id="postman" class="postman">
+        <!--
+<h1>{% block pm_write_title %}{% endblock %}</h1>
+-->
+
+        <div class="write">
+
+            <form action="{% if next_url %}?next={{ next_url|urlencode }}{% endif %}" method="post">{% csrf_token %}
+                {% block pm_write_recipient %}{% endblock %}
+
+                {{ form.as_p }}
+                {# crispy form #}
+
+                <div class="actions">
+                    <button class="btn btn-primary pull-right" type="submit">{% trans "Send" %}</button>
+                </div>
+            </form>
+
+
+        </div>
+
+
+    </div>
+{% endblock %}

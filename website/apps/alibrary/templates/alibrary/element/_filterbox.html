@@ -1,0 +1,234 @@
+{% load spurl sekizai_tags daterange i18n %}
+
+{{ item.form.as_p }}
+
+
+{% comment %}
+A bit of a hack here, don't know how this could be implemented in a neat way...
+hard-coded selecting of property, to provide some 'special' types of filters for:
+ - releasedate
+ - more to come...
+{% endcomment %}
+
+{% comment %}check if special filter{% endcomment %}
+{% if item.name in special_filters %}
+
+    {% comment %}actual switching{% endcomment %}
+    {% if item.name == "releasedate" %}
+        {% addtoblock "js" %}
+            <script>
+
+                var RangeFilter = function() {
+                    var self = this;
+                    this.el;
+                    this.range = {
+                        'start': false,
+                        'end': false
+                    };
+
+                    this.init = function(el) {
+                        console.log('RangeFilter - init');
+                        self.el = el;
+                        self.get_state();
+                        self.bindings();
+                    };
+
+                    this.get_state = function() {
+                        var params = $.url().param('releasedate');
+                        if (params != undefined) {
+                            params = params.split(':');
+                            if(params[0] && params[0].length == 10) {
+                                self.range.start = params[0];
+                            }
+                            if(params[1] && params[1].length == 10) {
+                                self.range.end = params[1];
+                            }
+
+                        } else {
+                            self.range.start = false;
+                            self.range.end = false;
+                        }
+                        console.log('RangeFilter - range:', self.range);
+
+                        self.update_display();
+                    };
+
+                    this.update_display = function() {
+                        console.log('RangeFilter - update_display');
+
+                        var container = $('#releasedate_range_container', self.el);
+
+                        // hack - but needed for compatibility
+                        if(self.range.start || self.range.end) {
+                            container.addClass('minus');
+                            container.removeClass('plus');
+                        } else {
+                            container.addClass('plus');
+                            container.removeClass('minus');
+                        }
+
+                        // set values
+                        if(self.range.start) {
+                            $('[name="range-start"]', container).val(self.range.start.substr(0,4))
+                        } else {
+                            $('[name="range-start"]', container).val(false)
+                        }
+                        if(self.range.end) {
+                            $('[name="range-end"]', container).val(self.range.end.substr(0,4))
+                        } else {
+                            $('[name="range-end"]', container).val(false)
+                        }
+
+                    };
+
+                    this.update_query = function() {
+                        console.log('RangeFilter - update_query', self.range);
+
+                        str_start = (self.range.start) ? self.range.start : '';
+                        str_end = (self.range.end) ? self.range.end : '';
+
+                        var url = $.insert_uri_param(window.location.href, 'releasedate',str_start + ':' + str_end, true);
+                        window.location.href = url;
+
+                    };
+
+                    this.bindings = function(el) {
+
+                        // form elements
+                        $(self.el).on('change', 'select', function(e){
+
+                            var val = $(this).val();
+                            if($(this).attr('name') == 'range-start') {
+                                if(val && val != '') {
+                                    self.range.start = val + '-01-01';
+                                } else {
+                                    self.range.start = false;
+                                }
+
+                            }
+                            if($(this).attr('name') == 'range-end') {
+                                if(val && val != '') {
+                                    self.range.end = val + '-12-31';
+                                } else {
+                                    self.range.end = false;
+                                }
+                            }
+
+                            self.update_query();
+                        });
+
+                        // predefined selections
+                        $('#predefined_selector', self.el).on('click', 'a.preset', function(e){
+
+                            var range_start = $(this).data('range_start');
+                            var range_end = $(this).data('range_end');
+
+                            if(range_start != undefined) {
+                                self.range.start = range_start;
+                            } else {
+                                self.range.start = false;
+                            }
+
+                            if(range_end != undefined) {
+                                self.range.end = range_end;
+                            } else {
+                                self.range.end = false;
+                            }
+
+
+                            self.update_query();
+                        });
+
+
+
+                    };
+
+                };
+
+                $(function(){
+                    var rf = new RangeFilter();
+                    rf.init($('#filterbox_holder-releasedate'));
+                });
+            </script>
+        {% endaddtoblock %}
+
+        <div class="box special releasedate">
+            <div class="ui-persistent boxtitle" data-uistate="init" id="filterbox-{{ item.name }}">
+                <span class="noselection">Filter: {% firstof item.label item.name %}</span>
+            </div>
+            <div style="" class="boxcontent" id="filterbox_holder-{{ item.name }}">
+
+                <div id="releasedate_range_container" class="boxitem">
+                    <div class="range-select">
+                        <select name="range-start">
+                            <option value="">{% trans "From" %}?</option>
+                            {% for year in 1900|xxxx_to_now reversed %}
+                                <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                        <span>-</span>
+                        <select name="range-end">
+                            <option value="">{% trans "To" %}?</option>
+                            {% for year in 1900|xxxx_to_now reversed %}
+                                <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div id="predefined_selector">
+                    <span class="">{% trans "Predefined ranges" %}:</span>
+
+                    <ul class="unstyled">
+                        <li><a data-range_end="1939-12-31" class="preset" href="#" class="">{% trans "Before 1940's" %}</a></li>
+
+                        <li><a data-range_start="1940-01-01" data-range_end="1949-12-31" class="preset" href="#" class="">40's</a></li>
+                        <li><a data-range_start="1950-01-01" data-range_end="1959-12-31" class="preset" href="#" class="">50's</a></li>
+                        <li><a data-range_start="1960-01-01" data-range_end="1969-12-31" class="preset" href="#" class="">60's</a></li>
+                        <li><a data-range_start="1970-01-01" data-range_end="1979-12-31" class="preset" href="#" class="">70's</a></li>
+                        <li><a data-range_start="1980-01-01" data-range_end="1989-12-31" class="preset" href="#" class="">80's</a></li>
+                        <li><a data-range_start="1990-01-01" data-range_end="1999-12-31" class="preset" href="#" class="">90's</a></li>
+                        <li><a data-range_start="2000-01-01" data-range_end="2009-12-31" class="preset" href="#" class="">2000's</a></li>
+                        <li><a data-range_start="2010-01-01" class="preset" href="#" class="">10's</a></li>
+                    </ul>
+
+                    <div class="clear"></div>
+
+                </div>
+
+
+            </div>
+        </div>
+    {% endif %}
+
+{% else %}
+<div class="box ">
+    <div class="ui-persistent boxtitle" data-uistate="init" id="filterbox-{{ item.name }}">
+        <span class="noselection">Filter: {% firstof item.label item.name %}</span>
+    </div>
+    <div style="" class="boxcontent" id="filterbox_holder-{{ item.name }}">
+
+        {% for filter_entry in item.entries %}
+
+            {% if filter_entry.0 %}
+
+                {% spurl base=request.get_full_path active_mquery="{{ item.name }}={{ filter_entry.0 }}" as is_active %}
+                <div class="boxitem {% if is_active %}minus{% else %}plus{% endif %}">
+                    <a id="filterbox_item-{{ filter_entry.0 }}" class="filterbox_item {% if is_active %}on{% endif %}"
+                       href="{% spurl base=request.get_full_path remove_query_param="page" trigger_mquery="{{ item.name }}={{ filter_entry.0 }}" %}"
+                       style="display: block;">
+                        {% if filter_entry.2 %}
+                            {{ filter_entry.2 }}
+                        {% else %}
+                            {{ filter_entry.0 }}
+                        {% endif %}
+                        <small> ({{ filter_entry.1 }})</small>
+                    </a>
+                </div>
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+</div>
+{% endif %}

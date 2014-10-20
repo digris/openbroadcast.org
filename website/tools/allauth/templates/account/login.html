@@ -1,0 +1,101 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% load account_tags allauth_tags crispy_forms_tags %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+
+
+
+
+{% block sidebarx %}
+{% if allauth.socialaccount_enabled  %}
+<h1>{% trans "Or Connect" %}</h1>
+<div class="socialaccount providers">
+	<ul class="unstyled">
+	{% include "socialaccount/snippets/provider_list.html" %}
+	</ul>
+
+</div>
+{% endif %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% block body %}
+    
+    
+<header class="xl-head subhead" id="overview">
+  <h1>{% trans "Sign In" %}</h1>
+  <!--
+  <p class="lead">Dozens of reusable components are built into Bootstrap to provide navigation, alerts, popovers, and much more.</p>
+  -->
+</header>    
+
+
+{% if not user.is_authenticated %}
+
+
+
+
+
+{% if extra == "login_reason" %}
+{% include "account/snippets/login_reason.html" %}
+{% endif %}
+
+
+<div class="alert alert-info">
+	<h4 class="alert-heading">{% trans "No account yet?" %}</h4>
+	Feel free to <a href="{{ signup_url }}">{% trans "sign up here" %}</a>.
+</div>
+
+
+
+<!--
+<h2>{% trans 'Existing users can login here.' %}</h2>
+-->
+
+
+{% endif %}
+
+    
+    {% if user.is_authenticated %}
+	<div class="alert">
+	  <a class="close" data-dismiss="alert"></a>
+	  {% include "account/snippets/already_logged_in.html" %}		
+	</div>
+    {% else %}
+    <form id="login_form" class="login form-horizontal" method="POST" action="{% url account_login %}">
+        {% csrf_token %}
+        <fieldset class="inlineLabels">
+            {{ form|crispy }}
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">{% trans "Sign In" %}</button>
+                <a class="btn btn-secondary" href="{% url account_reset_password %}">{% trans "Forgot Password?" %}</a>
+            </div>
+        </fieldset>
+    </form>
+
+    {% endif %}
+    
+
+{% fbconnect %}
+
+
+
+{% endblock %}

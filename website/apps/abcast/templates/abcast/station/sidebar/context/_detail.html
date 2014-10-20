@@ -1,0 +1,37 @@
+{% load i18n guardian_tags activity_tags ctype %}
+
+
+<div class="menu-context">
+
+
+    <div class="action-group">
+        <ul class="unstyled">
+
+            {% if perms.alibrary.change_station and user.is_staff %}
+            <li class="link">
+                <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}" title="{% trans "Administration view" %}">
+                    <i class="icon icon-lock"></i>
+                    <span>{% trans "Administration view" %}</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <li class="link">
+                    <a class="hoverable" href="{% follow_all_url object %}?next={{ request.get_full_path }}" title="{% trans "Follow/unfollow" %}">
+                    {% if request.user|is_following:object %}
+                        <i class="icon icon-unlink"></i>
+                        <span>{% trans "Stop following" %} {{ object|ct_name_by_object }}</span>
+                    {% else %}
+                        <i class="icon icon-link"></i>
+                        <span>{% trans "Follow" %} {{ object|ct_name_by_object }}</span>
+                    {% endif %}
+                </a>
+                </li>
+            {% endif %}
+
+        </ul>
+    </div>
+
+
+</div>

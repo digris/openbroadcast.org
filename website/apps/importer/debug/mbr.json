@@ -1,0 +1,912 @@
+
+      'status':'Official',
+      'asin':'B00004S7RX',
+      'label-info-list':[
+         {
+            'label':{
+               'sort-name':'EFA',
+               'label-code':'6110',
+               'id':'a02bd6d1-ac07-4153-bbbb-75ce4fbc6890',
+               'name':'EFA'
+            }
+         }
+      ],
+      'title':'Chicks on Speed Will Save Us All!',
+      'country':'DE',
+      'barcode':'0718752990127',
+      'artist-credit':[
+         {
+            'artist':{
+               'sort-name':'Chicks on Speed',
+               'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+               'name':'Chicks on Speed'
+            }
+         }
+      ],
+      'medium-list':[
+         {
+            'disc-list':[
+               {
+                  'id':'I9gNOajapUkNwgwbsgLiI5ANd4U-',
+                  'sectors':'196105'
+               }
+            ],
+            'position':'1',
+            'track-list':[
+               {
+                  'artist-credit':[
+                     {
+                        'artist':{
+                           'sort-name':'Chicks on Speed',
+                           'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                           'name':'Chicks on Speed'
+                        }
+                     }
+                  ],
+                  'number':'1',
+                  'recording':{
+                     'artist-credit':[
+                        {
+                           'artist':{
+                              'sort-name':'Chicks on Speed',
+                              'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                              'name':'Chicks on Speed'
+                           }
+                        }
+                     ],
+                     'length':'30266',
+                     'title':'Stop Records Advert',
+                     'puid-list':[
+                        '440f8042-8e0c-7222-1739-24c33350c28b',
+                        '6c8035d9-a132-cbbd-5f87-301241929aa6',
+                        '78cab2cf-f331-5968-aac1-a5a3e1f3c673',
+                        'a5f938b8-1d16-a907-90ef-e1ba3602a8e6',
+                        'd7555655-29ef-eb95-0c03-461d90b937ea'
+                     ],
+                     'isrc-list':[
+                        'DEK590060101'
+                     ],
+                     'id':'e6bfb6a1-0821-460a-876c-41fe7f3ae3bf',
+                     'artist-credit-phrase':'Chicks on Speed'
+                  },
+                  'length':'30266',
+                  'position':'1',
+                  'artist-credit-phrase':'Chicks on Speed',
+                  'track_or_recording_length':'30266'
+               },
+               {
+                  'artist-credit':[
+                     {
+                        'artist':{
+                           'sort-name':'Chicks on Speed',
+                           'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                           'name':'Chicks on Speed'
+                        }
+                     }
+                  ],
+                  'number':'2',
+                  'recording':{
+                     'artist-credit':[
+                        {
+                           'artist':{
+                              'sort-name':'Chicks on Speed',
+                              'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                              'name':'Chicks on Speed'
+                           }
+                        }
+                     ],
+                     'length':'266160',
+                     'work-relation-list':[
+                        {
+                           'work':{
+                              'label-relation-list':[
+                                 {
+                                    'direction':'backward',
+                                    'type':'publishing',
+                                    'target':'4cab9030-1b3f-46d5-b12b-c86d5e0ecd80',
+                                    'label':{
+                                       'sort-name':'Rondor Music (London)',
+                                       'id':'4cab9030-1b3f-46d5-b12b-c86d5e0ecd80',
+                                       'name':'Rondor Music (London)'
+                                    }
+                                 }
+                              ],
+                              'recording-relation-list':[
+                                 {
+                                    'recording':{
+                                       'artist-credit':[
+                                          {
+                                             'artist':{
+                                                'sort-name':'Chicks on Speed',
+                                                'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                                                'name':'Chicks on Speed'
+                                             }
+                                          }
+                                       ],
+                                       'length':'269106',
+                                       'artist-credit-phrase':'Chicks on Speed',
+                                       'id':'6f185168-fb2e-420f-afbb-aaedd314bdc6',
+                                       'title':'Gimme Back My Man'
+                                    },
+                                    'direction':'backward',
+                                    'attribute-list':[
+                                       'cover'
+                                    ],
+                                    'type':'performance',
+                                    'target':'6f185168-fb2e-420f-afbb-aaedd314bdc6'
+                                 },
+                                 {
+                                    'recording':{
+                                       'artist-credit':[
+                                          {
+                                             'artist':{
+                                                'sort-name':'Chicks on Speed',
+                                                'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                                                'name':'Chicks on Speed'
+                                             }
+                                          }
+                                       ],
+                                       'length':'266160',
+                                       'title':'Give Me Back My Man',
+                                       'puid-list':[
+                                          '09cf5411-acef-c86e-1f1e-deb5ab802f26',
+                                          'a82ab414-f1c8-88a0-0b31-75bc0f62b4b1',
+                                          'd7555655-29ef-eb95-0c03-461d90b937ea'
+                                       ],
+                                       'isrc-list':[
+                                          'DEK590060102'
+                                       ],
+                                       'id':'95046dfc-d3c4-4ff7-adb6-590d0aa3164a',
+                                       'artist-credit-phrase':'Chicks on Speed'
+                                    },
+                                    'direction':'backward',
+                                    'attribute-list':[
+                                       'cover'
+                                    ],
+                                    'type':'performance',
+                                    'target':'95046dfc-d3c4-4ff7-adb6-590d0aa3164a'
+                                 },
+                                 {
+                                    'recording':{
+                                       'artist-credit':[
+                                          {
+                                             'name':u'The B-52\u2019s',
+                                             'artist':{
+                                                'sort-name':'B-52s, The',
+                                                'id':'127f591a-7e27-4435-92db-0780f219f3a1',
+                                                'name':'The B-52s'
+                                             }
+                                          }
+                                       ],
+                                       'length':'241840',
+                                       'artist-credit-phrase':u'The B-52\u2019s',
+                                       'id':'f7008f16-4de2-4d6a-969e-4ae5e27e0f9a',
+                                       'title':'Give Me Back My Man'
+                                    },
+                                    'direction':'backward',
+                                    'type':'performance',
+                                    'target':'f7008f16-4de2-4d6a-969e-4ae5e27e0f9a'
+                                 }
+                              ],
+                              'id':'d3d6b7ac-45e9-38f4-b128-e84efa7d543b',
+                              'artist-relation-list':[
+                                 {
+                                    'direction':'backward',
+                                    'type':'composer',
+                                    'target':'15596805-8343-40a5-b2b1-d5585d945056',
+                                    'artist':{
+                                       'sort-name':'Strickland, Keith',
+                                       'id':'15596805-8343-40a5-b2b1-d5585d945056',
+                                       'name':'Keith Strickland'
+                                    }
+                                 },
+                                 {
+                                    'direction':'backward',
+                                    'type':'composer',
+                                    'target':'43bcca8b-9edc-4997-8343-122350e790bf',
+                                    'artist':{
+                                       'sort-name':'Schneider, Fred',
+                                       'id':'43bcca8b-9edc-4997-8343-122350e790bf',
+                                       'name':'Fred Schneider'
+                                    }
+                                 },
+                                 {
+                                    'direction':'backward',
+                                    'type':'composer',
+                                    'target':'b8798e20-85ec-4db5-a8fa-df1543296339',
+                                    'artist':{
+                                       'sort-name':'Wilson, Ricky',
+                                       'disambiguation':"B-52's",
+                                       'id':'b8798e20-85ec-4db5-a8fa-df1543296339',
+                                       'name':'Ricky Wilson'
+                                    }
+                                 },
+                                 {
+                                    'direction':'backward',
+                                    'type':'composer',
+                                    'target':'d1c86c31-33e7-47c2-ad6b-a82e1ef69121',
+                                    'artist':{
+                                       'sort-name':'Wilson, Cindy',
+                                       'id':'d1c86c31-33e7-47c2-ad6b-a82e1ef69121',
+                                       'name':'Cindy Wilson'
+                                    }
+                                 }
+                              ],
+                              'title':'Give Me Back My Man'
+                           },
+                           'type':'performance',
+                           'target':'d3d6b7ac-45e9-38f4-b128-e84efa7d543b',
+                           'attribute-list':[
+                              'cover'
+                           ]
+                        }
+                     ],
+                     'title':'Give Me Back My Man',
+                     'puid-list':[
+                        '09cf5411-acef-c86e-1f1e-deb5ab802f26',
+                        'a82ab414-f1c8-88a0-0b31-75bc0f62b4b1',
+                        'd7555655-29ef-eb95-0c03-461d90b937ea'
+                     ],
+                     'isrc-list':[
+                        'DEK590060102'
+                     ],
+                     'id':'95046dfc-d3c4-4ff7-adb6-590d0aa3164a',
+                     'artist-credit-phrase':'Chicks on Speed'
+                  },
+                  'length':'266160',
+                  'position':'2',
+                  'artist-credit-phrase':'Chicks on Speed',
+                  'track_or_recording_length':'266160'
+               },
+               {
+                  'artist-credit':[
+                     {
+                        'artist':{
+                           'sort-name':'Chicks on Speed',
+                           'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                           'name':'Chicks on Speed'
+                        }
+                     }
+                  ],
+                  'number':'3',
+                  'recording':{
+                     'artist-credit':[
+                        {
+                           'artist':{
+                              'sort-name':'Chicks on Speed',
+                              'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                              'name':'Chicks on Speed'
+                           }
+                        }
+                     ],
+                     'length':'141266',
+                     'title':'For All the Boys in the World',
+                     'puid-list':[
+                        '067e0b57-9ac3-056f-b7b1-1f4478f33737',
+                        '09cf5411-acef-c86e-1f1e-deb5ab802f26',
+                        '761aa74b-d07c-df82-61e7-f7d73f54238e',
+                        '7ed2667d-04d1-b842-d0a7-5c220091d00b',
+                        '83b32c50-bf29-1866-f6d9-96caea12458e'
+                     ],
+                     'isrc-list':[
+                        'DEK590060103'
+                     ],
+                     'artist-credit-phrase':'Chicks on Speed',
+                     'id':'1598f6c9-10ea-4e76-8383-47b1d915b606',
+                     'artist-relation-list':[
+                        {
+                           'direction':'backward',
+                           'attribute-list':[
+                              'co'
+                           ],
+                           'type':'producer',
+                           'target':'3a45b846-7f4c-40dc-8825-77d575ea6931',
+                           'artist':{
+                              'sort-name':'Potuznik, Gerhard',
+                              'id':'3a45b846-7f4c-40dc-8825-77d575ea6931',
+                              'name':'Gerhard Potuznik'
+                           }
+                        }
+                     ]
+                  },
+                  'length':'141266',
+                  'position':'3',
+                  'artist-credit-phrase':'Chicks on Speed',
+                  'track_or_recording_length':'141266'
+               },
+               {
+                  'artist-credit':[
+                     {
+                        'artist':{
+                           'sort-name':'Chicks on Speed',
+                           'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                           'name':'Chicks on Speed'
+                        }
+                     }
+                  ],
+                  'number':'4',
+                  'recording':{
+                     'artist-credit':[
+                        {
+                           'artist':{
+                              'sort-name':'Chicks on Speed',
+                              'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                              'name':'Chicks on Speed'
+                           }
+                        }
+                     ],
+                     'length':'375293',
+                     'title':'Glamour Girl',
+                     'puid-list':[
+                        '1c65ce93-75db-a2dd-953a-7fcd960a421a',
+                        '1f312153-d1e8-1ad7-e18e-ab0b56450911',
+                        '7a489678-8050-1fac-0c4a-161dab768768',
+                        'f5cf11ca-b97a-547b-6d1a-d964137d76ad'
+                     ],
+                     'isrc-list':[
+                        'DEK590060104'
+                     ],
+                     'artist-credit-phrase':'Chicks on Speed',
+                     'id':'e1fcb5fc-0d8f-42d9-b446-c38cae284853',
+                     'artist-relation-list':[
+                        {
+                           'direction':'backward',
+                           'attribute-list':[
+                              'guest'
+                           ],
+                           'type':'performer',
+                           'target':'3e3a68ca-8bc5-42c3-b0bc-55bb319f618b',
+                           'artist':{
+                              'sort-name':'Anderson, Punk',
+                              'id':'3e3a68ca-8bc5-42c3-b0bc-55bb319f618b',
+                              'name':'Punk Anderson'
+                           }
+                        }
+                     ]
+                  },
+                  'length':'375293',
+                  'position':'4',
+                  'artist-credit-phrase':'Chicks on Speed',
+                  'track_or_recording_length':'375293'
+               },
+               {
+                  'artist-credit':[
+                     {
+                        'artist':{
+                           'sort-name':'Chicks on Speed',
+                           'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                           'name':'Chicks on Speed'
+                        }
+                     }
+                  ],
+                  'number':'5',
+                  'recording':{
+                     'artist-credit':[
+                        {
+                           'artist':{
+                              'sort-name':'Chicks on Speed',
+                              'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                              'name':'Chicks on Speed'
+                           }
+                        }
+                     ],
+                     'length':'121840',
+                     'title':'~Ped Stang [Re]Issue',
+                     'puid-list':[
+                        '3707258a-a410-03d5-cf05-1f3bcab039a0',
+                        '537982ab-b332-8410-bc0b-56ab6ae34f6e',
+                        '58642a3b-4d73-2c01-39be-0e047bc78704',
+                        '5da126d1-8950-8f2e-9f84-a5d46043995b',
+                        '7a489678-8050-1fac-0c4a-161dab768768',
+                        'a17dee97-a39a-03e3-cd1b-18cce140424b',
+                        'a48959b5-d0fd-1c16-87de-0ea9221f5545',
+                        'a6b99304-779a-0511-dcd2-0570d0793a3c',
+                        'f6c5e63c-8f48-7cd4-42cd-8fb1b5504bd2'
+                     ],
+                     'isrc-list':[
+                        'DEK590060105'
+                     ],
+                     'artist-credit-phrase':'Chicks on Speed',
+                     'id':'fd6ed2a6-33d4-4c56-8bd8-05c3d7b629aa',
+                     'artist-relation-list':[
+                        {
+                           'direction':'backward',
+                           'type':'remixer',
+                           'target':'560efbf4-515a-4f05-9064-942678c3baf8',
+                           'artist':{
+                              'sort-name':'Hecker',
+                              'id':'560efbf4-515a-4f05-9064-942678c3baf8',
+                              'name':'Hecker'
+                           }
+                        }
+                     ]
+                  },
+                  'length':'121840',
+                  'position':'5',
+                  'artist-credit-phrase':'Chicks on Speed',
+                  'track_or_recording_length':'121840'
+               },
+               {
+                  'artist-credit':[
+                     {
+                        'artist':{
+                           'sort-name':'Chicks on Speed',
+                           'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                           'name':'Chicks on Speed'
+                        }
+                     }
+                  ],
+                  'number':'6',
+                  'recording':{
+                     'artist-credit':[
+                        {
+                           'artist':{
+                              'sort-name':'Chicks on Speed',
+                              'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                              'name':'Chicks on Speed'
+                           }
+                        }
+                     ],
+                     'length':'254133',
+                     'title':'Little Star',
+                     'puid-list':[
+                        '0e93af3c-a5a4-b595-3d7b-76292371b453',
+                        '15dc44ff-8cc9-2af6-9606-b6a10718084f',
+                        'a211aa25-5e76-0fd6-4500-1c2c9822b878',
+                        'eea695c8-0382-ad84-7db2-5ce15a34f0ef'
+                     ],
+                     'isrc-list':[
+                        'DEK590060106'
+                     ],
+                     'id':'6043d551-9879-400c-8bd0-83cda22cd8ce',
+                     'artist-credit-phrase':'Chicks on Speed'
+                  },
+                  'length':'254133',
+                  'position':'6',
+                  'artist-credit-phrase':'Chicks on Speed',
+                  'track_or_recording_length':'254133'
+               },
+               {
+                  'artist-credit':[
+                     {
+                        'artist':{
+                           'sort-name':'Chicks on Speed',
+                           'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                           'name':'Chicks on Speed'
+                        }
+                     }
+                  ],
+                  'number':'7',
+                  'recording':{
+                     'artist-credit':[
+                        {
+                           'artist':{
+                              'sort-name':'Chicks on Speed',
+                              'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                              'name':'Chicks on Speed'
+                           }
+                        }
+                     ],
+                     'length':'219640',
+                     'title':'Warm Leatherette',
+                     'puid-list':[
+                        '15dc44ff-8cc9-2af6-9606-b6a10718084f',
+                        '1e164533-bfa9-c3f7-8b82-59ae14117662'
+                     ],
+                     'isrc-list':[
+                        'DEK590060107'
+                     ],
+                     'id':'25ba21b5-9a70-45ce-909f-7f213434176b',
+                     'artist-credit-phrase':'Chicks on Speed'
+                  },
+                  'length':'219640',
+                  'position':'7',
+                  'artist-credit-phrase':'Chicks on Speed',
+                  'track_or_recording_length':'219640'
+               },
+               {
+                  'artist-credit':[
+                     {
+                        'artist':{
+                           'sort-name':'Chicks on Speed',
+                           'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                           'name':'Chicks on Speed'
+                        }
+                     }
+                  ],
+                  'number':'8',
+                  'recording':{
+                     'artist-credit':[
+                        {
+                           'artist':{
+                              'sort-name':'Chicks on Speed',
+                              'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                              'name':'Chicks on Speed'
+                           }
+                        }
+                     ],
+                     'length':'277013',
+                     'title':'Kaltes Klares Wasser',
+                     'puid-list':[
+                        '1bbd1d48-b2f0-fa00-65d2-f4c6c189e201',
+                        '1e164533-bfa9-c3f7-8b82-59ae14117662',
+                        '4885b1d4-78a7-9839-5639-0b442d664301',
+                        'ff3d813a-08d3-a1c0-018a-a6071c942be3'
+                     ],
+                     'isrc-list':[
+                        'DEK590060108'
+                     ],
+                     'id':'fe61f13f-6635-4292-837e-deb130643aec',
+                     'artist-credit-phrase':'Chicks on Speed'
+                  },
+                  'length':'277013',
+                  'position':'8',
+                  'artist-credit-phrase':'Chicks on Speed',
+                  'track_or_recording_length':'277013'
+               },
+               {
+                  'artist-credit':[
+                     {
+                        'artist':{
+                           'sort-name':'Chicks on Speed',
+                           'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                           'name':'Chicks on Speed'
+                        }
+                     }
+                  ],
+                  'number':'9',
+                  'recording':{
+                     'artist-credit':[
+                        {
+                           'artist':{
+                              'sort-name':'Chicks on Speed',
+                              'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                              'name':'Chicks on Speed'
+                           }
+                        }
+                     ],
+                     'length':'156720',
+                     'title':'Yes I Do!',
+                     'puid-list':[
+                        '14bd261d-3e78-b7f4-aa06-51e7e8d4febf',
+                        '1bbd1d48-b2f0-fa00-65d2-f4c6c189e201',
+                        '5211f018-9307-3bc7-43a6-61850b307c3a',
+                        'fe8b3784-2608-d5f9-3920-2e82f258493f'
+                     ],
+                     'isrc-list':[
+                        'DEK590060109'
+                     ],
+                     'id':'e0b144b5-a777-4fc7-b0ed-b4dbbcfcff48',
+                     'artist-credit-phrase':'Chicks on Speed'
+                  },
+                  'length':'156720',
+                  'position':'9',
+                  'artist-credit-phrase':'Chicks on Speed',
+                  'track_or_recording_length':'156720'
+               },
+               {
+                  'artist-credit':[
+                     {
+                        'artist':{
+                           'sort-name':'Chicks on Speed',
+                           'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                           'name':'Chicks on Speed'
+                        }
+                     }
+                  ],
+                  'number':'10',
+                  'recording':{
+                     'artist-credit':[
+                        {
+                           'artist':{
+                              'sort-name':'Chicks on Speed',
+                              'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                              'name':'Chicks on Speed'
+                           }
+                        }
+                     ],
+                     'length':'107360',
+                     'title':'Procrastinator',
+                     'puid-list':[
+                        '1b626822-41c6-2445-0d15-cd47649f5ede',
+                        '78c45619-c631-0023-478a-70d048271041',
+                        '8af86bb5-0522-2fbb-ab2a-3a78a6604789',
+                        'fe8b3784-2608-d5f9-3920-2e82f258493f'
+                     ],
+                     'isrc-list':[
+                        'DEK590060110'
+                     ],
+                     'id':'40e810ae-fdb0-4372-a911-4f860503c8df',
+                     'artist-credit-phrase':'Chicks on Speed'
+                  },
+                  'length':'107360',
+                  'position':'10',
+                  'artist-credit-phrase':'Chicks on Speed',
+                  'track_or_recording_length':'107360'
+               },
+               {
+                  'artist-credit':[
+                     {
+                        'artist':{
+                           'sort-name':'Chicks on Speed',
+                           'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                           'name':'Chicks on Speed'
+                        }
+                     }
+                  ],
+                  'number':'11',
+                  'recording':{
+                     'artist-credit':[
+                        {
+                           'artist':{
+                              'sort-name':'Chicks on Speed',
+                              'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                              'name':'Chicks on Speed'
+                           }
+                        }
+                     ],
+                     'length':'190360',
+                     'title':'Mind Your Own Business',
+                     'puid-list':[
+                        '1bdff957-bf2b-5e18-ec98-5840d8dca33c',
+                        '742b7203-e445-9005-9575-1791e9fb2b74',
+                        '8af86bb5-0522-2fbb-ab2a-3a78a6604789',
+                        'a5f938b8-1d16-a907-90ef-e1ba3602a8e6'
+                     ],
+                     'isrc-list':[
+                        'DEK590060111'
+                     ],
+                     'id':'6f525e3c-5b92-4210-8d36-090d23387089',
+                     'artist-credit-phrase':'Chicks on Speed'
+                  },
+                  'length':'190360',
+                  'position':'11',
+                  'artist-credit-phrase':'Chicks on Speed',
+                  'track_or_recording_length':'190360'
+               },
+               {
+                  'artist-credit':[
+                     {
+                        'artist':{
+                           'sort-name':'Chicks on Speed',
+                           'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                           'name':'Chicks on Speed'
+                        }
+                     }
+                  ],
+                  'number':'12',
+                  'recording':{
+                     'artist-credit':[
+                        {
+                           'artist':{
+                              'sort-name':'Chicks on Speed',
+                              'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                              'name':'Chicks on Speed'
+                           }
+                        }
+                     ],
+                     'length':'230480',
+                     'title':'The Floating Pyramid Over Frankfurt That the Taxi Driver Saw When He Was Landing',
+                     'puid-list':[
+                        'fe7290e6-7a35-ba20-d8a6-a117a0e42df3'
+                     ],
+                     'isrc-list':[
+                        'DEK590060112'
+                     ],
+                     'id':'0991ca9a-3d98-498f-86ce-190ff0666ae2',
+                     'artist-credit-phrase':'Chicks on Speed'
+                  },
+                  'length':'230480',
+                  'position':'12',
+                  'artist-credit-phrase':'Chicks on Speed',
+                  'track_or_recording_length':'230480'
+               },
+               {
+                  'artist-credit':[
+                     {
+                        'artist':{
+                           'sort-name':'Chicks on Speed',
+                           'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                           'name':'Chicks on Speed'
+                        }
+                     }
+                  ],
+                  'number':'13',
+                  'recording':{
+                     'artist-credit':[
+                        {
+                           'artist':{
+                              'sort-name':'Chicks on Speed',
+                              'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                              'name':'Chicks on Speed'
+                           }
+                        }
+                     ],
+                     'title':'Euro Trash Girl',
+                     'isrc-list':[
+                        'DEK590060113'
+                     ],
+                     'artist-credit-phrase':'Chicks on Speed',
+                     'artist-relation-list':[
+                        {
+                           'direction':'backward',
+                           'attribute-list':[
+                              'co'
+                           ],
+                           'type':'producer',
+                           'target':'d48215e0-dfec-47de-8a06-f20b3c899386',
+                           'artist':{
+                              'sort-name':'Neumann, Tobi',
+                              'id':'d48215e0-dfec-47de-8a06-f20b3c899386',
+                              'name':'Tobi Neumann'
+                           }
+                        }
+                     ],
+                     'length':'242200',
+                     'work-relation-list':[
+                        {
+                           'work':{
+                              'artist-relation-list':[
+                                 {
+                                    'direction':'backward',
+                                    'type':'composer',
+                                    'target':'e0fefe0b-74c1-4af8-989e-5efd17655c4e',
+                                    'artist':{
+                                       'sort-name':'Peters, Josef',
+                                       'id':'e0fefe0b-74c1-4af8-989e-5efd17655c4e',
+                                       'name':'Josef Peters'
+                                    }
+                                 }
+                              ],
+                              'recording-relation-list':[
+                                 {
+                                    'recording':{
+                                       'artist-credit':[
+                                          {
+                                             'artist':{
+                                                'sort-name':'Chicks on Speed',
+                                                'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                                                'name':'Chicks on Speed'
+                                             }
+                                          }
+                                       ],
+                                       'length':'242200',
+                                       'title':'Euro Trash Girl',
+                                       'puid-list':[
+                                          '2ccd6a70-9f5e-66cf-ae24-3bab92904f49',
+                                          '3a8b7050-e840-c910-c1b1-6700ed2797f0',
+                                          'eea695c8-0382-ad84-7db2-5ce15a34f0ef'
+                                       ],
+                                       'isrc-list':[
+                                          'DEK590060113'
+                                       ],
+                                       'id':'b2c884f2-daf0-4899-bd61-cd4f4897e943',
+                                       'artist-credit-phrase':'Chicks on Speed'
+                                    },
+                                    'direction':'backward',
+                                    'type':'performance',
+                                    'target':'b2c884f2-daf0-4899-bd61-cd4f4897e943'
+                                 }
+                              ],
+                              'id':'d3dc88e1-2f34-3b47-ae44-112035778468',
+                              'title':'Euro Trash Girl'
+                           },
+                           'type':'performance',
+                           'target':'d3dc88e1-2f34-3b47-ae44-112035778468'
+                        },
+                        {
+                           'work':{
+                              'recording-relation-list':[
+                                 {
+                                    'recording':{
+                                       'artist-credit':[
+                                          {
+                                             'artist':{
+                                                'sort-name':'Cracker',
+                                                'id':'ca48bfb8-37c5-4a04-9837-a07975ee0cd3',
+                                                'name':'Cracker'
+                                             }
+                                          }
+                                       ],
+                                       'length':'484000',
+                                       'artist-credit-phrase':'Cracker',
+                                       'id':'18f52035-e3a9-4ea1-a589-3ccae474fb4d',
+                                       'title':'Euro-Trash Girl'
+                                    },
+                                    'direction':'backward',
+                                    'type':'performance',
+                                    'target':'18f52035-e3a9-4ea1-a589-3ccae474fb4d'
+                                 },
+                                 {
+                                    'recording':{
+                                       'artist-credit':[
+                                          {
+                                             'artist':{
+                                                'sort-name':'Chicks on Speed',
+                                                'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                                                'name':'Chicks on Speed'
+                                             }
+                                          }
+                                       ],
+                                       'length':'242200',
+                                       'title':'Euro Trash Girl',
+                                       'puid-list':[
+                                          '2ccd6a70-9f5e-66cf-ae24-3bab92904f49',
+                                          '3a8b7050-e840-c910-c1b1-6700ed2797f0',
+                                          'eea695c8-0382-ad84-7db2-5ce15a34f0ef'
+                                       ],
+                                       'isrc-list':[
+                                          'DEK590060113'
+                                       ],
+                                       'id':'b2c884f2-daf0-4899-bd61-cd4f4897e943',
+                                       'artist-credit-phrase':'Chicks on Speed'
+                                    },
+                                    'direction':'backward',
+                                    'attribute-list':[
+                                       'cover'
+                                    ],
+                                    'type':'performance',
+                                    'target':'b2c884f2-daf0-4899-bd61-cd4f4897e943'
+                                 }
+                              ],
+                              'id':'db4829ba-14dd-3514-9ce9-43e4ff1c73cc',
+                              'title':'Euro-Trash Girl'
+                           },
+                           'type':'performance',
+                           'target':'db4829ba-14dd-3514-9ce9-43e4ff1c73cc',
+                           'attribute-list':[
+                              'cover'
+                           ]
+                        }
+                     ],
+                     'puid-list':[
+                        '2ccd6a70-9f5e-66cf-ae24-3bab92904f49',
+                        '3a8b7050-e840-c910-c1b1-6700ed2797f0',
+                        'eea695c8-0382-ad84-7db2-5ce15a34f0ef'
+                     ],
+                     'id':'b2c884f2-daf0-4899-bd61-cd4f4897e943'
+                  },
+                  'length':'242200',
+                  'position':'13',
+                  'artist-credit-phrase':'Chicks on Speed',
+                  'track_or_recording_length':'242200'
+               }
+            ],
+            'format':'CD'
+         }
+      ],
+      'release-group':{
+         'artist-credit':[
+            {
+               'artist':{
+                  'sort-name':'Chicks on Speed',
+                  'id':'4da58f86-c7fb-4837-9ef5-423f122d2d15',
+                  'name':'Chicks on Speed'
+               }
+            }
+         ],
+         'first-release-date':'2000',
+         'title':'Chicks on Speed Will Save Us All!',
+         'primary-type':'Album',
+         'type':'Album',
+         'id':'d6d84167-4660-3361-9350-70f14c381eee',
+         'artist-credit-phrase':'Chicks on Speed'
+      },
+      'text-representation':{
+         'language':'eng',
+         'script':'Latn'
+      },
+      'url-relation-list':[
+         {
+            'type':'amazon asin',
+            'target':'http://www.amazon.co.uk/gp/product/B00004S7RX'
+         },
+         {
+            'type':'discogs',
+            'target':'http://www.discogs.com/release/65839'
+         }
+      ],
+      'date':'2000',
+      'artist-credit-phrase':'Chicks on Speed',
+      'quality':'normal',
+      'id':'267f4d78-3b84-3772-b747-fd53532564e7'

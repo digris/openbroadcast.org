@@ -1,0 +1,48 @@
+<div class="result">
+	<div class="search">
+		<h1>Search [Hit "Enter"]</h1>
+		<p>
+			Search Library for: "{{ meta.query }}"
+			
+		</p>
+	</div>
+	<div class="listing">
+		{% for item in objects %}
+
+		<div class="item linkable hoverable">
+			
+			<div class="row-fluid">
+
+				<div class="span2">
+					<img src="{{ item.main_image }}" />
+				</div>
+
+				<div class="span10">
+					
+					<a href="{{ item.get_absolute_url }}" class="link-main"><h2>{{ item.name|highlight(meta.query) }}</h2></a>
+					
+
+
+					<div class="related">
+						<ul class="unstyled">
+                            {% if item.artist %}
+                                <li>{{ item.artist|highlight(meta.query) }}</li>
+                            {% endif %}
+                            {% if item.release %}
+                                <li>{{ item.release|highlight(meta.query) }}</li>
+                            {% endif %}
+						</ul>
+
+					</div>
+					
+					
+				</div>
+				
+			</div>
+			
+
+
+		</div>
+		{% endfor %}
+	</div>
+</div>

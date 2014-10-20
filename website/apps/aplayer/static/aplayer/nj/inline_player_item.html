@@ -1,0 +1,35 @@
+<div class="item playlist media object {{ object.uuid }} hoverable" id="{{ object.uuid }}"
+     id="playlist_item_{{ object.id }}"
+     data-item_id="{{ object.id }}"
+     data-id="{{ object.id }}"
+     data-uuid="{{ object.uuid }}">
+
+    <div class="wrapper">
+
+        <div class="row-fluid">
+            <div class="span10 information">
+                <span class="title">
+                    <a class="" href="{{ object.absolute_url }}">{{ object.name }}</a>
+                </span>
+                <span><a class="" href="{{ object.artist.absolute_url }}">{{ object.artist.name }}</a> |
+                <a class="" href="{{ object.release.absolute_url }}">{{ object.release.name }}</a></span>
+            </div>
+            <div class="span2 duration">
+                <span>
+                {{ object.formated_duration }}
+                    <a class="" data-action="collect" href="#"><i class="icon-plus icon-large"></i></a>
+                </span>
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="indicator" style="width: 100% !important">
+        <div class="wrapper">
+            <div class="inner">&nbsp;</div>
+        </div>
+    </div>
+</div>

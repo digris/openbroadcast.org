@@ -1,0 +1,55 @@
+{% load calc i18n truncate arating_tags %}
+
+
+
+<div class="list_body_row item editable {{ item.uuid }}" id="list_item_{{ item.id }}">
+
+
+	<div class="row-fluid">
+		
+		<div class="span1">
+			{{ item.position }}
+			{{ item.media.get_duration }}
+		</div>
+		
+		<div class="span4">
+			<ul class="unstyled">
+				<li class="bold">
+					<a href="{{ item.media.get_absolute_url }}" title="{{ item.media.name }}">
+						{{ item.media.name|truncate_chars_inner:24 }}
+					</a>
+				</li>
+				<li class="small">
+					<span>
+						<a href="{{ item.media.artist.get_absolute_url }}" title="{{ item.media.artist.name }}">
+							{{ item.media.artist.name|truncate_chars_inner:24 }}
+						</a>
+					</span>
+					|
+					<span>
+						<a href="{{ item.media.release.get_absolute_url }}" title="{{ item.media.release.name }}">
+							{{ item.media.release.name|truncate_chars_inner:24 }}
+						</a>
+					</span>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="span1">
+			
+		</div>
+		
+		<div class="span2 fade-cue">
+			<input type="text" value="{{ item.fade_in }}" />
+			<input type="text" value="{{ item.fade_out }}" />
+		</div>
+		
+		<div class="span2 fade-cue">
+			<input type="text" value="{{ item.cue_in }}" />
+			<input type="text" value="{{ item.cue_out }}" />
+		</div>
+		
+	</div>
+
+	
+</div>

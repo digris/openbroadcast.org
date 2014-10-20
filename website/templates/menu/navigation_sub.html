@@ -1,0 +1,21 @@
+{% load menu_tags %}
+
+
+{% for child in children %}
+
+
+	{% if child.parent_id and 1 = 1 %}
+	<li class="{% if child.selected %}selected{% endif %}{% if child.ancestor %}ancestor{% endif %}{% if child.sibling %}sibling{% endif %}{% if child.descendant %}descendant{% endif %}">
+	<a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>
+	{% endif %}
+	
+	{% if child.children %}
+    <ul id="nav_sub-{{ child.id }}" class="navigation-sub" style="display: none;" >
+        {% show_menu from_level to_level extra_inactive extra_active template "" "" child %}
+    </ul>
+    {% endif %}
+    
+	{% if child.parent_id %}    
+	</li>
+	{% endif %}
+{% endfor %}

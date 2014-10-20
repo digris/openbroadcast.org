@@ -1,0 +1,23 @@
+# Package Installation notes
+
+## 
+
+numpy does not correctly install through PIP.
+so a "pip install numpy" should fix it.
+ 
+## libsndfile
+aptitude install libsndfile
+
+# on os x
+sudo port install libsndfile
+
+#
+install python-dev libboost-dev libtag1-dev ffmpeg
+# on os x
+brew install boost taglib
+
+
+
+
+# linux packages
+

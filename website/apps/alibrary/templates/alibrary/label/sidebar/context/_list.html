@@ -1,0 +1,22 @@
+{% load i18n %}
+
+
+<div class="menu-context">
+
+    <div class="action-group">
+        <ul class="unstyled">
+
+            {% if perms.alibrary.merge_label %}
+                <li class="action">
+                    <a class="hoverable disabled selection-required selection-multiple" href="#" data-action="merge" data-ct="label" title="{% trans "Merge Selection" %}">
+                        <i class="icon icon-align-justify"></i>
+                        <span>{% trans "Merge Selection" %}</span>
+                        <small class="opt pull-right"></small>
+                    </a>
+                </li>
+            {% endif %}
+
+        </ul>
+    </div>
+
+</div>

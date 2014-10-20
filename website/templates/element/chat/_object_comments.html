@@ -1,0 +1,21 @@
+{% load i18n disqus_tags comments %}
+		<div class="header">
+			<h3>{% trans "Comments" %}</h3>
+		</div>
+
+		<div class="form">
+			{% if user.is_authenticated %}
+			{% render_comment_form for object %}
+			{% else %}
+			<p>
+				{% trans "Please login to join the conversation" %}
+			</p>
+			{% endif %}
+		</div>
+
+		<!-- TODO: maybe move to template tag.. just testing here... -->
+		{% with router=object.get_api_url %}
+		{# include "element/chat/_message_list.html" #}
+		{% endwith %}
+
+		{% render_comment_list for object %}

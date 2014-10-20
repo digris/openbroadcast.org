@@ -1,0 +1,41 @@
+
+div.body h3 {
+    font-size:120%;
+}
+
+hr {
+    border: 10px solid #eee;
+    margin: 3em 0;
+}
+
+
+pre {
+    /*background:#f8f8f8;*/
+    border-color:#ccc;
+}
+
+.request-headers, .response-headers {
+    margin-bottom:0;
+}
+.request-headers pre, .response-headers pre {
+    /*background:#fff;*/
+    margin-bottom:0;
+    border:1px solid #ccc;
+    border-radius: 0;
+}
+.response-body {
+    margin-top:0;
+}
+.response-body pre {
+    margin-top:0;
+    /*background:#f8f8f8;*/
+    border:1px solid #ccc;
+    border-top:0;
+}
+.no-headers pre {
+    border-radius:5px;
+    border-top:1px solid #ccc;
+}
+.no-body pre {
+    border-radius:5px;
+}

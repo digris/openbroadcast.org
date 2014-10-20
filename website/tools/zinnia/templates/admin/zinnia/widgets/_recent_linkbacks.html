@@ -1,0 +1,29 @@
+{% load i18n %}
+{% load url from future %}
+{% for linkback in linkbacks %}
+<tr>
+  <th>
+    {% with entry=linkback.content_object %}
+    <a href="{{ linkback.url }}">{{ linkback.name }}</a>
+    {% trans "made a linkback on" %}
+    <a href="{{ entry.get_absolute_url }}#{{ linkback.flags.all.0.flag }}_{{ linkback.pk }}"
+       title="{{ entry.title }}">
+      {{ entry.title }}
+    </a>
+    {% endwith %}
+    {{ linkback.comment|truncatewords:20|linebreaks }}
+  </th>
+  <td>
+    <a href="{% url 'admin:comments_comment_change' linkback.pk %}"
+       title="{% trans "Edit the linkback" %}" class="changelink">
+      {% trans "Edit" %}
+    </a>
+  </td>
+</tr>
+{% empty %}
+<tr>
+  <th colspan="2">
+    {% trans "No linkbacks yet." %}
+  </th>
+</tr>
+{% endfor %}

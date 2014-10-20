@@ -1,0 +1,28 @@
+{% load truncate i18n thumbnail arating_tags %}
+
+<div class="item selectable clickable linkable hoverable owner" id="list_item_{{ item.pk }}">
+	<div class="image profile-image">
+		<img src="{% thumbnail item.image 194x194 crop upscale %}" class="img-polaroid" />
+	</div>
+	<div class="information">
+		<h6><a href="{{ item.get_absolute_url }}" class="permalink">{% firstof item.user.get_full_name|truncate_chars_inner:20 item.user.username|truncate_chars_inner:20 %}</a></h6>
+	
+	<ul class="unstyled">
+			<li>
+				<span class="key">{% trans "Username" %}:</span> <span class="value">{{ item.user.username }}</span>
+			</li>
+		
+			{% if item.user.date_joined %}
+			<li>
+				<span class="key">{% trans "Date joined" %}:</span> <span class="value">{{ item.user.date_joined|date:"SHORT_DATE_FORMAT" }}</span>
+			</li>
+			{% endif %}
+			
+			{% if item.user.last_login %}
+			<li>
+				<span class="key">{% trans "Last login" %}:</span> <span class="value">{{ item.user.last_login|date:"SHORT_DATE_FORMAT" }}</span>
+			</li>
+			{% endif %}
+	</dl>
+	</div>
+</div>

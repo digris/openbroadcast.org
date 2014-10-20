@@ -1,0 +1,37 @@
+@import "_settings.scss";
+
+// partials
+@import "partials/_mixins.scss";
+@import "partials/_base.scss";
+@import "partials/_forms.scss";
+@import "partials/_tables.scss";
+@import "partials/_filer.scss";
+@import "partials/_cmsplaceholders.scss";
+@import "partials/_content.scss";
+@import "partials/_icons.scss";
+
+@import "partials/_shortcuts.scss";
+
+// TODO:
+//@import "partials/_messages.scss";
+
+
+// Media should come last
+//@import "partials/media";
+
+// Layout for pad version
+@media only screen and (max-width: 1024px) {
+	@import "devices/_pad.scss";
+}
+
+
+// Layout for mobile version
+/*@media handheld, only screen and (max-width: 767px) {
+	@import "devices/mobile";
+}
+
+
+// Provide higher res assets for iPhone 4
+@media only screen and (-webkit-min-device-pixel-ratio: 2) { 
+	@import "devices/retina";
+}*/

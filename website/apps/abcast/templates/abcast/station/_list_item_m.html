@@ -1,0 +1,81 @@
+{% load thumbnail i18n truncate display_tags arating_tags spurl %}
+
+
+
+<div class="list_body_row selectable item profile {% if item.user == user %}owner{% endif %} {% if item.user == user %}owner{% endif %} view edit" id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}">
+
+	<div class="list_body_item c1 image_center_bg" {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 54x54 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}>
+		<ul class="unstyled">
+			<li class="play">
+				{% if item.is_approved %}
+				<i class="icon-star"></i>
+				{% else %}{% if item.mentor.username %}
+				<i class="icon-star-empty"></i>
+				{% else %}
+				<i class="icon-star-empty"></i>
+				{% endif %}{% endif %}
+			</li>
+		</ul>
+	</div>
+	
+	<div class="list_body_item c2">
+		<ul class="unstyled">
+			<li class="bold">
+				<a href="{{ item.get_absolute_url }}" class="permalink">{{ item.name|truncate_chars_inner:20  }}
+				{% if item.country %}({{ item.country }}){% endif %}
+				{% topflop_for_object item %} </a>
+			</li>
+		
+			{% if item.user.date_joined %}
+			<li class="small">
+				<span class="key">{% trans "Date joined" %}:</span> <span class="value">{{ item.user.date_joined|date:"SHORT_DATE_FORMAT" }}</span>
+			</li>
+			{% endif %}
+			
+			{% if item.user.last_login %}
+			<li class="small">
+				<span class="key">{% trans "Last login" %}:</span> <span class="value">{{ item.user.last_login|date:"SHORT_DATE_FORMAT" }}</span>
+			</li>
+			{% endif %}
+			
+		</ul>
+	</div>
+
+	<div class="list_body_item c3">
+		<ul class="unstyled horizontal">
+			
+			{% for service in item.service_set.all %}
+			<li>
+			<a href="{{ service.service_url }}" class="skip-external"><i class="icon-link"></i></a>
+			</li>
+			{% endfor %}
+
+		</ul>
+	</div>
+
+	<div class="list_body_item c4 action">
+		<div class="inner_row top right">
+			<!-- Actions sub-view -->
+			<div class="wrapper">
+				<div class="right">
+					<ul class="unstyled">
+						<li>
+						</li>
+					</ul>
+				</div>
+				<div class="clear"></div>
+			</div>
+			  
+		</div>
+		<div class="clear"></div>
+		<div class="inner_row bottom left">
+			<ul class="tags unstyled">
+				{% for tag in item.tags|slice:":7" %}
+				<li>{{ tag.name|truncate_chars_inner:12 }}</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+
+</div>
+

@@ -1,0 +1,48 @@
+{% extends "datatrans/base.html" %}
+{% load i18n %}
+{% load adminmedia %}
+{% block title %}{% trans "Models to translate" %} - {{ block.super }}{% endblock %}
+{% block coltype %}colMS{% endblock %}
+{% block bodyclass %}dashboard{% endblock %}
+{% block content %}
+
+<h1>{% trans "Models to translate" %}</h1>
+<h3>{% blocktrans %}{{ words }} words{% endblocktrans %}</h3>
+
+<div id="content-main">
+	<p>
+		<a class="button" href="{% url datatrans_make_messages %}">{% trans "Scan models" %}</a>
+		<a class="button" href="{% url datatrans_obsolete_list %}">{% trans "Obsolete translations" %}</a>
+	</p>
+	{% for model in models %}
+	<div class="module">
+		<table>
+		    <caption><span class="section">{{ model.model_name }} ({% for field in model.field_names %}{{ field }}{% if not forloop.last %}, {% endif %}{% endfor %})</span>
+            <span style='float:right'>{{ model.words }} {% blocktrans %}words{% endblocktrans %}</span> </caption>
+		    {% for lang in model.languages %}
+	        <tr>
+	            <th scope="row">{{ lang.1 }}</th>
+	            <td>{{ lang.2.0 }}%</td>
+	            <td>
+	            	<div style="width: 64px; border: 1px solid #CCC; margin: 0; padding: 0;">
+					     <div style="margin: 0; padding: 0; width: {% widthratio lang.2.0 100 64 %}px; height: 12px; background: #ACE url({% admin_media_prefix %}img/admin/default-bg.gif) repeat-x;"></div>
+					</div>
+	            </td>
+	            <td><a href="{% url datatrans_model_detail model.slug lang.0 %}" class="changelink">{% trans 'Change' %}</a></td>
+	        </tr>
+		    {% endfor %}
+		    <tr>
+		    	<td>{% trans "Total" %}:</td>
+		    	<td>{{ model.stats.0 }}%</td>
+		    	<td>
+	            	<div style="width: 64px; border: 1px solid #CCC; margin: 0; padding: 0;">
+					     <div style="margin: 0; padding: 0; width: {% widthratio model.stats.0 100 64 %}px; height: 12px; background: #ACE url({% admin_media_prefix %}img/admin/default-bg.gif) repeat-x;"></div>
+					</div>
+	            </td>
+	            <td>&nbsp;</td>
+		    </tr>
+	    </table>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}

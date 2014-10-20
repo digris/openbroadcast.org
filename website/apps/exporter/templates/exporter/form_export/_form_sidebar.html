@@ -1,0 +1,68 @@
+{% load i18n %}
+
+<div id="import_summary" class="import summary listing">
+
+	<div class="page-header">
+		<h2>{% trans "Overview" %} <small>{% trans "Current Export" %}</small></h2>
+	</div>
+
+	<div class="summary item ready hoverable">
+		<h4><i class="icon-check-empty"></i> {% trans "Ready to import" %}</h4>
+		<div class="row-fluid ">
+			<div class="span3">
+				<span class="num-files">0</span> {% trans "files" %}
+			</div>
+			<div class="span9">
+				<button class=" pull-right btn btn-mini btn-primary start-import-all" type="button">{% trans "Export all" %}</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="summary item done hoverable">
+		<h4><i class="icon-check"></i> {% trans "Export completed" %} <a class="toggle" data-toggle="done" href="#"><i class="icon-angle-up pull-right"></i></a></h4>
+		<div class="row-fluid ">
+			<div class="span3">
+				<span class="num-files">0</span> {% trans "files" %}
+			</div>
+			<div class="span9">
+			</div>
+		</div>
+	</div>
+
+	<div class="summary item duplicate hoverable">
+		<h4><i class="icon-copy"></i> {% trans "Duplicates" %} <a class="toggle" data-toggle="duplicate" href="#"><i class="icon-angle-up pull-right"></i></a></h4>
+		<div class="row-fluid ">
+			<div class="span3">
+				<span class="num-files">0</span> {% trans "files" %}
+			</div>
+			<div class="span9">
+				
+			</div>
+		</div>
+	</div>
+
+	<div class="summary item warning hoverable">
+		<h4><i class="icon-question-sign"></i> {% trans "Information needed" %}</h4>
+		<div class="row-fluid ">
+			<div class="span3">
+				<span class="num-files">0</span> {% trans "files" %}
+			</div>
+			<div class="span9">
+				
+			</div>
+		</div>
+	</div>
+
+	<div class="summary item error hoverable">
+		<h4><i class="icon-warning-sign"></i> {% trans "Errors" %}</h4>
+		<div class="row-fluid ">
+			<div class="span3">
+				<span class="num-files">0</span> {% trans "files" %}
+			</div>
+			<div class="span9">
+				
+			</div>
+		</div>
+	</div>
+
+</div>

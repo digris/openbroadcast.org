@@ -1,0 +1,34 @@
+{% extends "layout_base.html" %}
+
+<!-- modifyed for 3-col box layout -->
+
+{% block inner %}
+	<div class="container app allauth">
+		
+		
+		<div class="row">
+			<div class="span8">
+		
+						{% with width=630 main_item_width=523 sidebar_map_size="296x100" columns=2 %}
+						
+						{% block body %}
+						{% endblock %}
+		        		
+		        		{% endwith %}
+	
+			</div>
+		
+	
+			<div class="span4">
+					{% with width=220 columns=1 %}
+	
+		        		{% block sidebarx %}
+		        		{% endblock %}
+		        	
+					{% endwith %}
+			</div>
+		</div>
+
+
+	</div>
+{% endblock %}

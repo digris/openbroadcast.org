@@ -1,0 +1,34 @@
+<div class="result">
+	<div class="search">
+		<h1>Search [Hit "Enter"]</h1>
+		<p>
+			Search Network for: "{{ meta.query }}"
+			
+		</p>
+	</div>
+	<div class="listing">
+		{% for item in objects %}
+
+		<div class="item linkable hoverable">
+			
+			<div class="row-fluid">
+
+				<div class="span2">
+					<img src="{{ item.image }}" />
+				</div>
+
+				<div class="span10">
+					<a href="{{ item.get_absolute_url }}" class="link-main"><h2>{{ item.display_name|highlight(meta.query) }}</h2></a>
+                    <span><!--<i class="icon icon-user"></i>-->{{ item.username }}</span><br />
+                    <span>{% if item.country %}{{ item.country }}{% endif %} {% if item.city %}{{ item.city }}{% endif %}</span><br />
+                    <span>Member since {{ item.created|format_datetime('date') }}</span>
+				</div>
+				
+			</div>
+			
+
+
+		</div>
+		{% endfor %}
+	</div>
+</div>

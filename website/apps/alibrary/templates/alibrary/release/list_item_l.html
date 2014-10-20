@@ -1,0 +1,216 @@
+{% load adv_cache hash_tags thumbnail i18n truncate display_tags arating_tags spurl spacify_tags %}
+
+<div class="list_body_row selectable clickable item release {{ item.uuid }} {% if item.creator == user %} owner{% endif %}"
+     id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}"
+     {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 200x200 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}
+     data-id="{{ item.id }}"
+     data-absolute_url="{{ item.get_absolute_url }}"
+     data-uuid="{{ item.uuid }}"
+     data-ct="release">
+
+
+
+
+    <div class="wrapper_icon">
+
+        {% if item.get_media.count > 0 %}
+            {% with object=item ct="release" %}
+                {% include "alibrary/element/_item_actions_primary.html" %}
+            {% endwith %}
+        {% endif %}
+
+    </div>
+
+    <div class="spacer tag-cloud">
+
+        <!-- TODO: this block consumes too much rendering time. -->
+
+        <ul class="tags unstyled horizontal">
+            {% for tag in item.tags|slice:":8" %}
+                <li class="{% if tag.pk in active_tags %}__active{% endif %}">{{ tag.name|truncate_chars_inner:10 }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+
+
+    {% if item.is_new %}
+    <div class="marker new">
+        <span><a href="{% spurl base=request.get_full_path toggle_query="new=1,0" %}" title="{% trans "Show promotional releases only" %}">new</a></span>
+    </div>
+    {% endif %}
+
+    {% if item.is_promotional %}
+    <div class="marker promo">
+        <span><a href="{% spurl base=request.get_full_path toggle_query="promo=1,0" %}" title="{% trans "Show promotional releases only" %}">promo</a></span>
+    </div>
+    {% endif %}
+
+
+
+    <div class="wrapper_info">
+
+        <div class="wrapper_inner">
+
+
+
+            <div class="list_body_item">
+
+
+                <ul class="title">
+
+                    <li class="bold">
+                        <a href="{{ item.get_absolute_url }}"
+                           title="{{ item.name }}"> {{ item.name|truncate_chars_inner:18 }}
+                            {% if item.release_country %}({{ item.release_country.iso2_code }}){% endif %}
+                            {% cache 3600 "topflop_release" item.pk item.updated %}
+                            {% topflop_for_object item %}
+                            {% endcache %}
+
+                        </a>
+                    </li>
+                    <li>
+
+                        {% comment %}{% endcomment %}
+
+                        {% for artist in item.get_artists %}
+
+                            {% if "join_phrase" in artist %}
+
+
+                                {% if artist.join_phrase %}{{ artist.join_phrase }}{% endif %}
+                                {% if artist.artist.get_absolute_url %}
+                                    <a href="{{ artist.artist.get_absolute_url }}"
+                                       title="{{ artist.artist.name }}">{{ artist.artist.name|truncate_chars_inner:12 }}</a>
+                                {% else %}
+                                    <span>{{ artist.artist.name|truncate_chars_inner:12 }}</span>
+                                {% endif %}
+
+
+                            {% else %}
+
+
+                                {% if artist.get_absolute_url %}
+                                    <a href="{{ artist.get_absolute_url }}">{{ artist.name|truncate_chars_inner:32 }}</a>
+                                    &nbsp;
+                                    <a href="{% spurl base=request.get_full_path remove_query_param="page" set_query="artist={{ artist.slug }}" %}"
+                                       title="{% trans "Only show releases by" %} {{ artist.name }}"
+                                       style="vertical-align: top;"><span class="filter icon"></span></a>
+                                    {% if not forloop.last %},{% endif %}
+                                {% else %}
+                                    <span>{{ artist.name|truncate_chars_inner:32 }}</span>{% if not forloop.last %},
+                                {% endif %}
+                                {% endif %}
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                        <span class="pull-right">
+                            <span>{{ item.get_media.count }}</span>{% if item.totaltracks %}<span class="small"> of {{ item.totaltracks }}</span>{% endif %}
+                        </span>
+
+
+                    </li>
+                </ul>
+
+                {% if item.label or item.releasedate %}
+                <ul class="horizontal clearfix unstyled">
+                    <li style="white-space:nowrap;">
+                        {% if item.label %}
+
+                            <a href="{{ item.label.get_absolute_url }}"
+                               title="{{ item.label.name }}">{{ item.label.name|truncate_chars_inner:18 }}</a>
+                            &nbsp;
+                            <a href="{% spurl base=request.get_full_path remove_query_param="page" set_query="label={{ item.label.slug }}" %}"
+                               title="{% trans "Only show releases on" %} {{ item.label.name }}"
+                               style="vertical-align: top;"><span class="filter icon"></span></a>
+
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+
+
+
+                    </li>
+                    <li class="small" style="float: right;">
+                        {% if  item.releasedate %}
+                            {{ item.releasedate|date:"Y/m/d" }}
+                        {% endif %}
+                        {% comment %}
+                        {% if  item.catalognumber %}
+                            {{ item.catalognumber }}
+                        {% endif %}
+                        {% endcomment %}
+                    </li>
+                </ul>
+                {% endif %}
+
+
+            </div>
+
+
+            {% comment %}
+            <div class="list_body_item">
+                <ul class="unstyled indicator horizontal">
+                    {% include "alibrary/element/_track_indicator.html" %}
+                </ul>
+            </div>
+            {% endcomment %}
+
+
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="wrapper_action">
+
+
+        <ul class="unstyled action secondary horizontal clearfix">
+
+
+            <li>
+                <a href="#"
+                   class="{% if not user.is_authenticated %} disabled{% endif %}"
+                   data-action="collect"
+                   title="{% trans "Add to playlist" %}">
+                    <i class="icon icon-plus"></i>
+                </a>
+            </li>
+
+            <li>
+                <a href="#"
+                   class="{% if not perms.alibrary.downoad_media %} disabled{% endif %}"
+                   data-ct="release"
+                   data-id="{{ item.pk }}"
+                   data-action="download"
+                   title="{% trans "Download" %}">
+                    <i class="icon icon-download-alt"></i>
+                </a>
+            </li>
+
+            {% if  perms.alibrary.change_release %}
+                <li>
+                    <a href="{{ item.get_edit_url }}"
+                       class=""
+                       title="{% trans "Edit" %}">
+                        <i class="icon icon-edit"></i>
+                    </a>
+                </li>
+            {% endif %}
+
+        </ul>
+
+    </div>
+
+
+
+</div>
+
+
+

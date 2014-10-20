@@ -1,0 +1,157 @@
+{% load sekizai_tags thumbnail i18n truncate verbatim value_from_settings %}
+
+
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery-impromptu.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}alibrary/js/lib/raphael-min.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}alibrary/js/lib/soundmanager2/soundmanager2.js">
+    </script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}alibrary/js/lib/jquery.inputmask.js">
+    </script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}alibrary/js/lib/jquery.inputmask.extensions.js">
+    </script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}alibrary/js/lib/jquery.inputmask.numeric.extensions.js">
+    </script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script type="text/javascript" src="{{ STATIC_URL }}alibrary/js/playlist.editor.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+    <script>
+
+        var alibrary = alibrary || {};
+        var pusher = pusher || {};
+
+        $(function () {
+
+
+            alibrary.playlist_editor = new PlaylistEditor();
+            alibrary.playlist_editor.readonly = {% if object.type == "broadcast" %}true{% else %}false{% endif %};
+            alibrary.playlist_editor.api_url = "{{ object.get_api_url }}";
+            // alibrary.playlist_editor.init();
+
+
+            soundManager.setup({
+                url: '{{ STATIC_URL }}alibrary/js/lib/soundmanager2/swf/',
+                flashVersion: 9,
+                useFlashBlock: true,
+                debugFlash: false,
+                debugMode: true,
+                flashLoadTimeout: 0,
+                //useFastPolling: true,
+                useHighPerformance: false,
+                flashPollingInterval: 100,
+                html5PollingInterval: 100,
+                onready: function () {
+                    alibrary.playlist_editor.init();
+                }
+                // useFavIcon: true
+            });
+
+        });
+    </script>
+
+    <!-- moustache templates -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endaddtoblock %}
+
+<div id="playlist_editor" class="listview editable container media inner s">
+
+
+    <div class="list_header">
+
+        <div class="row-fluid">
+
+            <div class="span12">
+
+                <ul class="unstyled horizontal" id="editor_mode_switch">
+                    <li>{% trans "Display" %}</li>
+                    <li><a data-mode="extended" href="#"><i class="icon-th-list"></i></a></li>
+                    <li><a data-mode="condensed" href="#"><i class="icon-list"></i></a></li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="row-fluid">
+
+            <div class="span1">
+                {% trans "Pos" %}
+            </div>
+
+            <div class="span3">
+                {% trans "Track" %}
+            </div>
+
+            <div class="span1">
+                <span class="pull-right">{% trans "Crossfade" %}</span>
+            </div>
+
+            <div class="span3 fade-cue">
+                <span class="pull-right">{% trans "Fade-In / -Out" %}</span>
+            </div>
+
+            <div class="span3 fade-cue">
+                <span class="pull-right">{% trans "Cue-In / -Out" %}</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="playlist_editor_list" class="list_body">
+        <!-- loaded via nj -->
+    </div>
+
+    {% if not object.type == "broadcast" %}
+
+
+        <div class="add-content">
+
+            <div class="info">
+                <h4><i class="icon-plus-sign"></i> {% trans "Add more tracks" %}</h4>
+                <p>{% trans "Use the form below to search the library for music" %}</p>
+            </div>
+
+
+
+            <div id="playlist_editor_search" class="list_search hoverable">
+                <form>
+                    <input type="text" placeholder="{% trans "Type here to search for music" %}"/>
+                </form>
+                <div class="result"></div>
+            </div>
+
+
+
+            {% include "alibrary/playlist/_tracklist_upload.html" %}
+
+
+        </div>
+
+    {% endif %}
+
+    <!--
+    <div id="playlist_editor_summary" class="list_footer">
+    </div>
+    -->
+
+</div>

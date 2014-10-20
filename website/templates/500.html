@@ -1,0 +1,28 @@
+{% extends "error_base.html" %}
+{% load i18n %}
+
+{% block title %}You've encountered an error, oh noes!{% endblock %}
+
+{% block body-class %}error-500{% endblock %}
+
+{% block content %}
+    <h1>You've encountered an error, oh noes!</h1>
+
+    {% if request.sentry.id %}
+        <div class="sentry">
+            <p>If you need assistance, you may reference this error as
+                <strong>{{ request.sentry.id }}</strong>.</p>
+
+            <p>
+                <a href="mailto:obp.lab@hazelfire.com?body=error-reference:%20{{ request.sentry.id }}">Click
+                    here</a> to create an issue email including references to the occurred problem.
+            </p>
+        </div>
+
+    {% endif %}
+
+    <p>Sorry about that. Please try refreshing and contact us if the problem persists.</p>
+
+    {{ block.super }}
+{% endblock %}
+

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Layer_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px" height="1024px"
+	 viewBox="0 0 1024 1024" enable-background="new 0 0 1024 1024" xml:space="preserve">
+	<g i:extraneous="self">
+		<g>
+			<path 
+				fill="#231F20" 
+				d="M0 582q0 8 0.5 16t0.5 17q11 6 32.5 10t47 7t52.5 5t49 3q-2 16 -1 32t7 33q1 4 6 11.5t18.5 15t40 13t71.5 5.5t71.5 -5.5t40 -13t18 -15.5t6.5 -12q6 -17 7 -32.5t-1 -31.5q22 -1 49 -3t53 -5t47 -7t32 -10q1 -9 1 -17v-16v-16q0 -8 -1 -17q-10 -6 -30.5 -10t-45.5 -7 t-51 -5t-48 -3t-37 -1.5t-16 -0.5l-95 -1h-13h-28q-19 0 -54 1q-2 0 -16.5 0.5t-36.5 1.5t-48 3t-51 5t-45.5 7t-30.5 10q0 9 -0.5 17t-0.5 16zM67 484q41 -5 84.5 -7.5t75.5 -3.5q9 -1 23 -1h74h73q14 0 23 1q33 1 76.5 3.5t84.5 7.5q-5 -76 -8 -154.5t-7 -154.5 q-1 -19 -1.5 -42.5t-2 -45.5t-6 -40.5t-14.5 -28.5q-12 -11 -42 -14.5t-58 -3.5h-236q-29 0 -58.5 3.5t-41.5 14.5q-10 10 -14.5 28.5t-6 40.5t-2 45.5t-1.5 42.5q-4 76 -7.5 154.5t-7.5 154.5zM147 383q1 -15 1 -28t1 -22q0 -11 1 -19q2 -34 3.5 -68t3.5 -67q1 -8 1 -17 v-20v-12q0 -6 0.5 -14t1.5 -19q1 -8 9.5 -14t13.5 -6q5 -1 10 -1t8 -1h11q5 0 5 19v286q0 8 -5.5 13.5t-13.5 5.5l-33 2q-8 0 -13 -5t-5 -13zM255.5 657q0.5 -6 1.5 -15q9 1 20 1h47l67 -1q1 9 1.5 15t-0.5 11q-11 3 -29.5 4.5t-38.5 1.5t-38.5 -1.5t-29.5 -4.5 q-1 -5 -0.5 -11zM292 94q0 -8 5 -13.5t13 -5.5h28q8 0 13.5 5.5t5.5 13.5v285q0 8 -11 13t-14 5h-15q-3 0 -14 -5t-11 -13v-285zM432 94q0 -19 4 -19h11q3 1 13 1.5t15 0.5q5 1 8.5 6.5t4.5 13.5q0 11 0.5 19t0.5 14q0 7 1 12v20q0 9 1 17q2 33 3 66.5t3 67.5q0 9 1 20 q1 9 1.5 22t1.5 28q0 8 -5 13t-13 5l-33 -2q-8 0 -13 -5.5t-5 -13.5v-286z"/>
+
+		</g>
+	</g>
+
+</svg>
+

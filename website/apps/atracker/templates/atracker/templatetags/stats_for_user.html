@@ -1,0 +1,20 @@
+{% load i18n %}
+
+
+
+{% for event in events %}
+    <div>
+
+        <dl class="dl-horizontal">
+            <dt>EV:</dt>
+            <dd>{{ event.created|timesince }}</dd>
+
+            <dt>event_type:</dt>
+            <dd>{{ event.event_type }}</dd>
+
+            <dt>content_object:</dt>
+            <dd>{{ event.content_object }}</dd>
+        </dl>
+
+    </div>
+{% endfor %}

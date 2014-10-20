@@ -1,0 +1,7 @@
+{% load i18n %}
+{% load account_tags %}
+
+{% user_display user as user_display %}
+<h4 class="alert-heading">{% trans "Note" %}!</h4>
+{% blocktrans %}you are already logged in as {{ user_display }}.{% endblocktrans %}
+<a class="btn btn-info btn-mini" href="{% url account_logout %}">{% trans "Logout" %}</a>

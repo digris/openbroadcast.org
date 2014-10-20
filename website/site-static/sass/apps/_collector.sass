@@ -1,0 +1,146 @@
+$popup-height: 280px
+$popup-width: 280px
+
+.popup-select-playlist
+
+  height: $popup-height !important
+
+  // content
+  > div
+    section.title
+      display: none // f.t.m.
+      height: 30px
+      h3
+        color: #fff
+        small:
+          text-transform: none !important
+          font-size: 60%
+
+    section.search
+      height: 30px
+      input
+        margin-bottom: 0
+        width: 100px
+        float: left
+        width: $popup-width - 28px
+        height: 10px
+        border-color: #333
+        background: transparent
+
+      &:hover
+        input
+          background: #424242
+          border-color: #999
+          color: white
+
+
+
+
+
+    section.listing
+      height: $popup-height - 70px
+      //max-height: 200px !important
+      // width: 200px
+
+      p.notice
+        color: white
+        text-align: center
+        padding-top: 20px
+
+
+      .pane
+        background: #444
+
+      .slider
+        background: #999
+
+      // the actual playlist
+      .item
+        border-top: 1px solid #424242
+        cursor: pointer !important
+        .image img
+          height: 31px
+          width: 31px
+        .information
+          ul
+            margin: 0
+            li
+              line-height: 15px
+
+              a
+                color: white
+
+              span
+                font-size: 11px
+                &.number
+                  font-size: 9px
+                &.collected
+                  padding-right: 10px
+
+              small
+                font-size: 10px
+                padding-right: 10px
+
+        &.match
+          background-color: #484848
+
+        &.hover
+          background-color: #ddffd9
+          li *, li > strong > a
+            color: #333
+
+        &.loading
+          opacity: 0.7
+          cursor: wait !important
+
+        // guess that obsolete (generic)
+        &.hidden
+          opacity: 0.8
+
+
+
+    section.form
+      height: 30px
+      .btn-toolbar
+
+        margin-bottom: 0
+        .btn-group
+          width: 100%
+
+        input
+          margin-bottom: 0
+          width: 100px
+          float: left
+          width: 172px
+          height: 10px
+          border-color: #333
+          background: transparent
+
+        .btn
+          opacity: 0
+
+      &:hover
+        .btn-toolbar
+          .btn
+            opacity: 1
+          input
+            background: #424242
+            border-color: #999
+            color: white
+
+      label
+        color: #efefef
+
+    section.form
+      fieldset.color
+        .controls
+          height: 40px
+          label
+            height: 24px
+            width: 14px
+            float: left
+            padding-top: 0
+            border: 4px solid #333
+            &.selected
+              border-color: $main-b
+

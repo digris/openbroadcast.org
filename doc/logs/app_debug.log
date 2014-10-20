@@ -1,0 +1,12 @@
+[DEBUG] pushy.models: Registering model: <class 'importer.models.Import'>
+[DEBUG] pushy.models: Registering model: <class 'importer.models.ImportFile'>
+[DEBUG] pushy.models: Registering model: <class 'importer.models.Import'>
+[DEBUG] pushy.models: Registering model: <class 'abcast.models.schedulermodels.Emission'>
+[DEBUG] pushy.models: Registering model: <class 'importer.models.ImportFile'>
+[DEBUG] pushy.models: Registering model: <class 'alibrary.models.playlistmodels.Playlist'>
+[DEBUG] pushy.models: Registering model: <class 'exporter.models.Export'>
+[DEBUG] pushy.models: Registering model: <class 'importer.models.Import'>
+[DEBUG] pushy.models: Registering model: <class 'abcast.models.schedulermodels.Emission'>
+[DEBUG] pushy.models: Registering model: <class 'importer.models.ImportFile'>
+[DEBUG] pushy.models: Registering model: <class 'alibrary.models.playlistmodels.Playlist'>
+[DEBUG] pushy.models: Registering model: <class 'exporter.models.Export'>

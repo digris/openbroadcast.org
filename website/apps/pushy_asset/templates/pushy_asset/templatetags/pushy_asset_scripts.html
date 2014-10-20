@@ -1,0 +1,14 @@
+{% load sekizai_tags pushy_tags %}
+{% if DEBUG %}
+{% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}pushy_asset/js/pushy_asset.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+<script>
+    var pa;
+    $(function(){
+        pa = new PushyAssetApp();
+        pa.init();
+    })
+</script>
+{% endaddtoblock %}
+{% endif %}

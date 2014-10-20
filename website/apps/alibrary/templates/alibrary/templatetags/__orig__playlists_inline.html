@@ -1,0 +1,160 @@
+{% load sekizai_tags verbatim i18n %}
+
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}alibrary/js/playlist.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+<script>
+	$(function(){
+
+		var alibrary = alibrary || {};
+		alibrary.playlist = new PlaylistUi();;
+		alibrary.playlist.api_url = "{% url api_dispatch_list resource_name='library/playlist' api_name='v1'%}";
+		alibrary.playlist.init();
+		
+	});
+</script>
+
+<!-- moustache templates -->
+{% verbatim %}
+<script id="tpl_playlists_inline" type="text/html">
+	
+	<div id="playlist_holder_{{ object.id }}" data-object_id="{{ object.id }}" class="playlist_holder " data-updated="{{ object.updated }}">
+
+		<div class="header">
+
+			<div class="right">
+				<a href="#393" title="Remove" data-action="delete" class="action delete"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Remove"></a>
+			</div>
+
+			<div class="right">
+				<a href="#393" title="Edit name" data-action="edit" class="action edit"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Edit name"></a>
+			</div>
+
+			<div class="right">
+				<a href="#playlist:393:mp3" title="Download" data-action="download" class="action downloadable queue"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Edit name"></a>
+			</div>
+
+			<div class="left name">
+				{{ object.name }}
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<div class="panel">
+
+			<div class="edit">
+				<div class="hint">
+					Enter the new name for the basket
+				</div>
+				<div class="input">
+					<input type="text" id="playlist_edit_name_{{ object.id }}" name="playlist_edit_name" value="{{ object.name }}">
+				</div>
+			</div>
+
+			<div class="convert">
+				<a href="{{ object.edit_url }}">Edit</a>
+				<!--<a href="{{ object.absolute_url }}">Detail</a>-->
+			</div>
+			<div class="duration">
+				{{ object.duration }}
+			</div>
+		</div>
+
+		<div class="list">
+			
+			{{#object.items}}
+			
+			<div class="list_item">
+				<div class="right">
+					<a href="#393:3884" title="Remove" class="action delete"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Remove"></a>
+				</div>
+				<div class="left">
+					<a href="http://openbroadcast.org/en/content/library/playlists/393-session/play.json#0#replace" title="Play" class="action play playable popup"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Play"></a>
+				</div>
+				<div class="left title">
+					<a href="{{ item.content_object.absolute_url }}" title="Mobilize">{{ item.content_object.name }}</a>
+				</div>
+				<div class="clear"></div>
+			</div>
+			
+			{{/object.items}}
+			
+		</div>
+
+	</div>
+			
+</script>
+{% endverbatim %}
+
+
+{% verbatim %}
+<script id="tpl_playlists_inline_selector" type="text/html">
+
+	
+<select name="playlists" id="playlists_inline_selector">
+	{{#objects}}
+	<option value="{{ resource_uri }}" {{#is_current}}selected="selected"{{/is_current}}>{{ name }}</option>
+	{{/objects}}
+  
+</select>
+	
+	
+</script>
+{% endverbatim %}
+
+
+{% endaddtoblock %}
+
+
+
+
+
+<div id="inline_playlist_container" class="">
+	
+	<div class="playlist basket ui-persistent open" data-uistate="init" id="playlist_basket">
+
+		<div class="header">
+			<span>{% trans "Playlist Basket" %}</span>
+			<!--
+			<span style="float: right;"> <span style="color: rgb(153, 153, 153);" class="opt">1</span> </span>
+			-->
+		</div>
+
+
+		<div class="form">
+
+			<form class="form-inline select">
+
+				<div class="control-group">
+					<!--<label><i class="icon-tasks"></i></label>-->
+					<div class="controls playlist-selector">
+						<!-- content via ich -->
+					</div>
+				</div>
+			</form>
+
+		</div>
+
+
+		<!-- Wrapper, can hold multiple lists  -->
+		<div id="inline_playlist_holder" class="wrapper"></div>
+
+
+		<div class="form">
+
+			<form class="form-inline create">
+				<div class="control-group">
+					<div class="controls">
+						<input type="text" class="full-width name" placeholder="{% trans "Newe Basket" %}">
+						<button type="submit" class="btn btn-primary btn-mini">
+							<i class="icon-ok-sign"></i>
+						</button>
+					</div>					
+				</div>
+			</form>
+
+		</div>
+
+
+	</div>
+	
+</div>

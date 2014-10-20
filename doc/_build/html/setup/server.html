@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. server installation &mdash; obp 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="obp 0.0.1 documentation" href="../index.html" />
+    <link rel="prev" title="1. Playout [a.k.a. pypo]" href="../services/playout/installation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../services/playout/installation.html" title="1. Playout [a.k.a. pypo]"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">obp 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="server-installation">
+<h1>2. server installation<a class="headerlink" href="#server-installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="vz-node-post-install">
+<h2>2.1. vz node post-install<a class="headerlink" href="#vz-node-post-install" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre>aptitude install build-essential python-setuptools supervisor git screen htop iftop bsd-mailx cron-apt locales ca-certificates
+</pre></div>
+</div>
+<p>(configure email / postfix)</p>
+<div class="highlight-bash"><div class="highlight"><pre>nano /etc/aliases     <span class="c"># (map root to to sysadmin)</span>
+nano /etc/postfix/transport   <span class="c"># (* smtp:[mx2.digris.ch])</span>
+
+postalias /etc/aliases
+postmap /etc/postfix/transport
+
+/etc/init.d/postfix reload
+</pre></div>
+</div>
+</div>
+<div class="section" id="vz-nodes-post-clone">
+<h2>2.2. vz nodes post-clone<a class="headerlink" href="#vz-nodes-post-clone" title="Permalink to this headline">¶</a></h2>
+<p>on vz-host:</p>
+<div class="highlight-bash"><div class="highlight"><pre>nano /etc/vz/conf/&lt;id&gt;.conf <span class="c"># adapt ip and hostname</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="vz-nodes">
+<h2>2.3. vz nodes<a class="headerlink" href="#vz-nodes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="node01">
+<h3>2.3.1. node01<a class="headerlink" href="#node01" title="Permalink to this headline">¶</a></h3>
+<p>webhead</p>
+<blockquote>
+<div><ul class="simple">
+<li>internal: 172.20.10.201</li>
+<li>external: 95.211.179.43</li>
+</ul>
+</div></blockquote>
+<div class="highlight-bash"><div class="highlight"><pre>aptitude install nginx
+</pre></div>
+</div>
+</div>
+<div class="section" id="node02">
+<h3>2.3.2. node02<a class="headerlink" href="#node02" title="Permalink to this headline">¶</a></h3>
+<p>database-server</p>
+<blockquote>
+<div><ul class="simple">
+<li>mariadb</li>
+</ul>
+</div></blockquote>
+<div class="highlight-bash"><div class="highlight"><pre>apt-get install python-software-properties
+apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
+add-apt-repository <span class="s1">&#39;deb http://mirror.netcologne.de/mariadb/repo/10.0/debian wheezy main&#39;</span>
+
+apt-get update
+apt-get install mariadb-server
+</pre></div>
+</div>
+</div>
+<div class="section" id="node03">
+<h3>2.3.3. node03<a class="headerlink" href="#node03" title="Permalink to this headline">¶</a></h3>
+<p>messaging-server</p>
+</div>
+<div class="section" id="node04">
+<h3>2.3.4. node04<a class="headerlink" href="#node04" title="Permalink to this headline">¶</a></h3>
+<p>development app-server</p>
+</div>
+<div class="section" id="node05">
+<h3>2.3.5. node05<a class="headerlink" href="#node05" title="Permalink to this headline">¶</a></h3>
+<p>app-server</p>
+</div>
+<div class="section" id="node06">
+<h3>2.3.6. node06<a class="headerlink" href="#node06" title="Permalink to this headline">¶</a></h3>
+<p>streaming-server</p>
+</div>
+<div class="section" id="node07">
+<h3>2.3.7. node07<a class="headerlink" href="#node07" title="Permalink to this headline">¶</a></h3>
+<p>musicbrainz mirror</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2. server installation</a><ul>
+<li><a class="reference internal" href="#vz-node-post-install">2.1. vz node post-install</a></li>
+<li><a class="reference internal" href="#vz-nodes-post-clone">2.2. vz nodes post-clone</a></li>
+<li><a class="reference internal" href="#vz-nodes">2.3. vz nodes</a><ul>
+<li><a class="reference internal" href="#node01">2.3.1. node01</a></li>
+<li><a class="reference internal" href="#node02">2.3.2. node02</a></li>
+<li><a class="reference internal" href="#node03">2.3.3. node03</a></li>
+<li><a class="reference internal" href="#node04">2.3.4. node04</a></li>
+<li><a class="reference internal" href="#node05">2.3.5. node05</a></li>
+<li><a class="reference internal" href="#node06">2.3.6. node06</a></li>
+<li><a class="reference internal" href="#node07">2.3.7. node07</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../services/playout/installation.html"
+                        title="previous chapter">1. Playout [a.k.a. pypo]</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/setup/server.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../services/playout/installation.html" title="1. Playout [a.k.a. pypo]"
+             >previous</a> |</li>
+        <li><a href="../index.html">obp 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+    </div>
+  </body>
+</html>

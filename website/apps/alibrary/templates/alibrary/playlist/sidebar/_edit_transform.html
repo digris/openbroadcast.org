@@ -1,0 +1,135 @@
+{% load i18n alibrary_tags %}
+
+<div id="playlist_transform" class="playlist-edit transform listing menu_context">
+
+    <div class="page-header">
+        <h2>{% trans "Transform" %}
+            <small>Public / Broadcast</small>
+        </h2>
+        <p>
+            {% trans "In order to save a broadcast-ready playlist some criterias have to be correct." %}<br>
+            {% trans "The current type is" %} "<strong>{{ object.get_type_display }}</strong>".
+        </p>
+    </div>
+
+
+    <!-- check available transformations -->
+
+    {% if not object.type == "playlist" %}
+
+        {% transform_status object "playlist" as transformation %}
+
+        <div class="criterias criterias-playlist">
+
+            <span class="title">{% trans "Public Playlist" %}</span>
+
+            <p>{% trans "Other users can see and listen." %}
+            {% if object.type == "basket" %}
+                <br>
+                {% trans "NOTE! Once a playlist is public you cannot make it private again!" %}
+            {% endif %}
+            </p>
+            {% for criteria in transformation.criterias %}
+                <div class="summary item criteria {{ criteria.key }} {% if criteria.status %}success{% else %}warning{% endif %}">
+
+                <span class="title">
+                    {% if criteria.status %}
+                        <i class="icon-check-sign"></i>
+                    {% else %}
+                        <i class="icon-warning-sign"></i>
+                    {% endif %}
+                    {{ criteria.name }}
+                </span>
+
+                    {% if not criteria.status %}
+                        <div class="information">
+                            <p>{{ criteria.warning }}</p>
+                        </div>
+                    {% endif %}
+
+                </div>
+            {% endfor %}
+
+
+            <div class="menu-context">
+                <div class="action-group">
+                    <ul class="unstyled">
+                        <li class="link">
+                            <a class="hoverable {% if not transformation.status %} disabled{% endif %}"
+                               href="{% url alibrary-playlist-convert object.pk "playlist" %}"
+                               title="{% trans "Make playlist public" %}">
+                                <i class="icon icon-exchange"></i>
+                                {% if  object.type == "broadcast" %}
+                                    <span>{% trans "Revert from broadcastable to public" %}</span>
+                                {% else %}
+                                    <span>{% trans "Make playlist public" %}</span>
+                                {% endif %}
+
+
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+    {# sorry, not very dry #}
+    {% if not object.type == "broadcast" %}
+        {% transform_status object "broadcast" as transformation %}
+
+        <div class="criterias criterias-broadcast">
+
+            <span class="title">{% trans "Broadcast Playlist" %}</span>
+
+            <p>{% trans "You and other users can schedule the playlist for broadcasting." %}</p>
+
+            {% for criteria in transformation.criterias %}
+                <div class="summary item criteria {{ criteria.key }} {% if criteria.status %}success{% else %}warning{% endif %}">
+
+                <span class="title">
+                    {% if criteria.status %}
+                        <i class="icon-check-sign"></i>
+                    {% else %}
+                        <i class="icon-warning-sign"></i>
+                    {% endif %}
+                    {{ criteria.name }}
+                </span>
+
+                    {% if not criteria.status %}
+                        <div class="information">
+                            <p>{{ criteria.warning }}</p>
+                        </div>
+                    {% endif %}
+
+                </div>
+            {% endfor %}
+
+
+            <div class="menu-context">
+                <div class="action-group">
+                    <ul class="unstyled">
+                        <li class="link">
+                            <a class="hoverable {% if not transformation.status %} disabled{% endif %}"
+                               href="{% url alibrary-playlist-convert object.pk "broadcast" %}"
+                               title="{% trans "Make playlist broadcastable" %}">
+                                <i class="icon icon-exchange"></i>
+                                <span>{% trans "Make playlist broadcastable" %}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
+
+
+    <div class="summary-holder">
+        <!-- loaded by nj -->
+    </div>
+
+</div>
+

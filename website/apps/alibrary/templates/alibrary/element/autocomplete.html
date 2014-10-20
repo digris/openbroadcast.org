@@ -1,0 +1,65 @@
+{% load thumbnail i18n truncate highlight_tags %}
+
+<!-- 
+	OBSOLETE - refactored to nj/api	
+-->
+
+<div class="result">
+	<div class="search">
+		<h1>Search [Hit "Enter"]</h1>
+		<p>
+			Search Library for: "{{ query }}"
+			[ Results: {{ result|length }} ]
+		</p>
+	</div>
+	<div class="listing">
+		{% for item in result %}
+		<div class="item linkable hoverable" style="background-image: url({% thumbnail item.release.main_image 50x50 crop upscale subject_location=item.release.main_image.subject_location %});">
+			<h2><a href="{{ item.release.get_absolute_url }}" class="link-main">{{ item.release.name|highlight:query }}{% if item.release.catalognumber %} [{{ item.release.catalognumber }}]{% endif %}</a></h2>
+
+			<div class="related">
+				{% if item.medias %} <span>Tracks:</span>
+				<ul class="horizontal">
+					{% for media in item.medias %}
+					<li>
+						<a href="{{ media.get_absolute_url}}">{{ media.name|highlight:query }}</a>
+						{% if not forloop.last %},&nbsp;{% endif %}
+					</li>
+					{% if forloop.last %}
+						<div class="clear"></div>
+					{% endif %}
+					{% endfor %}
+				</ul>
+				{% endif %}
+
+				{% if item.artists %} <span>Artists:</span>
+				<ul class="horizontal">
+					{% for artist in item.artists %}
+					<li>
+						<a href="{{ artist.get_absolute_url}}">{{ artist.name|highlight:query }}</a>
+						{% if not forloop.last %},&nbsp;{% endif %}
+					</li>
+					{% if forloop.last %}
+						<div class="clear"></div>
+					{% endif %}
+					{% endfor %}
+				</ul>
+				{% endif %}
+
+				{% if item.labels %} <span>Labels:</span>
+				<ul class="horizontal">
+					{% for label in item.labels %}
+					<li>
+						{{ label.name|highlight:query }}
+					</li>
+					{% if forloop.last %}
+						<div class="clear"></div>
+					{% endif %}
+					{% endfor %}
+				</ul>
+				{% endif %}
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>

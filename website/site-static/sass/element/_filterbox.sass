@@ -1,0 +1,215 @@
+
+/* ---------- box classes ----------
+
+.box
+  //margin-bottom:23px;
+  border-left: 1px solid #fff
+  border-right: 1px solid #fff
+  border-top: 1px solid #ccc
+
+.boxtitle
+  color: #333
+  padding: 3px 0px 2px 19px
+  background-image: url(/static/img/prototype/box_handler.png)
+  background-repeat: no-repeat
+  &:hover
+    cursor: pointer
+
+.boxcontent
+  padding: 0px 0px 4px 0px
+  /*padding:0px 0px 4px 19px;
+  /*|s| - padding_left auf boxitem verschoben
+  display: none
+  .boxitem input
+    background-color: #ffffff
+    border: 1px solid #bbbbbb
+    color: #5a5a5a
+
+.boxitem
+  /*|s|
+  padding-left: 19px
+  &.selected
+    a
+      /*|s|
+      color: #333333
+    &.plus
+      /*|s|
+      //background-image: url(/static/img/prototype/box_item_plus_on.png)
+      background-repeat: no-repeat
+  &.plus
+    /*|s|
+    //background-image: url(/static/img/prototype/box_item_plus.png)
+    background-repeat: no-repeat
+  &.minus
+    /*|s|
+    //background-image: url(/static/img/prototype/box_item_minus.png)
+    background-repeat: no-repeat
+  &.folder
+    /*|s|
+    //background-image: url(/static/img/prototype/box_item_folder.png)
+    background-repeat: no-repeat
+
+.box.boxon
+  //background-color: #f5f5f5
+  //border-left: 1px solid #ddd
+  //border-right: 1px solid #ddd
+  background-color: #fafafa
+  border-left: 1px solid #fff
+  border-right: 1px solid #fafafa
+
+.box.has_active
+  background-color: #DDFFD9
+
+
+
+.boxtitle.boxon
+  //font-weight:bold;
+  color: #000
+  background-image: url(/static/img/prototype/box_handler_on.png)
+
+.boxend
+  border-top: 1px solid #ddd
+
+/* ---------- content box classes ----------
+
+/*|s|
+
+.content_box
+  margin-bottom: 8px
+  border-left: 1px solid #fff
+  border-right: 1px solid #fff
+  border-top: 1px solid #ccc
+  border-bottom: 1px solid #ccc
+
+.content_boxtitle
+  float: left
+  color: #333
+  margin-right: 30px !important
+  padding: 3px 0px 2px 19px
+  background-image: url(/static/img/prototype/box_handler.png)
+  background-repeat: no-repeat
+  &:hover
+    cursor: pointer
+
+.content_boxcontent
+  padding: 0px 0px 0px 0px
+  display: none
+
+
+.content_box.boxon
+  background-color: #f5f5f5
+  border-top: 1px solid #ddd
+  border-left: 1px solid #ddd
+  border-right: 1px solid #ddd
+  //border-bottom:1px solid #ddd;
+  //margin-bottom: 3px;
+  /*|s|
+  border-bottom: 1px solid #ddd
+  /*|s|
+  //margin-top:4px;
+
+.content_boxtitle.boxon
+  //font-weight:bold;
+  color: #000
+  background-image: url(/static/img/prototype/box_handler_on.png)
+
+.content_boxmore
+  float: right
+  margin-top: 2px
+  width: 20px
+
+.content_boxend
+  border-top: 1px solid #ddd
+
+.content_boxextra
+  padding: 2px 0px 2px 7px
+  //border-bottom:1px solid #ddd;
+
+
+
+/* ---------- basket ----------
+
+.boxtitle .count
+  color: #999
+
+.boxsub
+  margin: 1px 2px 0px 2px
+  background: #eee
+
+.boxsub-title
+  border: 1px solid #bbb
+  //border-top:0px;
+  padding: 1px 2px 0px 16px
+  background: #dddddd url(/static/img/prototype/box_handler.png) no-repeat -2px -2px
+  cursor: pointer
+  &.open
+    background-image: url(/static/img/prototype/box_handler_on.png) !important
+
+.boxsub-content
+  display: none
+  color: $main-b
+
+.boxsub
+  .b-closer
+    float: right
+    background: url(/static/img/prototype/basket_remove.png) no-repeat
+    width: 17px
+    height: 18px
+  .i-closer
+    float: right
+    background: url(/static/img/prototype/boxsub_item_remove.png) no-repeat
+    width: 17px
+    height: 18px
+  .i-add
+    float: right
+    background: url(/static/img/prototype/boxsub_item_add.png) no-repeat
+    width: 17px
+    height: 18px
+
+.b-closer:hover, .i-closer:hover
+  background: url(/static/img/prototype/boxsub_remove_on.png) no-repeat !important
+
+.boxsub
+  .b-pl
+    float: right
+    background: url(/static/img/prototype/basket_to_pl.png) no-repeat
+    width: 17px
+    height: 18px
+  .b-play
+    float: right
+    background: url(/static/img/prototype/list_play_button2_s.png) no-repeat
+    width: 17px
+    height: 18px
+
+.boxsub-item
+  padding: 2px 2px 1px 16px
+  cursor: pointer
+  border: 1px solid #bbb
+  border-top: 1px solid #ccc
+  margin-top: -1px
+  &:hover
+    background-color: #e4e4e4 !important
+
+.boxsub.drop-over .boxsub-title
+  background-color: #c8efc8 !important
+
+
+
+
+// special filters
+.box.special
+  &.releasedate
+    .range-select
+      clear: both
+      select
+        width: 80px
+        height: 20px
+        margin-bottom: 0
+        padding: 0 4px !important
+
+    #predefined_selector
+      padding: 8px 10px 2px 20px
+      ul
+        > li
+          padding-right: 8px
+          float: left

@@ -1,0 +1,130 @@
+{% extends "base/generic.html" %}
+
+{% load i18n sekizai_tags pushy_tags istats_tags %}
+
+{% block object_type %}export{% endblock %}
+
+
+{% block heading %} <!-- heading / icon (large one) -->
+    {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
+    {% addtoblock "js-post" %}{% istats_scripts %}{% endaddtoblock %}
+    {% addtoblock "js-post" %}
+        <script type="text/javascript" src="{{ STATIC_URL }}js/lib/ICanHaz.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}
+        <script type="text/javascript" src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
+
+    {% addtoblock "js-post" %}
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+
+                $(function () {
+                    exporter = new ExporterMain();
+                    exporter.api_url = "{% url api_dispatch_list resource_name='export' api_name='v1'%}";
+                    exporter.pushy_key = "{{ request.user.profile.uuid }}";
+                    exporter.init();
+                });
+
+                $('#export_list_holder').css('opacity', 0.2);
+
+                $('#accept_toc').on('click', function(e){
+                    e.preventDefault()
+                    $('#export_list_holder').css('opacity', 1);
+                    exporter.toc_accepted = true;
+                })
+
+
+
+            });
+        </script>
+    {% endaddtoblock %}
+
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+    <!-- heading / icon (large one) -->
+{% endblock %}
+
+
+{% block pre_body %}
+    <section>
+
+        <div class="page-header">
+            <h2>{% trans "Your Downloads" %}
+                <small></small>
+            </h2>
+        </div>
+
+        <div>
+            <p>{% trans "Below you can find items you have marked for download. The corresponding files are being processed in the background – this can take a (short) while. " %}<br>
+                {% trans "As soon as a download item is ready, the \"Download\" link turns active and you can start to download it by clicking on the link." %}</p>
+        </div>
+
+
+
+        <div class="alert alert-warning">
+            <strong>{% trans "Terms and Conditions" %}</strong>
+            <p>
+                {% blocktrans %}
+                We do care about copyright and legal correctness.
+                {% endblocktrans %}
+                <br>
+                <strong>{% blocktrans %}
+                In order to download any data from Open Broadcast, you have to accept the terms and conditions, which can be found
+                {% endblocktrans %} <a href="/legal/terms-and-conditions/">{% trans "here" %}</a>.</strong>
+            </p>
+
+            <a id="accept_toc" class="btn btn-primary" href="#">I do accept the terms and conditions</a>
+
+        </div>
+
+
+        <!-- Notification enabler -->
+        <div class="util notify enable" style="display: none;">
+            <a class="btn btn-secondary btn" href="#">
+                <i class="icon-tasks icon-white"></i>
+                <span> {% trans "Enable Desktop Notifications" %}</span>
+            </a>
+        </div>
+
+
+    </section>
+{% endblock %}
+
+{% block list_inner %}
+
+    <table class="table table-condensed table-striped">
+
+
+        <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th>{% trans "Name" %}</th>
+            <th>{% trans "Queue Time" %}</th>
+            <th>{% trans "Last Download" %}</th>
+            <th>{% trans "Size" %}</th>
+            <th>{% trans "Link" %}</th>
+            <th>{% trans "Actions" %}</th>
+        </tr>
+        </thead>
+
+        <tbody id="export_list_holder">
+        <!-- CONTENT INSERTED FROM JS -->
+        </tbody>
+
+    </table>
+
+
+
+
+    <div>
+        <a href="{% url exporter-export-delete-all %}" class="btn btn-mini pull-right">
+        {% trans "Clear all downloads" %}
+        </a>
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+    {% include "exporter/_export_list_sidebar.html" %}
+{% endblock %}

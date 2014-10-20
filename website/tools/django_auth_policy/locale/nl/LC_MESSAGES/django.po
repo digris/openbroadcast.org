@@ -1,0 +1,365 @@
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-09 17:22+0100\n"
+"PO-Revision-Date: 2013-11-07 17:45+0100\n"
+"Last-Translator: Rudolph Froger <rudolphfroger@estrate.nl>\n"
+"Language: Dutch\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin.py:41
+msgid "You don't have unlock permissions"
+msgstr "U heeft geen toegang tot ontgrendelen"
+
+#: admin.py:44
+#, python-format
+msgid "Unlocked %s failed attempts"
+msgstr "%s mislukte pogingen ontgrendeld"
+
+#: admin.py:45
+msgid "Unlock"
+msgstr "Ontgrendel"
+
+#: authentication.py:44
+msgid ""
+"Please enter a correct username and password. Note that both fields may be "
+"case-sensitive."
+msgstr ""
+"Voer een correcte gebruikersnaam en wachtwoord in. Let op dat beide velden "
+"hoofdlettergevoelig zijn."
+
+#: authentication.py:106
+#, python-brace-format
+msgid "{days} days"
+msgstr "{days} dagen"
+
+#: authentication.py:108
+msgid "a day"
+msgstr "een dag"
+
+#: authentication.py:110
+#, python-brace-format
+msgid "{mins} minutes"
+msgstr "{mins} minuten"
+
+#: authentication.py:112
+msgid "a minute"
+msgstr "een minuut"
+
+#: authentication.py:114
+#, python-brace-format
+msgid "{secs} seconds"
+msgstr "{secs} seconden"
+
+#: authentication.py:129 authentication.py:193
+#, python-brace-format
+msgid ""
+"Too many failed login attempts. Your account has been locked for {duration}."
+msgstr ""
+"Te veel mislukte inlogpogingen. Uw account is voor {duration} geblokkeerd."
+
+#: forms.py:54 forms.py:103
+msgid "The two password fields didn't match."
+msgstr "De twee ingevulde wachtwoorden zijn niet gelijk."
+
+#: forms.py:56
+msgid "New password"
+msgstr "Nieuw wachtwoord"
+
+#: forms.py:58
+msgid "New password confirmation"
+msgstr "Bevestig nieuw wachtwoord"
+
+#: forms.py:104
+msgid "Your old password was entered incorrectly. Please enter it again."
+msgstr ""
+"Uw oude wachtwoord is niet correct ingevoerd. Voert u het alstublieft "
+"opnieuw in."
+
+#: forms.py:106
+msgid "The new password must not be the same as the old password"
+msgstr "Het nieuwe wachtwoord mag niet hetzelfde zijn als het oude wachtwoord"
+
+#: forms.py:109
+msgid "Old password"
+msgstr "Oud wachtwoord"
+
+#: models.py:45
+msgid "username"
+msgstr "gebruikersnaam"
+
+#: models.py:47
+msgid "source address"
+msgstr "bronadres"
+
+#: models.py:48
+msgid "hostname"
+msgstr "hostnaam"
+
+#: models.py:49 models.py:102
+msgid "successful"
+msgstr "succesvol"
+
+#: models.py:51 models.py:98 models.py:123
+msgid "user"
+msgstr "gebruiker"
+
+#: models.py:52 models.py:100 models.py:125
+msgid "timestamp"
+msgstr "tijdstip"
+
+#: models.py:56
+msgid "lockout"
+msgstr "vergrendel"
+
+#: models.py:57
+msgid "Counts towards lockout count"
+msgstr "Tellingen ter vergrendeling"
+
+#: models.py:62
+msgid "login attempt"
+msgstr "inlogpoging"
+
+#: models.py:63
+msgid "login attempts"
+msgstr "inlogpogingen"
+
+#: models.py:66
+msgid "Unlock by username or IP address"
+msgstr "Vergrendeld op gebruikersnaam of IP-adres"
+
+#: models.py:105
+msgid "is temporary"
+msgstr "is tijdelijk"
+
+#: models.py:108
+msgid "password"
+msgstr "wachtwoord"
+
+#: models.py:114
+msgid "password change"
+msgstr "wachtwoord aanpassing"
+
+#: models.py:115
+msgid "password changes"
+msgstr "wachtwoord aanpassingen"
+
+#: models.py:127
+msgid "by user"
+msgstr "door gebruiker"
+
+#: models.py:132
+msgid "user change"
+msgstr "aanpassing gebruiker"
+
+#: models.py:133
+msgid "user changes"
+msgstr "aanpassingen gebruiker"
+
+#: password_change.py:24
+#, python-brace-format
+msgid "One is required to change passwords every {age} days."
+msgstr "Men is verplicht om elke {age} dagen het wachtwoord aan te passen."
+
+#: password_change.py:25
+msgid "Your password has expired and must be changed."
+msgstr "Uw wachtwoord is verlopen en moet worden aangepast."
+
+#: password_change.py:48
+msgid "Your must change your temporary password into a personal password."
+msgstr ""
+"U moet uw tijdelijke wachtwoord aanpassen in een persoonlijk wachtwoord."
+
+#: password_strength.py:45
+#, python-brace-format
+msgid "Passwords must be at least {min_length} characters in length."
+msgstr "Wachtwoorden moeten minimaal {min_length} tekens lang zijn."
+
+#: password_strength.py:88
+msgid "Passwords must have at least one lowercase character"
+msgstr "Wachtwoorden moeten minimaal één kleine letter bevatten"
+
+#: password_strength.py:89
+#, python-brace-format
+msgid "Passwords must have at least {min_count} lowercase characters"
+msgstr "Wachtwoorden moeten minimaal {min_count} kleine letters bevatten"
+
+#: password_strength.py:95
+msgid "Passwords must have at least one uppercase character"
+msgstr "Wachtwoorden moeten minimaal één hoofdletter bevatten"
+
+#: password_strength.py:96
+#, python-brace-format
+msgid "Passwords must have at least {min_count} uppercase characters"
+msgstr "Wachtwoorden moeten minimaal {min_count} hoofdletter bevatten"
+
+#: password_strength.py:102
+msgid "Passwords must have at least one number"
+msgstr "Wachtwoorden moeten minimaal één cijfer bevatten"
+
+#: password_strength.py:103
+#, python-brace-format
+msgid "Passwords must have at least {min_count} numbers"
+msgstr "Wachtwoorden moeten minimaal {min_count} cijfers bevatten"
+
+#: password_strength.py:109
+msgid "Passwords must have at least one special character (punctuation)"
+msgstr "Wachtwoorden moeten minimaal één speciaal teken (leesteken) bevatten"
+
+#: password_strength.py:110
+#, python-brace-format
+msgid ""
+"Passwords must have at least {min_count} special characters (punctuation)"
+msgstr ""
+"Wachtwoorden moeten minimaal {min_count} speciale tekens (leestekens) "
+"bevatten"
+
+#: password_strength.py:116
+msgid "Passwords must have at least one alphabetic character"
+msgstr "Wachtwoorden moeten minimaal één letter bevatten"
+
+#: password_strength.py:117
+#, python-brace-format
+msgid "Passwords must have at least {min_count} alphabetic characters"
+msgstr "Wachtwoorden moeten minimaal {min_count} letters bevatten"
+
+#: password_strength.py:137
+msgid "Passwords are not allowed to contain (pieces of) your name or email."
+msgstr ""
+"Wachtwoorden mogen niet (onderdelen van) uw naam of e-mailadres bevatten."
+
+#: password_strength.py:168
+#, python-brace-format
+msgid "Passwords are not allowed to contain the following term(s): {terms}"
+msgstr "Wachtwoorden mogen niet de volgende term(en) bevatten: {terms}"
+
+#: user_admin.py:28
+#: templates/admin/django_auth_policy/set_temporary_password.html:19
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: user_admin.py:30
+msgid "Required. 30 characters or fewer. Letters, digits and @/./+/-/_ only."
+msgstr ""
+"Verplicht. 30 tekens of minder. Alleen letters, cijfers en de tekens @/./+/-/"
+"_."
+
+#: user_admin.py:34
+msgid "This value may contain only letters, numbers and @/./+/-/_ characters."
+msgstr ""
+"Deze waarde mag alleen letters, cijfers en de tekens @/./+/-/_ bevatten."
+
+#: user_admin.py:80
+msgid "Unlocked selected usernames"
+msgstr "Ontgrendel geselecteerde gebruikersnamen"
+
+#: user_admin.py:81
+msgid "Unlock usernames of users"
+msgstr "Ontgrendel gebruikersnamen van gebruikers"
+
+#: user_admin.py:87
+#, python-format
+msgid "%s users were (re)activated"
+msgstr "%s gebruikers zijn ge(her)activeerd"
+
+#: user_admin.py:88
+msgid "(Re)activate users"
+msgstr "(Her)activatie gebruikers"
+
+#: user_admin.py:107
+msgid "Set temporary password"
+msgstr "Tijdelijk wachtwoord instellen"
+
+#: templates/admin/django_auth_policy/confirm_temporary_password.html:5
+#: templates/admin/django_auth_policy/set_temporary_password.html:6
+#: templates/admin/django_auth_policy/set_temporary_password.html:21
+msgid "Temporary password"
+msgstr "Tijdelijk wachtwoord"
+
+#: templates/admin/django_auth_policy/confirm_temporary_password.html:7
+msgid "Selected user(s)"
+msgstr "Selecteer gebruiker(s)"
+
+#: templates/admin/django_auth_policy/confirm_temporary_password.html:11
+#: templates/admin/django_auth_policy/set_temporary_password.html:20
+msgid "Email"
+msgstr "E-mail"
+
+#: templates/admin/django_auth_policy/confirm_temporary_password.html:15
+msgid ""
+"If you continue a temporary password will be set for\n"
+"  these users. They will be required to change their password on first "
+"usage.\n"
+"  "
+msgstr ""
+"Als u doorgaat wordt er een tijdelijk wachtwoord in gesteld voor deze "
+"gebruikers. Bij het eerst inloggen worden zij verplicht het wachtwoord aan "
+"te passen."
+
+#: templates/admin/django_auth_policy/confirm_temporary_password.html:21
+#: templates/admin/django_auth_policy/set_temporary_password.html:32
+msgid "Continue"
+msgstr "Doorgaan"
+
+#: templates/admin/django_auth_policy/confirm_temporary_password.html:22
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: templates/admin/django_auth_policy/set_temporary_password.html:8
+msgid ""
+"The temporary password(s) have been set. Now securely\n"
+"  inform the user(s) about their new password."
+msgstr ""
+"De tijdelijke wachtwoord(en) zijn ingesteld. Informeer de gebruiker(s) over "
+"hun nieuwe wachtwoord op een velige wijze."
+
+#: templates/admin/django_auth_policy/set_temporary_password.html:10
+msgid ""
+"The user(s) will be required to change their password on\n"
+"  first usage."
+msgstr ""
+"De gebruiker(s) zijn verplicht om hun wachtwoord aan te passen bij het "
+"eerste gebruik."
+
+#: templates/admin/django_auth_policy/set_temporary_password.html:17
+msgid "User"
+msgstr "Gebruiker"
+
+#: templates/admin/django_auth_policy/set_temporary_password.html:23
+msgid "Your temporary password"
+msgstr "Uw tijdelijke wachtwoord"
+
+#: templates/admin/django_auth_policy/set_temporary_password.html:25
+msgid "Compose email"
+msgstr "E-mail samenstellen"
+
+#: testsite/templates/change_password.html:4
+msgid "Change password"
+msgstr "Wachtwoord aanpassen"
+
+#: testsite/templates/change_password.html:6
+msgid "Password policy"
+msgstr "Wachtwoordbeleid"
+
+#: testsite/templates/change_password.html:12
+msgid "Every password must have:"
+msgstr "Elk wachtwoord bevat:"
+
+#: testsite/templates/change_password.html:20
+#, python-format
+msgid ""
+"Passwords must be changed every\n"
+"        %(max_password_age)s days."
+msgstr "Elke %(max_password_age)s dagen moet een wachtwoord worden aangepast."
+
+#~ msgid "This account is inactive."
+#~ msgstr "Dit account is niet actief."
+
+#~ msgid "Passwords must have at least one symbol"
+#~ msgstr "Wachtwoorden moeten minimaal één symbool bevatten"
+
+#~ msgid "Passwords must have at least {min_count} symbols"
+#~ msgstr "Wachtwoorden moeten minimaal {min_count} symbolen bevatten"

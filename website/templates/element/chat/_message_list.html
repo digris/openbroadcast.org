@@ -1,0 +1,118 @@
+{% load sekizai_tags verbatim %}
+
+
+
+{% addtoblock "js-post" %}<!--<script src="http://localhost:8888/socket.io/socket.io.js"></script>-->{% endaddtoblock %}
+
+{% addtoblock "js-post" %}
+
+		<script id="tpl_chat_message" type="text/html">
+			{% verbatim %}
+	        <li class="item comment {{ object.me }}">
+	            <img src="{{ media_url }}{{ object.image }}" />
+	            <p>
+		            <strong class="pull-right">{{ object.user }}<span class="timestamp">{{ timestamp }}</span></strong>
+		            <span class="message">{{ object.comment_html }}</small>
+	            </p>
+	        </li>
+	        {% endverbatim %}
+        </script>
+		
+		<script id="tpl_media_list_item" type="text/html">
+			{% verbatim %}
+	        <li class="item media {{ object.uuid }}">
+	            <img src="{{ media_url }}{{ object.release.main_image }}" />
+	            <p>
+		            <strong>{{ object.name }}<span class="timestamp">{{ object.timestamp }}</span></strong>
+		            <br />
+		            <span class="message"><a href="{{ object.artist.absolute_url }}">{{ object.artist.name }}</a> | <a href="{{ object.release.absolute_url }}">{{ object.release.name }}</a></small>
+	            </p>
+	        </li>
+	        {% endverbatim %}
+        </script>
+
+<script>
+	
+SocketApp = function(base_app) {
+
+	var self = this;
+	this.base_app = base_app;
+
+	this.socket
+	this.socket_url = 'http://localhost:8888/';
+	//this.socket_url = 'http://dev.openbroadcast.org:8888/'
+
+	this.init = function() {
+		console.log('SocketApp: init');
+		setTimeout(function(){self.connect()},500);
+	};
+	
+	this.connect = function() {
+		
+		console.log('SocketApp: connect');
+		
+		// console.log(self.localSettings.user.username);
+		
+		try {
+			self.socket = io.connect(self.socket_url);
+			console.log('socket connection ok')
+
+			self.socket.on('push', function(data) {
+				console.log('news from socket');
+
+				// data = JSON.parse(data);
+
+				console.log('push-data:', data);
+				console.log('data-route: ', data.route)
+				
+				// routing data..
+				if(data.route == '{{ object.get_api_url }}') {
+					console.log('my channel!!', data)
+				};
+
+				// build content by type
+				
+				// chat messages
+				if(data.type == 'message') {
+					var html = ich.tpl_chat_message({
+						object : data,
+						media_url: self.media_url,
+					});
+				}
+
+				// TODO: more modularity..
+				if(data.type == 'media') {
+					var html = ich.tpl_media_list_item({
+						object : data.object,
+						media_url: self.media_url,
+					});
+				}
+
+
+				$('div.listing ul').prepend(html);
+				
+				$('div.listing ul').children().slice(9, 1000).fadeOut(500);
+				$('div.listing ul').children().slice(10, 1000).remove();
+
+			});
+
+		} catch(err) {
+			console.log(err.message);
+		}
+	};
+
+	this.bindings = function() {
+
+	};
+}; 	
+	
+//var sa = new SocketApp;
+//sa.init();
+	
+</script>
+{% endaddtoblock %}
+<div class="listing">
+	<ul class="unstyled"></ul>
+</div>
+
+

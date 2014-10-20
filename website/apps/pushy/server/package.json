@@ -1,0 +1,43 @@
+{
+  "name": "pushy-server",
+  "preferGlobal": true,
+  "version": "0.0.1",
+  "author": "Nodejitsu <support@nodejitsu.com>",
+  "description": "a simple zero-configuration command-line http server",
+  "contributors": [ 
+    {
+      "name": "Marak Squires",
+      "email": "marak@nodejitsu.com"
+    } 
+  ],
+  "bin": {
+    "http-server": "./bin/http-server"
+  },
+  "scripts": {
+    "start": "node ./pushy.js"
+  },
+  "main": "./lib/http-server",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nodejitsu/http-server.git"
+  },
+  "keywords": [
+    "django",
+    "push",
+    "gateway"
+  ],
+  "dependencies" : {
+    "socket.io": "1.0.x",
+    "redis": "0.8.x",
+    "debug": "0.7.x",
+    "winston": "0.6.x"
+  },
+  "analyze": false,
+  "bundledDependencies": [
+    "socket.io"
+  ],  
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.6"
+  }
+}

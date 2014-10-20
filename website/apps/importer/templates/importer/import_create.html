@@ -1,0 +1,44 @@
+{% extends "base/generic.html" %}
+
+{% load i18n sekizai_tags verbatim dajaxice_templatetags crispy_forms_tags istats_tags %}
+
+{% block object_type %}import{% endblock %}
+
+{% block heading %} <!-- heading / icon (large one) -->
+    {% addtoblock "js-post" %}{% istats_scripts %}{% endaddtoblock %}
+
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+
+{% endblock %}
+
+{% block list_inner %}
+
+{% addtoblock "js-post" %}
+<script type="text/javascript">
+
+</script>
+{% endaddtoblock %}
+
+<section>
+	
+	<div class="page-header">
+		<h2>Upload <small>Add/Upload Files to the Import Queue</small></h2>
+	</div>
+
+	<div class="uploader">
+	{% crispy form %}
+    </div>
+
+</section>
+
+
+
+
+{% endblock %}
+
+
+{% block sidebar %}
+{% include "importer/_import_list_sidebar.html" %}
+{% endblock %}

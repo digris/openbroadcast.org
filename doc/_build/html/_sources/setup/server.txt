@@ -1,0 +1,103 @@
+server installation
+===================
+
+
+
+vz node post-install
+~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+    aptitude install build-essential python-setuptools supervisor git screen htop iftop bsd-mailx cron-apt locales ca-certificates
+
+
+(configure email / postfix)
+
+.. code-block:: bash
+
+    nano /etc/aliases     # (map root to to sysadmin)
+    nano /etc/postfix/transport   # (* smtp:[mx2.digris.ch])
+
+    postalias /etc/aliases
+    postmap /etc/postfix/transport
+
+    /etc/init.d/postfix reload
+
+
+
+
+vz nodes post-clone
+~~~~~~~~~~~~~~~~~~~
+
+on vz-host:
+
+.. code-block:: bash
+
+    nano /etc/vz/conf/<id>.conf # adapt ip and hostname
+
+
+
+vz nodes
+~~~~~~~~
+
+node01
+::::::
+
+webhead
+
+ - internal: 172.20.10.201
+ - external: 95.211.179.43
+
+
+.. code-block:: bash
+
+    aptitude install nginx
+
+
+node02
+::::::
+
+database-server
+
+ - mariadb
+
+.. code-block:: bash
+
+    apt-get install python-software-properties
+    apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
+    add-apt-repository 'deb http://mirror.netcologne.de/mariadb/repo/10.0/debian wheezy main'
+
+    apt-get update
+    apt-get install mariadb-server
+
+
+node03
+::::::
+
+messaging-server
+
+
+node04
+::::::
+
+development app-server
+
+
+node05
+::::::
+
+app-server
+
+
+node06
+::::::
+
+streaming-server
+
+
+node07
+::::::
+
+musicbrainz mirror
+
+

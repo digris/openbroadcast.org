@@ -1,0 +1,16 @@
+{% load sekizai_tags %}
+
+{% addtoblock "js" %}
+	<script src="{{ STATIC_URL }}js/lib/soundcloud.player.api.js" type="text/javascript" charset="utf-8"></script>
+	<script src="{{ STATIC_URL }}js/lib/sc-player.js" type="text/javascript" charset="utf-8"></script>
+{% endaddtoblock %}
+
+{% addtoblock "css" %}
+	<link href="{{ STATIC_URL }}css/soundcloud.css" media="screen" rel="stylesheet" type="text/css" />
+{% endaddtoblock %}
+
+<a href="http://soundcloud.com/{{ ids.0 }}/{{ ids.1 }}/" class="sc-player">Soulhack</a>
+
+<!--
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="http://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F{{ object.track_id }}&amp;auto_play=false&amp;show_artwork=false&amp;color=20ff00"></iframe>
+-->

@@ -1,0 +1,7 @@
+[{% for area in object_list %}
+    {
+        "id": "{{ area.id }}",
+        "name": "{{ area.name }}",
+        "abbrev": "{{ area.abbrev }}"
+    }{% if not forloop.last %},{% endif %}
+{% endfor %}]

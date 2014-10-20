@@ -1,0 +1,92 @@
+{% load cms_tags menu_tags adv_cache %}
+
+{% cache 600 "footer" request.get_full_path %}
+<div class="container">
+
+
+    <div class="row">
+        <div class="span12">
+            <ul class="sitemap unstyled">
+                {% show_menu 0 1 100 100 %}
+                <span class="clear"></span>
+            </ul>
+
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="span9">
+
+
+
+            <p class="muted credit">
+                © openbroadcast.org {% now "Y" %} |
+                Renggerstrasse 31, CH-8038 Zurich, Switzerland
+            </p>
+        </div>
+        <div class="span3">
+            <p class="muted credit pull-right">developed by <a href="http://hazelfire.com">hazelfire GmbH</a></p>
+        </div>
+    </div>
+
+
+    {% if DEBUG %}
+    {% load ctype %}
+    <div id="debug_container" style="width: 100%; opacity: 0.6; font-size: 90%;">
+        <dl class="dl-horizontal">
+
+            {% if object and object.id %}
+            <dt>Object ID:</dt>
+            <dd>
+                {{ object.id }}
+                {%  if object.get_admin_url %}
+                | <a href="{{ object.get_admin_url }}">admin</a>
+                {% endif %}
+
+
+            </dd>
+            {% endif %}
+
+            {% if object.folder %}
+            <dt>Directory:</dt>
+            <dd>
+                {{ object.folder }}
+            </dd>
+            {% endif %}
+
+
+
+
+
+            {% if object and object.legacy_id %}
+            <dt>Legacy ID:</dt>
+            <dd>
+                {{ object.legacy_id }}
+
+                {% if object|ct_name_by_object|lower == 'release' %}
+                | <a href="http://openbroadcast.org/en/content/library/{{ object|ct_name_by_object|lower }}s/{{ object.legacy_id }}/detail.html">show legacy page</a>
+                {% endif %}
+                {% if object|ct_name_by_object|lower == 'artist' %}
+                | <a href="http://openbroadcast.org/en/content/library/{{ object|ct_name_by_object|lower }}s/{{ object.legacy_id }}.html">show legacy page</a>
+                {% endif %}
+                {% if object|ct_name_by_object|lower == 'label' %}
+                | <a href="http://openbroadcast.org/en/content/library/{{ object|ct_name_by_object|lower }}s/{{ object.legacy_id }}/releases.html">show legacy page</a>
+                {% endif %}
+                {% if object|ct_name_by_object|lower == 'track' %}
+                | <a href="http://openbroadcast.org/en/content/library/media/{{ object.legacy_id }}/detail.html">show legacy page</a>
+                {% endif %}
+
+
+
+            </dd>
+            {% endif %}
+
+        </dl>
+    </div>
+    {% endif %}
+
+
+</div>
+{% endcache %}

@@ -1,0 +1,30 @@
+{% extends "cms_base.html" %}
+
+{% load cms_tags abcast_tags %}
+
+
+	{% block heading %}
+	<div id="heading" class="heading heading-alt">
+		{% include "skeleton/heading_alt.html" %}
+	</div>
+	{% endblock %}
+
+{% block cms_main %}
+
+    <section id="on_air_home">
+        {% on_air_inline %}
+    </section>
+
+
+	{% placeholder "main" or %}empty{% endplaceholder %}
+{% endblock %}
+
+
+{% block cms_sidebar %}
+	{% placeholder "aux" or %}{% endplaceholder %}
+{% endblock %}
+
+
+{% block footer %}
+	{% placeholder "footer" inherit or %}{% show_placeholder "footer" "base" %}{% endplaceholder %}
+{% endblock %}

@@ -1,0 +1,219 @@
+/* pplayer inline */
+@import 'bourbon/bourbon' 
+
+#aplayer_inline
+  
+  width: 235px
+  height: 18px
+  margin-right: 20px
+  position: relative
+  right:auto
+
+
+  &.paused .hidden-while-paused
+    display: none
+
+  &.playing .hidden-while-playing
+    display: none
+
+  &.buffering .hidden-while-buffering
+    display: none
+
+  //
+    &.hover
+      .display
+        height: 100px
+        width: 210px
+
+      .shortcuts
+        // display: none
+
+
+  &.hover
+    .display
+      background-color: #f5f5f5
+
+  .display
+    //@include transition (height 0.07s)
+    width: 210px
+    overflow: hidden
+    ul
+      list-style-type: none
+      padding: 0px
+      margin: 0px
+      
+    ul.timing
+      display: none
+      li
+        font-size: 83%
+        padding-top: 2px
+	
+
+
+    border: none
+    //
+      border-color: #666 #666 #999 #999
+      border-color: #222
+      border-style: solid
+      border-width: 1px
+
+    margin-top: 1px
+    height: 18px
+	
+    
+	
+    .name
+      font-weight: bold
+	  
+    span
+      color: #555555
+      padding: 1px 4px 0
+      display: block
+      float: left
+    a
+      color: #555555
+    
+  
+  .shortcuts
+    padding-top: 1px
+    width: 22px
+    a
+      margin-left: 2px
+
+  .display-large
+    // width: 208px
+    width: 400px
+    margin-top: 13px
+    background: #f5f5f5
+    border: 1px solid #dddddd
+    display: none
+
+    .actions
+      a
+        color: #a5a5a5
+        &:hover
+          color: $main-a
+
+    // alibrary only
+    div.playhead
+      margin: 8px 0
+      .background
+        background: $main-a
+
+      .indicator
+        background-image: url(/static/aplayer/img/playhead.indicator.png)
+        background-repeat: repeat-y
+        background-position: 30px 0
+
+
+      .handler
+        background-image: none
+
+      .waveform
+        height: 20px
+
+      &.hover
+        .handler
+          background-image: url(/static/aplayer/img/playhead.handler.png)
+          background-repeat: no-repeat
+
+    // abcast only
+    div.channel
+      padding: 5px 0 5px 5px
+
+    &.listing .inner
+
+
+      max-height: 420px
+      overflow-y: auto
+      overflow-x: hidden
+
+      .item
+        border-bottom: 1px solid #efefef
+        background-color: white
+
+        span, a
+          margin: 0
+          font-size: 11px
+        span
+          display: block
+          line-height: 16px
+          padding: 0 5px
+
+          // bit hackish...
+          width: 362px
+          overflow: hidden
+
+          &.title
+            font-weight: bold
+
+        .duration span
+          font-size: 10px
+          padding: 0 5px 0 0
+
+        a
+          color: $main-b
+          &:hover
+            text-decoration: underline
+
+        span.title > a
+          color: #555555
+
+
+        &.hover
+          background-color: #DDFFD9
+        &.playing
+          background-color: #DDFFD9
+
+
+        // indicatr (small 1px 'border' at bottom)
+        &.playing
+          border-bottom: none
+          .indicator
+            display: block
+
+        .indicator
+          display: none
+          height: 1px
+          overflow: hidden
+          width: 100%
+
+          .wrapper
+            background: #efefef
+            padding: 0 !important
+            .inner
+              width: 0%
+              background: $main-a
+
+
+// source switches
+#aplayer_inline
+
+  .display
+    background-color: #efefef
+
+  .indicator, .channel
+    display: none
+
+  &.alibrary
+
+    .display
+      background-color: #DDFFD9
+
+
+    .indicator
+      display: block
+
+  &.abcast
+
+    .display
+      background-color: #EEE6FF
+    .channel
+      display: block
+
+    .listing .actions
+      .prev, .next
+        display: none
+
+    .indicator
+      display: none !important

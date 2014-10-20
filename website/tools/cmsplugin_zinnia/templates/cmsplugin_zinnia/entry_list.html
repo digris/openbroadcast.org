@@ -1,0 +1,12 @@
+{% load i18n %}
+<ul>
+  {% for object in entries %}
+  <li>
+    <a href="{{ object.get_absolute_url }}" title="{{ object.title }}" rel="bookmark">{{ object.title }}</a>
+  </li>
+  {% empty %}
+  <li>
+    {% trans "No entries yet." %}
+  </li>
+  {% endfor %}
+</ul>

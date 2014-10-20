@@ -1,0 +1,38 @@
+<div class="result">
+
+	<div class="listing">
+		{% for item in objects %}
+		<div class="item hoverable" data-id="{{ item.id }}" data-name="{{ item.name }}" data-ct="{{ item.ct }}">
+			
+			<div class="row-fluid">
+				
+				<div class="span3">
+					
+					{% if item.main_image %}
+					<img src="{{ item.main_image }}" />
+					{% else %}
+					<img src="/static/img/base/defaults/listview.{{ item.ct }}.xl.png" width="90" height="90" />
+					{% endif %}
+					
+				</div>
+				
+				<div class="span9">
+					
+					<ul class="unstyled">
+						<li><strong>{{ item.name|highlight(meta.query) }}</strong>  <small class="pull-right">{{ item.releasedate }}</small></li>
+						
+						{% if item.ct == 'release' %}
+						<li>{% for artist in item.artist %}{{ artist }}{% if not loop.last %}, {% endif %}{% endfor %}</li>
+						<li>Tracks: {{ item.media_count }}</li>
+						{% endif %}
+						
+					</ul>
+
+				</div>
+				
+			</div>
+
+		</div>
+		{% endfor %}
+	</div>
+</div>

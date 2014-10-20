@@ -1,0 +1,71 @@
+{% extends "profiles/base_profile.html" %}
+
+{% block title %}Profile form{% endblock %}
+
+{% load crispy_forms_tags i18n %}
+
+{% block content_title %}
+<h2>Profile form</h2>
+{% endblock %}
+
+{% block content %}
+<form action="." method="post" enctype="multipart/form-data" class="profile_form form-horizontal form-compact">
+	{% csrf_token %}
+
+	{% crispy action_form %}
+
+	<table>
+		{% crispy user_form %}
+		{% crispy profile_form %}
+	</table>
+
+	{% crispy action_form %}
+
+	<fieldset>
+		
+		<legend>{% trans "Communication / Services" %}</legend>
+		
+		<div class="notes-inline notes">
+			<h4></h4>
+			<p>
+				{% trans "Flickr, Twitter, etc." %}
+			</p>
+		</div>
+
+		{{ service_formset.management_form }}
+
+		{% for form in service_formset.forms %}
+		{% crispy form %}
+		{% endfor %}
+		
+		<p class="dim">
+			{% trans "To add more links than displayed save and continue editing." %}
+		</p>
+		
+	</fieldset>
+
+	<fieldset>
+		
+		<legend>{% trans "Personal Links" %}</legend>
+		
+		<div class="notes-inline notes">
+			<h4></h4>
+			<p>
+				{% trans "Example: Your blog, you personal site, etc." %}
+			</p>
+		</div>
+
+		{{ link_formset.management_form }}
+
+		{% for form in link_formset.forms %}
+		{% crispy form %}
+		{% endfor %}
+		<p class="dim">
+			{% trans "To add more links than displayed save and continue editing." %}
+		</p>
+	</fieldset>
+
+	{% crispy action_form %}
+
+</form>
+{% endblock %}

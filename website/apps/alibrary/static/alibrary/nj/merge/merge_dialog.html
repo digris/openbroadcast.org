@@ -1,0 +1,120 @@
+<div class="info">
+
+    <strong>Kjhaksdhaksdh</strong>
+
+    <p>asldkjhakjshdksjhdkjh</p>
+
+</div>
+
+
+<div class="listing" style="max-height: 400px; overflow: auto; width: 700px;">
+
+
+    {% if objects.length < 1 %}
+
+        <p>
+            Sorry - but we could not find any objects to merge.
+        </p>
+    {% endif %}
+
+    {% for object in objects %}
+
+        <div class="item object " data-uri="{{ object.uri }}" data-id="{{ object.id }}">
+
+            <div class="row-fluid">
+
+                <div class="span2">
+                    {% if  object.main_image %}
+                        <img src="{{ object.main_image }}">
+                    {% else %}
+                        <img src="/static/img/base/spacer.png">
+                    {% endif %}
+                </div>
+
+                <div class="span10">
+
+
+
+                        <strong>{{ object.name }}
+                            {% if item_type == "release" %}
+                            <small class="pull-right"> {{ object.media.length }} Tracks</small>
+                            {% endif %}
+                            {% if item_type == "label" %}
+                            <small class="pull-right"> {{ object.release_count }} Releases</small>
+                            {% endif %}
+                        </strong>
+
+                        <ul class="unstyled">
+                            {% if item_type == "release" %}
+                                <li>
+                                    <span class="value">
+                                        <strong>{{ object.releasedate }} | {{ object.release_country }}</strong>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="title">
+                                        Artist:
+                                    </span>
+                                    <span class="value">
+                                        {% for artist in object.artist %}
+                                            <strong>{{ artist }}</strong>
+                                        {% endfor %}
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="title">
+                                        Catalog #:
+                                    </span>
+                                    <span class="value">
+                                        <strong>{{ object.catalognumber }}</strong>
+                                    </span>
+                                </li>
+                            {% endif %}
+
+
+                            {% if item_type == "label" %}
+                                <li>
+                                    <span class="value">{{ object.type_display }}</span>
+                                </li>
+                                {% if object.labelcode %}
+                                <li>
+                                    <span class="title">
+                                        Label code:
+                                    </span>
+                                    <span class="value">
+                                        <strong>{{ object.labelcode }}</strong>
+                                    </span>
+                                </li>
+                                {% endif %}
+                            {% endif %}
+
+                        </ul>
+
+
+
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+    {% endfor %}
+</div>
+
+
+<div class="action">
+
+    <form class="form-horizontal">
+
+
+        <a class="pull-right confirm btn btn-primary" data-action="confirm" type="button">Confirm</a>
+        <a class="pull-right confirm btn" data-action="cancel" type="button">Cancel</a>
+
+    </form>
+
+</div>

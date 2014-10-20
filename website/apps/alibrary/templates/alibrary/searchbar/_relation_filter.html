@@ -1,0 +1,9 @@
+{% load spurl i18n truncate %}
+
+{% for filter in relation_filter %}
+	<a href="{% spurl base=request.get_full_path remove_query_param="page" remove_query_param=filter.item_type %}" class="lfilter">
+		<div>
+			{{ filter.label }}: {{ filter.item }}<img border="0" src="/static/img/prototype/tag_remove.png">
+		</div>
+	</a>
+{% endfor %}

@@ -1,0 +1,22 @@
+{% for dp in available_dayparts %}
+
+
+
+{% endfor %}
+
+
+<!--
+{% for item in object.dayparts.all %}
+
+<span>
+	{{ item.get_day_display }}
+	{{ item.time_start|date:"H:i" }} - 
+	{{ item.time_end|date:"H:i"  }}
+	{% if not forloop.last %}
+	|
+	{% endif %}
+</span>
+
+
+{% endfor %}
+-->

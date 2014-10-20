@@ -1,0 +1,13 @@
+
+
+Best regards,
+your {{ site_name }} Team
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+{{ protocol }}://{{ domain }}
+Renggerstrasse 31
+8038 Zürich
+Switzerland

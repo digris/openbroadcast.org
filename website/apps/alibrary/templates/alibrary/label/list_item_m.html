@@ -1,0 +1,88 @@
+{% load adv_cache thumbnail i18n truncate display_tags arating_tags spurl alibrary_tags %}
+
+<div class="list_body_row selectable item label {{ item.uuid }} {% if item.creator == user %} owner{% endif %}"
+     id="list_item_{{ item.pk }}"
+     data-id="{{ item.id }}"
+     data-uuid="{{ item.uuid }}"
+     data-ct="label"
+     data-resource_uri="{{ item.get_api_url }}">
+
+    <div class="list_body_item c1 image_center_bg"
+         {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 54x54 upscale subject_location=item.main_image.subject_location %});"{% endif %}>
+
+        {% with object=item ct="label" %}
+            {# include "alibrary/element/_item_actions_primary.html" #}
+        {% endwith %}
+
+    </div>
+    <div class="list_body_item c2">
+        <ul class="unstyled">
+            <li class="bold">
+                <a href="{{ item.get_absolute_url }}" title="{{ item.name }}">
+                    {{ item.name|truncate_chars_inner:24 }}
+                    {% if item.country %}<small> {{ item.country }}</small>{% endif %}
+                    {% cache 3600 "topflop_label" item.pk item.updated %}
+                    {% topflop_for_object item %}
+                    {% endcache %}
+                </a>
+            </li>
+
+            <li>
+                {{ item.get_type_display }}
+            </li>
+
+            {% if item.release_label.count > 0 %}
+                <li>
+                    {% url alibrary-release-list as release_list %}
+                    {% trans "Releases" %}:&nbsp;<a href="{% spurl path=release_list query="label={{ item.slug }}" %}"
+                                                    title="{% trans "Only show releases on" %} {{ item.name }}"
+                                                    style="vertical-align: top;">{{ item.release_label.count }}<span
+                        class="filter icon"></span></a>
+                </li>
+            {% endif %}
+            {% if item.media_artist.count > 0 %}
+                <li>
+                    {% trans "Tracks" %}:&nbsp;<a href="#"
+                                                  style="vertical-align: top;">{{ item.media_artist.count }}<span class="filter icon"></span></a>
+                </li>
+            {% endif %}
+
+        </ul>
+    </div>
+
+	<div class="list_body_item c3 links external">
+        <div class="relations">
+            {% relations_inline item %}
+        </div>
+	</div>
+
+    <div class="list_body_item c4">
+
+        <ul class="tags unstyled">
+            {% for tag in item.tags|slice:":9" %}
+                <li class="{% if tag.pk in active_tags %}__active{% endif %}">{{ tag.name|truncate_chars_inner:10 }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    <div class="list_body_item c5 action">
+
+        <ul class="unstyled action secondary horizontal">
+
+            {% if  perms.alibrary.change_label %}
+                <li>
+                    <a href="{{ item.get_edit_url }}"
+                       class=""
+                       title="{% trans "Edit" %}">
+                        <i class="icon icon-edit"></i>
+                    </a>
+                </li>
+            {% endif %}
+
+        </ul>
+
+    </div>
+
+</div>
+

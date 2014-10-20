@@ -1,0 +1,49 @@
+.tags a
+  padding: 1px 9px 2px 5px
+  border-top: 1px solid #e3dbf2
+  border-left: 1px solid #e3dbf2
+  margin: 0px 2px 3px 0px
+  background-image: url(/static/img/prototype/tag_bg.png)
+  background-repeat: no-repeat
+  background-position: bottom right
+  font-size: 12px
+  
+  
+  
+  
+.item_menu
+  ul
+    text-align: left
+    margin: 16px 0px 0px 0px
+    line-height: 14px
+    border-bottom: 1px solid #aaa
+    list-style-type: none
+    padding: 4px 10px 3px 15px
+  li
+    display: inline
+    a
+      padding: 4px 7px 3px 7px
+      border: 1px solid #bbb
+      background-color: #e1e1e1
+      color: #666
+      margin-right: 5px
+      text-decoration: none
+      border-bottom: none
+      &.on
+        border: 1px solid #aaa
+        border-bottom: none
+        background-color: #fff
+        color: $main-a
+      &.disabled
+        color: #c1c1c1
+        cursor: wait
+      &:hover
+        border: 1px solid #aaa
+        border-bottom: none
+        background-color: #fff
+        color: $main-a
+      &.disabled:hover
+        border: 1px solid #bbb
+        border-bottom: none
+        background-color: #e1e1e1
+        color: #c1c1c1

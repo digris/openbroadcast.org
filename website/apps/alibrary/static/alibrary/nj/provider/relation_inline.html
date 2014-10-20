@@ -1,0 +1,14 @@
+<p>
+    <span class="relation{% if match %} match{% endif %}{% if no_match %} diff{% endif %}"
+         data-service="{{ object.service }}"
+         data-url="{{ object.url }}">
+         <span style="white-space: nowrap;">
+             {% if match %}
+                <i class="icon-link"></i>
+             {% else%}
+                 <i class="icon-chevron-sign-up"></i>
+             {% endif %}
+
+             <a href="{{ object.url }}" class="skip-external" target="_blank">{{ object.url }}</a></span>
+    </span>
+</p>

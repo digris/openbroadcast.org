@@ -1,0 +1,51 @@
+<tr class="item export {{ object.status_key }}" data-last_status="0" id="export_{{ object.id }}">
+	<td>
+	
+		<i class="icon-refresh icon-spin visible-while-init"></i>
+		<i class="icon-download-alt visible-while-done"></i>
+		<i class="icon-ok-sign visible-while-downloaded"></i>
+		<i class="icon-film visible-while-ready"></i>
+		<i class="icon-tasks visible-while-progress"></i>
+		<i class="icon-warning-sign icon-pulse visible-while-error"></i>
+	
+	</td>
+	
+	
+	<td>{{ object.filename }}</td>
+	<td>{{ object.formatted_created }}</td>
+	<td>{{ object.formatted_downloaded }}</td>
+
+	<td>{{ object.formatted_filesize }}</td>
+	<td class="action download">
+		<a class="" data-url="{{ object.download_url }}"><i class="icon-download"></i> Download</a>
+		
+		</td>
+	<td>
+		
+		
+					<div class="btn-group pull-right">
+				<button class="btn btn-mini btn-prrimary" data-toggle="dropdown">
+					Actions
+				</button>
+				<button class="btn btn-mini  btn-prrimary dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li>
+						<a href="{{ object.get_absolute_url }}"><i class="icon-edit"></i> Details</a>
+					</li>
+					<li>
+						<a class="transform-post reload" href="{{ object.get_delete_url }}"><i class="icon-trash"></i> Delete</a>
+					</li>
+					<!--
+					<li class="divider"></li>
+					<li>
+						<a href="#">Separated link</a>
+					</li>
+					-->
+				</ul>
+			</div>
+		
+	</td>
+
+</tr>

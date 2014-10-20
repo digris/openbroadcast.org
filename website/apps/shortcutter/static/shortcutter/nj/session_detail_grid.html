@@ -1,0 +1,25 @@
+<div>
+	
+	{% for slot in object.slots %}
+	<div class="holder slot" style="width: {{ shotSize }}px;">
+		<div class="header"><h4>{{ slot.time }}</h4></div>
+		
+		{% for shot in slot.shots %}
+			<div class="holder shot loading" id="{{ shot.uuid }}">
+
+			<i class="icon-spinner icon-spin"></i>
+			
+			</div>
+			
+			{% if loop.last %}
+			<div style="clear: both;"></div>
+			{% endif %}
+			
+			
+		{% endfor %}
+		
+		
+	</div>
+	{% endfor %}
+	
+</div>

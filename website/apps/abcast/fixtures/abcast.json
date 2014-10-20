@@ -1,0 +1,50 @@
+[
+    {
+        "pk": 1,
+        "model": "abcast.station",
+        "fields": {
+            "website": "",
+            "city": "",
+            "updated": "2014-06-03T14:03:05",
+            "main_image": null,
+            "address2": "",
+            "uuid": "05573823-eb17-11e3-8f80-b8f6b11a3aed",
+            "zip": "",
+            "created": "2014-06-03T14:03:05",
+            "address1": "",
+            "description": "",
+            "fax": null,
+            "phone": null,
+            "teaser": "",
+            "country": null,
+            "description_html": "",
+            "type": "stream",
+            "slug": "open-broadcast",
+            "name": "Open Broadcast"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "abcast.channel",
+        "fields": {
+            "rtmp_app": "",
+            "updated": "2014-06-03T14:03:12",
+            "has_scheduler": true,
+            "uuid": "09298af5-eb17-11e3-9036-b8f6b11a3aed",
+            "description_html": "",
+            "created": "2014-06-03T14:03:12",
+            "rtmp_path": "",
+            "description": "",
+            "mount": "",
+            "stream_server": null,
+            "teaser": "",
+            "station": 1,
+            "on_air_type": null,
+            "stream_url": "",
+            "on_air_id": null,
+            "type": "stream",
+            "slug": "open-broadcast",
+            "name": "Open Broadcast"
+        }
+    }
+]

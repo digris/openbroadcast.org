@@ -1,0 +1,128 @@
+<div id="import_summary" class="import summary listing">
+
+    <div class="page-header">
+        <h4>Summary
+            <small>Current Import</small>
+        </h4>
+    </div>
+
+    <div class="summary item ready hoverable">
+        <strong><i class="icon-check-empty"></i> Ready to import</strong>
+
+        <div class="row-fluid ">
+            <div class="span12">
+                <span class="num-files">{{ counters.num_ready }}</span> files
+            </div>
+        </div>
+
+
+        <!--
+        <div class="row-fluid">
+            <div class="span12 counters">
+                <p>Importing all files will ad +/_ the following to the library:</p>
+                <dl>
+                    <dt>{{ inserts.num_media }}</dt>
+                    <dd>Track(s)</dd>
+
+                    <dt>{{ inserts.num_artists }}</dt>
+                    <dd>Artist(s)</dd>
+
+                    <dt>{{ inserts.num_releases }}</dt>
+                    <dd>Release(s)</dd>
+                </dl>
+            </div>
+        </div>
+        -->
+
+
+        <div class="row-fluid ">
+            <div class="span12">
+                <button class=" pull-right btn btn-mini btn-primary start-import-all"
+                        type="button">Import all
+                </button>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+    <div class="summary item done hoverable">
+        <strong><i class="icon-check"></i> Import completed <a class="toggle"
+                                                               data-toggle="done"
+                                                               href="#"><i class="icon-angle-up pull-right icon-2x"></i></a></strong>
+
+        <div class="row-fluid ">
+            <div class="span3">
+                <span class="num-files">{{ counters.num_done }}</span> files
+            </div>
+            <div class="span9">
+            </div>
+        </div>
+    </div>
+
+    <div class="summary item duplicate hoverable">
+        <strong><i class="icon-copy"></i> Duplicates <a class="toggle"
+                                                        data-toggle="duplicate"
+                                                        href="#"><i class="icon-angle-up pull-right icon-2x"></i></a></strong>
+
+        <div class="row-fluid ">
+            <div class="span3">
+                <span class="num-files">{{ counters.num_duplicate }}</span> files
+            </div>
+            <div class="span9">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="summary item pending hoverable">
+        <strong><i class="icon-time"></i> Processing</strong>
+
+        <div class="row-fluid ">
+            <div class="span3">
+                <span class="num-files">{{ counters.num_working }}</span> files
+            </div>
+            <div class="span9">
+
+            </div>
+        </div>
+
+        <div class="row-fluid ">
+            <div class="span12">
+                <button class=" pull-right btn btn-mini btn-secondary retry-pending"
+                        type="button">Retry all
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="summary item warning hoverable">
+        <strong><i class="icon-question-sign"></i> Information needed</strong>
+
+        <div class="row-fluid ">
+            <div class="span3">
+                <span class="num-files">{{ counters.num_warning }}</span> files
+            </div>
+            <div class="span9">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="summary item error hoverable">
+        <strong><i class="icon-warning-sign"></i> Errors</strong>
+
+        <div class="row-fluid ">
+            <div class="span3">
+                <span class="num-files">{{ counters.num_error }}</span> files
+            </div>
+            <div class="span9">
+
+            </div>
+        </div>
+    </div>
+
+</div>

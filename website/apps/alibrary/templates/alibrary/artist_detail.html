@@ -1,0 +1,356 @@
+{% extends "layout_base.html" %}
+
+{% load truncate i18n thumbnail arating_tags wiki_tags atracker_tags spurl alibrary_tags url_tags sekizai_tags %}
+
+{% block heading %}
+
+
+    <!-- jqplot - TODO: maybe move to include -->
+    {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/statistics.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-uncompressed" %}<script src="{{ STATIC_URL }}js/lib/flot-0.8.3/jquery.flot.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-uncompressed" %}<script src="{{ STATIC_URL }}js/lib/flot-0.8.3/jquery.flot.time.js"></script>{% endaddtoblock %}
+
+
+
+
+    {% addtoblock "js-post" %}
+        <script>
+            $(function () {
+
+                // initialize stats app
+                var stats = new StatisticApp;
+                stats.resource_uri = '{{ object.get_api_url }}';
+                stats.init();
+
+                // trigger to actually _load_ the stats
+                $('a[data-toggle="tab"]').on('shown', function (e) {
+                    if($(e.target).attr('href') == '#statistics') {
+                        stats.show();
+                    }
+                })
+
+
+            });
+        </script>
+    {% endaddtoblock %}
+
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+{% endblock %}
+
+{% block modnav %} <!-- start: intra-module navigation -->
+    <div id="modnav">
+        {% include "skeleton/modnav.html" %}
+    </div>
+    <!-- end: intra-module navigation -->
+{% endblock %}
+
+{% block inner %}
+    <div class="item_detail" style="">
+
+    <section class="shaded">
+        <div class="row iteminfo release">
+            {% include "alibrary/artist/_detail_info.html" %}
+        </div>
+    </section>
+
+    <div class="item_menu" id="item_menu">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#tracklist" data-toggle="tab">{% trans "Overview" %}</a>
+            </li>
+            {% if m_contrib.count > 0 %}
+            <li>
+                <a href="#contribution" data-toggle="tab">{% trans "Credited" %} ({{ m_contrib.count }})</a>
+            </li>
+            {% endif %}
+            {% if object.biography %}
+            <li>
+                <a href="#biography" data-toggle="tab">{% trans "Biography" %}</a>
+            </li>
+            {% endif %}
+            {% if object.agencies.count > 0 %}
+            <li>
+                <a href="#management" data-toggle="tab">{% trans "Management" %}</a>
+            </li>
+            {% endif %}
+
+            <li>
+                <a href="#history" data-toggle="tab">{% trans "Edit History" %}</a>
+            </li>
+            <li>
+                <a href="#statistics" data-toggle="tab">{% trans "Statistics" %}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="clear"></div>
+
+    <section class="tabbed item_inner">
+
+    <div class="tab-content">
+
+    <div class="tab-pane {% if releases.count > 0 %}active{% endif %}" id="tracklist"
+         class="topflop">
+
+        <!--
+				<div class="pagination">
+				{{ media.render }}
+				</div>
+				-->
+        <section class="top">
+
+
+            <h2>
+                {% url alibrary-media-list as media_list %}
+                {% trans "Top Tracks" %}
+                            <span class="pull-right">
+                                <a href="{% spurl path=media_list query="artist={{ object.slug }}" %}">
+                                    <i class="icon-chevron-sign-right"></i>
+                                    {% trans "Show all" %} {{ object.media_artist.count }} {% trans "tracks by" %} {{ object.name }}
+                                </a>
+                            </span>
+            </h2>
+
+            <div class="listview container medias s">
+
+                <div class="list_header"></div>
+
+                <div class="list_body">
+
+                    {# for item in media.object_list #}
+                    {% for item in m_top %}
+                        {% include "alibrary/media/_list_item_foreign_xs.html" %}
+                        {# include "alibrary/media/list_item_s.html" #}
+                    {% empty %}
+                        <p>
+                            {% trans "Not enough ratings to calculate the 'Tops'." %}
+                        </p>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </section>
+
+        <section class="flop">
+
+            <h2>{% trans "Flop Tracks" %}</h2>
+
+            <div class="listview container medias s">
+
+                <div class="list_header"></div>
+
+                <div class="list_body">
+
+                    {% for item in m_flop %}
+                        {% include "alibrary/media/_list_item_foreign_xs.html" %}
+                        {# include "alibrary/media/list_item_s.html" #}
+                    {% empty %}
+                        <p>
+                            {% trans "Not enough ratings to calculate the 'Flops'." %}
+                        </p>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </section>
+
+
+        <section class="top">
+            {% url alibrary-release-list as release_list %}
+
+            <h2>
+                {% trans "Releases" %}
+                            <span class="pull-right">
+                                <a href="{% spurl path=release_list query="artist={{ object.slug }}" %}">
+                                    <i class="icon-chevron-sign-right"></i>
+                                    {% trans "Show all" %} {{ object.releases.count }} {% trans "releases by" %} {{ object.name }}
+                                </a>
+                            </span>
+            </h2>
+
+            <div class="listview container releases inner l">
+
+                <div class="list_header"></div>
+
+                <div class="list_body">
+
+                    {% for item in releases %}
+                        {% include "alibrary/release/list_item_l.html" %}
+                    {% endfor %}
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <div class="tab-pane" id="history">
+
+        <section class="history">
+
+            <h2>{% trans "Edit history" %}</h2>
+
+            {% include "alibrary/element/_object_history.html" %}
+        </section>
+
+    </div>
+
+    <div class="tab-pane {% if releases.count < 1 and m_contrib > 1 %}active{% endif %}"
+         id="contribution">
+
+        <section class="contribution">
+
+            <h2>{% trans "Appears on" %}</h2>
+
+            <div class="listview container medias s">
+
+                <div class="list_header"></div>
+
+                <div class="list_body">
+
+                    {% with highlight=object extended=1 %}
+                        {% for item in m_contrib %}
+                            {% include "alibrary/media/_list_item_foreign_xs.html" %}
+                        {% endfor %}
+                    {% endwith %}
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <div class="tab-pane" id="biography">
+        <section class="description">
+            <h2>{% trans "Artist description" %}</h2>
+
+            <div class="description markdown padded-h">
+                {% wikify object.biography %}
+            </div>
+
+        </section>
+
+    </div>
+
+    <div class="tab-pane" id="management">
+        <section class="description">
+            <h2>{% trans "Management" %}</h2>
+
+
+            {% if object.agencies.count > 0 %}
+
+
+                {% for agency in object.agencies.all %}
+
+                    <dl class="dl-horizontal">
+
+                        <dt>{% trans "Agency" %}</dt>
+                        <dd>
+                            <ul class="unstyled">
+                                <li>{{ agency.name }}</li>
+                                {% if  agency.address %}
+                                    <li>{{ agency.address|linebreaksbr }}</li>
+                                {% endif %}
+                                {% if  agency.country %}
+                                    <li>{{ agency.country }}</li>
+                                {% endif %}
+                            </ul>
+                        </dd>
+
+                        <dt>{% trans "Scope" %}</dt>
+                        <dd>
+                            {% for aa in agency.agencyartist_set.all %}
+                                {% for scope in aa.scopes.all %}
+                                    {{ scope }}
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </dd>
+
+                        <dt>{% trans "Countries" %}</dt>
+                        <dd>
+                            {% for aa in agency.agencyartist_set.all %}
+                                {% for country in aa.countries.all %}
+                                    {{ country.iso2_code }}
+                                    {% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </dd>
+
+                    </dl>
+
+
+                {% endfor %}
+
+
+
+
+            {% endif %}
+        </section>
+
+    </div>
+
+
+
+    <div class="tab-pane" id="statistics">
+
+        <section class="statistics">
+
+            <h2>{% trans "Statistics" %}</h2>
+
+            <div id="statistics_container" style="min-height: 240px;">
+                <div class="message">{% trans "Loading statistics" %}</div>
+                <!-- dynamic content -->
+            </div>
+            <div class="choices-container">
+                <ul class="unstyled pull-right" id="plot_choices"></ul>
+            </div>
+
+        </section>
+
+    </div>
+
+    <div class="tab-pane" id="broadcasts">
+        ...
+    </div>
+
+    </div>
+
+    </section>
+
+    <section class="comments on-site">
+        {% include "element/chat/_object_comments.html" %}
+    </section>
+
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+    {% include "alibrary/artist/sidebar/_detail.html" %}
+
+    <div class="listing relations" style="padding-top: 8px;">
+
+    <div class="page-header">
+        <h2>{% trans "Show/share on" %}
+            <small>{% trans "external links" %}</small>
+        </h2>
+
+        <div class="item social">
+            <div class="fb-like"
+                 data-href="{% fullurl %}"
+                 data-width="200"
+                 data-layout="button_count"
+                 data-show-faces="false"
+                 data-send="true"></div>
+        </div>
+
+    </div>
+
+    <div class="item relations">
+        {% all_relations_inline object %}
+    </div>
+
+{% endblock %}

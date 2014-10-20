@@ -1,0 +1,78 @@
+// ----------------------------------------------------------------------------------------------
+// aplayer / playhead
+// ----------------------------------------------------------------------------------------------
+
+
+@mixin aplayer($width-base, $height-base, $width-item, $height-item)
+  &.playlist
+    padding: ($padding-inner / 2) 0 ($padding-inner / 2) 0
+    text-transform: uppercase
+    &:first-child
+      padding: 0 0 ($padding-inner / 2) 0
+    &:last-child
+      padding: ($padding-inner / 2) 0 0 0
+    
+    .information
+      padding: $padding-inner 0 0 0
+      
+    .background
+      margin: $padding-inner 0 0 0
+      
+      
+  div.playhead
+    width: $width-item
+    // height: $aplayer-height-item
+  
+  
+    // times
+    div.waveform > .time
+      text-align: right
+      span
+        //background-color: $color-base-bg
+        &.current
+          color: green
+        &.total
+          color: yellow
+  
+    // background layer (for hover/active/etc ? )
+    div.background
+    
+    div.indicator
+      background-repeat: repeat-y
+      
+    div.handler
+      background-image: none
+    
+      div.waveform
+        height: $height-item
+        
+        // inner information
+        div.information, div.information > *
+          display: none
+         
+    // general 
+    div.information.base
+      // background-color: #ff00ff
+        
+  &.hover
+    div.background
+      // background-color: $color-a-d !important
+    
+    div.indicator
+    
+    div.handler
+      cursor: crosshair !important
+      background-image: url(#{$static-url}img/aplayer/playhead.handler.png) !important
+      background-repeat: repeat-y
+      
+      
+  &.active
+    div.background
+      //background-color: $color-a-l !important
+    
+    div.indicator
+      background-image: url(#{$static-url}img/aplayer/playhead.indicator.png)
+      background-repeat: repeat-y
+      
+
+

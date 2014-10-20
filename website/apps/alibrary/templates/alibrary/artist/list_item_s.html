@@ -1,0 +1,116 @@
+{% load adv_cache thumbnail i18n truncate display_tags arating_tags spurl alibrary_tags %}
+
+<!-- list item s -->
+
+<div class="list_body_row selectable view edit stream collect download" id="list_item_{{ item.pk }}">
+	<div class="list_body_item c1 image_center_bg" {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 36x36 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}>
+        {% with object=item ct="artist" %}
+            {% include "alibrary/element/_item_actions_primary.html" %}
+        {% endwith %}
+	</div>
+
+	<div class="list_body_item c2">
+		<ul class="unstyled">
+			<li class="bold">
+				<a href="{{ item.get_absolute_url }}" title="{{ item.name }}">
+				{{ item.name|truncate_chars_inner:24 }}
+				{% if item.country %}({{ item.country.iso2_code }}){% endif %}
+                {% cache 3600 "topflop_artist" item.pk %}
+                {% topflop_for_object item %}
+                {% endcache %}
+                </a>
+			</li>
+
+			<li>
+
+                {% if item.type %}{{ item.type }}{% endif %}
+
+                <span class="life">
+                    {% if item.date_start %}&nbsp;*{{ item.date_start.year }}{% endif %}
+                    {% if item.date_end %}&nbsp;&#10013;{{ item.date_end.year }}{% endif %}
+                </span>
+            </li>
+
+		</ul>
+	</div>
+
+	<div class="list_body_item c3">
+		<ul class="unstyled">
+			{% if item.get_releases.count > 0 %}
+			<li>
+				{% url alibrary-release-list as release_list %}
+				{% trans "Releases" %}:&nbsp;<a href="{% spurl path=release_list query="artist={{ item.slug }}" %}" title="{% trans "Only show releases by" %} {{ item.name }}" style="vertical-align: top;">{{ item.get_releases.count }}<span class="filter icon"></span></a>
+			</li>
+			{% endif %}
+			{% if item.media_artist.count > 0 %}
+			<li>
+                {% url alibrary-media-list as media_list %}
+				{% trans "Tracks" %}:&nbsp;<a href="{% spurl path=media_list query="artist={{ item.slug }}" %}" style="vertical-align: top;">{{ item.media_artist.count }}<span class="filter icon"></span></a>
+			</li>
+			{% endif %}
+			
+		</ul>
+	</div>
+
+	<div class="list_body_item c4 links external">
+        <div class="relations">
+            {% relations_inline item %}
+        </div>
+	</div>
+
+	<div class="list_body_item c5">
+		<ul class="unstyled">
+			<li>
+				{{ item.updated|date:"SHORT_DATE_FORMAT" }}
+			</li>
+			<li class="small">
+                {% if item.get_last_revision %}
+                {% trans "by" %}:
+				<a href="{{ item.get_last_revision.user.get_profile.get_absolute_url }}">{{ item.get_last_revision.user }}</a>
+                {% endif %}
+			</li>
+		</ul>
+	</div>
+
+	<div class="list_body_item c6 action">
+
+        <ul class="unstyled action secondary horizontal">
+
+            {% comment %}
+            <li>
+                <a href="#"
+                   class="downloadable queue{% if not perms.alibrary.downoad_media %} disabled{% endif %}"
+                   data-ct="artist"
+                   data-resource_uri="{{ item.get_api_url }}"
+                   title="{% trans "Download" %}">
+                    <i class="icon icon-download-alt"></i>
+                </a>
+            </li>
+
+            <li>
+                <a href="#"
+                   class="{% if not user.is_authenticated %} disabled{% endif %}"
+                   data-action="collect"
+                   title="{% trans "Add to playlist" %}">
+                    <i class="icon icon-plus"></i>
+                </a>
+            </li>
+            {% endcomment %}
+
+            {% if  perms.alibrary.change_artist %}
+                <li>
+                    <a href="{{ item.get_edit_url }}"
+                       class=""
+                       title="{% trans "Edit" %}">
+                        <i class="icon icon-edit"></i>
+                    </a>
+                </li>
+            {% endif %}
+
+        </ul>
+
+	</div>
+
+</div>
+
+

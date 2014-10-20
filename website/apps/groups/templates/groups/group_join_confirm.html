@@ -1,0 +1,18 @@
+{% extends "groups/base_groups.html" %}
+
+
+{% block title %}Join group{% endblock %}
+{% block body_class %}{{ block.super }} group_confirm_join{% endblock %}
+
+
+{% block content_title %}
+  <h2>Join {{ group }}</h2>
+{% endblock %}
+
+
+{% block content %}
+  <form action=".{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" method="post">{% csrf_token %}
+    <p>Are you sure you want to join the group, "{{ group }}?"</p>
+    <p class="submit"><button type="submit">Indeed</button></p>
+  </form>
+{% endblock %}

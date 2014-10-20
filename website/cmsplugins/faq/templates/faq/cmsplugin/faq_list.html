@@ -1,0 +1,21 @@
+{% load i18n sekizai_tags %}
+
+<div class="faq-list">
+
+        {% for faq in objects %}
+            <div class="entry">
+            <h2><a id="{{ faq.question|slugify }}"></a><a href="#{{ faq.question|slugify }}">{{ faq.question }}</a></h2>
+            <p>{{ faq.answer|linebreaksbr }}</p>
+            </div>
+        {% endfor %}
+
+</div>
+
+
+{% addtoblock "js" %}
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+{% endaddtoblock %}
