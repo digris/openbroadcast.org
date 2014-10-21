@@ -41,8 +41,8 @@ java -jar start.jar
 ./manage.py dumpdata cms text link menus sites > fixtures/initial.json
 
 # snapshot (dev, osx)
-mysqldump5 -h 127.0.0.1 -u root -proot ch_openbroadcast_local > ~/tmp/ch_openbroadcast_local.sql
-mysql5 -h 127.0.0.1 -u root -proot ch_openbroadcast_local < ~/tmp/ch_openbroadcast_local.sql
+mysqldump5 -h 127.0.0.1 -u root -proot org_openbroadcast_local > ~/tmp/org_openbroadcast_local.sql
+mysql5 -h 127.0.0.1 -u root -proot org_openbroadcast_local < ~/tmp/org_openbroadcast_local.sql
 
 # pushy
 cd code/django-apps/django-pushy/server/

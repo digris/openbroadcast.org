@@ -145,8 +145,8 @@ mkdir /var/ttserver/
 /usr/sbin/ttserver -port 1978 -thnum 4 -pid /var/run/ttserver.pid /var/ttserver/prod_casket.tch#bnum<span class="o">=</span>1000000
 </pre></div>
 </div>
-<div class="section" id="etc-supervisor-conf-d-tt-prod-openbroadcast-ch-conf">
-<h4>2.4.1.5.1. /etc/supervisor/conf.d/tt.prod.openbroadcast.org.conf<a class="headerlink" href="#etc-supervisor-conf-d-tt-prod-openbroadcast-ch-conf" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="etc-supervisor-conf-d-tt-prod-openbroadcast-org-conf">
+<h4>2.4.1.5.1. /etc/supervisor/conf.d/tt.prod.openbroadcast.org.conf<a class="headerlink" href="#etc-supervisor-conf-d-tt-prod-openbroadcast-org-conf" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">[</span>program:tt.prod.openbroadcast.org.conf<span class="o">]</span>
 <span class="nv">directory</span><span class="o">=</span>/root/
 <span class="nb">command</span><span class="o">=</span>/usr/sbin/ttserver -port 1978 -thnum 4 -pid /var/run/ttserver.pid /var/ttserver/prod_casket.tch#bnum<span class="o">=</span>1000000
@@ -161,8 +161,8 @@ mkdir /var/ttserver/
 </pre></div>
 </div>
 </div>
-<div class="section" id="etc-supervisor-conf-d-solr-prod-openbroadcast-ch-conf">
-<h4>2.4.1.5.2. /etc/supervisor/conf.d/solr.prod.openbroadcast.org.conf<a class="headerlink" href="#etc-supervisor-conf-d-solr-prod-openbroadcast-ch-conf" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="etc-supervisor-conf-d-solr-prod-openbroadcast-org-conf">
+<h4>2.4.1.5.2. /etc/supervisor/conf.d/solr.prod.openbroadcast.org.conf<a class="headerlink" href="#etc-supervisor-conf-d-solr-prod-openbroadcast-org-conf" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-bash"><div class="highlight"><pre><span class="o">[</span>program:solr.prod.openbroadcast.org.conf<span class="o">]</span>
 <span class="nv">directory</span><span class="o">=</span>/srv/openbroadcast.org/service/solr
 <span class="nb">command</span><span class="o">=</span>/usr/bin/java -Dsolr.solr.home<span class="o">=</span>/srv/openbroadcast.org/service/solr/solr/ -Djava.awt.headless<span class="o">=</span><span class="nb">true</span> -jar start.jar
@@ -207,8 +207,8 @@ supervisorctl status
 </li>
 <li><a class="reference internal" href="#rabbit-mq">2.4.1.4. rabbit-mq</a></li>
 <li><a class="reference internal" href="#echoprint-server-installation">2.4.1.5. Echoprint server installation</a><ul>
-<li><a class="reference internal" href="#etc-supervisor-conf-d-tt-prod-openbroadcast-ch-conf">2.4.1.5.1. /etc/supervisor/conf.d/tt.prod.openbroadcast.org.conf</a></li>
-<li><a class="reference internal" href="#etc-supervisor-conf-d-solr-prod-openbroadcast-ch-conf">2.4.1.5.2. /etc/supervisor/conf.d/solr.prod.openbroadcast.org.conf</a></li>
+<li><a class="reference internal" href="#etc-supervisor-conf-d-tt-prod-openbroadcast-org-conf">2.4.1.5.1. /etc/supervisor/conf.d/tt.prod.openbroadcast.org.conf</a></li>
+<li><a class="reference internal" href="#etc-supervisor-conf-d-solr-prod-openbroadcast-org-conf">2.4.1.5.2. /etc/supervisor/conf.d/solr.prod.openbroadcast.org.conf</a></li>
 <li><a class="reference internal" href="#start-it">2.4.1.5.3. start it!</a></li>
 </ul>
 </li>

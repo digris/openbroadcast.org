@@ -2,7 +2,7 @@
 
 ## 
 
-numpy does not correctly install through PIP.
+numpy does not correctly install through requirements/PIP.
 so a "pip install numpy" should fix it.
  
 ## libsndfile

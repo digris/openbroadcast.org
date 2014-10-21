@@ -177,7 +177,7 @@ Now try to run the deployment-script on your local machine.
 .. code-block:: bash
 
     cd <code root>
-    fab prod_openbroadcast_ch deploy
+    fab prod_openbroadcast_org deploy
 
 .. note::
 

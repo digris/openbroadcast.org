@@ -27,20 +27,20 @@ def reboot():
     env.reboot = True
 
 
-def stage_openbroadcast_ch():
+def stage_openbroadcast_org():
     env.site_id = 'openbroadcast.org'
     env.hosts = ['172.20.10.204']
-    env.git_url = 'git@lab.hazelfire.com:hazelfire/obp/openbroadcast-ch.git'
+    env.git_url = 'git@lab.hazelfire.com:hazelfire/obp/openbroadcast-org.git'
     env.git_branches = ['development', 'master',]
     env.git_default_branch = 'development'
     env.path = '/var/www/openbroadcast.org'
     env.storage = '/nas/storage/stage.openbroadcast.org'
     env.user = 'root'
 
-def prod_openbroadcast_ch():
+def prod_openbroadcast_org():
     env.site_id = 'openbroadcast.org'
     env.hosts = ['172.20.10.205',]
-    env.git_url = 'git@lab.hazelfire.com:hazelfire/obp/openbroadcast-ch.git'
+    env.git_url = 'git@lab.hazelfire.com:hazelfire/obp/openbroadcast-org.git'
     env.git_branches = ['development', 'master',]
     env.git_default_branch = 'development'
     env.path = '/var/www/openbroadcast.org'
@@ -243,7 +243,7 @@ def deploy(branch=None):
             except Exception, e:
                 print e
 
-        """
+        """"""
         # linking config files
         try:
             run('rm %s/%s.conf' % (env.supervisor, env.site_id))
@@ -257,7 +257,7 @@ def deploy(branch=None):
             run('ln -s %s/src/conf/%s.nginx.conf %s/%s' % (env.path, env.site_id, env.nginx, env.site_id))
         except Exception, e:
             pass
-        """
+
 
         # restart app-server
 
