@@ -215,7 +215,7 @@ def deploy(branch=None):
         # generate git changelog
         try:
             with cd(env.path + '/src_new/website/'):
-                run('git log > changelog.txt')
+                run('git log -n 1 > changelog.txt')
         except Exception, e:
             pass
 
@@ -243,7 +243,7 @@ def deploy(branch=None):
             except Exception, e:
                 print e
 
-        """"""
+        """
         # linking config files
         try:
             run('rm %s/%s.conf' % (env.supervisor, env.site_id))
@@ -252,12 +252,13 @@ def deploy(branch=None):
             pass
 
         # additional configs
+        # no nginx on this server!
         try:
             run('rm %s/%s' % (env.nginx, env.site_id))
             run('ln -s %s/src/conf/%s.nginx.conf %s/%s' % (env.path, env.site_id, env.nginx, env.site_id))
         except Exception, e:
             pass
-
+        """
 
         # restart app-server
 

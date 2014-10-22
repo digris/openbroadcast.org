@@ -1,0 +1,5 @@
+commit 27e5676237da7cc346a4db04ebb6f441b8da7bb7
+Author: ohrstrom <jonas@anorg.net>
+Date:   Tue Oct 21 09:37:12 2014 +0200
+
+    config fixes
