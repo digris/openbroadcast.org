@@ -1,5 +1,6 @@
-<span class="key">Commit:</span>
-<span class="value">{{ commit|default:"Undefined" }}</span>
 
-<span class="key">Time:</span>
-<span class="value">{{ timestamp|default:"Undefined" }}</span>
+<span class="key">Deployed</span>
+<span class="value">{{ install_time|default:"Undefined" }}</span>
+
+<span class="key">Commit:</span>
+<span class="value">{{ commit|default:"" }} / {{ timestamp|default:"" }}</span>
