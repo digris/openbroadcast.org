@@ -35,8 +35,8 @@ class Format(models.Model):
     excerpt = models.TextField(blank=True, null=True, verbose_name=_("Notes")) 
     
     # auto-update
-    created = models.DateField(auto_now_add=True, editable=False)
-    updated = models.DateField(auto_now=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    updated = models.DateTimeField(auto_now=True, editable=False)
     
     # manager
     objects = models.Manager()

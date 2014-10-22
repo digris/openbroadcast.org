@@ -15,6 +15,7 @@ anyjson==0.3.3
 argparse==1.2.1
 astroid==1.0.1
 audioread==1.0.1
+akismet==0.2.0
 celery==2.5.5
 chardet==2.2.1
 cmsplugin-pagedown==0.0.2

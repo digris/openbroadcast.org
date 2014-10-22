@@ -101,8 +101,8 @@ class Label(MPTTModel, MigrationMixin):
     #first_placeholder = PlaceholderField('first_placeholder')
     
     # auto-update
-    created = models.DateField(auto_now_add=True, editable=False)
-    updated = models.DateField(auto_now=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    updated = models.DateTimeField(auto_now=True, editable=False)
 
     # life-span
     date_start = ApproximateDateField(verbose_name="Life-span begin", blank=True, null=True)

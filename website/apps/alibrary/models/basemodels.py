@@ -94,8 +94,8 @@ class Distributor(MPTTModel, MigrationMixin):
     first_placeholder = PlaceholderField('first_placeholder')
     
     # auto-update
-    created = models.DateField(auto_now_add=True, editable=False)
-    updated = models.DateField(auto_now=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    updated = models.DateTimeField(auto_now=True, editable=False)
     
     # relations
     parent = TreeForeignKey('self', null=True, blank=True, related_name='label_children')
@@ -213,8 +213,8 @@ class Agency(MPTTModel, MigrationMixin):
     description = extra.MarkdownTextField(blank=True, null=True)
 
     # auto-update
-    created = models.DateField(auto_now_add=True, editable=False)
-    updated = models.DateField(auto_now=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    updated = models.DateTimeField(auto_now=True, editable=False)
 
     # relations
     parent = TreeForeignKey('self', null=True, blank=True, related_name='agency_children')
@@ -355,8 +355,8 @@ class License(MPTTModel, MigrationMixin):
     
     
     # auto-update
-    created = models.DateField(auto_now_add=True, editable=False)
-    updated = models.DateField(auto_now=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    updated = models.DateTimeField(auto_now=True, editable=False)
     
     # relations
     parent = TreeForeignKey('self', null=True, blank=True, related_name='license_children')
@@ -415,8 +415,8 @@ class Profession(models.Model):
     excerpt = models.TextField(blank=True, null=True)  
     
     # auto-update
-    created = models.DateField(auto_now_add=True, editable=False)
-    updated = models.DateField(auto_now=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    updated = models.DateTimeField(auto_now=True, editable=False)
     
     # manager
     objects = ProfessionManager()
@@ -622,8 +622,8 @@ class Relation(models.Model):
 
     
     # auto-update
-    created = models.DateField(auto_now_add=True, editable=False)
-    updated = models.DateField(auto_now=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    updated = models.DateTimeField(auto_now=True, editable=False)
     
     # manager
     objects = RelationManager()

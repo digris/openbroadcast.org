@@ -162,8 +162,8 @@ class Artist(MigrationMixin):
     objects = ArtistManager()
     
     # auto-update
-    created = models.DateField(auto_now_add=True, editable=False)
-    updated = models.DateField(auto_now=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    updated = models.DateTimeField(auto_now=True, editable=False)
 
     # meta
     class Meta:
