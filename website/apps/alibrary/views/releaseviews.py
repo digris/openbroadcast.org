@@ -296,6 +296,8 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         self.object = form.save(commit=False)
 
         for name, formset in named_formsets.items():
+
+
             formset_save_func = getattr(self, 'formset_{0}_valid'.format(name), None)
             if formset_save_func is not None:
                 formset_save_func(formset)

@@ -219,7 +219,7 @@ ListEditUi = function () {
             _item_type = 'track';
         }
 
-        var url = '/api/v1/' + _item_type + '/';
+        var url = '/api/v1/library/' + _item_type + '/';
         var query = '?id__in=' + data.item_ids.join(',');
 
         $.get(url + query, function (data) {

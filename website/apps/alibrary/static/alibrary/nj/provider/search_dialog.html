@@ -4,7 +4,11 @@
 
         <input class="query" type="text" value="{{ query }}">
 
+
+        <a class="pull-right btn_">[close] X</a>
         <a class="pull-right search btn btn-primary" type="button">Search</a>
+
+
 
     </form>
 
@@ -95,11 +99,21 @@
                         <strong>{{ result.title }}</strong>
                         <ul class="unstyled">
 
-                            <li>
+                            {% if result["artist-credit"] %}
+                                {% for a in result["artist-credit"] %}
+                                    <li>
+                                        <span class="value">
+                                        <strong>{{ a["artist"]["name"] }}</strong>
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
 
-                            <span class="value">
-                                <strong>{{ result.date }} | {{ result.country }}</strong>
-                            </span>
+
+                            <li>
+                                <span class="value">
+                                    <strong>{{ result.date }} | {{ result.country }}</strong>
+                                </span>
                             </li>
 
                             {% if result["label-info"] %}
@@ -117,6 +131,7 @@
                             {% endif %}
 
 
+                            <!--
                             <li>
                             <span class="title">
                                 Barcode:
@@ -124,10 +139,10 @@
                             <span class="value">
                                 <strong>
                                     {{ result.barcode }}
-
                                 </strong>
                             </span>
                             </li>
+                            -->
 
                         </ul>
                         {% endif %}

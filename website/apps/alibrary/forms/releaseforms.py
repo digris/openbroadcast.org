@@ -484,19 +484,7 @@ class BaseAlbumartistForm(ModelForm):
 
 
 
-
-
-
-
-
-
-
-
-
-
 class BaseReleaseReleationFormSet(BaseGenericInlineFormSet):
-
-
 
     def __init__(self, *args, **kwargs):
 
@@ -535,28 +523,24 @@ class BaseReleaseReleationForm(ModelForm):
     class Meta:
         model = Relation
         parent_model = Release
-        #formset = BaseReleaseReleationFormSet
         fields = ('url','service')
 
     def __init__(self, *args, **kwargs):
         super(BaseReleaseReleationForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
-        """"""
 
         self.fields['service'].widget.instance = instance
 
         if instance and instance.id:
             self.fields['service'].widget.attrs['readonly'] = True
 
-    """"""
+
     def clean_service(self):
         return self.instance.service
 
     service = forms.CharField(label='', widget=ReadOnlyIconField(**{'url': 'whatever'}), required=False)
     url = forms.URLField(label=_('Website / URL'), required=False)
 
-    #name = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
-    #tracknumber =  forms.CharField(label=_('No.'))  
 
 
 # Compose Formsets

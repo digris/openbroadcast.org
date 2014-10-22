@@ -97,19 +97,6 @@ EditUi = function () {
 
         });
 
-        // auto-check delete checkmark if textfield is empty
-        /*
-        $('.form-autogrow', $('fieldset')).on('blur', '.controls input[type="text"]', function(e){
-            var value = $(this).val();
-            if (value=='') {
-                $('input[type="checkbox"]', $(this).parents('.form-autogrow')).prop('checked', true);
-            } else {
-                $('input[type="checkbox"]', $(this).parents('.form-autogrow')).prop('checked', false);
-            }
-        });
-        */
-
-
 
         $(container).on('click', '.item', function (e) {
 
@@ -122,7 +109,16 @@ EditUi = function () {
 
             // check if provider set
             if (item.hasClass('available')) {
-                self.api_lookup(item_type, item_id, provider);
+
+                // try to get api_url
+                var api_url = false;
+                $('fieldset.relations input[name^="relation"]').each(function(i, el){
+                    if ($(this).val().toLowerCase().indexOf(provider) >= 0) {
+                        api_url = $(this).val();
+                    }
+                });
+
+                self.api_lookup(item_type, item_id, provider, api_url);
             } else {
                 debug.debug('provider url not set');
             }
@@ -206,7 +202,6 @@ EditUi = function () {
             Dajaxice.alibrary.provider_update(function (data) {
 
                 if (data) {
-                    debug.debug('data:', data);
                     try {
                         var api = self.dialog_window.qtip('api');
                         api.destroy();
@@ -231,15 +226,24 @@ EditUi = function () {
                     } else {
                         var _container = $('fieldset.relations .relation-row:not(".hidden")').last();
                         $('.controls input', _container).val(self.current_data.uri);
-                        // reqrow...
                         self.autogrow();
                     }
 
                     // TODO: refactor
+
+                    // try to get api_url
+                    var api_url = false;
+                    $('fieldset.relations input[name^="relation"]').each(function(i, el){
+                        if ($(this).val().toLowerCase().indexOf(self.current_data.provider) >= 0) {
+                            api_url = $(this).val();
+                        }
+                    });
+
                     self.api_lookup(
                         self.current_data.item_type,
                         self.current_data.item_id,
-                        self.current_data.provider
+                        self.current_data.provider,
+                        api_url
                     )
 
                 }
@@ -430,7 +434,6 @@ EditUi = function () {
             query: query
         });
 
-
         Dajaxice.alibrary.provider_search(function (data) {
 
             data.item_type = self.current_data.item_type;
@@ -452,7 +455,7 @@ EditUi = function () {
      * API comparison
      ***************************************************************************************/
 
-    this.api_lookup = function (item_type, item_id, provider) {
+    this.api_lookup = function (item_type, item_id, provider, api_url) {
 
 
         // which keys should not be marked red/green?
@@ -473,7 +476,8 @@ EditUi = function () {
         var data = {
             'item_type': item_type,
             'item_id': item_id,
-            'provider': provider
+            'provider': provider,
+            'api_url': api_url
         };
 
         debug.debug('query data:', data);
@@ -487,6 +491,7 @@ EditUi = function () {
 
 
         Dajaxice.alibrary.api_lookup(function (data) {
+
             var lookup_prefix = 'lookup_id_';
 
             $('body').removeClass('api_lookup-progress');
@@ -662,11 +667,11 @@ EditUi = function () {
                 }
                 html = nj.render('alibrary/nj/provider/relation_inline.html', data);
 
-                if(match) {
-                    $('fieldset.relations .lookup-container').prepend(html);
-                } else {
-                    $('fieldset.relations .lookup-container').append(html);
-                }
+                //if(match) {
+                //    $('fieldset.relations .lookup-container').prepend(html);
+                //} else {
+                //    $('fieldset.relations .lookup-container').append(html);
+                //}
             }
 
 

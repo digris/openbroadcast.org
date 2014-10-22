@@ -1,5 +1,5 @@
 import json
-
+import re
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from dajaxice.decorators import dajaxice_register
@@ -21,14 +21,18 @@ DISCOGS_HOST = getattr(settings, 'DISCOGS_HOST', None)
 @dajaxice_register
 def api_lookup(request, *args, **kwargs):
 
+    # compose lookup by known objects
     item_type = kwargs.get('item_type', None)
     item_id = kwargs.get('item_id', None)
     provider = kwargs.get('provider', None)
 
+    # alternatively, in case we already know the uri, this value is used for the query
+    api_url = kwargs.get('api_url', None)
+
     log.debug('api_lookup: %s - id: %s - provider: %s' % (item_type, item_id, provider))
 
     try:
-        data = get_from_provider(item_type, item_id, provider)
+        data = get_from_provider(item_type, item_id, provider, api_url)
         return json.dumps(data, encoding="utf-8")
     except Exception, e:
         log.warning('api_lookup error: %s', e)
@@ -55,7 +59,7 @@ def provider_search_query(request, *args, **kwargs):
         if item_type == 'release' and provider == 'musicbrainz':
             item = Release.objects.get(pk=item_id)
             ctype = ContentType.objects.get_for_model(item)
-            data = {'query': '%s' % (item.name)}
+            data = {'query': '%s AND artist:%s' % (item.name, item.get_artist_display())}
 
         if item_type == 'artist':
             item = Artist.objects.get(pk=item_id)
@@ -97,6 +101,9 @@ def provider_search(request, *args, **kwargs):
     log.debug('query: %s' % (query))
 
     if provider == 'discogs':
+
+        query = re.sub('[^A-Za-z0-9 :]+', '', query)
+
         url = 'http://%s/database/search?q=%s&type=%s&per_page=%s' % (DISCOGS_HOST, query, item_type, 15)
         log.debug('query url: %s' % (url))
         r = requests.get(url)
@@ -113,8 +120,8 @@ def provider_search(request, *args, **kwargs):
         if item_type == 'media':
             _type = 'recording'
 
-        import re
-        query = re.sub('[^A-Za-z0-9 ]+', '', query)
+
+        query = re.sub('[^A-Za-z0-9 :]+', '', query)
 
         url = 'http://%s/ws/2/%s?query=%s&fmt=json' % (MUSICBRAINZ_HOST, _type, query)
         log.debug('query url: %s' % (url))
@@ -128,7 +135,7 @@ def provider_search(request, *args, **kwargs):
                 result['thumb'] = 'http://coverartarchive.org/%s/%s' % (item_type, result['id'])
 
         if item_type == 'artist':
-            results = json.loads(r.text)['artist']
+            results = json.loads(r.text)['artists']
             for result in results:
                 result['uri'] = 'http://musicbrainz.org/artist/%s' % result['id']
                 result['thumb'] = 'http://coverartarchive.org/%s/%s' % (item_type, result['id'])
@@ -140,7 +147,7 @@ def provider_search(request, *args, **kwargs):
                 result['thumb'] = 'http://coverartarchive.org/%s/%s' % (item_type, result['id'])
 
         if item_type == 'media':
-            results = json.loads(r.text)['recording']
+            results = json.loads(r.text)['recordings']
             for result in results:
                 result['uri'] = 'http://musicbrainz.org/recording/%s' % result['id']
 
@@ -189,7 +196,8 @@ def provider_update(request, *args, **kwargs):
 
         if item and uri:
             rel = Relation(content_object=item, url=uri)
-            rel.save()
+            # disabled save, as this involves heavy issues!
+            #rel.save()
 
         data = {
             'service': '%s' % rel.service,

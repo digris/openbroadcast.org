@@ -592,6 +592,7 @@ class Relation(models.Model):
 
 
     SERVICE_CHOICES = (
+        ('', _('Not specified')),
         ('generic', _('Generic')),
         ('facebook', _('Facebook')),
         ('youtube', _('YouTube')),
@@ -607,7 +608,7 @@ class Relation(models.Model):
         ('itunes', _('iTunes')),
         ('official', _('Official website')),
     )
-    service = models.CharField(max_length=50, choices=SERVICE_CHOICES, blank=True, null=True, editable=True)
+    service = models.CharField(max_length=50, choices=SERVICE_CHOICES, blank=True, null=True, editable=True, default='generic')
 
     ACTION_CHOICES = (
         ('information', _('Information')),

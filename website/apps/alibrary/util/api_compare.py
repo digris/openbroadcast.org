@@ -27,7 +27,8 @@ class MusicbrainzAPILookup(APILookup):
     def get_data(self, uri=None):
         log.debug('run musicbrainz lookup for %s - %s' % (self.obj, self.type))
 
-        uri = self.obj.relations.filter(service='musicbrainz')[0].url
+        if not uri:
+            uri = self.obj.relations.filter(service='musicbrainz')[0].url
         log.debug('musicbrainz uri: %s' % uri)
 
         # for consistency uri is handled in resp. method
@@ -325,7 +326,8 @@ class DiscogsAPILookup(APILookup):
     def get_data(self, uri=None):
         log.debug('run discogs lookup for %s - %s' % (self.obj, self.type))
 
-        uri = self.obj.relations.filter(service='discogs')[0].url
+        if not uri:
+            uri = self.obj.relations.filter(service='discogs')[0].url
         log.debug('discogs uri: %s' % uri)
 
         # for consistency uri is handled in resp. method
@@ -367,7 +369,13 @@ class DiscogsAPILookup(APILookup):
         """
 
         provider_id = uri.split('/')[-1]
-        api_url = 'http://%s/releases/%s' % (DISCOGS_HOST, provider_id)
+
+        if '/release/' in uri:
+            api_url = 'http://%s/releases/%s' % (DISCOGS_HOST, provider_id)
+
+        if '/master/' in uri:
+            api_url = 'http://%s/masters/%s' % (DISCOGS_HOST, provider_id)
+
 
         log.info('composed api url: %s' % api_url)
 
@@ -591,9 +599,15 @@ class DiscogsAPILookup(APILookup):
 """
 function to call from 'outside'
 """
-def get_from_provider(item_type, item_id, provider):
+def get_from_provider(item_type, item_id, provider, api_url=None):
 
     log.debug('get_from_provider: %s - id: %s - provider: %s' % (item_type, item_id, provider))
+
+
+    if api_url:
+        print '//////////////////////////////////////////'
+        print api_url
+
 
     # get source object
     obj = None
@@ -612,11 +626,11 @@ def get_from_provider(item_type, item_id, provider):
 
     if obj and provider == 'musicbrainz':
         lookup = MusicbrainzAPILookup(obj=obj)
-        return lookup.get_data()
+        return lookup.get_data(uri=api_url)
 
     if obj and provider == 'discogs':
         lookup = DiscogsAPILookup(obj=obj)
-        return lookup.get_data()
+        return lookup.get_data(uri=api_url)
 
 
 
