@@ -41,7 +41,7 @@ def parse_git_changelog():
         for line in iter(log.stdout.readline,''):
             line = line.rstrip()
             if line[0:6] == 'commit':
-                commit = line[7:14]
+                commit = line[7:].strip()
             if line[0:4] == 'Date':
                 timestamp = line[7:].strip()
                 # timestamp format:
