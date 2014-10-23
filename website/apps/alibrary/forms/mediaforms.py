@@ -163,7 +163,7 @@ class MediaForm(ModelForm):
     
 
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
-    release = selectable.AutoCompleteSelectField(ReleaseNameLookup, allow_new=True, required=True) 
+    release = selectable.AutoCompleteSelectField(ReleaseNameLookup, allow_new=True, required=True, label=_('Release'))
     
     
     

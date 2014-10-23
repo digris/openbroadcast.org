@@ -138,48 +138,72 @@ class PlatformStatistics(object):
         num_total = Release.objects.count()
         num_week = Release.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
         num_day = Release.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
+
+        num_created_week = Release.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
+        num_created_day = Release.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
+
         stats.append({
             'name': 'Releases',
             'stats': {
                 'num_total': num_total,
-                'num_week': num_week,
-                'num_day': num_day,
+                'num_edited_week': num_week,
+                'num_edited_day': num_day,
+                'num_created_week': num_created_week,
+                'num_created_day': num_created_day,
             }
         })
 
         num_total = Artist.objects.count()
         num_week = Artist.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
         num_day = Artist.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
+
+        num_created_week = Artist.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
+        num_created_day = Artist.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
+
         stats.append({
             'name': 'Artists',
             'stats': {
                 'num_total': num_total,
-                'num_week': num_week,
-                'num_day': num_day,
+                'num_edited_week': num_week,
+                'num_edited_day': num_day,
+                'num_created_week': num_created_week,
+                'num_created_day': num_created_day,
             }
         })
 
         num_total = Media.objects.count()
         num_week = Media.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
         num_day = Media.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
+
+        num_created_week = Media.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
+        num_created_day = Media.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
+
         stats.append({
             'name': 'Tracks',
             'stats': {
                 'num_total': num_total,
-                'num_week': num_week,
-                'num_day': num_day,
+                'num_edited_week': num_week,
+                'num_edited_day': num_day,
+                'num_created_week': num_created_week,
+                'num_created_day': num_created_day,
             }
         })
 
         num_total = Label.objects.count()
         num_week = Label.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
         num_day = Label.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
+
+        num_created_week = Label.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
+        num_created_day = Label.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
+
         stats.append({
             'name': 'Labels',
             'stats': {
                 'num_total': num_total,
-                'num_week': num_week,
-                'num_day': num_day,
+                'num_edited_week': num_week,
+                'num_edited_day': num_day,
+                'num_created_week': num_created_week,
+                'num_created_day': num_created_day,
             }
         })
 

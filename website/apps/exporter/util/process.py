@@ -228,6 +228,7 @@ class Process(object):
             shutil.copyfile(cache_file, file_path)
 
         except Exception, e:
+            print e
             self.messages.append((media, e))
             return
 
@@ -235,6 +236,7 @@ class Process(object):
             self.inject_metadata(file_path, media)
 
         except Exception, e:
+            print e
             self.messages.append((media, e))
             return
 

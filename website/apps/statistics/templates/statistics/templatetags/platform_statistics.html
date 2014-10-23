@@ -3,7 +3,7 @@
 <div class="statistics platform">
     <h2>Platform Statistics</h2>
     <p>
-        Objects created on the platform
+        Objects edited / created on the platform
     </p>
 
     <div class="stat">
@@ -28,8 +28,8 @@
             {% for stat in statistics %}
                 <tr>
                     <td>{{ stat.name }}</td>
-                    <td style="text-align: right;">{{ stat.stats.num_day }}</td>
-                    <td style="text-align: right;">{{ stat.stats.num_week }}</td>
+                    <td style="text-align: right;">{{ stat.stats.num_edited_day }} / {{ stat.stats.num_created_day }}</td>
+                    <td style="text-align: right;">{{ stat.stats.num_edited_week }} / {{ stat.stats.num_created_week }}</td>
                     <td style="text-align: right;">{{ stat.stats.num_total }}</td>
                 </tr>
             {% endfor %}

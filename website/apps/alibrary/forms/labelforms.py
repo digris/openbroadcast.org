@@ -167,16 +167,20 @@ class LabelForm(ModelForm):
     
 
     def clean(self, *args, **kwargs):
-        
         cd = super(LabelForm, self).clean()
+
+        print 'pre-save'
 
         try:
             parent = cd['parent']
             if not parent.pk:
-
                 parent.save()
         except:
             pass
+
+        if parent.pk == self.instance.pk:
+            self._errors["parent"] = self.error_class([_('The parent label can not be itself!')])
+
         
         if cd.get('remote_image', None):
             remote_file = get_file_from_url(cd['remote_image'])
@@ -184,6 +188,7 @@ class LabelForm(ModelForm):
                 cd['main_image'] = remote_file
 
         return cd
+
 
 
     def save(self, *args, **kwargs):
