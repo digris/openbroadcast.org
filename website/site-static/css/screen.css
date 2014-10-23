@@ -3758,37 +3758,51 @@ div.autocomplete.holder {
   z-index: 1001;
   margin-top: 0px;
 }
-/* line 16, ../sass/element/_search.sass */
+/* line 17, ../sass/element/_search.sass */
+div.autocomplete.holder .btn.exit {
+  position: absolute;
+  top: 13px;
+  right: 10px;
+  color: white;
+  background: transparent !important;
+  border: none;
+  margin-left: 10px;
+}
+/* line 25, ../sass/element/_search.sass */
+div.autocomplete.holder .btn.exit:hover {
+  color: #cccccc;
+}
+/* line 28, ../sass/element/_search.sass */
 div.autocomplete.holder .result {
   padding: 0;
   border: 1px solid #999999;
   border-top: none;
   border-right: 1px solid #cccccc;
 }
-/* line 22, ../sass/element/_search.sass */
+/* line 34, ../sass/element/_search.sass */
 div.autocomplete.holder .result h1, div.autocomplete.holder .result h2, div.autocomplete.holder .result h3 {
   font-size: 12px !important;
   line-height: 15px !important;
 }
-/* line 26, ../sass/element/_search.sass */
+/* line 38, ../sass/element/_search.sass */
 div.autocomplete.holder .result .linkable {
   cursor: pointer;
 }
-/* line 29, ../sass/element/_search.sass */
+/* line 41, ../sass/element/_search.sass */
 div.autocomplete.holder .result .search {
   color: white;
   padding: 5px;
 }
-/* line 33, ../sass/element/_search.sass */
+/* line 45, ../sass/element/_search.sass */
 div.autocomplete.holder .result .search h1 {
   margin-bottom: 0px !important;
 }
-/* line 36, ../sass/element/_search.sass */
+/* line 48, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing {
   max-height: 491px;
   overflow: auto;
 }
-/* line 44, ../sass/element/_search.sass */
+/* line 56, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing .item {
   color: white;
   border-top: 1px solid #cccccc;
@@ -3797,60 +3811,60 @@ div.autocomplete.holder .result .listing .item {
   padding: 5px;
   min-height: 42px;
 }
-/* line 47, ../sass/element/_search.sass */
+/* line 59, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing .item .row-fluid > .span2 {
   width: 70px;
 }
-/* line 49, ../sass/element/_search.sass */
+/* line 61, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing .item .row-fluid > .span10 {
   width: 710px;
 }
-/* line 53, ../sass/element/_search.sass */
+/* line 65, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing .item a {
   color: white;
 }
-/* line 64, ../sass/element/_search.sass */
+/* line 76, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing .item h2 {
   color: white;
   text-transform: uppercase;
   margin-bottom: 0px !important;
 }
-/* line 71, ../sass/element/_search.sass */
+/* line 83, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing .item .related > span {
   float: left;
   margin-right: 4px;
   text-transform: none;
 }
-/* line 76, ../sass/element/_search.sass */
+/* line 88, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing .item .related ul {
   list-style: none !important;
   margin-left: 55px;
 }
-/* line 79, ../sass/element/_search.sass */
+/* line 91, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing .item .related ul li {
   margin-right: 10px;
 }
-/* line 82, ../sass/element/_search.sass */
+/* line 94, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing .item em.highlight {
   color: #ddffd9;
   padding: 0px;
   font-style: italic;
   font-weight: bold;
 }
-/* line 92, ../sass/element/_search.sass */
+/* line 104, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing .item.hover {
   background-color: #ddffd9;
   color: #333333;
 }
-/* line 95, ../sass/element/_search.sass */
+/* line 107, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing .item.hover h2, div.autocomplete.holder .result .listing .item.hover a {
   color: #333333;
 }
-/* line 97, ../sass/element/_search.sass */
+/* line 109, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing .item.hover a:hover {
   text-decoration: underline;
 }
-/* line 100, ../sass/element/_search.sass */
+/* line 112, ../sass/element/_search.sass */
 div.autocomplete.holder .result .listing .item.hover em.highlight {
   color: black;
 }

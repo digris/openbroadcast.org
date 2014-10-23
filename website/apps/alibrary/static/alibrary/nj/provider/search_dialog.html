@@ -1,14 +1,15 @@
 <div class="query">
 
     <form class="form-horizontal">
-
         <input class="query" type="text" value="{{ query }}">
-
-
-        <a class="pull-right btn_">[close] X</a>
+        <a class="pull-right exit btn">close <i class="icon icon-remove-sign"></i></a>
         <a class="pull-right search btn btn-primary" type="button">Search</a>
 
-
+        {% if item_type == "release" and provider == "musicbrainz" %}
+            <p class="hint">
+                <i class="icon-info-sign"></i> <strong>Info:</strong> You can search by <em>BARCODES</em> as well!
+            </p>
+        {% endif %}
 
     </form>
 
@@ -112,13 +113,13 @@
 
                             <li>
                                 <span class="value">
-                                    <strong>{{ result.date }} | {{ result.country }}</strong>
+                                    <strong>{{ result.date }} {% if result.date and result.country %}|{% endif %} {{ result.country }}</strong>
                                 </span>
                             </li>
 
                             {% if result["label-info"] %}
                                 {% for l in result["label-info"] %}
-                                    <li>
+                                    <li style="float: left; margin-right: 30px;">
 
                                         <span class="title">
                                             Catalog #:
@@ -131,18 +132,19 @@
                             {% endif %}
 
 
-                            <!--
-                            <li>
-                            <span class="title">
-                                Barcode:
-                            </span>
-                            <span class="value">
-                                <strong>
-                                    {{ result.barcode }}
-                                </strong>
-                            </span>
-                            </li>
-                            -->
+                            {% if result.barcode %}
+                                <li>
+                                <span class="title">
+                                    Barcode:
+                                </span>
+                                <span class="value">
+                                    <strong>
+                                        {{ result.barcode }}
+                                    </strong>
+                                </span>
+                                </li>
+                            {% endif %}
+
 
                         </ul>
                         {% endif %}

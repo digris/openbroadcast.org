@@ -3244,50 +3244,66 @@ section.item_inner .tab-pane section.profile.information dl {
 /* line 50, ../sass/apps/_lookup.sass */
 .popup-provider-search .query input {
   color: white;
-  width: 550px;
+  width: 530px;
   border: none;
   background: #5a5a5a;
   padding: 4px 2px 4px 6px;
 }
-/* line 57, ../sass/apps/_lookup.sass */
+/* line 59, ../sass/apps/_lookup.sass */
+.popup-provider-search .query .btn.exit {
+  color: white;
+  background: transparent !important;
+  border: none;
+  margin-left: 10px;
+}
+/* line 64, ../sass/apps/_lookup.sass */
+.popup-provider-search .query .btn.exit:hover {
+  color: #cccccc;
+}
+/* line 67, ../sass/apps/_lookup.sass */
+.popup-provider-search .query p.hint {
+  color: white;
+  padding-top: 8px;
+}
+/* line 71, ../sass/apps/_lookup.sass */
 .popup-provider-search .item.result {
   margin: 0 0 10px 0;
   width: 98%;
   cursor: pointer;
 }
-/* line 60, ../sass/apps/_lookup.sass */
+/* line 74, ../sass/apps/_lookup.sass */
 .popup-provider-search .item.result img {
   width: 72px;
   padding: 4px 0 4px 4px;
 }
-/* line 64, ../sass/apps/_lookup.sass */
+/* line 78, ../sass/apps/_lookup.sass */
 .popup-provider-search .item.result .span10 {
   width: 80.982%;
 }
-/* line 68, ../sass/apps/_lookup.sass */
+/* line 82, ../sass/apps/_lookup.sass */
 .popup-provider-search .item.result.hover {
   background: #ddffd9;
 }
-/* line 70, ../sass/apps/_lookup.sass */
+/* line 84, ../sass/apps/_lookup.sass */
 .popup-provider-search .item.result.hover * {
   color: #5a5a5a;
 }
-/* line 76, ../sass/apps/_lookup.sass */
+/* line 90, ../sass/apps/_lookup.sass */
 .popup-provider-search > div section.title h3 {
   color: white;
   small-text-transform: none !important;
   small-font-size: 60%;
 }
-/* line 83, ../sass/apps/_lookup.sass */
+/* line 97, ../sass/apps/_lookup.sass */
 .popup-provider-search > div section.description p {
   color: #efefef;
 }
-/* line 85, ../sass/apps/_lookup.sass */
+/* line 99, ../sass/apps/_lookup.sass */
 .popup-provider-search > div section.description a {
   background: #6633cc;
   color: white;
 }
-/* line 90, ../sass/apps/_lookup.sass */
+/* line 104, ../sass/apps/_lookup.sass */
 .popup-provider-search > div section.form label {
   color: #efefef;
 }

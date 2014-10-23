@@ -197,8 +197,6 @@ EditUi = function () {
                 uri: uri
             });
 
-            console.log(self.current_data);
-
             Dajaxice.alibrary.provider_update(function (data) {
 
                 if (data) {
@@ -216,7 +214,6 @@ EditUi = function () {
 
 
                     // replace link in form
-
                     if($('.external.' + self.current_data.provider).length) {
 
                         var field = $('.controls input', $('.external.' + self.current_data.provider)
@@ -230,7 +227,6 @@ EditUi = function () {
                     }
 
                     // TODO: refactor
-
                     // try to get api_url
                     var api_url = false;
                     $('fieldset.relations input[name^="relation"]').each(function(i, el){
@@ -252,10 +248,29 @@ EditUi = function () {
 
         });
 
+        // search form
         $('#search_dialog_container .query .search').live('click', function () {
             var query = $('#search_dialog_container .query .query').val();
             self.provider_search_update_dialog(query);
         });
+        $('#search_dialog_container .query .query').live('keypress', function (e) {
+
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                e.stopPropagation();
+                var query = $(this).val();
+                self.provider_search_update_dialog(query);
+            }
+        });
+        $('#search_dialog_container .query .exit').live('click', function () {
+            try {
+                var api = self.dialog_window.qtip('api');
+                api.destroy();
+            } catch (e) {
+            }
+        });
+
+
 
         // reset
         $('button.reset').live('click', function (e) {
@@ -263,22 +278,16 @@ EditUi = function () {
             location.reload();
         });
 
-
         // shift offset (single, by click)
         $('#offset_selector a').live('click', function (e) {
             e.preventDefault();
             var offset = $(this).data('offset');
-
-            // alert(offset);
-
             if (offset == 'add') {
                 self.lookup_offset++;
             } else if (offset == 'subtract') {
                 self.lookup_offset--;
             }
-
             self.media_lookup(self.lookup_data);
-
         });
 
 
@@ -288,29 +297,6 @@ EditUi = function () {
             self.lookup_offset = parseInt(offset);
             self.media_lookup(self.lookup_data);
         });
-
-
-        // mode switch (editor)
-        /*
-        $('#editor_mode_switch li > a').live('click', function (e) {
-            e.preventDefault();
-            var mode = $(this).data('mode');
-            $(this).parents('.ui-persistent').data('uistate', mode);
-
-        });
-        */
-
-        // apply classes based on state
-        // $("#release_media_form *[class*='mode-']").parents('.control-group').hide(5000);
-
-        //$('#release_media_form .mode-m').parents('.control-group').addClass('mode-m');
-        //$('#release_media_form .mode-l').parents('.control-group').addClass('mode-l');
-
-
-
-
-        // relation mapping for lookup results
-
 
 
         $('fieldset.relations').on('click', '.relation', function (e) {
@@ -325,19 +311,15 @@ EditUi = function () {
 
             var url = el.data('url');
 
-
             if(el.parents('.lookup-container').length) {
                 // if item is in generic container
                 // find last 'unused' input & assign value
-
                 var container = $('fieldset.relations .relation-row:not(".hidden")').last();
                 $('.controls input', container).val(url);
                 el.remove();
 
                 // reqrow...
                 self.autogrow();
-
-
 
             } else {
                 // attached to a specific service
@@ -346,8 +328,6 @@ EditUi = function () {
                 el.removeClass('diff');
                 el.addClass('match');
             }
-
-
 
         });
 

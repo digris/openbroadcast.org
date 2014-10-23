@@ -1,12 +1,11 @@
 <div class="result">
-    <div class="search">
-        <h1>Search [Hit "Enter"]</h1>
-
-        <p>
-            Search Library for: "{{ meta.query }}"
-
-        </p>
-    </div>
+	<div class="search">
+		<h1>Search [Hit "Enter"]</h1>
+		<p>
+			Search Library for: "{{ meta.query }}"
+		</p>
+        <a class="exit btn">close <i class="icon icon-remove-sign"></i></a>
+	</div>
     <div class="listing">
         {% for item in objects %}
 

@@ -108,6 +108,7 @@ python-magic==0.4.6
 python-memcached==1.53
 python-openid==2.2.5
 python-varnish==0.2.1
+python-stdnum==1.0
 -e git://github.com/newvem/pytz.git@f137ff00112a9682bc4e4945067b3b88f158d010#egg=pytz-master
 #-e git://github.com/hzlf/django-loginas.git@a282186c11c1e58e11987ec3314933a410909e8f#egg=loginas
 raven==5.0.0

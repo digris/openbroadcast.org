@@ -1000,6 +1000,10 @@ AutocompleteApp = function () {
         self.container.html(html).fadeIn(50);
     };
 
+    this.close = function () {
+        self.container.html('');
+    };
+
 };
 
 base.ui.searchbar = function () {
@@ -1042,10 +1046,16 @@ base.ui.searchbar = function () {
 
         var el = $(this);
         var q = $(this).val();
-        // vatch enter
+        // catch enter
         if (e.keyCode == 13 || e.keyCode == 9) {
             var uri = util.uri_param_insert(window.location.href, 'q', q, true);
             window.location = util.uri_param_insert(uri, 'page', 1, true);
+            return false;
+        }
+        // catch esc
+        if (e.keyCode == 27) {
+            $('#searchbar_input').val('')
+            self.autocomplete.close();
             return false;
         }
 
@@ -1053,6 +1063,10 @@ base.ui.searchbar = function () {
         util.delay(function(){
             self.autocomplete.search(q);
         }, 200 );
+    });
+    $('#autocomplete_holder').on('click', 'a.exit', function (e) {
+        $('#searchbar_input').val('')
+        self.autocomplete.close();
     });
 
 

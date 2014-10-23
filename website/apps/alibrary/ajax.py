@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from dajaxice.decorators import dajaxice_register
 import requests
+from stdnum import ean
 
 from alibrary.models import APILookup, Release, Relation, Label, Artist, Media
 from lib.util.merge import merge_model_objects
@@ -53,32 +54,26 @@ def provider_search_query(request, *args, **kwargs):
     try:
         if item_type == 'release' and provider == 'discogs':
             item = Release.objects.get(pk=item_id)
-            ctype = ContentType.objects.get_for_model(item)
             data = {'query': '%s %s' % (item.name, item.get_artist_display())}
 
         if item_type == 'release' and provider == 'musicbrainz':
             item = Release.objects.get(pk=item_id)
-            ctype = ContentType.objects.get_for_model(item)
             data = {'query': '%s AND artist:%s' % (item.name, item.get_artist_display())}
 
         if item_type == 'artist':
             item = Artist.objects.get(pk=item_id)
-            ctype = ContentType.objects.get_for_model(item)
             data = {'query': '%s' % (item.name)}
 
         if item_type == 'media' and provider == 'discogs':
             item = Media.objects.get(pk=item_id)
-            ctype = ContentType.objects.get_for_model(item)
             data = {'query': '%s' % (item.name)}
 
         if item_type == 'media' and provider == 'musicbrainz':
             item = Media.objects.get(pk=item_id)
-            ctype = ContentType.objects.get_for_model(item)
             data = {'query': "%s AND artist:%s" % (item.name, item.artist.name)}
 
         if item_type == 'label':
             item = Label.objects.get(pk=item_id)
-            ctype = ContentType.objects.get_for_model(item)
             data = {'query': '%s' % (item.name)}
 
 
@@ -120,10 +115,15 @@ def provider_search(request, *args, **kwargs):
         if item_type == 'media':
             _type = 'recording'
 
+        if ean.is_valid(query):
+            log.debug('ean barcode detected. switching url composition')
+            t_query = query.replace('-', '')
+            url = 'http://%s/ws/2/%s?query=barcode:%s&fmt=json' % (MUSICBRAINZ_HOST, _type, t_query)
+        else:
+            query = re.sub('[^A-Za-z0-9 :]+', '', query)
+            url = 'http://%s/ws/2/%s?query=%s&fmt=json' % (MUSICBRAINZ_HOST, _type, query)
 
-        query = re.sub('[^A-Za-z0-9 :]+', '', query)
 
-        url = 'http://%s/ws/2/%s?query=%s&fmt=json' % (MUSICBRAINZ_HOST, _type, query)
         log.debug('query url: %s' % (url))
         r = requests.get(url)
 
