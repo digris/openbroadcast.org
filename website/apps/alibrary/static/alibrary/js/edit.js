@@ -126,10 +126,23 @@ EditUi = function () {
 
         });
 
+
+        // handle compare clicks
         $("[id^=" + self.lookup_prefix + "]").live('click', function (e) {
             e.preventDefault();
+            e.stopPropagation();
             var el = $(this);
             self.apply_value(el);
+            return false;
+        });
+        // allow clicks on parent element as well
+        $("div.field-lookup-holder").live('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            // 'simulate' click in child element
+            $('span', $(this)).click()
+            return false;
+
         });
 
 
@@ -945,7 +958,15 @@ EditUi = function () {
             // reflect change in info-panel
             //$('.iteminfo .image a').attr('href','#');
             //$('.iteminfo .image img').attr('src',val_b);
-            $('#div_id_main_image .advancedfileinput img').attr('src',val_b);
+
+            // create img element if not present
+            // extremely ugly, i know.
+            if(!$('#div_id_main_image img.placeholder').length) {
+                $('#div_id_main_image').css('position', 'relative');
+                $('#div_id_main_image').append('<img class="placeholder" style="height: 102px; position: absolute; left:132px; top: 25px;"></img>');
+            }
+
+            $('#div_id_main_image img').attr('src',val_b);
 
             target_b.val(val_b);
         }
@@ -955,7 +976,8 @@ EditUi = function () {
         if (key == 'd_tags') {
             var tags = val.split(',');
             $(tags).each(function (i, el) {
-                $("#id_d_tags").tagit("createTag", $.trim(el));
+                //$("#id_d_tags").tagit("createTag", $.trim(el));
+                $("#id_d_tags").tagit("createTag", $('<input />').html($.trim(el)).text());
             });
         }
         ;

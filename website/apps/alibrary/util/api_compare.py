@@ -134,6 +134,17 @@ class MusicbrainzAPILookup(APILookup):
         except:
             pass
 
+
+
+        try:
+            num_tracks = 0
+            print data['media'][0]['track-count']
+            for x in data['media']:
+                num_tracks += int(x['track-count'])
+            res['totaltracks'] = num_tracks if num_tracks > 0 else None
+        except:
+            pass
+
         res['d_tags'] = ', '.join(d_tags)
 
         return res

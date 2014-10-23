@@ -42,9 +42,9 @@ class AdvancedFileInput(ClearableFileInput):
 
     def __init__(self, *args, **kwargs):
 
-        self.url_length = kwargs.pop('url_length',30)
-        self.preview = kwargs.pop('preview',True)
-        self.image_width = kwargs.pop('image_width',125)
+        self.url_length = kwargs.pop('url_length', 30)
+        self.preview = kwargs.pop('preview', True)
+        self.image_width = kwargs.pop('image_width', 125)
         super(AdvancedFileInput, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None,):
@@ -65,7 +65,7 @@ class AdvancedFileInput(ClearableFileInput):
             if self.preview:
                 #substitutions['initial'] = (u'<a href="{0}" target="_blank"><img src="{0}" width="{1}"></a><br>'.format
                 #    (escape(value.url), self.image_width))
-                substitutions['initial'] = (u'<div data-image_url="{0}"><img src="{0}" width="{1}"></div>'.format
+                substitutions['initial'] = (u'<div data-image_url="{0}"><img class="placeholder" src="{0}" width="{1}"></div>'.format
                     (escape(value.url), self.image_width))
             else:
                 substitutions['initial'] = (u'<a href="{0}">{1}</a>'.format
@@ -77,6 +77,7 @@ class AdvancedFileInput(ClearableFileInput):
                 substitutions['clear_checkbox_id'] = conditional_escape(checkbox_id)
                 substitutions['clear'] = CheckboxInput().render(checkbox_name, False, attrs={'id': checkbox_id})
                 substitutions['clear_template'] = self.template_with_clear % substitutions
+
 
         return mark_safe(template % substitutions)
     
