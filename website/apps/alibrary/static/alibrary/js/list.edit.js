@@ -213,7 +213,7 @@ ListEditUi = function () {
         var query = '?id__in=' + data.item_ids.join(',');
 
         $.get(url + query, function (data) {
-            debug.debug(data);
+            console.log(data);
             data.item_type = item_type;
             var html = nj.render('alibrary/nj/merge/merge_dialog.html', data);
             setTimeout(function () {

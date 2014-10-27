@@ -48,7 +48,7 @@
                             {% if item_type == "release" %}
                                 <li>
                                     <span class="value">
-                                        <strong>{{ object.releasedate }} | {{ object.release_country }}</strong>
+                                        <strong>{{ object.releasedate }} {% if object.releasedate and object.release_country %} | {% endif %} {{ object.release_country }}</strong>
                                     </span>
                                 </li>
                                 <li>
@@ -57,10 +57,11 @@
                                     </span>
                                     <span class="value">
                                         {% for artist in object.artist %}
-                                            <strong>{{ artist }}</strong>
+                                            <strong>{{ artist.artist }}{% if not loop.last %},{% endif %} </strong>
                                         {% endfor %}
                                     </span>
                                 </li>
+                                {% if object.catalognumber %}
                                 <li>
                                     <span class="title">
                                         Catalog #:
@@ -69,6 +70,7 @@
                                         <strong>{{ object.catalognumber }}</strong>
                                     </span>
                                 </li>
+                                    {% endif %}
                             {% endif %}
 
 

@@ -178,8 +178,11 @@ class LabelForm(ModelForm):
         except:
             pass
 
-        if parent.pk == self.instance.pk:
-            self._errors["parent"] = self.error_class([_('The parent label can not be itself!')])
+        try:
+            if parent.pk == self.instance.pk:
+                self._errors["parent"] = self.error_class([_('The parent label can not be itself!')])
+        except:
+            pass
 
         
         if cd.get('remote_image', None):
