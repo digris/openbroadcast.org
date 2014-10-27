@@ -123,6 +123,7 @@ class ReleaseResource(ModelResource):
         bundle.data['name'] = bundle.obj.name
         bundle.data['get_absolute_url'] = bundle.obj.get_absolute_url()
         bundle.data['resource_uri'] = bundle.obj.get_api_url()
+        bundle.data['id'] = bundle.obj.pk
         bundle.data['main_image'] = None
         try:
             opt = THUMBNAIL_OPT

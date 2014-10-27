@@ -1,0 +1,46 @@
+{% for object in objects %}
+    <div class="item result hoverable" data-id="{{ object.id }}" data-uuid="{{ object.uuid }}">
+
+
+        <div class="row-fluid">
+
+            <div class="span2">
+                {% if object.main_image %}
+                    <img src="{{ object.main_image }}">
+                {% else %}
+                    <img src="/static/img/base/defaults/listview.release.xl.png">
+                {% endif %}
+
+            </div>
+
+            <div class="span10">
+
+                <strong>{{ object.name }}</strong>
+
+                <ul class="unstyled">
+
+                    <li>
+                        <span class="value">
+                            {% for a in object.artist %}
+                                <strong>{{ a }}</strong>
+                            {% endfor %}
+                        </span>
+                    </li>
+
+                    <li>
+                        <span class="value">
+                            <strong>{{ object.media_count }}</strong>
+                        </span>
+                        <span class="title">Tracks</span>
+                    </li>
+
+                    <li>
+                        <span class="value">
+                            <strong>{{ object.releasedate }}</strong>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endfor %}

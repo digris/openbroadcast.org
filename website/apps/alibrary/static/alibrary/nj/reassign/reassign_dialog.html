@@ -1,0 +1,34 @@
+<div class="query">
+
+    <form class="form-horizontal">
+        <input class="query" type="text" value="{{ query }}">
+        <a class="pull-right exit btn" data-action="exit">close <i class="icon icon-remove-sign"></i></a>
+
+        <!--
+        <p class="hint">
+            <i class="icon-warning-sign"></i> <strong>Warning:</strong> This can not be undone!
+        </p>
+        -->
+    </form>
+</div>
+
+
+<div class="results" style="max-height: 400px; overflow: auto; width: 700px;">
+
+    <div id="search_result">
+        <!-- loaded dynamically, template: reassign_dialog_search_result.html -->
+    </div>
+
+</div>
+
+
+<div class="action">
+    <form class="form-horizontal">
+        <!--
+        <span class="info" style="top: 6px; position: relative;">
+            4 Tracks will be moved to a <em>NEWLY CREATED</em> release with the name "Peter & der Wolf".
+        </span>
+        -->
+        <a class="pull-right confirm btn btn-primary" data-action="confirm" type="button">Confirm reassignment</a>
+    </form>
+</div>

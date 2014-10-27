@@ -390,7 +390,7 @@ EditUi = function () {
         self.dialog_window = $('<div />').qtip({
             content: {
                 text: function (api) {
-                    return '<div id="search_dialog_container">loading</div>'
+                    return '<div id="search_dialog_container"><div class="loading-placeholder"><i class="icon-spinner icon-spin icon-large"></i> loading</div></div>'
                 }
             },
             position: {
@@ -406,7 +406,7 @@ EditUi = function () {
                 }
             },
             hide: false,
-            style: 'qtip-dark qtip-dialogue qtip-shadow qtip-rounded popup-provider-search',
+            style: 'qtip-dark qtip-dialogue qtip-shadow qtip-rounded popup-actions popup-provider-search',
             events: {
                 render: function (event, api) {
                     $('a.btn', api.elements.content).click(api.hide);

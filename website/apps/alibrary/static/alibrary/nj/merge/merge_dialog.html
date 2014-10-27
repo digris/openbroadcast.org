@@ -1,8 +1,8 @@
 <div class="info">
 
-    <strong>Kjhaksdhaksdh</strong>
-
-    <p>asldkjhakjshdksjhdkjh</p>
+    <a class="pull-right exit btn" data-action="exit">close <i class="icon icon-remove-sign"></i></a>
+    <strong>Merge items</strong>
+    <p>(This can not be undone!)</p>
 
 </div>
 
@@ -19,7 +19,7 @@
 
     {% for object in objects %}
 
-        <div class="item object " data-uri="{{ object.uri }}" data-id="{{ object.id }}">
+        <div class="item object {{ item_type }}" data-uri="{{ object.uri }}" data-id="{{ object.id }}">
 
             <div class="row-fluid">
 
@@ -88,11 +88,17 @@
                                 {% endif %}
                             {% endif %}
 
+
+                            {% if item_type == "media" %}
+                                <li>
+                                    <span class="value">{{ object.type_display }}</span>
+                                </li>
+                                <li>
+                                    <span class="value">{{ object.artist.name }}</span>
+                                </li>
+                            {% endif %}
+
                         </ul>
-
-
-
-
 
                 </div>
 
@@ -108,13 +114,7 @@
 
 
 <div class="action">
-
     <form class="form-horizontal">
-
-
-        <a class="pull-right confirm btn btn-primary" data-action="confirm" type="button">Confirm</a>
-        <a class="pull-right confirm btn" data-action="cancel" type="button">Cancel</a>
-
+        <a class="pull-right confirm btn btn-primary" data-action="confirm" type="button">Confirm Merge</a>
     </form>
-
 </div>

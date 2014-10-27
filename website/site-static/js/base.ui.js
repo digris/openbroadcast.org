@@ -982,6 +982,7 @@ AutocompleteApp = function () {
     this.q_min = 3;
 
     this.search = function (q) {
+
         if (q.length >= this.q_min) {
             $.get(this.api_url + '?q=' + q, function (data) {
                 self.display(data);

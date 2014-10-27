@@ -1,6 +1,55 @@
 /* alibrary styleing. further app specific styles should be placed here */
 
+/////////////////////////////////////////////////////////////////
+// popup windows (search/merge/reassign/...)
+/////////////////////////////////////////////////////////////////
 
+
+// generic
+.popup-actions
+  .loading-placeholder
+    text-align: center
+    text-transform: uppercase
+    padding: 30px 0 40px
+
+  .btn.exit
+    color: white
+    background: transparent !important
+    border: none
+    margin-left: 10px
+    &:hover
+      color: #ccc
+
+  p.hint
+    color: white
+    padding-top: 8px
+
+
+
+  .item.result, .item.object
+    margin: 0 0 10px 0
+    width: 97%
+    border-left: 4px solid transparent
+    img
+      width: 82px
+      padding: 4px 0 4px 4px
+      padding: 0 4px 0 4px
+
+    .span10
+      width: 80.982%
+
+    cursor: pointer
+    &.hover
+      border-left: 4px solid white
+      background: #444
+    &.selected
+      border-left: 4px solid $main-a
+      background: #444
+
+
+/////////////////////////////////////////////////////////////////
+// merge dialog
+/////////////////////////////////////////////////////////////////
 .popup-merge
   width: 703px !important
   max-width: 703px !important
@@ -21,25 +70,20 @@
 
 
   .item.object
-    margin: 0 0 10px 0
-    width: 98%
+
     img
-      width: 72px
-      padding: 4px 0 4px 4px
+      width: 82px
 
-    .span10
-      width: 80.982%
-
-    cursor: pointer
-    &.hover, &.selected
-      background: #ddffd9
-      *
-        color: #5a5a5a
+    &.media
+      img
+        display: none
+      .span2
+        width: 0
+      .span10
+        width: 100%
 
     &.slave
       opacity: 0.7
-      //transition: opacity 0.1s
-      //-webkit-transition: opacity 0.1s
 
   // content
   > div
@@ -68,6 +112,180 @@
       border: none
       background: #5a5a5a
       padding: 4px 2px 4px 6px
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+// re-assign dialog
+/////////////////////////////////////////////////////////////////
+.popup-reassign
+  width: 703px !important
+  max-width: 703px !important
+
+  padding: 10px 0 0 0
+
+  p.message
+    text-align: center
+    color: white
+
+  .query
+    input
+      color: white
+      width: 530px
+      border: none
+      background: #5a5a5a
+      padding: 4px 2px 4px 6px
+
+    .btn.search
+      //color: red
+
+
+  // content
+  > div
+    section.title
+      h3
+        color: #fff
+        small:
+          text-transform: none !important
+          font-size: 60%
+
+    section.description
+      p
+        color: #efefef
+      a
+        background: $main-b
+        color: white
+
+    section.form
+      label
+        color: #efefef
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////
+// compare dialog & sidebar
+/////////////////////////////////////////////////////////////////
+.popup-provider-search
+  width: 703px !important
+  max-width: 703px !important
+
+  padding: 10px 0 0 0
+
+  .query
+    input
+      color: white
+      width: 530px
+      border: none
+      background: #5a5a5a
+      padding: 4px 2px 4px 6px
+
+    .btn.search
+      //color: red
+    .btn.exit
+      color: white
+      background: transparent !important
+      border: none
+      margin-left: 10px
+      &:hover
+        color: #ccc
+
+    p.hint
+      color: white
+      padding-top: 8px
+
+  .item.result
+    img
+      width: 82px
+      padding: 0 0 0 4px
+
+    cursor: pointer
+
+
+  // content
+  > div
+    section.title
+      h3
+        color: #fff
+        small:
+          text-transform: none !important
+          font-size: 60%
+
+    section.description
+      p
+        color: #efefef
+      a
+        background: $main-b
+        color: white
+
+    section.form
+      label
+        color: #efefef
+
+
+
+
+// form sidebar
+.lookup.provider
+
+  &.listing
+    &.fixed
+      position: fixed
+      width: 260px
+      top: 120px
+
+  h2
+    border-bottom: 1px solid #efefef
+
+  .item
+    padding: 4px 4px 4px 4px
+    margin: 0px 0 0px 0
+    border-bottom: 1px solid #efefef
+
+    span.name
+      font-size: 120%
+
+    // override actiuon background
+    li > a
+      background: none
+
+    &.available
+      // color: green
+      cursor: pointer
+      &.hover
+        background-color: #DDFFD9
+
+    &.unavailable
+      // color: green
+      cursor: wait
+      span.name
+        color: #a5a5a5
+        text-decoration: line-through
+      &.hover
+        background-color: #efefef
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // special elements

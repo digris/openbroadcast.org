@@ -326,6 +326,7 @@ class Media(MigrationMixin):
             ('play_media', 'Play Track'),
             ('downoad_media', 'Download Track'),
             ('merge_media', 'Merge Tracks'),
+            ('reassign_media', 'Re-assign Tracks'),
             ('admin_media', 'Edit Track (extended)'),
             ('upload_media', 'Upload Track'),
         )
