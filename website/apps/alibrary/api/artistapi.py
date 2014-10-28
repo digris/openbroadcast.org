@@ -42,6 +42,8 @@ class ArtistResource(ModelResource):
             except:
                 pass
 
+        bundle.data['media_count'] = len(bundle.obj.get_media())
+
         return bundle
         
     

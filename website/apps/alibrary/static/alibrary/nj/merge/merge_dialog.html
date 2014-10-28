@@ -23,8 +23,9 @@
 
             <div class="row-fluid">
 
+
                 <div class="span2">
-                    {% if  object.main_image %}
+                    {% if object.main_image %}
                         <img src="{{ object.main_image }}">
                     {% else %}
                         <img src="/static/img/base/spacer.png">
@@ -33,11 +34,13 @@
 
                 <div class="span10">
 
-
-
                         <strong>{{ object.name }}
                             {% if item_type == "release" %}
                             <small class="pull-right"> {{ object.media.length }} Tracks</small>
+                            {% endif %}
+                            {% if item_type == "artist" %}
+                            <small style="font-weight: normal; font-size: 90%; opacity: 0.7; padding-left: 10px;"> {{ object.type }}</small>
+                            <small class="pull-right"> {{ object.media_count }} Tracks</small>
                             {% endif %}
                             {% if item_type == "label" %}
                             <small class="pull-right"> {{ object.release_count }} Releases</small>
@@ -61,6 +64,36 @@
                                         {% endfor %}
                                     </span>
                                 </li>
+                                {% if object.catalognumber %}
+                                <li>
+                                    <span class="title">
+                                        Catalog #:
+                                    </span>
+                                    <span class="value">
+                                        <strong>{{ object.catalognumber }}</strong>
+                                    </span>
+                                </li>
+                                    {% endif %}
+                            {% endif %}
+
+
+
+                            {% if item_type == "artist" %}
+                                <li>
+                                    <span class="value">
+                                        {% if object.date_start %}*{{ object.date_start }}{% endif %} {% if object.date_end %}✝{{ object.date_end }}{% endif %}
+                                    </span>
+                                </li>
+
+
+                                {% if object.disambiguation %}
+                                <li>
+                                    <span class="value">
+                                        {{ object.disambiguation }}
+                                    </span>
+                                </li>
+                                {% endif %}
+
                                 {% if object.catalognumber %}
                                 <li>
                                     <span class="title">
