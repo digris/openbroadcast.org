@@ -116,11 +116,12 @@ class ReleaseListView(PaginationMixin, ListView):
         q = self.request.GET.get('q', None)
         
         if q:
-            qs = Release.objects.filter(Q(name__istartswith=q)\
-            | Q(media_release__name__icontains=q)\
-            | Q(media_release__artist__name__icontains=q)\
-            | Q(label__name__icontains=q))\
-            .distinct()
+            #qs = Release.objects.filter(Q(name__istartswith=q)\
+            #| Q(media_release__name__icontains=q)\
+            #| Q(media_release__artist__name__icontains=q)\
+            #| Q(label__name__icontains=q))\
+            #.distinct()
+            qs = Release.objects.filter(name__icontains=q).distinct()
         else:
             qs = Release.objects.select_related('license','media_release').prefetch_related('media_release').all()
             
