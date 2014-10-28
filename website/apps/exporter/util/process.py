@@ -176,7 +176,7 @@ class Process(object):
                 item_rel_dir = safe_name(content_object.name)
 
 
-        item_cache_dir = os.path.join(self.archive_cache_dir, item_rel_dir)
+        item_cache_dir = os.path.join(self.archive_cache_dir, safe_name(item_rel_dir))
         if not os.path.exists(item_cache_dir):
             os.makedirs(item_cache_dir)
 
@@ -245,6 +245,9 @@ class Process(object):
             'directory': item_rel_dir,
             'item': media
         })
+
+
+
 
         return True
 
