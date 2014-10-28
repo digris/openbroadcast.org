@@ -9,6 +9,7 @@ from stdnum import ean
 
 from alibrary.models import APILookup, Release, Relation, Label, Artist, Media
 from lib.util.merge import merge_model_objects
+from lib.util.AsciiDammit import asciiDammit
 
 from alibrary.util.api_compare import get_from_provider
 
@@ -98,7 +99,8 @@ def provider_search(request, *args, **kwargs):
 
     if provider == 'discogs':
 
-        query = re.sub('[^A-Za-z0-9 :]+', '', query)
+        #query = re.sub('[^A-Za-z0-9 :]+', '', query)
+        query = asciiDammit(query)
 
         url = 'http://%s/database/search?q=%s&type=%s&per_page=%s' % (DISCOGS_HOST, query, item_type, 15)
         log.debug('query url: %s' % (url))
@@ -121,7 +123,8 @@ def provider_search(request, *args, **kwargs):
             t_query = query.replace('-', '')
             url = 'http://%s/ws/2/%s?query=barcode:%s&fmt=json' % (MUSICBRAINZ_HOST, _type, t_query)
         else:
-            query = re.sub('[^A-Za-z0-9 :]+', '', query)
+            #query = re.sub('[^A-Za-z0-9 :]+', '', query)
+            query = asciiDammit(query)
             url = 'http://%s/ws/2/%s?query=%s&fmt=json' % (MUSICBRAINZ_HOST, _type, query)
 
 
