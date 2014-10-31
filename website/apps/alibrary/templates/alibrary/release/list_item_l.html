@@ -24,7 +24,6 @@
     <div class="spacer tag-cloud">
 
         <!-- TODO: this block consumes too much rendering time. -->
-
         <ul class="tags unstyled horizontal">
             {% for tag in item.tags|slice:":8" %}
                 <li class="{% if tag.pk in active_tags %}__active{% endif %}">{{ tag.name|truncate_chars_inner:10 }}</li>
@@ -171,6 +170,7 @@
     <div class="wrapper_action">
 
 
+
         <ul class="unstyled action secondary horizontal clearfix">
 
 
@@ -207,6 +207,16 @@
         </ul>
 
     </div>
+
+    {% if item.creator %}
+    <div class="by" style="position: absolute; bottom: 0; left: 5px; color: #999;">
+    {% trans "by" %}:
+    <a style="color: #999;"
+       href="{{ item.creator.get_absolute_url }}">
+        {{ item.creator }}
+    </a>
+    </div>
+    {% endif %}
 
 
 
