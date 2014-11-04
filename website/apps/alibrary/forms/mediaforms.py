@@ -189,29 +189,13 @@ class MediaForm(ModelForm):
         
         cd = super(MediaForm, self).clean()
 
-        print "*************************************"
-        print cd
-        print "*************************************"
-        
-            
-        """
-        
-        if 'main_image' in cd and cd['main_image'] != None:
-            try:
-                ui = cd['main_image']
-                dj_file = DjangoFile(open(ui.temporary_file_path()), name='cover.jpg')
-                cd['main_image'], created = Image.objects.get_or_create(
-                                    original_filename='cover_%s.jpg' % self.instance.pk,
-                                    file=dj_file,
-                                    folder=self.instance.folder,
-                                    is_public=True)
-            except Exception, e:
-                print e
-                pass
-            
-        else:
-            cd['main_image'] = self.instance.main_image
-        """
+        try:
+            # hack. allow_new in AutoCompleteSelectField does _not_ automatically create new objects???
+            artist = cd['artist']
+            if not artist.pk:
+                artist.save()
+        except:
+            pass
 
         return cd
 

@@ -25,7 +25,8 @@ BackfeedUi = function () {
             e.preventDefault();
             var form = $(this).parents('form');
             var data = form.serialize();
-            console.log(data);
+
+            data['url'] = document.location.href;
 
             $.ajax({
                 url: self.post_url,

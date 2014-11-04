@@ -402,6 +402,19 @@ class BaseReleaseMediaForm(ModelForm):
             return self.cleaned_data['license']
     """
 
+    def clean(self, *args, **kwargs):
+
+        cd = super(BaseReleaseMediaForm, self).clean()
+        try:
+            # hack. allow_new in AutoCompleteSelectField does _not_ automatically create new objects???
+            artist = cd['artist']
+            if not artist.pk:
+                artist.save()
+        except:
+            pass
+
+        return cd
+
 
 """
 Album Artists

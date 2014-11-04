@@ -101,6 +101,8 @@ def provider_search(request, *args, **kwargs):
 
         #query = re.sub('[^A-Za-z0-9 :]+', '', query)
         query = asciiDammit(query)
+        query = query.replace('(', '')
+        query = query.replace(')', '')
 
         url = 'http://%s/database/search?q=%s&type=%s&per_page=%s' % (DISCOGS_HOST, query, item_type, 15)
         log.debug('query url: %s' % (url))

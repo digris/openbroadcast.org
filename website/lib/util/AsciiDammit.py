@@ -29,6 +29,8 @@ __license__ = "Public domain"
 import re
 import string
 import types
+from unidecode import unidecode
+
 
 CHARS = { '\x80' : ('EUR', 'euro'),
           '\x81' : ' ',
@@ -195,6 +197,10 @@ def _dammit(t, html=0, fixWindowsOnly=0):
     return re.sub(r, m, t)
 
 def asciiDammit(t, fixWindowsOnly=0):
+    "Turns ISO-Latin-1 into a plain ASCII approximation, dammit."
+    return unidecode(u'%s' % t)
+
+def __asciiDammit(t, fixWindowsOnly=0):
     "Turns ISO-Latin-1 into a plain ASCII approximation, dammit."
     return _dammit(t, 0, fixWindowsOnly)
 
