@@ -6,6 +6,9 @@
 /* core */
 
 
+dw = false
+
+
 ListEditUi = function () {
 
     var self = this;
@@ -95,6 +98,16 @@ ListEditUi = function () {
 
                 debug.debug('local', data);
 
+                // display processing message
+
+                try {
+                    var api = self.dialog_window.qtip('api');
+                    api.set('content.text', nj.render('alibrary/nj/merge/merge_dialog_progress.html'));
+                } catch (e) {
+                }
+
+
+                /**/
                 Dajaxice.alibrary.merge_items(function (data) {
                     debug.debug('remote', data);
                     try {
@@ -108,6 +121,7 @@ ListEditUi = function () {
                         alert(data.error);
                     }
                 }, data);
+
 
             }
 
