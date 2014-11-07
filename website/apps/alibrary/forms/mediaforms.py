@@ -189,13 +189,25 @@ class MediaForm(ModelForm):
         
         cd = super(MediaForm, self).clean()
 
+        # hack. allow_new in AutoCompleteSelectField does _not_ automatically create new objects???
         try:
-            # hack. allow_new in AutoCompleteSelectField does _not_ automatically create new objects???
             artist = cd['artist']
             if not artist.pk:
                 artist.save()
         except:
             pass
+
+        try:
+            release = cd['release']
+            if not release.pk:
+                release.save()
+
+        except:
+            pass
+
+
+
+
 
         return cd
 

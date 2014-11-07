@@ -68,10 +68,11 @@ class Country(models.Model):
     class Meta:
         verbose_name = _('Country')
         verbose_name_plural = _('Countries')
-        ordering = ('name',)
+        ordering = ('iso2_code',)
 
     def __unicode__(self):
-        return '%s (%s)' % (self.printable_name, self.iso2_code)
+        return '%s - %s' % (self.iso2_code, self.printable_name)
+        #return '%s (%s)' % (self.printable_name, self.iso2_code)
 
 
 class AdminArea(models.Model):
