@@ -1061,7 +1061,7 @@ EditUi = function () {
         if (key == 'release_country') {
 
             if(val.length < 4) {
-                var target = $('#' + self.field_prefix + 'release_country option:contains((' + val + '))');
+                var target = $('#' + self.field_prefix + 'release_country option:contains(' + val + ' - )');
             } else {
                 var target = $('#' + self.field_prefix + 'release_country option:contains(' + val + ' ()');
             }
@@ -1070,7 +1070,7 @@ EditUi = function () {
         }
         if (key == 'country') {
             if(val.length < 4) {
-                var target = $('#' + self.field_prefix + 'country option:contains((' + val + '))');
+                var target = $('#' + self.field_prefix + 'country option:contains(' + val + ' - )');
             } else {
                 var target = $('#' + self.field_prefix + 'country option:contains(' + val + ' ()');
             }
