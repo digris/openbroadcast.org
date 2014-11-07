@@ -341,6 +341,32 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         for relation in relations:
             relation.save()
 
+
+    def formset_media_valid(self, formset):
+        media = formset.save(commit=False)
+
+        # TODO: this is extremely ugly!! refactor!
+
+        import hashlib
+        artists = {}
+        for m in media:
+
+            if not m.artist.pk:
+                key = hashlib.md5(m.artist.name).hexdigest()
+                print key
+                try:
+                    artist = artists[key]
+                except Exception, e:
+                    m.artist.save()
+                    artist = m.artist
+                    artists[key] = artist
+
+                m.artist = artist
+                m.save()
+            else:
+                m.save()
+
+
     def formset_action_valid(self, formset):
         self.do_publish = formset.cleaned_data.get('publish', False)
 

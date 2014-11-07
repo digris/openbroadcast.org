@@ -108,8 +108,6 @@ class ArtistLookup(ModelLookup):
         return mark_safe(html)
 
     
-    
-    
 registry.register(ArtistLookup)
 
 

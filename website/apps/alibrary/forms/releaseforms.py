@@ -409,7 +409,8 @@ class BaseReleaseMediaForm(ModelForm):
             # hack. allow_new in AutoCompleteSelectField does _not_ automatically create new objects???
             artist = cd['artist']
             if not artist.pk:
-                artist.save()
+                pass
+                #artist.save()
         except:
             pass
 
@@ -465,7 +466,7 @@ class BaseAlbumartistFormSet(BaseInlineFormSet):
             instance = self.get_queryset()[index]
             pk_value = instance.pk
         except IndexError:
-            instance=None
+            instance = None
             pk_value = hash(form.prefix)
 
 
