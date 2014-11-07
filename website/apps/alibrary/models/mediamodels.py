@@ -320,7 +320,7 @@ class Media(MigrationMixin):
         app_label = 'alibrary'
         verbose_name = _('Track')
         verbose_name_plural = _('Tracks')
-        ordering = ('medianumber', 'tracknumber', )
+        ordering = ('medianumber', 'tracknumber', 'name')
 
         permissions = (
             ('play_media', 'Play Track'),

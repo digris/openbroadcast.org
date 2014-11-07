@@ -352,7 +352,7 @@ class Release(MigrationMixin):
     
     
     def get_media(self):
-        return Media.objects.filter(release=self).order_by('tracknumber', 'name').select_related()
+        return Media.objects.filter(release=self).select_related()
     
     def get_products(self):
         return self.releaseproduct.all()
