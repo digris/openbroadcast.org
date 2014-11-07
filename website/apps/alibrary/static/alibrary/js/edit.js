@@ -485,6 +485,7 @@ EditUi = function () {
 
         Dajaxice.alibrary.api_lookup(function (data) {
 
+
             var lookup_prefix = 'lookup_id_';
 
             $('body').removeClass('api_lookup-progress');
@@ -494,7 +495,7 @@ EditUi = function () {
             self.lookup_data = data;
 
             for (var key_ in data) {
-                console.log('### ' + key_)
+                console.log('* ' + key_)
             };
 
 
@@ -508,6 +509,7 @@ EditUi = function () {
             // generic data
             for (var key in data) {
 
+
                 var obj = data[key];
                 console.log('key: ' + key + ': ', obj);
 
@@ -520,8 +522,79 @@ EditUi = function () {
                         self.image_lookup(key);
                         break;
                     case 'relations':
-                        self.relation_lookup(key);
+                        console.log('!!!', key);
+
+                        // for some strange reason this does not work
+                        // self.relation_lookup(key);
+
+
+                        var val = self.lookup_data[key];
+                        $('fieldset.relations .lookup-container').html('');
+                        $(val).each(function(i, item){
+                            debug.debug(item);
+                            console.log(item);
+
+                            // try to find relation in form - not extremly nice :(
+                            var container = $('.controls input', $('.external.' + item.service).parents('.relation-row'))
+
+                            if(container.length) {
+
+                                console.log('got container');
+                                var inner = container.parents('.relation-url')
+
+                                var match = false;
+                                var no_match = false;
+
+                                if(container.val() == item.uri) {
+                                    match=true;
+                                } else {
+                                    no_match = true
+                                }
+
+                                var data = {
+                                    object: item,
+                                    match: match,
+                                    no_match: no_match
+                                }
+                                var html = nj.render('alibrary/nj/provider/relation_inline.html', data);
+
+                                if($('.relation', inner).length) {
+                                    $('.relation', inner).replaceWith(html);
+                                } else {
+                                    inner.append(html);
+                                }
+
+                            } else {
+                                console.log('no container');
+                                var match = false;
+
+                                $('.controls input', $('.relation-row')).each(function(i, el){
+                                   if($(el).val() == item.uri) {
+                                       match = true;
+                                   }
+                                });
+
+                                var data = {
+                                    object: item,
+                                    match: match
+                                }
+
+
+
+                                html = nj.render('alibrary/nj/provider/relation_inline.html', data);
+
+                                if(match) {
+                                    $('fieldset.relations .lookup-container').prepend(html);
+                                } else {
+                                    $('fieldset.relations .lookup-container').append(html);
+                                }
+
+                            }
+
+                        });
+
                         break;
+
                     default:
                         $('#' + self.lookup_prefix + key).html(obj);
                         $('#' + self.lookup_prefix + key).parent().fadeIn(200);
@@ -594,6 +667,8 @@ EditUi = function () {
 
     this.relation_lookup = function (key) {
         var val = self.lookup_data[key];
+
+
         debug.debug('relation_lookup:', val);
 
         $('fieldset.relations .lookup-container').html('');

@@ -234,7 +234,7 @@ class ReleaseForm(ModelForm):
                 _('Label/Catalog'),
                 LookupField('label', css_class='input-xlarge'),
                 HTML("""<ul class="horizontal unstyled clearfix action label-select">
-                    <li><a data-label="Unknown 22" href="#"><i class="icon-double-angle-right"></i> Unknown label</a></li>
+                    <li><a data-label="Unknown label" href="#"><i class="icon-double-angle-right"></i> Unknown label</a></li>
                     <li><a data-label="Not on label" href="#"><i class="icon-double-angle-right"></i> Not on label</a></li>
                 </ul>"""),
                 LookupField('catalognumber', css_class='input-xlarge'),

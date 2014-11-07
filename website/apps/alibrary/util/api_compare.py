@@ -395,6 +395,8 @@ class DiscogsAPILookup(APILookup):
 
         res = {}
         d_tags = []
+        relations = []
+
         for k in data:
 
             mk = k
@@ -448,6 +450,15 @@ class DiscogsAPILookup(APILookup):
                 except:
                     pass
 
+
+            if k == 'urls':
+                mapped = []
+                for rel in data[k]:
+                    relations.append({
+                        'uri': rel,
+                        'service': get_service_by_url(rel, None),
+                        })
+
             # image
             if k == 'images':
                 res['remote_image'] = res['main_image'] = self.map_image(data[k])
@@ -460,6 +471,7 @@ class DiscogsAPILookup(APILookup):
             pass
 
         res['d_tags'] = ', '.join(d_tags)
+        res['relations'] = relations
 
         # remap borgious countries
         try:
@@ -525,7 +537,7 @@ class DiscogsAPILookup(APILookup):
                 mapped = []
                 for rel in data[k]:
                     relations.append({
-                        'url': rel,
+                        'uri': rel,
                         'service': get_service_by_url(rel, None),
                         })
 
@@ -584,7 +596,7 @@ class DiscogsAPILookup(APILookup):
                 mapped = []
                 for rel in data[k]:
                     relations.append({
-                        'url': rel,
+                        'uri': rel,
                         'service': get_service_by_url(rel, None),
                         })
 
