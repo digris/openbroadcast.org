@@ -276,6 +276,18 @@ class LabelFilter(django_filters.FilterSet):
                 if ds not in flist:
                     flist.append(filter_)
 
+            """
+            add some custom queries
+            """
+            cf = {
+                'label': 'Extra filters',
+                'name': 'extra_filter',
+                'entries': [
+                    ['possible_duplicates', '', 'Duplicate detection'],
+                ]
+            }
+            flist.append(cf)
+
             self._filterlist = flist
 
         return self._filterlist

@@ -107,7 +107,7 @@ class LabelListView(PaginationMixin, ListView):
         qs = Label.objects.active()
         
         if q:
-            qs = qs.filter(name__istartswith=q).distinct()
+            qs = qs.filter(name__icontains=q).distinct()
             
             
             
@@ -153,12 +153,20 @@ class LabelListView(PaginationMixin, ListView):
             ids = import_session.importitem_set.filter(content_type=ctype.pk).values_list('object_id',)
             qs = qs.filter(pk__in=ids).distinct()
 
-        # base queryset        
-        #qs = Release.objects.all()
+
+        # "extra-filters" (to provide some arbitary searches)
+        extra_filter = self.request.GET.get('extra_filter', None)
+        if extra_filter:
+            if extra_filter == 'possible_duplicates':
+                from django.db.models import Count
+                dupes = Label.objects.values('name').annotate(Count('id')).order_by().filter(id__count__gt=1)
+                qs = qs.filter(name__in=[item['name'] for item in dupes])
+                if not order_by:
+                    qs = qs.order_by('name')
+
         
         # apply filters
         self.filter = LabelFilter(self.request.GET, queryset=qs)
-        # self.filter = ReleaseFilter(self.request.GET, queryset=Release.objects.active().filter(**kwargs))
         
         qs = self.filter.qs
         

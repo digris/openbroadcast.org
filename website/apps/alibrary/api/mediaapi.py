@@ -178,9 +178,10 @@ class MediaResource(ModelResource):
         qs = None
 
         if q and len(q) > 1:
-            qs = Media.objects.order_by('name').filter(Q(name__istartswith=q)\
-                | Q(artist__name__icontains=q)\
-                | Q(release__name__icontains=q))
+            qs = Media.objects.order_by('name').filter(name__icontains=q)
+            #qs = Media.objects.order_by('name').filter(Q(name__istartswith=q)\
+            #    | Q(artist__name__icontains=q)\
+            #    | Q(release__name__icontains=q))
 
 
 

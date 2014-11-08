@@ -196,6 +196,8 @@ class ReleaseListView(PaginationMixin, ListView):
                 from django.db.models import Count
                 dupes = Release.objects.values('name').annotate(Count('id')).order_by().filter(id__count__gt=1)
                 qs = qs.filter(name__in=[item['name'] for item in dupes])
+                if not order_by:
+                    qs = qs.order_by('name')
 
 
 

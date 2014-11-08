@@ -80,7 +80,7 @@ class ReleaseResource(ModelResource):
             #    | Q(media_release__artist__name__icontains=q)\
             #    | Q(label__name__icontains=q))
 
-            qs = Release.objects.filter(name__istartswith=q)
+            qs = Release.objects.filter(name__icontains=q)
         
 
         if qs:
