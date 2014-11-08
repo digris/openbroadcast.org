@@ -222,7 +222,9 @@ hard-coded selecting of property, to provide some 'special' types of filters for
                         {% else %}
                             {{ filter_entry.0 }}
                         {% endif %}
-                        <small> ({{ filter_entry.1 }})</small>
+                        {% if filter_entry.1 %}
+                            <small> ({{ filter_entry.1 }})</small>
+                        {% endif %}
                     </a>
                 </div>
             {% endif %}

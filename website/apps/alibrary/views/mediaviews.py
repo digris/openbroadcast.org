@@ -176,6 +176,13 @@ class MediaListView(PaginationMixin, ListView):
             if extra_filter == 'unassigned':
                 qs = qs.filter(release=None).distinct()
 
+            if extra_filter == 'possible_duplicates':
+                from django.db.models import Count
+                dupes = Media.objects.values('name').annotate(Count('id')).order_by().filter(id__count__gt=1)
+                qs = qs.filter(name__in=[item['name'] for item in dupes])
+
+
+
         
         # apply filters
         self.filter = MediaFilter(self.request.GET, queryset=qs)

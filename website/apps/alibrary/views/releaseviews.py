@@ -188,9 +188,9 @@ class ReleaseListView(PaginationMixin, ListView):
         extra_filter = self.request.GET.get('extra_filter', None)
         if extra_filter:
             if extra_filter == 'no_cover':
-                qs = qs.filter(main_image=None).distinct()
+                qs = qs.filter(main_image='').distinct()
             if extra_filter == 'has_cover':
-                qs = qs.exclude(main_image=None).distinct()
+                qs = qs.exclude(main_image='').distinct()
 
             if extra_filter == 'possible_duplicates':
                 from django.db.models import Count

@@ -428,6 +428,7 @@ class MediaFilter(django_filters.FilterSet):
                 'name': 'extra_filter',
                 'entries': [
                     ['unassigned', '', 'Unassigned tracks'],
+                    ['possible_duplicates', '', 'Duplicate detection'],
                 ]
             }
             flist.append(cf)
