@@ -192,6 +192,12 @@ class ReleaseListView(PaginationMixin, ListView):
             if extra_filter == 'has_cover':
                 qs = qs.exclude(main_image=None).distinct()
 
+            if extra_filter == 'possible_duplicates':
+                from django.db.models import Count
+                dupes = Release.objects.values('name').annotate(Count('id')).order_by().filter(id__count__gt=1)
+                qs = qs.filter(name__in=[item['name'] for item in dupes])
+
+
 
         
         # apply filters

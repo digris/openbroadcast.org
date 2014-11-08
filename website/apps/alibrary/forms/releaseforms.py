@@ -283,7 +283,7 @@ class ReleaseForm(ModelForm):
     #releasedate = forms.DateField(required=False,widget=forms.DateInput(format = '%Y-%m-%d'), input_formats=('%Y-%m-%d',))
     releasedate_approx = ApproximateDateFormField(label="Releasedate", required=False)
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
-    name = forms.CharField(widget=selectable.AutoCompleteWidget(ReleaseNameLookup), required=True)
+    #name = forms.CharField(widget=selectable.AutoCompleteWidget(ReleaseNameLookup), required=True)
     label = selectable.AutoCompleteSelectField(ReleaseLabelLookup, allow_new=True, required=False)
     description = forms.CharField(widget=PagedownWidget(), required=False)
 

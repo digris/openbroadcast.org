@@ -171,6 +171,7 @@ class ReleaseFilter(django_filters.FilterSet):
                 'entries': [
                     ['no_cover', '', 'No cover'],
                     ['has_cover', '', 'With cover'],
+                    ['possible_duplicates', '', 'Duplicate detection'],
                 ]
             }
             flist.append(cf)
@@ -210,6 +211,18 @@ class ArtistFilter(django_filters.FilterSet):
 
                 if ds not in flist:
                     flist.append(filter_)
+
+            """
+            add some custom queries
+            """
+            cf = {
+                'label': 'Extra filters',
+                'name': 'extra_filter',
+                'entries': [
+                    ['possible_duplicates', '', 'Duplicate detection'],
+                ]
+            }
+            flist.append(cf)
 
             self._filterlist = flist
 

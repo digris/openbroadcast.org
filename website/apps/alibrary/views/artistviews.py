@@ -144,6 +144,14 @@ class ArtistListView(PaginationMixin, ListView):
             f = {'item_type': 'label' , 'item': '%s-12-31' % date_start_filter, 'label': _('Date start')}
             self.relation_filter.append(f)
 
+        # "extra-filters" (to provide some arbitary searches)
+        extra_filter = self.request.GET.get('extra_filter', None)
+        if extra_filter:
+            if extra_filter == 'possible_duplicates':
+                from django.db.models import Count
+                dupes = Artist.objects.values('name').annotate(Count('id')).order_by().filter(id__count__gt=1)
+                qs = qs.filter(name__in=[item['name'] for item in dupes])
+
         # filter by import session
         import_session = self.request.GET.get('import', None)
         if import_session:
