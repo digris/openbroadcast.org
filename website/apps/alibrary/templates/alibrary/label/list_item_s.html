@@ -33,7 +33,7 @@
 				{% url alibrary-release-list as release_list %}
 				{% trans "Releases" %}:&nbsp;<a href="{% spurl path=release_list query="label={{ item.slug }}" %}" title="{% trans "Only show releases by" %} {{ item.name }}" style="vertical-align: top;">{{ item.release_label.count }}<span class="filter icon"></span></a>
 			</li>
-			{% endif %}			
+			{% endif %}
 		</ul>
 	</div>
 
