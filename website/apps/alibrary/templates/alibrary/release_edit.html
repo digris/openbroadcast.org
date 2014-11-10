@@ -178,7 +178,13 @@
 
                 </div>
 
-                {% crispy named_formsets.media %}
+                {# crispy named_formsets.media #}
+
+                {% for mf in named_formsets.media %}
+                    {% crispy mf %}
+                {% endfor %}
+
+
             </div>
 
 

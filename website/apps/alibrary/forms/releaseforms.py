@@ -325,6 +325,7 @@ class BaseReleaseMediaFormSet(BaseInlineFormSet):
 
         self.instance = kwargs['instance']
 
+
         super(BaseReleaseMediaFormSet, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -342,7 +343,7 @@ class BaseReleaseMediaFormSet(BaseInlineFormSet):
                         LookupField('name', css_class='input-large'),
                         LookupField('artist', css_class='input-large'),
                         Field('isrc', css_class='input-large'),
-                        #Field('filename', css_class='input-large'),
+                        HTML('<span>*%s*</span>' % self.instance.name),
                        css_class='span9'
                        ),
                 css_class='releasemedia-row row-fluid',
@@ -380,6 +381,30 @@ class BaseReleaseMediaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs['instance']
         super(BaseReleaseMediaForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+        base_layout = Row(
+                Column(
+                       Field('tracknumber', css_class='input-small'),
+                       Field('mediatype', css_class='input-small'),
+                       Field('license', css_class='input-small'),
+                       HTML('<div><span style="padding-right: 68px;">&nbsp;</span><a href="%s"><i class="icon icon-edit"></i> Edit Track</a></div>' % self.instance.get_edit_url()),
+                       css_class='span3'
+                       ),
+                Column(
+                        LookupField('name', css_class='input-large'),
+                        LookupField('artist', css_class='input-large'),
+                        Field('isrc', css_class='input-large'),
+                        HTML('<div style="opacity: 0.5;"><span style="padding-right: 48px;">File:</span>%s</div>' % self.instance.filename),
+                       css_class='span9'
+                       ),
+                css_class='releasemedia-row row-fluid',
+        )
+
+
+        self.helper.add_layout(base_layout)
 
         """
         # publishing removed

@@ -214,7 +214,6 @@ ListEditUi = function () {
 
     this.merge_dialog_update = function (data) {
 
-
         // not so nice, but have to map type as names differ in api
         var item_type = data.item_type;
         var _item_type = item_type;
@@ -224,7 +223,7 @@ ListEditUi = function () {
         }
 
         var url = '/api/v1/library/' + _item_type + '/';
-        var query = '?id__in=' + data.item_ids.join(',');
+        var query = '?limit=36&id__in=' + data.item_ids.join(',');
 
         $.get(url + query, function (data) {
             console.log(data);
@@ -233,7 +232,6 @@ ListEditUi = function () {
             setTimeout(function () {
                 $('#merge_dialog_container').html(html);
             }, 100)
-
         });
 
     };

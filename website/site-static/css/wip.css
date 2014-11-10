@@ -1266,7 +1266,7 @@ div.form-errors dl dd ul.errorlist {
 }
 /* line 468, ../sass/element/_listview.sass */
 .listview.container.labels.m .c1 {
-  width: 61px;
+  background-position: 5px 5px;
   background-position: center;
   background-image: url(/static/img/base/defaults/listview.artist.xl.png);
   background-size: 53px auto;
