@@ -1,0 +1,32 @@
+{% extends "admin/base_site.html" %}
+{% load i18n l10n %}
+
+{% block content %}
+    <form method="post">{% csrf_token %}
+        <p>The following Tags will be merged:</p>
+
+        <ul>{{ queryset|unordered_list }}</ul>
+
+        <div>
+            <fieldset>
+                <label>Master Tag:
+                    <select name="master_tag">
+                        {% for obj in queryset %}
+                            <option value="{{ obj.pk|unlocalize }}" {% if forloop.first %} selected{% endif %}>{{ obj }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                {% for obj in queryset %}
+                    <input type="hidden" name="{{ action_checkbox_name }}" value="{{ obj.pk|unlocalize }}"/>
+                {% endfor %}
+            </fieldset>
+
+            <fieldset>
+                <input type="hidden" name="tag_ids" value="{% for obj in queryset %}{{ obj.pk }}{% if not forloop.last %},{% endif %}{% endfor %}"/>
+                <input type="hidden" name="action" value="merge_tags"/>
+                <input type="submit" value="{% trans "Yes, I'm sure" %}"/>
+            </fieldset>
+
+        </div>
+    </form>
+{% endblock %}
