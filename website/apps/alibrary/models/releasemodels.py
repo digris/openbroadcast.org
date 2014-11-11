@@ -403,20 +403,16 @@ class Release(MigrationMixin):
     """
     def get_artist_display(self):
 
-
         artist_str = ''
         artists = self.get_artists()
-
         if len(artists) > 1:
             try:
                 for artist in artists:
                     if artist['join_phrase']:
                         artist_str += ' %s ' % artist['join_phrase']
                     artist_str += artist['artist'].name
-
             except:
                 artist_str = artists[0].name
-
         else:
             try:
                 artist_str = artists[0].name
@@ -426,16 +422,12 @@ class Release(MigrationMixin):
         return artist_str
 
 
-
     def get_artists(self):
 
         artists = []
-        
         if self.album_artists.count() > 0:
-            
             for albumartist in self.release_albumartist_release.all():
                 artists.append({'artist': albumartist.artist, 'join_phrase': albumartist.join_phrase})
-            
             return artists
         
 
@@ -444,7 +436,6 @@ class Release(MigrationMixin):
             artists.append(media.artist)
         
         artists = list(set(artists))
-    
         if len(artists) > 1:
             from alibrary.models import Artist
             a, c = Artist.objects.get_or_create(name="Various Artists")

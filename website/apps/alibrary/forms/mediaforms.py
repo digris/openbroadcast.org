@@ -10,7 +10,7 @@ from crispy_forms.bootstrap import FormActions
 from pagedown.widgets import PagedownWidget
 
 from filer.models.imagemodels import Image
-from alibrary.models import Media, Relation, MediaExtraartists
+from alibrary.models import Media, Relation, MediaExtraartists, MediaArtists
 import selectable.forms as selectable
 from alibrary.lookups import ReleaseNameLookup, ArtistLookup
 
@@ -310,6 +310,80 @@ class BaseExtraartistForm(ModelForm):
 
 
 
+"""
+Media Artists
+"""
+class BaseMediaartistFormSet(BaseInlineFormSet):
+
+
+    def __init__(self, *args, **kwargs):
+
+        self.instance = kwargs['instance']
+
+        super(BaseMediaartistFormSet, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_id = "id_artists_form_%s" % 'inline'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.form_method = 'post'
+        self.helper.form_action = ''
+        self.helper.form_tag = False
+
+        base_layout = Row(
+                Column(
+                       Field('join_phrase', css_class='input-small'),
+                       css_class='span4'
+                       ),
+                Column(
+                       Field('artist', css_class='input-xlarge'),
+                       css_class='span6'
+                       ),
+                Column(
+                       Field('DELETE', css_class='input-mini'),
+                       css_class='span2'
+                       ),
+                css_class='albumartist-row row-fluid form-autogrow',
+        )
+
+        self.helper.add_layout(base_layout)
+
+
+
+
+    def add_fields(self, form, index):
+        # allow the super class to create the fields as usual
+        super(BaseMediaartistFormSet, self).add_fields(form, index)
+
+        # created the nested formset
+        try:
+            instance = self.get_queryset()[index]
+            pk_value = instance.pk
+        except IndexError:
+            instance = None
+            pk_value = hash(form.prefix)
+
+
+class BaseMediaartistForm(ModelForm):
+
+    class Meta:
+        model = MediaArtists
+        parent_model = Media
+        fields = ('artist','join_phrase', 'position',)
+
+    def __init__(self, *args, **kwargs):
+        super(BaseMediaartistForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+
+
+    def clean_artist(self):
+
+        artist = self.cleaned_data['artist']
+        if not artist.pk:
+            artist.save()
+
+        return artist
+
+    artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
 
 
 
@@ -381,6 +455,15 @@ MediaRelationFormSet = generic_inlineformset_factory(Relation,
                                                      formset=BaseMediaReleationFormSet,
                                                      extra=10, exclude=('action',),
                                                      can_delete=True)
+
+MediaartistFormSet = inlineformset_factory(Media,
+                                           MediaArtists,
+                                           form=BaseMediaartistForm,
+                                           formset=BaseMediaartistFormSet,
+                                           extra=10,
+                                           exclude=('position',),
+                                           can_delete=True,
+                                           can_order=False,)
 
 ExtraartistFormSet = inlineformset_factory(Media,
                                        MediaExtraartists,

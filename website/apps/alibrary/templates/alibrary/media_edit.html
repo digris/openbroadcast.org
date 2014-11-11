@@ -102,6 +102,21 @@
 
             <fieldset>
                 <legend>
+                    {% trans "Track Artists" %}<span class="pull-right"></span>
+                </legend>
+                <div class="notes-form notes-inline notes-info">
+                    <p>
+                        {% trans "Allows you to customize artist-credits." %}</br>
+                        {% trans "Use this to generate 'composite' names, like:" %} <strong>'Soviet France feat. Beck & Madonna'</strong>
+                    </p>
+                </div>
+
+                {% crispy named_formsets.mediaartists %}
+
+            </fieldset>
+
+            <fieldset>
+                <legend>
                     {% trans "Credits & Credited Artists" %}<span class="pull-right"></span>
                 </legend>
 

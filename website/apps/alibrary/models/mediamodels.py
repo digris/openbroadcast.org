@@ -258,6 +258,9 @@ class Media(MigrationMixin):
     # extra-artists
     # TODO: Fix this - guess should relate to Artist instead of Profession
     extra_artists = models.ManyToManyField('Artist', through='MediaExtraartists', blank=True, null=True)
+
+    # provide 'multi-names' for artist crediting.
+    media_artists = models.ManyToManyField('Artist', through='MediaArtists', related_name="credited", blank=True, null=True)
     
     license = models.ForeignKey(License, blank=True, null=True, related_name='media_license', limit_choices_to={'selectable': True}, on_delete=models.PROTECT)
     
@@ -458,6 +461,46 @@ class Media(MigrationMixin):
     @property
     def get_soundcloud(self):
         return self.relations.filter(service='soundcloud').all()[0]
+
+
+
+    """
+    compose artist display as string
+    """
+    def get_artist_display(self):
+
+        artist_str = ''
+        artists = self.get_mediaartists()
+        if len(artists) > 1:
+            try:
+                for artist in artists:
+                    if artist['join_phrase']:
+                        artist_str += ' %s ' % artist['join_phrase']
+                    artist_str += artist['artist'].name
+            except:
+                artist_str = artists[0].name
+        else:
+            try:
+                artist_str = artists[0].name
+            except:
+                artist_str = _('Unknown Artist')
+
+        return artist_str
+
+
+    def get_mediaartists(self):
+
+        artists = []
+        if self.media_artists.count() > 0:
+            for media_artist in self.media_mediaartist.all():
+                artists.append({'artist': media_artist.artist, 'join_phrase': media_artist.join_phrase})
+            return artists
+
+
+        return artists
+
+
+
     
 
     # TODO: still needed?
@@ -1595,6 +1638,25 @@ class MediaExtraartists(models.Model):
 
 
 
+class MediaArtists(models.Model):
+    artist = models.ForeignKey('Artist', related_name='artist_mediaartist')
+    media = models.ForeignKey('Media', related_name='media_mediaartist')
+    JOIN_PHRASE_CHOICES = (
+        ('&', _('&')),
+        (',', _(',')),
+        ('and', _('and')),
+        ('feat.', _('feat.')),
+        ('vs.', _('vs.')),
+        ('-', _('-')),
+    )
+    join_phrase = models.CharField(verbose_name="join phrase", max_length=12, default=None, choices=JOIN_PHRASE_CHOICES, blank=True, null=True)
+    position = models.PositiveIntegerField(null=True, blank=True)
+
+    class Meta:
+        app_label = 'alibrary'
+        verbose_name = _('Artist (title credited)')
+        verbose_name_plural = _('Artists (title credited)')
+        ordering = ('position', )
     
     
 

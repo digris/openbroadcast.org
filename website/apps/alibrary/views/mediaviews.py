@@ -20,7 +20,7 @@ from pure_pagination.mixins import PaginationMixin
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 
 from alibrary.models import Media, Playlist, PlaylistItem, Artist, Release
-from alibrary.forms import MediaForm, MediaActionForm, MediaRelationFormSet, ExtraartistFormSet
+from alibrary.forms import MediaForm, MediaActionForm, MediaRelationFormSet, ExtraartistFormSet, MediaartistFormSet
 from alibrary.filters import MediaFilter
 
 from lib.util import tagging_extra
@@ -274,6 +274,7 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             'action': MediaActionForm(self.request.POST or None, prefix='action'),
             'relation': MediaRelationFormSet(self.request.POST or None, instance=self.object, prefix='relation'),
             'extraartist': ExtraartistFormSet(self.request.POST or None, instance=self.object, prefix='extraartist'),
+            'mediaartists': MediaartistFormSet(self.request.POST or None, instance=self.object, prefix='mediaartists'),
         }
 
     def get_form_errors(self, form=None):
