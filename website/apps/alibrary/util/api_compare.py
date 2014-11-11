@@ -88,7 +88,7 @@ class MusicbrainzAPILookup(APILookup):
                 for rel in data[k]:
                     if 'url' in rel:
                         mapped.append({
-                            'url': rel['url']['resource'],
+                            'uri': rel['url']['resource'],
                             'service': get_service_by_url(rel['url']['resource'], None),
                             })
                 data[k] = mapped
@@ -181,7 +181,7 @@ class MusicbrainzAPILookup(APILookup):
                 for rel in data[k]:
                     if 'url' in rel:
                         mapped.append({
-                            'url': rel['url']['resource'],
+                            'uri': rel['url']['resource'],
                             'service': get_service_by_url(rel['url']['resource'], None),
                             })
                 data[k] = mapped
@@ -245,7 +245,7 @@ class MusicbrainzAPILookup(APILookup):
                 for rel in data[k]:
                     if 'url' in rel:
                         mapped.append({
-                            'url': rel['url']['resource'],
+                            'uri': rel['url']['resource'],
                             'service': get_service_by_url(rel['url']['resource'], None),
                             })
                 data[k] = mapped
@@ -303,7 +303,7 @@ class MusicbrainzAPILookup(APILookup):
                 for rel in data[k]:
                     if 'url' in rel:
                         mapped.append({
-                            'url': rel['url']['resource'],
+                            'uri': rel['url']['resource'],
                             'service': get_service_by_url(rel['url']['resource'], None),
                             })
                 data[k] = mapped
