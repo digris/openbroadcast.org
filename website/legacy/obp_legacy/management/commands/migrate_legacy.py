@@ -121,7 +121,7 @@ class LegacyImporter(object):
 
         if(self.object_type == 'release'):
 
-            objects = Releases.objects.using('legacy').filter(Q(migrated__lte=F('updated')) | Q(migrated=None)).exclude(name=u'').all()[0:self.limit]
+            objects = Releases.objects.using('legacy').filter(Q(migrated__lte=F('updated')) | Q(migrated=None)).exclude(name__in=[u'', u'UNSORTED-FILES']).all()[0:self.limit]
 
             for legacy_obj in objects:
                 obj, status = get_release_by_legacy_object(legacy_obj, force=FORCE_UPDATE)
@@ -132,7 +132,7 @@ class LegacyImporter(object):
         if(self.object_type == 'media'):
 
             #objects = Medias.objects.using('legacy').filter(migrated=None).exclude(name=u'').order_by('-created').all()[0:self.limit]
-            objects = Medias.objects.using('legacy').filter(Q(migrated__lte=F('updated')) | Q(migrated=None)).exclude(name=u'').order_by('-created').all()[0:self.limit]
+            objects = Medias.objects.using('legacy').filter(Q(migrated__lte=F('updated')) | Q(migrated=None)).exclude(name=u'', mediasreleases__release__name__in=[u'UNSORTED-FILES', u'']).order_by('-created').all()[0:self.limit]
 
             print 'NUM OBJECTS: %s' % objects.count()
         
