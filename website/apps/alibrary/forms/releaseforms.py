@@ -214,6 +214,17 @@ class ReleaseForm(ModelForm):
         self.helper.form_action = ''
         self.helper.form_tag = False
 
+        # TODO: this is very ugly!
+        unknown_label, c = Label.objects.get_or_create(slug='unknown')
+        if c:
+            unknown_label.name = 'Unknown label'
+            unknown_label.save()
+
+        noton_label, c = Label.objects.get_or_create(slug='not-on-label')
+        if c:
+            noton_label.name = 'Not on label'
+            noton_label.save()
+
 
         base_layout = Fieldset(
 
@@ -234,9 +245,9 @@ class ReleaseForm(ModelForm):
                 _('Label/Catalog'),
                 LookupField('label', css_class='input-xlarge'),
                 HTML("""<ul class="horizontal unstyled clearfix action label-select">
-                    <li><a data-label="Unknown label" href="#"><i class="icon-double-angle-right"></i> Unknown label</a></li>
-                    <li><a data-label="Not on label" href="#"><i class="icon-double-angle-right"></i> Not on label</a></li>
-                </ul>"""),
+                    <li><a data-label="%s" data-label_id="%s" href="#"><i class="icon-double-angle-right"></i> %s</a></li>
+                    <li><a data-label="%s" data-label_id="%s" href="#"><i class="icon-double-angle-right"></i> %s</a></li>
+                </ul>""" % (unknown_label.name, unknown_label.pk, unknown_label.name, noton_label.name, noton_label.pk, noton_label.name)),
                 LookupField('catalognumber', css_class='input-xlarge'),
                 LookupField('release_country', css_class='input-xlarge'),
                 # LookupField('releasedate', css_class='input-xlarge'),

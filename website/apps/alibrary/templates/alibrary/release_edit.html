@@ -38,9 +38,12 @@
                 $('.action.label-select').on('click', 'a', function (e) {
                     e.preventDefault();
                     var val = $(this).data('label');
+                    var label_id = $(this).data('label_id');
                     $('input#id_label_0').val(val);
-                    $('input#id_label_0').focus();
-                    $('input#id_label_0').blur();
+                    $('input#id_label_1').val(label_id);
+
+                    //$('input#id_label_0').focus();
+                    //$('input#id_label_0').blur();
                 });
 
 

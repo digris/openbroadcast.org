@@ -1,6 +1,6 @@
 from django.views.generic import DetailView, ListView, UpdateView
 from django.shortcuts import get_object_or_404, render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.conf import settings
 from django.template import RequestContext
 from django.contrib import messages
@@ -254,11 +254,18 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     def __init__(self, *args, **kwargs):
         super(LabelEditView, self).__init__(*args, **kwargs)
 
+
     def get_initial(self):
         self.initial.update({ 'user': self.request.user })
         return self.initial
 
     def get_context_data(self, **kwargs):
+
+        # TODO: this is the wrong place for this!
+        if self.object.disable_editing:
+            raise Exception('Editing is locked on that object!')
+
+
         ctx = super(LabelEditView, self).get_context_data(**kwargs)
         ctx['named_formsets'] = self.get_named_formsets()
         # TODO: is this a good way to pass the instance main form?
