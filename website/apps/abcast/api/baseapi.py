@@ -129,6 +129,7 @@ class ChannelResource(ModelResource):
         
         return [
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/on-air%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_now_playing'), name="playlist_api_get_now_playing"),
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/history%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_history'), name="playlist_api_get_history"),
         ]
 
 
@@ -235,6 +236,38 @@ class ChannelResource(ModelResource):
         bundle = {
                   'start_next': start_next,
                   'playing': now_playing,
+                  }
+
+        self.log_throttled_access(request)
+        return self.create_response(request, bundle)
+
+
+    def get_history(self, request, **kwargs):
+
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+        from alibrary.models.mediamodels import Media
+
+        c = Channel.objects.get(**self.remove_api_resource_names(kwargs))
+
+        objects = []
+
+        for i in range(0,4):
+
+            item = {
+                'emission': Emission.objects.order_by('?').all()[0].get_api_url(),
+                'item': Media.objects.order_by('?').all()[0].get_api_url(),
+                'time_start': None,
+                'time_end': None,
+            }
+
+            objects.append(item)
+
+
+        bundle = {
+                  'meta': {},
+                  'objects': objects,
                   }
 
         self.log_throttled_access(request)
