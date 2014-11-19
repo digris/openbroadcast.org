@@ -257,7 +257,7 @@ class ChannelResource(ModelResource):
 
             item = {
                 'emission': Emission.objects.order_by('?').all()[0].get_api_url(),
-                'item': Media.objects.order_by('?').all()[0].get_api_url(),
+                'item': Media.objects.order_by('-created').all()[i].get_api_url(),
                 'time_start': None,
                 'time_end': None,
             }
