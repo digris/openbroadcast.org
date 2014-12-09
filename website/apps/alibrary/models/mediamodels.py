@@ -214,6 +214,7 @@ class Media(MigrationMixin):
     lock = models.PositiveIntegerField(max_length=1, default=0, editable=False)
 
     TRACKNUMBER_CHOICES = ((x, x) for x in range(1, 101))
+    #TRACKNUMBER_CHOICES =  [(None, '---')] + list(((str(x), x) for x in range(1, 101)))
     tracknumber = models.PositiveIntegerField(verbose_name=_('Track Number'), max_length=12, blank=True, null=True, choices=TRACKNUMBER_CHOICES)
 
     opus_number = models.CharField(max_length=200, blank=True, null=True)
