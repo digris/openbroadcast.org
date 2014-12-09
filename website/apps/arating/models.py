@@ -16,8 +16,7 @@ VOTE_CHOICES = (
 class Vote(Timestamped):
 
     vote = models.SmallIntegerField(choices=VOTE_CHOICES)
-    
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name="votes")
 
     # generic foreign key to the model being voted upon
     content_type = models.ForeignKey(ContentType)
@@ -38,9 +37,6 @@ class Vote(Timestamped):
 
 def post_save_vote(sender, **kwargs):
     obj = kwargs['instance']
-
-    print 'post_save_vote - kwargs'
-
     try:
         from pushy.util import pushy_custom
         pushy_custom(obj.content_object.get_api_url(), type='update')

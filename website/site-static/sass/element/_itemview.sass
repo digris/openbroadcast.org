@@ -179,6 +179,36 @@ section.comments.disqus
           &:hover
             color: $grayDark
 
+  &.votes
+    margin-top: 15px
+
+    .listing
+      min-height: 50px
+
+      // grid hack
+      .span3
+        width: 256px
+        margin-left: 27px
+
+      .item
+        min-height: 50px
+        box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1)
+        padding: 10px 10px 10px 90px
+        margin-bottom: 10px
+        background-size: 70px
+        background-repeat: no-repeat
+        cursor: pointer
+        &.ctype
+          background: transparent
+          text-align: center
+
+
+      &.voted-up
+        //background: green
+      &.voted-down
+        //background: red
+
+
 
 
 

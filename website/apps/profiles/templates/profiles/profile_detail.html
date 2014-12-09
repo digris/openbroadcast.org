@@ -21,7 +21,6 @@
     {% addtoblock "js-post" %}
         <script>
             $(function () {
-
                 // initialize stats app
                 var stats = new StatisticApp;
                 stats.resource_uri = '{{ object.get_api_url }}';
@@ -36,7 +35,6 @@
                     }
                 });
 
-
                 // quick'n'dirty follow/unfollow AJAX implementation
                 $('table.follows').on('click', '[data-action="trigger_follow"]', function(e){
                     e.preventDefault();
@@ -45,12 +43,7 @@
                     $.get(url, function(data){
                         el.toggleClass('following');
                     });
-
-
-
                 })
-
-
             });
         </script>
     {% endaddtoblock %}
@@ -90,6 +83,10 @@
 
             <li>
                 <a href="#following" data-toggle="tab">{% trans "Following" %}</a>
+            </li>
+
+            <li>
+                <a href="#votes" data-toggle="tab">{% trans "Up- & Downvotes" %}</a>
             </li>
 
             {% if broadcasts.count %}
@@ -247,16 +244,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
         <div class="row-fluid">
             <div class="span6">
                 <section class="profile information">
@@ -377,6 +364,57 @@
                 </tr>
                 {% endfor %}
             </table>
+
+
+        </section>
+
+
+    </div>
+
+
+    <div class="tab-pane" id="votes">
+
+        <section class="votes">
+            {% load ctype %}
+
+            <h2>{% trans "Upvotes" %}</h2>
+
+            <div class="listing voted-up">
+                <div class="row">
+                {%  for vote in upvotes %}
+                    <div class="span3">
+                        <div class="item {{ vote.content_object|ct_name_by_object }}"
+                            {% if vote.content_object.main_image %}style="background-image: url({% thumbnail vote.content_object.main_image 200x200 crop upscale subject_location=vote.content_object.main_image.subject_location %});"{% endif %}
+                            >
+                            <div>
+                                <a href="{{ vote.content_object.get_absolute_url }}">{{ vote.content_object.name }}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+
+            <h2 style="margin-top: 24px;">{% trans "Downvotes" %}</h2>
+
+            <div class="listing voted-down">
+                <div class="row">
+                {%  for vote in downvotes %}
+                    <div class="span3">
+                        <div class="item {{ vote.content_object|ct_name_by_object }} hoverable linkable"
+                             data-absolute_url="{{ vote.content_object.get_absolute_url }}"
+                            {% if vote.content_object.main_image %}style="background-image: url({% thumbnail vote.content_object.main_image 200x200 crop upscale subject_location=vote.content_object.main_image.subject_location %});"{% endif %}
+                            >
+                            <div>
+                                <a class="link-main" href="{{ vote.content_object.get_absolute_url }}">{% firstof vote.content_object.name vote.content_object.user.username %}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+
+
 
 
         </section>

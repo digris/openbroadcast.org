@@ -205,15 +205,16 @@ class ProfileDetailView(DetailView):
         else:
             context['broadcasts'] = Playlist.objects.filter(user=self.object.user).exclude(type='basket').order_by('-updated')
 
-
-
         context['uploaded_releases'] = Release.objects.filter(creator=self.object.user).order_by('-created')
         context['uploaded_media'] = Media.objects.filter(creator=self.object.user).order_by('-created')
-
         context['user_stream'] = actor_stream(self.object.user)[0:20]
-
         context['following'] = Follow.objects.following(self.object.user)
         context['followers'] = Follow.objects.followers(self.object.user)
+
+        # votes
+        # vs = Vote.objects.filter(user=u).order_by('-vote', '-created')
+        context['upvotes'] = self.object.user.votes.filter(vote__gt=0).order_by('content_type__name', '-created')
+        context['downvotes'] = self.object.user.votes.filter(vote__lt=0).order_by('content_type__name', '-created')
 
         if context_object_name:
             context[context_object_name] = self.object
