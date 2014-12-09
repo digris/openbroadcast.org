@@ -116,10 +116,37 @@
 
                             {% if item_type == "media" %}
                                 <li>
-                                    <span class="value">{{ object.type_display }}</span>
+                                    <span class="value">
+                                        {% if object.mediatype %}
+                                            {{ object.mediatype|upper }} |
+                                        {% endif %}
+                                        {% if object.artist %}
+                                            by: {{ object.artist.name }}
+                                        {% endif %}
+                                    </span>
                                 </li>
+
+                                {% if object.release %}
                                 <li>
-                                    <span class="value">{{ object.artist.name }}</span>
+                                    <span class="value">
+                                        on: {{ object.release.name }}
+                                    </span>
+                                </li>
+                                {% endif %}
+
+
+                                <li>
+                                    <span class="value">
+                                        {% if object.base_format %}
+                                            {{ object.base_format|upper }} |
+                                        {% endif %}
+                                        {% if object.duration %}
+                                            {{ object.duration|ms2time }} |
+                                        {% endif %}
+                                        {% if object.original_filename %}
+                                            Original file: {{ object.original_filename }}
+                                        {% endif %}
+                                    </span>
                                 </li>
                             {% endif %}
 

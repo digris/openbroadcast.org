@@ -129,6 +129,9 @@ MEDIATYPE_CHOICES = (
 )
 
 
+VALID_BITRATES = [
+    56, 64, 96, 128, 160, 196, 256, 320
+]
 
 
 # TODO: depreciated
@@ -285,6 +288,9 @@ class Media(MigrationMixin):
     base_filesize = models.PositiveIntegerField(verbose_name=_('Filesize'), blank=True, null=True)
     base_duration = models.FloatField(verbose_name=_('Duration'), blank=True, null=True)
     base_samplerate = models.PositiveIntegerField(verbose_name=_('Samplerate'), blank=True, null=True)
+    """
+    base_bitrate is an unlucky choice here. it holds the 'bits per sample' and does not help too much.
+    """
     base_bitrate = models.PositiveIntegerField(verbose_name=_('Bitrate'), blank=True, null=True)
 
     # echonest data
@@ -347,6 +353,15 @@ class Media(MigrationMixin):
     @property
     def duration_ms(self):
         return self.get_duration(units='ms')
+
+    @property
+    def bitrate(self):
+
+        try:
+            exact_bitrate = int(self.base_filesize * 8 / (self.base_duration * 1000))
+            return min(VALID_BITRATES, key=lambda x:abs(x-exact_bitrate))
+        except:
+            pass
 
     
     @property
@@ -1528,10 +1543,22 @@ def media_post_save(sender, **kwargs):
 
             audiofile = audiotools.open(obj.master.path)
 
-            obj.base_bitrate = audiofile.bits_per_sample()
             obj.base_samplerate = audiofile.sample_rate()
             obj.base_filesize = os.path.getsize(obj.master.path)
             obj.base_duration = audiofile.seconds_length()
+
+            try:
+                obj.base_bitrate = int(obj.base_filesize * 8 / (obj.base_duration * 1000))
+            except:
+                obj.base_bitrate = None
+
+
+            try:
+                exact_bitrate = int(obj.base_filesize * 8 / (obj.base_duration * 1000))
+                obj.base_bitrate = min(VALID_BITRATES, key=lambda x:abs(x - exact_bitrate))
+            except:
+                obj.base_bitrate = None
+
 
             obj.processed = 1 # done
 

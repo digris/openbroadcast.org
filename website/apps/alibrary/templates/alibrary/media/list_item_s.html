@@ -164,7 +164,10 @@
                 {% if item.conversion_status == 2 %}<i class="icon-warning-sign"></i> {% endif %}
                 {% if item.conversion_status == 99 %}<i class="icon-warning-sign"></i> {% endif %}
                 {% if item.base_format %}{{ item.base_format|upper }}{% else %}ERROR{% endif %}
+                {%  comment %}
                 {% if item.base_filesize %}| {{ item.base_filesize|filesizeformat }}{% endif %}
+                {%  endcomment %}
+                {% if item.bitrate %}| {{ item.bitrate }} Kbps{% endif %}
             </li>
         </ul>
 
