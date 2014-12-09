@@ -36,13 +36,13 @@
 
     {% if item.is_new %}
     <div class="marker new">
-        <span><a href="{% spurl base=request.get_full_path toggle_query="new=1,0" %}" title="{% trans "Show promotional releases only" %}">new</a></span>
+        <span><a href="{% spurl base=request.get_full_path toggle_query="new=1,0" remove_query_param="page" %}" title="{% trans "Show new releases only" %}">new</a></span>
     </div>
     {% endif %}
 
     {% if item.is_promotional %}
     <div class="marker promo">
-        <span><a href="{% spurl base=request.get_full_path toggle_query="promo=1,0" %}" title="{% trans "Show promotional releases only" %}">promo</a></span>
+        <span><a href="{% spurl base=request.get_full_path toggle_query="promo=1,0" remove_query_param="page" %}" title="{% trans "Show promotional releases only" %}">promo</a></span>
     </div>
     {% endif %}
 

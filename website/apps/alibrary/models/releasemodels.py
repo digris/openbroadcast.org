@@ -287,9 +287,9 @@ class Release(MigrationMixin):
     @property
     def is_promotional(self):
         # TODO: refactor to license query
-        #if self.releasedate and self.publish_date:
-        #    if self.releasedate > self.publish_date.date() and self.releasedate > datetime.now().date():
-        #        return True
+        if self.releasedate:
+            if self.releasedate > datetime.now().date():
+                return True
 
         if License.objects.filter(media_license__in=self.get_media(),
                                   is_promotional=True).distinct().exists():
@@ -300,6 +300,8 @@ class Release(MigrationMixin):
 
     @property
     def is_new(self):
+        if self.is_promotional:
+            return False
         if self.releasedate and self.releasedate > (datetime.now()-timedelta(days=7)).date():
             return True
 

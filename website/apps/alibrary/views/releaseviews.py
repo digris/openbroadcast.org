@@ -1,6 +1,8 @@
 from django.views.generic import DetailView, ListView, UpdateView
 from django.shortcuts import get_object_or_404, render_to_response
 from django import http
+import datetime
+from datetime import timedelta
 from django.http import HttpResponseForbidden, Http404, HttpResponseRedirect
 from django.utils import simplejson as json
 from django.conf import settings
@@ -179,8 +181,19 @@ class ReleaseListView(PaginationMixin, ListView):
         promo_filter = self.request.GET.get('promo', None)
         if promo_filter and promo_filter.isnumeric() and int(promo_filter) == 1:
             from django.db.models import F
-            qs = qs.filter(releasedate__gte=F('publish_date')).distinct()
-            f = {'item_type': 'release' , 'item': _('Promotional releases'), 'label': 'Filter'}
+            #qs = qs.filter(releasedate__gte=F('publish_date')).distinct()
+            qs = qs.filter(releasedate__gt=datetime.now().date()).distinct()
+            f = {'item_type': 'release' , 'item': _('Promotional Releases'), 'label': 'Filter'}
+            self.relation_filter.append(f)
+
+        # filter by new flag
+        # TODO: refactor query, publish_date is depreciated
+        new_filter = self.request.GET.get('new', None)
+        if new_filter and new_filter.isnumeric() and int(new_filter) == 1:
+            from django.db.models import F
+            #qs = qs.filter(releasedate__gte=F('publish_date')).distinct()
+            qs = qs.filter(releasedate__range=(datetime.now() - timedelta(days=7), datetime.now().date())).distinct()
+            f = {'item_type': 'release' , 'item': _('New Releases'), 'label': 'Filter'}
             self.relation_filter.append(f)
 
 
