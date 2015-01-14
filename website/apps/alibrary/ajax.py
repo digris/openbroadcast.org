@@ -6,7 +6,7 @@ from dajaxice.decorators import dajaxice_register
 from django.contrib.auth.decorators import permission_required
 import requests
 from stdnum import ean
-
+import urllib
 from alibrary.models import APILookup, Release, Relation, Label, Artist, Media
 from lib.util.merge import merge_model_objects
 from lib.util.AsciiDammit import asciiDammit
@@ -104,7 +104,8 @@ def provider_search(request, *args, **kwargs):
         query = query.replace('(', '')
         query = query.replace(')', '')
 
-        url = 'http://%s/database/search?q=%s&type=%s&per_page=%s' % (DISCOGS_HOST, query, item_type, 15)
+
+        url = 'http://%s/database/search?q=%s&type=%s&per_page=%s' % (DISCOGS_HOST, urllib.quote_plus(query), item_type, 15)
         log.debug('query url: %s' % (url))
         r = requests.get(url)
         text = r.text
