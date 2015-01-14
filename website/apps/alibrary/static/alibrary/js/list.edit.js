@@ -223,7 +223,7 @@ ListEditUi = function () {
         }
 
         var url = '/api/v1/library/' + _item_type + '/';
-        var query = '?limit=36&id__in=' + data.item_ids.join(',');
+        var query = '?limit=120&id__in=' + data.item_ids.join(',');
 
         $.get(url + query, function (data) {
             console.log(data);
