@@ -174,6 +174,7 @@ class LabelForm(ModelForm):
         try:
             parent = cd['parent']
             if not parent.pk:
+                parent.creator = self.user
                 parent.save()
         except:
             pass

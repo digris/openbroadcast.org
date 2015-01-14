@@ -208,16 +208,18 @@
 
     </div>
 
-    {% if item.creator %}
+
     <div class="by" style="position: absolute; bottom: 0; left: 5px; color: #999;">
-    {% trans "by" %}:
-    <a style="color: #999;"
-       href="{{ item.creator.get_absolute_url }}">
-        {{ item.creator }}
-    </a>
-    | {{ item.created|naturalday }}
+        {% if item.creator %}
+            {% trans "by" %}:
+            <a style="color: #999;"
+               href="{{ item.creator.get_absolute_url }}">
+                {{ item.creator }}
+            </a>
+            |
+        {% endif %}
+        {{ item.created|naturalday }}
     </div>
-    {% endif %}
 
 
 

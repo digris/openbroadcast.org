@@ -193,6 +193,7 @@ class MediaForm(ModelForm):
         try:
             artist = cd['artist']
             if not artist.pk:
+                artist.creator = self.user
                 artist.save()
         except:
             pass
@@ -200,6 +201,7 @@ class MediaForm(ModelForm):
         try:
             release = cd['release']
             if not release.pk:
+                release.creator = self.user
                 release.save()
 
         except:

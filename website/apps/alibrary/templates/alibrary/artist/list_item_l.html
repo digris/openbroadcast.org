@@ -1,4 +1,4 @@
-{% load thumbnail i18n truncate display_tags arating_tags spurl adv_cache hash_tags %}
+{% load thumbnail i18n truncate display_tags arating_tags spurl adv_cache hash_tags humanize %}
 
 <div class="list_body_row selectable clickable item artist view edit stream collect download" id="list_item_{{ item.pk }}"
      data-resource_uri="{{ item.get_api_url }}"
@@ -105,6 +105,20 @@
             {% endif %}
         </ul>
     </div>
+
+
+    <div class="by" style="position: absolute; bottom: 0; left: 5px; color: #999;">
+        {% if item.creator %}
+            {% trans "by" %}:
+            <a style="color: #999;"
+               href="{{ item.creator.get_absolute_url }}">
+                {{ item.creator }}
+            </a>
+            |
+        {% endif %}
+        {{ item.created|naturalday }}
+    </div>
+
 </div>
 
 

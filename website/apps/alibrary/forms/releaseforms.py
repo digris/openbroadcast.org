@@ -309,6 +309,7 @@ class ReleaseForm(ModelForm):
         try:
             label = cd['label']
             if not label.pk:
+                label.creator = self.user
                 label.save()
         except:
             pass

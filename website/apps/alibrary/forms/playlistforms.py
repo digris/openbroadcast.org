@@ -221,11 +221,9 @@ class PlaylistForm(ModelForm):
 
     def clean(self, *args, **kwargs):
         cd = super(PlaylistForm, self).clean()
-
         series = cd['series']
         try:
             if not series.pk:
-                print "SEEMS TO BE NEW SERIES..."
                 series.save()
         except:
             pass
