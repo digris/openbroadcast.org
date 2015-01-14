@@ -611,15 +611,28 @@ class Media(MigrationMixin):
 
     def get_cache_file(self, format, version='base', absolute=True):
 
+        log.debug('looking up cache for: %s - %s' % (format, version))
+
         versions_directory = os.path.join(self.get_directory(absolute=absolute), 'versions')
         path = os.path.join(versions_directory, '%s.%s' % (version, format))
+
         if absolute:
             path = os.path.join(settings.MEDIA_ROOT, path)
+            log.debug('absolute cache path: %s' % path)
+
             if os.path.isfile(path):
                 return path
+            else:
+                log.warning('file does not exist: %s' % path)
+
         else:
+            path = os.path.join(settings.MEDIA_ROOT, path)
+            log.debug('relative cache path: %s' % path)
+
             if os.path.isfile(os.path.join(settings.MEDIA_ROOT, path)):
                 return path
+            else:
+                log.warning('file does not exist: %s' % path)
 
 
 

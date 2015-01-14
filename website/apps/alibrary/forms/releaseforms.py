@@ -222,7 +222,7 @@ class ReleaseForm(ModelForm):
 
         noton_label, c = Label.objects.get_or_create(slug='not-on-label')
         if c:
-            noton_label.name = 'Not on label'
+            noton_label.name = 'Not on Label / Self Released'
             noton_label.save()
 
 
