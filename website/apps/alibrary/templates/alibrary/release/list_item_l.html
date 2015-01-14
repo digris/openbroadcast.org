@@ -1,4 +1,4 @@
-{% load adv_cache hash_tags thumbnail i18n truncate display_tags arating_tags spurl spacify_tags %}
+{% load adv_cache hash_tags thumbnail i18n truncate display_tags arating_tags spurl spacify_tags humanize %}
 
 <div class="list_body_row selectable clickable item release {{ item.uuid }} {% if item.creator == user %} owner{% endif %}"
      id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}"
@@ -215,6 +215,7 @@
        href="{{ item.creator.get_absolute_url }}">
         {{ item.creator }}
     </a>
+    | {{ item.created|naturaltime }}
     </div>
     {% endif %}
 
