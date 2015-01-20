@@ -839,11 +839,13 @@
   &.playlist.l
     .list_body_row.item
       background-image: url(/static/img/base/defaults/listview.playlist.xl.png)
+
+
       .wrapper_icon
-        width: 100%
-        ul.action
-          width: 16px
-          float: left
+        //width: 100%
+        //ul.action
+        //  width: 16px
+        //  float: left
         ul.indicator
           li
             padding: 2px 4px 0 0
@@ -924,9 +926,38 @@
           .wrapper
             width: 36px
             padding: 0 0 0 150px
-		
-      /* Play icon */
+
+
+
+      /* Alternative Play icon */
       .wrapper_icon
+        position: absolute
+        left: 51px
+        top: 73px
+        padding: 4px
+        border-radius: 5px
+        z-index: 999
+        ul li
+          float: left
+          a
+            display: block
+            padding: 4px 8px 3px
+            color: rgba(255, 255, 255, 0.5) !important
+          i
+            font-size: 32px
+      &.hover .wrapper_icon
+        background: rgba(51, 51, 51, 0.71)
+        ul li
+          a
+            color: #fff !important
+            background: transparent !important
+            &:hover
+              background: transparent
+              color: #0B0 !important
+
+
+      /* Play icon */
+      .__disabled__.wrapper_icon
         width: 24px
         height: 44px
         padding: 2px 0 0 4px
@@ -962,6 +993,12 @@
         cursor: pointer
         // height: 150px
         height: 151px
+
+        // actions absolute -> heigher spacer needed (+44px)
+        // see above: "Alternative Play icon"
+        height: 195px
+
+
         // height: 82px // simulate hover state
         -webkit-transition-property: height
         -webkit-transition-duration: .1s

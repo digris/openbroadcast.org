@@ -477,19 +477,19 @@ class Process(object):
             
             result = r.json()
 
-            if 'recording' in result:
+            if 'recordings' in result:
 
                 log.info('recording on API mb_id: %s' % recording_id)
-                if len(result['recording']) > 0:
+                if len(result['recordings']) > 0:
 
-                    if 'releases' in result['recording'][0]:
+                    if 'releases' in result['recordings'][0]:
 
-                        log.info('got releases on api: %s' % len(result['recording'][0]['releases']))
+                        log.info('got releases on api: %s' % len(result['recordings'][0]['releases']))
                         
                         """
                         fix missing dates
                         """
-                        for r in result['recording'][0]['releases']:
+                        for r in result['recordings'][0]['releases']:
                             # dummy-date - sorry, none comes first else.
                             if 'date' not in r:
                                 r['date'] = '9999'
@@ -499,7 +499,7 @@ class Process(object):
                         try to get the first one, by date
                         """
                         try:
-                            sorted_releases = sorted(result['recording'][0]['releases'], key=lambda k: k['date'])
+                            sorted_releases = sorted(result['recordings'][0]['releases'], key=lambda k: k['date'])
                             release = sorted_releases[0]
                             log.debug('Sorting OK!')
                             # reset dummy-date
@@ -509,7 +509,7 @@ class Process(object):
 
                         except Exception, e:
                             log.warning('Unable to sort by date: %s' % e)
-                            sorted_releases = result['recording'][0]['releases']
+                            sorted_releases = result['recordings'][0]['releases']
 
                         #sorted_releases = result['recording'][0]['releases']
                             
@@ -577,10 +577,10 @@ class Process(object):
                               
                         for selected_release in selected_releases:
                             
-                            selected_release['artist'] = result['recording'][0]['artist-credit'][0]['artist']
-                            selected_release['recording'] = result['recording'][0]
+                            selected_release['artist'] = result['recordings'][0]['artist-credit'][0]['artist']
+                            selected_release['recording'] = result['recordings'][0]
                             try:
-                                selected_release['recording']['releases'] = None
+                                selected_release['recordings']['releases'] = None
                             except Exception, e:
                                 print e
                             
