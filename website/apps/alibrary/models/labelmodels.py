@@ -193,12 +193,21 @@ class Label(MPTTModel, MigrationMixin):
         return providers
 
 
-    @models.permalink
+    #@models.permalink
+    #def get_absolute_url(self):
+    #    if self.disable_link:
+    #        return None
+    #    return ('alibrary-label-detail', [self.slug])
+
     def get_absolute_url(self):
         if self.disable_link:
             return None
-        
-        return ('alibrary-label-detail', [self.slug])
+        return reverse('alibrary-label-detail', kwargs={
+            'pk': self.pk,
+            'slug': self.slug,
+        })
+
+
 
     @models.permalink
     def get_edit_url(self):

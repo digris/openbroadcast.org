@@ -199,12 +199,20 @@ class Artist(MigrationMixin):
         else:
             return None
 
-    @models.permalink
+    #@models.permalink
+    #def get_absolute_url(self):
+    #    if self.disable_link:
+    #        return None
+    #    return ('alibrary-artist-detail', [self.slug])
+
     def get_absolute_url(self):
         if self.disable_link:
             return None
-        
-        return ('alibrary-artist-detail', [self.slug])
+        return reverse('alibrary-artist-detail', kwargs={
+            'pk': self.pk,
+            'slug': self.slug,
+        })
+
 
     @models.permalink
     def get_edit_url(self):

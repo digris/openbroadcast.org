@@ -650,14 +650,6 @@ MANAGERS = ADMINS
 """
 Accounts
 """
-AUTHENTICATION_BACKENDS = (
-    # allauth
-    #'allauth.account.auth_backends.AuthenticationBackend',
-    # base
-    'django.contrib.auth.backends.ModelBackend',
-    # guardian
-    'guardian.backends.ObjectPermissionBackend',
-)
 ANONYMOUS_USER_ID = -1
 #AUTH_PROFILE_MODULE = 'profiles.Profile'
 
