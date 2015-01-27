@@ -769,7 +769,7 @@ div.form-errors dl dd ul.errorlist {
 }
 /* line 29, ../sass/element/_listview.sass */
 .listhead .pagination-holder p.pagination span.current {
-  background: #333333;
+  background: #00bb00;
   color: white;
 }
 /* line 34, ../sass/element/_listview.sass */
