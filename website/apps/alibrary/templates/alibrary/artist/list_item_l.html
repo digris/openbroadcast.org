@@ -86,6 +86,7 @@
 
             <div class="list_body_item links external">
                 <ul class="links external unstyled">
+                    {% comment %}
                     {% for relation in item.relations.specific %}
                         <li>
                             <a href="{{ relation.url }}" class="skip-external"
@@ -93,6 +94,7 @@
                                     class="cicon-{{ relation.service }}"></i></a>
                         </li>
                     {% endfor %}
+                    {% endcomment %}
                 </ul>
             </div>
         </div>
