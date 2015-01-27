@@ -14,7 +14,7 @@
 
         <ul class="tags unstyled horizontal">
             {% for tag in item.tags|slice:":8" %}
-                <li class="{% if tag.pk in active_tags %}__active{% endif %}">{{ tag.name|truncate_chars_inner:10 }}</li>
+                <li>{{ tag.name|truncate_chars_inner:10 }}</li>
             {% endfor %}
         </ul>
 
@@ -30,7 +30,12 @@
 				<a href="{{ item.get_absolute_url }}" title="{{ item.name }}">
 				{{ item.name|truncate_chars_inner:24 }}
 				{% if item.country %}({{ item.country }}){% endif %}
-				{% topflop_for_object item %} </a>
+                {% comment %}
+				{% topflop_for_object item %}
+				{% endcomment %}
+
+                </a>
+
 			</li>
 			<li>
 				{% if item.disambiguation %}
