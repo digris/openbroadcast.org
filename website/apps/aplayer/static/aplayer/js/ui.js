@@ -218,6 +218,32 @@ aplayer.ui.bind = function() {
     });
 
 
+    // TODO: temporary hack to play + queue all items in results
+    $('body').on('click', '.play-all:not(".disabled")', function(e) {
+        e.preventDefault();
+        // find all action elements and simulate click
+        var x = 0;
+        $('.listview.container .wrapper_icon ul.action').each(function(i, el){
+            var el = $(el);
+            if(x == 0) {
+                console.log('replace')
+                setTimeout(function(){
+                    $('a[data-mode="replace"]', el).click();
+                }, 100 * x)
+            } else {
+                console.log('queue')
+                setTimeout(function(){
+                    $('a[data-mode="queue"]', el).click();
+                }, 100 * x)
+
+            }
+            x++;
+        });
+
+
+    })
+
+
 
 
 	aplayer.ui.rebind();

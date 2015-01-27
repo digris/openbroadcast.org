@@ -13940,7 +13940,6 @@ body .subhead .icontitle {
 
 /* line 37, ../sass/site/_style.sass */
 body.loading-playlist {
-  opacity: 0.2;
   cursor: wait;
 }
 

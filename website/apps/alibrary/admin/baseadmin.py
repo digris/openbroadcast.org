@@ -58,7 +58,8 @@ admin.site.register(Format, FormatAdmin)
     
 class ReleaseExtraartistsInline(admin.TabularInline):
     model = ReleaseExtraartists
-    extra=1   
+    extra=1
+    raw_id_fields = ['artist',]
     
     
 class ReleaseAlbumartistsInline(admin.TabularInline):
@@ -67,6 +68,7 @@ class ReleaseAlbumartistsInline(admin.TabularInline):
     fieldsets = [
         (None,               {'fields': ['position', 'join_phrase', 'artist']}),
     ]
+    raw_id_fields = ['artist',]
    
 
 class RelationsInline(GenericTabularInline):
@@ -100,6 +102,13 @@ class ReleaseAdmin(BaseAdmin):
     inlines = [ReleaseAlbumartistsInline, MediaInline, RelationsInline, ReleaseExtraartistsInline]
     readonly_fields = ['slug', 'license', 'd_tags']
 
+    raw_id_fields = [
+        'label',
+        'owner',
+        'creator',
+        'publisher',
+    ]
+
     fieldsets = [
         (None,  {
                 'fields': ['name', 'slug', 'main_image', ('label', 'catalognumber'), ('releasedate', 'release_country', 'license'), ('releasetype',), 'enable_comments', 'main_format', 'd_tags', 'description']
@@ -115,11 +124,13 @@ admin.site.register(Release, ReleaseAdmin)
 class ArtistMembersInline(admin.TabularInline):
     model = Artist.members.through
     fk_name = 'parent'
+    raw_id_fields = ['child',]
     extra=1
     
 class ArtistParentsInline(admin.TabularInline):
     model = Artist.members.through
     fk_name = 'child'
+    raw_id_fields = ['parent',]
     extra=1
     
 class ArtistProfessionsInline(admin.TabularInline):
@@ -129,6 +140,7 @@ class ArtistProfessionsInline(admin.TabularInline):
 class MediaExtraartistsInline(admin.TabularInline):
     model = MediaExtraartists
     extra=1
+    raw_id_fields = ['artist',]
 
 
 class AgencyArtistInline(admin.TabularInline):
@@ -156,6 +168,12 @@ class ArtistAdmin(BaseAdmin):
         (None,               {'fields': ['name', 'slug', 'main_image', 'real_name', 'country', ('listed', 'disable_link',), 'enable_comments', 'biography', 'excerpt', 'folder', ]}),
         ('Users', {'fields' : ['owner', 'creator', 'publisher']}),
         ('Various', {'fields' : ['booking_contact', 'email',]}),
+    ]
+
+    raw_id_fields = [
+        'owner',
+        'creator',
+        'publisher',
     ]
     
 admin.site.register(Artist, ArtistAdmin)
@@ -201,6 +219,7 @@ admin.site.register(Profession, ProfessionAdmin)
 class MediaReleaseInline(admin.TabularInline):
     model = Release.media.through
     extra = 1
+    raw_id_fields = ['release',]
 
     
 class MediaAdmin(BaseAdmin):
@@ -235,6 +254,14 @@ class MediaAdmin(BaseAdmin):
             'fields': ('processed','echoprint_status','conversion_status',)
         }),
     ]
+
+    raw_id_fields = [
+        'owner',
+        'creator',
+        'publisher',
+        'release',
+        'artist',
+    ]
     
     
 admin.site.register(Media, MediaAdmin)
@@ -259,6 +286,13 @@ class LabelAdmin(BaseAdmin):
         ('Settings', {'fields' : ['listed', 'disable_link', 'disable_editing']}),
         ('Relations', {'fields': ['parent',], 'classes': ['']}),
         ('Users', {'fields' : [('owner', 'creator', 'publisher'),]}),
+    ]
+
+    raw_id_fields = [
+        'owner',
+        'creator',
+        'publisher',
+        'parent',
     ]
     
 admin.site.register(Label, LabelAdmin)

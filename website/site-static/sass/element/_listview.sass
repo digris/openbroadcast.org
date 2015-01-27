@@ -44,6 +44,49 @@
 
 
 
+
+
+
+// TODO: refactor
+.listview.container
+  .play-all
+    margin-bottom: 12px
+    .wrapper
+      padding: 10px
+      background: #f9f9f9
+      //font-style: italic
+      position: relative
+      text-align: center
+
+      &:after
+        content: ''
+        position: absolute
+        top: 100%
+        left: 0
+        right: 0
+        margin: 0 auto
+        width: 0
+        height: 0
+        border-top: solid 9px #f9f9f9
+        border-left: solid 9px transparent
+        border-right: solid 9px transparent
+
+      .play-button
+        //background: black
+        width: 120px
+        margin: 0 auto
+        padding: 3px 8px 2px
+        text-transform: uppercase
+        font-size: 16px
+        color: #a5a5a5
+        cursor: pointer
+
+        &.hover
+          color: #00bb00
+
+
+
+
 .listview
   &.container
   
