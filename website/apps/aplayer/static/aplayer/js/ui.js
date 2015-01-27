@@ -219,24 +219,34 @@ aplayer.ui.bind = function() {
 
 
     // TODO: temporary hack to play + queue all items in results
-    $('body').on('click', '.play-all:not(".disabled")', function(e) {
+    $('body').on('click', 'a.play-all:not(".disabled")', function(e) {
         e.preventDefault();
         // find all action elements and simulate click
         var x = 0;
         $('.listview.container .wrapper_icon ul.action').each(function(i, el){
-            var el = $(el);
-            if(x == 0) {
-                console.log('replace')
-                setTimeout(function(){
-                    $('a[data-mode="replace"]', el).click();
-                }, 100 * x)
-            } else {
-                console.log('queue')
-                setTimeout(function(){
-                    $('a[data-mode="queue"]', el).click();
-                }, 100 * x)
 
+            var item = $('a.playable', $(el));
+
+            var uri = item.data('resource_uri');
+            var offset = 0;
+            if(x == 0) {
+                var mode = 'replace';
+            } else {
+                var mode = 'queue';
             }
+
+            var token = '-';
+            var source = 'alibrary';
+
+            if(x == 0) {
+                aplayer.base.play_in_popup(uri, token, offset, mode, false, source);
+            } else {
+                setTimeout(function(){
+                    aplayer.base.play_in_popup(uri, token, offset, mode, false, source);
+                }, 3000 + (x * 200))
+            }
+
+
             x++;
         });
 

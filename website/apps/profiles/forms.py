@@ -104,6 +104,17 @@ class ProfileForm(ModelForm):
                 Field('paypal', css_class='input-xlarge'),
             )
         )
+        settings_layout = Layout(
+
+            Fieldset(
+                _('Settings'),
+                # Div(
+                #        HTML('<h2>%s</h2><p>%s</p>' % (_('Account data'), _('In case you see a reason to recieve some money from us :) This information is not visible on the plattform.'))),
+                #        css_class='notes-form notes-inline notes-info',
+                #),
+                Field('enable_alpha_features', css_class='input-xlarge'),
+            )
+        )
         skills_layout = Layout(
 
             Fieldset(
@@ -125,6 +136,7 @@ class ProfileForm(ModelForm):
                         tagging_layout,
                         skills_layout,
                         account_layout,
+                        settings_layout,
                         )
 
         self.helper.add_layout(layout)
