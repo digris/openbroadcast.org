@@ -626,13 +626,19 @@ class Release(MigrationMixin):
         unique_slugify(self, self.name)
         
         # update d_tags
+
+        """
         t_tags = ''
+
+        #if self.tags:
+        #   t_tags = ','.join([t.name.strip(' ') for t in self.tags])
+
         for tag in self.tags:
-            t_tags += '%s, ' % tag    
-        
+            t_tags += '%s, ' % tag
+
         self.tags = t_tags
         self.d_tags = t_tags
-        
+        """
 
         # convert approx date to real one
         ad = self.releasedate_approx

@@ -35,8 +35,8 @@ class TagAutocompleteTagIt(TextInput):
                 animate: %s,
                 maxLength: %s,
                 maxTags: %s,
-                onTagAdded  : null,
-                onTagRemoved: null,
+                //onTagAdded  : ac_tagginc_clean,
+                //onTagRemoved: ac_tagginc_clean,
                 onTagClicked: null,
                 onMaxTagsExceeded: null, 
                 })
@@ -60,7 +60,8 @@ class TagAutocompleteTagIt(TextInput):
         js = (
             '%sac_tagging.js' % js_base_url,
             jqueryui_file,
-            '%sjquery.tag-it.min.js' % js_base_url,            
+            #'%sjquery.tag-it.min.js' % js_base_url,
+            '%sjquery.tag-it.js' % js_base_url,
         )
         
         # custom css can also be overriden in settings
@@ -71,3 +72,14 @@ class TagAutocompleteTagIt(TextInput):
         css = {
             'screen': css_list
         }
+
+    def _format_value(self, value):
+        return value.replace(',', ', ')
+
+    def value_from_datadict(self, data, files, name):
+        current_value = data.get(name, None)
+        if current_value and current_value[-1] != ',':
+            current_value = u'%s,' % current_value
+            #current_value = u'"%s"' % current_value
+            #current_value = u'%s' % current_value
+        return current_value

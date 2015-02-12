@@ -97,7 +97,8 @@ def parse_tags(obj, d_tags, msg=''):
 
     try:
 
-        d_tags = ['"%s"' % x.strip() for x in d_tags.split(',')]
+        #d_tags = ['"%s"' % x.strip() for x in d_tags.split(',') if len(x.name) > 1]
+        d_tags = ['"%s"' % x.strip() for x in d_tags.split(',') if x.strip() != '']
         tags = ['"%s"' % x.name for x in obj.tags]
 
         tags_added = diff_lists(d_tags, tags)

@@ -286,19 +286,13 @@ class ReleaseForm(ModelForm):
         self.helper.add_layout(layout)
 
 
-
-
-    #main_image = forms.Field(widget=FileInput(), required=False)
     main_image = forms.Field(widget=AdvancedFileInput(), required=False)
     remote_image = forms.URLField(required=False)
-    #releasedate = forms.DateField(required=False,widget=forms.DateInput(format = '%Y-%m-%d'), input_formats=('%Y-%m-%d',))
     releasedate_approx = ApproximateDateFormField(label="Releasedate", required=False)
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
-    #name = forms.CharField(widget=selectable.AutoCompleteWidget(ReleaseNameLookup), required=True)
     label = selectable.AutoCompleteSelectField(ReleaseLabelLookup, allow_new=True, required=False)
     description = forms.CharField(widget=PagedownWidget(), required=False)
 
-    #extra_artists = selectable.AutoComboboxSelectMultipleField(ArtistLookup, required=False)
 
 
     # TODO: rework clean function

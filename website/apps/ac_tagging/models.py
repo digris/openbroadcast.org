@@ -1,5 +1,6 @@
 from tagging.fields import TagField
 from django.contrib.admin.widgets import AdminTextInputWidget
+from django.utils.encoding import smart_unicode, force_unicode, smart_str
 
 from ac_tagging.widgets import TagAutocompleteTagIt
 

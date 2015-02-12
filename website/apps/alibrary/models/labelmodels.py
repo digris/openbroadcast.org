@@ -231,12 +231,14 @@ class Label(MPTTModel, MigrationMixin):
         unique_slugify(self, self.name)
         
         # update d_tags
+        """
         t_tags = ''
         for tag in self.tags:
             t_tags += '%s, ' % tag    
         
         self.tags = t_tags
         self.d_tags = t_tags
+        """
         
         super(Label, self).save(*args, **kwargs)
     

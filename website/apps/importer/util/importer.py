@@ -735,22 +735,26 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, excludes=()):
                         mb_complete_artist_task(l_a, relation['artist']['id'])
 
 
-    tags = result.get('tags', ())
-    for tag in tags:
-        log.debug('got tag: %s' % (tag['name']))
-        try:
-            Tag.objects.add_tag(obj, '"%s"' % tag['name'])
-        except:
-            pass
+    """
+    Tags disabled cause of bad quality
+    """
+    #tags = result.get('tags', ())
+    #for tag in tags:
+    #    log.debug('got tag: %s' % (tag['name']))
+    #    try:
+    #        Tag.objects.add_tag(obj, '"%s"' % tag['name'])
+    #    except:
+    #        pass
 
     # add mb relation
-    mb_url = 'http://musicbrainz.org/recording/%s' % (mb_id)
-    try:
-        rel = Relation.objects.get(object_id=obj.pk, url=mb_url)
-    except:
-        log.debug('relation not here yet, add it: %s' % (mb_url))
-        rel = Relation(content_object=obj, url=mb_url)
-        rel.save()
+    if mb_id:
+        mb_url = 'http://musicbrainz.org/recording/%s' % (mb_id)
+        try:
+            rel = Relation.objects.get(object_id=obj.pk, url=mb_url)
+        except:
+            log.debug('relation not here yet, add it: %s' % (mb_url))
+            rel = Relation(content_object=obj, url=mb_url)
+            rel.save()
 
 
     return obj
@@ -1013,13 +1017,16 @@ def mb_complete_release_task(obj, mb_id):
 
 
 
-    tags = result.get('tags', ())
-    for tag in tags:
-        log.debug('got tag: %s' % (tag['name']))
-        try:
-            Tag.objects.add_tag(obj, '"%s"' % tag['name'])
-        except:
-            pass
+    """
+    Tags disabled cause of bad quality
+    """
+    #tags = result.get('tags', ())
+    #for tag in tags:
+    #    log.debug('got tag: %s' % (tag['name']))
+    #    try:
+    #        Tag.objects.add_tag(obj, '"%s"' % tag['name'])
+    #    except:
+    #        pass
 
     status = result.get('status', None)
     if status:
@@ -1340,14 +1347,16 @@ def mb_complete_artist_task(obj, mb_id):
         log.debug('got disambiguation: %s' % (disambiguation))
         obj.disambiguation = disambiguation
 
-    tags = result.get('tags', ())
-
-    for tag in tags:
-        log.debug('got tag: %s' % (tag['name']))
-        try:
-            Tag.objects.add_tag(obj, '"%s"' % tag['name'])
-        except:
-            pass
+    """
+    Tags disabled cause of bad quality
+    """
+    #tags = result.get('tags', ())
+    #for tag in tags:
+    #    log.debug('got tag: %s' % (tag['name']))
+    #    try:
+    #        Tag.objects.add_tag(obj, '"%s"' % tag['name'])
+    #    except:
+    #        pass
 
 
     # add mb relation
@@ -1521,14 +1530,16 @@ def mb_complete_label_task(obj, mb_id):
         log.debug('got disambiguation: %s' % (disambiguation))
         obj.disambiguation = disambiguation
 
-    tags = result.get('tags', ())
-
-    for tag in tags:
-        log.debug('got tag: %s' % (tag['name']))
-        try:
-            Tag.objects.add_tag(obj, '"%s"' % tag['name'])
-        except:
-            pass
+    """
+    Tags disabled cause of bad quality
+    """
+    #tags = result.get('tags', ())
+    #for tag in tags:
+    #    log.debug('got tag: %s' % (tag['name']))
+    #    try:
+    #        Tag.objects.add_tag(obj, '"%s"' % tag['name'])
+    #    except:
+    #        pass
 
 
 

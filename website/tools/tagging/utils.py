@@ -83,6 +83,13 @@ def parse_tag_input(input):
         for chunk in to_be_split:
             words.extend(split_strip(chunk, delimiter))
     words = list(set(words))
+
+
+
+    print 'tag input - words:'
+    print words
+    print '---'
+
     words.sort()
     return words
 

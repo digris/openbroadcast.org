@@ -629,6 +629,7 @@ class Playlist(MigrationMixin, models.Model):
 
 
         # update d_tags
+        """
         try:
             t_tags = ''
             for tag in self.tags:
@@ -639,6 +640,7 @@ class Playlist(MigrationMixin, models.Model):
         except Exception, e:
             #print e
             pass
+        """
         
         
         # self.user = request.user  
