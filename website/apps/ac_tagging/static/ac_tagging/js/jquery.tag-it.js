@@ -120,6 +120,7 @@
                 this.options.singleField = true;
                 this.options.singleFieldNode = this.element;
                 this.element.addClass('tagit-hidden-field');
+                this.element.css('display', 'none');
             } else {
                 this.tagList = this.element.find('ul, ol').andSelf().last();
             }
