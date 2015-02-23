@@ -155,7 +155,7 @@ def get_history(range, channel=None):
         print u'%s - %s' % (emission.time_start, emission.time_end)
 
         for emission_item in  emission.get_timestamped_media():
-            print u'%s - %s' % (emission_item.timestamp, emission_item.content_object)
+            #print u'%s - %s' % (emission_item.timestamp, emission_item.content_object)
             emission_item.emission = emission
             if emission_item.timestamp > range_start and emission_item.timestamp < now:
                 print '+ IN RANGE'
