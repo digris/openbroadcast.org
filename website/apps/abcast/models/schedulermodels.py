@@ -222,13 +222,7 @@ class Emission(BaseModel):
                 item.is_future = True
             offset += item.playout_duration
 
-            print 'offset: %s' % offset
-            print 'playout_duration: %s' % item.playout_duration
-            print
-
-
         return items
-
 
 
 

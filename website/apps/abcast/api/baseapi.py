@@ -152,15 +152,13 @@ class ChannelResource(ModelResource):
         now = datetime.datetime.now()
         
         es = Emission.objects.filter(time_start__lte=now, time_end__gte=now)
-        print
-        print 'get_now_playing:'
-        print es
-
 
         # check if in cache
-        cached_item = cache.get('abcast_on_air_%s' % c.pk)
-        print 'ITEM FROM CACHE:'
-        print cached_item
+        try:
+            cached_item = cache.get('abcast_on_air_%s' % c.pk)
+        except:
+            cached_item = None
+
 
         now_playing = []
         start_next = False
@@ -170,9 +168,6 @@ class ChannelResource(ModelResource):
         
         if es.count() == 1:
             e = es[0]
-            print e
-            print 'Got scheduled emission!'
-            
 
             e_start = e.time_start
             offset = 0
@@ -208,24 +203,19 @@ class ChannelResource(ModelResource):
                     item.is_playing = False
                 
                 print '## item'
-                print 
                 print 'start:      %s' % item.time_start
                 print 'end:        %s' % item.time_end
                 print 'is playing: %s' % item.is_playing
-                # print item.content_object
+
                 
                 """
                 compose media data
                 """
-
-
-                
                 offset += ( co.get_duration() - (item.cue_in + item.cue_out) )
                 
         else:
             # no emission in timeframe
             es = Emission.objects.filter(time_start__gte=now).order_by('time_start')
-            print 'Nothing playing right now... future:'
             if es.count() > 0:
                 e = es[0]
                 start_next = (e.time_start - now).total_seconds()
@@ -242,17 +232,29 @@ class ChannelResource(ModelResource):
         return self.create_response(request, bundle)
 
 
+
     def get_history(self, request, **kwargs):
+        """
+        dummy implementation! just returns random data!
+        """
 
         self.method_check(request, allowed=['get'])
         self.is_authenticated(request)
         self.throttle_check(request)
         from alibrary.models.mediamodels import Media
 
-        c = Channel.objects.get(**self.remove_api_resource_names(kwargs))
+        channel = Channel.objects.get(**self.remove_api_resource_names(kwargs))
 
-        objects = []
 
+
+        range_start = datetime.datetime.now()
+        range_end = datetime.datetime.now() + datetime.timedelta(seconds=SCHEDULE_AHEAD)
+
+        objects = scheduler.get_history(range=360*60, channel=channel)
+
+        #objects = []
+
+        """
         for i in range(0,4):
 
             item = {
@@ -263,6 +265,7 @@ class ChannelResource(ModelResource):
             }
 
             objects.append(item)
+        """
 
 
         bundle = {
@@ -536,23 +539,14 @@ class BaseResource(Resource):
         search for current emission & map item times
         """
         now = datetime.datetime.now()
-        
         es = Emission.objects.filter(time_start__lte=now, time_end__gte=now)
-        print
-        print 'get_now_playing:'
-        print es
-        
+
         now_playing = []
         start_next = False
         items = []
-        
-        
-        
+
         if es.count() == 1:
             e = es[0]
-            print e
-            print 'Got scheduled emission!'
-            
 
             e_start = e.time_start
             offset = 0
@@ -579,32 +573,15 @@ class BaseResource(Resource):
                     
                 else:
                     item.is_playing = False
-                
-                print '## item'
-                print 
-                print 'start:      %s' % item.time_start
-                print 'end:        %s' % item.time_end
-                print 'is playing: %s' % item.is_playing
-                # print item.content_object
-                
-                """
-                compose media data
-                """
 
-
-                
                 offset += ( co.get_duration() - (item.cue_in + item.cue_out) )
                 
         else:
             # no emission in timeframe
             es = Emission.objects.filter(time_start__gte=now).order_by('time_start')
-            print 'Nothing playing right now... future:'
             if es.count() > 0:
                 e = es[0]
                 start_next = (e.time_start - now).total_seconds()
-            
-            
-            
 
         bundle = {
                   'start_next': start_next,
@@ -613,11 +590,6 @@ class BaseResource(Resource):
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
-        
-        """
-        data = {"now_playing": now_playing,"items": []}
-        return self.json_response(request, data)
-        """
 
 
     """
@@ -641,18 +613,4 @@ class BaseResource(Resource):
         
         return HttpResponse(json.dumps(data),
                             content_type = 'application/json; charset=utf8')
-    
-    
-    
-    
-    
-    
-    
-"""
-kind of hackish - function is here to hav access via api and other places
-"""
-    
-    
-    
-    
     

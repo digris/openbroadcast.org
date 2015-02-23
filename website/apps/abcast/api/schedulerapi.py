@@ -134,10 +134,19 @@ class EmissionResource(ModelResource):
                                     'full_name': obj.content_object.user.get_full_name()
                                    }
 
+        # TODO: HACK! dehydrate user profile information. used in on-air app
+        try:
+            from profiles.api import ProfileResource
+            profile_bundle = ProfileResource().build_bundle(obj=obj.content_object.user.profile, request=bundle.request)
+            profile_resource = ProfileResource().full_dehydrate(profile_bundle)
+            bundle.data['user_co_profile'] = profile_resource
+        except:
+            bundle.data['user_co_profile'] = None
+
+
+
         return bundle
-    
-    
-    
+
 
     
     # additional methods

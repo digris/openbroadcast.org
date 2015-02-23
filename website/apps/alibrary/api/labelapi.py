@@ -20,7 +20,7 @@ class LabelResource(ModelResource):
         detail_allowed_methods = ['get',]
         resource_name = 'library/label'
         excludes = ['updated',]
-        #include_absolute_url = True
+        include_absolute_url = True
         authentication =  MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
         authorization = Authorization()
         filtering = {

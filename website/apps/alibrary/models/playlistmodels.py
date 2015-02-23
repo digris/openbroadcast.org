@@ -514,19 +514,14 @@ class Playlist(MigrationMixin, models.Model):
             item.fade_in = pi.fade_in
             item.fade_out = pi.fade_out
             item.fade_cross = pi.fade_cross
-
             # get the actual playout duration
             try:
-                print
-                print '// getting duration for:'
-                print '%s - %s' % (item.content_object.pk, item.content_object.name)
-                print 'obj duration: %s' % item.content_object.duration_s
-                print
+                #print '// getting duration for:'
+                #print '%s - %s' % (item.content_object.pk, item.content_object.name)
+                #print 'obj duration: %s' % item.content_object.duration_s
                 item.playout_duration = item.content_object.duration_ms - item.cue_in - item.cue_out - item.fade_cross
             except Exception, e:
-                print '****************'
-                print e
-                print
+                print 'unable to get duration: %s' % e
                 item.playout_duration = 0
 
             items.append(item)

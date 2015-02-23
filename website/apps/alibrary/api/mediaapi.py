@@ -110,6 +110,28 @@ class MediaResource(ModelResource):
         bundle.data['votes'] = votes
 
 
+
+        """
+        TODO: verry hackish and incomplete imnplementation.
+        label includes are needed for on-air app. should be built more flexible in the future!
+        """
+        if bundle.request.GET.get('includes', None):
+            includes = bundle.request.GET['includes'].split(',')
+            if 'label' in includes:
+                try:
+                    from alibrary.api.labelapi import LabelResource
+                    label = bundle.obj.release.label
+                    label_bundle = LabelResource().build_bundle(obj=label, request=bundle.request)
+                    label_resource = LabelResource().full_dehydrate(label_bundle)
+                except:
+                    label_resource = None
+
+
+                bundle.data['label'] = label_resource
+
+
+
+
         return bundle
 
 

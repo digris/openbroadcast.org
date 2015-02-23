@@ -58,7 +58,7 @@ class Autopilot(object):
         log.debug('auto-adding emission, slot start: %s' % slot_start)
 
         # check if overlapping emission exists
-        ces = Emission.objects.filter(time_start__lt=slot_start, time_end__gt=slot_start, channel=self.channel)
+        ces = Emission.objects.filter(time_start__lt=slot_start, time_end__gt=slot_start, channel=self.channel, user__pk__in=[7,3,120,345])
         print 'coliding emissions'
         print ces
         if ces.count() > 0:

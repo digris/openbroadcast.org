@@ -11,6 +11,14 @@ def get_schedule(range_start, range_end, exclude=None, channel=None):
 
 
 def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
+    """
+
+    :param range_start:
+    :param range_end:
+    :param exclude:
+    :param channel:
+    returns pypo readable schedule
+    """
 
 
     es = Emission.objects.filter(time_end__gte=range_start, time_start__lte=range_end)
@@ -56,7 +64,7 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
             i_end = i_end - datetime.timedelta(milliseconds=( item.cue_in + item.cue_out ))
 
 
-            # map to airtime format
+            # map to ugly airtime format
             i_start_str = i_start.strftime('%Y-%m-%d-%H-%M-%S')
             i_end_str = i_end.strftime('%Y-%m-%d-%H-%M-%S')
 
@@ -75,23 +83,14 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
             if i_end < range_start:
                 pass
             else:
-
                 if EXCHANGE == 'http':
-
                     try:
                         uri = "http://%s%s" % (base_url, co.get_stream_url())
                     except Exception, ex:
                         uri = None
 
                 if EXCHANGE == 'fs':
-
                     uri = co.get_playout_file(absolute=False)
-
-                    #try:
-                    #    uri = co.get_cache_file(format='mp3', version='base', absolute=False)
-                    #except Exception, ex:
-                    #    uri = None
-
 
                 data = {
                         #'id': co.pk,
@@ -124,3 +123,57 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
 
     #print media
     return media
+
+
+
+def get_history(range, channel=None):
+
+    now = datetime.datetime.now()
+    range_start = now - datetime.timedelta(seconds=range)
+
+    EMISSION_LIMIT = 4
+
+    emissions = Emission.objects.filter(time_start__lte=now, channel=channel).order_by('-time_start')[0:EMISSION_LIMIT]
+    base_url = Site.objects.get_current().domain
+
+    objects = []
+
+    print
+    print u'--------------------------------------------------------------------'
+    print u'| getting schedule history                                        |'
+    print u'--------------------------------------------------------------------'
+    print u'channel                 : %s ' % channel.name
+    print u'total emissions in range: %s' % emissions.count()
+    print u'--------------------------------------------------------------------'
+    print
+
+
+    for emission in emissions:
+
+        print u'--------------------------------------------------------------------'
+        print u'emission: %s | %s - %s' % (emission.name, emission.pk, emission.get_absolute_url())
+        print u'%s - %s' % (emission.time_start, emission.time_end)
+
+        for emission_item in  emission.get_timestamped_media():
+            print u'%s - %s' % (emission_item.timestamp, emission_item.content_object)
+            emission_item.emission = emission
+            if emission_item.timestamp > range_start and emission_item.timestamp < now:
+                print '+ IN RANGE'
+                objects.append({
+                    'emission': emission.get_api_url(),
+                    'item': emission_item.content_object.get_api_url(),
+                    'time_start': emission_item.timestamp,
+                    'time_end': None,
+                    'verbose_name': emission_item.content_object.name,
+                })
+            else:
+                print '- OUT OF RANGE'
+
+
+        print
+
+
+    objects.reverse()
+
+    return objects
+
