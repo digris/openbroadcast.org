@@ -8,7 +8,7 @@ EXCLUDE_CHARS = "/\\'"
 
 def safe_name(str):
 
-    return asciiDammit(str)
+    return asciiDammit(str.replace('/', ' '))
 
     str = unicodedata.normalize('NFKD', str)
 

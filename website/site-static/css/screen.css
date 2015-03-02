@@ -3750,6 +3750,35 @@ div.slideout.base div.inner.feedback div.form_row div.form_col input.error, div.
   padding: 2px;
 }
 
+/* line 154, ../sass/element/_element.sass */
+#private_site_message {
+  background-color: #6633cc;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+/* line 160, ../sass/element/_element.sass */
+#private_site_message .inner {
+  width: 1120px;
+  margin: 0 auto;
+  padding: 10px 0 20px;
+}
+/* line 165, ../sass/element/_element.sass */
+#private_site_message .inner p, #private_site_message .inner a {
+  color: white;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+/* line 169, ../sass/element/_element.sass */
+#private_site_message .inner p a, #private_site_message .inner a a {
+  text-decoration: underline;
+}
+/* line 172, ../sass/element/_element.sass */
+#private_site_message .inner h2 {
+  color: white;
+  margin-bottom: 0px;
+}
+
 /* search */
 /* line 8, ../sass/element/_search.sass */
 div.autocomplete.holder {

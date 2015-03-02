@@ -173,9 +173,13 @@
         </div>
 
         <div id="footer">
-
             {% include "skeleton/footer_new.html" %}
         </div>
+
+
+        {% if not user.is_authenticated %}
+            {%  include "element/private_site_message.html" %}
+        {% endif %}
 
 
         {% comment %}
