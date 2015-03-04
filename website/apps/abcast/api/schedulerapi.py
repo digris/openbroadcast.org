@@ -252,7 +252,24 @@ class EmissionResource(ModelResource):
         # check if slot is free
         es = Emission.objects.filter(time_end__gt=time_start + datetime.timedelta(seconds=2), time_start__lt=time_end, channel=channel).exclude(pk=e.pk)
         if es.count() > 0:
-            data = { 'message': _('The desired time does not seem to be available.') }
+
+            message = _('The desired time slot does not seem to be available.')
+
+            try:
+                message += u'<br>Emission schedule "%s" - from %s to %s' % (e.name, time_start.time(), time_end.time())
+                for conflicting_emission in es:
+                    message += u'<br> - overlaps "%s" - from %s to %s' % (conflicting_emission.name, conflicting_emission.time_start.time(), conflicting_emission.time_end.time())
+
+            except:
+                pass
+
+
+
+
+
+            data = { 'message': message
+
+            }
             success = False
 
 

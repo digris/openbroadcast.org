@@ -22,4 +22,5 @@ def duration_ffmpeg(src):
             return float(dur) * 1000
 
         except Exception, e:
-            print e
+            pass
+            #print e
