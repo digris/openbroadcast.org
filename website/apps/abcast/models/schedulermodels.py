@@ -302,6 +302,10 @@ def pre_delete_emission(sender, **kwargs):
 
     # TODO: think about calculation
     # if obj.time_start > range_start and obj.time_start < range_end:
+
+    if not obj or not obj.time_end or not obj.time_start:
+        return
+
     if obj.time_end > range_start and obj.time_start < range_end:
         # notify pypy
         print 'emission in critical range: notify pypo'

@@ -76,7 +76,7 @@ def setup_signals():
             logger.error('Unable to register model')
             continue
         else:
-            logger.debug('Registering model: %s' % model)
+            #logger.debug('Registering model: %s' % model)
             post_save.connect(pushy_post_save, sender=model)
             post_delete.connect(pushy_post_delete, sender=model)
 

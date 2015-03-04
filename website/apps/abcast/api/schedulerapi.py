@@ -16,7 +16,7 @@ from abcast.models import Emission, Channel
 
 # logging
 import logging
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 SCHEDULER_GRID_WIDTH = getattr(settings, 'SCHEDULER_GRID_WIDTH', 830)
@@ -169,7 +169,6 @@ class EmissionResource(ModelResource):
         if not request.user.is_authenticated():
             return HttpUnauthorized()
 
-
         e = Emission.objects.get(**self.remove_api_resource_names(kwargs))
 
         locked = request.POST.get('locked', 0)
@@ -195,8 +194,6 @@ class EmissionResource(ModelResource):
         if not request.user.is_authenticated():
             return HttpUnauthorized()
 
-        log = logging.getLogger('abcast.schedulerapi.reschedule')
-
         top = request.POST.get('top', None)
         left = request.POST.get('left', None)
         
@@ -208,8 +205,7 @@ class EmissionResource(ModelResource):
         e = Emission.objects.get(**self.remove_api_resource_names(kwargs))
 
         data = {"version":"2.4.1"}
-    
-    
+
         pph = SCHEDULER_PPH
         # ppd = SCHEDULER_PPD
         ppd = (SCHEDULER_GRID_WIDTH - SCHEDULER_GRID_OFFSET) / int(num_days)
@@ -229,13 +225,18 @@ class EmissionResource(ModelResource):
         # add offsets
         time_start = datetime.datetime.combine(e.time_start.date(), datetime.time(0))
         time_start = time_start + datetime.timedelta(minutes=offset_min, days=offset_d)
-        
         time_start = time_start + datetime.timedelta(hours=SCHEDULER_OFFSET)
-        
+
+
+        if (0 <= e.time_start.hour <= (SCHEDULER_OFFSET - 1)) and (0 <= e.time_start.hour <= (SCHEDULER_OFFSET - 1)):
+            # checks if emission is within offset range (e.g. between 0:00 and 06:00) - that belongs to the following day
+            time_start = time_start - datetime.timedelta(hours=24)
+
         # time_end = time_start + datetime.timedelta(milliseconds=e.content_object.get_duration())
         # for duration calculation we use the 'target duration' (to avoid blocked slots)
         time_end = time_start + datetime.timedelta(seconds=e.content_object.target_duration)
-    
+
+
         log.debug('time_start: %s' % time_start)
         log.debug('time_end: %s' % time_end)
     
@@ -245,14 +246,22 @@ class EmissionResource(ModelResource):
         now = datetime.datetime.now()
         lock_end = now + datetime.timedelta(seconds=SCHEDULER_LOCK_AHEAD)
         if lock_end > time_start:
-            data = { 'message': _('You cannot schedule things in the past!') }
+            data = { 'message': _('You cannot schedule emissions in the past.') }
             success = False
         
         # check if slot is free
         es = Emission.objects.filter(time_end__gt=time_start + datetime.timedelta(seconds=2), time_start__lt=time_end, channel=channel).exclude(pk=e.pk)
         if es.count() > 0:
-            data = { 'message': _('Sorry, but the desired time does not seem to be available.') }
+            data = { 'message': _('The desired time does not seem to be available.') }
             success = False
+
+
+        # check that emission does not overlap to day ranges (e.g. 05:30 to 06:30)
+        # TODO: make sure calculations are correct
+        if time_start.hour <= (SCHEDULER_OFFSET - 1) and (time_end.hour >= SCHEDULER_OFFSET and time_end.minute > 0):
+            data = { 'message': _('Emissions must not overlap days.') }
+            success = False
+
 
         if success:
             e.time_start = time_start
@@ -278,7 +287,7 @@ class EmissionResource(ModelResource):
         self.throttle_check(request)
         self.log_throttled_access(request)
         
-        return HttpResponse(json.dumps(data), content_type = 'application/json; charset=utf8')
+        return HttpResponse(json.dumps(data), content_type='application/json; charset=utf8')
     
     
     

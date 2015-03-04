@@ -212,7 +212,7 @@ SchedulerApp = function () {
             },
             hide: {
                 delay: 10
-            },
+            }
         });
 
 
@@ -858,12 +858,18 @@ var EmissionApp = function () {
 
                 // update schedule data
                 var url = self.api_url + 'reschedule/';
+
+                var offset_left = parseInt(el.position().left);
+                var offset_top = parseInt(el.css('top'));
+
                 var data = {
-                    left: parseInt(el.position().left),
-                    top: parseInt(el.css('top')),
+                    left: offset_left,
+                    top: offset_top,
                     num_days: self.num_days,
                     channel_id: self.scheduler_app.channel_id
                 };
+
+                console.log('reschedule', data)
 
                 /**/
                 $.ajax({

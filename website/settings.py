@@ -490,6 +490,7 @@ INSTALLED_APPS = (
     'massimporter',
     'exporter',
     'abcast',
+    'autopilot',
     'multiuploader',
     'arating',
     'asearch',
