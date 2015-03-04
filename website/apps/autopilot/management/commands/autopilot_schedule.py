@@ -139,12 +139,25 @@ class Autopilot(object):
 
             emission_start = (abs_start + datetime.timedelta(seconds=slot_time_offset))
 
+
+            theme = SCHEDULER_DEFAULT_THEME
+
+            if abs_start.hour == 6:
+                theme = 1
+
+            if abs_start.hour == 12:
+                theme = 2
+
+            if abs_start.hour == 19:
+                theme = 4
+
+
             emission = Emission(
                 content_object=playlist,
                 time_start=emission_start,
                 channel=self.channel,
                 user=self.user,
-                color=SCHEDULER_DEFAULT_THEME
+                color=theme
             )
 
             emission.save()
@@ -177,7 +190,7 @@ class Autopilot(object):
 
             now = datetime.datetime.now()
             today = now.date()
-            tomorrow = (now.date() + datetime.timedelta(hours=24))
+            day_ahead = (now.date() + datetime.timedelta(hours=self.schedule_ahead * 24))
 
             #print 'now: %s' % now
             #print 'today: %s' % today
@@ -185,7 +198,7 @@ class Autopilot(object):
 
             print '/// dayparts on %s ///' % self.channel
 
-            days_to_fill = [tomorrow,]
+            days_to_fill = [day_ahead,]
 
 
             for day_to_fill in days_to_fill:

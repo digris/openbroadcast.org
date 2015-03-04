@@ -54,7 +54,7 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
         items = e.content_object.get_items()
         for item in items:
             co = item.content_object
-            if not co:
+            if not co or not co.get_duration():
                 return
             i_start = e_start + datetime.timedelta(milliseconds=offset)
             i_end = e_start + datetime.timedelta(milliseconds=offset + co.get_duration())
