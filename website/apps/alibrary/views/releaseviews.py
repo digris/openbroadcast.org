@@ -176,6 +176,15 @@ class ReleaseListView(PaginationMixin, ListView):
             f = {'item_type': 'release' , 'item': creator, 'label': _('Added by')}
             self.relation_filter.append(f)
 
+        # filter by user
+        creator_exclude_filter = self.request.GET.get('creator_exclude', None)
+        if creator_exclude_filter:
+            from django.contrib.auth.models import User
+            creator = get_object_or_404(User, username='%s' % creator_exclude_filter)
+            qs = qs.exclude(creator=creator).distinct()
+            f = {'item_type': 'release' , 'item': creator, 'label': _('Not added by')}
+            self.relation_filter.append(f)
+
         # filter by promo flag
         # TODO: refactor query, publish_date is depreciated
         promo_filter = self.request.GET.get('promo', None)
