@@ -313,17 +313,24 @@ def schedule_object(request):
     now = datetime.datetime.now()
     lock_end = now + datetime.timedelta(seconds=SCHEDULER_LOCK_AHEAD)
     if lock_end > time_start:
-        return { 'message': _('You cannot schedule things in the past!') }
+        return { 'message': _('You cannot schedule emissions in the past.') }
     
     # check if slot is free
     # hm just allow some seconds of tolerance (in case of mini-overlaps)
-    es = Emission.objects.filter(time_end__gt=time_start + datetime.timedelta(seconds=OVERLAP_TOLERANCE), time_start__lt=time_end + datetime.timedelta(seconds=OVERLAP_TOLERANCE), channel=channel)
+    es = Emission.objects.filter(
+        time_end__gt=time_start + datetime.timedelta(seconds=OVERLAP_TOLERANCE),
+        time_start__lt=time_end,
+        channel=channel)
     if es.count() > 0:
-        for em in es:
-            print 'Blocking emission: %s' % em.id
-            print em.time_start
-            print em.time_end
-        return { 'message': _('Sorry, but the desired time does not seem to be available.') }
+        message = _('The desired time slot does not seem to be available.')
+        try:
+            message += u'<br>Emission schedule "%s" - from %s to %s' % (e.name, time_start.time(), time_end.time())
+            for conflicting_emission in es:
+                message += u'<br> - overlaps "%s" - from %s to %s' % (conflicting_emission.name, conflicting_emission.time_start.time(), conflicting_emission.time_end.time())
+
+        except:
+            pass
+        return { 'message': message }
     
     
     # if no errors so far -> create emission and attach object
