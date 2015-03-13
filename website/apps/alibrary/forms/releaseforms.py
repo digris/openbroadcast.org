@@ -612,7 +612,7 @@ AlbumartistFormSet = inlineformset_factory(Release,
                                            ReleaseAlbumartists,
                                            form=BaseAlbumartistForm,
                                            formset=BaseAlbumartistFormSet,
-                                           extra=10,
+                                           extra=15,
                                            exclude=('position',),
                                            can_delete=True,
                                            can_order=False,)
@@ -620,7 +620,7 @@ AlbumartistFormSet = inlineformset_factory(Release,
 ReleaseRelationFormSet = generic_inlineformset_factory(Relation,
                                                        form=BaseReleaseReleationForm,
                                                        formset=BaseReleaseReleationFormSet,
-                                                       extra=10,
+                                                       extra=15,
                                                        exclude=('action',),
                                                        can_delete=True)
 

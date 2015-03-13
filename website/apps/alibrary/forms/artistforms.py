@@ -446,7 +446,7 @@ class BaseArtistReleationForm(ModelForm):
 ArtistRelationFormSet = generic_inlineformset_factory(Relation,
                                                       form=BaseArtistReleationForm,
                                                       formset=BaseArtistReleationFormSet,
-                                                      extra=10, exclude=('action',),
+                                                      extra=15, exclude=('action',),
                                                       can_delete=True,)
 
 
@@ -455,7 +455,7 @@ MemberFormSet = inlineformset_factory(Artist,
                                        form=BaseMemberForm,
                                        formset=BaseMemberFormSet,
                                        fk_name = 'parent',
-                                       extra=4,
+                                       extra=15,
                                        exclude=('position',),
                                        can_delete=True,
                                        can_order=False,)
@@ -466,7 +466,7 @@ AliasFormSet = inlineformset_factory(Artist,
                                        form=BaseAliasForm,
                                        formset=BaseAliasFormSet,
                                        fk_name = 'parent',
-                                       extra=4,
+                                       extra=15,
                                        #exclude=('position',),
                                        can_delete=True,
                                        can_order=False,)

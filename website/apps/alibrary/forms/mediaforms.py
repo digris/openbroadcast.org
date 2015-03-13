@@ -455,14 +455,14 @@ class BaseMediaReleationForm(ModelForm):
 MediaRelationFormSet = generic_inlineformset_factory(Relation,
                                                      form=BaseMediaReleationForm,
                                                      formset=BaseMediaReleationFormSet,
-                                                     extra=10, exclude=('action',),
+                                                     extra=15, exclude=('action',),
                                                      can_delete=True)
 
 MediaartistFormSet = inlineformset_factory(Media,
                                            MediaArtists,
                                            form=BaseMediaartistForm,
                                            formset=BaseMediaartistFormSet,
-                                           extra=10,
+                                           extra=15,
                                            exclude=('position',),
                                            can_delete=True,
                                            can_order=False,)
@@ -472,7 +472,7 @@ ExtraartistFormSet = inlineformset_factory(Media,
                                        form=BaseExtraartistForm,
                                        formset=BaseExtraartistFormSet,
                                        fk_name = 'media',
-                                       extra=10,
+                                       extra=15,
                                        #exclude=('position',),
                                        can_delete=True,
                                        can_order=False,)
