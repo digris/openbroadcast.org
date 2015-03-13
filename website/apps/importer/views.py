@@ -136,7 +136,7 @@ class ImportCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
 class ImportUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Import
-    template_name = 'importer/import_form_pushy.html'
+    template_name = 'importer/import_form.html'
 
     permission_required = 'importer.change_import'
     raise_exception = True

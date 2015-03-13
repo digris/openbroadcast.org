@@ -202,6 +202,20 @@ ImporterUi = function() {
 		
 	};
 
+    /*
+    add overlay & dim to screen
+    feedback & prevent multiple actions triggered
+     */
+    this.lock_ui = function(lock) {
+        if(lock) {
+            $('#importer_ui_lock').show();
+            //$('body').css('opacity', 0.5);
+        } else {
+            $('#importer_ui_lock').hide();
+            //$('body').css('opacity', 1);
+        }
+    };
+
 
 
 	this.import_by_id = function(id) {
@@ -281,14 +295,28 @@ ImporterUi = function() {
 
 	this.update_import_files = function() {
 
+        console.log('update_import_files');
+
 		$.getJSON(self.api_url, function(data) {
-			self.update_import_files_callback(data);
+			//self.update_import_files_callback(data);
+
+            self.update_list_display(data.files);
+            //self.update_summary_display(data);
+            try {
+                self.update_best_match(data.files);
+                self.apply_best_match(data.files);
+            } catch(err) {
+                // debug.debug(err);
+            }
+
+            self.update_summary(data);
 
             $('#loading_message').fadeOut(300);
 
 		});
 
 	};
+    /*
 	this.update_import_files_callback = function(data) {
 
         console.log('update_import_files_callback', data);
@@ -305,6 +333,7 @@ ImporterUi = function() {
         self.update_summary(data);
 
 	};
+	*/
 
 
 	this.update_summary = function(data) {
@@ -390,6 +419,10 @@ ImporterUi = function() {
             counters: counters,
             inserts: inserts
         }
+
+
+
+        self.lock_ui(false);
 
         self.update_summary_display();
 
@@ -562,7 +595,9 @@ ImporterUi = function() {
         }
 
         if(force_update) {
-            $('#result_holder').html('');
+            // TODO: is this needed??
+            // refactor 'force' handling
+            //$('#result_holder').html('');
             self.importfiles = [];
         }
 
@@ -582,18 +617,33 @@ ImporterUi = function() {
 			}
 			
 			// check if in dom
-			if(! $('#' + item.uuid).size()) {
+
+            //alert($('#' + item.uuid).length)
+
+			if(! $('#' + item.uuid).length || force_update) {
+
+                //alert('does not exist')
+
 				debug.debug('element not existent in dom');
 				
 				// add container
-				$('#result_holder').append('<div id="' + item.uuid + '"></div>');
-				
+                if(force_update) {
+                    $('#' + item.uuid).html('')
+                } else {
+                    $('#result_holder').append('<div id="' + item.uuid + '"></div>');
+                }
+
 				var ifa = new ImportfileApp;
 				ifa.local_data = item;
 				ifa.container = $('#' + item.uuid);
 				ifa.api_url = item.resource_uri;
 				ifa.importer = self;
+
 				ifa.init(true);
+
+                if(!force_update) {
+                    ifa.bindings();
+                }
 				
 				self.importfiles.push(ifa);
 				

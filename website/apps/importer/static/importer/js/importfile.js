@@ -16,7 +16,9 @@ var ImportfileApp = function () {
 
         self.ac = new ImportfileAcApp();
 
-        self.bindings();
+
+        //alert('init')
+
 
         self.load(use_local_data);
         pushy.subscribe(self.api_url, function () {
@@ -44,7 +46,20 @@ var ImportfileApp = function () {
 
     this.bindings = function () {
 
+
+
+
+        $('body').on('click', '.page-header', function(){
+            alert(123);
+        })
+
+
+
+
         $('.result-set', self.container).live('click', function (e) {
+
+            //alert('c')
+
             var el = $(this);
             var import_tag;
 
@@ -303,6 +318,10 @@ var ImportfileApp = function () {
 
         $('.apply-to-all', self.container).live('click', function (e) {
 
+
+
+            self.importer.lock_ui(true);
+
             e.preventDefault();
             var url = self.importer.api_url + 'apply-to-all/';
             var data = {
@@ -512,6 +531,9 @@ var ImportfileApp = function () {
         // debug.debug(import_tag)
 
         self.api_lock = true;
+
+        self.importer.lock_ui(true);
+
 
         self.container.addClass('loading');
 
