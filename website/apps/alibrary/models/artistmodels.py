@@ -344,6 +344,9 @@ class Artist(MigrationMixin):
         
     def save(self, *args, **kwargs):
         unique_slugify(self, self.name)
+
+        if self.type:
+            self.type = self.type.lower()
         
         # update d_tags
         """
