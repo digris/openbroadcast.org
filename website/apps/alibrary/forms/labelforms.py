@@ -263,7 +263,12 @@ class BaseLabelReleationForm(ModelForm):
 
 
 # Compose Formsets
-LabelRelationFormSet = generic_inlineformset_factory(Relation, form=BaseLabelReleationForm, formset=BaseLabelReleationFormSet, extra=3, exclude=('action',), can_delete=True)
+LabelRelationFormSet = generic_inlineformset_factory(Relation,
+                                                     form=BaseLabelReleationForm,
+                                                     formset=BaseLabelReleationFormSet,
+                                                     extra=10,
+                                                     exclude=('action',),
+                                                     can_delete=True)
 
 
 
