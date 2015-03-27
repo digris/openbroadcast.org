@@ -45,7 +45,7 @@ mysqldump5 -h 127.0.0.1 -u root -proot org_openbroadcast_local > ~/tmp/org_openb
 mysql5 -h 127.0.0.1 -u root -proot org_openbroadcast_local < ~/tmp/org_openbroadcast_local.sql
 
 # pushy
-cd code/django-apps/django-pushy/server/
+cd ~/code/openbroadcast/pushy/server/
 node pushy.js
 
 
