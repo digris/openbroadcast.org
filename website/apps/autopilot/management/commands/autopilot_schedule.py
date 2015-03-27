@@ -102,6 +102,7 @@ class Autopilot(object):
         qs = Playlist.objects.filter(
             type='broadcast',
             broadcast_status=1,
+            rotation=True,
             dayparts__in=pldps,
             target_duration__in=target_durations
         )

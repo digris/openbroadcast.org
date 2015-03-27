@@ -1,10 +1,9 @@
+import reversion
 from multilingual.admin import MultilingualModelAdmin
 from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
-import reversion
+from django.utils.translation import ugettext as _
 from guardian.admin import GuardedModelAdmin
-
 from django.contrib import admin
-
 from ashop.models import *
 from alibrary.models import *
 
@@ -349,7 +348,16 @@ class PlaylistItemPlaylistInline(admin.TabularInline):
     model = PlaylistItemPlaylist
     inlines = [PlaylistItemInline,] 
     extra=1
-        
+
+
+def playlists_enable_rotation(modeladmin, request, queryset):
+    queryset.update(rotation=True)
+playlists_enable_rotation.short_description = _('Include selected playlists in rotation')
+
+def playlists_disable_rotation(modeladmin, request, queryset):
+    queryset.update(rotation=False)
+playlists_disable_rotation.short_description = _('Exclude selected playlists from rotation')
+
 class PlaylistAdmin(GenericAdminModelAdmin):
     
     list_display   = ('name', 'user', 'type', 'duration', 'target_duration', 'is_current', 'rotation', 'updated')
@@ -357,6 +365,9 @@ class PlaylistAdmin(GenericAdminModelAdmin):
 
     search_fields = ['name', 'user__username',]
     date_hierarchy = 'created'
+
+
+    actions = [playlists_enable_rotation, playlists_disable_rotation]
     
     #readonly_fields = ['slug', 'is_current',]
 
