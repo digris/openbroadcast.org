@@ -81,7 +81,7 @@ dropbox==2.0.0
 easy-thumbnails==2.0.1
 #facebook-python-sdk==0.1
 -e git://github.com/pythonforfacebook/facebook-sdk#egg=facebookSDK
-gunicorn==0.13.4
+gunicorn==18.0
 gunicorn-console==0.1.16
 guppy==0.1.10
 html2text==3.200.3

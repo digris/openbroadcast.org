@@ -579,6 +579,10 @@ class DiscogsAPILookup(APILookup):
         d_tags = [] # needed as merged from different keys
         relations = []
 
+
+        print '----------'
+        print data
+
         for k in data:
             if k == 'name':
                 mk = 'name'
@@ -614,6 +618,10 @@ class DiscogsAPILookup(APILookup):
 
         res['d_tags'] = ', '.join(d_tags)
         res['relations'] = relations
+
+        print '----------'
+        print res
+
 
         return res
 
