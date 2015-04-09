@@ -390,6 +390,8 @@ INSTALLED_APPS = (
     'djcelery',
     'django_bleach',
 
+    #'sphinxdoc',
+
     'cms',
     'menus',
     'mptt',
@@ -813,8 +815,9 @@ Search
 """
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://127.0.0.1:8983/solr',
+        #'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        #'URL': 'http://127.0.0.1:8983/solr',
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
     },
 }
 

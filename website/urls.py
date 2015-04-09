@@ -75,6 +75,8 @@ urlpatterns = patterns('',
     #url(r"^api/", include("alibrary.urls_api")),
     #url(r'^api/', include('urls_api')),
 
+    #url(r'^docs/', include('sphinxdoc.urls')),
+
 
 
 

@@ -361,18 +361,27 @@ ListEditUi = function () {
                             }
                         }
 
+                        // lock ui
+                        try {
+                            var api = self.dialog_window.qtip('api');
+                            api.set('content.text', nj.render('alibrary/nj/reassign/reassign_dialog_progress.html'));
+                        } catch (e) {
+                        }
+
+
                         Dajaxice.alibrary.reassign_items(function (data) {
 
-                            if(data.status) {
+                            // unlock ui
+                            try {
+                                //var api = self.dialog_window.qtip('api');
+                               // api.destroy();
+                            } catch (e) {
+                            }
 
+
+                            if(data.status) {
                                 var html = nj.render('alibrary/nj/reassign/reassign_dialog_continue.html', data);
                                 $('.qtip-content', container).html(html)
-
-
-
-                                //document.location.reload();
-
-
 
                             } else {
                                 alert(data.error);
