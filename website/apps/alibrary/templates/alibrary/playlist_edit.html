@@ -53,17 +53,14 @@
                 $('.dayparts input').live('click', function (e) {
 
                     var num_selected = $('.dayparts input:checked').length;
-                    if(num_selected > 14) {
+                    if(num_selected > 14 && $(this).is(':checked')) {
                         alert('Sorry - no more than 14 dayparts please!');
                         //$(util).dialog({text: 'No more than 14 dayparts please!', title: 'Sorry'})
                         return false;
                     }
-
                     $(this).parents('li').toggleClass('selected');
-
                 });
-
-
+            
             });
         </script>
     {% endaddtoblock %}

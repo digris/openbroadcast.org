@@ -346,7 +346,8 @@ class PlaylistItemInline(GenericTabularInline):
     
 class PlaylistItemPlaylistInline(admin.TabularInline):
     model = PlaylistItemPlaylist
-    inlines = [PlaylistItemInline,] 
+    inlines = [PlaylistItemInline,]
+    raw_id_fields = ['item',]
     extra=1
 
 
@@ -365,6 +366,9 @@ class PlaylistAdmin(GenericAdminModelAdmin):
 
     search_fields = ['name', 'user__username',]
     date_hierarchy = 'created'
+
+
+    raw_id_fields = ['user',]
 
 
     actions = [playlists_enable_rotation, playlists_disable_rotation]
