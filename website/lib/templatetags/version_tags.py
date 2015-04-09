@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
+import locale
+import sys
 import subprocess
 from datetime import datetime
 import os
@@ -25,6 +27,23 @@ def version_by_git(context):
         'commit': commit,
         'timestamp': timestamp,
         'install_time': install_time,
+    })
+
+    return context
+
+
+
+@register.inclusion_tag('lib/templatetags/locale_info.html', takes_context=True)
+def locale_info(context):
+
+    loc_info = {
+        'loc_loc': locale.getlocale(),
+        'loc_def': locale.getdefaultlocale(),
+        'sys_fenc': sys.getfilesystemencoding(),
+    }
+
+    context.update({
+        'locale_info': loc_info,
     })
 
     return context
