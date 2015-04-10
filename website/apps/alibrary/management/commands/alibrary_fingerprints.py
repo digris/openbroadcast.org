@@ -14,6 +14,8 @@ from ep.API import fp
 import logging
 log = logging.getLogger(__name__)
 
+DEFAULT_LIMIT = 1000
+
 
 class Fingerprinter(object):
     def __init__(self, * args, **kwargs):
@@ -21,6 +23,7 @@ class Fingerprinter(object):
         self.create_fingerprints = kwargs.get('create_fingerprints')
         self.show_stats = kwargs.get('show_stats')
         self.force_action = kwargs.get('force_action')
+        self.limit = int(kwargs.get('limit', DEFAULT_LIMIT))
         self.verbosity = int(kwargs.get('verbosity', 1))
 
     def run(self):
@@ -56,7 +59,13 @@ class Fingerprinter(object):
 
             from alibrary.models import Media
             
-            qs = Media.objects.exclude(master='')[0:1]
+            qs = Media.objects.exclude(master='')
+            if not self.force_action:
+                qs = qs.filter(echoprint_status=0)
+
+            qs = qs[0:self.limit]
+
+
             num_total = qs.count()
             num_done = 0
             for object in qs:
@@ -111,6 +120,11 @@ class Command(NoArgsCommand):
             dest='force_action',
             default=False,
             help='Enforce action'),
+        make_option('--limit',
+            action='store',
+            dest='limit',
+            default=DEFAULT_LIMIT,
+            help='Limit objects to process'),
         make_option('--stats',
             action='store_true',
             dest='show_stats',
