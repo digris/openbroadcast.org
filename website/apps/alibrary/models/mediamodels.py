@@ -202,10 +202,11 @@ class Media(MigrationMixin):
         (0, _('Init')),
         (1, _('Assigned')),
         (2, _('Error')),
+        (3, _('File not suitable')),
         (99, _('Error')),
     )
     echoprint_status = models.PositiveIntegerField(max_length=2, default=0, choices=ECHOPRINT_STATUS_CHOICES)
-    echoprint_id = models.PositiveIntegerField(null=True, blank=True)
+    #echoprint_id = models.PositiveIntegerField(null=True, blank=True)
         
     CONVERSION_STATUS_CHOICES = (
         (0, _('Init')),
@@ -1361,10 +1362,23 @@ class Media(MigrationMixin):
             duration = d[0]['metadata']['duration']
 
         except Exception, e:
+            log.error('unable to extract code: %s' % e)
+
             code = None
             version = None
             duration = None
             status = 2
+
+
+
+
+        # skip file if longer than 12 minutes
+        if duration and duration > (60 * 12):
+            obj.echoprint_status = 3
+            obj.save()
+            return
+
+
 
         if code:
             

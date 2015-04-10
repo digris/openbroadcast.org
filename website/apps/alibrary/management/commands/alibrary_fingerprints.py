@@ -41,7 +41,6 @@ class Fingerprinter(object):
                 fp.erase_database(True)
                 print
                 Media.objects.all().update(echoprint_status=0)
-                Media.objects.all().update(echoprint_id=None)
                 print 'done'
 
             else:
@@ -90,6 +89,7 @@ class Fingerprinter(object):
             print ' - num. total:     %s' % qs.count()
             print ' - num. init:      %s' % qs.filter(echoprint_status=0).count()
             print ' - num. assigned:  %s' % qs.filter(echoprint_status=1).count()
+            print ' - num. skipped:   %s' % qs.filter(echoprint_status=3).count()
             print ' - num. error:     %s' % qs.filter(echoprint_status__in=[2, 99]).count()
             print
 
