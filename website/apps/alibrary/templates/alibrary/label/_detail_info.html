@@ -3,7 +3,12 @@
 
 	<div class="page-header">
 		<h2>{{ object.name|truncate_chars_inner:40 }}
-            <small>{{ object.get_type_display }}</small>
+            {% if object.country %}
+                ({{ object.country.iso2_code }})
+            {% endif %}
+            {% if object.type %}
+                <small>{{ object.get_type_display }}</small>
+            {% endif %}
             <small>
                 {% if object.date_start %}&nbsp;*{{ object.date_start.year }}{% endif %}
                 {% if object.date_end %}&nbsp;&#10013;{{ object.date_end.year }}{% endif %}
