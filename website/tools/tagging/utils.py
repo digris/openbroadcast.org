@@ -86,9 +86,9 @@ def parse_tag_input(input):
 
 
 
-    print 'tag input - words:'
-    print words
-    print '---'
+    #print 'tag input - words:'
+    #print words
+    #print '---'
 
     words.sort()
     return words

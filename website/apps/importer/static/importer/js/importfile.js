@@ -233,7 +233,7 @@ var ImportfileApp = function () {
             var artist_name = $('.artist input', self.container).val()
             var release_name = $('.release input', self.container).val()
 
-            if(! (media_name.length > 1 && artist_name.length > 1 && release_name.length > 1)) {
+            if(! (media_name.length > 0 && artist_name.length > 0 && release_name.length > 0)) {
                 alert('"Title", "Artist" and "Release" are required fields!');
                 return false;
             }
