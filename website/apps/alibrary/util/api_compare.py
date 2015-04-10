@@ -635,11 +635,6 @@ def get_from_provider(item_type, item_id, provider, api_url=None):
     log.debug('get_from_provider: %s - id: %s - provider: %s' % (item_type, item_id, provider))
 
 
-    if api_url:
-        print '//////////////////////////////////////////'
-        print api_url
-
-
     # get source object
     obj = None
     if item_type == 'release':
