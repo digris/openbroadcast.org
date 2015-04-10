@@ -36,9 +36,7 @@ def events_for_object_by_verb(context, obj, verb):
 
 @register.inclusion_tag('atracker/templatetags/stats_for_object.html', takes_context=True)
 def stats_for_object(context, obj):
-
     statistics = summary_for_object(obj)
-    
     if statistics:
         return {
             'request': context['request'],

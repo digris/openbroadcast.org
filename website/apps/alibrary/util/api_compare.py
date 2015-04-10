@@ -138,7 +138,6 @@ class MusicbrainzAPILookup(APILookup):
 
         try:
             num_tracks = 0
-            print data['media'][0]['track-count']
             for x in data['media']:
                 num_tracks += int(x['track-count'])
             res['totaltracks'] = num_tracks if num_tracks > 0 else None
@@ -352,7 +351,6 @@ class DiscogsAPILookup(APILookup):
         image = None
         try:
             for v in d:
-                print v
                 if v['type'] == 'primary':
                     image = v['resource_url']
         except:
@@ -368,6 +366,30 @@ class DiscogsAPILookup(APILookup):
                 pass
 
         return image
+
+
+    def reformat_name(self, name):
+        """
+        reformat discogs scheme names:
+         - removes the number
+         - repositions the 'The'
+        e.g. "Tone Control Music, The (2)" becomes "The Tone Control Music"
+        """
+
+        p = ' \([0-9]+\)'
+        name = re.sub(p, '', name)
+
+        if name[-5:] == ', The':
+            name = 'The %s' % name[:-5]
+        if name[-4:] == ',The':
+            name = 'The %s' % name[:-4]
+
+        return name
+
+
+
+
+
 
 
     def get_release(self, uri):
@@ -400,8 +422,13 @@ class DiscogsAPILookup(APILookup):
         for k in data:
 
             mk = k
+
+            #if k == 'title':
+            #    mk = 'name'
+
             if k == 'title':
-                mk = 'name'
+                # reformat numbering & 'The'
+                res['name'] = self.reformat_name(data[k])
 
             if k == 'notes':
                 mk = 'description'
@@ -427,7 +454,7 @@ class DiscogsAPILookup(APILookup):
             if k == 'labels':
                 try:
                     d = data[k][0]
-                    res['label_0'] = d['name']
+                    res['label_0'] = self.reformat_name(d['name'])
                     res['catalognumber'] = d['catno']
                 except:
                     pass
@@ -481,6 +508,18 @@ class DiscogsAPILookup(APILookup):
             pass
 
 
+        # reformat tracklist
+        res['tracklist'] = []
+        for track in data['tracklist']:
+            if 'artists' in track:
+                try:
+                    track['artists'][0]['name'] = self.reformat_name(track['artists'][0]['name'])
+                except:
+                    pass
+            res['tracklist'].append(track)
+
+
+
         return res
 
 
@@ -516,22 +555,9 @@ class DiscogsAPILookup(APILookup):
             if k == 'namevariations':
                 res['namevariations'] = ', '.join(data[k])
 
-
             if k == 'name':
-
-                value = data[k]
-                # remove numbers from eg: My Artist (3)
-                p = ' \([0-9]+\)'
-                value = re.sub(p, '', value)
-
-                # try to remap ", The"
-                if value[-5:] == ', The':
-                    value = 'The %s' % value[:-5]
-                if value[-4:] == ',The':
-                    value = 'The %s' % value[:-4]
-
-                res[k] = value
-
+                # reformat numbering & 'The'
+                res[k] = self.reformat_name(data[k])
 
             if k == 'urls':
                 mapped = []
@@ -580,12 +606,11 @@ class DiscogsAPILookup(APILookup):
         relations = []
 
 
-        print '----------'
-        print data
-
         for k in data:
+
             if k == 'name':
-                mk = 'name'
+                # reformat numbering & 'The'
+                res[k] = self.reformat_name(data[k])
 
             if k == 'profile':
                 mk = 'description'
@@ -618,10 +643,6 @@ class DiscogsAPILookup(APILookup):
 
         res['d_tags'] = ', '.join(d_tags)
         res['relations'] = relations
-
-        print '----------'
-        print res
-
 
         return res
 

@@ -221,16 +221,6 @@ def provider_update(request, *args, **kwargs):
 
 
 
-
-
-
-
-
-
-"""
-listview functions (merge etc)
-"""
-
 @dajaxice_register
 @permission_required('alibrary.merge_media')
 def merge_items(request, *args, **kwargs):
@@ -340,29 +330,35 @@ def reassign_items(request, *args, **kwargs):
     name = kwargs.get('name', None)
     release_id = kwargs.get('release_id', None)
 
-    print '## reassign_items ##'
-    print 'media_ids:  %s' % media_ids
-    print 'name:       %s' % name
-    print 'release_id: %s' % release_id
-    print
+    if media_ids and release_id:
 
-    if release_id:
-        r = Release.objects.get(pk=int(release_id))
+        log.debug(u'reassigning items: %s to %s' % ((',').join(media_ids), release_id))
+
+        if release_id:
+            r = Release.objects.get(pk=int(release_id))
+        else:
+            r = Release(name=name.strip())
+            r.save()
+
+        for id in media_ids:
+            m = Media.objects.get(pk=int(id))
+            m.release = r
+            m.save()
+
+
+        data = {
+            'status': True,
+            'error': None,
+            'next': r.get_absolute_url()
+        }
+
     else:
-        r = Release(name=name.strip())
-        r.save()
 
-    for id in media_ids:
-        m = Media.objects.get(pk=int(id))
-        m.release = r
-        m.save()
+        data = {
+            'status': False,
+            'error': 'missing data',
+        }
 
-
-    data = {
-        'status': True,
-        'error': None,
-        'next': r.get_absolute_url()
-    }
 
     return json.dumps(data)
 
