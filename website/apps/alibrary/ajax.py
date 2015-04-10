@@ -77,7 +77,10 @@ def provider_search_query(request, *args, **kwargs):
 
         if item_type == 'label':
             item = Label.objects.get(pk=item_id)
-            data = {'query': '%s' % (item.name)}
+            if ' ' in item.name:
+                data = {'query': '"%s"' % (item.name)}
+            else:
+                data = {'query': '%s' % (item.name)}
 
 
         return json.dumps(data)
@@ -115,6 +118,8 @@ def provider_search(request, *args, **kwargs):
         results = json.loads(text)['results']
         for result in results:
             result['uri'] = 'http://www.discogs.com%s' % result['uri']
+
+        query = query.replace('"', '&quot;')
 
     if provider == 'musicbrainz':
 
