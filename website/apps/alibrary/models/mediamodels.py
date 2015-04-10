@@ -1328,7 +1328,6 @@ class Media(MigrationMixin):
         status = 2
         
         from settings import ECHOPRINT_CODEGEN_BIN
-        ecb = ECHOPRINT_CODEGEN_BIN
 
         path = obj.get_master_path()
 
@@ -1338,12 +1337,11 @@ class Media(MigrationMixin):
             obj.save()
             return None
 
-        #log.debug('echoprint binary at: %s' % ecb)
         log.debug('update echoprint: %s' % path)
 
         p = subprocess.Popen([
-            ecb, path,
-        ], stdout=subprocess.PIPE)
+            ECHOPRINT_CODEGEN_BIN, path,
+        ], stdout=subprocess.PIPE, close_fds=True)
         stdout = p.communicate()
 
         try:

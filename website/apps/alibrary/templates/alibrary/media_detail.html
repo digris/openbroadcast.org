@@ -266,9 +266,66 @@
 
 
         <section class="file-properties">
+
+            <!--
+            <h2><a href="#">{% trans "Audio Properties" %} <i class="icon icon-caret-up"></i></a></h2>
+            -->
+
             <h2>{% trans "Audio Properties" %}</h2>
 
 
+        <div class="row-fluid">
+
+            <div class="span6">
+
+                <dl class="dl-horizontal" style="margin-top: 0;">
+
+                    <dt>{% trans "Format" %}</dt>
+                    <dd>{{ object.base_format|upper }}</dd>
+
+                    <dt>{% trans "Filesize" %}</dt>
+                    <dd>{{ object.base_filesize|filesizeformat }}</dd>
+
+                    <dt>{% trans "Samplerate" %}</dt>
+                    <dd>{{ object.base_samplerate }} Hz</dd>
+
+                    <dt>{% trans "Bitrate" %}</dt>
+                    <dd>{{ object.bitrate }} Kbps</dd>
+
+                    {% if object.original_filename %}
+                    <dt>{% trans "Original Filename" %}</dt>
+                    <dd>{{ object.original_filename }}</dd>
+                    {% endif %}
+
+                </dl>
+            </div>
+
+            <div class="span6">
+
+                <dl class="dl-horizontal" style="margin-top: 0;">
+
+                    <dt>{% trans "File Status" %}</dt>
+                    <dd>{{ object.get_status_display }}</dd>
+
+                    <dt>{% trans "Conversion Status" %}</dt>
+                    <dd>{{ object.get_conversion_status_display }}</dd>
+
+                    <dt>{% trans "Fingerprint" %}</dt>
+                    <dd>{{ object.get_echoprint_status_display }}</dd>
+
+                    <dt>{% trans "Hash" %} (SHA1)</dt>
+                    <dd style="font-size: 90%;">{{ object.master_sha1|upper }}</dd>
+
+
+                </dl>
+            </div>
+
+        </div>
+
+
+
+
+            {% comment %}
             <table class=" table-condensed" style="width: 100%;">
                 <thead>
                 <tr>
@@ -289,6 +346,8 @@
                 </tr>
                 </tbody>
             </table>
+            {% endcomment %}
+
 
 
         </section>
