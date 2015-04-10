@@ -35,11 +35,12 @@ def api_lookup(request, *args, **kwargs):
     log.debug('api_lookup: %s - id: %s - provider: %s' % (item_type, item_id, provider))
 
     try:
+        log.debug(provider)
         data = get_from_provider(item_type, item_id, provider, api_url)
         return json.dumps(data, encoding="utf-8")
     except Exception, e:
         log.warning('api_lookup error: %s', e)
-        return json.dumps({'error': e}, encoding="utf-8")
+        return json.dumps({'error': u'%s' % e}, encoding="utf-8")
 
 
 
