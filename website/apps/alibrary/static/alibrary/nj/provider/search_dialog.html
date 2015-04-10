@@ -5,6 +5,12 @@
         <a class="pull-right exit btn">close <i class="icon icon-remove-sign"></i></a>
         <a class="pull-right search btn btn-primary" type="button">Search</a>
 
+        {% if provider == "discogs" %}
+            <p class="hint">
+                <i class="icon-info-sign"></i> <strong>Info:</strong> You can search by <em>Discogs IDs</em> as well.
+            </p>
+        {% endif %}
+
         {% if item_type == "release" and provider == "musicbrainz" %}
             <p class="hint">
                 <i class="icon-info-sign"></i> <strong>Info:</strong> You can search by <em>BARCODES</em> as well!
