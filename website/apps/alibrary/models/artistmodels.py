@@ -89,6 +89,7 @@ class Artist(MigrationMixin):
     TYPE_CHOICES = (
         ('person', _('Person')),
         ('group', _('Group')),
+        ('orchestra', _('Orchestra')),
         ('other', _('Other')),
     )
     type = models.CharField(verbose_name="Artist type", max_length=120, blank=True, null=True, choices=TYPE_CHOICES)
