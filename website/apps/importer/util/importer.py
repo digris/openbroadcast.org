@@ -551,7 +551,8 @@ class Importer(object):
             else:
                 log.debug('no artist to link with')
         else:
-            print 'no artist name in tag'
+            pass
+            #print 'no artist name in tag'
         
         if 'release' in import_tag:
             r = Release.objects.filter(name=import_tag['release'])
@@ -563,7 +564,8 @@ class Importer(object):
             else:
                 log.debug('no release to link with')
         else:
-            print 'no release name in tag'
+            pass
+            #print 'no release name in tag'
         
         
         return import_tag

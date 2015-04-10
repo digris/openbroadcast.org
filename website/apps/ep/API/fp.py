@@ -168,8 +168,7 @@ def best_match_for_query(code_string, elbow=10, local=False):
             return Response(Response.CANNOT_DECODE, tic=tic)
     
     code_len = len(code_string.split(" ")) / 2
-    
-    print 'code len: %s' % code_len
+
     
     if code_len < elbow:
         logger.warn("Query code length (%d) is less than elbow (%d)" % (code_len, elbow))
@@ -191,7 +190,7 @@ def best_match_for_query(code_string, elbow=10, local=False):
 
     # Query the FP flat directly.
     response = query_fp(code_string, rows=rows, local=local, get_data=True)
-    logger.debug("solr qtime is %d" % (response.header["QTime"]))
+    #logger.debug("solr qtime is %d" % (response.header["QTime"]))
     
     if len(response.results) == 0:
         return Response(Response.NO_RESULTS, qtime=response.header["QTime"], tic=tic)

@@ -81,15 +81,19 @@ class Process(object):
     look for a duplicate by sha1
     """
     def id_by_sha1(self, file):
+
         sha1 = sha1_by_file(file)
-        print 'SHA1: %s' % sha1
-        try:
-            from alibrary.models import Media
-            return Media.objects.filter(master_sha1=sha1)[0].pk
-        except Exception, e:
-            print "SHA1 EXCEPTION:"
-            print e
+        log.debug(u'generated SHA1 %s for %s' % (sha1, file))
+
+        from alibrary.models import Media
+        duplicates = Media.objects.filter(master_sha1=sha1)
+        if duplicates.exists():
+            log.info(u'detected duplicate by SHA1 hash. pk is: %s' % duplicates[0].pk)
+            return duplicates[0].pk
+        else:
+            log.debug(u'no duplicate by SHA1 hash.')
             return None
+
     
     """
     look for a duplicate by fingerprint
@@ -228,17 +232,20 @@ class Process(object):
         try:
             dataset['artist_name'] = meta['artist'][0]
         except Exception, e:
-            print e
+            #print e
+            pass
             
         try:
             dataset['artist_mb_id'] = meta['musicbrainz_artistid'][0]
         except Exception, e:
-            print e
+            #print e
+            pass
             
         try:
             dataset['performer_name'] = meta['performer'][0]
         except Exception, e:
-            print e
+            #print e
+            pass
 
 
 
@@ -246,27 +253,32 @@ class Process(object):
         try:
             dataset['release_name'] = meta['album'][0]
         except Exception, e:
-            print e
+            #print e
+            pass
             
         try:
             dataset['release_mb_id'] = meta['musicbrainz_albumid'][0]
         except Exception, e:
-            print e
+            #print e
+            pass
             
         try:
             dataset['release_date'] = meta['date'][0]
         except Exception, e:
-            print e
+            #print e
+            pass
             
         try:
             dataset['release_releasecountry'] = meta['releasecountry'][0]
         except Exception, e:
-            print e
+            #print e
+            pass
             
         try:
             dataset['release_status'] = meta['musicbrainz_albumstatus'][0]
         except Exception, e:
-            print e
+            #print e
+            pass
             
             
             
@@ -275,19 +287,24 @@ class Process(object):
             try:
                 dataset['label_name'] = meta['organization'][0]
             except Exception, e:
-                print e
+                #print e
+                pass
                 
             try:
                 dataset['label_name'] = meta['label'][0]
             except Exception, e:
+                #print e
                 pass
             
         except Exception, e:
-            print e
+            #print e
+            pass
+
             
         try:
             dataset['label_code'] = meta['labelno'][0]
         except Exception, e:
+            #print e
             pass
             
             
@@ -296,29 +313,29 @@ class Process(object):
         try:
             dataset['media_copyright'] = meta['copyright'][0]
         except Exception, e:
-            print e
+            #print e
+            pass
             
         try:
             dataset['media_comment'] = meta['comment'][0]
         except Exception, e:
+            #print e
             pass
             
         try:
             dataset['media_bpm'] = meta['bpm'][0]
         except Exception, e:
-            print e
+            #print e
+            pass
 
         # debug
         if meta:
             for k in meta:
                 m = meta[k]
                 if k[0:13] != 'PRIV:TRAKTOR4':
-                    pass        
-                    #print "%s:   %s" % (k, m)
+                    pass
 
 
-
-        print
         print "******************************************************************"
         print "* Aquired metadata"
         print "******************************************************************"
@@ -329,10 +346,7 @@ class Process(object):
             except:
                 pass
         print "******************************************************************"
-        print
 
-
-        
         return dataset
     
     """
@@ -341,7 +355,7 @@ class Process(object):
     """
     def get_aid(self, file):
 
-        log.info('Lookup acoustid for: %s' % (file.path))
+        log.debug('lookup acoustid for: %s' % (file.path))
 
         data = acoustid.match(AC_API_KEY, file.path)
 
@@ -374,6 +388,9 @@ class Process(object):
                 #log.debug('skipping acoustid, we have %s of them' % i)
             i += 1
 
+        log.info('got %s possible matches via acoustid' % len(res))
+
+
         return res
 
        
@@ -394,15 +411,15 @@ class Process(object):
 
         try:
             tracknumber = obj.results_tag['media_tracknumber']
-            log.debug('Got tracknumber: %s' % tracknumber)
+            log.debug('tracknumber from metadata: %s' % tracknumber)
         except Exception, e:
-            log.debug('Unable to get tracknumber') 
+            log.debug('no tracknumber in metadata')
             
         try:
             releasedate = obj.results_tag['release_date']
-            log.debug('Got releasedate: %s' % releasedate)
+            log.debug('releasedate from metadata: %s' % releasedate)
         except Exception, e:
-            log.debug('Unable to get releasedate') 
+            log.debug('no releasedate in metadata')
 
         
         """
@@ -556,13 +573,13 @@ class Process(object):
                                 if (not t_rel['title'] in named_releases):
                                     named_releases[t_rel['title']] = []
                                     named_releases[t_rel['title']].append(t_rel)
-                                    log.debug('adding new release name: "%s"' % t_rel['title'])
+                                    #log.debug('adding new release name: "%s"' % t_rel['title'])
                                 else:
                                     named_releases[t_rel['title']].append(t_rel)
-                                    log.debug('appending to existing: "%s"' % t_rel['title'])
+                                    #log.debug('appending to existing: "%s"' % t_rel['title'])
 
                             for k, v in named_releases.iteritems():
-                                log.debug('got %s releases for "%s"' % (len(v), k))
+                                #log.debug('got %s releases for "%s"' % (len(v), k))
                                 selected_releases += v[0:LIMIT_EQUAL_NAMES]
 
                             #selected_releases.append(sorted_releases[0])
@@ -591,7 +608,7 @@ class Process(object):
                                 s_rd = releasedate[0:4]
                                 t_rd = selected_release['date'][0:4]
 
-                                log.debug('compare releasedates: %s | %s' % (s_rd, t_rd))
+                                #log.debug('compare releasedates: %s | %s' % (s_rd, t_rd))
 
                                 if s_rd == t_rd:
                                     releases.append(selected_release)
@@ -602,14 +619,13 @@ class Process(object):
                             else:
                                 releases.append(selected_release)
 
-        # TODO: think about limit
+        # TODO: think about limits
         releases = releases[0:LIMIT_MB_RELEASES]
 
-        releases = self.complete_releases(releases)
-        releases = self.format_releases(releases)
+        if len(releases) > 0:
+            releases = self.complete_releases(releases)
+            releases = self.format_releases(releases)
 
-        self.pp.pprint(releases)
-        
         return releases
 
 
@@ -619,7 +635,7 @@ class Process(object):
         
 
         log = logging.getLogger('importer.process.complete_releases')
-        log.info('Got %s releases to complete' % len(releases))
+        log.info('got %s releases to complete' % len(releases))
         
         completed_releases = []
         
@@ -732,7 +748,7 @@ class Process(object):
     def format_releases(self, releases):
 
         log = logging.getLogger('importer.process.format_releases')
-        log.info('Got %s releases to complete' % len(releases))
+        log.info('got %s releases to format' % len(releases))
         
         formatted_releases = []
         

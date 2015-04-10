@@ -3779,6 +3779,21 @@ div.slideout.base div.inner.feedback div.form_row div.form_col input.error, div.
   margin-bottom: 0px;
 }
 
+/* line 8, ../sass/element/_errors.sass */
+body.error .error-message .reason {
+  margin-top: 20px;
+  color: #333333;
+  padding: 0px 10px;
+  border-left: 2px solid #6633cc;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+/* line 16, ../sass/element/_errors.sass */
+body.error .error-message .solution {
+  padding: 10px 0px;
+  font-size: 14px;
+}
+
 /* search */
 /* line 8, ../sass/element/_search.sass */
 div.autocomplete.holder {

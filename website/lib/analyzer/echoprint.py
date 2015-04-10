@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 import subprocess
 import json
-
+import logging
 import requests
+
+log = logging.getLogger(__name__)
 
 
 try:
@@ -38,7 +40,7 @@ class Echoprint:
     
     def echoprint_from_path(self, path, offset=10, duration=25):
         
-        print ECHOPRINT_CODEGEN_BIN
+        log.debug('echoprint binary: %s' % ECHOPRINT_CODEGEN_BIN)
         
         p = subprocess.Popen([
             ECHOPRINT_CODEGEN_BIN, path, '%s' % offset, '%s' % (offset + duration)
@@ -52,8 +54,11 @@ class Echoprint:
             code = d[0]['code']
             version = d[0]['metadata']['version']
             duration = d[0]['metadata']['duration']
+
+            log.info(u'echoprint result - version: %s - duration: %s' % (version, duration))
+
         except Exception, e:
-            print e
+            log.warning(u'unable to generate echoprint: %s' % e)
             pass
         
         return code, version, duration, d

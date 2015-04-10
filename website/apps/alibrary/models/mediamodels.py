@@ -205,6 +205,7 @@ class Media(MigrationMixin):
         (99, _('Error')),
     )
     echoprint_status = models.PositiveIntegerField(max_length=2, default=0, choices=ECHOPRINT_STATUS_CHOICES)
+    echoprint_id = models.PositiveIntegerField(null=True, blank=True)
         
     CONVERSION_STATUS_CHOICES = (
         (0, _('Init')),
@@ -1322,15 +1323,12 @@ class Media(MigrationMixin):
         
     @task()
     def update_echoprint_task(obj):
-        
-        from settings import ECHOPRINT_CODEGEN_BIN
 
         status = 2
         
-        
+        from settings import ECHOPRINT_CODEGEN_BIN
         ecb = ECHOPRINT_CODEGEN_BIN
-        # ecb = 'echoprint-codegen'
-        
+
         path = obj.get_master_path()
 
         if not path:
@@ -1339,7 +1337,7 @@ class Media(MigrationMixin):
             obj.save()
             return None
 
-        log.debug('echoprint binary at: %s' % ecb)
+        #log.debug('echoprint binary at: %s' % ecb)
         log.debug('update echoprint: %s' % path)
 
         p = subprocess.Popen([
@@ -1361,8 +1359,8 @@ class Media(MigrationMixin):
             code = d[0]['code']
             version = d[0]['metadata']['version']
             duration = d[0]['metadata']['duration']
+
         except Exception, e:
-            print e
             code = None
             version = None
             duration = None
@@ -1371,13 +1369,9 @@ class Media(MigrationMixin):
         if code:
             
             try:
-            
-                print 'delete fingerprint on server id: %s' % obj.id 
+
                 fp.delete("%s" % obj.id)
-                
-                print 'post new fingerprint:'
                 code_pre = code
-                id = obj.updated.isoformat('T')[:-7]
                 id = obj.updated.isoformat()
                 code = fp.decode_code_string(code)
                 
@@ -1392,30 +1386,26 @@ class Media(MigrationMixin):
                         "source": "%s" % "NRGFP",
                         "import_date": "%sZ" % id
                         }
-                
-                #print nfp
-                
-                print 'PRE INGEST'
-                res = fp.ingest(nfp, split=False, do_commit=True)
-                print 'POST INGEST'
 
-                print 'getting code by id (check)'
-    
-                
-                if fp.fp_code_for_track_id("%s" % obj.id):
-                    print "ALL RIGHT!!! FP INSERTED!!"
+                # ingest fingerprint into database
+                fp.ingest(nfp, split=False, do_commit=True)
+
+                # try to look up track by id
+                code_for_track = fp.fp_code_for_track_id("%s" % obj.id)
+                if code_for_track:
+                    log.info('successfully ingested fingerprint for %s' % obj.id)
                     status = 1
-                    
                 else:
+                    log.warning('unable to ingest fingerprint for %s' % obj.id)
                     status = 2
                     
                     
                     
-                res = fp.best_match_for_query(code_string=code_pre)
-                print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-                print res.score
-                print res.match()
-                print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+                #res = fp.best_match_for_query(code_string=code_pre)
+                #print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+                #print res.score
+                #print res.match()
+                #print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
                     
                 
                     
@@ -1430,10 +1420,10 @@ class Media(MigrationMixin):
 
 
 
-    # Echoprint analyzer
+    # echonest analyzer
     def echonest_analyze(self):
 
-        log.info('Start echoprint_analyze: %s' % (self.pk))
+        log.info('Start echonest_analyze: %s' % (self.pk))
         if USE_CELERYD:
             self.echonest_analyze_task.delay(self)
         else:

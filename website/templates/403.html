@@ -1,20 +1,35 @@
-{% extends "base.html" %}
+{% extends "layout_base.html" %}
 {% load i18n %}
 
-{% block breadcrumbs %}
-<ul class="breadcrumbs">
-  <li>{% trans "Error 403" %}</li>
-</ul>
-{% endblock %}
+{% block body_class %}error error-403{% endblock %}
 
-{% block title %}{% trans "Permission denied" %}{% endblock %}
-
-{% block body-class %}error-403{% endblock %}
+{% block title %}{% trans "Permission denied" %} | {% endblock %}
 
 {% block main %}
-<h2>{% trans "Permission denied" %}</h2>
 
-<p>{% trans "Sorry but you don't have the permission to do this action." %}</p>
+    <div class="container main error-message">
+        <header class="subhead">
+                <div id="heading" class="heading heading-alt">
+                    <div class="heading-container">
+                        <div class="page-title">
+                            <h1>{% trans "Permission denied" %}</h1>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+        </header>
 
-{{ block.super }}
+        <section>
+            <p class="reason">
+                {% trans "Sorry but you don't have the permission to access this page." %}
+            </p>
+            <p class="solution">
+                {% trans "If you believe thatyou should be able to access this page please contact our support" %}
+                <br>
+                <a href="mailto:support@openbroadcast.org">support@openbroadcast.org</a>
+            </p>
+        </section>
+
+    </div>
+
 {% endblock %}

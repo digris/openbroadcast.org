@@ -333,27 +333,25 @@ class ImportFile(BaseModel):
         
         # duplicate check by sha1
         media_id = processor.id_by_sha1(obj.file)
-        log.debug('Got something by sha1?: %s' % media_id)
+        log.debug('duplicate by SHA1: %s' % media_id)
         # duplicate check by echoprint
         if not media_id:
             media_id = processor.id_by_echoprint(obj.file)
-            log.debug('Got something by echoprint?: %s' % media_id)
+            log.debug('duplicate by echoprint: %s' % media_id)
 
         try:
             metadata = processor.extract_metadata(obj.file)
-            if metadata:
-                log.info('sucessfully extracted metadata')
+            if not metadata:
+                log.warning('unable to extracted metadata')
 
-            # check if we have obp-data available
+            # check if we have obp-data available in files meta
             obp_media_uuid = metadata['obp_media_uuid'] if 'obp_media_uuid' in metadata else None
 
             if obp_media_uuid:
-                print
                 print '******************************************************************'
                 print 'got obp match'
                 print 'obp_media_uuid: %s' % obp_media_uuid
                 print '******************************************************************'
-                print
 
                 obj.status = 5
                 obj.media = Media.objects.get(uuid=obp_media_uuid)
@@ -406,7 +404,7 @@ class ImportFile(BaseModel):
 
 
         except Exception, e:
-            print e
+            print 'unable to process metadata: %s' % e
             obj.error = '%s' % e
             obj.status = 99
             obj.save()

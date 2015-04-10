@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
+import sys
 from optparse import make_option
-
 from django.core.management.base import BaseCommand, NoArgsCommand
 
 
@@ -17,27 +17,73 @@ log = logging.getLogger(__name__)
 
 class Fingerprinter(object):
     def __init__(self, * args, **kwargs):
-        self.do_delete = kwargs.get('delete')
-        self.do_create = kwargs.get('create')
+        self.delete_fingerprints = kwargs.get('delete_fingerprints')
+        self.create_fingerprints = kwargs.get('create_fingerprints')
+        self.show_stats = kwargs.get('show_stats')
+        self.force_action = kwargs.get('force_action')
         self.verbosity = int(kwargs.get('verbosity', 1))
 
     def run(self):
 
-        if self.do_delete:
+        if self.delete_fingerprints:
+
+            print
+            print '********************************************************'
+            print '* delete all fingerprints'
+            print '********************************************************'
+
             from alibrary.models import Media
-            print 'delete fingerprints'
-            fp.erase_database(True)
+
+            if raw_input('are you sure? [y/N]: ').lower() == 'y':
+                fp.erase_database(True)
+                print
+                Media.objects.all().update(echoprint_status=0)
+                Media.objects.all().update(echoprint_id=None)
+                print 'done'
+
+            else:
+                print
+                print 'exiting'
+                sys.exit(0)
             
             
-        if self.do_create:
+        if self.create_fingerprints:
+
+            print
+            print '********************************************************'
+            print '* (re-)create fingerprints'
+            print '********************************************************'
+
             from alibrary.models import Media
-            print 'create fingerprints'
             
-            media = Media.objects.exclude(master='')
-            for m in media:
-                print m.name
-                m.update_echoprint()
-            
+            qs = Media.objects.exclude(master='')[0:1]
+            num_total = qs.count()
+            num_done = 0
+            for object in qs:
+                print object.pk
+                object.update_echoprint()
+                num_done += 1
+                print '%0.2f%% - %s/%s' % ((float(num_done) / float(num_total) * 100), num_done, num_total)
+
+
+        if self.show_stats:
+
+            print
+            print '********************************************************'
+            print '* fingerprint stats'
+            print '********************************************************'
+
+            from alibrary.models import Media
+
+            qs = Media.objects.all()
+
+
+            print ' - num. total:     %s' % qs.count()
+            print ' - num. init:      %s' % qs.filter(echoprint_status=0).count()
+            print ' - num. assigned:  %s' % qs.filter(echoprint_status=1).count()
+            print ' - num. error:     %s' % qs.filter(echoprint_status__in=[2, 99]).count()
+            print
+
             
 
 
@@ -52,15 +98,24 @@ class Command(NoArgsCommand):
     option_list = BaseCommand.option_list + (
         make_option('--delete',
             action='store_true',
-            dest='delete',
+            dest='delete_fingerprints',
             default=False,
             help='Delete all fingerprints'),
         make_option('--create',
             action='store_true',
-            dest='create',
+            dest='create_fingerprints',
             default=False,
             help='Create fingerprints'),
-
+        make_option('--force',
+            action='store_true',
+            dest='force_action',
+            default=False,
+            help='Enforce action'),
+        make_option('--stats',
+            action='store_true',
+            dest='show_stats',
+            default=False,
+            help='Display stats'),
         )
 
     def handle_noargs(self, **options):
