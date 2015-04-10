@@ -140,7 +140,7 @@
 		{% endif %}
 
 
-		{% if object.address %}
+		{% if object.address or object.country or object.email or object.phone or object.fax %}
 		<dt>
 			{% trans "Address" %}:
 		</dt>
