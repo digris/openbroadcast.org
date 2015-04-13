@@ -335,7 +335,7 @@ def reassign_items(request, *args, **kwargs):
     name = kwargs.get('name', None)
     release_id = kwargs.get('release_id', None)
 
-    if media_ids and release_id:
+    if media_ids and (release_id or name):
 
         log.debug(u'reassigning items: %s to %s' % ((',').join(media_ids), release_id))
 
