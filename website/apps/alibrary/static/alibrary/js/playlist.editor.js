@@ -77,6 +77,9 @@ PlaylistEditor = function () {
          */
 
         if (!self.readonly) {
+
+            self.dom_element.css('overflow-y', 'scroll');
+
             self.dom_element.sortable(
                 {
                     placeholder: "item drop-placeholder",
@@ -85,14 +88,16 @@ PlaylistEditor = function () {
                     //cursorAt: { left: 5 },
                     delay: 150,
                     handle: '.base',
-                    scroll: true,
-                    scrollSensitivity: 10
+                    scroll: false,
+                    scrollSensitivity: 5,
+                    scrollSpeed: 4
+                    //containment: "parent"
                 }
             );
 
             self.dom_element.disableSelection();
         }
-        ;
+
 
 
         self.dom_element.on("sortupdate", function (e, ui) {
