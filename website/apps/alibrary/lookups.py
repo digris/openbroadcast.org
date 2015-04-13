@@ -103,7 +103,7 @@ class ArtistLookup(ModelLookup):
             pass
 
         html = '<img src="%s">' % image
-        html += '<span>%s</span>' % item.name
+        html += '<span>%s</span>' % (item.name)
 
         return mark_safe(html)
 

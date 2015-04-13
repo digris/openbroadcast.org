@@ -46,30 +46,19 @@ var ImportfileApp = function () {
 
     this.bindings = function () {
 
-
-
-
-        $('body').on('click', '.page-header', function(){
-            alert(123);
-        })
-
-
-
-
         $('.result-set', self.container).live('click', function (e) {
-
-            //alert('c')
 
             var el = $(this);
             var import_tag;
-
 
             if (el.hasClass('musicbrainz-tag')) {
                 debug.debug('mb set selected:', el.index());
                 var mb_tag = self.local_data.results_musicbrainz[el.index()]
                 import_tag = self.parse_mb_tag(mb_tag);
-            }
 
+                // set provider for result highlighting
+                import_tag['metadata_provider'] = 'musicbrainz';
+            }
 
             if (el.hasClass('provider-tag')) {
                 debug.debug('provider set selected');
@@ -87,13 +76,14 @@ var ImportfileApp = function () {
                 // unset links
                 delete import_tag['alibrary_release_id'];
 
-                import_tag['name'] = results_tag['media_name']
-                import_tag['artist'] = results_tag['artist_name']
-                import_tag['release'] = results_tag['release_name']
-                import_tag['label'] = results_tag['label_name']
+                import_tag['name'] = results_tag['media_name'];
+                import_tag['artist'] = results_tag['artist_name'];
+                import_tag['release'] = results_tag['release_name'];
+                import_tag['label'] = results_tag['label_name'];
 
+                // set provider for result highlighting
+                import_tag['metadata_provider'] = 'file';
             }
-
 
             debug.debug(import_tag);
 
@@ -102,9 +92,7 @@ var ImportfileApp = function () {
         });
 
         $('a.toggle-advanced', self.container).live('click', function (e) {
-
             $('.advanced-fields', self.container).toggle();
-
         });
 
         // autocomplete (input)
@@ -494,9 +482,8 @@ var ImportfileApp = function () {
             self.update_callback(data);
         }
 
-
         var d = {
-            object: data,
+            object: data
         };
 
         var html = nj.render('importer/nj/importfile.html', d);
@@ -504,10 +491,19 @@ var ImportfileApp = function () {
 
         // try to set states
         var selected_mb_id = data.import_tag.mb_release_id;
-        //console.log('selected_mb_id', selected_mb_id);
         if (selected_mb_id) {
             $('.mb_id-' + selected_mb_id, self.container).addClass('selected');
         }
+
+        var metadata_provider = data.import_tag.metadata_provider;
+        if (metadata_provider == 'file') {
+           $('.provider-tag', self.container).addClass('selected');
+        }
+
+
+
+
+
         self.container.removeClass('loading');
 
         self.rebind();
@@ -576,22 +572,11 @@ var ImportfileApp = function () {
             mb_track_id: mb_tag.media.mb_id,
             mb_release_id: mb_tag.mb_id,
             mb_artist_id: mb_tag.artist.mb_id,
-            mb_label_id: mb_tag.label.mb_id,
+            mb_label_id: mb_tag.label.mb_id
 
-            /*
-             release: $('input.release', form_result).val(),
-             releasedate: $('input.releasedate', form_result).val(),
-             artist: $('input.artist', form_result).val(),
-             tracknumber: $('input.tracknumber', form_result).val(),
-
-             mb_track_id: $('input.mb-track-id', form_result).val(),
-             mb_artist_id: $('input.mb-artist-id', form_result).val(),
-             mb_release_id: $('input.mb-release-id', form_result).val(),
-             */
         }
 
         debug.debug('import_tag:', import_tag);
-
 
         return import_tag;
     }

@@ -12527,10 +12527,6 @@ ul.ui-autocomplete > li img {
 .lookup.provider .item.available.hover {
   background-color: #ddffd9;
 }
-/* line 268, ../sass/apps/_alibrary.sass */
-.lookup.provider .item.unavailable {
-  cursor: wait;
-}
 /* line 271, ../sass/apps/_alibrary.sass */
 .lookup.provider .item.unavailable span.name {
   color: #a5a5a5;

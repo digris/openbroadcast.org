@@ -53,25 +53,16 @@ class ImportFileResource(ModelResource):
         
         
     def obj_update(self, bundle, request, **kwargs):
-        #import time
-        #time.sleep(3)
         return super(ImportFileResource, self).obj_update(bundle, request, **kwargs)
         
 
     def obj_create(self, bundle, request, **kwargs):
         """
-        Little switch to play with jquery fileupload
+        Little hack to play with jquery fileupload
         """
         try:
-
-            #import_id = request.GET['import_session']
             import_id = request.GET.get('import_session', None)
-            #uuid_key = request.GET.get('uuid_key', None)
             uuid_key = request.GET.get('import_session__uuid_key', None)
-
-
-            print "####################################"
-            print request.FILES[u'files[]']
 
             if import_id:
                 imp = Import.objects.get(pk=import_id)
@@ -83,8 +74,6 @@ class ImportFileResource(ModelResource):
 
             else:
                 bundle.data['import_session'] = None
-
-
 
             bundle.data['file'] = request.FILES[u'files[]']
             

@@ -484,6 +484,9 @@ class Importer(object):
         results_musicbrainz = obj.results_musicbrainz
         results_tag = obj.results_tag
 
+
+        selected_import_tag = import_tag.copy()
+
         
         """
         Apply musicbrainz tags if unique
@@ -498,13 +501,13 @@ class Importer(object):
             tag_release_name = None
             if 'release_name' in results_tag:
                 tag_release_name = results_tag['release_name']
-                print tag_release_name
+                #print tag_release_name
             for res in results_musicbrainz:
                 if tag_release_name and 'name' in res:
                     result_release_name = res['name']
 
                     dist = distance(tag_release_name.lower(), result_release_name.lower())
-                    print 'matching "%s" vs "%s" - dist: %s' % (tag_release_name, result_release_name, dist)
+                    #print 'matching "%s" vs "%s" - dist: %s' % (tag_release_name, result_release_name, dist)
 
                     if dist < 4:
                         mb = res
@@ -545,11 +548,12 @@ class Importer(object):
 
             #if a.count() == 1:
             if a.count() > 0:
-                log.debug('artist: %s - %s' % (a[0].name, a[0].get_api_url()))
+                #log.debug('artist: %s - %s' % (a[0].name, a[0].get_api_url()))
                 import_tag['alibrary_artist_id'] = a[0].pk
                 import_tag['alibrary_artist_resource_uri'] = a[0].get_api_url()
             else:
-                log.debug('no artist to link with')
+                pass
+                #log.debug('no artist to link with')
         else:
             pass
             #print 'no artist name in tag'
@@ -558,15 +562,103 @@ class Importer(object):
             r = Release.objects.filter(name=import_tag['release'])
             #if r.count() == 1:
             if r.count() > 0:
-                log.debug('release: %s - %s' % (r[0].name, r[0].get_api_url()))
+                #log.debug('release: %s - %s' % (r[0].name, r[0].get_api_url()))
                 import_tag['alibrary_release_id'] = r[0].pk
                 import_tag['alibrary_release_resource_uri'] = r[0].get_api_url()
             else:
-                log.debug('no release to link with')
+                pass
+                #log.debug('no release to link with')
         else:
             pass
             #print 'no release name in tag'
-        
+
+
+
+
+        # remove musicbrainz & discogs ids in case that assigned by ID3
+        if len(selected_import_tag) > 0:
+            if not 'mb_release_id' in selected_import_tag:
+                import_tag.pop("mb_release_id", None)
+
+            if not 'mb_artist_id' in selected_import_tag:
+                import_tag.pop("mb_artist_id", None)
+
+            if not 'mb_track_id' in selected_import_tag:
+                import_tag.pop("mb_track_id", None)
+
+            if not 'mb_label_id' in selected_import_tag:
+                import_tag.pop("mb_label_id", None)
+
+
+
+        # clean 'wrong' relations
+        # https://lab.hazelfire.com/issues/681
+        print '/////////////////////////////////////'
+        print import_tag
+        print
+        pop_release = False
+        pop_artist = False
+        pop_media = False
+        if len(results_musicbrainz) > 0:
+
+            if 'mb_release_id' in import_tag:
+                print 'cleaning mb assignments'
+                for result in results_musicbrainz:
+
+                    if 'mb_id' in result and result['mb_id'] == import_tag['mb_release_id']:
+
+                        if not result['name'] == import_tag['release']:
+                            print '%s <> %s' % (result['name'], import_tag['release'])
+                            print 'release name mismatch. remove mb_id from result'
+                            pop_release = True
+
+            if 'mb_artist_id' in import_tag:
+                print 'cleaning mb assignments'
+                for result in results_musicbrainz:
+
+                    if 'artist' in result and 'mb_id' in result['artist'] and result['artist']['mb_id'] == import_tag['mb_artist_id']:
+
+                        if not result['artist']['name'] == import_tag['artist']:
+                            print '%s <> %s' % (result['artist']['name'], import_tag['artist'])
+                            print 'artist name mismatch. remove mb_id from result'
+                            pop_artist = True
+
+
+
+            if 'mb_track_id' in import_tag:
+                print 'cleaning mb assignments'
+                for result in results_musicbrainz:
+
+                    if 'media' in result and 'mb_id' in result['media'] and result['media']['mb_id'] == import_tag['mb_track_id']:
+
+                        if not result['media']['name'] == import_tag['name']:
+                            print '%s <> %s' % (result['media']['name'], import_tag['name'])
+                            print 'media name mismatch. remove mb_id from result'
+                            pop_media = True
+
+
+
+
+
+
+
+
+        """"""
+        if pop_release:
+            import_tag.pop("mb_release_id", None)
+            import_tag.pop("mb_label_id", None)
+            import_tag.pop("alibrary_release_id", None)
+            import_tag.pop("alibrary_release_resource_uri", None)
+
+        if pop_artist:
+            import_tag.pop("mb_artist_id", None)
+            import_tag.pop("alibrary_artist_id", None)
+            import_tag.pop("alibrary_artist_resource_uri", None)
+
+        if pop_media:
+            import_tag.pop("mb_track_id", None)
+
+
         
         return import_tag
         

@@ -161,124 +161,129 @@ form.form-horizontal .controls.field-lookup .field-lookup-holder {
   background-repeat: no-repeat;
   color: #5a5a5a;
 }
-/* line 170, ../sass/site/_forms_extra.sass */
+/* line 157, ../sass/site/_forms_extra.sass */
+form.form-horizontal .controls.field-lookup .field-lookup-holder span:empty {
+  background: red;
+  height: 120px;
+}
+/* line 174, ../sass/site/_forms_extra.sass */
 form.form-horizontal .controls.field-lookup .field-lookup-holder.hover {
   border: 1px solid #999999;
   cursor: pointer;
 }
-/* line 178, ../sass/site/_forms_extra.sass */
+/* line 182, ../sass/site/_forms_extra.sass */
 form.form-horizontal .controls.field-lookup .field-lookup-holder.lookup-match {
   background-color: #ddffd9 !important;
 }
-/* line 180, ../sass/site/_forms_extra.sass */
+/* line 184, ../sass/site/_forms_extra.sass */
 form.form-horizontal .controls.field-lookup .field-lookup-holder.lookup-diff {
   background-color: #fff4d9;
 }
 
-/* line 189, ../sass/site/_forms_extra.sass */
+/* line 193, ../sass/site/_forms_extra.sass */
 form.form-horizontal.form-compact fieldset {
   padding: 0 0 0 0;
 }
-/* line 193, ../sass/site/_forms_extra.sass */
+/* line 197, ../sass/site/_forms_extra.sass */
 form.form-horizontal.form-compact fieldset {
   background-color: #fafafa;
   margin-top: 20px;
 }
-/* line 198, ../sass/site/_forms_extra.sass */
+/* line 202, ../sass/site/_forms_extra.sass */
 form.form-horizontal.form-compact fieldset .control-group {
   padding-left: 7px;
 }
-/* line 201, ../sass/site/_forms_extra.sass */
+/* line 205, ../sass/site/_forms_extra.sass */
 form.form-horizontal.form-compact legend {
   width: 816px;
   padding: 6px 7px;
   line-height: 14px;
   background-color: #f2f2f2;
 }
-/* line 207, ../sass/site/_forms_extra.sass */
+/* line 211, ../sass/site/_forms_extra.sass */
 form.form-horizontal.form-compact legend {
   margin-bottom: 7px;
   font-size: 100%;
   font-weight: bold;
   border-bottom: none;
 }
-/* line 214, ../sass/site/_forms_extra.sass */
+/* line 218, ../sass/site/_forms_extra.sass */
 form.form-horizontal.form-compact legend + .control-group {
   margin-bottom: 4px;
   margin-top: 4px;
 }
-/* line 218, ../sass/site/_forms_extra.sass */
+/* line 222, ../sass/site/_forms_extra.sass */
 form.form-horizontal.form-compact .control-group {
   margin-bottom: 2px;
 }
 
-/* line 224, ../sass/site/_forms_extra.sass */
+/* line 228, ../sass/site/_forms_extra.sass */
 body.api_lookup-progress {
   opacity: 0.4;
 }
 
-/* line 234, ../sass/site/_forms_extra.sass */
+/* line 238, ../sass/site/_forms_extra.sass */
 .lookup.provider__.listing.fixed {
   position: fixed;
   width: 260px;
   top: 120px;
 }
-/* line 239, ../sass/site/_forms_extra.sass */
+/* line 243, ../sass/site/_forms_extra.sass */
 .lookup.provider__ .item {
   padding: 2px 2px 0px 2px;
   background-color: #efefef;
 }
-/* line 243, ../sass/site/_forms_extra.sass */
+/* line 247, ../sass/site/_forms_extra.sass */
 .lookup.provider__ .item.available {
   background-color: #ddffd9;
 }
-/* line 246, ../sass/site/_forms_extra.sass */
+/* line 250, ../sass/site/_forms_extra.sass */
 .lookup.provider__ .item.hover {
   background-color: red;
 }
 
 /* specific form styles
  * release edit view */
-/* line 259, ../sass/site/_forms_extra.sass */
+/* line 263, ../sass/site/_forms_extra.sass */
 div.bulk_edit {
   padding: 20px;
   background: #ddffd9;
 }
 
-/* line 269, ../sass/site/_forms_extra.sass */
+/* line 273, ../sass/site/_forms_extra.sass */
 #release_media_form .help-inline {
   font-size: 78%;
 }
-/* line 273, ../sass/site/_forms_extra.sass */
+/* line 277, ../sass/site/_forms_extra.sass */
 #release_media_form .form-header {
   background: #fafafa;
   margin: 7px 0 0 0;
 }
-/* line 276, ../sass/site/_forms_extra.sass */
+/* line 280, ../sass/site/_forms_extra.sass */
 #release_media_form .form-header ul {
   margin: 0;
   padding: 0 10px;
 }
-/* line 279, ../sass/site/_forms_extra.sass */
+/* line 283, ../sass/site/_forms_extra.sass */
 #release_media_form .form-header ul li {
   padding: 6px 0 0 0;
   color: #666666;
   text-transform: uppercase;
   font-size: 90%;
 }
-/* line 284, ../sass/site/_forms_extra.sass */
+/* line 288, ../sass/site/_forms_extra.sass */
 #release_media_form .form-header ul li a {
   padding: 0 0 0 10px;
 }
-/* line 286, ../sass/site/_forms_extra.sass */
+/* line 290, ../sass/site/_forms_extra.sass */
 #release_media_form .form-header ul li a .icon-large {
   font-size: 110%;
 }
-/* line 289, ../sass/site/_forms_extra.sass */
+/* line 293, ../sass/site/_forms_extra.sass */
 #release_media_form .form-header ul li.dropdown {
   padding: 4px 10px 0;
 }
-/* line 291, ../sass/site/_forms_extra.sass */
+/* line 295, ../sass/site/_forms_extra.sass */
 #release_media_form .form-header ul li.dropdown select {
   height: 18px;
   border: 1px solid lightgrey;
@@ -286,78 +291,78 @@ div.bulk_edit {
   padding: 0 4px;
   box-shadow: none;
 }
-/* line 298, ../sass/site/_forms_extra.sass */
+/* line 302, ../sass/site/_forms_extra.sass */
 #release_media_form .form-extra.readonly {
   color: #a5a5a5;
   padding: 2px 0 0 0;
 }
 
-/* line 312, ../sass/site/_forms_extra.sass */
+/* line 316, ../sass/site/_forms_extra.sass */
 fieldset ul.label-select {
   margin-left: 127px;
 }
-/* line 314, ../sass/site/_forms_extra.sass */
+/* line 318, ../sass/site/_forms_extra.sass */
 fieldset ul.label-select li {
   background: #efefef;
   padding: 1px 4px 1px 4px;
   margin-right: 10px;
 }
 
-/* line 328, ../sass/site/_forms_extra.sass */
+/* line 332, ../sass/site/_forms_extra.sass */
 .relation-row .span1 .controls {
   margin-left: 80px !important;
 }
 
-/* line 334, ../sass/site/_forms_extra.sass */
+/* line 338, ../sass/site/_forms_extra.sass */
 ul.relations.external li > a {
   color: #5a5a5a;
 }
-/* line 336, ../sass/site/_forms_extra.sass */
+/* line 340, ../sass/site/_forms_extra.sass */
 ul.relations.external li > a:hover {
   color: #6633cc;
 }
-/* line 338, ../sass/site/_forms_extra.sass */
+/* line 342, ../sass/site/_forms_extra.sass */
 ul.relations.external li > a i {
   font-size: 130%;
 }
 
-/* line 343, ../sass/site/_forms_extra.sass */
+/* line 347, ../sass/site/_forms_extra.sass */
 fieldset.relations .relation {
   border: 1px solid #efefef;
   background: #efefef;
   padding: 1px 4px 1px 4px;
   margin: 2px 0 2px 127px;
 }
-/* line 349, ../sass/site/_forms_extra.sass */
+/* line 353, ../sass/site/_forms_extra.sass */
 fieldset.relations .relation:hover {
   border: 1px solid #a5a5a5;
 }
-/* line 352, ../sass/site/_forms_extra.sass */
+/* line 356, ../sass/site/_forms_extra.sass */
 fieldset.relations .relation a {
   color: #5a5a5a;
 }
-/* line 354, ../sass/site/_forms_extra.sass */
+/* line 358, ../sass/site/_forms_extra.sass */
 fieldset.relations .relation a:hover {
   text-decoration: none;
 }
-/* line 357, ../sass/site/_forms_extra.sass */
+/* line 361, ../sass/site/_forms_extra.sass */
 fieldset.relations .relation.match {
   background: #ddffd9;
 }
-/* line 359, ../sass/site/_forms_extra.sass */
+/* line 363, ../sass/site/_forms_extra.sass */
 fieldset.relations .relation.diff {
   background: #fff4d9;
 }
 
-/* line 366, ../sass/site/_forms_extra.sass */
+/* line 370, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.name {
   margin-left: 12px;
 }
-/* line 369, ../sass/site/_forms_extra.sass */
+/* line 373, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.action {
   margin-left: 12px;
 }
-/* line 372, ../sass/site/_forms_extra.sass */
+/* line 376, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon {
   height: 16px;
   width: 16px;
@@ -365,176 +370,176 @@ ___ul.links.external li.icon {
   background-image: url(/static/img/base/listview.iconset.links_external.png);
   /* individual links (icon sprite) */
 }
-/* line 377, ../sass/site/_forms_extra.sass */
+/* line 381, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon:hover {
   background-position: 0 -16px;
 }
-/* line 380, ../sass/site/_forms_extra.sass */
+/* line 384, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.unknown {
   background-image: none;
 }
-/* line 383, ../sass/site/_forms_extra.sass */
+/* line 387, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.discogs {
   background-position: 0 0;
 }
-/* line 385, ../sass/site/_forms_extra.sass */
+/* line 389, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.discogs.available {
   background-position: 0 16px;
 }
-/* line 387, ../sass/site/_forms_extra.sass */
+/* line 391, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.wikipedia {
   background-position: -16px 0;
 }
-/* line 389, ../sass/site/_forms_extra.sass */
+/* line 393, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.wikipedia:hover {
   background-position: -16px 16px;
 }
-/* line 391, ../sass/site/_forms_extra.sass */
+/* line 395, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.lastfm {
   background-position: -32px 0;
 }
-/* line 393, ../sass/site/_forms_extra.sass */
+/* line 397, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.lastfm:hover {
   background-position: -32px 16px;
 }
-/* line 395, ../sass/site/_forms_extra.sass */
+/* line 399, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.musicbrainz {
   background-position: -48px 0;
 }
-/* line 397, ../sass/site/_forms_extra.sass */
+/* line 401, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.musicbrainz:hover {
   background-position: -48px 16px;
 }
-/* line 399, ../sass/site/_forms_extra.sass */
+/* line 403, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.soundcloud {
   background-position: -64px 0;
 }
-/* line 401, ../sass/site/_forms_extra.sass */
+/* line 405, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.soundcloud:hover {
   background-position: -64px 16px;
 }
-/* line 403, ../sass/site/_forms_extra.sass */
+/* line 407, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.facebook {
   background-position: -80px 0;
 }
-/* line 405, ../sass/site/_forms_extra.sass */
+/* line 409, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.facebook:hover {
   background-position: -80px 16px;
 }
-/* line 407, ../sass/site/_forms_extra.sass */
+/* line 411, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.youtube {
   background-position: -96px 0;
 }
-/* line 409, ../sass/site/_forms_extra.sass */
+/* line 413, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.youtube:hover {
   background-position: -96px 16px;
 }
-/* line 411, ../sass/site/_forms_extra.sass */
+/* line 415, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.myspace {
   background-position: -112px 0;
 }
-/* line 413, ../sass/site/_forms_extra.sass */
+/* line 417, ../sass/site/_forms_extra.sass */
 ___ul.links.external li.icon.myspace:hover {
   background-position: -112px 16px;
 }
 
-/* line 424, ../sass/site/_forms_extra.sass */
+/* line 428, ../sass/site/_forms_extra.sass */
 form.form-horizontal .input-image .control-group .controls ul, form.form-horizontal .input-file .control-group .controls ul {
   margin-left: 0;
   list-style-type: none;
 }
-/* line 427, ../sass/site/_forms_extra.sass */
+/* line 431, ../sass/site/_forms_extra.sass */
 form.form-horizontal .input-image .control-group .controls ul li input[type="checkbox"], form.form-horizontal .input-file .control-group .controls ul li input[type="checkbox"] {
   float: left;
   margin-right: 10px;
 }
 
-/* line 438, ../sass/site/_forms_extra.sass */
+/* line 442, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline {
   color: #333333;
   padding: 5px 10px;
   margin-bottom: 10px;
 }
-/* line 442, ../sass/site/_forms_extra.sass */
+/* line 446, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline h1, form.form-horizontal fieldset div.notes-inline h2, form.form-horizontal fieldset div.notes-inline h3 {
   color: #333333;
   font-weight: bold;
   font-size: 12px;
   line-height: 18px;
 }
-/* line 447, ../sass/site/_forms_extra.sass */
+/* line 451, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline p {
   color: #333333;
   width: 80%;
 }
-/* line 452, ../sass/site/_forms_extra.sass */
+/* line 456, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline.notes-info {
   background-color: #ddffd9;
   color: #00bb00;
 }
-/* line 455, ../sass/site/_forms_extra.sass */
+/* line 459, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline.notes-info h1, form.form-horizontal fieldset div.notes-inline.notes-info h2, form.form-horizontal fieldset div.notes-inline.notes-info h3 {
   color: #00bb00;
 }
-/* line 457, ../sass/site/_forms_extra.sass */
+/* line 461, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline.notes-info p {
   color: #00bb00;
 }
-/* line 460, ../sass/site/_forms_extra.sass */
+/* line 464, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline.notes-warning {
   background-color: #fcf8e3;
   color: #c09853;
 }
-/* line 463, ../sass/site/_forms_extra.sass */
+/* line 467, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline.notes-warning h1, form.form-horizontal fieldset div.notes-inline.notes-warning h2, form.form-horizontal fieldset div.notes-inline.notes-warning h3 {
   color: #c09853;
 }
-/* line 465, ../sass/site/_forms_extra.sass */
+/* line 469, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline.notes-warning p {
   color: #c09853;
 }
-/* line 468, ../sass/site/_forms_extra.sass */
+/* line 472, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline.notes-error {
   background-color: #ffeed4;
   color: #ff743e;
 }
-/* line 471, ../sass/site/_forms_extra.sass */
+/* line 475, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline.notes-error h1, form.form-horizontal fieldset div.notes-inline.notes-error h2, form.form-horizontal fieldset div.notes-inline.notes-error h3 {
   color: #ff743e;
 }
-/* line 473, ../sass/site/_forms_extra.sass */
+/* line 477, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline.notes-error p {
   color: #ff743e;
 }
-/* line 476, ../sass/site/_forms_extra.sass */
+/* line 480, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline.notes-success {
   background-color: #ddffd9;
   color: #00bb00;
 }
-/* line 479, ../sass/site/_forms_extra.sass */
+/* line 483, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline.notes-success h1, form.form-horizontal fieldset div.notes-inline.notes-success h2, form.form-horizontal fieldset div.notes-inline.notes-success h3 {
   color: #00bb00;
 }
-/* line 481, ../sass/site/_forms_extra.sass */
+/* line 485, ../sass/site/_forms_extra.sass */
 form.form-horizontal fieldset div.notes-inline.notes-success p {
   color: #00bb00;
 }
 
-/* line 490, ../sass/site/_forms_extra.sass */
+/* line 494, ../sass/site/_forms_extra.sass */
 form div.form-help {
   padding-bottom: 7px;
 }
-/* line 492, ../sass/site/_forms_extra.sass */
+/* line 496, ../sass/site/_forms_extra.sass */
 form div.form-help h4 {
   font-size: 100%;
   text-transform: none;
 }
-/* line 495, ../sass/site/_forms_extra.sass */
+/* line 499, ../sass/site/_forms_extra.sass */
 form div.form-help p {
   color: #a5a5a5;
 }
 
-/* line 498, ../sass/site/_forms_extra.sass */
+/* line 502, ../sass/site/_forms_extra.sass */
 .ui-combo-button {
   border: 1px solid green;
   background: white;
@@ -543,64 +548,64 @@ form div.form-help p {
   width: 16px;
 }
 
-/* line 505, ../sass/site/_forms_extra.sass */
+/* line 509, ../sass/site/_forms_extra.sass */
 ul.selectable-deck {
   width: 276px;
   margin: 10px 0 4px 0;
   background-color: transparent !important;
 }
-/* line 510, ../sass/site/_forms_extra.sass */
+/* line 514, ../sass/site/_forms_extra.sass */
 ul.selectable-deck > li {
   color: #5a5a5a;
   border-bottom: 1px solid #ececec;
   padding: 1px 4px 1px 4px;
   margin-right: 10px;
 }
-/* line 515, ../sass/site/_forms_extra.sass */
+/* line 519, ../sass/site/_forms_extra.sass */
 ul.selectable-deck > li a.selectable-deck-remove {
   color: #999999;
 }
-/* line 517, ../sass/site/_forms_extra.sass */
+/* line 521, ../sass/site/_forms_extra.sass */
 ul.selectable-deck > li a.selectable-deck-remove i {
   font-size: 14px;
 }
-/* line 519, ../sass/site/_forms_extra.sass */
+/* line 523, ../sass/site/_forms_extra.sass */
 ul.selectable-deck > li a.selectable-deck-remove:hover {
   text-decoration: none;
   color: #6633cc;
 }
 
-/* line 533, ../sass/site/_forms_extra.sass */
+/* line 537, ../sass/site/_forms_extra.sass */
 .control-group.error label {
   color: #ff743e;
 }
-/* line 535, ../sass/site/_forms_extra.sass */
+/* line 539, ../sass/site/_forms_extra.sass */
 .control-group.error input {
   color: #999999;
   border-color: #ff743e;
   background-color: #ffeed4;
 }
-/* line 540, ../sass/site/_forms_extra.sass */
+/* line 544, ../sass/site/_forms_extra.sass */
 .control-group.error span.help-inline > strong {
   color: #ff743e;
   font-weight: normal;
 }
 
-/* line 553, ../sass/site/_forms_extra.sass */
+/* line 557, ../sass/site/_forms_extra.sass */
 form.form-playlist div.target-duration div.controls label {
   float: left;
   width: 26px;
   padding: 0 0 0 7px;
 }
-/* line 563, ../sass/site/_forms_extra.sass */
+/* line 567, ../sass/site/_forms_extra.sass */
 form.form-playlist div.target-duration div.controls label.selected {
   background-color: #ddffd9;
 }
-/* line 565, ../sass/site/_forms_extra.sass */
+/* line 569, ../sass/site/_forms_extra.sass */
 form.form-playlist div.target-duration div.controls label input {
   padding: 0;
 }
-/* line 572, ../sass/site/_forms_extra.sass */
+/* line 576, ../sass/site/_forms_extra.sass */
 form.form-playlist div.seasons div.controls label,
 form.form-playlist div.weather div.controls label {
   float: left;
@@ -609,21 +614,21 @@ form.form-playlist div.weather div.controls label {
   border: 1px solid #cccccc;
   margin-right: 5px;
 }
-/* line 578, ../sass/site/_forms_extra.sass */
+/* line 582, ../sass/site/_forms_extra.sass */
 form.form-playlist div.seasons div.controls label.selected,
 form.form-playlist div.weather div.controls label.selected {
   background-color: #ddffd9;
 }
-/* line 580, ../sass/site/_forms_extra.sass */
+/* line 584, ../sass/site/_forms_extra.sass */
 form.form-playlist div.seasons div.controls label input,
 form.form-playlist div.weather div.controls label input {
   padding: 0;
 }
-/* line 588, ../sass/site/_forms_extra.sass */
+/* line 592, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul {
   padding: 4px 0px 0;
 }
-/* line 591, ../sass/site/_forms_extra.sass */
+/* line 595, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul li {
   width: 87px;
   margin: 0 2px 2px 0;
@@ -631,52 +636,52 @@ form.form-playlist div.dayparts div.controls ul li {
   height: 18px;
   border: 1px solid #cccccc;
 }
-/* line 600, ../sass/site/_forms_extra.sass */
+/* line 604, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul li label {
   text-align: center;
 }
-/* line 603, ../sass/site/_forms_extra.sass */
+/* line 607, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul li:hover {
   border-color: #555555;
 }
-/* line 606, ../sass/site/_forms_extra.sass */
+/* line 610, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul li.selected {
   background-color: #d4f3da !important;
   border-color: #555555;
 }
-/* line 609, ../sass/site/_forms_extra.sass */
+/* line 613, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul li.selected:hover {
   border-color: #cccccc;
 }
-/* line 612, ../sass/site/_forms_extra.sass */
+/* line 616, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul li:nth-child(2) {
   background-color: #fbd1ff;
 }
-/* line 614, ../sass/site/_forms_extra.sass */
+/* line 618, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul li:nth-child(3) {
   background-color: #ffd8bf;
 }
-/* line 616, ../sass/site/_forms_extra.sass */
+/* line 620, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul li:nth-child(4) {
   background-color: #fff9bf;
 }
-/* line 618, ../sass/site/_forms_extra.sass */
+/* line 622, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul li:nth-child(5) {
   background-color: #ccffbf;
 }
-/* line 620, ../sass/site/_forms_extra.sass */
+/* line 624, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul li:nth-child(6) {
   background-color: #bfffeb;
 }
-/* line 622, ../sass/site/_forms_extra.sass */
+/* line 626, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul li:nth-child(7) {
   background-color: #bfe9ff;
 }
-/* line 624, ../sass/site/_forms_extra.sass */
+/* line 628, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul li:nth-child(8) {
   background-color: #bfc7ff;
 }
-/* line 627, ../sass/site/_forms_extra.sass */
+/* line 631, ../sass/site/_forms_extra.sass */
 form.form-playlist div.dayparts div.controls ul li.title {
   color: #5a5a5a;
   border: none;
@@ -685,49 +690,49 @@ form.form-playlist div.dayparts div.controls ul li.title {
   text-align: center;
 }
 
-/* line 649, ../sass/site/_forms_extra.sass */
+/* line 653, ../sass/site/_forms_extra.sass */
 div.form-errors {
   margin: 20px 0 14px;
   padding: 10px;
   background: #ffeed4;
 }
-/* line 654, ../sass/site/_forms_extra.sass */
+/* line 658, ../sass/site/_forms_extra.sass */
 div.form-errors strong {
   color: #ff743e;
 }
-/* line 658, ../sass/site/_forms_extra.sass */
+/* line 662, ../sass/site/_forms_extra.sass */
 div.form-errors ul.errorlist:not(:first-child) {
   list-style: none;
   margin: 0 0 2px 0;
   clear: both;
 }
-/* line 663, ../sass/site/_forms_extra.sass */
+/* line 667, ../sass/site/_forms_extra.sass */
 div.form-errors ul.errorlist:not(:first-child) > li {
   padding: 6px 0 2px;
   border-bottom: 1px solid rgba(255, 116, 62, 0.18);
 }
-/* line 667, ../sass/site/_forms_extra.sass */
+/* line 671, ../sass/site/_forms_extra.sass */
 div.form-errors ul.errorlist:not(:first-child) > li > ul {
   list-style: none;
   font-style: italic;
 }
-/* line 672, ../sass/site/_forms_extra.sass */
+/* line 676, ../sass/site/_forms_extra.sass */
 div.form-errors ul.errorlist:not(:first-child) > li > ul > li {
   font-style: italic;
 }
-/* line 678, ../sass/site/_forms_extra.sass */
+/* line 682, ../sass/site/_forms_extra.sass */
 div.form-errors dl {
   margin: 4px 0;
 }
-/* line 680, ../sass/site/_forms_extra.sass */
+/* line 684, ../sass/site/_forms_extra.sass */
 div.form-errors dl dt {
   width: 100px;
 }
-/* line 682, ../sass/site/_forms_extra.sass */
+/* line 686, ../sass/site/_forms_extra.sass */
 div.form-errors dl dd {
   margin-left: 100px;
 }
-/* line 684, ../sass/site/_forms_extra.sass */
+/* line 688, ../sass/site/_forms_extra.sass */
 div.form-errors dl dd ul.errorlist {
   margin: 0;
   font-style: italic;
