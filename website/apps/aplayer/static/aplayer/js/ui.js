@@ -189,7 +189,7 @@ aplayer.ui.bind = function() {
 	});
 	
 
-	aplayer.ui.bind_controls($("div.aplayer-controls li > a", '.aplayer'));
+	aplayer.ui.bind_controls($("div.aplayer-controls a", '.aplayer'));
 
 
     // set status (mode / version)

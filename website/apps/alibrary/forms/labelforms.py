@@ -169,8 +169,6 @@ class LabelForm(ModelForm):
     def clean(self, *args, **kwargs):
         cd = super(LabelForm, self).clean()
 
-        print 'pre-save'
-
         try:
             parent = cd['parent']
             if not parent.pk:
@@ -184,6 +182,17 @@ class LabelForm(ModelForm):
                 self._errors["parent"] = self.error_class([_('The parent label can not be itself!')])
         except:
             pass
+
+
+        try:
+            tree_id = getattr(self.instance, 'tree_id')
+            new_tree_id = getattr(parent, 'tree_id')
+            if tree_id == new_tree_id:
+                pass
+                #self._errors["parent"] = self.error_class([_('Parent error. Try to select a valid Label in the dropdown.')])
+        except:
+            pass
+
 
         
         if cd.get('remote_image', None):

@@ -146,6 +146,9 @@ class MusicbrainzAPILookup(APILookup):
 
         res['d_tags'] = ', '.join(d_tags)
 
+        # disable tags on mb
+        res['d_tags'] = res['tags'] = ''
+
         return res
 
 
@@ -196,6 +199,9 @@ class MusicbrainzAPILookup(APILookup):
             res[mk] = data[k]
 
         res['d_tags'] = ', '.join(d_tags)
+
+        # disable tags on mb
+        res['d_tags'] = res['tags'] = ''
 
         return res
 
@@ -267,6 +273,9 @@ class MusicbrainzAPILookup(APILookup):
 
         res['d_tags'] = ', '.join(d_tags)
 
+        # disable tags on mb
+        res['d_tags'] = res['tags'] = ''
+
         return res
 
 
@@ -321,6 +330,9 @@ class MusicbrainzAPILookup(APILookup):
 
         # TODO: implement artist mapping
         # res['artist_0'] = 'peter'
+
+        # disable tags on mb
+        res['d_tags'] = res['tags'] = ''
 
 
         return res
