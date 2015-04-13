@@ -593,9 +593,6 @@ class Importer(object):
 
         # clean 'wrong' relations
         # https://lab.hazelfire.com/issues/681
-        print '/////////////////////////////////////'
-        print import_tag
-        print
         pop_release = False
         pop_artist = False
         pop_media = False
@@ -608,7 +605,6 @@ class Importer(object):
                     if 'mb_id' in result and result['mb_id'] == import_tag['mb_release_id']:
 
                         if not result['name'] == import_tag['release']:
-                            print '%s <> %s' % (result['name'], import_tag['release'])
                             print 'release name mismatch. remove mb_id from result'
                             pop_release = True
 
@@ -619,7 +615,6 @@ class Importer(object):
                     if 'artist' in result and 'mb_id' in result['artist'] and result['artist']['mb_id'] == import_tag['mb_artist_id']:
 
                         if not result['artist']['name'] == import_tag['artist']:
-                            print '%s <> %s' % (result['artist']['name'], import_tag['artist'])
                             print 'artist name mismatch. remove mb_id from result'
                             pop_artist = True
 
@@ -632,18 +627,10 @@ class Importer(object):
                     if 'media' in result and 'mb_id' in result['media'] and result['media']['mb_id'] == import_tag['mb_track_id']:
 
                         if not result['media']['name'] == import_tag['name']:
-                            print '%s <> %s' % (result['media']['name'], import_tag['name'])
                             print 'media name mismatch. remove mb_id from result'
                             pop_media = True
 
 
-
-
-
-
-
-
-        """"""
         if pop_release:
             import_tag.pop("mb_release_id", None)
             import_tag.pop("mb_label_id", None)
