@@ -8,19 +8,23 @@ PushyApp = function() {
 	this.subscriptions = [];
 
 	this.init = function() {
+
+
 		if(self.debug){
 			console.log('PushyApp - init');
 		}
 		setTimeout(function(){
-			self.connect()
+			self.connect();
 		}, 100);
 	};
 	
 	this.connect = function() {
 
+
 		try {
-			
+
 			self.socket = io.connect(self.socket_url);
+
 			self.socket.on('push', function(data) {
 
 				if(self.debug){
@@ -32,27 +36,27 @@ PushyApp = function() {
 						console.log('PushyApp - create:', data.route);
 					}
 					self.trigger(data);
-				};
+				}
 
 				if(data.type == 'update') {
 					if(self.debug){
 						console.log('PushyApp - update:', data.route);
 					}
 					self.trigger(data);
-				};
+				}
 
 				if(data.type == 'delete') {
 					if(self.debug){
 						console.log('PushyApp - delete:', data.route);
 					}
 					self.trigger(data);
-				};
+				}
 
 			});
 
-		} catch(err) {
+		} catch(e) {
 			//alert('Unable to connect to socket-server');
-			console.log(err.message);
+			console.error('Unable to connect to socket-server', e);
 		}
 	};
 	
@@ -67,11 +71,14 @@ PushyApp = function() {
 	};
 	
 	this.trigger = function(data) {
+		if(self.debug){
+			console.log('PushyApp - trigger:', data);
+		}
 		for(i in self.subscriptions) {
 			if(self.subscriptions[i].route == data.route) {
 				self.subscriptions[i].callback(data);
 			}
-		};
+		}
 	};
 
 	this.bindings = function() {

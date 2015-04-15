@@ -480,11 +480,10 @@ INSTALLED_APPS = (
 
     'pushy',
     'nunjucks',
-    'pushy_asset',
+    #'pushy_asset',
     'istats',
 
     # custom apps/*
-    #'pusher',
     'asite',
     'alibrary',
     'aplayer',
@@ -933,13 +932,6 @@ DISCOGS_HOST = '172.20.10.207:8099'
 DISCOGS_RATE_LIMIT = False
 
 
-"""
-pusher / nodejs
-"""
-SOCKETIO_URL = 'http://localhost:8888/'
-PUSHER_SETTINGS = {
-    'MODELS': ('alibrary.playlist',),
-}
 
 """
 using django pushy!!

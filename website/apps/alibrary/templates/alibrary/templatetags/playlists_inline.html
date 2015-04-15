@@ -1,14 +1,11 @@
-{% load sekizai_tags verbatim i18n pushy_tags %}
-
-
-{% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
+{% load sekizai_tags verbatim i18n %}
 
 {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}alibrary/js/playlist.js"></script>{% endaddtoblock %}
 {% addtoblock "js-post" %}
 <script>
 
 	var alibrary = alibrary || {};
-	
+
 	$(function(){
 
 		alibrary.playlist = new PlaylistUi();
@@ -16,13 +13,13 @@
 		alibrary.playlist.api_url_simple = "{% url api_dispatch_list resource_name='library/simpleplaylist' api_name='v1'%}";
 		alibrary.playlist.current_playlist_id = "{{ current_playlist.pk }}";
 		//alibrary.playlist.init();
-		
+
 
 		alibrary.collector = new CollectorApp;
 		alibrary.collector.api_url = "{% url api_dispatch_list resource_name='library/playlist' api_name='v1'%}";
 		alibrary.collector.playlist_app = alibrary.playlist;
 		alibrary.collector.init();
-		
+
 	});
 </script>
 
@@ -40,7 +37,7 @@
 
 <!--
 <div id="inline_playlist_container" class="">
-	
+
 	<div class="playlist basket ui-persistent open" data-uistate="init" id="playlist_basket">
 
 		<div class="header">
@@ -71,7 +68,7 @@
 						<button type="submit" class="btn btn-primary btn-mini">
 							<i class="icon-ok-sign"></i>
 						</button>
-					</div>					
+					</div>
 				</div>
 			</form>
 
@@ -79,6 +76,6 @@
 
 
 	</div>
-	
+
 </div>
 -->

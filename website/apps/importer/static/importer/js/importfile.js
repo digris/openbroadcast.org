@@ -12,13 +12,10 @@ var ImportfileApp = function () {
 
 
     this.init = function (use_local_data) {
+
         debug.debug('ImportfileApp - init');
 
         self.ac = new ImportfileAcApp();
-
-
-        //alert('init')
-
 
         self.load(use_local_data);
         pushy.subscribe(self.api_url, function () {
@@ -36,6 +33,8 @@ var ImportfileApp = function () {
             if(self.local_data && self.local_data.status == 'init') {
                 debug.debug('periodic reload to re-check status');
                 self.load();
+            } else {
+                //debug.debug('skipping periodic reload');
             }
         }, 5000 + Math.floor(Math.random() * 1000))
 
@@ -47,6 +46,7 @@ var ImportfileApp = function () {
     this.bindings = function () {
 
         $('.result-set', self.container).live('click', function (e) {
+
 
             var el = $(this);
             var import_tag;

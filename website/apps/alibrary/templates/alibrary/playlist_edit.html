@@ -1,21 +1,31 @@
 {% extends "layout_edit.html" %}
 
-{% load crispy_forms_tags dajaxice_templatetags sekizai_tags static %}
+{% load crispy_forms_tags dajaxice_templatetags sekizai_tags pushy_tags static %}
 
 {% load thumbnail i18n truncate alibrary_tags abcast_tags %}
 
 {% block heading %} <!-- heading / icon (large one) -->
+
+
+
     {% addtoblock "js-post" %}
         <script type="text/javascript" src="{{ STATIC_URL }}selectable/js/jquery.dj.selectable.js"></script>
     {% endaddtoblock %}
     {% addtoblock "js-post" %}
         <script type="text/javascript" src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>{% endaddtoblock %}
-    {% addtoblock "js-post" %}{% dajaxice_js_import %}{% endaddtoblock %}
-    {% addtoblock "js-post" %}
-        <script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>{% endaddtoblock %}
+
+    {%  comment %}
+    <!-- dajaxice is not compatible with socket.io !!!! -->
+    {% addtoblock "js-post" %}<!-- pre dajax -->{% dajaxice_js_import %}<!-- post dajax -->{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>{% endaddtoblock %}
+    {%  endcomment %}
+
+
+    {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
 
 
     {% addtoblock "js-post" %}
+        {%  comment %}{%  endcomment %}
         <script>
             $(function () {
 
@@ -63,6 +73,7 @@
 
             });
         </script>
+
     {% endaddtoblock %}
 
     {% addtoblock "css" %}
@@ -131,11 +142,11 @@
 
                 <div class="tab-pane active" id="metadata">
 
+                {% comment %}{% endcomment %}
                     {% if form_errors %}
                     {% include "element/forms/_merged_form_errors.html" %}
                     {% endif %}
 
-                    {% comment %}{% endcomment %}
                     {% if form.errors or form.non_field_errors %}
                         {% with ctype='playlist'%}
                         {% include "element/forms/_form_errors.html" %}
@@ -160,8 +171,12 @@
 
                     </form>
 
+
+
                 </div>
 
+
+                {% comment %}{% endcomment %}
                 <div class="tab-pane" id="tracklist_editor">
 
                     {% if object.type == "broadcast" %}
@@ -178,8 +193,8 @@
 
                     {% include "alibrary/playlist/_tracklist_editor.html" %}
 
-
                 </div>
+
 
 
             </div>
@@ -190,6 +205,7 @@
     </div>
 {% endblock %}
 
+{% comment %}{% endcomment %}
 {% block form_sidebar %}
 
     <div class="sidebar form-sidebar holder">

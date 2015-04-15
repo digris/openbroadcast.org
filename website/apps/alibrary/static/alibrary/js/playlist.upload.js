@@ -8,6 +8,7 @@ PlaylistEditorUpload = function () {
 
     this.fileupload_options = false
     this.api_url;
+    this.pushy_paused = false;
 
     this.uploaded = [];
 
@@ -31,6 +32,8 @@ PlaylistEditorUpload = function () {
 
             $('#playlist_editor_upload').append('<div id="' + item.uuid + '"></div>');
 
+
+
             var ifa = new ImportfileApp;
             ifa.local_data = item;
             ifa.container = $('#' + item.uuid);
@@ -40,6 +43,7 @@ PlaylistEditorUpload = function () {
             ifa.update_callback = self.if_callback;
 
             ifa.init(true);
+            ifa.bindings();
 
 
         });
@@ -88,5 +92,14 @@ PlaylistEditorUpload = function () {
 
         }
     }
+    this.lock_ui = function(lock) {
+        if(lock) {
+            $('#importer_ui_lock').show();
+            //$('body').css('opacity', 0.5);
+        } else {
+            $('#importer_ui_lock').hide();
+            //$('body').css('opacity', 1);
+        }
+    };
 
 };

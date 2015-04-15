@@ -356,8 +356,6 @@ PlaylistUi = function () {
                 self.current_items[item.id] = item;
 
                 try {
-                    //console.log('trying to subscribe to pusher with: ' + item.resource_uri);
-                    //pusher.subscribe(item.resource_uri, self.update_playlists);
                     pushy.subscribe(item.resource_uri, self.update_playlists);
 
 

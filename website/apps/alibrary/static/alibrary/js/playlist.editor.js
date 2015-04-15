@@ -21,6 +21,7 @@ PlaylistEditor = function () {
     // readonly mode for locked playlists
     this.readonly = false;
     this.enable_crossfades = false;
+    this.enable_drag_n_drop = true;
 
     // holding the playlist
     this.current_playlist;
@@ -78,7 +79,7 @@ PlaylistEditor = function () {
 
         if (!self.readonly) {
 
-            self.dom_element.css('overflow-y', 'scroll');
+            //self.dom_element.css('overflow-y', 'scroll');
 
             self.dom_element.sortable(
                 {
@@ -258,7 +259,15 @@ PlaylistEditor = function () {
             } else {
 
                 debug.debug(q);
-                self.ac.search(q);
+
+
+
+                // autocomplete
+                util.delay(function(){
+                    self.ac.search(q);
+                }, 500 );
+
+                //self.ac.search(q);
 
             }
 
@@ -670,6 +679,7 @@ PlaylistEditorItem = function () {
         this.playlist_editor = playlist_editor;
         this.readonly = playlist_editor.readonly;
         this.enable_crossfades = playlist_editor.enable_crossfades;
+        this.enable_drag_n_drop = playlist_editor.enable_drag_n_drop;
 
         //debug.debug('PlaylistEditorItem - init');
         self.api_url = self.item.resource_uri;

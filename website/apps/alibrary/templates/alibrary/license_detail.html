@@ -2,18 +2,17 @@
 
 {% load truncate i18n thumbnail arating_tags markup %}
 
-{% block heading %} <!-- heading / icon (large one) -->
+{% block heading %}
     <div id="heading">
         {% include "skeleton/heading.html" %}
     </div>
-    <!-- heading / icon (large one) -->
+
 {% endblock %}
 
-{% block modnav %} <!-- start: intra-module navigation -->
+{% block modnav %}
     <div id="modnav">
         {% include "skeleton/modnav.html" %}
     </div>
-    <!-- end: intra-module navigation -->
 {% endblock %}
 
 {% block inner %}

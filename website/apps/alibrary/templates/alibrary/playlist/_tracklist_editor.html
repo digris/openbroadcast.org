@@ -23,14 +23,20 @@
     <script>
 
         var alibrary = alibrary || {};
-        var pusher = pusher || {};
 
         $(function () {
 
 
             alibrary.playlist_editor = new PlaylistEditor();
+
             alibrary.playlist_editor.readonly = {% if object.type == "broadcast" %}true{% else %}false{% endif %};
             alibrary.playlist_editor.api_url = "{{ object.get_api_url }}";
+            alibrary.playlist_editor.enable_drag_n_drop = {% if user.profile.enable_alpha_features %}true{% else %}false{% endif %};
+
+
+
+
+
             // alibrary.playlist_editor.init();
 
 

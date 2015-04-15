@@ -1063,7 +1063,7 @@ base.ui.searchbar = function () {
         // autocomplete
         util.delay(function(){
             self.autocomplete.search(q);
-        }, 200 );
+        }, 500 );
     });
     $('#autocomplete_holder').on('click', 'a.exit', function (e) {
         $('#searchbar_input').val('')
