@@ -7,7 +7,7 @@
      data-image_color="{% thumbnail item.main_image 200x200 crop upscale subject_location=item.main_image.subject_location %}"
      data-image_bw="{% thumbnail item.main_image 200x200 crop bw upscale subject_location=item.main_image.subject_location %}"
      {% endif %}
-     {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 200x200 crop bw upscale subject_location=item.main_image.subject_location %});"{% endif %}>
+     {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 200x200 crop bw upscale subject_location='0,0' %});"{% endif %}>
 
     <div class="wrapper_icon">
 
