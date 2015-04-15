@@ -75,12 +75,16 @@ def provider_search_query(request, *args, **kwargs):
             item = Media.objects.get(pk=item_id)
             data = {'query': "%s AND artist:%s" % (item.name, item.artist.name)}
 
-        if item_type == 'label':
+        if item_type == 'label' and provider == 'discogs':
             item = Label.objects.get(pk=item_id)
             if ' ' in item.name:
                 data = {'query': '"%s"' % (item.name)}
             else:
                 data = {'query': '%s' % (item.name)}
+
+        if item_type == 'label' and provider == 'musicbrainz':
+            item = Label.objects.get(pk=item_id)
+            data = {'query': '%s' % (item.name)}
 
 
         return json.dumps(data)
