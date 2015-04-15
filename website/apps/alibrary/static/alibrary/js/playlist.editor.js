@@ -882,15 +882,22 @@ PlaylistEditorItem = function () {
             this.el_controls_cross.animate({x: self.abs_to_px(self.co.duration - self.item.cue_out - self.item.fade_cross - 1)}, 100);
         }
 
-        // update cues
+        // update fade handlers
         try {
-            self.el_controls_cue[0].transform('T' + Math.floor(self.abs_to_px(self.item.cue_in)) + ',0');
+            self.el_controls_fade[0].attr({x: Math.floor(self.abs_to_px(self.item.cue_in + self.item.fade_in))});
+            self.el_controls_fade[1].attr({x: Math.floor(self.abs_to_px(self.co.duration - self.item.cue_out - self.item.fade_out))});
         } catch (e) {
 
         }
 
-        // good idea??
-        //self.reload_waveform()
+        // update cues
+        try {
+            self.el_controls_cue[0].transform('T' + Math.floor(self.abs_to_px(self.item.cue_in)) + ',0');
+            self.el_controls_cue[1].transform('T' + (Math.floor(self.abs_to_px(self.co.duration - self.item.cue_out)) - 8) + ',0');
+        } catch (e) {
+
+        }
+
 
         // reorder 'z-index'
         try {
@@ -1053,7 +1060,16 @@ PlaylistEditorItem = function () {
 
                     // set self + update display
                     this.transform('T' + X + ',0')
-                    $('.cue_in', self.dom_element).val(Math.floor(self.px_to_abs(X)));
+
+
+                    var offset = Math.floor(self.px_to_abs(X));
+
+                    if(offset >= 0) {
+                        $('.cue_in', self.dom_element).val(offset);
+                    } else {
+                        $('.cue_in', self.dom_element).val(0);
+                    }
+
                 };
                 self.el_controls_cue[1].update = function (x, y) {
                     // get X
@@ -1069,7 +1085,15 @@ PlaylistEditorItem = function () {
 
                     // set self + update display
                     this.transform('T' + X + ',0')
-                    $('.cue_out', self.dom_element).val(Math.floor(self.co.duration - self.px_to_abs(X + c_cue_size)));
+
+                    var offset = Math.floor(self.co.duration - self.px_to_abs(X + c_cue_size));
+
+                    if(offset >= 0) {
+                        $('.cue_out', self.dom_element).val(offset);
+                    } else {
+                        $('.cue_out', self.dom_element).val(0);
+                    }
+
                 };
 
                 // transform to current values
@@ -1098,17 +1122,43 @@ PlaylistEditorItem = function () {
                 // specific update functions
                 self.el_controls_fade[0].update = function (x, y) {
                     var X = this.attr("x") + x, Y = this.attr("y") + y;
+
+                    // calculate offset
+                    var offset = Math.floor(self.px_to_abs(X)) - self.item.cue_in;
+
+                    // set handler
                     this.attr({x: X});
+
+                    // set path
                     path[1][1] = X;
                     self.el_envelope.animate({path: path}, 0);
-                    $('.fade_in', self.dom_element).val(Math.floor(self.px_to_abs(X)) - self.item.cue_in);
+
+                    // set input
+                    if(offset >= 0) {
+                        $('.fade_in', self.dom_element).val(offset);
+                    } else {
+                        $('.fade_in', self.dom_element).val(0);
+                    }
+
+
                 };
                 self.el_controls_fade[1].update = function (x, y) {
                     var X = this.attr("x") + x, Y = this.attr("y") + y;
+
+                    // calculate offset
+                    var offset = Math.floor(self.co.duration - self.px_to_abs(X)) - self.item.cue_out;
+
                     this.attr({x: X});
                     path[2][1] = X;
                     self.el_envelope.animate({path: path}, 0);
-                    $('.fade_out', self.dom_element).val(Math.floor(self.co.duration - self.px_to_abs(X)) - self.item.cue_out);
+
+                    // set input
+                    if(offset >= 0) {
+                        $('.fade_out', self.dom_element).val(offset);
+                    } else {
+                        $('.fade_out', self.dom_element).val(0);
+                    }
+
                 };
                 self.el_controls_fade.drag(self.controls_fade_onmove, self.controls_fade_onstart, self.controls_fade_onend);
                 self.el_controls_fade.dblclick(self.controls_fade_dbclick);
