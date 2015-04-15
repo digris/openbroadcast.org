@@ -517,6 +517,9 @@ PlaylistEditor = function () {
         status_map[99] = 'error';
 
 
+        //console.log('update_editor_playlist', data)
+
+
         for (var i in data.items) {
 
             var item = data.items[i];
@@ -642,7 +645,7 @@ PlaylistEditorItem = function () {
     this.el_buffer;
     this.el_indicator;
     this.el_controls_cross;
-    this.el_waveform;
+    this.el_waveform = false;
     this.el_envelope;
     this.el_controls_fade;
     this.el_controls_cue;
@@ -652,6 +655,8 @@ PlaylistEditorItem = function () {
 
     this.envelope_color = '#00bb00';
     this.waveform_fill = '90-#aaa-#444:50-#aaa';
+
+    this.waveform_retry = 0;
 
 
     this.interval_duration = false;
@@ -778,10 +783,8 @@ PlaylistEditorItem = function () {
                     async: false
                 });
             }
-            ;
 
             if (action == 'play') {
-
 
                 // try to pause aplayer - hackish..
                 try {
@@ -791,20 +794,18 @@ PlaylistEditorItem = function () {
                 } catch (e) {
 
                 }
-                ;
 
                 self.playlist_editor.stop_all();
                 self.player.play().setPosition(self.item.cue_in);
             }
-            ;
+
             if (action == 'pause') {
                 self.player.togglePause();
             }
-            ;
+
             if (action == 'stop') {
                 self.player.stop();
             }
-            ;
 
         });
 
@@ -821,12 +822,10 @@ PlaylistEditorItem = function () {
             if (preview == 'fade_cross') {
                 pos = self.co.duration - self.item.cue_out - self.item.fade_cross - 2000;
             }
-            ;
 
             if (preview == 'fade_in') {
                 pos = self.item.cue_in;
             }
-            ;
 
             if (preview == 'fade_out') {
                 if (self.item.fade_cross > self.item.fade_out) {
@@ -835,14 +834,10 @@ PlaylistEditorItem = function () {
                     pos = self.co.duration - self.item.cue_out - self.item.fade_out - 2000;
                 }
             }
-            ;
-
             self.player.play().setPosition(pos);
-
         });
 
-
-    }
+    };
 
     // interval
     this.set_interval = function (method, duration) {
@@ -854,14 +849,9 @@ PlaylistEditorItem = function () {
 
     this.run_interval = function () {
         self.interval_loops += 1;
-        // Put functions needed in interval here
-        //debug.debug('run_interval');
-        //debug.debug(self.player);
 
         var paused = self.player.paused;
         var playState = self.player.playState;
-        //debug.debug('paused: ', paused);
-        //debug.debug('playState: ', playState);
 
         if (paused) {
             self.dom_element.addClass('paused');
@@ -873,6 +863,10 @@ PlaylistEditorItem = function () {
 
     this.update = function (item, playlist_editor) {
         debug.debug('PlaylistEditorItem - update');
+
+
+        //console.log('update', item)
+
         self.item = item;
         this.playlist_editor = playlist_editor;
 
@@ -880,7 +874,6 @@ PlaylistEditorItem = function () {
         var x = self.get_x_points();
         var path = self.get_path(x);
         this.el_envelope.animate({path: path}, 0);
-
 
         self.el_buffer.attr({x: self.abs_to_px(self.item.cue_in), width: self.size_x - self.abs_to_px(self.item.cue_in + self.item.cue_out)});
 
@@ -896,15 +889,19 @@ PlaylistEditorItem = function () {
 
         }
 
+        // good idea??
+        //self.reload_waveform()
 
-        /*
-         var temp = self.el_controls_cue[0].clone();
-         temp.transform('t' + Math.floor(self.abs_to_px(self.item.cue_in)) + ',0');
-         self.el_controls_cue[0].animate({path: temp.attr('path')}, 100);
-         temp.remove();
-         */
+        // reorder 'z-index'
+        try {
+            self.el_waveform.toBack();
+            self.el_buffer.toBack();
+            self.el_background.toBack();
+        } catch(e) {
 
-        // this.player.unload();
+        }
+
+
 
     };
 
@@ -913,31 +910,88 @@ PlaylistEditorItem = function () {
         if (self.el_controls_cue) {
             self.el_controls_cue.attr({stroke: self.envelope_color});
         }
+    };
 
-    }
     this.trigger_hout = function (e) {
         //debug.debug('el hout', e);
         if (self.el_controls_cue) {
             self.el_controls_cue.attr({stroke: "none"});
         }
-
-    }
+    };
 
     this.init_waveform = function () {
 
-
         var waveform_image = self.item.item.content_object.waveform_image;
+
+
+        //console.log('waveform - object', self.item.item.content_object);
+
+        //alert(self.item.item.content_object.waveform_image)
 
         this.r = Raphael(self.waveform_dom_id, 830, self.size_y + 6);
 
         self.el_background = this.r.rect(0, 0, self.size_x, self.size_y).attr({ stroke: "none", fill: '90-#efefef-#bbb:50-#efefef' });
         self.el_buffer = this.r.rect(0, 0, 0, self.size_y).attr({ stroke: "none", fill: self.waveform_fill });
+
         if(waveform_image) {
-            self.el_waveform = this.r.image(waveform_image, 0, 0, 830, self.size_y);
+            self.el_waveform = self.r.image(waveform_image, 0, 0, 830, self.size_y);
+        } else {
+            setTimeout(function(){
+                self.reload_waveform();
+            }, 10000);
         }
         self.el_indicator = this.r.rect(-10, 0, 2, 40).attr({ stroke: "none", fill: '#00bb00' });
 
         self.set_envelope(true);
+
+    };
+
+    this.reload_waveform = function() {
+
+
+        $.get(self.item.item.content_object.resource_uri, function(content_object){
+            var waveform_image = content_object.waveform_image;
+
+            self.item.item.content_object = content_object;
+            self.co = content_object;
+
+
+            // TODO: verry ugly!
+
+
+
+            if(waveform_image) {
+                console.log('got waveform image for: ' + content_object.name);
+                self.el_waveform = self.r.image(waveform_image, 0, 0, 830, self.size_y);
+                try {
+                    self.el_waveform.toBack();
+                    self.el_buffer.toBack();
+                    self.el_background.toBack();
+                } catch(e) {
+
+                }
+            } else {
+                console.log('still no waveform image available. will try again in: ' + (self.waveform_retry + 1) * 10000)
+
+                if(self.waveform_retry < 10) {
+                    setTimeout(function(){
+                        self.reload_waveform();
+                    }, (self.waveform_retry + 1) * 10000);
+                } else {
+                    console.log('giving up with waveform')
+                }
+
+
+
+                self.waveform_retry++;
+
+            }
+
+        });
+
+
+
+
 
     };
 

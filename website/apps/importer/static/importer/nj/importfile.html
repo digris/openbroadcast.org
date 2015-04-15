@@ -38,7 +38,7 @@
 
 
     {{ object.filename }}
-    <small>[{{ object.mimetype }}] {{ object.id }}</small>
+    <small><!--[{{ object.mimetype }}]--> (debug: {{ object.id }})</small>
     {% if object.status == 'duplicate' %}<span class="warning pull-right">Duplicate</span>{% endif %}
 
     {% if object.error %}<span class="warning pull-right">Error: {{ object.error }}</span>{% endif %}
@@ -698,9 +698,9 @@
 
         <div class="pull-right span10">
             <a class="btn btn-secondary btn-small delete-importfile">Delete this File</a>
-            <!---->
+            <!--
             <a class="btn btn-secondary btn-small rescan" data-settings="skip_tracknumber">Scan witouth tracknumber</a>
-
+            -->
             <a class="btn btn-secondary btn-small rescan">Scan again</a>
             {% if object.status == 'ready' or object.status == 'warning' %}
                 <a class="btn btn-primary btn-small start-import">Start Import</a>

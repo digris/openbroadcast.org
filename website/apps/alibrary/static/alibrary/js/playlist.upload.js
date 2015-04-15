@@ -24,15 +24,11 @@ PlaylistEditorUpload = function () {
     this.bindings = function () {
 
 
-        self.fileupload.bind('fileuploaddone', function (e, data, whatever) {
-
-            // console.log(data.result)
+        self.fileupload.bind('fileuploaddone', function (e, data) {
 
             var item = data.result;
 
             $('#playlist_editor_upload').append('<div id="' + item.uuid + '"></div>');
-
-
 
             var ifa = new ImportfileApp;
             ifa.local_data = item;
@@ -52,9 +48,6 @@ PlaylistEditorUpload = function () {
 
     this.if_callback = function (data) {
 
-        //console.log('this.if_callback');
-        //console.log(data);
-
         if (data.status == 'done' || data.status == 'duplicate') {
 
             // if (!$.inArray(data.id, self.uploaded)) {
@@ -72,9 +65,8 @@ PlaylistEditorUpload = function () {
                     contentType: "application/json",
                     success: function (data) {
                         var item = data.items.pop();
-                        debug.debug('created item:', item);
-                        //data = data;
-                        var html = '<div class="temporary item editable" id="playlist_item_' + item.id + '" data-uuid="' + item.uuid + '"><i class="icon-time icon-2x"></i>Computing waveform</div>'
+
+                        var html = '<div class="temporary item editable" id="playlist_item_' + item.id + '" data-uuid="' + item.uuid + '">Loading Data</div>'
                         $('#playlist_editor_list').append(html);
 
                         // reset
@@ -83,7 +75,7 @@ PlaylistEditorUpload = function () {
 
                         setTimeout(function () {
                             alibrary.playlist_editor.reorder();
-                        }, 10000)
+                        }, 100)
 
                     }
                 });
