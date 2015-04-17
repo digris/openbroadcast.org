@@ -491,7 +491,6 @@ class Process(object):
             
             log.debug('API url for request: %s' % url)
             r = requests.get(url)
-            
             result = r.json()
 
             if 'recordings' in result:

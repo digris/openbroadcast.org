@@ -124,20 +124,18 @@ class UserResource(ModelResource):
     def prepend_urls(self):
 
         return [
-            url(
-                r"^(?P<resource_name>%s)/?P<email>[A-Za-z0-9._+-]+@[A-Za-z0-9._+-]+\.[A-Za-z]{2,4}%s$" % (
-                self._meta.resource_name, trailing_slash()),
-                self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
             url(r"^(?P<resource_name>%s)/login%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('login'), name="profile-api-login"),
+
             url(r"^(?P<resource_name>%s)/register%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('register'), name="profile-api-register"),
+
+            url(r"^(?P<resource_name>%s)/validate-registration%s$" % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('validate_registration'), name="profile-api-validate-registration"),
+
             url(r"^(?P<resource_name>%s)/reset-password%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('reset_password'), name="profile-api-reset-password"),
-            url(r"^(?P<resource_name>%s)/(?P<email>[A-Za-z0-9._+-]+@[A-Za-z0-9._+-]+\.[A-Za-z]{2,4})/forget-device%s$" % (
-                self._meta.resource_name, trailing_slash()),
-                self.wrap_view('forget_device'), name="profile-api-forget-device"),
         ]
 
 
@@ -191,6 +189,63 @@ class UserResource(ModelResource):
         return self.create_response(request, bundle)
 
 
+    def validate_registration(self, request, **kwargs):
+
+        self.method_check(request, allowed=['post', ])
+        self.throttle_check(request)
+
+        try:
+            data = json.loads(request.body)
+
+        except ValueError, e:
+            if request.POST:
+                data = request.POST
+
+
+        print data
+
+        REQUIRED_FIELDS = ('key', 'value', )
+        for field in REQUIRED_FIELDS:
+            if field not in data:
+                raise APIBadRequest(
+                    code="missing_key",
+                    message=_('Must provide {missing_key} when logging in.').format(missing_key=field)
+                )
+
+        key = data.get('key', None)
+        value = data.get('value', None)
+
+
+        print key
+        print value
+
+        error = None
+
+        # logic goes here...
+        if key == 'email':
+            if User.objects.filter(email=value).exists():
+                error = _('That email is already used.')
+
+        if key == 'username':
+            if User.objects.filter(username=value).exists():
+                error = _('That username is already used.')
+
+
+
+
+
+        bundle = {
+            'error': error,
+            'key': key,
+            'value': value,
+        }
+
+        self.log_throttled_access(request)
+        return self.create_response(request, bundle)
+
+
+
+
     def register(self, request, **kwargs):
 
         self.method_check(request, allowed=['post', ])
@@ -204,7 +259,7 @@ class UserResource(ModelResource):
             if request.POST:
                 data = request.POST
 
-        REQUIRED_FIELDS = ('email', 'password', )
+        REQUIRED_FIELDS = ('username', 'email', 'password', )
         for field in REQUIRED_FIELDS:
             if field not in data:
                 log.warning('missing key "{missing_key}" when creating a user.'.format(missing_key=field))
@@ -213,67 +268,21 @@ class UserResource(ModelResource):
                     message=_('Must provide {missing_key} when creating a user.').format(missing_key=field)
                 )
 
-        try:
-            email = data['email'].strip()
-            if User.objects.filter(email=email):
-                log.warning('duplicate_email: %s' % email)
-                raise APIBadRequest(
-                    code="duplicate_email",
-                    message=_('That email is already used.'))
-        except KeyError as missing_key:
-            log.warning('missing key "{missing_key}" when creating a user.'.format(missing_key=field))
-            raise APIBadRequest(
-                code="missing_key",
-                message=_('Must provide {missing_key} when creating a user.')
-                .format(missing_key=missing_key))
-        except User.DoesNotExist:
-            pass
-
-
-        # handle duplicate serial numbers
-        try:
-            serial_number = data['serial_number']
-        except:
-            serial_number = None
-
-        if serial_number:
-            if Device.objects.filter(serial_number=serial_number).exists():
-                log.warning('duplicate serial number: %s' % (serial_number))
-                raise APIBadRequest(
-                    code="duplicate_serial_number",
-                    message=_('That serial-number is already used.'))
-
 
         # create the user as active
         # separate flag in profile model to track email confirmation
-        user = create_user(data['email'], data['password'], is_active=True)
+        #user = create_user(data['email'], data['password'], is_active=True)
 
-        # hook up with registration
-        registration_profile = RegistrationProfile.objects.create_profile(user)
-        registration_signals.user_registered.send(sender=self.__class__, user=user, request=request)
-        send_activation_email(registration_profile)
+        user = User.objects.create_user(username=data['username'],
+                                        email=data['email'],
+                                        password=data['password'])
 
-        # create device for user
-        if serial_number:
-            # device, created = Device.objects.get_or_create(profiles__in=[user.pk, ], serial_number=serial_number)
-            device, created = Device.objects.get_or_create(serial_number=serial_number, status=2)
-        else:
-            # no serial provided, so create a 'app' device and generate a serial for it
-            device = Device()
-            device.generate_serial_number(user.pk)
-            device.status = 2
-            device.save()
-
-        # finally create the user profile
-        profile, created = UserProfile.objects.get_or_create(user=user, device=device)
-
-        log.info('registraion success: %s - serial number: %s' % (email, device.serial_number))
 
         bundle = self.build_bundle(obj=user, request=request)
         bundle = self.full_dehydrate(bundle)
 
         # provide api key
-        bundle.data['api_key'] = bundle.obj.api_key.key
+        #bundle.data['api_key'] = bundle.obj.api_key.key
 
         self.log_throttled_access(request)
 
@@ -321,116 +330,6 @@ class UserResource(ModelResource):
             'code': 'ok',
             'message': _('Sending new password to %s' % email)
         }
-
-        self.log_throttled_access(request)
-        return self.create_response(request, bundle)
-
-
-    def forget_device(self, request, **kwargs):
-        """
-        'forgetting' a device happens if a user unlinks a 'hardware' device from daysyView
-        """
-        self.method_check(request, allowed=['get', ])
-        self.throttle_check(request)
-        self.is_authenticated(request)
-
-        user = User.objects.get(**self.remove_api_resource_names(kwargs))
-        log.info('forget device for %s' % user.email)
-
-        try:
-            device = user.profile.device
-        except Exception, e:
-            device = None
-            log.warning('unable to get device: %s' % e)
-
-
-        if device:
-
-            if device.profiles.count() > 1:
-                log.warning('device has %s users assigned. so will not flush it!' % device.profiles.count())
-                new_device = Device()
-                new_device.generate_serial_number(id=user.pk)
-                new_device.status = 2
-                new_device.save()
-
-                user.profile.device = new_device
-                user.profile.save()
-
-
-            else:
-                device.generate_serial_number(id=user.pk)
-                device.reset()
-                device.status = 2
-                device.save()
-
-        # refresh user
-        user = User.objects.get(pk=user.pk)
-
-        bundle = self.build_bundle(obj=user, request=request)
-        bundle = self.full_dehydrate(bundle)
-
-        self.log_throttled_access(request)
-        return self.create_response(request, bundle)
-
-    # old version
-    def __forget_device(self, request, **kwargs):
-        """
-        'forgetting' a device happens if a user unlinks a 'hardware' device from daysyView
-
-        what happens:
-         - a new device with a 'virtual' serial-number is created and attached to the user/profile
-         - data (files) form the old device are copied to the new one
-         - old device and its data (files) are deleted.
-        """
-        self.method_check(request, allowed=['get', ])
-        self.throttle_check(request)
-        self.is_authenticated(request)
-
-
-        user = User.objects.get(**self.remove_api_resource_names(kwargs))
-
-        log.info('forget device for %s' % user.email)
-
-        old_device = user.profile.device
-
-        device = Device()
-        device.generate_serial_number(user.pk)
-        from django.core.files.base import ContentFile
-        # temporary store data
-        try:
-            data_file = ContentFile(old_device.data_file.read())
-        except Exception, e:
-            data_file = None
-            print e
-
-        try:
-            analyse_file = ContentFile(old_device.analyse_file.read())
-        except Exception, e:
-            analyse_file = None
-            print e
-
-        # delete old instance (will also remove files from filesystem)
-        old_device.delete()
-
-        # store temporary data to file
-        if data_file:
-            device.data_file.save('data_file.xml', data_file)
-
-        if analyse_file:
-            device.analyse_file.save('data_file.xml', data_file)
-
-        device.status = 2
-        device.save()
-
-        user.profile.device = device
-        user.profile.save()
-
-
-        # refresh user
-        user = User.objects.get(pk=user.pk)
-
-        bundle = self.build_bundle(obj=user, request=request)
-        bundle = self.full_dehydrate(bundle)
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)

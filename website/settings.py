@@ -151,6 +151,10 @@ CACHES = {
 }
 JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_obp'
 
+
+
+
+
 """
 CACHES = {
     'default': {
@@ -413,6 +417,11 @@ INSTALLED_APPS = (
 
     'adv_cache_tag',
     #'debug_toolbar_memcache',
+
+
+
+    # caching
+    'cacheops',
 
 
     # dajax
@@ -901,7 +910,11 @@ use for maintenance tasks etc.
 CELERYBEAT_SCHEDULE = {
     'exporter-cleanup': {
         'task': 'exporter.models.cleanup_exports',
-        'schedule': timedelta(seconds=10),
+        'schedule': timedelta(seconds=30),
+    },
+    'importer-cleanup': {
+        'task': 'importer.models.reset_hangin_files',
+        'schedule': timedelta(seconds=30),
     },
 }
 

@@ -11708,9 +11708,19 @@ section.importer-importfiles .listing .form-horizontal .input-minitext {
 .qtip-importer .alert {
   margin-top: 10px;
   margin-bottom: 0px;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+/* line 378, ../sass/apps/_importer.sass */
+.qtip-importer .alert p {
+  padding: 10px 0 0 0;
+  margin-mottom: 0;
+  color: white;
+  text-shadow: none;
 }
 
-/* line 376, ../sass/apps/_importer.sass */
+/* line 385, ../sass/apps/_importer.sass */
 span.dim {
   background: transparent;
   color: #a3a3a3;

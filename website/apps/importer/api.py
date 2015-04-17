@@ -1,3 +1,4 @@
+import random
 from django.conf.urls.defaults import *
 from tastypie import fields
 from tastypie.authentication import *
@@ -39,7 +40,7 @@ class ImportFileResource(ModelResource):
         
 
     def dehydrate(self, bundle):
-        bundle.data['status'] = bundle.obj.get_status_display().lower();
+        bundle.data['status'] = bundle.obj.get_status_display().lower()
         # offload json parsing to the backend
         # TODO: remove in js, enable here
         """
@@ -49,6 +50,7 @@ class ImportFileResource(ModelResource):
         bundle.data['results_discogs'] = json.loads(bundle.data['results_discogs'])
         bundle.data['results_tag'] = json.loads(bundle.data['results_tag'])
         """
+
         return bundle
         
         
