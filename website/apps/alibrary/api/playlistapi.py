@@ -88,6 +88,7 @@ class PlaylistResource(ModelResource):
         
         authentication =  MultiAuthentication(SessionAuthentication(), OAuth20Authentication(), ApiKeyAuthentication())
         authorization = Authorization()
+        limit = 50
         filtering = {
             #'channel': ALL_WITH_RELATIONS,
             'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
@@ -413,6 +414,7 @@ class SimplePlaylistResource(ModelResource):
 
         authentication =  MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
         authorization = Authorization()
+        limit = 50
         filtering = {
             #'channel': ALL_WITH_RELATIONS,
             'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
