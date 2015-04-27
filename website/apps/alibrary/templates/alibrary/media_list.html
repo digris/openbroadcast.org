@@ -128,7 +128,7 @@
                 {# switching list styles #}
                 {% if list_style == "s" %}
 
-                    {% cache 600 "media_list_item_s" item.pk item.updated group_hash %}
+                    {% cache 600 "media_list_item_s" item.pk group_hash item.updated %}
                     {% include "alibrary/media/list_item_s.html" %}
                     {% endcache %}
 

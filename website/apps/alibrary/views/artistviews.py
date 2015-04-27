@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+import reversion
 from django.views.generic import DetailView, ListView, UpdateView
 from django.shortcuts import get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect
@@ -10,7 +12,8 @@ from pure_pagination.mixins import PaginationMixin
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from tagging.models import Tag
-import reversion
+from cacheops import cached_as
+
 
 from alibrary.models import Artist, Label, Release, Media, NameVariation
 from alibrary.forms import ArtistForm, ArtistActionForm, ArtistRelationFormSet, MemberFormSet, AliasFormSet
@@ -71,6 +74,7 @@ class ArtistListView(PaginationMixin, ListView):
         return self.paginate_by
 
     def get_context_data(self, **kwargs):
+
         context = super(ArtistListView, self).get_context_data(**kwargs)
         
         self.extra_context['filter'] = self.filter
@@ -185,8 +189,9 @@ class ArtistListView(PaginationMixin, ListView):
         self.filter = ArtistFilter(self.request.GET, queryset=qs)
         
         # tagging / cloud generation
-        tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=0)
+        tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=10)
         self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
+        #self.tagcloud = tagcloud
 
         return qs
 

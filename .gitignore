@@ -21,5 +21,6 @@ website/site-static/.sass-cache
 website/data.db
 website/static/CACHE
 website/cache/*
+util/nginx-dev/*
 
 

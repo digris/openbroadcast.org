@@ -160,7 +160,7 @@
                 {% endif %}
 
                 {% if list_style == "m" %}
-                    {% cache 600 "label_list_item_m" item.pk item.updated group_hash %}
+                    {% cache 600 "label_list_item_m" item.pk group_hash item.updated %}
                     {% include "alibrary/label/list_item_m.html" %}
                     {% endcache %}
                 {% endif %}

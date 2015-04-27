@@ -1,13 +1,14 @@
+# -*- coding: utf-8 -*-
 from django import template
 from django.contrib.contenttypes.models import ContentType
-from django.core.cache import get_cache
+from cacheops import cached_as
 from django.db.models import Avg
-from arating.models import VOTE_CHOICES 
+from arating.models import Vote, VOTE_CHOICES
 
 register = template.Library()
 
 
-arating_cache = get_cache('default')
+
 
      
 @register.inclusion_tag('arating/inline.html', takes_context=True)
@@ -40,12 +41,8 @@ def rating_for_object(context, object):
 @register.inclusion_tag('arating/topflop.html', takes_context=True)
 def topflop_for_object(context, object):
 
-    try:
-        data = arating_cache.get(object.get_absolute_url())
-    except:
-        data = None
-
-    if not data:
+    @cached_as(Vote.objects.filter(object_id=object.pk), timeout=86400*7, extra=object.pk)
+    def _calculate_top_flop():
 
         avg_vote = object.votes.aggregate(Avg('vote')).values()[0]
         upvotes = object.votes.filter(vote__gt=0).count()
@@ -57,18 +54,12 @@ def topflop_for_object(context, object):
             tc = {'key': choice[0], 'count': count }
             choices.append(tc)
 
-        data = {}
-        data['upvotes'] = upvotes
-        data['downvotes'] = downvotes
-        data['avg_vote'] = avg_vote
+        return {
+            'upvotes': upvotes,
+            'downvotes': downvotes,
+            'avg_vote': avg_vote,
+        }
 
-        try:
-            arating_cache.set(object.get_absolute_url(), data)
-        except:
-            pass
-
-
-
-    return data
+    return _calculate_top_flop()
      
      

@@ -41,6 +41,14 @@
                             {{ item.name|truncate_chars_inner:24 }}
                             {% if item.country %}({{ item.country.iso2_code }}){% endif %}
 
+
+
+                            {% nocache %}
+                                {% load arating_tags %}
+                                {% topflop_for_object item %}
+                            {% endnocache %}
+
+
                             {% comment %}
                             {% cache 3600 "topflop_artist" item.pk %}
                             {% topflop_for_object item %}
@@ -61,6 +69,7 @@
                 </ul>
 
                 <ul class="unstyled horizontal">
+                {% comment %}{% endcomment %}
                     {% if item.get_releases.count > 0 %}
                         <li>
                             {% url alibrary-release-list as release_list %}
@@ -81,6 +90,7 @@
                                 class="filter icon"></span></a>
                         </li>
                     {% endif %}
+
                 </ul>
             </div>
 
