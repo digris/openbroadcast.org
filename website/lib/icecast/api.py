@@ -43,7 +43,7 @@ class IcecastAPI:
         url = '%sadmin/metadata' % server.host
         print '*******************'
         
-        auth=('admin', server.admin_pass)
+        auth=(server.admin_user, server.admin_pass)
         
         params = {'mount': mount, 'mode': 'updinfo', 'song': u'%s' % text}
         

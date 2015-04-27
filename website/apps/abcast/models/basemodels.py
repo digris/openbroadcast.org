@@ -302,10 +302,14 @@ post_save.connect(post_save_channel, sender=Channel)
 class StreamServer(BaseModel):
     
     name = models.CharField(max_length=256, null=True, blank=False)     
-    host = models.URLField(max_length=256, null=True, blank=False) 
+    host = models.URLField(max_length=256, null=True, blank=False)
+
+    source_user = models.CharField(max_length=64, default='source', null=True, blank=True)
     source_pass = models.CharField(max_length=64, null=True, blank=True)
+
+    admin_user = models.CharField(max_length=64, default='admin', null=True, blank=True)
     admin_pass = models.CharField(max_length=64, null=True, blank=True)
-    
+
     active = models.BooleanField(default=True)
     mountpoint = models.CharField(max_length=64, null=True, help_text=_('e.g. main-hifi.mp3'))
     meta_prefix = models.CharField(max_length=64, null=True, blank=True, help_text=_('e.g. My Station!'))
