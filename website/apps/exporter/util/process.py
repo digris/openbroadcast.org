@@ -279,7 +279,7 @@ class Process(object):
         template = 'exporter/txt/README.TXT'
 
         with open(os.path.join(cache_dir, 'README.TXT'), "w") as txt:
-            str = render_to_string(template, {'object': instance})
+            str = render_to_string(template, {'object': instance, 'base_url': BASE_URL })
             txt.write(str)
 
 
