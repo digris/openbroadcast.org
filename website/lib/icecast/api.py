@@ -12,15 +12,13 @@ class IcecastAPI:
 
         log.info('setting metadata: %s' % text)
         
-        print '*************************'
-        # getting streaming setup
         server = channel.stream_server
         
-        print server
-        print 'server name: %s' % server.name
-        print 'host:        %s' % server.host
-        print 'admin:       %s' % server.admin_pass
-        print 'mount:       %s' % server.mountpoint
+        #print server
+        #print 'server name: %s' % server.name
+        #print 'host:        %s' % server.host
+        #print 'admin:       %s' % server.admin_pass
+        #print 'mount:       %s' % server.mountpoint
 
         if server.meta_prefix:
             text = '%s %s' % (server.meta_prefix, text)
@@ -41,18 +39,10 @@ class IcecastAPI:
         log.debug('mount: %s' % mount)
         
         url = '%sadmin/metadata' % server.host
-        print '*******************'
-        
         auth=(server.admin_user, server.admin_pass)
-        
         params = {'mount': mount, 'mode': 'updinfo', 'song': u'%s' % text}
         
         r = requests.get(url, auth=auth, params=params, timeout=2.0)
-        
-        print '######################################################'
-        print r.url
-        print r.text
-        print
-        print
 
-        
+        log.debug('calling icecast API at: %s' % r.url)
+        log.debug('icecast API response: %s' % r.text)

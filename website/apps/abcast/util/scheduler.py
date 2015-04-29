@@ -152,9 +152,9 @@ def get_history(range, channel=None):
 
     for emission in emissions:
 
-        print u'--------------------------------------------------------------------'
-        print u'emission: %s | %s - %s' % (emission.name, emission.pk, emission.get_absolute_url())
-        print u'%s - %s' % (emission.time_start, emission.time_end)
+        #print u'--------------------------------------------------------------------'
+        #print u'emission: %s | %s - %s' % (emission.name, emission.pk, emission.get_absolute_url())
+        #print u'%s - %s' % (emission.time_start, emission.time_end)
 
         for emission_item in  emission.get_timestamped_media():
             #print u'%s - %s' % (emission_item.timestamp, emission_item.content_object)

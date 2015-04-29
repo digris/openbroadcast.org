@@ -27,15 +27,10 @@ def start_play(item, channel=None, user=None):
     """
     Update stream metadata
     """
-    text = u'%s - %s | %s' % (item.name, item.artist.name, item.release.name)
+    text = u'%s by %s - %s' % (item.name, item.artist.name, item.release.name)
     api = IcecastAPI()
     api.set_metadata(channel, text)
-    
-    
-    """
-    Add stat information
-    """
-    """"""
+
     try:
         from atracker.util import create_event
         user = None

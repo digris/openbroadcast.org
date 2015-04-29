@@ -68,7 +68,7 @@ aplayer.ui.bind = function() {
             })
 
             // sorry, kind of ugly..
-            uri = '/api/v1/library/simpletrack/?id__in=' + item_ids.join(',');
+            uri = '/api/v1/library/simpletrack/?limit=50&id__in=' + item_ids.join(',');
 
         }
 

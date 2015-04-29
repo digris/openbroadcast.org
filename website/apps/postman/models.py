@@ -22,6 +22,8 @@ except ImportError:
 from postman.urls import OPTION_MESSAGES
 from postman.utils import email_visitor, notify_user
 
+from cacheops import invalidate_model
+
 # moderation constants
 STATUS_PENDING = 'p'
 STATUS_ACCEPTED = 'a'
@@ -170,6 +172,7 @@ class MessageManager(models.Manager):
             'sender_archived': True,
             'sender_deleted_at__isnull': True,
         })
+        invalidate_model(Message)
         return self._folder(related, filters, **kwargs)
 
     def trash(self, user, **kwargs):
@@ -185,6 +188,7 @@ class MessageManager(models.Manager):
             'sender': user,
             'sender_deleted_at__isnull': False,
         })
+        invalidate_model(Message)
         return self._folder(related, filters, **kwargs)
 
     def thread(self, user, filter):
@@ -221,12 +225,14 @@ class MessageManager(models.Manager):
         """
         Set messages as read.
         """
-        return self.filter(
+        qs = self.filter(
             filter,
             recipient=user,
             moderation_status=STATUS_ACCEPTED,
             read_at__isnull=True,
         ).update(read_at=now())
+        invalidate_model(Message)
+        return qs
 
 
 class Message(models.Model):
