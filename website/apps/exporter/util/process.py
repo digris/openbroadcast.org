@@ -16,6 +16,9 @@ from atracker.util import create_event
 
 PROJECT_DIR = getattr(settings, 'PROJECT_DIR', None)
 FILENAME_FORMAT = getattr(settings, 'EXPORTER_FILENAME_FORMAT', '%s - %s - %s.%s')
+
+EXPORTER_DEBUG = getattr(settings, 'EXPORTER_DEBUG', False)
+
 IMAGE_FILENAME = 'cover.jpg'
 CREATE_EVENTS = True # should events a.k.a. statistics be added?
 INCLUDE_USER = True
@@ -37,7 +40,7 @@ class Process(object):
 
     def __init__(self):
 
-        self.debug = False
+        self.debug = EXPORTER_DEBUG
 
         self.status = 0
         self.instance = None
@@ -106,7 +109,7 @@ class Process(object):
     def prepare_directories(self):
 
 
-        if self.debug:
+        if EXPORTER_DEBUG:
             path = os.path.join('export', 'cache', 'debug')
         else:
             path = os.path.join('export', 'cache', '%s-%s' % (time.strftime("%Y%m%d%H%M%S", time.gmtime()), self.instance.uuid))
@@ -130,7 +133,7 @@ class Process(object):
 
         log.debug('cleaning cache: %s' % self.archive_dir)
         try:
-            if not self.debug:
+            if not EXPORTER_DEBUG:
                 shutil.rmtree(self.archive_dir, True)
         except Exception, e:
             pass

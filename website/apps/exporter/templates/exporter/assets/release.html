@@ -58,7 +58,7 @@
                     <dt>{% trans "Tags" %}:</dt>
                     <dd>
                         {% for tag in object.tags %}
-                            <span class="tag">{{ tag.name|spacify }}</span>
+                            <span class="tag">{{ tag.name|spacify }}</span>{% if not forloop.last %}, {% endif %}
                         {% endfor %}
                     </dd>
                 {% endif %}
