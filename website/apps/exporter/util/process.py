@@ -37,7 +37,7 @@ class Process(object):
 
     def __init__(self):
 
-        self.debug = True
+        self.debug = False
 
         self.status = 0
         self.instance = None
