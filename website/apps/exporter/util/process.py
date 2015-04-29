@@ -37,7 +37,7 @@ class Process(object):
 
     def __init__(self):
 
-        self.debug = False
+        self.debug = True
 
         self.status = 0
         self.instance = None
@@ -276,11 +276,11 @@ class Process(object):
         translation.activate('en')
 
         log.debug('processing readme')
-        template = 'exporter/txt/README.TXT'
+        template = 'exporter/txt/readme.txt'
 
-        with open(os.path.join(cache_dir, 'README.TXT'), "w") as txt:
+        with open(os.path.join(cache_dir, 'readme.txt'), "w") as txt:
             str = render_to_string(template, {'object': instance, 'base_url': BASE_URL })
-            txt.write(str)
+            txt.write(str.encode('utf8'))
 
 
 
