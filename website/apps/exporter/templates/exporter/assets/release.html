@@ -1,0 +1,97 @@
+{% extends "exporter/assets/base.html" %}
+{% load truncate i18n spacify_tags alibrary_tags wiki_tags %}
+
+{% block title %}{{ object.name }}{% endblock %}
+
+{% block content %}
+    <div class="header">
+        <div class="info">
+            <h1><a href="{{ base_url }}{{ object.get_absolute_url }}">{{ object.name }}</a></h1>
+            <h2>{% for artist in object.get_artists %}
+
+                {% if "join_phrase" in artist %}
+
+                    {% with item=artist.artist %}
+                        {% if artist.join_phrase %}{{ artist.join_phrase }}{% endif %}
+                        {% if item.get_absolute_url %}
+                            <a href="{{ base_url }}{{ item.get_absolute_url }}">{{ item.name|spacify }}</a>
+                        {% else %}
+                            <span>{{ item.name }}</span>
+                        {% endif %}
+                    {% endwith %}
+                {% else %}
+                    {% with item=artist %}
+                        {% if item.get_absolute_url %}
+                            <a href="{{ base_url }}{{ item.get_absolute_url }}">{{ item.name|spacify }}</a>
+                        {% else %}
+                            <span>{{ item.name }}</span>
+                        {% endif %}
+                        {% if not forloop.last %},{% endif %}
+                    {% endwith %}
+
+                {% endif %}
+
+            {% endfor %}</h2>
+            <dl>
+                {% if object.label %}
+                    <dt>{% trans "Label" %}</dt>
+                    <dd>
+                        {% if object.label.get_absolute_url %}
+                            <a href="{{ base_url }}{{ object.label.get_absolute_url }}">{{ object.label.name }}</a>
+                        {% else %}
+                            {{ object.label.name }}
+                        {% endif %}
+                    </dd>
+                {% endif %}
+                {% if object.catalognumber %}
+                    <dt>{% trans "Catalog No." %}</dt>
+                    <dd>{{ object.catalognumber }}</dd>
+                {% endif %}
+                {% if object.is_promotional %}
+                    <dt>{% trans "Release date" %}:</dt>
+                    <dd>{{ object.releasedate|date:"SHORT_DATE_FORMAT" }} ({% trans "Promo release" %})</dd>
+                {% else %}{% if object.releasedate_approx %}
+                    <dt>{% trans "Release date" %}:</dt>
+                    <dd>{{ object.releasedate_approx }}</dd>
+                {% endif %}{% endif %}
+                {% if object.tags %}
+                    <dt>{% trans "Tags" %}:</dt>
+                    <dd>
+                        {% for tag in object.tags %}
+                            <span class="tag">{{ tag.name|spacify }}</span>
+                        {% endfor %}
+                    </dd>
+                {% endif %}
+            </dl>
+        </div>
+        <div class="image">
+            {% if object.main_image %}
+                <a href="./cover.jpg"><img src="./cover.jpg" /></a>
+            {% else %}
+                &nbsp;
+            {%  endif %}
+        </div>
+    </div>
+
+    <div style="clear: both;">
+        {% if object.description %}
+        <div class="description">
+            {% wikify object.description %}
+        </div>
+        {% endif %}
+        <ul>
+            <li><span>Links:</span></li>
+            <li><a href="{{ base_url }}{{ object.get_absolute_url }}">Open Broadcast Platform</a></li>
+            {% for relation in object.relations.specific %}
+                <li>
+                    <a href="{{ relation.url }}">{{ relation.get_service_display }}</a>
+                </li>
+            {% endfor %}
+            {% for relation in object.relations.generic %}
+                <li>
+                    <a href="{{ relation.url }}">{{ relation.url|truncate_chars_inner:48 }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

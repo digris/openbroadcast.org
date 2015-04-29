@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import time
 import shutil
@@ -19,11 +20,15 @@ IMAGE_FILENAME = 'cover.jpg'
 CREATE_EVENTS = True # should events a.k.a. statistics be added?
 INCLUDE_USER = True
 INCLUDE_README = True
+INCLUDE_HTML_README = True
 INCLUDE_LICENSE = False
 INCLUDE_PLAYLIST = True
 DEFAULT_PLAYLIST_FORMAT = 'm3u'
 AVAILABLE_FORMATS = ['mp3', ]
 AVAILABLE_ARCHIVE_FORMATS = ['zip', ]
+
+BASE_URL = 'https://www.openbroadcast.org'
+#BASE_URL = 'http://local.openbroadcast.org:8080'
 
 
 log = logging.getLogger(__name__)
@@ -74,7 +79,6 @@ class Process(object):
         if not self.prepare_directories():
             log.error('directories could not be created')
             self.status = 99
-
             return self.status
 
         export_items = self.instance.export_items.all()
@@ -84,11 +88,6 @@ class Process(object):
             status, message = self.process_item(item)
             if message:
                 self.messages.append(message)
-
-        #print '-----------------------------------'
-        #print self.messages
-        #print self.file_list
-
 
         if self.target == 'download':
             log.info('download as target, compressing directory')
@@ -131,7 +130,8 @@ class Process(object):
 
         log.debug('cleaning cache: %s' % self.archive_dir)
         try:
-            shutil.rmtree(self.archive_dir, True)
+            if not self.debug:
+                shutil.rmtree(self.archive_dir, True)
         except Exception, e:
             pass
 
@@ -144,39 +144,53 @@ class Process(object):
         content_object = item.content_object
         image = None
 
-        # type depending values
-        if item.content_type.name.lower() == 'release':
+        ct = item.content_type.name.lower()
+
+
+        if ct == 'release':
             media_set = content_object.media_release.all()
             image = content_object.main_image
             if content_object.get_artist_display:
-                item_rel_dir = os.path.join(safe_name(content_object.get_artist_display()), safe_name(content_object.name))
+                item_rel_dir = os.path.join(
+                    safe_name(content_object.get_artist_display()),
+                    safe_name(content_object.name)
+                )
             else:
                 item_rel_dir = safe_name(content_object.get_artist_display())
 
 
-        if item.content_type.name.lower() == 'track':
+        if ct == 'track':
             media_set = [content_object]
             if content_object.artist and content_object.release:
-                item_rel_dir = os.path.join(safe_name(content_object.artist.name), safe_name(content_object.release.name))
+                item_rel_dir = os.path.join(
+                    safe_name(content_object.artist.name),
+                    safe_name(content_object.release.name)
+                )
             elif content_object.artist:
                 item_rel_dir = safe_name(content_object.artist.name)
             else:
                 item_rel_dir = safe_name(content_object.name)
 
 
-        if item.content_type.name.lower() == 'playlist':
+        if ct == 'playlist':
             media_set = []
             image = content_object.main_image
             for m in content_object.get_items():
                 media_set.append(m.content_object)
 
             if content_object.user and content_object.user.get_full_name():
-                item_rel_dir = '%s (%s)' % (safe_name(content_object.name), safe_name(content_object.user.get_full_name()))
+                item_rel_dir = '%s (%s)' % (
+                    safe_name(content_object.name),
+                    safe_name(content_object.user.get_full_name())
+                )
             else:
                 item_rel_dir = safe_name(content_object.name)
 
 
-        item_cache_dir = os.path.join(self.archive_cache_dir, safe_name(item_rel_dir))
+        item_cache_dir = os.path.join(
+            self.archive_cache_dir,
+            safe_name(item_rel_dir)
+        )
         if not os.path.exists(item_cache_dir):
             os.makedirs(item_cache_dir)
 
@@ -197,14 +211,17 @@ class Process(object):
         if INCLUDE_README:
             self.process_readme(instance=content_object, cache_dir=item_cache_dir)
 
+        if INCLUDE_HTML_README:
+            try:
+                self.process_html_readme(instance=content_object, cache_dir=item_cache_dir)
+            except:
+                pass
+
         if INCLUDE_LICENSE:
-            log.debug('adding license')
             self.process_license(instance=content_object, cache_dir=item_cache_dir, file_list=self.file_list)
 
         if INCLUDE_PLAYLIST:
-            log.debug('adding playlist')
-
-
+            pass
 
         return None, None
 
@@ -246,20 +263,17 @@ class Process(object):
             'item': media
         })
 
-
-
-
         return True
 
         #if self.dbox:
         #    self.dbox.upload(file_path, filename)
 
 
-        #log.debug('path: %s' % file_path)
-        #log.debug('processing media - id: %s' % media.pk)
-
 
     def process_readme(self, instance, cache_dir):
+
+        from django.utils import translation
+        translation.activate('en')
 
         log.debug('processing readme')
         template = 'exporter/txt/README.TXT'
@@ -269,14 +283,35 @@ class Process(object):
             txt.write(str)
 
 
+
+    def process_html_readme(self, instance, cache_dir):
+
+        from django.utils import translation
+        translation.activate('en')
+
+        log.debug('processing HTML readme')
+
+        ct = instance.__class__.__name__.lower()
+
+        # TODO: modularize
+        if ct in ['release',]:
+            template = 'exporter/assets/%s.html' % ct
+            with open(os.path.join(cache_dir, 'readme.html'), "w") as txt:
+                str = render_to_string(template, {'object': instance, 'base_url': BASE_URL })
+                txt.write(str.encode('utf8'))
+
+
     def process_license(self, instance, cache_dir, file_list=[]):
+
+        from django.utils import translation
+        translation.activate('en')
 
         log.debug('processing license')
         template = 'exporter/txt/LICENSE.TXT'
 
         with open(os.path.join(cache_dir, 'LICENSE.TXT'), "w") as txt:
             str = render_to_string(template, {'object': instance, 'file_list': file_list})
-            txt.write(str)
+            txt.write(str.encode('utf8'))
 
 
 
