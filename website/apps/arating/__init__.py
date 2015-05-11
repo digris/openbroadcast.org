@@ -77,7 +77,6 @@ def enable_voting_on(cls, manager_name='objects',
 
 
     cls.add_to_class('objects', VotableManager())
-    cls.add_to_class('objects', VotableManager())
     cls.add_to_class(votes_name, generic.GenericRelation(Vote))
     cls.add_to_class(total_name, property(get_total))
     cls.add_to_class(add_vote_name, add_vote)

@@ -940,11 +940,11 @@ class Media(MigrationMixin):
                     pass
                 else:
                     # use lame for the rest
-                    sox_binary = alibrary_settings.LAME_BINARY
-                    log.debug('running: "%s %s %s"' % (sox_binary, src_path, tmp_path))
+                    lame_binary = alibrary_settings.LAME_BINARY
+                    log.debug('running: "%s %s %s"' % (lame_binary, src_path, tmp_path))
 
                     p = subprocess.Popen([
-                        sox_binary, src_path, tmp_path
+                        lame_binary, src_path, tmp_path
                     ], stdout=subprocess.PIPE)
                     stdout = p.communicate()
 
@@ -957,7 +957,6 @@ class Media(MigrationMixin):
             try:
                 shutil.rmtree(tmp_directory)
             except Exception, e:
-
                 print e
             
         return
@@ -1567,7 +1566,27 @@ def media_post_save(sender, **kwargs):
         try:
             obj.base_format = os.path.splitext(obj.master.path)[1][1:].lower()
 
-            audiofile = audiotools.open(obj.master.path)
+            try:
+                audiofile = audiotools.open(obj.master.path)
+            except audiotools.UnsupportedFile, e:
+                # hackish - re-encode file if hpeless to open with at
+                file_fix_path = obj.master.path + '_re-encoded.mp3'
+                shutil.copy2(obj.master.path, file_fix_path)
+
+                # use lame for the rest
+                lame_binary = alibrary_settings.LAME_BINARY
+                lame_options = '-b 320'
+                log.debug('running: "%s %s %s %s"' % (lame_binary, lame_options, file_fix_path, obj.master.path))
+
+                p = subprocess.Popen([
+                    lame_binary, lame_options, file_fix_path, obj.master.path
+                ], stdout=subprocess.PIPE)
+                stdout = p.communicate()
+
+                os.remove(file_fix_path)
+
+                audiofile = audiotools.open(obj.master.path)
+
 
             obj.base_samplerate = audiofile.sample_rate()
             obj.base_filesize = os.path.getsize(obj.master.path)

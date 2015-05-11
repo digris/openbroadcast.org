@@ -61,6 +61,7 @@ class MediaResource(ModelResource):
 
         obj = bundle.obj
 
+
         if obj.master:
             stream = {
                 'rtmp_app': '%s' % settings.RTMP_APP,
@@ -91,6 +92,11 @@ class MediaResource(ModelResource):
         bundle.data['waveform_image'] = waveform_image
 
 
+
+
+
+        # TODO: find a nicer way - disable ops-cache
+        obj = Media.objects.filter(pk=obj.pk).nocache()[0]
 
         # votes
         try:

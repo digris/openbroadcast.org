@@ -23,11 +23,16 @@ class Vote(Timestamped):
     object_id = models.PositiveIntegerField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
 
+
     class Meta:
         app_label = 'arating'
         verbose_name = _('Vote')
         verbose_name_plural = _('Votes')
         unique_together = (('user', 'content_type', 'object_id'),)
+
+        permissions = (
+            ('vote_for_user', 'Can vote in behalf of other user'),
+        )
 
 
     def __unicode__(self):

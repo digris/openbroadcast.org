@@ -391,7 +391,7 @@ base.ui.iface = function () {
     // Prevent disabled / locked clicks
     $('.action a').live('click', function (e) {
         if ($(this).parents('li').hasClass('disabled') || $(this).parents('li').hasClass('locked')) {
-            alert('prevent');
+            alert('Action not allowed');
             e.stopPropagation();
             return false;
         }

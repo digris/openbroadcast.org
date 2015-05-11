@@ -30,6 +30,7 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
 
     # es = Emission.objects.future()
     media = {}
+
     print
     print '--------------------------------------------------------------------'
     print '| getting schedule for PYPO                                        |'
@@ -140,6 +141,7 @@ def get_history(range, channel=None):
 
     objects = []
 
+    """
     print
     print u'--------------------------------------------------------------------'
     print u'| getting schedule history                                        |'
@@ -148,19 +150,13 @@ def get_history(range, channel=None):
     print u'total emissions in range: %s' % emissions.count()
     print u'--------------------------------------------------------------------'
     print
-
+    """
 
     for emission in emissions:
 
-        #print u'--------------------------------------------------------------------'
-        #print u'emission: %s | %s - %s' % (emission.name, emission.pk, emission.get_absolute_url())
-        #print u'%s - %s' % (emission.time_start, emission.time_end)
-
         for emission_item in  emission.get_timestamped_media():
-            #print u'%s - %s' % (emission_item.timestamp, emission_item.content_object)
             emission_item.emission = emission
             if emission_item.timestamp > range_start and emission_item.timestamp < now:
-                print '+ IN RANGE'
                 objects.append({
                     'emission': emission.get_api_url(),
                     'item': emission_item.content_object.get_api_url(),
@@ -168,12 +164,6 @@ def get_history(range, channel=None):
                     'time_end': None,
                     'verbose_name': emission_item.content_object.name,
                 })
-            else:
-                print '- OUT OF RANGE'
-
-
-        print
-
 
     objects.reverse()
 

@@ -1054,7 +1054,7 @@ div.form-errors dl dd ul.errorlist {
 .listview.container .list_body_item ul.action li > a.disabled, .listview.container .list_body_item ul.action li > a.disabled:hover, .listview.container .list_body_row ul.action li > a.disabled, .listview.container .list_body_row ul.action li > a.disabled:hover {
   color: #a5a5a5 !important;
   background: transparent !important;
-  cursor: wait;
+  cursor: not-allowed;
 }
 /* line 287, ../sass/element/_listview.sass */
 .listview.container .list_body_item ul.action li > a.disabled i, .listview.container .list_body_item ul.action li > a.disabled:hover i, .listview.container .list_body_row ul.action li > a.disabled i, .listview.container .list_body_row ul.action li > a.disabled:hover i {
