@@ -154,9 +154,25 @@ def get_history(range, channel=None):
 
     for emission in emissions:
 
-        for emission_item in  emission.get_timestamped_media():
+        print '*******************************'
+        print emission
+        print 'range start: %s' % range_start
+        print 'now: %s' % now
+
+        for emission_item in emission.get_timestamped_media():
             emission_item.emission = emission
+
             if emission_item.timestamp > range_start and emission_item.timestamp < now:
+
+
+
+                print '////////////////////////////////'
+                print 'is %s > %s ?' % (emission_item.timestamp, range_start)
+                print 'is %s < %s ?' % (emission_item.timestamp, now)
+                print
+
+
+
                 objects.append({
                     'emission': emission.get_api_url(),
                     'item': emission_item.content_object.get_api_url(),
@@ -167,5 +183,5 @@ def get_history(range, channel=None):
 
     objects.reverse()
 
-    return objects
+    return objects[1:]
 
