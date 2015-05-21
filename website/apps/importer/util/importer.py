@@ -1168,23 +1168,20 @@ def mb_complete_release_task(obj, mb_id):
     """
     trying to get label information
     """
-    print '//////////////////////////////////////////////////////////'
-    print 'trying to get label info'
     label_info = result.get('label-info', None)
     if label_info:
-        print label_info
         catalog_number = label_info[0].get('catalog-number', None)
         label = label_info[0].get('label', None)
 
-        print 'catno: %s' % catalog_number
+        #print 'catno: %s' % catalog_number
         #print 'label: %s' % label
 
         label_name = label.get('name', None)
         label_code = label.get('label-code', None)
         mb_label_id = label.get('id', None)
-        print 'label_name:  %s' % label_name
-        print 'label_code:  %s' % label_code
-        print 'label_mb_id: %s' % mb_label_id
+        #print 'label_name:  %s' % label_name
+        #print 'label_code:  %s' % label_code
+        #print 'label_mb_id: %s' % mb_label_id
 
         l = obj.label
         l_created = False
