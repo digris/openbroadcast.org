@@ -1,6 +1,6 @@
 from django.utils.html import mark_safe
+from django.template.loader import render_to_string
 from easy_thumbnails.files import get_thumbnailer
-
 from selectable.base import ModelLookup
 from selectable.registry import registry
 from alibrary.models import *
@@ -8,36 +8,34 @@ from alibrary.models import *
 THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
 
 
-class ReleaseNameLookup(ModelLookup):
+class BaseLookup(ModelLookup):
+    template_name = None
+    def get_item_label(self, object):
+        return mark_safe(render_to_string(self.template_name, {'object': object}))
+
+
+class ReleaseNameLookup(BaseLookup):
     model = Release
-    search_fields = ['name__icontains',]
-    
-    def get_item_label(self, item):
+    search_fields = ['name__icontains', 'catalognumber__istartswith']
+    template_name = 'alibrary/lookups/_release.html'
 
-        name = (item.name[:22] + '..') if len(item.name) > 22 else item.name
-
-        try:
-            opt = THUMBNAIL_OPT
-            image = image = get_thumbnailer(item.main_image).get_thumbnail(opt).url
-        except:
-            image = "/static/img/base/spacer.png"
-            pass
-
-        html = '<img src="%s">' % image
-        html += '<span>%s' % name
-
-        if item.catalognumber:
-            html += '<small>%s</small>' % item.catalognumber
-
-        html += '</span>'
-
-
-
-        return mark_safe(html)
-    
 registry.register(ReleaseNameLookup)
 
-""""""
+
+class ArtistLookup(BaseLookup):
+    model = Artist
+    search_fields = ['name__icontains',]
+    template_name = 'alibrary/lookups/_artist.html'
+
+registry.register(ArtistLookup)
+
+
+
+
+
+"""
+TODO: refactor lookup toi use generic class & templates
+"""
 class PlaylistSeriesLookup(ModelLookup):
     model = Series
     search_fields = ['name__icontains',]
@@ -89,26 +87,7 @@ class ParentLabelLookup(ReleaseLabelLookup):
 
 registry.register(ParentLabelLookup)
 
-""""""
-class ArtistLookup(ModelLookup):
-    model = Artist
-    search_fields = ['name__icontains',]
 
-    def get_item_label(self, item):
-        try:
-            opt = THUMBNAIL_OPT
-            image = image = get_thumbnailer(item.main_image).get_thumbnail(opt).url
-        except:
-            image = "/static/img/base/spacer.png"
-            pass
-
-        html = '<img src="%s">' % image
-        html += '<span>%s</span>' % (item.name)
-
-        return mark_safe(html)
-
-    
-registry.register(ArtistLookup)
 
 
 class LabelLookup(ModelLookup):

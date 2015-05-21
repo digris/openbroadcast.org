@@ -12238,17 +12238,57 @@ div.shortcutter div.item.hover .col-left i {
  * Copyright 2010-2013, Mark Lavin
  * BSD License
  */
-/* line 12, ../sass/apps/_selectable.sass */
+/* line 13, ../sass/apps/_selectable.sass */
 ul.ui-autocomplete {
   background: white;
-  max-width: 315px;
+  max-width: 360;
 }
-/* line 15, ../sass/apps/_selectable.sass */
+/* line 16, ../sass/apps/_selectable.sass */
 ul.ui-autocomplete > li {
   margin-bottom: 0;
 }
-/* line 18, ../sass/apps/_selectable.sass */
-ul.ui-autocomplete > li a {
+/* line 20, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a div.lookup {
+  width: 360;
+}
+/* line 22, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a div.lookup .image {
+  width: 64px;
+  float: left;
+}
+/* line 25, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a div.lookup .image img {
+  width: auto;
+  max-height: 64px;
+}
+/* line 28, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a div.lookup .meta {
+  padding-left: 72px;
+  height: 64px;
+}
+/* line 31, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a div.lookup .meta p, ul.ui-autocomplete > li > a div.lookup .meta small {
+  color: white;
+}
+/* line 33, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a div.lookup .meta p {
+  padding-right: 0;
+  margin-bottom: 0;
+}
+/* line 36, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a div.lookup .meta .dim {
+  padding: 0;
+}
+/* line 39, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a.ui-state-focus {
+  background-color: #ddffd9;
+}
+/* line 43, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a.ui-state-focus div.lookup .meta p, ul.ui-autocomplete > li > a.ui-state-focus div.lookup .meta small {
+  color: black;
+}
+/* line 49, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a {
   padding: 4px;
   border-bottom: 1px solid #eeeeee;
   background: #333333;
@@ -12257,33 +12297,33 @@ ul.ui-autocomplete > li a {
   display: block;
   width: 315px;
 }
-/* line 27, ../sass/apps/_selectable.sass */
-ul.ui-autocomplete > li a > span {
+/* line 58, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a > span {
   padding-left: 5px;
 }
-/* line 29, ../sass/apps/_selectable.sass */
-ul.ui-autocomplete > li a > span > span.highlight {
+/* line 60, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a > span > span.highlight {
   font-style: italic;
   font-weight: normal;
 }
-/* line 32, ../sass/apps/_selectable.sass */
-ul.ui-autocomplete > li a > span small {
+/* line 63, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a > span small {
   padding: 0 0 0 7px;
   color: #999999;
   font-size: 82%;
 }
-/* line 37, ../sass/apps/_selectable.sass */
-ul.ui-autocomplete > li a.ui-state-focus {
+/* line 68, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a.ui-state-focus {
   background-color: #ddffd9;
   color: black;
 }
-/* line 41, ../sass/apps/_selectable.sass */
-ul.ui-autocomplete > li img {
+/* line 72, ../sass/apps/_selectable.sass */
+ul.ui-autocomplete > li > a > img {
   width: 42px;
   height: 42px;
 }
 
-/* line 47, ../sass/apps/_selectable.sass */
+/* line 78, ../sass/apps/_selectable.sass */
 .controls.field-lookup span[role=status] {
   display: none;
 }

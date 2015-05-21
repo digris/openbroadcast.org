@@ -1,0 +1,24 @@
+{% load spurl i18n truncate thumbnail %}
+<div class="lookup lookup-artist">
+    <div class="image">
+        <img src="{% thumbnail object.main_image 80x80 crop subject_location='0,0' %}">
+    </div>
+    <div class="meta">
+        <p>
+            {{ object.name|truncatechars:28 }}
+            {% if object.country %}({{ object.country.iso2_code }}){% endif %}
+
+            <span class="pull-right">
+            {% if object.type %}{{ object.get_type_display }}{% endif %}
+            </span>
+        </p>
+        <p>
+            {% if object.real_name and object.real_name != object.name %}
+                <span>{{ object.real_name|truncatechars:28 }}</span><br>
+            {% endif %}
+
+            {% if object.date_start %}&nbsp;*{{ object.date_start.year }}{% endif %}
+            {% if object.date_end %}&nbsp;&#10013;{{ object.date_end.year }}{% endif %}
+        </p>
+    </div>
+</div>

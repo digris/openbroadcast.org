@@ -1,0 +1,29 @@
+{% load spurl i18n truncate thumbnail %}
+<div class="lookup lookup-release">
+    <div class="image">
+        <img src="{% thumbnail object.main_image 80x80 crop %}">
+    </div>
+    <div class="meta">
+        <p>
+            {{ object.name|truncatechars:28 }}
+            <span class="pull-right">{% if object.releasetype %}{{ object.get_releasetype_display }} {% endif %}{% if object.release_country %} ({{ object.release_country.iso2_code }}){% endif %}</span>
+        </p>
+        <p>
+            {% if object.label %}
+                <span>{{ object.label|truncatechars:28 }}</span>
+            {% endif %}
+
+            {% if object.catalognumber and object.label %} - {% endif %}
+
+            {% if object.catalognumber %}
+                <span>{{ object.catalognumber }}</span>
+            {% endif %}
+
+            {% if object.catalognumber or object.label %}<br>{% endif %}
+
+            {% if object.get_artist_display %}
+                <span class="dim">by</span> <span>{{ object.get_artist_display|truncatechars:36 }}</span><br>
+            {% endif %}
+        </p>
+    </div>
+</div>

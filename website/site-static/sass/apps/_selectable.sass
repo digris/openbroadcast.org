@@ -7,15 +7,46 @@
  * BSD License
  *
 
-
+$ac-image-size: 64px
+$ac-width: 360
 
 ul.ui-autocomplete
   background: white
-  max-width: 315px
+  max-width: $ac-width
   > li
     margin-bottom: 0
 
-    a
+    // refactored to own templates, e.g. alibrary/lookups/_release.html
+    > a div.lookup
+      width: $ac-width
+      .image
+        width: $ac-image-size
+        float: left
+        img
+          width: auto
+          max-height: $ac-image-size
+      .meta
+        padding-left: $ac-image-size + 8px
+        height: $ac-image-size
+        p, small
+          color: #ffffff
+        p
+          padding-right: 0
+          margin-bottom: 0
+        .dim
+          padding: 0
+
+    > a.ui-state-focus
+      background-color: #ddffd9
+      div.lookup
+        .meta
+          p, small
+            color: #000000
+
+
+
+    // TODO: refactor templates and remove styles below
+    > a
       padding: 4px
       border-bottom: 1px solid #eeeeee
       background: #333
@@ -38,9 +69,9 @@ ul.ui-autocomplete
         background-color: #ddffd9
         color: #000
 
-    img
-      width: 42px
-      height: 42px
+      > img
+        width: 42px
+        height: 42px
 
 
 .controls.field-lookup

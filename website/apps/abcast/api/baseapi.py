@@ -128,10 +128,69 @@ class ChannelResource(ModelResource):
     def prepend_urls(self):
         
         return [
-            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/on-air%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_now_playing'), name="playlist_api_get_now_playing"),
-            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/history%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_history'), name="playlist_api_get_history"),
+
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/schedule%s$" % (
+                self._meta.resource_name,
+                trailing_slash()),
+                self.wrap_view('get_schedule'),
+                name="playlist_api_schedule"),
+
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/history%s$" % (
+                self._meta.resource_name,
+                trailing_slash()),
+                self.wrap_view('get_history'),
+                name="playlist_api_history"),
+
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/on-air%s$" % (
+                self._meta.resource_name,
+                trailing_slash()),
+                self.wrap_view('get_now_playing'),
+                name="playlist_api_on_air"),
         ]
 
+
+
+
+
+    def get_schedule(self, request, **kwargs):
+
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        range_start = int(request.GET.get('range_start', 60 * 60))
+        range_end = int(request.GET.get('range_end', 60 * 60))
+
+        channel = Channel.objects.get(**self.remove_api_resource_names(kwargs))
+        objects = scheduler.get_schedule(range_start=range_start, range_end=range_end, channel=channel)
+
+        bundle = {
+                  'meta': {
+                      'total_count': len(objects),
+                  },
+                  'objects': objects,
+                  }
+
+        self.log_throttled_access(request)
+        return self.create_response(request, bundle)
+
+
+    def get_history(self, request, **kwargs):
+
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        channel = Channel.objects.get(**self.remove_api_resource_names(kwargs))
+        objects = scheduler.get_history(range=360*60, channel=channel)
+
+        bundle = {
+                  'meta': {},
+                  'objects': objects,
+                  }
+
+        self.log_throttled_access(request)
+        return self.create_response(request, bundle)
 
 
     def get_now_playing(self, request, **kwargs):
@@ -226,51 +285,6 @@ class ChannelResource(ModelResource):
         bundle = {
                   'start_next': start_next,
                   'playing': now_playing,
-                  }
-
-        self.log_throttled_access(request)
-        return self.create_response(request, bundle)
-
-
-
-    def get_history(self, request, **kwargs):
-        """
-        dummy implementation! just returns random data!
-        """
-
-        self.method_check(request, allowed=['get'])
-        self.is_authenticated(request)
-        self.throttle_check(request)
-        from alibrary.models.mediamodels import Media
-
-        channel = Channel.objects.get(**self.remove_api_resource_names(kwargs))
-
-
-
-        range_start = datetime.datetime.now()
-        range_end = datetime.datetime.now() + datetime.timedelta(seconds=SCHEDULE_AHEAD)
-
-        objects = scheduler.get_history(range=360*60, channel=channel)
-
-        #objects = []
-
-        """
-        for i in range(0,4):
-
-            item = {
-                'emission': Emission.objects.order_by('?').all()[0].get_api_url(),
-                'item': Media.objects.order_by('-created').all()[i].get_api_url(),
-                'time_start': None,
-                'time_end': None,
-            }
-
-            objects.append(item)
-        """
-
-
-        bundle = {
-                  'meta': {},
-                  'objects': objects,
                   }
 
         self.log_throttled_access(request)

@@ -4,22 +4,7 @@ from abcast.models import Emission
 
 EXCHANGE = 'fs' # 'fs' or 'http'
 
-
-def get_schedule(range_start, range_end, exclude=None, channel=None):
-
-    return
-
-
 def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
-    """
-
-    :param range_start:
-    :param range_end:
-    :param exclude:
-    :param channel:
-    returns pypo readable schedule
-    """
-
 
     es = Emission.objects.filter(time_end__gte=range_start, time_start__lte=range_end)
     if exclude:
@@ -27,8 +12,6 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
 
     base_url = Site.objects.get_current().domain
 
-
-    # es = Emission.objects.future()
     media = {}
 
     print
@@ -43,12 +26,6 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
 
 
     for e in es:
-        try:
-            print
-            print 'emission: %s | %s - %s' % (e.name, e.pk, e.get_absolute_url())
-            #print 'co      : %s | %s - %s' % (e.content_object.name, e.content_object.pk, e.content_object.get_absolute_url())
-        except:
-            pass
 
         e_start = e.time_start
         offset = 0
@@ -120,11 +97,8 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
 
                 media['%s' % i_start_str] = data
 
-            #offset += ( co.get_duration() - (item.cue_in + item.cue_out) )
             offset += ( co.get_duration() - (item.cue_in + item.cue_out + item.fade_cross ) )
 
-
-    #print media
     return media
 
 
@@ -164,14 +138,10 @@ def get_history(range, channel=None):
 
             if emission_item.timestamp > range_start and emission_item.timestamp < now:
 
-
-
-                print '////////////////////////////////'
-                print 'is %s > %s ?' % (emission_item.timestamp, range_start)
-                print 'is %s < %s ?' % (emission_item.timestamp, now)
-                print
-
-
+                #print '////////////////////////////////'
+                #print 'is %s > %s ?' % (emission_item.timestamp, range_start)
+                #print 'is %s < %s ?' % (emission_item.timestamp, now)
+                #print
 
                 objects.append({
                     'emission': emission.get_api_url(),
@@ -184,4 +154,61 @@ def get_history(range, channel=None):
     objects.reverse()
 
     return objects[1:]
+
+
+
+def get_schedule(range_start=0, range_end=0, channel=None):
+    """
+    @range_start: seconds back
+    @range_end: seconds forward
+    """
+
+    now = datetime.datetime.now()
+    range_start = now - datetime.timedelta(seconds=range_start)
+    range_end = now + datetime.timedelta(seconds=range_end)
+
+    print
+    print u'--------------------------------------------------------------------'
+    print u'| getting schedule history                                        |'
+    print u'--------------------------------------------------------------------'
+    print u'channel                 : %s ' % channel.name
+    print u'range_start             : %s ' % range_start
+    print u'range_end               : %s ' % range_end
+    print
+
+    emissions = Emission.objects.filter(
+        time_end__gte=range_start,
+        time_start__lte=range_end,
+        channel=channel).order_by('-time_start')
+
+    objects = []
+
+
+    print u'total emissions in range: %s' % emissions.count()
+    print u'--------------------------------------------------------------------'
+
+    for emission in emissions:
+
+        print u'emission: %s ' % emission.name
+
+        for emission_item in emission.get_timestamped_media():
+
+            # map timestamps
+            emission_item.time_start = emission_item.timestamp
+            emission_item.time_end = emission_item.timestamp + datetime.timedelta(milliseconds=emission_item.playout_duration)
+
+            # check if ranges apply
+            if emission_item.time_end >= range_start and emission_item.time_start <= range_end:
+
+                objects.append({
+                    'emission': emission.get_api_url(),
+                    'item': emission_item.content_object.get_api_url(),
+                    'time_start': emission_item.time_start,
+                    'time_end': emission_item.time_end,
+                    'verbose_name': emission_item.content_object.name,
+                })
+
+    objects.reverse()
+
+    return objects
 

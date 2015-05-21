@@ -1,8 +1,5 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 import datetime
-
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.contrib.auth.models import User
