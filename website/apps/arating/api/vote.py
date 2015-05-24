@@ -3,7 +3,7 @@ from tastypie import fields
 import logging
 from tastypie.authentication import MultiAuthentication, Authentication, SessionAuthentication, ApiKeyAuthentication
 from tastypie.authorization import *
-from tastypie.resources import ModelResource, ALL_WITH_RELATIONS
+from tastypie.resources import ModelResource, ALL_WITH_RELATIONS, ALL
 from tastypie.http import HttpUnauthorized
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -32,12 +32,11 @@ class VoteResource(ModelResource):
         resource_name = 'rating/vote'
         include_resource_uri = False
         # TODO: double-check for sensitive information
-        fields = ['id', 'created',]
+        fields = ['id', 'created']
         authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication(), Authentication())
         authorization = Authorization()
         always_return_data = True
-        filtering = {
-        }
+        filtering = {}
 
     def dehydrate(self, bundle):
         return bundle

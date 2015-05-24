@@ -455,7 +455,8 @@ class Media(MigrationMixin):
         return reverse('api_dispatch_detail', kwargs={  
             'api_name': 'v1',  
             'resource_name': 'library/track',
-            'pk': self.pk  
+            #'pk': self.pk
+            'uuid': self.uuid
         }) + ''
     
     def release_link(self):

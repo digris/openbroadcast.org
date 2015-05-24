@@ -50,6 +50,14 @@ class ReleaseResource(ModelResource):
             
         bundle.data['artist'] = bundle.obj.get_artists()
 
+
+        if  bundle.obj.release_country:
+            bundle.data['country'] = bundle.obj.release_country.printable_name
+            bundle.data['country_code'] = bundle.obj.release_country.iso2_code
+        else:
+            bundle.data['country'] = None
+            bundle.data['country_code'] = None
+
         return bundle
 
     # additional methods

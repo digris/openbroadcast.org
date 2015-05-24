@@ -1,7 +1,8 @@
+from sendfile import sendfile
 from django.conf import settings
 from django.conf.urls import *
 from django.db.models import Q
-
+from django.http import HttpResponseBadRequest, HttpResponseForbidden
 from tastypie import fields
 from tastypie.authentication import *
 from tastypie.authorization import *
@@ -32,9 +33,10 @@ class MediaResource(ModelResource):
         list_allowed_methods = ['get', ]
         detail_allowed_methods = ['get', ]
         resource_name = 'library/track'
+        detail_uri_name = 'uuid'
         excludes = ['updated', 'release__media']
         include_absolute_url = True
-        authentication = Authentication()
+        authentication = MultiAuthentication(ApiKeyAuthentication(), SessionAuthentication(), Authentication())
         authorization = Authorization()
         limit = 50
         filtering = {
@@ -188,8 +190,9 @@ class MediaResource(ModelResource):
 
         return [
               url(r"^(?P<resource_name>%s)/autocomplete%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('autocomplete'), name="alibrary-media_api-autocomplete"),
-              url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/vote%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('vote'), name="alibrary-media_api-vote"),
-              url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/stats%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('stats'), name="alibrary-media_api-stats"),
+              url(r"^(?P<resource_name>%s)/(?P<uuid>\w[\w/-]*)/vote%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('vote'), name="alibrary-media_api-vote"),
+              url(r"^(?P<resource_name>%s)/(?P<uuid>\w[\w/-]*)/stats%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('stats'), name="alibrary-media_api-stats"),
+              url(r"^(?P<resource_name>%s)/(?P<uuid>\w[\w/-]*)/stream.mp3$" % self._meta.resource_name, self.wrap_view('stream_file'), name="alibrary-media_api-stream"),
         ]
 
     def autocomplete(self, request, **kwargs):
@@ -291,7 +294,6 @@ class MediaResource(ModelResource):
         return self.create_response(request, votes)
 
 
-
     def stats(self, request, **kwargs):
 
         self.method_check(request, allowed=['get'])
@@ -308,12 +310,29 @@ class MediaResource(ModelResource):
         return self.create_response(request, stats)
 
 
+    def stream_file(self, request, **kwargs):
+        """
+        provides the default stream file as download.
+        method is only used by API clients at the moment
+        """
+
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        if not(request.user.has_perm('alibrary.play_media')):
+            return HttpResponseForbidden('sorry. no permissions here!')
+
+        obj = Media.objects.get(**self.remove_api_resource_names(kwargs))
+        file = obj.get_cache_file('mp3', 'base')
+        if not file:
+            return HttpResponseBadRequest('unable to get file')
+
+        return sendfile(request, file)
+
+
 
 class SimpleMediaResource(ModelResource):
-    #release = fields.ForeignKey('alibrary.api.ReleaseResource', 'release', null=True, full=False, max_depth=2)
-    #artist = fields.ForeignKey('alibrary.api.ArtistResource', 'artist', null=True, full=False, max_depth=2)
-
-    #message = fields.CharField(attribute='message', null=True)
 
     class Meta:
         queryset = Media.objects.order_by('tracknumber').all()
@@ -321,6 +340,7 @@ class SimpleMediaResource(ModelResource):
         detail_allowed_methods = ['get', ]
         # not so nice - force resource to full version
         resource_name = 'library/simpletrack'
+        detail_uri_name = 'uuid'
         excludes = ['updated', 'release__media']
         include_absolute_url = True
         authentication = Authentication()
