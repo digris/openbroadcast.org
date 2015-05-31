@@ -48,6 +48,9 @@ def _folder(request, folder_name, view_name, option, template_name):
     order_by = get_order_by(request.GET)
     if order_by:
         kwargs.update(order_by=order_by)
+
+    kwargs.update(option='m')
+
     msgs = getattr(Message.objects, folder_name)(request.user, **kwargs)
     return render_to_response(template_name, {
         'pm_messages': msgs,  # avoid 'messages', already used by contrib.messages
@@ -171,15 +174,24 @@ def write(request, recipients=None, form_classes=(WriteForm, AnonymousWriteForm)
             # order_by() is not mandatory, but: a) it doesn't hurt; b) it eases the test suite
             # and anyway the original ordering cannot be respected.
             user_model = get_user_model()
+
+
             usernames = list(user_model.objects.values_list(user_model.USERNAME_FIELD, flat=True).filter(
                 is_active=True,
                 **{'{0}__in'.format(user_model.USERNAME_FIELD): [r.strip() for r in recipients.split(':') if r and not r.isspace()]}
             ).order_by(user_model.USERNAME_FIELD))
+
+            users = user_model.objects.filter(
+                is_active=True,
+                **{'{0}__in'.format(user_model.USERNAME_FIELD): [r.strip() for r in recipients.split(':') if r and not r.isspace()]}
+            ).order_by(user_model.USERNAME_FIELD)
+
             if usernames:
                 initial.update(recipients=', '.join(usernames))
         form = form_class(initial=initial, channel=channel)
     return render_to_response(template_name, {
         'form': form,
+        'recipients': users,
         'autocompleter_app': autocompleter_app,
         'next_url': request.GET.get('next', next_url),
         }, context_instance=RequestContext(request))
@@ -261,7 +273,8 @@ def _view(request, filter, form_class=QuickReplyForm, formatters=(format_subject
         else:
             archived = True
         # look for the more recent received message (and non-deleted to comply with the future perms() control), if any
-        for m in reversed(msgs):
+        #for m in reversed(msgs):
+        for m in msgs:
             if m.recipient == user and not m.recipient_deleted_at:
                 received = m
                 break

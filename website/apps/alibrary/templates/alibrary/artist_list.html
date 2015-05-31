@@ -150,7 +150,11 @@
 
 		{% endif %}
 
-		{% endfor %}
+        {% empty %}
+            <p style="padding: 20px; text-align: center;">
+                {% trans 'No results to display.' %}
+            </p>
+        {% endfor %}
 
 	</div>
 

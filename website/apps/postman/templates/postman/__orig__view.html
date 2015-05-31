@@ -1,0 +1,93 @@
+{% extends "postman/base.html" %}
+{% load url from future %}
+{% load i18n humanize postman_tags%}
+{% block content %}
+    <div id="postman" class="postman read">
+
+        {% for message in pm_messages %}
+            <div class="message{% if message.is_pending %} pending{% endif %}{% if message.is_rejected %} rejected{% endif %}{% if message.sender == user and message.sender_archived or message.recipient == user and message.recipient_archived %} archived{% endif %}{% if message.sender == user and message.sender_deleted_at or message.recipient == user and message.recipient_deleted_at %} deleted{% endif %}{% if message.recipient == user and not message.read_at %} unread{% endif %}">
+
+                <div class="header">
+
+                    <div class="row-fluid">
+                        <div class="span8">
+                          <span class="sender">{% trans "From" %}:
+                            {% if message.sender.get_absolute_url %}
+                                <a href="{{ message.sender.get_absolute_url }}">{{ message.obfuscated_sender|or_me:user }}</a>
+                            {% else %}
+                                {{ message.obfuscated_sender|or_me:user }}
+                            {% endif %}
+                          </span>
+                        </div>
+                        <div class="span4">
+                            <span class="date pull-right">{{ message.sent_at|naturaltime }}</span>
+                        </div>
+                    </div>
+
+
+                    <div class="row-fluid">
+                        <div class="span8">
+                            <span class="recipient">{% trans "To" %}: {{ message.obfuscated_recipient|or_me:user }}</span>
+                        </div>
+                        <div class="span4">
+                            {% if message.is_rejected %}
+                                <div class="status">
+                                    {% trans "Rejected" %}
+                                    {% if message.moderation_reason %}{% trans ":" %}
+                                        {{ message.moderation_reason }}{% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if forloop.first %}
+
+
+
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <span class="subject">{% trans "Subject" %}: {{ message.subject }}</span>
+                            </div>
+                        </div>
+
+
+                    {% endif %}
+
+
+                </div>
+
+                <div class="body">{{ message.body|linebreaksbr }}</div>
+
+            </div>
+
+
+
+
+            {% if forloop.last %}
+                <div class="actions">
+                <form action="" method="post" class="pull-right">{% csrf_token %}
+
+                    <input type="hidden"
+                           {% if pm_messages|length > 1 and message.thread_id %}name="tpks"
+                           value="{{ message.thread_id }}"
+                           {% else %}name="pks"
+                           value="{{ message.pk }}"{% endif %}/>
+
+
+
+
+                    <button type="submit"
+                            class="btn btn-secondary"
+                            onclick="this.form.action='{% url 'postman_delete' %}?next={{ next_url|urlencode }}'">{% trans "Delete" %}</button>
+
+                    {% if reply_to_pk %}<a class="btn btn-primary"
+                                           href="{% url 'postman_reply' reply_to_pk %}?next={{ next_url|urlencode }}">
+                        {% trans "Reply" %}</a>{% endif %}
+                </form>
+                </div>
+
+            {% endif %}
+        {% endfor %}
+
+    </div>
+{% endblock %}

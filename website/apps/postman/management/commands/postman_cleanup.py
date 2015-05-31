@@ -1,3 +1,5 @@
+#-*- coding: utf-8 -*-
+from __future__ import absolute_import
 from __future__ import unicode_literals
 from datetime import timedelta
 from optparse import make_option

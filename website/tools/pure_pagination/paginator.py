@@ -40,7 +40,8 @@ class Paginator(object):
             if number == 1 and self.allow_empty_first_page:
                 pass
             else:
-                raise EmptyPage('That page contains no results')
+                pass
+                #raise EmptyPage('That page contains no results')
         return number
 
     def page(self, number):

@@ -1,4 +1,5 @@
-from __future__ import unicode_literals
+#-*- coding: utf-8 -*-
+from __future__ import unicode_literals, absolute_import
 import datetime
 
 from django.core.management.base import NoArgsCommand

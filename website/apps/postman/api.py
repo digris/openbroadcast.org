@@ -1,22 +1,5 @@
-"""
-This module provides an API to the django-postman application,
-for an easy usage from other applications in the project.
-
-Sample:
-Suppose an application managing Event objects. Whenever a new Event is generated,
-you want to broadcast an announcement to Users who have subscribed
-to be informed of the availability of such a kind of Event.
-
-from postman.api import pm_broadcast
-events = Event.objects.filter(...)
-for e in events:
-    pm_broadcast(
-        sender=e.author,
-        recipients=e.subscribers,
-        subject='New {0} at Our School: {1}'.format(e.type, e.title),
-        body=e.description)
-"""
-from __future__ import unicode_literals
+#-*- coding: utf-8 -*-
+from __future__ import unicode_literals, absolute_import
 
 try:
     from django.utils.timezone import now  # Django 1.4 aware datetimes

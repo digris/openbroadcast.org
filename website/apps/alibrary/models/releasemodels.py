@@ -394,15 +394,15 @@ class Release(MigrationMixin):
     def get_license(self):        
         
         licenses = License.objects.filter(media_license__in=self.get_media()).distinct()
-        
-        license = None
-        
-        if licenses.count() == 1:
-            license = licenses[0]
+        if not licenses.exists():
+            return {'name': _(u'Not Defined')}
+
         if licenses.count() > 1:
             license, created = License.objects.get_or_create(name="Multiple")
-            
-        return license
+            return license
+
+        if licenses.count() == 1:
+            return licenses[0]
 
 
     """

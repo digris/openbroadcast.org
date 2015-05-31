@@ -80,11 +80,7 @@ class MediaForm(ModelForm):
         """
         Prototype function, set some fields to readonly depending on permissions
         """
-        print '## permission check'
-        print
-
         if not self.user.has_perm("alibrary.admin_release", self.instance) and self.instance.release and self.instance.release.publish_date:
-            #pass
             self.fields['license'].widget.attrs['readonly'] = 'readonly'
 
 

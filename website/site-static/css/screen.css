@@ -3509,7 +3509,19 @@ div.navbar .container .navright a {
   margin: 0px 0px 4px 8px;
 }
 
-/* line 111, ../sass/element/_toolbar.sass */
+/* line 113, ../sass/element/_toolbar.sass */
+div.navbar .container .nav-profile .message-notification.has-unread span {
+  color: white;
+}
+/* line 115, ../sass/element/_toolbar.sass */
+div.navbar .container .nav-profile .message-notification.has-unread .count {
+  color: white;
+  font-weight: bold;
+  background-color: #00bb00;
+  padding: 0 5px;
+  border-radius: 2px;
+}
+/* line 124, ../sass/element/_toolbar.sass */
 div.navbar .container .nav-profile .messages span.icon-label {
   color: white;
   padding-left: 3px;
@@ -3517,33 +3529,33 @@ div.navbar .container .nav-profile .messages span.icon-label {
 }
 
 /* ---------- subnav ---------- */
-/* line 120, ../sass/element/_toolbar.sass */
+/* line 133, ../sass/element/_toolbar.sass */
 .subnav {
   padding: 8px 0px 0px 154px;
 }
-/* line 124, ../sass/element/_toolbar.sass */
+/* line 137, ../sass/element/_toolbar.sass */
 .subnav li {
   list-style: none;
   float: left;
 }
-/* line 127, ../sass/element/_toolbar.sass */
+/* line 140, ../sass/element/_toolbar.sass */
 .subnav li a {
   color: #666666;
   text-decoration: none;
   padding: 0px 7px 0px 7px;
   border-right: 1px solid #999999;
 }
-/* line 133, ../sass/element/_toolbar.sass */
+/* line 146, ../sass/element/_toolbar.sass */
 .subnav li a:hover {
   color: #00bb00;
 }
-/* line 137, ../sass/element/_toolbar.sass */
+/* line 150, ../sass/element/_toolbar.sass */
 .subnav li.selected a, .subnav li.ancestor a {
   color: #00bb00;
   text-decoration: none;
   padding: 0px 7px 0px 7px;
 }
-/* line 143, ../sass/element/_toolbar.sass */
+/* line 156, ../sass/element/_toolbar.sass */
 .subnav li:last-child a {
   border-right: none !important;
 }

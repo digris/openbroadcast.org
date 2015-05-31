@@ -21,12 +21,10 @@ With subject: "a great interest":
 {% endcomment %}
 
 {% load postman_tags %}
-{% with message.subject|truncatewords:7 as truncated_subject %}
-<span class="subject">{{ truncated_subject }}</span>
+
 {% with truncated_subject|wordcount as subject_wc %}
 {% with 24|sub:subject_wc as wc %}
  {% if message.body and wc > 0 %}<div class="body-preview"><span>&#171;</span>{{ message.body|truncatewords:wc }}<span>&#187;</span></div>
  {% endif %}
-{% endwith %}
 {% endwith %}
 {% endwith %}

@@ -1,125 +1,183 @@
-.postman
+
+
+
+#modnav.postman
+
+  // hack - sorry.
+  &.postman-inbox
+    li.inbox > a
+      color: #0b0
+  &.postman-sent
+    li.sent > a
+      color: #0b0
+  &.postman-trash
+    li.trash > a
+      color: #0b0
+
+
+
+
+#postman.postman
+
   margin: 10px 0 10px
   padding: 0 0px
 
-  // hack
-  .row-fluid > .span8
-    width: 65.9%
+  table#pm_messages
+    width: 100%
+    margin: 10px 0 10px
 
-  thead
-    tr > th
-      padding: 2px 2px 10px
-      text-align: left
-      &.action
-        width: 60px
-      &.sender, &.recipient
-        width: 160px
-      &.date
-        width: 140px
-
-  tbody
-    tr > td
-      padding: 4px 2px 4px
-      text-align: left
-
-      &.select
-        text-align: center
-
-      .subject
-        //font-family: monospace
-
-      .body-preview
-        color: #5a5a5a
-        font-weight: normal
+    thead
+      padding-bottom: 8px
+      tr > th
+        padding: 2px 2px 2px
+        text-align: left
+        font-weight: 300
         font-style: italic
-        //font-family: monospace
+        color: #666666
+
+        border-top: 1px solid #bbbbbb
+        border-bottom: 1px solid #bbbbbb
+
+        &.action
+          width: 60px
+        &.sender, &.recipient
+          width: 160px
+        &.date
+          width: 140px
+          text-align: right
+
+    tbody > tr.message
+      border-bottom: 1px solid #f5f5f5
+      //cursor: pointer
+      &:nth-child(even)
+        //background-color: #fafafa
+      &.hover
+        background-color: #f5f5f5
+
+
+      > td
+        padding: 8px 4px 8px
+        text-align: left
+
+        &.select
+          padding-left: 10px
+          //text-align: center
+
+        .subject
+        .body-preview
+          max-width: 350px
+
+        .body-preview
+          padding: 4px 0
+          color: #5a5a5a
+          font-weight: normal
+          font-style: italic
+
+        &.date
+          color: #5a5a5a
+          text-align: right
+
+          .status
+            text-align: right
+            padding: 4px 0
+
+            span
+              color: #999
+
+
+#postman.postman
+  &.inbox
+    .is-new a
+      font-weight: bold
+    .is-replied a
+      font-style: italic
 
 
 
 
 
+
+
+#postman.postman.read
+  // view / write
   .message
     // background-color: red
 
     .header
-      background-color: #efefef
-      padding: 5px
+      padding: 12px
+
+      .dl-horizontal
+        margin: 0
+        dt
+          width: 70px
+        dd
+          margin-left: 80px
+
       .sender
-        font-weight: bold
+      .subject
       .date
         color: #999
-      .subject
-        font-weight: bold
 
-      form
-        margin: 0
+      &.main
+        background-color: #f5f5f5
 
-      // overrides
-      .actions
-        li
-          padding: 0 0 0 10px
-          a
-            color: #5a5a5a
-            &:hover
-              color: $main-b
-              text-decoration: none
+      &.thread
+        background-color: #fcfcfc
 
-          button
-            border: none
-            background: transparent
-            color: #5a5a5a
-            padding: 0
-            line-height: 0
-            &:hover
-              color: $main-b
+
+
 
 
 
     .body
-      padding: 20px 0
+      padding: 20px 10px
       line-height: 180%
       color: #333
-      text-align: justify
-      font-family: monospace
-
-    &.deleted
-      text-decoration: line-through
-      .pm_body
-        display: none
-    &.archived
       font-style: italic
-      color: grey
-    &.unread .subject
-      font-weight: bolder
-    &.pending .header
-      background-color: #FFC
-    &.rejected .header
-      background-color: #FDD
+      //text-align: justify
+      //font-family: monospace
 
 
+#postman.postman.write
 
 
-  .write
-    padding: 5px 0
+  .header
+    padding: 12px
+    background-color: #f5f5f5
 
-    label
-      font-weight: bold
-      width: 120px
-      float: left
+    .dl-horizontal
+      margin: 0
+      dt
+        width: 70px
+      dd
+        margin-left: 80px
 
-    p
-      clear: both
+  .body
+    padding: 20px 0 20px 10px
+    line-height: 180%
+    color: #333
+    font-style: italic
 
-      input, textarea
-        font-family: monospace
-        width: 705px
-        border: none
-        background-color: #f2f2f2
+    form
+
+      ul
+        > li
+          margin: 0 0 8px 0
+          //clear: both
+
+          label
+            width: 80px
+            float: left
+
+          input, textarea
+            padding: 2px 4px
+
+            width: 732px
+            border: none
+            background-color: rgb(249, 249, 249)
 
     div.actions
-      padding-right: 30px
-      button
-        width: 160px
+
 
 
 // also styled here... invitations:

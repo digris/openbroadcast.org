@@ -84,7 +84,7 @@
         {% if object.get_license %}
             {% if object.get_license.iconset %}
                 <a href="{{ object.get_license.get_absolute_url }}"
-                   title="{% trans "License details" %}"
+                   title="{% trans "License details" %} - {{ object.get_license.name }}"
                    class="iconset iconset-license">
                        {{ object.get_license.iconset_display }}
                 </a>

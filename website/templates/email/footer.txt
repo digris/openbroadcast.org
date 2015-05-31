@@ -1,13 +1,9 @@
 
-
-Best regards,
-your {{ site_name }} Team
-
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
-{{ protocol }}://{{ domain }}
+www.openbroadcast.org
+Digris AG
 Renggerstrasse 31
-8038 Zürich
+CH-8038 Zürich
 Switzerland
+
+send@openbroadcast.org

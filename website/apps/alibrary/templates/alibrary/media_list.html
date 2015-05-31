@@ -142,6 +142,10 @@
                     {% include "alibrary/media/list_item_l.html" %}
                 {% endif %}
 
+            {% empty %}
+                <p style="padding: 20px; text-align: center;">
+                    {% trans 'No results to display.' %}
+                </p>
             {% endfor %}
 
         </div>

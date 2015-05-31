@@ -3133,182 +3133,211 @@ section.item_inner .tab-pane section.profile.information dl {
   color: #5a5a5a !important;
 }
 
-/* line 1, ../sass/apps/_postman.sass */
-.postman {
+/* line 8, ../sass/apps/_postman.sass */
+#modnav.postman.postman-inbox li.inbox > a {
+  color: #00bb00;
+}
+/* line 11, ../sass/apps/_postman.sass */
+#modnav.postman.postman-sent li.sent > a {
+  color: #00bb00;
+}
+/* line 14, ../sass/apps/_postman.sass */
+#modnav.postman.postman-trash li.trash > a {
+  color: #00bb00;
+}
+
+/* line 20, ../sass/apps/_postman.sass */
+#postman.postman {
   margin: 10px 0 10px;
   padding: 0 0px;
 }
-/* line 6, ../sass/apps/_postman.sass */
-.postman .row-fluid > .span8 {
-  width: 65.9%;
-}
-/* line 10, ../sass/apps/_postman.sass */
-.postman thead tr > th {
-  padding: 2px 2px 10px;
-  text-align: left;
-}
-/* line 13, ../sass/apps/_postman.sass */
-.postman thead tr > th.action {
-  width: 60px;
-}
-/* line 15, ../sass/apps/_postman.sass */
-.postman thead tr > th.sender, .postman thead tr > th.recipient {
-  width: 160px;
-}
-/* line 17, ../sass/apps/_postman.sass */
-.postman thead tr > th.date {
-  width: 140px;
-}
-/* line 21, ../sass/apps/_postman.sass */
-.postman tbody tr > td {
-  padding: 4px 2px 4px;
-  text-align: left;
-}
 /* line 25, ../sass/apps/_postman.sass */
-.postman tbody tr > td.select {
-  text-align: center;
+#postman.postman table#pm_messages {
+  width: 100%;
+  margin: 10px 0 10px;
+}
+/* line 29, ../sass/apps/_postman.sass */
+#postman.postman table#pm_messages thead {
+  padding-bottom: 8px;
 }
 /* line 31, ../sass/apps/_postman.sass */
-.postman tbody tr > td .body-preview {
+#postman.postman table#pm_messages thead tr > th {
+  padding: 2px 2px 2px;
+  text-align: left;
+  font-weight: 300;
+  font-style: italic;
+  color: #666666;
+  border-top: 1px solid #bbbbbb;
+  border-bottom: 1px solid #bbbbbb;
+}
+/* line 41, ../sass/apps/_postman.sass */
+#postman.postman table#pm_messages thead tr > th.action {
+  width: 60px;
+}
+/* line 43, ../sass/apps/_postman.sass */
+#postman.postman table#pm_messages thead tr > th.sender, #postman.postman table#pm_messages thead tr > th.recipient {
+  width: 160px;
+}
+/* line 45, ../sass/apps/_postman.sass */
+#postman.postman table#pm_messages thead tr > th.date {
+  width: 140px;
+  text-align: right;
+}
+/* line 49, ../sass/apps/_postman.sass */
+#postman.postman table#pm_messages tbody > tr.message {
+  border-bottom: 1px solid whitesmoke;
+}
+/* line 54, ../sass/apps/_postman.sass */
+#postman.postman table#pm_messages tbody > tr.message.hover {
+  background-color: whitesmoke;
+}
+/* line 58, ../sass/apps/_postman.sass */
+#postman.postman table#pm_messages tbody > tr.message > td {
+  padding: 8px 4px 8px;
+  text-align: left;
+}
+/* line 62, ../sass/apps/_postman.sass */
+#postman.postman table#pm_messages tbody > tr.message > td.select {
+  padding-left: 10px;
+}
+/* line 67, ../sass/apps/_postman.sass */
+#postman.postman table#pm_messages tbody > tr.message > td .body-preview {
+  max-width: 350px;
+}
+/* line 70, ../sass/apps/_postman.sass */
+#postman.postman table#pm_messages tbody > tr.message > td .body-preview {
+  padding: 4px 0;
   color: #5a5a5a;
   font-weight: normal;
   font-style: italic;
 }
-/* line 44, ../sass/apps/_postman.sass */
-.postman .message .header {
-  background-color: #efefef;
-  padding: 5px;
+/* line 76, ../sass/apps/_postman.sass */
+#postman.postman table#pm_messages tbody > tr.message > td.date {
+  color: #5a5a5a;
+  text-align: right;
 }
-/* line 47, ../sass/apps/_postman.sass */
-.postman .message .header .sender {
-  font-weight: bold;
+/* line 80, ../sass/apps/_postman.sass */
+#postman.postman table#pm_messages tbody > tr.message > td.date .status {
+  text-align: right;
+  padding: 4px 0;
 }
-/* line 49, ../sass/apps/_postman.sass */
-.postman .message .header .date {
+/* line 84, ../sass/apps/_postman.sass */
+#postman.postman table#pm_messages tbody > tr.message > td.date .status span {
   color: #999999;
 }
-/* line 51, ../sass/apps/_postman.sass */
-.postman .message .header .subject {
+
+/* line 90, ../sass/apps/_postman.sass */
+#postman.postman.inbox .is-new a {
   font-weight: bold;
-}
-/* line 54, ../sass/apps/_postman.sass */
-.postman .message .header form {
-  margin: 0;
-}
-/* line 59, ../sass/apps/_postman.sass */
-.postman .message .header .actions li {
-  padding: 0 0 0 10px;
-}
-/* line 61, ../sass/apps/_postman.sass */
-.postman .message .header .actions li a {
-  color: #5a5a5a;
-}
-/* line 63, ../sass/apps/_postman.sass */
-.postman .message .header .actions li a:hover {
-  color: #6633cc;
-  text-decoration: none;
-}
-/* line 67, ../sass/apps/_postman.sass */
-.postman .message .header .actions li button {
-  border: none;
-  background: transparent;
-  color: #5a5a5a;
-  padding: 0;
-  line-height: 0;
-}
-/* line 73, ../sass/apps/_postman.sass */
-.postman .message .header .actions li button:hover {
-  color: #6633cc;
-}
-/* line 78, ../sass/apps/_postman.sass */
-.postman .message .body {
-  padding: 20px 0;
-  line-height: 180%;
-  color: #333333;
-  text-align: justify;
-  font-family: monospace;
-}
-/* line 85, ../sass/apps/_postman.sass */
-.postman .message.deleted {
-  text-decoration: line-through;
-}
-/* line 87, ../sass/apps/_postman.sass */
-.postman .message.deleted .pm_body {
-  display: none;
-}
-/* line 89, ../sass/apps/_postman.sass */
-.postman .message.archived {
-  font-style: italic;
-  color: grey;
 }
 /* line 92, ../sass/apps/_postman.sass */
-.postman .message.unread .subject {
-  font-weight: bolder;
-}
-/* line 94, ../sass/apps/_postman.sass */
-.postman .message.pending .header {
-  background-color: #ffffcc;
-}
-/* line 96, ../sass/apps/_postman.sass */
-.postman .message.rejected .header {
-  background-color: #ffdddd;
-}
-/* line 102, ../sass/apps/_postman.sass */
-.postman .write {
-  padding: 5px 0;
-}
-/* line 105, ../sass/apps/_postman.sass */
-.postman .write label {
-  font-weight: bold;
-  width: 120px;
-  float: left;
-}
-/* line 110, ../sass/apps/_postman.sass */
-.postman .write p {
-  clear: both;
-}
-/* line 113, ../sass/apps/_postman.sass */
-.postman .write p input, .postman .write p textarea {
-  font-family: monospace;
-  width: 705px;
-  border: none;
-  background-color: #f2f2f2;
-}
-/* line 119, ../sass/apps/_postman.sass */
-.postman .write div.actions {
-  padding-right: 30px;
-}
-/* line 121, ../sass/apps/_postman.sass */
-.postman .write div.actions button {
-  width: 160px;
+#postman.postman.inbox .is-replied a {
+  font-style: italic;
 }
 
-/* line 129, ../sass/apps/_postman.sass */
+/* line 106, ../sass/apps/_postman.sass */
+#postman.postman.read .message .header {
+  padding: 12px;
+}
+/* line 109, ../sass/apps/_postman.sass */
+#postman.postman.read .message .header .dl-horizontal {
+  margin: 0;
+}
+/* line 111, ../sass/apps/_postman.sass */
+#postman.postman.read .message .header .dl-horizontal dt {
+  width: 70px;
+}
+/* line 113, ../sass/apps/_postman.sass */
+#postman.postman.read .message .header .dl-horizontal dd {
+  margin-left: 80px;
+}
+/* line 118, ../sass/apps/_postman.sass */
+#postman.postman.read .message .header .date {
+  color: #999999;
+}
+/* line 121, ../sass/apps/_postman.sass */
+#postman.postman.read .message .header.main {
+  background-color: whitesmoke;
+}
+/* line 124, ../sass/apps/_postman.sass */
+#postman.postman.read .message .header.thread {
+  background-color: #fcfcfc;
+}
+/* line 132, ../sass/apps/_postman.sass */
+#postman.postman.read .message .body {
+  padding: 20px 10px;
+  line-height: 180%;
+  color: #333333;
+  font-style: italic;
+}
+
+/* line 144, ../sass/apps/_postman.sass */
+#postman.postman.write .header {
+  padding: 12px;
+  background-color: whitesmoke;
+}
+/* line 148, ../sass/apps/_postman.sass */
+#postman.postman.write .header .dl-horizontal {
+  margin: 0;
+}
+/* line 150, ../sass/apps/_postman.sass */
+#postman.postman.write .header .dl-horizontal dt {
+  width: 70px;
+}
+/* line 152, ../sass/apps/_postman.sass */
+#postman.postman.write .header .dl-horizontal dd {
+  margin-left: 80px;
+}
+/* line 155, ../sass/apps/_postman.sass */
+#postman.postman.write .body {
+  padding: 20px 0 20px 10px;
+  line-height: 180%;
+  color: #333333;
+  font-style: italic;
+}
+/* line 164, ../sass/apps/_postman.sass */
+#postman.postman.write .body form ul > li {
+  margin: 0 0 8px 0;
+}
+/* line 168, ../sass/apps/_postman.sass */
+#postman.postman.write .body form ul > li label {
+  width: 80px;
+  float: left;
+}
+/* line 172, ../sass/apps/_postman.sass */
+#postman.postman.write .body form ul > li input, #postman.postman.write .body form ul > li textarea {
+  padding: 2px 4px;
+  width: 732px;
+  border: none;
+  background-color: #f9f9f9;
+}
+
+/* line 187, ../sass/apps/_postman.sass */
 .invitation form {
   padding: 5px 0;
 }
-/* line 132, ../sass/apps/_postman.sass */
+/* line 190, ../sass/apps/_postman.sass */
 .invitation form label {
   font-weight: bold;
   width: 120px;
   float: left;
 }
-/* line 137, ../sass/apps/_postman.sass */
+/* line 195, ../sass/apps/_postman.sass */
 .invitation form fieldset {
   clear: both;
 }
-/* line 140, ../sass/apps/_postman.sass */
+/* line 198, ../sass/apps/_postman.sass */
 .invitation form fieldset input, .invitation form fieldset textarea {
   font-family: monospace;
   width: 705px;
   border: none;
   background-color: #f2f2f2;
 }
-/* line 146, ../sass/apps/_postman.sass */
+/* line 204, ../sass/apps/_postman.sass */
 .invitation form div.actions {
   padding-right: 2px;
 }
-/* line 148, ../sass/apps/_postman.sass */
+/* line 206, ../sass/apps/_postman.sass */
 .invitation form div.actions button {
   width: 160px;
 }

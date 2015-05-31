@@ -26,7 +26,11 @@
 						<li><a href="/admin/"><i class="icon-dashboard"></i> <span>{% trans 'Administration' %}</span></a></li>
 						{% endif %}
 						
-						<li class="messgae-notification {% if postman_unread_count %}messgae-notification-has-unread{% endif %}"><a href="{% url postman_inbox %}"><i class="icon-envelope-alt"></i><span> {% trans 'Messages' %} {{ postman_unread_count }}</span></a></li>
+						<li class="message-notification{% if postman_unread_count %} has-unread{% endif %}">
+                            <a href="{% url postman_inbox %}">
+                                <i class="icon-envelope-alt"></i>
+                                <span>{% trans 'Messages' %} <small class="count">{{ postman_unread_count }}</small></span></a>
+                        </li>
 
                         {% comment %}
 						{% if user|user_stream_count > 0 %}

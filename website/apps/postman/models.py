@@ -198,7 +198,7 @@ class MessageManager(models.Manager):
         return self.select_related('sender', 'recipient').filter(
             filter,
             (models.Q(recipient=user) & models.Q(moderation_status=STATUS_ACCEPTED)) | models.Q(sender=user),
-        ).order_by('sent_at')
+        ).order_by('-sent_at')
 
     def as_recipient(self, user, filter):
         """

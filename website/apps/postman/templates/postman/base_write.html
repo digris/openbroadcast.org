@@ -1,22 +1,45 @@
 {% extends "postman/base.html" %}
-{% load i18n crispy_forms_tags %}
+{% load i18n crispy_forms_tags postman_tags humanize %}
 {% block extrahead %}{{ block.super }}{% endblock %}
 {% block content %}
-    <div id="postman" class="postman">
-        <!--
-<h1>{% block pm_write_title %}{% endblock %}</h1>
--->
+    <div id="postman" class="postman write">
 
-        <div class="write">
+        <div class="header">
+            <div class="row-fluid">
+                <div class="span8">
+                    <dl class="dl-horizontal">
+
+
+                        <dt>{% trans "To" %}</dt>
+                        <dd>
+                            {% if recipient %}
+                                {{ recipient }}
+                            {% else %}
+                                {%  if recipients %}
+                                    {% firstof recipients.0.get_full_name recipients.0  %}
+                                {% endif %}
+                            {% endif %}
+                        </dd>
+
+                    </dl>
+                </div>
+                <div class="span4">
+                    <span class="date pull-right">{{ message.sent_at|naturaltime }}</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="body">
 
             <form action="{% if next_url %}?next={{ next_url|urlencode }}{% endif %}" method="post">{% csrf_token %}
-                {% block pm_write_recipient %}{% endblock %}
 
-                {{ form.as_p }}
-                {# crispy form #}
+                <ul class="unstyled">
+                {{ form.as_ul }}
+                </ul>
 
                 <div class="actions">
-                    <button class="btn btn-primary pull-right" type="submit">{% trans "Send" %}</button>
+                    <button class="btn btn-primary pull-right" type="submit">{% trans "Send Message" %}</button>
                 </div>
             </form>
 

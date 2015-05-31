@@ -34,7 +34,7 @@ else:
 DISABLE_USER_EMAILING = getattr(settings, 'POSTMAN_DISABLE_USER_EMAILING', False)
 
 # default wrap width; referenced in forms.py
-WRAP_WIDTH = 55
+WRAP_WIDTH = 120
 
 
 def format_body(sender, body, indent=_("> "), width=WRAP_WIDTH):
@@ -77,9 +77,7 @@ def email(subject_template, message_template, recipient_list, object, action=Non
     subject = ''.join(subject.splitlines())
     message = render_to_string(message_template, ctx_dict)
     # during the development phase, consider using the setting: EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    print 'pre send_mail'
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list, fail_silently=False)
-    print 'post send_mail'
 
 
 def email_visitor(object, action):
@@ -88,8 +86,6 @@ def email_visitor(object, action):
 
 
 def notify_user(object, action):
-
-    print '************* NOTIFY USER **********************'
 
     """Notify a user."""
     if action == 'rejection':
@@ -102,20 +98,9 @@ def notify_user(object, action):
     else:
         return
 
-
-    print user
-
     if notification:
-        print 'notification, so no email'
         # the context key 'message' is already used in django-notification/models.py/send_now() (v0.2.0)
         notification.send(users=[user], label=label, extra_context={'pm_message': object, 'pm_action': action})
     else:
-        print 'try to send email'
-        print DISABLE_USER_EMAILING
-        print user.email
-        print user.is_active
-        print '--------------------------'
         if not DISABLE_USER_EMAILING and user.email and user.is_active:
-            print 'let us send da mail!!!'
             email('postman/email_user_subject.txt', 'postman/email_user.txt', [user.email], object, action)
-            print 'sending mail should be done now...'
