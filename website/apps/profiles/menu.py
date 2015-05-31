@@ -12,8 +12,7 @@ class ProfileMenu(CMSAttachMenu):
     
     def get_nodes(self, request):
         nodes = []
-        
-        """"""
+
         node = NavigationNode(
             _('All Users'),
             reverse('profiles-profile-list'),

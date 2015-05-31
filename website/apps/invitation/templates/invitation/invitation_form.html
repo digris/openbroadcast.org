@@ -32,31 +32,18 @@
 
 {% block content %}
 
-    <!--
-	<div>
+    <form method="post" class="" action="" style="margin-top: 40px;">{% csrf_token %}
 
-        <div class="alert alert-warning">
-            <strong>{% trans "Please note!" %}</strong>
-            {% lorem 1 p %}
+        {# include 'invitation/form_fields.html' #}
 
-            <ul>
-                <li><a href="https://musicbrainz.org/doc/MusicBrainz_Picard">Read more about users and invitations</a></li>
-                <li>{% trans "If this all sounds too complicated, please don't hesitate to contact our" %} <a href="#">support</a></li>
-            </ul>
-        </div>
-
-	</div>
-    -->
-
-
-    <form method="post" class="form-horizontal" action="" style="margin-top: 40px;">{% csrf_token %}
-
-        {% include 'invitation/form_fields.html' %}
+        <ul class="unstyled">
+        {{ form.as_ul }}
+        </ul>
 
         <div class="actions">
             <input type="submit"
                    class="btn btn-primary pull-right"
-                   value="{% trans "Send invitation email" %}"/>
+                   value="{% trans "Send Invitation" %}"/>
         </div>
     </form>
 

@@ -1,9 +1,17 @@
 {% extends "layout_base.html" %}
 
 
+{% block modnav %}
+<!-- start: intra-module navigation -->
+<div id="modnav">
+	{% include "skeleton/modnav.html" %}
+</div>
+<!-- end: intra-module navigation -->
+{% endblock %}
+
 
 {% block inner %}
-<div class="invitation">
+<div class="listview container profile invitations create">
 {% block content %}{% endblock %}
 </div>
 {% endblock %}

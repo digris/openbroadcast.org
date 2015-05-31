@@ -3312,36 +3312,6 @@ section.item_inner .tab-pane section.profile.information dl {
   background-color: #f9f9f9;
 }
 
-/* line 187, ../sass/apps/_postman.sass */
-.invitation form {
-  padding: 5px 0;
-}
-/* line 190, ../sass/apps/_postman.sass */
-.invitation form label {
-  font-weight: bold;
-  width: 120px;
-  float: left;
-}
-/* line 195, ../sass/apps/_postman.sass */
-.invitation form fieldset {
-  clear: both;
-}
-/* line 198, ../sass/apps/_postman.sass */
-.invitation form fieldset input, .invitation form fieldset textarea {
-  font-family: monospace;
-  width: 705px;
-  border: none;
-  background-color: #f2f2f2;
-}
-/* line 204, ../sass/apps/_postman.sass */
-.invitation form div.actions {
-  padding-right: 2px;
-}
-/* line 206, ../sass/apps/_postman.sass */
-.invitation form div.actions button {
-  width: 160px;
-}
-
 /* line 2, ../sass/apps/_playlist_editor.sass */
 .tab-pane .alert {
   margin-top: 20px;

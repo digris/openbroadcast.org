@@ -43,9 +43,6 @@ import debug_toolbar
 
 urlpatterns = patterns('',
 
-
-    # admin
-    #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     # django-su
     url(r"^admin/su/", include("django_su.urls")),
     url(r'^admin_tools/', include('admin_tools.urls')),
@@ -53,46 +50,18 @@ urlpatterns = patterns('',
 
     url(r'^backfeed/', include('backfeed.urls')),
 
-
-    
-    #url(r"^profiles/", include("profiles.urls")),
-    
     url(r'uploader/', include('multiuploader.urls')),
 
 
     url(r"^vote/", include('arating.urls')),
     url(r'^ac_tagging/', include('ac_tagging.urls')),
-    #url(r'^ac_lookup/lookups/', include('ajax_select.urls')),
     url(r'^autocomplete/', include('autocomplete_light.urls')),
-    
-
 
     url(r'^api/', include(api.urls)),
-    #url(r'^api/', include('tastytools.urls'), {'api_name': api.api_name}),
-    #url(r'^apidocs/', include("tastydocs.urls"), {"api": api}),
 
-
-    #url(r"^api/", include("alibrary.urls_api")),
-    #url(r'^api/', include('urls_api')),
-
-    #url(r'^docs/', include('sphinxdoc.urls')),
-
-
-
-
-    # oauth
     url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
-
-    
-    
     url(r'^comments/', include('fluent_comments.urls')),
-    
     url(r'^postman/', include('postman.urls')),
-    
-    #url(r'^invite/', include('invite.urls')),
-    
-    
-    
 
     url(r'^selectable/', include('selectable.urls')),
     
@@ -102,11 +71,9 @@ urlpatterns = patterns('',
     url(r'^esi/', include('esi.urls')),
     
     # registration
-    url(r'^accounts/', include('invitation.urls')),
-    # url(r'^accounts/', include('registration.backends.default.urls')),
+    #url(r'^accounts/', include('invitation.urls')),
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r"^accounts/login_as/(?P<user_id>.+)/$", "loginas.views.user_login", name="loginas-user-login"),
-    # socialauth
     url(r'^sa/', include('social_auth.urls')),
 
     # filer (protected)
@@ -119,7 +86,6 @@ urlpatterns = patterns('',
 
     # shop
     (r'^shop/discount/', include('discount.urls')),
-    # (r'^shop/cart/', include('shop_simplevariations.urls')), # urls for variations
     (r'^shop/cart/', include('shop_ajax.urls')), # urls for variations
     (r'^shop/', include('shop.urls')), # shop main urls
     
@@ -127,10 +93,7 @@ urlpatterns = patterns('',
     url(r'^search/', include('haystack.urls')),
     
     url(r'^sitemap.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
-    
-    # apps
-    #(r'^blog/', include('articles.urls')),
-    #(r'^', include('alibrary.urls')),
+
     (r'^player/', include('aplayer.urls')),
     
     url(r'^bb/', include('django_badbrowser.urls')),
@@ -139,13 +102,10 @@ urlpatterns = patterns('',
 
     # spf
     url(r"^spf/", include("spf.urls")),
-
-
     url(r'^__debug__/', include(debug_toolbar.urls)),
     
     # cms base
     url(r'^', include('cms.urls')),
-
 )
 
 

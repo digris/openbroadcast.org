@@ -13312,6 +13312,35 @@ body.loginas-active .navbar.navbar-fixed-top .container {
   border-top: 4px solid orangered;
 }
 
+/* line 3, ../sass/apps/_profile.sass */
+.container.profile.invitations {
+  border-top: 1px solid #bbbbbb;
+}
+/* line 8, ../sass/apps/_profile.sass */
+.container.profile.invitations thead th {
+  border-bottom: 1px solid #bbbbbb;
+  font-weight: normal;
+  font-style: italic;
+  color: #666666;
+}
+/* line 21, ../sass/apps/_profile.sass */
+.container.profile.invitations.create form ul > li {
+  margin: 0 0 8px 0;
+}
+/* line 25, ../sass/apps/_profile.sass */
+.container.profile.invitations.create form ul > li label {
+  width: 80px;
+  float: left;
+  font-style: italic;
+}
+/* line 30, ../sass/apps/_profile.sass */
+.container.profile.invitations.create form ul > li input, .container.profile.invitations.create form ul > li textarea {
+  padding: 2px 4px;
+  width: 742px;
+  border: none;
+  background-color: #f9f9f9;
+}
+
 /*!
  * qTip2 - Pretty powerful tooltips - v2.0.1-4-g
  * http://qtip2.com
