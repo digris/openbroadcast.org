@@ -419,7 +419,7 @@ class BaseReleaseMediaForm(ModelForm):
         """
 
     artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
-    TRACKNUMBER_CHOICES =  [('', '---')] + list(((str(x), x) for x in range(1, 101)))
+    TRACKNUMBER_CHOICES =  [('', '---')] + list(((str(x), x) for x in range(1, 301)))
     tracknumber =  forms.ChoiceField(label=_('No.'), required=False, choices=TRACKNUMBER_CHOICES)
     #filename =  forms.CharField(widget=ReadOnlyField(), label=_('Original File'), required=False)
 
