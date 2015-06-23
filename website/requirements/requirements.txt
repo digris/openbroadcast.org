@@ -5,6 +5,9 @@ MySQL-python==1.2.5
 PIL==1.1.7
 Pillow==2.3.0
 -e git://github.com/hzlf/python-audio-tools.git@8877cc5055241d884de475944ff4d618845afa88#egg=Python_Audio_Tools-master
+
+-e git+https://github.com/hzlf/graypy.git@master#egg=graypy
+
 South==0.8.4
 URLObject==2.3.4
 Unidecode==0.04.14
