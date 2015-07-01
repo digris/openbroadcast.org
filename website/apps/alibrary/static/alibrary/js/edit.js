@@ -32,7 +32,6 @@ EditUi = function () {
 
 
     this.init = function () {
-        // alert('etit ui');
         self.bindings();
         self.iface();
     };
@@ -1045,17 +1044,16 @@ EditUi = function () {
 
             target_b.val(val_b);
         }
-        ;
 
         // handle tags
         if (key == 'd_tags') {
             var tags = val.split(',');
+
             $(tags).each(function (i, el) {
                 //$("#id_d_tags").tagit("createTag", $.trim(el));
                 $("#id_d_tags").tagit("createTag", $('<input />').html($.trim(el)).text());
             });
         }
-        ;
 
         // handle country mapping (kind of hakish...)
         if (key == 'release_country') {
@@ -1093,8 +1091,6 @@ EditUi = function () {
             skip_apply = true;
         }
 
-
-
         // handle pagedown-preview
         if (key == 'description') {
 
@@ -1104,9 +1100,7 @@ EditUi = function () {
                 }, 200)
             } catch (e) {
             }
-            ;
         }
-        ;
         // handle pagedown-preview
         if (key == 'biography') {
 
@@ -1116,10 +1110,7 @@ EditUi = function () {
                 }, 200)
             } catch (e) {
             }
-            ;
         }
-        ;
-
 
         // apply feedback
         el.parent().removeClass('lookup-diff');
@@ -1129,12 +1120,10 @@ EditUi = function () {
             target.val($.decodeHTML(val));
         }
 
-
         // hack for autocomlete fields - trigger search dialog
         if (key.endsWith('_0')) {
             target.djselectable('search', $.decodeHTML(val));
         }
-
     };
 
 

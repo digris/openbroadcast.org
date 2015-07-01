@@ -17,7 +17,9 @@ THUMBNAIL_OPT = dict(size=(240, 240), crop=True, bw=False, quality=80)
 
 class ReleaseResource(ModelResource):
     
-    media = fields.ToManyField('alibrary.api.MediaResource', 'media_release', null=True, full=True, max_depth=3)
+    #media = fields.ToManyField('alibrary.api.MediaResource', 'media_release', null=True, full=True, max_depth=3)
+    media = fields.ToManyField('alibrary.api.MediaResource', 'media_release', null=True, full=True, max_depth=2)
+
     label = fields.ForeignKey('alibrary.api.LabelResource', 'label', null=True, full=True, max_depth=2)
 
     class Meta:
