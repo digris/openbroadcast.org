@@ -381,7 +381,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         artists = {}
         for m in media:
 
-            if not m.artist.pk:
+            if not m.artist:
                 key = hashlib.md5(m.artist.name).hexdigest()
                 print key
                 try:
