@@ -23,7 +23,7 @@ from lib.widgets.widgets import ReadOnlyIconField
 
 log = logging.getLogger(__name__)
 
-MAX_TRACKNUMBER = 100 + 1
+MAX_TRACKNUMBER = 300 + 1
 
 ACTION_LAYOUT =  action_layout = FormActions(
                 HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),            
