@@ -7,7 +7,7 @@ from atracker.models import Event
 from atracker.util import summary_for_object
 
 
-DEFAULT_ACTIONS = ['playout', 'stream', 'download',]
+DEFAULT_ACTIONS = ['playout', 'stream', 'radio-stream', 'download',]
 
 
 class ObjectStatistics(object):
@@ -35,6 +35,12 @@ class ObjectStatistics(object):
             if action == 'stream':
                 stats.append({
                         'label': _("Plays"),
+                        'data': self.get_stats(action)
+                })
+
+            if action == 'radio-stream':
+                stats.append({
+                        'label': _("Plays Radio Website"),
                         'data': self.get_stats(action)
                 })
 
