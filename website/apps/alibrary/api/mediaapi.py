@@ -13,6 +13,7 @@ from tastypie.cache import SimpleCache
 from easy_thumbnails.files import get_thumbnailer
 
 from alibrary.models import Media
+from alibrary.util.relations import relations_for_object
 
 from ep.API import fp
 
@@ -93,9 +94,7 @@ class MediaResource(ModelResource):
 
         bundle.data['waveform_image'] = waveform_image
 
-
-
-
+        bundle.data['relations'] = relations_for_object(bundle.obj)
 
         # TODO: find a nicer way - disable ops-cache
         obj = Media.objects.filter(pk=obj.pk).nocache()[0]

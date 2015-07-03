@@ -101,11 +101,16 @@ class Event(models.Model):
     
     objects = EventManager()
 
+
     class Meta:
         app_label = 'atracker'
         verbose_name = _('Event')
         verbose_name_plural = _('Events')
         ordering = ('-created',)
+
+        permissions = (
+            ('track_for_user', 'Can create events in behalf of other user'),
+        )
 
     @staticmethod
     def create_event(user, content_object, event_content_object=None,
@@ -132,7 +137,7 @@ class Event(models.Model):
         return obj
 
     def __unicode__(self):
-        return '{0}'.format(self.content_object)
+        return u'{0}'.format(self.content_object)
 
     """
     somehow obsolete... use |timesince template-tag

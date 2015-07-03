@@ -13,6 +13,7 @@ from abcast.api import BaseResource as AbcastBaseResource
 from profiles.api import ProfileResource, UserResource
 
 from arating.api import VoteResource
+from atracker.api import EventResource
 
 #from statistics.api import StatisticResource
 
@@ -64,6 +65,9 @@ api.register(UserResource())
 
 # rating
 api.register(VoteResource())
+
+# atracker
+api.register(EventResource())
 
 # comment
 api.register(CommentResource())

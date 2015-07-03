@@ -497,8 +497,6 @@ class Media(MigrationMixin):
     def get_soundcloud(self):
         return self.relations.filter(service='soundcloud').all()[0]
 
-
-
     """
     compose artist display as string
     """

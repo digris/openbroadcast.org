@@ -69,3 +69,19 @@ def uuid_by_object(obj, service='musicbrainz'):
 
     except:
         pass
+
+
+def relations_for_object(obj):
+
+    relations = []
+    for relation in obj.relations.all():
+
+        relations.append({
+            'url': relation.url,
+            'service': relation.service,
+            'name': relation.get_service_display(),
+        })
+
+    return relations
+
+
