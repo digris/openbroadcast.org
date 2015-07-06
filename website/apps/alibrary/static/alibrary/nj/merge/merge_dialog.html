@@ -159,6 +159,9 @@
                                         {% if object.base_format %}
                                             {{ object.base_format|upper }} |
                                         {% endif %}
+                                        {% if object.base_bitrate %}
+                                            {{ object.base_bitrate }} kbps |
+                                        {% endif %}
                                         {% if object.duration %}
                                             {{ object.duration|ms2time }} |
                                         {% endif %}
