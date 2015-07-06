@@ -442,6 +442,15 @@ class DiscogsAPILookup(APILookup):
                 # reformat numbering & 'The'
                 res['name'] = self.reformat_name(data[k])
 
+            if k == 'artists':
+                reformated_artists = []
+                for item in data['artists']:
+                    if 'name' in item:
+                        item['name'] = self.reformat_name(item['name'])
+                        reformated_artists.append(item)
+                res['artists'] = reformated_artists
+
+
             if k == 'notes':
                 mk = 'description'
 
