@@ -60,10 +60,28 @@
                                     </span>
                                     <span class="value">
                                         {% for artist in object.artist %}
-                                            <strong>{{ artist.artist }}{% if not loop.last %},{% endif %} </strong>
+                                            <strong>
+                                                {% if artist.artist %}
+                                                    {{ artist.artist }}
+                                                {%  else %}
+                                                    {{ artist }}
+                                                {%  endif %}
+                                                {% if not loop.last %},{% endif %} </strong>
                                         {% endfor %}
                                     </span>
                                 </li>
+
+                                {% if object.label and object.label.name %}
+                                <li>
+                                    <span class="title">
+                                        Label:
+                                    </span>
+                                    <span class="value">
+                                        <strong>{{ object.label.name }}</strong>
+                                    </span>
+                                </li>
+                                {% endif %}
+
                                 {% if object.catalognumber %}
                                 <li>
                                     <span class="title">
@@ -73,7 +91,8 @@
                                         <strong>{{ object.catalognumber }}</strong>
                                     </span>
                                 </li>
-                                    {% endif %}
+                                {% endif %}
+
                             {% endif %}
 
 
