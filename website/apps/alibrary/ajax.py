@@ -113,7 +113,7 @@ def provider_search(request, *args, **kwargs):
         query = query.replace(')', '')
 
 
-        url = 'http://%s/database/search?q=%s&type=%s&per_page=%s' % (DISCOGS_HOST, urllib.quote_plus(query), item_type, 15)
+        url = 'http://%s/database/search?q=%s&type=%s&per_page=%s' % (DISCOGS_HOST, urllib.quote_plus(query), item_type, 50)
         log.debug('query url: %s' % (url))
         r = requests.get(url)
         text = r.text

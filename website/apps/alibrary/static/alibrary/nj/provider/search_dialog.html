@@ -42,6 +42,8 @@
                     <div class="span2">
                         {% if  result.thumb %}
                             <img src="{{ result.thumb }}">
+                        {% else %}
+                            <img src="/static/img/base/defaults/listview.release.xl.png">
                         {% endif %}
                     </div>
 
@@ -97,6 +99,9 @@
                             <img src="/static/img/base/defaults/listview.release.xl.png" data-carchive_url="{{ result.thumb }}">
                         {% endif %}
                     </div>
+
+
+
 
                     <div class="span10">
 

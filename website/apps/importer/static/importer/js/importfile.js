@@ -36,7 +36,7 @@ var ImportfileApp = function () {
             } else {
                 //debug.debug('skipping periodic reload');
             }
-        }, 5000 + Math.floor(Math.random() * 1000))
+        }, 10000 + Math.floor(Math.random() * 1000))
 
 
 

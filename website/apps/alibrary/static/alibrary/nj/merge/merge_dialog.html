@@ -28,7 +28,8 @@
                     {% if object.main_image %}
                         <img src="{{ object.main_image }}">
                     {% else %}
-                        <img src="/static/img/base/spacer.png">
+                        <!--<img src="/static/img/base/spacer.png">-->
+                        <img src="/static/img/base/defaults/listview.release.xl.png">
                     {% endif %}
                 </div>
 
@@ -98,6 +99,26 @@
 
 
                             {% if item_type == "artist" %}
+
+                                {% if object.country_name %}
+                                <li>
+                                    <span class="value">
+                                        {{ object.country_name }}
+                                    </span>
+                                </li>
+                                {% endif %}
+
+                                {% if object.real_name %}
+                                <li>
+                                    <span class="title">
+                                        Real name:
+                                    </span>
+                                    <span class="value">
+                                        {{ object.real_name }}
+                                    </span>
+                                </li>
+                                {% endif %}
+
                                 <li>
                                     <span class="value">
                                         {% if object.date_start %}*{{ object.date_start }}{% endif %} {% if object.date_end %}✝{{ object.date_end }}{% endif %}

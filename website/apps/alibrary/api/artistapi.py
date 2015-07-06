@@ -44,6 +44,12 @@ class ArtistResource(ModelResource):
 
         bundle.data['media_count'] = len(bundle.obj.get_media())
 
+
+        if bundle.obj.country:
+            bundle.data['country_name'] = bundle.obj.country.printable_name
+        else:
+            bundle.data['country_name'] = None
+
         return bundle
         
     
