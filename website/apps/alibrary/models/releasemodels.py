@@ -25,6 +25,9 @@ from django_extensions.db.fields import UUIDField
 # cms
 from cms.models import CMSPlugin, Page
 
+# celery / task management
+from celery.task import task
+
 # filer
 from filer.models.filemodels import *
 from filer.models.foldermodels import *
@@ -253,21 +256,19 @@ class Release(MigrationMixin):
     
     def get_last_revision(self):
         try:
-            return reversion.get_unique_for_object(self)[0].revision
+            last_version = reversion.get_unique_for_object(self)[0]
+            return last_version.revision
         except:
             return None
         
     def get_last_editor(self):
         
         latest_revision = self.get_last_revision()
-        
         if latest_revision:
             return latest_revision.user
-        
-        else:
-            return None
-        
-        
+
+        return None
+
     
     def is_active(self):
         
@@ -668,9 +669,17 @@ arating.enable_voting_on(Release)
 post_save.connect(library_post_save, sender=Release)  
 
 
-""""""
+"""
+Actstream handling moved to task queue to avoid wrong revision due to transaction
+"""
 from actstream import action
 def action_handler(sender, instance, created, **kwargs):
+    action_handler_task.delay(instance, created)
+
+post_save.connect(action_handler, sender=Release)
+
+@task
+def action_handler_task(instance, created):
     try:
         verb = _('updated')
         if created:
@@ -679,7 +688,6 @@ def action_handler(sender, instance, created, **kwargs):
     except Exception, e:
         print e
 
-post_save.connect(action_handler, sender=Release)
 
 
 class ReleaseExtraartists(models.Model):

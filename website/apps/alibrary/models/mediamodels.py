@@ -1671,18 +1671,41 @@ def media_pre_delete(sender, **kwargs):
 
 pre_delete.connect(media_pre_delete, sender=Media)
 
+# from actstream import action
+# @disable_for_loaddata
+# def action_handler(sender, instance, created, **kwargs):
+#
+#     if instance.get_last_editor() and instance.status == 1:
+#         log.debug('last editor seems to be: %s' % instance.get_last_editor())
+#         try:
+#             action.send(instance.get_last_editor(), verb='updated', target=instance)
+#         except Exception, e:
+#             print 'error calling action_handler: %s' % e
+#
+# post_save.connect(action_handler, sender=Media)
+
+
+"""
+Actstream handling moved to task queue to avoid wrong revision due to transaction
+"""
 from actstream import action
 @disable_for_loaddata
 def action_handler(sender, instance, created, **kwargs):
-
-    if instance.get_last_editor() and instance.status == 1:
-        log.debug('last editor seems to be: %s' % instance.get_last_editor())
-        try:
-            action.send(instance.get_last_editor(), verb='updated', target=instance)
-        except Exception, e:
-            print 'error calling action_handler: %s' % e
+    action_handler_task.delay(instance, created)
 
 post_save.connect(action_handler, sender=Media)
+
+@task
+def action_handler_task(instance, created):
+    try:
+        verb = _('updated')
+        if created:
+            verb = _('created')
+        action.send(instance.get_last_editor(), verb=verb, target=instance)
+    except Exception, e:
+        print e
+
+
 
 
 

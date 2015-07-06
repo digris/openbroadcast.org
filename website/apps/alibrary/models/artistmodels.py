@@ -15,6 +15,9 @@ from django_extensions.db.fields import UUIDField, AutoSlugField
 # cms
 from cms.models import CMSPlugin, Page
 
+# celery / task management
+from celery.task import task
+
 # filer
 from filer.models.filemodels import *
 from filer.models.foldermodels import *
@@ -373,16 +376,39 @@ except:
 arating.enable_voting_on(Artist)
 post_save.connect(library_post_save, sender=Artist)   
 
+
+# from actstream import action
+# def action_handler(sender, instance, created, **kwargs):
+#     try:
+#         if instance.get_last_editor():
+#             action.send(instance.get_last_editor(), verb=_('updated'), target=instance)
+#     except Exception, e:
+#         print 'error calling action_handler: %s' % e
+#         print e
+#
+# post_save.connect(action_handler, sender=Artist)
+
+
+"""
+Actstream handling moved to task queue to avoid wrong revision due to transaction
+"""
 from actstream import action
 def action_handler(sender, instance, created, **kwargs):
+    action_handler_task.delay(instance, created)
+
+post_save.connect(action_handler, sender=Artist)
+
+@task
+def action_handler_task(instance, created):
     try:
-        if instance.get_last_editor():
-            action.send(instance.get_last_editor(), verb=_('updated'), target=instance)
+        verb = _('updated')
+        if created:
+            verb = _('created')
+        action.send(instance.get_last_editor(), verb=verb, target=instance)
     except Exception, e:
-        print 'error calling action_handler: %s' % e
         print e
 
-post_save.connect(action_handler, sender=Artist)   
+
 
 class ArtistMembership(models.Model):
     
