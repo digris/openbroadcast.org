@@ -7,7 +7,7 @@ from atracker.models import Event
 from atracker.util import summary_for_object
 
 
-DEFAULT_ACTIONS = ['playout', 'stream', 'radio-stream', 'download',]
+DEFAULT_ACTIONS = ['playout', 'stream', 'download',]
 
 
 class ObjectStatistics(object):
