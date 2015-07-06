@@ -1465,7 +1465,10 @@ class Media(MigrationMixin):
         log.debug('Media id: %s - Save' % (self.pk))
 
         # Assign a default license
-        """ not applying default license anymore
+        """
+         - not applying default license anymore
+         - applying default license again: #898
+        """
         if not self.license:
             try:
                 license = License.objects.filter(is_default=True)[0]
@@ -1473,7 +1476,7 @@ class Media(MigrationMixin):
                 log.debug('applied default license: %s' % license.name)
             except Exception, e:
                 log.warning('unable to apply default license: %s' % e)
-        """
+
         
 
         # check if master changed. if yes we need to reprocess the cached files
