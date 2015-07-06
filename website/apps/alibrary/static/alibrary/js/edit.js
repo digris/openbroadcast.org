@@ -647,6 +647,16 @@ EditUi = function () {
             }
 
 
+            // clean up interface
+            $('div.field-lookup-holder').each(function(i, el){
+                var el = $(el);
+                if(! $('span', el).html().length) {
+                    el.hide()
+                }
+            });
+
+
+
         }, data);
     };
 
