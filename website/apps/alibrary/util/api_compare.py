@@ -640,7 +640,8 @@ class DiscogsAPILookup(APILookup):
                 mk = 'address'
 
             if k == 'parent_label':
-                res['parent_0'] = data[k]['name']
+                #res['parent_0'] = data[k]['name']
+                res['parent_0'] = self.reformat_name(data[k]['name'])
 
             if k == 'urls':
                 mapped = []
