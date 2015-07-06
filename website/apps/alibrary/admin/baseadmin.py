@@ -280,7 +280,7 @@ class LabelAdmin(BaseAdmin):
     
     """"""
     fieldsets = [
-        (None,               {'fields': ['name', 'slug', 'type', 'description']}),
+        (None,               {'fields': ['name', 'slug', 'main_image', 'type', 'description']}),
         ('Contact', {'fields' : ['address', 'country', ('phone', 'fax'), 'email']}),
         ('Settings', {'fields' : ['listed', 'disable_link', 'disable_editing']}),
         ('Relations', {'fields': ['parent',], 'classes': ['']}),

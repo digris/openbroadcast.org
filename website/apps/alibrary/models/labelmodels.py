@@ -96,7 +96,7 @@ class Label(MPTTModel, MigrationMixin):
     phone = PhoneNumberField(blank=True, null=True)
     fax = PhoneNumberField(blank=True, null=True)
     
-    main_image = models.ImageField(verbose_name=_('Cover'), upload_to=upload_image_to, storage=OverwriteStorage(), null=True, blank=True)
+    main_image = models.ImageField(verbose_name=_('Logo Image'), upload_to=upload_image_to, storage=OverwriteStorage(), null=True, blank=True)
     #main_image = FilerImageField(null=True, blank=True, related_name="label_main_image", rel='')
     
     description = extra.MarkdownTextField(blank=True, null=True)
