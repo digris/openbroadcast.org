@@ -65,7 +65,23 @@ class MediaForm(ModelForm):
 
     class Meta:
         model = Media
-        fields = ('name', 'description', 'lyrics', 'lyrics_language', 'artist', 'tracknumber', 'medianumber', 'opus_number', 'mediatype', 'version', 'license', 'release', 'd_tags', 'isrc', )
+        fields = (
+            'name',
+            'description',
+            'lyrics',
+            'lyrics_language',
+            'artist',
+            'tracknumber',
+            'medianumber',
+            'opus_number',
+            'mediatype',
+            'version',
+            'filename',
+            'license',
+            'release',
+            'd_tags',
+            'isrc',
+        )
 
 
     def __init__(self, *args, **kwargs):
@@ -90,6 +106,7 @@ class MediaForm(ModelForm):
         # rewrite labels
         self.fields['medianumber'].label = _('Disc number')
         self.fields['opus_number'].label = _('Opus N.')
+        self.fields['filename'].label = _('Orig. Filename')
 
         
         base_layout = Fieldset(
@@ -103,6 +120,7 @@ class MediaForm(ModelForm):
                 Field('medianumber', css_class='input-xlarge'),
                 Field('opus_number', css_class='input-xlarge'),
                 Field('version', css_class='input-xlarge'),
+                HTML('<div style="opacity: 0.5;"><span style="padding: 0 44px 0 8px;">Orig. Filename:</span>%s</div>' % self.instance.filename),
         )
         
         license_layout = Fieldset(
