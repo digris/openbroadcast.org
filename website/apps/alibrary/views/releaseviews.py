@@ -382,7 +382,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         for m in media:
 
             if m.artist and not m.artist.pk:
-                key = hashlib.md5(m.artist.name).hexdigest()
+                key = hashlib.md5(m.artist.name.encode('ascii', 'ignore')).hexdigest()
                 try:
                     artist = artists[key]
                 except Exception, e:
