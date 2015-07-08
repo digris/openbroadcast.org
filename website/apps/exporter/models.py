@@ -264,6 +264,8 @@ def generate_export_filename(qs):
             filename = item.content_object.name.encode('ascii', 'ignore')
         if item.content_type.name.lower() == 'track':
             filename = item.content_object.name.encode('ascii', 'ignore')
+        if item.content_type.name.lower() == 'playlist':
+            filename = item.content_object.name.encode('ascii', 'ignore')
 
     if qs.count() > 1:
         filename = _('Multiple items')
