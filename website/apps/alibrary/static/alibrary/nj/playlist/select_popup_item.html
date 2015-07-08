@@ -3,7 +3,7 @@
 
     <div class="row-fluid">
 
-        <div class="span2 image">
+        <div class="span1 image">
 
             {% if item.main_image %}
                 <img src="{{ item.main_image }}"/>
@@ -13,7 +13,7 @@
 
         </div>
 
-        <div class="span10 information">
+        <div class="span11 information">
 
             <ul class="unstyled">
 
@@ -21,7 +21,7 @@
 
                     <strong><a class="" title="Click to visit detail page" href="{{ item.absolute_url }}">{{ item.name|truncate_chars_inner(30) }}</a></strong>
 
-                    <small class="pull-right">{{ item.item_count }} tracks | {{ item.duration|s2time }}</small>
+                    <small class="pull-right">{{ item.item_count }} tracks | {{ item.duration|ms2time }}</small>
                 </li>
                 <li>
                     <!--

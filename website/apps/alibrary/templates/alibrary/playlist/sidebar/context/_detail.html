@@ -75,7 +75,7 @@
 
             {% if perms.alibrary.downoad_media %}
                 <li class="action">
-                    <a class="hoverable" href="#" data-action="download" data-ct="release" data-id="{{ object.pk }}"  title="{% trans "Download" %} {{ object|ct_name_by_object }}">
+                    <a class="hoverable" href="#" data-action="download" data-ct="playlist" data-id="{{ object.pk }}"  title="{% trans "Download" %} {{ object|ct_name_by_object }}">
                         <i class="icon icon-download-alt"></i>
                         <span>{% trans "Download" %} {{ object|ct_name_by_object }}</span>
                     </a>

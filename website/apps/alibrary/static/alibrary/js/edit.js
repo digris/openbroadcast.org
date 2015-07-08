@@ -906,7 +906,7 @@ EditUi = function () {
 
         //var tracklist = data.media[0].tracks;
         var tracklist = data.tracklist;
-        
+
         // offset tracks - in case of 'non-track-meta'
         var offset = self.lookup_offset;
 

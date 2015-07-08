@@ -501,68 +501,13 @@ CollectorApp = (function () {
 
             }
 
-            console.log(self.media_to_collect);
-
 
             if(self.media_to_collect && self.media_to_collect.length){
                 self.dialogue(e);
             }
 
-
         });
 
-
-        $('__legacy__ .collectable').live('click', function (e) {
-
-
-            e.preventDefault();
-
-
-            // get container item
-            var container = $(this).parents('.item');
-            var resource_uri = container.data('resource_uri');
-
-
-            items = new Array;
-
-            // type switch
-            if (container.hasClass('release')) {
-                $.log('type: release')
-                $.log(resource_uri);
-
-                $.ajax({
-                    url: resource_uri,
-                    success: function (data) {
-
-                        for (i in data.media) {
-                            var item = data.media[i];
-                            items.push(item.id);
-                        }
-
-                        self.collect(items, false);
-
-                    },
-                    async: true
-                });
-
-            }
-
-            // type switch
-            if (container.hasClass('media')) {
-                var item_id = container.data('item_id');
-                $.log('type: media', 'id:' + item_id);
-                items.push(item_id);
-                self.collect(items, false);
-            }
-
-
-            if (self.use_effects) {
-                $('#' + container.attr('id')).effect("transfer", { to: self.animation_target }, 300);
-            }
-
-            return false;
-
-        });
 
     };
 
@@ -634,7 +579,6 @@ CollectorApp = (function () {
                 });
             }
 
-
         });
 
         $('input.search', el).focus();
@@ -654,11 +598,11 @@ CollectorApp = (function () {
         var el = self.popup_container;
         var local_uuids = [];
         $.each(self.media_to_collect, function (i, media) {
-            console.log(media)
+            //console.log(media)
             local_uuids.push(media.uuid);
         })
 
-        console.log('media to collect, uuids:', local_uuids);
+        //console.log('media to collect, uuids:', local_uuids);
 
         $('.collected', el).html('');
 
@@ -713,8 +657,11 @@ CollectorApp = (function () {
 
                 $('.listing .content p.notice', el).fadeOut(500);
 
-                $('.listing .content', el).append(html);
-                $('.listing.nano', el).nanoScroller({ scroll: 'bottom' });
+                //$('.listing .content', el).append(html);
+                //$('.listing.nano', el).nanoScroller({ scroll: 'bottom' });
+
+                $('.listing .content', el).prepend(html);
+                $('.listing.nano', el).nanoScroller({ scroll: 'top' });
 
                 // reset the playlist cache
                 // self.playlists_local = false;
@@ -766,7 +713,6 @@ CollectorApp = (function () {
 
         $('<div />').qtip({
             content: {
-                // text: nj.render('alibrary/nj/playlist/select_popup.html', { data: data }),
                 text: function (e, api) {
                     return self.get_dialog_content(api);
                 },

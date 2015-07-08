@@ -12664,7 +12664,7 @@ div.daypart-grid > ul > li.daypart.selected {
 
 /* line 4, ../sass/apps/_collector.sass */
 .popup-select-playlist {
-  height: 280px !important;
+  height: 360px !important;
 }
 /* line 10, ../sass/apps/_collector.sass */
 .popup-select-playlist > div section.title {
@@ -12686,7 +12686,7 @@ div.daypart-grid > ul > li.daypart.selected {
   margin-bottom: 0;
   width: 100px;
   float: left;
-  width: 252px;
+  width: 452px;
   height: 10px;
   border-color: #333333;
   background: transparent;
@@ -12699,7 +12699,7 @@ div.daypart-grid > ul > li.daypart.selected {
 }
 /* line 40, ../sass/apps/_collector.sass */
 .popup-select-playlist > div section.listing {
-  height: 210px;
+  height: 290px;
 }
 /* line 45, ../sass/apps/_collector.sass */
 .popup-select-playlist > div section.listing p.notice {
