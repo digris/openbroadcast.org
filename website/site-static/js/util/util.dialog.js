@@ -3,6 +3,7 @@
  * https://github.com/craga89/qtip2
  */
 
+
 (function(window, undefined) {
 
 	var util = util || {};
@@ -97,6 +98,8 @@
 
 	util.dialog = new UtilDialog;
 	util.dialog.init();
+
+    //window.util = util;
 
 })(window);
 

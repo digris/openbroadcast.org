@@ -40,7 +40,8 @@ def api_lookup(request, *args, **kwargs):
         return json.dumps(data, encoding="utf-8")
     except Exception, e:
         log.warning('api_lookup error: %s', e)
-        return json.dumps({'error': u'%s' % e}, encoding="utf-8")
+        error_message = 'Unable to process search request. \r\nPlease check again if the provided URLs are correct.'
+        return json.dumps({'error': u'%s' % error_message}, encoding="utf-8")
 
 
 
@@ -61,7 +62,7 @@ def provider_search_query(request, *args, **kwargs):
 
         if item_type == 'release' and provider == 'musicbrainz':
             item = Release.objects.get(pk=item_id)
-            data = {'query': '"%s" AND artist:"%s"' % (item.name, item.get_artist_display())}
+            data = {'query': '%s AND artist:%s' % (item.name, item.get_artist_display())}
 
         if item_type == 'artist' and provider == 'discogs':
             item = Artist.objects.get(pk=item_id)
@@ -69,7 +70,7 @@ def provider_search_query(request, *args, **kwargs):
 
         if item_type == 'artist' and provider == 'musicbrainz':
             item = Artist.objects.get(pk=item_id)
-            data = {'query': '"%s"' % (item.name)}
+            data = {'query': '%s' % (item.name)}
 
         if item_type == 'media' and provider == 'discogs':
             item = Media.objects.get(pk=item_id)
@@ -77,7 +78,7 @@ def provider_search_query(request, *args, **kwargs):
 
         if item_type == 'media' and provider == 'musicbrainz':
             item = Media.objects.get(pk=item_id)
-            data = {'query': '"%s" AND artist:"%s"' % (item.name, item.artist.name)}
+            data = {'query': '%s AND artist:%s' % (item.name, item.artist.name)}
 
         if item_type == 'label' and provider == 'discogs':
             item = Label.objects.get(pk=item_id)
@@ -88,7 +89,7 @@ def provider_search_query(request, *args, **kwargs):
 
         if item_type == 'label' and provider == 'musicbrainz':
             item = Label.objects.get(pk=item_id)
-            data = {'query': '"%s"' % (item.name)}
+            data = {'query': '%s' % (item.name)}
 
 
         return json.dumps(data)
@@ -142,7 +143,20 @@ def provider_search(request, *args, **kwargs):
         else:
             #query = re.sub('[^A-Za-z0-9 :]+', '', query)
             query = asciiDammit(query)
-            url = 'http://%s/ws/2/%s?query=%s&fmt=json' % (MUSICBRAINZ_HOST, _type, query)
+
+            """
+            escape lucene special characters:
+            https://lucene.apache.org/core/4_3_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description
+            """
+            t_query = query\
+                .replace('!', '\!')\
+                .replace('+', '\+')\
+                .replace('-', '\-')\
+                .replace('~', '\~')\
+                .replace('*', '\*')\
+                .replace('?', '\?')
+
+            url = 'http://%s/ws/2/%s?query=%s&fmt=json' % (MUSICBRAINZ_HOST, _type, t_query)
 
 
         log.debug('query url: %s' % (url))
