@@ -120,7 +120,7 @@ class MediaForm(ModelForm):
                 Field('medianumber', css_class='input-xlarge'),
                 Field('opus_number', css_class='input-xlarge'),
                 Field('version', css_class='input-xlarge'),
-                HTML('<div style="opacity: 0.5;"><span style="padding: 0 44px 0 8px;">Orig. Filename:</span>%s</div>' % self.instance.filename),
+                HTML('<div style="opacity: 0.5;"><span style="padding: 0 44px 0 8px;">Orig. Filename:</span>%s</div>' % self.instance.original_filename),
         )
         
         license_layout = Fieldset(
