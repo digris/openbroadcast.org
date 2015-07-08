@@ -191,6 +191,17 @@
                                         {% endif %}
                                     </span>
                                 </li>
+
+
+                                {% if object.playlist_usage %}
+                                <li>
+                                    <span class="value warning">
+                                        Used {{ object.playlist_usage }} time(s) in a playlist!
+                                    </span>
+                                </li>
+                                {% endif %}
+
+
                             {% endif %}
 
                         </ul>

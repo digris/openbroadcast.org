@@ -117,6 +117,11 @@ class MediaResource(ModelResource):
         bundle.data['votes'] = votes
 
 
+        """
+        count playlist usage - #914
+        """
+        bundle.data['playlist_usage'] = len(bundle.obj.get_appearances())
+
 
         """
         TODO: verry hackish and incomplete imnplementation.

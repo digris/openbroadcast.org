@@ -12390,67 +12390,73 @@ ul.ui-autocomplete > li > a > img {
   border-left: 4px solid #00bb00;
   background: #444444;
 }
+/* line 49, ../sass/apps/_alibrary.sass */
+.popup-actions .item.result span.warning, .popup-actions .item.object span.warning {
+  color: #ff743e;
+  text-transform: uppercase;
+  font-weight: bold;
+}
 
-/* line 53, ../sass/apps/_alibrary.sass */
+/* line 58, ../sass/apps/_alibrary.sass */
 .popup-merge {
   width: 703px !important;
   max-width: 703px !important;
   padding: 10px 0 0 0;
 }
-/* line 59, ../sass/apps/_alibrary.sass */
+/* line 64, ../sass/apps/_alibrary.sass */
 .popup-merge .info {
   border-bottom: 1px solid #5a5a5a;
   margin-bottom: 10px;
 }
-/* line 63, ../sass/apps/_alibrary.sass */
+/* line 68, ../sass/apps/_alibrary.sass */
 .popup-merge .info strong {
   color: white;
 }
-/* line 66, ../sass/apps/_alibrary.sass */
+/* line 71, ../sass/apps/_alibrary.sass */
 .popup-merge .info p {
   color: #999999;
   margin-bottom: 4px;
 }
-/* line 74, ../sass/apps/_alibrary.sass */
+/* line 79, ../sass/apps/_alibrary.sass */
 .popup-merge .item.object img {
   width: 82px;
 }
-/* line 78, ../sass/apps/_alibrary.sass */
+/* line 83, ../sass/apps/_alibrary.sass */
 .popup-merge .item.object.media img {
   display: none;
 }
-/* line 80, ../sass/apps/_alibrary.sass */
+/* line 85, ../sass/apps/_alibrary.sass */
 .popup-merge .item.object.media .span2 {
   width: 0;
 }
-/* line 82, ../sass/apps/_alibrary.sass */
+/* line 87, ../sass/apps/_alibrary.sass */
 .popup-merge .item.object.media .span10 {
   width: 100%;
 }
-/* line 85, ../sass/apps/_alibrary.sass */
+/* line 90, ../sass/apps/_alibrary.sass */
 .popup-merge .item.object.slave {
   opacity: 0.7;
 }
-/* line 91, ../sass/apps/_alibrary.sass */
+/* line 96, ../sass/apps/_alibrary.sass */
 .popup-merge > div section.title h3 {
   color: white;
   small-text-transform: none !important;
   small-font-size: 60%;
 }
-/* line 98, ../sass/apps/_alibrary.sass */
+/* line 103, ../sass/apps/_alibrary.sass */
 .popup-merge > div section.description p {
   color: #efefef;
 }
-/* line 100, ../sass/apps/_alibrary.sass */
+/* line 105, ../sass/apps/_alibrary.sass */
 .popup-merge > div section.description a {
   background: #6633cc;
   color: white;
 }
-/* line 105, ../sass/apps/_alibrary.sass */
+/* line 110, ../sass/apps/_alibrary.sass */
 .popup-merge > div section.form label {
   color: #efefef;
 }
-/* line 109, ../sass/apps/_alibrary.sass */
+/* line 114, ../sass/apps/_alibrary.sass */
 .popup-merge .action input {
   color: white;
   width: 550px;
@@ -12459,18 +12465,18 @@ ul.ui-autocomplete > li > a > img {
   padding: 4px 2px 4px 6px;
 }
 
-/* line 124, ../sass/apps/_alibrary.sass */
+/* line 129, ../sass/apps/_alibrary.sass */
 .popup-reassign {
   width: 703px !important;
   max-width: 703px !important;
   padding: 10px 0 0 0;
 }
-/* line 130, ../sass/apps/_alibrary.sass */
+/* line 135, ../sass/apps/_alibrary.sass */
 .popup-reassign p.message {
   text-align: center;
   color: white;
 }
-/* line 135, ../sass/apps/_alibrary.sass */
+/* line 140, ../sass/apps/_alibrary.sass */
 .popup-reassign .query input {
   color: white;
   width: 530px;
@@ -12478,33 +12484,33 @@ ul.ui-autocomplete > li > a > img {
   background: #5a5a5a;
   padding: 4px 2px 4px 6px;
 }
-/* line 149, ../sass/apps/_alibrary.sass */
+/* line 154, ../sass/apps/_alibrary.sass */
 .popup-reassign > div section.title h3 {
   color: white;
   small-text-transform: none !important;
   small-font-size: 60%;
 }
-/* line 156, ../sass/apps/_alibrary.sass */
+/* line 161, ../sass/apps/_alibrary.sass */
 .popup-reassign > div section.description p {
   color: #efefef;
 }
-/* line 158, ../sass/apps/_alibrary.sass */
+/* line 163, ../sass/apps/_alibrary.sass */
 .popup-reassign > div section.description a {
   background: #6633cc;
   color: white;
 }
-/* line 163, ../sass/apps/_alibrary.sass */
+/* line 168, ../sass/apps/_alibrary.sass */
 .popup-reassign > div section.form label {
   color: #efefef;
 }
 
-/* line 179, ../sass/apps/_alibrary.sass */
+/* line 184, ../sass/apps/_alibrary.sass */
 .popup-provider-search {
   width: 703px !important;
   max-width: 703px !important;
   padding: 10px 0 0 0;
 }
-/* line 186, ../sass/apps/_alibrary.sass */
+/* line 191, ../sass/apps/_alibrary.sass */
 .popup-provider-search .query input {
   color: white;
   width: 530px;
@@ -12512,151 +12518,151 @@ ul.ui-autocomplete > li > a > img {
   background: #5a5a5a;
   padding: 4px 2px 4px 6px;
 }
-/* line 195, ../sass/apps/_alibrary.sass */
+/* line 200, ../sass/apps/_alibrary.sass */
 .popup-provider-search .query .btn.exit {
   color: white;
   background: transparent !important;
   border: none;
   margin-left: 10px;
 }
-/* line 200, ../sass/apps/_alibrary.sass */
+/* line 205, ../sass/apps/_alibrary.sass */
 .popup-provider-search .query .btn.exit:hover {
   color: #cccccc;
 }
-/* line 203, ../sass/apps/_alibrary.sass */
+/* line 208, ../sass/apps/_alibrary.sass */
 .popup-provider-search .query p.hint {
   color: white;
   padding-top: 8px;
 }
-/* line 207, ../sass/apps/_alibrary.sass */
+/* line 212, ../sass/apps/_alibrary.sass */
 .popup-provider-search .item.result {
   cursor: pointer;
 }
-/* line 208, ../sass/apps/_alibrary.sass */
+/* line 213, ../sass/apps/_alibrary.sass */
 .popup-provider-search .item.result img {
   width: 82px;
   padding: 0 0 0 4px;
 }
-/* line 218, ../sass/apps/_alibrary.sass */
+/* line 223, ../sass/apps/_alibrary.sass */
 .popup-provider-search > div section.title h3 {
   color: white;
   small-text-transform: none !important;
   small-font-size: 60%;
 }
-/* line 225, ../sass/apps/_alibrary.sass */
+/* line 230, ../sass/apps/_alibrary.sass */
 .popup-provider-search > div section.description p {
   color: #efefef;
 }
-/* line 227, ../sass/apps/_alibrary.sass */
+/* line 232, ../sass/apps/_alibrary.sass */
 .popup-provider-search > div section.description a {
   background: #6633cc;
   color: white;
 }
-/* line 232, ../sass/apps/_alibrary.sass */
+/* line 237, ../sass/apps/_alibrary.sass */
 .popup-provider-search > div section.form label {
   color: #efefef;
 }
 
-/* line 242, ../sass/apps/_alibrary.sass */
+/* line 247, ../sass/apps/_alibrary.sass */
 .lookup.provider.listing.fixed {
   position: fixed;
   width: 260px;
   top: 120px;
 }
-/* line 247, ../sass/apps/_alibrary.sass */
+/* line 252, ../sass/apps/_alibrary.sass */
 .lookup.provider h2 {
   border-bottom: 1px solid #efefef;
 }
-/* line 250, ../sass/apps/_alibrary.sass */
+/* line 255, ../sass/apps/_alibrary.sass */
 .lookup.provider .item {
   padding: 4px 4px 4px 4px;
   margin: 0px 0 0px 0;
   border-bottom: 1px solid #efefef;
 }
-/* line 255, ../sass/apps/_alibrary.sass */
+/* line 260, ../sass/apps/_alibrary.sass */
 .lookup.provider .item span.name {
   font-size: 120%;
 }
-/* line 259, ../sass/apps/_alibrary.sass */
+/* line 264, ../sass/apps/_alibrary.sass */
 .lookup.provider .item li > a {
   background: none;
 }
-/* line 262, ../sass/apps/_alibrary.sass */
+/* line 267, ../sass/apps/_alibrary.sass */
 .lookup.provider .item.available {
   cursor: pointer;
 }
-/* line 265, ../sass/apps/_alibrary.sass */
+/* line 270, ../sass/apps/_alibrary.sass */
 .lookup.provider .item.available.hover {
   background-color: #ddffd9;
 }
-/* line 271, ../sass/apps/_alibrary.sass */
+/* line 276, ../sass/apps/_alibrary.sass */
 .lookup.provider .item.unavailable span.name {
   color: #a5a5a5;
   text-decoration: line-through;
 }
-/* line 274, ../sass/apps/_alibrary.sass */
+/* line 279, ../sass/apps/_alibrary.sass */
 .lookup.provider .item.unavailable.hover {
   background-color: #efefef;
 }
 
-/* line 293, ../sass/apps/_alibrary.sass */
+/* line 298, ../sass/apps/_alibrary.sass */
 div.daypart-grid > ul {
   width: 40px;
   margin-right: 4px;
   float: left;
 }
-/* line 298, ../sass/apps/_alibrary.sass */
+/* line 303, ../sass/apps/_alibrary.sass */
 div.daypart-grid > ul > li.heading {
   background: transparent;
   color: #999999;
   font-size: 9px;
 }
-/* line 302, ../sass/apps/_alibrary.sass */
+/* line 307, ../sass/apps/_alibrary.sass */
 div.daypart-grid > ul > li.daypart {
   background: gainsboro;
   border: 1px solid white;
 }
-/* line 307, ../sass/apps/_alibrary.sass */
+/* line 312, ../sass/apps/_alibrary.sass */
 div.daypart-grid > ul > li.daypart > a {
   display: block;
   height: 4px;
 }
-/* line 311, ../sass/apps/_alibrary.sass */
+/* line 316, ../sass/apps/_alibrary.sass */
 div.daypart-grid > ul > li.daypart:nth-child(2) {
   background-color: #fbd1ff;
   border-color: #fbd1ff;
 }
-/* line 314, ../sass/apps/_alibrary.sass */
+/* line 319, ../sass/apps/_alibrary.sass */
 div.daypart-grid > ul > li.daypart:nth-child(3) {
   background-color: #ffd8bf;
   border-color: #ffd8bf;
 }
-/* line 317, ../sass/apps/_alibrary.sass */
+/* line 322, ../sass/apps/_alibrary.sass */
 div.daypart-grid > ul > li.daypart:nth-child(4) {
   background-color: #fff9bf;
   border-color: #fff9bf;
 }
-/* line 320, ../sass/apps/_alibrary.sass */
+/* line 325, ../sass/apps/_alibrary.sass */
 div.daypart-grid > ul > li.daypart:nth-child(5) {
   background-color: #ccffbf;
   border-color: #ccffbf;
 }
-/* line 323, ../sass/apps/_alibrary.sass */
+/* line 328, ../sass/apps/_alibrary.sass */
 div.daypart-grid > ul > li.daypart:nth-child(6) {
   background-color: #bfffeb;
   border-color: #bfffeb;
 }
-/* line 326, ../sass/apps/_alibrary.sass */
+/* line 331, ../sass/apps/_alibrary.sass */
 div.daypart-grid > ul > li.daypart:nth-child(7) {
   background-color: #bfe9ff;
   border-color: #bfe9ff;
 }
-/* line 329, ../sass/apps/_alibrary.sass */
+/* line 334, ../sass/apps/_alibrary.sass */
 div.daypart-grid > ul > li.daypart:nth-child(8) {
   background-color: #bfc7ff;
   border-color: #bfc7ff;
 }
-/* line 333, ../sass/apps/_alibrary.sass */
+/* line 338, ../sass/apps/_alibrary.sass */
 div.daypart-grid > ul > li.daypart.selected {
   background-color: #00bb00 !important;
   border: 1px solid #00bb00;
