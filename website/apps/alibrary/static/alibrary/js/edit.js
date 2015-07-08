@@ -904,7 +904,8 @@ EditUi = function () {
         $('.field-lookup .field-lookup-holder', container).removeClass('lookup-diff');
 
 
-        var tracklist = data.media[0].tracks;
+        //var tracklist = data.media[0].tracks;
+        var tracklist = data.tracklist;
 
         console.log(tracklist);
 

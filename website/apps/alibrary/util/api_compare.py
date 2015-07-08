@@ -49,6 +49,7 @@ class MusicbrainzAPILookup(APILookup):
         # data mapping
         res = {}
         d_tags = []
+        mapped_media = None
         for k in data:
             mk = k
 
@@ -94,18 +95,21 @@ class MusicbrainzAPILookup(APILookup):
                 data[k] = mapped
 
             if k == 'media':
-                mapped = []
-                pos = 1
-                disc = 1
+                mapped_media = []
+                pos = 0
+                disc_no = 0
+
                 for disc in data[k]:
+                    disc_no += 1
                     for m in disc['tracks']:
-                        mapped.append({
-                            'position': '%s-%s' % (disc, pos),
+                        pos += 1
+                        mapped_media.append({
+                            'number': '%s' % (pos),
+                            'position': '%s-%s' % (disc_no, pos),
                             'duration': m['length'],
                             'title': m['title'],
                             })
 
-                #res['tracklist'] = mapped
 
 
             if k == 'tags':
@@ -148,6 +152,9 @@ class MusicbrainzAPILookup(APILookup):
 
         # disable tags on mb
         res['d_tags'] = res['tags'] = ''
+
+
+        res['tracklist'] = mapped_media
 
         return res
 
