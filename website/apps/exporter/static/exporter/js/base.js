@@ -4,7 +4,6 @@
 
 /* core */
 
-
 ExporterMain = function () {
 
     var self = this;
@@ -69,8 +68,6 @@ ExporterMain = function () {
             } else {
                 debug.debug('Item exists on stage');
             }
-
-            // $('#' + item.uuid).removeClass('delete-flag');
 
         });
 
@@ -269,7 +266,6 @@ ExporterApp = (function () {
              *  into an object
              */
 
-
             items = new Array;
             items.push({item_type: item_type, item_id: item_id, format: format});
 
@@ -324,7 +320,6 @@ ExporterApp = (function () {
             debug.debug('exporter item:', item);
 
             var data = {
-                // export_session: {'pk': export_session.id },
                 export_session_id: export_session.id,
                 item: item
             }
@@ -337,27 +332,14 @@ ExporterApp = (function () {
                 contentType: "application/json",
                 processData: false,
                 success: function (data) {
-                    debug.debug(data);
-                    // export_session = data;
+
                 },
                 async: false
             });
 
-
         }
 
-        // run the queue
-
         var result = self.run(export_session, redirect);
-
-
-
-
-
-
-
-
-
 
     };
 
@@ -383,13 +365,23 @@ ExporterApp = (function () {
                     window.location.href = export_session.download_url;
                 }
 
-                base.ui.ui_message('Download queued', 10000);
+                // TODO: not a particularly nice place for these kind of strings..
+
+                /*
+                The files are now being processed in the background and will then be added to your download queue.
+                To view your queue and download the files, go to "Downloads" in the navigation menu.
+                 */
+
+                var message = '<strong>Download queued</strong><br>'
+                message += '<p>The files are now being processed in the background and will then be added to your download queue.</p>'
+                message += '<p>To view your queue and download the files, go to <a href="/content/download/">Download</a> in the navigation menu.</p>'
+
+
+                base.ui.ui_message(message, 10000);
             },
             error: function (a,b,c) {
                 console.log(a,b,c)
-                //alert(c);
                 alert(a.responseText)
-
             },
             async: true // this is the processing one - could take some time.
         });
