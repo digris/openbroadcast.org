@@ -1068,8 +1068,10 @@ EditUi = function () {
         // handle country mapping (kind of hakish...)
         if (key == 'release_country') {
 
+            console.log('release_country:', val, val.length)
+
             if(val.length < 4) {
-                var target = $('#' + self.field_prefix + 'release_country option:contains(' + val + ' - )');
+                var target = $('#' + self.field_prefix + 'release_country option:contains("' + val + ')")');
             } else {
                 var target = $('#' + self.field_prefix + 'release_country option:contains(' + val + ')');
             }
@@ -1078,7 +1080,7 @@ EditUi = function () {
         }
         if (key == 'country') {
             if(val.length < 4) {
-                var target = $('#' + self.field_prefix + 'country option:contains(' + val + ' - )');
+                var target = $('#' + self.field_prefix + 'country option:contains("' + val + ')")');
             } else {
                 var target = $('#' + self.field_prefix + 'country option:contains(' + val + ')');
             }

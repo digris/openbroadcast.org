@@ -71,8 +71,8 @@ class Country(models.Model):
         ordering = ('iso2_code',)
 
     def __unicode__(self):
-        return '%s - %s' % (self.iso2_code, self.printable_name)
-        #return '%s (%s)' % (self.printable_name, self.iso2_code)
+        #return '%s - %s' % (self.iso2_code, self.printable_name)
+        return '%s (%s)' % (self.printable_name, self.iso2_code)
 
 
 class AdminArea(models.Model):
