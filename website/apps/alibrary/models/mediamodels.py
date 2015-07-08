@@ -365,7 +365,6 @@ class Media(MigrationMixin):
 
         if self.base_format and self.base_format.lower() in LOSSLESS_FORMATS:
             return
-
         try:
             exact_bitrate = int(self.base_filesize * 8 / (self.base_duration * 1000))
             return min(VALID_BITRATES, key=lambda x:abs(x-exact_bitrate))

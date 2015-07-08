@@ -122,6 +122,8 @@ class MediaResource(ModelResource):
         """
         bundle.data['playlist_usage'] = len(bundle.obj.get_appearances())
 
+        bundle.data['bitrate'] = bundle.obj.bitrate
+
 
         """
         TODO: verry hackish and incomplete imnplementation.
