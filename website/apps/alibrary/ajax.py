@@ -58,7 +58,11 @@ def provider_search_query(request, *args, **kwargs):
     try:
         if item_type == 'release' and provider == 'discogs':
             item = Release.objects.get(pk=item_id)
-            data = {'query': '%s %s' % (item.name, item.get_artist_display())}
+            artist_display = item.get_artist_display()
+            if artist_display == 'Various Artists':
+                artist_display = 'Various'
+
+            data = {'query': '%s %s' % (item.name, artist_display)}
 
         if item_type == 'release' and provider == 'musicbrainz':
             item = Release.objects.get(pk=item_id)
