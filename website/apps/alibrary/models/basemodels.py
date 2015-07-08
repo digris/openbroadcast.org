@@ -3,6 +3,8 @@ import uuid
 
 # django
 from django.db import models
+from django.db.models.signals import post_delete, post_save, pre_save
+from django.dispatch.dispatcher import receiver
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 
@@ -43,7 +45,7 @@ from l10n.models import Country
 
 # logging
 import logging
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 ################
@@ -669,6 +671,14 @@ class Relation(models.Model):
             icon = 'discogs'
 
         return icon
+
+
+@receiver(post_save, sender=Relation)
+def relation_post_save(sender, instance, signal, created, **kwargs):
+    if instance.url[-4:] == 'None':
+        log.debug('deleting wrongly formated relation')
+        instance.delete()
+
 
 
 def update_relations():
