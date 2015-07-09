@@ -60,6 +60,8 @@ class ReleaseResource(ModelResource):
             bundle.data['country'] = None
             bundle.data['country_code'] = None
 
+        bundle.data['tags'] = [tag.name for tag in bundle.obj.tags]
+
         return bundle
 
     # additional methods

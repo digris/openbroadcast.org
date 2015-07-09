@@ -153,6 +153,8 @@ class PlaylistResource(ModelResource):
         except:
             pass
 
+        bundle.data['tags'] = [tag.name for tag in bundle.obj.tags]
+
         #bundle.data['reorder_url'] = bundle.obj.get_reorder_url();
         return bundle
 

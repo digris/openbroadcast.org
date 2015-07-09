@@ -124,6 +124,8 @@ class MediaResource(ModelResource):
 
         bundle.data['bitrate'] = bundle.obj.bitrate
 
+        bundle.data['tags'] = [tag.name for tag in bundle.obj.tags]
+
 
         """
         TODO: verry hackish and incomplete imnplementation.

@@ -60,6 +60,8 @@ class ProfileResource(ModelResource):
         except:
             pass
 
+        bundle.data['tags'] = [tag.name for tag in bundle.obj.tags]
+
         return bundle
 
 

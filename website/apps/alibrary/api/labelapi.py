@@ -45,6 +45,8 @@ class LabelResource(ModelResource):
         bundle.data['release_count'] = bundle.obj.release_label.count()
         bundle.data['type_display'] = bundle.obj.get_type_display()
 
+        bundle.data['tags'] = [tag.name for tag in bundle.obj.tags]
+
         return bundle
 
 

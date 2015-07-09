@@ -50,6 +50,8 @@ class ArtistResource(ModelResource):
         else:
             bundle.data['country_name'] = None
 
+        bundle.data['tags'] = [tag.name for tag in bundle.obj.tags]
+
         return bundle
         
     
