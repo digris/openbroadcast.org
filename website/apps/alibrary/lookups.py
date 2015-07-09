@@ -7,7 +7,6 @@ from alibrary.models import *
 
 THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
 
-
 class BaseLookup(ModelLookup):
     template_name = None
     def get_item_label(self, object):

@@ -974,6 +974,8 @@ AJAX_LOOKUP_CHANNELS = {
 # AJAX_SELECT_INLINES = 'inline'
 
 
+SELECTABLE_MAX_LIMIT = 10
+
 
 
 # media conversion

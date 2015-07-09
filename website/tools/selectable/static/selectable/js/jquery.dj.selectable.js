@@ -12,6 +12,7 @@
  * BSD License
  *
 */
+
 (function ($) {
 
 	$.widget("ui.djselectable", $.ui.autocomplete, {
@@ -29,6 +30,8 @@
         },
 
         _initDeck: function () {
+
+
             /* Create list display for currently selected items for multi-select */
             var self = this;
             var data = $(this.element).data();
@@ -43,6 +46,7 @@
                 self._addDeckItem(input);
             });
         },
+
 
         _addDeckItem: function (input) {
             /* Add new deck list item from a given hidden input */
@@ -162,6 +166,8 @@
                 $input.val("");
                 this._initDeck();
             }
+
+
             options = data.selectableOptions || data['selectable-options'];
             if (options) {
                 this._setOptions(options);
@@ -185,6 +191,7 @@
                     $input.focus();
                 });
             }
+
         },
 
         // Override the default source creation
@@ -218,7 +225,14 @@
                     }
                     return response(results);
                 }
-				$.getJSON(self.url, query, unwrapResponse);
+
+                //console.log('query', query)
+                if(query.term.length >= 2) {
+                    $.getJSON(self.url, query, unwrapResponse);
+                } else {
+                    //console.debug('search term to short');
+                }
+
             };
         },
         // Override the default auto-complete render.
@@ -253,6 +267,33 @@
             }
             return li;
         },
+
+        _renderMenu: function( ul, items ) {
+            var that = this;
+            $.each( items, function( index, item ) {
+                that._renderItemData( ul, item );
+            });
+            $( ul ).find( "li:odd" ).addClass( "odd" );
+
+
+
+            var close_html = $('<div class="close-container"><a href="#">Close</a></div>');
+
+            close_html.click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (that.widget().is(":visible")) {
+                    that.close();
+                }
+                return false;
+            });
+            $(ul).prepend(close_html)
+
+
+        },
+
+
+
         // Override the default auto-complete suggest.
         _suggest: function (items) {
             /* Needed for handling pagination links */
