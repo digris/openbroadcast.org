@@ -521,12 +521,9 @@ EditUi = function () {
                         self.image_lookup(key);
                         break;
                     case 'relations':
-                        console.log('!!!', key);
 
                         // for some strange reason this does not work
                         // self.relation_lookup(key);
-
-
                         var val = self.lookup_data[key];
                         $('fieldset.relations .lookup-container').html('');
                         $(val).each(function(i, item){
@@ -655,7 +652,12 @@ EditUi = function () {
                 }
             });
 
-
+            // hack for image positionong/overlapping
+            if($('#lookup_id_main_image').parents('div').is(":hidden") && $('#lookup_id_main_image img').length) {
+                $('#div_id_main_image').css('padding-bottom', '114px');
+            } else {
+                $('#div_id_main_image').css('padding-bottom', '8px');
+            }
 
         }, data);
     };
@@ -1002,14 +1004,14 @@ EditUi = function () {
             orig = orig.toLowerCase();
             lookup_value = lookup_value.toLowerCase();
         }
-        ;
-
 
         if (orig == lookup_value) {
             return 'match';
         } else {
             return 'diff';
         }
+
+
 
     };
 
@@ -1134,6 +1136,7 @@ EditUi = function () {
         if (key.endsWith('_0')) {
             target.djselectable('search', $.decodeHTML(val));
         }
+
     };
 
 
