@@ -1,14 +1,24 @@
-{% load i18n truncate %}
+{% load i18n truncate permission_tags %}
 
 <ul class="unstyled">
-{% for relation in object.relations.specific %}
+    {% for relation in object.relations.specific %}
+        <li>
+            <a href="{{ relation.url }}" class="skip-external" title="Show on {{ relation.get_service_display }}">
+                <i class="icon-{{ relation.service_icon }}"></i>
+                <span class="service">{{ relation.get_service_display }}</span>
+            </a>
+        </li>
+    {% endfor %}
+
+    {% if request.user|in_group:"Developer" %}
     <li>
-        <a href="{{ relation.url }}" class="skip-external" title="Show on {{ relation.get_service_display }}">
-            <i class="icon-{{ relation.service_icon }}"></i>
-            <span class="service">{{ relation.get_service_display }}</span>
+        <a href="{{ object.get_api_url }}" class="skip-external" title="Show on Open Broadcast API">
+            <i class="icon-cog"></i>
+            <span class="service">Open Broadcast API</span>
         </a>
     </li>
-{% endfor %}
+    {% endif %}
+
 </ul>
 
 {% if include_generic %}
@@ -16,14 +26,14 @@
     {% for relation in object.relations.generic %}
         <li>
             <a href="{{ relation.url }}" class="skip-external"
-               title="Show on {{ relation.url }}">{{ relation.url|truncate_chars_inner:27 }}</a>
+               title="Show on {{ relation.url }}">{{ relation.url|truncate_chars_inner:34 }}</a>
 
             {% if relation.service == "official" %}
                 <small class="pull-right">{% trans "official" %}</small>
             {% endif %}
 
         </li>
-
     {% endfor %}
+
 </ul>
 {% endif %}

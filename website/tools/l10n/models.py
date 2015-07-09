@@ -68,7 +68,7 @@ class Country(models.Model):
     class Meta:
         verbose_name = _('Country')
         verbose_name_plural = _('Countries')
-        ordering = ('iso2_code',)
+        ordering = ('printable_name',)
 
     def __unicode__(self):
         #return '%s - %s' % (self.iso2_code, self.printable_name)
