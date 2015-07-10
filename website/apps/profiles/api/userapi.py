@@ -136,6 +136,10 @@ class UserResource(ModelResource):
             url(r"^(?P<resource_name>%s)/reset-password%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('reset_password'), name="profile-api-reset-password"),
+
+            url(r"^(?P<resource_name>%s)/get-social-user%s$" % (
+                self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_social_user'), name="profile-api-get-social-user"),
         ]
 
 
@@ -330,6 +334,52 @@ class UserResource(ModelResource):
             'code': 'ok',
             'message': _('Sending new password to %s' % email)
         }
+
+        self.log_throttled_access(request)
+        return self.create_response(request, bundle)
+
+
+    def get_social_user(self, request, **kwargs):
+
+        self.method_check(request, allowed=['get', 'post', ])
+        self.throttle_check(request)
+
+        try:
+            data = json.loads(request.body)
+
+        except ValueError, e:
+
+            if request.GET:
+                data = request.GET
+
+            if request.POST:
+                data = request.POST
+
+        REQUIRED_FIELDS = ('provider', 'uid')
+        for field in REQUIRED_FIELDS:
+            if field not in data:
+                raise APIBadRequest(
+                    code="missing_key",
+                    message=_('Must provide {missing_key} when looking up a social user.').format(missing_key=field)
+                )
+
+
+        print data
+
+        provider = data.get('provider', None)
+        uid = data.get('uid', None)
+
+        qs = User.objects.filter(social_auth__provider=provider, social_auth__uid=uid)
+
+        if qs.exists():
+            bundle = {
+                'id': qs[0].id,
+            }
+        else:
+            bundle = {
+                'id': None,
+            }
+
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)

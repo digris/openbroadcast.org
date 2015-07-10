@@ -87,25 +87,13 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     # sentry
     'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
-    #'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware',
-
-    #'johnny.middleware.LocalStoreClearMiddleware',
-    #'johnny.middleware.QueryCacheMiddleware',
-
-    #'django.middleware.cache.UpdateCacheMiddleware',
-
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
     #'reversion.middleware.RevisionMiddleware',
-
-
-
     'django.contrib.messages.middleware.MessageMiddleware',
-    #'pagination.middleware.PaginationMiddleware',
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
     # cms
     'cms.middleware.multilingual.MultilingualURLMiddleware',
     'cms.middleware.page.CurrentPageMiddleware',
@@ -115,29 +103,12 @@ MIDDLEWARE_CLASSES = (
     # mobile [just testing]
     'django_mobile.middleware.MobileDetectionMiddleware',
     'django_mobile.middleware.SetFlavourMiddleware',
-
-    # xs
     'lib.middleware.xs_sharing.XsSharingMiddleware',
-
     'lib.middleware.profiler.ProfileMiddleware',
-
-    # admin
-    #'lib.middleware.admin_redirects.AdminRedirectMiddleware',
-    # custom
-    #'lib.middleware.ProfileMiddleware',
-    #'lib.middleware.PrettifyMiddlewareBS',
-    #'django_badbrowser.middleware.BrowserSupportDetection',
 
     #'turbolinks.middleware.TurbolinksMiddleware',
 
     'arating.middleware.AratingIpMiddleware',
-    #'lib.middleware.social_auth_extra.SocialAuthExceptionExtraMiddleware',
-
-    #'django.middleware.cache.FetchFromCacheMiddleware',
-
-    #'profiler.middleware.StatProfMiddleware',
-    #'profiler.middleware.ProfilerMiddleware',
-
 )
 
 
@@ -190,12 +161,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'postman.context_processors.inbox',
 
     # authentication
-    #'allauth.context_processors.allauth',
-    #'allauth.account.context_processors.account',
-    #'social_auth.context_processors.social_auth_by_name_backends',
     'social_auth.context_processors.social_auth_backends',
     'social_auth.context_processors.backends_data',
-    #'social_auth.context_processors.social_auth_by_type_backends',
     'social_auth.context_processors.social_auth_login_redirect',
 
     'lib.context_processors.debug',
@@ -698,9 +665,7 @@ ACCOUNT_ACTIVATION_DAYS = 7
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.twitter.TwitterBackend',
     'social_auth.backends.facebook.FacebookBackend',
-    #'social_auth.backends.google.GoogleOAuthBackend',
     'social_auth.backends.google.GoogleOAuth2Backend',
-    #'social_auth.backends.google.GoogleBackend',
     'social_auth.backends.contrib.dropbox.DropboxBackend',
     'social_auth.backends.contrib.soundcloud.SoundcloudBackend',
     #'social_auth.backends.yahoo.YahooBackend',
@@ -718,11 +683,9 @@ AUTHENTICATION_BACKENDS = (
     #'social_auth.backends.contrib.readability.ReadabilityBackend',
     #'social_auth.backends.contrib.fedora.FedoraBackend',
     #'social_auth.backends.OpenIDBackend',
-    # legacy
+
     'obp_legacy.auth.backends.LegacyBackend',
-    # base
     'django.contrib.auth.backends.ModelBackend',
-    # guardian
     'guardian.backends.ObjectPermissionBackend',
 )
 TWITTER_CONSUMER_KEY = ''
@@ -732,8 +695,6 @@ FACEBOOK_API_SECRET = ''
 FACEBOOK_EXTENDED_PERMISSIONS = ['email', ]
 LINKEDIN_CONSUMER_KEY = ''
 LINKEDIN_CONSUMER_SECRET = ''
-GOOGLE_CONSUMER_KEY = ''
-GOOGLE_CONSUMER_SECRET = ''
 GOOGLE_OAUTH2_CLIENT_ID = ''
 GOOGLE_OAUTH2_CLIENT_SECRET = ''
 FOURSQUARE_CONSUMER_KEY = ''

@@ -49,7 +49,9 @@
 			<li>{% trans "the more - the better" %} :)</li>
 		</ul>
 		{% else %}
-		<p>{% trans "You don't have a mentor yet, please look out for one if you'd like to get additional privileges." %}</p>
+<p>{% blocktrans with url='/network/profiles/' %}
+You don't have a mentor yet, please  <a href="{{ url }}">look out</a> for one if you'd like to get additional privileges.
+{% endblocktrans %}</p>
 		{% endif %}
 	</div>
 	{% endif %}

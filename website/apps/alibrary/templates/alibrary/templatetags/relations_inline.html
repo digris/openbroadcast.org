@@ -12,7 +12,7 @@
 
     {% if request.user|in_group:"Developer" %}
     <li>
-        <a href="{{ object.get_api_url }}" class="skip-external" title="Show on Open Broadcast API">
+        <a href="{{ object.get_api_url }}?format=json" class="skip-external" title="Show on Open Broadcast API">
             <i class="icon-cog"></i>
             <span class="service">Open Broadcast API</span>
         </a>
