@@ -268,8 +268,8 @@ class Process(object):
 
         return True
 
-        #if self.dbox:
-        #    self.dbox.upload(file_path, filename)
+        if self.dbox:
+            self.dbox.upload(file_path, filename)
 
 
 
