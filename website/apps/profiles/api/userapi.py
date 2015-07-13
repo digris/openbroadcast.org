@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.conf.urls import *
+from uuid import uuid4
 from django.utils.translation import ugettext as _
 from django.shortcuts import get_object_or_404
 
@@ -137,9 +138,9 @@ class UserResource(ModelResource):
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('reset_password'), name="profile-api-reset-password"),
 
-            url(r"^(?P<resource_name>%s)/get-social-user%s$" % (
+            url(r"^(?P<resource_name>%s)/get-or-create-social-user%s$" % (
                 self._meta.resource_name, trailing_slash()),
-                self.wrap_view('get_social_user'), name="profile-api-get-social-user"),
+                self.wrap_view('get_or_create_social_user'), name="profile-api-get-or-create-social-user"),
         ]
 
 
@@ -339,7 +340,7 @@ class UserResource(ModelResource):
         return self.create_response(request, bundle)
 
 
-    def get_social_user(self, request, **kwargs):
+    def get_or_create_social_user(self, request, **kwargs):
 
         self.method_check(request, allowed=['get', 'post', ])
         self.throttle_check(request)
@@ -355,7 +356,7 @@ class UserResource(ModelResource):
             if request.POST:
                 data = request.POST
 
-        REQUIRED_FIELDS = ('provider', 'uid')
+        REQUIRED_FIELDS = ('provider', 'uid', 'extra_data', 'user')
         for field in REQUIRED_FIELDS:
             if field not in data:
                 raise APIBadRequest(
@@ -366,19 +367,61 @@ class UserResource(ModelResource):
 
         print data
 
-        provider = data.get('provider', None)
-        uid = data.get('uid', None)
 
-        qs = User.objects.filter(social_auth__provider=provider, social_auth__uid=uid)
+        provider = data['provider']
+        uid = data['uid']
+        extra_data = data['extra_data']
+        #user = data['user']
+        user = json.loads(data['user'])
+        #extra_data = json.loads(data['extra_data'])
 
-        if qs.exists():
-            bundle = {
-                'id': qs[0].id,
-            }
+
+        print '/// USER ///'
+        print user
+        print
+
+
+        user_qs = User.objects.filter(social_auth__provider=provider, social_auth__uid=uid)
+
+        if not user_qs.exists():
+            """
+            create new account & social user
+            """
+            print 'user does not exist - so we will create one'
+
+            # TODO: hack!!! try to create unique username
+            username = user['username']
+
+            while User.objects.filter(username=username).exists():
+                username += uuid4().get_hex()[:8]
+
+            remote_user = User.objects.create_user(username=username,
+                                            email=user['email'],
+                                            password=None)
+
+            remote_user.first_name = user['first_name']
+            remote_user.last_name = user['last_name']
+            remote_user.save()
+
+            from social_auth.models import UserSocialAuth
+            social_user = UserSocialAuth(
+                user=remote_user,
+                provider=provider,
+                uid=uid,
+                extra_data=extra_data,
+            )
+            social_user.save()
+
         else:
-            bundle = {
-                'id': None,
-            }
+            remote_user = user_qs[0]
+            remote_user.extra_data = extra_data
+            remote_user.save()
+
+
+
+        bundle = {
+            'id': remote_user.id,
+        }
 
 
         self.log_throttled_access(request)
