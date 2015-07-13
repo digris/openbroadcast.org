@@ -421,6 +421,12 @@ class UserResource(ModelResource):
 
         bundle = {
             'id': remote_user.id,
+            'user': {
+                'id': remote_user.id,
+                'username': remote_user.username,
+                'first_name': remote_user.first_name,
+                'last_name': remote_user.last_name,
+            }
         }
 
 
