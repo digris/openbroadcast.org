@@ -266,10 +266,10 @@ class Process(object):
             'item': media
         })
 
-        return True
-
         if self.dbox:
             self.dbox.upload(file_path, filename)
+
+        return True
 
 
 
