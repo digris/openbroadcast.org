@@ -107,6 +107,7 @@ MIDDLEWARE_CLASSES = (
     'lib.middleware.profiler.ProfileMiddleware',
 
     #'turbolinks.middleware.TurbolinksMiddleware',
+    'social_auth.middleware.SocialAuthExceptionMiddleware',
 
     'arating.middleware.AratingIpMiddleware',
 )
@@ -668,6 +669,7 @@ AUTHENTICATION_BACKENDS = (
     'social_auth.backends.google.GoogleOAuth2Backend',
     'social_auth.backends.contrib.dropbox.DropboxBackend',
     'social_auth.backends.contrib.soundcloud.SoundcloudBackend',
+    'social_auth.backends.contrib.stackoverflow.StackoverflowBackend',
     #'social_auth.backends.yahoo.YahooBackend',
     #'social_auth.backends.browserid.BrowserIDBackend',
     #'social_auth.backends.contrib.linkedin.LinkedinBackend',
@@ -675,7 +677,7 @@ AUTHENTICATION_BACKENDS = (
     #'social_auth.backends.contrib.livejournal.LiveJournalBackend',
     #'social_auth.backends.contrib.orkut.OrkutBackend',
     #'social_auth.backends.contrib.foursquare.FoursquareBackend',
-    'social_auth.backends.contrib.github.GithubBackend',
+    #'social_auth.backends.contrib.github.GithubBackend',
     #'social_auth.backends.contrib.vk.VKOAuth2Backend',
     #'social_auth.backends.contrib.live.LiveBackend',
     #'social_auth.backends.contrib.skyrock.SkyrockBackend',
