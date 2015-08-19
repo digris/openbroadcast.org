@@ -221,11 +221,6 @@ def select_playlist(request):
     request.session['scheduler_selected_playlist_history'] = history
 
 
-    print 'HISTORY:'
-    print history
-    print '//////////////////////////////'
-
-
     log.debug('nex: %s' % next)
     log.debug('playlist_id: %s' % playlist_id)
     
@@ -385,7 +380,6 @@ def copy_paste_day(request):
         # get emissions
         es = Emission.objects.filter(time_start__gte=source_start, time_end__lte=source_end, channel=channel)
         for e in es:
-            print e
             # check if slot is available
             slot_free = True
 

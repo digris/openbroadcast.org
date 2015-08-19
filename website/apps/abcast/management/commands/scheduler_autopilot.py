@@ -91,7 +91,14 @@ class Autopilot(object):
         """
         look for possible playlists to schedule
         """
-        ps = Playlist.objects.filter(target_duration__lte=free_slot, rotation=True, status=1, type="broadcast", duration__gte=29*60*1000, duration__lte=180*60*1000).order_by('?')
+        ps = Playlist.objects.filter(
+            target_duration__lte=free_slot,
+            rotation=True,
+            status=1,
+            type="broadcast",
+            duration__gte=29*60*1000,
+            duration__lte=180*60*1000
+        ).order_by('?')
         
         if ps.count() > 0:
             p = ps[0]

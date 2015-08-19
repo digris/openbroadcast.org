@@ -739,7 +739,7 @@ class Media(MigrationMixin):
         ps = []
         try:
             pis = PlaylistItem.objects.filter(object_id=self.pk, content_type=ContentType.objects.get_for_model(self))
-            ps = Playlist.objects.exclude(type='other').filter(items__in=pis).order_by('-type', '-created',).distinct()
+            ps = Playlist.objects.exclude(type='other').filter(items__in=pis).order_by('-type', '-created',).nocache().distinct()
         except Exception, e:
             print '### get_appearances error: %s' % e
             pass

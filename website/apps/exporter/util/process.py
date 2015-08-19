@@ -70,6 +70,8 @@ class Process(object):
         dbox = Synchronizer(self.instance.user)
         if dbox.dbox_client:
             self.dbox = dbox
+        else:
+            self.dbox = None
 
         if not self.format in AVAILABLE_FORMATS:
             raise Exception('Format not available.')
