@@ -98,11 +98,15 @@ def parse_tags(obj, d_tags, msg=''):
     try:
 
         #d_tags = ['"%s"' % x.strip() for x in d_tags.split(',') if len(x.name) > 1]
-        d_tags = ['"%s"' % x.strip() for x in d_tags.split(',') if x.strip() != '']
-        tags = ['"%s"' % x.name for x in obj.tags]
+        d_tags = ['"%s"' % x.strip().lower() for x in d_tags.split(',') if x.strip() != '']
+        tags = ['"%s"' % x.name.lower() for x in obj.tags]
 
         tags_added = diff_lists(d_tags, tags)
         tags_removed = diff_lists(tags, d_tags)
+
+
+
+
 
         if (tags_added or tags_removed) and msg == 'Nothing changed':
             msg = _('Changed: \n')
