@@ -38,12 +38,6 @@ class ObjectStatistics(object):
                         'data': self.get_stats(action)
                 })
 
-            if action == 'radio-stream':
-                stats.append({
-                        'label': _("Plays Radio Website"),
-                        'data': self.get_stats(action)
-                })
-
             if action == 'download':
                 stats.append({
                         'label': _("Downloads"),
