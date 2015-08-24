@@ -380,6 +380,13 @@ class PlaylistResource(ModelResource):
             bundle.data['main_image'] = main_image.url
         except:
             pass
+
+        if bundle.obj.series:
+            bundle.data['series'] = bundle.obj.series.name
+
+        if bundle.obj.series_number:
+            bundle.data['series_number'] = bundle.obj.series_number
+
         
         media_list = []
         try:

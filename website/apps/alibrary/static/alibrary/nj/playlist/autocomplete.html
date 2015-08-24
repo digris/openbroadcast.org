@@ -27,6 +27,14 @@
 
                         <div class="related">
                             <ul class="unstyled">
+                                {% if item.series %}
+                                    <li>Series:
+                                        {{ item.series|highlight(meta.query) }}
+                                        {% if item.series_number %}
+                                            #{{ item.series_number }}
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
                                 {% if item.user %}
                                     <li>User: {{ item.user|highlight(meta.query) }}</li>
                                 {% endif %}

@@ -103,17 +103,12 @@ class PlaylistListView(PaginationMixin, ListView):
         else:
             qs = Playlist.objects.exclude(type='basket')
 
-
-        
         if q:
             qs = qs.filter(Q(name__icontains=q)\
             | Q(series__name__istartswith=q)\
             | Q(user__username__istartswith=q))\
             .distinct()
 
-
-
-            
         order_by = self.request.GET.get('order_by', None)
         direction = self.request.GET.get('direction', None)
         
