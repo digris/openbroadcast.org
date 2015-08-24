@@ -195,7 +195,6 @@ class ReleaseForm(ModelForm):
 
         self.user = kwargs['initial']['user']
         self.instance = kwargs['instance']
-
         self.label = kwargs.pop('label', None)
 
         super(ReleaseForm, self).__init__(*args, **kwargs)
@@ -316,6 +315,9 @@ class ReleaseForm(ModelForm):
         return cd
 
     def save(self, *args, **kwargs):
+
+        # update actstream
+
         return super(ReleaseForm, self).save(*args, **kwargs)
 
 

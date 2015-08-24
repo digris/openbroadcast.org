@@ -39,6 +39,10 @@ ORDER_BY = [
         'name': _('Name')
     },
     {
+        'key': 'artist__name',
+        'name': _('Artist name')
+    },
+    {
         'key': 'base_duration',
         'name': _('Duration')
     },
@@ -178,7 +182,14 @@ class MediaListView(PaginationMixin, ListView):
 
             if extra_filter == 'possible_duplicates':
                 from django.db.models import Count
-                dupes = Media.objects.values('name').annotate(Count('id')).order_by().filter(id__count__gt=1)
+                dupes = Media.objects.values('name').annotate(Count('id')).filter(id__count__gt=1)
+                qs = qs.filter(name__in=[item['name'] for item in dupes])
+                if not order_by:
+                    qs = qs.order_by('name')
+
+            if extra_filter == 'possible_duplicates_incl_artists':
+                from django.db.models import Count
+                dupes = Media.objects.values('name').annotate(Count('id')).filter(id__count__gt=1)
                 qs = qs.filter(name__in=[item['name'] for item in dupes])
                 if not order_by:
                     qs = qs.order_by('name')

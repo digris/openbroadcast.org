@@ -96,7 +96,9 @@ class MediaForm(ModelForm):
         """
         Prototype function, set some fields to readonly depending on permissions
         """
-        if not self.user.has_perm("alibrary.admin_release", self.instance) and self.instance.release and self.instance.release.publish_date:
+        #if not self.user.has_perm("alibrary.admin_release", self.instance) and self.instance.release and self.instance.release.publish_date:
+        if not self.user.has_perm("alibrary.admin_release", self.instance):
+            #self.fields['license'].widget.attrs['disabled'] = 'disabled'
             self.fields['license'].widget.attrs['readonly'] = 'readonly'
 
 
@@ -197,7 +199,15 @@ class MediaForm(ModelForm):
     # aliases  = make_ajax_field(Media,'aliases','aliases',help_text=None)
     
     #members = selectable.AutoCompleteSelectMultipleField(ArtistLookup, required=False)
-    
+
+
+    def clean_license(self):
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk and not self.user.has_perm("alibrary.admin_release", instance):
+            print 'returning instance.license'
+            return instance.license
+        else:
+            return self.cleaned_data['license']
 
     def clean(self, *args, **kwargs):
         

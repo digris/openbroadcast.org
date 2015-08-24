@@ -2,12 +2,12 @@ from django.utils.text import get_text_list
 from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext as _
 
-def construct(request, form, formsets):
+def construct(request, form, formsets=[]):
     """
     Construct a change message from a changed object.
     """
     change_message = []
-    if form.changed_data:
+    if form and form.changed_data:
         
         try:
             form.changed_data.remove('d_tags')

@@ -31,7 +31,8 @@
 
                 $('select[readonly] option[selected]').each(function (i, el) {
                     var val = $(el).text();
-                    $(el).parents('.control-group').html('<span>' + val + '</span>');
+                    $(el).parents('.control-group select').hide();
+                    $(el).parents('.control-group .controls').prepend('<span>' + val + '</span>');
                 });
 
                 edit.ui.init();

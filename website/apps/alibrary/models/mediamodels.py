@@ -98,6 +98,7 @@ LOOKUP_PROVIDERS = (
 
 VERSION_CHOICES = (
     ('original', _('Original')),
+    ('track', _('Track')),
     ('remix', _('Remix')),
     ('cover', _('Cover')),
     ('live', _('Live Version')),
@@ -1498,6 +1499,11 @@ class Media(MigrationMixin):
                 pass
                 #print e
 
+        if self.version:
+            self.version = self.version.lower()
+
+        if self.mediatype:
+            self.mediatype = self.mediatype.lower()
 
 
         # sha1 for quick duplicate checks
@@ -1693,12 +1699,18 @@ Actstream handling moved to task queue to avoid wrong revision due to transactio
 from actstream import action
 @disable_for_loaddata
 def action_handler(sender, instance, created, **kwargs):
-    action_handler_task.delay(instance, created)
+
+    print
+    print 'Media - action_handler'
+    print sender
+    print instance
+
+    action_handler_task.delay(sender, instance, created)
 
 post_save.connect(action_handler, sender=Media)
 
 @task
-def action_handler_task(instance, created):
+def action_handler_task(sender, instance, created):
     try:
         verb = _('updated')
         if created:

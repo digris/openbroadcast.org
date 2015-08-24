@@ -667,20 +667,26 @@ except:
 
 
 arating.enable_voting_on(Release)
-post_save.connect(library_post_save, sender=Release)  
 
+post_save.connect(library_post_save, sender=Release)  
 
 """
 Actstream handling moved to task queue to avoid wrong revision due to transaction
 """
 from actstream import action
 def action_handler(sender, instance, created, **kwargs):
-    action_handler_task.delay(instance, created)
+
+    print
+    print 'Release - action_handler'
+    print sender
+    print instance
+
+    action_handler_task.delay(sender, instance, created)
 
 post_save.connect(action_handler, sender=Release)
 
 @task
-def action_handler_task(instance, created):
+def action_handler_task(sender, instance, created):
     try:
         verb = _('updated')
         if created:
