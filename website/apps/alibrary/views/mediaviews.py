@@ -18,7 +18,7 @@ import audiotranscode
 
 from pure_pagination.mixins import PaginationMixin
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
-
+import actstream
 from alibrary.models import Media, Playlist, PlaylistItem, Artist, Release
 from alibrary.forms import MediaForm, MediaActionForm, MediaRelationFormSet, ExtraartistFormSet, MediaartistFormSet
 from alibrary.filters import MediaFilter
@@ -323,6 +323,12 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             self.object = form.save()
             reversion.set_user(self.request.user)
             reversion.set_comment(msg)
+
+            # set actstream (e.v. atracker?)
+            if msg != 'Nothing changed':
+                actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
+
+
 
         messages.add_message(self.request, messages.INFO, msg)
 

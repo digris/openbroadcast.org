@@ -11,22 +11,17 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.db.models import Q
 from sendfile import sendfile
-
 from pure_pagination.mixins import PaginationMixin
 from alibrary.models import Artist, Label, Release
 from ashop.util.base import get_download_permissions
-
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
-
+import actstream
 from tagging.models import Tag
-
 from alibrary.forms import *
 from alibrary.filters import ReleaseFilter
-
 from lib.util import tagging_extra
 from lib.util import change_message
 from lib.util.form_errors import merge_form_errors
-
 import reversion
 
 ALIBRARY_PAGINATE_BY = getattr(settings, 'ALIBRARY_PAGINATE_BY', (12,24,36,120))
@@ -387,6 +382,11 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             reversion.set_user(self.request.user)
             reversion.set_comment(msg)
 
+            # set actstream (e.v. atracker?)
+            if msg != 'Nothing changed':
+                actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
+
+
 
 
         messages.add_message(self.request, messages.INFO, msg)
@@ -421,6 +421,11 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
                 m.save()
             else:
                 m.save()
+
+            if formset.has_changed():
+                # set actstream (e.v. atracker?)
+                actstream.action.send(self.request.user, verb=_('updated'), target=m)
+
 
 
     def formset_action_valid(self, formset):

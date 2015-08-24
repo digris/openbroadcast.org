@@ -1696,10 +1696,23 @@ pre_delete.connect(media_pre_delete, sender=Media)
 """
 Actstream handling moved to task queue to avoid wrong revision due to transaction
 """
+
+"""
 from actstream import action
 @disable_for_loaddata
 def action_handler(sender, instance, created, **kwargs):
-    action_handler_task.delay(sender, instance, created)
+
+    print
+    print 'Media - action_handler'
+    print 'sender:   %s' % sender
+    print 'instance: %s' % instance.__class__
+    print instance
+
+    if sender == instance.__class__:
+        print 'self originating save'
+        action_handler_task.delay(sender, instance, created)
+    else:
+        print 'foreign save > skip'
 
 post_save.connect(action_handler, sender=Media)
 
@@ -1713,7 +1726,7 @@ def action_handler_task(sender, instance, created):
     except Exception, e:
         print e
 
-
+"""
 
 
 
