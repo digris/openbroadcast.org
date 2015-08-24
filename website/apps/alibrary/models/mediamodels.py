@@ -1699,12 +1699,6 @@ Actstream handling moved to task queue to avoid wrong revision due to transactio
 from actstream import action
 @disable_for_loaddata
 def action_handler(sender, instance, created, **kwargs):
-
-    print
-    print 'Media - action_handler'
-    print sender
-    print instance
-
     action_handler_task.delay(sender, instance, created)
 
 post_save.connect(action_handler, sender=Media)

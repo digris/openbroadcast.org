@@ -675,12 +675,6 @@ Actstream handling moved to task queue to avoid wrong revision due to transactio
 """
 from actstream import action
 def action_handler(sender, instance, created, **kwargs):
-
-    print
-    print 'Release - action_handler'
-    print sender
-    print instance
-
     action_handler_task.delay(sender, instance, created)
 
 post_save.connect(action_handler, sender=Release)
