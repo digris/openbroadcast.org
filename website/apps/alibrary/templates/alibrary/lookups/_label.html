@@ -1,0 +1,28 @@
+{% load spurl i18n truncate thumbnail %}
+<div class="lookup lookup-release">
+    <div class="image">
+        <img src="{% thumbnail object.main_image 80x80 crop %}">
+    </div>
+    <div class="meta">
+        <p>
+            {{ object.name|truncatechars:28 }}
+            <span class="pull-right">{% if object.country %}{{ object.country.iso2_code }}{% endif %}</span>
+        </p>
+        <p>
+            {% if object.type %}
+                <span>{{ object.get_type_display }}</span>
+            {% endif %}
+
+            {% if object.type and object.labelcode %} - {% endif %}
+
+            {% if object.labelcode %}
+                <span>{{ object.labelcode }}</span>
+            {% endif %}
+
+        </p>
+        <p>
+            {% if object.date_start %}&nbsp;*{{ object.date_start.year }}{% endif %}
+            {% if object.date_end %}&nbsp;&#10013;{{ object.date_end.year }}{% endif %}
+        </p>
+    </div>
+</div>

@@ -29,11 +29,31 @@ class ArtistLookup(BaseLookup):
 registry.register(ArtistLookup)
 
 
+class LabelLookup(BaseLookup):
+    model = Label
+    search_fields = ['name__icontains',]
+    template_name = 'alibrary/lookups/_label.html'
+
+registry.register(LabelLookup)
+
+
+
+class ReleaseLabelLookup(LabelLookup):
+    pass
+registry.register(ReleaseLabelLookup)
+
+
+class ParentLabelLookup(LabelLookup):
+    pass
+
+registry.register(ParentLabelLookup)
+
+
 
 
 
 """
-TODO: refactor lookup toi use generic class & templates
+TODO: refactor lookup to use generic class & templates
 """
 class PlaylistSeriesLookup(ModelLookup):
     model = Series
@@ -59,54 +79,7 @@ registry.register(PlaylistSeriesLookup)
 
 
 
-class ReleaseLabelLookup(ModelLookup):
-    model = Label
-    search_fields = ['name__icontains',]
 
-    def get_item_label(self, item):
-        try:
-            opt = THUMBNAIL_OPT
-            image = image = get_thumbnailer(item.main_image).get_thumbnail(opt).url
-        except:
-            image = "/static/img/base/spacer.png"
-            pass
-
-        html = '<img src="%s">' % image
-        html += '<span>%s</span>' % item.name
-
-        return mark_safe(html)
-
-
-
-registry.register(ReleaseLabelLookup)
-
-
-class ParentLabelLookup(ReleaseLabelLookup):
-    pass
-
-registry.register(ParentLabelLookup)
-
-
-
-
-class LabelLookup(ModelLookup):
-    model = Label
-    search_fields = ['name__icontains',]
-
-    def get_item_label(self, item):
-        try:
-            opt = THUMBNAIL_OPT
-            image = image = get_thumbnailer(item.main_image).get_thumbnail(opt).url
-        except:
-            image = "/static/img/base/spacer.png"
-            pass
-
-        html = '<img src="%s">' % image
-        html += '<span>%s</span>' % item.name
-
-        return mark_safe(html)
-    
-registry.register(LabelLookup)
 
 
 class LicenseLookup(ModelLookup):
