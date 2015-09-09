@@ -319,7 +319,7 @@ class PlaylistResource(ModelResource):
         
         if q and len(q) > 1:
             qs = Playlist.objects.order_by('name').filter(Q(name__icontains=q)\
-                | Q(series__name__istartswith=q)\
+                | Q(series__name__icontains=q)\
                 | Q(user__username__icontains=q))
 
             if type:
