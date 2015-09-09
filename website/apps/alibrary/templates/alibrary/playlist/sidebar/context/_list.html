@@ -2,10 +2,9 @@
 
 <div class="menu-context">
 
-
     <div class="action-group">
         <ul class="unstyled">
-            {% if perms.alibrary.create_playlist %}
+            {% if perms.alibrary.add_playlist %}
                 <li class="link">
                     <a class="hoverable"
                        href="{% url alibrary-playlist-create %}"
@@ -18,6 +17,5 @@
 
         </ul>
     </div>
-
 
 </div>
