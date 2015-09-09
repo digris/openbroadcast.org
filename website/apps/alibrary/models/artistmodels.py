@@ -40,7 +40,7 @@ from l10n.models import Country
 
 # logging
 import logging
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
     
 import arating
     
@@ -351,16 +351,21 @@ class Artist(MigrationMixin):
 
         if self.type:
             self.type = self.type.lower()
-        
-        # update d_tags
+
         """
-        t_tags = ''
-        for tag in self.tags:
-            t_tags += '%s, ' % tag    
-        
-        self.tags = t_tags
-        self.d_tags = t_tags
+        TODO: implement otherwise
+        there is a special-case artist called "Various Artists" that should only exist once.
+        in the case we - for whatever unplanned reason - there is a duplicate coming in we
+        add a counter to the name ensure uniqueness.
         """
+
+        if self.name == 'Various Artists' and self.pk is None:
+            log.warning('attempt to create "Various Artists"')
+            original_name = self.name
+            i = 1
+            while Artist.objects.filter(name=self.name).count() > 0:
+                self.name = u'%s %s' % (original_name, i)
+                i += 1
 
         super(Artist, self).save(*args, **kwargs)
     
