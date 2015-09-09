@@ -57,6 +57,10 @@
 
                             <span class="value">
                                 <strong>{{ result.year }} | {{ result.country }}</strong>
+                                {% if result.label %}
+                                    - on
+                                    <strong>{{ result.label }}</strong>
+                                {% endif %}
                             </span>
                             </li>
 
