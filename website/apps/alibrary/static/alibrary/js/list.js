@@ -532,7 +532,11 @@ var RangeFilter = function() {
         str_start = (self.range.start) ? self.range.start : '';
         str_end = (self.range.end) ? self.range.end : '';
 
-        var url = $.insert_uri_param(window.location.href, 'releasedate',str_start + ':' + str_end, true);
+        var url = $.insert_uri_param(window.location.href, 'releasedate', str_start + ':' + str_end, true);
+        url = $.insert_uri_param(url, 'page', 1, true);
+
+
+
         window.location.href = url;
 
     };
