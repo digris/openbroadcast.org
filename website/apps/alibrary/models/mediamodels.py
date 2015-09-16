@@ -940,6 +940,13 @@ class Media(MigrationMixin):
                 """
                 if ext in ['.m4a', '.mp4']:
                     # decode using faad
+                    faad_binary = alibrary_settings.FAAD_BINARY
+                    log.debug('running: "%s %s -o %s"' % (faad_binary, src_path, tmp_path))
+
+                    p = subprocess.Popen([
+                        faad_binary, src_path, '-o', tmp_path
+                    ], stdout=subprocess.PIPE)
+                    stdout = p.communicate()
                     pass
                 elif ext in ['.mp5',]:
                     # just a placeholder
@@ -975,11 +982,9 @@ class Media(MigrationMixin):
         # get settings
         formats_download = FORMATS_DOWNLOAD 
         waveform_sizes = WAVEFORM_SIZES
-        
-        
+
         # cleanup:
         # delete everything that 'could' be in the cache so far...
-        print '# formats_download:'
 
         for format, variations in formats_download.iteritems():
             for variation in variations:

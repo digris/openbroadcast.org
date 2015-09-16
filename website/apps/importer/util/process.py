@@ -336,16 +336,16 @@ class Process(object):
                     pass
 
 
-        print "******************************************************************"
-        print "* Aquired metadata"
-        print "******************************************************************"
-        for k in dataset:
-            m = dataset[k]
-            try:
-                print "%s:   %s" % (k, m)
-            except:
-                pass
-        print "******************************************************************"
+        # print "******************************************************************"
+        # print "* Aquired metadata"
+        # print "******************************************************************"
+        # for k in dataset:
+        #     m = dataset[k]
+        #     try:
+        #         print "%s:   %s" % (k, m)
+        #     except:
+        #         pass
+        # print "******************************************************************"
 
         return dataset
     
@@ -355,9 +355,12 @@ class Process(object):
     """
     def get_aid(self, file):
 
-        log.debug('lookup acoustid for: %s' % (file.path))
+        log.info('lookup acoustid for: %s' % (file.path))
 
+        print 'PRE LOOKUP'
+        print 'command: acoustid.match("%s", "%s")' % (AC_API_KEY, file.path)
         data = acoustid.match(AC_API_KEY, file.path)
+        print 'POST LOOKUP'
 
         res = []
         i = 0

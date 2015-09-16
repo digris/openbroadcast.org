@@ -945,11 +945,6 @@ class APILookup(models.Model):
                 pass
 
 
-
-
-        print 'DTAGS:'
-        print d_tags
-
         res['d_tags'] = ', '.join(d_tags)
 
         self.api_data = res

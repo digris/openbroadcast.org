@@ -167,6 +167,16 @@ $(document).ready(function() {
                 </ul>
             </div>
 
+            <div class="alert alert-info">
+                <strong>{% trans "Hint!" %}</strong>
+                <p>
+                    {% blocktrans %}
+                    If the imports seem to freeze for a longer time you can try to just refresh the browser window. [CTRL/CMD]+[R] or <i class="icon-refresh"></i>.<br>
+                    Refreshing the browser will not lead to a loss of any uploaded files.
+                    {% endblocktrans %}
+                </p>
+            </div>
+
 
             <p>{% trans "Either use the 'Add Files' button - or Drag and Drop the desired fils into the browser window." %}</p>
         </div>

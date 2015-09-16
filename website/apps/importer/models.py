@@ -170,7 +170,7 @@ class Import(BaseModel):
                 for mb in file.results_musicbrainz:
                     # got a match - try to apply
                     if 'mb_id' in mb and mb['mb_id'] == mb_release_id:
-                        print 'GOT A MATCH!!!'
+
                         # main id
                         file.import_tag['mb_release_id'] = mb_release_id
                         # textual
@@ -348,10 +348,11 @@ class ImportFile(BaseModel):
             obp_media_uuid = metadata['obp_media_uuid'] if 'obp_media_uuid' in metadata else None
 
             if obp_media_uuid:
-                print '******************************************************************'
-                print 'got obp match'
-                print 'obp_media_uuid: %s' % obp_media_uuid
-                print '******************************************************************'
+
+                # print '******************************************************************'
+                # print 'got obp match'
+                # print 'obp_media_uuid: %s' % obp_media_uuid
+                # print '******************************************************************'
 
                 obj.status = 5
                 obj.media = Media.objects.get(uuid=obp_media_uuid)
@@ -369,21 +370,23 @@ class ImportFile(BaseModel):
             media_tracknumber = metadata['media_tracknumber'] if 'media_tracknumber' in metadata else None
 
             if media_mb_id and artist_mb_id and release_mb_id:
-                print
-                print '******************************************************************'
-                print 'got musicbrainz match'
-                print 'media_name: %s' % media_name
-                print 'artist_name: %s' % artist_name
-                print 'release_name: %s' % release_name
-                print 'media_mb_id: %s' % media_mb_id
-                print 'artist_mb_id: %s' % artist_mb_id
-                print 'release_mb_id: %s' % release_mb_id
-                print 'media_tracknumber: %s' % media_tracknumber
-                print '******************************************************************'
-                print
+
+
+                # print
+                # print '******************************************************************'
+                # print 'got musicbrainz match'
+                # print 'media_name: %s' % media_name
+                # print 'artist_name: %s' % artist_name
+                # print 'release_name: %s' % release_name
+                # print 'media_mb_id: %s' % media_mb_id
+                # print 'artist_mb_id: %s' % artist_mb_id
+                # print 'release_mb_id: %s' % release_mb_id
+                # print 'media_tracknumber: %s' % media_tracknumber
+                # print '******************************************************************'
+                # print
 
                 if not media_id:
-                    print 'directly applying mb-data and send to import-queue'
+                    log.debug('directly applying mb-data and send to import-queue')
 
                     # build import tag
                     import_tag = {
@@ -404,7 +407,7 @@ class ImportFile(BaseModel):
 
 
         except Exception, e:
-            print 'unable to process metadata: %s' % e
+            log.warning('unable to process metadata: %s' % e)
             obj.error = '%s' % e
             obj.status = 99
             obj.save()
@@ -538,7 +541,6 @@ class ImportFile(BaseModel):
             if not skip_apply_import_tag and self.import_session:
                 # TODO: this breaks the interface, as nearly infinite loop arises
                 #print 'skipping import_session.apply_import_tag'
-                print 'import_session.apply_import_tag'
                 self.import_session.apply_import_tag(self)
                 
         # check import_tag for completeness
@@ -635,7 +637,7 @@ class ImportItem(BaseModel):
 def reset_hangin_files(age=120):
     from datetime import datetime, timedelta
     for importfile in ImportFile.objects.filter(status=3, updated__lte=(datetime.now() - timedelta(seconds=age))):
-        print 'releasing "working" lock for %s' % importfile.pk
+        log.info('releasing "working" lock for %s' % importfile.pk)
         importfile.status = 4
         importfile.save()
 
