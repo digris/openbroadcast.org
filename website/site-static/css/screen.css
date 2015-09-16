@@ -11636,87 +11636,95 @@ section.importer-importfiles .listing .item div.result-actions .base {
 section.importer-importfiles .listing .item div.result-actions .advanced-fields {
   display: none;
 }
+/* line 298, ../sass/apps/_importer.sass */
+section.importer-importfiles .listing .item div.result-actions .tooltipable {
+  padding-left: 5px;
+}
 /* line 302, ../sass/apps/_importer.sass */
+section.importer-importfiles .listing .item div.result-actions .matches {
+  color: #ff743e;
+}
+/* line 308, ../sass/apps/_importer.sass */
 section.importer-importfiles .listing .form-horizontal .control-group {
   margin-bottom: 0;
 }
-/* line 304, ../sass/apps/_importer.sass */
+/* line 310, ../sass/apps/_importer.sass */
 section.importer-importfiles .listing .form-horizontal .input-minitext {
   font-size: 10px;
 }
 
-/* line 310, ../sass/apps/_importer.sass */
+/* line 316, ../sass/apps/_importer.sass */
 .import.summary {
   margin-top: 20px;
 }
-/* line 315, ../sass/apps/_importer.sass */
+/* line 321, ../sass/apps/_importer.sass */
 .import.summary.listing.fixed {
   position: fixed;
   width: 260px;
   top: 120px;
 }
-/* line 320, ../sass/apps/_importer.sass */
+/* line 326, ../sass/apps/_importer.sass */
 .import.summary .item {
   padding: 4px 4px 4px 4px;
   margin: 5px 0 5px 0;
   border-bottom: 1px solid #efefef;
 }
-/* line 328, ../sass/apps/_importer.sass */
+/* line 334, ../sass/apps/_importer.sass */
 .import.summary .item .counters p {
   margin: 0;
 }
-/* line 330, ../sass/apps/_importer.sass */
+/* line 336, ../sass/apps/_importer.sass */
 .import.summary .item .counters dl {
   margin: 6px 0 0 0;
 }
-/* line 332, ../sass/apps/_importer.sass */
+/* line 338, ../sass/apps/_importer.sass */
 .import.summary .item .counters dl dt {
   float: left;
   width: 30px;
   text-align: right;
   padding-right: 4px;
 }
-/* line 338, ../sass/apps/_importer.sass */
+/* line 344, ../sass/apps/_importer.sass */
 .import.summary .item a.toggle {
   color: #333333;
 }
-/* line 340, ../sass/apps/_importer.sass */
+/* line 346, ../sass/apps/_importer.sass */
 .import.summary .item a.toggle:hover {
   text-decoration: none;
 }
-/* line 346, ../sass/apps/_importer.sass */
+/* line 352, ../sass/apps/_importer.sass */
 .import.summary .item.hover.done {
   background-color: #ddffd9;
 }
-/* line 349, ../sass/apps/_importer.sass */
+/* line 355, ../sass/apps/_importer.sass */
 .import.summary .item.hover.duplicate {
   background-color: #fffeac;
 }
-/* line 352, ../sass/apps/_importer.sass */
+/* line 358, ../sass/apps/_importer.sass */
 .import.summary .item.hover.ready {
   background-color: #ddffd9;
 }
 
-/* line 357, ../sass/apps/_importer.sass */
+/* line 363, ../sass/apps/_importer.sass */
 .qtip-importer {
   color: white;
 }
-/* line 360, ../sass/apps/_importer.sass */
+/* line 366, ../sass/apps/_importer.sass */
 .qtip-importer .po-inline {
   padding: 4px 0;
 }
-/* line 364, ../sass/apps/_importer.sass */
+/* line 370, ../sass/apps/_importer.sass */
 .qtip-importer img {
   width: 70px;
   height: 70px;
 }
-/* line 367, ../sass/apps/_importer.sass */
+/* line 373, ../sass/apps/_importer.sass */
 .qtip-importer h1 {
   line-height: 100%;
   color: white;
   margin-bottom: 8px !important;
 }
-/* line 372, ../sass/apps/_importer.sass */
+/* line 378, ../sass/apps/_importer.sass */
 .qtip-importer .alert {
   margin-top: 10px;
   margin-bottom: 0px;
@@ -11724,7 +11732,7 @@ section.importer-importfiles .listing .form-horizontal .input-minitext {
   background: transparent;
   border: none;
 }
-/* line 378, ../sass/apps/_importer.sass */
+/* line 384, ../sass/apps/_importer.sass */
 .qtip-importer .alert p {
   padding: 10px 0 0 0;
   margin-mottom: 0;
@@ -11732,7 +11740,7 @@ section.importer-importfiles .listing .form-horizontal .input-minitext {
   text-shadow: none;
 }
 
-/* line 385, ../sass/apps/_importer.sass */
+/* line 391, ../sass/apps/_importer.sass */
 span.dim {
   background: transparent;
   color: #a3a3a3;

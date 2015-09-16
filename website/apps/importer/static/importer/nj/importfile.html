@@ -463,7 +463,7 @@
 
         </div>
 
-        <div class="span2">
+        <div class="span3">
             {% if object.import_tag.alibrary_release_id and not object.import_tag.force_release %}
                 <a href="#"
                    data-ct="release"
@@ -490,7 +490,7 @@
             {% endif %}
         </div>
 
-        <div class="span3">
+        <div class="span2">
             <a class="btn btn-mini pull-right apply-to-all" data-ct="release"><i class="icon-repeat"></i> Apply Release
                 to all</a>
         </div>
@@ -518,7 +518,7 @@
 
         </div>
 
-        <div class="span2">
+        <div class="span3">
             {% if object.import_tag.alibrary_artist_id and not object.import_tag.force_artist %}
                 <a href="#"
                    data-ct="artist"
@@ -528,6 +528,9 @@
                     Assigned
                 </a>
             {% else %}
+                {% if object.import_tag.alibrary_artist_matches %}
+                    <a href="#" class="matches"><i class="icon-warning-sign"></i> {{ object.import_tag.alibrary_artist_matches }} matches</a>
+                {% endif %}
                 <span class="dim"><i class="icon-plus"></i> Create</span>
             {% endif %}
         </div>
@@ -545,7 +548,7 @@
             {% endif %}
         </div>
 
-        <div class="span3">
+        <div class="span2">
             <a class="btn btn-mini pull-right apply-to-all" data-ct="artist"><i class="icon-repeat"></i> Apply Artist to
                 all</a>
         </div>

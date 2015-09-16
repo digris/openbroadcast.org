@@ -18,7 +18,7 @@ import magic
 from celery.task import task
 from lib.signals.unsignal import disable_for_loaddata
 
-from alibrary.models import Media
+from alibrary.models import Media, Artist, Release
 
 log = logging.getLogger(__name__)
 
@@ -553,6 +553,14 @@ class ImportFile(BaseModel):
                 self.status = 2
             else:
                 self.status = 4
+
+        # lookup number of possible duplicates by name
+        artist_name = self.import_tag.get('artist', None)
+        if artist_name:
+            num_artist_matches = Artist.objects.filter(name=artist_name).count()
+        else:
+            num_artist_matches = None
+        self.import_tag['alibrary_artist_matches'] = num_artist_matches
 
         super(ImportFile, self).save(*args, **kwargs)
 

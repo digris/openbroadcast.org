@@ -179,6 +179,18 @@ var ImportfileApp = function () {
             self.ac_select(el);
         });
 
+        // duplicate matches, trigger autocomplete on click
+
+        $(".result-actions a.matches", self.container).live('click', function (e) {
+            e.preventDefault();
+            var el = $(this);
+            var input_el = $('.autocomplete', el.parent().parent());
+            input_el.focus();
+            input_el.val(input_el.val())
+
+        });
+
+
         // force creation
         $("input.force-creation", self.container).live('change', function (e) {
             var el = $(this);
