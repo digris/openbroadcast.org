@@ -355,7 +355,7 @@ maintenance tasks
 
 @task
 def cleanup_exports():
-    es = Export.objects.filter(created__lte=datetime.datetime.now() - datetime.timedelta(days=2))
+    es = Export.objects.filter(created__lte=datetime.datetime.now() - datetime.timedelta(days=7))
     es.delete()
 
         

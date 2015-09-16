@@ -867,17 +867,17 @@ CELERY_ROUTES = {
 
 
 """
-celery repetitive tasks
+celery periodic tasks
 use for maintenance tasks etc.
 """
 CELERYBEAT_SCHEDULE = {
     'exporter-cleanup': {
         'task': 'exporter.models.cleanup_exports',
-        'schedule': timedelta(seconds=30),
+        'schedule': timedelta(seconds=600),
     },
     'importer-cleanup': {
         'task': 'importer.models.reset_hangin_files',
-        'schedule': timedelta(seconds=30),
+        'schedule': timedelta(seconds=600),
     },
 }
 

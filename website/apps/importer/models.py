@@ -634,7 +634,7 @@ class ImportItem(BaseModel):
 
 
 @task
-def reset_hangin_files(age=120):
+def reset_hangin_files(age=600):
     from datetime import datetime, timedelta
     for importfile in ImportFile.objects.filter(status=3, updated__lte=(datetime.now() - timedelta(seconds=age))):
         log.info('releasing "working" lock for %s' % importfile.pk)
