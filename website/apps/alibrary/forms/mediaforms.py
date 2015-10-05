@@ -76,7 +76,7 @@ class MediaForm(ModelForm):
             'opus_number',
             'mediatype',
             'version',
-            'filename',
+            #'filename',
             'license',
             'release',
             'd_tags',
@@ -108,7 +108,7 @@ class MediaForm(ModelForm):
         # rewrite labels
         self.fields['medianumber'].label = _('Disc number')
         self.fields['opus_number'].label = _('Opus N.')
-        self.fields['filename'].label = _('Orig. Filename')
+        #self.fields['filename'].label = _('Orig. Filename')
 
         
         base_layout = Fieldset(
