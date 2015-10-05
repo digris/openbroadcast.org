@@ -56,10 +56,6 @@ import tempfile
 # celery / task management
 from celery.task import task
 
-
-# shop
-from shop.models import Product
-
 # audio processing / waveform
 from lib.audioprocessing.processing import create_wave_images, AudioProcessingException
 from lib.fields.languages import LanguageField

@@ -25,9 +25,6 @@ from filer.fields.file import FilerFileField
 # celery / task management
 
 
-# shop
-from shop.models import Product
-
 # audio processing / waveform
 from lib.audioprocessing.processing import create_wave_images, AudioProcessingException
 # import optparse

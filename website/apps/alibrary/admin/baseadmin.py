@@ -4,35 +4,17 @@ from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
 from django.utils.translation import ugettext as _
 from guardian.admin import GuardedModelAdmin
 from django.contrib import admin
-from ashop.models import *
 from alibrary.models import *
 
 from django.utils.safestring import mark_safe
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-#class BaseAdmin(reversion.VersionAdmin, GuardedModelAdmin):
 class BaseAdmin(GuardedModelAdmin):
 
     search_fields = ['name']
     save_on_top = True
-    
-    
-class HardwarereleaseInline(admin.TabularInline):
-    max_num = 10
-    model = Hardwarerelease
-    fieldsets = [
-        (None,               {'fields': ['name', 'slug', 'medium', 'unit_price', 'active']}),
-    ]
-    readonly_fields = ['slug', 'medium']
-    
-class DownloadreleaseInline(admin.TabularInline):
-    max_num = 1
-    model = Downloadrelease
-    fieldsets = [
-        (None,               {'fields': ['name', 'slug', 'unit_price', 'active']}),
-    ]
-    readonly_fields = ['slug', 'name', 'unit_price']
+
 
 class LabelInline(admin.TabularInline):
     model = Label

@@ -1,8 +1,5 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 import datetime
-
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
@@ -11,34 +8,23 @@ from django_extensions.db.fields import *
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.core.urlresolvers import reverse
-
 from cms.models import CMSPlugin
-
-# filer
 from filer.fields.image import FilerImageField
 from filer.fields.file import FilerFileField
-
 import arating
-
 from phonenumber_field.modelfields import PhoneNumberField
 from l10n.models import Country
-
 from abcast.util import notify
-
-# 
 from lib.fields import extra
 
 class BaseModel(models.Model):
     
     uuid = UUIDField()
-    
     created = CreationDateTimeField()
     updated = ModificationDateTimeField()
     
     class Meta:
         abstract = True
-
-
 
 
 class Station(BaseModel):
@@ -55,7 +41,6 @@ class Station(BaseModel):
     
     main_image = FilerImageField(null=True, blank=True, related_name="station_main_image", rel='')
     description = extra.MarkdownTextField(blank=True, null=True)
-
 
     # members
     members = models.ManyToManyField(User, through='StationMembers', blank=True, null=True)
@@ -185,13 +170,10 @@ class Channel(BaseModel):
     stream_server = models.ForeignKey('StreamServer', null=True, blank=True, on_delete=models.SET_NULL)
     mount = models.CharField(max_length=64, null=True, blank=True)
 
-    # on_air = JSONField(null=True, blank=True)
-    # on_air = generic.GenericRelation(OnAirItem, object_id_field="object_id")
     on_air_type = models.ForeignKey(ContentType, null=True, blank=True)
     on_air_id = models.PositiveIntegerField(null=True, blank=True)
     on_air = generic.GenericForeignKey('on_air_type', 'on_air_id')
 
-    
     class Meta:
         app_label = 'abcast'
         verbose_name = _('Channel')
@@ -279,12 +261,11 @@ class Channel(BaseModel):
             'emission_items': emission_items
         }
 
-
         return on_air
 
 
 def post_save_channel(sender, **kwargs):
-    print 'post_save_channel - kwargs'
+
     obj = kwargs['instance']
 
     # call notification
@@ -314,12 +295,8 @@ class StreamServer(BaseModel):
     mountpoint = models.CharField(max_length=64, null=True, help_text=_('e.g. main-hifi.mp3'))
     meta_prefix = models.CharField(max_length=64, null=True, blank=True, help_text=_('e.g. My Station!'))
 
-
     formats = models.ManyToManyField('StreamFormat', null=True, blank=True)
 
-    
-    
-     
     TYPE_CHOICES = (
         ('icecast2', _('Icecast 2')),
         ('rtmp', _('RTMP / Wowza')),
@@ -335,19 +312,6 @@ class StreamServer(BaseModel):
 
     def __unicode__(self):
         return "%s" % self.name
-
-"""
-class StreamMountpoint(BaseModel):
-
-    server = models.ForeignKey(StreamServer, null=True, blank=True)
-    path = models.CharField(max_length=64, null=True, help_text=_('e.g. main-hifi.mp3'))
-
-
-    class Meta:
-        app_label = 'abcast'
-        verbose_name = _('Mountpoint')
-        ordering = ('server', 'path',)
-"""
 
 
 class StreamFormat(BaseModel):
@@ -379,44 +343,6 @@ class StreamFormat(BaseModel):
     def __unicode__(self):
         return "%s | %s" % (self.type, self.bitrate)
 
-"""
-class StreamMount(BaseModel):
-
-    TYPE_CHOICES = (
-        ('icecast2', _('Icecast 2')),
-        ('rtmp', _('RTMP / Wowza')),
-    )
-    type = models.CharField(max_length=12, default='icecast2', choices=TYPE_CHOICES)
-    formats = models.ManyToManyField('StreamFormat', null=True, blank=True)
-    active = models.BooleanField(default=True)
-    
-    stream_url = models.URLField(null=True, blank=True, max_length=256, help_text=_('stream-url has priority over streams-erver'))
-    stream_server = models.ForeignKey('StreamServer', null=True, blank=True, on_delete=models.SET_NULL)
-
-    # url is either generated through an assigned stream-server, or the given stream-url.
-    # the stream-url has priority.
-    
-    @property
-    def url(selfself):
-        if self.stream_url:
-            return self.stream_url
-        
-        if self.stream_server:
-            return self.stream_server.host
-        
-        return None
-            
-    class Meta:
-        app_label = 'abcast'
-        verbose_name = _('Mountpoint')
-        verbose_name_plural = _('Mountpoints')
-        ordering = ('type', )
-
-    def __unicode__(self):
-        return "%s | %s" % (self.type, self.bitrate)
-"""    
-    
-    
 
 class OnAirPlugin(CMSPlugin):    
     channel = models.ForeignKey(Channel, related_name='plugins')

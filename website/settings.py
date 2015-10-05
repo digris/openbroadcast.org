@@ -24,8 +24,6 @@ sys.path.insert(0, os.path.join(PROJECT_DIR, 'apps'))
 sys.path.insert(0, os.path.join(PROJECT_DIR, 'tools'))
 # subdirectory for plugins
 sys.path.insert(0, os.path.join(PROJECT_DIR, 'cmsplugins'))
-# subdirectory for shop
-sys.path.insert(0, os.path.join(PROJECT_DIR, 'ecommerce'))
 # subdirectory for legacy tools
 sys.path.insert(0, os.path.join(PROJECT_DIR, 'legacy'))
 
@@ -39,7 +37,6 @@ SERVE_MEDIA = False
 COMPRESS_OFFLINE = False
 COMPRESS_ENABLED = False
 
-#LANGUAGES = [('en', 'en'), ('de', 'de'), ('fr', 'fr')]
 LANGUAGES = [('en', 'en'),]
 DEFAULT_LANGUAGE = 0
 
@@ -47,14 +44,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(PROJECT_DIR, 'data.db'),
-        #'NAME': '/Users/ohrstrom/srv/alibrary/data.db',
     },
 }
 
 TIME_ZONE = 'Europe/Zurich'
 
 LANGUAGE_CODE = 'en-us'
-#LANGUAGE_CODE = 'de-de'
 
 SITE_ID = 1
 
@@ -65,17 +60,6 @@ SECRET_KEY = '0r6%7gip5tmez*vygfv+u14h@4lbt^8e2^26o#5_f_#b7%cm)u'
 CRYPTO_SECRET = 'JHRhwLiOsyMyL1JA'
 AES_SECRET_PASSWORD = 'JHRhwLiOsyMyL1JA'
 AES_BLOCK_SIZE = 32
-
-"""
-TEMPLATE_LOADERS = (
-    # mobile
-    #'django_mobile.loader.Loader',
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    #'django.template.loaders.eggs.Loader',
-    #'django.template.loaders.app_directories.Loader',
-)
-"""
 
 TEMPLATE_LOADERS = (
     ('django.template.loaders.cached.Loader', (
@@ -360,9 +344,7 @@ INSTALLED_APPS = (
     #'debug_toolbar',
     'mailer',
     'djcelery',
-    'django_bleach',
-
-    #'sphinxdoc',
+    #'django_bleach',
 
     'cms',
     'menus',
@@ -373,24 +355,18 @@ INSTALLED_APPS = (
     'l10n',
     'guardian',
     'filer',
-    #'private_files',
 
     'profiles',
     'sendfile',
     'reversion',
-    #'clear_cache',
     'django_badbrowser',
-    'datatrans',
     'genericadmin',
 
-    'adv_cache_tag',
     #'debug_toolbar_memcache',
 
-
-
     # caching
+    'adv_cache_tag',
     'cacheops',
-
 
     # dajax
     'dajaxice',
@@ -398,22 +374,16 @@ INSTALLED_APPS = (
     'ajax_select',
     'email_obfuscator',
 
-
     # cms plugins
     'cms.plugins.text',
     'cms.plugins.link',
     'cms.plugins.inherit',
-    #'cmsplugin_filer_folder',
-    #'cmsplugin_filer_image',
     'cmsplugin_youtube',
     'cmsplugin_vimeo',
-    #'cmsplugin_soundcloud',
     'cmsplugin_pagedown',
     'cmsplugin_git',
     'cmsplugin_toc',
     'stepguide',
-
-
 
     'shortcutter',
     'multilingual',
@@ -431,15 +401,13 @@ INSTALLED_APPS = (
 
     # stats
     'atracker',
+    'istats',
 
     # users/auth
     'avatar',
     'emailconfirmation',
-
-    # alternative registration
     'registration',
     'social_auth',
-    #'django_auth_policy',
     'loginas',
     'dropbox',
     'invitation',
@@ -458,7 +426,6 @@ INSTALLED_APPS = (
     'pushy',
     'nunjucks',
     #'pushy_asset',
-    'istats',
 
     # custom apps/*
     'asite',
@@ -474,25 +441,11 @@ INSTALLED_APPS = (
     'asearch',
     'backfeed',
     'statistics',
-    #'django_db_signals',
-
-    # blog
-    #'zinnia',
-    #'cmsplugin_zinnia', # somehow not working.. ivestigate!!
 
     'bcmon',
     'genericrelations',
-    'ashop',
-    'ashop.addressmodel',
-    #'acalendar',
     'spurl',
     'lib',
-
-    # shop apps
-    'shop',
-    'shop_ajax',
-    'paypal.standard.ipn',
-    'shop_paypal',
 
     #
     'wikisyntax',
@@ -501,15 +454,6 @@ INSTALLED_APPS = (
     'pure_pagination',
     'obp_legacy',
     'apiv1cache',
-
-    # helpers
-    #'dev',
-
-    # spf
-    #'csvimport',
-    #'spf',
-    #n'fprint',
-
     'actstream',
 )
 
@@ -741,45 +685,6 @@ ABSOLUTE_URL_OVERRIDES = {
 }
 AUTH_PROFILE_MODULE = "profiles.Profile"
 
-"""
-Shop configuration
-"""
-# shop config
-SHOP_ADDRESS_MODEL = 'ashop.addressmodel.models.Address'
-
-SHOP_SHIPPING_BACKENDS = (
-    'ashop.shipping.SkipShippingBackend',
-    'shop.shipping.backends.flat_rate.FlatRateShipping',
-)
-
-SHOP_PAYMENT_BACKENDS = (
-    'shop.payment.backends.pay_on_delivery.PayOnDeliveryBackend',
-    'shop_paypal.offsite_paypal.OffsitePaypalBackend',
-
-)
-
-SHOP_CART_MODIFIERS = (
-    #'shop_simplevariations.cart_modifier.ProductOptionsModifier',
-    'ashop.modifiers.BulkRebateModifier',
-    'discount.cart_modifiers.DiscountCartModifier',
-    'ashop.modifiers.FixedTaxRate',
-    'ashop.modifiers.FixedShippingCosts', # move before Tax if you want to add taxes to shipping as well
-)
-
-# shop and payment settings
-SHOP_SHIPPING_FLAT_RATE = "10.00"
-SHOP_CURRENCY = {
-    'code': 'USD',
-    'character': '$',
-    'separator': '',
-}
-
-"""
-Payment providers
-"""
-# paypal
-PAYPAL_RECEIVER_EMAIL = 'spam3_1325160774_biz@anorg.net'
-PAYPAL_CURRENCY_CODE = SHOP_CURRENCY['code']
 
 """
 Search

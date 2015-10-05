@@ -13,7 +13,6 @@ from django.db.models import Q
 from sendfile import sendfile
 from pure_pagination.mixins import PaginationMixin
 from alibrary.models import Artist, Label, Release
-from ashop.util.base import get_download_permissions
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 import actstream
 from tagging.models import Tag
@@ -676,53 +675,6 @@ class JSONResponseMixin(object):
     
 class JSONReleaseDetailView(JSONResponseMixin, ReleaseDetailView):
     pass
-
-
-
-def release_download(request, slug, format, version):
-    
-    release = get_object_or_404(Release, slug=slug)
-    
-    version = 'base' 
-    
-    """
-    check permissions
-    """
-    download_permission = False
-    for product in release.releaseproduct.filter(downloadrelease__format__format=format, active=True): # users who purchase hardware can download the software part as well
-        if get_download_permissions(request, product, format, version):
-            download_permission = True
-        if product.unit_price == 0:
-            download_permission = True
-    
-    if not download_permission:
-        return HttpResponseForbidden('forbidden')
-    
-    """
-    check if valid
-    TODO: use formats defined in settings
-    """
-    if format in ['mp3', 'flac', 'wav']:
-        cache_file = release.get_cache_file(format, version)
-    else:
-        raise Http404
-    
-    
-    if release.catalognumber:
-        filename = '[%s] - %s [%s]' % (release.catalognumber.encode('ascii', 'ignore'), release.name.encode('ascii', 'ignore'), format.upper())
-    else:
-        filename = '%s [%s]' % (release.name.encode('ascii', 'ignore'), format.upper())
-    
-    filename = '%s.%s' % (filename, 'zip')
-    
-    return sendfile(request, cache_file, attachment=True, attachment_filename=filename)
-
-
-
-
-
-
-
 
 
 

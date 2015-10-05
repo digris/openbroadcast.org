@@ -70,13 +70,7 @@ from alibrary.models.artistmodels import *
 from alibrary.models.labelmodels import Label
 from alibrary.models.mediamodels import Media
 
-
-
-
 FORCE_CATALOGNUMBER = False
-
-# shop
-#from ashop.models import Hardwarerelease, Downloadrelease
 
 from lib.fields import extra
 

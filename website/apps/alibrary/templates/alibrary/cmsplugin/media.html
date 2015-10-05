@@ -12,7 +12,7 @@
 
 {% with playlink=object.get_playlink %}
 
-{% load thumbnail ashop_tags sekizai_tags calc guardian_tags truncate asite_tags %}
+{% load thumbnail sekizai_tags calc guardian_tags truncate asite_tags %}
 
 
 <div id="{{ media.uuid }}" data-duration="{{ media.get_duration }}" class="item playlist {{ media.uuid }}" itemscope itemtype="http://schema.org/MusicRecording" >

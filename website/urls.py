@@ -82,12 +82,7 @@ urlpatterns = patterns('',
     # only devel
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': settings.MEDIA_ROOT,
-    }), 
-
-    # shop
-    (r'^shop/discount/', include('discount.urls')),
-    (r'^shop/cart/', include('shop_ajax.urls')), # urls for variations
-    (r'^shop/', include('shop.urls')), # shop main urls
+    }),
     
     url(r'^search/', include('asearch.urls')),
     url(r'^search/', include('haystack.urls')),
@@ -97,11 +92,8 @@ urlpatterns = patterns('',
     (r'^player/', include('aplayer.urls')),
     
     url(r'^bb/', include('django_badbrowser.urls')),
-    url(r'^translate/', include('datatrans.urls')),
+    #url(r'^translate/', include('datatrans.urls')),
 
-
-    # spf
-    url(r"^spf/", include("spf.urls")),
     url(r'^__debug__/', include(debug_toolbar.urls)),
     
     # cms base
