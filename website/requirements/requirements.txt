@@ -4,8 +4,10 @@ Markdown==2.4
 MySQL-python==1.2.5
 Pillow==2.9.0
 -e git://github.com/hzlf/python-audio-tools.git@master#egg=python-audio-tools-master
-
+-e git+https://github.com/hzlf/django-relatedadminlinks.git@master#egg=relatedadminlink-master
 -e git+https://github.com/hzlf/graypy.git@master#egg=graypy
+
+djangocms-admin-style==0.2.8
 
 South==1.0.2
 URLObject==2.3.4

@@ -286,7 +286,9 @@ FLUENT_COMMENTS_EXCLUDE_FIELDS = ['title', 'email', 'name', 'url', ]
 
 INSTALLED_APPS = (
 
-    'admin_style',
+    'relatedadminlink',
+    #'admin_style',
+    'djangocms_admin_style',
     'admin_tools',
     'admin_shortcuts',
     'django_su',
