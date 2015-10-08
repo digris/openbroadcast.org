@@ -82,12 +82,11 @@
 
             //debug.setLevel(2);
 
-            if (!nunjucks.env) {
-                nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('{{ STATIC_URL }}'));
-            }
-            nj = nunjucks.env;
-
-            nj = nunjucks_register_filters(nj);
+            //if (!nunjucks.env) {
+            //    nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('{{ STATIC_URL }}'));
+            //}
+            //nj = nunjucks.env;
+            //nj = nunjucks_register_filters(nj);
 
 			// set some variables to be available in script file
 			aplayer.vars.swf_url = '{{ STATIC_URL }}aplayer/swf/lib/jwplayer/jwplayer-5.9.swf';

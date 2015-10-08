@@ -25,7 +25,7 @@
 
 	{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}js/lib/ba-debug.js"></script>{% endaddtoblock %}
 
-	{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}js/lib/nunjucks/nunjucks-dev.js"></script>{% endaddtoblock %}
+	{% addtoblock "js-post" %}<!--<script type="text/javascript" src="{{ STATIC_URL }}js/lib/nunjucks/nunjucks-dev.js"></script>-->{% endaddtoblock %}
 
 	{% addtoblock "js-post" %}{% nunjucks_scripts %}{% endaddtoblock %}
     {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}js/lib/nunjucks/filters.js"></script>{% endaddtoblock %}
