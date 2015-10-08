@@ -3,25 +3,16 @@ import shutil
 import time
 import subprocess
 import json
-import ntpath
-
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.core.files import File as DjangoFile
 from django.core.urlresolvers import reverse
-
 # TODO: only import needed settings
 from settings import *
-
 from django.conf import settings
-
 from alibrary import settings as alibrary_settings
-
-
-
-# django-extensions (http://packages.python.org/django-extensions/)
 from django_extensions.db.fields import AutoSlugField
 from lib.fields.uuidfield import UUIDField as RUUIDField
 
@@ -1789,9 +1780,7 @@ class MediaArtists(models.Model):
 CMS-Plugins
 """
 class MediaPlugin(CMSPlugin):
-    
     media = models.ForeignKey(Media)
-    
     headline = models.BooleanField(verbose_name=_('Show headline (Track/Artist)'), default=False)
     
     def __unicode__(self):
@@ -1801,8 +1790,6 @@ class MediaPlugin(CMSPlugin):
     class Meta:
         app_label = 'alibrary'
 
-
-    
 def get_raw_image(filename, type):
     try:
         f = open(filename, 'rb')

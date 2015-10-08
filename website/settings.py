@@ -363,10 +363,6 @@ INSTALLED_APPS = (
     'reversion',
     'django_badbrowser',
     'genericadmin',
-
-    #'debug_toolbar_memcache',
-
-    # caching
     'adv_cache_tag',
     'cacheops',
 

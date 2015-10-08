@@ -193,6 +193,10 @@ class Process(object):
             try:
                 dataset['media_tracknumber'] = int(meta['tracknumber'][0])
             except Exception, e:
+                try:
+                    dataset['media_tracknumber'] = int(meta['tracknumber'][0].split('/')[0])
+                except Exception, e:
+                    pass
                 log.debug('metadata missing "media_tracknumber": %s' % (e))
                 
             try:

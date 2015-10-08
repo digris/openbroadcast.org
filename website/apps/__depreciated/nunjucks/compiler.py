@@ -1,29 +1,26 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
 import subprocess
-import logging
 
-from nunjucks import settings as nunjucks_settings
+NUNJUCKS_BIN = 'nunjucks-precompile'
 
-log = logging.getLogger(__name__)
+"""
+Just a wrapper to the nunjucks/npm 'binary'
+"""
 
 class NunjucksCompiler(object):
 
     def __init__(self):
         pass
 
+
     def compile(self, path):
 
         template = ''
-        command = '%s %s' % (nunjucks_settings.NUNJUCKS_BIN, path)
-
+        command = '%s %s' % (NUNJUCKS_BIN, path)
         print command
-
-        log.debug(u'%s' % command)
-
         p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         for line in p.stdout.readlines():
             template += line
         retval = p.wait()
+
 
         return template

@@ -31,12 +31,12 @@ var ImportfileApp = function () {
         setInterval(function(){
             //console.log('periodic reload to re-check status', self.local_data);
             if(self.local_data && self.local_data.status == 'init') {
-                debug.debug('periodic reload to re-check status');
+                console.debug('periodic reload to re-check status');
                 self.load();
             } else {
                 //debug.debug('skipping periodic reload');
             }
-        }, 10000 + Math.floor(Math.random() * 1000))
+        }, 20000 + Math.floor(Math.random() * 4000))
 
 
 

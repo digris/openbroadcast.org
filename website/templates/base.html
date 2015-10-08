@@ -177,15 +177,17 @@
             {% include "skeleton/footer_new.html" %}
         </div>
 
-
-        {% if not user.is_authenticated %}
-            {%  include "element/private_site_message.html" %}
+        {% if user.is_authenticated %}
+            {# include "element/_quicklinks_panel.html" #}
+        {% else %}
+            {% include "element/_private_site_panel.html" %}
         {% endif %}
+
+
 
 
         {% comment %}
         <section id="site_messages">
-
             {% if messages %}
                 <div class="messages">
                     {% for message in messages %}
@@ -196,7 +198,6 @@
                     {% endfor %}
                 </div>
             {% endif %}
-
         </section>
         {% endcomment %}
 
@@ -245,12 +246,12 @@
             $(document).ready(function () {
                 /* js general init functions */
 
-                if (!nunjucks.env) {
-                    nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('{{ STATIC_URL }}'));
-                }
-                nj = nunjucks.env;
+                //if (!nunjucks.env) {
+                //    nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('{{ STATIC_URL }}'));
+                //}
+                //nj = nunjucks.env;
 
-                nj = nunjucks_register_filters(nj);
+                //nj = nunjucks_register_filters(nj);
 
 
                 debug.setLevel(2);

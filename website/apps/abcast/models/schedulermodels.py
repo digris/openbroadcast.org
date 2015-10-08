@@ -72,8 +72,6 @@ class Broadcast(BaseModel):
     def __unicode__(self):
         return u'%s' % self.name
 
-
-#class EmissionManager(CachingManager):
 class EmissionManager(models.Manager):
 
     def future(self):
@@ -85,9 +83,6 @@ class EmissionManager(models.Manager):
         return self.get_query_set().filter(time_end__lt=now)
 
 
-
-
-#class Emission(BaseModel, CachingMixin):
 class Emission(BaseModel):
 
     # core fields

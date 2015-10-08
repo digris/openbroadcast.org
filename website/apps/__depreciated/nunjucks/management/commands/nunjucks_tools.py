@@ -1,16 +1,11 @@
 import os
+import codecs
 from optparse import make_option
-
 from django.core.files.storage import FileSystemStorage
 from django.core.management.base import NoArgsCommand
 from django.contrib.staticfiles import finders, storage
 from django.template.loader import render_to_string
-
-
 from nunjucks.compiler import NunjucksCompiler
-
-
-
 
 class Command(NoArgsCommand):
     """
@@ -64,9 +59,12 @@ class Command(NoArgsCommand):
                     )
 
 
-        tpl = render_to_string('nunjucks/compile/templates.js', {'templates': templates})
+        tpl = u'%s' % render_to_string('nunjucks/compile/templates.js', {'templates': templates})
 
-        open(target, "w").write(tpl)
+        file = codecs.open(target, "w", "utf-8")
+        file.write(tpl)
+        file.close()
+        #open(target, "w").write(tpl)
 
         return
 
