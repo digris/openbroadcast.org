@@ -228,20 +228,26 @@ var ImportfileApp = function () {
         $('.start-import', self.container).live('click', function (e) {
 
 
+            if($(this).hasClass('disabled')) {
+                alert('Pleas only click once. File is already queued for processing.');
+                return;
+            }
+
             // check if required fields here
-            var media_name = $('.media input', self.container).val()
-            var artist_name = $('.artist input', self.container).val()
-            var release_name = $('.release input', self.container).val()
+            var media_name = $('.media input', self.container).val();
+            var artist_name = $('.artist input', self.container).val();
+            var release_name = $('.release input', self.container).val();
 
             if(! (media_name.length > 0 && artist_name.length > 0 && release_name.length > 0)) {
                 alert('"Title", "Artist" and "Release" are required fields!');
                 return false;
             }
 
-
             var data = {
                 status: 6
             };
+
+            $(this).addClass('disabled');
 
             $.ajax({
                 type: "PUT",
