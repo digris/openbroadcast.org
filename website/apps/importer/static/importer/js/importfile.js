@@ -91,6 +91,13 @@ var ImportfileApp = function () {
 
         });
 
+        $('a.toggle-hint', self.container).live('click', function (e) {
+            e.preventDefault();
+            $('.expandable', $(this).parents('.hint')).fadeToggle(500);
+        });
+
+
+
         $('a.toggle-advanced', self.container).live('click', function (e) {
             $('.advanced-fields', self.container).toggle();
         });

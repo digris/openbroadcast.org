@@ -1,30 +1,27 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 import os
 import time
 import logging
-
+import magic
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.db.models.signals import post_delete
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django_extensions.db.fields.json import JSONField
-import magic
 from celery.task import task
 from lib.signals.unsignal import disable_for_loaddata
-
 from alibrary.models import Media, Artist, Release
 
 log = logging.getLogger(__name__)
 
-USE_CELERYD = True
+USE_CELERYD = getattr(settings, 'IMORTER_USE_CELERYD', True)
+AUTOIMPORT_MB = getattr(settings, 'IMORTER_AUTOIMPORT_MB', True)
 
-AUTOIMPORT_MB = True
         
 GENERIC_STATUS_CHOICES = (
     (0, _('Init')),
@@ -56,8 +53,7 @@ class BaseModel(models.Model):
     
     class Meta:
         abstract = True
-        
-        
+
 class Import(BaseModel):
 
     class Meta:
@@ -65,10 +61,8 @@ class Import(BaseModel):
         verbose_name = _('Import')
         verbose_name_plural = _('Imports')
         ordering = ('-created', )
-    
-    
-    user = models.ForeignKey(User, blank=True, null=True, related_name="import_user", on_delete=models.SET_NULL)
 
+    user = models.ForeignKey(User, blank=True, null=True, related_name="import_user", on_delete=models.SET_NULL)
     uuid_key = models.CharField(max_length=60, null=True, blank=True)
 
     STATUS_CHOICES = (
@@ -87,10 +81,7 @@ class Import(BaseModel):
         ('fs', _('Filesystem')),
     )
     type = models.CharField(max_length="10", default='web', choices=TYPE_CHOICES)
-    
     notes = models.TextField(blank=True, null=True, help_text=_('Optionally, just add some notes to this import if desired.'))
-    
-    
 
     def __unicode__(self):
         return "%s | %s" % (self.created, self.user)
@@ -102,7 +93,6 @@ class Import(BaseModel):
     @models.permalink
     def get_delete_url(self):
         return ('importer-import-delete', [str(self.pk)])
-    
 
     @task
     def get_stats(self):
@@ -119,8 +109,6 @@ class Import(BaseModel):
         
         return stats
 
-
-
     def get_inserts(self):
 
         inserts = {
@@ -128,7 +116,6 @@ class Import(BaseModel):
             'artist_mb': [],
             'release_mb': [],
         }
-
 
         for file in self.files.filter(status=2):
             it = file.import_tag
@@ -144,21 +131,13 @@ class Import(BaseModel):
                 if not it['mb_release_id'] in inserts['release_mb']:
                     inserts['release_mb'].append(it['mb_release_id'])
 
-
-
-
         return inserts
-
-        
 
     def get_api_url(self):
         url = reverse('api_dispatch_list', kwargs={'resource_name': 'import', 'api_name': 'v1'})
         return '%s%s/' % (url, self.pk)
     
     def apply_import_tag(self, importfile, **kwargs):
-
-        #print 'apply_import_tag:'
-        #print importfile.import_tag
 
         if 'mb_release_id' in importfile.import_tag:
         
@@ -186,27 +165,20 @@ class Import(BaseModel):
 
                         return
 
-                
-
-
     def add_to_playlist(self, item):
         pass
     
     def add_to_collection(self, item):
         pass
 
-
-    # importitem handling
     def add_importitem(self, item):
 
         ctype = ContentType.objects.get_for_model(item)
-
         try:
             item, created = ImportItem.objects.get_or_create(object_id=item.pk, content_type=ctype, import_session=self)
         except Exception, e:
             item = ImportItem.objects.filter(object_id=item.pk, content_type=ctype, import_session=self)[0]
             created = False
-
 
         if created:
             self.add_to_playlist(item)
@@ -218,22 +190,7 @@ class Import(BaseModel):
         ii_ids = ImportItem.objects.filter(content_type=ctype, import_session=self).values_list('object_id', flat=True)
         return ii_ids
 
-
     def save(self, *args, **kwargs):
-        
-        """
-        stats = self.get_stats()
-        
-        if stats['done'].count() == self.files.count():
-            self.status = 1
-        
-        if stats['done'].count() + stats['duplicate'].count() == self.files.count():
-            self.status = 1
-        
-        if stats['error'].count() > 0:
-            self.status = 99
-        """   
-        
         super(Import, self).save(*args, **kwargs)
  
     
@@ -269,7 +226,6 @@ class ImportFile(BaseModel):
     results_musicbrainz = JSONField(blank=True, null=True)
     results_discogs_status = models.PositiveIntegerField(verbose_name=_('Result Musicbrainz'), default=0, choices=GENERIC_STATUS_CHOICES)
     results_discogs = JSONField(blank=True, null=True)
-    #results_discogs_status = models.PositiveIntegerField(verbose_name=_('Result Discogs'), default=0, choices=GENERIC_STATUS_CHOICES)
     import_tag = JSONField(blank=True, null=True)
     
     # actual media!
@@ -277,7 +233,6 @@ class ImportFile(BaseModel):
     imported_api_url = models.CharField(max_length=512, null=True, blank=True)
     error = models.CharField(max_length=512, null=True, blank=True)
     status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
-
 
     class Meta:
         app_label = 'importer'
@@ -288,7 +243,6 @@ class ImportFile(BaseModel):
     
     def __unicode__(self):
         return self.filename
-        
 
     def get_api_url(self):
         url = reverse('api_dispatch_list', kwargs={'resource_name': 'importfile', 'api_name': 'v1'})
@@ -300,9 +254,7 @@ class ImportFile(BaseModel):
         return ''
 
     def process(self):
-        log = logging.getLogger('importer.models.process')
-        log.info('Start processing ImportFile: %s' % (self.pk))
-        log.info('Path: %s' % (self.file.path))
+        log.info('Start processing ImportFile: %s at %s' % (self.pk, self.file.path))
         
         if USE_CELERYD:
             self.process_task.delay(self)
@@ -311,15 +263,12 @@ class ImportFile(BaseModel):
         
     @task
     def process_task(obj):
-        
+
         # to prevent circular import errors
         from util.process import Process
 
-        pre_sleep = 2
-        log.debug('sleping for %s seconds' % pre_sleep)
+        pre_sleep = 1
         time.sleep(pre_sleep)
-        log.debug('wakeup after %s seconds' % pre_sleep)
-
 
         if not obj.mimetype:
             try:
@@ -404,8 +353,6 @@ class ImportFile(BaseModel):
                     obj.save()
                     return
 
-
-
         except Exception, e:
             log.warning('unable to process metadata: %s' % e)
             obj.error = '%s' % e
@@ -436,17 +383,12 @@ class ImportFile(BaseModel):
 
         else:
             pass
-            
-    
-        #time.sleep(1)
-        """
-        """
+
         obj.results_tag = metadata
         obj.status = 3
         obj.results_tag_status = True
         obj.save()
         log.info('sucessfully aquired metadata')
-
 
         obj.results_acoustid = processor.get_aid(obj.file)
         obj.results_acoustid_status = True
@@ -463,10 +405,8 @@ class ImportFile(BaseModel):
             obj.save()
             obj.results_musicbrainz = processor.get_musicbrainz(obj)
             obj.save()
-            
-        
+
         obj.status = 2
-        
         if media:
             obj.status = 5
             # add to session
@@ -475,14 +415,10 @@ class ImportFile(BaseModel):
         
         obj.results_tag_status = True
         obj.save()
-    
 
     
-    
     def do_import(self):
-        log = logging.getLogger('importer.models.do_import')
-        log.info('Start importing ImportFile: %s' % (self.pk))
-        log.info('Path: %s' % (self.file.path))
+        log.debug('Start importing ImportFile: %s at %s' % (self.pk, self.file.path))
         
         if USE_CELERYD:
             self.import_task.delay(self)
@@ -492,14 +428,8 @@ class ImportFile(BaseModel):
     @task
     def import_task(obj):
 
-        log = logging.getLogger('importer.models.import_task')
-        log.info('Starting import task for:  %s' % (obj.pk))
-
-        pre_sleep = 1
-        log.debug('sleping for %s seconds' % pre_sleep)
-        time.sleep(pre_sleep)
-        log.debug('wakeup after %s seconds' % pre_sleep)
-
+        log.debug('Starting import task for:  %s' % (obj.pk))
+        time.sleep(1)
 
         # to prevent circular import errors
         from util.importer import Importer
@@ -509,21 +439,18 @@ class ImportFile(BaseModel):
 
         if media:
             obj.media = media
-
             obj.status = 1
-            
         else:
             obj.status = 99
         
-        log.info('Ending import task for:  %s' % (obj.pk))
+        log.info('Ending import task with status: %s for: %s' % (obj.status, obj.pk))
+
         obj.save()
+
     
     def save(self, skip_apply_import_tag=False, *args, **kwargs):
         
         msg = {'key': 'save', 'content': 'object saved'}
-        #self.messages.update(msg);
-
-        # self._pushy_ignore = True
 
         if not self.filename:
             self.filename = self.file.name
@@ -532,9 +459,7 @@ class ImportFile(BaseModel):
         if self.status == 2: # ready
             from util.importer import Importer
             importer = Importer()
-            
             self.import_tag = importer.complete_import_tag(self)
-            
 
         if self.status == 2: # ready
             # try to apply import_tag to other files of this import session
@@ -570,9 +495,11 @@ def post_save_importfile(sender, **kwargs):
     obj = kwargs['instance']
 
     # init: newly uploaded/created file. let's process (gather data) it
+    # data then is presented in the import dialog, where the user can choose how to continue
     if obj.status == 0:
         obj.process()
 
+    # finalize the import, fired when user clicks on "start import"
     if obj.status == 6:
         obj.do_import()
       
@@ -628,18 +555,9 @@ class ImportItem(BaseModel):
             return '%s | %s' % (ContentType.objects.get_for_model(self.content_object), self.content_object.name)
         except:
             return '%s' % (self.pk)
-            
-    
+
     def save(self, *args, **kwargs):
         super(ImportItem, self).save(*args, **kwargs) 
-
-
-
-
-
-
-
-
 
 @task
 def reset_hangin_files(age=600):
@@ -648,7 +566,3 @@ def reset_hangin_files(age=600):
         log.info('releasing "working" lock for %s' % importfile.pk)
         importfile.status = 4
         importfile.save()
-
-
-        
-        

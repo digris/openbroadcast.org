@@ -2361,106 +2361,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["importer/nj/autocomplete.html"] = (function() {
-function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-var parentTemplate = null;
-output += "<div class=\"result\">\n\n\t<div class=\"listing\">\n\t\t";
-frame = frame.push();
-var t_3 = runtime.contextOrFrameLookup(context, frame, "objects");
-if(t_3) {var t_2 = t_3.length;
-for(var t_1=0; t_1 < t_3.length; t_1++) {
-var t_4 = t_3[t_1];
-frame.set("item", t_4);
-frame.set("loop.index", t_1 + 1);
-frame.set("loop.index0", t_1);
-frame.set("loop.revindex", t_2 - t_1);
-frame.set("loop.revindex0", t_2 - t_1 - 1);
-frame.set("loop.first", t_1 === 0);
-frame.set("loop.last", t_1 === t_2 - 1);
-frame.set("loop.length", t_2);
-output += "\n\t\t<div class=\"item hoverable\" data-id=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"id"), env.opts.autoescape);
-output += "\" data-name=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"name"), env.opts.autoescape);
-output += "\" data-ct=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"ct"), env.opts.autoescape);
-output += "\">\n\t\t\t\n\t\t\t<div class=\"row-fluid\">\n\t\t\t\t\n\t\t\t\t<div class=\"span3\">\n\t\t\t\t\t\n\t\t\t\t\t";
-if(runtime.memberLookup((t_4),"main_image")) {
-output += "\n\t\t\t\t\t<img src=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"main_image"), env.opts.autoescape);
-output += "\" />\n\t\t\t\t\t";
-;
-}
-else {
-output += "\n\t\t\t\t\t<img src=\"/static/img/base/defaults/listview.";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"ct"), env.opts.autoescape);
-output += ".xl.png\" width=\"90\" height=\"90\" />\n\t\t\t\t\t";
-;
-}
-output += "\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t\t<div class=\"span9\">\n\t\t\t\t\t\n\t\t\t\t\t<ul class=\"unstyled\">\n\t\t\t\t\t\t<li><strong>";
-output += runtime.suppressValue(env.getFilter("highlight").call(context, runtime.memberLookup((t_4),"name"),runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "meta")),"query")), env.opts.autoescape);
-output += "</strong>  <small class=\"pull-right\">";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"releasedate"), env.opts.autoescape);
-output += "</small></li>\n\t\t\t\t\t\t\n\t\t\t\t\t\t";
-if(runtime.memberLookup((t_4),"ct") == "release") {
-output += "\n\t\t\t\t\t\t<li>";
-frame = frame.push();
-var t_7 = runtime.memberLookup((t_4),"artist");
-if(t_7) {var t_6 = t_7.length;
-for(var t_5=0; t_5 < t_7.length; t_5++) {
-var t_8 = t_7[t_5];
-frame.set("artist", t_8);
-frame.set("loop.index", t_5 + 1);
-frame.set("loop.index0", t_5);
-frame.set("loop.revindex", t_6 - t_5);
-frame.set("loop.revindex0", t_6 - t_5 - 1);
-frame.set("loop.first", t_5 === 0);
-frame.set("loop.last", t_5 === t_6 - 1);
-frame.set("loop.length", t_6);
-output += runtime.suppressValue(t_8, env.opts.autoescape);
-if(!runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"last")) {
-output += ", ";
-;
-}
-;
-}
-}
-frame = frame.pop();
-output += "</li>\n\t\t\t\t\t\t<li>Tracks: ";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"media_count"), env.opts.autoescape);
-output += "</li>\n\t\t\t\t\t\t";
-;
-}
-output += "\n\t\t\t\t\t\t\n\t\t\t\t\t</ul>\n\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t</div>\n\n\t\t</div>\n\t\t";
-;
-}
-}
-frame = frame.pop();
-output += "\n\t</div>\n</div>\n";
-if(parentTemplate) {
-parentTemplate.rootRenderFunc(env, context, frame, runtime, cb);
-} else {
-cb(null, output);
-}
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-
-})();
-})();
-
-
-
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["importer/nj/importfile.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["importer/nj/__orig__importfile.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -2691,7 +2592,12 @@ output += "\n\n    </div>\n";
 }
 output += "\n\n\n\n\n\n";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "ready" || runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "warning") {
-output += "\n    <div class=\"row-fluid result-set hoverable provider-tag\">\n\n        <div class=\"span1\">\n            <i class=\"icon icon-padded icon-id3\"></i>\n        </div>\n\n        <div class=\"span4\">\n\n            <ul class=\"horizontal unstyled\">\n                <li class=\"key\">Title</li>\n                <li class=\"value\" title=\"";
+output += "\n\n\n\n    ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_musicbrainz")),"length") > 0) {
+output += "\n        <div class=\"hint\">\n            <p>File Metadata</p>\n        </div>\n    ";
+;
+}
+output += "\n\n    <div class=\"row-fluid result-set hoverable provider-tag\">\n\n        <div class=\"span1\">\n            <i class=\"icon icon-padded icon-id3\"></i>\n        </div>\n\n        <div class=\"span4\">\n\n            <ul class=\"horizontal unstyled\">\n                <li class=\"key\">Title</li>\n                <li class=\"value\" title=\"";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"media_name"), env.opts.autoescape);
 output += "\">\n                    ";
 output += runtime.suppressValue(env.getFilter("truncate_chars_inner").call(context, runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"media_name"),38), env.opts.autoescape);
@@ -2712,12 +2618,12 @@ output += "</li>\n                </ul>\n            </label>\n\n        </div>\
 }
 output += "\n\n\n\n\n";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "ready" || runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "warning") {
-output += "\n    <div class=\"musicbrainz-tag-holder\">\n\n\n        ";
-if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_musicbrainz")),"length") < 1 && runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"media_tracknumber")) {
-output += "\n            <!--\n            <p>\n                <strong>No results available.</strong>\n                Would you like to try to <a class=\"rescan\" href=\"#\" data-settings=\"skip_tracknumber, another_setting\">lookup again witouth including the tracknumber</a>?\n            </p>\n            -->\n        ";
+output += "\n\n    ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_musicbrainz")),"length") > 0) {
+output += "\n        <div class=\"hint\">\n            <p>Possible Releases found on musicbrainz.org. </p>\n        </div>\n    ";
 ;
 }
-output += "\n\n        ";
+output += "\n\n    <div class=\"musicbrainz-tag-holder\">\n\n\n\n        ";
 frame = frame.push();
 var t_3 = runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_musicbrainz");
 if(t_3) {var t_2 = t_3.length;
@@ -2907,6 +2813,546 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runt
 output += "\"\n                               readonly=\"readonly\">\n                    </div>\n                </div>\n\n            </div>\n\n        </div>\n\n\n    </div>\n    -->\n\n    </form>\n\n    </div>\n\n    <div class=\"row-fluid pull-righ result-actions\">\n\n        <div class=\"span2\">\n            &nbsp;\n        </div>\n\n        <div class=\"pull-right span10\">\n            <a class=\"btn btn-secondary btn-small delete-importfile\">Delete this File</a>\n            <!--\n            <a class=\"btn btn-secondary btn-small rescan\" data-settings=\"skip_tracknumber\">Scan witouth tracknumber</a>\n            -->\n            <a class=\"btn btn-secondary btn-small rescan\">Scan again</a>\n            ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "ready" || runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "warning") {
 output += "\n                <a class=\"btn btn-primary btn-small start-import\">Start Import</a>\n            ";
+;
+}
+output += "\n        </div>\n    </div>\n\n\n";
+;
+}
+output += "\n\n</div>";
+if(parentTemplate) {
+parentTemplate.rootRenderFunc(env, context, frame, runtime, cb);
+} else {
+cb(null, output);
+}
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+
+})();
+})();
+
+
+
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["importer/nj/autocomplete.html"] = (function() {
+function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+var parentTemplate = null;
+output += "<div class=\"result\">\n\n\t<div class=\"listing\">\n\t\t";
+frame = frame.push();
+var t_3 = runtime.contextOrFrameLookup(context, frame, "objects");
+if(t_3) {var t_2 = t_3.length;
+for(var t_1=0; t_1 < t_3.length; t_1++) {
+var t_4 = t_3[t_1];
+frame.set("item", t_4);
+frame.set("loop.index", t_1 + 1);
+frame.set("loop.index0", t_1);
+frame.set("loop.revindex", t_2 - t_1);
+frame.set("loop.revindex0", t_2 - t_1 - 1);
+frame.set("loop.first", t_1 === 0);
+frame.set("loop.last", t_1 === t_2 - 1);
+frame.set("loop.length", t_2);
+output += "\n\t\t<div class=\"item hoverable\" data-id=\"";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"id"), env.opts.autoescape);
+output += "\" data-name=\"";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"name"), env.opts.autoescape);
+output += "\" data-ct=\"";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"ct"), env.opts.autoescape);
+output += "\">\n\t\t\t\n\t\t\t<div class=\"row-fluid\">\n\t\t\t\t\n\t\t\t\t<div class=\"span3\">\n\t\t\t\t\t\n\t\t\t\t\t";
+if(runtime.memberLookup((t_4),"main_image")) {
+output += "\n\t\t\t\t\t<img src=\"";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"main_image"), env.opts.autoescape);
+output += "\" />\n\t\t\t\t\t";
+;
+}
+else {
+output += "\n\t\t\t\t\t<img src=\"/static/img/base/defaults/listview.";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"ct"), env.opts.autoescape);
+output += ".xl.png\" width=\"90\" height=\"90\" />\n\t\t\t\t\t";
+;
+}
+output += "\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t\t<div class=\"span9\">\n\t\t\t\t\t\n\t\t\t\t\t<ul class=\"unstyled\">\n\t\t\t\t\t\t<li><strong>";
+output += runtime.suppressValue(env.getFilter("highlight").call(context, runtime.memberLookup((t_4),"name"),runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "meta")),"query")), env.opts.autoescape);
+output += "</strong>  <small class=\"pull-right\">";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"releasedate"), env.opts.autoescape);
+output += "</small></li>\n\t\t\t\t\t\t\n\t\t\t\t\t\t";
+if(runtime.memberLookup((t_4),"ct") == "release") {
+output += "\n\t\t\t\t\t\t<li>";
+frame = frame.push();
+var t_7 = runtime.memberLookup((t_4),"artist");
+if(t_7) {var t_6 = t_7.length;
+for(var t_5=0; t_5 < t_7.length; t_5++) {
+var t_8 = t_7[t_5];
+frame.set("artist", t_8);
+frame.set("loop.index", t_5 + 1);
+frame.set("loop.index0", t_5);
+frame.set("loop.revindex", t_6 - t_5);
+frame.set("loop.revindex0", t_6 - t_5 - 1);
+frame.set("loop.first", t_5 === 0);
+frame.set("loop.last", t_5 === t_6 - 1);
+frame.set("loop.length", t_6);
+output += runtime.suppressValue(t_8, env.opts.autoescape);
+if(!runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"last")) {
+output += ", ";
+;
+}
+;
+}
+}
+frame = frame.pop();
+output += "</li>\n\t\t\t\t\t\t<li>Tracks: ";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"media_count"), env.opts.autoescape);
+output += "</li>\n\t\t\t\t\t\t";
+;
+}
+output += "\n\t\t\t\t\t\t\n\t\t\t\t\t</ul>\n\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t</div>\n\n\t\t</div>\n\t\t";
+;
+}
+}
+frame = frame.pop();
+output += "\n\t</div>\n</div>\n";
+if(parentTemplate) {
+parentTemplate.rootRenderFunc(env, context, frame, runtime, cb);
+} else {
+cb(null, output);
+}
+;
+} catch (e) {
+  cb(runtime.handleError(e, lineno, colno));
+}
+}
+return {
+root: root
+};
+
+})();
+})();
+
+
+
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["importer/nj/importfile.html"] = (function() {
+function root(env, context, frame, runtime, cb) {
+var lineno = null;
+var colno = null;
+var output = "";
+try {
+var parentTemplate = null;
+output += "<div id=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"uuid"), env.opts.autoescape);
+output += "\" class=\"importfile item ";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status"), env.opts.autoescape);
+output += "\" xmlns=\"http://www.w3.org/1999/html\">\n\n<h3>\n    ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "init") {
+output += "\n        <i class=\"icon-time icon-spin\"></i>\n    ";
+;
+}
+output += "\n\n    ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "done") {
+output += "\n        <i class=\"icon-ok-sign\"></i>\n    ";
+;
+}
+output += "\n\n    ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "ready") {
+output += "\n        <i class=\"icon-thumbs-up\"></i>\n    ";
+;
+}
+output += "\n\n    ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "working") {
+output += "\n        <i class=\"icon-spinner icon-spin\"></i>\n    ";
+;
+}
+output += "\n\n    ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "warning") {
+output += "\n        <i class=\"icon-thumbs-down\"></i>\n    ";
+;
+}
+output += "\n\n    ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "duplicate") {
+output += "\n        <i class=\"icon-copy\"></i>\n    ";
+;
+}
+output += "\n\n    ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "queued") {
+output += "\n        <i class=\"icon-spinner icon-spin\"></i>\n    ";
+;
+}
+output += "\n\n    ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "importing") {
+output += "\n        <i class=\"icon-asterisk icon-spin\"></i>\n    ";
+;
+}
+output += "\n\n\n    ";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"filename"), env.opts.autoescape);
+output += "\n    <small><!--[";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"mimetype"), env.opts.autoescape);
+output += "]--> (debug: ";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += ")</small>\n    ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "duplicate") {
+output += "<span class=\"warning pull-right\">Duplicate</span>";
+;
+}
+output += "\n\n    ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"error")) {
+output += "<span class=\"warning pull-right\">Error: ";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"error"), env.opts.autoescape);
+output += "</span>";
+;
+}
+output += "\n\n</h3>\n\n\n\n";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "working") {
+output += "\n    <div class=\"row-fluid status status-working provider-tag\">\n\n        <div class=\"span1\">\n            <!--<i class=\"icon icon-large icon-large icon-ok\"></i>-->\n        </div>\n\n        <div class=\"span4\">\n\n            <ul class=\"horizontal unstyled\">\n                <li class=\"value\" title=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"media_name"), env.opts.autoescape);
+output += "\">\n                    ";
+output += runtime.suppressValue(env.getFilter("truncate_chars_inner").call(context, runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"media_name"),38), env.opts.autoescape);
+output += "</li>\n            </ul>\n\n            <div class=\"clearfix\"></div>\n\n            <ul class=\"horizontal unstyled\">\n                <li class=\"value\" title=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"release_name"), env.opts.autoescape);
+output += "\">\n                    ";
+output += runtime.suppressValue(env.getFilter("truncate_chars_inner").call(context, runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"release_name"),38), env.opts.autoescape);
+output += "</li>\n            </ul>\n\n        </div>\n\n        <div class=\"span4\">\n\n\n            <ul class=\"horizontal unstyled\">\n                <li class=\"value\" title=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"artist_name"), env.opts.autoescape);
+output += "\">\n                    ";
+output += runtime.suppressValue(env.getFilter("truncate_chars_inner").call(context, runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"artist_name"),38), env.opts.autoescape);
+output += "</li>\n            </ul>\n\n            <div class=\"clearfix\"></div>\n\n        </div>\n\n        <div class=\"span3\">\n\n            <ul class=\"horizontal unstyled\">\n                <li class=\"value\" title=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"media_tracknumber"), env.opts.autoescape);
+output += "\">\n                    ";
+output += runtime.suppressValue(env.getFilter("truncate_chars_inner").call(context, runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media_tracknumber")),"media_name"),38), env.opts.autoescape);
+output += "</li>\n            </ul>\n\n            <div class=\"clearfix\"></div>\n\n            <ul class=\"horizontal unstyled\">\n                <li class=\"value\" title=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"release_date"), env.opts.autoescape);
+output += "\">\n                    ";
+output += runtime.suppressValue(env.getFilter("truncate_chars_inner").call(context, runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"release_date"),38), env.opts.autoescape);
+output += "</li>\n            </ul>\n\n\n        </div>\n\n\n    </div>\n    <div class=\"row-fluid status\">\n        <div class=\"progress\">\n            <div class=\"bar bar";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += "\" style=\"width: 0%;\"></div>\n        </div>\n\n\n        <script>\n\n            var progress";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += " = setInterval(function () {\n                var $bar";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += " = $('.bar.bar";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += "');\n                if ($bar";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += ".width() > 770) {\n                    clearInterval(progress";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += ");\n                    //$('.progress').removeClass('active');\n                } else {\n                    $bar";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += ".width($bar";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += ".width() + 10);\n                }\n            }, 80);\n\n        </script>\n\n    </div>\n";
+;
+}
+output += "\n\n\n\n";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "queued") {
+output += "\n    <div class=\"row-fluid status status-queue\">\n\n        <div class=\"span1 icon-holder\">&nbsp;</div>\n\n        <div class=\"span8 information\">\n            \n            <p>File placed in the import-queue.<br/>Please be patient for a while.</p>\n\n            <!--\n            <p>Depending on server-load and available metadata it can take several minutes per track to complete it's\n                information.</p>\n            -->\n        </div>\n\n        <div class=\"span3 image\">\n            <div class=\"pull-right\">\n                <!--\n                <i class=\"ajax-loader c3CA3B9\"></i>\n                -->\n            </div>\n        </div>\n\n\n    </div>\n    <div class=\"row-fluid status\">\n        <div class=\"progress\">\n            <div class=\"bar\" style=\"width: 0%;\"></div>\n        </div>\n\n\n        <script>\n\n            var progress";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += " = setInterval(function () {\n                var $bar";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += " = $('.bar.bar";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += "');\n                if ($bar";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += ".width() > 770) {\n                    clearInterval(progress";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += ");\n                    //$('.progress').removeClass('active');\n                } else {\n                    $bar";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += ".width($bar";
+output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"id"), env.opts.autoescape);
+output += ".width() + 10);\n                }\n            }, 80);\n\n        </script>\n\n    </div>\n";
+;
+}
+output += "\n\n\n\n\n\n\n";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "duplicate") {
+output += "\n    <div class=\"row-fluid result-set status-duplicate\">\n\n        ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")) {
+output += "\n            <div class=\"span1\">\n                <i class=\"icon icon-large icon-obp\"></i>\n            </div>\n\n            <div class=\"span8 information\">\n\n                <ul class=\"unstyled\">\n                    <li><strong><a href=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"absolute_url"), env.opts.autoescape);
+output += "\">";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"name"), env.opts.autoescape);
+output += "</a>\n                        ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"artist")),"name")) {
+output += " by\n                            <a href=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"artist")),"absolute_url"), env.opts.autoescape);
+output += "\">";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"artist")),"name"), env.opts.autoescape);
+output += "</a>";
+;
+}
+output += "\n                    </strong></li>\n\n                    ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"release")),"name")) {
+output += "\n                        <li><a href=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"release")),"absolute_url"), env.opts.autoescape);
+output += "\">";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"release")),"name"), env.opts.autoescape);
+output += "</a></li>\n                    ";
+;
+}
+else {
+output += "\n                        <li>No Release</li>\n                    ";
+;
+}
+output += "\n\n                    <li class=\"small\">";
+output += runtime.suppressValue(env.getFilter("format_timestamp").call(context, runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"created")), env.opts.autoescape);
+output += "</li>\n\n                </ul>\n\n            </div>\n\n            <div class=\"span3 image\">\n                ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"release") && runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"release")),"main_image")) {
+output += "\n                    <img class=\"pull-right\" src=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"release")),"main_image"), env.opts.autoescape);
+output += "\"/>\n                ";
+;
+}
+else {
+output += "\n                    <img class=\"pull-right\" src=\"/static/img/base/defaults/listview.release.xl.png\"/>\n                ";
+;
+}
+output += "\n            </div>\n        ";
+;
+}
+output += "\n\n    </div>\n";
+;
+}
+output += "\n\n\n";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "done") {
+output += "\n    <div class=\"row-fluid result-set status-done\">\n\n        ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")) {
+output += "\n            <div class=\"span1\">\n                <i class=\"icon icon-large icon-obp\"></i>\n            </div>\n\n            <div class=\"span8 information\">\n\n                <ul class=\"unstyled\">\n                    <li><strong><a href=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"absolute_url"), env.opts.autoescape);
+output += "\">";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"name"), env.opts.autoescape);
+output += "</a>\n                        ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"artist")),"name")) {
+output += " by\n                            <a href=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"artist")),"absolute_url"), env.opts.autoescape);
+output += "\">";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"artist")),"name"), env.opts.autoescape);
+output += "</a>";
+;
+}
+output += "\n                    </strong></li>\n\n                    ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"release")),"name")) {
+output += "\n                        <li><a href=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"release")),"absolute_url"), env.opts.autoescape);
+output += "\">\n                            ";
+output += runtime.suppressValue(env.getFilter("truncate_chars_inner").call(context, runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"release")),"name"),50), env.opts.autoescape);
+output += "</a></li>\n                    ";
+;
+}
+else {
+output += "\n                        <li>No Release</li>\n                    ";
+;
+}
+output += "\n\n                    <li class=\"small\">";
+output += runtime.suppressValue(env.getFilter("format_timestamp").call(context, runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"created")), env.opts.autoescape);
+output += "</li>\n\n                </ul>\n\n            </div>\n\n            <div class=\"span3 image\">\n                ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"release") && runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"release")),"main_image")) {
+output += "\n                    <img class=\"pull-right\" src=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"media")),"release")),"main_image"), env.opts.autoescape);
+output += "\"/>\n                ";
+;
+}
+else {
+output += "\n                    <img class=\"pull-right\" src=\"/static/img/base/defaults/listview.release.xl.png\"/>\n                ";
+;
+}
+output += "\n            </div>\n        ";
+;
+}
+output += "\n\n    </div>\n";
+;
+}
+output += "\n\n\n\n\n\n";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "ready" || runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "warning") {
+output += "\n\n    ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_musicbrainz")),"length") > 0) {
+output += "\n        <div class=\"hint\">\n            <p>\n                <em>File Metadata</em> <a class=\"toggle-hint\" href=\"#\"><i class=\"icon-question-sign\"></i></a><br>\n                Information extracted from your uploaded file.<br>\n                Choose this entry if you want to continue with the bare file metadata.\n            </p>\n            <div class=\"expandable\">\n                <p>(( More to read here soon. ))</p>\n            </div>\n        </div>\n    ";
+;
+}
+output += "\n\n    <div class=\"row-fluid result-set hoverable provider-tag\">\n\n        <div class=\"span1\">\n            <i class=\"icon icon-large icon-ok\"></i>\n        </div>\n\n        <div class=\"span4\">\n\n            <ul class=\"horizontal unstyled\">\n                <li class=\"key\">Title</li>\n                <li class=\"value\" title=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"media_name"), env.opts.autoescape);
+output += "\">\n                    ";
+output += runtime.suppressValue(env.getFilter("truncate_chars_inner").call(context, runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"media_name"),38), env.opts.autoescape);
+output += "</li>\n            </ul>\n\n            <div class=\"clearfix\"></div>\n\n            <ul class=\"horizontal unstyled\">\n                <li class=\"key\">Release</li>\n                <li class=\"value\" title=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"release_name"), env.opts.autoescape);
+output += "\">\n                    ";
+output += runtime.suppressValue(env.getFilter("truncate_chars_inner").call(context, runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"release_name"),38), env.opts.autoescape);
+output += "</li>\n            </ul>\n\n        </div>\n\n        <div class=\"span4\">\n\n            <label class=\"checkbox holder-artist_name\">\n                <input type=\"checkbox\">\n                <ul class=\"horizontal unstyled\">\n                    <li class=\"key\">\n                        Artist\n                    </li>\n                    <li class=\"value\" title=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"artist_name"), env.opts.autoescape);
+output += "\">\n                        ";
+output += runtime.suppressValue(env.getFilter("truncate_chars_inner").call(context, runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"artist_name"),38), env.opts.autoescape);
+output += "</li>\n                </ul>\n            </label>\n\n            <div class=\"clearfix\"></div>\n\n            <label class=\"checkbox holder-label_name\">\n                <input type=\"checkbox\">\n                <ul class=\"horizontal unstyled\">\n                    <li class=\"key\">\n                        Label\n                    </li>\n                    <li class=\"value\"></li>\n                </ul>\n            </label>\n\n        </div>\n\n        <div class=\"span3\">\n\n            <label class=\"checkbox holder-media_tracknumber\">\n                <input type=\"checkbox\">\n                <ul class=\"horizontal unstyled\">\n                    <li class=\"key\">\n                        TrackNo\n                    </li>\n                    <li class=\"value\">";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"media_tracknumber"), env.opts.autoescape);
+output += "</li>\n                </ul>\n            </label>\n\n            <div class=\"clearfix\"></div>\n\n            <label class=\"checkbox holder-release_date\">\n                <input type=\"checkbox\">\n                <ul class=\"horizontal unstyled\">\n                    <li class=\"key\">\n                        Date\n                    </li>\n                    <li class=\"value\">";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_tag")),"release_date"), env.opts.autoescape);
+output += "</li>\n                </ul>\n            </label>\n\n        </div>\n\n    </div>\n";
+;
+}
+output += "\n\n\n\n\n";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "ready" || runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "warning") {
+output += "\n\n    ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_musicbrainz")),"length") > 0) {
+output += "\n        <div class=\"hint\">\n            <p>\n                <em>Possible Releases</em> <a class=\"toggle-hint\" href=\"#\"><i class=\"icon-question-sign\"></i></a><br>\n                Information found in our linked databases.<br>\n                Select the most appropriate result to automatically complete the metadata.\n            </p>\n            <div class=\"expandable\">\n                <p>(( More to read here soon. ))</p>\n            </div>\n        </div>\n    ";
+;
+}
+output += "\n\n    <div class=\"musicbrainz-tag-holder\">\n\n\n\n        ";
+frame = frame.push();
+var t_3 = runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_musicbrainz");
+if(t_3) {var t_2 = t_3.length;
+for(var t_1=0; t_1 < t_3.length; t_1++) {
+var t_4 = t_3[t_1];
+frame.set("item", t_4);
+frame.set("loop.index", t_1 + 1);
+frame.set("loop.index0", t_1);
+frame.set("loop.revindex", t_2 - t_1);
+frame.set("loop.revindex0", t_2 - t_1 - 1);
+frame.set("loop.first", t_1 === 0);
+frame.set("loop.last", t_1 === t_2 - 1);
+frame.set("loop.length", t_2);
+output += "\n\n            <div class=\"row-fluid result-set hoverable musicbrainz-tag mb_id-";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"mb_id"), env.opts.autoescape);
+output += "\">\n\n                <div class=\"span1\">\n                    <i class=\"icon icon-large icon-ok\"></i>\n                </div>\n\n                <div class=\"span8\">\n\n                    <!-- ids -->\n                    <input type=\"hidden\" class=\"media-id\" value=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"media")),"mb_id"), env.opts.autoescape);
+output += "\">\n                    <input type=\"hidden\" class=\"release-id\" value=\"";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"mb_id"), env.opts.autoescape);
+output += "\">\n                    <input type=\"hidden\" class=\"artist-id\" value=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"artist")),"mb_id"), env.opts.autoescape);
+output += "\">\n\n                    <!-- other data -->\n                    <input type=\"hidden\" class=\"releasedate\" value=\"";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"releasedate"), env.opts.autoescape);
+output += "\">\n                    <input type=\"hidden\" class=\"catalognumber\" value=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"label")),"catalognumber"), env.opts.autoescape);
+output += "\">\n                    <input type=\"hidden\" class=\"name\" value=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"media")),"name"), env.opts.autoescape);
+output += "\">\n                    <input type=\"hidden\" class=\"artist\" value=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"artist")),"name"), env.opts.autoescape);
+output += "\">\n                    <input type=\"hidden\" class=\"release\" value=\"";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"name"), env.opts.autoescape);
+output += "\">\n\n                    <h5>\n                        <a href=\"http://musicbrainz.org/recording/";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"media")),"mb_id"), env.opts.autoescape);
+output += "\">";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"media")),"name"), env.opts.autoescape);
+output += "</a>\n                        by\n                        <a href=\"http://musicbrainz.org/artist/";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"artist")),"mb_id"), env.opts.autoescape);
+output += "\">";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"artist")),"name"), env.opts.autoescape);
+output += "</a>\n                    </h5>\n\n                    <a class=\"external\" href=\"http://musicbrainz.org/release/";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"mb_id"), env.opts.autoescape);
+output += "\">";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"name"), env.opts.autoescape);
+output += "</a>\n                    <ul class=\"unstyled\">\n                        <li class=\"small\">";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"country"), env.opts.autoescape);
+output += " - ";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"releasedate"), env.opts.autoescape);
+output += " | ";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"status"), env.opts.autoescape);
+output += "</li>\n                        <li class=\"small\">";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"label")),"name"), env.opts.autoescape);
+output += " - ";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"catalognumber"), env.opts.autoescape);
+output += "</li>\n                    </ul>\n\n                </div>\n\n                <div class=\"span3\">\n                    ";
+if(runtime.memberLookup((runtime.memberLookup((t_4),"relations")),"discogs_image")) {
+output += "\n                        <img class=\"pull-right\" src=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"relations")),"discogs_image"), env.opts.autoescape);
+output += "\"/>\n                    ";
+;
+}
+else {
+output += "\n                        <img class=\"pull-right\" src=\"/static/img/base/defaults/listview.release.xl.png\"/>\n                    ";
+;
+}
+output += "\n                </div>\n            </div>\n\n        ";
+;
+}
+}
+frame = frame.pop();
+output += "\n\n    </div>\n";
+;
+}
+output += "\n\n\n";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "ready" || runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "warning") {
+output += "\n    <div class=\"pull-righ result-actions\">\n\n    <form class=\"form-horizontal form-result\">\n\n        <div class=\"hint\">\n            <p>\n                <em>Selected Information</em> <a class=\"toggle-hint\" href=\"#\"><i class=\"icon-question-sign\"></i></a>\n            </p>\n            <div class=\"expandable\">\n                <p>(( More to read here soon. ))</p>\n            </div>\n        </div>\n\n    <!-- name -->\n    <div class=\"row-fluid base media ";
+if(!runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"name")) {
+output += "missing";
+;
+}
+output += "\">\n\n        <div class=\"span6\">\n\n            <div class=\"control-group\">\n                <label class=\"control-label\" for=\"inputEmail\">Title <span class=\"required\">*</span></label>\n\n                <div class=\"controls\">\n                    <input type=\"text\" class=\"release autoupdate\" data-ct=\"media\" value=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"name"), env.opts.autoescape);
+output += "\">\n                </div>\n            </div>\n\n        </div>\n\n    </div>\n\n    <!-- release -->\n    <div class=\"row-fluid base release ";
+if(!runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"release")) {
+output += "missing";
+;
+}
+output += "\">\n\n        <div class=\"span5\">\n\n            <div class=\"control-group\">\n                <label class=\"control-label\" for=\"inputEmail\">Release <span class=\"required\">*</span></label>\n\n                <div class=\"controls\">\n                    <input type=\"text\"\n                           class=\"release autocomplete\"\n                           data-ct=\"release\"\n                           value=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"release"), env.opts.autoescape);
+output += "\">\n\n                    <div class=\"ac-result\"></div>\n                </div>\n            </div>\n\n        </div>\n\n        <div class=\"span3\">\n            ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"alibrary_release_id") && !runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"force_release")) {
+output += "\n                <a href=\"#\"\n                   data-ct=\"release\"\n                   data-resource_uri=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"alibrary_release_resource_uri"), env.opts.autoescape);
+output += "\"\n                   class=\"tooltip-inline\">\n                    <i class=\"icon-paper-clip\"></i>\n                    Assigned\n                </a>\n            ";
+;
+}
+else {
+output += "\n                <span class=\"dim\"><i class=\"icon-plus\"></i> Create</span>\n            ";
+;
+}
+output += "\n        </div>\n\n        <div class=\"span2\">\n            ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"alibrary_release_id")) {
+output += "\n                <input type=\"checkbox\"\n                       class=\"force-creation\"\n                       ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"force_release")) {
+output += "checked=\"checked\"";
+;
+}
+output += "/>\n                Force Creation<a class=\"tooltipable\"\n                                 data-title=\"Enable this to force the creation of a new entry - even if there is already an item with the same name.\"><i\n                    class=\"icon-question-sign\"></i></a>\n            ";
+;
+}
+else {
+output += "\n                &nbsp;\n            ";
+;
+}
+output += "\n        </div>\n\n        <div class=\"span2\">\n            <a class=\"btn btn-mini pull-right apply-to-all\" data-ct=\"release\"><i class=\"icon-repeat\"></i> Apply Release\n                to all</a>\n        </div>\n\n\n    </div>\n\n    <!-- artist -->\n    <div class=\"row-fluid base artist ";
+if(!runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"artist")) {
+output += "missing";
+;
+}
+output += "\">\n\n        <div class=\"span5\">\n\n            <div class=\"control-group\">\n                <label class=\"control-label\" for=\"inputEmail\">Artist <span class=\"required\">*</span></label>\n\n                <div class=\"controls\">\n                    <input type=\"text\"\n                           class=\"artist autocomplete\"\n                           data-ct=\"artist\"\n                           value=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"artist"), env.opts.autoescape);
+output += "\">\n\n                    <div class=\"ac-result\"></div>\n                </div>\n            </div>\n\n        </div>\n\n        <div class=\"span3\">\n            ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"alibrary_artist_id") && !runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"force_artist")) {
+output += "\n                <a href=\"#\"\n                   data-ct=\"artist\"\n                   data-resource_uri=\"";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"alibrary_artist_resource_uri"), env.opts.autoescape);
+output += "\"\n                   class=\"tooltip-inline\">\n                    <i class=\"icon-paper-clip\"></i>\n                    Assigned\n                </a>\n            ";
+;
+}
+else {
+output += "\n                ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"alibrary_artist_matches")) {
+output += "\n                    <a href=\"#\" class=\"matches\"><i class=\"icon-warning-sign\"></i> ";
+output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"alibrary_artist_matches"), env.opts.autoescape);
+output += " matches</a>\n                ";
+;
+}
+output += "\n                <span class=\"dim\"><i class=\"icon-plus\"></i> Create</span>\n            ";
+;
+}
+output += "\n        </div>\n\n        <div class=\"span2\">\n            ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"alibrary_artist_id")) {
+output += "\n                <input type=\"checkbox\"\n                       class=\"force-creation\"\n                       ";
+if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"import_tag")),"force_artist")) {
+output += "checked=\"checked\"";
+;
+}
+output += "/>\n                Force Creation<a class=\"tooltipable\"\n                                 data-title=\"Enable this to force the creation of a new entry - even if there is already an item with the same name.\"><i\n                    class=\"icon-question-sign\"></i></a>\n            ";
+;
+}
+else {
+output += "\n                &nbsp;\n            ";
+;
+}
+output += "\n        </div>\n\n        <div class=\"span2\">\n            <a class=\"btn btn-mini pull-right apply-to-all\" data-ct=\"artist\"><i class=\"icon-repeat\"></i> Apply Artist to all</a>\n        </div>\n\n\n    </div>\n\n    </form>\n\n    </div>\n\n    <div class=\"row-fluid pull-righ result-actions\">\n\n        <div class=\"span2\">\n            &nbsp;\n        </div>\n\n        <div class=\"pull-right span10\">\n            <a class=\"btn btn-secondary btn-small delete-importfile\">Delete this File</a>\n            <!--\n            <a class=\"btn btn-secondary btn-small rescan\" data-settings=\"skip_tracknumber\">Scan witouth tracknumber</a>\n            -->\n            <a class=\"btn btn-secondary btn-small rescan\">Scan again</a>\n            ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "ready" || runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "warning") {
+output += "\n                <a class=\"btn btn-primary btn-small start-import\">Continue Import</a>\n            ";
 ;
 }
 output += "\n        </div>\n    </div>\n\n\n";

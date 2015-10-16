@@ -421,10 +421,6 @@ INSTALLED_APPS = (
     'floppyforms',
     'django_mobile',
 
-    'pushy',
-    'nunjucks',
-    #'pushy_asset',
-
     # custom apps/*
     'asite',
     'alibrary',
@@ -453,6 +449,10 @@ INSTALLED_APPS = (
     'obp_legacy',
     'apiv1cache',
     'actstream',
+
+    'pushy',
+    'nunjucks',
+    #'pushy_asset',
 )
 
 ZINNIA_ENTRY_BASE_MODEL = 'cmsplugin_zinnia.placeholder.EntryPlaceholder'
@@ -822,8 +822,8 @@ PUSHY_SETTINGS = {
         'importer.import',
         'importer.importfile',
         'abcast.emission',
+        'exporter.export',
         'abcast.channel',
-        'exporter.Export',
     ),
     'SOCKET_SERVER': 'http://localhost:8888/',
     'CHANNEL_PREFIX': 'pushy_',

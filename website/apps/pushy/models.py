@@ -8,7 +8,7 @@ from django.db.models.signals import post_save, post_delete
 import redis
 
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 pool = Pool(processes=10)
 
@@ -46,8 +46,8 @@ def pushy_post_save(sender, **kwargs):
                'route': route,
                'type': action
                }
-    logger.debug('Routing message to: %s' % pushy_settings.get_channel())
-    logger.debug('route: %s' % route)
+    log.debug('Routing message to: %s' % pushy_settings.get_channel())
+    log.debug('route: %s' % route)
 
     #pushy_publish(pushy_settings.get_channel(), 'update', message)
     pool.apply_async(pushy_publish(pushy_settings.get_channel(), action, message))
@@ -61,8 +61,8 @@ def pushy_post_delete(sender, **kwargs):
                'route': obj.get_api_url(),
                'type': 'delete'
                }
-    logger.debug('Routing message to: %s' % pushy_settings.get_channel())
-    logger.debug('route: %s' % obj.get_api_url())
+    log.debug('Routing message to: %s' % pushy_settings.get_channel())
+    log.debug('route: %s' % obj.get_api_url())
 
     pool.apply_async(pushy_publish(pushy_settings.get_channel(), 'delete', message))
     
@@ -73,10 +73,9 @@ def setup_signals():
     for model in pushy_settings.get_models().values():
 
         if not model:
-            logger.error('Unable to register model')
+            log.error('Unable to register model %s' % model)
             continue
         else:
-            #logger.debug('Registering model: %s' % model)
             post_save.connect(pushy_post_save, sender=model)
             post_delete.connect(pushy_post_delete, sender=model)
 

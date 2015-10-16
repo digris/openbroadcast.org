@@ -2,7 +2,7 @@
     <script src="{{ STATIC_URL }}nunjucks/js/lib/nunjucks-1.3.3.js"></script>
     <script src="{{ STATIC_URL }}nunjucks/js/filters.js"></script>
     <script>
-        var env = nunjucks.configure('static', { autoescape: false });
+        var env = nunjucks.configure('/static', { autoescape: false });
         nj = nunjucks_register_filters(env);
     </script>
 

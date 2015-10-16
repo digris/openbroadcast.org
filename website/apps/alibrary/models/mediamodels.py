@@ -221,7 +221,7 @@ class Media(MigrationMixin):
     medianumber = models.PositiveIntegerField(verbose_name=_('a.k.a. "Disc number'), blank=True, null=True, max_length=12, choices=MEDIANUMBER_CHOICES)
     
 
-    mediatype = models.CharField(verbose_name=_('Type'), max_length=12, default='song', choices=MEDIATYPE_CHOICES)
+    mediatype = models.CharField(verbose_name=_('Type'), max_length=128, default='song', choices=MEDIATYPE_CHOICES)
 
     version = models.CharField(max_length=12, blank=True, null=True, default='track', choices=VERSION_CHOICES)
 
@@ -1772,8 +1772,15 @@ class MediaArtists(models.Model):
         verbose_name = _('Artist (title credited)')
         verbose_name_plural = _('Artists (title credited)')
         ordering = ('position', )
-    
-    
+
+
+    def __unicode__(self):
+
+        if self.join_phrase:
+            return u'%s credited with "%s" on %s' % (self.artist, self.join_phrase, self.media)
+        else:
+            return u'%s on %s' % (self.artist, self.media)
+
 
 
 """

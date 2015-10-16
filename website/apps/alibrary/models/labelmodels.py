@@ -126,7 +126,7 @@ class Label(MPTTModel, MigrationMixin):
     disable_editing = models.BooleanField(verbose_name='Disable Editing', default=False, help_text=_('Disable Editing. Useful e.g. for "Unknown Label"'))
 
     
-    type = models.CharField(verbose_name="Label type", max_length=12, default='unknown', choices=alibrary_settings.LABELTYPE_CHOICES)
+    type = models.CharField(verbose_name="Label type", max_length=128, default='unknown', choices=alibrary_settings.LABELTYPE_CHOICES)
 
 
     # relations a.k.a. links

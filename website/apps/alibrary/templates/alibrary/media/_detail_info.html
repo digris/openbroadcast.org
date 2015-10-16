@@ -107,46 +107,15 @@
 		</dd>
 		{% endif %}
 
+		{% if object.release and object.release.releasedate_approx %}
 		<dt>
-			{% trans "Date Created" %}:
+			{% trans "Release date" %}:
 		</dt>
 		<dd>
-			{{ object.created|date:"DATETIME_FORMAT" }}
-		</dd>
-
-		<dt>
-			{% trans "Last Updated" %}:
-		</dt>
-		<dd>
-			{{ object.updated|date:"DATETIME_FORMAT" }}
-		</dd>
-
-		{% if object.releasedate %}
-		<dt>
-			{% trans "Releasedate" %}:
-		</dt>
-		<dd>
-			{{ object.releasedate|date:"SHORT_DATE_FORMAT" }}
+			{{ object.release.releasedate_approx|date:"SHORT_DATE_FORMAT" }}
 		</dd>
 		{% endif %}
 
-		{% if object.releasedate_approx %}
-		<dt>
-			{% trans "Released" %}:
-		</dt>
-		<dd>
-			{{ object.releasedate_approx }}
-		</dd>
-		{% endif %}
-
-		{% if object.catalognumber %}
-		<dt>
-			{% trans "Catalog Number" %}:
-		</dt>
-		<dd>
-			{{ object.catalognumber }}
-		</dd>
-		{% endif %}
 
 	</dl>
 
@@ -229,6 +198,25 @@
 
 	<dl class="dl-horizontal sub">
 
+
+        {% include 'alibrary/element/_created_updated.html' %}
+
+
+        {% comment %}
+		<dt>
+			{% trans "Date Created" %}:
+		</dt>
+		<dd>
+			{{ object.created|date:"DATETIME_FORMAT" }}
+		</dd>
+
+		<dt>
+			{% trans "Last Updated" %}:
+		</dt>
+		<dd>
+			{{ object.updated|date:"DATETIME_FORMAT" }}
+		</dd>
+
 		<dt>
 			{% trans "Edit History" %}:
 		</dt>
@@ -248,7 +236,7 @@
 			{% endif %}
 			&nbsp;
 		</dd>
-
+        {% endcomment %}
 
 
 

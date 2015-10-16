@@ -1,0 +1,21 @@
+{% load i18n %}
+
+<dt>
+    {% trans "Date Created" %}:
+</dt>
+<dd>
+    {{ object.created|date:"DATETIME_FORMAT" }}
+    {% if object.creator %}
+    <span class="key"> - {% trans "by" %} </span><span class="value"><a href="{{ object.creator.get_absolute_url }}">{{ object.creator }}</a></span>
+    {% endif %}
+</dd>
+
+<dt>
+    {% trans "Last Updated" %}:
+</dt>
+<dd>
+    {{ object.updated|date:"DATETIME_FORMAT" }}
+    {% if object.get_last_revision %}
+    <span class="key"> - {% trans "by" %} </span><span class="value"><a href="{{ object.get_last_revision.user.get_profile.get_absolute_url }}">{{ object.get_last_revision.user }}</a></span>
+    {% endif %}
+</dd>

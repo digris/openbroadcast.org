@@ -9,11 +9,11 @@
     border: none
 
 
-i.icon-padded
-  padding-left: 5px
-  margin-left: 5px
+i.icon-large
+  padding: 3px 0 0 10px
   display: block
   background-repeat: no-repeat
+  font-size: 24px
 
 i.icon-id3
   background-image: url(/static/img/icons/metadata.providers/id3v2.png) !important
@@ -67,41 +67,32 @@ section.importer-importfiles
 
   // base
   .listing
-  
-    .loading
-      // opacity: 0.5
-  
+
     .item
-      //padding: 5px
       background: $grayLightest
       margin-bottom: $basePadding
+
+      // info display
+      form .hint
+        border-bottom: none
+        padding: 10px 10px 10px
+      .hint
+        padding: 10px 10px 5px
+        border-bottom: 1px solid $grayLighter
+        p
+          text-align: center
+          color: $gray
+        .expandable
+          display: none
+
       
-      
+      // TODO: check. seems to be in 'queued' mode only
       .icon-holder
         padding-top: 12px
-
         i
           font-size: 30px
           color: green
-      
-      
-      &.waiting
-        opacity: 0.5
-        cursor: wait
-        
 
-    
-      &.init
-        opacity: 0.5
-        cursor: wait
-        .icon-blank:before
-          content: "\f017" // icon-time
-        div.result-actions
-          // display: none
-        div.result-set
-          // display: none
-        
-      
       &.info
         background-color: $infoBackground
         color: $infoText
@@ -118,7 +109,21 @@ section.importer-importfiles
       &.success
         background-color: $successBackground
         color: $successText
-    
+
+      &.waiting
+        opacity: 0.5
+        cursor: wait
+
+      &.init
+        opacity: 0.5
+        cursor: wait
+        .icon-blank:before
+          content: "\f017" // icon-time
+        div.result-actions
+          // display: none
+        div.result-set
+          // display: none
+
       &.ready
         //background-color: #ff00ff
         //color: #5a5a5a
@@ -136,6 +141,7 @@ section.importer-importfiles
         div.result-set
           display: block
 
+        //
 
         // progress bar
         .progress
@@ -172,17 +178,19 @@ section.importer-importfiles
         div.status-imported
           display: block
 
-          
       &.queued
         background-color: #d8f9ff
         color: #5a5a5a
         div.status-queue
           display: block
-        
-      // status elements
-      div.status
-        // display: none
-        
+
+      // metadata source selection
+      div.result-set
+        i.icon
+          color: $grayLighter
+        &.selected i.icon
+          color: #00bb00
+
       div.status-imported
         .information
           min-height: 80px
@@ -198,8 +206,7 @@ section.importer-importfiles
           margin-right: 10px
           width: 70px
           height: 70px
-      
-      
+
       h3
         padding: 5px
         font-size: 12px
@@ -208,7 +215,6 @@ section.importer-importfiles
       
       
       // element styleing
-      
       div.result-set
         padding: 5px 0
         border-bottom: 1px solid $grayLighter
@@ -284,9 +290,7 @@ section.importer-importfiles
                 background-color: #ddffd9
                 color: $black
               
-            
-       
-            
+
       // action form
       div.result-actions
         padding: 5px 20px 5px 10px
@@ -314,9 +318,7 @@ section.importer-importfiles
 
 // sidebar
 .import.summary
-
   margin-top: 20px
-
   &.listing
     &.fixed
       position: fixed

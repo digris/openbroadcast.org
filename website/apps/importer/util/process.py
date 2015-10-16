@@ -1,16 +1,15 @@
+# -*- coding: utf-8 -*-
 import os
 import re
 import locale
 import pprint
 import logging
-
 from mutagen import File as MutagenFile
 from mutagen.easyid3 import EasyID3
 from mutagen.easymp4 import EasyMP4
 from django.conf import settings
 import acoustid
 import requests
-
 import musicbrainzngs
 from lib.util import pesterfish
 from lib.util.sha1 import sha1_by_file
@@ -18,17 +17,14 @@ from base import discogs_image_by_url
 
 log = logging.getLogger(__name__)
 
-
 AC_API_KEY = getattr(settings, 'AC_API_KEY', 'ZHKcJyyV')
 MUSICBRAINZ_HOST = getattr(settings, 'MUSICBRAINZ_HOST', None)
 MUSICBRAINZ_RATE_LIMIT = getattr(settings, 'MUSICBRAINZ_RATE_LIMIT', True)
 
-
-LIMIT_AID_RESULTS = 10
+LIMIT_AID_RESULTS = 6
 AID_MIN_SCORE = 0.9
 LIMIT_MB_RELEASES = 12
 LIMIT_EQUAL_NAMES = 7
-
 
 METADATA_SET = {
                 # media
@@ -360,11 +356,7 @@ class Process(object):
     def get_aid(self, file):
 
         log.info('lookup acoustid for: %s' % (file.path))
-
-        print 'PRE LOOKUP'
-        print 'command: acoustid.match("%s", "%s")' % (AC_API_KEY, file.path)
         data = acoustid.match(AC_API_KEY, file.path)
-        print 'POST LOOKUP'
 
         res = []
         i = 0
@@ -605,7 +597,8 @@ class Process(object):
                             try:
                                 selected_release['recordings']['releases'] = None
                             except Exception, e:
-                                print e
+                                pass
+                                #print e
                             
                             
                             #if releasedate:
@@ -656,8 +649,8 @@ class Process(object):
                 r_id = release['id']
                 rg_id = release['release-group']['id']
                 
-                print 'r_id: %s' % r_id
-                print 'rg_id: %s' % rg_id
+                #print 'r_id: %s' % r_id
+                #print 'rg_id: %s' % rg_id
                 
                 
                 release['label'] = None

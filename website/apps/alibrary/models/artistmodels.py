@@ -95,7 +95,7 @@ class Artist(MigrationMixin):
         ('orchestra', _('Orchestra')),
         ('other', _('Other')),
     )
-    type = models.CharField(verbose_name="Artist type", max_length=120, blank=True, null=True, choices=TYPE_CHOICES)
+    type = models.CharField(verbose_name="Artist type", max_length=128, blank=True, null=True, choices=TYPE_CHOICES)
     main_image = models.ImageField(verbose_name=_('Image'), upload_to=upload_image_to, storage=OverwriteStorage(), null=True, blank=True)
     #main_image = FilerImageField(null=True, blank=True, related_name="artist_main_image", rel='')
 
@@ -411,6 +411,12 @@ def action_handler_task(instance, created):
             verb = _('created')
         action.send(instance.get_last_editor(), verb=verb, target=instance)
     except Exception, e:
+
+        print "artist - action_handler_task"
+        print 'instance:     %s' % instance
+        print 'created:      %s' % created
+        print 'last editor:  %s' % instance.get_last_editor()
+
         print e
 
 

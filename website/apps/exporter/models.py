@@ -1,12 +1,9 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 import os
 import time
 import datetime
 import shutil
 import logging
-
 from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.core.files import File as DjangoFile
@@ -21,7 +18,6 @@ from celery.task import task
 
 from util.process import Process
 from lib.util.filename import safe_name
-from pushy.util import pushy_custom
 
 
 log = logging.getLogger(__name__)
@@ -230,6 +226,7 @@ def post_save_export(sender, **kwargs):
     # emmit update message via pushy
     if kwargs['created']:
         if obj.user and obj.user.profile:
+            from pushy.util import pushy_custom
             pushy_custom(obj.user.profile.uuid)
 
     obj.export_items.update(status=1)

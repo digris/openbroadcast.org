@@ -128,8 +128,9 @@
 
 	<dl class="dl-horizontal sub">
 
+        {% include 'alibrary/element/_created_updated.html' %}
 
-
+        {% comment %}
 		<dt>
 			{% trans "Edit History" %}:
 		</dt>
@@ -152,6 +153,7 @@
 			{% endif %}
 			&nbsp;
 		</dd>
+        {% endcomment %}
 
         {% if object.tags %}
             <dt>

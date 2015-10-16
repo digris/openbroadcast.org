@@ -1,6 +1,9 @@
-<div id="{{ object.uuid }}" class="importfile item {{ object.status }}" xmlns="http://www.w3.org/1999/html">
+<div id="{{ object.uuid }}" class="importfile item {{ object.status }}">
 
 <h3>
+    <!--
+		{{ object.id }}
+		-->
     {% if object.status == 'init' %}
         <i class="icon-time icon-spin"></i>
     {% endif %}
@@ -48,7 +51,7 @@
     <div class="row-fluid status status-working provider-tag">
 
         <div class="span1">
-            <!--<i class="icon icon-large icon-large icon-ok"></i>-->
+            <i class="icon icon-padded icon-id3"></i>
         </div>
 
         <div class="span4">
@@ -129,7 +132,8 @@
         <div class="span1 icon-holder">&nbsp;</div>
 
         <div class="span8 information">
-            
+
+            <!--<h4>Importing <i class="icon icon-padded icon-cogs"></i></h4>-->
             <p>File placed in the import-queue.<br/>Please be patient for a while.</p>
 
             <!--
@@ -181,7 +185,7 @@
 
         {% if object.media %}
             <div class="span1">
-                <i class="icon icon-large icon-obp"></i>
+                <i class="icon icon-padded icon-obp"></i>
             </div>
 
             <div class="span8 information">
@@ -222,7 +226,7 @@
 
         {% if object.media %}
             <div class="span1">
-                <i class="icon icon-large icon-obp"></i>
+                <i class="icon icon-padded icon-obp"></i>
             </div>
 
             <div class="span8 information">
@@ -264,23 +268,18 @@
 
 {% if object.status == 'ready' or object.status == 'warning' %}
 
+
+
     {% if object.results_musicbrainz.length > 0 %}
         <div class="hint">
-            <p>
-                <em>File Metadata</em> <a class="toggle-hint" href="#"><i class="icon-question-sign"></i></a><br>
-                Information extracted from your uploaded file.<br>
-                Choose this entry if you want to continue with the bare file metadata.
-            </p>
-            <div class="expandable">
-                <p>(( More to read here soon. ))</p>
-            </div>
+            <p>File Metadata</p>
         </div>
     {% endif %}
 
     <div class="row-fluid result-set hoverable provider-tag">
 
         <div class="span1">
-            <i class="icon icon-large icon-ok"></i>
+            <i class="icon icon-padded icon-id3"></i>
         </div>
 
         <div class="span4">
@@ -364,14 +363,7 @@
 
     {% if object.results_musicbrainz.length > 0 %}
         <div class="hint">
-            <p>
-                <em>Possible Releases</em> <a class="toggle-hint" href="#"><i class="icon-question-sign"></i></a><br>
-                Information found in our linked databases.<br>
-                Select the most appropriate result to automatically complete the metadata.
-            </p>
-            <div class="expandable">
-                <p>(( More to read here soon. ))</p>
-            </div>
+            <p>Possible Releases found on musicbrainz.org. </p>
         </div>
     {% endif %}
 
@@ -384,7 +376,7 @@
             <div class="row-fluid result-set hoverable musicbrainz-tag mb_id-{{ item.mb_id }}">
 
                 <div class="span1">
-                    <i class="icon icon-large icon-ok"></i>
+                    <i class="icon icon-padded icon-musicbrainz"></i>
                 </div>
 
                 <div class="span8">
@@ -424,25 +416,22 @@
                 </div>
             </div>
 
+
         {% endfor %}
+
 
     </div>
 {% endif %}
+
+
+
 
 
 {% if object.status == 'ready' or object.status == 'warning' %}
     <div class="pull-righ result-actions">
 
     <form class="form-horizontal form-result">
-
-        <div class="hint">
-            <p>
-                <em>Selected Information</em> <a class="toggle-hint" href="#"><i class="icon-question-sign"></i></a>
-            </p>
-            <div class="expandable">
-                <p>(( More to read here soon. ))</p>
-            </div>
-        </div>
+    <h4>Result</h4>
 
     <!-- name -->
     <div class="row-fluid base media {% if not object.import_tag.name %}missing{% endif %}">
@@ -458,6 +447,7 @@
             </div>
 
         </div>
+
 
     </div>
 
@@ -567,11 +557,145 @@
         </div>
 
         <div class="span2">
-            <a class="btn btn-mini pull-right apply-to-all" data-ct="artist"><i class="icon-repeat"></i> Apply Artist to all</a>
+            <a class="btn btn-mini pull-right apply-to-all" data-ct="artist"><i class="icon-repeat"></i> Apply Artist to
+                all</a>
         </div>
 
 
     </div>
+
+
+    <!--
+			<div class="row-fluid base">
+
+				<div class="span6">
+
+					<div class="control-group">
+						<label class="control-label" for="inputEmail">Title</label>
+						<div class="controls">
+							<input type="text" class="name" value="{{ object.import_tag.name }}">
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label" for="inputEmail">Release</label>
+						<div class="controls">
+							<input type="text" class="release" value="{{ object.import_tag.release }}">
+							{% if object.import_tag.alibrary_release_id %}
+								<i class="icon-magic"></i>
+								{{ object.import_tag.alibrary_release_id }}
+								{{ object.import_tag.alibrary_release_resource_uri }}
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label" for="inputEmail">Release Date</label>
+						<div class="controls">
+							<input type="text" class="releasedate" value="{{ object.import_tag.releasedate }}">
+
+						</div>
+					</div>
+					
+				</div>
+
+				<div class="span5">
+					
+					<div class="control-group">
+						<label class="control-label" for="inputPassword">Artist</label>
+						<div class="controls">
+							<input type="text" class="artist" value="{{ object.import_tag.artist }}">
+							{% if object.import_tag.alibrary_artist_id %}
+								{{ object.import_tag.alibrary_artist_id }}
+							{% endif %}
+						</div>
+					</div>
+					
+
+					<div class="control-group">
+						<label class="control-label" for="inputEmail">Track Number</label>
+						<div class="controls">
+							<input type="text" class="tracknumber" value="{{ object.import_tag.tracknumber }}">
+						</div>
+					</div>
+					
+
+					<div class="control-group">
+						<label class="control-label" for="inputEmail">Label</label>
+						<div class="controls">
+							<input type="text" id="inputEmail" value="{{ object.import_tag.label }}">
+						</div>
+					</div>
+					
+				</div>
+
+			</div>
+			-->
+
+
+
+    <!--
+    <div class="toggle">
+        <div class="row-fluid">
+            <div class="span12">
+                <a class="toggle-advanced pull-right">More&nbsp;<i class="icon-angle-down"></i></a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="advanced-fields">
+
+        <h4>Musicbrainz IDs</h4>
+
+        <div class="row-fluid musicbrainz">
+
+            <div class="span6">
+
+                <div class="control-group">
+                    <label class="control-label" for="inputEmail">Track ID</label>
+
+                    <div class="controls">
+                        <input type="text"
+                               class="mb-track-id input-minitext"
+                               value="{{ object.import_tag.mb_track_id }}"
+                               readonly="readonly">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="inputEmail">Artist ID</label>
+
+                    <div class="controls">
+                        <input type="text"
+                               class="mb-artist-id input-minitext"
+                               value="{{ object.import_tag.mb_artist_id }}"
+                               readonly="readonly">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="span5">
+
+                <div class="control-group">
+                    <label class="control-label" for="inputPassword">Release ID</label>
+
+                    <div class="controls">
+                        <input type="text"
+                               class="mb-release-id input-minitext"
+                               value="{{ object.import_tag.mb_release_id }}"
+                               readonly="readonly">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+    -->
 
     </form>
 
@@ -590,7 +714,7 @@
             -->
             <a class="btn btn-secondary btn-small rescan">Scan again</a>
             {% if object.status == 'ready' or object.status == 'warning' %}
-                <a class="btn btn-primary btn-small start-import">Continue Import</a>
+                <a class="btn btn-primary btn-small start-import">Start Import</a>
             {% endif %}
         </div>
     </div>

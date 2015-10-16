@@ -211,8 +211,9 @@
 
 	<dl class="dl-horizontal sub">
 
+        {% include 'alibrary/element/_created_updated.html' %}
 
-
+        {% comment %}
 		<dt>
 			{% trans "Edit History" %}:
 		</dt>
@@ -231,17 +232,8 @@
 			{% endif %}
 			&nbsp;
 		</dd>
+        {% endcomment %}
 
-		<!--
-		<dt>
-			{% trans "Stats" %}:
-		</dt>
-		<dd>
-			<span class="value">3</span> <span class="key">{% trans "Airplays" %}</span> /
-			<span class="value">173</span> <span class="key">{% trans "Plays" %}</span> /
-			<span class="value">28</span> <span class="key">{% trans "Downloads" %}</span>
-		</dd>
-		-->
 		
     {% if object.tags %}
         <dt>
