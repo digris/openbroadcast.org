@@ -3168,7 +3168,7 @@ output += "\n\n\n\n\n\n";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "ready" || runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "warning") {
 output += "\n\n    ";
 if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_musicbrainz")),"length") > 0) {
-output += "\n        <div class=\"hint\">\n            <p>\n                <em>File Metadata</em> <a class=\"toggle-hint\" href=\"#\"><i class=\"icon-question-sign\"></i></a><br>\n                Information extracted from your uploaded file.<br>\n                Choose this entry if you want to continue with the bare file metadata.\n            </p>\n            <div class=\"expandable\">\n                <p>(( More to read here soon. ))</p>\n            </div>\n        </div>\n    ";
+output += "\n        <div class=\"hint\">\n            <p>\n                <em>File Metadata</em> <a class=\"toggle-hint\" href=\"#\"><i class=\"icon-question-sign\"></i></a>\n\n            </p>\n            <div class=\"expandable\">\n                <p>\n                Information extracted from your uploaded file.<br>\n                Choose this entry if you want to continue with the bare file metadata.\n                </p>\n            </div>\n        </div>\n    ";
 ;
 }
 output += "\n\n    <div class=\"row-fluid result-set hoverable provider-tag\">\n\n        <div class=\"span1\">\n            <i class=\"icon icon-large icon-ok\"></i>\n        </div>\n\n        <div class=\"span4\">\n\n            <ul class=\"horizontal unstyled\">\n                <li class=\"key\">Title</li>\n                <li class=\"value\" title=\"";
@@ -3194,7 +3194,7 @@ output += "\n\n\n\n\n";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "ready" || runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") == "warning") {
 output += "\n\n    ";
 if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_musicbrainz")),"length") > 0) {
-output += "\n        <div class=\"hint\">\n            <p>\n                <em>Possible Releases</em> <a class=\"toggle-hint\" href=\"#\"><i class=\"icon-question-sign\"></i></a><br>\n                Information found in our linked databases.<br>\n                Select the most appropriate result to automatically complete the metadata.\n            </p>\n            <div class=\"expandable\">\n                <p>(( More to read here soon. ))</p>\n            </div>\n        </div>\n    ";
+output += "\n        <div class=\"hint\">\n            <p>\n                <em>Possible Releases</em> <a class=\"toggle-hint\" href=\"#\"><i class=\"icon-question-sign\"></i></a>\n            </p>\n            <div class=\"expandable\">\n                <p>\n                Information found in our linked databases.<br>\n                Select the most appropriate result to automatically complete the metadata.\n                </p>\n            </div>\n        </div>\n    ";
 ;
 }
 output += "\n\n    <div class=\"musicbrainz-tag-holder\">\n\n\n\n        ";
