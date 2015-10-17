@@ -1,36 +1,26 @@
-# python
 import re
-
-# django
+import requests
 from urlparse import urlparse
-
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-import requests
 from django.conf import settings
-
-from settings import *
 from l10n.models import Country
 from jsonfield import JSONField
 from alibrary.util.relations import get_service_by_url
-
 
 # logging
 import logging
 log = logging.getLogger(__name__)
 
-
 MUSICBRAINZ_HOST = getattr(settings, 'MUSICBRAINZ_HOST', 'musicbrainz.org')
 DISCOGS_HOST = getattr(settings, 'DISCOGS_HOST', None)
 
-
-################
 from alibrary.models import *
 
 USER_AGENT = 'ANORGDiscogsAPIClient/0.0.1 +http://anorg.net'
-
 
 class APILookup(models.Model):
     
@@ -52,7 +42,7 @@ class APILookup(models.Model):
         (1, _('Done')),
         (2, _('Error')),
     )
-    processed = models.PositiveIntegerField(max_length=2, default=0, choices=PROCESSED_CHOICES)
+    processed = models.PositiveIntegerField(default=0, choices=PROCESSED_CHOICES)
     
     
     content_type = models.ForeignKey(ContentType)

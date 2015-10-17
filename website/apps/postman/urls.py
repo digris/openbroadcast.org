@@ -91,7 +91,7 @@ from __future__ import unicode_literals
 try:
     from django.conf.urls import patterns, include, url  # django 1.4
 except ImportError:
-    from django.conf.urls.defaults import patterns, include, url  # django 1.3
+    from django.conf.urls import patterns, include, url  # django 1.3
 from django.views.generic.base import RedirectView
 
 OPTION_MESSAGES = 'm'

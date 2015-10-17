@@ -23,7 +23,7 @@ from types import StringType, UnicodeType
 try:
     import json
 except ImportError:
-    import simplejson as json
+    import json as json
 
 logger = logging.getLogger(__name__)
 TYPENAMES = (

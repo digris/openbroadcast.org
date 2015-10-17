@@ -99,7 +99,7 @@ class BaseWriteForm(forms.ModelForm):
                 raise forms.ValidationError(errors)
         return recipients
 
-    @transaction.commit_on_success
+    @transaction.atomic
     def save(self, recipient=None, parent=None, auto_moderators=[], hacked_recipient=None):
         """
         Save as many messages as there are recipients.

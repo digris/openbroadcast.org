@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url
 from django.http import HttpResponse
 from django.template import Template, Context, loader, TemplateSyntaxError
 from .templatetags.spurl import convert_to_boolean

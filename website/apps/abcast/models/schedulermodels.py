@@ -11,7 +11,6 @@ from django_extensions.db.fields import *
 
 from celery.task import task
 
-from cms.models import CMSPlugin
 
 # filer
 from filer.fields.image import FilerImageField
@@ -41,7 +40,7 @@ class Broadcast(BaseModel):
         (1, _('Done')),
         (2, _('Error')),
     )
-    status = models.PositiveIntegerField(max_length=2, default=0, choices=STATUS_CHOICES)
+    status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
 
     TYPE_CHOICES = (
         ('studio', _('Studio')),
@@ -51,7 +50,7 @@ class Broadcast(BaseModel):
     type = models.CharField(verbose_name=_('Type'), max_length=12, default='jingle', choices=TYPE_CHOICES)
     
     description = models.TextField(verbose_name="Extra Description", blank=True, null=True)
-    duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", max_length=12, blank=True, null=True, editable=True)
+    duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", blank=True, null=True, editable=True)
     
     # relations
     user = models.ForeignKey(User, blank=True, null=True, related_name="scheduler_broadcasts", on_delete=models.SET_NULL)
@@ -94,7 +93,7 @@ class Emission(BaseModel):
         (1, _('Done')),
         (2, _('Error')),
     )
-    status = models.PositiveIntegerField(max_length=2, default=0, choices=STATUS_CHOICES)
+    status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
     
     COLOR_CHOICES = (
         (0, _('Theme 1')),
@@ -102,7 +101,7 @@ class Emission(BaseModel):
         (2, _('Theme 3')),
         (3, _('Theme 4')),
     )
-    color = models.PositiveIntegerField(max_length=2, default=0, choices=COLOR_CHOICES)
+    color = models.PositiveIntegerField(default=0, choices=COLOR_CHOICES)
 
     TYPE_CHOICES = (
         ('studio', _('Studio')),
@@ -122,7 +121,7 @@ class Emission(BaseModel):
     time_end = models.DateTimeField(blank=True, null=True)
     
     # eventually use this
-    duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", max_length=12, blank=True, null=True, editable=False)
+    duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", blank=True, null=True, editable=False)
     
     
     # relations
@@ -349,7 +348,7 @@ class Weekday(models.Model):
         (6, _('Fri')),
         (7, _('Sat')),
     )
-    day = models.PositiveIntegerField(max_length=1, default=1, null=False, choices=DAY_CHOICES)
+    day = models.PositiveIntegerField(default=1, null=False, choices=DAY_CHOICES)
 
     class Meta:
         app_label = 'abcast'
@@ -374,7 +373,7 @@ class Daypart(BaseModel):
         (6, _('Sun')),
     )
     daypartset = models.ForeignKey(DaypartSet, blank=False, null=True, on_delete=models.SET_NULL)
-    weekdays = models.ManyToManyField(Weekday, null=True, blank=True)
+    weekdays = models.ManyToManyField(Weekday, blank=True)
     
     time_start = models.TimeField()
     time_end = models.TimeField()

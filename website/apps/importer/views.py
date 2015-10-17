@@ -11,12 +11,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.utils.functional import lazy
 from django.views.decorators.csrf import csrf_exempt
-from django.utils import simplejson
+import json
 
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 
 from django import http
-from django.utils import simplejson as json
+import json
 
 from importer.models import *
 from importer.forms import *
@@ -212,7 +212,7 @@ def multiuploader(request, import_id):
                            "delete_url": import_file.get_delete_url(),
                            "delete_type": "POST", })
 
-    response_data = simplejson.dumps(result)
+    response_data = json.dumps(result)
     if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
         mimetype = 'application/json'
     else:

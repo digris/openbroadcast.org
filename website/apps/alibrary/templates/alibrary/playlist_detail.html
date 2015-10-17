@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate i18n thumbnail arating_tags wiki_tags disqus_tags comments sekizai_tags %}
+{% load truncate i18n thumbnail arating_tags wiki_tags comments sekizai_tags %}
 
 {% block heading %}
     <!-- view specific scripts -->
@@ -205,10 +205,6 @@
         {% endwith %}
 
         {% render_comment_list for object %}
-    </section>
-
-    <section class="comments disqus">
-        {# disqus_show_comments #}
     </section>
 
     </div>

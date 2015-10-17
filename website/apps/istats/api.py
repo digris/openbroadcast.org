@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.contrib.sites.models import Site
 
 from tastypie.authentication import *

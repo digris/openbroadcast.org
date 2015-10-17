@@ -18,7 +18,6 @@ from alibrary.util.storage import get_file_from_url
 from lib.util import filer_extra
 from actstream import action
 from alibrary.util import lookup
-from settings import MEDIA_ROOT
 import musicbrainzngs
 from base import discogs_image_by_url, discogs_id_by_url
 
@@ -28,6 +27,7 @@ DISCOGS_HOST = getattr(settings, 'DISCOGS_HOST', None)
 MUSICBRAINZ_HOST = getattr(settings, 'MUSICBRAINZ_HOST', None)
 MUSICBRAINZ_RATE_LIMIT = getattr(settings, 'MUSICBRAINZ_RATE_LIMIT', True)
 MUSICBRAINZ_RATE_LIMIT = getattr(settings, 'MUSICBRAINZ_RATE_LIMIT', True)
+MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', True)
 
 USE_CELERYD = getattr(settings, 'IMORTER_USE_CELERYD', True)
 

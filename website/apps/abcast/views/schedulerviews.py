@@ -2,7 +2,7 @@ from django.views.generic import DetailView, ListView
 from django.shortcuts import render_to_response
 
 from django.http import HttpResponse, Http404
-from django.utils import simplejson as json
+import json
 from django.conf import settings
 from django.shortcuts import redirect
 from django.utils.translation import ugettext as _

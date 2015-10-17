@@ -12,8 +12,6 @@ from django.core.urlresolvers import reverse
 # django-extensions (http://packages.python.org/django-extensions/)
 from django_extensions.db.fields import UUIDField, AutoSlugField
 
-# cms
-from cms.models import CMSPlugin, Page
 
 # celery / task management
 from celery.task import task
@@ -21,10 +19,9 @@ from celery.task import task
 # filer
 from filer.models.filemodels import *
 from filer.models.foldermodels import *
-from filer.models.audiomodels import *
 from filer.models.imagemodels import *
 from filer.fields.image import FilerImageField
-from filer.fields.audio import FilerAudioField
+# from filer.fields.audio import FilerAudioField
 from filer.fields.file import FilerFileField
 
 from django_date_extensions.fields import ApproximateDateField
@@ -133,7 +130,7 @@ class Artist(MigrationMixin):
     # relations
     members = models.ManyToManyField('self', through='ArtistMembership', symmetrical=False)
     #aliases = models.ManyToManyField("self", related_name='artist_aliases', blank=True, null=True)
-    aliases = models.ManyToManyField("self", through='ArtistAlias', related_name='artist_aliases', blank=True, null=True, symmetrical=False)
+    aliases = models.ManyToManyField("self", through='ArtistAlias', related_name='artist_aliases', blank=True, symmetrical=False)
 
     folder = models.ForeignKey(Folder, blank=True, null=True, related_name='artist_folder', on_delete=models.SET_NULL)
     
@@ -482,12 +479,12 @@ class ArtistProfessions(models.Model):
         
 
 """"""
-class ArtistPlugin(CMSPlugin):
-    
-    artist = models.ForeignKey(Artist)
-    def __unicode__(self):
-        return self.artist.name
-
-    # meta
-    class Meta:
-        app_label = 'alibrary'
+# class ArtistPlugin(CMSPlugin):
+#
+#     artist = models.ForeignKey(Artist)
+#     def __unicode__(self):
+#         return self.artist.name
+#
+#     # meta
+#     class Meta:
+#         app_label = 'alibrary'

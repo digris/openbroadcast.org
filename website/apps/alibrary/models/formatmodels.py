@@ -25,7 +25,7 @@ class Format(models.Model):
     )
     format = models.CharField(max_length=4, choices=FORMAT_CHOICES)
     
-    default_price = models.PositiveIntegerField(max_length=6, default=1, blank=True, null=True)
+    default_price = models.PositiveIntegerField(default=1, blank=True, null=True)
     
     VERSION_CHOICES = (
         ('base', _('Base')),

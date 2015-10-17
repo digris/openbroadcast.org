@@ -9,25 +9,21 @@ from django.core.urlresolvers import reverse
 
 from django.contrib.contenttypes.models import ContentType
 
-from settings import *
+from django.conf import settings
 
 # django-extensions (http://packages.python.org/django-extensions/)
 from django_extensions.db.fields import UUIDField, AutoSlugField
 from django_extensions.db.fields.json import JSONField
-# cms
-from cms.models import CMSPlugin, Page
-from cms.models.fields import PlaceholderField
-from cms.utils.placeholder import get_page_from_placeholder_if_exists
 
 # model_utils
 
 # filer
 from filer.models.filemodels import *
 from filer.models.foldermodels import *
-from filer.models.audiomodels import *
+# from filer.models.audiomodels import *
 from filer.models.imagemodels import *
 from filer.fields.image import FilerImageField
-from filer.fields.audio import FilerAudioField
+# from filer.fields.audio import FilerAudioField
 from filer.fields.file import FilerFileField
 
 
@@ -139,7 +135,7 @@ class Playlist(MigrationMixin, models.Model):
     user = models.ForeignKey(User, null=True, blank=True, default = None)
     #media = models.ManyToManyField('Media', through='PlaylistMedia', blank=True, null=True)
     
-    items = models.ManyToManyField('PlaylistItem', through='PlaylistItemPlaylist', blank=True, null=True)
+    items = models.ManyToManyField('PlaylistItem', through='PlaylistItemPlaylist', blank=True)
 
     @property
     def sorted_items(self):
@@ -153,14 +149,14 @@ class Playlist(MigrationMixin, models.Model):
     enable_comments = models.BooleanField(_('Enable Comments'), default=True)
     
     # updated/calculated on save
-    duration = models.IntegerField(max_length=12, null=True, default=0)
+    duration = models.IntegerField(null=True, default=0)
     
 
     target_duration = models.PositiveIntegerField(default=0, null=True, choices=alibrary_settings.PLAYLIST_TARGET_DURATION_CHOICES)
     
-    dayparts = models.ManyToManyField(Daypart, null=True, blank=True, related_name='daypart_plalists')
-    seasons = models.ManyToManyField('Season', null=True, blank=True, related_name='season_plalists')
-    weather = models.ManyToManyField('Weather', null=True, blank=True, related_name='weather_plalists')
+    dayparts = models.ManyToManyField(Daypart, blank=True, related_name='daypart_plalists')
+    seasons = models.ManyToManyField('Season', blank=True, related_name='season_plalists')
+    weather = models.ManyToManyField('Weather', blank=True, related_name='weather_plalists')
 
     # series
     series = models.ForeignKey(Series, null=True, blank=True, on_delete=models.SET_NULL)
@@ -668,13 +664,13 @@ class PlaylistMedia(models.Model):
     media = models.ForeignKey('Media')
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
-    position = models.PositiveIntegerField(max_length=12, default=0)
+    position = models.PositiveIntegerField(default=0)
     # 
-    cue_in = models.PositiveIntegerField(max_length=12, default=0)
-    cue_out = models.PositiveIntegerField(max_length=12, default=0)
-    fade_in = models.PositiveIntegerField(max_length=12, default=0)
-    fade_out = models.PositiveIntegerField(max_length=12, default=0)
-    fade_cross = models.PositiveIntegerField(max_length=12, default=0)
+    cue_in = models.PositiveIntegerField(default=0)
+    cue_out = models.PositiveIntegerField(default=0)
+    fade_in = models.PositiveIntegerField(default=0)
+    fade_out = models.PositiveIntegerField(default=0)
+    fade_cross = models.PositiveIntegerField(default=0)
     class Meta:
         app_label = 'alibrary'
     
@@ -689,13 +685,13 @@ class PlaylistItemPlaylist(models.Model):
     
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
-    position = models.PositiveIntegerField(max_length=12, default=0)
+    position = models.PositiveIntegerField(default=0)
     # 
-    cue_in = models.PositiveIntegerField(max_length=12, default=0)
-    cue_out = models.PositiveIntegerField(max_length=12, default=0)
-    fade_in = models.PositiveIntegerField(max_length=12, default=0)
-    fade_out = models.PositiveIntegerField(max_length=12, default=0)
-    fade_cross = models.PositiveIntegerField(max_length=12, default=0)
+    cue_in = models.PositiveIntegerField(default=0)
+    cue_out = models.PositiveIntegerField(default=0)
+    fade_in = models.PositiveIntegerField(default=0)
+    fade_out = models.PositiveIntegerField(default=0)
+    fade_cross = models.PositiveIntegerField(default=0)
     class Meta:
         app_label = 'alibrary'
         ordering = ('position', )

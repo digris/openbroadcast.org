@@ -15,16 +15,13 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-
-from settings import *
+from django.conf import settings
 
 from alibrary import settings as alibrary_settings
 
 # django-extensions (http://packages.python.org/django-extensions/)
 from django_extensions.db.fields import UUIDField
 
-# cms
-from cms.models import CMSPlugin, Page
 
 # celery / task management
 from celery.task import task
@@ -32,10 +29,10 @@ from celery.task import task
 # filer
 from filer.models.filemodels import *
 from filer.models.foldermodels import *
-from filer.models.audiomodels import *
+# from filer.models.audiomodels import *
 from filer.models.imagemodels import *
 from filer.fields.image import FilerImageField
-from filer.fields.audio import FilerAudioField
+# from filer.fields.audio import FilerAudioField
 from filer.fields.file import FilerFileField
 
 
@@ -43,15 +40,11 @@ from l10n.models import Country
 
 from django_date_extensions.fields import ApproximateDateField
 
-# modules
-#from taggit.managers import TaggableManager
-from django_countries import CountryField
-
 import tagging
 import reversion 
 
 # settings
-from settings import TEMP_DIR
+TEMP_DIR = getattr(settings, 'TEMP_DIR', None)
 
 # logging
 import logging
@@ -137,7 +130,7 @@ class Release(MigrationMixin):
     releasedate_approx = ApproximateDateField(verbose_name="Releasedate", blank=True, null=True)
     
 
-    pressings = models.PositiveIntegerField(max_length=12, default=0)
+    pressings = models.PositiveIntegerField(default=0)
 
     TOTALTRACKS_CHOICES = ((x, x) for x in range(1, 301))
     totaltracks = models.IntegerField(verbose_name=_('Total Tracks'), blank=True, null=True, choices=TOTALTRACKS_CHOICES)
@@ -178,7 +171,7 @@ class Release(MigrationMixin):
     
     
     # reworking media relationship
-    media = models.ManyToManyField('Media', through='ReleaseMedia', blank=True, null=True, related_name="releases")
+    media = models.ManyToManyField('Media', through='ReleaseMedia', blank=True, related_name="releases")
     #media = SortedManyToManyField('Media', blank=True, null=True, related_name="releases")
     
 
@@ -194,7 +187,7 @@ class Release(MigrationMixin):
     # import_items = generic.GenericRelation('importer.ImportItem')
 
     # extra-artists
-    extra_artists = models.ManyToManyField('Artist', through='ReleaseExtraartists', blank=True, null=True)
+    extra_artists = models.ManyToManyField('Artist', through='ReleaseExtraartists', blank=True)
     def get_extra_artists(self):
         ea = []
         for artist in self.extra_artists.all():
@@ -202,7 +195,7 @@ class Release(MigrationMixin):
         return ea
     
     # special relation to provide 'multi-names' for artists.
-    album_artists = models.ManyToManyField('Artist', through='ReleaseAlbumartists', related_name="release_albumartists", blank=True, null=True)
+    album_artists = models.ManyToManyField('Artist', through='ReleaseAlbumartists', related_name="release_albumartists", blank=True)
     
     # relations a.k.a. links
     relations = generic.GenericRelation(Relation)
@@ -750,15 +743,15 @@ class ReleaseMedia(models.Model):
 
 
         
-class ReleasePlugin(CMSPlugin):
-    
-    release = models.ForeignKey(Release)
-    def __unicode__(self):
-        return self.release.name
-
-    # meta
-    class Meta:
-        app_label = 'alibrary'
+# class ReleasePlugin(CMSPlugin):
+#
+#     release = models.ForeignKey(Release)
+#     def __unicode__(self):
+#         return self.release.name
+#
+#     # meta
+#     class Meta:
+#         app_label = 'alibrary'
         
   
    

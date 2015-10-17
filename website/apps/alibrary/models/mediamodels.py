@@ -10,24 +10,20 @@ from django.utils.translation import ugettext as _
 from django.core.files import File as DjangoFile
 from django.core.urlresolvers import reverse
 # TODO: only import needed settings
-from settings import *
+
 from django.conf import settings
 from alibrary import settings as alibrary_settings
 from django_extensions.db.fields import AutoSlugField
 from lib.fields.uuidfield import UUIDField as RUUIDField
-
-# cms
-from cms.models import CMSPlugin, Page
-from cms.models.fields import PlaceholderField
-from cms.utils.placeholder import get_page_from_placeholder_if_exists
+from django.conf import settings
 
 # filer
 from filer.models.filemodels import *
 from filer.models.foldermodels import *
-from filer.models.audiomodels import *
+# from filer.models.audiomodels import *
 from filer.models.imagemodels import *
 from filer.fields.image import FilerImageField
-from filer.fields.audio import FilerAudioField
+# from filer.fields.audio import FilerAudioField
 from filer.fields.file import FilerFileField
 
 from django_extensions.db.fields.json import JSONField
@@ -188,7 +184,7 @@ class Media(MigrationMixin):
         (1, _('Done')),
         (99, _('Error')),
     )
-    processed = models.PositiveIntegerField(max_length=2, default=0, choices=PROCESSED_CHOICES)
+    processed = models.PositiveIntegerField(default=0, choices=PROCESSED_CHOICES)
     
     ECHOPRINT_STATUS_CHOICES = (
         (0, _('Init')),
@@ -197,7 +193,7 @@ class Media(MigrationMixin):
         (3, _('File not suitable')),
         (99, _('Error')),
     )
-    echoprint_status = models.PositiveIntegerField(max_length=2, default=0, choices=ECHOPRINT_STATUS_CHOICES)
+    echoprint_status = models.PositiveIntegerField(default=0, choices=ECHOPRINT_STATUS_CHOICES)
     #echoprint_id = models.PositiveIntegerField(null=True, blank=True)
         
     CONVERSION_STATUS_CHOICES = (
@@ -206,19 +202,19 @@ class Media(MigrationMixin):
         (2, _('Error')),
         (99, _('Error')),
     )
-    conversion_status = models.PositiveIntegerField(max_length=2, default=0, choices=CONVERSION_STATUS_CHOICES)
+    conversion_status = models.PositiveIntegerField(default=0, choices=CONVERSION_STATUS_CHOICES)
 
-    lock = models.PositiveIntegerField(max_length=1, default=0, editable=False)
+    lock = models.PositiveIntegerField(default=0, editable=False)
 
     TRACKNUMBER_CHOICES = ((x, x) for x in range(1, 301))
     #TRACKNUMBER_CHOICES =  [(None, '---')] + list(((str(x), x) for x in range(1, 101)))
-    tracknumber = models.PositiveIntegerField(verbose_name=_('Track Number'), max_length=12, blank=True, null=True, choices=TRACKNUMBER_CHOICES)
+    tracknumber = models.PositiveIntegerField(verbose_name=_('Track Number'), blank=True, null=True, choices=TRACKNUMBER_CHOICES)
 
     opus_number = models.CharField(max_length=200, blank=True, null=True)
 
     MEDIANUMBER_CHOICES = ((x, x) for x in range(1, 51))
     # a.k.a. "Disc number"
-    medianumber = models.PositiveIntegerField(verbose_name=_('a.k.a. "Disc number'), blank=True, null=True, max_length=12, choices=MEDIANUMBER_CHOICES)
+    medianumber = models.PositiveIntegerField(verbose_name=_('a.k.a. "Disc number'), blank=True, null=True, choices=MEDIANUMBER_CHOICES)
     
 
     mediatype = models.CharField(verbose_name=_('Type'), max_length=128, default='song', choices=MEDIATYPE_CHOICES)
@@ -230,7 +226,7 @@ class Media(MigrationMixin):
     lyrics = models.TextField(blank=True, null=True)
     lyrics_language = LanguageField(blank=True, null=True)
 
-    duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", max_length=12, blank=True, null=True, editable=False)
+    duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", blank=True, null=True, editable=False)
     
     # relations
     release = models.ForeignKey('Release', blank=True, null=True, related_name='media_release', on_delete=models.SET_NULL)
@@ -255,10 +251,10 @@ class Media(MigrationMixin):
     
     # extra-artists
     # TODO: Fix this - guess should relate to Artist instead of Profession
-    extra_artists = models.ManyToManyField('Artist', through='MediaExtraartists', blank=True, null=True)
+    extra_artists = models.ManyToManyField('Artist', through='MediaExtraartists', blank=True)
 
     # provide 'multi-names' for artist crediting.
-    media_artists = models.ManyToManyField('Artist', through='MediaArtists', related_name="credited", blank=True, null=True)
+    media_artists = models.ManyToManyField('Artist', through='MediaArtists', related_name="credited", blank=True)
     
     license = models.ForeignKey(License, blank=True, null=True, related_name='media_license', limit_choices_to={'selectable': True}, on_delete=models.PROTECT)
     
@@ -1323,8 +1319,8 @@ class Media(MigrationMixin):
     def update_echoprint_task(obj):
 
         status = 2
-        
-        from settings import ECHOPRINT_CODEGEN_BIN
+
+        ECHOPRINT_CODEGEN_BIN = getattr(settings, 'ECHOPRINT_CODEGEN_BIN', None)
 
         path = obj.get_master_path()
 
@@ -1786,16 +1782,16 @@ class MediaArtists(models.Model):
 """
 CMS-Plugins
 """
-class MediaPlugin(CMSPlugin):
-    media = models.ForeignKey(Media)
-    headline = models.BooleanField(verbose_name=_('Show headline (Track/Artist)'), default=False)
-    
-    def __unicode__(self):
-        return self.media.name
-
-    # meta
-    class Meta:
-        app_label = 'alibrary'
+# class MediaPlugin(CMSPlugin):
+#     media = models.ForeignKey(Media)
+#     headline = models.BooleanField(verbose_name=_('Show headline (Track/Artist)'), default=False)
+#
+#     def __unicode__(self):
+#         return self.media.name
+#
+#     # meta
+#     class Meta:
+#         app_label = 'alibrary'
 
 def get_raw_image(filename, type):
     try:

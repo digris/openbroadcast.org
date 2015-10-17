@@ -3,9 +3,8 @@ import shutil
 import subprocess
 import signal
 import sys
-
-from settings import ESSENTIA_EXECUTABLE
-
+from django.conf import settings
+ESSENTIA_EXECUTABLE = getattr(settings, 'ESSENTIA_EXECUTABLE', None)
 
 def analyze(sound):
     FFMPEG_TIMEOUT = 3 * 60

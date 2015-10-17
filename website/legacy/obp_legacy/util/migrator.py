@@ -5,17 +5,13 @@ import shutil
 import json
 import datetime
 import ntpath
-
 from django.core.validators import email_re
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from html2text import html2text
 from tagging.models import Tag
+from django.conf import settings
 
-from filer.models.filemodels import File
-from filer.models.audiomodels import Audio
-from filer.models.imagemodels import Image
-from settings import MEDIA_ROOT
 
 #from alibrary.models import Relation, Release, Artist, Media, Label, MediaExtraartists, Profession, ArtistMembership
 from obp_legacy.models import *
@@ -25,13 +21,14 @@ from alibrary.util.storage import get_file_from_path
 
 from l10n.models import Country
 
-from settings import LEGACY_STORAGE_ROOT
+LEGACY_STORAGE_ROOT = getattr(settings, 'LEGACY_STORAGE_ROOT', True)
+MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', True)
 
 import logging
 
 log = logging.getLogger(__name__)
 
-validate_url = URLValidator(verify_exists=False)
+validate_url = URLValidator()
 
 
 class Migrator(object):

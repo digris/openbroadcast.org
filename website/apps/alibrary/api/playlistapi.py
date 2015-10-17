@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.db.models import Q
 from tastypie import fields
 from tastypie.authentication import *

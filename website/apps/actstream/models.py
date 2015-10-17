@@ -181,7 +181,8 @@ def setup_generic_relations():
                 model._meta.app_label, model._meta.module_name, field), None)
 
 
-setup_generic_relations()
+# TODO: 1.8 upgrade - this need to be called on app start
+#setup_generic_relations()
 
 
 if actstream_settings.USE_JSONFIELD:

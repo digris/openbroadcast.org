@@ -1,6 +1,6 @@
 import json
 
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from tastypie.authentication import *
 from tastypie.authorization import *
 from tastypie.resources import Resource, ALL_WITH_RELATIONS

@@ -8,7 +8,7 @@ from django.conf import settings
 try:
     from django.conf.urls import patterns, include, url  # django 1.4
 except ImportError:
-    from django.conf.urls.defaults import *  # "patterns, include, url" is enough for django 1.3, "*" for django 1.2
+    from django.conf.urls import *  # "patterns, include, url" is enough for django 1.3, "*" for django 1.2
 try:
     from django.contrib.auth import get_user_model  # Django 1.5
 except ImportError:

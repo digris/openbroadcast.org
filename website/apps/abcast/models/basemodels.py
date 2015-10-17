@@ -8,7 +8,6 @@ from django_extensions.db.fields import *
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.core.urlresolvers import reverse
-from cms.models import CMSPlugin
 from filer.fields.image import FilerImageField
 from filer.fields.file import FilerFileField
 import arating
@@ -43,7 +42,7 @@ class Station(BaseModel):
     description = extra.MarkdownTextField(blank=True, null=True)
 
     # members
-    members = models.ManyToManyField(User, through='StationMembers', blank=True, null=True)
+    members = models.ManyToManyField(User, through='StationMembers', blank=True)
 
     # stations contact information
     website = models.URLField(max_length=256, null=True, blank=True)
@@ -104,7 +103,7 @@ class StationMembers(models.Model):
     user = models.ForeignKey(User, related_name='station_membership')
     station = models.ForeignKey(Station)
     # role = models.ForeignKey(Role, blank=True, null=True)
-    roles = models.ManyToManyField(Role, blank=True, null=True, related_name='memgership_roles')
+    roles = models.ManyToManyField(Role, blank=True, related_name='memgership_roles')
 
     class Meta:
         app_label = 'abcast'
@@ -295,7 +294,7 @@ class StreamServer(BaseModel):
     mountpoint = models.CharField(max_length=64, null=True, help_text=_('e.g. main-hifi.mp3'))
     meta_prefix = models.CharField(max_length=64, null=True, blank=True, help_text=_('e.g. My Station!'))
 
-    formats = models.ManyToManyField('StreamFormat', null=True, blank=True)
+    formats = models.ManyToManyField('StreamFormat', blank=True)
 
     TYPE_CHOICES = (
         ('icecast2', _('Icecast 2')),
@@ -344,12 +343,12 @@ class StreamFormat(BaseModel):
         return "%s | %s" % (self.type, self.bitrate)
 
 
-class OnAirPlugin(CMSPlugin):    
-    channel = models.ForeignKey(Channel, related_name='plugins')
-    show_channel_info = models.BooleanField(default=True)
-    class Meta:
-        app_label = 'abcast'
-
-    def __unicode__(self):
-        return "%s" % self.channel.name
+# class OnAirPlugin(CMSPlugin):
+#     channel = models.ForeignKey(Channel, related_name='plugins')
+#     show_channel_info = models.BooleanField(default=True)
+#     class Meta:
+#         app_label = 'abcast'
+#
+#     def __unicode__(self):
+#         return "%s" % self.channel.name
 

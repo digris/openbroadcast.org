@@ -1,6 +1,6 @@
 from tagging.models import Tag
 from django.http import HttpResponse
-from django.utils import simplejson
+import json
 from django.utils.datastructures import MultiValueDictKeyError
 
 def list_tags(request):
@@ -17,4 +17,4 @@ class JsonResponse(HttpResponse):
     HttpResponse descendant, which return response with ``application/json`` mimetype.
     """
     def __init__(self, data):
-        super(JsonResponse, self).__init__(content=simplejson.dumps(data), mimetype='application/json')
+        super(JsonResponse, self).__init__(content=json.dumps(data), mimetype='application/json')

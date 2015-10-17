@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 
 urlpatterns = patterns('loginas.tests.views',
     url(r"^current_user/$", "current_user", name="current_user"),

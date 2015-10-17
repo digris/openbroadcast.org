@@ -33,7 +33,7 @@ IMPORTDATE = now.strftime("%Y-%m-%dT%H:%M:%SZ")
 try:
     import json
 except ImportError:
-    import simplejson as json
+    import json as json
 
 _hexpoch = int(time.time() * 1000)
 logger = logging.getLogger(__name__)

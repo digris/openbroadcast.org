@@ -1,7 +1,7 @@
 import datetime
 import json
 
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.http import HttpResponse
 from django.contrib.sites.models import Site
 from django.core.cache import cache

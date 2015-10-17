@@ -9,10 +9,9 @@ from mutagen.easyid3 import EasyID3
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import *
-
-from cms.models import CMSPlugin
 
 
 # filer
@@ -26,7 +25,8 @@ import tempfile
 # audio processing / waveform
 from lib.audioprocessing.processing import create_wave_images, AudioProcessingException
 
-from settings import MEDIA_ROOT
+MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
+
 # 
 from lib.fields import extra
 
@@ -92,15 +92,15 @@ class Jingle(BaseModel):
         (1, _('Done')),
         (2, _('Error')),
     )
-    processed = models.PositiveIntegerField(max_length=2, default=0, choices=PROCESSED_CHOICES)
+    processed = models.PositiveIntegerField(default=0, choices=PROCESSED_CHOICES)
    
     CONVERSION_STATUS_CHOICES = (
         (0, _('Init')),
         (1, _('Completed')),
         (2, _('Error')),
     )
-    conversion_status = models.PositiveIntegerField(max_length=2, default=0, choices=CONVERSION_STATUS_CHOICES)
-    lock = models.PositiveIntegerField(max_length=1, default=0, editable=False)
+    conversion_status = models.PositiveIntegerField(default=0, choices=CONVERSION_STATUS_CHOICES)
+    lock = models.PositiveIntegerField(default=0, editable=False)
 
     
     TYPE_CHOICES = (
@@ -109,7 +109,7 @@ class Jingle(BaseModel):
     )
     type = models.CharField(verbose_name=_('Type'), max_length=12, default='jingle', choices=TYPE_CHOICES)
     description = models.TextField(verbose_name="Extra Description", blank=True, null=True)
-    duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", max_length=12, blank=True, null=True, editable=True)
+    duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", blank=True, null=True, editable=True)
     
     # relations
     user = models.ForeignKey(User, blank=True, null=True, related_name="jingle_user", on_delete=models.SET_NULL)

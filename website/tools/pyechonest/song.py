@@ -15,7 +15,7 @@ from proxies import SongProxy
 try:
     import json
 except ImportError:
-    import simplejson as json
+    import json as json
     
 class Song(SongProxy):
     """

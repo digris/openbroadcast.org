@@ -2,7 +2,7 @@ import json
 import datetime
 
 from django.conf import settings
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.http import HttpResponse
 from tastypie.authentication import *
 from tastypie.authorization import *

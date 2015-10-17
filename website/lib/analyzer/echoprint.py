@@ -3,16 +3,10 @@ import subprocess
 import json
 import logging
 import requests
-
+from django.conf import settings
 log = logging.getLogger(__name__)
 
-
-try:
-    from settings import ECHOPRINT_CODEGEN_BIN
-except Exception, e:
-    print e
-    ECHOPRINT_CODEGEN_BIN = 'echoprint-codegen'
-    pass
+ECHOPRINT_CODEGEN_BIN = getattr(settings, 'ECHOPRINT_CODEGEN_BIN', 'echoprint-codegen')
 
 class Echoprint:
     

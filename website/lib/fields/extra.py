@@ -4,9 +4,6 @@ from django.forms import forms
 from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext_lazy as _
 
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^lib\.fields\.extra\.MarkdownTextField"])
-add_introspection_rules([], ["^lib\.fields\.extra\.ContentTypeRestrictedFileField"])
 
 
 #from django.utils.html import conditional_escape, format_html, format_html_join

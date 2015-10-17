@@ -9,9 +9,12 @@ from django.db.models import permalink
 from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
 from django.core.urlresolvers import reverse
-import tagging
+
 from django_extensions.db.fields import AutoSlugField, UUIDField
 from phonenumber_field.modelfields import PhoneNumberField
+
+
+from tagging.fields import TagField
 
 import arating
 from postman.api import pm_write
@@ -93,10 +96,10 @@ class Profile(MigrationMixin):
     paypal = models.EmailField(_('Paypal'), null=True, blank=True, max_length=200)
     
     # relations
-    expertise = models.ManyToManyField('Expertise', verbose_name=_('Fields of expertise'), null=True, blank=True)
+    expertise = models.ManyToManyField('Expertise', verbose_name=_('Fields of expertise'), blank=True)
 
     # tagging (d_tags = "display tags")
-    d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
+    d_tags = TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
 
     # alpha features
     enable_alpha_features = models.BooleanField(default=False)
@@ -201,7 +204,7 @@ class Community(MigrationMixin):
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
     
     group = models.OneToOneField(Group, unique=True, null=True, blank=True)
-    members = models.ManyToManyField(User, null=True, blank=True)
+    members = models.ManyToManyField(User, blank=True)
     
     # auto-update
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -224,10 +227,10 @@ class Community(MigrationMixin):
     #country = CountryField(blank=True, null=True)
     country = models.ForeignKey(Country, blank=True, null=True)
     # relations
-    expertise = models.ManyToManyField('Expertise', verbose_name=_('Fields of expertise'), null=True, blank=True)
+    expertise = models.ManyToManyField('Expertise', verbose_name=_('Fields of expertise'), blank=True)
     
     # tagging (d_tags = "display tags")
-    d_tags = tagging.fields.TagField(verbose_name="Tags", blank=True, null=True)
+    d_tags = TagField(verbose_name="Tags", blank=True, null=True)
 
     class Meta:
         app_label = 'profiles'
@@ -330,7 +333,7 @@ class MobileProvider(models.Model):
 class ServiceType(models.Model):
     """Service type model"""
     title = models.CharField(_('title'), blank=True, max_length=100)
-    url = models.URLField(_('url'), blank=True, help_text='URL with a single \'{user}\' placeholder to turn a username into a service URL.', verify_exists=False)
+    url = models.URLField(_('url'), blank=True, help_text='URL with a single \'{user}\' placeholder to turn a username into a service URL.')
 
     class Meta:
         verbose_name = _('service type')
@@ -370,7 +373,7 @@ class Link(models.Model):
 
     profile = models.ForeignKey(Profile)
     title = models.CharField(_('title'), max_length=100, null=True, blank=True)
-    url = models.URLField(_('url'), verify_exists=True)
+    url = models.URLField(_('url'))
 
     class Meta:
         verbose_name = _('link')

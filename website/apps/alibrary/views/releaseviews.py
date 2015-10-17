@@ -4,7 +4,7 @@ from django import http
 import datetime
 from datetime import timedelta
 from django.http import HttpResponseForbidden, Http404, HttpResponseRedirect
-from django.utils import simplejson as json
+import json
 from django.conf import settings
 from django.template import RequestContext
 from django.contrib import messages

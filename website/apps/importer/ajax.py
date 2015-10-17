@@ -1,4 +1,4 @@
-from django.utils import simplejson
+import json
 from dajaxice.decorators import dajaxice_register
 from importer.models import ImportFile
 
@@ -9,6 +9,6 @@ def get_import(request, *args, **kwargs):
     for import_file in ImportFile.objects.all():
         data.append({'id': import_file.pk, 'status': import_file.status})
 
-    data = simplejson.dumps(data)
+    data = json.dumps(data)
 
     return data

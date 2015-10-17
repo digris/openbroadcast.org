@@ -251,15 +251,7 @@ except ImportError:
     south = None
 
 if south is not None and 'south' in settings.INSTALLED_APPS:
-    from south.modelsinspector import add_introspection_rules
-    add_introspection_rules(
-        [(
-            (SortedManyToManyField,),
-            [],
-            {"sorted": ["sorted", {"default": True}]},
-        )],
-        [r'^sortedm2m\.fields\.SortedManyToManyField']
-    )
+
 
     # Monkeypatch South M2M actions to create the sorted through model.
     # FIXME: This doesn't detect if you changed the sorted argument to the field.

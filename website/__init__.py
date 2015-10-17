@@ -1,5 +1,3 @@
-from south.signals import post_migrate
-
 def update_permissions_after_migration(app,**kwargs):
     """
     Update app permission just after every migration.
@@ -11,4 +9,3 @@ def update_permissions_after_migration(app,**kwargs):
 
     create_permissions(get_app(app), get_models(), 2 if settings.DEBUG else 0)
 
-post_migrate.connect(update_permissions_after_migration)

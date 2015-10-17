@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import time
+import hashlib
 import datetime
 import shutil
 import logging
@@ -13,7 +14,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
-from django.utils.hashcompat import sha_constructor
+from django.conf import settings
 from celery.task import task
 
 from util.process import Process
@@ -39,7 +40,7 @@ GENERIC_STATUS_CHOICES = (
 # extra fields
 from django_extensions.db.fields import *
 
-from settings import PROJECT_DIR
+PROJECT_DIR = getattr(settings, 'PROJECT_DIR', None)
 
 
 def create_download_path(instance, filename):
@@ -211,7 +212,7 @@ class Export(BaseModel):
         self.filename = generate_export_filename(self.export_items)
 
         if not self.token:
-            self.token = sha_constructor('TX%s' % self.uuid).hexdigest()
+            self.token = hashlib.sha1('TX%s' % self.uuid).hexdigest()
 
         super(Export, self).save(*args, **kwargs)
 

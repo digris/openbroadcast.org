@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate i18n thumbnail arating_tags wiki_tags disqus_tags comments atracker_tags sekizai_tags calc url_tags alibrary_tags video_tags %}
+{% load truncate i18n thumbnail arating_tags wiki_tags comments atracker_tags sekizai_tags calc url_tags alibrary_tags video_tags %}
 
 {% block heading %} <!-- heading / icon (large one) -->
 
@@ -493,10 +493,6 @@
 
     <section class="comments on-site">
         {% include "element/chat/_object_comments.html" %}
-    </section>
-
-    <section class="comments disqus">
-        {# disqus_show_comments #}
     </section>
 
     </div>

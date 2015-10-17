@@ -51,7 +51,7 @@ except ImportError:
             except ImportError:
                 from elementtree.ElementTree import Element
             
-import simplejson
+import json
 
 def elem_to_pesterfish(elem):
     """
@@ -95,7 +95,7 @@ def to_pesterfish(elem):
     """
     if hasattr(elem, 'getroot'):
         elem=elem.getroot()
-    return simplejson.dumps(elem_to_pesterfish(elem))
+    return json.dumps(elem_to_pesterfish(elem))
 
 def from_pesterfish(json, factory=Element):
     """
@@ -104,7 +104,7 @@ def from_pesterfish(json, factory=Element):
     default; if you want to use something else, pass the Element class
     as the factory parameter.
     """
-    return pesterfish_to_elem(simplejson.loads(json), factory)
+    return pesterfish_to_elem(json.loads(json), factory)
     
 
             

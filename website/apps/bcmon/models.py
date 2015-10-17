@@ -11,7 +11,7 @@ from django.utils.translation import ugettext as _
 from django_extensions.db.fields import *
 from django_extensions.db.fields.json import JSONField
 
-from cms.models import CMSPlugin
+
 from alibrary.models import Media
 from ep.API import fp
 
@@ -321,7 +321,7 @@ class Channel(BaseModel):
     
     
     
-class ChannelPlugin(CMSPlugin):    
-    channel = models.ForeignKey(Channel, related_name='plugins')
-    def __unicode__(self):
-        return "%s" % self.channel.name
+# class ChannelPlugin(CMSPlugin):
+#     channel = models.ForeignKey(Channel, related_name='plugins')
+#     def __unicode__(self):
+#         return "%s" % self.channel.name

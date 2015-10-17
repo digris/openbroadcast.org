@@ -1,5 +1,6 @@
 import reversion
-from multilingual.admin import MultilingualModelAdmin
+#from multilingual.admin import TranslatableAdmin
+from hvad.admin import TranslatableAdmin
 from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
 from django.utils.translation import ugettext as _
 from guardian.admin import GuardedModelAdmin
@@ -160,7 +161,7 @@ class ArtistAdmin(BaseAdmin):
 admin.site.register(Artist, ArtistAdmin)
 admin.site.register(NameVariation)
 
-class LicenseAdmin(reversion.VersionAdmin, MultilingualModelAdmin):
+class LicenseAdmin(reversion.VersionAdmin, TranslatableAdmin):
     
     inline_instances = ('name_translated', 'restricted', 'parent',)
     
@@ -385,10 +386,10 @@ admin.site.register(Mediaformat, MediaformatAdmin)
 admin.site.register(APILookup)
 
 
-from modeltranslation.admin import TranslationAdmin
-class SeasonAdmin(TranslationAdmin):
+from hvad.admin import TranslatableAdmin
+class SeasonAdmin(TranslatableAdmin):
     pass
-class WeatherAdmin(TranslationAdmin):
+class WeatherAdmin(TranslatableAdmin):
     pass
 
 admin.site.register(Season, SeasonAdmin)

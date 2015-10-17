@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 import subprocess
 import json
-
+from django.conf import settings
 import requests
-
-from settings import ENMFP_CODEGEN_BIN, ECHONEST_API_KEY
-
+ENMFP_CODEGEN_BIN = getattr(settings, 'ENMFP_CODEGEN_BIN', True)
+ECHONEST_API_KEY = getattr(settings, 'ECHONEST_API_KEY', True)
 
 class Analyze:
     

@@ -5,7 +5,6 @@ from optparse import make_option
 
 from django.core.management.base import BaseCommand, NoArgsCommand
 
-from cms.models import CMSPlugin
 from importer.models import *
 from importer.util.process import Process
 from importer.util.importer import Importer

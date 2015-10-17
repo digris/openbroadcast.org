@@ -6,7 +6,7 @@ from django.contrib.contenttypes.generic import GenericForeignKey
 
 logger = logging.getLogger(__name__)
 
-@transaction.commit_on_success
+@transaction.atomic
 def merge_model_objects(primary_object, alias_objects=[], keep_old=False):
 
     log = logging.getLogger('lib.util.merge.merge_model_objects')

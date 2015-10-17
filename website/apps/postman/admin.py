@@ -11,6 +11,7 @@ from postman.models import Message, PendingMessage
 class MessageAdminForm(forms.ModelForm):
     class Meta:
         model = Message
+        exclude = []
     class Media:
         css = { "all": ("postman/css/admin.css",) }
 
@@ -121,7 +122,7 @@ class MessageAdmin(admin.ModelAdmin):
         """
         return super(MessageAdmin, self).queryset(request).select_related('sender', 'recipient')
 
-    @transaction.commit_on_success
+    @transaction.atomic
     def save_model(self, request, obj, form, change):
         """
         Add some actions around the save.
@@ -140,6 +141,7 @@ class MessageAdmin(admin.ModelAdmin):
 class PendingMessageAdminForm(forms.ModelForm):
     class Meta:
         model = PendingMessage
+        exclude = []
     class Media:
         css = { "all": ("postman/css/admin.css",) }
 

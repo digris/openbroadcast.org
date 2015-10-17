@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.utils.functional import lazy
 from django import http
-from django.utils import simplejson as json
+import json
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from sendfile import sendfile
 

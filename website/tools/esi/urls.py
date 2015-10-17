@@ -13,7 +13,7 @@ example URL:
   /esi/news/story/12345/300/news/story_detail.html
 
 """
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 
 urlpatterns = patterns('esi.views',
     url(r'^(?P<app_label>[\w-]+)/(?P<model_name>[\w-]+)/(?P<object_id>\d+)/$', 'esi', name='esi'),

@@ -11,7 +11,7 @@ Refer to the official api documentation if you are unsure about something.
 try:
     import json
 except ImportError:
-    import simplejson as json
+    import json as json
 import datetime
 
 import util

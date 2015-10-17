@@ -276,5 +276,3 @@ class PrettyDateField(forms.fields.Field):
         raise ValidationError('Please enter a valid date.')
 
 
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^django_date_extensions\.fields\.ApproximateDateField"])   

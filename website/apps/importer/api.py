@@ -1,5 +1,5 @@
 import random
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from tastypie import fields
 from tastypie.authentication import *
 from tastypie.authorization import *

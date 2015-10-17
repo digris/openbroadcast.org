@@ -3,7 +3,7 @@ import urllib
 from django import http
 
 try:
-    from django.utils import simplejson as json
+    import json
 except ImportError:
     import json
 

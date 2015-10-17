@@ -15,15 +15,14 @@ from django.contrib.contenttypes import generic
 # cms
 # from cms.models import CMSPlugin, Page
 from cms.models.fields import PlaceholderField
-from cms.utils.placeholder import get_page_from_placeholder_if_exists
 
 # filer
 from filer.models.filemodels import *
 from filer.models.foldermodels import *
-from filer.models.audiomodels import *
+# from filer.models.audiomodels import *
 from filer.models.imagemodels import *
 from filer.fields.image import FilerImageField
-from filer.fields.audio import FilerAudioField
+# from filer.fields.audio import FilerAudioField
 from filer.fields.file import FilerFileField
 
 # modules
@@ -34,8 +33,10 @@ import tagging
 
 # model extensions
 from mptt.models import MPTTModel, TreeForeignKey
-from multilingual.translation import TranslationModel
-from multilingual.manager import MultilingualManager
+
+#from multilingual.translation import TranslatableModel
+from hvad.models import TranslatableModel, TranslatedFields
+from hvad.manager import TranslationManager
 
 # django-extensions (http://packages.python.org/django-extensions/)
 from django_extensions.db.fields import UUIDField, AutoSlugField
@@ -102,7 +103,7 @@ class Distributor(MPTTModel, MigrationMixin):
     # relations
     parent = TreeForeignKey('self', null=True, blank=True, related_name='label_children')
 
-    labels = models.ManyToManyField('Label', through='DistributorLabel', blank=True, null=True, related_name="distributors")
+    labels = models.ManyToManyField('Label', through='DistributorLabel', blank=True, related_name="distributors")
     
     # user relations
     owner = models.ForeignKey(User, blank=True, null=True, related_name="distributors_owner", on_delete=models.SET_NULL)
@@ -221,7 +222,7 @@ class Agency(MPTTModel, MigrationMixin):
     # relations
     parent = TreeForeignKey('self', null=True, blank=True, related_name='agency_children')
 
-    artists = models.ManyToManyField('Artist', through='AgencyArtist', blank=True, null=True, related_name="agencies")
+    artists = models.ManyToManyField('Artist', through='AgencyArtist', blank=True, related_name="agencies")
 
     # user relations
     owner = models.ForeignKey(User, blank=True, null=True, related_name="agencies_owner", on_delete=models.SET_NULL)
@@ -327,7 +328,7 @@ class AgencyArtist(models.Model):
 
 
 
-class License(MPTTModel, MigrationMixin):
+class License(MPTTModel, TranslatableModel, MigrationMixin):
     
     name = models.CharField(max_length=200)
     
@@ -349,12 +350,12 @@ class License(MPTTModel, MigrationMixin):
     is_promotional = models.NullBooleanField(default=False, null=True, blank=True)
 
 
-    class Translation(TranslationModel):
-        
-        name_translated = models.CharField(max_length=200)
-        excerpt = models.TextField(blank=True, null=True)  
-        license_text = models.TextField(blank=True, null=True) 
-    
+    translations = TranslatedFields(
+        name_translated = models.CharField(max_length=200),
+        excerpt = models.TextField(blank=True, null=True),
+        license_text = models.TextField(blank=True, null=True)
+    )
+
     
     # auto-update
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -362,11 +363,10 @@ class License(MPTTModel, MigrationMixin):
     
     # relations
     parent = TreeForeignKey('self', null=True, blank=True, related_name='license_children')
-    
-    # manager
-    objects = MultilingualManager()
 
-    # meta
+    objects = TranslationManager()
+
+
     class Meta:
         app_label = 'alibrary'
         verbose_name = _('License')
@@ -474,7 +474,7 @@ class Daypart(models.Model):
         (5, _('Sat')),
         (6, _('Sun')),
     )
-    day = models.PositiveIntegerField(max_length=1, default=0, null=True, choices=DAY_CHOICES)
+    day = models.PositiveIntegerField(default=0, null=True, choices=DAY_CHOICES)
     time_start = models.TimeField()
     time_end = models.TimeField()
     

@@ -1,22 +1,17 @@
 import os
 from optparse import make_option
-
 import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-
-
-
 from django.core.files.storage import FileSystemStorage
 from django.core.management.base import NoArgsCommand
 from django.contrib.staticfiles import storage
+from django.conf import settings
 
 from pushy_asset.compiler import PushyAssetCompiler
 
 
-
-
-from settings import PROJECT_DIR
+PROJECT_DIR = getattr(settings, 'PROJECT_DIR', None)
 
 
 class AssetChangedHandler(FileSystemEventHandler):

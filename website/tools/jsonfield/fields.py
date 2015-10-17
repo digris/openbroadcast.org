@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.serializers.json import DjangoJSONEncoder
-from django.utils import simplejson as json
+import json
 from django.utils.translation import ugettext_lazy as _
 
 from django.forms.fields import Field
@@ -79,9 +79,3 @@ class JSONCharField(JSONFieldBase, models.CharField):
     stored in the database like a CharField, which enables it to be used
     e.g. in unique keys"""
 
-
-try:
-    from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ["^jsonfield\.fields\.(JSONField|JSONCharField)"])
-except ImportError:
-    pass
