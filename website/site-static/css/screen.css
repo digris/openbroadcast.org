@@ -11339,33 +11339,29 @@ a.thumbnail:hover {
   color: #999999;
   border: none;
 }
-
 /* line 12, ../sass/apps/_importer.sass */
-i.icon-large {
+.listview.import i.icon-large {
   padding: 3px 0 0 10px;
   display: block;
   background-repeat: no-repeat;
   font-size: 24px;
 }
-
 /* line 18, ../sass/apps/_importer.sass */
-i.icon-id3 {
+.listview.import i.icon-id3 {
   background-image: url(/static/img/icons/metadata.providers/id3v2.png) !important;
   background-position: 0 0;
   width: 22px;
   height: 22px;
 }
-
 /* line 23, ../sass/apps/_importer.sass */
-i.icon-musicbrainz_ {
+.listview.import i.icon-musicbrainz_ {
   background-image: url(/static/img/icons/metadata.providers/musicbrainz.png) !important;
   background-position: 0 0;
   width: 22px;
   height: 22px;
 }
-
 /* line 28, ../sass/apps/_importer.sass */
-i.icon-obp {
+.listview.import i.icon-obp {
   background-image: url(/static/img/icons/metadata.providers/openbroadcast.png) !important;
   background-position: 0 0;
   width: 22px;

@@ -27,7 +27,7 @@
             <tbody>
             {% for stat in statistics %}
                 <tr>
-                    <td>{{ stat.name }}</td>
+                    <td><a href="{{ stat.url }}">{{ stat.name }}</a></td>
                     <td style="text-align: right;">{{ stat.stats.num_edited_day }} / {{ stat.stats.num_created_day }}</td>
                     <td style="text-align: right;">{{ stat.stats.num_edited_week }} / {{ stat.stats.num_created_week }}</td>
                     <td style="text-align: right;">{{ stat.stats.num_total }}</td>

@@ -1,14 +1,14 @@
+# -*- coding: utf-8 -*-
 import time
 import datetime
 from dateutil.relativedelta import relativedelta
 from django.db.models import Count
 from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
 from atracker.models import Event
 from atracker.util import summary_for_object
 
-
 DEFAULT_ACTIONS = ['playout', 'stream', 'download',]
-
 
 class ObjectStatistics(object):
 
@@ -144,6 +144,7 @@ class PlatformStatistics(object):
 
         stats.append({
             'name': 'Releases',
+            'url': reverse('alibrary-release-list'),
             'stats': {
                 'num_total': num_total,
                 'num_edited_week': num_week,
@@ -162,6 +163,7 @@ class PlatformStatistics(object):
 
         stats.append({
             'name': 'Artists',
+            'url': reverse('alibrary-artist-list'),
             'stats': {
                 'num_total': num_total,
                 'num_edited_week': num_week,
@@ -180,6 +182,7 @@ class PlatformStatistics(object):
 
         stats.append({
             'name': 'Tracks',
+            'url': reverse('alibrary-media-list'),
             'stats': {
                 'num_total': num_total,
                 'num_edited_week': num_week,
@@ -198,6 +201,7 @@ class PlatformStatistics(object):
 
         stats.append({
             'name': 'Labels',
+            'url': reverse('alibrary-label-list'),
             'stats': {
                 'num_total': num_total,
                 'num_edited_week': num_week,
