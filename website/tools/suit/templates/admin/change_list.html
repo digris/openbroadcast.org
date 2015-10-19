@@ -63,7 +63,7 @@
             {% if has_add_permission %}
               <div class="object-tools">
                 {% block object-tools-items %}
-                  <a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}" class="btn btn-success">
+                  <a href="{% url "cl.opts"|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}" class="btn btn-success">
                     <i class="icon-plus-sign icon-white"></i>&nbsp;
                     {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
                   </a>
@@ -111,7 +111,7 @@
                   <a href="?{% if cl.is_popup %}pop=1{% endif %}">{% trans 'Reset search and filters' %}</a>
                 {% else %}
                   {% blocktrans with cl.opts.verbose_name_plural|capfirst as name_plural %}{{ name_plural }} are not created yet{% endblocktrans %}.
-                  {% if has_add_permission %}<a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}">
+                  {% if has_add_permission %}<a href="{% url "cl.opts"|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}">
                     {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}</a>{% endif %}
                 {% endif %}
               </div>

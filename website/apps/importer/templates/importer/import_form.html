@@ -1,6 +1,6 @@
 {% extends "layout_edit.html" %}
 
-{% load i18n sekizai_tags verbatim dajaxice_templatetags straight_include mustache pushy_tags istats_tags %}
+{% load i18n sekizai_tags straight_include dajaxice_templatetags pushy_tags istats_tags %}
 
 {% block object_type %}import{% endblock %}
 
@@ -54,7 +54,7 @@
 		<ul class="unstyled">
 
 			<li class="link ">
-				<span class="left icon"> <a href="{% url importer-import-list %}" title="{% trans "Back to Detail-View" %}">{% trans "Back to Imports" %}</a> </span>
+				<span class="left icon"> <a href="{% url "importer-import-list" %}" title="{% trans "Back to Detail-View" %}">{% trans "Back to Imports" %}</a> </span>
 				<span class="opt"></span>
 				<span class="clear"></span>
 			</li>
@@ -72,7 +72,7 @@
 
 {% addtoblock "js-head" %}
 <script type="text/javascript">
-	IMPORTFILE_API = "{% url api_dispatch_list api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}";
+	IMPORTFILE_API = "{% url "api_dispatch_list" api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}";
 	{% if data %}
 	app = {loaded: true};
 	{% endif %}
@@ -89,19 +89,7 @@
 
 {% addtoblock "css" %}<link rel="stylesheet" href="{{ STATIC_URL }}css/lib/multiuploader/jquery.fileupload-ui.css">{% endaddtoblock %}
 
-{% addtoblock "js-post" %}
-    <script type="text/html" id="tweetTemplate">
-      {% straight_include "importer/tweetTemplate.mustache" %}
-    </script>
 
-    <script type="text/html" id="listApp">
-      {% straight_include "importer/listApp.mustache" %}
-    </script>
-
-    <script type="text/html" id="detailApp">
-      {% straight_include "importer/detailApp.mustache" %}
-    </script>
-{% endaddtoblock %}
 
 {% addtoblock "js-post" %}
 <script type="text/javascript">
@@ -112,7 +100,7 @@ $(document).ready(function() {
 	$(function () {
 
 		importer.ui = new ImporterUi();
-		importer.ui.api_url = "{% url api_dispatch_list resource_name='import' api_name='v1'%}{{ object.id }}/";
+		importer.ui.api_url = "{% url "api_dispatch_list" resource_name='import' api_name='v1'%}{{ object.id }}/";
 		importer.ui.fileupload_id = 'fileupload';
 		importer.ui.fileupload_options = {
 	        maxFileSize: 1000000000, // 1000 MB
@@ -183,9 +171,9 @@ $(document).ready(function() {
 
         <div class="uploader">
 
-            <form id="fileupload" action="{% url api_dispatch_list api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}" method="POST" enctype="multipart/form-data">
+            <form id="fileupload" action="{% url "api_dispatch_list" api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}" method="POST" enctype="multipart/form-data">
 
-                <input type="hidden" id="import_api_url"  value="{% url api_dispatch_list resource_name='import' api_name='v1'%}{{ object.id }}" />
+                <input type="hidden" id="import_api_url"  value="{% url "api_dispatch_list" resource_name='import' api_name='v1'%}{{ object.id }}" />
 
                 <div class="fileupload-buttonbar">
 
@@ -260,6 +248,7 @@ $(document).ready(function() {
 <script id="template-result-imported" type="text/x-tmpl">
 {% straight_include "importer/template-result-imported.html" %}
 </script>
+
 
 
 {% endblock %}

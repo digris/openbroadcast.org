@@ -405,12 +405,12 @@
                     <input type="hidden" class="release" value="{{ item.name }}">
 
                     <h5>
-                        <a href="http://musicbrainz.org/recording/{{ item.media.mb_id }}">{{ item.media.name }}</a>
+                        <a target="_blank" href="http://musicbrainz.org/recording/{{ item.media.mb_id }}">{{ item.media.name }}</a>
                         by
-                        <a href="http://musicbrainz.org/artist/{{ item.artist.mb_id }}">{{ item.artist.name }}</a>
+                        <a target="_blank" href="http://musicbrainz.org/artist/{{ item.artist.mb_id }}">{{ item.artist.name }}</a>
                     </h5>
 
-                    <a class="external" href="http://musicbrainz.org/release/{{ item.mb_id }}">{{ item.name }}</a>
+                    <a target="_blank" class="external" href="http://musicbrainz.org/release/{{ item.mb_id }}">{{ item.name }}</a>
                     <ul class="unstyled">
                         <li class="small">{{ item.country }} - {{ item.releasedate }} | {{ item.status }}</li>
                         <li class="small">{{ item.label.name }} - {{ item.catalognumber }}</li>

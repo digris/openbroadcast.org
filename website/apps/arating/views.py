@@ -88,6 +88,6 @@ def vote(request, content_type, object_id, vote=0, can_vote_test=None,
         data = {'choices': choices}
 
         
-    return HttpResponse(json.dumps(data), mimetype="application/json")
-    #return HttpResponse(data, mimetype=mimetype)
+    return HttpResponse(json.dumps(data), content_type="application/json")
+    #return HttpResponse(data, content_type=mimetype)
 

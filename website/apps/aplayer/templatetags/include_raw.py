@@ -18,7 +18,7 @@ def do_include_raw(parser, token):
         template_name = template_name[1:-1]
  
     #source, path = load_template_source(template_name)
-    source, path= Loader().load_template_source(template_name)
+    source, path= Loader(engine=None).load_template_source(template_name)
     
  
     return template.TextNode(source)

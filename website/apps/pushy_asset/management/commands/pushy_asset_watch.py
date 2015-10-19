@@ -11,7 +11,7 @@ from django.conf import settings
 from pushy_asset.compiler import PushyAssetCompiler
 
 
-PROJECT_DIR = getattr(settings, 'PROJECT_DIR', None)
+BASE_DIR = getattr(settings, 'BASE_DIR', None)
 
 
 class AssetChangedHandler(FileSystemEventHandler):
@@ -54,7 +54,7 @@ class Command(NoArgsCommand):
         self.dry_run = options['dry_run']
 
     def watch(self):
-        path = os.path.join(PROJECT_DIR, 'site-static', 'css')
+        path = os.path.join(BASE_DIR, 'site-static', 'css')
         target = 'pushy_asset/refresh/'
         print target
         import logging

@@ -1,6 +1,6 @@
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["profiles/nj/profile/autocomplete.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/profiles/static/profiles/nj/profile/autocomplete.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -68,267 +68,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["shortcutter/nj/session_detail.html"] = (function() {
-function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-var parentTemplate = null;
-output += "<div>\n\t\n\t";
-frame = frame.push();
-var t_3 = runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"slots");
-if(t_3) {var t_2 = t_3.length;
-for(var t_1=0; t_1 < t_3.length; t_1++) {
-var t_4 = t_3[t_1];
-frame.set("slot", t_4);
-frame.set("loop.index", t_1 + 1);
-frame.set("loop.index0", t_1);
-frame.set("loop.revindex", t_2 - t_1);
-frame.set("loop.revindex0", t_2 - t_1 - 1);
-frame.set("loop.first", t_1 === 0);
-frame.set("loop.last", t_1 === t_2 - 1);
-frame.set("loop.length", t_2);
-output += "\n\t<div class=\"holder slot\" style=\"width: ";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize"), env.opts.autoescape);
-output += "px;\">\n\t\t<div class=\"header\"><h4>";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"time"), env.opts.autoescape);
-output += "</h4></div>\n\t\t\n\t\t";
-frame = frame.push();
-var t_7 = runtime.memberLookup((t_4),"shots");
-if(t_7) {var t_6 = t_7.length;
-for(var t_5=0; t_5 < t_7.length; t_5++) {
-var t_8 = t_7[t_5];
-frame.set("shot", t_8);
-frame.set("loop.index", t_5 + 1);
-frame.set("loop.index0", t_5);
-frame.set("loop.revindex", t_6 - t_5);
-frame.set("loop.revindex0", t_6 - t_5 - 1);
-frame.set("loop.first", t_5 === 0);
-frame.set("loop.last", t_5 === t_6 - 1);
-frame.set("loop.length", t_6);
-output += "\n\t\t\t<div class=\"holder shot\">\n\t\t\t\t<div class=\"box\" style=\"width: ";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize"), env.opts.autoescape);
-output += "px; height: ";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize"), env.opts.autoescape);
-output += "px;\">\n\t\t\t\t";
-if(runtime.memberLookup((t_8),"image")) {
-output += "\t\t\t\t\n\t\t\t\t\t<img src=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_8),"image"), env.opts.autoescape);
-output += "\" width=\"";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize") - 10, env.opts.autoescape);
-output += "\"/>\n\t\t\t\t";
-;
-}
-else {
-output += "\n\t\t\t\t\t<img src=\"/static/shortcutter/img/shot_placeholder.png\" width=\"";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize") - 10, env.opts.autoescape);
-output += "\"/>\n\t\t\t\t";
-;
-}
-output += "\n\t\t\t\t\n\t\t\t\t\t<span class=\"caption caption fade-caption\" style=\"width: ";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize") - 25, env.opts.autoescape);
-output += "px; height: ";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize") - 25, env.opts.autoescape);
-output += "px;\">\n\t\t\t\t\t\t<h3>Caption</h3>\n\t\t\t\t\t\t<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<dl>\n\t\t\t\t\t\t\t<dt>Created</dt>\n\t\t\t\t\t\t\t<dd>";
-output += runtime.suppressValue(runtime.memberLookup((t_8),"created"), env.opts.autoescape);
-output += "</dd>\n\t\t\t\t\t\t</dl>\n\t\t\t\t\t\t\n\t\t\t\t\t\t<span class=\"datetime pull-right\"></span>\n\t\t\t\t\t</span>\n\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"meta shot\">\n\t\t\t<p>";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_8),"user")),"username"), env.opts.autoescape);
-output += "\n\t\t\t\t<span class=\"datetime pull-right\">";
-output += runtime.suppressValue(runtime.memberLookup((t_8),"created"), env.opts.autoescape);
-output += "</span>\n\t\t\t</p>\n\t\t\t</div>\n\t\t\t\n\t\t\t</div>\n\t\t\t\n\t\t\t";
-if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"last")) {
-output += "\n\t\t\t<div style=\"clear: both;\"></div>\n\t\t\t";
-;
-}
-output += "\n\t\t\t\n\t\t\t\n\t\t";
-;
-}
-}
-frame = frame.pop();
-output += "\n\t\t\n\t\t\n\t</div>\n\t";
-;
-}
-}
-frame = frame.pop();
-output += "\n\t\n</div>";
-if(parentTemplate) {
-parentTemplate.rootRenderFunc(env, context, frame, runtime, cb);
-} else {
-cb(null, output);
-}
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-
-})();
-})();
-
-
-
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["shortcutter/nj/session_detail_grid.html"] = (function() {
-function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-var parentTemplate = null;
-output += "<div>\n\t\n\t";
-frame = frame.push();
-var t_3 = runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"slots");
-if(t_3) {var t_2 = t_3.length;
-for(var t_1=0; t_1 < t_3.length; t_1++) {
-var t_4 = t_3[t_1];
-frame.set("slot", t_4);
-frame.set("loop.index", t_1 + 1);
-frame.set("loop.index0", t_1);
-frame.set("loop.revindex", t_2 - t_1);
-frame.set("loop.revindex0", t_2 - t_1 - 1);
-frame.set("loop.first", t_1 === 0);
-frame.set("loop.last", t_1 === t_2 - 1);
-frame.set("loop.length", t_2);
-output += "\n\t<div class=\"holder slot\" style=\"width: ";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize"), env.opts.autoescape);
-output += "px;\">\n\t\t<div class=\"header\"><h4>";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"time"), env.opts.autoescape);
-output += "</h4></div>\n\t\t\n\t\t";
-frame = frame.push();
-var t_7 = runtime.memberLookup((t_4),"shots");
-if(t_7) {var t_6 = t_7.length;
-for(var t_5=0; t_5 < t_7.length; t_5++) {
-var t_8 = t_7[t_5];
-frame.set("shot", t_8);
-frame.set("loop.index", t_5 + 1);
-frame.set("loop.index0", t_5);
-frame.set("loop.revindex", t_6 - t_5);
-frame.set("loop.revindex0", t_6 - t_5 - 1);
-frame.set("loop.first", t_5 === 0);
-frame.set("loop.last", t_5 === t_6 - 1);
-frame.set("loop.length", t_6);
-output += "\n\t\t\t<div class=\"holder shot loading\" id=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_8),"uuid"), env.opts.autoescape);
-output += "\">\n\n\t\t\t<i class=\"icon-spinner icon-spin\"></i>\n\t\t\t\n\t\t\t</div>\n\t\t\t\n\t\t\t";
-if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"last")) {
-output += "\n\t\t\t<div style=\"clear: both;\"></div>\n\t\t\t";
-;
-}
-output += "\n\t\t\t\n\t\t\t\n\t\t";
-;
-}
-}
-frame = frame.pop();
-output += "\n\t\t\n\t\t\n\t</div>\n\t";
-;
-}
-}
-frame = frame.pop();
-output += "\n\t\n</div>";
-if(parentTemplate) {
-parentTemplate.rootRenderFunc(env, context, frame, runtime, cb);
-} else {
-cb(null, output);
-}
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-
-})();
-})();
-
-
-
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["shortcutter/nj/session_detail_shot.html"] = (function() {
-function root(env, context, frame, runtime, cb) {
-var lineno = null;
-var colno = null;
-var output = "";
-try {
-var parentTemplate = null;
-output += "<div class=\"loader\" style=\"width: ";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize"), env.opts.autoescape);
-output += "px; height: ";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize"), env.opts.autoescape);
-output += "px;\">\n\n\t<h1 class=\"indicator\"><i class=\"icon-spinner icon-spin\"></i></h1>\n\n</div>\n\n<div class=\"box\" style=\"width: ";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize"), env.opts.autoescape);
-output += "px; height: ";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize"), env.opts.autoescape);
-output += "px;\">\n\n\t\n\n\t";
-if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "shot")),"image")) {
-output += "\n\t<img src=\"";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "shot")),"image"), env.opts.autoescape);
-output += "\" width=\"";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize") - 10, env.opts.autoescape);
-output += "\"/>\n\t";
-;
-}
-else {
-output += "\n\t<img src=\"/static/shortcutter/img/shot_placeholder.png\" width=\"";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize") - 10, env.opts.autoescape);
-output += "\"/>\n\t";
-;
-}
-output += "\n\n\t";
-if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "shot")),"status") != 100) {
-output += "\n\t<span class=\"caption caption fade-caption\" style=\"width: ";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize") - 25, env.opts.autoescape);
-output += "px; height: ";
-output += runtime.suppressValue(runtime.contextOrFrameLookup(context, frame, "shotSize") - 25, env.opts.autoescape);
-output += "px;\">\n\t\t<h3>";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "shot")),"user")),"username"), env.opts.autoescape);
-output += "</h3>\n\t\t\n\t\t";
-if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "shot")),"description")) {
-output += "\n\t\t<blockquote>\n\t\t\t";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "shot")),"description"), env.opts.autoescape);
-output += "\n\t\t</blockquote>\n\t\t";
-;
-}
-output += "\n\t\t<dl>\n\t\t\t<dt>\n\t\t\t\tShot taken:\n\t\t\t</dt>\n\t\t\t<dd>\n\t\t\t\t";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "shot")),"updated"), env.opts.autoescape);
-output += "\n\t\t\t</dd>\n\t\t\t<dt>\n\t\t\t\turi: ";
-output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "shot")),"resource_uri"), env.opts.autoescape);
-output += "\n\t\t\t</dt>\n\t\t\t<dd>\n\t\t\t\t";
-if(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "shot")),"pos")),"lat")) {
-output += "\n\t\t\t\t";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "shot")),"pos")),"lat"), env.opts.autoescape);
-output += "\n\t\t\t\t";
-output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "shot")),"pos")),"lng"), env.opts.autoescape);
-output += "\n\t\t\t\t";
-;
-}
-output += "\n\t\t\t</dd>\n\t\t</dl>\n\t\t<span class=\"datetime pull-right\"></span>\n\t\t\n\t</span>\n\t";
-;
-}
-output += "\n\t\n\t\n\n</div>";
-if(parentTemplate) {
-parentTemplate.rootRenderFunc(env, context, frame, runtime, cb);
-} else {
-cb(null, output);
-}
-;
-} catch (e) {
-  cb(runtime.handleError(e, lineno, colno));
-}
-}
-return {
-root: root
-};
-
-})();
-})();
-
-
-
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["istats/nj/server.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/istats/static/istats/nj/server.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -380,7 +120,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/artist/autocomplete.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/artist/autocomplete.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -460,7 +200,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/label/autocomplete.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/label/autocomplete.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -514,7 +254,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/media/autocomplete.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/media/autocomplete.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -582,7 +322,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/merge/merge_dialog.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/merge/merge_dialog.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -853,7 +593,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/merge/merge_dialog_progress.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/merge/merge_dialog_progress.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -880,7 +620,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/playlist/_transform_duration.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/playlist/_transform_duration.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -938,7 +678,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/playlist/autocomplete.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/playlist/autocomplete.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -1019,7 +759,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/playlist/editor_item.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/playlist/editor_item.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -1165,7 +905,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/playlist/editor_search.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/playlist/editor_search.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -1233,7 +973,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/playlist/editor_transform_summary.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/playlist/editor_transform_summary.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -1291,7 +1031,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/playlist/listing_inline.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/playlist/listing_inline.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -1367,7 +1107,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/playlist/select_popup.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/playlist/select_popup.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -1392,7 +1132,7 @@ frame.set("loop.first", t_1 === 0);
 frame.set("loop.last", t_1 === t_2 - 1);
 frame.set("loop.length", t_2);
 output += "\n            ";
-env.getTemplate("alibrary/nj/playlist/select_popup_item.html", false, "alibrary/nj/playlist/select_popup.html", function(t_6,t_4) {
+env.getTemplate("alibrary/nj/playlist/select_popup_item.html", false, "/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/playlist/select_popup.html", function(t_6,t_4) {
 if(t_6) { cb(t_6); return; }
 t_4.render(context.getVariables(), frame, function(t_7,t_5) {
 if(t_7) { cb(t_7); return; }
@@ -1423,7 +1163,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/playlist/select_popup_item.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/playlist/select_popup_item.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -1487,7 +1227,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/provider/relation_inline.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/provider/relation_inline.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -1540,7 +1280,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/provider/search_dialog.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/provider/search_dialog.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -1804,7 +1544,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/reassign/reassign_dialog.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/reassign/reassign_dialog.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -1833,7 +1573,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/reassign/reassign_dialog_continue.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/reassign/reassign_dialog_continue.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -1862,7 +1602,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/reassign/reassign_dialog_progress.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/reassign/reassign_dialog_progress.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -1889,7 +1629,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/reassign/reassign_dialog_search_result.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/reassign/reassign_dialog_search_result.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -1976,7 +1716,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["alibrary/nj/release/autocomplete.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/alibrary/static/alibrary/nj/release/autocomplete.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -2070,7 +1810,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["aplayer/nj/detail_player.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/aplayer/static/aplayer/nj/detail_player.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -2132,7 +1872,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["aplayer/nj/inline_player_item.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/aplayer/static/aplayer/nj/inline_player_item.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -2185,7 +1925,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["aplayer/nj/popup_emission.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/aplayer/static/aplayer/nj/popup_emission.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -2255,7 +1995,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["aplayer/nj/popup_information_abcast.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/aplayer/static/aplayer/nj/popup_information_abcast.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -2288,7 +2028,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["aplayer/nj/popup_screen.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/aplayer/static/aplayer/nj/popup_screen.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -2361,7 +2101,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["importer/nj/__orig__importfile.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/importer/static/importer/nj/__orig__importfile.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -2838,7 +2578,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["importer/nj/autocomplete.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/importer/static/importer/nj/autocomplete.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -2937,7 +2677,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["importer/nj/importfile.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/importer/static/importer/nj/importfile.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -3229,15 +2969,15 @@ output += "\">\n                    <input type=\"hidden\" class=\"artist\" valu
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"artist")),"name"), env.opts.autoescape);
 output += "\">\n                    <input type=\"hidden\" class=\"release\" value=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"name"), env.opts.autoescape);
-output += "\">\n\n                    <h5>\n                        <a href=\"http://musicbrainz.org/recording/";
+output += "\">\n\n                    <h5>\n                        <a target=\"_blank\" href=\"http://musicbrainz.org/recording/";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"media")),"mb_id"), env.opts.autoescape);
 output += "\">";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"media")),"name"), env.opts.autoescape);
-output += "</a>\n                        by\n                        <a href=\"http://musicbrainz.org/artist/";
+output += "</a>\n                        by\n                        <a target=\"_blank\" href=\"http://musicbrainz.org/artist/";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"artist")),"mb_id"), env.opts.autoescape);
 output += "\">";
 output += runtime.suppressValue(runtime.memberLookup((runtime.memberLookup((t_4),"artist")),"name"), env.opts.autoescape);
-output += "</a>\n                    </h5>\n\n                    <a class=\"external\" href=\"http://musicbrainz.org/release/";
+output += "</a>\n                    </h5>\n\n                    <a target=\"_blank\" class=\"external\" href=\"http://musicbrainz.org/release/";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"mb_id"), env.opts.autoescape);
 output += "\">";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"name"), env.opts.autoescape);
@@ -3378,7 +3118,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["importer/nj/popover.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/importer/static/importer/nj/popover.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -3488,7 +3228,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["importer/nj/summary.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/importer/static/importer/nj/summary.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -3533,7 +3273,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["exporter/nj/export.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/exporter/static/exporter/nj/export.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -3607,7 +3347,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["abcast/nj/autocomplete.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/abcast/static/abcast/nj/autocomplete.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -3710,7 +3450,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["abcast/nj/col_day.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/abcast/static/abcast/nj/col_day.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -3736,7 +3476,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["abcast/nj/emission.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/abcast/static/abcast/nj/emission.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -3817,7 +3557,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["abcast/nj/emission_popup.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/abcast/static/abcast/nj/emission_popup.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -3934,7 +3674,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["abcast/nj/on_air_emission.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/abcast/static/abcast/nj/on_air_emission.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -4020,7 +3760,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["abcast/nj/on_air_item.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/abcast/static/abcast/nj/on_air_item.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -4148,7 +3888,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["abcast/nj/selected_object.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/abcast/static/abcast/nj/selected_object.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;
@@ -4201,7 +3941,7 @@ root: root
 
 
 
-(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["abcast/nj/top_week.html"] = (function() {
+(function() {(window.nunjucksPrecompiled = window.nunjucksPrecompiled || {})["/Users/ohrstrom/Documents/Code/upgrade.openbroadcast.org/website/apps/abcast/static/abcast/nj/top_week.html"] = (function() {
 function root(env, context, frame, runtime, cb) {
 var lineno = null;
 var colno = null;

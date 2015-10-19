@@ -1,6 +1,6 @@
 {% extends "layout_edit.html" %}
 
-{% load i18n sekizai_tags verbatim dajaxice_templatetags straight_include mustache %}
+{% load i18n sekizai_tags dajaxice_templatetags straight_include mustache %}
 
 {% block object_type %}import{% endblock %}
 
@@ -47,7 +47,7 @@
 		<ul class="unstyled">
 			
 			<li class="link ">
-				<span class="left icon"> <a href="{% url importer-import-list %}" title="{% trans "Back to Detail-View" %}">{% trans "Back to Imports" %}</a> </span>
+				<span class="left icon"> <a href="{% url "importer-import-list" %}" title="{% trans "Back to Detail-View" %}">{% trans "Back to Imports" %}</a> </span>
 				<span class="opt"></span>
 				<span class="clear"></span>
 			</li>
@@ -63,7 +63,7 @@
 
 {% addtoblock "js-head" %}
 <script type="text/javascript">
-	IMPORTFILE_API = "{% url api_dispatch_list api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}";
+	IMPORTFILE_API = "{% url "api_dispatch_list" api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}";
 	{% if data %}
 	app = {loaded: true};
 	{% endif %}
@@ -103,7 +103,7 @@ $(document).ready(function() {
 	$(function () {
 
 		importer.ui = new ImporterUi();
-		importer.ui.api_url = "{% url api_dispatch_list resource_name='import' api_name='v1'%}{{ object.id }}";
+		importer.ui.api_url = "{% url "api_dispatch_list" resource_name='import' api_name='v1'%}{{ object.id }}";
 		importer.ui.fileupload_id = 'fileupload';
 		importer.ui.fileupload_options = {
 	        maxFileSize: 1000000000, // 1000 MB
@@ -135,9 +135,9 @@ $(document).ready(function() {
 
 	<div class="uploader">
 		
-		<form id="fileupload" action="{% url api_dispatch_list api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}" method="POST" enctype="multipart/form-data">
+		<form id="fileupload" action="{% url "api_dispatch_list" api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}" method="POST" enctype="multipart/form-data">
     
-	        <input type="hidden" id="import_api_url"  value="{% url api_dispatch_list resource_name='import' api_name='v1'%}{{ object.id }}" />
+	        <input type="hidden" id="import_api_url"  value="{% url "api_dispatch_list" resource_name='import' api_name='v1'%}{{ object.id }}" />
 	        
 	        <div class="fileupload-buttonbar">
 

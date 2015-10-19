@@ -56,7 +56,7 @@
                     <ul class="unstyled">
                         <li class="link">
                             <a class="hoverable {% if not transformation.status %} disabled{% endif %}"
-                               href="{% url alibrary-playlist-convert object.pk "playlist" %}"
+                               href="{% url "alibrary-playlist-convert" object.pk "playlist" %}"
                                title="{% trans "Make playlist public" %}">
                                 <i class="icon icon-exchange"></i>
                                 {% if  object.type == "broadcast" %}
@@ -112,7 +112,7 @@
                     <ul class="unstyled">
                         <li class="link">
                             <a class="hoverable {% if not transformation.status %} disabled{% endif %}"
-                               href="{% url alibrary-playlist-convert object.pk "broadcast" %}"
+                               href="{% url "alibrary-playlist-convert" object.pk "broadcast" %}"
                                title="{% trans "Make playlist broadcastable" %}">
                                 <i class="icon icon-exchange"></i>
                                 <span>{% trans "Make playlist broadcastable" %}</span>

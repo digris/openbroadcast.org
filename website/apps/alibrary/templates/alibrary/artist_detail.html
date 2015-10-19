@@ -103,7 +103,7 @@
 
 
             <h2>
-                {% url alibrary-media-list as media_list %}
+                {% url "alibrary-media-list" as media_list %}
                 {% trans "Top Tracks" %}
                             <span class="pull-right">
                                 <a href="{% spurl path=media_list query="artist={{ object.slug }}" %}">
@@ -158,7 +158,7 @@
 
 
         <section class="top">
-            {% url alibrary-release-list as release_list %}
+            {% url "alibrary-release-list" as release_list %}
 
             <h2>
                 {% trans "Releases" %}

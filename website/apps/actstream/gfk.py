@@ -11,11 +11,11 @@ class GFKManager(Manager):
     A manager that returns a GFKQuerySet instead of a regular QuerySet.
 
     """
-    def get_query_set(self):
+    def get_queryset(self):
         return GFKQuerySet(self.model, using=self.db)
 
     def none(self):
-        return self.get_query_set().none()
+        return self.get_queryset().none()
 
 
 class GFKQuerySet(QuerySet):

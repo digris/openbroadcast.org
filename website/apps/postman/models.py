@@ -510,9 +510,9 @@ class Message(models.Model):
 class PendingMessageManager(models.Manager):
     """The manager for PendingMessage."""
 
-    def get_query_set(self):
+    def get_queryset(self):
         """Filter to get only pending objects."""
-        return super(PendingMessageManager, self).get_query_set().filter(moderation_status=STATUS_PENDING)
+        return super(PendingMessageManager, self).get_queryset().filter(moderation_status=STATUS_PENDING)
 
 
 class PendingMessage(Message):

@@ -453,7 +453,7 @@ def encode(request, uuid, bitrate=128, format='mp3'):
         pass
 
 
-    return HttpResponse(__encode(media.master.path, bitrate, format), mimetype='audio/mpeg')
+    return HttpResponse(__encode(media.master.path, bitrate, format), content_type='audio/mpeg')
 
     #return sendfile(request, media.get_cache_file('mp3', 'base'))
 

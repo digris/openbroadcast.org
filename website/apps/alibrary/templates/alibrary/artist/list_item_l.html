@@ -72,7 +72,7 @@
                 {% comment %}{% endcomment %}
                     {% if item.get_releases.count > 0 %}
                         <li>
-                            {% url alibrary-release-list as release_list %}
+                            {% url "alibrary-release-list" as release_list %}
                             {% trans "Releases" %}:&nbsp;<a
                                 href="{% spurl path=release_list query="artist={{ item.slug }}" %}"
                                 title="{% trans "Only show releases by" %} {{ item.name }}"
@@ -82,7 +82,7 @@
                     {% endif %}
                     {% if item.media_artist.count > 0 %}
                         <li style="padding-left: 30px">
-                            {% url alibrary-media-list as media_list %}
+                            {% url "alibrary-media-list" as media_list %}
                             {% trans "Tracks" %}:&nbsp;<a
                                 href="{% spurl path=media_list query="artist={{ item.slug }}" %}"
                                 title="{% trans "Only show tracks by" %} {{ item.name }}"

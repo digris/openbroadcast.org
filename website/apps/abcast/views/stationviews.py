@@ -120,7 +120,7 @@ class StationDetailView(DetailView):
     extra_context = {}
 
     def render_to_response(self, context):
-        return super(StationDetailView, self).render_to_response(context, mimetype="text/html")
+        return super(StationDetailView, self).render_to_response(context, content_type="text/html")
     
 
         

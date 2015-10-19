@@ -38,7 +38,7 @@ class EventManager(models.Manager):
 
     def by_obj(self, obj):
         ctype = ContentType.objects.get_for_model(obj)
-        return self.get_query_set().filter(object_id=obj.pk, content_type=ctype)
+        return self.get_queryset().filter(object_id=obj.pk, content_type=ctype)
 
 
 class Event(models.Model):

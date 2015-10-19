@@ -40,7 +40,7 @@ GENERIC_STATUS_CHOICES = (
 # extra fields
 from django_extensions.db.fields import *
 
-PROJECT_DIR = getattr(settings, 'PROJECT_DIR', None)
+BASE_DIR = getattr(settings, 'BASE_DIR', None)
 
 
 def create_download_path(instance, filename):
@@ -70,10 +70,10 @@ def create_archive_dir(instance):
     path = "export/cache/%s-%s/" % (time.strftime("%Y%m%d%H%M%S", time.gmtime()), instance.uuid)
     #path = "export/cache/%s/" % ('DEBUG')
 
-    path_full = os.path.join(PROJECT_DIR, 'media', path)
+    path_full = os.path.join(BASE_DIR, 'media', path)
 
     # debug - set to persistent directory for easier testing:
-    # path_full = os.path.join(PROJECT_DIR, 'media' , 'export/debug/')
+    # path_full = os.path.join(BASE_DIR, 'media' , 'export/debug/')
 
     try:
         os.makedirs(os.path.join(path_full, 'cache/'))

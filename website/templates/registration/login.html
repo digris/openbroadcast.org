@@ -12,18 +12,18 @@
     {# include 'registration/form_errors.html' #}
     <form method="post"
           class="form-horizontal"
-          action="{% url django.contrib.auth.views.login %}">{% csrf_token %}
+          action="{% url "django.contrib.auth.views.login" %}">{% csrf_token %}
         {% include 'registration/form_fields.html' %}
 
 
         <ul style="margin-top: 20px;" class="unstyled">
             <li>
-                <a href="{% url auth_password_reset %}">
+                <a href="{% url "auth_password_reset" %}">
                     <i class="icon icon-double-angle-right"></i> {% trans "Forgot your password or username?" %}
                 </a>
             </li>
             <li>
-                <a href="{% url registration_register %}">
+                <a href="{% url "registration_register" %}">
                     <i class="icon icon-double-angle-right"></i> {% trans "Create a new account?" %}
                 </a>
             </li>

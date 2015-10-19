@@ -189,22 +189,16 @@ class LabelListView(PaginationMixin, ListView):
         #stags = ('Techno', 'Electronic')
         #stags = (4,)
         if stags:
-            qs = Release.tagged.with_all(tstags, qs)
+            qs = Label.tagged.with_all(tstags, qs)
             
             
         # rebuild filter after applying tags
         self.filter = LabelFilter(self.request.GET, queryset=qs)
         
         # tagging / cloud generation
-        tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=0)
-        #print '** CLOUD: **'
-        #print tagcloud
-        #print '** END CLOUD **'
-        
+        tagcloud = Tag.objects.usage_for_queryset(qs, counts=False, min_count=2)
         self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
-        
-        #print '** CALCULATED CLOUD'
-        #print self.tagcloud
+
         
         return qs
 
@@ -218,7 +212,7 @@ class LabelDetailView(DetailView):
 
     
     def render_to_response(self, context):
-        return super(LabelDetailView, self).render_to_response(context, mimetype="text/html")
+        return super(LabelDetailView, self).render_to_response(context, content_type="text/html")
     
 
         

@@ -32,7 +32,10 @@ from celery.task import task
 # modules
 #from taggit.managers import TaggableManager
 
+
+
 import tagging
+from tagging.registry import register as tagging_register
 #import reversion 
 
 # logging
@@ -640,8 +643,9 @@ class Playlist(MigrationMixin, models.Model):
 
     
 try:
-    tagging.register(Playlist)
-except:
+    tagging_register(Playlist)
+except Exception as e:
+    print '***** %s' % e
     pass
     
 arating.enable_voting_on(Playlist)

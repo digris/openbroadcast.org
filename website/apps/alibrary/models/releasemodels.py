@@ -35,12 +35,10 @@ from filer.fields.image import FilerImageField
 # from filer.fields.audio import FilerAudioField
 from filer.fields.file import FilerFileField
 
-
 from l10n.models import Country
-
 from django_date_extensions.fields import ApproximateDateField
-
 import tagging
+from tagging.registry import register as tagging_register
 import reversion 
 
 # settings
@@ -80,7 +78,7 @@ class ReleaseManager(models.Manager):
 
     def active(self):
         now = datetime.now()
-        return self.get_query_set().filter(
+        return self.get_queryset().filter(
                 Q(publish_date__isnull=True) |
                 Q(publish_date__lte=now)
                 )
@@ -348,7 +346,7 @@ class Release(MigrationMixin):
     
     
     def get_media(self):
-        return Media.objects.filter(release=self).select_related()
+        return Media.objects.filter(release=self)
     
     def get_products(self):
         return self.releaseproduct.all()
@@ -648,8 +646,9 @@ class Release(MigrationMixin):
         super(Release, self).save(*args, **kwargs)
 
 try:
-    tagging.register(Release)
-except:
+    tagging_register(Release)
+except Exception as e:
+    print '***** %s' % e
     pass
 
 

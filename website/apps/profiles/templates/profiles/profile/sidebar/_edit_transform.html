@@ -26,7 +26,7 @@
 		<ul class="unstyled">
 
 			<li class="action {% if not object.mentor %}disabled{% endif %} selection_single">
-				<span class="left icon"><a href="{% url postman_write object.mentor.username %}?subject={% trans "Please review my profile" %}" title="{% trans "Request a profile-review" %}"><i class="icon-unlock"></i> {% trans "Request a profile-review" %}</a> </span>
+				<span class="left icon"><a href="{% url "postman_write" object.mentor.username %}?subject={% trans "Please review my profile" %}" title="{% trans "Request a profile-review" %}"><i class="icon-unlock"></i> {% trans "Request a profile-review" %}</a> </span>
 				<span class="opt"></span>
 				<span class="clear"></span>
 			</li>

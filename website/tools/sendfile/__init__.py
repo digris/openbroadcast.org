@@ -32,7 +32,7 @@ def _get_sendfile():
 
 
 
-def sendfile(request, filename, attachment=False, attachment_filename=None, mimetype=None, encoding=None):
+def sendfile(request, filename, attachment=False, attachment_filename=None, content_type=None, encoding=None):
     '''
     create a response to send file using backend configured in SENDFILE_BACKEND
 
@@ -50,13 +50,13 @@ def sendfile(request, filename, attachment=False, attachment_filename=None, mime
         raise Http404('"%s" does not exist' % filename)
 
     guessed_mimetype, guessed_encoding = guess_type(filename)
-    if mimetype is None:
-        if guessed_mimetype:
-            mimetype = guessed_mimetype
-        else:
-            mimetype = 'application/octet-stream'
+
+    if guessed_mimetype:
+        mimetype = guessed_mimetype
+    else:
+        mimetype = 'application/octet-stream'
         
-    response = _sendfile(request, filename, mimetype=mimetype)
+    response = _sendfile(request, filename, content_type=mimetype)
     if attachment:
         attachment_filename = attachment_filename or os.path.basename(filename)
         response['Content-Disposition'] = 'attachment; filename="%s"' % attachment_filename

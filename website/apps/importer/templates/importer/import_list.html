@@ -27,7 +27,7 @@
 	</div>
 
 	<div>
-		<a class="btn btn-primary btn" href="{% url importer-import-create %}">
+		<a class="btn btn-primary btn" href="{% url "importer-import-create" %}">
 			<i class="icon-cloud-upload icon-white"></i>
 			<span> {% trans "Start Uploading" %}</span>
 		</a>
@@ -187,16 +187,16 @@
                         <span>&nbsp;{% trans "Created items"  %}</span>
                     </li>
 					<li>
-						<a href="{% url alibrary-release-list %}?import={{ object.pk }}">{% trans "Releases"  %}</a>
+						<a href="{% url "alibrary-release-list" %}?import={{ object.pk }}">{% trans "Releases"  %}</a>
 					</li>
 					<li>
-						<a href="{% url alibrary-artist-list %}?import={{ object.pk }}">{% trans "Artists"  %}</a>
+						<a href="{% url "alibrary-artist-list" %}?import={{ object.pk }}">{% trans "Artists"  %}</a>
 					</li>
 					<li>
-						<a href="{% url alibrary-media-list %}?import={{ object.pk }}">{% trans "Tracks"  %}</a>
+						<a href="{% url "alibrary-media-list" %}?import={{ object.pk }}">{% trans "Tracks"  %}</a>
 					</li>
 					<li>
-						<a href="{% url alibrary-label-list %}?import={{ object.pk }}">{% trans "Labels"  %}</a>
+						<a href="{% url "alibrary-label-list" %}?import={{ object.pk }}">{% trans "Labels"  %}</a>
 					</li>
 
 				</ul>
@@ -215,7 +215,7 @@
 
 
     <div>
-        <form action="{% url importer-import-delete-all %}" method="post">
+        <form action="{% url "importer-import-delete-all" %}" method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-mini pull-right">{% trans "Clear all imports" %}</button>
         </form>

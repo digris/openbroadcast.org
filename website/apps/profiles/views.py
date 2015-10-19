@@ -1,7 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import Http404, HttpResponseRedirect, HttpResponseForbidden
-from django.views.generic import list_detail
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse
 from django.views.generic import DetailView, ListView, View
@@ -55,16 +54,6 @@ ORDER_BY = [
 ]
 
 
-
-
-
-def profile_list(request):
-    return list_detail.object_list(
-        request,
-        queryset=Profile.objects.all(),
-        paginate_by=20,
-    )
-profile_list.__doc__ = list_detail.object_list.__doc__
 
 
 class ProfileListView(PaginationMixin, ListView):
@@ -193,7 +182,7 @@ class ProfileDetailView(DetailView):
 
     
     def render_to_response(self, context):
-        return super(ProfileDetailView, self).render_to_response(context, mimetype="text/html")
+        return super(ProfileDetailView, self).render_to_response(context, content_type="text/html")
         
     def get_context_data(self, **kwargs):
         context = kwargs
@@ -213,8 +202,8 @@ class ProfileDetailView(DetailView):
 
         # votes
         # vs = Vote.objects.filter(user=u).order_by('-vote', '-created')
-        context['upvotes'] = self.object.user.votes.filter(vote__gt=0).order_by('content_type__name', '-created')
-        context['downvotes'] = self.object.user.votes.filter(vote__lt=0).order_by('content_type__name', '-created')
+        context['upvotes'] = self.object.user.votes.filter(vote__gt=0).order_by('content_type__model', '-created')
+        context['downvotes'] = self.object.user.votes.filter(vote__lt=0).order_by('content_type__model', '-created')
 
         if context_object_name:
             context[context_object_name] = self.object

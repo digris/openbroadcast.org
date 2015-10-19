@@ -5,9 +5,10 @@ from django.core.cache import cache
 from django.utils.safestring import mark_safe
 
 def wikisafe_markdown(value):
-	from django.contrib.markup.templatetags.markup import markdown
+	import markdown as mkdn
+	#from django.contrib.markup.templatetags.markup import markdown
 	try:
-		return mark_safe(markdown(value.replace('[[','LBRACK666').replace(']]','RBRACK666')).replace('LBRACK666','[[').replace('RBRACK666',']]'))
+		return mark_safe(mkdn.markdown(value.replace('[[','LBRACK666').replace(']]','RBRACK666')).replace('LBRACK666','[[').replace('RBRACK666',']]'))
 	except Exception, e:
 		return value
 

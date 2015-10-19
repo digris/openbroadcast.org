@@ -76,7 +76,7 @@ class ActionDetailView(DetailView):
 
     
     def render_to_response(self, context):
-        return super(ActionDetailView, self).render_to_response(context, mimetype="text/html")
+        return super(ActionDetailView, self).render_to_response(context, content_type="text/html")
         
     def get_context_data(self, **kwargs):
         context = super(ActionDetailView, self).get_context_data(**kwargs)

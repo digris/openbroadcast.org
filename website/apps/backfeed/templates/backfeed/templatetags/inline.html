@@ -7,7 +7,7 @@
     <script>
         $(function () {
             var backfeed = new BackfeedUi();
-            backfeed.post_url = '{% url backfeed-views-post %}';
+            backfeed.post_url = '{% url "backfeed-views-post" %}';
             backfeed.init();
         })
     </script>

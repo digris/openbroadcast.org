@@ -11,7 +11,7 @@
       <span class="divider">&raquo;</span></li>
   <li><a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_label|capfirst|escape }}</a>
       <span class="divider">&raquo;</span></li>
-  <li><a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+  <li><a href="{% url "opts"|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
       <span class="divider">&raquo;</span></li>
   <li class=active>{% block breadcrumbs_last %}{% endblock %}</li>
 </ul>

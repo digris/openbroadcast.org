@@ -63,4 +63,4 @@ def example_data(request, resource_name, api):
         'GET': get_data
     })
 
-    return HttpResponse(json_string, mimetype="application/json; charset=utf-8")
+    return HttpResponse(json_string, content_type="application/json; charset=utf-8")

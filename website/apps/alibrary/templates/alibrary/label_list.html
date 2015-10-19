@@ -18,7 +18,7 @@
                 list_edit.init();
 
                 exporter = new ExporterApp();
-                exporter.api_url = '{% url api_dispatch_list resource_name='export' api_name='v1'%}';
+                exporter.api_url = '{% url "api_dispatch_list" resource_name='export' api_name='v1'%}';
                 exporter.init();
             });
         </script>

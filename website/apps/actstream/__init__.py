@@ -1,7 +1,11 @@
 try:
     from actstream.signals import action
-except ImportError:
+except ImportError as e:
     pass
+
+default_app_config = 'actstream.apps.ActstreamConfig'
+
+
 
 __version_info__ = {
     'major': 0,

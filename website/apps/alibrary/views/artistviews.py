@@ -110,7 +110,7 @@ class ArtistListView(PaginationMixin, ListView):
         else:
             # only display artists with tracks a.t.m.
             # qs = Artist.objects.filter(media_artist__isnull=False).select_related('media_artist').prefetch_related('media_artist').distinct()
-            qs = Artist.objects.all().select_related('media_artist').prefetch_related('media_artist')
+            qs = Artist.objects.all().prefetch_related('media_artist')
 
             
         order_by = self.request.GET.get('order_by', 'created')
@@ -205,7 +205,7 @@ class ArtistDetailView(DetailView):
 
     
     def render_to_response(self, context):
-        return super(ArtistDetailView, self).render_to_response(context, mimetype="text/html")
+        return super(ArtistDetailView, self).render_to_response(context, content_type="text/html")
     
 
         

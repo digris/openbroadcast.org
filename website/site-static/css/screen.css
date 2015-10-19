@@ -3394,34 +3394,38 @@ div.navbar-fixed-top {
   height: 70px;
   background-repeat: repeat-x;
 }
+/* line 16, ../sass/element/_toolbar.sass */
+.cms-toolbar-expanded div.navbar-fixed-top {
+  top: 31px !important;
+}
 
-/* line 17, ../sass/element/_toolbar.sass */
+/* line 21, ../sass/element/_toolbar.sass */
 div.navbar div.container {
   height: 33px;
   width: 100%;
 }
-/* line 20, ../sass/element/_toolbar.sass */
+/* line 24, ../sass/element/_toolbar.sass */
 div.navbar div.container.active {
   background-image: url(/static/img/ajax-loader.gif);
   background-position: 7px 43px;
   background-repeat: no-repeat;
 }
-/* line 25, ../sass/element/_toolbar.sass */
+/* line 29, ../sass/element/_toolbar.sass */
 div.navbar div.container ul {
   margin: 0px;
 }
 
-/* line 31, ../sass/element/_toolbar.sass */
+/* line 35, ../sass/element/_toolbar.sass */
 div.navbar .container {
   border-top: 1px solid #333333;
   background-color: #333333;
 }
-/* line 34, ../sass/element/_toolbar.sass */
+/* line 38, ../sass/element/_toolbar.sass */
 div.navbar .container .divider {
   width: 11px;
   height: 20px;
 }
-/* line 38, ../sass/element/_toolbar.sass */
+/* line 42, ../sass/element/_toolbar.sass */
 div.navbar .container .button {
   padding: 1px 6px 1px 6px;
   margin: 0px 0px 0px 6px;
@@ -3431,12 +3435,12 @@ div.navbar .container .button {
   height: 20px;
   cursor: pointer;
 }
-/* line 46, ../sass/element/_toolbar.sass */
+/* line 50, ../sass/element/_toolbar.sass */
 div.navbar .container .button:hover {
   border: 1px solid #999999;
   color: white;
 }
-/* line 50, ../sass/element/_toolbar.sass */
+/* line 54, ../sass/element/_toolbar.sass */
 div.navbar .container .field {
   border: 1px solid #555555;
   font-size: 100%;
@@ -3445,75 +3449,75 @@ div.navbar .container .field {
   background: #333333;
   color: #888888;
 }
-/* line 57, ../sass/element/_toolbar.sass */
+/* line 61, ../sass/element/_toolbar.sass */
 div.navbar .container .field:focus {
   border: 1px solid #888888;
   border-top: 1px solid #555555;
   border-left: 1px solid #555555;
   background: #555555;
 }
-/* line 63, ../sass/element/_toolbar.sass */
+/* line 67, ../sass/element/_toolbar.sass */
 div.navbar .container .field#username, div.navbar .container .field#password {
   width: 130px;
   height: 14px;
 }
-/* line 67, ../sass/element/_toolbar.sass */
+/* line 71, ../sass/element/_toolbar.sass */
 div.navbar .container .navleft {
   float: left;
   margin: 8px 0px 8px 12px;
   color: #bbbbbb;
 }
-/* line 72, ../sass/element/_toolbar.sass */
+/* line 76, ../sass/element/_toolbar.sass */
 div.navbar .container .navleft .logo {
   width: 120px;
   padding-left: 20px;
   background-image: url(/static/img/icons/site/icon.static.gif);
   background-repeat: no-repeat;
 }
-/* line 78, ../sass/element/_toolbar.sass */
+/* line 82, ../sass/element/_toolbar.sass */
 div.navbar .container .navleft li {
   display: inline;
   list-style-type: none;
   float: left;
 }
-/* line 82, ../sass/element/_toolbar.sass */
+/* line 86, ../sass/element/_toolbar.sass */
 div.navbar .container .navleft li a {
   text-decoration: none;
   color: #cccccc;
   padding: 5px 8px 4px 8px;
 }
-/* line 86, ../sass/element/_toolbar.sass */
+/* line 90, ../sass/element/_toolbar.sass */
 div.navbar .container .navleft li a:hover {
   color: white;
 }
-/* line 90, ../sass/element/_toolbar.sass */
+/* line 94, ../sass/element/_toolbar.sass */
 div.navbar .container .navleft li.selected a, div.navbar .container .navleft li.ancestor a {
   color: white;
   border: 1px solid #aaaaaa;
   padding: 4px 7px 3px 7px;
 }
-/* line 96, ../sass/element/_toolbar.sass */
+/* line 100, ../sass/element/_toolbar.sass */
 div.navbar .container .navright {
   margin: 6px 20px 2px 0px;
   float: right;
 }
-/* line 99, ../sass/element/_toolbar.sass */
+/* line 103, ../sass/element/_toolbar.sass */
 div.navbar .container .navright .link {
   float: right;
   margin-top: 1px;
 }
-/* line 102, ../sass/element/_toolbar.sass */
+/* line 106, ../sass/element/_toolbar.sass */
 div.navbar .container .navright a {
   text-decoration: none;
   color: #cccccc;
   margin: 0px 0px 4px 8px;
 }
 
-/* line 113, ../sass/element/_toolbar.sass */
+/* line 117, ../sass/element/_toolbar.sass */
 div.navbar .container .nav-profile .message-notification.has-unread span {
   color: white;
 }
-/* line 115, ../sass/element/_toolbar.sass */
+/* line 119, ../sass/element/_toolbar.sass */
 div.navbar .container .nav-profile .message-notification.has-unread .count {
   color: white;
   font-weight: bold;
@@ -3521,7 +3525,7 @@ div.navbar .container .nav-profile .message-notification.has-unread .count {
   padding: 0 5px;
   border-radius: 2px;
 }
-/* line 124, ../sass/element/_toolbar.sass */
+/* line 128, ../sass/element/_toolbar.sass */
 div.navbar .container .nav-profile .messages span.icon-label {
   color: white;
   padding-left: 3px;
@@ -3529,33 +3533,33 @@ div.navbar .container .nav-profile .messages span.icon-label {
 }
 
 /* ---------- subnav ---------- */
-/* line 133, ../sass/element/_toolbar.sass */
+/* line 137, ../sass/element/_toolbar.sass */
 .subnav {
   padding: 8px 0px 0px 154px;
 }
-/* line 137, ../sass/element/_toolbar.sass */
+/* line 141, ../sass/element/_toolbar.sass */
 .subnav li {
   list-style: none;
   float: left;
 }
-/* line 140, ../sass/element/_toolbar.sass */
+/* line 144, ../sass/element/_toolbar.sass */
 .subnav li a {
   color: #666666;
   text-decoration: none;
   padding: 0px 7px 0px 7px;
   border-right: 1px solid #999999;
 }
-/* line 146, ../sass/element/_toolbar.sass */
+/* line 150, ../sass/element/_toolbar.sass */
 .subnav li a:hover {
   color: #00bb00;
 }
-/* line 150, ../sass/element/_toolbar.sass */
+/* line 154, ../sass/element/_toolbar.sass */
 .subnav li.selected a, .subnav li.ancestor a {
   color: #00bb00;
   text-decoration: none;
   padding: 0px 7px 0px 7px;
 }
-/* line 156, ../sass/element/_toolbar.sass */
+/* line 160, ../sass/element/_toolbar.sass */
 .subnav li:last-child a {
   border-right: none !important;
 }
@@ -11332,7 +11336,7 @@ a.thumbnail:hover {
 }
 
 /* line 3, ../sass/apps/_importer.sass */
-.listview.import thead th {
+.importer-importfiles thead th {
   background-color: white;
   font-weight: normal;
   font-style: italic;
@@ -11340,28 +11344,28 @@ a.thumbnail:hover {
   border: none;
 }
 /* line 12, ../sass/apps/_importer.sass */
-.listview.import i.icon-large {
+.importer-importfiles i.icon-large {
   padding: 3px 0 0 10px;
   display: block;
   background-repeat: no-repeat;
   font-size: 24px;
 }
 /* line 18, ../sass/apps/_importer.sass */
-.listview.import i.icon-id3 {
+.importer-importfiles i.icon-id3 {
   background-image: url(/static/img/icons/metadata.providers/id3v2.png) !important;
   background-position: 0 0;
   width: 22px;
   height: 22px;
 }
 /* line 23, ../sass/apps/_importer.sass */
-.listview.import i.icon-musicbrainz_ {
+.importer-importfiles i.icon-musicbrainz_ {
   background-image: url(/static/img/icons/metadata.providers/musicbrainz.png) !important;
   background-position: 0 0;
   width: 22px;
   height: 22px;
 }
 /* line 28, ../sass/apps/_importer.sass */
-.listview.import i.icon-obp {
+.importer-importfiles i.icon-obp {
   background-image: url(/static/img/icons/metadata.providers/openbroadcast.png) !important;
   background-position: 0 0;
   width: 22px;

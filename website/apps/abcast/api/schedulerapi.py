@@ -171,8 +171,10 @@ class EmissionResource(ModelResource):
 
         e = Emission.objects.get(**self.remove_api_resource_names(kwargs))
 
-        locked = request.POST.get('locked', 0)
-        color = request.POST.get('color', 0)
+        data = json.loads(request.body)
+
+        locked = data.get('locked', 0)
+        color = data.get('color', 0)
 
         if int(locked) == 1:
             e.locked = True
@@ -194,11 +196,13 @@ class EmissionResource(ModelResource):
         if not request.user.is_authenticated():
             return HttpUnauthorized()
 
-        top = request.POST.get('top', None)
-        left = request.POST.get('left', None)
+        data = json.loads(request.body)
+
+        top = data.get('top', None)
+        left = data.get('left', None)
         
-        num_days = request.POST.get('num_days', SCHEDULER_NUM_DAYS)
-        channel_id = request.POST.get('channel_id', SCHEDULER_DEFAULT_CHANNEL_ID)
+        num_days = data.get('num_days', SCHEDULER_NUM_DAYS)
+        channel_id = data.get('channel_id', SCHEDULER_DEFAULT_CHANNEL_ID)
 
         channel = Channel.objects.get(pk=int(channel_id))
 

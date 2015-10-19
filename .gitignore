@@ -25,4 +25,6 @@ website/cache/*
 website/celerybeat*
 util/nginx-dev/*
 
+*.sass-cache*
+
 

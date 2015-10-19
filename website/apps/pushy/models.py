@@ -71,14 +71,14 @@ def pushy_post_delete(sender, **kwargs):
 def setup_signals():
 
     for model in pushy_settings.get_models().values():
-
         if not model:
             log.error('Unable to register model %s' % model)
             continue
         else:
             post_save.connect(pushy_post_save, sender=model)
             post_delete.connect(pushy_post_delete, sender=model)
+            log.debug('registered pushy signals for %s' % model)
 
 
-setup_signals()
+#setup_signals()
 

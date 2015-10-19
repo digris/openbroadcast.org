@@ -2,7 +2,7 @@
 <script>
     $(function () {
         istats = new IstatsApp;
-        istats.api_url = "{% url api_dispatch_list resource_name='stats' api_name='v1'%}server/";
+        istats.api_url = "{% url "api_dispatch_list" resource_name='stats' api_name='v1'%}server/";
         istats.init();
     });
 </script>

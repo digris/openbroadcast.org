@@ -1,10 +1,11 @@
 import os
 import sys
-from settings import MIDDLEWARE_CLASSES, PROJECT_DIR
-PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
+from django.conf import settings
+
+BASE_DIR = getattr(settings, 'BASE_DIR')
 
 # external modules are sylinked to dev folder. on production they are installed via pip
-sys.path.insert(0, os.path.join(PROJECT_DIR, 'dev'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'dev'))
 
 INTERNAL_IPS = ('127.0.0.10',)
 DEBUG = True
@@ -13,6 +14,7 @@ EXPORTER_DEBUG = DEBUG
 
 IMORTER_USE_CELERYD = False
 
+TASTYPIE_FULL_DEBUG = True
 
 
 #CELERY_ALWAYS_EAGER = True
@@ -20,9 +22,9 @@ IMORTER_USE_CELERYD = False
 
 
 COMPRESS_OFFLINE = False
-COMPRESS_ENABLED = True
+COMPRESS_ENABLED = False
 
-NUNJUCKS_DEBUG = False
+NUNJUCKS_DEBUG = True
 THUMBNAIL_DEBUG = False
 
 SECRET_KEY = '0r6%7gip5tmez*vygfv+u14h@4lbt^8e2^26o#5_f_#b7%cm)u'
@@ -41,9 +43,6 @@ SESSION_COOKIE_NAME = 'org-openbroadcast-local-session'
 CELERYD_TASK_SOFT_TIME_LIMIT = 60
 CELERYD_TASK_TIME_LIMIT = 240
 
-
-#MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + ('plop.middleware.PlopMiddleware',)
-#PLOP_DIR = os.path.join(PROJECT_DIR, 'plop')
 
 if DEBUG:
     COMPRESS_DEBUG_TOGGLE = 'uncompressed'
@@ -79,7 +78,7 @@ DATABASES = {
     },
     'sqlite': {
         'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(PROJECT_DIR, 'data.db'),
+        #'NAME': os.path.join(BASE_DIR, 'data.db'),
         'NAME': '/Users/ohrstrom/srv/openbroadcast.org/data.db',
     },
     'legacy': {
@@ -156,12 +155,23 @@ RTMP_PORT = '1935'
 
 APLAYER_STREAM_MODE = 'html5' # or 'rtmp' 'html5'
 
+PUSHY_SETTINGS = {
+    'MODELS': (
+        'alibrary.playlist',
+        'alibrary.media',
+        'importer.import',
+        'importer.importfile',
+        'abcast.emission',
+        'exporter.export',
+        'abcast.channel',
+    ),
+    'SOCKET_SERVER': 'http://local.openbroadcast.org:8180/',
+    'CHANNEL_PREFIX': 'org_openbroadcast_prod_',
+    'REDIS_HOST': '127.0.0.1',
+    'DEBUG': DEBUG
+}
 
-from settings import PUSHY_SETTINGS
-PUSHY_SETTINGS['SOCKET_SERVER'] = 'http://local.openbroadcast.org:8180/'
-PUSHY_SETTINGS['CHANNEL_PREFIX'] = 'org_openbroadcast_prod_'
-#PUSHY_SETTINGS['REDIS_HOST'] = '172.20.10.203'
-PUSHY_SETTINGS['REDIS_HOST'] = '127.0.0.1'
+
 
 
 SOLR_SERVER = {
@@ -292,9 +302,9 @@ CACHES = {
     }
 }
 
-SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-SESSION_CACHE_ALIAS = "default"
-#SESSION_ENGINE = "django.contrib.sessions.backends.db"
+#SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+#SESSION_CACHE_ALIAS = "default"
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 
 __CACHES = {
@@ -323,7 +333,7 @@ CACHEOPS = {
     'alibrary.playlist': {'ops': ('fetch', 'get', 'count'), 'timeout': 60*60*24, 'cache_on_save': True},
     'alibrary.license': {'ops': ('fetch', 'get', 'count'), 'timeout': 1},
     #'alibrary.media': {'ops': ('fetch', 'get', 'count'), 'timeout': 1},
-    'cms.*': {'ops': ('fetch', 'get', 'count'), 'timeout': 60*60},
+    #'cms.*': {'ops': ('fetch', 'get', 'count'), 'timeout': 60*60},
     #'menu.*': {'ops': ('fetch', 'get'), 'timeout': 60*60},
     'tagging.*': {'ops': ('fetch', 'get', 'count'), 'timeout': 60*60},
     'arating.*': {'ops': ('fetch', 'get', 'count'), 'timeout': 60*60*24},
@@ -331,7 +341,7 @@ CACHEOPS = {
     'notifications.notification': {'ops': ('count'), 'timeout': 60*60*24},
 }
 CACHEOPS_DEGRADE_ON_FAILURE=False
-CACHEOPS_FAKE = True
+CACHEOPS_FAKE = False
 
 
 
@@ -342,7 +352,7 @@ FILER_STORAGES = {
         'main': {
             'ENGINE': 'filer.storage.PublicFileSystemStorage',
             'OPTIONS': {
-                'location': os.path.join(PROJECT_DIR, 'media/filer'),
+                'location': os.path.join(BASE_DIR, 'media/filer'),
                 'base_url': '/media/filer/',
             },
             'UPLOAD_TO': 'filer.utils.generate_filename.by_date',
@@ -350,7 +360,7 @@ FILER_STORAGES = {
         'thumbnails': {
             'ENGINE': 'filer.storage.PublicFileSystemStorage',
             'OPTIONS': {
-                'location': os.path.join(PROJECT_DIR, 'media/filer_thumbnails'),
+                'location': os.path.join(BASE_DIR, 'media/filer_thumbnails'),
                 'base_url': '/media/filer_thumbnails/',
             },
         },
@@ -359,7 +369,7 @@ FILER_STORAGES = {
         'main': {
             'ENGINE': 'filer.storage.PrivateFileSystemStorage',
             'OPTIONS': {
-                'location': os.path.join(PROJECT_DIR, 'smedia/filer'),
+                'location': os.path.join(BASE_DIR, 'smedia/filer'),
                 'base_url': '/smedia/filer/',
             },
             'UPLOAD_TO': 'filer.utils.generate_filename.by_date',
@@ -367,7 +377,7 @@ FILER_STORAGES = {
         'thumbnails': {
             'ENGINE': 'filer.storage.PrivateFileSystemStorage',
             'OPTIONS': {
-                'location': os.path.join(PROJECT_DIR, 'smedia/filer_thumbnails'),
+                'location': os.path.join(BASE_DIR, 'smedia/filer_thumbnails'),
                 'base_url': '/smedia/filer_thumbnails/',
             },
         },
@@ -384,31 +394,8 @@ DEFAULT_FILER_SERVERS = {
         }
     }
 }
-"""
-FILER_SERVERS = {
-    'private': {
-        'main': {
-            'ENGINE': 'filer.server.backends.nginx.NginxXAccelRedirectServer',
-            'OPTIONS': {
-                'location': os.path.join(PROJECT_DIR, 'smedia/filer'),
-                'nginx_location': '/nginx_filer_private',
-            },
-        },
-        'thumbnails': {
-            'ENGINE': 'filer.server.backends.nginx.NginxXAccelRedirectServer',
-            'OPTIONS': {
-                'location': os.path.join(PROJECT_DIR, 'smedia/filer_thumbnails'),
-                'nginx_location': '/nginx_filer_private_thumbnails',
-            },
-        },
-    },
-}
-"""
-
-
 
 from colorlog import ColoredFormatter
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -421,7 +408,7 @@ LOGGING = {
         },
         'colored': {
             '()': 'colorlog.ColoredFormatter',
-            'format': '%(log_color)s%(lineno)-4s%(name)-32s %(levelname)-8s %(message)s',
+            'format': '%(log_color)s%(lineno)-4s%(name)-24s %(levelname)-8s %(message)s',
             'log_colors': {
                 'DEBUG': 'cyan',
                 'INFO': 'bold_green',
@@ -483,78 +470,3 @@ LOGGING = {
     }
 }
 
-LOGGING__ = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'root': {
-        'level': 'WARNING',
-        'handlers': ['sentry'],
-    },
-    'formatters': {
-        'verbose': {
-            'format': '[%(levelname)s] %(name)s: %(message)s'
-        },
-    },
-    'handlers': {
-        'sentry': {
-            'level': 'DEBUG',
-            'class': 'raven.contrib.django.handlers.SentryHandler',
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose'
-        }
-    },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'ERROR',
-            'handlers': ['console'],
-            'propagate': False,
-        },
-        'raven': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-            'propagate': False,
-        },
-        'sentry.errors': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-            'propagate': False,
-        },
-        'celery': {
-            'level': 'WARNING',
-            'handlers': ['sentry'],
-            'propagate': False,
-        },
-    },
-}
-
-
-def patch_broken_pipe_error():
-    """Monkey Patch BaseServer.handle_error to not write
-    a stacktrace to stderr on broken pipe.
-    http://stackoverflow.com/a/22618740/362702"""
-    import sys
-    from SocketServer import BaseServer
-    from wsgiref import handlers
-
-    handle_error = BaseServer.handle_error
-    log_exception = handlers.BaseHandler.log_exception
-
-    def is_broken_pipe_error():
-        type, err, tb = sys.exc_info()
-        return repr(err) == "error(32, 'Broken pipe')"
-
-    def my_handle_error(self, request, client_address):
-        if not is_broken_pipe_error():
-            handle_error(self, request, client_address)
-
-    def my_log_exception(self, exc_info):
-        if not is_broken_pipe_error():
-            log_exception(self, exc_info)
-
-    BaseServer.handle_error = my_handle_error
-    handlers.BaseHandler.log_exception = my_log_exception
-
-patch_broken_pipe_error()

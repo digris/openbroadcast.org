@@ -146,7 +146,9 @@ class ProfileForm(ModelForm):
     #birth_date = forms.DateField(widget=DateInput(), required=False, help_text=_('Format: YYYY/MM/DD'))
     #description = forms.CharField(widget=PagedownWidget(), required=False, help_text=_('Markdown enabled'))
     biography = forms.CharField(widget=PagedownWidget(), required=False, help_text=_('Markdown enabled'))
-    d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
+
+    # TODO: 1.8 upgrade: re-enable tags
+    #d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
     
     #invitation = InviteField()
     
@@ -161,6 +163,7 @@ class LinkForm(ModelForm):
     class Meta:
         model = Link
         parent_model = Profile
+        exclude = []
         
         
     def __init__(self, *args, **kwargs):
@@ -200,6 +203,7 @@ class ServiceForm(ModelForm):
     class Meta:
         model = Service
         parent_model = Profile
+        exclude = []
         
         
     def __init__(self, *args, **kwargs):

@@ -187,7 +187,7 @@ class PlaylistDetailView(DetailView):
     model = Playlist
     
     def render_to_response(self, context):
-        return super(PlaylistDetailView, self).render_to_response(context, mimetype="text/html")
+        return super(PlaylistDetailView, self).render_to_response(context, content_type="text/html")
         
     def get_context_data(self, **kwargs):
 
@@ -289,7 +289,7 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         context = super(PlaylistEditView, self).get_context_data(**kwargs)
 
         context['action_form'] = ActionForm()
-        context['releasemedia_form'] = ReleaseMediaFormSet(instance=self.object)
+        #context['releasemedia_form'] = ReleaseMediaFormSet(instance=self.object)
         context['user'] = self.request.user
         context['request'] = self.request
         context['permission_form'] =  UserObjectPermissionsForm(self.request.user, self.object, self.request.POST or None)

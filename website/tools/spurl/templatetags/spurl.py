@@ -4,7 +4,8 @@ from django.utils.html import escape
 from django.utils.encoding import smart_str
 from urlobject import URLObject
 from urlobject.query_string import QueryString
-from django.template import StringOrigin, Lexer, Parser
+from django.template import StringOrigin
+from django.template.base import Lexer, Parser
 from django.template.defaulttags import kwarg_re
 from django.template import Template, Library, Node, TemplateSyntaxError
 

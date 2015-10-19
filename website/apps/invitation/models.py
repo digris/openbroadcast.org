@@ -95,14 +95,14 @@ class InvitationManager(models.Manager):
         """
         expiration = datetime.datetime.now() - datetime.timedelta(
                                                      app_settings.EXPIRE_DAYS)
-        return self.get_query_set().filter(date_invited__gte=expiration)
+        return self.get_queryset().filter(date_invited__gte=expiration)
 
     def invalid(self):
         """Filter invalid invitation.
         """
         expiration = datetime.datetime.now() - datetime.timedelta(
                                                      app_settings.EXPIRE_DAYS)
-        return self.get_query_set().filter(date_invited__le=expiration)
+        return self.get_queryset().filter(date_invited__le=expiration)
 
 
 class Invitation(models.Model):
@@ -219,7 +219,7 @@ class InvitationStatsManager(models.Manager):
         if not isinstance(count, int) and not callable(count):
             raise TypeError('Count must be int or callable.')
         if user is None:
-            qs = self.get_query_set()
+            qs = self.get_queryset()
         else:
             qs = self.filter(user=user)
         for instance in qs:
@@ -296,7 +296,7 @@ class InvitationStats(models.Model):
         :count:
             Number of invitations to mark used. Default is ``1``.
         """
-        if app_settings.INVITE_ONLY or 1 == 1:
+        if app_settings.INVITE_ONLY:
             if self.available - count >= 0:
                 self.available = models.F('available') - count
             else:

@@ -338,6 +338,7 @@ class BaseAliasForm(ModelForm):
         model = Artist
         parent_model = Artist
         #fields = ('child',)
+        exclude = []
 
     def __init__(self, *args, **kwargs):
         super(BaseAliasForm, self).__init__(*args, **kwargs)

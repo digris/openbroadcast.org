@@ -384,6 +384,7 @@ class BaseReleaseMediaForm(ModelForm):
         parent_model = Release
         #formset = BaseReleaseMediaFormSet
         #fields = ('name','tracknumber','base_filesize',)
+        exclude = []
 
 
     def __init__(self, *args, **kwargs):

@@ -100,7 +100,7 @@ def multiuploader(request):
             mimetype = 'application/json'
         else:
             mimetype = 'text/plain'
-        return HttpResponse(response_data, mimetype=mimetype)
+        return HttpResponse(response_data, content_type=mimetype)
     else: #GET
         return HttpResponse('Only POST accepted')
     

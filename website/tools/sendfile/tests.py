@@ -35,7 +35,7 @@ class TestSendfile(TestCase):
         self.assertEqual(_get_readme(), response.content)
 
     def test_set_mimetype(self):
-        response = real_sendfile(HttpRequest(), _get_readme(), mimetype='text/plain')
+        response = real_sendfile(HttpRequest(), _get_readme(), content_type='text/plain')
         self.assertTrue(response is not None)
         self.assertEqual('text/plain', response['Content-Type'])
 

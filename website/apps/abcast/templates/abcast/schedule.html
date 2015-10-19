@@ -87,7 +87,7 @@
                 scheduler.app.readonly = {% if user.is_authenticated %}false{% else %}true{% endif %};
 
                 scheduler.app.range = [{% for date in days %}'{{ date|date:"Y-m-d" }}',{% endfor %}]
-                scheduler.app.api_url = "{% url api_dispatch_list resource_name='abcast/emission' api_name='v1'%}";
+                scheduler.app.api_url = "{% url "api_dispatch_list" resource_name='abcast/emission' api_name='v1'%}";
                 scheduler.app.channel_id = {{ channel.pk }};
 
 
@@ -179,7 +179,7 @@
             {% for c in channels %}
                 <li class="channel {% if channel.pk == c.pk %}active{% endif %}">
                     <ul class="unstyled hoverable">
-                        <li><a href="{% url abcast-schedule %}?channel_id={{ c.pk }}">{{ c.name }}</a></li>
+                        <li><a href="{% url "abcast-schedule" %}?channel_id={{ c.pk }}">{{ c.name }}</a></li>
                         <li>{% trans "Station" %}: {{ c.station.name }}</li>
                     </ul>
 

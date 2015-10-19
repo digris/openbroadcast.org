@@ -456,8 +456,8 @@ SchedulerApp = function () {
             url: url,
             dataType: "json",
             contentType: 'application/json',
-            processData: true,
-            data: data,
+            processData: false,
+            data: JSON.stringify(data),
             success: function (data) {
                 if (data.status) {
                     self.load();
@@ -615,8 +615,8 @@ var EmissionApp = function () {
                     url: url,
                     dataType: "application/json",
                     contentType: 'application/json',
-                    processData: true,
-                    data: data,
+                    processData: false,
+                    data: JSON.stringify(data),
                     complete: function (data) {
 
                         // console.log(data);
@@ -877,8 +877,8 @@ var EmissionApp = function () {
                     url: url,
                     dataType: "json",
                     contentType: 'application/json',
-                    processData: true,
-                    data: data,
+                    processData: false,
+                    data: JSON.stringify(data),
                     success: function (data) {
                         if (data.status) {
                             self.load();

@@ -382,6 +382,8 @@
             <div class="listing voted-up">
                 <div class="row">
                 {%  for vote in upvotes %}
+
+
                     <div class="span3">
                         <div class="item {{ vote.content_object|ct_name_by_object }}"
                             {% if vote.content_object.main_image %}style="background-image: url({% thumbnail vote.content_object.main_image 200x200 crop upscale subject_location=vote.content_object.main_image.subject_location %});"{% endif %}
@@ -391,6 +393,8 @@
                             </div>
                         </div>
                     </div>
+
+
                 {% endfor %}
                 </div>
             </div>
@@ -401,7 +405,7 @@
                 <div class="row">
                 {%  for vote in downvotes %}
                     <div class="span3">
-                        <div class="item {{ vote.content_object|ct_name_by_object }} hoverable linkable"
+                        <div class="item {{ vote.content_object|ct_name_by_object|lower }} hoverable linkable"
                              data-absolute_url="{{ vote.content_object.get_absolute_url }}"
                             {% if vote.content_object.main_image %}style="background-image: url({% thumbnail vote.content_object.main_image 200x200 crop upscale subject_location=vote.content_object.main_image.subject_location %});"{% endif %}
                             >
@@ -413,9 +417,6 @@
                 {% endfor %}
                 </div>
             </div>
-
-
-
 
         </section>
 
@@ -429,7 +430,7 @@
 
             <h2>{% trans "Activities" %}
             <span class="pull-right">
-                <a href="{% url actstream-action-list %}?username={{ object.user.username }}">
+                <a href="{% url "actstream-action-list" %}?username={{ object.user.username }}">
                     <i class="icon-chevron-sign-right"></i>
                     {% trans "Show all activities" %}
                 </a>
@@ -498,7 +499,7 @@
 
         <section class="broadcasts">
 
-            {% url alibrary-playlist-list as playlist_list %}
+            {% url "alibrary-playlist-list" as playlist_list %}
 
             <h2>
                 {% trans "Recently updated Playlists" %}
@@ -533,7 +534,7 @@
             <h2>
                 {% trans "Recently added Releases" %}
                 <span class="pull-right">
-                    {% url alibrary-release-list as release_list %}
+                    {% url "alibrary-release-list" as release_list %}
                     <a href="{% spurl path=release_list query="creator={{ object.user.username }}" %}">
                         <i class="icon-chevron-sign-right"></i>
                         {% trans "Show all added Releases" %} ({{ uploaded_releases.count }})
@@ -555,7 +556,7 @@
             <h2 style="margin-top: 24px;">
                 {% trans "Recently added Tracks" %}
                 <span class="pull-right">
-                    {% url alibrary-media-list as media_list %}
+                    {% url "alibrary-media-list" as media_list %}
                     <a href="{% spurl path=media_list query="creator={{ object.user.username }}" %}">
                         <i class="icon-chevron-sign-right"></i>
                         {% trans "Show all added Tracks" %} ({{ uploaded_media.count }})

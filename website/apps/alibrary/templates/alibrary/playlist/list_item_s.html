@@ -52,7 +52,7 @@
 
             <li>
                 <a href="{{ item.user.get_absolute_url }}">{% firstof item.user.username|truncate_chars_inner:16 item.user|truncate_chars_inner:16 %}</a>
-                {% url alibrary-playlist-list as playlist_list %}
+                {% url "alibrary-playlist-list" as playlist_list %}
                 <a href="{% spurl path=playlist_list query="user={{ item.user.username }}" %}"
                    title="{% trans "Only show playlists by" %} {% firstof item.user.username item.user %}"
                    style="vertical-align: top;"><span class="filter icon"></span></a>

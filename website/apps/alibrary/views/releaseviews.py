@@ -119,7 +119,7 @@ class ReleaseListView(PaginationMixin, ListView):
             #.distinct()
             qs = Release.objects.filter(name__icontains=q).distinct()
         else:
-            qs = Release.objects.select_related('license','media_release').prefetch_related('media_release').all()
+            qs = Release.objects.select_related('license').prefetch_related('media_release').all()
             
             
         order_by = self.request.GET.get('order_by', 'created')
@@ -236,7 +236,7 @@ class ReleaseListView(PaginationMixin, ListView):
         self.filter = ReleaseFilter(self.request.GET, queryset=qs)
         
         # tagging / cloud generation
-        tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=2)
+        tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=5)
         self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
 
         return qs
@@ -250,7 +250,7 @@ class ReleaseDetailView(DetailView):
     extra_context = {}
     
     def render_to_response(self, context):
-        return super(ReleaseDetailView, self).render_to_response(context, mimetype="text/html")
+        return super(ReleaseDetailView, self).render_to_response(context, content_type="text/html")
         
     def get_context_data(self, **kwargs):
         
@@ -688,7 +688,7 @@ def release_playlist(request, slug, format, version):
         raise Http404
 
     return render_to_response('alibrary/xml/rss_playlist.xml', { 'object': object }, context_instance=RequestContext(request))
-    # return render_to_response('alibrary/xml/rss_playlist.xml', data, mimetype="application/xhtml+xml")
+    # return render_to_response('alibrary/xml/rss_playlist.xml', data, content_type="application/xhtml+xml")
     
 
 

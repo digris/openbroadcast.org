@@ -36,7 +36,7 @@ def generic_lookup(request):
             obj = get_obj(request.GET['content_type'], request.GET['object_id'])
             objects.append(obj)
         
-        response = HttpResponse(mimetype='application/json')
+        response = HttpResponse(content_type='application/json')
         json.dump(objects, response, ensure_ascii=False)
         return response
     return HttpResponseNotAllowed(['GET'])
@@ -55,7 +55,7 @@ def get_generic_rel_list(request, blacklist=(), whitelist=(), url_params={}):
                 if val not in blacklist:
                     obj_dict[c.id] = (val, params)
 
-        response = HttpResponse(mimetype='application/json')
+        response = HttpResponse(content_type='application/json')
         json.dump(obj_dict, response, ensure_ascii=False)
         return response
     return HttpResponseNotAllowed(['GET'])

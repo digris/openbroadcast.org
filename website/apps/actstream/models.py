@@ -161,7 +161,7 @@ model_stream = Action.objects.model_actions
 followers = Follow.objects.followers
 following = Follow.objects.following
 
-def setup_generic_relations():
+def __orig__setup_generic_relations():
     """
     Set up GenericRelations for actionable models.
     """
@@ -183,6 +183,28 @@ def setup_generic_relations():
 
 # TODO: 1.8 upgrade - this need to be called on app start
 #setup_generic_relations()
+
+
+
+def setup_generic_relations():
+    """
+    Set up GenericRelations for actionable models.
+    In Django 1.8 Model._meta.module_name was renamed to model_name.
+    """
+    for model in actstream_settings.get_models().values():
+        if not model:
+            continue
+        for field in ('actor', 'target', 'action_object'):
+            generic.GenericRelation(Action,
+                content_type_field='%s_content_type' % field,
+                object_id_field='%s_object_id' % field,
+                related_query_name='actions_with_%s_%s_as_%s' % (
+                    model._meta.app_label, model._meta.model_name, field),
+            ).contribute_to_class(model, '%s_actions' % field)
+
+            setattr(Action, 'actions_with_%s_%s_as_%s' % (
+                model._meta.app_label, model._meta.model_name, field), None)
+
 
 
 if actstream_settings.USE_JSONFIELD:

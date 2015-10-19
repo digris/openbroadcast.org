@@ -47,7 +47,7 @@
                     <li>
                         <a href="{{ item.user.get_absolute_url }}">{% firstof item.user.username item.user %}</a>
 
-                        {% url alibrary-playlist-list as playlist_list %}
+                        {% url "alibrary-playlist-list" as playlist_list %}
                         <a href="{% spurl path=playlist_list query="user={{ item.user.username }}" %}"
                            title="{% trans "Only show playlists by" %} {% firstof item.user.username item.user %}"
                            style="vertical-align: top;"><span class="filter icon"></span></a>
@@ -145,7 +145,7 @@
 
             {% if perms.alibrary.schedule_playlist and item.type == "broadcast" and item.broadcast_status == 1 %}
             <li>
-                <a href="{% url abcast-schedule-select-playlist  %}?playlist_id={{ item.pk }}&next={% url abcast-schedule %}"
+                <a href="{% url "abcast-schedule-select-playlist"  %}?playlist_id={{ item.pk }}&next={% url "abcast-schedule" %}"
                    class="{% if not perms.alibrary.schedule_playlist or not item.type == "broadcast" or not item.broadcast_status == 1 %} disabled{% endif %}"
                    data-action="schedule"
                    data-ct="playlist"

@@ -9,7 +9,7 @@
             <!---->
             {% if perms.alibrary.upload_media %}
             <li class="link">
-                <a class="hoverable" href="{% url importer-import-create %}" title="{% trans "Upload Music" %}">
+                <a class="hoverable" href="{% url "importer-import-create" %}" title="{% trans "Upload Music" %}">
                     <i class="icon icon-upload-alt"></i>
                     <span>{% trans "Upload Content" %}</span>
                 </a>

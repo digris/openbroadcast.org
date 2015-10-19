@@ -256,10 +256,11 @@ class PlaylistResource(ModelResource):
         self.throttle_check(request)
 
         try:
-            p = Playlist.objects.filter(user=request.user,is_current=True)[0]
+            p = Playlist.objects.filter(user=request.user, is_current=True)[0]
         except:
-            p = Playlist(user=request.user,is_current=True, name="New Playlist")
+            p = Playlist(user=request.user, is_current=True, name="New Playlist")
             p.save()
+
         ids = request.POST.get('ids', None)
         ct = request.POST.get('ct', None)
 
@@ -273,7 +274,6 @@ class PlaylistResource(ModelResource):
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
-
 
 
     def reorder(self, request, **kwargs):

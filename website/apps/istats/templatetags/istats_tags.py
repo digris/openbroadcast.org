@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from django import template
 
-import settings
+from django.conf import settings
 
 
-DEBUG = settings.DEBUG
+DEBUG = getattr(settings, 'DEBUG', False)
 
 register = template.Library()
 

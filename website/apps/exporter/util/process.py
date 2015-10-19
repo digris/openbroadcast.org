@@ -14,7 +14,7 @@ from alibrary.util.relations import uuid_by_object
 from exporter.util.dbox import Synchronizer
 from atracker.util import create_event
 
-PROJECT_DIR = getattr(settings, 'PROJECT_DIR', None)
+BASE_DIR = getattr(settings, 'BASE_DIR', None)
 FILENAME_FORMAT = getattr(settings, 'EXPORTER_FILENAME_FORMAT', '%s - %s - %s.%s')
 
 EXPORTER_DEBUG = getattr(settings, 'EXPORTER_DEBUG', False)
@@ -116,7 +116,7 @@ class Process(object):
         else:
             path = os.path.join('export', 'cache', '%s-%s' % (time.strftime("%Y%m%d%H%M%S", time.gmtime()), self.instance.uuid))
 
-        self.archive_dir = os.path.join(PROJECT_DIR, 'media', path)
+        self.archive_dir = os.path.join(BASE_DIR, 'media', path)
         self.archive_cache_dir = os.path.join(self.archive_dir, 'cache')
         self.archive_path = os.path.join(self.archive_dir, 'archive') # .zip appended by 'make_archive'
 

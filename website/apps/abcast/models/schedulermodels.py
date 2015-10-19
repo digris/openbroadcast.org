@@ -75,11 +75,11 @@ class EmissionManager(models.Manager):
 
     def future(self):
         now = datetime.datetime.now()
-        return self.get_query_set().filter(time_end__gte=now)
+        return self.get_queryset().filter(time_end__gte=now)
 
     def past(self):
         now = datetime.datetime.now()
-        return self.get_query_set().filter(time_end__lt=now)
+        return self.get_queryset().filter(time_end__lt=now)
 
 
 class Emission(BaseModel):

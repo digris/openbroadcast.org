@@ -32,10 +32,10 @@ def post(request):
             #post.user_ip = request.META['REMOTE_ADDR']
 
             bf.save()
-            return HttpResponse(json.dumps({'status': True}), mimetype="application/json")
+            return HttpResponse(json.dumps({'status': True}), content_type="application/json")
 
         else:
-            return HttpResponse(json.dumps({'status': False, 'errors': form.errors}), mimetype="application/json")
+            return HttpResponse(json.dumps({'status': False, 'errors': form.errors}), content_type="application/json")
 
 
 

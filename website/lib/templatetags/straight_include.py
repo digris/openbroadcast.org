@@ -22,12 +22,17 @@ from django import template
 from django.conf import settings
 
 
+TEMPLATES = getattr(settings, 'TEMPLATES', [])
+
+TEMPLATE_DIRS = TEMPLATES[0]['DIRS']
+
 register = template.Library()
 
 
 class StraightIncludeNode(template.Node):
+
     def __init__(self, template_path):
-        self.filepath = '%s/%s' % (settings.TEMPLATE_DIRS[0], template_path)
+        self.filepath = '%s/%s' % (TEMPLATE_DIRS[0], template_path)
 
     def render(self, context):
         fp = open(self.filepath, 'r')

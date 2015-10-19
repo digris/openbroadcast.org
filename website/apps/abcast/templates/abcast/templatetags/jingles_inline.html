@@ -1,4 +1,4 @@
-{% load sekizai_tags verbatim i18n %}
+{% load sekizai_tags i18n %}
 
 {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}abcast/js/jingle.js"></script>{% endaddtoblock %}
 {% addtoblock "js-post" %}
@@ -7,8 +7,8 @@
 
 		var abcast = abcast || {};
 		abcast.jingle = new JingleUi();
-		abcast.jingle.api_url = "{% url api_dispatch_list resource_name='abcast/jingleset' api_name='v1'%}";
-		abcast.jingle.api_url_simple = "{% url api_dispatch_list resource_name='abcast/jingleset' api_name='v1'%}";
+		abcast.jingle.api_url = "{% url "api_dispatch_list" resource_name='abcast/jingleset' api_name='v1'%}";
+		abcast.jingle.api_url_simple = "{% url "api_dispatch_list" resource_name='abcast/jingleset' api_name='v1'%}";
 		abcast.jingle.init();
 
 	});

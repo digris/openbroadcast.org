@@ -405,7 +405,7 @@ class License(MPTTModel, TranslatableModel, MigrationMixin):
 class ProfessionManager(models.Manager):
 
     def listed(self):
-        return self.get_query_set().filter(in_listing=True)
+        return self.get_queryset().filter(in_listing=True)
     
     
 class Profession(models.Model):
@@ -458,7 +458,7 @@ class Mediaformat(models.Model):
 class DaypartManager(models.Manager):
     
     def active(self):
-        return self.get_query_set().filter(active=True)
+        return self.get_queryset().filter(active=True)
        
 class Daypart(models.Model):
     
@@ -520,12 +520,12 @@ class Service(models.Model):
 class RelationManager(models.Manager):
 
     def generic(self):
-        qs = self.get_query_set().filter(service__in=['generic', 'official',])
+        qs = self.get_queryset().filter(service__in=['generic', 'official',])
         return qs.order_by('-service')
 
     def specific(self, key=None):
 
-        qs = self.get_query_set().exclude(service__in=['generic', 'official',])
+        qs = self.get_queryset().exclude(service__in=['generic', 'official',])
 
         """
         try to order by dict
@@ -558,7 +558,7 @@ class RelationManager(models.Manager):
 
     def highlighted(self, key=None):
 
-        qs = self.get_query_set().exclude(service__in=['generic', 'official',])
+        qs = self.get_queryset().exclude(service__in=['generic', 'official',])
 
         services = [
                     'wikipedia',

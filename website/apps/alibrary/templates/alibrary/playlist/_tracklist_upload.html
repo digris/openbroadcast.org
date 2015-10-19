@@ -1,4 +1,4 @@
-{% load sekizai_tags thumbnail i18n truncate verbatim value_from_settings straight_include %}
+{% load sekizai_tags thumbnail i18n truncate value_from_settings straight_include %}
 
 {% addtoblock "js-post" %}
     <script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/tmpl.js"></script>{% endaddtoblock %}
@@ -82,13 +82,13 @@
     <div class="uploader">
 
         <form id="fileupload"
-              action="{% url api_dispatch_list api_name="v1" resource_name="importfile" %}?import_session__uuid_key={{ object.uuid }}"
+              action="{% url "api_dispatch_list" api_name="v1" resource_name="importfile" %}?import_session__uuid_key={{ object.uuid }}"
               method="POST"
               enctype="multipart/form-data">
 
             <input type="hidden"
                    id="import_api_url"
-                   value="{% url api_dispatch_list resource_name='import' api_name='v1' %}{{ object.id }}"/>
+                   value="{% url "api_dispatch_list" resource_name='import' api_name='v1' %}{{ object.id }}"/>
 
             <div class="fileupload-buttonbar">
 

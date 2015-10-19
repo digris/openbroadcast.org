@@ -109,7 +109,7 @@ class ReleaseFilter(django_filters.FilterSet):
 
             for name, filter_ in self.filters.iteritems():
 
-                ds = self.queryset.values_list(name, flat=False).annotate(
+                ds = self.queryset.values_list(name, flat=False).order_by(name).annotate(
                     n=models.Count("pk", distinct=True)).distinct()
 
 
@@ -201,7 +201,7 @@ class ArtistFilter(django_filters.FilterSet):
         flist = []
         if not hasattr(self, '_filterlist'):
             for name, filter_ in self.filters.iteritems():
-                ds = self.queryset.values_list(name, flat=False).annotate(
+                ds = self.queryset.values_list(name, flat=False).order_by(name).annotate(
                     n=models.Count("pk", distinct=True)).distinct()
                 filter_.entries = ds
 
@@ -235,19 +235,23 @@ class ArtistFilter(django_filters.FilterSet):
 
 
 class LabelFilter(django_filters.FilterSet):
+
     type = CharListFilter(label=_("Label type"))
     country__printable_name = CharListFilter(label=_("Country"))
 
     class Meta:
         model = Label
-        fields = ['type', 'country__printable_name', ]
+        fields = [
+            'type',
+            'country__printable_name',
+        ]
 
     @property
     def filterlist(self):
         flist = []
         if not hasattr(self, '_filterlist'):
             for name, filter_ in self.filters.iteritems():
-                ds = self.queryset.values_list(name, flat=False).annotate(
+                ds = self.queryset.values_list(name, flat=False).order_by(name).annotate(
                     n=models.Count("pk", distinct=True)).distinct()
 
                 # TODO: extreme hackish...
@@ -346,7 +350,7 @@ class MediaFilter(django_filters.FilterSet):
 
             for name, filter_ in self.filters.iteritems():
 
-                ds = self.queryset.values_list(name, flat=False).annotate(
+                ds = self.queryset.values_list(name, flat=False).order_by(name).annotate(
                     n=models.Count("pk", distinct=True)).distinct()
 
                 # TODO: extreme hackish...
@@ -507,7 +511,7 @@ class PlaylistFilter(django_filters.FilterSet):
 
             for name, filter_ in self.filters.iteritems():
 
-                ds = self.queryset.values_list(name, flat=False).annotate(
+                ds = self.queryset.values_list(name, flat=False).order_by(name).annotate(
                     n=models.Count("pk", distinct=True)).distinct()
 
 
@@ -569,10 +573,8 @@ class PlaylistFilter(django_filters.FilterSet):
                     from alibrary.models import Daypart
                     nd = []
                     for d in ds:
-                        print 'daypart filter'
                         try:
                             dp = Daypart.objects.get(pk=int(d[0]))
-                            print dp
                             nd.append([d[0], d[1], dp])
 
                         except:

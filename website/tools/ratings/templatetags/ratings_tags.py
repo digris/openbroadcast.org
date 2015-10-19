@@ -69,7 +69,7 @@ def get_rating_form(parser, token):
     
     .. code-block:: html+django
         
-        <form action="{% url ratings_vote %}" method="post">
+        <form action="{% url "ratings_vote" %}" method="post">
             {% csrf_token %}
             {{ rating_form }}
             <p><input type="submit" value="Vote &rarr;"></p>

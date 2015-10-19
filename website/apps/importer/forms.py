@@ -9,6 +9,9 @@ from importer.models import Import
 
 
 class ImportCreateForm(forms.Form):
+
+    class Meta:
+        exclude = []
     
     def __init__(self, *args, **kwargs):
         super(ImportCreateForm, self).__init__(*args, **kwargs)        

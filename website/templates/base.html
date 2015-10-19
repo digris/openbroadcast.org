@@ -141,13 +141,7 @@
                         </div>
                     {% endif %}
 
-
-
-
-                    <!-- col&co handling inside block -->
                     {% block main %}{% endblock %}
-
-
 
                 </section>
 
@@ -207,7 +201,7 @@
             <div>
                 <h2>WARNING: Currently logged in as user "{{ user }}"!</h2>
                 <p>
-                    <a href="{% url loginas-user-login loginas_active %}" class="btn btn-primary">Back to own account</a>
+                    <a href="{% url "loginas-user-login" loginas_active %}" class="btn btn-primary">Back to own account</a>
                 </p>
             </div>
 
@@ -294,7 +288,7 @@
             $(function(){
 
                 alibrary.collector = new CollectorApp;
-                alibrary.collector.api_url = "{% url api_dispatch_list resource_name='library/playlist' api_name='v1'%}";
+                alibrary.collector.api_url = "{% url "api_dispatch_list" resource_name='library/playlist' api_name='v1'%}";
                 // alibrary.collector.playlist_app = alibrary.playlist;
                 alibrary.collector.init();
 

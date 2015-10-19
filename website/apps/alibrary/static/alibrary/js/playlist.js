@@ -522,7 +522,8 @@ CollectorApp = (function () {
         el.off('click');
 
         // nano scroll
-        $('.listing.nano', el).nanoScroller({ flash: false, preventPageScrolling: true });
+        // TODO: re-enable nano scroller. having issue a.t.m.
+        //$('.listing.nano', el).nanoScroller({ flash: false, preventPageScrolling: true });
 
         // form actions
         el.on('click', 'a[data-action]', function (e) {

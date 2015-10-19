@@ -81,7 +81,7 @@
                 <td>{{ item.email }}</td>
                 <td>{{ item.date_invited }}</td>
                 <td>{{ item.expiration_date }}{% if not item.is_valid %} ({% trans "Expired" %}){% endif %}</td>
-                <td><a href="{% url profiles-invitation-delete pk=item.pk %}">{% trans "Delete" %}</a></td>
+                <td><a href="{% url "profiles-invitation-delete" pk=item.pk %}">{% trans "Delete" %}</a></td>
             </tr>
 		{% endfor %}
 
@@ -152,7 +152,7 @@
 
             {% if user.is_authenticated %}
                 <li class="link">
-                    <a class="hoverable{% if not perms.invitation.add_invitation %}  disabled{% endif %}" href="{% url invitation_invite %}?next={{ request.get_full_path }}" title="{% trans "Invite new users" %}">
+                    <a class="hoverable{% if not perms.invitation.add_invitation %}  disabled{% endif %}" href="{% url "invitation_invite" %}?next={{ request.get_full_path }}" title="{% trans "Invite new users" %}">
                         <i class="icon icon-user"></i>
                         <span>{% trans "Invite new users" %}</span>
                         <small class="opt pull-right"></small>

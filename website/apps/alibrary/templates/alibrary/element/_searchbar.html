@@ -24,8 +24,10 @@
         {% endif %}
     </div>
 
+    {% spaceless %}
     <ul class="filter-bar unstyled horizontal">
-        {% for filter in relation_filter %}
+
+            {% for filter in relation_filter %}
             <li>
                 <a href="{% spurl base=request.get_full_path remove_query_param="page" remove_query_param=filter.item_type %}"
                    class="lfilter">
@@ -34,7 +36,9 @@
                 </a></li>
         {% endfor %}
     </ul>
+    {% endspaceless %}
 
+    {% spaceless %}
     <ul class="filter-bar unstyled horizontal">
         {% for item in filter.filterlist %}
 
@@ -75,6 +79,7 @@
 
         {% endfor %}
     </ul>
+    {% endspaceless %}
 
     <div class="clear"></div>
 

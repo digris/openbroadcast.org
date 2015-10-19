@@ -40,6 +40,9 @@ from audiotools import MetaData
 import audiotools
 import tempfile
 
+import tagging
+from tagging.registry import register as tagging_register
+
 # celery / task management
 from celery.task import task
 
@@ -422,7 +425,7 @@ class Media(MigrationMixin):
     
     @models.permalink
     def get_stream_url(self):
-        return ('en:alibrary-media-stream_html5', [self.uuid])
+        return ('alibrary-media-stream_html5', [self.uuid])
 
     @models.permalink
     def get_encode_url(self, format='mp3', bitrate='32'):
@@ -891,6 +894,9 @@ class Media(MigrationMixin):
     def create_waveform_image(self):
 
         if self.master:
+
+            log.info('creating waveform image for media with pk: %s' % self.pk)
+
             tmp_directory = tempfile.mkdtemp()
     
             src_path = self.master.path;
@@ -898,17 +904,16 @@ class Media(MigrationMixin):
 
             versions_directory = os.path.join(self.get_directory(absolute=True), 'versions')
             dst_path = os.path.join(versions_directory, 'waveform.png')
-            
-            #print 'create waveform'
-            print 'src_path: %s' % src_path
-            #print 'tmp_path: %s' % tmp_path
-            print 'dst_path: %s' % dst_path
+
+            log.debug('tmp_path: %s' % tmp_path)
+            log.debug('src_paths: %s' % src_path)
+            log.debug('dst_path: %s' % dst_path)
+
 
             """
             first try to convert using audiotools.
             if this fails, we try to force the process 'by hand'
             """
-
             try:
                 log.debug('trying to convert to .wav using audiotools: %s' % src_path)
                 audiotools.open(src_path).convert(tmp_path, audiotools.WaveAudio)
@@ -1103,7 +1108,7 @@ class Media(MigrationMixin):
                 os.symlink(obj.master.path, version_path)
 
         else:
-            log.info('conversion needed: %s to MP3' % master_format)
+            log.info('conversion: %s > MP3' % master_format)
             try:
                 audiotools.open(obj.master.path).convert(
                     version_path,
@@ -1721,10 +1726,10 @@ def action_handler_task(sender, instance, created):
 arating.enable_voting_on(Media)
 
 try:
-    tagging.register(Media)
-except:
+    tagging_register(Media)
+except Exception as e:
+    print '***** %s' % e
     pass
-
 
 
 class MediaExtraartists(models.Model):

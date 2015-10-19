@@ -503,7 +503,7 @@ class SpectrogramImage(object):
             self.pixels.append(self.palette[0])
 
     def save(self, filename, quality=80):
-        assert filename.lower().endswith(".jpg")
+        #assert filename.lower().endswith(".jpg")
         self.image.putdata(self.pixels)
         self.image.transpose(Image.ROTATE_90).save(filename, quality=quality)
 
@@ -512,6 +512,14 @@ def create_wave_images(input_filename, output_filename_w, output_filename_s, ima
     """
     Utility function for creating both wavefile and spectrum images from an audio input file.
     """
+
+    print 'input_filename:    %s' % input_filename
+    print 'output_filename_w: %s' % output_filename_w
+    print 'output_filename_s: %s' % output_filename_s
+    print 'image_width:       %s' % image_width
+    print 'image_height:      %s' % image_height
+    print 'fft_size:          %s' % fft_size
+
     processor = AudioProcessor(input_filename, fft_size, numpy.hanning)
     samples_per_pixel = processor.audio_file.nframes / float(image_width)
 
@@ -538,8 +546,8 @@ def create_wave_images(input_filename, output_filename_w, output_filename_s, ima
     if progress_callback:
         progress_callback(100)
 
-    waveform.save(output_filename_w)
-    #spectrogram.save(output_filename_s)
+    #waveform.save(output_filename_w)
+    spectrogram.save(output_filename_w)
 
 
 class NoSpaceLeftException(Exception):

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 from django import template
 
-from pushy.settings import SETTINGS
+from pushy.settings import PUSHY_SETTINGS
 
-
-SOCKET_SERVER = SETTINGS.get('SOCKET_SERVER', None)
-DEBUG = SETTINGS.get('PUSHY_DEBUG', False)
+SOCKET_SERVER = PUSHY_SETTINGS.get('SOCKET_SERVER', None)
+DEBUG = PUSHY_SETTINGS.get('PUSHY_DEBUG', False)
 
 register = template.Library()
 

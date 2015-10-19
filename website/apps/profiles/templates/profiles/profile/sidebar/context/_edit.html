@@ -10,7 +10,7 @@
 				<span class="clear"></span>
 			</li>
 			<li class="link ">
-				<span class="left icon"> <a href="{% url auth_password_change %}?next={{ object.get_edit_url }}" title="{% trans "Change password" %}">{% trans "Change password" %}</a> </span>
+				<span class="left icon"> <a href="{% url "auth_password_change" %}?next={{ object.get_edit_url }}" title="{% trans "Change password" %}">{% trans "Change password" %}</a> </span>
 				<span class="opt"></span>
 				<span class="clear"></span>
 			</li>
@@ -23,14 +23,14 @@
 		<h4>{% trans "Connected accounts" %}</h4>
 		<ul class="unstyled connected">
 			{% for service in social_auth.associated %}
-			<li><i class="icon-{{ service.provider }}"></i><span class="service">{{ service|title|truncatechars:24 }}</span><a class="pull-right" href="{% url socialauth_disconnect service.provider %}?next={{ request.get_full_path }}">{% trans "disconnect" %}</a></li>
+			<li><i class="icon-{{ service.provider }}"></i><span class="service">{{ service|title|truncatechars:24 }}</span><a class="pull-right" href="{% url "socialauth_disconnect" service.provider %}?next={{ request.get_full_path }}">{% trans "disconnect" %}</a></li>
 			{% endfor %}
 		</ul>
 		
 		<h4>{% trans "Available accounts" %}</h4>
 		<ul class="unstyled available">
 			{% for service in social_auth.not_associated %}
-			<li><i class="icon-{{ service }}"></i><span class="service">{{ service|title }}</span><a class="pull-right" href="{% url socialauth_begin service %}?next={{ request.get_full_path }}">{% trans "connect" %}</a></li>
+			<li><i class="icon-{{ service }}"></i><span class="service">{{ service|title }}</span><a class="pull-right" href="{% url "socialauth_begin" service %}?next={{ request.get_full_path }}">{% trans "connect" %}</a></li>
 			{% endfor %}
 		</ul>
 	</div>

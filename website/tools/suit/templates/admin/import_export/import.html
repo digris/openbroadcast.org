@@ -84,7 +84,7 @@
     {% endif %}
 
     {% if confirm_form %}
-        <form action="{% url opts|admin_urlname:"process_import" %}" method="POST">
+        <form action="{% url "opts"|admin_urlname:"process_import" %}" method="POST">
             {% csrf_token %}
             {{ confirm_form.as_p }}
             <input class="btn btn-success" name="confirm" type="submit" value="{% trans "Confirm import" %}">

@@ -24,9 +24,9 @@
         } else {
           var next;
           if (response && response.status && response.status == "notConnected") {
-            next = '{% url socialaccount_login_cancelled %}';
+            next = '{% url "socialaccount_login_cancelled" %}';
           } else {
-            next = '{% url socialaccount_login_error %}';
+            next = '{% url "socialaccount_login_error" %}';
           }
           window.location.href = next;
         }

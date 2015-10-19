@@ -30,6 +30,7 @@ from django_date_extensions.fields import ApproximateDateField
 #from taggit.managers import TaggableManager
 
 import tagging
+from tagging.registry import register as tagging_register
 import reversion 
 
 from l10n.models import Country
@@ -77,7 +78,7 @@ class NameVariation(models.Model):
 class ArtistManager(models.Manager):
 
     def listed(self):
-        return self.get_query_set().filter(listed=True, priority__gt=0)
+        return self.get_queryset().filter(listed=True, priority__gt=0)
 
 class Artist(MigrationMixin):
     
@@ -370,8 +371,9 @@ class Artist(MigrationMixin):
 
 
 try:
-    tagging.register(Artist)
-except:
+    tagging_register(Artist)
+except Exception as e:
+    print '***** %s' % e
     pass
 
 # register

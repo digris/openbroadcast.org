@@ -34,6 +34,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from l10n.models import Country
 
 import tagging
+from tagging.registry import register as tagging_register
 import reversion 
 
 # model extensions
@@ -74,7 +75,7 @@ class LabelManager(models.Manager):
 
     def active(self):
         now = datetime.now()
-        return self.get_query_set().exclude(listed=False)
+        return self.get_queryset().exclude(listed=False)
 
 
 class Label(MPTTModel, MigrationMixin):
@@ -246,8 +247,9 @@ class Label(MPTTModel, MigrationMixin):
     
         
 try:
-    tagging.register(Label)
-except:
+    tagging_register(Label)
+except Exception as e:
+    print '***** %s' % e
     pass
 
 # register

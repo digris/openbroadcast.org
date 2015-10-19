@@ -138,6 +138,8 @@ class ImportUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Import
     template_name = 'importer/import_form.html'
 
+    fields = "__all__"
+
     permission_required = 'importer.change_import'
     raise_exception = True
 
@@ -217,7 +219,7 @@ def multiuploader(request, import_id):
         mimetype = 'application/json'
     else:
         mimetype = 'text/plain'
-    return HttpResponse(response_data, mimetype=mimetype)
+    return HttpResponse(response_data, content_type=mimetype)
 
 
 

@@ -20,7 +20,7 @@
 
                 $(function () {
                     exporter = new ExporterMain();
-                    exporter.api_url = "{% url api_dispatch_list resource_name='export' api_name='v1'%}";
+                    exporter.api_url = "{% url "api_dispatch_list" resource_name='export' api_name='v1'%}";
                     exporter.pushy_key = "{{ request.user.profile.uuid }}";
                     exporter.init();
                 });
@@ -129,7 +129,7 @@
 
 
     <div>
-        <a href="{% url exporter-export-delete-all %}" class="btn btn-mini pull-right">
+        <a href="{% url "exporter-export-delete-all" %}" class="btn btn-mini pull-right">
         {% trans "Clear all downloads" %}
         </a>
     </div>

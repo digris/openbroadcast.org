@@ -6,7 +6,7 @@
     {% for service in social_auth.backends %}
         <li>
             <i class="icon-{{ service }}"></i>
-            <a href="{% url socialauth_begin service %}?{{ redirect_querystring }}">{{ service|title }}</a>
+            <a href="{% url "socialauth_begin" service %}?{{ redirect_querystring }}">{{ service|title }}</a>
         </li>
     {% endfor %}
 </ul>

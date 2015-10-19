@@ -9,7 +9,7 @@ django-mptt==0.7.4
 django-filer==0.9.12
 
 
-django-cms==3.1.2
+django-cms==3.1.3
 django-treebeard==3.0
 djangocms-admin-style==0.2.8
 djangocms-file==0.1
@@ -32,6 +32,17 @@ django-hvad==1.3.0
 
 django-extensions==1.5.7
 django-dajaxice==0.7
+django-braces==1.8.1
+
+#django-tastypie==0.12.2
+
+numpy==1.8.0
+scikits.audiolab-0.10.2
+
+
+# django-adv-cache-tag==0.1.3
+# https://github.com/twidi/django-adv-cache-tag/pull/11
+-e git+https://github.com/caxap/django-adv-cache-tag.git@3d0e494ff6fb82d7d354460307bec21011b4d8c0#egg=django-adv-cache-tag
 
 # uninstall
 pip uninstall django-modeltranslation
@@ -43,6 +54,17 @@ pip uninstall south
 # migration steps
 
 ./manage.py migrate --fake-initial
-./manage.py migrate cms 0001 --fake
-./manage.py migrate cms 0002 --fake
+
+#./manage.py migrate cms 0001 --fake
+#./manage.py migrate cms 0002 --fake
+
+./manage.py migrate django_comments --fake-initial
+./manage.py migrate --fake-initial
+
+
+
+# sql hacks
+/* 14:08:18 localhost */ ALTER TABLE `reversion_version` CHANGE `type` `type` SMALLINT(5)  UNSIGNED  NOT NULL  DEFAULT '1';
+/* 17:35:47 localhost */ ALTER TABLE `postman_message` CHANGE `sender_archived` `sender_archived` TINYINT(1)  NULL;
+/* 17:35:12 localhost */ ALTER TABLE `postman_message` CHANGE `recipient_archived` `recipient_archived` TINYINT(1)  NULL;
 

@@ -25,7 +25,7 @@
 				{% for channel in object.channel_set.all %}
 				<span>
                     {% if channel.has_scheduler %}
-					<a href="{% url abcast-schedule %}?channel_id={{ channel.pk }}">{{ channel.name }}</a>
+					<a href="{% url "abcast-schedule" %}?channel_id={{ channel.pk }}">{{ channel.name }}</a>
                     {%  else %}
                     {{ channel.name }}
                     {% endif %}

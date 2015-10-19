@@ -26,7 +26,7 @@ def home(request):
     return render_to_response('wdd/home.html', data, context_instance=RequestContext(request))
 
 
-def chat(request, room=None, mimetype='json'):
+def chat(request, room=None, content_type='json'):
     
     entries = Entry.objects.all()
 
@@ -35,7 +35,7 @@ def chat(request, room=None, mimetype='json'):
         js = serializers.get_serializer("json")()
         data = js.serialize(entries, ensure_ascii=False)
 
-        return HttpResponse(data, mimetype="application/json")
+        return HttpResponse(data, content_type="application/json")
     
     if mimetype == 'html':
 

@@ -17,4 +17,4 @@ class JsonResponse(HttpResponse):
     HttpResponse descendant, which return response with ``application/json`` mimetype.
     """
     def __init__(self, data):
-        super(JsonResponse, self).__init__(content=json.dumps(data), mimetype='application/json')
+        super(JsonResponse, self).__init__(content=json.dumps(data), content_type='application/json')

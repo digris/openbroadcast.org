@@ -18,7 +18,7 @@ def version_by_git(context):
     commit, timestamp = parse_git_changelog()
 
     try:
-        install_time = datetime.fromtimestamp(os.path.getmtime(os.path.join(settings.PROJECT_DIR, 'changelog.txt')))
+        install_time = datetime.fromtimestamp(os.path.getmtime(os.path.join(settings.BASE_DIR, 'changelog.txt')))
     except Exception, e:
         print e
         install_time = None

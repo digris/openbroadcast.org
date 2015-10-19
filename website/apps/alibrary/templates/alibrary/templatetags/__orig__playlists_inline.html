@@ -7,7 +7,7 @@
 
 		var alibrary = alibrary || {};
 		alibrary.playlist = new PlaylistUi();;
-		alibrary.playlist.api_url = "{% url api_dispatch_list resource_name='library/playlist' api_name='v1'%}";
+		alibrary.playlist.api_url = "{% url "api_dispatch_list" resource_name='library/playlist' api_name='v1'%}";
 		alibrary.playlist.init();
 		
 	});

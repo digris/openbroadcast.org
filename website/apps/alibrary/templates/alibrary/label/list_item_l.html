@@ -49,7 +49,7 @@
 				<ul class="unstyled">
 					{% if item.get_releases.count > 0 %}
 					<li>
-						{% url alibrary-release-list as release_list %}
+						{% url "alibrary-release-list" as release_list %}
 						{% trans "Releases" %}:&nbsp;<a href="{% spurl path=release_list query="artist={{ item.slug }}" %}" title="{% trans "Only show releases by" %} {{ item.name }}" style="vertical-align: top;">{{ item.get_releases.count }}<span class="filter icon"></span></a>
 					</li>
 					{% endif %}

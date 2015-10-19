@@ -182,7 +182,7 @@ class EmissionDetailView(DetailView):
     extra_context = {}
 
     def render_to_response(self, context):
-        return super(EmissionDetailView, self).render_to_response(context, mimetype="text/html")
+        return super(EmissionDetailView, self).render_to_response(context, content_type="text/html")
 
     def get_context_data(self, **kwargs):
         
@@ -233,7 +233,7 @@ def select_playlist(request):
             }
     #return data
     data = json.dumps(data)
-    return HttpResponse(data, mimetype='application/json')
+    return HttpResponse(data, content_type='application/json')
 
 
 
@@ -248,18 +248,21 @@ def schedule_object(request):
     if not request.user.has_perm('abcast.schedule_emission'):
         log.warning('unauthorized attempt to schedule emission by: %s' % request.user)
         return { 'message': _('Sorry - you are not allowed to schedule an emission.') }
+
+
+    data = json.loads(request.body)
     
-    ct = request.POST.get('ct', None) 
-    obj_id = request.POST.get('obj_id', None)
-    top = request.POST.get('top', None)
-    left = request.POST.get('left', None)
-    range_start = request.POST.get('range_start', None)
-    range_end = request.POST.get('range_end', None)
-    channel_id = request.POST.get('channel_id', SCHEDULER_DEFAULT_CHANNEL_ID)
+    ct = data.get('ct', None)
+    obj_id = data.get('obj_id', None)
+    top = data.get('top', None)
+    left = data.get('left', None)
+    range_start = data.get('range_start', None)
+    range_end = data.get('range_end', None)
+    channel_id = data.get('channel_id', SCHEDULER_DEFAULT_CHANNEL_ID)
     channel = Channel.objects.get(pk=channel_id)
-    color = request.POST.get('color', 0)
+    color = data.get('color', 0)
     
-    num_days = request.POST.get('num_days', SCHEDULER_NUM_DAYS)
+    num_days = data.get('num_days', SCHEDULER_NUM_DAYS)
     
     log.debug('content type: %s' % ct)
     
@@ -343,7 +346,7 @@ def schedule_object(request):
     
     return data
     #data = json.dumps(data)
-    #return HttpResponse(data, mimetype='application/json')
+    #return HttpResponse(data, content_type='application/json')
  
 
 """

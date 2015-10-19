@@ -7,7 +7,7 @@
             {% if perms.alibrary.add_playlist %}
                 <li class="link">
                     <a class="hoverable"
-                       href="{% url alibrary-playlist-create %}"
+                       href="{% url "alibrary-playlist-create" %}"
                        title="{% trans "Create a playlist" %}">
                         <i class="icon icon-reorder"></i>
                         <span>{% trans "Create a playlist" %}</span>

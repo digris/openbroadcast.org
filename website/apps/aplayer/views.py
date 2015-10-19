@@ -44,6 +44,6 @@ def sc_proxy(request, username=None):
                 pixdata[x, y] = (255, 255, 255, 255)
 
     # serialize to HTTP response
-    response = HttpResponse(mimetype="image/png")
+    response = HttpResponse(content_type="image/png")
     img.save(response, "PNG")
     return response

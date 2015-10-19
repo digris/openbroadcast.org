@@ -11,7 +11,7 @@
             {% if perms.alibrary.create_playlist %}
                 <li class="link">
                     <a class="hoverable"
-                       href="{% url alibrary-playlist-create %}"
+                       href="{% url "alibrary-playlist-create" %}"
                        title="{% trans "Create a playlist" %}">
                         <i class="icon icon-reorder"></i>
                         <span>{% trans "Create a playlist" %}</span>
@@ -50,7 +50,7 @@
 
 			{% if perms.alibrary.schedule_playlist and object.type == "broadcast" and object.broadcast_status == 1 %}
             <li class="link">
-                <a class="hoverable" href="{% url abcast-schedule-select-playlist  %}?playlist_id={{ object.pk }}&next={% url abcast-schedule %}" title="{% trans "Schedule for Broadcast" %}">
+                <a class="hoverable" href="{% url "abcast-schedule-select-playlist"  %}?playlist_id={{ object.pk }}&next={% url "abcast-schedule" %}" title="{% trans "Schedule for Broadcast" %}">
                     <i class="icon icon-calendar"></i>
                     <span>{% trans "Schedule for Broadcast" %}</span>
                 </a>
