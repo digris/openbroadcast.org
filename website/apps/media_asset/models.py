@@ -46,7 +46,7 @@ class Waveform(models.Model):
     status = models.PositiveIntegerField(default=INIT, choices=STATUS_CHOICES)
     type = models.CharField(max_length=64, default=WAVEFORM, choices=TYPE_CHOICES)
 
-    media = models.ForeignKey('alibrary.Media')
+    #media = models.ForeignKey('alibrary.Media')
 
     class Meta:
         app_label = 'media_asset'

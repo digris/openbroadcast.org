@@ -123,17 +123,17 @@ class TagManager(models.Manager):
 
         cursor = connection.cursor()
 
-        print '---'
-        print query
-        print '---'
-        print extra_joins
-        print '---'
-        print extra_criteria
-        print '---'
-        print min_count_sql
-        print '-------------------------'
-
-        print query % (extra_joins, extra_criteria, min_count_sql)
+        # print '---'
+        # print query
+        # print '---'
+        # print extra_joins
+        # print '---'
+        # print extra_criteria
+        # print '---'
+        # print min_count_sql
+        # print '-------------------------'
+        #
+        # print query % (extra_joins, extra_criteria, min_count_sql)
 
         cursor.execute(query % (extra_joins, extra_criteria, min_count_sql),
                        params)
