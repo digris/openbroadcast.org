@@ -1,22 +1,56 @@
-{% load i18n comments  %}
+{% load i18n comments fluent_comments_tags %}
+
+
+
+{% comment %}
+
+  {% get_comment_count for object as comments_count %}
+
+  <div id="comments-wrapper">
+    {% if comments_count %}
+    <h3 class="has-comments-title">{% blocktrans with entry_title=object.title count comments_count=comments_count %}{{ comments_count }} comment to {{ entry_title }}{% plural %}{{ comments_count }} comments to {{ entry_title }}{% endblocktrans %}</h3>
+      {% render_comment_list for object %}
+
+      {% if not object|comments_are_open %}
+        <p class="comments-closed">{% trans "Comments are closed." %}</p>
+      {% endif %}
+    {% else %}
+      {# no comments yet, invite #}
+      {% if object|comments_are_open %}
+        <h3 class="no-comments-title">{% trans "Leave a reply" %}</h3>
+
+        {# include the empty list, so the <div> is there for Ajax code #}
+        {% render_comment_list for object %}
+
+      {% endif %}
+    {% endif %}
+  </div>
+
+  {% if object|comments_are_open %}
+    <div id="comments-form-wrapper">
+      {% render_comment_form for object %}
+    </div>
+  {% endif %}
+{% endcomment %}
 
 <div class="header">
     <h3>{% trans "Comments" %}</h3>
 </div>
 
+<div id="comments-wrapper">
+    <div id="comments-{{ object.pk }}">
+        {% render_comment_list for object %}
+    </div>
+</div>
+
 <div class="form">
     {% if user.is_authenticated %}
-    {% render_comment_form for object %}
+        <div id="comments-form-wrapper">
+            {% render_comment_form for object %}
+        </div>
     {% else %}
     <p>
         {% trans "Please login to join the conversation" %}
     </p>
     {% endif %}
 </div>
-
-<!-- TODO: maybe move to template tag.. just testing here... -->
-{% with router=object.get_api_url %}
-{# include "element/chat/_message_list.html" #}
-{% endwith %}
-
-{% render_comment_list for object %}

@@ -425,17 +425,12 @@ class BaseResource(Resource):
         return self.json_response(request, data)
 
     def update_stream_settings(self, request, **kwargs):
-        
-        print '** update_stream_settings **'
-        print request.POST
 
         data = {"stream_params":{"s1":{"enable":"true","output":"icecast","type":"ogg","bitrate":"128","host":"ubuntu","port":"8000","user":"","pass":"donthackme","admin_user":"admin","admin_pass":"donthackme","mount":"airtime_128","url":"http:\/\/airtime.sourcefabric.org","description":"Airtime Radio! Stream #1","genre":"genre","name":"Airtime!","channels":"stereo","liquidsoap_error":"OK"},"s2":{"enable":"false","output":"icecast","type":"","bitrate":"","host":"","port":"","user":"","pass":"","admin_user":"","admin_pass":"","mount":"","url":"","description":"","genre":"","name":"","channels":"stereo"},"s3":{"enable":"false","output":"icecast","type":"","bitrate":"","host":"","port":"","user":"","pass":"","admin_user":"","admin_pass":"","mount":"","url":"","description":"","genre":"","name":"","channels":"stereo"}}}
         return self.json_response(request, data)
 
     def get_stream_settings(self, request, **kwargs):
-        
-        print '** get_stream_settings **'
-        print request.GET
+
         channel_uuid = request.GET.get('channel_id', None)
 
         try:
@@ -453,10 +448,7 @@ class BaseResource(Resource):
         return self.json_response(request, data)
 
     def update_liquidsoap_status(self, request, **kwargs):
-        
-        print '** update_liquidsoap_status **'
-        print request.POST
-        
+
         data = {'status': True}
         return self.json_response(request, data)
 

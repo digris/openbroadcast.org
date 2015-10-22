@@ -93,7 +93,7 @@ INSTALLED_APPS = (
     # dajax
     'dajaxice',
     'dajax',
-    'ajax_select',
+    #'ajax_select',
     'email_obfuscator',
 
     #'stepguide',
@@ -118,6 +118,7 @@ INSTALLED_APPS = (
     'invitation',
     'asite',
     'alibrary',
+    'media_asset',
     'aplayer',
     'importer',
     'massimporter',

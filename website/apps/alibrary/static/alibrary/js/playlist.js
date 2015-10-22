@@ -779,10 +779,10 @@ CollectorApp = (function () {
         jQuery.ajax({
             url: item.resource_uri.replace('simple', '') + 'collect/',
             type: 'POST',
-            data: data,
+            data: JSON.stringify(data),
             dataType: "json",
             contentType: "application/json",
-            //processData:  false,
+            processData:  false,
             success: function (data) {
                 var html = nj.render('alibrary/nj/playlist/select_popup_item.html', { item: data });
                 item.el.replaceWith(html);
@@ -815,33 +815,6 @@ CollectorApp = (function () {
     };
 
 
-    this.__collect = function (items) {
-
-        var data = {
-            ids: items.join(','),
-            ct: 'media'
-        }
-
-        url = this.api_url + 'collect/';
-
-        /**/
-        jQuery.ajax({
-            url: url,
-            type: 'POST',
-            data: data,
-            dataType: "json",
-            contentType: "application/json",
-            //processData:  false,
-            success: function (data) {
-                if (self.playlist_app) {
-                    //self.playlist_app.update_playlists();
-                    self.playlist_app.load();
-                }
-            },
-            async: true
-        });
-
-    };
 
 });
 

@@ -15,6 +15,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 from tagging.fields import TagField
+from tagging.registry import register as tagging_register
 
 import arating
 from postman.api import pm_write
@@ -190,7 +191,7 @@ class Profile(MigrationMixin):
         super(Profile, self).save(*args, **kwargs)
 
 try:
-    tagging.register(Profile)
+    tagging_register(Profile)
 except:
     pass
 

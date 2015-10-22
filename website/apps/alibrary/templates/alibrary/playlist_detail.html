@@ -150,11 +150,14 @@
                                 <div class="span2">
                                     {{ item.time_start|date:"H:i:s" }}
                                 </div>
+
+                                {% if item.channel %}
                                 <div class="span5">
-                                    <a href="{{ item.channel.get_absolute_url }}">
+                                    <a href="{# item.channel.get_absolute_url #}">
                                         {{ item.channel.name }} | {{ item.channel.station.name }}
                                     </a>
                                 </div>
+                                {% endif %}
                                 <div class="span4">
                                     {% if  item.user %}
                                         <a href="{{ item.user.get_absolute_url }}">

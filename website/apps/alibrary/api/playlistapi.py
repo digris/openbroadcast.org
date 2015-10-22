@@ -1,3 +1,4 @@
+import json
 from django.conf.urls import *
 from django.db.models import Q
 from tastypie import fields
@@ -229,8 +230,10 @@ class PlaylistResource(ModelResource):
 
         p = Playlist.objects.get(**self.remove_api_resource_names(kwargs))
 
-        ids = request.POST.get('ids', None)
-        ct = request.POST.get('ct', None)
+        data = json.loads(request.body)
+
+        ids = data.get('ids', None)
+        ct = data.get('ct', None)
         
         print ids
         print ct
@@ -261,8 +264,10 @@ class PlaylistResource(ModelResource):
             p = Playlist(user=request.user, is_current=True, name="New Playlist")
             p.save()
 
-        ids = request.POST.get('ids', None)
-        ct = request.POST.get('ct', None)
+        data = json.loads(request.body)
+
+        ids = data.get('ids', None)
+        ct = data.get('ct', None)
 
         if ids:
             ids = ids.split(',')

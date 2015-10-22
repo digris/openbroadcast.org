@@ -537,7 +537,7 @@ def create_wave_images(input_filename, output_filename_w, output_filename_s, ima
         (spectral_centroid, db_spectrum) = processor.spectral_centroid(seek_point)
         peaks = processor.peaks(seek_point, next_seek_point)
         
-        # hackish... set tu 1 to make monochrome
+        # hackish... set to 1 to make monochrome
         spectral_centroid = 1
 
         waveform.draw_peaks(x, peaks, spectral_centroid)
@@ -546,8 +546,8 @@ def create_wave_images(input_filename, output_filename_w, output_filename_s, ima
     if progress_callback:
         progress_callback(100)
 
-    #waveform.save(output_filename_w)
-    spectrogram.save(output_filename_w)
+    waveform.save(output_filename_w)
+    #spectrogram.save(output_filename_w)
 
 
 class NoSpaceLeftException(Exception):

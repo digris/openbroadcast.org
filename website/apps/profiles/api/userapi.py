@@ -153,10 +153,10 @@ class UserResource(ModelResource):
             data = json.loads(request.body)
 
         except ValueError, e:
+            print e
 
             if request.GET:
                 data = request.GET
-
             if request.POST:
                 data = request.POST
 

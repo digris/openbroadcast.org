@@ -1,4 +1,4 @@
-# python
+# -*- coding: utf-8 -*-
 import shutil
 import time
 import subprocess
@@ -935,10 +935,11 @@ class Media(MigrationMixin):
                         faad_binary, src_path, '-o', tmp_path
                     ], stdout=subprocess.PIPE)
                     stdout = p.communicate()
-                    pass
+
                 elif ext in ['.mp5',]:
-                    # just a placeholder
                     pass
+                    # just a placeholder
+
                 else:
                     # use lame for the rest
                     lame_binary = alibrary_settings.LAME_BINARY
@@ -948,9 +949,6 @@ class Media(MigrationMixin):
                         lame_binary, src_path, tmp_path
                     ], stdout=subprocess.PIPE)
                     stdout = p.communicate()
-
-            
-
             
             args = (tmp_path, dst_path, None, 1800, 301, 2048)
             create_wave_images(*args)
@@ -1489,6 +1487,7 @@ class Media(MigrationMixin):
                     self.echoprint_status = 0
 
             except Exception, e:
+                print e
                 pass
                 #print e
 
@@ -1566,16 +1565,16 @@ def media_post_save(sender, **kwargs):
         return
 
 
-    # extract files 'hard facts'
     if obj.master and obj.processed != 1 and obj.processed != 99:
         log.info('Media id: %s - reprocess master at: %s' % (obj.pk, obj.master.path))
 
         try:
             obj.base_format = os.path.splitext(obj.master.path)[1][1:].lower()
-
+            print obj.base_format
             try:
                 audiofile = audiotools.open(obj.master.path)
-            except audiotools.UnsupportedFile, e:
+            except audiotools.UnsupportedFile as e:
+                print e
                 # hackish - re-encode file if hpeless to open with at
                 file_fix_path = obj.master.path + '_re-encoded.mp3'
                 shutil.copy2(obj.master.path, file_fix_path)
@@ -1595,24 +1594,31 @@ def media_post_save(sender, **kwargs):
                 audiofile = audiotools.open(obj.master.path)
 
 
+
             obj.base_samplerate = audiofile.sample_rate()
             obj.base_filesize = os.path.getsize(obj.master.path)
             obj.base_duration = audiofile.seconds_length()
 
+            log.debug('file data - samplerate: %s - filesize: %s - duration: %s' % (obj.base_samplerate, obj.base_filesize, obj.base_duration))
+
             try:
                 obj.base_bitrate = int(obj.base_filesize * 8 / (obj.base_duration * 1000))
-            except:
+            except Exception as e:
+                print e
                 obj.base_bitrate = None
 
 
             try:
                 exact_bitrate = int(obj.base_filesize * 8 / (obj.base_duration * 1000))
                 obj.base_bitrate = min(VALID_BITRATES, key=lambda x:abs(x - exact_bitrate))
-            except:
+            except Exception as e:
+                print e
                 obj.base_bitrate = None
 
 
             obj.processed = 1 # done
+
+
 
         except Exception, e:
 
@@ -1625,6 +1631,8 @@ def media_post_save(sender, **kwargs):
             obj.base_duration = None
             obj.processed = 99 # error
 
+        from cacheops import invalidate_obj
+        invalidate_obj(obj)
         obj.save()
 
 

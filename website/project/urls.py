@@ -1,4 +1,6 @@
-from django.conf.urls import *
+from django.conf.urls import patterns, include, url
+from django.conf.urls.i18n import i18n_patterns
+#from solid_i18n.urls import solid_i18n_patterns
 from django.views.defaults import page_not_found, server_error
 from django.conf import settings
 
@@ -90,13 +92,19 @@ urlpatterns = patterns('',
     url(r'^sitemap.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
 
     (r'^player/', include('aplayer.urls')),
-    
+    (r'^media-asset/', include('media_asset.urls')),
+
     #url(r'^bb/', include('django_badbrowser.urls')),
     #url(r'^translate/', include('datatrans.urls')),
 
     url(r'^__debug__/', include(debug_toolbar.urls)),
     
     # cms base
+
+)
+
+#urlpatterns += i18n_patterns('',
+urlpatterns += patterns('',
     url(r'^', include('cms.urls')),
 )
 

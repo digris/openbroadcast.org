@@ -382,15 +382,25 @@ class Importer(object):
         src = obj.file.path
         filename, extension = os.path.splitext(obj.file.path)
         dst = os.path.join(folder, "master%s" % extension.lower())
+        log.debug('source path: %s' % src)
+        log.debug('destination path: %s' % dst)
         try:
-            os.makedirs("%s/%s" % (MEDIA_ROOT, folder))
-            shutil.copy(src, "%s/%s" % (MEDIA_ROOT, dst))
+            log.debug('os.makedirs: %s' % os.path.join(MEDIA_ROOT, folder))
+            os.makedirs(os.path.join(MEDIA_ROOT, folder))
+
+            log.debug('os.shutil.copy: %s - %s' % (src, os.path.join(MEDIA_ROOT, dst)))
+            shutil.copy(src, os.path.join(MEDIA_ROOT, dst))
+
+            log.debug('set master for pk: %s to %s' % (m.pk, dst))
             m.master = dst
             m.original_filename = obj.filename
+
+            log.debug('pre-save')
             m.save()
+            log.debug('post-save')
             
         except Exception, e:
-            log.warning('unable to create directory: %s' % e)
+            log.warning('unable to create directory "%s": %s' % (os.path.join(MEDIA_ROOT, folder), e))
 
         return m, 1
 

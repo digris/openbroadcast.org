@@ -2,6 +2,7 @@ from sendfile import sendfile
 from django.conf import settings
 from django.conf.urls import *
 from django.db.models import Q
+from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseBadRequest, HttpResponseForbidden
 from tastypie import fields
 from tastypie.authentication import *
@@ -79,20 +80,8 @@ class MediaResource(ModelResource):
 
         bundle.data['stream'] = stream
         bundle.data['duration'] = bundle.obj.get_duration()
-        try:
-            waveform_image = bundle.obj.get_waveform_image()
-            if waveform_image:
-                waveform_image = bundle.obj.get_waveform_url()
-
-        except:
-            waveform_image = None
-            pass
-
-        #if not waveform_image:
-        #    # actually very bad place to put the default image...
-        #    waveform_image = '%s%s' % (settings.STATIC_URL, 'img/base/defaults/waveform.png')
-
-        bundle.data['waveform_image'] = waveform_image
+        bundle.data['waveform_image'] = reverse_lazy('mediaasset-waveform', kwargs={'media_uuid': bundle.obj.uuid, 'type': 'w'})
+        bundle.data['spectrogram_image'] = reverse_lazy('mediaasset-waveform', kwargs={'media_uuid': bundle.obj.uuid, 'type': 's'})
 
         bundle.data['relations'] = relations_for_object(bundle.obj)
 
@@ -387,14 +376,9 @@ class SimpleMediaResource(ModelResource):
             stream = None
 
         bundle.data['stream'] = stream
-        bundle.data['waveform_image'] = None
         bundle.data['duration'] = bundle.obj.get_duration()
-        try:
-            waveform_image = bundle.obj.get_waveform_image()
-            if waveform_image:
-                bundle.data['waveform_image'] = bundle.obj.get_waveform_url()
+        bundle.data['waveform_image'] = reverse_lazy('mediaasset-waveform', kwargs={'media_uuid': bundle.obj.uuid, 'type': 'w'})
+        bundle.data['spectrogram_image'] = reverse_lazy('mediaasset-waveform', kwargs={'media_uuid': bundle.obj.uuid, 'type': 's'})
 
-        except:
-            pass
 
         return bundle

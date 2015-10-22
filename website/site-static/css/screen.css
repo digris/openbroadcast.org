@@ -11882,25 +11882,81 @@ div.listview.export .item.done .action.download a, div.listview.export .item.dow
   }
 }
 
-/* Exporter styles
- */
-/* line 5, ../sass/apps/_comment.sass */
+/* line 1, ../sass/apps/_comment.sass */
 section.comments.on-site {
   background-color: white !important;
   margin-top: 24px;
+  /* ---- threaded comments ---- */
 }
-/* line 10, ../sass/apps/_comment.sass */
-section.comments.on-site #div_id_honeypot {
-  display: none;
-}
-/* line 15, ../sass/apps/_comment.sass */
+/* line 7, ../sass/apps/_comment.sass */
 section.comments.on-site div.header h3 {
   text-transform: none;
   font-weight: normal;
   color: #5a5a5a;
   font-size: 14px;
 }
-/* line 24, ../sass/apps/_comment.sass */
+/* line 13, ../sass/apps/_comment.sass */
+section.comments.on-site #comments-wrapper {
+  padding: 20px 0;
+}
+/* line 16, ../sass/apps/_comment.sass */
+section.comments.on-site #comment-waiting {
+  line-height: 16px;
+}
+/* line 18, ../sass/apps/_comment.sass */
+section.comments.on-site #comment-waiting img {
+  vertical-align: middle;
+  padding: 0 4px 0 10px;
+}
+/* line 22, ../sass/apps/_comment.sass */
+section.comments.on-site #comment-added-message, section.comments.on-site #comment-thanks {
+  padding-left: 10px;
+}
+/* line 25, ../sass/apps/_comment.sass */
+section.comments.on-site .comment-moderated-flag {
+  font-variant: small-caps;
+  margin-left: 5px;
+}
+/* line 29, ../sass/apps/_comment.sass */
+section.comments.on-site #div_id_honeypot {
+  /* Hide the honeypot from django_comments by default */
+  display: none;
+}
+/* line 34, ../sass/apps/_comment.sass */
+section.comments.on-site ul.comment-list-wrapper {
+  /* to avoid touching our own "ul" tags, our tags are explicitly decorated with a class selector */
+  margin-left: 0;
+  padding-left: 0;
+  margin-bottom: 12px;
+  padding-bottom: 2px;
+  border-left: 1px solid #e7e7e7;
+  padding-left: 10px;
+}
+/* line 44, ../sass/apps/_comment.sass */
+section.comments.on-site ul.comment-list-wrapper ul.comment-list-wrapper {
+  border-left: 1px solid #e7e7e7;
+  padding-left: 10px;
+  margin-left: 1em;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-top: none;
+  border-bottom: none;
+}
+/* line 53, ../sass/apps/_comment.sass */
+section.comments.on-site li.comment-wrapper {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+/* line 58, ../sass/apps/_comment.sass */
+section.comments.on-site .js-comments-form-orig-position .comment-cancel-reply-link {
+  display: none;
+}
+/* line 61, ../sass/apps/_comment.sass */
+section.comments.on-site .comment-header {
+  color: #999999;
+}
+/* line 70, ../sass/apps/_comment.sass */
 section.comments.on-site div.form form textarea {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -11911,61 +11967,89 @@ section.comments.on-site div.form form textarea {
   width: 100%;
   height: 48px;
 }
-/* line 33, ../sass/apps/_comment.sass */
+/* line 79, ../sass/apps/_comment.sass */
 section.comments.on-site div.form form .form-actions {
   border: none;
   margin-top: 0;
   padding-top: 0;
 }
-/* line 38, ../sass/apps/_comment.sass */
+/* line 84, ../sass/apps/_comment.sass */
 section.comments.on-site div.form form .control-label {
   display: none;
 }
-/* line 44, ../sass/apps/_comment.sass */
-section.comments.on-site div.listing .item {
+/* line 90, ../sass/apps/_comment.sass */
+section.comments.on-site .__disabled div.header h3 {
+  text-transform: none;
+  font-weight: normal;
+  color: #5a5a5a;
+  font-size: 14px;
+}
+/* line 99, ../sass/apps/_comment.sass */
+section.comments.on-site .__disabled div.form form textarea {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #fafafa;
+  border: 1px solid #dddddd;
+  border-top: none;
+  width: 100%;
+  height: 48px;
+}
+/* line 108, ../sass/apps/_comment.sass */
+section.comments.on-site .__disabled div.form form .form-actions {
+  border: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+/* line 113, ../sass/apps/_comment.sass */
+section.comments.on-site .__disabled div.form form .control-label {
+  display: none;
+}
+/* line 119, ../sass/apps/_comment.sass */
+section.comments.on-site .__disabled div.listing .item {
   border: none !important;
   padding: 4px 0 4px 0 !important;
   border-bottom: 1px solid #ececec;
 }
-/* line 48, ../sass/apps/_comment.sass */
-section.comments.on-site div.listing .item:nth-child(odd) {
+/* line 123, ../sass/apps/_comment.sass */
+section.comments.on-site .__disabled div.listing .item:nth-child(odd) {
   background: #fafafa;
 }
-/* line 51, ../sass/apps/_comment.sass */
-section.comments.on-site div.listing .item .col-left {
+/* line 126, ../sass/apps/_comment.sass */
+section.comments.on-site .__disabled div.listing .item .col-left {
   max-width: 640px;
   float: left;
 }
-/* line 54, ../sass/apps/_comment.sass */
-section.comments.on-site div.listing .item .col-left .comment-text > p {
+/* line 129, ../sass/apps/_comment.sass */
+section.comments.on-site .__disabled div.listing .item .col-left .comment-text > p {
   padding-left: 5px;
 }
-/* line 57, ../sass/apps/_comment.sass */
-section.comments.on-site div.listing .item .col-right {
+/* line 132, ../sass/apps/_comment.sass */
+section.comments.on-site .__disabled div.listing .item .col-right {
   float: right;
 }
-/* line 60, ../sass/apps/_comment.sass */
-section.comments.on-site div.listing .item .col-right ul {
+/* line 135, ../sass/apps/_comment.sass */
+section.comments.on-site .__disabled div.listing .item .col-right ul {
   background-repeat: no-repeat;
   background-position: right;
   padding-right: 40px;
   background-size: 34px;
 }
-/* line 66, ../sass/apps/_comment.sass */
-section.comments.on-site div.listing .item .col-right .comment-date {
+/* line 141, ../sass/apps/_comment.sass */
+section.comments.on-site .__disabled div.listing .item .col-right .comment-date {
   color: #a5a5a5;
   font-size: 90%;
   padding-right: 5px;
 }
-/* line 71, ../sass/apps/_comment.sass */
-section.comments.on-site div.listing .item img {
+/* line 146, ../sass/apps/_comment.sass */
+section.comments.on-site .__disabled div.listing .item img {
   width: 48px;
   height: 48px;
   float: left;
   margin-right: 10px;
 }
-/* line 79, ../sass/apps/_comment.sass */
-section.comments.on-site div.listing .item.media {
+/* line 154, ../sass/apps/_comment.sass */
+section.comments.on-site .__disabled div.listing .item.media {
   background: #f3f0fb;
   border-bottom: none;
 }

@@ -452,6 +452,16 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False
         },
+        'alibrary': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'media_asset': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
         'social_auth': {
             'handlers': ['null'],
             'level': 'DEBUG',

@@ -25,9 +25,38 @@ COMPRESS_ENABLED = False
 
 LANGUAGES = [
     ('en', 'en'),
+    ('de', 'de'),
 ]
 DEFAULT_LANGUAGE = 0
 LANGUAGE_CODE = 'en'
+
+LANGUAGES = [
+    ('en', _(u'Englisch')),
+    ('de', _(u'Deutsch')),
+]
+
+CMS_LANGUAGES = {
+    1: [
+        {
+            'code': 'en',
+            'name': _(u'Englisch'),
+            'public': True,
+        },
+        {
+            'code': 'de',
+            'name': _(u'Deutsch'),
+            'public': True,
+        }
+    ],
+    'default': {
+        'fallbacks': ['en',],
+        'redirect_on_fallback': False,
+        'public': True,
+        'hide_untranslated': True,
+    }
+}
+
+
 
 
 TIME_ZONE = 'Europe/Zurich'

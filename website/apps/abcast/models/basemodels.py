@@ -185,7 +185,8 @@ class Channel(BaseModel):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('abcast-channel-detail', [self.pk])
+        pass
+        #return ('abcast-channel-detail', [self.pk])
     
     def get_api_url(self):
         return reverse('api_dispatch_detail', kwargs={  
