@@ -296,10 +296,8 @@ def reload_gunicorn():
         run('kill -s HUP %s' % pid)
 
     except Exception, e:
-        print '!!!!!!!!! WARNING !!!!!!!!!!!!!'
         print 'unable to send HUP to gunicorn'
         print e
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 
 
 def restart_services():
@@ -309,9 +307,7 @@ def restart_services():
         run('supervisorctl update')
         run('supervisorctl restart services.%s:*' % env.site_id)
     except Exception, e:
-        print '!!!!!! SERVICES WARNING !!!!!!!'
         print e
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 
 
 
@@ -383,3 +379,11 @@ def tx_pull_remote():
         run('/srv/%s/bin/python /%s/src/website/manage.py compilemessages' % (env.site_id, env.path))
 
 
+def cms_dump():
+
+    models_to_dump = [
+        'cms',
+        'djangocms_text_ckeditor',
+    ]
+
+    local('./manage.py dumpdata --indent=4 %s > fixtures/cms_initial.json' % (' '.join(models_to_dump)))

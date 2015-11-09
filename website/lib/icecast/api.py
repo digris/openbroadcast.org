@@ -1,48 +1,44 @@
 import requests
-# logging
 import logging
 log = logging.getLogger(__name__)
 
 class IcecastAPI:
     
-    def __init__(self):
-        pass
-    
-    def set_metadata(self, channel, text):
-
-        log.info('setting metadata: %s' % text)
-        
-        server = channel.stream_server
-        
-        #print server
-        #print 'server name: %s' % server.name
-        #print 'host:        %s' % server.host
-        #print 'admin:       %s' % server.admin_pass
-        #print 'mount:       %s' % server.mountpoint
-
-        if server.meta_prefix:
-            text = '%s %s' % (server.meta_prefix, text)
-
-        try:
-            self.update_server(server, '/%s' % server.mountpoint, text)
-        except Exception, e:
-            print e
+    def __init__(self, channel):
+        self.channel = channel
+        if self.channel and self.channel.stream_server:
+            self.server = self.channel.stream_server
+        else:
+            log.warning(u'unable to get streaming server for channel: %s' % self.channel)
+            self.server = None
 
 
-    def update_server(self, server, mount, text):
+    def set_text(self, text):
 
-        """
-        url format:
-        http://pypo:8000/admin/metadata?mount=/po_256&mode=updinfo&song=ACDC+Back+In+Black!!
-        """
-        log.debug('server: %s' % server)
-        log.debug('mount: %s' % mount)
-        
-        url = '%sadmin/metadata' % server.host
-        auth=(server.admin_user, server.admin_pass)
-        params = {'mount': mount, 'mode': 'updinfo', 'song': u'%s' % text}
-        
-        r = requests.get(url, auth=auth, params=params, timeout=2.0)
+        if self.server and self.server.meta_prefix:
+            text = u'%s %s' % (self.server.meta_prefix, text)
 
-        log.debug('calling icecast API at: %s' % r.url)
-        log.debug('icecast API response: %s' % r.text)
+        if self.server:
+
+            url = '%sadmin/metadata' % self.server.host
+            auth=(self.server.admin_user, self.server.admin_pass)
+            params = {
+                'mount': '/%s' % self.server.mountpoint,
+                'mode': 'updinfo',
+                'song': u'%s' % text
+            }
+            r = requests.get(url, auth=auth, params=params, timeout=2.0)
+
+            if not r.status_code == 200:
+                log.warning('API: %s - status: %s' % (r.url, r.status_code))
+            else:
+                log.debug('API: %s - status: %s' % (r.url, r.status_code))
+
+
+def set_stream_metadata(channel, text):
+    log.info(u'channel: %s - metadata-text: %s' % (channel, text))
+    try:
+        api = IcecastAPI(channel=channel)
+        api.set_text(text)
+    except Exception as e:
+        log.warning(u'unable to set stream metadata text: %s' % e)

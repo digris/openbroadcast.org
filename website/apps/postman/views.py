@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 import urlparse
-
+import logging
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -25,6 +25,8 @@ from postman.forms import WriteForm, AnonymousWriteForm, QuickReplyForm, FullRep
 from postman.models import Message, get_order_by
 from postman.urls import OPTION_MESSAGES
 from postman.utils import format_subject, format_body
+
+log = logging.getLogger(__name__)
 
 
 ##########
@@ -130,10 +132,7 @@ def write(request, recipients=None, form_classes=(WriteForm, AnonymousWriteForm)
 
     """
 
-    print '-- postmam write, to: -------'
-    print recipients
-    print '-----------------------------'
-
+    log.debug(u'message to %s' % recipients)
 
     user = request.user
     form_class = form_classes[0] if user.is_authenticated() else form_classes[1]
@@ -144,28 +143,20 @@ def write(request, recipients=None, form_classes=(WriteForm, AnonymousWriteForm)
     next_url = _get_referer(request)
     if request.method == 'POST':
 
-        print ' * request is post'
-
         form = form_class(request.POST, sender=user, channel=channel,
             user_filter=user_filter,
             exchange_filter=exchange_filter,
             max=max)
 
         if form.is_valid():
-            print ' * form is valid trying to save'
             is_successful = form.save(auto_moderators=auto_moderators, hacked_recipient=recipients)
-            print ' * form is post save'
-
             if is_successful:
-                print ' * successfully saved message'
+                log.debug(u'successfully saved message')
                 messages.success(request, _("Message successfully sent."), fail_silently=False)
             else:
-                print ' * message rejected'
+                log.warning(u'message rejected for at least one recipient')
                 messages.warning(request, _("Message rejected for at least one recipient."), fail_silently=False)
             return redirect(request.GET.get('next', success_url or next_url or 'postman_inbox'))
-
-        else:
-            print ' * form is _not_ valid'
 
 
     else:

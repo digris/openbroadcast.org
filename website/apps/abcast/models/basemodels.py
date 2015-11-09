@@ -152,7 +152,6 @@ class Channel(BaseModel):
     
     stream_url = models.CharField(max_length=256, null=True, blank=True, help_text=_('setting the stream-url overrides server settings'))
     description = extra.MarkdownTextField(blank=True, null=True)
-    
     station = models.ForeignKey('Station', null=True, blank=True, on_delete=models.SET_NULL)
 
 
@@ -183,10 +182,11 @@ class Channel(BaseModel):
     def __unicode__(self):
         return "%s" % self.name
 
-    @models.permalink
+
     def get_absolute_url(self):
-        pass
-        #return ('abcast-channel-detail', [self.pk])
+        return reverse('abcast-station-detail', kwargs={
+            'slug': self.station.slug
+        })
     
     def get_api_url(self):
         return reverse('api_dispatch_detail', kwargs={  
@@ -283,7 +283,7 @@ post_save.connect(post_save_channel, sender=Channel)
 class StreamServer(BaseModel):
     
     name = models.CharField(max_length=256, null=True, blank=False)     
-    host = models.URLField(max_length=256, null=True, blank=False)
+    host = models.CharField(max_length=256, null=True, blank=True)
 
     source_user = models.CharField(max_length=64, default='source', null=True, blank=True)
     source_pass = models.CharField(max_length=64, null=True, blank=True)

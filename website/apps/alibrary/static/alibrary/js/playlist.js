@@ -1,10 +1,4 @@
-/*
- * PLAYLIST SCRIPTS
- * REFACTORIN TO NUNJUCKS!
- */
-
-/* core */
-
+;
 PlaylistUi = function () {
 
     var self = this;
@@ -12,7 +6,6 @@ PlaylistUi = function () {
     this.interval = false;
     this.interval_loops = 0;
     this.interval_duration = 120000;
-    // this.interval_duration = false;
     this.api_url = false;
     this.api_url_simple = false; // used for listings as much faster..
 
@@ -33,22 +26,7 @@ PlaylistUi = function () {
 
         self.iface();
         self.bindings();
-
-        // set interval and run once
-        /*
-         if(self.interval_duration) {
-         self.set_interval(self.run_interval, self.interval_duration);
-         }
-         self.run_interval();
-         */
         self.load();
-        /*
-         pushy.subscribe(self.api_url + self.current_playlist_id + '/', function() {
-         debug.debug('pushy callback');
-         self.load();
-         });
-         */
-
 
     };
 
@@ -58,8 +36,6 @@ PlaylistUi = function () {
 
     this.bindings = function () {
 
-
-        //self.inline_dom_element.hide(20000)
         var container = $('#inline_playlist_container');
 
         // states - open / close
@@ -73,8 +49,6 @@ PlaylistUi = function () {
                 parent.data('uistate', 'hidden');
             }
         });
-        // sub boxes
-
 
         // settings panel / create
         $('.ui-persistent > .form form.create', container).live('submit', function (e) {
@@ -97,8 +71,6 @@ PlaylistUi = function () {
                 conatiner.fadeOut(200)
             }
 
-            //var name = $('input.name', $(this)).val();
-            //self.create_playlist(name);
         });
 
 
@@ -118,12 +90,8 @@ PlaylistUi = function () {
 
             if (e.keyCode == 13 || e.keyCode == 9) {
                 e.preventDefault();
-
                 var id = $(this).attr('id').split("_").pop();
-                ;
                 var name = $(this).val();
-
-                // Request data
                 var data = {
                     name: name
                 };
@@ -136,22 +104,17 @@ PlaylistUi = function () {
                     contentType: "application/json",
                     processData: false,
                     success: function (data) {
-                        //$('#playlist_holder_' + id).hide(500);
                         self.run_interval();
                     },
                     async: true
                 });
-
             }
-
         });
-
 
         // list items
         $('.action.download > a', self.inline_dom_element).live('click', function (e) {
             e.preventDefault();
         });
-
 
         // list-inner items
         $('.list.item a', self.inline_dom_element).live('click', function (e) {
@@ -175,23 +138,18 @@ PlaylistUi = function () {
                     async: true
                 });
             }
-            ;
 
             if (action == 'play') {
 
             }
-            ;
-
 
         });
 
         // selector
-
         $('#playlists_inline_selector').live('change', function (e) {
             e.preventDefault();
 
             var resource_uri = $(this).val();
-
             $('.playlist_holder', self.inline_dom_element).hide();
 
             $.ajax({
@@ -221,12 +179,8 @@ PlaylistUi = function () {
 
     this.run_interval = function () {
         self.interval_loops += 1;
-
-        // Put functions needed in interval here
         self.update_playlists();
-
     };
-
 
     this.create_playlist = function (name) {
 
@@ -234,8 +188,6 @@ PlaylistUi = function () {
             'name': name,
             'type': 'basket'
         };
-
-        // alert('create: ' + name);
 
         $.ajax({
             url: self.api_url,
@@ -252,9 +204,6 @@ PlaylistUi = function () {
             async: true
         });
 
-        // console.log('data:', data);
-
-        // self.run_interval();
     };
 
 
@@ -267,14 +216,10 @@ PlaylistUi = function () {
             contentType: "application/json",
             processData: false,
             success: function (data) {
-                //$('#playlist_holder_' + id).hide(500);
-
                 $('#playlist_holder_' + id).fadeOut(160, function () {
                     $(this).remove();
-                })
+                });
 
-
-                // self.update_playlists();
                 self.load();
             },
             async: true
@@ -294,9 +239,6 @@ PlaylistUi = function () {
 
 
     this.load = function () {
-
-        debug.debug('PlaylistUi: load');
-
 
         // get & display data
         $.getJSON(self.api_url + '?is_current=1', function (data) {
@@ -343,8 +285,6 @@ PlaylistUi = function () {
             // filter out current playlist
             if (item.is_current) {
 
-
-
                 // var html = ich.tpl_playlists_inline({object: item});
                 var html = nj.render('alibrary/nj/playlist/listing_inline.html', {
                     object: item
@@ -357,12 +297,9 @@ PlaylistUi = function () {
 
                 try {
                     pushy.subscribe(item.resource_uri, self.update_playlists);
-
-
                 } catch (e) {
                     //console.log('error subscribe to pushy:', e);
                 }
-
 
             } else {
                 // remove item if not the current one
@@ -372,8 +309,6 @@ PlaylistUi = function () {
     };
 
     this.update_playlist_selector = function (data) {
-
-        // console.log(this.current_data, data)
 
         if (data.objects.length > 1) {
 
@@ -554,7 +489,7 @@ CollectorApp = (function () {
                     uuid: $(this).data('uuid'),
                     id: $(this).data('id'),
                     resource_uri: $(this).data('resource_uri')
-                }
+                };
                 var media = self.media_to_collect;
                 self.collect(item, media);
             }
@@ -584,7 +519,6 @@ CollectorApp = (function () {
 
         $('input.search', el).focus();
 
-
         self.update_dialog_markers();
 
     };
@@ -601,10 +535,9 @@ CollectorApp = (function () {
         $.each(self.media_to_collect, function (i, media) {
             //console.log(media)
             local_uuids.push(media.uuid);
-        })
+        });
 
         //console.log('media to collect, uuids:', local_uuids);
-
         $('.collected', el).html('');
 
         $.each(self.playlists_local.objects, function (i, item) {
@@ -619,7 +552,7 @@ CollectorApp = (function () {
                     matches++
                 }
 
-            })
+            });
             if (matches > 0) {
                 var html = '<i class="icon icon-star"></i>';
                 $('.collected', container).html(html);
@@ -627,7 +560,6 @@ CollectorApp = (function () {
             } else {
                 container.removeClass('match');
             }
-
 
         });
 
@@ -640,8 +572,6 @@ CollectorApp = (function () {
             'name': name,
             'type': (type != undefined) ? type : 'basket'
         };
-
-        // alert('create: ' + name);
 
         $.ajax({
             url: self.api_url,
@@ -679,6 +609,10 @@ CollectorApp = (function () {
         // self.run_interval();
     };
 
+
+    /*
+        generic "add to playlist" dialog
+     */
     this.get_dialog_content = function (api) {
 
         if (self.playlists_local) {
@@ -689,7 +623,7 @@ CollectorApp = (function () {
         } else {
             var uri = '/api/v1/library/simpleplaylist/'
             $.ajax({
-                url: uri + '?limit=500&type__in=playlist,basket',
+                url: uri + '?limit=50&type__in=playlist,basket',
                 success: function (data) {
                     self.playlists_local = data;
                     api.set({
@@ -710,7 +644,6 @@ CollectorApp = (function () {
 
 
     this.dialogue = function (e) {
-
 
         $('<div />').qtip({
             content: {
@@ -820,7 +753,7 @@ CollectorApp = (function () {
 
 
 // selector to set active playlist
-// currently osed in popup-player
+// currently used in popup-player
 PlaylistSelector = function () {
 
     var self = this;
@@ -955,4 +888,4 @@ Object.equals = function (x, y) {
         // allows x[ p ] to be set to undefined
     }
     return true;
-}
+};

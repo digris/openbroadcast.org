@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 import json
 import time
@@ -15,7 +16,7 @@ pool = Pool(processes=10)
 def pushy_publish(channel, key, message):
     rs = redis.StrictRedis(host=pushy_settings.get_redis_host())
     time.sleep(0.005)
-    rs.publish('%s%s' % (channel, key), json.dumps(message))
+    return rs.publish('%s%s' % (channel, key), json.dumps(message))
     
 
 def pushy_post_save(sender, **kwargs):

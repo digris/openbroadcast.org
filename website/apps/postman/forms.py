@@ -136,9 +136,6 @@ class BaseWriteForm(forms.ModelForm):
 
         for r in recipients:
 
-            print 'recipient:'
-            print r
-
             if isinstance(r, get_user_model()):
                 self.instance.recipient = r
             else:

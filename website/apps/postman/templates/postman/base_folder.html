@@ -45,8 +45,8 @@
 
                                     {% block pm_sender_cell %}
                                         <td>
-                                            {% if message.sender.get_absolute_url %}
-                                                <a href="{{ message.sender.get_absolute_url }}">
+                                            {% if message.sender.profile.get_absolute_url %}
+                                                <a href="{{ message.sender.profile.get_absolute_url }}">
                                                     {{ message.obfuscated_sender|or_me:user }}{% if message.count %} (
                                                         {{ message.count }}){% endif %}</a>
                                             {% else %}

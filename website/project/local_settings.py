@@ -53,21 +53,20 @@ FAAD_BINARY = '/usr/local/bin/faad'
 
 DATABASES = {
     
-    #'default': {
-    #    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #    'NAME': 'org_openbroadcast_local',
-    #    'USER': 'dev',
-    #    'PASSWORD': 'dev',
-    #    'HOST': '',
-    #    'OPTIONS': {
-    #        'autocommit': True,
-    #    }
-    #},
+    'pgsql_default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'org_openbroadcast_local_upgrade',
+        'USER': 'ohrstrom',
+        'PASSWORD': 'sd',
+        'HOST': '127.0.0.1',
+        'OPTIONS': {
+            #'autocommit': True,
+        }
+    },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'org_openbroadcast_local_upgrade',
-        #'NAME': 'org_openbroadcast_local_full',
-        #'NAME': 'dumptester',
+        #'NAME': 'upgrade_test',
         'USER': 'root',
         'HOST': '127.0.0.1',    
         'PASSWORD': 'root',
@@ -190,14 +189,11 @@ ANALYTICS_ACCOUNT = 'UA-28856125-1'
 #MEDIA_URL = 'http://127.0.0.1:8000/media/'
 
 DEV_APPS = ()
-DEBUG_APPS = (
-              'debug_toolbar',
-              'devserver',
-              )
 
-DEBUG_MIDDLEWARE = (
-              'debug_toolbar.middleware.DebugToolbarMiddleware',
-              )
+#MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+#INSTALLED_APPS += ('debug_toolbar',)
+
+
 
 POST_MORTEM = False
 
@@ -243,7 +239,6 @@ DEVSERVER_DEFAULT_PORT = '8080'
 # debug settings
 DEBUG_TOOLBAR_PANELS = (
     #'debug_toolbar.panels.version.VersionDebugPanel',
-    'debug_toolbar.panels.timer.TimerDebugPanel',
     #'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
     #'debug_toolbar.panels.headers.HeaderDebugPanel',
     #'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
@@ -253,6 +248,8 @@ DEBUG_TOOLBAR_PANELS = (
     #'debug_toolbar_htmltidy.panels.HTMLTidyDebugPanel',
     #'debug_toolbar_memcache.panels.memcache.MemcachePanel',
     ### below the ones used often!
+    'debug_toolbar.panels.timer.TimerDebugPanel',
+    #'djdt_flamegraph.FlamegraphPanel',
     'debug_toolbar.panels.sql.SQLPanel',
     'template_timings_panel.panels.TemplateTimings.TemplateTimings',
 )
@@ -464,6 +461,21 @@ LOGGING = {
         },
         'social_auth': {
             'handlers': ['null'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'lib.icecast': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'pushy': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'postman': {
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False
         },

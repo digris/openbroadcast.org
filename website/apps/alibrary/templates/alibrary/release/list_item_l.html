@@ -2,7 +2,7 @@
 
 <div class="list_body_row selectable clickable item release {{ item.uuid }} {% if item.creator == user %} owner{% endif %}"
      id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}"
-     {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 200x200 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}
+     {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 300x300 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}
      data-id="{{ item.id }}"
      data-absolute_url="{{ item.get_absolute_url }}"
      data-uuid="{{ item.uuid }}"

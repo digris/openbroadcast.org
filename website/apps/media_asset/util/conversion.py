@@ -10,8 +10,6 @@ def any_to_wav(src, dst=None):
         raise IOError('unable to access %s' % src)
 
     audiotools.open(src).convert(dst, audiotools.WaveAudio)
-
     log.debug('to wav: %s > %s' % (src, dst))
-
     if os.path.isfile(dst):
         return dst

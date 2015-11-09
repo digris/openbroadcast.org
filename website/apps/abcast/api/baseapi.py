@@ -1,6 +1,6 @@
 import datetime
 import json
-
+import logging
 from django.conf.urls import *
 from django.http import HttpResponse
 from django.contrib.sites.models import Site
@@ -16,6 +16,8 @@ from easy_thumbnails.files import get_thumbnailer
 from abcast.models import Station, Channel, Emission
 from abcast.util import scheduler
 from lib.pypo_gateway import send as pypo_send
+
+log = logging.getLogger(__name__)
 
 
 SCHEDULE_AHEAD = 60 * 60 * 6 # seconds
@@ -456,15 +458,13 @@ class BaseResource(Resource):
 
 
     def notify_start_play(self, request, **kwargs):
-        
-        print '** notify_start_play **'
+
         media_uuid = request.GET.get('media_id', None)
         channel_uuid = request.GET.get('channel_id', None)
+        log.debug('start play: %s - %s' % (media_uuid, channel_uuid))
 
         if media_uuid and channel_uuid:
-            print 'media_uuid  : %s' % media_uuid
-            print 'channel_uuid: %s' % channel_uuid
-            
+
             from alibrary.models import Media 
             
             item = Media.objects.get(uuid=media_uuid)
@@ -477,10 +477,6 @@ class BaseResource(Resource):
                 channel.on_air = item
                 channel.save()
 
-            
-            #print 'item: %s' % item.name
-            #print 'channel: %s' % channel.name
-            
         data = {
             'status': True,
             'item': '%s' % item.name,

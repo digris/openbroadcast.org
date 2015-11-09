@@ -57,9 +57,9 @@ class ProfileFilter(django_filters.FilterSet):
                 
                     
                 try:
-                    ds = self.queryset.values_list(name, '%s__name' % name, flat=False).annotate(n=models.Count("pk", distinct=True)).distinct()
+                    ds = self.queryset.values_list(name, '%s__name' % name, flat=False).order_by(name).annotate(n=models.Count("pk", distinct=True)).distinct()
                 except:
-                    ds = self.queryset.values_list(name, flat=False).annotate(n=models.Count("pk", distinct=True)).distinct()
+                    ds = self.queryset.values_list(name, flat=False).order_by(name).annotate(n=models.Count("pk", distinct=True)).distinct()
                 
                 if name == 'country__printable_name':
                     nd = []

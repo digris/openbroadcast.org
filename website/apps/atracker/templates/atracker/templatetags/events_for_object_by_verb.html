@@ -26,8 +26,9 @@
                 </a>
                 {% endif %}
             </li>
-
-            <li class="eco"><a href="{{ event.event_content_object.get_absolute_url }}">{{ event.event_content_object.name }}</a></li>
+            {% if event.event_content_object %}
+                <li class="eco"><a href="{{ event.event_content_object.get_absolute_url }}">{{ event.event_content_object.name }}</a></li>
+            {% endif %}
 
         </ul>
 
@@ -39,7 +40,7 @@
 </div>
 
 
-<!--
+{% comment %}
 {% for event in events %}
 <tr>
 
@@ -50,4 +51,4 @@
 
 </tr>
 {% endfor %}
--->
+{% endcomment %}

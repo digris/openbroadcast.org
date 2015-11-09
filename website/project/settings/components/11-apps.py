@@ -160,7 +160,7 @@ DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
-    'SHOW_TOOLBAR_CALLBACK': 'lib.show_debug_toolbar.show',
+    #'SHOW_TOOLBAR_CALLBACK': 'lib.show_debug_toolbar.show',
 }
 
 PAGINATION_SETTINGS = {

@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 import subprocess
-
+import logging
+log = logging.getLogger(__name__)
 __ALL__ = 'duration_audiotools', 'duration_ffmpeg'
 
 FFPROBE_BINARY = 'ffprobe'
@@ -12,15 +13,25 @@ def duration_audiotools(src):
 def duration_ffmpeg(src):
 
         try:
-            p = subprocess.Popen([
-                FFPROBE_BINARY, src, "-show_format"
-            ], stdout=subprocess.PIPE)
+
+            probe_args = [
+                FFPROBE_BINARY,
+                src,
+                '-loglevel',
+                '-8',
+                '-show_format'
+            ]
+
+            log.debug('calling %s' % ' '.join(probe_args))
+            p = subprocess.Popen(probe_args, stdout=subprocess.PIPE)
             stdout = p.communicate()
 
-            dur = stdout[0].split('duration=')[1]
-            dur = dur.split("\n")[0]
-            return float(dur) * 1000
+            duration = stdout[0].split('duration=')[1]
+            duration = float(duration.split("\n")[0]) * 1000
+
+            log.debug('duration from ffmpeg: %s' % duration)
+
+            return duration
 
         except Exception, e:
-            pass
-            #print e
+            log.warning(u'unable to process file at: %s - %S' % (src, e))

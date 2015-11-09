@@ -123,18 +123,6 @@ class TagManager(models.Manager):
 
         cursor = connection.cursor()
 
-        # print '---'
-        # print query
-        # print '---'
-        # print extra_joins
-        # print '---'
-        # print extra_criteria
-        # print '---'
-        # print min_count_sql
-        # print '-------------------------'
-        #
-        # print query % (extra_joins, extra_criteria, min_count_sql)
-
         cursor.execute(query % (extra_joins, extra_criteria, min_count_sql),
                        params)
         tags = []
@@ -316,10 +304,11 @@ class TaggedItemManager(models.Manager):
             # No existing tags were given
             queryset, model = get_queryset_and_model(queryset_or_model)
             return model._default_manager.none()
-        elif tag_count == 1:
-            # Optimisation for single tag - fall through to the simpler
-            # query below.
-            tag = tags[0]
+# patched: http://code.google.com/p/django-tagging/issues/detail?id=230
+#         elif tag_count == 1:
+#             # Optimisation for single tag - fall through to the simpler
+#             # query below.
+#             tag = tags[0]
         else:
             return self.get_intersection_by_model(queryset_or_model, tags)
 

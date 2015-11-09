@@ -21,11 +21,12 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 """
 rabbitmq
 """
-BROKER_HOST = "localhost"
-BROKER_PORT = 5672
-BROKER_USER = "guest"
-BROKER_PASSWORD = "guest"
-BROKER_VHOST = "/"
+# BROKER_HOST = "localhost"
+# BROKER_PORT = 5672
+# BROKER_USER = "obp"
+# BROKER_PASSWORD = "obp"
+# BROKER_VHOST = "openbroadcast.org"
+BROKER_URL = 'amqp://obp:obp@127.0.0.1:5672/openbroadcast.org'
 
 CELERY_IMPORTS = (
     'importer.util.importer', # ?

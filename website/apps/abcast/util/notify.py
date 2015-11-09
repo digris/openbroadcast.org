@@ -1,40 +1,29 @@
-from django.core.cache import cache
-from lib.icecast.api import IcecastAPI
-
-# logging
+# -*- coding: utf-8 -*-
 import logging
-logger = logging.getLogger(__name__)
+from django.core.cache import cache
+from lib.icecast.api import set_stream_metadata
+from pushy.util import pushy_custom
+
+log = logging.getLogger(__name__)
 
 def start_play(item, channel=None, user=None):
-    log = logging.getLogger('abcast.util.notify.start_play')
 
-    log.debug('item: %s' % item)
-    log.debug('channel: %s' % channel)
-    log.debug('user: %s' % user)
+    log.debug(u'item: %s - channel: %s - user: %s' % (item, channel, user))
 
-    """
-    Set current values to cache
-    """
+    # Set current values to cache
     cache.set('abcast_on_air_%s' % channel.pk, item, 30)
 
-
-    """
-    Broadcast to pushy clients
-    """
-    from pushy.util import pushy_custom
+    # Broadcast to pushy clients
     pushy_custom('%son-air/' % channel.get_api_url())
 
-    """
-    Update stream metadata
-    """
+    # Update stream metadata
     text = u'%s by %s - %s' % (item.name, item.artist.name, item.release.name)
-    api = IcecastAPI()
-    api.set_metadata(channel, text)
+    set_stream_metadata(channel, text)
 
-    try:
-        from atracker.util import create_event
-        user = None
-        create_event(user, item, channel, 'playout')
-    except Exception, e:
-        log.warning('exception: %s' % e)
+    if user:
+        try:
+            from atracker.util import create_event
+            create_event(user, item, channel, 'playout')
+        except Exception, e:
+            log.warning('exception: %s' % e)
 

@@ -128,12 +128,12 @@ ADMIN_SHORTCUTS = [
 
 
 
-
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 
 # profiles & co
 ABSOLUTE_URL_OVERRIDES = {
-    "auth.user": lambda o: "/network/profiles/%s/" % o.username,
+    "auth.user": lambda o: "/network/users/%s/" % o.username,
 }
 
 

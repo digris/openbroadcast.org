@@ -58,7 +58,7 @@ from ep.API import fp
 
 # logging
 import logging
-log = logging.getLogger(__name__)
+
     
     
 ################
@@ -72,6 +72,8 @@ from alibrary.util.storage import get_dir_for_object, OverwriteStorage
 from alibrary.util.echonest import EchonestWorker
 from caching.base import CachingMixin, CachingManager
 import arating
+
+log = logging.getLogger(__name__)
 
 USE_CELERYD = True
 AUTOCREATE_ECHOPRINT = False
@@ -684,7 +686,7 @@ class Media(MigrationMixin):
 
 
         if not duration:
-            log.debug('duration from ffmpeg')
+            log.debug('try to read duration through ffmpeg')
             from alibrary.util.duration import duration_ffmpeg
             duration = duration_ffmpeg(self.master.path)
 
@@ -749,8 +751,7 @@ class Media(MigrationMixin):
     # send task to celeryd
     # @task
     def convert(self, format, version):
-        
-        log = logging.getLogger('alibrary.mediamodels.convert')
+
         
         log.info('Media id: %s - Encoder: %s/%s' % (self.pk, format, version))
         
@@ -1170,14 +1171,11 @@ class Media(MigrationMixin):
 
     # TODO: depreciated
     def generate_media_versions(self):
-        log = logging.getLogger('alibrary.mediamodels.generate_media_versions')
         self.generate_media_versions_task.delay(self)
 
     @task
     def generate_media_versions_task(obj):
-        
-        log = logging.getLogger('alibrary.mediamodels.generate_media_versions_task')
-        
+
         log.info('Start conversion for Media: %s' % (obj.pk))
         print 'Start conversion for Media: %s' % (obj.pk)
         
@@ -1667,8 +1665,7 @@ post_save.connect(media_post_save, sender=Media)
         
 
 def media_pre_delete(sender, **kwargs):
-    
-    log = logging.getLogger('alibrary.mediamodels.media_pre_delete')
+
     obj = kwargs['instance']
 
     # try to delete fingerprint

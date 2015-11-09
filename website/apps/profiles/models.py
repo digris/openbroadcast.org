@@ -155,9 +155,9 @@ class Profile(MigrationMixin):
         else:
             return None
 
-    @permalink
+    #@permalink
     def get_absolute_url(self):
-        return ('profiles-profile-detail', None, { 'slug': self.user.username })
+        return reverse('profiles-profile-detail', kwargs={ 'slug': self.user.username })
 
 
     @models.permalink

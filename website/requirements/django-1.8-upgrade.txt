@@ -12,6 +12,7 @@ django-filer==0.9.12
 django-cms==3.1.3
 django-treebeard==3.0
 djangocms-admin-style==0.2.8
+#djangocms-admin-style==1.0.4
 djangocms-file==0.1
 djangocms-link==1.6.2
 djangocms-picture==0.1
@@ -55,11 +56,17 @@ pip uninstall south
 
 ./manage.py migrate --fake-initial
 
-#./manage.py migrate cms 0001 --fake
-#./manage.py migrate cms 0002 --fake
+delete all cms tables
+
+./manage.py migrate cms
+
 
 ./manage.py migrate django_comments --fake-initial
+./manage.py migrate easy_thumbnails 0002 --fake
 ./manage.py migrate --fake-initial
+
+
+./manage.py migrate
 
 
 
@@ -67,4 +74,7 @@ pip uninstall south
 /* 14:08:18 localhost */ ALTER TABLE `reversion_version` CHANGE `type` `type` SMALLINT(5)  UNSIGNED  NOT NULL  DEFAULT '1';
 /* 17:35:47 localhost */ ALTER TABLE `postman_message` CHANGE `sender_archived` `sender_archived` TINYINT(1)  NULL;
 /* 17:35:12 localhost */ ALTER TABLE `postman_message` CHANGE `recipient_archived` `recipient_archived` TINYINT(1)  NULL;
+
+
+./manage.py loaddata fixtures/cms_initial.json
 

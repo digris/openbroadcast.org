@@ -20,7 +20,7 @@ def mentor_for_user(context, profile, mentor):
 
 
         actions.append({
-                        'description': _('asd'),
+                        'description': _('Approve as MUSIC PROFESSIONAL'),
                         'name': _('Approve as MUSIC PROFESSIONAL'),
                         'icon': 'star',
                         'url': reverse('profiles-profile-mentor-approve',
@@ -30,7 +30,7 @@ def mentor_for_user(context, profile, mentor):
                                        }),
                         })
         actions.append({
-                        'description': _('asd'),
+                        'description': _('Approve as RADIO PROFESSIONAL'),
                         'name': _('Approve as RADIO PROFESSIONAL'),
                         'icon': 'star',
                         'url': reverse('profiles-profile-mentor-approve',
@@ -40,18 +40,16 @@ def mentor_for_user(context, profile, mentor):
                                        }),
                         })
         actions.append({
-                        'description': _('asd'),
+                        'description': _('Cancel mentorship'),
                         'name': _('Cancel mentorship'),
                         'icon': 'remove',
                         'url': reverse('profiles-profile-mentor-cancel', kwargs={'pk': profile.pk}),
                         })
     
     if not profile.mentor and mentor.has_perm('profiles.mentor_profiles'):
-        
-        # notes = _("Do youwant to become the mentor of this user?")
-        
+
         actions.append({
-                        'description': _('asd'),
+                        'description': _('Become the mentor'),
                         'name': _('Become the mentor'),
                         'icon': 'female' if mentor.profile.gender == 1 else 'male',
                         'url': reverse('profiles-profile-mentor-become', kwargs={'pk': profile.pk}),

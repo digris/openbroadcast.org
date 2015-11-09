@@ -23,12 +23,11 @@ def events_for_object(context, obj):
 @register.inclusion_tag('atracker/templatetags/events_for_object_by_verb.html', takes_context=True)
 def events_for_object_by_verb(context, obj, verb):
 
-    events = Event.objects.by_obj(obj=obj).filter(event_type__title='%s' % verb)[0:2000]
-
-    if events:
+    events = Event.objects.by_obj(obj=obj).filter(event_type__title='%s' % verb)
+    if events.exists():
         return {
             'request': context['request'],
-            'events': events
+            'events': events[0:200]
         }
 
     return {}
