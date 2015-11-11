@@ -7,7 +7,7 @@ BASE_DIR = getattr(settings, 'BASE_DIR')
 # external modules are sylinked to dev folder. on production they are installed via pip
 sys.path.insert(0, os.path.join(BASE_DIR, 'dev'))
 
-INTERNAL_IPS = ('127.0.0.10',)
+INTERNAL_IPS = ('127.0.0.1',)
 DEBUG = True
 
 EXPORTER_DEBUG = DEBUG
@@ -65,6 +65,7 @@ DATABASES = {
     },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        #'NAME': 'org_openbroadcast_local_upgrade',
         'NAME': 'org_openbroadcast_local_upgrade',
         #'NAME': 'upgrade_test',
         'USER': 'root',
@@ -136,6 +137,7 @@ CELERY_ROUTES = {
 }
 
 CELERYD_MAX_TASKS_PER_CHILD = 1
+#CELERY_TASK_SERIALIZER = "json"
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -190,8 +192,8 @@ ANALYTICS_ACCOUNT = 'UA-28856125-1'
 
 DEV_APPS = ()
 
-#MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-#INSTALLED_APPS += ('debug_toolbar',)
+MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+INSTALLED_APPS += ('debug_toolbar',)
 
 
 
@@ -472,6 +474,11 @@ LOGGING = {
         'pushy': {
             'handlers': ['console'],
             'level': 'INFO',
+            'propagate': False
+        },
+        'changetracker': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
             'propagate': False
         },
         'postman': {

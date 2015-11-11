@@ -328,12 +328,17 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             self.object.tags = d_tags
 
 
-        with reversion.create_revision():
-            self.object = form.save()
-            reversion.set_user(self.request.user)
-            reversion.set_comment(msg)
+        # with reversion.create_revision():
+        #     self.object = form.save()
+        #     reversion.set_user(self.request.user)
+        #     reversion.set_comment(msg)
+        #
+        # messages.add_message(self.request, messages.INFO, msg)
 
-        messages.add_message(self.request, messages.INFO, msg)
+        # revisions disabled -> needs refactoring
+        self.object = form.save()
+        messages.add_message(self.request, messages.INFO, 'Object updated')
+
 
 
         return HttpResponseRedirect('')

@@ -88,6 +88,7 @@ MIDDLEWARE_CLASSES = (
     'lib.middleware.profiler.ProfileMiddleware',
 
     #'turbolinks.middleware.TurbolinksMiddleware',
+    #'auditlog.middleware.AuditlogMiddleware',
     'social_auth.middleware.SocialAuthExceptionMiddleware',
     'arating.middleware.AratingIpMiddleware',
 )

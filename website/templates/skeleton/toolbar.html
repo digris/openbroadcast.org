@@ -20,7 +20,7 @@
 					{% if user.is_authenticated %}
 			        	<li><a href="{% url "auth_logout" %}?next=/"><i class="icon-signout"></i><span> {% trans 'Logout' %}</span></a></li>
 
-			        	<li><a href="{% url "profiles-profile-detail" user %}"><i class="icon-cog"></i><span> {% firstof user.get_full_name user.username %}</span></a></li>
+			        	<li><a href="{# url "profiles-profile-detail" user.username #}"><i class="icon-cog"></i><span> {% firstof user.get_full_name user.username %}</span></a></li>
 
 			        	{% if user.is_staff %}
 						<li><a href="/admin/"><i class="icon-dashboard"></i> <span>{% trans 'Administration' %}</span></a></li>

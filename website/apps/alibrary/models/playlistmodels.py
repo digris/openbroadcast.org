@@ -1,60 +1,30 @@
-# python
-
-# django
+import logging
+import tagging
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-
 from django.contrib.contenttypes.models import ContentType
-
 from django.conf import settings
-
-# django-extensions (http://packages.python.org/django-extensions/)
 from django_extensions.db.fields import UUIDField, AutoSlugField
 from django_extensions.db.fields.json import JSONField
-
-# model_utils
-
-# filer
 from filer.models.filemodels import *
 from filer.models.foldermodels import *
-# from filer.models.audiomodels import *
 from filer.models.imagemodels import *
 from filer.fields.image import FilerImageField
-# from filer.fields.audio import FilerAudioField
 from filer.fields.file import FilerFileField
-
-
 from celery.task import task
-
-# modules
-#from taggit.managers import TaggableManager
-
-
-
-import tagging
 from tagging.registry import register as tagging_register
-#import reversion 
-
-# logging
-import logging
-log = logging.getLogger(__name__)
-    
+from caching.base import CachingMixin, CachingManager
 from lib.fields import extra
-
-################
 from alibrary.models.basemodels import *
 from alibrary.models.artistmodels import *
-
 from alibrary import settings as alibrary_settings
 
-from caching.base import CachingMixin, CachingManager
-
+log = logging.getLogger(__name__)
 
 DURATION_MAX_DIFF = 2500 # ms
-
 
 def filename_by_uuid(instance, filename):
     filename, extension = os.path.splitext(filename)
@@ -588,6 +558,9 @@ class Playlist(MigrationMixin, models.Model):
 
 
     def save(self, *args, **kwargs):
+
+
+
         
         
         # status update

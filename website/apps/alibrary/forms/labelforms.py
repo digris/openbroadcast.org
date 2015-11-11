@@ -193,8 +193,6 @@ class LabelForm(ModelForm):
         except:
             pass
 
-
-        
         if cd.get('remote_image', None):
             remote_file = get_file_from_url(cd['remote_image'])
             if remote_file:

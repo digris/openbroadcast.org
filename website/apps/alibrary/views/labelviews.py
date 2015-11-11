@@ -299,28 +299,33 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
                 formset.save()
 
         msg = change_message.construct(self.request, form, [named_formsets['relation'],])
+
         d_tags = form.cleaned_data['d_tags']
         if d_tags:
             msg = change_message.parse_tags(obj=self.object, d_tags=d_tags, msg=msg)
             self.object.tags = d_tags
 
 
-        with reversion.create_revision():
-            self.object = form.save()
-            reversion.set_user(self.request.user)
-            reversion.set_comment(msg)
+        # with reversion.create_revision():
+        #
+        #     self.object = form.save()
+        #     reversion.set_user(self.request.user)
+        #     reversion.set_comment(msg)
+        #
+        # messages.add_message(self.request, messages.INFO, msg)
 
-        messages.add_message(self.request, messages.INFO, msg)
+        # revisions disabled -> needs refactoring
+        self.object = form.save()
+        messages.add_message(self.request, messages.INFO, 'Object updated')
+
 
 
         return HttpResponseRedirect('')
 
     def formset_relation_valid(self, formset):
 
-        relations = formset.save(commit=False) # self.save_formset(formset, contact)
+        relations = formset.save(commit=False)
         for relation in relations:
-            #relation.who = self.request.user
-            #relation.contact = self.object
             relation.save()
 
     

@@ -319,18 +319,20 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             msg = change_message.parse_tags(obj=self.object, d_tags=d_tags, msg=msg)
             self.object.tags = d_tags
 
-        with reversion.create_revision():
-            self.object = form.save()
-            reversion.set_user(self.request.user)
-            reversion.set_comment(msg)
+        # with reversion.create_revision():
+        #     self.object = form.save()
+        #     reversion.set_user(self.request.user)
+        #     reversion.set_comment(msg)
+        #
+        #     # set actstream (e.v. atracker?)
+        #     if msg != 'Nothing changed':
+        #         actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
+        #
+        # messages.add_message(self.request, messages.INFO, msg)
 
-            # set actstream (e.v. atracker?)
-            if msg != 'Nothing changed':
-                actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
-
-
-
-        messages.add_message(self.request, messages.INFO, msg)
+        # revisions disabled -> needs refactoring
+        self.object = form.save()
+        messages.add_message(self.request, messages.INFO, 'Object updated')
 
         return HttpResponseRedirect('')
 

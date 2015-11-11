@@ -59,6 +59,8 @@ INSTALLED_APPS = (
     'adv_cache_tag',
     'cacheops',
     'reversion',
+    #'changetracker',
+    #'auditlog',
     'django_badbrowser',
     'genericadmin',
     'hvad',
@@ -432,7 +434,12 @@ AJAX_LOOKUP_CHANNELS = {
 # AJAX_SELECT_INLINES = 'inline'
 
 
-
+CHANGETRACKER_TRACKED_MODELS = (
+    # {
+    #     'model': 'alibrary.label',
+    #     'diff_function': 'bla',
+    # },
+)
 
 
 JENKINS_TASKS = (

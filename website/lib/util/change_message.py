@@ -2,17 +2,33 @@ from django.utils.text import get_text_list
 from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext as _
 
+IGNORE_FIELDS = [
+    'd_tags',
+    'main_image',
+    'date_start',
+    'date_end',
+]
+
 def construct(request, form, formsets=[]):
     """
     Construct a change message from a changed object.
     """
     change_message = []
+
+    if not form:
+        print 'no form'
+
+
     if form and form.changed_data:
-        
-        try:
-            form.changed_data.remove('d_tags')
-        except:
-            pass
+
+        print form.changed_data
+
+        for field in IGNORE_FIELDS:
+            try:
+                form.changed_data.remove(field)
+            except:
+                pass
+
             
         if len(form.changed_data) > 0:
             #change_message.append(_('Changed %s. \n') % get_text_list(form.changed_data, _('and')))
@@ -24,6 +40,7 @@ def construct(request, form, formsets=[]):
         try:
             for formset in formsets:
                 for added_object in formset.new_objects:
+
                     change_message.append(_('Added %(name)s "%(object)s". \n')
                                           % {'name': force_unicode(added_object._meta.verbose_name),
                                              'object': force_unicode(added_object)})

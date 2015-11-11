@@ -320,6 +320,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
         self.object = form.save(commit=False)
 
+
         # moved to revision transaction
         # for name, formset in named_formsets.items():
         #     formset_save_func = getattr(self, 'formset_{0}_valid'.format(name), None)
@@ -348,47 +349,65 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         # hm - not so nice. separate revision for media formset:
         # separate revision needed for media object, as it should only display
         # changes made to the object itself (and not the release object)
-        with reversion.create_revision():
-
-            self.formset_media_valid(named_formsets['media'])
-            msg = change_message.construct(self.request, None, [named_formsets['media'],])
-            reversion.set_user(self.request.user)
-            reversion.set_comment(msg)
-
-
-        with reversion.create_revision():
-
-            self.object = form.save()
-
-            for name, formset in named_formsets.items():
-                formset_save_func = getattr(self, 'formset_{0}_valid'.format(name), None)
-                if name != 'media':
-                    if formset_save_func is not None:
-                        formset_save_func(formset)
-                    else:
-                        formset.save()
-
-            # we still need the media formset here to get revision for the whole form
-            msg = change_message.construct(self.request, form, [named_formsets['relation'],
-                                                                named_formsets['albumartist'],
-                                                                named_formsets['media'],])
-
-            d_tags = form.cleaned_data['d_tags']
-            if d_tags:
-                msg = change_message.parse_tags(obj=self.object, d_tags=d_tags, msg=msg)
-                self.object.tags = d_tags
-
-            reversion.set_user(self.request.user)
-            reversion.set_comment(msg)
-
-            # set actstream (e.v. atracker?)
-            if msg != 'Nothing changed':
-                actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
-
-
+        # with reversion.create_revision():
+        #
+        #     # hm..
+        #     self.object = form.save()
+        #
+        #     self.formset_media_valid(named_formsets['media'])
+        #     msg = change_message.construct(self.request, None, [named_formsets['media'],])
+        #     reversion.set_user(self.request.user)
+        #     reversion.set_comment(msg)
+        #
+        #     for name, formset in named_formsets.items():
+        #         formset_save_func = getattr(self, 'formset_{0}_valid'.format(name), None)
+        #         if name != 'media':
+        #             if formset_save_func is not None:
+        #                 formset_save_func(formset)
+        #             else:
+        #                 formset.save()
+        #
+        #     # we still need the media formset here to get revision for the whole form
+        #     msg = change_message.construct(self.request, form, [named_formsets['relation'],
+        #                                                         named_formsets['albumartist'],
+        #                                                         named_formsets['media'],])
+        #
+        #     d_tags = form.cleaned_data['d_tags']
+        #     if d_tags:
+        #         msg = change_message.parse_tags(obj=self.object, d_tags=d_tags, msg=msg)
+        #         self.object.tags = d_tags
+        #
+        #     reversion.set_user(self.request.user)
+        #     reversion.set_comment(msg)
+        #
+        #     # set actstream (e.v. atracker?)
+        #     if msg != 'Nothing changed':
+        #         actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
+        #
+        # messages.add_message(self.request, messages.INFO, msg)
 
 
-        messages.add_message(self.request, messages.INFO, msg)
+
+        # revisions disabled -> needs refactoring
+        self.object = form.save()
+
+        self.formset_media_valid(named_formsets['media'])
+
+        for name, formset in named_formsets.items():
+            formset_save_func = getattr(self, 'formset_{0}_valid'.format(name), None)
+            if name != 'media':
+                if formset_save_func is not None:
+                    formset_save_func(formset)
+                else:
+                    formset.save()
+
+        d_tags = form.cleaned_data['d_tags']
+        if d_tags:
+            self.object.tags = d_tags
+
+        messages.add_message(self.request, messages.INFO, 'Object updated')
+
+
         return HttpResponseRedirect('')
 
 
