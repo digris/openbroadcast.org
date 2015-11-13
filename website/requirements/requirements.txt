@@ -94,7 +94,11 @@ oauth2==1.5.211
 pep8==1.0.1
 
 # pyacoustid==1.0.0 # use patched version
--e git+ssh://git@lab.hazelfire.com/hazelfire/obp/pyacoustid.git@deploy#egg=pyacoustid
+#-e git+ssh://git@lab.hazelfire.com/hazelfire/obp/pyacoustid.git@deploy#egg=pyacoustid
+-e git+https://ohrstrom@lab.hazelfire.com/hazelfire/obp/pyacoustid.git@deploy#egg=pyacoustid
+
+
+
 
 
 pycrypto==2.6.1
