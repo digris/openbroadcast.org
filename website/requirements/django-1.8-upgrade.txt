@@ -60,6 +60,31 @@ pip uninstall south
 
 delete all cms tables
 
+
+/* 11:31:54 localhost */ SET FOREIGN_KEY_CHECKS = 0;
+/* 11:31:54 localhost */ DROP TABLE `cms_title`;
+/* 11:31:54 localhost */ DROP TABLE `cms_placeholder`;
+/* 11:31:54 localhost */ DROP TABLE `cms_pageusergroup`;
+/* 11:31:54 localhost */ DROP TABLE `cms_pageuser`;
+/* 11:31:54 localhost */ DROP TABLE `cms_pagepermission`;
+/* 11:31:54 localhost */ DROP TABLE `cms_pagemoderatorstate`;
+/* 11:31:54 localhost */ DROP TABLE `cms_pagemoderator`;
+/* 11:31:54 localhost */ DROP TABLE `cms_page_placeholders`;
+/* 11:31:54 localhost */ DROP TABLE `cms_page`;
+/* 11:31:54 localhost */ DROP TABLE `cms_globalpagepermission_sites`;
+/* 11:31:54 localhost */ DROP TABLE `cms_globalpagepermission`;
+/* 11:31:54 localhost */ DROP TABLE `cms_cmsplugin`;
+/* 11:31:54 localhost */ SET FOREIGN_KEY_CHECKS = 1;
+
+
+
+delete cms migration entries
+
+/* 11:32:39 localhost */ DELETE FROM `south_migrationhistory` WHERE `app_name` = 'cms';
+
+
+
+
 ./manage.py migrate cms
 
 

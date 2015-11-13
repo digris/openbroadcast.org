@@ -43,6 +43,10 @@ SESSION_COOKIE_NAME = 'org-openbroadcast-local-session'
 CELERYD_TASK_SOFT_TIME_LIMIT = 60
 CELERYD_TASK_TIME_LIMIT = 240
 
+LANGUAGES = [
+    ('en', 'en'),
+]
+
 
 if DEBUG:
     COMPRESS_DEBUG_TOGGLE = 'uncompressed'
@@ -192,8 +196,8 @@ ANALYTICS_ACCOUNT = 'UA-28856125-1'
 
 DEV_APPS = ()
 
-MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-INSTALLED_APPS += ('debug_toolbar',)
+#MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+#INSTALLED_APPS += ('debug_toolbar',)
 
 
 
@@ -301,9 +305,9 @@ CACHES = {
     }
 }
 
-#SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 #SESSION_CACHE_ALIAS = "default"
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
+#SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 
 __CACHES = {
@@ -464,6 +468,11 @@ LOGGING = {
         'social_auth': {
             'handlers': ['null'],
             'level': 'DEBUG',
+            'propagate': False
+        },
+        'obp_legacy': {
+            'handlers': ['console'],
+            'level': 'WARNING',
             'propagate': False
         },
         'lib.icecast': {

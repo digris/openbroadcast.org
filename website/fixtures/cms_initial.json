@@ -3157,19 +3157,5 @@
     },
     "model": "cms.title",
     "pk": 41
-},
-{
-    "fields": {
-        "body": "<h1>Welcome</h1>\n"
-    },
-    "model": "djangocms_text_ckeditor.text",
-    "pk": 1
-},
-{
-    "fields": {
-        "body": "<h1>Welcome</h1>\n"
-    },
-    "model": "djangocms_text_ckeditor.text",
-    "pk": 14
 }
 ]
