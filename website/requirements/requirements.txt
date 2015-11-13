@@ -120,7 +120,7 @@ requests==2.2.1
 scikits.audiolab==0.11.0
 setproctitle==1.1.8
 shortuuid==0.4
-json==3.3.3
+#json==3.3.3
 six==1.5.2
 sphinx-me==0.2.1
 sqlparse==0.1.11
