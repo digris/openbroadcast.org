@@ -40,7 +40,7 @@ django-braces==1.8.1
 #django-tastypie==0.12.2
 
 numpy==1.8.0
-scikits.audiolab-0.10.2
+scikits.audiolab==0.10.2
 
 
 # django-adv-cache-tag==0.1.3
