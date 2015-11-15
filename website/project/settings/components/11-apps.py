@@ -10,7 +10,6 @@ DEBUG = getattr(settings, 'DEBUG')
 
 INSTALLED_APPS = (
 
-    'relatedadminlink',
     'djangocms_admin_style',
     'admin_tools',
     'admin_shortcuts',
@@ -40,7 +39,6 @@ INSTALLED_APPS = (
 
     # tools
     'django_extensions',
-    'django_jenkins',
     'django_filters',
     'sendfile',
     'missing', # http://django-missing.readthedocs.org/
@@ -439,14 +437,4 @@ CHANGETRACKER_TRACKED_MODELS = (
     #     'model': 'alibrary.label',
     #     'diff_function': 'bla',
     # },
-)
-
-
-JENKINS_TASKS = (
-    'django_jenkins.tasks.run_pylint',
-    'django_jenkins.tasks.with_coverage',
-    'django_jenkins.tasks.django_tests',
-    #'django_jenkins.tasks.run_csslint',
-    'django_jenkins.tasks.run_pep8',
-    'django_jenkins.tasks.run_pyflakes',
 )

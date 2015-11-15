@@ -1,2 +1,0 @@
-django-pdb>=0.3.2
-django-debug-toolbar==1.4

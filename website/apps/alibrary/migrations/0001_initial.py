@@ -26,7 +26,7 @@ import alibrary.util.storage
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('cms', '0013_auto_20151022_1756'),
+        ('cms', '0012_auto_20150607_2207'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('contenttypes', '0002_remove_content_type_name'),
         ('filer', '0002_auto_20150606_2003'),

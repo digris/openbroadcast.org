@@ -57,16 +57,16 @@ FAAD_BINARY = '/usr/local/bin/faad'
 
 DATABASES = {
     
-    'pgsql_default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'org_openbroadcast_local_upgrade',
-        'USER': 'ohrstrom',
-        'PASSWORD': 'sd',
-        'HOST': '127.0.0.1',
-        'OPTIONS': {
-            #'autocommit': True,
-        }
-    },
+    # 'pgsql_default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'org_openbroadcast_local_upgrade',
+    #     'USER': 'ohrstrom',
+    #     'PASSWORD': 'sd',
+    #     'HOST': '127.0.0.1',
+    #     'OPTIONS': {
+    #         #'autocommit': True,
+    #     }
+    # },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         #'NAME': 'org_openbroadcast_local_upgrade',
@@ -80,28 +80,23 @@ DATABASES = {
         },
 
     },
-    'sqlite': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'data.db'),
-        'NAME': '/Users/ohrstrom/srv/openbroadcast.org/data.db',
-    },
     'legacy': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        #'NAME': 'obp_legacy',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.mysql',
+        #'NAME': 'obp_legacy',
         'NAME' : 'legacy_openbroadcast_medialibrary',
-        'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': 'root',                  # Not used with sqlite3.
-        'HOST': '127.0.0.1',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '',
     },
     'legacy_legacy': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        #'NAME': 'obp_legacy',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.mysql',
+        #'NAME': 'obp_legacy',
         'NAME' : 'legacy_openbroadcast',
-        'USER': 'root',                      # Not used with sqlite3.
-        'PASSWORD': 'root',                  # Not used with sqlite3.
-        'HOST': '127.0.0.1',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '',
     },
 }
 
