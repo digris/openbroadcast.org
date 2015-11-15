@@ -2,6 +2,7 @@
 import os
 import sys
 import djcelery
+from django.core.urlresolvers import reverse_lazy
 
 djcelery.setup_loader()
 gettext = _ = lambda s: s
@@ -95,33 +96,70 @@ MIDDLEWARE_CLASSES = (
 
 
 
+
 ADMIN_SHORTCUTS = [
     {
-        'title': 'Quick Links',
+        'title': _('Quick Links'),
         'shortcuts': [
             {
                 'url': '/',
-                'title': 'Public Site',
+                'title': _('Public Site'),
                 'open_new_window': True,
             },
             {
+                'url_name': 'admin:cms_page_changelist',
+                'title': _('CMS Pages'),
+            },
+            {
                 'url': 'https://lab.hazelfire.com/projects/openbroadcast-org/issues/new',
-                'title': 'Issue Tracker',
+                'title': _('Issue Tracker'),
                 'open_new_window': True,
                 'class': 'tool',
+            },
+            {
+                'url': 'mailto:lab@hazelfire.com?body=%0D%0A%0D%0AProject: openbroadcast-org',
+                'title': _('New Issue by Email'),
+                'open_new_window': False,
+                'class': 'mail',
             },
         ]
     },
     {
-        'title': 'Administration',
+        'title': _('Administration'),
         'shortcuts': [
             {
-                'url_name': 'admin:cms_page_changelist',
-                'title': 'CMS Pages',
+                'url': reverse_lazy('admin:app_list', args=('alibrary',)),
+                'title': _('Media Library'),
+                'class': 'music',
+            },
+            {
+                'url': reverse_lazy('admin:app_list', args=('abcast',)),
+                'title': _('Broadcast App'),
+                'class': 'sound',
+            },
+            {
+                'url': reverse_lazy('admin:app_list', args=('profiles',)),
+                'title': _('Profile App'),
+                'class': 'user',
+            },
+            {
+                'url': reverse_lazy('admin:app_list', args=('importer',)),
+                'title': _('Import App'),
+                'class': 'cloud2',
+            },
+            {
+                'url': reverse_lazy('admin:app_list', args=('exporter',)),
+                'title': _('Export App'),
+                'class': 'cloud3',
             },
         ]
     },
+
 ]
+
+
+
+
 
 
 

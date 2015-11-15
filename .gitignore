@@ -12,6 +12,7 @@ tools/*/env
 env
 docs/
 website/local_settings.py
+website/project/local_settings.py
 website/smedia
 website/media
 website/temp

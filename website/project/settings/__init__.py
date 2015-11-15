@@ -10,6 +10,7 @@ include(
     'components/21-messaging.py',
     'components/30-template_cms.py',
     'components/99-depreciated.py',
-    os.path.join(os.getcwd(), 'project/local_settings.py'),
+    optional(os.path.join(os.getcwd(), 'project/local_settings.py')),
+    optional('/etc/openbroadcast.org/settings.py'),
     scope=locals()
 )
