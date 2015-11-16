@@ -191,7 +191,7 @@ def check_directories(output):
 
         BASE_DIR = getattr(settings, 'BASE_DIR', None)
 
-        path = BASE_DIR
+        path = os.path.join(BASE_DIR, 'media')
         if not path:
             section.error("Settgins for %s directory missing!" % 'BASE_DIR')
 
@@ -284,5 +284,5 @@ def check(output):
         elif output.warnings:
             output.write_stderr_line(output.colorize('Installation okay, but please check warnings above', opts=['bold'], fg='yellow'))
         else:
-            output.write_line(output.colorize('Installation okay', opts=['bold'], fg='green'))
+            output.write_line(output.colorize('Installation seems to be okay', opts=['bold'], fg='green'))
     return output.successful
