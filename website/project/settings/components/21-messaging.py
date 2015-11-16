@@ -19,8 +19,13 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 
 """
-rabbitmq
+celery / rabbitmq
 """
+
+CELERY_ACCEPT_CONTENT = ['pickle', 'json',]
+CELERY_RESULT_BACKEND = 'djcelery.backends.cache:CacheBackend'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
 # broker settings, used to compose connection for playout messaging
 BROKER_HOST = "localhost"
 BROKER_PORT = 5672
@@ -30,6 +35,7 @@ BROKER_VHOST_PYPO = "playout"
 
 # base broker url - used for task servers
 BROKER_URL = 'amqp://obp:obp@127.0.0.1:5672/openbroadcast.org'
+
 
 CELERY_IMPORTS = (
     'importer.util.importer', # ?
