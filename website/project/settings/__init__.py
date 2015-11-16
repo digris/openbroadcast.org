@@ -6,6 +6,7 @@ include(
     'components/11-apps.py',
     'components/12-identity.py',
     'components/13-credentials.py',
+    'components/14-binaries.py',
     'components/20-media.py',
     'components/21-messaging.py',
     'components/30-template_cms.py',

@@ -1,0 +1,6 @@
+LAME_BINARY = '/usr/local/bin/lame'
+SOX_BINARY = '/usr/local/bin/sox'
+FAAD_BINARY = '/usr/local/bin/faad'
+FFPROBE_BINARY = '/usr/local/bin/ffprobe'
+ENMFP_CODEGEN_BINARY = BASE_DIR + '/lib/analyzer/bin/codegen.Darwin'
+ECHOPRINT_CODEGEN_BINARY = '/usr/local/bin/echoprint-codegen'

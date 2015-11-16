@@ -3,17 +3,17 @@ import subprocess
 import json
 from django.conf import settings
 import requests
-ENMFP_CODEGEN_BIN = getattr(settings, 'ENMFP_CODEGEN_BIN', True)
+ENMFP_CODEGEN_BINARY = getattr(settings, 'ENMFP_CODEGEN_BINARY', True)
 ECHONEST_API_KEY = getattr(settings, 'ECHONEST_API_KEY', True)
 
 class Analyze:
     
     def enmfp_from_path(self, path):
         
-        print ENMFP_CODEGEN_BIN
+        print ENMFP_CODEGEN_BINARY
         
         p = subprocess.Popen([
-            ENMFP_CODEGEN_BIN, path, '10', '40',
+            ENMFP_CODEGEN_BINARY, path, '10', '40',
         ], stdout=subprocess.PIPE)
         stdout = p.communicate()        
         d = json.loads(stdout[0])

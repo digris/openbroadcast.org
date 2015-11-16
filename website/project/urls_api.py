@@ -1,7 +1,7 @@
 from tastypie.api import Api
 #from tastytools.api import Api
 
-from base.api import BaseResource
+from api_base.api import BaseResource
 
 from bcmon.api import PlayoutResource as BcmonPlayoutResource
 from bcmon.api import ChannelResource as BcmonChannelResource

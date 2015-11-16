@@ -1321,7 +1321,7 @@ class Media(MigrationMixin):
 
         status = 2
 
-        ECHOPRINT_CODEGEN_BIN = getattr(settings, 'ECHOPRINT_CODEGEN_BIN', None)
+        ECHOPRINT_CODEGEN_BINARY = getattr(settings, 'ECHOPRINT_CODEGEN_BINARY', None)
 
         path = obj.get_master_path()
 
@@ -1334,7 +1334,7 @@ class Media(MigrationMixin):
         log.debug('update echoprint: %s' % path)
 
         p = subprocess.Popen([
-            ECHOPRINT_CODEGEN_BIN, path,
+            ECHOPRINT_CODEGEN_BINARY, path,
         ], stdout=subprocess.PIPE, close_fds=True)
         stdout = p.communicate()
 

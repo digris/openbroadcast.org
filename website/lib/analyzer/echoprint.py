@@ -6,16 +6,16 @@ import requests
 from django.conf import settings
 log = logging.getLogger(__name__)
 
-ECHOPRINT_CODEGEN_BIN = getattr(settings, 'ECHOPRINT_CODEGEN_BIN', 'echoprint-codegen')
+ECHOPRINT_CODEGEN_BINARY = getattr(settings, 'ECHOPRINT_CODEGEN_BINARY', 'echoprint-codegen')
 
 class Echoprint:
     
     def full_echoprint_from_path(self, path):
         
-        print ECHOPRINT_CODEGEN_BIN
+        print ECHOPRINT_CODEGEN_BINARY
         
         p = subprocess.Popen([
-            ECHOPRINT_CODEGEN_BIN, path,
+            ECHOPRINT_CODEGEN_BINARY, path,
         ], stdout=subprocess.PIPE)
         stdout = p.communicate()        
         d = json.loads(stdout[0])
@@ -34,10 +34,10 @@ class Echoprint:
     
     def echoprint_from_path(self, path, offset=10, duration=25):
         
-        log.debug('echoprint binary: %s' % ECHOPRINT_CODEGEN_BIN)
+        log.debug('echoprint binary: %s' % ECHOPRINT_CODEGEN_BINARY)
         
         p = subprocess.Popen([
-            ECHOPRINT_CODEGEN_BIN, path, '%s' % offset, '%s' % (offset + duration)
+            ECHOPRINT_CODEGEN_BINARY, path, '%s' % offset, '%s' % (offset + duration)
         ], stdout=subprocess.PIPE)
         stdout = p.communicate()        
         d = json.loads(stdout[0])
