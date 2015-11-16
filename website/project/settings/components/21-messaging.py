@@ -21,11 +21,14 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 """
 rabbitmq
 """
-# BROKER_HOST = "localhost"
-# BROKER_PORT = 5672
-# BROKER_USER = "obp"
-# BROKER_PASSWORD = "obp"
-# BROKER_VHOST = "openbroadcast.org"
+# broker settings, used to compose connection for playout messaging
+BROKER_HOST = "localhost"
+BROKER_PORT = 5672
+BROKER_USER = "obp"
+BROKER_PASSWORD = "obp"
+BROKER_VHOST_PYPO = "playout"
+
+# base broker url - used for task servers
 BROKER_URL = 'amqp://obp:obp@127.0.0.1:5672/openbroadcast.org'
 
 CELERY_IMPORTS = (

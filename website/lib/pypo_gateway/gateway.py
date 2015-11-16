@@ -48,7 +48,13 @@ class PypoGateway:
     def send_task(obj, message):
         log.info('send message: %s' % message['event_type'])
         try:
-            connection = Connection('amqp://%s:%s@%s:%s/%s' % (BROKER_USER, BROKER_PASSWORD, BROKER_HOST, BROKER_PORT, BROKER_VHOST_PYPO))
+            connection = Connection('amqp://%s:%s@%s:%s/%s' % (
+                BROKER_USER,
+                BROKER_PASSWORD,
+                BROKER_HOST,
+                BROKER_PORT,
+                BROKER_VHOST_PYPO
+            ))
             simple_queue = connection.SimpleQueue(BROKER_QUEUE)
             simple_queue.put(json.dumps(message))
             simple_queue.close()
