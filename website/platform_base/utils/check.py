@@ -189,17 +189,17 @@ def check_directories(output):
 
     with output.section("Directories & storage") as section:
 
-        BASE_DIR = getattr(settings, 'BASE_DIR', None)
+        MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
 
-        path = os.path.join(BASE_DIR, 'media')
+        path = MEDIA_ROOT
         if not path:
-            section.error("Settgins for %s directory missing!" % 'BASE_DIR')
+            section.error("Settgins for %s directory missing!" % 'MEDIA_ROOT')
 
         elif not os.path.isdir(path):
-            section.error("%s directory does not exist at %s" % ('BASE_DIR', path))
+            section.error("%s directory does not exist at %s" % ('MEDIA_ROOT', path))
 
         else:
-            section.success("%s found: %s" % ('BASE_DIR', path))
+            section.success("%s found: %s" % ('MEDIA_ROOT', path))
 
         if section.successful:
             section.finish_success("Directory configuration okay")
