@@ -1,9 +1,12 @@
 #-*- coding: utf-8 -*-
+import logging
 import subprocess
+from django.conf import settings
 from django.core.management.base import NoArgsCommand
 
-import logging
 log = logging.getLogger(__name__)
+
+FFPROBE_BINARY = getattr(settings, 'FFPROBE_BINARY')
 
 class MediaFix(object):
     def __init__(self, * args, **kwargs):
@@ -24,16 +27,13 @@ class MediaFix(object):
         print 'Num. tracks:        %s' % Media.objects.count();
         print 'Without duration:   %s' % qs.count();
 
-
-        ffprobe_binary = '/usr/bin/ffprobe'
-
         for m in qs[0:10]:
 
             print '%s - %s' % (m.base_duration, m.name)
 
             try:
                 p = subprocess.Popen([
-                    ffprobe_binary, m.master.path, "-show_format"
+                    FFPROBE_BINARY, m.master.path, "-show_format"
                 ], stdout=subprocess.PIPE)
                 stdout = p.communicate()
 

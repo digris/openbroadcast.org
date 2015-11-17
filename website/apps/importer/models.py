@@ -19,7 +19,7 @@ from alibrary.models import Media, Artist, Release
 
 log = logging.getLogger(__name__)
 
-USE_CELERYD = getattr(settings, 'IMORTER_USE_CELERYD', True)
+USE_CELERYD = getattr(settings, 'IMORTER_USE_CELERYD', False)
 AUTOIMPORT_MB = getattr(settings, 'IMORTER_AUTOIMPORT_MB', True)
 
         

@@ -193,3 +193,9 @@ MIGRATION_MODULES = {
     'cms_redirects': 'cms_redirects.migrations_django',
 }
 
+IMORTER_USE_CELERYD = True
+EXPORTER_USE_CELERYD = True
+ALIBRARY_USE_CELERYD = True
+ABCAST_USE_CELERYD = True
+MEDIA_ASSET_USE_CELERY = True
+PYPO_USE_CELERY = True

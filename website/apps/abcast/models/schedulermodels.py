@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
+import tagging
+import logging
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.contrib.auth.models import User
@@ -8,26 +10,19 @@ from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django_extensions.db.fields import *
-
+from django.conf import settings
 from celery.task import task
-
-
-# filer
 from filer.fields.image import FilerImageField
 from filer.fields.file import FilerFileField
-
-
-# 
 from lib.fields import extra
-
 from alibrary.models import Playlist
-
 from abcast.models import BaseModel, Channel
-
-
 from caching.base import CachingMixin, CachingManager
 
-USE_CELERY = True
+log = logging.getLogger(__name__)
+
+USE_CELERYD = getattr(settings, 'ABCAST_USE_CELERYD', False)
+
 
 class Broadcast(BaseModel):
     

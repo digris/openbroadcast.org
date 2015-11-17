@@ -1,22 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-    PypoGateway
-    ~~~~~~~~~
-
-    :author: (c) 2013 by Jonas Ohrstrom.
-    :license: GPLv3, see LICENSE for more details.
-"""
 import json
 import logging
-
 from kombu import Connection
 from celery.task import task
+from django.conf import settings
 
 log = logging.getLogger(__name__)
 
-from django.conf import settings
-
-USE_CELERYD = False
+USE_CELERY = getattr(settings, 'PYPO_USE_CELERY', False)
 
 """
 Same config as used for celery setup
@@ -27,9 +18,6 @@ BROKER_USER = getattr(settings, 'BROKER_USER', 'guest')
 BROKER_PASSWORD = getattr(settings, 'BROKER_PASSWORD', 'guest')
 BROKER_VHOST_PYPO = getattr(settings, 'BROKER_VHOST_PYPO', '/pypo')
 BROKER_QUEUE = 'pypo-fetch'
-
-
-# BROKER_HOST = 'node05.daj.anorg.net'
 
 log = logging.getLogger(__name__)
 

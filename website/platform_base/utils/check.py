@@ -261,8 +261,10 @@ def check(output):
 
     Returns whether the configuration/environment are okay (has no errors)
     """
-    title = "Checking Open Broadcast platform installation"
-    border = '*' * len(title)
+    title = "|   Checking Open Broadcast platform installation   |"
+    border = '|' * len(title)
+    output.write_line()
+    output.write_line()
     output.write_line(output.colorize(border, opts=['bold']))
     output.write_line(output.colorize(title, opts=['bold']))
     output.write_line(output.colorize(border, opts=['bold']))

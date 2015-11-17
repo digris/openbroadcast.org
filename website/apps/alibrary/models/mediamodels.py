@@ -3,80 +3,57 @@ import shutil
 import time
 import subprocess
 import json
+import audiotools
+import tempfile
+import tagging
+import logging
+import arating
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.core.files import File as DjangoFile
 from django.core.urlresolvers import reverse
-# TODO: only import needed settings
-
 from django.conf import settings
 from alibrary import settings as alibrary_settings
 from django_extensions.db.fields import AutoSlugField
 from lib.fields.uuidfield import UUIDField as RUUIDField
 from django.conf import settings
-
-# filer
 from filer.models.filemodels import *
 from filer.models.foldermodels import *
-# from filer.models.audiomodels import *
 from filer.models.imagemodels import *
 from filer.fields.image import FilerImageField
-# from filer.fields.audio import FilerAudioField
 from filer.fields.file import FilerFileField
-
 from django_extensions.db.fields.json import JSONField
-
-# private_files
-#from private_files import PrivateFileField
-
-# modules
-#from taggit.managers import TaggableManager
 from easy_thumbnails.files import get_thumbnailer
-
-# audiotools (for conversion)
 from audiotools import MetaData
-import audiotools
-import tempfile
-
-import tagging
 from tagging.registry import register as tagging_register
-
-# celery / task management
 from celery.task import task
-
 # audio processing / waveform
 from lib.audioprocessing.processing import create_wave_images, AudioProcessingException
 from lib.fields.languages import LanguageField
 from lib.signals.unsignal import disable_for_loaddata
-# hash
 from lib.util.sha1 import sha1_by_file
-
-# echoprint
 from ep.API import fp
 
-# logging
-import logging
 
-    
-    
-################
 from alibrary.models.basemodels import *
 from alibrary.models.artistmodels import *
 from alibrary.models.playlistmodels import PlaylistItem, Playlist
-
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
-
 from alibrary.util.echonest import EchonestWorker
 from caching.base import CachingMixin, CachingManager
-import arating
+
 
 log = logging.getLogger(__name__)
 
-USE_CELERYD = True
+USE_CELERYD = getattr(settings, 'ALIBRARY_USE_CELERYD', False)
 AUTOCREATE_ECHOPRINT = False
+
+LAME_BINARY = getattr(settings, 'LAME_BINARY')
+SOX_BINARY = getattr(settings, 'SOX_BINARY')
+FAAD_BINARY = getattr(settings, 'FAAD_BINARY')
 
 LOOKUP_PROVIDERS = (
     #('discogs', _('Discogs')),
@@ -929,11 +906,10 @@ class Media(MigrationMixin):
                 """
                 if ext in ['.m4a', '.mp4']:
                     # decode using faad
-                    faad_binary = alibrary_settings.FAAD_BINARY
-                    log.debug('running: "%s %s -o %s"' % (faad_binary, src_path, tmp_path))
+                    log.debug('running: "%s %s -o %s"' % (FAAD_BINARY, src_path, tmp_path))
 
                     p = subprocess.Popen([
-                        faad_binary, src_path, '-o', tmp_path
+                        FAAD_BINARY, src_path, '-o', tmp_path
                     ], stdout=subprocess.PIPE)
                     stdout = p.communicate()
 
@@ -943,11 +919,9 @@ class Media(MigrationMixin):
 
                 else:
                     # use lame for the rest
-                    lame_binary = alibrary_settings.LAME_BINARY
-                    log.debug('running: "%s %s %s"' % (lame_binary, src_path, tmp_path))
-
+                    log.debug('running: "%s %s %s"' % (LAME_BINARY, src_path, tmp_path))
                     p = subprocess.Popen([
-                        lame_binary, src_path, tmp_path
+                        LAME_BINARY, src_path, tmp_path
                     ], stdout=subprocess.PIPE)
                     stdout = p.communicate()
             
@@ -1116,9 +1090,9 @@ class Media(MigrationMixin):
                 log.warning('audiotools exception: %s' % e)
 
                 try:
-                    log.info('trying with lame: %s' % alibrary_settings.LAME_BINARY)
+                    log.info('trying with lame: %s' % LAME_BINARY)
                     p = subprocess.Popen([
-                        alibrary_settings.LAME_BINARY, obj.master.path, version_path
+                        LAME_BINARY, obj.master.path, version_path
                     ], stdout=subprocess.PIPE)
                     stdout = p.communicate()
                     print stdout
@@ -1578,12 +1552,11 @@ def media_post_save(sender, **kwargs):
                 shutil.copy2(obj.master.path, file_fix_path)
 
                 # use lame for the rest
-                lame_binary = alibrary_settings.LAME_BINARY
                 lame_options = '-b 320'
-                log.debug('running: "%s %s %s %s"' % (lame_binary, lame_options, file_fix_path, obj.master.path))
+                log.debug('running: "%s %s %s %s"' % (LAME_BINARY, lame_options, file_fix_path, obj.master.path))
 
                 p = subprocess.Popen([
-                    lame_binary, lame_options, file_fix_path, obj.master.path
+                    LAME_BINARY, lame_options, file_fix_path, obj.master.path
                 ], stdout=subprocess.PIPE)
                 stdout = p.communicate()
 

@@ -1,11 +1,13 @@
+# -*- coding: utf-8 -*-
 import logging
 from celery.task import task
 from social_auth.models import UserSocialAuth
 from dropbox import client, session
 from django.conf import settings
+
 log = logging.getLogger(__name__)
 
-USE_CELERYD = True
+USE_CELERYD = getattr(settings, 'EXPORTER_USE_CELERYD', False)
 
 class Synchronizer(object):
 

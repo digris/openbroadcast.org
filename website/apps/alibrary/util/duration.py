@@ -1,10 +1,11 @@
 #-*- coding: utf-8 -*-
 import subprocess
 import logging
+from django.conf import settings
 log = logging.getLogger(__name__)
 __ALL__ = 'duration_audiotools', 'duration_ffmpeg'
 
-FFPROBE_BINARY = 'ffprobe'
+FFPROBE_BINARY = getattr(settings, 'FFPROBE_BINARY')
 
 def duration_audiotools(src):
     raise NotImplementedError
@@ -13,7 +14,6 @@ def duration_audiotools(src):
 def duration_ffmpeg(src):
 
         try:
-
             probe_args = [
                 FFPROBE_BINARY,
                 src,

@@ -21,7 +21,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 """
 celery / rabbitmq
 """
-
+CELERYD_MAX_TASKS_PER_CHILD = 1
 CELERY_ACCEPT_CONTENT = ['pickle', 'json',]
 CELERY_RESULT_BACKEND = 'djcelery.backends.cache:CacheBackend'
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
@@ -41,6 +41,7 @@ CELERY_IMPORTS = (
     'importer.util.importer', # ?
     'lib.pypo_gateway.gateway',
 )
+
 CELERY_ROUTES = {
     #'importer.models.process_task': {'queue': 'import'},
     # assign import task to single-instance worker
@@ -69,8 +70,12 @@ CELERYBEAT_SCHEDULE = {
 }
 
 """
-using django pushy!!
+using django pushy
 """
+# TODO: refactor settings in a way of:
+# PUSHY_REGISTER_MODELS =
+# PUSHY_REDIS_HOST =
+# etc.
 PUSHY_SETTINGS = {
     'MODELS': (
         'alibrary.playlist',

@@ -16,14 +16,15 @@ from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.conf import settings
 from celery.task import task
-
 from util.process import Process
+from django_extensions.db.fields import *
 from lib.util.filename import safe_name
-
 
 log = logging.getLogger(__name__)
 
-USE_CELERYD = True
+BASE_DIR = getattr(settings, 'BASE_DIR', None)
+MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
+USE_CELERYD = getattr(settings, 'EXPORTER_USE_CELERYD', False)
 
 GENERIC_STATUS_CHOICES = (
     (0, _('Init')),
@@ -34,14 +35,6 @@ GENERIC_STATUS_CHOICES = (
     (99, _('Error')),
     (11, _('Other')),
 )
-
-
-
-# extra fields
-from django_extensions.db.fields import *
-
-BASE_DIR = getattr(settings, 'BASE_DIR', None)
-
 
 def create_download_path(instance, filename):
     import unicodedata
@@ -70,7 +63,7 @@ def create_archive_dir(instance):
     path = "export/cache/%s-%s/" % (time.strftime("%Y%m%d%H%M%S", time.gmtime()), instance.uuid)
     #path = "export/cache/%s/" % ('DEBUG')
 
-    path_full = os.path.join(BASE_DIR, 'media', path)
+    path_full = os.path.join(MEDIA_ROOT, path)
 
     # debug - set to persistent directory for easier testing:
     # path_full = os.path.join(BASE_DIR, 'media' , 'export/debug/')

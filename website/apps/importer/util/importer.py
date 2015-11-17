@@ -29,7 +29,7 @@ MUSICBRAINZ_RATE_LIMIT = getattr(settings, 'MUSICBRAINZ_RATE_LIMIT', True)
 MUSICBRAINZ_RATE_LIMIT = getattr(settings, 'MUSICBRAINZ_RATE_LIMIT', True)
 MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', True)
 
-USE_CELERYD = getattr(settings, 'IMORTER_USE_CELERYD', True)
+USE_CELERYD = getattr(settings, 'IMORTER_USE_CELERYD', False)
 
 # promt for continuation (does not work with USE_CELERYD = True)
 DEBUG_WAIT = False
