@@ -238,7 +238,7 @@ def post_save_emission(sender, **kwargs):
 
     obj = kwargs['instance']
 
-    if USE_CELERY:
+    if USE_CELERYD:
         post_save_emission_task.delay(obj)
     else:
         post_save_emission_task(obj)

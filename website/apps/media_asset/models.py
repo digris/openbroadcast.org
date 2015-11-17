@@ -18,7 +18,7 @@ from util.grapher import create_waveform_image, create_spectrogram_image
 log = logging.getLogger(__name__)
 
 BASE_DIR = getattr(settings, 'BASE_DIR', None)
-USE_CELERY = getattr(settings, 'MEDIA_ASSET_USE_CELERY', False)
+USE_CELERYD = getattr(settings, 'MEDIA_ASSET_USE_CELERYD', False)
 ASSET_DIR = os.path.join(BASE_DIR, 'media', 'media_asset')
 
 class WaveformManager(models.Manager):
@@ -100,7 +100,7 @@ def waveform_post_save(sender, instance, created, **kwargs):
     obj = instance
     log.info('waveform_post_save - created: %s' % created)
     if created or 1 == 1:
-        if USE_CELERY:
+        if USE_CELERYD:
             log.debug('sending job to task queue')
             obj.process_waveform.apply_async()
         else:
@@ -196,7 +196,7 @@ def format_post_save(sender, instance, created, **kwargs):
     obj = instance
     log.info('format_post_save - created: %s' % created)
     if created or 1 == 1:
-        if USE_CELERY:
+        if USE_CELERYD:
             log.debug('sending job to task queue')
             obj.process_format.apply_async()
         else:

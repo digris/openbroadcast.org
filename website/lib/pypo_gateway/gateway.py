@@ -7,7 +7,7 @@ from django.conf import settings
 
 log = logging.getLogger(__name__)
 
-USE_CELERY = getattr(settings, 'PYPO_USE_CELERY', False)
+USE_CELERYD = getattr(settings, 'PYPO_USE_CELERYD', False)
 
 """
 Same config as used for celery setup

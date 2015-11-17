@@ -65,23 +65,6 @@ admin.site.register(Channel, ChannelAdmin)
 admin.site.register(Jingle, JingleAdmin)
 admin.site.register(JingleSet, JingleSetAdmin)
 
-
-
-
 admin.site.register(StreamServer, StreamServerAdmin)
 admin.site.register(StreamFormat)
 admin.site.register(Role)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
