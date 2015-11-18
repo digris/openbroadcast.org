@@ -25,8 +25,7 @@ USE_CELERYD = getattr(settings, 'ABCAST_USE_CELERYD', False)
 
 
 class Broadcast(BaseModel):
-    
-    # core fields
+
     name = models.CharField(max_length=200, db_index=True)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
 
@@ -46,14 +45,11 @@ class Broadcast(BaseModel):
     
     description = models.TextField(verbose_name="Extra Description", blank=True, null=True)
     duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", blank=True, null=True, editable=True)
-    
-    # relations
+
     user = models.ForeignKey(User, blank=True, null=True, related_name="scheduler_broadcasts", on_delete=models.SET_NULL)
 
-    # REFACTORED: playlist not used, modeled via emission -> co
     playlist = models.ForeignKey(Playlist, blank=True, null=True, related_name="scheduler_broadcasts", on_delete=models.SET_NULL)
 
-    # manager
     objects = models.Manager()
 
     class Meta:
@@ -79,7 +75,6 @@ class EmissionManager(models.Manager):
 
 class Emission(BaseModel):
 
-    # core fields
     name = models.CharField(max_length=200, db_index=True)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
 
@@ -117,9 +112,7 @@ class Emission(BaseModel):
     
     # eventually use this
     duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", blank=True, null=True, editable=False)
-    
-    
-    # relations
+
     user = models.ForeignKey(User, blank=True, null=True, related_name="scheduler_emissions", on_delete=models.SET_NULL)
     channel = models.ForeignKey(Channel, blank=True, null=True, related_name="scheduler_emissions", on_delete=models.SET_NULL)
     
@@ -137,8 +130,6 @@ class Emission(BaseModel):
     
     locked = models.BooleanField(default=False)
 
-    
-    # manager
     objects = EmissionManager()
 
     class Meta:
@@ -213,31 +204,20 @@ class Emission(BaseModel):
 
 
     def save(self, *args, **kwargs):
-        
-        print 'save'
-        print self.content_object
-        
+
         if not self.name:
             self.name = self.content_object.name
-        
-        
+
         self.duration = self.content_object.get_duration()
-        
-        print 'duration: %s' % self.content_object.get_duration()
-        
         if self.duration:
             self.time_end = self.time_start + datetime.timedelta(milliseconds=self.duration)
-        
-        
+
         super(Emission, self).save(*args, **kwargs)
         
-
-
 
 def post_save_emission(sender, **kwargs):
 
     obj = kwargs['instance']
-
     if USE_CELERYD:
         post_save_emission_task.delay(obj)
     else:
@@ -398,6 +378,3 @@ class Daypart(BaseModel):
     
     def __unicode__(self):
         return u'%s - %s' % (self.time_start, self.time_end)
-        
-        
-    

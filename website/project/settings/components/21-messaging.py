@@ -5,6 +5,7 @@ from django.conf import settings
 BASE_DIR = getattr(settings, 'BASE_DIR')
 DEBUG = getattr(settings, 'DEBUG')
 
+
 ################################################################################
 # messaging
 ################################################################################
@@ -15,12 +16,10 @@ EMAIL_DEBUG = DEBUG
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 
+################################################################################
+# celery / rabbitmq
+################################################################################
 
-
-
-"""
-celery / rabbitmq
-"""
 CELERYD_MAX_TASKS_PER_CHILD = 1
 CELERY_ACCEPT_CONTENT = ['pickle', 'json',]
 CELERY_RESULT_BACKEND = 'djcelery.backends.cache:CacheBackend'
@@ -35,7 +34,7 @@ BROKER_VHOST_PYPO = "playout"
 
 # base broker url - used for task servers
 BROKER_URL = 'amqp://obp:obp@127.0.0.1:5672/openbroadcast.org'
-
+PLAYOUT_BROKER_URL = 'amqp://obp:obp@127.0.0.1:5672/openbroadcast.org/playout'
 
 CELERY_IMPORTS = (
     'importer.util.importer', # ?
@@ -54,10 +53,6 @@ CELERY_ROUTES = {
 }
 
 
-"""
-celery periodic tasks
-use for maintenance tasks etc.
-"""
 CELERYBEAT_SCHEDULE = {
     'exporter-cleanup': {
         'task': 'exporter.models.cleanup_exports',
@@ -68,6 +63,7 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=600),
     },
 }
+
 
 """
 using django pushy

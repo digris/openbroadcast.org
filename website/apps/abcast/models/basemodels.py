@@ -40,16 +40,10 @@ class Station(BaseModel):
     
     main_image = FilerImageField(null=True, blank=True, related_name="station_main_image", rel='')
     description = extra.MarkdownTextField(blank=True, null=True)
-
-    # members
     members = models.ManyToManyField(User, through='StationMembers', blank=True)
-
-    # stations contact information
     website = models.URLField(max_length=256, null=True, blank=True)
-
     phone = PhoneNumberField(_('phone'), blank=True, null=True)
     fax = PhoneNumberField(_('fax'), blank=True, null=True)
-
     address1 = models.CharField(_('address'), null=True, blank=True, max_length=100)
     address2 = models.CharField(_('address (secondary)'), null=True, blank=True, max_length=100)
     city = models.CharField(_('city'), null=True, blank=True, max_length=100)
@@ -69,12 +63,6 @@ class Station(BaseModel):
     def get_absolute_url(self):
         return ('abcast-station-detail', [self.slug])
 
-    """
-    @models.permalink
-    def get_edit_url(self):
-        return ('alibrary-artist-edit', [self.pk])
-    """
-
     def get_admin_url(self):
         from lib.util.get_admin_url import change_url
         return change_url(self)
@@ -88,7 +76,6 @@ class Role(BaseModel):
 
     name = models.CharField(max_length=200)
 
-    # meta
     class Meta:
         app_label = 'abcast'
         verbose_name = _('Role')
@@ -102,7 +89,6 @@ class Role(BaseModel):
 class StationMembers(models.Model):
     user = models.ForeignKey(User, related_name='station_membership')
     station = models.ForeignKey(Station)
-    # role = models.ForeignKey(Role, blank=True, null=True)
     roles = models.ManyToManyField(Role, blank=True, related_name='memgership_roles')
 
     class Meta:
@@ -110,15 +96,11 @@ class StationMembers(models.Model):
         verbose_name = _('Role')
         verbose_name_plural = _('Roles')
 
-
-
     
 """
 Holds what is on air right now
 """
 class OnAirItem(BaseModel):
-
-    #channel = models.ForeignKey('Channel')
 
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
@@ -129,7 +111,6 @@ class OnAirItem(BaseModel):
         verbose_name = _('On Air')
         verbose_name_plural = _('On Air')
         unique_together = ('content_type', 'object_id',)
-        #ordering = ('name', )
 
     def __unicode__(self):
         return "%s : %s" % (self.channel.pk, self.channel.pk)
@@ -153,17 +134,8 @@ class Channel(BaseModel):
     stream_url = models.CharField(max_length=256, null=True, blank=True, help_text=_('setting the stream-url overrides server settings'))
     description = extra.MarkdownTextField(blank=True, null=True)
     station = models.ForeignKey('Station', null=True, blank=True, on_delete=models.SET_NULL)
-
-
-    """
-    RTMP settings
-    """
     rtmp_app = models.CharField(max_length=256, null=True, blank=True)
     rtmp_path = models.CharField(max_length=256, null=True, blank=True)
-
-    """
-    settings for 'owned' channels
-    """
     has_scheduler = models.BooleanField(default=False)
     stream_server = models.ForeignKey('StreamServer', null=True, blank=True, on_delete=models.SET_NULL)
     mount = models.CharField(max_length=64, null=True, blank=True)
@@ -342,14 +314,3 @@ class StreamFormat(BaseModel):
 
     def __unicode__(self):
         return "%s | %s" % (self.type, self.bitrate)
-
-
-# class OnAirPlugin(CMSPlugin):
-#     channel = models.ForeignKey(Channel, related_name='plugins')
-#     show_channel_info = models.BooleanField(default=True)
-#     class Meta:
-#         app_label = 'abcast'
-#
-#     def __unicode__(self):
-#         return "%s" % self.channel.name
-

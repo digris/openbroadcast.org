@@ -1,9 +1,9 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 import os
 import shutil
-
+import audiotools
+import tempfile
+import logging
 from mutagen import File as MutagenFile
 from mutagen.easyid3 import EasyID3
 from django.db import models
@@ -12,31 +12,16 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import *
-
-
-# filer
 from filer.fields.image import FilerImageField
 from filer.fields.file import FilerFileField
-
-# audiotools (for conversion)
-import audiotools
-import tempfile
-
-# audio processing / waveform
 from lib.audioprocessing.processing import create_wave_images, AudioProcessingException
-
-MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
-
-# 
 from lib.fields import extra
-
 from alibrary.models import Artist
-
 from abcast.models import BaseModel, Station
 
-# logging
-import logging
 log = logging.getLogger(__name__)
+
+MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
 
 def clean_filename(filename):
     import unicodedata
@@ -52,20 +37,14 @@ def masterpath_by_uuid(instance, filename):
     return os.path.join(folder, "%s%s" % (clean_filename(filename).lower(), extension.lower()))
 
 
-
-
 class JingleSet(BaseModel):
-    
-    # core fields
+
     name = models.CharField(max_length=200, db_index=True)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
-
     description = models.TextField(verbose_name="Extra Description", blank=True, null=True)
-
     main_image = FilerImageField(null=True, blank=True, related_name="jingleset_main_image", rel='')
     station = models.ForeignKey(Station, blank=True, null=True, related_name="jingleset_station", on_delete=models.SET_NULL)
 
-    # manager
     objects = models.Manager()
 
     class Meta:
@@ -73,17 +52,13 @@ class JingleSet(BaseModel):
         verbose_name = _('Jingle-Set')
         verbose_name_plural = _('Jingle-Sets')
         ordering = ('created', )
-    
-    
+
     def __unicode__(self):
         return self.name
 
 
-
-
 class Jingle(BaseModel):
     
-    # core fields
     name = models.CharField(max_length=200, db_index=True)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
 
@@ -116,21 +91,9 @@ class Jingle(BaseModel):
     artist = models.ForeignKey(Artist, blank=True, null=True, related_name='jingle_artist')
     set = models.ForeignKey(JingleSet, blank=True, null=True, related_name="jingle_set", on_delete=models.SET_NULL)
 
-    # File related (new)
     master = models.FileField(max_length=1024, upload_to=masterpath_by_uuid, blank=True, null=True)
     master_sha1 = models.CharField(max_length=64, db_index=True, blank=True, null=True)
-    
     folder = models.CharField(max_length=1024, null=True, blank=True, editable=False)
-    
-    # File Data
-    """
-    base_format = models.CharField(verbose_name=_('Format'), max_length=12, blank=True, null=True)
-    base_filesize = models.PositiveIntegerField(verbose_name=_('Filesize'), blank=True, null=True)
-    base_duration = models.FloatField(verbose_name=_('Duration'), blank=True, null=True)
-    base_samplerate = models.PositiveIntegerField(verbose_name=_('Samplerate'), blank=True, null=True)
-    base_bitrate = models.PositiveIntegerField(verbose_name=_('Bitrate'), blank=True, null=True)
-    """
-    # manager
     objects = models.Manager()
 
     class Meta:
@@ -138,8 +101,7 @@ class Jingle(BaseModel):
         verbose_name = _('Jingle')
         verbose_name_plural = _('Jingles')
         ordering = ('created', )
-    
-    
+
     def __unicode__(self):
         return self.name
     
@@ -154,10 +116,7 @@ class Jingle(BaseModel):
     @models.permalink
     def get_waveform_url(self):
         return ('abcast-jingle-waveform', [self.uuid])
-    
-    """
-    file(system) related methods
-    """
+
     def get_folder_path(self, subfolder=None):
         if not self.folder:
             return None
@@ -166,7 +125,6 @@ class Jingle(BaseModel):
             folder = "%s/%s%s/" % (MEDIA_ROOT, self.folder, subfolder)
             if not os.path.isdir(folder):
                 os.mkdir(folder, 0755)
-                
             return folder
                     
         return "%s/%s" % (MEDIA_ROOT, self.folder)
@@ -189,7 +147,6 @@ class Jingle(BaseModel):
         
         if not waveform_image:
             try:
-                #self.create_waveform_image.delay(self)
                 self.create_waveform_image()
                 waveform_image = self.get_cache_file('png', 'waveform')
             except Exception, e:
@@ -279,9 +236,7 @@ class Jingle(BaseModel):
             self.name = meta['title'][0]
         if 'artist' in meta:
             self.artist, created = Artist.objects.get_or_create(name=meta['artist'][0])
-            #self.name = meta['title'][0]
-        
-        
+
         self.save()
         
         try:
@@ -310,9 +265,7 @@ class Jingle(BaseModel):
             
         super(Jingle, self).save(*args, **kwargs)
     
-    
-    
-# media post save
+
 def jingle_post_save(sender, **kwargs):
     
     log = logging.getLogger('abcast.jinblemodels.jingle_post_save')
@@ -327,14 +280,10 @@ def jingle_post_save(sender, **kwargs):
 
     log.info('Jingle id: %s - Processed state: %s' % (obj.pk, obj.processed))
 
-    
     if obj.master and obj.processed == 0:
         
         log.info('Media id: %s - Re-Process' % (obj.pk))
-        
         obj.process()
         
-        
 
-# register
-post_save.connect(jingle_post_save, sender=Jingle) 
+post_save.connect(jingle_post_save, sender=Jingle)
