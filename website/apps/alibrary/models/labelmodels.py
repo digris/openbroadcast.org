@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 from django.db import models
 import tagging
@@ -9,10 +10,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes import generic
-
 from auditlog.registry import auditlog
 from auditlog.models import AuditlogHistoryField
-
 from celery.task import task
 from filer.models.filemodels import *
 from filer.models.foldermodels import *
@@ -28,7 +27,6 @@ from alibrary import settings as alibrary_settings
 from model_utils import FieldTracker
 from lib.fields import extra
 from alibrary.models import MigrationMixin
-from alibrary.util.signals import library_post_save
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
 
@@ -176,8 +174,6 @@ except Exception as e:
     print '***** %s' % e
     pass
 
-# register
-post_save.connect(library_post_save, sender=Label)   
 arating.enable_voting_on(Label)
 
 """

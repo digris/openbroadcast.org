@@ -1,80 +1,44 @@
-# python
+# -*- coding: utf-8 -*-
 import uuid
-
-# django
+import tagging
+import logging
 from django.db import models
 from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch.dispatcher import receiver
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
-
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-
-
-# cms
-# from cms.models import CMSPlugin, Page
 from cms.models.fields import PlaceholderField
-
-# filer
 from filer.models.filemodels import *
 from filer.models.foldermodels import *
-# from filer.models.audiomodels import *
 from filer.models.imagemodels import *
 from filer.fields.image import FilerImageField
-# from filer.fields.audio import FilerAudioField
 from filer.fields.file import FilerFileField
-
-# modules
-#from taggit.managers import TaggableManager
 from phonenumber_field.modelfields import PhoneNumberField
-
-import tagging
-
-# model extensions
 from mptt.models import MPTTModel, TreeForeignKey
-
-#from multilingual.translation import TranslatableModel
 from hvad.models import TranslatableModel, TranslatedFields
 from hvad.manager import TranslationManager
-
-# django-extensions (http://packages.python.org/django-extensions/)
 from django_extensions.db.fields import UUIDField, AutoSlugField
-
 from l10n.models import Country
-
-
-# logging
-import logging
-log = logging.getLogger(__name__)
-
-
-################
 from alibrary.models import *
 from alibrary.util.slug import unique_slugify
 from alibrary.util.relations import get_service_by_url
-
 from lib.fields import extra
 
-
-    
+log = logging.getLogger(__name__)
 
 class MigrationMixin(models.Model):
     
     legacy_id = models.IntegerField(null=True, blank=True, editable=False)
     migrated = models.DateField(null=True, blank=True, editable=False)
-    
-    
+
     class Meta:
         abstract = True
         app_label = 'alibrary'
         verbose_name = _('MigrationMixin')
         verbose_name_plural = _('MigrationMixins')
         ordering = ('pk', )
-    
-    
-
-
 
 class Distributor(MPTTModel, MigrationMixin):
 

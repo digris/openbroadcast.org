@@ -29,14 +29,11 @@ from easy_thumbnails.files import get_thumbnailer
 from audiotools import MetaData
 from tagging.registry import register as tagging_register
 from celery.task import task
-# audio processing / waveform
 from lib.audioprocessing.processing import create_wave_images, AudioProcessingException
 from lib.fields.languages import LanguageField
 from lib.signals.unsignal import disable_for_loaddata
 from lib.util.sha1 import sha1_by_file
 from ep.API import fp
-
-
 from alibrary.models.basemodels import *
 from alibrary.models.artistmodels import *
 from alibrary.models.playlistmodels import PlaylistItem, Playlist
@@ -44,7 +41,6 @@ from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
 from alibrary.util.echonest import EchonestWorker
 from caching.base import CachingMixin, CachingManager
-
 
 log = logging.getLogger(__name__)
 
@@ -59,7 +55,6 @@ LOOKUP_PROVIDERS = (
     #('discogs', _('Discogs')),
     ('musicbrainz', _('Musicbrainz')),
 )
-
 
 VERSION_CHOICES = (
     ('original', _('Original')),

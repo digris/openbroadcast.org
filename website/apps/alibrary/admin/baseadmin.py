@@ -1,15 +1,19 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import reversion
-#from multilingual.admin import TranslatableAdmin
+from django.core import urlresolvers
 from hvad.admin import TranslatableAdmin
 from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
 from django.utils.translation import ugettext as _
+from easy_thumbnails.files import get_thumbnailer
 from guardian.admin import GuardedModelAdmin
 from django.contrib import admin
 from alibrary.models import *
-
 from django.utils.safestring import mark_safe
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+
+THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
 
 class BaseAdmin(GuardedModelAdmin):
 
@@ -76,12 +80,33 @@ class ReleaseMediaInline(admin.TabularInline):
 
 class ReleaseAdmin(BaseAdmin):
 
-    list_display   = ('name', 'releasetype', 'label', 'slug', 'uuid', 'catalognumber',)
-    search_fields = ['name', 'label__name',]
+    list_display = (
+        'image_display',
+        #'name',
+        'info_display',
+        'meta_display',
+        'catalognumber',
+    )
+
+    list_display_links = [
+        'catalognumber',
+    ]
+
+    search_fields = [
+        'name',
+        'catalognumber',
+        'label__name',
+    ]
+
     list_filter = ('releasetype',)
     date_hierarchy = 'created'
 
-    inlines = [ReleaseAlbumartistsInline, MediaInline, RelationsInline, ReleaseExtraartistsInline]
+    inlines = [
+        ReleaseAlbumartistsInline,
+        MediaInline,
+        RelationsInline,
+        ReleaseExtraartistsInline
+    ]
     readonly_fields = ['slug', 'license', 'd_tags']
 
     raw_id_fields = [
@@ -97,8 +122,53 @@ class ReleaseAdmin(BaseAdmin):
                 }),
         ('Users', {'fields' : ['owner', 'creator', 'publisher']}),
     ]
-    
-#admin.site.register(Release)
+
+
+    def info_display(self, obj):
+
+        tpl = u"""<p>
+        <strong><a href="{object_url}">{object_name}</strong></a><br>
+        by: {artist_name}<br>
+        on: <a href="{label_url}">{label_name}</a>
+        </p>""".format(
+            object_url=urlresolvers.reverse('admin:alibrary_release_change', args=(obj.pk,)) if obj.label else '#',
+            object_name=obj.name[0:40],
+            artist_name=obj.get_artist_display(),
+            label_url=urlresolvers.reverse('admin:alibrary_label_change', args=(obj.label.pk,)) if obj.label else '#',
+            label_name=obj.label,
+        )
+        return tpl
+    info_display.short_description = _('Release')
+    info_display.allow_tags = True
+
+    def meta_display(self, obj):
+
+        tpl = """<p>
+        <strong>{releasedate}</strong><br>
+        {type}<br>
+        {num_tracks} Tracks<br>
+        </p>""".format(
+            releasedate=obj.releasedate_approx,
+            type=obj.get_releasetype_display(),
+            num_tracks=obj.get_media().count(),
+        )
+        return tpl
+    meta_display.short_description = _('Metadata')
+    meta_display.allow_tags = True
+
+    def image_display(self, obj):
+        if obj.main_image:
+            try:
+                return '<img src="%s" />' % (get_thumbnailer(obj.main_image).get_thumbnail(THUMBNAIL_OPT).url)
+            except:
+                pass
+        return '-'
+    image_display.short_description = _('Cover')
+    image_display.allow_tags = True
+
+
+
+
 admin.site.register(Release, ReleaseAdmin)
 
 

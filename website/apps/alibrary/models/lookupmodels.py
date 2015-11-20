@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 import re
+import logging
 import requests
 from urlparse import urlparse
 from django.conf import settings
@@ -10,15 +12,12 @@ from django.conf import settings
 from l10n.models import Country
 from jsonfield import JSONField
 from alibrary.util.relations import get_service_by_url
+from alibrary.models import *
 
-# logging
-import logging
 log = logging.getLogger(__name__)
 
 MUSICBRAINZ_HOST = getattr(settings, 'MUSICBRAINZ_HOST', 'musicbrainz.org')
 DISCOGS_HOST = getattr(settings, 'DISCOGS_HOST', None)
-
-from alibrary.models import *
 
 USER_AGENT = 'ANORGDiscogsAPIClient/0.0.1 +http://anorg.net'
 

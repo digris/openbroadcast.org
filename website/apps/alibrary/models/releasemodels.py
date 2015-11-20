@@ -1,13 +1,13 @@
-# python
+# -*- coding: utf-8 -*-
 import datetime
 from datetime import *
 import glob
 from zipfile import ZipFile
-
 import requests
-
-
-# django
+import tagging
+import logging
+import reversion
+import arating
 from django.db import models
 from django.db import transaction
 from django.db.models import Q
@@ -16,65 +16,35 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.conf import settings
-
 from alibrary import settings as alibrary_settings
-
-# django-extensions (http://packages.python.org/django-extensions/)
 from django_extensions.db.fields import UUIDField
-
-
-# celery / task management
 from celery.task import task
-
-# filer
 from filer.models.filemodels import *
 from filer.models.foldermodels import *
-# from filer.models.audiomodels import *
 from filer.models.imagemodels import *
 from filer.fields.image import FilerImageField
-# from filer.fields.audio import FilerAudioField
 from filer.fields.file import FilerFileField
-
 from l10n.models import Country
 from django_date_extensions.fields import ApproximateDateField
-import tagging
 from tagging.registry import register as tagging_register
-import reversion 
-
-# settings
-TEMP_DIR = getattr(settings, 'TEMP_DIR', None)
-
-# logging
-import logging
-logger = logging.getLogger(__name__)
-
-from alibrary.util.signals import library_post_save
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
-
-import arating
-    
-################
-
 from alibrary.models.basemodels import *
 from alibrary.models.artistmodels import *
 from alibrary.models.labelmodels import Label
 from alibrary.models.mediamodels import Media
-
-FORCE_CATALOGNUMBER = False
-
 from lib.fields import extra
 
+logger = logging.getLogger(__name__)
 
+TEMP_DIR = getattr(settings, 'TEMP_DIR', None)
+FORCE_CATALOGNUMBER = False
 LOOKUP_PROVIDERS = (
     ('discogs', _('Discogs')),
     ('musicbrainz', _('Musicbrainz')),
 )
 
-
-
 class ReleaseManager(models.Manager):
-
 
     def active(self):
         now = datetime.now()
@@ -82,7 +52,6 @@ class ReleaseManager(models.Manager):
                 Q(publish_date__isnull=True) |
                 Q(publish_date__lte=now)
                 )
-
 
 
 def upload_cover_to(instance, filename):
@@ -102,40 +71,29 @@ class Release(MigrationMixin):
     uuid = UUIDField(primary_key=False)
     name = models.CharField(max_length=200, db_index=True)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
-    
     license = models.ForeignKey(License, blank=True, null=True, related_name='release_license')
-
     release_country = models.ForeignKey(Country, blank=True, null=True)
     
     uuid = UUIDField()
-    
-    #main_image = FilerImageField(null=True, blank=True, related_name="release_main_image", rel='')
+
     main_image = models.ImageField(verbose_name=_('Cover'), upload_to=upload_cover_to, storage=OverwriteStorage(), null=True, blank=True)
     cover_image = FilerImageField(null=True, blank=True, related_name="release_cover_image", rel='', help_text=_('Cover close-up. Used e.g. for embedding in digital files.'))
-    
-    
+
     if FORCE_CATALOGNUMBER:
         catalognumber = models.CharField(max_length=50)
     else:
         catalognumber = models.CharField(max_length=50, blank=True, null=True)
-        
-    
+
     """
     releasedate stores the 'real' time, approx is for inputs
     lik 2012-12 etc.
     """
     releasedate = models.DateField(blank=True, null=True)
     releasedate_approx = ApproximateDateField(verbose_name="Releasedate", blank=True, null=True)
-    
-
     pressings = models.PositiveIntegerField(default=0)
-
     TOTALTRACKS_CHOICES = ((x, x) for x in range(1, 301))
     totaltracks = models.IntegerField(verbose_name=_('Total Tracks'), blank=True, null=True, choices=TOTALTRACKS_CHOICES)
-
-
     asin = models.CharField(max_length=150, blank=True)
-    
     RELEASESTATUS_CHOICES = (
         (None, _('Not set')),
         ('official', _('Official')),
@@ -145,70 +103,30 @@ class Release(MigrationMixin):
     )
     
     releasestatus = models.CharField(max_length=60, blank=True, choices=RELEASESTATUS_CHOICES)
-    
-    # publish_date = models.DateTimeField(default=datetime.now, blank=True, null=True, help_text=_('If set this Release will not be published on the site before the given date.'))
-    # publish_date = models.DateTimeField(blank=True, null=True, help_text=_('If set this Release will not be published on the site before the given date.'))
-    @property
-    def publish_date(self):
-        # compatibility hack TODO: refactor all dependencies
-        return datetime.utcnow()
-
     main_format = models.ForeignKey(Mediaformat, null=True, blank=True, on_delete=models.SET_NULL)
-    
-    # 
     excerpt = models.TextField(blank=True, null=True)
     description = extra.MarkdownTextField(blank=True, null=True)
-
-
     releasetype = models.CharField(verbose_name="Release type", max_length=24, blank=True, null=True, choices=alibrary_settings.RELEASETYPE_CHOICES)
-
-    
-    # relations
     label = models.ForeignKey(Label, blank=True, null=True, related_name='release_label', on_delete=models.SET_NULL)
     folder = models.ForeignKey(Folder, blank=True, null=True, related_name='release_folder', on_delete=models.SET_NULL)
-    
-    
-    # reworking media relationship
     media = models.ManyToManyField('Media', through='ReleaseMedia', blank=True, related_name="releases")
-    #media = SortedManyToManyField('Media', blank=True, null=True, related_name="releases")
-    
-
-    # user relations
     owner = models.ForeignKey(User, blank=True, null=True, related_name="releases_owner", on_delete=models.SET_NULL)
     creator = models.ForeignKey(User, blank=True, null=True, related_name="releases_creator", on_delete=models.SET_NULL)
     publisher = models.ForeignKey(User, blank=True, null=True, related_name="releases_publisher", on_delete=models.SET_NULL)
-
-    # identifiers
     barcode = models.CharField(max_length=32, blank=True, null=True)
 
-    # generic reverse relations
-    # import_items = generic.GenericRelation('importer.ImportItem')
-
-    # extra-artists
     extra_artists = models.ManyToManyField('Artist', through='ReleaseExtraartists', blank=True)
-    def get_extra_artists(self):
-        ea = []
-        for artist in self.extra_artists.all():
-            ea.push(artist.name)
-        return ea
-    
-    # special relation to provide 'multi-names' for artists.
+
+
     album_artists = models.ManyToManyField('Artist', through='ReleaseAlbumartists', related_name="release_albumartists", blank=True)
-    
-    # relations a.k.a. links
     relations = generic.GenericRelation(Relation)
-    
-    # tagging (d_tags = "display tags")
     d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
-    
     enable_comments = models.BooleanField(_('Enable Comments'), default=True)
-    
-    # manager
-    objects = ReleaseManager()
-    
-    # auto-update
+
+
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
+    objects = ReleaseManager()
 
     # meta
     class Meta:
@@ -233,12 +151,21 @@ class Release(MigrationMixin):
         return self.__class__.__name__
     
     def get_versions(self):
-       
         try:
             return reversion.get_for_object(self)
         except:
             return None
-        
+
+    @property
+    def publish_date(self):
+        # compatibility hack TODO: refactor all dependencies
+        return datetime.utcnow()
+
+    def get_extra_artists(self):
+        ea = []
+        for artist in self.extra_artists.all():
+            ea.push(artist.name)
+        return ea
     
     def get_last_revision(self):
         try:
@@ -257,7 +184,6 @@ class Release(MigrationMixin):
 
     
     def is_active(self):
-        
         now = date.today()
         try:
             if not self.releasedate:
@@ -308,11 +234,7 @@ class Release(MigrationMixin):
             providers.append({'key': key, 'name': name, 'relation': relation})
 
         return providers
-    
 
-    #@models.permalink
-    #def get_absolute_url(self):
-    #    return ('alibrary-release-detail', [self.slug])
     def get_absolute_url(self):
         return reverse('alibrary-release-detail', kwargs={
             'pk': self.pk,
@@ -326,10 +248,7 @@ class Release(MigrationMixin):
     def get_admin_url(self):
         from lib.util.get_admin_url import change_url
         return change_url(self)
-    
-    
 
-    
     def get_api_url(self):
         return reverse('api_dispatch_detail', kwargs={  
             'api_name': 'v1',  
@@ -354,10 +273,8 @@ class Release(MigrationMixin):
     def get_media_indicator(self):
         
         media = self.get_media()
-        
         indicator = []
-        
-        
+
         if self.totaltracks:
             for i in range(self.totaltracks):
                 indicator.append(0)
@@ -367,11 +284,8 @@ class Release(MigrationMixin):
                     indicator[m.tracknumber -1 ] = 3
                 except Exception, e:
                     pass
-            
-            
-            
+
         else:
-                
             for m in media:
                 indicator.append(2)
         
@@ -453,27 +367,13 @@ class Release(MigrationMixin):
         return artists
     
     def get_downloads(self):
-
         return None
-        """
-        downloads = File.objects.filter(folder=self.get_folder('downloads')).all()
-        if len(downloads) < 1:
-            return None
-        return downloads
-        """
-    
-    
+
     
     def get_download_url(self, format, version):
         
         return '%sdownload/%s/%s/' % (self.get_absolute_url(), format, version)
-    
-    
-    
-    
-    
-    
-    
+
     def get_cache_file_path(self, format, version):
         
         tmp_directory = TEMP_DIR
@@ -484,15 +384,10 @@ class Release(MigrationMixin):
     
     
     def clear_cache_file(self):
-        """
-        Clears cached release (the one for buy-downloads)
-        """
-        
+
         tmp_directory = TEMP_DIR
         pattern = '*%s.zip' % (str(self.uuid))
         versions = glob.glob('%s/%s' % (tmp_directory, pattern))
-        
-        print versions
 
         try:
             for version in versions:
@@ -532,64 +427,24 @@ class Release(MigrationMixin):
         adding corresponding media files
         """
         for media in self.get_media():
-
             media_cache_file = media.inject_metadata(format, version)
 
             # filename for the file archive
             file_name = '%02d - %s - %s' % (media.tracknumber, media.artist.name, media.name)
             file_name = '%s.%s' % (file_name.encode('ascii', 'ignore'), format)
 
-            # archive_file.write('/Users/ohrstrom/code/alibrary/website/check.txt', 'test.txt')
             archive_file.write(media_cache_file.path, file_name)
-                
-            
-        """
-        adding assets if any
-        asset_files = File.objects.filter(folder=self.get_folder('assets')).all()
-        for asset_file in asset_files:
-            if asset_file.name:
-                file_name = asset_file.name
-            else:
-                file_name = asset_file.original_filename
-            archive_file.write(asset_file.path, file_name)
-        """
 
             
         return cache_file_path
 
     def get_extraimages(self):
-
         return None
 
-        """
-        if self.folder:
-            folder = self.get_folder('pictures')
-            images = folder.files.instance_of(Image)
 
-        if len(images) > 0:
-            return images
-        else:
-            return None
-        """
-                
-                
-    """
-    def get_folder(self, name):
-        
-        if name == 'cache':
-            parent_folder, created = Folder.objects.get_or_create(name='cache')
-            folder, created = Folder.objects.get_or_create(name=str(self.uuid), parent=parent_folder)
-        else:
-            folder, created = Folder.objects.get_or_create(name=name, parent=self.folder)
-            
-        return folder
-    """
-    
-    
     # OBSOLETE
     def complete_by_mb_id(self, mb_id):
-        
-        
+
         obj = self
 
         log = logging.getLogger('alibrary.release.complete_by_mb_id')
@@ -611,21 +466,6 @@ class Release(MigrationMixin):
 
         self.clear_cache_file()        
         unique_slugify(self, self.name)
-        
-        # update d_tags
-
-        """
-        t_tags = ''
-
-        #if self.tags:
-        #   t_tags = ','.join([t.name.strip(' ') for t in self.tags])
-
-        for tag in self.tags:
-            t_tags += '%s, ' % tag
-
-        self.tags = t_tags
-        self.d_tags = t_tags
-        """
 
         # convert approx date to real one
         ad = self.releasedate_approx
@@ -654,7 +494,6 @@ except Exception as e:
 
 arating.enable_voting_on(Release)
 
-post_save.connect(library_post_save, sender=Release)  
 
 """
 Actstream handling moved to task queue to avoid wrong revision due to transaction

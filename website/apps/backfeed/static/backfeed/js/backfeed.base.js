@@ -1,17 +1,16 @@
-BackfeedUi = function () {
+;
+var BackfeedUi = function () {
 
     var self = this;
     var post_url;
     var el;
 
     this.init = function () {
-        console.log('BackfeedUi: init');
         self.el = $('.backfeed');
         self.bindings();
     };
 
     this.bindings = function () {
-        console.log('BackfeedUi: bindings');
 
         // show/hide backfeed
         self.el.on('click', '.toggle > a', function (e) {

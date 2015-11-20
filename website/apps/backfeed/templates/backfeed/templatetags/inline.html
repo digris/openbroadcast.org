@@ -3,6 +3,7 @@
 {% addtoblock "js-post" %}
     <script src="{{ STATIC_URL }}backfeed/js/backfeed.base.js"></script>
 {% endaddtoblock %}
+
 {% addtoblock "js-post" %}
     <script>
         $(function () {
@@ -14,14 +15,10 @@
 {% endaddtoblock %}
 
 
-<div class="backfeed hoverable">
+<div id="backfeed_container" class="panel backfeed">
 
     <div class="wrapper">
 
-        <div class="toggle">
-            <a class="" href="#"><i class="icon icon-envelope"></i> <span class="title">{% trans "Feedback" %}</span><span
-                    class="right close">x</span></a>
-        </div>
 
         <div class="content-holder">
 
@@ -49,8 +46,6 @@
             <div id="backfeed_errors" style="display: none;">
                 <p>{% trans "Errors occured while processing." %}</p>
             </div>
-
-
 
 
         </div>

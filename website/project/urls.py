@@ -10,6 +10,8 @@ from django.contrib import admin
 from cms.sitemaps import CMSSitemap
 from alibrary.sitemap import ReleaseSitemap
 
+DEBUG = getattr(settings, 'DEBUG', False)
+
 def handler500(request):
 
     from django.template import Context, loader
@@ -75,17 +77,13 @@ urlpatterns = patterns('',
 
 )
 
-#urlpatterns += i18n_patterns('',
-urlpatterns += patterns('',
-    url(r'^', include('cms.urls')),
-)
 
 if settings.SERVE_MEDIA:
     urlpatterns += patterns("",
         url(r"", include("staticfiles.urls")),
 )
 
-if settings.DEBUG:
+if DEBUG:
 
     try:
         import debug_toolbar
@@ -99,4 +97,9 @@ if settings.DEBUG:
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.MEDIA_ROOT,
         }),
+)
+
+#urlpatterns += i18n_patterns('',
+urlpatterns += patterns('',
+    url(r'^', include('cms.urls')),
 )

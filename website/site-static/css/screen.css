@@ -13262,58 +13262,58 @@ div.jqplot-noData-container {
 }
 
 /* line 1, ../sass/apps/_backfeed.sass */
-div.backfeed {
+div.__backfeed {
   position: fixed;
   left: 0;
   top: 25%;
 }
 /* line 7, ../sass/apps/_backfeed.sass */
-div.backfeed .wrapper {
+div.__backfeed .wrapper {
   -webkit-box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.12);
 }
-/* line 12, ../sass/apps/_backfeed.sass */
-div.backfeed .toggle a {
+/* line 11, ../sass/apps/_backfeed.sass */
+div.__backfeed .toggle a {
   display: block;
   padding: 10px;
   background: #00bb00;
   color: white;
   text-decoration: none;
 }
-/* line 18, ../sass/apps/_backfeed.sass */
-div.backfeed .toggle a span {
+/* line 17, ../sass/apps/_backfeed.sass */
+div.__backfeed .toggle a span {
   display: none;
 }
-/* line 21, ../sass/apps/_backfeed.sass */
-div.backfeed.hover .toggle a span.title {
+/* line 20, ../sass/apps/_backfeed.sass */
+div.__backfeed.hover .toggle a span.title {
   display: inline;
 }
-/* line 24, ../sass/apps/_backfeed.sass */
-div.backfeed .content-holder {
+/* line 23, ../sass/apps/_backfeed.sass */
+div.__backfeed .content-holder {
   display: none;
 }
-/* line 27, ../sass/apps/_backfeed.sass */
-div.backfeed .content-holder input, div.backfeed .content-holder textarea {
+/* line 26, ../sass/apps/_backfeed.sass */
+div.__backfeed .content-holder input, div.__backfeed .content-holder textarea {
   width: 291px;
   margin-bottom: 4px;
 }
-/* line 30, ../sass/apps/_backfeed.sass */
-div.backfeed .content-holder input.error, div.backfeed .content-holder textarea.error {
+/* line 29, ../sass/apps/_backfeed.sass */
+div.__backfeed .content-holder input.error, div.__backfeed .content-holder textarea.error {
   border-color: orangered;
 }
-/* line 36, ../sass/apps/_backfeed.sass */
-div.backfeed.expanded {
+/* line 32, ../sass/apps/_backfeed.sass */
+div.__backfeed.expanded {
   width: 320px;
 }
-/* line 40, ../sass/apps/_backfeed.sass */
-div.backfeed.expanded .toggle a span {
+/* line 36, ../sass/apps/_backfeed.sass */
+div.__backfeed.expanded .toggle a span {
   display: inline;
 }
-/* line 43, ../sass/apps/_backfeed.sass */
-div.backfeed.expanded .content-holder {
+/* line 39, ../sass/apps/_backfeed.sass */
+div.__backfeed.expanded .content-holder {
   display: block;
 }
-/* line 49, ../sass/apps/_backfeed.sass */
-div.backfeed .content-holder {
+/* line 43, ../sass/apps/_backfeed.sass */
+div.__backfeed .content-holder {
   padding: 10px;
   min-height: 200px;
   background: #fafafa;
@@ -14127,6 +14127,78 @@ div.jqi button.jqidefaultbutton {
 /* line 60, ../sass/util/_nanoscroller.sass */
 .has-scrollbar .content::-webkit-scrollbar {
   visibility: visible;
+}
+
+/* line 1, ../sass/util/_site_panel.sass */
+#site_panel_container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+/* line 7, ../sass/util/_site_panel.sass */
+#site_panel_container .toggle-container {
+  width: 1115px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* line 11, ../sass/util/_site_panel.sass */
+#site_panel_container .toggle-container ul {
+  clear: both;
+  list-style: none;
+}
+/* line 15, ../sass/util/_site_panel.sass */
+#site_panel_container .toggle-container ul li {
+  background: #00bb00;
+  float: right;
+  margin-left: 10px;
+  padding: 4px 10px;
+}
+/* line 21, ../sass/util/_site_panel.sass */
+#site_panel_container .toggle-container ul li a {
+  padding: 2px 2px;
+  text-decoration: none;
+  display: block;
+  color: white;
+}
+/* line 26, ../sass/util/_site_panel.sass */
+#site_panel_container .toggle-container ul li a span {
+  display: block;
+  text-transform: uppercase;
+  float: left;
+  margin: 3px 0 0 0;
+  overflow: hidden;
+  width: 0px;
+  -webkit-transition: width 0.2s ease-in-out;
+}
+/* line 35, ../sass/util/_site_panel.sass */
+#site_panel_container .toggle-container ul li a i {
+  font-size: 20px;
+}
+/* line 38, ../sass/util/_site_panel.sass */
+#site_panel_container .toggle-container ul li.hover,
+#site_panel_container .toggle-container ul li.active {
+  background: #6633cc;
+}
+/* line 41, ../sass/util/_site_panel.sass */
+#site_panel_container .toggle-container ul li.hover a span,
+#site_panel_container .toggle-container ul li.active a span {
+  width: 100px;
+}
+/* line 49, ../sass/util/_site_panel.sass */
+#site_panel_container .content-container {
+  clear: both;
+}
+/* line 51, ../sass/util/_site_panel.sass */
+#site_panel_container .content-container > .panel {
+  height: 0;
+  overflow: hidden;
+  -webkit-transition: height 0.01s ease-in-out;
+}
+/* line 56, ../sass/util/_site_panel.sass */
+#site_panel_container.expanded .content-container > .panel {
+  height: 300px;
+  background: #6633cc;
+  -webkit-transition: height 0.3s ease-in-out;
 }
 
 /* line 2, ../sass/site/_style.sass */

@@ -59,8 +59,15 @@ class JSONFieldBase(object):
 
     def formfield(self, **kwargs):
 
+
+        try:
+            del kwargs['max_length']
+        except KeyError:
+            pass
+
         if "form_class" not in kwargs:
             kwargs["form_class"] = JSONFormField
+
 
         field = super(JSONFieldBase, self).formfield(**kwargs)
 

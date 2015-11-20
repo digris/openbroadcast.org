@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
+import logging
 from django.db import models
 from django.utils.translation import ugettext as _
-import logging
+
 logger = logging.getLogger(__name__)
 
 class Format(models.Model):

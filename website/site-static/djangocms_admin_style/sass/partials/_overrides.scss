@@ -1,0 +1,26 @@
+.admin_shortcuts .shortcuts li a {
+
+  //color: green;
+  background-size: 20px;
+  padding: 8px 0px 8px 36px;
+
+  span.title {
+    text-shadow: none;
+    font-weight: $base-font-weight;
+  }
+
+}
+
+#content {
+
+  > h1 {
+    font-weight: $base-font-weight;
+  }
+
+}
+
+.module {
+  caption {
+    font-weight: $base-font-weight;
+  }
+}

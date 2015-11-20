@@ -33,7 +33,6 @@ INSTALLED_APPS = (
     'gunicorn',
     'django_date_extensions',
     'esi',
-    'template_timings_panel',
     'haystack',
 
 
