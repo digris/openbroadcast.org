@@ -1542,27 +1542,33 @@ def media_post_save(sender, **kwargs):
 
         try:
             obj.base_format = os.path.splitext(obj.master.path)[1][1:].lower()
+
             print obj.base_format
+
             try:
                 audiofile = audiotools.open(obj.master.path)
+
             except audiotools.UnsupportedFile as e:
+
                 print e
-                # hackish - re-encode file if hpeless to open with at
-                file_fix_path = obj.master.path + '_re-encoded.mp3'
-                shutil.copy2(obj.master.path, file_fix_path)
+                # hackish - re-encode file if impossible open with audiotools
 
-                # use lame for the rest
-                lame_options = '-b 320'
-                log.debug('running: "%s %s %s %s"' % (LAME_BINARY, lame_options, file_fix_path, obj.master.path))
+                if obj.base_format.lower == 'mp3':
 
-                p = subprocess.Popen([
-                    LAME_BINARY, lame_options, file_fix_path, obj.master.path
-                ], stdout=subprocess.PIPE)
-                stdout = p.communicate()
+                    file_fix_path = obj.master.path + '_re-encoded.mp3'
+                    shutil.copy2(obj.master.path, file_fix_path)
+    
+                    lame_options = '-b 320'
+                    log.debug('running: "%s %s %s %s"' % (LAME_BINARY, lame_options, file_fix_path, obj.master.path))
 
-                os.remove(file_fix_path)
+                    p = subprocess.Popen([
+                        LAME_BINARY, lame_options, file_fix_path, obj.master.path
+                    ], stdout=subprocess.PIPE)
+                    stdout = p.communicate()
 
-                audiofile = audiotools.open(obj.master.path)
+                    os.remove(file_fix_path)
+
+                    audiofile = audiotools.open(obj.master.path)
 
 
 
