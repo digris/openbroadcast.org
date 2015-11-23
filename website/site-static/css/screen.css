@@ -4278,6 +4278,41 @@ div.autocomplete.holder .result .listing .item.hover em.highlight {
   margin-left: 20px;
 }
 
+/* line 1, ../sass/element/_announcements.sass */
+#site_announcements {
+  max-width: 830px;
+}
+/* line 5, ../sass/element/_announcements.sass */
+#site_announcements .announcement {
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #f2f2f2;
+}
+/* line 12, ../sass/element/_announcements.sass */
+#site_announcements .announcement p:last-child {
+  margin-bottom: 0;
+}
+/* line 16, ../sass/element/_announcements.sass */
+#site_announcements .announcement.info {
+  background-color: #ddffd9;
+  border-color: #d1ffc0;
+}
+/* line 19, ../sass/element/_announcements.sass */
+#site_announcements .announcement.info p {
+  color: #00bb00;
+}
+/* line 22, ../sass/element/_announcements.sass */
+#site_announcements .announcement.warning {
+  background-color: #ffeed4;
+  border-color: #ffdec5;
+}
+/* line 25, ../sass/element/_announcements.sass */
+#site_announcements .announcement.warning p {
+  color: #ff743e;
+}
+
 /* line 5, ../sass/element/_socialauth.sass */
 div.social-auth ul > li {
   *zoom: 1;

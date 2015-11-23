@@ -1,0 +1,35 @@
+{% load i18n sekizai_tags announcements_tags %}
+
+{% announcements as announcements_list %}
+{% if announcements_list %}
+    <div id="site_announcements" class="announcements">
+        {% for announcement in announcements_list %}
+            <div class="announcement {{ announcement.level }}">
+            <p>
+                <strong>{{ announcement.title }}</strong><br />
+                {{ announcement.content|linebreaksbr }}
+            </p>
+            {% if announcement.dismiss_url %}
+                <p>
+                    <a href="{{ announcement.dismiss_url }}" class="announcement-dismiss" data-clear-closest=".announcement"><i class="icon-double-angle-right"></i> {% trans 'OK' %}</a>
+                </p>
+            {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+{% addtoblock "js-post" %}
+    <script>
+    $(function(){
+        $('#site_announcements').on('click', 'a.announcement-dismiss', function(e){
+            e.preventDefault();
+            var el = $(this);
+            $.post(el.attr('href'), {}, function(data){
+                el.parents('.announcement').fadeOut(200);
+            });
+        })
+    });
+    </script>
+{% endaddtoblock %}

@@ -60,6 +60,8 @@ urlpatterns = patterns('',
     url(r"^accounts/login_as/(?P<user_id>.+)/$", "loginas.views.user_login", name="loginas-user-login"),
     url(r'^sa/', include('social_auth.urls')),
 
+    url(r"^announcements/", include("announcements.urls")),
+
     # filer (protected)
     (r'^', include('filer.server.urls')),
     # only devel

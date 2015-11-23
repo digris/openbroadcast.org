@@ -73,6 +73,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'floppyforms',
     'absolute',
+    'announcements',
 
     # asset and media handling
     'sekizai',
