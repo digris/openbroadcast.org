@@ -44,9 +44,33 @@ class ImportAdmin(admin.ModelAdmin):
 
 class ImportFileAdmin(admin.ModelAdmin):    
     
-    list_display = ('created', 'filename', 'status',)
-    list_filter = ('status', 'import_session',)
-    readonly_fields = ('created', 'updated', 'mimetype', 'import_session', 'media', 'results_tag', 'results_musicbrainz', 'results_discogs',)
+    list_display = (
+        'created',
+        'filename',
+        'media',
+        'error',
+        'status',
+        'mimetype',
+    )
+
+    search_fields = (
+        'filename',
+        'media__name',
+    )
+
+    list_filter = (
+        'status',
+    )
+    readonly_fields = (
+        'created',
+        'updated',
+        'mimetype',
+        'import_session',
+        'media',
+        'results_tag',
+        'results_musicbrainz',
+        'results_discogs',
+    )
     date_hierarchy = 'created'
     actions = [status_set_ready, status_set_queued, requeue]
 
