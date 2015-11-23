@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import uuid
 import tagging
 import logging
@@ -27,6 +29,8 @@ from alibrary.util.relations import get_service_by_url
 from lib.fields import extra
 
 log = logging.getLogger(__name__)
+
+#__all__ = ["MigrationMixin", "Distributor", "reverse"]
 
 class MigrationMixin(models.Model):
     

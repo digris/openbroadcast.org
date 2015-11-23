@@ -9,9 +9,7 @@ pip uninstall south
 
 ./manage.py migrate --fake-initial
 
-delete all cms tables
-
-
+# delete all cms tables
 /* 11:31:54 localhost */ SET FOREIGN_KEY_CHECKS = 0;
 /* 11:31:54 localhost */ DROP TABLE `cms_title`;
 /* 11:31:54 localhost */ DROP TABLE `cms_placeholder`;
@@ -29,22 +27,14 @@ delete all cms tables
 
 
 
-delete cms migration entries
-
+# delete cms migration entries
 /* 11:32:39 localhost */ DELETE FROM `south_migrationhistory` WHERE `app_name` = 'cms';
 
-
-
-
 ./manage.py migrate cms
-
 
 ./manage.py migrate django_comments --fake-initial
 ./manage.py migrate easy_thumbnails 0002 --fake
 ./manage.py migrate --fake-initial
-
-
-./manage.py migrate
 
 
 

@@ -1,16 +1,16 @@
-# storage related helpers
-import os
-import string
-import unicodedata
-import urllib2
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import logging
 import ntpath
-
-from django.core.files import File
-from django.core.files.temp import NamedTemporaryFile
+import os
+import unicodedata
+import urllib2
 
 from django.conf import settings
+from django.core.files import File
 from django.core.files.storage import FileSystemStorage
+from django.core.files.temp import NamedTemporaryFile
 
 log = logging.getLogger(__name__)
 
@@ -18,10 +18,10 @@ log = logging.getLogger(__name__)
 class NoUUIDException(Exception):
     pass
 
-def get_dir_for_object(obj, prefix=None, app_dir=None, object_dir=None):
 
+def get_dir_for_object(obj, prefix=None, app_dir=None, object_dir=None):
     if not obj.uuid:
-        raise NoUUIDException("get_dir_for_object needs an object with uuid property! and this property needs a value!")
+        raise NoUUIDException("Object with uuid expected")
 
     if not object_dir:
         object_dir = obj.__class__.__name__.lower()
@@ -50,7 +50,6 @@ def safe_filename(str):
 
 
 def get_file_from_url(url):
-
     log.info('try to get file from url: %s' % url)
     file_obj = None
 
@@ -73,7 +72,6 @@ def get_file_from_url(url):
 
 
 def get_file_from_path(path, filename=None):
-
     log.info('try to get file from path: %s' % path)
     file_obj = None
 
@@ -90,7 +88,6 @@ def get_file_from_path(path, filename=None):
         else:
             filename = safe_filename(filename)
 
-
         file_obj = File(temp_file, filename)
 
 
@@ -101,9 +98,7 @@ def get_file_from_path(path, filename=None):
     return file_obj
 
 
-
 class OverwriteStorage(FileSystemStorage):
-
     def get_available_name(self, name):
         """
         Returns a filename that's free on the target storage system, and

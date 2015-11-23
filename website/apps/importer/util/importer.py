@@ -395,9 +395,7 @@ class Importer(object):
             m.master = dst
             m.original_filename = obj.filename
 
-            log.debug('pre-save')
             m.save()
-            log.debug('post-save')
             
         except Exception, e:
             log.warning('unable to create directory "%s": %s' % (os.path.join(MEDIA_ROOT, folder), e))

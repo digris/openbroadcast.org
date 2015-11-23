@@ -385,9 +385,6 @@ def stream_html5(request, uuid):
     
     media = get_object_or_404(Media, uuid=uuid)
 
-    print 'requested to stream: %s' % media.pk
-    print 'user: %s' % request.user
-
     stream_permission = False
 
     if request.user and request.user.has_perm('alibrary.play_media'):
@@ -398,10 +395,6 @@ def stream_html5(request, uuid):
     #    if media.license and media.license.restricted == False:
     #        stream_permission = True
 
-    # TODO: IMPLEMENT PERMISSION CHECK FOR PYPO!!!!!!!!!!!!!
-    print request.META['HTTP_HOST']
-    print request.META['HTTP_USER_AGENT']
-    #stream_permission = True
 
     if not stream_permission:
         log.warning('unauthorized attempt by "%s" to download: %s - "%s"' % (request.user.username if request.user else 'unknown', media.pk, media.name))

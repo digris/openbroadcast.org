@@ -34,4 +34,4 @@ def duration_ffmpeg(src):
             return duration
 
         except Exception, e:
-            log.warning(u'unable to process file at: %s - %S' % (src, e))
+            log.warning(u'unable to process file at: %s - %s' % (src, e))

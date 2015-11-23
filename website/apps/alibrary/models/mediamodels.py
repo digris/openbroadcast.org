@@ -34,8 +34,8 @@ from lib.fields.languages import LanguageField
 from lib.signals.unsignal import disable_for_loaddata
 from lib.util.sha1 import sha1_by_file
 from ep.API import fp
-from alibrary.models.basemodels import *
 from alibrary.models.artistmodels import *
+from alibrary.models.basemodels import MigrationMixin
 from alibrary.models.playlistmodels import PlaylistItem, Playlist
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
@@ -1081,7 +1081,7 @@ class Media(MigrationMixin):
                 audiotools.open(obj.master.path).convert(
                     version_path,
                     audiotools.MP3Audio, compression=0, progress=audiotools_progress)
-            except Exception, e:
+            except Exception as e:
                 log.warning('audiotools exception: %s' % e)
 
                 try:
@@ -1090,8 +1090,8 @@ class Media(MigrationMixin):
                         LAME_BINARY, obj.master.path, version_path
                     ], stdout=subprocess.PIPE)
                     stdout = p.communicate()
-                    print stdout
-                except Exception, e:
+
+                except Exception as e:
                     log.warning('lame did fail as well: %s' % e)
 
 
@@ -1659,40 +1659,6 @@ pre_delete.connect(media_pre_delete, sender=Media)
 # post_save.connect(action_handler, sender=Media)
 
 
-"""
-Actstream handling moved to task queue to avoid wrong revision due to transaction
-"""
-
-"""
-from actstream import action
-@disable_for_loaddata
-def action_handler(sender, instance, created, **kwargs):
-
-    print
-    print 'Media - action_handler'
-    print 'sender:   %s' % sender
-    print 'instance: %s' % instance.__class__
-    print instance
-
-    if sender == instance.__class__:
-        print 'self originating save'
-        action_handler_task.delay(sender, instance, created)
-    else:
-        print 'foreign save > skip'
-
-post_save.connect(action_handler, sender=Media)
-
-@task
-def action_handler_task(sender, instance, created):
-    try:
-        verb = _('updated')
-        if created:
-            verb = _('created')
-        action.send(instance.get_last_editor(), verb=verb, target=instance)
-    except Exception, e:
-        print e
-
-"""
 
 
 
@@ -1756,20 +1722,6 @@ class MediaArtists(models.Model):
             return u'%s on %s' % (self.artist, self.media)
 
 
-
-"""
-CMS-Plugins
-"""
-# class MediaPlugin(CMSPlugin):
-#     media = models.ForeignKey(Media)
-#     headline = models.BooleanField(verbose_name=_('Show headline (Track/Artist)'), default=False)
-#
-#     def __unicode__(self):
-#         return self.media.name
-#
-#     # meta
-#     class Meta:
-#         app_label = 'alibrary'
 
 def get_raw_image(filename, type):
     try:

@@ -19,7 +19,9 @@ log = logging.getLogger(__name__)
 
 BASE_DIR = getattr(settings, 'BASE_DIR', None)
 USE_CELERYD = getattr(settings, 'MEDIA_ASSET_USE_CELERYD', False)
-ASSET_DIR = os.path.join(BASE_DIR, 'media', 'media_asset')
+
+MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
+ASSET_DIR = os.path.join(MEDIA_ROOT, 'media_asset')
 
 class WaveformManager(models.Manager):
 
