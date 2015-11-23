@@ -1557,7 +1557,7 @@ def media_post_save(sender, **kwargs):
 
                     file_fix_path = obj.master.path + '_re-encoded.mp3'
                     shutil.copy2(obj.master.path, file_fix_path)
-    
+
                     lame_options = '-b 320'
                     log.debug('running: "%s %s %s %s"' % (LAME_BINARY, lame_options, file_fix_path, obj.master.path))
 
