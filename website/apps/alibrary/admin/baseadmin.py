@@ -282,12 +282,24 @@ class MediaAdmin(BaseAdmin):
     
     inlines = [MediaReleaseInline, RelationsInline, MediaExtraartistsInline]
 
-    readonly_fields = ['slug', 'folder', 'uuid', 'base_format', 'base_filesize', 'base_duration','base_samplerate', 'base_bitrate', 'release_link', 'master_sha1', 'd_tags']
+    readonly_fields = [
+        'slug',
+        'folder',
+        'uuid',
+        'base_format',
+        'base_filesize',
+        'base_duration',
+        'base_samplerate',
+        'base_bitrate',
+        'release_link',
+        'master_sha1',
+        'd_tags'
+    ]
 
 
     date_hierarchy = 'created'
     
-    """"""
+
     fieldsets = [
         (None,  {'fields': 
                  ['name', 'slug', 'isrc', 'filename', 'uuid', ('tracknumber', 'medianumber', 'opus_number'), 'mediatype', 'version', ('release', 'release_link'), 'artist', 'license', 'd_tags', 'echonest_id',]
@@ -296,8 +308,18 @@ class MediaAdmin(BaseAdmin):
         ('Users', {'fields' : ['owner', 'creator', 'publisher']}),
         ('Text', {'fields' : ['description', 'lyrics',]}),
                  
-        ('Storage related',  {
-                'fields': ['master', 'master_sha1', 'folder', ('base_format', 'base_filesize', 'base_duration',), ('base_samplerate', 'base_bitrate')]
+        # ('Storage related',  {
+        #         'fields': ['master', 'master_sha1', 'folder', ('base_format', 'base_filesize', 'base_duration',), ('base_samplerate', 'base_bitrate')]
+        #          }),
+
+        ('Master Audio File',  {
+                'fields': [
+                    'master',
+                    'master_sha1',
+                    'folder',
+                    ('master_encoding', 'master_bitrate', 'master_samplerate',),
+                    ('master_duration', 'master_filesize')
+                ]
                  }),
 
         #('Mixed content', {'fields': ['description'], 'classes': ['']}),

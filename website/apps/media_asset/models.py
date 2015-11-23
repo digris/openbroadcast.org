@@ -1,20 +1,24 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 import logging
 import os
 import shutil
-import uuid
-import audiotools
+import subprocess
 import tempfile
-from django.db import models
-from django.conf import settings
-from django.utils.translation import ugettext as _
-from django.dispatch import receiver
-from django.db.models.signals import post_save
+import uuid
+
 from celery import current_app
 from celery.contrib.methods import task_method
+from django.conf import settings
+from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.utils.translation import ugettext as _
+
 from util.conversion import any_to_wav
 from util.grapher import create_waveform_image, create_spectrogram_image
+
 log = logging.getLogger(__name__)
 
 BASE_DIR = getattr(settings, 'BASE_DIR', None)
@@ -22,12 +26,15 @@ USE_CELERYD = getattr(settings, 'MEDIA_ASSET_USE_CELERYD', False)
 
 MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
 ASSET_DIR = os.path.join(MEDIA_ROOT, 'media_asset')
+LAME_BINARY = getattr(settings, 'LAME_BINARY')
+SOX_BINARY = getattr(settings, 'SOX_BINARY')
+FAAD_BINARY = getattr(settings, 'FAAD_BINARY')
 
 class WaveformManager(models.Manager):
 
     def get_or_create_for_media(self, media, type, **kwargs):
         waveform, created = self.model.objects.get_or_create(media=media, type=type, **kwargs)
-        log.debug('get_or_create_for_media: %s %s (created: %s)' % (media, type, created))
+        log.debug('waveform - get or create for media: %s %s (created: %s)' % (media, type, created))
         return waveform
 
 class Waveform(models.Model):
@@ -77,6 +84,7 @@ class Waveform(models.Model):
 
         # e.v. refactor later, so obj instead of self...
         obj = self
+        file_created = False
 
         log.debug('processing waveform for media with pk: %s' % obj.media.pk)
         tmp_directory = tempfile.mkdtemp()
@@ -97,6 +105,9 @@ class Waveform(models.Model):
 
         shutil.rmtree(tmp_directory)
 
+        return os.path.isfile(obj.path)
+
+
 @receiver(post_save, sender=Waveform)
 def waveform_post_save(sender, instance, created, **kwargs):
     obj = instance
@@ -104,10 +115,16 @@ def waveform_post_save(sender, instance, created, **kwargs):
     if created or 1 == 1:
         if USE_CELERYD:
             log.debug('sending job to task queue')
-            obj.process_waveform.apply_async()
+            file_created = obj.process_waveform.apply_async()
         else:
             log.debug('processing task in foreground')
-            obj.process_waveform()
+            file_created =  obj.process_waveform()
+
+        if file_created:
+            Waveform.objects.filter(pk=obj.pk).update(status=Waveform.DONE)
+        else:
+            Waveform.objects.filter(pk=obj.pk).update(status=Waveform.ERROR)
+
 
 
 
@@ -117,7 +134,7 @@ class FormatManager(models.Manager):
     def get_or_create_for_media(self, media, encoding, quality, **kwargs):
 
         version, created = self.model.objects.get_or_create(media=media, encoding=encoding, quality=quality, **kwargs)
-        log.debug('get_or_create_for_media: %s %s %s (created: %s)' % (media, encoding, quality, created))
+        log.debug('version - get or create for media: %s %s %s (created: %s)' % (media, encoding, quality, created))
 
         return version
 
@@ -171,7 +188,8 @@ class Format(models.Model):
 
     @property
     def directory(self):
-        return os.path.join(ASSET_DIR, 'format', self.quality, self.encoding, self.media.uuid.replace('-', '/'))
+        #return os.path.join(ASSET_DIR, 'format', self.encoding, self.media.uuid.replace('-', '/'))
+        return os.path.join(ASSET_DIR, 'format', self.media.uuid.replace('-', '/'))
 
     @property
     def path(self):
@@ -182,25 +200,74 @@ class Format(models.Model):
 
         # e.v. refactor later, so obj instead of self...
         obj = self
+        processed = False
 
         log.debug('processing format for media with pk: %s' % obj.media.pk)
-        tmp_directory = tempfile.mkdtemp()
-        tmp_path = os.path.join(tmp_directory, 'tmp.wav')
-        wav_path = any_to_wav(src=obj.media.master.path, dst=tmp_path)
+
+        tmp_directory = None
 
         if not os.path.isdir(obj.directory):
             os.makedirs(obj.directory)
 
-        shutil.rmtree(tmp_directory)
+        if obj.encoding == obj.media.master_encoding:
+            processed = True
+            log.info('identical encodeing for source and target. file will be copied untouched')
+            shutil.copy(obj.media.master.path, obj.path)
 
-#@receiver(post_save, sender=Format)
-# def format_post_save(sender, instance, created, **kwargs):
-#     obj = instance
-#     log.info('format_post_save - created: %s' % created)
-#     if created or 1 == 1:
-#         if USE_CELERYD:
-#             log.debug('sending job to task queue')
-#             obj.process_format.apply_async()
-#         else:
-#             log.debug('processing task in foreground')
-#             obj.process_format()
+        if not processed:
+
+            tmp_directory = tempfile.mkdtemp()
+            tmp_path = os.path.join(tmp_directory, 'tmp.wav')
+            wav_path = any_to_wav(src=obj.media.master.path, dst=tmp_path)
+
+        if obj.encoding == 'mp3':
+
+            log.info('%s encoded version requested.' % obj.encoding)
+
+            lame_opt = '-b 128'
+
+            if obj.quality == 'default':
+                lame_opt = '-b 128'
+
+            if obj.quality == 'preview':
+                lame_opt = '-b 36'
+
+            if obj.quality == 'lo':
+                lame_opt = '-b 64'
+
+            if obj.quality == 'hi':
+                lame_opt = '-b 320'
+
+            command = [
+                LAME_BINARY,
+                wav_path,
+                lame_opt,
+                obj.path
+            ]
+
+            log.debug('running: %s' % ' '.join(command))
+
+            p = subprocess.Popen(command, stdout=subprocess.PIPE)
+            stdout = p.communicate()
+
+        if os.path.isdir(tmp_directory):
+            shutil.rmtree(tmp_directory)
+
+        return os.path.isfile(obj.path)
+
+@receiver(post_save, sender=Format)
+def format_post_save(sender, instance, created, **kwargs):
+    obj = instance
+    log.info('format_post_save - created: %s' % created)
+    if created or 1 == 1:
+        if USE_CELERYD:
+            log.debug('sending job to task queue')
+            file_created = obj.process_format.apply_async()
+        else:
+            log.debug('processing task in foreground')
+            file_created = obj.process_format()
+
+        if file_created:
+            Format.objects.filter(pk=obj.pk).update(status=Format.DONE)
+        else:
+            Format.objects.filter(pk=obj.pk).update(status=Format.ERROR)

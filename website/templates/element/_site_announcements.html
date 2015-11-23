@@ -9,6 +9,9 @@
                 <strong>{{ announcement.title }}</strong><br />
                 {{ announcement.content|linebreaksbr }}
             </p>
+            <p style="opacity: 0.5;">
+                posted {{ announcement.publish_start|date:"DATETIME_FORMAT" }} by <a href="{{ announcement.creator.get_absolute_url }}">{{ announcement.creator }}</a>
+            </p>
             {% if announcement.dismiss_url %}
                 <p>
                     <a href="{{ announcement.dismiss_url }}" class="announcement-dismiss" data-clear-closest=".announcement"><i class="icon-double-angle-right"></i> {% trans 'OK' %}</a>

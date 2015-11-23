@@ -68,12 +68,18 @@ class MediaResource(ModelResource):
 
         if obj.master:
             stream = {
-                'rtmp_app': '%s' % settings.RTMP_APP,
-                'rtmp_host': 'rtmp://%s:%s/' % (settings.RTMP_HOST, settings.RTMP_PORT),
-                'file': obj.master,
-                'uuid': obj.uuid,
+                #'rtmp_app': '%s' % settings.RTMP_APP,
+                #'rtmp_host': 'rtmp://%s:%s/' % (settings.RTMP_HOST, settings.RTMP_PORT),
+                #'file': obj.master,
                 #'uri': obj.master.url,
+                'uuid': obj.uuid,
                 'uri': obj.get_stream_url(),
+                # refactored to use media_asset pipeline
+                'uri': reverse_lazy('mediaasset-format', kwargs={
+                    'media_uuid': bundle.obj.uuid,
+                    'quality': 'default',
+                    'encoding': 'mp3',
+                }),
             }
         else:
             stream = None
@@ -365,11 +371,10 @@ class SimpleMediaResource(ModelResource):
 
         if obj.master:
             stream = {
-                'rtmp_app': '%s' % settings.RTMP_APP,
-                'rtmp_host': 'rtmp://%s:%s/' % (settings.RTMP_HOST, settings.RTMP_PORT),
-                'file': obj.master,
+                #'rtmp_app': '%s' % settings.RTMP_APP,
+                #'rtmp_host': 'rtmp://%s:%s/' % (settings.RTMP_HOST, settings.RTMP_PORT),
+                #'file': obj.master,
                 'uuid': obj.uuid,
-                #'uri': obj.master.url,
                 'uri': obj.get_stream_url(),
             }
         else:

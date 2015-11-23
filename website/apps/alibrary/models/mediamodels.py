@@ -244,8 +244,7 @@ class Media(MigrationMixin):
     #master = models.FileField(max_length=1024, upload_to=masterpath_by_uuid, blank=True, null=True)
     filename = models.CharField(verbose_name=_('Filename'), max_length=256, blank=True, null=True)
     original_filename = models.CharField(verbose_name=_('Original filename'), max_length=256, blank=True, null=True)
-    master = models.FileField(max_length=1024, upload_to=upload_master_to, blank=True, null=True)
-    master_sha1 = models.CharField(max_length=64, db_index=True, blank=True, null=True)
+
     
     
     folder = models.CharField(max_length=1024, null=True, blank=True, editable=False)
@@ -255,10 +254,19 @@ class Media(MigrationMixin):
     base_filesize = models.PositiveIntegerField(verbose_name=_('Filesize'), blank=True, null=True)
     base_duration = models.FloatField(verbose_name=_('Duration'), blank=True, null=True)
     base_samplerate = models.PositiveIntegerField(verbose_name=_('Samplerate'), blank=True, null=True)
-    """
-    base_bitrate is an unlucky choice here. it holds the 'bits per sample' and does not help too much.
-    """
     base_bitrate = models.PositiveIntegerField(verbose_name=_('Bitrate'), blank=True, null=True)
+
+    # master audio-file data
+    # TODO: all version- & conversion based data will be refactored.
+    # the media model should just hold information about the associated master file
+    master = models.FileField(max_length=1024, upload_to=upload_master_to, blank=True, null=True)
+    master_sha1 = models.CharField(max_length=64, db_index=True, blank=True, null=True)
+    master_encoding = models.CharField(max_length=16, blank=True, null=True)
+    master_bitrate = models.PositiveIntegerField(verbose_name=_('Bitrate'), blank=True, null=True)
+    master_filesize = models.PositiveIntegerField(verbose_name=_('Filesize'), blank=True, null=True)
+    master_samplerate = models.PositiveIntegerField(verbose_name=_('Samplerate'), blank=True, null=True)
+    master_duration = models.FloatField(verbose_name=_('Duration'), blank=True, null=True)
+
 
     # echonest data
     echonest_id = models.CharField(max_length=20, blank=True, null=True)
@@ -571,20 +579,6 @@ class Media(MigrationMixin):
         return self.get_stream_file('mp3', 'base')
 
 
-
-    # TODO: depreciated version - remove
-    """
-    def get_cache_file(self, format, version):
-        
-        filename = str(version) + '.' + str(format)
-        
-        full_path = "%s%s" % (self.get_folder_path('cache'), filename)
-        
-        if not os.path.isfile(full_path):
-            return None
-        
-        return full_path
-    """
 
     def get_cache_file(self, format, version='base', absolute=True):
 
@@ -1539,6 +1533,21 @@ def media_post_save(sender, **kwargs):
 
     if obj.master and obj.processed != 1 and obj.processed != 99:
         log.info('Media id: %s - reprocess master at: %s' % (obj.pk, obj.master.path))
+
+
+        # refactored version: store file data related to master only
+        try:
+
+            basename, ext = os.path.splitext(obj.master.path)
+            obj.master_encoding = ext[1:].lower()
+            obj.master_filesize = os.path.getsize(obj.master.path)
+            # obj.master_bitrate
+            # obj.master_samplerate
+            # obj.master_duration
+
+        except Exception as e:
+            log.warning('unable to extract file data for master at %s: %s' % (obj.master.path, e))
+
 
         try:
             obj.base_format = os.path.splitext(obj.master.path)[1][1:].lower()

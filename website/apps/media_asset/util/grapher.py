@@ -461,11 +461,8 @@ def create_waveform_image(src, dst):
         spectral_centroid = 1
 
         waveform.draw_peaks(x, peaks, spectral_centroid)
-        #spectrogram.draw_spectrum(x, db_spectrum)
-
 
     waveform.save(dst)
-    #spectrogram.save(output_filename_w)
 
 def create_spectrogram_image(src, dst):
 
@@ -497,10 +494,6 @@ def create_spectrogram_image(src, dst):
         # hackish... set to 1 to make monochrome
         spectral_centroid = 1
 
-        #waveform.draw_peaks(x, peaks, spectral_centroid)
         spectrogram.draw_spectrum(x, db_spectrum)
 
-
-    #waveform.save(dst)
     spectrogram.save(dst)
-
