@@ -1439,6 +1439,7 @@ class Media(MigrationMixin):
 
         # check if master changed. if yes we need to reprocess the cached files
         if self.uuid is not None:
+
             try:
                 orig = Media.objects.filter(uuid=self.uuid)[0]
                 if orig.master != self.master:
@@ -1446,7 +1447,11 @@ class Media(MigrationMixin):
 
                     # set 'original filename'
                     if not self.original_filename and self.master.name:
-                        self.original_filename = self.master.name[0:250]
+                        try:
+                            self.original_filename = self.master.name[0:250]
+                        except Exception as e:
+                            pass
+
 
                     # reset processing flags
                     self.processed = 0

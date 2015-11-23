@@ -194,13 +194,13 @@ class Format(models.Model):
         shutil.rmtree(tmp_directory)
 
 #@receiver(post_save, sender=Format)
-def format_post_save(sender, instance, created, **kwargs):
-    obj = instance
-    log.info('format_post_save - created: %s' % created)
-    if created or 1 == 1:
-        if USE_CELERYD:
-            log.debug('sending job to task queue')
-            obj.process_format.apply_async()
-        else:
-            log.debug('processing task in foreground')
-            obj.process_format()
+# def format_post_save(sender, instance, created, **kwargs):
+#     obj = instance
+#     log.info('format_post_save - created: %s' % created)
+#     if created or 1 == 1:
+#         if USE_CELERYD:
+#             log.debug('sending job to task queue')
+#             obj.process_format.apply_async()
+#         else:
+#             log.debug('processing task in foreground')
+#             obj.process_format()
