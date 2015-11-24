@@ -335,13 +335,15 @@ class Media(MigrationMixin):
     @property
     def bitrate(self):
 
-        if self.base_format and self.base_format.lower() in LOSSLESS_FORMATS:
-            return
-        try:
-            exact_bitrate = int(self.base_filesize * 8 / (self.base_duration * 1000))
-            return min(VALID_BITRATES, key=lambda x:abs(x-exact_bitrate))
-        except:
-            pass
+        return self.master_bitrate
+
+        # if self.base_format and self.base_format.lower() in LOSSLESS_FORMATS:
+        #     return
+        # try:
+        #     exact_bitrate = int(self.base_filesize * 8 / (self.base_duration * 1000))
+        #     return min(VALID_BITRATES, key=lambda x:abs(x-exact_bitrate))
+        # except:
+        #     pass
 
     
     @property
@@ -643,8 +645,21 @@ class Media(MigrationMixin):
         return waveform_image
         
 
-        
     def get_duration(self, units='ms'):
+
+        if not self.master_duration:
+            return
+
+        if units == 'ms':
+            return int(self.master_duration * 1000)
+
+        if units == 's':
+            return int(self.master_duration)
+
+
+    # old version. TODO: remove
+    def __get_duration(self, units='ms'):
+
         duration = None
         if self.base_duration:
             if self.base_duration > 5:

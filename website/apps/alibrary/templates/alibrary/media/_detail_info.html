@@ -91,8 +91,8 @@
 			{% trans "Duration" %}:
 		</dt>
 		<dd>
-            {% if object.duration_s %}
-			{{ object.duration_s|sec_to_time }}
+            {% if object.master_duration %}
+			{{ object.master_duration|sec_to_time }}
             {% endif %}
 			&nbsp;
 		</dd>

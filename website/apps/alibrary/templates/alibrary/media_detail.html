@@ -267,10 +267,6 @@
 
         <section class="file-properties">
 
-            <!--
-            <h2><a href="#">{% trans "Audio Properties" %} <i class="icon icon-caret-up"></i></a></h2>
-            -->
-
             <h2>{% trans "Audio Properties" %}</h2>
 
 
@@ -281,16 +277,13 @@
                 <dl class="dl-horizontal" style="margin-top: 0;">
 
                     <dt>{% trans "Format" %}</dt>
-                    <dd>{{ object.base_format|upper }}</dd>
+                    <dd>{{ object.master_encoding|upper }}</dd>
 
                     <dt>{% trans "Filesize" %}</dt>
-                    <dd>{{ object.base_filesize|filesizeformat }}</dd>
+                    <dd>{{ object.master_filesize|filesizeformat }}</dd>
 
                     <dt>{% trans "Samplerate" %}</dt>
-                    <dd>{{ object.base_samplerate }} Hz</dd>
-
-                    <dt>{% trans "Bitrate" %}</dt>
-                    <dd>{{ object.bitrate }} Kbps</dd>
+                    <dd>{{ object.master_samplerate }} Hz</dd>
 
                     {% if object.original_filename %}
                     <dt>{% trans "Original Filename" %}</dt>
@@ -304,17 +297,15 @@
 
                 <dl class="dl-horizontal" style="margin-top: 0;">
 
-                    <dt>{% trans "File Status" %}</dt>
-                    <dd>{{ object.get_status_display }}</dd>
+                    <dt>{% trans "Bitrate" %}</dt>
+                    <dd>{{ object.master_bitrate }} Kbps</dd>
 
-                    <dt>{% trans "Conversion Status" %}</dt>
-                    <dd>{{ object.get_conversion_status_display }}</dd>
 
                     <dt>{% trans "Fingerprint" %}</dt>
                     <dd>{{ object.get_echoprint_status_display }}</dd>
 
                     <dt>{% trans "Hash" %} (SHA1)</dt>
-                    <dd style="font-size: 90%;">{{ object.master_sha1|upper }}</dd>
+                    <dd style="font-size: 84%;">{{ object.master_sha1|upper }}</dd>
 
 
                 </dl>
