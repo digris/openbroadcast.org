@@ -201,7 +201,7 @@ class Format(TimestampedModel, UUIDModel):
 
 
     LAME_OPTIONS = {
-        DEFAULT: '-b 128',
+        DEFAULT: '-b 256',
         LOFI: '-b 96',
         HIFI: '-b 320',
         PREVIEW: '-b 24',
