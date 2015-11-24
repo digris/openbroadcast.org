@@ -1429,6 +1429,22 @@ class Media(MigrationMixin):
 
 
 
+    def process_master_info(self, save=False):
+
+        # read key information from master file
+        file_processor = FileInfoProcessor(self.master.path)
+        if file_processor.audio_stream:
+            self.master_encoding = file_processor.encoding
+            self.master_filesize = file_processor.filesize
+            self.master_bitrate = file_processor.bitrate
+            self.master_samplerate = file_processor.samplerate
+            self.master_duration = file_processor.duration
+
+        if save:
+            self.save()
+
+
+
         
     def save(self, *args, **kwargs):
 
@@ -1448,6 +1464,20 @@ class Media(MigrationMixin):
                 log.warning('unable to apply default license: %s' % e)
 
 
+        self.master_changed = False
+        if self.uuid is not None:
+            try:
+                orig = Media.objects.filter(uuid=self.uuid)[0]
+                if orig.master != self.master:
+                    self.master_changed = True
+            except:
+                pass
+
+        if self.master_changed:
+            self.process_master_info()
+
+
+
         # check if master changed. if yes we need to reprocess the cached files
         if self.uuid is not None:
 
@@ -1455,19 +1485,6 @@ class Media(MigrationMixin):
                 orig = Media.objects.filter(uuid=self.uuid)[0]
                 if orig.master != self.master:
                     log.info('Media id: %s - Master changed from "%s" to "%s"' % (self.pk, orig.master, self.master))
-
-
-                    # read key information from master file
-                    file_processor = FileInfoProcessor(self.master.path)
-                    if file_processor.audio_stream:
-                        self.master_encoding = file_processor.encoding
-                        self.master_filesize = file_processor.filesize
-                        self.master_bitrate = file_processor.bitrate
-                        self.master_samplerate = file_processor.samplerate
-                        self.master_duration = file_processor.duration
-
-
-
 
                     # set 'original filename'
                     if not self.original_filename and self.master.name:

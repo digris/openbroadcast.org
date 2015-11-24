@@ -42,7 +42,7 @@ class MediaFix(object):
             print
 
 
-    def copy_master_meta(self):
+    def reprocess_master_meta(self):
 
         from alibrary.models import Media
 
@@ -52,16 +52,21 @@ class MediaFix(object):
         print '-----------------------------------------------'
         print
 
-        qs = Media.objects.filter(master_duration__isnull=True, base_duration__gt=0).nocache()
+        qs = Media.objects.filter(master_duration__isnull=True).nocache()
 
         print 'files in qs:   %s' % qs.count()
 
-        i = 0
+
         for m in qs[0:500000]:
-            if i % 100:
-                print i * 100
-            i += 1
-            Media.objects.filter(pk=m.pk).update(master_duration=m.base_duration)
+            try:
+                if not m.master:
+                    print 'no master assigned for: %s' % m
+                else:
+                    m.process_master_info()
+                    m.save()
+            except IOError as e:
+                print e
+
 
 
 
@@ -90,3 +95,8 @@ class Command(BaseCommand):
 
             runner = MediaFix()
             runner.copy_master_meta()
+
+        if action == 'reprocess_master_meta':
+
+            runner = MediaFix()
+            runner.reprocess_master_meta()
