@@ -1,20 +1,24 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import hashlib
 import logging
 import os
 import shutil
 import subprocess
 import tempfile
-import uuid
 
 from celery import current_app
 from celery.contrib.methods import task_method
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
+from django.core.cache import cache
 from django.utils.translation import ugettext as _
+from django.template import defaultfilters
+
+from base.models import TimestampedModel, UUIDModel
 
 from util.conversion import any_to_wav
 from util.grapher import create_waveform_image, create_spectrogram_image
@@ -30,6 +34,8 @@ LAME_BINARY = getattr(settings, 'LAME_BINARY')
 SOX_BINARY = getattr(settings, 'SOX_BINARY')
 FAAD_BINARY = getattr(settings, 'FAAD_BINARY')
 
+FORMAT_LOCK_EXPIRE = 60 * 1
+
 class WaveformManager(models.Manager):
 
     def get_or_create_for_media(self, media, type, **kwargs):
@@ -37,7 +43,7 @@ class WaveformManager(models.Manager):
         log.debug('waveform - get or create for media: %s %s (created: %s)' % (media, type, created))
         return waveform
 
-class Waveform(models.Model):
+class Waveform(TimestampedModel, UUIDModel):
 
     INIT = 0
     DONE = 1
@@ -57,23 +63,26 @@ class Waveform(models.Model):
         (SPECTROGRAM, _(u'Spectrogram')),
     )
 
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)
     status = models.PositiveIntegerField(default=INIT, choices=STATUS_CHOICES)
     type = models.CharField(max_length=64, default=WAVEFORM, choices=TYPE_CHOICES)
+    accessed = models.DateTimeField(auto_now_add=True)
     media = models.ForeignKey('alibrary.Media', null=True, related_name='versions', on_delete=models.CASCADE)
+    media_uuid = models.UUIDField(blank=True, null=True)
 
     objects = WaveformManager()
 
     class Meta:
         app_label = 'media_asset'
         verbose_name = _('Waveform')
+        unique_together = ('media', 'type')
 
     def __unicode__(self):
-        return '%s - %s' % (self.uuid, self.type)
+        return '%s' % (self.get_type_display())
 
     @property
     def directory(self):
-        return os.path.join(ASSET_DIR, 'waveform', self.media.uuid.replace('-', '/'))
+        uuid = '%s' % self.media_uuid
+        return os.path.join(ASSET_DIR, 'waveform', uuid.replace('-', '/'))
 
     @property
     def path(self):
@@ -105,27 +114,45 @@ class Waveform(models.Model):
 
         shutil.rmtree(tmp_directory)
 
-        return os.path.isfile(obj.path)
+        if os.path.isfile(obj.path):
+            obj.status = Waveform.DONE
+        else:
+            obj.status = Waveform.ERROR
+
+        obj.save()
+
+    def save(self, *args, **kwargs):
+
+        self.do_process = False
+        if self.pk is None or self.status == Waveform.INIT:
+            self.do_process = True
+
+        if not self.media_uuid:
+            self.media_uuid = self.media.uuid
+
+        super(Waveform, self).save(*args, **kwargs)
 
 
 @receiver(post_save, sender=Waveform)
 def waveform_post_save(sender, instance, created, **kwargs):
     obj = instance
-    log.info('waveform_post_save - created: %s' % created)
-    if created or 1 == 1:
+    do_process = getattr(obj, 'do_process', False)
+    log.debug('waveform_post_save - processing required: %s' % do_process)
+    if do_process:
         if USE_CELERYD:
             log.debug('sending job to task queue')
-            file_created = obj.process_waveform.apply_async()
+            obj.process_waveform.apply_async()
         else:
             log.debug('processing task in foreground')
-            file_created =  obj.process_waveform()
-
-        if file_created:
-            Waveform.objects.filter(pk=obj.pk).update(status=Waveform.DONE)
-        else:
-            Waveform.objects.filter(pk=obj.pk).update(status=Waveform.ERROR)
+            obj.process_waveform()
 
 
+
+@receiver(pre_delete, sender=Waveform)
+def waveform_pre_delete(sender, instance, **kwargs):
+    obj = instance
+    if os.path.isfile(obj.path):
+        os.remove(obj.path)
 
 
 
@@ -133,13 +160,13 @@ class FormatManager(models.Manager):
 
     def get_or_create_for_media(self, media, encoding, quality, **kwargs):
 
-        version, created = self.model.objects.get_or_create(media=media, encoding=encoding, quality=quality, **kwargs)
+        format, created = self.model.objects.get_or_create(media=media, encoding=encoding, quality=quality, **kwargs)
         log.debug('version - get or create for media: %s %s %s (created: %s)' % (media, encoding, quality, created))
 
-        return version
+        return format
 
 
-class Format(models.Model):
+class Format(TimestampedModel, UUIDModel):
 
     INIT = 0
     DONE = 1
@@ -170,46 +197,66 @@ class Format(models.Model):
         (PREVIEW, _(u'Preview')),
     )
 
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)
+
+
+    LAME_OPTIONS = {
+        DEFAULT: '-b 128',
+        LOFI: '-b 96',
+        HIFI: '-b 320',
+        PREVIEW: '-b 24',
+    }
+
     status = models.PositiveIntegerField(default=INIT, choices=STATUS_CHOICES)
     encoding = models.CharField(max_length=4, default=MP3, choices=ENCODING_CHOICES, db_index=True)
     quality = models.CharField(max_length=16, default=DEFAULT, choices=QUALITY_CHOICES, db_index=True)
-
+    filesize = models.PositiveIntegerField(verbose_name=_('Filesize'), blank=True, null=True)
+    accessed = models.DateTimeField(auto_now_add=True)
     media = models.ForeignKey('alibrary.Media', null=True, related_name='formats', on_delete=models.CASCADE)
+    media_uuid = models.UUIDField(blank=True, null=True)
 
     objects = FormatManager()
 
     class Meta:
         app_label = 'media_asset'
         verbose_name = _('Format')
+        unique_together = ('media', 'encoding', 'quality')
 
     def __unicode__(self):
-        return '%s - %s - %s' % (self.uuid, self.encoding, self.quality)
+        return '%s - %s' % (self.get_encoding_display(), self.get_quality_display())
 
     @property
     def directory(self):
-        #return os.path.join(ASSET_DIR, 'format', self.encoding, self.media.uuid.replace('-', '/'))
-        return os.path.join(ASSET_DIR, 'format', self.media.uuid.replace('-', '/'))
+        #return os.path.join(ASSET_DIR, 'format', self.encoding, self.media_uuid.replace('-', '/'))
+        uuid = '%s' % self.media_uuid
+        return os.path.join(ASSET_DIR, 'format', uuid.replace('-', '/'))
 
     @property
     def path(self):
         return os.path.join(self.directory, self.quality + '.' + self.encoding)
 
-    @current_app.task(filter=task_method, name='Format.process_format')
-    def process_format(self):
+    @property
+    def filesize_display(self):
+        if self.filesize:
+            return defaultfilters.filesizeformat(self.filesize)
+
+
+    @current_app.task(bind=True, filter=task_method, name='Format.process_format')
+    def process_format(self, instance):
 
         # e.v. refactor later, so obj instead of self...
-        obj = self
+        obj = instance
         processed = False
 
         log.debug('processing format for media with pk: %s' % obj.media.pk)
+
+        Format.objects.filter(pk=obj.pk).update(status=Format.PROCESSING)
 
         tmp_directory = None
 
         if not os.path.isdir(obj.directory):
             os.makedirs(obj.directory)
 
-        if obj.encoding == obj.media.master_encoding:
+        if obj.quality == Format.DEFAULT and obj.encoding == obj.media.master_encoding:
             processed = True
             log.info('identical encodeing for source and target. file will be copied untouched')
             shutil.copy(obj.media.master.path, obj.path)
@@ -220,54 +267,63 @@ class Format(models.Model):
             tmp_path = os.path.join(tmp_directory, 'tmp.wav')
             wav_path = any_to_wav(src=obj.media.master.path, dst=tmp_path)
 
-        if obj.encoding == 'mp3':
+            if obj.encoding == 'mp3':
 
-            log.info('%s encoded version requested.' % obj.encoding)
+                log.info('%s encoded version requested.' % obj.encoding)
 
-            lame_opt = '-b 128'
+                command = [
+                    LAME_BINARY,
+                    wav_path,
+                    Format.LAME_OPTIONS[obj.quality],
+                    obj.path
+                ]
 
-            if obj.quality == 'default':
-                lame_opt = '-b 128'
+                log.debug('running: %s' % ' '.join(command))
 
-            if obj.quality == 'preview':
-                lame_opt = '-b 36'
+                p = subprocess.Popen(command, stdout=subprocess.PIPE)
+                stdout = p.communicate()
 
-            if obj.quality == 'lo':
-                lame_opt = '-b 64'
-
-            if obj.quality == 'hi':
-                lame_opt = '-b 320'
-
-            command = [
-                LAME_BINARY,
-                wav_path,
-                lame_opt,
-                obj.path
-            ]
-
-            log.debug('running: %s' % ' '.join(command))
-
-            p = subprocess.Popen(command, stdout=subprocess.PIPE)
-            stdout = p.communicate()
-
-        if os.path.isdir(tmp_directory):
+        if tmp_directory and os.path.isdir(tmp_directory):
             shutil.rmtree(tmp_directory)
 
-        return os.path.isfile(obj.path)
+        if os.path.isfile(obj.path):
+            obj.status = Format.DONE
+            obj.filesize = os.path.getsize(obj.path)
+        else:
+            obj.status = Format.ERROR
+            obj.filesize = None
+
+        obj.save()
+
+    def save(self, *args, **kwargs):
+
+        self.do_process = False
+        if self.pk is None or self.status == Format.INIT:
+            self.do_process = True
+
+        if not self.media_uuid:
+            self.media_uuid = self.media.uuid
+
+        super(Format, self).save(*args, **kwargs)
 
 @receiver(post_save, sender=Format)
 def format_post_save(sender, instance, created, **kwargs):
     obj = instance
-    log.info('format_post_save - created: %s' % created)
-    if created or 1 == 1:
+    do_process = getattr(obj, 'do_process', False)
+    log.debug('format_post_save - processing required: %s' % do_process)
+
+    if do_process:
         if USE_CELERYD:
             log.debug('sending job to task queue')
-            file_created = obj.process_format.apply_async()
+            obj.process_format.apply_async()
         else:
             log.debug('processing task in foreground')
-            file_created = obj.process_format()
+            obj.process_format()
 
-        if file_created:
-            Format.objects.filter(pk=obj.pk).update(status=Format.DONE)
-        else:
-            Format.objects.filter(pk=obj.pk).update(status=Format.ERROR)
+
+
+@receiver(pre_delete, sender=Format)
+def format_pre_delete(sender, instance, **kwargs):
+    obj = instance
+    if os.path.isfile(obj.path):
+        os.remove(obj.path)

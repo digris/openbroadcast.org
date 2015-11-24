@@ -42,6 +42,9 @@ from alibrary.util.storage import get_dir_for_object, OverwriteStorage
 from alibrary.util.echonest import EchonestWorker
 from caching.base import CachingMixin, CachingManager
 
+from base.audio import fileinfo
+from base.audio.fileinfo import FileInfoProcessor
+
 log = logging.getLogger(__name__)
 
 USE_CELERYD = getattr(settings, 'ALIBRARY_USE_CELERYD', False)
@@ -1429,7 +1432,6 @@ class Media(MigrationMixin):
             except Exception, e:
                 log.warning('unable to apply default license: %s' % e)
 
-        
 
         # check if master changed. if yes we need to reprocess the cached files
         if self.uuid is not None:
@@ -1439,6 +1441,19 @@ class Media(MigrationMixin):
                 if orig.master != self.master:
                     log.info('Media id: %s - Master changed from "%s" to "%s"' % (self.pk, orig.master, self.master))
 
+
+                    # read key information from master file
+                    file_processor = FileInfoProcessor(self.master.path)
+                    if file_processor.audio_stream:
+                        self.master_encoding = file_processor.encoding
+                        self.master_filesize = file_processor.filesize
+                        self.master_bitrate = file_processor.bitrate
+                        self.master_samplerate = file_processor.samplerate
+                        self.master_duration = file_processor.duration
+
+
+
+
                     # set 'original filename'
                     if not self.original_filename and self.master.name:
                         try:
@@ -1447,7 +1462,9 @@ class Media(MigrationMixin):
                             pass
 
 
+
                     # reset processing flags
+                    # TODO: this should be refactored / removed. Only master_* related informations are extracted.
                     self.processed = 0
                     self.conversion_status = 0
                     self.echoprint_status = 0
@@ -1470,18 +1487,7 @@ class Media(MigrationMixin):
         else:
             self.master_sha1 = None
 
-
         unique_slugify(self, self.name)
-
-        # update d_tags
-        """
-        t_tags = ''
-        for tag in self.tags:
-            t_tags += '%s, ' % tag    
-        
-        self.tags = t_tags
-        self.d_tags = t_tags
-        """
 
         # kind of ugly, clean empty relations
         for ea in MediaExtraartists.objects.filter(media=self):

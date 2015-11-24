@@ -44,7 +44,7 @@ INSTALLED_APPS = (
     'raven.contrib.django.raven_compat',
     'raven.contrib.django.celery',
 
-    # base app
+    'base',
     'platform_base',
     #
     'api_base',

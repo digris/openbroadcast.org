@@ -35,7 +35,12 @@ class ImportItemnline(admin.TabularInline):
 
 class ImportAdmin(admin.ModelAdmin):    
     
-    list_display = ('created', 'user', 'status', 'type', 'uuid_key',)
+    list_display = (
+        'created',
+        'user',
+        'status',
+        'type',
+    )
     list_filter = ('status', )
     readonly_fields = ('created', 'updated',)
     date_hierarchy = 'created'

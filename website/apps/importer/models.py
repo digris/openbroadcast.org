@@ -1,21 +1,26 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+import logging
 import os
 import time
-import logging
+import unicodedata
+import string
 import magic
-from django.db import models
-from django.db.models.signals import post_save
-from django.contrib.auth.models import User
-from django.utils.translation import ugettext as _
-from django.db.models.signals import post_delete
-from django.core.urlresolvers import reverse
-from django.conf import settings
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
-from django_extensions.db.fields.json import JSONField
+from alibrary.models import Media, Artist
 from celery.task import task
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.db.models.signals import post_delete
+from django.db.models.signals import post_save
+from django.utils.translation import ugettext as _
+from django_extensions.db.fields.json import JSONField
 from lib.signals.unsignal import disable_for_loaddata
-from alibrary.models import Media, Artist, Release
+from django_extensions.db.fields import *
 
 log = logging.getLogger(__name__)
 
@@ -32,12 +37,8 @@ GENERIC_STATUS_CHOICES = (
     (11, _('Other')),
 )
 
-# extra fields
-from django_extensions.db.fields import *
-
 def clean_upload_path(instance, filename):
-    import unicodedata
-    import string
+
     filename, extension = os.path.splitext(filename)
     valid_chars = "-_.%s%s" % (string.ascii_letters, string.digits)
     cleaned_filename = unicodedata.normalize('NFKD', filename).encode('ASCII', 'ignore')    
@@ -54,34 +55,63 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+
 class Import(BaseModel):
+
+    STATUS_INIT = 0
+    STATUS_DONE = 1
+    STATUS_READY = 2
+    STATUS_PROGRESS = 3
+    STATUS_ERROR = 99
+    STATUS_OTHER = 11
+    STATUS_CHOICES = (
+        (STATUS_INIT, _('Init')),
+        (STATUS_DONE, _('Done')),
+        (STATUS_READY, _('Ready')),
+        (STATUS_PROGRESS, _('Progress')),
+        (STATUS_ERROR, _('Error')),
+        (STATUS_OTHER, _('Other')),
+    )
+
+    TYPE_WEB = 'web'
+    TYPE_API = 'api'
+    TYPE_FS = 'fs'
+    TYPE_CHOICES = (
+        (TYPE_WEB, _('Web Interface')),
+        (TYPE_API, _('API')),
+        (TYPE_FS, _('Filesystem')),
+    )
+
+    user = models.ForeignKey(
+        User,
+        blank=True, null=True,
+        related_name="import_user",
+        on_delete=models.SET_NULL
+    )
+    uuid_key = models.CharField(
+        max_length=60,
+        null=True, blank=True
+    )
+
+    status = models.PositiveIntegerField(
+        default=STATUS_INIT, choices=STATUS_CHOICES
+    )
+
+    type = models.CharField(
+        max_length=10,
+        default=TYPE_WEB,
+        choices=TYPE_CHOICES
+    )
+    notes = models.TextField(
+        blank=True, null=True,
+        help_text=_('Optionally, just add some notes to this import if desired.')
+    )
 
     class Meta:
         app_label = 'importer'
         verbose_name = _('Import')
         verbose_name_plural = _('Imports')
         ordering = ('-created', )
-
-    user = models.ForeignKey(User, blank=True, null=True, related_name="import_user", on_delete=models.SET_NULL)
-    uuid_key = models.CharField(max_length=60, null=True, blank=True)
-
-    STATUS_CHOICES = (
-        (0, _('Init')),
-        (1, _('Done')),
-        (2, _('Ready')),
-        (3, _('Progress')),
-        (99, _('Error')),
-        (11, _('Other')),
-    )
-    status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
-        
-    TYPE_CHOICES = (
-        ('web', _('Web Interface')),
-        ('api', _('API')),
-        ('fs', _('Filesystem')),
-    )
-    type = models.CharField(max_length="10", default='web', choices=TYPE_CHOICES)
-    notes = models.TextField(blank=True, null=True, help_text=_('Optionally, just add some notes to this import if desired.'))
 
     def __unicode__(self):
         return "%s | %s" % (self.created, self.user)
@@ -96,16 +126,36 @@ class Import(BaseModel):
 
     @task
     def get_stats(self):
+
         stats = {}
-        stats['init'] = self.files.filter(status=0)
-        stats['done'] = self.files.filter(status=1)
-        stats['ready'] = self.files.filter(status=2)
-        stats['working'] = self.files.filter(status=3)
-        stats['warning'] = self.files.filter(status=4)
-        stats['duplicate'] = self.files.filter(status=5)
-        stats['queued'] = self.files.filter(status=6)
-        stats['importing'] = self.files.filter(status=6)
-        stats['error'] = self.files.filter(status=99)
+
+        stats['init'] = self.files.filter(
+            status=ImportFile.STATUS_INIT
+        )
+        stats['done'] = self.files.filter(
+            status=ImportFile.STATUS_DONE
+        )
+        stats['ready'] = self.files.filter(
+            status=ImportFile.STATUS_READY
+        )
+        stats['working'] = self.files.filter(
+            status=ImportFile.STATUS_PROGRESS
+        )
+        stats['warning'] = self.files.filter(
+            status=ImportFile.STATUS_WARNING
+        )
+        stats['duplicate'] = self.files.filter(
+            status=ImportFile.STATUS_DUPLICATE
+        )
+        stats['queued'] = self.files.filter(
+            status=ImportFile.STATUS_QUEUED
+        )
+        stats['importing'] = self.files.filter(
+            status=ImportFile.STATUS_IMPORTING
+        )
+        stats['error'] = self.files.filter(
+            status=ImportFile.STATUS_ERROR
+        )
         
         return stats
 
@@ -147,16 +197,13 @@ class Import(BaseModel):
             importfiles = qs.filter(status=2)
             for file in importfiles:
                 for mb in file.results_musicbrainz:
-                    # got a match - try to apply
+
                     if 'mb_id' in mb and mb['mb_id'] == mb_release_id:
 
-                        # main id
                         file.import_tag['mb_release_id'] = mb_release_id
-                        # textual
                         file.import_tag['release'] = mb['name']
                         file.import_tag['artist'] = mb['artist']['name']
                         file.import_tag['name'] = mb['media']['name']
-                        # mb ids
                         file.import_tag['mb_artist_id'] = mb['artist']['mb_id']
                         file.import_tag['mb_track_id'] = mb['media']['mb_id']
                         
@@ -196,28 +243,37 @@ class Import(BaseModel):
     
 class ImportFile(BaseModel):
 
+    STATUS_INIT = 0
+    STATUS_DONE = 1
+    STATUS_READY = 2
+    STATUS_PROGRESS = 3
+    STATUS_WARNING = 4
+    STATUS_DUPLICATE = 5
+    STATUS_QUEUED = 6
+    STATUS_IMPORTING = 7
+    STATUS_ERROR = 99
+    STATUS_OTHER = 11
     STATUS_CHOICES = (
-        (0, _('Init')),
-        (1, _('Done')),
-        (2, _('Ready')),
-        (3, _('Working')),
-        (4, _('Warning')),
-        (5, _('Duplicate')),
-        (6, _('Queued')),
-        (7, _('Importing')),
-        (99, _('Error')),
-        (11, _('Other')),
+        (STATUS_INIT, _('Init')),
+        (STATUS_DONE, _('Done')),
+        (STATUS_READY, _('Ready')),
+        (STATUS_PROGRESS, _('Progress')),
+        (STATUS_WARNING, _('Warning')),
+        (STATUS_DUPLICATE, _('Dulicate')),
+        (STATUS_QUEUED, _('Queued')),
+        (STATUS_IMPORTING, _('Importing')),
+        (STATUS_ERROR, _('Error')),
+        (STATUS_OTHER, _('Other')),
     )
-    
+
+    status = models.PositiveIntegerField(default=STATUS_INIT, choices=STATUS_CHOICES)
     filename = models.CharField(max_length=256, blank=True, null=True)
     file = models.FileField(max_length=256, upload_to=clean_upload_path)
     import_session = models.ForeignKey(Import, verbose_name=_('Import'), null=True, related_name='files')
     mimetype = models.CharField(max_length=100, blank=True, null=True)
     messages = JSONField(blank=True, null=True, default=None)
-    
-    """
-    Result sets. Not stored in foreign model - as they are rather fix.
-    """
+
+    # Result sets - used for further processing.
     settings = JSONField(blank=True, null=True)
     results_tag = JSONField(blank=True, null=True)
     results_tag_status = models.PositiveIntegerField(verbose_name=_('Result Tags (ID3 & co)'), default=0, choices=GENERIC_STATUS_CHOICES)
@@ -228,11 +284,11 @@ class ImportFile(BaseModel):
     results_discogs = JSONField(blank=True, null=True)
     import_tag = JSONField(blank=True, null=True)
     
-    # actual media!
+    # assigned media object
     media = models.ForeignKey(Media, blank=True, null=True, related_name="importfile_media", on_delete=models.SET_NULL)
+
     imported_api_url = models.CharField(max_length=512, null=True, blank=True)
     error = models.CharField(max_length=512, null=True, blank=True)
-    status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
 
     class Meta:
         app_label = 'importer'
@@ -248,9 +304,7 @@ class ImportFile(BaseModel):
         url = reverse('api_dispatch_list', kwargs={'resource_name': 'importfile', 'api_name': 'v1'})
         return '%s%s/' % (url, self.pk)
 
-    #@models.permalink
     def get_delete_url(self):
-        #return ('importer-upload-delete', [str(self.pk)])
         return ''
 
     def process(self):
@@ -264,7 +318,6 @@ class ImportFile(BaseModel):
     @task
     def process_task(obj):
 
-        # to prevent circular import errors
         from util.process import Process
 
         pre_sleep = 1
@@ -283,6 +336,7 @@ class ImportFile(BaseModel):
         # duplicate check by sha1
         media_id = processor.id_by_sha1(obj.file)
         log.debug('duplicate by SHA1: %s' % media_id)
+
         # duplicate check by echoprint
         if not media_id:
             media_id = processor.id_by_echoprint(obj.file)
@@ -303,7 +357,7 @@ class ImportFile(BaseModel):
                 # print 'obp_media_uuid: %s' % obp_media_uuid
                 # print '******************************************************************'
 
-                obj.status = 5
+                obj.status = ImportFile.STATUS_DUPLICATE
                 obj.media = Media.objects.get(uuid=obp_media_uuid)
                 obj.save()
                 return
@@ -400,7 +454,9 @@ class ImportFile(BaseModel):
         
         # requeue if no results yet
         if len(obj.results_musicbrainz) < 1:
-            s = {'skip_tracknumber': True}
+            s = {
+                'skip_tracknumber': True
+            }
             obj.settings = s
             obj.save()
             obj.results_musicbrainz = processor.get_musicbrainz(obj)
@@ -525,12 +581,12 @@ post_delete.connect(post_delete_importfile, sender=ImportFile)
 
 
 
-"""
-ImportItem
-store relations to objects created/assigned during that specific import
-"""
 
 class ImportItem(BaseModel):
+
+    """
+    stores relations to objects created/assigned during the specific import
+    """
         
     # limit to alibrary objects
     ct_limit = models.Q(app_label = 'alibrary', model = 'media') | \
@@ -548,7 +604,6 @@ class ImportItem(BaseModel):
         app_label = 'importer'
         verbose_name = _('Import Item')
         verbose_name_plural = _('Import Items')
-        #ordering = ('-created', )
         
     def __unicode__(self):
         try:
