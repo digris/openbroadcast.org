@@ -1432,25 +1432,26 @@ class Media(MigrationMixin):
     def process_master_info(self, save=False):
 
         # read key information from master file
-        file_processor = FileInfoProcessor(self.master.path)
-        if file_processor.audio_stream:
-            self.master_encoding = file_processor.encoding
-            self.master_filesize = file_processor.filesize
-            self.master_bitrate = file_processor.bitrate
-            self.master_samplerate = file_processor.samplerate
-            self.master_duration = file_processor.duration
+        if self.master:
+            file_processor = FileInfoProcessor(self.master.path)
+            if file_processor.audio_stream:
+                self.master_encoding = file_processor.encoding
+                self.master_filesize = file_processor.filesize
+                self.master_bitrate = file_processor.bitrate
+                self.master_samplerate = file_processor.samplerate
+                self.master_duration = file_processor.duration
 
-            print self.master_encoding
-            print self.master_filesize
-            print self.master_bitrate
-            print self.master_samplerate
-            print self.master_duration
+                print self.master_encoding
+                print self.master_filesize
+                print self.master_bitrate
+                print self.master_samplerate
+                print self.master_duration
 
-        else:
-            log.warning('unable to process audio file')
+            else:
+                log.warning('unable to process audio file')
 
-        if save:
-            self.save()
+            if save:
+                self.save()
 
 
 

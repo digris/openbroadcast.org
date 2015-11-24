@@ -30,7 +30,7 @@ USE_CELERYD = getattr(settings, 'MEDIA_ASSET_USE_CELERYD', False)
 
 MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
 ASSET_DIR = os.path.join(MEDIA_ROOT, 'media_asset')
-LAME_BINARY = getattr(settings, 'LAME_BINARY')
+LAME_BINARY = getattr(settings, 'LAME_BINARY', 'lame')
 SOX_BINARY = getattr(settings, 'SOX_BINARY')
 FAAD_BINARY = getattr(settings, 'FAAD_BINARY')
 
@@ -277,6 +277,10 @@ class Format(TimestampedModel, UUIDModel):
                     Format.LAME_OPTIONS[obj.quality],
                     obj.path
                 ]
+
+                print '///////////////'
+                print command
+                print '///////////////'
 
                 log.debug('running: %s' % ' '.join(command))
 

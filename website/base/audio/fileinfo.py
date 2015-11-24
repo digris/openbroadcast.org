@@ -52,9 +52,13 @@ class FileInfoProcessor(object):
 
     @property
     def encoding(self):
-        if self.audio_stream:
-            return self.audio_stream.codec_name
-            #return self.audio_stream.codecTag()
+
+        basename, ext = os.path.splitext(self.path)
+        return ext[1:].lower()
+
+        # if self.audio_stream:
+        #     return self.audio_stream.codec_name
+        #     #return self.audio_stream.codecTag()
 
     @property
     def bitrate(self):

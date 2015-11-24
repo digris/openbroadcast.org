@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import os
+import shutil
 import subprocess
 import logging
 import audiotools
@@ -15,8 +16,18 @@ FAAD_BINARY = getattr(settings, 'FAAD_BINARY')
 
 def any_to_wav(src, dst=None):
 
+    log.info('any to wav: %s > %s' % (src, dst))
+
     if not os.path.isfile(src):
         raise IOError('unable to access %s' % src)
+
+
+    src_path, src_ext = os.path.splitext(src)
+    if src_ext.lower() == '.wav':
+        shutil.copyfile(src, dst)
+        return dst
+
+
 
     try:
         audiotools.open(src).convert(dst, audiotools.WaveAudio)
@@ -37,7 +48,7 @@ def any_to_wav(src, dst=None):
         print ext
 
     log.debug('to wav: %s > %s' % (src, dst))
-    if os.path.isfile(dst):
+    if os.path.exists(dst):
         return dst
 
 
