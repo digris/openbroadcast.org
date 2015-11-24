@@ -1441,12 +1441,6 @@ class Media(MigrationMixin):
                 self.master_samplerate = file_processor.samplerate
                 self.master_duration = file_processor.duration
 
-                print self.master_encoding
-                print self.master_filesize
-                print self.master_bitrate
-                print self.master_samplerate
-                print self.master_duration
-
             else:
                 log.warning('unable to process audio file')
 
@@ -1485,6 +1479,25 @@ class Media(MigrationMixin):
 
         if self.master_changed:
             self.process_master_info()
+
+
+        if not self.folder:
+            log.debug('no directory for media %s - create it.' % self.pk)
+            directory = get_dir_for_object(self)
+            abs_directory = os.path.join(settings.MEDIA_ROOT, directory)
+
+            try:
+                if not os.path.exists(abs_directory):
+                    os.makedirs(abs_directory, 0755)
+
+                self.folder = directory
+                log.info('creating directory: %s' % abs_directory)
+
+            except Exception, e:
+                log.warning('unable to create directory: %s - %s' % (abs_directory, e))
+                self.folder = None
+                self.status = 99
+
 
 
 
@@ -1553,132 +1566,102 @@ def media_post_save(sender, **kwargs):
     log.info('Media id: %s - Processed state: %s' % (obj.pk, obj.processed))
 
     # create object directory ?
-    if not obj.folder:
-        log.debug('no directory for media %s - create it.' % obj.pk)
-        directory = get_dir_for_object(obj)
-        abs_directory = os.path.join(settings.MEDIA_ROOT, directory)
-
-        try:
-            if not os.path.exists(abs_directory):
-                os.makedirs(abs_directory, 0755)
-
-            obj.folder = directory
-            log.info('creating directory: %s' % abs_directory)
-
-            obj.save()
-
-        except Exception, e:
-            log.warning('unable to create directory: %s - %s' % (abs_directory, e))
-            obj.folder = None
-            obj.status = 99
-            obj.save()
+    # if not obj.folder:
+    #     log.debug('no directory for media %s - create it.' % obj.pk)
+    #     directory = get_dir_for_object(obj)
+    #     abs_directory = os.path.join(settings.MEDIA_ROOT, directory)
+    #
+    #     try:
+    #         if not os.path.exists(abs_directory):
+    #             os.makedirs(abs_directory, 0755)
+    #
+    #         obj.folder = directory
+    #         log.info('creating directory: %s' % abs_directory)
+    #
+    #         obj.save()
+    #
+    #     except Exception, e:
+    #         log.warning('unable to create directory: %s - %s' % (abs_directory, e))
+    #         obj.folder = None
+    #         obj.status = 99
+    #         obj.save()
 
 
     if obj.status == 99:
         log.warning('media %s - status is error > return' % obj.pk)
-        return
+
 
 
     if obj.master and obj.processed != 1 and obj.processed != 99:
         log.info('Media id: %s - reprocess master at: %s' % (obj.pk, obj.master.path))
 
 
-        # refactored version: store file data related to master only
-        try:
+        # try:
+        #     obj.base_format = os.path.splitext(obj.master.path)[1][1:].lower()
+        #
+        #     print obj.base_format
+        #
+        #     try:
+        #         audiofile = audiotools.open(obj.master.path)
+        #
+        #     except audiotools.UnsupportedFile as e:
+        #
+        #         print e
+        #
+        #         if obj.base_format.lower == 'mp3':
+        #
+        #             file_fix_path = obj.master.path + '_re-encoded.mp3'
+        #             shutil.copy2(obj.master.path, file_fix_path)
+        #
+        #             lame_options = '-b 320'
+        #             log.debug('running: "%s %s %s %s"' % (LAME_BINARY, lame_options, file_fix_path, obj.master.path))
+        #
+        #             p = subprocess.Popen([
+        #                 LAME_BINARY, lame_options, file_fix_path, obj.master.path
+        #             ], stdout=subprocess.PIPE)
+        #             stdout = p.communicate()
+        #
+        #             os.remove(file_fix_path)
+        #
+        #             audiofile = audiotools.open(obj.master.path)
+        #
+        #
+        #     obj.base_samplerate = audiofile.sample_rate()
+        #     obj.base_filesize = os.path.getsize(obj.master.path)
+        #     obj.base_duration = audiofile.seconds_length()
+        #
+        #     log.debug('file data - samplerate: %s - filesize: %s - duration: %s' % (obj.base_samplerate, obj.base_filesize, obj.base_duration))
+        #
+        #     try:
+        #         obj.base_bitrate = int(obj.base_filesize * 8 / (obj.base_duration * 1000))
+        #     except Exception as e:
+        #         print e
+        #         obj.base_bitrate = None
+        #
+        #     try:
+        #         exact_bitrate = int(obj.base_filesize * 8 / (obj.base_duration * 1000))
+        #         obj.base_bitrate = min(VALID_BITRATES, key=lambda x:abs(x - exact_bitrate))
+        #     except Exception as e:
+        #         print e
+        #         obj.base_bitrate = None
+        #
+        #
+        #     obj.processed = 1 # done
+        #
+        # except Exception, e:
+        #
+        #     log.warning('media %s - unable to process: %s' % (obj.pk, e))
+        #
+        #     obj.base_format = None
+        #     obj.base_bitrate = None
+        #     obj.base_samplerate = None
+        #     obj.base_filesize = None
+        #     obj.base_duration = None
+        #     obj.processed = 99 # error
 
-            basename, ext = os.path.splitext(obj.master.path)
-            obj.master_encoding = ext[1:].lower()
-            obj.master_filesize = os.path.getsize(obj.master.path)
-            # obj.master_bitrate
-            # obj.master_samplerate
-            # obj.master_duration
-
-        except Exception as e:
-            log.warning('unable to extract file data for master at %s: %s' % (obj.master.path, e))
-
-
-        try:
-            obj.base_format = os.path.splitext(obj.master.path)[1][1:].lower()
-
-            print obj.base_format
-
-            try:
-                audiofile = audiotools.open(obj.master.path)
-
-            except audiotools.UnsupportedFile as e:
-
-                print e
-                # hackish - re-encode file if impossible open with audiotools
-
-                if obj.base_format.lower == 'mp3':
-
-                    file_fix_path = obj.master.path + '_re-encoded.mp3'
-                    shutil.copy2(obj.master.path, file_fix_path)
-
-                    lame_options = '-b 320'
-                    log.debug('running: "%s %s %s %s"' % (LAME_BINARY, lame_options, file_fix_path, obj.master.path))
-
-                    p = subprocess.Popen([
-                        LAME_BINARY, lame_options, file_fix_path, obj.master.path
-                    ], stdout=subprocess.PIPE)
-                    stdout = p.communicate()
-
-                    os.remove(file_fix_path)
-
-                    audiofile = audiotools.open(obj.master.path)
-
-
-
-            obj.base_samplerate = audiofile.sample_rate()
-            obj.base_filesize = os.path.getsize(obj.master.path)
-            obj.base_duration = audiofile.seconds_length()
-
-            log.debug('file data - samplerate: %s - filesize: %s - duration: %s' % (obj.base_samplerate, obj.base_filesize, obj.base_duration))
-
-            try:
-                obj.base_bitrate = int(obj.base_filesize * 8 / (obj.base_duration * 1000))
-            except Exception as e:
-                print e
-                obj.base_bitrate = None
-
-
-            try:
-                exact_bitrate = int(obj.base_filesize * 8 / (obj.base_duration * 1000))
-                obj.base_bitrate = min(VALID_BITRATES, key=lambda x:abs(x - exact_bitrate))
-            except Exception as e:
-                print e
-                obj.base_bitrate = None
-
-
-            obj.processed = 1 # done
+        #obj.save()
 
 
-
-        except Exception, e:
-
-            log.warning('media %s - unable to process: %s' % (obj.pk, e))
-
-            obj.base_format = None
-            obj.base_bitrate = None
-            obj.base_samplerate = None
-            obj.base_filesize = None
-            obj.base_duration = None
-            obj.processed = 99 # error
-
-        from cacheops import invalidate_obj
-        invalidate_obj(obj)
-        obj.save()
-
-
-
-    """
-    # save/create directory
-    if not obj.folder and obj.master:
-        folder = "private/%s/" % (obj.uuid.replace('-', '/')[5:])
-        log.info('Adding folder: %s' % (folder))
-        obj.folder = folder
-        obj.save()
-    """
 
     if obj.master and obj.echoprint_status == 0:
         if AUTOCREATE_ECHOPRINT:
@@ -1687,15 +1670,15 @@ def media_post_save(sender, **kwargs):
         else:
             log.info('Media id: %s - skipping echoprint generation' % (obj.pk))
 
-    # TODO: investigate!
-    #if obj.master and obj.conversion_status == 0 and obj.echoprint_status != 0:
-    if obj.master and obj.conversion_status == 0:
-        log.info('Media id: %s - re-process conversion' % (obj.pk))
-        obj.create_versions()
-        """
-        # TODO: depreciate
-        obj.generate_media_versions()
-        """
+
+
+    from cacheops import invalidate_obj
+    invalidate_obj(obj)
+
+    # if obj.master and obj.conversion_status == 0:
+    #     log.info('Media id: %s - re-process conversion' % (obj.pk))
+    #     obj.create_versions()
+
 
 post_save.connect(media_post_save, sender=Media) 
         
@@ -1704,9 +1687,13 @@ def media_pre_delete(sender, **kwargs):
 
     obj = kwargs['instance']
 
+    # delete associated master file
+    if obj.master and os.path.isfile(obj.master.path):
+        os.unlink(obj.master.path)
+
     # try to delete fingerprint
     try:
-        log.info('delete fingerprint on server id: %s' % obj.id)
+        #log.info('delete fingerprint on server id: %s' % obj.id)
         fp.delete("%s" % obj.id)
     except Exception, e:
         log.warning('unable to delete fingerprint for media_id: %s - %s' % (obj.id, e))

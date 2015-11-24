@@ -125,6 +125,7 @@ class Waveform(TimestampedModel, UUIDModel):
 
         self.do_process = False
         if self.pk is None or self.status == Waveform.INIT:
+            self.status = Waveform.PROCESSING
             self.do_process = True
 
         if not self.media_uuid:
@@ -158,7 +159,7 @@ def waveform_pre_delete(sender, instance, **kwargs):
 
 class FormatManager(models.Manager):
 
-    def get_or_create_for_media(self, media, encoding, quality, **kwargs):
+    def get_or_create_for_media(self, media, encoding='mp3', quality='default', **kwargs):
 
         format, created = self.model.objects.get_or_create(media=media, encoding=encoding, quality=quality, **kwargs)
         log.debug('version - get or create for media: %s %s %s (created: %s)' % (media, encoding, quality, created))
@@ -304,6 +305,7 @@ class Format(TimestampedModel, UUIDModel):
         self.do_process = False
         if self.pk is None or self.status == Format.INIT:
             self.do_process = True
+            self.status = Format.PROCESSING
 
         if not self.media_uuid:
             self.media_uuid = self.media.uuid

@@ -38,7 +38,7 @@ def upload_image_to(instance, filename):
 class NameVariation(models.Model):
 
     name = models.CharField(max_length=250, db_index=True)
-    artist = models.ForeignKey('Artist', related_name="namevariations", on_delete=models.SET_NULL, null=True, blank=True)
+    artist = models.ForeignKey('Artist', related_name="namevariations", on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         app_label = 'alibrary'
