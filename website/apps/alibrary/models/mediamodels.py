@@ -1440,6 +1440,15 @@ class Media(MigrationMixin):
             self.master_samplerate = file_processor.samplerate
             self.master_duration = file_processor.duration
 
+            print self.master_encoding
+            print self.master_filesize
+            print self.master_bitrate
+            print self.master_samplerate
+            print self.master_duration
+
+        else:
+            log.warning('unable to process audio file')
+
         if save:
             self.save()
 

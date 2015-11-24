@@ -21,7 +21,7 @@ def any_to_wav(src, dst=None):
     try:
         audiotools.open(src).convert(dst, audiotools.WaveAudio)
 
-    except audiotools.UnsupportedFile as e:
+    except Exception as e:
 
         log.info('file %s not supported by audiotools' % src)
 

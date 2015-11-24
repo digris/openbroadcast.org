@@ -44,7 +44,6 @@ class FileInfoProcessor(object):
         for stream in meta.streams:
             if stream.isAudio():
                 self.audio_stream = stream
-                print 'got audio stream: %s' % stream
                 break
 
     @property
@@ -60,10 +59,12 @@ class FileInfoProcessor(object):
     @property
     def bitrate(self):
         if self.audio_stream:
-            bitrate = self.audio_stream.bitrate()
-            if bitrate:
-
-                return int(bitrate / 1000)
+            try:
+                bitrate = self.audio_stream.bitrate()
+                if bitrate:
+                    return int(bitrate / 1000)
+            except:
+                pass
 
     @property
     def duration(self):
@@ -73,4 +74,7 @@ class FileInfoProcessor(object):
     @property
     def samplerate(self):
         if self.audio_stream:
-            return self.audio_stream.sample_rate
+            try:
+                return int(self.audio_stream.sample_rate)
+            except:
+                pass
