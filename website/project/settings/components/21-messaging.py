@@ -56,8 +56,7 @@ CELERY_ROUTES = {
     'media_asset.models.process_format': {'queue': 'convert'},
     'media_asset.process_format': {'queue': 'convert'},
 
-
-    'exporter.models.process_task': {'queue': 'export'},
+    #'exporter.models.process_task': {'queue': 'export'},
 
 }
 
