@@ -20,6 +20,7 @@ class NoUUIDException(Exception):
 
 
 def get_dir_for_object(obj, prefix=None, app_dir=None, object_dir=None):
+
     if not obj.uuid:
         raise NoUUIDException("Object with uuid expected")
 

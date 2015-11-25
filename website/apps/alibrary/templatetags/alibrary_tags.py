@@ -9,11 +9,6 @@ from alibrary.models import Daypart, Playlist
 register = template.Library()
 
 @register.filter
-def download_url(obj, format, version):
-    return obj.get_download_url(format, version)
-
-
-@register.filter
 def quality_indicator(obj):
     return obj.get_media_indicator()
 

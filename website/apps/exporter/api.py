@@ -74,8 +74,7 @@ class ExportItemResource(ModelResource):
 
         if item['item_type'] == 'playlist':
             co = Playlist.objects.get(pk=int(item['item_id']))
-            print '###########################################'
-            print co
+
 
 
 
@@ -85,7 +84,7 @@ class ExportItemResource(ModelResource):
         'ManyRelatedManager is not Callable'
         just temporary set co to arbitary media object
         """
-        bundle.data['content_object'] = Media.objects.all()[1]
+        bundle.data['content_object'] = Media.objects.all()[0]
 
         res = super(ExportItemResource, self).obj_create(bundle, request, **kwargs)
 

@@ -102,10 +102,39 @@ LOSSLESS_FORMATS = [
 ]
 
 
+# TODO: depreciated
+def clean_filename(filename):
+    import unicodedata
+    import string
+    valid_chars = "-_.%s%s" % (string.ascii_letters, string.digits)
+    cleaned = unicodedata.normalize('NFKD', filename).encode('ASCII', 'ignore')
+    return ''.join(c for c in cleaned if c in valid_chars)
+
+# TODO: depreciated
+def masterpath_by_uuid(instance, filename):
+    filename, extension = os.path.splitext(filename)
+    folder = "private/%s/" % (instance.uuid.replace('-', '/')[5:])
+    #filename = instance.uuid.replace('-', '/') + extension
+    filename = u'master'
+    return os.path.join(folder, "%s%s" % (clean_filename(filename).lower(), extension.lower()))
+
+
+
+
 def upload_master_to(instance, filename):
     filename, extension = os.path.splitext(filename)
     return os.path.join(get_dir_for_object(instance), 'master%s' % extension.lower())
 
+
+
+def audiotools_progress(x, y):
+    p = (x * 100 / y)
+    last_p = None
+    if (p%10) == 0:
+        pass
+        #log.debug('conversion: %s' % p)
+
+#class Media(CachingMixin, MigrationMixin):
 class Media(MigrationMixin):
 
     # core fields
@@ -305,8 +334,18 @@ class Media(MigrationMixin):
 
     @property
     def bitrate(self):
+
         return self.master_bitrate
 
+        # if self.base_format and self.base_format.lower() in LOSSLESS_FORMATS:
+        #     return
+        # try:
+        #     exact_bitrate = int(self.base_filesize * 8 / (self.base_duration * 1000))
+        #     return min(VALID_BITRATES, key=lambda x:abs(x-exact_bitrate))
+        # except:
+        #     pass
+
+    
     @property
     def classname(self):
         return self.__class__.__name__
@@ -349,40 +388,50 @@ class Media(MigrationMixin):
 
         return providers
 
+    
+    #@models.permalink
+    #def get_absolute_url(self):
+    #    return ('alibrary-media-detail', [self.slug])
+
     def get_absolute_url(self):
         return reverse('alibrary-media-detail', kwargs={
             'pk': self.pk,
             'slug': self.slug,
         })
 
-    def get_edit_url(self):
-        return reverse('alibrary-media-edit', kwargs={'pk': self.pk})
 
-    # TODO: refactor to reverse
+
+
+    @models.permalink
+    def get_edit_url(self):
+        return ('alibrary-media-edit', [self.pk])
+
     def get_admin_url(self):
         from lib.util.get_admin_url import change_url
         return change_url(self)
-
-    # TODO: depreciated
+    
+    @models.permalink
     def get_stream_url(self):
-        return reverse('alibrary-media-stream_html5', kwargs={'uuid': self.uuid})
+        return ('alibrary-media-stream_html5', [self.uuid])
 
-    # TODO: depreciated
+    @models.permalink
     def get_encode_url(self, format='mp3', bitrate='32'):
-        return reverse('alibrary-media-encode', (), {'uuid': self.uuid, 'format': format, 'bitrate': bitrate})
+        #return ('alibrary-media-encode', [self.uuid, format, bitrate])
+        return ('alibrary-media-encode', (), {'uuid': self.uuid, 'format': format, 'bitrate': bitrate})
 
-    # TODO: depreciated
+    @models.permalink
     def get_waveform_url(self):
-        return reverse('alibrary-media-waveform', kwargs={'uuid': self.uuid})
+        return ('alibrary-media-waveform', [self.uuid])
+    
 
     def get_api_url(self):
         return reverse('api_dispatch_detail', kwargs={  
             'api_name': 'v1',  
             'resource_name': 'library/track',
+            #'pk': self.pk
             'uuid': self.uuid
-        })
-
-    # TODO: refactor to admin module
+        }) + ''
+    
     def release_link(self):
         if self.release:
             return '<a href="%s">%s</a>' % (reverse("admin:alibrary_release_change", args=(self.release.id,)), self.release.name)
@@ -390,17 +439,19 @@ class Media(MigrationMixin):
     
     release_link.allow_tags = True
     release_link.short_description = "Edit" 
-
-    # TODO: depreciated
+    
     def get_playlink(self):
         return '/api/tracks/%s/#0#replace' % self.uuid
     
-    # TODO: depreciated
+    
     def get_download_permissions(self):
         pass
+    
+
 
     def generate_sha1(self):
         return sha1_by_file(self.master)
+    
 
     @property
     def has_video(self):
@@ -409,6 +460,7 @@ class Media(MigrationMixin):
     @property
     def get_videos(self):
         return self.relations.filter(service__in=['youtube', 'vimeo'])
+
 
     @property
     def has_soundcloud(self):
@@ -450,9 +502,24 @@ class Media(MigrationMixin):
                 artists.append({'artist': media_artist.artist, 'join_phrase': media_artist.join_phrase})
             return artists
 
+
         return artists
 
 
+
+    
+
+    # TODO: still needed?
+    def get_products(self):
+        return self.mediaproduct.all()
+    
+    
+    # TODO: still needed?
+    def get_download_url(self, format, version):
+        
+        return '%sdownload/%s/%s/' % (self.get_absolute_url(), format, version)
+    
+    
     def get_master_path(self):
         try:
             return self.master.path
@@ -473,12 +540,35 @@ class Media(MigrationMixin):
             return None
 
 
+    
+    # full absolute path
+    def get_folder_path(self, subfolder=None):
+        
+        if not self.folder:
+            return None
+        
+        if subfolder:
+            folder = "%s/%s%s/" % (MEDIA_ROOT, self.folder, subfolder)
+            if not os.path.isdir(folder):
+                try:
+                    os.mkdir(folder, 0755)
+                except Exception, e:
+                    pass
+                
+            return folder
+                    
+        return "%s/%s" % (MEDIA_ROOT, self.folder)
+    
+    """
+    gets the 'real' file, eg flac-master, stream-preview etc.
+    """
     def get_file(self, source, version):
         # TODO: implement...
         return self.master
     
     def get_stream_file(self, format, version):
         # TODO: improve...
+        
         if format == 'mp3' and version == 'base':
             ext = os.path.splitext(self.master.path)[1][1:].strip() 
             if ext == 'mp3':
@@ -489,9 +579,40 @@ class Media(MigrationMixin):
         
         return file.file
     
+    
     def get_default_stream_file(self):
         return self.get_stream_file('mp3', 'base')
 
+
+
+    def get_cache_file(self, format, version='base', absolute=True):
+
+        log.debug('looking up cache for: %s - %s' % (format, version))
+
+        versions_directory = os.path.join(self.get_directory(absolute=absolute), 'versions')
+        path = os.path.join(versions_directory, '%s.%s' % (version, format))
+
+        if absolute:
+            path = os.path.join(settings.MEDIA_ROOT, path)
+            log.debug('absolute cache path: %s' % path)
+
+            if os.path.isfile(path):
+                return path
+            else:
+                log.warning('file does not exist: %s' % path)
+
+        else:
+            path = os.path.join(settings.MEDIA_ROOT, path)
+            log.debug('relative cache path: %s' % path)
+
+            if os.path.isfile(os.path.join(settings.MEDIA_ROOT, path)):
+                return path
+            else:
+                log.warning('file does not exist: %s' % path)
+
+
+
+        return None
 
     def get_playout_file(self, absolute=False):
 
@@ -505,6 +626,25 @@ class Media(MigrationMixin):
 
         return abs_path
 
+
+
+
+    def get_waveform_image(self):
+        
+        waveform_image = self.get_cache_file('png', 'waveform')
+        
+        if not waveform_image:
+            try:
+                self.create_waveform_image.delay(self)
+                waveform_image = None
+                # waveform_image = self.get_cache_file('png', 'waveform')
+            except Exception, e:
+                log.warning('unable to request wafeform image for pk: %s' % self.pk)
+                waveform_image = None
+            
+        return waveform_image
+        
+
     def get_duration(self, units='ms'):
 
         if not self.master_duration:
@@ -516,7 +656,42 @@ class Media(MigrationMixin):
         if units == 's':
             return int(self.master_duration)
 
-    # TODO: depreciated
+
+    # old version. TODO: remove
+    def __get_duration(self, units='ms'):
+
+        duration = None
+        if self.base_duration:
+            if self.base_duration > 5:
+                duration = self.base_duration * 1000
+
+        if not self.master:
+            return None
+
+
+        if not duration:
+            log.debug('try to read duration through ffmpeg')
+            from alibrary.util.duration import duration_ffmpeg
+            duration = duration_ffmpeg(self.master.path)
+
+        if not duration:
+            log.debug('duration from audiotools')
+            try:
+                duration = self.get_audiofile().seconds_length() * 1000
+            except Exception, e:
+                log.warning('unable to get duration with audiotools: %s' % e)
+
+        if duration and units == 'ms':
+            return int(duration)
+
+        if duration and units == 's':
+            return duration / 1000
+
+        return None
+    
+    """
+    shortcut to audiotools api
+    """
     def get_audiofile(self):
 
         try:
@@ -525,7 +700,10 @@ class Media(MigrationMixin):
         except Exception, e:
             log.warning('unable to get audiofile audiotools: %s' % e)
             return None
-
+        
+        
+        
+        
     @property
     def appearances(self):
         return self.get_appearances()
@@ -543,6 +721,495 @@ class Media(MigrationMixin):
         
         
     
+        
+    
+    """
+    Conversion flow:
+     - create target folder
+       ***/cache/<media uuid>/
+    
+     - src -> temp-file in destination format (eg /tmp/xyz-tempfile.mp3)
+     - add file to filer-folder (think about creating filermodel for cache-file)
+     
+    """
+    # send task to celeryd
+    # @task
+    def convert(self, format, version):
+
+        
+        log.info('Media id: %s - Encoder: %s/%s' % (self.pk, format, version))
+        
+        status = 0
+        
+        dst_file = str(version) + '.' + str(format)
+        #src_path = self.master.path
+        src_path = self.get_master_path()
+    
+        tmp_directory = tempfile.mkdtemp()
+        tmp_path = tmp_directory + '/' + dst_file
+        
+        log.info('Media id: %s - dst_file: %s' % (self.pk, dst_file))
+        log.info('Media id: %s - src_path: %s' % (self.pk, src_path))
+        log.info('Media id: %s - tmp_path: %s' % (self.pk, tmp_path))
+        
+        
+        """
+        print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        print 'Media id: %s - dst_file: %s' % (self.pk, dst_file)
+        print 'Media id: %s - src_path: %s' % (self.pk, src_path)
+        print 'Media id: %s - tmp_path: %s' % (self.pk, tmp_path)
+        """
+
+    
+        """
+        get duration (removed)
+        # TODO: refactor to @property
+        if not self.duration:
+            try:
+                self.duration = int(self.get_audiofile().seconds_length() * 1000)
+            except Exception, e:
+                print e
+                self.duration = 0
+        """
+        
+        """
+        create a converted version of the master, stored in temp location
+        """
+        #try:
+        print '*******************************************************'
+        print 'Tmp file at: %s' % tmp_path
+        print 'Source file at: %s' % src_path
+        print 'Destination file at: %s' % dst_file
+        print '*******************************************************'
+
+        skip_conversion = False
+        if format == 'mp3':
+            # TODO: make compression variable / configuration dependant
+            
+            compression = '2'
+
+            
+            print 'Version: %s' % version
+
+            if version == 'base':
+                
+                # skip conversino in case of mp3 - just use the original file
+                ext = os.path.splitext(src_path)[1][1:].strip() 
+                if ext == 'mp3':
+                    print 'skip conversion - mp3 > mp3'
+                    tmp_path = src_path
+                    skip_conversion = True
+                
+                compression = '0'
+                
+            if version == 'low':
+                compression = '6'
+            
+            
+            
+            if not skip_conversion:
+                print '> AUDIOTOOLS: conversion to mp3'
+                audiotools.open(src_path).convert(tmp_path, audiotools.MP3Audio, compression=compression, progress=self.convert_progress)
+
+        
+        if format == 'flac':
+            # TODO: make compression variable / configuration dependant
+            print '> AUDIOTOOLS: conversion to flac'
+            audiotools.open(src_path).convert(tmp_path, audiotools.FlacAudio, progress=self.convert_progress)
+
+        
+        converted = True
+        
+        print '* END OF CONVERSION *******************************************'
+        
+        """
+        finaly create a django file object and attach it to the medias cache folder
+        """
+        try:
+            
+            dst_final = self.get_folder_path('cache')
+            
+            print "Final Source: %s" % tmp_path
+            print "Final Destination: %s" % dst_final + dst_file
+            
+            # TODO: just create a symlink in case of mp3
+            # shutil.copy2(tmp_path, dst_final + dst_file)
+
+            if skip_conversion:
+                print "o conversion -> just symlinking to cache folder"
+                if not os.path.lexists(dst_final + dst_file):
+                    os.symlink(tmp_path, dst_final + dst_file)
+            else:
+                shutil.copy2(tmp_path, dst_final + dst_file)
+            
+            #tmp_file = DjangoFile(open(tmp_path), name=dst_file)
+
+
+            status = 1
+        
+        except Exception, e:
+            print "error adding file to the cache :( "
+            status = 2
+            print e
+        
+        
+        """
+        cleanup temp-files
+        """
+        try:
+            shutil.rmtree(tmp_directory)
+            pass
+        except Exception, e:
+            print e
+
+        
+        return status
+        
+        
+
+    @task
+    def grappher(self, width, height):
+        """
+        
+        """
+        pass
+    
+    
+    @task
+    def create_waveform_image(self):
+
+        if self.master:
+
+            log.info('creating waveform image for media with pk: %s' % self.pk)
+
+            tmp_directory = tempfile.mkdtemp()
+    
+            src_path = self.master.path;
+            tmp_path = os.path.join(tmp_directory, 'tmp.wav')
+
+            versions_directory = os.path.join(self.get_directory(absolute=True), 'versions')
+            dst_path = os.path.join(versions_directory, 'waveform.png')
+
+            log.debug('tmp_path: %s' % tmp_path)
+            log.debug('src_paths: %s' % src_path)
+            log.debug('dst_path: %s' % dst_path)
+
+
+            """
+            first try to convert using audiotools.
+            if this fails, we try to force the process 'by hand'
+            """
+            try:
+                log.debug('trying to convert to .wav using audiotools: %s' % src_path)
+                audiotools.open(src_path).convert(tmp_path, audiotools.WaveAudio)
+            except Exception, e:
+                log.warning('unable to convert with audiotools: %s' % e)
+
+                ext = os.path.splitext(src_path)[1]
+                log.debug('have "%s" format' % ext)
+
+                """
+                different processing depending on audio format
+                """
+                if ext in ['.m4a', '.mp4']:
+                    # decode using faad
+                    log.debug('running: "%s %s -o %s"' % (FAAD_BINARY, src_path, tmp_path))
+
+                    p = subprocess.Popen([
+                        FAAD_BINARY, src_path, '-o', tmp_path
+                    ], stdout=subprocess.PIPE)
+                    stdout = p.communicate()
+
+                elif ext in ['.mp5',]:
+                    pass
+                    # just a placeholder
+
+                else:
+                    # use lame for the rest
+                    log.debug('running: "%s %s %s"' % (LAME_BINARY, src_path, tmp_path))
+                    p = subprocess.Popen([
+                        LAME_BINARY, src_path, tmp_path
+                    ], stdout=subprocess.PIPE)
+                    stdout = p.communicate()
+            
+            args = (tmp_path, dst_path, None, 1800, 301, 2048)
+            create_wave_images(*args)
+            
+            try:
+                shutil.rmtree(tmp_directory)
+            except Exception, e:
+                print e
+            
+        return
+
+ 
+       
+    #@task
+    def build_cache(self):
+        
+        # get settings
+        formats_download = FORMATS_DOWNLOAD 
+        waveform_sizes = WAVEFORM_SIZES
+
+        # cleanup:
+        # delete everything that 'could' be in the cache so far...
+
+        for format, variations in formats_download.iteritems():
+            for variation in variations:
+                
+                filename = '%s_%s.%s' % ('download', variation, format)
+                tmp_directory = self.convert_(filename, self.folder, format, variation)
+                
+                
+                """
+                if sucessfully converted, create a django/filer file from temp_file
+                """
+                if tmp_directory:
+                    tmp_path =  tmp_directory + '/' + filename
+                    try:
+                        tmp_file = DjangoFile(open(tmp_path),name=filename)            
+                        file, created = File.objects.get_or_create(
+                                                        original_filename=tmp_file.name,
+                                                        file=tmp_file,
+                                                        folder=self.folder,
+                                                        is_public=False)
+                        self.status = 1
+                    
+                    except Exception, e:
+                        self.status = 2
+                        print e
+                        
+                        
+
+                try:
+                    shutil.rmtree(tmp_directory)
+                except Exception, e:
+                    print e
+                    
+                    
+                self.save()
+            
+            
+
+        
+        
+        # convert:
+        # get needed output-formats
+        
+        
+        # grappher:
+        # get needed output-formats
+        
+        
+        
+        pass
+
+
+    # TODO: implement!
+    # access media versions
+    def get_version(self, bitrate=320, format='mp3', absolute=False):
+
+        path = ''
+
+        if absolute:
+            path = os.path.join(settings.MEDIA_ROOT, path)
+
+        return path
+       
+       
+       
+    # create converted (mp3) versions of master file
+    def create_versions(self):
+
+        log.info('create versions for: %s | %s' % (self.pk, self.name))
+        if USE_CELERYD:
+            self.create_versions_task.delay(self)
+        else:
+            self.create_versions_task(self)
+
+    # create converted (mp3) versions of master file
+    @task
+    def create_versions_task(obj):
+
+        """
+        for the moment we either
+         - create a high-quality mp3 in case of non-MP3 files
+         - or symlink the file if it is an MP3 already
+
+         'versions' are stored in the sub-directory 'versions', following the pattern:
+         <base/or/bitrate>.mp3
+        """
+
+        SUPPORTED_FORMATS = ['mp3', 'flac', 'aif', 'aiff', 'mp4', 'm4a', 'ogg', 'vorbis', 'wav']
+
+        # check if 'versions' directory exists - if not create it
+        versions_directory = os.path.join(obj.get_directory(absolute=True), 'versions')
+        log.debug('versions directory: %s' % versions_directory)
+        if versions_directory:
+            if not os.path.exists(versions_directory):
+                try:
+                    os.makedirs(versions_directory, 0755)
+                except:
+                    pass
+
+        else:
+            log.warning('unable to create verisons dir: %s' % versions_directory)
+            return
+
+        # remove current files
+        for file in os.listdir(versions_directory):
+            file_path = os.path.join(versions_directory, file)
+            try:
+                log.debug('unlinking: %s' % file_path)
+                if os.path.isfile(file_path):
+                    os.unlink(file_path)
+            except Exception, e:
+                log.warning('unable to unlink: %s - %s' % (file_path, e))
+
+
+        # check type of source file
+        if not obj.master:
+            raise Exception('master needed for conversion')
+
+        if not os.path.isfile(obj.master.path):
+            raise IOError('file does not exist: %s' % obj.master.path)
+
+
+        master_format = os.path.splitext(obj.master.path)[1][1:].strip().lower()
+        version_path = os.path.join(versions_directory, 'base.mp3')
+
+
+        if not master_format in SUPPORTED_FORMATS:
+            raise IOError('format not supported: %s' % obj.master.path)
+
+        if master_format == 'mp3':
+            log.debug('in MP3 format already: symlinking to vorsions folder: %s' % obj.master)
+            if not os.path.lexists(version_path):
+                os.symlink(obj.master.path, version_path)
+
+        else:
+            log.info('conversion: %s > MP3' % master_format)
+            try:
+                audiotools.open(obj.master.path).convert(
+                    version_path,
+                    audiotools.MP3Audio, compression=0, progress=audiotools_progress)
+            except Exception as e:
+                log.warning('audiotools exception: %s' % e)
+
+                try:
+                    log.info('trying with lame: %s' % LAME_BINARY)
+                    p = subprocess.Popen([
+                        LAME_BINARY, obj.master.path, version_path
+                    ], stdout=subprocess.PIPE)
+                    stdout = p.communicate()
+
+                except Exception as e:
+                    log.warning('lame did fail as well: %s' % e)
+
+
+
+
+
+            if os.path.isfile(version_path):
+                log.info('conversion complete: %s' % version_path)
+            else:
+                log.warning('unable to convert: %s to MP3' % master_format)
+
+
+
+        # self-check
+        if os.path.isfile(version_path) or os.path.lexists(version_path):
+            log.info('media %s - versions created' % obj.pk)
+            obj.conversion_status = 1
+            obj.save()
+        else:
+            log.warning('media %s - error creating versions' % obj.pk)
+            obj.conversion_status = 99
+            obj.save()
+
+
+
+
+
+
+            
+    """
+    progress/callback functions
+    TODO: unify calls
+    """
+    def convert_progress(self, x, y):
+        p = (x * 100 / y)
+        if (p%10) == 0:
+            print p
+
+        
+    def progress_callback(self, percentage):
+        pass
+        #print 'waveform:',
+        #print str(percentage)
+
+    
+
+    # TODO: depreciated
+    def generate_media_versions(self):
+        self.generate_media_versions_task.delay(self)
+
+    @task
+    def generate_media_versions_task(obj):
+
+        log.info('Start conversion for Media: %s' % (obj.pk))
+        print 'Start conversion for Media: %s' % (obj.pk)
+        
+        print 
+        print '************************************************************'
+        print 'Delete files from cache folder'
+        folder = obj.get_folder_path('cache')
+        for file in os.listdir(folder):
+            file_path = os.path.join(folder, file)
+            try:
+                print 'Unlinking: %s' % file_path
+                if os.path.isfile(file_path):
+                    os.unlink(file_path)
+            except Exception, e:
+                print e
+        
+        
+        
+        print 'Sleeping 0.2 secs.. To be sure the transaction is completed.'
+        time.sleep(0.2)
+        print
+        
+
+        formats_media = FORMATS_MEDIA
+        
+        for source, versions in formats_media.iteritems():
+            for version in versions:
+                print 'Media id: %s - Sending to Encoder: %s/%s' % (obj.pk, source, version)
+                log.info('Media id: %s - Sending to Encoder: %s/%s' % (obj.pk, source, version))
+                try:
+                    obj.convert(source, version)
+                except Exception, e:
+                    print e
+                    pass
+
+        
+        # check if everything went fine (= if cache files available)
+
+        c = obj.get_cache_file('mp3', 'base')
+        if c:
+            print c            
+            obj.conversion_status = 1;
+            obj.save();
+        else:
+            obj.conversion_status = 2;
+            obj.save();
+
+        
+        print "* EOL"
+            
+            
+
+
 
 
     def inject_metadata(self, format, version):
@@ -675,11 +1342,16 @@ class Media(MigrationMixin):
             duration = None
             status = 2
 
+
+
+
         # skip file if longer than 12 minutes
         if duration and duration > (60 * 12):
             obj.echoprint_status = 3
             obj.save()
             return
+
+
 
         if code:
             
@@ -713,13 +1385,19 @@ class Media(MigrationMixin):
                 else:
                     log.warning('unable to ingest fingerprint for %s' % obj.id)
                     status = 2
-
+                    
+                    
+                    
                 #res = fp.best_match_for_query(code_string=code_pre)
                 #print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
                 #print res.score
                 #print res.match()
                 #print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-
+                    
+                
+                    
+                    
+                    
             except Exception, e:
                 print e
                 status = 2
@@ -747,6 +1425,8 @@ class Media(MigrationMixin):
             obj.save()
         except Exception, e:
             print e
+
+
 
 
     def process_master_info(self, save=False):
@@ -799,6 +1479,24 @@ class Media(MigrationMixin):
 
         if self.master_changed:
             self.process_master_info()
+
+
+        if not self.folder:
+            log.debug('no directory for media %s - create it.' % self.pk)
+            directory = get_dir_for_object(self)
+            abs_directory = os.path.join(settings.MEDIA_ROOT, directory)
+
+            try:
+                if not os.path.exists(abs_directory):
+                    os.makedirs(abs_directory, 0755)
+
+                self.folder = directory
+                log.info('creating directory: %s' % abs_directory)
+
+            except Exception, e:
+                log.warning('unable to create directory: %s - %s' % (abs_directory, e))
+                self.folder = None
+                self.status = 99
 
 
 
@@ -867,6 +1565,103 @@ def media_post_save(sender, **kwargs):
     obj = kwargs['instance']
     log.info('Media id: %s - Processed state: %s' % (obj.pk, obj.processed))
 
+    # create object directory ?
+    # if not obj.folder:
+    #     log.debug('no directory for media %s - create it.' % obj.pk)
+    #     directory = get_dir_for_object(obj)
+    #     abs_directory = os.path.join(settings.MEDIA_ROOT, directory)
+    #
+    #     try:
+    #         if not os.path.exists(abs_directory):
+    #             os.makedirs(abs_directory, 0755)
+    #
+    #         obj.folder = directory
+    #         log.info('creating directory: %s' % abs_directory)
+    #
+    #         obj.save()
+    #
+    #     except Exception, e:
+    #         log.warning('unable to create directory: %s - %s' % (abs_directory, e))
+    #         obj.folder = None
+    #         obj.status = 99
+    #         obj.save()
+
+
+    if obj.status == 99:
+        log.warning('media %s - status is error > return' % obj.pk)
+
+
+
+    if obj.master and obj.processed != 1 and obj.processed != 99:
+        log.info('Media id: %s - reprocess master at: %s' % (obj.pk, obj.master.path))
+
+
+        # try:
+        #     obj.base_format = os.path.splitext(obj.master.path)[1][1:].lower()
+        #
+        #     print obj.base_format
+        #
+        #     try:
+        #         audiofile = audiotools.open(obj.master.path)
+        #
+        #     except audiotools.UnsupportedFile as e:
+        #
+        #         print e
+        #
+        #         if obj.base_format.lower == 'mp3':
+        #
+        #             file_fix_path = obj.master.path + '_re-encoded.mp3'
+        #             shutil.copy2(obj.master.path, file_fix_path)
+        #
+        #             lame_options = '-b 320'
+        #             log.debug('running: "%s %s %s %s"' % (LAME_BINARY, lame_options, file_fix_path, obj.master.path))
+        #
+        #             p = subprocess.Popen([
+        #                 LAME_BINARY, lame_options, file_fix_path, obj.master.path
+        #             ], stdout=subprocess.PIPE)
+        #             stdout = p.communicate()
+        #
+        #             os.remove(file_fix_path)
+        #
+        #             audiofile = audiotools.open(obj.master.path)
+        #
+        #
+        #     obj.base_samplerate = audiofile.sample_rate()
+        #     obj.base_filesize = os.path.getsize(obj.master.path)
+        #     obj.base_duration = audiofile.seconds_length()
+        #
+        #     log.debug('file data - samplerate: %s - filesize: %s - duration: %s' % (obj.base_samplerate, obj.base_filesize, obj.base_duration))
+        #
+        #     try:
+        #         obj.base_bitrate = int(obj.base_filesize * 8 / (obj.base_duration * 1000))
+        #     except Exception as e:
+        #         print e
+        #         obj.base_bitrate = None
+        #
+        #     try:
+        #         exact_bitrate = int(obj.base_filesize * 8 / (obj.base_duration * 1000))
+        #         obj.base_bitrate = min(VALID_BITRATES, key=lambda x:abs(x - exact_bitrate))
+        #     except Exception as e:
+        #         print e
+        #         obj.base_bitrate = None
+        #
+        #
+        #     obj.processed = 1 # done
+        #
+        # except Exception, e:
+        #
+        #     log.warning('media %s - unable to process: %s' % (obj.pk, e))
+        #
+        #     obj.base_format = None
+        #     obj.base_bitrate = None
+        #     obj.base_samplerate = None
+        #     obj.base_filesize = None
+        #     obj.base_duration = None
+        #     obj.processed = 99 # error
+
+        #obj.save()
+
+
 
     if obj.master and obj.echoprint_status == 0:
         if AUTOCREATE_ECHOPRINT:
@@ -877,27 +1672,13 @@ def media_post_save(sender, **kwargs):
 
 
 
-
-
-    if not obj.folder:
-        log.debug('no directory for media %s - create it.' % obj.pk)
-        directory = get_dir_for_object(obj)
-        abs_directory = os.path.join(settings.MEDIA_ROOT, directory)
-
-        try:
-            if not os.path.exists(abs_directory):
-                os.makedirs(abs_directory, 0755)
-
-            obj.folder = directory
-            log.info('creating directory: %s' % abs_directory)
-
-        except Exception, e:
-            log.warning('unable to create directory: %s - %s' % (abs_directory, e))
-            obj.folder = None
-            obj.status = 99
-
     from cacheops import invalidate_obj
     invalidate_obj(obj)
+
+    # if obj.master and obj.conversion_status == 0:
+    #     log.info('Media id: %s - re-process conversion' % (obj.pk))
+    #     obj.create_versions()
+
 
 post_save.connect(media_post_save, sender=Media) 
         

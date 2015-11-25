@@ -125,7 +125,7 @@ class Waveform(TimestampedModel, UUIDModel):
 
         self.do_process = False
         if self.pk is None or self.status == Waveform.INIT:
-            self.status = Waveform.PROCESSING
+            #self.status = Waveform.PROCESSING
             self.do_process = True
 
         if not self.media_uuid:
@@ -305,7 +305,7 @@ class Format(TimestampedModel, UUIDModel):
         self.do_process = False
         if self.pk is None or self.status == Format.INIT:
             self.do_process = True
-            self.status = Format.PROCESSING
+            #self.status = Format.PROCESSING
 
         if not self.media_uuid:
             self.media_uuid = self.media.uuid

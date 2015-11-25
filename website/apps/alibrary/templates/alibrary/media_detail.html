@@ -89,8 +89,6 @@
                 <a href="#overview_" data-toggle="tab">{% trans "Overview" %}</a>
             </li>
 
-
-
             {% if object.has_video %}
                 <li>
                     <a href="#video" data-toggle="tab">{% trans "Video Clip" %}</a>
@@ -131,25 +129,6 @@
     <div class="tab-content">
 
     <div class="tab-pane active" id="overview_">
-
-        <section class="media">
-
-            <!--
-                        <h2>{% trans "Track" %}</h2>
-
-
-                        <div id="aplayer_detail__" style="background: white;">
-                            {% trans "Loading player" %}
-                        </div>
-                        -->
-
-            <!--
-                        <div id="waveform" style="background: #a5a5a5; width: 100%; height: 50px;">
-                            <img src="{{ object.get_waveform_url }}" style="height: 50px; width: 100%;"></img>
-                        </div>
-                        -->
-
-        </section>
 
         {% if object.description %}
             <section class="description">
@@ -305,7 +284,7 @@
                     <dd>{{ object.get_echoprint_status_display }}</dd>
 
                     <dt>{% trans "Hash" %} (SHA1)</dt>
-                    <dd style="font-size: 84%;">{{ object.master_sha1|upper }}</dd>
+                    <dd style="font-size: 90%;">{{ object.master_sha1|upper }}</dd>
 
 
                 </dl>
