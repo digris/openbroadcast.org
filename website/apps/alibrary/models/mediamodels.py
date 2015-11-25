@@ -496,9 +496,15 @@ class Media(MigrationMixin):
     def get_playout_file(self, absolute=False):
 
         # at the moment unified to mp3 format
-        abs_path = os.path.join(self.get_directory(absolute=True), 'versions', 'base.mp3')
-        if os.path.islink(abs_path):
-            abs_path = self.master.path
+        #abs_path = os.path.join(self.get_directory(absolute=True), 'versions', 'base.mp3')
+        #if os.path.islink(abs_path):
+        #    abs_path = self.master.path
+
+        abs_path = self.master.path
+
+        print '---'
+        print abs_path
+        print
 
         if not absolute:
             abs_path = abs_path.replace(settings.MEDIA_ROOT + '/', '')
