@@ -321,7 +321,7 @@ def format_post_save(sender, instance, created, **kwargs):
     if do_process:
         if USE_CELERYD:
             log.debug('sending job to task queue')
-            obj.process_format.apply_async()
+            obj.process_format.apply_async(queue='convert')
         else:
             log.debug('processing task in foreground')
             obj.process_format()

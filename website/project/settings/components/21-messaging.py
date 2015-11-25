@@ -37,35 +37,39 @@ BROKER_URL = 'amqp://obp:obp@127.0.0.1:5672/openbroadcast.org'
 PLAYOUT_BROKER_URL = 'amqp://obp:obp@127.0.0.1:5672/openbroadcast.org/playout'
 
 CELERY_IMPORTS = (
-    'importer.util.importer', # ?
+    'importer.util.importer',
     'lib.pypo_gateway.gateway',
-    'media_asset.models',
 )
 
 CELERY_ROUTES = {
-    #'importer.models.process_task': {'queue': 'import'},
     # assign import task to single-instance worker
     'importer.models.import_task': {'queue': 'import'},
     'importer.models.process_task': {'queue': 'process'},
     'importer.util.importer.mb_complete_media_task': {'queue': 'complete'},
+
     #
     'alibrary.models.generate_media_versions_task': {'queue': 'convert'},
     'alibrary.models.create_waveform_image': {'queue': 'convert'},
 
     #
-    'media_asset.models.process_waveform': {'queue': 'process'},
+    'media_asset.models.process_waveform': {'queue': 'convert'},
     'media_asset.models.process_format': {'queue': 'convert'},
+    'media_asset.process_format': {'queue': 'convert'},
+
+
+    'exporter.models.process_task': {'queue': 'export'},
+
 }
 
 
 CELERYBEAT_SCHEDULE = {
     'exporter-cleanup': {
         'task': 'exporter.models.cleanup_exports',
-        'schedule': timedelta(seconds=600),
+        'schedule': timedelta(seconds=660),
     },
     'importer-cleanup': {
-        'task': 'importer.models.reset_hangin_files',
-        'schedule': timedelta(seconds=600),
+        'task': 'importer.models.reset_hanging_files',
+        'schedule': timedelta(seconds=300),
     },
 }
 
