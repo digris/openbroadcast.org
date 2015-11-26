@@ -11,7 +11,7 @@ IstatsApp = function () {
 
         setInterval(function(){
             self.load();
-        }, 60000);
+        }, 12000);
 
         self.load();
     };
@@ -25,12 +25,9 @@ IstatsApp = function () {
 
     this.display = function(data) {
 
-        debug.debug('load')
-
         d = {
             objects: data
         }
-
 
         var html = nj.render('istats/nj/server.html', d);
         self.dom_element.html(html)

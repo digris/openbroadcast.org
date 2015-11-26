@@ -13941,6 +13941,13 @@ body.loginas-active .navbar.navbar-fixed-top .container {
   border-top: 15px solid rgba(102, 51, 204, 0.95);
 }
 
+/* line 5, ../sass/apps/_istats.sass */
+#istats_container .display-name {
+  color: #a5a5a5;
+  padding: 0;
+  margin: 7px 0 0 0;
+}
+
 /*!
  * qTip2 - Pretty powerful tooltips - v2.0.1-4-g
  * http://qtip2.com

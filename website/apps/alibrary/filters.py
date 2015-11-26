@@ -304,9 +304,9 @@ class LabelFilter(django_filters.FilterSet):
 
 class MediaFilter(django_filters.FilterSet):
     license__name = CharListFilter(label=_("License"))
-    base_bitrate = CharListFilter(label=_("Bitrate"))
-    base_format = CharListFilter(label=_("Format"))
-    base_samplerate = CharListFilter(label=_("Samplerate (Hz)"))
+    master_bitrate = CharListFilter(label=_("Bitrate (kbps)"))
+    master_encoding = CharListFilter(label=_("Format / Codec"))
+    master_samplerate = CharListFilter(label=_("Samplerate (Hz)"))
     mediatype = CharListFilter(label=_("Type"))
     PROCESSED_CHOICES = (
         (0, _('Waiting')),
@@ -333,11 +333,21 @@ class MediaFilter(django_filters.FilterSet):
         (10, _('Bb')),
         (11, _('B')),
     )
-    #processed = django_filters.ChoiceFilter(label=_("Status"), choices=PROCESSED_CHOICES)
 
     class Meta:
         model = Media
-        fields = ['license__name', 'mediatype', 'base_bitrate', 'base_format', 'base_samplerate', 'conversion_status', 'processed', 'tempo', 'key', 'lyrics_language', 'version']
+        fields = [
+            'license__name',
+            'mediatype',
+            'master_bitrate',
+            'master_encoding',
+            'master_samplerate',
+            #'processed',
+            'tempo',
+            'key',
+            'lyrics_language',
+            'version'
+        ]
 
     @property
     def filterlist(self):
@@ -377,10 +387,10 @@ class MediaFilter(django_filters.FilterSet):
 
                     filter_.entries = nd
 
-                elif name == 'base_format':
+                elif name == 'master_encoding':
                     nd = []
                     for d in ds:
-                        nd.append([d[0], d[1], d[0]])
+                        nd.append([d[0], d[1], d[0].upper()])
 
                     filter_.entries = nd
 
@@ -438,9 +448,6 @@ class MediaFilter(django_filters.FilterSet):
                 if ds not in flist:
                     flist.append(filter_)
 
-
-
-
             """
             add some custom queries
             """
@@ -455,14 +462,7 @@ class MediaFilter(django_filters.FilterSet):
             }
             flist.append(cf)
 
-
-
-
             self._filterlist = flist
-
-
-
-
 
         return self._filterlist
 

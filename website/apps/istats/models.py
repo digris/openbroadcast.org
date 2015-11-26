@@ -1,6 +1,6 @@
 from celery.task.control import inspect
 
-from exporter.models import Export
+from exporter.models import Export, ExportItem
 from importer.models import ImportFile
 
 class Stats(object):
@@ -9,11 +9,9 @@ class Stats(object):
         self.celery_inspector = inspect()
 
 
-
     def get_server_stats(self):
 
         stats = []
-
         ts = {
                 'key': 'exporter',
                 'display': 'Exports',

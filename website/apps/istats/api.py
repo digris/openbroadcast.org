@@ -8,8 +8,6 @@ from tastypie.utils import trailing_slash
 
 from .models import Stats
 
-
-
 class StatsResource(Resource):
     
     base_url = Site.objects.get_current().domain
@@ -36,27 +34,10 @@ class StatsResource(Resource):
                 name="istats_api_server"),
         ]
 
-    
-    
-    
     def server_stats(self, request, **kwargs):
 
-
         s = Stats()
-
         bundle = s.get_server_stats()
-
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
