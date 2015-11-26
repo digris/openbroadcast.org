@@ -17,7 +17,7 @@ from actstream.filters import ActionFilter
 
 
 PAGINATE_BY = getattr(settings, 'ACTSTREAM_PAGINATE_BY', (30,60,120))
-PAGINATE_BY_DEFAULT = getattr(settings, 'ACTSTREAM_PAGINATE_BY_DEFAULT', 30)
+PAGINATE_BY_DEFAULT = getattr(settings, 'ACTSTREAM_PAGINATE_BY_DEFAULT', 120)
 
 class ActionListView(PaginationMixin, ListView):
     
