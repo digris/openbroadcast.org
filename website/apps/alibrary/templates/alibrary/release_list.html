@@ -1,5 +1,5 @@
 {% extends "layout_base.html" %}
-{% load spurl adv_cache hash_tags i18n truncate dajaxice_templatetags sekizai_tags webdesign %}
+{% load spurl adv_cache hash_tags i18n truncate dajaxice_templatetags sekizai_tags webdesign pageguide_tags %}
 
 
 
@@ -34,45 +34,7 @@
     </div>
     <!-- heading / icon (large one) -->
 
-    <!-- guide -->
-    {% addtoblock "js-post" %}
-        <script>
-            $(function () {
-                tl.pg.init({ /* optional preferences go here */ });
-                $('#tlyPageGuide').css('display', 'block');
-            })
-        </script>
-    {% endaddtoblock %}
 
-    <!--
-    <ul id="tlyPageGuide" data-tourtitle="REPLACE THIS WITH A TITLE" style="display: none;">
-        <li class="tlypageguide_left" data-tourtarget="#tagcloud_inline_toggle">
-            <div>
-                Here is the first item description. The number will appear to the left of the element.
-            </div>
-        </li>
-        <li class="tlypageguide_bottom" data-tourtarget="#aplayer_inline">
-            <div>
-                Here is the second item description. The number will appear to the right of the element.
-            </div>
-        </li>
-        <li class="tlypageguide_bottom" data-tourtarget=".filter_context">
-            <div>
-                Here is the third item description. The number will appear above the element.
-            </div>
-        </li>
-        <li class="tlypageguide_top" data-tourtarget=".action-group">
-            <div>
-                Here is the fourth item description. The number will appear below the element.
-            </div>
-        </li>
-        <li class="tlypageguide_bottom" data-tourtarget=".list_style">
-            <div>
-                Here is the fourth item description. The number will appear below the element.
-            </div>
-        </li>
-    </ul>
-    -->
 
 
 
@@ -104,6 +66,9 @@
 
 
 {% block inner %}
+
+
+
 
 
     <div class="listhead">
@@ -262,6 +227,10 @@
         </div>
     </div>
     <!-- end: listing footer -->
+
+
+
+    {% pageguide_inline 'alibrary.release.list' %}
 
 {% endblock %}
 

@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'tagging',
     'ac_tagging',
     'actstream',
+    'pageguide',
 
     # legacy & migration
     'obp_legacy',

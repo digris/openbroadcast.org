@@ -35,7 +35,7 @@
 
 
     {{ object.filename }}
-    <small><!--[{{ object.mimetype }}]--> (debug: {{ object.id }})</small>
+    <small class="admin-info" style="display: none;"><a data-importfile_id="{{ object.id }}" href="#">admin: {{ object.id }}</a></small>
     {% if object.status == 'duplicate' %}<span class="warning pull-right">Duplicate</span>{% endif %}
 
     {% if object.error %}<span class="warning pull-right">Error: {{ object.error }}</span>{% endif %}

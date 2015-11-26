@@ -48,7 +48,10 @@ class ImportAdmin(admin.ModelAdmin):
     actions = [status_set_ready]
 
 class ImportFileAdmin(admin.ModelAdmin):    
-    
+
+
+    save_on_top = True
+
     list_display = (
         'created',
         'filename',
@@ -59,6 +62,7 @@ class ImportFileAdmin(admin.ModelAdmin):
     )
 
     search_fields = (
+        'id',
         'filename',
         'media__name',
     )

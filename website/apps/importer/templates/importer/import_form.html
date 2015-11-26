@@ -1,6 +1,6 @@
 {% extends "layout_edit.html" %}
 
-{% load i18n sekizai_tags straight_include dajaxice_templatetags pushy_tags istats_tags %}
+{% load i18n sekizai_tags straight_include dajaxice_templatetags pushy_tags istats_tags pageguide_tags %}
 
 {% block object_type %}import{% endblock %}
 
@@ -96,7 +96,6 @@
 
 $(document).ready(function() {
 
-
 	$(function () {
 
 		importer.ui = new ImporterUi();
@@ -112,12 +111,42 @@ $(document).ready(function() {
 
 	   importer.ui.init();
 
-
-
 	});
 });
 </script>
 {% endaddtoblock %}
+
+{% if request.user.is_staff %}
+
+    {% addtoblock "js-post" %}
+        <script>
+            $(function () {
+                $(document).on('mouseover', '.item .admin-info a', function(e){
+                    e.preventDefault();
+                    var id = $(this).data('importfile_id');
+                    var url = '/admin/importer/importfile/' + id + '/';
+
+                    $(this).attr('href', url);
+
+                    //document.location.href = url;
+                    //var win = window.open(url, '_blank');
+                })
+            });
+
+
+        </script>
+    {% endaddtoblock %}
+
+    {% addtoblock "css" %}
+        <style>
+            .item .admin-info {
+                display: inline !important;
+            }
+        </style>
+    {% endaddtoblock %}
+
+{% endif %}
+
 
 
 <div class="item_inner">
@@ -249,6 +278,8 @@ $(document).ready(function() {
 {% straight_include "importer/template-result-imported.html" %}
 </script>
 
+
+    {% pageguide_inline 'importer.importer' %}
 
 
 {% endblock %}

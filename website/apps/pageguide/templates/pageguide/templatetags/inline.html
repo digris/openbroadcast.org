@@ -1,0 +1,22 @@
+{% load sekizai_tags i18n %}
+{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}pageguide/js/pageguide.js"></script>{% endaddtoblock %}
+
+
+{% addtoblock "js-post" %}
+    <script>
+        $(function () {
+            /*
+            tl.pg.init({
+                pg_caption: 'Quick Guide',
+                default_zindex: 1060,
+                auto_refresh: true
+            });
+            */
+        })
+    </script>
+{% endaddtoblock %}
+
+<ul id="tlyPageGuide" data-tourtitle="{% trans 'Bla Bli Blup!' %}">
+{% include render_template %}
+</ul>
+
