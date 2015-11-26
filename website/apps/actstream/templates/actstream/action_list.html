@@ -83,7 +83,7 @@
 				</td>
 
 				<td>
-                    <span class="pull-right">{{ action.timestamp }} {% trans "ago" %}</span>
+                    <span class="pull-right">{{ action.timestamp|date:'H:i' }}</span>
                 </td>
 			</tr>
 			{% endfor %}
