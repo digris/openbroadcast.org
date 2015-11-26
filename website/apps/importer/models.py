@@ -267,7 +267,7 @@ class ImportFile(BaseModel):
     )
 
     status = models.PositiveIntegerField(default=STATUS_INIT, choices=STATUS_CHOICES)
-    filename = models.CharField(max_length=256, blank=True, null=True)
+    filename = models.CharField(max_length=256, blank=True, null=True, db_index=True)
     file = models.FileField(max_length=256, upload_to=clean_upload_path)
     import_session = models.ForeignKey(Import, verbose_name=_('Import'), null=True, related_name='files')
     mimetype = models.CharField(max_length=100, blank=True, null=True)
