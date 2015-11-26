@@ -65,7 +65,7 @@
                         {% if action.actor == user and 1 == 2 %}
                         {% trans "You" %}
                         {% else %}
-                        <a href="{{ action.actor.get_profile.get_absolute_url }}">{% firstof action.actor.get_full_name action.actor %}</a>
+                        <a href="{{ action.actor.get_absolute_url }}">{% firstof action.actor.get_full_name action.actor %}</a>
                         {% endif %}
 
                     {% endif %}
