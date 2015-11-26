@@ -330,6 +330,9 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         #
         # messages.add_message(self.request, messages.INFO, msg)
 
+        self.object.last_editor = self.request.user
+        actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
+
         # revisions disabled -> needs refactoring
         self.object = form.save()
         messages.add_message(self.request, messages.INFO, 'Object updated')

@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+import actstream
 from django.views.generic import DetailView, ListView, UpdateView
 from django.shortcuts import get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect, HttpResponseForbidden
@@ -315,6 +318,11 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         # messages.add_message(self.request, messages.INFO, msg)
 
         # revisions disabled -> needs refactoring
+
+
+        self.object.last_editor = self.request.user
+        actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
+
         self.object = form.save()
         messages.add_message(self.request, messages.INFO, 'Object updated')
 

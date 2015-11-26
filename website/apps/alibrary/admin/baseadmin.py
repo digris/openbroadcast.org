@@ -113,6 +113,7 @@ class ReleaseAdmin(BaseAdmin):
         'label',
         'owner',
         'creator',
+        'last_editor',
         'publisher',
     ]
 
@@ -120,7 +121,7 @@ class ReleaseAdmin(BaseAdmin):
         (None,  {
                 'fields': ['name', 'slug', 'main_image', ('label', 'catalognumber'), ('releasedate', 'release_country', 'license'), ('releasetype',), 'enable_comments', 'main_format', 'd_tags', 'description']
                 }),
-        ('Users', {'fields' : ['owner', 'creator', 'publisher']}),
+        ('Users', {'fields' : ['owner', 'creator', 'last_editor', 'publisher']}),
     ]
 
 
@@ -218,13 +219,14 @@ class ArtistAdmin(BaseAdmin):
     """"""
     fieldsets = [
         (None,               {'fields': ['name', 'slug', 'main_image', 'real_name', 'country', ('listed', 'disable_link',), 'enable_comments', 'biography', 'excerpt', 'folder', ]}),
-        ('Users', {'fields' : ['owner', 'creator', 'publisher']}),
+        ('Users', {'fields' : ['owner', 'creator', 'last_editor', 'publisher']}),
         ('Various', {'fields' : ['booking_contact', 'email',]}),
     ]
 
     raw_id_fields = [
         'owner',
         'creator',
+        'last_editor',
         'publisher',
     ]
     
@@ -305,7 +307,7 @@ class MediaAdmin(BaseAdmin):
                  ['name', 'slug', 'isrc', 'filename', 'uuid', ('tracknumber', 'medianumber', 'opus_number'), 'mediatype', 'version', ('release', 'release_link'), 'artist', 'license', 'd_tags', 'echonest_id',]
                  }),
                  
-        ('Users', {'fields' : ['owner', 'creator', 'publisher']}),
+        ('Users', {'fields' : ['owner', 'creator', 'last_editor', 'publisher']}),
         ('Text', {'fields' : ['description', 'lyrics',]}),
                  
         # ('Storage related',  {
@@ -332,6 +334,7 @@ class MediaAdmin(BaseAdmin):
     raw_id_fields = [
         'owner',
         'creator',
+        'last_editor',
         'publisher',
         'release',
         'artist',
@@ -359,12 +362,13 @@ class LabelAdmin(BaseAdmin):
         ('Contact', {'fields' : ['address', 'country', ('phone', 'fax'), 'email']}),
         ('Settings', {'fields' : ['listed', 'disable_link', 'disable_editing']}),
         ('Relations', {'fields': ['parent',], 'classes': ['']}),
-        ('Users', {'fields' : [('owner', 'creator', 'publisher'),]}),
+        ('Users', {'fields' : [('owner', 'creator', 'last_editor', 'publisher'),]}),
     ]
 
     raw_id_fields = [
         'owner',
         'creator',
+        'last_editor',
         'publisher',
         'parent',
     ]

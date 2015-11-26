@@ -75,6 +75,7 @@ class Label(MPTTModel, MigrationMixin):
 
     owner = models.ForeignKey(User, blank=True, null=True, related_name="labels_owner", on_delete=models.SET_NULL)
     creator = models.ForeignKey(User, blank=True, null=True, related_name="labels_creator", on_delete=models.SET_NULL)
+    last_editor = models.ForeignKey(User, blank=True, null=True, related_name="labels_last_editor", on_delete=models.SET_NULL)
     publisher = models.ForeignKey(User, blank=True, null=True, related_name="labels_publisher", on_delete=models.SET_NULL)
 
     listed = models.BooleanField(verbose_name='Include in listings', default=True, help_text=_('Should this Label be shown on the default Label-list?'))

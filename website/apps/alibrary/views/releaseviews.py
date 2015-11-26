@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.views.generic import DetailView, ListView, UpdateView
 from django.shortcuts import get_object_or_404, render_to_response
 from django import http
@@ -389,6 +391,12 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
 
         # revisions disabled -> needs refactoring
+
+
+        self.object.last_editor = self.request.user
+        actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
+
+
         self.object = form.save()
 
         self.formset_media_valid(named_formsets['media'])

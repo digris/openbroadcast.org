@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import uuid
 import tagging
 import logging
 from django.db import models
@@ -27,6 +26,7 @@ from alibrary.models import *
 from alibrary.util.slug import unique_slugify
 from alibrary.util.relations import get_service_by_url
 from lib.fields import extra
+import uuid
 
 log = logging.getLogger(__name__)
 
@@ -301,7 +301,8 @@ class License(MPTTModel, TranslatableModel, MigrationMixin):
     name = models.CharField(max_length=200)
     
     slug = models.SlugField(max_length=100, unique=False)
-    uuid = models.CharField(max_length=36, unique=False, default=str(uuid.uuid4), editable=False)
+    #uuid = models.CharField(max_length=36, unique=False, default=str(uuid.uuid4), editable=False)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     #uuid = models.UUIDField(default=uuid.uuid4, editable=False, max_length=64)
 
     key = models.CharField(verbose_name=_("License key"), help_text=_("used e.g. for the icon-names"), max_length=36, blank=True, null=True)

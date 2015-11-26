@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+import actstream
 import reversion
 from django.views.generic import DetailView, ListView, UpdateView
 from django.shortcuts import get_object_or_404, render_to_response
@@ -334,6 +336,9 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         #     reversion.set_comment(msg)
         #
         # messages.add_message(self.request, messages.INFO, msg)
+
+        self.object.last_editor = self.request.user
+        actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
 
         # revisions disabled -> needs refactoring
         self.object = form.save()

@@ -1148,8 +1148,18 @@
 
 
 
-
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// activities
+////////////////////////////////////////////////////////////////////////////////////////////////////
+.listview.container.actions
+  table
+    tr:first-child > td
+      border-top: none
+    tr.day-separator > td
+      padding: 10px
+      text-align: center
+      text-transform: capitalize
+      color: #5a5a5a
 
 
 
@@ -1245,40 +1255,6 @@
     color: $main-a
 
 
-
-/* ---------- tagbar/search ---------- */
-.__searchbar
-
-  &.hover
-    background-color: #333 !important
-
-  // override defaults. TODO: remove original styles
-
-  .tagbar
-    background: none
-    border: none
-
-  margin-top: 8px
-
-  //position: absolute // TODO: how to achieve this.. ???
-  //width: 100%
-  z-index: 1002
-  #searchbar_input
-    border: 0px none
-    background: none repeat scroll 0% 0% transparent
-    //margin: 5px 2px 2px 5px
-    margin: 0px
-    padding: 2px 2px 0px 4px
-    &.blur
-      color: #999999
-    &.focus
-      color: #333333
-  a #searchbar_input
-    margin: 0 0 0 0
-    &.blur
-      color: $main-a
-    &.focus
-      color: #333333
 
 
 /* ---------- tagbar/search for gianluca :) ---------- */

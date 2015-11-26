@@ -123,6 +123,7 @@ class Artist(MigrationMixin):
     # user relations
     owner = models.ForeignKey(User, blank=True, null=True, related_name="artists_owner", on_delete=models.SET_NULL)
     creator = models.ForeignKey(User, blank=True, null=True, related_name="artists_creator", on_delete=models.SET_NULL)
+    last_editor = models.ForeignKey(User, blank=True, null=True, related_name="artists_last_editor", on_delete=models.SET_NULL)
     publisher = models.ForeignKey(User, blank=True, null=True, related_name="artists_publisher", on_delete=models.SET_NULL)
 
     # identifiers
