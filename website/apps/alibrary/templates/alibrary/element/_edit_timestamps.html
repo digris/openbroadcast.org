@@ -1,10 +1,11 @@
-{% load i18n %}
+{% load i18n humanize %}
 
 <dt>
     {% trans "Date Created" %}:
 </dt>
 <dd>
-    {{ object.created|date:"DATETIME_FORMAT" }}
+    {{ object.created|date:'DATETIME_FORMAT' }}
+    {# object.created|naturaltime #}
     {% if object.creator %}
         <span class="key"> - {% trans "by" %} </span>
         <span class="value">
@@ -17,7 +18,7 @@
     {% trans "Last Updated" %}:
 </dt>
 <dd>
-    {{ object.updated|date:"DATETIME_FORMAT" }}
+    {{ object.updated|date:'DATETIME_FORMAT' }}
     {% if object.last_editor %}
         <span class="key"> - {% trans "by" %} </span>
         <span class="value">

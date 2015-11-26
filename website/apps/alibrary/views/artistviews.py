@@ -348,13 +348,11 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
         return HttpResponseRedirect('')
 
-    def formset_relation_valid(self, formset):
-
-        relations = formset.save(commit=False)
-        for relation in relations:
-            #relation.who = self.request.user
-            #relation.contact = self.object
-            relation.save()
+    # TODO: investigate if this can be removed
+    # def formset_relation_valid(self, formset):
+    #     relations = formset.save(commit=False)
+    #     for relation in relations:
+    #         relation.save()
 
 
     

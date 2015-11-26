@@ -23,25 +23,13 @@ urlpatterns = patterns('',
 
 
     
-    
-    # media                   
-    #(r'^tracks/$', MediaListView.as_view()),              
-    #url(r'^tracks/(?P<slug>[-\w]+)/$', MediaDetailView.as_view(), name='TrackDetailView'),
-    
     # views to serve protected (buyed) files
     url(r'^releases/(?P<slug>[-\w]+)/download/(?P<format>[a-z0-9]+)/(?P<version>[a-z0-9]+)/$', 'alibrary.views.release_download', name='release-zip-view'),
     url(r'^tracks/(?P<slug>[-\w]+)/download/(?P<format>[a-z0-9]+)/(?P<version>[a-z0-9]+)/$', 'alibrary.views.media_download', name='media-zip-view'),
     
     # html5 stream
     url(r'^tracks/(?P<uuid>[-\w]+)/stream_html5/$', 'alibrary.views.stream_html5', name='alibrary-media-stream_html5'),
-    
-    
-    # playlist urls (for embedding)
-    url(r'^releases/(?P<slug>[-\w]+)/playlist/(?P<format>[a-z0-9]+)/(?P<version>[a-z0-9]+)/$', 'alibrary.views.release_playlist', name='release-playlist-view'),
 
-    
-    # REST-API urls
-    # url(r'^api/$', direct_to_template, {'template': 'alibrary/api/index.html'}),
 
     
     

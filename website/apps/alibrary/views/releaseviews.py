@@ -419,10 +419,11 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         return HttpResponseRedirect('')
 
 
-    def formset_relation_valid(self, formset):
-        relations = formset.save(commit=False)
-        for relation in relations:
-            relation.save()
+    # TODO: investigate if this can be removed
+    # def formset_relation_valid(self, formset):
+    #     relations = formset.save(commit=False)
+    #     for relation in relations:
+    #         relation.save()
 
 
     def formset_media_valid(self, formset):
@@ -458,160 +459,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         self.do_publish = formset.cleaned_data.get('publish', False)
 
     
-    
-class __ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
-    model = Release
-    template_name = 'alibrary/release_edit.html'
-    success_url = '#'
-    form_class = ReleaseForm
-
-    permission_required = 'alibrary.change_release'
-    raise_exception = True
-    
-    def __init__(self, *args, **kwargs):
-        super(ReleaseEditView, self).__init__(*args, **kwargs)
-        
-    def get_initial(self):
-        self.initial.update({ 'user': self.request.user })
-        return self.initial
-        
-
-    def get_context_data(self, **kwargs):
-
-        print 'GET CONTEXT DATA'
-        print kwargs
-        
-        context = super(ReleaseEditView, self).get_context_data(**kwargs)
-        
-        # 
-        context['release_bulkedit_form'] = ReleaseBulkeditForm(instance=self.object)
-        context['action_form'] = ReleaseActionForm(instance=self.object)
-
-        context['releasemedia_form'] = kwargs.get('releasemedia_form', ReleaseMediaFormSet(instance=self.object))
-
-
-        context['relation_form'] = ReleaseRelationFormSet(instance=self.object)
-        context['albumartist_form'] = AlbumartistFormSet(instance=self.object)
-
-        context['user'] = self.request.user
-        context['request'] = self.request
-        
-        return context
-    
-
-
-    #def dispatch(self, request, *args, **kwargs):
-    #    if not request.user.has_perm('alibrary.change_release'):
-    #        return HttpResponseForbidden()
-    #    return super(ReleaseEditView, self).dispatch(request, *args, **kwargs)
-
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        # get the inline forms
-        releasemedia_form = context['releasemedia_form']
-        relation_form = context['relation_form']
-
-
-        valid = False
-
-
-        if form.is_valid():
-
-            self.object.tags = form.cleaned_data['d_tags']
-
-            # temporary instance to validate inline forms against
-            with reversion.create_revision():
-                tmp = form.save(commit=False)
-            releasemedia_form = ReleaseMediaFormSet(self.request.POST, instance=tmp)
-            relation_form = ReleaseRelationFormSet(self.request.POST, instance=tmp)
-            albumartist_form = AlbumartistFormSet(self.request.POST, instance=tmp)
-
-        if relation_form.is_valid():
-            relation_form.save()
-
-        if albumartist_form.is_valid():
-            albumartist_form.save()
-
-        if releasemedia_form.is_valid():
-
-            valid = True
-
-            print "releasemedia_form.cleaned_data:",
-            print releasemedia_form.cleaned_data
-
-            releasemedia_form.save()
-
-            for te in releasemedia_form.cleaned_data:
-
-                print te['artist']
-                try:
-                    if not te['artist'].pk:
-                        print 'no artist yet - create: %s' % te['artist']
-                        te['artist'].save()
-                        te['id'].artist = te['artist']
-                        te['id'].save()
-                except:
-                    pass
-
-
-            """
-            handle publish action
-            """
-            action_form = ReleaseActionForm(self.request.POST)
-            publish = False
-            if action_form.is_valid():
-                publish = action_form.cleaned_data['publish']
-
-
-            """"""
-            msg = change_message.construct(self.request, form, [relation_form, releasemedia_form])
-            with reversion.create_revision():
-                obj = form.save()
-                if publish:
-                    msg = '%s. \n %s' %('Published release', msg)
-
-                reversion.set_user(self.request.user)
-                reversion.set_comment(msg)
-            form.save_m2m()
-
-
-            """
-            # publishing is depreciated
-            if publish:
-                from datetime import datetime
-                obj.publish_date = datetime.now()
-                obj.publisher = self.request.user
-
-                obj.save()
-            """
-
-
-
-        if valid:
-            return HttpResponseRedirect('#')
-        else:
-
-            from lib.util.form_errors import merge_form_errors
-            form_errors = merge_form_errors([
-                form,
-                releasemedia_form,
-                relation_form,
-            ])
-
-            print '//////////////////////////////////////////'
-            print form_errors
-
-
-            return self.render_to_response(self.get_context_data(
-                form=form,
-                releasemedia_form=releasemedia_form,
-                form_errors=form_errors
-            ))
-
-
-    
 
     
 # autocompleter views
@@ -702,22 +550,4 @@ class JSONResponseMixin(object):
     
 class JSONReleaseDetailView(JSONResponseMixin, ReleaseDetailView):
     pass
-
-
-
-def release_playlist(request, slug, format, version):
-    
-    object = get_object_or_404(Release, slug=slug)
-
-    if format in ['mp3']:
-        pass
-    else:
-        raise Http404
-
-    return render_to_response('alibrary/xml/rss_playlist.xml', { 'object': object }, context_instance=RequestContext(request))
-    # return render_to_response('alibrary/xml/rss_playlist.xml', data, content_type="application/xhtml+xml")
-    
-
-
-    
 
