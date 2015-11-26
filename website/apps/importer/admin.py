@@ -49,7 +49,7 @@ class ImportAdmin(admin.ModelAdmin):
     search_fields = (
         'user__username',
         'files__filename',
-        'files__media__name',
+        #'files__media__name',
     )
     list_filter = ('status', )
     readonly_fields = (
