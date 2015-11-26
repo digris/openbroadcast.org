@@ -144,6 +144,7 @@ PlaylistEditor = function () {
                 jQuery.ajax({
                     url: url,
                     type: 'POST',
+                    //data: JSON.stringify(post_data),
                     data: post_data,
                     dataType: "json",
                     contentType: "application/json",
@@ -286,10 +287,10 @@ PlaylistEditor = function () {
                     $.ajax({
                         url: self.api_url + 'collect/',
                         type: 'POST',
-                        data: {
+                        data: JSON.stringify({
                             ids: [data.id].join(','),
                             ct: 'media'
-                        },
+                        }),
                         dataType: "json",
                         contentType: "application/json",
                         success: function (data) {

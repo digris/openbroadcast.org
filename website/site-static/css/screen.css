@@ -11921,7 +11921,6 @@ div.listview.export .item.done .action.download a, div.listview.export .item.dow
 section.comments.on-site {
   background-color: white !important;
   margin-top: 24px;
-  /* ---- threaded comments ---- */
 }
 /* line 7, ../sass/apps/_comment.sass */
 section.comments.on-site div.header h3 {
@@ -11954,12 +11953,10 @@ section.comments.on-site .comment-moderated-flag {
 }
 /* line 29, ../sass/apps/_comment.sass */
 section.comments.on-site #div_id_honeypot {
-  /* Hide the honeypot from django_comments by default */
   display: none;
 }
-/* line 34, ../sass/apps/_comment.sass */
+/* line 32, ../sass/apps/_comment.sass */
 section.comments.on-site ul.comment-list-wrapper {
-  /* to avoid touching our own "ul" tags, our tags are explicitly decorated with a class selector */
   margin-left: 0;
   padding-left: 0;
   margin-bottom: 12px;
@@ -11967,7 +11964,7 @@ section.comments.on-site ul.comment-list-wrapper {
   border-left: 1px solid #e7e7e7;
   padding-left: 10px;
 }
-/* line 44, ../sass/apps/_comment.sass */
+/* line 39, ../sass/apps/_comment.sass */
 section.comments.on-site ul.comment-list-wrapper ul.comment-list-wrapper {
   border-left: 1px solid #e7e7e7;
   padding-left: 10px;
@@ -11977,22 +11974,49 @@ section.comments.on-site ul.comment-list-wrapper ul.comment-list-wrapper {
   border-top: none;
   border-bottom: none;
 }
-/* line 53, ../sass/apps/_comment.sass */
+/* line 48, ../sass/apps/_comment.sass */
 section.comments.on-site li.comment-wrapper {
   list-style: none;
   margin-left: 0;
   padding-left: 0;
 }
-/* line 58, ../sass/apps/_comment.sass */
+/* line 53, ../sass/apps/_comment.sass */
 section.comments.on-site .js-comments-form-orig-position .comment-cancel-reply-link {
   display: none;
 }
-/* line 61, ../sass/apps/_comment.sass */
+/* line 56, ../sass/apps/_comment.sass */
 section.comments.on-site .comment-header {
   color: #999999;
 }
-/* line 70, ../sass/apps/_comment.sass */
-section.comments.on-site div.form form textarea {
+
+/* line 65, ../sass/apps/_comment.sass */
+section.comments.on-site div.form form .controls,
+section.comments.on-site .comments-wrapper form .controls,
+section.comments.on-site #comments-wrapper form .controls {
+  margin-left: 0;
+}
+/* line 68, ../sass/apps/_comment.sass */
+section.comments.on-site div.form form .form-group,
+section.comments.on-site .comments-wrapper form .form-group,
+section.comments.on-site #comments-wrapper form .form-group {
+  text-align: right;
+}
+/* line 71, ../sass/apps/_comment.sass */
+section.comments.on-site div.form form .form-group input[name="preview"],
+section.comments.on-site .comments-wrapper form .form-group input[name="preview"],
+section.comments.on-site #comments-wrapper form .form-group input[name="preview"] {
+  display: none;
+}
+/* line 75, ../sass/apps/_comment.sass */
+section.comments.on-site div.form form #div_id_comment,
+section.comments.on-site .comments-wrapper form #div_id_comment,
+section.comments.on-site #comments-wrapper form #div_id_comment {
+  background-color: greenyellow;
+}
+/* line 78, ../sass/apps/_comment.sass */
+section.comments.on-site div.form form textarea,
+section.comments.on-site .comments-wrapper form textarea,
+section.comments.on-site #comments-wrapper form textarea {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -12002,91 +12026,19 @@ section.comments.on-site div.form form textarea {
   width: 100%;
   height: 48px;
 }
-/* line 79, ../sass/apps/_comment.sass */
-section.comments.on-site div.form form .form-actions {
+/* line 86, ../sass/apps/_comment.sass */
+section.comments.on-site div.form form .form-actions,
+section.comments.on-site .comments-wrapper form .form-actions,
+section.comments.on-site #comments-wrapper form .form-actions {
   border: none;
   margin-top: 0;
   padding-top: 0;
 }
-/* line 84, ../sass/apps/_comment.sass */
-section.comments.on-site div.form form .control-label {
+/* line 91, ../sass/apps/_comment.sass */
+section.comments.on-site div.form form .control-label,
+section.comments.on-site .comments-wrapper form .control-label,
+section.comments.on-site #comments-wrapper form .control-label {
   display: none;
-}
-/* line 90, ../sass/apps/_comment.sass */
-section.comments.on-site .__disabled div.header h3 {
-  text-transform: none;
-  font-weight: normal;
-  color: #5a5a5a;
-  font-size: 14px;
-}
-/* line 99, ../sass/apps/_comment.sass */
-section.comments.on-site .__disabled div.form form textarea {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  background: #fafafa;
-  border: 1px solid #dddddd;
-  border-top: none;
-  width: 100%;
-  height: 48px;
-}
-/* line 108, ../sass/apps/_comment.sass */
-section.comments.on-site .__disabled div.form form .form-actions {
-  border: none;
-  margin-top: 0;
-  padding-top: 0;
-}
-/* line 113, ../sass/apps/_comment.sass */
-section.comments.on-site .__disabled div.form form .control-label {
-  display: none;
-}
-/* line 119, ../sass/apps/_comment.sass */
-section.comments.on-site .__disabled div.listing .item {
-  border: none !important;
-  padding: 4px 0 4px 0 !important;
-  border-bottom: 1px solid #ececec;
-}
-/* line 123, ../sass/apps/_comment.sass */
-section.comments.on-site .__disabled div.listing .item:nth-child(odd) {
-  background: #fafafa;
-}
-/* line 126, ../sass/apps/_comment.sass */
-section.comments.on-site .__disabled div.listing .item .col-left {
-  max-width: 640px;
-  float: left;
-}
-/* line 129, ../sass/apps/_comment.sass */
-section.comments.on-site .__disabled div.listing .item .col-left .comment-text > p {
-  padding-left: 5px;
-}
-/* line 132, ../sass/apps/_comment.sass */
-section.comments.on-site .__disabled div.listing .item .col-right {
-  float: right;
-}
-/* line 135, ../sass/apps/_comment.sass */
-section.comments.on-site .__disabled div.listing .item .col-right ul {
-  background-repeat: no-repeat;
-  background-position: right;
-  padding-right: 40px;
-  background-size: 34px;
-}
-/* line 141, ../sass/apps/_comment.sass */
-section.comments.on-site .__disabled div.listing .item .col-right .comment-date {
-  color: #a5a5a5;
-  font-size: 90%;
-  padding-right: 5px;
-}
-/* line 146, ../sass/apps/_comment.sass */
-section.comments.on-site .__disabled div.listing .item img {
-  width: 48px;
-  height: 48px;
-  float: left;
-  margin-right: 10px;
-}
-/* line 154, ../sass/apps/_comment.sass */
-section.comments.on-site .__disabled div.listing .item.media {
-  background: #f3f0fb;
-  border-bottom: none;
 }
 
 /* line 2, ../sass/apps/_notification.sass */
