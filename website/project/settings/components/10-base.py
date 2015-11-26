@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'legacy'))
 DEBUG = False
 SERVE_MEDIA = False
 COMPRESS_OFFLINE = False
-COMPRESS_ENABLED = False
+COMPRESS_ENABLED = True
 
 ################################################################################
 # language settings

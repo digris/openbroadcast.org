@@ -9,16 +9,12 @@ PushyAssetApp = function () {
 
     this.init = function () {
 
-        debug.debug('PushyAssetApp - init');
-
         pushy.subscribe('pushy_asset/refresh/', function () {
-            debug.debug('pushy callback');
             self.refresh();
         });
     };
 
     this.refresh = function () {
-        debug.debug('PushyAssetApp - refresh');
 
         var q = '?reload=' + new Date().getTime();
         $('link[rel="stylesheet"]').each(function () {

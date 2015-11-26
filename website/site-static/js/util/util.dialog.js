@@ -13,7 +13,6 @@
 		var self = this;
 
 		this.init = (function() {
-			console.log('UtilDialog: init');
 		});
 
 		this.show = function(object) {

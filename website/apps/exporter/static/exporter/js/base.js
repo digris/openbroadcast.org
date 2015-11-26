@@ -204,7 +204,6 @@ ExporterApp = (function () {
 
 
     this.init = function () {
-        debug.debug('ExporterApp: init');
         self.bindings();
     };
 

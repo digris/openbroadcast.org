@@ -23,9 +23,6 @@ OnAirApp = function () {
 
     this.init = function () {
 
-        debug.debug('OnAirApp: init');
-        debug.debug(self.api_url);
-
         this.dom_element = $('#' + this.dom_id);
 
         self.iface();
@@ -55,8 +52,6 @@ OnAirApp = function () {
 
     this.load = function () {
 
-        debug.debug('OnAirApp: load');
-
         $.get(self.api_url, function (data) {
 
             // check if references changed, update if so
@@ -75,7 +70,6 @@ OnAirApp = function () {
     // get updated data
     this.update_emission = function (url) {
 
-        debug.debug('OnAirApp: update_emission - ' + url);
         self.current_emission_url = url;
         $.get(url, function (data) {
             self.display_emission(data);
@@ -85,7 +79,6 @@ OnAirApp = function () {
 
     this.update_item = function (url) {
 
-        debug.debug('OnAirApp: update_item - ' + url);
         self.current_item_url = url;
         $.get(url, function (data) {
             self.display_item(data);
@@ -95,7 +88,6 @@ OnAirApp = function () {
 
     // display methods
     this.display_emission = function (data) {
-        debug.debug('OnAirApp: display_emission',  data);
         self.current_emission = data;
 
         var container = $('.emission', self.dom_element);
@@ -105,7 +97,6 @@ OnAirApp = function () {
     };
 
     this.display_item = function (data) {
-        debug.debug('OnAirApp: display_item',  data);
         self.current_item = data;
 
         var container = $('.items', self.dom_element);
@@ -123,7 +114,6 @@ OnAirApp = function () {
     };
 
     this.refresh_item = function(data) {
-        debug.debug('OnAirApp: refresh_item - ', data);
         $.get(data.route, function (data) {
             var container = $('.item[data-uuid="'+ data.uuid  + '"]');
 

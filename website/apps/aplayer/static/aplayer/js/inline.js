@@ -12,14 +12,11 @@ InlinePlayer = function () {
     this.current_media = false;
 
     this.init = function () {
-
         self.dom_element = $('#' + self.dom_id);
-        debug.debug('InlinePlayer: init');
         self.bindings();
     };
 
     this.bindings = function () {
-        debug.debug('InlinePlayer: bindings');
         var timeout;
         // listen for hover only on display, but hout on whole element
         $(self.dom_element).on('mouseover', 'div.display', function () {
@@ -46,8 +43,6 @@ InlinePlayer = function () {
             e.preventDefault();
 
             var action = $(this).data('action');
-
-            debug.debug('action', action);
 
             if (action == 'pause') {
                 self.player.base.controls({action: 'pause' });
@@ -170,11 +165,7 @@ InlinePlayer = function () {
         var states = aplayer.states;
 
 
-        //debug.debug('aplayer:', aplayer)
-        //debug.debug('media:', media)
-
         if (self.state !== states.state) {
-            debug.debug('state changed');
             self.state = states.state;
             self.current_media = media;
             self.update_state();
@@ -182,7 +173,6 @@ InlinePlayer = function () {
         }
 
         if (self.current_uuid !== media.uuid) {
-            debug.debug('media changed');
             self.current_uuid = media.uuid;
             self.update_media();
             //self.display_listing();
@@ -241,16 +231,13 @@ InlinePlayer = function () {
     this.update_state = function () {
         self.dom_element.removeClass();
         self.dom_element.addClass(self.state);
-    }
+    };
 
     this.update_media = function () {
-        debug.debug('self.current_media', self.current_media)
-
         $('.playhead .waveform img').attr('src', self.current_media.waveform_image);
-    }
+    };
 
     this.reset = function () {
-        debug.debug('InlinePlayer: reset');
         var container = self.dom_element;
 
         // TODO: maybe rewrite the display section to nj templates
@@ -267,13 +254,11 @@ InlinePlayer = function () {
         classes: ['playing', 'paused'],
 
         play: function () {
-            debug.debug('events: ', 'play');
             self.dom_element.removeClass('paused');
             self.dom_element.addClass('playing');
         },
 
         stop: function () {
-            debug.debug('events: ', 'stop');
             self.dom_element.removeClass('paused');
             self.dom_element.removeClass('playing');
 
@@ -281,27 +266,20 @@ InlinePlayer = function () {
         },
 
         pause: function () {
-            debug.debug('events: ', 'pause');
             self.dom_element.removeClass('playing');
             self.dom_element.addClass('paused');
         },
 
         resume: function () {
-            debug.debug('events: ', 'resume');
             self.dom_element.removeClass('paused');
             self.dom_element.addClass('playing');
         },
 
         finish: function () {
-            debug.debug('events: ', 'finish');
             self.dom_element.removeClass('paused');
             self.dom_element.removeClass('playing');
         }
     }
 
-
-}
-
-
-
+};
 

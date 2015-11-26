@@ -119,7 +119,6 @@ EditUi = function () {
 
                 self.api_lookup(item_type, item_id, provider, api_url);
             } else {
-                debug.debug('provider url not set');
             }
             // else show research dialog
 
@@ -356,7 +355,6 @@ EditUi = function () {
      ***************************************************************************************/
 
     this.provider_search = function (item_type, item_id, provider) {
-        debug.debug(item_type, item_id, provider);
         self.current_data = $.extend(self.current_data, {
             'item_type': item_type,
             'item_id': item_id,
@@ -366,7 +364,6 @@ EditUi = function () {
         // ask api what query string to use
         // exmple return: Human After All Daft Punk
         Dajaxice.alibrary.provider_search_query(function (data) {
-            console.log('data:', data);
             if (data && data.query) {
                 self.provider_search_dialog(data.query);
             }
@@ -472,7 +469,6 @@ EditUi = function () {
             'api_url': api_url
         };
 
-        debug.debug('query data:', data);
 
         // add status class
         $('body').addClass('api_lookup-progress');
@@ -489,7 +485,6 @@ EditUi = function () {
 
             $('body').removeClass('api_lookup-progress');
 
-            debug.debug('returned data:', data);
 
             self.lookup_data = data;
 
@@ -527,15 +522,11 @@ EditUi = function () {
                         var val = self.lookup_data[key];
                         $('fieldset.relations .lookup-container').html('');
                         $(val).each(function(i, item){
-                            debug.debug(item);
-                            console.log(item);
 
                             // try to find relation in form - not extremly nice :(
                             var container = $('.controls input', $('.external.' + item.service).parents('.relation-row'))
 
                             if(container.length) {
-
-                                console.log('got container');
                                 var inner = container.parents('.relation-url')
 
                                 var match = false;
@@ -679,14 +670,9 @@ EditUi = function () {
     this.relation_lookup = function (key) {
         var val = self.lookup_data[key];
 
-
-        debug.debug('relation_lookup:', val);
-
         $('fieldset.relations .lookup-container').html('');
 
         $(val).each(function(i, item){
-            debug.debug(item);
-
             // try to find relation in form - not extremly nice :(
             var container = $('.controls input', $('.external.' + item.service).parents('.relation-row'))
 
@@ -790,8 +776,6 @@ EditUi = function () {
      */
     this.media_lookup = function (data) {
         var container = $('#release_media_form');
-        debug.debug('data:', data);
-
 
         // reset the lookup results
         $('.field-lookup .field-lookup-holder', container).hide();
@@ -800,14 +784,10 @@ EditUi = function () {
         $('.field-lookup .field-lookup-holder', container).removeClass('lookup-match');
         $('.field-lookup .field-lookup-holder', container).removeClass('lookup-diff');
 
-
         var tracklist = data.tracklist;
 
         // offset tracks - in case of 'non-track-meta'
         var offset = self.lookup_offset;
-
-        console.log('OFFSET: ', offset);
-
 
         $('.releasemedia-row', container).each(function (i, el) {
 
@@ -816,7 +796,6 @@ EditUi = function () {
             try {
                 var tracknumber = parseInt($('select[name$="tracknumber"] option:selected', el).val());
             } catch (e) {
-                debug.debug(e);
             }
 
             // ok got one, try to map. tracknumber is 1-based, index of tracklist 0-based
@@ -827,10 +806,8 @@ EditUi = function () {
                 try {
                     var meta = tracklist[index];
                 } catch (e) {
-                    debug.debug(e);
                 }
 
-                debug.debug('tracknumber:', tracknumber, 'meta:', meta);
 
                 // apply meta lookup information
                 if (meta) {
@@ -895,8 +872,6 @@ EditUi = function () {
 
 
         var container = $('#release_media_form');
-        debug.debug('data:', data);
-
 
         // reset the lookup results
         $('.field-lookup .field-lookup-holder', container).hide();
@@ -919,7 +894,6 @@ EditUi = function () {
             try {
                 var tracknumber = parseInt($('select[name$="tracknumber"] option:selected', el).val());
             } catch (e) {
-                debug.debug(e);
             }
 
             // ok got one, try to map. tracknumber is 1-based, index of tracklist 0-based
@@ -933,8 +907,6 @@ EditUi = function () {
                    }
 
                 });
-
-                debug.debug('tracknumber:', tracknumber, 'meta:', meta);
 
                 // apply meta lookup information
                 if (meta) {

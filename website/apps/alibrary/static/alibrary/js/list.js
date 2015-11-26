@@ -74,7 +74,6 @@ ListEditUi = function () {
 
             self.selected = $(this).data('id');
 
-            debug.debug('selected id:', self.selected)
 
         });
 
@@ -96,8 +95,6 @@ ListEditUi = function () {
                     return false;
                 }
 
-                debug.debug('local', data);
-
                 // display processing message
 
                 try {
@@ -109,7 +106,6 @@ ListEditUi = function () {
 
                 /**/
                 Dajaxice.alibrary.merge_items(function (data) {
-                    debug.debug('remote', data);
                     try {
                         var api = self.dialog_window.qtip('api');
                         api.destroy();
@@ -154,7 +150,6 @@ ListEditUi = function () {
         self.item_ids = [];
 
         self.item_ids = this.get_selection();
-        debug.debug('ids:', self.item_ids);
         var data = {
             item_ids: self.item_ids,
             item_type: self.ct
@@ -226,7 +221,6 @@ ListEditUi = function () {
         var query = '?limit=120&id__in=' + data.item_ids.join(',');
 
         $.get(url + query, function (data) {
-            console.log(data);
             data.item_type = item_type;
             var html = nj.render('alibrary/nj/merge/merge_dialog.html', data);
             setTimeout(function () {
@@ -250,7 +244,6 @@ ListEditUi = function () {
 
         self.item_ids = [];
         self.item_ids = this.get_selection();
-        debug.debug('ids:', self.item_ids);
         var data = {
             item_ids: self.item_ids,
             item_type: self.ct
@@ -291,7 +284,6 @@ ListEditUi = function () {
             style: 'qtip-dark qtip-dialogue qtip-shadow qtip-rounded  popup-actions popup-reassign',
             events: {
                 render: function (event, api) {
-                    console.log(this, event, api);
                     var container = $(this);
 
                     setTimeout(function(){
@@ -407,8 +399,6 @@ ListEditUi = function () {
         if (q.length >= 3) {
             $.get(url + '?q=' + q, function (data) {
 
-                console.log(data)
-
                 if(data.objects.length) {
                     var html = nj.render('alibrary/nj/reassign/reassign_dialog_search_result.html', data);
                     $('#search_result', container).html(html);
@@ -438,7 +428,6 @@ ListEditUi = function () {
         var query = '?id__in=' + data.item_ids.join(',');
 
         $.get(url + query, function (data) {
-            debug.debug(data);
             data.item_type = item_type;
             var html = nj.render('alibrary/nj/reassign/reassign_dialog.html', data);
             setTimeout(function () {
@@ -472,7 +461,6 @@ var RangeFilter = function() {
     };
 
     this.init = function(el) {
-        console.log('RangeFilter - init');
         self.el = el;
         self.get_state();
         self.bindings();
@@ -493,13 +481,11 @@ var RangeFilter = function() {
             self.range.start = false;
             self.range.end = false;
         }
-        console.log('RangeFilter - range:', self.range);
 
         self.update_display();
     };
 
     this.update_display = function() {
-        console.log('RangeFilter - update_display');
 
         var container = $('#releasedate_range_container', self.el);
 
@@ -527,15 +513,12 @@ var RangeFilter = function() {
     };
 
     this.update_query = function() {
-        console.log('RangeFilter - update_query', self.range);
 
         str_start = (self.range.start) ? self.range.start : '';
         str_end = (self.range.end) ? self.range.end : '';
 
         var url = $.insert_uri_param(window.location.href, 'releasedate', str_start + ':' + str_end, true);
         url = $.insert_uri_param(url, 'page', 1, true);
-
-
 
         window.location.href = url;
 

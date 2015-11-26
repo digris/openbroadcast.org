@@ -45,6 +45,7 @@ django-cache-machine==0.9
 django-cacheops==2.3.1
 django-celery==3.1.17
 django-comments==0.3.3a0
+django-compressor==1.6
 django-countries==3.3
 django-dajax==0.9.2
 django-dajaxice==0.7

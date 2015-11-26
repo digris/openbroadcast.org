@@ -64,8 +64,6 @@ PlaylistUi = function () {
             var id = $(this).parents('.playlist_holder').data('object_id');
             var action = $(this).data('action');
 
-            $.log(action, id);
-
             if (action == 'delete' && confirm('Sure?')) {
                 self.delete_playlist(id);
                 conatiner.fadeOut(200)
@@ -249,7 +247,6 @@ PlaylistUi = function () {
             this.current_data = data;
 
             pushy.subscribe(self.api_url + data.objects[0].id + '/', function () {
-                debug.debug('pushy callback');
                 self.load();
             });
 
@@ -349,7 +346,6 @@ CollectorApp = (function () {
     this.popup_container = false;
 
     this.init = function () {
-        debug.debug('CollectorApp: init');
         this.bindings();
     };
 
@@ -526,10 +522,6 @@ CollectorApp = (function () {
 
     this.update_dialog_markers = function () {
 
-        // debug.debug('update_dialog_markers');
-        // debug.debug('local playlist:', self.playlists_local)
-        // debug.debug('media_to_collect:', self.media_to_collect)
-
         var el = self.popup_container;
         var local_uuids = [];
         $.each(self.media_to_collect, function (i, media) {
@@ -537,7 +529,6 @@ CollectorApp = (function () {
             local_uuids.push(media.uuid);
         });
 
-        //console.log('media to collect, uuids:', local_uuids);
         $('.collected', el).html('');
 
         $.each(self.playlists_local.objects, function (i, item) {
@@ -582,7 +573,6 @@ CollectorApp = (function () {
             processData: false,
             success: function (data) {
                 // self.load(true);
-                debug.debug('the data:', data)
                 var el = self.popup_container;
                 var html = nj.render('alibrary/nj/playlist/select_popup_item.html', { item: data });
 
@@ -770,7 +760,6 @@ PlaylistSelector = function () {
 
     this.init = function () {
 
-        $.log('PlaylistSelector: init');
         this.dom_element = $('#' + this.dom_id);
 
         self.iface();

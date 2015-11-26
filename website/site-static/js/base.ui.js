@@ -28,12 +28,10 @@ UiStates = function () {
     // load states from cookie to hash-table
     this.load = function () {
 
-        $.log('load states');
 
         if ($.cookie(this.cookie_name)) {
             self.values.items = JSON.parse($.cookie(this.cookie_name));
         }
-        $.log(['(load) current states', self.values.items]);
 
         this.apply_states();
     },
@@ -50,7 +48,6 @@ UiStates = function () {
         },
         this.apply_states = function (key) {
 
-            $.log('apply_states: ' + key);
 
 
             if (key !== undefined) {
@@ -184,7 +181,6 @@ base.ui.states_custom_update = function (id, state) {
 
     if (id.substring(0, 9) == 'filterbox') {
 
-        $.log('custom state-update: ' + 'filterbox');
         if (state == 'expanded') {
             el.addClass('boxon');
             el.parent().addClass('boxon');
@@ -584,34 +580,6 @@ base.ui.iface = function () {
     });
 
 
-    // handling of 'collectables' - eg to put into a 'basket'
-    // for single elements (through href/class)
-    $('.___collectable').live('click', function (e) {
-
-        e.preventDefault();
-
-        // href is eg: "#release:324:flac"
-        var action = $(this).attr('href').substr(1).split(':');
-
-        var item_type = action[0];
-        var item_id = action[1];
-        var format = action[2];
-
-        items = new Array;
-        items.push({item_type: item_type, item_id: item_id, format: format});
-
-        if (base.ui.use_effects) {
-            $('#list_item_' + item_id).effect("transfer", { to: ".playlist.basket" }, 300);
-        }
-
-        // Request data
-        var data = {
-            items: items
-        };
-
-        base.ui.collector.collect(items, false);
-
-    });
 
     /*
      * Collect multiple items

@@ -77,8 +77,6 @@ PlaylistUi = function() {
 			var id = $(this).parents('.playlist_holder').data('object_id');
 			var action = $(this).data('action');
 			
-			$.log(action, id);
-			
 			if(action == 'delete' && confirm('Sure?')) {
 				self.delete_playlist(id);
 			}
@@ -483,7 +481,6 @@ CollectorApp = (function() {
 	this.animation_target = ".playlist.basket";
 	
 	this.init = function() {
-		$.log('CollectorApp: init');
 		this.bindings();
 	};
 	
@@ -493,22 +490,14 @@ CollectorApp = (function() {
 	
 			e.preventDefault();
 			
-			$.log('collect');
-			
-			// get container item
-			
 			var container = $(this).parents('.item');
 			var resource_uri = container.data('resource_uri');
-			
-
 			
 			items = new Array;
 			
 			// type switch
 			if(container.hasClass('release')) {
-				$.log('type: release')
-				$.log(resource_uri);
-				
+
 				$.ajax({
 					url: resource_uri,
 					success: function(data) {
@@ -529,7 +518,6 @@ CollectorApp = (function() {
 			// type switch
 			if(container.hasClass('media')) {
 				var item_id = container.data('item_id');
-				$.log('type: media', 'id:' + item_id);
 				items.push(item_id);
 				self.collect(items, false);				
 			}
@@ -605,8 +593,6 @@ PlaylistSelector = function() {
 	this.current_data;
 
 	this.init = function() {
-		
-		$.log('PlaylistSelector: init');		
 		this.dom_element = $('#' + this.dom_id);
 
 		self.iface();

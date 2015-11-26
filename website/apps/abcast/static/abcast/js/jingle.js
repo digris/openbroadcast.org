@@ -72,8 +72,6 @@ JingleUi = function() {
 			var id = $(this).parents('.jingle_holder').data('object_id');
 			var action = $(this).data('action');
 			
-			$.log(action, id);
-			
 			if(action == 'delete' && confirm('Sure?')) {
 				// self.delete_jingle(id);
 			}

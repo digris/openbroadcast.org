@@ -47,10 +47,6 @@ SchedulerApp = function () {
 
     this.init = function () {
 
-        debug.debug('scheduler: init');
-        debug.debug(self.api_url);
-        debug.debug('readonly:', self.readonly);
-
         if ($.cookie('scheduler_copy_paste_source')) {
             self.copy_paste_source = $.cookie('scheduler_copy_paste_source');
         }
@@ -116,10 +112,8 @@ SchedulerApp = function () {
         // copy-paster
         $('.day-actions').on('click', 'a', function (e) {
             e.preventDefault();
-            debug.debug('day action');
             var action = $(this).data('action');
             var date = $(this).data('date');
-            debug.debug(action);
 
             if (action == 'copy') {
                 self.copy_paste_source = date;
@@ -187,9 +181,6 @@ SchedulerApp = function () {
                 });
             }
 
-
-            debug.debug(date);
-
         });
 
 
@@ -219,13 +210,10 @@ SchedulerApp = function () {
     };
 
     this.load = function (use_local_data) {
-        debug.debug('SchedulerApp - load');
 
         if (use_local_data) {
-            debug.debug('SchedulerApp - load: using local data');
             self.display(self.local_data);
         } else {
-            debug.debug('SchedulerApp - load: using remote data');
             var url = self.api_url + '?channel_id=' + self.channel_id + '&limit=500' + self.range_filter;
 
             if (self.last_update) {
@@ -243,9 +231,6 @@ SchedulerApp = function () {
     };
 
     this.display = function (data) {
-
-        debug.debug('SchedulerApp - display');
-        // load header
 
         /*
          * flag all emissions, they maight
@@ -267,7 +252,6 @@ SchedulerApp = function () {
                 emission.init(true);
                 self.emissions[item.uuid] = emission;
             } else {
-                debug.debug('Item exists on stage');
             }
 
             $('#' + item.uuid).removeClass('delete-flag');
@@ -287,7 +271,6 @@ SchedulerApp = function () {
     // handling of selected object (to place in schedule)
     this.set_selection = function (ct, resource_uri) {
 
-        debug.debug('set_selection', ct, resource_uri);
 
         $.get(resource_uri + '?all=1', function (data) {
             self.selected_object = data;
@@ -297,31 +280,15 @@ SchedulerApp = function () {
             if (data.id != undefined) {
                 var url = '/program/scheduler/select-playlist/?playlist_id=' + data.id;
                 $.get(url, function (data) {
-                    debug.debug('OK');
                 })
             }
         });
     };
     this.set_history = function (playlist_ids) {
 
-        debug.debug('set_history', playlist_ids);
 
         // TODO: implement
 
-        /*
-        var url = '/en/api/v1/library/simpleplaylist/' + '?all=1&id__in=' + playlist_ids.join(',');
-        $.get(url, function (data) {
-
-            $.each(data.objects, function(i, el){
-                console.log('el', el)
-
-                var container = $('#container_selection');
-                //container.append('<p>' + el.name + '</p>');
-
-            });
-
-        });
-        */
 
     };
 
@@ -329,7 +296,6 @@ SchedulerApp = function () {
 
     this.display_selection = function (data) {
 
-        // debug.debug('display_selection', data);
 
         if (!self.readonly) {
 
@@ -337,7 +303,7 @@ SchedulerApp = function () {
             var container = $('#container_selection');
             var d = {
                 object: data
-            }
+            };
             var html = nj.render('abcast/nj/selected_object.html', d);
             container.html(html);
 
@@ -478,9 +444,7 @@ SchedulerApp = function () {
     this.floating_sidebar = function (id, offset) {
 
         try {
-
         } catch (err) {
-            debug.debug(error);
         }
 
     };
@@ -550,12 +514,10 @@ var EmissionApp = function () {
     this.local_data = false;
 
     this.init = function (use_local_data) {
-        debug.debug('EmissionApp - init');
         self.offset = self.scheduler_app.offset;
         // self.bindings();
         self.load(use_local_data);
         pushy.subscribe(self.api_url, function (data) {
-            debug.debug('pushy callback');
 
             if (data.type == 'update') {
                 self.load()
@@ -569,13 +531,10 @@ var EmissionApp = function () {
     };
 
     this.load = function (use_local_data) {
-        debug.debug('EmissionApp - load');
 
         if (use_local_data) {
-            debug.debug('EmissionApp - load: using local data');
             self.display(self.local_data);
         } else {
-            debug.debug('EmissionApp - load: using remote data');
             var url = self.api_url;
             $.get(url, function (data) {
                 self.local_data = data;
@@ -900,15 +859,8 @@ var EmissionApp = function () {
 
     this.display = function (data) {
 
-        debug.debug('EmissionApp - display');
-        debug.debug('offset:', self.offset);
-
-        debug.debug(data.time_start)
         var day_id = data.time_start.substring(0, 10);
-
         var day_id = data.day_id;
-        debug.debug('day_id:', data.day_id)
-
         var hms = data.time_start.substr(11, 8);
         var a = hms.split(':');
         var s_start = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
