@@ -33,7 +33,9 @@ class ImportItemnline(admin.TabularInline):
     extra = 0
     readonly_fields = ('content_type', 'object_id',)
 
-class ImportAdmin(admin.ModelAdmin):    
+class ImportAdmin(admin.ModelAdmin):
+
+    save_on_top = True
     
     list_display = (
         'created',
@@ -41,8 +43,20 @@ class ImportAdmin(admin.ModelAdmin):
         'status',
         'type',
     )
+
+    raw_id_fields = ['user',]
+
+    search_fields = (
+        'user__username',
+        'files__filename',
+        'files__media__name',
+    )
     list_filter = ('status', )
-    readonly_fields = ('created', 'updated',)
+    readonly_fields = (
+        'created',
+        'updated',
+        'notes',
+    )
     date_hierarchy = 'created'
     inlines = [ImportImportFileInline, ImportItemnline]
     actions = [status_set_ready]
