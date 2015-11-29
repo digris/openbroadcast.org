@@ -631,9 +631,7 @@ class Process(object):
         
         
     def complete_releases(self, releases):
-        
 
-        log = logging.getLogger('importer.process.complete_releases')
         log.info('got %s releases to complete' % len(releases))
         
         completed_releases = []
@@ -746,7 +744,6 @@ class Process(object):
     """
     def format_releases(self, releases):
 
-        log = logging.getLogger('importer.process.format_releases')
         log.info('got %s releases to format' % len(releases))
         
         formatted_releases = []

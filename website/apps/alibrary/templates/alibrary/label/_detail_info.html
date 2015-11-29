@@ -75,6 +75,9 @@
 		{% endif %}
 
 
+
+
+        {% comment "TODO: check distributor url reverses" %}
 		{% if object.distributors.count > 0 %}
 		<dt>
 			{% trans "Distribution" %}:
@@ -91,11 +94,12 @@
 			</ul>
 		</dd>
 		{% endif %}
+        {% endcomment %}
 
 
 
-
-		{% if object.get_root and object.get_root !=  object and object.parent != object.get_root %}
+        {% comment "TODO: check mptt on label" %}
+		{% if object.get_root and object.get_root != object and object.parent != object.get_root %}
 		<dt>
 			{% trans "Umbrella Label" %}:
 		</dt>
@@ -109,6 +113,7 @@
 			</ul>
 		</dd>
 		{% endif %}
+        {% endcomment %}
 
 
 		{% if object.parent %}

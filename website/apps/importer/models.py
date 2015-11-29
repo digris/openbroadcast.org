@@ -184,7 +184,9 @@ class Import(BaseModel):
         return inserts
 
     def get_api_url(self):
-        url = reverse('api_dispatch_list', kwargs={'resource_name': 'import', 'api_name': 'v1'})
+        url = reverse('api_dispatch_list',
+                      kwargs={'resource_name': 'import', 'api_name': 'v1'}
+                      )
         return '%s%s/' % (url, self.pk)
     
     def apply_import_tag(self, importfile, **kwargs):
@@ -194,7 +196,7 @@ class Import(BaseModel):
             mb_release_id = importfile.import_tag['mb_release_id']
             
             qs = self.files.exclude(pk=importfile.pk)
-            importfiles = qs.filter(status=2)
+            importfiles = qs.filter(status=ImportFile.STATUS_READY)
             for file in importfiles:
                 for mb in file.results_musicbrainz:
 
@@ -222,9 +224,16 @@ class Import(BaseModel):
 
         ctype = ContentType.objects.get_for_model(item)
         try:
-            item, created = ImportItem.objects.get_or_create(object_id=item.pk, content_type=ctype, import_session=self)
+            item, created = ImportItem.objects.get_or_create(
+                object_id=item.pk,
+                content_type=ctype,
+                import_session=self
+            )
         except Exception, e:
-            item = ImportItem.objects.filter(object_id=item.pk, content_type=ctype, import_session=self)[0]
+            item = ImportItem.objects.filter(
+                object_id=item.pk,
+                content_type=ctype,
+                import_session=self)[0]
             created = False
 
         if created:
@@ -234,7 +243,10 @@ class Import(BaseModel):
         return item
     
     def get_importitem_ids(self, ctype):
-        ii_ids = ImportItem.objects.filter(content_type=ctype, import_session=self).values_list('object_id', flat=True)
+        ii_ids = ImportItem.objects.filter(
+            content_type=ctype,
+            import_session=self
+        ).values_list('object_id', flat=True)
         return ii_ids
 
     def save(self, *args, **kwargs):
@@ -257,9 +269,9 @@ class ImportFile(BaseModel):
         (STATUS_INIT, _('Init')),
         (STATUS_DONE, _('Done')),
         (STATUS_READY, _('Ready')),
-        (STATUS_PROGRESS, _('Progress')),
+        (STATUS_PROGRESS, _('Working')),
         (STATUS_WARNING, _('Warning')),
-        (STATUS_DUPLICATE, _('Dulicate')),
+        (STATUS_DUPLICATE, _('Duplicate')),
         (STATUS_QUEUED, _('Queued')),
         (STATUS_IMPORTING, _('Importing')),
         (STATUS_ERROR, _('Error')),
@@ -389,6 +401,7 @@ class ImportFile(BaseModel):
                 # print
 
                 if not media_id:
+
                     log.debug('directly applying mb-data and send to import-queue')
 
                     # build import tag
@@ -403,14 +416,14 @@ class ImportFile(BaseModel):
                     }
 
                     obj.import_tag = import_tag
-                    obj.status = 6
+                    obj.status = ImportFile.STATUS_QUEUED
                     obj.save()
                     return
 
         except Exception, e:
             log.warning('unable to process metadata: %s' % e)
             obj.error = '%s' % e
-            obj.status = 99
+            obj.status = ImportFile.STATUS_ERROR
             obj.save()
             return
         
@@ -420,7 +433,7 @@ class ImportFile(BaseModel):
             try:
                 media = Media.objects.get(pk=media_id)
                 if media:
-                    obj.status = 5
+                    obj.status = ImportFile.STATUS_DUPLICATE
                     obj.media = media
                     if obj.import_session:
                         obj.import_session.add_importitem(obj)
@@ -434,15 +447,13 @@ class ImportFile(BaseModel):
         if media:
             obj.results_tag = metadata
             obj.media = media
-
         else:
             pass
 
         obj.results_tag = metadata
-        obj.status = 3
+        obj.status = ImportFile.STATUS_PROGRESS
         obj.results_tag_status = True
         obj.save()
-        log.info('sucessfully aquired metadata')
 
         obj.results_acoustid = processor.get_aid(obj.file)
         obj.results_acoustid_status = True
@@ -462,10 +473,9 @@ class ImportFile(BaseModel):
             obj.results_musicbrainz = processor.get_musicbrainz(obj)
             obj.save()
 
-        obj.status = 2
+        obj.status = ImportFile.STATUS_READY
         if media:
-            obj.status = 5
-            # add to session
+            obj.status = ImportFile.STATUS_DUPLICATE
             if obj.import_session:
                 obj.import_session.add_importitem(obj)
         
@@ -474,6 +484,7 @@ class ImportFile(BaseModel):
 
     
     def do_import(self):
+
         log.debug('Start importing ImportFile: %s at %s' % (self.pk, self.file.path))
         
         if USE_CELERYD:
@@ -512,12 +523,12 @@ class ImportFile(BaseModel):
             self.filename = self.file.name
             
         # check/update import_tag
-        if self.status == 2: # ready
+        if self.status == ImportFile.STATUS_READY:
             from util.importer import Importer
             importer = Importer()
             self.import_tag = importer.complete_import_tag(self)
 
-        if self.status == 2: # ready
+        if self.status == ImportFile.STATUS_READY:
             # try to apply import_tag to other files of this import session
             if not skip_apply_import_tag and self.import_session:
                 # TODO: this breaks the interface, as nearly infinite loop arises
@@ -525,15 +536,15 @@ class ImportFile(BaseModel):
                 self.import_session.apply_import_tag(self)
                 
         # check import_tag for completeness
-        if self.status == 2 or self.status == 4: # ready
+        if self.status in [ImportFile.STATUS_READY, ImportFile.STATUS_WARNING]:
             media = self.import_tag.get('name', None)
             artist = self.import_tag.get('artist', None)
             release = self.import_tag.get('release', None)
             
             if media and artist and release:
-                self.status = 2
+                self.status = ImportFile.STATUS_READY
             else:
-                self.status = 4
+                self.status = ImportFile.STATUS_WARNING
 
         # lookup number of possible duplicates by name
         artist_name = self.import_tag.get('artist', None)
@@ -552,11 +563,11 @@ def post_save_importfile(sender, **kwargs):
 
     # init: newly uploaded/created file. let's process (gather data) it
     # data then is presented in the import dialog, where the user can choose how to continue
-    if obj.status == 0:
+    if obj.status == ImportFile.STATUS_INIT:
         obj.process()
 
     # finalize the import, fired when user clicks on "start import"
-    if obj.status == 6:
+    if obj.status == ImportFile.STATUS_QUEUED:
         obj.do_import()
       
 post_save.connect(post_save_importfile, sender=ImportFile)      
@@ -569,16 +580,6 @@ def post_delete_importfile(sender, **kwargs):
         pass
       
 post_delete.connect(post_delete_importfile, sender=ImportFile)
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -617,7 +618,10 @@ class ImportItem(BaseModel):
 @task
 def reset_hanging_files(age=600):
     from datetime import datetime, timedelta
-    for importfile in ImportFile.objects.filter(status=3, updated__lte=(datetime.now() - timedelta(seconds=age))):
+    for importfile in ImportFile.objects.filter(
+            status__in=[ImportFile.STATUS_PROGRESS, ImportFile.STATUS_QUEUED],
+            updated__lte=(datetime.now() - timedelta(seconds=age))
+        ):
         log.info('releasing "working" lock for %s' % importfile.pk)
         importfile.status = 4
         importfile.save()

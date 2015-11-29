@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from alibrary.models import *
 import tagging
 import logging
 from django.db import models
@@ -18,11 +18,15 @@ from filer.fields.image import FilerImageField
 from filer.fields.file import FilerFileField
 from phonenumber_field.modelfields import PhoneNumberField
 from mptt.models import MPTTModel, TreeForeignKey
+
+from treebeard.mp_tree import MP_Node
+
 from hvad.models import TranslatableModel, TranslatedFields
 from hvad.manager import TranslationManager
 from django_extensions.db.fields import UUIDField, AutoSlugField
 from l10n.models import Country
-from alibrary.models import *
+from tagging.registry import register as tagging_register
+
 from alibrary.util.slug import unique_slugify
 from alibrary.util.relations import get_service_by_url
 from lib.fields import extra
@@ -139,10 +143,10 @@ class Distributor(MPTTModel, MigrationMixin):
     
         
 try:
-    tagging.register(Distributor)
-except:
-    pass     
-        
+    tagging_register(Distributor)
+except Exception as e:
+    print '***** %s' % e
+    pass
         
 
 class DistributorLabel(models.Model):
