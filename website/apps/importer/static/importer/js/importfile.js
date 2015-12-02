@@ -312,6 +312,34 @@ var ImportfileApp = function () {
         });
 
 
+        $('.reimport-duplicate', self.container).live('click', function (e) {
+
+            e.preventDefault();
+
+            var data = {
+                status: 0,
+                settings: {
+                    reimport_duplicate: true
+                }
+            };
+
+            $.ajax({
+                type: "PUT",
+                url: self.api_url,
+                dataType: "application/json",
+                contentType: 'application/json',
+                processData: false,
+                data: JSON.stringify(data),
+                success: function (data) {
+                    console.debug(data);
+                }
+            });
+
+
+
+        });
+
+
         $('.delete-importfile', self.container).live('click', function (e) {
 
             $.ajax({

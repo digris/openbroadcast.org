@@ -59,7 +59,7 @@ METADATA_SET = {
                 'media_bpm': None,
                 }
 
-class Process(object):
+class Identifier(object):
 
 
     def __init__(self):

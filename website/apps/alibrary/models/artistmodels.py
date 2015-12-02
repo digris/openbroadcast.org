@@ -383,13 +383,13 @@ def action_handler_task(instance, created):
         verb = _('updated')
         if created:
             verb = _('created')
-        action.send(instance.get_last_editor(), verb=verb, target=instance)
+        action.send(instance.creator, verb=verb, target=instance)
     except Exception, e:
 
         print "artist - action_handler_task"
         print 'instance:     %s' % instance
         print 'created:      %s' % created
-        print 'last editor:  %s' % instance.get_last_editor()
+        print 'last editor:  %s' % instance.creator
 
         print e
 

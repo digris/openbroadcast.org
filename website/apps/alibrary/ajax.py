@@ -1,5 +1,6 @@
 import json
 import re
+from django.db import transaction
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from dajaxice.decorators import dajaxice_register
@@ -269,19 +270,22 @@ def merge_items(request, *args, **kwargs):
 
 
     if item_type and item_ids and master_id:
-        log.debug('type: %s - ids: %s - master: %s' % (item_type, ', '.join(item_ids), master_id))
+        log.debug('merge items - type: %s - ids: %s - master: %s' % (item_type, ', '.join(item_ids), master_id))
         try:
 
             if item_type == 'release':
+
+
+
                 items = Release.objects.filter(pk__in=item_ids).exclude(pk=int(master_id))
                 for item in items:
                     slave_items.append(item)
 
                 master_item = Release.objects.get(pk=int(master_id))
                 if slave_items and master_item:
-                    merge_model_objects(master_item, slave_items)
-                    master_item.save()
-                    # needed to clear cache
+                    master_item = merge_model_objects(master_item, slave_items)
+                    #master_item.save()
+                    # needed to clear cache TODO: really needed??
                     for media in master_item.media_release.all():
                         media.save()
                     data['status'] = True
@@ -293,6 +297,8 @@ def merge_items(request, *args, **kwargs):
             if item_type == 'media':
                 items = Media.objects.filter(pk__in=item_ids).exclude(pk=int(master_id))
                 for item in items:
+                    item.waveforms.all().delete()
+                    item.formats.all().delete()
                     slave_items.append(item)
 
                 master_item = Media.objects.get(pk=int(master_id))

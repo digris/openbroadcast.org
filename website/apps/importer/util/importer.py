@@ -13,7 +13,7 @@ from django.contrib.contenttypes.models import ContentType
 from tagging.models import Tag
 from celery.task import task
 from l10n.models import Country
-from alibrary.models import Relation, Release, Artist, Media, MediaExtraartists, Profession, ArtistMembership
+from alibrary.models import Relation, Release, Artist, Media, MediaExtraartists, Profession, ArtistMembership, ArtistAlias
 from alibrary.models import NameVariation as ArtistNameVariation
 from alibrary.util.storage import get_file_from_url
 from lib.util import filer_extra
@@ -51,7 +51,7 @@ def masterpath_by_uuid(instance, filename):
 
 class Importer(object):
 
-    def __init__(self):
+    def __init__(self, user=None):
         musicbrainzngs.set_useragent("NRG Processor", "0.01", "http://anorg.net/")
         musicbrainzngs.set_rate_limit(MUSICBRAINZ_RATE_LIMIT)
         if MUSICBRAINZ_HOST:
@@ -61,7 +61,8 @@ class Importer(object):
         self.pp.pprint = lambda d: None
 
         self.mb_completed = []
-        
+        self.user = user
+
         
     def run(self, obj):
 
@@ -276,8 +277,11 @@ class Importer(object):
         if r:
             log.info('release here, add it to importitems: %s' % r)
             if obj.import_session:
-                ii = obj.import_session.add_importitem(r)
-                log.info('importitem created: %s' % ii)
+                try:
+                    ii = obj.import_session.add_importitem(r)
+                    log.info('importitem created: %s' % ii)
+                except:
+                    pass
             
             # assign
             m.release = r
@@ -353,23 +357,26 @@ class Importer(object):
         # try to complete release metadata
         if r_created:
             log.info('release created, try to complete: %s' % r)
-            r.creator = obj.import_session.user
-            action.send(r.creator, verb='added', target=r)
+            if self.user:
+                r.creator = self.user
+                action.send(r.creator, verb='added', target=r)
             r = self.mb_complete_release(r, mb_release_id)
 
         # try to complete artist metadata
         if a_created:
             log.info('artist created, try to complete: %s' % a)
-            a.creator = obj.import_session.user
-            action.send(a.creator, verb='added', target=a)
+            if self.user:
+                a.creator = self.user
+                action.send(a.creator, verb='added', target=a)
             a = self.mb_complete_artist(a, mb_artist_id)
 
         # try to complete media metadata
         # comes after artist creation ,to prevent duplicates!
         if m_created:
             log.info('media created, try to complete: %s' % m)
-            m.creator = obj.import_session.user
-            action.send(m.creator, verb='added', target=m)
+            if self.user:
+                m.creator = self.user
+                action.send(m.creator, verb='added', target=m)
             m = self.mb_complete_media(m, mb_track_id, mb_release_id,  excludes=(mb_artist_id,))
 
         # save assignments
@@ -409,27 +416,27 @@ class Importer(object):
     def mb_complete_media(self, obj, mb_id, mb_release_id, excludes=()):
 
         if USE_CELERYD:
-            mb_complete_media_task.delay(obj, mb_id, mb_release_id, excludes=())
+            mb_complete_media_task.delay(obj, mb_id, mb_release_id, excludes=(), user=self.user)
         else:
-            mb_complete_media_task(obj, mb_id, mb_release_id, excludes=())
+            mb_complete_media_task(obj, mb_id, mb_release_id, excludes=(), user=self.user)
         return obj
 
 
     def mb_complete_release(self, obj, mb_id):
 
         if USE_CELERYD:
-            mb_complete_release_task.delay(obj, mb_id)
+            mb_complete_release_task.delay(obj, mb_id, user=self.user)
         else:
-            mb_complete_release_task(obj, mb_id)
+            mb_complete_release_task(obj, mb_id, user=self.user)
         return obj
 
 
     def mb_complete_artist(self, obj, mb_id):
 
         if USE_CELERYD:
-            mb_complete_artist_task.delay(obj, mb_id)
+            mb_complete_artist_task.delay(obj, mb_id, user=self.user)
         else:
-            mb_complete_artist_task(obj, mb_id)
+            mb_complete_artist_task(obj, mb_id, user=self.user)
         return obj
 
 
@@ -594,7 +601,7 @@ task definitions
 """
 
 @task
-def mb_complete_media_task(obj, mb_id, mb_release_id, excludes=()):
+def mb_complete_media_task(obj, mb_id, mb_release_id, excludes=(), user=None):
 
     log.info('complete media, m: %s | mb_id: %s' % (obj.name, mb_id))
 
@@ -674,6 +681,7 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, excludes=()):
                 if len(l_as) < 1 and relation['artist']['id'] not in excludes:
                     #instance.mb_completed.append(relation['artist']['id'])
                     l_a = Artist(name=relation['artist']['name'])
+                    l_a.creator = user
                     l_a.save()
 
                     url = 'http://musicbrainz.org/artist/%s' % relation['artist']['id']
@@ -694,9 +702,9 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, excludes=()):
                     mea, created = MediaExtraartists.objects.get_or_create(artist=l_a, media=obj, profession=profession)
 
                     if USE_CELERYD:
-                        mb_complete_artist_task.delay(l_a, relation['artist']['id'])
+                        mb_complete_artist_task.delay(l_a, relation['artist']['id'], user=user)
                     else:
-                        mb_complete_artist_task(l_a, relation['artist']['id'])
+                        mb_complete_artist_task(l_a, relation['artist']['id'], user=user)
 
 
     """
@@ -721,6 +729,33 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, excludes=()):
             rel.save()
 
 
+
+    # acousticbrainz musical analysis
+    if mb_id:
+        url = 'http://acousticbrainz.org/{mb_id}/low-level'.format(mb_id=mb_id)
+        log.debug('API request for: %s' % url)
+        r = requests.get(url)
+        if r.status_code == 200:
+            result = r.json()
+            try:
+                bpm = result['rhythm']['bpm']
+                print 'got tempo: %s bpm' % bpm
+                obj.tempo = float(bpm)
+            except Exception as e:
+                print e
+                pass
+
+            # try:
+            #     key = result['tonal']['key_key']
+            #     scale = result['tonal']['key_scale']
+            #     obj.tempo = bpm
+            # except:
+            #     pass
+
+
+
+
+
     return obj
         
         
@@ -729,7 +764,7 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, excludes=()):
 
 
 @task
-def mb_complete_release_task(obj, mb_id):
+def mb_complete_release_task(obj, mb_id, user=None):
 
     log.info('complete release, r: %s | mb_id: %s' % (obj.name, mb_id))
 
@@ -1092,8 +1127,9 @@ def mb_complete_release_task(obj, mb_id):
 
         if l_created and l:
             log.info('label created, try to complete: %s' % l)
-            #l.creator = obj.import_session.user
-            #action.send(l.creator, verb='added', target=l)
+            if user:
+                l.creator = user
+                action.send(l.creator, verb='added', target=l)
 
             if USE_CELERYD:
                 mb_complete_label_task.delay(l, mb_label_id)
@@ -1109,13 +1145,13 @@ def mb_complete_release_task(obj, mb_id):
 
 
 @task
-def mb_complete_artist_task(obj, mb_id):
+def mb_complete_artist_task(obj, mb_id, user=None):
 
     log.info(u'complete artist, a: %s %s | mb_id: %s' % (obj.name, obj.pk, mb_id))
 
 
 
-    inc = ('url-rels', 'tags')
+    inc = ('artist-rels', 'url-rels', 'tags')
     url = 'http://%s/ws/2/artist/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, mb_id, "+".join(inc))
 
     log.info('url: %s' % url)
@@ -1142,8 +1178,6 @@ def mb_complete_artist_task(obj, mb_id):
         'other databases',
         'fanpage',
     )
-
-
 
 
     life_span = result.get('life-span', None)
@@ -1183,6 +1217,14 @@ def mb_complete_artist_task(obj, mb_id):
         pass
 
 
+    # ipis
+    if 'ipis' in result:
+        try:
+            obj.ipi_code = result['ipis'][0]
+        except:
+            pass
+
+
     relations = result.get('relations', ())
 
     for relation in relations:
@@ -1205,6 +1247,47 @@ def mb_complete_artist_task(obj, mb_id):
 
         else:
             log.debug('ignore relation type: %s' % relation['type'])
+
+
+
+
+    # loop artist based relations ('band member')
+    for relation in relations:
+
+        if relation['type'] == 'member of band' and relation['direction'] == 'backward':
+        #if relation['type'] == 'member of band':
+            log.debug('got band member')
+            rel_mb_id = relation['artist']['id']
+            l_as = lookup.artist_by_mb_id(rel_mb_id)
+            l_a = None
+
+            if len(l_as) < 1:
+                l_a = Artist(name=relation['artist']['name'])
+                l_a.creator = user
+                l_a.save()
+
+                if USE_CELERYD:
+                    mb_complete_artist_task.delay(l_a, rel_mb_id, user=user)
+                else:
+                    mb_complete_artist_task(l_a, rel_mb_id, user=user)
+
+
+
+
+                mb_url = 'http://musicbrainz.org/artist/%s' % (rel_mb_id)
+                rel = Relation(content_object=l_a, url=mb_url)
+                rel.save()
+
+            if len(l_as) == 1:
+                l_a = l_as[0]
+                print l_as[0]
+
+            if l_a:
+                if relation['direction'] == 'backward':
+                    ma = ArtistMembership.objects.get_or_create(parent=obj, child=l_a)
+                if relation['direction'] == 'forward':
+                    ma = ArtistMembership.objects.get_or_create(parent=l_a, child=obj)
+
 
 
 
@@ -1265,7 +1348,7 @@ def mb_complete_artist_task(obj, mb_id):
                 namevariations = dgs_result.get('namevariations', None)
                 if namevariations:
                     for namevariation in namevariations:
-                        log.debug(u'got namevariation: %s' % namevariation)
+                        #log.debug(u'got namevariation: %s' % namevariation)
                         ArtistNameVariation.objects.get_or_create(name=namevariation[0:245], artist=obj)
 
 
@@ -1273,6 +1356,7 @@ def mb_complete_artist_task(obj, mb_id):
                 verry hackish part here, just as proof-of-concept
                 """
                 aliases = dgs_result.get('aliases', ())
+                aliases = []
                 for alias in aliases:
                     try:
                         log.debug('got alias: %s' % alias['name'])
@@ -1290,6 +1374,7 @@ def mb_complete_artist_task(obj, mb_id):
 
                             if len(l_as) < 1:
                                 l_a = Artist(name=aa_name, biography=aa_profile)
+                                l_a.creator = user
                                 l_a.save()
 
                                 rel = Relation(content_object=l_a, url=aa_discogs_url)
@@ -1300,7 +1385,8 @@ def mb_complete_artist_task(obj, mb_id):
                                 print l_as[0]
 
                             if l_a:
-                                obj.aliases.add(l_a)
+                                aa = ArtistAlias.objects.get_or_create(parent=obj, child=l_a)
+                                #obj.aliases.add(l_a)
                     except:
                         pass
 
@@ -1308,6 +1394,7 @@ def mb_complete_artist_task(obj, mb_id):
                 verry hackish part here, just as proof-of-concept
                 """
                 members = dgs_result.get('members', ())
+                members = [] # just temporary disabled
                 for member in members:
                     try:
                         log.debug('got member: %s' % member['name'])
@@ -1325,6 +1412,7 @@ def mb_complete_artist_task(obj, mb_id):
 
                             if len(l_as) < 1:
                                 l_a = Artist(name=ma_name, biography=ma_profile)
+                                l_a.creator = user
                                 l_a.save()
 
                                 rel = Relation(content_object=l_a, url=ma_discogs_url)
@@ -1347,12 +1435,12 @@ def mb_complete_artist_task(obj, mb_id):
 
     type = result.get('type', None)
     if type:
-        log.debug('got type: %s' % (type))
+        #log.debug('got type: %s' % (type))
         obj.type = type
 
     disambiguation = result.get('disambiguation', None)
     if disambiguation:
-        log.debug('got disambiguation: %s' % (disambiguation))
+        #log.debug('got disambiguation: %s' % (disambiguation))
         obj.disambiguation = disambiguation
 
     """
@@ -1375,7 +1463,7 @@ def mb_complete_artist_task(obj, mb_id):
 
 
 @task
-def mb_complete_label_task(obj, mb_id):
+def mb_complete_label_task(obj, mb_id, user=None):
 
     log.info('complete label, l: %s | mb_id: %s' % (obj.name, mb_id))
 

@@ -1,7 +1,5 @@
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView, View
 
-from django.views.generic.detail import TemplateResponseMixin
-from  django.views.generic.edit import FormMixin, ProcessFormView
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect, \
     HttpResponseForbidden

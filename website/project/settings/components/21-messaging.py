@@ -44,7 +44,7 @@ CELERY_IMPORTS = (
 CELERY_ROUTES = {
     # assign import task to single-instance worker
     'importer.models.import_task': {'queue': 'import'},
-    'importer.models.process_task': {'queue': 'process'},
+    'importer.models.identifiy_task': {'queue': 'process'},
     'importer.util.importer.mb_complete_media_task': {'queue': 'complete'},
 
     #

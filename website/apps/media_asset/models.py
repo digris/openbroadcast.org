@@ -66,7 +66,7 @@ class Waveform(TimestampedModel, UUIDModel):
     status = models.PositiveIntegerField(default=INIT, choices=STATUS_CHOICES)
     type = models.CharField(max_length=64, default=WAVEFORM, choices=TYPE_CHOICES)
     accessed = models.DateTimeField(auto_now_add=True)
-    media = models.ForeignKey('alibrary.Media', null=True, related_name='versions', on_delete=models.CASCADE)
+    media = models.ForeignKey('alibrary.Media', null=True, related_name='waveforms', on_delete=models.CASCADE)
     media_uuid = models.UUIDField(blank=True, null=True)
 
     objects = WaveformManager()
@@ -322,6 +322,7 @@ def format_post_save(sender, instance, created, **kwargs):
         if USE_CELERYD:
             log.debug('sending job to task queue')
             obj.process_format.apply_async(queue='convert')
+            #obj.process_format.apply_async()
         else:
             log.debug('processing task in foreground')
             obj.process_format()

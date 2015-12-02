@@ -319,18 +319,18 @@ class ImportFile(BaseModel):
     def get_delete_url(self):
         return ''
 
-    def process(self):
+    def identify(self):
         log.info('Start processing ImportFile: %s at %s' % (self.pk, self.file.path))
         
         if USE_CELERYD:
-            self.process_task.delay(self)
+            self.identify_task.delay(self)
         else:
-            self.process_task(self)
+            self.identify_task(self)
         
     @task
-    def process_task(obj):
+    def identify_task(obj):
 
-        from util.process import Process
+        from util.identifier import Identifier
 
         pre_sleep = 1
         time.sleep(pre_sleep)
@@ -343,19 +343,28 @@ class ImportFile(BaseModel):
                 log.warning('Unable to determine mimetype: %s' % e)
 
 
-        processor = Process()
-        
-        # duplicate check by sha1
-        media_id = processor.id_by_sha1(obj.file)
-        log.debug('duplicate by SHA1: %s' % media_id)
+        identifier = Identifier()
 
-        # duplicate check by echoprint
-        if not media_id:
-            media_id = processor.id_by_echoprint(obj.file)
-            log.debug('duplicate by echoprint: %s' % media_id)
+        # get import settings
+        reimport_duplicate = obj.settings.get('reimport_duplicate', False)
+        if reimport_duplicate:
+            log.debug('duplicate reimport forced for pk: %s' % obj.pk)
+
+        if reimport_duplicate:
+            media_id = None
+
+        else:
+            # duplicate check by sha1
+            media_id = identifier.id_by_sha1(obj.file)
+            log.debug('duplicate by SHA1: %s' % media_id)
+
+            # duplicate check by echoprint
+            if not media_id:
+                media_id = identifier.id_by_echoprint(obj.file)
+                log.debug('duplicate by echoprint: %s' % media_id)
 
         try:
-            metadata = processor.extract_metadata(obj.file)
+            metadata = identifier.extract_metadata(obj.file)
             if not metadata:
                 log.warning('unable to extracted metadata')
 
@@ -455,11 +464,11 @@ class ImportFile(BaseModel):
         obj.results_tag_status = True
         obj.save()
 
-        obj.results_acoustid = processor.get_aid(obj.file)
+        obj.results_acoustid = identifier.get_aid(obj.file)
         obj.results_acoustid_status = True
         obj.save()
 
-        obj.results_musicbrainz = processor.get_musicbrainz(obj)
+        obj.results_musicbrainz = identifier.get_musicbrainz(obj)
         obj.results_discogs_status = True # TODO: ???
         obj.save()
         
@@ -470,7 +479,7 @@ class ImportFile(BaseModel):
             }
             obj.settings = s
             obj.save()
-            obj.results_musicbrainz = processor.get_musicbrainz(obj)
+            obj.results_musicbrainz = identifier.get_musicbrainz(obj)
             obj.save()
 
         obj.status = ImportFile.STATUS_READY
@@ -500,7 +509,7 @@ class ImportFile(BaseModel):
 
         # to prevent circular import errors
         from util.importer import Importer
-        importer = Importer()
+        importer = Importer(user=obj.import_session.user)
         
         media, status = importer.run(obj)
 
@@ -525,7 +534,7 @@ class ImportFile(BaseModel):
         # check/update import_tag
         if self.status == ImportFile.STATUS_READY:
             from util.importer import Importer
-            importer = Importer()
+            importer = Importer(user=self.import_session.user)
             self.import_tag = importer.complete_import_tag(self)
 
         if self.status == ImportFile.STATUS_READY:
@@ -564,7 +573,7 @@ def post_save_importfile(sender, **kwargs):
     # init: newly uploaded/created file. let's process (gather data) it
     # data then is presented in the import dialog, where the user can choose how to continue
     if obj.status == ImportFile.STATUS_INIT:
-        obj.process()
+        obj.identify()
 
     # finalize the import, fired when user clicks on "start import"
     if obj.status == ImportFile.STATUS_QUEUED:
