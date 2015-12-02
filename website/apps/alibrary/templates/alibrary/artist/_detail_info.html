@@ -130,31 +130,6 @@
 
         {% include 'alibrary/element/_edit_timestamps.html' %}
 
-        {% comment %}
-		<dt>
-			{% trans "Edit History" %}:
-		</dt>
-		<dd>
-			
-			{% if object.owner %}
-			<span class="key">{% trans "Owned by" %}:</span> <span class="value"><a href="{{ object.owner.get_absolute_url }}">{{ object.owner }}</a></span> |
-			{% endif %}
-
-			{% if object.creator %}
-			<span class="key">{% trans "Added by" %}:</span> <span class="value"><a href="{{ object.creator.get_absolute_url }}">{{ object.creator }}</a></span> |
-			{% endif %}
-			
-			{% if object.publisher %}
-			<span class="key">{% trans "Published by" %}:</span> <span class="value"><a href="#">{{ object.publisher }}</a></span> |
-			{% endif %}
-			
-			{% if object.get_last_revision %}
-			<span class="key">{% trans "Last edit by" %}:</span> <span class="value"><a href="{{ object.get_last_revision.user.get_profile.get_absolute_url }}">{{ object.get_last_revision.user }}</a></span>
-			{% endif %}
-			&nbsp;
-		</dd>
-        {% endcomment %}
-
         {% if object.tags %}
             <dt>
                 {% trans "Tags" %}:

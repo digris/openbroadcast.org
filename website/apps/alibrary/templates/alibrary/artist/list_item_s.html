@@ -48,7 +48,7 @@
 				{% trans "Tracks" %}:&nbsp;<a href="{% spurl path=media_list query="artist={{ item.slug }}" %}" style="vertical-align: top;">{{ item.media_artist.count }}<span class="filter icon"></span></a>
 			</li>
 			{% endif %}
-			
+
 		</ul>
 	</div>
 
@@ -64,10 +64,8 @@
 				{{ item.updated|date:"SHORT_DATE_FORMAT" }}
 			</li>
 			<li class="small">
-                {% if item.get_last_revision %}
                 {% trans "by" %}:
-				<a href="{{ item.get_last_revision.user.get_profile.get_absolute_url }}">{{ item.get_last_revision.user }}</a>
-                {% endif %}
+				<a href="{{ item.last_editor.get_absolute_url }}">{% firstof item.last_editor.get_full_name object.last_editor %}</a>
 			</li>
 		</ul>
 	</div>

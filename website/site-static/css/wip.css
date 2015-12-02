@@ -1318,186 +1318,190 @@ div.form-errors dl dd ul.errorlist {
 .listview.container.artists.s .c4 .relations > ul li a > span.service {
   display: none;
 }
-/* line 512, ../sass/element/_listview.sass */
+/* line 511, ../sass/element/_listview.sass */
+.listview.container.artists.s .c5 {
+  width: 120px;
+}
+/* line 513, ../sass/element/_listview.sass */
 .listview.container.artists.s .c6 {
   width: 40px;
   padding-right: 0px;
 }
-/* line 518, ../sass/element/_listview.sass */
+/* line 519, ../sass/element/_listview.sass */
 .listview.container.labels.s .c6 {
   width: 30px;
   padding-right: 0px;
 }
-/* line 522, ../sass/element/_listview.sass */
+/* line 523, ../sass/element/_listview.sass */
 .listview.container.labels.m .c1 {
   background-position: 5px 5px;
   background-position: center;
   background-image: url(/static/img/base/defaults/listview.artist.xl.png);
   background-size: 53px auto;
 }
-/* line 532, ../sass/element/_listview.sass */
+/* line 533, ../sass/element/_listview.sass */
 .listview.container.medias.s .c1 {
   width: 40px;
 }
-/* line 534, ../sass/element/_listview.sass */
+/* line 535, ../sass/element/_listview.sass */
 .listview.container.medias.s .c1 li {
   float: left;
 }
-/* line 537, ../sass/element/_listview.sass */
+/* line 538, ../sass/element/_listview.sass */
 .listview.container.medias.s .c2 small.type, .listview.container.medias.s .c2 small.tempo {
   font-weight: normal;
   font-size: 90%;
 }
-/* line 540, ../sass/element/_listview.sass */
+/* line 541, ../sass/element/_listview.sass */
 .listview.container.medias.s .c3 {
   width: auto;
 }
-/* line 543, ../sass/element/_listview.sass */
+/* line 544, ../sass/element/_listview.sass */
 .listview.container.medias.s .c4 {
   width: 100px;
 }
-/* line 546, ../sass/element/_listview.sass */
+/* line 547, ../sass/element/_listview.sass */
 .listview.container.medias.s .c5 {
   width: 68px;
   text-align: center;
 }
-/* line 549, ../sass/element/_listview.sass */
+/* line 550, ../sass/element/_listview.sass */
 .listview.container.medias.s .c5 ul > li {
   width: 24px;
   padding-top: 10px;
 }
-/* line 552, ../sass/element/_listview.sass */
+/* line 553, ../sass/element/_listview.sass */
 .listview.container.medias.s .c5 ul > li a {
   color: #333333;
 }
-/* line 554, ../sass/element/_listview.sass */
+/* line 555, ../sass/element/_listview.sass */
 .listview.container.medias.s .c5 ul > li a:hover {
   text-decoration: none;
   color: #6633cc;
 }
-/* line 557, ../sass/element/_listview.sass */
+/* line 558, ../sass/element/_listview.sass */
 .listview.container.medias.s .c5 ul > li i {
   font-size: 145%;
 }
-/* line 564, ../sass/element/_listview.sass */
+/* line 565, ../sass/element/_listview.sass */
 .listview.container.medias.s .c6 {
   width: 40px;
   padding-right: 0px;
 }
-/* line 567, ../sass/element/_listview.sass */
+/* line 568, ../sass/element/_listview.sass */
 .listview.container.medias.s .c7 {
   width: 30px;
 }
-/* line 571, ../sass/element/_listview.sass */
+/* line 572, ../sass/element/_listview.sass */
 .listview.container.medias.inner.s {
   margin-top: 20px;
 }
-/* line 575, ../sass/element/_listview.sass */
+/* line 576, ../sass/element/_listview.sass */
 .listview.container.medias.inner.s .c1 {
   width: 64px;
 }
-/* line 577, ../sass/element/_listview.sass */
+/* line 578, ../sass/element/_listview.sass */
 .listview.container.medias.inner.s .c1 .tracknumber {
   text-align: right;
   font-weight: bold;
   padding: 2px 9px 0 0;
 }
-/* line 582, ../sass/element/_listview.sass */
+/* line 583, ../sass/element/_listview.sass */
 .listview.container.medias.inner.s .c3 {
   width: 200px;
 }
-/* line 588, ../sass/element/_listview.sass */
+/* line 589, ../sass/element/_listview.sass */
 .listview.container.medias.inner.s .list_body_row:first-child .list_body_item {
   border-top: 1px solid #dddddd;
 }
-/* line 591, ../sass/element/_listview.sass */
+/* line 592, ../sass/element/_listview.sass */
 .listview.container.medias.inner.s .list_body_row .list_body_item {
   padding: 4px 2px 0px 2px;
   vertical-align: middle;
 }
-/* line 596, ../sass/element/_listview.sass */
+/* line 597, ../sass/element/_listview.sass */
 .listview.container .item.timestamp .c1 {
   width: 90px !important;
 }
-/* line 598, ../sass/element/_listview.sass */
+/* line 599, ../sass/element/_listview.sass */
 .listview.container .item.timestamp .c1 .timestamp {
   width: 36px;
   float: left;
   font-weight: bold;
   padding: 2px 0 0 4px;
 }
-/* line 604, ../sass/element/_listview.sass */
+/* line 605, ../sass/element/_listview.sass */
 .listview.container .item.hidden-future {
   display: table-row;
   background: #efefef;
 }
-/* line 608, ../sass/element/_listview.sass */
+/* line 609, ../sass/element/_listview.sass */
 .listview.container .item.hidden-future .inner {
   display: table-cell;
   border-bottom: 1px solid #dddddd;
   height: 36px;
 }
-/* line 613, ../sass/element/_listview.sass */
+/* line 614, ../sass/element/_listview.sass */
 .listview.container .item.hidden-future .inner.icon i {
   padding-left: 15px;
   font-size: 200%;
   line-height: 33px;
   color: #aaaaaa;
 }
-/* line 629, ../sass/element/_listview.sass */
+/* line 630, ../sass/element/_listview.sass */
 .listview.container.transmissions.s .c2 {
   width: auto;
 }
-/* line 631, ../sass/element/_listview.sass */
+/* line 632, ../sass/element/_listview.sass */
 .listview.container.transmissions.s .c3 {
   width: 80px;
 }
-/* line 633, ../sass/element/_listview.sass */
+/* line 634, ../sass/element/_listview.sass */
 .listview.container.transmissions.s .c4 {
   width: 180px;
 }
-/* line 635, ../sass/element/_listview.sass */
+/* line 636, ../sass/element/_listview.sass */
 .listview.container.transmissions.s .c5 {
   width: 80px;
 }
-/* line 637, ../sass/element/_listview.sass */
+/* line 638, ../sass/element/_listview.sass */
 .listview.container.transmissions.s .list_body_item.c3 {
   text-align: right;
   padding-right: 24px;
 }
-/* line 643, ../sass/element/_listview.sass */
+/* line 644, ../sass/element/_listview.sass */
 .listview.container.downloads.s .list_body_row {
   height: 22px;
 }
-/* line 645, ../sass/element/_listview.sass */
+/* line 646, ../sass/element/_listview.sass */
 .listview.container.downloads.s .c2 {
   width: auto;
 }
-/* line 647, ../sass/element/_listview.sass */
+/* line 648, ../sass/element/_listview.sass */
 .listview.container.downloads.s .c3 {
   width: 80px;
   text-align: right;
   padding-right: 8px;
 }
-/* line 651, ../sass/element/_listview.sass */
+/* line 652, ../sass/element/_listview.sass */
 .listview.container.downloads.s .c4 {
   width: auto;
   text-align: right;
   padding-right: 8px;
 }
-/* line 655, ../sass/element/_listview.sass */
+/* line 656, ../sass/element/_listview.sass */
 .listview.container.downloads.s .c5 {
   width: 80px;
   text-align: right;
   padding-right: 8px;
 }
-/* line 659, ../sass/element/_listview.sass */
+/* line 660, ../sass/element/_listview.sass */
 .listview.container.downloads.s .c6 {
   width: 80px;
   text-align: right;
   padding-right: 8px;
 }
-/* line 664, ../sass/element/_listview.sass */
+/* line 665, ../sass/element/_listview.sass */
 .listview.container.s .playing {
   background-color: #dcffdc;
 }
@@ -1505,42 +1509,42 @@ div.form-errors dl dd ul.errorlist {
 /**********************************************************
  * Styles Medium
  ********************************************************** */
-/* line 678, ../sass/element/_listview.sass */
+/* line 679, ../sass/element/_listview.sass */
 .listview.container.releases.m .c1.list_body_item {
   background-image: url(/static/img/base/defaults/listview.release.xl.png);
   background-size: 54px 54px;
 }
-/* line 683, ../sass/element/_listview.sass */
+/* line 684, ../sass/element/_listview.sass */
 .listview.container.artists.m .c1.list_body_item {
   background-image: url(/static/img/base/defaults/listview.artist.xl.png);
   background-size: 54px 54px;
 }
-/* line 686, ../sass/element/_listview.sass */
+/* line 687, ../sass/element/_listview.sass */
 .listview.container.artists.m .c2 {
   width: 214px;
 }
-/* line 694, ../sass/element/_listview.sass */
+/* line 695, ../sass/element/_listview.sass */
 .listview.container.labels.m .c2 {
   width: 260px;
 }
-/* line 698, ../sass/element/_listview.sass */
+/* line 699, ../sass/element/_listview.sass */
 .listview.container.labels.m .c3 .relations > ul {
   position: relative;
   top: 16px;
 }
-/* line 702, ../sass/element/_listview.sass */
+/* line 703, ../sass/element/_listview.sass */
 .listview.container.labels.m .c3 .relations > ul li {
   padding-right: 7px;
 }
-/* line 704, ../sass/element/_listview.sass */
+/* line 705, ../sass/element/_listview.sass */
 .listview.container.labels.m .c3 .relations > ul li a > span.service {
   display: none;
 }
-/* line 707, ../sass/element/_listview.sass */
+/* line 708, ../sass/element/_listview.sass */
 .listview.container.labels.m .c4 {
   position: relative;
 }
-/* line 711, ../sass/element/_listview.sass */
+/* line 712, ../sass/element/_listview.sass */
 .listview.container.labels.m .c4 ul.tags {
   position: absolute;
   bottom: 0px;
@@ -1548,7 +1552,7 @@ div.form-errors dl dd ul.errorlist {
   opacity: 0.88;
   padding-bottom: 2px;
 }
-/* line 717, ../sass/element/_listview.sass */
+/* line 718, ../sass/element/_listview.sass */
 .listview.container.labels.m .c4 ul.tags li {
   margin: 2px 2px 0 0;
   padding: 0 4px;
@@ -1559,35 +1563,35 @@ div.form-errors dl dd ul.errorlist {
   float: right;
   text-transform: uppercase;
 }
-/* line 729, ../sass/element/_listview.sass */
+/* line 730, ../sass/element/_listview.sass */
 .listview.container.labels.m .c4 ul.tags li.active {
   background: #00bb00;
   border-color: #00bb00;
   color: white;
 }
-/* line 734, ../sass/element/_listview.sass */
+/* line 735, ../sass/element/_listview.sass */
 .listview.container.labels.m .c5 {
   width: 40px;
 }
-/* line 738, ../sass/element/_listview.sass */
+/* line 739, ../sass/element/_listview.sass */
 .listview.container.playlist.m .c1.list_body_item {
   background-image: url(/static/img/base/defaults/listview.playlist.xl.png);
   background-size: 54px 54px;
 }
-/* line 745, ../sass/element/_listview.sass */
+/* line 746, ../sass/element/_listview.sass */
 .listview.container.profile.m .c1.list_body_item {
   background-image: url(/static/img/base/defaults/listview.profile.xl.png);
   background-size: 54px 54px;
 }
-/* line 750, ../sass/element/_listview.sass */
+/* line 751, ../sass/element/_listview.sass */
 .listview.container.profile.m .c3 {
   width: 178px;
 }
-/* line 752, ../sass/element/_listview.sass */
+/* line 753, ../sass/element/_listview.sass */
 .listview.container.profile.m .c4 {
   position: relative;
 }
-/* line 756, ../sass/element/_listview.sass */
+/* line 757, ../sass/element/_listview.sass */
 .listview.container.profile.m .c4 ul.tags {
   position: absolute;
   bottom: 0px;
@@ -1595,7 +1599,7 @@ div.form-errors dl dd ul.errorlist {
   opacity: 0.88;
   padding-bottom: 2px;
 }
-/* line 762, ../sass/element/_listview.sass */
+/* line 763, ../sass/element/_listview.sass */
 .listview.container.profile.m .c4 ul.tags li {
   margin: 2px 2px 0 0;
   padding: 0 4px;
@@ -1606,38 +1610,38 @@ div.form-errors dl dd ul.errorlist {
   float: right;
   text-transform: uppercase;
 }
-/* line 775, ../sass/element/_listview.sass */
+/* line 776, ../sass/element/_listview.sass */
 .listview.container.profile.m .c4 ul.tags li.active {
   background: #00bb00;
   border-color: #00bb00;
   color: white;
 }
-/* line 780, ../sass/element/_listview.sass */
+/* line 781, ../sass/element/_listview.sass */
 .listview.container.m {
   font-size: 90%;
 }
-/* line 782, ../sass/element/_listview.sass */
+/* line 783, ../sass/element/_listview.sass */
 .listview.container.m .list_body_item, .listview.container.m .list_header_item {
   padding: 2px;
 }
-/* line 785, ../sass/element/_listview.sass */
+/* line 786, ../sass/element/_listview.sass */
 .listview.container.m .c1 {
   width: 84px;
   background-position: 28px 5px;
   height: 58px;
 }
-/* line 789, ../sass/element/_listview.sass */
+/* line 790, ../sass/element/_listview.sass */
 .listview.container.m .c1 img {
   width: 84px;
   height: 58px;
 }
-/* line 792, ../sass/element/_listview.sass */
+/* line 793, ../sass/element/_listview.sass */
 .listview.container.m .c1 ul li {
   display: block;
   width: 16px;
   padding: 2px 0 0 0px;
 }
-/* line 797, ../sass/element/_listview.sass */
+/* line 798, ../sass/element/_listview.sass */
 .listview.container.m .c1 ul li a {
   display: block;
   width: 16px;
@@ -1645,15 +1649,15 @@ div.form-errors dl dd ul.errorlist {
   background-position: 0 0;
   background-repeat: no-repeat;
 }
-/* line 803, ../sass/element/_listview.sass */
+/* line 804, ../sass/element/_listview.sass */
 .listview.container.m .c1 ul li a:hover {
   background-position: 0 -16px;
 }
-/* line 805, ../sass/element/_listview.sass */
+/* line 806, ../sass/element/_listview.sass */
 .listview.container.m .c1 ul li.play a {
   background-image: url(/static/img/base/listview.row.play.button.png);
 }
-/* line 807, ../sass/element/_listview.sass */
+/* line 808, ../sass/element/_listview.sass */
 .listview.container.m .c1 ul li.play span {
   background-image: url(/static/img/base/listview.row.play.button.disabled.png);
   display: block;
@@ -1662,28 +1666,28 @@ div.form-errors dl dd ul.errorlist {
   background-position: 0 0;
   background-repeat: no-repeat;
 }
-/* line 817, ../sass/element/_listview.sass */
+/* line 818, ../sass/element/_listview.sass */
 .listview.container.m .playing ul li.play a {
   background-position: 0 -16px;
 }
-/* line 820, ../sass/element/_listview.sass */
+/* line 821, ../sass/element/_listview.sass */
 .listview.container.m .c2 {
   width: 240px;
 }
-/* line 822, ../sass/element/_listview.sass */
+/* line 823, ../sass/element/_listview.sass */
 .listview.container.m .c2.slim {
   width: 218px;
 }
-/* line 824, ../sass/element/_listview.sass */
+/* line 825, ../sass/element/_listview.sass */
 .listview.container.m .c3 {
   width: 78px;
 }
-/* line 826, ../sass/element/_listview.sass */
+/* line 827, ../sass/element/_listview.sass */
 .listview.container.m .c3.external {
   padding-top: 6px;
   width: 100px;
 }
-/* line 829, ../sass/element/_listview.sass */
+/* line 830, ../sass/element/_listview.sass */
 .listview.container.m .c4 {
   width: auto;
 }
@@ -1693,51 +1697,51 @@ div.form-errors dl dd ul.errorlist {
  ***********************************************************/
  *
  * /* Reset all divs to block display (instead of table-way) */
-/* line 883, ../sass/element/_listview.sass */
+/* line 884, ../sass/element/_listview.sass */
 .listview.container.releases.l .list_body_row.item {
   background-image: url(/static/img/base/defaults/listview.release.xl.png);
 }
-/* line 886, ../sass/element/_listview.sass */
+/* line 887, ../sass/element/_listview.sass */
 .listview.container.releases.l .list_body_row.item .iconset-license {
   font-size: 14px;
 }
-/* line 890, ../sass/element/_listview.sass */
+/* line 891, ../sass/element/_listview.sass */
 .listview.container.artists.l .list_body_row.item {
   background-image: url(/static/img/base/defaults/listview.artist.xl.png);
 }
-/* line 894, ../sass/element/_listview.sass */
+/* line 895, ../sass/element/_listview.sass */
 .listview.container.playlist.l .list_body_row.item {
   background-image: url(/static/img/base/defaults/listview.playlist.xl.png);
 }
-/* line 904, ../sass/element/_listview.sass */
+/* line 905, ../sass/element/_listview.sass */
 .listview.container.playlist.l .list_body_row.item .wrapper_icon ul.indicator li {
   padding: 2px 4px 0 0;
   font-size: 200%;
 }
 
-/* line 908, ../sass/element/_listview.sass */
+/* line 909, ../sass/element/_listview.sass */
 .listview.container.l {
   display: block;
   font-size: 90%;
 }
-/* line 913, ../sass/element/_listview.sass */
+/* line 914, ../sass/element/_listview.sass */
 .listview.container.l .list_body_item, .listview.container.l .list_header_item {
   padding: 2px 5px;
 }
-/* line 918, ../sass/element/_listview.sass */
+/* line 919, ../sass/element/_listview.sass */
 .listview.container.l .list_body_row.item {
   background-size: 197px 197px;
 }
-/* line 922, ../sass/element/_listview.sass */
+/* line 923, ../sass/element/_listview.sass */
 .listview.container.l div.list_body {
   display: block;
   /* actually not a real 'row' in this style */
 }
-/* line 925, ../sass/element/_listview.sass */
+/* line 926, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.break_line {
   height: 55px;
 }
-/* line 929, ../sass/element/_listview.sass */
+/* line 930, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row {
   display: block;
   float: left;
@@ -1755,46 +1759,46 @@ div.form-errors dl dd ul.errorlist {
   /* Play icon */
   /* Adjustable infoo panel */
 }
-/* line 936, ../sass/element/_listview.sass */
+/* line 937, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row:nth-child(4n) {
   margin: 14px 0 0 0;
 }
-/* line 953, ../sass/element/_listview.sass */
+/* line 954, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row.selection div.wrapper_info, .listview.container.l div.list_body div.list_body_row.selection div.wrapper_action {
   background-color: #eee6ff;
 }
-/* line 956, ../sass/element/_listview.sass */
+/* line 957, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row.hover {
   border-bottom: none;
   background-color: white;
 }
-/* line 959, ../sass/element/_listview.sass */
+/* line 960, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row.hover .wrapper_info {
   background-color: whitesmoke;
 }
-/* line 961, ../sass/element/_listview.sass */
+/* line 962, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row.hover .wrapper_action {
   background-color: whitesmoke;
 }
-/* line 963, ../sass/element/_listview.sass */
+/* line 964, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row.selection.hover {
   background-color: white;
 }
-/* line 968, ../sass/element/_listview.sass */
+/* line 969, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row.playing ul li.play a {
   background-position: 0 -16px;
 }
-/* line 975, ../sass/element/_listview.sass */
+/* line 976, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row div.list_body_item {
   display: block;
   border-bottom: none;
 }
-/* line 980, ../sass/element/_listview.sass */
+/* line 981, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row div.list_body_item.action .wrapper {
   width: 36px;
   padding: 0 0 0 150px;
 }
-/* line 987, ../sass/element/_listview.sass */
+/* line 988, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .wrapper_icon {
   position: absolute;
   left: 51px;
@@ -1803,47 +1807,47 @@ div.form-errors dl dd ul.errorlist {
   border-radius: 5px;
   z-index: 999;
 }
-/* line 994, ../sass/element/_listview.sass */
+/* line 995, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .wrapper_icon ul li {
   float: left;
 }
-/* line 996, ../sass/element/_listview.sass */
+/* line 997, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .wrapper_icon ul li a {
   display: block;
   padding: 4px 8px 3px;
   color: rgba(255, 255, 255, 0.5) !important;
 }
-/* line 1000, ../sass/element/_listview.sass */
+/* line 1001, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .wrapper_icon ul li i {
   font-size: 32px;
 }
-/* line 1002, ../sass/element/_listview.sass */
+/* line 1003, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row.hover .wrapper_icon {
   background: rgba(51, 51, 51, 0.71);
 }
-/* line 1005, ../sass/element/_listview.sass */
+/* line 1006, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row.hover .wrapper_icon ul li a {
   color: white !important;
   background: transparent !important;
 }
-/* line 1008, ../sass/element/_listview.sass */
+/* line 1009, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row.hover .wrapper_icon ul li a:hover {
   background: transparent;
   color: #00bb00 !important;
 }
-/* line 1014, ../sass/element/_listview.sass */
+/* line 1015, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .__disabled__.wrapper_icon {
   width: 24px;
   height: 44px;
   padding: 2px 0 0 4px;
 }
-/* line 1020, ../sass/element/_listview.sass */
+/* line 1021, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .__disabled__.wrapper_icon ul li {
   display: block;
   width: 16px;
   padding: 2px 0 0 0px;
 }
-/* line 1025, ../sass/element/_listview.sass */
+/* line 1026, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .__disabled__.wrapper_icon ul li a {
   display: block;
   width: 16px;
@@ -1851,15 +1855,15 @@ div.form-errors dl dd ul.errorlist {
   background-position: 0 0;
   background-repeat: no-repeat;
 }
-/* line 1031, ../sass/element/_listview.sass */
+/* line 1032, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .__disabled__.wrapper_icon ul li a:hover {
   background-position: 0 -16px;
 }
-/* line 1033, ../sass/element/_listview.sass */
+/* line 1034, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .__disabled__.wrapper_icon ul li.play a {
   background-image: url(/static/img/base/listview.row.play.button.png);
 }
-/* line 1035, ../sass/element/_listview.sass */
+/* line 1036, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .__disabled__.wrapper_icon ul li.play span {
   background-image: url(/static/img/base/listview.row.play.button.disabled.png);
   display: block;
@@ -1868,7 +1872,7 @@ div.form-errors dl dd ul.errorlist {
   background-position: 0 0;
   background-repeat: no-repeat;
 }
-/* line 1045, ../sass/element/_listview.sass */
+/* line 1046, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .spacer {
   position: relative;
   cursor: pointer;
@@ -1877,11 +1881,11 @@ div.form-errors dl dd ul.errorlist {
   -webkit-transition-property: height;
   -webkit-transition-duration: 0.1s;
 }
-/* line 1060, ../sass/element/_listview.sass */
+/* line 1061, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .spacer.license {
   background-position: right bottom;
 }
-/* line 1064, ../sass/element/_listview.sass */
+/* line 1065, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .spacer ul.tags {
   position: absolute;
   bottom: 0px;
@@ -1889,7 +1893,7 @@ div.form-errors dl dd ul.errorlist {
   opacity: 0.88;
   padding-bottom: 2px;
 }
-/* line 1070, ../sass/element/_listview.sass */
+/* line 1071, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .spacer ul.tags li {
   margin: 2px 2px 0 0;
   padding: 0 4px;
@@ -1900,12 +1904,12 @@ div.form-errors dl dd ul.errorlist {
   float: right;
   text-transform: uppercase;
 }
-/* line 1079, ../sass/element/_listview.sass */
+/* line 1080, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .spacer ul.tags li.active {
   background: #00bb00;
   border-color: #00bb00;
 }
-/* line 1090, ../sass/element/_listview.sass */
+/* line 1091, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row.hover ul.tags {
   position: absolute;
   opacity: 1;
@@ -1913,38 +1917,38 @@ div.form-errors dl dd ul.errorlist {
   -webkit-transition-property: opacity, background-color;
   -webkit-transition-duration: 0.1s;
 }
-/* line 1096, ../sass/element/_listview.sass */
+/* line 1097, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row.hover ul.tags li {
   border: 1px solid #626262;
 }
-/* line 1102, ../sass/element/_listview.sass */
+/* line 1103, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .wrapper_info {
   background-color: white;
 }
-/* line 1104, ../sass/element/_listview.sass */
+/* line 1105, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .wrapper_info ul li {
   /*padding: 2px 2px 2px 5px */
 }
-/* line 1106, ../sass/element/_listview.sass */
+/* line 1107, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .wrapper_info .wrapper_inner {
   height: 60px;
   overflow: hidden;
 }
-/* line 1113, ../sass/element/_listview.sass */
+/* line 1114, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .wrapper_action {
   background: white;
 }
-/* line 1115, ../sass/element/_listview.sass */
+/* line 1116, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.list_body_row .wrapper_action li {
   float: right;
 }
-/* line 1121, ../sass/element/_listview.sass */
+/* line 1122, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.marker {
   position: absolute;
   top: 10px;
   right: -30px;
 }
-/* line 1125, ../sass/element/_listview.sass */
+/* line 1126, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.marker span {
   text-transform: uppercase;
   background: white;
@@ -1959,20 +1963,20 @@ div.form-errors dl dd ul.errorlist {
   -moz-transform: rotate(45deg);
   transform: rotate(45deg);
 }
-/* line 1138, ../sass/element/_listview.sass */
+/* line 1139, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.marker span a {
   color: black;
 }
-/* line 1141, ../sass/element/_listview.sass */
+/* line 1142, ../sass/element/_listview.sass */
 .listview.container.l div.list_body div.marker.promo span {
   background: white;
 }
 
-/* line 1156, ../sass/element/_listview.sass */
+/* line 1157, ../sass/element/_listview.sass */
 .listview.container.actions table tr:first-child > td {
   border-top: none;
 }
-/* line 1158, ../sass/element/_listview.sass */
+/* line 1159, ../sass/element/_listview.sass */
 .listview.container.actions table tr.day-separator > td {
   padding: 10px;
   text-align: center;
@@ -1981,90 +1985,90 @@ div.form-errors dl dd ul.errorlist {
 }
 
 /* license icon display */
-/* line 1185, ../sass/element/_listview.sass */
+/* line 1186, ../sass/element/_listview.sass */
 .listview.container .list_body_item.links.external ul li {
   float: left;
 }
-/* line 1187, ../sass/element/_listview.sass */
+/* line 1188, ../sass/element/_listview.sass */
 .listview.container .list_body_item.links.external ul li a {
   font-size: 16px;
   color: #5a5a5a;
 }
-/* line 1190, ../sass/element/_listview.sass */
+/* line 1191, ../sass/element/_listview.sass */
 .listview.container .list_body_item.links.external ul li a:hover {
   color: #6633cc;
   text-decoration: none;
 }
-/* line 1198, ../sass/element/_listview.sass */
+/* line 1199, ../sass/element/_listview.sass */
 .listview.container.s .list_body_item.license {
   background-position: center center;
   background-position-y: 5px;
 }
-/* line 1204, ../sass/element/_listview.sass */
+/* line 1205, ../sass/element/_listview.sass */
 .listview.container.m .list_body_item.license {
   background-position: 0 4px;
 }
 
 /* overrides for states */
-/* line 1211, ../sass/element/_listview.sass */
+/* line 1212, ../sass/element/_listview.sass */
 .listview.container.downloads .c1 {
   background-repeat: no-repeat;
   background-position: 2px 2px;
   width: 20px;
 }
-/* line 1215, ../sass/element/_listview.sass */
+/* line 1216, ../sass/element/_listview.sass */
 .listview.container.downloads .c1 img {
   width: 16px;
   height: 16px;
 }
-/* line 1220, ../sass/element/_listview.sass */
+/* line 1221, ../sass/element/_listview.sass */
 .listview.container.downloads .list_body_row.init .list_body_item {
   color: #ababab;
 }
-/* line 1222, ../sass/element/_listview.sass */
+/* line 1223, ../sass/element/_listview.sass */
 .listview.container.downloads .list_body_row.init .c1 {
   background-image: url(/static/img/base/listview.downloads.init.png);
 }
-/* line 1226, ../sass/element/_listview.sass */
+/* line 1227, ../sass/element/_listview.sass */
 .listview.container.downloads .list_body_row.running .list_body_item {
   color: #ababab;
 }
-/* line 1228, ../sass/element/_listview.sass */
+/* line 1229, ../sass/element/_listview.sass */
 .listview.container.downloads .list_body_row.running .c1 {
   background-image: url(/static/img/base/listview.downloads.running.png);
 }
-/* line 1232, ../sass/element/_listview.sass */
+/* line 1233, ../sass/element/_listview.sass */
 .listview.container.downloads .list_body_row.done .c1 {
   background-image: url(/static/img/base/listview.downloads.done.png);
 }
-/* line 1236, ../sass/element/_listview.sass */
+/* line 1237, ../sass/element/_listview.sass */
 .listview.container.downloads .list_body_row.error .list_body_item {
   background-color: #fff0e1;
   color: #5a5a5a;
 }
-/* line 1239, ../sass/element/_listview.sass */
+/* line 1240, ../sass/element/_listview.sass */
 .listview.container.downloads .list_body_row.error .c1 {
   background-image: url(/static/img/base/listview.downloads.error.png);
 }
-/* line 1243, ../sass/element/_listview.sass */
+/* line 1244, ../sass/element/_listview.sass */
 .listview.container.downloads .list_body_row.done.downloaded .list_body_item {
   background-color: #e4ffe4;
 }
-/* line 1245, ../sass/element/_listview.sass */
+/* line 1246, ../sass/element/_listview.sass */
 .listview.container.downloads .list_body_row.done.downloaded .c1 {
   /* background-color: #ff00ff */
   background-image: url(/static/img/base/listview.downloads.downloaded.png);
 }
 
 /* highlighter */
-/* line 1253, ../sass/element/_listview.sass */
+/* line 1254, ../sass/element/_listview.sass */
 .listview.container .list_body span.highlight {
   background-color: #ddffd9;
   color: #00bb00;
 }
 
 /* ---------- tagbar/search for gianluca :) ---------- */
-/* line 1261, ../sass/element/_listview.sass */
+/* line 1262, ../sass/element/_listview.sass */
 .searchbar {
   padding: 0 0 3px 0;
   background-color: #efefef;
@@ -2073,27 +2077,27 @@ div.form-errors dl dd ul.errorlist {
   -webkit-transition-property: background-color;
   -webkit-transition-duration: 0.3s;
 }
-/* line 1270, ../sass/element/_listview.sass */
+/* line 1271, ../sass/element/_listview.sass */
 .searchbar.hover {
   background-color: #efefef;
   -webkit-transition-property: background-color;
   -webkit-transition-duration: 0.3s;
 }
-/* line 1278, ../sass/element/_listview.sass */
+/* line 1279, ../sass/element/_listview.sass */
 .searchbar .search-input {
   margin: 3px 0 0 2px;
   height: 17px;
   padding: 0;
 }
-/* line 1282, ../sass/element/_listview.sass */
+/* line 1283, ../sass/element/_listview.sass */
 .searchbar .search-input ::-webkit-input-placeholder {
   color: #777777;
 }
-/* line 1286, ../sass/element/_listview.sass */
+/* line 1287, ../sass/element/_listview.sass */
 .searchbar .search-input span, .searchbar .search-input i {
   display: none;
 }
-/* line 1288, ../sass/element/_listview.sass */
+/* line 1289, ../sass/element/_listview.sass */
 .searchbar .search-input input {
   border: 0px none;
   box-shadow: none !important;
@@ -2103,62 +2107,62 @@ div.form-errors dl dd ul.errorlist {
   line-height: 17px;
   padding: 0px 2px 0px 4px;
 }
-/* line 1296, ../sass/element/_listview.sass */
+/* line 1297, ../sass/element/_listview.sass */
 .searchbar .search-input input.blur {
   color: #5a5a5a;
 }
-/* line 1298, ../sass/element/_listview.sass */
+/* line 1299, ../sass/element/_listview.sass */
 .searchbar .search-input input.focus {
   color: #333333;
 }
-/* line 1300, ../sass/element/_listview.sass */
+/* line 1301, ../sass/element/_listview.sass */
 .searchbar .search-input a #searchbar_input {
   margin: 0 0 0 0;
 }
-/* line 1302, ../sass/element/_listview.sass */
+/* line 1303, ../sass/element/_listview.sass */
 .searchbar .search-input a #searchbar_input.blur {
   color: #00bb00;
 }
-/* line 1304, ../sass/element/_listview.sass */
+/* line 1305, ../sass/element/_listview.sass */
 .searchbar .search-input a #searchbar_input.focus {
   color: #333333;
 }
-/* line 1309, ../sass/element/_listview.sass */
+/* line 1310, ../sass/element/_listview.sass */
 .searchbar .search-input.active .inner {
   background: #ddffd9;
   border: 1px solid white;
   border-right-color: #7ab89b;
   border-bottom-color: #7ab89b;
 }
-/* line 1314, ../sass/element/_listview.sass */
+/* line 1315, ../sass/element/_listview.sass */
 .searchbar .search-input.active .inner input {
   color: #00bb00;
 }
-/* line 1316, ../sass/element/_listview.sass */
+/* line 1317, ../sass/element/_listview.sass */
 .searchbar .search-input.active .inner i {
   display: inline;
 }
-/* line 1318, ../sass/element/_listview.sass */
+/* line 1319, ../sass/element/_listview.sass */
 .searchbar .search-input.active .inner span {
   color: #00bb00;
   padding: 0 0 0 5px;
   display: inline;
 }
-/* line 1324, ../sass/element/_listview.sass */
+/* line 1325, ../sass/element/_listview.sass */
 .searchbar .search-clear a {
   color: #5a5a5a;
 }
-/* line 1326, ../sass/element/_listview.sass */
+/* line 1327, ../sass/element/_listview.sass */
 .searchbar .search-clear a:hover {
   color: #00bb00;
   text-decoration: none;
 }
-/* line 1330, ../sass/element/_listview.sass */
+/* line 1331, ../sass/element/_listview.sass */
 .searchbar .filter-bar {
   float: right;
   margin: 0;
 }
-/* line 1333, ../sass/element/_listview.sass */
+/* line 1334, ../sass/element/_listview.sass */
 .searchbar .filter-bar a {
   color: #00bb00;
   background: #ddffd9;
@@ -2169,23 +2173,23 @@ div.form-errors dl dd ul.errorlist {
   padding: 0px 6px 0px 5px !important;
   margin: 3px 2px 0px 1px !important;
 }
-/* line 1342, ../sass/element/_listview.sass */
+/* line 1343, ../sass/element/_listview.sass */
 .searchbar .filter-bar a:hover {
   text-decoration: none;
 }
-/* line 1346, ../sass/element/_listview.sass */
+/* line 1347, ../sass/element/_listview.sass */
 .searchbar i._icon.icon-delete {
   background-image: url(/static/img/prototype/tag_remove.png);
   background-position: 0 11px;
   white-space: nowrap;
   padding: 0 0 0 12px;
 }
-/* line 1353, ../sass/element/_listview.sass */
+/* line 1354, ../sass/element/_listview.sass */
 .searchbar .tagbar {
   background: none;
   border: none;
 }
-/* line 1357, ../sass/element/_listview.sass */
+/* line 1358, ../sass/element/_listview.sass */
 .searchbar .tagbar a {
   float: right;
   padding: 0px 6px 0px 5px !important;
