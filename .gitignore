@@ -4,6 +4,7 @@
 .pydev*
 
 .idea
+.tmp
 
 *node_modules*
 
