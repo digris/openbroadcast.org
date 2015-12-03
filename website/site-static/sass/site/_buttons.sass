@@ -127,27 +127,28 @@ $color-adjust: -15
 // Set the backgrounds
 // -------------------------
 .btn-primary
-  +buttonBackground($primaryButtonBackground, adjust-lightness($primaryButtonBackground, $color-adjust))
+  background: $primaryButtonBackground
+  //+buttonBackground($primaryButtonBackground, adjust-lightness($primaryButtonBackground, $color-adjust))
 
 // Warning appears are orange
 .btn-warning
-  +buttonBackground($orange, adjust-lightness($orange, $color-adjust))
+  //+buttonBackground($orange, adjust-lightness($orange, $color-adjust))
 
 // Danger and error appear as red
 .btn-danger
-  +buttonBackground($red, adjust-lightness($red, $color-adjust))
+  //+buttonBackground($red, adjust-lightness($red, $color-adjust))
 
 // Success appears as green
 .btn-success
-  +buttonBackground($green, adjust-lightness($green, $color-adjust))
+  //+buttonBackground($green, adjust-lightness($green, $color-adjust))
 
 // Info appears as a neutral blue
 .btn-info
-  +buttonBackground($yellow, adjust-lightness($yellow, $color-adjust))
+  //+buttonBackground($yellow, adjust-lightness($yellow, $color-adjust))
 
 // Inverse appears as dark gray
 .btn-inverse
-  +buttonBackground(#454545, #262626)
+  //+buttonBackground(#454545, #262626)
 
 // Cross-browser Jank
 // --------------------------------------------------
