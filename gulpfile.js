@@ -38,13 +38,17 @@ gulp.task('proxy', ['styles'], function () {
     });
 
     gulp.watch("website/site-static/sass/**/*.sass", ['styles']);
-    gulp.watch("app/*.html").on('change', browserSync.reload);
+    gulp.watch("website/**/*.html").on('change', browserSync.reload);
 });
 
 gulp.task('styles', function () {
     return gulp.src([
             'website/site-static/sass/screen.sass',
-            'website/site-static/sass/wip.sass'
+            'website/site-static/sass/print.sass',
+            'website/site-static/sass/aplayer.sass',
+            'website/site-static/sass/scheduler.sass',
+            'website/site-static/sass/admin.sass',
+            //'website/site-static/sass/wip.sass'
         ])
         //.pipe($.sourcemaps.init())
         //.pipe($.plumber())

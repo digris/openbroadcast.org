@@ -4,279 +4,254 @@
 
 {% block object_type %}import{% endblock %}
 
+{% block heading %}
 
-{% block heading %} <!-- heading / icon (large one) -->
+    {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
 
-{% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
+    {% addtoblock "js-post" %}{% istats_scripts %}{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/tmpl.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.iframe-transport.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload-fp.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload-ui.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/locale.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/main.js"></script>{% endaddtoblock %}
 
-{% comment %}{% endcomment %}{% addtoblock "js-post" %}{% istats_scripts %}{% endaddtoblock %}
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
 
-{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/tmpl.js"></script>{% endaddtoblock %}
-{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.iframe-transport.js"></script>{% endaddtoblock %}
-{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload.js"></script>{% endaddtoblock %}
-{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload-fp.js"></script>{% endaddtoblock %}
-{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload-ui.js"></script>{% endaddtoblock %}
-{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/locale.js"></script>{% endaddtoblock %}
-{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/main.js"></script>{% endaddtoblock %}
-<div id="heading">
-	{% include "skeleton/heading.html" %}
-</div>
-<!-- heading / icon (large one) -->
 {% endblock %}
 
-{% block modnav %} <!-- start: intra-module navigation -->
-<div id="modnav">
-	{% include "skeleton/modnav.html" %}
-</div>
-<!-- end: intra-module navigation -->
+{% block modnav %}
+    <div id="modnav">
+        {% include "skeleton/modnav.html" %}
+    </div>
 {% endblock %}
 
 {% block inner %}
-<div class="item_detail" style="">
-
-	<section>
-		<div class="row">
-			<div>&nbsp;</div>
-		</div>
-	</section>
-
-	<div class="clear"></div>
-
-
-
-</div>
+    <div class="item_detail" style="">
+        <section>
+            <div class="row">
+                <div>&nbsp;</div>
+            </div>
+        </section>
+        <div class="clear"></div>
+    </div>
 {% endblock %}
 
 
 {% block sidebar %}
-<div id="menu_context" class="menu_context">
-	<div class="set">
-		<ul class="unstyled">
-
-			<li class="link ">
-				<span class="left icon"> <a href="{% url "importer-import-list" %}" title="{% trans "Back to Detail-View" %}">{% trans "Back to Imports" %}</a> </span>
-				<span class="opt"></span>
-				<span class="clear"></span>
-			</li>
-
-
-		</ul>
-	</div>
-</div>
-
-
+    <div id="menu_context" class="menu_context">
+        <div class="set">
+            <ul class="unstyled">
+                <li class="link ">
+                    <span class="left icon"> <a href="{% url "importer-import-list" %}" title="{% trans "Back to Detail-View" %}">{% trans "Back to Imports" %}</a> </span>
+                    <span class="opt"></span>
+                    <span class="clear"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
 
 
 {% block form %}
 
-{% addtoblock "js-head" %}
-<script type="text/javascript">
-	IMPORTFILE_API = "{% url "api_dispatch_list" api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}";
-	{% if data %}
-	app = {loaded: true};
-	{% endif %}
-</script>
-{% endaddtoblock %}
+    {% addtoblock "js-head" %}
+    <script type="text/javascript">
+        IMPORTFILE_API = "{% url "api_dispatch_list" api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}";
+        {% if data %}
+        app = {loaded: true};
+        {% endif %}
+    </script>
+    {% endaddtoblock %}
+
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/importfile.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/base.js"></script>{% endaddtoblock %}
 
 
-{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/importfile.js"></script>{% endaddtoblock %}
-{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/base.js"></script>{% endaddtoblock %}
-
-{% addtoblock "js-post" %}<!--<script type="text/javascript" src="{{ STATIC_URL }}importer/js/templates.js"></script>-->{% endaddtoblock %}
+    {% addtoblock "css" %}<link rel="stylesheet" href="{{ STATIC_URL }}css/lib/multiuploader/jquery.fileupload-ui.css">{% endaddtoblock %}
 
 
-
-{% addtoblock "css" %}<link rel="stylesheet" href="{{ STATIC_URL }}css/lib/multiuploader/jquery.fileupload-ui.css">{% endaddtoblock %}
-
-
-
-{% addtoblock "js-post" %}
-<script type="text/javascript">
-
-$(document).ready(function() {
-
-	$(function () {
-
-		importer.ui = new ImporterUi();
-		importer.ui.api_url = "{% url "api_dispatch_list" resource_name='import' api_name='v1'%}{{ object.id }}/";
-		importer.ui.fileupload_id = 'fileupload';
-		importer.ui.fileupload_options = {
-	        maxFileSize: 1000000000, // 1000 MB
-	        minFileSize: 200000,
-	        acceptFileTypes: /(\.|\/)(mp3|aif?f|wav|avi|flac|mp4|m4a|ogg)$/i,
-            sequentialUploads: false,
-	        limitConcurrentUploads: 4
-	   };
-
-	   importer.ui.init();
-
-	});
-});
-</script>
-{% endaddtoblock %}
-
-{% if request.user.is_staff %}
 
     {% addtoblock "js-post" %}
-        <script>
-            $(function () {
-                $(document).on('mouseover', '.item .admin-info a', function(e){
-                    e.preventDefault();
-                    var id = $(this).data('importfile_id');
-                    var url = '/admin/importer/importfile/' + id + '/';
+    <script type="text/javascript">
 
-                    $(this).attr('href', url);
+    $(document).ready(function() {
 
-                    //document.location.href = url;
-                    //var win = window.open(url, '_blank');
-                })
-            });
+        $(function () {
 
+            importer.ui = new ImporterUi();
+            importer.ui.api_url = "{% url "api_dispatch_list" resource_name='import' api_name='v1'%}{{ object.id }}/";
+            importer.ui.fileupload_id = 'fileupload';
+            importer.ui.fileupload_options = {
+                maxFileSize: 1000000000, // 1000 MB
+                minFileSize: 200000,
+                acceptFileTypes: /(\.|\/)(mp3|aif?f|wav|avi|flac|mp4|m4a|ogg)$/i,
+                sequentialUploads: false,
+                limitConcurrentUploads: 4
+           };
 
-        </script>
+           importer.ui.init();
+
+        });
+    });
+    </script>
     {% endaddtoblock %}
 
-    {% addtoblock "css" %}
-        <style>
-            .item .admin-info {
-                display: inline !important;
-            }
-        </style>
-    {% endaddtoblock %}
+    {% if request.user.is_staff %}
 
-{% endif %}
+        {% addtoblock "js-post" %}
+            <script>
+                $(function () {
+                    $(document).on('mouseover', '.item .admin-info a', function(e){
+                        e.preventDefault();
+                        var id = $(this).data('importfile_id');
+                        var url = '/admin/importer/importfile/' + id + '/';
+                        $(this).attr('href', url);
+                    })
+                });
+            </script>
+        {% endaddtoblock %}
+
+        {% addtoblock "css" %}
+            <style>
+                .item .admin-info {
+                    display: inline !important;
+                }
+            </style>
+        {% endaddtoblock %}
+
+    {% endif %}
 
 
 
-<div class="item_inner">
+    <div class="item_inner">
 
-    <section>
+        <section>
 
-        <div class="page-header">
-            <h2>{% trans "Upload" %} <small>{% trans "Add/Upload Files to the Import Queue" %}</small></h2>
-        </div>
-
-        <div>
-
-            <div class="alert alert-warning">
-                <strong>{% trans "Please note!" %}</strong>
-                <p>
-                    {% blocktrans %}
-                    The upload system tries to identify as exact as possible - however this is not so easy to do...
-                    You REALLY should process your files with the awesome "Picard" metadata-tagger prior to uploading them!!!
-                    {% endblocktrans %}
-                </p><p>
-                    <strong>{% blocktrans %}
-                    Doing so will save you a lot of work when adding music to the Open Broadcast library!
-                    {% endblocktrans %}</strong>
-                    <br>
-
-                    <strong>{% blocktrans %}
-                        If picard does not recognize your files, Open Broadcast will neither.
-                    {% endblocktrans %}</strong>
-                </p>
-
-                <ul>
-                    <li><a href="https://musicbrainz.org/doc/MusicBrainz_Picard">MusicBrainz Picard</a></li>
-                    <li><a href="https://musicbrainz.org/doc/How_to_Tag_Files_With_Picard">{% trans "How to Tag Files With Picard" %}</a></li>
-                    <li>{% trans "If this all sounds too complicated, please don't hesitate to contact our" %} <a href="#">support</a></li>
-                </ul>
+            <div class="page-header">
+                <h2>{% trans "Upload" %} <small>{% trans "Add/Upload Files to the Import Queue" %}</small></h2>
             </div>
 
-            <div class="alert alert-info">
-                <strong>{% trans "Hint!" %}</strong>
-                <p>
-                    {% blocktrans %}
-                    If the imports seem to freeze for a longer time you can try to just refresh the browser window. [CTRL/CMD]+[R] or <i class="icon-refresh"></i>.<br>
-                    Refreshing the browser will not lead to a loss of any uploaded files.
-                    {% endblocktrans %}
-                </p>
-            </div>
+            <div>
 
+                <div class="alert alert-warning">
+                    <strong>{% trans "Please note!" %}</strong>
+                    <p>
+                        {% blocktrans %}The upload system tries to identify as exact as possible - however this is not so easy to do...
+                        You REALLY should process your files with the awesome "Picard" metadata-tagger prior to uploading them!!!{% endblocktrans %}
 
-            <p>{% trans "Either use the 'Add Files' button - or Drag and Drop the desired fils into the browser window." %}</p>
-        </div>
+                    </p><p>
+                        <strong>
+                        {% blocktrans %}Doing so will save you a lot of work when adding music to the Open Broadcast library!{% endblocktrans %}
+                        </strong>
+                        <br>
 
-        <div class="uploader">
+                        <strong>
+                            {% blocktrans %}If picard does not recognize your files, Open Broadcast will neither.{% endblocktrans %}
+                        </strong>
+                    </p>
 
-            <form id="fileupload" action="{% url "api_dispatch_list" api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}" method="POST" enctype="multipart/form-data">
-
-                <input type="hidden" id="import_api_url"  value="{% url "api_dispatch_list" resource_name='import' api_name='v1'%}{{ object.id }}" />
-
-                <div class="fileupload-buttonbar">
-
-                        <span class="btn btn-success fileinput-button">
-                            <i class="icon-plus icon-white"></i>
-                            <span> Add Files</span>
-                            <input type="file" name="files[]" multiple>
-                        </span>&nbsp;&nbsp;
-                        <button type="submit" class="btn btn-primary start">
-                            <i class="icon-upload icon-white"></i>
-                            <span> Start upload</span>
-                        </button>&nbsp;&nbsp;
-
+                    <ul>
+                        <li><a href="https://musicbrainz.org/doc/MusicBrainz_Picard">MusicBrainz Picard</a></li>
+                        <li><a href="https://musicbrainz.org/doc/How_to_Tag_Files_With_Picard">{% trans "How to Tag Files With Picard" %}</a></li>
+                        <li>{% trans "If this all sounds too complicated, please don't hesitate to contact our" %} <a href="#">support</a></li>
+                    </ul>
                 </div>
 
-                <table role="presentation" class="table table-striped table-condensed"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
-            </form>
-        </div>
-
-    </section>
-
-    <section class="importer-importfiles">
-
-        <div class="page-header">
-            <h2>Review <small>your uploads and confirm additions</small></h2>
-        </div>
-
-        <div class="listing">
-            <div id="result_holder">
-
-                <div id="loading_message">
-                    <p>{% trans "Loading your import - please be patient!" %}</p>
+                <div class="alert alert-info">
+                    <strong>{% trans "Hint!" %}</strong>
+                    <p>
+                        {% blocktrans %}If the imports seem to freeze for a longer time you can try to just refresh the browser window. [CTRL/CMD]+[R] or <i class="icon-refresh"></i>.<br>
+                        Refreshing the browser will not lead to a loss of any uploaded files.{% endblocktrans %}
+                    </p>
                 </div>
 
+                <p>{% trans "Either use the 'Add Files' button - or Drag and Drop the desired fils into the browser window." %}</p>
+
+            </div>
+
+            <div class="uploader">
+
+                <form id="fileupload" action="{% url "api_dispatch_list" api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}" method="POST" enctype="multipart/form-data">
+
+                    <input type="hidden" id="import_api_url"  value="{% url "api_dispatch_list" resource_name='import' api_name='v1'%}{{ object.id }}" />
+
+                    <div class="fileupload-buttonbar">
+
+                            <span class="btn btn-success fileinput-button">
+                                <i class="icon-plus icon-white"></i>
+                                <span> Add Files</span>
+                                <input type="file" name="files[]" multiple>
+                            </span>&nbsp;&nbsp;
+                            <button type="submit" class="btn btn-primary start">
+                                <i class="icon-upload icon-white"></i>
+                                <span> Start upload</span>
+                            </button>&nbsp;&nbsp;
+
+                    </div>
+
+                    <table role="presentation" class="table table-striped table-condensed"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+                </form>
+            </div>
+
+        </section>
+
+        <section class="importer-importfiles">
+
+            <div class="page-header">
+                <h2>Review <small>your uploads and confirm additions</small></h2>
+            </div>
+
+            <div class="listing">
+                <div id="result_holder">
+
+                    <div id="loading_message">
+                        <p>{% trans "Loading your import - please be patient!" %}</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        <div id="importer_ui_lock" style="display: none;">
+            <div class="inner">
+                <p style="text-align: center; padding-top: 50px; color: white;">
+                    <i class="icon icon-spin icon-spinner icon-4x"></i>
+                </p>
+                <p style="text-align: center; padding-top: 5px; color: white;">
+                    Processing
+                </p>
             </div>
         </div>
 
-    </section>
-
-    <div id="importer_ui_lock" style="display: none;">
-        <div class="inner">
-            <p style="text-align: center; padding-top: 50px; color: white;">
-                <i class="icon icon-spin icon-spinner icon-4x"></i>
-            </p>
-            <p style="text-align: center; padding-top: 5px; color: white;">
-                Processing
-            </p>
-        </div>
     </div>
 
-</div>
+    <script id="template-upload" type="text/x-tmpl">
+    {% straight_include "importer/template-upload.html" %}
+    </script>
 
-<script id="template-upload" type="text/x-tmpl">
-{% straight_include "importer/template-upload.html" %}
-</script>
+    <!-- Not used a.t.m. -->
+    <script id="template-download" type="text/x-tmpl">
+    {% straight_include "importer/template-download.html" %}
+    </script>
 
-<!-- Not used a.t.m. -->
-<script id="template-download" type="text/x-tmpl">
-{% straight_include "importer/template-download.html" %}
-</script>
+    <!-- The template to handle the ImportFiles -->
+    <script id="template-import" type="text/x-tmpl">
+    {% straight_include "importer/template-import.html" %}
+    </script>
 
-<!-- The template to handle the ImportFiles -->
-<script id="template-import" type="text/x-tmpl">
-{% straight_include "importer/template-import.html" %}
-</script>
+    <!-- The template to handle the musicbrainz results -->
+    <script id="template-result-musicbrainz" type="text/x-tmpl">
+    {% straight_include "importer/template-result-musicbrainz.html" %}
+    </script>
 
-<!-- The template to handle the musicbrainz results -->
-<script id="template-result-musicbrainz" type="text/x-tmpl">
-{% straight_include "importer/template-result-musicbrainz.html" %}
-</script>
-
-<script id="template-result-imported" type="text/x-tmpl">
-{% straight_include "importer/template-result-imported.html" %}
-</script>
+    <script id="template-result-imported" type="text/x-tmpl">
+    {% straight_include "importer/template-result-imported.html" %}
+    </script>
 
 
     {% pageguide_inline 'importer.importer' %}
@@ -284,16 +259,9 @@ $(document).ready(function() {
 
 {% endblock %}
 
-
-
-
 {% block form_sidebar %}
-{% include "importer/_import_list_sidebar.html" %}
-<div class="sidebar form-sidebar holder">
-	{% include "importer/form_import/_form_sidebar.html" %}
-</div>
-
-
-
-
+    {% include "importer/_import_list_sidebar.html" %}
+    <div class="sidebar form-sidebar holder">
+        {% include "importer/form_import/_form_sidebar.html" %}
+    </div>
 {% endblock %}

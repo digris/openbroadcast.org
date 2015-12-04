@@ -1,0 +1,409 @@
+@charset "UTF-8"
+
+.importer-importfiles
+
+  thead th
+    background-color: white
+    // text-align: center
+    font-weight: normal
+    font-style: italic
+    color: #999
+    border: none
+
+
+  i.icon-large
+    padding: 3px 0 0 10px
+    display: block
+    background-repeat: no-repeat
+    font-size: 24px
+
+  i.icon-id3
+    background-image: url(/static/img/icons/metadata.providers/id3v2.png) !important
+    background-position: 0 0
+    width: 22px
+    height: 22px
+  i.icon-musicbrainz_
+    background-image: url(/static/img/icons/metadata.providers/musicbrainz.png) !important
+    background-position: 0 0
+    width: 22px
+    height: 22px
+  i.icon-obp
+    background-image: url(/static/img/icons/metadata.providers/openbroadcast.png) !important
+    background-position: 0 0
+    width: 22px
+    height: 22px
+
+#importer_ui_lock
+  width: 100%
+  height: 100%
+  position: fixed
+  background: rgba(0, 0, 0, 0.5)
+  top: 0
+  left: 0
+  z-index: 9999
+  padding-top: 20%
+  cursor: wait
+
+
+$duplicateBackground: #fffeac
+//$duplicateBackground: #ddffd9
+
+#loading_message
+  min-height: 120px
+  text-align: center
+  vertical-align: middle
+  padding-top: 90px
+  background: #efefef
+
+
+section.importer-importfiles
+
+  .listing
+
+    .item
+      background: $grayLightest
+      margin-bottom: $basePadding
+
+      // info display
+      form .hint
+        border-bottom: none
+        padding: 10px 10px 10px
+      .hint
+        padding: 10px 10px 5px
+        border-bottom: 1px solid $grayLighter
+        p
+          text-align: center
+          color: $gray
+        .expandable
+          display: none
+
+      
+      // TODO: check. seems to be in 'queued' mode only
+      .icon-holder
+        padding-top: 12px
+        i
+          font-size: 30px
+          color: green
+
+      &.info
+        background-color: $infoBackground
+        color: $infoText
+          
+      &.warning
+        h3
+          background-color: $warningBackground
+
+      &.error
+        background-color: $errorBackground
+        color: $errorText
+    
+      &.success
+        background-color: $successBackground
+        color: $successText
+
+      &.waiting
+        opacity: 0.5
+        cursor: wait
+
+      &.init
+        opacity: 0.5
+        cursor: wait
+        .icon-blank:before
+          content: "\f017" // icon-time
+
+      &.ready
+        .icon-blank:before
+          content: "\f096" // icon-refresh
+    
+      &.working
+        .icon-blank:before
+          content: "\f021" // icon-refresh
+
+        div.result-set
+          display: block
+
+        .progress
+          height: 5px
+          background: none
+          box-shadow: none
+          padding: 0 16px 4px
+          > .bar
+            height: 4px
+            background: $main-a
+
+    
+      &.duplicate
+        background-color: $duplicateBackground
+        color: #5a5a5a
+        .icon-blank:before
+          content: "\f0c5" // icon-check
+            
+        div.status-imported
+          display: block
+        div.status-duplicate
+          display: block
+    
+      &.done
+        background-color: $successBackground
+        color: #5a5a5a
+        .icon-blank:before
+          content: "\f046" // icon-copy
+            
+        div.status-imported
+          display: block
+
+      &.queued
+        background-color: #d8f9ff
+        color: #5a5a5a
+        div.status-queue
+          display: block
+        .progress
+          display: none
+
+      // metadata source selection
+      div.result-set
+        i.icon
+          color: $grayLighter
+        &.selected i.icon
+          color: #00bb00
+
+      div.status-imported
+        .information
+          min-height: 80px
+        .image img
+          margin-right: 10px
+          width: 70px
+          height: 70px
+        
+      div.status-queue
+        .information
+          min-height: 80px
+        .image img
+          margin-right: 10px
+          width: 70px
+          height: 70px
+
+      h3
+        padding: 5px
+        font-size: 12px
+        small
+          font-size: 10px
+        i
+          margin-right: 8px
+      
+      
+      // element styleing
+      div.result-set
+        padding: 5px 0
+        border-bottom: 1px solid $grayLighter
+        
+        img
+          margin-right: 4px
+          width: 66px
+          height: 66px
+        
+        &.provider-tag
+          font-size: 11px !important
+          input[type='checkbox']
+            display: none
+            
+        .subset
+          display: block
+          
+        &.hover
+          background-color: lighten($successBackground, 7%)
+          cursor: pointer
+            
+        &.choosen
+          background-color: $successBackground
+          .subset
+            display: block
+            
+        &.selected
+          background-color: lighten($successBackground, 5%)
+          .subset
+            display: block
+          
+        ul
+          margin: 0
+          > li
+            &.small
+              font-size: 11px
+            &.key
+              font-weight: bold
+              padding: 0 5px 0 0
+              width: 50px
+
+      form.form-result
+      
+        .missing input
+          background-color: $warningBackground
+      
+        .base
+          padding-top: 0 !important
+        .ac-result
+          position: absolute
+          z-index: 1000
+          background: white
+          width: 416px
+          .listing
+            .item
+              margin-bottom: 0
+              padding: 4px
+              background-color: yellow
+              border-bottom: 1px solid #eeeeee
+              background: #333
+              color: $white
+              img
+                width: 63px
+                height: 63px
+              &.hover
+                background-color: #ddffd9
+                color: $black
+              
+
+      // action form
+      div.result-actions
+        padding: 5px 20px 5px 10px
+        // temporary
+        .base
+          padding-top: 10px
+        .advanced-fields
+          display: none
+        .tooltipable
+          padding-left: 5px
+
+        // possible duplicates/matches
+        .matches
+          color: $errorText
+
+  // form overrides
+  .listing
+    .form-horizontal
+      .control-group
+        margin-bottom: 0
+      .input-minitext
+        font-size: 10px
+      
+
+
+// sidebar
+.import.summary
+  margin-top: 20px
+  &.listing
+    &.fixed
+      position: fixed
+      width: 260px
+      top: 120px
+
+  .item
+    padding: 4px 4px 4px 4px
+    margin: 5px 0 5px 0
+    border-bottom: 1px solid #efefef
+    //background-color: #efefef
+
+    // counters
+    .counters
+      p
+        margin: 0
+      dl
+        margin: 6px 0 0 0
+        dt
+          float: left
+          width: 30px
+          text-align: right
+          padding-right: 4px
+
+    a.toggle
+      color: #333
+      &:hover
+        text-decoration: none
+
+    
+
+    &.hover
+      &.done
+        background-color: #DDFFD9
+        
+      &.duplicate
+        background-color: $duplicateBackground
+  
+      &.ready
+        background-color: #DDFFD9
+
+
+
+.qtip-importer
+
+  .po-inline
+    padding: 4px 0
+
+  color: $white
+  img
+    width: 70px
+    height: 70px
+  h1
+    line-height: 100%
+    color: $white
+    margin-bottom: 8px !important
+
+  .alert
+    margin-top: 10px
+    margin-bottom: 0px
+    padding: 0
+    background: transparent
+    border: none
+    p
+      padding: 10px 0 0 0
+      margin-mottom: 0
+      color: #fff
+      text-shadow: none
+      //text-transform: uppercase
+
+span.dim
+  background: transparent
+  color: #a3a3a3
+
+
+
+//////////////////////////////////////////////////////////////
+// styles below converted from jquery-file-upload plugin
+//////////////////////////////////////////////////////////////
+.template-upload .progress
+  margin-bottom: 0
+
+.fileinput-button
+  position: relative
+  overflow: hidden
+  float: left
+  margin-right: 4px
+  input
+    position: absolute
+    top: 0
+    right: 0
+    margin: 0
+    border: solid transparent
+    border-width: 0 0 100px 200px
+    opacity: 0
+    filter: alpha(opacity = 0)
+    transform: translate(-300px, 0) scale(4)
+    direction: ltr
+    cursor: pointer
+
+.fileupload-buttonbar
+  .btn, .toggle
+    margin-bottom: 5px
+
+.files .progress
+  width: 200px
+
+.fileupload-loading
+  position: absolute
+  left: 50%
+  width: 128px
+  height: 128px
+  display: none
+
+.fileupload-processing .fileupload-loading
+  display: block
+

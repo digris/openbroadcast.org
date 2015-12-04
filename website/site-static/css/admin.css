@@ -1,51 +1,31 @@
-/* line 1, ../sass/admin/_base.sass */
 body {
-  font-family: verdana;
-}
+  font-family: verdana; }
 
-/* line 4, ../sass/admin/_base.sass */
 #header {
   background-color: #333940;
-  border-bottom: solid 3px #999999;
-}
+  border-bottom: solid 3px #999999; }
 
-/* line 8, ../sass/admin/_base.sass */
 #branding h1 {
-  color: white;
-}
+  color: white; }
 
-/* line 11, ../sass/admin/_base.sass */
 .module h2, .module caption, .inline-group h2 {
   background: #cccccc url(/admin_media/img/admin/nav-bg.gif) bottom left repeat-x;
-  color: #333940;
-}
+  color: #333940; }
 
-/* line 16, ../sass/admin/_base.sass */
 a.section:link, a.section:visited {
-  color: #666666;
-}
+  color: #666666; }
 
-/* line 19, ../sass/admin/_base.sass */
 a:link, a:visited {
   color: #00aeff;
-  text-decoration: none;
-}
+  text-decoration: none; }
 
-/* line 24, ../sass/admin/_base.sass */
 #header {
-  color: magenta;
-}
+  color: #ff00ff; }
 
-/* line 28, ../sass/admin/_base.sass */
 .module {
-  border: 1px solid #c3c3c3;
-}
-/* line 31, ../sass/admin/_base.sass */
-.module table caption, .module h2 caption {
-  background-image: none;
-  background-color: #c3c3c3;
-}
-/* line 34, ../sass/admin/_base.sass */
-.module table caption a, .module h2 caption a {
-  color: #333333 !important;
-}
+  border: 1px solid #c3c3c3; }
+  .module table caption, .module h2 caption {
+    background-image: none;
+    background-color: #c3c3c3; }
+    .module table caption a, .module h2 caption a {
+      color: #333 !important; }

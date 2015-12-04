@@ -88,7 +88,6 @@ MIDDLEWARE_CLASSES = (
     'lib.middleware.xs_sharing.XsSharingMiddleware',
     'lib.middleware.profiler.ProfileMiddleware',
 
-    #'turbolinks.middleware.TurbolinksMiddleware',
     #'auditlog.middleware.AuditlogMiddleware',
     'social_auth.middleware.SocialAuthExceptionMiddleware',
     'arating.middleware.AratingIpMiddleware',

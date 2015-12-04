@@ -788,12 +788,6 @@ base.ui.iface = function () {
     });
 
 
-    // site messages (django notification, green bar at bottom)
-    $('#site_messages').on('click', 'button', function(e){
-        e.preventDefault();
-        $(this).parents('.alert').fadeOut(300);
-    });
-    $('#site_messages .alert').fadeIn(500);
 
 
     // form reset

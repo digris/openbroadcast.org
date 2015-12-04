@@ -1,0 +1,2335 @@
+// Variables
+$main-a: $main-a
+$main-b: $main-b
+
+$img-path: '/static/img/prototype/'
+
+$footer_fix-height: 20px
+
+
+.dl-horizontal
+  dt
+    float: left
+    clear: left
+    width: 120px
+    //text-align: right
+
+  dd
+    margin-left: 130px
+
+#body
+  font-size: 12px
+  font-family: $baseFontFamily
+  font-weight: 300
+  line-height: 18px
+  color: #222
+  background: #fff
+  margin: 0
+  padding: 0 0 0 0
+  &.ajax_loading
+    /*cursor: wait !important*/
+    cursor: progress !important
+    /*background-color: #efefef*/
+  &.blur
+    cursor: pointer !important
+
+
+#body > #dim_content
+  position: absolute
+  width: 100%
+  height: 100%
+  background-color: black
+  z-index: 1000
+  opacity: 0.2
+
+
+
+html body
+  overflow: auto
+
+  #cms_toolbar-toggle
+    top: 40px
+
+  &.toolbar-visible
+    #cms_toolbar-toggle
+      top: 0
+    .navbar-fixed-top
+      top: 43px
+    .container.main
+      margin-top: 103px
+
+  //#cms_toolbar-toggle
+  //  top: 40px
+  //&.toolbar-visible
+  //  #cms_toolbar-toggle
+  //    top: 0
+  //  div#wrapper_main
+  //    margin-top: 42px
+
+div.container.main
+  margin-top: 70px
+
+.topnav
+  margin-bottom: 75px
+
+
+.subhead
+  .subnav
+    padding: 0 0 0 0
+
+
+
+
+// sticky-footer setup
+html, body
+  height: 100%
+
+body #wrap
+  min-height: 100%
+  height: auto !important
+  height: 100%
+  // Negative indent footer by it's height
+  //margin: 0 auto -130px
+  margin: 0 auto -80px
+
+#push
+  height: 130px
+
+#footer
+  min-height: 130px
+
+
+#footer
+  background-color: #f5f5f5
+
+  .container
+    padding: 10px 0 0px 0
+
+  ul.sitemap
+
+    li > a
+      color: #999
+
+    > li
+      width: 14%
+      float: left
+      > a
+        color: #5a5a5a
+      ul
+        list-style: none
+        list-style-position: outside
+        margin: 0 0 9px 8px
+
+
+    li.selected
+      > a
+        color: $main-a
+
+    li.ancestor
+      > a
+        color: $main-a
+
+
+  p.credit
+    margin: 0
+    color: #ccc
+    a, a.external
+      color: #ccc
+
+  p.version
+    margin: 0
+    color: #ccc
+    span.key
+      padding-right: 4px
+    span.value
+      padding-right: 14px
+    a, a.external
+      color: #ccc
+
+
+
+
+
+
+
+
+img, div, p, table, td, tr
+  vertical-align: top
+
+.img-container
+  position: absolute
+  top: 0px
+  width: 100%
+  height: 100%
+  background: url(#{$img-path}container_bg.png)
+  text-align: center
+  color: #fff
+  img
+    margin: 150px 0px 10px 0px
+    border: 8px solid #fff
+
+/* ----------- front ------------ */
+
+.ob-head
+  padding: 10px 0px 10px 0px
+  font-weight: bold
+  font-size: 32px
+  line-height: 1em
+  color: #333
+  color: $main-a
+  color: $main-b
+  .add
+    font-family: "Times New Roman", Times, serif
+    font-weight: normal
+
+.ob-content
+  padding-top: 10px
+  h1
+    color: #333
+    font-size: 20px
+    text-transform: lowercase
+    margin: 0px !important
+    padding: 0px
+  h2
+    font-family: "Times New Roman", Times, serif
+    font-size: 18px
+    line-height: 24px
+    margin-bottom: 17px
+    margin-top: -10px
+    padding: 12px 14px 14px 0px
+    border-bottom: 1px solid #bbb
+  h3
+    color: #333
+  p
+    color: #666
+    padding-right: 0px
+    margin-bottom: 17px
+  b, strong
+    color: #333
+  ul, ol
+    padding: 0px
+    margin-bottom: 17px
+  ul
+    list-style: none
+    list-style-image: url(/static/img/prototype/list_img4.png)
+    ul
+      margin-bottom: 0px
+  ol
+    margin-left: 19px
+    padding-left: 0px
+  li
+    color: #666
+  .tabelle
+    width: 100%
+    margin-bottom: 17px
+    margin-top: 4px
+    td
+      padding: 4px 5px 3px 0px
+      border-bottom: 1px solid #ddd
+      color: #666
+    ul
+      margin-bottom: 0px
+
+.textimg
+  float: left
+  margin: 0px 14px 14px 0px
+  position: relative
+  .bigimg
+    position: absolute
+    border-top: 1px solid #000
+    border-left: 1px solid #000
+    background: white url(/static/img/prototype/img_big.png)
+    width: 15px
+    height: 15px
+    bottom: 0px
+    right: 0px
+    cursor: pointer
+
+.imgcol .textimg
+  float: left
+  margin: 0px 14px 14px 0px
+
+.imgrow
+  float: right
+  .textimg
+    float: none
+    margin: 0px 0px 14px 20px
+
+table.front td
+  &.appicon
+    border-top: 1px solid #bbb
+    border-bottom: 1px solid #bbb
+    background: #f6f6f6
+  &.text
+    border-top: 1px solid #bbb
+    border-bottom: 1px solid #bbb
+    padding: 10px 0px 10px 0px
+    color: #777
+    font-size: 12px
+    line-height: 15px
+    background: #f6f6f6
+
+.modbox
+  width: 500px
+  img
+    float: left
+    margin: 5px 0px 5px 0px
+    width: 40px
+  .txt
+    color: #666
+    line-height: 16px
+    padding: 8px 15px 10px 55px
+  div a
+    font-weight: bold
+  &:hover
+    background-color: #EFE9FA
+
+
+
+
+// heading new
+#heading
+  position: relative
+
+  width: 830px
+  padding: 12px 0 24px
+
+  .page-title
+    float: left
+    width: 330px
+    h1
+      margin: 0 0 0 0 !important
+      padding: 0 0 0 0 !important
+      font-size: 32px
+      line-height: 32px
+      text-align: right
+      color: #0b0
+
+  .global-search
+    float: left
+    width: 500px
+    form
+      margin: 0 0 0 0 !important
+      padding: 0 0 0 0 !important
+      input
+        border: none
+        height: 19px
+        padding: 6px
+
+
+      .ac-results
+        background: #333
+        position: absolute
+        top: 44px
+        width: 830px
+        a
+          color: white
+          padding: 8px !important
+
+
+
+#heading.heading-alt
+
+  padding-bottom: 12px
+  margin-bottom: 12px
+  border-bottom: 1px solid #eee
+
+  .page-title
+    float: left
+    width: 330px
+    h1
+      margin: 0 0 0 0 !important
+      padding: 0 0 0 0 !important
+      font-size: 32px
+      line-height: 32px
+      text-align: left
+      color: #6633CC
+      font-weight: bold
+
+      span.extra
+        font-weight: normal !important
+        text-transform: lowercase
+
+  .global-search
+    float: left
+    width: 500px
+    form
+      //text-align: right
+
+
+
+
+
+
+.headingaction
+  margin-top: 19px
+  float: right
+  width: 200px
+
+
+
+
+
+
+
+/* mod nav */
+
+#modnav
+  //margin: 0px 250px 6px 0px
+  // UNBORDERING
+  border-bottom: 1px solid #999
+  border-bottom: 1px solid #fff
+  ul
+    margin: 0
+  li
+    height: 22px
+    //list-style: none
+    //float: left
+    a
+      //color: #666
+      text-decoration: none
+      padding: 0px 7px 0px 7px
+      border-right: 1px solid #999
+      &.on, &.selected
+        color: $main-a
+        text-decoration: none
+        padding: 0px 7px 0px 7px
+      &:hover
+        color: $main-a
+
+#modnavright
+  //float: right
+  //margin-top: -24px
+  li
+    //list-style: none
+    //float: right
+  a
+    color: #666
+    text-decoration: none
+    padding: 0px 7px 0px 7px
+    border-right: 1px solid #999
+    &.on
+      color: $main-a
+      text-decoration: none
+      padding: 0px 7px 0px 7px
+
+/* codntent nav */
+
+.contentnav
+  margin: 0px 250px 6px 0px
+  li
+    list-style: none
+    float: left
+  a
+    color: #666
+    text-decoration: none
+    padding: 0px 7px 0px 7px
+    border-right: 1px solid #999
+    &.on
+      color: $main-a
+      text-decoration: none
+      padding: 0px 7px 0px 7px
+
+/* codntentv */
+
+
+#splitpane-sidebar
+  float: right
+  width: 225px
+
+#splitpane-content
+  border-top: 1px solid #aaa
+  /*margin-right: 250px*/
+  margin-right: 0
+  position: relative
+
+#pane-content
+  border-top: 1px solid #aaa
+  position: relative
+
+
+
+
+#modaction
+  border-top: 1px solid #aaa
+  margin-bottom: 23px
+  div
+    padding: 3px 0px 2px 19px
+    background-image: url(/static/img/prototype/action.png)
+    background-repeat: no-repeat
+    background-position: 0px 3px
+    border-bottom: 1px solid #ccc
+    color: #73c
+    &:hover
+      cursor: pointer
+      background-color: #eee6ff
+  a
+    text-decoration: none
+  .disabled
+    cursor: wait
+    color: #bbb
+    background-image: url(/static/img/prototype/action_off.png)
+    &:hover
+      cursor: default
+      background-color: #fff
+    a
+      color: #bbb
+      cursor: wait
+
+
+/* selection sets / research sets
+
+div.research_sets
+  background-color: #f5f5f5
+  border: 1px solid #ddd
+  margin-top: 4px
+  padding: 4px 2px 6px 5px
+  li
+    padding-left: 19px
+
+/*--Preproduction--
+
+/**|s|
+
+#preproduction_container
+  padding: 0px 17px 0px 17px
+
+/*---------- timeline_muster classes ----------
+
+/*|s|
+
+.timelineholder_muster
+  position: relative
+  height: 76px
+  border-top: solid 1px #CCCCCC
+  border-bottom: solid 1px #CCCCCC
+  border-left: solid 1px #AAAAAA
+  border-right: solid 1px #AAAAAA
+  overflow: hidden
+
+.timeline_muster
+  position: absolute
+  background-image: url(/static/img/prototype/timeline_bg.png)
+  background-position: left 0
+  width: 1800px
+  height: 80px
+
+.timelineelement_muster
+  list-style: none
+  color: #666666
+  background-color: #CCCCCC
+  margin: 4px 0 0 4px
+  width: 300px
+  height: 54px
+  float: left
+
+#timeline_muster
+  .innerleft
+    overflow: hidden
+    margin: 4px 53px 4px 6px
+    padding-left: 0px
+  .innerright
+    float: right
+    width: 35px
+    margin: 4px 4px 4px 4px
+
+/*---------- timeline classes ----------
+
+/*|s|
+
+#timelinehead
+  background-color: #f5f5f5
+  padding: 15px 15px 80px 15px
+  border-top: solid 1px #AAAAAA
+  border-bottom: solid 1px #AAAAAA
+  height: 100px
+  .timelineholder
+    position: relative
+    border-top: solid 1px #CCCCCC
+    border-bottom: solid 1px #CCCCCC
+    border-left: solid 1px #AAAAAA
+    border-right: solid 1px #AAAAAA
+    overflow: auto
+    overflow: auto
+    height: 100%
+    &.nav
+      border: none
+      height: 50px!important
+      background: none!important
+  .manuscriptholder
+    &.nav
+      border: none
+      height: 50px!important
+      background: none!important
+    float: right
+    background-color: #ffffff
+    color: #999999
+    border-top: solid 1px #CCCCCC
+    border-bottom: solid 1px #CCCCCC
+    border-left: solid 1px #AAAAAA
+    border-right: solid 1px #AAAAAA
+    overflow: auto
+    margin-left: 4px
+    height: 100%
+    list-style: none
+    &.horizontal
+      width: 280px
+    &.vertical
+      width: 600px
+    &.horizontal .manuscript
+      padding: 4px 4px 4px 4px
+    &.vertical .manuscript
+      padding: 800px 4px 800px 4px
+  .manuscript
+    &.on
+      color: #666666
+      margin-left: 0px
+    .on a
+      color: $main-a
+    li
+      margin: 0px 4px 12px 0px
+      cursor: pointer
+  .timelineholder
+    &.horizontal #timeline
+      position: absolute
+      background-image: url("/static/img/prototype/timeline_bg.png")
+      background-position: left top
+      background-repeat: repeat-x
+      width: 6000px
+      height: 100%
+    &.vertical #timeline
+      position: absolute
+      background-image: url("/static/img/prototype/timeline_bg_v.png")
+      background-position: right 0
+      background-repeat: repeat-y
+      width: 100%
+
+/*#timelinehead .timelineholder.horizontal{
+ *	height:100%;
+ *}
+ *
+ *#timelinehead .timelineholder.vertical{
+ *
+ *	height:100%;
+ *
+ *}
+
+#timeline
+  .timelineinsert
+    background-color: #f5f5f5
+    margin: 4px 0 0 4px
+    list-style: none
+    height: 52px
+    float: left
+    border: dotted 1px #999999
+  .timelineelement
+    list-style: none
+    color: $main-b
+    //background-image: url("/static/img/prototype/timeline_element_bg.png");
+    //background-position: right bottom;
+    background: #f8f3ff
+    margin: 4px 0 0 4px
+    cursor: pointer
+    border-top: solid 1px #CEBDED
+    border-left: solid 1px #CEBDED
+    border-bottom: solid 2px #CEBDED
+    border-right: solid 2px #CEBDED
+
+#timelinehead .timelineholder
+  &.horizontal .timelineelement
+    height: 52px
+    float: left
+  &.vertical .timelineelement
+    margin-right: 20px
+
+#timeline
+  .timelineelement:hover, .on
+    color: $main-a
+    //background-image: url("/static/img/prototype/timeline_element_bg_on.png");
+    //background-position: right bottom;
+    background: #d4f3da
+    border-top: solid 1px $main-a
+    border-left: solid 1px $main-a
+    border-bottom: solid 2px $main-a
+    border-right: solid 2px $main-a
+  .innerleft
+    overflow: hidden
+    margin: 4px 50px 4px 6px
+    padding-left: 24px
+
+.status_proposed
+  background-image: url("/static/img/prototype/status_proposed.png")
+  background-position: left top
+  background-repeat: no-repeat
+
+.file_music
+  background-image: url("/static/img/prototype/file_music.png")
+  background-position: left top
+  background-repeat: no-repeat
+
+#timeline .innerright
+  float: right
+  width: 35px
+  margin: 4px 4px 4px 4px
+
+#sliderholder
+  height: 10px
+  border-bottom: solid 1px #CCCCCC
+  border-left: solid 1px #AAAAAA
+  border-right: solid 1px #AAAAAA
+  background: #ffffff
+  &.vertical
+    margin: 0px 620px 0px 0px
+  &.horizontal
+    margin: 0px 300px 0px 0px
+
+#slider
+  min-width: 100px
+  min-height: 9px
+  width: 100px
+  height: 10px
+  border-left: solid 1px #AAAAAA
+  border-right: solid 1px #AAAAAA
+  background: url("/static/img/prototype/timeline_slider_bg.png")
+  background-position: left 0
+
+#timelinenav
+  margin-top: 5px
+
+#timeline_scala_v
+  color: #999999
+  width: 10px
+  display: none
+  float: right
+
+#timeline_scala_h
+  margin-top: 60px
+  color: #999999
+  display: none
+
+.manuscript_link
+  font-size: 16px
+  //margin-left:58px;
+  a:hover
+    cursor: pointer
+    color: #009900
+    text-decoration: none
+
+#timeline_scala_v .on a, #timeline_scala_h .on a
+  color: #009900
+  text-decoration: none
+
+/* ---------- playlist ----------
+
+.plistelement
+  list-style: none
+  //color:$main-b;
+  background: #f8f3ff
+  margin: 0px 0px 2px 0px
+  cursor: pointer
+  border: solid 1px #CEBDED
+  padding: 2px 2px 2px 2px
+  //background:#f8f3ff url("/static/img/prototype/list_play_button2_s.png") no-repeat 2px 2px;
+  td
+    padding-right: 6px
+  &.placeholder
+    background: #ddd
+  .mp
+    background: #f8f3ff url("/static/img/prototype/list_play_button2_s.png") no-repeat 2px 2px
+
+.deletebut
+  width: 20px
+  height: 20px
+  background: url("/static/img/prototype/delete.png") no-repeat 2px 2px
+  &.black
+    background: url("/static/img/prototype/delete_black.png") no-repeat 2px 2px
+  &:hover
+    background: url("/static/img/prototype/delete_hover.png") no-repeat 2px 2px
+  &.black:hover
+    background: url("/static/img/prototype/delete_black_hover.png") no-repeat 2px 2px
+
+/* ---------- section classes ----------
+
+.section
+  margin-top: -1px
+  border-top: 1px solid #ccc
+
+.sectiontitle
+  color: #333
+  padding: 3px 0px 2px 19px
+  background-image: url(/static/img/prototype/box_handler.png)
+  background-repeat: no-repeat
+  background-color: #fff
+  span
+    font-weight: bold
+  &:hover
+    cursor: pointer
+
+.sectioncontent
+  padding: 0px 0px 0px 20px
+  display: none
+  &.nopadding
+    padding: 0px 0px 0px 0px
+    display: none
+
+.sectiontitle.sectionon
+  color: #000
+  background-image: url(/static/img/prototype/box_handler_on.png)
+  //background-color:#f5f5f5;
+  border-bottom: 1px dotted #ccc
+  a
+    color: $main-a
+
+.content-line
+  border-top: 1px solid #ccc
+  padding: 3px 0px 2px 0px
+
+
+
+
+/* new version (jonas) */
+.item_inner
+  .notes
+    margin: 24px 0 0 0
+    .header
+      cursor: pointer
+      border-top: 1px solid #CCCCCC
+      border-bottom: 1px dotted #CCCCCC
+      padding: 2px 0 2px 0
+      background-repeat: no-repeat
+      span
+        font-weight: bold
+        padding-left: 20px
+    &.close .header
+      background-image: url(/static/img/prototype/box_handler.png)
+    &.open .header
+      background-image: url(/static/img/prototype/box_handler_on.png)
+    &.close .description
+      display: none
+    &.open .description
+      display: block
+    .description
+      padding: 2px 10px 2px 20px
+
+
+
+
+
+/* ---------- reseting tags ----------
+
+ul, li, table, form, p, h1, h2, h3
+  margin: 0px
+  padding: 0px
+  text-indent: 0px
+
+ul
+  list-style-type: none
+  &.text
+    margin: 8px 0px 10px 0px !important
+    padding: 0px !important
+    li
+      margin: 0px !important
+      padding: 0px 180px 0px 19px
+      background: url(/static/img/prototype/list_img.png) no-repeat
+
+table
+  border-collapse: collapse
+  empty-cells: show
+  td
+    vertical-align: top
+
+img
+  border: none
+
+input, textarea
+  margin: 0px
+  padding: 0px
+
+.__date // what's this for??
+  border: 1px solid #ddd
+  margin-top: 5px
+  padding: 3px 3px 3px 3px
+  font-size: 10px
+  text-align: center
+  background-color: #f5f5f5
+  b
+    font-size: 15px
+
+/* ---------- general classes ----------
+
+a
+  //color:$main-b;
+  color: $main-b
+  text-decoration: none
+  cursor: pointer
+  &:hover
+    text-decoration: underline
+  &.noline:hover
+    text-decoration: none
+  &.extern
+    padding-right: 17px
+    background: url(/static/img/prototype/link_extern.png) no-repeat right
+  &.mail
+    padding-left: 19px
+    background: url(/static/img/prototype/link_mail.png) no-repeat
+
+button.mainlink
+  font-family: inherit
+  padding: 3px 10px 2px 10px
+  margin: 5px 8px 5px 0px
+  border: none
+  color: #fff
+  border-bottom: 1px solid #666
+  border-right: 1px solid #666
+  width: auto !important
+  background: url(/static/img/prototype/formbut_bg_a.png)
+
+p
+  color: #666
+  padding-right: 25px
+
+.on
+  color: $main-a
+
+a
+  &.action
+    background: url(/static/img/prototype/action.png)
+    background-repeat: no-repeat
+    background-position: -2px -2px
+    padding-left: 13px
+  &.action2
+    padding: 3px 10px 2px 10px
+    color: #fff
+    background: url(/static/img/prototype/formbut_bg_a.png)
+    border-bottom: 1px solid #666
+    border-right: 1px solid #666
+    &:hover
+      text-decoration: none
+      background: url(/static/img/prototype/formbut_bg_a_on.png)
+    &.desabled
+      padding: 3px 10px 2px 10px
+      color: #888
+      background: url(/static/img/prototype/formbut_bg_des.png)
+      border-bottom: 1px solid #aaa
+      border-right: 1px solid #aaa
+  &.reply
+    background: url(/static/img/prototype/forum_reply.png)
+    background-repeat: no-repeat
+    background-position: -2px -2px
+    padding-left: 17px
+  &.userlink
+    color: inherit
+    //background:url(/static/img/prototype/bg_dotted.png);
+    //background-position:bottom;
+    text-decoration: underline
+    //border-bottom:1px dotted;
+
+.clear
+  clear: both !important
+  border: 0px !important
+  padding: 0px !important
+  td
+    border: 0px !important
+    padding: 0px !important
+
+#splitpane-content-inner
+  h1, h2, h3, h4
+    color: #333333
+    line-height: 18px
+    text-indent: 0px
+    margin: 18px 0px 0px 0px
+
+h1
+  font-size: 26px
+  //font-weight:normal;
+  margin-bottom: 30px !important
+
+h2
+  color: #333333
+  font-size: 16px
+  font-weight: normal
+
+h3
+  font-size: 12px
+  font-weight: bold
+  text-transform: uppercase
+
+h4
+  font-size: 12px
+  font-weight: normal
+  text-transform: uppercase
+  margin: 0px
+  padding: 0px
+
+.text
+  color: #666 !important
+  padding-right: 50px
+
+#splitpane-content-inner ul
+  padding-left: 0px
+  color: #666
+
+#splitpane-content ul
+  padding-left: 0px
+  color: #666
+  padding-right: 0px
+
+#msg
+  padding: 12px 12px 10px 15px
+  margin-bottom: 12px
+
+.msg-error
+  padding: 8px 8px 8px 8px
+  background: #fedede
+  border-bottom: 1px solid #bbb
+  color: #FF0000
+
+.msg-alert
+  padding: 8px 8px 8px 8px
+  background: #fffcde
+  border-bottom: 1px solid #bbb
+  color: #000
+
+.msg-action
+  padding: 8px 8px 8px 8px
+  background: #ddffd9
+  border-bottom: 1px solid #bbb
+  color: #000
+  .item
+    margin: 3px 25px 0 25px
+    padding: 3px 6px 2px 6px
+    border: 1px solid #99aa99
+    background: #c6e6c6
+
+.msg-error2
+  margin-top: -1px
+  padding: 8px 8px 8px 8px
+  background: #fedede
+  border: 1px solid #ff6666
+  color: #FF0000
+
+.msg-alert2
+  margin-top: -1px
+  padding: 8px 8px 8px 8px
+  background: #fffcde
+  border: 1px solid #e5de69
+  color: #000
+
+.green
+  color: $main-a
+  //color:#00AA33;
+
+.grey
+  color: #aaa
+
+.textgrey
+  color: #666
+
+.selected
+  // text-decoration: underline
+
+.cl
+  //background:#e4f3e5;
+  color: #00bb33
+
+.closed
+  background: #e4f3e5
+  border-left: 6px solid #00bb33
+
+.inprocess
+  background: #ffffe1
+  border: 1px solid #fcf021
+
+.discussed
+  background: #FFFFE6
+  border-left: 6px solid #FFF000
+
+.proposed
+  background: #feeee3
+  border: 6px solid #f78819
+
+.prop
+  background: #feeee3
+  color: #f78819
+
+.small
+  font-size: 11px
+  line-height: 14px
+  color: #999
+
+.topline
+  border-top: 1px solid #aaa
+
+.cover
+  border: 1px solid #999
+
+/* system messages errors
+
+div
+  &#system-message
+    background: #FFFCDE
+    border: 1px solid #FFEE00
+    color: #000000
+    margin: 23px 0px 23px 0px
+    padding: 15px 15px 14px 15px
+    p
+      color: #000000
+  &#system-error
+    background: #fedede
+    border: 1px solid #ff0000
+    color: #FF0000
+    margin: 23px 0px 23px 0px
+    padding: 15px 15px 14px 15px
+    p
+      color: #FF0000
+
+/* ---------- home classes ----------
+
+.hfixw
+  /*max-width: 980px*/
+  width: 980px
+  margin: auto
+  text-align: left
+
+.htotalw
+  margin: auto
+  text-align: left
+
+.hmainl
+  margin: 0px 250px 0px 0px
+
+.hboxr
+  float: right
+  width: 225px
+
+#boxr
+  float: right
+  width: 225px
+  padding-top: 113px
+  h3
+    font-size: 12px
+    border-top: 1px solid #ddd
+    border-bottom: 1px solid #ddd
+    padding: 16px 0px 0px 0px
+    margin: 0px
+    //font-weight:normal;
+  .action
+    border-bottom: 1px solid #ddd
+  a
+    text-decoration: none
+
+.hboxrontent
+  padding: 10px 0px 10px 0px
+
+.hboxtitle
+  padding: 0px 0px 5px 0px
+  font-weight: bold
+  font-size: 15px
+  line-height: 20px
+  border-bottom: 1px solid #aaa
+
+.hheadline a
+  text-decoration: none
+
+.hbigtext
+  font-family: Times,"Monospace 821 BT", "Trebuchet MS", Monaco, Courier, Georgia
+  padding: 12px 25px 14px 0px
+  font-size: 20px
+  line-height: 24px
+  border-bottom: 1px solid #bbb
+
+.appicon
+  padding: 3px 10px 15px 0px
+
+.apptext
+  padding: 0px 0px 15px 0px
+
+
+
+#homenav
+  padding-bottom: 100px
+  li
+    list-style: none
+    float: left
+    margin-right: 10px
+  a
+    text-decoration: underline
+    &.on
+      //color:#000000;
+      font-weight: bold
+      text-decoration: none
+
+.light
+  color: #c0e5c4
+
+/* TOOLTIP ----------------------------------
+
+#tooltip
+  display: none
+  position: absolute
+  background: #ff00ff
+  padding: 5px
+
+
+
+
+
+.activity
+  margin: 0px 0px 10px 0px
+  border-bottom: 1px dotted #ccc
+  h1
+    font-size: 13px
+
+/* TABLE ----------------------------------
+
+.header
+  border-bottom: 1px solid #ddd
+  padding-bottom: 5px
+
+.table
+  //border-top:1px solid #bbb;
+  color: #666
+  h3
+    /*|s|
+    /*margin:5px 0px 0px 0px;
+    /*padding:0px;
+    color: #333
+  &.noline, td.noline
+    /*|s|
+    border: none
+  &.releasebox
+    /*|s|
+    /*line-height:17px;
+  tr.error
+    /*|s|
+    background-color: #fedede
+  td.error
+    /*|s|
+    color: #ff0000
+  th
+    font-weight: normal
+    background-color: #e5e5e5
+    border-bottom: 1px solid #bbb
+    padding: 2px 6px 0px 6px
+    //padding:4px 6px 3px 6px;
+    //border-left:1px solid #bbb;
+    &.icon
+      padding: 2px 0px 0px 6px
+    &.selected
+      padding-right: 21px
+      background-image: url(/static/img/prototype/table_order.png)
+      background-repeat: no-repeat
+      background-position: right
+      background-color: #ccc
+      text-decoration: none
+  td
+    color: #666
+    padding: 4px 6px 3px 6px
+    border-bottom: 1px solid #ddd
+    line-height: 15px
+    a
+      //text-decoration:none;
+
+.trhover tr:hover
+  background-color: #f5f5f5
+
+.comment
+  border-bottom: 1px dotted #ccc
+  padding: 8px 0px 8px 0px
+
+.table span
+  color: #999
+  //font-size:11px;
+
+.label2
+  color: #333
+  font-weight: bold
+
+.table
+  .formaction
+    padding: 25px 0px 30px 5px
+    border-bottom: none
+  .formaction_box
+    /*|s|
+    padding: 15px 15px 15px 5px
+    border-bottom: none
+  div.time
+    float: right
+    color: #999
+
+.block
+  display: block
+
+/* TABLE GRID----------------------------------
+
+.table
+  &.grid
+    margin-top: -1px
+    th
+      background: none
+      border: 1px solid #ddd
+      border-bottom: 1px solid #aaa
+      border-top: 1px solid #aaa
+    td
+      border: 1px solid #ddd
+  &.small
+    th
+      font-size: 11px
+      padding: 4px 6px 3px 6px
+    td
+      font-size: 11px
+  &.user td
+    padding: 6px 6px 6px 6px
+  .tags
+    float: right
+    text-align: right
+    margin-top: 2px
+    line-height: 21px
+
+/* TABLE SMALL----------------------------------
+
+/* specific tables classes
+
+
+
+
+.genres a
+  /*|s|
+  padding: 1px 9px 2px 5px
+  border-top: 1px solid #e3dbf2
+  border-left: 1px solid #e3dbf2
+  margin: 0px 3px 3px 0px
+  background-image: url(/static/img/prototype/genre_bg.png)
+  background-repeat: no-repeat
+  background-position: bottom right
+
+.tablerel
+  border-top: 1px solid #bbb
+  td
+    color: #666
+    padding: 4px 0px 3px 6px
+    border-bottom: 1px solid #ddd
+
+tr
+  &.locked, &.closedx
+    background: url(/static/img/prototype/list_closed_bg.png)
+
+td.status
+  padding: 5px 2px 2px 2px !important
+
+.selectable tr
+  &:hover
+    background-color: #f5f5f5
+    cursor: pointer
+  &.locked
+    &:hover
+      background-color: #fff
+      cursor: default
+    td
+      //color:#999;
+
+div.locked
+  background-image: url(/static/img/prototype/schraffur.png)
+
+
+
+.iconbut
+  color: #fff
+  background: url(/static/img/prototype/formbut_bg.png)
+  border: 1px solid #bbb
+  border-bottom: 1px solid #666
+  border-right: 1px solid #666
+  height: inherit
+  cursor: pointer
+  &:hover
+    background: url(/static/img/prototype/formbut_bg_a.png)
+  img
+    margin: 4px 5px 3px 5px
+
+
+
+// Tagbar
+
+a#tagcloud_inline_toggle
+  background-image: url(/static/img/base/tagcloud.open_close.png)
+  background-repeat: no-repeat
+  background-position: right top
+  padding: 0 18px 0 0 !important
+  &.active
+    background-position: right -16px
+
+
+
+.tagcloud
+  a
+    display: block
+    float: left
+    padding: 1px 5px 1px 5px
+    margin: 2px 2px 0px 0px
+    background: #f1f1f1
+    border: 1px solid #d9ccf0
+    &.on
+      background: #d4f3da
+      border: 1px solid #a9e1b4
+  &.inline a
+    display: block
+    float: left
+    padding: 1px 5px 1px 5px
+    margin: 2px 2px 0px 0px
+    background: transparent
+    border: none
+    text-transform: uppercase
+
+    span
+      font-size: 80%
+      padding: 0 0 0 4px
+
+
+div.tagcloud.inline
+  border-bottom: 1px solid #BBBBBB
+  /*max-height: 80px*/
+  margin-bottom: 14px
+  padding-bottom: 2px !important
+  overflow: hidden
+  position: relative
+
+  .cloud-container
+    width: 800px
+
+  ul.tag-level
+    float: right
+    margin: 0
+    padding: 0 4px 4px 4px
+    background: white
+    position: absolute
+    top: 0
+    right: 0
+    a
+      padding: 0
+      margin: 0
+
+.tagcloud.inline a
+
+  &.on
+    background: #d4f3da
+
+  &:hover
+    text-decoration: none
+    color: #ffffff
+    background-color: $main-b
+
+  &.on
+    background: $main-a
+    color: white
+
+  &.tag-hidden
+    display: none
+
+  &.tag1
+    font-size: 84%
+  &.tag2
+    font-size: 88%
+  &.tag3
+    font-size: 92%
+  &.tag4
+    font-size: 98%
+  &.tag5
+    font-size: 108%
+  &.tag6
+    font-size: 112%
+  &.tag7
+    font-size: 114%
+  &.tag8
+    font-size: 118%
+  &.tag9
+    font-size: 124%
+  &.tag10
+    font-size: 130%
+
+.broadcasttime
+  border-spacing: 2px
+  border-collapse: separate
+  td
+    text-align: center
+    width: 14%
+    padding: 2px 2px 0px 2px !important
+    background: #ddd
+    border: 1px solid #bbb
+    color: $main-b
+    cursor: pointer
+    background-image: url(/static/img/prototype/white_50.png)
+    &.on
+      border: 1px solid #666
+      color: #333
+      background-image: none
+
+/* ---------- contentsearch ----------
+
+.contentsearch
+  height: 21px
+
+.contentsearchfield
+  background: url(/static/img/prototype/forminput_bg.png)
+  border: 1px solid #ccc
+  border-top: 1px solid #999
+  border-left: 1px solid #999
+  height: inherit
+
+.contentsearch form input
+  padding: 0px !important
+
+/* ---------- FROM input fields ------------
+
+form
+  input, textarea
+    font-size: 99%
+    font-family: inherit
+    padding: 2px 0px 2px 2px
+    margin-bottom: 1px
+    font-size: 12px
+  select
+    font-family: Arial, Helvetica, sans-serif
+    font-size: 12px
+    line-height: 23px
+    padding: 2px 1px 0px 1px
+    border: 1px solid #aaa
+    background: #eee
+  option
+    padding: 1px 4px 1px 4px
+  .input
+    border: 1px solid #ccc
+    border-top: 1px solid #999
+    border-left: 1px solid #999
+    width: 99%
+    padding: 3px
+    background: url(/static/img/prototype/forminput_bg.png)
+    &.full
+      background: #eee
+      //border:1px solid #ccc;
+  .info
+    padding: 3px 0px 0px 8px
+  .infoholder img
+    margin-top: 2px
+
+
+.infoholder
+  clear: left
+  padding: 7px 0px 8px 0px
+
+.submitholder
+  padding: 15px 0px 8px 0px
+  border-top: 1px solid #ccc
+
+.fieldname
+  padding-right: 10px
+  h3
+    text-transform: none
+
+input
+  margin: 0px
+  padding: 0px
+  font-family: Arial, Helvetica, sans-serif
+  font-size: 100%
+  font-size: 12px
+
+.radio
+  border: 1px solid #ccc
+  margin-right: 5px
+
+input.total, textarea.total
+  width: 100%
+
+.half
+  width: 50%
+
+input
+  &.submit
+    padding: 3px 10px 2px 10px
+    margin: 0px 8px 0px 0px
+    border: none
+    color: #fff
+    background: url(/static/img/prototype/formbut_bg.png)
+    border-bottom: 1px solid #666
+    border-right: 1px solid #666
+    width: auto !important
+    &.active
+      background: url(/static/img/prototype/formbut_bg_a.png)
+      width: auto !important
+  &.isearch:focus
+    background: #eee
+  &.submit:hover
+    background: url(/static/img/prototype/formbut_bg_a_on.png)
+
+.textarea-plain
+  border: 1px solid #aaa
+  padding: 2px
+  font-family: Arial, Helvetica, sans-serif
+  font-size: 12px
+
+.input-plain
+  border: 1px solid #ccc
+  border-top: 1px solid #999
+  border-left: 1px solid #999
+  font-size: 100%
+  padding: 2px 1px 2px 1px
+  margin-bottom: 1px
+
+.submit.small
+  padding: 2px 7px 2px 7px
+  margin: 0px 3px 0px 0px
+
+/* ---------- button ------------
+
+.button
+  display: inline
+  padding: 3px 10px 3px 10px
+  margin: 0px 5px 0px 0px
+  color: #f4ebfd
+  background: url(/static/img/prototype/formbut_bg_a.png)
+  border: 1px solid #774488
+  border-top: 1px solid #8a63d9
+
+a.button
+  color: #f4ebfd
+  &:hover
+    background: url(/static/img/prototype/formbut_bg_a_on.png)
+    border: 1px solid #669966
+    border-top: 1px solid #3db502
+    color: #ddfedd
+    text-decoration: none
+
+.button
+  &.off
+    background: url(/static/img/prototype/formbut_bg.png)
+    border: 1px solid #888
+    border-top: 1px solid #999
+    color: #fff
+    &:hover
+      background: url(/static/img/prototype/formbut_bg_off.png)
+      border: 1px solid #666
+      border-top: 1px solid #888
+      color: #fff
+  &.second
+    background: #d4d2f7
+    border: 1px solid #d4d2f7
+    //border-top:1px solid #999;
+    color: $main-b
+    &:hover
+      background: url(/static/img/prototype/formbut_bg_off.png)
+      border: 1px solid #666
+      border-top: 1px solid #888
+      color: #fff
+
+
+.buttonr
+  display: inline
+  /*|s| juni 09
+  font-size: 11px
+  position: relative
+  margin-left: 10px
+  padding: 2px 0px 4px 0px
+  /*|s| juni 09
+  margin-top: -2px
+  height: 18px
+  background: transparent url(/static/img/prototype/but_bg_a.png) no-repeat right
+  &:hover
+    cursor: pointer
+    background: transparent url(/static/img/prototype/but_bg_a_on.png) no-repeat right
+    a
+      background: transparent url(/static/img/prototype/but_bg_a_on_left.png) no-repeat left !important
+  a
+    line-height: 16px
+    background: transparent url(/static/img/prototype/but_bg_a_left.png) no-repeat left
+    position: relative
+    left: -10px
+    padding: 2px 0px 4px 10px
+    color: #f4ebfd
+    white-space: nowrap
+    &:hover
+      background: url(/static/img/prototype/but_bg_a_on_left.png) no-repeat left
+      color: #FFFFFF
+      text-decoration: none
+
+inputxx.submit.active
+  background: url(/static/img/prototype/formbut_bg_a.png)
+  width: auto !important
+
+
+/* ---------- content-browser ------------
+
+.content-browser
+  border: 1px solid $main-b
+  border-top: 1px solid #D1C2F0
+  border: 1px solid #bbb
+  background: #F0F0F0
+  padding: 4px 5px 5px 5px
+  margin: -1px 0px 23px 0px
+  .search
+    border: 1px solid #ccc
+    border-top: 1px solid #999
+    border-left: 1px solid #999
+    background: #fff
+    font-size: 100%
+    padding: 3px 5px 2px 5px
+    margin-top: 4px
+    input
+      border: 0px
+      width: 100%
+  .searchi
+    background: #f7f7f7
+    border: 1px solid #ccc
+    border-top: 0px
+    padding: 1px 5px 1px 5px
+    color: $main-b
+    &:hover
+      background: #E9FFDC
+      color: #009900
+
+/* ---------- media-library ------------
+
+/*|s|
+
+.meta_bar_holder
+  margin-top: 4px
+  height: 7px
+  width: 50px
+  border: 1px solid #adadad
+
+.meta_bar_inner
+  height: 7px
+  background-color: #dfdfdf
+
+.track_holder
+  margin-top: 4px
+
+#edit_release
+  border-top: 1px solid #aaa
+  background-color: #FFFFFF
+  min-width: 786px
+
+.comparison_marker
+  margin-top: 10px
+  padding-left: 4px
+  padding-top: 0px
+  background-image: url(/static/img/prototype/comparison_marker.png)
+  color: #ffffff
+  font-size: 8px
+  background-repeat: no-repeat
+  background-position: left top
+
+.list_view_big
+  float: left
+  width: 162px
+  margin-right: 20px
+  padding-bottom: 7px
+  border-bottom: 1px solid #ccc
+  margin-bottom: 7px
+  margin-top: 3px
+  &.ohne
+    margin-right: 0px
+  img
+    margin-bottom: 5px
+
+.filebrowser
+  background-color: #F5F5F5
+  td
+    border-bottom: 1px solid #ccc
+  .root
+    display: block
+    margin-left: 0px !important
+  ul
+    display: none
+    list-style: none
+    margin-left: 17px
+  .folder
+    background: url(/static/img/prototype/filebrowser_handler.png) no-repeat
+  a
+    cursor: pointer
+  .open
+    background: url(/static/img/prototype/filebrowser_handler_on.png) no-repeat
+
+.bg-selected
+  background-color: #eee6ff !important
+
+.bg-hover
+  background-color: #e5e5e5 !important
+
+/* ---------- crazy stuff ------------
+
+.errorline
+  border-bottom: 1px solid #ff0000
+
+/* ---------- browser fixes ------------
+
+/* entfernt den input focus bei safari
+
+input:focus, textarea:focus, select:focus
+  outline: none
+
+form
+  input:focus, textarea:focus
+    background: #eee
+    border-top: 1px solid #666
+    border-left: 1px solid #666
+
+/* entfernt den link focus bei firefox cef8cb f2ecfd
+
+a:focus, input:focus
+  outline: none
+
+
+#dialog
+  table
+    th
+      padding: 5px 8px 0px 0px
+      text-align: right
+    td
+      padding: 5px 8px 0px 0px
+  .info
+    padding: 6px 0px 0px 0px
+
+.buttons
+  border-top: 1px solid #bbb
+  padding: 15px 0px 6px 0px !important
+
+.right
+  float: right
+
+.nomargin
+  margin: 0px !important
+
+.nopadding
+  padding: 0px !important
+
+#infobox
+  //display:none;
+  //position:absolute;
+  //border:1px solid #555;
+  //top:100px;left:100px;width:350px;
+  background: #fff
+  font-size: 11px
+  line-height: 14px
+  .header
+    background: #666
+    border-bottom: 1px solid #555
+  .content
+    padding: 10px 10px 15px 10px
+  .title
+    font-size: 12px
+    font-weight: bold
+    padding-bottom: 2px
+    text-transform: uppercase
+  .subtitle
+    font-size: 10px
+    font-weight: bold
+    text-transform: uppercase
+  .border
+    th
+      border: 1px solid #bbb
+      padding: 2px 4px 1px 4px
+      background: #ddd
+      font-weight: normal
+      text-align: left
+    td
+      border: 1px solid #bbb
+      padding: 2px 4px 1px 4px
+
+/* ---------- modul calendar ------------
+
+/*|s| mehrere Veränderungen
+
+#calendar
+  font-family: Verdana
+  font-size: 11px
+  line-height: 16px
+  width: 100%
+  td
+    width: 14%
+    border: 1px solid #ccc
+    padding: 0px 0px 0px 0px
+  th
+    &.top
+      border: none
+      background-color: #fff
+      height: 49px
+      padding: 0px
+    font-weight: normal
+    border: 1px solid #ccc
+    padding: 3px 3px 3px 5px
+  td:hover
+    background-color: #f9f9f9
+    cursor: pointer
+  img:hover
+    //	background-color:#eee6ff;
+  .num
+    text-align: right
+    padding-bottom: 5px
+    width: 60%
+    margin-right: 3px
+    font-size: 11px
+    font-family: Verdana
+    color: #666666
+    float: right
+  .cal_day_holder
+    width: 100%
+    height: 94px
+    overflow: hidden
+  .more_bg
+    background-image: url(/static/img/prototype/calendar_more.png)
+    background-position: bottom right
+    background-repeat: no-repeat
+  .nomonthday
+    background-image: url(/static/img/prototype/calendar_bg_off.png)
+    background-repeat: repeat-x
+  .monthday
+    background-image: url(/static/img/prototype/calendar_bg.png)
+    background-repeat: repeat-x
+    text-align: left
+    height: 94px
+    width: 90px
+    //font-size:12px;
+    border: 1px solid #ccc !important
+  .today
+    border: 2px solid #000000 !important
+    a
+      color: #000000
+  .sunday, .saturday
+    background-color: #F9F9F9
+  .nomonthday.overlap
+    background-image: url(/static/img/prototype/calendar_bg_overlap_off.png)
+    background-repeat: repeat-x
+  .monthday.overlap
+    background-image: url(/static/img/prototype/calendar_bg_overlap.png)
+    background-repeat: repeat-x
+  .normal
+    font-family: verdana
+    font-size: 17px
+    /*line-height:12px;
+  .special
+    font-family: verdana
+    font-size: 11px
+
+/* ---------- modul calendar listview------------
+
+/*|s|
+
+#calendarlist
+  border-top: 1px solid #ccc
+  border-bottom: 1px solid #ccc
+  width: 100%
+  td
+    color: #333
+    padding-left: 4px
+  img:hover
+    //	background-color:#eee6ff;
+  .nomonthday td
+    padding-top: 6px
+    margin-top: 3px
+    background-image: url(/static/img/prototype/calendar_off.png)
+    //border-top:1px dotted #ccc !important;
+  .monthday td
+    padding-top: 6px
+    margin-top: 3px
+    text-align: left
+    border-top: 1px dotted #ccc
+    /*!important;
+  .today
+    td
+      border-top: 2px solid #000000
+      /*!important;
+    a
+      color: #000000
+    td
+      padding-top: 6px
+      margin-top: 3px
+  .sunday, .saturday
+    background-color: #F9F9F9
+  .details
+    color: #999
+    margin-right: 50px
+  .normal
+    font-family: verdana
+    font-size: 17px
+    line-height: 12px
+  .special
+    font-family: verdana
+    font-size: 11px
+  td a.action
+    color: $main-b !important
+
+.eventlist
+  width: 100%
+  td
+    border: none !important
+    background-image: none !important
+    padding: 0px 0px 5px 4px !important
+    margin: 0px !important
+  tr
+    border: none !important
+    background-image: none !important
+    padding: 0px
+    &:hover
+      cursor: pointer
+
+/* - calendar box -
+
+/*|s|
+
+.cal_group_activator
+  float: left
+  width: 12px
+  height: 12px
+  margin-top: 1px
+  margin-right: 4px
+  background-image: url(/static/img/prototype/event_activator_bg.png)
+  background-color: #FFFFFF
+  border: 1px solid #999
+
+.cal_group_boxitem
+  color: #666
+  margin: 2px 0px 2px 4px
+  cursor: pointer
+  a
+    color: #666
+
+.cal_group_meta
+  float: right
+  margin-right: 7px
+  padding-right: 22px
+  &.message
+    background-image: url(/static/img/prototype/calendar_message.png)
+    background-position: right
+    background-repeat: no-repeat
+
+.check_all
+  width: 13px
+  height: 12px
+  background-image: url(/static/img/prototype/check_all.png)
+  cursor: pointer
+
+/* - events -
+
+.hidden
+  /*|s|
+  display: none
+
+.more
+  /*|s|
+  position: relative
+  padding: 1px 3px 0px 3px
+  //margin-bottom:2px;
+  text-align: left
+
+.event
+  position: relative
+  padding: 1px 3px 0px 3px
+  /*margin-bottom:2px;
+  text-align: left
+
+.publicevent
+  border: 1px solid #b1dfac !important
+  background-color: #e8f6e7
+  color: #20a311 !important
+  a
+    color: #20a311 !important
+
+.publiceventlegend
+  width: 15px
+  height: 15px
+  margin-bottom: 2px
+  border: 1px solid #20a311 !important
+  background-color: #e8f6e7
+  color: #20a311 !important
+
+.publicevent-detail
+  border: 5px solid #b1dfac !important
+  background-color: #e8f6e7
+  background-color: #fff
+  color: #20a311 !important
+  min-width: 203px
+
+.privateevent
+  border: 1px solid #fca6ad !important
+  background-color: #fee5e7
+  color: #ff0000 !important
+  a
+    color: #ff0000 !important
+
+.privateeventlegend
+  width: 15px
+  height: 15px
+  margin-bottom: 2px
+  border: 1px solid #ff0000 !important
+  background-color: #fee5e7
+  color: #ff0000 !important
+
+.privateevent-detail
+  border: 5px solid #fca6ad !important
+  background-color: #fee5e7
+  background-color: #fff
+  color: #ff0000 !important
+  min-width: 203px
+
+.loggedinevent
+  border: 1px solid #b6d4fe !important
+  background-color: #eaf2ff
+  color: #2e84fc !important
+  a
+    color: #2e84fc !important
+
+.loggedineventlegend
+  width: 15px
+  height: 15px
+  margin-bottom: 2px
+  border: 1px solid #2e84fc !important
+  background-color: #eaf2ff
+  color: #2e84fc !important
+
+.loggedinevent-detail
+  border: 5px solid #b6d4fe !important
+  background-color: #eaf2ff
+  background-color: #fff
+  color: #2e84fc !important
+  min-width: 203px
+
+/* - blog -
+
+.blogcomment
+  //background-color:#f5f5f5;
+  border: 1px solid #eee
+  padding: 5px 9px 5px 5px
+  background-color: #f5f5f5
+  margin-top: 5px
+
+.blogcomment2
+  //background-color:#f5f5f5;
+  border-bottom: 1px solid #ddd
+  padding: 5px 9px 5px 25px
+  //background-color:#f5f5f5;
+  margin-top: 5px
+
+.blogcomment textarea
+  margin-bottom: 5px
+
+.systeminsert
+  //margin:5px -5px -5px -5px;
+  //border:5px solid #eee7f8;
+
+/* - mod overview -
+
+.module a
+  //color:#00CC33;
+  font-size: 13px
+  text-decoration: underline
+
+/* -dashboard -
+
+#dashboard
+  border-top: 1px solid #aaa
+  background-color: #FFFFFF
+  min-width: 786px
+  overflow: hidden
+  //padding:20px 25px 0px;
+
+.dashcol
+  width: 33%
+
+.dc
+  margin: 15px 0px 0px 15px
+  &.first
+    margin-left: 0px
+
+.widget
+  margin-bottom: 15px
+  .widget_title
+    border: 1px solid #ccc
+    border-bottom: 1px solid #aaa
+    padding: 3px 3px 2px 5px
+    cursor: move
+    background-repeat: no-repeat
+    background-position: 1px 1px
+    background-color: #eee
+  .widget_content
+    border: 1px solid #ddd
+    border-top: none
+    padding: 5px 5px 5px 5px
+  .widget_title h3
+    font-weight: normal !important
+    text-transform: none !important
+  .widget_content a
+    text-decoration: underline
+  .widget_bottom
+    text-decoration: none
+.wred
+  color: #FF0000
+
+.wtred
+  border: 1px solid #fca6ad !important
+  border-bottom: 1px solid #fa7984 !important
+  background-color: #fee5e7 !important
+
+.wcred
+  border: 1px solid #fca6ad !important
+  border-top: none !important
+  a
+    color: #FF0000 !important
+
+table
+  &.none
+    border: none !important
+    height: auto !important
+    background: none !important
+    color: #000000
+    padding: 0px !important
+    td, tr
+      border: none !important
+      height: auto !important
+      background: none !important
+      color: #000000
+      padding: 0px !important
+      &:hover
+        border: none !important
+        height: auto !important
+        background: none !important
+        color: #000000
+        padding: 0px !important
+  &.event
+    width: 100% !important
+  &.forum
+    background: #f5f5f5
+    td
+      padding: 8px 30px 8px 0px
+      &.exp, &.expanded
+        background-position: 0px 5px
+
+/* ---------- forum classes ----------
+
+.forumcontent
+  border-top: 1px solid #bbb
+  margin: 25px 0px 17px 0px
+  .title
+    font-weight: bold
+    color: $main-a
+
+.fci
+  .title
+    font-weight: bold
+    color: #000
+  .title2
+    color: #000
+  .address
+    font-size: 11px
+    color: #999
+
+.exp
+  padding-right: 0px !important
+  background-image: url(/static/img/prototype/box_handler.png)
+  background-repeat: no-repeat
+  background-position: 0px 2px
+
+.expanded
+  padding-right: 0px !important
+  background-image: url(/static/img/prototype/box_handler_on.png)
+  background-repeat: no-repeat
+  background-position: 0px 2px
+
+.bold
+  //font-weight: bold
+  font-weight: 500
+
+.newbasket
+  display: none
+  border: 1px solid #bbb
+  margin: 0px 2px 2px 2px
+  padding: 3px 3px 3px 15px
+  background: #ddd
+
+.drag
+  position: absolute
+  padding: 5px 10px 5px 10px
+  border: 1px solid #666
+  background: #eee
+  width: 160px
+
+.drop-highlight
+  //border:1px solid #999 !important;
+
+.drop-over
+  //border:1px solid #333 !important;
+  background-color: #dffddf !important
+
+.unselectable
+  -moz-user-select: none
+  -khtml-user-select: none
+  user-select: none
+
+.ui-inlineedit
+  color: $main-b
+  padding: 0px 3px 0px 3px
+  margin-right: -3px
+  border: 1px dotted #CEBDED
+  //background:#fff;
+  &.edit
+    padding: 0px 3px 0px 3px
+    border: 1px solid #666
+    border-bottom: 1px solid #ddd
+    border-right: 1px solid #ddd
+    background: #fff
+
+.edit input
+  padding-top: 2px
+  margin-bottom: -2px
+  background: none
+  border: 0px
+  text-align: right
+
+/* datepicker
+
+.selectable .ui-selected
+  background-color: #e4ffe4
+  a
+    color: #555
+  &:hover
+    background-color: #e4ffe4
+
+.ui-dialog
+  padding: 0px
+  border: 1px solid #666
+
+.dialog-content
+  padding: 10px
+
+.ui-dialog-content
+  padding: 0px !important
+
+.ui-widget-header
+  border: 0px
+  border-bottom: 1px solid #999
+  padding: 0px
+  //background:#ccc;
+
+.ui-dialog-titlebar
+  padding: 3px 0px 0px 7px !important
+  background-color: #666 !important
+
+.ui-dialog-title
+  //text-transform:none !important;
+  font-size: 11px
+
+.box .ui-widget-header
+  background: #ccc !important
+
+/* pageplayer
+
+.fadeindiv
+  background: url(/static/img/prototype/basket_remove.png) no-repeat
+
+
+
+
+
+
+
+
+
+

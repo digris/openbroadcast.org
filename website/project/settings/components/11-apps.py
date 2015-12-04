@@ -69,7 +69,6 @@ INSTALLED_APPS = (
     'spurl',
     'lib',
     'pure_pagination',
-    'multiuploader',
     'crispy_forms',
     'floppyforms',
     'absolute',

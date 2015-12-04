@@ -1,50 +1,33 @@
-{% load cms_tags sekizai_tags compress value_from_settings %}
-<!DOCTYPE html>
+{% load cms_tags sekizai_tags compress value_from_settings %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
 
-
-<!--head -->
 <head>
 
 	<title>Audio Player</title>
 
-	<!--[if lt IE 8]>
-		<link href="{{ STATIC_URL }}css/ie.css" media="screen, projection" rel="stylesheet" type="text/css" />
-	<![endif]-->
 	<!--[if lt IE 9]>
 	    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 
-	<!-- compressed -->
 	{% compress css %}
-	{% endcompress %}
+
+    {% endcompress %}
 	<link href="{{ STATIC_URL }}css/aplayer.css" media="screen, projection" rel="stylesheet" type="text/css" />
 
-	<!-- REMOVE FOR PRODUCTION!
-	<link href="{{ STATIC_URL }}css/in_progress.css" media="screen, projection" rel="stylesheet" type="text/css" />
-	 -->
 
 	<!-- meta ----------------------------------------------------------------------------------------------->
 	<link rel="icon" type="image/png" href="{{ STATIC_URL }}img/base/favicon.png" />
 	<link rel="shortcut icon" type="image/x-icon" href="{{ STATIC_URL }}img/base/favicon.png">
 
-	<!-- scripts -------------------------------------------------------------------------------------------->
-	<!-- common includes -->
 	{% include "aplayer/_common_script.html" %}
 
-
-	<!-- webfonts -->
-	{# include "lib/monotype.html" #}
-
-{% render_block "css" %}
-
-{% render_block "js-head" %}
-
-{% render_block "js-pre" %}
+    {% render_block "css" %}
+    {% render_block "js-head" %}
+    {% render_block "js-pre" %}
 
 </head>
 
-<!--body -->
+
 <body class="popup aplayer" data-spy="scroll">
 
 
@@ -56,12 +39,7 @@
 
 
 
-
-
-
-	<!-- main javascript block -->
 	{% render_block "js" %}
-
 
 	<script type="text/javascript" src="{{ STATIC_URL }}aplayer/js/lib/jwplayer/jwplayer-5.9.js"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}alibrary/js/playlist.js"></script>
@@ -122,11 +100,8 @@
 		//--><!]]>
 	</script>
 
-	<!-- verry last scripts -->
 	{% render_block "js-post" %}
 	{% render_block "js-uncompressed" %}
-
-
 
 </body>
 

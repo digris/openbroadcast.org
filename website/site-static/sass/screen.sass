@@ -1,65 +1,19 @@
-// Core variables
+@charset "UTF-8"
+
 @import site/variables
 
-
-@import element/skeleton
-@import util/control
-@import element/style
-@import element/toolbar
-
-@import element/listview
-@import element/itemview
-
-@import element/element
-@import element/errors
-@import element/sidebar
-@import element/search
-@import element/aplayer_inline
-@import element/cms
-
-@import element/addons
-@import element/sitemessages
-@import element/markdown
-@import element/announcements
-// obsolete?? @import element/dialog
-@import element/socialauth
-
-
-
-
-
-
-
-
-// Modify this for custom colors, font-sizes, etc
+///////////////////////////////////////////////////////////////////
+// bootstrap components
+///////////////////////////////////////////////////////////////////
 @import bootstrap/mixins
-@import site/mixins
+@import site/bootstrap-custom/mixins
 
-// CSS Reset
 @import bootstrap/reset
-
-// Grid system and page structure
 @import bootstrap/scaffolding
 @import bootstrap/grid
 @import bootstrap/layouts
-
-// Base CSS
-@import site/type
 @import bootstrap/code
-@import site/forms
-@import site/forms_extra
 @import bootstrap/tables
-
-// Tagging
-@import site/ac-tagging
-
-// WMD
-@import site/wmd
-
-
-// Components: common
-// @import bootstrap/sprites
-//@import bootstrap/addons/font-awesome-3.1.1
 @import bootstrap/addons/font-awesome-3.2.1/font-awesome
 @import bootstrap/addons/switch
 @import bootstrap/dropdowns
@@ -67,50 +21,29 @@
 @import bootstrap/dim
 @import bootstrap/component-animations
 @import bootstrap/close
-
-// Components: Buttons & Alerts
-@import site/buttons
-@import site/button-groups
 @import bootstrap/alerts
-
-// Note: alerts share common CSS with buttons and thus have styles in buttons.scss
-
-// Components: Nav
-@import site/navs
-@import site/navbar
 @import bootstrap/breadcrumbs
-//@import bootstrap/pagination // using legacy paginator
 @import bootstrap/pager
-
-// Components: Popovers
-//@import bootstrap/modals
 @import bootstrap/tooltip
 @import bootstrap/popovers
-
-// Components: Misc
 @import bootstrap/thumbnails
-@import site/thumbnails
-//@import bootstrap/labels
 @import bootstrap/progress-bars
-//@import bootstrap/accordion
-//@import bootstrap/carousel
-//@import bootstrap/hero-unit
-
-// Utility classes
 @import bootstrap/utilities
 
-// Has to be last to override when necessary
+@import site/bootstrap-custom/type
+@import site/bootstrap-custom/forms
+@import site/bootstrap-custom/forms_extra
+@import site/bootstrap-custom/buttons
+@import site/bootstrap-custom/button-groups
+@import site/bootstrap-custom/navs
+@import site/bootstrap-custom/navbar
+@import site/bootstrap-custom/thumbnails
 
 
-
-// app imports
-@import apps/base
-
-// util imports
-@import util/base
-
-// import site styles
-@import site/style
-
-
-@import apps/arating
+///////////////////////////////////////////////////////////////////
+// project components
+///////////////////////////////////////////////////////////////////
+@import site/element/base
+@import site/apps/base
+@import site/util/base
+@import site/style/base

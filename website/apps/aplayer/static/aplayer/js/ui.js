@@ -578,11 +578,7 @@ aplayer.ui.playlist_display = function(aplayer, target) {
 		var html = ich.tpl_media({'media': media});
 		target.append(html);
 		
-	};
-
-
-
-
+	}
 
 };
 
