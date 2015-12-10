@@ -953,6 +953,7 @@ except Exception as e:
 
 
 class MediaExtraartists(models.Model):
+
     artist = models.ForeignKey('Artist', related_name='extraartist_artist', on_delete=models.CASCADE, blank=True, null=True)
     media = models.ForeignKey('Media', related_name='extraartist_media', on_delete=models.CASCADE, blank=True, null=True)
     # function = models.CharField(max_length=128, blank=True, null=True)

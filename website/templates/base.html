@@ -14,8 +14,8 @@
         <meta property="fb:app_id" content="{% value_from_settings "FACEBOOK_APP_ID" %}"/>
         {% block meta_opengraph %}{% endblock %}
 
-        <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/base/favicon.gif" />
-        <link rel="shortcut icon" type="image/x-icon" href="{{ STATIC_URL }}img/base/favicon.gif">
+        <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/base/favicon.png" />
+        <link rel="shortcut icon" type="image/x-icon" href="{{ STATIC_URL }}img/base/favicon.png">
 
 
         <!-- start: compressor css -->
@@ -53,15 +53,18 @@
         {% cms_toolbar %}
         <div id="dim_content" style="display: none;"></div>
 
+
+
+        <div class="main-navigation">
+            {% block toolbar %}{% endblock %}
+        </div>
+
+
         <div id="wrap">
 
-            <div class="navbar navbar-fixed-top">
-                <div class="navbar-inner">
-                    <div class="container">
-                        {% block toolbar %}{% endblock %}
-                    </div>
-                </div>
-            </div>
+
+            {% block teaser %}{% endblock %}
+
 
             <div class="container main">
 
@@ -107,14 +110,17 @@
         </div>
 
         <div id="footer">
-            {% include "skeleton/footer_new.html" %}
+            {% include "skeleton/footer.html" %}
         </div>
 
+
+        {% block user_panels %}
         {% if user.is_authenticated %}
             {# include "element/_quicklinks_panel.html" #}
         {% else %}
             {% include "element/_private_site_panel.html" %}
         {% endif %}
+        {% endblock %}
 
         {% if loginas_active %}
         <section id="loginas_message">
@@ -240,7 +246,7 @@
                 base.ui.skeleton();
                 base.ui.iface();
                 base.ui.loading();
-                base.ui.toolbar();
+                //base.ui.toolbar();
                 base.ui.searchbar();
                 base.ui.tagcloud();
                 base.ui.sidebar();

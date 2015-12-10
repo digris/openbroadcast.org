@@ -72,7 +72,7 @@ CMS_PLACEHOLDER_CONF = {
 }
 
 CMS_PLUGIN_PROCESSORS = (
-    'lib.cms_plugin_processors.wrap_text',
+    #'lib.cms_plugin_processors.wrap_text',
 )
 
 CMS_SEO_FIELDS = True
@@ -82,3 +82,7 @@ CMS_CACHE_DURATIONS = {
     'content': 1,
 }
 
+COLUMN_WIDTH_CHOICES = (
+    ('33.33%', '33%'),
+    ('50%', '50%'),
+)

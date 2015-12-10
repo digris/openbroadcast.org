@@ -2,6 +2,9 @@
 
 .importer-importfiles
 
+
+
+
   thead th
     background-color: white
     // text-align: center
@@ -46,7 +49,8 @@
 
 
 $duplicateBackground: #fffeac
-//$duplicateBackground: #ddffd9
+$duplicateBackground: #FCFF80
+//$duplicateBackground: $primary-color-a-bg-light
 
 #loading_message
   min-height: 120px
@@ -58,10 +62,12 @@ $duplicateBackground: #fffeac
 
 section.importer-importfiles
 
+
+
   .listing
 
     .item
-      background: $grayLightest
+      background: $body-color-shaded-bg
       margin-bottom: $basePadding
 
       // info display
@@ -84,6 +90,9 @@ section.importer-importfiles
         i
           font-size: 30px
           color: green
+
+      .apply-to-all
+        text-transform: none
 
       &.info
         background-color: $infoBackground
@@ -129,7 +138,7 @@ section.importer-importfiles
           padding: 0 16px 4px
           > .bar
             height: 4px
-            background: $main-a
+            background: $primary-color-a
 
     
       &.duplicate
@@ -144,7 +153,7 @@ section.importer-importfiles
           display: block
     
       &.done
-        background-color: $successBackground
+        background-color: $success-color-bg
         color: #5a5a5a
         .icon-blank:before
           content: "\f046" // icon-copy
@@ -165,7 +174,7 @@ section.importer-importfiles
         i.icon
           color: $grayLighter
         &.selected i.icon
-          color: #00bb00
+          color: $primary-color-a
 
       div.status-imported
         .information
@@ -258,7 +267,7 @@ section.importer-importfiles
                 width: 63px
                 height: 63px
               &.hover
-                background-color: #ddffd9
+                background-color: $primary-color-a-bg-light
                 color: $black
               
 
@@ -323,13 +332,13 @@ section.importer-importfiles
 
     &.hover
       &.done
-        background-color: #DDFFD9
+        background-color: $primary-color-a-bg-light
         
       &.duplicate
         background-color: $duplicateBackground
   
       &.ready
-        background-color: #DDFFD9
+        background-color: $primary-color-a-bg-light
 
 
 

@@ -90,6 +90,8 @@ INSTALLED_APPS = (
     'djangocms_link',
     'djangocms_snippet',
     'djangocms_text_ckeditor',
+    'djangocms_panel',
+    'djangocms_column',
 
     # dajax
     'dajaxice',

@@ -1,26 +1,55 @@
-$main-a: #00BB00
-$main-b: #6633CC
-//$main-b: #be00ff
-//$main-b: #0000BB
-//$main-a: #555
-//$main-b: #000
+$primary-color-a: #00BB00
+$primary-color-a: #00bb73
+$primary-color-b: #6633CC
+//$primary-color-b: #6423C8
+//$primary-color-b: #00ffff
+//$primary-color-b: #007ad0
 
-$main-color: $main-a
-$main-color-b: $main-a
-$main-link-color: $main-b
+$primary-color-a-bg-light: #DDFFD9
+$primary-color-a-bg-light: #BCF5E0
+
+$primary-color-b-bg-light: #EEE6FF
+$primary-color-b-bg-light: #E2D7F9
+
+
+$main-color: $primary-color-a
+$main-color-b: $primary-color-a
+$main-link-color: $primary-color-b
 $main-inverse-color: #FFFFFF
 $main-content-background-color: #F5F5F5
 
-$selection-bg-color: #EEE6FF
-$active-bg-color: #E4FFE4
+//
+$selection-bg-color: $primary-color-b-bg-light
+$active-bg-color: $primary-color-a-bg-light
+$hover-bg-color: $primary-color-a-bg-light
 
 
-// dimensions
+$body-color-bg: #fff
+$body-color-shaded-bg: #f5f5f5
+
+$body-color-bg: #f5f5f5
+$body-color-shaded-bg: #fff
+
+$separator-line-color: #ccc
+//$separator-line-color: #000
+
+
+// colors alert/success/error etc...
+$success-color-bg: #4CF5A1
+$success-color-text: #000
+
+
+
+
+// sizes & dimensions
 $width-maincontent: 1115px
 $width-sidebar: 225px
 $width-inner_content: 830px // TODO: remove
 $width-inner: 830px
 $footer_fix-height: 20px
+
+$toolbar-height: 32px !default
+$toolbar-font-size: 13px
 
 // paths
 $image_path: unquote("/static/img/prototype/")
@@ -31,7 +60,7 @@ $static-url: '/static/'
 
 
 // Links
-$linkColor: $main-b !default
+$linkColor: $primary-color-b !default
 $linkColorHover: darken($linkColor, 15) !default
 
 // Site
@@ -42,7 +71,7 @@ $siteColorAlt: darken($siteColor, 15) !default
 $black: black !default
 $grayDarker: #222222 !default
 $grayDark: #333333 !default
-$gray: #555555 !default
+$gray: #777777 !default
 $grayLight: #cccccc !default
 $grayLighter: #eeeeee !default
 $grayLightest: #fafafa !default
@@ -51,7 +80,7 @@ $white: white !default
 // Accent colors
 $blue: #049cdb !default
 $blueDark: #0064cd !default
-$green: $main-a !default
+$green: $primary-color-a !default
 $red: #9d261d !default
 $yellow: #ffc40d !default
 $orange: #f89406 !default
@@ -130,23 +159,23 @@ $navbarLinkColorHover: $white !default
 
 // Form states and alerts
 $warningText: #c09853 !default
-$warningBackground: #fcf8e3 !default
+$warningBackground: #f7fc87 !default
 $warningBorder: darken(adjust-hue($warningBackground, -10), 3%) !default
 
 $errorText: #ff743e !default
 $errorBackground: #ffeed4 !default
 $errorBorder: darken(adjust-hue($errorBackground, -10), 3%) !default
 
-$successText: $main-a !default
-$successBackground: #DDFFD9 !default
+$successText: $primary-color-a !default
+$successBackground: $primary-color-a-bg-light !default
 $successBorder: darken(adjust-hue($successBackground, -10), 5%) !default
 
-$successTextAlt: $main-b !default
+$successTextAlt: $primary-color-b !default
 $successBackgroundAlt: #f3f0fb !default
 $successBorderAlt: darken(adjust-hue($successBackgroundAlt, -10), 5%) !default
 
-$infoText: $main-a !default
-$infoBackground: #DDFFD9 !default
+$infoText: $primary-color-a !default
+$infoBackground: $primary-color-a-bg-light !default
 $infoBorder: darken(adjust-hue($successBackground, -10), 5%) !default
 
 //$infoText: #7a7a7a !default

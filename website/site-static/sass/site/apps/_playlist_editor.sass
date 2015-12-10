@@ -17,29 +17,23 @@
         height: 65px !important
 
       .fade-cue input
-        // background: red !important
         width: 55px !important
 
       .base
-        background: #f5f5f5
+        background: $body-color-shaded-bg
 
     .waveform
       display: none
       transition: display 0.5s
 
-  // background: green !important
   margin: 20px 0 20px
-
-
 
 
   .list_header
 
     .row-fluid
-      background-color: #fff
-      border-bottom: 1px solid #efefef !important
       > div
-        padding: 5px
+        padding: 8px 0
         margin: 1px 0
 
 
@@ -50,38 +44,30 @@
         a:hover
           text-decoration: none
           color: $green
-        i
-          // border: 1px solid red
-          // padding: 2px 0px 1px 1px
-
-
-
 
 
   .list_body
     .item
 
-      border-bottom: 1px solid #efefef !important
-
+      //border-bottom: 1px solid #efefef !important
+      background: $body-color-bg
 
       // display: block
       height: 100px
 
       > div
-        background-color: #efefef
+        background-color: $body-color-shaded-bg
 
-      &.hover
-        //background-color: #efefef
 
       &.drop-placeholder
         height: 130px
         width: 100%
-        background-color: #ddffd9 !important
+        background-color: $primary-color-a-bg-light !important
 
       &.ui-sortable-helper
         opacity: 0.8
         > div
-          background: #f3f0fb !important
+          background: $primary-color-a-bg-light !important
 
       .row-fluid.base
         //background-color: #fff
@@ -93,7 +79,7 @@
         > div
           // padding: 5px
         .waveform
-          background-color: #a5a5a5
+          background-color: $body-color-shaded-bg
           background-size: 100% 30px
           height: 30px
         .envelope
@@ -111,10 +97,10 @@
 
         .row-fluid.playhead
           .waveform
-            background-color: #ddffd9
+            background-color: $primary-color-a-bg-light
           .envelope
             opacity: 0.5
-            border-bottom-color: #ddffd9
+            border-bottom-color: $primary-color-a-bg-light
             border-left-color: transparent
             border-right-color: transparent
 
@@ -172,7 +158,7 @@
       // override
       background-color: transparent
       a
-        color: $main-a !important
+        color: $primary-color-a !important
       .visible-while-playing
         display: inline-block
       .hidden-while-playing
@@ -202,7 +188,7 @@
     background: #efefef
 
     &.hover, &.focus
-      background: #eee6ff
+      background: $primary-color-b-bg-light
 
     form
       padding: 10px
@@ -250,7 +236,7 @@
               margin: 0 0 0px 25px
 
           &.hover
-            background: #ddffd9
+            background: $primary-color-a-bg-light
             .information
               color: #333
 
@@ -263,7 +249,7 @@
     background: #efefef
 
     &.hover
-      background: #eee6ff
+      background: $primary-color-b-bg-light
 
     form, table
       padding: 10px
@@ -368,7 +354,7 @@
         margin: 0 5px
         width: 808px
         .bar
-          background: $main-a
+          background: $primary-color-a
           padding: 0
 
 
@@ -472,11 +458,11 @@
 
     &.hover
       &.done
-        background-color: #DDFFD9
+        background-color: $primary-color-a-bg-light
 
       &.duplicate
         // background-color: $duplicateBackground
 
       &.ready
-        background-color: #DDFFD9
+        background-color: $primary-color-a-bg-light
 

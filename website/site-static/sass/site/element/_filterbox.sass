@@ -2,10 +2,8 @@
 /* ---------- box classes ----------
 
 .box
-  //margin-bottom:23px;
-  border-left: 1px solid #fff
-  border-right: 1px solid #fff
-  border-top: 1px solid #ccc
+
+  border-top: 1px solid $separator-line-color
 
 .boxtitle
   color: #333
@@ -22,7 +20,7 @@
   display: none
   .boxitem input
     background-color: #ffffff
-    border: 1px solid #bbbbbb
+    border: 1px solid $separator-line-color
     color: #5a5a5a
 
 .boxitem
@@ -50,13 +48,10 @@
     background-repeat: no-repeat
 
 .box.boxon
-  //background-color: #fafafa
-  background-color: #fcfcfc
-  border-left: 1px solid #fff
-  border-right: 1px solid #fafafa
+  background-color: $body-color-shaded-bg
 
 .box.has_active
-  background-color: #DDFFD9
+  background-color: $primary-color-a-bg-light
 
 
 
@@ -66,7 +61,7 @@
   background-image: url(/static/img/prototype/box_handler_on.png)
 
 .boxend
-  border-top: 1px solid #ddd
+  border-top: 1px solid $separator-line-color
 
 /* ---------- content box classes ----------
 
@@ -145,7 +140,7 @@
 
 .boxsub-content
   display: none
-  color: $main-b
+  color: $primary-color-b
 
 .boxsub
   .b-closer

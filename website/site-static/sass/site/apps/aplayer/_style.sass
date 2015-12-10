@@ -2,7 +2,7 @@
 
 $window-width: 100%
 $outer-padding: 10px
-$height-navigation: 32px
+$height-navigation: 0px
 $inner-width: auto
 
 // height has to be the same as image size
@@ -12,13 +12,10 @@ $footer-height: 60px
 
 html, body
 
-
   .row-fluid > .span8
     width: 65% !important
   .row-fluid > .span9
     width: 74% !important
-
-
 
   height: 100%
   #wrap
@@ -34,44 +31,37 @@ html, body
       padding: 0 10px
       select
         width: 260px
-    
-    
-    
+
     
   .navbar.navbar-fixed-top
     background-image: none !important
 
-    // countdown hack
     ul.countdown
       li
         span
           color: white
           padding: 7px 5px 0 0
-        span.time
 
 
-// main wrapper
+
 body.popup
 
   .container
     width: 100% !important
 
-  .screen.controls
-
   // navbar override
+  .navbar
+    display: none
   .navbar .nav
+    background-color: $primary-color-b
     > li > a
+      display: none !important
       padding: 1px 5px 0px
       margin: 6px 5px 6px
   .navbar .navbar-inner
-    background-color: #333
   .navbar .active > a
     background-color: #333
-    border: 1px solid #a5a5a5 
-    
-
-    
-
+    //border: 1px solid #a5a5a5
 
   &.buffering
     div.ajax-indicator
@@ -96,8 +86,6 @@ body.popup
     .hidden-while-buffering
       display: none
 
-
-     
   div.ajax-indicator
     display: none
     position: fixed
@@ -112,26 +100,24 @@ body.popup
 
 body.popup
 
+  background: $body-color-bg
 
-    
   section.container
     width: 100%
-    background: #efefef
-    // margin-top: $height-navigation
+    background: $body-color-shaded-bg
     
   .screen
     .padded-x, .padded-y
       padding: 10px
     
   .screen.controls
-  
-    // height: 141px
+
     width: 100%
     position: fixed
     top: $height-navigation
     
-    background: whitesmoke
-    border-bottom: 1px solid #dddddd
+    background: $body-color-shaded-bg
+
     
     .information
       h1
@@ -155,20 +141,13 @@ body.popup
      
     .aplayer-information
       height: 80px
-      
-    .aplayer-progress
-      //height: 18px
-      
-      
-      
+
     .aplayer-controls
-      // background: yellow
-      padding: 2px 0 2px 10px
-      border-top: 1px solid #dddddd
+      padding: 6px 0 2px 10px
       height: 36px
       overflow: hidden
-      border-bottom: 1px solid #dddddd
-      background: whitesmoke
+      border-bottom: 1px solid $separator-line-color
+      background: $body-color-shaded-bg
 
       > p
         margin: 0
@@ -187,7 +166,7 @@ body.popup
           font-size: 14px
           color: #a5a5a5
           &:hover
-            color: $main-a
+            color: $primary-color-a
             text-decoration: none
       
     
@@ -203,7 +182,7 @@ body.popup
     overflow-x: hidden
     height: 542px
     width: 100%
-    top: 204px
+    top: 164px
     position: fixed
     
     padding-top: 24px
@@ -211,14 +190,15 @@ body.popup
 
   .screen.playlist
     .item
-      border-bottom: 1px solid #efefef
+      background: $body-color-shaded-bg
+      border-bottom: 2px solid $body-color-bg
       &:first-child
-        border-top: 1px solid #efefef
+        //border-top: 1px solid #efefef
       .wrapper
         padding: 2px 10px
         
         .icon
-          padding-top: 12px
+          padding-top: 7px
           i
             margin-left: 6px
             color: #a5a5a5
@@ -245,18 +225,22 @@ body.popup
           
       &.hover, &.playing
         cursor: pointer
-        border-bottom: none
-        background: #ddffd9
+
+        background: $primary-color-a-bg-light
         .icon > i
-          color: $main-a
+          color: $primary-color-a
         .indicator
           display: block
+
+
+      &.hover:not(.playing)
+        border-bottom: none
           
 
         
       .indicator
         display: none
-        height: 1px
+        height: 2px
         overflow: hidden
         width: 100%
           
@@ -265,7 +249,7 @@ body.popup
           padding: 0 !important
           .inner
             width: 0%
-            background: $main-a
+            background: $primary-color-a
 
 
   .screen.emission
@@ -277,8 +261,6 @@ body.popup
         color: #5a5a5a
 
       .description
-        border-top: 1px #a5a5a5
-        border-bottom: 1px solid#a5a5a5
         max-height: 260px
         overflow: hidden
 
@@ -299,7 +281,7 @@ body.popup
         padding-top: 4px
 
       a
-        //background: $main-b
+        //background: $primary-color-b
         //color: white
 
   .screen.comments
@@ -324,7 +306,7 @@ body.popup
     div.playhead
     
       .background
-        background: $main-a
+        background: $primary-color-a
         
       .indicator
         background-image: url(#{$static-url}aplayer/img/playhead.indicator.png)
@@ -356,7 +338,7 @@ body.popup
 
         &.has-waveform
           background-size: 100% 100%
-          background-color: $main-a
+          background-color: $primary-color-a
         
         
         .wrapper
@@ -369,9 +351,9 @@ body.popup
             height: 36px
             width: 0%
             // float: right
-            background: #ddffd9
+            background: $primary-color-a-bg-light
             opacity: 0.5
-            border-right: 1px solid $main-a
+            //border-right: 1px solid $primary-color-a
     
   
 

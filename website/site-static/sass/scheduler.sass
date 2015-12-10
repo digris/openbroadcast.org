@@ -11,9 +11,9 @@ body.scheduler
 
 // themes
 $theme-0-dark: #95d182
-$theme-0-bright: #ddffd9
+$theme-0-bright: $primary-color-a-bg-light
 
-$theme-1-dark: $main-b
+$theme-1-dark: $primary-color-b
 $theme-1-bright: #d9ccf2
 
 $theme-2-dark: #cc33b9
@@ -53,8 +53,8 @@ $theme-4-bright: #f2dacc
         color: #efefef
 
       .description
-        border-top: 1px solid#5a5a5a
-        border-bottom: 1px solid#5a5a5a
+        border-top: 1px solid #5a5a5a
+        border-bottom: 1px solid #5a5a5a
         max-height: 260px
         overflow: hidden
 
@@ -71,7 +71,7 @@ $theme-4-bright: #f2dacc
         padding-top: 12px
 
       a
-        background: $main-b
+        background: $primary-color-b
         color: white
         
     section.form
@@ -89,7 +89,7 @@ $theme-4-bright: #f2dacc
             padding-top: 0
             border: 4px solid #333
             &.selected
-              border-color: $main-b
+              border-color: $primary-color-b
               
             &.theme-0
               background: $theme-0-dark
@@ -176,7 +176,7 @@ $theme-4-bright: #f2dacc
   cursor: default
   color: #222
   -moz-user-select: none
-  background: #ddffd9
+  background: $primary-color-a-bg-light
   a
     color: #333 !important
     font-size: 90%
@@ -316,7 +316,7 @@ $theme-4-bright: #f2dacc
         padding: 1px 5px
         &:hover
           text-decoration: none
-          background: #ddffd9
+          background: $primary-color-a-bg-light
         small
           color: #999
           font-size: 70%
@@ -364,7 +364,7 @@ input.autocomplete
         width: 63px
         height: 63px
       &.hover
-        background-color: #ddffd9
+        background-color: $primary-color-a-bg-light
         color: #000
 
 

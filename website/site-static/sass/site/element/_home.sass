@@ -1,0 +1,164 @@
+@charset "UTF-8"
+
+body.home
+  margin-top: $toolbar-height !important
+
+$h1-font-size: 36px
+$h2-line-height: 40px
+$h2-font-weight: 600
+
+%typography-base
+  font-family: 'Helvetica Neue','Source Sans Pro', sans-serif
+  font-weight: 300
+  font-size: 14px
+  line-height: 20px
+  letter-spacing: 1px
+
+%typography-teaser
+  h1, h2
+    margin: 0 !important
+  h1
+    font-weight: 600
+    font-size: 42px
+    line-height: 48px
+  h2
+    font-weight: 300
+    font-size: 42px
+    line-height: 48px
+
+
+///////////////////////////////////////////////////////////////
+// teaser styles
+///////////////////////////////////////////////////////////////
+body.home
+  section.teaser
+    position: relative
+    .teaser-container
+      height: 400px
+
+    .background
+      height: 400px
+      background: url(/static/img/asset/home.teaser.bg.jpg)
+      background-repeat: no-repeat
+      background-size: 100% 400px
+
+    .text
+      text-align: center
+      position: absolute
+      top: 0
+      width: 100%
+      padding: 50px 0 0 0
+
+      @extend %typography-teaser
+      h1, h2
+        color: white
+
+
+///////////////////////////////////////////////////////////////
+// cms content / panels
+///////////////////////////////////////////////////////////////
+body.home
+
+  .container.main
+    margin-top: 50px
+    .subhead
+      display: none
+
+    // plugin panels
+    .panel
+      @extend %typography-base
+      border-bottom: 2px solid #000
+      padding: 48px 0 40px
+
+      .panel-body
+        h1, h2, h3, h4
+          text-align: center
+          text-transform: none
+          color: #000
+
+        h1, h2
+          font-size: 36px
+          line-height: 40px
+          font-weight: 600
+
+        h3
+          font-size: 36px
+          line-height: 40px
+          font-weight: 300
+
+        h4
+          font-size: 18px
+          line-height: 20px
+          font-weight: 600
+
+      .column
+        @extend %typography-base
+        margin: 30px 0
+        h4
+          margin-bottom: 20px
+        p
+          font-size: 14px
+          line-height: 20px
+
+
+///////////////////////////////////////////////////////////////
+// panel extra classes
+///////////////////////////////////////////////////////////////
+body.home
+
+  .panel.numbered-columns
+    .column
+      p:first-child
+        margin: 0 auto 20px
+        width: 40px
+        height: 30px
+        background: #000
+        color: #fff
+        text-align: center
+        padding: 10px 0 0 0
+        border-radius: 20px
+        font-size: 14px
+        line-height: 20px
+
+  .panel.star-list
+    ul
+      width: 660px
+      margin: 40px auto 20px
+      list-style-position: outside
+
+      li.__variation
+        font-size: 18px
+        line-height: 20px
+        padding: 20px 10px 40px
+        text-align: center
+        background: url(/static/img/asset/home.bullet-star.png)
+        background-repeat: no-repeat
+        background-position: center bottom
+
+      li
+        font-size: 18px
+        line-height: 20px
+        padding: 10px 10px 10px 50px
+        background: url(/static/img/asset/home.bullet-star.png)
+        background-repeat: no-repeat
+        background-position: left center
+        background-size: 36px
+
+    p
+      width: 660px
+      margin: 0 auto
+      text-align: center
+      font-size: 14px
+      line-height: 20px
+
+
+///////////////////////////////////////////////////////////////
+// sign-up / register panel
+///////////////////////////////////////////////////////////////
+.sign-up
+  text-align: center
+  @extend %typography-teaser
+  .text
+    margin: 60px 0
+    h1, h2, h3
+      color: $primary-color-b

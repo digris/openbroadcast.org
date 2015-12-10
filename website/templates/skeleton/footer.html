@@ -1,56 +1,80 @@
-{% load ctype %}
-<p>
-	© openbroadcast.org {% now "Y" %} |
-	Renggerstrasse 31, CH-8038 Zurich, Switzerland
-</p>
-{% if DEBUG %}
+{% load cms_tags menu_tags adv_cache version_tags %}
 
-    <div id="debug_container" style="width: 100%; opacity: 0.6; font-size: 90%;">
-        <dl class="dl-horizontal">
-
-            {% if object and object.id %}
-            <dt>Object ID:</dt>
-            <dd>
-                {{ object.id }}
-                {%  if object.get_admin_url %}
-                | <a href="{{ object.get_admin_url }}">admin</a>
-                {% endif %}
-
-                {% if object.folder %}
-                <br>
-                    lsdakj
-                {% endif %}
+{% cache 600 "footer" request.get_full_path %}
+<div class="container">
 
 
 
-            </dd>
-            {% endif %}
-
-            {% if object and object.legacy_id %}
-            <dt>Legacy ID:</dt>
-            <dd>
-                {{ object.legacy_id }}
-
-                {% if object|ct_name_by_object|lower == 'release' %}
-                | <a href="http://openbroadcast.org/en/content/library/{{ object|ct_name_by_object|lower }}s/{{ object.legacy_id }}/detail.html">show legacy page</a>
-                {% endif %}
-                {% if object|ct_name_by_object|lower == 'artist' %}
-                | <a href="http://openbroadcast.org/en/content/library/{{ object|ct_name_by_object|lower }}s/{{ object.legacy_id }}.html">show legacy page</a>
-                {% endif %}
-                {% if object|ct_name_by_object|lower == 'label' %}
-                | <a href="http://openbroadcast.org/en/content/library/{{ object|ct_name_by_object|lower }}s/{{ object.legacy_id }}/releases.html">show legacy page</a>
-                {% endif %}
-                {% if object|ct_name_by_object|lower == 'track' %}
-                | <a href="http://openbroadcast.org/en/content/library/media/{{ object.legacy_id }}/detail.html">show legacy page</a>
-                {% endif %}
+    <div class="row">
 
 
+        <div class="span3">
+            <p class="address">
+                <!--<img src="{{ STATIC_URL }}img/base/favicon.png">-->openbroadcast.org ©{% now "Y" %}<br>
+                Renggerstrasse 31<br>
+                8038 Zürich<br>
+                <a href="mailto:openbroadcast@digris.ch">openbroadcast@digris.ch</a><br>
+                A plattform by <a href="http://www.digris.ch/">Digris AG</a>
+            </p>
+        </div>
 
 
-            </dd>
-            {% endif %}
+        <div class="span6">
+            <p class="address">
 
-        </dl>
+            </p>
+        </div>
+
+
+        <div class="span3">
+            <p class="address">
+
+            </p>
+        </div>
+
+
     </div>
 
-{% endif %}
+
+<!--
+    <div class="row">
+        <div class="span12">
+            <ul class="sitemap unstyled">
+                {% show_menu 0 1 100 100 %}
+                <span class="clear"></span>
+            </ul>
+
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="span9">
+            <p class="muted credit">
+                © openbroadcast.org {% now "Y" %} |
+                Renggerstrasse 31, CH-8038 Zurich, Switzerland
+            </p>
+
+            <p class="version">
+                {% version_by_git %}
+            </p>
+
+            {%  comment %}
+            <p class="version">
+                {% locale_info %}
+            </p>
+            {%  endcomment %}
+
+        </div>
+        <div class="span3">
+            <p class="muted credit pull-right">developed by <a href="http://hazelfire.com">hazelfire GmbH</a></p>
+        </div>
+
+
+    </div>
+    -->
+
+
+</div>
+{% endcache %}

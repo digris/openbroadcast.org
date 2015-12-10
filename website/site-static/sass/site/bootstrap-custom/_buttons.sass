@@ -1,85 +1,68 @@
-// BUTTON STYLES
-// -------------
-
-// Base styles
-// --------------------------------------------------
+////////////////////////////////////////////////////////////////////////////////////////////////
+// button styles
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 $color-adjust: -15
+$hover-radius: 5px
 
-// Core
+// base
 .btn
+  color: #000
+  background: #fff
+  font-weight: 300
   display: inline-block
   padding: 4px 10px 2px // bottom was 4px
   margin-bottom: 0
+  text-align: center
+  vertical-align: middle
+  border: 2px solid #000
+  cursor: pointer
+  text-transform: uppercase
+  transition: border-radius 0.1s ease-out, background-color 0.1s ease-out
   // For input.btn
   font-size: $baseFontSize
   line-height: $baseLineHeight
-  color: $grayDark
-  text-align: center
-  //text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75)
-  vertical-align: middle
-  +buttonBackground($white, darken($white, 10%))
-  border: 1px solid #ccc
-  border-bottom-color: #bbb
-  //+border-radius($baseRadiusSmall)
-  //$shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05)
-  //+box-shadow($shadow)
-  cursor: pointer
-  // text-transform: uppercase
-  // Give IE7 some love
-  +reset-filter
-  +ie7-restore-left-whitespace
 
 // Hover state
 .btn:hover
-  color: $grayDark
+  color: #fff
   text-decoration: none
-  background-color: darken($white, 10%)
-  background-position: 0 -15px
-  // transition is only when going to hover, otherwise the background
-  // behind the gradient (there for IE<=9 fallback) gets mismatched
-  +transition(background-position 0.1s linear)
+  background-color: #000
+  border-radius: $hover-radius
 
 // Focus state for keyboard and accessibility
 .btn:focus
   +tab-focus
 
 // Active state
-
 .btn.active,
 .btn:active
-  background-image: none
-  //$shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05)
-  //+box-shadow($shadow)
-  background-color: darken($white, 10%)
-  background-color: darken($white, 15%) #{"\9"}
   outline: 0
 
 // Disabled state
-
 .btn.disabled,
 .btn[disabled]
-  cursor: default
-  background-image: none
-  background-color: darken($white, 10%)
+  cursor: not-allowed
   +opacity(65)
-  //+box-shadow(none)
 
-// Button Sizes
-// --------------------------------------------------
+////////////////////////////////////////////////////////////////////////////////////////////////
+// sizes
+////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Large
 .btn-large
-  padding: 9px 14px
+  padding: 9px 32px
   font-size: $baseFontSize + 2px
   line-height: normal
-  //+border-radius($baseRadiusSmall)
 
-.btn-large [class^="icon-"]
-  margin-top: 1px
+//.btn-large [class^="icon-"]
+.btn-large.icon
+  padding: 9px 32px 9px 20px
+  i
+    padding-right: 11px
 
-// Small
+
 .btn-small
+  font-weight: normal
   padding: 5px 9px
   font-size: $baseFontSize - 2px
   line-height: $baseLineHeight - 2px
@@ -87,72 +70,88 @@ $color-adjust: -15
 .btn-small [class^="icon-"]
   margin-top: -1px
 
-// Mini
 .btn-mini
+  border-width: 1px
+  font-weight: normal
   padding: 2px 6px
   font-size: $baseFontSize - 2px
   line-height: $baseLineHeight - 4px
+  &:hover
+    border-radius: $hover-radius - 2
 
-// Alternate buttons
-// --------------------------------------------------
-
-// Set text color
-// -------------------------
-
+////////////////////////////////////////////////////////////////////////////////////////////////
+// colors / additional styles
+////////////////////////////////////////////////////////////////////////////////////////////////
 .btn-primary,
-.btn-primary:hover,
+.btn-secondary,
 .btn-warning,
-.btn-warning:hover,
 .btn-danger,
-.btn-danger:hover,
 .btn-success,
-.btn-success:hover,
 .btn-info,
-.btn-info:hover,
-.btn-inverse,
-.btn-inverse:hover
-  // text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25)
-  color: $white
-
-// Provide *some* extra contrast for those who can get it
-
-.btn-primary.active,
-.btn-warning.active,
-.btn-danger.active,
-.btn-success.active,
-.btn-info.active,
-.btn-dark.active
-  color: rgba(255, 255, 255, 0.75)
-
-// Set the backgrounds
-// -------------------------
-.btn-primary
-  background: $primaryButtonBackground
-  //+buttonBackground($primaryButtonBackground, adjust-lightness($primaryButtonBackground, $color-adjust))
-
-// Warning appears are orange
-.btn-warning
-  //+buttonBackground($orange, adjust-lightness($orange, $color-adjust))
-
-// Danger and error appear as red
-.btn-danger
-  //+buttonBackground($red, adjust-lightness($red, $color-adjust))
-
-// Success appears as green
-.btn-success
-  //+buttonBackground($green, adjust-lightness($green, $color-adjust))
-
-// Info appears as a neutral blue
-.btn-info
-  //+buttonBackground($yellow, adjust-lightness($yellow, $color-adjust))
-
-// Inverse appears as dark gray
 .btn-inverse
-  //+buttonBackground(#454545, #262626)
+  &:hover,
+  &.active
+    color: $white
 
-// Cross-browser Jank
-// --------------------------------------------------
+// primary buttons
+.btn-primary
+  color: $primary-color-b
+  border-color: $primary-color-b
+  &:hover
+    background-color: $primary-color-b
 
+
+.btn-secondary
+  color: $primary-color-a
+  border-color: $primary-color-a
+  &:hover
+    background-color: $primary-color-a
+
+
+.btn-abort
+  color: $gray
+  border-color: $gray !important
+  &:hover
+    background-color: $gray
+
+
+
+
+// additional buttons - not sure if used anywhere...
+.btn-warning
+  color: $orange
+  border-color: $orange
+  &:hover
+    background-color: $orange
+
+.btn-danger
+  color: $pink
+  border-color: $pink
+  &:hover
+    background-color: $pink
+
+.btn-success
+  @extend .btn-secondary
+
+.btn-info
+  color: $blue
+  border-color: $blue
+  &:hover
+    background-color: $blue
+
+
+.btn-inverse
+  color: #fff
+  background: #000
+  &:hover
+    color: $primary-color-a
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// cross-browser. TODO: still needed??
+////////////////////////////////////////////////////////////////////////////////////////////////
 button.btn,
 input[type="submit"].btn
   // Firefox 3.6 only I believe

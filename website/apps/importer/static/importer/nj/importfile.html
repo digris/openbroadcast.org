@@ -221,7 +221,7 @@
 
     <div class="row-fluid pull-righ result-actions">
         <div class="span12">
-            <a class="btn btn-secondary btn-small reimport-duplicate">Re-Import File</a>
+            <a class="btn btn-abort btn-small reimport-duplicate">Re-Import File</a>
         </div>
     </div>
 {% endif %}
@@ -522,7 +522,7 @@
         </div>
 
         <div class="span2">
-            <a class="btn btn-mini pull-right apply-to-all" data-ct="release"><i class="icon-repeat"></i> Apply Release
+            <a class="btn btn-mini btn-primary pull-right apply-to-all" data-ct="release"><i class="icon-repeat"></i> Apply Release
                 to all</a>
         </div>
 
@@ -580,7 +580,7 @@
         </div>
 
         <div class="span2">
-            <a class="btn btn-mini pull-right apply-to-all" data-ct="artist"><i class="icon-repeat"></i> Apply Artist to all</a>
+            <a class="btn btn-mini btn-primary pull-right apply-to-all" data-ct="artist"><i class="icon-repeat"></i> Apply Artist to all</a>
         </div>
 
 
@@ -597,11 +597,11 @@
         </div>
 
         <div class="pull-right span10">
-            <a class="btn btn-secondary btn-small delete-importfile">Delete this File</a>
+            <a class="btn btn-abort btn-small delete-importfile">Delete this File</a>
             <!--
-            <a class="btn btn-secondary btn-small rescan" data-settings="skip_tracknumber">Scan witouth tracknumber</a>
+            <a class="btn btn-abort btn-small rescan" data-settings="skip_tracknumber">Scan witouth tracknumber</a>
             -->
-            <a class="btn btn-secondary btn-small rescan">Scan again</a>
+            <a class="btn btn-abort btn-small rescan">Scan again</a>
             {% if object.status == 'ready' or object.status == 'warning' %}
                 <a class="btn btn-primary btn-small start-import">Continue Import</a>
             {% endif %}

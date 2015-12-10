@@ -251,7 +251,8 @@ class WaveformImage(object):
         if image_height % 2 == 0:
             raise Exception, "Height should be uneven: images look much better at uneven height"
 
-        background_color = (245, 245, 245, 255)
+        #background_color = (245, 245, 245, 255)
+        background_color = (255, 255, 255, 255)
         colors = [
                     (255,255,255, 0),
                  ]
@@ -436,11 +437,11 @@ def create_waveform_image(src, dst):
     image_height = 301
     fft_size = 2048
 
-    print 'input_filename:    %s' % src
-    print 'output_filename_w: %s' % dst
-    print 'image_width:       %s' % image_width
-    print 'image_height:      %s' % image_height
-    print 'fft_size:          %s' % fft_size
+    # print 'input_filename:    %s' % src
+    # print 'output_filename_w: %s' % dst
+    # print 'image_width:       %s' % image_width
+    # print 'image_height:      %s' % image_height
+    # print 'fft_size:          %s' % fft_size
 
     processor = AudioProcessor(src, fft_size, numpy.hanning)
     samples_per_pixel = processor.audio_file.nframes / float(image_width)
@@ -470,11 +471,11 @@ def create_spectrogram_image(src, dst):
     image_height = 301
     fft_size = 2048
 
-    print 'input_filename:    %s' % src
-    print 'output_filename_w: %s' % dst
-    print 'image_width:       %s' % image_width
-    print 'image_height:      %s' % image_height
-    print 'fft_size:          %s' % fft_size
+    # print 'input_filename:    %s' % src
+    # print 'output_filename_w: %s' % dst
+    # print 'image_width:       %s' % image_width
+    # print 'image_height:      %s' % image_height
+    # print 'fft_size:          %s' % fft_size
 
     processor = AudioProcessor(src, fft_size, numpy.hanning)
     samples_per_pixel = processor.audio_file.nframes / float(image_width)

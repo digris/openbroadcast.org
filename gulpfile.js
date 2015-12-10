@@ -2,6 +2,7 @@
 
 var config = require('./settings.json');
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var $ = require('gulp-load-plugins')();
 var browserSync = require('browser-sync').create();
 var sass = require('gulp-sass');
@@ -16,7 +17,7 @@ var AUTOPREFIXER_BROWSERS = [
   'safari >= 7',
   'opera >= 23',
   'ios >= 7',
-  'android >= 4.4',
+  'android >= 4.4'
 ];
 
 gulp.task('proxy', ['styles'], function () {
@@ -25,7 +26,8 @@ gulp.task('proxy', ['styles'], function () {
         notify: false,
         port: config.local_port,
         host: config.hostname,
-        open: "external",
+        //open: "external",
+        open: false,
         proxy: {
             target: "127.0.0.1:" + config.proxy_port
         },
@@ -38,7 +40,8 @@ gulp.task('proxy', ['styles'], function () {
     });
 
     gulp.watch("website/site-static/sass/**/*.sass", ['styles']);
-    gulp.watch("website/**/*.html").on('change', browserSync.reload);
+    gulp.watch("website/site-static/js/**/*.coffee", ['scripts']);
+    //gulp.watch("website/**/*.html").on('change', browserSync.reload);
 });
 
 gulp.task('styles', function () {
@@ -50,17 +53,31 @@ gulp.task('styles', function () {
             'website/site-static/sass/admin.sass',
             //'website/site-static/sass/wip.sass'
         ])
-        //.pipe($.sourcemaps.init())
+        .pipe($.sourcemaps.init())
         //.pipe($.plumber())
         .pipe($.sass({
             precision: 10,
             //onError: logSASSError
         }))
         .pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
-        //.pipe($.sourcemaps.write())
+        .pipe($.sourcemaps.write())
         .pipe(gulp.dest('website/site-static/css/'))
-        .pipe(browserSync.stream())
+        .pipe(browserSync.stream({match: '**/*.css'}))
         .pipe($.size({title: 'styles'}));
+});
+
+
+//Concat and minify scripts
+gulp.task('scripts', function() {
+    return gulp.src([
+          'website/site-static/js/**/*.coffee',
+    ])
+    .pipe($.coffee({bare: true}).on('error', gutil.log))
+    //.pipe($.rename(function (path) {
+    //    path.basename += "-goodbye";
+    //}))
+    //.pipe($.size({title: 'scripts'}))
+    .pipe(gulp.dest('website/site-static/dist/js/'));
 });
 
 gulp.task('default', ['proxy']);

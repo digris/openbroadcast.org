@@ -25,7 +25,7 @@
 
 {% block modnav %}
     <div id="modnav">
-        {% include "skeleton/modnav.html" %}
+        {% include "skeleton/module-navigation.html" %}
     </div>
 {% endblock %}
 
@@ -137,6 +137,7 @@
 
             <div>
 
+                {% comment %}
                 <div class="alert alert-warning">
                     <strong>{% trans "Please note!" %}</strong>
                     <p>
@@ -160,6 +161,7 @@
                         <li>{% trans "If this all sounds too complicated, please don't hesitate to contact our" %} <a href="#">support</a></li>
                     </ul>
                 </div>
+                {% endcomment %}
 
                 <div class="alert alert-info">
                     <strong>{% trans "Hint!" %}</strong>
@@ -169,7 +171,7 @@
                     </p>
                 </div>
 
-                <p>{% trans "Either use the 'Add Files' button - or Drag and Drop the desired fils into the browser window." %}</p>
+
 
             </div>
 
@@ -181,7 +183,7 @@
 
                     <div class="fileupload-buttonbar">
 
-                            <span class="btn btn-success fileinput-button">
+                            <span class="btn btn-primary fileinput-button">
                                 <i class="icon-plus icon-white"></i>
                                 <span> Add Files</span>
                                 <input type="file" name="files[]" multiple>
@@ -195,6 +197,10 @@
 
                     <table role="presentation" class="table table-striped table-condensed"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
                 </form>
+
+
+                <p>{% trans "Either use the 'Add Files' button - or Drag and Drop the desired fils into the browser window." %}</p>
+
             </div>
 
         </section>

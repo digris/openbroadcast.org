@@ -78,6 +78,7 @@ django-threadedcomments==1.0
 django-cms==3.1.2
 django-treebeard==3.0
 djangocms-admin-style==0.2.8
+djangocms-column==1.6.0
 djangocms-file==0.1
 djangocms-link==1.6.2
 djangocms-picture==0.1
@@ -113,3 +114,4 @@ scikits.audiolab==0.10.2
 -e git+https://ohrstrom@lab.hazelfire.com/hazelfire/obp/pyacoustid.git@deploy#egg=pyacoustid
 -e git+https://github.com/hzlf/django-announcements@master#egg=django-announcements
 -e git+https://github.com/hzlf/django-extensions@master#egg=django-extensions
+-e git+https://github.com/hzlf/djangocms-panel@master#egg=djangocms-panel

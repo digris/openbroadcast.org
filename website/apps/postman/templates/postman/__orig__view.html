@@ -77,7 +77,7 @@
 
 
                     <button type="submit"
-                            class="btn btn-secondary"
+                            class="btn btn-abort"
                             onclick="this.form.action='{% url 'postman_delete' %}?next={{ next_url|urlencode }}'">{% trans "Delete" %}</button>
 
                     {% if reply_to_pk %}<a class="btn btn-primary"

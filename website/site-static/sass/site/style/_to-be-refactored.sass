@@ -1,6 +1,6 @@
 // Variables
-$main-a: $main-a
-$main-b: $main-b
+$primary-color-a: $primary-color-a
+$primary-color-b: $primary-color-b
 
 $img-path: '/static/img/prototype/'
 
@@ -23,7 +23,7 @@ $footer_fix-height: 20px
   font-weight: 300
   line-height: 18px
   color: #222
-  background: #fff
+  background: $body-color-bg
   margin: 0
   padding: 0 0 0 0
   &.ajax_loading
@@ -97,24 +97,24 @@ body #wrap
 
 #footer
   min-height: 130px
+  background-color: #000
 
-
-#footer
-  background-color: #f5f5f5
+  p
+    font-size: 13px
 
   .container
-    padding: 10px 0 0px 0
+    padding: 20px 0 0px 0
 
   ul.sitemap
 
     li > a
-      color: #999
+      color: #aaa
 
     > li
       width: 14%
       float: left
       > a
-        color: #5a5a5a
+        color: #fff
       ul
         list-style: none
         list-style-position: outside
@@ -123,28 +123,31 @@ body #wrap
 
     li.selected
       > a
-        color: $main-a
+        color: $primary-color-a
 
     li.ancestor
       > a
-        color: $main-a
+        color: $primary-color-a
 
-
-  p.credit
+  p.credit,
+  p.address
     margin: 0
-    color: #ccc
+    color: #999
     a, a.external
-      color: #ccc
+      color: #999
+      text-decoration: underline
+      &:hover
+        color: $primary-color-b
 
   p.version
     margin: 0
-    color: #ccc
+    color: #777
     span.key
       padding-right: 4px
     span.value
       padding-right: 14px
     a, a.external
-      color: #ccc
+      color: #999
 
 
 
@@ -176,8 +179,8 @@ img, div, p, table, td, tr
   font-size: 32px
   line-height: 1em
   color: #333
-  color: $main-a
-  color: $main-b
+  color: $primary-color-a
+  color: $primary-color-b
   .add
     font-family: "Times New Roman", Times, serif
     font-weight: normal
@@ -288,7 +291,14 @@ table.front td
 
 
 // heading new
+header.subhead
+  margin-top: 50px
 #heading
+  display: none
+
+
+#heading
+
   position: relative
 
   width: 830px
@@ -303,7 +313,7 @@ table.front td
       font-size: 32px
       line-height: 32px
       text-align: right
-      color: #0b0
+      color: $primary-color-a
 
   .global-search
     float: left
@@ -343,7 +353,7 @@ table.front td
       font-size: 32px
       line-height: 32px
       text-align: left
-      color: #6633CC
+      color: $primary-color-b
       font-weight: bold
 
       span.extra
@@ -377,25 +387,34 @@ table.front td
 #modnav
   //margin: 0px 250px 6px 0px
   // UNBORDERING
-  border-bottom: 1px solid #999
-  border-bottom: 1px solid #fff
+  //border-bottom: 1px solid #999
+  //border-bottom: 1px solid #fff
   ul
-    margin: 0
+    margin: 0 0 10px
+    clear: both
   li
-    height: 22px
+    height: 28px
     //list-style: none
-    //float: left
+    float: left
     a
-      //color: #666
+      font-size: $toolbar-font-size
+      text-transform: uppercase
+      color: #666
       text-decoration: none
       padding: 0px 7px 0px 7px
       border-right: 1px solid #999
-      &.on, &.selected
-        color: $main-a
+      letter-spacing: 1px
+
+    &:last-child a
+      border-right: none
+
+    &.on, &.selected
+      a
+        color: $primary-color-a
         text-decoration: none
         padding: 0px 7px 0px 7px
       &:hover
-        color: $main-a
+        color: $primary-color-a
 
 #modnavright
   //float: right
@@ -409,7 +428,7 @@ table.front td
     padding: 0px 7px 0px 7px
     border-right: 1px solid #999
     &.on
-      color: $main-a
+      color: $primary-color-a
       text-decoration: none
       padding: 0px 7px 0px 7px
 
@@ -426,7 +445,7 @@ table.front td
     padding: 0px 7px 0px 7px
     border-right: 1px solid #999
     &.on
-      color: $main-a
+      color: $primary-color-a
       text-decoration: none
       padding: 0px 7px 0px 7px
 
@@ -462,7 +481,7 @@ table.front td
     color: #73c
     &:hover
       cursor: pointer
-      background-color: #eee6ff
+      background-color: $primary-color-b-bg-light
   a
     text-decoration: none
   .disabled
@@ -585,7 +604,7 @@ div.research_sets
       color: #666666
       margin-left: 0px
     .on a
-      color: $main-a
+      color: $primary-color-a
     li
       margin: 0px 4px 12px 0px
       cursor: pointer
@@ -624,7 +643,7 @@ div.research_sets
     border: dotted 1px #999999
   .timelineelement
     list-style: none
-    color: $main-b
+    color: $primary-color-b
     //background-image: url("/static/img/prototype/timeline_element_bg.png");
     //background-position: right bottom;
     background: #f8f3ff
@@ -644,14 +663,14 @@ div.research_sets
 
 #timeline
   .timelineelement:hover, .on
-    color: $main-a
+    color: $primary-color-a
     //background-image: url("/static/img/prototype/timeline_element_bg_on.png");
     //background-position: right bottom;
     background: #d4f3da
-    border-top: solid 1px $main-a
-    border-left: solid 1px $main-a
-    border-bottom: solid 2px $main-a
-    border-right: solid 2px $main-a
+    border-top: solid 1px $primary-color-a
+    border-left: solid 1px $primary-color-a
+    border-bottom: solid 2px $primary-color-a
+    border-right: solid 2px $primary-color-a
   .innerleft
     overflow: hidden
     margin: 4px 50px 4px 6px
@@ -723,7 +742,7 @@ div.research_sets
 
 .plistelement
   list-style: none
-  //color:$main-b;
+  //color:$primary-color-b;
   background: #f8f3ff
   margin: 0px 0px 2px 0px
   cursor: pointer
@@ -778,7 +797,7 @@ div.research_sets
   //background-color:#f5f5f5;
   border-bottom: 1px dotted #ccc
   a
-    color: $main-a
+    color: $primary-color-a
 
 .content-line
   border-top: 1px solid #ccc
@@ -858,8 +877,7 @@ input, textarea
 /* ---------- general classes ----------
 
 a
-  //color:$main-b;
-  color: $main-b
+  color: $primary-color-b
   text-decoration: none
   cursor: pointer
   &:hover
@@ -889,7 +907,7 @@ p
   padding-right: 25px
 
 .on
-  color: $main-a
+  color: $primary-color-a
 
 a
   &.action
@@ -992,7 +1010,7 @@ h4
 
 .msg-action
   padding: 8px 8px 8px 8px
-  background: #ddffd9
+  background: $primary-color-a-bg-light
   border-bottom: 1px solid #bbb
   color: #000
   .item
@@ -1016,7 +1034,7 @@ h4
   color: #000
 
 .green
-  color: $main-a
+  color: $primary-color-a
   //color:#00AA33;
 
 .grey
@@ -1190,29 +1208,20 @@ div
   //border-top:1px solid #bbb;
   color: #666
   h3
-    /*|s|
-    /*margin:5px 0px 0px 0px;
-    /*padding:0px;
     color: #333
   &.noline, td.noline
-    /*|s|
     border: none
-  &.releasebox
-    /*|s|
-    /*line-height:17px;
   tr.error
-    /*|s|
     background-color: #fedede
   td.error
-    /*|s|
     color: #ff0000
   th
     font-weight: normal
-    background-color: #e5e5e5
-    border-bottom: 1px solid #bbb
-    padding: 2px 6px 0px 6px
-    //padding:4px 6px 3px 6px;
-    //border-left:1px solid #bbb;
+    padding: 4px 6px 2px 6px
+    font-style: italic
+    color: #666666
+    font-weight: 300
+
     &.icon
       padding: 2px 0px 0px 6px
     &.selected
@@ -1224,14 +1233,15 @@ div
       text-decoration: none
   td
     color: #666
-    padding: 4px 6px 3px 6px
-    border-bottom: 1px solid #ddd
+    background: $body-color-shaded-bg
+    padding: 6px 6px 5px 6px
+    border-bottom: 4px solid $body-color-bg
     line-height: 15px
-    a
-      //text-decoration:none;
 
-.trhover tr:hover
-  background-color: #f5f5f5
+  tr:hover td
+    background: $hover-bg-color !important
+
+
 
 .comment
   border-bottom: 1px dotted #ccc
@@ -1259,37 +1269,6 @@ div
 
 .block
   display: block
-
-/* TABLE GRID----------------------------------
-
-.table
-  &.grid
-    margin-top: -1px
-    th
-      background: none
-      border: 1px solid #ddd
-      border-bottom: 1px solid #aaa
-      border-top: 1px solid #aaa
-    td
-      border: 1px solid #ddd
-  &.small
-    th
-      font-size: 11px
-      padding: 4px 6px 3px 6px
-    td
-      font-size: 11px
-  &.user td
-    padding: 6px 6px 6px 6px
-  .tags
-    float: right
-    text-align: right
-    margin-top: 2px
-    line-height: 21px
-
-/* TABLE SMALL----------------------------------
-
-/* specific tables classes
-
 
 
 
@@ -1319,14 +1298,12 @@ td.status
 
 .selectable tr
   &:hover
-    background-color: #f5f5f5
+    background-color: $hover-bg-color
     cursor: pointer
   &.locked
     &:hover
-      background-color: #fff
+      background-color: $hover-bg-color
       cursor: default
-    td
-      //color:#999;
 
 div.locked
   background-image: url(/static/img/prototype/schraffur.png)
@@ -1386,8 +1363,7 @@ a#tagcloud_inline_toggle
 
 
 div.tagcloud.inline
-  border-bottom: 1px solid #BBBBBB
-  /*max-height: 80px*/
+  //border-bottom: 1px solid #BBBBBB
   margin-bottom: 14px
   padding-bottom: 2px !important
   overflow: hidden
@@ -1400,7 +1376,7 @@ div.tagcloud.inline
     float: right
     margin: 0
     padding: 0 4px 4px 4px
-    background: white
+    background: $body-color-bg
     position: absolute
     top: 0
     right: 0
@@ -1416,10 +1392,10 @@ div.tagcloud.inline
   &:hover
     text-decoration: none
     color: #ffffff
-    background-color: $main-b
+    background-color: $primary-color-b
 
   &.on
-    background: $main-a
+    background: $primary-color-a
     color: white
 
   &.tag-hidden
@@ -1455,7 +1431,7 @@ div.tagcloud.inline
     padding: 2px 2px 0px 2px !important
     background: #ddd
     border: 1px solid #bbb
-    color: $main-b
+    color: $primary-color-b
     cursor: pointer
     background-image: url(/static/img/prototype/white_50.png)
     &.on
@@ -1613,7 +1589,7 @@ a.button
     background: #d4d2f7
     border: 1px solid #d4d2f7
     //border-top:1px solid #999;
-    color: $main-b
+    color: $primary-color-b
     &:hover
       background: url(/static/img/prototype/formbut_bg_off.png)
       border: 1px solid #666
@@ -1658,7 +1634,7 @@ inputxx.submit.active
 /* ---------- content-browser ------------
 
 .content-browser
-  border: 1px solid $main-b
+  border: 1px solid $primary-color-b
   border-top: 1px solid #D1C2F0
   border: 1px solid #bbb
   background: #F0F0F0
@@ -1680,7 +1656,7 @@ inputxx.submit.active
     border: 1px solid #ccc
     border-top: 0px
     padding: 1px 5px 1px 5px
-    color: $main-b
+    color: $primary-color-b
     &:hover
       background: #E9FFDC
       color: #009900
@@ -1749,7 +1725,7 @@ inputxx.submit.active
     background: url(/static/img/prototype/filebrowser_handler_on.png) no-repeat
 
 .bg-selected
-  background-color: #eee6ff !important
+  background-color: $primary-color-b-bg-light !important
 
 .bg-hover
   background-color: #e5e5e5 !important
@@ -1860,7 +1836,7 @@ a:focus, input:focus
     background-color: #f9f9f9
     cursor: pointer
   img:hover
-    //	background-color:#eee6ff;
+    //	background-color:$primary-color-b-bg-light;
   .num
     text-align: right
     padding-bottom: 5px
@@ -1921,7 +1897,7 @@ a:focus, input:focus
     color: #333
     padding-left: 4px
   img:hover
-    //	background-color:#eee6ff;
+    //	background-color:$primary-color-b-bg-light;
   .nomonthday td
     padding-top: 6px
     margin-top: 3px
@@ -1955,7 +1931,7 @@ a:focus, input:focus
     font-family: verdana
     font-size: 11px
   td a.action
-    color: $main-b !important
+    color: $primary-color-b !important
 
 .eventlist
   width: 100%
@@ -2175,6 +2151,12 @@ a:focus, input:focus
     color: #FF0000 !important
 
 table
+
+
+  tr > td
+    border-top: none !important
+
+
   &.none
     border: none !important
     height: auto !important
@@ -2209,7 +2191,7 @@ table
   margin: 25px 0px 17px 0px
   .title
     font-weight: bold
-    color: $main-a
+    color: $primary-color-a
 
 .fci
   .title
@@ -2264,7 +2246,7 @@ table
   user-select: none
 
 .ui-inlineedit
-  color: $main-b
+  color: $primary-color-b
   padding: 0px 3px 0px 3px
   margin-right: -3px
   border: 1px dotted #CEBDED

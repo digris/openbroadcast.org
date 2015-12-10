@@ -1,0 +1,77 @@
+{% load menu_tags i18n notifications_tags adv_cache activity_tags sekizai_tags %}
+{% notifications_unread as unread_count %}
+
+{% addtoblock "js-post" %}<script src="{{ STATIC_URL }}dist/js/element/navigation.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}
+<script>
+    $(function(){
+
+        var navigation = new NavigationUI($('#main_navigation'));
+        var account = new AccountUI($('#account_navigation'));
+        //navigation.init($('#main_navigation'));
+
+    });
+</script>
+{% endaddtoblock %}
+
+<div class="toolbar" id="toolbar">
+
+    <div class="section-left">
+        <ul id="main_navigation" class="top-level">
+            <li class="branding"><h1><a href="/" title="Open Broadcast Platform - Home">Open Broadcast</a></h1></li>
+            {% show_menu 0 1 100 100 "element/main-navigation/_menu.html" %}
+        </ul>
+    </div>
+
+    <div class="section-right">
+
+        {% include "aplayer/_inline.html" %}
+
+        <ul id="account_navigation">
+            {% if user.is_authenticated %}
+
+                <li class="account">
+                    <a href="{% url "profiles-profile-detail" user.username %}">{% firstof user.get_full_name user.username %}</a>
+
+                    <ul class="sub-level">
+
+                        <li><a href="{% url "auth_logout" %}?next=/"><i class="icon-signout"></i> {% trans 'Logout' %}</a></li>
+
+
+                        {% if user.is_staff %}
+                        <li><a href="/admin/"><i class="icon-dashboard"></i> {% trans 'Administration' %}</a></li>
+                        {% endif %}
+
+                    </ul>
+
+
+                </li>
+
+
+                <li class="message-notification{% if postman_unread_count %} has-unread{% endif %}">
+                    <a href="{% url "postman_inbox" %}">
+                        <i class="icon-envelope-alt"></i>
+                        <span><small class="count">{{ postman_unread_count }}</small></span></a>
+                </li>
+
+            {% else %}
+                <li class="login">
+                    <a title="Login" href="{% url "auth_login" %}?next={{ request.get_full_path }}" rel="modal:open">{% trans 'Login' %}</a>
+                    {% comment %}{% endcomment %}
+                    <ul class="sub-level" style="visibility: hidden;">
+                        <li><a href="{% url "socialauth_begin" "twitter" %}?next={{ request.get_full_path }}"><i class="icon-twitter"></i> {% trans 'Login using Twitter' %}</a></li>
+                        <li><a href="{% url "socialauth_begin" "facebook" %}?next={{ request.get_full_path }}"><i class="icon-facebook"></i> {% trans 'Login using Facebook' %}</a></li>
+                        <li><a href="{% url "socialauth_begin" "google-oauth2" %}?next={{ request.get_full_path }}"><i class="icon-google-oauth2"></i> {% trans 'Login using google' %}</a></li>
+                        <li><a href="{% url "socialauth_begin" "github" %}?next={{ request.get_full_path }}"><i class="icon-github"></i> {% trans 'Login using GitHub' %}</a></li>
+                    </ul>
+
+                </li>
+                <!--<li class="login"><a title="Register" href="{% url "registration_register" %}?next={{ request.get_full_path }}" rel="modal:open">{% trans 'Sign Up' %}</a></li>-->
+            {% endif %}
+        </ul>
+
+
+    </div>
+
+</div>
+

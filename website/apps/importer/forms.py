@@ -83,7 +83,7 @@ class ImportCreateModelForm(forms.ModelForm):
   
             FormActions(
                 HTML('<button type="submit" value="Submit" class="btn btn-primary pull-right"><i class="icon-ok icon-white"></i> Agree & Continue</button>'),            
-                HTML('<button type="reset" name="reset" value="reset" class="reset btn btn-secondary pull-right"><i class="icon-trash"></i> Cancel</button>'),
+                HTML('<button type="reset" name="reset" value="reset" class="reset btn btn-abort pull-right"><i class="icon-trash"></i> Cancel</button>'),
             ),
         )
         self.helper.add_layout(layout)

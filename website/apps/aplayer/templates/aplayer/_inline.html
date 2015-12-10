@@ -26,14 +26,8 @@
         var aplayer = aplayer || {};
         var player_app = player_app || {};
         $(function () {
-
             aplayer.inline = new InlinePlayer();
             aplayer.inline.init();
-
-            // new version
-            // player_app = new AplayerApp('main');
-            // player_app.init();
-
         });
     </script>
 
@@ -48,68 +42,35 @@
 
         <!-- Player display -->
         <div class="left display">
-            <ul class="main">
+
+            <ul>
                 <li>
-                    <span class="media_name"><a href="#"></a></span>
+
+                    <a href="#" class="streamable popup icon" data-resource_uri="/api/v1/abcast/channel/1/">
+                        <i class="icon-play"></i>
+                    </a>
+
+                    <span class="media_name current-title">
+                        <a href="#"></a>
+                    </span>
+                    <!--
                     <ul class="unstyled horizontal timing pull-right">
                         <li class="current"></li>
                         <li class="separator">&nbsp;|&nbsp;</li>
                         <li class="total"></li>
                         <li>&nbsp;</li>
                     </ul>
+                    -->
                 </li>
-                <div class="clear"></div>
             </ul>
-            <div class="clear"></div>
-            <ul class="aux">
-                <li><span class="artist_name">{% trans "Artist" %}: <a href="#"></a></span></li>
-                <li><span class="release_name">{% trans "Release" %}: <a href="#"></a></span></li>
-                <div class="clear"></div>
-            </ul>
-
-            <div class="actions inner">
-                <ul class="unstyled horizontal pull-right">
-                    <li><a href="#"><i class="icon-play"></i></a></li>
-                    <li><a href="#"><i class="icon-pause"></i></a></li>
-                    <li><a href="#"><i class="icon-stop"></i></a></li>
-                </ul>
-            </div>
 
 
         </div>
 
-        <!-- Icon/Actions-->
-        <div class="right shortcuts">
-            <a href="#" class="streamable popup" data-resource_uri="/api/v1/abcast/channel/1/"><img
-                    src="/static/img/prototype/webstream.png" alt="Webstream"/></a>
-
-        </div>
-        <div class="clear"></div>
     </div>
 
 
     <div class="display-large listing">
-
-        <div class="actions">
-            <ul class="unstyled horizontal">
-
-                <li class="prev">
-                    <a href="#" data-action="prev" title="Previous"> <i class="icon-step-backward"></i> </a>
-                </li>
-
-                <li class="hidden-while-paused">
-                    <a href="#" data-action="pause" title="Stop"> <i class="icon-pause"></i> </a>
-                </li>
-                <li class="hidden-while-playing hidden-while-buffering">
-                    <a href="#" data-action="play" title="Play"> <i class="icon-play"></i> </a>
-                </li>
-
-                <li class="next">
-                    <a href="#" data-action="next" title="Next"> <i class="icon-step-forward"></i> </a>
-                </li>
-                <div class="clear"></div>
-            </ul>
-        </div>
 
         <div class="indicator playhead hoverable">
 
@@ -139,9 +100,46 @@
             <div class="clear"></div>
         </div>
 
+
+
+        <div class="actions">
+
+                    <a href="#" data-action="prev" title="Previous"> <i class="icon-step-backward"></i> </a>
+                    <a href="#" data-action="pause" title="Stop"> <i class="icon-pause"></i> </a>
+                    <a href="#" data-action="play" title="Play"> <i class="icon-play"></i> </a>
+                    <a href="#" data-action="next" title="Next"> <i class="icon-step-forward"></i> </a>
+
+
+
+            <!--
+            <ul class="unstyled horizontal">
+
+                <li class="prev">
+                    <a href="#" data-action="prev" title="Previous"> <i class="icon-step-backward"></i> </a>
+                </li>
+
+                <li class="hidden-while-paused">
+                    <a href="#" data-action="pause" title="Stop"> <i class="icon-pause"></i> </a>
+                </li>
+                <li class="hidden-while-playing hidden-while-buffering">
+                    <a href="#" data-action="play" title="Play"> <i class="icon-play"></i> </a>
+                </li>
+
+                <li class="next">
+                    <a href="#" data-action="next" title="Next"> <i class="icon-step-forward"></i> </a>
+                </li>
+                <div class="clear"></div>
+            </ul>
+            -->
+
+
+        </div>
+
+        <!--
         <div class="channel">
             <strong>On-Air - Live</strong>
         </div>
+        -->
 
 
         <div class="inner">

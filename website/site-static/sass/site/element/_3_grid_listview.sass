@@ -23,11 +23,11 @@
       a
         background: #F9F9F9
         &:hover
-          background: #6633CC
+          background: $primary-color-b
           color: white
           text-decoration: none
       span.current
-        background: #0b0
+        background: $primary-color-a
         color: white
     
 	
@@ -93,7 +93,7 @@
         cursor: pointer
 
         &.hover
-          color: #00bb00
+          color: $primary-color-a
 
 
 
@@ -162,7 +162,7 @@
         /* Status dependant styleing */
         &.selection
           //background-color: #E4FFE4
-          background-color: #EEE6FF
+          background-color: $primary-color-b-bg-light
           li.indicator
             background-image: url(/static/img/base/listview.row.selection.bg.png)
             background-repeat: no-repeat
@@ -213,7 +213,7 @@
             &.highlight
               text-transform: uppercase
               small
-                color: $main-a
+                color: $primary-color-a
             
 
 
@@ -235,7 +235,7 @@
       &:first-child
         margin-right: 12px
       &.top
-        background: $main-a
+        background: $primary-color-a
         color: #fff
       &.flop
         background: red
@@ -294,11 +294,11 @@
             border-radius: 1px
             text-align: center
             padding: 0 0px 2px 2px
-            color: $main-a !important
+            color: $primary-color-a !important
             text-decoration: none !important
 
           &:hover > a
-            background: $main-a
+            background: $primary-color-a
             color: #fff !important
 
 
@@ -309,11 +309,11 @@
           > a
             text-align: center
             padding: 0 0px 2px 2px
-            color: $main-b !important
+            color: $primary-color-b !important
             text-decoration: none !important
 
           &:hover > a
-            color: $main-a !important
+            color: $primary-color-a !important
             background: transparent
 
 
@@ -727,8 +727,8 @@
             float: right
             text-transform: uppercase
             &.active
-              background: $main-a
-              border-color: $main-a
+              background: $primary-color-a
+              border-color: $primary-color-a
               color: white
 
       .c5
@@ -773,8 +773,8 @@
             float: right
             text-transform: uppercase
             &.active
-              background: $main-a
-              border-color: $main-a
+              background: $primary-color-a
+              border-color: $primary-color-a
               color: white
   
     &.m
@@ -858,7 +858,7 @@
                   &.active
                     background-image: url(/static/img/base/element.tag.a.png)
                     border-left: 1px solid #e3ffe8
-                    color: $main-a
+                    color: $primary-color-a
               
 		
 
@@ -1011,7 +1011,7 @@
             background: transparent !important
             &:hover
               background: transparent
-              color: #0B0 !important
+              color: $primary-color-a !important
 
 
       /* Play icon */
@@ -1079,8 +1079,8 @@
             float: right
             text-transform: uppercase
             &.active
-              background: $main-a
-              border-color: $main-a
+              background: $primary-color-a
+              border-color: $primary-color-a
 
 
 
@@ -1180,7 +1180,7 @@
           font-size: 16px
           color: #5a5a5a
           &:hover
-            color: $main-b
+            color: $primary-color-b
             text-decoration: none
         // @include link_external
 	  
@@ -1243,8 +1243,8 @@
 /* highlighter */
 .listview.container .list_body
   span.highlight
-    background-color: #DDFFD9
-    color: $main-a
+    background-color: $primary-color-a-bg-light
+    color: $primary-color-a
 
 
 
@@ -1278,7 +1278,7 @@
   a #searchbar_input
     margin: 0 0 0 0
     &.blur
-      color: $main-a
+      color: $primary-color-a
     &.focus
       color: #333333
 
@@ -1326,23 +1326,23 @@
     a #searchbar_input
       margin: 0 0 0 0
       &.blur
-        color: $main-a
+        color: $primary-color-a
       &.focus
         color: #333333
 
 
     &.active
       .inner
-        background: #ddffd9
+        background: $primary-color-a-bg-light
         border: 1px solid white
         border-right-color: #7ab89b
         border-bottom-color: #7ab89b
         input
-          color: $main-a
+          color: $primary-color-a
         i
           display: inline
         span
-          color: $main-a
+          color: $primary-color-a
           padding: 0 0 0 5px
           display: inline
 
@@ -1350,15 +1350,15 @@
     a
       color: #5a5a5a
       &:hover
-        color: $main-a
+        color: $primary-color-a
         text-decoration: none
 
   .filter-bar
     float: right
     margin: 0
     a
-      color: $main-a
-      background: #ddffd9
+      color: $primary-color-a
+      background: $primary-color-a-bg-light
       border: 1px solid white
       border-right-color: #7ab89b
       border-bottom-color: #7ab89b

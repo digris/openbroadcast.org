@@ -4,8 +4,9 @@
 // table width: 830px
 
 .listhead
-  padding: 4px 2px 3px 5px
-  border-bottom: 1px solid #bbb
+  //padding: 4px 2px 3px 5px
+  padding: 15px 2px 2px 5px
+  //border-bottom: 1px solid #bbb
   font-size: 90%
   height: 20px
   // margin-top: 36px
@@ -21,13 +22,13 @@
       span, a
         padding: 4px 6px 3px
       a
-        background: #F9F9F9
+        background: $body-color-shaded-bg
         &:hover
-          background: #6633CC
+          background: $primary-color-b
           color: white
           text-decoration: none
       span.current
-        background: #0b0
+        background: $primary-color-a
         color: white
     
 	
@@ -64,7 +65,7 @@
     margin-bottom: 12px
     .wrapper
       padding: 10px
-      background: #f9f9f9
+      background: $body-color-shaded-bg
       //font-style: italic
       position: relative
       text-align: center
@@ -93,7 +94,7 @@
         cursor: pointer
 
         &.hover
-          color: #00bb00
+          color: $primary-color-a
 
 
 
@@ -125,7 +126,7 @@
       font-size: 12px !important
       .list_header_item
         display: table-cell
-        border-bottom: 1px solid #BBBBBB
+        //border-bottom: 1px solid #BBBBBB
         &.sortable
           //background-color: #dddddd
           background-position: right center
@@ -154,6 +155,10 @@
       .list_body_row
         display: table-row
 
+        background: $body-color-shaded-bg
+        transition-property: background
+        transition-duration: 0.3s
+
         // inline smalls (eg country)
         a > small
           color: #5a5a5a
@@ -162,13 +167,12 @@
         /* Status dependant styleing */
         &.selection
           //background-color: #E4FFE4
-          background-color: #EEE6FF
+          background-color: $primary-color-b-bg-light
           li.indicator
             background-image: url(/static/img/base/listview.row.selection.bg.png)
             background-repeat: no-repeat
             background-position: 0 -16px
-        &.hover
-          background-color: #E4E4E4
+
         &.selection.hover
           background-color: #cbe5cb
 		  
@@ -176,8 +180,8 @@
         &.locked
           background-image: url(/static/img/prototype/list_closed_bg.png)
           background-color: #ffe1d2
-        &:hover
-          background-color: #e9e9e9
+        &.hover
+          background-color: $hover-bg-color
 		  
         /* Unpublished, grey text */
         &.unpublished
@@ -190,18 +194,12 @@
       
       
       
-      
-      
-      .list_body_row
-        // not working... (cause of display table etc)
-        border-bottom: 1px solid #DDDDDD
-      
-      
+
       
       .list_body_item
         vertical-align: top !important
         display: table-cell
-        border-bottom: 1px solid #DDDDDD
+        border-bottom: 4px solid $body-color-bg
         color: #666666
         .small
           line-height: 18px
@@ -213,7 +211,7 @@
             &.highlight
               text-transform: uppercase
               small
-                color: $main-a
+                color: $primary-color-a
             
 
 
@@ -235,7 +233,7 @@
       &:first-child
         margin-right: 12px
       &.top
-        background: $main-a
+        background: $primary-color-a
         color: #fff
       &.flop
         background: red
@@ -255,7 +253,7 @@
   &.footer
     border-top: none
     margin: 0
-    padding: 8px 2px 3px 5px
+    padding: 8px 2px 8px 5px
     font-size: 90%
     clear: both
 
@@ -294,11 +292,11 @@
             border-radius: 1px
             text-align: center
             padding: 0 0px 2px 2px
-            color: $main-a !important
+            color: $primary-color-a !important
             text-decoration: none !important
 
           &:hover > a
-            background: $main-a
+            background: $primary-color-a
             color: #fff !important
 
 
@@ -309,11 +307,11 @@
           > a
             text-align: center
             padding: 0 0px 2px 2px
-            color: $main-b !important
+            color: $primary-color-b !important
             text-decoration: none !important
 
           &:hover > a
-            color: $main-a !important
+            color: $primary-color-a !important
             background: transparent
 
 
@@ -728,8 +726,8 @@
             float: right
             text-transform: uppercase
             &.active
-              background: $main-a
-              border-color: $main-a
+              background: $primary-color-a
+              border-color: $primary-color-a
               color: white
 
       .c5
@@ -774,8 +772,8 @@
             float: right
             text-transform: uppercase
             &.active
-              background: $main-a
-              border-color: $main-a
+              background: $primary-color-a
+              border-color: $primary-color-a
               color: white
   
     &.m
@@ -859,7 +857,7 @@
                   &.active
                     background-image: url(/static/img/base/element.tag.a.png)
                     border-left: 1px solid #e3ffe8
-                    color: $main-a
+                    color: $primary-color-a
               
 		
 
@@ -908,18 +906,15 @@
 
 .listview.container.l
   display: block
-  
 
   font-size: 90%
   .list_body_item, .list_header_item
     padding: 2px 5px
 
-  
-
   .list_body_row.item
     background-size: 197px 197px
 
-  
+
   div.list_body
     display: block
 	
@@ -932,22 +927,13 @@
       float: left
       width: 197px
       height: 277px
-
-      margin: 14px 14px 0 0
+      margin: 14px 11px 0 0
       &:nth-child(4n)
         margin: 14px 0 0 0
 
       background-repeat: no-repeat
       overflow: hidden
-
-      // changed to shadow style
-      //border-bottom: 1px solid #DDDDDD
-      border-bottom: none
-      -moz-box-shadow: 1px 1px 4px 2px #EFEFEF
-      -webkit-box-shadow: 1px 1px 4px 2px #EFEFEF
-      box-shadow: 1px 1px 4px 2px #EFEFEF
-
-
+      border: 1px solid #EFEFEF
       position: relative
 	  
       &.selection
@@ -956,13 +942,13 @@
 		  
       &.hover
         border-bottom: none
-        background-color: #ffffff
+        //background-color: #ffffff
         .wrapper_info
-          background-color: #F5F5F5
+          //background-color: #F5F5F5
         .wrapper_action
-          background-color: #F5F5F5
+          //background-color: #F5F5F5
       &.selection.hover
-        background-color: #ffffff
+        background-color: $selection-bg-color
 		
       &.playing
         ul li
@@ -1008,38 +994,10 @@
             background: transparent !important
             &:hover
               background: transparent
-              color: #0B0 !important
+              color: $primary-color-a !important
 
 
-      /* Play icon */
-      .__disabled__.wrapper_icon
-        width: 24px
-        height: 44px
-        padding: 2px 0 0 4px
 
-	
-        ul li
-          display: block
-          width: 16px
-          padding: 2px 0 0 0px
-        
-          a
-            display: block
-            width: 16px
-            height: 16px
-            background-position: 0 0
-            background-repeat: no-repeat
-            &:hover
-              background-position: 0 -16px
-          &.play a
-            background-image: url(/static/img/base/listview.row.play.button.png)
-          &.play span
-            background-image: url(/static/img/base/listview.row.play.button.disabled.png)
-            display: block
-            width: 16px
-            height: 16px
-            background-position: 0 0
-            background-repeat: no-repeat
 
 
       // moving pat & inline tagcloud
@@ -1078,8 +1036,8 @@
             float: right
             text-transform: uppercase
             &.active
-              background: $main-a
-              border-color: $main-a
+              background: $primary-color-a
+              border-color: $primary-color-a
 
 
 
@@ -1099,9 +1057,9 @@
 
 
 		
-      /* Adjustable infoo panel */
+      /* Adjustable info panel */
       .wrapper_info
-        background-color: #ffffff
+        //background-color: #ffffff
         ul li
           /*padding: 2px 2px 2px 5px
         .wrapper_inner
@@ -1112,7 +1070,7 @@
 
 
       .wrapper_action
-        background: #ffffff
+        //background: #ffffff
         li
           float: right
 
@@ -1189,7 +1147,7 @@
           font-size: 16px
           color: #5a5a5a
           &:hover
-            color: $main-b
+            color: $primary-color-b
             text-decoration: none
         // @include link_external
 	  
@@ -1252,27 +1210,27 @@
 /* highlighter */
 .listview.container .list_body
   span.highlight
-    background-color: #DDFFD9
-    color: $main-a
+    background-color: $primary-color-a-bg-light
+    color: $primary-color-a
 
 
 
 
 /* ---------- tagbar/search for gianluca :) ---------- */
 .searchbar
-  padding: 0 0 3px 0
-  background-color: #efefef
+  padding: 2px 0 5px 0
+  background-color: $body-color-shaded-bg
+  border: 1px solid $body-color-shaded-bg
   //margin-top: 8px
   margin-top: 0
   z-index: 1002
-  -webkit-transition-property: background-color
-  -webkit-transition-duration: .3s
+  transition-property: border
+  transition-duration: .3s
 
   &.hover
     // background-color: #333 !important
-    background-color: #efefef
-    -webkit-transition-property: background-color
-    -webkit-transition-duration: .3s
+    //background-color: #efefef
+    border: 1px solid $primary-color-b
 
 
   // search field (wrapper)
@@ -1301,23 +1259,23 @@
     a #searchbar_input
       margin: 0 0 0 0
       &.blur
-        color: $main-a
+        color: $primary-color-a
       &.focus
         color: #333333
 
 
     &.active
       .inner
-        background: #ddffd9
+        background: $primary-color-a-bg-light
         border: 1px solid white
         border-right-color: #7ab89b
         border-bottom-color: #7ab89b
         input
-          color: $main-a
+          color: $primary-color-a
         i
           display: inline
         span
-          color: $main-a
+          color: $primary-color-a
           padding: 0 0 0 5px
           display: inline
 
@@ -1325,15 +1283,15 @@
     a
       color: #5a5a5a
       &:hover
-        color: $main-a
+        color: $primary-color-a
         text-decoration: none
 
   .filter-bar
     float: right
     margin: 0
     a
-      color: $main-a
-      background: #ddffd9
+      color: $primary-color-a
+      background: $primary-color-a-bg-light
       border: 1px solid white
       border-right-color: #7ab89b
       border-bottom-color: #7ab89b

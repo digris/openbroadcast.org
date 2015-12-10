@@ -11,7 +11,7 @@
 
 {% block modnav %}
     <div id="modnav">
-        {% include "skeleton/modnav.html" %}
+        {% include "skeleton/module-navigation.html" %}
     </div>
 {% endblock %}
 
@@ -34,15 +34,8 @@
         <section id="license">
 
             {% if object.excerpt %}
-            {% comment %}
-            <div class="page-header padded">
-                <h3>{% trans "Excerpt" %}
-                    <small>{% trans "in a few words" %}</small>
-                </h3>
-            </div>
-            {% endcomment %}
             <div class="markdown page-content padded">
-                {{ object.excerpt|markdown:"safe" }}
+                {{ object.excerpt|markdown|safe }}
             </div>
             {% endif %}
 
@@ -54,7 +47,7 @@
             </div>
 
             <div class="markdown page-content padded">
-                {{ object.license_text|markdown:"safe" }}
+                {{ object.license_text|markdown|safe }}
             </div>
             {% endif %}
 

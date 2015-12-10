@@ -180,7 +180,7 @@ form.form-horizontal
         color: #5a5a5a
         
         &.lookup-match
-          background-color: #ddffd9 !important
+          background-color: $primary-color-a-bg-light !important
         &.lookup-diff
           background-color: #fff4d9
 
@@ -188,6 +188,7 @@ form.form-horizontal
 form.form-horizontal
   &.form-compact
     //background: yellow
+    //background-color: $body-color-shaded-bg
     
     
     fieldset
@@ -195,7 +196,7 @@ form.form-horizontal
       padding: 0 0 0 0
     
     fieldset
-      background-color: #fafafa
+      //background-color: $body-color-shaded-bg
       
       margin-top: 20px
       
@@ -206,14 +207,14 @@ form.form-horizontal
       width: 816px
       padding: 6px 7px
       line-height: 14px
-      background-color: #f2f2f2
-    
-    legend
-      //display: none
-      margin-bottom: 7px
+      text-align: right
+      background-color: $body-color-bg
+      margin-bottom: 12px
       font-size: 100%
-      font-weight: bold
-      border-bottom: none
+      //font-weight: bold
+      border-bottom: 1px solid #CCCCCC
+      font-style: italic
+
     
     legend + .control-group
       margin-bottom: 4px 
@@ -245,7 +246,7 @@ body
     background-color: #efefef
 
     &.available
-      background-color: #DDFFD9
+      background-color: $primary-color-a-bg-light
     
     &.hover
       background-color: red
@@ -262,7 +263,7 @@ body
 // bulk apply form
 div.bulk_edit
   padding: 20px
-  background: #DDFFD9
+  background: $primary-color-a-bg-light
 
 
 
@@ -338,7 +339,7 @@ ul.relations.external
   li > a
     color: #5a5a5a
     &:hover
-      color: $main-b
+      color: $primary-color-b
     i
       font-size: 130%
 
@@ -359,7 +360,7 @@ fieldset.relations
         text-decoration: none
 
     &.match
-      background: #ddffd9
+      background: $primary-color-a-bg-light
     &.diff
       background: #fff4d9
 
@@ -522,7 +523,7 @@ ul.selectable-deck
         font-size: 14px
       &:hover
         text-decoration: none
-        color: $main-b
+        color: $primary-color-b
       //.ui-button-text
       //  display: block
       //  width: 16px
@@ -565,7 +566,7 @@ form.form-playlist
       padding: 0 0 0 7px
 
       &.selected
-        background-color: #ddffd9
+        background-color: $primary-color-a-bg-light
       input
         padding: 0
         //display: none
@@ -580,7 +581,7 @@ form.form-playlist
       border: 1px solid #cccccc
       margin-right: 5px
       &.selected
-        background-color: #ddffd9
+        background-color: $primary-color-a-bg-light
       input
         padding: 0
         //display: none

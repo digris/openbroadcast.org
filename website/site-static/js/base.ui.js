@@ -292,10 +292,8 @@ function HashTable(obj) {
 /* AJAX Indicator */
 base.ui.loading = function () {
     $(document).ajaxStart(function () {
-        $('.navbar .container').addClass('active');
         $('body').addClass('ajax_loading');
     }).ajaxStop(function () {
-            $('.navbar .container').removeClass('active');
             $('body').removeClass('ajax_loading');
         });
 };
@@ -877,39 +875,30 @@ base.ui.skeleton = function () {
     });
 };
 
-/* top navigation aka toolbar */
+/* top navigation aka toolbar
+TODO: remove when new navigation is implemented
 base.ui.toolbar = function () {
 
 
     $('a', 'ul.navigation-main').live('click', function (e) {
         e.preventDefault();
-        // extract clicked section
         var section = $(this).parent().attr('id').substring(9);
-
-        // hide all sub-nav items and show active one
         $('ul.navigation-sub').hide();
         $('ul#nav_sub-' + section).show();
 
         return false;
     });
 
-    // show active submenus
     $('.navigation-sub > li.descendant').parent().css('display', 'block');
     $('.navigation-sub > li.selected').parent().css('display', 'block');
     $('.navigation-sub > li.ancestor').parent().css('display', 'block');
 
-
     $("#toolbar #username").on_focus_input();
     $("#toolbar #password").on_focus_input();
 
-    /* Navigatino overrides */
     $(".nav_sub a.chat_irc").live('click', function (e) {
-
         e.preventDefault();
-
         uri = base.vars.irc_chat_url + '&nick=' + base.vars.username;
-        // uri = 'http://web.devel.obp.ch:9090/?channels=openbroadcast&nick=' + base.vars.username;
-
 
         var chat_win = window.open('', 'chat', 'width=650, height=720');
 
@@ -923,17 +912,13 @@ base.ui.toolbar = function () {
             alert('sorry - chat could not be loaded');
         }
 
-
         chat_win.focus();
-
-
         return false;
 
     });
 
-
 };
-
+*/
 AutocompleteApp = function () {
 
     var self = this;

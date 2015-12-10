@@ -10,8 +10,8 @@
                 <div class="progress progress-success active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
             </td>
             <td class="start">{% if (!o.options.autoUpload) { %}
-                <button class="btn btn-mini">
-                    <i class="icon-upload icon-white"></i>&nbsp;
+                <button class="btn btn-mini btn-primary icon">
+                    <i class="icon-upload"></i>&nbsp;
                     <span>{%=locale.fileupload.start%}</span>
                 </button>
             {% } %}</td>
@@ -19,8 +19,8 @@
             <td colspan="2"></td>
         {% } %}
         <td class="cancel">{% if (!i) { %}
-            <button class="btn btn-mini">
-                <i class="icon-ban-circle icon-white"></i>&nbsp;
+            <button class="btn btn-mini btn-abort icon">
+                <i class="icon-ban-circle"></i>&nbsp;
                 <span>{%=locale.fileupload.cancel%}</span>
             </button>
         {% } %}</td>

@@ -9,9 +9,13 @@
     <form method='post' class="form-horizontal" action=''>{% csrf_token %}
         {% include 'registration/form_fields.html' %}
 
-        <input type="submit" class="btn btn-primary pull-right"
-               value="> {% trans "Register Account" %}"/>
+
+        <button type="submit" class="btn btn-primary icon pull-right"><i class="icon-double-angle-right"></i> {% trans "Register Account" %}</button>
+
+        <a style="margin-right: 20px;" href="{% url "auth_login" %}?next=/" class="btn icon pull-right"><i class="icon-user"></i> {% trans "Login" %}</a>
+
         <div class="clear"></div>
+
     </form>
 
     {% include "registration/_social_auth.html" %}
