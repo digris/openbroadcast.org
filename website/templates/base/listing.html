@@ -40,9 +40,11 @@
 
 
 <div class="listhead">
-	<div style="float: right;">
-		{% include "element/_pagination.html" %}
-	</div>
+    {% block pagination %}
+        <div style="float: right;">
+            {% include "element/_pagination.html" %}
+        </div>
+    {% endblock %}
 </div>
 
 <div class="listview container {% block object_type %}{% endblock %} {{ list_style }}">
@@ -54,22 +56,24 @@
 
 
 <div class="listview footer">
-	<div class="right ipp">
-		<ul class="unstyled horizontal">
-			{% spurl base=request.get_full_path active_query="ipp=12" as is_active %}
-			<li>
-				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=12" %}">12</a>
-			</li>
-			{% spurl base=request.get_full_path active_query="ipp=24" as is_active %}
-			<li>
-				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=24" %}">24</a>
-			</li>
-			{% spurl base=request.get_full_path active_query="ipp=36" as is_active %}
-			<li>
-				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=36" %}">36</a>
-			</li>
-		</ul>
-	</div>
+    {% block ipp %}
+        <div class="right ipp">
+            <ul class="unstyled horizontal">
+                {% spurl base=request.get_full_path active_query="ipp=12" as is_active %}
+                <li>
+                    <a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=12" %}">12</a>
+                </li>
+                {% spurl base=request.get_full_path active_query="ipp=24" as is_active %}
+                <li>
+                    <a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=24" %}">24</a>
+                </li>
+                {% spurl base=request.get_full_path active_query="ipp=36" as is_active %}
+                <li>
+                    <a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=36" %}">36</a>
+                </li>
+            </ul>
+        </div>
+    {% endblock %}
 	<div class="clear">&nbsp;</div>
 </div>
 

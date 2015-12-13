@@ -18,6 +18,7 @@ class NavigationUI
       console.debug 'active', @active.length
       console.debug 'active has sublevel', @active_has_sublevel
 
+    @update_display()
     @bindings()
 
 
@@ -68,6 +69,23 @@ class NavigationUI
       $('.sub-level', @container).css('visibility', 'hidden')
       if @active_has_sublevel
         $('.sub-level', @active).css('visibility', 'visible')
+
+
+    # calculate & apply padding for sub-levels
+    $('.sub-level', @container).each (i, el) ->
+      parent_offset = $(el).parent().position().left
+      console.debug parent_offset
+      $(el).css 'padding-left', parent_offset + 'px'
+
+
+
+
+
+
+    #if @active_has_sublevel or @hover_has_sublevel
+    #  $('#toolbar').addClass 'expanded'
+    #else
+    #  $('#toolbar').removeClass 'expanded'
 
 
 class AccountUI

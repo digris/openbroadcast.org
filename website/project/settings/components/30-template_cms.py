@@ -86,3 +86,11 @@ COLUMN_WIDTH_CHOICES = (
     ('33.33%', '33%'),
     ('50%', '50%'),
 )
+
+
+CKEDITOR_SETTINGS = {
+    'startupOutlineBlocks': True,
+    'skin': 'moono',
+}
+
+

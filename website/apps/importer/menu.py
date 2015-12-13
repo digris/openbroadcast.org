@@ -12,23 +12,14 @@ class ImportMenu(CMSAttachMenu):
     
     def get_nodes(self, request):
         nodes = []
-        
-        """"""
+
         node = NavigationNode(
             _('My Uploads'),
             reverse('importer-import-list'),
             181
         )
         nodes.append(node)
-        
-        """"""
-        node = NavigationNode(
-            _('Help'),
-            reverse('importer-import-list'),
-            182
-        )
-        nodes.append(node)
-        
+
         
         return nodes
     

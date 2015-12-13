@@ -82,26 +82,18 @@ class PlaylistResource(ModelResource):
         list_allowed_methods = ['get','post']
         detail_allowed_methods = ['get','delete', 'put', 'post', 'patch']
         resource_name = 'library/playlist'
-        #excludes = ['updated',]
         include_absolute_url = True
-        
         always_return_data = True
-        
         authentication =  MultiAuthentication(SessionAuthentication(), OAuth20Authentication(), ApiKeyAuthentication())
         authorization = Authorization()
         limit = 50
         filtering = {
-            #'channel': ALL_WITH_RELATIONS,
             'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
             'status': ['exact', 'range',],
             'is_current': ['exact',],
             'type': ['exact',],
         }
-        #cache = SimpleCache(timeout=120)
-        
-        
 
-    """ """
     def apply_authorization_limits(self, request, object_list):
         if request.GET.get('all', False):
             return object_list
@@ -145,7 +137,6 @@ class PlaylistResource(ModelResource):
             item_uuids.append(item.content_object.uuid)
         bundle.data['item_uuids'] = item_uuids
 
-
         bundle.data['main_image'] = None
         try:
             opt = THUMBNAIL_OPT
@@ -153,6 +144,10 @@ class PlaylistResource(ModelResource):
             bundle.data['main_image'] = main_image.url
         except:
             pass
+
+        bundle.data['series'] = None
+        if bundle.obj.series:
+            bundle.data['series'] = bundle.obj.series.name
 
         bundle.data['tags'] = [tag.name for tag in bundle.obj.tags]
 

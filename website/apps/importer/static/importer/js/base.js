@@ -1,9 +1,4 @@
-/*
- * IMPORTER SCRIPTS
- * probably split in importer.base.js and importer.ui.js later on
- */
-
-/* core */
+;
 var importer = importer || {};
 importer.base = importer.base || {};
 importer.ui = importer.ui || {};
@@ -18,42 +13,26 @@ ImporterUi = function() {
 	this.interval_loops = 0;
 	this.interval_duration = 50000;
 	this.api_url = false;
-
     this.pushy_paused = false;
-	
 	this.importfiles = [];
-
     this.summary;
-
-	// attach fu here
 	this.fileupload_id = false;
-	this.fileupload_options = false
-
-	this.current_data = new Array;
-	this.musicbrainz_data = new Array;
-
-	this.is_ie6 = $.browser == 'msie' && $.browser.version < 7;
-
+	this.fileupload_options = false;
+	this.current_data = [];
+	this.musicbrainz_data = [];
 	this.init = function() {
-		debug.debug('importer: init');
-		debug.debug(self.api_url);
-		self.iface();
 
+		self.iface();
 		self.fileupload = $('#' + self.fileupload_id);
 		self.fileupload.fileupload('option', self.fileupload_options);
-
 		self.bindings();
 
-		// set interval (now handled by pushy..)
-		// self.set_interval(self.run_interval, self.interval_duration);
 		pushy.subscribe(self.api_url, function() {
-
             if(!this.pushy_paused) {
                 self.run_interval();
             }
         });
 		self.run_interval();
-
 
 	};
 
@@ -64,14 +43,11 @@ ImporterUi = function() {
 	this.bindings = function() {
 
 		self.fileupload.bind('fileuploaddone', function(e, data) {
-			// run update
 			self.update_import_files();
 		});
 
-		// item actions
 		var actions = $('#result_holder .importfile.item .result-actions');
 
-		
 		$('.start-import-all', $('#import_summary')).live('click', function(e){
 
 			var url = self.api_url + 'import-all/';
@@ -88,7 +64,7 @@ ImporterUi = function() {
                     },500)
 
                 }
-            })
+            });
 
             setTimeout(function(){
                 $.ajax({
@@ -105,11 +81,9 @@ ImporterUi = function() {
 
 		});
 
-
 		$('.retry-pending', $('#import_summary')).live('click', function(e){
 
 			var url = self.api_url + 'retry-pending/';
-            // alert('retry-pending');
             $.ajax({
                 type: "POST",
                 url: url,
@@ -152,15 +126,12 @@ ImporterUi = function() {
 
 			
 		});
-		
-		
+
 		// "add all to playlist"
 		var container = $('.sidebar.playlist-container');
 		$(container).on('click', 'a.add-all-to-playlist', function(e){
 			e.preventDefault();
 
-			// get id's
-			// console.log(self.importfiles);
 			var ids = [];
 			$.each(self.importfiles, function(i, el) {
 				if(el.local_data.status == 'done' || el.local_data.status == 'duplicate') {
@@ -168,38 +139,26 @@ ImporterUi = function() {
 				}
 			});
 
-			/**/
 			var data = {
 				ids: ids.join(','), 
 				ct: 'media'
-			}
-
-			
+			};
 
 			url = '/api/v1/library/playlist/collect/';
-			
-			/**/
 			jQuery.ajax({
 				url: url,
 				type: 'POST',
 				data: data,
 				dataType: "json",
 				contentType: "application/json",
-				//processData:  false,
 				success: function(data) {
 					alibrary.playlist.update_playlists();
 				},
 				async: true
 			});
-			
-
 
 		});
-		
-		
-		
-		
-		
+
 	};
 
     /*
@@ -209,18 +168,15 @@ ImporterUi = function() {
     this.lock_ui = function(lock) {
         if(lock) {
             $('#importer_ui_lock').show();
-            //$('body').css('opacity', 0.5);
         } else {
             $('#importer_ui_lock').hide();
-            //$('body').css('opacity', 1);
         }
     };
 
 
 
 	this.import_by_id = function(id) {
-		debug.debug('id: ' + id);
-		
+
 		var item = self.current_data[id];
 		var el = $('#importfile_result_' + id)
 		var form_result = $('.form-result', el);
@@ -236,7 +192,7 @@ ImporterUi = function() {
 			mb_track_id: $('input.mb-track-id', form_result).val(), 
 			mb_artist_id: $('input.mb-artist-id', form_result).val(), 
 			mb_release_id: $('input.mb-release-id', form_result).val(), 
-		}
+		};
 		
 		if(! (import_tag.name && import_tag.artist)) {
 			alert('Missing fields!!');
@@ -246,7 +202,7 @@ ImporterUi = function() {
 		var data = { 
 			status: 6, 
 			import_tag: import_tag 
-			};
+		};
 		
 
 		el.removeClass('working');
@@ -255,7 +211,6 @@ ImporterUi = function() {
 		$('.result-set', el).hide(100);
 		$('.result-actions', el).hide(200);
 		
-		/**/
 		$.ajax({
 			type: "PUT",
 			url: item.resource_uri,
@@ -269,14 +224,8 @@ ImporterUi = function() {
 				
 			}
 		});
-		
-		
 	};
 
-
-	/*
-	 * Methods for import editing
-	 */
 	this.set_interval = function(method, duration) {
 		self.interval = setInterval(method, duration);
 	};
@@ -285,56 +234,35 @@ ImporterUi = function() {
 	};
 
 	this.run_interval = function() {
-		//debug.debug('interval: ' + self.interval_loops);
 		self.interval_loops += 1;
-
 		// Put functions needed in interval here
 		self.update_import_files();
-
 	};
 
 	this.update_import_files = function() {
 
-        console.log('update_import_files');
-
 		$.getJSON(self.api_url, function(data) {
-			//self.update_import_files_callback(data);
-
             self.update_list_display(data.files);
-            //self.update_summary_display(data);
             try {
                 self.update_best_match(data.files);
                 self.apply_best_match(data.files);
             } catch(err) {
                 // debug.debug(err);
             }
-
             self.update_summary(data);
-
             $('#loading_message').fadeOut(300);
+
+			if(! self.importfiles.length) {
+				$('#drag_n_drop_area').show()
+			} else {
+				$('#drag_n_drop_area').hide()
+			}
+
+
 
 		});
 
 	};
-    /*
-	this.update_import_files_callback = function(data) {
-
-        console.log('update_import_files_callback', data);
-
-		self.update_list_display(data.files);
-		//self.update_summary_display(data);
-		try {
-			self.update_best_match(data.files);
-			self.apply_best_match(data.files);
-		} catch(err) {
-			// debug.debug(err);
-		}
-
-        self.update_summary(data);
-
-	};
-	*/
-
 
 	this.update_summary = function(data) {
 

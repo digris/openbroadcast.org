@@ -21,6 +21,7 @@ NavigationUI = (function() {
       console.debug('active', this.active.length);
       console.debug('active has sublevel', this.active_has_sublevel);
     }
+    this.update_display();
     this.bindings();
   }
 
@@ -74,14 +75,20 @@ NavigationUI = (function() {
     if (this.hover) {
       $('.sub-level', this.container).css('visibility', 'hidden');
       if (this.hover_has_sublevel) {
-        return $('.sub-level', this.hover).css('visibility', 'visible');
+        $('.sub-level', this.hover).css('visibility', 'visible');
       }
     } else {
       $('.sub-level', this.container).css('visibility', 'hidden');
       if (this.active_has_sublevel) {
-        return $('.sub-level', this.active).css('visibility', 'visible');
+        $('.sub-level', this.active).css('visibility', 'visible');
       }
     }
+    return $('.sub-level', this.container).each(function(i, el) {
+      var parent_offset;
+      parent_offset = $(el).parent().position().left;
+      console.debug(parent_offset);
+      return $(el).css('padding-left', parent_offset + 'px');
+    });
   };
 
   return NavigationUI;

@@ -15,6 +15,9 @@
 
 {% endblock %}
 
+{% block pagination %}{% endblock %}
+{% block ipp %}{% endblock %}
+
 
 {% block pre_list %}
 <section>
@@ -22,10 +25,12 @@
         {% static_placeholder 'importer_introduction' %}
     </div>
 	<div>
-		<a class="btn btn-primary btn" href="{% url "importer-import-create" %}">
-			<i class="icon-cloud-upload icon-white"></i>
-			<span> {% trans "Start Uploading" %}</span>
-		</a>
+        <div class="btn-group">
+            <a class="btn btn-primary btn pull-right" href="{% url "importer-import-create" %}">
+                <i class="icon-cloud-upload icon-white"></i>
+                <span> {% trans "Upload Music" %}</span>
+            </a>
+	    </div>
 	</div>
 </section>
 {% endblock %}
@@ -35,7 +40,7 @@
     {% if object_list %}
 
         <table class="table table-condensed">
-
+            <!--
             <thead>
                 <tr>
                     <th>{% trans "Status" %}</th>
@@ -45,13 +50,16 @@
                     <th>{% trans "Actions" %}</th>
                 </tr>
             </thead>
+            -->
 
             <tbody>
 
                 {% for object in object_list %}
                 <tr class="item {{ object.get_status_display|lower }}">
-                    <td>
 
+
+                    {% comment %}
+                    <td>
                         {% if object.status == 0 %}
                         <i class="icon-time" title="{{ object.get_status_display }}"></i>
                         {% endif %}
@@ -71,12 +79,12 @@
                         {% if object.status == 99 %}
                         <i class="icon-remove" title="{{ object.get_status_display }}"></i>
                         {% endif %}
-
                     </td>
+                    {% endcomment %}
 
                     <td>
                         <a href="{{ object.get_absolute_url }}" title="{{ object.notes }}">
-                        {{ object.created|timesince }} ago
+                        {% trans 'Added' %} {{ object.created|timesince }} ago
                         </a>
                     </td>
 
@@ -186,7 +194,7 @@
         <div>
             <form action="{% url "importer-import-delete-all" %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-mini pull-right">{% trans "Clear all imports" %}</button>
+                <button type="submit" class="btn btn-mini pull-right icon"><i class="icon-archive"></i> {% trans "Archive all imports" %}</button>
             </form>
         </div>
 

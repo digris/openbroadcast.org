@@ -134,6 +134,15 @@ class EmissionResource(ModelResource):
                                     'full_name': obj.content_object.user.get_full_name()
                                    }
 
+
+
+        bundle.data['series'] = None
+        bundle.data['series_number'] = None
+        if obj.content_object.series:
+            bundle.data['series'] = obj.content_object.series.name
+            bundle.data['series_number'] = obj.content_object.series_number
+
+
         # TODO: HACK! dehydrate user profile information. used in on-air app
         try:
             from profiles.api import ProfileResource

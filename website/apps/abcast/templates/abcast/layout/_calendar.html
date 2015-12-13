@@ -9,16 +9,34 @@
             <ul class="horizontal unstyled clearfix">
 
                 <li>
-                    <a href="{% spurl base=request.get_full_path trigger_query="days_offset={{ days_offset|subtract:28 }}" %}"><i class="icon-angle-left"></i><i class="icon-angle-left"></i><small>{% trans "Previous Month" %}</small></a>
-                    <a href="{% spurl base=request.get_full_path trigger_query="days_offset={{ days_offset|subtract:7 }}" %}"><i class="icon-angle-left"></i><small>{% trans "Previous Week" %}</small></a>
-                    <a href="{% spurl base=request.get_full_path trigger_query="days_offset={{ days_offset|subtract:1 }}" %}"><i class="icon-angle-left"></i><small>{% trans "Day -" %}</small></a>
+                    <a href="{% spurl base=request.get_full_path trigger_query="days_offset={{ days_offset|subtract:28 }}" %}">
+                        <i class="icon-double-angle-left"></i>
+                        {% trans "Previous Month" %}
+                    </a>
+                    <a href="{% spurl base=request.get_full_path trigger_query="days_offset={{ days_offset|subtract:7 }}" %}">
+                        <i class="icon-angle-left"></i>
+                        {% trans "Previous Week" %}
+                    </a>
+                    <a href="{% spurl base=request.get_full_path trigger_query="days_offset={{ days_offset|subtract:1 }}" %}">
+                        <i class="icon-angle-left"></i>
+                        {% trans "Day -" %}
+                    </a>
                 </li>
 
                 <li class="week-number">{% trans "Week" %} {{ range_start.isocalendar.1 }}, {{ range_start|date:"F Y" }}</li>
                 <li class="pull-right">
-                    <a href="{% spurl base=request.get_full_path trigger_query="days_offset={{ days_offset|add:1 }}" %}"><i class="icon-angle-right"></i><small>{% trans "Day +" %}</small></a>
-                    <a href="{% spurl base=request.get_full_path trigger_query="days_offset={{ days_offset|add:7 }}" %}"><i class="icon-angle-right"></i><small>{% trans "Next Week" %}</small></a>
-                    <a href="{% spurl base=request.get_full_path trigger_query="days_offset={{ days_offset|add:28 }}" %}"><i class="icon-angle-right"></i><i class="icon-angle-right"></i><small>{% trans "Next Month" %}</small></a>
+                    <a href="{% spurl base=request.get_full_path trigger_query="days_offset={{ days_offset|add:1 }}" %}">
+                        <i class="icon-angle-right"></i>
+                        {% trans "Day +" %}
+                    </a>
+                    <a href="{% spurl base=request.get_full_path trigger_query="days_offset={{ days_offset|add:7 }}" %}">
+                        <i class="icon-angle-right"></i>
+                        {% trans "Next Week" %}
+                    </a>
+                    <a href="{% spurl base=request.get_full_path trigger_query="days_offset={{ days_offset|add:28 }}" %}">
+                        <i class="icon-double-angle-right"></i>
+                        {% trans "Next Month" %}
+                    </a>
                 </li>
             </ul>
         </div>

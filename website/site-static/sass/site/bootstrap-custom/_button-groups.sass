@@ -23,9 +23,11 @@
 // Float them, remove border radius, then re-add to first and last elements
 .btn-group .btn
   position: relative
-  float: left
+  //float: left
   margin-left: -1px
   +border-radius(0)
+  &[data-toggle="dropdown"]
+    float: left
 
 // Set corners individual because sometimes a single button can be in a .btn-group and we need :first-child and :last-child to both match
 .btn-group .btn:first-child
@@ -86,9 +88,14 @@
 .open.btn-group .caret
   +opacity(100)
 
-// Account for other colors
+.btn-primary
+  .caret
+    border-top-color: $primary-color-b
+    opacity: 1.0
+  &:hover .caret
+    border-top-color: white
 
-.btn-primary,
+// Account for other colors
 .btn-danger,
 .btn-info,
 .btn-success,

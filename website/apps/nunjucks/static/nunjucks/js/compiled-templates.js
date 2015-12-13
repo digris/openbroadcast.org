@@ -3316,7 +3316,7 @@ if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object"))
 output += "\n        <a href=\"#\" data-action=\"download\"><i class=\"icon-download-alt\"></i> Download</a>\n        ";
 ;
 }
-output += "\n    </td>\n    <td>\n\n\n        <div class=\"btn-group pull-right\">\n            <button class=\"btn btn-mini btn-prrimary\" data-toggle=\"dropdown\">\n                Actions\n            </button>\n            <button class=\"btn btn-mini btn-prrimary dropdown-toggle\" data-toggle=\"dropdown\">\n                <span class=\"caret\"></span>\n            </button>\n            <ul class=\"dropdown-menu\">\n                <!--\n                <li>\n                    <a href=\"";
+output += "\n    </td>\n    <td>\n\n\n        <div class=\"btn-group pull-right\">\n            <button class=\"btn btn-mini btn-primary\" data-toggle=\"dropdown\">\n                Actions\n            </button>\n            <button class=\"btn btn-mini btn-primary dropdown-toggle\" data-toggle=\"dropdown\">\n                <span class=\"caret\"></span>\n            </button>\n            <ul class=\"dropdown-menu\">\n                <!--\n                <li>\n                    <a href=\"";
 output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"get_absolute_url"), env.opts.autoescape);
 output += "\"><i class=\"icon-edit\"></i> Details</a>\n                </li>\n                -->\n                ";
 if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"status") != 2) {

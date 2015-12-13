@@ -1,5 +1,18 @@
 <section class="title">
-	<h3>{{ object.name }} <small class="pull-right">{{ object.type_display }}</small></h3>
+
+
+
+    {% if object.series %}
+        <h3>
+            {{ object.series|shorten(48) }}
+            {% if object.series_number %}#{{ object.series_number }}{% endif %}
+            <small class="pull-right">{{ object.type_display }}</small>
+        </h3>
+        <h3>{{ object.name|shorten(48) }}</h3>
+    {% else %}
+        <h3>{{ object.name|shorten(48) }} <small class="pull-right">{{ object.type_display }}</small></h3>
+    {% endif %}
+
 	<ul class="unstyled">
 		<li>
 			<i class="icon-time"></i> {{ object.time_start|format_datetime('time') }} - {{ object.time_end|format_datetime('time') }} | {{ object.time_start|format_datetime('date') }}
@@ -25,25 +38,20 @@
 
 
     {% if object.content_object.main_image %}
-    <img src="{{ object.content_object.main_image }}" style="width: 50%;">
+    <img src="{{ object.content_object.main_image }}" style="max-height: 120px;">
     {% endif %}
 
-    <!--
-	<p>{{ object.content_object.description_html|shorten(200)|linebreaksbr}}</p>
-    -->
     {% if object.content_object.description %}
-	<div class="description markdown-remove">{{ object.content_object.description_html}}</div>
+	<div class="description markdown-remove">{{ object.content_object.description|shorten(240)}}</div>
     {% endif %}
-	<!--
-	<a href="{{ object.content_object.absolute_url }}" class="pull-left">> Read more</a>
-	-->
+
 
 	<ul class="unstyled object-links">
 		<li>
-			<a href="{{ object.absolute_url }}">&gt; Emission details</a>
+			<a href="{{ object.absolute_url }}"><i class="icon-angle-right"></i> Emission details</a>
 		</li>
 		<li>
-			<a href="{{ object.content_object.absolute_url }}">&gt; Content details</a>
+			<a href="{{ object.content_object.absolute_url }}"><i class="icon-angle-right"></i> Content details</a>
 		</li>
 	</ul>
 
@@ -58,41 +66,41 @@
 			<input type="checkbox" class="edit-lock" {% if object.locked == 1 %}checked="checked"{% endif %}>
 			Lock editing </label>
 	</fieldset>
-	
+
 	<fieldset class="color">
 		<div class="controls">
-			
+
 			<label class="radio  theme-0">
 				<input type="radio" class="color" name="color" value="0" {% if object.color == 0 %}checked="checked"{% endif %}>
 			</label>
-			
+
 			<label class="radio theme-1">
 				<input type="radio" class="color" name="color" value="1" {% if object.color == 1 %}checked="checked"{% endif %}>
 			</label>
-			
+
 			<label class="radio theme-2">
 				<input type="radio" class="color" name="color" value="2" {% if object.color == 2 %}checked="checked"{% endif %}>
 			</label>
-			
+
 			<label class="radio theme-3">
 				<input type="radio" class="color" name="color" value="3" {% if object.color == 3 %}checked="checked"{% endif %}>
 			</label>
-			
+
 			<label class="radio theme-4">
 				<input type="radio" class="color" name="color" value="4" {% if object.color == 4 %}checked="checked"{% endif %}>
 			</label>
 
 		</div>
 	</fieldset>
-	
+
 
 	<div class="btn-toolbar">
 		<div class="btn-group pull-right">
-			<a data-action="cancel" class="btn btn-mini pull-right">Cancel</a>
-			{% if not object.locked %}
-			<a data-action="delete" class="btn btn-mini pull-right">Delete</a>
-			{% endif %}
 			<a data-action="save" class="btn btn-primary btn-mini pull-right">Save</a>
+			<a data-action="cancel" class="btn btn-mini btn-abort pull-right">Cancel</a>
+			{% if not object.locked %}
+			<a data-action="delete" class="btn btn-mini btn-danger pull-right">Delete</a>
+			{% endif %}
 		</div>
 	</div>
 

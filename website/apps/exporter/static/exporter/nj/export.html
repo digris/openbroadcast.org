@@ -16,7 +16,7 @@
 
 
     <td>
-        {{ object.filename }} <small>debug: {{ object.id }}</small>
+        {{ object.filename|truncate_chars_inner(64) }} <small>debug: {{ object.id }}</small>
 
     </td>
     <td>{{ object.created|format_datetime('datetime') }}</td>
@@ -39,22 +39,19 @@
         <a href="#" data-action="download"><i class="icon-download-alt"></i> Download</a>
         {% endif %}
     </td>
+
+
+    <!--
     <td>
 
-
         <div class="btn-group pull-right">
-            <button class="btn btn-mini btn-prrimary" data-toggle="dropdown">
+            <button class="btn btn-mini btn-primary" data-toggle="dropdown">
                 Actions
             </button>
-            <button class="btn btn-mini btn-prrimary dropdown-toggle" data-toggle="dropdown">
+            <button class="btn btn-mini btn-primary dropdown-toggle" data-toggle="dropdown">
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <!--
-                <li>
-                    <a href="{{ object.get_absolute_url }}"><i class="icon-edit"></i> Details</a>
-                </li>
-                -->
                 {% if object.status != 2 %}
                 <li>
                     <a href="#" data-action="delete">Delete</a>
@@ -62,15 +59,10 @@
                 {% else %}
                     <li>...</li>
                 {% endif %}
-                <!--
-                <li class="divider"></li>
-                <li>
-                    <a href="#">Separated link</a>
-                </li>
-                -->
             </ul>
         </div>
 
     </td>
+    -->
 
 </tr>

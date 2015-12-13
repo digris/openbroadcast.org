@@ -642,7 +642,9 @@ var EmissionApp = function () {
                             top: 10,
                             height: 200,
                             object: data
-                        }
+                        };
+
+                        console.info(data.content_object)
 
                         var html = nj.render('abcast/nj/emission_popup.html', d);
 

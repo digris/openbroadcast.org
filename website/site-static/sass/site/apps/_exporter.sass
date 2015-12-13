@@ -5,7 +5,6 @@
 div.listview.export
 
   thead th
-    background-color: white
 
     font-weight: normal
     font-style: italic
@@ -22,17 +21,12 @@ div.listview.export
       .visible-while-init
         display: inline-block
 
-        
     &.done
-      td
-        // background-color: $successBackgroundAlt
       .visible-while-done
         display: inline-block
         color: $successTextAlt
         
     &.downloaded
-      td
-        background-color: $successBackground
       .visible-while-downloaded
         display: inline-block
         color: $successText
@@ -61,7 +55,6 @@ div.listview.export
     .action.download
       a
         color: #a5a5a5
-        color: #a5a5a6
         cursor: wait
 
     &.done, &.downloaded
@@ -70,30 +63,3 @@ div.listview.export
           color: $linkColor
           cursor: pointer
         
-
-
-
-
-// experiment
-.icon-pulse
-  -webkit-animation: pulsate-b 1s
-  -webkit-animation-iteration-count: infinite 
-  opacity: 1.0
-
-@-webkit-keyframes pulsate-b
-  0% 
-    opacity: 1.0
-  50% 
-    opacity: 0.2
-  100%
-    opacity: 1.0
-
-@-webkit-keyframes pulsate-a
-  0% 
-    -webkit-transform: scale(0.1, 0.1)
-    opacity: 0.0
-  50% 
-    opacity: 1.0
-  100%
-    webkit-transform: scale(1.2, 1.2)
-    opacity: 0.0

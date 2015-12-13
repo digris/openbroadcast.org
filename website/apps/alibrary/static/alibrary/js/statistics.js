@@ -85,7 +85,7 @@ StatisticApp = function () {
                     show: true,
                     aboveData: true,
                     color: '#999999',
-                    backgroundColor: '#ffffff',
+                    //backgroundColor: '#ffffff',
                     margin: 0,
                     borderWidth: 0,
                     borderColor: null,

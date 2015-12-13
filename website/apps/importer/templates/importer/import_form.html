@@ -131,13 +131,16 @@
 
         <section>
 
+            <!--
             <div class="page-header">
                 <h2>{% trans "Upload" %} <small>{% trans "Add/Upload Files to the Import Queue" %}</small></h2>
             </div>
+            -->
 
+            {% comment %}
             <div>
 
-                {% comment %}
+
                 <div class="alert alert-warning">
                     <strong>{% trans "Please note!" %}</strong>
                     <p>
@@ -161,7 +164,7 @@
                         <li>{% trans "If this all sounds too complicated, please don't hesitate to contact our" %} <a href="#">support</a></li>
                     </ul>
                 </div>
-                {% endcomment %}
+
 
                 <div class="alert alert-info">
                     <strong>{% trans "Hint!" %}</strong>
@@ -174,6 +177,9 @@
 
 
             </div>
+            {% endcomment %}
+
+
 
             <div class="uploader">
 
@@ -195,11 +201,9 @@
 
                     </div>
 
-                    <table role="presentation" class="table table-striped table-condensed"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+                    <table role="presentation" class="table table-condensed"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
                 </form>
 
-
-                <p>{% trans "Either use the 'Add Files' button - or Drag and Drop the desired fils into the browser window." %}</p>
 
             </div>
 
@@ -207,18 +211,18 @@
 
         <section class="importer-importfiles">
 
-            <div class="page-header">
-                <h2>Review <small>your uploads and confirm additions</small></h2>
-            </div>
-
             <div class="listing">
                 <div id="result_holder">
-
                     <div id="loading_message">
                         <p>{% trans "Loading your import - please be patient!" %}</p>
                     </div>
-
                 </div>
+            </div>
+
+            <div id="drag_n_drop_area" style="display: none;">
+                <p>
+                    {% trans "Either use the 'Add Files' button - or Drag and Drop files here" %}
+                </p>
             </div>
 
         </section>

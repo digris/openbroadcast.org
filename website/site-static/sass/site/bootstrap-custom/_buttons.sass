@@ -147,7 +147,14 @@ $hover-radius: 5px
     color: $primary-color-a
 
 
-
+// additional button elements
+.btn > small
+  text-transform: none
+  padding-left: 4px
+  font-size: 88%
+  opacity: 0.8
+  vertical-align: super
+  line-height: 0
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // cross-browser. TODO: still needed??
@@ -175,3 +182,7 @@ form.form-horizontal
     input, button
       margin-left: 10px
       min-width: 90px
+
+//
+.btn-group > .pull-right
+  float: right

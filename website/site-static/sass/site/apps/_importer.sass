@@ -52,12 +52,13 @@ $duplicateBackground: #fffeac
 $duplicateBackground: #FCFF80
 //$duplicateBackground: $primary-color-a-bg-light
 
-#loading_message
+#loading_message,
+#drag_n_drop_area
   min-height: 120px
   text-align: center
   vertical-align: middle
   padding-top: 90px
-  background: #efefef
+  background: $body-color-shaded-bg
 
 
 section.importer-importfiles
@@ -162,8 +163,8 @@ section.importer-importfiles
           display: block
 
       &.queued
-        background-color: #d8f9ff
-        color: #5a5a5a
+        background-color: #68F7FF
+        color: #333
         div.status-queue
           display: block
         .progress

@@ -1,8 +1,12 @@
-{% extends "base/generic.html" %}
+{% extends "base/listing.html" %}
 
-{% load i18n sekizai_tags pushy_tags istats_tags %}
+{% load i18n sekizai_tags pushy_tags cms_tags istats_tags %}
 
 {% block object_type %}export{% endblock %}
+
+{% block pagination %}{% endblock %}
+{% block ipp %}{% endblock %}
+
 
 
 {% block heading %} <!-- heading / icon (large one) -->
@@ -46,65 +50,27 @@
 {% endblock %}
 
 
-{% block pre_body %}
-    <section>
+{% block pre_list %}
+<section>
+    <div class="heading">
+        {% static_placeholder 'exporter_introduction' %}
+    </div>
+	<div>
+        <div class="btn-group">
 
-        <div class="page-header">
-            <h2>{% trans "Your Downloads" %}
-                <small></small>
-            </h2>
-        </div>
-
-        <div>
-            <p>{% trans "Below you can find items you have marked for download. The corresponding files are being processed in the background – this can take a (short) while. " %}<br>
-                {% trans "As soon as a download item is ready, the \"Download\" link turns active and you can start to download it by clicking on the link." %}</p>
-        </div>
-
-
-
-        <div class="alert alert-warning">
-            <strong>{% trans "Terms and Conditions" %}</strong>
-            <p>
-                {% blocktrans %}
-                We do care about copyright and legal correctness.
-                {% endblocktrans %}
-                <br>
-                <strong>{% blocktrans %}
-                In order to download any data from Open Broadcast, you have to accept the terms and conditions, which can be found
-                {% endblocktrans %} <a href="/legal/terms-and-conditions/">{% trans "here" %}</a>.</strong>
-            </p>
-
-            <a id="accept_toc" class="btn btn-primary" href="#">I do accept the terms and conditions</a>
-
-        </div>
-
-
-
-        <div class="alert alert-info">
-            <strong>{% trans "Hint!" %}</strong>
-            <p>
-                {% blocktrans %}
-                If your downloads seem to freeze for a longer period time you can try to just refresh the browser window. [CTRL/CMD]+[R] or <i class="icon-refresh"></i>.
-                {% endblocktrans %}
-            </p>
-        </div>
-
-
-        <!-- Notification enabler -->
-        <div class="util notify enable" style="display: none;">
-            <a class="btn btn-abort btn" href="#">
-                <i class="icon-tasks icon-white"></i>
-                <span> {% trans "Enable Desktop Notifications" %}</span>
+            <a id="accept_toc" class="btn btn-primary btn pull-right" href="#">
+                <i class="icon-legal icon-white"></i>
+                <span> {% trans "I do accept the terms and conditions" %}</span>
             </a>
-        </div>
+	    </div>
+	</div>
+</section>
 
-
-    </section>
 {% endblock %}
 
 {% block list_inner %}
 
-    <table class="table table-condensed table-striped">
+    <table class="table table-condensed">
 
 
         <thead>
@@ -115,7 +81,7 @@
             <th>{% trans "Last Download" %}</th>
             <th>{% trans "Size" %}</th>
             <th>{% trans "Link" %}</th>
-            <th>{% trans "Actions" %}</th>
+            <!--<th>{% trans "Actions" %}</th>-->
         </tr>
         </thead>
 
@@ -129,8 +95,8 @@
 
 
     <div>
-        <a href="{% url "exporter-export-delete-all" %}" class="btn btn-mini pull-right">
-        {% trans "Clear all downloads" %}
+        <a href="{% url "exporter-export-delete-all" %}" class="btn btn-mini pull-right icon">
+        <i class="icon-archive"></i> {% trans "Archive all downloads" %}
         </a>
     </div>
 
