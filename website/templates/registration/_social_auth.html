@@ -6,7 +6,7 @@
     {% for service in social_auth.backends %}
 
         <li>
-            <a class="btn btn-primary icon" href="{% url "socialauth_begin" service %}?{{ redirect_querystring }}"><i class="icon-{{ service }}"></i> {{ service|title }}</a>
+            <a class="btn btn-primary icon" href="{% url "socialauth_begin" service %}?{{ redirect_querystring|default:'next=/content/library/releases/' }}"><i class="icon-{{ service }}"></i> {{ service|title }}</a>
         </li>
 
 
