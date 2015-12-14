@@ -87,7 +87,7 @@ class LabelListView(PaginationMixin, ListView):
     
         # hard-coded for the moment
         
-        self.extra_context['list_style'] = self.request.GET.get('list_style', 'm')
+        self.extra_context['list_style'] = self.request.GET.get('list_style', 'l')
         #self.extra_context['list_style'] = 's'
         
         self.extra_context['get'] = self.request.GET
