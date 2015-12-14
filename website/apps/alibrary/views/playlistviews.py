@@ -231,7 +231,7 @@ class PlaylistDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView
 
     # TODO: this is a hack/bug/issue
     # http://stackoverflow.com/questions/7039839/how-do-i-use-reverse-or-an-equivalent-to-refer-to-urls-that-are-hooked-into-dj
-    success_url = reverse_lazy('en:alibrary-playlist-list')
+    success_url = reverse_lazy('alibrary-playlist-list')
 
 
     def dispatch(self, request, *args, **kwargs):
