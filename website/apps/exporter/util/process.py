@@ -337,9 +337,6 @@ class Process(object):
 
     def process_playlist(self, instance, cache_dir, file_list=[]):
 
-        from django.utils import translation
-        translation.activate('en')
-
         log.debug('processing license')
         template = 'exporter/m3u/playlist.m3u'
 
@@ -347,21 +344,12 @@ class Process(object):
             str = render_to_string(template, {'object': instance, 'file_list': file_list})
             txt.write(str.encode('utf8'))
 
-
-
-
-
     def inject_metadata(self, path, media):
 
         if self.format == 'mp3':
             self.metadata_mp3_mutagen(path, media)
 
-            #self.metadata_audiotools(path, media)
-
-
         return
-
-
 
 
     def metadata_mp3_mutagen(self, path, media):
@@ -438,11 +426,6 @@ class Process(object):
                 except:
                     pass
 
-
-
-
-
-
         # artist-level metadata
         if media.artist:
             tags.add(TPE1(encoding=3, text=u'%s' % media.artist.name))
@@ -455,43 +438,5 @@ class Process(object):
 
         tags.save(v1=0)
 
-
         return
 
-
-
-    def metadata_audiotools(self, path, media):
-
-        import audiotools
-        meta = audiotools.MetaData()
-
-        log.info('injecting image: %s - %s' % (media.pk, path))
-
-        # release-level metadata
-        if media.release and media.release.main_image:
-            print 'images supported & available'
-            if meta.supports_images() and os.path.exists(media.release.main_image.path):
-                opt = dict(size=(200, 200), crop=True, bw=False, quality=80)
-                image = get_thumbnailer(media.release.main_image).get_thumbnail(opt)
-                meta.add_image(get_raw_image(image.path, 0))
-
-            audiotools.open(path).update_metadata(meta)
-
-        return
-
-
-
-def get_raw_image(filename, type):
-
-    import audiotools
-
-    print 'get_raw_image'
-
-    try:
-        f = open(filename, 'rb')
-        data = f.read()
-        f.close()
-
-        return audiotools.Image.new(data, u'', type)
-    except Exception as e :
-        print e

@@ -19,10 +19,11 @@
 </dt>
 <dd>
     {{ object.updated|date:'DATETIME_FORMAT' }}
+    {# object.updated|naturaltime #}
     {% if object.last_editor %}
         <span class="key"> - {% trans "by" %} </span>
         <span class="value">
-            <a href="{{ object.last_editor.get_absolute_url }}">{{ object.last_editor.pk }}</a>
+            <a href="{{ object.last_editor.get_absolute_url }}">{{ object.last_editor.profile.get_display_name }}</a>
         </span>
     {% endif %}
 </dd>

@@ -18,16 +18,11 @@
 			{% trans "Artist" %}:
 		</dt>
 		<dd>
-
 			{% with item=object.artist %}
 			{% include "alibrary/element/_inline_link.html" %}
 			{% endwith %}
-
 			&nbsp;
 		</dd>
-
-
-
 
         {%  if object.get_mediaartists %}
         <dt>
@@ -141,38 +136,6 @@
         </dd>
 
     </dl>
-
-{% comment %}
-	<dl class="dl-horizontal">
-
-		<dt>
-			{% trans "Show on" %}:
-		</dt>
-		<dd class="horizontal relations">
-			{% for relation in object.relations.specific %}
-			<a href="{{ relation.url }}" class="skip-external" title="Show on {{ relation.get_service_display }}"><i class="icon-{{ relation.service }}"></i></a>
-
-			{% endfor %}
-			<div class="clear"></div>
-		</dd>
-
-	</dl>
-
-	<dl class="dl-horizontal">
-
-		<dt>
-			{% trans "Show on (debug)" %}:
-		</dt>
-		<dd class="horizontal relations">
-			{% for relation in object.relations.specific %}
-			<a href="{{ relation.url }}" class="skip-external" title="Show on {{ relation.get_service_display }}">{{ relation.service }}</a>
-
-			{% endfor %}
-			<div class="clear"></div>
-		</dd>
-
-	</dl>
-{% endcomment %}
 
 	{% if object.relations.generic.count > 0 %}
 	<dl class="dl-horizontal">

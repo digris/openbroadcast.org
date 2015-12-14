@@ -66,7 +66,7 @@
 			<li class="small">
                 {% if item.last_editor %}
                 {% trans "by" %}:
-				<a href="{{ item.last_editor.get_absolute_url }}">{% firstof item.last_editor.get_full_name object.last_editor %}</a>
+				<a href="{{ item.last_editor.get_absolute_url }}">{{ item.last_editor.profile.get_display_name }}</a>
                 {% endif %}
 			</li>
 		</ul>

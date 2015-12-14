@@ -8,58 +8,61 @@
     background-color: $body-color-shaded-bg
 
 
-  // inline player
+
+// inline player
+.item_detail section
+
   #aplayer_detail
     height: 128px
     position: relative
+    padding-left: 10px
+    margin-top: 10px
+
+
     // loading notice
     p.notice
       padding: 50px 0
       text-align: center
 
-    // playhead container
-    .playhead
+.item_detail section
+  #aplayer_detail .item
+    .overlay
+      position: absolute
+      z-index: 10
+      top: 20px
 
-      .overlay
-        position: absolute
-        width: 32px
-        z-index: 10
-        // alignment
-        &.primary
+      &.primary
+        left: 20px
+        width: 110px
 
-        &.secondary
-          right: 10px
-          width: 16px
+      &.secondary
+        right: 20px
+        //width: 20px
 
+    ul.action
+      background-color: rgba(0, 0, 0, 0.0)
+      clear: both
+      display: inline-block
+      padding: 4px
+      border-radius: 4px
+      opacity: 0.25
+      transition: opacity 0.2s
+      li
+        float: left
+        margin-right: 10px
+      a
+        color: #fff
+        &:hover
+          color: $primary-color-a
+          text-decoration: none
+      i
+        font-size: 32px
 
-        // inner elements
-        ul.action
-          margin: 0
-          padding-left: 0px
-
-          li
-            float: left
-
-          li > a
-            padding: 1px 1px 1px 3px
-            width: 12px
-            display: block
-
-            &:hover
-              text-decoration: none
-              color: white !important
-
-        // color overrides
-        &.primary
-          ul.action li > a
-            color: $primary-color-a
-            &:hover
-              background: $primary-color-a
-        &.secondary
-          ul.action li > a
-            &:hover
-              background: $primary-color-b
-
+.item_detail section
+  #aplayer_detail .item.hover
+    ul.action
+      //background-color: rgba(0, 0, 0, 0.5)
+      opacity: 1.0
 
 // descriuptioin / biography etc
 .item_detail
