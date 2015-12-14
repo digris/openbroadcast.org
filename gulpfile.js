@@ -53,14 +53,14 @@ gulp.task('styles', function () {
             'website/site-static/sass/admin.sass',
             //'website/site-static/sass/wip.sass'
         ])
-        .pipe($.sourcemaps.init())
+        //.pipe($.sourcemaps.init())
         //.pipe($.plumber())
         .pipe($.sass({
             precision: 10,
             //onError: logSASSError
         }))
         .pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
-        .pipe($.sourcemaps.write())
+        //.pipe($.sourcemaps.write())
         .pipe(gulp.dest('website/site-static/css/'))
         .pipe(browserSync.stream({match: '**/*.css'}))
         .pipe($.size({title: 'styles'}));
