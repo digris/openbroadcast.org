@@ -1,23 +1,30 @@
-{% load thumbnail i18n truncate display_tags arating_tags spurl %}
+{% load adv_cache thumbnail i18n truncate display_tags arating_tags spurl %}
 
-<div class="list_body_row selectable item artist view edit stream collect download" id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}" {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 200x200 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}>
+<div class="list_body_row selectable item artist view edit stream collect download" id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}">
 
+    {% comment %}
 	<div class="wrapper_icon">
-
         {% with object=item ct="label" %}
             {% include "alibrary/element/_item_actions_primary.html" %}
         {% endwith %}
-
 	</div>
+    {% endcomment %}
 
     <div class="spacer tag-cloud">
+
+        {% if item.main_image %}
+        <div class="image-container centered">
+            <div class="padder"></div>
+                <img src="{% thumbnail item.main_image 197x197 upscale subject_location=item.main_image.subject_location %}">
+
+        </div>
+        {% endif %}
 
         <ul class="tags unstyled horizontal">
             {% for tag in item.tags|slice:":8" %}
                 <li>{{ tag.name|truncate_chars_inner:10 }}</li>
             {% endfor %}
         </ul>
-
     </div>
 
 	<div class="wrapper_info">
@@ -26,54 +33,38 @@
 
 			<div class="list_body_item">
 				<ul class="title">
-			<li class="bold">
-				<a href="{{ item.get_absolute_url }}" title="{{ item.name }}">
-				{{ item.name|truncate_chars_inner:24 }}
-				{% if item.country %}({{ item.country }}){% endif %}
-                {% comment %}
-				{% topflop_for_object item %}
-				{% endcomment %}
-
-                </a>
-
-			</li>
-			<li>
-				{% if item.disambiguation %}
-				{{ item.disambiguation }}
-				{% endif %}&nbsp;
-			</li>
+                    <li class="bold">
+                        <a href="{{ item.get_absolute_url }}" title="{{ item.name }}">
+                            {{ item.name|truncate_chars_inner:24 }}
+                            {% if item.country %}({{ item.country.iso2_code }}){% endif %}
+                            {% cache 3600 "topflop_label" item.pk item.updated %}
+                            {% topflop_for_object item %}
+                            {% endcache %}
+                        </a>
+                    </li>
+                    <li>
+                        {{ item.get_type_display }}
+                        <span class="life">
+                            {% if item.date_start %}&nbsp;*{{ item.date_start.year }}{% endif %}
+                            {% if item.date_end %}&nbsp;&#10013;{{ item.date_end.year }}{% endif %}
+                        </span>
+                    </li>
 				</ul>
 			</div>
 
 			<div class="list_body_item">
 				<ul class="unstyled">
-					{% if item.get_releases.count > 0 %}
-					<li>
-						{% url "alibrary-release-list" as release_list %}
-						{% trans "Releases" %}:&nbsp;<a href="{% spurl path=release_list query="artist={{ item.slug }}" %}" title="{% trans "Only show releases by" %} {{ item.name }}" style="vertical-align: top;">{{ item.get_releases.count }}<span class="filter icon"></span></a>
-					</li>
-					{% endif %}
-					{% if item.media_artist.count > 0 %}
-					<li>
-						{% trans "Tracks" %}:&nbsp;<a href="#" style="vertical-align: top;">{{ item.media_artist.count }}<span class="filter icon"></span></a>
-					</li>
-					{% endif %}
+                    {% if item.release_label.count > 0 %}
+                        <li>
+                            {% url "alibrary-release-list" as release_list %}
+                            {% trans "Releases" %}:&nbsp;<a href="{% spurl path=release_list query="label={{ item.slug }}" %}"
+                                                            title="{% trans "Only show releases on" %} {{ item.name }}"
+                                                            style="vertical-align: top;">{{ item.release_label.count }}<span
+                                class="filter icon"></span></a>
+                        </li>
+                    {% endif %}
 				</ul>
 			</div>
-
-			<div class="list_body_item links external">
-				<ul class="links external unstyled">
-					{% for relation in item.relations.specific %}
-					<li>
-					<a href="{{ relation.url }}" class="skip-external" title="Show on {{ relation.get_service_display }}"><i class="cicon-{{ relation.service }}"></i></a>
-					<!--
-					<a href="{{ relation.url }}" class="skip-external" title="Show on {{ relation.get_service_display }}">{{ relation.service }}</a>
-					-->
-					</li>
-					{% endfor %}
-				</ul>
-			</div>
-
 
 		</div>
 

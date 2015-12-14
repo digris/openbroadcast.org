@@ -246,10 +246,25 @@
 
 .listview
   &.container.l
+
     span.badge
       &:first-child
         margin-right: 0px
 
+    // image display (containered, not background style)
+    .image-container
+      height: 100%
+      background: #fff
+      white-space: nowrap
+      text-align: center
+      .padder
+        display: inline-block
+        height: 100%
+        vertical-align: middle
+      img
+        margin-left: -3px
+        width: 197px
+        vertical-align: middle
 	  
 .listview
   &.footer
