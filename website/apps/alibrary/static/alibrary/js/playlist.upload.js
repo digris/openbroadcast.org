@@ -54,13 +54,15 @@ PlaylistEditorUpload = function () {
             if (! self.uploaded.indexOf(data.id) > -1) {
                 self.uploaded.push(data.id);
 
+                var data = {
+                        ids: [data.media.id].join(','),
+                        ct: 'media'
+                    };
+
                 $.ajax({
                     url: self.api_url + 'collect/',
                     type: 'POST',
-                    data: {
-                        ids: [data.media.id].join(','),
-                        ct: 'media'
-                    },
+                    data: JSON.stringify(data),
                     dataType: "json",
                     contentType: "application/json",
                     success: function (data) {
