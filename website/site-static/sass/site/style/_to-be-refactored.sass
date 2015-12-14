@@ -99,39 +99,15 @@ body #wrap
   min-height: 130px
   background-color: #000
 
-  p
+  .row.meta
+    margin-bottom: 10px
+
+  h4
+    color: #a5a5a5
+    margin-bottom: 12px
+
+  p, ul, ol, dl
     font-size: 13px
-
-  .container
-    padding: 20px 0 0px 0
-
-  ul.sitemap
-
-    li > a
-      color: #aaa
-
-    > li
-      width: 14%
-      float: left
-      > a
-        color: #fff
-      ul
-        list-style: none
-        list-style-position: outside
-        margin: 0 0 9px 8px
-
-
-    li.selected
-      > a
-        color: $primary-color-a
-
-    li.ancestor
-      > a
-        color: $primary-color-a
-
-  p.credit,
-  p.address
-    margin: 0
     color: #999
     a, a.external
       color: #999
@@ -139,8 +115,29 @@ body #wrap
       &:hover
         color: $primary-color-b
 
+    a.external
+      padding-left: 0
+      background-image: none
+
+  .container
+    padding: 20px 0 0px 0
+
+  p.address
+    margin: 0
+    padding-right: 0
+
+
+  dl.contact
+    maring: 0
+    dt, dd
+      color: #999
+    dt
+      opacity: 1.0
+
+  p.credit,
   p.version
     margin: 0
+    padding-right: 0
     color: #777
     span.key
       padding-right: 4px
@@ -149,7 +146,29 @@ body #wrap
     a, a.external
       color: #999
 
+  // newsletter form
+  .newsletter-container
 
+    .btn
+      border: none
+
+    .span12 input
+      width: 345px
+
+    .span8 input
+      width: 221px
+
+    .span4 .btn
+      width: 100px
+
+    .span12 input,
+    .span8 input
+      background-color: #5a5a5a
+      border-color: #5a5a5a
+      padding-left: 8px
+      &:focus,
+      &:hover
+        background-color: $body-color-bg !important
 
 
 

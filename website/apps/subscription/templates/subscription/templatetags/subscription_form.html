@@ -1,0 +1,110 @@
+{% load i18n sekizai_tags %}
+
+{% if newsletter %}
+
+    <div class="newsletter-container">
+        <form action="." method="post" id="subscription_form">
+
+            <h4 class="label-text">
+                {% if newsletter.title %}
+                    {{ newsletter.title }}
+                {% else %}
+                    {% trans 'Newsletter' %}
+                {% endif %}
+
+            </h4>
+            {% if newsletter.description %}
+            <p>
+                {{ newsletter.description|linebreaksbr }}
+            </p>
+            {% endif %}
+
+            <div class="row-fluid">
+                <div class="span12">
+                    <input name="email" style="margin-bottom: 4px;" type="text" placeholder="signup@example.com">
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span8">
+                    <input name="name" type="text" placeholder="{% trans 'Your Name' %}">
+                </div>
+                <div class="span4">
+
+                    <div class="btn-group pull-right">
+                        <a data-action="subscribe" href="#" class="btn btn-primary" data-toggle="dropdown">
+                            {% trans 'Sign Up' %}
+                        </a>
+                        <!--
+                        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <li><a data-action="subscribe" href="#">{% trans 'Sign Up' %}</a></li>
+                            </li>
+                            <li>
+                                <li><a data-action="unsubscribe">{% trans 'Unsubscribe' %}</a></li>
+                            </li>
+                        </ul>
+                        -->
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="form-messages">
+
+            </div>
+
+        </form>
+    </div>
+
+
+    {% addtoblock 'js-post' %}
+        <script>
+
+            $(function(){
+
+                var subscription_form = $('#subscription_form');
+                $(subscription_form).on('click', 'a[data-action]', function(e){
+                    e.preventDefault();
+                    var action = $(this).data('action');
+                    var email = $('input[name="email"]', subscription_form).val();
+                    var name = $('input[name="name"]', subscription_form).val();
+                    var message_container = $('.form-messages', subscription_form);
+
+                    var url = '{% url 'subscription-subscribe' list_id=newsletter.id %}';
+
+                    var data = {
+                        action: action,
+                        name: name,
+                        email: email
+                    };
+
+                    $.post(url, data, function(response) {
+
+                        if(response.success) {
+                            subscription_form.removeClass('error');
+                            var html = '<p>' + response.message + '</p>';
+
+                            // TODO: refactor later on. triggers event to be used with custom trackers
+                            $(document).trigger('subscription', ['newsletter', 'subscribe']);
+
+                        } else {
+                            subscription_form.addClass('error');
+                            var html = '<p>' + response.message + '</p>';
+                        }
+
+                        message_container.html(html);
+                    });
+                });
+            });
+
+        </script>
+    {% endaddtoblock %}
+{% else %}
+    {% if error %}
+        <span>Error: {{ error }}</span>
+    {% endif %}
+{% endif %}

@@ -118,9 +118,20 @@ class ReleaseFilter(django_filters.FilterSet):
                     nd = []
                     for d in ds:
                         if d[0] == 'NULL':
-                            nd.append([d[0], d[1], _('Unknown')])
+                            pass
+                            #nd.append([d[0], d[1], _('Unknown')])
                         else:
-                            nd.append([d[0], d[1], u'%s' % d[0].replace('_', ' ').title()])
+                            print d[0]
+                            if d[0] != None:
+
+
+                                for x in alibrary_settings.RELEASETYPE_CHOICES:
+                                    print x
+                                    if x[0] == d[0]:
+                                        print x[1]
+                                        nd.append([d[0], d[1], x[1]])
+
+                                #nd.append([d[0], d[1], u'%s' % d[0].replace('_', ' ').title()])
 
                     filter_.entries = nd
 

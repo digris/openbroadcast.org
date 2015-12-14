@@ -73,6 +73,7 @@ INSTALLED_APPS = (
     'floppyforms',
     'absolute',
     'announcements',
+    'subscription',
 
     # asset and media handling
     'sekizai',

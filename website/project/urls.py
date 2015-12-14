@@ -60,6 +60,7 @@ urlpatterns = patterns('',
     url(r'^sa/', include('social_auth.urls')),
 
     url(r"^announcements/", include("announcements.urls")),
+    url(r'^subscription/', include('subscription.urls')),
 
     # filer (protected)
     (r'^', include('filer.server.urls')),
