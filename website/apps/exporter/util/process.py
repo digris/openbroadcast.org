@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import os
 import time
 import shutil
 import logging
+import subprocess
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
@@ -32,6 +34,8 @@ AVAILABLE_ARCHIVE_FORMATS = ['zip', ]
 
 BASE_URL = 'https://www.openbroadcast.org'
 #BASE_URL = 'http://local.openbroadcast.org:8080'
+
+LAME_BINARY = getattr(settings, 'LAME_BINARY')
 
 
 log = logging.getLogger(__name__)
@@ -225,8 +229,8 @@ class Process(object):
         if INCLUDE_LICENSE:
             self.process_license(instance=content_object, cache_dir=item_cache_dir, file_list=self.file_list)
 
-        if INCLUDE_PLAYLIST:
-            pass
+        if ct == 'playlist' and INCLUDE_PLAYLIST:
+            self.process_playlist(instance=content_object, cache_dir=item_cache_dir, file_list=self.file_list)
 
         return None, None
 
@@ -331,6 +335,19 @@ class Process(object):
             txt.write(str.encode('utf8'))
 
 
+    def process_playlist(self, instance, cache_dir, file_list=[]):
+
+        from django.utils import translation
+        translation.activate('en')
+
+        log.debug('processing license')
+        template = 'exporter/m3u/playlist.m3u'
+
+        with open(os.path.join(cache_dir, 'playlist.m3u'), "w") as txt:
+            str = render_to_string(template, {'object': instance, 'file_list': file_list})
+            txt.write(str.encode('utf8'))
+
+
 
 
 
@@ -338,7 +355,9 @@ class Process(object):
 
         if self.format == 'mp3':
             self.metadata_mp3_mutagen(path, media)
+
             #self.metadata_audiotools(path, media)
+
 
         return
 
@@ -348,11 +367,12 @@ class Process(object):
     def metadata_mp3_mutagen(self, path, media):
 
         from mutagen.mp3 import MP3
-        from mutagen.id3 import ID3, TRCK, TIT2, TPE1, TALB, TCON, TXXX, UFID, TSRC, TPUB, TMED, TRCK, TDRC
+        from mutagen.id3 import ID3, TRCK, TIT2, TPE1, TALB, TCON, TXXX, UFID, TSRC, TPUB, TMED, TRCK, TDRC, APIC
 
         try:
             tags = ID3(path)
         except Exception:
+
             """
             kindf of hackish - mutagen does complain if no id3 headers - so just create some
             """
@@ -361,16 +381,12 @@ class Process(object):
             audio.save()
             tags = ID3(path)
 
-
-
         # reset tags
         tags.delete()
 
         # user data
         if INCLUDE_USER and self.user:
             tags.add(TXXX(encoding=3, desc='Open Broadcast User', text=u'%s' % self.user.email))
-
-
 
         # track-level metadata
         tags.add(TIT2(encoding=3, text=u'%s' % media.name))
@@ -401,9 +417,31 @@ class Process(object):
                 tags.add(TRCK(encoding=3, text=u'%s/%s' % (media.tracknumber, media.release.totaltracks)))
             if media.release.releasedate:
                 tags.add(TDRC(encoding=3, text=u'%s' % media.release.releasedate.year))
-
             if uuid_by_object(media.release, 'musicbrainz'):
                 tags.add(TXXX(encoding=3, desc='MusicBrainz Album Id', text=u'%s' % uuid_by_object(media.release, 'musicbrainz')))
+
+            if os.path.exists(media.release.main_image.path):
+
+                opt = dict(size=(300, 300), crop=True, bw=False, quality=80)
+
+                try:
+                    image = get_thumbnailer(media.release.main_image).get_thumbnail(opt)
+                    tags.add(
+                        APIC(
+                            encoding=3,
+                            mime='image/jpeg',
+                            type=3,
+                            desc=u'Cover',
+                            data=open(image.path).read()
+                        )
+                    )
+                except:
+                    pass
+
+
+
+
+
 
         # artist-level metadata
         if media.artist:
@@ -417,26 +455,27 @@ class Process(object):
 
         tags.save(v1=0)
 
+
         return
 
 
 
     def metadata_audiotools(self, path, media):
 
-        from audiotools import MetaData
         import audiotools
+        meta = audiotools.MetaData()
 
-        meta = MetaData()
+        log.info('injecting image: %s - %s' % (media.pk, path))
 
         # release-level metadata
         if media.release and media.release.main_image:
-
+            print 'images supported & available'
             if meta.supports_images() and os.path.exists(media.release.main_image.path):
                 opt = dict(size=(200, 200), crop=True, bw=False, quality=80)
                 image = get_thumbnailer(media.release.main_image).get_thumbnail(opt)
                 meta.add_image(get_raw_image(image.path, 0))
 
-        audiotools.open(path).update_metadata(meta)
+            audiotools.open(path).update_metadata(meta)
 
         return
 
@@ -446,11 +485,13 @@ def get_raw_image(filename, type):
 
     import audiotools
 
+    print 'get_raw_image'
+
     try:
         f = open(filename, 'rb')
         data = f.read()
         f.close()
 
         return audiotools.Image.new(data, u'', type)
-    except IOError:
-        raise audiotools.InvalidImage(u'Unable to open file')
+    except Exception as e :
+        print e

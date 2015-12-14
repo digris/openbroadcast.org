@@ -66,6 +66,7 @@ NavigationUI = (function() {
   };
 
   NavigationUI.prototype.update_display = function() {
+    $('.sub-level', this.container).removeClass('hide');
     if (debug) {
       console.debug('active', this.active);
       console.debug('hover', this.hover);

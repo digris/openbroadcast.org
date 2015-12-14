@@ -54,6 +54,8 @@ class NavigationUI
 
   update_display: ->
 
+    $('.sub-level', @container).removeClass 'hide'
+
     if debug
       console.debug 'active', @active
       console.debug 'hover', @hover

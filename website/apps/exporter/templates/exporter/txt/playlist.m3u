@@ -1,2 +1,0 @@
-{% for object in objects %}{{ object.filename }}
-{% endfor %}

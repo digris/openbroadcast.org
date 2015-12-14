@@ -119,7 +119,23 @@ class Profile(MigrationMixin):
         )
 
     def __unicode__(self):
-        return u"%s" % self.user.get_full_name()
+
+        return u"%s" % self.get_display_name()
+
+        #return u"%s" % self.user.get_full_name()
+
+
+    def get_display_name(self):
+
+        if self.pseudonym:
+            return self.pseudonym
+
+        if self.user.get_full_name():
+            return self.user.get_full_name()
+
+        return self.user.username
+
+
 
     @property
     def is_approved(self):

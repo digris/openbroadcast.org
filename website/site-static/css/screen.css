@@ -4629,6 +4629,8 @@ html.cms-ready li.message-notification {
   visibility: hidden; }
   .toolbar .section-left ul.sub-level li.hover, .toolbar .section-right ul.sub-level li.hover {
     color: #00bb73; }
+  .toolbar .section-left ul.sub-level.hide, .toolbar .section-right ul.sub-level.hide {
+    display: none; }
 
 .toolbar .section-left .ancestor ul.sub-level, .toolbar .section-right .ancestor ul.sub-level, .toolbar .section-left .selected ul.sub-level, .toolbar .section-right .selected ul.sub-level {
   visibility: visible; }
@@ -5476,7 +5478,9 @@ html.cms-ready li.message-notification {
   padding: 10px;
   text-align: center;
   text-transform: capitalize;
-  color: #5a5a5a; }
+  color: #5a5a5a;
+  font-style: italic;
+  background: none; }
 
 /* license icon display */
 .listview.container .list_body_item.links.external ul li {
