@@ -129,7 +129,7 @@ class MessageManager(models.Manager):
         related = ('sender',) if related else None
         filters = {
             'recipient': user,
-            'recipient_archived': False,
+            'recipient_archived__isnull': True,
             'recipient_deleted_at__isnull': True,
             'moderation_status': STATUS_ACCEPTED,
         }
@@ -143,6 +143,7 @@ class MessageManager(models.Manager):
 
         """
         return self.inbox(user, related=False, option=OPTION_MESSAGES).filter(read_at__isnull=True).count()
+        #return Message.objects.filter(recipient=user, read_at__isnull=True).count()
 
     def sent(self, user, **kwargs):
         """
@@ -151,7 +152,7 @@ class MessageManager(models.Manager):
         related = ('recipient',)
         filters = {
             'sender': user,
-            'sender_archived': False,
+            'sender_archived__isnull': True,
             'sender_deleted_at__isnull': True,
             # allow to see pending and rejected messages as well
         }
@@ -164,7 +165,7 @@ class MessageManager(models.Manager):
         related = ('sender', 'recipient')
         filters = ({
             'recipient': user,
-            'recipient_archived': True,
+            'recipient_archived__isnull': False,
             'recipient_deleted_at__isnull': True,
             'moderation_status': STATUS_ACCEPTED,
         }, {

@@ -81,4 +81,5 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('default', ['proxy']);
+gulp.task('watch', ['proxy']);
 
