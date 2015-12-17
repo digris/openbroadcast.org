@@ -533,6 +533,10 @@ class Media(MigrationMixin):
             log.warning('unable to get audiofile audiotools: %s' % e)
             return None
 
+
+    """
+    TODO: check usage. appearances refactored to media_tags
+    """
     @property
     def appearances(self):
         return self.get_appearances()

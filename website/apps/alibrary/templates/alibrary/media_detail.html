@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate i18n thumbnail arating_tags wiki_tags comments atracker_tags sekizai_tags calc url_tags alibrary_tags video_tags %}
+{% load truncate i18n thumbnail arating_tags wiki_tags comments atracker_tags sekizai_tags calc url_tags alibrary_tags media_tags video_tags %}
 
 {% block heading %} <!-- heading / icon (large one) -->
 
@@ -336,7 +336,10 @@
                 <div class="list_body">
 
                     {% with highlight=object extended=1 %}
-                        {% for item in object.appearances %}
+
+                        {% appearance_for_media media=object user=request.user as appearances %}
+
+                        {% for item in appearances %}
                             {% include "alibrary/playlist/list_item_s.html" %}
                         {% endfor %}
                     {% endwith %}
