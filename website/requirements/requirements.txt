@@ -45,6 +45,7 @@ django-braces==1.8.1
 django-cache-machine==0.9
 django-cacheops==2.3.1
 django-celery==3.1.17
+django-celery-email==1.1.3
 django-comments==0.3.3a0
 django-compressor==1.6
 django-countries==3.3

@@ -73,6 +73,12 @@ CELERYBEAT_SCHEDULE = {
 }
 
 
+CELERY_EMAIL_TASK_CONFIG = {
+    'queue' : 'celery',
+    'rate_limit' : '50/m',
+}
+
+
 """
 using django pushy
 """
