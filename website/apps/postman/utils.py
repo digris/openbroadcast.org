@@ -19,16 +19,7 @@ if name and name in settings.INSTALLED_APPS:
 else:
     notification = None
 
-# give priority to a favourite mailer app such as django-mailer
-# but if not installed or not desired, fallback to django.core.mail
-name = getattr(settings, 'POSTMAN_MAILER_APP', 'mailer')
-""""""
-if name and name in settings.INSTALLED_APPS:
-    send_mail = __import__(name, globals(), locals(), [str('send_mail')]).send_mail
-else:
-    from django.core.mail import send_mail
-
-
+from django.core.mail import send_mail
 
 # to disable email notification to users
 DISABLE_USER_EMAILING = getattr(settings, 'POSTMAN_DISABLE_USER_EMAILING', False)

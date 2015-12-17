@@ -309,7 +309,7 @@ POSTMAN_DISALLOW_MULTIRECIPIENTS = True
 POSTMAN_AUTO_MODERATE_AS = True  # default is None
 POSTMAN_SHOW_USER_AS = 'get_full_name'
 # POSTMAN_NOTIFIER_APP = None  # default is 'notification'
-POSTMAN_MAILER_APP = 'mailer'
+# POSTMAN_MAILER_APP = 'mailer'
 
 
 
