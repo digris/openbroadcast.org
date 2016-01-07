@@ -64,6 +64,28 @@ PlaylistUi = function () {
             var id = $(this).parents('.playlist_holder').data('object_id');
             var action = $(this).data('action');
 
+
+            //if (action == 'delete') {
+            //
+            //    var options = {
+            //        title: 'Confirm',
+            //        body: '<p>' + 'Are you sure?' + '</p>',
+            //        buttons: [
+            //            {
+            //                label: 'Delete',
+            //                hide: true,
+            //                callback: function(e) {
+            //                    self.delete_playlist(id);
+            //                    conatiner.fadeOut(200)
+            //                }
+            //            }
+            //        ]
+            //    };
+            //
+            //    ui.dialog.show(options);
+            //
+            //}
+
             if (action == 'delete' && confirm('Sure?')) {
                 self.delete_playlist(id);
                 conatiner.fadeOut(200)

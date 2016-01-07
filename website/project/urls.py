@@ -51,6 +51,7 @@ urlpatterns = patterns('',
     url(r'^comments/', include('fluent_comments.urls')),
     url(r'^postman/', include('postman.urls')),
     url(r'^selectable/', include('selectable.urls')),
+    url(r'^ip/', include('iptracker.urls')),
     url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
 
     # registration

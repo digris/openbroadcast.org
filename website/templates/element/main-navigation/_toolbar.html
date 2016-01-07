@@ -1,15 +1,11 @@
 {% load menu_tags i18n notifications_tags adv_cache activity_tags sekizai_tags %}
 {% notifications_unread as unread_count %}
 
-{% addtoblock "js-post" %}<script src="{{ STATIC_URL }}dist/js/element/navigation.js"></script>{% endaddtoblock %}
 {% addtoblock "js-post" %}
 <script>
     $(function(){
-
         var navigation = new NavigationUI($('#main_navigation'));
         var account = new AccountUI($('#account_navigation'));
-        //navigation.init($('#main_navigation'));
-
     });
 </script>
 {% endaddtoblock %}

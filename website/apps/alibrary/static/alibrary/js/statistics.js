@@ -79,7 +79,10 @@ StatisticApp = function () {
             $.plot('#' + self.dom_id, datasets, {
                 xaxis: {
                     mode: "time",
-                    minTickSize: [1, "month"]
+                    minTickSize: [
+                        1,
+                        "month"
+                    ]
                 },
                 grid: {
                     show: true,
@@ -107,8 +110,6 @@ StatisticApp = function () {
                 }
             });
         }
-        ;
-
 
     };
 

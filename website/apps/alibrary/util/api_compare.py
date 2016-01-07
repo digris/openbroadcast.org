@@ -1,16 +1,24 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import logging
-import requests
 import re
-from django.conf import settings
-from l10n.models import Country
+import requests
 
 from alibrary.models import Release, Label, Artist, Media
 from alibrary.util.relations import get_service_by_url
+from django.conf import settings
+from l10n.models import Country
 
 log = logging.getLogger(__name__)
 
 MUSICBRAINZ_HOST = getattr(settings, 'MUSICBRAINZ_HOST', None)
 DISCOGS_HOST = getattr(settings, 'DISCOGS_HOST', None)
+
+MUSICBRAINZ_404_MESSAGE = '''
+We could not find the requested data on our Musicbrainz mirror server.<br>
+This is a known issue and we're working on improving synchronisation of external data sources.
+'''
 
 class APILookup(object):
 
@@ -44,9 +52,12 @@ class MusicbrainzAPILookup(APILookup):
         log.info('composed api url: %s' % api_url)
 
         r = requests.get(api_url)
+
+        if r.status_code == 404:
+            return {'error': MUSICBRAINZ_404_MESSAGE}
+
         data= r.json()
 
-        # data mapping
         res = {}
         d_tags = []
         mapped_media = None
@@ -168,9 +179,12 @@ class MusicbrainzAPILookup(APILookup):
         log.info('composed api url: %s' % api_url)
 
         r = requests.get(api_url)
-        data= r.json()
 
-        # data mapping
+        if r.status_code == 404:
+            return {'error': MUSICBRAINZ_404_MESSAGE}
+
+        data = r.json()
+
         res = {}
         d_tags = []
         for k in data:
@@ -222,10 +236,12 @@ class MusicbrainzAPILookup(APILookup):
         log.info('composed api url: %s' % api_url)
 
         r = requests.get(api_url)
+
+        if r.status_code == 404:
+            return {'error': MUSICBRAINZ_404_MESSAGE}
+
         data= r.json()
 
-
-        # data mapping
         res = {}
         d_tags = []
         for k in data:
@@ -296,9 +312,12 @@ class MusicbrainzAPILookup(APILookup):
         log.info('composed api url: %s' % api_url)
 
         r = requests.get(api_url)
+
+        if r.status_code == 404:
+            return {'error': MUSICBRAINZ_404_MESSAGE}
+
         data= r.json()
 
-        # data mapping
         res = {}
         d_tags = []
         for k in data:

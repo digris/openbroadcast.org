@@ -17,7 +17,7 @@ def appearance_for_media(media, include_private=False, user=None):
 
     qs = Playlist.objects.filter(items__in=pis)
 
-    if user:
+    if user and user.is_authenticated():
         qs = qs.exclude(
             Q(type='other') | (Q(type='basket') & ~Q(user=user)),
         )

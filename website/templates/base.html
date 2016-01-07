@@ -210,6 +210,14 @@
         <script src="{{ STATIC_URL }}fluent_comments/js/ajaxcomments.js"></script>
         <script src="{{ STATIC_URL }}ac_tagging/js/ac_tagging.js"></script>
         <script src="{{ STATIC_URL }}arating/js/base.js"></script>
+
+        <!-- refactored modules, coffeescript versions -->
+        <script src="{{ STATIC_URL }}dist/js/element/navigation.js"></script>
+        <script src="{{ STATIC_URL }}dist/js/ui/base.js"></script>
+        <script src="{{ STATIC_URL }}dist/js/ui/dialog.js"></script>
+
+
+
         {% nunjucks_scripts %}
         {% endcompress %}
         <!-- end: compressor js-post -->
@@ -223,7 +231,7 @@
         <script src="{{ STATIC_URL }}js/lib/jquery.pulse.js"></script>
         <script src="{{ STATIC_URL }}js/lib/jquery.highlight.js"></script>
         <script src="{{ STATIC_URL }}js/lib/jquery.watch.js"></script>
-        <script src="{{ STATIC_URL }}js/base.ui.js"></script>
+        <script src="{{ STATIC_URL }}js/ui.base.js"></script>
         <script src="{{ STATIC_URL }}js/util.base.js"></script>
         <script src="{{ STATIC_URL }}js/util/util.base.js"></script>
         <script src="{{ STATIC_URL }}js/util/util.notify.js"></script>

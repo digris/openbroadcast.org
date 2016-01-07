@@ -768,22 +768,57 @@ PlaylistEditorItem = function () {
 
             var action = $(this).data('action');
 
-            if (action == 'delete' && confirm('sure?')) {
-                $.ajax({
-                    url: self.item.resource_uri,
-                    type: 'DELETE',
-                    dataType: "json",
-                    contentType: "application/json",
-                    processData: false,
-                    success: function (data) {
-                        self.dom_element.remove();
-                        delete self.playlist_editor.current_items[self.item.id]
-                        delete self.playlist_editor.editor_items[self.item.id]
-                        self.playlist_editor.reorder();
-                    },
-                    async: false
-                });
+            if (action == 'delete') {
+
+                var options = {
+                    title: 'Confirm',
+                    body: '<p>' + 'Are you sure?' + '</p>',
+                    buttons: [
+                        {
+                            label: 'Delete',
+                            hide: true,
+                            callback: function(e) {
+                                $.ajax({
+                                    url: self.item.resource_uri,
+                                    type: 'DELETE',
+                                    dataType: "json",
+                                    contentType: "application/json",
+                                    processData: false,
+                                    success: function (data) {
+                                        self.dom_element.remove();
+                                        delete self.playlist_editor.current_items[self.item.id]
+                                        delete self.playlist_editor.editor_items[self.item.id]
+                                        self.playlist_editor.reorder();
+                                    },
+                                    async: false
+                                });
+                            }
+                        }
+                    ]
+                };
+
+                ui.dialog.show(options);
+
             }
+
+
+
+            //if (action == 'delete' && confirm('sure?')) {
+            //    $.ajax({
+            //        url: self.item.resource_uri,
+            //        type: 'DELETE',
+            //        dataType: "json",
+            //        contentType: "application/json",
+            //        processData: false,
+            //        success: function (data) {
+            //            self.dom_element.remove();
+            //            delete self.playlist_editor.current_items[self.item.id]
+            //            delete self.playlist_editor.editor_items[self.item.id]
+            //            self.playlist_editor.reorder();
+            //        },
+            //        async: false
+            //    });
+            //}
 
             if (action == 'play') {
 

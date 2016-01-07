@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'ac_tagging',
     'actstream',
     'pageguide',
+    'iptracker',
 
     # legacy & migration
     'obp_legacy',

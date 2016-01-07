@@ -1,12 +1,12 @@
 /*
  * requires jquery.qtip2
  * https://github.com/craga89/qtip2
- */
+
 
 
 (function(window, undefined) {
 
-	var util = util || {};
+	var util = window.util || {};
 
 	var UtilDialog = (function() {
 
@@ -101,4 +101,4 @@
     //window.util = util;
 
 })(window);
-
+ */

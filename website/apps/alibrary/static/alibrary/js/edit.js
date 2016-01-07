@@ -485,17 +485,31 @@ EditUi = function () {
 
             $('body').removeClass('api_lookup-progress');
 
-
             self.lookup_data = data;
-
-            for (var key_ in data) {
-                console.log('* ' + key_)
-            };
-
 
             // check for errors
             if(data.error) {
-                alert(data.error);
+
+                var options = {
+                    title: 'Sorry!',
+                    body: '<p>' + data.error + '</p>',
+                    buttons: [
+                        {
+                            label: 'OK',
+                            //class: 'btn-warning',
+                            hide: true,
+                            callback: function(e) {
+                                //alert('calling back...')
+                            }
+                        }
+                    ]
+                };
+
+                ui.dialog.show(options);
+
+
+
+                //alert(data.error);
                 return;
             }
 
