@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import logging
 from django.views.generic import View
 from django.http import HttpResponse
+from django.shortcuts import render
 from .models import Host
 
 log = logging.getLogger(__name__)
@@ -28,10 +29,10 @@ class IPTrackerView(View):
             host.ip = ip
             host.save()
 
+            return HttpResponse(ip)
 
 
+        else:
 
-        print hostname
-
-        return HttpResponse('ok')
+            return render(self.request, 'iptracker/index.html', {'hosts': Host.objects.all()}, content_type="text/html")
 
