@@ -204,15 +204,18 @@ class ChannelResource(ModelResource):
 
         c = Channel.objects.get(**self.remove_api_resource_names(kwargs))
 
-        bundle = self.build_bundle(obj=c, request=request)
-        bundle = self.full_dehydrate(bundle)
-        
+        #bundle = self.build_bundle(obj=c, request=request)
+        bundle = self.full_dehydrate(self.build_bundle(obj=c, request=request))
+
+        now = datetime.datetime.now()
 
         """
-        search for current emission & map item times
+        "time shift" query
         """
-        now = datetime.datetime.now()
-        
+        time_shift = int(request.GET.get('time_shift', 0))
+
+        now = datetime.datetime.now() + datetime.timedelta(seconds=time_shift)
+
         es = Emission.objects.filter(time_start__lte=now, time_end__gte=now)
 
         # check if in cache
@@ -236,8 +239,8 @@ class ChannelResource(ModelResource):
             items = e.content_object.get_items()
             for item in items:
                 co = item.content_object
-                item.time_start = e_start + datetime.timedelta(milliseconds=offset)
-                item.time_end = e_start + datetime.timedelta(milliseconds=offset + co.get_duration() - (item.cue_in + item.cue_out + item.fade_cross))
+                item.time_start = e_start + datetime.timedelta(milliseconds=offset) + datetime.timedelta(seconds=time_shift)
+                item.time_end = e_start + datetime.timedelta(milliseconds=offset + co.get_duration() - (item.cue_in + item.cue_out + item.fade_cross)) + datetime.timedelta(seconds=time_shift)
                 
                 # check if playing
                 if item.time_start < now and item.time_end > now:
@@ -257,7 +260,7 @@ class ChannelResource(ModelResource):
                                    'time_end': item.time_end,
                                    }
                     
-                    start_next = (item.time_end - now).total_seconds()
+                    start_next = (item.time_end - now + datetime.timedelta(seconds=time_shift)).total_seconds()
                     
                     print (item.time_end - now).total_seconds()
                     

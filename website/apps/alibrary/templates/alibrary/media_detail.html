@@ -262,7 +262,7 @@
                     <dd>{{ object.master_filesize|filesizeformat }}</dd>
 
                     <dt>{% trans "Samplerate" %}</dt>
-                    <dd>{{ object.master_samplerate }} Hz</dd>
+                    <dd>{% if object.master_samplerate %}{{ object.master_samplerate }} Hz{% else %}-{% endif %}</dd>
 
                     {% if object.original_filename %}
                     <dt>{% trans "Original Filename" %}</dt>
@@ -277,7 +277,7 @@
                 <dl class="dl-horizontal" style="margin-top: 0;">
 
                     <dt>{% trans "Bitrate" %}</dt>
-                    <dd>{{ object.master_bitrate }} Kbps</dd>
+                    <dd>{% if object.master_bitrate %}{{ object.master_bitrate }} Kbps{% else %}-{% endif %}</dd>
 
 
                     <dt>{% trans "Fingerprint" %}</dt>

@@ -353,7 +353,6 @@ class MediaFilter(django_filters.FilterSet):
             'master_bitrate',
             'master_encoding',
             'master_samplerate',
-            #'processed',
             'tempo',
             'key',
             'lyrics_language',
@@ -401,7 +400,10 @@ class MediaFilter(django_filters.FilterSet):
                 elif name == 'master_encoding':
                     nd = []
                     for d in ds:
-                        nd.append([d[0], d[1], d[0].upper()])
+                        if not d[0] or d[0] == 'NULL':
+                            nd.append([d[0], d[1], _('Unknown')])
+                        else:
+                            nd.append([d[0], d[1], d[0].upper()])
 
                     filter_.entries = nd
 
