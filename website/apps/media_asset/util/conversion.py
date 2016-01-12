@@ -41,7 +41,7 @@ def any_to_wav(src, dst=None):
         if ext.lower() in ['.mp3',]:
             mp3_to_wav(src, dst)
 
-        if ext.lower() in ['.m4a',]:
+        if ext.lower() in ['.m4a', '.mp4']:
             m4a_to_wav(src, dst)
 
         print name
