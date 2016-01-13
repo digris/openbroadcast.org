@@ -267,9 +267,7 @@ class MediaResource(ModelResource):
         except:
             pass
 
-
         return bundle
-
 
 
     def vote(self, request, **kwargs):
@@ -316,7 +314,7 @@ class MediaResource(ModelResource):
     def stream_file(self, request, **kwargs):
         """
         provides the default stream file as download.
-        method is only used by API clients at the moment
+        method is only used by API clients (radio website) at the moment
         """
 
         self.method_check(request, allowed=['get'])
@@ -327,11 +325,20 @@ class MediaResource(ModelResource):
             return HttpResponseForbidden('sorry. no permissions here!')
 
         obj = Media.objects.get(**self.remove_api_resource_names(kwargs))
-        file = obj.get_cache_file('mp3', 'base')
-        if not file:
-            return HttpResponseBadRequest('unable to get file')
 
-        return sendfile(request, file)
+
+        from media_asset.util import get_format
+
+
+        #file = obj.get_cache_file('mp3', 'base')
+
+        format = get_format(obj, wait=True)
+        # format_file = open(format.path, "rb").read()
+        #
+        # if not format_file:
+        #     return HttpResponseBadRequest('unable to get file')
+
+        return sendfile(request, format.path)
 
 
 

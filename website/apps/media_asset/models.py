@@ -20,8 +20,8 @@ from django.template import defaultfilters
 
 from base.models import TimestampedModel, UUIDModel
 
-from util.conversion import any_to_wav
-from util.grapher import create_waveform_image, create_spectrogram_image
+
+
 
 log = logging.getLogger(__name__)
 
@@ -90,6 +90,9 @@ class Waveform(TimestampedModel, UUIDModel):
 
     @current_app.task(filter=task_method, name='Waveform.process_waveform')
     def process_waveform(self):
+
+        from util.conversion import any_to_wav
+        from util.grapher import create_waveform_image, create_spectrogram_image
 
         # e.v. refactor later, so obj instead of self...
         obj = self
@@ -244,6 +247,8 @@ class Format(TimestampedModel, UUIDModel):
     @current_app.task(bind=True, filter=task_method, name='Format.process_format')
     def process_format(self, instance):
 
+        from util.conversion import any_to_wav
+
         # e.v. refactor later, so obj instead of self...
         obj = instance
         processed = False
@@ -278,10 +283,6 @@ class Format(TimestampedModel, UUIDModel):
                     Format.LAME_OPTIONS[obj.quality],
                     obj.path
                 ]
-
-                print '///////////////'
-                print command
-                print '///////////////'
 
                 log.debug('running: %s' % ' '.join(command))
 
@@ -334,3 +335,5 @@ def format_pre_delete(sender, instance, **kwargs):
     obj = instance
     if os.path.isfile(obj.path):
         os.remove(obj.path)
+
+

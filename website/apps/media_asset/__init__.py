@@ -17,6 +17,3 @@ def media_post_save(sender, instance, created, **kwargs):
         Waveform.objects.get_or_create_for_media(media=instance, type=Waveform.SPECTROGRAM)
         Format.objects.get_or_create_for_media(media=instance, encoding=Format.MP3, quality=Format.DEFAULT)
 
-
-
-
