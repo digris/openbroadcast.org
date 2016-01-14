@@ -125,6 +125,12 @@ class Profile(MigrationMixin):
         #return u"%s" % self.user.get_full_name()
 
 
+    def get_full_name(self):
+
+        if self.user:
+            return self.user.get_full_name()
+
+
     def get_display_name(self):
 
         if self.pseudonym:

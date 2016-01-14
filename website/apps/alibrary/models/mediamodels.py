@@ -438,7 +438,11 @@ class Media(MigrationMixin):
             try:
                 artist_str = artists[0].name
             except:
-                artist_str = _('Unknown Artist')
+
+                try:
+                    artist_str = self.artist.name
+                except:
+                    artist_str = _('Unknown Artist')
 
         return artist_str
 

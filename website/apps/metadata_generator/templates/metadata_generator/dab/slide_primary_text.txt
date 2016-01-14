@@ -1,0 +1,4 @@
+{% autoescape off %}{{ media.name|truncatechars:28 }}
+{% if media.artist %}by: {{ media.artist.name|truncatechars:24 }}{% else %}-{% endif %}
+{% if media.release %}{{ media.release.name|truncatechars:28 }}{% else %}-{% endif %}
+{% if media.release and media.release.label %}on: {{ media.release.label.name|truncatechars:24 }}{% else %}-{% endif %}{% endautoescape %}

@@ -124,14 +124,18 @@ class EmissionResource(ModelResource):
             bundle.data['user'] = {
                                     'username': obj.user.username,
                                     'absolute_url': obj.user.get_absolute_url(),
-                                    'full_name': obj.user.get_full_name()
+                                    'full_name': obj.user.get_full_name(),
+                                    'pseudonym': obj.user.profile.pseudonym,
+                                    'display_name': obj.user.profile.get_display_name()
                                    }
 
         if obj.content_object and obj.content_object.user:
             bundle.data['user_co'] = {
                                     'username': obj.content_object.user.username,
                                     'absolute_url': obj.content_object.user.get_absolute_url(),
-                                    'full_name': obj.content_object.user.get_full_name()
+                                    'full_name': obj.content_object.user.get_full_name(),
+                                    'pseudonym': obj.content_object.user.profile.pseudonym,
+                                    'display_name': obj.content_object.user.profile.get_display_name()
                                    }
 
 

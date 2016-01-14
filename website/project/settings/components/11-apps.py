@@ -141,6 +141,7 @@ INSTALLED_APPS = (
     'actstream',
     'pageguide',
     'iptracker',
+    'metadata_generator',
 
     # legacy & migration
     'obp_legacy',

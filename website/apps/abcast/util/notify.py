@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 from django.core.cache import cache
-from lib.icecast.api import set_stream_metadata
+from base.icecast.api import set_stream_metadata
 from pushy.util import pushy_custom
 
 log = logging.getLogger(__name__)

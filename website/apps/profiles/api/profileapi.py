@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+import logging
 from django.conf.urls import *
 from tastypie import fields
 from tastypie.authentication import *
@@ -13,6 +15,8 @@ from easy_thumbnails.files import get_thumbnailer
 
 from profiles.models import Profile
 
+log = logging.getLogger(__name__)
+
 THUMBNAIL_OPT = dict(size=(240, 240), crop=True, bw=False, quality=80)
 
 
@@ -23,8 +27,17 @@ class ProfileResource(ModelResource):
         list_allowed_methods = ['get',]
         detail_allowed_methods = ['get',]
         resource_name = 'profile'
-        # TODO: double-check for sensitive information
-        excludes = ['birth_date', 'phone', 'iban', 'id', 'fax', 'mobile', 'paypal', 'address1', 'address2', 'legacy_id', 'legacy_legacy_id', 'migrated', ]
+        fields = [
+            'pseudonym',
+            'biography',
+            'biography_html',
+            'description',
+            'image',
+            'gender',
+            'city',
+            'zip',
+            'enable_alpha_features',
+        ]
         authentication = Authentication()
         authorization = Authorization()
         always_return_data = True
@@ -33,25 +46,21 @@ class ProfileResource(ModelResource):
 
 
     def dehydrate(self, bundle):
-        # populate with user data
+
         if bundle.obj.user:
-
             bundle.data['username'] = bundle.obj.user.username
-            bundle.data['first_name'] = bundle.obj.user.first_name
-            bundle.data['last_name'] = bundle.obj.user.last_name
+            bundle.data['pseudonym'] = bundle.obj.pseudonym
+            bundle.data['display_name'] = bundle.obj.get_display_name()
+            bundle.data['full_name'] = bundle.obj.get_full_name()
+            bundle.data['groups'] = [g.name for g in bundle.obj.user.groups.all()]
 
-            # generate display-name
-            if bundle.obj.user.first_name and bundle.obj.user.last_name:
-                bundle.data['display_name'] = '%s %s' % (bundle.obj.user.first_name, bundle.obj.user.last_name)
-            else:
-                bundle.data['display_name'] = bundle.obj.user.username
         else:
             bundle.data['username'] = None
+            bundle.data['pseudonym'] = None
             bundle.data['display_name'] = None
-            bundle.data['first_name'] = None
-            bundle.data['last_name'] = None
+            bundle.data['display_name'] = None
 
-        bundle.data['country'] = bundle.obj.country.name if bundle.obj.country else None
+        bundle.data['country'] = bundle.obj.country.printable_name if bundle.obj.country else None
 
         bundle.data['get_absolute_url'] = bundle.obj.get_absolute_url()
         bundle.data['image'] = None

@@ -16,6 +16,7 @@ from easy_thumbnails.files import get_thumbnailer
 
 from abcast.models import Station, Channel, Emission
 from abcast.util import scheduler
+from metadata_generator.dab import DABMetadataGenerator
 from lib.pypo_gateway import send as pypo_send
 
 log = logging.getLogger(__name__)
@@ -202,35 +203,34 @@ class ChannelResource(ModelResource):
         self.is_authenticated(request)
         self.throttle_check(request)
 
-        c = Channel.objects.get(**self.remove_api_resource_names(kwargs))
+        channel = Channel.objects.get(**self.remove_api_resource_names(kwargs))
 
-        #bundle = self.build_bundle(obj=c, request=request)
-        bundle = self.full_dehydrate(self.build_bundle(obj=c, request=request))
+
+        bundle = self.full_dehydrate(self.build_bundle(obj=channel, request=request))
 
         now = datetime.datetime.now()
 
         """
         "time shift" query
         """
-        time_shift = int(request.GET.get('time_shift', 0))
+        timeshift = int(request.GET.get('timeshift', 0))
 
-        now = datetime.datetime.now() + datetime.timedelta(seconds=time_shift)
+        now = datetime.datetime.now() + datetime.timedelta(seconds=timeshift)
 
-        es = Emission.objects.filter(time_start__lte=now, time_end__gte=now)
+        es = Emission.objects.filter(channel=channel, time_start__lte=now, time_end__gte=now)
 
         # check if in cache
         try:
-            cached_item = cache.get('abcast_on_air_%s' % c.pk)
+            cached_item = cache.get('abcast_on_air_%s' % channel.pk)
         except:
             cached_item = None
 
 
         now_playing = []
         start_next = False
-        items = []
-        
-        
-        
+        current_emission = None
+        current_content_object = None
+
         if es.count() == 1:
             e = es[0]
 
@@ -239,8 +239,8 @@ class ChannelResource(ModelResource):
             items = e.content_object.get_items()
             for item in items:
                 co = item.content_object
-                item.time_start = e_start + datetime.timedelta(milliseconds=offset) + datetime.timedelta(seconds=time_shift)
-                item.time_end = e_start + datetime.timedelta(milliseconds=offset + co.get_duration() - (item.cue_in + item.cue_out + item.fade_cross)) + datetime.timedelta(seconds=time_shift)
+                item.time_start = e_start + datetime.timedelta(milliseconds=offset) + datetime.timedelta(seconds=timeshift)
+                item.time_end = e_start + datetime.timedelta(milliseconds=offset + co.get_duration() - (item.cue_in + item.cue_out + item.fade_cross)) + datetime.timedelta(seconds=timeshift)
                 
                 # check if playing
                 if item.time_start < now and item.time_end > now:
@@ -260,22 +260,20 @@ class ChannelResource(ModelResource):
                                    'time_end': item.time_end,
                                    }
                     
-                    start_next = (item.time_end - now + datetime.timedelta(seconds=time_shift)).total_seconds()
-                    
-                    print (item.time_end - now).total_seconds()
+                    start_next = (item.time_end - now + datetime.timedelta(seconds=timeshift)).total_seconds()
+
+                    current_emission = e
+                    current_content_object = item.content_object
+
                     
                 else:
                     item.is_playing = False
                 
-                print '## item'
-                print 'start:      %s' % item.time_start
-                print 'end:        %s' % item.time_end
-                print 'is playing: %s' % item.is_playing
+                # print '## item'
+                # print 'start:      %s' % item.time_start
+                # print 'end:        %s' % item.time_end
+                # print 'is playing: %s' % item.is_playing
 
-                
-                """
-                compose media data
-                """
                 offset += ( co.get_duration() - (item.cue_in + item.cue_out) )
                 
         else:
@@ -284,14 +282,23 @@ class ChannelResource(ModelResource):
             if es.count() > 0:
                 e = es[0]
                 start_next = (e.time_start - now).total_seconds()
-            
-            
-            
+
+
 
         bundle = {
                   'start_next': start_next,
                   'playing': now_playing,
                   }
+
+
+        # hackish hook to integrate mot/dls metadata
+        if request.method == 'GET' and 'include-dls' in request.GET:
+            dls_generator = DABMetadataGenerator(emission=current_emission, content_object=current_content_object)
+
+            bundle.update({
+                'dls_text': dls_generator.get_text(),
+                'dls_slides': dls_generator.get_slides(),
+            })
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
