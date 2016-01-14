@@ -140,6 +140,10 @@ class Channel(BaseModel):
     stream_server = models.ForeignKey('StreamServer', null=True, blank=True, on_delete=models.SET_NULL)
     mount = models.CharField(max_length=64, null=True, blank=True)
 
+    tunein_station_id = models.CharField(max_length=16, null=True, blank=True)
+    tunein_partner_id = models.CharField(max_length=16, null=True, blank=True)
+    tunein_partner_key = models.CharField(max_length=16, null=True, blank=True)
+
     on_air_type = models.ForeignKey(ContentType, null=True, blank=True)
     on_air_id = models.PositiveIntegerField(null=True, blank=True)
     on_air = generic.GenericForeignKey('on_air_type', 'on_air_id')

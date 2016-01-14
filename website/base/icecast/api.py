@@ -2,7 +2,7 @@ import requests
 import logging
 log = logging.getLogger(__name__)
 
-class IcecastAPI:
+class IcecastAPIClient:
     
     def __init__(self, channel):
         self.channel = channel
@@ -38,7 +38,7 @@ class IcecastAPI:
 def set_stream_metadata(channel, text):
     log.info(u'channel: %s - metadata-text: %s' % (channel, text))
     try:
-        api = IcecastAPI(channel=channel)
+        api = IcecastAPIClient(channel=channel)
         api.set_text(text)
     except Exception as e:
         log.warning(u'unable to set stream metadata text: %s' % e)

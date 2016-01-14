@@ -2,6 +2,7 @@
 import logging
 from django.core.cache import cache
 from base.icecast.api import set_stream_metadata
+from base.tunein.api import set_tunein_metadata
 from pushy.util import pushy_custom
 
 log = logging.getLogger(__name__)
@@ -19,6 +20,7 @@ def start_play(item, channel=None, user=None):
     # Update stream metadata
     text = u'%s by %s - %s' % (item.name, item.artist.name, item.release.name)
     set_stream_metadata(channel, text)
+    set_tunein_metadata(channel, item)
 
     if user:
         try:
