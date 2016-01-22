@@ -97,7 +97,8 @@ class Autopilot(object):
                 'abs_time_end': abs_time_end,
             }
 
-            dayparts_to_fill.append(slot)
+            if abs_time_end > datetime.datetime.now():
+                dayparts_to_fill.append(slot)
 
         for dp in dayparts_to_fill:
 
