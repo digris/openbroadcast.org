@@ -187,10 +187,8 @@ class Playlist(MigrationMixin, models.Model):
     
     def get_duration(self):
         duration = 0
-
         try:
             for item in self.items.all():
-
 
 
                 duration += item.content_object.get_duration()
@@ -203,7 +201,7 @@ class Playlist(MigrationMixin, models.Model):
 
         # TODO: think about what to use as s reference
         # duration = self.target_duration * 1000
-            
+
         return duration
 
 

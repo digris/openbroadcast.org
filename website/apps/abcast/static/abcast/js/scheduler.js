@@ -62,7 +62,10 @@ SchedulerApp = function () {
         self.bindings();
 
         pushy.subscribe(self.api_url, function () {
-            self.load();
+            setTimeout(function(){
+                self.load();
+            }, 1)
+
         });
         self.load();
 

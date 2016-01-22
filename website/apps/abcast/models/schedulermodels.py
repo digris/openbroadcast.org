@@ -234,11 +234,12 @@ def post_save_emission_task(obj):
         range_start = datetime.datetime.now()
         range_end = datetime.datetime.now() + datetime.timedelta(seconds=SCHEDULE_AHEAD)
 
+
         # TODO: think about calculation
         # if obj.time_start > range_start and obj.time_start < range_end:
         if obj.time_end > range_start and obj.time_start < range_end:
             # notify pypy
-            print 'emission in critical range: notify pypo'
+            log.debug('Emission in critical range ({:} - {:}) - will notify pypo'.format(range_start, range_end))
             from lib.pypo_gateway import send as pypo_send
             from abcast.util import scheduler
             data = scheduler.get_schedule_for_pypo(range_start=range_start, range_end=range_end)
@@ -248,8 +249,6 @@ def post_save_emission_task(obj):
                 'schedule': {'media': data},
             }
             pypo_send(message)
-        else:
-            print 'emission NOT in critical range: pass'
 
 
 post_save.connect(post_save_emission, sender=Emission)
@@ -295,7 +294,7 @@ pre_delete.connect(pre_delete_emission, sender=Emission)
         
 class DaypartSet(BaseModel):
     
-    channel = models.ForeignKey(Channel, blank=False, null=True, related_name="daypartset_set", on_delete=models.SET_NULL)
+    channel = models.ForeignKey(Channel, blank=False, null=True, related_name="daypartsets", on_delete=models.SET_NULL)
 
     time_start = models.DateField(blank=False, null=True)
     time_end = models.DateField(blank=False, null=True)
@@ -316,15 +315,15 @@ class DaypartSet(BaseModel):
 class Weekday(models.Model):
 
     DAY_CHOICES = (
-        (1, _('Sun')),
-        (2, _('Mon')),
-        (3, _('Tue')),
-        (4, _('Wed')),
-        (5, _('Thu')),
-        (6, _('Fri')),
-        (7, _('Sat')),
+        (6, _('Sun')),
+        (0, _('Mon')),
+        (1, _('Tue')),
+        (2, _('Wed')),
+        (3, _('Thu')),
+        (4, _('Fri')),
+        (5, _('Sat')),
     )
-    day = models.PositiveIntegerField(default=1, null=False, choices=DAY_CHOICES)
+    day = models.PositiveIntegerField(default=0, null=False, choices=DAY_CHOICES)
 
     class Meta:
         app_label = 'abcast'
@@ -360,22 +359,23 @@ class Daypart(BaseModel):
     sound = models.TextField(null=True, blank=True)
     talk = models.TextField(null=True, blank=True)
 
+    enable_autopilot = models.BooleanField(default=True)
+
     position = models.PositiveIntegerField(default=1, choices=((0, '0'),(1, '1'),(2, '2'),(3, '3'),))
+
+    class Meta:
+        app_label = 'abcast'
+        verbose_name = _('Daypart')
+        verbose_name_plural = _('Dayparts')
+        ordering = ('position', 'time_start', )
     
+    
+    def __unicode__(self):
+        return u'%s - %s' % (self.time_start, self.time_end)
+
     @property
     def duration(self):
         duration = (self.time_end.hour - self.time_start.hour)
         if duration < 0:
             duration = 24 + duration
         return duration
-
-    class Meta:
-        app_label = 'abcast'
-        verbose_name = _('Daypart')
-        verbose_name_plural = _('Dayparts')
-        ordering = ('created', )
-        ordering = ('position', 'time_start', )
-    
-    
-    def __unicode__(self):
-        return u'%s - %s' % (self.time_start, self.time_end)

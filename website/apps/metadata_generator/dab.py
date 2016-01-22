@@ -90,7 +90,14 @@ class DABMetadataGenerator(object):
                     secondary_text='-',
             )]
 
+
+        self.clean_slides()
+
         items = []
+
+        ######################################################################
+        # main slide, including image & text                                 #
+        ######################################################################
 
         main_image_path = SLIDE_DEFAULT_IMAGE
         if self.content_object.release and self.content_object.release.main_image:
@@ -108,7 +115,7 @@ class DABMetadataGenerator(object):
             'playlist': self.emission.content_object
         })
 
-        slide = self.generate_slide(
+        slide = self.compose_main_slide(
                     primary_text=primary_text,
                     secondary_text=secondary_text,
                     overlay_image_path=main_image_path
@@ -118,15 +125,28 @@ class DABMetadataGenerator(object):
             slide
         )
 
+        ######################################################################
+        # additional slides                                                  #
+        ######################################################################
+        if self.content_object.artist and self.content_object.artist.main_image and os.path.isfile(self.content_object.artist.main_image.path):
+
+            slide = self.compose_image_slide(
+                        image_path=self.content_object.artist.main_image.path,
+                        text='%s' % self.content_object.artist.name
+            )
+
+            items.append(
+                slide
+            )
+
+
         return items
 
-    def generate_slide(self, primary_text=None, secondary_text=None, overlay_image_path=None):
 
-        self.clean_slides()
+    def compose_main_slide(self, primary_text=None, secondary_text=None, overlay_image_path=None, slide_id=0):
 
-
-        if overlay_image_path:
-            key = '%s-%s' % (self.emission.uuid, self.content_object.uuid)
+        if overlay_image_path and os.path.isfile(overlay_image_path):
+            key = '%s-%s-%03d' % (self.emission.uuid, self.content_object.uuid, slide_id)
             path = os.path.join(SLIDE_BASE_DIR, key + '.png')
             url = SLIDE_BASE_URL + key + '.png'
         else:
@@ -134,9 +154,6 @@ class DABMetadataGenerator(object):
             key = 'default'
             path = os.path.join(SLIDE_BASE_DIR, key + '.png')
             url = SLIDE_BASE_URL + key + '.png'
-
-        # if os.path.isfile(path):
-        #     return url
 
         overlay_image = Image(filename=overlay_image_path)
 
@@ -161,26 +178,72 @@ class DABMetadataGenerator(object):
                 draw.text_interline_spacing = 5
                 draw.text(10, 140, secondary_text)
 
+            # compose image
+            with Image(filename=SLIDE_BASE_IMAGE) as image:
+                draw(image)
+                image.save(filename=path)
+                image.save(filename=os.path.join(SLIDE_BASE_DIR, 'debug-0.png'))
 
-            # offset = 28
-            # for line in primary_text:
-            #     if len(line) > 28:
-            #         line = '%s...' % line[0:25]
-            #     draw.text(10, offset, line)
-            #     offset += 24
+        return url
 
 
+    def compose_image_slide(self, image_path=None, text=None, slide_id=1):
 
-            # draw.text(10, 20, self.content_object.name)
-            # draw.text(10, 42, 'by %s' % self.content_object.artist.name)
-            # draw.text(10, 64, '%s' % self.content_object.release.name)
+        image_display_size = (300, 190)
+
+        key = '%s-%s-%03d' % (self.emission.uuid, self.content_object.uuid, slide_id)
+        path = os.path.join(SLIDE_BASE_DIR, key + '.png')
+        url = SLIDE_BASE_URL + key + '.png'
+
+        overlay_image = Image(filename=image_path)
+
+        with Drawing() as draw:
+
+            # add overlay image
+
+            size = overlay_image.size
+
+            if size[0] > size[1]:
+                orientation = 'landscape'
+                scale = float(image_display_size[1]) / float(size[1])
+            else:
+                orientation = 'portrait'
+                scale = float(image_display_size[1]) / float(size[0])
+
+
+            print scale
+            print orientation
+
+            overlay_image.resize(int(size[0] * scale), int(size[1] * scale))
+
+            size = overlay_image.size
+            print size
+
+            #if orientation == 'portrait':
+            width = 190
+            height = 190
+            overlay_image.crop(10, 0, width=width, height=height)
+
+
+            draw.composite('over', left=int(width/2) - 20, top=10, width=width, height=height, image=overlay_image)
+
+            # text settings
+            draw.font = SLIDE_BASE_FONT
+            draw.font_size = 14
+            draw.text_interline_spacing = 8
+            draw.fill_color = Color('white')
+            draw.text_antialias = True
+
+            # draw text
+            if text:
+                draw.text(220, 10, text)
 
 
             # compose image
             with Image(filename=SLIDE_BASE_IMAGE) as image:
                 draw(image)
                 image.save(filename=path)
-                image.save(filename=os.path.join(SLIDE_BASE_DIR, 'debug.png'))
+                image.save(filename=os.path.join(SLIDE_BASE_DIR, 'debug-1.png'))
 
 
 
@@ -190,8 +253,8 @@ class DABMetadataGenerator(object):
 
     def clean_slides(self, max_age=3600):
 
-        # uuid-uuid.png -> 77 chars
-        filename_length = 77
+        # uuid-uuid-000.png -> 81 chars
+        filename_length = 81
 
         for file in os.listdir(SLIDE_BASE_DIR):
             if file.endswith(".png"):

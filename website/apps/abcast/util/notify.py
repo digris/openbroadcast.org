@@ -20,7 +20,9 @@ def start_play(item, channel=None, user=None):
     # Update stream metadata
     text = u'%s by %s - %s' % (item.name, item.artist.name, item.release.name)
     set_stream_metadata(channel, text)
-    set_tunein_metadata(channel, item)
+
+    if item.release and not 'jingle' in item.release.name.lower():
+        set_tunein_metadata(channel, item)
 
     if user:
         try:

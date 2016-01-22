@@ -28,6 +28,13 @@ admin.site.register(Emission, EmissionAdmin)
 # daypart integration
 class DaypartInline(admin.TabularInline):
     model = Daypart
+    extra = 0
+    exclude = [
+        'description',
+        'mood',
+        'sound',
+        'talk',
+    ]
 
 class DaypartSetAdmin(GenericAdminModelAdmin):
     list_display = ('channel', 'time_start', 'time_end',)

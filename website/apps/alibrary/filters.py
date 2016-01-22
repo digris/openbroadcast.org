@@ -503,7 +503,7 @@ class PlaylistFilter(django_filters.FilterSet):
     #main_format__name = CharListFilter(label="Release Format")
     class Meta:
         model = Playlist
-        fields = ['type', 'status', 'target_duration', 'dayparts', 'weather__name', 'seasons__name', ]
+        fields = ['type', 'status', 'target_duration', 'dayparts', 'weather__name', 'seasons__name', 'rotation']
 
     def __init__(self, *args, **kwargs):
         super(PlaylistFilter, self).__init__(*args, **kwargs)

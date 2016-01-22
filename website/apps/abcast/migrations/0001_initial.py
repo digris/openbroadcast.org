@@ -102,7 +102,7 @@ class Migration(migrations.Migration):
                 ('updated', django_extensions.db.fields.ModificationDateTimeField(auto_now=True)),
                 ('time_start', models.DateField(null=True)),
                 ('time_end', models.DateField(null=True)),
-                ('channel', models.ForeignKey(related_name='daypartset_set', on_delete=django.db.models.deletion.SET_NULL, to='abcast.Channel', null=True)),
+                ('channel', models.ForeignKey(related_name='daypartsets', on_delete=django.db.models.deletion.SET_NULL, to='abcast.Channel', null=True)),
             ],
             options={
                 'ordering': ('created',),

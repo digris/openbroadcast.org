@@ -18,9 +18,8 @@ def version_by_git(context):
     commit, timestamp = parse_git_changelog()
 
     try:
-        install_time = datetime.fromtimestamp(os.path.getmtime(os.path.join(settings.BASE_DIR, 'changelog.txt')))
+        install_time = datetime.fromtimestamp(os.path.getctime(os.path.join(settings.BASE_DIR, 'changelog.txt')))
     except Exception, e:
-        print e
         install_time = None
 
     context.update({
@@ -68,6 +67,7 @@ def parse_git_changelog():
                 # %a  %b  %w %H:%M:%S %Y
                 timestamp = datetime.strptime(line[8:].split(' +')[0], '%a %b %d %H:%M:%S %Y')
                 break
+
 
         return commit, timestamp
 

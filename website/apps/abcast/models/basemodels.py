@@ -188,7 +188,7 @@ class Channel(BaseModel):
 
     def get_dayparts(self, day):
         dayparts = []
-        daypart_sets = self.daypartset_set.filter(time_start__lte=day, time_end__gte=day, channel=self)
+        daypart_sets = self.daypartsets.filter(time_start__lte=day, time_end__gte=day, channel=self)
         daypart_set = None
         if daypart_sets.count() > 0:
             daypart_set = daypart_sets[0]

@@ -17,6 +17,16 @@ SCHEDULER_DEFAULT_CHANNEL_ID = getattr(settings, 'SCHEDULER_DEFAULT_CHANNEL_ID',
 SCHEDULER_DEFAULT_USERNAME = getattr(settings, 'SCHEDULER_DEFAULT_USERNAME', 'autopilot')
 SCHEDULER_DEFAULT_THEME = 3
 
+
+
+
+"""
+!!!!! OLD VERSION - DO NOT USE
+"""
+
+
+
+
 class Autopilot(object):
 
     def __init__(self, * args, **kwargs):
@@ -52,14 +62,9 @@ class Autopilot(object):
         slot_time_left = slot_duration
         slot_time_offset = 0
 
-
-
-
-
         print 'adding emissions to slot: %s to %s' % (abs_start, abs_end)
         print 'weekday: %s' % abs_start.weekday()
         print 'slot_duration: %s' % slot_duration
-
 
         from abcast.models import Emission
         from alibrary.models import Playlist
@@ -181,13 +186,10 @@ class Autopilot(object):
         from abcast.models import Channel, Emission, Daypart, DaypartSet
         
         
-        if self.action == 'schedule':
+        if self.action == '__schedule':
 
             daypartset = DaypartSet.objects.get(channel=self.channel)
             dayparts = Daypart.objects.filter(daypartset=daypartset).order_by('time_start')
-
-            
-            log.debug('...')
 
             now = datetime.datetime.now()
             today = now.date()
@@ -279,7 +281,7 @@ class Command(NoArgsCommand):
             action='store',
             dest='schedule_ahead',
             default=SCHEDULE_AHEAD,
-            help='Number of days to schedule ahead. Default 1'),
+            help='Number of hours to schedule ahead. Default 1'),
         )
 
     def handle_noargs(self, **options):

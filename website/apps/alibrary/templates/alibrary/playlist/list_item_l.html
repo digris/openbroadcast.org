@@ -5,18 +5,21 @@
      data-absolute_url="{{ item.get_absolute_url }}"
      {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 200x200 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}>
 
+
+    <div class="wrapper_properties">
+        <!-- property icons-->
+        <ul class="unstyled properties">
+            {% if item.rotation %}
+                <li><i class="icon-refresh" title="{% trans 'In Rotation' %}"></i></li>
+            {% endif %}
+        </ul>
+    </div>
+
     <div class="wrapper_icon">
 
         {% with object=item ct="playlist" %}
             {% include "alibrary/element/_item_actions_primary.html" %}
         {% endwith %}
-
-        <!-- type icons
-        <ul class="unstyled pull-right indicator">
-            <li><i class="icon-broadcast"></i></li>
-        </ul>
-         -->
-
 
     </div>
 

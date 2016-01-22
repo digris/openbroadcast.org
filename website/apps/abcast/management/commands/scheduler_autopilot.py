@@ -24,6 +24,11 @@ SCHEDULER_DEFAULT_USERNAME = 'root'
 
 SCHEDULER_DEFAULT_THEME = 3
 
+"""
+!!!!! OLD VERSION - DO NOT USE
+"""
+
+
 class Autopilot(object):
 
     def __init__(self, * args, **kwargs):
