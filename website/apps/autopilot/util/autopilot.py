@@ -402,7 +402,9 @@ class Autopilot(object):
 
         # TODO: don't affect past
         delete_qs = Emission.objects.filter(
-                channel=self.channel
+            channel=self.channel
+        ).exclude(
+            time_start__lt=datetime.datetime.now()
         )
 
         if self.user:
