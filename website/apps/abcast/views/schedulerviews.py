@@ -106,7 +106,11 @@ def schedule(request):
     # look for a selected playlist in session
     playlist_id = request.session.get('scheduler_selected_playlist_id', None)
     if playlist_id:
-        data['selected_playlist'] = Playlist.objects.get(pk=playlist_id)
+        try:
+            data['selected_playlist'] = Playlist.objects.get(pk=playlist_id)
+        except Playlist.DoesNotExist as e:
+            data['selected_playlist'] = None
+
 
     playlist_history = request.session.get('scheduler_selected_playlist_history', None)
     if playlist_history:
@@ -123,11 +127,9 @@ def schedule(request):
         """
 
 
-
-    
-    log.debug('schedule offset: %s' % offset)
-    log.debug('schedule today: %s' % today)
-    log.debug('schedule playlist_id: %s' % playlist_id)
+    # log.debug('schedule offset: %s' % offset)
+    # log.debug('schedule today: %s' % today)
+    # log.debug('schedule playlist_id: %s' % playlist_id)
     
     
     return render_to_response('abcast/schedule.html', data, context_instance=RequestContext(request))

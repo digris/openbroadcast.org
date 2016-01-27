@@ -41,6 +41,7 @@ class DABMetadataGenerator(object):
     def __init__(self, emission, content_object):
 
         self.emission = emission
+        self.playlist = emission.content_object
         self.content_object = content_object
 
         log.debug('generate dab metadata for emission: %s - content_object: %s' % (self.emission, self.content_object))
@@ -57,22 +58,22 @@ class DABMetadataGenerator(object):
             return ['zzZzzZZZzzZZ']
 
 
-        playlist = self.emission.content_object
+        playlist = self.playlist
 
         text = ''
-        if playlist.series:
-            text += '%s ' % playlist.series.name
-            if playlist.series_number:
-                text += '#%s ' % playlist.series_number
+        if self.playlist.series:
+            text += '%s ' % self.playlist.series.name
+            if self.playlist.series_number:
+                text += '#%s ' % self.playlist.series_number
             text += ' - '
 
-        text += '%s\n' % playlist.name
+        text += '%s\n' % self.playlist.name
 
         if self.content_object.name:
             text += '%s by %s - %s\n' % (self.content_object.name, self.content_object.artist.name, self.content_object.release.name)
 
-        if playlist.user:
-            text += 'curated by %s' % playlist.user.profile.get_display_name()
+        if self.playlist.user:
+            text += 'curated by %s' % self.playlist.user.profile.get_display_name()
 
         items.append(
             text
@@ -94,6 +95,7 @@ class DABMetadataGenerator(object):
         self.clean_slides()
 
         items = []
+        slide_id = 0
 
         ######################################################################
         # main slide, including image & text                                 #
@@ -116,14 +118,16 @@ class DABMetadataGenerator(object):
         })
 
         slide = self.compose_main_slide(
-                    primary_text=primary_text,
-                    secondary_text=secondary_text,
-                    overlay_image_path=main_image_path
+            primary_text=primary_text,
+            secondary_text=secondary_text,
+            overlay_image_path=main_image_path,
+            slide_id=slide_id
         )
 
         items.append(
             slide
         )
+        slide_id +=1
 
         ######################################################################
         # additional slides                                                  #
@@ -131,13 +135,26 @@ class DABMetadataGenerator(object):
         if self.content_object.artist and self.content_object.artist.main_image and os.path.isfile(self.content_object.artist.main_image.path):
 
             slide = self.compose_image_slide(
-                        image_path=self.content_object.artist.main_image.path,
-                        text='%s' % self.content_object.artist.name
+                image_path=self.content_object.artist.main_image.path,
+                slide_id=slide_id
             )
 
             items.append(
                 slide
             )
+            slide_id +=1
+
+        if self.playlist.main_image and os.path.isfile(self.playlist.main_image.path):
+
+            slide = self.compose_image_slide(
+                image_path=self.playlist.main_image.path,
+                slide_id=slide_id
+            )
+
+            items.append(
+                slide
+            )
+            slide_id +=1
 
 
         return items
@@ -182,7 +199,7 @@ class DABMetadataGenerator(object):
             with Image(filename=SLIDE_BASE_IMAGE) as image:
                 draw(image)
                 image.save(filename=path)
-                image.save(filename=os.path.join(SLIDE_BASE_DIR, 'debug-0.png'))
+                image.save(filename=os.path.join(SLIDE_BASE_DIR, 'debug-%s.png' % slide_id))
 
         return url
 
@@ -243,7 +260,7 @@ class DABMetadataGenerator(object):
             with Image(filename=SLIDE_BASE_IMAGE) as image:
                 draw(image)
                 image.save(filename=path)
-                image.save(filename=os.path.join(SLIDE_BASE_DIR, 'debug-1.png'))
+                image.save(filename=os.path.join(SLIDE_BASE_DIR, 'debug-%s.png' % slide_id))
 
 
 

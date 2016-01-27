@@ -150,6 +150,12 @@ class ChannelResource(ModelResource):
                 trailing_slash()),
                 self.wrap_view('get_now_playing'),
                 name="playlist_api_on_air"),
+
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/program%s$" % (
+                self._meta.resource_name,
+                trailing_slash()),
+                self.wrap_view('get_program'),
+                name="channel_api_program"),
         ]
 
 
@@ -304,16 +310,75 @@ class ChannelResource(ModelResource):
         return self.create_response(request, bundle)
         
 
-"""
-api mapping for airtime / pypo
-
-required resources are:
- - 
- 
-"""
 
 
 
+    def get_program(self, request, **kwargs):
+
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        channel = Channel.objects.get(**self.remove_api_resource_names(kwargs))
+        dayparts = channel.get_dayparts(day=datetime.datetime.now())
+
+        objects = []
+        now = datetime.datetime.now()
+
+        for daypart in dayparts:
+
+
+            time_start = datetime.datetime.combine(now.date(), daypart.time_start)
+            time_end = datetime.datetime.combine(now.date(), daypart.time_end)
+
+            #emissions = scheduler.get_schedule(range_start=time_start, range_end=time_end, channel=channel)
+
+            emissions = Emission.objects.filter(
+                time_end__gte=time_start,
+                time_start__lte=time_end,
+                channel=channel).order_by('-time_start')
+
+
+            content_programmers = [{
+                                       'display_name': x.user.profile.get_display_name(),
+                                       'absolute_url': x.user.get_absolute_url()
+                                   } for x in emissions]
+
+            content_creators = [{
+                                       'display_name': x.content_object.user.profile.get_display_name(),
+                                       'absolute_url': x.content_object.user.get_absolute_url()
+                                   } for x in emissions]
+
+
+            objects.append({
+                'time_start': daypart.time_start,
+                'time_end': daypart.time_end,
+                'name': daypart.name,
+                'description': daypart.description,
+                'mood': daypart.mood,
+                'sound': daypart.sound,
+                'talk': daypart.talk,
+                'content_programmers': content_programmers,
+                'content_creators': content_creators,
+            })
+
+
+        bundle = {
+                  'meta': {
+                      'total_count': len(objects),
+                  },
+                  'objects': objects,
+                  }
+
+        self.log_throttled_access(request)
+        return self.create_response(request, bundle)
+
+
+
+
+####################################################################
+# api mapping for airtime / pypo
+####################################################################
 class BaseResource(Resource):
     
     base_url = Site.objects.get_current().domain

@@ -73,7 +73,7 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
                     uri = co.get_playout_file(absolute=False)
 
                 data = {
-                        #'id': co.pk,
+
                         'id': co.uuid,
                         'cue_in': float(item.cue_in) / 1000,
                         'cue_out': float(co.get_duration() - item.cue_out) / 1000,
@@ -158,13 +158,18 @@ def get_history(range, channel=None):
 
 def get_schedule(range_start=0, range_end=0, channel=None):
     """
-    @range_start: seconds back
-    @range_end: seconds forward
+    @range_start: seconds back or datetime
+    @range_end: seconds forward or datetime
     """
 
     now = datetime.datetime.now()
-    range_start = now - datetime.timedelta(seconds=range_start)
-    range_end = now + datetime.timedelta(seconds=range_end)
+
+    if not isinstance(range_start, datetime.datetime):
+        range_start = now - datetime.timedelta(seconds=range_start)
+
+    if not isinstance(range_end, datetime.datetime):
+        range_end = now + datetime.timedelta(seconds=range_end)
+
 
     print
     print u'--------------------------------------------------------------------'

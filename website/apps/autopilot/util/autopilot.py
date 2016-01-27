@@ -5,6 +5,7 @@ import logging
 import time
 from django.db.models import Count, Sum, Q, Max, Min
 from django.contrib.auth.models import User
+from django.conf import settings
 from random import shuffle
 from abcast.models import Channel, Emission
 from abcast.models import Daypart as BroadcastDaypart
@@ -14,9 +15,10 @@ from alibrary.models import Daypart as PlaylistDaypart
 
 log = logging.getLogger(__name__)
 
-
-OVERLAP_TOLERANCE = 5 # tolerance in seconds. keep low! (1-5 seconds)
-SLOT_MIN_DURATION = 15 * 60
+OVERLAP_TOLERANCE = getattr(settings, 'AUTOPILOT_OVERLAP_TOLERANCE', 5) # tolerance in seconds. keep low! (1-5 seconds)
+SLOT_MIN_DURATION = getattr(settings, 'AUTOPILOT_SLOT_MIN_DURATION', 15 * 60)
+ALLOW_IGNORE_DUPLICATES = getattr(settings, 'AUTOPILOT_ALLOW_IGNORE_DUPLICATES', False)
+ALLOW_IGNORE_DAYPARTS = getattr(settings, 'AUTOPILOT_ALLOW_IGNORE_DAYPARTS', False)
 
 class Autopilot(object):
 
@@ -370,7 +372,7 @@ class Autopilot(object):
         ).nocache()
 
         # try again without filtering duplicates
-        if not playlists_qs.exists():
+        if not playlists_qs.exists() and ALLOW_IGNORE_DUPLICATES:
             playlists_qs = Playlist.objects.filter(
                 target_duration__gte=duration_filter,
                 type=type_filter,
@@ -380,7 +382,7 @@ class Autopilot(object):
             ).nocache()
 
         # try again without looking at dayparts
-        if not playlists_qs.exists():
+        if not playlists_qs.exists() and ALLOW_IGNORE_DAYPARTS:
             playlists_qs = Playlist.objects.filter(
                 target_duration__gte=duration_filter,
                 type=type_filter,

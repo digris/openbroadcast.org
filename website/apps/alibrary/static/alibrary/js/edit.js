@@ -380,8 +380,6 @@ EditUi = function () {
             api.destroy();
         } catch (e) {
         }
-        ;
-
 
         self.dialog_window = $('<div />').qtip({
             content: {
@@ -556,7 +554,7 @@ EditUi = function () {
                                     object: item,
                                     match: match,
                                     no_match: no_match
-                                }
+                                };
                                 var html = nj.render('alibrary/nj/provider/relation_inline.html', data);
 
                                 if($('.relation', inner).length) {
@@ -578,9 +576,7 @@ EditUi = function () {
                                 var data = {
                                     object: item,
                                     match: match
-                                }
-
-
+                                };
 
                                 html = nj.render('alibrary/nj/provider/relation_inline.html', data);
 
