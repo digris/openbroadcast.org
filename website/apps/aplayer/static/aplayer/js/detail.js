@@ -230,7 +230,7 @@ DetailPlayer = function () {
         }
 
 
-    }
+    };
 
 
     this.events = {

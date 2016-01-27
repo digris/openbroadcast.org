@@ -1755,6 +1755,10 @@ base.ui.pplayer_update = function (item) {
     $('#pplayer_inline_scroll .release').html('<a href="' + item.release_url + '">' + release + '</a>');
     $('#pplayer_inline_scroll .artist').html('<a href="' + item.artist_url + '">' + artist + '</a>');
 
+
+    console.info('playing track', item.id)
+    console.info('playing release', item.release_id)
+
     // try to set indicator for playing track
     $('.listview.container.medias .list_body_row').removeClass('playing');
     $('.listview.container.medias #list_item_' + item.id).addClass('playing');

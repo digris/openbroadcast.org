@@ -473,7 +473,7 @@ aplayer.base.play_in_popup = function (uri, token, offset, mode, force_seek, sou
         source: source
     };
 
-    console.log('play:', play)
+    //console.log('play:', play)
 
     local.play = play;
 
@@ -549,7 +549,6 @@ aplayer.base.grab_player = function (focus) {
         } catch (err) {
             // pass
         }
-        ;
     }
 
     return this.aplayer;
@@ -802,66 +801,10 @@ aplayer.base.update_channel_data = function (channel) {
 
     });
 
-    /*
-     $.get(channel.resource_uri + 'on-air/', function (data) {
-
-     debug.debug('on air:', data);
-
-     var media;
-     var emission;
 
 
-     if (data.playing && data.playing.item) {
 
-
-     $.get(data.playing.item, function (media) {
-     debug.debug('media on air:', media)
-     aplayer.vars.playlist[aplayer.states.current].media = media;
-
-     aplayer.ui.screen_display(aplayer.states.current);
-
-     if (data.start_next) {
-     var cnt_holder = $('.countdown span.time');
-     cnt_holder.countdown({
-     until: data.start_next,
-     format: 'HMS',
-     compact: true,
-     significant: 4
-     });
-     }
-     })
-
-     // make sure api has data updated
-     setTimeout(function () {
-     $.get(data.playing.emission, function (data) {
-     debug.debug('emission on air:', data)
-     aplayer.vars.playlist[aplayer.states.current].emission = emission;
-     aplayer.ui.screen_display(aplayer.states.current);
-
-     aplayer.ui.update_emission(data);
-
-     })
-     }, 2000);
-
-     } else {
-     var media = {
-     'name': 'No information available'
-     }
-     var emission = {
-     'name': 'No information available'
-     }
-     aplayer.vars.playlist[aplayer.states.current].media = media;
-     aplayer.vars.playlist[aplayer.states.current].emission = emission;
-     aplayer.ui.screen_display(aplayer.states.current);
-
-     debug.debug('nothing on air');
-     }
-
-     })
-     */
-
-
-}
+};
 
 
 aplayer.base.controls = function (args) {
@@ -1289,38 +1232,6 @@ aplayer.base.reload = function (uri, token, offset, mode) {
 aplayer.interval = function () {
 
 
-    /*
-     //aplayer.vars.states.position = Math.round(aplayer.player.getPosition());
-     aplayer.vars.states.position = aplayer.player.getPosition();
-     aplayer.vars.states.duration = Math.round(aplayer.player.getDuration());
-
-     aplayer.vars.states.position_rel = ((aplayer.vars.states.position / aplayer.vars.states.duration) * 100);
-
-
-     // TODO: MAKE THIS BETTER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-     aplayer.vars.states.buffer = aplayer.player.getBuffer();
-     aplayer.vars.states.state = aplayer.player.getState();
-
-     $('body').removeClass('buffering');
-     $('body').removeClass('playing');
-     $('body').removeClass('paused');
-     $('body').addClass(aplayer.vars.states.state.toLowerCase());
-
-     $(document).attr('title', aplayer.vars.states.buffer + ' | ' + aplayer.vars.states.state);
-
-     // update player _inside_ the popup
-     asite.ui.play_update(aplayer, 610);
-
-     // little hackish - update the parents aplayer (if parent exists...)
-     try {
-     parent_win.asite.ui.play_update(aplayer);
-     }
-     catch(err) {
-
-     };
-
-     */
 };
 
 

@@ -412,9 +412,7 @@ aplayer.ui.update = function(aplayer) {
 	if (media) {
 
 		// var media = aplayer.vars.playlist[aplayer.states.current];
-		
-		//debug.debug('media:', media);
-		//debug.debug('media name:', media.name);
+
 	
 		// var playlist_container = $('div.listing.extended');
 		$('div.item.playlist').not('div.item.playlist.' + media.uuid).removeClass('active playing');
@@ -423,6 +421,18 @@ aplayer.ui.update = function(aplayer) {
 		// modification for alternate layout
 		$('div.listview.medias .item').not('div.item.playlist.' + media.uuid).removeClass('active playing');
 		$('div.listview.medias .item.' + media.uuid).addClass('active playing');
+
+		try{
+			var release_uuid = media.release.uuid;
+		} catch(e) {
+			var release_uuid = false;
+		}
+
+		if(release_uuid) {
+			$('div.listview.releases .item').not('div.item.releases.' + release_uuid).removeClass('active playing');
+			$('div.listview.releases .item.' + release_uuid).addClass('active playing');
+
+		}
 	
 		// playhead
 		//var active_playhead = $('div.item.' + media.uuid + ' ' + 'div.indicator');
