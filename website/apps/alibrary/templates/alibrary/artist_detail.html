@@ -94,11 +94,8 @@
     <div class="tab-pane {% if releases.count > 0 %}active{% endif %}" id="tracklist"
          class="topflop">
 
-        <!--
-				<div class="pagination">
-				{{ media.render }}
-				</div>
-				-->
+
+        {% if m_top %}
         <section class="top">
 
 
@@ -132,7 +129,9 @@
             </div>
 
         </section>
+        {% endif %}
 
+        {% if m_flop %}
         <section class="flop">
 
             <h2>{% trans "Flop Tracks" %}</h2>
@@ -145,7 +144,6 @@
 
                     {% for item in m_flop %}
                         {% include "alibrary/media/_list_item_foreign_xs.html" %}
-                        {# include "alibrary/media/list_item_s.html" #}
                     {% empty %}
                         <p>
                             {% trans "Not enough ratings to calculate the 'Flops'." %}
@@ -155,6 +153,7 @@
             </div>
 
         </section>
+        {% endif %}
 
 
         <section class="top">
@@ -165,7 +164,7 @@
                             <span class="pull-right">
                                 <a href="{% spurl path=release_list query="artist={{ object.slug }}" %}">
                                     <i class="icon-chevron-sign-right"></i>
-                                    {% trans "Show all" %} {{ object.releases.count }} {% trans "releases by" %} {{ object.name }}
+                                    {% trans "Show all" %} {{ object.get_releases.count }} {% trans "releases by" %} {{ object.name }}
                                 </a>
                             </span>
             </h2>

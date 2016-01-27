@@ -3,7 +3,13 @@ $popup-width: 480px
 
 .popup-select-playlist
 
-  height: $popup-height !important
+  height: $popup-height + 8 !important
+
+  ::-webkit-input-placeholder
+    color: #a5a5a5
+
+  ::-moz-placeholder
+    color: #fff
 
   // content
   > div
@@ -19,6 +25,7 @@ $popup-width: 480px
     section.search
       height: 30px
       input
+        padding-left: 4px
         margin-bottom: 0
         width: 100px
         float: left
@@ -108,6 +115,8 @@ $popup-width: 480px
           width: 100%
 
         input
+
+          padding-left: 4px
           margin-bottom: 0
           width: 100%
           float: left

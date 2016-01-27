@@ -110,6 +110,31 @@ $ui-dialog-title-color: #fff !default
 
 
 
+
+  .qtip-tip
+    //display: none !important
+    margin: 0 auto
+    overflow: hidden
+    z-index: 10
+    position: absolute
+    color: #123456
+    background: transparent
+    border: 0 dashed transparent
+    .qtip-vml
+      position: absolute
+      color: #123456
+      background: transparent
+      border: 0 dashed transparent
+    canvas
+      top: 0
+      left: 0
+    .qtip-vml
+      behavior: url(#default#VML)
+      display: inline-block
+      visibility: visible
+
+
+
 .__refactoring__
 
 
@@ -237,6 +262,7 @@ $ui-dialog-title-color: #fff !default
         filter: none
         -ms-filter: none
     .qtip-tip
+      display: none !important
       margin: 0 auto
       overflow: hidden
       z-index: 10

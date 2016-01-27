@@ -478,23 +478,25 @@ CollectorApp = (function () {
         // TODO: re-enable nano scroller. having issue a.t.m.
         //$('.listing.nano', el).nanoScroller({ flash: false, preventPageScrolling: true });
 
-        // form actions
-        el.on('click', 'a[data-action]', function (e) {
-            var action = $(this).data('action');
-            if (action == 'cancel') {
-                api.hide();
-            }
-            if (action == 'save') {
+        // search / filter
+        el.on('keyup', 'input.search', function (e) {
 
-                var input = $('input.name', $(this).parents('.form'));
-                if (input.val().length < 1) {
-                    return false;
-                } else {
-                    self.create_playlist(input.val());
-                    input.val('');
-                }
+            var q = $(this).val();
+
+            if(q.length < 2){
+                $('.item', el).removeClass('hidden');
+            } else {
+                $('.item', el).addClass('hidden');
+                $('.item', el).each(function(i, item){
+                    var name = $(this).data('name').toLowerCase();
+                    if (name.indexOf(q) != -1) {
+                        $(this).removeClass('hidden');
+                    }
+                });
             }
+
         });
+        $('input.search', el).focus();
 
         // item actions
         el.on('click', '.item.playlist', function (e) {
@@ -516,26 +518,31 @@ CollectorApp = (function () {
 
         });
 
-        // search / filter
-        el.on('keyup', 'input.search', function (e) {
+        // form actions
+        el.on('click', 'a[data-action]', function (e) {
+            var action = $(this).data('action');
+            if (action == 'cancel') {
+                api.hide();
+            }
+            if (action == 'save') {
 
-            var q = $(this).val();
+                var input = $('input.name', $(this).parents('.form'));
+                if (input.val().length < 1) {
+                    return false;
+                } else {
+                    self.create_playlist(input.val());
+                    input.val('');
+                }
+            }
+        });
+        el.on('keydown', 'input.name', function (e) {
 
-            if(q.length < 2){
-                $('.item', el).removeClass('hidden');
-            } else {
-                $('.item', el).addClass('hidden');
-                $('.item', el).each(function(i, item){
-                    var name = $(this).data('name').toLowerCase();
-                    if (name.indexOf(q) != -1) {
-                        $(this).removeClass('hidden');
-                    }
-                });
+            if(e.keyCode == 13) {
+                e.preventDefault();
+                $(this).parent().find('a[data-action="save"]').click()
             }
 
         });
-
-        $('input.search', el).focus();
 
         self.update_dialog_markers();
 
@@ -703,7 +710,7 @@ CollectorApp = (function () {
                 }
             }
         });
-    }
+    };
 
 
     this.collect = function (item, media) {
@@ -714,12 +721,12 @@ CollectorApp = (function () {
         var ids = [];
         $.each(media, function (i, x) {
             ids.push(x.id);
-        })
+        });
 
         var data = {
             ids: ids.join(','),
             ct: 'media'
-        }
+        };
 
         jQuery.ajax({
             url: item.resource_uri.replace('simple', '') + 'collect/',
