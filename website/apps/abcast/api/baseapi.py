@@ -339,16 +339,25 @@ class ChannelResource(ModelResource):
                 channel=channel).order_by('-time_start')
 
 
-            content_programmers = [{
-                                       'display_name': x.user.profile.get_display_name(),
-                                       'absolute_url': x.user.get_absolute_url()
-                                   } for x in emissions]
 
-            content_creators = [{
-                                       'display_name': x.content_object.user.profile.get_display_name(),
-                                       'absolute_url': x.content_object.user.get_absolute_url()
-                                   } for x in emissions]
+            content_programmers = []
+            for emission in emissions:
+                item = {
+                    'display_name': emission.user.profile.get_display_name(),
+                    'absolute_url': emission.user.get_absolute_url()
+                }
+                if not item in content_programmers:
+                    content_programmers.append(item)
 
+
+            content_creators = []
+            for emission in emissions:
+                item = {
+                    'display_name': emission.content_object.user.profile.get_display_name(),
+                    'absolute_url': emission.content_object.user.get_absolute_url()
+                }
+                if not item in content_creators:
+                    content_creators.append(item)
 
             objects.append({
                 'time_start': daypart.time_start,
