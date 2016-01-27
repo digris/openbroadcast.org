@@ -45,6 +45,19 @@
         {% include "element/_pagination.html" %}
     </div>
 
+	<div class="wrapper list_style">
+
+			<ul class="unstyled">
+				<li class="left">
+					<a href="{% spurl base=request.get_full_path set_query="list_style=m" %}" title="Set Style" class="action list_style m {% if list_style == "m" %}active{% endif %}"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Disply Type" /></a>
+				</li>
+				<li class="left">
+					<a href="{% spurl base=request.get_full_path set_query="list_style=l" %}" title="Set Style" class="action list_style l {% if list_style == "l" %}active{% endif %}"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Disply Type" /></a>
+				</li><li class="clear"></li>
+			</ul>
+
+	</div>
+
 </div>
 <!-- end: listing header / paginator -->
 
@@ -79,9 +92,13 @@
 		
 		{% for item in object_list %}
 		
-		{# if list_style == "m" #}
+		{% if list_style == "m" %}
 		{% include "profiles/profile/_list_item_m.html" %}
-		{# endif #}
+		{% endif %}
+
+		{% if list_style == "l" %}
+		{% include "profiles/profile/_list_item_l.html" %}
+		{% endif %}
 
 		{% endfor %}
 

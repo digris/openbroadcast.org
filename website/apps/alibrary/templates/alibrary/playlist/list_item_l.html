@@ -9,7 +9,7 @@
     <div class="wrapper_properties">
         <!-- property icons-->
         <ul class="unstyled properties">
-            {% if item.rotation %}
+            {% if item.rotation and item.type == 'broadcast' %}
                 <li><i class="icon-refresh" title="{% trans 'In Rotation' %}"></i></li>
             {% endif %}
         </ul>

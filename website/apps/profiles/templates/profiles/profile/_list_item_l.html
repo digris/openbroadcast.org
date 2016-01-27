@@ -1,0 +1,91 @@
+{% load thumbnail i18n truncate display_tags arating_tags spurl spacify_tags humanize %}
+
+
+
+<div class="list_body_row clickable item profile {% if item.mentor == user %}owner{% endif %} {% if item.user == user %}owner{% endif %} view edit"
+     id="list_item_{{ item.pk }}"
+     data-resource_uri="{{ item.get_api_url }}"
+     data-absolute_url="{{ item.get_absolute_url }}"
+    {% if item.image %}style="background-image: url({% thumbnail item.image 200x200 crop upscale subject_location=item.image.subject_location %});"{% endif %}>
+
+    <div class="wrapper_properties">
+        <!-- property icons-->
+        <ul class="unstyled properties">
+            <li>
+				{% if item.is_approved %}
+				<i class="icon-star" title="{% trans 'Approved user' %}"></i>
+				{% else %}{% if item.mentor.username %}
+				<i class="icon-star-empty"></i>
+				{% else %}
+				<i class="icon-star-empty"></i>
+				{% endif %}{% endif %}
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="spacer tag-cloud">
+
+        <ul class="tags unstyled horizontal">
+            {% for tag in item.tags|slice:":5" %}
+                <li class="{% if tag.pk in active_tags %}__active{% endif %}">{{ tag.name|truncate_chars_inner:10 }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    <div class="wrapper_info">
+
+        <div class="wrapper_inner">
+
+            <div class="list_body_item">
+                <ul class="title">
+                    <li class="bold">
+                        <a href="{{ item.get_absolute_url }}" title="{{ item.get_display_name }}">
+                            {{ item.get_display_name|truncate_chars_inner:16 }}
+                            {% if item.country %}({{ item.country.iso2_code }}){% endif %}
+                            {% topflop_for_object item %} </a>
+                    </li>
+
+                </ul>
+
+                <ul class="unstyled">
+                    <li>
+                    {% for group in item.get_groups.all %}
+                    <span>
+                        {{ group.name|spacify }}{% if not forloop.last %}, {% endif %}
+                    </span>
+                    {% endfor %}
+                    </li>
+                </ul>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="wrapper_action">
+
+
+        <ul class="unstyled action secondary horizontal clearfix">
+
+            {% if user.is_authenticated%}
+                <li>
+                    <a href="{% url "postman_write" item.user.username %}" title="{% trans "Send Message" %}"><i class="icon-envelope"></i></a>
+                </li>
+            {% endif %}
+
+        </ul>
+
+    </div>
+
+
+    <div class="by" style="position: absolute; bottom: 0; left: 5px; color: #999;">
+        {% trans "Joined" %}:</span> <span class="value">{{ item.user.date_joined|date:"SHORT_DATE_FORMAT" }}
+    </div>
+
+</div>
+
