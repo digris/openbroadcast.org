@@ -375,6 +375,7 @@ def reassign_items(request, *args, **kwargs):
             r = Release.objects.get(pk=int(release_id))
         else:
             r = Release(name=name.strip())
+            r.creator = r.last_editor = request.user
             r.save()
 
         for id in media_ids:
