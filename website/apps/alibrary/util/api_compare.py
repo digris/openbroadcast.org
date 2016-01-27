@@ -209,6 +209,20 @@ class MusicbrainzAPILookup(APILookup):
                             })
                 data[k] = mapped
 
+            if k == 'ipis':
+                try:
+                    d = data[k]
+                    res['ipi_code'] = d[0]
+                except:
+                    pass
+
+            if k == 'isni':
+                try:
+                    d = data[k]
+                    res['isni_code'] = d
+                except:
+                    pass
+
             if k == 'tags':
                 try:
                     d = data[k]
@@ -223,6 +237,21 @@ class MusicbrainzAPILookup(APILookup):
 
         # disable tags on mb
         res['d_tags'] = res['tags'] = ''
+
+
+        # temporary hack to get isni
+        # http://tickets.musicbrainz.org/browse/MBS-8762
+        api_url = 'http://%s/ws/2/artist/%s/?fmt=xml&inc=%s' % (MUSICBRAINZ_HOST, provider_id, "+".join(inc))
+        log.info('composed api url: %s' % api_url)
+        r = requests.get(api_url)
+        if r.status_code == 200:
+            import xmltodict
+            import json
+            try:
+                res['isni_code'] = json.loads(json.dumps(xmltodict.parse(r.text)))['metadata']['artist']['isni-list']['isni']
+            except:
+                pass
+
 
         return res
 
