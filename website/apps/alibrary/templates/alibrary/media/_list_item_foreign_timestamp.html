@@ -46,25 +46,23 @@
 
         <ul class="unstyled">
             <li class="bold">
-
 				<a href="{{ item.get_absolute_url }}" title="{{ item.name }}">
 				{{ item.name|truncate_chars_inner:32 }}
 				{% if item.country %}({{ item.country }}){% endif %}
 				{% topflop_for_object item %} </a>
-
             </li>
             <li>
-                {% if item.artist %}
-
+                {%  if item.get_mediaartists %}
+                    {% include "alibrary/media/_credited_artists.html" with artist_list=item.get_mediaartists %}
+                {% else %}{% if item.artist %}
                     {% if item.artist.get_absolute_url %}
                         <a href="{{ item.artist.get_absolute_url }}"
                            title="{{ item.artist.name }}">{{ item.artist.name|truncate_chars_inner:28 }}</a>
                     {% else %}
                         <span>{{ item.artist.name|truncate_chars_inner:28 }}</span>
                     {% endif %}
-                {% else %}
-                    &nbsp;
-                {% endif %}
+                {% endif %}{% endif %}
+                &nbsp;
             </li>
         </ul>
 

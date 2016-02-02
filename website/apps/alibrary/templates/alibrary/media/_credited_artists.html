@@ -1,0 +1,20 @@
+{% for artist in artist_list %}
+
+    {# check if extended artist (with join phrase) #}
+    {% if "join_phrase" in artist %}
+
+        {% with item=artist.artist %}
+            {% if artist.join_phrase %}{{ artist.join_phrase }}{% endif %}
+            {% include "alibrary/element/_inline_link.html" %}
+        {% endwith %}
+
+    {% else %}
+
+        {% with item=artist %}
+            {% include "alibrary/element/_inline_link.html" %}
+            {% if not forloop.last %},{% endif %}
+        {% endwith %}
+
+    {% endif %}
+
+{% endfor %}

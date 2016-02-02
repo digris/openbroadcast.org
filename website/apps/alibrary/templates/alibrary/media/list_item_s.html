@@ -61,7 +61,11 @@
                 {% endif %}
             </li>
             <li>
-                {% if item.artist %}
+
+
+                {%  if item.get_mediaartists %}
+                    {% include "alibrary/media/_credited_artists.html" with artist_list=item.get_mediaartists %}
+                {% else %}{% if item.artist %}
 
                     {% if item.artist.get_absolute_url %}
                         <a href="{{ item.artist.get_absolute_url }}"
@@ -75,10 +79,8 @@
                        title="{% trans "Only show tracks by" %} {{ item.artist.name }}"
                        style="vertical-align: top;"><span class="filter icon"></span></a>
 
-
-                {% else %}
-                    &nbsp;
-                {% endif %}
+                {% endif %}{% endif %}
+                &nbsp;
             </li>
         </ul>
 
