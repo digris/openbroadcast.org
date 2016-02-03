@@ -92,6 +92,41 @@ class MaintenanceWorker(object):
                     item.status = 1
                     item.save()
 
+        if self.action == 'reprocess_masters':
+
+            from alibrary.models import Media
+            from base.audio.fileinfo import FileInfoProcessor
+
+            items = Media.objects.filter(master_bitrate=None)[0:self.limit]
+
+            for item in items:
+                if item.master and item.master.path:
+                    file_processor = FileInfoProcessor(item.master.path)
+                    if file_processor.audio_stream:
+
+                        print '+',
+
+                        # print 'encoding: %s' % file_processor.encoding
+                        # print 'filesize: %s' % file_processor.filesize
+                        # print 'bitrate: %s' % file_processor.bitrate
+                        # print 'samplerate: %s' % file_processor.samplerate
+                        # print 'duration: %s' % file_processor.duration
+
+
+                        Media.objects.filter(pk=item.pk).update(
+                            master_encoding = file_processor.encoding,
+                            master_filesize = file_processor.filesize,
+                            master_bitrate = file_processor.bitrate,
+                            master_samplerate = file_processor.samplerate,
+                            #master_duration = file_processor.duration
+                        )
+
+                    else:
+                        print '.',
+
+
+
+
 
         if self.action == 'echonest_media':
 

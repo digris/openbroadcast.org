@@ -167,7 +167,7 @@ class Release(MigrationMixin):
     def get_extra_artists(self):
         ea = []
         for artist in self.extra_artists.all():
-            ea.push(artist.name)
+            ea.append(artist.name)
         return ea
     
     def get_last_revision(self):
@@ -491,40 +491,11 @@ class Release(MigrationMixin):
 try:
     tagging_register(Release)
 except Exception as e:
-    print '***** %s' % e
+    print e
     pass
 
 
 arating.enable_voting_on(Release)
-
-
-"""
-Actstream handling moved to task queue to avoid wrong revision due to transaction
-"""
-"""
-from actstream import action
-def action_handler(sender, instance, created, **kwargs):
-
-    print
-    print 'Release - action_handler'
-    print sender
-    print instance
-
-    action_handler_task.delay(sender, instance, created)
-
-post_save.connect(action_handler, sender=Release)
-
-@task
-def action_handler_task(sender, instance, created):
-    try:
-        verb = _('updated')
-        if created:
-            verb = _('created')
-        action.send(instance.get_last_editor(), verb=verb, target=instance)
-    except Exception, e:
-        print e
-"""
-
 
 class ReleaseExtraartists(models.Model):
     artist = models.ForeignKey('Artist', related_name='release_extraartist_artist')
@@ -535,7 +506,6 @@ class ReleaseExtraartists(models.Model):
         verbose_name = _('Role')
         verbose_name_plural = _('Roles')
 
-""""""
 class ReleaseAlbumartists(models.Model):
     artist = models.ForeignKey('Artist', related_name='release_albumartist_artist')
     release = models.ForeignKey('Release', related_name='release_albumartist_release')
@@ -567,32 +537,11 @@ class ReleaseRelations(models.Model):
         app_label = 'alibrary'
         verbose_name = _('Relation')
         verbose_name_plural = _('Relations')
-        
 
-""""""
+
 class ReleaseMedia(models.Model):
     release = models.ForeignKey('Release')
     media = models.ForeignKey('Media')
     position = models.PositiveIntegerField(null=True, blank=True)
     class Meta:
         app_label = 'alibrary'
-
-
-
-
-
-
-
-        
-# class ReleasePlugin(CMSPlugin):
-#
-#     release = models.ForeignKey(Release)
-#     def __unicode__(self):
-#         return self.release.name
-#
-#     # meta
-#     class Meta:
-#         app_label = 'alibrary'
-        
-  
-   

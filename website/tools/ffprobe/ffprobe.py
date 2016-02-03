@@ -208,7 +208,8 @@ class FFStream:
 			try:
 				b=int(self.__dict__['bit_rate'])
 			except Exception as e:
-				print "None integer bitrate"
+				pass
+				#print "None integer bitrate"
 		return b
 			
 if __name__ == '__main__':

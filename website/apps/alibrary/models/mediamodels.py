@@ -48,7 +48,7 @@ from base.audio.fileinfo import FileInfoProcessor
 log = logging.getLogger(__name__)
 
 USE_CELERYD = getattr(settings, 'ALIBRARY_USE_CELERYD', False)
-AUTOCREATE_ECHOPRINT = False
+AUTOCREATE_ECHOPRINT = getattr(settings, 'ALIBRARY_AUTOCREATE_ECHOPRINT', False)
 
 LAME_BINARY = getattr(settings, 'LAME_BINARY')
 SOX_BINARY = getattr(settings, 'SOX_BINARY')
@@ -991,6 +991,9 @@ class MediaArtists(models.Model):
         (',', _(',')),
         ('and', _('and')),
         ('feat.', _('feat.')),
+        ('presents.', _('presents')),
+        ('meets.', _('meets')),
+        ('with.', _('with')),
         ('vs.', _('vs.')),
         ('-', _('-')),
     )
