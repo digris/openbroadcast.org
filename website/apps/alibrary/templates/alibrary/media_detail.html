@@ -279,9 +279,10 @@
                     <dt>{% trans "Bitrate" %}</dt>
                     <dd>{% if object.master_bitrate %}{{ object.master_bitrate }} Kbps{% else %}-{% endif %}</dd>
 
-
+                    <!--
                     <dt>{% trans "Fingerprint" %}</dt>
                     <dd>{{ object.get_echoprint_status_display }}</dd>
+                    -->
 
                     <dt>{% trans "Hash" %} (SHA1)</dt>
                     <dd style="font-size: 90%;">{{ object.master_sha1|upper }}</dd>
