@@ -94,17 +94,18 @@ class MaintenanceWorker(object):
 
         if self.action == 'reprocess_masters':
 
+            from tqdm import tqdm
             from alibrary.models import Media
             from base.audio.fileinfo import FileInfoProcessor
 
             items = Media.objects.filter(master_bitrate=None)[0:self.limit]
 
-            for item in items:
+            for item in tqdm(items):
                 if item.master and item.master.path:
                     file_processor = FileInfoProcessor(item.master.path)
                     if file_processor.audio_stream:
 
-                        print '+',
+                        #print '+',
 
                         # print 'encoding: %s' % file_processor.encoding
                         # print 'filesize: %s' % file_processor.filesize
@@ -122,7 +123,8 @@ class MaintenanceWorker(object):
                         )
 
                     else:
-                        print '.',
+                        pass
+                        #print '.',
 
 
 
