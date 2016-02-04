@@ -34,11 +34,24 @@ EditUi = function () {
     this.init = function () {
         self.bindings();
         self.iface();
+        self.layout();
     };
 
     this.iface = function () {
-        this.floating_sidebar('lookup_providers', 120)
+        this.floating_sidebar('lookup_providers', 120);
         self.autogrow();
+    };
+
+    this.layout = function () {
+        // hack for albumartist formset
+        $('.albumartist-row').each(function(i, el){
+            if(i == 0) {
+                $('.controls select', $(el)).attr("disabled", true);
+                //$(el).fadeOut(5000)
+            }
+        })
+
+
     };
 
 
@@ -59,10 +72,9 @@ EditUi = function () {
 
                 if(j < 3){
                    $(el).addClass('hidden')
-                };
+                }
             });
         });
-
 
     };
 

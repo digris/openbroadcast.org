@@ -69,6 +69,8 @@ class Identifier(object):
         
         self.pp = pprint.PrettyPrinter(indent=4)
         self.pp.pprint = lambda d: None
+
+        self.file_metadata = None
         
         if MUSICBRAINZ_HOST:
             musicbrainzngs.set_hostname(MUSICBRAINZ_HOST)
@@ -92,6 +94,42 @@ class Identifier(object):
 
     
     """
+    look for a duplicate by metadata
+    """
+    def id_by_metadata(self, file):
+
+        from alibrary.models.mediamodels import Media
+
+        try:
+            metadata = self.extract_metadata(file)
+        except:
+            metadata = None
+
+
+        if not metadata:
+            return
+
+        if 'performer_name' in metadata and 'media_name' in metadata and 'release_name' in metadata:
+
+            qs = Media.objects.filter(
+                name__icontains=metadata['media_name'],
+                artist__name__icontains=metadata['performer_name']
+            )
+
+            if not qs.exists():
+                qs = Media.objects.filter(
+                    name__icontains=metadata['media_name'],
+                    release__name__icontains=metadata['release_name']
+                )
+
+            if qs.exists():
+                return qs[0].pk
+
+
+        return None
+
+
+    """
     look for a duplicate by fingerprint
     """
     def id_by_echoprint(self, file):
@@ -112,7 +150,7 @@ class Identifier(object):
                 #print res.score
                 #print res.TRID
                 return int(res.TRID)
-            
+
         except Exception, e:
             log.warning('echoprint error: %s' % (e))
 
@@ -121,6 +159,10 @@ class Identifier(object):
     
     
     def extract_metadata(self, file):
+
+
+        if self.file_metadata:
+            return self.file_metadata
 
         log.info('Extracting metadata for: %s' % (file.path))
         
@@ -346,6 +388,8 @@ class Identifier(object):
         #     except:
         #         pass
         # print "******************************************************************"
+
+        self.file_metadata = dataset
 
         return dataset
     

@@ -48,7 +48,7 @@ from base.audio.fileinfo import FileInfoProcessor
 log = logging.getLogger(__name__)
 
 USE_CELERYD = getattr(settings, 'ALIBRARY_USE_CELERYD', False)
-AUTOCREATE_ECHOPRINT = getattr(settings, 'ALIBRARY_AUTOCREATE_ECHOPRINT', False)
+AUTOCREATE_ECHOPRINT = getattr(settings, 'ALIBRARY_AUTOCREATE_ECHOPRINT', True)
 
 LAME_BINARY = getattr(settings, 'LAME_BINARY')
 SOX_BINARY = getattr(settings, 'SOX_BINARY')
@@ -671,7 +671,6 @@ class Media(MigrationMixin):
             d = json.loads(stdout[0])
         except ValueError, e:
             log.error('unable to load JSON: %s' % e)
-            log.error('stdout: %s' % stdout)
 
             return False
 

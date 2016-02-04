@@ -358,6 +358,11 @@ class ImportFile(BaseModel):
             media_id = identifier.id_by_sha1(obj.file)
             log.debug('duplicate by SHA1: %s' % media_id)
 
+            # duplicate check by name matching
+            if not media_id:
+                media_id = identifier.id_by_metadata(obj.file)
+                log.debug('duplicate by metadata: %s' % media_id)
+
             # duplicate check by echoprint
             if not media_id:
                 media_id = identifier.id_by_echoprint(obj.file)
