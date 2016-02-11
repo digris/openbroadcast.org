@@ -109,21 +109,26 @@ class Identifier(object):
         if not metadata:
             return
 
-        if 'performer_name' in metadata and 'media_name' in metadata and 'release_name' in metadata:
+        try:
 
-            qs = Media.objects.filter(
-                name__icontains=metadata['media_name'],
-                artist__name__icontains=metadata['performer_name']
-            )
+            if 'performer_name' in metadata and 'media_name' in metadata and 'release_name' in metadata:
 
-            if not qs.exists():
                 qs = Media.objects.filter(
                     name__icontains=metadata['media_name'],
-                    release__name__icontains=metadata['release_name']
+                    artist__name__icontains=metadata['performer_name']
                 )
 
-            if qs.exists():
-                return qs[0].pk
+                if not qs.exists():
+                    qs = Media.objects.filter(
+                        name__icontains=metadata['media_name'],
+                        release__name__icontains=metadata['release_name']
+                    )
+
+                if qs.exists():
+                    return qs[0].pk
+
+        except:
+            pass
 
 
         return None
@@ -400,41 +405,47 @@ class Identifier(object):
     def get_aid(self, file):
 
         log.info('lookup acoustid for: %s' % (file.path))
-        data = acoustid.match(AC_API_KEY, file.path)
 
-        res = []
-        i = 0
-        for d in data:
-            selected = False
-            if i == 0:
-                selected = True
-            t = {
-                 'score': d[0],
-                 'id': d[1],
-                 'selected': selected,
-                 }
+        try:
+
+            data = acoustid.match(AC_API_KEY, file.path)
+
+            res = []
+            i = 0
+            for d in data:
+                selected = False
+                if i == 0:
+                    selected = True
+                t = {
+                     'score': d[0],
+                     'id': d[1],
+                     'selected': selected,
+                     }
 
 
-            if i < LIMIT_AID_RESULTS:
-                log.debug('acoustid: got result (loop: %s) - score: %s | mb id: %s' % (i, d[0], d[1]))
-                if i < 1:
-                    res.append(t)
-                else:
-                    # only append further releases if score is high enough
-                    if float(d[0]) > AID_MIN_SCORE:
+                if i < LIMIT_AID_RESULTS:
+                    log.debug('acoustid: got result (loop: %s) - score: %s | mb id: %s' % (i, d[0], d[1]))
+                    if i < 1:
                         res.append(t)
                     else:
-                        log.debug('skipping acoustid, score %s < %s (AID_MIN_SCORE)' % (float(d[0]), AID_MIN_SCORE))
+                        # only append further releases if score is high enough
+                        if float(d[0]) > AID_MIN_SCORE:
+                            res.append(t)
+                        else:
+                            log.debug('skipping acoustid, score %s < %s (AID_MIN_SCORE)' % (float(d[0]), AID_MIN_SCORE))
 
-            else:
-                pass
-                #log.debug('skipping acoustid, we have %s of them' % i)
-            i += 1
+                else:
+                    pass
+                    #log.debug('skipping acoustid, we have %s of them' % i)
+                i += 1
 
-        log.info('got %s possible matches via acoustid' % len(res))
+            log.info('got %s possible matches via acoustid' % len(res))
 
 
-        return res
+            return res
+
+        except:
+            return None
 
        
     def get_musicbrainz(self, obj):
@@ -924,9 +935,7 @@ class Identifier(object):
             
             
         return formatted_releases
-    
-    
-    
+
     
     
     def complete_musicbrainz(self, results):
@@ -1010,20 +1019,9 @@ class Identifier(object):
             res['recording'] = r
             res['relations'] = relations
             master_releases.append(res)
-            
-            
-            
+
         master_releases = self.format_master_releases(master_releases)
-            
 
-        print
-        print "MASTER RELEASES"
-        print master_releases
-        print
-
-        
-        
-        
         return master_releases
     
     
@@ -1204,12 +1202,9 @@ class Identifier(object):
             except Exception, e:
                 print e
                 pass
-            
-            
-            
+
             r['label'] = l
-            
-            
+
             # relation mapping
             rel = {}
             rel['discogs_url'] = None
@@ -1233,28 +1228,15 @@ class Identifier(object):
             
             r['relations'] = rel
 
-            
-
             if r not in releases:
                 releases.append(r)
-        
-        
+
         return releases
 
 
     def mb_order_by_releasedate(self, releases):
-        
-        print
-        print
-        print "mb_order_by_releasedate"
-        print
-        
+
         for release in releases:
             print release
-        
-        
-        return releases
-        
 
-        
-        
+        return releases

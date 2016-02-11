@@ -354,19 +354,31 @@ class ImportFile(BaseModel):
             media_id = None
 
         else:
+
+            media_id = None
+
             # duplicate check by sha1
-            media_id = identifier.id_by_sha1(obj.file)
-            log.debug('duplicate by SHA1: %s' % media_id)
+            try:
+                media_id = identifier.id_by_sha1(obj.file)
+                log.debug('duplicate by SHA1: %s' % media_id)
+            except:
+                log.warning('unable to identify by sha1: %s' % media_id)
 
             # duplicate check by name matching
             if not media_id:
-                media_id = identifier.id_by_metadata(obj.file)
-                log.debug('duplicate by metadata: %s' % media_id)
+                try:
+                    media_id = identifier.id_by_metadata(obj.file)
+                    log.debug('duplicate by metadata: %s' % media_id)
+                except:
+                    log.warning('unable to identify by metadata: %s' % media_id)
 
             # duplicate check by echoprint
             if not media_id:
-                media_id = identifier.id_by_echoprint(obj.file)
-                log.debug('duplicate by echoprint: %s' % media_id)
+                try:
+                    media_id = identifier.id_by_echoprint(obj.file)
+                    log.debug('duplicate by echoprint: %s' % media_id)
+                except:
+                    log.warning('unable to identify by echoprint: %s' % media_id)
 
         try:
             metadata = identifier.extract_metadata(obj.file)

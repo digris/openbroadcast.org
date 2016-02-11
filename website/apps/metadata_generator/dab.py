@@ -18,6 +18,8 @@ log = logging.getLogger(__name__)
 MEDIA_ROOT  = getattr(settings, 'MEDIA_ROOT')
 MEDIA_URL  = getattr(settings, 'MEDIA_URL')
 
+DEFAULT_DLS_TEXT = 'Open Broadcast'
+
 SLIDE_BASE_IMAGE = getattr(settings, 'DAB_SLIDE_BASE_IMAGE', os.path.join(
         os.path.dirname(__file__), 'asset', 'slide_base.png')
     )
@@ -41,7 +43,7 @@ class DABMetadataGenerator(object):
     def __init__(self, emission, content_object):
 
         self.emission = emission
-        self.playlist = emission.content_object
+        self.playlist = emission.content_object if emission else None
         self.content_object = content_object
 
         log.debug('generate dab metadata for emission: %s - content_object: %s' % (self.emission, self.content_object))
@@ -55,7 +57,7 @@ class DABMetadataGenerator(object):
         items = []
 
         if not (self.emission and self.content_object):
-            return ['zzZzzZZZzzZZ']
+            return [DEFAULT_DLS_TEXT]
 
 
         playlist = self.playlist
@@ -86,7 +88,7 @@ class DABMetadataGenerator(object):
     def get_slides(self):
 
         if not (self.emission and self.content_object):
-            return [self.generate_slide(
+            return [self.compose_main_slide(
                     primary_text='-',
                     secondary_text='-',
             )]
