@@ -68,7 +68,7 @@
             <span {% if forloop.counter0 > 5 %}style="display: none;" class="limited"{% endif %}>{{ name }}{% if not forloop.last %},{% endif %}</span>
 			{% endfor %}
             {% if object.namevariations.count > 5%}
-                <a href="#" class="toggle">{% trans "Show all" %} ({{ object.namevariations.count }})</a>
+                <a href="#" class="toggle">{% trans "Show more/less" %}<!--({{ object.namevariations.count }})--></a>
             {% endif %}
 		</dd>
 		{% endif %}
