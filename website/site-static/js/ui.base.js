@@ -1049,15 +1049,11 @@ base.ui.searchbar = function () {
 /* tagcloud (inline) */
 base.ui.tagcloud = function () {
 
-
     $('a#tagcloud_inline_toggle').live('click', function (e) {
-
-
 
         e.preventDefault();
 
         var display = $('#tagcloud_inline').css('display');
-
 
         if (display == 'none') {
             $('#tagcloud_inline').data('uistate', 'expanded');
@@ -1067,28 +1063,6 @@ base.ui.tagcloud = function () {
         }
 
     });
-
-    // tag-level chooser
-    total_count = 0;
-    $('#tagcloud_inline .toggle-level').each(function (i, e) {
-
-        /*
-        var level = $(this).data('taglevel');
-        var count = $('a.level' + level, '#tagcloud_inline').length;
-
-        total_count = total_count + count;
-        console.log('count:', count, 'level:', level);
-
-        if (count > 0) {
-            $(this).html('&nbsp;' + total_count + '&nbsp;');
-        } else {
-            // $(this).html('.');
-        }
-        */
-
-
-    });
-
 
     $('.tag-level a', '#tagcloud_inline').live('click', function (e) {
         e.preventDefault();
@@ -1104,6 +1078,12 @@ base.ui.tagcloud = function () {
             $('a.level' + (i), '#tagcloud_inline').addClass('tag-hidden');
         }
 
+    });
+
+    // aply "highlight" class for selected tag(s)
+    $('#tagcloud_inline .cloud-container a.on').each(function(i, el){
+        var tag_id = $(el).data('id');
+        $('.listview .tags li[data-id="' + tag_id + '"]').addClass('active');
     });
 
 };

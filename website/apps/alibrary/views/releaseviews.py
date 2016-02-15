@@ -343,11 +343,6 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         """
 
 
-        #if publish:
-        #    msg = '%s. \n %s' %('Published release', msg)
-
-
-
         # hm - not so nice. separate revision for media formset:
         # separate revision needed for media object, as it should only display
         # changes made to the object itself (and not the release object)

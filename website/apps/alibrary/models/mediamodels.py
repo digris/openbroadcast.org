@@ -885,7 +885,7 @@ def media_post_save(sender, **kwargs):
     if obj.master and obj.echoprint_status == 0:
         if AUTOCREATE_ECHOPRINT:
             log.info('Media id: %s - Echoprint' % (obj.pk))
-            obj.update_echoprint()
+            #obj.update_echoprint()
         else:
             log.info('Media id: %s - skipping echoprint generation' % (obj.pk))
 

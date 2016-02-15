@@ -37,7 +37,6 @@ SLIDE_BASE_DIR = os.path.join(MEDIA_ROOT, 'metadata', 'dab')
 SLIDE_BASE_URL = MEDIA_URL + 'metadata/' +  'dab/'
 
 
-
 class DABMetadataGenerator(object):
 
     def __init__(self, emission, content_object):

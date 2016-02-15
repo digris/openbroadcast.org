@@ -264,6 +264,9 @@ class BaseLabelReleationForm(ModelForm):
     def clean_service(self):
         return self.instance.service
 
+    def clean_url(self):
+        return self.cleaned_data.get('url', '').strip()
+
     service = forms.CharField(label='', widget=ReadOnlyIconField(), required=False)
     url = forms.URLField(label=_('Website / URL'), required=False)
 

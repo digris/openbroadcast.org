@@ -28,7 +28,7 @@
 
         <ul class="tags unstyled horizontal">
             {% for tag in item.tags|slice:":5" %}
-                <li class="{% if tag.pk in active_tags %}__active{% endif %}">{{ tag.name|truncate_chars_inner:10 }}</li>
+                <li data-id="{{ tag.pk }}">{{ tag.name|truncate_chars_inner:10 }}</li>
             {% endfor %}
         </ul>
 

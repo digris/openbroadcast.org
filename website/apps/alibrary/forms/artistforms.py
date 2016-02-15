@@ -431,11 +431,11 @@ class BaseArtistReleationForm(ModelForm):
 
         self.fields['service'].widget.instance = instance
 
-        #if instance and instance.id:
-            #self.fields['service'].widget.attrs['readonly'] = True
-        
     def clean_service(self):
         return self.instance.service
+
+    def clean_url(self):
+        return self.cleaned_data.get('url', '').strip()
 
     #service = forms.CharField(label='', widget=ReadOnlyIconField(), required=False)
     service = forms.CharField(label='Service', widget=ReadOnlyIconField(), required=False)

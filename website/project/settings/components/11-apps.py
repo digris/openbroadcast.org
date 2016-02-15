@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     'bcmon',
     'wikisyntax',
     'tagging',
+    'tagging_extra',
     'ac_tagging',
     'actstream',
     'pageguide',

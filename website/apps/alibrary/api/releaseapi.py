@@ -36,7 +36,7 @@ class ReleaseResource(ModelResource):
             'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
             'id': ['exact', 'in'],
         }
-        cache = SimpleCache(timeout=600)
+        
         
 
     def dehydrate(self, bundle):
