@@ -64,7 +64,7 @@ PlaylistEditor = function () {
     // just testing
     this.update = function () {
         self.run_interval();
-    }
+    };
 
     this.iface = function () {
         // this.floating_inline('lookup_providers', 120)
@@ -169,7 +169,7 @@ PlaylistEditor = function () {
 
 
             }
-            ;
+
 
 
             if (ui.sender && ui.sender[0].id == 'jingle_list') {
@@ -398,8 +398,6 @@ PlaylistEditor = function () {
         delete item.item.content_object;
         delete item.item.content_type;
 
-        debug.debug('fade_in:', fade_in)
-        debug.debug('fade_out:', fade_out)
 
         item.fade_in = fade_in;
         item.fade_out = fade_out;
@@ -802,24 +800,6 @@ PlaylistEditorItem = function () {
             }
 
 
-
-            //if (action == 'delete' && confirm('sure?')) {
-            //    $.ajax({
-            //        url: self.item.resource_uri,
-            //        type: 'DELETE',
-            //        dataType: "json",
-            //        contentType: "application/json",
-            //        processData: false,
-            //        success: function (data) {
-            //            self.dom_element.remove();
-            //            delete self.playlist_editor.current_items[self.item.id]
-            //            delete self.playlist_editor.editor_items[self.item.id]
-            //            self.playlist_editor.reorder();
-            //        },
-            //        async: false
-            //    });
-            //}
-
             if (action == 'play') {
 
                 // try to pause aplayer - hackish..
@@ -845,8 +825,10 @@ PlaylistEditorItem = function () {
 
         });
 
-        $('a.editor.preview', self.dom_element).live('click', function (e) {
+        //$('a.editor.preview', self.dom_element).live('click', function (e) {
+        $(self.dom_element).on('click', 'a.editor.preview', function (e) {
             e.preventDefault();
+
 
             var preview = $(this).data('preview');
 
@@ -872,6 +854,14 @@ PlaylistEditorItem = function () {
             }
             self.player.play().setPosition(pos);
         });
+
+
+        // hacks:
+        $(self.dom_element).on('click', 'input', function (e) {
+           //$(this).focus();
+           $(this).select();
+        });
+
 
     };
 
