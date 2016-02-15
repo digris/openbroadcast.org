@@ -4,10 +4,9 @@
 
 {% block heading %} <!-- heading / icon (large one) -->
 
-    {% addtoblock "js-post" %}
-        <script src="{{ STATIC_URL }}alibrary/js/lib/raphael-min.js"></script>{% endaddtoblock %}
-    {% addtoblock "js-post" %}
-        <script src="{{ STATIC_URL }}aplayer/js/detail.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/lib/raphael-min.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}aplayer/js/detail.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
 
     <!-- statistic tools -->
     {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/statistics.js"></script>{% endaddtoblock %}
@@ -31,9 +30,14 @@
                 detail_player.perms = {
                     'play': {% if perms.alibrary.play_media %}true{% else %}false{% endif %},
                     'add': {% if user.is_authenticated %}true{% else %}false{% endif %}
-                }
+                };
                 detail_player.init();
                 window.detail_player = detail_player;
+
+                // initialize exporter app
+                exporter = new ExporterApp();
+                exporter.api_url = '{% url "api_dispatch_list" resource_name='export' api_name='v1'%}';
+                exporter.init();
 
                 // initialize stats app
                 var stats = new StatisticApp;

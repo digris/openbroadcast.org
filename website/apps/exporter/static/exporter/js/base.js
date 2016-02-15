@@ -138,7 +138,7 @@ ExporterItem = function () {
                 var dialog = {
                     title: 'Error',
                     text: 'Already downloaded.'
-                }
+                };
                 // util.dialog.show(dialog);
 
             }
