@@ -57,16 +57,16 @@
 
     <div class="item_menu" id="item_menu">
         <ul class="nav nav-tabs">
-            <li class="active">
+            <li {% if object.get_media.count > 0 %}class="active"{% endif %}>
                 <a href="#tracklist" data-toggle="tab">{% trans "Overview" %}</a>
             </li>
             {% if m_contrib.count > 0 %}
-            <li>
+            <li {% if object.get_media.count < 1 %}class="active"{% endif %}>
                 <a href="#contribution" data-toggle="tab">{% trans "Credited" %} ({{ m_contrib.count }})</a>
             </li>
             {% endif %}
             {% if object.biography %}
-            <li>
+            <li {% if object.get_media.count < 1  and m_contrib.count < 1 %}class="active"{% endif %}>
                 <a href="#biography" data-toggle="tab">{% trans "Biography" %}</a>
             </li>
             {% endif %}
