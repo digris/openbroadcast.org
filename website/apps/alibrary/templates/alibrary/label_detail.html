@@ -89,12 +89,12 @@
 
                     <h2>
                         {% trans "Releases" %}
-                                    <span class="pull-right">
-                                        <a href="{% spurl path=release_list query="label={{ object.slug }}" %}">
-                                            <i class="icon-chevron-sign-right"></i>
-                                            {% trans "Show all" %} {{ object.release_label.count }} {% trans "releases on" %} {{ object.name }}
-                                        </a>
-                                    </span>
+                        <span class="pull-right">
+                            <a href="{% spurl path=release_list query="label={{ object.slug }}" %}">
+                                <i class="icon-chevron-sign-right"></i>
+                                {% blocktrans with count=object.release_label.count name=object.name %}Show all {{ count }} releases on {{ name }}{% endblocktrans %}
+                            </a>
+                        </span>
                     </h2>
 
                     <div class="listview container releases inner l">

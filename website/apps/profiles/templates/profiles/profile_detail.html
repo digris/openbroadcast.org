@@ -506,7 +506,7 @@
                             <span class="pull-right">
                                 <a href="{% spurl path=playlist_list query="user={{ object.user.username }}" %}">
                                     <i class="icon-chevron-sign-right"></i>
-                                    {% trans "Show users playlists" %} ({{ broadcasts.count }})
+                                    {% blocktrans with count=broadcasts.count %}Show all {{ count }} user playlists{% endblocktrans %}
                                 </a>
                             </span>
             </h2>
@@ -537,7 +537,7 @@
                     {% url "alibrary-release-list" as release_list %}
                     <a href="{% spurl path=release_list query="creator={{ object.user.username }}" %}">
                         <i class="icon-chevron-sign-right"></i>
-                        {% trans "Show all added Releases" %} ({{ uploaded_releases.count }})
+                        {% blocktrans with count=uploaded_releases.count %}Show all {{ count }} uploaded Releases{% endblocktrans %}
                     </a>
                 </span>
             </h2>
@@ -559,7 +559,7 @@
                     {% url "alibrary-media-list" as media_list %}
                     <a href="{% spurl path=media_list query="creator={{ object.user.username }}" %}">
                         <i class="icon-chevron-sign-right"></i>
-                        {% trans "Show all added Tracks" %} ({{ uploaded_media.count }})
+                        {% blocktrans with count=uploaded_media.count %}Show all {{ count }} uploaded Tracks{% endblocktrans %}
                     </a>
                 </span>
             </h2>

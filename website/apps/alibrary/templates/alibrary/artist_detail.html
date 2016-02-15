@@ -105,7 +105,7 @@
                             <span class="pull-right">
                                 <a href="{% spurl path=media_list query="artist={{ object.slug }}" %}">
                                     <i class="icon-chevron-sign-right"></i>
-                                    {% trans "Show all" %} {{ object.media_artist.count }} {% trans "tracks by" %} {{ object.name }}
+                                    {% blocktrans with count=object.media_artist.count name=object.name %}Show all {{ count }} tracks by {{ name }}{% endblocktrans %}
                                 </a>
                             </span>
             </h2>
@@ -164,7 +164,7 @@
                             <span class="pull-right">
                                 <a href="{% spurl path=release_list query="artist={{ object.slug }}" %}">
                                     <i class="icon-chevron-sign-right"></i>
-                                    {% trans "Show all" %} {{ object.get_releases.count }} {% trans "releases by" %} {{ object.name }}
+                                    {% blocktrans with count=object.get_releases.count name=object.name %}Show all {{ count }} releases by {{ name }}{% endblocktrans %}
                                 </a>
                             </span>
             </h2>
