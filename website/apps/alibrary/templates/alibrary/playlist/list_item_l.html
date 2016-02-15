@@ -46,11 +46,11 @@
                             {% topflop_for_object item %} </a>
                     </li>
                     <li>
-                        <a href="{{ item.user.get_absolute_url }}">{% firstof item.user.username item.user %}</a>
+                        <a href="{{ item.user.get_absolute_url }}">{{ item.user.profile.get_display_name }}</a>
 
                         {% url "alibrary-playlist-list" as playlist_list %}
                         <a href="{% spurl path=playlist_list query="user={{ item.user.username }}" %}"
-                           title="{% trans "Only show playlists by" %} {% firstof item.user.username item.user %}"
+                           title="{% trans "Only show playlists by" %} {{ item.user.profile.get_display_name }}"
                            style="vertical-align: top;"><span class="filter icon"></span></a>
 
 

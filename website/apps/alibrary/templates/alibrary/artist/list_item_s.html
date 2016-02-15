@@ -66,7 +66,7 @@
 			<li class="small">
                 {% if item.last_editor %}
                 {% trans "by" %}:
-				<a href="{{ item.last_editor.get_absolute_url }}">{{ item.last_editor.profile.get_display_name }}</a>
+				<a href="{{ item.last_editor.get_absolute_url }}">{{ item.last_editor.profile.get_display_name|truncate_chars:16 }}</a>
                 {% endif %}
 			</li>
 		</ul>
@@ -75,27 +75,6 @@
 	<div class="list_body_item c6 action">
 
         <ul class="unstyled action secondary horizontal">
-
-            {% comment %}
-            <li>
-                <a href="#"
-                   class="downloadable queue{% if not perms.alibrary.downoad_media %} disabled{% endif %}"
-                   data-ct="artist"
-                   data-resource_uri="{{ item.get_api_url }}"
-                   title="{% trans "Download" %}">
-                    <i class="icon icon-download-alt"></i>
-                </a>
-            </li>
-
-            <li>
-                <a href="#"
-                   class="{% if not user.is_authenticated %} disabled{% endif %}"
-                   data-action="collect"
-                   title="{% trans "Add to playlist" %}">
-                    <i class="icon icon-plus"></i>
-                </a>
-            </li>
-            {% endcomment %}
 
             {% if  perms.alibrary.change_artist %}
                 <li>

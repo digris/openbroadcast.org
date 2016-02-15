@@ -461,7 +461,8 @@
                         <td>
                             {% if action.actor %}
                                 <a href="{{ action.actor.get_profile.get_absolute_url }}">
-                                    {% firstof action.actor.get_full_name action.actor %}</a>
+                                    {{ action.actor.profile.get_display_name|truncate_chars:16 }}
+                                </a>
                             {% endif %}
 
                             {{ action.verb }}

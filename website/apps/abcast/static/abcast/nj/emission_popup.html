@@ -20,14 +20,14 @@
 		{% if object.user %}
 		<li>
 			<i class="icon-user"></i>
-            <a href="{{ object.user.absolute_url }}">{{ object.user.username }}</a>
+            <a href="{{ object.user.absolute_url }}">{{ object.user.display_name }}</a>
             <small>scheduler</small>
 		</li>
 		{% endif %}
 		{% if object.user_co %}
 		<li>
 			<i class="icon-user"></i>
-            <a href="{{ object.user_co.absolute_url }}">{{ object.user_co.username }}</a>
+            <a href="{{ object.user_co.absolute_url }}">{{ object.user_co.display_name }}</a>
             <small>creator</small>
 		</li>
 		{% endif %}

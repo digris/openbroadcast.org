@@ -112,6 +112,20 @@
 
     </div>
 
+
+    <div class="by" style="position: absolute; bottom: 0; left: 5px; color: #999;">
+        {% if item.creator %}
+            <!--{% trans "by" %}:-->
+            <a style="color: #999;"
+               title="{{ item.creator.profile.get_display_name }}"
+               href="{{ item.creator.get_absolute_url }}">
+                {{ item.creator.profile.get_display_name|truncate_chars:16 }}
+            </a>
+            |
+        {% endif %}
+        {{ item.created|date:"SHORT_DATE_FORMAT" }}
+    </div>
+
 </div>
 
 

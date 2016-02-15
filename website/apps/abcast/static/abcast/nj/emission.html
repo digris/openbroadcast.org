@@ -2,23 +2,23 @@
 	class="hoverable chip fix {{ object.source }} emission theme-{{ object.color }}"
 	data-resource-uri={{ object.resource_uri }}
 	id="{{ object.uuid }}" 
-	data-tip="<div class='tooltip-emission'>{% if object.series %}<h3>{{ object.series|shorten(48) }}{% if object.series_number %} #{{ object.series_number }}{% endif %}</h3>{% endif %}<h3>{{ object.name|shorten(36) }}</h3><br><i class='icon-tasks'></i> {{ object.type }}<br>{{ object.start }} - {{ object.end }}<br>scheduled by: {{ object.user.username|escape }}</div>"
+	data-tip="<div class='tooltip-emission'>{% if object.series %}<h3>{{ object.series|shorten(48)|escape }}{% if object.series_number %} #{{ object.series_number }}{% endif %}</h3>{% endif %}<h3>{{ object.name|shorten(36)|escape }}</h3><br><i class='icon-tasks'></i> {{ object.type }}<br>{{ object.start }} - {{ object.end }}<br>scheduled by: {{ object.user.display_name|escape }}</div>"
 	style="top:{{ top }}px;left:-1px;width:100%;
 ">
 
 
 	<dl class="cbrd" style="height:{{ height - 1 }}px;">
 		<dt style="">
-			
+
 			<a href="{{ object.content_object.absolute_url }}" data-resource_uri="{{ object.resource_uri }}">
 			{{ object.name|escape }}
 			</a>
-			
+
 			{% if object.playing %}
 			<i class="icon-bullhorn pull-right"></i>
                 asd
 			{% endif %}
-			
+
 			{% if object.locked %}
 			<i class="icon-lock pull-right"></i>
 			{% endif %}

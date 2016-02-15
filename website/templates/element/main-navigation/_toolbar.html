@@ -24,10 +24,11 @@
         {% include "aplayer/_inline.html" %}
 
         <ul id="account_navigation">
+
             {% if user.is_authenticated %}
 
                 <li class="account">
-                    <a href="{% url "profiles-profile-detail" user.username %}">{% firstof user.get_full_name user.username %}</a>
+                    <a href="{% url "profiles-profile-detail" user.username %}">{{ user.profile.get_display_name }}</a>
 
                     <ul class="sub-level">
 
@@ -40,9 +41,7 @@
 
                     </ul>
 
-
                 </li>
-
 
                 <li class="message-notification{% if postman_unread_count %} has-unread{% endif %}">
                     <a href="{% url "postman_inbox" %}">
@@ -51,6 +50,7 @@
                 </li>
 
             {% else %}
+
                 <li class="login">
                     <a title="Login" href="{% url "auth_login" %}?next={{ request.get_full_path }}" rel="modal:open">{% trans 'Login' %}</a>
                     {% comment %}{% endcomment %}
