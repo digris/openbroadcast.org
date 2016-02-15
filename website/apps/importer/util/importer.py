@@ -440,10 +440,6 @@ class Importer(object):
         return obj
 
 
-
-        
-        
-        
         
     def complete_import_tag(self, obj):
 
@@ -1572,10 +1568,11 @@ def mb_complete_label_task(obj, mb_id, user=None):
             except Exception as e:
                 log.info('unable to get discogs data: %s' % e)
 
-    type = result.get('type', None)
-    if type:
-        log.debug('got type: %s' % (type))
-        obj.type = type
+    # https://lab.hazelfire.com/issues/927
+    # type = result.get('type', None)
+    # if type:
+    #     log.debug('got type: %s' % (type))
+    #     obj.type = type
 
     times = result.get('life-span', None)
     if times:
