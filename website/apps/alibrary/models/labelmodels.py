@@ -87,6 +87,9 @@ class Label(MPTTModel, MigrationMixin):
     relations = generic.GenericRelation('Relation')
     d_tags = tagging.fields.TagField(max_length=1024,verbose_name="Tags", blank=True, null=True)
 
+    # refactoring to treebeard
+    parent_temporary_id = models.PositiveIntegerField(null=True, blank=True)
+
     objects = LabelManager()
 
     class Meta:

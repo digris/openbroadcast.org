@@ -199,6 +199,13 @@ class MaintenanceWorker(object):
                         item.save()
 
 
+        if self.action == 'set_parent_temporary_id':
+
+            from alibrary.models import Label
+            labels = Label.objects.exclude(parent__isnull=True)
+
+            for label in labels:
+                Label.objects.filter(pk=label.pk).update(parent_temporary_id=label.parent.pk)
 
 
         if self.action == 'echonest_media__':
@@ -216,8 +223,6 @@ class MaintenanceWorker(object):
 
             for item in items:
                 log.info('analyze: %s' % item)
-
-
 
 
                 #md5 = '96fa0180d225f14e9f8cbfffbf5eb81d'
