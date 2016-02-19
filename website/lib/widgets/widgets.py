@@ -26,6 +26,10 @@ class ReadOnlyIconField(Widget):
         if not value or value == 'generic':
             value = 'angle-right'
 
+        # TODO: very ugly... sorry
+        if value == 'itunes':
+            value = 'apple'
+
         if self.instance and self.instance.url:
             return mark_safe('<ul class="relations external %s unstyled"><li><a class="skip-external" href="%s"><i class="icon-%s"></i></a></li></ul>' % (value, self.instance.url, value))
         else:
