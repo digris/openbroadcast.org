@@ -100,6 +100,8 @@
 
         {% comment "TODO: check mptt on label" %}
 		{% if object.get_root and object.get_root != object and object.parent != object.get_root %}
+        {% endcomment %}
+        {% if object.get_root %}
 		<dt>
 			{% trans "Umbrella Label" %}:
 		</dt>
@@ -113,7 +115,7 @@
 			</ul>
 		</dd>
 		{% endif %}
-        {% endcomment %}
+
 
 
 		{% if object.parent %}
@@ -131,13 +133,13 @@
 		</dd>
 		{% endif %}
 
-		{% if object.label_children.count > 0 %}
+		{% if object.children.count > 0 %}
 		<dt>
 			{% trans "Sub Labels" %}:
 		</dt>
 		<dd class="limit" data-limit="5">
 			<ul class="unstyled">
-			{% for sl in object.label_children.all %}
+			{% for sl in object.children.all %}
                 <li {% if forloop.counter0 > 5 %}style="display: none;" class="limited"{% endif %}><a href="{{ sl.get_absolute_url }}">{{ sl.name }}</a>
                 {% if sl.type %}<small>
                     [{{ sl.get_type_display }}]
@@ -145,7 +147,7 @@
                 {% endif %}
                 </li>
 			{% endfor %}
-            {% if object.label_children.count > 5 %}
+            {% if object.children.count > 5 %}
                 <li><a href="#" class="toggle">{% trans "Show more/less" %}<!--({{ object.label_children.count }})--></a></li>
             {% endif %}
 			</ul>

@@ -183,16 +183,6 @@ class LabelForm(ModelForm):
         except:
             pass
 
-
-        try:
-            tree_id = getattr(self.instance, 'tree_id')
-            new_tree_id = getattr(parent, 'tree_id')
-            if tree_id == new_tree_id:
-                pass
-                #self._errors["parent"] = self.error_class([_('Parent error. Try to select a valid Label in the dropdown.')])
-        except:
-            pass
-
         if cd.get('remote_image', None):
             remote_file = get_file_from_url(cd['remote_image'])
             if remote_file:

@@ -208,6 +208,19 @@ class MaintenanceWorker(object):
                 Label.objects.filter(pk=label.pk).update(parent_temporary_id=label.parent.pk)
 
 
+        if self.action == 'update_label_tree':
+
+            from alibrary.models import Label
+            labels = Label.objects.exclude(parent_temporary_id__isnull=True)
+
+            for label in labels:
+                print label.parent_temporary_id
+                parent_label = Label.objects.get(pk=label.parent_temporary_id)
+                Label.objects.filter(pk=label.pk).update(parent=parent_label)
+
+                #Label.objects.filter(pk=label.pk).update(parent_temporary_id=label.parent.pk)
+
+
         if self.action == 'echonest_media__':
 
             from alibrary.models import Media

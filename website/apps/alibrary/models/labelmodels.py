@@ -21,6 +21,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from l10n.models import Country
 from tagging.registry import register as tagging_register
 from mptt.models import MPTTModel, TreeForeignKey
+
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import UUIDField, AutoSlugField
 from alibrary import settings as alibrary_settings
@@ -47,7 +48,8 @@ class LabelManager(models.Manager):
     def active(self):
         return self.get_queryset().exclude(listed=False)
 
-class Label(MPTTModel, MigrationMixin):
+class Label(MigrationMixin):
+
 
     # core fields
     uuid = UUIDField(primary_key=False)
@@ -70,7 +72,7 @@ class Label(MPTTModel, MigrationMixin):
     date_start = ApproximateDateField(verbose_name="Life-span begin", blank=True, null=True)
     date_end = ApproximateDateField(verbose_name="Life-span end", blank=True, null=True)
 
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='label_children')
+    #parent = TreeForeignKey('self', null=True, blank=True, related_name='label_children')
     folder = models.ForeignKey(Folder, blank=True, null=True, related_name='label_folder')
 
     owner = models.ForeignKey(User, blank=True, null=True, related_name="labels_owner", on_delete=models.SET_NULL)
@@ -87,7 +89,8 @@ class Label(MPTTModel, MigrationMixin):
     relations = generic.GenericRelation('Relation')
     d_tags = tagging.fields.TagField(max_length=1024,verbose_name="Tags", blank=True, null=True)
 
-    # refactoring to treebeard
+    # refactoring parent handling
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
     parent_temporary_id = models.PositiveIntegerField(null=True, blank=True)
 
     objects = LabelManager()
@@ -168,9 +171,28 @@ class Label(MPTTModel, MigrationMixin):
             'pk': self.pk
         }) + ''
 
+
+    def get_root(self):
+
+        if not self.parent:
+            return None
+
+        parent = self.parent
+        last_parent = None
+        while parent:
+            parent = parent.parent
+            if parent:
+                last_parent = parent
+
+        return last_parent
+
+
+
     def save(self, *args, **kwargs):
         unique_slugify(self, self.name)
         super(Label, self).save(*args, **kwargs)
+
+
 
 try:
     tagging_register(Label)
