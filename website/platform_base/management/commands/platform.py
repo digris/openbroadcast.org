@@ -3,8 +3,10 @@ from __future__ import absolute_import
 from platform_base.management.commands.subcommands.base import SubcommandsCommand
 from platform_base.management.commands.subcommands.check import CheckInstallation
 from platform_base.management.commands.subcommands.reset import ResetDatabase
+from platform_base.management.commands.subcommands.clean import DeleteOrphanedTags
 from django.core.management.base import BaseCommand
 from optparse import make_option
+
 
 
 class Command(SubcommandsCommand):
@@ -21,6 +23,7 @@ class Command(SubcommandsCommand):
     subcommands = {
         'check': CheckInstallation,
         'reset': ResetDatabase,
+        'delete_orphaned_tags': DeleteOrphanedTags,
     }
 
     @property
