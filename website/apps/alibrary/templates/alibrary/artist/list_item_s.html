@@ -42,10 +42,10 @@
 				{% trans "Releases" %}:&nbsp;<a href="{% spurl path=release_list query="artist={{ item.slug }}" %}" title="{% trans "Only show releases by" %} {{ item.name }}" style="vertical-align: top;">{{ item.get_releases.count }}<span class="filter icon"></span></a>
 			</li>
 			{% endif %}
-			{% if item.media_artist.count > 0 %}
+			{% if item.get_media.count > 0 %}
 			<li>
                 {% url "alibrary-media-list" as media_list %}
-				{% trans "Tracks" %}:&nbsp;<a href="{% spurl path=media_list query="artist={{ item.slug }}" %}" style="vertical-align: top;">{{ item.media_artist.count }}<span class="filter icon"></span></a>
+				{% trans "Tracks" %}:&nbsp;<a href="{% spurl path=media_list query="artist={{ item.slug }}" %}" style="vertical-align: top;">{{ item.get_media.count }}<span class="filter icon"></span></a>
 			</li>
 			{% endif %}
 

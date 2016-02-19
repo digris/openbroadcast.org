@@ -263,7 +263,7 @@ class Artist(MigrationMixin):
         
     def get_media(self):
         try:
-            m = Media.objects.filter(artist=self).distinct()
+            m = Media.objects.filter(Q(artist=self) | Q(media_artists=self)).distinct()
             return m
         except Exception, e:
             return []
