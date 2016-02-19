@@ -20,8 +20,6 @@ from filer.fields.image import FilerImageField
 from phonenumber_field.modelfields import PhoneNumberField
 from l10n.models import Country
 from tagging.registry import register as tagging_register
-from mptt.models import MPTTModel, TreeForeignKey
-
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import UUIDField, AutoSlugField
 from alibrary import settings as alibrary_settings
@@ -105,9 +103,7 @@ class Label(MigrationMixin):
             ('merge_label', 'Merge Labels'),
         )
 
-    class MPTTMeta:
-        order_insertion_by = ['name']
-    
+
     def __unicode__(self):
         return self.name
 

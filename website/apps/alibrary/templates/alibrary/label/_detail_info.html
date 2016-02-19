@@ -97,10 +97,6 @@
         {% endcomment %}
 
 
-
-        {% comment "TODO: check mptt on label" %}
-		{% if object.get_root and object.get_root != object and object.parent != object.get_root %}
-        {% endcomment %}
         {% if object.get_root %}
 		<dt>
 			{% trans "Umbrella Label" %}:

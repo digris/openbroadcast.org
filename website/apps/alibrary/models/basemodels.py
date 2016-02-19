@@ -17,10 +17,6 @@ from filer.models.imagemodels import *
 from filer.fields.image import FilerImageField
 from filer.fields.file import FilerFileField
 from phonenumber_field.modelfields import PhoneNumberField
-from mptt.models import MPTTModel, TreeForeignKey
-
-from treebeard.mp_tree import MP_Node
-
 from hvad.models import TranslatableModel, TranslatedFields
 from hvad.manager import TranslationManager
 from django_extensions.db.fields import UUIDField, AutoSlugField
@@ -34,8 +30,6 @@ import uuid
 
 log = logging.getLogger(__name__)
 
-#__all__ = ["MigrationMixin", "Distributor", "reverse"]
-
 class MigrationMixin(models.Model):
     
     legacy_id = models.IntegerField(null=True, blank=True, editable=False)
@@ -48,7 +42,7 @@ class MigrationMixin(models.Model):
         verbose_name_plural = _('MigrationMixins')
         ordering = ('pk', )
 
-class Distributor(MPTTModel, MigrationMixin):
+class Distributor(MigrationMixin):
 
     # core fields
     uuid = UUIDField(primary_key=False)
@@ -73,7 +67,7 @@ class Distributor(MPTTModel, MigrationMixin):
     updated = models.DateTimeField(auto_now=True, editable=False)
     
     # relations
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='label_children')
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
 
     labels = models.ManyToManyField('Label', through='DistributorLabel', blank=True, related_name="distributors")
     
@@ -109,9 +103,6 @@ class Distributor(MPTTModel, MigrationMixin):
         verbose_name_plural = _('Distributors')
         ordering = ('name', )
 
-    class MPTTMeta:
-        order_insertion_by = ['name']
-    
     def __unicode__(self):
         return self.name
 
@@ -171,7 +162,7 @@ class DistributorLabel(models.Model):
 
 
 
-class Agency(MPTTModel, MigrationMixin):
+class Agency(MigrationMixin):
 
     # core fields
     uuid = UUIDField(primary_key=False)
@@ -192,7 +183,7 @@ class Agency(MPTTModel, MigrationMixin):
     updated = models.DateTimeField(auto_now=True, editable=False)
 
     # relations
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='agency_children')
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
 
     artists = models.ManyToManyField('Artist', through='AgencyArtist', blank=True, related_name="agencies")
 
@@ -224,9 +215,6 @@ class Agency(MPTTModel, MigrationMixin):
         verbose_name = _('Agency')
         verbose_name_plural = _('Agencies')
         ordering = ('name', )
-
-    class MPTTMeta:
-        order_insertion_by = ['name']
 
     def __unicode__(self):
         return self.name
@@ -300,7 +288,7 @@ class AgencyArtist(models.Model):
 
 
 
-class License(MPTTModel, TranslatableModel, MigrationMixin):
+class License(TranslatableModel, MigrationMixin):
     
     name = models.CharField(max_length=200)
     
@@ -336,7 +324,7 @@ class License(MPTTModel, TranslatableModel, MigrationMixin):
     updated = models.DateTimeField(auto_now=True, editable=False)
     
     # relations
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='license_children')
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='license_children')
 
     objects = TranslationManager()
 
@@ -347,9 +335,6 @@ class License(MPTTModel, TranslatableModel, MigrationMixin):
         verbose_name_plural = _('Licenses')
         ordering = ('parent__name', 'name', )
 
-    class MPTTMeta:
-        order_insertion_by = ['name']
-    
     def __unicode__(self):
         if self.parent:
             return '%s - %s' % (self.parent.name, self.name)

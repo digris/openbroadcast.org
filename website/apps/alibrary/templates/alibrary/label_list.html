@@ -40,27 +40,7 @@
 {% endblock %}
 
 {% block tagcloud %}
-
     {% include "element/_tagcloud.html" %}
-
-    {%  comment %}
-    {%  load mptt_tags %}
-    {% full_tree_for_model alibrary.Label as label_tree %}
-    <ul class="root">
-        {% recursetree label_tree %}
-            <li>
-                {{ node.name }}
-                {% if not node.is_leaf_node %}
-                    <ul class="children">
-                        {{ children }}
-                    </ul>
-                {% endif %}
-            </li>
-        {% endrecursetree %}
-    </ul>
-    {% endcomment %}
-
-
 {% endblock %}
 
 
