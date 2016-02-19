@@ -209,16 +209,15 @@ def setup_generic_relations():
 
 if actstream_settings.USE_JSONFIELD:
 
+    # TODO: clean this up & remove json part
+
     try:
         from jsonfield.fields import JSONField
     except ImportError:
         raise ImproperlyConfigured('You must have django-jsonfield installed '
                                 'if you wish to use a JSONField on your actions')
 
-
-    #from django.db.models.fields import JSONField
-
-    JSONField(blank=True, null=True).contribute_to_class(Action, 'data')
+    models.TextField(blank=True, null=True).contribute_to_class(Action, 'data')
 
 # connect the signal
 action.connect(action_handler, dispatch_uid='actstream.models')

@@ -243,11 +243,10 @@ class Channel(BaseModel):
 def post_save_channel(sender, **kwargs):
 
     obj = kwargs['instance']
-
-    # call notification
     try:
         notify.start_play(obj.on_air, obj)
-    except:
+    except Exception as e:
+        print e
         pass
 
 post_save.connect(post_save_channel, sender=Channel)

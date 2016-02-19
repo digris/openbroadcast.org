@@ -129,8 +129,15 @@ class Event(models.Model):
         """
         event_type_obj, created = EventType.objects.get_or_create(
             title=event_type)
-        obj = Event(user=user, content_object=content_object,
-                          event_type=event_type_obj)
+
+        if user:
+            obj = Event(user=user, content_object=content_object,
+                              event_type=event_type_obj)
+        else:
+            obj = Event(content_object=content_object,
+                              event_type=event_type_obj)
+
+
         if event_content_object is not None:
             obj.event_content_object = event_content_object
         obj.save()
@@ -155,7 +162,8 @@ class Event(models.Model):
 def actstream_link(sender, instance, created, **kwargs):
     from actstream import action
     try:
-        action.send(instance.user, verb=instance.event_type.title, target=instance.content_object)
+        if instance.user:
+            action.send(instance.user, verb=instance.event_type.title, target=instance.content_object)
     except Exception, e:
         print e
 

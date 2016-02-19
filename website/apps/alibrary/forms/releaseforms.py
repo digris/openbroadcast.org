@@ -529,7 +529,7 @@ class BaseAlbumartistForm(ModelForm):
     def clean_artist(self):
 
         artist = self.cleaned_data['artist']
-        if not artist.pk:
+        if artist and not artist.pk:
             logger.debug('saving not existant artist: %s' % artist.name)
             artist.save()
 

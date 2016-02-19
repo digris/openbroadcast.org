@@ -11,6 +11,8 @@ def start_play(item, channel=None, user=None):
 
     log.debug(u'item: %s - channel: %s - user: %s' % (item, channel, user))
 
+
+
     # Set current values to cache
     cache.set('abcast_on_air_%s' % channel.pk, item, 30)
 
@@ -24,10 +26,12 @@ def start_play(item, channel=None, user=None):
     if item.release and not 'jingle' in item.release.name.lower():
         set_tunein_metadata(channel, item)
 
-    if user:
-        try:
-            from atracker.util import create_event
-            create_event(user, item, channel, 'playout')
-        except Exception, e:
-            log.warning('exception: %s' % e)
+    if not user:
 
+        pass
+
+    try:
+        from atracker.util import create_event
+        create_event(user, item, channel, 'playout')
+    except Exception, e:
+        log.warning('exception: %s' % e)

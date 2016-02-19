@@ -3,6 +3,7 @@ import time
 import datetime
 from dateutil.relativedelta import relativedelta
 from django.db.models import Count
+from django.db import connection
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from atracker.models import Event
@@ -73,10 +74,24 @@ class ObjectStatistics(object):
             td = range_start + relativedelta(months=i)
             month_map.append({'id': td.month, 'date': td, 'count': 0})
 
-
-        # get the data
         if self.obj:
-            events = Event.objects.by_obj(obj=self.obj).filter(event_type__title='%s' % action, created__gte=range_start, created__lte=range_end).extra(select={'month': 'extract( month from created )'}).values('month').annotate(dcount=Count('created'))
+            events = Event.objects.by_obj(obj=self.obj).filter(
+                    event_type__title='%s' % action,
+                    created__gte=range_start,
+                    created__lte=range_end).extra(select={'month': 'extract( month from created )'}).values('month').annotate(dcount=Count('created'))
+
+
+        # if self.obj:
+        #     truncate_date = connection.ops.date_trunc_sql('month', 'created')
+        #     qs = Event.objects.by_obj(obj=self.obj).filter(
+        #             event_type__title='%s' % action,
+        #             created__gte=range_start,
+        #             created__lte=range_end).extra({'month': truncate_date})
+        #
+        #     events = qs.values('month').annotate(count=Count('pk')).order_by('month')
+        #     return [[int((time.mktime(e['month'].timetuple()))) * 1000, e['count']] for e in events]
+
+
         elif self.user:
             events = Event.objects.filter(user=self.user, event_type__title='%s' % action, created__gte=range_start, created__lte=range_end).extra(select={'month': 'extract( month from created )'}).values('month').annotate(dcount=Count('created'))
         elif self.artist:
@@ -95,7 +110,10 @@ class ObjectStatistics(object):
         for item in events:
             for el in month_map:
                 if el['id'] == item['month']:
-                    el['count'] = item['dcount']
+                    print item
+                    #el['count'] = item['dcount']
+                    el['count'] += 1
+
 
 
 
