@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import json
 import re
 from django.db import transaction
@@ -160,6 +162,8 @@ def provider_search(request, *args, **kwargs):
                 .replace('~', '\~')\
                 .replace('*', '\*')\
                 .replace('?', '\?')
+
+            t_query = urllib.quote(t_query)
 
             url = 'http://%s/ws/2/%s?query=%s&fmt=json' % (MUSICBRAINZ_HOST, _type, t_query)
 

@@ -56,7 +56,7 @@
                             <li>
 
                             <span class="value">
-                                <strong>{{ result.year }} | {{ result.country }}</strong>
+                                <strong>{{ result.year }}{% if result.country %} | {{ result.country }}{% endif %}</strong>
                                 {% if result.label %}
                                     - on
                                     <strong>{{ result.label }}</strong>
@@ -99,16 +99,10 @@
                 <div class="row-fluid">
 
                     <div class="span2">
-                        {% if  result.thumb %}
-                            <img src="/static/img/base/defaults/listview.release.xl.png" data-carchive_url="{{ result.thumb }}">
-                        {% endif %}
+                        <img src="/static/img/base/defaults/listview.release.xl.png">
                     </div>
 
-
-
-
                     <div class="span10">
-
 
 
                         {% if item_type == "release" %}
@@ -167,10 +161,10 @@
 
 
                         {% if item_type == "artist" %}
-                        <strong>{{ result.name }} | {{ result.country }}</strong>
+                        <strong>{{ result.name }}{% if result.country %} | {{ result.country }}{% endif %}</strong>
                         <ul class="unstyled">
 
-
+                            {% if result.type %}
                             <li>
                             <span class="title">
                                 Type:
@@ -178,10 +172,10 @@
                             <span class="value">
                                 <strong>
                                     {{ result.type }}
-
                                 </strong>
                             </span>
                             </li>
+                            {% endif %}
 
                         </ul>
                         {% endif %}
