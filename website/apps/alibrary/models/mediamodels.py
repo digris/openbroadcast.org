@@ -1,49 +1,39 @@
 # -*- coding: utf-8 -*-
-import shutil
-import time
-import subprocess
+from __future__ import unicode_literals
+
 import json
-import audiotools
-import tempfile
-import tagging
 import logging
+import os
+import subprocess
+import uuid
+
 import arating
+import audiotools
+import reversion
+import tagging
+from base.audio.fileinfo import FileInfoProcessor
+from celery.task import task
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
-from django.core.files import File as DjangoFile
-from django.core.urlresolvers import reverse
-from django.conf import settings
-from alibrary import settings as alibrary_settings
 from django_extensions.db.fields import AutoSlugField
-from lib.fields.uuidfield import UUIDField as RUUIDField
-from django.conf import settings
-from filer.models.filemodels import *
-from filer.models.foldermodels import *
-from filer.models.imagemodels import *
-from filer.fields.image import FilerImageField
-from filer.fields.file import FilerFileField
 from django_extensions.db.fields.json import JSONField
-from easy_thumbnails.files import get_thumbnailer
-from audiotools import MetaData
-from tagging.registry import register as tagging_register
-from celery.task import task
-from lib.audioprocessing.processing import create_wave_images, AudioProcessingException
+from ep.API import fp
 from lib.fields.languages import LanguageField
+from lib.fields.uuidfield import UUIDField as RUUIDField
 from lib.signals.unsignal import disable_for_loaddata
 from lib.util.sha1 import sha1_by_file
-from ep.API import fp
-from alibrary.models.artistmodels import *
-from alibrary.models.basemodels import MigrationMixin
+from tagging.registry import register as tagging_register
+from alibrary.models.basemodels import MigrationMixin, License, Relation, Profession
 from alibrary.models.playlistmodels import PlaylistItem, Playlist
-from alibrary.util.slug import unique_slugify
-from alibrary.util.storage import get_dir_for_object, OverwriteStorage
 from alibrary.util.echonest import EchonestWorker
-from caching.base import CachingMixin, CachingManager
-
-from base.audio import fileinfo
-from base.audio.fileinfo import FileInfoProcessor
+from alibrary.util.slug import unique_slugify
+from alibrary.util.storage import get_dir_for_object
 
 log = logging.getLogger(__name__)
 
@@ -108,8 +98,8 @@ def upload_master_to(instance, filename):
 
 class Media(MigrationMixin):
 
-    # core fields
-    uuid = RUUIDField(primary_key=False)
+    #uuid = RUUIDField(primary_key=False)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255, db_index=True)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
     
@@ -122,14 +112,8 @@ class Media(MigrationMixin):
         (99, _('Error')),
     )
     status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
-
-
-    
     publish_date = models.DateTimeField(blank=True, null=True)
 
-    
-    
-    # processed & lock flag (needed for models that have maintenance/init/save tasks)
     PROCESSED_CHOICES = (
         (0, _('Waiting')),
         (1, _('Done')),
@@ -145,8 +129,7 @@ class Media(MigrationMixin):
         (99, _('Error')),
     )
     echoprint_status = models.PositiveIntegerField(default=0, choices=ECHOPRINT_STATUS_CHOICES)
-    #echoprint_id = models.PositiveIntegerField(null=True, blank=True)
-        
+
     CONVERSION_STATUS_CHOICES = (
         (0, _('Init')),
         (1, _('Completed')),
@@ -180,8 +163,8 @@ class Media(MigrationMixin):
     duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", blank=True, null=True, editable=False)
     
     # relations
-    release = models.ForeignKey('Release', blank=True, null=True, related_name='media_release', on_delete=models.SET_NULL)
-    artist = models.ForeignKey('Artist', blank=True, null=True, related_name='media_artist')
+    release = models.ForeignKey('alibrary.Release', blank=True, null=True, related_name='media_release', on_delete=models.SET_NULL)
+    artist = models.ForeignKey('alibrary.Artist', blank=True, null=True, related_name='media_artist')
     
     # user relations
     owner = models.ForeignKey(User, blank=True, null=True, related_name="media_owner", on_delete=models.SET_NULL)
@@ -202,26 +185,16 @@ class Media(MigrationMixin):
     d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
     
     # extra-artists
-    # TODO: Fix this - guess should relate to Artist instead of Profession
-    extra_artists = models.ManyToManyField('Artist', through='MediaExtraartists', blank=True)
+    extra_artists = models.ManyToManyField('alibrary.Artist', through='MediaExtraartists', blank=True)
 
     # provide 'multi-names' for artist crediting.
-    media_artists = models.ManyToManyField('Artist', through='MediaArtists', related_name="credited", blank=True)
+    media_artists = models.ManyToManyField('alibrary.Artist', through='MediaArtists', related_name="credited", blank=True)
     
     license = models.ForeignKey(License, blank=True, null=True, related_name='media_license', limit_choices_to={'selectable': True}, on_delete=models.PROTECT)
     
-    # File related (old)
-    #master = FilerAudioField(blank=True, null=True, related_name='media_master')
-    #master_path = models.CharField(max_length=2048, null=True, blank=True, help_text="Master Path", editable=False)
-    #folder = models.ForeignKey(Folder, blank=True, null=True, related_name='media_folder', editable=False, on_delete=models.SET_NULL)
-    
-    # File related (new)
-    #master = models.FileField(max_length=1024, upload_to=masterpath_by_uuid, blank=True, null=True)
     filename = models.CharField(verbose_name=_('Filename'), max_length=256, blank=True, null=True)
     original_filename = models.CharField(verbose_name=_('Original filename'), max_length=256, blank=True, null=True)
 
-    
-    
     folder = models.CharField(max_length=1024, null=True, blank=True, editable=False)
     
     # File Data
@@ -257,20 +230,8 @@ class Media(MigrationMixin):
 
     sections = JSONField(blank=True, null=True)
 
-
-
-    #force_migration = models.IntegerField(null=True, blank=True) # dummy field, to trigger mermission db-updates
-
-
-
-    # tagging
-    #tags = TaggableManager(blank=True)
-    
-    # manager
     objects = models.Manager()
-    #objects = CachingManager()
-    
-    # auto-update
+
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
 
@@ -357,12 +318,11 @@ class Media(MigrationMixin):
         })
 
     def get_edit_url(self):
-        return reverse('alibrary-media-edit', kwargs={'pk': self.pk})
+        return reverse("alibrary-media-edit", args=(self.pk,))
 
-    # TODO: refactor to reverse
     def get_admin_url(self):
-        from lib.util.get_admin_url import change_url
-        return change_url(self)
+        return reverse("admin:alibrary_media_change", args=(self.pk,))
+
 
     # TODO: depreciated
     def get_stream_url(self):
@@ -481,36 +441,12 @@ class Media(MigrationMixin):
     def get_file(self, source, version):
         # TODO: implement...
         return self.master
-    
-    def get_stream_file(self, format, version):
-        # TODO: improve...
-        if format == 'mp3' and version == 'base':
-            ext = os.path.splitext(self.master.path)[1][1:].strip() 
-            if ext == 'mp3':
-                return self.master
-        
-        filename = str(version) + '.' + str(format)
-        file = File.objects.get(original_filename=filename, folder=self.folder)
-        
-        return file.file
-    
-    def get_default_stream_file(self):
-        return self.get_stream_file('mp3', 'base')
+
 
 
     def get_playout_file(self, absolute=False):
 
-        # at the moment unified to mp3 format
-        #abs_path = os.path.join(self.get_directory(absolute=True), 'versions', 'base.mp3')
-        #if os.path.islink(abs_path):
-        #    abs_path = self.master.path
-
         abs_path = self.master.path
-
-        print '---'
-        print abs_path
-        print
-
         if not absolute:
             abs_path = abs_path.replace(settings.MEDIA_ROOT + '/', '')
 
@@ -527,16 +463,6 @@ class Media(MigrationMixin):
         if units == 's':
             return int(self.master_duration)
 
-    # TODO: depreciated
-    def get_audiofile(self):
-
-        try:
-            return audiotools.open(self.get_master_path())
-
-        except Exception, e:
-            log.warning('unable to get audiofile audiotools: %s' % e)
-            return None
-
 
     """
     TODO: check usage. appearances refactored to media_tags
@@ -551,91 +477,10 @@ class Media(MigrationMixin):
             pis = PlaylistItem.objects.filter(object_id=self.pk, content_type=ContentType.objects.get_for_model(self))
             ps = Playlist.objects.exclude(type='other').filter(items__in=pis).order_by('-type', '-created',).nocache().distinct()
         except Exception, e:
-            print '### get_appearances error: %s' % e
             pass
         
         return ps
-        
-        
-    
 
-
-    def inject_metadata(self, format, version):
-        
-        """
-        audiotools.MetaData
-        """
-        meta = MetaData()
-        
-        
-        """
-        prepare metadata object
-        """
-        # track-level metadata
-        meta.track_name = self.name
-        meta.track_number = self.tracknumber
-        meta.media = 'DIGITAL'
-        meta.isrc = self.isrc
-        
-
-            
-        """ Needs fixing...
-        for extra_artist in self.extra_artists.all():
-            print extra_artist
-        meta.performer_name =
-        meta.composer_name =
-        meta.conductor_name =
-        """
-        
-        # release-level metadata
-        if self.release:
-            meta.album_name = self.release.name
-            meta.catalog = self.release.catalognumber
-            meta.track_total = len(self.release.media_release.all())
-            
-            if self.release.releasedate:
-                try:
-                    meta.year = str(self.release.releasedate.year)
-                    meta.date = str(self.release.releasedate)
-                    
-                except Exception, e:
-                    print e
-            
-            try:
-                
-                cover_image = self.release.cover_image if self.release.cover_image else self.release.main_image
-                
-                if meta.supports_images() and cover_image:
-                    for i in meta.images():
-                        meta.delete_image(i)
-                        
-                    opt = dict(size=(200, 200), crop=True, bw=False, quality=80)
-                    image = get_thumbnailer(cover_image).get_thumbnail(opt)
-                    meta.add_image(get_raw_image(image.path, 0))
-                    
-            except Exception, e:
-                print e
-                
-            
-        # artist-level metadata
-        if self.artist:
-            meta.artist_name = self.artist.name
-                    
-        # label-level metadata
-        if self.release.label:
-            pass
-            # meta.artist_name = self.artist.name
-
-        """
-        get corresponding file and apply the metadata
-        """
-        cache_file = self.get_cache_file(format, version)
-        try:
-            audiotools.open(cache_file.path).set_metadata(meta)
-        except Exception, e:
-            print e
-        return cache_file
-    
     
     """
     creates an echoprint fp and post it to the 
@@ -961,7 +806,7 @@ except Exception as e:
 
 class MediaExtraartists(models.Model):
 
-    artist = models.ForeignKey('Artist', related_name='extraartist_artist', on_delete=models.CASCADE, blank=True, null=True)
+    artist = models.ForeignKey('alibrary.Artist', related_name='extraartist_artist', on_delete=models.CASCADE, blank=True, null=True)
     media = models.ForeignKey('Media', related_name='extraartist_media', on_delete=models.CASCADE, blank=True, null=True)
     # function = models.CharField(max_length=128, blank=True, null=True)
     profession = models.ForeignKey(Profession, verbose_name='Role/Profession', related_name='media_extraartist_profession', blank=True, null=True)
@@ -983,7 +828,7 @@ class MediaExtraartists(models.Model):
 
 
 class MediaArtists(models.Model):
-    artist = models.ForeignKey('Artist', related_name='artist_mediaartist')
+    artist = models.ForeignKey('alibrary.Artist', related_name='artist_mediaartist')
     media = models.ForeignKey('Media', related_name='media_mediaartist')
     JOIN_PHRASE_CHOICES = (
         ('&', _('&')),

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from alibrary.models import *
+
 import tagging
 import logging
+
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch.dispatcher import receiver
@@ -11,11 +13,6 @@ from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from cms.models.fields import PlaceholderField
-from filer.models.filemodels import *
-from filer.models.foldermodels import *
-from filer.models.imagemodels import *
-from filer.fields.image import FilerImageField
-from filer.fields.file import FilerFileField
 from phonenumber_field.modelfields import PhoneNumberField
 from hvad.models import TranslatableModel, TranslatedFields
 from hvad.manager import TranslationManager
@@ -45,7 +42,8 @@ class MigrationMixin(models.Model):
 class Distributor(MigrationMixin):
 
     # core fields
-    uuid = UUIDField(primary_key=False)
+    #uuid = UUIDField(primary_key=False)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=400)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
     
@@ -165,7 +163,8 @@ class DistributorLabel(models.Model):
 class Agency(MigrationMixin):
 
     # core fields
-    uuid = UUIDField(primary_key=False)
+    #uuid = UUIDField(primary_key=False)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=400)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
 
@@ -280,22 +279,12 @@ class AgencyArtist(models.Model):
 
 
 
-
-
-
-
-
-
-
-
 class License(TranslatableModel, MigrationMixin):
     
     name = models.CharField(max_length=200)
     
     slug = models.SlugField(max_length=100, unique=False)
-    #uuid = models.CharField(max_length=36, unique=False, default=str(uuid.uuid4), editable=False)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
-    #uuid = models.UUIDField(default=uuid.uuid4, editable=False, max_length=64)
 
     key = models.CharField(verbose_name=_("License key"), help_text=_("used e.g. for the icon-names"), max_length=36, blank=True, null=True)
     version = models.CharField(verbose_name=_("License version"), help_text=_("e.g. 2.5 CH"), max_length=36, blank=True, null=True)
@@ -322,8 +311,7 @@ class License(TranslatableModel, MigrationMixin):
     # auto-update
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
-    
-    # relations
+
     parent = models.ForeignKey('self', null=True, blank=True, related_name='license_children')
 
     objects = TranslationManager()
@@ -340,11 +328,13 @@ class License(TranslatableModel, MigrationMixin):
             return '%s - %s' % (self.parent.name, self.name)
         else:
             return '%s' % (self.name)
-    
-    @models.permalink
-    def get_absolute_url(self):
-        return ('alibrary-license-detail', [self.slug])
 
+
+    def get_absolute_url(self):
+        return reverse('alibrary-license-detail', [self.slug])
+
+    def get_admin_url(self):
+        return reverse("admin:alibrary_license_change", args=(self.pk,))
 
     @property
     def iconset_display(self):
@@ -357,9 +347,6 @@ class License(TranslatableModel, MigrationMixin):
 
         return mark_safe(html)
 
-    def get_admin_url(self):
-        from lib.util.get_admin_url import change_url
-        return change_url(self)
 
 class ProfessionManager(models.Manager):
 
@@ -378,8 +365,7 @@ class Profession(models.Model):
     # auto-update
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
-    
-    # manager
+
     objects = ProfessionManager()
 
     # meta
@@ -391,29 +377,7 @@ class Profession(models.Model):
     
     def __unicode__(self):
         return self.name
-    
-    
-class Mediaformat(models.Model):
-    
-    name = models.CharField(max_length=50)
-    excerpt = models.TextField(blank=True, null=True) 
-    in_listing = models.BooleanField(default=True, verbose_name='Include in listings')
-    
-    # manager
-    objects = models.Manager()
 
-    # meta
-    class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Mediaformat')
-        verbose_name_plural = _('Mediaformat')
-        ordering = ('name', )
-    
-    def __unicode__(self):
-        return self.name
-    
-    
-    
 class DaypartManager(models.Manager):
     
     def active(self):
@@ -511,33 +475,20 @@ class RelationManager(models.Manager):
             if service in objects:
                 sorted.append(objects[service])
 
-        #sorted = [objects[service] for service in services]
-
         return sorted
 
     def highlighted(self, key=None):
 
         qs = self.get_queryset().exclude(service__in=['generic', 'official',])
 
-        services = [
-                    'wikipedia',
-                    'youtube',
-                    ]
-
         objects = dict([(obj.service, obj) for obj in qs])
 
         sorted = []
-        for service in services:
+        for service in ['wikipedia', 'youtube',]:
             if service in objects:
                 sorted.append(objects[service])
 
-        #sorted = [objects[service] for service in services]
-
         return sorted
-
-        #return qs.order_by('service')
-
-
 
 
     
@@ -595,12 +546,10 @@ class Relation(models.Model):
         verbose_name = _('Relation')
         verbose_name_plural = _('Relations')
         ordering = ('url', )
-        #unique_together = ('content_type', 'object_id')
     
     def __unicode__(self):
         return self.url
-    
-    """"""
+
     def save(self, *args, **kwargs):
 
         self.service = get_service_by_url(self.url, self.service)
@@ -608,7 +557,7 @@ class Relation(models.Model):
         # find already assigned services and delete them
         if self.service != 'generic':
             # TODO: fix unique problem
-            reld = Relation.objects.filter(service=self.service, content_type=self.content_type, object_id=self.object_id).delete()
+            Relation.objects.filter(service=self.service, content_type=self.content_type, object_id=self.object_id).delete()
 
         super(Relation, self).save(*args, **kwargs)    
         
@@ -616,10 +565,8 @@ class Relation(models.Model):
 
     @property
     def service_icon(self):
-        """
-        some mapping is needed to map services
-        """
         icon = self.service
+
         if icon == 'itunes':
             icon = 'apple'
 
@@ -637,8 +584,6 @@ def relation_post_save(sender, instance, signal, created, **kwargs):
     if instance.url[-4:] == 'None':
         log.debug('deleting wrongly formated relation')
         instance.delete()
-
-
 
 def update_relations():
     rs = Relation.objects.all()

@@ -1,28 +1,27 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import logging
+import os
 import arating
-from django.db import models
-from django.db.models.signals import post_save
-from django.db.models import Q
-from django.contrib.auth.models import User
-from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
-from django_extensions.db.fields import UUIDField, AutoSlugField
-from celery.task import task
-from filer.models.filemodels import *
-from filer.models.foldermodels import *
-from filer.models.imagemodels import *
-from filer.fields.image import FilerImageField
-from filer.fields.file import FilerFileField
-from django_date_extensions.fields import ApproximateDateField
+import reversion
 import tagging
-from tagging.registry import register as tagging_register
-import reversion 
-from l10n.models import Country
-from alibrary.models.basemodels import *
-from alibrary.models.releasemodels import *
+import uuid
+from alibrary.models import MigrationMixin, Relation, Profession
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
+from celery.task import task
+from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.db.models import Q
+from django.db.models.signals import post_save
+from django.utils.translation import ugettext as _
+from django_date_extensions.fields import ApproximateDateField
+from django_extensions.db.fields import UUIDField, AutoSlugField
+from django_extensions.db.fields.json import JSONField
+from l10n.models import Country
+from tagging.registry import register as tagging_register
 
 log = logging.getLogger(__name__)
     
@@ -58,9 +57,10 @@ class ArtistManager(models.Manager):
 
 class Artist(MigrationMixin):
     
-    uuid = UUIDField(primary_key=False)
+    #uuid = UUIDField(primary_key=False)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=250, db_index=True)
-    slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
+    slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True, db_index=True)
 
 
     TYPE_CHOICES = (
@@ -71,12 +71,10 @@ class Artist(MigrationMixin):
     )
     type = models.CharField(verbose_name="Artist type", max_length=128, blank=True, null=True, choices=TYPE_CHOICES)
     main_image = models.ImageField(verbose_name=_('Image'), upload_to=upload_image_to, storage=OverwriteStorage(), null=True, blank=True)
-    #main_image = FilerImageField(null=True, blank=True, related_name="artist_main_image", rel='')
 
     real_name = models.CharField(max_length=250, blank=True, null=True)
     disambiguation = models.CharField(max_length=256, blank=True, null=True)
     
-    #country = CountryField(blank=True, null=True)
     country = models.ForeignKey(Country, blank=True, null=True)
 
     booking_contact = models.CharField(verbose_name=_('Booking'), max_length=256, blank=True, null=True)
@@ -109,7 +107,7 @@ class Artist(MigrationMixin):
     #aliases = models.ManyToManyField("self", related_name='artist_aliases', blank=True, null=True)
     aliases = models.ManyToManyField("self", through='ArtistAlias', related_name='artist_aliases', blank=True, symmetrical=False)
 
-    folder = models.ForeignKey(Folder, blank=True, null=True, related_name='artist_folder', on_delete=models.SET_NULL)
+    #folder = models.ForeignKey(Folder, blank=True, null=True, related_name='artist_folder', on_delete=models.SET_NULL)
     
     # relations a.k.a. links
     relations = generic.GenericRelation(Relation)
@@ -130,8 +128,8 @@ class Artist(MigrationMixin):
     ipi_code = models.CharField(verbose_name=_('IPI Code'), max_length=32, blank=True, null=True)
     isni_code = models.CharField(verbose_name=_('ISNI Code'), max_length=32, blank=True, null=True)
 
+    summary = JSONField(null=True, blank=True)
 
-    
     # tagging
     #tags = TaggableManager(blank=True)
 
@@ -193,13 +191,13 @@ class Artist(MigrationMixin):
         })
 
 
-    @models.permalink
+
     def get_edit_url(self):
-        return ('alibrary-artist-edit', [self.pk])
+        return reverse("alibrary-artist-edit", args=(self.pk,))
 
     def get_admin_url(self):
-        from lib.util.get_admin_url import change_url
-        return change_url(self)
+        return reverse("admin:alibrary_artist_change", args=(self.pk,))
+
     
     def get_api_url(self):
         return reverse('api_dispatch_detail', kwargs={  
@@ -207,7 +205,6 @@ class Artist(MigrationMixin):
             'resource_name': 'library/artist',
             'pk': self.pk  
         }) + ''
-
 
 
     @property
@@ -255,6 +252,7 @@ class Artist(MigrationMixin):
     
     # release collection
     def get_releases(self):
+        from alibrary.models.releasemodels import Release
         try:
             r = Release.objects.filter(Q(media_release__artist=self) | Q(album_artists=self)).distinct()
             return r
@@ -262,6 +260,7 @@ class Artist(MigrationMixin):
             return []
         
     def get_media(self):
+        from alibrary.models.mediamodels import Media
         try:
             m = Media.objects.filter(Q(artist=self) | Q(media_artists=self)).distinct()
             return m
@@ -271,30 +270,15 @@ class Artist(MigrationMixin):
     
     def get_downloads(self):
         
-        downloads = File.objects.filter(folder=self.get_folder('downloads')).all()
+        return
 
-        if len(downloads) < 1:
-            return None
-        
-        return downloads
     
     def get_images(self):
         images = []
         
         if self.main_image:
-            images.append(self.main_image)
-            
-        try:
-            extra_images = Image.objects.filter(folder=self.get_folder('pictures')).all()
-            
-            for ea in extra_images:
-                if ea != self.main_image:
-                    images.append(ea)
-            
-        except Exception, e:
-            pass
-            
-        
+            return [self.main_image]
+
         return images
         
 
@@ -317,8 +301,7 @@ class Artist(MigrationMixin):
 
 
     def get_folder(self, name):
-        folder, created = Folder.objects.get_or_create(name=name, parent=self.folder)
-        return folder
+        return
         
         
     def save(self, *args, **kwargs):
@@ -341,6 +324,12 @@ class Artist(MigrationMixin):
             while Artist.objects.filter(name=self.name).count() > 0:
                 self.name = u'%s %s' % (original_name, i)
                 i += 1
+
+        # update summary
+        self.summary = {
+            'num_releases': self.get_releases().count(),
+            'num_media': self.get_media().count()
+        }
 
         super(Artist, self).save(*args, **kwargs)
     

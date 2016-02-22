@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import re
 import logging
 import requests
 from urlparse import urlparse
-from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.conf import settings
+from django_extensions.db.fields.json import JSONField
 from l10n.models import Country
-from jsonfield import JSONField
 from alibrary.util.relations import get_service_by_url
-from alibrary.models import *
+
 
 log = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ class APILookup(models.Model):
     uri = models.URLField(blank=True, null=True)
     ressource_id = models.CharField(max_length=500, null=True, blank=True)
     
-    api_data = JSONField(null=True, blank=True);
+    api_data = JSONField(null=True, blank=True)
     
 
     PROCESSED_CHOICES = (

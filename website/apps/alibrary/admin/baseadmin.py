@@ -31,15 +31,15 @@ class MediaInline(admin.TabularInline):
     readonly_fields = ['artist', ]
     extra = 0
     
-class FormatAdmin(BaseAdmin):
-    
-    list_display   = ('format', 'version', 'default_price')
-
-    fieldsets = [
-        (None,               {'fields': ['format', 'version', 'default_price', 'excerpt']}),
-    ]
-    
-admin.site.register(Format, FormatAdmin)
+# class FormatAdmin(BaseAdmin):
+#
+#     list_display   = ('format', 'version', 'default_price')
+#
+#     fieldsets = [
+#         (None,               {'fields': ['format', 'version', 'default_price', 'excerpt']}),
+#     ]
+#
+# admin.site.register(Format, FormatAdmin)
     
     
 class ReleaseExtraartistsInline(admin.TabularInline):
@@ -119,7 +119,7 @@ class ReleaseAdmin(BaseAdmin):
 
     fieldsets = [
         (None,  {
-                'fields': ['name', 'slug', 'main_image', ('label', 'catalognumber'), ('releasedate', 'release_country', 'license'), ('releasetype',), 'enable_comments', 'main_format', 'd_tags', 'description']
+                'fields': ['name', 'slug', 'main_image', ('label', 'catalognumber'), ('releasedate', 'release_country', 'license'), ('releasetype',), 'enable_comments', 'd_tags', 'description']
                 }),
         ('Users', {'fields' : ['owner', 'creator', 'last_editor', 'publisher']}),
     ]
@@ -213,12 +213,11 @@ class ArtistAdmin(BaseAdmin):
     
     # RelationsInline, 
     inlines = [NameVariationInline, RelationsInline, ArtistProfessionsInline, ArtistMembersInline, ArtistParentsInline, AgencyArtistInline]
-    
-    readonly_fields = ["folder",]
+
     
     """"""
     fieldsets = [
-        (None,               {'fields': ['name', 'slug', 'main_image', 'real_name', 'country', ('listed', 'disable_link',), 'enable_comments', 'biography', 'excerpt', 'folder', ]}),
+        (None,               {'fields': ['name', 'slug', 'main_image', 'real_name', 'country', ('listed', 'disable_link',), 'enable_comments', 'biography', 'excerpt', ]}),
         ('Users', {'fields' : ['owner', 'creator', 'last_editor', 'publisher']}),
         ('Various', {'fields' : ['booking_contact', 'email',]}),
     ]
@@ -286,7 +285,6 @@ class MediaAdmin(BaseAdmin):
 
     readonly_fields = [
         'slug',
-        'folder',
         'uuid',
         'base_format',
         'base_filesize',
@@ -309,22 +307,17 @@ class MediaAdmin(BaseAdmin):
                  
         ('Users', {'fields' : ['owner', 'creator', 'last_editor', 'publisher']}),
         ('Text', {'fields' : ['description', 'lyrics',]}),
-                 
-        # ('Storage related',  {
-        #         'fields': ['master', 'master_sha1', 'folder', ('base_format', 'base_filesize', 'base_duration',), ('base_samplerate', 'base_bitrate')]
-        #          }),
+
 
         ('Master Audio File',  {
                 'fields': [
                     'master',
                     'master_sha1',
-                    'folder',
                     ('master_encoding', 'master_bitrate', 'master_samplerate',),
                     ('master_duration', 'master_filesize')
                 ]
                  }),
 
-        #('Mixed content', {'fields': ['description'], 'classes': ['']}),
         ('Advanced options [Know what you are doing!!!!!!!!]', {
             'classes': ('uncollapse',),
             'fields': ('processed','echoprint_status','conversion_status',)
@@ -351,7 +344,6 @@ class DistributorLabelInline(admin.TabularInline):
 class LabelAdmin(BaseAdmin):
     
     # inlines = [LabelInline]
-    #prepopulated_fields = {"slug": ("name",)}
     readonly_fields = ['slug']
     
     inlines = [RelationsInline]
@@ -471,12 +463,6 @@ admin.site.register(Daypart, DaypartAdmin)
 admin.site.register(PlaylistItem, PlaylistItemAdmin)
 
 
-        
-class MediaformatAdmin(BaseAdmin):
-    pass
-    
-admin.site.register(Mediaformat, MediaformatAdmin)
-
 
 
 admin.site.register(APILookup)
@@ -493,24 +479,5 @@ admin.site.register(Weather, WeatherAdmin)
 
 admin.site.register(Series)
 
-
-
-
-"""
-from tastypie.admin import ApiKeyInline
-from tastypie.models import ApiAccess, ApiKey
-from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
-
-admin.site.register(ApiKey)
-admin.site.register(ApiAccess)
-
-
-class UserModelAdmin(UserAdmin):
-    inlines = UserAdmin.inlines + [ApiKeyInline]
-
-admin.site.unregister(User)
-admin.site.register(User,UserModelAdmin)
-"""
 
 

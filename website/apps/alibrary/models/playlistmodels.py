@@ -1,27 +1,25 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import logging
+import os
+import arating
 import tagging
+import uuid
+from celery.task import task
+from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
-from django.contrib.contenttypes.models import ContentType
-from django.conf import settings
 from django_extensions.db.fields import UUIDField, AutoSlugField
 from django_extensions.db.fields.json import JSONField
-from filer.models.filemodels import *
-from filer.models.foldermodels import *
-from filer.models.imagemodels import *
-from filer.fields.image import FilerImageField
-from filer.fields.file import FilerFileField
-from celery.task import task
-from tagging.registry import register as tagging_register
-from caching.base import CachingMixin, CachingManager
 from lib.fields import extra
-from alibrary.models.basemodels import *
-from alibrary.models.artistmodels import *
+from tagging.registry import register as tagging_register
 from alibrary import settings as alibrary_settings
+from alibrary.models import MigrationMixin, Daypart
 
 log = logging.getLogger(__name__)
 
@@ -68,7 +66,8 @@ class Series(models.Model):
 
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
-    uuid = UUIDField()
+    #uuid = UUIDField()
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     description = extra.MarkdownTextField(blank=True, null=True)
 
     class Meta:
@@ -87,7 +86,8 @@ class Playlist(MigrationMixin, models.Model):
 
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
-    uuid = UUIDField()
+    #uuid = UUIDField()
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     status = models.PositiveIntegerField(default=0, choices=alibrary_settings.PLAYLIST_STATUS_CHOICES)
     type = models.CharField(max_length=12, default='basket', null=True, choices=alibrary_settings.PLAYLIST_TYPE_CHOICES)
@@ -167,30 +167,25 @@ class Playlist(MigrationMixin, models.Model):
     def __unicode__(self):
         return self.name
         
-        
-    @models.permalink
+
     def get_absolute_url(self):
-        return ('alibrary-playlist-detail', [self.slug])
+        return reverse('alibrary-playlist-detail', kwargs={
+            'slug': self.slug,
+        })
 
-    @models.permalink
     def get_edit_url(self):
-        return ('alibrary-playlist-edit', [self.pk])
+        return reverse("alibrary-playlist-edit", args=(self.pk,))
 
-    @models.permalink
     def get_delete_url(self):
-        return ('alibrary-playlist-delete', [self.pk])
+        return reverse("alibrary-playlist-delete", args=(self.pk,))
 
     def get_admin_url(self):
-        from lib.util.get_admin_url import change_url
-        return change_url(self)
-    
-    
+        return reverse("admin:alibrary_playlist_change", args=(self.pk,))
+
     def get_duration(self):
         duration = 0
         try:
             for item in self.items.all():
-
-
                 duration += item.content_object.get_duration()
                 pip = PlaylistItemPlaylist.objects.get(playlist=self, item=item)
                 duration -= pip.cue_in
@@ -204,17 +199,12 @@ class Playlist(MigrationMixin, models.Model):
 
         return duration
 
-
     def get_emissions(self):
         from abcast.models import Emission
         ctype = ContentType.objects.get_for_model(self)
         emissions = Emission.objects.filter(content_type__pk=ctype.id, object_id=self.id).order_by('-time_start')
         return emissions
-    
-    #@models.permalink
-    #def get_reorder_url(self):
-    #    return ('alibrary-playlist-reorder', [self.pk])
-    
+
     def get_api_url(self):
         return reverse('api_dispatch_detail', kwargs={  
             'api_name': 'v1',  
@@ -231,9 +221,7 @@ class Playlist(MigrationMixin, models.Model):
 
 
     def can_be_deleted(self):
-        """
-        check if there is a reason not to allow delete
-        """
+
         can_delete = False
         reason = _('This playlist cannot be deleted.')
 
@@ -248,8 +236,6 @@ class Playlist(MigrationMixin, models.Model):
         if self.type == 'broadcast':
             can_delete = False
             reason = _('Playlist "%s" published for broadcast. It cannot be deleted anymore.' % self.name)
-
-
 
 
         return can_delete, reason
@@ -634,7 +620,8 @@ class PlaylistMedia(models.Model):
     #playlist = models.ForeignKey('Playlist', related_name='playlist_playlist')
     #media = models.ForeignKey('Media', related_name='playlist_media')
     
-    uuid = UUIDField()
+    #uuid = UUIDField()
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     
     playlist = models.ForeignKey('Playlist')
     media = models.ForeignKey('Media')
@@ -657,7 +644,8 @@ class PlaylistItemPlaylist(models.Model):
     playlist = models.ForeignKey('Playlist', on_delete=models.CASCADE)
     item = models.ForeignKey('PlaylistItem', on_delete=models.CASCADE)
 
-    uuid = UUIDField()
+    #uuid = UUIDField()
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
@@ -701,7 +689,8 @@ class PlaylistItemPlaylist(models.Model):
  
 class PlaylistItem(models.Model):
     
-    uuid = UUIDField()
+    #uuid = UUIDField()
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     class Meta:
         app_label = 'alibrary'

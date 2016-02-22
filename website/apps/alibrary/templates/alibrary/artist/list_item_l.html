@@ -39,11 +39,12 @@
                             {% if item.country %}({{ item.country.iso2_code }}){% endif %}
 
 
-
+                            {% comment %}
                             {% nocache %}
                                 {% load arating_tags %}
                                 {% topflop_for_object item %}
                             {% endnocache %}
+                            {% endcomment %}
 
 
                             {% comment %}
@@ -67,23 +68,23 @@
 
                 <ul class="unstyled horizontal">
                 {% comment %}{% endcomment %}
-                    {% if item.get_releases.count > 0 %}
+                    {% if item.summary.num_releases > 0 %}
                         <li>
                             {% url "alibrary-release-list" as release_list %}
                             {% trans "Releases" %}:&nbsp;<a
                                 href="{% spurl path=release_list query="artist={{ item.slug }}" %}"
                                 title="{% trans "Only show releases by" %} {{ item.name }}"
-                                style="vertical-align: top;">{{ item.get_releases.count }}<span
+                                style="vertical-align: top;">{{ item.summary.num_releases }}<span
                                 class="filter icon"></span></a>
                         </li>
                     {% endif %}
-                    {% if item.get_media.count > 0 %}
+                    {% if item.summary.num_media > 0 %}
                         <li style="padding-left: 30px">
                             {% url "alibrary-media-list" as media_list %}
                             {% trans "Tracks" %}:&nbsp;<a
                                 href="{% spurl path=media_list query="artist={{ item.slug }}" %}"
                                 title="{% trans "Only show tracks by" %} {{ item.name }}"
-                                style="vertical-align: top;">{{ item.get_media.count }}<span
+                                style="vertical-align: top;">{{ item.summary.num_media }}<span
                                 class="filter icon"></span></a>
                         </li>
                     {% endif %}

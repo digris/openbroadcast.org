@@ -1,29 +1,25 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import datetime
 from django.db import models
 import tagging
+import os
 import logging
 import reversion
+import uuid
 import arating
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes import generic
-from auditlog.registry import auditlog
-from auditlog.models import AuditlogHistoryField
 from celery.task import task
-from filer.models.filemodels import *
-from filer.models.foldermodels import *
-from filer.models.imagemodels import *
-from filer.fields.image import FilerImageField
 from phonenumber_field.modelfields import PhoneNumberField
 from l10n.models import Country
 from tagging.registry import register as tagging_register
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import UUIDField, AutoSlugField
 from alibrary import settings as alibrary_settings
-from model_utils import FieldTracker
 from lib.fields import extra
 from alibrary.models import MigrationMixin
 from alibrary.util.slug import unique_slugify
@@ -50,7 +46,8 @@ class Label(MigrationMixin):
 
 
     # core fields
-    uuid = UUIDField(primary_key=False)
+    #uuid = UUIDField(primary_key=False)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=400)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
 
@@ -69,9 +66,6 @@ class Label(MigrationMixin):
 
     date_start = ApproximateDateField(verbose_name="Life-span begin", blank=True, null=True)
     date_end = ApproximateDateField(verbose_name="Life-span end", blank=True, null=True)
-
-    #parent = TreeForeignKey('self', null=True, blank=True, related_name='label_children')
-    folder = models.ForeignKey(Folder, blank=True, null=True, related_name='label_folder')
 
     owner = models.ForeignKey(User, blank=True, null=True, related_name="labels_owner", on_delete=models.SET_NULL)
     creator = models.ForeignKey(User, blank=True, null=True, related_name="labels_creator", on_delete=models.SET_NULL)
@@ -127,8 +121,7 @@ class Label(MigrationMixin):
             return None
 
     def get_folder(self, name):
-        folder, created = Folder.objects.get_or_create(name=name, parent=self.folder)
-        return folder
+        return
 
     def get_lookup_providers(self):
 
@@ -152,13 +145,12 @@ class Label(MigrationMixin):
             'slug': self.slug,
         })
 
-    @models.permalink
     def get_edit_url(self):
-        return ('alibrary-label-edit', [self.pk])
+        return reverse("alibrary-label-edit", args=(self.pk,))
 
     def get_admin_url(self):
-        from lib.util.get_admin_url import change_url
-        return change_url(self)
+        return reverse("admin:alibrary_label_change", args=(self.pk,))
+
 
     def get_api_url(self):
         return reverse('api_dispatch_detail', kwargs={

@@ -1,41 +1,37 @@
 # -*- coding: utf-8 -*-
-import datetime
-from datetime import *
+from __future__ import unicode_literals
+
 import glob
-from zipfile import ZipFile
-import requests
-import tagging
 import logging
-import reversion
+import os
+from datetime import *
+from zipfile import ZipFile
+import uuid
 import arating
-from django.db import models
-from django.db import transaction
-from django.db.models import Q
-from django.db.models.signals import post_save
-from django.contrib.auth.models import User
-from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
-from django.conf import settings
+import requests
+import reversion
+import tagging
 from alibrary import settings as alibrary_settings
-from django_extensions.db.fields import UUIDField
-from celery.task import task
-from filer.models.filemodels import *
-from filer.models.foldermodels import *
-from filer.models.imagemodels import *
-from filer.fields.image import FilerImageField
-from filer.fields.file import FilerFileField
-from l10n.models import Country
-from django_date_extensions.fields import ApproximateDateField
-from tagging.registry import register as tagging_register
+from alibrary.models import Relation, License, MigrationMixin, Profession
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
-from alibrary.models.basemodels import *
-from alibrary.models.artistmodels import *
-from alibrary.models.labelmodels import Label
-from alibrary.models.mediamodels import Media
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.db.models import Q
+from django.utils.translation import ugettext as _
+from django_date_extensions.fields import ApproximateDateField
+from django_extensions.db.fields import AutoSlugField
+from django_extensions.db.fields import UUIDField
+from l10n.models import Country
 from lib.fields import extra
+from tagging.registry import register as tagging_register
 
 logger = logging.getLogger(__name__)
+
+MUSICBRAINZ_HOST = getattr(settings, 'MUSICBRAINZ_HOST', 'musicbrainz.org')
 
 TEMP_DIR = getattr(settings, 'TEMP_DIR', None)
 FORCE_CATALOGNUMBER = False
@@ -68,16 +64,16 @@ def filename_by_uuid(instance, filename, root='release'):
 class Release(MigrationMixin):
     
     # core fields
-    uuid = UUIDField(primary_key=False)
     name = models.CharField(max_length=200, db_index=True)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
     license = models.ForeignKey(License, blank=True, null=True, related_name='release_license')
     release_country = models.ForeignKey(Country, blank=True, null=True)
-    
-    uuid = UUIDField()
+
+    #uuid = UUIDField(primary_key=False)
+    #uuid = UUIDField()
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     main_image = models.ImageField(verbose_name=_('Cover'), upload_to=upload_cover_to, storage=OverwriteStorage(), null=True, blank=True)
-    cover_image = FilerImageField(null=True, blank=True, related_name="release_cover_image", rel='', help_text=_('Cover close-up. Used e.g. for embedding in digital files.'))
 
     if FORCE_CATALOGNUMBER:
         catalognumber = models.CharField(max_length=50)
@@ -103,13 +99,11 @@ class Release(MigrationMixin):
     )
     
     releasestatus = models.CharField(max_length=60, blank=True, choices=RELEASESTATUS_CHOICES)
-    main_format = models.ForeignKey(Mediaformat, null=True, blank=True, on_delete=models.SET_NULL)
     excerpt = models.TextField(blank=True, null=True)
     description = extra.MarkdownTextField(blank=True, null=True)
     releasetype = models.CharField(verbose_name="Release type", max_length=24, blank=True, null=True, choices=alibrary_settings.RELEASETYPE_CHOICES)
-    label = models.ForeignKey(Label, blank=True, null=True, related_name='release_label', on_delete=models.SET_NULL)
-    folder = models.ForeignKey(Folder, blank=True, null=True, related_name='release_folder', on_delete=models.SET_NULL)
-    media = models.ManyToManyField('Media', through='ReleaseMedia', blank=True, related_name="releases")
+    label = models.ForeignKey('alibrary.Label', blank=True, null=True, related_name='release_label', on_delete=models.SET_NULL)
+    media = models.ManyToManyField('alibrary.Media', through='ReleaseMedia', blank=True, related_name="releases")
 
     owner = models.ForeignKey(User, blank=True, null=True, related_name="releases_owner", on_delete=models.SET_NULL)
     creator = models.ForeignKey(User, blank=True, null=True, related_name="releases_creator", on_delete=models.SET_NULL)
@@ -118,10 +112,10 @@ class Release(MigrationMixin):
 
     barcode = models.CharField(max_length=32, blank=True, null=True)
 
-    extra_artists = models.ManyToManyField('Artist', through='ReleaseExtraartists', blank=True)
+    extra_artists = models.ManyToManyField('alibrary.Artist', through='ReleaseExtraartists', blank=True)
 
 
-    album_artists = models.ManyToManyField('Artist', through='ReleaseAlbumartists', related_name="release_albumartists", blank=True)
+    album_artists = models.ManyToManyField('alibrary.Artist', through='ReleaseAlbumartists', related_name="release_albumartists", blank=True)
     relations = generic.GenericRelation(Relation)
     d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
     enable_comments = models.BooleanField(_('Enable Comments'), default=True)
@@ -244,13 +238,11 @@ class Release(MigrationMixin):
             'slug': self.slug,
         })
 
-    @models.permalink
     def get_edit_url(self):
-        return ('alibrary-release-edit', [self.pk])
-    
+        return reverse("alibrary-release-edit", args=(self.pk,))
+
     def get_admin_url(self):
-        from lib.util.get_admin_url import change_url
-        return change_url(self)
+        return reverse("admin:alibrary_release_change", args=(self.pk,))
 
     def get_api_url(self):
         return reverse('api_dispatch_detail', kwargs={  
@@ -268,6 +260,7 @@ class Release(MigrationMixin):
     
     
     def get_media(self):
+        from alibrary.models import Media
         return Media.objects.filter(release=self)
     
     def get_products(self):
@@ -498,7 +491,7 @@ except Exception as e:
 arating.enable_voting_on(Release)
 
 class ReleaseExtraartists(models.Model):
-    artist = models.ForeignKey('Artist', related_name='release_extraartist_artist')
+    artist = models.ForeignKey('alibrary.Artist', related_name='release_extraartist_artist')
     release = models.ForeignKey('Release', related_name='release_extraartist_release')
     profession = models.ForeignKey(Profession, verbose_name='Role/Profession', related_name='release_extraartist_profession', blank=True, null=True)   
     class Meta:
@@ -507,7 +500,7 @@ class ReleaseExtraartists(models.Model):
         verbose_name_plural = _('Roles')
 
 class ReleaseAlbumartists(models.Model):
-    artist = models.ForeignKey('Artist', related_name='release_albumartist_artist')
+    artist = models.ForeignKey('alibrary.Artist', related_name='release_albumartist_artist')
     release = models.ForeignKey('Release', related_name='release_albumartist_release')
     JOIN_PHRASE_CHOICES = (
         ('&', _('&')),
@@ -541,7 +534,7 @@ class ReleaseRelations(models.Model):
 
 class ReleaseMedia(models.Model):
     release = models.ForeignKey('Release')
-    media = models.ForeignKey('Media')
+    media = models.ForeignKey('alibrary.Media')
     position = models.PositiveIntegerField(null=True, blank=True)
     class Meta:
         app_label = 'alibrary'

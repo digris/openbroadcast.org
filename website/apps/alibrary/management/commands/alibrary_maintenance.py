@@ -5,6 +5,7 @@ import pprint
 from optparse import make_option
 import logging
 
+
 from django.core.management.base import BaseCommand, NoArgsCommand
 
 
@@ -142,6 +143,25 @@ class MaintenanceWorker(object):
             for item in items:
                 log.info('analyze: %s' % item)
                 item.echonest_analyze()
+
+
+        if self.action == 'update_artist_summary':
+
+            from alibrary.models import Artist
+            from tqdm import tqdm
+
+
+            for item in tqdm(Artist.objects.all()):
+
+                summary = {
+                    'num_releases': item.get_releases().count(),
+                    'num_media': item.get_media().count()
+                }
+
+                Artist.objects.filter(pk=item.pk).update(summary=summary)
+
+
+
 
 
         if self.action == 'clean_playlists':
