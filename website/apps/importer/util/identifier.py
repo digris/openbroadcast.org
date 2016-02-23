@@ -253,8 +253,7 @@ class Identifier(object):
         except Exception, e:
             print e
            
-           
-           
+
         # try to extract tracknumber from filename
         if 'media_tracknumber' in dataset and not dataset['media_tracknumber']:
             
@@ -375,24 +374,25 @@ class Identifier(object):
             #print e
             pass
 
-        # debug
+
+        """
+        hacks to prevent some mutagen bugs:
+         - https://bitbucket.org/lazka/mutagen/issues/215/mutageneasyid3easyid3keyerror
+         - https://dev.sourcefabric.org/browse/CC-6035
+        """
         if meta:
+
             for k in meta:
-                m = meta[k]
-                if k[0:13] != 'PRIV:TRAKTOR4':
-                    pass
 
+                if k == 'replaygain_SeratoGain_gain':
+                    del(meta[k])
 
-        # print "******************************************************************"
-        # print "* Aquired metadata"
-        # print "******************************************************************"
-        # for k in dataset:
-        #     m = dataset[k]
-        #     try:
-        #         print "%s:   %s" % (k, m)
-        #     except:
-        #         pass
-        # print "******************************************************************"
+                if k == 'replaygain_SeratoGain_peak':
+                    del(meta[k])
+
+                if k[0:13] == 'PRIV:TRAKTOR4':
+                    del(meta[k])
+
 
         self.file_metadata = dataset
 

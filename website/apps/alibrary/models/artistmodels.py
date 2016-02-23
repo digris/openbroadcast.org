@@ -254,7 +254,7 @@ class Artist(MigrationMixin):
     def get_releases(self):
         from alibrary.models.releasemodels import Release
         try:
-            r = Release.objects.filter(Q(media_release__artist=self) | Q(album_artists=self)).distinct()
+            r = Release.objects.filter(Q(media_release__artist=self) | Q(media_release__media_artists=self) | Q(album_artists=self)).distinct()
             return r
         except Exception, e:
             return []
@@ -266,7 +266,20 @@ class Artist(MigrationMixin):
             return m
         except Exception, e:
             return []
-        
+
+
+    def update_summary(self, save=False):
+
+        self.summary = {
+            'num_releases': self.get_releases().count(),
+            'num_media': self.get_media().count()
+        }
+
+        if save:
+            self.save()
+
+        return self.summary
+
     
     def get_downloads(self):
         
@@ -317,6 +330,8 @@ class Artist(MigrationMixin):
         add a counter to the name ensure uniqueness.
         """
 
+        self.update_summary(save=False)
+
         if self.name == 'Various Artists' and self.pk is None:
             log.warning('attempt to create "Various Artists"')
             original_name = self.name
@@ -324,12 +339,6 @@ class Artist(MigrationMixin):
             while Artist.objects.filter(name=self.name).count() > 0:
                 self.name = u'%s %s' % (original_name, i)
                 i += 1
-
-        # update summary
-        self.summary = {
-            'num_releases': self.get_releases().count(),
-            'num_media': self.get_media().count()
-        }
 
         super(Artist, self).save(*args, **kwargs)
     
@@ -373,6 +382,7 @@ def action_handler_task(instance, created):
         if created:
             verb = _('created')
         action.send(instance.creator, verb=verb, target=instance)
+
     except Exception, e:
 
         print "artist - action_handler_task"

@@ -2,9 +2,19 @@ import re
 
 from django.conf import settings
 from django.core.cache import cache
+from django.template.defaultfilters import striptags
 from django.utils.safestring import mark_safe
 
+
+def remove_non_a_tags(text):
+	TAG_RE = re.compile(r'</(?!a).*?>|<(?!/)(?!a).*?>')
+	return TAG_RE.sub('', text)
+
+
 def wikisafe_markdown(value):
+
+	value = remove_non_a_tags(value)
+
 	import markdown as mkdn
 	#from django.contrib.markup.templatetags.markup import markdown
 	try:

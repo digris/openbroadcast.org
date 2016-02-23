@@ -54,13 +54,6 @@ def upload_cover_to(instance, filename):
     filename, extension = os.path.splitext(filename)
     return os.path.join(get_dir_for_object(instance), 'cover%s' % extension.lower())
 
-
-def filename_by_uuid(instance, filename, root='release'):
-    filename, extension = os.path.splitext(filename)
-    filename = instance.uuid.replace('-', '/')[5:] + extension
-    return os.path.join(root, filename)
-
-
 class Release(MigrationMixin):
     
     # core fields

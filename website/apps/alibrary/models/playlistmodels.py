@@ -20,16 +20,22 @@ from lib.fields import extra
 from tagging.registry import register as tagging_register
 from alibrary import settings as alibrary_settings
 from alibrary.models import MigrationMixin, Daypart
+from alibrary.util.storage import get_dir_for_object, OverwriteStorage
 
 log = logging.getLogger(__name__)
 
 DURATION_MAX_DIFF = 2500 # ms
 
+# TODO: remove. still referenced in migrations, so left here for the moment
 def filename_by_uuid(instance, filename):
     filename, extension = os.path.splitext(filename)
     path = "playlists/"
-    filename = instance.uuid.replace('-', '/') + extension
+    filename = str(instance.uuid).replace('-', '/') + extension
     return os.path.join(path, filename)
+
+def upload_image_to(instance, filename):
+    filename, extension = os.path.splitext(filename)
+    return os.path.join(get_dir_for_object(instance), 'playlists%s' % extension.lower())
 
 
 class Season(models.Model):
@@ -102,9 +108,10 @@ class Playlist(MigrationMixin, models.Model):
     edit_mode = models.PositiveIntegerField(default=2, choices=EDIT_MODE_CHOICES)
     
     rotation = models.BooleanField(default=True)
-    
-    main_image = models.ImageField(verbose_name=_('Image'), upload_to=filename_by_uuid, null=True, blank=True)
-    
+
+    main_image = models.ImageField(verbose_name=_('Image'), upload_to=upload_image_to, storage=OverwriteStorage(), null=True, blank=True)
+
+
     # relations
     user = models.ForeignKey(User, null=True, blank=True, default = None)
     #media = models.ManyToManyField('Media', through='PlaylistMedia', blank=True, null=True)

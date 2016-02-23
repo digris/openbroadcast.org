@@ -123,8 +123,8 @@ class Distributor(MigrationMixin):
         for tag in self.tags:
             t_tags += '%s, ' % tag    
         
-        self.tags = t_tags;
-        self.d_tags = t_tags;
+        self.tags = t_tags
+        self.d_tags = t_tags
         
         super(Distributor, self).save(*args, **kwargs)
 
@@ -331,7 +331,7 @@ class License(TranslatableModel, MigrationMixin):
 
 
     def get_absolute_url(self):
-        return reverse('alibrary-license-detail', [self.slug])
+        return reverse('alibrary-license-detail', args=(self.slug,))
 
     def get_admin_url(self):
         return reverse("admin:alibrary_license_change", args=(self.pk,))

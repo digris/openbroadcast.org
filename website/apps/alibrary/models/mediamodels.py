@@ -659,9 +659,6 @@ class Media(MigrationMixin):
         if self.master_changed:
             self.process_master_info()
 
-
-
-
         # check if master changed. if yes we need to reprocess the cached files
         if self.uuid is not None:
 

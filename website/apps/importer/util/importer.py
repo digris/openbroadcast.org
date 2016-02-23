@@ -44,7 +44,7 @@ def clean_filename(filename):
 
 def masterpath_by_uuid(instance, filename):
     filename, extension = os.path.splitext(filename)
-    folder = "private/%s/" % (instance.uuid.replace('-', '/')[5:])
+    folder = "private/%s/" % (str(instance.uuid).replace('-', '/')[5:])
     filename = u'master'
     return os.path.join(folder, "%s%s" % (clean_filename(filename).lower(), extension.lower()))
 
@@ -386,7 +386,7 @@ class Importer(object):
             obj.import_session.add_importitem(m)
         
         # add file
-        folder = "private/%s/" % (m.uuid.replace('-', '/'))
+        folder = "private/%s/" % (str(m.uuid).replace('-', '/'))
         src = obj.file.path
         filename, extension = os.path.splitext(obj.file.path)
         dst = os.path.join(folder, "master%s" % extension.lower())

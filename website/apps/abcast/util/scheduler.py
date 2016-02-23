@@ -74,7 +74,7 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
 
                 data = {
 
-                        'id': co.uuid,
+                        'id': str(co.uuid),
                         'cue_in': float(item.cue_in) / 1000,
                         'cue_out': float(co.get_duration() - item.cue_out) / 1000,
                         'fade_in': item.fade_in,
@@ -90,7 +90,7 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
                         'title': 'fartsi',
                         'show_name': "%s" % e.name,
                         'uri': uri,
-                        'row_id': co.uuid,
+                        'row_id': str(co.uuid),
                         'type': "file",
 
                         }

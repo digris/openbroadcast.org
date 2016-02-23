@@ -33,7 +33,7 @@ def get_dir_for_object(obj, prefix=None, app_dir=None, object_dir=None):
         except:
             app_dir = None
 
-    path = os.path.join(object_dir, obj.uuid.replace('-', '/')[5:])
+    path = os.path.join(object_dir, str(obj.uuid).replace('-', '/')[5:])
 
     if app_dir:
         path = os.path.join(app_dir, path)

@@ -1,7 +1,7 @@
-from django.conf.urls import *
-
-# app imports
-from alibrary.views import *
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from django.conf.urls import patterns, url
+from alibrary.views import MediaListView, MediaDetailView, MediaEditView
 
 urlpatterns = patterns('',
 
@@ -12,8 +12,5 @@ urlpatterns = patterns('',
     url(r'^(?P<uuid>[-\w]+)/stream.mp3$', 'alibrary.views.stream_html5', name='alibrary-media-stream_html5'),
     url(r'^(?P<uuid>[-\w]+)/stream.(?P<bitrate>\d+).(?P<format>[-\w]+)$', 'alibrary.views.encode', name='alibrary-media-encode'),
     url(r'^(?P<uuid>[-\w]+)/waveform.png$', 'alibrary.views.waveform', name='alibrary-media-waveform'),
-    #url(r'^tracks/(?P<uuid>[-\w]+)/stream_html5/base.mp3$', 'alibrary.views.stream_html5', name='alibrary-media-stream_html5'),
-    #url(r'^tracks/(?P<uuid>[-\w]+)/waveform/$', 'alibrary.views.waveform', name='alibrary-media-waveform'),
-    #url(r'^encode/(?P<uuid>[-\w]+)/stream.(?P<bitrate>\d+).(?P<format>[-\w]+)$', 'alibrary.views.encode', name='alibrary-media-encode'),
 
 )

@@ -442,11 +442,8 @@ class WaveformImage(object):
         for x in range(self.image_width):
             self.pix[x, self.image_height/2] = tuple(map(lambda p: p+a, self.pix[x, self.image_height/2]))
 
-        print 'ready to save:',
-        print filename
         try:
             self.image.save(filename)
-            print 'image saved successfully'
         except Exception, e:
             print e
 
