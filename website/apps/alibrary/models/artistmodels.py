@@ -16,12 +16,14 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save
+from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import UUIDField, AutoSlugField
 from django_extensions.db.fields.json import JSONField
 from l10n.models import Country
 from tagging.registry import register as tagging_register
+from cacheops import cached
 
 log = logging.getLogger(__name__)
     
@@ -251,18 +253,27 @@ class Artist(MigrationMixin):
         return aliases
     
     # release collection
+
+    #@cached(timeout=60*60*24)
     def get_releases(self):
+
+        # obj.get_releases.invalidate(obj)
+
         from alibrary.models.releasemodels import Release
         try:
-            r = Release.objects.filter(Q(media_release__artist=self) | Q(media_release__media_artists=self) | Q(album_artists=self)).distinct()
+            r = Release.objects.filter(Q(media_release__artist=self) | Q(media_release__media_artists=self) | Q(album_artists=self)).nocache().distinct()
             return r
         except Exception, e:
             return []
-        
+
+    #@cached(timeout=60*60*24)
     def get_media(self):
+
+        # obj.get_media.invalidate(obj)
+
         from alibrary.models.mediamodels import Media
         try:
-            m = Media.objects.filter(Q(artist=self) | Q(media_artists=self)).distinct()
+            m = Media.objects.filter(Q(artist=self) | Q(media_artists=self)).nocache().distinct()
             return m
         except Exception, e:
             return []
@@ -279,6 +290,33 @@ class Artist(MigrationMixin):
             self.save()
 
         return self.summary
+
+
+    #@cached(timeout=60*60*24)
+    def cached_summary(self):
+
+        # obj.cached_summary.invalidate(obj)
+
+        summary = {
+            'num_releases': self.get_releases().count(),
+            'num_media': self.get_media().count()
+        }
+        return summary
+
+    def get_summary(self):
+
+        return self.cached_summary()
+        #return self.summary
+
+        #@cached(extra=self.media_artist.count())
+        # @cached(timeout=60*60*60)
+        # def cached_summary():
+        #     summary = {
+        #         'num_releases': self.get_releases().count(),
+        #         'num_media': self.get_media().count()
+        #     }
+        #     return summary
+        # return cached_summary()
 
     
     def get_downloads(self):
@@ -364,6 +402,18 @@ arating.enable_voting_on(Artist)
 #         print e
 #
 # post_save.connect(action_handler, sender=Artist)
+
+
+
+@receiver(post_save, sender=Artist)
+def invalidate_cache(sender, instance, created, **kwargs):
+
+    pass
+
+    # instance.get_releases.invalidate(instance)
+    # instance.get_media.invalidate(instance)
+
+
 
 
 """

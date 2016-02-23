@@ -110,7 +110,7 @@
 
 		{% for item in object_list %}
 
-            {% cached_as item 600 "artist_list_item_l"  group_hash %}
+            {% cached_as item 600 "artist_list_item_l" group_hash %}
             {% include "alibrary/artist/list_item_l.html" %}
             {% endcached_as %}
 
