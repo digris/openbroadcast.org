@@ -61,7 +61,8 @@ django-filter==0.11.0
 django-floppyforms==1.1.1
 django-fluent-comments==1.0.4
 django-guardian==1.3
-django-haystack
+django-haystack==2.4.1
+elasticsearch==2.2.0
 django-hvad==1.3.0
 django-mailer==0.1.0
 django-missing==0.1.11

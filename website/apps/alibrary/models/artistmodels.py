@@ -18,6 +18,7 @@ from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext as _
+from django.utils.functional import cached_property
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import UUIDField, AutoSlugField
 from django_extensions.db.fields.json import JSONField
@@ -217,18 +218,9 @@ class Artist(MigrationMixin):
     def get_soundcloud(self):
         return self.relations.filter(service='soundcloud').all()[0]
 
-    
+    @cached_property
     def get_membership(self):
-
-        parents = []
-        try:
-            ms = ArtistMembership.objects.filter(child=self)
-            for m in ms:
-                parents.append(m.parent)
-        except:
-            pass
-        
-        return parents
+        return [m.parent for m in ArtistMembership.objects.filter(child=self)]
 
 
     def get_alias_ids(self, exclude=[]):
@@ -251,72 +243,54 @@ class Artist(MigrationMixin):
 
         aliases = Artist.objects.filter(pk__in=self.get_alias_ids([])).exclude(pk=self.pk).distinct()
         return aliases
-    
-    # release collection
 
-    #@cached(timeout=60*60*24)
+
+    @cached(timeout=60*60*24)
     def get_releases(self):
 
         # obj.get_releases.invalidate(obj)
 
         from alibrary.models.releasemodels import Release
         try:
-            r = Release.objects.filter(Q(media_release__artist=self) | Q(media_release__media_artists=self) | Q(album_artists=self)).nocache().distinct()
+            r = Release.objects.filter(Q(media_release__artist__pk=self.pk) | Q(media_release__media_artists__pk=self.pk) | Q(album_artists__pk=self.pk)).nocache().distinct()
             return r
         except Exception, e:
             return []
 
-    #@cached(timeout=60*60*24)
+    @cached(timeout=60*60*24)
     def get_media(self):
 
         # obj.get_media.invalidate(obj)
 
         from alibrary.models.mediamodels import Media
         try:
-            m = Media.objects.filter(Q(artist=self) | Q(media_artists=self)).nocache().distinct()
+            m = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk)).nocache().distinct()
             return m
         except Exception, e:
             return []
 
 
-    def update_summary(self, save=False):
+    @cached_property
+    def appearances(self):
 
-        self.summary = {
-            'num_releases': self.get_releases().count(),
-            'num_media': self.get_media().count()
+        try:
+            num_releases = self.get_releases().count()
+        except:
+            num_releases = 0
+
+        try:
+            num_media = self.get_media().count()
+        except:
+            num_media = 0
+
+        log.debug('calculating appearances for {} - r:{} m:{}'.format(self.pk, num_releases, num_media))
+
+
+        appearances = {
+            'num_releases': num_releases,
+            'num_media': num_media
         }
-
-        if save:
-            self.save()
-
-        return self.summary
-
-
-    #@cached(timeout=60*60*24)
-    def cached_summary(self):
-
-        # obj.cached_summary.invalidate(obj)
-
-        summary = {
-            'num_releases': self.get_releases().count(),
-            'num_media': self.get_media().count()
-        }
-        return summary
-
-    def get_summary(self):
-
-        return self.cached_summary()
-        #return self.summary
-
-        #@cached(extra=self.media_artist.count())
-        # @cached(timeout=60*60*60)
-        # def cached_summary():
-        #     summary = {
-        #         'num_releases': self.get_releases().count(),
-        #         'num_media': self.get_media().count()
-        #     }
-        #     return summary
-        # return cached_summary()
+        return appearances
 
     
     def get_downloads(self):
@@ -347,10 +321,6 @@ class Artist(MigrationMixin):
         return providers
 
 
-    def is_multiple(self):
-        return self.multiple == True # TODO: actually check if combo-artist!
-
-
     def get_folder(self, name):
         return
         
@@ -367,8 +337,6 @@ class Artist(MigrationMixin):
         in the case we - for whatever unplanned reason - there is a duplicate coming in we
         add a counter to the name ensure uniqueness.
         """
-
-        self.update_summary(save=False)
 
         if self.name == 'Various Artists' and self.pk is None:
             log.warning('attempt to create "Various Artists"')
@@ -402,16 +370,6 @@ arating.enable_voting_on(Artist)
 #         print e
 #
 # post_save.connect(action_handler, sender=Artist)
-
-
-
-@receiver(post_save, sender=Artist)
-def invalidate_cache(sender, instance, created, **kwargs):
-
-    pass
-
-    # instance.get_releases.invalidate(instance)
-    # instance.get_media.invalidate(instance)
 
 
 

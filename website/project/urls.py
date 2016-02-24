@@ -70,7 +70,7 @@ urlpatterns = patterns('',
         'document_root': settings.MEDIA_ROOT,
     }),
     
-    url(r'^search/', include('asearch.urls')),
+    url(r'^search/', include('search.urls')),
     url(r'^search/', include('haystack.urls')),
     url(r'^sitemap.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
     (r'^player/', include('aplayer.urls')),

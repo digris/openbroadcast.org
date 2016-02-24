@@ -144,9 +144,9 @@
 
 		{% if list_style == "l" %}
 
-            {% cache 600 "artist_list_item_l" item.pk group_hash item.updated %}
+            {% cache 600 "artist_list_item_l" item.pk group_hash item.updated %}{% endcache %}
             {% include "alibrary/artist/list_item_l.html" %}
-            {% endcache %}
+
 
 		{% endif %}
 

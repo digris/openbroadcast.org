@@ -55,6 +55,12 @@
                         </a>
                     </li>
 
+                    {% comment %}
+                    {% if item.get_membership %}
+                        <li><a href="{{ item.get_membership.0.get_absolute_url }}">{{ item.get_membership.0 }}</a></li>
+                    {% endif %}
+                    {% endcomment %}
+
                     <li>
                         {% if item.type %}
                             {{ item.type|capfirst }}
@@ -67,27 +73,30 @@
                 </ul>
 
                 <ul class="unstyled horizontal">
-                    {% if item.get_summary.num_releases > 0 %}
+                    {% if item.appearances.num_releases > 0 %}
                         <li>
                             {% url "alibrary-release-list" as release_list %}
                             {% trans "Releases" %}:&nbsp;<a
                                 href="{% spurl path=release_list query="artist={{ item.slug }}" %}"
                                 title="{% trans "Only show releases by" %} {{ item.name }}"
-                                style="vertical-align: top;">{{ item.get_summary.num_releases }}<span
+                                style="vertical-align: top;">{{ item.appearances.num_releases }}<span
                                 class="filter icon"></span></a>
                         </li>
                     {% endif %}
-                    {% if item.get_summary.num_media > 0 %}
+                    {% if item.appearances.num_media > 0 %}
                         <li style="padding-left: 30px">
                             {% url "alibrary-media-list" as media_list %}
                             {% trans "Tracks" %}:&nbsp;<a
                                 href="{% spurl path=media_list query="artist={{ item.slug }}" %}"
                                 title="{% trans "Only show tracks by" %} {{ item.name }}"
-                                style="vertical-align: top;">{{ item.get_summary.num_media }}<span
+                                style="vertical-align: top;">{{ item.appearances.num_media }}<span
                                 class="filter icon"></span></a>
                         </li>
                     {% endif %}
                 </ul>
+
+
+
             </div>
 
             <div class="list_body_item links external">

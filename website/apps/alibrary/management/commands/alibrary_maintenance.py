@@ -145,7 +145,7 @@ class MaintenanceWorker(object):
                 item.echonest_analyze()
 
 
-        if self.action == 'update_artist_summary':
+        if self.action == 'warm_appearances_cache':
 
             from alibrary.models import Artist
             from tqdm import tqdm
@@ -153,13 +153,8 @@ class MaintenanceWorker(object):
 
             for item in tqdm(Artist.objects.all()):
 
-                summary = {
-                    'num_releases': item.get_releases().count(),
-                    'num_media': item.get_media().count()
-                }
-
-                Artist.objects.filter(pk=item.pk).update(summary=summary)
-
+                item.get_releases()
+                item.get_media()
 
 
 

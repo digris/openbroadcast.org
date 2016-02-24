@@ -12,6 +12,8 @@ from abcast.api import StationResource, ChannelResource, JingleResource, JingleS
 from abcast.api import BaseResource as AbcastBaseResource
 from profiles.api import ProfileResource, UserResource
 
+from search.api.resources import SearchResource
+
 from arating.api import VoteResource
 from atracker.api import EventResource
 
@@ -68,6 +70,9 @@ api.register(VoteResource())
 
 # atracker
 api.register(EventResource())
+
+# search
+api.register(SearchResource())
 
 # comment
 #api.register(CommentResource())

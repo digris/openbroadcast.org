@@ -34,6 +34,8 @@ INSTALLED_APPS = (
     'django_date_extensions',
     'esi',
     'haystack',
+    'search',
+
 
 
     # tools
@@ -131,7 +133,6 @@ INSTALLED_APPS = (
     'abcast',
     'autopilot',
     'arating',
-    'asearch',
     'backfeed',
     'statistics',
     'bcmon',
