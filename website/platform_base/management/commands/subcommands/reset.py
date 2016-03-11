@@ -19,6 +19,11 @@ MODELS_TO_RESET = (
     'importer.ImportFile',
     'importer.ImportItem',
 
+    # massimporter
+    'massimporter.Massimport',
+    'massimporter.MassimportFile',
+
+
     # exporter
     'exporter.Export',
     'exporter.ExportItem',

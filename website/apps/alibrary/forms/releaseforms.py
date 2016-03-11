@@ -1,4 +1,5 @@
 from django import forms
+import logging
 from django.forms import ModelForm, Form
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from django.contrib.contenttypes.generic import BaseGenericInlineFormSet, generic_inlineformset_factory
@@ -32,7 +33,7 @@ from lib.util.filer_extra import url_to_file
 
 from alibrary.util.storage import get_file_from_url
 
-
+log = logging.getLogger(__name__)
 
 ACTION_LAYOUT =  action_layout = FormActions(
                 HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),
@@ -519,7 +520,7 @@ class BaseAlbumartistForm(ModelForm):
     class Meta:
         model = ReleaseAlbumartists
         parent_model = Release
-        fields = ('artist','join_phrase', 'position',)
+        fields = ('artist', 'join_phrase', 'position',)
 
     def __init__(self, *args, **kwargs):
         super(BaseAlbumartistForm, self).__init__(*args, **kwargs)
@@ -530,7 +531,7 @@ class BaseAlbumartistForm(ModelForm):
 
         artist = self.cleaned_data['artist']
         if artist and not artist.pk:
-            logger.debug('saving not existant artist: %s' % artist.name)
+            log.debug('saving not existant artist: %s' % artist.name)
             artist.save()
 
         return artist

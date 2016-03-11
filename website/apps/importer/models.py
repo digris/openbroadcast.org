@@ -124,7 +124,7 @@ class Import(BaseModel):
     def get_delete_url(self):
         return ('importer-import-delete', [str(self.pk)])
 
-    @task
+    #@task
     def get_stats(self):
 
         stats = {}
@@ -223,6 +223,7 @@ class Import(BaseModel):
     def add_importitem(self, item):
 
         ctype = ContentType.objects.get_for_model(item)
+        created = False
         try:
             item, created = ImportItem.objects.get_or_create(
                 object_id=item.pk,
@@ -230,17 +231,46 @@ class Import(BaseModel):
                 import_session=self
             )
         except Exception, e:
+            pass
+
+        try:
             item = ImportItem.objects.filter(
                 object_id=item.pk,
                 content_type=ctype,
                 import_session=self)[0]
             created = False
+        except Exception, e:
+            pass
 
         if created:
             self.add_to_playlist(item)
             self.add_to_collection(item)
     
         return item
+
+    def get_importitems(self):
+
+        qs = self.importitem_set.order_by('content_type__model')
+        cts = ['artist', 'release', 'media', 'label']
+
+        importitems = {}
+        for obj in [i for i in qs if i.content_object and i.content_type.model in cts]:
+            ct = '{}'.format(obj.content_type.model)
+            if not ct in importitems:
+                importitems[ct] = {
+                    'name': obj.content_object._meta.verbose_name_plural,
+                    'url': reverse('alibrary-{}-list'.format(ct)),
+                    'items': []
+                }
+
+            importitems[ct]['items'].append(
+                obj.content_object
+            )
+
+        return importitems
+
+
+
     
     def get_importitem_ids(self, ctype):
         ii_ids = ImportItem.objects.filter(
@@ -279,8 +309,8 @@ class ImportFile(BaseModel):
     )
 
     status = models.PositiveIntegerField(default=STATUS_INIT, choices=STATUS_CHOICES)
-    filename = models.CharField(max_length=256, blank=True, null=True, db_index=True)
-    file = models.FileField(max_length=256, upload_to=clean_upload_path)
+    filename = models.CharField(max_length=1024, blank=True, null=True)
+    file = models.FileField(max_length=1024, upload_to=clean_upload_path)
     import_session = models.ForeignKey(Import, verbose_name=_('Import'), null=True, related_name='files')
     mimetype = models.CharField(max_length=100, blank=True, null=True)
     messages = JSONField(blank=True, null=True, default=None)

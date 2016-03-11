@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 from django.conf.urls import url, patterns
-
-from importer.views import ImportListView, ImportCreateView, ImportUpdateView, ImportDeleteView, ImportModifyView, ImportDeleteAllView, multiuploader
+from importer.views import (ImportListView, ImportCreateView, ImportUpdateView,
+                            ImportDeleteView, ImportModifyView, ImportDeleteAllView)
 
 urlpatterns = patterns('',
                                                
@@ -11,8 +12,5 @@ urlpatterns = patterns('',
     url(r'^delete-all/$', ImportDeleteAllView.as_view(), name='importer-import-delete-all'),
     url(r'^delete/(?P<pk>\d+)/$', ImportDeleteView.as_view(), name='importer-import-delete'),
     url(r'^modify/(?P<pk>\d+)/$', ImportModifyView.as_view(), name='importer-import-modify'),
-    
-    # upload handler
-    url(r'^multi/(?P<import_id>\d+)/$', multiuploader, name='importer-upload-multi'),
 
 )

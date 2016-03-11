@@ -1,12 +1,12 @@
 {% extends "base/listing.html" %}
 
-{% load i18n webdesign sekizai_tags cms_tags istats_tags %}
+{% load i18n webdesign sekizai_tags cms_tags istats_tags humanize %}
 
 {% block object_type %}import{% endblock %}
 
 {% block searchbar %}{% endblock %}
 
-{% block heading %} <!-- heading / icon (large one) -->
+{% block heading %}
     {% addtoblock "js-post" %}{% istats_scripts %}{% endaddtoblock %}
 
     <div id="heading">
@@ -37,156 +37,158 @@
 
 {% block list_inner %}
 
+    <div class="listhead">
+        <div class="pagination-holder">
+            {% include "element/_pagination.html" %}
+        </div>
+    </div>
+
     {% if object_list %}
 
-        <table class="table table-condensed">
-            <!--
-            <thead>
-                <tr>
-                    <th>{% trans "Status" %}</th>
-                    <th>{% trans "Created" %}</th>
-                    <th>{% trans "Notes" %}</th>
-                    <th>{% trans "Stats" %}</th>
-                    <th>{% trans "Actions" %}</th>
-                </tr>
-            </thead>
-            -->
+        <table class="table items table-condensed">
 
             <tbody>
 
                 {% for object in object_list %}
+
+
+                {% ifchanged %}
+                <tr class="day-separator">
+                    <td colspan="3">{{ object.created|date:'F Y' }}</td>
+                </tr>
+                {% endifchanged %}
+
+
                 <tr class="item {{ object.get_status_display|lower }}">
-
-
-                    {% comment %}
-                    <td>
-                        {% if object.status == 0 %}
-                        <i class="icon-time" title="{{ object.get_status_display }}"></i>
-                        {% endif %}
-
-                        {% if object.status == 1 %}
-                        <i class="icon-ok-sign" title="{{ object.get_status_display }}"></i>
-                        {% endif %}
-
-                        {% if object.status == 2 %}
-                        <i class="icon-check" title="{{ object.get_status_display }}"></i>
-                        {% endif %}
-
-                        {% if object.status == 3 %}
-                        <i class="icon-retweet" title="{{ object.get_status_display }}"></i>
-                        {% endif %}
-
-                        {% if object.status == 99 %}
-                        <i class="icon-remove" title="{{ object.get_status_display }}"></i>
-                        {% endif %}
-                    </td>
-                    {% endcomment %}
-
-                    <td>
-                        <a href="{{ object.get_absolute_url }}" title="{{ object.notes }}">
-                        {% trans 'Added' %} {{ object.created|timesince }} ago
-                        </a>
-                    </td>
-
-                    <td>
-                        {% if  object.notes %}
-                        {{ object.notes|truncatechars:64 }}
-                        {% endif %}
-                    </td>
 
                     <td>
 
                         {% with stats=object.get_stats %}
 
-                        <ul class="unstyled horizontal">
+                        <ul class="unstyled horizontal stats">
 
-                            <li style="width: 124px;">
-                                {% trans "Total Files" %}: {{ object.files.count }}
+                            <li class="completed">
+                                <a href="{{ object.get_absolute_url }}">
+                                <span>{% trans "Completed" %}:
+                                    {% if object.files.count > 0 %}
+                                        <span class="{% if stats.done.count ==  object.files.count%}done{% endif %}">{{ stats.done.count }} of {{ object.files.count }}</span>
+                                    {% else %}
+                                        <span>{{ object.files.count }}</span>
+                                    {% endif %}
+                                </span>
+                                </a>
                             </li>
 
-                            {% if stats.ready.count > 0 %}
-                            <li style="width: 44px;" rel="tooltip" class="tooltipable" title="{{ stats.ready.count }} {% trans "files ready for import" %}" >
-                                <i class="icon-thumbs-up"></i>
-                                {{ stats.ready.count }}
-                            </li>
-                            {% endif %}
-
-                            {% if stats.done.count > 0 %}
-                            <li style="width: 44px;" rel="tooltip" class="tooltipable" title="{{ stats.done.count }} {% trans "files completed" %}" >
-                                <i class="icon-ok-sign"></i>
-                                {{ stats.done.count }}
+                            {% if stats.queued.count > 0 %}
+                            <li class="queued">
+                                <span>{% trans 'queued' %}: {{ stats.queued.count }}</span>
                             </li>
                             {% endif %}
 
                             {% if stats.duplicate.count > 0 %}
-                            <li style="width: 44px;" rel="tooltip" class="tooltipable" title="{{ stats.duplicate.count }} {% trans "duplicates" %}" >
-                                <i class="icon-copy"></i>
-                                {{ stats.duplicate.count }}
+                            <li class="duplicates">
+                                <span>{% trans 'duplicates' %}: {{ stats.duplicate.count }}</span>
                             </li>
                             {% endif %}
 
-                            {% if stats.queued.count > 0 %}
-                            <li style="width: 44px;" rel="tooltip" class="tooltipable" title="{{ stats.queued.count }} {% trans "in queue" %}" >
-                                <i class="icon-tasks"></i>
-                                {{ stats.queued.count }}
+                            {% if stats.warning.count > 0 %}
+                            <li class="warnings">
+                                <span>{% trans 'warnings' %}: {{ stats.warning.count }}</span>
                             </li>
                             {% endif %}
 
                             {% if stats.error.count > 0 %}
-                            <li style="width: 44px;" rel="tooltip" class="tooltipable" title="{{ stats.error.count }} {% trans "files with errors" %}" >
-                                <i class="icon-thumbs-down"></i>
-                                {{ stats.error.count }}
+                            <li class="errors">
+                                <span>{% trans 'errors' %}: {{ stats.error.count }}</span>
                             </li>
                             {% endif %}
+
+
 
                         </ul>
 
                         {% endwith %}
 
+                        <p>
+                            <span>{% trans 'Created items' %}:</span>
+
+                            {% for key, ct in object.get_importitems.items %}
+                                <a href="{{ ct.url }}?import={{ object.pk }}" title="{% for item in ct.items|dictsort:"name" %}{{ item.name }}{% if not forloop.last %}&#10;{% endif %}{% endfor %}">{{ ct.name }} <span>{{ ct.items|length }}</span></a>
+
+                                {% if not forloop.last %}<span>&mdash;</span>{% endif %}
+
+                            {% empty %}
+                                <span>({% trans 'no items created so far' %})</span>
+                            {% endfor %}
+                        </p>
+
+
+                    </td>
+
+
+                    <td style="width: 340px;">
+                        <a href="{{ object.get_absolute_url }}">
+                            {{ object.created|date:'DATETIME_FORMAT' }}
+                        <!--{% trans 'Added' %} {{ object.created|timesince }} ago-->
+                        </a>
+
+                        {% if  object.notes %}
+                        <p class="notes">{{ object.notes|truncatechars:128|linebreaksbr }}</p>
+                        {% endif %}
+
                     </td>
 
                     <td class="">
 
-                    <div class="btn-group pull-right">
-                        <button class="btn btn-mini btn-primary" data-toggle="dropdown">
-                            {% trans "Actions" %}
-                        </button>
-                        <button class="btn btn-mini  btn-primary dropdown-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="{{ object.get_absolute_url }}"><i class="icon-edit"></i> {% trans "Details" %}</a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="icon-cloud-upload"></i> {% trans "Archive" %}</a>
-                            </li>
-                            <li>
-                                <a class="transform-post reload" href="{{ object.get_delete_url }}"><i class="icon-trash"></i> {% trans "Delete" %}</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <span>&nbsp;{% trans "Created items"  %}</span>
-                            </li>
-                            <li>
-                                <a href="{% url "alibrary-release-list" %}?import={{ object.pk }}">{% trans "Releases"  %}</a>
-                            </li>
-                            <li>
-                                <a href="{% url "alibrary-artist-list" %}?import={{ object.pk }}">{% trans "Artists"  %}</a>
-                            </li>
-                            <li>
-                                <a href="{% url "alibrary-media-list" %}?import={{ object.pk }}">{% trans "Tracks"  %}</a>
-                            </li>
-                            <li>
-                                <a href="{% url "alibrary-label-list" %}?import={{ object.pk }}">{% trans "Labels"  %}</a>
-                            </li>
+                        <div class="btn-group pull-right">
+                            <button class="btn btn-mini btn-primary" data-toggle="dropdown">
+                                {% trans "Actions" %}
+                            </button>
+                            <button class="btn btn-mini  btn-primary dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="{{ object.get_absolute_url }}"><i class="icon-edit"></i> {% trans "Details" %}</a>
+                                </li>
+                                <li>
+                                    <a href="#"><i class="icon-cloud-upload"></i> {% trans "Archive" %}</a>
+                                </li>
+                                <li>
+                                    <a class="transform-post reload" href="{{ object.get_delete_url }}"><i class="icon-trash"></i> {% trans "Delete" %}</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <span>&nbsp;{% trans "Created items"  %}</span>
+                                </li>
+                                <li>
+                                    <a href="{% url "alibrary-release-list" %}?import={{ object.pk }}">{% trans "Releases"  %}</a>
+                                </li>
+                                <li>
+                                    <a href="{% url "alibrary-artist-list" %}?import={{ object.pk }}">{% trans "Artists"  %}</a>
+                                </li>
+                                <li>
+                                    <a href="{% url "alibrary-media-list" %}?import={{ object.pk }}">{% trans "Tracks"  %}</a>
+                                </li>
+                                <li>
+                                    <a href="{% url "alibrary-label-list" %}?import={{ object.pk }}">{% trans "Labels"  %}</a>
+                                </li>
 
-                        </ul>
-                    </div>
+                            </ul>
+
+
+                            <p>
+                                <small>ID: {{ object.pk }}</small>
+                            </p>
+                        </div>
+
+
                     </td>
 
 
                 </tr>
+
+
                 {% endfor %}
             </tbody>
         </table>

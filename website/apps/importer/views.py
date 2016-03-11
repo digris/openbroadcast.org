@@ -1,23 +1,23 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView, View
-
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect, \
-    HttpResponseForbidden
+from django.http import (HttpResponse, HttpResponseBadRequest, HttpResponseRedirect, HttpResponseForbidden)
 from django.core.files.uploadedfile import UploadedFile
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.utils.functional import lazy
 from django.views.decorators.csrf import csrf_exempt
+from pure_pagination.mixins import PaginationMixin
 import json
-
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
-
 from django import http
 import json
-
-from importer.models import *
 from importer.forms import *
+from importer.models import Import, ImportFile
+from importer.models import *
+
 
 
 class JSONResponseMixin(object):
@@ -35,9 +35,9 @@ class JSONResponseMixin(object):
         return json.dumps(context['result'])
 
 
-class ImportListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class ImportListView(LoginRequiredMixin, PermissionRequiredMixin, PaginationMixin, ListView):
     model = Import
-
+    paginate_by = 12
     permission_required = 'importer.add_import'
     raise_exception = True
 
@@ -81,11 +81,6 @@ class ImportDeleteAllView(LoginRequiredMixin, PermissionRequiredMixin, View):
 
 
 
-"""
-NOT WORKING!!
-"""
-
-
 class ImportModifyView(LoginRequiredMixin, PermissionRequiredMixin, JSONResponseMixin, UpdateView):
     model = Import
 
@@ -108,11 +103,6 @@ class ImportModifyView(LoginRequiredMixin, PermissionRequiredMixin, JSONResponse
             return JSONResponseMixin.render_to_response(self, context)
         else:
             return HttpResponseForbidden()
-
-
-"""
-Model version, adding some extra fields to the import session
-"""
 
 
 class ImportCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -152,72 +142,6 @@ class ImportUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         kwargs = {}
         return Import.objects.filter(user=self.request.user)
 
-
-@login_required
-@csrf_exempt
-def multiuploader(request, import_id):
-    """
-    Main Multiuploader module.
-    Parses data from jQuery plugin and makes database changes.
-    """
-    result = []
-
-    if request.method == 'POST':
-        if request.FILES == None:
-            return HttpResponseBadRequest('Must have files attached!')
-
-
-        # getting file data for farther manipulations
-        file = request.FILES[u'files[]']
-        wrapped_file = UploadedFile(file)
-        filename = wrapped_file.name
-        file_size = wrapped_file.file.size
-
-        import_session = Import.objects.get(pk=import_id)
-
-        import_file = ImportFile()
-        import_file.import_session = import_session
-        import_file.filename = str(filename)
-        import_file.file = file
-        import_file.save()
-
-        thumb_url = ''  # does not exist, as audio only
-
-        #settings imports
-        try:
-            file_delete_url = settings.MULTI_FILE_DELETE_URL + '/'
-            file_url = settings.MULTI_IMAGE_URL + '/' + image.key_data + '/'
-        except AttributeError:
-            file_delete_url = 'multi_delete/'
-            file_url = 'multi_image/' + import_file.filename + '/'
-
-        #generating json response array
-        result.append({"name": import_file.filename,
-                       "size": import_file.file.size,
-                       "url": import_file.file.url,
-                       "id": '%s' % import_file.pk,
-                       "thumbnail_url": '',
-                       "delete_url": import_file.get_delete_url(),
-                       "delete_type": "POST", })
-
-    else:
-
-        import_files = ImportFile.objects.filter(status=0)
-        for import_file in import_files:
-            result.append({"name": import_file.filename,
-                           "size": import_file.file.size,
-                           "url": import_file.file.url,
-                           "id": '%s' % import_file.pk,
-                           "thumbnail_url": '',
-                           "delete_url": import_file.get_delete_url(),
-                           "delete_type": "POST", })
-
-    response_data = json.dumps(result)
-    if "application/json" in request.META['HTTP_ACCEPT_ENCODING']:
-        mimetype = 'application/json'
-    else:
-        mimetype = 'text/plain'
-    return HttpResponse(response_data, content_type=mimetype)
 
 
 

@@ -76,6 +76,9 @@ urlpatterns = patterns('',
     (r'^player/', include('aplayer.urls')),
     (r'^media-asset/', include('media_asset.urls')),
 
+
+    (r'^webhooks/import/', include('massimporter.webhook.urls')),
+
     #url(r'^bb/', include('django_badbrowser.urls')),
 
 )

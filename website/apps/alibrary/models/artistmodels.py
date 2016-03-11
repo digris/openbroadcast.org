@@ -270,7 +270,7 @@ class Artist(MigrationMixin):
             return []
 
 
-    @cached_property
+    #@cached_property
     def appearances(self):
 
         try:
@@ -282,9 +282,6 @@ class Artist(MigrationMixin):
             num_media = self.get_media().count()
         except:
             num_media = 0
-
-        log.debug('calculating appearances for {} - r:{} m:{}'.format(self.pk, num_releases, num_media))
-
 
         appearances = {
             'num_releases': num_releases,

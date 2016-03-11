@@ -79,8 +79,8 @@
                             {% trans "Releases" %}:&nbsp;<a
                                 href="{% spurl path=release_list query="artist={{ item.slug }}" %}"
                                 title="{% trans "Only show releases by" %} {{ item.name }}"
-                                style="vertical-align: top;">{{ item.appearances.num_releases }}<span
-                                class="filter icon"></span></a>
+                                style="vertical-align: top;">{{ item.appearances.num_releases }}<!--<span
+                                class="filter icon"></span>--></a>
                         </li>
                     {% endif %}
                     {% if item.appearances.num_media > 0 %}
@@ -89,8 +89,8 @@
                             {% trans "Tracks" %}:&nbsp;<a
                                 href="{% spurl path=media_list query="artist={{ item.slug }}" %}"
                                 title="{% trans "Only show tracks by" %} {{ item.name }}"
-                                style="vertical-align: top;">{{ item.appearances.num_media }}<span
-                                class="filter icon"></span></a>
+                                style="vertical-align: top;">{{ item.appearances.num_media }}<!--<span
+                                class="filter icon"></span>--></a>
                         </li>
                     {% endif %}
                 </ul>

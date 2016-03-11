@@ -77,7 +77,17 @@
 
     <div class="item_menu" id="item_menu">
         <ul class="nav nav-tabs">
+
+            {% if broadcasts.count %}
             <li class="active">
+                <a href="#broadcasts" data-toggle="tab">
+                    {% trans "Playlists" %}
+                    ({{ broadcasts.count }})
+                </a>
+            </li>
+            {% endif %}
+
+            <li {% if not broadcasts.count %}class="active"{% endif %}>
                 <a href="#profile" data-toggle="tab">{% trans "Profile" %}</a>
             </li>
 
@@ -88,15 +98,6 @@
             <li>
                 <a href="#votes" data-toggle="tab">{% trans "Up- & Downvotes" %}</a>
             </li>
-
-            {% if broadcasts.count %}
-            <li>
-                <a href="#broadcasts" data-toggle="tab">
-                    {% trans "Playlists" %}
-                    ({{ broadcasts.count }})
-                </a>
-            </li>
-            {% endif %}
 
             {% if uploaded_media.count > 0 or uploaded_releases.count > 0 %}
             <li>
@@ -127,7 +128,7 @@
     <div class="tab-content">
 
 
-    <div class="tab-pane active" id="profile">
+    <div class="tab-pane {% if not broadcasts.count %}active{% endif %}" id="profile">
 
 
         <section class="profile">
@@ -375,6 +376,7 @@
     <div class="tab-pane" id="votes">
 
         <section class="votes">
+
             {% load ctype %}
 
             <h2>{% trans "Upvotes" %}</h2>
@@ -382,19 +384,26 @@
             <div class="listing voted-up">
                 <div class="row">
                 {%  for vote in upvotes %}
-
+                    {% ifchanged %}
+                        <div class="span12">
+                            <h3>{{ vote.content_object|ct_name_by_object|title }}</h3>
+                        </div>
+                    {% endifchanged %}
 
                     <div class="span3">
-                        <div class="item {{ vote.content_object|ct_name_by_object }}"
-                            {% if vote.content_object.main_image %}style="background-image: url({% thumbnail vote.content_object.main_image 200x200 crop upscale subject_location=vote.content_object.main_image.subject_location %});"{% endif %}
-                            >
+                        <div class="item hoverable linkable {{ vote.content_object|ct_name_by_object }}"
+                            {% if vote.content_object.main_image %}
+                             style="background-image: url({% thumbnail vote.content_object.main_image 200x200 crop upscale subject_location=vote.content_object.main_image.subject_location %});"
+                            {% else %}
+                             style="background-image: url(/static/img/base/defaults/listview.artist.xl.png)"
+                            {% endif %}>
                             <div>
-                                <a href="{{ vote.content_object.get_absolute_url }}">{{ vote.content_object.name }}</a>
+                                <a class="link-main" href="{{ vote.content_object.get_absolute_url }}">{% firstof vote.content_object.get_display_name vote.content_object.name %}</a>
+                                <br>
+                                <span>{{ vote.content_object|ct_name_by_object|title }}</span>
                             </div>
                         </div>
                     </div>
-
-
                 {% endfor %}
                 </div>
             </div>
@@ -404,13 +413,23 @@
             <div class="listing voted-down">
                 <div class="row">
                 {%  for vote in downvotes %}
+                    {% ifchanged %}
+                        <div class="span12">
+                            <h3>{{ vote.content_object|ct_name_by_object|title }}</h3>
+                        </div>
+                    {% endifchanged %}
+
                     <div class="span3">
-                        <div class="item {{ vote.content_object|ct_name_by_object|lower }} hoverable linkable"
-                             data-absolute_url="{{ vote.content_object.get_absolute_url }}"
-                            {% if vote.content_object.main_image %}style="background-image: url({% thumbnail vote.content_object.main_image 200x200 crop upscale subject_location=vote.content_object.main_image.subject_location %});"{% endif %}
-                            >
+                        <div class="item hoverable linkable {{ vote.content_object|ct_name_by_object }}"
+                            {% if vote.content_object.main_image %}
+                             style="background-image: url({% thumbnail vote.content_object.main_image 200x200 crop upscale subject_location=vote.content_object.main_image.subject_location %});"
+                            {% else %}
+                             style="background-image: url(/static/img/base/defaults/listview.artist.xl.png)"
+                            {% endif %}>
                             <div>
-                                <a class="link-main" href="{{ vote.content_object.get_absolute_url }}">{% firstof vote.content_object.name vote.content_object.user.username %}</a>
+                                <a class="link-main" href="{{ vote.content_object.get_absolute_url }}">{% firstof vote.content_object.get_display_name vote.content_object.name %}</a>
+                                <br>
+                                <span>{{ vote.content_object|ct_name_by_object|title }}</span>
                             </div>
                         </div>
                     </div>
@@ -496,7 +515,7 @@
 
     </div>
 
-    <div class="tab-pane" id="broadcasts">
+    <div class="tab-pane {% if broadcasts.count %}active{% endif %}" id="broadcasts">
 
         <section class="broadcasts">
 

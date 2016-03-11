@@ -315,6 +315,8 @@ class ChannelResource(ModelResource):
 
     def get_program(self, request, **kwargs):
 
+        from abcast.api import EmissionResource
+
         self.method_check(request, allowed=['get'])
         self.is_authenticated(request)
         self.throttle_check(request)
@@ -327,18 +329,66 @@ class ChannelResource(ModelResource):
 
         for daypart in dayparts:
 
-
             time_start = datetime.datetime.combine(now.date(), daypart.time_start)
             time_end = datetime.datetime.combine(now.date(), daypart.time_end)
 
-            #emissions = scheduler.get_schedule(range_start=time_start, range_end=time_end, channel=channel)
+            emissions_qs = Emission.objects.filter(
+                time_end__gt=time_start,
+                time_start__lt=time_end,
+                channel=channel).order_by('-time_start')
+
+            emissions = []
+
+            for emission in emissions_qs:
+                res = EmissionResource()
+                emission_bundle = res.build_bundle(request=request, obj=emission)
+                emission_bundle = res.full_dehydrate(emission_bundle)
+                emissions.append(emission_bundle)
+
+
+
+            objects.append({
+                'time_start': daypart.time_start,
+                'time_end': daypart.time_end,
+                'name': daypart.name,
+                'emissions': emissions
+            })
+
+
+        bundle = {
+                  'meta': {
+                      'total_count': len(objects),
+                  },
+                  'objects': objects,
+                  }
+
+        self.log_throttled_access(request)
+        return self.create_response(request, bundle)
+
+
+
+    # not used at the moment. just here for reference
+    def get_dayparts(self, request, **kwargs):
+
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        channel = Channel.objects.get(**self.remove_api_resource_names(kwargs))
+        dayparts = channel.get_dayparts(day=datetime.datetime.now())
+
+        objects = []
+        now = datetime.datetime.now()
+
+        for daypart in dayparts:
+
+            time_start = datetime.datetime.combine(now.date(), daypart.time_start)
+            time_end = datetime.datetime.combine(now.date(), daypart.time_end)
 
             emissions = Emission.objects.filter(
                 time_end__gte=time_start,
                 time_start__lte=time_end,
                 channel=channel).order_by('-time_start')
-
-
 
             content_programmers = []
             for emission in emissions:

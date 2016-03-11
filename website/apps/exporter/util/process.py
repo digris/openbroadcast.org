@@ -408,7 +408,8 @@ class Process(object):
             if uuid_by_object(media.release, 'musicbrainz'):
                 tags.add(TXXX(encoding=3, desc='MusicBrainz Album Id', text=u'%s' % uuid_by_object(media.release, 'musicbrainz')))
 
-            if os.path.exists(media.release.main_image.path):
+
+            if media.release and media.release.main_image and os.path.exists(media.release.main_image.path):
 
                 opt = dict(size=(300, 300), crop=True, bw=False, quality=80)
 

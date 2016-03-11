@@ -13,6 +13,9 @@ def remove_non_a_tags(text):
 
 def wikisafe_markdown(value):
 
+	if not value:
+		return
+
 	value = remove_non_a_tags(value)
 
 	import markdown as mkdn

@@ -23,7 +23,7 @@ class ReadOnlyIconField(Widget):
 
     def render(self, name, value, attrs=None):
 
-        if not value or value == 'generic':
+        if not value or value in ['generic', 'official']:
             value = 'angle-right'
 
         # TODO: very ugly... sorry

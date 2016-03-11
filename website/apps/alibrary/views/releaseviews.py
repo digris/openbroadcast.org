@@ -23,6 +23,7 @@ from alibrary.filters import ReleaseFilter
 from lib.util import tagging_extra
 from lib.util import change_message
 from lib.util.form_errors import merge_form_errors
+from lib.util.merge import merge_model_objects
 import reversion
 
 ALIBRARY_PAGINATE_BY = getattr(settings, 'ALIBRARY_PAGINATE_BY', (12,24,36,120))
@@ -281,6 +282,9 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     success_url = '#'
 
     def __init__(self, *args, **kwargs):
+
+        self.created_artists = {}
+
         super(ReleaseEditView, self).__init__(*args, **kwargs)
 
     def get_initial(self):
@@ -427,17 +431,17 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         # TODO: this is extremely ugly!! refactor!
 
         import hashlib
-        artists = {}
+        #self.created_artists = {}
         for m in media:
 
             if m.artist and not m.artist.pk:
                 key = hashlib.md5(m.artist.name.encode('ascii', 'ignore')).hexdigest()
                 try:
-                    artist = artists[key]
+                    artist = self.created_artists[key]
                 except Exception, e:
                     m.artist.save()
                     artist = m.artist
-                    artists[key] = artist
+                    self.created_artists[key] = artist
 
                 m.artist = artist
                 m.save()
@@ -447,6 +451,34 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             if formset.has_changed():
                 # set actstream (e.v. atracker?)
                 actstream.action.send(self.request.user, verb=_('updated'), target=m)
+
+
+    def formset_albumartist_valid(self, formset):
+
+        # TODO: this is extremely ugly!! refactor!
+        albumartists = formset.save(commit=False)
+        import hashlib
+        for albumartist in albumartists:
+
+            key = hashlib.md5(albumartist.artist.name.encode('ascii', 'ignore')).hexdigest()
+
+            try:
+                artist = self.created_artists[key]
+            except Exception, e:
+                pass
+            else:
+                delete_pk = albumartist.artist.pk
+                albumartist.artist = artist
+                albumartist.save()
+                merge_model_objects(albumartist.artist, [Artist.objects.get(pk=delete_pk),])
+
+            # if not albumartist.artist.creator:
+            #     print 'no creator'
+            #     albumartist.artist.creator = self.request.user
+            #     albumartist.artist.save()
+
+            albumartist.save()
+
 
 
 

@@ -3,6 +3,8 @@ from django.conf import settings
 
 from social_auth.middleware import SocialAuthExceptionMiddleware
 
+LOGIN_ERROR_URL = getattr(settings, 'LOGIN_ERROR_URL', '/')
+
 class SocialAuthExceptionExtraMiddleware(SocialAuthExceptionMiddleware):
 
     def get_redirect_uri(self, request, exception):
@@ -11,4 +13,4 @@ class SocialAuthExceptionExtraMiddleware(SocialAuthExceptionMiddleware):
             # TODO: should be edit url
             return request.user.get_absolute_url()
         
-        return settings.LOGIN_ERROR_URL
+        return LOGIN_ERROR_URL

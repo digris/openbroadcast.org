@@ -11,14 +11,25 @@ def merge_tags(modeladmin, request, queryset):
     main = queryset[0]
     slaves = [x for x in queryset[1:]]
 
-    for tag in slaves:
+    print '---------------'
+    print main
+    print slaves
 
-        try:
-            TaggedItem.objects.filter(
-                    pk__in=[t.pk for t in tag.items.all()]
-            ).update(tag=main)
-        except:
-            pass
+
+    for tag in slaves:
+        print ' - %s' % tag
+
+        item_pks = [t.pk for t in tag.items.all()]
+        print item_pks
+
+        for pk in item_pks:
+            try:
+                TaggedItem.objects.filter(
+                        pk=pk
+                ).update(tag=main)
+            except Exception as e:
+                print e
+
         tag.delete()
 
     modeladmin.message_user(request, "%s is merged with other places, now you can give it a canonical name." % main)

@@ -1,9 +1,32 @@
 @charset "UTF-8"
 
+
+// listview
+.listview.import
+  .items
+    margin-top: 14px
+
+  .item
+    p.notes
+      font-style: italic
+
+    .stats
+      +clearfix
+      li
+        padding-right: 10px
+        &.completed span
+          color: $textColor
+          .done
+            color: $primary-color-a
+        &.duplicates span
+          //color: #00aeff
+        &.warnings span,
+        &.errors span
+          color: $errorText
+
+
+// detail/edit view
 .importer-importfiles
-
-
-
 
   thead th
     background-color: white
