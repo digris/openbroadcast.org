@@ -7,6 +7,7 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.conf import settings
 from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
@@ -15,6 +16,8 @@ from django.utils.translation import ugettext as _
 from base.mixins import TimestampedModelMixin, UUIDModelMixin
 
 log = logging.getLogger(__name__)
+
+USER_MODEL = getattr(settings, 'AUTH_USER_MODEL')
 
 class Collection(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
@@ -27,11 +30,12 @@ class Collection(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     name = models.CharField(max_length=250, db_index=True)
     slug = models.SlugField(editable=False, blank=True)
-    user = models.ForeignKey(User, null=True)
+    #user = models.ForeignKey(User, null=True)
     visibility = models.PositiveIntegerField(default=PRIVATE, choices=VISIBILITY_CHOICES)
     description = models.TextField(blank=True, null=True)
 
     items = models.ManyToManyField('CollectionItem', through='CollectionMember', blank=True)
+    maintainers = models.ManyToManyField(USER_MODEL, through='CollectionMaintainer', blank=True)
 
     class Meta:
         app_label = 'collection'
@@ -59,7 +63,7 @@ class CollectionItem(UUIDModelMixin, models.Model):
         verbose_name = _('Collection Item')
         verbose_name_plural = _('Collection Items')
 
-    ct_limit = models.Q(app_label = 'alibrary', model = 'media') | models.Q(app_label = 'alibrary', model = 'release')
+    ct_limit = models.Q(app_label = 'alibrary', model = 'media') | models.Q(app_label = 'alibrary', model = 'release') | models.Q(app_label = 'alibrary', model = 'playlist')
 
     content_type = models.ForeignKey(ContentType, limit_choices_to = ct_limit)
     object_id = models.PositiveIntegerField()
@@ -71,3 +75,7 @@ class CollectionItem(UUIDModelMixin, models.Model):
     def save(self, *args, **kwargs):
         super(CollectionItem, self).save(*args, **kwargs)
 
+
+class CollectionMaintainer(models.Model):
+    collection = models.ForeignKey(Collection)
+    user = models.ForeignKey(USER_MODEL)

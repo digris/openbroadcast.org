@@ -151,7 +151,7 @@ class MaintenanceWorker(object):
             from tqdm import tqdm
 
 
-            for item in tqdm(Artist.objects.all()):
+            for item in tqdm(Artist.objects.order_by('-created').all()):
 
                 item.get_releases()
                 item.get_media()
