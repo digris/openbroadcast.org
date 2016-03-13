@@ -92,7 +92,6 @@ djangocms-snippet==1.5
 djangocms-teaser==0.1
 djangocms-text-ckeditor==2.6.0
 djangocms-video==0.1
-
 cmsplugin-filer==0.10.2
 
 
@@ -121,3 +120,9 @@ scikits.audiolab==0.10.2
 -e git+https://github.com/hzlf/django-announcements@master#egg=django-announcements
 -e git+https://github.com/hzlf/django-extensions@master#egg=django-extensions
 -e git+https://github.com/hzlf/djangocms-panel@master#egg=djangocms-panel
+
+
+################################################
+# services
+################################################
+opbeat==3.3 #https://opbeat.com/hazelfire-llc/obp/module-setup/instructions/

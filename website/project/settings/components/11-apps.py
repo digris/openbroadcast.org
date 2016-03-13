@@ -154,6 +154,9 @@ INSTALLED_APPS = (
     'pushy',
     'nunjucks',
 
+    # monitoring / ops / tracking
+    'opbeat.contrib.django',
+
 )
 
 

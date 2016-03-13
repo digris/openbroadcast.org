@@ -72,7 +72,7 @@ SECRET_KEY = '0r6%7gip5tmez*vygfv+u14h@4lbt^8e2^26o#5_f_#b7%cm)u'
 ################################################################################
 
 MIDDLEWARE_CLASSES = (
-    # sentry
+    'opbeat.contrib.django.middleware.OpbeatAPMMiddleware',
     'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
