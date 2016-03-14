@@ -193,7 +193,7 @@ class ReleaseListView(PaginationMixin, ListView):
         if promo_filter and promo_filter.isnumeric() and int(promo_filter) == 1:
             from django.db.models import F
             #qs = qs.filter(releasedate__gte=F('publish_date')).distinct()
-            qs = qs.filter(releasedate__gt=datetime.now().date()).distinct()
+            qs = qs.filter(releasedate__gt=datetime.datetime.now().date()).distinct()
             f = {'item_type': 'release' , 'item': _('Promotional Releases'), 'label': 'Filter'}
             self.relation_filter.append(f)
 
@@ -203,7 +203,7 @@ class ReleaseListView(PaginationMixin, ListView):
         if new_filter and new_filter.isnumeric() and int(new_filter) == 1:
             from django.db.models import F
             #qs = qs.filter(releasedate__gte=F('publish_date')).distinct()
-            qs = qs.filter(releasedate__range=(datetime.now() - timedelta(days=7), datetime.now().date())).distinct()
+            qs = qs.filter(releasedate__range=(datetime.datetime.now() - timedelta(days=14), datetime.datetime.now().date())).distinct()
             f = {'item_type': 'release' , 'item': _('New Releases'), 'label': 'Filter'}
             self.relation_filter.append(f)
 

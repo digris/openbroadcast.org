@@ -205,7 +205,7 @@ class Release(MigrationMixin):
     def is_new(self):
         if self.is_promotional:
             return False
-        if self.releasedate and self.releasedate > (datetime.now()-timedelta(days=7)).date():
+        if self.releasedate and self.releasedate >= (datetime.now()-timedelta(days=14)).date():
             return True
 
         return False
