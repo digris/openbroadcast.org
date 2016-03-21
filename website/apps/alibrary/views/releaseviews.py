@@ -183,7 +183,7 @@ class ReleaseListView(PaginationMixin, ListView):
         if creator_exclude_filter:
             from django.contrib.auth.models import User
             creator = get_object_or_404(User, username='%s' % creator_exclude_filter)
-            qs = qs.exclude(creator=creator).distinct()
+            qs = qs.exclude(creator__id=creator.id).distinct()
             f = {'item_type': 'release' , 'item': creator, 'label': _('Not added by')}
             self.relation_filter.append(f)
 

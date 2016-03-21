@@ -1,9 +1,9 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import logging
-
 from django.contrib.contenttypes.models import ContentType
-
-from alibrary.models.basemodels import *
-from alibrary.models.artistmodels import *
+from alibrary.models import Media, Release, Relation, Artist, Label
 log = logging.getLogger(__name__)
 
 
