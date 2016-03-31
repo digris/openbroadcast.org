@@ -144,9 +144,6 @@ var EditUi = function () {
 
         });
 
-
-
-
         $('.bulk_apply').live('click', function (e) {
 
             e.preventDefault();
@@ -158,9 +155,9 @@ var EditUi = function () {
 
             if (key == 'license') {
                 var src_id = $("#id_bulkedit-bulk_license").val();
-                var start = 'id_media'
-                var end = 'license'
-                var dst_id = $('[id^="' + start + '"][id$="' + end + '"]')
+                var start = 'id_media';
+                var end = 'license';
+                var dst_id = $('[id^="' + start + '"][id$="' + end + '"]');
                 if (!src_id) {
                     alert('Nothing selected.');
                     return;
@@ -168,19 +165,13 @@ var EditUi = function () {
                 dst_id.val(src_id);
             }
 
-
-
             if (key == 'artist_name') {
 
-                console.log('bulk apply artist name');
+                var src_id = $("#id_bulkedit-bulk_artist_name_1").val();
+                var src_name = $("#id_bulkedit-bulk_artist_name_0").val();
 
-                var src_id = $("#id_bulkedit-bulk_artist_name_1").val()
-                var src_name = $("#id_bulkedit-bulk_artist_name_0").val()
-
-                console.log('src_id', src_id, 'src_name', src_name);
-
-                var dst_id = $('[id^="' + 'id_media' + '"][id$="' + 'artist_1' + '"]')
-                var dst_name = $('[id^="' + 'id_media' + '"][id$="' + 'artist_0' + '"]')
+                var dst_id = $('[id^="' + 'id_media' + '"][id$="' + 'artist_1' + '"]');
+                var dst_name = $('[id^="' + 'id_media' + '"][id$="' + 'artist_0' + '"]');
 
                 if (!src_name) {
                     alert('Nothing selected.');
@@ -238,6 +229,7 @@ var EditUi = function () {
 
                         // TODO: re-implement with generic autogrow
                         //self.autogrow();
+                        ui.edit_base.autogrow_formset();
                     }
 
                     // TODO: refactor
@@ -334,6 +326,7 @@ var EditUi = function () {
 
                 // TODO: re-implement with generic autogrow
                 // self.autogrow();
+                ui.edit_base.autogrow_formset();
 
             } else {
                 // attached to a specific service
@@ -344,7 +337,7 @@ var EditUi = function () {
             }
 
         });
-        
+
     };
 
 
