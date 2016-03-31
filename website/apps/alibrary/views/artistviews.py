@@ -14,8 +14,6 @@ from pure_pagination.mixins import PaginationMixin
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from tagging.models import Tag
-from cacheops import cached_as
-
 
 from alibrary.models import Artist, Label, Release, Media, NameVariation
 from alibrary.forms import ArtistForm, ArtistActionForm, ArtistRelationFormSet, MemberFormSet, AliasFormSet

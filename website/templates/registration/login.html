@@ -9,7 +9,7 @@
 
     <h4 style="margin-bottom: 20px;">{% trans "Login" %}</h4>
 
-    {# include 'registration/form_errors.html' #}
+    {% include 'registration/form_errors.html' %}
     <form method="post"
           class="form-horizontal"
           action="{% url "django.contrib.auth.views.login" %}">{% csrf_token %}

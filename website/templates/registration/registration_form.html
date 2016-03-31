@@ -5,7 +5,7 @@
 
     <h4 style="margin-bottom: 20px;">{% trans "Register" %}</h4>
 
-    {# include 'registration/form_errors.html' #}
+    {% include 'registration/form_errors.html' %}
     <form method='post' class="form-horizontal" action=''>{% csrf_token %}
         {% include 'registration/form_fields.html' %}
 

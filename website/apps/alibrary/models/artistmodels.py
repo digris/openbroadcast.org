@@ -25,6 +25,7 @@ from django_extensions.db.fields.json import JSONField
 from l10n.models import Country
 from tagging.registry import register as tagging_register
 from cacheops import cached
+from base.cacheops_extra import cached_uuid_aware
 
 log = logging.getLogger(__name__)
     
@@ -245,28 +246,22 @@ class Artist(MigrationMixin):
         return aliases
 
 
-    @cached(timeout=60*60*24)
+    @cached_uuid_aware(timeout=60*60*24)
     def get_releases(self):
-
-        # obj.get_releases.invalidate(obj)
-
         from alibrary.models.releasemodels import Release
         try:
             r = Release.objects.filter(Q(media_release__artist__pk=self.pk) | Q(media_release__media_artists__pk=self.pk) | Q(album_artists__pk=self.pk)).nocache().distinct()
             return r
-        except Exception, e:
+        except Exception as e:
             return []
 
-    @cached(timeout=60*60*24)
+    @cached_uuid_aware(timeout=60*60*24)
     def get_media(self):
-
-        # obj.get_media.invalidate(obj)
-
         from alibrary.models.mediamodels import Media
         try:
             m = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk)).nocache().distinct()
             return m
-        except Exception, e:
+        except Exception as e:
             return []
 
 

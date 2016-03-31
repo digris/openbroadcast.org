@@ -45,16 +45,16 @@ hard-coded selecting of property, to provide some 'special' types of filters for
                     <span class="">{% trans "Predefined ranges" %}:</span>
 
                     <ul class="unstyled">
-                        <li><a data-range_end="1939-12-31" class="preset" href="#" class="">{% trans "Before 1940's" %}</a></li>
+                        <li><a rel="nofollow" data-range_end="1939-12-31" class="preset" href="#" class="">{% trans "Before 1940's" %}</a></li>
 
-                        <li><a data-range_start="1940-01-01" data-range_end="1949-12-31" class="preset" href="#" class="">40's</a></li>
-                        <li><a data-range_start="1950-01-01" data-range_end="1959-12-31" class="preset" href="#" class="">50's</a></li>
-                        <li><a data-range_start="1960-01-01" data-range_end="1969-12-31" class="preset" href="#" class="">60's</a></li>
-                        <li><a data-range_start="1970-01-01" data-range_end="1979-12-31" class="preset" href="#" class="">70's</a></li>
-                        <li><a data-range_start="1980-01-01" data-range_end="1989-12-31" class="preset" href="#" class="">80's</a></li>
-                        <li><a data-range_start="1990-01-01" data-range_end="1999-12-31" class="preset" href="#" class="">90's</a></li>
-                        <li><a data-range_start="2000-01-01" data-range_end="2009-12-31" class="preset" href="#" class="">2000's</a></li>
-                        <li><a data-range_start="2010-01-01" class="preset" href="#" class="">10's</a></li>
+                        <li><a rel="nofollow" data-range_start="1940-01-01" data-range_end="1949-12-31" class="preset" href="#" class="">40's</a></li>
+                        <li><a rel="nofollow" data-range_start="1950-01-01" data-range_end="1959-12-31" class="preset" href="#" class="">50's</a></li>
+                        <li><a rel="nofollow" data-range_start="1960-01-01" data-range_end="1969-12-31" class="preset" href="#" class="">60's</a></li>
+                        <li><a rel="nofollow" data-range_start="1970-01-01" data-range_end="1979-12-31" class="preset" href="#" class="">70's</a></li>
+                        <li><a rel="nofollow" data-range_start="1980-01-01" data-range_end="1989-12-31" class="preset" href="#" class="">80's</a></li>
+                        <li><a rel="nofollow" data-range_start="1990-01-01" data-range_end="1999-12-31" class="preset" href="#" class="">90's</a></li>
+                        <li><a rel="nofollow" data-range_start="2000-01-01" data-range_end="2009-12-31" class="preset" href="#" class="">2000's</a></li>
+                        <li><a rel="nofollow" data-range_start="2010-01-01" class="preset" href="#" class="">10's</a></li>
                     </ul>
 
                     <div class="clear"></div>
@@ -79,7 +79,7 @@ hard-coded selecting of property, to provide some 'special' types of filters for
 
                 {% spurl base=request.get_full_path active_mquery="{{ item.name }}={{ filter_entry.0 }}" as is_active %}
                 <div class="boxitem {% if is_active %}minus{% else %}plus{% endif %}">
-                    <a id="filterbox_item-{{ filter_entry.0 }}" class="filterbox_item {% if is_active %}on{% endif %}"
+                    <a rel="nofollow" id="filterbox_item-{{ filter_entry.0 }}" class="filterbox_item {% if is_active %}on{% endif %}"
                        href="{% spurl base=request.get_full_path remove_query_param="page" trigger_mquery="{{ item.name }}={{ filter_entry.0 }}" %}"
                        style="display: block;">
                         {% if filter_entry.2 %}
