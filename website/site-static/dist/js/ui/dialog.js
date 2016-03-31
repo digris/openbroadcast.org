@@ -5,7 +5,7 @@
 var DialogUI;
 
 DialogUI = (function() {
-  DialogUI.prototype.debug = true;
+  DialogUI.prototype.debug = false;
 
   DialogUI.prototype.active = false;
 
@@ -13,7 +13,9 @@ DialogUI = (function() {
 
   function DialogUI(container) {
     this.container = container;
-    console.log('DialogUI', this.container);
+    if (this.debug) {
+      console.log('DialogUI', this.container);
+    }
   }
 
   DialogUI.prototype.show = function(opts) {

@@ -1,6 +1,6 @@
 class NavigationUI
 
-  debug: true
+  debug: false
   hover: false
   active: false
   hover_has_sublevel: false
@@ -56,7 +56,7 @@ class NavigationUI
 
     $('.sub-level', @container).removeClass 'hide'
 
-    if debug
+    if @debug
       console.debug 'active', @active
       console.debug 'hover', @hover
       console.debug 'active_has_sublevel', @active_has_sublevel
@@ -76,7 +76,8 @@ class NavigationUI
     # calculate & apply padding for sub-levels
     $('.sub-level', @container).each (i, el) ->
       parent_offset = $(el).parent().position().left
-      console.debug parent_offset
+      if @debug
+        console.debug parent_offset
       $(el).css 'padding-left', parent_offset + 'px'
 
 
@@ -92,7 +93,7 @@ class NavigationUI
 
 class AccountUI
 
-  debug: true
+  debug: false
 
   constructor: (@container) ->
     @bindings()

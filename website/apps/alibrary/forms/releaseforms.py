@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django import forms
 import logging
 from django.forms import ModelForm, Form
@@ -227,61 +230,49 @@ class ReleaseForm(ModelForm):
 
 
         base_layout = Fieldset(
-
-
-                _('General'),
-                #Div(HTML('<h4>%s</h4><p>%s</p>' % (_('Bulk Edit'), _('Choose Artist name and/or license to apply on every track.'))), css_class='form-help'),
-                LookupField('name', css_class='input-xlarge'),
-                LookupField('releasetype', css_class='input-xlarge'),
-                LookupField('totaltracks', css_class='input-xlarge'),
-        )
-
-        artist_layout = Fieldset(
-                _('Artist(s)'),
-                Field('extra_artists', css_class='input-xlarge'),
+            _('General'),
+            LookupField('name', css_class='input-xlarge'),
+            LookupField('releasetype', css_class='input-xlarge'),
+            LookupField('totaltracks', css_class='input-xlarge'),
         )
 
         catalog_layout = Fieldset(
-                _('Label/Catalog'),
-                LookupField('label', css_class='input-xlarge'),
-                HTML("""<ul class="horizontal unstyled clearfix action label-select">
-                    <li><a data-label="%s" data-label_id="%s" href="#"><i class="icon-double-angle-right"></i> %s</a></li>
-                    <li><a data-label="%s" data-label_id="%s" href="#"><i class="icon-double-angle-right"></i> %s</a></li>
-                </ul>""" % (unknown_label.name, unknown_label.pk, unknown_label.name, noton_label.name, noton_label.pk, noton_label.name)),
-                LookupField('catalognumber', css_class='input-xlarge'),
-                LookupField('release_country', css_class='input-xlarge'),
-                # LookupField('releasedate', css_class='input-xlarge'),
-                LookupField('releasedate_approx', css_class='input-xlarge'),
+            _('Label/Catalog'),
+            LookupField('label', css_class='input-xlarge'),
+            HTML("""<ul class="horizontal unstyled clearfix action label-select">
+                <li><a data-label="%s" data-label_id="%s" href="#"><i class="icon-double-angle-right"></i> %s</a></li>
+                <li><a data-label="%s" data-label_id="%s" href="#"><i class="icon-double-angle-right"></i> %s</a></li>
+            </ul>""" % (unknown_label.name, unknown_label.pk, unknown_label.name, noton_label.name, noton_label.pk, noton_label.name)),
+            LookupField('catalognumber', css_class='input-xlarge'),
+            LookupField('release_country', css_class='input-xlarge'),
+            LookupField('releasedate_approx', css_class='input-xlarge'),
         )
 
-
-        image_layout = Fieldset(
-                'Meta',
-                LookupField('description', css_class='input-xxlarge'),
-                LookupImageField('main_image',),
-                LookupField('remote_image',),
+        meta_layout = Fieldset(
+            'Meta',
+            LookupField('description', css_class='input-xxlarge'),
+            LookupImageField('main_image',),
+            LookupField('remote_image',),
         )
 
         tagging_layout = Fieldset(
-                'Tags',
-                LookupField('d_tags'),
+            'Tags',
+            LookupField('d_tags'),
         )
 
         identifiers_layout = Fieldset(
-                _('Identifiers'),
-                LookupField('barcode', css_class='input-xlarge'),
+            _('Identifiers'),
+            LookupField('barcode', css_class='input-xlarge'),
         )
 
         layout = Layout(
-                        #ACTION_LAYOUT,
-                        base_layout,
-                        # artist_layout,
-                        image_layout,
-                        catalog_layout,
-                        tagging_layout,
-                        identifiers_layout,
-                        #ACTION_LAYOUT,
-                        )
+            base_layout,
+            HTML('<div id="artist_relation_container"></div>'),
+            meta_layout,
+            catalog_layout,
+            identifiers_layout,
+            tagging_layout,
+        )
 
         self.helper.add_layout(layout)
 

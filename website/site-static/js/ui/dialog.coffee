@@ -5,12 +5,13 @@
 
 class DialogUI
 
-  debug: true
+  debug: false
   active: false
   container: false
 
   constructor: (@container) ->
-    console.log 'DialogUI', @container
+    if @debug
+      console.log 'DialogUI', @container
 
   show: (opts = {}) ->
 

@@ -6,7 +6,7 @@
 		// test for mouse, pointer or touch
 		var EVENT = window.navigator.msPointerEnabled ? 2 : 'ontouchend' in document ? 3 : 1;
 		if (window.debug && console) {
-			console.log(EVENT);
+			//console.log(EVENT);
 		}
 
 		// shorthand for test=function, calling

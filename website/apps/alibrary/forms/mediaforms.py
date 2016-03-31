@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django import forms
 import logging
 from django.forms import ModelForm, Form
@@ -112,65 +115,54 @@ class MediaForm(ModelForm):
 
         
         base_layout = Fieldset(
-                               
-                _('General'),
-                LookupField('name', css_class='input-xlarge'),
-                LookupField('release', css_class='input-xlarge'),
-                LookupField('artist', css_class='input-xlarge'),
-                LookupField('mediatype', css_class='input-xlarge'),
-                LookupField('tracknumber', css_class='input-xlarge'),
-                Field('medianumber', css_class='input-xlarge'),
-                Field('opus_number', css_class='input-xlarge'),
-                Field('version', css_class='input-xlarge'),
-                HTML('<div style="opacity: 0.5;"><span style="padding: 0 44px 0 8px;">Orig. Filename:</span>%s</div>' % self.instance.original_filename),
+            _('General'),
+            LookupField('name', css_class='input-xlarge'),
+            LookupField('release', css_class='input-xlarge'),
+            LookupField('artist', css_class='input-xlarge'),
+            LookupField('mediatype', css_class='input-xlarge'),
+            LookupField('tracknumber', css_class='input-xlarge'),
+            Field('medianumber', css_class='input-xlarge'),
+            Field('opus_number', css_class='input-xlarge'),
+            Field('version', css_class='input-xlarge'),
+            HTML('<div style="opacity: 0.5;"><span style="padding: 0 44px 0 8px;">Orig. Filename:</span>%s</div>' % self.instance.original_filename),
         )
-        
+
+        identifiers_layout = Fieldset(
+            _('Identifiers'),
+            LookupField('isrc', css_class='input-xlarge'),
+        )
+
         license_layout = Fieldset(
-                _('License/Source'),
-                Field('license', css_class='input-xlarge'),   
+            _('License/Source'),
+            Field('license', css_class='input-xlarge'),
         )
-        
-        catalog_layout = Fieldset(
-                _('Label/Catalog'),
-                LookupField('label', css_class='input-xlarge'),
-                LookupField('catalognumber', css_class='input-xlarge'),
-                LookupField('release_country', css_class='input-xlarge'),
-                # LookupField('releasedate', css_class='input-xlarge'),
-                LookupField('releasedate_approx', css_class='input-xlarge'),
-        )
-        
 
         meta_layout = Fieldset(
-                'Meta',
-                LookupField('description', css_class='input-xxlarge'),
+            'Meta',
+            LookupField('description', css_class='input-xxlarge'),
         )
 
 
         lyrics_layout = Fieldset(
-                'Lyrics',
-                LookupField('lyrics_language', css_class='input-xxlarge'),
-                LookupField('lyrics', css_class='input-xxlarge'),
+            'Lyrics',
+            LookupField('lyrics_language', css_class='input-xxlarge'),
+            LookupField('lyrics', css_class='input-xxlarge'),
         )
         
         tagging_layout = Fieldset(
-                'Tags',
-                LookupField('d_tags'),
-        )
-
-        identifiers_layout = Fieldset(
-                _('Identifiers'),
-                LookupField('isrc', css_class='input-xlarge'),
+            'Tags',
+            LookupField('d_tags'),
         )
             
         layout = Layout(
-                        base_layout,
-                        # artist_layout,
-                        meta_layout,
-                        lyrics_layout,
-                        license_layout,
-                        tagging_layout,
-                        identifiers_layout,
-                        )
+            base_layout,
+            HTML( '<div id="artist_relation_container"></div>'),
+            identifiers_layout,
+            license_layout,
+            meta_layout,
+            lyrics_layout,
+            tagging_layout,
+        )
 
         self.helper.add_layout(layout)
 

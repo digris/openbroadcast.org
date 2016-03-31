@@ -8,7 +8,7 @@ var edit = edit || {};
 edit.base = edit.base || {};
 edit.ui = edit.ui || {};
 
-EditUi = function () {
+var EditUi = function () {
 
     var self = this;
 
@@ -35,57 +35,46 @@ EditUi = function () {
         self.bindings();
         self.iface();
         self.layout();
+        self.hacks();
     };
 
     this.iface = function () {
         this.floating_sidebar('lookup_providers', 120);
-        self.autogrow();
     };
 
     this.layout = function () {
+
+    };
+
+    // collection uf ugly hacks...
+    this.hacks = function () {
+
         // hack for albumartist formset
         $('.albumartist-row').each(function(i, el){
             if(i == 0) {
                 $('.controls select', $(el)).attr("disabled", true);
-                //$(el).fadeOut(5000)
             }
-        })
-
-
-    };
-
-
-    this.autogrow = function(){
-        // hide formsets until limit
-
-        $('fieldset').each(function(i, el){
-        var j = 4; // the limit
-            $('.form-autogrow', $(el)).removeClass('hidden');
-            $('.form-autogrow', $(el)).each(function(i, el){
-
-                // get the input
-                var value = $('.controls input', $(el)).val();
-                if(value.length > 0) {
-                    j++;
-                }
-                j--;
-
-                if(j < 3){
-                   $(el).addClass('hidden')
-                }
-            });
         });
 
+        // move track/release artist inlineformset
+        // media
+        $('#mediaartist_container').detach().appendTo('#artist_relation_container');
+        $('#extraartist_container').detach().appendTo('#artist_relation_container');
+        // release
+        $('#albumartist_container').detach().appendTo('#artist_relation_container');
+        // artist alias_container
+        $('#alias_container').detach().appendTo('#artist_relation_container');
+        $('#member_container').detach().appendTo('#artist_relation_container');
+
+
+
+
     };
+
 
     this.bindings = function () {
         // lookup providers
         var container = $('.lookup.provider.listing');
-
-        // handle autogrow
-        $('.form-autogrow', $('fieldset')).on('blur', '.controls input', function(e){
-            self.autogrow();
-        });
 
         // handle links
         $(container).on('click', '.item a.external', function (e) {
@@ -246,7 +235,9 @@ EditUi = function () {
                     } else {
                         var _container = $('fieldset.relations .relation-row:not(".hidden")').last();
                         $('.controls input', _container).val(self.current_data.uri);
-                        self.autogrow();
+
+                        // TODO: re-implement with generic autogrow
+                        //self.autogrow();
                     }
 
                     // TODO: refactor
@@ -341,8 +332,8 @@ EditUi = function () {
                 $('.controls input', container).val(url);
                 el.remove();
 
-                // reqrow...
-                self.autogrow();
+                // TODO: re-implement with generic autogrow
+                // self.autogrow();
 
             } else {
                 // attached to a specific service
@@ -353,12 +344,7 @@ EditUi = function () {
             }
 
         });
-
-
-
-
-
-
+        
     };
 
 

@@ -42,13 +42,9 @@
                     $('input#id_label_0').val(val);
                     $('input#id_label_1').val(label_id);
 
-                    //$('input#id_label_0').focus();
-                    //$('input#id_label_0').blur();
                 });
 
-
                 edit.ui.init();
-
 
             });
         </script>
@@ -114,7 +110,7 @@
             {% crispy named_formsets.action %}
             {% crispy form %}
 
-            <fieldset>
+            <fieldset id="albumartist_container">
                 <legend>
                     {% trans "Albumartists" %}<span class="pull-right"></span>
                 </legend>

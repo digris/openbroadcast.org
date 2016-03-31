@@ -1,7 +1,7 @@
 var AccountUI, NavigationUI;
 
 NavigationUI = (function() {
-  NavigationUI.prototype.debug = true;
+  NavigationUI.prototype.debug = false;
 
   NavigationUI.prototype.hover = false;
 
@@ -67,7 +67,7 @@ NavigationUI = (function() {
 
   NavigationUI.prototype.update_display = function() {
     $('.sub-level', this.container).removeClass('hide');
-    if (debug) {
+    if (this.debug) {
       console.debug('active', this.active);
       console.debug('hover', this.hover);
       console.debug('active_has_sublevel', this.active_has_sublevel);
@@ -87,7 +87,9 @@ NavigationUI = (function() {
     return $('.sub-level', this.container).each(function(i, el) {
       var parent_offset;
       parent_offset = $(el).parent().position().left;
-      console.debug(parent_offset);
+      if (this.debug) {
+        console.debug(parent_offset);
+      }
       return $(el).css('padding-left', parent_offset + 'px');
     });
   };
@@ -97,7 +99,7 @@ NavigationUI = (function() {
 })();
 
 AccountUI = (function() {
-  AccountUI.prototype.debug = true;
+  AccountUI.prototype.debug = false;
 
   function AccountUI(container) {
     this.container = container;

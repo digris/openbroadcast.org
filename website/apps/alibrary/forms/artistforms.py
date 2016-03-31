@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import logging
 
 from django import forms
@@ -128,7 +131,6 @@ class ArtistForm(ModelForm):
                 LookupField('booking_contact', css_class='input-xlarge'),
         )
 
-
         activity_layout = Fieldset(
                 _('Activity'),
                 LookupField('date_start', css_class='input-xlarge'),
@@ -154,13 +156,13 @@ class ArtistForm(ModelForm):
         )
             
         layout = Layout(
-                        base_layout,
-                        activity_layout,
-                        # artist_layout,
-                        meta_layout,
-                        tagging_layout,
-                        identifiers_layout,
-                        )
+            base_layout,
+            HTML('<div id="artist_relation_container"></div>'),
+            identifiers_layout,
+            activity_layout,
+            meta_layout,
+            tagging_layout,
+        )
 
         self.helper.add_layout(layout)
 

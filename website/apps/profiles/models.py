@@ -1,6 +1,10 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import re
 import datetime
 import os
+import tagging
 
 from dateutil import relativedelta
 from django.db import models
@@ -13,7 +17,7 @@ from django.core.urlresolvers import reverse
 from django_extensions.db.fields import AutoSlugField, UUIDField
 from phonenumber_field.modelfields import PhoneNumberField
 
-
+import tagging
 from tagging.fields import TagField
 from tagging.registry import register as tagging_register
 
@@ -76,7 +80,10 @@ class Profile(MigrationMixin):
     birth_date = models.DateField(_('Date of birth'), blank=True, null=True, help_text=_('Format: YYYY-MM-DD'))
     
     # Profile
-    pseudonym = models.CharField(blank=True, null=True, max_length=250)
+    pseudonym = models.CharField(
+        blank=True, null=True, max_length=250,
+        help_text=_('If specified the pseudonym will appear when referencing to your profile - instead of your name & surname')
+    )
     description = models.CharField(_('Disambiguation'), blank=True, null=True, max_length=250)
     biography = extra.MarkdownTextField(blank=True, null=True)
 
@@ -100,7 +107,7 @@ class Profile(MigrationMixin):
     expertise = models.ManyToManyField('Expertise', verbose_name=_('Fields of expertise'), blank=True)
 
     # tagging (d_tags = "display tags")
-    d_tags = TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
+    d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
 
     # alpha features
     enable_alpha_features = models.BooleanField(default=False)
@@ -119,14 +126,10 @@ class Profile(MigrationMixin):
         )
 
     def __unicode__(self):
-
         return u"%s" % self.get_display_name()
-
-        #return u"%s" % self.user.get_full_name()
 
 
     def get_full_name(self):
-
         if self.user:
             return self.user.get_full_name()
 
@@ -140,7 +143,6 @@ class Profile(MigrationMixin):
             return self.user.get_full_name()
 
         return self.user.username
-
 
 
     @property
@@ -160,7 +162,6 @@ class Profile(MigrationMixin):
         if level == 'radio_pro':
             groups_to_add = ('Radio PRO', 'Mentor',)
 
-
         groups = Group.objects.filter(name__in=groups_to_add)
         
         for group in groups:
@@ -177,10 +178,8 @@ class Profile(MigrationMixin):
         else:
             return None
 
-    #@permalink
     def get_absolute_url(self):
         return reverse('profiles-profile-detail', kwargs={ 'slug': self.user.username })
-
 
     @models.permalink
     def get_edit_url(self):
@@ -195,19 +194,15 @@ class Profile(MigrationMixin):
             'api_name': 'v1',
             'resource_name': 'profile',
             'pk': self.pk
-        }) + ''
-
-
+        })
 
     @property
     def sms_address(self):
         if (self.mobile and self.mobile_provider):
             return u"%s@%s" % (re.sub('-', '', self.mobile), self.mobile_provider.domain)
-        
-        
+
     def get_groups(self):
         return self.user.groups
-        
 
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)
@@ -253,7 +248,7 @@ class Community(MigrationMixin):
     expertise = models.ManyToManyField('Expertise', verbose_name=_('Fields of expertise'), blank=True)
     
     # tagging (d_tags = "display tags")
-    d_tags = TagField(verbose_name="Tags", blank=True, null=True)
+    d_tags = tagging.fields.TagField(verbose_name="Tags", blank=True, null=True)
 
     class Meta:
         app_label = 'profiles'
@@ -292,9 +287,6 @@ except:
 arating.enable_voting_on(Community)
 
 
-
-
-
 def create_profile(sender, instance, created, **kwargs):
     
     if created:  
@@ -313,11 +305,6 @@ def add_to_group(sender, instance, **kwargs):
     if not instance.groups.filter(pk=default_group.pk).exists():
         instance.groups.add(default_group)
         instance.save()
-
-       
-#post_save.connect(add_to_group, sender=User) 
-
-
 
 
 def add_mentor(sender, **kwargs):
@@ -421,14 +408,3 @@ class Expertise(models.Model):
         
     def __unicode__(self):
         return u"%s" % self.name
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        

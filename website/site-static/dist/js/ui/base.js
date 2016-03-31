@@ -7,5 +7,6 @@ var ui;
 ui = window.ui || {};
 
 $(function() {
-  return ui.dialog = new DialogUI;
+  ui.dialog = new DialogUI;
+  return ui.edit_base = new EditBaseUI;
 });
