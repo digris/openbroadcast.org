@@ -280,7 +280,10 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         return super(PlaylistEditView, self).dispatch(request, *args, **kwargs)
 
     def get_initial(self):
-        self.initial.update({ 'user': self.request.user })
+        self.initial.update({
+            'user': self.request.user,
+            'd_tags': ','.join(t.name for t in self.object.tags)}
+        )
         return self.initial
 
 
@@ -299,8 +302,6 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     def form_valid(self, form):
         context = self.get_context_data()
 
-        print 'PlaylistEditView - form_valid'
-
         # validation
         if form.is_valid():
             self.object.tags = form.cleaned_data['d_tags']
@@ -316,9 +317,6 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
             from lib.util.form_errors import merge_form_errors
             form_errors = merge_form_errors([form,])
-
-            print form_errors
-
 
             return self.render_to_response(self.get_context_data(form=form, form_errors=form_errors))
         

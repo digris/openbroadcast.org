@@ -272,7 +272,10 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         super(MediaEditView, self).__init__(*args, **kwargs)
 
     def get_initial(self):
-        self.initial.update({ 'user': self.request.user })
+        self.initial.update({
+            'user': self.request.user,
+            'd_tags': ','.join(t.name for t in self.object.tags)
+        })
         return self.initial
 
     def get_context_data(self, **kwargs):

@@ -293,7 +293,10 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         super(ReleaseEditView, self).__init__(*args, **kwargs)
 
     def get_initial(self):
-        self.initial.update({ 'user': self.request.user })
+        self.initial.update({
+            'user': self.request.user,
+            'd_tags': ','.join(t.name for t in self.object.tags)
+        })
         return self.initial
 
     def get_context_data(self, **kwargs):
@@ -443,7 +446,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
                 key = hashlib.md5(m.artist.name.encode('ascii', 'ignore')).hexdigest()
                 try:
                     artist = self.created_artists[key]
-                except Exception, e:
+                except Exception as e:
                     m.artist.save()
                     artist = m.artist
                     self.created_artists[key] = artist
@@ -469,7 +472,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
             try:
                 artist = self.created_artists[key]
-            except Exception, e:
+            except Exception as e:
                 pass
             else:
                 delete_pk = albumartist.artist.pk
@@ -574,7 +577,6 @@ class JSONResponseMixin(object):
                                       'tracknumber': media.tracknumber,
                                       'url': media.master.url
                                       }
-            print media.name
         
         
         

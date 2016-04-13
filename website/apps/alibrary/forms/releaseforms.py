@@ -281,6 +281,7 @@ class ReleaseForm(ModelForm):
     remote_image = forms.URLField(required=False)
     releasedate_approx = ApproximateDateFormField(label="Releasedate", required=False)
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
+    #d_tags = TagField()
     label = selectable.AutoCompleteSelectField(ReleaseLabelLookup, allow_new=True, required=False)
     description = forms.CharField(widget=PagedownWidget(), required=False)
 

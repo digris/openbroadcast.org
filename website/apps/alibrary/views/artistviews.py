@@ -264,7 +264,10 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         super(ArtistEditView, self).__init__(*args, **kwargs)
 
     def get_initial(self):
-        self.initial.update({ 'user': self.request.user })
+        self.initial.update({
+            'user': self.request.user,
+            'd_tags': ','.join(t.name for t in self.object.tags)}
+        )
         return self.initial
 
     def get_context_data(self, **kwargs):
@@ -359,7 +362,7 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 def artist_autocomplete(request):
 
     q = request.GET.get('q', None)
-    
+
     result = []
     
     if q and len(q) > 1:
@@ -394,15 +397,6 @@ def artist_autocomplete(request):
             item['labels'] = labels
             
             result.append(item)
-        
-    
-    #return HttpResponse(json.dumps(list(result)))
+
     return render_to_response("alibrary/element/autocomplete.html", { 'query': q, 'result': result }, context_instance=RequestContext(request))
-    
-
-
-    
-    
-    
-    
     

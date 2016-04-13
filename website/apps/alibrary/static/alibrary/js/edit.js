@@ -208,7 +208,7 @@ var EditUi = function () {
                         api.destroy();
                     } catch (e) {
                     }
-                    ;
+
 
                     // TODO: maybe make a bit nicer...
                     // set button classes

@@ -109,14 +109,12 @@ var ImportfileApp = function () {
             var ct = $(this).attr('data-ct');
             var target = $('.ac-result', $(this).parent());
 
-
             if (e.keyCode == 13 || e.keyCode == 9) {
                 return false;
-            } else {
-
-                debug.debug(q, ct, target)
-                self.ac.search(q, ct, target);
             }
+
+            self.ac.search(q, ct, target);
+
 
         });
         $("input.autocomplete", self.container).live('blur', function (e) {
@@ -132,16 +130,10 @@ var ImportfileApp = function () {
             target.fadeIn(1);
 
 
-            // apply to local data first (to allow tabbing)
-            // TODO: implementation
-
-
             setTimeout(function () {
                 if (!self.api_lock) {
 
                     var import_tag = self.local_data.import_tag;
-
-                    /**/
                     if (ct == 'release') {
                         import_tag['release'] = q;
                         delete import_tag['alibrary_release_id'];
@@ -151,9 +143,6 @@ var ImportfileApp = function () {
                         import_tag['artist'] = q;
                         delete import_tag['alibrary_artist_id'];
                     }
-
-
-                    debug.debug('blur', name, ct);
 
                     self.set_import_tag(import_tag);
                 }
@@ -634,25 +623,33 @@ var ImportfileApp = function () {
         return import_tag;
     }
 
-}
+};
 
 
 ImportfileAcApp = function () {
 
     var self = this;
     this.template = 'importer/nj/autocomplete.html';
-    this.q_min = 2;
+    this.q_min = 3;
+    this.timeout = false;
 
     this.search = function (q, ct, target) {
-
-        console.log('AutocompleteApp - search', q, ct, target);
 
         var url = '/api/v1/library/' + ct + '/autocomplete-name/?q=' + q + '&';
 
         if (q.length >= this.q_min) {
-            $.get(url, function (data) {
-                self.display(target, data);
-            });
+
+            if(self.timeout) {
+                clearTimeout(self.timeout);
+            }
+
+            self.timeout = setTimeout(function(){
+                $.get(url, function (data) {
+                    self.display(target, data);
+                    clearTimeout(self.timeout);
+                });
+            }, 300)
+
         } else {
             target.html('');
             // a bit hackish..

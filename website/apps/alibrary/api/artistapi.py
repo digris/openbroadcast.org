@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.conf.urls import *
 from django.db.models import Q
 
@@ -28,8 +31,7 @@ class ArtistResource(ModelResource):
             'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
             'id': ['exact', 'in'],
         }
-        # cache = SimpleCache(timeout=120)
-        
+
 
     def dehydrate(self, bundle):
         
@@ -37,7 +39,7 @@ class ArtistResource(ModelResource):
             bundle.data['main_image'] = None
             try:
                 opt = THUMBNAIL_OPT
-                main_image = image = get_thumbnailer(bundle.obj.main_image).get_thumbnail(opt)
+                main_image = get_thumbnailer(bundle.obj.main_image).get_thumbnail(opt)
                 bundle.data['main_image'] = main_image.url
             except:
                 pass
@@ -82,10 +84,9 @@ class ArtistResource(ModelResource):
         
         if q and len(q) > 1:
 
-            # qs = Artist.objects.filter(name__istartswith=q)
-            qs = Artist.objects.order_by('name').filter(Q(name__icontains=q)\
-                | Q(namevariations__name__icontains=q))
-        
+            #qs = Artist.objects.order_by('name').filter(Q(name__icontains=q) | Q(namevariations__name__icontains=q))
+            qs = Artist.objects.order_by('name').filter(name__icontains=q)
+
 
             object_list = qs.distinct()[0:50]
             object_count = qs.distinct().count()

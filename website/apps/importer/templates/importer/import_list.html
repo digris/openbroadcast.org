@@ -140,6 +140,7 @@
 
                     <td class="">
 
+                        {% comment %}
                         <div class="btn-group pull-right">
                             <button class="btn btn-mini btn-primary" data-toggle="dropdown">
                                 {% trans "Actions" %}
@@ -176,11 +177,12 @@
 
                             </ul>
 
-
-                            <p>
-                                <small>ID: {{ object.pk }}</small>
-                            </p>
                         </div>
+                        {% endcomment %}
+
+                        <p>
+                            <small>ID: {{ object.pk }}</small>
+                        </p>
 
 
                     </td>

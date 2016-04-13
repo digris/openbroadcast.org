@@ -103,7 +103,7 @@ INSTALLED_APPS = (
     #'ajax_select',
     'email_obfuscator',
 
-    #'stepguide',
+    'stepguide',
 
     # users / auth
     'avatar',
