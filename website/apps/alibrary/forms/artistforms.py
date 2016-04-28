@@ -11,32 +11,18 @@ from django.utils.translation import ugettext as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import *
 from crispy_forms.bootstrap import FormActions
-
-from filer.models.imagemodels import Image
-logger = logging.getLogger(__name__)
-
-
-from alibrary.models import Relation
-
+from alibrary.models import Artist, Relation, ArtistAlias, ArtistMembership
+from alibrary.lookups import ArtistLookup
 from pagedown.widgets import PagedownWidget
-
 import selectable.forms as selectable
-from alibrary.lookups import *
-
-from django.forms.widgets import FileInput
-
-#from floppyforms.widgets import DateInput
 from tagging.forms import TagField
 from ac_tagging.widgets import TagAutocompleteTagIt
-
 from lib.widgets.widgets import ReadOnlyIconField
 from lib.fields.extra import AdvancedFileInput
-
-from lib.util.filer_extra import url_to_file
-
 from alibrary.util.storage import get_file_from_url
+from base.mixins import StripWhitespaceFormMixin
 
-
+log = logging.getLogger(__name__)
 
 ACTION_LAYOUT =  action_layout = FormActions(
                 HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),            
@@ -268,7 +254,7 @@ class BaseMemberForm(ModelForm):
         child = self.cleaned_data['child']
         try:
             if not child.pk:
-                logger.debug('saving not existant child: %s' % child.name)
+                log.debug('saving not existant child: %s' % child.name)
                 child.save()
                 return child
         except:
@@ -347,14 +333,12 @@ class BaseAliasForm(ModelForm):
         instance = getattr(self, 'instance', None)
 
     child = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False, label=_('Alias'))
-    #service = forms.CharField(label='', widget=ReadOnlyIconField(**{'url': 'whatever'}), required=False)
-    #url = forms.URLField(label=_('Website / URL'), required=False)
 
     def clean_child(self):
 
         child = self.cleaned_data['child']
         if not child.pk:
-            logger.debug('saving not existant child: %s' % child.name)
+            log.debug('saving not existant child: %s' % child.name)
             child.save()
         return child
 
@@ -363,30 +347,15 @@ class BaseAliasForm(ModelForm):
         cd = super(BaseAliasForm, self).clean()
         return cd
 
-
     def save(self, *args, **kwargs):
         instance = super(BaseAliasForm, self).save(*args, **kwargs)
         return instance
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
   
 class BaseArtistReleationFormSet(BaseGenericInlineFormSet):
 
-        
-        
     def __init__(self, *args, **kwargs):
 
         self.instance = kwargs['instance']
@@ -419,7 +388,7 @@ class BaseArtistReleationFormSet(BaseGenericInlineFormSet):
         
 
 
-class BaseArtistReleationForm(ModelForm):
+class BaseArtistReleationForm(StripWhitespaceFormMixin, ModelForm):
 
     class Meta:
         model = Relation
@@ -436,10 +405,6 @@ class BaseArtistReleationForm(ModelForm):
     def clean_service(self):
         return self.instance.service
 
-    def clean_url(self):
-        return self.cleaned_data.get('url', '').strip()
-
-    #service = forms.CharField(label='', widget=ReadOnlyIconField(), required=False)
     service = forms.CharField(label='Service', widget=ReadOnlyIconField(), required=False)
     url = forms.URLField(label=_('Website / URL'), required=False)
 

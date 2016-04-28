@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django import forms
 from django.forms import ModelForm, Form
 from django.contrib.contenttypes.generic import BaseGenericInlineFormSet, generic_inlineformset_factory
@@ -7,23 +10,14 @@ from crispy_forms.layout import *
 from crispy_forms.bootstrap import FormActions
 from pagedown.widgets import PagedownWidget
 from django.forms.widgets import FileInput
-
-from filer.models.imagemodels import Image
-from alibrary.models import Relation
 import selectable.forms as selectable
-from alibrary.lookups import *
-
-#from floppyforms.widgets import DateInput
+from alibrary.models import Relation, Label
+from alibrary.lookups import ParentLabelLookup
 from tagging.forms import TagField
 from ac_tagging.widgets import TagAutocompleteTagIt
-
 from lib.widgets.widgets import ReadOnlyIconField
-
-from lib.util.filer_extra import url_to_file
-
 from alibrary.util.storage import get_file_from_url
-
-
+from base.mixins import StripWhitespaceFormMixin
 
 ACTION_LAYOUT =  action_layout = FormActions(
                 HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),            
@@ -236,7 +230,7 @@ class BaseLabelReleationFormSet(BaseGenericInlineFormSet):
         
 
 
-class BaseLabelReleationForm(ModelForm):
+class BaseLabelReleationForm(StripWhitespaceFormMixin, ModelForm):
 
     class Meta:
         model = Relation
@@ -253,9 +247,6 @@ class BaseLabelReleationForm(ModelForm):
         
     def clean_service(self):
         return self.instance.service
-
-    def clean_url(self):
-        return self.cleaned_data.get('url', '').strip()
 
     service = forms.CharField(label='', widget=ReadOnlyIconField(), required=False)
     url = forms.URLField(label=_('Website / URL'), required=False)

@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate i18n thumbnail arating_tags wiki_tags atracker_tags spurl alibrary_tags url_tags sekizai_tags %}
+{% load truncate i18n thumbnail arating_tags wiki_tags atracker_tags spurl alibrary_tags url_tags sekizai_tags pageguide_tags %}
 
 {% block heading %}
 
@@ -96,7 +96,7 @@
         <section class="top">
 
 
-            <h2>
+            <h2 data-guide="top">
                 {% url "alibrary-media-list" as media_list %}
                 {% trans "Top Tracks" %}
                             <span class="pull-right">
@@ -321,6 +321,8 @@
     </section>
 
     </div>
+
+    {% pageguide_inline 'alibrary.artist.detail' %}
 
 {% endblock %}
 

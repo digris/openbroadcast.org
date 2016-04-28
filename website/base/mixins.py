@@ -23,3 +23,18 @@ class UUIDModelMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class StripWhitespaceFormMixin(object):
+    # seen heere: http://stackoverflow.com/a/31248409/469111
+    def full_clean(self):
+        # self.data can be dict (usually empty) or QueryDict here.
+        self.data = self.data.copy()
+        is_querydict = hasattr(self.data, 'setlist')
+        strip = lambda val: val.strip()
+        for k in list(self.data.keys()):
+            if is_querydict:
+                self.data.setlist(k, map(strip, self.data.getlist(k)))
+            else:
+                self.data[k] = strip(self.data[k])
+        super(StripWhitespaceFormMixin, self).full_clean()

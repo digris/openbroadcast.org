@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django import forms
 import logging
+
+from django import forms
 from django.forms import ModelForm, Form
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from django.contrib.contenttypes.generic import BaseGenericInlineFormSet, generic_inlineformset_factory
@@ -11,18 +12,13 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import *
 from crispy_forms.bootstrap import FormActions
 from pagedown.widgets import PagedownWidget
-
-from filer.models.imagemodels import Image
 from alibrary.models import Media, Relation, MediaExtraartists, MediaArtists
 import selectable.forms as selectable
 from alibrary.lookups import ReleaseNameLookup, ArtistLookup
-
-
-#from floppyforms.widgets import DateInput
 from tagging.forms import TagField
 from ac_tagging.widgets import TagAutocompleteTagIt
-
 from lib.widgets.widgets import ReadOnlyIconField
+from base.mixins import StripWhitespaceFormMixin
 
 log = logging.getLogger(__name__)
 
@@ -444,7 +440,7 @@ class BaseMediaReleationFormSet(BaseGenericInlineFormSet):
         
 
 
-class BaseMediaReleationForm(ModelForm):
+class BaseMediaReleationForm(StripWhitespaceFormMixin, ModelForm):
 
     class Meta:
         model = Relation
@@ -461,9 +457,6 @@ class BaseMediaReleationForm(ModelForm):
         
     def clean_service(self):
         return self.instance.service
-
-    def clean_url(self):
-        return self.cleaned_data.get('url', '').strip()
 
     service = forms.CharField(label='', widget=ReadOnlyIconField(), required=False)
     url = forms.URLField(label=_('Website / URL'), required=False)

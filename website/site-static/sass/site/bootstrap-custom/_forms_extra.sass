@@ -150,8 +150,8 @@ form.form-horizontal
       .field-lookup-holder
         float: right
         margin: 0 0 0 30px
-        background-color: #efefef
-        
+        //background-color: #efefef
+        background-color: #ffffff
         border: 1px solid #efefef
 
         span:empty
@@ -161,7 +161,7 @@ form.form-horizontal
         max-width: 220px
         
         display: none
-        padding: 0px 4px 0px 24px
+        padding: 0 4px 0 24px
 
         max-height: 185px
         overflow: auto
@@ -180,11 +180,62 @@ form.form-horizontal
         color: #5a5a5a
         
         &.lookup-match
-          background-color: $primary-color-a-bg-light !important
-        &.lookup-diff
-          background-color: #fff4d9
+          //background-color: $primary-color-a-bg-light !important
+          background-color: #ffffff !important
 
-          
+        &.lookup-diff
+          background-color: $warning-color-bg
+
+
+fieldset
+  ul.label-select
+    margin-left: 127px
+    margin-bottom: 10px
+    li
+      background: #efefef
+      padding: 1px 4px 1px 4px
+      margin-right: 10px
+
+
+
+.relation-row
+  .span1
+    .controls
+      margin-left: 80px !important
+
+ul.relations.external
+  li > a
+    color: #5a5a5a
+    &:hover
+      color: $primary-color-b
+    i
+      font-size: 130%
+
+// relation lookup
+fieldset.relations
+  .relation
+    border: 1px solid #efefef
+    //background: #efefef
+    background: #ffffff
+    padding: 1px 4px 1px 4px
+    margin: 2px 0 2px 127px
+    // float: left
+    &:hover
+      border: 1px solid #a5a5a5
+
+    a
+      color: #5a5a5a
+      &:hover
+        text-decoration: none
+
+    &.match
+      //background: $primary-color-a-bg-light
+      background: #ffffff
+    &.diff
+      background-color: $warning-color-bg
+
+
+
 form.form-horizontal
   &.form-compact
     //background: yellow
@@ -309,120 +360,6 @@ div.bulk_edit
     padding: 2px 0 0 0
 
 
-
-
-
-
-
-
-
-// hm..
-fieldset
-  ul.label-select
-    margin-left: 127px
-    li
-      background: #efefef
-      padding: 1px 4px 1px 4px
-      margin-right: 10px
-
-
-
-
-
-
-
-
-.relation-row
-  .span1
-    .controls
-      margin-left: 80px !important
-ul.relations.external
-  //width: 20px
-  //height: 18px
-  //background: red
-  li > a
-    color: #5a5a5a
-    &:hover
-      color: $primary-color-b
-    i
-      font-size: 130%
-
-// relation lookup
-fieldset.relations
-  .relation
-    border: 1px solid #efefef
-    background: #efefef
-    padding: 1px 4px 1px 4px
-    margin: 2px 0 2px 127px
-    // float: left
-    &:hover
-      border: 1px solid #a5a5a5
-
-    a
-      color: #5a5a5a
-      &:hover
-        text-decoration: none
-
-    &.match
-      background: $primary-color-a-bg-light
-    &.diff
-      background: #fff4d9
-
-
-// unused, refactored to custom font icons
-___ul.links.external
-
-  li.name
-    margin-left: 12px
-  
-  li.action
-    margin-left: 12px
-
-  li.icon
-    height: 16px
-    width: 16px
-    display: block
-    background-image: url(/static/img/base/listview.iconset.links_external.png)
-    &:hover
-      background-position: 0 -16px
-    /* individual links (icon sprite)
-    &.unknown
-      background-image: none
-
-    &.discogs
-      background-position: 0 0
-      &.available
-        background-position: 0 16px
-    &.wikipedia
-      background-position: -16px 0
-      &:hover
-        background-position: -16px 16px
-    &.lastfm
-      background-position: -32px 0
-      &:hover
-        background-position: -32px 16px
-    &.musicbrainz
-      background-position: -48px 0
-      &:hover
-        background-position: -48px 16px
-    &.soundcloud
-      background-position: -64px 0
-      &:hover
-        background-position: -64px 16px
-    &.facebook
-      background-position: -80px 0
-      &:hover
-        background-position: -80px 16px
-    &.youtube
-      background-position: -96px 0
-      &:hover
-        background-position: -96px 16px
-    &.myspace
-      background-position: -112px 0
-      &:hover
-        background-position: -112px 16px
-
-
 // clearable file/image input
 form.form-horizontal
   .input-image, .input-file
@@ -448,6 +385,8 @@ form.form-horizontal
       color: $grayDark
       padding: 5px 10px
       margin-bottom: 10px
+
+
       h1, h2, h3
         color: $grayDark
         font-weight: bold
@@ -459,6 +398,18 @@ form.form-horizontal
         
       // type dependent
       &.notes-info
+        color: $gray
+        padding: 0 10px
+        margin-bottom: 18px
+        margin-left: 6px
+        p, h1, h2, h3
+          color: $gray
+
+        border-left: 4px solid $grayLight
+
+
+      // TODO: define what levels in use / style them in a generic way
+      &.__notes-info
         background-color: $infoBackground
         color: $infoText
         h1, h2, h3

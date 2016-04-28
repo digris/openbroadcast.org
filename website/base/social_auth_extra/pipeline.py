@@ -3,7 +3,6 @@ import logging
 from social_auth.backends.contrib.dropbox import DropboxBackend
 from social_auth.models import UserSocialAuth
 from dropbox import client, session
-from dropbox import Dropbox, DropboxTeam, create_session
 from django.conf import settings
 
 DROPBOX_APP_ID = getattr(settings, 'DROPBOX_APP_ID')
@@ -15,11 +14,15 @@ def post_connect_tasks(backend, details, response, user=None, is_new=False, *arg
         return
 
     if isinstance(backend, DropboxBackend):
-        dropbox_post_connect_tasks(backend, details, response, user, is_new, *args, **kwargs)
-
+        try:
+            dropbox_post_connect_tasks(backend, details, response, user, is_new, *args, **kwargs)
+        except Exception as e:
+            pass
 
 
 def dropbox_post_connect_tasks(backend, details, response, user=None, is_new=False, *args, **kwargs):
+
+    from dropbox import Dropbox, DropboxTeam, create_session
 
     print 'dropbox_post_connect_tasks'
 

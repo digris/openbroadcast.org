@@ -498,10 +498,8 @@ class Relation(models.Model):
     url = models.URLField(max_length=512)
 
     content_type = models.ForeignKey(ContentType)
-    #object_id = models.PositiveIntegerField()
     object_id = UUIDField()
     content_object = generic.GenericForeignKey('content_type', 'object_id')
-
 
     SERVICE_CHOICES = (
         ('', _('Not specified')),
@@ -532,13 +530,9 @@ class Relation(models.Model):
     def _service(cls):
         return cls.service
 
-
-    
-    # auto-update
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
-    
-    # manager
+
     objects = RelationManager()
 
     class Meta:

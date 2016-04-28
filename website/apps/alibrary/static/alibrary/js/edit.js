@@ -66,9 +66,6 @@ var EditUi = function () {
         $('#alias_container').detach().appendTo('#artist_relation_container');
         $('#member_container').detach().appendTo('#artist_relation_container');
 
-
-
-
     };
 
 
@@ -119,10 +116,7 @@ var EditUi = function () {
                 });
 
                 self.api_lookup(item_type, item_id, provider, api_url);
-            } else {
             }
-            // else show research dialog
-
         });
 
 
@@ -139,7 +133,7 @@ var EditUi = function () {
             e.preventDefault();
             e.stopPropagation();
             // 'simulate' click in child element
-            $('span', $(this)).click()
+            $('span', $(this)).click();
             return false;
 
         });
@@ -150,8 +144,6 @@ var EditUi = function () {
 
             var id = $(this).attr('id');
             var key = id.substring(11); // strip off "bulk_apply_"
-
-            console.log('bulk apply:', id, key)
 
             if (key == 'license') {
                 var src_id = $("#id_bulkedit-bulk_license").val();
@@ -276,8 +268,6 @@ var EditUi = function () {
             }
         });
 
-
-
         // reset
         $('button.reset').live('click', function (e) {
             e.preventDefault();
@@ -296,14 +286,12 @@ var EditUi = function () {
             self.media_lookup(self.lookup_data);
         });
 
-
         // shift offset (via dropdown)
         $('#offset_selector .shift-offset select').live('change', function () {
             var offset = $(this).val();
             self.lookup_offset = parseInt(offset);
             self.media_lookup(self.lookup_data);
         });
-
 
         $('fieldset.relations').on('click', '.relation', function (e) {
 
@@ -438,17 +426,17 @@ var EditUi = function () {
 
         // which keys should not be marked red/green?
         var exclude_mark = [
-            'description',
-            'biography',
-            'date_start',
-            'date_end',
+            //'description',
+            //'biography',
+            //'date_start',
+            //'date_end',
             'main_image',
-            'namevariations',
-            'releasedate_approx',
-            'release_country',
-            'country',
-            'type',
-            'd_tags'
+            //'namevariations',
+            //'releasedate_approx',
+            //'release_country',
+            //'country',
+            //'type',
+            //'d_tags'
         ];
 
         var data = {
@@ -464,6 +452,7 @@ var EditUi = function () {
 
         // reset elements
         $("[id^=" + self.lookup_prefix + "]").parent().removeClass('lookup-match');
+        $("[id^=" + self.lookup_prefix + "]").parent().removeClass('lookup-diff');
         $("[id^=" + self.lookup_prefix + "]").parent().fadeOut(100);
 
 
@@ -485,20 +474,13 @@ var EditUi = function () {
                     buttons: [
                         {
                             label: 'OK',
-                            //class: 'btn-warning',
                             hide: true,
-                            callback: function(e) {
-                                //alert('calling back...')
-                            }
+                            callback: function(e) {}
                         }
                     ]
                 };
 
                 ui.dialog.show(options);
-
-
-
-                //alert(data.error);
                 return;
             }
 
@@ -506,20 +488,22 @@ var EditUi = function () {
             // generic data
             for (var key in data) {
 
+                var value = data[key];
+                value_html = '';
 
-                var obj = data[key];
-                console.log('key: ' + key + ': ', obj);
-
-                // check if custom method is required for this key
-
-
+                if (typeof value === 'string' || value instanceof String) {
+                    value_html = value.replace(/(?:\r\n|\r|\n)/g, '<br />');
+                } else {
+                    value_html = value;
+                }
 
                 switch(key) {
+
                     case 'main_image':
                         self.image_lookup(key);
                         break;
-                    case 'relations':
 
+                    case 'relations':
                         // for some strange reason this does not work
                         // self.relation_lookup(key);
                         var val = self.lookup_data[key];
@@ -527,25 +511,26 @@ var EditUi = function () {
                         $(val).each(function(i, item){
 
                             // try to find relation in form - not extremly nice :(
-                            var container = $('.controls input', $('.external.' + item.service).parents('.relation-row'))
+                            var container = $('.controls input', $('.external.' + item.service).parents('.relation-row'));
+                            var match = false;
+                            var no_match = false;
+                            var data = {};
 
                             if(container.length) {
-                                var inner = container.parents('.relation-url')
-
-                                var match = false;
-                                var no_match = false;
+                                var inner = container.parents('.relation-url');
 
                                 if(container.val() == item.uri) {
-                                    match=true;
+                                    match = true;
                                 } else {
                                     no_match = true
                                 }
 
-                                var data = {
+                                data = {
                                     object: item,
                                     match: match,
                                     no_match: no_match
                                 };
+
                                 var html = nj.render('alibrary/nj/provider/relation_inline.html', data);
 
                                 if($('.relation', inner).length) {
@@ -555,8 +540,7 @@ var EditUi = function () {
                                 }
 
                             } else {
-                                console.log('no container');
-                                var match = false;
+                                match = false;
 
                                 $('.controls input', $('.relation-row')).each(function(i, el){
                                    if($(el).val() == item.uri) {
@@ -564,7 +548,7 @@ var EditUi = function () {
                                    }
                                 });
 
-                                var data = {
+                                data = {
                                     object: item,
                                     match: match
                                 };
@@ -584,14 +568,11 @@ var EditUi = function () {
                         break;
 
                     default:
-                        $('#' + self.lookup_prefix + key).html(obj);
+                        $('#' + self.lookup_prefix + key).html(value_html);
                         $('#' + self.lookup_prefix + key).parent().fadeIn(200);
                 }
 
-
-
-
-                // if ($.inArray(key, exclude_mark)) {
+                // apply highlighting if key not present in 'exclude_mark'
                 if (exclude_mark.indexOf(key) == -1) {
                     $('#' + self.lookup_prefix + key).parent().addClass('lookup-' + self.lookup_compare(key, data));
                 }
@@ -602,28 +583,12 @@ var EditUi = function () {
             var tbd = [];
             if(data.tracklist){
                 $.each(data.tracklist, function (i, el) {
-                    console.log('el', el);
+                    // console.log('el', el);
                     if (el.duration == '' && el.position == '') {
                         tbd.push(i);
                     }
                 });
             }
-
-
-            // remove eventual non-track data
-            /*
-            var ros = 0;
-            $.each(tbd, function (i, el) {
-                // data.tracklist.remove(el - ros);
-                try {
-                    data.tracklist = arrRemove(data.tracklist, (el-ros));
-                    ros++;
-                } catch(err) {
-                    console.log('error:', err)
-                }
-            });
-            */
-
 
             // display dta
             if (data.tracklist) {
@@ -634,7 +599,6 @@ var EditUi = function () {
             if (data.media) {
                 self.media_lookup_mb(data);
             }
-
 
             // clean up interface
             $('div.field-lookup-holder').each(function(i, el){
@@ -851,7 +815,7 @@ var EditUi = function () {
             }
 
 
-            console.log('tracknumber:', tracknumber);
+            // console.log('tracknumber:', tracknumber);
 
 
         });
@@ -962,6 +926,7 @@ var EditUi = function () {
 
         // which keys should be checked case-insensitive=
         var keys_ci = [
+            'name',
             'releasetype',
             'main_image'
         ];
@@ -970,13 +935,50 @@ var EditUi = function () {
         var orig = $('#' + self.field_prefix + key).val();
         var lookup_value = data[key];
 
-        // console.log('orig:', orig, 'lookup_value:', lookup_value)
+        console.debug('key:', key, 'orig:', orig, 'lookup_value:', lookup_value);
+
+
+        // TODO: hack! special treatment for contry/release_country
+        if(key == 'release_country' || key == 'country') {
+
+            // split value into code & name
+            // like "Republic of Korea (KR)" becomes:
+            // code: 'kr', name: 'Republic of Korea'
+
+            var orig_selection = $('#' + self.field_prefix + key + ' option:selected').text();
+
+            var orig_name = orig_selection.substring(0, orig_selection.length - 5);
+            var orig_code = orig_selection.substring(orig_selection.length - 4).replace(/(?:\(|\))/g, '');
+
+            // country code situation (musicbrainz)
+            if(orig_code !== undefined && lookup_value !== undefined && lookup_value.length == 2) {
+                if(lookup_value.toLowerCase() == orig_code.toLowerCase()) {
+                    return 'match';
+                }
+            }
+
+            // country name situation (discogs)
+            if(orig_code !== undefined && lookup_value !== undefined && lookup_value.length > 2) {
+                if(lookup_value.toLowerCase() == orig_name.toLowerCase()) {
+                    return 'match';
+                }
+            }
+
+        }
+
+
 
         //if (orig != undefined && !$.inArray(key, keys_ci)) {
         if (orig != undefined && keys_ci.indexOf(key) != -1) {
             orig = orig.toLowerCase();
             lookup_value = lookup_value.toLowerCase();
         }
+
+        // hack - try to remove linebreaks / newline
+        try {
+            orig = orig.replace(/(?:\r\n|\r|\n|<br>|<br \/>)/g, '');
+            lookup_value = lookup_value.replace(/(?:\r\n|\r|\n|<br>|<br \/>)/g, '');
+        } catch (e) {}
 
         if (orig == lookup_value) {
             return 'match';
@@ -997,7 +999,6 @@ var EditUi = function () {
 
         var skip_apply = false;
 
-
         console.log('apply value:', val, ' key: ', key, 'prefix:', self.lookup_prefix);
 
         // hack for autocomlete fields (there is a hidden value)
@@ -1012,12 +1013,8 @@ var EditUi = function () {
             var val_b = $('#' + self.lookup_prefix + 'remote_image').html();
             var target_b = $('#' + self.field_prefix + 'remote_image');
 
-            // reflect change in info-panel
-            //$('.iteminfo .image a').attr('href','#');
-            //$('.iteminfo .image img').attr('src',val_b);
-
             // create img element if not present
-            // extremely ugly, i know.
+            // extremely ugly, we know.
             if(!$('#div_id_main_image img.placeholder').length) {
                 $('#div_id_main_image').css('position', 'relative');
                 $('#div_id_main_image').append('<img class="placeholder" style="height: 102px; position: absolute; left:132px; top: 25px;"></img>');
@@ -1044,18 +1041,18 @@ var EditUi = function () {
             console.log('release_country:', val, val.length)
 
             if(val.length < 4) {
-                var target = $('#' + self.field_prefix + 'release_country option:contains("' + val + ')")');
+                target = $('#' + self.field_prefix + 'release_country option:contains("' + val + ')")');
             } else {
-                var target = $('#' + self.field_prefix + 'release_country option:contains(' + val + ')');
+                target = $('#' + self.field_prefix + 'release_country option:contains(' + val + ')');
             }
             target.prop("selected", "selected");
             skip_apply = true;
         }
         if (key == 'country') {
             if(val.length < 4) {
-                var target = $('#' + self.field_prefix + 'country option:contains("' + val + ')")');
+                target = $('#' + self.field_prefix + 'country option:contains("' + val + ')")');
             } else {
-                var target = $('#' + self.field_prefix + 'country option:contains(' + val + ')');
+                target = $('#' + self.field_prefix + 'country option:contains(' + val + ')');
             }
             target.prop("selected", "selected");
             skip_apply = true;
@@ -1064,14 +1061,14 @@ var EditUi = function () {
         // artist type mapping
         if (key == 'type' && $('form.form-artist').length) {
 
-            var target = $('#' + self.field_prefix + 'type option:contains(' + val + ')');
+            target = $('#' + self.field_prefix + 'type option:contains(' + val + ')');
             target.prop("selected", "selected");
             skip_apply = true;
         }
 
         // release type mapping
         if (key == 'releasetype' && $('form.form-release').length) {
-            var target = $('#' + self.field_prefix + 'releasetype option:contains(' + val + ')');
+            target = $('#' + self.field_prefix + 'releasetype option:contains(' + val + ')');
             target.prop("selected", "selected");
             skip_apply = true;
         }
@@ -1102,7 +1099,8 @@ var EditUi = function () {
         el.parent().addClass('lookup-match');
 
         if(!skip_apply){
-            target.val($.decodeHTML(val));
+            target.val($.decodeHTML(val.replace(/(?:<br>|<br \/>)/g, '\r')));
+            //target.val($.decodeHTML(val));
         }
 
         // hack for autocomlete fields - trigger search dialog
