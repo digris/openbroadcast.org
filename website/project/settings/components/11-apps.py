@@ -35,7 +35,7 @@ INSTALLED_APPS = (
     'esi',
     'haystack',
     'search',
-    'docs',
+    #'docs',
 
 
 
