@@ -207,7 +207,7 @@ class PlaylistForm(ModelForm):
     #main_image = forms.Field(widget=FileInput(), required=False)
     main_image = forms.Field(widget=AdvancedFileInput(), required=False)
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
-    description = forms.CharField(widget=PagedownWidget(), required=False, help_text="Markdown enabled text")
+    description = forms.CharField(widget=PagedownWidget(), required=False)
 
     rotation = forms.BooleanField(required=False, label=_('Include in rotation'), help_text=_('Allow this broadcast to be aired at random time if nothing else is scheduled.'))
 

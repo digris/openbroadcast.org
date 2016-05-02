@@ -69,7 +69,9 @@ urlpatterns = patterns('',
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': settings.MEDIA_ROOT,
     }),
-    
+
+    #url(r'^docs/', include('docs.urls')),
+
     url(r'^search/', include('search.urls')),
     url(r'^search/', include('haystack.urls')),
     url(r'^sitemap.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),

@@ -162,7 +162,7 @@ class ArtistForm(ModelForm):
     remote_image = forms.URLField(required=False)
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
     namevariations = forms.CharField(widget=forms.Textarea(attrs={'rows':'2'}), required=False, label=_('Variations'))
-    biography = forms.CharField(widget=PagedownWidget(), required=False, help_text="Markdown enabled text")
+    biography = forms.CharField(widget=PagedownWidget(), required=False)
     # aliases = selectable.AutoCompleteSelectMultipleField(ArtistLookup, required=False)
 
     

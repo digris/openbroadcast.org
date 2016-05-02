@@ -316,7 +316,7 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
                                                             named_formsets['alias'], ])
 
 
-        # hack
+        # TODO: implement in a better way
         namevariations_text = form.cleaned_data['namevariations']
         if namevariations_text:
             self.object.namevariations.all().delete()
@@ -324,6 +324,8 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             for v in variations:
                 nv = NameVariation(name=v.strip(), artist=self.object)
                 nv.save()
+        else:
+            self.object.namevariations.all().delete()
 
         d_tags = form.cleaned_data['d_tags']
         if d_tags:

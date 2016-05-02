@@ -120,20 +120,31 @@ var EditUi = function () {
         });
 
 
-        // handle compare clicks
-        $("[id^=" + self.lookup_prefix + "]").live('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var el = $(this);
-            self.apply_value(el);
-            return false;
-        });
+        // // handle compare clicks
+        // $("[id^=" + self.lookup_prefix + "]").live('click', function (e) {
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        //     var el = $(this);
+        //     self.apply_value(el);
+        //     return false;
+        // });
+        //
+        // // allow clicks on parent element as well
+        // $("div.field-lookup-holder").live('click', function (e) {
+        //     e.preventDefault();
+        //     e.stopPropagation();
+        //     // 'simulate' click in child element
+        //     $('span', $(this)).click();
+        //     return false;
+        //
+        // });
+
         // allow clicks on parent element as well
-        $("div.field-lookup-holder").live('click', function (e) {
+        $('form').on('click', 'div.field-lookup-holder', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            // 'simulate' click in child element
-            $('span', $(this)).click();
+            var el = $(this).find('span.changed');
+            self.apply_value(el);
             return false;
 
         });
@@ -574,7 +585,30 @@ var EditUi = function () {
 
                 // apply highlighting if key not present in 'exclude_mark'
                 if (exclude_mark.indexOf(key) == -1) {
-                    $('#' + self.lookup_prefix + key).parent().addClass('lookup-' + self.lookup_compare(key, data));
+
+
+                    var state = self.lookup_compare(key, data);
+                    var element = $('#' + self.lookup_prefix + key);
+                    var container = element.parents('.control-group');
+
+                    // TODO: hack. make better.
+                    // apply diff on elements with textarea only
+                    // ignore if textarea empty
+                    if($('textarea', container).length && $('textarea', container).val().length > 0) {
+
+                        container.prettyTextDiff({
+                            originalContainer: "textarea",
+                            changedContainer: "span.changed",
+                            diffContainer: "span.diff"
+                        });
+
+                        $('span.changed', container).hide();
+
+
+                    }
+
+
+                    element.parent().addClass('lookup-' + state);
                 }
             }
 
@@ -927,6 +961,7 @@ var EditUi = function () {
         // which keys should be checked case-insensitive=
         var keys_ci = [
             'name',
+            'type',
             'releasetype',
             'main_image'
         ];

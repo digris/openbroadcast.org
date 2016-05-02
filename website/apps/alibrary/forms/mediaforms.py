@@ -177,7 +177,7 @@ class MediaForm(ModelForm):
     """
     name = forms.CharField(required=True, label='Title')
     artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=True,label=_('Artist'))
-    description = forms.CharField(widget=PagedownWidget(), required=False, help_text="Markdown enabled text")
+    description = forms.CharField(widget=PagedownWidget(), required=False)
 
 
     
