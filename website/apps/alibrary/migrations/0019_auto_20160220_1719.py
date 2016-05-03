@@ -15,11 +15,16 @@ class Migration(migrations.Migration):
         ('alibrary', '0018_delete_format'),
     ]
 
+    sql_uuid_migration = 'alter table alibrary_artist alter column uuid type uuid using uuid::uuid;'
+
     operations = [
         migrations.RunPython(concat_uuid),
-        migrations.AlterField(
-            model_name='artist',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False),
-        ),
+        migrations.RunSQL(sql_uuid_migration, None, [
+            migrations.AlterField(
+                model_name='artist',
+                name='uuid',
+                field=models.UUIDField(default=uuid.uuid4, editable=False),
+            ),
+        ]),
+
     ]

@@ -21,6 +21,8 @@ class ElggCalendarEvents(models.Model):
     date_end = models.IntegerField()
     class Meta:
         db_table = u'elgg_calendar_events'
+        managed = False
+
 
 class ElggCcAccess(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -34,6 +36,8 @@ class ElggCcAccess(models.Model):
     ts = models.DateTimeField()
     class Meta:
         db_table = u'elgg_cc_access'
+        managed = False
+
 
 class ElggCcGunid(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -42,6 +46,8 @@ class ElggCcGunid(models.Model):
     gunid = models.CharField(max_length=765, blank=True)
     class Meta:
         db_table = u'elgg_cc_gunid'
+        managed = False
+
 
 class ElggCcTransport(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -70,6 +76,8 @@ class ElggCcTransport(models.Model):
     starttime = models.IntegerField(null=True, blank=True)
     class Meta:
         db_table = u'elgg_cc_transport'
+        managed = False
+
 
 class ElggCmBaskets(models.Model):
     userid = models.IntegerField(unique=True)
@@ -78,6 +86,8 @@ class ElggCmBaskets(models.Model):
     migrated = models.DateTimeField(null=True, blank=True)
     class Meta:
         db_table = u'elgg_cm_baskets'
+        managed = False
+
 
 class ElggCmContainer(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -98,6 +108,8 @@ class ElggCmContainer(models.Model):
     rebroadcast_url = models.CharField(max_length=1536)
     class Meta:
         db_table = u'elgg_cm_container'
+        managed = False
+
 
 class ElggCmFile(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -107,6 +119,8 @@ class ElggCmFile(models.Model):
     filetype = models.CharField(max_length=240)
     class Meta:
         db_table = u'elgg_cm_file'
+        managed = False
+
 
 class ElggCmLog(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -117,6 +131,8 @@ class ElggCmLog(models.Model):
     timestamp = models.IntegerField()
     class Meta:
         db_table = u'elgg_cm_log'
+        managed = False
+
 
 class ElggCmMaster(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -141,6 +157,8 @@ class ElggCmMaster(models.Model):
     migrated = models.DateTimeField(null=True, blank=True)
     class Meta:
         db_table = u'elgg_cm_master'
+        managed = False
+
 
 class ElggCmMedias(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -178,6 +196,8 @@ class ElggCmMedias(models.Model):
     lock = models.IntegerField()
     class Meta:
         db_table = u'elgg_cm_medias'
+        managed = False
+
 
 class ElggCmRelations(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -187,6 +207,8 @@ class ElggCmRelations(models.Model):
     user_ident = models.IntegerField()
     class Meta:
         db_table = u'elgg_cm_relations'
+        managed = False
+
 
 class ElggCmText(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -195,6 +217,8 @@ class ElggCmText(models.Model):
     posted = models.IntegerField()
     class Meta:
         db_table = u'elgg_cm_text'
+        managed = False
+
 
 class ElggCmWordlist(models.Model):
     word_text = models.CharField(max_length=150, primary_key=True)
@@ -202,6 +226,8 @@ class ElggCmWordlist(models.Model):
     word_common = models.IntegerField()
     class Meta:
         db_table = u'elgg_cm_wordlist'
+        managed = False
+
 
 class ElggCmWordmatch(models.Model):
     content_ident = models.IntegerField()
@@ -209,6 +235,8 @@ class ElggCmWordmatch(models.Model):
     title_match = models.IntegerField()
     class Meta:
         db_table = u'elgg_cm_wordmatch'
+        managed = False
+
 
 class ElggComments(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -220,12 +248,16 @@ class ElggComments(models.Model):
     posted = models.IntegerField()
     class Meta:
         db_table = u'elgg_comments'
+        managed = False
+
 
 class ElggContentFlags(models.Model):
     ident = models.IntegerField(primary_key=True)
     url = models.CharField(max_length=384)
     class Meta:
         db_table = u'elgg_content_flags'
+        managed = False
+
 
 class ElggDatalists(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -233,6 +265,8 @@ class ElggDatalists(models.Model):
     value = models.TextField()
     class Meta:
         db_table = u'elgg_datalists'
+        managed = False
+
 
 class ElggFeedPosts(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -244,6 +278,8 @@ class ElggFeedPosts(models.Model):
     url = models.CharField(max_length=765)
     class Meta:
         db_table = u'elgg_feed_posts'
+        managed = False
+
 
 class ElggFeedSubscriptions(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -253,6 +289,8 @@ class ElggFeedSubscriptions(models.Model):
     autopost_tag = models.CharField(max_length=384)
     class Meta:
         db_table = u'elgg_feed_subscriptions'
+        managed = False
+
 
 class ElggFeeds(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -264,6 +302,8 @@ class ElggFeeds(models.Model):
     last_updated = models.IntegerField()
     class Meta:
         db_table = u'elgg_feeds'
+        managed = False
+
 
 class ElggFileFolders(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -283,6 +323,8 @@ class ElggFileMetadata(models.Model):
     file_id = models.IntegerField()
     class Meta:
         db_table = u'elgg_file_metadata'
+        managed = False
+
 
 class ElggFiles(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -300,6 +342,8 @@ class ElggFiles(models.Model):
     handler = models.CharField(max_length=96)
     class Meta:
         db_table = u'elgg_files'
+        managed = False
+
 
 class ElggFilesIncoming(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -310,6 +354,8 @@ class ElggFilesIncoming(models.Model):
     user_id = models.IntegerField()
     class Meta:
         db_table = u'elgg_files_incoming'
+        managed = False
+
 
 class ElggFriends(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -318,6 +364,8 @@ class ElggFriends(models.Model):
     status = models.CharField(max_length=12)
     class Meta:
         db_table = u'elgg_friends'
+        managed = False
+
 
 class ElggFriendsRequests(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -325,6 +373,8 @@ class ElggFriendsRequests(models.Model):
     friend = models.IntegerField(unique=True)
     class Meta:
         db_table = u'elgg_friends_requests'
+        managed = False
+
 
 class ElggGroupMembership(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -332,6 +382,8 @@ class ElggGroupMembership(models.Model):
     group_id = models.IntegerField(unique=True)
     class Meta:
         db_table = u'elgg_group_membership'
+        managed = False
+
 
 class ElggGroups(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -340,6 +392,8 @@ class ElggGroups(models.Model):
     access = models.CharField(max_length=60)
     class Meta:
         db_table = u'elgg_groups'
+        managed = False
+
 
 class ElggIcons(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -348,6 +402,8 @@ class ElggIcons(models.Model):
     description = models.CharField(max_length=765)
     class Meta:
         db_table = u'elgg_icons'
+        managed = False
+
 
 class ElggInvitations(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -358,6 +414,8 @@ class ElggInvitations(models.Model):
     added = models.IntegerField()
     class Meta:
         db_table = u'elgg_invitations'
+        managed = False
+
 
 class ElggIpoolData(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -371,6 +429,8 @@ class ElggIpoolData(models.Model):
     posted = models.IntegerField()
     class Meta:
         db_table = u'elgg_ipool_data'
+        managed = False
+
 
 class ElggLicences(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -379,6 +439,8 @@ class ElggLicences(models.Model):
     modify_time = models.DateTimeField(null=True, blank=True)
     class Meta:
         db_table = u'elgg_licences'
+        managed = False
+
 
 class ElggLicencesAcceptedCmMaster(models.Model):
     licences_ident = models.ForeignKey(ElggLicences, db_column='licences_ident')
@@ -387,6 +449,8 @@ class ElggLicencesAcceptedCmMaster(models.Model):
     licence_time = models.DateTimeField()
     class Meta:
         db_table = u'elgg_licences_accepted_cm_master'
+        managed = False
+
 
 class ElggLicencesAcceptedMlMedias(models.Model):
     licences_ident = models.ForeignKey(ElggLicences, db_column='licences_ident')
@@ -395,6 +459,8 @@ class ElggLicencesAcceptedMlMedias(models.Model):
     licence_time = models.DateTimeField()
     class Meta:
         db_table = u'elgg_licences_accepted_ml_medias'
+        managed = False
+
 
 class ElggLicencesAcceptedMlRelease(models.Model):
     licences_ident = models.ForeignKey(ElggLicences, db_column='licences_ident')
@@ -403,6 +469,8 @@ class ElggLicencesAcceptedMlRelease(models.Model):
     licence_time = models.DateTimeField()
     class Meta:
         db_table = u'elgg_licences_accepted_ml_release'
+        managed = False
+
 
 class ElggLicencesAcceptedUsers(models.Model):
     licences_ident = models.ForeignKey(ElggLicences, db_column='licences_ident')
@@ -411,6 +479,8 @@ class ElggLicencesAcceptedUsers(models.Model):
     licence_time = models.DateTimeField()
     class Meta:
         db_table = u'elgg_licences_accepted_users'
+        managed = False
+
 
 class ElggLicencesArchived(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -422,6 +492,8 @@ class ElggLicencesArchived(models.Model):
     version_time = models.DateTimeField()
     class Meta:
         db_table = u'elgg_licences_archived'
+        managed = False
+
 
 class ElggMessages(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -435,12 +507,16 @@ class ElggMessages(models.Model):
     hidden_to = models.CharField(max_length=3)
     class Meta:
         db_table = u'elgg_messages'
+        managed = False
+
 
 class ElggMlf2Banlists(models.Model):
     name = models.CharField(max_length=765)
     list = models.TextField()
     class Meta:
         db_table = u'elgg_mlf2_banlists'
+        managed = False
+
 
 class ElggMlf2Categories(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -450,6 +526,8 @@ class ElggMlf2Categories(models.Model):
     accession = models.IntegerField()
     class Meta:
         db_table = u'elgg_mlf2_categories'
+        managed = False
+
 
 class ElggMlf2Entries(models.Model):
     id = models.IntegerField(unique=True)
@@ -484,12 +562,16 @@ class ElggMlf2Entries(models.Model):
     threadtype = models.CharField(max_length=30)
     class Meta:
         db_table = u'elgg_mlf2_entries'
+        managed = False
+
 
 class ElggMlf2EntriesCache(models.Model):
     cache_id = models.IntegerField(primary_key=True)
     cache_text = models.TextField()
     class Meta:
         db_table = u'elgg_mlf2_entries_cache'
+        managed = False
+
 
 class ElggMlf2Logincontrol(models.Model):
     time = models.DateTimeField()
@@ -497,6 +579,8 @@ class ElggMlf2Logincontrol(models.Model):
     logins = models.IntegerField()
     class Meta:
         db_table = u'elgg_mlf2_logincontrol'
+        managed = False
+
 
 class ElggMlf2Pages(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -507,12 +591,16 @@ class ElggMlf2Pages(models.Model):
     access = models.IntegerField()
     class Meta:
         db_table = u'elgg_mlf2_pages'
+        managed = False
+
 
 class ElggMlf2Settings(models.Model):
     name = models.CharField(max_length=765)
     value = models.CharField(max_length=765)
     class Meta:
         db_table = u'elgg_mlf2_settings'
+        managed = False
+
 
 class ElggMlf2Smilies(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -526,6 +614,8 @@ class ElggMlf2Smilies(models.Model):
     title = models.CharField(max_length=765)
     class Meta:
         db_table = u'elgg_mlf2_smilies'
+        managed = False
+
 
 class ElggMlf2Userdata(models.Model):
     user_id = models.IntegerField(primary_key=True)
@@ -560,6 +650,8 @@ class ElggMlf2Userdata(models.Model):
     activate_code = models.CharField(max_length=765)
     class Meta:
         db_table = u'elgg_mlf2_userdata'
+        managed = False
+
 
 class ElggMlf2UserdataCache(models.Model):
     cache_id = models.IntegerField(primary_key=True)
@@ -567,6 +659,8 @@ class ElggMlf2UserdataCache(models.Model):
     cache_profile = models.TextField()
     class Meta:
         db_table = u'elgg_mlf2_userdata_cache'
+        managed = False
+
 
 class ElggMlf2Useronline(models.Model):
     ip = models.CharField(max_length=45)
@@ -574,6 +668,8 @@ class ElggMlf2Useronline(models.Model):
     user_id = models.IntegerField(null=True, blank=True)
     class Meta:
         db_table = u'elgg_mlf2_useronline'
+        managed = False
+
 
 class ElggPages(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -587,6 +683,8 @@ class ElggPages(models.Model):
     access = models.CharField(max_length=60)
     class Meta:
         db_table = u'elgg_pages'
+        managed = False
+
 
 class ElggPasswordRequests(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -602,6 +700,8 @@ class ElggPreprodRelations(models.Model):
     relation_type = models.IntegerField()
     class Meta:
         db_table = u'elgg_preprod_relations'
+        managed = False
+
 
 class ElggPreprodRsegment(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -610,6 +710,8 @@ class ElggPreprodRsegment(models.Model):
     posted = models.IntegerField()
     class Meta:
         db_table = u'elgg_preprod_rsegment'
+        managed = False
+
 
 class ElggPreprodRtransmission(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -618,6 +720,8 @@ class ElggPreprodRtransmission(models.Model):
     posted = models.IntegerField()
     class Meta:
         db_table = u'elgg_preprod_rtransmission'
+        managed = False
+
 
 class ElggProfileData(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -627,6 +731,8 @@ class ElggProfileData(models.Model):
     value = models.TextField()
     class Meta:
         db_table = u'elgg_profile_data'
+        managed = False
+
 
 class ElggRiver(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -639,6 +745,8 @@ class ElggRiver(models.Model):
     ts = models.IntegerField()
     class Meta:
         db_table = u'elgg_river'
+        managed = False
+
 
 class ElggRoleCommunity(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -646,6 +754,8 @@ class ElggRoleCommunity(models.Model):
     communities = models.CharField(max_length=1500)
     class Meta:
         db_table = u'elgg_role_community'
+        managed = False
+
 
 class ElggRolePermissions(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -653,6 +763,8 @@ class ElggRolePermissions(models.Model):
     permissions = models.CharField(max_length=1500)
     class Meta:
         db_table = u'elgg_role_permissions'
+        managed = False
+
 
 class ElggRoleProfessions(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -660,6 +772,8 @@ class ElggRoleProfessions(models.Model):
     professions = models.CharField(max_length=1500)
     class Meta:
         db_table = u'elgg_role_professions'
+        managed = False
+
 
 class ElggSchedule(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -675,6 +789,8 @@ class ElggSchedule(models.Model):
     played = models.IntegerField()
     class Meta:
         db_table = u'elgg_schedule'
+        managed = False
+
 
 class ElggScheduleLog(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -690,6 +806,8 @@ class ElggScheduleLog(models.Model):
     pl_ident = models.IntegerField()
     class Meta:
         db_table = u'elgg_schedule_log'
+        managed = False
+
 
 class ElggScheduleUdata(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -698,12 +816,16 @@ class ElggScheduleUdata(models.Model):
     dtype = models.CharField(max_length=150)
     class Meta:
         db_table = u'elgg_schedule_udata'
+        managed = False
+
 
 class ElggStreamTokens(models.Model):
     id = models.IntegerField(primary_key=True)
     token = models.CharField(max_length=96)
     class Meta:
         db_table = u'elgg_stream_tokens'
+        managed = False
+
 
 class ElggTags(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -714,6 +836,8 @@ class ElggTags(models.Model):
     owner = models.IntegerField()
     class Meta:
         db_table = u'elgg_tags'
+        managed = False
+
 
 class ElggTemplateElements(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -722,6 +846,8 @@ class ElggTemplateElements(models.Model):
     template_id = models.IntegerField()
     class Meta:
         db_table = u'elgg_template_elements'
+        managed = False
+
 
 class ElggTemplates(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -731,12 +857,16 @@ class ElggTemplates(models.Model):
     shortname = models.CharField(max_length=384)
     class Meta:
         db_table = u'elgg_templates'
+        managed = False
+
 
 class ElggTimetabledigrisData(models.Model):
     elgg_timetabledigris_ident = models.IntegerField(primary_key=True)
     elgg_timetabledigris_txt = models.TextField()
     class Meta:
         db_table = u'elgg_timetabledigris_data'
+        managed = False
+
 
 class ElggToptags(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -745,6 +875,8 @@ class ElggToptags(models.Model):
     type = models.TextField()
     class Meta:
         db_table = u'elgg_toptags'
+        managed = False
+
 
 class ElggUserFlags(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -753,6 +885,8 @@ class ElggUserFlags(models.Model):
     value = models.CharField(max_length=192)
     class Meta:
         db_table = u'elgg_user_flags'
+        managed = False
+
 
 class ElggUsers(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -779,6 +913,8 @@ class ElggUsers(models.Model):
     migrated = models.DateTimeField(null=True, blank=True)
     class Meta:
         db_table = u'elgg_users'
+        managed = False
+
 
 class ElggUsersAlias(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -790,6 +926,8 @@ class ElggUsersAlias(models.Model):
     user_id = models.IntegerField()
     class Meta:
         db_table = u'elgg_users_alias'
+        managed = False
+
 
 class ElggWatchlist(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -798,6 +936,8 @@ class ElggWatchlist(models.Model):
     object_type = models.CharField(max_length=384)
     class Meta:
         db_table = u'elgg_watchlist'
+        managed = False
+
 
 class ElggWeblogComments(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -808,6 +948,8 @@ class ElggWeblogComments(models.Model):
     posted = models.IntegerField()
     class Meta:
         db_table = u'elgg_weblog_comments'
+        managed = False
+
 
 class ElggWeblogPosts(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -820,6 +962,8 @@ class ElggWeblogPosts(models.Model):
     body = models.TextField()
     class Meta:
         db_table = u'elgg_weblog_posts'
+        managed = False
+
 
 class ElggWeblogWatchlist(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -827,6 +971,8 @@ class ElggWeblogWatchlist(models.Model):
     weblog_post = models.IntegerField()
     class Meta:
         db_table = u'elgg_weblog_watchlist'
+        managed = False
+
 
 class ElggWidgetData(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -835,6 +981,8 @@ class ElggWidgetData(models.Model):
     value = models.TextField()
     class Meta:
         db_table = u'elgg_widget_data'
+        managed = False
+
 
 class ElggWidgets(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -847,6 +995,8 @@ class ElggWidgets(models.Model):
     access = models.CharField(max_length=384)
     class Meta:
         db_table = u'elgg_widgets'
+        managed = False
+
 
 class ElggXblog(models.Model):
     ident = models.IntegerField(primary_key=True)
@@ -855,4 +1005,6 @@ class ElggXblog(models.Model):
     blog_ident = models.IntegerField()
     class Meta:
         db_table = u'elgg_xblog'
+        managed = False
+
 

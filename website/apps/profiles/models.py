@@ -288,6 +288,9 @@ arating.enable_voting_on(Community)
 
 
 def create_profile(sender, instance, created, **kwargs):
+
+    if kwargs['raw']:
+        return
     
     if created:  
        profile, created = Profile.objects.get_or_create(user=instance)

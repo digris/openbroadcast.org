@@ -19,6 +19,7 @@ var EditUi = function () {
 
     this.lookup_data = null;
     this.lookup_offset = 0;
+    this.lookup_show_diff;
 
     this.current_data = {
         item_type: null,
@@ -32,17 +33,33 @@ var EditUi = function () {
 
 
     this.init = function () {
+
+
+        if($.cookie('editor_lookup_show_diff') == "true") { // sorry - jquery cookie does not support boolean
+            self.lookup_show_diff = true;
+        } else {
+            self.lookup_show_diff = false;
+        }
+
         self.bindings();
         self.iface();
         self.layout();
+        self.settings();
         self.hacks();
     };
 
     this.iface = function () {
         this.floating_sidebar('lookup_providers', 120);
+
+        $('#lookup_settings [data-action="toggle-diff"] input').prop('checked', self.lookup_show_diff);
+
     };
 
     this.layout = function () {
+
+    };
+
+    this.settings = function () {
 
     };
 
@@ -70,8 +87,42 @@ var EditUi = function () {
 
 
     this.bindings = function () {
+        
         // lookup providers
         var container = $('.lookup.provider.listing');
+
+        // handle settings
+        $('#lookup_settings').on('click', '[data-action]', function (e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            var el = $(this);
+            var action = el.data('action');
+
+            if(action == 'toggle-diff') {
+                if(self.lookup_show_diff) {
+                    self.lookup_show_diff = false;
+                } else {
+                    self.lookup_show_diff = true;
+                }
+            }
+
+
+
+            // TODO: remove redundancy
+            setTimeout(function(){
+                $('input', el).prop('checked', self.lookup_show_diff);
+            }, 50);
+
+            $.cookie('editor_lookup_show_diff', self.lookup_show_diff);
+
+
+            //alert(self.lookup_show_diff)
+
+
+        });
 
         // handle links
         $(container).on('click', '.item a.external', function (e) {
@@ -594,18 +645,27 @@ var EditUi = function () {
                     // TODO: hack. make better.
                     // apply diff on elements with textarea only
                     // ignore if textarea empty
+
                     if($('textarea', container).length && $('textarea', container).val().length > 0) {
 
-                        container.prettyTextDiff({
-                            originalContainer: "textarea",
-                            changedContainer: "span.changed",
-                            diffContainer: "span.diff"
-                        });
 
-                        $('span.changed', container).hide();
+                        if(self.lookup_show_diff) {
 
+                            container.prettyTextDiff({
+                                originalContainer: "textarea",
+                                changedContainer: "span.changed",
+                                diffContainer: "span.diff"
+                            });
+
+                            $('span.diff', container).show();
+                            $('span.changed', container).hide();
+                        } else {
+                            $('span.diff', container).hide();
+                            $('span.changed', container).show();
+                        }
 
                     }
+
 
 
                     element.parent().addClass('lookup-' + state);

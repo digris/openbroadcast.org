@@ -25,6 +25,20 @@ def concat_uuids(apps, schema_editor):
             qs.objects.filter(pk=object.pk).update(uuid=object.uuid.replace('-', ''))
 
 
+
+sql_uuid_migration = """
+alter table alibrary_agency alter column uuid type uuid using uuid::uuid;
+alter table alibrary_distributor alter column uuid type uuid using uuid::uuid;
+alter table alibrary_media alter column uuid type uuid using uuid::uuid;
+alter table alibrary_playlist alter column uuid type uuid using uuid::uuid;
+alter table alibrary_playlistitem alter column uuid type uuid using uuid::uuid;
+alter table alibrary_playlistitemplaylist alter column uuid type uuid using uuid::uuid;
+alter table alibrary_playlistmedia alter column uuid type uuid using uuid::uuid;
+alter table alibrary_release alter column uuid type uuid using uuid::uuid;
+alter table alibrary_series alter column uuid type uuid using uuid::uuid;
+"""
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -33,49 +47,54 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunPython(concat_uuids),
-        migrations.AlterField(
-            model_name='agency',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False),
-        ),
-        migrations.AlterField(
-            model_name='distributor',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False),
-        ),
-        migrations.AlterField(
-            model_name='media',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False),
-        ),
-        migrations.AlterField(
-            model_name='playlist',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False),
-        ),
-        migrations.AlterField(
-            model_name='playlistitem',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False),
-        ),
-        migrations.AlterField(
-            model_name='playlistitemplaylist',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False),
-        ),
-        migrations.AlterField(
-            model_name='playlistmedia',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False),
-        ),
-        migrations.AlterField(
-            model_name='release',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False),
-        ),
-        migrations.AlterField(
-            model_name='series',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False),
-        ),
+
+        migrations.RunSQL(sql_uuid_migration, None, [
+
+            migrations.AlterField(
+                model_name='agency',
+                name='uuid',
+                field=models.UUIDField(default=uuid.uuid4, editable=False),
+            ),
+            migrations.AlterField(
+                model_name='distributor',
+                name='uuid',
+                field=models.UUIDField(default=uuid.uuid4, editable=False),
+            ),
+            migrations.AlterField(
+                model_name='media',
+                name='uuid',
+                field=models.UUIDField(default=uuid.uuid4, editable=False),
+            ),
+            migrations.AlterField(
+                model_name='playlist',
+                name='uuid',
+                field=models.UUIDField(default=uuid.uuid4, editable=False),
+            ),
+            migrations.AlterField(
+                model_name='playlistitem',
+                name='uuid',
+                field=models.UUIDField(default=uuid.uuid4, editable=False),
+            ),
+            migrations.AlterField(
+                model_name='playlistitemplaylist',
+                name='uuid',
+                field=models.UUIDField(default=uuid.uuid4, editable=False),
+            ),
+            migrations.AlterField(
+                model_name='playlistmedia',
+                name='uuid',
+                field=models.UUIDField(default=uuid.uuid4, editable=False),
+            ),
+            migrations.AlterField(
+                model_name='release',
+                name='uuid',
+                field=models.UUIDField(default=uuid.uuid4, editable=False),
+            ),
+            migrations.AlterField(
+                model_name='series',
+                name='uuid',
+                field=models.UUIDField(default=uuid.uuid4, editable=False),
+            ),
+        ]),
+
     ]

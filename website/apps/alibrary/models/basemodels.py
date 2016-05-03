@@ -576,7 +576,7 @@ class Relation(models.Model):
 @receiver(post_save, sender=Relation)
 def relation_post_save(sender, instance, signal, created, **kwargs):
     if instance.url[-4:] == 'None':
-        log.debug('deleting wrongly formated relation')
+        #log.debug('deleting wrongly formated relation')
         instance.delete()
 
 def update_relations():

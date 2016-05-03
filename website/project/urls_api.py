@@ -3,8 +3,8 @@ from tastypie.api import Api
 
 from api_base.api import BaseResource
 
-from bcmon.api import PlayoutResource as BcmonPlayoutResource
-from bcmon.api import ChannelResource as BcmonChannelResource
+#from bcmon.api import PlayoutResource as BcmonPlayoutResource
+#from bcmon.api import ChannelResource as BcmonChannelResource
 from alibrary.api import MediaResource, SimpleMediaResource, ReleaseResource, SimpleReleaseResource, ArtistResource, LabelResource, SimplePlaylistResource, PlaylistResource, PlaylistItemPlaylistResource
 from importer.api import ImportResource, ImportFileResource
 from exporter.api import ExportResource, ExportItemResource
@@ -29,8 +29,8 @@ api = Api()
 api.register(BaseResource())
 
 # bcmon
-api.register(BcmonPlayoutResource())
-api.register(BcmonChannelResource())
+#api.register(BcmonPlayoutResource())
+#api.register(BcmonChannelResource())
 
 # library
 api.register(MediaResource())

@@ -112,7 +112,7 @@ BaseUi = function () {
         $('.ui-persistent').watch('uistate', function () {
             var state = $(this).data('uistate');
 
-            $.log('watched:' + state);
+            console.debug(state)
 
             self.states.set_states($(this).attr('id'), state);
             self.states.apply_states();
@@ -121,10 +121,11 @@ BaseUi = function () {
 
 
         this.states.load();
-    },
-        this.unload = function () {
-            this.states.save();
-        }
+    };
+
+    this.unload = function () {
+        this.states.save();
+    }
 };
 
 
@@ -205,8 +206,7 @@ base.ui.states_custom_update = function (id, state) {
 
         return true;
     }
-
-
+    
     return false;
 
 };

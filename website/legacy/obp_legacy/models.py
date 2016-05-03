@@ -52,6 +52,7 @@ class Artists(models.Model):
     total_plays = models.IntegerField()
     class Meta:
         db_table = u'artists'
+        managed = False
 
 class Labels(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -100,6 +101,8 @@ class Labels(models.Model):
     migrated = models.DateTimeField(null=True, blank=True)
     class Meta:
         db_table = u'labels'
+        managed = False
+
 
 class Licenses(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -111,6 +114,8 @@ class Licenses(models.Model):
     lock = models.IntegerField()
     class Meta:
         db_table = u'licenses'
+        managed = False
+
 
 class Medias(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -213,6 +218,8 @@ class Medias(models.Model):
     total_plays = models.IntegerField()
     class Meta:
         db_table = u'medias'
+        managed = False
+
 
 class Ntags(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -228,6 +235,8 @@ class Ntags(models.Model):
     playlist_count = models.IntegerField()
     class Meta:
         db_table = u'ntags'
+        managed = False
+
 
 class Playlists(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -261,6 +270,8 @@ class Playlists(models.Model):
     legacy_id = models.IntegerField()
     class Meta:
         db_table = u'playlists'
+        managed = False
+
 
 class Releases(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -325,9 +336,7 @@ class Releases(models.Model):
     status_viral = models.IntegerField(blank=True)
     class Meta:
         db_table = u'releases'
-
-
-
+        managed = False
 
 
 class Users(models.Model):
@@ -346,18 +355,7 @@ class Users(models.Model):
     client_ip = models.CharField(max_length=45, blank=True)
     class Meta:
         db_table = u'users'
-
-
-
-
-
-
-
-
-
-
-
-
+        managed = False
 
 
 class ArtistsMedias(models.Model):
@@ -367,6 +365,8 @@ class ArtistsMedias(models.Model):
     created = models.DateTimeField(null=True, blank=True)
     class Meta:
         db_table = u'artists_medias'
+        managed = False
+
 
 class ArtistsReleases(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -375,6 +375,7 @@ class ArtistsReleases(models.Model):
     created = models.DateTimeField(null=True, blank=True)
     class Meta:
         db_table = u'artists_releases'
+        managed = False
 
 
 class NtagsArtists(models.Model):
@@ -384,6 +385,8 @@ class NtagsArtists(models.Model):
     created = models.DateTimeField()
     class Meta:
         db_table = u'ntags_artists'
+        managed = False
+
 
 class NtagsLabels(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -392,6 +395,8 @@ class NtagsLabels(models.Model):
     created = models.DateTimeField()
     class Meta:
         db_table = u'ntags_labels'
+        managed = False
+
 
 class NtagsMedias(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -400,6 +405,8 @@ class NtagsMedias(models.Model):
     created = models.DateTimeField()
     class Meta:
         db_table = u'ntags_medias'
+        managed = False
+
 
 class NtagsPlaylists(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -408,6 +415,8 @@ class NtagsPlaylists(models.Model):
     created = models.DateTimeField()
     class Meta:
         db_table = u'ntags_playlists'
+        managed = False
+
 
 class NtagsReleases(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -416,6 +425,8 @@ class NtagsReleases(models.Model):
     created = models.DateTimeField()
     class Meta:
         db_table = u'ntags_releases'
+        managed = False
+
 
 class NtagsTransmissions(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -424,6 +435,8 @@ class NtagsTransmissions(models.Model):
     created = models.DateTimeField()
     class Meta:
         db_table = u'ntags_transmissions'
+        managed = False
+
 
 class MediasPlaylists(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -438,6 +451,8 @@ class MediasPlaylists(models.Model):
     cue_out = models.IntegerField()
     class Meta:
         db_table = u'medias_playlists'
+        managed = False
+
 
 class MediasReleases(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -446,6 +461,8 @@ class MediasReleases(models.Model):
     created = models.DateTimeField(null=True, blank=True)
     class Meta:
         db_table = u'medias_releases'
+        managed = False
+
 
 class LabelsReleases(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -454,3 +471,4 @@ class LabelsReleases(models.Model):
     created = models.DateTimeField(null=True, blank=True)
     class Meta:
         db_table = u'labels_releases'
+        managed = False

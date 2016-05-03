@@ -79,7 +79,8 @@ class AdvancedFileInput(ClearableFileInput):
         return mark_safe(template % substitutions)
     
 
-class MarkdownTextField (TextField):
+
+class MarkdownTextField(TextField):
     """
     A TextField that automatically implements DB-cached Markdown translation.
 

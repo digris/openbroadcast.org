@@ -9,6 +9,11 @@ def concat_uuid(apps, schema_editor):
     for object in qs.objects.all():
         qs.objects.filter(pk=object.pk).update(uuid=object.uuid.replace('-', ''))
 
+
+sql_uuid_migration = """
+alter table alibrary_label alter column uuid type uuid using uuid::uuid;
+"""
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -17,9 +22,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunPython(concat_uuid),
-        migrations.AlterField(
-            model_name='label',
-            name='uuid',
-            field=models.UUIDField(default=uuid.uuid4, editable=False),
-        ),
+        migrations.RunSQL(sql_uuid_migration, None, [
+            migrations.AlterField(
+                model_name='label',
+                name='uuid',
+                field=models.UUIDField(default=uuid.uuid4, editable=False),
+            ),
+        ]),
+
     ]
