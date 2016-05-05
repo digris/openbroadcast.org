@@ -683,9 +683,8 @@ class Media(MigrationMixin):
                     self.echoprint_status = 0
 
             except Exception, e:
-                print e
-                pass
-                #print e
+                print 'mediamodels line 686: %s' % e
+
 
         if self.version:
             self.version = self.version.lower()

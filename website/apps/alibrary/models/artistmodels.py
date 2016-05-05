@@ -390,7 +390,7 @@ def action_handler_task(instance, created):
         print 'created:      %s' % created
         print 'last editor:  %s' % instance.creator
 
-        print e
+        #print e
 
 
 

@@ -425,10 +425,13 @@ class ImportFile(BaseModel):
                 # print 'obp_media_uuid: %s' % obp_media_uuid
                 # print '******************************************************************'
 
-                obj.status = ImportFile.STATUS_DUPLICATE
-                obj.media = Media.objects.get(uuid=obp_media_uuid)
-                obj.save()
-                return
+                try:
+                    obj.status = ImportFile.STATUS_DUPLICATE
+                    obj.media = Media.objects.get(uuid=obp_media_uuid)
+                    obj.save()
+                    return
+                except Media.DoesNotExist as e:
+                    pass
 
             # check if we have musicbrainz-data available
             media_mb_id = metadata['media_mb_id'] if 'media_mb_id' in metadata else None
@@ -440,7 +443,7 @@ class ImportFile(BaseModel):
             release_name = metadata['release_name'] if 'release_name' in metadata else None
             media_tracknumber = metadata['media_tracknumber'] if 'media_tracknumber' in metadata else None
 
-            if media_mb_id and artist_mb_id and release_mb_id:
+            if AUTOIMPORT_MB and media_mb_id and artist_mb_id and release_mb_id:
 
 
                 # print

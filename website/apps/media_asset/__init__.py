@@ -8,7 +8,8 @@ __version__ = '0.0.1'
 default_app_config = 'media_asset.apps.MediaassetConfig'
 
 
-@receiver(post_save, sender='alibrary.Media')
+# TODO: don't forget to re-enable!
+#@receiver(post_save, sender='alibrary.Media')
 def media_post_save(sender, instance, created, **kwargs):
 
     if instance.master:

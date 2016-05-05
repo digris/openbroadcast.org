@@ -6,6 +6,9 @@
 .idea
 .tmp
 
+.ipynb_checkpoints
+db_dumps/
+
 *node_modules*
 
 util/remote_to_local.conf

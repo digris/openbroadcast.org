@@ -48,6 +48,8 @@ INSTALLED_APPS = (
     'raven.contrib.django.celery',
     'djcelery_email',
 
+    #'chunked_dumpdata',
+
     'base',
     'platform_base',
     #

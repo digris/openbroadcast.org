@@ -13,7 +13,7 @@ from django.contrib.contenttypes.models import ContentType
 from tagging.models import Tag
 from celery.task import task
 from l10n.models import Country
-from alibrary.models import Relation, Release, Artist, Media, MediaExtraartists, Profession, ArtistMembership, ArtistAlias
+from alibrary.models import Relation, Release, Artist, Media, MediaExtraartists, Profession, ArtistMembership, ArtistAlias, MediaArtists
 from alibrary.models import NameVariation as ArtistNameVariation
 from alibrary.util.storage import get_file_from_url
 from lib.util import filer_extra
@@ -118,6 +118,7 @@ class Importer(object):
         artist = None
         alibrary_artist_id = None
         mb_artist_id = None
+        mb_artist_combo_ids = None
         force_artist = False
         
         if 'artist' in it and it['artist']:
@@ -128,7 +129,20 @@ class Importer(object):
         
         if 'mb_artist_id' in it and it['mb_artist_id']:
             mb_artist_id = it['mb_artist_id']
-        
+            # there can be multiple ids split by '/' here
+            if '/' in mb_artist_id:
+                log.debug('got multiple mb artist ids: {}'.format(mb_artist_id))
+
+                url = 'http://%s/ws/2/artist/%s/?fmt=json' % (MUSICBRAINZ_HOST, mb_artist_id)
+                log.info('url: %s' % url)
+                r = requests.get(url)
+                result = r.json()
+                log.info('aquired name for split-artist: {} > {}'.format(artist, result['name']))
+                artist = result['name']
+
+                mb_artist_combo_ids = mb_artist_id.split('/')
+                mb_artist_id = mb_artist_id.split('/')[0]
+
         if 'force_artist' in it and it['force_artist']:
             force_artist = it['force_artist']
             
@@ -377,7 +391,7 @@ class Importer(object):
             if self.user:
                 m.creator = self.user
                 action.send(m.creator, verb='added', target=m)
-            m = self.mb_complete_media(m, mb_track_id, mb_release_id,  excludes=(mb_artist_id,))
+            m = self.mb_complete_media(m, mb_track_id, mb_release_id, mb_artist_combo_ids,  excludes=(mb_artist_id,))
 
         # save assignments
         m.save()
@@ -413,12 +427,12 @@ class Importer(object):
     """
     method mappers to send to background queue
     """
-    def mb_complete_media(self, obj, mb_id, mb_release_id, excludes=()):
+    def mb_complete_media(self, obj, mb_id, mb_release_id, mb_artist_combo_ids=None, excludes=()):
 
         if USE_CELERYD:
-            mb_complete_media_task.delay(obj, mb_id, mb_release_id, excludes=(), user=self.user)
+            mb_complete_media_task.delay(obj, mb_id, mb_release_id, mb_artist_combo_ids, excludes=(), user=self.user)
         else:
-            mb_complete_media_task(obj, mb_id, mb_release_id, excludes=(), user=self.user)
+            mb_complete_media_task(obj, mb_id, mb_release_id, mb_artist_combo_ids, excludes=(), user=self.user)
         return obj
 
 
@@ -597,7 +611,7 @@ task definitions
 """
 
 @task
-def mb_complete_media_task(obj, mb_id, mb_release_id, excludes=(), user=None):
+def mb_complete_media_task(obj, mb_id, mb_release_id, mb_artist_combo_ids=None, excludes=(), user=None):
 
     log.info('complete media, m: %s | mb_id: %s' % (obj.name, mb_id))
 
@@ -661,6 +675,56 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, excludes=(), user=None):
         raw_input("Press Enter to continue...")
 
 
+
+
+    if mb_artist_combo_ids and 'artist-credit' in result:
+
+        artist_credits = result['artist-credit']
+        last_join_phrase = None
+        position = 0
+        for credit in artist_credits:
+            if 'artist' in credit:
+
+                log.info('got creditet artist: {}'.format(credit['artist']))
+
+                time.sleep(0.5)
+                c_as = lookup.artist_by_mb_id(credit['artist']['id'])
+                c_a = None
+
+                if len(c_as) < 1:
+                    # instance.mb_completed.append(relation['artist']['id'])
+                    c_a = Artist(name=credit['artist']['name'])
+                    c_a.creator = user
+                    c_a.save()
+
+                    url = 'http://musicbrainz.org/artist/%s' % credit['artist']['id']
+                    rel = Relation(content_object=c_a, url=url)
+                    rel.save()
+
+                if len(c_as) == 1:
+                    c_a = c_as[0]
+
+                """"""
+                if c_a:
+                    ma, ma_created = MediaArtists.objects.get_or_create(artist=c_a, media=obj, join_phrase=last_join_phrase, position=position)
+                    position += 1
+                    if not credit['artist']['id'] not in excludes:
+                        if USE_CELERYD:
+                            mb_complete_artist_task.delay(c_a, credit['artist']['id'], user=user)
+                        else:
+                            mb_complete_artist_task(c_a, credit['artist']['id'], user=user)
+
+            """
+            musicbrainz uses join element _after_ artist, we do it the opposite way
+            TODO: eventually change to that structure as well
+            """
+            if 'joinphrase' in credit and len(credit['joinphrase']) > 0:
+                print credit['joinphrase']
+                last_join_phrase = credit['joinphrase'].strip()
+
+
+
+
     if 'relations' in result:
         for relation in result['relations']:
 
@@ -669,7 +733,7 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, excludes=(), user=None):
                 print 'artist: %s' % relation['artist']['name']
                 print 'mb_id:   %s' % relation['artist']['id']
                 print 'role:   %s' % relation['type']
-                time.sleep(0.1)
+                time.sleep(0.5)
                 l_as = lookup.artist_by_mb_id(relation['artist']['id'])
                 l_a = None
 
@@ -686,7 +750,6 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, excludes=(), user=None):
 
                 if len(l_as) == 1:
                     l_a = l_as[0]
-                    print l_as[0]
 
                 profession = None
                 if 'type' in relation:
@@ -695,7 +758,7 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, excludes=(), user=None):
 
                 """"""
                 if l_a:
-                    mea, created = MediaExtraartists.objects.get_or_create(artist=l_a, media=obj, profession=profession)
+                    mea, mea_created = MediaExtraartists.objects.get_or_create(artist=l_a, media=obj, profession=profession)
 
                     if USE_CELERYD:
                         mb_complete_artist_task.delay(l_a, relation['artist']['id'], user=user)
@@ -735,7 +798,7 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, excludes=(), user=None):
             result = r.json()
             try:
                 bpm = result['rhythm']['bpm']
-                print 'got tempo: %s bpm' % bpm
+                log.debug('aquired tempo - {}bpm'.format(bpm))
                 obj.tempo = float(bpm)
             except Exception as e:
                 print e
@@ -1122,7 +1185,6 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
 
         if l_created and l:
-            log.info('label created, try to complete: %s' % l)
             if user:
                 l.creator = user
                 action.send(l.creator, verb='added', target=l)
@@ -1213,6 +1275,10 @@ def mb_complete_artist_task(obj, mb_id, user=None):
         pass
 
 
+    # retrieve exact name
+    # if 'name' in result:
+    #     obj.name = result['name']
+
     # ipis
     if 'ipis' in result:
         try:
@@ -1276,7 +1342,6 @@ def mb_complete_artist_task(obj, mb_id, user=None):
 
             if len(l_as) == 1:
                 l_a = l_as[0]
-                print l_as[0]
 
             if l_a:
                 if relation['direction'] == 'backward':
@@ -1461,7 +1526,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
 @task
 def mb_complete_label_task(obj, mb_id, user=None):
 
-    log.info('complete label, l: %s | mb_id: %s' % (obj.name, mb_id))
+    log.info('complete label, mb_id: %s' % (mb_id))
 
 
 
