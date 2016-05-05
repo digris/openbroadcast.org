@@ -82,7 +82,14 @@ class Waveform(TimestampedModel, UUIDModel):
     @property
     def directory(self):
         uuid = '%s' % self.media_uuid
-        return os.path.join(ASSET_DIR, 'waveform', uuid.replace('-', '/'))
+
+        """
+        we need to insert an attitional directory here - as else 32000 fs limit could make problems
+        """
+        dir = uuid.replace('-', '/')
+        dir = dir[:2] + '/' + dir[2:]
+
+        return os.path.join(ASSET_DIR, 'waveform', dir)
 
     @property
     def path(self):
@@ -228,11 +235,25 @@ class Format(TimestampedModel, UUIDModel):
     def __unicode__(self):
         return '%s - %s' % (self.get_encoding_display(), self.get_quality_display())
 
+    # @property
+    # def directory(self):
+    #     #return os.path.join(ASSET_DIR, 'format', self.encoding, self.media_uuid.replace('-', '/'))
+    #     uuid = '%s' % self.media_uuid
+    #     return os.path.join(ASSET_DIR, 'format', uuid.replace('-', '/'))
+
     @property
     def directory(self):
-        #return os.path.join(ASSET_DIR, 'format', self.encoding, self.media_uuid.replace('-', '/'))
         uuid = '%s' % self.media_uuid
-        return os.path.join(ASSET_DIR, 'format', uuid.replace('-', '/'))
+
+        """
+        we need to insert an attitional directory here - as else 32000 fs limit could make problems
+        """
+        dir = uuid.replace('-', '/')
+        dir = dir[:2] + '/' + dir[2:]
+
+        return os.path.join(ASSET_DIR, 'format', dir)
+
+
 
     @property
     def path(self):
