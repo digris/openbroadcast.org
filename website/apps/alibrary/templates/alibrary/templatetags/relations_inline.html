@@ -1,4 +1,4 @@
-{% load i18n truncate permission_tags %}
+{% load i18n truncate permission_tags anchor_tags %}
 
 <ul class="unstyled">
     {% for relation in object.relations.specific %}
@@ -26,7 +26,7 @@
     {% for relation in object.relations.generic %}
         <li>
             <a href="{{ relation.url }}" class="skip-external"
-               title="Show on {{ relation.url }}">{{ relation.url|truncate_chars_inner:34 }}</a>
+               title="Go to {{ relation.url }}">{{ relation.url|domain_for_url }}</a>
 
             {% if relation.service == "official" %}
                 <small class="pull-right">{% trans "official" %}</small>

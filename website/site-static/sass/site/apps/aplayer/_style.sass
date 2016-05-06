@@ -184,7 +184,6 @@ body.popup
     width: 100%
     top: 164px
     position: fixed
-    
     padding-top: 24px
 
 
@@ -192,6 +191,7 @@ body.popup
     .item
       background: $body-color-shaded-bg
       border-bottom: 2px solid $body-color-bg
+
       &:first-child
         //border-top: 1px solid #efefef
       .wrapper
@@ -220,26 +220,26 @@ body.popup
           font-size: 10px
           padding-top: 0px
           text-align: right
-          
 
-          
-      &.hover, &.playing
+
+      &.hover
         cursor: pointer
-
         background: $primary-color-a-bg-light
+        transition: background 0.1s
         .icon > i
           color: $primary-color-a
-        .indicator
-          display: block
 
-
-      &.hover:not(.playing)
-        border-bottom: none
+      &.playing
+        background: $primary-color-a-bg-light
+        transition-delay: 0.5s
+        //transition: background 0.3s
+        .icon > i
+          color: $primary-color-a
           
 
         
       .indicator
-        display: none
+        display: block
         height: 2px
         overflow: hidden
         width: 100%

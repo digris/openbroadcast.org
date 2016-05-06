@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'search',
     #'docs',
 
+    'addthis',
 
 
     # tools

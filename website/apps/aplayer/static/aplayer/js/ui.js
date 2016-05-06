@@ -277,7 +277,7 @@ aplayer.ui.rebind = function() {
 	
 	
 	// waveform scaleing
-	$(document).bind('keydown.modal', function(event) {
+	$('body.popup').bind('keydown.modal', function(event) {
 
 		switch(event.which)
 		{

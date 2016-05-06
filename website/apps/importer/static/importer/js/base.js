@@ -3,7 +3,7 @@ var importer = importer || {};
 importer.base = importer.base || {};
 importer.ui = importer.ui || {};
 
-ImporterUi = function() {
+var ImporterUi = function() {
 
 	var self = this;
 
@@ -21,6 +21,12 @@ ImporterUi = function() {
 	this.current_data = [];
 	this.musicbrainz_data = [];
 	this.init = function() {
+
+
+		// addditional helpers for templates (https://github.com/blueimp/JavaScript-Templates)
+		// TODO: rebuild upload, if possible use nunjucks
+		tmpl.helper += ",truncate=function(str){console.log(str); return str;}";
+
 
 		self.iface();
 		self.fileupload = $('#' + self.fileupload_id);

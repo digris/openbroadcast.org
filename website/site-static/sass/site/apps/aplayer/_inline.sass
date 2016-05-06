@@ -44,9 +44,15 @@ $inline-player-width: 250px
         &:hover
           text-decoration: none
 
-      .current-title a
-        color: #000
-        //text-decoration: none
+      .current-title
+        //max-width: 209px
+        //overflow: hidden
+        //white-space: nowrap
+        //float: right
+        //text-overflow: ellipsis
+        a
+          color: #000
+
 
 
 
@@ -137,6 +143,8 @@ $inline-player-width: 250px
         span, a
           margin: 0
           font-size: 12px
+          letter-spacing: 0px
+
         span
           display: block
           line-height: 16px
@@ -167,13 +175,13 @@ $inline-player-width: 250px
           background: $primary-color-a-bg-light
 
         &.playing
-          border-bottom: none
+          //border-bottom: none
           background: $primary-color-a-bg-light
           .indicator
             display: block
 
         .indicator
-          //display: none
+          display: block
           height: 1px
           overflow: hidden
           width: 100%

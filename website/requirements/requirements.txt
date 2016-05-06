@@ -71,6 +71,7 @@ django-mptt==0.7.4
 django-oauth2-provider==0.2.6
 django-polymorphic==0.7.2
 django-redis==3.8.4
+redis==2.10.5
 django-reversion==1.9.3
 django-sekizai==0.8.2
 django-social-auth==0.7.28

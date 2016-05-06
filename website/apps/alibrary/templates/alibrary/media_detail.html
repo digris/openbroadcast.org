@@ -15,8 +15,7 @@
     {% addtoblock "js-uncompressed" %}<script src="{{ STATIC_URL }}js/lib/flot-0.8.3/jquery.flot.js"></script>{% endaddtoblock %}
     {% addtoblock "js-uncompressed" %}<script src="{{ STATIC_URL }}js/lib/flot-0.8.3/jquery.flot.time.js"></script>{% endaddtoblock %}
 
-
-
+    {% addtoblock "js-uncompressed" %}<!--<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-572c880b2e9ced75"></script>-->{% endaddtoblock %}
 
     {% addtoblock "js-post" %}
         <script>
@@ -89,8 +88,19 @@
 
     <div class="item_menu" id="item_menu">
         <ul class="nav nav-tabs">
-            <li class="active">
-                <a href="#overview_" data-toggle="tab">{% trans "Overview" %}</a>
+
+
+
+
+            {% if object.appearances.exists %}
+                <li class="active">
+                    <a href="#appearance" data-toggle="tab">{% trans "Appearance" %}
+                        {% comment %}({{ object.appearances.count }}){% endcomment %}</a>
+                </li>
+            {% endif %}
+
+            <li {% if not object.appearances.exists %}class="active"{% endif %}>
+                <a href="#overview_" data-toggle="tab">{% trans "File Info" %}</a>
             </li>
 
             {% if object.has_video %}
@@ -102,13 +112,6 @@
             {% if object.has_soundcloud %}
                 <li>
                     <a href="#soundcloud" data-toggle="tab">{% trans "Soundcloud" %}</a>
-                </li>
-            {% endif %}
-
-            {% if object.appearances.count > 0 %}
-                <li>
-                    <a href="#appearance" data-toggle="tab">{% trans "Appearance" %}
-                        {% comment %}({{ object.appearances.count }}){% endcomment %}</a>
                 </li>
             {% endif %}
 
@@ -132,7 +135,38 @@
 
     <div class="tab-content">
 
-    <div class="tab-pane active" id="overview_">
+
+    {% if object.appearances.exists %}
+    <div class="tab-pane active" id="appearance">
+
+        <section class="appearance">
+
+            <h2>{% trans "Playlists using this track" %}</h2>
+
+            <div class="listview container playlist s">
+
+                <div class="list_body">
+
+                    {% with highlight=object extended=1 %}
+
+                        {% appearance_for_media media=object user=request.user as appearances %}
+
+                        {% for item in appearances %}
+                            {% include "alibrary/playlist/list_item_s.html" %}
+                        {% endfor %}
+                    {% endwith %}
+                </div>
+            </div>
+
+
+        </section>
+
+    </div>
+    {% endif %}
+
+
+
+    <div class="tab-pane{% if not object.appearances.exists %} active{% endif %}" id="overview_">
 
         {% if object.description %}
             <section class="description">
@@ -330,32 +364,6 @@
 
     </div>
 
-    <div class="tab-pane" id="appearance">
-
-        <section class="appearance">
-
-            <h2>{% trans "Playlists using this track" %}</h2>
-
-            <div class="listview container playlist s">
-
-                <div class="list_body">
-
-                    {% with highlight=object extended=1 %}
-
-                        {% appearance_for_media media=object user=request.user as appearances %}
-
-                        {% for item in appearances %}
-                            {% include "alibrary/playlist/list_item_s.html" %}
-                        {% endfor %}
-                    {% endwith %}
-                </div>
-            </div>
-
-
-        </section>
-
-    </div>
-
 
 
 
@@ -475,6 +483,12 @@
 
     </div>
 
+
+    {% load addthis %}
+
+    {% addthis_widget %}
+
+
 {% endblock %}
 
 {% block sidebar %}
@@ -483,6 +497,7 @@
 
     <div class="listing relations" style="padding-top: 8px;">
 
+    <!--
     <div class="page-header">
         <h2>{% trans "Show/share on" %}
             <small>{% trans "external links" %}</small>
@@ -494,9 +509,10 @@
         </div>
 
     </div>
+    -->
 
     <div class="item relations">
-        {% relations_inline object %}
+        {% all_relations_inline object %}
     </div>
 
 {% endblock %}

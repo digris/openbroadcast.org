@@ -84,9 +84,27 @@ $duplicateBackground: #FCFF80
   background: $body-color-shaded-bg
 
 
+section.importer-upload
+
+  tbody.files
+
+    .name
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+      max-width: 300px
+
+    .size
+      min-width: 80px
+      text-align: right
+    button
+      min-width: 80px
+
+
+    .progress .bar
+      background: $primary-color-b
+
 section.importer-importfiles
-
-
 
   .listing
 

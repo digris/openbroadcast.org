@@ -50,6 +50,11 @@
                     <span class="opt"></span>
                     <span class="clear"></span>
                 </li>
+                <li class="link ">
+                    <span class="left icon"> <a href="{% url "importer-import-create" %}" title="{% trans "New Upload Session" %}">{% trans "New Upload Session" %}</a></span>
+                    <span class="opt"></span>
+                    <span class="clear"></span>
+                </li>
             </ul>
         </div>
     </div>
@@ -85,11 +90,13 @@
             importer.ui.api_url = "{% url "api_dispatch_list" resource_name='import' api_name='v1'%}{{ object.id }}/";
             importer.ui.fileupload_id = 'fileupload';
             importer.ui.fileupload_options = {
+                autoUpload: true,
+                maxNumberOfFiles: 30,
                 maxFileSize: 1000000000, // 1000 MB
                 minFileSize: 200000,
-                acceptFileTypes: /(\.|\/)(mp3|aif?f|wav|avi|flac|mp4|m4a|ogg)$/i,
+                acceptFileTypes: /(\.|\/)(mp3|aif?f|wav|avi|flac|mp4|m4a)$/i,
                 sequentialUploads: false,
-                limitConcurrentUploads: 4
+                limitConcurrentUploads: 3
            };
 
            importer.ui.init();
@@ -128,7 +135,7 @@
 
     <div class="item_inner">
 
-        <section>
+        <section class="importer-upload">
 
             <!--
             <div class="page-header">

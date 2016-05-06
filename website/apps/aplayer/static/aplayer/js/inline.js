@@ -195,8 +195,16 @@ InlinePlayer = function () {
             $('li.current', container).html(util.format_time(states.position));
             $('li.total', container).html(util.format_time(states.duration));
 
+            var title = media.name;
+
+            if(title.length > 24) {
+                title = jQuery.trim(title).substring(0, 24).split(" ").slice(0, -1).join(" ") + "..."
+
+            }
+
+
             $('ul.timing', container).fadeIn(500);
-            $('.media_name a', container).html(media.name);
+            $('.media_name a', container).html(title);
             $('.media_name a', container).attr('href', media.absolute_url);
 
             /*
