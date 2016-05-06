@@ -4,12 +4,10 @@
 <script>
     var pushy;
 
-    //$(function(){
-        pushy = new PushyApp;
-        pushy.socket_url = '{{ SOCKET_SERVER }}';
-        {% if DEBUG %}pushy.debug = true;{% endif %}
-        pushy.debug = true;
-        pushy.init();
-    //})
+    pushy = new PushyApp;
+    pushy.socket_url = 'http{% if request.is_secure %}s{% endif %}:{{ SOCKET_SERVER }}';
+    {% if DEBUG %}pushy.debug = true;{% endif %}
+    pushy.debug = true;
+    pushy.init();
 
 </script>

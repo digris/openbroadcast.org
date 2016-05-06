@@ -97,7 +97,7 @@ PUSHY_SETTINGS = {
         'exporter.export',
         'abcast.channel',
     ),
-    'SOCKET_SERVER': 'http://localhost:8888/',
+    'SOCKET_SERVER': '//localhost:8888/',
     'CHANNEL_PREFIX': 'pushy_',
     'DEBUG': DEBUG
 }
