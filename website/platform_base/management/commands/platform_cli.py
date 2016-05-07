@@ -4,6 +4,7 @@ from platform_base.management.commands.subcommands.base import SubcommandsComman
 from platform_base.management.commands.subcommands.check import CheckInstallation
 from platform_base.management.commands.subcommands.reset import ResetDatabase
 from platform_base.management.commands.subcommands.clean import DeleteOrphanedTags
+from platform_base.management.commands.subcommands.crawl import MBCrawlerCommand
 from django.core.management.base import BaseCommand
 from optparse import make_option
 
@@ -24,6 +25,7 @@ class Command(SubcommandsCommand):
         'check': CheckInstallation,
         'reset': ResetDatabase,
         'delete_orphaned_tags': DeleteOrphanedTags,
+        'crawl_mb': MBCrawlerCommand,
     }
 
     @property

@@ -71,6 +71,15 @@
 			&nbsp;
 		</dd>
 
+        {% if object.isrc %}
+		<dt>
+			{% trans "ISRC" %}:
+		</dt>
+		<dd>
+			{{ object.isrc}}
+		</dd>
+		{% endif %}
+
 
 		{% if object.opus_number %}
 		<dt>
