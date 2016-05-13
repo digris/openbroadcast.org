@@ -37,6 +37,8 @@ SLIDE_DEFAULT_IMAGE = getattr(settings, 'DAB_SLIDE_DEFAULT_IMAGE', os.path.join(
 SLIDE_BASE_DIR = os.path.join(MEDIA_ROOT, 'metadata', 'dab')
 SLIDE_BASE_URL = MEDIA_URL + 'metadata/' +  'dab/'
 
+INCLUDE_STATION_LOGO = True
+
 
 class DABMetadataGenerator(object):
 
@@ -88,10 +90,12 @@ class DABMetadataGenerator(object):
     def get_slides(self):
 
         if not (self.emission and self.content_object):
-            return [self.compose_main_slide(
-                    primary_text='-',
-                    secondary_text='-',
-            )]
+            key = 'default'
+            path = os.path.join(SLIDE_BASE_DIR, key + '.png')
+            url = SLIDE_BASE_URL + key + '.png'
+            shutil.copyfile(SLIDE_DEFAULT_IMAGE, path)
+
+            return [url]
 
 
         self.clean_slides()
@@ -159,6 +163,16 @@ class DABMetadataGenerator(object):
             slide_id +=1
 
 
+        if INCLUDE_STATION_LOGO:
+
+            key = 'default'
+            path = os.path.join(SLIDE_BASE_DIR, key + '.png')
+            url = SLIDE_BASE_URL + key + '.png'
+            shutil.copyfile(SLIDE_DEFAULT_IMAGE, path)
+            items.append(
+                url
+            )
+
         return items
 
 
@@ -169,16 +183,14 @@ class DABMetadataGenerator(object):
             path = os.path.join(SLIDE_BASE_DIR, key + '.png')
             url = SLIDE_BASE_URL + key + '.png'
         else:
+            # TODO: not used anymore
             overlay_image_path = SLIDE_DEFAULT_IMAGE
             key = 'default'
             path = os.path.join(SLIDE_BASE_DIR, key + '.png')
             url = SLIDE_BASE_URL + key + '.png'
+            #shutil.copyfile(SLIDE_DEFAULT_IMAGE, path)
+            #return url
 
-            shutil.copyfile(SLIDE_DEFAULT_IMAGE, path)
-
-            return url
-
-            # directly save default image without compositing
 
         overlay_image = Image(filename=overlay_image_path)
 
