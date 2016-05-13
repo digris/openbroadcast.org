@@ -190,7 +190,7 @@ class ArtistListView(PaginationMixin, ListView):
         
         # tagging / cloud generation
         if qs.exists():
-            tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=5)
+            tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=10)
             self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
 
         return qs
