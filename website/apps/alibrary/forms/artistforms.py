@@ -12,7 +12,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import *
 from crispy_forms.bootstrap import FormActions
 from alibrary.models import Artist, Relation, ArtistAlias, ArtistMembership
-from alibrary.lookups import ArtistLookup
+from alibrary.lookups import ArtistLookup, ParentArtistLookup
 from pagedown.widgets import PagedownWidget
 import selectable.forms as selectable
 from tagging.forms import TagField
@@ -84,9 +84,6 @@ class ArtistForm(ModelForm):
         self.user = kwargs['initial']['user']
         self.instance = kwargs['instance']
 
-        self.label = kwargs.pop('label', None)
-        
-
         super(ArtistForm, self).__init__(*args, **kwargs)
         
         """
@@ -117,6 +114,12 @@ class ArtistForm(ModelForm):
                 LookupField('booking_contact', css_class='input-xlarge'),
         )
 
+        identifiers_layout = Fieldset(
+            _('Identifiers'),
+            LookupField('ipi_code', css_class='input-xlarge'),
+            LookupField('isni_code', css_class='input-xlarge'),
+        )
+
         activity_layout = Fieldset(
                 _('Activity'),
                 LookupField('date_start', css_class='input-xlarge'),
@@ -133,12 +136,6 @@ class ArtistForm(ModelForm):
         tagging_layout = Fieldset(
                 'Tags',
                 LookupField('d_tags'),
-        )
-
-        identifiers_layout = Fieldset(
-                _('Identifiers'),
-                LookupField('ipi_code', css_class='input-xlarge'),
-                LookupField('isni_code', css_class='input-xlarge'),
         )
             
         layout = Layout(
@@ -163,9 +160,7 @@ class ArtistForm(ModelForm):
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
     namevariations = forms.CharField(widget=forms.Textarea(attrs={'rows':'2'}), required=False, label=_('Variations'))
     biography = forms.CharField(widget=PagedownWidget(), required=False)
-    # aliases = selectable.AutoCompleteSelectMultipleField(ArtistLookup, required=False)
 
-    
 
     def clean(self, *args, **kwargs):
         
@@ -245,9 +240,6 @@ class BaseMemberForm(ModelForm):
         instance = getattr(self, 'instance', None)
 
     child = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False, label=_('Member'))
-    #service = forms.CharField(label='', widget=ReadOnlyIconField(**{'url': 'whatever'}), required=False)
-    #url = forms.URLField(label=_('Website / URL'), required=False)
-
 
     def clean_child(self):
 

@@ -108,11 +108,9 @@ class Artist(MigrationMixin):
     
     # relations
     members = models.ManyToManyField('self', through='ArtistMembership', symmetrical=False)
-    #aliases = models.ManyToManyField("self", related_name='artist_aliases', blank=True, null=True)
     aliases = models.ManyToManyField("self", through='ArtistAlias', related_name='artist_aliases', blank=True, symmetrical=False)
 
-    #folder = models.ForeignKey(Folder, blank=True, null=True, related_name='artist_folder', on_delete=models.SET_NULL)
-    
+
     # relations a.k.a. links
     relations = generic.GenericRelation(Relation)
     

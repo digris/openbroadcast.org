@@ -49,6 +49,12 @@ class ParentLabelLookup(LabelLookup):
 registry.register(ParentLabelLookup)
 
 
+class ParentArtistLookup(ArtistLookup):
+    pass
+
+registry.register(ParentArtistLookup)
+
+
 
 
 

@@ -10,6 +10,7 @@ from Levenshtein import distance
 import requests
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
+from django.core.cache import cache
 from tagging.models import Tag
 from celery.task import task
 from l10n.models import Country
@@ -722,18 +723,18 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, mb_artist_combo_ids=None, 
                     rel = Relation(content_object=c_a, url=url)
                     rel.save()
 
-                if len(c_as) == 1:
-                    c_a = c_as[0]
-
-                """"""
-                if c_a:
-                    ma, ma_created = MediaArtists.objects.get_or_create(artist=c_a, media=obj, join_phrase=last_join_phrase, position=position)
-                    position += 1
-                    if not credit['artist']['id'] not in excludes:
+                    if not credit['artist']['id'] in excludes:
                         if USE_CELERYD:
                             mb_complete_artist_task.delay(c_a, credit['artist']['id'], user=user)
                         else:
                             mb_complete_artist_task(c_a, credit['artist']['id'], user=user)
+
+                if len(c_as) == 1:
+                    c_a = c_as[0]
+
+                if c_a:
+                    MediaArtists.objects.get_or_create(artist=c_a, media=obj, join_phrase=last_join_phrase, position=position)
+                    position += 1
 
             """
             musicbrainz uses join element _after_ artist, we do it the opposite way
@@ -751,9 +752,7 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, mb_artist_combo_ids=None, 
 
             # map artists
             if 'artist' in relation:
-                print 'artist: %s' % relation['artist']['name']
-                print 'mb_id:   %s' % relation['artist']['id']
-                print 'role:   %s' % relation['type']
+
                 time.sleep(0.5)
                 l_as = lookup.artist_by_mb_id(relation['artist']['id'])
                 l_a = None
@@ -769,6 +768,11 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, mb_artist_combo_ids=None, 
                     rel = Relation(content_object=l_a, url=url)
                     rel.save()
 
+                    if USE_CELERYD:
+                        mb_complete_artist_task.delay(l_a, relation['artist']['id'], user=user)
+                    else:
+                        mb_complete_artist_task(l_a, relation['artist']['id'], user=user)
+
                 if len(l_as) == 1:
                     l_a = l_as[0]
 
@@ -776,15 +780,8 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, mb_artist_combo_ids=None, 
                 if 'type' in relation:
                     profession, created = Profession.objects.get_or_create(name=relation['type'])
 
-
-                """"""
                 if l_a:
-                    mea, mea_created = MediaExtraartists.objects.get_or_create(artist=l_a, media=obj, profession=profession)
-
-                    if USE_CELERYD:
-                        mb_complete_artist_task.delay(l_a, relation['artist']['id'], user=user)
-                    else:
-                        mb_complete_artist_task(l_a, relation['artist']['id'], user=user)
+                    MediaExtraartists.objects.get_or_create(artist=l_a, media=obj, profession=profession)
 
 
     """
@@ -1227,315 +1224,325 @@ def mb_complete_artist_task(obj, mb_id, user=None):
 
     log.info(u'complete artist, a: %s %s | mb_id: %s' % (obj.name, obj.pk, mb_id))
 
+    lock_key = 'complete-{}'.format(mb_id)
+
+    if cache.get(lock_key) != None:
+
+        log.warning('completeion locked for id: {}'.format(mb_id))
+
+    else:
+
+        cache.set(lock_key, 'lock', 60)
+
+        inc = ('artist-rels', 'url-rels', 'tags')
+        url = 'http://%s/ws/2/artist/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, mb_id, "+".join(inc))
+
+        log.info('url: %s' % url)
+
+        r = requests.get(url)
+        result = r.json()
+
+        discogs_url = None
+        discogs_image = None
+
+        valid_relations = (
+            'wikipedia',
+            'allmusic',
+            'BBC Music page',
+            'social network',
+            'official homepage',
+            'youtube',
+            'myspace',
+            'IMDb',
+            'wikidata',
+            'VIAF',
+            'lyrics',
+            'last.fm',
+            'other databases',
+            'fanpage',
+        )
 
 
-    inc = ('artist-rels', 'url-rels', 'tags')
-    url = 'http://%s/ws/2/artist/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, mb_id, "+".join(inc))
+        life_span = result.get('life-span', None)
+        if life_span:
+            date_start = life_span.get('begin', None)
+            date_end = life_span.get('end', None)
+            log.debug('got lifespan: %s to %s' % (date_start, date_end))
+            if date_start:
+                if len(date_start) == 4:
+                    date_start = '%s-00-00' % (date_start)
+                elif len(date_start) == 7:
+                    date_start = '%s-00' % (date_start)
+                elif len(date_start) == 10:
+                    date_start = '%s' % (date_start)
+                re_date_start = re.compile('^\d{4}-\d{2}-\d{2}$')
+                if re_date_start.match(date_start) and date_start != '0000-00-00':
+                    obj.date_start = '%s' % date_start
 
-    log.info('url: %s' % url)
-
-    r = requests.get(url)
-    result = r.json()
-
-    discogs_url = None
-    discogs_image = None
-
-    valid_relations = (
-        'wikipedia',
-        'allmusic',
-        'BBC Music page',
-        'social network',
-        'official homepage',
-        'youtube',
-        'myspace',
-        'IMDb',
-        'wikidata',
-        'VIAF',
-        'lyrics',
-        'last.fm',
-        'other databases',
-        'fanpage',
-    )
-
-
-    life_span = result.get('life-span', None)
-    if life_span:
-        date_start = life_span.get('begin', None)
-        date_end = life_span.get('end', None)
-        log.debug('got lifespan: %s to %s' % (date_start, date_end))
-        if date_start:
-            if len(date_start) == 4:
-                date_start = '%s-00-00' % (date_start)
-            elif len(date_start) == 7:
-                date_start = '%s-00' % (date_start)
-            elif len(date_start) == 10:
-                date_start = '%s' % (date_start)
-            re_date_start = re.compile('^\d{4}-\d{2}-\d{2}$')
-            if re_date_start.match(date_start) and date_start != '0000-00-00':
-                obj.date_start = '%s' % date_start
-
-        if date_end:
-            if len(date_end) == 4:
-                date_end = '%s-00-00' % (date_end)
-            elif len(date_end) == 7:
-                date_end = '%s-00' % (date_end)
-            elif len(date_end) == 10:
-                date_end = '%s' % (date_end)
-            re_date_end = re.compile('^\d{4}-\d{2}-\d{2}$')
-            if re_date_end.match(date_end) and date_end != '0000-00-00':
-                obj.date_end = '%s' % date_end
+            if date_end:
+                if len(date_end) == 4:
+                    date_end = '%s-00-00' % (date_end)
+                elif len(date_end) == 7:
+                    date_end = '%s-00' % (date_end)
+                elif len(date_end) == 10:
+                    date_end = '%s' % (date_end)
+                re_date_end = re.compile('^\d{4}-\d{2}-\d{2}$')
+                if re_date_end.match(date_end) and date_end != '0000-00-00':
+                    obj.date_end = '%s' % date_end
 
 
 
 
-    try:
-        obj.country = Country.objects.filter(name=result['area']['name'])[0]
-    except Exception as e:
-        pass
-
-
-    # retrieve exact name
-    # if 'name' in result:
-    #     obj.name = result['name']
-
-    # ipis
-    if 'ipis' in result:
         try:
-            obj.ipi_code = result['ipis'][0]
-        except:
+            obj.country = Country.objects.filter(name=result['area']['name'])[0]
+        except Exception as e:
             pass
 
 
-    relations = result.get('relations', ())
+        # retrieve exact name
+        # if 'name' in result:
+        #     obj.name = result['name']
 
-    for relation in relations:
-
-        if relation['type'] == 'discogs':
-            log.debug('got discogs url for artist: %s' % relation['url'])
-            discogs_url = relation['url']['resource']
-
-        if relation['type'] in valid_relations:
-            log.debug('got %s url for artist: %s' % (relation['type'], relation['url']))
-
+        # ipis
+        if 'ipis' in result:
             try:
-                rel = Relation.objects.get(object_id=obj.pk, url=relation['url']['resource'])
-            except:
-                rel = Relation(content_object=obj, url=relation['url']['resource'])
-                if relation['type'] == 'official homepage':
-                    rel.service = 'official'
-
-                rel.save()
-
-        else:
-            log.debug('ignore relation type: %s' % relation['type'])
-
-
-
-
-    # loop artist based relations ('band member')
-    for relation in relations:
-
-        if relation['type'] == 'member of band' and relation['direction'] == 'backward':
-        #if relation['type'] == 'member of band':
-            log.debug('got band member')
-            rel_mb_id = relation['artist']['id']
-            l_as = lookup.artist_by_mb_id(rel_mb_id)
-            l_a = None
-
-            if len(l_as) < 1:
-                l_a = Artist(name=relation['artist']['name'])
-                l_a.creator = user
-                l_a.save()
-
-                if USE_CELERYD:
-                    mb_complete_artist_task.delay(l_a, rel_mb_id, user=user)
-                else:
-                    mb_complete_artist_task(l_a, rel_mb_id, user=user)
-
-
-
-
-                mb_url = 'http://musicbrainz.org/artist/%s' % (rel_mb_id)
-                rel = Relation(content_object=l_a, url=mb_url)
-                rel.save()
-
-            if len(l_as) == 1:
-                l_a = l_as[0]
-
-            if l_a:
-                if relation['direction'] == 'backward':
-                    ma = ArtistMembership.objects.get_or_create(parent=obj, child=l_a)
-                if relation['direction'] == 'forward':
-                    ma = ArtistMembership.objects.get_or_create(parent=l_a, child=obj)
-
-
-
-
-
-    if discogs_url:
-
-        try:
-            rel = Relation.objects.get(object_id=obj.pk, url=discogs_url)
-        except:
-            rel = Relation(content_object=obj, url=discogs_url)
-            rel.save()
-
-        # try to get image
-        try:
-            discogs_image = discogs_image_by_url(discogs_url, 'resource_url')
-            log.debug('discogs image located at: %s' % discogs_image)
-        except:
-            pass
-
-
-    # try to load & assign image
-    if discogs_image:
-        try:
-            #img = filer_extra.url_to_file(discogs_image, obj.folder)
-            img = get_file_from_url(discogs_image)
-            obj.main_image = img
-            obj.save()
-        except:
-            log.info('unable to assign discogs image')
-
-
-    if discogs_url:
-
-        discogs_id = None
-        try:
-            # TODO: not sure if always working
-            discogs_id = discogs_id_by_url(discogs_url)
-            log.info('extracted discogs id: %s' % discogs_id)
-        except:
-            pass
-
-        if discogs_id:
-            url = 'http://%s/artists/%s' % (DISCOGS_HOST, discogs_id)
-            r = requests.get(url)
-
-
-            try:
-                dgs_result = r.json()
-                profile = dgs_result.get('profile', None)
-                if profile:
-                    obj.biography = profile
-
-                realname = dgs_result.get('realname', None)
-                if realname:
-                    obj.real_name = realname
-
-
-                namevariations = dgs_result.get('namevariations', None)
-                if namevariations:
-                    for namevariation in namevariations:
-                        #log.debug(u'got namevariation: %s' % namevariation)
-                        ArtistNameVariation.objects.get_or_create(name=namevariation[0:245], artist=obj)
-
-
-                """
-                verry hackish part here, just as proof-of-concept
-                """
-                aliases = dgs_result.get('aliases', ())
-                aliases = []
-                for alias in aliases:
-                    try:
-                        log.debug('got alias: %s' % alias['name'])
-                        # TODO: improve! handle duplicates!
-                        time.sleep(1.1)
-                        r = requests.get(alias['resource_url'])
-                        aa_result = r.json()
-                        aa_discogs_url = aa_result.get('uri', None)
-                        aa_name = aa_result.get('name', None)
-                        aa_profile = aa_result.get('profile', None)
-                        if aa_discogs_url and aa_name:
-
-                            l_as = lookup.artist_by_relation_url(aa_discogs_url)
-                            l_a = None
-
-                            if len(l_as) < 1:
-                                l_a = Artist(name=aa_name, biography=aa_profile)
-                                l_a.creator = user
-                                l_a.save()
-
-                                rel = Relation(content_object=l_a, url=aa_discogs_url)
-                                rel.save()
-
-                            if len(l_as) == 1:
-                                l_a = l_as[0]
-                                print l_as[0]
-
-                            if l_a:
-                                aa = ArtistAlias.objects.get_or_create(parent=obj, child=l_a)
-                                #obj.aliases.add(l_a)
-                    except:
-                        pass
-
-                """
-                verry hackish part here, just as proof-of-concept
-                """
-                members = dgs_result.get('members', ())
-                members = [] # just temporary disabled
-                for member in members:
-                    try:
-                        log.debug('got member: %s' % member['name'])
-                        # TODO: improve! handle duplicates!
-                        time.sleep(1.1)
-                        r = requests.get(member['resource_url'])
-                        ma_result = r.json()
-                        ma_discogs_url = ma_result.get('uri', None)
-                        ma_name = ma_result.get('name', None)
-                        ma_profile = ma_result.get('profile', None)
-                        if ma_discogs_url and ma_name:
-
-                            l_as = lookup.artist_by_relation_url(ma_discogs_url)
-                            l_a = None
-
-                            if len(l_as) < 1:
-                                l_a = Artist(name=ma_name, biography=ma_profile)
-                                l_a.creator = user
-                                l_a.save()
-
-                                rel = Relation(content_object=l_a, url=ma_discogs_url)
-                                rel.save()
-
-                            if len(l_as) == 1:
-                                l_a = l_as[0]
-                                print l_as[0]
-
-                            if l_a:
-                                ma = ArtistMembership.objects.get_or_create(parent=obj, child=l_a)
-
-                    except:
-                        pass
-
+                obj.ipi_code = result['ipis'][0]
             except:
                 pass
 
 
+        relations = result.get('relations', ())
 
-    type = result.get('type', None)
-    if type:
-        #log.debug('got type: %s' % (type))
-        obj.type = type
+        for relation in relations:
 
-    disambiguation = result.get('disambiguation', None)
-    if disambiguation:
-        #log.debug('got disambiguation: %s' % (disambiguation))
-        obj.disambiguation = disambiguation
+            if relation['type'] == 'discogs':
+                log.debug('got discogs url for artist: %s' % relation['url'])
+                discogs_url = relation['url']['resource']
+
+            if relation['type'] in valid_relations:
+                log.debug('got %s url for artist: %s' % (relation['type'], relation['url']))
+
+                try:
+                    rel = Relation.objects.get(object_id=obj.pk, url=relation['url']['resource'])
+                except:
+                    rel = Relation(content_object=obj, url=relation['url']['resource'])
+                    if relation['type'] == 'official homepage':
+                        rel.service = 'official'
+
+                    rel.save()
+
+            else:
+                log.debug('ignore relation type: %s' % relation['type'])
 
 
-    # add mb relation
-    # moved to be completed before running mb_complete_* so could be redundant here
-    if mb_id:
-        mb_url = 'http://musicbrainz.org/artist/%s' % (mb_id)
-        try:
-            rel = Relation.objects.get(object_id=obj.pk, url=mb_url)
-        except:
-            log.debug('relation not here yet, add it: %s' % (mb_url))
-            rel = Relation(content_object=obj, url=mb_url)
-            rel.save()
 
-        obj.save()
+
+        # loop artist based relations ('band member')
+        for relation in relations:
+
+            if relation['type'] == 'member of band' and relation['direction'] == 'backward':
+            #if relation['type'] == 'member of band':
+                log.debug('got band member')
+                rel_mb_id = relation['artist']['id']
+                l_as = lookup.artist_by_mb_id(rel_mb_id)
+                l_a = None
+
+                if len(l_as) < 1:
+                    l_a = Artist(name=relation['artist']['name'])
+                    l_a.creator = user
+                    l_a.save()
+
+                    if USE_CELERYD:
+                        mb_complete_artist_task.delay(l_a, rel_mb_id, user=user)
+                    else:
+                        mb_complete_artist_task(l_a, rel_mb_id, user=user)
+
+
+
+
+                    mb_url = 'http://musicbrainz.org/artist/%s' % (rel_mb_id)
+                    rel = Relation(content_object=l_a, url=mb_url)
+                    rel.save()
+
+                if len(l_as) == 1:
+                    l_a = l_as[0]
+
+                if l_a:
+                    if relation['direction'] == 'backward':
+                        ma = ArtistMembership.objects.get_or_create(parent=obj, child=l_a)
+                    if relation['direction'] == 'forward':
+                        ma = ArtistMembership.objects.get_or_create(parent=l_a, child=obj)
+
+
+
+
+
+        if discogs_url:
+
+            try:
+                rel = Relation.objects.get(object_id=obj.pk, url=discogs_url)
+            except:
+                rel = Relation(content_object=obj, url=discogs_url)
+                rel.save()
+
+            # try to get image
+            try:
+                discogs_image = discogs_image_by_url(discogs_url, 'resource_url')
+                log.debug('discogs image located at: %s' % discogs_image)
+            except:
+                pass
+
+
+        # try to load & assign image
+        if discogs_image:
+            try:
+                #img = filer_extra.url_to_file(discogs_image, obj.folder)
+                img = get_file_from_url(discogs_image)
+                obj.main_image = img
+                obj.save()
+            except:
+                log.info('unable to assign discogs image')
+
+
+        if discogs_url:
+
+            discogs_id = None
+            try:
+                # TODO: not sure if always working
+                discogs_id = discogs_id_by_url(discogs_url)
+                log.info('extracted discogs id: %s' % discogs_id)
+            except:
+                pass
+
+            if discogs_id:
+                url = 'http://%s/artists/%s' % (DISCOGS_HOST, discogs_id)
+                r = requests.get(url)
+
+
+                try:
+                    dgs_result = r.json()
+                    profile = dgs_result.get('profile', None)
+                    if profile:
+                        obj.biography = profile
+
+                    realname = dgs_result.get('realname', None)
+                    if realname:
+                        obj.real_name = realname
+
+
+                    namevariations = dgs_result.get('namevariations', None)
+                    if namevariations:
+                        for namevariation in namevariations:
+                            #log.debug(u'got namevariation: %s' % namevariation)
+                            ArtistNameVariation.objects.get_or_create(name=namevariation[0:245], artist=obj)
+
+
+                    """
+                    verry hackish part here, just as proof-of-concept
+                    """
+                    aliases = dgs_result.get('aliases', ())
+                    aliases = []
+                    for alias in aliases:
+                        try:
+                            log.debug('got alias: %s' % alias['name'])
+                            # TODO: improve! handle duplicates!
+                            time.sleep(1.1)
+                            r = requests.get(alias['resource_url'])
+                            aa_result = r.json()
+                            aa_discogs_url = aa_result.get('uri', None)
+                            aa_name = aa_result.get('name', None)
+                            aa_profile = aa_result.get('profile', None)
+                            if aa_discogs_url and aa_name:
+
+                                l_as = lookup.artist_by_relation_url(aa_discogs_url)
+                                l_a = None
+
+                                if len(l_as) < 1:
+                                    l_a = Artist(name=aa_name, biography=aa_profile)
+                                    l_a.creator = user
+                                    l_a.save()
+
+                                    rel = Relation(content_object=l_a, url=aa_discogs_url)
+                                    rel.save()
+
+                                if len(l_as) == 1:
+                                    l_a = l_as[0]
+                                    print l_as[0]
+
+                                if l_a:
+                                    aa = ArtistAlias.objects.get_or_create(parent=obj, child=l_a)
+                                    #obj.aliases.add(l_a)
+                        except:
+                            pass
+
+                    """
+                    verry hackish part here, just as proof-of-concept
+                    """
+                    members = dgs_result.get('members', ())
+                    members = [] # just temporary disabled
+                    for member in members:
+                        try:
+                            log.debug('got member: %s' % member['name'])
+                            # TODO: improve! handle duplicates!
+                            time.sleep(1.1)
+                            r = requests.get(member['resource_url'])
+                            ma_result = r.json()
+                            ma_discogs_url = ma_result.get('uri', None)
+                            ma_name = ma_result.get('name', None)
+                            ma_profile = ma_result.get('profile', None)
+                            if ma_discogs_url and ma_name:
+
+                                l_as = lookup.artist_by_relation_url(ma_discogs_url)
+                                l_a = None
+
+                                if len(l_as) < 1:
+                                    l_a = Artist(name=ma_name, biography=ma_profile)
+                                    l_a.creator = user
+                                    l_a.save()
+
+                                    rel = Relation(content_object=l_a, url=ma_discogs_url)
+                                    rel.save()
+
+                                if len(l_as) == 1:
+                                    l_a = l_as[0]
+                                    print l_as[0]
+
+                                if l_a:
+                                    ma = ArtistMembership.objects.get_or_create(parent=obj, child=l_a)
+
+                        except:
+                            pass
+
+                except:
+                    pass
+
+
+
+        type = result.get('type', None)
+        if type:
+            #log.debug('got type: %s' % (type))
+            obj.type = type
+
+        disambiguation = result.get('disambiguation', None)
+        if disambiguation:
+            #log.debug('got disambiguation: %s' % (disambiguation))
+            obj.disambiguation = disambiguation
+
+
+        # add mb relation
+        # moved to be completed before running mb_complete_* so could be redundant here
+        if mb_id:
+            mb_url = 'http://musicbrainz.org/artist/%s' % (mb_id)
+            try:
+                rel = Relation.objects.get(object_id=obj.pk, url=mb_url)
+            except:
+                log.debug('relation not here yet, add it: %s' % (mb_url))
+                rel = Relation(content_object=obj, url=mb_url)
+                rel.save()
+
+            obj.save()
+
+        cache.delete(lock_key)
 
     return obj
 
@@ -1544,7 +1551,6 @@ def mb_complete_artist_task(obj, mb_id, user=None):
 def mb_complete_label_task(obj, mb_id, user=None):
 
     log.info('complete label, mb_id: %s' % (mb_id))
-
 
 
     inc = ('url-rels', 'tags', 'aliases', )

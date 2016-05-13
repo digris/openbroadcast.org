@@ -1046,14 +1046,14 @@ var EditUi = function () {
             var orig_code = orig_selection.substring(orig_selection.length - 4).replace(/(?:\(|\))/g, '');
 
             // country code situation (musicbrainz)
-            if(orig_code !== undefined && lookup_value !== undefined && lookup_value.length == 2) {
+            if(orig_code !== undefined && lookup_value != undefined  && lookup_value.length == 2) {
                 if(lookup_value.toLowerCase() == orig_code.toLowerCase()) {
                     return 'match';
                 }
             }
 
             // country name situation (discogs)
-            if(orig_code !== undefined && lookup_value !== undefined && lookup_value.length > 2) {
+            if(orig_code !== undefined && lookup_value != undefined && lookup_value.length > 2) {
                 if(lookup_value.toLowerCase() == orig_name.toLowerCase()) {
                     return 'match';
                 }

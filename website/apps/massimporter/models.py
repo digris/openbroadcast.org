@@ -91,7 +91,7 @@ class Massimport(BaseModel):
         if not os.path.isdir(self.directory):
             raise IOError('directory "%s" does not exist' % self.directory)
 
-        log.debug('scanning directory: %s - reset: %s' % (self.directory, reset))
+        #log.debug('scanning directory: %s - reset: %s' % (self.directory, reset))
         for root, dirs, files in os.walk(self.directory):
             for file in files:
                 path = '{}'.format(os.path.join(root, file))
@@ -112,22 +112,26 @@ class Massimport(BaseModel):
                         cache_dir = os.path.dirname(cache_path)
 
                         try:
-                            os.makedirs(cache_dir)
+                            if not os.path.isdir(cache_dir):
+                                os.makedirs(cache_dir)
                         except OSError, e:
+                            print e
                             pass # file exists
+                        #else:
 
                         shutil.copyfile(aps_path, cache_path)
 
                         metadata, status = extract_metadata(path=aps_path)
 
                         importfile, created = MassimportFile.objects.get_or_create(path=rel_path, massimport=self)
-                        log.info('assigned file: %s - created: %s' % (importfile.path, created))
+                        #log.info('assigned file: %s - created: %s' % (importfile.path, created))
 
                     else:
                         log.debug('extension "%s" not allowed. (not %s)' % (ext, ', '.join(ALLOWED_EXTENSIONS)))
 
                 else:
-                    log.warning('file does not exists: %s' % path)\
+                    pass
+                    #log.warning('file does not exists: %s' % path)
 
 
 @receiver(post_save, sender=Massimport, dispatch_uid="massimport_post_save")
@@ -149,6 +153,7 @@ class MassimportFile(BaseModel):
 
     status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
     massimport = models.ForeignKey(Massimport, related_name='files')
+    import_file = models.ForeignKey(ImportFile, null=True)
     path = models.CharField(max_length=1024)
     uuid = models.UUIDField(default=uuid.uuid4)
 
@@ -187,8 +192,12 @@ def massimport_file_post_save(sender, instance, created, **kwargs):
 
         import_file = ImportFile(file=instance.cache_path,
                                  import_session=import_session)
+
+
         import_file.save()
 
+        instance.import_file = import_file
+        instance.save()
 
 
 """

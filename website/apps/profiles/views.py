@@ -1,3 +1,4 @@
+from django.db.models.query import EmptyResultSet
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import Http404, HttpResponseRedirect, HttpResponseForbidden
@@ -127,22 +128,6 @@ class ProfileListView(PaginationMixin, ListView):
         # special relation filters
         # TODO: maybe implement for profiles
         self.relation_filter = []
-        
-        artist_filter = self.request.GET.get('artist', None)
-        if artist_filter:
-            qs = qs.filter(media_release__artist__slug=artist_filter).distinct()
-            # add relation filter
-            fa = Artist.objects.filter(slug=artist_filter)[0]
-            f = {'item_type': 'artist' , 'item': fa, 'label': _('Artist')}
-            self.relation_filter.append(f)
-            
-        label_filter = self.request.GET.get('label', None)
-        if label_filter:
-            qs = qs.filter(label__slug=label_filter).distinct()
-            # add relation filter
-            fa = Label.objects.filter(slug=label_filter)[0]
-            f = {'item_type': 'label' , 'item': fa, 'label': _('Label')}
-            self.relation_filter.append(f)
 
         # apply filters
         self.filter = ProfileFilter(self.request.GET, queryset=qs)
@@ -163,8 +148,9 @@ class ProfileListView(PaginationMixin, ListView):
         self.filter = ProfileFilter(self.request.GET, queryset=qs)
         
         # tagging / cloud generation
-        tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=0)
-        self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
+        if qs.exists():
+            tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=0)
+            self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
 
         return qs
 

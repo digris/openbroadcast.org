@@ -87,7 +87,7 @@ VALID_BITRATES = [
     56, 64, 96, 128, 160, 196, 256, 320
 ]
 
-LOSSLESS_FORMATS = [
+LOSSLESS_CODECS = [
     'wav', 'aif', 'aiff', 'flac',
 ]
 
@@ -266,8 +266,14 @@ class Media(MigrationMixin):
         return self.get_duration(units='ms')
 
     @property
+    def is_lossless(self):
+        if self.master_encoding and self.master_encoding.lower() in LOSSLESS_CODECS:
+            return True
+
+    @property
     def bitrate(self):
-        return self.master_bitrate
+        if not self.is_lossless:
+            return self.master_bitrate
 
     @property
     def classname(self):
@@ -804,7 +810,6 @@ class MediaExtraartists(models.Model):
 
     artist = models.ForeignKey('alibrary.Artist', related_name='extraartist_artist', on_delete=models.CASCADE, blank=True, null=True)
     media = models.ForeignKey('Media', related_name='extraartist_media', on_delete=models.CASCADE, blank=True, null=True)
-    # function = models.CharField(max_length=128, blank=True, null=True)
     profession = models.ForeignKey(Profession, verbose_name='Role/Profession', related_name='media_extraartist_profession', blank=True, null=True)
 
     class Meta:
@@ -818,9 +823,6 @@ class MediaExtraartists(models.Model):
             return 'Credited "%s"' % (self.artist.name)
         else:
             return 'Credited "%s"' % self.pk
-
-
-
 
 
 class MediaArtists(models.Model):

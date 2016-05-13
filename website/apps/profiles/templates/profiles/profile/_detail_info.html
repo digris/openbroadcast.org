@@ -29,6 +29,15 @@
 			{{ object.pseudonym }}
 		</dd>
 		{% endif %}
+
+        {% if object.description %}
+		<dt>
+			{% trans "Disambiguation" %}:
+		</dt>
+		<dd>
+			{{ object.description }}
+		</dd>
+		{% endif %}
 		
 		{% if object.mentor %}
 		<dt>

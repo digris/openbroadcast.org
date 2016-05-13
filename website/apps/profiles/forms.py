@@ -141,7 +141,7 @@ class ProfileForm(ModelForm):
 
         self.helper.add_layout(layout)
 
-    biography = forms.CharField(widget=PagedownWidget(), required=False, help_text=_('Markdown enabled'))
+    biography = forms.CharField(widget=PagedownWidget(), required=False)
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
 
     def clean_user(self):

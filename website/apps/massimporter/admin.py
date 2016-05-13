@@ -11,6 +11,13 @@ class MassimportFileAdmin(admin.ModelAdmin):
 class MassimportFileInline(admin.TabularInline):
 
     model = MassimportFile
+    exclude = [
+        'import_file',
+    ]
+    readonly_fields = [
+        'uuid',
+        'path',
+    ]
 
     extra = 0
 
@@ -18,7 +25,7 @@ class MassimportFileInline(admin.TabularInline):
 class MassimportAdmin(admin.ModelAdmin):
 
     list_display = ('directory', 'created', 'user', 'status',)
-    list_filter = ('status', 'user',)
+    list_filter = ('status',)
     readonly_fields = ('created', 'updated',)
     date_hierarchy = 'created'
     inlines = [MassimportFileInline, ]

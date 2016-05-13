@@ -223,10 +223,13 @@ class MediaListView(PaginationMixin, ListView):
             
         # rebuild filter after applying tags
         self.filter = MediaFilter(self.request.GET, queryset=qs)
-        
 
-        tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=0)
-        self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
+
+        # tagging / cloud generation
+        if qs.exists():
+            tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=0)
+            self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
+
 
         return qs
     

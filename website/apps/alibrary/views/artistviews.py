@@ -189,9 +189,9 @@ class ArtistListView(PaginationMixin, ListView):
         self.filter = ArtistFilter(self.request.GET, queryset=qs)
         
         # tagging / cloud generation
-        tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=10)
-        self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
-        #self.tagcloud = tagcloud
+        if qs.exists():
+            tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=5)
+            self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
 
         return qs
 

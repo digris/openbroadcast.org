@@ -1,4 +1,6 @@
 #-*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import os
 import sys
 from optparse import make_option
@@ -8,6 +10,7 @@ from django.core.management.base import BaseCommand, NoArgsCommand
 from massimporter.models import Massimport
 
 class Massimporter(object):
+
     def __init__(self, * args, **kwargs):
         self.directory = kwargs.get('directory')
         self.rescan = kwargs.get('rescan')

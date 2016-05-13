@@ -55,6 +55,7 @@ CELERY_ROUTES = {
     #
     'media_asset.models.process_waveform': {'queue': 'convert'},
     'media_asset.models.process_format': {'queue': 'convert'},
+    'media_asset.process_waveform': {'queue': 'convert'},
     'media_asset.process_format': {'queue': 'convert'},
 
     #'exporter.models.process_task': {'queue': 'export'},

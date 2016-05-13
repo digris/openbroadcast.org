@@ -362,11 +362,9 @@ class MediaFilter(django_filters.FilterSet):
     @property
     def filterlist(self):
 
-
         flist = []
 
         if not hasattr(self, '_filterlist'):
-
 
             for name, filter_ in self.filters.iteritems():
 

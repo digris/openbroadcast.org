@@ -131,7 +131,7 @@
             <li>{{ item.duration_s|sec_to_time }}</li>
             <li>
                 {% if item.master_encoding %}{{ item.master_encoding|upper }}{% else %}ERROR{% endif %}
-                {% if item.master_bitrate %}| {{ item.master_bitrate }} Kbps{% endif %}
+                {% if item.bitrate %}| {{ item.bitrate }} Kbps{% endif %}
             </li>
 
         </ul>

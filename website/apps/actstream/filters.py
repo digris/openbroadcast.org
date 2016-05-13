@@ -48,11 +48,12 @@ class ActionFilter(django_filters.FilterSet):
             for name, filter_ in self.filters.iteritems():
                 qs = self.queryset.values_list(name, flat=False).order_by(name).annotate(n=models.Count("pk", distinct=True)).distinct()
                 mapped_qs = []
+
                 if name == 'target_content_type':
                     for item in qs:
                         ct_name = ContentType.objects.get(pk=item[0]).name
                         mapped_qs.append(
-                            (ct_name, item[1])
+                            (item[0], ct_name, item[1])
                         )
                     mapped_qs.sort(key=lambda tup: tup[0])
                     qs = mapped_qs
