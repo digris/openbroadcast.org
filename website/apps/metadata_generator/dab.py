@@ -4,6 +4,7 @@ import hashlib
 import logging
 import os
 import time
+import shutil
 from django.conf import settings
 from django.template import loader
 from wand.color import Color
@@ -172,6 +173,12 @@ class DABMetadataGenerator(object):
             key = 'default'
             path = os.path.join(SLIDE_BASE_DIR, key + '.png')
             url = SLIDE_BASE_URL + key + '.png'
+
+            shutil.copyfile(SLIDE_DEFAULT_IMAGE, path)
+
+            return url
+
+            # directly save default image without compositing
 
         overlay_image = Image(filename=overlay_image_path)
 
