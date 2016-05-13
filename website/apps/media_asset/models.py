@@ -87,7 +87,7 @@ class Waveform(TimestampedModel, UUIDModel):
         we need to insert an attitional directory here - as else 32000 fs limit could make problems
         """
         dir = uuid.replace('-', '/')
-        dir = dir[:2] + '/' + dir[2:]
+        #dir = dir[:2] + '/' + dir[2:]
 
         return os.path.join(ASSET_DIR, 'waveform', dir)
 
@@ -249,7 +249,7 @@ class Format(TimestampedModel, UUIDModel):
         we need to insert an attitional directory here - as else 32000 fs limit could make problems
         """
         dir = uuid.replace('-', '/')
-        dir = dir[:2] + '/' + dir[2:]
+        #dir = dir[:2] + '/' + dir[2:]
 
         return os.path.join(ASSET_DIR, 'format', dir)
 
