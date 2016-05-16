@@ -1,10 +1,8 @@
 <div 
 	class="hoverable chip fix {{ object.source }} emission theme-{{ object.color }}"
 	data-resource-uri={{ object.resource_uri }}
-	id="{{ object.uuid }}" 
-	data-tip="<div class='tooltip-emission'>{% if object.series %}<h3>{{ object.series|shorten(48)|escape }}{% if object.series_number %} #{{ object.series_number }}{% endif %}</h3>{% endif %}<h3>{{ object.name|shorten(36)|escape }}</h3><br><i class='icon-tasks'></i> {{ object.type }}<br>{{ object.start }} - {{ object.end }}<br>scheduled by: {{ object.user.display_name|escape }}</div>"
-	style="top:{{ top }}px;left:-1px;width:100%;
-">
+	id="{{ object.uuid }}"
+	style="top:{{ top }}px;left:-1px;width:100%;">
 
 
 	<dl class="cbrd" style="height:{{ height - 1 }}px;">

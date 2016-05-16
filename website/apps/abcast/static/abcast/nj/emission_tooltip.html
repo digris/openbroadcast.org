@@ -1,0 +1,49 @@
+<section class="title">
+
+
+
+    {% if object.series %}
+        <h3>
+            {{ object.series|shorten(48) }}
+            {% if object.series_number %}#{{ object.series_number }}{% endif %}
+            <small class="pull-right">{{ object.type_display }}</small>
+        </h3>
+        <h3>{{ object.name|shorten(48) }}</h3>
+    {% else %}
+        <h3>{{ object.name|shorten(48) }} <small class="pull-right">{{ object.type_display }}</small></h3>
+    {% endif %}
+
+	<ul class="unstyled">
+		<li>
+			<i class="icon-time"></i> {{ object.time_start|format_datetime('time') }} - {{ object.time_end|format_datetime('time') }} | {{ object.time_start|format_datetime('date') }}
+		</li>
+		{% if object.user %}
+		<li>
+			<i class="icon-user"></i>
+            <a href="{{ object.user.absolute_url }}">{{ object.user.display_name }}</a>
+            <small>scheduler</small>
+		</li>
+		{% endif %}
+		{% if object.user_co %}
+		<li>
+			<i class="icon-user"></i>
+            <a href="{{ object.user_co.absolute_url }}">{{ object.user_co.display_name }}</a>
+            <small>creator</small>
+		</li>
+		{% endif %}
+	</ul>
+</section>
+
+<section class="description">
+
+    {% if object.content_object.main_image %}
+    <img src="{{ object.content_object.main_image }}" style="max-height: 120px;">
+    {% endif %}
+
+    {% if object.content_object.description %}
+	<div class="description markdown-remove">{{ object.content_object.description|shorten(240)}}</div>
+    {% endif %}
+
+</section>
+
+

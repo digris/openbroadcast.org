@@ -623,21 +623,17 @@ var EmissionApp = function () {
     };
 
     this.dialogue = function (uri, title) {
-        /*
-         * Since the dialogue isn't really a tooltip as such, we'll use a dummy
-         * out-of-DOM element as our target instead of an actual element like document.body
-         */
+
         $('<div />').qtip({
             content: {
                 text: '<i class="icon-spinner icon-spin"></i> Loading data',
                 ajax: {
-                    url: uri, // URL to the local file
-                    type: 'GET', // POST or GET
-                    data: {}, // Data to pass along with your request
+                    url: uri,
+                    type: 'GET',
+                    data: {},
                     once: false,
                     dataType: 'json',
                     success: function (data, status) {
-                        // Process the data
 
                         // Set the content manually (required!)
                         var d = {
@@ -646,15 +642,8 @@ var EmissionApp = function () {
                             height: 200,
                             object: data
                         };
-
-                        console.info(data.content_object)
-
                         var html = nj.render('abcast/nj/emission_popup.html', d);
-
-
-                        // this.set('content.title.text', data.name);
                         this.set('content.text', html);
-
                         self.dialogue_bindings(this);
 
                     }
@@ -663,23 +652,20 @@ var EmissionApp = function () {
             },
             position: {
                 my: 'center',
-                at: 'center', // Center it...
-                target: $(window) // ... in the window
+                at: 'center',
+                target: $(window)
             },
             show: {
-                ready: true, // Show it straight away
+                ready: true,
                 modal: {
-                    on: true, // Make it modal (darken the rest of the page)...
-                    blur: false // ... but don't close the tooltip when clicked
-                },
-                // effect: false
+                    on: true,
+                    blur: false
+                }
             },
             hide: false,
             style: {
                 classes: 'qtip-dark qtip-dialogue qtip-shadow qtip-rounded popup-emission'
-                // width: '1000px'
             },
-            // style : 'qtip-dark qtip-dialogue qtip-shadow qtip-rounded popup-emission',
             events: {
                 render: function (event, api) {
                     $('a.btn', api.elements.content).click(api.hide);
@@ -728,21 +714,30 @@ var EmissionApp = function () {
             self.dom_element.bind("drag", self.drag_handler);
         }
 
-        /*
-         * tips
-         */
+
         self.dom_element.qtip({
             content: {
-                text: function (api) {
-                    return $(this).attr('data-tip');
+                text: function(event, api) {
+                    $.ajax({
+                        url: $(this).data('resource-uri')
+                    })
+                    .then(function(data) {
+                        var html = nj.render('abcast/nj/emission_tooltip.html', {
+                            object: data
+                        });
+                        api.set('content.text', html);
+                    }, function(xhr, status, error) {
+                        api.set('content.text', status + ': ' + error);
+                    });
+                    return 'Loading...';
                 }
             },
             position: {
                 my: 'left top',
-                at: 'top right',
+                at: 'top right'
             },
             style: {
-                classes: 'qtip-default'
+                classes: 'qtip-dark qtip-dialogue qtip-shadow qtip-rounded tooltip-emission'
             },
             show: {
                 delay: 10
@@ -751,6 +746,28 @@ var EmissionApp = function () {
                 delay: 10
             }
         });
+
+
+        // self.dom_element.qtip({
+        //     content: {
+        //         text: function (api) {
+        //             return $(this).attr('data-tip');
+        //         }
+        //     },
+        //     position: {
+        //         my: 'left top',
+        //         at: 'top right',
+        //     },
+        //     style: {
+        //         classes: 'qtip-default'
+        //     },
+        //     show: {
+        //         delay: 10
+        //     },
+        //     hide: {
+        //         delay: 10
+        //     }
+        // });
 
     };
 
