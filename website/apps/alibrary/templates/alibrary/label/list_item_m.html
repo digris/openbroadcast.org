@@ -58,11 +58,25 @@
 
     <div class="list_body_item c4">
 
+        <ul class="unstyled">
+            <li><span class="label">{% trans 'Created' %}:</span> {{ item.created|date:'SHORT_DATETIME_FORMAT' }}</li>
+            {% if item.updated %}
+            <li><span class="label">{% trans 'Edited' %}:</span> {{ item.updated|date:'SHORT_DATETIME_FORMAT'}}</li>
+
+                {% if item.last_editor %}
+                    <li><span class="label">{% trans 'Last Editor' %}:</span> <a href="{{ item.last_editor.get_absolute_url }}">{{ item.last_editor.profile.get_display_name }}</a></li>
+                {% endif %}
+
+            {% endif %}
+        </ul>
+
+        {% comment %}
         <ul class="tags unstyled">
             {% for tag in item.tags|slice:":9" %}
                 <li class="{% if tag.pk in active_tags %}__active{% endif %}">{{ tag.name|truncate_chars_inner:10 }}</li>
             {% endfor %}
         </ul>
+        {% endcomment %}
 
     </div>
 

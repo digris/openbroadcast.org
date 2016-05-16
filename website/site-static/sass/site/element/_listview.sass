@@ -720,7 +720,8 @@
       .c2
         width: 260px
 
-      .c3 // links
+      .c3.external // links
+        width: 160px
         .relations > ul
           position: relative
           top: 16px
@@ -731,31 +732,12 @@
               display: none
 
       .c4
-        //background-color: orangered
-        // cloud (inline)
         position: relative
-        ul.tags
-          position: absolute
-          bottom: 0px
-          right: 0
-          opacity: 0.88
-          padding-bottom: 2px
-          li
-            margin: 2px 2px 0 0
-            padding: 0 4px
-            line-height: 14px
-            //background: white
-            //color: #333
-            //border: 1px solid #dfdfdf
-            background: #333
-            color: white
-            border: 1px solid #343434
-            float: right
-            text-transform: uppercase
-            &.active
-              background: $primary-color-a
-              border-color: $primary-color-a
-              color: white
+        ul
+          text-align: right
+        li .label
+          opacity: 0.5
+
 
       .c5
         width: 40px
