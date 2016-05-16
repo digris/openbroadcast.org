@@ -1,14 +1,13 @@
 <section class="title">
 
-
-
     {% if object.series %}
         <h3>
+            <span class="label">Series:</span>
             {{ object.series|shorten(48) }}
             {% if object.series_number %}#{{ object.series_number }}{% endif %}
             <small class="pull-right">{{ object.type_display }}</small>
         </h3>
-        <h3>{{ object.name|shorten(48) }}</h3>
+        <h3><span class="label">Title:</span> {{ object.name|shorten(48) }}</h3>
     {% else %}
         <h3>{{ object.name|shorten(48) }} <small class="pull-right">{{ object.type_display }}</small></h3>
     {% endif %}

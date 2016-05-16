@@ -4,26 +4,30 @@
 	id="{{ object.uuid }}"
 	style="top:{{ top }}px;left:-1px;width:100%;">
 
-
 	<dl class="cbrd" style="height:{{ height - 1 }}px;">
-		<dt style="">
+		<dt>
 
 			<a href="{{ object.content_object.absolute_url }}" data-resource_uri="{{ object.resource_uri }}">
-			{{ object.name|escape }}
+
+                {% if object.series %}
+                    {{ object.series|escape }}
+                    {% if object.series_number %}#{{ object.series_number }}{% endif %}
+                {% else %}
+                    {{ object.name|escape }}
+                {% endif %}
 			</a>
 
 			{% if object.playing %}
-			<i class="icon-bullhorn pull-right"></i>
-                asd
+			    <i class="icon-bullhorn pull-right"></i>
 			{% endif %}
 
 			{% if object.locked %}
-			<i class="icon-lock pull-right"></i>
+			    <i class="icon-lock pull-right"></i>
 			{% endif %}
             {% if height > 20 %}
-            <div class="time">
-                <span>{{ object.start }} - {{ object.end }}</span>
-            </div>
+                <div class="time">
+                    <span>{{ object.start }} - {{ object.end }}</span>
+                </div>
             {% endif %}
 
 		</dt>
