@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 import logging
 import re
+import types
+
 import requests
 
 from alibrary.models import Release, Label, Artist, Media
@@ -255,7 +257,11 @@ class MusicbrainzAPILookup(APILookup):
             import xmltodict
             import json
             try:
-                res['isni_code'] = json.loads(json.dumps(xmltodict.parse(r.text)))['metadata']['artist']['isni-list']['isni']
+                isni_code = json.loads(json.dumps(xmltodict.parse(r.text)))['metadata']['artist']['isni-list']['isni']
+                if isinstance(isni_code, types.ListType):
+                    res['isni_code'] = isni_code[0]
+                else:
+                    res['isni_code'] = isni_code
             except:
                 pass
 
