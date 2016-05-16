@@ -149,23 +149,35 @@ def provider_search(request, *args, **kwargs):
             url = 'http://%s/ws/2/%s?query=barcode:%s&fmt=json' % (MUSICBRAINZ_HOST, _type, t_query)
         else:
             #query = re.sub('[^A-Za-z0-9 :]+', '', query)
-            query = asciiDammit(query)
+            t_query = asciiDammit(query)
 
             """
             escape lucene special characters:
             https://lucene.apache.org/core/4_3_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description
             """
-            t_query = query\
+            t_query = t_query\
                 .replace('!', '\!')\
                 .replace('+', '\+')\
                 .replace('-', '\-')\
                 .replace('~', '\~')\
                 .replace('*', '\*')\
-                .replace('?', '\?')
+                .replace('?', '\?')\
+                .replace('/', '\/')
 
             t_query = urllib.quote(t_query)
 
             url = 'http://%s/ws/2/%s?query=%s&fmt=json' % (MUSICBRAINZ_HOST, _type, t_query)
+
+            query = urllib.unquote(t_query)
+            query = query\
+                .replace('\!', '!')\
+                .replace('\+', '+')\
+                .replace('\-', '-')\
+                .replace('\~', '~')\
+                .replace('\*', '*')\
+                .replace('\?', '?')\
+                .replace('\/', '/')
+
 
 
         log.debug('query url: %s' % (url))
