@@ -89,6 +89,18 @@ DEFAULT_PLAYLIST_BROADCAST_STATUS_CHOICES = (
     (99, _('Error')),
 )
 
+DEFAULT_ARTIST_JOIN_PHRASE_CHOICES = (
+    ('&', _('&')),
+    (',', _(',')),
+    ('and', _('and')),
+    ('feat', _('feat.')),
+    ('presents', _('presents')),
+    ('meets', _('meets')),
+    ('with', _('with')),
+    ('vs', _('vs.')),
+    ('-', _('-')),
+)
+
 
 """
 choice settings
@@ -123,4 +135,9 @@ PLAYLIST_BROADCAST_STATUS_CHOICES = getattr(
     settings,
     'ALIBRARY_PLAYLIST_BROADCAST_STATUS_CHOICES',
     DEFAULT_PLAYLIST_BROADCAST_STATUS_CHOICES
+)
+ARTIST_JOIN_PHRASE_CHOICES = getattr(
+    settings,
+    'ALIBRARY_ARTIST_JOIN_PHRASE_CHOICES',
+    DEFAULT_ARTIST_JOIN_PHRASE_CHOICES
 )

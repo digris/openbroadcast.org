@@ -29,6 +29,7 @@ from lib.fields.uuidfield import UUIDField as RUUIDField
 from lib.signals.unsignal import disable_for_loaddata
 from lib.util.sha1 import sha1_by_file
 from tagging.registry import register as tagging_register
+from alibrary import settings as alibrary_settings
 from alibrary.models.basemodels import MigrationMixin, License, Relation, Profession
 from alibrary.models.playlistmodels import PlaylistItem, Playlist
 from alibrary.util.echonest import EchonestWorker
@@ -828,18 +829,8 @@ class MediaExtraartists(models.Model):
 class MediaArtists(models.Model):
     artist = models.ForeignKey('alibrary.Artist', related_name='artist_mediaartist')
     media = models.ForeignKey('Media', related_name='media_mediaartist')
-    JOIN_PHRASE_CHOICES = (
-        ('&', _('&')),
-        (',', _(',')),
-        ('and', _('and')),
-        ('feat.', _('feat.')),
-        ('presents.', _('presents')),
-        ('meets.', _('meets')),
-        ('with.', _('with')),
-        ('vs.', _('vs.')),
-        ('-', _('-')),
-    )
-    join_phrase = models.CharField(verbose_name="join phrase", max_length=12, default=None, choices=JOIN_PHRASE_CHOICES, blank=True, null=True)
+
+    join_phrase = models.CharField(verbose_name="join phrase", max_length=12, default=None, choices=alibrary_settings.ARTIST_JOIN_PHRASE_CHOICES, blank=True, null=True)
     position = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:

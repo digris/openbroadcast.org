@@ -495,18 +495,8 @@ class ReleaseExtraartists(models.Model):
 class ReleaseAlbumartists(models.Model):
     artist = models.ForeignKey('alibrary.Artist', related_name='release_albumartist_artist')
     release = models.ForeignKey('Release', related_name='release_albumartist_release')
-    JOIN_PHRASE_CHOICES = (
-        ('&', _('&')),
-        (',', _(',')),
-        ('and', _('and')),
-        ('feat.', _('feat.')),
-        ('presents.', _('presents')),
-        ('meets.', _('meets')),
-        ('with.', _('with')),
-        ('vs.', _('vs.')),
-        ('-', _('-')),
-    )
-    join_phrase = models.CharField(verbose_name="join phrase", max_length=12, default=None, choices=JOIN_PHRASE_CHOICES, blank=True, null=True)
+
+    join_phrase = models.CharField(verbose_name="join phrase", max_length=12, default=None, choices=alibrary_settings.ARTIST_JOIN_PHRASE_CHOICES, blank=True, null=True)
     position = models.PositiveIntegerField(null=True, blank=True)
     
     class Meta:
