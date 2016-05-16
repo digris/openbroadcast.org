@@ -160,7 +160,7 @@ SchedulerApp = function () {
                 var data = {
                     date: date,
                     channel_id: self.channel_id
-                }
+                };
 
                 $.ajax({
                     type: "POST",
@@ -587,7 +587,7 @@ var EmissionApp = function () {
                     }
                 });
             }
-            ;
+            
             if (action == 'delete') {
 
                 var url = self.api_url;
@@ -608,7 +608,6 @@ var EmissionApp = function () {
                     }
                 });
             }
-            ;
 
         });
 

@@ -475,12 +475,6 @@ aplayer.ui.update = function(aplayer) {
 	
 		var container_screen = $('#progress_bar');
 		if(container_screen) {
-			$('div.time-current > span', container_screen).html(util.format_time(aplayer.states.position));
-			$('div.time-total > span', container_screen).html(util.format_time(aplayer.states.duration));
-			
-			// $('.indicator .inner', container_screen).css('width', aplayer.states.position_rel + '%');
-			//$('.playhead .indicator', container_screen).css('width', aplayer.states.position_rel + '%');
-			
 			// playlist inline progress
 			$('.indicator .inner', '.item.playlist.playing').css('width', aplayer.states.position_rel + '%');
 		}
@@ -525,7 +519,7 @@ aplayer.ui.screen_display = function(index) {
 		item.images = []
 		item.images.push(item.release.main_image);
 	} catch(err) {};
-	
+
     var html = nj.render('aplayer/nj/popup_screen.html', {
         object: item
     });

@@ -32,7 +32,6 @@
         <!-- end: css elements added by sub-templates -->
 
         <!-- start: compressor js-head -->
-	    <!--<script src="{{ STATIC_URL }}js/lib/jquery-1.8.1.min.js"></script>-->
 	    <script src="{{ STATIC_URL }}js/lib/jquery-1.8.3.js"></script>
 	    <script src="{{ STATIC_URL }}js/lib/jquery-ui-1.9.2.custom.min.js"></script>
         <!-- end: compressor js-head -->
@@ -176,7 +175,7 @@
         <script src="{{ STATIC_URL }}js/lib/jquery.jgrowl.min.js"></script>
         <script src="{{ STATIC_URL }}js/lib/jquery.ajax-queue.js"></script>
         <script src="{{ STATIC_URL }}js/lib/ba-debug.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/nunjucks/filters.js"></script>
+        <!--<script src="{{ STATIC_URL }}js/lib/nunjucks/filters.js"></script>-->
         <script src="{{ STATIC_URL }}js/lib/jquery.daterangepicker.js"></script>
         <script src="{{ STATIC_URL }}js/lib/jquery.countdown.js"></script>
         <script src="{{ STATIC_URL }}js/lib/jquery.smartupdater.js"></script>
@@ -190,7 +189,6 @@
         <script src="{{ STATIC_URL }}js/lib/jquery.boxy.js"></script>
         <script src="{{ STATIC_URL }}js/lib/jquery.autogrow.js"></script>
         <script src="{{ STATIC_URL }}js/lib/jquery.qtip.js"></script>
-        <!--<script src="{{ STATIC_URL }}js/lib/jquery-qtip-3.0.3/jquery.qtip.js"></script>-->
         <script src="{{ STATIC_URL }}js/lib/jquery.tools.min.js"></script>
         <script src="{{ STATIC_URL }}js/lib/jquery.purl.js"></script>
         <script src="{{ STATIC_URL }}js/lib/jquery.scrollfollow.js"></script>
@@ -206,9 +204,6 @@
         <script src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-popover.js"></script>
         <script src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-button.js"></script>
 
-        <!--
-        <script src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-dropdown.js"></script>
-        -->
         <script src="{{ STATIC_URL }}js/lib/ICanHaz.js"></script>
         <script src="{{ STATIC_URL }}js/lib/pagedown/Markdown.Converter.js"></script>
         <script src="{{ STATIC_URL }}js/lib/pagedown/Markdown.Sanitizer.js"></script>
@@ -281,12 +276,11 @@
 
         <script type="text/javascript" src="{{ STATIC_URL }}alibrary/js/playlist.js"></script>
         <script>
-
             var alibrary = alibrary || {};
-
             $(function(){
                 alibrary.collector = new CollectorApp;
                 alibrary.collector.api_url = "{% url "api_dispatch_list" resource_name='library/playlist' api_name='v1'%}";
+                alibrary.collector.mode = 'main';
                 alibrary.collector.init();
             });
         </script>

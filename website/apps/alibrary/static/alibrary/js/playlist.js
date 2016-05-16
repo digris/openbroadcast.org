@@ -355,6 +355,7 @@ CollectorApp = (function () {
     var self = this;
     this.api_url;
     this.playlist_app;
+    this.mode = 'main'; // or popup
 
     this.active_playlist = false;
 
@@ -456,7 +457,15 @@ CollectorApp = (function () {
 
 
             if(self.media_to_collect && self.media_to_collect.length){
-                self.dialogue(e);
+
+                if(self.mode == 'main') {
+                    self.dialogue(e)
+                } else if(self.mode == 'popup') {
+                    self.dialogue_popup(e)
+                } else {
+                    return;
+                }
+
             }
 
         });
@@ -662,6 +671,7 @@ CollectorApp = (function () {
     };
 
 
+    // dialogue version used for inline selection (main window)
     this.dialogue = function (e) {
 
         $('<div />').qtip({
@@ -692,7 +702,7 @@ CollectorApp = (function () {
                 }
             },
             hide: false,
-            style: 'qtip-dark qtip-dialogue qtip-shadow qtip-rounded popup-select-playlist',
+            style: 'qtip-dark qtip-dialogue qtip-shadow qtip-rounded select-playlist',
             events: {
                 render: function (e, api) {
                     // $('body *').click(api.hide);
@@ -709,6 +719,35 @@ CollectorApp = (function () {
 
                 }
             }
+        });
+    };
+
+    // dialogue version used for full-screen selection (popup window)
+    this.dialogue_popup = function (e) {
+
+        $('<div />').qtip({
+            content: {
+                text: function (e, api) {
+                    
+                    return self.get_dialog_content(api);
+                },
+                title: false
+            },
+            position: {
+                my: 'center',
+                at: 'center',
+                target: $(window)
+            },
+            show: {
+                ready: true,
+                modal: {
+                    on: false,
+                    blur: false
+                }
+            },
+            hide: false,
+            style: 'qtip-dark qtip-dialogue select-playlist-popup',
+
         });
     };
 

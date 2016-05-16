@@ -22,9 +22,6 @@ def version_by_git(context):
     except Exception, e:
         install_time = None
 
-
-    print 'install_time: %s' % install_time
-
     context.update({
         'commit': commit,
         'timestamp': timestamp,

@@ -1,7 +1,7 @@
 $popup-height: 360px
 $popup-width: 480px
 
-.popup-select-playlist
+.select-playlist
 
   height: $popup-height + 8 !important
 
@@ -43,14 +43,10 @@ $popup-width: 480px
 
     section.listing
       height: $popup-height - 70px
-      //max-height: 200px !important
-      // width: 200px
-
       p.notice
         color: white
         text-align: center
         padding-top: 20px
-
 
       .pane
         background: #444
@@ -101,8 +97,6 @@ $popup-width: 480px
         &.hidden
           opacity: 0.8
 
-
-
     section.form
       height: 30px
       .btn-toolbar
@@ -115,7 +109,6 @@ $popup-width: 480px
 
           padding-left: 4px
           margin-bottom: 0
-          width: 100%
           float: left
           width: 372px
           //height: 10px
@@ -150,3 +143,31 @@ $popup-width: 480px
             &.selected
               border-color: $primary-color-b
 
+
+$popup-window-width: 400px
+$popup-window-height: 800px
+$popup-content-width: 378px
+.select-playlist-popup
+  @extend .select-playlist
+  height: 100% !important
+  width: 100% !important
+  max-width: 100% !important
+  border: none !important
+  > div
+    section.title
+      display: block
+    section.search
+      height: 30px
+      input
+        padding-left: 4px
+        margin-bottom: 0
+        float: left
+        width: $popup-content-width
+
+    section.listing
+      height: $popup-window-height - 90px
+
+    section.form
+      .btn-toolbar
+        input
+          width: $popup-content-width - 100px
