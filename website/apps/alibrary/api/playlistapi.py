@@ -414,7 +414,7 @@ class SimplePlaylistResource(ModelResource):
 
     class Meta:
         #queryset = Playlist.objects.order_by('-created').all()
-        queryset = Playlist.objects.order_by('-updated').all()
+        queryset = Playlist.objects.order_by('-updated').all().nocache()
         list_allowed_methods = ['get',]
         detail_allowed_methods = ['get',]
         resource_name = 'library/simpleplaylist'
