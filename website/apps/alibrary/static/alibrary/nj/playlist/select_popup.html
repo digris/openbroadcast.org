@@ -27,6 +27,15 @@
         {% for item in data.objects %}
             {% include "alibrary/nj/playlist/select_popup_item.html" %}
         {% endfor %}
+
+        {% if data.meta.next %}
+            <p class="load-more">
+                <a href="#" data-action="load-more" class="btn">
+                    Load More
+                </a>
+            </p>
+        {% endif %}
+
     </div>
 </section>
 

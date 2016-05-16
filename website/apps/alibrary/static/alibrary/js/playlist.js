@@ -356,6 +356,7 @@ CollectorApp = (function () {
     this.api_url;
     this.playlist_app;
     this.mode = 'main'; // or popup
+    this.qs_limit = 20;
 
     this.active_playlist = false;
 
@@ -543,12 +544,23 @@ CollectorApp = (function () {
                     input.val('');
                 }
             }
+            if (action == 'load-more') {
+                alert('Not implemented yet - Sorry.')
+            }
         });
         el.on('keydown', 'input.name', function (e) {
 
             if(e.keyCode == 13) {
                 e.preventDefault();
                 $(this).parent().find('a[data-action="save"]').click()
+            }
+
+        });
+        el.on('keydown', function (e) {
+
+            if(e.keyCode == 27) {
+                e.preventDefault();
+                api.hide();
             }
 
         });
@@ -649,9 +661,9 @@ CollectorApp = (function () {
             }, 10);
             return self.render_dialog_content(self.playlists_local)
         } else {
-            var uri = '/api/v1/library/simpleplaylist/'
+            var uri = '/api/v1/library/simpleplaylist/';
             $.ajax({
-                url: uri + '?limit=50&type__in=playlist,basket',
+                url: uri + '?limit=' + self.qs_limit + '&type__in=playlist,basket',
                 success: function (data) {
                     self.playlists_local = data;
                     api.set({
@@ -666,7 +678,12 @@ CollectorApp = (function () {
     };
 
     this.render_dialog_content = function (data) {
-        var html = nj.render('alibrary/nj/playlist/select_popup.html', { data: data });
+
+        console.debug('pl data:', data)
+
+        var html = nj.render('alibrary/nj/playlist/select_popup.html', {
+            data: data
+        });
         return html;
     };
 
@@ -698,7 +715,8 @@ CollectorApp = (function () {
                 ready: true,
                 modal: {
                     on: false,
-                    blur: true
+                    blur: true,
+                    escape: true
                 }
             },
             hide: false,
@@ -728,7 +746,6 @@ CollectorApp = (function () {
         $('<div />').qtip({
             content: {
                 text: function (e, api) {
-                    
                     return self.get_dialog_content(api);
                 },
                 title: false
@@ -746,7 +763,7 @@ CollectorApp = (function () {
                 }
             },
             hide: false,
-            style: 'qtip-dark qtip-dialogue select-playlist-popup',
+            style: 'qtip-dark qtip-dialogue select-playlist-popup'
 
         });
     };
