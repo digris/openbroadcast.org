@@ -525,14 +525,7 @@ aplayer.ui.screen_display = function(index) {
 		item.images = []
 		item.images.push(item.release.main_image);
 	} catch(err) {};
-
-    // refactored to nj
-    /*
-	var html = ich.tpl_screen({object: item});
-	$( "#aplayer_screen" ).html(html);
-    */
-
-    // moving to nj
+	
     var html = nj.render('aplayer/nj/popup_screen.html', {
         object: item
     });
@@ -558,37 +551,55 @@ aplayer.ui.update_emission = function(data) {
 /*********************************************************************************
  * Updates the playlist-screen.
  * (renders the tpl_media.html template)
+ * refactored to junjucks - see below
+ *********************************************************************************/
+// aplayer.ui.playlist_display = function(aplayer, target) {
+//
+// 	target.html('');
+//
+// 	var media_listing = new Array();
+//
+// 	for (x in aplayer.vars.playlist) {
+// 		var media = aplayer.vars.playlist[x];
+//
+// 		var media_name = 'unknown';
+// 		var artist_name = 'unknown';
+//
+// 		if(media.name) {
+// 			media_name = media.name;
+// 		}
+// 		if(media.artist) {
+// 			artist_name = media.artist.name;
+// 		}
+//
+// 		media_listing[x] = {
+// 			media: media,
+// 			name: media.name,
+// 		};
+//
+// 		media.formated_duration = util.format_time(Number(media.duration / 1000))
+//
+// 		var html = ich.tpl_media({'media': media});
+// 		target.append(html);
+//
+// 	}
+//
+// };
+/*********************************************************************************
+ * Updates the playlist-screen.
+ * (refactored nunjucks version)
  *********************************************************************************/
 aplayer.ui.playlist_display = function(aplayer, target) {
 
 	target.html('');
 
-	var media_listing = new Array();
-	
-	for (x in aplayer.vars.playlist) {
-		var media = aplayer.vars.playlist[x];
-		
-		var media_name = 'unknown';
-		var artist_name = 'unknown';
-		
-		if(media.name) {
-			media_name = media.name;
-		}
-		if(media.artist) {
-			artist_name = media.artist.name;
-		}
-
-		media_listing[x] = {
-			media: media,
-			name: media.name,
-		};
-		
-		media.formated_duration = util.format_time(Number(media.duration / 1000))
-
-		var html = ich.tpl_media({'media': media});
+	$.each(aplayer.vars.playlist, function(i, media){
+		var html = nj.render('aplayer/nj/popup_player_item.html', {
+			object: media
+		});
 		target.append(html);
-		
-	}
+
+	});
 
 };
 

@@ -8,142 +8,7 @@
 {% endblock %}
 
 {% block inner %}
-<!-- include unparsed template for js rendering -->
-<!-- TODO: maybe refactor to nunjucks -->
-<script id="tpl_screen" type="text/html">
-    {% verbatim %}
-    <div class="row-fluid aplayer-information">
-        <div class="span8 information">
-            <div class="padded-x padded-y">
-                <h2>
-                    <a class="parent_link" href="{{ object.release.absolute_url }}">{{ object.release.name }}</a>
-
-                    {{#object.release.releasedate}}
-                    <small> {{ object.release.releasedate }}</small>
-                    {{/object.release.releasedate}}
-
-                    <!--
-                    {{#object.release.catalognumber}}
-                    <small> {{ object.release.catalognumber }}</small>
-                    {{/object.release.catalognumber}}
-
-                    {{#object.release.label}}
-                    {{ object.release.label.name }}
-                    {{/object.release.label}}
-                    -->
-                </h2>
-                <h1>{{ object.name }}</h1>
-
-                <h2><a class="parent_link" href="{{ object.artist.absolute_url }}">{{ object.artist.name }}</a></h2>
-            </div>
-        </div>
-
-        <div class="span4 image">
-            <div class="padded-x padded-y">
-
-                {{#object.images}}
-                <img class=" pull-right" id="" src="{{.}}">
-                {{/object.images}}
-
-            </div>
-        </div>
-
-    </div>
-
-    <div class="row-fluid aplayer-progress" id="progress_bar">
-
-        <!-- main wrapper -->
-        <div class="indicator playhead hoverable">
-
-            <!-- background layer (for hover/active/etc ? ) -->
-            <div class="background">
-
-                <!-- holder for indicator (animated transparent png-24 bg.image) -->
-                <div class="indicator">
-
-                    <!-- holder for handler (animated transparent png-24 bg.image) -->
-                    <div class="handler">
-
-                        <!-- actual waveform (transparent inner) -->
-                        <div class="waveform">
-
-                            <img data-href="{{ object.waveform_image }}" src="{{ object.waveform_image }}"
-                                 style="width: 100%; height: 100%"/></img>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="clear"></div>
-        </div>
-
-        <div class="row-fluid aplayer-controls">
-            <div class="span6">
-                <ul class="horizontal unstyled">
-
-                    <li class="prev">
-                        <a href="#prev" title="Previous"> <i class="icon-step-backward"></i> </a>
-                    </li>
-
-                    <li class="hidden-while-paused">
-                        <a href="#pause" title="Stop"> <i class="icon-pause"></i> </a>
-                    </li>
-                    <li class="hidden-while-playing hidden-while-buffering">
-                        <a href="#play" title="Play"> <i class="icon-play"></i> </a>
-                    </li>
-
-                    <li class="next">
-                        <a href="#next" title="Next"> <i class="icon-step-forward"></i> </a>
-                    </li>
-
-                </ul>
-            </div>
-
-        </div>
-    </div>
-    {% endverbatim %}
-</script>
-
-<script id="tpl_media" type="text/html">
-    {% verbatim %}
-    <div class="item playlist media {{media.uuid}} hoverable" id="{{media.uuid}}" id="playlist_item_{{media.id}}" data-item_id="{{media.id}}" >
-
-        <div class="wrapper">
-
-            <div class="row-fluid">
-                <div class="span1 icon">
-                    <i class="icon-play"></i>
-                </div>
-                <div class="span9 information">
-                    <h1>{{media.name}}</h1>
-                    <h2><a class="parent_link" href="{{media.artist.absolute_url}}">{{media.artist.name}}</a> | <a class="parent_link" href="{{media.release.absolute_url}}">{{media.release.name}}</a></h2>
-                </div>
-                <div class="span2 duration">
-                    <span>
-                        {{ media.formated_duration }}
-                        <!--<a class="" data-action="collect" href="#"><i class="icon-plus icon-large"></i></a>-->
-                    </span>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="indicator">
-            <div class="wrapper">
-                <div class="inner">&nbsp;</div>
-            </div>
-        </div>
-    </div>
-    {% endverbatim %}
-
-</script>
-
-
-
+    
     <div id="wrap">
         <div class="navbar navbar-inverse navbar-fixed-top" style="height: 34px">
             <div class="navbar-inner">
@@ -249,19 +114,6 @@
     <footer class="footer" style="position: fixed; bottom: 0; width: 100%;">
         <div class="__container">
 
-            <!--
-		<form class="form-horizontal">
-		  <div class="control-group" id="playlists_inline_selector">
-		    <label class="control-label" for="inputEmail">{% trans "Active Basket" %}</label>
-		    <div class="controls">
-				<select>
-
-				</select>
-		    </div>
-		  </div>
-		</form>
-        -->
-
         <span class="pull-left">
             <div class="noUiSlider" id="aplayer_volume" style="margin: 4px 0 0 10px;"></div>
         </span>
@@ -288,21 +140,5 @@
         <div id="aplayer_container" style="height: 1px; width: 1px"></div>
     </div>
 
-    <!--
-<div class="ovaerlay aplayer" id="overlay_container">
-<div class="wrapper">
-<h1>{% trans "Please wait" %}</h1>
-<h2>{% trans "Loading the player could take some seconds..." %}</h2>
-
-<p>
-If you see this thext for more than a few seconds, chances are high that something went wrong.
-</p>
-<p>
-So please just close this popup-window and try to click play again.
-</p>
-<div class="console"></div>
-</div>
-</div>
--->
 
 {% endblock %}
