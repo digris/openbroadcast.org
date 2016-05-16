@@ -635,7 +635,7 @@ ImportfileAcApp = function () {
 
     this.search = function (q, ct, target) {
 
-        var url = '/api/v1/library/' + ct + '/autocomplete-name/?q=' + q + '&';
+        var url = '/api/v1/library/' + ct + '/autocomplete/?q=' + q + '&';
 
         if (q.length >= this.q_min) {
 

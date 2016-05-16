@@ -4,11 +4,19 @@ var nunjucks_register_filters = function (nj) {
 
     nj.addFilter('shorten', function (str, count) {
 
+
         if(str == undefined) {
             return '';
         }
 
-        return str.slice(0, count || 5);
+        count = count || 5;
+
+        if (str && str.length > count) {
+            return str.slice(0, count) + '...';
+        } else {
+            return str;
+        }
+        
     });
 
 

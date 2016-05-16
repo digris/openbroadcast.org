@@ -19,11 +19,35 @@
 				<div class="span9">
 					
 					<ul class="unstyled">
-						<li><strong>{{ item.name|highlight(meta.query) }}</strong>  <small class="pull-right">{{ item.releasedate }}</small></li>
-						
-						{% if item.ct == 'release' %}
-						<li>{% for artist in item.artist %}{{ artist }}{% if not loop.last %}, {% endif %}{% endfor %}</li>
-						<li>Tracks: {{ item.media_count }}</li>
+
+                        {% if item.ct == 'release' %}
+                            <li><strong>{{ item.name|highlight(meta.query) }}</strong>  <small class="pull-right">{{ item.releasedate }}</small></li>
+                            <li>{% for artist in item.artist %}{{ artist }}{% if not loop.last %}, {% endif %}{% endfor %}</li>
+                            <li>Tracks: {{ item.media_count }}</li>
+						{% endif %}
+
+                        {% if item.ct == 'artist' %}
+                            <li>
+                                <strong>{{ item.name|highlight(meta.query) }}</strong>
+                                {% if item.country %}
+                                    <small>({{ item.country }})</small>
+                                {% endif %}
+                                {% if item.type %}
+                                    <small class="pull-right">{{ item.type }}</small>
+                                {% endif %}
+                            </li>
+                            {% if item.real_name %}
+                                <li>{{ item.real_name|shorten(36) }}</li>
+                            {% endif %}
+
+                            {% if item.date_start or item.date_end %}
+                            <li>
+                                <span class="value">
+                                    {% if item.date_start %}*{{ item.date_start }}{% endif %} {% if item.date_end %}✝{{ item.date_end }}{% endif %}
+                                </span>
+                            </li>
+                            {% endif %}
+
 						{% endif %}
 						
 					</ul>

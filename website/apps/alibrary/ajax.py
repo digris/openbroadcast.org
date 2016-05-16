@@ -279,8 +279,6 @@ def merge_items(request, *args, **kwargs):
 
             if item_type == 'release':
 
-
-
                 items = Release.objects.filter(pk__in=item_ids).exclude(pk=int(master_id))
                 for item in items:
                     slave_items.append(item)

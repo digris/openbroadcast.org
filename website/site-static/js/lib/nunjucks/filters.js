@@ -1,10 +1,12 @@
 var nunjucks_register_filters = function (nj) {
 
     nj.addFilter('shorten', function (str, count) {
-
+        
         if(str == undefined) {
             return '';
         }
+
+        alert(123)
 
         return str.slice(0, count || 5);
     });

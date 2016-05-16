@@ -34,6 +34,9 @@ div.autocomplete
       h1, h2, h3
         font-size: 12px !important
         line-height: 15px !important
+
+        .type
+          text-transform: capitalize
       
       .linkable
         cursor: pointer
@@ -44,17 +47,16 @@ div.autocomplete
         
         h1
           margin-bottom: 0px !important
+
+        h1, p
+          color: white
       
       .listing
 
-
-
-      
         max-height: 491px
         overflow: auto
       
         .item
-
           // fix col widths
           .row-fluid > .span2
             width: 70px
@@ -86,8 +88,9 @@ div.autocomplete
               text-transform: none
               
             ul
+              +clearfix()
               list-style: none !important
-              margin-left: 55px
+              margin-left: 0
               li
                 margin-right: 10px
           

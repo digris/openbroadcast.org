@@ -5,6 +5,7 @@ import logging
 import os
 import time
 import shutil
+import random
 from django.conf import settings
 from django.template import loader
 from wand.color import Color
@@ -38,6 +39,7 @@ SLIDE_BASE_DIR = os.path.join(MEDIA_ROOT, 'metadata', 'dab')
 SLIDE_BASE_URL = MEDIA_URL + 'metadata/' +  'dab/'
 
 INCLUDE_STATION_LOGO = True
+STATION_LOGO_PROBABILITY = 0.3
 
 
 class DABMetadataGenerator(object):
@@ -163,7 +165,7 @@ class DABMetadataGenerator(object):
             slide_id +=1
 
 
-        if INCLUDE_STATION_LOGO:
+        if INCLUDE_STATION_LOGO and random.random() < STATION_LOGO_PROBABILITY:
 
             key = 'default'
             path = os.path.join(SLIDE_BASE_DIR, key + '.png')

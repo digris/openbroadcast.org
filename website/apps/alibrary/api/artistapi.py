@@ -87,7 +87,6 @@ class ArtistResource(ModelResource):
             #qs = Artist.objects.order_by('name').filter(Q(name__icontains=q) | Q(namevariations__name__icontains=q))
             qs = Artist.objects.order_by('name').filter(name__icontains=q)
 
-
             object_list = qs.distinct()[0:50]
             object_count = qs.distinct().count()
 
@@ -115,6 +114,11 @@ class ArtistResource(ModelResource):
     def autocomplete_dehydrate(self, bundle, q):
         
         bundle.data['name'] = bundle.obj.name
+        bundle.data['type'] = bundle.obj.get_type_display()
+        bundle.data['real_name'] = bundle.obj.real_name
+        bundle.data['date_start'] = bundle.obj.date_start.year if bundle.obj.date_start else None
+        bundle.data['date_end'] = bundle.obj.date_end.year if bundle.obj.date_end else None
+        bundle.data['country'] = bundle.obj.country.iso2_code if bundle.obj.country else None
         bundle.data['id'] = bundle.obj.pk
         bundle.data['ct'] = 'artist'
         bundle.data['get_absolute_url'] = bundle.obj.get_absolute_url()

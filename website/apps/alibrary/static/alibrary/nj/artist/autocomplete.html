@@ -19,18 +19,44 @@
 
                     <div class="span10">
 
-                        <a href="{{ item.get_absolute_url }}" class="link-main"><h2>
-                            {{ item.name|highlight(meta.query) }}</h2></a>
+                        <a href="{{ item.get_absolute_url }}" class="link-main">
+                            <h2>
+                                {{ item.name|highlight(meta.query) }}
+                                {% if item.country %}
+                                    <small>({{ item.country }})</small>
+                                {% endif %}
+                                {% if item.type %}
+                                    <small class="type pull-right">{{ item.type }}</small>
+                                {% endif %}
+                            </h2>
+                        </a>
 
-                        {% if item.namevariations %}
-                            <div class="related">
+                        <div class="related">
+
+                            {% if item.real_name %}
+                                <ul class="unstyled">
+                                    <li>{{ item.real_name|shorten(64) }}</li>
+                                </ul>
+                            {% endif %}
+
+                            {% if item.date_start or item.date_end %}
+                                <ul class="unstyled">
+                                    <li>
+                                        {% if item.date_start %}*{{ item.date_start }}{% endif %} {% if item.date_end %}✝{{ item.date_end }}{% endif %}
+                                    </li>
+                                </ul>
+                            {% endif %}
+
+                            {% if item.namevariations %}
                                 <ul class="unstyled horizontal">
                                     {% for name in item.namevariations %}
-                                    <li>{{ name|highlight(meta.query) }}, </li>
+                                    <li>{{ name|highlight(meta.query) }}{% if not loop.last %}, {% endif %}</li>
                                     {% endfor %}
                                 </ul>
-                            </div>
-                        {% endif %}
+                            {% endif %}
+
+                        </div>
+
                     </div>
 
                 </div>

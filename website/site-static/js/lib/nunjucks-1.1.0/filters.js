@@ -2,6 +2,8 @@ var nunjucks_register_filters = function (nj) {
 
     nj.addFilter('shorten', function (str, count) {
 
+        return '123';
+
         if(str == undefined) {
             return '';
         }
