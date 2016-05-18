@@ -41,7 +41,10 @@
 
                     <div class="span2">
                         {% if  result.thumb %}
-                            <img src="{{ result.thumb }}">
+                            <!--<img src="{{ result.thumb }}">-->
+
+                            <img src="/static/img/icons/loader/loader.96.222222.gif" data-src="{{ result.thumb }}" class="lazyload" />
+
                         {% else %}
                             <img src="/static/img/base/defaults/listview.release.xl.png">
                         {% endif %}
@@ -53,40 +56,77 @@
                         <ul class="unstyled">
 
                             {% if item_type == "release" %}
-                            <li>
+                                <li>
+                                    <span class="value">
+                                        <strong>{{ result.year }}{% if result.country %} | {{ result.country }}{% endif %}</strong>
+                                        {% if result.label %}
+                                            - on
+                                            <strong>{{ result.label }}</strong>
+                                        {% endif %}
+                                    </span>
+                                </li>
 
-                            <span class="value">
-                                <strong>{{ result.year }}{% if result.country %} | {{ result.country }}{% endif %}</strong>
-                                {% if result.label %}
-                                    - on
-                                    <strong>{{ result.label }}</strong>
-                                {% endif %}
-                            </span>
-                            </li>
+                                <li>
+                                    <span class="title">
+                                        Catalog #:
+                                    </span>
+                                    <span class="value">
+                                        <strong>{{ result.catno }}</strong>
+                                    </span>
+                                </li>
 
-                            <li>
-                            <span class="title">
-                                Catalog #:
-                            </span>
-                            <span class="value">
-                                <strong>{{ result.catno }}</strong>
-                            </span>
-                            </li>
-
-                            <li>
-                            <span class="title">
-                                Format:
-                            </span>
-                            <span class="value">
-                                <strong>
-                                    {% for k in result.format %}
-                                        {{ k }} |
-                                    {% endfor %}
-                                </strong>
-                            </span>
+                                <li>
+                                    <span class="title">
+                                        Format:
+                                    </span>
+                                    <span class="value">
+                                        <strong>
+                                            {% for k in result.format %}
+                                                {{ k }} |
+                                            {% endfor %}
+                                        </strong>
+                                    </span>
+                                </li>
                             {% endif %}
 
-                            </li>
+                            {% if item_type == "artist" %}
+
+                                {% if result.real_name %}
+                                    <li>
+                                        <span class="title">
+                                            Real name:
+                                        </span>
+                                        <span class="value">
+                                            <strong>{{ result.real_name }}</strong>
+                                        </span>
+                                    </li>
+                                {% endif %}
+
+                                {% if result.aliases %}
+                                    <li>
+                                        <span class="title">
+                                            Aliases:
+                                        </span>
+                                        <span class="value">
+                                            <strong>{{ result.aliases }}</strong>
+                                        </span>
+                                    </li>
+                                {% endif %}
+
+                                {% if result.members %}
+                                    <li>
+                                        <span class="title">
+                                            Members:
+                                        </span>
+                                        <span class="value">
+                                            <strong>{{ result.members }}</strong>
+                                        </span>
+                                    </li>
+                                {% endif %}
+
+                            {% endif %}
+
+
 
                         </ul>
                     </div>

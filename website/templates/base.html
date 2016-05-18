@@ -166,7 +166,11 @@
         {% render_block "js" %}
         {% render_block "js-ext" %}
 
-
+        <!-- start: fast-load scripts -->
+        {% compress js %}
+        <script src="{{ STATIC_URL }}js/lib/lazysizes.js"></script>
+        {% endcompress %}
+        <!-- end: fast-scripts -->
 
         <!-- start: compressor js-post -->
         {% compress js %}

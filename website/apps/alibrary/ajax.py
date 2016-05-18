@@ -15,6 +15,7 @@ from lib.util.merge import merge_model_objects
 from lib.util.AsciiDammit import asciiDammit
 
 from alibrary.util.api_compare import get_from_provider
+from alibrary.util.api_search import discogs_ordered_search
 
 
 import logging
@@ -101,7 +102,7 @@ def provider_search_query(request, *args, **kwargs):
 
         return json.dumps(data)
 
-    except Exception, e:
+    except Exception as e:
         log.warning('%s' % e)
         return None
 
@@ -117,6 +118,9 @@ def provider_search(request, *args, **kwargs):
 
     log.debug('query: %s' % (query))
 
+    results = []
+    error = None
+
     if provider == 'discogs':
 
         #query = re.sub('[^A-Za-z0-9 :]+', '', query)
@@ -124,18 +128,25 @@ def provider_search(request, *args, **kwargs):
         query = query.replace('(', '')
         query = query.replace(')', '')
 
-
-        url = 'http://%s/database/search?q=%s&type=%s&per_page=%s' % (DISCOGS_HOST, urllib.quote_plus(query), item_type, 50)
-        log.debug('query url: %s' % (url))
-        r = requests.get(url)
-        text = r.text
-        if DISCOGS_HOST:
-            text = text.replace('api.discogs.com', DISCOGS_HOST)
-        results = json.loads(text)['results']
-        for result in results:
-            result['uri'] = 'http://www.discogs.com%s' % result['uri']
+        results = discogs_ordered_search(query, item_type)
 
         query = query.replace('"', '&quot;')
+
+        #
+        # url = 'http://%s/database/search?q=%s&type=%s&per_page=%s' % (DISCOGS_HOST, urllib.quote_plus(query), item_type, 100)
+        # log.debug('query url: %s' % (url))
+        # r = requests.get(url)
+        # text = r.text
+        # if DISCOGS_HOST:
+        #     text = text.replace('api.discogs.com', DISCOGS_HOST)
+        # results = json.loads(text)['results']
+        # for result in results:
+        #     result['uri'] = 'https://www.discogs.com%s' % result['uri']
+        #
+        # query = query.replace('"', '&quot;')
+
+
+
 
     if provider == 'musicbrainz':
 
@@ -208,20 +219,14 @@ def provider_search(request, *args, **kwargs):
                 result['uri'] = 'http://musicbrainz.org/recording/%s' % result['id']
 
 
-    data = {
+
+    return json.dumps({
         'query': query,
         'results': results,
-    }
+        'error': error,
+    })
 
 
-
-    try:
-        data = json.dumps(data)
-        return data
-
-    except Exception, e:
-        log.warning('%s' % e)
-        return None
 
 
 @dajaxice_register
@@ -261,7 +266,7 @@ def provider_update(request, *args, **kwargs):
             }
 
 
-    except Exception, e:
+    except Exception as e:
         log.warning('%s' % e)
 
 

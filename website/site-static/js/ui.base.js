@@ -432,13 +432,7 @@ base.ui.iface = function () {
         };
 
         base.ui.ajax(url, data);
-
-        // AJAX Call
-        /*if(base.ui.ajax(url, data)) {
-         alert(123);
-         }*/
-
-
+        
         return false;
     });
 
@@ -755,27 +749,25 @@ base.ui.iface = function () {
         return false;
     });
 
-
-
     // limited lists
     $('dd.limit').on('click', 'a.toggle', function(e){
         e.preventDefault();
         $('.limited', $(this).parents('dd')).toggle();
     });
 
-
     // color on hover
-    // TODO: where to have this??
-    $('.listview.artists.l').on('mouseover', '.item', function(){
-        var src = $(this).data('image_color');
-        if (src != undefined) {
-            //$(this).css('background-image', 'url(' + src + ')');
-        }
-    })
-    $('.listview.artists.l').on('mouseout', '.item', function(){
-        var src = $(this).data('image_bw');
-        //$(this).css('background-image', 'url(' + src + ')');
-    })
+    // refactored to css
+    // // TODO: where to have this??
+    // $('.listview.artists.l').on('mouseover', '.item', function(){
+    //     var src = $(this).data('image_color');
+    //     if (src != undefined) {
+    //         //$(this).css('background-image', 'url(' + src + ')');
+    //     }
+    // })
+    // $('.listview.artists.l').on('mouseout', '.item', function(){
+    //     var src = $(this).data('image_bw');
+    //     //$(this).css('background-image', 'url(' + src + ')');
+    // })
 
     // preload color images
     $('.listview.artists.l .item').each(function(i){

@@ -267,6 +267,19 @@
         max-width: 197px
         max-height: 197px
         vertical-align: middle
+
+.listview
+  &.container.l .item
+    .hover-image.default
+      display: inline
+    .hover-image.on-hover
+      display: none
+  &.container.l .item.hover
+    .hover-image.default
+      display: none
+    .hover-image.on-hover
+      display: inline
+
 	  
 .listview
   &.footer
@@ -1022,7 +1035,8 @@
 
         // actions absolute -> heigher spacer needed (+44px)
         // see above: "Alternative Play icon"
-        height: 195px
+        //height: 195px
+        height: 197px
 
 
         // height: 82px // simulate hover state

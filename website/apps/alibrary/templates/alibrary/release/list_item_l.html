@@ -2,7 +2,6 @@
 
 <div class="list_body_row selectable clickable item release {{ item.uuid }} {% if item.creator == user %} owner{% endif %}"
      id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}"
-     {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 300x300 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}
      data-id="{{ item.id }}"
      data-absolute_url="{{ item.get_absolute_url }}"
      data-uuid="{{ item.uuid }}"
@@ -23,7 +22,13 @@
 
     <div class="spacer tag-cloud">
 
-        <!-- TODO: this block consumes too much rendering time. -->
+        {% if item.main_image %}
+        <div class="image-container centered">
+            <div class="padder"></div>
+            <img src="/static/img/base/defaults/listview.release.xl.png" data-src="{% thumbnail item.main_image 197x197 crop upscale subject_location=item.main_image.subject_location %}" class="lazyload" />
+        </div>
+        {% endif %}
+
         <ul class="tags unstyled horizontal">
             {% for tag in item.tags|slice:":8" %}
                 <li data-id="{{ tag.pk }}">{{ tag.name|truncate_chars_inner:10 }}</li>

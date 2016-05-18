@@ -2,12 +2,8 @@
 
 <div class="list_body_row selectable clickable item artist view edit stream collect download" id="list_item_{{ item.pk }}"
      data-resource_uri="{{ item.get_api_url }}"
-     data-absolute_url="{{ item.get_absolute_url }}"
-     {% if item.main_image %}
-     data-image_color="{% thumbnail item.main_image 200x200 crop upscale subject_location=item.main_image.subject_location %}"
-     data-image_bw="{% thumbnail item.main_image 200x200 crop bw upscale subject_location=item.main_image.subject_location %}"
-     {% endif %}
-     {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 200x200 crop bw upscale subject_location='0,0' %});"{% endif %}>
+     data-absolute_url="{{ item.get_absolute_url }}">
+
 
     <div class="wrapper_icon">
 
@@ -18,6 +14,14 @@
     </div>
 
     <div class="spacer tag-cloud">
+
+        {% if item.main_image %}
+        <div class="image-container centered">
+            <div class="padder"></div>
+            <img src="/static/img/base/defaults/listview.release.xl.png" data-src="{% thumbnail item.main_image 197x197 crop bw upscale subject_location=item.main_image.subject_location %}" class="lazyload hover-image default" />
+            <img src="{% thumbnail item.main_image 197x197 crop upscale subject_location=item.main_image.subject_location %}" class="hover-image on-hover" />
+        </div>
+        {% endif %}
 
         <ul class="tags unstyled horizontal">
             {% for tag in item.tags|slice:":8" %}

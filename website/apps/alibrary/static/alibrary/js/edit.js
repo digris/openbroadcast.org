@@ -422,10 +422,12 @@ var EditUi = function () {
         } catch (e) {
         }
 
+        var html = '<div id="search_dialog_container"><div class="loading-placeholder"><p><i class="icon-spinner icon-spin icon-large"></i> loading</p><p>Depending on the number of results this could take a while.</p></div></div>'
+
         self.dialog_window = $('<div />').qtip({
             content: {
                 text: function (api) {
-                    return '<div id="search_dialog_container"><div class="loading-placeholder"><i class="icon-spinner icon-spin icon-large"></i> loading</div></div>'
+                    return html
                 }
             },
             position: {
@@ -457,6 +459,7 @@ var EditUi = function () {
 
     this.provider_search_update_dialog = function (query) {
 
+        $('#search_dialog_container .results').html('<div class="loading-placeholder"><p><i class="icon-spinner icon-spin icon-large"></i> loading</p></div>');
 
         self.current_data = $.extend(self.current_data, {
             query: query

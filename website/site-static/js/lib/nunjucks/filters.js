@@ -4,10 +4,7 @@ var nunjucks_register_filters = function (nj) {
         
         if(str == undefined) {
             return '';
-        }
-
-        alert(123)
-
+        };
         return str.slice(0, count || 5);
     });
     nj.addFilter('truncate_chars_inner', function (str, count) {
