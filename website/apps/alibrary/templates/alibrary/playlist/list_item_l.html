@@ -58,7 +58,7 @@
                         <a href="{% spurl path=playlist_list query="user={{ item.user.username }}" %}"
                            title="{% trans "Only show playlists by" %} {{ item.user.profile.get_display_name }}"
                            style="vertical-align: top;"><span class="filter icon"></span></a>
-                        
+
                         <span class="pull-right">
                             <span class="small">{{ item.get_type_display }}</span>
                         </span>

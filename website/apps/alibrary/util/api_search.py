@@ -3,9 +3,12 @@ import json
 import re
 import urllib
 from django.conf import settings
+import logging
 
 DISCOGS_HOST = getattr(settings, 'DISCOGS_HOST', None)
-import logging
+
+API_MAX_REQUESTS = 5
+
 log = logging.getLogger(__name__)
 
 def sort_results(items):
@@ -58,17 +61,14 @@ def discogs_ordered_search(query, item_type, limit=100):
     results_other = []
     name_pattern = ' \([0-9]+\)'
 
-    max_requests = 10
     x = 0
-    while url and x < max_requests:
+    while url and x < API_MAX_REQUESTS:
 
         log.debug(url)
         r = requests.get(url)
         data = json.loads(r.text.replace('api.discogs.com', DISCOGS_HOST))
 
         url = reduce(dict.get, ['pagination', 'urls', 'next'], data)
-
-        # print(json.dumps(data, indent=2))
 
         for r in data['results']:
             if 'title' in r:
@@ -87,10 +87,9 @@ def discogs_ordered_search(query, item_type, limit=100):
 
         x += 1
 
+    results = sort_results(results_exact) + sort_results(results_start)+ sort_results(results_other)
 
-
-    results = sort_results(results_exact) + sort_results(results_start) + sort_results(results_other)
-
-    results = populate_results(results)
+    if item_type == 'artist':
+        results = populate_results(results)
 
     return results[0:limit]

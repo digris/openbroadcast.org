@@ -42,7 +42,7 @@ def api_lookup(request, *args, **kwargs):
         log.debug(provider)
         data = get_from_provider(item_type, item_id, provider, api_url)
         return json.dumps(data, encoding="utf-8")
-    except Exception, e:
+    except Exception as e:
         log.warning('api_lookup error: %s', e)
         error_message = 'Unable to process search request. \r\nPlease check again if the provided URLs are correct.'
         return json.dumps({'error': u'%s' % error_message}, encoding="utf-8")
@@ -369,7 +369,7 @@ def merge_items(request, *args, **kwargs):
 
 
 
-        except Exception, e:
+        except Exception as e:
             log.warning('%s' % e)
             data['status'] = False
             data['error'] = '%s' % e

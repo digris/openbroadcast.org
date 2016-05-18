@@ -522,8 +522,7 @@ var EditUi = function () {
 
 
         Dajaxice.alibrary.api_lookup(function (data) {
-
-
+            
             var lookup_prefix = 'lookup_id_';
 
             $('body').removeClass('api_lookup-progress');
