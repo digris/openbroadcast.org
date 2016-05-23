@@ -175,7 +175,7 @@ input[type="hidden"]
 
 .controls > .radio:first-child,
 .controls > .checkbox:first-child
-  padding-top: 5px
+  padding-top: 2px
   // has to be padding because margin collaspes
 
 // Radios and checkboxes on same line
@@ -198,18 +198,9 @@ input[type="hidden"]
 
 input,
 textarea
-  +box-shadow(inset 0 1px 1px rgba(0, 0, 0, 0.075))
+  //+box-shadow(inset 0 1px 1px rgba(0, 0, 0, 0.075))
   $transition: border linear 0.2s, box-shadow linear 0.2s
   +transition($transition)
-
-__input:focus,
-__textarea:focus
-  border-color: rgba(82, 168, 236, 0.8)
-  $shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6)
-  +box-shadow($shadow)
-  outline: 0
-  outline: thin dotted \9
-  /* IE6-9
 
 // we don't want any glow
 input:focus,
@@ -226,7 +217,7 @@ input[type="checkbox"]:focus,
 select:focus
   +box-shadow(none)
   // override for file inputs
-  +tab-focus
+  //+tab-focus
 
 // INPUT SIZES
 // -----------
@@ -242,13 +233,17 @@ select:focus
   width: 150px
 
 .input-large
-  width: 210px
+  width: 310px
 
 .input-xlarge
-  width: 270px
-// TODO: check cross-browser & make generic
+  width: 370px
+
+textarea.input-xlarge
+  padding: 4px
+  width: 364px
+
 select.input-xlarge
-  width: 275px
+  width: 375px
 
 .input-xxlarge
   width: 530px
@@ -454,9 +449,9 @@ select:focus:required:invalid
   margin-bottom: $baseLineHeight / 2
 
 // Legend collapses margin, so next element is responsible for spacing
-legend + .control-group
-  margin-top: $baseLineHeight
-  -webkit-margin-top-collapse: separate
+//legend + .control-group
+//  margin-top: $baseLineHeight
+//  -webkit-margin-top-collapse: separate
 
 // Horizontal-specific styles
 // --------------------------

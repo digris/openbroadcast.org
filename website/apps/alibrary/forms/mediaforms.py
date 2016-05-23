@@ -120,7 +120,7 @@ class MediaForm(ModelForm):
             Field('medianumber', css_class='input-xlarge'),
             Field('opus_number', css_class='input-xlarge'),
             Field('version', css_class='input-xlarge'),
-            HTML('<div style="opacity: 0.5;"><span style="padding: 0 44px 0 8px;">Orig. Filename:</span>%s</div>' % self.instance.original_filename),
+            HTML('<div style="opacity: 0.5;"><span style="padding: 0 44px 0 0;">Orig. Filename:</span>%s</div>' % self.instance.original_filename),
         )
 
         identifiers_layout = Fieldset(
@@ -135,14 +135,14 @@ class MediaForm(ModelForm):
 
         meta_layout = Fieldset(
             'Meta',
-            LookupField('description', css_class='input-xxlarge'),
+            LookupField('description', css_class='input-xlarge'),
         )
 
 
         lyrics_layout = Fieldset(
             'Lyrics',
-            LookupField('lyrics_language', css_class='input-xxlarge'),
-            LookupField('lyrics', css_class='input-xxlarge'),
+            LookupField('lyrics_language', css_class='input-xlarge'),
+            LookupField('lyrics', css_class='input-xlarge'),
         )
         
         tagging_layout = Fieldset(
@@ -257,18 +257,18 @@ class BaseExtraartistFormSet(BaseInlineFormSet):
 
         base_layout = Row(
                 Column(
-                       Field('artist', css_class='input-large'),
-                       css_class='span5'
+                       Field('profession'),
+                       css_class='span3'
                        ),
                 Column(
-                       Field('profession', css_class='input-large'),
+                       Field('artist'),
                        css_class='span5'
                        ),
                 Column(
                        Field('DELETE', css_class='input-mini'),
-                       css_class='span2'
+                       css_class='span4'
                        ),
-                css_class='albumartist-row row-fluid form-autogrow',
+                css_class='extraartist-row row-fluid form-autogrow',
         )
 
         self.helper.add_layout(base_layout)
@@ -306,10 +306,7 @@ class BaseExtraartistForm(ModelForm):
 
         self.fields['profession'].label = _('Credited as')
 
-
-    artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False, label=_('Credited Artist'))
-    #profession = forms.ChoiceField()
-
+    artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False, label=_('Artist'))
 
     def clean_artist(self):
 
@@ -345,18 +342,18 @@ class BaseMediaartistFormSet(BaseInlineFormSet):
 
         base_layout = Row(
                 Column(
-                       Field('join_phrase', css_class='input-small'),
-                       css_class='span4'
+                       Field('join_phrase'),
+                       css_class='span3'
                        ),
                 Column(
-                       Field('artist', css_class='input-xlarge'),
-                       css_class='span6'
+                       Field('artist'),
+                       css_class='span5'
                        ),
                 Column(
                        Field('DELETE', css_class='input-mini'),
-                       css_class='span2'
+                       css_class='span4'
                        ),
-                css_class='albumartist-row row-fluid form-autogrow',
+                css_class='mediaartist-row row-fluid form-autogrow',
         )
 
         self.helper.add_layout(base_layout)

@@ -23,7 +23,7 @@ def round_dt(dt=None, snap=900):
     Author: Thierry Husson 2012 - Use it as you want but don't blame me.
     http://stackoverflow.com/questions/3463930/how-to-round-the-minute-of-a-datetime-object-python
     """
-    if dt == None: dt = datetime.datetime.now()
+    if dt is None: dt = datetime.datetime.now()
     seconds = (dt - dt.min).seconds
     # // is a floor division, not a comment on following line:
     rounding = (seconds + snap / 2) // snap * snap

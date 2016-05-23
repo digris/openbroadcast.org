@@ -47,14 +47,11 @@ def schedule(request):
 
     data = {}
 
-    # pet all available channels
     data['channels'] = Channel.objects.filter(has_scheduler=True)
-
-
     data['list_style'] = request.GET.get('list_style', 's')
     data['days_offset'] = request.GET.get('days_offset', 0)
     data['get'] = request.GET
-    
+
     num_days = request.GET.get('num_days', SCHEDULER_NUM_DAYS)
     num_days = int(num_days)
     if num_days < 7:

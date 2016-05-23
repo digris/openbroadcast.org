@@ -249,7 +249,7 @@ class ChannelResource(ModelResource):
                 item.time_end = e_start + datetime.timedelta(milliseconds=offset + co.get_duration() - (item.cue_in + item.cue_out + item.fade_cross)) + datetime.timedelta(seconds=timeshift)
                 
                 # check if playing
-                if item.time_start < now and item.time_end > now:
+                if item.time_start < now < item.time_end:
                     item.is_playing = True
                     # map item for quick access
 
@@ -302,7 +302,8 @@ class ChannelResource(ModelResource):
             dls_generator = DABMetadataGenerator(emission=current_emission, content_object=current_content_object)
 
             bundle.update({
-                'dls_text': dls_generator.get_text(),
+                #'dls_text': dls_generator.get_dls_text(),
+                'dls_text': dls_generator.get_dl_plus(),
                 'dls_slides': dls_generator.get_slides(),
             })
 
@@ -694,7 +695,7 @@ class BaseResource(Resource):
                 item.time_end = e_start + datetime.timedelta(milliseconds=offset + co.get_duration() - (item.cue_in + item.cue_out + item.fade_cross))
                 
                 # check if playing
-                if item.time_start < now and item.time_end > now:
+                if item.time_start < now < item.time_end:
                     item.is_playing = True
                     # map item for quick access
                     now_playing = {

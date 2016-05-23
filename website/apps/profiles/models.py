@@ -82,7 +82,7 @@ class Profile(MigrationMixin):
     # Profile
     pseudonym = models.CharField(
         blank=True, null=True, max_length=250,
-        help_text=_('If specified the pseudonym will appear when referencing to your profile - instead of your name & surname')
+        help_text=_('Will appear instead of your name & surname')
     )
     description = models.CharField(_('Disambiguation'), blank=True, null=True, max_length=250)
     biography = extra.MarkdownTextField(blank=True, null=True)

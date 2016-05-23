@@ -53,14 +53,6 @@
     {% include "element/forms/_merged_form_errors.html" %}
     {% endif %}
 
-    {% comment %}
-    {% if profile_form.errors or profile_form.non_field_errors %}
-        {% with form=profile_form ctype='playlist'%}
-        {% include "element/forms/_merged_form_errors.html" %}
-        {% endwith %}
-    {% endif %}
-    {% endcomment %}
-
 <form action="." method="post" enctype="multipart/form-data" class="profile_form form-horizontal form-compact">
 	{% csrf_token %}
 

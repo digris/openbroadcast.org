@@ -50,15 +50,15 @@
             function days_between(date1, date2) {
 
                 // The number of milliseconds in one day
-                var ONE_DAY = 1000 * 60 * 60 * 24
+                var ONE_DAY = 1000 * 60 * 60 * 24;
 
                 // Convert both dates to milliseconds
-                var date1_ms = date1.getTime()
-                var date2_ms = date2.getTime()
+                var date1_ms = date1.getTime();
+                var date2_ms = date2.getTime();
 
                 // Calculate the difference in milliseconds
                 // var difference_ms = Math.abs(date1_ms - date2_ms)
-                var difference_ms = date1_ms - date2_ms
+                var difference_ms = date1_ms - date2_ms;
 
                 // Convert back to days and return
                 return Math.round(difference_ms / ONE_DAY)
@@ -86,7 +86,7 @@
 
                 scheduler.app.readonly = {% if user.is_authenticated %}false{% else %}true{% endif %};
 
-                scheduler.app.range = [{% for date in days %}'{{ date|date:"Y-m-d" }}',{% endfor %}]
+                scheduler.app.range = [{% for date in days %}'{{ date|date:"Y-m-d" }}',{% endfor %}];
                 scheduler.app.api_url = "{% url "api_dispatch_list" resource_name='abcast/emission' api_name='v1'%}";
                 scheduler.app.channel_id = {{ channel.pk }};
 

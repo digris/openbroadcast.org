@@ -20,8 +20,11 @@ log = logging.getLogger(__name__)
 MEDIA_ROOT  = getattr(settings, 'MEDIA_ROOT')
 MEDIA_URL  = getattr(settings, 'MEDIA_URL')
 
-DEFAULT_DLS_TEXT = 'Open Broadcast'
-
+DEFAULT_DLS_TEXT = [
+    'Open Broadcast',
+    'another text',
+    'and a third one',
+]
 SLIDE_BASE_IMAGE = getattr(settings, 'DAB_SLIDE_BASE_IMAGE', os.path.join(
         os.path.dirname(__file__), 'asset', 'slide_base.png')
     )
@@ -42,6 +45,9 @@ INCLUDE_STATION_LOGO = True
 STATION_LOGO_PROBABILITY = 0.3
 
 
+NEWLINE = "\n"
+
+
 class DABMetadataGenerator(object):
 
     def __init__(self, emission, content_object):
@@ -56,15 +62,119 @@ class DABMetadataGenerator(object):
             os.makedirs(SLIDE_BASE_DIR)
 
 
-    def get_text(self):
+    def get_dls_text(self):
 
         items = []
 
         if not (self.emission and self.content_object):
-            return [DEFAULT_DLS_TEXT]
+            return DEFAULT_DLS_TEXT
+
+        series_text = None
+        playlist_text = None
+        item_text = None
+        author_text = None
+
+        if self.playlist.series and self.playlist.series_number:
+            series_text = '{0} #{1}'.format(self.playlist.series.name, self.playlist.series_number)
+        elif self.playlist.series:
+            series_text = '{0}'.format(self.playlist.series.name)
+
+        if self.playlist:
+            playlist_text = '{0}'.format(self.playlist.name)
+
+        if self.content_object.name:
+            item_text= '"{title}" by {artist} - {release}'.format(
+                title=self.content_object.name,
+                artist=self.content_object.artist.name,
+                release=self.content_object.release.name
+            )
+
+        if self.playlist.user:
+            author_text = 'curated by {0}'.format(self.playlist.user.profile.get_display_name())
+
+        if series_text:
+            items.append(series_text)
+
+        if playlist_text:
+            items.append(playlist_text)
+
+        if item_text:
+            items.append(item_text)
+
+        if author_text:
+            items.append(author_text)
+
+        return items
 
 
-        playlist = self.playlist
+
+    def dl_plus_tag(self, tags=[]):
+
+        tag = '##### parameters { #####' + NEWLINE + 'DL_PLUS=1' + NEWLINE
+
+        for t in tags[0:4]:
+            tag += 'DL_PLUS_TAG={0}'.format(t) + NEWLINE
+
+        tag += '##### parameters } #####' + NEWLINE
+
+        return tag
+
+
+    def get_dl_plus(self):
+
+        items = []
+
+        if not (self.emission and self.content_object):
+            return DEFAULT_DLS_TEXT
+
+        series_text = None
+        playlist_text = None
+        item_text = None
+        author_text = None
+
+        if self.playlist.series and self.playlist.series_number:
+            series_text = '{0} #{1}'.format(self.playlist.series.name, self.playlist.series_number)
+        elif self.playlist.series:
+            series_text = '{0}'.format(self.playlist.series.name)
+
+        if self.playlist:
+            playlist_text = '{0}'.format(self.playlist.name)
+
+        if self.content_object.name:
+            text= '"{title}" by {artist} - {release}'.format(
+                title=self.content_object.name,
+                artist=self.content_object.artist.name,
+                release=self.content_object.release.name
+            )
+            tags = ['1 2 7',]
+            item_text = '{tag}{text}'.format(tag=self.dl_plus_tag(tags), text=text)
+
+
+        if self.playlist.user:
+            author_text = 'curated by {0}'.format(self.playlist.user.profile.get_display_name())
+
+        if series_text:
+            items.append(series_text)
+
+        if playlist_text:
+            items.append(playlist_text)
+
+        if item_text:
+            items.append(item_text)
+
+        if author_text:
+            items.append(author_text)
+
+        return items
+
+
+
+    def __old__get_dls_text(self):
+
+        items = []
+
+        if not (self.emission and self.content_object):
+            return DEFAULT_DLS_TEXT
 
         text = ''
         if self.playlist.series:
@@ -85,7 +195,40 @@ class DABMetadataGenerator(object):
             text
         )
 
+        items.append(
+            '{}'.format(self.playlist.name)
+        )
+
         return items
+
+
+    # def get_dl_plus(self):
+    #
+    #     items = []
+    #
+    #     if not (self.emission and self.content_object):
+    #         return DEFAULT_DLS_TEXT
+    #
+    #     text = ''
+    #     if self.playlist.series:
+    #         text += '%s ' % self.playlist.series.name
+    #         if self.playlist.series_number:
+    #             text += '#%s ' % self.playlist.series_number
+    #         text += ' - '
+    #
+    #     text += '%s\n' % self.playlist.name
+    #
+    #     if self.content_object.name:
+    #         text += '%s by %s - %s\n' % (self.content_object.name, self.content_object.artist.name, self.content_object.release.name)
+    #
+    #     if self.playlist.user:
+    #         text += 'curated by %s' % self.playlist.user.profile.get_display_name()
+    #
+    #     items.append(
+    #         text
+    #     )
+    #
+    #     return items
 
 
 

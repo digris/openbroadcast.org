@@ -67,36 +67,36 @@ class CrawlIdentifiersCommand(SubcommandsCommand):
 
 
 
-        # qs = Artist.objects.annotate(isni_code_length=Length('isni_code')).filter(isni_code_length__lt=1, relations__service='musicbrainz').nocache()
-        # print 'artists: {}'.format(qs.count())
-        #
-        # for item in tqdm(qs):
-        #     url = item.relations.filter(service='musicbrainz')[0].url
-        #     provider_id = url.split('/')[-1]
-        #
-        #     if not len(provider_id) == 36:
-        #         return
-        #
-        #     api_url = 'http://%s/ws/2/artist/%s/?fmt=xml' % (MUSICBRAINZ_HOST, provider_id)
-        #     r = requests.get(api_url)
-        #
-        #     if not r.status_code == 200:
-        #         print 'url: {}'.format(api_url)
-        #         print 'request error: {}'.format(r.text)
-        #
-        #     else:
-        #
-        #         item_metadata = json.loads(json.dumps(xmltodict.parse(r.text)))['metadata']['artist']
-        #         isni_code = None
-        #
-        #         if 'isni-list' in item_metadata and 'isni' in item_metadata['isni-list']:
-        #             isni_code = item_metadata['isni-list']['isni']
-        #             if isinstance(isni_code, types.ListType):
-        #                 isni_code = isni_code[0]
-        #
-        #         if isni_code:
-        #             print 'ISNI: {}'.format(isni_code)
-        #             Artist.objects.filter(pk=item.pk).update(isni_code=isni_code)
+        qs = Artist.objects.annotate(isni_code_length=Length('isni_code')).filter(isni_code_length__lt=1, relations__service='musicbrainz').nocache()
+        print 'artists: {}'.format(qs.count())
+
+        for item in tqdm(qs):
+            url = item.relations.filter(service='musicbrainz')[0].url
+            provider_id = url.split('/')[-1]
+
+            if not len(provider_id) == 36:
+                return
+
+            api_url = 'http://%s/ws/2/artist/%s/?fmt=xml' % (MUSICBRAINZ_HOST, provider_id)
+            r = requests.get(api_url)
+
+            if not r.status_code == 200:
+                print 'url: {}'.format(api_url)
+                print 'request error: {}'.format(r.text)
+
+            else:
+
+                item_metadata = json.loads(json.dumps(xmltodict.parse(r.text)))['metadata']['artist']
+                isni_code = None
+
+                if 'isni-list' in item_metadata and 'isni' in item_metadata['isni-list']:
+                    isni_code = item_metadata['isni-list']['isni']
+                    if isinstance(isni_code, types.ListType):
+                        isni_code = isni_code[0]
+
+                if isni_code:
+                    print 'ISNI: {}'.format(isni_code)
+                    Artist.objects.filter(pk=item.pk).update(isni_code=isni_code)
         #
         #
         # qs = Artist.objects.annotate(ipi_code_length=Length('ipi_code')).filter(ipi_code_length__lt=1, relations__service='musicbrainz').nocache()

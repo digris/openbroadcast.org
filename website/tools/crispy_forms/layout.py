@@ -340,7 +340,7 @@ class Row(Div):
 
         Row('form_field_1', 'form_field_2', 'form_field_3')
     """
-    css_class = 'formRow'
+    css_class = 'form-row'
 
 
 class Column(Div):
@@ -349,7 +349,7 @@ class Column(Div):
 
         Column('form_field_1', 'form_field_2')
     """
-    css_class = 'formColumn'
+    css_class = 'form-column'
 
 
 class HTML(object):

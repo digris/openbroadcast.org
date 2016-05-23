@@ -201,11 +201,11 @@ class BaseMemberFormSet(BaseInlineFormSet):
         base_layout = Row(
                 Column(
                        Field('child', css_class='input-xlarge'),
-                       css_class='span9'
+                       css_class='span8'
                        ),
                 Column(
                        Field('DELETE', css_class='input-mini'),
-                       css_class='span3'
+                       css_class='span4 delete'
                        ),
                 css_class='albumartist-row row-fluid form-autogrow',
         )
@@ -285,11 +285,11 @@ class BaseAliasFormSet(BaseInlineFormSet):
         base_layout = Row(
                 Column(
                        Field('child', css_class='input-xlarge'),
-                       css_class='span9'
+                       css_class='span8'
                        ),
                 Column(
                        Field('DELETE', css_class='input-mini'),
-                       css_class='span3'
+                       css_class='span4 delete'
                        ),
                 css_class='albumartist-row row-fluid form-autogrow',
         )
@@ -363,15 +363,15 @@ class BaseArtistReleationFormSet(BaseGenericInlineFormSet):
         base_layout = Row(
                 Column(
                        Field('url', css_class='input-xlarge'),
-                       css_class='span6 relation-url'
+                       css_class='span8 relation-url'
                        ),
                 Column(
                        Field('service', css_class='input-mini'),
-                       css_class='span4'
+                       css_class='span2'
                        ),
                 Column(
                        Field('DELETE', css_class='input-mini'),
-                       css_class='span2'
+                       css_class='span2 delete'
                        ),
                 css_class='row-fluid relation-row form-autogrow',
         )

@@ -303,7 +303,6 @@ def merge_items(request, *args, **kwargs):
                 master_item = Release.objects.get(pk=int(master_id))
                 if slave_items and master_item:
                     master_item = merge_model_objects(master_item, slave_items)
-                    #master_item.save()
                     # needed to clear cache TODO: really needed??
                     for media in master_item.media_release.all():
                         media.save()
@@ -339,7 +338,6 @@ def merge_items(request, *args, **kwargs):
                     merge_model_objects(master_item, slave_items)
                     master_item.save()
                     # needed to clear cache
-                    """"""
                     for media in master_item.media_artist.all():
                         media.save()
 

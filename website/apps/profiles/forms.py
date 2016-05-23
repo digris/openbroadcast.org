@@ -58,8 +58,7 @@ class ProfileForm(ModelForm):
             Fieldset(
                 _('Personal Information'),
                 Div(
-                    HTML('<h2>%s</h2><p>%s</p>' % (_('Privacy!'), _(
-                        'Your birth date is only visible to your mentor, and to team-members with administrative rights.'))),
+                    HTML('<p>%s</p>' % (_('Your birth date is only visible to your mentor, and to team-members with administrative rights.'))),
                     css_class='notes-form notes-inline notes-info',
                 ),
                 Field('gender', css_class='input-xlarge'),
@@ -76,8 +75,7 @@ class ProfileForm(ModelForm):
             Fieldset(
                 _('Contact'),
                 Div(
-                    HTML('<h2>%s</h2><p>%s</p>' % (_('Privacy!'), _(
-                        'Except for "City" and "Country", this information is only visible to your mentor, and to team-members with administrative rights.'))),
+                    HTML('<p>%s</p>' % (_('Except for "City" and "Country", this information is only visible to your mentor, and to team-members with administrative rights.'))),
                     css_class='notes-form notes-inline notes-info',
                 ),
                 Field('mobile', css_class='input-xlarge'),
@@ -96,7 +94,7 @@ class ProfileForm(ModelForm):
             Fieldset(
                 _('Accounts'),
                 Div(
-                    HTML('<h2>%s</h2><p>%s</p>' % (_('Account data'), _(
+                    HTML('<p>%s</p>' % (_(
                         'In case you see a reason to recieve some money from us :) This information is not visible on the plattform.'))),
                     css_class='notes-form notes-inline notes-info',
                 ),
@@ -170,18 +168,18 @@ class LinkForm(ModelForm):
 
         base_layout = Row(
             Column(
-                Field('url', css_class='input-large'),
-                css_class='span4'
+                Field('url', css_class='input-medium'),
+                css_class='span5'
             ),
             Column(
                 Field('title', css_class='input-medium'),
-                css_class='span2'
+                css_class='span5'
             ),
             Column(
                 Field('DELETE', css_class='input-mini'),
-                css_class='span1'
+                css_class='span2 delete'
             ),
-            css_class='row link-row form-autogrow',
+            css_class='row-fluid link-row form-autogrow',
         )
 
         self.helper.add_layout(base_layout)
@@ -209,18 +207,18 @@ class ServiceForm(ModelForm):
 
         base_layout = Row(
             Column(
-                Field('username', css_class='input-large'),
-                css_class='span4'
+                Field('username', css_class='input-medium'),
+                css_class='span5'
             ),
             Column(
                 Field('service', css_class='input-medium'),
-                css_class='span2'
+                css_class='span5'
             ),
             Column(
                 Field('DELETE', css_class='input-mini'),
-                css_class='span1'
+                css_class='span2 delete'
             ),
-            css_class='row service-row form-autogrow',
+            css_class='row-fluid service-row form-autogrow',
         )
 
         self.helper.add_layout(base_layout)
@@ -232,6 +230,9 @@ class UserForm(ModelForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username', 'email')
+        help_texts = {
+            'username': _('Letters, digits and @/./+/-/_ only'),
+        }
 
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()

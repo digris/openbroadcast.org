@@ -103,8 +103,7 @@ class Import(BaseModel):
         choices=TYPE_CHOICES
     )
     notes = models.TextField(
-        blank=True, null=True,
-        help_text=_('Optionally, just add some notes to this import if desired.')
+        blank=True, null=True
     )
 
     class Meta:

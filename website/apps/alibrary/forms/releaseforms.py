@@ -103,62 +103,49 @@ class ReleaseBulkeditForm(Form):
         """
         super(ReleaseBulkeditForm, self).__init__(*args, **kwargs)
 
-
         self.helper = FormHelper()
-        self.helper.form_id = "bulk_edit%s" % 'asd'
         self.helper.form_class = 'form-horizontal'
         self.helper.form_method = 'post'
         self.helper.form_action = ''
         self.helper.form_tag = False
 
-
         form_class = 'input-xlarge'
         if self.disable_license:
             form_class = 'hidden'
 
-
-
         if self.instance:
 
             base_layout = Div(
-                    Div(HTML('<h4>%s</h4><p>%s</p>' % (_('Bulk Edit'), _('Choose Artist name and/or license to apply on each track.'))), css_class='form-help'),
+                    Div(HTML('<p>"%s": %s</p>' % (_('Bulk Edit'), _('Choose Artist name and/or license to apply on each track.')))),
                     Row(
                         Column(
                                Field('bulk_artist_name', css_class='input-xlarge'),
-                               css_class='span6'
+                               css_class='main'
                                ),
                         Column(
                                HTML('<button type="button" id="bulk_apply_artist_name" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> %s</button>' % _('Apply Artist to all tracks')),
-                               css_class='span2'
+                               css_class='side'
                                ),
-                        css_class='releasemedia-row row',
+                        css_class='bulkedit-row row-fluid',
                     ),
                     Row(
                         Column(
                                Field('bulk_license', css_class=form_class),
-                               css_class='span6'
+                               css_class='main'
                                ),
                         Column(
                                HTML('<button type="button" id="bulk_apply_license" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> %s</button>' % _('Apply License to all tracks')),
-                               css_class='span2'
+                               css_class='side'
                                ),
-                        css_class='releasemedia-row row',
+                        css_class='bulkedit-row row-fluid',
                     ),
                     css_class='bulk_edit',
             )
 
-
         self.helper.add_layout(base_layout)
 
-    # Fields
     bulk_artist_name = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False, label=_('Artist'))
     bulk_license = forms.ModelChoiceField(queryset=License.objects.filter(selectable=True), required=False, label=_('License'))
-    #from lib.fields.choices import NestedModelChoiceField
-    #bulk_license = NestedModelChoiceField(queryset=License.objects.all(),
-    #                                      related_name='license_children',
-    #                                      parent_field='parent',
-    #                                      label_field='name',
-    #                                      required=False, label=_('License'))
 
     def save(self, *args, **kwargs):
         return True
@@ -332,7 +319,7 @@ class BaseReleaseMediaFormSet(BaseInlineFormSet):
                         LookupField('artist', css_class='input-large'),
                         Field('isrc', css_class='input-large'),
                         HTML('<span>*%s*</span>' % self.instance.name),
-                       css_class='span9'
+                       css_class='span5'
                        ),
                 css_class='releasemedia-row row-fluid',
         )
@@ -462,16 +449,16 @@ class BaseAlbumartistFormSet(BaseInlineFormSet):
 
         base_layout = Row(
                 Column(
-                       Field('join_phrase', css_class='input-small'),
-                       css_class='span4'
+                       Field('join_phrase'),
+                       css_class='span3'
                        ),
                 Column(
-                       Field('artist', css_class='input-xlarge'),
-                       css_class='span6'
+                       Field('artist'),
+                       css_class='span5'
                        ),
                 Column(
-                       Field('DELETE', css_class='input-mini'),
-                       css_class='span2'
+                       Field('DELETE'),
+                       css_class='span4 delete'
                        ),
                 css_class='albumartist-row row-fluid form-autogrow',
         )
@@ -547,7 +534,7 @@ class BaseReleaseReleationFormSet(BaseGenericInlineFormSet):
                        ),
                 Column(
                        Field('DELETE', css_class='input-mini'),
-                       css_class='span2'
+                       css_class='span2 delete'
                        ),
                 css_class='row-fluid relation-row form-autogrow',
         )

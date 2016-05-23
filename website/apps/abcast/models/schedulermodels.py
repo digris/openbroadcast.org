@@ -184,7 +184,7 @@ class Emission(BaseModel):
     @property
     def is_playing(self):
         playing = False
-        if self.time_start < datetime.datetime.now() and datetime.datetime.now() < self.time_end:
+        if self.time_start < datetime.datetime.now() < self.time_end:
             playing = True
         return playing
 
@@ -377,5 +377,5 @@ class Daypart(BaseModel):
     def duration(self):
         duration = (self.time_end.hour - self.time_start.hour)
         if duration < 0:
-            duration = 24 + duration
+            duration += 24
         return duration

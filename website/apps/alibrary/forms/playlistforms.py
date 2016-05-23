@@ -140,7 +140,7 @@ class PlaylistForm(ModelForm):
                     Field('target_duration'),
                     css_class='target-duration'
                 ),
-                Field('description', css_class='input-xxlarge'),
+                Field('description', css_class='input-xlarge'),
                 'main_image',
                 css_class='base'
         )
@@ -149,11 +149,11 @@ class PlaylistForm(ModelForm):
         series_layout = Fieldset(
                 "%s %s" % ('<i class="icon-tags"></i>', _('Series')),
                 Div(
-                    Field('series'),
+                    Field('series', css_class='input-xlarge'),
                     css_class='series'
                 ),
                 Div(
-                    Field('series_number'),
+                    Field('series_number', css_class='input-xlarge'),
                     css_class='series-number'
                 ),
                 css_class='series'
@@ -190,13 +190,11 @@ class PlaylistForm(ModelForm):
         )
             
         layout = Layout(
-                        #ACTION_LAYOUT,
                         base_layout,
                         tagging_layout,
                         series_layout,
                         rotation_layout,
                         daypart_layout,
-                        #ACTION_LAYOUT,
                         )
 
         self.helper.add_layout(layout)
