@@ -1083,7 +1083,9 @@ var EditUi = function () {
         //if (orig != undefined && !$.inArray(key, keys_ci)) {
         if (orig != undefined && keys_ci.indexOf(key) != -1) {
             orig = orig.toLowerCase();
-            lookup_value = lookup_value.toLowerCase();
+            if(lookup_value) {
+                lookup_value = lookup_value.toLowerCase();
+            }
         }
 
         // hack - try to remove linebreaks / newline

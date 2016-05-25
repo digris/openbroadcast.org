@@ -106,7 +106,8 @@ class ArtistListView(PaginationMixin, ListView):
         
         if q:
             #qs = Artist.objects.filter(name__istartswith=q).distinct()
-            qs = Artist.objects.filter(name__icontains=q).distinct()
+            qs = Artist.objects.filter(Q(name__istartswith=q) | Q(namevariations__name__istartswith=q)).distinct()
+            qs = qs.prefetch_related('media_artist')
         else:
             # only display artists with tracks a.t.m.
             # qs = Artist.objects.filter(media_artist__isnull=False).select_related('media_artist').prefetch_related('media_artist').distinct()

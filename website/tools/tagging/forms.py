@@ -16,9 +16,15 @@ class TagAdminForm(forms.ModelForm):
 
     def clean_name(self):
         value = self.cleaned_data['name']
-        tag_names = parse_tag_input(value)
-        if len(tag_names) > 1:
-            raise forms.ValidationError(_('Multiple tags were given.'))
+
+        print 'CLEAN NAME'
+        print value
+        print
+
+        # tag_names = parse_tag_input(value)
+        # if len(tag_names) > 1:
+        #     raise forms.ValidationError(_('Multiple tags were given.'))
+
         return value
 
 
