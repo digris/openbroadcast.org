@@ -20,11 +20,8 @@ log = logging.getLogger(__name__)
 MEDIA_ROOT  = getattr(settings, 'MEDIA_ROOT')
 MEDIA_URL  = getattr(settings, 'MEDIA_URL')
 
-DEFAULT_DLS_TEXT = [
-    'Open Broadcast',
-    'another text',
-    'and a third one',
-]
+DEFAULT_DLS_TEXT = ['Open Broadcast',]
+
 SLIDE_BASE_IMAGE = getattr(settings, 'DAB_SLIDE_BASE_IMAGE', os.path.join(
         os.path.dirname(__file__), 'asset', 'slide_base.png')
     )

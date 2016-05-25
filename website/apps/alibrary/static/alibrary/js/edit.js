@@ -50,9 +50,7 @@ var EditUi = function () {
 
     this.iface = function () {
         this.floating_sidebar('lookup_providers', 120);
-
         $('#lookup_settings [data-action="toggle-diff"] input').prop('checked', self.lookup_show_diff);
-
     };
 
     this.layout = function () {
@@ -1003,6 +1001,23 @@ var EditUi = function () {
                         holder_artist.parent().addClass('lookup-match');
                     } else {
                         holder_artist.parent().addClass('lookup-diff');
+                    }
+
+
+                    // media isrc
+                    value = '';
+                    if (meta.isrcs && meta.isrcs.length > 0) {
+                        value = meta.isrcs[0];
+                    }
+                    var holder_isrc = $('.field-lookup-holder span[id$="isrc"]', el);
+                    holder_isrc.html(value);
+                    holder_isrc.parent().fadeIn(100);
+                    // mark
+                    var target_isrc = $('#' + self.field_prefix + holder_isrc.attr('id').replace(self.lookup_prefix, ''));
+                    if (value == target_isrc.val()) {
+                        holder_isrc.parent().addClass('lookup-match');
+                    } else {
+                        holder_isrc.parent().addClass('lookup-diff');
                     }
                 }
 

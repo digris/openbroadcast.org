@@ -50,13 +50,13 @@ gulp.task('styles', function () {
             'website/site-static/sass/print.sass',
             'website/site-static/sass/aplayer.sass',
             'website/site-static/sass/scheduler.sass',
-            'website/site-static/sass/admin.sass',
+            'website/site-static/sass/admin.sass'
             //'website/site-static/sass/wip.sass'
         ])
         .pipe($.sourcemaps.init())
         //.pipe($.plumber())
         .pipe($.sass({
-            precision: 10,
+            precision: 10
             //onError: logSASSError
         }))
         .pipe($.autoprefixer({browsers: AUTOPREFIXER_BROWSERS}))
@@ -70,13 +70,9 @@ gulp.task('styles', function () {
 //Concat and minify scripts
 gulp.task('scripts', function() {
     return gulp.src([
-          'website/site-static/js/**/*.coffee',
+          'website/site-static/js/**/*.coffee'
     ])
     .pipe($.coffee({bare: true}).on('error', gutil.log))
-    //.pipe($.rename(function (path) {
-    //    path.basename += "-goodbye";
-    //}))
-    //.pipe($.size({title: 'scripts'}))
     .pipe(gulp.dest('website/site-static/dist/js/'));
 });
 

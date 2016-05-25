@@ -1,5 +1,7 @@
 from collections import namedtuple
 
+from django.core.paginator import Paginator, InvalidPage
+from django.http import Http404
 from tastypie import fields
 from tastypie.authorization import Authorization
 from tastypie.resources import Resource, Bundle
@@ -20,6 +22,7 @@ class SearchObject(object):
             'tags': [t.name for t in obj.tags.all()],
             'ct': 'alibrary.{}'.format(ct),
             'detail_uri': obj.get_absolute_url(),
+            # 'image': obj.main_image,
         }
 
         meta = []
@@ -51,13 +54,15 @@ class SearchObject(object):
 class SearchResource(Resource):
     # Just like a Django ``Form`` or ``Model``, we're defining all the
     # fields we're going to handle with the API here.
-    uuid = fields.CharField(attribute='uuid')
-    name = fields.CharField(attribute='name')
-    ct = fields.CharField(attribute='ct')
-    detail_uri = fields.CharField(attribute='detail_uri')
-    tags = fields.ListField(attribute='tags')
-    meta = fields.ListField(attribute='meta')
-    #created = fields.IntegerField(attribute='created')
+    uuid = fields.CharField(attribute='uuid', null=True)
+    name = fields.CharField(attribute='name', null=True)
+    ct = fields.CharField(attribute='ct', null=True)
+    detail_uri = fields.CharField(attribute='detail_uri', null=True)
+    tags = fields.ListField(attribute='tags', null=True)
+    meta = fields.ListField(attribute='meta', null=True)
+
+
+    paginator_class = Paginator
 
     class Meta:
         resource_name = 'search'
@@ -78,14 +83,14 @@ class SearchResource(Resource):
 
         if isinstance(bundle_or_obj, Bundle):
             return ''
-            #return bundle_or_obj.obj.get_api_url()
         else:
             return ''
 
     def get_object_list(self, request, **kwargs):
 
         #sqs = SearchQuerySet().load_all().auto_query(request.GET.get('q', ''))
-        sqs = SearchQuerySet().filter(text__startswith=request.GET.get('q', ''))
+        sqs = SearchQuerySet().load_all().filter(text__startswith=request.GET.get('q', ''))
+        #sqs = SearchQuerySet().load_all().auto_query(request.GET.get('q', ''))
 
 
         search_models = []
@@ -94,29 +99,97 @@ class SearchResource(Resource):
 
         if limit_models:
 
-            print '////////////////////'
-            print limit_models
-
             for model in limit_models.split(' '):
                 search_models.append(models.get_model(*model.split('.')))
 
             sqs = sqs.models(*search_models)
 
 
+        #return sqs
+
+        paginator = Paginator(sqs, 20)
+
+        try:
+            page = paginator.page(int(request.GET.get('page', 1)))
+        except InvalidPage:
+            raise Http404("Sorry, no results on that page.")
 
         results = []
-
-        for result in sqs:
+        for result in page.object_list:
             new_obj = SearchObject(obj=result.object)
             results.append(new_obj)
 
         return results
 
+
     def obj_get_list(self, request=None, **kwargs):
         # Filtering disabled for brevity...
         return self.get_object_list(request)
 
-    def obj_get(self, request=None, **kwargs):
-        bucket = self._bucket()
-        message = bucket.get(kwargs['pk'])
-        return SearchObject(initial=message.get_data())
+
+    def get_list(self, request, **kwargs):
+        """
+        Returns a serialized list of resources.
+
+        Calls ``obj_get_list`` to provide the data, then handles that result
+        set and serializes it.
+
+        Should return a HttpResponse (200 OK).
+        """
+        # TODO: Uncached for now. Invalidation that works for everyone may be
+        #       impossible.
+        objects = self.obj_get_list(request=request, **self.remove_api_resource_names(kwargs))
+        sorted_objects = self.apply_sorting(objects, options=request.GET)
+
+        paginator = self._meta.paginator_class(request.GET, sorted_objects, resource_uri=self.get_resource_uri(),
+                                               limit=self._meta.limit, max_limit=self._meta.max_limit,
+                                               collection_name=self._meta.collection_name)
+        to_be_serialized = paginator.page()
+
+        # Dehydrate the bundles in preparation for serialization.
+        bundles = [self.build_bundle(obj=obj, request=request) for obj in to_be_serialized[self._meta.collection_name]]
+        to_be_serialized[self._meta.collection_name] = [self.full_dehydrate(bundle) for bundle in bundles]
+        to_be_serialized = self.alter_list_data_to_serialize(request, to_be_serialized)
+        return self.create_response(request, to_be_serialized)
+
+
+
+    def __get_list(self, request, **kwargs):
+        """
+        Returns a serialized list of resources.
+
+        Calls ``obj_get_list`` to provide the data, then handles that result
+        set and serializes it.
+
+        Should return a HttpResponse (200 OK).
+        """
+
+        print '*** get_list ***'
+
+        objects = self.obj_get_list(request=request, **self.remove_api_resource_names(kwargs))
+        sorted_objects = self.apply_sorting(objects, options=request.GET)
+
+        paginator = self._meta.paginator_class(request.GET, sorted_objects, resource_uri=self.get_resource_uri(),
+                                               limit=self._meta.limit, max_limit=self._meta.max_limit,
+                                               collection_name=self._meta.collection_name)
+        to_be_serialized = paginator.page()
+
+        # Dehydrate the bundles in preparation for serialization.
+        # bundles = [self.build_bundle(obj=obj, request=request) for obj in
+        #            to_be_serialized[self._meta.collection_name]]
+
+        bundles = []
+        for result in to_be_serialized[self._meta.collection_name]:
+            new_obj = SearchObject(obj=result.object)
+
+            #bundle = self.full_dehydrate(new_obj)
+            bundle = new_obj.to_dict()
+
+            print bundle
+
+            bundles.append(bundle)
+
+        to_be_serialized = self.alter_list_data_to_serialize(request, to_be_serialized)
+
+        return self.create_response(request, to_be_serialized)
+

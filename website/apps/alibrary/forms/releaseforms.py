@@ -317,7 +317,7 @@ class BaseReleaseMediaFormSet(BaseInlineFormSet):
                 Column(
                         LookupField('name', css_class='input-large'),
                         LookupField('artist', css_class='input-large'),
-                        Field('isrc', css_class='input-large'),
+                        LookupField('isrc', css_class='input-large'),
                         HTML('<span>*%s*</span>' % self.instance.name),
                        css_class='span5'
                        ),
@@ -372,7 +372,7 @@ class BaseReleaseMediaForm(ModelForm):
                 Column(
                         LookupField('name', css_class='input-large'),
                         LookupField('artist', css_class='input-large'),
-                        Field('isrc', css_class='input-large'),
+                        LookupField('isrc', css_class='input-large'),
                         HTML('<div style="opacity: 0.5;"><span style="padding-right: 48px;">File:</span>%s</div>' % self.instance.filename),
                        css_class='span9'
                        ),

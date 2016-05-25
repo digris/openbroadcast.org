@@ -1,7 +1,13 @@
 # views.py
 import json
 from django.http import HttpResponse
+from django.shortcuts import render
 from haystack.query import SearchQuerySet
+
+
+def index(request):
+    return render(request, 'search/index.html')
+
 
 def autocomplete(request):
 

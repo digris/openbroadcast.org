@@ -15,7 +15,7 @@ class BaseLookup(ModelLookup):
 
 class ReleaseNameLookup(BaseLookup):
     model = Release
-    search_fields = ['name__icontains', 'catalognumber__istartswith']
+    search_fields = ['name__istartswith', 'catalognumber__istartswith']
     template_name = 'alibrary/lookups/_release.html'
 
 registry.register(ReleaseNameLookup)

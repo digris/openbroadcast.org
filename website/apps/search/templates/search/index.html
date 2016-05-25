@@ -1,0 +1,51 @@
+{% extends "layout_base.html" %}
+
+{% load i18n sekizai_tags %}
+
+{% block heading %}
+Ø
+    {% addtoblock "js-post" %}
+        <script src="/static/search/js/base.js"></script>
+    {% endaddtoblock %}
+
+
+    {% addtoblock "js-post" %}
+        <script>
+            var search_app;
+            $(function() {
+              search_app = new SearchApp();
+              search_app.debug = true;
+              search_app.init();
+            });
+        </script>
+    {% endaddtoblock %}
+
+
+    <div id="chat"></div>
+
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+{% endblock %}
+
+{% block inner %}
+<h1>alsdkj</h1>
+
+    <div>
+
+        <form action="/api/v1/search/">
+            <input type="text" name="q" id="search_input">
+            <input type="hidden" name="format" value="json">
+            <button type="submit">search</button>
+        </form>
+
+
+    </div>
+
+
+    <div id="search_results">
+
+    </div>
+
+
+{% endblock %}

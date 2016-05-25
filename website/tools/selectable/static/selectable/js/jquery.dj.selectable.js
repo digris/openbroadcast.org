@@ -277,22 +277,19 @@
 
 
 
-            var close_html = $('<div class="close-container"><a href="#">Close</a></div>');
-
-            close_html.click(function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (that.widget().is(":visible")) {
-                    that.close();
-                }
-                return false;
-            });
-            $(ul).prepend(close_html)
-
-
+            if(! $('.close-container', $(ul)).length) {
+                var close_html = $('<div class="close-container"><a href="#">Close</a></div>');
+                close_html.click(function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (that.widget().is(":visible")) {
+                        that.close();
+                    }
+                    return false;
+                });
+                $(ul).prepend(close_html)
+            }
         },
-
-
 
         // Override the default auto-complete suggest.
         _suggest: function (items) {

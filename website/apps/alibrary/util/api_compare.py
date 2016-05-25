@@ -48,7 +48,7 @@ class MusicbrainzAPILookup(APILookup):
     def get_release(self, uri):
 
         provider_id = uri.split('/')[-1]
-        inc = ('aliases', 'url-rels', 'annotation', 'tags', 'artist-rels', 'recordings', 'artists', 'labels', 'release-groups', 'artist-credits')
+        inc = ('aliases', 'url-rels', 'annotation', 'tags', 'artist-rels', 'recordings', 'artists', 'labels', 'release-groups', 'artist-credits', 'isrcs')
         api_url = 'http://%s/ws/2/release/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, provider_id, "+".join(inc))
 
         log.info('composed api url: %s' % api_url)
@@ -122,12 +122,18 @@ class MusicbrainzAPILookup(APILookup):
                         else:
                             track_artists = []
 
+                        if 'recording' in m and 'isrcs' in m['recording']:
+                            isrcs = m['recording']['isrcs']
+                        else:
+                            isrcs = []
+
                         mapped_media.append({
                             'number': '%s' % (pos),
                             'position': '%s-%s' % (disc_no, pos),
                             'duration': m['length'],
                             'title': m['title'],
                             'artists': track_artists,
+                            'isrcs': isrcs,
                             })
 
 
@@ -139,6 +145,7 @@ class MusicbrainzAPILookup(APILookup):
                         d_tags.append(v['name'])
                 except:
                     pass
+
 
             res[mk] = data[k]
 

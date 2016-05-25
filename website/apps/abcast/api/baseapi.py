@@ -302,8 +302,8 @@ class ChannelResource(ModelResource):
             dls_generator = DABMetadataGenerator(emission=current_emission, content_object=current_content_object)
 
             bundle.update({
-                #'dls_text': dls_generator.get_dls_text(),
-                'dls_text': dls_generator.get_dl_plus(),
+                'dls_text': dls_generator.get_dls_text(),
+                'dl_plus': dls_generator.get_dl_plus(),
                 'dls_slides': dls_generator.get_slides(),
             })
 
