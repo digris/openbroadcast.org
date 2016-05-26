@@ -39,7 +39,7 @@ FORMAT_LOCK_EXPIRE = 60 * 1
 class WaveformManager(models.Manager):
 
     def get_or_create_for_media(self, media, type, **kwargs):
-        waveform, created = self.model.objects.get_or_create(media=media, type=type, **kwargs)
+        waveform, created = self.model.objects.get_or_create(media__pk=media.pk, type=type, **kwargs)
         log.debug('waveform - get or create for media: %s %s (created: %s)' % (media, type, created))
         return waveform
 
@@ -64,7 +64,7 @@ class Waveform(TimestampedModel, UUIDModel):
     )
 
     status = models.PositiveIntegerField(default=INIT, choices=STATUS_CHOICES)
-    type = models.CharField(max_length=64, default=WAVEFORM, choices=TYPE_CHOICES)
+    type = models.CharField(max_length=64, default=WAVEFORM, choices=TYPE_CHOICES, db_index=True)
     accessed = models.DateTimeField(auto_now_add=True)
     media = models.ForeignKey('alibrary.Media', null=True, related_name='waveforms', on_delete=models.CASCADE)
     media_uuid = models.UUIDField(blank=True, null=True)
@@ -171,7 +171,7 @@ class FormatManager(models.Manager):
 
     def get_or_create_for_media(self, media, encoding='mp3', quality='default', **kwargs):
 
-        format, created = self.model.objects.get_or_create(media=media, encoding=encoding, quality=quality, **kwargs)
+        format, created = self.model.objects.get_or_create(media__pk=media.pk, encoding=encoding, quality=quality, **kwargs)
         log.debug('version - get or create for media: %s %s %s (created: %s)' % (media, encoding, quality, created))
 
         return format
@@ -217,7 +217,7 @@ class Format(TimestampedModel, UUIDModel):
         PREVIEW: '-b 24',
     }
 
-    status = models.PositiveIntegerField(default=INIT, choices=STATUS_CHOICES)
+    status = models.PositiveIntegerField(default=INIT, choices=STATUS_CHOICES, db_index=True)
     encoding = models.CharField(max_length=4, default=MP3, choices=ENCODING_CHOICES, db_index=True)
     quality = models.CharField(max_length=16, default=DEFAULT, choices=QUALITY_CHOICES, db_index=True)
     filesize = models.PositiveIntegerField(verbose_name=_('Filesize'), blank=True, null=True)
