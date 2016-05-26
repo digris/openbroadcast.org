@@ -6,12 +6,12 @@ import logging
 import os
 import subprocess
 import uuid
-
 import arating
 import audiotools
 import reversion
 import tagging
 from base.audio.fileinfo import FileInfoProcessor
+from cacheops import invalidate_obj
 from celery.task import task
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -638,8 +638,6 @@ class Media(MigrationMixin):
         
     def save(self, *args, **kwargs):
 
-        log.debug('Media id: %s - Save' % (self.pk))
-
         # Assign a default license
         """
          - not applying default license anymore
@@ -681,8 +679,6 @@ class Media(MigrationMixin):
                         except Exception as e:
                             pass
 
-
-
                     # reset processing flags
                     # TODO: this should be refactored / removed. Only master_* related informations are extracted.
                     self.processed = 0
@@ -690,8 +686,7 @@ class Media(MigrationMixin):
                     self.echoprint_status = 0
 
             except Exception, e:
-                print 'mediamodels line 686: %s' % e
-
+                print '%s' % e
 
         if self.version:
             self.version = self.version.lower()
@@ -701,7 +696,7 @@ class Media(MigrationMixin):
 
 
         # sha1 for quick duplicate checks
-        if self.master:
+        if self.master and not self.master_sha1:
             self.master_sha1 = self.generate_sha1()
         else:
             self.master_sha1 = None
@@ -709,7 +704,7 @@ class Media(MigrationMixin):
         unique_slugify(self, self.name)
 
         # kind of ugly, clean empty relations
-        for ea in MediaExtraartists.objects.filter(media=self):
+        for ea in MediaExtraartists.objects.filter(media__pk=self.pk):
             try:
                 if not ea.artist:
                     ea.delete()
@@ -737,10 +732,6 @@ def media_post_save(sender, **kwargs):
         else:
             log.info('Media id: %s - skipping echoprint generation' % (obj.pk))
 
-
-
-
-
     if not obj.folder:
         log.debug('no directory for media %s - create it.' % obj.pk)
         directory = get_dir_for_object(obj)
@@ -753,12 +744,11 @@ def media_post_save(sender, **kwargs):
             obj.folder = directory
             log.info('creating directory: %s' % abs_directory)
 
-        except Exception, e:
+        except Exception as e:
             log.warning('unable to create directory: %s - %s' % (abs_directory, e))
             obj.folder = None
             obj.status = 99
 
-    from cacheops import invalidate_obj
     invalidate_obj(obj)
 
 post_save.connect(media_post_save, sender=Media) 
