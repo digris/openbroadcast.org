@@ -65,7 +65,7 @@
                 <small class="type">{{ item.get_mediatype_display }}</small>
                 -->
                 {% if item.tempo %}
-                    <small class="tempo">{{ item.tempo }} BPM</small>
+                    <small class="tempo">{{ item.tempo|floatformat:"1" }} BPM</small>
                 {% endif %}
             </li>
 

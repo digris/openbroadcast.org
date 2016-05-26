@@ -304,7 +304,7 @@ class ChannelResource(ModelResource):
             bundle.update({
                 'dls_text': dls_generator.get_dls_text(),
                 'dl_plus': dls_generator.get_dl_plus(),
-                'dls_slides': dls_generator.get_slides(),
+                'slides': dls_generator.get_slides(),
             })
 
         self.log_throttled_access(request)
