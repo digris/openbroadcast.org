@@ -15,4 +15,4 @@ def process_waveform(media, type):
 
 @app.task
 def process_format(media, encoding, quality):
-    Waveform.objects.get_or_create_for_media(media=media, encoding=encoding, quality=quality)
+    Format.objects.get_or_create_for_media(media=media, encoding=encoding, quality=quality)

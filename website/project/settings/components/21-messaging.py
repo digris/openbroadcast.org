@@ -40,6 +40,7 @@ CELERY_IMPORTS = (
     'importer.util.importer',
     'lib.pypo_gateway.gateway',
     'djcelery_email.tasks',
+    'media_asset.tasks',
 )
 
 CELERY_ROUTES = {
