@@ -34,8 +34,8 @@ DetailPlayer = function () {
 
         self.dom_element = $('#' + self.dom_id);
 
-        debug.debug('DetailPlayer: init')
-        debug.debug(self.api_url)
+        debug.debug('DetailPlayer: init');
+        debug.debug(self.api_url);
 
         self.bindings();
         //self.init_waveform();
@@ -169,7 +169,7 @@ DetailPlayer = function () {
 
     this.init_markers = function (sections) {
 
-        debug.debug('init_markers:', sections)
+        debug.debug('init_markers:', sections);
 
         if (sections.length > 1) {
 
@@ -271,7 +271,7 @@ DetailPlayer = function () {
     }
 
 
-}
+};
 
 
 

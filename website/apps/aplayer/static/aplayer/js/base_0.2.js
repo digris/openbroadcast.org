@@ -149,7 +149,7 @@ AplayerApp = function (context) {
         }
     }
 
-}
+};
 
 
 JWP = function (aplayer) {

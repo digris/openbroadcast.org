@@ -1,9 +1,8 @@
 {% extends "aplayer/base.html" %}
 
-{% load sekizai_tags compress i18n comments %}
+{% load sekizai_tags compress i18n %}
 
 {% block extras %}
-
 
 {% endblock %}
 
@@ -14,13 +13,7 @@
             <div class="navbar-inner">
 
                 <a class="brand" href="#">
-
-                    <img class="__hidden-while-buffering" src="{{ STATIC_URL }}aplayer/img/icon.playing.gif"/>
-                    <!--
-                    <img class="__hidden-while-playing __hidden-while-buffering" src="{{ STATIC_URL }}aplayer/img/icon.base.gif"/>
-                    <img class="__hidden-while-playing" src="{{ STATIC_URL }}aplayer/img/icon.buffering.gif"/>
-                    <img class="__hidden-while-playing" src="{{ STATIC_URL }}aplayer/img/icon.paused.gif"/>
-                    -->
+                    <img src="{{ STATIC_URL }}aplayer/img/icon.playing.gif"/>
                 </a>
 
                 <div class="nav-collapse collapse">
@@ -33,14 +26,6 @@
                         </li>
 
                     </ul>
-                    <!--
-                    <ul class="nav pull-right countdown">
-                        <li class="">
-                            <span class="pull-right time"></span>
-                            <span class="pull-right">Next: </span>
-                        </li>
-                    </ul>
-                    -->
 
                 </div>
 
@@ -78,31 +63,6 @@
 
                     <p style="padding-right: 0;">{% trans "Loading the player for the first time can take some seconds." %}</p>
                 </div>
-
-            </section>
-
-
-            <section class="screen comments on-site" id="aplayer_comments">
-
-                <!---->
-                <div class="header">
-                    <h3>{% trans "Comments" %}</h3>
-                </div>
-
-                <div class="form">
-                    {% if user.is_authenticated %}
-                        {% render_comment_form for object %}
-                    {% else %}
-                        <p>{% trans "Please login to join the conversation" %}</p>
-                    {% endif %}
-                </div>
-
-                {% with router=object.get_api_url %}
-                    {% include "element/chat/_message_list.html" %}
-                {% endwith %}
-
-                {% render_comment_list for object %}
-
 
             </section>
 

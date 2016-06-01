@@ -72,7 +72,7 @@ aplayer.ui.bind = function() {
                     offset = i;
                 }
                 item_ids.push(current_id)
-            })
+            });
 
             // sorry, kind of ugly..
             uri = '/api/v1/library/simpletrack/?limit=50&id__in=' + item_ids.join(',');
@@ -190,7 +190,7 @@ aplayer.ui.bind = function() {
 		var args = {
 			action: 'play',
 			index: index
-		}
+		};
 		
 		aplayer.base.controls(args)
 	});
@@ -200,8 +200,8 @@ aplayer.ui.bind = function() {
 
 
     // set status (mode / version)
-    $('#aplayer_mode', $('footer')).html(aplayer.vars.stream_mode)
-    $('#aplayer_version', $('footer')).html(aplayer.vars.version)
+    $('#aplayer_mode', $('footer')).html(aplayer.vars.stream_mode);
+    $('#aplayer_version', $('footer')).html(aplayer.vars.version);
 
 
     $('#aplayer_volume', $('footer')).noUiSlider({
@@ -258,7 +258,7 @@ aplayer.ui.bind = function() {
         });
 
 
-    })
+    });
 
 
 
@@ -357,7 +357,7 @@ aplayer.ui.bind_controls = function(obj) {
 			action: 'seek',
 			position: x_percent,
 			uuid: uuid 
-		}
+		};
 		aplayer.base.controls(args);
 
 	});
@@ -516,7 +516,7 @@ aplayer.ui.screen_display = function(index) {
     }
 
 	try {
-		item.images = []
+		item.images = [];
 		item.images.push(item.release.main_image);
 	} catch(err) {};
 
@@ -532,13 +532,13 @@ aplayer.ui.screen_display = function(index) {
 aplayer.ui.update_emission = function(data) {
 
 
-    debug.debug('update_emission - data:', data)
+    debug.debug('update_emission - data:', data);
 
     var html = nj.render('aplayer/nj/popup_emission.html', {
         object: data
     });
     $( "#aplayer_emission" ).html(html);
-}
+};
 
 
 
@@ -721,7 +721,7 @@ aplayer.ui.playhead = function(base_width) {
 			action: 'seek',
 			position: x_percent,
 			uuid: uuid 
-		}
+		};
 		aplayer.base.controls(args);
 
 	});
@@ -758,7 +758,7 @@ aplayer.ui.playhead = function(base_width) {
 				action: 'seek',
 				position: x_percent,
 				uuid: uuid 
-			}
+			};
 			local.aplayer.base.controls(args);
 			
 			

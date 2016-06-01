@@ -235,7 +235,7 @@ aplayer.base.load_playlist = function (uri) {
                     // aplayer.base.set_playlist(result.media)
 
                     // version for 'simple-release'
-                    aplayer.base.set_playlist(result.media)
+                    aplayer.base.set_playlist(result.media);
                     aplayer.base.complete_playlist()
 
 
@@ -268,9 +268,9 @@ aplayer.base.load_playlist = function (uri) {
 
                     var media = [];
                     $.each(result.items, function (i, item) {
-                        debug.debug('co:', item.item.content_object)
+                        debug.debug('co:', item.item.content_object);
                         media.push(item.item.content_object);
-                    })
+                    });
                     aplayer.base.set_playlist(media);
                     aplayer.base.complete_playlist()
 
@@ -279,10 +279,10 @@ aplayer.base.load_playlist = function (uri) {
                     var media = [];
 
                     // got artist object to play, additional api-query required
-                    var url = uri + 'top-tracks/'
+                    var url = uri + 'top-tracks/';
 
                     $.get(url, function(data){
-                       debug.debug(data)
+                       debug.debug(data);
                         aplayer.base.set_playlist(data);
                         aplayer.base.complete_playlist();
                     });
@@ -316,7 +316,7 @@ aplayer.base.complete_playlist = function () {
 
     $.each(aplayer.vars.playlist, function (i, item) {
 
-        console.log('complete_playlist:', i, item)
+        console.log('complete_playlist:', i, item);
 
         // hack - sorry!
         console.log('complete_playlist relations:', typeof item.release, typeof item.artist);
@@ -338,7 +338,7 @@ aplayer.base.complete_playlist = function () {
             $.get(uri, function (data) {
                 item.release = data.release;
                 item.artist = data.artist;
-                debug.debug('got data:', data)
+                debug.debug('got data:', data);
                 //aplayer.vars.playlist[i] = el;
                 aplayer.ui.playlist_display(aplayer, $('#aplayer_playlist'));
             })
@@ -349,7 +349,7 @@ aplayer.base.complete_playlist = function () {
     //
     //aplayer.ui.screen_display(idx);
 
-}
+};
 
 /*********************************************************************************
  * Parses and sets the loaded playlist
@@ -398,7 +398,7 @@ aplayer.base.set_playlist = function (media) {
             } else {
                 console.log('item already loaded');
             }
-        })
+        });
 
         aplayer.vars.playlist = new_playlist;
 
@@ -731,7 +731,7 @@ aplayer.base.on_complete = function () {
 
 aplayer.base.subscribe_channel_data = function (channel) {
 
-    debug.debug('aplayer.base.subscribe_channel_data: ', channel)
+    debug.debug('aplayer.base.subscribe_channel_data: ', channel);
 
     try {
         aplayer.vars.playlist[aplayer.states.current].media = {
@@ -756,21 +756,21 @@ aplayer.base.subscribe_channel_data = function (channel) {
     });
 
 
-}
+};
 aplayer.base.unsubscribe_channel_data = function () {
     debug.debug('aplayer.base.unsubscribe_channel_data: ')
 
 
-}
+};
 
 
 aplayer.base.update_channel_data = function (channel) {
 
-    debug.debug('aplayer.base.update_channel_data: ', channel)
+    debug.debug('aplayer.base.update_channel_data: ', channel);
 
 
     $.get(channel.resource_uri, function (data) {
-        debug.debug('ON-AIR', data.on_air)
+        debug.debug('ON-AIR', data.on_air);
 
         var on_air = data.on_air;
         var media;
@@ -778,7 +778,7 @@ aplayer.base.update_channel_data = function (channel) {
 
         if (on_air.item) {
             $.get(on_air.item, function (media) {
-                debug.debug('media on air:', media)
+                debug.debug('media on air:', media);
                 aplayer.vars.playlist[aplayer.states.current].media = media;
 
                 aplayer.ui.screen_display(aplayer.states.current);
@@ -788,7 +788,7 @@ aplayer.base.update_channel_data = function (channel) {
         if (on_air.emission) {
             setTimeout(function () {
                 $.get(on_air.emission, function (data) {
-                    debug.debug('emission on air:', data)
+                    debug.debug('emission on air:', data);
                     aplayer.vars.playlist[aplayer.states.current].emission = emission;
                     aplayer.ui.screen_display(aplayer.states.current);
 
@@ -872,14 +872,14 @@ aplayer.base.controls = function (args) {
         if (aplayer.vars.source && aplayer.vars.source == 'alibrary') {
 
 
-            debug.debug('*** TRYING TO EXTRACT STREAM INFO ***')
-            debug.debug(aplayer.vars.playlist)
+            debug.debug('*** TRYING TO EXTRACT STREAM INFO ***');
+            debug.debug(aplayer.vars.playlist);
 
             try {
                 stream = aplayer.vars.playlist[index].stream;
                 debug.debug('stream:', stream);
                 // TODO: Hakish here - try to complete meta data
-                var el = aplayer.vars.playlist[index]
+                var el = aplayer.vars.playlist[index];
                 var idx = index;
                 debug.debug('ELEMENT:', aplayer.vars.playlist[index])
             } catch (e) {
@@ -890,7 +890,7 @@ aplayer.base.controls = function (args) {
         // in case abcast stream is played
         if (aplayer.vars.source && aplayer.vars.source == 'abcast') {
 
-            var channel = aplayer.vars.playlist[index]
+            var channel = aplayer.vars.playlist[index];
             stream = channel.stream;
 
             if(stream.error){
@@ -910,7 +910,7 @@ aplayer.base.controls = function (args) {
         // TODO: ?
         setTimeout(function () {
             aplayer.ui.screen_display(index);
-        }, 2000)
+        }, 2000);
 
 
         // mode switch and player initialisation
@@ -923,7 +923,7 @@ aplayer.base.controls = function (args) {
                 'title': stream.media_name,
                 'mediaid': stream.uuid,
                 'index': index
-            }
+            };
 
             aplayer.base.debug('mode: ' + 'rtmp');
             aplayer.base.debug('file: ' + stream.file);
@@ -939,7 +939,7 @@ aplayer.base.controls = function (args) {
                 'title': stream.media_name,
                 'mediaid': stream.uuid,
                 'index': index
-            }
+            };
             aplayer.base.debug('mode: ' + 'html5');
             aplayer.base.debug('uri: ' + stream.uri);
         }
@@ -1090,7 +1090,7 @@ aplayer.controls = function (action, index, uuid) {
                 'title': stream.media_name,
                 'mediaid': stream.uuid,
                 'index': index
-            }
+            };
 
 
             jwp.load(tpl).play();

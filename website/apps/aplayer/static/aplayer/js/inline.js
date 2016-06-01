@@ -75,12 +75,12 @@ InlinePlayer = function () {
             } else {
 
                 var uuid = $(this).attr('id');
-                var index = self.player.vars.uuid_map[uuid]
+                var index = self.player.vars.uuid_map[uuid];
 
                 var args = {
                     action: 'play',
                     index: index
-                }
+                };
 
                 self.player.base.controls(args)
 
@@ -109,7 +109,7 @@ InlinePlayer = function () {
                 action: 'seek',
                 position: x_percent,
                 uuid: uuid
-            }
+            };
             self.player.base.controls(args);
         });
 
