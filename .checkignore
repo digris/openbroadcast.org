@@ -1,0 +1,9 @@
+# http://docs.quantifiedcode.com/configuration/config_checkignore.html
+# code analysis - ignore patterns
+
+bin/*
+conf/*
+doc/*
+
+# 3rd party in repository
+website/tools/*

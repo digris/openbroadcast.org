@@ -65,7 +65,7 @@ SITE_ID = 1
 USE_I18N = True
 USE_L10N = True
 ROOT_URLCONF = 'project.urls'
-SECRET_KEY = '0r6%7gip5tmez*vygfv+u14h@4lbt^8e2^26o#5_f_#b7%cm)u'
+SECRET_KEY = '**********'
 
 ################################################################################
 # middleware

@@ -11,11 +11,8 @@ from collections import namedtuple
 from django.conf import settings
 from django.template import loader
 from wand.color import Color
-from wand.image import Image
 from wand.drawing import Drawing
-from wand.compat import nested
-from math import cos, pi, sin
-from wand.image import Image, COMPOSITE_OPERATORS
+from wand.image import Image
 
 log = logging.getLogger(__name__)
 

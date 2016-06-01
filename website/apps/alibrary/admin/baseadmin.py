@@ -463,10 +463,6 @@ admin.site.register(Daypart, DaypartAdmin)
 admin.site.register(PlaylistItem, PlaylistItemAdmin)
 
 
-
-
-
-from hvad.admin import TranslatableAdmin
 class SeasonAdmin(TranslatableAdmin):
     pass
 class WeatherAdmin(TranslatableAdmin):

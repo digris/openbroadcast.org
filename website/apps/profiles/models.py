@@ -4,12 +4,10 @@ from __future__ import unicode_literals
 import re
 import datetime
 import os
-import tagging
 
 from dateutil import relativedelta
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.db.models import permalink
 from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
 from django.core.urlresolvers import reverse
@@ -17,7 +15,6 @@ from django.core.urlresolvers import reverse
 from django_extensions.db.fields import AutoSlugField, UUIDField
 from phonenumber_field.modelfields import PhoneNumberField
 
-import tagging
 from tagging.fields import TagField
 from tagging.registry import register as tagging_register
 
@@ -26,7 +23,6 @@ from postman.api import pm_write
 from lib.fields import extra
 from invitation.signals import invitation_accepted
 from l10n.models import Country
-
 
 DEFAULT_GROUP = 'Listener'
 

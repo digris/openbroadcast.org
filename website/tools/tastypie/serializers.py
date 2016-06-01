@@ -1,10 +1,12 @@
 import datetime
-from StringIO import StringIO
+import json
 import django
+
+from StringIO import StringIO
+
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.core.serializers import json
-import json
+
 from django.utils.encoding import force_unicode
 from tastypie.bundle import Bundle
 from tastypie.exceptions import UnsupportedFormat

@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+import json
+
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView, View
 from django.conf import settings
 from django.http import (HttpResponse, HttpResponseBadRequest, HttpResponseRedirect, HttpResponseForbidden)
@@ -10,10 +13,8 @@ from django.core.urlresolvers import reverse
 from django.utils.functional import lazy
 from django.views.decorators.csrf import csrf_exempt
 from pure_pagination.mixins import PaginationMixin
-import json
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from django import http
-import json
 from importer.forms import *
 from importer.models import Import, ImportFile
 from importer.models import *
