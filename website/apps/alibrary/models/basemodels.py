@@ -468,7 +468,7 @@ class RelationManager(models.Manager):
                     'linkedin',
                     ]
 
-        objects = dict([(obj.service, obj) for obj in qs])
+        objects = {obj.service: obj for obj in qs}
 
         sorted = []
         for service in services:
@@ -481,7 +481,7 @@ class RelationManager(models.Manager):
 
         qs = self.get_queryset().exclude(service__in=['generic', 'official',])
 
-        objects = dict([(obj.service, obj) for obj in qs])
+        objects = {obj.service: obj for obj in qs}
 
         sorted = []
         for service in ['wikipedia', 'youtube',]:

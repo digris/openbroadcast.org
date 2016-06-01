@@ -396,7 +396,7 @@ class Field(LayoutObject):
         self.template = kwargs.pop('template', self.template)
 
         # We use kwargs as HTML attributes, turning data_id='test' into data-id='test'
-        self.attrs.update(dict([(k.replace('_', '-'), conditional_escape(v)) for k,v in kwargs.items()]))
+        self.attrs.update({k.replace('_', '-'): conditional_escape(v) for k,v in kwargs.items()})
 
     def render(self, form, form_style, context):
         html = ''
@@ -431,7 +431,7 @@ class LookupField(LayoutObject):
         self.template = kwargs.pop('template', self.template)
 
         # We use kwargs as HTML attributes, turning data_id='test' into data-id='test'
-        self.attrs.update(dict([(k.replace('_', '-'), conditional_escape(v)) for k,v in kwargs.items()]))
+        self.attrs.update({k.replace('_', '-'): conditional_escape(v) for k,v in kwargs.items()})
 
     def render(self, form, form_style, context):
         html = ''
@@ -466,7 +466,7 @@ class LookupImageField(LayoutObject):
         self.template = kwargs.pop('template', self.template)
 
         # We use kwargs as HTML attributes, turning data_id='test' into data-id='test'
-        self.attrs.update(dict([(k.replace('_', '-'), conditional_escape(v)) for k,v in kwargs.items()]))
+        self.attrs.update({k.replace('_', '-'): conditional_escape(v) for k,v in kwargs.items()})
 
     def render(self, form, form_style, context):
         html = ''
