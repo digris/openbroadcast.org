@@ -4,17 +4,14 @@ from __future__ import unicode_literals
 import glob
 import logging
 import os
-from datetime import *
-from zipfile import ZipFile
 import uuid
+from datetime import datetime, date, timedelta
+from zipfile import ZipFile
+
 import arating
 import requests
 import reversion
 import tagging
-from alibrary import settings as alibrary_settings
-from alibrary.models import Relation, License, MigrationMixin, Profession
-from alibrary.util.slug import unique_slugify
-from alibrary.util.storage import get_dir_for_object, OverwriteStorage
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
@@ -24,10 +21,14 @@ from django.db.models import Q
 from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
-from django_extensions.db.fields import UUIDField
 from l10n.models import Country
 from lib.fields import extra
 from tagging.registry import register as tagging_register
+
+from alibrary import settings as alibrary_settings
+from ..models import Relation, License, MigrationMixin, Profession
+from ..util.slug import unique_slugify
+from ..util.storage import get_dir_for_object, OverwriteStorage
 
 logger = logging.getLogger(__name__)
 
@@ -382,8 +383,7 @@ class Release(MigrationMixin):
             for version in versions:
                 os.remove(version)
   
-        except Exception, e:
-            print e
+        except Exception as e:
             pass
 
     def get_cache_file(self, format, version):

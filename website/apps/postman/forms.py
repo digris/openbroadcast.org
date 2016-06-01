@@ -100,7 +100,7 @@ class BaseWriteForm(forms.ModelForm):
         return recipients
 
     @transaction.atomic
-    def save(self, recipient=None, parent=None, auto_moderators=[], hacked_recipient=None):
+    def save(self, recipient=None, parent=None, auto_moderators=None, hacked_recipient=None):
         """
         Save as many messages as there are recipients.
 
@@ -112,6 +112,8 @@ class BaseWriteForm(forms.ModelForm):
         Return False if one of the messages is rejected.
 
         """
+
+        auto_moderators = auto_moderators or []
 
         recipients = self.cleaned_data.get('recipients', [])
         if hacked_recipient:

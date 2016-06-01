@@ -2,50 +2,46 @@
 import datetime
 import json
 import logging
-from django.conf.urls import *
-from django.http import HttpResponse
-from django.contrib.sites.models import Site
-from django.core.cache import cache
-from django.shortcuts import get_object_or_404
-from tastypie import fields
-from tastypie.authentication import *
-from tastypie.authorization import *
-from tastypie.resources import ModelResource, Resource, ALL_WITH_RELATIONS
-from tastypie.utils import trailing_slash
-from easy_thumbnails.files import get_thumbnailer
 
 from abcast.models import Station, Channel, Emission
 from abcast.util import scheduler
-from metadata_generator.dab import DABMetadataGenerator
+from django.conf import settings
+from django.conf.urls import url
+from django.contrib.sites.models import Site
+from django.core.cache import cache
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from easy_thumbnails.files import get_thumbnailer
 from lib.pypo_gateway import send as pypo_send
+from metadata_generator.dab import DABMetadataGenerator
+from tastypie import fields
+from tastypie.authentication import MultiAuthentication, SessionAuthentication, ApiKeyAuthentication, Authentication
+from tastypie.authorization import Authorization
+from tastypie.resources import ModelResource, Resource, ALL_WITH_RELATIONS
+from tastypie.utils import trailing_slash
 
 log = logging.getLogger(__name__)
 
+SCHEDULE_AHEAD = 60 * 60 * 6  # seconds
 
-SCHEDULE_AHEAD = 60 * 60 * 6 # seconds
 
 class StationResource(ModelResource):
-    
-    # label = fields.ForeignKey('alibrary.api.LabelResource', 'label', null=True, full=True, max_depth=2)
-
     class Meta:
         queryset = Station.objects.order_by('name').all()
-        list_allowed_methods = ['get',]
-        detail_allowed_methods = ['get',]
+        list_allowed_methods = ['get', ]
+        detail_allowed_methods = ['get', ]
         resource_name = 'abcast/station'
-        excludes = ['updated',]
-        #include_absolute_url = True
-        authentication =  MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication(), Authentication())
+        excludes = ['updated', ]
+        # include_absolute_url = True
+        authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication(), Authentication())
         authorization = Authorization()
         filtering = {
-            #'channel': ALL_WITH_RELATIONS,
             'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
         }
-        #cache = SimpleCache(timeout=120)
-        
+        # cache = SimpleCache(timeout=120)
 
     def dehydrate(self, bundle):
-        
+
         if bundle.obj.main_image:
             opt = dict(size=(70, 70), crop=True, bw=False, quality=80)
             try:
@@ -56,25 +52,22 @@ class StationResource(ModelResource):
 
         return bundle
 
+
 class ChannelResource(ModelResource):
-    
     station = fields.ForeignKey('abcast.api.StationResource', 'station', null=True, full=True, max_depth=2)
 
     class Meta:
         queryset = Channel.objects.order_by('name').all()
-        list_allowed_methods = ['get',]
-        detail_allowed_methods = ['get',]
+        list_allowed_methods = ['get', ]
+        detail_allowed_methods = ['get', ]
         resource_name = 'abcast/channel'
-        excludes = ['on_air_id',]
-        #include_absolute_url = True
-        authentication =  Authentication()
+        excludes = ['on_air_id', ]
+        # include_absolute_url = True
+        authentication = Authentication()
         authorization = Authorization()
         filtering = {
-            #'channel': ALL_WITH_RELATIONS,
             'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
         }
-        #cache = SimpleCache(timeout=120)
-        
 
     """ stream:
     file: "private/8acfe075/bcb7/11e2/a24c/b8f6b11a3aed/master.mp3"
@@ -85,7 +78,7 @@ class ChannelResource(ModelResource):
     """
 
     def dehydrate(self, bundle):
-        
+
         if bundle.obj.station and bundle.obj.station.main_image:
             opt = dict(size=(70, 70), crop=True, bw=False, quality=80)
             try:
@@ -95,7 +88,6 @@ class ChannelResource(ModelResource):
                 bundle.data['main_image'] = None
         else:
             bundle.data['main_image'] = None
-
 
         """
         generate on-air
@@ -109,13 +101,13 @@ class ChannelResource(ModelResource):
         """
         if (bundle.obj.rtmp_app and bundle.obj.rtmp_path) or bundle.obj.get_stream_url():
             stream = {
-                      'file': '%s.stream' % bundle.obj.rtmp_path,
-                     'rtmp_app': '%s' % bundle.obj.rtmp_app,
-                     'rtmp_host': 'rtmp://%s:%s/' % (settings.RTMP_HOST, settings.RTMP_PORT),
-                      #'uri': 'http://pypo:8000/obp-dev-256.mp3',
-                      'uri': bundle.obj.get_stream_url(),
-                      'uuid': bundle.obj.uuid,
-                      }
+                'file': '%s.stream' % bundle.obj.rtmp_path,
+                'rtmp_app': '%s' % bundle.obj.rtmp_app,
+                'rtmp_host': 'rtmp://%s:%s/' % (settings.RTMP_HOST, settings.RTMP_PORT),
+                # 'uri': 'http://pypo:8000/obp-dev-256.mp3',
+                'uri': bundle.obj.get_stream_url(),
+                'uuid': bundle.obj.uuid,
+            }
         else:
             stream = {
                 'error': _('stream data not defined')
@@ -127,10 +119,9 @@ class ChannelResource(ModelResource):
         bundle.data['media'] = None
 
         return bundle
-    
-    # additional methods
+
     def prepend_urls(self):
-        
+
         return [
 
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/schedule%s$" % (
@@ -158,10 +149,6 @@ class ChannelResource(ModelResource):
                 name="channel_api_program"),
         ]
 
-
-
-
-
     def get_schedule(self, request, **kwargs):
 
         self.method_check(request, allowed=['get'])
@@ -175,15 +162,14 @@ class ChannelResource(ModelResource):
         objects = scheduler.get_schedule(range_start=range_start, range_end=range_end, channel=channel)
 
         bundle = {
-                  'meta': {
-                      'total_count': len(objects),
-                  },
-                  'objects': objects,
-                  }
+            'meta': {
+                'total_count': len(objects),
+            },
+            'objects': objects,
+        }
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
-
 
     def get_history(self, request, **kwargs):
 
@@ -192,25 +178,23 @@ class ChannelResource(ModelResource):
         self.throttle_check(request)
 
         channel = Channel.objects.get(**self.remove_api_resource_names(kwargs))
-        objects = scheduler.get_history(range=360*60, channel=channel)
+        objects = scheduler.get_history(range=360 * 60, channel=channel)
 
         bundle = {
-                  'meta': {},
-                  'objects': objects,
-                  }
+            'meta': {},
+            'objects': objects,
+        }
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
 
-
     def get_now_playing(self, request, **kwargs):
-        
+
         self.method_check(request, allowed=['get'])
         self.is_authenticated(request)
         self.throttle_check(request)
 
         channel = Channel.objects.get(**self.remove_api_resource_names(kwargs))
-
 
         bundle = self.full_dehydrate(self.build_bundle(obj=channel, request=request))
 
@@ -231,7 +215,6 @@ class ChannelResource(ModelResource):
         except:
             cached_item = None
 
-
         now_playing = []
         start_next = False
         current_emission = None
@@ -245,9 +228,11 @@ class ChannelResource(ModelResource):
             items = e.content_object.get_items()
             for item in items:
                 co = item.content_object
-                item.time_start = e_start + datetime.timedelta(milliseconds=offset) + datetime.timedelta(seconds=timeshift)
-                item.time_end = e_start + datetime.timedelta(milliseconds=offset + co.get_duration() - (item.cue_in + item.cue_out + item.fade_cross)) + datetime.timedelta(seconds=timeshift)
-                
+                item.time_start = e_start + datetime.timedelta(milliseconds=offset) + datetime.timedelta(
+                    seconds=timeshift)
+                item.time_end = e_start + datetime.timedelta(milliseconds=offset + co.get_duration() - (
+                item.cue_in + item.cue_out + item.fade_cross)) + datetime.timedelta(seconds=timeshift)
+
                 # check if playing
                 if item.time_start < now < item.time_end:
                     item.is_playing = True
@@ -260,28 +245,28 @@ class ChannelResource(ModelResource):
                         item_url = item.content_object.get_api_url()
 
                     now_playing = {
-                                   'emission': e.get_api_url(),
-                                   'item': item_url,
-                                   'time_start': item.time_start,
-                                   'time_end': item.time_end,
-                                   }
-                    
+                        'emission': e.get_api_url(),
+                        'item': item_url,
+                        'time_start': item.time_start,
+                        'time_end': item.time_end,
+                    }
+
                     start_next = (item.time_end - now + datetime.timedelta(seconds=timeshift)).total_seconds()
 
                     current_emission = e
                     current_content_object = item.content_object
 
-                    
+
                 else:
                     item.is_playing = False
-                
+
                 # print '## item'
                 # print 'start:      %s' % item.time_start
                 # print 'end:        %s' % item.time_end
                 # print 'is playing: %s' % item.is_playing
 
-                offset += ( co.get_duration() - (item.cue_in + item.cue_out) )
-                
+                offset += (co.get_duration() - (item.cue_in + item.cue_out))
+
         else:
             # no emission in timeframe
             es = Emission.objects.filter(time_start__gte=now).order_by('time_start')
@@ -289,13 +274,10 @@ class ChannelResource(ModelResource):
                 e = es[0]
                 start_next = (e.time_start - now).total_seconds()
 
-
-
         bundle = {
-                  'start_next': start_next,
-                  'playing': now_playing,
-                  }
-
+            'start_next': start_next,
+            'playing': now_playing,
+        }
 
         # hackish hook to integrate mot/dls metadata
         if request.method == 'GET' and 'include-dls' in request.GET:
@@ -309,10 +291,6 @@ class ChannelResource(ModelResource):
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
-        
-
-
-
 
     def get_program(self, request, **kwargs):
 
@@ -346,8 +324,6 @@ class ChannelResource(ModelResource):
                 emission_bundle = res.full_dehydrate(emission_bundle)
                 emissions.append(emission_bundle)
 
-
-
             objects.append({
                 'time_start': daypart.time_start,
                 'time_end': daypart.time_end,
@@ -355,18 +331,15 @@ class ChannelResource(ModelResource):
                 'emissions': emissions
             })
 
-
         bundle = {
-                  'meta': {
-                      'total_count': len(objects),
-                  },
-                  'objects': objects,
-                  }
+            'meta': {
+                'total_count': len(objects),
+            },
+            'objects': objects,
+        }
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
-
-
 
     # not used at the moment. just here for reference
     def get_dayparts(self, request, **kwargs):
@@ -400,7 +373,6 @@ class ChannelResource(ModelResource):
                 if not item in content_programmers:
                     content_programmers.append(item)
 
-
             content_creators = []
             for emission in emissions:
                 item = {
@@ -422,35 +394,31 @@ class ChannelResource(ModelResource):
                 'content_creators': content_creators,
             })
 
-
         bundle = {
-                  'meta': {
-                      'total_count': len(objects),
-                  },
-                  'objects': objects,
-                  }
+            'meta': {
+                'total_count': len(objects),
+            },
+            'objects': objects,
+        }
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
-
-
 
 
 ####################################################################
 # api mapping for airtime / pypo
 ####################################################################
 class BaseResource(Resource):
-    
     base_url = Site.objects.get_current().domain
 
     class Meta:
-        #queryset = ImportFile.objects.all()
-        list_allowed_methods = ['get',]
-        detail_allowed_methods = ['get',]
+        # queryset = ImportFile.objects.all()
+        list_allowed_methods = ['get', ]
+        detail_allowed_methods = ['get', ]
         resource_name = 'abcast/base'
         # excludes = ['type','results_musicbrainz']
-        excludes = ['type',]
-        authentication =  MultiAuthentication(ApiKeyAuthentication(), SessionAuthentication(), Authentication())
+        excludes = ['type', ]
+        authentication = MultiAuthentication(ApiKeyAuthentication(), SessionAuthentication(), Authentication())
         authorization = Authorization()
         always_return_data = True
         filtering = {
@@ -458,21 +426,20 @@ class BaseResource(Resource):
             'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
         }
 
-    
     # additional methods
     def prepend_urls(self):
-        
+
         return [
             url(r"^(?P<resource_name>%s)/version%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('api_version'),
                 name="base_api_version"),
-            
+
             url(r"^(?P<resource_name>%s)/register-component%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('register_component'),
                 name="base_api_register_component"),
-            
+
             url(r"^(?P<resource_name>%s)/get-stream-parameters%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_stream_parameters'),
@@ -482,55 +449,52 @@ class BaseResource(Resource):
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('rabbitmq_do_push'),
                 name="base_api_rabbitmq_do_push"),
-            
+
             url(r"^(?P<resource_name>%s)/get-stream-settings%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_stream_settings'),
                 name="base_api_get_stream_settings"),
-                
+
             url(r"^(?P<resource_name>%s)/update-stream-settings%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('update_stream_settings'),
                 name="base_api_update_stream_settings"),
-                
+
             url(r"^(?P<resource_name>%s)/update-liquidsoap-status%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('update_liquidsoap_status'),
                 name="base_api_update_liquidsoap_status"),
-                
+
             url(r"^(?P<resource_name>%s)/notify-media-item-start-play%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('notify_start_play'),
                 name="base_api_notify_start_play"),
-                
+
             url(r"^(?P<resource_name>%s)/get-bootstrap-info%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_bootstrap_info'),
                 name="base_api_get_bootstrap_info"),
-                
+
             url(r"^(?P<resource_name>%s)/recorded-shows%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('recorded_shows'),
                 name="base_api_recorded_shows"),
-                
+
             url(r"^(?P<resource_name>%s)/get-schedule%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_schedule'),
                 name="base_api_get_schedule"),
-                
+
             url(r"^(?P<resource_name>%s)/on-air%s$" % (
                 self._meta.resource_name, trailing_slash()),
                 self.wrap_view('get_now_playing'),
                 name="base_api_get_now_playing'"),
         ]
-        
-        
 
     def api_version(self, request, **kwargs):
 
-        data = {"version":"2.4.1"}
+        data = {"version": "2.4.1"}
         return self.json_response(request, data)
-    
 
     def register_component(self, request, **kwargs):
 
@@ -539,7 +503,18 @@ class BaseResource(Resource):
 
     def get_stream_parameters(self, request, **kwargs):
 
-        data = {"stream_params":{"s1":{"enable":"true","output":"icecast","type":"mp3","bitrate":"256","host":"ubuntu","port":"8000","user":"","pass":"donthackme","admin_user":"admin","admin_pass":"donthackme","mount":"airtime_128","url":"http:\/\/airtime.sourcefabric.org","description":"Airtime Radio! Stream #1","genre":"genre","name":"Airtime!","channels":"stereo","liquidsoap_error":"OK"},"s2":{"enable":"false","output":"icecast","type":"","bitrate":"","host":"","port":"","user":"","pass":"","admin_user":"","admin_pass":"","mount":"","url":"","description":"","genre":"","name":"","channels":"stereo"},"s3":{"enable":"false","output":"icecast","type":"","bitrate":"","host":"","port":"","user":"","pass":"","admin_user":"","admin_pass":"","mount":"","url":"","description":"","genre":"","name":"","channels":"stereo"}}}
+        data = {"stream_params": {
+            "s1": {"enable": "true", "output": "icecast", "type": "mp3", "bitrate": "256", "host": "ubuntu",
+                   "port": "8000", "user": "", "pass": "donthackme", "admin_user": "admin", "admin_pass": "donthackme",
+                   "mount": "airtime_128", "url": "http:\/\/airtime.sourcefabric.org",
+                   "description": "Airtime Radio! Stream #1", "genre": "genre", "name": "Airtime!",
+                   "channels": "stereo", "liquidsoap_error": "OK"},
+            "s2": {"enable": "false", "output": "icecast", "type": "", "bitrate": "", "host": "", "port": "",
+                   "user": "", "pass": "", "admin_user": "", "admin_pass": "", "mount": "", "url": "",
+                   "description": "", "genre": "", "name": "", "channels": "stereo"},
+            "s3": {"enable": "false", "output": "icecast", "type": "", "bitrate": "", "host": "", "port": "",
+                   "user": "", "pass": "", "admin_user": "", "admin_pass": "", "mount": "", "url": "",
+                   "description": "", "genre": "", "name": "", "channels": "stereo"}}}
         return self.json_response(request, data)
 
     def rabbitmq_do_push(self, request, **kwargs):
@@ -564,7 +539,18 @@ class BaseResource(Resource):
 
     def update_stream_settings(self, request, **kwargs):
 
-        data = {"stream_params":{"s1":{"enable":"true","output":"icecast","type":"ogg","bitrate":"128","host":"ubuntu","port":"8000","user":"","pass":"donthackme","admin_user":"admin","admin_pass":"donthackme","mount":"airtime_128","url":"http:\/\/airtime.sourcefabric.org","description":"Airtime Radio! Stream #1","genre":"genre","name":"Airtime!","channels":"stereo","liquidsoap_error":"OK"},"s2":{"enable":"false","output":"icecast","type":"","bitrate":"","host":"","port":"","user":"","pass":"","admin_user":"","admin_pass":"","mount":"","url":"","description":"","genre":"","name":"","channels":"stereo"},"s3":{"enable":"false","output":"icecast","type":"","bitrate":"","host":"","port":"","user":"","pass":"","admin_user":"","admin_pass":"","mount":"","url":"","description":"","genre":"","name":"","channels":"stereo"}}}
+        data = {"stream_params": {
+            "s1": {"enable": "true", "output": "icecast", "type": "ogg", "bitrate": "128", "host": "ubuntu",
+                   "port": "8000", "user": "", "pass": "donthackme", "admin_user": "admin", "admin_pass": "donthackme",
+                   "mount": "airtime_128", "url": "http:\/\/airtime.sourcefabric.org",
+                   "description": "Airtime Radio! Stream #1", "genre": "genre", "name": "Airtime!",
+                   "channels": "stereo", "liquidsoap_error": "OK"},
+            "s2": {"enable": "false", "output": "icecast", "type": "", "bitrate": "", "host": "", "port": "",
+                   "user": "", "pass": "", "admin_user": "", "admin_pass": "", "mount": "", "url": "",
+                   "description": "", "genre": "", "name": "", "channels": "stereo"},
+            "s3": {"enable": "false", "output": "icecast", "type": "", "bitrate": "", "host": "", "port": "",
+                   "user": "", "pass": "", "admin_user": "", "admin_pass": "", "mount": "", "url": "",
+                   "description": "", "genre": "", "name": "", "channels": "stereo"}}}
         return self.json_response(request, data)
 
     def get_stream_settings(self, request, **kwargs):
@@ -573,10 +559,10 @@ class BaseResource(Resource):
 
         try:
             channel = Channel.objects.get(uuid=channel_uuid)
-        except Exception, e:
+        except Exception as e:
             print e
             channel = None
-            
+
         settings = []
         if channel:
             from abcast.util.liquidsoap import generate_settings
@@ -590,9 +576,6 @@ class BaseResource(Resource):
         data = {'status': True}
         return self.json_response(request, data)
 
-
-
-
     def notify_start_play(self, request, **kwargs):
 
         media_uuid = request.GET.get('media_id', None)
@@ -601,8 +584,8 @@ class BaseResource(Resource):
 
         if media_uuid and channel_uuid:
 
-            from alibrary.models import Media 
-            
+            from alibrary.models import Media
+
             item = Media.objects.get(uuid=media_uuid)
             try:
                 channel = Channel.objects.get(uuid=channel_uuid)
@@ -622,7 +605,6 @@ class BaseResource(Resource):
 
     def get_bootstrap_info(self, request, **kwargs):
 
-        print '** get_bootstrap_info **'
         channel_uuid = request.GET.get('channel_id', None)
 
         if channel_uuid:
@@ -632,22 +614,20 @@ class BaseResource(Resource):
                     {"live_dj": "off",
                      "master_dj": "off",
                      "scheduled_play": "on"
-                    },
-                    "station_name": u'%s' % channel.name,
-                    "stream_label": u'%s' % channel.teaser,
-                    "transition_fade": "00.000000"
-        }
+                     },
+                "station_name": u'%s' % channel.name,
+                "stream_label": u'%s' % channel.teaser,
+                "transition_fade": "00.000000"
+                }
         return self.json_response(request, data)
 
     def recorded_shows(self, request, **kwargs):
 
-        data = {"shows":[],"is_recording":False,"server_timezone":"America\/Los_Angeles"}
+        data = {"shows": [], "is_recording": False, "server_timezone": "America\/Los_Angeles"}
         return self.json_response(request, data)
-    
 
     def get_schedule(self, request, **kwargs):
 
-        print '** get_schedule **'
         channel_uuid = request.GET.get('channel_id', None)
 
         if channel_uuid:
@@ -665,7 +645,6 @@ class BaseResource(Resource):
 
         return self.json_response(request, data)
 
-    
     def get_now_playing(self, request, **kwargs):
         """
         search for current emission & map item times
@@ -686,28 +665,28 @@ class BaseResource(Resource):
             for item in items:
                 co = item.content_object
                 item.time_start = e_start + datetime.timedelta(milliseconds=offset)
-                item.time_end = e_start + datetime.timedelta(milliseconds=offset + co.get_duration() - (item.cue_in + item.cue_out + item.fade_cross))
-                
+                item.time_end = e_start + datetime.timedelta(
+                    milliseconds=offset + co.get_duration() - (item.cue_in + item.cue_out + item.fade_cross))
+
                 # check if playing
                 if item.time_start < now < item.time_end:
                     item.is_playing = True
                     # map item for quick access
                     now_playing = {
-                                   'emission': e.get_api_url(),
-                                   'item': item.content_object.get_api_url(),
-                                   'time_start': item.time_start,
-                                   'time_end': item.time_end,
-                                   }
-                    
+                        'emission': e.get_api_url(),
+                        'item': item.content_object.get_api_url(),
+                        'time_start': item.time_start,
+                        'time_end': item.time_end,
+                    }
+
                     start_next = (item.time_end - now).total_seconds()
-                    
-                    print (item.time_end - now).total_seconds()
-                    
+
+
                 else:
                     item.is_playing = False
 
-                offset += ( co.get_duration() - (item.cue_in + item.cue_out) )
-                
+                offset += (co.get_duration() - (item.cue_in + item.cue_out))
+
         else:
             # no emission in timeframe
             es = Emission.objects.filter(time_start__gte=now).order_by('time_start')
@@ -716,33 +695,32 @@ class BaseResource(Resource):
                 start_next = (e.time_start - now).total_seconds()
 
         bundle = {
-                  'start_next': start_next,
-                  'playing': now_playing,
-                  }
+            'start_next': start_next,
+            'playing': now_playing,
+        }
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
-
 
     """
     response wrappers
     """
+
     def base_response(self, request, bundle):
-        
+
         self.method_check(request, allowed=['get'])
         self.is_authenticated(request)
         self.throttle_check(request)
         self.log_throttled_access(request)
-        
+
         return self.create_response(request, bundle)
 
     def json_response(self, request, data):
-        
+
         self.method_check(request, allowed=['get', 'post'])
         self.is_authenticated(request)
         self.throttle_check(request)
         self.log_throttled_access(request)
-        
+
         return HttpResponse(json.dumps(data),
-                            content_type = 'application/json; charset=utf8')
-    
+                            content_type='application/json; charset=utf8')

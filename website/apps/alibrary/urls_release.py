@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.conf.urls import *
-from alibrary.views import *
+from django.conf.urls import patterns, url
+from .views import ReleaseListView, ReleaseDetailView, ReleaseEditView, release_autocomplete
 
 urlpatterns = patterns('',
     

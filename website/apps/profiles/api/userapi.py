@@ -1,26 +1,18 @@
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from django.conf.urls import *
-from uuid import uuid4
-from django.utils.translation import ugettext as _
-from django.shortcuts import get_object_or_404
-
 import json
-
-from tastypie.authentication import MultiAuthentication, Authentication
-from tastypie.authorization import *
-from tastypie.resources import ModelResource, Resource, ALL, ALL_WITH_RELATIONS
-from tastypie.utils import trailing_slash
-from tastypie.http import HttpCreated
-from django.http import HttpResponseForbidden, Http404
-from tastypie import fields
-
-
-
-from profiles.exceptions import APIBadRequest
-
-
 import logging
+
+from django.conf.urls import url
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+from django.http import HttpResponseForbidden
+from django.utils.translation import ugettext as _
+from profiles.exceptions import APIBadRequest
+from tastypie import fields
+from tastypie.authentication import MultiAuthentication, Authentication
+from tastypie.authorization import Authorization
+from tastypie.resources import ModelResource
+from tastypie.utils import trailing_slash
+
 log = logging.getLogger(__name__)
 
 

@@ -1,30 +1,30 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.views.generic import DetailView, ListView, UpdateView
-from django.shortcuts import get_object_or_404, render_to_response
-from django import http
+
 import datetime
-from datetime import timedelta
-from django.http import HttpResponseForbidden, Http404, HttpResponseRedirect
 import json
-from django.conf import settings
-from django.template import RequestContext
-from django.contrib import messages
-from django.utils.translation import ugettext as _
-from django.db.models import Q
-from sendfile import sendfile
-from pure_pagination.mixins import PaginationMixin
-from alibrary.models import Artist, Label, Release
-from braces.views import PermissionRequiredMixin, LoginRequiredMixin
+from datetime import timedelta
+
 import actstream
-from tagging.models import Tag
-from alibrary.forms import *
+import reversion
 from alibrary.filters import ReleaseFilter
+from ..forms import ReleaseForm, ReleaseActionForm, ReleaseBulkeditForm, ReleaseRelationFormSet, AlbumartistFormSet, ReleaseMediaFormSet
+from braces.views import PermissionRequiredMixin, LoginRequiredMixin
+from django import http
+from django.conf import settings
+from django.contrib import messages
+from django.db.models import Q
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render_to_response
+from django.template import RequestContext
+from django.utils.translation import ugettext as _
+from django.views.generic import DetailView, ListView, UpdateView
 from lib.util import tagging_extra
-from lib.util import change_message
 from lib.util.form_errors import merge_form_errors
 from lib.util.merge import merge_model_objects
-import reversion
+from pure_pagination.mixins import PaginationMixin
+from tagging.models import Tag
+from ..models import Release, Artist, Label
 
 ALIBRARY_PAGINATE_BY = getattr(settings, 'ALIBRARY_PAGINATE_BY', (12,24,36,120))
 ALIBRARY_PAGINATE_BY_DEFAULT = getattr(settings, 'ALIBRARY_PAGINATE_BY_DEFAULT', 12)
@@ -35,22 +35,10 @@ ORDER_BY = [
         'key': 'name',
         'name': _('Name')
     },
-    #{
-    #    'key': 'votes',
-    #    'name': _('Most rated')
-    #},
-    #{
-    #    'key': 'votes__vote',
-    #    'name': _('Rating')
-    #},
     {
         'key': 'releasedate',
         'name': _('Releasedate')
     },
-    #{
-    #    'key': 'publish_date',
-    #    'name': _('Publishing date')
-    #},
     {
         'key': 'updated',
         'name': _('Last modified')
@@ -77,7 +65,7 @@ class ReleaseListView(PaginationMixin, ListView):
             try:
                 if int(ipp) in ALIBRARY_PAGINATE_BY:
                     return int(ipp)
-            except Exception, e:
+            except Exception as e:
                 pass
 
         return self.paginate_by
@@ -190,7 +178,6 @@ class ReleaseListView(PaginationMixin, ListView):
         # TODO: refactor query, publish_date is depreciated
         promo_filter = self.request.GET.get('promo', None)
         if promo_filter and promo_filter.isnumeric() and int(promo_filter) == 1:
-            from django.db.models import F
             #qs = qs.filter(releasedate__gte=F('publish_date')).distinct()
             qs = qs.filter(releasedate__gt=datetime.datetime.now().date()).distinct()
             f = {'item_type': 'release' , 'item': _('Promotional Releases'), 'label': 'Filter'}
@@ -200,7 +187,6 @@ class ReleaseListView(PaginationMixin, ListView):
         # TODO: refactor query, publish_date is depreciated
         new_filter = self.request.GET.get('new', None)
         if new_filter and new_filter.isnumeric() and int(new_filter) == 1:
-            from django.db.models import F
             #qs = qs.filter(releasedate__gte=F('publish_date')).distinct()
             qs = qs.filter(releasedate__range=(datetime.datetime.now() - timedelta(days=14), datetime.datetime.now().date())).distinct()
             f = {'item_type': 'release' , 'item': _('New Releases'), 'label': 'Filter'}
@@ -422,15 +408,8 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
         messages.add_message(self.request, messages.INFO, 'Object updated')
 
-
         return HttpResponseRedirect('')
 
-
-    # TODO: investigate if this can be removed
-    # def formset_relation_valid(self, formset):
-    #     relations = formset.save(commit=False)
-    #     for relation in relations:
-    #         relation.save()
 
 
     def formset_media_valid(self, formset):
@@ -536,9 +515,7 @@ def release_autocomplete(request):
             item['labels'] = labels
             
             result.append(item)
-        
-    
-    #return HttpResponse(json.dumps(list(result)))
+
     return render_to_response("alibrary/element/autocomplete.html", { 'query': q, 'result': result }, context_instance=RequestContext(request))
     
 

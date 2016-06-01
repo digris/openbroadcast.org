@@ -321,8 +321,9 @@ class ViewTest(BaseTest):
             self.check_status(m, sender_deleted_at=True)
         self.assertEqual(len(mail.outbox), 0)
 
-    def check_write_post(self, extra={}, is_anonymous=False):
+    def check_write_post(self, extra=None, is_anonymous=False):
         "Check message generation, redirection, and mandatory fields."
+        extra = extra or {}
         url = reverse('postman_write')
         url_with_success_url = reverse('postman_write_with_success_url_to_sent')
         data = {'recipients': self.user2.get_username(), 'subject': 's', 'body': 'b'}

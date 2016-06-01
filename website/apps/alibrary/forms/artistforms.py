@@ -3,32 +3,32 @@ from __future__ import unicode_literals
 
 import logging
 
-from django import forms
-from django.forms import ModelForm, Form
-from django.forms.models import BaseInlineFormSet, inlineformset_factory
-from django.contrib.contenttypes.generic import BaseGenericInlineFormSet, generic_inlineformset_factory
-from django.utils.translation import ugettext as _
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import *
-from crispy_forms.bootstrap import FormActions
-from alibrary.models import Artist, Relation, ArtistAlias, ArtistMembership
-from alibrary.lookups import ArtistLookup, ParentArtistLookup
-from pagedown.widgets import PagedownWidget
 import selectable.forms as selectable
-from tagging.forms import TagField
 from ac_tagging.widgets import TagAutocompleteTagIt
-from lib.widgets.widgets import ReadOnlyIconField
-from lib.fields.extra import AdvancedFileInput
+from alibrary.lookups import ArtistLookup
+from alibrary.models import Artist, Relation, ArtistAlias, ArtistMembership
 from alibrary.util.storage import get_file_from_url
 from base.mixins import StripWhitespaceFormMixin
+from crispy_forms.bootstrap import FormActions
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, Layout, Field, Fieldset, Row, Column, LookupField, LookupImageField
+from django import forms
+from django.contrib.contenttypes.generic import BaseGenericInlineFormSet, generic_inlineformset_factory
+from django.forms import ModelForm, Form
+from django.forms.models import BaseInlineFormSet, inlineformset_factory
+from django.utils.translation import ugettext as _
+from lib.fields.extra import AdvancedFileInput
+from lib.widgets.widgets import ReadOnlyIconField
+from pagedown.widgets import PagedownWidget
+from tagging.forms import TagField
 
 log = logging.getLogger(__name__)
 
-ACTION_LAYOUT =  action_layout = FormActions(
+ACTION_LAYOUT = FormActions(
                 HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),            
                 HTML('<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'),
         )
-ACTION_LAYOUT_EXTENDED =  action_layout = FormActions(
+ACTION_LAYOUT_EXTENDED = FormActions(
                 Field('publish', css_class='input-hidden' ),
                 HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),            
                 HTML('<button type="submit" name="save-and-publish" value="save" class="btn pull-right ajax_submit save-and-publish" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-bullhorn icon-white"></i> Save & Publish</button>'),            

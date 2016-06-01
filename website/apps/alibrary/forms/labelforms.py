@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django import forms
-from django.forms import ModelForm, Form
-from django.contrib.contenttypes.generic import BaseGenericInlineFormSet, generic_inlineformset_factory
-from django.utils.translation import ugettext as _
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import *
-from crispy_forms.bootstrap import FormActions
-from pagedown.widgets import PagedownWidget
-from django.forms.widgets import FileInput
 import selectable.forms as selectable
-from alibrary.models import Relation, Label
-from alibrary.lookups import ParentLabelLookup
-from tagging.forms import TagField
 from ac_tagging.widgets import TagAutocompleteTagIt
-from lib.widgets.widgets import ReadOnlyIconField
+from alibrary.lookups import ParentLabelLookup
+from alibrary.models import Relation, Label
 from alibrary.util.storage import get_file_from_url
 from base.mixins import StripWhitespaceFormMixin
+from crispy_forms.bootstrap import FormActions
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, Layout, Field, Fieldset, Row, Column, LookupField, LookupImageField
+from django import forms
+from django.contrib.contenttypes.generic import BaseGenericInlineFormSet, generic_inlineformset_factory
+from django.forms import ModelForm, Form
+from django.forms.widgets import FileInput
+from django.utils.translation import ugettext as _
+from lib.widgets.widgets import ReadOnlyIconField
+from pagedown.widgets import PagedownWidget
+from tagging.forms import TagField
 
 ACTION_LAYOUT =  action_layout = FormActions(
                 HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),            

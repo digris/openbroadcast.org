@@ -3,57 +3,61 @@ from __future__ import unicode_literals
 
 import logging
 
+import selectable.forms as selectable
+from ac_tagging.widgets import TagAutocompleteTagIt
+from alibrary.lookups import ReleaseNameLookup, ArtistLookup
+from alibrary.models import Media, Relation, MediaExtraartists, MediaArtists
+from base.mixins import StripWhitespaceFormMixin
+from crispy_forms.bootstrap import FormActions
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, Layout, Field, Fieldset, Row, Column, LookupField
 from django import forms
+from django.contrib.contenttypes.generic import BaseGenericInlineFormSet, generic_inlineformset_factory
 from django.forms import ModelForm, Form
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
-from django.contrib.contenttypes.generic import BaseGenericInlineFormSet, generic_inlineformset_factory
 from django.utils.translation import ugettext as _
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import *
-from crispy_forms.bootstrap import FormActions
-from pagedown.widgets import PagedownWidget
-from alibrary.models import Media, Relation, MediaExtraartists, MediaArtists
-import selectable.forms as selectable
-from alibrary.lookups import ReleaseNameLookup, ArtistLookup
-from tagging.forms import TagField
-from ac_tagging.widgets import TagAutocompleteTagIt
 from lib.widgets.widgets import ReadOnlyIconField
-from base.mixins import StripWhitespaceFormMixin
+from pagedown.widgets import PagedownWidget
+from tagging.forms import TagField
 
 log = logging.getLogger(__name__)
 
 MAX_TRACKNUMBER = 300 + 1
 
-ACTION_LAYOUT =  action_layout = FormActions(
-                HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),            
-                HTML('<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'),
-        )
-ACTION_LAYOUT_EXTENDED =  action_layout = FormActions(
-                Field('publish', css_class='input-hidden' ),
-                HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),            
-                HTML('<button type="submit" name="save-and-publish" value="save" class="btn pull-right ajax_submit save-and-publish" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-bullhorn icon-white"></i> Save & Publish</button>'),            
-                HTML('<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'),
-        )
+ACTION_LAYOUT = action_layout = FormActions(
+    HTML(
+        '<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),
+    HTML(
+        '<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'),
+)
+ACTION_LAYOUT_EXTENDED = action_layout = FormActions(
+    Field('publish', css_class='input-hidden'),
+    HTML(
+        '<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),
+    HTML(
+        '<button type="submit" name="save-and-publish" value="save" class="btn pull-right ajax_submit save-and-publish" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-bullhorn icon-white"></i> Save & Publish</button>'),
+    HTML(
+        '<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'),
+)
 
 
 class MediaActionForm(Form):
-    
     def __init__(self, *args, **kwargs):
-        self.instance = kwargs.pop('instance', False)        
+        self.instance = kwargs.pop('instance', False)
         super(MediaActionForm, self).__init__(*args, **kwargs)
-        
+
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.helper.form_tag = False
-        
-        
+
         self.helper.add_layout(ACTION_LAYOUT)
         """
         if self.instance and self.instance.publish_date:
             self.helper.add_layout(ACTION_LAYOUT)
         else:
             self.helper.add_layout(ACTION_LAYOUT_EXTENDED)
-        """    
+        """
+
     publish = forms.BooleanField(required=False)
 
     def save(self, *args, **kwargs):
@@ -61,7 +65,6 @@ class MediaActionForm(Form):
 
 
 class MediaForm(ModelForm):
-
     class Meta:
         model = Media
         fields = (
@@ -75,13 +78,12 @@ class MediaForm(ModelForm):
             'opus_number',
             'mediatype',
             'version',
-            #'filename',
+            # 'filename',
             'license',
             'release',
             'd_tags',
             'isrc',
         )
-
 
     def __init__(self, *args, **kwargs):
 
@@ -91,15 +93,14 @@ class MediaForm(ModelForm):
         self.label = kwargs.pop('label', None)
 
         super(MediaForm, self).__init__(*args, **kwargs)
-        
+
         """
         Prototype function, set some fields to readonly depending on permissions
         """
-        #if not self.user.has_perm("alibrary.admin_release", self.instance) and self.instance.release and self.instance.release.publish_date:
+        # if not self.user.has_perm("alibrary.admin_release", self.instance) and self.instance.release and self.instance.release.publish_date:
         if not self.user.has_perm("alibrary.admin_release", self.instance):
-            #self.fields['license'].widget.attrs['disabled'] = 'disabled'
+            # self.fields['license'].widget.attrs['disabled'] = 'disabled'
             self.fields['license'].widget.attrs['readonly'] = 'readonly'
-
 
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -107,9 +108,9 @@ class MediaForm(ModelForm):
         # rewrite labels
         self.fields['medianumber'].label = _('Disc number')
         self.fields['opus_number'].label = _('Opus N.')
-        #self.fields['filename'].label = _('Orig. Filename')
+        # self.fields['filename'].label = _('Orig. Filename')
 
-        
+
         base_layout = Fieldset(
             _('General'),
             LookupField('name', css_class='input-xlarge'),
@@ -120,7 +121,8 @@ class MediaForm(ModelForm):
             Field('medianumber', css_class='input-xlarge'),
             Field('opus_number', css_class='input-xlarge'),
             Field('version', css_class='input-xlarge'),
-            HTML('<div style="opacity: 0.5;"><span style="padding: 0 44px 0 0;">Orig. Filename:</span>%s</div>' % self.instance.original_filename),
+            HTML(
+                '<div style="opacity: 0.5;"><span style="padding: 0 44px 0 0;">Orig. Filename:</span>%s</div>' % self.instance.original_filename),
         )
 
         identifiers_layout = Fieldset(
@@ -138,21 +140,20 @@ class MediaForm(ModelForm):
             LookupField('description', css_class='input-xlarge'),
         )
 
-
         lyrics_layout = Fieldset(
             'Lyrics',
             LookupField('lyrics_language', css_class='input-xlarge'),
             LookupField('lyrics', css_class='input-xlarge'),
         )
-        
+
         tagging_layout = Fieldset(
             'Tags',
             LookupField('d_tags'),
         )
-            
+
         layout = Layout(
             base_layout,
-            HTML( '<div id="artist_relation_container"></div>'),
+            HTML('<div id="artist_relation_container"></div>'),
             identifiers_layout,
             license_layout,
             meta_layout,
@@ -162,27 +163,22 @@ class MediaForm(ModelForm):
 
         self.helper.add_layout(layout)
 
-        
-
-    
-
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
     release = selectable.AutoCompleteSelectField(ReleaseNameLookup, allow_new=True, required=True, label=_('Release'))
 
     name = forms.CharField(required=True, label='Title')
-    artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=True,label=_('Artist'))
+    artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=True, label=_('Artist'))
     description = forms.CharField(widget=PagedownWidget(), required=False)
 
     def clean_license(self):
         instance = getattr(self, 'instance', None)
         if instance and instance.pk and not self.user.has_perm("alibrary.admin_release", instance):
-            print 'returning instance.license'
             return instance.license
         else:
             return self.cleaned_data['license']
 
     def clean(self, *args, **kwargs):
-        
+
         cd = super(MediaForm, self).clean()
 
         # hack. allow_new in AutoCompleteSelectField does _not_ automatically create new objects???
@@ -203,29 +199,19 @@ class MediaForm(ModelForm):
         except:
             pass
 
-
-
-
-
         return cd
 
     # TODO: take a look at save
     def save(self, *args, **kwargs):
         return super(MediaForm, self).save(*args, **kwargs)
-   
-    
-
-
-
-
 
 
 """
 Album Artists
 """
+
+
 class BaseExtraartistFormSet(BaseInlineFormSet):
-
-
     def __init__(self, *args, **kwargs):
 
         self.instance = kwargs['instance']
@@ -240,25 +226,22 @@ class BaseExtraartistFormSet(BaseInlineFormSet):
         self.helper.form_tag = False
 
         base_layout = Row(
-                Column(
-                       Field('profession'),
-                       css_class='span3'
-                       ),
-                Column(
-                       Field('artist'),
-                       css_class='span5'
-                       ),
-                Column(
-                       Field('DELETE', css_class='input-mini'),
-                       css_class='span4'
-                       ),
-                css_class='extraartist-row row-fluid form-autogrow',
+            Column(
+                Field('profession'),
+                css_class='span3'
+            ),
+            Column(
+                Field('artist'),
+                css_class='span5'
+            ),
+            Column(
+                Field('DELETE', css_class='input-mini'),
+                css_class='span4'
+            ),
+            css_class='extraartist-row row-fluid form-autogrow',
         )
 
         self.helper.add_layout(base_layout)
-
-
-
 
     def add_fields(self, form, index):
         # allow the super class to create the fields as usual
@@ -269,16 +252,15 @@ class BaseExtraartistFormSet(BaseInlineFormSet):
             instance = self.get_queryset()[index]
             pk_value = instance.pk
         except IndexError:
-            instance=None
+            instance = None
             pk_value = hash(form.prefix)
 
 
 class BaseExtraartistForm(ModelForm):
-
     class Meta:
         model = MediaExtraartists
         parent_model = Media
-        fields = ('artist','profession',)
+        fields = ('artist', 'profession',)
         # labels in django 1.6 only... leave them here for the future...
         labels = {
             'profession': _('Credited as'),
@@ -304,13 +286,12 @@ class BaseExtraartistForm(ModelForm):
             return None
 
 
-
 """
 Media Artists
 """
+
+
 class BaseMediaartistFormSet(BaseInlineFormSet):
-
-
     def __init__(self, *args, **kwargs):
 
         self.instance = kwargs['instance']
@@ -325,25 +306,22 @@ class BaseMediaartistFormSet(BaseInlineFormSet):
         self.helper.form_tag = False
 
         base_layout = Row(
-                Column(
-                       Field('join_phrase'),
-                       css_class='span3'
-                       ),
-                Column(
-                       Field('artist'),
-                       css_class='span5'
-                       ),
-                Column(
-                       Field('DELETE', css_class='input-mini'),
-                       css_class='span4'
-                       ),
-                css_class='mediaartist-row row-fluid form-autogrow',
+            Column(
+                Field('join_phrase'),
+                css_class='span3'
+            ),
+            Column(
+                Field('artist'),
+                css_class='span5'
+            ),
+            Column(
+                Field('DELETE', css_class='input-mini'),
+                css_class='span4'
+            ),
+            css_class='mediaartist-row row-fluid form-autogrow',
         )
 
         self.helper.add_layout(base_layout)
-
-
-
 
     def add_fields(self, form, index):
         # allow the super class to create the fields as usual
@@ -359,19 +337,16 @@ class BaseMediaartistFormSet(BaseInlineFormSet):
 
 
 class BaseMediaartistForm(ModelForm):
-
     class Meta:
         model = MediaArtists
         parent_model = Media
-        fields = ('artist','join_phrase', 'position',)
+        fields = ('artist', 'join_phrase', 'position',)
 
     def __init__(self, *args, **kwargs):
         super(BaseMediaartistForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
 
-
     def clean_artist(self):
-
         artist = self.cleaned_data['artist']
         if not artist.pk:
             artist.save()
@@ -381,16 +356,8 @@ class BaseMediaartistForm(ModelForm):
     artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
 
 
-
-
-
-  
 class BaseMediaReleationFormSet(BaseGenericInlineFormSet):
-
-        
-        
     def __init__(self, *args, **kwargs):
-
         self.instance = kwargs['instance']
         super(BaseMediaReleationFormSet, self).__init__(*args, **kwargs)
 
@@ -400,48 +367,45 @@ class BaseMediaReleationFormSet(BaseGenericInlineFormSet):
         self.helper.form_method = 'post'
         self.helper.form_action = ''
         self.helper.form_tag = False
-        
+
         base_layout = Row(
-                Column(
-                       Field('url', css_class='input-xlarge'),
-                       css_class='span6 relation-url'
-                       ),
-                Column(
-                       Field('service', css_class='input-mini'),
-                       css_class='span4'
-                       ),
-                Column(
-                       Field('DELETE', css_class='input-mini'),
-                       css_class='span2'
-                       ),
-                css_class='row-fluid relation-row form-autogrow',
+            Column(
+                Field('url', css_class='input-xlarge'),
+                css_class='span6 relation-url'
+            ),
+            Column(
+                Field('service', css_class='input-mini'),
+                css_class='span4'
+            ),
+            Column(
+                Field('DELETE', css_class='input-mini'),
+                css_class='span2'
+            ),
+            css_class='row-fluid relation-row form-autogrow',
         )
- 
+
         self.helper.add_layout(base_layout)
-        
 
 
 class BaseMediaReleationForm(StripWhitespaceFormMixin, ModelForm):
-
     class Meta:
         model = Relation
         parent_model = Media
         formset = BaseMediaReleationFormSet
-        fields = ('url','service',)
-        
+        fields = ('url', 'service',)
+
     def __init__(self, *args, **kwargs):
         super(BaseMediaReleationForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['service'].widget.instance = instance
         if instance and instance.id:
             self.fields['service'].widget.attrs['readonly'] = True
-        
+
     def clean_service(self):
         return self.instance.service
 
     service = forms.CharField(label='', widget=ReadOnlyIconField(), required=False)
     url = forms.URLField(label=_('Website / URL'), required=False)
-
 
 
 # Compose Formsets
@@ -458,19 +422,14 @@ MediaartistFormSet = inlineformset_factory(Media,
                                            extra=15,
                                            exclude=('position',),
                                            can_delete=True,
-                                           can_order=False,)
+                                           can_order=False, )
 
 ExtraartistFormSet = inlineformset_factory(Media,
-                                       MediaExtraartists,
-                                       form=BaseExtraartistForm,
-                                       formset=BaseExtraartistFormSet,
-                                       fk_name = 'media',
-                                       extra=15,
-                                       #exclude=('position',),
-                                       can_delete=True,
-                                       can_order=False,)
-
-
-
-
-    
+                                           MediaExtraartists,
+                                           form=BaseExtraartistForm,
+                                           formset=BaseExtraartistFormSet,
+                                           fk_name='media',
+                                           extra=15,
+                                           # exclude=('position',),
+                                           can_delete=True,
+                                           can_order=False, )

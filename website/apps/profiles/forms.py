@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from ac_tagging.widgets import TagAutocompleteTagIt
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import *
+from crispy_forms.layout import HTML, Layout, Fieldset, Div, Field, Row, Column
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm

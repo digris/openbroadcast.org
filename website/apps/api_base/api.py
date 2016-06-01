@@ -1,9 +1,9 @@
 import json
 
-from django.conf.urls import *
+from django.conf.urls import url
 from django.http import HttpResponse
-from tastypie.authentication import *
-from tastypie.authorization import *
+from tastypie.authentication import Authentication
+from tastypie.authorization import Authorization
 from tastypie.resources import Resource, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
 

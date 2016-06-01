@@ -1,23 +1,22 @@
 # -*- coding: utf-8 -*-
+import logging
 import os
 import shutil
-import audiotools
 import tempfile
-import logging
-from mutagen import File as MutagenFile
-from mutagen.easyid3 import EasyID3
+
+import audiotools
+from abcast.models import BaseModel, Station
+from alibrary.models import Artist
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
-from django.contrib.auth.models import User
-from django.conf import settings
 from django.utils.translation import ugettext as _
-from django_extensions.db.fields import *
+from django_extensions.db.fields import AutoSlugField
 from filer.fields.image import FilerImageField
-from filer.fields.file import FilerFileField
-from lib.audioprocessing.processing import create_wave_images, AudioProcessingException
-from lib.fields import extra
-from alibrary.models import Artist
-from abcast.models import BaseModel, Station
+from lib.audioprocessing.processing import create_wave_images
+from mutagen import File as MutagenFile
+from mutagen.easyid3 import EasyID3
 
 log = logging.getLogger(__name__)
 
@@ -149,8 +148,7 @@ class Jingle(BaseModel):
             try:
                 self.create_waveform_image()
                 waveform_image = self.get_cache_file('png', 'waveform')
-            except Exception, e:
-                print e
+            except Exception as e:
                 waveform_image = None
             
         return waveform_image
@@ -172,7 +170,7 @@ class Jingle(BaseModel):
             
             try:
                 shutil.rmtree(tmp_directory)
-            except Exception, e:
+            except Exception as e:
                 print e
             
         return
@@ -205,7 +203,7 @@ class Jingle(BaseModel):
                 pass
             
             self.processed = 1
-        except Exception, e:
+        except Exception as e:
             print e
             base_bitrate = None
             base_samplerate = None
@@ -225,7 +223,7 @@ class Jingle(BaseModel):
         try:
             meta = EasyID3(self.master.path)
             log.debug('using EasyID3')
-        except Exception, e:
+        except Exception as e:
             meta = MutagenFile(self.master.path)
             log.debug('using MutagenFile')
         
@@ -259,7 +257,7 @@ class Jingle(BaseModel):
                     self.processed = 0
                     self.conversion_status = 0
 
-            except Exception, e:
+            except Exception as e:
                 print e
                 pass
             

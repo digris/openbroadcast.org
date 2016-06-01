@@ -1,34 +1,24 @@
-from django.conf.urls import url
-from tastypie import fields
 import logging
-from tastypie.authentication import MultiAuthentication, Authentication, SessionAuthentication, ApiKeyAuthentication
-from tastypie.authorization import *
-from tastypie.resources import ModelResource, ALL_WITH_RELATIONS, ALL
-from tastypie.http import HttpUnauthorized
-from django.contrib.auth.models import User
-from django.db.models import Q
-from django.db.models import Avg
-from tastypie.utils import trailing_slash
-from tastypie.exceptions import ImmediateHttpResponse
-from django.http import HttpResponse
-from easy_thumbnails.files import get_thumbnailer
-
-from django.db.models.base import ModelBase
-from django.contrib.contenttypes.models import ContentType
-
 
 from arating.models import Vote
-from arating.models import VOTE_CHOICES
+from django.conf.urls import url
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.db.models import Avg
+from tastypie.authentication import MultiAuthentication, Authentication, SessionAuthentication, ApiKeyAuthentication
+from tastypie.authorization import Authorization
+from tastypie.http import HttpUnauthorized
+from tastypie.resources import ModelResource
+from tastypie.utils import trailing_slash
 
 log = logging.getLogger(__name__)
 
 
 class VoteResource(ModelResource):
-
     class Meta:
         queryset = Vote.objects.all()
-        list_allowed_methods = ['get',]
-        detail_allowed_methods = ['get',]
+        list_allowed_methods = ['get', ]
+        detail_allowed_methods = ['get', ]
         resource_name = 'rating/vote'
         include_resource_uri = False
         # TODO: double-check for sensitive information
@@ -44,12 +34,12 @@ class VoteResource(ModelResource):
     def prepend_urls(self):
 
         return [
-              url(r"^(?P<resource_name>%s)/(?P<content_type>[\w.]+)/(?P<object_id>\d+)(?:/(?P<vote>-?\d{1}))?(?:/(?P<user_id>-?[0-9]+))?%s$" % (
-                  self._meta.resource_name, trailing_slash()),
-                  self.wrap_view('vote_by_ct'),
-                  name="arating-vote_api-by-ct"),
+            url(
+                r"^(?P<resource_name>%s)/(?P<content_type>[\w.]+)/(?P<object_id>\d+)(?:/(?P<vote>-?\d{1}))?(?:/(?P<user_id>-?[0-9]+))?%s$" % (
+                    self._meta.resource_name, trailing_slash()),
+                self.wrap_view('vote_by_ct'),
+                name="arating-vote_api-by-ct"),
         ]
-
 
     # vote for user
     """
@@ -68,15 +58,13 @@ class VoteResource(ModelResource):
 
     """
 
-
     def vote_by_ct(self, request, **kwargs):
 
         self.method_check(request, allowed=['get'])
         self.is_authenticated(request)
         self.throttle_check(request)
 
-
-        #v = Vote.objects.get(**self.remove_api_resource_names(kwargs))
+        # v = Vote.objects.get(**self.remove_api_resource_names(kwargs))
 
         object_id = kwargs.get('object_id', None)
         if object_id:
@@ -102,7 +90,6 @@ class VoteResource(ModelResource):
         else:
             raise ValueError('content_type must a ct id or "app.modelname" string')
 
-
         # no vot & no user_id: get the current vote(s)
 
 
@@ -125,7 +112,6 @@ class VoteResource(ModelResource):
             log.debug('no authenticated user')
             user = None
 
-
         if vote and vote != 0:
 
             if not user:
@@ -135,8 +121,8 @@ class VoteResource(ModelResource):
                 return HttpUnauthorized('Bad vote value.')
 
             vote_object, created = Vote.objects.get_or_create(content_type=content_type,
-                                                  object_id=object_id, user=user,
-                                                  defaults={'vote': vote})
+                                                              object_id=object_id, user=user,
+                                                              defaults={'vote': vote})
             if not created:
                 vote_object.vote = vote
                 vote_object.save()
@@ -151,22 +137,19 @@ class VoteResource(ModelResource):
             Vote.objects.filter(content_type=content_type,
                                 object_id=object_id, user=user).delete()
 
+        obj = content_type.model_class().objects.get(pk=object_id)
 
-        object = content_type.model_class().objects.get(pk=object_id)
-
-        avg_vote = object.votes.aggregate(Avg('vote')).values()[0]
-        upvotes = object.votes.filter(vote__gt=0).count()
-        downvotes = object.votes.filter(vote__lt=0).count()
-
+        avg_vote = obj.votes.aggregate(Avg('vote')).values()[0]
+        upvotes = obj.votes.filter(vote__gt=0).count()
+        downvotes = obj.votes.filter(vote__lt=0).count()
 
         try:
-            uuid = object.uuid
+            uuid = obj.uuid
         except:
             uuid = None
 
-
         bundle = {
-            'object_id': object.id,
+            'object_id': obj.id,
             'uuid': uuid,
             'ct': orig_ct,
             'up': upvotes,
@@ -174,17 +157,5 @@ class VoteResource(ModelResource):
             'total': avg_vote,
         }
 
-
-
-
-
-
-
-        #bundle = self.build_bundle(obj=v, request=request)
-        #bundle = self.full_dehydrate(bundle)
-
-        #bundle = {}
-
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
-

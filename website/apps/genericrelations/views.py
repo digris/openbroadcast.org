@@ -41,7 +41,9 @@ def generic_lookup(request):
         return response
     return HttpResponseNotAllowed(['GET'])
 
-def get_generic_rel_list(request, blacklist=(), whitelist=(), url_params={}):
+def get_generic_rel_list(request, blacklist=(), whitelist=(), url_params=None):
+    url_params = url_params or {}
+
     if request.method == 'GET':
         obj_dict = {}
         for c in ContentType.objects.all().order_by('id'):

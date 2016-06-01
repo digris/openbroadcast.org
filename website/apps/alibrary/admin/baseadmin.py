@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 import reversion
 from django.core import urlresolvers
 from hvad.admin import TranslatableAdmin
@@ -8,10 +9,11 @@ from django.utils.translation import ugettext as _
 from easy_thumbnails.files import get_thumbnailer
 from guardian.admin import GuardedModelAdmin
 from django.contrib import admin
-from alibrary.models import *
-from django.utils.safestring import mark_safe
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from alibrary.models import (Label, Artist, Media, Release, Playlist, ReleaseExtraartists,
+                             ReleaseAlbumartists, Relation, ReleaseMedia, MediaExtraartists,
+                             Agency, NameVariation, License, Service, ArtistProfessions, Profession,
+                             Distributor, AgencyScope, PlaylistMedia, PlaylistItem, PlaylistItemPlaylist,
+                             Daypart, Season, Weather, Series)
 
 THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
 
@@ -30,18 +32,7 @@ class MediaInline(admin.TabularInline):
     exclude = ['description','slug','processed','echoprint_status','conversion_status', 'd_tags', 'echonest_id', 'lyrics', 'lyrics_language', 'danceability', 'energy', 'liveness', 'loudness', 'speechiness', 'start_of_fade_out', 'echonest_duration', 'tempo', 'key', 'sections','master_sha1', 'base_format', 'base_filesize', 'base_duration', 'base_samplerate', 'base_bitrate', 'filename', 'publish_date', 'status', 'owner', 'creator', 'publisher', 'medianumber', 'master', 'mediatype' ]
     readonly_fields = ['artist', ]
     extra = 0
-    
-# class FormatAdmin(BaseAdmin):
-#
-#     list_display   = ('format', 'version', 'default_price')
-#
-#     fieldsets = [
-#         (None,               {'fields': ['format', 'version', 'default_price', 'excerpt']}),
-#     ]
-#
-# admin.site.register(Format, FormatAdmin)
-    
-    
+
 class ReleaseExtraartistsInline(admin.TabularInline):
     model = ReleaseExtraartists
     extra=1
@@ -64,9 +55,6 @@ class RelationsInline(GenericTabularInline):
         (None,               {'fields': ['url', 'name', 'service']}),
     ]
     readonly_fields = ['service']
-
-    
-#class ReleaseAdmin(PlaceholderAdmin, BaseAdmin):
 
 class ReleaseMediaMediaInline(admin.TabularInline):
     model = Media

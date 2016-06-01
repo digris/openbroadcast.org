@@ -20,7 +20,7 @@ from django.db.models.signals import post_save
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields.json import JSONField
 from lib.signals.unsignal import disable_for_loaddata
-from django_extensions.db.fields import *
+from django_extensions.db.fields import UUIDField, CreationDateTimeField, ModificationDateTimeField
 
 log = logging.getLogger(__name__)
 
@@ -229,7 +229,7 @@ class Import(BaseModel):
                 content_type=ctype,
                 import_session=self
             )
-        except Exception, e:
+        except Exception as e:
             pass
 
         try:
@@ -238,7 +238,7 @@ class Import(BaseModel):
                 content_type=ctype,
                 import_session=self)[0]
             created = False
-        except Exception, e:
+        except Exception as e:
             pass
 
         if created:
@@ -368,7 +368,7 @@ class ImportFile(BaseModel):
             try:
                 mime = magic.Magic(mime=True)
                 obj.mimetype = mime.from_file(obj.file.path.encode('ascii', 'ignore'))
-            except Exception, e:
+            except Exception as e:
                 log.warning('Unable to determine mimetype: %s' % e)
 
 

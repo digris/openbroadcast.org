@@ -1,25 +1,21 @@
+import selectable.forms as selectable
+from ac_tagging.widgets import TagAutocompleteTagIt
+from alibrary import settings as alibrary_settings
+from alibrary.models import Playlist
+from crispy_forms.bootstrap import FormActions
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, Layout, Field, Fieldset, Div
 from django import forms
 from django.forms import ModelForm, Form
+from django.utils.html import conditional_escape
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import *
-from crispy_forms.bootstrap import FormActions
+from lib.fields.extra import AdvancedFileInput
 from pagedown.widgets import PagedownWidget
-from django.forms.widgets import FileInput
 from tagging.forms import TagField
 
-from filer.models.imagemodels import Image
-from alibrary.models import Playlist
-import selectable.forms as selectable
-from alibrary.lookups import *
-from ac_tagging.widgets import TagAutocompleteTagIt
-from lib.widgets.widgets import ReadOnlyIconField
-from lib.fields.extra import AdvancedFileInput
-
-
-from alibrary import settings as alibrary_settings
-
-
+from ..lookups import PlaylistSeriesLookup
+from ..models import Daypart, Season, Weather
 
 ACTION_LAYOUT =  action_layout = FormActions(
                 HTML('<button type="submit" name="save-i-classicon-arrow-upi" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-ok icon-white"></i> Save</button>'),            
@@ -238,152 +234,3 @@ class PlaylistForm(ModelForm):
 
     def save(self, *args, **kwargs):
         return super(PlaylistForm, self).save(*args, **kwargs)
-   
-    
-    
- 
-
-""" 
-class BaseReleaseMediaFormSet(BaseInlineFormSet): 
-        
-
-    def __init__(self, *args, **kwargs):
-
-        self.instance = kwargs['instance']
-
-        super(BaseReleaseMediaFormSet, self).__init__(*args, **kwargs)
-        
-        self.helper = FormHelper()
-        self.helper.form_id = "id_releasemediainline_form_%s" % 'asd'
-        self.helper.form_class = 'form-horizontal'
-        self.helper.form_method = 'post'
-        self.helper.form_action = ''
-        self.helper.form_tag = False
-        
-        
-        base_layout = Row(
-                Column(
-                       Field('tracknumber', css_class='input-small'),
-                       Field('mediatype', css_class='input-small'),
-                       Field('license', css_class='input-small'),
-                       css_class='span2'
-                       ),
-                Column(
-                                Field('name', css_class='input-xlarge'),
-                                Field('artist', css_class='input-xlarge'),
-                                Field('isrc', css_class='input-xlarge'),
-                       css_class='span5'
-                       ),
-                css_class='releasemedia-row row',
-        )
- 
-        self.helper.add_layout(base_layout)
-        
-
-        
- 
-    def add_fields(self, form, index):
-        # allow the super class to create the fields as usual
-        super(BaseReleaseMediaFormSet, self).add_fields(form, index)
- 
-        # created the nested formset
-        try:
-            instance = self.get_queryset()[index]
-            pk_value = instance.pk
-        except IndexError:
-            instance=None
-            pk_value = hash(form.prefix)
- 
- 
-
-class BaseReleaseMediaForm(ModelForm):
-
-    class Meta:
-        model = Media
-        parent_model = Release
-        formset = BaseReleaseMediaFormSet
-        fields = ('name','tracknumber',)
-        
-    def __init__(self, *args, **kwargs):
-        self.instance = kwargs['instance']
-        super(BaseReleaseMediaForm, self).__init__(*args, **kwargs)
-        
-
-    artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
-    tracknumber =  forms.CharField(label=_('No.'))   
-
-
-
-
-  
-class BaseReleaseReleationFormSet(BaseGenericInlineFormSet):
-
-        
-        
-    def __init__(self, *args, **kwargs):
-
-        self.instance = kwargs['instance']
-        super(BaseReleaseReleationFormSet, self).__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-        self.helper.form_id = "id_releasemediainline_form_%s" % 'asdfds'
-        self.helper.form_class = 'form-horizontal'
-        self.helper.form_method = 'post'
-        self.helper.form_action = ''
-        self.helper.form_tag = False
-        
-        base_layout = Row(
-                Column(
-                       Field('url', css_class='input-xlarge'),
-                       css_class='span5'
-                       ),
-                Column(
-                       Field('service', css_class='input-small'),
-                       css_class='span1'
-                       ),
-                Column(
-                       Field('DELETE', css_class='input-mini'),
-                       css_class='span1'
-                       ),
-                css_class='row relation-row',
-        )
- 
-        self.helper.add_layout(base_layout)
-        
-
-
-class BaseReleaseReleationForm(ModelForm):
-
-    class Meta:
-        model = Relation
-        parent_model = Release
-        formset = BaseReleaseReleationFormSet
-        fields = ('url','service',)
-        
-    def __init__(self, *args, **kwargs):
-        super(BaseReleaseReleationForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
-        if instance and instance.id:
-            self.fields['service'].widget.attrs['readonly'] = True
-        
-    def clean_service(self):
-        return self.instance.service
-
-    service = forms.CharField(label='', widget=ReadOnlyIconField(), required=False)
-    url = forms.URLField(label=_('Website / URL'), required=False)
-
-    #name = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
-    #tracknumber =  forms.CharField(label=_('No.'))  
-"""
-
-# Compose Formsets
-"""
-ReleaseMediaFormSet = inlineformset_factory(Release, Media, form=BaseReleaseMediaForm, formset=BaseReleaseMediaFormSet, can_delete=False, extra=0, fields=('name', 'tracknumber', 'isrc', 'artist', 'license', 'mediatype',), can_order=False)
-ReleaseRelationFormSet = generic_inlineformset_factory(Relation, form=BaseReleaseReleationForm, formset=BaseReleaseReleationFormSet, extra=3, exclude=('action',), can_delete=True)
-"""
-
-
-
-
-
-    

@@ -1,6 +1,6 @@
-from django.conf.urls import *
+from django.conf.urls import patterns, url
 
-from abcast.views import *
+from abcast.views import schedule, EmissionDetailView, select_playlist, schedule_object, copy_paste_day, delete_day
 
 urlpatterns = patterns('',   
     url(r'^$', schedule, name='abcast-schedule'),              

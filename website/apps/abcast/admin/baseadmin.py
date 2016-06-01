@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from abcast.models import *
+from abcast.models import Station, Channel, Jingle, JingleSet, StreamServer, StreamFormat, Role
 
 
 class MembersInline(admin.TabularInline):

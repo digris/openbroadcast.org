@@ -1,20 +1,16 @@
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
-from django.http import HttpResponseRedirect, HttpResponse
-from django.views.generic import DetailView, ListView
+from actstream import actions, models
+from actstream.filters import ActionFilter
+from actstream.models import Action
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-from actstream import actions, models
-from actstream.models import *
-
+from django.views.generic import DetailView, ListView
 from pure_pagination.mixins import PaginationMixin
-from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-
-from actstream.filters import ActionFilter
-
 
 PAGINATE_BY = getattr(settings, 'ACTSTREAM_PAGINATE_BY', (30,60,120))
 PAGINATE_BY_DEFAULT = getattr(settings, 'ACTSTREAM_PAGINATE_BY_DEFAULT', 120)
@@ -32,7 +28,7 @@ class ActionListView(PaginationMixin, ListView):
             try:
                 if int(ipp) in PAGINATE_BY:
                     return int(ipp)
-            except Exception, e:
+            except Exception as e:
                 pass
 
         return self.paginate_by

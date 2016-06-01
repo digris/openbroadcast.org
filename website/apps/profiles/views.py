@@ -1,7 +1,9 @@
 from actstream.models import Follow, actor_stream
 from alibrary.models import Playlist, Release, Media
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect, HttpResponseForbidden
 from django.http import HttpResponse
@@ -12,8 +14,8 @@ from django.views.generic import DetailView, ListView, View
 from invitation.models import Invitation
 from lib.util import tagging_extra
 from profiles.filters import ProfileFilter
-from profiles.forms import *
-from profiles.models import *
+from profiles.forms import UserForm, ProfileForm, ServiceFormSet, LinkFormSet, ActionForm
+from profiles.models import Profile, User
 from pure_pagination.mixins import PaginationMixin
 from tagging.models import Tag
 
@@ -61,7 +63,7 @@ class ProfileListView(PaginationMixin, ListView):
             try:
                 if int(ipp) in PAGINATE_BY:
                     return int(ipp)
-            except Exception, e:
+            except Exception as e:
                 pass
 
         return self.paginate_by

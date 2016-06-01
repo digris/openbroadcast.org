@@ -1,25 +1,23 @@
-from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
-from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse_lazy, reverse
-from django.utils.translation import ugettext as _
-from django.db.models import Q
+from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from tagging.models import Tag
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
+from django.core.urlresolvers import reverse_lazy
+from django.db.models import Q
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.utils.translation import ugettext as _
+from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
 from guardian.forms import UserObjectPermissionsForm
-
-from pure_pagination.mixins import PaginationMixin
-from braces.views import PermissionRequiredMixin, LoginRequiredMixin
-from alibrary.models import Playlist
-from alibrary.forms import *
-from alibrary.filters import PlaylistFilter
 from lib.util import tagging_extra
+from pure_pagination.mixins import PaginationMixin
+from tagging.models import Tag
 
+from ..filters import PlaylistFilter
+from ..forms import PlaylistForm, ActionForm
+from ..models import Playlist, Release
 
 ALIBRARY_PAGINATE_BY = getattr(settings, 'ALIBRARY_PAGINATE_BY', (12,24,36,120))
 ALIBRARY_PAGINATE_BY_DEFAULT = getattr(settings, 'ALIBRARY_PAGINATE_BY_DEFAULT', 12)
@@ -58,7 +56,7 @@ class PlaylistListView(PaginationMixin, ListView):
             try:
                 if int(ipp) in ALIBRARY_PAGINATE_BY:
                     return int(ipp)
-            except Exception, e:
+            except Exception as e:
                 pass
 
         return self.paginate_by

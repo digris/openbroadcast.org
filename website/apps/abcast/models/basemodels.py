@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*-
 import datetime
+
+import arating
+from abcast.util import notify
+from django.contrib.auth.models import User
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
-from django_extensions.db.fields import *
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
-from django.core.urlresolvers import reverse
+from django_extensions.db.fields import UUIDField, CreationDateTimeField, ModificationDateTimeField, AutoSlugField
 from filer.fields.image import FilerImageField
-from filer.fields.file import FilerFileField
-import arating
-from phonenumber_field.modelfields import PhoneNumberField
 from l10n.models import Country
-from abcast.util import notify
 from lib.fields import extra
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 class BaseModel(models.Model):
     

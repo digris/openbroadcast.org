@@ -115,7 +115,7 @@ def trash(request, option=None, template_name='postman/trash.html'):
 
 def write(request, recipients=None, form_classes=(WriteForm, AnonymousWriteForm), autocomplete_channels=None,
         template_name='postman/write.html', success_url=None,
-        user_filter=None, exchange_filter=None, max=None, auto_moderators=[]):
+        user_filter=None, exchange_filter=None, max=None, auto_moderators=None):
     """
     Display a form to compose a message.
 
@@ -132,7 +132,7 @@ def write(request, recipients=None, form_classes=(WriteForm, AnonymousWriteForm)
 
     """
 
-    log.debug(u'message to %s' % recipients)
+    auto_moderators = auto_moderators or []
 
     user = request.user
     form_class = form_classes[0] if user.is_authenticated() else form_classes[1]
@@ -193,7 +193,7 @@ if getattr(settings, 'POSTMAN_DISALLOW_ANONYMOUS', False):
 @login_required
 def reply(request, message_id, form_class=FullReplyForm, formatters=(format_subject,format_body), autocomplete_channel=None,
         template_name='postman/reply.html', success_url=None,
-        user_filter=None, exchange_filter=None, max=None, auto_moderators=[]):
+        user_filter=None, exchange_filter=None, max=None, auto_moderators=None):
     """
     Display a form to compose a reply.
 
@@ -209,6 +209,9 @@ def reply(request, message_id, form_class=FullReplyForm, formatters=(format_subj
         ``auto_moderators``: a list of auto-moderation functions
 
     """
+
+    auto_moderators = auto_moderators or []
+
     user = request.user
     perms = Message.objects.perms(user)
     parent = get_object_or_404(Message, perms, pk=message_id)

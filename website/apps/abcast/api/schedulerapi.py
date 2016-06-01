@@ -4,10 +4,12 @@ import json
 from abcast.models import Emission, Channel
 from actstream import action
 from alibrary.models import Playlist
-from django.conf.urls import *
+from django.conf import settings
+from django.conf.urls import url
 from django.http import HttpResponse
-from tastypie.authentication import *
-from tastypie.authorization import *
+from django.utils.translation import ugettext as _
+from tastypie.authentication import MultiAuthentication, SessionAuthentication, ApiKeyAuthentication, Authentication
+from tastypie.authorization import Authorization
 from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 from tastypie.http import HttpUnauthorized
 from tastypie.resources import ModelResource
