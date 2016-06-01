@@ -3,11 +3,12 @@
 # This file is distributed under a BSD-2-Clause type license.
 # See the COPYING file for more information.
 
-import sys
 import locale
+import sys
 import xml.etree.ElementTree as ET
 
 from . import compat
+
 
 def _unicode(string, encoding=None):
     """Try to decode byte strings to unicode.
