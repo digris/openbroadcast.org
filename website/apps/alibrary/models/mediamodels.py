@@ -335,14 +335,6 @@ class Media(MigrationMixin):
     def get_stream_url(self):
         return reverse('alibrary-media-stream_html5', kwargs={'uuid': self.uuid})
 
-    # TODO: depreciated
-    def get_encode_url(self, format='mp3', bitrate='32'):
-        return reverse('alibrary-media-encode', (), {'uuid': self.uuid, 'format': format, 'bitrate': bitrate})
-
-    # TODO: depreciated
-    def get_waveform_url(self):
-        return reverse('alibrary-media-waveform', kwargs={'uuid': self.uuid})
-
     def get_api_url(self):
         return reverse('api_dispatch_detail', kwargs={  
             'api_name': 'v1',  

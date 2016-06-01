@@ -64,10 +64,7 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
                 pass
             else:
                 if EXCHANGE == 'http':
-                    try:
-                        uri = "http://%s%s" % (base_url, co.get_stream_url())
-                    except Exception, ex:
-                        uri = None
+                    raise NotImplemented('http transport not implemented anymore')
 
                 if EXCHANGE == 'fs':
                     uri = co.get_playout_file(absolute=False)

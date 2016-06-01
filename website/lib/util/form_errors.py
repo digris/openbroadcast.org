@@ -31,8 +31,4 @@ def merge_form_errors(forms_to_merge=[]):
 
                     form_errors[key] = errors
 
-
-    print form_errors
-
-
     return form_errors

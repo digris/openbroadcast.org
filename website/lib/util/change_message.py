@@ -86,7 +86,7 @@ def construct(request, form, formsets=[]):
                     change_message.append(_('Deleted %(name)s "%(object)s". \n')
                                           % {'name': force_unicode(deleted_object._meta.verbose_name),
                                              'object': force_unicode(deleted_object)})
-        except Exception, e:
+        except Exception as e:
             print e
             pass
 

@@ -118,6 +118,7 @@ SchedulerApp = function () {
             var action = $(this).data('action');
             var date = $(this).data('date');
 
+
             if (action == 'copy') {
                 self.copy_paste_source = date;
                 $.cookie('scheduler_copy_paste_source', date);
@@ -132,15 +133,14 @@ SchedulerApp = function () {
                         source: self.copy_paste_source,
                         target: date,
                         channel_id: self.channel_id
-                    }
+                    };
 
                     $.ajax({
                         type: "POST",
                         url: url,
                         dataType: "json",
                         contentType: 'application/json',
-                        processData: true,
-                        data: data,
+                        data: JSON.stringify(data),
                         success: function (data) {
                             if (data.status) {
                                 self.load();

@@ -39,7 +39,7 @@ FORMAT_LOCK_EXPIRE = 60 * 1
 class WaveformManager(models.Manager):
 
     def get_or_create_for_media(self, media, type, **kwargs):
-        waveform, created = self.model.objects.get_or_create(media__pk=media.pk, type=type, **kwargs)
+        waveform, created = self.model.objects.get_or_create(media=media, type=type, **kwargs)
         log.debug('waveform - get or create for media: %s %s (created: %s)' % (media, type, created))
         return waveform
 
@@ -171,7 +171,7 @@ class FormatManager(models.Manager):
 
     def get_or_create_for_media(self, media, encoding='mp3', quality='default', **kwargs):
 
-        format, created = self.model.objects.get_or_create(media__pk=media.pk, encoding=encoding, quality=quality, **kwargs)
+        format, created = self.model.objects.get_or_create(media=media, encoding=encoding, quality=quality, **kwargs)
         log.debug('version - get or create for media: %s %s %s (created: %s)' % (media, encoding, quality, created))
 
         return format

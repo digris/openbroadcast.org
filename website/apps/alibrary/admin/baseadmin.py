@@ -465,8 +465,6 @@ admin.site.register(PlaylistItem, PlaylistItemAdmin)
 
 
 
-admin.site.register(APILookup)
-
 
 from hvad.admin import TranslatableAdmin
 class SeasonAdmin(TranslatableAdmin):

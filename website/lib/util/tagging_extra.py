@@ -64,7 +64,7 @@ def calculate_cloud(tags, steps=6, distribution=LOGARITHMIC, group_by=10):
         for tag in tags:
             try:
                 tag.hide_level = hidden[tag.weight -1]
-            except Exception, e:
+            except Exception as e:
                 pass
         
 

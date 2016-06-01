@@ -32,7 +32,6 @@ INSTALLED_APPS = (
     # server
     'gunicorn',
     'django_date_extensions',
-    'esi',
     'haystack',
     'search',
     #'docs',
@@ -48,8 +47,8 @@ INSTALLED_APPS = (
     'raven.contrib.django.raven_compat',
     'raven.contrib.django.celery',
     'djcelery_email',
+    'django_coverage',
 
-    #'chunked_dumpdata',
 
     'base',
     'platform_base',
@@ -71,7 +70,6 @@ INSTALLED_APPS = (
     'genericadmin',
     'hvad',
     'selectable',
-    'autocomplete_light',
     'genericrelations',
     'spurl',
     'lib',
@@ -207,7 +205,6 @@ THUMBNAIL_PROCESSORS = (
     #'easy_thumbnails.processors.scale_and_crop',
     'filer.thumbnail_processors.scale_and_crop_with_subject_location',
     'easy_thumbnails.processors.filters',
-    'lib.thumbnail_processors.colors.colorize',
 )
 THUMBNAIL_QUALITY = 80
 THUMBNAIL_BASEDIR = 'thumbnails'

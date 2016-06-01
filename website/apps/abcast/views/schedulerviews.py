@@ -17,14 +17,12 @@ from alibrary.models import Playlist
 
 import datetime
 
-from jsonview.decorators import json_view
-
 from django.db.models import Q
 from lib.util import tagging_extra
 
 # logging
 import logging
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 SCHEDULER_GRID_WIDTH = getattr(settings, 'SCHEDULER_GRID_WIDTH', 830)
@@ -42,8 +40,7 @@ SCHEDULER_DEFAULT_CHANNEL_ID = getattr(settings, 'SCHEDULER_DEFAULT_CHANNEL_ID',
 OVERLAP_TOLERANCE = 2 # seconds
 
 def schedule(request):
-        
-    log = logging.getLogger('abcast.schedulerviews.schedule')
+
 
     data = {}
 
@@ -176,7 +173,6 @@ class EmissionListView(ListView):
 
 class EmissionDetailView(DetailView):
 
-    # context_object_name = "emission"
     model = Emission
     extra_context = {}
 
@@ -184,8 +180,7 @@ class EmissionDetailView(DetailView):
         return super(EmissionDetailView, self).render_to_response(context, content_type="text/html")
 
     def get_context_data(self, **kwargs):
-        
-        obj = kwargs.get('object', None)
+
         context = super(EmissionDetailView, self).get_context_data(**kwargs)
         context.update(self.extra_context)
         return context
@@ -195,11 +190,8 @@ class EmissionDetailView(DetailView):
 """
 views for playlist / emission selection
 """
-#@json_view
 def select_playlist(request):
-    
-    log = logging.getLogger('abcast.schedulerviews.select_playlist')
-    
+
     playlist_id = request.GET.get('playlist_id', None) 
     next = request.GET.get('next', None)
 
@@ -230,19 +222,15 @@ def select_playlist(request):
             'status': True,
             'playlist_id': playlist.id
             }
-    #return data
-    data = json.dumps(data)
-    return HttpResponse(data, content_type='application/json')
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 
 """
 put object to schedule
 """
-@json_view
 def schedule_object(request):
-    
-    log = logging.getLogger('abcast.schedulerviews.schedule_object')
 
     if not request.user.has_perm('abcast.schedule_emission'):
         log.warning('unauthorized attempt to schedule emission by: %s' % request.user)
@@ -274,20 +262,16 @@ def schedule_object(request):
             log.warning('attempt to shedule invalid playlist. pk: %s' % obj.pk)
             return { 'message': _('Sorry - this playlist does not meet all criterias to be scheduled.') }
 
-    
-    
+
     pph = SCHEDULER_PPH
-    # ppd = SCHEDULER_PPD
     ppd = (SCHEDULER_GRID_WIDTH - SCHEDULER_GRID_OFFSET) / int(num_days)
-    
-    
+
     top = float(top) / pph * 60
     offset_min = int(15 * round(float(top)/15))
     
     left = float(left) / ppd
     offset_d = int(round(float(left)))
-    
-        
+
     log.debug('minutes (offset): %s' % offset_min)
     log.debug('days (offset): %s' % offset_d)
     
@@ -336,33 +320,29 @@ def schedule_object(request):
 
     action.send(request.user, verb='scheduled', target=e.content_object)
     
-    
-    
+
     data = {
             'status': True,
             'obj_id': obj_id
             }
-    
-    return data
-    #data = json.dumps(data)
-    #return HttpResponse(data, content_type='application/json')
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
  
 
 """
 copy a day to another
 """
-@json_view
 def copy_paste_day(request):
-    
-    log = logging.getLogger('abcast.schedulerviews.copy_day')
 
     if not request.user.has_perm('abcast.schedule_emission'):
         log.warning('unauthorized attempt to copypast day by: %s' % request.user)
         return { 'message': _('Sorry - you are not allowed to edit emissions.') }
-    
-    source = request.POST.get('source', None) 
-    target = request.POST.get('target', None)
-    channel_id = request.POST.get('channel_id', SCHEDULER_DEFAULT_CHANNEL_ID)
+
+    data = json.loads(request.body)
+
+    source = data.get('source', None)
+    target = data.get('target', None)
+    channel_id = data.get('channel_id', SCHEDULER_DEFAULT_CHANNEL_ID)
     channel = Channel.objects.get(pk=channel_id)
     
     log.debug('copy from: %s to %s' % (source, target))
@@ -402,29 +382,17 @@ def copy_paste_day(request):
                 e.time_start = e.time_start + offset
                 e.save()
 
-                # action.send(request.user, verb='scheduled', target=e)
-
-            else:
-                print 'slot not free'
-
-    
-    now = datetime.datetime.now()
-
-    
     data = {
             'status': True,
             }
-    
-    return data
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 """
 delete all emissions in given day
 """
-@json_view
 def delete_day(request):
-
-    log = logging.getLogger('abcast.schedulerviews.delete_day')
 
     if not request.user.has_perm('abcast.schedule_emission'):
         log.warning('unauthorized attempt to delete day by: %s' % request.user)
@@ -460,6 +428,6 @@ def delete_day(request):
             'deleted': emission_count
             }
 
-    return data
+    return HttpResponse(json.dumps(data), content_type='application/json')
 
  

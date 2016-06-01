@@ -11,7 +11,6 @@ from django.conf import settings
 import acoustid
 import requests
 import musicbrainzngs
-from lib.util import pesterfish
 from lib.util.sha1 import sha1_by_file
 from base import discogs_image_by_url
 

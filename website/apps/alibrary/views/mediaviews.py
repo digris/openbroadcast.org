@@ -14,7 +14,6 @@ from django.contrib import messages
 from tagging.models import Tag
 import reversion
 from sendfile import sendfile
-import audiotranscode
 
 from pure_pagination.mixins import PaginationMixin
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
@@ -142,20 +141,20 @@ class MediaListView(PaginationMixin, ListView):
         
         artist_filter = self.request.GET.get('artist', None)
         if artist_filter:
-            #qs = qs.filter(Q(artist__slug=artist_filter) | Q(media_artists__slug=artist_filter)).distinct()
 
-            a = Artist.objects.get(slug=artist_filter)
+            a = get_object_or_404(Artist, slug=artist_filter)
             qs = qs.filter(pk__in=(r.id for r in a.get_media())).distinct()
 
-            fa = Artist.objects.filter(slug=artist_filter)[0]
-            f = {'item_type': 'artist' , 'item': fa, 'label': _('Artist')}
+            f = {'item_type': 'artist' , 'item': a, 'label': _('Artist')}
             self.relation_filter.append(f)
             
         release_filter = self.request.GET.get('release', None)
         if release_filter:
-            qs = qs.filter(release__slug=release_filter).distinct()
-            fa = Release.objects.filter(slug=release_filter)[0]
-            f = {'item_type': 'release' , 'item': fa, 'label': _('Release')}
+
+            r = get_object_or_404(Release, slug=release_filter)
+            qs = qs.filter(release__pk=r.pk).distinct()
+
+            f = {'item_type': 'release' , 'item': r, 'label': _('Release')}
             self.relation_filter.append(f)
             
         # filter by import session
@@ -367,14 +366,8 @@ def media_download(request, slug, format, version):
     media = get_object_or_404(Media, slug=slug)
     version = 'base' 
 
-
     download_permission = False
-    #for product in media.mediaproduct.filter(active=True): # users who purchase hardware can download the software part as well
-    #    if get_download_permissions(request, product, format, version):
-    #        download_permission = True
-    #    if product.unit_price == 0:
-    #        download_permission = True
-    
+
     if not download_permission:
         return HttpResponseForbidden('forbidden')
     
@@ -423,55 +416,3 @@ def stream_html5(request, uuid):
         return HttpResponseBadRequest('unable to get cache file')
 
     return sendfile(request, media_file)
-
-
-def __encode(path, bitrate, format):
-    at = audiotranscode.AudioTranscode()
-    for data in at.transcode_stream(path, format, bitrate=bitrate):
-        # do something with chuck of data
-        # e.g. sendDataToClient(data)
-        yield data
-
-
-
-@never_cache
-def encode(request, uuid, bitrate=128, format='mp3'):
-
-    media = get_object_or_404(Media, uuid=uuid)
-
-    stream_permission = False
-
-    if request.user and request.user.has_perm('alibrary.play_media'):
-        stream_permission = True
-
-    # check if unrestricted license
-    if not stream_permission:
-        if media.license and media.license.restricted == False:
-            stream_permission = True
-
-    if not stream_permission:
-        raise PermissionDenied
-
-    try:
-        from atracker.util import create_event
-        create_event(request.user, media, None, 'stream')
-    except:
-        pass
-
-
-    return HttpResponse(__encode(media.master.path, bitrate, format), content_type='audio/mpeg')
-
-    #return sendfile(request, media.get_cache_file('mp3', 'base'))
-
-@never_cache
-def waveform(request, uuid):
-    
-    media = get_object_or_404(Media, uuid=uuid)
-
-    if media.get_cache_file('png', 'waveform'):
-        waveform_file = media.get_cache_file('png', 'waveform')
-    else:
-        waveform_file = os.path.join(settings.STATIC_ROOT, 'img/base/defaults/waveform.png')
-
-
-    return sendfile(request, waveform_file)

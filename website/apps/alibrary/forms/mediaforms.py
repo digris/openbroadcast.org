@@ -168,26 +168,10 @@ class MediaForm(ModelForm):
 
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
     release = selectable.AutoCompleteSelectField(ReleaseNameLookup, allow_new=True, required=True, label=_('Release'))
-    
-    
-    
-    """
-    extra_artists = forms.ModelChoiceField(Artist.objects.all(),
-        widget=autocomplete_light.ChoiceWidget('ArtistAutocomplete'), required=False)
-    """
+
     name = forms.CharField(required=True, label='Title')
     artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=True,label=_('Artist'))
     description = forms.CharField(widget=PagedownWidget(), required=False)
-
-
-    
-    #license = selectable.AutoCompleteSelectField(LicenseLookup, widget=selectable.AutoComboboxSelectWidget(lookup_class=LicenseLookup), allow_new=False, required=False, label=_('License'))
-
-    # aliases = selectable.AutoCompleteSelectMultipleField(ArtistLookup, required=False)
-    # aliases  = make_ajax_field(Media,'aliases','aliases',help_text=None)
-    
-    #members = selectable.AutoCompleteSelectMultipleField(ArtistLookup, required=False)
-
 
     def clean_license(self):
         instance = getattr(self, 'instance', None)

@@ -6,7 +6,6 @@ from basemodels import (MigrationMixin, Relation, Profession, Agency,
 from artistmodels import (Artist, ArtistProfessions, NameVariation,
                           ArtistMembership, ArtistAlias)
 from labelmodels import Label
-from lookupmodels import APILookup
 from mediamodels import Media, MediaExtraartists, MediaArtists
 from playlistmodels import (Playlist, PlaylistMedia, PlaylistItem,
                             PlaylistItemPlaylist, Season, Weather, Series)

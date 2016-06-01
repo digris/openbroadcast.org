@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import autocomplete_light
 from django.conf.urls import patterns, include, url
 from django.conf.urls.i18n import i18n_patterns
 from django.views.defaults import page_not_found, server_error
@@ -32,20 +31,15 @@ admin.autodiscover()
 admin.site.site_header = "Open Broadcast"
 admin.site.site_title = "Open Broadcast"
 
-
 dajaxice_autodiscover()
-autocomplete_light.autodiscover()
 
 urlpatterns = patterns('',
 
-    # django-su
-    #url(r"^admin/su/", include("django_su.urls")),
     url(r'^admin_tools/', include('admin_tools.urls')),
     url(r"^admin/", include(admin.site.urls)),
     url(r'^backfeed/', include('backfeed.urls')),
     url(r"^vote/", include('arating.urls')),
     url(r'^ac_tagging/', include('ac_tagging.urls')),
-    url(r'^autocomplete/', include('autocomplete_light.urls')),
     url(r'^api/', include(api.urls)),
     url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
     url(r'^comments/', include('fluent_comments.urls')),

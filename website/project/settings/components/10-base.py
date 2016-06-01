@@ -86,7 +86,6 @@ MIDDLEWARE_CLASSES = (
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
     'lib.middleware.xs_sharing.XsSharingMiddleware',
-    'lib.middleware.profiler.ProfileMiddleware',
 
     #'auditlog.middleware.AuditlogMiddleware',
     'social_auth.middleware.SocialAuthExceptionMiddleware',

@@ -143,19 +143,18 @@ class ReleaseListView(PaginationMixin, ListView):
         if artist_filter:
             #qs = qs.filter(Q(media_release__artist__slug=artist_filter) | Q(media_release__media_artists__slug=artist_filter) | Q(album_artists__slug=artist_filter)).distinct()
 
-            a = Artist.objects.get(slug=artist_filter)
+            a = get_object_or_404(Artist, slug=artist_filter)
             qs = qs.filter(pk__in=(r.id for r in a.get_releases())).distinct()
 
-
-            fa = Artist.objects.filter(slug=artist_filter)[0]
-            f = {'item_type': 'artist' , 'item': fa, 'label': _('Artist')}
+            f = {'item_type': 'artist' , 'item': a, 'label': _('Artist')}
             self.relation_filter.append(f)
             
         label_filter = self.request.GET.get('label', None)
         if label_filter:
-            qs = qs.filter(label__slug=label_filter).distinct()
-            fa = Label.objects.filter(slug=label_filter)[0]
-            f = {'item_type': 'label' , 'item': fa, 'label': _('Label')}
+            l = get_object_or_404(Label, slug=label_filter)
+            qs = qs.filter(label__pk=l.pk).distinct()
+
+            f = {'item_type': 'label' , 'item': l, 'label': _('Label')}
             self.relation_filter.append(f)
 
 

@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import permission_required
 import requests
 from stdnum import ean
 import urllib
-from alibrary.models import APILookup, Release, Relation, Label, Artist, Media
+from alibrary.models import Release, Relation, Label, Artist, Media
 from lib.util.merge import merge_model_objects
 from lib.util.AsciiDammit import asciiDammit
 
