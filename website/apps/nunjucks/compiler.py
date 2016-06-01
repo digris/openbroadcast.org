@@ -12,14 +12,10 @@ class NunjucksCompiler(object):
     def __init__(self):
         pass
 
-    def compile(self, path):
+    def compile_template(self, path):
 
         template = ''
         command = '%s %s' % (nunjucks_settings.NUNJUCKS_BIN, path)
-
-        print command
-
-        log.debug(u'%s' % command)
 
         p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         for line in p.stdout.readlines():

@@ -16,7 +16,7 @@ class SubcommandsCommand(BaseCommand):
     def handle(self, *args, **options):
         stderr = getattr(self, 'stderr', sys.stderr)
         stdout = getattr(self, 'stdout', sys.stdout)
-        if len(args) > 0:
+        if args:
             if args[0] in self.subcommands.keys():
                 handle_command = self.subcommands.get(args[0])()
                 handle_command.stdout = stdout

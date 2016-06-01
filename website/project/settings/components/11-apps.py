@@ -121,7 +121,6 @@ INSTALLED_APPS = (
     'postman',
     'atracker',
     'invitation',
-    'asite',
     'alibrary',
     'collection',
     'media_asset',

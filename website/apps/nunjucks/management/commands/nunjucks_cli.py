@@ -53,22 +53,10 @@ class Command(NoArgsCommand):
             for path, storage in finder.list([]):
 
                 # TOTO: find a correct way to get nj-paths
-
-
-
                 if '/nj/' in path:
 
-                    print path
-                    print storage.path(path)
-                    compiled_template = self.compiler.compile(storage.path(path))
-
-                    print compiled_template
-
+                    compiled_template = self.compiler.compile_template(storage.path(path))
                     compiled_template = re.sub('/Users/ohrstrom/Documents/Code/openbroadcast.org/website/apps/(\w*)/static/', '', compiled_template)
-
-
-                    #compiled_template = compiled_template.replace('/Users/ohrstrom/Documents/Code/openbroadcast.ch/website/', '')
-
                     templates.append( {
                         'path': path,
                         'inner': compiled_template

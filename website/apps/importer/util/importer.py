@@ -487,7 +487,7 @@ class Importer(object):
         """
         Apply musicbrainz tags if unique
         """
-        if len(results_musicbrainz) > 0:
+        if results_musicbrainz:
             log.debug('got musicbrainz result -> apply it')
 
             mb = None
@@ -555,7 +555,7 @@ class Importer(object):
             pass
 
         # remove musicbrainz & discogs ids in case that assigned by ID3
-        if len(selected_import_tag) > 0:
+        if selected_import_tag:
             if not 'mb_release_id' in selected_import_tag:
                 import_tag.pop("mb_release_id", None)
 
@@ -575,7 +575,7 @@ class Importer(object):
         pop_release = False
         pop_artist = False
         pop_media = False
-        if len(results_musicbrainz) > 0:
+        if results_musicbrainz:
 
             if 'mb_release_id' in import_tag:
                 print 'cleaning mb assignments'

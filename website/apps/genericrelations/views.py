@@ -32,7 +32,7 @@ def get_obj(content_type_id, object_id):
 def generic_lookup(request):
     if request.method == 'GET':
         objects = []
-        if request.GET.has_key('content_type') and request.GET.has_key('object_id'):
+        if 'content_type' in request.GET and 'object_id' in request.GET:
             obj = get_obj(request.GET['content_type'], request.GET['object_id'])
             objects.append(obj)
         
