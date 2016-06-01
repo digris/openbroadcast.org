@@ -61,7 +61,7 @@ class Station(BaseModel):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('abcast-station-detail', [self.slug])
+        return 'abcast-station-detail', [self.slug]
 
     def get_admin_url(self):
         from lib.util.get_admin_url import change_url

@@ -1,11 +1,10 @@
 {% extends "base/generic.html" %}
 
-{% load i18n sekizai_tags dajaxice_templatetags crispy_forms_tags istats_tags %}
+{% load i18n sekizai_tags dajaxice_templatetags crispy_forms_tags %}
 
 {% block object_type %}import{% endblock %}
 
-{% block heading %} <!-- heading / icon (large one) -->
-    {% addtoblock "js-post" %}{% istats_scripts %}{% endaddtoblock %}
+{% block heading %}
 
     <div id="heading">
         {% include "skeleton/heading.html" %}

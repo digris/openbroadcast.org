@@ -1,6 +1,6 @@
 {% extends "layout_edit.html" %}
 
-{% load i18n sekizai_tags straight_include dajaxice_templatetags pushy_tags istats_tags pageguide_tags %}
+{% load i18n sekizai_tags straight_include dajaxice_templatetags pushy_tags pageguide_tags %}
 
 {% block object_type %}import{% endblock %}
 
@@ -8,7 +8,6 @@
 
     {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
 
-    {% addtoblock "js-post" %}{% istats_scripts %}{% endaddtoblock %}
     {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/tmpl.js"></script>{% endaddtoblock %}
     {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.iframe-transport.js"></script>{% endaddtoblock %}
     {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload.js"></script>{% endaddtoblock %}

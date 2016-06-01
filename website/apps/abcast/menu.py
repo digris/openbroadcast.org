@@ -1,12 +1,8 @@
 from django.utils.translation import ugettext_lazy as _
 
-from menus.base import Modifier, Menu, NavigationNode
+from menus.base import NavigationNode
 from menus.menu_pool import menu_pool
 from cms.menu_bases import CMSAttachMenu
-
-
-#from abcast.models import Emission
-
 
 class SchedulerMenu(CMSAttachMenu):
     

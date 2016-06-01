@@ -1,8 +1,0 @@
-<script type="text/javascript" src="{{ STATIC_URL }}istats/js/istats.js"></script>
-<script>
-    $(function () {
-        istats = new IstatsApp;
-        istats.api_url = "{% url "api_dispatch_list" resource_name='stats' api_name='v1'%}server/";
-        istats.init();
-    });
-</script>

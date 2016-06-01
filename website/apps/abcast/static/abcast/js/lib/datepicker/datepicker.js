@@ -177,7 +177,7 @@
 					data = {
 						data: [],
 						className: 'datepickerYears'
-					}
+					};
 					for ( var j = 0; j < 12; j++) {
 						data.data.push(dow + j);
 					}

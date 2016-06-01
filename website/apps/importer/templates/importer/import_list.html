@@ -1,13 +1,12 @@
 {% extends "base/listing.html" %}
 
-{% load i18n webdesign sekizai_tags cms_tags istats_tags humanize %}
+{% load i18n webdesign sekizai_tags cms_tags humanize %}
 
 {% block object_type %}import{% endblock %}
 
 {% block searchbar %}{% endblock %}
 
 {% block heading %}
-    {% addtoblock "js-post" %}{% istats_scripts %}{% endaddtoblock %}
 
     <div id="heading">
         {% include "skeleton/heading.html" %}

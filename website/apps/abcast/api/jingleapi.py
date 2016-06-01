@@ -105,7 +105,7 @@ class JingleSetResource(ModelResource):
         
         bundle.data['main_image'] = None
         
-        if(bundle.obj.main_image):
+        if bundle.obj.main_image:
             opt = dict(size=(70, 70), crop=True, bw=False, quality=80)
             try:
                 main_image = get_thumbnailer(bundle.obj.main_image).get_thumbnail(opt)

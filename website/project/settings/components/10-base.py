@@ -24,10 +24,7 @@ COMPRESS_ENABLED = True
 # language settings
 ################################################################################
 
-LANGUAGES = [
-    ('en', 'en'),
-    ('de', 'de'),
-]
+
 DEFAULT_LANGUAGE = 0
 LANGUAGE_CODE = 'en'
 

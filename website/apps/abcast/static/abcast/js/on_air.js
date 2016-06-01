@@ -75,7 +75,7 @@ OnAirApp = function () {
             self.display_emission(data);
         });
 
-    }
+    };
 
     this.update_item = function (url) {
 
@@ -84,7 +84,7 @@ OnAirApp = function () {
             self.display_item(data);
         });
 
-    }
+    };
 
     // display methods
     this.display_emission = function (data) {

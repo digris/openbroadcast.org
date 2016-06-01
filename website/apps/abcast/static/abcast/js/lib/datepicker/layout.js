@@ -68,7 +68,7 @@
 		});
 		var now3 = new Date();
 		now3.addDays(-4);
-		var now4 = new Date()
+		var now4 = new Date();
 		$('#widgetCalendar').DatePicker({
 			flat: true,
 			format: 'd B, Y',
@@ -103,4 +103,4 @@
 	};
 	
 	EYE.register(initLayout, 'init');
-})(jQuery)
+})(jQuery);

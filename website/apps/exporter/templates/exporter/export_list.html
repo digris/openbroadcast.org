@@ -1,6 +1,6 @@
 {% extends "base/listing.html" %}
 
-{% load i18n sekizai_tags pushy_tags cms_tags istats_tags %}
+{% load i18n sekizai_tags pushy_tags cms_tags %}
 
 {% block object_type %}export{% endblock %}
 
@@ -11,11 +11,8 @@
 
 {% block heading %} <!-- heading / icon (large one) -->
     {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
-    {% addtoblock "js-post" %}{% istats_scripts %}{% endaddtoblock %}
-    {% addtoblock "js-post" %}
-        <script type="text/javascript" src="{{ STATIC_URL }}js/lib/ICanHaz.js"></script>{% endaddtoblock %}
-    {% addtoblock "js-post" %}
-        <script type="text/javascript" src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}js/lib/ICanHaz.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
 
     {% addtoblock "js-post" %}
         <script type="text/javascript">

@@ -98,10 +98,8 @@ INSTALLED_APPS = (
     'djangocms_panel',
     'djangocms_column',
 
-    # dajax
     'dajaxice',
     'dajax',
-    #'ajax_select',
     'email_obfuscator',
 
     #'stepguide',
@@ -122,7 +120,6 @@ INSTALLED_APPS = (
     'profiles',
     'postman',
     'atracker',
-    'istats',
     'invitation',
     'asite',
     'alibrary',
@@ -137,7 +134,6 @@ INSTALLED_APPS = (
     'arating',
     'backfeed',
     'statistics',
-    #'bcmon',
     'wikisyntax',
     'tagging',
     'tagging_extra',

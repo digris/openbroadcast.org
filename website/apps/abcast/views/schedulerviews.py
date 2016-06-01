@@ -1,27 +1,19 @@
-from django.views.generic import DetailView, ListView
-from django.shortcuts import render_to_response
-
-from django.http import HttpResponse, Http404
+import datetime
 import json
-from django.conf import settings
-from django.shortcuts import redirect
-from django.utils.translation import ugettext as _
-
-from django.template import RequestContext
+import logging
 
 from abcast.models import Emission, Channel
 from actstream import action
 from alibrary.models import Playlist
-
-#from abcast.filters import EmissionFilter
-
-import datetime
-
+from django.conf import settings
 from django.db.models import Q
-from lib.util import tagging_extra
+from django.http import HttpResponse, Http404
+from django.shortcuts import redirect
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from django.utils.translation import ugettext as _
+from django.views.generic import DetailView, ListView
 
-# logging
-import logging
 log = logging.getLogger(__name__)
 
 
@@ -285,7 +277,7 @@ def schedule_object(request):
     
     # time_end = time_start + datetime.timedelta(milliseconds=obj.get_duration())
     # for duration calculation we use the 'target duration' (to avoid blocked slots)
-    time_end = time_start + datetime.timedelta(seconds=(obj.target_duration))
+    time_end = time_start + datetime.timedelta(seconds=obj.target_duration)
 
     log.debug('time_start: %s' % time_start)
     log.debug('time_end: %s' % time_end)
@@ -305,7 +297,7 @@ def schedule_object(request):
     if es.count() > 0:
         message = _('The desired time slot does not seem to be available.')
         try:
-            message += u'<br>Emission schedule "%s" - from %s to %s' % (e.name, time_start.time(), time_end.time())
+            message += u'<br>Emission schedule from %s to %s' % (time_start.time(), time_end.time())
             for conflicting_emission in es:
                 message += u'<br> - overlaps "%s" - from %s to %s' % (conflicting_emission.name, conflicting_emission.time_start.time(), conflicting_emission.time_end.time())
 
@@ -357,7 +349,7 @@ def copy_paste_day(request):
         source_end = source_start + datetime.timedelta(hours=24)
 
         log.debug('source: %s to %s' % (source_start, source_end))
-        log.debug('offset: %s' % (offset))
+        log.debug('offset: %s' % offset)
         
         # get emissions
         es = Emission.objects.filter(time_start__gte=source_start, time_end__lte=source_end, channel=channel)

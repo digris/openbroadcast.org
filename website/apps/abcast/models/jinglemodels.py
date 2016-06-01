@@ -107,15 +107,15 @@ class Jingle(BaseModel):
     
     @models.permalink
     def get_absolute_url(self):
-        return ('abjast-jingle-detail', [self.slug])
+        return 'abjast-jingle-detail', [self.slug]
     
     @models.permalink
     def get_stream_url(self):
-        return ('abjast-jingle-stream_html5', [self.uuid])
+        return 'abjast-jingle-stream_html5', [self.uuid]
     
     @models.permalink
     def get_waveform_url(self):
-        return ('abcast-jingle-waveform', [self.uuid])
+        return 'abcast-jingle-waveform', [self.uuid]
 
     def get_folder_path(self, subfolder=None):
         if not self.folder:
@@ -161,7 +161,7 @@ class Jingle(BaseModel):
         if self.master:
             tmp_directory = tempfile.mkdtemp()
 
-            src_path = self.master.path;
+            src_path = self.master.path
             tmp_path = os.path.join(tmp_directory, 'tmp.wav')
             dst_path = os.path.join(self.get_folder_path('cache'), 'waveform.png')
             
@@ -248,7 +248,7 @@ class Jingle(BaseModel):
     def save(self, *args, **kwargs):
         
         log = logging.getLogger('abcast.jinblemodels.save')
-        log.info('Jingle id: %s - Save' % (self.pk))
+        log.info('Jingle id: %s - Save' % self.pk)
     
         if self.uuid is not None:
             try:
@@ -274,7 +274,7 @@ def jingle_post_save(sender, **kwargs):
     # save the folder path
     if not obj.folder and obj.master:
         folder = "private/%s/" % (obj.uuid.replace('-', '/'))
-        log.info('Adding folder: %s' % (folder))
+        log.info('Adding folder: %s' % folder)
         obj.folder = folder
         obj.save()
 
@@ -282,7 +282,7 @@ def jingle_post_save(sender, **kwargs):
 
     if obj.master and obj.processed == 0:
         
-        log.info('Media id: %s - Re-Process' % (obj.pk))
+        log.info('Media id: %s - Re-Process' % obj.pk)
         obj.process()
         
 

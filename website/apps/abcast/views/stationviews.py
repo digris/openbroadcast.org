@@ -1,14 +1,11 @@
-from django.views.generic import DetailView, ListView
-from django.conf import settings
-from tagging.models import Tag
-from django.db.models import Q
-
-from pure_pagination.mixins import PaginationMixin
-from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-from abcast.models import Station
 from abcast.filters import StationFilter
+from abcast.models import Station
+from django.conf import settings
+from django.db.models import Q
+from django.views.generic import DetailView, ListView
 from lib.util import tagging_extra
-
+from pure_pagination.mixins import PaginationMixin
+from tagging.models import Tag
 
 PAGINATE_BY = getattr(settings, 'PAGINATE_BY', (12,24,36,120))
 PAGINATE_BY_DEFAULT = getattr(settings, 'AGINATE_BY_DEFAULT', 12)

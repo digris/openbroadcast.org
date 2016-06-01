@@ -1,18 +1,17 @@
-import json
 import datetime
+import json
 
-from django.conf import settings
+from abcast.models import Emission, Channel
+from actstream import action
+from alibrary.models import Playlist
 from django.conf.urls import *
 from django.http import HttpResponse
 from tastypie.authentication import *
 from tastypie.authorization import *
+from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
+from tastypie.http import HttpUnauthorized
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
-from tastypie.http import HttpUnauthorized
-from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
-from actstream import action
-from alibrary.models import Playlist
-from abcast.models import Emission, Channel
 
 # logging
 import logging
@@ -53,7 +52,7 @@ class PlaylistResource(ModelResource):
         }
 
     def dehydrate(self, bundle):
-        bundle.data['item_count'] = bundle.obj.items.count();
+        bundle.data['item_count'] = bundle.obj.items.count()
         return bundle
 
 

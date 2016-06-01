@@ -191,7 +191,7 @@ JingleUi = function() {
 		// console.log(data)
 		
 		
-		console.log('JINGLE DATA', data)
+		console.log('JINGLE DATA', data);
 
 		var status_map = new Array;
 		status_map[0] = 'init';
@@ -307,4 +307,4 @@ Object.equals = function( x, y ) {
       // allows x[ p ] to be set to undefined
   }
   return true;
-}
+};

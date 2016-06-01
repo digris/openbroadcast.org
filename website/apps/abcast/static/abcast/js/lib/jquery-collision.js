@@ -116,7 +116,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			clone.y2 -= parseInt( this.proto.css( "margin-bottom") ) || 0;
 		}
 		return clone;
-	}
+	};
 
 	CollisionCoords.prototype.move = function( dx, dy )
 	{
@@ -202,7 +202,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 																						 undefined;
 		}
 		return hit || [];
-	}
+	};
 
 	CollisionCoords.prototype._overlaps = function( other, inclusive )
 	{
@@ -285,7 +285,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		var oc = c.overlap;
 		return Math.sqrt( (tc.centerx()-oc.centerx())*(tc.centerx()-oc.centerx()) +
 											(tc.centery()-oc.centery())*(tc.centery()-oc.centery())   );
-	}
+	};
 
 	function CollisionFactory( targets, obstacles, containment )
 	{

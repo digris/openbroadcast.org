@@ -46,7 +46,7 @@ class StationResource(ModelResource):
 
     def dehydrate(self, bundle):
         
-        if(bundle.obj.main_image):
+        if bundle.obj.main_image:
             opt = dict(size=(70, 70), crop=True, bw=False, quality=80)
             try:
                 main_image = get_thumbnailer(bundle.obj.main_image).get_thumbnail(opt)
@@ -86,7 +86,7 @@ class ChannelResource(ModelResource):
 
     def dehydrate(self, bundle):
         
-        if(bundle.obj.station and bundle.obj.station.main_image):
+        if bundle.obj.station and bundle.obj.station.main_image:
             opt = dict(size=(70, 70), crop=True, bw=False, quality=80)
             try:
                 main_image = get_thumbnailer(bundle.obj.station.main_image).get_thumbnail(opt)
@@ -638,12 +638,6 @@ class BaseResource(Resource):
                     "transition_fade": "00.000000"
         }
         return self.json_response(request, data)
-
-    def recorded_shows(self, request, **kwargs):
-
-        data = {"shows":[],"is_recording":False,"server_timezone":"America\/Los_Angeles"}
-        return self.json_response(request, data)
-    
 
     def recorded_shows(self, request, **kwargs):
 

@@ -364,7 +364,7 @@ SchedulerApp = function () {
                     var el = ui.helper,
                         left = el.position().left,
                         top = el.position().top;
-                    console.log('el:', el)
+                    console.log('el:', el);
 
                     left = left - self.grid_offset.left;
                     top = top - self.grid_offset.top;
@@ -378,7 +378,7 @@ SchedulerApp = function () {
                     var pos = {
                         top: top,
                         left: left
-                    }
+                    };
 
                     self.schedule_object(pos);
 
@@ -415,7 +415,7 @@ SchedulerApp = function () {
             range_start: self.range[0],
             range_end: self.range[self.range.length - 1],
             channel_id: self.channel_id
-        }
+        };
 
         // call creation view, maybe refactor this to tp later
 
@@ -501,8 +501,8 @@ var EmissionApp = function () {
 
     var self = this;
     this.readonly = true;
-    this.api_url
-    this.container
+    this.api_url;
+    this.container;
     this.dom_element = false;
 
     this.scheduler_app;
@@ -570,7 +570,7 @@ var EmissionApp = function () {
                 var data = {
                     'locked': locked,
                     'color': color,
-                }
+                };
                 var url = self.api_url + 'update/';
                 $.ajax({
                     type: "POST",
@@ -822,7 +822,7 @@ var EmissionApp = function () {
                 var pos = {
                     top: top,
                     left: left - 50
-                }
+                };
 
                 //console.log('POS:', pos)
 
@@ -849,7 +849,7 @@ var EmissionApp = function () {
                     channel_id: self.scheduler_app.channel_id
                 };
 
-                console.log('reschedule', data)
+                console.log('reschedule', data);
 
                 /**/
                 $.ajax({
@@ -899,23 +899,23 @@ var EmissionApp = function () {
             top += (24 - self.offset) * self.pph;
         }
         // var height = Math.floor((s_end - s_start) * 0.01166666666667)
-        var height = Math.floor((data.duration / 1000) * 0.01166666666667)
+        var height = Math.floor((data.duration / 1000) * 0.01166666666667);
 
         var old_item = $('#' + data.uuid);
-        old_item.attr('id', 'old_' + data.uuid)
-        old_item.fadeOut(500)
+        old_item.attr('id', 'old_' + data.uuid);
+        old_item.fadeOut(500);
         setTimeout(function () {
             old_item.remove();
-        }, 500)
+        }, 500);
 
-        data.start = data.time_start.substr(11, 5)
-        data.end = data.time_end.substr(11, 5)
+        data.start = data.time_start.substr(11, 5);
+        data.end = data.time_end.substr(11, 5);
 
         var d = {
             top: top,
             height: height,
             object: data
-        }
+        };
 
         var html = nj.render('abcast/nj/emission.html', d);
         $('div.tg-gutter', $('#day_' + day_id)).append(html);
@@ -926,7 +926,7 @@ var EmissionApp = function () {
 
     };
 
-}
+};
 function sortObject(obj) {
     var arr = [];
     for (var prop in obj) {
