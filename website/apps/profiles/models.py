@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import re
 import datetime
 import os
+import tagging
 
 from dateutil import relativedelta
 from django.db import models
