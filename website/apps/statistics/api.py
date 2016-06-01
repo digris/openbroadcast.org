@@ -1,13 +1,7 @@
-from django.conf.urls import *
+
 from tastypie import fields
-from tastypie.authentication import *
-from tastypie.authorization import *
-from tastypie.resources import ModelResource, Resource, Bundle
-
-
-
-from alibrary.models import Media
-
+from tastypie.authorization import Authorization
+from tastypie.resources import Resource, Bundle
 
 class StatisticObject(object):
     def __init__(self, initial=None):

@@ -1,1 +1,1 @@
-from lib.models.basemodels import *
+from lib.models.basemodels import Timestamped

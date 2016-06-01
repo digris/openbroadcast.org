@@ -4,13 +4,11 @@ from django.db import transaction
 from django.db.models import get_models, Model
 from django.contrib.contenttypes.generic import GenericForeignKey
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 # TODO: investigate if non-atomic transactions here are a problem
 #@transaction.atomic
-def merge_model_objects(primary_object, alias_objects=[], keep_old=False):
-
-    log = logging.getLogger('lib.util.merge.merge_model_objects')
+def merge_model_objects(primary_object, alias_objects=None, keep_old=False):
 
     """
     Use this function to merge model objects (i.e. Users, Organizations, Polls,
@@ -23,6 +21,9 @@ def merge_model_objects(primary_object, alias_objects=[], keep_old=False):
     duplicate_user = User.objects.get(email='good_email+duplicate@example.com')
     merge_model_objects(primary_user, duplicate_user)
     """
+
+    alias_objects = alias_objects or []
+
     if not isinstance(alias_objects, list):
         alias_objects = [alias_objects]
 
@@ -35,7 +36,7 @@ def merge_model_objects(primary_object, alias_objects=[], keep_old=False):
 
     for alias_object in alias_objects:
         if not isinstance(alias_object, primary_class):
-            print 'hm what strange error??'
+            pass
             #raise TypeError('Only models of same class can be merged')
 
     # Get a list of all GenericForeignKeys in all models

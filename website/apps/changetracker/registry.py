@@ -24,7 +24,7 @@ class ChangeTrackerModelRegistry(object):
         if custom is not None:
             self._signals.update(custom)
 
-    def register(self, model, include_fields=[], exclude_fields=[], diff_function=None):
+    def register(self, model, include_fields=None, exclude_fields=None, diff_function=None):
         """
         Register a model with changetracker. ChangeTracker will then track mutations on this model's instances.
 
@@ -36,9 +36,8 @@ class ChangeTrackerModelRegistry(object):
         :type exclude_fields: list
         """
 
-        print 'REGISTER'
-        print diff_function
-        print model
+        include_fields = include_fields or []
+        exclude_fields = exclude_fields or []
 
         if issubclass(model, Model):
             self._registry[model] = {
@@ -46,7 +45,6 @@ class ChangeTrackerModelRegistry(object):
                 'exclude_fields': exclude_fields,
             }
 
-            print self._registry
 
             self._connect_signals(model, diff_function)
         else:
@@ -104,10 +102,6 @@ class ChangeTrackerModelRegistry(object):
         return (self.__class__, model, signal)
 
     def get_model_fields(self, model):
-
-        print '---'
-        print self._registry
-        print '---'
 
         return {
             'include_fields': self._registry[model]['include_fields'],

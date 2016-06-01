@@ -1,30 +1,23 @@
-from django.db.models.query import EmptyResultSet
+from actstream.models import Follow, actor_stream
+from alibrary.models import Playlist, Release, Media
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.http import Http404, HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.http import Http404, HttpResponseRedirect, HttpResponseForbidden
 from django.utils.translation import ugettext as _
-from django.http import HttpResponse
 from django.views.generic import DetailView, ListView, View
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.core.urlresolvers import reverse
-from actstream.models import *
-from tagging.models import Tag
-from django.db.models import Q
-
-from pure_pagination.mixins import PaginationMixin
-from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-from profiles.models import *
-from profiles.forms import *
-from alibrary.models import Playlist, Release, Media
-from profiles.filters import ProfileFilter
-from lib.util import tagging_extra
-
 from invitation.models import Invitation
+from lib.util import tagging_extra
+from profiles.filters import ProfileFilter
+from profiles.forms import *
+from profiles.models import *
+from pure_pagination.mixins import PaginationMixin
+from tagging.models import Tag
 
-
-PAGINATE_BY = getattr(settings, 'PROFILES_PAGINATE_BY', (12,24,36))
+PAGINATE_BY = getattr(settings, 'PROFILES_PAGINATE_BY', (12, 24, 36))
 PAGINATE_BY_DEFAULT = getattr(settings, 'PROFILES_PAGINATE_BY_DEFAULT', 12)
 
 ORDER_BY = [
@@ -55,17 +48,14 @@ ORDER_BY = [
 ]
 
 
-
-
 class ProfileListView(PaginationMixin, ListView):
-    
     # context_object_name = "artist_list"
     # template_name = "alibrary/artist_list.html"
     paginate_by = PAGINATE_BY
     extra_context = {}
-    
+
     def get_paginate_by(self, queryset):
-        
+
         ipp = self.request.GET.get('ipp', PAGINATE_BY_DEFAULT)
         if ipp:
             try:
@@ -77,9 +67,9 @@ class ProfileListView(PaginationMixin, ListView):
         return self.paginate_by
 
     def get_context_data(self, **kwargs):
-        
+
         context = super(ProfileListView, self).get_context_data(**kwargs)
-        
+
         self.extra_context['filter'] = self.filter
         self.extra_context['relation_filter'] = self.relation_filter
         self.extra_context['tagcloud'] = self.tagcloud
@@ -87,10 +77,9 @@ class ProfileListView(PaginationMixin, ListView):
         self.extra_context['get'] = self.request.GET
 
         self.extra_context['order_by'] = ORDER_BY
-        
+
         context.update(self.extra_context)
         return context
-    
 
     def get_queryset(self, **kwargs):
 
@@ -101,19 +90,18 @@ class ProfileListView(PaginationMixin, ListView):
         self.tagcloud = None
 
         q = self.request.GET.get('q', None)
-        
+
         if q:
-            qs = Profile.objects.filter(Q(user__username__istartswith=q)\
-            | Q(user__first_name__istartswith=q)\
-            | Q(user__last_name__istartswith=q))\
-            .distinct()
+            qs = Profile.objects.filter(Q(user__username__istartswith=q) \
+                                        | Q(user__first_name__istartswith=q) \
+                                        | Q(user__last_name__istartswith=q)) \
+                .distinct()
         else:
             qs = Profile.objects.all()
-            
-            
+
         order_by = self.request.GET.get('order_by', None)
         direction = self.request.GET.get('direction', None)
-        
+
         if order_by and direction:
             if direction == 'descending':
                 qs = qs.order_by('-%s' % order_by)
@@ -122,9 +110,7 @@ class ProfileListView(PaginationMixin, ListView):
 
         else:
             qs = qs.order_by('user__first_name', 'user__last_name')
-            
-            
-            
+
         # special relation filters
         # TODO: maybe implement for profiles
         self.relation_filter = []
@@ -143,10 +129,10 @@ class ProfileListView(PaginationMixin, ListView):
 
         if stags:
             qs = Profile.tagged.with_all(tstags, qs)
-            
+
         # rebuild filter after applying tags
         self.filter = ProfileFilter(self.request.GET, queryset=qs)
-        
+
         # tagging / cloud generation
         if qs.exists():
             tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=0)
@@ -155,21 +141,14 @@ class ProfileListView(PaginationMixin, ListView):
         return qs
 
 
-
-
-
-
 class ProfileDetailView(DetailView):
-
     context_object_name = "profile"
     model = Profile
     slug_field = 'user__username'
-    
 
-    
     def render_to_response(self, context):
         return super(ProfileDetailView, self).render_to_response(context, content_type="text/html")
-        
+
     def get_context_data(self, **kwargs):
         context = kwargs
         context_object_name = self.get_context_object_name(self.object)
@@ -178,7 +157,8 @@ class ProfileDetailView(DetailView):
         if self.request.user == self.object.user:
             context['broadcasts'] = Playlist.objects.filter(user=self.object.user).order_by('-updated')
         else:
-            context['broadcasts'] = Playlist.objects.filter(user=self.object.user).exclude(type='basket').order_by('-updated')
+            context['broadcasts'] = Playlist.objects.filter(user=self.object.user).exclude(type='basket').order_by(
+                '-updated')
 
         context['uploaded_releases'] = Release.objects.filter(creator=self.object.user).order_by('-created')
         context['uploaded_media'] = Media.objects.filter(creator=self.object.user).order_by('-created')
@@ -197,16 +177,13 @@ class ProfileDetailView(DetailView):
         return context
 
 
-
-
-
 def profile_detail(request, username):
     try:
         user = User.objects.get(username__iexact=username)
     except User.DoesNotExist:
         raise Http404
     profile = Profile.objects.get(user=user)
-    context = { 'object':profile }
+    context = {'object': profile}
     return render_to_response('profiles/profile_detail.html', context, context_instance=RequestContext(request))
 
 
@@ -226,7 +203,7 @@ def profile_edit(request, template_name='profiles/profile_form.html'):
             user_form.save()
             link_formset.save()
             service_formset.save()
-            #return HttpResponseRedirect(reverse('profile_detail', kwargs={'username': request.user.username}))
+            # return HttpResponseRedirect(reverse('profile_detail', kwargs={'username': request.user.username}))
             return HttpResponseRedirect(reverse('profiles-profile-edit'))
         else:
 
@@ -252,7 +229,7 @@ def profile_edit(request, template_name='profiles/profile_form.html'):
         profile = Profile.objects.get(user=request.user)
         link_formset = LinkFormSet(instance=profile)
         service_formset = ServiceFormSet(instance=profile)
-        
+
         context = {
             'object': profile,
             'action_form': ActionForm(),
@@ -264,30 +241,18 @@ def profile_edit(request, template_name='profiles/profile_form.html'):
     return render_to_response(template_name, context, context_instance=RequestContext(request))
 
 
-
-
-
-
 # TODO: Implement!
 def profile_force_login(request, username):
     raise NotImplementedError("Not implemented yet.")
-
-
-
-
-
-
-
-
 
 
 """
 mentoring views
 """
 
-@login_required
-def profile_mentor(request, pk, cancel = False):
 
+@login_required
+def profile_mentor(request, pk, cancel=False):
     profile = get_object_or_404(Profile, pk=pk)
 
     if cancel and profile.mentor == request.user:
@@ -302,12 +267,11 @@ def profile_mentor(request, pk, cancel = False):
 
 @login_required
 def profile_approve(request, pk, level):
-
     profile = get_object_or_404(Profile, pk=pk)
-    
+
     if not profile.mentor == request.user:
         return respond(request, 403)
-    
+
     # assign groups
     profile.approve(mentor=request.user, level=level)
 
@@ -321,20 +285,16 @@ def respond(request, code):
     """
     if 'next' in request.REQUEST:
         return HttpResponseRedirect(request.REQUEST['next'])
-    return type('Response%d' % code, (HttpResponse, ), {'status_code': code})()
-
-
-
-
+    return type('Response%d' % code, (HttpResponse,), {'status_code': code})()
 
 
 """
 invitation based views / hackish here but still better than in invitation module...
 """
 
+
 class InvitationListView(PaginationMixin, ListView):
 
-    # context_object_name = "artist_list"
     template_name = "profiles/invitation_list.html"
     paginate_by = PAGINATE_BY
     extra_context = {}
@@ -346,7 +306,7 @@ class InvitationListView(PaginationMixin, ListView):
             try:
                 if int(ipp) in PAGINATE_BY:
                     return int(ipp)
-            except Exception, e:
+            except Exception as e:
                 pass
 
         return self.paginate_by
@@ -354,9 +314,8 @@ class InvitationListView(PaginationMixin, ListView):
     def get_context_data(self, **kwargs):
 
         context = super(InvitationListView, self).get_context_data(**kwargs)
-        #context.update(self.extra_context)
+        # context.update(self.extra_context)
         return context
-
 
     def get_queryset(self, **kwargs):
 
@@ -368,7 +327,6 @@ class InvitationListView(PaginationMixin, ListView):
 
 
 class InvitationDeleteView(View):
-
     model = Invitation
 
     def get(self, *args, **kwargs):
@@ -381,7 +339,4 @@ class InvitationDeleteView(View):
         if i.delete():
             messages.add_message(self.request, messages.INFO, _('Deleted invitation for %s' % i.email))
 
-
         return HttpResponseRedirect(reverse('profiles-invitations'))
-
-

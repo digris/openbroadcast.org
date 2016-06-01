@@ -1,26 +1,32 @@
 from django.contrib import admin
-from profiles.models import *
+from profiles.models import Profile, Community, Service, ServiceType, Expertise, Link, MobileProvider
 
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'city')
     date_hierarchy = 'created'
-    readonly_fields = ('legacy_id','legacy_legacy_id',)
+    readonly_fields = ('legacy_id', 'legacy_legacy_id',)
+
+
 admin.site.register(Profile, ProfileAdmin)
+
 
 class CommunityAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'country')
     list_filter = ('country',)
     date_hierarchy = 'created'
-    readonly_fields = ('legacy_id','legacy_legacy_id',)
+    readonly_fields = ('legacy_id', 'legacy_legacy_id',)
+
+
 admin.site.register(Community, CommunityAdmin)
 
 
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ('profile', 'service')
     list_filter = ('profile', 'service')
-admin.site.register(Service, ServiceAdmin)
 
+
+admin.site.register(Service, ServiceAdmin)
 
 admin.site.register(MobileProvider)
 admin.site.register(ServiceType)

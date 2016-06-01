@@ -9,19 +9,16 @@ IGNORE_FIELDS = [
     'date_end',
 ]
 
-def construct(request, form, formsets=[]):
+def construct(request, form, formsets=None):
     """
     Construct a change message from a changed object.
     """
+
+    formsets = formsets or []
+
     change_message = []
 
-    if not form:
-        print 'no form'
-
-
     if form and form.changed_data:
-
-        print form.changed_data
 
         for field in IGNORE_FIELDS:
             try:
@@ -31,9 +28,7 @@ def construct(request, form, formsets=[]):
 
             
         if len(form.changed_data) > 0:
-            #change_message.append(_('Changed %s. \n') % get_text_list(form.changed_data, _('and')))
             change_message.append(_('Changed %s. \n') % get_text_list(convert_changed_list(form.instance, form.changed_data), _('and')))
-
 
 
     if formsets:
@@ -48,7 +43,6 @@ def construct(request, form, formsets=[]):
 
 
                 # remove some 'wrong' messages
-
                 co = formset.changed_objects
                 """
                 for el in formset.changed_objects:
@@ -87,7 +81,6 @@ def construct(request, form, formsets=[]):
                                           % {'name': force_unicode(deleted_object._meta.verbose_name),
                                              'object': force_unicode(deleted_object)})
         except Exception as e:
-            print e
             pass
 
     change_message = ' '.join(change_message)
@@ -113,16 +106,11 @@ def convert_changed_list(obj, changed_data):
 def parse_tags(obj, d_tags, msg=''):
 
     try:
-
-        #d_tags = ['"%s"' % x.strip() for x in d_tags.split(',') if len(x.name) > 1]
         d_tags = ['"%s"' % x.strip().lower() for x in d_tags.split(',') if x.strip() != '']
         tags = ['"%s"' % x.name.lower() for x in obj.tags]
 
         tags_added = diff_lists(d_tags, tags)
         tags_removed = diff_lists(tags, d_tags)
-
-
-
 
 
         if (tags_added or tags_removed) and msg == 'Nothing changed':

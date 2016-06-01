@@ -3,22 +3,16 @@ from __future__ import unicode_literals
 
 import json
 
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView, View
-from django.conf import settings
-from django.http import (HttpResponse, HttpResponseBadRequest, HttpResponseRedirect, HttpResponseForbidden)
-from django.core.files.uploadedfile import UploadedFile
-from django.core.exceptions import PermissionDenied
-from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
-from django.utils.functional import lazy
-from django.views.decorators.csrf import csrf_exempt
-from pure_pagination.mixins import PaginationMixin
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from django import http
-from importer.forms import *
-from importer.models import Import, ImportFile
-from importer.models import *
-
+from django.core.exceptions import PermissionDenied
+from django.core.urlresolvers import reverse
+from django.http import (HttpResponseRedirect, HttpResponseForbidden)
+from django.utils.functional import lazy
+from django.views.generic import ListView, UpdateView, CreateView, DeleteView, View
+from importer.forms import ImportCreateModelForm
+from importer.models import Import
+from pure_pagination.mixins import PaginationMixin
 
 
 class JSONResponseMixin(object):
@@ -67,7 +61,6 @@ class ImportDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
 
 
 class ImportDeleteAllView(LoginRequiredMixin, PermissionRequiredMixin, View):
-
     url = lazy(reverse, str)("importer-import-list")
 
     permission_required = 'importer.delete_import'
@@ -79,7 +72,6 @@ class ImportDeleteAllView(LoginRequiredMixin, PermissionRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         Import.objects.filter(user=self.request.user).delete()
         return HttpResponseRedirect(self.url)
-
 
 
 class ImportModifyView(LoginRequiredMixin, PermissionRequiredMixin, JSONResponseMixin, UpdateView):
@@ -114,6 +106,7 @@ class ImportCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
     template_name = 'importer/import_create.html'
     form_class = ImportCreateModelForm
+
     # success_url = lazy(reverse, str)("feedback-feedback-list")
 
     def form_valid(self, form):
@@ -142,17 +135,3 @@ class ImportUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     def get_queryset(self):
         kwargs = {}
         return Import.objects.filter(user=self.request.user)
-
-
-
-
-
-
-
-
-
-
-
-
-
-

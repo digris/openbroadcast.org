@@ -55,11 +55,6 @@ def stats_for_user(context, user):
         'events': events
     }
 
-    return {}
-
-
-
-
 
 @register.inclusion_tag('object_events/notifications.html', takes_context=True)
 def render_notifications(context, notification_amount=8):

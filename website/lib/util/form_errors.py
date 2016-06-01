@@ -6,7 +6,9 @@ from django.forms.util import ErrorDict
 
 NON_FIELD_MESSAGE = _('General form errors')
 
-def merge_form_errors(forms_to_merge=[]):
+def merge_form_errors(forms_to_merge=None):
+    forms_to_merge = forms_to_merge or []
+
     form_errors = ErrorDict()
     for form in forms_to_merge:
         # check if form

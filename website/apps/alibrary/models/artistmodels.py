@@ -222,8 +222,9 @@ class Artist(MigrationMixin):
         return [m.parent for m in ArtistMembership.objects.filter(child=self)]
 
 
-    def get_alias_ids(self, exclude=[]):
+    def get_alias_ids(self, exclude=None):
 
+        exclude = exclude or []
         alias_ids = []
         parent_alias_ids = ArtistAlias.objects.filter(child__pk=self.pk).values_list('parent__pk', flat=True).distinct()
         child_alias_ids = ArtistAlias.objects.filter(parent__pk=self.pk).values_list('child__pk', flat=True).distinct()

@@ -1,10 +1,5 @@
-from django.conf.urls import *
+from django.conf.urls import patterns, url
 from django.views.generic.base import TemplateView
-from django.contrib.auth.decorators import login_required
-from app_settings import INVITE_ONLY
-
-
-
 
 TemplateView.as_view(template_name='invitation/invitation_home.html')
 
@@ -28,4 +23,3 @@ urlpatterns = patterns('',
         'invitation.views.register',
         name='invitation_register'),
 )
-

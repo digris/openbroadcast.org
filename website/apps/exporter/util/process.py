@@ -322,10 +322,12 @@ class Process(object):
                 txt.write(str.encode('utf8'))
 
 
-    def process_license(self, instance, cache_dir, file_list=[]):
+    def process_license(self, instance, cache_dir, file_list=None):
 
         from django.utils import translation
         translation.activate('en')
+
+        file_list = file_list or []
 
         log.debug('processing license')
         template = 'exporter/txt/LICENSE.TXT'
@@ -335,7 +337,9 @@ class Process(object):
             txt.write(str.encode('utf8'))
 
 
-    def process_playlist(self, instance, cache_dir, file_list=[]):
+    def process_playlist(self, instance, cache_dir, file_list=None):
+
+        file_list = file_list or []
 
         log.debug('processing license')
         template = 'exporter/m3u/playlist.m3u'

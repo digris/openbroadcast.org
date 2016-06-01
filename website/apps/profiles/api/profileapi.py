@@ -1,19 +1,14 @@
 # -*- coding: utf-8 -*-
 import logging
-from django.conf.urls import *
-from tastypie import fields
-from tastypie.authentication import *
-from tastypie.authorization import *
-from tastypie.resources import ModelResource, ALL_WITH_RELATIONS
-from django.contrib.auth.models import User
+
+from django.conf.urls import url
 from django.db.models import Q
-from tastypie.utils import trailing_slash
-from tastypie.exceptions import ImmediateHttpResponse
-from django.http import HttpResponse
 from easy_thumbnails.files import get_thumbnailer
-
-
 from profiles.models import Profile
+from tastypie.authentication import Authentication
+from tastypie.authorization import Authorization
+from tastypie.resources import ModelResource
+from tastypie.utils import trailing_slash
 
 log = logging.getLogger(__name__)
 
@@ -21,11 +16,10 @@ THUMBNAIL_OPT = dict(size=(240, 240), crop=True, bw=False, quality=80)
 
 
 class ProfileResource(ModelResource):
-
     class Meta:
         queryset = Profile.objects.all()
-        list_allowed_methods = ['get',]
-        detail_allowed_methods = ['get',]
+        list_allowed_methods = ['get', ]
+        detail_allowed_methods = ['get', ]
         resource_name = 'profile'
         fields = [
             'pseudonym',
@@ -43,7 +37,6 @@ class ProfileResource(ModelResource):
         always_return_data = True
         filtering = {
         }
-
 
     def dehydrate(self, bundle):
 
@@ -73,22 +66,19 @@ class ProfileResource(ModelResource):
 
         return bundle
 
-
     def obj_update(self, bundle, request, **kwargs):
         return super(ProfileResource, self).obj_update(bundle, request, **kwargs)
-
-
 
     # additional methods
     def prepend_urls(self):
 
         return [
-              url(r"^(?P<resource_name>%s)/autocomplete%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('autocomplete'), name="profiles-profile_api-autocomplete"),
-              url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/stats%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('stats'), name="profiles-profile_api-stats"),
+            url(r"^(?P<resource_name>%s)/autocomplete%s$" % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('autocomplete'), name="profiles-profile_api-autocomplete"),
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/stats%s$" % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('stats'), name="profiles-profile_api-stats"),
 
         ]
-
-
 
     def autocomplete(self, request, **kwargs):
 
@@ -101,29 +91,24 @@ class ProfileResource(ModelResource):
         object_list = []
         qs = None
         if q and len(q) > 1:
-
-            qs = Profile.objects.filter(Q(user__username__istartswith=q)\
-                | Q(user__first_name__istartswith=q)\
-                | Q(user__last_name__istartswith=q))
+            qs = Profile.objects.filter(Q(user__username__istartswith=q) \
+                                        | Q(user__first_name__istartswith=q) \
+                                        | Q(user__last_name__istartswith=q))
 
         if qs:
-           object_list = qs.distinct()[0:20]
+            object_list = qs.distinct()[0:20]
 
         objects = []
         for result in object_list:
-
-            print result
-
             bundle = self.build_bundle(obj=result, request=request)
-            #bundle = self.autocomplete_dehydrate(bundle, q)
             bundle = self.full_dehydrate(bundle)
             objects.append(bundle)
 
         if qs:
             meta = {
-                    'query': q,
-                    'total_count': qs.distinct().count()
-                    }
+                'query': q,
+                'total_count': qs.distinct().count()
+            }
 
             data = {
                 'meta': meta,
@@ -131,25 +116,22 @@ class ProfileResource(ModelResource):
             }
         else:
             meta = {
-                    'query': q,
-                    'total_count': 0
-                    }
+                'query': q,
+                'total_count': 0
+            }
 
             data = {
                 'meta': meta,
                 'objects': {},
             }
 
-
         self.log_throttled_access(request)
         return self.create_response(request, data)
-
-
 
     def autocomplete_dehydrate(self, bundle, q):
 
         bundle.data['get_absolute_url'] = bundle.obj.get_absolute_url()
-        #bundle.data['resource_uri'] = bundle.obj.get_api_url()
+        # bundle.data['resource_uri'] = bundle.obj.get_api_url()
         bundle.data['main_image'] = None
         try:
             opt = THUMBNAIL_OPT
@@ -159,8 +141,6 @@ class ProfileResource(ModelResource):
             pass
 
         return bundle
-
-
 
     def stats(self, request, **kwargs):
 
@@ -174,11 +154,7 @@ class ProfileResource(ModelResource):
 
         ostats = ObjectStatistics(user=profile.user)
 
-        stats = ostats.generate(actions=['stream', 'download',])
-
-
-
+        stats = ostats.generate(actions=['stream', 'download', ])
 
         self.log_throttled_access(request)
         return self.create_response(request, stats)
-        
