@@ -614,8 +614,8 @@ class SolrConnection:
         """
 
        # Clean up optional parameters to match SOLR spec.
-        params = {key.replace('_','.'): unicode(value) 
-                      for key, value in params.items()}
+        params = dict([(key.replace('_','.'), unicode(value)) 
+                      for key, value in params.items()])
 
         if type(q) == type(u''):
             q = q.encode('utf-8')
@@ -856,8 +856,8 @@ class SolrConnection:
         input parameters or responses
         """
         # Clean up optional parameters to match SOLR spec.
-        params = {key.replace('_','.'): unicode(value) 
-                       for key, value in params.items()}
+        params = dict([(key.replace('_','.'), unicode(value)) 
+                       for key, value in params.items()])
         request = urllib.urlencode(params, doseq=True)
         try:
             rsp = self._post(self.path+'/'+handler+self.invariant, 
@@ -871,8 +871,8 @@ class SolrConnection:
 
     def handler_update_params(self, handler, **params):
         # Clean up optional parameters to match SOLR spec.
-        params = {key.replace('_','.'): unicode(value) 
-                       for key, value in params.items()}
+        params = dict([(key.replace('_','.'), unicode(value)) 
+                       for key, value in params.items()])
 
         request = urllib.urlencode(params, doseq=True)
         try:
@@ -895,8 +895,8 @@ class SolrConnection:
         """
 
         # Clean up optional parameters to match SOLR spec.
-        params = {key.replace('_','.'): unicode(value) 
-                       for key, value in params.items()}
+        params = dict([(key.replace('_','.'), unicode(value)) 
+                       for key, value in params.items()])
 
 
         request = urllib.urlencode(params, doseq=True)
@@ -1211,8 +1211,9 @@ class ResponseContentHandler(ContentHandler):
 
         elif name in ('lst','doc'): 
             # Represent these with a dict
-            node.final = {cnode.attrs['name']: cnode.final 
-                        for cnode in node.children}
+            node.final = dict(
+                    [(cnode.attrs['name'], cnode.final) 
+                        for cnode in node.children])
 
         elif name in ('arr',): 
             node.final = [cnode.final for cnode in node.children]
@@ -1222,8 +1223,8 @@ class ResponseContentHandler(ContentHandler):
 
 
         elif name in ('responseHeader',): 
-            node.final = {cnode.name: cnode.final
-                        for cnode in node.children}
+            node.final = dict([(cnode.name, cnode.final)
+                        for cnode in node.children])
 
         else:
             raise SolrContentException("Unknown tag: %s" % name)

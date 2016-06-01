@@ -1836,8 +1836,8 @@ class ASPI(Frame):
     def __eq__(self, other): return self.Fi == other
     __hash__ = Frame.__hash__
 
-Frames = {k: v for (k,v) in globals().items()
-        if len(k)==4 and isinstance(v, type) and issubclass(v, Frame)}
+Frames = dict([(k,v) for (k,v) in globals().items()
+        if len(k)==4 and isinstance(v, type) and issubclass(v, Frame)])
 """All supported ID3v2 frames, keyed by frame name."""
 del(k); del(v)
 
@@ -1930,8 +1930,8 @@ class LNK(LINK):
     _framespec = [ StringSpec('frameid', 3), Latin1TextSpec('url') ]
     _optionalspec = [ BinaryDataSpec('data') ]
 
-Frames_2_2 = {k: v for (k,v) in globals().items()
-        if len(k)==3 and isinstance(v, type) and issubclass(v, Frame)}
+Frames_2_2 = dict([(k,v) for (k,v) in globals().items()
+        if len(k)==3 and isinstance(v, type) and issubclass(v, Frame)])
 
 # support open(filename) as interface
 Open = ID3
