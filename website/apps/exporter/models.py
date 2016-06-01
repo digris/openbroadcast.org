@@ -17,7 +17,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from celery.task import task
 from util.process import Process
-from django_extensions.db.fields import *
+from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField, UUIDField
 from lib.util.filename import safe_name
 
 log = logging.getLogger(__name__)
@@ -47,21 +47,9 @@ def create_download_path(instance, filename):
     return os.path.join(folder, "%s%s" % (cleaned_filename.lower(), extension.lower()))
 
 
-def create_export_path():
-    import unicodedata
-    import string
-
-    filename, extension = os.path.splitext(filename)
-    valid_chars = "-_.%s%s" % (string.ascii_letters, string.digits)
-    cleaned_filename = unicodedata.normalize('NFKD', filename).encode('ASCII', 'ignore')
-    folder = "export/%s/" % time.strftime("%Y%m%d%H%M%S", time.gmtime())
-    return os.path.join(folder, "%s%s" % (cleaned_filename.lower(), extension.lower()))
-
-
 def create_archive_dir(instance):
 
     path = "export/cache/%s-%s/" % (time.strftime("%Y%m%d%H%M%S", time.gmtime()), instance.uuid)
-    #path = "export/cache/%s/" % ('DEBUG')
 
     path_full = os.path.join(MEDIA_ROOT, path)
 
@@ -72,8 +60,6 @@ def create_archive_dir(instance):
         os.makedirs(os.path.join(path_full, 'cache/'))
     except OSError, e:
         pass # file exists
-
-    print 'archive dir: %s' % path_full
 
     return path_full
 

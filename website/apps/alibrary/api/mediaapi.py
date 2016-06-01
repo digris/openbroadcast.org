@@ -1,6 +1,6 @@
 from alibrary.models import Media
 from alibrary.util.relations import relations_for_object
-from django.conf.urls import *
+from django.conf.urls import url
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseForbidden
 from easy_thumbnails.files import get_thumbnailer

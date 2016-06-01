@@ -14,8 +14,8 @@ import json
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from sendfile import sendfile
 
-from exporter.models import *
-from exporter.forms import *
+from exporter.models import Export
+from exporter.forms import ExportCreateModelForm, ExportCreateForm
 log = logging.getLogger(__name__)
 
 
@@ -78,7 +78,6 @@ class ExportDeleteAllView(PermissionRequiredMixin, LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
 
 
-        #Export.objects.filter(user=self.request.user).exclude(status__in=[2,3]).delete()
         Export.objects.filter(user=self.request.user).delete()
 
 

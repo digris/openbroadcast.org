@@ -1,38 +1,28 @@
-from django.conf.urls import url
-from tastypie import fields
 import logging
-from tastypie.authentication import MultiAuthentication, Authentication, SessionAuthentication, ApiKeyAuthentication
-from tastypie.authorization import *
-from tastypie.resources import ModelResource, ALL_WITH_RELATIONS, ALL
-from tastypie.http import HttpUnauthorized
-from django.contrib.auth.models import User
-from django.db.models import Q
-from django.db.models import Avg
-from tastypie.utils import trailing_slash
-from tastypie.exceptions import ImmediateHttpResponse
-from django.http import HttpResponse
-from easy_thumbnails.files import get_thumbnailer
-
-from django.db.models.base import ModelBase
-from django.contrib.contenttypes.models import ContentType
-
 
 from atracker.models import Event
 from atracker.util import create_event
+from django.conf.urls import url
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from tastypie.authentication import MultiAuthentication, Authentication, SessionAuthentication, ApiKeyAuthentication
+from tastypie.authorization import Authorization
+from tastypie.http import HttpUnauthorized
+from tastypie.resources import ModelResource
+from tastypie.utils import trailing_slash
 
 log = logging.getLogger(__name__)
 
 
 class EventResource(ModelResource):
-
     class Meta:
         queryset = Event.objects.all()
-        list_allowed_methods = ['get',]
-        detail_allowed_methods = ['get',]
+        list_allowed_methods = ['get', ]
+        detail_allowed_methods = ['get', ]
         resource_name = 'atracker/event'
         include_resource_uri = False
         # TODO: double-check for sensitive information
-        fields = ['created',]
+        fields = ['created', ]
         authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication(), Authentication())
         authorization = Authorization()
         always_return_data = True
@@ -44,12 +34,12 @@ class EventResource(ModelResource):
     def prepend_urls(self):
 
         return [
-              url(r"^(?P<resource_name>%s)/(?P<content_type>[\w.]+)/(?P<object_uuid>[\w.-]+)(?:/(?P<action>[\w-]+))?(?:/(?P<user_id>-?[0-9]+))?%s$" % (
-                  self._meta.resource_name, trailing_slash()),
-                  self.wrap_view('create_event_for_user'),
-                  name="atracker-create-event-for-user"),
+            url(
+                r"^(?P<resource_name>%s)/(?P<content_type>[\w.]+)/(?P<object_uuid>[\w.-]+)(?:/(?P<action>[\w-]+))?(?:/(?P<user_id>-?[0-9]+))?%s$" % (
+                    self._meta.resource_name, trailing_slash()),
+                self.wrap_view('create_event_for_user'),
+                name="atracker-create-event-for-user"),
         ]
-
 
     # creante event in behalf of user
     """
@@ -109,7 +99,6 @@ class EventResource(ModelResource):
             log.debug('no authenticated user')
             user = None
 
-
         object = content_type.model_class().objects.get(uuid=object_uuid)
 
         if action:
@@ -125,7 +114,5 @@ class EventResource(ModelResource):
             'action': action,
         }
 
-
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
-
