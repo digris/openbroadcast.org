@@ -1,4 +1,4 @@
-{% load thumbnail i18n truncate display_tags arating_tags spurl %}
+{% load thumbnail i18n truncate_tags display_tags arating_tags spurl %}
 
 <div class="list_body_row selectable item artist view edit stream collect download" id="list_item_{{ item.pk }}" data-ct="media" data-resource_uri="{{ item.get_api_url }}" {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 200x200 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}>
 

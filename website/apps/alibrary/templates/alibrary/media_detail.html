@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate i18n thumbnail arating_tags wiki_tags comments atracker_tags sekizai_tags calc url_tags alibrary_tags media_tags video_tags %}
+{% load truncate_tags i18n thumbnail arating_tags wiki_tags comments atracker_tags sekizai_tags calc url_tags alibrary_tags media_tags video_tags %}
 
 {% block heading %} <!-- heading / icon (large one) -->
 
@@ -331,41 +331,10 @@
 
         </div>
 
-
-
-
-            {% comment %}
-            <table class=" table-condensed" style="width: 100%;">
-                <thead>
-                <tr>
-                    <th>{% trans "Format" %}</th>
-                    <th>{% trans "Filesize" %}</th>
-                    <th>{% trans "Samplerate" %}</th>
-                    <th>{% trans "Bitrate" %}</th>
-                    <th>{% trans "Filename" %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="value">{{ object.base_format|upper }}</td>
-                    <td class="value">{{ object.base_filesize|filesizeformat }}</td>
-                    <td class="value">{{ object.base_samplerate }}</td>
-                    <td class="value">{{ object.bitrate }} Kbps</td>
-                    <td class="value">{% if object.original_filename %}{{ object.original_filename }}{% endif %}</td>
-                </tr>
-                </tbody>
-            </table>
-            {% endcomment %}
-
-
-
         </section>
 
 
     </div>
-
-
-
 
 
     {% if object.has_video %}

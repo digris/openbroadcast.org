@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate i18n thumbnail arating_tags wiki_tags comments atracker_tags dajaxice_templatetags sekizai_tags alibrary_tags url_tags %}
+{% load truncate_tags i18n thumbnail arating_tags wiki_tags comments atracker_tags dajaxice_templatetags sekizai_tags alibrary_tags url_tags %}
 
 
 {% block title %}{{ object.name }}{% if object.get_artist_display %} - {{ object.get_artist_display }}{% endif %}

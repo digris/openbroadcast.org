@@ -1,4 +1,4 @@
-{% load spurl i18n truncate adv_cache hash_tags %}
+{% load spurl i18n truncate_tags adv_cache hash_tags %}
 {% cache 600 "searchbar" request.get_full_path %}
 
 <div id="searchbar" class="searchbar hoverable" data-ct="{{ ct }}">

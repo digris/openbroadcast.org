@@ -1,4 +1,4 @@
-{% load thumbnail i18n truncate display_tags arating_tags spurl calc %}
+{% load thumbnail i18n truncate_tags display_tags arating_tags spurl calc %}
 
 <div class="list_body_row selectable clickable item playlist published {% if item.user == request.user %}owner{% endif %} view edit stream collect download"
      id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}"
