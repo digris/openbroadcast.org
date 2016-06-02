@@ -1,3 +1,6 @@
+"""
+Not used anymore. but file should stay for the moment as UUIDField appears in migrations
+"""
 import uuid
 
 from django.db.models import CharField

@@ -25,7 +25,6 @@ from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.fields.json import JSONField
 from ep.API import fp
 from lib.fields.languages import LanguageField
-from lib.fields.uuidfield import UUIDField as RUUIDField
 from base.signals.unsignal import disable_for_loaddata
 from lib.util.sha1 import sha1_by_file
 from tagging.registry import register as tagging_register

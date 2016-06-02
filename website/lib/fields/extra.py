@@ -1,3 +1,8 @@
+"""
+TODO: heavy mess. field here need refactoring.
+"""
+
+
 from django.db.models import TextField, FileField
 from markdown import markdown
 from django.forms import forms

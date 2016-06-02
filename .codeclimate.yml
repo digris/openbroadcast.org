@@ -1,0 +1,11 @@
+languages:
+  JavaScript: true
+  Python: true
+
+exclude_paths:
+- "bin/*"
+- "conf/*"
+- "doc/*"
+- "website/tools/*"
+- "website/legacy/obp_legacy/*"
+- "website/apps/nunjucks/*"

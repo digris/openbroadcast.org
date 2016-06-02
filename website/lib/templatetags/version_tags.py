@@ -30,26 +30,6 @@ def version_by_git(context):
 
     return context
 
-
-
-@register.inclusion_tag('lib/templatetags/locale_info.html', takes_context=True)
-def locale_info(context):
-
-    loc_info = {
-        'loc_loc': locale.getlocale(),
-        'loc_def': locale.getdefaultlocale(),
-        'sys_fenc': sys.getfilesystemencoding(),
-    }
-
-    context.update({
-        'locale_info': loc_info,
-    })
-
-    return context
-
-
-
-
 def parse_git_changelog():
 
     try:
