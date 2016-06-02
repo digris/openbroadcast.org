@@ -65,8 +65,7 @@ class Station(BaseModel):
         return 'abcast-station-detail', [self.slug]
 
     def get_admin_url(self):
-        from lib.util.get_admin_url import change_url
-        return change_url(self)
+        return reverse("admin:abcas_station_change", args=(self.pk,))
 
 
 arating.enable_voting_on(Station)

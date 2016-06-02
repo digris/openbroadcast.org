@@ -8,7 +8,7 @@ log = logging.getLogger(__name__)
 
 # TODO: investigate if non-atomic transactions here are a problem
 #@transaction.atomic
-def merge_model_objects(primary_object, alias_objects=None, keep_old=False):
+def merge_objects(primary_object, alias_objects=None, keep_old=False):
 
     """
     Use this function to merge model objects (i.e. Users, Organizations, Polls,
@@ -19,7 +19,7 @@ def merge_model_objects(primary_object, alias_objects=None, keep_old=False):
     from django.contrib.auth.models import User
     primary_user = User.objects.get(email='good_email@example.com')
     duplicate_user = User.objects.get(email='good_email+duplicate@example.com')
-    merge_model_objects(primary_user, duplicate_user)
+    merge_objects(primary_user, duplicate_user)
     """
 
     alias_objects = alias_objects or []

@@ -7,3 +7,6 @@ doc/*
 
 # 3rd party in repository
 website/tools/*
+
+# legacy modules
+website/legacy/obp_legacy/*

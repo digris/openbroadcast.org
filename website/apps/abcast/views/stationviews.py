@@ -3,7 +3,7 @@ from abcast.models import Station
 from django.conf import settings
 from django.db.models import Q
 from django.views.generic import DetailView, ListView
-from lib.util import tagging_extra
+from tagging_extra.utils import calculate_cloud
 from pure_pagination.mixins import PaginationMixin
 from tagging.models import Tag
 
@@ -104,7 +104,7 @@ class StationListView(PaginationMixin, ListView):
         # tagging / cloud generation
         tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=0)
 
-        self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
+        self.tagcloud = calculate_cloud(tagcloud)
         
         return qs
 

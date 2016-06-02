@@ -13,10 +13,9 @@ from tagging.models import Tag
 from django.conf import settings
 
 
-#from alibrary.models import Relation, Release, Artist, Media, Label, MediaExtraartists, Profession, ArtistMembership
 from obp_legacy.models import *
 
-from lib.util import filer_extra
+
 from alibrary.util.storage import get_file_from_path
 
 from l10n.models import Country
@@ -223,7 +222,6 @@ class ReleaseMigrator(Migrator):
                 img_path = os.path.join(LEGACY_STORAGE_ROOT, 'images', 'release', id_to_location(obj.legacy_id), 'original.jpg')
                 log.debug('image path: %s' % img_path)
                 if os.path.isfile(img_path):
-                    #img = filer_extra.path_to_file(img_path, obj.folder)
                     img = get_file_from_path(img_path)
                     obj.main_image = img
                 else:
@@ -599,7 +597,6 @@ class ArtistMigrator(Migrator):
                 img_path = os.path.join(LEGACY_STORAGE_ROOT, 'images', 'artist', id_to_location(obj.legacy_id), 'original.jpg')
                 log.debug('image path: %s' % img_path)
                 if os.path.isfile(img_path):
-                    #img = filer_extra.path_to_file(img_path, obj.folder)
                     img = get_file_from_path(img_path)
                     obj.main_image = img
                 else:
@@ -778,7 +775,6 @@ class LabelMigrator(Migrator):
                 img_path = os.path.join(LEGACY_STORAGE_ROOT, 'images', 'label', id_to_location(obj.legacy_id), 'original.jpg')
                 log.debug('image path: %s' % img_path)
                 if os.path.isfile(img_path):
-                    #img = filer_extra.path_to_file(img_path, obj.folder)
                     img = get_file_from_path(img_path)
                     obj.main_image = img
                 else:
@@ -1213,7 +1209,6 @@ class CommunityMigrator(Migrator):
             if icon > 0:
                 img_url = 'https://www.openbroadcast.org/_icon/user/%s/h/300/w/300/302' % icon
                 log.debug('download image: %s' % img_url)
-            #img = filer_extra.url_to_file(img_url, obj.folder)
             #obj.image = img
         except Exception, e:
             print e

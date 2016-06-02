@@ -11,7 +11,7 @@ import requests
 from stdnum import ean
 import urllib
 from alibrary.models import Release, Relation, Label, Artist, Media
-from lib.util.merge import merge_model_objects
+from base.models.utils import merge_objects
 from lib.util.AsciiDammit import asciiDammit
 
 from alibrary.util.api_compare import get_from_provider
@@ -302,7 +302,7 @@ def merge_items(request, *args, **kwargs):
 
                 master_item = Release.objects.get(pk=int(master_id))
                 if slave_items and master_item:
-                    master_item = merge_model_objects(master_item, slave_items)
+                    master_item = merge_objects(master_item, slave_items)
                     # needed to clear cache TODO: really needed??
                     for media in master_item.media_release.all():
                         media.save()
@@ -321,7 +321,7 @@ def merge_items(request, *args, **kwargs):
 
                 master_item = Media.objects.get(pk=int(master_id))
                 if slave_items and master_item:
-                    merge_model_objects(master_item, slave_items)
+                    merge_objects(master_item, slave_items)
                     master_item.save()
                     data['status'] = True
                 else:
@@ -335,7 +335,7 @@ def merge_items(request, *args, **kwargs):
 
                 master_item = Artist.objects.get(pk=int(master_id))
                 if slave_items and master_item:
-                    merge_model_objects(master_item, slave_items)
+                    merge_objects(master_item, slave_items)
                     master_item.save()
                     # needed to clear cache
                     for media in master_item.media_artist.all():
@@ -353,7 +353,7 @@ def merge_items(request, *args, **kwargs):
 
                 master_item = Label.objects.get(pk=int(master_id))
                 if slave_items and master_item:
-                    merge_model_objects(master_item, slave_items)
+                    merge_objects(master_item, slave_items)
                     master_item.save()
                     # needed to clear cache
                     """

@@ -183,8 +183,7 @@ class Profile(MigrationMixin):
         return ('profiles-profile-edit',)
 
     def get_admin_url(self):
-        from lib.util.get_admin_url import change_url
-        return change_url(self)
+        return reverse("admin:profiles_profile_change", args=(self.pk,))
 
     def get_api_url(self):
         return reverse('api_dispatch_detail', kwargs={

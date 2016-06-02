@@ -17,7 +17,6 @@ from l10n.models import Country
 from alibrary.models import Relation, Release, Artist, Media, MediaExtraartists, Profession, ArtistMembership, ArtistAlias, MediaArtists
 from alibrary.models import NameVariation as ArtistNameVariation
 from alibrary.util.storage import get_file_from_url
-from lib.util import filer_extra
 from actstream import action
 from alibrary.util import lookup
 import musicbrainzngs
@@ -990,7 +989,6 @@ def mb_complete_release_task(obj, mb_id, user=None):
     # try to load & assign image
     if discogs_image:
         try:
-            #img = filer_extra.url_to_file(discogs_image, obj.folder)
             img = get_file_from_url(discogs_image)
             obj.main_image = img
             obj.save()
@@ -1004,7 +1002,6 @@ def mb_complete_release_task(obj, mb_id, user=None):
             r = requests.get(url)
             ca_result = r.json()
             ca_url = ca_result['images'][0]['image']
-            #img = filer_extra.url_to_file(ca_url, obj.folder)
             img = get_file_from_url(ca_url)
             obj.main_image = img
             obj.save()
@@ -1396,7 +1393,6 @@ def mb_complete_artist_task(obj, mb_id, user=None):
         # try to load & assign image
         if discogs_image:
             try:
-                #img = filer_extra.url_to_file(discogs_image, obj.folder)
                 img = get_file_from_url(discogs_image)
                 obj.main_image = img
                 obj.save()

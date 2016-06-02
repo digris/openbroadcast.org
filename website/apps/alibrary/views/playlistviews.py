@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
 from guardian.forms import UserObjectPermissionsForm
-from lib.util import tagging_extra
+from tagging_extra.utils import calculate_cloud
 from pure_pagination.mixins import PaginationMixin
 from tagging.models import Tag
 
@@ -171,7 +171,7 @@ class PlaylistListView(PaginationMixin, ListView):
         # tagging / cloud generation
         if qs.exists():
             tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=0)
-            self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
+            self.tagcloud = calculate_cloud(tagcloud)
 
         return qs
     

@@ -19,7 +19,7 @@ from alibrary.models import Artist, Label, Release, Media, NameVariation
 from alibrary.forms import ArtistForm, ArtistActionForm, ArtistRelationFormSet, MemberFormSet, AliasFormSet
 from alibrary.filters import ArtistFilter
 
-from lib.util import tagging_extra
+from tagging_extra.utils import calculate_cloud
 from lib.util import change_message
 from lib.util.form_errors import merge_form_errors
 
@@ -192,7 +192,7 @@ class ArtistListView(PaginationMixin, ListView):
         # tagging / cloud generation
         if qs.exists():
             tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=10)
-            self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
+            self.tagcloud = calculate_cloud(tagcloud)
 
         return qs
 

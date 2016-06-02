@@ -22,7 +22,7 @@ from alibrary.models import Media, Playlist, PlaylistItem, Artist, Release
 from alibrary.forms import MediaForm, MediaActionForm, MediaRelationFormSet, ExtraartistFormSet, MediaartistFormSet
 from alibrary.filters import MediaFilter
 
-from lib.util import tagging_extra
+from tagging_extra.utils import calculate_cloud
 from lib.util import change_message
 from lib.util.form_errors import merge_form_errors
 
@@ -227,7 +227,7 @@ class MediaListView(PaginationMixin, ListView):
         # tagging / cloud generation
         if qs.exists():
             tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=0)
-            self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
+            self.tagcloud = calculate_cloud(tagcloud)
 
 
         return qs

@@ -18,7 +18,7 @@ from django.conf import settings
 from celery.task import task
 from util.process import Process
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField, UUIDField
-from lib.util.filename import safe_name
+
 
 log = logging.getLogger(__name__)
 

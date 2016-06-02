@@ -19,9 +19,9 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, UpdateView
-from lib.util import tagging_extra
+from tagging_extra.utils import calculate_cloud
 from lib.util.form_errors import merge_form_errors
-from lib.util.merge import merge_model_objects
+from base.models.utils import merge_objects
 from pure_pagination.mixins import PaginationMixin
 from tagging.models import Tag
 from ..models import Release, Artist, Label
@@ -231,7 +231,7 @@ class ReleaseListView(PaginationMixin, ListView):
         # tagging / cloud generation
         if qs.exists():
             tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=5)
-            self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
+            self.tagcloud = calculate_cloud(tagcloud)
 
         return qs
 
@@ -457,7 +457,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
                 delete_pk = albumartist.artist.pk
                 albumartist.artist = artist
                 albumartist.save()
-                merge_model_objects(albumartist.artist, [Artist.objects.get(pk=delete_pk),])
+                merge_objects(albumartist.artist, [Artist.objects.get(pk=delete_pk),])
 
             # if not albumartist.artist.creator:
             #     print 'no creator'

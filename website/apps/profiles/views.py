@@ -12,7 +12,7 @@ from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, View
 from invitation.models import Invitation
-from lib.util import tagging_extra
+from tagging_extra.utils import calculate_cloud
 from profiles.filters import ProfileFilter
 from profiles.forms import UserForm, ProfileForm, ServiceFormSet, LinkFormSet, ActionForm
 from profiles.models import Profile, User
@@ -138,7 +138,7 @@ class ProfileListView(PaginationMixin, ListView):
         # tagging / cloud generation
         if qs.exists():
             tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=0)
-            self.tagcloud = tagging_extra.calculate_cloud(tagcloud)
+            self.tagcloud = calculate_cloud(tagcloud)
 
         return qs
 
