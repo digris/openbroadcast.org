@@ -79,8 +79,6 @@ def discogs_image_by_url(url, type='uri'):
             pass
 
 
-
-
 def discogs_id_by_url(url, type='uri'):
 
     discogs_id = None
@@ -112,37 +110,3 @@ def discogs_id_by_url(url, type='uri'):
         log.info('Unable to get id: %s', e)
 
     return None
-
-
-def __old__discogs_id_by_url(url, type='uri'):
-
-    discogs_id = None
-    discogs.user_agent = "NRG Processor 0.01 http://anorg.net/"
-
-    try:
-        id = url.split('/')
-        id = id[-1]
-
-        if '/master/' in url:
-            log.debug('Type is "master-release"')
-            item = discogs.MasterRelease(int(id))
-
-        if '/release/' in url:
-            log.debug('Type is "release"')
-            item = discogs.Release(int(id))
-
-        if '/artist/' in url:
-            log.debug('Type is "artist"')
-            item = discogs.Artist(id)
-
-        time.sleep(1.1)
-
-        discogs_id = item.data['id']
-
-    except Exception, e:
-        log.info('Unable to get id: %s', e)
-
-
-    log.debug('Got id: %s' % (discogs_id))
-
-    return discogs_id

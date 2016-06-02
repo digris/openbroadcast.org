@@ -4,7 +4,7 @@ import json
 
 from django import forms
 from django.conf import settings
-from django.forms.util import flatatt
+from django.forms.utils import flatatt
 from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 

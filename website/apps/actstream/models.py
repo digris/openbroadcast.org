@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import ugettext as _
 
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 
@@ -31,7 +31,7 @@ class Follow(models.Model):
 
     content_type = models.ForeignKey(ContentType)
     object_id = models.CharField(max_length=255)
-    follow_object = generic.GenericForeignKey()
+    follow_object = GenericForeignKey()
     actor_only = models.BooleanField("Only follow actions where the object is "
         "the target.", default=True)
     started = models.DateTimeField(default=now)
@@ -75,7 +75,7 @@ class Action(models.Model):
     """
     actor_content_type = models.ForeignKey(ContentType, related_name='actor')
     actor_object_id = models.CharField(max_length=255)
-    actor = generic.GenericForeignKey('actor_content_type', 'actor_object_id')
+    actor = GenericForeignKey('actor_content_type', 'actor_object_id')
 
     verb = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
@@ -83,14 +83,14 @@ class Action(models.Model):
     target_content_type = models.ForeignKey(ContentType, related_name='target',
         blank=True, null=True)
     target_object_id = models.CharField(max_length=255, blank=True, null=True)
-    target = generic.GenericForeignKey('target_content_type',
+    target = GenericForeignKey('target_content_type',
         'target_object_id')
 
     action_object_content_type = models.ForeignKey(ContentType,
         related_name='action_object', blank=True, null=True)
     action_object_object_id = models.CharField(max_length=255, blank=True,
         null=True)
-    action_object = generic.GenericForeignKey('action_object_content_type',
+    action_object = GenericForeignKey('action_object_content_type',
         'action_object_object_id')
 
     timestamp = models.DateTimeField(default=now)
@@ -161,29 +161,6 @@ model_stream = Action.objects.model_actions
 followers = Follow.objects.followers
 following = Follow.objects.following
 
-def __orig__setup_generic_relations():
-    """
-    Set up GenericRelations for actionable models.
-    """
-    for model in actstream_settings.get_models().values():
-        if not model:
-            continue
-        for field in ('actor', 'target', 'action_object'):
-            generic.GenericRelation(Action,
-                content_type_field='%s_content_type' % field,
-                object_id_field='%s_object_id' % field,
-                related_name='actions_with_%s_%s_as_%s' % (
-                    model._meta.app_label, model._meta.module_name, field),
-            ).contribute_to_class(model, '%s_actions' % field)
-
-            # @@@ I'm not entirely sure why this works
-            setattr(Action, 'actions_with_%s_%s_as_%s' % (
-                model._meta.app_label, model._meta.module_name, field), None)
-
-
-# TODO: 1.8 upgrade - this need to be called on app start
-#setup_generic_relations()
-
 
 
 def setup_generic_relations():
@@ -195,7 +172,7 @@ def setup_generic_relations():
         if not model:
             continue
         for field in ('actor', 'target', 'action_object'):
-            generic.GenericRelation(Action,
+            GenericRelation(Action,
                 content_type_field='%s_content_type' % field,
                 object_id_field='%s_object_id' % field,
                 related_query_name='actions_with_%s_%s_as_%s' % (

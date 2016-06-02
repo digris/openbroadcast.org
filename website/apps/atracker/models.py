@@ -1,5 +1,5 @@
 """Models for the ``object_events`` app."""
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.signals import post_save
@@ -87,7 +87,7 @@ class Event(models.Model):
         null=True, blank=True
     )
     object_id = models.PositiveIntegerField(null=True, blank=True)
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     # Generic FK to the object that created this event
     event_content_type = models.ForeignKey(
@@ -96,7 +96,7 @@ class Event(models.Model):
         null=True, blank=True
     )
     event_object_id = models.PositiveIntegerField(null=True, blank=True)
-    event_content_object = generic.GenericForeignKey(
+    event_content_object = GenericForeignKey(
         'event_content_type', 'event_object_id')
     
     objects = EventManager()

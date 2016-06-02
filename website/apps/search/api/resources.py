@@ -100,7 +100,7 @@ class SearchResource(Resource):
         if limit_models:
 
             for model in limit_models.split(' '):
-                search_models.append(models.get_model(*model.split('.')))
+                search_models.append(models.apps.get_model(*model.split('.')))
 
             sqs = sqs.models(*search_models)
 

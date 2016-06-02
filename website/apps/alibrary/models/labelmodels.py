@@ -12,7 +12,7 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from celery.task import task
 from phonenumber_field.modelfields import PhoneNumberField
 from l10n.models import Country
@@ -78,7 +78,7 @@ class Label(MigrationMixin):
 
     type = models.CharField(verbose_name="Label type", max_length=128, default='unknown', choices=alibrary_settings.LABELTYPE_CHOICES)
 
-    relations = generic.GenericRelation('Relation')
+    relations = GenericRelation('Relation')
     d_tags = tagging.fields.TagField(max_length=1024,verbose_name="Tags", blank=True, null=True)
 
     # refactoring parent handling

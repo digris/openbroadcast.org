@@ -11,7 +11,7 @@ from alibrary.models import Media, Artist
 from celery.task import task
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -557,7 +557,7 @@ class ImportFile(BaseModel):
         time.sleep(1)
 
         # to prevent circular import errors
-        from util.importer import Importer
+        from util.importer_tools import Importer
         importer = Importer(user=obj.import_session.user)
         
         media, status = importer.run(obj)
@@ -582,7 +582,7 @@ class ImportFile(BaseModel):
             
         # check/update import_tag
         if self.status == ImportFile.STATUS_READY:
-            from util.importer import Importer
+            from util.importer_tools import Importer
             importer = Importer(user=self.import_session.user)
             self.import_tag = importer.complete_import_tag(self)
 
@@ -657,7 +657,7 @@ class ImportItem(BaseModel):
     
     content_type = models.ForeignKey(ContentType, limit_choices_to = ct_limit)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     class Meta:
         app_label = 'importer'

@@ -10,7 +10,7 @@ TODO: Note about origin
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Manager
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 
 def limit_total_votes(num):
     from arating.models import Vote
@@ -77,7 +77,7 @@ def enable_voting_on(cls, manager_name='objects',
 
 
     cls.add_to_class('objects', VotableManager())
-    cls.add_to_class(votes_name, generic.GenericRelation(Vote))
+    cls.add_to_class(votes_name, GenericRelation(Vote))
     cls.add_to_class(total_name, property(get_total))
     cls.add_to_class(add_vote_name, add_vote)
     cls.add_to_class(remove_vote_name, remove_vote)

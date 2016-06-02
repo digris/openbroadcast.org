@@ -12,7 +12,7 @@ import acoustid
 import requests
 import musicbrainzngs
 from lib.util.sha1 import sha1_by_file
-from base import discogs_image_by_url
+from importer.util.tools import discogs_image_by_url
 from base.audio.echoprint import echoprint_from_path
 
 log = logging.getLogger(__name__)

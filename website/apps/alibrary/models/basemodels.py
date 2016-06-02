@@ -11,7 +11,7 @@ from django.dispatch.dispatcher import receiver
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from cms.models.fields import PlaceholderField
 from phonenumber_field.modelfields import PhoneNumberField
 from hvad.models import TranslatableModel, TranslatedFields
@@ -85,7 +85,7 @@ class Distributor(MigrationMixin):
 
 
     # relations a.k.a. links
-    relations = generic.GenericRelation('Relation')
+    relations = GenericRelation('Relation')
     
     # tagging (d_tags = "display tags")
     d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
@@ -199,7 +199,7 @@ class Agency(MigrationMixin):
     type = models.CharField(verbose_name="Agency type", max_length=12, default='unknown', choices=TYPE_CHOICES)
 
     # relations a.k.a. links
-    relations = generic.GenericRelation('Relation')
+    relations = GenericRelation('Relation')
 
     # tagging (d_tags = "display tags")
     d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
@@ -499,7 +499,7 @@ class Relation(models.Model):
 
     content_type = models.ForeignKey(ContentType)
     object_id = UUIDField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     SERVICE_CHOICES = (
         ('', _('Not specified')),

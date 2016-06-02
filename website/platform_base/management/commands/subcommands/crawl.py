@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
 from django.core.management.base import NoArgsCommand, CommandError, BaseCommand
-from django.db.models.loading import get_model
 from platform_base.management.commands.subcommands.base import SubcommandsCommand
 from alibrary.util.api_crawler import MBCeawler
 from alibrary.models import Artist, Media

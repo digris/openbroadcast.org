@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_save, post_save, post_delete
 from django.dispatch.dispatcher import receiver
-from django.db.models import get_model, get_app
+from django.apps import apps
 from changetracker import receivers
 from changetracker.registry import tracker
 
@@ -19,7 +19,7 @@ def setup_registry():
 
     for item in TRACKED_MODELS:
 
-        model = get_model(*item['model'].lower().split('.'))
+        model = apps.get_model(*item['model'].lower().split('.'))
         diff_function = item.get('diff_function', None)
 
         print 'model:         %s' % model

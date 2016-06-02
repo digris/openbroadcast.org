@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from django.core.management.base import NoArgsCommand, CommandError
-from django.db.models.loading import get_model
+from django.apps import apps
 
 MODELS_TO_RESET = (
 
@@ -50,7 +50,7 @@ class ResetDatabase(NoArgsCommand):
 
         for entry in MODELS_TO_RESET:
             app_label, model_name = entry.split(".")
-            model = get_model(app_label=app_label, model_name=model_name)
+            model = apps.get_model(app_label=app_label, model_name=model_name)
             qs = model.objects.all().nocache()
 
             print

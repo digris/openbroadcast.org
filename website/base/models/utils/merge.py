@@ -1,8 +1,9 @@
 import logging
 
 from django.db import transaction
-from django.db.models import get_models, Model
-from django.contrib.contenttypes.generic import GenericForeignKey
+from django.apps import apps
+from django.db.models import Model
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 log = logging.getLogger(__name__)
 

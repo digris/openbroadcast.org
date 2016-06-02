@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from django.db.models import get_model
+from django.apps import apps
 from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 
@@ -68,7 +68,7 @@ class ActionManager(GFKManager):
         actors_by_content_type = defaultdict(lambda: [])
         others_by_content_type = defaultdict(lambda: [])
 
-        follow_gfks = get_model('actstream', 'follow').objects.filter(
+        follow_gfks = apps.get_model('actstream', 'follow').objects.filter(
             user=object).values_list('content_type_id',
                                      'object_id', 'actor_only')
 

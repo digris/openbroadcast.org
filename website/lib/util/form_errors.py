@@ -2,7 +2,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms import BaseForm
 from django.forms.formsets import BaseFormSet
 from django.forms.forms import NON_FIELD_ERRORS
-from django.forms.util import ErrorDict
+from django.forms.utils import ErrorDict
 
 NON_FIELD_MESSAGE = _('General form errors')
 

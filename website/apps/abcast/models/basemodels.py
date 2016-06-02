@@ -4,7 +4,7 @@ import datetime
 import arating
 from abcast.util import notify
 from django.contrib.auth.models import User
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -104,7 +104,7 @@ class OnAirItem(BaseModel):
 
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     class Meta:
         app_label = 'abcast'
@@ -146,7 +146,7 @@ class Channel(BaseModel):
 
     on_air_type = models.ForeignKey(ContentType, null=True, blank=True)
     on_air_id = models.PositiveIntegerField(null=True, blank=True)
-    on_air = generic.GenericForeignKey('on_air_type', 'on_air_id')
+    on_air = GenericForeignKey('on_air_type', 'on_air_id')
 
     class Meta:
         app_label = 'abcast'

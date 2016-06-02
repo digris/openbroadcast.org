@@ -20,7 +20,7 @@ from alibrary.util.storage import get_file_from_url
 from actstream import action
 from alibrary.util import lookup
 import musicbrainzngs
-from base import discogs_image_by_url, discogs_id_by_url
+from importer.util.tools import discogs_image_by_url, discogs_id_by_url
 
 log = logging.getLogger(__name__)
 

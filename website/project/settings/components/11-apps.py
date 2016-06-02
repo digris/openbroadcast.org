@@ -62,7 +62,7 @@ INSTALLED_APPS = (
     'filer',
     'adv_cache_tag',
     'cacheops',
-    'reversion',
+    #'reversion',
     #'changetracker',
     #'auditlog',
     'django_badbrowser',
@@ -88,7 +88,7 @@ INSTALLED_APPS = (
     'cms',
     'menus',
     'mptt',
-    'polymorphic',
+    #'polymorphic',
     'treebeard',
 
     # cms plugins

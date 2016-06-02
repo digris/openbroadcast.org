@@ -37,7 +37,7 @@ BROKER_URL = 'amqp://obp:obp@127.0.0.1:5672/openbroadcast.org'
 PLAYOUT_BROKER_URL = 'amqp://obp:obp@127.0.0.1:5672/openbroadcast.org/playout'
 
 CELERY_IMPORTS = (
-    'importer.util.importer',
+    'importer.util.importer_tools',
     'base.pypo.gateway',
     'djcelery_email.tasks',
     'media_asset.tasks',
@@ -47,7 +47,7 @@ CELERY_ROUTES = {
     # assign import task to single-instance worker
     'importer.models.import_task': {'queue': 'import'},
     'importer.models.identify_task': {'queue': 'process'},
-    'importer.util.importer.mb_complete_media_task': {'queue': 'complete'},
+    'importer.util.importer_tools.mb_complete_media_task': {'queue': 'complete'},
 
     #
     'alibrary.models.generate_media_versions_task': {'queue': 'convert'},

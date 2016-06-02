@@ -11,7 +11,7 @@ from django.core.files import File as DjangoFile
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -265,7 +265,7 @@ class ExportItem(BaseModel):
 
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
 
 
     def __unicode__(self):

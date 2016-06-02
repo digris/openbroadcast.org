@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django_extensions.db.fields import AutoSlugField
 from django.conf import settings
 from celery.task import task
@@ -122,7 +122,7 @@ class Emission(BaseModel):
     ct_limit = models.Q(app_label = 'alibrary', model = 'playlist') | models.Q(app_label = 'alibrary', model = 'release')
     content_type = models.ForeignKey(ContentType, limit_choices_to = ct_limit)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey('content_type', 'object_id')
     
     locked = models.BooleanField(default=False)
 

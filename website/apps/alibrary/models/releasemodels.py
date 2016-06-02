@@ -14,7 +14,7 @@ import reversion
 import tagging
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
@@ -110,7 +110,7 @@ class Release(MigrationMixin):
 
 
     album_artists = models.ManyToManyField('alibrary.Artist', through='ReleaseAlbumartists', related_name="release_albumartists", blank=True)
-    relations = generic.GenericRelation(Relation)
+    relations = GenericRelation(Relation)
     d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
     enable_comments = models.BooleanField(_('Enable Comments'), default=True)
 

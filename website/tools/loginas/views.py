@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import load_backend, login
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
 from django.shortcuts import redirect
-from django.utils.importlib import import_module
+from importlib import import_module
 from django.utils import six
 try:
     from django.contrib.auth import get_user_model

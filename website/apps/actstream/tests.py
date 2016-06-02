@@ -1,7 +1,7 @@
 from random import choice
 
 from django.db import connection
-from django.db.models import get_model
+from django.apps import apps
 from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User, Group
@@ -35,7 +35,7 @@ class ActivityBaseTestCase(TestCase):
         self.old_models = get_models()
         SETTINGS['MODELS'] = {}
         for model in self.actstream_models:
-            SETTINGS['MODELS'][model.lower()] = get_model(*model.split('.'))
+            SETTINGS['MODELS'][model.lower()] = apps.get_model(*model.split('.'))
         setup_generic_relations()
 
     def tearDown(self):

@@ -1,6 +1,6 @@
 import django
 from django.conf import settings
-from django.db.models import get_model
+from django.apps import apps
 
 
 SETTINGS = getattr(settings, 'ACTSTREAM_SETTINGS', {})
@@ -13,7 +13,7 @@ def get_models():
     models = {}
     """"""
     for model in SETTINGS.get('MODELS', ('auth.User',)):
-        models[model.lower()] = get_model(*model.split('.'))
+        models[model.lower()] = apps.get_model(*model.split('.'))
     
     return models
 

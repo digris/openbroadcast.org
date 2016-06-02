@@ -2,8 +2,8 @@ import re
 
 from django import template
 from django.db import models
-
-Profile = models.get_model('profiles', 'profile')
+from django.apps import apps
+Profile = apps.get_model('profiles', 'profile')
 
 register = template.Library()
 

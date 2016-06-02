@@ -7,7 +7,8 @@ from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 import hashlib
 from django.contrib.auth.models import User
-from django.contrib.sites.models import Site, RequestSite
+from django.contrib.sites.models import Site
+from django.contrib.sites.requests import RequestSite
 from django.contrib import messages
 import app_settings
 import signals

@@ -15,7 +15,7 @@ from cacheops import invalidate_obj
 from celery.task import task
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -176,9 +176,9 @@ class Media(MigrationMixin):
     isrc = models.CharField(verbose_name='ISRC', max_length=12, null=True, blank=True)
     
     # relations a.k.a. links
-    relations = generic.GenericRelation(Relation)
+    relations = GenericRelation(Relation)
 
-    playlist_items = generic.GenericRelation(PlaylistItem, object_id_field="object_id")
+    playlist_items = GenericRelation(PlaylistItem, object_id_field="object_id")
 
     
     # tagging (d_tags = "display tags")

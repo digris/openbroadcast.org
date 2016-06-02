@@ -1,0 +1,1 @@
+module is depreciated. we still use it and keep it here to patch it for django 1.9 support & security issues

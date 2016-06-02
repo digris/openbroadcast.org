@@ -3,7 +3,7 @@ import datetime
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db import models
 from django.utils.timezone import utc
 from model_utils import managers, Choices
@@ -90,7 +90,7 @@ class Notification(models.Model):
 
     actor_content_type = models.ForeignKey(ContentType, related_name='notify_actor')
     actor_object_id = models.CharField(max_length=255)
-    actor = generic.GenericForeignKey('actor_content_type', 'actor_object_id')
+    actor = GenericForeignKey('actor_content_type', 'actor_object_id')
 
     verb = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
@@ -98,14 +98,14 @@ class Notification(models.Model):
     target_content_type = models.ForeignKey(ContentType, related_name='notify_target',
         blank=True, null=True)
     target_object_id = models.CharField(max_length=255, blank=True, null=True)
-    target = generic.GenericForeignKey('target_content_type',
+    target = GenericForeignKey('target_content_type',
         'target_object_id')
 
     action_object_content_type = models.ForeignKey(ContentType,
         related_name='notify_action_object', blank=True, null=True)
     action_object_object_id = models.CharField(max_length=255, blank=True,
         null=True)
-    action_object = generic.GenericForeignKey('action_object_content_type',
+    action_object = GenericForeignKey('action_object_content_type',
         'action_object_object_id')
 
     timestamp = models.DateTimeField(default=now)

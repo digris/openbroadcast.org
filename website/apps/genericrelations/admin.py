@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.conf.urls import patterns, url
 from django.conf import settings
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.admin import GenericTabularInline, GenericStackedInline
 
 from genericrelations.views import generic_lookup, get_generic_rel_list
 
@@ -57,10 +57,10 @@ class GenericAdminModelAdmin(BaseGenericModelAdmin, admin.ModelAdmin):
     """Model admin for generic relations. """
 
 
-class GenericTabularInline(BaseGenericModelAdmin, generic.GenericTabularInline):
+class GenericTabularInline(BaseGenericModelAdmin, GenericTabularInline):
     """Model admin for generic tabular inlines. """ 
 
 
-class GenericStackedInline(BaseGenericModelAdmin, generic.GenericStackedInline):
+class GenericStackedInline(BaseGenericModelAdmin, GenericStackedInline):
     """Model admin for generic stacked inlines. """
 

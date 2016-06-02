@@ -11,7 +11,7 @@ from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
 from celery.task import task
 from django.contrib.auth.models import User
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
@@ -112,7 +112,7 @@ class Artist(MigrationMixin):
 
 
     # relations a.k.a. links
-    relations = generic.GenericRelation(Relation)
+    relations = GenericRelation(Relation)
     
     # tagging (d_tags = "display tags")
     d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)

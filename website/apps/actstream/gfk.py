@@ -3,7 +3,7 @@ from django.db.models.query import QuerySet, EmptyQuerySet
 from django.utils.encoding import smart_unicode
 
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.generic import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 
 class GFKManager(Manager):
