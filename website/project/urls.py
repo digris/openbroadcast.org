@@ -69,6 +69,9 @@ urlpatterns = patterns('',
     url(r'^search/', include('search.urls')),
     url(r'^search-hs/', include('haystack.urls')),
     url(r'^sitemap.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
+
+    #url(r'^silk/', include('silk.urls', namespace='silk')),
+
     (r'^player/', include('aplayer.urls')),
     (r'^media-asset/', include('media_asset.urls')),
 

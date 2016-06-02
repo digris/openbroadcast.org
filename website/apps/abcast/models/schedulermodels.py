@@ -236,7 +236,7 @@ def post_save_emission_task(obj):
         if obj.time_end > range_start and obj.time_start < range_end:
             # notify pypy
             log.debug('Emission in critical range ({:} - {:}) - will notify pypo'.format(range_start, range_end))
-            from lib.pypo_gateway import send as pypo_send
+            from base.pypo.gateway import send as pypo_send
             from abcast.util import scheduler
             data = scheduler.get_schedule_for_pypo(range_start=range_start, range_end=range_end)
 
@@ -270,7 +270,7 @@ def pre_delete_emission(sender, **kwargs):
     if obj.time_end > range_start and obj.time_start < range_end:
         # notify pypy
         #print 'emission in critical range: notify pypo'
-        from lib.pypo_gateway import send as pypo_send
+        from base.pypo.gateway import send as pypo_send
         from abcast.util import scheduler
         data = scheduler.get_schedule_for_pypo(range_start=range_start, range_end=range_end, exclude=[obj.pk])
 

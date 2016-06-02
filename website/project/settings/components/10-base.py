@@ -82,11 +82,12 @@ MIDDLEWARE_CLASSES = (
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
-    'lib.middleware.xs_sharing.XsSharingMiddleware',
+    'base.middleware.xs_sharing.XsSharingMiddleware',
 
     #'auditlog.middleware.AuditlogMiddleware',
     'social_auth.middleware.SocialAuthExceptionMiddleware',
     'arating.middleware.AratingIpMiddleware',
+    #'silk.middleware.SilkyMiddleware',
 )
 
 

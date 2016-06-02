@@ -432,7 +432,7 @@ class Autopilot(object):
 http://stackoverflow.com/questions/3463930/how-to-round-the-minute-of-a-datetime-object-python
 """
 def round_time(dt=None, round_to=60):
-    if dt == None : dt = datetime.datetime.now()
+    if dt is None: dt = datetime.datetime.now()
     seconds = (dt - dt.min).seconds
     rounding = (seconds + round_to / 2) // round_to * round_to
     return dt + datetime.timedelta(0, rounding-seconds, -dt.microsecond)

@@ -12,7 +12,7 @@ from django.core.cache import cache
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from easy_thumbnails.files import get_thumbnailer
-from lib.pypo_gateway import send as pypo_send
+from base.pypo.gateway import send as pypo_send
 from metadata_generator.dab import DABMetadataGenerator
 from tastypie import fields
 from tastypie.authentication import MultiAuthentication, SessionAuthentication, ApiKeyAuthentication, Authentication

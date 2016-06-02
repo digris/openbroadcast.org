@@ -57,18 +57,14 @@ class AdvancedFileInput(ClearableFileInput):
 
         substitutions['input'] = super(ClearableFileInput, self).render(name, value, attrs)
 
-        print "VALUE"
-        print value
 
         file = File.objects.get(pk=value)
-        
-        print file.url
+
 
         if file.url:
 
             template = self.template_with_initial
             if self.preview:
-                print "HAVE PREVIEW!!"
                 substitutions['initial'] = (u'<a href="{0}">{1}</a><br>\
                 <a href="{0}" target="_blank"><img src="{0}" width="{2}"></a>'.format
                     (escape(file.url),'.',

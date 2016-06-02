@@ -14,7 +14,6 @@ from django.db.models.signals import post_save
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
 from filer.fields.image import FilerImageField
-from lib.audioprocessing.processing import create_wave_images
 from mutagen import File as MutagenFile
 from mutagen.easyid3 import EasyID3
 
@@ -156,6 +155,8 @@ class Jingle(BaseModel):
     #@task
     def create_waveform_image(self):
 
+        raise NotImplemented('create_waveform_image not implemented for jingles yet')
+
         if self.master:
             tmp_directory = tempfile.mkdtemp()
 
@@ -166,7 +167,7 @@ class Jingle(BaseModel):
             audiotools.open(src_path).convert(tmp_path, audiotools.WaveAudio)
             
             args = (tmp_path, dst_path, None, 1800, 301, 2048)
-            create_wave_images(*args)
+            #create_wave_images(*args)
             
             try:
                 shutil.rmtree(tmp_directory)

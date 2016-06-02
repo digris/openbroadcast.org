@@ -31,6 +31,7 @@ INSTALLED_APPS = (
 
     # server
     'gunicorn',
+    #'silk',
     'django_date_extensions',
     'haystack',
     'search',

@@ -7,7 +7,7 @@ from .utils import slug2id
 
 
 @login_required
-def all(request):
+def show_all(request):
     """
     Index page for authenticated user
     """

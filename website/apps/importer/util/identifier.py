@@ -13,6 +13,7 @@ import requests
 import musicbrainzngs
 from lib.util.sha1 import sha1_by_file
 from base import discogs_image_by_url
+from base.audio.echoprint import echoprint_from_path
 
 log = logging.getLogger(__name__)
 
@@ -140,22 +141,17 @@ class Identifier(object):
 
 
         from ep.API import fp
-        from lib.analyzer.echoprint import Echoprint
-        e = Echoprint()
-        code, version, duration, echoprint = e.echoprint_from_path(file.path, offset=10, duration=100)
+
+        code, version, duration, echoprint = echoprint_from_path(file.path, offset=10, duration=100)
 
         try:
             res = fp.best_match_for_query(code_string=code)
 
             if res.match():
                 log.info('echoprint match - score: %s trid: %s' % (res.score, res.TRID))
-                #print res.message()
-                #print res.match()
-                #print res.score
-                #print res.TRID
                 return int(res.TRID)
 
-        except Exception, e:
+        except Exception as e:
             log.warning('echoprint error: %s' % (e))
 
 

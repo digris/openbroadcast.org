@@ -38,7 +38,7 @@ PLAYOUT_BROKER_URL = 'amqp://obp:obp@127.0.0.1:5672/openbroadcast.org/playout'
 
 CELERY_IMPORTS = (
     'importer.util.importer',
-    'lib.pypo_gateway.gateway',
+    'base.pypo.gateway',
     'djcelery_email.tasks',
     'media_asset.tasks',
 )

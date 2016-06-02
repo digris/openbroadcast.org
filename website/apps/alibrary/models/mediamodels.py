@@ -26,7 +26,7 @@ from django_extensions.db.fields.json import JSONField
 from ep.API import fp
 from lib.fields.languages import LanguageField
 from lib.fields.uuidfield import UUIDField as RUUIDField
-from lib.signals.unsignal import disable_for_loaddata
+from base.signals.unsignal import disable_for_loaddata
 from lib.util.sha1 import sha1_by_file
 from tagging.registry import register as tagging_register
 from alibrary import settings as alibrary_settings
@@ -719,7 +719,7 @@ def media_post_save(sender, **kwargs):
 
     if obj.master and obj.echoprint_status == 0:
         if AUTOCREATE_ECHOPRINT:
-            log.info('Media id: %s - Echoprint' % (obj.pk))
+            log.info('Media id: %s - generate echoprint' % (obj.pk))
             #obj.update_echoprint()
         else:
             log.info('Media id: %s - skipping echoprint generation' % (obj.pk))

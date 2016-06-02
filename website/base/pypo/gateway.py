@@ -12,12 +12,10 @@ PLAYOUT_BROKER_URL = getattr(settings, 'PLAYOUT_BROKER_URL', False)
 
 BROKER_QUEUE = 'pypo-fetch'
 
-log = logging.getLogger(__name__)
-
-class PypoGateway:
+class PypoGateway(object):
 
     def __init__(self):
-        log.info('gateway init')
+        pass
 
     def send(self, message):
         if USE_CELERYD:
@@ -37,7 +35,7 @@ class PypoGateway:
             simple_queue.close()
             connection.close()
 
-        except Exception, e:
+        except Exception as e:
             log.error('error sending message: %s' % e)
 
 

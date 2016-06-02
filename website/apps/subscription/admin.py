@@ -70,7 +70,8 @@ class SubscriptionAdmin(admin.ModelAdmin):
     raw_id_fields = ['user', ]
 
     def active_display(self, obj):
-        return obj.opted_out == None
+        return obj.opted_out is None
+
     active_display.short_description = 'Active'
     active_display.boolean = True
 

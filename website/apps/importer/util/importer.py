@@ -1226,7 +1226,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
 
     lock_key = 'complete-{}'.format(mb_id)
 
-    if cache.get(lock_key) != None:
+    if cache.get(lock_key) is not None:
 
         log.warning('completeion locked for id: {}'.format(mb_id))
 

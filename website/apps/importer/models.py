@@ -19,7 +19,7 @@ from django.db.models.signals import post_delete
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields.json import JSONField
-from lib.signals.unsignal import disable_for_loaddata
+from base.signals.unsignal import disable_for_loaddata
 from django_extensions.db.fields import UUIDField, CreationDateTimeField, ModificationDateTimeField
 
 log = logging.getLogger(__name__)

@@ -71,9 +71,7 @@ CMS_PLACEHOLDER_CONF = {
     },
 }
 
-CMS_PLUGIN_PROCESSORS = (
-    #'lib.cms_plugin_processors.wrap_text',
-)
+CMS_PLUGIN_PROCESSORS = ()
 
 CMS_SEO_FIELDS = True
 

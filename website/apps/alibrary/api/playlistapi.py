@@ -8,7 +8,6 @@ from alibrary.models import Release
 from django.conf.urls import url
 from django.db.models import Q
 from easy_thumbnails.files import get_thumbnailer
-from lib.api.authentication import OAuth20Authentication
 from tastypie import fields
 from tastypie.authentication import MultiAuthentication, SessionAuthentication, ApiKeyAuthentication
 from tastypie.authorization import Authorization
@@ -82,7 +81,7 @@ class PlaylistResource(ModelResource):
         resource_name = 'library/playlist'
         include_absolute_url = True
         always_return_data = True
-        authentication = MultiAuthentication(SessionAuthentication(), OAuth20Authentication(), ApiKeyAuthentication())
+        authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
         authorization = Authorization()
         limit = 50
         filtering = {

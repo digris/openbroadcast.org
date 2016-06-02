@@ -6,14 +6,14 @@ from django.db.models.signals import post_save
 
 from django.utils.translation import ugettext as _
 
-from lib.models import Timestamped
+from base.models import TimestampedModel
 
 VOTE_CHOICES = (
     (+1, '+1'),
     (-1, '-1'),
 )
 
-class Vote(Timestamped):
+class Vote(TimestampedModel):
 
     vote = models.SmallIntegerField(choices=VOTE_CHOICES)
     user = models.ForeignKey(User, related_name="votes")
@@ -45,7 +45,7 @@ def post_save_vote(sender, **kwargs):
     try:
         from pushy.util import pushy_custom
         pushy_custom(obj.content_object.get_api_url(), type='update')
-    except Exception, e:
-        print e
+    except Exception as e:
+        pass
 
 post_save.connect(post_save_vote, sender=Vote)

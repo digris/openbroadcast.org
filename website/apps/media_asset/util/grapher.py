@@ -153,7 +153,7 @@ class AudioProcessor(object):
         if energy > 1e-60:
             # calculate the spectral centroid
 
-            if self.spectrum_range == None:
+            if self.spectrum_range is None:
                 self.spectrum_range = numpy.arange(length)
 
             spectral_centroid = (spectrum * self.spectrum_range).sum() / (energy * (length - 1)) * self.audio_file.samplerate * 0.5
@@ -288,7 +288,7 @@ class WaveformImage(object):
         #print line_color
 
 
-        if self.previous_y != None:
+        if self.previous_y is not None:
             self.draw.line([self.previous_x, self.previous_y, x, y1, x, y2], line_color)
         else:
             #pass

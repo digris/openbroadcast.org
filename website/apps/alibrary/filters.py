@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+
+"""
+the filter functionality is implemented really badly.
+TODO: so this part should definately be refactored at some point of time.
+"""
+
 import datetime
 import django_filters
 from django.utils.translation import ugettext as _
@@ -12,6 +18,7 @@ from django.db import models
 
 class CharListFilter(django_filters.Filter):
     def filter(self, qs, value):
+        values = []
         if not value:
             return qs
         if isinstance(value, (list, tuple)):
@@ -39,7 +46,6 @@ class DekadeFilter(django_filters.ChoiceFilter):
     pass
 
 
-
 class DateRangeFilter(django_filters.Filter):
 
     range_start = None
@@ -62,7 +68,6 @@ class DateRangeFilter(django_filters.Filter):
         range = range if len(range) == 2 else None
 
         if range:
-            # try to extract the dates
             try:
                 range_start = datetime.datetime.strptime(range[0], '%Y-%m-%d').date()
             except:
@@ -96,7 +101,6 @@ class ReleaseFilter(django_filters.FilterSet):
     releasedate = DateRangeFilter(label="Release date")
     class Meta:
         model = Release
-        #fields = ['releasedate', 'releasetype', 'release_country__printable_name', 'media_release__license__name', 'label__type', ]
         fields = ['releasedate', 'releasetype', 'release_country__printable_name',]
 
     @property
@@ -106,12 +110,10 @@ class ReleaseFilter(django_filters.FilterSet):
 
         if not hasattr(self, '_filterlist'):
 
-
             for name, filter_ in self.filters.iteritems():
 
                 ds = self.queryset.values_list(name, flat=False).order_by(name).annotate(
                     n=models.Count("pk", distinct=True)).distinct()
-
 
                 # TODO: extreme hackish...
                 if name == 'releasetype_':
@@ -119,19 +121,14 @@ class ReleaseFilter(django_filters.FilterSet):
                     for d in ds:
                         if d[0] == 'NULL':
                             pass
-                            #nd.append([d[0], d[1], _('Unknown')])
                         else:
-                            print d[0]
-                            if d[0] != None:
 
-
+                            if d[0] is not None:
                                 for x in alibrary_settings.RELEASETYPE_CHOICES:
-                                    print x
+
                                     if x[0] == d[0]:
                                         print x[1]
                                         nd.append([d[0], d[1], x[1]])
-
-                                #nd.append([d[0], d[1], u'%s' % d[0].replace('_', ' ').title()])
 
                     filter_.entries = nd
 
@@ -142,16 +139,13 @@ class ReleaseFilter(django_filters.FilterSet):
                     for d in ds:
                         if d[0] == 'NULL':
                             pass
-                            #nd.append([d[0], d[1], _('Unknown')])
                         else:
-                            if d[0] != None:
+                            if d[0] is not None:
                                 for x in alibrary_settings.LABELTYPE_CHOICES:
                                     if x[0] == d[0]:
                                         nd.append([d[0], d[1], x[1]])
 
                     filter_.entries = nd
-
-
 
 
                 elif name == 'release_country__printable_name':
@@ -162,16 +156,11 @@ class ReleaseFilter(django_filters.FilterSet):
                     nd.sort()
                     filter_.entries = nd
 
-
-
                 else:
-                    #ds.sort()
                     filter_.entries = ds
 
                 if ds not in flist:
                     flist.append(filter_)
-
-
 
 
             """
@@ -197,7 +186,6 @@ class ReleaseFilter(django_filters.FilterSet):
 class ArtistFilter(django_filters.FilterSet):
     type = CharListFilter(label=_("Artist type"))
     country__printable_name = CharListFilter(label=_("Country"))
-    #professions__name = CharListFilter(label=_("Professions"))
 
     class Meta:
         model = Artist
@@ -271,9 +259,8 @@ class LabelFilter(django_filters.FilterSet):
                     for d in ds:
                         if d[0] == 'NULL':
                             pass
-                            #nd.append([d[0], d[1], _('Unknown')])
                         else:
-                            if d[0] != None:
+                            if d[0] is not None:
                                 for x in alibrary_settings.LABELTYPE_CHOICES:
                                     if x[0] == d[0]:
                                         nd.append([d[0], d[1], x[1]])
@@ -377,9 +364,8 @@ class MediaFilter(django_filters.FilterSet):
                     for d in ds:
                         if d[0] == 'NULL':
                             pass
-                            #nd.append([d[0], d[1], _('Unknown')])
                         else:
-                            if d[0] != None:
+                            if d[0] is not None:
                                 for x in self.PROCESSED_CHOICES:
                                     if x[0] == d[0]:
                                         nd.append([d[0], d[1], x[1]])
@@ -448,13 +434,8 @@ class MediaFilter(django_filters.FilterSet):
                     nd.sort()
                     filter_.entries = nd
 
-
-
                 else:
-
                     filter_.entries = ds
-
-
 
                 if ds not in flist:
                     flist.append(filter_)
@@ -490,15 +471,12 @@ DAY_CHOICES = (
 )
 
 class PlaylistFilter(django_filters.FilterSet):
-    # releasedate = django_filters.DateFilter()
     type = CharListFilter(label=_("Type"))
     status = CharListFilter(label=_("Status"))
     target_duration = CharListFilter(label=_("Target Duration"))
     dayparts = CharListFilter(label="Dayparts")
     weather__name = CharListFilter(label="Weather")
     seasons__name = CharListFilter(label="Season")
-    #media_release__license__name = CharListFilter(label="License")
-    #main_format__name = CharListFilter(label="Release Format")
     class Meta:
         model = Playlist
         fields = ['type', 'status', 'target_duration', 'dayparts', 'weather__name', 'seasons__name', 'rotation']
@@ -506,12 +484,6 @@ class PlaylistFilter(django_filters.FilterSet):
     def __init__(self, *args, **kwargs):
         super(PlaylistFilter, self).__init__(*args, **kwargs)
 
-        """
-        self.filters['dayparts'].extra.update(
-            {
-                'choices': DAY_CHOICES
-            })
-        """
 
     @property
     def filterlist(self):
@@ -526,27 +498,13 @@ class PlaylistFilter(django_filters.FilterSet):
                     n=models.Count("pk", distinct=True)).distinct()
 
 
-                # TODO: extreme hackish...
-                """
                 if name == 'type':
                     nd = []
                     for d in ds:
                         if d[0] == 'NULL':
                             nd.append([d[0], d[1], _('Unknown')])
                         else:
-                            nd.append([d[0], d[1], u'%s' % d[0].replace('_', ' ').title()])
-
-                    filter_.entries = nd
-                """
-
-                if name == 'type':
-                    nd = []
-                    for d in ds:
-                        if d[0] == 'NULL':
-                            nd.append([d[0], d[1], _('Unknown')])
-                            #pass
-                        else:
-                            if d[0] != None:
+                            if d[0] is not None:
                                 for x in alibrary_settings.PLAYLIST_TYPE_CHOICES:
                                     if x[0] == d[0]:
                                         nd.append([d[0], d[1], '%s' % x[1]])
@@ -559,7 +517,7 @@ class PlaylistFilter(django_filters.FilterSet):
                         if d[0] == 'NULL':
                             pass
                         else:
-                            if d[0] != None:
+                            if d[0] is not None:
                                 for x in alibrary_settings.PLAYLIST_STATUS_CHOICES:
                                     if x[0] == d[0]:
                                         nd.append([d[0], d[1], '%s' % x[1]])
@@ -572,7 +530,7 @@ class PlaylistFilter(django_filters.FilterSet):
                         if d[0] == 'NULL':
                             pass
                         else:
-                            if d[0] != None:
+                            if d[0] is not None:
                                 for x in alibrary_settings.PLAYLIST_TARGET_DURATION_CHOICES:
                                     if x[0] == d[0]:
                                         nd.append([d[0], d[1], _('%s minutes') % x[1]])

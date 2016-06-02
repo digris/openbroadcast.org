@@ -14,8 +14,6 @@ except:
 class XsSharingMiddleware(object):
     """
         This middleware allows cross-domain XHR using the html5 postMessage API.
-         
-
         Access-Control-Allow-Origin: http://foo.example
         Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE
     """

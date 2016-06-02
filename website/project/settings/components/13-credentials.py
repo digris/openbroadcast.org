@@ -16,7 +16,5 @@ FACEBOOK_SECRET_KEY = "a5b0a3ce9f47d1eadaf004ffd9da4e1f"
 FACEBOOK_API_SECRET = 'a5b0a3ce9f47d1eadaf004ffd9da4e1f'
 FACEBOOK_EXTENDED_PERMISSIONS = ['email', 'publish_stream']
 
-# analyzer
+# echonest analyzer
 ECHONEST_API_KEY = 'DC7YKF3VYN7R0LG1M'
-
-

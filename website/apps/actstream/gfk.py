@@ -73,7 +73,7 @@ class GFKQuerySet(QuerySet):
 
         for item in qs:
             for gfk in gfk_fields:
-                if getattr(item, gfk.fk_field) != None:
+                if getattr(item, gfk.fk_field) is not None:
                     ct_id_field = self.model._meta.get_field(gfk.ct_field)\
                         .column
                     setattr(item, gfk.name,
