@@ -1,6 +1,21 @@
 engines:
   duplication:
-    enabled: false
+    enabled: true
+    config:
+      languages:
+      - python
+  pep8:
+    enabled: true
+  radon:
+    enabled: true
+  fixme:
+    enabled: true
+
+
+ratings:
+   paths:
+   - "**.js"
+   - "**.py"
 
 
 languages:
