@@ -38,7 +38,6 @@ INSTALLED_APPS = (
 
     'addthis',
 
-
     # tools
     'django_extensions',
     'django_filters',
@@ -151,7 +150,7 @@ INSTALLED_APPS = (
     'nunjucks',
 
     # monitoring / ops / tracking
-    'opbeat.contrib.django',
+    #'opbeat.contrib.django',
 
 )
 
@@ -165,13 +164,6 @@ COMMENTS_APP = 'fluent_comments'
 COMMENT_MAX_LENGTH = 800
 FLUENT_COMMENTS_EXCLUDE_FIELDS = ['title', 'email', 'name', 'url', ]
 
-
-DEBUG_TOOLBAR_PATCH_SETTINGS = False
-
-DEBUG_TOOLBAR_CONFIG = {
-    'INTERCEPT_REDIRECTS': False,
-    #'SHOW_TOOLBAR_CALLBACK': 'lib.show_debug_toolbar.show',
-}
 
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 6,

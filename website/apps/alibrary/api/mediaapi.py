@@ -36,7 +36,7 @@ class MediaResource(ModelResource):
             'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
             'id': ['exact', 'in'],
         }
-        #cache = SimpleCache(timeout=600)
+
 
 
     def apply_sorting(self, obj_list, options=None):
@@ -130,12 +130,9 @@ class MediaResource(ModelResource):
         return bundle
 
 
-    """
-    Filters
-    Enable querying by fingerprint
-    """
 
     def build_filters(self, filters=None):
+        """ Enable querying by fingerprint """
         if filters is None:
             filters = {}
 
@@ -143,17 +140,13 @@ class MediaResource(ModelResource):
 
         if "code" in filters:
 
-            ids = []
             code = filters['code']
             res = fp.best_match_for_query(code_string=code, elbow=10)
 
             try:
                 if res.match():
-                    print res.match()
                     ids = [int(res.TRID), ]
-
                     orm_filters["pk__in"] = ids
-
                 else:
                     orm_filters["pk__in"] = ()
             except Exception as e:
@@ -302,14 +295,7 @@ class MediaResource(ModelResource):
 
         from media_asset.util import get_format
 
-
-        #file = obj.get_cache_file('mp3', 'base')
-
         format = get_format(obj, wait=True)
-        # format_file = open(format.path, "rb").read()
-        #
-        # if not format_file:
-        #     return HttpResponseBadRequest('unable to get file')
 
         return sendfile(request, format.path)
 

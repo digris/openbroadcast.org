@@ -34,6 +34,7 @@
 		</ul>
 	</div>
 
+    {% comment %}
 	<div class="list_body_item c3">
 		<ul class="unstyled">
 			{% if item.get_releases.count > 0 %}
@@ -51,10 +52,11 @@
 
 		</ul>
 	</div>
+    {% endcomment %}
 
 	<div class="list_body_item c4 links external">
         <div class="relations">
-            {% relations_inline item %}
+            {# relations_inline item #}
         </div>
 	</div>
 

@@ -1,7 +1,8 @@
 {% load i18n truncate permission_tags anchor_tags %}
 
+{% if relations.specific %}
 <ul class="unstyled">
-    {% for relation in object.relations.specific %}
+    {% for relation in relations.specific %}
         <li>
             <a href="{{ relation.url }}" class="skip-external" title="Show on {{ relation.get_service_display }}">
                 <i class="icon-{{ relation.service_icon }}"></i>
@@ -20,10 +21,11 @@
     {% endif %}
 
 </ul>
+{% endif %}
 
-{% if include_generic %}
+{% if relations.generic %}
 <ul class="unstyled" style="margin-top: 20px;">
-    {% for relation in object.relations.generic %}
+    {% for relation in relations.generic %}
         <li>
             <a href="{{ relation.url }}" class="skip-external"
                title="Go to {{ relation.url }}">{{ relation.url|domain_for_url }}</a>

@@ -69,7 +69,7 @@ SECRET_KEY = 'test_key'
 ################################################################################
 
 MIDDLEWARE_CLASSES = (
-    'opbeat.contrib.django.middleware.OpbeatAPMMiddleware',
+    #'opbeat.contrib.django.middleware.OpbeatAPMMiddleware',
     'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

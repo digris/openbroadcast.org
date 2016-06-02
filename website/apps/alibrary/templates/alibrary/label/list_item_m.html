@@ -7,12 +7,13 @@
      data-ct="label"
      data-resource_uri="{{ item.get_api_url }}">
 
-    <div class="list_body_item c1 image_center_bg"
-         {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 54x54 upscale subject_location=item.main_image.subject_location %});"{% endif %}>
+    <div class="list_body_item c1 image_center_bg">
 
-        {% with object=item ct="label" %}
-            {# include "alibrary/element/_item_actions_primary.html" #}
-        {% endwith %}
+        {% if item.main_image %}
+        <div class="image-container">
+            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{% thumbnail item.main_image 53x53 upscale subject_location=item.main_image.subject_location %}" class="lazyload" />
+        </div>
+        {% endif %}
 
     </div>
     <div class="list_body_item c2">

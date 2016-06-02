@@ -77,10 +77,18 @@ def m2m_inline(context, items):
 
 @register.inclusion_tag('alibrary/templatetags/relations_inline.html', takes_context=True)
 def relations_inline(context, object):
-    context.update({'object': object})
+    relations = {
+        'specific': object.relations.specific(),
+        'generic': [],
+    }
+    context.update({'relations': relations})
     return context
 
 @register.inclusion_tag('alibrary/templatetags/relations_inline.html', takes_context=True)
 def all_relations_inline(context, object):
-    context.update({'object': object, 'include_generic': True})
+    relations = {
+        'specific': object.relations.specific(),
+        'generic': object.relations.generic(),
+    }
+    context.update({'relations': relations})
     return context

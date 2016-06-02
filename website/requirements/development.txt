@@ -1,8 +1,15 @@
 ################################################
 # dev tools
 ################################################
-Werkzeug==0.9.4
+Werkzeug
 colorlog==2.6.0
-django-debug-toolbar
-django-devserver==0.8.0
 ipython
+
+# django-devserver
+# patched devserver to work with django >= 1.8
+# https://github.com/dcramer/django-devserver/pull/129
+git+git://github.com/hzlf/django-devserver#egg=django-devserver
+
+sqlparse
+guppy
+line_profiler

@@ -128,3 +128,11 @@ scikits.audiolab==0.10.2
 # services
 ################################################
 opbeat==3.3 #https://opbeat.com/hazelfire-llc/obp/module-setup/instructions/
+
+
+################################################
+# metrics & insights
+################################################
+django-silk==0.5.7
+
+
