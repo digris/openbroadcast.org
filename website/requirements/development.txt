@@ -4,6 +4,7 @@
 Werkzeug
 colorlog==2.6.0
 ipython
+tox
 
 # django-devserver
 # patched devserver to work with django >= 1.8

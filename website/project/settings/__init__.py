@@ -1,6 +1,17 @@
 from split_settings.tools import optional, include
 import os
 
+
+site_settings = os.path.join(os.getcwd(), 'project/local_settings.py')
+
+try:
+    settings_path = os.environ['SETTINGS_PATH']
+    if settings_path:
+        site_settings = os.path.abspath(settings_path)
+
+except KeyError:
+    pass
+
 include(
     'components/10-base.py',
     'components/11-apps.py',
@@ -13,7 +24,7 @@ include(
     'components/99-depreciated.py',
 
     # via local_settings.py
-    optional(os.path.join(os.getcwd(), 'project/local_settings.py')),
+    optional(site_settings),
 
     # via server based settings in etc (placed by ansible deployment tasks)
     optional('/etc/openbroadcast.org/application-settings.py'),

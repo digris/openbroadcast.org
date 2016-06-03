@@ -38,6 +38,7 @@ class Follow(models.Model):
     objects = FollowManager()
 
     class Meta:
+        app_label = 'actstream'
         unique_together = ('user', 'content_type', 'object_id')
 
     def __unicode__(self):
@@ -100,6 +101,7 @@ class Action(models.Model):
     objects = actstream_settings.get_action_manager()
 
     class Meta:
+        app_label = 'actstream'
         ordering = ('-timestamp', )
 
     def __unicode__(self):

@@ -3,19 +3,23 @@ __version__ = "0.2.3"
 __copyright__ = "Copyright (c) 2009 Sunlight Labs"
 __license__ = "BSD"
 
-"""
-TODO: Note about origin
-"""
+
+# -*- coding: utf-8 -*-
+__version__ = '0.0.1'
+
+default_app_config = 'arating.apps.AratingConfig'
+
 
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Manager
+
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+from django.contrib.contenttypes.fields import GenericRelation
 
 def limit_total_votes(num):
     from arating.models import Vote
     def total_vote_limiter(request, content_type, object_id, vote):
-        return Vote.objects.filter(content_type=content_type, 
+        return Vote.objects.filter(content_type=content_type,
                                token=request.arating_token).count() < num
     return total_vote_limiter
 
@@ -51,6 +55,7 @@ def enable_voting_on(cls, manager_name='objects',
             base_manager = Manager
 
     class VotableManager(base_manager):
+
 
         def get_queryset(self):
             db_table = self.model._meta.db_table

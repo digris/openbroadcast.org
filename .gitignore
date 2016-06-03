@@ -5,6 +5,7 @@
 
 .idea
 .tmp
+.tox
 
 .ipynb_checkpoints
 db_dumps/
