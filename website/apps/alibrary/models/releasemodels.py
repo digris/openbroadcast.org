@@ -112,8 +112,6 @@ class Release(MigrationMixin):
     album_artists = models.ManyToManyField('alibrary.Artist', through='ReleaseAlbumartists', related_name="release_albumartists", blank=True)
     relations = GenericRelation(Relation)
     d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
-    enable_comments = models.BooleanField(_('Enable Comments'), default=True)
-
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)

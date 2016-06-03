@@ -107,7 +107,7 @@ class ReleaseAdmin(BaseAdmin):
 
     fieldsets = [
         (None,  {
-                'fields': ['name', 'slug', 'main_image', ('label', 'catalognumber'), ('releasedate', 'release_country', 'license'), ('releasetype',), 'enable_comments', 'd_tags', 'description']
+                'fields': ['name', 'slug', 'main_image', ('label', 'catalognumber'), ('releasedate', 'release_country', 'license'), ('releasetype',), 'd_tags', 'description']
                 }),
         ('Users', {'fields' : ['owner', 'creator', 'last_editor', 'publisher']}),
     ]
@@ -205,7 +205,7 @@ class ArtistAdmin(BaseAdmin):
     
     """"""
     fieldsets = [
-        (None,               {'fields': ['name', 'slug', 'main_image', 'real_name', 'country', ('listed', 'disable_link',), 'enable_comments', 'biography', 'excerpt', ]}),
+        (None,               {'fields': ['name', 'slug', 'main_image', 'real_name', 'country', ('listed', 'disable_link',), 'biography', 'excerpt', ]}),
         ('Users', {'fields' : ['owner', 'creator', 'last_editor', 'publisher']}),
         ('Various', {'fields' : ['booking_contact', 'email',]}),
     ]

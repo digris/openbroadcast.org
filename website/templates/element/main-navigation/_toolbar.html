@@ -55,6 +55,9 @@
                     <a title="Login" href="{% url "auth_login" %}?next={{ request.get_full_path }}" rel="modal:open">{% trans 'Login' %}</a>
                     {% comment %}{% endcomment %}
                     <ul class="sub-level" style="visibility: hidden;">
+
+                        <li><a href="{% url "auth_login" %}?next={{ request.get_full_path }}"><i class="icon-lock"></i> {% trans 'Login / Sign Up' %}</a></li>
+
                         <li><a href="{% url "socialauth_begin" "twitter" %}?next={{ request.get_full_path }}"><i class="icon-twitter"></i> {% trans 'Login using Twitter' %}</a></li>
                         <li><a href="{% url "socialauth_begin" "facebook" %}?next={{ request.get_full_path }}"><i class="icon-facebook"></i> {% trans 'Login using Facebook' %}</a></li>
                         <li><a href="{% url "socialauth_begin" "google-oauth2" %}?next={{ request.get_full_path }}"><i class="icon-google-oauth2"></i> {% trans 'Login using google' %}</a></li>

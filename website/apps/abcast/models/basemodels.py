@@ -65,7 +65,7 @@ class Station(BaseModel):
         return 'abcast-station-detail', [self.slug]
 
     def get_admin_url(self):
-        return reverse("admin:abcas_station_change", args=(self.pk,))
+        return reverse("admin:abcast_station_change", args=(self.pk,))
 
 
 arating.enable_voting_on(Station)
@@ -246,7 +246,6 @@ def post_save_channel(sender, **kwargs):
     try:
         notify.start_play(obj.on_air, obj)
     except Exception as e:
-        print e
         pass
 
 post_save.connect(post_save_channel, sender=Channel)

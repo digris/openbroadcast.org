@@ -32,7 +32,6 @@ def format_cuelinks(m):
     s = sum(int(x) * 60 ** i for i,x in enumerate(reversed(t.split(":"))))
 
     str = '<a class="cuepoint" href="#%s">%s</a>' % (s, t)
-    print m.group(0)
     return str
 
 
