@@ -10,9 +10,6 @@
 {% block modnav %}
 <div id="modnav">
 
-    {# include "skeleton/module-navigation.html" #}
-    {% comment %}hardcoded navigation here{% endcomment %}
-
     <ul class="unstyled">
         <li class="descendant"><a href="{% spurl base=url set_query="num_days=7" %}">{% trans "One week" %}</a></li>
         <li class="descendant"><a href="{% spurl base=url set_query="num_days=14" %}">{% trans "Two weeks" %}</a></li>
@@ -25,33 +22,6 @@
 {% block body_class %}scheduler{% endblock %}
 
 {% block inner %}
-<!--
-<div class="listhead">
-	<div style="float: right;">
-
-		{% include "element/_pagination.html" %}
-
-	</div>
-
-	<div class="wrapper list_style">
-		<div>
-			<ul class="unstyled">
-				<li class="left">
-					<a href="{% spurl base=request.get_full_path set_query="list_style=s" %}" title="Set Style" class="action list_style s {% if list_style == "s" %}active{% endif %}"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Disply Type" /></a>
-				</li>
-				<li class="left">
-					<a href="{% spurl base=request.get_full_path set_query="list_style=m" %}" title="Set Style" class="action list_style m {% if list_style == "m" %}active{% endif %}"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Disply Type" /></a>
-				</li>
-				<li class="left">
-					<a href="{% spurl base=request.get_full_path set_query="list_style=l" %}" title="Set Style" class="action list_style l {% if list_style == "l" %}active{% endif %}"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Disply Type" /></a>
-				</li><li class="clear"></li>
-			</ul>
-		</div>
-	</div>
-
-</div>
--->
-
 
 <div class="gridview container scheduler {{ list_style }}">
 {% block content %}

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-import datetime
+from __future__ import unicode_literals
 
+import datetime
 import arating
 from abcast.util import notify
 from django.contrib.auth.models import User
@@ -116,9 +117,6 @@ class OnAirItem(BaseModel):
         return "%s : %s" % (self.channel.pk, self.channel.pk)
 
 
-"""
-A bit verbose, as already channel in bcmon - but different type of app f.t.m.
-"""
 class Channel(BaseModel):
 
     name = models.CharField(max_length=256, null=True, blank=True)
@@ -169,9 +167,6 @@ class Channel(BaseModel):
             'resource_name': 'abcast/channel',  
             'pk': self.pk  
         }) + ''
-        
-        
-
 
     def get_dayparts(self, day):
         dayparts = []

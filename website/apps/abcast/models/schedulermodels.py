@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 import logging
 import datetime
@@ -12,7 +13,6 @@ from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKe
 from django_extensions.db.fields import AutoSlugField
 from django.conf import settings
 from celery.task import task
-from alibrary.models import Playlist
 from abcast.models import BaseModel, Channel
 
 log = logging.getLogger(__name__)

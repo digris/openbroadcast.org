@@ -2,19 +2,15 @@
 {% load spurl cache i18n truncate_tags cache %}
 
 {% block heading %}
-<!-- heading / icon (large one) -->
 <div id="heading">
 	{% include "skeleton/heading.html" %}
 </div>
-<!-- heading / icon (large one) -->
 {% endblock %}
 
 {% block modnav %}
-<!-- start: intra-module navigation -->
 <div id="modnav">
 	{% include "skeleton/module-navigation.html" %}
 </div>
-<!-- end: intra-module navigation -->
 {% endblock %}
 
 {% block tagcloud %}
@@ -40,28 +36,18 @@
 		{% include "element/_pagination.html" %}
 	</div>
 </div>
-<!-- end: listing header / paginator -->
 
-<!-- start: listing output -->
 <div class="listview container profile m {{ list_style }}">
-
-
-
 
 	<div class="list_body">
 		
 		{% for item in object_list %}
-		
-		{# if list_style == "m" #}
-		{% include "abcast/station/_list_item_m.html" %}
-		{# endif #}
-
+		    {% include "abcast/station/_list_item_m.html" %}
 		{% endfor %}
 
 	</div>
 </div>
 
-<!-- start: listing footer -->
 <div class="listview footer">
 	<div class="right ipp">
 
@@ -81,20 +67,12 @@
 		</ul>
 
 	</div>
-	
-	<!--
-	<div id="control_selection" class="left control_selection">
-		<span>Selection:</span>
-		<a href="#selection:invert" class="action">Invert</a>&nbsp;<a href="#selection:all" class="action">All</a>&nbsp;<a href="#selection:clear" class="action">None</a>
-	</div>
-	-->
+
 	<div class="clear">&nbsp;</div>
 </div>
-<!-- end: listing footer -->
 
 {% endblock %}
 
 {% block sidebar %}
 {% include "abcast/station/sidebar/_list.html" %}
 {% endblock %}
-

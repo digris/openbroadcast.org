@@ -17,10 +17,7 @@
 				</div>
 				
 				<div class="span9">
-					
-					
-					
-					<!---->
+
 					<ul class="unstyled">
 						
 						<li><strong>{{ item.name|truncate_chars_inner(30)|highlight(meta.query) }}</strong>  <small class="pull-right">{{ item.releasedate }}</small></li>
@@ -30,15 +27,7 @@
 							<span>{{ item.target_duration / 60 }} min</span>
 						</li>
 						<li><span>{{ item.tags|shorten(30) }}</span></li>
-						<!--
-						{% if item.ct == 'playlist' %}
-						{% for item in item.media %}
-						<li>
-						{{ item.name }}
-						</li>
-						{% endfor %}
-						{% endif %}
-						-->
+
 					</ul>
 					
 				</div>

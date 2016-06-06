@@ -22,10 +22,7 @@ JingleUi = function() {
 	this.current_items = [];
 
 	this.init = function() {
-		
-		console.log('JingleUi: init');
-		console.log(self.api_url);
-		
+
 		this.inline_dom_element = $('#' + this.inline_dom_id);
 
 		self.iface();
@@ -169,11 +166,6 @@ JingleUi = function() {
 	
 	this.update_jingle_display = function(data) {
 
-		// console.log(data)
-		
-		
-		console.log('JINGLE DATA', data);
-
 		var status_map = [];
 		status_map[0] = 'init';
 		status_map[1] = 'done';
@@ -189,21 +181,16 @@ JingleUi = function() {
 			var target_element = $('#jingle_holder_' + item.id);
 
 			item.status_key = status_map[item.status];
-			
-			console.log('ITEM:', item);
-			
-			// console.log(item);
+
 
 			// filter out current jingle
 			if (item.is_current || 1 == 1) {
 
 				if (item.id in self.current_items) {
 					self.current_items[item.id] = item;
-					console.log('item already present');
 
 					if(item.updated != target_element.attr('data-updated')) {
-						console.log('update detected');
-						
+
 						var html = ich.tpl_jingles_inline({object: item});
 						
 						html.attr('data-updated', item.updated);
@@ -226,32 +213,24 @@ JingleUi = function() {
 	};
 	
 	this.update_jingle_selector = function(data) {
-		
-		console.log('this.current_data, data', data);
+
 
 		if(data.objects.length > 0) {
 		
 			if( ! Object.equals(this.current_data, data)) {
-				console.log('data changed');
 
                 // TODO: fix ich templates resp refactor to nj
-				//var html = ich.tpl_jingles_inline_selector(data);
-				//$('.jingle-selector', self.inline_dom_element.parent()).html(html);
+                // var html = ich.tpl_jingles_inline_selector(data);
+                // $('.jingle-selector', self.inline_dom_element.parent()).html(html);
 	
 			} else {
-				console.log('data unchanged');
+
 			}
 		
 		}
 	};
-
-
+	
 };
-
-
-
-
-
 
 
 

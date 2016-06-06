@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 """
 models here nit in use currently. major refactoring required befor integrating

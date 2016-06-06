@@ -346,7 +346,6 @@ SchedulerApp = function () {
                     var el = ui.helper,
                         left = el.position().left,
                         top = el.position().top;
-                    console.log('el:', el);
 
                     left = left - self.grid_offset.left;
                     top = top - self.grid_offset.top;
@@ -383,9 +382,6 @@ SchedulerApp = function () {
         if (!color) {
             color = 0;
         }
-
-        console.log('pos', pos);
-
 
         var data = {
             ct: 'playlist',
@@ -438,37 +434,22 @@ SchedulerApp = function () {
     // time marker
     this.update_time_marker = function () {
 
-
         if (!self.time_offset) {
-            console.log('calculate time offset!');
+
             var ds = new Date(self.station_time);
             var dl = new Date();
-
-            console.log(ds, dl);
-
             var offset = ds - dl;
-            console.log('offset:', offset);
 
             self.time_offset = offset / 1000;
         }
 
-
         var d = new Date();
-        // d += self.time_offset;
-        // d = new Date(d + self.time_offset)
         var top = (d.getMinutes() / 60 + d.getHours() ) * self.pph - self.pph * self.offset;
-
-        // console.log('station_time:', d);
-        // console.log('offset:', self.time_offset);
 
         // lines
         $('.current-time-marker').fadeIn(1000).css('top', top + 'px');
         // left marker
         $('.current-time-arrow').fadeIn(1000).css('top', (top - 5) + 'px');
-
-
-        //
-
 
     };
 
@@ -561,9 +542,6 @@ var EmissionApp = function () {
                     processData: false,
                     data: JSON.stringify(data),
                     complete: function (data) {
-
-                        // console.log(data);
-
                         dialogue.destroy();
                     }
                 });
@@ -671,15 +649,8 @@ var EmissionApp = function () {
 
         if (!self.local_data.locked) {
 
-            /*
-             self.dom_element.draggable({
-             containment : "#board",
-             grid : [self.ppd, self.pph / 4 / 3] // TODO: remove 3 - just here for 5min dev grid
-             // snap: true,
-             });
-             */
             self.dom_element.mousedown(function (e) {
-                // console.log(e);
+
                 $(this).draggable('option', {
                     helper: e.altKey ? 'clone' : 'original'
                 });
@@ -774,16 +745,12 @@ var EmissionApp = function () {
 
         if (e.type == 'dragstop') {
 
-            // gather data
             var el = $(e.target);
-            //console.log(el.offsetParent())
-            //console.log(el.position())
 
             if (e.target.offsetTop < 0) {
                 el.css('top', 0)
             }
 
-            //console.log('drag-stop', e.target.offsetTop);
 
             // check if event was drag or duplicate-drag
             if (e.altKey) {
@@ -805,7 +772,6 @@ var EmissionApp = function () {
                     left: left - 50
                 };
 
-                //console.log('POS:', pos)
 
                 self.scheduler_app.selected_object = self.local_data.content_object;
                 self.scheduler_app.selected_color = self.local_data.color;
@@ -830,9 +796,7 @@ var EmissionApp = function () {
                     channel_id: self.scheduler_app.channel_id
                 };
 
-                console.log('reschedule', data);
 
-                /**/
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -844,12 +808,10 @@ var EmissionApp = function () {
                         if (data.status) {
                             self.load();
                         } else {
-                            // alert(data.message);
                             base.ui.ui_message(data.message, 4000);
                         }
                     },
                     error: function (xhr, status, e) {
-                        // alert(e)
                         base.ui.ui_message(e, 4000);
                     }
                 });
@@ -934,8 +896,6 @@ BaseAcApp = function () {
 
     this.search = function (q, ct, target, extra_query) {
 
-        // console.log('AutocompleteApp - search', q, ct, target, extra_query);
-
         var url = '/api/v1/library/' + ct + '/autocomplete-name/?q=' + q + '&';
 
         if (extra_query != undefined) {
@@ -969,7 +929,4 @@ BaseAcApp = function () {
 
     };
 
-
 };
-
-

@@ -107,7 +107,6 @@ OnAirApp = function () {
         // subscribe for item changes
         // data.resource_uri = data.resource_uri.replace('/track/', '/media/')
         pushy.subscribe(data.resource_uri, function (data) {
-            console.log('pushy callbackk with data:', data);
             self.refresh_item(data)
         });
 

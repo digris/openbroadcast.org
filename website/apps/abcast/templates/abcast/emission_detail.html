@@ -2,18 +2,16 @@
 
 {% load truncate_tags i18n thumbnail arating_tags wiki_tags sekizai_tags abcast_tags %}
 
-{% block heading %} <!-- heading / icon (large one) -->
+{% block heading %}
     <div id="heading">
         {% include "skeleton/heading.html" %}
     </div>
-    <!-- heading / icon (large one) -->
 {% endblock %}
 
-{% block modnav %} <!-- start: intra-module navigation -->
+{% block modnav %}
     <div id="modnav">
         {% include "skeleton/module-navigation.html" %}
     </div>
-    <!-- end: intra-module navigation -->
 {% endblock %}
 
 {% block inner %}
@@ -90,9 +88,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    {# include "alibrary/artist/sidebar/_detail.html" #}
 
-    	<!-- inline "On Air" -->
 	{% on_air_inline %}
 
     <!-- hackish, remove tune-in button -->

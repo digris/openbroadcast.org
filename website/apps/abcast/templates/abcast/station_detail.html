@@ -3,7 +3,6 @@
 {% load truncate_tags i18n thumbnail arating_tags wiki_tags sekizai_tags activity_tags %}
 
 {% block heading %}
-<!-- heading / icon (large one) -->
 {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}js/lib/bootstrap-tab.js"></script>
 {% endaddtoblock %}
 {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery.history.js"></script>{% endaddtoblock %}
@@ -11,14 +10,12 @@
 <div id="heading">
 	{% include "skeleton/heading.html" %}
 </div>
-<!-- heading / icon (large one) -->
 {% endblock %}
 
-{% block modnav %} <!-- start: intra-module navigation -->
+{% block modnav %}
 <div id="modnav">
 	{% include "skeleton/module-navigation.html" %}
 </div>
-<!-- end: intra-module navigation -->
 {% endblock %}
 
 {% block inner %}

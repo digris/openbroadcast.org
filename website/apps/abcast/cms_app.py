@@ -9,7 +9,6 @@ class JingleApp(CMSApp):
     
     name = _("Jingle App")
     urls = ["abcast.urls_jingle"]
-    # menus = [JingleMenu]
 
 apphook_pool.register(JingleApp)
 
@@ -25,6 +24,6 @@ class StationApp(CMSApp):
 
     name = _("Station App")
     urls = ["abcast.urls_station"]
-    #menus = [StationMenu]
+
 
 apphook_pool.register(StationApp)

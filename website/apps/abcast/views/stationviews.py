@@ -33,7 +33,7 @@ class StationListView(PaginationMixin, ListView):
             except Exception, e:
                 pass
 
-        return self.paginate_by
+        return PAGINATE_BY_DEFAULT
 
     def get_context_data(self, **kwargs):
         context = super(StationListView, self).get_context_data(**kwargs)
