@@ -146,10 +146,12 @@ form.form-horizontal
     .span5 .controls
       margin-left: 68px
 
-    .delete .controls
-      text-align: right
-      label
-        float: right
+    .delete
+      margin-left: 0
+      .controls
+        text-align: right
+        label
+          float: right
     
 
 
@@ -557,6 +559,10 @@ ul.selectable-deck
 form.form-playlist
   // target duration
   div.target-duration div.controls
+
+    width: 378px
+    //padding-left: 1px
+
     label
       float: left
 
@@ -564,8 +570,9 @@ form.form-playlist
       // padding: 0 0 0 20px
 
       // version with up to 240 min
-      width: 26px
+      width: 33px
       padding: 0 0 0 7px
+      text-align: center
 
       &.selected
         background-color: $primary-color-a-bg-light

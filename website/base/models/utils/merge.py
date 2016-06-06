@@ -44,7 +44,7 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
     # TODO: this is a bit of a hack, since the generics framework should provide a similar
     # method to the ForeignKey field for accessing the generic related fields.
     generic_fields = []
-    for model in get_models():
+    for model in apps.get_models():
         for field_name, field in filter(lambda x: isinstance(x[1], GenericForeignKey), model.__dict__.iteritems()):
             generic_fields.append(field)
 

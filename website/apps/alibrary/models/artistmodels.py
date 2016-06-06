@@ -8,6 +8,7 @@ import uuid
 import arating
 import reversion
 import tagging
+from actstream import action
 from alibrary.models import MigrationMixin, Relation, Profession
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
@@ -24,7 +25,6 @@ from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
-from django_extensions.db.fields.json import JSONField
 from l10n.models import Country
 from tagging.registry import register as tagging_register
 
@@ -34,7 +34,6 @@ LOOKUP_PROVIDERS = (
     ('discogs', _('Discogs')),
     ('musicbrainz', _('Musicbrainz')),
 )
-
 
 def upload_image_to(instance, filename):
     filename, extension = os.path.splitext(filename)
@@ -239,10 +238,11 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     @cached_property
     def get_membership(self):
+        """ get artists group/band membership """
         return [m.parent for m in ArtistMembership.objects.filter(child=self)]
 
     def get_alias_ids(self, exclude=None):
-
+        """ get ids of artists aliases """
         exclude = exclude or []
         alias_ids = []
         parent_alias_ids = ArtistAlias.objects.filter(child__pk=self.pk).values_list('parent__pk', flat=True).distinct()
@@ -259,11 +259,13 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         return alias_ids
 
     def get_aliases(self):
+        """ get artists aliases """
         return Artist.objects.filter(pk__in=self.get_alias_ids([])).exclude(pk=self.pk).distinct()
 
 
     @cached_uuid_aware(timeout=60 * 60 * 24)
     def get_releases(self):
+        """ get releases where artist appears """
         from alibrary.models.releasemodels import Release
         try:
             r = Release.objects.filter(
@@ -275,6 +277,7 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     @cached_uuid_aware(timeout=60 * 60 * 24)
     def get_media(self):
+        """ get tracks where artist appears """
         from alibrary.models.mediamodels import Media
         try:
             m = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk)).nocache().distinct()
@@ -283,7 +286,7 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
             return []
 
     def appearances(self):
-
+        """ get artists appearances (releases/tracks) """
         try:
             num_releases = self.get_releases().count()
         except:
@@ -338,18 +341,9 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         super(Artist, self).save(*args, **kwargs)
 
 
-try:
-    tagging_register(Artist)
-except Exception as e:
-    print '%s' % e
-    pass
 
+tagging_register(Artist)
 arating.enable_voting_on(Artist)
-
-"""
-Actstream handling moved to task queue to avoid wrong revision due to transaction
-"""
-from actstream import action
 
 
 def action_handler(sender, instance, created, **kwargs):
@@ -361,18 +355,12 @@ post_save.connect(action_handler, sender=Artist)
 
 @task
 def action_handler_task(instance, created):
-    try:
-        verb = _('updated')
-        if created:
-            verb = _('created')
-        action.send(instance.creator, verb=verb, target=instance)
 
-    except Exception as e:
+    if created and instance.creator:
+        action.send(instance.creator, verb=_('created'), target=instance)
 
-        print "artist - action_handler_task"
-        print 'instance:     %s' % instance
-        print 'created:      %s' % created
-        print 'last editor:  %s' % instance.creator
+    elif instance.last_editor:
+        action.send(instance.last_editor, verb=_('updated'), target=instance)
 
 
 class ArtistMembership(models.Model):

@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate_tags i18n thumbnail arating_tags wiki_tags comments atracker_tags dajaxice_templatetags sekizai_tags alibrary_tags url_tags %}
+{% load truncate_tags i18n thumbnail arating_tags wiki_tags comments atracker_tags dajaxice_templatetags sekizai_tags alibrary_tags url_tags addthis %}
 
 
 {% block title %}{{ object.name }}{% if object.get_artist_display %} - {{ object.get_artist_display }}{% endif %}
@@ -189,7 +189,7 @@
 
     </div>
 
-
+    {% addthis_widget %}
 
 
 {% endblock %}
@@ -198,28 +198,11 @@
 
     {% include "alibrary/release/sidebar/_detail.html" %}
 
-    <div class="listing relations" style="padding-top: 8px;">
-
-        <div class="page-header">
-            <h2>{% trans "Show/share on" %}
-                <small>{% trans "external links" %}</small>
-            </h2>
-
-            <div class="item social">
-                <div class="fb-like" data-href="{% fullurl %}" data-width="200" data-layout="button_count"
-                     data-show-faces="false" data-send="true"></div>
-            </div>
-
-        </div>
-
+    <div class="listing relations">
         <div class="item relations">
             {% all_relations_inline object %}
         </div>
-
-
     </div>
-
-
 
 
 {% endblock %}

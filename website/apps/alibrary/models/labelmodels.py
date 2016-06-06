@@ -8,6 +8,7 @@ import logging
 import reversion
 import uuid
 import arating
+from actstream import action
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
@@ -44,9 +45,6 @@ class LabelManager(models.Manager):
 
 class Label(MigrationMixin):
 
-
-    # core fields
-    #uuid = UUIDField(primary_key=False)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=400)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
@@ -182,18 +180,10 @@ class Label(MigrationMixin):
 
 
 
-try:
-    tagging_register(Label)
-except Exception as e:
-    print '***** %s' % e
-    pass
 
+tagging_register(Label)
 arating.enable_voting_on(Label)
 
-"""
-Actstream handling moved to task queue to avoid wrong revision due to transaction
-"""
-from actstream import action
 def action_handler(sender, instance, created, **kwargs):
     action_handler_task.delay(instance, created)
 
@@ -201,10 +191,9 @@ post_save.connect(action_handler, sender=Label)
 
 @task
 def action_handler_task(instance, created):
-    try:
-        verb = _('updated')
-        if created:
-            verb = _('created')
-        action.send(instance.get_last_editor(), verb=verb, target=instance)
-    except Exception, e:
-        print e
+
+    if created and instance.creator:
+        action.send(instance.creator, verb=_('created'), target=instance)
+
+    elif instance.last_editor:
+        action.send(instance.last_editor, verb=_('updated'), target=instance)

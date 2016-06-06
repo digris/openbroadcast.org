@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate_tags i18n thumbnail arating_tags wiki_tags sekizai_tags alibrary_tags url_tags spurl %}
+{% load truncate_tags i18n thumbnail arating_tags wiki_tags sekizai_tags alibrary_tags url_tags spurl addthis %}
 
 {% block heading %}
     <!-- view specific scripts -->
@@ -207,46 +207,21 @@
 		{% include "element/chat/_object_comments.html" %}
 	</section>
 
-	
+    </div>
 
-	
-	
-	
-	
-	
-	
-	
-
-
-</div>
+    {% addthis_widget %}
 
 {% endblock %}
-
-
 
 
 {% block sidebar %}
 
     {% include "alibrary/label/sidebar/_detail.html" %}
 
-    <div class="listing relations" style="padding-top: 8px;">
-
-        <div class="page-header">
-            <h2>{% trans "Show/share on" %}
-                <small>{% trans "external links" %}</small>
-            </h2>
-
-            <div class="item social">
-                <div class="fb-like" data-href="{% fullurl %}" data-width="200" data-layout="button_count"
-                     data-show-faces="false" data-send="true"></div>
-            </div>
-
-        </div>
-
+    <div class="listing relations">
         <div class="item relations">
             {% all_relations_inline object %}
         </div>
-
     </div>
 
 {% endblock %}

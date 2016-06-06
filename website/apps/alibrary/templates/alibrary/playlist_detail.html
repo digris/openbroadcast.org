@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate_tags i18n thumbnail arating_tags wiki_tags comments sekizai_tags %}
+{% load truncate_tags i18n thumbnail arating_tags wiki_tags comments sekizai_tags addthis %}
 
 {% block heading %}
     <!-- view specific scripts -->
@@ -212,8 +212,8 @@
 
     </div>
 
-
-
+    {# TODO: how to handle privat/public playlists? #}
+    {# addthis_widget #}
 
 {% endblock %}
 

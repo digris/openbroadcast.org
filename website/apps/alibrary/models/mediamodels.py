@@ -694,7 +694,7 @@ class Media(MigrationMixin):
 
         unique_slugify(self, self.name)
 
-        # kind of ugly, clean empty relations
+        # pretty of ugly, clean empty relations
         for ea in MediaExtraartists.objects.filter(media__pk=self.pk):
             try:
                 if not ea.artist:

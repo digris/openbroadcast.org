@@ -18,6 +18,8 @@ from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKe
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
@@ -469,8 +471,29 @@ class Release(MigrationMixin):
             self.releasedate = rd
         except:
             self.releasedate = None
-        
+
         super(Release, self).save(*args, **kwargs)
+
+
+
+
+@receiver(post_save, sender=Release)
+def release_post_save(sender, instance, **kwargs):
+    # TODO: hackish workaround - improve!
+    # delete duplicate albumartists (can be caused by generic 'merge')
+    qs = instance.release_albumartist_release.all()
+    to_keep = []
+    to_delete = []
+    for aa in qs:
+        t = (aa.join_phrase, aa.artist)
+        if not t in to_keep:
+            to_keep.append(t)
+        else:
+            to_delete.append(aa.pk)
+
+    if to_delete:
+        qs.filter(pk__in=to_delete).delete()
+
 
 try:
     tagging_register(Release)
@@ -502,6 +525,9 @@ class ReleaseAlbumartists(models.Model):
         verbose_name = _('Albumartist')
         verbose_name_plural = _('Albumartists')
         ordering = ('position', )
+
+    def __unicode__(self):
+        return '{0} - {1} {2}'.format(self.release, self.join_phrase, self.artist)
 
 
 class ReleaseRelations(models.Model):

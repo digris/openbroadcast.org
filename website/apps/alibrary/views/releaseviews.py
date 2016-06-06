@@ -24,7 +24,7 @@ from lib.util.form_errors import merge_form_errors
 from base.models.utils import merge_objects
 from pure_pagination.mixins import PaginationMixin
 from tagging.models import Tag
-from ..models import Release, Artist, Label
+from ..models import Release, Artist, Label, ReleaseAlbumartists
 
 ALIBRARY_PAGINATE_BY = getattr(settings, 'ALIBRARY_PAGINATE_BY', (12,24,36,120))
 ALIBRARY_PAGINATE_BY_DEFAULT = getattr(settings, 'ALIBRARY_PAGINATE_BY_DEFAULT', 12)
@@ -442,13 +442,17 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
     def formset_albumartist_valid(self, formset):
 
+        import hashlib
+
         # TODO: this is extremely ugly!! refactor!
         albumartists = formset.save(commit=False)
-        import hashlib
+
+        releaseartist_delete_qs = ReleaseAlbumartists.objects.filter(release__pk=self.object.pk)
+        releaseartist_delete_qs = releaseartist_delete_qs.exclude(artist__pk__in=[a.artist.pk for a in albumartists])
+        releaseartist_delete_qs.delete()
+
         for albumartist in albumartists:
-
             key = hashlib.md5(albumartist.artist.name.encode('ascii', 'ignore')).hexdigest()
-
             try:
                 artist = self.created_artists[key]
             except Exception as e:
@@ -459,14 +463,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
                 albumartist.save()
                 merge_objects(albumartist.artist, [Artist.objects.get(pk=delete_pk),])
 
-            # if not albumartist.artist.creator:
-            #     print 'no creator'
-            #     albumartist.artist.creator = self.request.user
-            #     albumartist.artist.save()
-
             albumartist.save()
-
-
 
 
     def formset_action_valid(self, formset):
