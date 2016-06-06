@@ -19,45 +19,6 @@ log = logging.getLogger(__name__)
 
 USE_CELERYD = getattr(settings, 'ABCAST_USE_CELERYD', False)
 
-
-class Broadcast(BaseModel):
-
-    name = models.CharField(max_length=200, db_index=True)
-    slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
-
-    STATUS_CHOICES = (
-        (0, _('Waiting')),
-        (1, _('Done')),
-        (2, _('Error')),
-    )
-    status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
-
-    TYPE_CHOICES = (
-        ('studio', _('Studio')),
-        ('playlist', _('Playlist')),
-        ('couchcast', _('Couchcast')),
-    )
-    type = models.CharField(verbose_name=_('Type'), max_length=12, default='jingle', choices=TYPE_CHOICES)
-    
-    description = models.TextField(verbose_name="Extra Description", blank=True, null=True)
-    duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", blank=True, null=True, editable=True)
-
-    user = models.ForeignKey(User, blank=True, null=True, related_name="scheduler_broadcasts", on_delete=models.SET_NULL)
-
-    playlist = models.ForeignKey(Playlist, blank=True, null=True, related_name="scheduler_broadcasts", on_delete=models.SET_NULL)
-
-    objects = models.Manager()
-
-    class Meta:
-        app_label = 'abcast'
-        verbose_name = _('Broadcast')
-        verbose_name_plural = _('Broadcasts')
-        ordering = ('created', )
-    
-    
-    def __unicode__(self):
-        return u'%s' % self.name
-
 class EmissionManager(models.Manager):
 
     def future(self):

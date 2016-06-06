@@ -22,8 +22,7 @@ from tastypie.utils import trailing_slash
 
 log = logging.getLogger(__name__)
 
-SCHEDULE_AHEAD = 60 * 60 * 6  # seconds
-
+SCHEDULE_AHEAD = 60 * 60 * 6
 
 class StationResource(ModelResource):
     class Meta:
@@ -32,13 +31,11 @@ class StationResource(ModelResource):
         detail_allowed_methods = ['get', ]
         resource_name = 'abcast/station'
         excludes = ['updated', ]
-        # include_absolute_url = True
         authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication(), Authentication())
         authorization = Authorization()
         filtering = {
             'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
         }
-        # cache = SimpleCache(timeout=120)
 
     def dehydrate(self, bundle):
 
@@ -62,7 +59,6 @@ class ChannelResource(ModelResource):
         detail_allowed_methods = ['get', ]
         resource_name = 'abcast/channel'
         excludes = ['on_air_id', ]
-        # include_absolute_url = True
         authentication = Authentication()
         authorization = Authorization()
         filtering = {
@@ -99,13 +95,13 @@ class ChannelResource(ModelResource):
         """
         generate stream settings
         """
-        if (bundle.obj.rtmp_app and bundle.obj.rtmp_path) or bundle.obj.get_stream_url():
+        if (bundle.obj.rtmp_app and bundle.obj.rtmp_path) or bundle.obj.stream_url:
             stream = {
                 'file': '%s.stream' % bundle.obj.rtmp_path,
                 'rtmp_app': '%s' % bundle.obj.rtmp_app,
                 'rtmp_host': 'rtmp://%s:%s/' % (settings.RTMP_HOST, settings.RTMP_PORT),
                 # 'uri': 'http://pypo:8000/obp-dev-256.mp3',
-                'uri': bundle.obj.get_stream_url(),
+                'uri': bundle.obj.stream_url,
                 'uuid': bundle.obj.uuid,
             }
         else:
@@ -114,7 +110,7 @@ class ChannelResource(ModelResource):
             }
 
         bundle.data['stream'] = stream
-        bundle.data['stream_url'] = bundle.obj.get_stream_url()
+        bundle.data['stream_url'] = bundle.obj.stream_url
         bundle.data['images'] = []
         bundle.data['media'] = None
 
@@ -523,6 +519,7 @@ class BaseResource(Resource):
         /* This action is for use by our dev scripts, that make
          * a change to the database and we want rabbitmq to send
          * out a message to pypo that a potential change has been made. */
+
         public function rabbitmqDoPushAction()
         {
             Logging::info("Notifying RabbitMQ to send message to pypo");
@@ -555,20 +552,7 @@ class BaseResource(Resource):
 
     def get_stream_settings(self, request, **kwargs):
 
-        channel_uuid = request.GET.get('channel_id', None)
-
-        try:
-            channel = Channel.objects.get(uuid=channel_uuid)
-        except Exception as e:
-            print e
-            channel = None
-
-        settings = []
-        if channel:
-            from abcast.util.liquidsoap import generate_settings
-            settings = generate_settings(channel)
-
-        data = {'settings': settings}
+        data = {'settings': []}
         return self.json_response(request, data)
 
     def update_liquidsoap_status(self, request, **kwargs):
@@ -702,10 +686,6 @@ class BaseResource(Resource):
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
 
-    """
-    response wrappers
-    """
-
     def base_response(self, request, bundle):
 
         self.method_check(request, allowed=['get'])
@@ -722,5 +702,4 @@ class BaseResource(Resource):
         self.throttle_check(request)
         self.log_throttled_access(request)
 
-        return HttpResponse(json.dumps(data),
-                            content_type='application/json; charset=utf8')
+        return HttpResponse(json.dumps(data), content_type='application/json; charset=utf8')

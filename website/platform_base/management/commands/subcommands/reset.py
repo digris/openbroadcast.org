@@ -2,6 +2,7 @@
 import sys
 from django.core.management.base import NoArgsCommand, CommandError
 from django.apps import apps
+from tqdm import tqdm
 
 MODELS_TO_RESET = (
 
@@ -37,7 +38,7 @@ MODELS_TO_RESET = (
 
 )
 
-LIMIT_PER_DELETE = 1000
+LIMIT_PER_DELETE = 10000
 
 
 class ResetDatabase(NoArgsCommand):
@@ -62,11 +63,10 @@ class ResetDatabase(NoArgsCommand):
 
             while qs.count() > 0:
                 print 'got %s entries for deletion - model: %s' % (qs.count(), entry)
-                for item in qs[0:LIMIT_PER_DELETE]:
+                for item in tqdm(qs[0:LIMIT_PER_DELETE]):
                     item.delete()
-                    #print '.',
-                    sys.stdout.write('.')
-                    sys.stdout.flush()
+                    # sys.stdout.write('.')
+                    # sys.stdout.flush()
                 print
                 qs = model.objects.all().nocache()
 

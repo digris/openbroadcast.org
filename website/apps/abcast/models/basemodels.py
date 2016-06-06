@@ -137,7 +137,6 @@ class Channel(BaseModel):
     rtmp_app = models.CharField(max_length=256, null=True, blank=True)
     rtmp_path = models.CharField(max_length=256, null=True, blank=True)
     has_scheduler = models.BooleanField(default=False)
-    stream_server = models.ForeignKey('StreamServer', null=True, blank=True, on_delete=models.SET_NULL)
     mount = models.CharField(max_length=64, null=True, blank=True)
 
     tunein_station_id = models.CharField(max_length=16, null=True, blank=True)
@@ -172,18 +171,6 @@ class Channel(BaseModel):
         }) + ''
         
         
-    def get_stream_url(self, format=None):
-        
-        if self.stream_url:
-            return self.stream_url
-
-        if self.stream_server:
-            stream_server = self.stream_server
-            format = self.stream_server.formats.all()[0]
-
-            return '%s%s-%s.%s' % (stream_server.host, self.mount, format.bitrate, format.type)
-
-        return None
 
 
     def get_dayparts(self, day):
@@ -250,69 +237,3 @@ def post_save_channel(sender, **kwargs):
 
 post_save.connect(post_save_channel, sender=Channel)
 
-
-
-
-
-class StreamServer(BaseModel):
-    
-    name = models.CharField(max_length=256, null=True, blank=False)     
-    host = models.CharField(max_length=256, null=True, blank=True)
-
-    source_user = models.CharField(max_length=64, default='source', null=True, blank=True)
-    source_pass = models.CharField(max_length=64, null=True, blank=True)
-
-    admin_user = models.CharField(max_length=64, default='admin', null=True, blank=True)
-    admin_pass = models.CharField(max_length=64, null=True, blank=True)
-
-    active = models.BooleanField(default=True)
-    mountpoint = models.CharField(max_length=64, null=True, help_text=_('e.g. main-hifi.mp3'))
-    meta_prefix = models.CharField(max_length=64, null=True, blank=True, help_text=_('e.g. My Station!'))
-
-    formats = models.ManyToManyField('StreamFormat', blank=True)
-
-    TYPE_CHOICES = (
-        ('icecast2', _('Icecast 2')),
-        ('rtmp', _('RTMP / Wowza')),
-    )
-    type = models.CharField(verbose_name=_('Type'), max_length=12, default='icecast2', choices=TYPE_CHOICES)
-    
-    
-    class Meta:
-        app_label = 'abcast'
-        verbose_name = _('Streaming server')
-        verbose_name_plural = _('Streaming servers')
-        ordering = ('name', )
-
-    def __unicode__(self):
-        return "%s" % self.name
-
-
-class StreamFormat(BaseModel):
-
-    TYPE_CHOICES = (
-        ('mp3', _('MP3')),
-        ('ogg', _('ogg/vorbis')),
-        ('aac', _('AAC')),
-    )
-    type = models.CharField(max_length=12, default='mp3', choices=TYPE_CHOICES)
-    BITRATE_CHOICES = (
-        (64, _('64 kbps')),
-        (96, _('96 kbps')),
-        (128, _('128 kbps')),
-        (160, _('160 kbps')),
-        (192, _('192 kbps')),
-        (256, _('256 kbps')),
-        (320, _('320 kbps')),
-    )
-    bitrate = models.PositiveIntegerField(default=256, choices=BITRATE_CHOICES)
-    
-    
-    class Meta:
-        app_label = 'abcast'
-        verbose_name = _('Streaming format')
-        verbose_name_plural = _('Streaming formats')
-        ordering = ('type', )
-
-    def __unicode__(self):
-        return "%s | %s" % (self.type, self.bitrate)

@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+"""
+models here nit in use currently. major refactoring required befor integrating
+"""
+
 import logging
 import os
 import shutil
