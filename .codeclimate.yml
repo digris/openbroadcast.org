@@ -9,7 +9,7 @@ engines:
   radon:
     enabled: true
   fixme:
-    enabled: true
+    enabled: false
 
 
 ratings:
