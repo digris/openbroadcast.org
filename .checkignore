@@ -4,6 +4,7 @@
 bin/*
 conf/*
 doc/*
+*migrations/*
 
 # 3rd party in repository
 website/tools/*

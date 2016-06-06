@@ -26,6 +26,7 @@ exclude_paths:
 - "bin/*"
 - "conf/*"
 - "doc/*"
+- "**/migrations/*"
 - "website/tools/*"
 - "website/legacy/obp_legacy/*"
 - "website/apps/nunjucks/*"
