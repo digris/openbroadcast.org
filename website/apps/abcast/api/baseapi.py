@@ -65,14 +65,6 @@ class ChannelResource(ModelResource):
             'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
         }
 
-    """ stream:
-    file: "private/8acfe075/bcb7/11e2/a24c/b8f6b11a3aed/master.mp3"
-    rtmp_app: "alibrary"
-    rtmp_host: "rtmp://localhost:1935/"
-    uri: "/content/library/tracks/tracks/8acfe075-bcb7-11e2-a24c-b8f6b11a3aed/stream_html5/base.mp3"
-    uuid: "8acfe075-bcb7-11e2-a24c-b8f6b11a3aed"
-    """
-
     def dehydrate(self, bundle):
 
         if bundle.obj.station and bundle.obj.station.main_image:
@@ -85,11 +77,7 @@ class ChannelResource(ModelResource):
         else:
             bundle.data['main_image'] = None
 
-        """
-        generate on-air
-        """
         on_air = bundle.obj.get_on_air()
-
         bundle.data['on_air'] = on_air
 
         """
@@ -573,7 +561,7 @@ class BaseResource(Resource):
             item = Media.objects.get(uuid=media_uuid)
             try:
                 channel = Channel.objects.get(uuid=channel_uuid)
-            except:
+            except Channel.DoesNotExist:
                 channel = None
 
             if channel:

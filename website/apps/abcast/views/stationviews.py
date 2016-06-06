@@ -18,7 +18,11 @@ class StationListView(PaginationMixin, ListView):
     
     model = Station
     extra_context = {}
-    
+
+    def __init__(self, **kwargs):
+        super(StationListView, self).__init__(**kwargs)
+        self.relation_filter = []
+
     def get_paginate_by(self, queryset):
         
         ipp = self.request.GET.get('ipp', None)
@@ -71,11 +75,10 @@ class StationListView(PaginationMixin, ListView):
             
             
         # special relation filters
-        self.relation_filter = []
 
-            
-            
-            
+
+
+
 
         # base queryset        
         #qs = Release.objects.all()
@@ -116,7 +119,7 @@ class StationDetailView(DetailView):
     model = Station
     extra_context = {}
 
-    def render_to_response(self, context):
+    def render_to_response(self, context, **kwargs):
         return super(StationDetailView, self).render_to_response(context, content_type="text/html")
     
 

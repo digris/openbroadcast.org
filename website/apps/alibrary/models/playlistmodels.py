@@ -579,27 +579,6 @@ class Playlist(MigrationMixin, models.Model):
         else:
             self.status = 99 # 'error'
 
-        # check if scheduled, if yes update status
-        if self.scheduler_broadcasts.all().count() > 1:
-            self.status = 3
-
-
-
-        # update d_tags
-        """
-        try:
-            t_tags = ''
-            for tag in self.tags:
-                t_tags += '%s, ' % tag    
-            
-            self.tags = t_tags
-            self.d_tags = t_tags
-        except Exception, e:
-            #print e
-            pass
-        """
-        
-        
         # self.user = request.user  
         super(Playlist, self).save(*args, **kwargs)
     

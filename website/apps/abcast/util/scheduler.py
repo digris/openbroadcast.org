@@ -63,6 +63,9 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
             if i_end < range_start:
                 pass
             else:
+
+                uri = None
+
                 if EXCHANGE == 'http':
                     raise NotImplemented('http transport not implemented anymore')
 

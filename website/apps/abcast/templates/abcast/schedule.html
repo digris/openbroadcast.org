@@ -19,24 +19,12 @@
 
     {% include "abcast/layout/_calendar.html" %}
 
-    {% addtoblock "js-post" %}
-        <script type="text/javascript" src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-switch.js"></script>
-    {% endaddtoblock %}
-    {% addtoblock "css" %}
-        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/scheduler.css">{% endaddtoblock %}
 
+    {% addtoblock "css" %}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/scheduler.css">{% endaddtoblock %}
     {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
-    {% addtoblock "js-post" %}
-        <script type="text/javascript" src="{{ STATIC_URL }}abcast/js/lib/datepicker/datepicker.js"></script>
-    {% endaddtoblock %}
-
-    {% addtoblock "js-post" %}
-        <script type="text/javascript" src="{{ STATIC_URL }}abcast/js/lib/jquery-collision.js"></script>
-    {% endaddtoblock %}
-    {% addtoblock "js-post" %}
-        <script type="text/javascript" src="{{ STATIC_URL }}abcast/js/scheduler.js"></script>{% endaddtoblock %}
-    {% addtoblock "js-post" %}
-
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-switch.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}abcast/js/lib/datepicker/datepicker.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}abcast/js/scheduler.js"></script>{% endaddtoblock %}{% addtoblock "js-post" %}
 
         <script type="text/javascript">
 
@@ -117,13 +105,10 @@
                     calendars: 1,
                     starts: 1,
                     onChange: function (formated, dates) {
-
                         var range_start = new Date('{{ today|date:"Y-m-d" }}');
                         var date_selected = new Date(formated);
                         var new_offset = (days_between(get_monday(date_selected), range_start));
-                        var uri = update_query_string(document.location.href, 'days_offset', new_offset);
-                        document.location.href = uri;
-
+                        document.location.href = update_query_string(document.location.href, 'days_offset', new_offset);
                     }
                 });
 
@@ -137,18 +122,19 @@
     {% addtoblock "css" %}
         <!-- override styles depending on range etc. -->
         <style>
+            /*noinspection CssUnusedSymbol*/
             .wk-daynames th {
                 width: {{ ppd }}px;
             }
-
+            /*noinspection CssUnusedSymbol*/
             .tg-gutter {
                 width: {{ ppd }}px;
             }
-
+            /*noinspection CssUnusedSymbol*/
             .emission {
                 width: {{ ppd|add:1 }}px !important;
             }
-
+            /*noinspection CssUnusedSymbol*/
             .ui-draggable-dragging {
                 width: {{ ppd }}px !important;
             }

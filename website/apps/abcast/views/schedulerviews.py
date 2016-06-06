@@ -126,6 +126,10 @@ class EmissionListView(ListView):
     model = Emission
     extra_context = {}
 
+    def __init__(self, **kwargs):
+        super(EmissionListView, self).__init__(**kwargs)
+        self.tagcloud = None
+
     def get_context_data(self, **kwargs):
         context = super(EmissionListView, self).get_context_data(**kwargs)
         
@@ -137,7 +141,6 @@ class EmissionListView(ListView):
         offset = datetime.timedelta(days=-today.weekday())
         for day in range(7):
             date = today + offset
-            #date = date.strftime("%a, %d %b %Y %H:%M:%S +0000")
             days.append( date )
             offset += datetime.timedelta(days=1)
         
@@ -152,12 +155,10 @@ class EmissionListView(ListView):
     def get_queryset(self, **kwargs):
 
         kwargs = {}
-        self.tagcloud = None
         q = self.request.GET.get('q', None)
         
         if q:
-            qs = Emission.objects.filter(Q(name__istartswith=q))\
-            .distinct()
+            qs = Emission.objects.filter(Q(name__istartswith=q)).distinct()
         else:
             qs = Emission.objects.all()
 
@@ -168,7 +169,7 @@ class EmissionDetailView(DetailView):
     model = Emission
     extra_context = {}
 
-    def render_to_response(self, context):
+    def render_to_response(self, context, **kwargs):
         return super(EmissionDetailView, self).render_to_response(context, content_type="text/html")
 
     def get_context_data(self, **kwargs):

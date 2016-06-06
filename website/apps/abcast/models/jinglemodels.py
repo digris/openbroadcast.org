@@ -250,8 +250,7 @@ class Jingle(BaseModel):
         return
     
     def save(self, *args, **kwargs):
-        
-        log = logging.getLogger('abcast.jinblemodels.save')
+
         log.info('Jingle id: %s - Save' % self.pk)
     
         if self.uuid is not None:
@@ -271,8 +270,7 @@ class Jingle(BaseModel):
     
 
 def jingle_post_save(sender, **kwargs):
-    
-    log = logging.getLogger('abcast.jinblemodels.jingle_post_save')
+
     obj = kwargs['instance']
     
     # save the folder path

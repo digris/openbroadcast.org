@@ -19,7 +19,7 @@ JingleUi = function() {
 	this.inline_dom_element;
 	
 	this.current_data;
-	this.current_items = new Array;
+	this.current_items = [];
 
 	this.init = function() {
 		
@@ -87,13 +87,10 @@ JingleUi = function() {
 			var container = $(this).parents('.list.item');
 			var action = $(this).data('action');
 			var resource_uri = container.data('resource_uri');
-
 			
 			if(action == 'play') {
 
-			};
-
-			
+			}
 		});
 
 		// selector
@@ -107,25 +104,10 @@ JingleUi = function() {
 
 			$('#default_jingle_set').data('uistate', resource_uri);
 
-		setTimeout(function(){
-			self.update_jingles();
-		},50);
-			//self.update_jingles();
+			setTimeout(function(){
+				self.update_jingles();
+			},50);
 
-			/*
-			$.ajax({
-				url: resource_uri + 'set-current/',
-				type: 'GET',
-				dataType: "json",
-				contentType: "application/json",
-				processData:  false,
-				success: function(data) {
-					self.run_interval();
-				},
-				async: false
-			});
-			*/
-			
 		});
 		
 		
@@ -165,9 +147,8 @@ JingleUi = function() {
 			$.getJSON(resource_uri, function(data) {
 				self.update_jingle_display(data);
 			});
-		};
-			
-			// maybe not the best way. think about alternatives...
+		}
+		// maybe not the best way. think about alternatives...
 			try {
 				setTimeout(function(){
 					alibrary.playlist_editor.rebind();
@@ -193,7 +174,7 @@ JingleUi = function() {
 		
 		console.log('JINGLE DATA', data);
 
-		var status_map = new Array;
+		var status_map = [];
 		status_map[0] = 'init';
 		status_map[1] = 'done';
 		status_map[2] = 'ready';

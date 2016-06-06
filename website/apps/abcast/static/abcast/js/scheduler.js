@@ -34,8 +34,8 @@ SchedulerApp = function () {
     };
     this.num_days;
 
-    this.local_data = new Array;
-    this.emissions = new Array;
+    this.local_data = [];
+    this.emissions = [];
 
     this.selected_object = false;
     this.selected_color = false;
@@ -85,8 +85,9 @@ SchedulerApp = function () {
     this.bindings = function () {
 
         // playlist search
+        var input_autocomplete = $("input.autocomplete");
 
-        $("input.autocomplete").live('keyup focus', function (e) {
+        input_autocomplete.live('keyup focus', function (e) {
 
             var q = $(this).val();
             var ct = $(this).attr('data-ct');
@@ -101,7 +102,7 @@ SchedulerApp = function () {
 
         });
 
-        $("input.autocomplete").live('blur', function (e) {
+        input_autocomplete.live('blur', function (e) {
             var target = $('.ac-result', $(this).parent());
             self.ac.clear(target);
         });
@@ -339,25 +340,6 @@ SchedulerApp = function () {
                         left = el.position().left,
                         top = el.position().top;
 
-                    /*
-                     var collision = ui.helper.collision("div.chip", {
-                     mode : "collision",
-                     colliderData : "cdata",
-                     as : "<div/>"
-                     });
-
-
-                     if (collision.length > 1) {
-                     for (var i = 1; i < collision.length; i++) {
-                     var hit = collision[i];
-                     var c = $(hit).data("cdata");
-                     $(c).addClass('colision');
-                     }
-                     } else {
-                     el.removeClass('colision');
-                     }
-                     */
-
                 },
 
                 stop: function (e, ui) {
@@ -555,7 +537,6 @@ var EmissionApp = function () {
             if (action == 'cancel') {
                 dialogue.destroy();
             }
-            ;
             if (action == 'save') {
 
                 var locked = $('.edit-lock', $(dialogue.elements.content)).attr('checked');
@@ -569,7 +550,7 @@ var EmissionApp = function () {
 
                 var data = {
                     'locked': locked,
-                    'color': color,
+                    'color': color
                 };
                 var url = self.api_url + 'update/';
                 $.ajax({

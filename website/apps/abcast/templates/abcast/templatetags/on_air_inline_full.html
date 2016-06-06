@@ -1,22 +1,18 @@
 {% load sekizai_tags i18n pushy_tags%}
 
-{% addtoblock "js-post" %}<!--<script src="{{ STATIC_URL }}abcast/js/lib/jquery.countdown.js"></script>-->{% endaddtoblock %}
 {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}abcast/js/on_air.js"></script>{% endaddtoblock %}
 {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
 {% addtoblock "js-post" %}
 <script>
 	$(function(){
-
 		var abcast = abcast || {};
 		abcast.on_air = new OnAirApp();
 		abcast.on_air.api_url = "{{ channel.get_api_url }}";
 		abcast.on_air.authenticated = {% if user.is_authenticated %}true{% else %}false{% endif %};
 
-
         setTimeout(function() {
             abcast.on_air.init();
         }, 1000);
-
 
 	});
 </script>
@@ -35,8 +31,6 @@
 	<div class="emission"><!-- inserted by nj --></div>
 
 	<div class="items"><!-- inserted by nj --></div>
-    <!--
-	<div>Next: <span class="countdown"></span></div>
-	-->
+
 </div>
 

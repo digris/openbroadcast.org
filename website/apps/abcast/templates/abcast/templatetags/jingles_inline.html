@@ -4,26 +4,14 @@
 {% addtoblock "js-post" %}
 <script>
 	$(function(){
-
 		var abcast = abcast || {};
 		abcast.jingle = new JingleUi();
 		abcast.jingle.api_url = "{% url "api_dispatch_list" resource_name='abcast/jingleset' api_name='v1'%}";
 		abcast.jingle.api_url_simple = "{% url "api_dispatch_list" resource_name='abcast/jingleset' api_name='v1'%}";
 		abcast.jingle.init();
-
 	});
 </script>
-
-<!-- moustache templates -->
-
-
-
-
-
 {% endaddtoblock %}
-
-
-
 
 
 <div id="inline_jingle_container" class="">
@@ -32,11 +20,7 @@
 
 		<div class="header">
 			<span>{% trans "Station Jingles" %}</span>
-			<!--
-			<span style="float: right;"> <span style="color: rgb(153, 153, 153);" class="opt">1</span> </span>
-			-->
 		</div>
-
 
 		<div class="form">
 			
@@ -53,11 +37,8 @@
 
 		</div>
 
-
 		<!-- Wrapper, can hold multiple lists  -->
 		<div id="inline_jingle_holder" class="wrapper"></div>
-
-
 
 	</div>
 	

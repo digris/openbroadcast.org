@@ -1,8 +1,5 @@
 {% load cms_tags abcast_tags sekizai_tags i18n pushy_tags  %}
 
-
-
-{% addtoblock "js-post" %}<script src="{{ STATIC_URL }}abcast/js/lib/jquery.countdown.js"></script>{% endaddtoblock %}
 {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}abcast/js/on_air.js"></script>{% endaddtoblock %}
 {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
 {% addtoblock "js-post" %}
@@ -41,4 +38,3 @@
 	</div>
 	
 </div>
-

@@ -344,7 +344,10 @@ class Process(object):
         log.debug('processing license')
         template = 'exporter/m3u/playlist.m3u'
 
-        with open(os.path.join(cache_dir, 'playlist.m3u'), "w") as txt:
+        #filename 'playlist.m3u'
+        filename = '{0}.m3u'.format(safe_name(instance.name))
+
+        with open(os.path.join(cache_dir, filename), "w") as txt:
             str = render_to_string(template, {'object': instance, 'file_list': file_list})
             txt.write(str.encode('utf8'))
 
