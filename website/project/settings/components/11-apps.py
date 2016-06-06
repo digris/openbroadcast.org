@@ -36,7 +36,7 @@ INSTALLED_APPS = (
     'django_date_extensions',
     'haystack',
     'search',
-    #'docs',
+    'djangocms_sphinxdoc',
 
     'addthis',
 

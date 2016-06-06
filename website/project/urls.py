@@ -64,7 +64,7 @@ urlpatterns = patterns('',
         'document_root': settings.MEDIA_ROOT,
     }),
 
-    #url(r'^docs/', include('docs.urls')),
+    url(r'^docs/', include('djangocms_sphinxdoc.urls')),
 
     url(r'^search/', include('search.urls')),
     url(r'^search-hs/', include('haystack.urls')),

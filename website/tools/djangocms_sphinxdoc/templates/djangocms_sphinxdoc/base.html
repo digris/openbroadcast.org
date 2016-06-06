@@ -1,0 +1,67 @@
+{% extends "layout_base.html" %}
+
+{% load truncate_tags i18n url_tags sekizai_tags %}
+
+
+{% block heading %}Documentation{% endblock %}
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>Open Broadcast documentation — obp 0.0.1 documentation</title>
+
+    <link rel="stylesheet" href="_static/solar.css" type="text/css">
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css">
+
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="obp 0.0.1 documentation" href="#">
+    <link rel="next" title="1. Development Documentation" href="development/index.html"><link href="http://fonts.googleapis.com/css?family=Source+Code+Pro|Open+Sans:300italic,400italic,700italic,400,300,700" rel="stylesheet" type="text/css">
+<link href="_static/solarized-dark.css" rel="stylesheet">
+<link href="_static/extra.css" rel="stylesheet">
+  </head>
+
+
+
+
+{% block modnav %}
+    {{ elements.navigation|safe }}
+{% endblock %}
+
+{% block inner %}
+
+    {% addtoblock "css" %}<link type="text/css" href="{{ STATIC_URL }}docs/pygments.css" rel="stylesheet" />{% endaddtoblock %}
+    {% addtoblock "css" %}<link type="text/css" href="{{ STATIC_URL }}docs/solarized-dark.css" rel="stylesheet" />{% endaddtoblock %}
+    {% addtoblock "css" %}<link type="text/css" href="{{ STATIC_URL }}docs/extra.css" rel="stylesheet" />{% endaddtoblock %}
+
+    {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}docs/underscore.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}docs/doctools.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}
+    <script type="text/javascript">
+            var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     '0.0.1',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+    {% endaddtoblock %}
+
+
+    {{ elements.document|safe }}
+{% endblock %}
+
+{% block sidebar %}
+    {{ elements.toc|safe }}
+{% endblock %}
