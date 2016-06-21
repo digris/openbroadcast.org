@@ -30,9 +30,6 @@ class XsSharingMiddleware(object):
         return None
 
     def process_response(self, request, response):
-        # Avoid unnecessary work
-        if response.has_header('Access-Control-Allow-Origin'):
-            return response
 
         response['Access-Control-Allow-Origin']  = XS_SHARING_ALLOWED_ORIGINS 
         response['Access-Control-Allow-Headers']  = ",".join( XS_SHARING_ALLOWED_HEADERS ) 

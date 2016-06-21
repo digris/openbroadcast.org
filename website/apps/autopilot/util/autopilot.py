@@ -1,17 +1,18 @@
 #-*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 import datetime
 import logging
 import time
-from django.db.models import Count, Sum, Q, Max, Min
-from django.contrib.auth.models import User
-from django.conf import settings
 from random import shuffle
+
 from abcast.models import Channel, Emission
 from abcast.models import Daypart as BroadcastDaypart
-from abcast.models import DaypartSet as BroadcastDaypartSet
-from alibrary.models import Playlist
 from alibrary.models import Daypart as PlaylistDaypart
+from alibrary.models import Playlist
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.db.models import Q, Max, Min
 
 log = logging.getLogger(__name__)
 
@@ -271,7 +272,6 @@ class Autopilot(object):
                 slot_duration = 0
 
             else:
-                print 'SLOT OK'
                 next_end = starting_emission.time_start.replace(second=0)
                 slot_duration = (next_end - next_start).seconds
 
@@ -417,7 +417,7 @@ class Autopilot(object):
         if kwargs.get('force'):
             delete_qs.delete()
 
-        print 'Got %s entries marked for deletion' % delete_qs.count()
+        print ('Got %s entries marked for deletion' % delete_qs.count())
 
         if raw_input('are you sure? [y/N]: ').lower() == 'y':
             delete_qs.delete()

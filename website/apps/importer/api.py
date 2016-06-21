@@ -83,7 +83,7 @@ class ImportResource(ModelResource):
         }
 
     def dehydrate(self, bundle):
-        bundle.data['inserts'] = bundle.obj.get_inserts();
+        bundle.data['inserts'] = bundle.obj.get_inserts()
         return bundle
 
     def save_related(self, obj):

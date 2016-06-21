@@ -111,7 +111,7 @@ class MarkdownTextField(TextField):
 
     def contribute_to_class (self, cls, name):
         self._html_field = "%s%s" % (name, self._html_field_suffix)
-        TextField(blank=True, null=True, editable=False).contribute_to_class(cls, self._html_field)
+        #TextField(blank=True, null=True, editable=False).contribute_to_class(cls, self._html_field)
         super(MarkdownTextField, self).contribute_to_class(cls, name)
 
     def pre_save (self, model_instance, add):

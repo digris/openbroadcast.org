@@ -67,6 +67,8 @@ class Importer(object):
 
     def run(self, obj):
 
+        #from importer.util.tools import discogs_image_by_url, discogs_id_by_url
+
         it = obj.import_tag
         rt = obj.results_tag
 

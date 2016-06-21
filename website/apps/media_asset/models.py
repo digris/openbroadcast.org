@@ -20,6 +20,8 @@ from django.template import defaultfilters
 
 from base.models import TimestampedModel, UUIDModel
 
+from base.fs.utils import clean_directory_tree_reverse
+
 
 
 
@@ -164,6 +166,7 @@ def waveform_pre_delete(sender, instance, **kwargs):
     obj = instance
     if os.path.isfile(obj.path):
         os.remove(obj.path)
+        clean_directory_tree_reverse(obj.path)
 
 
 
@@ -356,5 +359,6 @@ def format_pre_delete(sender, instance, **kwargs):
     obj = instance
     if os.path.isfile(obj.path):
         os.remove(obj.path)
+        clean_directory_tree_reverse(obj.path)
 
 

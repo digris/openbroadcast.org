@@ -558,9 +558,9 @@ class ImportFile(BaseModel):
 
         # to prevent circular import errors
         from util.importer_tools import Importer
-        importer = Importer(user=obj.import_session.user)
+        _importer = Importer(user=obj.import_session.user)
         
-        media, status = importer.run(obj)
+        media, status = _importer.run(obj)
 
         if media:
             obj.media = media
@@ -582,9 +582,9 @@ class ImportFile(BaseModel):
             
         # check/update import_tag
         if self.status == ImportFile.STATUS_READY:
-            from util.importer_tools import Importer
-            importer = Importer(user=self.import_session.user)
-            self.import_tag = importer.complete_import_tag(self)
+            from importer.util.importer_tools import Importer
+            _importer = Importer(user=self.import_session.user)
+            self.import_tag = _importer.complete_import_tag(self)
 
         if self.status == ImportFile.STATUS_READY:
             # try to apply import_tag to other files of this import session
