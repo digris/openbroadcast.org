@@ -1,0 +1,37 @@
+session_name: openbroadcast_org
+start_directory: ./
+windows:
+
+- window_name: dev window
+  layout: tiled
+  focus: true
+  shell_command_before:
+    - 'source ~/srv/openbroadcast.org/bin/activate'
+  panes:
+    - focus: true
+    - shell_command:
+        - cd website
+        - ./manage.py runserver 0.0.0.0:8080
+    - shell_command:
+        - cd website
+        - celery -A project worker -c 1 -Q celery -l INFO
+    - shell_command:
+        - cd website
+        - celery -A project worker -c 2 -Q convert -l INFO
+    - gulp watch
+    - cd website
+
+
+- window_name: services
+  layout: tiled
+
+  start_directory: website/
+  shell_command_before:
+    - 'source ~/srv/openbroadcast.org/bin/activate'
+  panes:
+    - shell_command:
+        - cd ~/code/openbroadcast/pushy/server/
+        - node pushy.js
+    - shell_command:
+        - cd ~/srv/echoprint-server/solr
+        - ./run.sh

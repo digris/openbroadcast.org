@@ -4,10 +4,34 @@ section.registration
     padding: 10px
     background: #fafafa
 
+    fieldset[data-field_id="id_captcha"]
+      padding: 10px 0
+
+      .captcha-container
+        width: 214px
+        +clearfix
+        .captcha-text
+          float: left
+          padding-top: 3px
+          input
+            width: 70px
+        .captcha-image
+          float: right
+
+      .control-label
+        padding-top: 9px
+
+      .help-inline
+        display: block
+        padding: 6px 0 10px
+        opacity: 0.8
+
+
+
+
 
     div.controls
       margin-left: 200px
-
 
     fieldset.control-group
       margin-bottom: 2px

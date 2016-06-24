@@ -79,6 +79,8 @@ django-social-auth==0.7.28
 django-split-settings==0.1.2
 django-threadedcomments==1.0
 
+django-simple-captcha==0.5.1
+
 
 ################################################
 # django-cms

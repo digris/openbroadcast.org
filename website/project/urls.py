@@ -53,6 +53,7 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r"^accounts/login_as/(?P<user_id>.+)/$", "loginas.views.user_login", name="loginas-user-login"),
     url(r'^sa/', include('social_auth.urls')),
+    url(r'^captcha/', include('captcha.urls')),
 
     url(r"^announcements/", include("announcements.urls")),
     url(r'^subscription/', include('subscription.urls')),

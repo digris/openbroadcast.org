@@ -12,7 +12,7 @@ you're using a custom model.
 from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-
+from captcha.fields import CaptchaField
 
 class RegistrationForm(forms.Form):
     """
@@ -73,6 +73,17 @@ class RegistrationFormTermsOfService(RegistrationForm):
     for agreeing to a site's Terms of Service.
     
     """
+
+    """
+    HACK: captcha field
+    registration has to be refactored anyway as django-social-auth not maintained anymore.
+    """
+
+    captcha = CaptchaField(label=_(u'Code'),
+                           id_prefix='alsjkdha',
+                           #help_text=_('Enter the 6 digit code in the field above'),
+                           error_messages={'required': _("Code empty or invalid")})
+
     tos = forms.BooleanField(widget=forms.CheckboxInput,
                              label=_(u'I have read and agree to the Terms of Service'),
                              error_messages={'required': _("You must agree to the terms to register")})

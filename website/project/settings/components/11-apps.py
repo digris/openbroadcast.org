@@ -109,6 +109,7 @@ INSTALLED_APPS = (
     'avatar',
     'registration',
     'social_auth',
+    'captcha',
     'loginas',
     'dropbox',
     'provider',
@@ -428,6 +429,27 @@ MUSICBRAINZ_RATE_LIMIT = False
 
 DISCOGS_HOST = '172.20.10.207:8099'
 DISCOGS_RATE_LIMIT = False
+
+
+
+"""
+captcha
+https://github.com/mbi/django-simple-captcha/blob/master/captcha/conf/settings.py
+"""
+
+
+
+CAPTCHA_LETTER_ROTATION = (-10, 10)
+CAPTCHA_BACKGROUND_COLOR = '#fafafa'
+CAPTCHA_FOREGROUND_COLOR = '#6633CC'
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
+CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)
+CAPTCHA_FILTER_FUNCTIONS = ()
+CAPTCHA_PUNCTUATION = '''_"',.;:-'''
+CAPTCHA_LENGTH = 6
+CAPTCHA_IMAGE_SIZE = (120, 30)
+CAPTCHA_FIELD_TEMPLATE = 'captcha/field.html'
+
 
 
 

@@ -1,5 +1,5 @@
 {% for field in form %}
-  <fieldset class="control-group {% if field.errors %}error{% endif %}">
+  <fieldset data-field_id="{{ field.auto_id }}" class="control-group {% if field.errors %}error{% endif %}">
     <label class="control-label" for="{{ field.auto_id }}">{{ field.label }}</label>
     <div class="controls">
       {{ field }}
