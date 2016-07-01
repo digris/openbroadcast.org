@@ -739,9 +739,7 @@ class DiscogsAPILookup(APILookup):
 
 
 
-"""
-function to call from 'outside'
-"""
+
 def get_from_provider(item_type, item_id, provider, api_url=None):
 
     log.debug('get_from_provider: %s - id: %s - provider: %s - %s' % (item_type, item_id, provider, api_url))

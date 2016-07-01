@@ -181,12 +181,24 @@
                                 {% for l in result["label-info"] %}
                                     <li style="float: left; margin-right: 30px;">
 
+                                        {% if l["label"] %}
+                                        <span class="title">
+                                            Label:
+                                        </span>
+                                        <span class="value">
+                                            <strong>{{ l["label"]["name"] }}</strong>
+                                        </span>
+                                        {% endif %}
+
+                                        {% if l["catalog-number"] %}
                                         <span class="title">
                                             Catalog #:
                                         </span>
                                         <span class="value">
-                                        <strong>{{ l["catalog-number"] }}</strong>
+                                            <strong>{{ l["catalog-number"] }}</strong>
                                         </span>
+                                        {% endif %}
+
                                     </li>
                                 {% endfor %}
                             {% endif %}
