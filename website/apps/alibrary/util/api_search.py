@@ -28,17 +28,26 @@ def populate_results(results):
     for r in results[0:10]:
         url = r['resource_url']
         log.debug(url)
-        req = requests.get(url)
-        res = req.json()
 
-        if 'realname' in res:
-            r['real_name'] = res['realname']
+        try:
 
-        if 'aliases' in res and res['aliases']:
-            r['aliases'] = ', '.join([a['name'] for a in res['aliases']])
+            req = requests.get(url)
+            res = req.json()
 
-        if 'members' in res and res['members']:
-            r['members'] = ', '.join([m['name'] for m in res['members']])
+            if 'realname' in res:
+                r['real_name'] = res['realname']
+
+            if 'aliases' in res and res['aliases']:
+                r['aliases'] = ', '.join([a['name'] for a in res['aliases']])
+
+            if 'members' in res and res['members']:
+                r['members'] = ', '.join([m['name'] for m in res['members']])
+
+        except Exception as e:
+
+            log.debug('unable to populate data for {0} - {1}'.format(url, e))
+
+            pass
 
 
     return results
@@ -47,7 +56,78 @@ def populate_results(results):
 
 def discogs_ordered_search(query, item_type, limit=100):
 
+    name_pattern = ' \([0-9]+\)'
     q_stripped = query.strip("'\"")
+
+    # special case when searching directly by id
+    if q_stripped.isdigit():
+
+        url = 'http://{host}/{item_type}s/{query}'.format(
+            host=DISCOGS_HOST,
+            query=urllib.quote_plus(query.lower()),
+            item_type=item_type
+        )
+
+        log.debug('search by id: {0}'.format(url))
+        r = requests.get(url)
+
+        if not r.status_code == 200:
+            return []
+
+
+        data = json.loads(r.text.replace('api.discogs.com', DISCOGS_HOST))
+
+        # TODO: not very nice - remap some fields
+        if item_type == 'release':
+
+            if 'title' in data:
+                data['title'] = re.sub(name_pattern, '', data['title'])
+
+            if 'formats' in data:
+                formats = []
+                for format in [f['name'] for f in data['formats'] if 'name' in f]:
+                    formats.append(format)
+                data['format'] = formats
+
+            if 'labels' in data:
+                try:
+                    data['catno'] = data['labels'][0]['catno']
+                except KeyError:
+                    pass
+
+        if item_type == 'artist':
+
+            if 'name' in data:
+                data['title'] = re.sub(name_pattern, '', data['name'])
+
+            if 'aliases' in data:
+                aliases = []
+                for alias in [a['name'] for a in data['aliases'] if 'name' in a]:
+                    aliases.append(re.sub(name_pattern, '', alias))
+                data['aliases'] = aliases
+
+            if 'members' in data:
+                members = []
+                for member in [m['name'] for m in data['members'] if 'name' in m]:
+                    members.append(re.sub(name_pattern, '', member))
+                data['members'] = members
+
+            if 'images' in data:
+
+                for image in [i['uri150'] for i in data['images'] if 'type' in i and i['type'] == 'primary']:
+                    data['thumb'] = image
+                    break
+
+
+
+
+
+        return [data,]
+
+
+
+
+
 
     url = 'http://{host}/database/search?q={query}&type={item_type}&per_page=100'.format(
         host=DISCOGS_HOST,
@@ -59,13 +139,16 @@ def discogs_ordered_search(query, item_type, limit=100):
     results_exact = []
     results_start = []
     results_other = []
-    name_pattern = ' \([0-9]+\)'
 
     x = 0
     while url and x < API_MAX_REQUESTS:
 
         log.debug(url)
         r = requests.get(url)
+
+        if not r.status_code == 200:
+            return []
+
         data = json.loads(r.text.replace('api.discogs.com', DISCOGS_HOST))
 
         url = reduce(dict.get, ['pagination', 'urls', 'next'], data)

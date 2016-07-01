@@ -227,7 +227,8 @@ def schedule_object(request):
 
     if not request.user.has_perm('abcast.schedule_emission'):
         log.warning('unauthorized attempt to schedule emission by: %s' % request.user)
-        return { 'message': _('Sorry - you are not allowed to schedule an emission.') }
+        data = { 'message': _('Sorry - you are not allowed to schedule an emission.') }
+        return HttpResponse(json.dumps(data), content_type='application/json')
 
 
     data = json.loads(request.body)
@@ -329,7 +330,8 @@ def copy_paste_day(request):
 
     if not request.user.has_perm('abcast.schedule_emission'):
         log.warning('unauthorized attempt to copypast day by: %s' % request.user)
-        return { 'message': _('Sorry - you are not allowed to edit emissions.') }
+        data = { 'message': _('Sorry - you are not allowed to edit emissions.') }
+        return HttpResponse(json.dumps(data), content_type='application/json')
 
     data = json.loads(request.body)
 
@@ -389,7 +391,8 @@ def delete_day(request):
 
     if not request.user.has_perm('abcast.schedule_emission'):
         log.warning('unauthorized attempt to delete day by: %s' % request.user)
-        return { 'message': _('Sorry - you are not allowed to delete emissions.') }
+        data = { 'message': _('Sorry - you are not allowed to delete emissions.') }
+        return HttpResponse(json.dumps(data), content_type='application/json')
 
     date = request.POST.get('date', None)
     channel_id = request.POST.get('channel_id', SCHEDULER_DEFAULT_CHANNEL_ID)

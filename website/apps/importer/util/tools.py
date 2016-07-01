@@ -21,7 +21,7 @@ def discogs_image_by_url(url, type='uri'):
     try:
         id = url.split('/')
         id = id[-1]
-    except Exception, e:
+    except Exception as e:
         log.warning('unable to extract id: %s' % e)
         id = None
 

@@ -7,6 +7,8 @@
 .tmp
 .tox
 
+temp/
+
 .ipynb_checkpoints
 db_dumps/
 

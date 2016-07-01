@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 from registration import signals
 from registration.views import RegistrationView as BaseRegistrationView
@@ -42,4 +43,5 @@ class RegistrationView(BaseRegistrationView):
         return getattr(settings, 'REGISTRATION_OPEN', True)
 
     def get_success_url(self, request, user):
-        return (user.get_absolute_url(), (), {})
+        return reverse('profiles-profile-edit')
+        #return (user.get_absolute_url(), (), {})

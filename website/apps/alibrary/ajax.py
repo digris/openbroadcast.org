@@ -132,20 +132,6 @@ def provider_search(request, *args, **kwargs):
 
         query = query.replace('"', '&quot;')
 
-        #
-        # url = 'http://%s/database/search?q=%s&type=%s&per_page=%s' % (DISCOGS_HOST, urllib.quote_plus(query), item_type, 100)
-        # log.debug('query url: %s' % (url))
-        # r = requests.get(url)
-        # text = r.text
-        # if DISCOGS_HOST:
-        #     text = text.replace('api.discogs.com', DISCOGS_HOST)
-        # results = json.loads(text)['results']
-        # for result in results:
-        #     result['uri'] = 'https://www.discogs.com%s' % result['uri']
-        #
-        # query = query.replace('"', '&quot;')
-
-
 
 
     if provider == 'musicbrainz':

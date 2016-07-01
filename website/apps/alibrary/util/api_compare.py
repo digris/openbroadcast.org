@@ -475,10 +475,6 @@ class DiscogsAPILookup(APILookup):
 
 
 
-
-
-
-
     def get_release(self, uri):
 
         """

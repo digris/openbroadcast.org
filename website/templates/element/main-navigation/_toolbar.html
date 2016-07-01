@@ -58,10 +58,23 @@
 
                         <li><a href="{% url "auth_login" %}?next={{ request.get_full_path }}"><i class="icon-lock"></i> {% trans 'Login / Sign Up' %}</a></li>
 
+
+                        {% for service in social_auth.backends %}
+
+                            <li>
+                                <a href="{% url "socialauth_begin" service %}?next={{ request.get_full_path }}">
+                                    <i class="icon-{{ service }}"></i> {% trans 'Login with' %} {{ service|title }}
+                                </a>
+                            </li>
+
+                        {% endfor %}
+
+                        {% comment %}
                         <li><a href="{% url "socialauth_begin" "twitter" %}?next={{ request.get_full_path }}"><i class="icon-twitter"></i> {% trans 'Login using Twitter' %}</a></li>
                         <li><a href="{% url "socialauth_begin" "facebook" %}?next={{ request.get_full_path }}"><i class="icon-facebook"></i> {% trans 'Login using Facebook' %}</a></li>
                         <li><a href="{% url "socialauth_begin" "google-oauth2" %}?next={{ request.get_full_path }}"><i class="icon-google-oauth2"></i> {% trans 'Login using google' %}</a></li>
-                        <li><a href="{% url "socialauth_begin" "github" %}?next={{ request.get_full_path }}"><i class="icon-github"></i> {% trans 'Login using GitHub' %}</a></li>
+                        <!--<li><a href="{% url "socialauth_begin" "github" %}?next={{ request.get_full_path }}"><i class="icon-github"></i> {% trans 'Login using GitHub' %}</a></li>-->
+                        {% endcomment %}
                     </ul>
 
                 </li>
