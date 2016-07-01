@@ -159,6 +159,7 @@ var EditUi = function () {
                 // try to get api_url
                 var api_url = false;
                 $('fieldset.relations input[name^="relation"]').each(function(i, el){
+                    // TODO: ugly fix - https://lab.hazelfire.com/issues/1425
                     if ($(this).val().toLowerCase().indexOf(provider + '.') >= 0) {
                         api_url = $(this).val();
                     }

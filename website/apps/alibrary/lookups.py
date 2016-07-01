@@ -27,7 +27,7 @@ registry.register(ReleaseNameLookup)
 
 class ArtistLookup(BaseLookup):
     model = Artist
-    search_fields = ['name__icontains', ]
+    search_fields = ['name__istartswith', ]
     template_name = 'alibrary/lookups/_artist.html'
 
 
