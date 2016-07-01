@@ -4,15 +4,20 @@ import re
 import urllib
 from django.conf import settings
 import logging
+from Levenshtein import distance, jaro_winkler, jaro, ratio
 
 DISCOGS_HOST = getattr(settings, 'DISCOGS_HOST', None)
 
-API_MAX_REQUESTS = 5
+API_MAX_REQUESTS = 1
 
 log = logging.getLogger(__name__)
 
 def sort_results(items):
     return sorted(items, key = lambda r: [r['formatted_title'].lower(), r['index']])
+
+def sort_results_by_distance(items):
+    #return sorted(items, key = lambda r: [r['dist']])
+    return sorted(items, key = lambda r: [r['dist1']], reverse=True)
 
 def get_index(title):
     name_pattern = ' \([0-9]+\)'
@@ -136,6 +141,7 @@ def discogs_ordered_search(query, item_type, limit=100):
     )
 
     results = []
+    results_unsorted = []
     results_exact = []
     results_start = []
     results_other = []
@@ -161,16 +167,34 @@ def discogs_ordered_search(query, item_type, limit=100):
                 r['formatted_title'] = formatted_title
                 r['uri'] = 'https://www.discogs.com%s' % r['uri']
 
+                r['dist'] = distance(formatted_title.lower(), q_stripped.lower())
+                r['dist1'] = jaro(formatted_title.lower(), q_stripped.lower())
+                r['dist2'] = jaro_winkler(formatted_title.lower(), q_stripped.lower())
+                r['dist3'] = ratio(formatted_title.lower(), q_stripped.lower())
+
+                # print r['dist'],
+                # print r['dist1'],
+                # print r['dist2'],
+                # print r['dist3'],
+                # print formatted_title.lower(),
+                # print '::: {0} <> {1}'.format(formatted_title.lower(), q_stripped.lower())
+
+                results_unsorted.append(r)
+
                 if formatted_title.lower() == q_stripped.lower():
+                    #print 'exact', formatted_title.lower()
                     results_exact.append(r)
-                elif formatted_title.lower().startswith(q_stripped.lower()):
+                elif formatted_title.lower().startswith(q_stripped.lower()[0:10]):
+                    #print 'start', formatted_title.lower()
                     results_start.append(r)
                 else:
+                    #print 'other', formatted_title.lower()
                     results_other.append(r)
 
         x += 1
 
-    results = sort_results(results_exact) + sort_results(results_start)+ sort_results(results_other)
+    #results = sort_results(results_exact) + sort_results(results_start)+ sort_results(results_other)
+    results = sort_results_by_distance(results_unsorted)
 
     if item_type == 'artist':
         results = populate_results(results)
