@@ -148,11 +148,22 @@ form.form-horizontal
 
     .delete
       margin-left: 0
+      +clearfix
       .controls
-        text-align: right
+        margin-left: 20px
+        float: right
         label
-          float: right
-    
+          display: block
+          padding-left: 24px
+        input
+          width: 16px
+          height: 16px
+          padding: 0
+          margin: 0 4px 0 0
+          vertical-align: bottom
+          position: relative
+          top: 1px
+          *overflow: hidden
 
 
 // overrides for special cases

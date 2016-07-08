@@ -52,12 +52,15 @@
                             {% topflop_for_object item %} </a>
                     </li>
                     <li>
-                        <a href="{{ item.user.get_absolute_url }}">{{ item.user.profile.get_display_name }}</a>
 
-                        {% url "alibrary-playlist-list" as playlist_list %}
-                        <a href="{% spurl path=playlist_list query="user={{ item.user.username }}" %}"
-                           title="{% trans "Only show playlists by" %} {{ item.user.profile.get_display_name }}"
-                           style="vertical-align: top;"><span class="filter icon"></span></a>
+                        {% if item.series %}
+                            <span>{{ item.series.name|truncate_chars_inner:24 }} </span>
+                            {% if item.series_number %}
+                                <small>#{{ item.series_number }}</small>
+                            {% endif %}
+                        {% else %}
+                            <span>&nbsp;</span>
+                        {% endif %}
 
                         <span class="pull-right">
                             <span class="small">{{ item.get_type_display }}</span>
@@ -68,10 +71,12 @@
 
                 <ul class="unstyled">
                     <li>
-                        {{ item.duration|divide:1000|sec_to_time }}
-                        {% if item.target_duration %}
-                            <span class="small">{% trans "of" %} {{ item.target_duration|sec_to_time }}</span>
-                        {% endif %}
+                        <a href="{{ item.user.get_absolute_url }}">{{ item.user.profile.get_display_name }}</a>
+
+                        {% url "alibrary-playlist-list" as playlist_list %}
+                        <a href="{% spurl path=playlist_list query="user={{ item.user.username }}" %}"
+                           title="{% trans "Only show playlists by" %} {{ item.user.profile.get_display_name }}"
+                           style="vertical-align: top;"><span class="filter icon"></span></a>
 
                         {% comment %}
                         <span class="small">{{ item.items.count }} {% trans "Tracks" %}</span>
@@ -85,26 +90,8 @@
 
                     </li>
 
-
-
                 </ul>
 
-
-            </div>
-
-            <div class="list_body_item links external">
-                <ul class="links external unstyled">
-                    {% for relation in item.relations.specific %}
-                        <li>
-                            <a href="{{ relation.url }}" class="skip-external"
-                               title="Show on {{ relation.get_service_display }}"><i
-                                    class="cicon-{{ relation.service }}"></i></a>
-                            <!--
-					<a href="{{ relation.url }}" class="skip-external" title="Show on {{ relation.get_service_display }}">{{ relation.service }}</a>
-					-->
-                        </li>
-                    {% endfor %}
-                </ul>
             </div>
 
 
@@ -163,6 +150,22 @@
         </ul>
 
     </div>
+
+
+    <div class="durations" style="position: absolute; bottom: 0; left: 5px; color: #999;">
+        {{ item.duration|divide:1000|sec_to_time }}
+        {% if item.target_duration %}
+            <span class="small">{% trans "of" %} {{ item.target_duration|sec_to_time }}</span>
+        {% endif %}
+    </div>
+
+
+
+
+
+
+
+
 </div>
 
 
