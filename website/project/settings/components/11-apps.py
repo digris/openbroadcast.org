@@ -451,7 +451,7 @@ CAPTCHA_IMAGE_SIZE = (120, 30)
 CAPTCHA_FIELD_TEMPLATE = 'captcha/field.html'
 
 
-
+MEDIA_ASSET_KEEP_DAYS = 60
 
 
 

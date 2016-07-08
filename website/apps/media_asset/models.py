@@ -26,6 +26,8 @@ log = logging.getLogger(__name__)
 BASE_DIR = getattr(settings, 'BASE_DIR', None)
 USE_CELERYD = getattr(settings, 'MEDIA_ASSET_USE_CELERYD', False)
 
+MEDIA_ASSET_KEEP_DAYS = getattr(settings, 'MEDIA_ASSET_KEEP_DAYS', 60)
+
 MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
 ASSET_DIR = os.path.join(MEDIA_ROOT, 'media_asset')
 LAME_BINARY = getattr(settings, 'LAME_BINARY', 'lame')
@@ -359,7 +361,7 @@ def format_pre_delete(sender, instance, **kwargs):
 
 
 @task
-def clean_assets(days_to_keep=1):
+def clean_assets(days_to_keep=MEDIA_ASSET_KEEP_DAYS):
     from datetime import datetime, timedelta
 
     format_qs = Format.objects.filter(accessed__lte=datetime.now() - timedelta(days=days_to_keep)).nocache()
