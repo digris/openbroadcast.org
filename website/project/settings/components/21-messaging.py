@@ -23,7 +23,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 CELERYD_MAX_TASKS_PER_CHILD = 1
 CELERY_ACCEPT_CONTENT = ['pickle', 'json',]
 CELERY_RESULT_BACKEND = 'djcelery.backends.cache:CacheBackend'
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+#CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 # broker settings, used to compose connection for playout messaging
 BROKER_HOST = "localhost"
@@ -63,7 +63,6 @@ CELERY_ROUTES = {
 
 }
 
-
 CELERYBEAT_SCHEDULE = {
     'exporter-cleanup': {
         'task': 'exporter.models.cleanup_exports',
@@ -73,8 +72,11 @@ CELERYBEAT_SCHEDULE = {
         'task': 'importer.models.reset_hanging_files',
         'schedule': timedelta(seconds=300),
     },
+    'asset-cleanup': {
+        'task': 'media_asset.models.clean_assets',
+        'schedule': timedelta(hours=24),
+    },
 }
-
 
 CELERY_EMAIL_TASK_CONFIG = {
     'queue' : 'celery',

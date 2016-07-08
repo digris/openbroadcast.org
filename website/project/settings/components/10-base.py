@@ -187,6 +187,7 @@ MIGRATION_MODULES = {
 
     # self maintained modules
     'cms_redirects': 'cms_redirects.migrations_django',
+
 }
 
 IMORTER_USE_CELERYD = True

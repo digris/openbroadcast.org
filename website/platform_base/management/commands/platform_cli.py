@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
-from platform_base.management.commands.subcommands.base import SubcommandsCommand
-from platform_base.management.commands.subcommands.check import CheckInstallation
-from platform_base.management.commands.subcommands.reset import ResetDatabase
-from platform_base.management.commands.subcommands.clean import DeleteOrphanedTags
-from platform_base.management.commands.subcommands.crawl import MBCrawlerCommand
+from .subcommands.base import SubcommandsCommand
+from .subcommands.check import CheckInstallation
+from .subcommands.reset import ResetDatabase
+from .subcommands.clean import DeleteOrphanedTags
+from .subcommands.crawl import MBCrawlerCommand
+from .subcommands.clean_assets import CleanAssets
 from django.core.management.base import BaseCommand
 from optparse import make_option
 
@@ -26,6 +27,7 @@ class Command(SubcommandsCommand):
         'reset': ResetDatabase,
         'delete_orphaned_tags': DeleteOrphanedTags,
         'crawl_mb': MBCrawlerCommand,
+        'clean_assets': CleanAssets,
     }
 
     @property

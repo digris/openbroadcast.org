@@ -10,6 +10,7 @@ import tempfile
 
 from celery import current_app
 from celery.contrib.methods import task_method
+from celery.task import task
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
@@ -17,13 +18,8 @@ from django.dispatch import receiver
 from django.core.cache import cache
 from django.utils.translation import ugettext as _
 from django.template import defaultfilters
-
 from base.models import TimestampedModel, UUIDModel
-
 from base.fs.utils import clean_directory_tree_reverse
-
-
-
 
 log = logging.getLogger(__name__)
 
@@ -362,3 +358,18 @@ def format_pre_delete(sender, instance, **kwargs):
         clean_directory_tree_reverse(obj.path)
 
 
+@task
+def clean_assets(days_to_keep=1):
+    from datetime import datetime, timedelta
+
+    format_qs = Format.objects.filter(accessed__lte=datetime.now() - timedelta(days=days_to_keep)).nocache()
+    waveform_qs = Waveform.objects.filter(accessed__lte=datetime.now() - timedelta(days=days_to_keep)).nocache()
+
+    log.info('cleaning assets. {0} formats and {1} waveforms'.format(format_qs.count(), waveform_qs.count()))
+
+    # delete must be called on each item, to not skip post_delete actions.
+    for i in format_qs:
+        i.delete()
+
+    for i in waveform_qs:
+        i.delete()
