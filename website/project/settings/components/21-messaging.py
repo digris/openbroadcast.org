@@ -54,10 +54,12 @@ CELERY_ROUTES = {
     'alibrary.models.create_waveform_image': {'queue': 'convert'},
 
     #
-    'media_asset.models.process_waveform': {'queue': 'convert'},
+    'media_asset.models.process_waveform': {'queue': 'grapher'},
     'media_asset.models.process_format': {'queue': 'convert'},
-    'media_asset.process_waveform': {'queue': 'convert'},
+    'media_asset.process_waveform': {'queue': 'grapher'},
     'media_asset.process_format': {'queue': 'convert'},
+    'media_asset.tasks.process_waveform': {'queue': 'grapher'},
+    'media_asset.tasks.process_format': {'queue': 'convert'},
 
     #'exporter.models.process_task': {'queue': 'export'},
 

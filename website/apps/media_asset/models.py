@@ -87,7 +87,7 @@ class Waveform(TimestampedModel, UUIDModel):
         we need to insert an attitional directory here - as else 32000 fs limit could make problems
         """
         dir = uuid.replace('-', '/')
-        #dir = dir[:2] + '/' + dir[2:]
+        dir = dir[:2] + '/' + dir[2:4] + '/' + dir[4:6] + '/' + dir[6:]
 
         return os.path.join(ASSET_DIR, 'waveform', dir)
 
@@ -152,7 +152,7 @@ def waveform_post_save(sender, instance, created, **kwargs):
     if do_process:
         if USE_CELERYD:
             log.debug('sending job to task queue')
-            obj.process_waveform.apply_async()
+            obj.process_waveform.apply_async(queue='grapher')
         else:
             log.debug('processing task in foreground')
             obj.process_waveform()
@@ -250,7 +250,7 @@ class Format(TimestampedModel, UUIDModel):
         we need to insert an attitional directory here - as else 32000 fs limit could make problems
         """
         dir = uuid.replace('-', '/')
-        #dir = dir[:2] + '/' + dir[2:]
+        dir = dir[:2] + '/' + dir[2:4] + '/' + dir[4:6] + '/' + dir[6:]
 
         return os.path.join(ASSET_DIR, 'format', dir)
 
@@ -345,7 +345,6 @@ def format_post_save(sender, instance, created, **kwargs):
         if USE_CELERYD:
             log.debug('sending job to task queue')
             obj.process_format.apply_async(queue='convert')
-            #obj.process_format.apply_async()
         else:
             log.debug('processing task in foreground')
             obj.process_format()

@@ -17,7 +17,7 @@ windows:
         - celery -A project worker -c 1 -Q celery -l INFO
     - shell_command:
         - cd website
-        - celery -A project worker -c 2 -Q convert -l INFO
+        - celery -A project worker -c 2 -Q convert,grapher -l INFO
     - gulp watch
     - cd website
 

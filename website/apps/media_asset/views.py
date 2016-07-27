@@ -31,20 +31,21 @@ class WaveformView(View):
         media = get_object_or_404(Media, uuid=media_uuid)
 
         waveform, waveform_created = Waveform.objects.get_or_create(media=media, type=type)
-        # if waveform_created:
-        #     waveform.status = Waveform.PROCESSING
-        #     waveform.save()
 
-        print 'created: %s' %  waveform_created
-
-        print 'uuid: %s' % media_uuid
-        print 'type: %s' % type
-        print 'path: %s' % waveform.path
+        # print 'created: %s' %  waveform_created
+        # print 'uuid: %s' % media_uuid
+        # print 'type: %s' % type
+        # print 'path: %s' % waveform.path
 
 
         # hack to wait until file is ready
+        i = 0
         while waveform.status in [Waveform.INIT, Waveform.PROCESSING]:
             log.debug('waveform not ready yet. sleep for a while')
+            if i > 6:
+                log.warning('waveform creation timeout')
+                return HttpResponse(status=202)
+            i += 1
             time.sleep(2)
             waveform.refresh_from_db()
 
@@ -78,23 +79,25 @@ class FormatView(View):
             log.warning('unauthorized attempt by "%s" to download: %s - "%s"' % (request.user.username if request.user else 'unknown', media.pk, media.name))
             raise PermissionDenied
 
-
         format, format_created = Format.objects.get_or_create(media=media, quality=quality, encoding=encoding)
-        # if waveform_created:
-        #     waveform.status = Waveform.PROCESSING
-        #     waveform.save()
 
-        print 'created: %s' %  format_created
 
-        print 'uuid: %s' % media_uuid
-        print 'quality: %s' % quality
-        print 'encoding: %s' % encoding
-        print 'path: %s' % format.path
+        # print 'created: %s' %  format_created
+        # print 'uuid: %s' % media_uuid
+        # print 'quality: %s' % quality
+        # print 'encoding: %s' % encoding
+        # print 'path: %s' % format.path
 
 
         # hack to wait until file is ready
+        i = 0
         while format.status in [Format.INIT, Format.PROCESSING]:
             log.debug('format not ready yet. sleep for a while')
+            if i > 6:
+                log.warning('format creation timeout')
+                return HttpResponse(status=202)
+
+            i += 1
             time.sleep(2)
             format.refresh_from_db()
 
