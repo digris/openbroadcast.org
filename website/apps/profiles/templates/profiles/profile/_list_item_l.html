@@ -1,4 +1,4 @@
-{% load thumbnail i18n truncate_tags display_tags arating_tags spurl spacify_tags humanize %}
+{% load thumbnail i18n truncate_tags display_tags arating_tags spurl spacify_tags humanize gravatar %}
 
 
 
@@ -6,7 +6,11 @@
      id="list_item_{{ item.pk }}"
      data-resource_uri="{{ item.get_api_url }}"
      data-absolute_url="{{ item.get_absolute_url }}"
-    {% if item.image %}style="background-image: url({% thumbnail item.image 200x200 crop upscale subject_location=item.image.subject_location %});"{% endif %}>
+    {% if item.image %}
+     style="background-image: url({% thumbnail item.image 200x200 crop upscale subject_location=item.image.subject_location %});"
+    {% else %}
+        style="background-image: url({% gravatar_url item.user.email 200 %});"
+    {% endif %}>
 
     <div class="wrapper_properties">
         <!-- property icons-->
@@ -22,6 +26,7 @@
             </li>
         </ul>
     </div>
+
 
 
     <div class="spacer tag-cloud">

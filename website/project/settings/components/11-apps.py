@@ -110,6 +110,7 @@ INSTALLED_APPS = (
     'registration',
     'social_auth',
     'captcha',
+    'django_gravatar',
     'loginas',
     'dropbox',
     'provider',
@@ -471,3 +472,6 @@ CHANGETRACKER_TRACKED_MODELS = (
     #     'diff_function': 'bla',
     # },
 )
+
+#GRAVATAR_DEFAULT_IMAGE = '/static/img/base/defaults/listview.artist.xl.png'
+GRAVATAR_DEFAULT_IMAGE = 'identicon'

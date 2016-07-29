@@ -1,10 +1,15 @@
-{% load thumbnail i18n truncate_tags display_tags arating_tags spurl spacify_tags %}
+{% load thumbnail i18n truncate_tags display_tags arating_tags spurl spacify_tags gravatar %}
 
 
 
 <div class="list_body_row selectable item profile {% if item.mentor == user %}owner{% endif %} {% if item.user == user %}owner{% endif %} view edit" id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}">
 
-	<div class="list_body_item c1 image_center_bg" {% if item.image %}style="background-image: url({% thumbnail item.image 54x54 crop upscale subject_location=item.image.subject_location %});"{% endif %}>
+	<div class="list_body_item c1 image_center_bg"
+         {% if item.image %}
+         style="background-image: url({% thumbnail item.image 54x54 crop upscale subject_location=item.image.subject_location %});"
+    {% else %}
+        style="background-image: url({% gravatar_url item.user.email 54 %});"
+    {% endif %}>
 		<ul class="unstyled">
 			<li class="play">
 				{% if item.is_approved %}
@@ -17,6 +22,8 @@
 			</li>
 		</ul>
 	</div>
+
+
 	
 	<div class="list_body_item c2">
 		<ul class="unstyled">
