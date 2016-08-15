@@ -179,13 +179,13 @@ class Identifier(object):
         if ext == '.mp3':
             try:
                 meta = EasyID3(file.path)
-            except Exception, e:
+            except Exception as e:
                 log.debug('unable to process MP3')
 
         if ext in ['.mp4', '.m4a']:
             try:
                 meta = EasyMP4(file.path)
-            except Exception, e:
+            except Exception as e:
                 log.debug('unable to process M4A')
 
 
@@ -193,7 +193,7 @@ class Identifier(object):
             try:
                 meta = MutagenFile(file.path)
                 log.debug('using MutagenFile')
-            except Exception, e:
+            except Exception as e:
                 log.warning('even unable to open file with straight mutagen: %s' % e)
 
 
@@ -218,22 +218,22 @@ class Identifier(object):
 
         try:
             dataset['media_name'] = meta['title'][0]
-        except Exception, e:
+        except Exception as e:
             log.info('metadata missing "media_name": %s' % (e))
             
         try:
             dataset['media_mb_id'] = meta['musicbrainz_trackid'][0]
-        except Exception, e:
+        except Exception as e:
             log.debug('metadata missing "media_mb_id": %s' % (e))
             
         try:
 
             try:
                 dataset['media_tracknumber'] = int(meta['tracknumber'][0])
-            except Exception, e:
+            except Exception as e:
                 try:
                     dataset['media_tracknumber'] = int(meta['tracknumber'][0].split('/')[0])
-                except Exception, e:
+                except Exception as e:
                     pass
                 log.debug('metadata missing "media_tracknumber": %s' % (e))
                 
@@ -241,11 +241,11 @@ class Identifier(object):
                 tn = meta['tracknumber'][0].split('/')
                 dataset['media_tracknumber'] = int(tn[0])
                 dataset['media_totaltracks'] = int(tn[1])
-            except Exception, e:
+            except Exception as e:
                 pass
                 #print e
 
-        except Exception, e:
+        except Exception as e:
             print e
            
 
@@ -272,20 +272,21 @@ class Identifier(object):
         # Artist
         try:
             dataset['artist_name'] = meta['artist'][0]
-        except Exception, e:
-            #print e
+        except Exception as e:
             pass
             
         try:
-            dataset['artist_mb_id'] = meta['musicbrainz_artistid'][0]
-        except Exception, e:
-            #print e
+            # mutagen metadata contains '/' separated ids for mp3, while a list for flac
+            # so we join by '/' to get an unified way.
+            # the opposite would actually be better, but also would require a lot of refactoring...
+            # so a TODO: fix this at some point of time...
+            dataset['artist_mb_id'] = '/'.join(meta['musicbrainz_artistid'])
+        except Exception as e:
             pass
             
         try:
             dataset['performer_name'] = meta['performer'][0]
-        except Exception, e:
-            #print e
+        except Exception as e:
             pass
 
 
@@ -293,31 +294,31 @@ class Identifier(object):
         # Release
         try:
             dataset['release_name'] = meta['album'][0]
-        except Exception, e:
+        except Exception as e:
             #print e
             pass
             
         try:
             dataset['release_mb_id'] = meta['musicbrainz_albumid'][0]
-        except Exception, e:
+        except Exception as e:
             #print e
             pass
             
         try:
             dataset['release_date'] = meta['date'][0]
-        except Exception, e:
+        except Exception as e:
             #print e
             pass
             
         try:
             dataset['release_releasecountry'] = meta['releasecountry'][0]
-        except Exception, e:
+        except Exception as e:
             #print e
             pass
             
         try:
             dataset['release_status'] = meta['musicbrainz_albumstatus'][0]
-        except Exception, e:
+        except Exception as e:
             #print e
             pass
             
@@ -327,24 +328,24 @@ class Identifier(object):
         try:
             try:
                 dataset['label_name'] = meta['organization'][0]
-            except Exception, e:
+            except Exception as e:
                 #print e
                 pass
                 
             try:
                 dataset['label_name'] = meta['label'][0]
-            except Exception, e:
+            except Exception as e:
                 #print e
                 pass
             
-        except Exception, e:
+        except Exception as e:
             #print e
             pass
 
             
         try:
             dataset['label_code'] = meta['labelno'][0]
-        except Exception, e:
+        except Exception as e:
             #print e
             pass
             
@@ -353,19 +354,19 @@ class Identifier(object):
         # Misc
         try:
             dataset['media_copyright'] = meta['copyright'][0]
-        except Exception, e:
+        except Exception as e:
             #print e
             pass
             
         try:
             dataset['media_comment'] = meta['comment'][0]
-        except Exception, e:
+        except Exception as e:
             #print e
             pass
             
         try:
             dataset['media_bpm'] = meta['bpm'][0]
-        except Exception, e:
+        except Exception as e:
             #print e
             pass
 
@@ -461,13 +462,13 @@ class Identifier(object):
         try:
             tracknumber = obj.results_tag['media_tracknumber']
             log.debug('tracknumber from metadata: %s' % tracknumber)
-        except Exception, e:
+        except Exception as e:
             log.debug('no tracknumber in metadata')
             
         try:
             releasedate = obj.results_tag['release_date']
             log.debug('releasedate from metadata: %s' % releasedate)
-        except Exception, e:
+        except Exception as e:
             log.debug('no releasedate in metadata')
 
         
@@ -572,7 +573,7 @@ class Identifier(object):
                                 release['date'] = None
                             log.info('First Date: %s' % release['date'])
 
-                        except Exception, e:
+                        except Exception as e:
                             log.warning('Unable to sort by date: %s' % e)
                             sorted_releases = result['recordings'][0]['releases']
 
@@ -646,7 +647,7 @@ class Identifier(object):
                             selected_release['recording'] = result['recordings'][0]
                             try:
                                 selected_release['recordings']['releases'] = None
-                            except Exception, e:
+                            except Exception as e:
                                 pass
                                 #print e
                             
@@ -991,7 +992,7 @@ class Identifier(object):
             
             try:
                 sorted_releases = sorted(releases, key=lambda k: k['date']) 
-            except Exception, e:
+            except Exception as e:
                 print "SORTING ERROR"
                 sorted_releases = releases
                 print e
@@ -1194,7 +1195,7 @@ class Identifier(object):
                 except:
                     pass
                 
-            except Exception, e:
+            except Exception as e:
                 print e
                 pass
 
@@ -1213,11 +1214,11 @@ class Identifier(object):
                             rel['discogs_image'] = discogs_image_by_url(relation['target'], 'uri150')
                             
                     
-                except Exception, e:
+                except Exception as e:
                     print e
                     pass
                 
-            except Exception, e:
+            except Exception as e:
                 print e
                 pass
             

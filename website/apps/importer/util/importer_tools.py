@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import collections
 import logging
 import os
 import pprint
@@ -132,11 +133,16 @@ class Importer(object):
 
         if 'mb_artist_id' in it and it['mb_artist_id']:
             mb_artist_id = it['mb_artist_id']
+
+            print '***************************************'
+            print it['mb_artist_id']
+            print '***************************************'
+
             # there can be multiple ids split by '/' here
             if '/' in mb_artist_id:
                 log.debug('got multiple mb artist ids: {}'.format(mb_artist_id))
 
-                url = 'http://%s/ws/2/artist/%s/?fmt=json' % (MUSICBRAINZ_HOST, mb_artist_id)
+                url = 'http://%s/ws/2/artist/%s/?fmt=json' % (MUSICBRAINZ_HOST, mb_artist_id.split('/')[0])
                 log.info('url: %s' % url)
                 r = requests.get(url)
                 result = r.json()
@@ -649,7 +655,8 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, mb_artist_combo_ids=None, 
             disc_index += 1
             media_offset += int(disc['track-count'])
 
-    if mb_artist_combo_ids and 'artist-credit' in result:
+    #if mb_artist_combo_ids and 'artist-credit' in result:
+    if 'artist-credit' in result and len(result['artist-credit']) > 1:
 
         artist_credits = result['artist-credit']
         last_join_phrase = None
