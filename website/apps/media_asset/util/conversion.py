@@ -13,6 +13,7 @@ log = logging.getLogger(__name__)
 LAME_BINARY = getattr(settings, 'LAME_BINARY')
 SOX_BINARY = getattr(settings, 'SOX_BINARY')
 FAAD_BINARY = getattr(settings, 'FAAD_BINARY')
+FFMPEG_BINARY = getattr(settings, 'FFMPEG_BINARY')
 
 def any_to_wav(src, dst=None):
 
@@ -41,15 +42,21 @@ def any_to_wav(src, dst=None):
         if ext.lower() in ['.mp3',]:
             mp3_to_wav(src, dst)
 
-        if ext.lower() in ['.m4a', '.mp4']:
+        if ext.lower() in ['.m4a', '.mp4',]:
             m4a_to_wav(src, dst)
 
-        print name
-        print ext
+        # fallback version via ffmpeg
+        if ext.lower() in ['.flac',]:
+            ffmpeg_to_wav(src, dst)
+
 
     log.debug('to wav: %s > %s' % (src, dst))
-    if os.path.exists(dst):
-        return dst
+    if not os.path.exists(dst):
+        log.warning('unable to convert {} to wav.'.format(src))
+        return
+
+    return dst
+
 
 
 def mp3_to_wav(src, dst):
@@ -82,6 +89,29 @@ def m4a_to_wav(src, dst):
         src,
         '-d', '-q',
         '-o', dst
+    ]
+
+    log.debug('running: %s' % ' '.join(command))
+
+    p = subprocess.Popen(command, stdout=subprocess.PIPE)
+    stdout = p.communicate()
+
+    if stdout:
+        log.debug(stdout)
+
+
+def ffmpeg_to_wav(src, dst):
+
+    log.debug('ssmpeg-to-wav converter: %s' % src)
+
+    command = [
+        FFMPEG_BINARY,
+        '-i',
+        src,
+        dst,
+        '-y',
+        '-v',
+        '0'
     ]
 
     log.debug('running: %s' % ' '.join(command))

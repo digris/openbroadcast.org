@@ -306,6 +306,11 @@ class Format(TimestampedModel, UUIDModel):
                     obj.path
                 ]
 
+                print '*******************'
+                print command
+                print '*******************'
+
+
                 log.debug('running: %s' % ' '.join(command))
 
                 p = subprocess.Popen(command, stdout=subprocess.PIPE)
