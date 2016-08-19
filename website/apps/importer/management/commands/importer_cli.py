@@ -185,6 +185,8 @@ def extract_metadata(path, log_f=None):
 
     dataset = dict(METADATA_SET)
 
+    print meta.get('title')
+
 
     if meta:
         return meta.get('musicbrainz_artistid')

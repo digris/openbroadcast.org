@@ -1,29 +1,28 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import requests
 import logging
 log = logging.getLogger(__name__)
 
 class IcecastAPIClient:
     
-    def __init__(self, channel):
-        self.channel = channel
-        if self.channel and self.channel.stream_server:
-            self.server = self.channel.stream_server
-        else:
-            log.warning(u'unable to get streaming server for channel: %s' % self.channel)
-            self.server = None
+    def __init__(self, server, mountpoint, admin_user, admin_pass):
+
+        self.server = server
+        self.mountpoint = mountpoint
+        self.admin_user = admin_user
+        self.admin_pass = admin_pass
 
 
     def set_text(self, text):
 
-        if self.server and self.server.meta_prefix:
-            text = u'%s %s' % (self.server.meta_prefix, text)
+        if self.server and self.admin_user and self.admin_pass:
 
-        if self.server:
-
-            url = '%sadmin/metadata' % self.server.host
-            auth=(self.server.admin_user, self.server.admin_pass)
+            url = '%sadmin/metadata' % self.server
+            auth=(self.admin_user, self.admin_pass)
             params = {
-                'mount': '/%s' % self.server.mountpoint,
+                'mount': '/%s' % self.mountpoint,
                 'mode': 'updinfo',
                 'song': u'%s' % text
             }
@@ -38,7 +37,12 @@ class IcecastAPIClient:
 def set_stream_metadata(channel, text):
     log.info(u'channel: %s - metadata-text: %s' % (channel, text))
     try:
-        api = IcecastAPIClient(channel=channel)
+        api = IcecastAPIClient(
+            server=channel.icecast2_server,
+            mountpoint=channel.icecast2_mountpoint,
+            admin_user=channel.icecast2_admin_user,
+            admin_pass=channel.icecast2_admin_pass
+        )
         api.set_text(text)
     except Exception as e:
         log.warning(u'unable to set stream metadata text: %s' % e)
