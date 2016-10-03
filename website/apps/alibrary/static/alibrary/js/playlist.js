@@ -356,7 +356,7 @@ CollectorApp = (function () {
     this.api_url;
     this.playlist_app;
     this.mode = 'main'; // or popup
-    this.qs_limit = 20;
+    this.qs_limit = 50;
 
     this.active_playlist = false;
 

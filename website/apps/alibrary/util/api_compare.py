@@ -603,11 +603,21 @@ class DiscogsAPILookup(APILookup):
         # reformat tracklist
         res['tracklist'] = []
         for track in data['tracklist']:
+
             if 'artists' in track:
                 try:
                     track['artists'][0]['name'] = self.reformat_name(track['artists'][0]['name'])
                 except:
                     pass
+            """
+            TODO: this is an ugly & temporary hack to address discogs API issue:
+            https://lab.hazelfire.com/issues/1622
+            """
+            try:
+                track['title'] = track['title'].replace('\x92', "'")
+            except Exception as e:
+                pass
+
             res['tracklist'].append(track)
 
 

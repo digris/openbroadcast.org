@@ -12,7 +12,7 @@ class TuneinAPIClient:
         self.station_id = station_id
         self.partner_id = partner_id
         self.partner_key = partner_key
-        
+
 
     def set_metadata(self, content_object):
 

@@ -159,7 +159,9 @@ def provider_search(request, *args, **kwargs):
                 .replace('~', '\~')\
                 .replace('*', '\*')\
                 .replace('?', '\?')\
+                .replace('"', '\\"')\
                 .replace('/', '\/')
+
 
             t_query = urllib.quote(t_query)
 
@@ -173,6 +175,7 @@ def provider_search(request, *args, **kwargs):
                 .replace('\~', '~')\
                 .replace('\*', '*')\
                 .replace('\?', '?')\
+                .replace('\\"', "")\
                 .replace('\/', '/')
 
 
@@ -265,7 +268,7 @@ def provider_update(request, *args, **kwargs):
 def merge_items(request, *args, **kwargs):
 
     item_type = kwargs.get('item_type', None)
-    item_ids = kwargs.get('item_ids', None)
+    item_ids = kwargs.get('item_ids', [])
     master_id = kwargs.get('master_id', None)
 
     slave_items = []
@@ -366,7 +369,7 @@ def merge_items(request, *args, **kwargs):
 @permission_required('alibrary.reassign_media')
 def reassign_items(request, *args, **kwargs):
 
-    media_ids = kwargs.get('media_ids', None)
+    media_ids = kwargs.get('media_ids', [])
     name = kwargs.get('name', None)
     release_id = kwargs.get('release_id', None)
 
@@ -402,9 +405,4 @@ def reassign_items(request, *args, **kwargs):
 
 
     return json.dumps(data)
-
-
-
-
-
 
