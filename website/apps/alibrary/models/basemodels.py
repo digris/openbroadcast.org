@@ -518,6 +518,12 @@ class Relation(models.Model):
         ('itunes', _('iTunes')),
         ('official', _('Official website')),
     )
+
+    UNIQUE_SERVICES = [
+        'lastfm',
+        'musicbrainz',
+    ]
+
     service = models.CharField(
         max_length=50,
         choices=SERVICE_CHOICES, blank=True, null=True, editable=True,
@@ -555,6 +561,7 @@ class Relation(models.Model):
 
         # find already assigned services and delete them
         if self.service != 'generic':
+        #if self.service in Relation.UNIQUE_SERVICES:
             # TODO: fix unique problem
             Relation.objects.filter(service=self.service, content_type=self.content_type, object_id=self.object_id).delete()
 

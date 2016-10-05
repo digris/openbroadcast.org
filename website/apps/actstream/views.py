@@ -36,24 +36,17 @@ class ActionListView(PaginationMixin, ListView):
     def get_queryset(self):
 
         kwargs = {}
-        
         qs = Action.objects.filter(**kwargs)
 
-        
         user_filter = self.request.GET.get('username', None)
         if user_filter:
             user = get_object_or_404(User, username=user_filter)
             qs = qs.filter(actor_object_id=user.pk).distinct()
 
-
         # apply filters
         self.filter = ActionFilter(self.request.GET, queryset=qs)
 
-        qs = self.filter.qs
-
-
-        
-        return qs
+        return self.filter.qs
     
 
     def get_context_data(self, **kwargs):

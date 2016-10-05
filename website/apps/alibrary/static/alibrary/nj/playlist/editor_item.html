@@ -1,8 +1,11 @@
-<div class="list_body_row item hoverable editable {{ object.uuid }} {{ object.item.content_type }} {% if readonly %} readonly{% endif %}"
+<div class="list_body_row item hoverable editable {{ object.uuid }} playlistitem {% if readonly %} readonly{% endif %}"
      data-updated="{{ object.updated }}"
      data-resource_uri="{{ object.resource_uri }}"
      data-uuid="{{ object.uuid }}"
      data-id="{{ object.id }}"
+     data-ct="{{ object.item.content_type }}"
+     data-ct_id="{{ object.item.content_object.id }}"
+     data-ct_uuid="{{ object.item.content_object.uuid }}"
      id="playlist_item_{{ object.id }}">
 
     <div class="row-fluid base">

@@ -14,68 +14,12 @@
 		alibrary.playlist.current_playlist_id = "{{ current_playlist.pk }}";
 		//alibrary.playlist.init();
 
-
-		alibrary.collector = new CollectorApp;
-		alibrary.collector.api_url = "{% url "api_dispatch_list" resource_name='library/playlist' api_name='v1'%}";
-		alibrary.collector.playlist_app = alibrary.playlist;
-		alibrary.collector.init();
+        // TODO: this is handled in base.html - so disabled here as it should not have any effects
+		//alibrary.collector = new CollectorApp();
+		//alibrary.collector.api_url = "{% url "api_dispatch_list" resource_name='library/playlist' api_name='v1'%}";
+		//alibrary.collector.playlist_app = alibrary.playlist;
+		//alibrary.collector.init();
 
 	});
 </script>
-
-<!-- moustache templates -->
-
-
-
-
-
-
 {% endaddtoblock %}
-
-
-
-
-<!--
-<div id="inline_playlist_container" class="">
-
-	<div class="playlist basket ui-persistent open" data-uistate="init" id="playlist_basket">
-
-		<div class="header">
-			<span>{% trans "Playlist Basket" %}</span>
-		</div>
-
-
-		<div class="form">
-
-			<form class="form-inline select">
-
-				<div class="control-group">
-					<div class="controls playlist-selector">
-					</div>
-				</div>
-			</form>
-
-		</div>
-
-		<div id="inline_playlist_holder" class="wrapper"></div>
-
-		<div class="form">
-
-			<form class="form-inline create">
-				<div class="control-group">
-					<div class="controls">
-						<input type="text" name="name" class="name" placeholder="{% trans "Newe Basket" %}">
-						<button type="submit" class="btn btn-primary btn-mini">
-							<i class="icon-ok-sign"></i>
-						</button>
-					</div>
-				</div>
-			</form>
-
-		</div>
-
-
-	</div>
-
-</div>
--->

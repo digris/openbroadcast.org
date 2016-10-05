@@ -1,7 +1,7 @@
 {% load compress i18n cms_tags sekizai_tags value_from_settings backfeed_tags raven loginas_tags announcements_tags nunjucks_tags %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
-        <title>{% block title %}{% endblock %}{{ request.current_page.get_title }}</title>
+        <title>{% block title %}{{ request.current_page.get_title }}{% endblock %}</title>
 
         <meta charset="utf-8">
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />

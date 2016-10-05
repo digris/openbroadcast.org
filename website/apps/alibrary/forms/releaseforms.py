@@ -195,13 +195,21 @@ class ReleaseForm(ModelForm):
         # TODO: this is very ugly!
         unknown_label, c = Label.objects.get_or_create(slug='unknown')
         if c:
-            unknown_label.name = 'Unknown label'
-            unknown_label.save()
+            Label.objects.filter(pk=unknown_label.pk).update(
+                name='Unknown label',
+                slug='unknown'
+            )
 
         noton_label, c = Label.objects.get_or_create(slug='not-on-label-self-released')
         if c:
-            noton_label.name = 'Not on Label / Self Released'
-            noton_label.save()
+            Label.objects.filter(pk=unknown_label.pk).update(
+                name='Not on Label / Self Released',
+                slug='not-on-label-self-released'
+            )
+        #
+        # if c:
+        #     noton_label.name = 'Not on Label / Self Released'
+        #     noton_label.save()
 
 
         base_layout = Fieldset(

@@ -7,8 +7,8 @@ from alibrary.models import Media
 @receiver(post_save, sender=Artist, dispatch_uid="invalidate_artist_cache")
 def invalidate_artist_cache(sender, instance, created, **kwargs):
     try:
-        instance.get_releases.invalidate(instance)
-        instance.get_media.invalidate(instance)
+        Artist.get_releases.invalidate(instance)
+        Artist.get_media.invalidate(instance)
     except Exception as e:
         pass
 
@@ -16,7 +16,7 @@ def invalidate_artist_cache(sender, instance, created, **kwargs):
 def invalidate_related_artist_cache(sender, instance, created, **kwargs):
     try:
         if instance.artist:
-            instance.artist.get_releases.invalidate(instance.artist)
-            instance.artist.get_media.invalidate(instance.artist)
+            Artist.get_releases.invalidate(instance.artist)
+            Artist.get_media.invalidate(instance.artist)
     except Exception as e:
         pass

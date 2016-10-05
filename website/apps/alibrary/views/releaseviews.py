@@ -21,7 +21,7 @@ from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, UpdateView
 from tagging_extra.utils import calculate_cloud
 from lib.util.form_errors import merge_form_errors
-from base.models.utils import merge_objects
+from base.models.utils.merge import merge_objects
 from pure_pagination.mixins import PaginationMixin
 from tagging.models import Tag
 from ..models import Release, Artist, Label, ReleaseAlbumartists
@@ -447,9 +447,9 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         # TODO: this is extremely ugly!! refactor!
         albumartists = formset.save(commit=False)
 
-        releaseartist_delete_qs = ReleaseAlbumartists.objects.filter(release__pk=self.object.pk)
-        releaseartist_delete_qs = releaseartist_delete_qs.exclude(artist__pk__in=[a.artist.pk for a in albumartists])
-        releaseartist_delete_qs.delete()
+        delete_qs = ReleaseAlbumartists.objects.filter(release__pk=self.object.pk)
+        delete_qs = delete_qs.exclude(artist__pk__in=[a.artist.pk for a in albumartists])
+        delete_qs.delete()
 
         for albumartist in albumartists:
             key = hashlib.md5(albumartist.artist.name.encode('ascii', 'ignore')).hexdigest()

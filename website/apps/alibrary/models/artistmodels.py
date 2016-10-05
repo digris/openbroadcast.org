@@ -21,6 +21,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateField
@@ -345,17 +346,13 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
 tagging_register(Artist)
 arating.enable_voting_on(Artist)
 
-
+@receiver(post_save, sender=Artist)
 def action_handler(sender, instance, created, **kwargs):
     action_handler_task.delay(instance, created)
 
 
-post_save.connect(action_handler, sender=Artist)
-
-
 @task
 def action_handler_task(instance, created):
-
     if created and instance.creator:
         action.send(instance.creator, verb=_('created'), target=instance)
 

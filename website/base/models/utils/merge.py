@@ -1,6 +1,7 @@
 import logging
 
 from django.db import transaction
+from django.db import IntegrityError
 from django.apps import apps
 from django.db.models import Model
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -102,4 +103,21 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
         if not keep_old:
             alias_object.delete()
     primary_object.save()
+    return primary_object
+
+
+def merge_votes(primary_object, alias_objects):
+    """
+    merges votes from 'alias_objects' to the master, taking into account
+    that a user can only vote once per object
+    """
+
+    for obj in alias_objects:
+        for v in obj.votes.all():
+            try:
+                v.object_id = primary_object.pk
+                v.save()
+            except IntegrityError as e:
+                v.delete()
+
     return primary_object

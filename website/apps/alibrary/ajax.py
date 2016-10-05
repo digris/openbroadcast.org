@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 import json
 import re
+
+import actstream
 from django.db import transaction
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
@@ -9,9 +11,11 @@ from dajaxice.decorators import dajaxice_register
 from django.contrib.auth.decorators import permission_required
 import requests
 from stdnum import ean
+from django.utils.translation import ugettext as _
 import urllib
 from alibrary.models import Release, Relation, Label, Artist, Media
-from base.models.utils import merge_objects
+from base.models.utils.merge import merge_objects
+from base.models.utils.merge import merge_votes
 from lib.util.AsciiDammit import asciiDammit
 
 from alibrary.util.api_compare import get_from_provider
@@ -287,12 +291,16 @@ def merge_items(request, *args, **kwargs):
 
                 items = Release.objects.filter(pk__in=item_ids).exclude(pk=int(master_id))
                 for item in items:
+                    # delete service specific relations (only one - from the master - allowed)
+                    item.relations.exclude(service='generic').delete()
+                    item.album_artists.clear()
                     slave_items.append(item)
 
                 master_item = Release.objects.get(pk=int(master_id))
                 if slave_items and master_item:
+                    merge_votes(master_item, slave_items)
                     master_item = merge_objects(master_item, slave_items)
-                    # needed to clear cache TODO: really needed??
+                    # needed to clear cache
                     for media in master_item.media_release.all():
                         media.save()
                     data['status'] = True
@@ -304,12 +312,19 @@ def merge_items(request, *args, **kwargs):
             if item_type == 'media':
                 items = Media.objects.filter(pk__in=item_ids).exclude(pk=int(master_id))
                 for item in items:
+                    # delete service specific relations (only one - from the master - allowed)
+                    item.relations.exclude(service='generic').delete()
                     item.waveforms.all().delete()
                     item.formats.all().delete()
+                    # delete media- and extra artist assignments
+                    item.media_artists.clear()
+                    item.extra_artists.clear()
+
                     slave_items.append(item)
 
                 master_item = Media.objects.get(pk=int(master_id))
                 if slave_items and master_item:
+                    merge_votes(master_item, slave_items)
                     merge_objects(master_item, slave_items)
                     master_item.save()
                     data['status'] = True
@@ -320,10 +335,13 @@ def merge_items(request, *args, **kwargs):
             if item_type == 'artist':
                 items = Artist.objects.filter(pk__in=item_ids).exclude(pk=int(master_id))
                 for item in items:
+                    # delete service specific relations (only one - from the master - allowed)
+                    item.relations.exclude(service='generic').delete()
                     slave_items.append(item)
 
                 master_item = Artist.objects.get(pk=int(master_id))
                 if slave_items and master_item:
+                    merge_votes(master_item, slave_items)
                     merge_objects(master_item, slave_items)
                     master_item.save()
                     # needed to clear cache
@@ -338,13 +356,16 @@ def merge_items(request, *args, **kwargs):
             if item_type == 'label':
                 items = Label.objects.filter(pk__in=item_ids).exclude(pk=int(master_id))
                 for item in items:
+                    # delete service specific relations (only one - from the master - allowed)
+                    item.relations.exclude(service='generic').delete()
                     slave_items.append(item)
 
                 master_item = Label.objects.get(pk=int(master_id))
                 if slave_items and master_item:
+                    merge_votes(master_item, slave_items)
                     merge_objects(master_item, slave_items)
                     master_item.save()
-                    # needed to clear cache
+                    # needed to clear cache?
                     """
                     for media in master_item.media_release.all():
                         media.save()
@@ -353,6 +374,12 @@ def merge_items(request, *args, **kwargs):
                 else:
                     data['status'] = False
                     data['error'] = 'No selection'
+
+
+            if master_item and data['status']:
+                actstream.action.send(request.user, verb=_('merged to'), target=master_item)
+
+                pass
 
 
 

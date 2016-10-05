@@ -61,7 +61,7 @@ CELERY_ROUTES = {
     'media_asset.tasks.process_waveform': {'queue': 'grapher'},
     'media_asset.tasks.process_format': {'queue': 'convert'},
 
-    #'exporter.models.process_task': {'queue': 'export'},
+    'exporter.models.process_task': {'queue': 'export'},
 
 }
 

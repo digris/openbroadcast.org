@@ -18,7 +18,7 @@ from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKe
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateField
@@ -109,9 +109,8 @@ class Release(MigrationMixin):
     barcode = models.CharField(max_length=32, blank=True, null=True)
 
     extra_artists = models.ManyToManyField('alibrary.Artist', through='ReleaseExtraartists', blank=True)
-
-
     album_artists = models.ManyToManyField('alibrary.Artist', through='ReleaseAlbumartists', related_name="release_albumartists", blank=True)
+
     relations = GenericRelation(Relation)
     d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
 
@@ -528,6 +527,13 @@ class ReleaseAlbumartists(models.Model):
 
     def __unicode__(self):
         return '{0} - {1} {2}'.format(self.release, self.join_phrase, self.artist)
+
+@receiver(post_delete, sender=ReleaseAlbumartists)
+def release_albumartists_post_delete(sender, instance, **kwargs):
+    # clear caches
+    from alibrary.models import Artist
+    Artist.get_releases.invalidate(instance.artist)
+    Artist.get_media.invalidate(instance.artist)
 
 
 class ReleaseRelations(models.Model):

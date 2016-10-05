@@ -378,6 +378,7 @@ CollectorApp = (function () {
 
 
         $('body').on('click', 'a[data-action=collect]', function (e) {
+
             e.preventDefault();
             e.stopPropagation();
 
@@ -417,6 +418,22 @@ CollectorApp = (function () {
                     // callbacks etc
                     async: false
                 });
+            }
+
+            // playlistitem (exists in playlist editor only a.t.m.)
+            if (container.hasClass('playlistitem')) {
+
+                if(container.data('ct') != 'media') {
+                    // only tracks a.k.a. media can be collected
+                    return;
+                }
+
+                var item_id = container.data('ct_id');
+                var item_uuid = container.data('ct_uuid');
+                media.push({id: item_id, uuid: item_uuid});
+
+                self.media_to_collect = media;
+                
             }
 
             // playlist -> we need to get it's media first

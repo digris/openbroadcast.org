@@ -1,13 +1,11 @@
+;
 /*
  * LISTEDIT
  * provides ui functionality for merge, delete etc
  */
 
-/* core */
 
-
-dw = false
-
+//dw = false;
 
 ListEditUi = function () {
 
@@ -74,9 +72,7 @@ ListEditUi = function () {
 
             self.selected = $(this).data('id');
 
-
         });
-
 
         $('#merge_dialog_container .action a').live('click', function (e) {
             e.preventDefault();
@@ -88,7 +84,7 @@ ListEditUi = function () {
                     item_ids: self.item_ids,
                     item_type: self.ct,
                     master_id: self.selected
-                }
+                };
 
                 if(!self.selected) {
                     alert('Selection required');
@@ -96,15 +92,12 @@ ListEditUi = function () {
                 }
 
                 // display processing message
-
                 try {
                     var api = self.dialog_window.qtip('api');
                     api.set('content.text', nj.render('alibrary/nj/merge/merge_dialog_progress.html'));
                 } catch (e) {
                 }
 
-
-                /**/
                 Dajaxice.alibrary.merge_items(function (data) {
                     try {
                         var api = self.dialog_window.qtip('api');
@@ -117,7 +110,6 @@ ListEditUi = function () {
                         alert(data.error);
                     }
                 }, data);
-
 
             }
 
@@ -446,11 +438,6 @@ ListEditUi = function () {
 
 
 };
-
-// should be called from corresponding place, with 'ctype' etc
-// list_edit.ui = new ListEditUi();
-
-
 
 var RangeFilter = function() {
     var self = this;

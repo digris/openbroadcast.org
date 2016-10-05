@@ -2,6 +2,12 @@
 
 {% load truncate_tags i18n thumbnail arating_tags wiki_tags atracker_tags spurl alibrary_tags url_tags sekizai_tags pageguide_tags addthis %}
 
+
+{% block title %}{{ object.name }}
+{% if object.country %}({{ object.country.iso2_code }}){% endif %}
+{% if object.date_start %} *{{ object.date_start.year }}{% endif %}
+{% if object.date_end %} &#10013;{{ object.date_end.year }}{% endif %}{% endblock %}
+
 {% block heading %}
 
 

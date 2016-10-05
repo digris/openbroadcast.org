@@ -161,10 +161,13 @@ class Event(models.Model):
     
 def actstream_link(sender, instance, created, **kwargs):
     from actstream import action
+
+    print 'post save - actstream_link'
+
     try:
         if instance.user:
             action.send(instance.user, verb=instance.event_type.title, target=instance.content_object)
-    except Exception, e:
-        print e
+    except Exception as e:
+        pass
 
 post_save.connect(actstream_link, sender=Event)

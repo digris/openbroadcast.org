@@ -48,7 +48,7 @@ def discogs_image_by_url(url, type='uri'):
             url = 'http://%s/%s/%s' %(DISCOGS_HOST, type, id)
             log.debug('constructed API url "%s"' % url)
 
-            r = requests.get(url)
+            r = requests.get(url, timeout=5)
 
             if not r.status_code == 200:
                 log.warning('server error: %s %s' % (r.status_code, r.text))

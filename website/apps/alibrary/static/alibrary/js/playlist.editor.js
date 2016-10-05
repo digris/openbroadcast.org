@@ -12,7 +12,7 @@ PlaylistEditor = function () {
     this.interval_duration = 30000;
     //this.interval_duration = false;
     this.api_url = false;
-    this.uuid = 'sdkhj';
+    this.uuid = '-';
     this.dom_id = 'playlist_editor_list';
     this.dom_element;
 
@@ -78,8 +78,6 @@ PlaylistEditor = function () {
          */
 
         if (!self.readonly) {
-
-            //self.dom_element.css('overflow-y', 'scroll');
 
             self.dom_element.sortable(
                 {
@@ -714,7 +712,6 @@ PlaylistEditorItem = function () {
 
         // check if append or replace
         if ($('#playlist_item_' + self.item.id).length) {
-            debug.debug('!!! replacing item !!!')
             $('#playlist_item_' + self.item.id).replaceWith(html);
         } else {
             self.editor_container.append(html);

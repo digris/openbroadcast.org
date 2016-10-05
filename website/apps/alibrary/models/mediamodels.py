@@ -19,7 +19,8 @@ from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKe
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import post_save, pre_delete
+from django.db.models.signals import post_save, pre_delete, post_delete
+from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.fields.json import JSONField
@@ -98,11 +99,6 @@ def upload_master_to(instance, filename):
 
 class Media(MigrationMixin):
 
-    #uuid = RUUIDField(primary_key=False)
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=255, db_index=True)
-    slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
-    
     STATUS_CHOICES = (
         (0, _('Init')),
         (1, _('Ready')),
@@ -111,16 +107,13 @@ class Media(MigrationMixin):
         (5, _('File error')),
         (99, _('Error')),
     )
-    status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
-    publish_date = models.DateTimeField(blank=True, null=True)
 
     PROCESSED_CHOICES = (
         (0, _('Waiting')),
         (1, _('Done')),
         (99, _('Error')),
     )
-    processed = models.PositiveIntegerField(default=0, choices=PROCESSED_CHOICES)
-    
+
     ECHOPRINT_STATUS_CHOICES = (
         (0, _('Init')),
         (1, _('Assigned')),
@@ -128,7 +121,6 @@ class Media(MigrationMixin):
         (3, _('File not suitable')),
         (99, _('Error')),
     )
-    echoprint_status = models.PositiveIntegerField(default=0, choices=ECHOPRINT_STATUS_CHOICES)
 
     CONVERSION_STATUS_CHOICES = (
         (0, _('Init')),
@@ -136,77 +128,204 @@ class Media(MigrationMixin):
         (2, _('Error')),
         (99, _('Error')),
     )
-    conversion_status = models.PositiveIntegerField(default=0, choices=CONVERSION_STATUS_CHOICES)
-
-    lock = models.PositiveIntegerField(default=0, editable=False)
 
     TRACKNUMBER_CHOICES = ((x, x) for x in range(1, 301))
-    #TRACKNUMBER_CHOICES =  [(None, '---')] + list(((str(x), x) for x in range(1, 101)))
-    tracknumber = models.PositiveIntegerField(verbose_name=_('Track Number'), blank=True, null=True, choices=TRACKNUMBER_CHOICES)
-
-    opus_number = models.CharField(max_length=200, blank=True, null=True)
 
     MEDIANUMBER_CHOICES = ((x, x) for x in range(1, 51))
-    # a.k.a. "Disc number"
-    medianumber = models.PositiveIntegerField(verbose_name=_('a.k.a. "Disc number'), blank=True, null=True, choices=MEDIANUMBER_CHOICES)
-    
 
-    mediatype = models.CharField(verbose_name=_('Type'), max_length=128, default='song', choices=MEDIATYPE_CHOICES)
+    uuid = models.UUIDField(
+        default=uuid.uuid4, editable=False
+    )
+    lock = models.PositiveIntegerField(
+        default=0, editable=False
+    )
+    name = models.CharField(
+        max_length=255, db_index=True
+    )
+    slug = AutoSlugField(
+        populate_from='name',
+        editable=True, blank=True, overwrite=True
+    )
+    status = models.PositiveIntegerField(
+        default=0,
+        choices=STATUS_CHOICES
+    )
+    created = models.DateTimeField(
+        auto_now_add=True, editable=False
+    )
+    updated = models.DateTimeField(
+        auto_now=True, editable=False
+    )
+    publish_date = models.DateTimeField(
+        blank=True, null=True
+    )
+    processed = models.PositiveIntegerField(
+        default=0,
+        choices=PROCESSED_CHOICES
+    )
+    echoprint_status = models.PositiveIntegerField(
+        default=0,
+        choices=ECHOPRINT_STATUS_CHOICES
+    )
+    conversion_status = models.PositiveIntegerField(
+        default=0,
+        choices=CONVERSION_STATUS_CHOICES
+    )
+    tracknumber = models.PositiveIntegerField(
+        verbose_name=_('Track Number'),
+        blank=True, null=True,
+        choices=TRACKNUMBER_CHOICES
+    )
+    opus_number = models.CharField(
+        max_length=200, blank=True, null=True
+    )
+    medianumber = models.PositiveIntegerField(
+        verbose_name=_('a.k.a. "Disc number'),
+        blank=True, null=True,
+        choices=MEDIANUMBER_CHOICES
+    )
+    mediatype = models.CharField(
+        verbose_name=_('Type'),
+        max_length=128, default='song',
+        choices=MEDIATYPE_CHOICES
+    )
+    version = models.CharField(
+        max_length=12, blank=True, null=True,
+        default='track',
+        choices=VERSION_CHOICES
+    )
+    description = models.TextField(
+        verbose_name="Extra Description / Tracklist",
+        blank=True, null=True
+    )
+    lyrics = models.TextField(
+        blank=True, null=True
+    )
+    lyrics_language = LanguageField(
+        blank=True, null=True
+    )
 
-    version = models.CharField(max_length=12, blank=True, null=True, default='track', choices=VERSION_CHOICES)
-
-
-    description = models.TextField(verbose_name="Extra Description / Tracklist", blank=True, null=True)
-    lyrics = models.TextField(blank=True, null=True)
-    lyrics_language = LanguageField(blank=True, null=True)
-
-    duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", blank=True, null=True, editable=False)
+    duration = models.PositiveIntegerField(
+        verbose_name="Duration (in ms)",
+        blank=True, null=True, editable=False
+    )
     
     # relations
-    release = models.ForeignKey('alibrary.Release', blank=True, null=True, related_name='media_release', on_delete=models.SET_NULL)
-    artist = models.ForeignKey('alibrary.Artist', blank=True, null=True, related_name='media_artist')
+    release = models.ForeignKey(
+        'alibrary.Release',
+        blank=True, null=True, on_delete=models.SET_NULL,
+        related_name='media_release'
+    )
+    artist = models.ForeignKey(
+        'alibrary.Artist',
+        blank=True, null=True,
+        related_name='media_artist'
+    )
     
     # user relations
-    owner = models.ForeignKey(User, blank=True, null=True, related_name="media_owner", on_delete=models.SET_NULL)
-    creator = models.ForeignKey(User, blank=True, null=True, related_name="media_creator", on_delete=models.SET_NULL)
-    last_editor = models.ForeignKey(User, blank=True, null=True, related_name="media_last_editor", on_delete=models.SET_NULL)
-    publisher = models.ForeignKey(User, blank=True, null=True, related_name="media_publisher", on_delete=models.SET_NULL)
+    owner = models.ForeignKey(
+        User,
+        blank=True, null=True, on_delete=models.SET_NULL,
+        related_name="media_owner"
+    )
+    creator = models.ForeignKey(
+        User,
+        blank=True, null=True, on_delete=models.SET_NULL,
+        related_name="media_creator"
+    )
+    last_editor = models.ForeignKey(
+        User,
+        blank=True, null=True, on_delete=models.SET_NULL,
+        related_name="media_last_editor"
+    )
+    publisher = models.ForeignKey(
+        User, blank=True, null=True, on_delete=models.SET_NULL,
+        related_name="media_publisher"
+    )
 
     # identifiers
-    isrc = models.CharField(verbose_name='ISRC', max_length=12, null=True, blank=True)
+    isrc = models.CharField(
+        verbose_name='ISRC',
+        max_length=12, null=True, blank=True
+    )
     
     # relations a.k.a. links
     relations = GenericRelation(Relation)
+    playlist_items = GenericRelation(
+        PlaylistItem,
+        object_id_field="object_id"
+    )
 
-    playlist_items = GenericRelation(PlaylistItem, object_id_field="object_id")
-
-    
     # tagging (d_tags = "display tags")
-    d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
-    
+    d_tags = tagging.fields.TagField(
+        verbose_name="Tags",
+        max_length=1024, blank=True, null=True
+    )
+
+    # provide 'multi-names' for artist crediting, like: Artist X feat. Artist Y & Artist Z
+    media_artists = models.ManyToManyField(
+        'alibrary.Artist',
+        blank=True,
+        through='MediaArtists',
+        related_name="credited",
+    )
+
     # extra-artists
-    extra_artists = models.ManyToManyField('alibrary.Artist', through='MediaExtraartists', blank=True)
+    extra_artists = models.ManyToManyField(
+        'alibrary.Artist',
+        blank=True,
+        through='MediaExtraartists'
+    )
 
-    # provide 'multi-names' for artist crediting.
-    media_artists = models.ManyToManyField('alibrary.Artist', through='MediaArtists', related_name="credited", blank=True)
+    license = models.ForeignKey(
+        License,
+        blank=True, null=True, on_delete=models.PROTECT,
+        related_name='media_license',
+        limit_choices_to={'selectable': True}
+    )
     
-    license = models.ForeignKey(License, blank=True, null=True, related_name='media_license', limit_choices_to={'selectable': True}, on_delete=models.PROTECT)
-    
-    filename = models.CharField(verbose_name=_('Filename'), max_length=256, blank=True, null=True)
-    original_filename = models.CharField(verbose_name=_('Original filename'), max_length=256, blank=True, null=True)
+    filename = models.CharField(
+        verbose_name=_('Filename'),
+        max_length=256, blank=True, null=True
+    )
+    original_filename = models.CharField(
+        verbose_name=_('Original filename'),
+        max_length=256, blank=True, null=True
+    )
 
-    folder = models.CharField(max_length=1024, null=True, blank=True, editable=False)
-    
+    folder = models.CharField(
+        max_length=1024, null=True, blank=True, editable=False
+    )
+
+    #######################################################################
     # File Data
-    base_format = models.CharField(verbose_name=_('Format'), max_length=12, blank=True, null=True)
-    base_filesize = models.PositiveIntegerField(verbose_name=_('Filesize'), blank=True, null=True)
-    base_duration = models.FloatField(verbose_name=_('Duration'), blank=True, null=True)
-    base_samplerate = models.PositiveIntegerField(verbose_name=_('Samplerate'), blank=True, null=True)
-    base_bitrate = models.PositiveIntegerField(verbose_name=_('Bitrate'), blank=True, null=True)
+    #######################################################################
+    base_format = models.CharField(
+        verbose_name=_('Format'),
+        max_length=12, blank=True, null=True
+    )
+    base_filesize = models.PositiveIntegerField(
+        verbose_name=_('Filesize'),
+        blank=True, null=True
+    )
+    base_duration = models.FloatField(
+        verbose_name=_('Duration'),
+        blank=True, null=True
+    )
+    base_samplerate = models.PositiveIntegerField(
+        verbose_name=_('Samplerate'),
+        blank=True, null=True
+    )
+    base_bitrate = models.PositiveIntegerField(
+        verbose_name=_('Bitrate'),
+        blank=True, null=True
+    )
 
+    #######################################################################
     # master audio-file data
     # TODO: all version- & conversion based data will be refactored.
     # the media model should just hold information about the associated master file
+    #######################################################################
     master = models.FileField(max_length=1024, upload_to=upload_master_to, blank=True, null=True)
     master_sha1 = models.CharField(max_length=64, db_index=True, blank=True, null=True)
     master_encoding = models.CharField(max_length=16, blank=True, null=True)
@@ -215,8 +334,9 @@ class Media(MigrationMixin):
     master_samplerate = models.PositiveIntegerField(verbose_name=_('Samplerate'), blank=True, null=True)
     master_duration = models.FloatField(verbose_name=_('Duration'), blank=True, null=True)
 
-
+    #######################################################################
     # echonest data
+    #######################################################################
     echonest_id = models.CharField(max_length=20, blank=True, null=True)
     danceability = models.FloatField(null=True, blank=True)
     energy = models.FloatField(null=True, blank=True)
@@ -227,15 +347,9 @@ class Media(MigrationMixin):
     echonest_duration = models.FloatField(null=True, blank=True)
     tempo = models.FloatField(null=True, blank=True)
     key = models.IntegerField(null=True, blank=True)
-
     sections = JSONField(blank=True, null=True)
 
     objects = models.Manager()
-
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    updated = models.DateTimeField(auto_now=True, editable=False)
-
-
 
     class Meta:
         app_label = 'alibrary'
@@ -784,15 +898,27 @@ arating.enable_voting_on(Media)
 try:
     tagging_register(Media)
 except Exception as e:
-    print '***** %s' % e
     pass
 
 
 class MediaExtraartists(models.Model):
 
-    artist = models.ForeignKey('alibrary.Artist', related_name='extraartist_artist', on_delete=models.CASCADE, blank=True, null=True)
-    media = models.ForeignKey('Media', related_name='extraartist_media', on_delete=models.CASCADE, blank=True, null=True)
-    profession = models.ForeignKey(Profession, verbose_name='Role/Profession', related_name='media_extraartist_profession', blank=True, null=True)
+    artist = models.ForeignKey(
+        'alibrary.Artist',
+        related_name='extraartist_artist',
+        blank=True, null=True, on_delete=models.CASCADE
+    )
+    media = models.ForeignKey(
+        'Media',
+        related_name='extraartist_media',
+        blank=True, null=True, on_delete=models.CASCADE
+    )
+    profession = models.ForeignKey(
+        Profession,
+        verbose_name='Role/Profession',
+        related_name='media_extraartist_profession',
+        blank=True, null=True
+    )
 
     class Meta:
         app_label = 'alibrary'
@@ -807,12 +933,35 @@ class MediaExtraartists(models.Model):
             return 'Credited "%s"' % self.pk
 
 
-class MediaArtists(models.Model):
-    artist = models.ForeignKey('alibrary.Artist', related_name='artist_mediaartist')
-    media = models.ForeignKey('Media', related_name='media_mediaartist')
+@receiver(post_delete, sender=MediaExtraartists)
+def media_extraartists_post_delete(sender, instance, **kwargs):
+    # clear caches
+    from alibrary.models import Artist
+    Artist.get_releases.invalidate(instance.artist)
+    Artist.get_media.invalidate(instance.artist)
 
-    join_phrase = models.CharField(verbose_name="join phrase", max_length=12, default=None, choices=alibrary_settings.ARTIST_JOIN_PHRASE_CHOICES, blank=True, null=True)
-    position = models.PositiveIntegerField(null=True, blank=True)
+
+class MediaArtists(models.Model):
+
+    artist = models.ForeignKey(
+        'alibrary.Artist',
+        related_name='artist_mediaartist',
+        on_delete=models.CASCADE
+    )
+    media = models.ForeignKey(
+        'Media',
+        related_name='media_mediaartist',
+        on_delete=models.CASCADE
+    )
+    join_phrase = models.CharField(
+        verbose_name="join phrase",
+        max_length=12, blank=True, null=True,
+        default=None,
+        choices=alibrary_settings.ARTIST_JOIN_PHRASE_CHOICES
+    )
+    position = models.PositiveIntegerField(
+        null=True, blank=True
+    )
 
     class Meta:
         app_label = 'alibrary'
@@ -828,6 +977,13 @@ class MediaArtists(models.Model):
         else:
             return u'%s on %s' % (self.artist, self.media)
 
+@receiver(post_delete, sender=MediaArtists)
+def media_artists_post_delete(sender, instance, **kwargs):
+
+    # clear caches
+    from alibrary.models import Artist
+    Artist.get_releases.invalidate(instance.artist)
+    Artist.get_media.invalidate(instance.artist)
 
 
 def get_raw_image(filename, type):

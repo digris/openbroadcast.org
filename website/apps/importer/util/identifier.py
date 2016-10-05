@@ -540,7 +540,7 @@ class Identifier(object):
             """
             
             log.debug('API url for request: %s' % url)
-            r = requests.get(url)
+            r = requests.get(url, timeout=5)
             result = r.json()
 
             if 'recordings' in result:
@@ -715,7 +715,7 @@ class Identifier(object):
                 inc = ('labels', 'artists', 'url-rels', 'label-rels',)
                 url = 'http://%s/ws/2/release/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, r_id, "+".join(inc))
                 
-                r = requests.get(url)
+                r = requests.get(url, timeout=5)
                 result = r.json()
                 #self.pp.pprint(result)
 
@@ -741,7 +741,7 @@ class Identifier(object):
                 inc = ('url-rels',)
                 url = 'http://%s/ws/2/release-group/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, rg_id, "+".join(inc))
                 
-                r = requests.get(url)
+                r = requests.get(url, timeout=5)
                 result = r.json()
                 #self.pp.pprint(result)
                     
@@ -775,7 +775,7 @@ class Identifier(object):
                 if not release['discogs_image']:
                     url = 'http://coverartarchive.org/release/%s' % r_id
                     try:    
-                        r = requests.get(url)
+                        r = requests.get(url, timeout=5)
                         result = r.json()
                         release['discogs_image'] = result['images'][0]['image']
                     except:

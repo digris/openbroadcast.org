@@ -144,7 +144,7 @@ class Importer(object):
 
                 url = 'http://%s/ws/2/artist/%s/?fmt=json' % (MUSICBRAINZ_HOST, mb_artist_id.split('/')[0])
                 log.info('url: %s' % url)
-                r = requests.get(url)
+                r = requests.get(url, timeout=5)
                 result = r.json()
                 log.info('aquired name for split-artist: {} > {}'.format(artist, result['name']))
                 artist = result['name']
@@ -616,14 +616,14 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, mb_artist_combo_ids=None, 
         'artists', 'url-rels', 'aliases', 'tags', 'recording-rels', 'artist-rels', 'work-level-rels', 'artist-credits')
     url = 'http://%s/ws/2/recording/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, mb_id, "+".join(inc))
     log.debug('API request for: %s' % url)
-    r = requests.get(url)
+    r = requests.get(url, timeout=5)
     result = r.json()
 
     # get release based information (to map track- and disc-number)
     inc = ('recordings',)
     url = 'http://%s/ws/2/release/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, mb_release_id, "+".join(inc))
     log.debug('API request for: %s' % url)
-    r = requests.get(url)
+    r = requests.get(url, timeout=5)
     result_release = r.json()
 
     # loop release recordings, trying to get our track...
@@ -761,7 +761,7 @@ def mb_complete_media_task(obj, mb_id, mb_release_id, mb_artist_combo_ids=None, 
     if mb_id:
         url = 'http://acousticbrainz.org/{mb_id}/low-level'.format(mb_id=mb_id)
         log.debug('API request for: %s' % url)
-        r = requests.get(url)
+        r = requests.get(url, timeout=5)
         if r.status_code == 200:
             result = r.json()
             try:
@@ -803,7 +803,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
     log.debug('query url: %s' % url)
 
-    r = requests.get(url)
+    r = requests.get(url, timeout=5)
     result = r.json()
 
     rg_id = None
@@ -841,7 +841,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
         inc = ('url-rels',)
         url = 'http://%s/ws/2/release-group/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, rg_id, "+".join(inc))
 
-        r = requests.get(url)
+        r = requests.get(url, timeout=5)
         rg_result = r.json()
 
         # try to get relations from master
@@ -932,7 +932,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
         # try at coverartarchive...
         url = 'http://coverartarchive.org/release/%s' % mb_id
         try:
-            r = requests.get(url)
+            r = requests.get(url, timeout=5)
             ca_result = r.json()
             ca_url = ca_result['images'][0]['image']
             img = get_file_from_url(ca_url)
@@ -952,7 +952,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
         if discogs_id:
             url = 'http://%s/releases/%s' % (DISCOGS_HOST, discogs_id)
-            r = requests.get(url)
+            r = requests.get(url, timeout=5)
 
             try:
                 dgs_result = r.json()
@@ -985,7 +985,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
         if discogs_id:
             url = 'http://%s/masters/%s' % (DISCOGS_HOST, discogs_id)
-            r = requests.get(url)
+            r = requests.get(url, timeout=5)
 
             try:
                 dgs_result = r.json()
@@ -1155,7 +1155,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
 
         log.info('url: %s' % url)
 
-        r = requests.get(url)
+        r = requests.get(url, timeout=5)
         result = r.json()
 
         discogs_url = None
@@ -1313,7 +1313,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
 
             if discogs_id:
                 url = 'http://%s/artists/%s' % (DISCOGS_HOST, discogs_id)
-                r = requests.get(url)
+                r = requests.get(url, timeout=5)
 
                 try:
                     dgs_result = r.json()
@@ -1341,7 +1341,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                             log.debug('got alias: %s' % alias['name'])
                             # TODO: improve! handle duplicates!
                             time.sleep(1.1)
-                            r = requests.get(alias['resource_url'])
+                            r = requests.get(alias['resource_url'], timeout=5)
                             aa_result = r.json()
                             aa_discogs_url = aa_result.get('uri', None)
                             aa_name = aa_result.get('name', None)
@@ -1377,7 +1377,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                             log.debug('got member: %s' % member['name'])
                             # TODO: improve! handle duplicates!
                             time.sleep(1.1)
-                            r = requests.get(member['resource_url'])
+                            r = requests.get(member['resource_url'], timeout=5)
                             ma_result = r.json()
                             ma_discogs_url = ma_result.get('uri', None)
                             ma_name = ma_result.get('name', None)
@@ -1444,7 +1444,7 @@ def mb_complete_label_task(obj, mb_id, user=None):
 
     log.info('url: %s' % url)
 
-    r = requests.get(url)
+    r = requests.get(url, timeout=5)
     result = r.json()
 
     discogs_url = None
@@ -1525,7 +1525,7 @@ def mb_complete_label_task(obj, mb_id, user=None):
             url = 'http://%s/labels/%s' % (DISCOGS_HOST, discogs_id)
 
             log.debug('url: %s' % url)
-            r = requests.get(url)
+            r = requests.get(url, timeout=5)
 
             try:
                 dgs_result = r.json()
