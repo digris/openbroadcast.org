@@ -163,6 +163,9 @@ class Label(MigrationMixin):
         if not self.parent:
             return None
 
+        if self.parent == self:
+            return None
+
         parent = self.parent
         last_parent = None
         while parent:

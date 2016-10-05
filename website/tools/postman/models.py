@@ -373,7 +373,9 @@ class Message(models.Model):
         """Return a dictionary of quote values to initiate a reply."""
         return {
             'subject': format_subject(self.subject)[:self.SUBJECT_MAX_LENGTH],
-            'body': format_body(self.obfuscated_sender, self.body),
+            #'body': format_body(self.obfuscated_sender, self.body),
+            # empty body requested in #1600
+            'body': '',
         }
 
     def clean(self):
