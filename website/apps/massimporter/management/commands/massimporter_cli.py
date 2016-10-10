@@ -5,11 +5,12 @@ import os
 import sys
 from optparse import make_option
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.core.management.base import BaseCommand, NoArgsCommand
 
-from massimporter.models import Massimport
+from massimporter.models import Massimport, MassimportFile
 
-
+MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
 
 class Massimporter(object):
 
@@ -22,6 +23,11 @@ class Massimporter(object):
         self.import_session = kwargs.get('import_session')
         self.username = kwargs.get('username')
         self.verbosity = int(kwargs.get('verbosity', 1))
+
+        if self.directory:
+            if not self.directory.startswith(MEDIA_ROOT):
+                print 'directory has to be inside MEDIA_ROOT: {}'.format(MEDIA_ROOT)
+                sys.exit(2)
 
 
     def list(self):
@@ -53,9 +59,35 @@ class Massimporter(object):
 
         Massimport.objects.get(pk=int(self.id)).delete()
 
+    def update(self):
+
+        massimport = Massimport.objects.get(pk=int(self.id))
+        massimport.update()
+
     def status(self):
 
         massimport = Massimport.objects.get(pk=int(self.id))
+        massimport.update()
+
+        print '--------------------------------------------------------------------'
+        print 'Status'
+        print '--------------------------------------------------------------------'
+
+        for status in MassimportFile.STATUS_CHOICES:
+            count = massimport.files.filter(status=status[0]).count()
+            if count:
+                print('{}:    \t{}'.format(
+                    status[1],
+                    count
+                ))
+
+
+
+
+
+
+
+
 
 
     def start(self):
@@ -68,7 +100,10 @@ class Massimporter(object):
             self.directory += '/'
 
         if Massimport.objects.filter(directory=self.directory).exists():
-            print 'Massimport already exists for: {}'.format(self.directory)
+            print 'Massimport (ID: {}) already exists for: {}'.format(
+                Massimport.objects.get(directory=self.directory).pk,
+                self.directory
+            )
             sys.exit(2)
 
         if not self.username or not User.objects.filter(username=self.username).exists():
@@ -81,7 +116,6 @@ class Massimporter(object):
         )
 
         massimport.save()
-
         massimport.scan()
 
     def enqueue(self):

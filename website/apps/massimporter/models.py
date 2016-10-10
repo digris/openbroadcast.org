@@ -33,16 +33,6 @@ ALLOWED_EXTENSIONS = [
 ]
 
 
-STATUS_CHOICES = (
-    (0, _('Init')),
-    (1, _('Done')),
-    (2, _('Ready')),
-    (3, _('Progress')),
-    (99, _('Error')),
-    (11, _('Other')),
-)
-
-
 class BaseModel(models.Model):
 
     created = CreationDateTimeField()
@@ -53,8 +43,20 @@ class BaseModel(models.Model):
 
 class Massimport(BaseModel):
 
+
+    STATUS_INIT = 0
+    STATUS_DONE = 1
+    STATUS_QUEUED = 2
+    STATUS_ERROR = 99
+    STATUS_CHOICES = (
+        (STATUS_INIT, _(u'Init')),
+        (STATUS_DONE, _(u'Done')),
+        (STATUS_QUEUED, _(u'Queued')),
+        (STATUS_ERROR, _(u'Error')),
+    )
+
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
-    status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
+    status = models.PositiveIntegerField(default=STATUS_INIT, choices=STATUS_CHOICES)
     directory = models.CharField(max_length=1024)
     uuid = models.UUIDField(default=uuid.uuid4)
 
@@ -88,6 +90,16 @@ class Massimport(BaseModel):
 
         return import_session
 
+
+    def update(self):
+
+        for item in self.files.all():
+            item.update()
+
+        pass
+
+
+
     def scan(self):
 
         stats = {
@@ -111,21 +123,22 @@ class Massimport(BaseModel):
 
                     if ext in ALLOWED_EXTENSIONS:
                         print(' + {}'.format(rel_path))
-
-
-                        aps_path = os.path.join(self.directory, rel_path)
-                        cache_path = os.path.join(self.abs_cache_directory, rel_path)
-                        cache_dir = os.path.dirname(cache_path)
-
-                        try:
-                            if not os.path.isdir(cache_dir):
-                                os.makedirs(cache_dir)
-                        except OSError, e:
-                            print e
-                            pass  # file exists
-                        # else:
-
-                        shutil.copyfile(aps_path, cache_path)
+                        #
+                        #
+                        # aps_path = os.path.join(self.directory, rel_path)
+                        #
+                        # cache_path = os.path.join(self.abs_cache_directory, rel_path)
+                        # cache_dir = os.path.dirname(cache_path)
+                        #
+                        # try:
+                        #     if not os.path.isdir(cache_dir):
+                        #         os.makedirs(cache_dir)
+                        # except OSError, e:
+                        #     print e
+                        #     pass  # file exists
+                        # # else:
+                        #
+                        # shutil.copyfile(aps_path, cache_path)
 
 
                         MassimportFile.objects.get_or_create(
@@ -143,10 +156,14 @@ class Massimport(BaseModel):
                     stats['missing'] += 1
 
         print('----------------------------------------------------------')
+        print('ID: {}'.format(self.pk))
+        print('----------------------------------------------------------')
         print('Files added:      {}'.format(stats['added']))
         print('Files ignored:    {}'.format(stats['ignored']))
         print('Files unreadable: {}'.format(stats['missing']))
 
+
+        self.status = Massimport.STATUS_QUEUED
         self.save()
 
 
@@ -169,7 +186,11 @@ def massimport_post_save(sender, instance, created, **kwargs):
 
 class MassimportFile(BaseModel):
 
-    status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
+    # TODO: a bit hackish - linked states to ImportFile model$
+
+    STATUS_CHOICES = ImportFile.STATUS_CHOICES
+
+    status = models.PositiveIntegerField(default=ImportFile.STATUS_INIT, choices=STATUS_CHOICES)
     massimport = models.ForeignKey(Massimport, related_name='files')
     import_file = models.ForeignKey(ImportFile, null=True)
     path = models.CharField(max_length=1024)
@@ -193,12 +214,36 @@ class MassimportFile(BaseModel):
         return os.path.join(self.massimport.abs_cache_directory, self.path)
 
 
+    def update(self):
+
+        if self.import_file:
+
+            if self.status != self.import_file.status:
+                print 'update status from {} to {} for {}'.format(
+                    self.get_status_display(),
+                    self.import_file.get_status_display(),
+                    self.path
+                )
+
+            self.status = self.import_file.status
+
+
+        else:
+            self.status = ImportFile.STATUS_INIT
+
+
+
+
+        self.save()
+
+
 
     def enqueue(self):
 
         if not self.import_file:
             import_file = ImportFile(
-                    file=self.cache_path,
+                    #file=self.cache_path,
+                    file=self.abs_path,
                     import_session=self.massimport.import_session
                 )
 
