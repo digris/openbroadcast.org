@@ -32,7 +32,7 @@ class Command(SubcommandsCommand):
 
     @property
     def help(self):
-        lines = ['django CMS command line interface.', '', 'Available subcommands:']
+        lines = ['Open Broadcast platform command line interface.', '', 'Available subcommands:']
         for subcommand in sorted(self.subcommands.keys()):
             lines.append('  %s' % subcommand)
         lines.append('')
