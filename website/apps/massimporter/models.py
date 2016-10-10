@@ -231,9 +231,6 @@ class MassimportFile(BaseModel):
         else:
             self.status = ImportFile.STATUS_INIT
 
-
-
-
         self.save()
 
 
@@ -253,28 +250,4 @@ class MassimportFile(BaseModel):
             self.save()
 
 
-
-
-@receiver(post_save, sender=MassimportFile, dispatch_uid="massimport_file_post_save")
-def massimport_file_post_save(sender, instance, created, **kwargs):
-
-    pass
-
-    # if created:
-    #     import_session, c = ImportSession.objects.get_or_create(
-    #         user=instance.massimport.user,
-    #         type=ImportSession.TYPE_API,
-    #         uuid_key=instance.massimport.uuid
-    #     )
-    #
-    #     import_file = ImportFile(
-    #         file=instance.cache_path,
-    #         import_session=import_session
-    #     )
-    #
-    #
-    #     import_file.save()
-    #
-    #     instance.import_file = import_file
-    #     instance.save()
 

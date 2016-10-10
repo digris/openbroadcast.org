@@ -111,7 +111,10 @@ class Waveform(TimestampedModel, UUIDModel):
         wav_path = any_to_wav(src=obj.media.master.path, dst=tmp_path)
 
         if not os.path.isdir(obj.directory):
-            os.makedirs(obj.directory)
+            try:
+                os.makedirs(obj.directory)
+            except:
+                pass
 
         if obj.type == 'w':
             create_waveform_image(wav_path, obj.path)
