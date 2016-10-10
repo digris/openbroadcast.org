@@ -314,7 +314,10 @@ class Release(MigrationMixin):
             try:
                 artist_str = artists[0]['artist'].name
             except:
-                artist_str = _('Unknown Artist')
+                try:
+                    artist_str = artists[0].name
+                except:
+                    artist_str = _('Unknown Artist')
 
         return artist_str
 
