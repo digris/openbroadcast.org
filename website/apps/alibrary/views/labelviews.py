@@ -323,9 +323,9 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
         # revisions disabled -> needs refactoring
 
+        self.object.last_editor = self.request.user
 
         # handled in model post-save
-        # self.object.last_editor = self.request.user
         # actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
 
         self.object = form.save()

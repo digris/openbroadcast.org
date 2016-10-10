@@ -273,9 +273,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     success_url = '#'
 
     def __init__(self, *args, **kwargs):
-
         self.created_artists = {}
-
         super(ReleaseEditView, self).__init__(*args, **kwargs)
 
     def get_initial(self):
@@ -418,7 +416,6 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         # TODO: this is extremely ugly!! refactor!
 
         import hashlib
-        #self.created_artists = {}
         for m in media:
 
             if m.artist and not m.artist.pk:

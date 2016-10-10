@@ -309,10 +309,10 @@ class Release(MigrationMixin):
                         artist_str += ' %s ' % artist['join_phrase']
                     artist_str += artist['artist'].name
             except:
-                artist_str = artists[0].name
+                artist_str = artists[0]['artist'].name
         else:
             try:
-                artist_str = artists[0].name
+                artist_str = artists[0]['artist'].name
             except:
                 artist_str = _('Unknown Artist')
 

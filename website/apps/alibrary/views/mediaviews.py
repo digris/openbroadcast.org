@@ -271,6 +271,7 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     success_url = '#'
 
     def __init__(self, *args, **kwargs):
+        self.created_artists = {}
         super(MediaEditView, self).__init__(*args, **kwargs)
 
     def get_initial(self):
@@ -347,15 +348,6 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         messages.add_message(self.request, messages.INFO, 'Object updated')
 
         return HttpResponseRedirect('')
-
-    # TODO: investigate if this can be removed
-    # def formset_relation_valid(self, formset):
-    #     relations = formset.save(commit=False)
-    #     for relation in relations:
-    #         relation.save()
-
-
-
 
 
     
