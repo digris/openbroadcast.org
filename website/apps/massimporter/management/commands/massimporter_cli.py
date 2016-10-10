@@ -10,6 +10,7 @@ from django.core.management.base import BaseCommand, NoArgsCommand
 
 from massimporter.models import Massimport, MassimportFile
 
+DEFAULT_LIMIT = 100
 MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
 
 class Massimporter(object):
@@ -17,6 +18,7 @@ class Massimporter(object):
     def __init__(self, command, *args, **kwargs):
 
         self.directory = kwargs.get('directory')
+        self.limit = kwargs.get('limit')
         self.rescan = kwargs.get('rescan')
         self.id = kwargs.get('id')
         self.reset_files = kwargs.get('reset_files')
@@ -82,14 +84,6 @@ class Massimporter(object):
                 ))
 
 
-
-
-
-
-
-
-
-
     def start(self):
 
         if not self.directory or not os.path.isdir(self.directory):
@@ -122,7 +116,9 @@ class Massimporter(object):
 
         massimport = Massimport.objects.get(pk=int(self.id))
 
-        for item in massimport.files.all():
+        print 'queing {} files'.format(self.limit)
+
+        for item in massimport.files.filter(status=0)[0:self.limit]:
             item.enqueue()
 
 
@@ -147,6 +143,11 @@ class Command(BaseCommand):
         parser.add_argument('-i', '--id',
                             dest='id',
                             default=False,
+                            help='Delete poll instead of closing it')
+
+        parser.add_argument('-l', '--limit',
+                            dest='limit',
+                            default=DEFAULT_LIMIT,
                             help='Delete poll instead of closing it')
 
     def handle(self, *args, **options):
