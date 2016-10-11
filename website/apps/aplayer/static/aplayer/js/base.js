@@ -100,7 +100,7 @@ aplayer.jwp = function (container) {
             }
         },
         modes: [
-            {type: 'flash', src: aplayer.vars.swf_url},
+            //{type: 'flash', src: aplayer.vars.swf_url},
             {type: 'html5'}
         ]
     });
