@@ -84,8 +84,8 @@ class Massimporter(object):
                 ))
 
         print '===================================================================='
-        print('Total:    \t{}'.format(massimport.files.all().count()
-        
+        print('Total:    \t{}'.format(massimport.files.all().count()))
+
 
 
     def start(self):

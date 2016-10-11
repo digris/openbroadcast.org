@@ -34,8 +34,8 @@ DetailPlayer = function () {
 
         self.dom_element = $('#' + self.dom_id);
 
-        debug.debug('DetailPlayer: init');
-        debug.debug(self.api_url);
+        console.debug('DetailPlayer: init');
+        console.debug(self.api_url);
 
         self.bindings();
         //self.init_waveform();
@@ -44,7 +44,7 @@ DetailPlayer = function () {
         // self.load();
 
         $.get(self.api_url, function (data) {
-            debug.debug('detail player - current item: ', data);
+            console.debug('detail player - current item: ', data);
             self.init_player(data);
         })
 
@@ -65,15 +65,15 @@ DetailPlayer = function () {
 
 
         $('.waveform', self.dom_element).live('click', function (e) {
-            // debug.debug(e.offsetX);
-            // debug.debug(self.px_to_abs(e.offsetX));
+            // console.debug(e.offsetX);
+            // console.debug(self.px_to_abs(e.offsetX));
 
             var pos = Number(e.offsetX / self.size_x * self.item.duration / 1000);
 
             // check if media is currently playing
 
-            // debug.debug('playing item:', self.aplayer_states.uuid);
-            // debug.debug('seeking item:', self.item.uuid)
+            // console.debug('playing item:', self.aplayer_states.uuid);
+            // console.debug('seeking item:', self.item.uuid)
 
             if (self.item && self.aplayer_states && self.aplayer_states.uuid == self.item.uuid) {
                 self.player.seek(pos);
@@ -120,7 +120,7 @@ DetailPlayer = function () {
      this.load = function() {
 
      $.get(self.api_url, function(data){
-     debug.debug('detail player - current item: ', data);
+     console.debug('detail player - current item: ', data);
      })
 
      };
@@ -169,12 +169,12 @@ DetailPlayer = function () {
 
     this.init_markers = function (sections) {
 
-        debug.debug('init_markers:', sections);
+        console.debug('init_markers:', sections);
 
         if (sections.length > 1) {
 
             $(sections).each(function (i, section) {
-                debug.debug('section', section);
+                console.debug('section', section);
 
                 var pos_x = section.start / self.item.duration * 1000 * self.size_x;
 
@@ -213,18 +213,18 @@ DetailPlayer = function () {
 
 
     this.update = function (aplayer) {
-        // debug.debug(aplayer);
+        // console.debug(aplayer);
 
         // check if current media is playing
         if (aplayer.states && aplayer.states.uuid && aplayer.states.uuid == self.item.uuid) {
 
-            //debug.debug(aplayer);
+            //console.debug(aplayer);
             self.player = aplayer.player;
             self.aplayer_states = aplayer.states;
 
             var pos_x = self.size_x / 100 * aplayer.states.position_rel;
 
-            //debug.debug(pos_x);
+            //console.debug(pos_x);
 
             self.el_indicator.attr({ x: pos_x + 'px' });
         }
@@ -238,13 +238,13 @@ DetailPlayer = function () {
         classes: ['playing', 'paused'],
 
         play: function () {
-            debug.debug('events: ', 'play');
+            console.debug('events: ', 'play');
             self.dom_element.removeClass('paused');
             self.dom_element.addClass('playing');
         },
 
         stop: function () {
-            debug.debug('events: ', 'stop');
+            console.debug('events: ', 'stop');
             self.dom_element.removeClass('paused');
             self.dom_element.removeClass('playing');
 
@@ -252,19 +252,19 @@ DetailPlayer = function () {
         },
 
         pause: function () {
-            debug.debug('events: ', 'pause');
+            console.debug('events: ', 'pause');
             self.dom_element.removeClass('playing');
             self.dom_element.addClass('paused');
         },
 
         resume: function () {
-            debug.debug('events: ', 'resume');
+            console.debug('events: ', 'resume');
             self.dom_element.removeClass('paused');
             self.dom_element.addClass('playing');
         },
 
         finish: function () {
-            debug.debug('events: ', 'finish');
+            console.debug('events: ', 'finish');
             self.dom_element.removeClass('paused');
             self.dom_element.removeClass('playing');
         }

@@ -19,7 +19,7 @@ AplayerApp = function (context) {
     };
 
     this.init = function () {
-        debug.debug('AplayerApp: init');
+        console.debug('AplayerApp: init');
 
         if (self.context == 'main') {
             self.init_main();
@@ -37,11 +37,11 @@ AplayerApp = function (context) {
      Initialisation
      *********************************************************/
     this.init_main = function () {
-        debug.debug('AplayerApp: init_main');
+        console.debug('AplayerApp: init_main');
     };
 
     this.init_popup = function () {
-        debug.debug('AplayerApp: init_popup');
+        console.debug('AplayerApp: init_popup');
         self.player = JWP(self);
     };
 
@@ -117,13 +117,13 @@ AplayerApp = function (context) {
         classes: ['playing', 'paused'],
 
         play: function () {
-            debug.debug('events: ', 'play');
+            console.debug('events: ', 'play');
             self.dom_element.removeClass('paused');
             self.dom_element.addClass('playing');
         },
 
         stop: function () {
-            debug.debug('events: ', 'stop');
+            console.debug('events: ', 'stop');
             self.dom_element.removeClass('paused');
             self.dom_element.removeClass('playing');
 
@@ -131,19 +131,19 @@ AplayerApp = function (context) {
         },
 
         pause: function () {
-            debug.debug('events: ', 'pause');
+            console.debug('events: ', 'pause');
             self.dom_element.removeClass('playing');
             self.dom_element.addClass('paused');
         },
 
         resume: function () {
-            debug.debug('events: ', 'resume');
+            console.debug('events: ', 'resume');
             self.dom_element.removeClass('paused');
             self.dom_element.addClass('playing');
         },
 
         finish: function () {
-            debug.debug('events: ', 'finish');
+            console.debug('events: ', 'finish');
             self.dom_element.removeClass('paused');
             self.dom_element.removeClass('playing');
         }
@@ -158,7 +158,7 @@ JWP = function (aplayer) {
     try {
         jwplayer(aplayer.container_id).remove();
     } catch (e) {
-        debug.debug(e)
+        console.debug(e)
     }
 
     // player setup

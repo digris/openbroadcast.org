@@ -131,7 +131,7 @@ aplayer.ui.bind = function() {
 
 		
 		var relative_position = parseInt(seek / duration * 100);
-		//debug.debug(duration, seek, relative_position);
+		//console.debug(duration, seek, relative_position);
 		
 		$('.handler', playhead).css('background-position', relative_position + '% 0');
 		
@@ -399,11 +399,11 @@ aplayer.ui.update = function(aplayer) {
 	}
 
 	if (aplayer.vars.source && aplayer.vars.source == 'abcast') {
-		//debug.debug('we\'re in abcast mode..');
+		//console.debug('we\'re in abcast mode..');
 		var channel = aplayer.vars.playlist[aplayer.states.current];
 
 		if (!channel.media) {
-			debug.debug('no channel media available.');
+			console.debug('no channel media available.');
 		} else {
 			media = channel.media;
 		}
@@ -445,15 +445,15 @@ aplayer.ui.update = function(aplayer) {
 			try {
 				base_width = outer_width.slice(0, -2);
 			} catch(err) {
-				//debug.debug(media.uuid);
-				//debug.debug('no base_width');
+				//console.debug(media.uuid);
+				//console.debug('no base_width');
 				base_width = 700;
 			};
 			active_playhead.css('background-position', (aplayer.states.position_rel * base_width / 100) + 'px' + ' 0px');
 	
 		}
 		
-		// debug.debug(state_changed, 'changed');
+		// console.debug(state_changed, 'changed');
 		var body = $('body');
 
         // refactored version, using InlinePlayer
@@ -488,7 +488,7 @@ aplayer.ui.update = function(aplayer) {
 		}
 	}
 
-	// debug.debug(aplayer.states, local.type);
+	// console.debug(aplayer.states, local.type);
     // TODO: make better...
     $('body').removeClass('loading-playlist');
 
@@ -532,7 +532,7 @@ aplayer.ui.screen_display = function(index) {
 aplayer.ui.update_emission = function(data) {
 
 
-    debug.debug('update_emission - data:', data);
+    console.debug('update_emission - data:', data);
 
     var html = nj.render('aplayer/nj/popup_emission.html', {
         object: data
@@ -688,7 +688,7 @@ aplayer.ui.playhead = function(base_width) {
 
 		var pos = util.get_position(e);
 		
-		// debug.debug(pos['x'], 'pos move');
+		// console.debug(pos['x'], 'pos move');
 		
 		$(this).css('background-position', pos['x'] + 'px' + ' 0px');
 
@@ -703,15 +703,15 @@ aplayer.ui.playhead = function(base_width) {
 		outer_width = $(this).parents('.playhead').css('width').slice(0, -2);
 		base_width = outer_width;
 		
-		//debug.debug(outer_width, 'outer_width');
-		//debug.debug(base_width, 'base_width');
+		//console.debug(outer_width, 'outer_width');
+		//console.debug(base_width, 'base_width');
 
 		var pos = util.get_position(e);
 		
-		//debug.debug(pos['x'], 'pos click');
+		//console.debug(pos['x'], 'pos click');
 		
 		var x_percent = pos['x'] / (base_width) * 100;
-		//debug.debug(x_percent, 'x_percent');
+		//console.debug(x_percent, 'x_percent');
 
 		var uuid = $(this).parents('.item').attr('id');
 
@@ -735,7 +735,7 @@ aplayer.ui.playhead = function(base_width) {
 		var pos = util.get_position(e);
 		var x_percent = pos['x'] / (base_width) * 100;
 
-		// debug.debug(x_rel);
+		// console.debug(x_rel);
 
 		var uuid = $(this).parents('.item').attr('id');
 
@@ -768,7 +768,7 @@ aplayer.ui.playhead = function(base_width) {
 		// TODO: pack in own funtion to not repeat...
 		else {
 
-			//debug.debug('player NOT HERE! böööh!');
+			//console.debug('player NOT HERE! böööh!');
 
 			var action = $('.info a', $(this).parents('.item')).attr('href').split('#');
 			var uri = action[0];
