@@ -68,7 +68,7 @@
 
                             <li class="completed">
                                 <a href="{{ object.get_absolute_url }}">
-                                <span>{% trans "Completed" %}:
+                                <span>{% trans "Imported" %}:
                                     {% if object.files.count > 0 %}
                                         <span class="{% if stats.done.count == object.files.count%}done{% endif %}">{{ stats.done.count }} of {{ object.files.count }}</span>
                                     {% else %}

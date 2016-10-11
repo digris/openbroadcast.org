@@ -56,7 +56,6 @@ aplayer.base.init = function () {
         aplayer.player = aplayer.jwp('aplayer_container'); // loads player into #aplayer_container
     }
 
-    // console.debug(aplayer.jwp, 'jwp');
 
 };
 
@@ -88,19 +87,22 @@ aplayer.jwp = function (container) {
         },
         events: {
             onReady: function () {
+                console.debug('jwplayer - onReady', event);
                 aplayer.jwp.on_ready();
             },
             onPlaylist: function (event) {
+                console.debug('jwplayer - onPlaylist', event);
                 aplayer.jwp.on_playlist(event);
             },
             onComplete: function (event) {
+                console.debug('jwplayer - onComplete', event);
                 aplayer.jwp.on_complete(event);
             }
         },
         modes: [
             {type: 'flash', src: aplayer.vars.swf_url},
             {type: 'html5'}
-        ],
+        ]
     });
 
 };
@@ -188,11 +190,7 @@ aplayer.base.load = function (play) {
     }
 
     aplayer.vars.source = play.source;
-
-    console.debug('uri - ' + play.uri);
-
     aplayer.ui.hide_overlay();
-
     aplayer.base.load_playlist(play.uri);
 
 };
@@ -268,7 +266,6 @@ aplayer.base.load_playlist = function (uri) {
 
                     var media = [];
                     $.each(result.items, function (i, item) {
-                        console.debug('co:', item.item.content_object);
                         media.push(item.item.content_object);
                     });
                     aplayer.base.set_playlist(media);
@@ -282,7 +279,6 @@ aplayer.base.load_playlist = function (uri) {
                     var url = uri + 'top-tracks/';
 
                     $.get(url, function(data){
-                       console.debug(data);
                         aplayer.base.set_playlist(data);
                         aplayer.base.complete_playlist();
                     });
@@ -338,7 +334,6 @@ aplayer.base.complete_playlist = function () {
             $.get(uri, function (data) {
                 item.release = data.release;
                 item.artist = data.artist;
-                console.debug('got data:', data);
                 //aplayer.vars.playlist[i] = el;
                 aplayer.ui.playlist_display(aplayer, $('#aplayer_playlist'));
             })
@@ -356,7 +351,6 @@ aplayer.base.complete_playlist = function () {
  *********************************************************************************/
 aplayer.base.set_playlist = function (media) {
 
-    console.debug('setting playlist to:', media);
 
 
     // store playlist
@@ -428,9 +422,6 @@ aplayer.base.set_playlist = function (media) {
     }
 
     aplayer.base.debug('done - aplayer.base.set_playlist()');
-
-    // console.debug(result);
-
     aplayer.ui.playlist_display(aplayer, $('#aplayer_playlist'));
 
 };
@@ -455,7 +446,6 @@ aplayer.base.play_in_popup = function (uri, token, offset, mode, force_seek, sou
     }
 
     if (aplayer.vars.debug) {
-        console.debug('aplayer.base.play_in_popup() | uri, token, offset, mode, force_seek');
         console.debug(uri, token, offset, mode, force_seek);
     }
 
@@ -597,8 +587,6 @@ aplayer.base.interval = function () {
 
     if (local.type == 'popup') {
 
-        // console.debug('interval popup');
-
         var states = aplayer.states;
 
         // aquire information
@@ -644,23 +632,7 @@ aplayer.base.interval = function () {
         catch (err) {
             // console.debug(err, 'ERROR');
         }
-        ;
 
-
-        try {
-
-            /*
-             var media = aplayer.vars.playlist[aplayer.states.current];
-             if(aplayer.vars.debug) {
-             console.debug(media);
-             }
-             */
-
-        }
-        catch (err) {
-
-        }
-        ;
     }
 
     if (local.type == 'main') {
@@ -701,9 +673,6 @@ aplayer.base.prev_next = function (index, uuid) {
         aplayer.states.next = false;
     }
 
-    // console.debug(aplayer.states, 'states');
-
-
 };
 
 
@@ -731,8 +700,6 @@ aplayer.base.on_complete = function () {
 
 aplayer.base.subscribe_channel_data = function (channel) {
 
-    console.debug('aplayer.base.subscribe_channel_data: ', channel);
-
     try {
         aplayer.vars.playlist[aplayer.states.current].media = {
             name: 'loading'
@@ -751,26 +718,21 @@ aplayer.base.subscribe_channel_data = function (channel) {
      });
      */
     pushy.subscribe(channel.resource_uri, function (data) {
-        console.debug('pushy callbackk with data:', data);
         aplayer.base.update_channel_data(channel);
     });
 
 
 };
 aplayer.base.unsubscribe_channel_data = function () {
-    console.debug('aplayer.base.unsubscribe_channel_data: ')
-
 
 };
 
 
 aplayer.base.update_channel_data = function (channel) {
 
-    console.debug('aplayer.base.update_channel_data: ', channel);
-
 
     $.get(channel.resource_uri, function (data) {
-        console.debug('ON-AIR', data.on_air);
+
 
         var on_air = data.on_air;
         var media;
@@ -778,7 +740,7 @@ aplayer.base.update_channel_data = function (channel) {
 
         if (on_air.item) {
             $.get(on_air.item, function (media) {
-                console.debug('media on air:', media);
+
                 aplayer.vars.playlist[aplayer.states.current].media = media;
 
                 aplayer.ui.screen_display(aplayer.states.current);
@@ -788,7 +750,7 @@ aplayer.base.update_channel_data = function (channel) {
         if (on_air.emission) {
             setTimeout(function () {
                 $.get(on_air.emission, function (data) {
-                    console.debug('emission on air:', data);
+
                     aplayer.vars.playlist[aplayer.states.current].emission = emission;
                     aplayer.ui.screen_display(aplayer.states.current);
 
@@ -872,16 +834,12 @@ aplayer.base.controls = function (args) {
         if (aplayer.vars.source && aplayer.vars.source == 'alibrary') {
 
 
-            console.debug('*** TRYING TO EXTRACT STREAM INFO ***');
-            console.debug(aplayer.vars.playlist);
-
             try {
                 stream = aplayer.vars.playlist[index].stream;
                 console.debug('stream:', stream);
                 // TODO: Hakish here - try to complete meta data
                 var el = aplayer.vars.playlist[index];
                 var idx = index;
-                console.debug('ELEMENT:', aplayer.vars.playlist[index])
             } catch (e) {
                 console.debug('error', e);
             }
@@ -897,11 +855,6 @@ aplayer.base.controls = function (args) {
                 alert('Error: '+ stream.error);
                 return;
             }
-
-            console.log('channel data', channel);
-
-            console.debug('channel:', channel);
-            console.debug('stream:', stream);
 
             aplayer.base.subscribe_channel_data(channel);
 
@@ -960,8 +913,6 @@ aplayer.base.controls = function (args) {
         var p = aplayer.states.duration;
         p = p / 100 * position;
 
-        //console.debug(aplayer.states.duration, 'aplayer.states.duration');
-        //console.debug(p, 'p');
 
         if (uuid && uuid == aplayer.states.uuid) {
 
@@ -996,35 +947,6 @@ aplayer.base.controls = function (args) {
             }
 
 
-            /*
-             var vc = aplayer.player.getVolume();
-             var cn = 10;
-             for (var v = vc; v > 0; v--) {
-             console.debug('v:' + v)
-             console.debug('cn:' + cn)
-             aplayer.player.setVolume(v)
-             setTimeout(function () {
-             aplayer.player.setVolume(v)
-             }, cn);
-             cn += 100;
-             }
-             setTimeout(function () {
-             jwp.seek(p);
-             }, cn);
-             cn += 100;
-
-             for (var v = 0; v < vc; v++) {
-             console.debug('v:' + v)
-             console.debug('cn:' + cn)
-             aplayer.player.setVolume(v)
-             setTimeout(function () {
-             aplayer.player.setVolume(v)
-             }, cn);
-             cn += 100;
-             }
-             */
-
-
             fast_polling = true;
             update_ui = true;
 
@@ -1034,11 +956,8 @@ aplayer.base.controls = function (args) {
         if (uuid) {
         } else {
             uuid = aplayer.states.uuid;
-            // console.debug('no uuid.. - use current:', uuid);
-
         }
 
-        // console.debug('seek:', position);
 
     }
 
@@ -1049,8 +968,6 @@ aplayer.base.controls = function (args) {
         aplayer.base.start_polling(2000);
     }
     if (update_ui) {
-
-        // aplayer.ui.update(aplayer);
 
         aplayer.ui.playlist_display(aplayer, $('#aplayer_playlist'));
 
@@ -1295,8 +1212,6 @@ aplayer.base.log = function (action, index, uuid) {
     } catch (err) {
         var log_string = uuid;
     }
-    ;
-
 
     //asite.base.log('track', action, log_string);
 };
@@ -1306,20 +1221,5 @@ aplayer.base.log = function (action, index, uuid) {
  * logging / event tracking
  *********************************************************************************/
 aplayer.base.debug = function (text) {
-    /*
-     var d = new Date();
-     var hour = d.getHours();
-     var min = d.getMinutes();
-     var sec = d.getSeconds();
 
-     var time = hour + ':' + min + ':' + sec;
-     try {
-     console.debug(text);
-     } catch (err) {
-
-     }
-     ;
-     */
-
-    // $('.footer > .wrapper').prepend('<p>' + '<span>' + time + '</span> | ' + text + '</p>');
 };

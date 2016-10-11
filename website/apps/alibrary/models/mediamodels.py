@@ -827,8 +827,6 @@ class Media(MigrationMixin):
 def media_post_save(sender, **kwargs):
 
     obj = kwargs['instance']
-    log.info('Media id: %s - Processed state: %s' % (obj.pk, obj.processed))
-
 
     if obj.master and obj.echoprint_status == 0:
         if AUTOCREATE_ECHOPRINT:
@@ -871,7 +869,7 @@ def media_pre_delete(sender, **kwargs):
     try:
         #log.info('delete fingerprint on server id: %s' % obj.id)
         fp.delete("%s" % obj.id)
-    except Exception, e:
+    except Exception as e:
         log.warning('unable to delete fingerprint for media_id: %s - %s' % (obj.id, e))
 
 pre_delete.connect(media_pre_delete, sender=Media)

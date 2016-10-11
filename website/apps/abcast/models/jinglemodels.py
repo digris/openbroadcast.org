@@ -281,7 +281,7 @@ def jingle_post_save(sender, **kwargs):
         obj.folder = folder
         obj.save()
 
-    log.info('Jingle id: %s - Processed state: %s' % (obj.pk, obj.processed))
+    #log.info('Jingle id: %s - Processed state: %s' % (obj.pk, obj.processed))
 
     if obj.master and obj.processed == 0:
         
