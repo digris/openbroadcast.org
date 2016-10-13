@@ -64,6 +64,7 @@ class ImportAdmin(admin.ModelAdmin):
     inlines = [ImportImportFileInline, ImportItemnline]
     actions = [status_set_ready]
 
+admin.site.register(Import, ImportAdmin)
 
 class ImportFileAdmin(admin.ModelAdmin):
     save_on_top = True
@@ -100,6 +101,18 @@ class ImportFileAdmin(admin.ModelAdmin):
     actions = [status_set_ready, status_set_queued, requeue]
 
 
-admin.site.register(Import, ImportAdmin)
+
 admin.site.register(ImportFile, ImportFileAdmin)
-admin.site.register(ImportItem)
+
+
+class ImportItemAdmin(admin.ModelAdmin):
+    save_on_top = True
+
+    list_display = (
+        'import_session',
+        'content_type',
+        'object_id',
+        'content_object',
+    )
+
+admin.site.register(ImportItem, ImportItemAdmin)

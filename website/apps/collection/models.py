@@ -33,6 +33,7 @@ class Collection(TimestampedModelMixin, UUIDModelMixin, models.Model):
     visibility = models.PositiveIntegerField(default=PRIVATE, choices=VISIBILITY_CHOICES)
     description = models.TextField(blank=True, null=True)
 
+    owner = models.ForeignKey(USER_MODEL, related_name='owned_collections', null=True)
     items = models.ManyToManyField('CollectionItem', through='CollectionMember', blank=True)
     maintainers = models.ManyToManyField(USER_MODEL, through='CollectionMaintainer', blank=True)
 
@@ -54,6 +55,7 @@ class CollectionMember(TimestampedModelMixin, models.Model):
 
     class Meta:
         app_label = 'collection'
+        unique_together = ('collection', 'item')
 
     def __unicode__(self):
         return '{} - {}'.format(self.collection.name, self.item.content_object)
@@ -77,7 +79,7 @@ class CollectionItem(UUIDModelMixin, models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
 
     def __unicode__(self):
-        return '%s' % (self.pk)
+        return '<{}> {}'.format(self.content_type, self.content_object)
 
     def save(self, *args, **kwargs):
         super(CollectionItem, self).save(*args, **kwargs)

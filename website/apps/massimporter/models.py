@@ -60,6 +60,11 @@ class Massimport(BaseModel):
     directory = models.CharField(max_length=1024)
     uuid = models.UUIDField(default=uuid.uuid4)
 
+    collection_name = models.CharField(
+        max_length=250,
+        blank=True, null=True
+    )
+
     class Meta:
         app_label = 'massimporter'
         verbose_name = _('Import')

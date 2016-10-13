@@ -5,12 +5,25 @@ from django.contrib import admin
 from collection.models import Collection, CollectionItem, CollectionMember, CollectionMaintainer
 
 admin.site.register(CollectionItem)
-admin.site.register(CollectionMember)
+
+
+@admin.register(CollectionMember)
+class CollectionMemberAdmin(admin.ModelAdmin):
+
+    list_display = [
+        'item',
+        'collection',
+        'added_by',
+    ]
+
 
 class CollectionItemInline(admin.TabularInline):
     model = CollectionMember
     raw_id_fields = [
         'added_by',
+    ]
+    readonly_fields = [
+        'item',
     ]
     extra=0
 
@@ -22,10 +35,22 @@ class CollectionMaintainerInline(admin.TabularInline):
     extra=0
 
 
+@admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
+
+    list_display = [
+        'name',
+        'owner',
+        'visibility',
+    ]
+
+    raw_id_fields = [
+        'owner',
+    ]
+
     inlines = [
         CollectionMaintainerInline,
         CollectionItemInline,
     ]
 
-admin.site.register(Collection, CollectionAdmin)
+

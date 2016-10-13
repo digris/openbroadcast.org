@@ -15,12 +15,14 @@ from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKe
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import post_delete
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields.json import JSONField
 from base.signals.unsignal import disable_for_loaddata
 from django_extensions.db.fields import UUIDField, CreationDateTimeField, ModificationDateTimeField
+
+from .signals import importitem_created
 
 log = logging.getLogger(__name__)
 
@@ -103,6 +105,12 @@ class Import(BaseModel):
         choices=TYPE_CHOICES
     )
     notes = models.TextField(
+        blank=True, null=True
+    )
+
+    # TODO: not so nice - field is used to ad imported files to a specific collection
+    collection_name = models.CharField(
+        max_length=250,
         blank=True, null=True
     )
 
@@ -221,7 +229,9 @@ class Import(BaseModel):
 
     def add_importitem(self, item):
 
+        log.debug('add importitem: {}'.format(item))
         ctype = ContentType.objects.get_for_model(item)
+
         created = False
         try:
             item, created = ImportItem.objects.get_or_create(
@@ -478,7 +488,7 @@ class ImportFile(BaseModel):
                     obj.save()
                     return
 
-        except Exception, e:
+        except Exception as e:
             log.warning('unable to process metadata: %s' % e)
             obj.error = '%s' % e
             obj.status = ImportFile.STATUS_ERROR
@@ -493,8 +503,15 @@ class ImportFile(BaseModel):
                 if media:
                     obj.status = ImportFile.STATUS_DUPLICATE
                     obj.media = media
+
+
+                    # TODO: improve this part
                     if obj.import_session:
-                        obj.import_session.add_importitem(obj)
+                        obj.import_session.add_importitem(media)
+                        if media.release:
+                            obj.import_session.add_importitem(media.release)
+                        if media.artist:
+                            obj.import_session.add_importitem(media.artist)
                     obj.save()
 
                     return
@@ -671,7 +688,21 @@ class ImportItem(BaseModel):
             return '%s' % (self.pk)
 
     def save(self, *args, **kwargs):
-        super(ImportItem, self).save(*args, **kwargs) 
+        super(ImportItem, self).save(*args, **kwargs)
+
+
+@receiver(post_save, sender=ImportItem)
+def importitem_post_save(sender, instance, created, **kwargs):
+
+    if created and instance.import_session and instance.import_session.user:
+        importitem_created.send(
+            sender=instance.__class__,
+            content_object=instance.content_object,
+            user=instance.import_session.user,
+            collection_name=instance.import_session.collection_name
+        )
+
+
 
 @task
 def reset_hanging_files(age=600):

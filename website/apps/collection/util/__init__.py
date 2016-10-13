@@ -6,11 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from ..models import CollectionItem, CollectionMember
 
-
-def add_to_collection(object, collection=None, user=None):
-
-    if not collection and not user:
-        raise Exception('Either collection or user is required')
+def add_to_collection(object, user, collection):
 
     content_type = ContentType.objects.get_for_model(object)
 
@@ -24,3 +20,5 @@ def add_to_collection(object, collection=None, user=None):
         collection=collection,
         added_by=user
     )
+
+    return collection_member

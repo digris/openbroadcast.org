@@ -9,4 +9,3 @@ class AlibraryConfig(AppConfig):
 
     def ready(self):
         import collection.signals
-

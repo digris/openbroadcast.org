@@ -24,6 +24,7 @@ class Massimporter(object):
         self.reset_files = kwargs.get('reset_files')
         self.import_session = kwargs.get('import_session')
         self.username = kwargs.get('username')
+        self.collection_name = kwargs.get('collection_name')
         self.verbosity = int(kwargs.get('verbosity', 1))
 
         if self.directory:
@@ -110,7 +111,8 @@ class Massimporter(object):
 
         massimport = Massimport(
             directory=self.directory,
-            user=User.objects.get(username=self.username)
+            user=User.objects.get(username=self.username),
+            collection_name=self.collection_name
         )
 
         massimport.save()
@@ -152,6 +154,10 @@ class Command(BaseCommand):
         parser.add_argument('-l', '--limit',
                             dest='limit',
                             default=DEFAULT_LIMIT,
+                            help='Delete poll instead of closing it')
+
+        parser.add_argument('-c', '--collection',
+                            dest='collection_name',
                             help='Delete poll instead of closing it')
 
     def handle(self, *args, **options):
