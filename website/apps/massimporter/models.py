@@ -91,6 +91,7 @@ class Massimport(BaseModel):
             user=self.user,
             type=ImportSession.TYPE_API,
             uuid_key=self.uuid,
+            collection_name=self.collection_name
         )
 
         return import_session
