@@ -50,13 +50,11 @@
 
                 {% for object in object_list %}
 
-
                 {% ifchanged %}
                 <tr class="day-separator">
                     <td colspan="3">{{ object.created|date:'F Y' }}</td>
                 </tr>
                 {% endifchanged %}
-
 
                 <tr class="item {{ object.get_status_display|lower }}">
 

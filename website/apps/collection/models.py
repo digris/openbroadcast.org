@@ -49,7 +49,7 @@ class Collection(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
 class CollectionMember(TimestampedModelMixin, models.Model):
 
-    collection = models.ForeignKey('Collection', on_delete=models.CASCADE)
+    collection = models.ForeignKey('Collection', on_delete=models.CASCADE, related_name='members')
     item = models.ForeignKey('CollectionItem', on_delete=models.CASCADE)
     added_by = models.ForeignKey(USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
 
@@ -68,11 +68,10 @@ class CollectionItem(UUIDModelMixin, models.Model):
         verbose_name = _('Collection Item')
         verbose_name_plural = _('Collection Items')
 
-    ct_limit = models.Q(
-        app_label = 'alibrary', model = 'media') | \
-               models.Q(app_label = 'alibrary', model = 'release') | \
-               models.Q(app_label = 'alibrary', model = 'artist') | \
-               models.Q(app_label = 'alibrary', model = 'playlist')
+    ct_limit = models.Q(app_label='alibrary', model='media')   | \
+               models.Q(app_label='alibrary', model='release') | \
+               models.Q(app_label='alibrary', model='artist')  | \
+               models.Q(app_label='alibrary', model='playlist')
 
     content_type = models.ForeignKey(ContentType, limit_choices_to = ct_limit)
     object_id = models.PositiveIntegerField()

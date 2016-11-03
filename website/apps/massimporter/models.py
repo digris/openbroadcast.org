@@ -102,9 +102,9 @@ class Massimport(BaseModel):
         for item in self.files.all():
             item.update()
 
-        pass
-
-
+        if self.files.count() > 0 and self.files.filter(status=ImportFile.STATUS_INIT).count() == 0:
+            self.status = Massimport.STATUS_DONE
+            self.save()
 
     def scan(self):
 
@@ -224,12 +224,12 @@ class MassimportFile(BaseModel):
 
         if self.import_file:
 
-            if self.status != self.import_file.status:
-                print 'update status from {} to {} for {}'.format(
-                    self.get_status_display(),
-                    self.import_file.get_status_display(),
-                    self.path
-                )
+            # if self.status != self.import_file.status:
+            #     print 'update status from {} to {} for {}'.format(
+            #         self.get_status_display(),
+            #         self.import_file.get_status_display(),
+            #         self.path
+            #     )
 
             self.status = self.import_file.status
 

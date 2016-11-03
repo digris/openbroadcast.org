@@ -1,11 +1,12 @@
 {% extends "error_base.html" %}
-{% load i18n %}
+{% load i18n raven %}
 
 {% block title %}You've encountered an error, oh noes!{% endblock %}
 
 {% block body-class %}error-500{% endblock %}
 
 {% block content %}
+
     <h1>You've encountered an error, oh noes!</h1>
 
     {% if request.sentry.id %}
@@ -18,6 +19,26 @@
                     here</a> to create an issue email including references to the occurred problem.
             </p>
         </div>
+
+      <script src="https://cdn.ravenjs.com/3.7.0/raven.min.js"></script>
+      <script>
+
+            var user = null;
+
+          {% if request.user %}
+              user = {
+                  email: '{{ request.user.email }}',
+                  name: '{{ request.user.get_full_name }}'
+              };
+          {% endif %}
+
+      Raven.showReportDialog({
+          eventId: '{{ request.sentry.id }}',
+          dsn: '{% sentry_public_dsn 'https' %}',
+          user: user
+      });
+      </script>
+
     {% endif %}
 
     <p>Sorry about that. Please try refreshing and contact us if the problem persists.</p>

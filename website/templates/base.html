@@ -323,6 +323,11 @@
 
         </script>
 
+
+        <script src="https://cdn.ravenjs.com/3.7.0/raven.min.js"></script>
+        <script>Raven.config('{% sentry_public_dsn 'https' %}').install()</script>
+
+
         {%  comment %}
         <script src="//cdn.ravenjs.com/1.1.15/jquery,native/raven.min.js"></script>
         <script>

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import os
 import sys
+import tqdm
 from optparse import make_option
 from django.contrib.auth.models import User
 from django.conf import settings

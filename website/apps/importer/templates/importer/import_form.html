@@ -142,6 +142,7 @@
             </div>
             -->
 
+
             {% comment %}
             <div>
 
@@ -183,6 +184,28 @@
 
             </div>
             {% endcomment %}
+
+            <div>
+
+
+                <div class="alert alert-info">
+                    <strong>{% trans "Please note!" %}</strong>
+                    <p>
+                        {% blocktrans %}Do not upload more than maximum 30 tracks per "Upload Session"{% endblocktrans %}
+                    </p>
+                    <p>
+                        {% blocktrans %}You don't have to wait until the import is complete.{% endblocktrans %}<br>
+                        {% url 'importer-import-create' as new_upload_url %}
+                        {% blocktrans %}As soon as the files are queued you can continue uploading with starting a <a href="{{ new_upload_url }}">new upload session</a>.{% endblocktrans %}
+                    </p>
+                </div>
+
+
+
+
+
+            </div>
+
 
 
 

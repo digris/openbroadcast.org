@@ -11,7 +11,7 @@ class ImportCreateModelForm(forms.ModelForm):
     
     class Meta:
         model = Import
-        exclude = ('user', 'type', 'status', 'uuid_key', )
+        exclude = ('user', 'type', 'status', 'uuid_key', 'collection_name', )
 
         widgets = {
             #'image': AdvancedFileInput(image_width=76),

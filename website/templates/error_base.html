@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% load i18n %}<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -88,13 +88,12 @@
         }
 
     </style>
+
 </head>
 <body class="{% block body-class %}{% endblock %}">
 
 <div class="container">
     {% block content %}{% endblock %}
-
-
 
     <div id="suggestions">
         <a href="mailto:support@openbroadcast.org">Contact Support</a> &mdash;
@@ -102,5 +101,8 @@
     </div>
 
 </div>
+
+
+
 </body>
 </html>

@@ -89,6 +89,7 @@ COLUMN_WIDTH_CHOICES = (
 
 CKEDITOR_SETTINGS = {
     'startupOutlineBlocks': True,
+    'uiColor': '#ffffff',
     'skin': 'moono',
 }
 
