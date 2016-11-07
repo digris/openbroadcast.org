@@ -72,7 +72,7 @@ class ReleaseListView(PaginationMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ReleaseListView, self).get_context_data(**kwargs)
-        
+
         self.extra_context['filter'] = self.filter
         self.extra_context['special_filters'] = ['releasedate',]
         self.extra_context['relation_filter'] = self.relation_filter
