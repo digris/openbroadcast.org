@@ -72,8 +72,8 @@ DetailPlayer = function () {
 
             // check if media is currently playing
 
-            // console.debug('playing item:', self.aplayer_states.uuid);
-            // console.debug('seeking item:', self.item.uuid)
+            //console.debug('playing item:', self.aplayer_states.uuid);
+            //console.debug('seeking item:', self.item.uuid)
 
             if (self.item && self.aplayer_states && self.aplayer_states.uuid == self.item.uuid) {
                 self.player.seek(pos);
@@ -92,15 +92,15 @@ DetailPlayer = function () {
                 self.playlist_editor.stop_all();
                 self.player.play().setPosition(self.item.cue_in);
             }
-            ;
+
             if (action == 'pause') {
                 self.player.togglePause();
             }
-            ;
+
             if (action == 'stop') {
                 self.player.stop();
             }
-            ;
+
 
         });
 
@@ -213,7 +213,6 @@ DetailPlayer = function () {
 
 
     this.update = function (aplayer) {
-        // console.debug(aplayer);
 
         // check if current media is playing
         if (aplayer.states && aplayer.states.uuid && aplayer.states.uuid == self.item.uuid) {
@@ -223,9 +222,6 @@ DetailPlayer = function () {
             self.aplayer_states = aplayer.states;
 
             var pos_x = self.size_x / 100 * aplayer.states.position_rel;
-
-            //console.debug(pos_x);
-
             self.el_indicator.attr({ x: pos_x + 'px' });
         }
 

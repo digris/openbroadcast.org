@@ -348,8 +348,10 @@ arating.enable_voting_on(Artist)
 
 @receiver(post_save, sender=Artist)
 def action_handler(sender, instance, created, **kwargs):
-    action_handler_task.delay(instance, created)
-
+    try:
+        action_handler_task.delay(instance, created)
+    except:
+        pass
 
 @task
 def action_handler_task(instance, created):

@@ -72,7 +72,7 @@ aplayer.jwp = function (container) {
         jwplayer(container).remove();
     } catch (e) {
     }
-    ;
+
 
     // player setup
     return jwplayer(container).setup({
@@ -100,7 +100,7 @@ aplayer.jwp = function (container) {
             }
         },
         modes: [
-            //{type: 'flash', src: aplayer.vars.swf_url},
+            {type: 'flash', src: aplayer.vars.swf_url},
             {type: 'html5'}
         ]
     });
@@ -598,7 +598,7 @@ aplayer.base.interval = function () {
             } catch (err) {
                 states.state = 'unknown';
             }
-            ;
+
             states.buffer = aplayer.player.getBuffer(); // allways 0 wth rtmp
         }
 
@@ -658,8 +658,7 @@ aplayer.base.prev_next = function (index, uuid) {
     if (index === undefined) {
         var index = 0;
     }
-
-
+    
     aplayer.states.current = index;
     aplayer.states.uuid = uuid;
     if (index > 0) {
@@ -785,15 +784,8 @@ aplayer.base.controls = function (args) {
     var uuid = args.uuid || false;
     var position = args.position || false;
 
-
-    //aplayer.base.debug('action: ' + action);
-    //aplayer.base.debug('index: ' + index);
-    //aplayer.base.debug('uuid: ' + uuid);
-
     var fast_polling = false;
     var update_ui = false;
-
-    // console.debug(action, index, uuid, position);
 
     // stop polling (we only need this during play action)
     aplayer.base.stop_polling();
