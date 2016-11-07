@@ -134,10 +134,6 @@ class Importer(object):
         if 'mb_artist_id' in it and it['mb_artist_id']:
             mb_artist_id = it['mb_artist_id']
 
-            print '***************************************'
-            print it['mb_artist_id']
-            print '***************************************'
-
             # there can be multiple ids split by '/' here
             if '/' in mb_artist_id:
                 log.debug('got multiple mb artist ids: {}'.format(mb_artist_id))

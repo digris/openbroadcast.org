@@ -15,18 +15,24 @@ log = logging.getLogger(__name__)
 @receiver(importitem_created)
 def add_importitem_to_collection(sender, **kwargs):
 
-    content_object = kwargs.get('content_object')
-    user = kwargs.get('user')
-    collection_name = kwargs.get('collection_name', 'Contributions')
+    try:
 
-    log.debug('adding "{}" to collection "{}" (by {})'.format(
-        content_object, collection_name, user
-    ))
+        content_object = kwargs.get('content_object')
+        user = kwargs.get('user')
+        collection_name = kwargs.get('collection_name', 'Contributions')
 
-    collection, collection_created = Collection.objects.get_or_create(
-        name=collection_name,
-        owner=user
-    )
+        log.debug('adding "{}" to collection "{}" (by {})'.format(
+            content_object, collection_name, user
+        ))
 
-    add_to_collection(object=content_object, user=user, collection=collection)
+        collection, collection_created = Collection.objects.get_or_create(
+            name=collection_name,
+            owner=user
+        )
+
+        add_to_collection(object=content_object, user=user, collection=collection)
+
+    except Exception as e:
+        log.debug('unable to add to collection. {}'.format(e))
+
 

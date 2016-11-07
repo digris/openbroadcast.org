@@ -240,6 +240,7 @@ class Import(BaseModel):
                 import_session=self
             )
         except Exception as e:
+            log.warning('unable to create importitem: {} - {}'.format(item, e))
             pass
 
         try:
@@ -249,6 +250,7 @@ class Import(BaseModel):
                 import_session=self)[0]
             created = False
         except Exception as e:
+            log.warning('unable to add importitem: {} - {}'.format(item, e))
             pass
 
         if created:
@@ -694,7 +696,7 @@ class ImportItem(BaseModel):
 @receiver(post_save, sender=ImportItem)
 def importitem_post_save(sender, instance, created, **kwargs):
 
-    if created and instance.import_session and instance.import_session.user:
+    if created and instance.import_session and instance.import_session.user and instance.import_session.collection_name:
         importitem_created.send(
             sender=instance.__class__,
             content_object=instance.content_object,
