@@ -10,6 +10,7 @@ import uuid
 import arating
 from actstream import action
 from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
@@ -187,16 +188,27 @@ class Label(MigrationMixin):
 tagging_register(Label)
 arating.enable_voting_on(Label)
 
-def action_handler(sender, instance, created, **kwargs):
-    action_handler_task.delay(instance, created)
 
-post_save.connect(action_handler, sender=Label)
+# @receiver(post_save, sender=Label, dispatch_uid="label_post_save")
+# def action_handler_task(sender, instance, created, **kwargs):
+#
+#     if created and instance.creator:
+#         action.send(instance.creator, verb=_('created'), target=instance)
+#
+#     elif instance.last_editor:
+#         action.send(instance.last_editor, verb=_('updated'), target=instance)
 
-@task
-def action_handler_task(instance, created):
 
-    if created and instance.creator:
-        action.send(instance.creator, verb=_('created'), target=instance)
-
-    elif instance.last_editor:
-        action.send(instance.last_editor, verb=_('updated'), target=instance)
+# def action_handler(sender, instance, created, **kwargs):
+#     action_handler_task.delay(instance, created)
+#
+# post_save.connect(action_handler, sender=Label)
+#
+# @task
+# def action_handler_task(instance, created):
+#
+#     if created and instance.creator:
+#         action.send(instance.creator, verb=_('created'), target=instance)
+#
+#     elif instance.last_editor:
+#         action.send(instance.last_editor, verb=_('updated'), target=instance)

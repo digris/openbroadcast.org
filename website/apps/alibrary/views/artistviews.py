@@ -342,9 +342,7 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         # messages.add_message(self.request, messages.INFO, msg)
 
         self.object.last_editor = self.request.user
-
-        # handled in model post-save
-        # actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
+        actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
 
         # revisions disabled -> needs refactoring
         self.object = form.save()

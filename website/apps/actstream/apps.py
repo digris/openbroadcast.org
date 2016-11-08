@@ -6,5 +6,4 @@ class ActstreamConfig(AppConfig):
     verbose_name = "Actstream"
 
     def ready(self):
-        pass
         setup_generic_relations()

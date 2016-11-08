@@ -121,3 +121,27 @@ def merge_votes(primary_object, alias_objects):
                 v.delete()
 
     return primary_object
+
+
+def merge_relations(primary_object, alias_objects):
+    """
+    merges services from 'alias_objects' to the master, taking into account
+    that 'specific' services (like wikipedia, musicbrains, etc) can only exist once
+    per instance.
+    """
+
+    # get available 'specific' relations for the master object
+    master_services = [r.service for r in primary_object.relations.exclude(service='generic')]
+
+    for obj in alias_objects:
+        # only take specific services into account that are not defined on master
+        for r in obj.relations.exclude(service__in=master_services):
+
+            # move to the master object
+            r.object_id = primary_object.pk
+            r.save()
+
+        # delete 'left over' specific relations
+        obj.relations.exclude(service='generic').delete()
+
+    return primary_object

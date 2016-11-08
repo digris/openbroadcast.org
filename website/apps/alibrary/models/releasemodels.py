@@ -271,7 +271,7 @@ class Release(MigrationMixin):
             for m in media:
                 try:
                     indicator[m.tracknumber -1 ] = 3
-                except Exception, e:
+                except Exception as e:
                     pass
 
         else:
@@ -408,7 +408,7 @@ class Release(MigrationMixin):
         try:
             os.remove(cache_file_path)
   
-        except Exception, e:
+        except Exception as e:
             pass
 
 
@@ -500,7 +500,6 @@ def release_post_save(sender, instance, **kwargs):
 try:
     tagging_register(Release)
 except Exception as e:
-    print e
     pass
 
 

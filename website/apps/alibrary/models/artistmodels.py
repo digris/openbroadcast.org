@@ -346,20 +346,20 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
 tagging_register(Artist)
 arating.enable_voting_on(Artist)
 
-@receiver(post_save, sender=Artist)
-def action_handler(sender, instance, created, **kwargs):
-    try:
-        action_handler_task.delay(instance, created)
-    except:
-        pass
-
-@task
-def action_handler_task(instance, created):
-    if created and instance.creator:
-        action.send(instance.creator, verb=_('created'), target=instance)
-
-    elif instance.last_editor:
-        action.send(instance.last_editor, verb=_('updated'), target=instance)
+# @receiver(post_save, sender=Artist)
+# def action_handler(sender, instance, created, **kwargs):
+#     try:
+#         action_handler_task.delay(instance, created)
+#     except:
+#         pass
+#
+# @task
+# def action_handler_task(instance, created):
+#     if created and instance.creator:
+#         action.send(instance.creator, verb=_('created'), target=instance)
+#
+#     elif instance.last_editor:
+#         action.send(instance.last_editor, verb=_('updated'), target=instance)
 
 
 class ArtistMembership(models.Model):

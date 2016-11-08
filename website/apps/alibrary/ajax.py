@@ -14,8 +14,7 @@ from stdnum import ean
 from django.utils.translation import ugettext as _
 import urllib
 from alibrary.models import Release, Relation, Label, Artist, Media
-from base.models.utils.merge import merge_objects
-from base.models.utils.merge import merge_votes
+from base.models.utils.merge import merge_objects, merge_votes, merge_relations
 from lib.util.AsciiDammit import asciiDammit
 
 from alibrary.util.api_compare import get_from_provider
@@ -291,14 +290,13 @@ def merge_items(request, *args, **kwargs):
 
                 items = Release.objects.filter(pk__in=item_ids).exclude(pk=int(master_id))
                 for item in items:
-                    # delete service specific relations (only one - from the master - allowed)
-                    item.relations.exclude(service='generic').delete()
                     item.album_artists.clear()
                     slave_items.append(item)
 
                 master_item = Release.objects.get(pk=int(master_id))
                 if slave_items and master_item:
                     merge_votes(master_item, slave_items)
+                    merge_relations(master_item, slave_items)
                     master_item = merge_objects(master_item, slave_items)
                     # needed to clear cache
                     for media in master_item.media_release.all():
@@ -341,9 +339,6 @@ def merge_items(request, *args, **kwargs):
 
                     # re-attach stored extra artists to master
                     if extra_artists:
-
-                        print extra_artists
-
                         for extra_artist in extra_artists:
                             MediaExtraartists.objects.get_or_create(
                                 artist=extra_artist['artist'],
