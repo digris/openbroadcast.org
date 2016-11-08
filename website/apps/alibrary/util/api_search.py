@@ -123,20 +123,14 @@ def discogs_ordered_search(query, item_type, limit=100):
                     data['thumb'] = image
                     break
 
-
-
-
-
         return [data,]
-
-
 
 
 
 
     url = 'http://{host}/database/search?q={query}&type={item_type}&per_page=100'.format(
         host=DISCOGS_HOST,
-        query=urllib.quote_plus(query.lower()),
+        query=urllib.quote_plus(query.encode('utf8').lower()),
         item_type=item_type
     )
 

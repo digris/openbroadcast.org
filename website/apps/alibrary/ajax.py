@@ -119,7 +119,7 @@ def provider_search(request, *args, **kwargs):
     provider = kwargs.get('provider', None)
     query = kwargs.get('query', None)
 
-    log.debug('query: %s' % (query))
+    #log.debug('query: %s' % (query))
 
     results = []
     error = None
@@ -127,7 +127,7 @@ def provider_search(request, *args, **kwargs):
     if provider == 'discogs':
 
         #query = re.sub('[^A-Za-z0-9 :]+', '', query)
-        query = asciiDammit(query)
+        #query = asciiDammit(query)
         query = query.replace('(', '')
         query = query.replace(')', '')
 
