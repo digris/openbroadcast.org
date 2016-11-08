@@ -167,8 +167,7 @@ def provider_search(request, *args, **kwargs):
                 .replace('(', '\(')\
                 .replace(')', '\)')\
                 .replace('[', '\[')\
-                .replace(']', '\]')\
-                .replace(':', '\:')
+                .replace(']', '\]')
 
 
             t_query = urllib.quote(t_query)
@@ -188,8 +187,7 @@ def provider_search(request, *args, **kwargs):
                 .replace('\(', '(')\
                 .replace('\)', ')')\
                 .replace('\[', '[')\
-                .replace('\]', ']')\
-                .replace('\:', ':')
+                .replace('\]', ']')
 
         log.debug('query url: %s' % (url))
         r = requests.get(url)
