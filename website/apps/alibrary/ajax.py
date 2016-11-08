@@ -310,6 +310,9 @@ def merge_items(request, *args, **kwargs):
 
 
             if item_type == 'media':
+
+                from alibrary.models import MediaExtraartists
+
                 items = Media.objects.filter(pk__in=item_ids).exclude(pk=int(master_id))
 
                 extra_artists = []
@@ -321,7 +324,9 @@ def merge_items(request, *args, **kwargs):
                     item.formats.all().delete()
 
                     # store extra artists before deleting assignment
-                    extra_artists += [ea.extraartist_artist.filter(media_id=item.pk) for ea in item.extra_artists.distinct()]
+                    # we need to extract artist and profession to a separate dict, as the 'MediaExtraartists'
+                    # instances will be deleted in the next step
+                    extra_artists += [{'artist': ea.artist, 'profession': ea.profession} for ea in MediaExtraartists.objects.filter(media=item)]
 
                     # delete media- and extra artist assignments
                     item.media_artists.clear()
@@ -336,18 +341,15 @@ def merge_items(request, *args, **kwargs):
 
                     # re-attach stored extra artists to master
                     if extra_artists:
-                        from alibrary.models import MediaExtraartists
-                        print extra_artists
-                        for extra_artist_qs in extra_artists:
-                            for extra_artist in extra_artist_qs.all():
-                                print '***********************************'
-                                print extra_artist
 
-                                MediaExtraartists.objects.get_or_create(
-                                    artist=extra_artist.artist,
-                                    profession=extra_artist.profession,
-                                    media=master_item,
-                                )
+                        print extra_artists
+
+                        for extra_artist in extra_artists:
+                            MediaExtraartists.objects.get_or_create(
+                                artist=extra_artist['artist'],
+                                profession=extra_artist['profession'],
+                                media=master_item,
+                            )
 
                     master_item.save()
                     data['status'] = True
