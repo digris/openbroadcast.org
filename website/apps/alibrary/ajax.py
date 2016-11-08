@@ -316,8 +316,6 @@ def merge_items(request, *args, **kwargs):
                 extra_artists = []
 
                 for item in items:
-                    # delete service specific relations (only one - from the master - allowed)
-                    item.relations.exclude(service='generic').delete()
                     item.waveforms.all().delete()
                     item.formats.all().delete()
 
@@ -335,6 +333,7 @@ def merge_items(request, *args, **kwargs):
                 master_item = Media.objects.get(pk=int(master_id))
                 if slave_items and master_item:
                     merge_votes(master_item, slave_items)
+                    merge_relations(master_item, slave_items)
                     merge_objects(master_item, slave_items)
 
                     # re-attach stored extra artists to master
@@ -355,13 +354,12 @@ def merge_items(request, *args, **kwargs):
             if item_type == 'artist':
                 items = Artist.objects.filter(pk__in=item_ids).exclude(pk=int(master_id))
                 for item in items:
-                    # delete service specific relations (only one - from the master - allowed)
-                    item.relations.exclude(service='generic').delete()
                     slave_items.append(item)
 
                 master_item = Artist.objects.get(pk=int(master_id))
                 if slave_items and master_item:
                     merge_votes(master_item, slave_items)
+                    merge_relations(master_item, slave_items)
                     merge_objects(master_item, slave_items)
                     master_item.save()
                     # needed to clear cache
@@ -376,13 +374,12 @@ def merge_items(request, *args, **kwargs):
             if item_type == 'label':
                 items = Label.objects.filter(pk__in=item_ids).exclude(pk=int(master_id))
                 for item in items:
-                    # delete service specific relations (only one - from the master - allowed)
-                    item.relations.exclude(service='generic').delete()
                     slave_items.append(item)
 
                 master_item = Label.objects.get(pk=int(master_id))
                 if slave_items and master_item:
                     merge_votes(master_item, slave_items)
+                    merge_relations(master_item, slave_items)
                     merge_objects(master_item, slave_items)
                     master_item.save()
                     # needed to clear cache?
