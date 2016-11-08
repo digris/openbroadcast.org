@@ -27,6 +27,9 @@
                     {% topflop_for_object item %}
                     {% endcache %}
                 </a>
+                {% if item.releasetype %}<small class="pull-right releasetype">{{ item.get_releasetype_display }}</small>{% endif %}
+
+
             </li>
             <li>
 
@@ -135,13 +138,11 @@
 
         <ul class="unstyled">
             <li>
-                {{ item.get_releasetype_display }}
+                {{ item.last_editor.profile.get_display_name|truncate_chars_inner:11|default:'-' }}
             </li>
-            <!--
             <li class="small">
-                {{ item.get_releasestatus_display }}
+                {{ item.updated|date:'SHORT_DATE_FORMAT' }}
             </li>
-            -->
         </ul>
     </div>
     <div class="list_body_item c8 action">
