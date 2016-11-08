@@ -76,9 +76,9 @@ CMS_PLUGIN_PROCESSORS = ()
 CMS_SEO_FIELDS = True
 
 CMS_CACHE_DURATIONS = {
-    'menus': 1,
-    'content': 1,
-    'permissions': 1,
+    'menus': 0,
+    'content': 0,
+    'permissions': 0,
 }
 
 COLUMN_WIDTH_CHOICES = (

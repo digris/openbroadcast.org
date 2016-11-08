@@ -27,14 +27,19 @@
                 <div class="span2">
                     {% if object.main_image %}
                         <img src="{{ object.main_image }}">
+                    {% else %}{% if object.release and object.release.main_image %}
+                        <img src="{{ object.release.main_image }}">
                     {% else %}
                         <img src="/static/img/base/defaults/listview.release.xl.png">
-                    {% endif %}
+                    {% endif %}{% endif %}
                 </div>
 
                 <div class="span10">
 
                         <strong>{{ object.name }}
+
+                            <small class="pull-right pk">ID: {{ object.id }}</small>
+
                             {% if item_type == "release" %}
                             <small class="pull-right"> {{ object.media.length }} Tracks</small>
                             {% endif %}
@@ -45,6 +50,8 @@
                             {% if item_type == "label" %}
                             <small class="pull-right"> {{ object.release_count }} Releases</small>
                             {% endif %}
+
+
                         </strong>
 
                         <ul class="unstyled">
@@ -202,6 +209,7 @@
 
 
                             {% endif %}
+
 
                         </ul>
 

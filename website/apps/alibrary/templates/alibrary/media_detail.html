@@ -2,6 +2,10 @@
 
 {% load truncate_tags i18n thumbnail arating_tags wiki_tags comments atracker_tags sekizai_tags calc url_tags alibrary_tags media_tags video_tags addthis %}
 
+
+{% block title %}{{ object.name }} - {{ object.get_artist_display }}{% endblock %}
+
+
 {% block heading %} <!-- heading / icon (large one) -->
 
     {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/lib/raphael-min.js"></script>{% endaddtoblock %}

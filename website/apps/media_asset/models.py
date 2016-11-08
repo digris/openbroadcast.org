@@ -98,6 +98,10 @@ class Waveform(TimestampedModel, UUIDModel):
     @current_app.task(filter=task_method, name='Waveform.process_waveform')
     def process_waveform(self):
 
+        print '******'
+        print self
+        print '******'
+
         from util.conversion import any_to_wav
         from util.grapher import create_waveform_image, create_spectrogram_image
 
@@ -156,6 +160,9 @@ def waveform_post_save(sender, instance, created, **kwargs):
         if USE_CELERYD:
             log.debug('sending job to task queue')
             obj.process_waveform.apply_async(queue='grapher')
+
+
+
         else:
             log.debug('processing task in foreground')
             obj.process_waveform()

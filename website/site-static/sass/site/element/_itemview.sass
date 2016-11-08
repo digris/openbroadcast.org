@@ -48,8 +48,14 @@
       opacity: 0.25
       transition: opacity 0.2s
       li
+        //background: $primary-color-a
+        //border-radius: 3px
+        width: 36px
+        text-align: center
+        padding: 2px
         float: left
         margin-right: 10px
+
       a
         color: #fff
         &:hover
@@ -61,8 +67,9 @@
 .item_detail section
   #aplayer_detail .item.hover
     ul.action
-      //background-color: rgba(0, 0, 0, 0.5)
       opacity: 1.0
+      li
+        filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.50))
 
 // descriuptioin / biography etc
 .item_detail

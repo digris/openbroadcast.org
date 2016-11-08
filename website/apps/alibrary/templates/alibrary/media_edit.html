@@ -1,8 +1,8 @@
 {% extends "layout_edit.html" %}
 
-{% load crispy_forms_tags dajaxice_templatetags sekizai_tags static %}
+{% load crispy_forms_tags dajaxice_templatetags sekizai_tags static thumbnail i18n truncate_tags %}
 
-{% load thumbnail i18n truncate_tags %}
+{% block title %}{% trans 'Edit' %}: {{ object.name }} - {{ object.get_artist_display }}{% endblock %}
 
 {% block heading %} <!-- heading / icon (large one) -->
     {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}selectable/js/jquery.dj.selectable.js"></script>{% endaddtoblock %}
