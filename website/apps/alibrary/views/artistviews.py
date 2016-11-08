@@ -105,8 +105,9 @@ class ArtistListView(PaginationMixin, ListView):
         q = self.request.GET.get('q', None)
         
         if q:
-            #qs = Artist.objects.filter(name__istartswith=q).distinct()
-            qs = Artist.objects.filter(Q(name__istartswith=q) | Q(namevariations__name__istartswith=q)).distinct()
+            # qs = Artist.objects.filter(Q(name__istartswith=q) | Q(namevariations__name__istartswith=q)).distinct()
+            # https://lab.hazelfire.com/issues/1477
+            qs = Artist.objects.filter(Q(name__icontains=q) | Q(namevariations__name__icontains=q)).distinct()
             qs = qs.prefetch_related('media_artist')
         else:
             # only display artists with tracks a.t.m.
@@ -361,7 +362,7 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
     
 # autocompleter views
-# TODO: rewrite!
+# TODO: check if still needed. should actually already be handled via api!
 def artist_autocomplete(request):
 
     q = request.GET.get('q', None)

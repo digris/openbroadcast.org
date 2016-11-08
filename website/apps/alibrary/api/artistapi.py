@@ -80,7 +80,7 @@ class ArtistResource(ModelResource):
 
         if q and len(q) > 1:
 
-            qs = Artist.objects.order_by('name').filter(Q(name__icontains=q) | Q(namevariations__name__icontains=q))
+            qs = Artist.objects.order_by('name').filter(Q(name__istartswith=q) | Q(namevariations__name__istartswith=q))
 
             object_list = qs.distinct()[0:50]
             object_count = qs.distinct().count()
