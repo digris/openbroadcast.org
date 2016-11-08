@@ -101,7 +101,7 @@ class ReleaseFilter(django_filters.FilterSet):
     releasedate = DateRangeFilter(label="Release date")
     class Meta:
         model = Release
-        fields = ['releasedate', 'releasetype', 'release_country__printable_name',]
+        fields = ['releasedate', 'releasetype', 'release_country__printable_name', 'label__type']
 
     @property
     def filterlist(self):
