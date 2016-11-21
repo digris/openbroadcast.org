@@ -37,7 +37,7 @@ class ReleaseResource(ModelResource):
             bundle.data['main_image'] = None
             try:
                 opt = THUMBNAIL_OPT
-                main_image = image = get_thumbnailer(bundle.obj.main_image).get_thumbnail(opt)
+                main_image = get_thumbnailer(bundle.obj.main_image).get_thumbnail(opt)
                 bundle.data['main_image'] = main_image.url
             except:
                 pass

@@ -1,4 +1,27 @@
-<h1>
-    ***
-    {{ object.name }}
-</h1>
+<div class="search-result">
+
+
+    <div class="row-fluid">
+        <div class="span-4">
+            <div>
+                {% if object.image %}
+                    <img src="{{ object.image }}">
+                {% endif %}
+            </div>
+        </div>
+        <div class="span-8">
+            <div>
+                <h4>{{ object.name }}</h4>
+                <p>{{ object.ct }}</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="tags">
+        {% for tag in object.tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
+    </div>
+
+</div>

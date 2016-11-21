@@ -15,14 +15,13 @@ var SearchApp = function () {
             
         });
 
-
     };
 
     this.search = function (q) {
 
         if(q.length < 3) {
             return;
-        };
+        }
 
         var url = self.base_url + '?q=' + q;
         $.get(url, function(data){
@@ -42,16 +41,9 @@ var SearchApp = function () {
 
             self.results_container.html(results_html);
 
-
-
         });
 
-
     };
-
-
-
-
 
     this.init = function () {
 
@@ -61,7 +53,6 @@ var SearchApp = function () {
         
         self.input_container = $('#search_input');
         self.results_container = $('#search_results');
-
 
         self.bindings();
     };
