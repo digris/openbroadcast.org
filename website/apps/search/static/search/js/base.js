@@ -10,6 +10,8 @@ var SearchApp = function () {
     this.next_url = null;
     this.lock = false;
 
+    this.current_request = null;
+
     this.q = null;
 
     this.ctypes = [
@@ -19,6 +21,8 @@ var SearchApp = function () {
     ];
 
     this.selected_ctypes = [];
+
+    this.loading_template = '<div class="loading"><i class="icon icon-spinner icon-spin"></i><p>Loading Results</p></div>';
 
     this.bindings = function () {
 
@@ -110,6 +114,10 @@ var SearchApp = function () {
             return;
         }
 
+        if(self.current_request) {
+            self.current_request.abort();
+        }
+
         if (self.debug) {
             console.log('search with query:', q);
         }
@@ -119,14 +127,15 @@ var SearchApp = function () {
             return;
         }
 
-        self.results_container.html('<div class="loading"><i class="icon icon-spinner icon-spin"></i></div>');
+
+        self.results_container.html(self.loading_template);
 
         var url = self.base_url + '?q=' + q;
         if (ctypes.length > 0) {
             url += '&ct=' + ctypes.join(':');
         }
 
-        $.get(url, function (data) {
+        self.current_request = $.get(url, function (data) {
             var results_html = '';
             $.each(data.objects, (function (i, object) {
                 var d = {
@@ -139,6 +148,7 @@ var SearchApp = function () {
             self.results_container.html(results_html);
 
             self.lock = false;
+            self.highlight();
 
         });
 
@@ -150,7 +160,13 @@ var SearchApp = function () {
             return;
         }
 
-        $.get(self.next_url, function (data) {
+        if(self.current_request) {
+            self.current_request.abort();
+        }
+
+        self.results_container.append(self.loading_template)
+
+        self.current_request = $.get(self.next_url, function (data) {
             var results_html = '';
             $.each(data.objects, (function (i, object) {
                 var d = {
@@ -162,12 +178,31 @@ var SearchApp = function () {
             self.next_url = data.meta.next;
             self.results_container.html(self.results_container.html() + results_html);
 
+            $('.loading', self.results_container).remove();
+
             self.lock = false;
+            self.highlight();
 
         });
 
     };
 
+    this.highlight = function() {
+
+        self.results_container.removeHighlight();
+        if (!self.q) {
+            return;
+        }
+
+        $.each(self.q.split(' '), function(i, el){
+
+            console.debug(el);
+
+            self.results_container.highlight(el);
+
+        })
+
+    };
 
 
     this.clear_results = function () {

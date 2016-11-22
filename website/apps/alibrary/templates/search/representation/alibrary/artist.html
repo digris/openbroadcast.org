@@ -1,1 +1,19 @@
-a
+<em>{{ object.country.iso2_code }}</em> based  <em>{{ object.get_type_display }}</em>, {{ object.date_start }} - {{ object.date_end }}
+
+{% if object.members.exists %}
+    <p class="members">
+        {{ object.get_type_display }} members: {% for member in object.members.all %}<em>{{ member }}</em>{% if not forloop.last %}, {% endif %}{% endfor %}
+    </p>
+{% endif %}
+
+{% if object.get_aliases %}
+    <p class="aliases">
+        a.k.a. {{ object.get_aliases }}
+    </p>
+{% endif %}
+
+{% if object.biography %}
+    <p class="description">
+        {{ object.biography|truncatechars_html:120 }}
+    </p>
+{% endif %}

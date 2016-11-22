@@ -1,6 +1,9 @@
 {{ object.name }}
+
 {{ object.get_artist_display }}
+
 {{ object.label.name }}
+
 {% for tag in object.tags %}
 {{ tag }},
 {% endfor %}

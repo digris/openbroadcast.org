@@ -71,7 +71,7 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True, db_index=True)
 
     TYPE_CHOICES = (
-        ('person', _('Person')),
+        ('person', _('Artist')),
         ('group', _('Group')),
         ('orchestra', _('Orchestra')),
         ('other', _('Other')),
@@ -243,6 +243,7 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         return self.biography
 
     @cached_property
+    #@property
     def get_membership(self):
         """ get artists group/band membership """
         return [m.parent for m in ArtistMembership.objects.filter(child=self)]

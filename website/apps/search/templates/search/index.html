@@ -33,7 +33,7 @@
 
     <div>
 
-        <form action="/api/v1/search/">
+        <form action="/api/v1/search/" id="search_form">
             <input type="text" name="q" id="search_input">
             <input type="hidden" name="format" value="json">
         </form>
@@ -42,10 +42,10 @@
 
     <div id="search_scope">
 
-            <span><a class="selected" data-ct="all" href="#">Everything</a></span>
-            <span><a data-ct="alibrary.artist" href="#">Artists</a></span>
-            <span><a data-ct="alibrary.release" href="#">Releases</a></span>
-            <span><a data-ct="alibrary.media"href="#">Tracks</a></span>
+            <span><a class="selected btn" data-ct="all" href="#">Everything</a></span>
+            <span><a class="btn" data-ct="alibrary.artist" href="#">Artists</a></span>
+            <span><a class="btn" data-ct="alibrary.release" href="#">Releases</a></span>
+            <span><a class="btn" data-ct="alibrary.media"href="#">Tracks</a></span>
 
     </div>
 

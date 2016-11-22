@@ -71,6 +71,7 @@ class GlobalSearchResource(Resource):
     representation = fields.CharField(attribute='representation', null=True)
     text = fields.CharField(attribute='text', null=True)
     image = fields.CharField(attribute='image', null=True)
+    detail_uri = fields.CharField(attribute='detail_uri', null=True)
     tags = fields.ListField(attribute='tags', null=True)
     ct = fields.CharField(attribute='ct', null=True)
 
