@@ -8,6 +8,9 @@ from datetime import timedelta
 import actstream
 import reversion
 from alibrary.filters import ReleaseFilter
+from haystack.backends import SQ
+from haystack.query import SearchQuerySet
+
 from ..forms import ReleaseForm, ReleaseActionForm, ReleaseBulkeditForm, ReleaseRelationFormSet, AlbumartistFormSet, ReleaseMediaFormSet
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from django import http
@@ -101,16 +104,29 @@ class ReleaseListView(PaginationMixin, ListView):
         self.tagcloud = None
 
         q = self.request.GET.get('q', None)
-        
+
+
+
+
+
+        # haystack version
         if q:
-            #qs = Release.objects.filter(Q(name__istartswith=q)\
-            #| Q(media_release__name__icontains=q)\
-            #| Q(media_release__artist__name__icontains=q)\
-            #| Q(label__name__icontains=q))\
-            #.distinct()
-            qs = Release.objects.filter(name__icontains=q).distinct()
+            sqs = SearchQuerySet().models(Release).filter(SQ(content__contains=q) | SQ(name__contains=q))
+            qs = Release.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
         else:
             qs = Release.objects.select_related('license').prefetch_related('media_release').all()
+
+
+
+        # if q:
+        #     #qs = Release.objects.filter(Q(name__istartswith=q)\
+        #     #| Q(media_release__name__icontains=q)\
+        #     #| Q(media_release__artist__name__icontains=q)\
+        #     #| Q(label__name__icontains=q))\
+        #     #.distinct()
+        #     qs = Release.objects.filter(name__icontains=q).distinct()
+        # else:
+        #     qs = Release.objects.select_related('license').prefetch_related('media_release').all()
             
             
         order_by = self.request.GET.get('order_by', 'created')

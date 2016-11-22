@@ -237,6 +237,11 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
             'pk': self.pk
         }) + ''
 
+    @property
+    def description(self):
+        """mapping to generic field"""
+        return self.biography
+
     @cached_property
     def get_membership(self):
         """ get artists group/band membership """

@@ -1,28 +1,33 @@
 from collections import namedtuple
 
-from django.core.paginator import Paginator, InvalidPage
+from haystack.inputs import AutoQuery
+from tastypie.paginator import Paginator
 from django.http import Http404
+from django.template.defaultfilters import truncatechars
+from django.template.loader import get_template
 from tastypie import fields
+from django.utils.translation import ugettext as _
 from tastypie.authorization import Authorization
 from tastypie.resources import Resource, Bundle
-from haystack.query import SearchQuerySet
+from haystack.query import SearchQuerySet, EmptySearchQuerySet, SQ
 from easy_thumbnails.files import get_thumbnailer
 from django.apps import apps
 
+THUMBNAIL_OPT = dict(size=(240, 240), crop=True, upscale=True, bw=False, quality=80)
 
 
-THUMBNAIL_OPT = dict(size=(240, 240), crop=True, bw=False, quality=80)
 
 
-Metadata = namedtuple('Metadata', ['k', 'v'])
+class ResultObject(object):
 
-class SearchObject(object):
+    def __init__(self, result):
 
-    def __init__(self, obj):
+        obj = result.object
 
-        self.app = obj._meta.app_label
-        self.ct = obj.__class__.__name__.lower()
+        self.ct = '{}.{}'.format(obj._meta.app_label, obj.__class__.__name__.lower())
         self.resource_uri = obj.get_api_url()
+        self.obj = obj
+
 
         main_image = None
         if hasattr(obj, 'main_image') and obj.main_image:
@@ -31,29 +36,16 @@ class SearchObject(object):
         data = {
             'uuid': obj.uuid,
             'name': obj.name,
-            'description': obj.description,
+            'ct': 'lasdhj',
+            'representation': self.representation,
             'tags': [t.name for t in obj.tags.all()],
-            'ct': '{}.{}'.format(self.app, self.ct),
             'detail_uri': obj.get_absolute_url(),
             'image': main_image.url if main_image else None,
         }
 
         meta = []
 
-        # if self.ct == 'media':
-        #     meta = [
-        #         ['Artist', obj.get_artist_display()],
-        #         ['Duration', obj.master_duration]
-        #     ]
-        #
-        # if self.ct == 'release':
-        #     meta = [
-        #         ['Label', obj.label.name if obj.label else ''],
-        #     ]
-
-
         data['meta'] = meta
-
 
         self.__dict__['_data'] = data
 
@@ -63,25 +55,32 @@ class SearchObject(object):
     def to_dict(self):
         return self._data
 
+    @property
+    def representation(self):
+        """html formatted human readable representation for object"""
+        tpl = get_template('search/representation/{}.html'.format(self.ct.replace('.', '/')))
+        return tpl.render(context={'object': self.obj})
 
-class SearchResource(Resource):
+
+
+
+class GlobalSearchResource(Resource):
 
     uuid = fields.CharField(attribute='uuid', null=True)
     name = fields.CharField(attribute='name', null=True)
-    ct = fields.CharField(attribute='ct', null=True)
-    detail_uri = fields.CharField(attribute='detail_uri', null=True)
+    representation = fields.CharField(attribute='representation', null=True)
+    text = fields.CharField(attribute='text', null=True)
     image = fields.CharField(attribute='image', null=True)
-    description = fields.CharField(attribute='description', null=True)
     tags = fields.ListField(attribute='tags', null=True)
-    meta = fields.ListField(attribute='meta', null=True)
+    ct = fields.CharField(attribute='ct', null=True)
 
     paginator_class = Paginator
 
     class Meta:
         resource_name = 'search'
-        object_class = SearchObject
         authorization = Authorization()
-        limit = 100
+        paginator_class = Paginator
+        limit = 5
 
     def detail_uri_kwargs(self, bundle_or_obj):
         kwargs = {}
@@ -104,19 +103,15 @@ class SearchResource(Resource):
 
     def get_object_list(self, request, **kwargs):
 
-        #sqs = SearchQuerySet().load_all().auto_query(request.GET.get('q', ''))
-        #sqs = SearchQuerySet().load_all().filter(text__startswith=request.GET.get('q', ''))
-        sqs = SearchQuerySet().filter(content__contains=request.GET.get('q', ''))
-        #sqs = SearchQuerySet().load_all().auto_query(request.GET.get('q', ''))
+        q = kwargs.get('query', '')
+        # sqs = SearchQuerySet().filter(content__contains=q)
+        sqs = SearchQuerySet().filter(SQ(content__contains=q) | SQ(name__contains=q))
 
 
         search_models = []
-
-        limit_models = request.GET.get('m', None)
-
+        limit_models = request.GET.get('ct', None)
         if limit_models:
-
-            for model in limit_models.split(' '):
+            for model in limit_models.split(':'):
                 try:
                     search_models.append(apps.get_model(*model.split('.')))
                 except LookupError as e:
@@ -124,38 +119,41 @@ class SearchResource(Resource):
 
             sqs = sqs.models(*search_models)
 
-        paginator = Paginator(sqs, 100)
+        sqs = sqs.highlight().load_all()
 
-        try:
-            page = paginator.page(int(request.GET.get('page', 1)))
-        except InvalidPage:
-            raise Http404("Sorry, no results on that page.")
-
-        results = []
-        for result in page.object_list:
-            new_obj = SearchObject(obj=result.object)
-            results.append(new_obj)
-
-        return results
+        return sqs
 
 
     def obj_get_list(self, request=None, **kwargs):
 
-        return self.get_object_list(request)
+        return self.get_object_list(request, **kwargs)
 
 
     def get_list(self, request, **kwargs):
 
-        objects = self.obj_get_list(request=request, **self.remove_api_resource_names(kwargs))
-        sorted_objects = self.apply_sorting(objects, options=request.GET)
+        query = request.GET.get('q', None)
 
-        paginator = self._meta.paginator_class(request.GET, sorted_objects, resource_uri=self.get_resource_uri(),
-                                               limit=self._meta.limit, max_limit=self._meta.max_limit,
-                                               collection_name=self._meta.collection_name)
-        to_be_serialized = paginator.page()
+        results = self.obj_get_list(request, **{'query': query})
+        if not results:
+            results = EmptySearchQuerySet()
 
-        # Dehydrate the bundles in preparation for serialization.
-        bundles = [self.build_bundle(obj=obj, request=request) for obj in to_be_serialized[self._meta.collection_name]]
-        to_be_serialized[self._meta.collection_name] = [self.full_dehydrate(bundle) for bundle in bundles]
-        to_be_serialized = self.alter_list_data_to_serialize(request, to_be_serialized)
-        return self.create_response(request, to_be_serialized)
+        paginator = Paginator(request.GET, results, resource_uri='/api/v1/search/', max_limit=20)
+
+        bundles = []
+        for result in paginator.page()['objects']:
+
+            result_obj = ResultObject(result)
+
+            bundle = self.build_bundle(
+                obj=result_obj,
+                request=request
+            )
+            bundles.append(self.full_dehydrate(bundle))
+
+        object_list = {
+            'meta': paginator.page()['meta'],
+            'objects': bundles
+        }
+        object_list['meta']['search_query'] = query
+
+        return self.create_response(request, object_list)

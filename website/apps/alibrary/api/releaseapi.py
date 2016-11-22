@@ -7,6 +7,8 @@ from tastypie.authorization import Authorization
 from tastypie.cache import SimpleCache
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
+from haystack.backends import SQ
+from haystack.query import SearchQuerySet
 
 THUMBNAIL_OPT = dict(size=(240, 240), crop=True, bw=False, quality=80)
 
@@ -77,14 +79,12 @@ class ReleaseResource(ModelResource):
         object_list = []
         qs = None
         if q and len(q) > 2:
-            """
-            this leads to too complicated results. see simpler version below
-            """
-            # qs = Release.objects.filter(Q(name__istartswith=q)\
-            #    | Q(media_release__name__icontains=q)\
-            #    | Q(media_release__artist__name__icontains=q)\
-            #    | Q(label__name__icontains=q))
 
+            # haystack version
+            # sqs = SearchQuerySet().models(Release).filter(content__contains=q)
+            # qs = Release.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
+
+            # ORM version
             qs = Release.objects.filter(name__icontains=q)
 
         if qs:

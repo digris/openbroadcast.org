@@ -29,7 +29,7 @@
 {% endblock %}
 
 {% block inner %}
-<h1>alsdkj</h1>
+    <h1>Global Search (Prototype View)</h1>
 
     <div>
 
@@ -40,7 +40,16 @@
 
     </div>
 
-    <div id="search_results">
+    <div id="search_scope">
+
+            <span><a class="selected" data-ct="all" href="#">Everything</a></span>
+            <span><a data-ct="alibrary.artist" href="#">Artists</a></span>
+            <span><a data-ct="alibrary.release" href="#">Releases</a></span>
+            <span><a data-ct="alibrary.media"href="#">Tracks</a></span>
+
+    </div>
+
+    <div id="search_results" class="search-results">
 
     </div>
 

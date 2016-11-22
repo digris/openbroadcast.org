@@ -8,7 +8,7 @@ from atracker.api import EventResource
 from exporter.api import ExportResource, ExportItemResource
 from importer.api import ImportResource, ImportFileResource
 from profiles.api import ProfileResource, UserResource
-from search.api.resources import SearchResource
+from search.api.resources import GlobalSearchResource
 from tastypie.api import Api
 
 api = Api()
@@ -56,7 +56,7 @@ api.register(VoteResource())
 api.register(EventResource())
 
 # search
-api.register(SearchResource())
+api.register(GlobalSearchResource())
 
 # statistics (for entities)
 # api.register(StatisticResource())

@@ -393,6 +393,13 @@ class Media(MigrationMixin):
     def classname(self):
         return self.__class__.__name__
 
+
+    @property
+    def main_image(self):
+        """main image referes to release image if available"""
+        if self.release:
+            return self.release.main_image
+
     def get_versions(self):
         try:
             return reversion.get_for_object(self)

@@ -1,0 +1,45 @@
+#search_scope
+  padding: 10px 0
+  span
+    padding: 4px
+  a
+    color: #999999
+    &.selected
+      color: $primary-color-b
+
+
+.search-results
+
+  padding: 20px 0
+
+  .item
+    margin-bottom: 10px
+    background: white
+    cursor: pointer
+    position: relative
+    &.hover
+      background: $primary-color-a-bg-light
+
+    .meta dl
+      margin: 2px 0
+      +clearfix
+      dt
+        width: 80px
+        float: left
+
+      dt
+
+    .representation
+      em
+        font-style: normal
+        font-weight: 400
+        //background: $primary-color-a-bg-light
+
+    .tags
+      position: absolute
+      bottom: 4px
+      right: 4px
+      .tag
+        padding: 2px 4px
+        background: #333
+        color: white

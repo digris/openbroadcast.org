@@ -1,34 +1,57 @@
-<div class="search-result">
-
-
+<div class="item hoverable linkable">
     <div class="row-fluid">
-        <div class="span-2">
+
+        <div class="span2">
             <div>
                 {% if object.image %}
-                    <img src="{{ object.image }}">
+                    <img src="/static/img/base/defaults/listview.release.xl.png" data-src="{{ object.image }}" class="lazyload">
+                {% else %}
+                    <img src="/static/img/base/defaults/listview.release.xl.png">
                 {% endif %}
             </div>
         </div>
-        <div class="span-10">
+        <div class="span7">
             <div>
-                <h4>{{ object.name }}</h4>
-                <p>{{ object.ct }}</p>
+                <h3><a href="{{ object.detail_uri }}" class="link-main">{{ object.name }}</a> <small>{{ object.ct }}</small></h3>
+                <p></p>
+            </div>
 
 
+            <div class="representation">
+                {{ object.representation }}
+            </div>
 
+
+            <!--<div class="meta">
+                <dl>
+
+                    {% for meta in object.meta %}
+                        <dt class="meta-{{ meta.key }}">
+                            {{ meta.label }}:
+                        </dt>
+                        <dd>
+                            {{ meta.value }}
+                        </dd>
+                    {% endfor %}
+
+                </dl>
+
+            </div>-->
+
+            <div class="description">
+                {% if object.description %}{{ object.description }}{% endif %}
             </div>
 
 
             <div class="tags">
                 {% for tag in object.tags %}
-                <span class="tag">{{ tag }}</span>
+                    <span class="tag">{{ tag }}</span>
                 {% endfor %}
             </div>
-
-
 
         </div>
     </div>
 
-
 </div>
+
+
