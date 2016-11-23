@@ -33,12 +33,21 @@ var SearchApp = function () {
          * handle query input
          */
         self.input_container.on('keyup', function (e) {
-            //if(!e.keyCode == 27) {
+
+            console.debug('kc:', e.keyCode);
+
+            e.preventDefault();
+
+            if(e.keyCode != 27) {
                 self.set_query($(this).val());
-                delay(function () {
-                    self.load()
-                }, self.keyup_delay);
-            //}
+
+                if(e.keyCode != 32) {
+                    delay(function () {
+                        self.load()
+                    }, self.keyup_delay);
+                }
+
+            }
         });
 
         /*
@@ -76,12 +85,13 @@ var SearchApp = function () {
 
             // only listen to shift-+ x events
             if (e.shiftKey) {
-                e.preventDefault();
+                //e.preventDefault();
                 if (self.debug) {
                     console.log('Shift + ', e.keyCode, '-', e.key);
                 }
                 switch (e.keyCode) {
                     case 32: // 'space'
+                        e.preventDefault();
                         if(self.search_mode) {
                             self.input_container.focus();
                         } else {
@@ -131,9 +141,16 @@ var SearchApp = function () {
 
 
     this.set_query = function (q) {
+
         self.input_container.val(q);
+
+        if(q.length < 3) {
+            self.clear_results();
+            //return;
+        }
+
         //History.replaceState({q: q}, null, '?q=' + q);
-        self.q = q;
+        self.q = q.trim();
     };
 
     this.toggle_ctype = function (ct) {
@@ -196,7 +213,7 @@ var SearchApp = function () {
             console.log('search with query:', q);
         }
 
-        if (q.length < 1) {
+        if (q.length < 3) {
             self.clear_results();
             return;
         }

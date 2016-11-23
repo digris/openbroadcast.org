@@ -404,6 +404,8 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+HAYSTACK_SIGNAL_PROCESSOR = 'search.signals.SearchIndexProcessor'
+
 
 
 
