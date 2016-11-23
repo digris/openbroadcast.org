@@ -614,7 +614,7 @@ class DiscogsAPILookup(APILookup):
             https://lab.hazelfire.com/issues/1622
             """
             try:
-                track['title'] = track['title'].replace('\x92', "'")
+                track['title'] = track['title'].replace('\x92', "'").strip()
             except Exception as e:
                 pass
 
