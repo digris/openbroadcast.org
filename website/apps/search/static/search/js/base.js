@@ -5,6 +5,9 @@ var SearchApp = function () {
     this.base_url = '/api/v1/search/';
     this.input_container;
     this.results_container;
+
+    this.search_mode = false;
+
     this.keyup_delay = 300;
 
     this.next_url = null;
@@ -26,64 +29,135 @@ var SearchApp = function () {
 
     this.bindings = function () {
 
+        /*
+         * handle query input
+         */
         self.input_container.on('keyup', function (e) {
-
-            self.set_query($(this).val());
-
-            delay(function () {
-                self.load()
-            }, self.keyup_delay);
-
+            //if(!e.keyCode == 27) {
+                self.set_query($(this).val());
+                delay(function () {
+                    self.load()
+                }, self.keyup_delay);
+            //}
         });
 
+        /*
+         * handle ctype filters
+         */
         self.scope_container.on('click', 'a', function (e) {
             e.preventDefault();
-
-            var ct = $(this).data('ct');
-
-            if (ct == 'all') {
-                if (self.selected_ctypes.length > 0) {
-                    self.selected_ctypes = [];
-                    self.set_ctypes();
-                    $(this).addClass('selected');
-                    self.load();
-                }
-                return;
-            }
-
-
-            var idx = $.inArray(ct, self.selected_ctypes);
-            if (idx == -1) {
-                self.selected_ctypes.push(ct);
-            } else {
-                self.selected_ctypes.splice(idx, 1);
-            }
-
-            self.set_ctypes();
-            self.load();
-
+            self.toggle_ctype($(this).data('ct'));
         });
 
-        // scroll loader
+        /*
+         * infinite scrolling
+         */
         $(document).scroll(function (e) {
-
-
-            console.debug('scroll');
             if (element_in_scroll($('.search-results .item:last'))) {
-                console.debug('scroll - element_in_scroll!');
-                if(!self.lock) {
+                if (!self.lock) {
                     self.lock = true;
                     self.load_next();
                 }
             }
         });
 
+
+
+        /*
+         * key bindings
+         */
+        $(document).on('keydown', function (e) {
+
+            if(self.search_mode && e.keyCode == 27) {
+                self.exit_search_mode();
+                return;
+            }
+
+
+            // only listen to shift-+ x events
+            if (e.shiftKey) {
+                e.preventDefault();
+                if (self.debug) {
+                    console.log('Shift + ', e.keyCode, '-', e.key);
+                }
+                switch (e.keyCode) {
+                    case 32: // 'space'
+                        if(self.search_mode) {
+                            self.input_container.focus();
+                        } else {
+                            self.enter_search_mode();
+                        }
+                        break;
+                    // case 65: // 'a'
+                    //     self.toggle_ctype('alibrary.artist');
+                    //     break;
+                    // case 82: // 'r'
+                    //     self.toggle_ctype('alibrary.release');
+                    //     break;
+                    // case 84: // 't'
+                    //     self.toggle_ctype('alibrary.media');
+                    //     break;
+                }
+
+
+            }
+        });
+
+
     };
+
+    this.enter_search_mode = function() {
+        if (self.debug) {
+            console.log('enter search mode');
+        }
+        self.search_mode = true;
+        self.input_container.val('');
+        self.results_container.html('');
+        $('body').addClass('global-search');
+        self.input_container.focus();
+    };
+
+    this.exit_search_mode = function() {
+        if (self.debug) {
+            console.log('exit search mode');
+        }
+        self.search_mode = false;
+        self.input_container.val('');
+        self.results_container.html('');
+        $('body').removeClass('global-search');
+    };
+
+
+
 
     this.set_query = function (q) {
         self.input_container.val(q);
-        History.replaceState({q: q}, null, '?q=' + q);
+        //History.replaceState({q: q}, null, '?q=' + q);
         self.q = q;
+    };
+
+    this.toggle_ctype = function (ct) {
+
+        if (ct == 'all') {
+            if (self.selected_ctypes.length > 0) {
+                self.selected_ctypes = [];
+                self.set_ctypes();
+                $(this).addClass('selected');
+                self.load();
+            }
+            return;
+        }
+
+        var idx = $.inArray(ct, self.selected_ctypes);
+        if (idx == -1) {
+            self.selected_ctypes.push(ct);
+        } else {
+            self.selected_ctypes.splice(idx, 1);
+        }
+
+        self.set_ctypes();
+        self.load();
+
     };
 
     this.set_ctypes = function () {
@@ -114,7 +188,7 @@ var SearchApp = function () {
             return;
         }
 
-        if(self.current_request) {
+        if (self.current_request) {
             self.current_request.abort();
         }
 
@@ -140,7 +214,7 @@ var SearchApp = function () {
             $.each(data.objects, (function (i, object) {
                 var d = {
                     object: object,
-                    q: q
+                    q: self.q
                 };
                 results_html += nj.render('search/nj/result.default.html', d);
             }));
@@ -156,15 +230,15 @@ var SearchApp = function () {
 
     this.load_next = function () {
 
-        if(!self.next_url) {
+        if (!self.next_url) {
             return;
         }
 
-        if(self.current_request) {
+        if (self.current_request) {
             self.current_request.abort();
         }
 
-        self.results_container.append(self.loading_template)
+        self.results_container.append(self.loading_template);
 
         self.current_request = $.get(self.next_url, function (data) {
             var results_html = '';
@@ -187,14 +261,14 @@ var SearchApp = function () {
 
     };
 
-    this.highlight = function() {
+    this.highlight = function () {
 
         self.results_container.removeHighlight();
         if (!self.q) {
             return;
         }
 
-        $.each(self.q.split(' '), function(i, el){
+        $.each(self.q.split(' '), function (i, el) {
 
             console.debug(el);
 
@@ -241,7 +315,7 @@ var delay = (function () {
 
 var element_in_scroll = function (el) {
 
-    if(!el.length) {
+    if (!el.length) {
         return false;
     }
 

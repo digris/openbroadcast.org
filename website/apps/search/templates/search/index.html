@@ -12,10 +12,10 @@
     {% addtoblock "js-post" %}
         <script>
             var search_app;
-            $(function() {
-              search_app = new SearchApp();
-              search_app.debug = true;
-              search_app.init();
+            $(function () {
+                search_app = new SearchApp();
+                search_app.debug = true;
+                search_app.init();
             });
         </script>
     {% endaddtoblock %}
@@ -31,25 +31,30 @@
 {% block inner %}
     <h1>Global Search (Prototype View)</h1>
 
-    <div>
+    <div id="global_search">
 
-        <form action="/api/v1/search/" id="search_form">
-            <input type="text" name="q" id="search_input">
-            <input type="hidden" name="format" value="json">
-        </form>
+        <div class="search-container">
+            <div>
+                <form action="/api/v1/search/" id="search_form">
+                    <input type="text" name="q" id="search_input">
+                    <input type="hidden" name="format" value="json">
+                </form>
+            </div>
 
-    </div>
+            <div id="search_scope">
 
-    <div id="search_scope">
+                <span><a class="selected btn" data-ct="all" href="#">Everything</a></span>
+                <span><a class="btn" data-ct="alibrary.artist" href="#">Artists</a></span>
+                <span><a class="btn" data-ct="alibrary.release" href="#">Releases</a></span>
+                <span><a class="btn" data-ct="alibrary.media" href="#">Tracks</a></span>
 
-            <span><a class="selected btn" data-ct="all" href="#">Everything</a></span>
-            <span><a class="btn" data-ct="alibrary.artist" href="#">Artists</a></span>
-            <span><a class="btn" data-ct="alibrary.release" href="#">Releases</a></span>
-            <span><a class="btn" data-ct="alibrary.media"href="#">Tracks</a></span>
+            </div>
 
-    </div>
+            <div id="search_results" class="search-results">
 
-    <div id="search_results" class="search-results">
+            </div>
+
+        </div>
 
     </div>
 

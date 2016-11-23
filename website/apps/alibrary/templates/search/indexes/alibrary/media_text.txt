@@ -1,6 +1,15 @@
 {{ object.name }}
+
 {% if object.release %}{{ object.release.name }}{% endif %}
+
 {{ object.get_artist_display }}
+
 {% for tag in object.tags %}
 {{ tag }},
 {% endfor %}
+
+{% if object.release %}
+{% for tag in object.release.tags %}
+{{ tag }},
+{% endfor %}
+{% endif %}
