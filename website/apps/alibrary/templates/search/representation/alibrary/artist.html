@@ -6,9 +6,17 @@
     </p>
 {% endif %}
 
-{% if object.get_aliases %}
+{% if object.aliases.exists %}
     <p class="aliases">
-        a.k.a. {{ object.get_aliases }}
+        a.k.a. {{ object.get_aliases|join:', ' }}
+    </p>
+{% endif %}
+
+{% if object.get_membership %}
+    <p class="membership">
+
+        Member of: {% for membership in object.get_membership %}<em>{{ membership }}</em>{% if not forloop.last %}, {% endif %}{% endfor %}
+
     </p>
 {% endif %}
 

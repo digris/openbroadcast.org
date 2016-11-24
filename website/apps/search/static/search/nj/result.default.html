@@ -1,4 +1,11 @@
-<div class="item hoverable linkable">
+<div class="item hoverable linkable"
+    data-uuid="{{ object.uuid }}"
+    data-id="{{ object.id }}"
+    data-ct="{{ object.ct }}"
+    data-resource_uri="{{ object.resource_uri }}"
+    data-detail_uri="{{ object.detail_uri }}"
+    data-edit_uri="{{ object.edit_uri }}"
+    >
     <div class="row-fluid">
 
         <div class="span2">
@@ -16,32 +23,13 @@
                 <p></p>
             </div>
 
-
             <div class="representation">
                 {{ object.representation }}
             </div>
 
-
-            <!--<div class="meta">
-                <dl>
-
-                    {% for meta in object.meta %}
-                        <dt class="meta-{{ meta.key }}">
-                            {{ meta.label }}:
-                        </dt>
-                        <dd>
-                            {{ meta.value }}
-                        </dd>
-                    {% endfor %}
-
-                </dl>
-
-            </div>-->
-
             <div class="description">
                 {% if object.description %}{{ object.description }}{% endif %}
             </div>
-
 
             <div class="tags">
                 {% for tag in object.tags %}
@@ -53,5 +41,3 @@
     </div>
 
 </div>
-
-

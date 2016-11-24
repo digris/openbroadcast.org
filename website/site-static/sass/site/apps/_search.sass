@@ -6,18 +6,24 @@ body.global-search
     display: none
   #global_search
     display: block
-    //background: rgba(25, 25, 25, 0.8)
-    //position: fixed
-    //top: 40px
-    //left: 0
-    //width: 100%
     min-height: 100%
-    //padding: 40px 0 40px
-    //overflow-y: scroll
     .search-container
       padding: 60px 0 40px
-      //max-width: 720px
-      //margin: 0 auto
+
+  // sidebar / meta
+  #search_summary
+    margin: 83px 0 0 0
+    border-top: 1px solid #ddd
+    padding-top: 10px
+
+
+    .keyboard-shortcuts
+      padding: 0 0
+
+    .result-meta-container
+      margin-top: 20px
+      padding-top: 4px
+      border-top: 1px solid #ddd
 
 
 
@@ -62,7 +68,8 @@ body.global-search
     background: white
     cursor: pointer
     position: relative
-    &.hover
+    &.hover,
+    &.selected
       background: $primary-color-a-bg-light
 
 
@@ -93,12 +100,52 @@ body.global-search
       position: absolute
       bottom: 4px
       right: 4px
+
+
       .tag
         padding: 2px 4px
         background: #333
         color: white
-
+        &:nth-child(n+6)
+          display: none
         .highlight
           background: #333
           color: $primary-color-b-bg-light
 
+
+
+// TODO: make global if used elsewhere
+ul.keyboard-shortcuts
+
+  li.separator
+    padding: 14px 3px 4px
+
+  li.shortcut
+    +clearfix
+    padding: 3px
+    .combo
+      +clearfix
+      float: left
+      width: 90px
+      span
+        display: block
+        float: left
+        padding: 1px 4px
+        &.key
+          background: white
+          border: 1px solid #ddd
+          border-bottom-color: #bbb
+          border-right-color: #bbb
+          min-width: 14px
+          text-align: center
+          //box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.1)
+          border-radius: 3px
+          font-family: "Monospace 821 BT", monospace
+
+
+    .help
+      float: left
+      span
+        text-transform: capitalize
+        display: block
+        padding: 1px 4px

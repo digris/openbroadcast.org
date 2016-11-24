@@ -1,0 +1,8 @@
+{{ object.city }}, <em>{{ object.country.iso2_code }}</em>
+
+{% if object.biography %}
+    <p class="description">
+        {{ object.biography|truncatechars_html:120 }}
+    </p>
+{% endif %}
+

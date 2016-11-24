@@ -13,7 +13,7 @@ from haystack.query import SearchQuerySet, EmptySearchQuerySet, SQ
 from easy_thumbnails.files import get_thumbnailer
 from django.apps import apps
 
-THUMBNAIL_OPT = dict(size=(240, 240), crop=True, upscale=True, bw=False, quality=80)
+THUMBNAIL_OPT = dict(size=(197, 197), crop=True, upscale=True)
 
 
 
@@ -31,16 +31,23 @@ class ResultObject(object):
 
         main_image = None
         if hasattr(obj, 'main_image') and obj.main_image:
-            main_image = get_thumbnailer(obj.main_image).get_thumbnail(THUMBNAIL_OPT)
+            try:
+                main_image = get_thumbnailer(obj.main_image).get_thumbnail(THUMBNAIL_OPT)
+            except:
+                pass
 
         data = {
             'uuid': obj.uuid,
+            'id': obj.id,
             'name': obj.name,
             'ct': 'lasdhj',
             'representation': self.representation,
             'tags': [t.name for t in obj.tags.all()],
             'detail_uri': obj.get_absolute_url(),
+            'edit_uri': obj.get_edit_url(),
             'image': main_image.url if main_image else None,
+            'text': result.text,
+            #'name_auto': result.name_auto,
         }
 
         meta = []
@@ -67,11 +74,14 @@ class ResultObject(object):
 class GlobalSearchResource(Resource):
 
     uuid = fields.CharField(attribute='uuid', null=True)
+    id = fields.IntegerField(attribute='id', null=True)
     name = fields.CharField(attribute='name', null=True)
     representation = fields.CharField(attribute='representation', null=True)
     text = fields.CharField(attribute='text', null=True)
+    #name_auto = fields.CharField(attribute='name_auto', null=True)
     image = fields.CharField(attribute='image', null=True)
     detail_uri = fields.CharField(attribute='detail_uri', null=True)
+    edit_uri = fields.CharField(attribute='edit_uri', null=True)
     tags = fields.ListField(attribute='tags', null=True)
     ct = fields.CharField(attribute='ct', null=True)
 
@@ -105,8 +115,13 @@ class GlobalSearchResource(Resource):
     def get_object_list(self, request, **kwargs):
 
         q = kwargs.get('query', '')
-        # sqs = SearchQuerySet().filter(content__contains=q)
-        sqs = SearchQuerySet().filter(SQ(content__contains=q) | SQ(name__contains=q))
+
+        #sqs = SearchQuerySet().filter(name__contains=q)
+        #sqs = SearchQuerySet().filter(name_auto=q)
+        sqs = SearchQuerySet().filter(SQ(content__fuzzy=q) | SQ(name=q))
+        #sqs = SearchQuerySet().filter(content=AutoQuery(q))
+        # sqs = SearchQuerySet().filter(SQ(content__fuzzy=q) | SQ(name__fuzzy=q))
+        # sqs = SearchQuerySet().filter(SQ(content__contains=q) | SQ(name__contains=q))
 
 
         search_models = []
@@ -138,7 +153,7 @@ class GlobalSearchResource(Resource):
         if not results:
             results = EmptySearchQuerySet()
 
-        paginator = Paginator(request.GET, results, resource_uri='/api/v1/search/', max_limit=20)
+        paginator = Paginator(request.GET, results, resource_uri='/api/v1/search/', max_limit=10)
 
         bundles = []
         for result in paginator.page()['objects']:

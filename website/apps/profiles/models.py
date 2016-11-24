@@ -131,6 +131,15 @@ class Profile(MigrationMixin):
             return self.user.get_full_name()
 
 
+    @property
+    def name(self):
+        return self.get_display_name()
+
+    @property
+    def main_image(self):
+        return self.image
+
+
     def get_display_name(self):
 
         if self.pseudonym:
