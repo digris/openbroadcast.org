@@ -121,7 +121,9 @@ class Massimport(BaseModel):
 
         for root, dirs, files in os.walk(self.directory):
             for file in files:
-                path = '{}'.format(os.path.join(root, file))
+
+                path = os.path.join(root.decode('utf-8'), file.decode('utf-8'))
+
                 rel_path = path.replace(self.directory, '')
 
                 if os.path.isfile(path):

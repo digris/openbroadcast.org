@@ -343,11 +343,13 @@ var SearchApp = function () {
                 // p - play
                 if(e.key == 'p') {
                     self.player.play_in_popup(item.resource_uri, '_', 0, 'replace', false, item.ct.split('.')[0]);
+                    $('.selected', self.results_container).effect( "transfer", { to: $( "#aplayer_inline" ) }, 300 );
                 }
 
                 // q - queue
                 if(e.key == 'q') {
                     self.player.play_in_popup(item.resource_uri, '_', 0, 'queue', false, item.ct.split('.')[0]);
+                    $('.selected', self.results_container).effect( "transfer", { to: $( "#aplayer_inline" ) }, 300 );
                 }
 
                 // a - add to playlist

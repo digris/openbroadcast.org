@@ -3,7 +3,10 @@ from __future__ import unicode_literals
 
 import os
 import sys
+
+import time
 import tqdm
+import djclick as click
 from optparse import make_option
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -14,193 +17,189 @@ from massimporter.models import Massimport, MassimportFile
 DEFAULT_LIMIT = 100
 MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
 
-class Massimporter(object):
 
-    def __init__(self, command, *args, **kwargs):
+"""
+massimporter cli
 
-        self.directory = kwargs.get('directory')
-        self.limit = kwargs.get('limit')
-        self.rescan = kwargs.get('rescan')
-        self.id = kwargs.get('id')
-        self.reset_files = kwargs.get('reset_files')
-        self.import_session = kwargs.get('import_session')
-        self.username = kwargs.get('username')
-        self.collection_name = kwargs.get('collection_name')
-        self.verbosity = int(kwargs.get('verbosity', 1))
+default usage:
 
-        if self.directory:
-            if not self.directory.startswith(MEDIA_ROOT):
-                print 'directory has to be inside MEDIA_ROOT: {}'.format(MEDIA_ROOT)
-                sys.exit(2)
+    ./manage.py massimporter_cli start /path/to/import
+    # returns the id
+    ./manage.py massimporter_cli enqueue <id>
 
 
-    def list(self):
-        """
-        returns a list with status information for all existing sessions
-        """
+"""
+
+
+
+@click.group()
+@click.option('--debug/--no-debug', default=False)
+def cli(debug):
+    pass
+    #click.echo(click.style('Debug mode is %s' % ('on' if debug else 'off'), bold=True))
+
+
+
+@cli.command()
+@click.argument('id', type=int, required=False)
+def status(id):
+
+    if not id:
 
         massimports = Massimport.objects.order_by('status').all()
 
-        print '--------------------------------------------------------------------'
-        print 'id\tstatus\tfiles\tuser\tdirectory\t'
-        print '--------------------------------------------------------------------'
+        tpl = '''{id}\t{status}\t{num_files}\t{username}\t{directory}'''
+
+        click.secho('--------------------------------------------------------------------', bold=True)
+        click.secho('ID\tstatus\tfiles\tuser\tdirectory\t', bold=True)
+        click.secho('--------------------------------------------------------------------', bold=True)
+
         for item in massimports:
-            print '{id}\t{status}\t{num_files}\t{username}\t{directory}'.format(
+            click.echo(tpl.format(
                 id=item.pk,
                 status=item.get_status_display(),
                 username=item.user,
                 num_files=item.files.count(),
                 directory=item.directory,
-            )
+            ))
+
+        click.echo('')
 
 
-    def scan(self):
+    else:
 
-        massimport = Massimport.objects.get(pk=int(self.id))
-        massimport.scan()
+        try:
+            massimport = Massimport.objects.get(pk=id)
+        except Massimport.DoesNotExist as e:
+            click.secho('Massimport session with id: {} does not exist.'.format(id), bold=True, fg='red')
+            return
 
-    def delete(self):
 
-        Massimport.objects.get(pk=int(self.id)).delete()
-
-    def update(self):
-
-        massimport = Massimport.objects.get(pk=int(self.id))
         massimport.update()
 
-    def status(self):
+        tpl = '''{}:    \t{}'''
 
-        massimport = Massimport.objects.get(pk=int(self.id))
-        massimport.update()
-
-        print '--------------------------------------------------------------------'
-        print 'Status'
-        print '--------------------------------------------------------------------'
+        click.secho('--------------------------------------------------------------------', bold=True)
+        click.secho('Status ({})\tcount'.format(id), bold=True)
+        click.secho('--------------------------------------------------------------------', bold=True)
 
         for status in MassimportFile.STATUS_CHOICES:
             count = massimport.files.filter(status=status[0]).count()
             if count:
-                print('{}:    \t{}'.format(
+                click.echo(tpl.format(
                     status[1],
                     count
                 ))
 
-        print '===================================================================='
-        print('Total:    \t{}'.format(massimport.files.all().count()))
+        click.secho('--------------------------------------------------------------------', bold=True)
+        click.secho(('Total:    \t{}'.format(massimport.files.all().count())), bold=True)
+        click.echo('')
 
 
 
-    def start(self):
+@cli.command()
+@click.argument('id', type=int)
+def delete(id):
 
-        if not self.directory or not os.path.isdir(self.directory):
-            print 'directory missing or does not exist'
-            sys.exit(2)
+    try:
+        massimport = Massimport.objects.get(pk=id)
+    except Massimport.DoesNotExist as e:
+        click.secho('Massimport session with id: {} does not exist.'.format(id), bold=True, fg='red')
+        return
 
-        if not self.directory.endswith('/'):
-            self.directory += '/'
+    if click.confirm('Do you want to delete session id: {} ?'.format(id), default='Y'):
+        massimport.delete()
 
-        if Massimport.objects.filter(directory=self.directory).exists():
-            print 'Massimport (ID: {}) already exists for: {}'.format(
-                Massimport.objects.get(directory=self.directory).pk,
-                self.directory
-            )
-            sys.exit(2)
 
-        if not self.username or not User.objects.filter(username=self.username).exists():
-            print 'username missing or user does not exist'
-            sys.exit(2)
 
-        massimport = Massimport(
-            directory=self.directory,
-            user=User.objects.get(username=self.username),
-            collection_name=self.collection_name
-        )
+@cli.command()
+@click.argument('id', type=int)
+def scan(id):
 
-        massimport.save()
+    try:
+        massimport = Massimport.objects.get(pk=id)
+    except Massimport.DoesNotExist as e:
+        click.secho('Massimport session with id: {} does not exist.'.format(id), bold=True, fg='red')
+        return
+
+    massimport.scan()
+
+
+@cli.command()
+@click.argument('id', type=int)
+def update(id):
+
+    try:
+        massimport = Massimport.objects.get(pk=id)
+    except Massimport.DoesNotExist as e:
+        click.secho('Massimport session with id: {} does not exist.'.format(id), bold=True, fg='red')
+        return
+
+    massimport.update()
+
+
+@cli.command()
+@click.argument('id', type=int)
+@click.option('--limit', '-l', type=click.IntRange(1, 50000, clamp=True), default=100)
+def enqueue(id, limit):
+
+    try:
+        massimport = Massimport.objects.get(pk=id)
+    except Massimport.DoesNotExist as e:
+        click.secho('Massimport session with id: {} does not exist.'.format(id), bold=True, fg='red')
+        return
+
+    qs = massimport.files.filter(status=0)
+    click.secho('Files total: {} - limit: {}'.format(qs.count(), limit), bold=True)
+    for item in massimport.files.filter(status=0)[0:limit]:
+        item.enqueue()
+
+
+
+@cli.command()
+@click.option('--path', '-p', type=click.Path(), required=True)
+@click.option('--username', '-u', type=unicode, required=True)
+@click.option('--collection', '-c', type=unicode)
+@click.option('--limit', '-l', type=click.IntRange(1, 50000, clamp=True), default=100)
+def start(path, limit, username, collection):
+
+    click.secho('--------------------------------------------------------------------', bold=True)
+    click.echo('Username:\t {}'.format(username))
+    click.echo('Collection:\t {}'.format(collection))
+    click.echo('Limit:\t\t {}'.format(limit))
+    click.echo('Path:\t\t {}'.format(path))
+    click.secho('--------------------------------------------------------------------', bold=True)
+    click.echo('')
+
+    if not os.path.isdir(path):
+        click.secho('Directory does not exist: {}'.format(path), bold=True, fg='red')
+        return
+
+    if not path.endswith('/'):
+        path += '/'
+
+    if not User.objects.filter(username=username).exists():
+        click.secho('User does not exist: {}'.format(username), bold=True, fg='red')
+        return
+
+    # if Massimport.objects.filter(directory=path).exists():
+    #     click.secho('Import session already exists: {}'.format(path), bold=True, fg='red')
+    #     return
+
+
+    massimport = Massimport(
+        directory=path,
+        user=User.objects.get(username=username),
+        collection_name=collection
+    )
+
+    massimport.save()
+
+    if click.confirm('Continue with scanning directories?', default='Y'):
         massimport.scan()
 
-    def enqueue(self):
+    if click.confirm('Continue with enqueuing files?'):
 
-        massimport = Massimport.objects.get(pk=int(self.id))
-
-        print 'queing {} files'.format(self.limit)
-
-        for item in massimport.files.filter(status=0)[0:self.limit]:
+        for item in massimport.files.filter(status=0)[0:limit]:
             item.enqueue()
 
-
-
-
-class Command(BaseCommand):
-
-    def add_arguments(self, parser):
-
-        parser.add_argument('action')
-
-        parser.add_argument('-d', '--directory',
-                            dest='directory',
-                            default=False,
-                            help='Delete poll instead of closing it')
-
-        parser.add_argument('-u', '--username',
-                            dest='username',
-                            default=False,
-                            help='Delete poll instead of closing it')
-
-        parser.add_argument('-i', '--id',
-                            dest='id',
-                            default=False,
-                            help='Delete poll instead of closing it')
-
-        parser.add_argument('-l', '--limit',
-                            dest='limit',
-                            default=DEFAULT_LIMIT,
-                            help='Delete poll instead of closing it')
-
-        parser.add_argument('-c', '--collection',
-                            dest='collection_name',
-                            help='Delete poll instead of closing it')
-
-    def handle(self, *args, **options):
-
-        action = options.get('action', None)
-
-        worker = Massimporter(command=self, **options)
-        command = getattr(worker, action)
-        if command:
-            command()
-
-
-# class Command(NoArgsCommand):
-#
-#     option_list = BaseCommand.option_list + (
-#         make_option('--directory',
-#             action='store',
-#             dest='directory',
-#             help='Apsolute path to directory for import'),
-#         make_option('--rescan',
-#             action='store_true',
-#             dest='rescan',
-#             default=False,
-#             help='Rescan directory (in case it exists)'),
-#         make_option('--reset',
-#             action='store_true',
-#             dest='reset_files',
-#             default=False,
-#             help='Reset files when scnanning directory'),
-#         make_option('--username',
-#             action='store',
-#             dest='username',
-#             default='root',
-#             help='Assign to username'),
-#         make_option('--import_session',
-#             action='store',
-#             dest='import_session',
-#             default=None,
-#             help='Name for import-session to use'),
-#         )
-#
-#     def handle_noargs(self, **options):
-#
-#         runner = Massimporter(**options)
-#         runner.process()

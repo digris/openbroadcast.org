@@ -118,10 +118,10 @@ class GlobalSearchResource(Resource):
 
         #sqs = SearchQuerySet().filter(name__contains=q)
         #sqs = SearchQuerySet().filter(name_auto=q)
-        sqs = SearchQuerySet().filter(SQ(content__fuzzy=q) | SQ(name=q))
+        sqs = SearchQuerySet().filter(SQ(content__contains=q) | SQ(name=q))
         #sqs = SearchQuerySet().filter(content=AutoQuery(q))
-        # sqs = SearchQuerySet().filter(SQ(content__fuzzy=q) | SQ(name__fuzzy=q))
-        # sqs = SearchQuerySet().filter(SQ(content__contains=q) | SQ(name__contains=q))
+        #sqs = SearchQuerySet().filter(SQ(content__fuzzy=q) | SQ(name__fuzzy=q))
+        #sqs = SearchQuerySet().filter(SQ(content__contains=q) | SQ(name__contains=q))
 
 
         search_models = []
