@@ -625,6 +625,7 @@ class Media(MigrationMixin):
             return None
 
         log.debug('update echoprint: %s' % path)
+        #log.debug('codegen binary: %s' % ECHOPRINT_CODEGEN_BINARY)
 
         p = subprocess.Popen([
             ECHOPRINT_CODEGEN_BINARY, path,
@@ -660,25 +661,25 @@ class Media(MigrationMixin):
             return
 
         if code:
-            
+
             try:
 
-                fp.delete("%s" % obj.id)
-                code_pre = code
+                fp.delete(b"%s" % obj.id)
                 id = obj.updated.isoformat()
                 code = fp.decode_code_string(code)
-                
+
                 nfp = {
-                        "track_id": "%s" % obj.id,
-                        "fp": code,
+                        b"track_id": "%s" % obj.id,
+                        b"fp": code,
                         #"artist": "%s" % obj.artist.id,
                         #"release": "%s" % obj.artist.id,
-                        "track": "%s" % obj.uuid,
-                        "length": duration,
-                        "codever": "%s" % version,
-                        "source": "%s" % "NRGFP",
-                        "import_date": "%sZ" % id
+                        b"track": "%s" % obj.uuid,
+                        b"length": duration,
+                        b"codever": "%s" % version,
+                        b"source": "%s" % "NRGFP",
+                        b"import_date": "%sZ" % id
                         }
+
 
                 # ingest fingerprint into database
                 fp.ingest(nfp, split=False, do_commit=True)
@@ -698,8 +699,8 @@ class Media(MigrationMixin):
                 #print res.match()
                 #print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 
-            except Exception, e:
-                print e
+            except Exception as e:
+                log.warning('unable to ingest fingerprint')
                 status = 2
 
         obj.echoprint_status = status
@@ -874,27 +875,11 @@ def media_pre_delete(sender, **kwargs):
 
     # try to delete fingerprint
     try:
-        #log.info('delete fingerprint on server id: %s' % obj.id)
-        fp.delete("%s" % obj.id)
+        fp.delete(b"%s" % obj.id)
     except Exception as e:
         log.warning('unable to delete fingerprint for media_id: %s - %s' % (obj.id, e))
 
 pre_delete.connect(media_pre_delete, sender=Media)
-
-# from actstream import action
-# @disable_for_loaddata
-# def action_handler(sender, instance, created, **kwargs):
-#
-#     if instance.get_last_editor() and instance.status == 1:
-#         log.debug('last editor seems to be: %s' % instance.get_last_editor())
-#         try:
-#             action.send(instance.get_last_editor(), verb='updated', target=instance)
-#         except Exception, e:
-#             print 'error calling action_handler: %s' % e
-#
-# post_save.connect(action_handler, sender=Media)
-
-
 
 
 

@@ -1,29 +1,21 @@
 #-*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 import os
-import sys
-
-import time
-import tqdm
 import djclick as click
-from optparse import make_option
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.core.management.base import BaseCommand, NoArgsCommand
 
 from massimporter.models import Massimport, MassimportFile
 
 DEFAULT_LIMIT = 100
 MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
 
-
 """
 massimporter cli
 
 default usage:
 
-    ./manage.py massimporter_cli start /path/to/import
+    ./manage.py massimporter_cli start -p /path/to/import -u <username> -c <colection name>
     # returns the id
     ./manage.py massimporter_cli enqueue <id>
 
@@ -31,19 +23,17 @@ default usage:
 """
 
 
-
 @click.group()
-@click.option('--debug/--no-debug', default=False)
-def cli(debug):
+def cli():
+    """Massimporter CLI"""
     pass
-    #click.echo(click.style('Debug mode is %s' % ('on' if debug else 'off'), bold=True))
 
 
 
 @cli.command()
 @click.argument('id', type=int, required=False)
 def status(id):
-
+    """Show (current) import session(s) info"""
     if not id:
 
         massimports = Massimport.objects.order_by('status').all()
@@ -100,7 +90,7 @@ def status(id):
 @cli.command()
 @click.argument('id', type=int)
 def delete(id):
-
+    """Delete session"""
     try:
         massimport = Massimport.objects.get(pk=id)
     except Massimport.DoesNotExist as e:
@@ -115,7 +105,7 @@ def delete(id):
 @cli.command()
 @click.argument('id', type=int)
 def scan(id):
-
+    """(Re-)scan directory"""
     try:
         massimport = Massimport.objects.get(pk=id)
     except Massimport.DoesNotExist as e:
@@ -128,7 +118,7 @@ def scan(id):
 @cli.command()
 @click.argument('id', type=int)
 def update(id):
-
+    """Update/poll status"""
     try:
         massimport = Massimport.objects.get(pk=id)
     except Massimport.DoesNotExist as e:
@@ -142,7 +132,7 @@ def update(id):
 @click.argument('id', type=int)
 @click.option('--limit', '-l', type=click.IntRange(1, 50000, clamp=True), default=100)
 def enqueue(id, limit):
-
+    """Send files to import queue"""
     try:
         massimport = Massimport.objects.get(pk=id)
     except Massimport.DoesNotExist as e:
@@ -162,6 +152,7 @@ def enqueue(id, limit):
 @click.option('--collection', '-c', type=unicode)
 @click.option('--limit', '-l', type=click.IntRange(1, 50000, clamp=True), default=100)
 def start(path, limit, username, collection):
+    """Start an import session"""
 
     click.secho('--------------------------------------------------------------------', bold=True)
     click.echo('Username:\t {}'.format(username))
@@ -182,9 +173,9 @@ def start(path, limit, username, collection):
         click.secho('User does not exist: {}'.format(username), bold=True, fg='red')
         return
 
-    # if Massimport.objects.filter(directory=path).exists():
-    #     click.secho('Import session already exists: {}'.format(path), bold=True, fg='red')
-    #     return
+    if Massimport.objects.filter(directory=path).exists():
+        click.secho('Import session already exists: {}'.format(path), bold=True, fg='red')
+        return
 
 
     massimport = Massimport(

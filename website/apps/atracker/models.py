@@ -1,4 +1,5 @@
 """Models for the ``object_events`` app."""
+import logging
 from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -7,6 +8,8 @@ from django.template.defaultfilters import date
 from django.utils.timesince import timesince
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+
+log = logging.getLogger(__name__)
 
 
 class EventType(models.Model):
@@ -161,13 +164,10 @@ class Event(models.Model):
     
 def actstream_link(sender, instance, created, **kwargs):
     from actstream import action
-
-    print 'post save - actstream_link'
-
     try:
         if instance.user:
             action.send(instance.user, verb=instance.event_type.title, target=instance.content_object)
     except Exception as e:
-        pass
+        log.info('unable to send action to stream')
 
 post_save.connect(actstream_link, sender=Event)
