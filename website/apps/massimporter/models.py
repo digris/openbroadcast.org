@@ -123,13 +123,15 @@ class Massimport(BaseModel):
 
             for file in files:
 
-                path = os.path.join(root.decode('utf-8'), file.decode('utf-8'))
+                try:
 
-                rel_path = path.replace(self.directory, '')
+                    path = os.path.join(root.decode('utf-8'), file.decode('utf-8'))
 
-                if os.path.isfile(path):
+                    rel_path = path.replace(self.directory, '')
 
-                    try:
+                    if os.path.isfile(path):
+
+
 
                         filename, ext = os.path.splitext(path)
                         if ext in ALLOWED_EXTENSIONS:
@@ -139,17 +141,20 @@ class Massimport(BaseModel):
 
                             stats['added'] += 1
 
-                    except Exception as e:
-                        print('{}'.format(e))
-                        stats['missing'] += 1
+
+
+                        else:
+                            print(' - {}'.format(rel_path))
+                            stats['ignored'] += 1
 
                     else:
-                        print(' - {}'.format(rel_path))
-                        stats['ignored'] += 1
+                        print(' ! {}'.format(rel_path))
+                        stats['missing'] += 1
 
-                else:
-                    print(' ! {}'.format(rel_path))
+                except Exception as e:
+                    print('{}'.format(e))
                     stats['missing'] += 1
+
 
         print('----------------------------------------------------------')
         print('ID: {}'.format(self.pk))
