@@ -152,7 +152,10 @@ class Massimport(BaseModel):
                         stats['missing'] += 1
 
                 except Exception as e:
+                    print '*********************'
                     print('{}'.format(e))
+                    print root.encode('ascii', 'ignore')
+                    print file.encode('ascii', 'ignore')
                     stats['missing'] += 1
 
 
