@@ -120,6 +120,7 @@ class Massimport(BaseModel):
         print('scanning {}'.format(self.directory))
 
         for root, dirs, files in os.walk(self.directory):
+
             for file in files:
 
                 path = os.path.join(root.decode('utf-8'), file.decode('utf-8'))
@@ -127,33 +128,20 @@ class Massimport(BaseModel):
                 rel_path = path.replace(self.directory, '')
 
                 if os.path.isfile(path):
-                    filename, ext = os.path.splitext(path)
 
-                    if ext in ALLOWED_EXTENSIONS:
-                        print(' + {}'.format(rel_path))
-                        #
-                        #
-                        # aps_path = os.path.join(self.directory, rel_path)
-                        #
-                        # cache_path = os.path.join(self.abs_cache_directory, rel_path)
-                        # cache_dir = os.path.dirname(cache_path)
-                        #
-                        # try:
-                        #     if not os.path.isdir(cache_dir):
-                        #         os.makedirs(cache_dir)
-                        # except OSError, e:
-                        #     print e
-                        #     pass  # file exists
-                        # # else:
-                        #
-                        # shutil.copyfile(aps_path, cache_path)
+                    try:
 
+                        filename, ext = os.path.splitext(path)
+                        if ext in ALLOWED_EXTENSIONS:
+                            MassimportFile.objects.get_or_create(
+                                path=rel_path, massimport=self
+                            )
 
-                        MassimportFile.objects.get_or_create(
-                            path=rel_path, massimport=self
-                        )
+                            stats['added'] += 1
 
-                        stats['added'] += 1
+                    except Exception as e:
+                        print('{}'.format(e))
+                        stats['missing'] += 1
 
                     else:
                         print(' - {}'.format(rel_path))
