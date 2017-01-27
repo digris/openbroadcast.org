@@ -32,7 +32,9 @@ def cli():
 
 @cli.command()
 @click.argument('id', type=int, required=False)
-def status(id):
+@click.option('--details', '-d', type=unicode, required=False)
+def status(id, details):
+
     """Show (current) import session(s) info"""
     if not id:
 
@@ -67,23 +69,49 @@ def status(id):
 
         massimport.update()
 
-        tpl = '''{}:    \t{}'''
+        if not details:
 
-        click.secho('--------------------------------------------------------------------', bold=True)
-        click.secho('Status ({})\tcount'.format(id), bold=True)
-        click.secho('--------------------------------------------------------------------', bold=True)
 
-        for status in MassimportFile.STATUS_CHOICES:
-            count = massimport.files.filter(status=status[0]).count()
-            if count:
-                click.echo(tpl.format(
-                    status[1],
-                    count
-                ))
+            tpl = '''{}:    \t{}'''
 
-        click.secho('--------------------------------------------------------------------', bold=True)
-        click.secho(('Total:    \t{}'.format(massimport.files.all().count())), bold=True)
-        click.echo('')
+            click.secho('--------------------------------------------------------------------', bold=True)
+            click.secho('Status ({})\tcount'.format(id), bold=True)
+            click.secho('--------------------------------------------------------------------', bold=True)
+
+            for status in MassimportFile.STATUS_CHOICES:
+                count = massimport.files.filter(status=status[0]).count()
+                if count:
+                    click.echo(tpl.format(
+                        status[1],
+                        count
+                    ))
+
+            click.secho('--------------------------------------------------------------------', bold=True)
+            click.secho(('Total:    \t{}'.format(massimport.files.all().count())), bold=True)
+            click.echo('')
+
+            return
+
+        if details:
+
+            from importer.models import ImportFile
+
+            status_id = getattr(ImportFile, 'STATUS_{}'.format(details.upper()), 0)
+            qs = massimport.files.filter(status=status_id)
+
+
+            tpl = '''{}:    \t{}'''
+
+            click.secho('--------------------------------------------------------------------', bold=True)
+            click.secho('{} ({})\tcount'.format(details, id), bold=True)
+            click.secho('--------------------------------------------------------------------', bold=True)
+
+            for item in qs:
+                click.echo(tpl.format(item, item.import_file.media))
+
+            click.secho('--------------------------------------------------------------------', bold=True)
+            click.secho(('Total:    \t{}'.format(qs.count())), bold=True)
+            click.echo('')
 
 
 

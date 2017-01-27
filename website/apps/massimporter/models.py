@@ -131,8 +131,6 @@ class Massimport(BaseModel):
 
                     if os.path.isfile(path):
 
-
-
                         filename, ext = os.path.splitext(path)
                         if ext in ALLOWED_EXTENSIONS:
                             MassimportFile.objects.get_or_create(
@@ -140,8 +138,6 @@ class Massimport(BaseModel):
                             )
 
                             stats['added'] += 1
-
-
 
                         else:
                             print(' - {}'.format(rel_path))
@@ -152,10 +148,9 @@ class Massimport(BaseModel):
                         stats['missing'] += 1
 
                 except Exception as e:
-                    print '*********************'
                     print('{}'.format(e))
-                    print root.encode('ascii', 'ignore')
-                    print file.encode('ascii', 'ignore')
+                    print(root.decode('ascii', 'ignore'))
+                    print(file.decode('ascii', 'ignore'))
                     stats['missing'] += 1
 
 
@@ -194,7 +189,7 @@ class MassimportFile(BaseModel):
 
     STATUS_CHOICES = ImportFile.STATUS_CHOICES
 
-    status = models.PositiveIntegerField(default=ImportFile.STATUS_INIT, choices=STATUS_CHOICES)
+    status = models.PositiveIntegerField(default=ImportFile.STATUS_INIT, choices=STATUS_CHOICES, db_index=True)
     massimport = models.ForeignKey(Massimport, related_name='files')
     import_file = models.ForeignKey(ImportFile, null=True)
     path = models.CharField(max_length=1024)
