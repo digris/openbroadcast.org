@@ -169,7 +169,9 @@ class Label(MigrationMixin):
 
         parent = self.parent
         last_parent = None
-        while parent:
+        i = 0
+        while parent and i < 10:
+            i += 1
             parent = parent.parent
             if parent:
                 last_parent = parent
