@@ -26,20 +26,19 @@ PlaylistEditor = function () {
     // holding the playlist
     this.current_playlist;
     // local cache of items
-    this.current_items = new Array;
+    this.current_items = [];
     // holding the objects
-    this.editor_items = new Array;
+    this.editor_items = [];
 
-    this.current_waveforms = new Array;
-    this.uuid_map = new Array();
-    this.position_map = new Array();
+    this.current_waveforms = [];
+    this.uuid_map = [];
+    this.position_map = [];
 
-    this.input_blur = new Array;
+    this.input_blur = [];
 
     this.init = function () {
 
-        debug.debug('PlaylistEditor: init');
-        debug.debug(self.api_url);
+        console.debug('PlaylistEditor: init', self.api_url);
 
         self.dom_element = $('#' + this.dom_id);
 
@@ -51,7 +50,7 @@ PlaylistEditor = function () {
             pushy.subscribe(self.api_url, self.update);
         } catch (e) {
 
-            debug.debug('error', e);
+            console.debug('error', e);
 
             if (self.interval_duration) {
                 self.set_interval(self.run_interval, self.interval_duration);
@@ -106,7 +105,7 @@ PlaylistEditor = function () {
             // check if dropped from outside
             if (dom_item.hasClass('sidebar list item source')) {
 
-                debug.debug('dropped from outside');
+                console.debug('dropped from outside');
 
                 var post_data = {};
 
@@ -118,7 +117,7 @@ PlaylistEditor = function () {
                     contentType: "application/json",
                     //processData:  false,
                     success: function (data) {
-                        debug.debug(data);
+                        console.debug(data);
                         try {
                             post_data = {
                                 ids: [data.item.object_id].join(','),
@@ -131,7 +130,6 @@ PlaylistEditor = function () {
                                 ct: 'jingle'
                             }
                         }
-                        ;
                     },
                     async: false
                 });
@@ -152,10 +150,10 @@ PlaylistEditor = function () {
 
                         var item = data.items.pop();
 
-                        debug.debug('created item:', item);
+                        console.debug('created item:', item);
 
                         //data = data;
-                        var temp_html = '<div class="temporary item editable" id="playlist_item_' + item.id + '" data-uuid="' + item.uuid + '"><i class="icon-spinner icon-spin icon-2x"></i></div>'
+                        var temp_html = '<div class="temporary item editable" id="playlist_item_' + item.id + '" data-uuid="' + item.uuid + '"><i class="icon-spinner icon-spin icon-2x"></i></div>';
                         dom_item.replaceWith(temp_html);
 
                     },
@@ -171,11 +169,11 @@ PlaylistEditor = function () {
 
 
             if (ui.sender && ui.sender[0].id == 'jingle_list') {
-                debug.debug('jingle dropped!!');
+                console.debug('jingle dropped!!');
             }
 
             if (ui.sender && ui.sender[0].id == 'inline_playlist_holder') {
-                debug.debug('jingle dropped!!');
+                console.debug('jingle dropped!!');
             }
 
             self.reorder();
@@ -188,9 +186,9 @@ PlaylistEditor = function () {
 
                 var container = $(this).parents('.item');
                 var uuid = container.data('uuid');
-                debug.debug(uuid + ' - blur');
+                console.debug(uuid + ' - blur');
                 self.input_blur[uuid] = setTimeout(function () {
-                    debug.debug('blur - timeout -> post')
+                    console.debug('blur - timeout -> post');
                     container.trigger('blur_batch')
                 }, 100)
 
@@ -199,13 +197,13 @@ PlaylistEditor = function () {
 
                 var container = $(this).parents('.item');
                 var uuid = container.data('uuid');
-                debug.debug(uuid + ' - focus');
+                console.debug(uuid + ' - focus');
 
                 // clearTimeout(self.input_blur[uuid]);
 
-            })
+            });
         $('.item.editable', self.dom_element).live('blur_batch', function (e) {
-            debug.debug('blur_batch triggered!');
+            console.debug('blur_batch triggered!');
 
             self.update_by_uuid($(this).data('uuid'));
         });
@@ -257,7 +255,7 @@ PlaylistEditor = function () {
                 return false;
             } else {
 
-                debug.debug(q);
+                console.debug(q);
 
 
 
@@ -293,9 +291,9 @@ PlaylistEditor = function () {
                         contentType: "application/json",
                         success: function (data) {
                             var item = data.items.pop();
-                            debug.debug('created item:', item);
+                            console.debug('created item:', item);
                             //data = data;
-                            var html = '<div class="temporary item editable" id="playlist_item_' + item.id + '" data-uuid="' + item.uuid + '"><i class="icon-spinner icon-spin icon-2x"></i></div>'
+                            var html = '<div class="temporary item editable" id="playlist_item_' + item.id + '" data-uuid="' + item.uuid + '"><i class="icon-spinner icon-spin icon-2x"></i></div>';
                             $('#playlist_editor_list').append(html);
 
                             // reset
@@ -340,7 +338,7 @@ PlaylistEditor = function () {
         // numbering
         var reorder_url = self.current_playlist.resource_uri + 'reorder/';
 
-        var order = new Array;
+        var order = [];
 
         $('.item.editable').each(function (i, e) {
 
@@ -349,7 +347,7 @@ PlaylistEditor = function () {
 
         });
 
-        debug.debug('order:', order);
+        console.debug('order:', order);
 
         $.ajax({
             url: reorder_url,
@@ -384,7 +382,7 @@ PlaylistEditor = function () {
         var item = self.current_playlist.items[self.uuid_map[uuid]];
         var container = $('.' + uuid, this.dom_element);
 
-        debug.debug('container', container);
+        console.debug('container', container);
 
         // aquire data
         var fade_in = $('input.fade_in', container).val();
@@ -403,7 +401,7 @@ PlaylistEditor = function () {
         item.cue_in = cue_in;
         item.cue_out = cue_out;
 
-        debug.debug('pre-post');
+        console.debug('pre-post');
         $.ajax({
             url: item.resource_uri,
             type: 'PUT',
@@ -412,9 +410,9 @@ PlaylistEditor = function () {
             contentType: "application/json",
             processData: false,
             success: function (data) {
-                // debug.debug('data:', data);
+                // console.debug('data:', data);
                 if (refresh_item == true) {
-                    debug.debug(self.editor_items);
+                    console.debug(self.editor_items);
                     // TODO: not working
                     self.editor_items[item.id].update(item, self);
                 }
@@ -422,7 +420,7 @@ PlaylistEditor = function () {
             },
             async: false
         });
-        debug.debug('post-post');
+        console.debug('post-post');
 
         self.run_interval();
 
@@ -432,8 +430,8 @@ PlaylistEditor = function () {
         $.getJSON(self.api_url, function (data) {
             self.current_playlist = data;
 
-            for (i in data.items) {
-                item = data.items[i];
+            for (var i in data.items) {
+                var item = data.items[i];
                 self.uuid_map[item.uuid] = i;
                 self.position_map[item.position] = item.id;
             }
@@ -452,13 +450,12 @@ PlaylistEditor = function () {
         /*
         most information is displayed while page rendering. just override some states for duration
          */
-        debug.debug('update_editor_summary')
-        debug.debug(data)
+        console.debug('update_editor_transform', data);
 
         var container = $('.criterias-broadcast');
 
         var total_duration = 0;
-        for (i in self.current_items) {
+        for (var i in self.current_items) {
             if (isInt(i)) {
                 var item = self.current_items[i];
                 total_duration += item.item.content_object.duration;
@@ -478,10 +475,10 @@ PlaylistEditor = function () {
             target: self.current_playlist.target_duration * 1000,
             difference: self.current_playlist.target_duration * 1000 - total_duration,
             error: error
-        }
+        };
 
 
-        debug.debug('durations', durations)
+        console.debug('durations', durations);
 
 
         html = nj.render('alibrary/nj/playlist/_transform_duration.html', {
@@ -503,19 +500,15 @@ PlaylistEditor = function () {
 
     this.update_editor_playlist = function (data) {
 
-        // debug.debug(data)
+        // console.debug(data)
 
-        var status_map = new Array;
+        var status_map = [];
         status_map[0] = 'init';
         status_map[1] = 'done';
         status_map[2] = 'ready';
         status_map[3] = 'progress';
         status_map[4] = 'downloaded';
         status_map[99] = 'error';
-
-
-        //console.log('update_editor_playlist', data)
-
 
         for (var i in data.items) {
 
@@ -561,18 +554,18 @@ PlaylistEditor = function () {
     // play-flow functions
     this.play_next = function (current_id) {
 
-        //debug.debug('play next');
+        //console.debug('play next');
 
         // get ordered list
 
-        var order = new Array;
+        var order = [];
 
         $('.item.editable').each(function (i, e) {
             order.push($(e).data('id'));
         });
 
-        //debug.debug(self.position_map);
-        //debug.debug(self.editor_items);
+        //console.debug(self.position_map);
+        //console.debug(self.editor_items);
 
         var current_item_id = self.position_map.indexOf(current_id);
         var next_item_id = self.position_map[current_item_id + 1];
@@ -584,18 +577,18 @@ PlaylistEditor = function () {
     // play-flow functions
     this.load_next = function (current_id) {
 
-        // debug.debug('load next');
+        // console.debug('load next');
 
         // get ordered list
 
-        var order = new Array;
+        var order = [];
 
         $('.item.editable').each(function (i, e) {
             order.push($(e).data('id'));
         });
 
-        //debug.debug(self.position_map);
-        //debug.debug(self.editor_items);
+        //console.debug(self.position_map);
+        //console.debug(self.editor_items);
 
         var current_item_id = self.position_map.indexOf(current_id);
         var next_item_id = self.position_map[current_item_id + 1];
@@ -683,7 +676,7 @@ PlaylistEditorItem = function () {
         this.enable_crossfades = playlist_editor.enable_crossfades;
         this.enable_drag_n_drop = playlist_editor.enable_drag_n_drop;
 
-        //debug.debug('PlaylistEditorItem - init');
+        //console.debug('PlaylistEditorItem - init');
         self.api_url = self.item.resource_uri;
         self.ct = self.item.item.content_type;
         self.co = self.item.item.content_object;
@@ -751,8 +744,8 @@ PlaylistEditorItem = function () {
 
 
         $('.waveform', self.dom_element).live('click', function (e) {
-            debug.debug(e.offsetX);
-            debug.debug(self.px_to_abs(e.offsetX));
+            console.debug(e.offsetX);
+            console.debug(self.px_to_abs(e.offsetX));
 
             self.player.setPosition(self.px_to_abs(e.offsetX));
 
@@ -781,8 +774,8 @@ PlaylistEditorItem = function () {
                                     processData: false,
                                     success: function (data) {
                                         self.dom_element.remove();
-                                        delete self.playlist_editor.current_items[self.item.id]
-                                        delete self.playlist_editor.editor_items[self.item.id]
+                                        delete self.playlist_editor.current_items[self.item.id];
+                                        delete self.playlist_editor.editor_items[self.item.id];
                                         self.playlist_editor.reorder();
                                     },
                                     async: false
@@ -885,7 +878,7 @@ PlaylistEditorItem = function () {
     };
 
     this.update = function (item, playlist_editor) {
-        debug.debug('PlaylistEditorItem - update');
+        console.debug('PlaylistEditorItem - update');
 
 
         //console.log('update', item)
@@ -936,14 +929,14 @@ PlaylistEditorItem = function () {
     };
 
     this.trigger_hover = function (e) {
-        //debug.debug('el hover', e);
+        //console.debug('el hover', e);
         if (self.el_controls_cue) {
             self.el_controls_cue.attr({stroke: self.envelope_color});
         }
     };
 
     this.trigger_hout = function (e) {
-        //debug.debug('el hout', e);
+        //console.debug('el hout', e);
         if (self.el_controls_cue) {
             self.el_controls_cue.attr({stroke: "none"});
         }
@@ -1001,7 +994,7 @@ PlaylistEditorItem = function () {
 
                 }
             } else {
-                console.log('still no waveform image available. will try again in: ' + (self.waveform_retry + 1) * 10000)
+                console.log('still no waveform image available. will try again in: ' + (self.waveform_retry + 1) * 10000);
 
                 if(self.waveform_retry < 10) {
                     setTimeout(function(){
@@ -1062,7 +1055,7 @@ PlaylistEditorItem = function () {
                         this.r.path(cp[0]).attr(c_cue_attr),
                         this.r.path(cp[1]).attr(c_cue_attr)
                     ).mouseover(function (set) {
-                        debug.debug('set', set)
+                        console.debug('set', set);
                         this.animate({"fill-opacity": .55, fill: self.envelope_color}, 100);
                     }).mouseout(function () {
                         this.animate(c_cue_attr, 300);
@@ -1082,7 +1075,7 @@ PlaylistEditorItem = function () {
                     self.el_controls_fade[0].attr({x: X + self.abs_to_px(self.item.fade_in)});
 
                     // set self + update display
-                    this.transform('T' + X + ',0')
+                    this.transform('T' + X + ',0');
 
 
                     var offset = Math.floor(self.px_to_abs(X));
@@ -1107,7 +1100,7 @@ PlaylistEditorItem = function () {
                     self.el_controls_fade[1].attr({x: X - self.abs_to_px(self.item.fade_out)});
 
                     // set self + update display
-                    this.transform('T' + X + ',0')
+                    this.transform('T' + X + ',0');
 
                     var offset = Math.floor(self.co.duration - self.px_to_abs(X + c_cue_size));
 
@@ -1228,26 +1221,26 @@ PlaylistEditorItem = function () {
         this.update(dx - (this.dx || 0), dy - (this.dy || 0));
         this.dx = dx;
         this.dy = dy;
-    }
+    };
 
     this.controls_fade_onstart = function (x, y) {
-        debug.debug('controls_fade_onstart', x, y);
-    }
+        console.debug('controls_fade_onstart', x, y);
+    };
 
     this.controls_fade_onend = function (e) {
-        debug.debug('controls_fade_onend', e.offsetX);
+        console.debug('controls_fade_onend', e.offsetX);
         this.dx = this.dy = 0;
         var pos_new = e.offsetX;
         self.playlist_editor.update_by_uuid(self.item.uuid);
-    }
+    };
 
 
     this.controls_fade_dbclick = function (e) {
-        debug.debug('dbclick', this);
+        console.debug('dbclick', this);
         self.item.fade_in = prompt('fade-in', self.item.fade_in);
         $('.fade_in', self.dom_element).val(Math.floor(self.item.fade_in));
         self.playlist_editor.update_by_uuid(self.item.uuid, true);
-    }
+    };
 
 
     // cue handlers
@@ -1255,18 +1248,18 @@ PlaylistEditorItem = function () {
         this.update(dx - (this.dx || 0), dy - (this.dy || 0));
         this.dx = dx;
         this.dy = dy;
-    }
+    };
 
     this.controls_cue_onstart = function (x, y) {
-        debug.debug('controls_cue_onstart', x, y);
-    }
+        console.debug('controls_cue_onstart', x, y);
+    };
 
     this.controls_cue_onend = function (e) {
-        debug.debug('controls_cue_onend', e.offsetX);
+        console.debug('controls_cue_onend', e.offsetX);
         this.dx = this.dy = 0;
         var pos_new = e.offsetX;
         self.playlist_editor.update_by_uuid(self.item.uuid);
-    }
+    };
 
 
     // cross handlers
@@ -1274,22 +1267,22 @@ PlaylistEditorItem = function () {
         this.update(dx - (this.dx || 0), dy - (this.dy || 0));
         this.dx = dx;
         this.dy = dy;
-    }
+    };
 
     this.controls_cross_onstart = function (x, y) {
-        debug.debug('controls_fade_onstart', x, y);
-    }
+        console.debug('controls_fade_onstart', x, y);
+    };
 
     this.controls_cross_onend = function (e) {
-        debug.debug('controls_fade_onend', e.offsetX);
+        console.debug('controls_fade_onend', e.offsetX);
         self.playlist_editor.update_by_uuid(self.item.uuid);
-    }
+    };
 
 
     // validators
     this.validate_fade = function(pos_new) {
 
-        debug.debug(pos_new);
+        console.debug(pos_new);
 
         return false;
     };
@@ -1301,8 +1294,8 @@ PlaylistEditorItem = function () {
         var x0 = self.abs_to_px(self.item.cue_in);
         var x1 = self.abs_to_px(self.item.cue_in + self.item.fade_in);
 
-        var x2 = self.abs_to_px(self.co.duration - self.item.cue_out - self.item.fade_out)
-        var x3 = self.abs_to_px(self.co.duration - self.item.cue_out)
+        var x2 = self.abs_to_px(self.co.duration - self.item.cue_out - self.item.fade_out);
+        var x3 = self.abs_to_px(self.co.duration - self.item.cue_out);
 
         return [x0, x1, x2, x3]
 
@@ -1311,7 +1304,7 @@ PlaylistEditorItem = function () {
     this.get_path = function (x) {
 
 
-        var diff = x[1] - x[0]
+        var diff = x[1] - x[0];
 
         var p0 = ["M", x[0], this.size_y - 1];
         var p1 = ["T", x[1], this.envelope_top];
@@ -1343,13 +1336,13 @@ PlaylistEditorItem = function () {
         classes: ['playing', 'paused'],
 
         play: function () {
-            debug.debug('events: ', 'play');
+            console.debug('events: ', 'play');
             self.dom_element.removeClass('paused');
             self.dom_element.addClass('playing');
         },
 
         stop: function () {
-            debug.debug('events: ', 'stop');
+            console.debug('events: ', 'stop');
             self.dom_element.removeClass('paused');
             self.dom_element.removeClass('playing');
 
@@ -1357,23 +1350,23 @@ PlaylistEditorItem = function () {
         },
 
         pause: function () {
-            debug.debug('events: ', 'pause');
+            console.debug('events: ', 'pause');
             self.dom_element.removeClass('playing');
             self.dom_element.addClass('paused');
         },
 
         resume: function () {
-            debug.debug('events: ', 'resume');
+            console.debug('events: ', 'resume');
             self.dom_element.removeClass('paused');
             self.dom_element.addClass('playing');
         },
 
         finish: function () {
-            debug.debug('events: ', 'finish');
+            console.debug('events: ', 'finish');
             self.dom_element.removeClass('paused');
             self.dom_element.removeClass('playing');
         }
-    }
+    };
 
 
     this.init_player = function () {
@@ -1395,30 +1388,16 @@ PlaylistEditorItem = function () {
             whileloading: this.whileloading,
             whileplaying: this.whileplaying,
             onload: this.onload
-        }
+        };
 
-        /*
-         # id:o.id,
-         # url:decodeURI(soundURL),
-         onplay:self.events.play,
-         onstop:self.events.stop,
-         onpause:self.events.pause,
-         onresume:self.events.resume,
-         onfinish:self.events.finish,
-         whileloading:self.events.whileloading,
-         whileplaying:self.events.whileplaying,
-         onmetadata:self.events.metadata,
-         onload:self.events.onload
-         */
-
-        soundManager.setup({debugMode: false})
+        soundManager.setup({debugMode: false});
 
         self.player = soundManager.createSound(options);
     };
 
 
     this.whileloading = function () {
-        var p = self.player.bytesTotal / self.player.bytesLoaded
+        var p = self.player.bytesTotal / self.player.bytesLoaded;
         self.el_buffer.attr({width: p * self.size_x});
     };
 
@@ -1427,9 +1406,7 @@ PlaylistEditorItem = function () {
         self.el_indicator.attr({ x: self.abs_to_px(self.player.position) });
 
         // check for neccessary fade
-
-        // debug.debug('pos:', self.player.position, self.item.cue_in);
-
+        
         var vol = 0;
         // ins
         if (self.player.position < self.item.cue_in) {
@@ -1458,17 +1435,19 @@ PlaylistEditorItem = function () {
         }
         if (self.player.position <= self.co.duration - self.item.cue_out && self.player.position > self.co.duration - self.item.cue_out - self.item.fade_out) {
             var diff = self.co.duration - self.item.cue_out - self.player.position;
-            // debug.debug('t/diff:', diff);
-
 
             var p = diff / self.item.fade_out;
+
             vol = 100 * p;
+
         }
+
+        self.player.setVolume(vol);
 
         // check for next
         var remaining = self.co.duration - (self.item.cue_out) - self.player.position;
 
-        // debug.debug('remaining:', remaining);
+        // console.debug('remaining:', remaining);
         // preload next track
         if (remaining <= self.item.fade_cross + 10000) {
             self.playlist_editor.load_next(self.item.id);
@@ -1478,15 +1457,12 @@ PlaylistEditorItem = function () {
             self.playlist_editor.play_next(self.item.id);
         }
 
-
-        self.player.setVolume(vol);
-
     };
 
 
     this.onload = function () {
 
-        // / debug.debug('sm2 onload');
+        // / console.debug('sm2 onload');
 
         self.el_buffer.attr({x: self.abs_to_px(self.item.cue_in), width: self.size_x - self.abs_to_px(self.item.cue_in + self.item.cue_out)});
 
@@ -1494,5 +1470,5 @@ PlaylistEditorItem = function () {
     };
 
 
-}
+};
 
