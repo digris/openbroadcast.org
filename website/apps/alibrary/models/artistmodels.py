@@ -287,7 +287,8 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         """ get tracks where artist appears """
         from alibrary.models.mediamodels import Media
         try:
-            m = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk)).nocache().distinct()
+            #m = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk)).nocache().distinct()
+            m = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk) | Q(extra_artists__pk=self.pk)).nocache().distinct()
             return m
         except Exception as e:
             return []
