@@ -17,137 +17,114 @@
 
 <div id="global_search">
 
-    <div class="container main">
 
+    <div>
+        <form action="/api/v1/search/" id="search_form">
+            <input type="text" name="q" id="search_input" autocomplete="off" placeholder="Search artists, releases and more...">
+            <input type="hidden" name="format" value="json">
+        </form>
+    </div>
 
-        <div class="row">
-            <div class="span9">
+    <div id="search_scope">
 
-                <div class="search-container">
-
-                    <div class="header">
-                        <H4>Global Search</H4>
-                    </div>
-
-
-                    <div>
-                        <form action="/api/v1/search/" id="search_form">
-                            <input type="text" name="q" id="search_input" autocomplete="off">
-                            <input type="hidden" name="format" value="json">
-                        </form>
-                    </div>
-
-                    <div id="search_scope">
-
-                        <span><a class="selected btn" data-ct="all" href="#">Everything</a></span>
-                        <span><a class="btn" data-ct="alibrary.artist" href="#">Artists</a></span>
-                        <span><a class="btn" data-ct="alibrary.release" href="#">Releases</a></span>
-                        <span><a class="btn" data-ct="alibrary.media" href="#">Tracks</a></span>
-                        <span><a class="btn" data-ct="alibrary.playlist" href="#">Playlists</a></span>
-                        <span><a class="btn" data-ct="profiles.profile" href="#">Users</a></span>
-
-                    </div>
-
-                    <div id="search_results" class="search-results">
-
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="span3">
-
-                <div id="search_summary">
-
-
-                    <div id="search_context">
-
-                        <div class="search-key-nav">
-
-                            <h4>Keyboard Shortcuts</h4>
-
-                            <ul class="keyboard-shortcuts">
-
-                                <li class="separator">
-                                    <span class="help">{% trans 'Global keys' %}</span>
-                                </li>
-
-                                <li class="shortcut">
-                                    <span class="combo">
-                                        <span class="key">Shift</span>
-                                        <span class="plus">+</span>
-                                        <span class="key">_</span>
-                                    </span>
-                                    <span class="help">
-                                        <span>{% trans 'Enter global search mode' %}</span>
-                                    </span>
-                                </li>
-
-                                <li class="shortcut">
-                                    <span class="combo">
-                                        <span class="key">ESC</span>
-                                    </span>
-                                    <span class="help">
-                                        <span>{% trans 'Exit global search mode' %}</span>
-                                    </span>
-                                </li>
-
-                                <li class="shortcut">
-                                    <span class="combo">
-                                        <span class="key"><i class="icon-caret-up"></i></span>
-                                        <span class="plus">/</span>
-                                        <span class="key"><i class="icon-caret-down"></i></span>
-                                    </span>
-                                    <span class="help">
-                                        <span>{% trans 'Navigate results up/down' %}</span>
-                                    </span>
-                                </li>
-
-                                <li class="separator">
-                                    <span class="help">{% trans 'Scope selection' %}</span>
-                                </li>
-
-                                <li class="shortcut">
-                                    <span class="combo">
-                                        <span class="key">ALT</span>
-                                        <span class="plus">+</span>
-                                        <span class="key">a</span>
-                                    </span>
-                                    <span class="help">
-                                        <span>{% trans 'Limit results to "Artists"' %}</span>
-                                    </span>
-                                </li>
-
-                                <li class="shortcut">
-                                    <span class="combo">
-                                        <span class="key">ALT</span>
-                                        <span class="plus">+</span>
-                                        <span class="key">r</span>
-                                    </span>
-                                    <span class="help">
-                                        <span>{% trans 'Limit results to "Releases"' %}</span>
-                                    </span>
-                                </li>
-
-                            </ul>
-
-                        </div>
-
-                        <div class="result-context-container"><!-- dynamic content --></div>
-
-                    </div>
-
-
-                    <div class="result-meta-container"><!-- dynamic content --></div>
-
-                </div>
-
-            </div>
-
-
-        </div>
-
+        <span><a class="selected btn_" data-ct="all" href="#">All</a></span>
+        <span><a class="btn_" data-ct="alibrary.artist" href="#">Artists</a></span>
+        <span><a class="btn_" data-ct="alibrary.release" href="#">Releases</a></span>
+        <span><a class="btn_" data-ct="alibrary.media" href="#">Tracks</a></span>
+        <span><a class="btn_" data-ct="alibrary.playlist" href="#">Playlists</a></span>
+        <span><a class="btn_" data-ct="profiles.profile" href="#">Users</a></span>
 
     </div>
+
+    <div id="search_results" class="search-results">
+
+    </div>
+
+
+
+
+    <div id="search_summary" style="display: none;">
+
+
+        <div id="search_context">
+
+            <div class="search-key-nav">
+
+                <h4>Keyboard Shortcuts</h4>
+
+                <ul class="keyboard-shortcuts">
+
+                    <li class="separator">
+                        <span class="help">{% trans 'Global keys' %}</span>
+                    </li>
+
+                    <li class="shortcut">
+                        <span class="combo">
+                            <span class="key">Shift</span>
+                            <span class="plus">+</span>
+                            <span class="key">_</span>
+                        </span>
+                        <span class="help">
+                            <span>{% trans 'Enter global search mode' %}</span>
+                        </span>
+                    </li>
+
+                    <li class="shortcut">
+                        <span class="combo">
+                            <span class="key">ESC</span>
+                        </span>
+                        <span class="help">
+                            <span>{% trans 'Exit global search mode' %}</span>
+                        </span>
+                    </li>
+
+                    <li class="shortcut">
+                        <span class="combo">
+                            <span class="key"><i class="icon-caret-up"></i></span>
+                            <span class="plus">/</span>
+                            <span class="key"><i class="icon-caret-down"></i></span>
+                        </span>
+                        <span class="help">
+                            <span>{% trans 'Navigate results up/down' %}</span>
+                        </span>
+                    </li>
+
+                    <li class="separator">
+                        <span class="help">{% trans 'Scope selection' %}</span>
+                    </li>
+
+                    <li class="shortcut">
+                        <span class="combo">
+                            <span class="key">ALT</span>
+                            <span class="plus">+</span>
+                            <span class="key">a</span>
+                        </span>
+                        <span class="help">
+                            <span>{% trans 'Limit results to "Artists"' %}</span>
+                        </span>
+                    </li>
+
+                    <li class="shortcut">
+                        <span class="combo">
+                            <span class="key">ALT</span>
+                            <span class="plus">+</span>
+                            <span class="key">r</span>
+                        </span>
+                        <span class="help">
+                            <span>{% trans 'Limit results to "Releases"' %}</span>
+                        </span>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <div class="result-context-container"><!-- dynamic content --></div>
+
+        </div>
+    </div>
+
+
+    <div class="result-meta-container"><!-- dynamic content --></div>
 
 </div>

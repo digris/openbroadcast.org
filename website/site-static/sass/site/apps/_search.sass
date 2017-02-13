@@ -1,55 +1,64 @@
 // handling of global search container
 #global_search
-  display: none
-body.global-search
-  #wrap
-    display: none
-  #global_search
-    display: block
-    min-height: 100%
-    .search-container
-      padding: 60px 0 40px
-
-  // sidebar / meta
-  #search_summary
-    margin: 83px 0 0 0
-    border-top: 1px solid #ddd
-    padding-top: 10px
-
-
-    .keyboard-shortcuts
-      padding: 0 0
-
-    .result-meta-container
-      margin-top: 20px
-      padding-top: 4px
-      border-top: 1px solid #ddd
-
-
-
+  float: left
+  position: relative
 
 #search_form
-  padding: 4px 0
+
+  height: 28px
+  padding: 4px 4px 0 0
+
   #search_input
-    width: 98.2%
-    padding: 6px 6px
+    width: 320px
+    padding: 2px 5px
+    border: none
+    background-color: rgba(255, 255, 255, 0.5)
+
+    &::placeholder
+      color: #555
+
+    &:focus::placeholder
+      color: rgba(34, 34, 34, 0.36)
+
 
 
 #search_scope
-  text-align: center
-  padding: 20px 0 10px
+  display: none
+  background: white
+  +clearfix()
+
+  border-bottom: 1px solid #dddddd
+
+  // display: none
+
+  //text-align: center
+  padding: 0 0 0 4px
   span
-    padding: 4px
+    padding: 5px 0
+    display: block
+    float: left
   a
+    padding: 2px 4px
+    text-decoration: none
+    background: #e8e8e8
+    margin: 0 2px 0 0
+
     //color: #999999
-    &.selected
+    &.selected, &:hover
       background: $primary-color-b
       color: white
       border-color: $primary-color-b
 
+.search-mode
+  #search_scope
+    display: block
+
 
 .search-results
-  padding: 20px 0
+  padding: 0
+  position: absolute
+
+  //display: none
 
   .loading
     //background: white
@@ -64,7 +73,8 @@ body.global-search
       color: $primary-color-b
 
   .item
-    margin-bottom: 20px
+    margin-bottom: 0
+    border-bottom: 1px solid #dddddd
     background: white
     cursor: pointer
     position: relative
@@ -85,73 +95,44 @@ body.global-search
         width: 80px
         float: left
 
-      dt
-
-    .representation
-      em
-        font-style: normal
-        font-weight: 400
-        //background: $primary-color-a-bg-light
-
-    .description
-      padding-top: 6px
-
-    .tags
-      position: absolute
-      bottom: 4px
-      right: 4px
 
 
-      .tag
-        padding: 2px 4px
-        background: #333
-        color: white
-        &:nth-child(n+6)
-          display: none
-        .highlight
-          background: #333
-          color: $primary-color-b-bg-light
+    .result-image
+      width: 18%
+
+    .result-body
+      width: 80%
+      margin-left: 2%
+
+      .ctype
+        max-width: 1ch
+        overflow: hidden
+
+      .representation
+
+        font-size: 11px
+        em
+          font-style: normal
+          font-weight: 400
+          //background: $primary-color-a-bg-light
+
+      .description
+        padding-top: 6px
+
+      .tags
+        position: absolute
+        bottom: 1px
+        right: 2px
 
 
-
-// TODO: make global if used elsewhere
-ul.keyboard-shortcuts
-
-  li.separator
-    padding: 14px 3px 4px
-
-  li.shortcut
-    +clearfix
-    padding: 3px
-    .combo
-      +clearfix
-      float: left
-      width: 90px
-      span
-        display: block
-        float: left
-        padding: 1px 4px
-        &.key
-          background: white
-          border: 1px solid #ddd
-          border-bottom-color: #bbb
-          border-right-color: #bbb
-          min-width: 14px
-          text-align: center
-          //box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.1)
-          border-radius: 3px
-          font-family: "Monospace 821 BT", monospace
+        .tag
+          padding: 1px 2px
+          color: #5a5a5a
+          font-size: 11px
+          &:nth-child(n+5)
+            display: none
+          .highlight
+            background: #333
+            color: $primary-color-b-bg-light
 
 
-    .help
-      float: left
-      span
-        text-transform: capitalize
-        display: block
-        padding: 1px 4px
-
-
-// TODO: just a quick hack for transfer effect
-body.global-search
-  .ui-effects-transfer
-    background: rgba(102, 51, 204, 0.25)

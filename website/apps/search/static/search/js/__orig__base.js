@@ -161,11 +161,6 @@ var SearchApp = function () {
 
             var q = $(this).val();
 
-            if(q.length > 0 && !self.search_mode) {
-                self.enter_search_mode();
-            }
-
-
             // check if the querystring actually did change, ignoring whitespace.
             if ($.trim(self.q) != $.trim(q)) {
                 self.q = q;
@@ -223,10 +218,10 @@ var SearchApp = function () {
             console.log('enter search mode');
         }
         self.search_mode = true;
-        //self.input_container.val('');
+        self.input_container.val('');
         self.clear_results();
         self.set_result_focus();
-        $('body').addClass('search-mode');
+        $('body').addClass('global-search');
         $('body').animate({scrollTop: 0}, 200);
         self.input_container.focus();
 
@@ -243,7 +238,7 @@ var SearchApp = function () {
         self.input_container.val('');
         self.clear_results();
         self.set_result_focus();
-        $('body').removeClass('search-mode');
+        $('body').removeClass('global-search');
     };
 
 
@@ -592,7 +587,16 @@ var SearchApp = function () {
         self.results_container = $('#search_results');
         self.summary_container = $('#search_summary');
 
-        self.player = aplayer.base;
+         self.player = aplayer.base;
+
+
+
+        // load query from url if available
+        // var q = $.url().param('q');
+        // if (q !== undefined) {
+        //     self.set_query(q);
+        //     self.search();
+        // }
 
         self.bindings();
     };

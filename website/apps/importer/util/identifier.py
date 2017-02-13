@@ -111,17 +111,24 @@ class Identifier(object):
 
         try:
 
+            if 'media_mb_id' in metadata and metadata['media_mb_id']:
+                # don't check for duplicates by name if musicbrainz id available
+                return
+
+
             if 'performer_name' in metadata and 'media_name' in metadata and 'release_name' in metadata:
 
+                # TODO: make this matching more inteligent!
+
                 qs = Media.objects.filter(
-                    name__icontains=metadata['media_name'],
-                    artist__name__icontains=metadata['performer_name']
+                    name__istartswith=metadata['media_name'][0:8],
+                    artist__name__istartswith=metadata['performer_name'][0:8]
                 )
 
                 if not qs.exists():
                     qs = Media.objects.filter(
-                        name__icontains=metadata['media_name'],
-                        release__name__icontains=metadata['release_name']
+                        name__istartswith=metadata['media_name'][0:8],
+                        release__name__istartswith=metadata['release_name'][0:8]
                     )
 
                 if qs.exists():
@@ -130,8 +137,6 @@ class Identifier(object):
         except:
             pass
 
-
-        return None
 
 
     """

@@ -24,6 +24,9 @@
         {# player moved to bottom / footer #}
         {# include "aplayer/_inline.html" #}
 
+        {# global search handling #}
+        {% include "search/search_inline.html" %}
+
         <ul id="account_navigation">
 
             {% if user.is_authenticated %}
