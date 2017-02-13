@@ -471,7 +471,7 @@ class DiscogsAPILookup(APILookup):
         if name[-4:] == ',The':
             name = 'The %s' % name[:-4]
 
-        return name
+        return name.strip()
 
 
 
@@ -510,7 +510,7 @@ class DiscogsAPILookup(APILookup):
             #    mk = 'name'
 
             if k == 'title':
-                # reformat numbering & 'The'
+                # reformat numbering & 'The' and strip blank characters
                 res['name'] = self.reformat_name(data[k])
 
             if k == 'artists':
