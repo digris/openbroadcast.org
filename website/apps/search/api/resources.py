@@ -25,6 +25,7 @@ class ResultObject(object):
         obj = result.object
 
         self.ct = '{}.{}'.format(obj._meta.app_label, obj.__class__.__name__.lower())
+        self.ct_display = '{}'.format(obj._meta.verbose_name.title())
         self.resource_uri = obj.get_api_url()
         self.obj = obj
 
@@ -40,7 +41,8 @@ class ResultObject(object):
             'uuid': obj.uuid,
             'id': obj.id,
             'name': obj.name,
-            'ct': 'lasdhj',
+            'ct': '',
+            'ct_display': '',
             'representation': self.representation,
             'tags': [t.name for t in obj.tags.all()],
             'detail_uri': obj.get_absolute_url(),
@@ -84,6 +86,7 @@ class GlobalSearchResource(Resource):
     edit_uri = fields.CharField(attribute='edit_uri', null=True)
     tags = fields.ListField(attribute='tags', null=True)
     ct = fields.CharField(attribute='ct', null=True)
+    ct_display = fields.CharField(attribute='ct_display', null=True)
 
     paginator_class = Paginator
 

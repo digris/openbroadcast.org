@@ -20,7 +20,8 @@
         <div class="span10 result-body">
 
             <div class="name">
-                <a href="{{ object.detail_uri }}" class="link-main">{{ object.name }}</a> <small class="pull-right ctype">{{ object.ct }}</small>
+                <small class="object-type">{{ object.ct_display }}</small>
+                <a href="{{ object.detail_uri }}" class="link-main" title="{{ object.name }}">{{ object.name|shorten(24) }}</a>
             </div>
 
             <div class="representation">

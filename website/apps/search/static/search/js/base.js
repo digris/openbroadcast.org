@@ -3,6 +3,7 @@ var SearchApp = function () {
     var self = this;
     this.debug = false;
     this.base_url = '/api/v1/search/';
+    this.form_container;
     this.input_container;
     this.results_container;
     this.selected_result = null;
@@ -34,6 +35,7 @@ var SearchApp = function () {
     this.ctype_map = {
         'alibrary.release': {
             display_name: 'Release',
+            search_url: '/content/library/releases/',
             keys: [
                 [['p'], 'play'],
                 [['q'], 'queue'],
@@ -43,6 +45,7 @@ var SearchApp = function () {
         },
         'alibrary.artist': {
             display_name: 'Artist',
+            search_url: '/content/library/artists/',
             keys: [
                 [['p'], 'play'],
                 [['e'], 'edit view'],
@@ -51,6 +54,7 @@ var SearchApp = function () {
         },
         'alibrary.media': {
             display_name: 'Track',
+            search_url: '/content/library/tracks/',
             keys: [
                 [['p'], 'play'],
                 [['q'], 'queue'],
@@ -71,6 +75,7 @@ var SearchApp = function () {
     this.selected_ctypes = [];
 
     this.loading_template = '<div class="loading"><i class="icon icon-spinner icon-spin"></i><p>Loading Results</p></div>';
+    this.search_more_template = '<div class="more"><a href="#">More Results</a></div>';
 
     // references to platform apps
     this.collector;
@@ -148,6 +153,8 @@ var SearchApp = function () {
 
         });
 
+
+
         this.input_container.on('keyup', function (e) {
 
 
@@ -200,10 +207,45 @@ var SearchApp = function () {
 
 
         /*
+         * handle 'submit' event
+         */
+        self.form_container.on('submit', function(e){
+            e.preventDefault();
+
+            // only if single content type is in search
+            if(self.selected_ctypes.length == 1) {
+
+                // TODO: this is hackish & ugly - search urls should be created in a better way
+                var search_url = self.ctype_map[self.selected_ctypes[0]].search_url;
+                search_url += '?q=' + encodeURIComponent(self.q);
+
+                document.location.href = search_url;
+
+            }
+
+
+
+        });
+
+
+
+        /*
+         * prevent mousewheel scrolling if cursor over result set
+         */
+        this.results_container.on('mouseenter', function (e) {
+            $('body').addClass('no-scroll');
+        }).on('mouseleave', function (e) {
+            $('body').removeClass('no-scroll');
+        });
+
+
+
+        /*
          * infinite scrolling
          */
-        $(document).scroll(function (e) {
-            if (element_in_scroll($('.search-results .item:last'))) {
+        //$(document).scroll(function (e) {
+        self.results_container.on('scroll', function(e){
+            if (element_in_scroll($('.search-results .item:last'), self.results_container)) {
                 if (!self.lock) {
                     self.lock = true;
                     self.search_next();
@@ -223,11 +265,11 @@ var SearchApp = function () {
             console.log('enter search mode');
         }
         self.search_mode = true;
+
         //self.input_container.val('');
         self.clear_results();
         self.set_result_focus();
-        $('body').addClass('search-mode');
-        $('body').animate({scrollTop: 0}, 200);
+        $('body').addClass('search-mode').animate({scrollTop: 0}, 200);
         self.input_container.focus();
 
     };
@@ -384,11 +426,7 @@ var SearchApp = function () {
         // get data attributes for focused element
         if(el_focus) {
             item = $(el_focus).data();
-
-
             item = $.extend({}, item, self.ctype_map[item.ct]);
-
-
         }
 
         //console.info('result focus:', el_focus);
@@ -413,38 +451,51 @@ var SearchApp = function () {
     //     self.q = q.trim();
     // };
 
-    this.toggle_ctype = function (ct) {
 
-        var set_ctypes = function (ctypes) {
-            self.scope_container.find('a').removeClass('selected');
-            if (ctypes.length < 1) {
-                self.scope_container.find('a[data-ct="all"]').addClass('selected')
-            }
-            $.each(ctypes, function (i, el) {
-                self.scope_container.find('a[data-ct="' + el + '"]').addClass('selected')
-            });
-        };
+    this.toggle_ctype = function (ct) {
 
         if (ct == 'all') {
             if (self.selected_ctypes.length > 0) {
                 self.selected_ctypes = [];
-                set_ctypes(self.selected_ctypes);
+
+                $.cookie('search_ctypes', self.selected_ctypes, {path: '/'});
+
+                self.set_ctypes(self.selected_ctypes);
                 $(this).addClass('selected');
                 self.search();
             }
             return;
         }
 
+        // implementation that allows multiple types selected the same time
         var idx = $.inArray(ct, self.selected_ctypes);
-        if (idx == -1) {
-            self.selected_ctypes.push(ct);
-        } else {
-            self.selected_ctypes.splice(idx, 1);
-        }
+        //if (idx == -1) {
+        //    self.selected_ctypes.push(ct);
+        //} else {
+        //    self.selected_ctypes.splice(idx, 1);
+        //}
 
-        set_ctypes(self.selected_ctypes);
+        // implementation with only one type at a time
+        self.selected_ctypes = [];
+        self.selected_ctypes.push(ct);
+
+        $.cookie('search_ctypes', self.selected_ctypes, {path: '/'});
+
+        self.set_ctypes(self.selected_ctypes);
         self.search();
 
+    };
+
+
+
+    this.set_ctypes = function (ctypes) {
+        self.scope_container.find('a').removeClass('selected');
+        if (ctypes.length < 1) {
+            self.scope_container.find('a[data-ct="all"]').addClass('selected')
+        }
+        $.each(ctypes, function (i, el) {
+            self.scope_container.find('a[data-ct="' + el + '"]').addClass('selected')
+        });
     };
 
 
@@ -490,6 +541,7 @@ var SearchApp = function () {
         self.api_request({
             url: url,
             beforeSend: function() {
+                $('.more', self.results_container).remove();
                 self.results_container.append(self.loading_template);
             }
         })
@@ -507,12 +559,30 @@ var SearchApp = function () {
             method: 'get',
             timeout: 5000,
             success: function(data) {
+
                 var results_html = '';
                 $.each(data.objects, (function (i, object) {
                     results_html += nj.render('search/nj/result.default.html', {object: object, q: self.q});
                 }));
                 self.results_container.html(self.results_container.html() + results_html);
+                // remove 'loading' message
                 $('.loading', self.results_container).remove();
+
+                // remove 'more' message and append again at the end
+                // only if single content type is in search
+                if(self.selected_ctypes.length == 1) {
+                    $('.more', self.results_container).remove();
+                    self.results_container.append(self.search_more_template);
+
+                    // TODO: this is hackish & ugly - search urls should be created in a better way
+                    var search_url = self.ctype_map[self.selected_ctypes[0]].search_url;
+                    search_url += '?q=' + encodeURIComponent(self.q);
+
+                    $('.more a', self.results_container).attr('href', search_url);
+                }
+
+
+
 
             }
         };
@@ -587,10 +657,24 @@ var SearchApp = function () {
             console.debug('SearchApp - init');
         }
 
+        self.form_container = $('#search_form');
         self.input_container = $('#search_input');
         self.scope_container = $('#search_scope');
         self.results_container = $('#search_results');
         self.summary_container = $('#search_summary');
+
+
+        // load ctypes from cookie
+        var ctypes = $.cookie('search_ctypes');
+        console.log('ctypes (cookie)', ctypes);
+
+        if(ctypes) {
+            self.selected_ctypes = ctypes.split(',');
+        } else {
+            self.selected_ctypes = [];
+        }
+
+        self.set_ctypes(self.selected_ctypes);
 
         self.player = aplayer.base;
 
@@ -607,14 +691,17 @@ var delay = (function () {
     };
 })();
 
-var element_in_scroll = function (el) {
+var element_in_scroll = function (el, ref) {
 
     if (!el.length) {
         return false;
     }
 
-    var top = $(window).scrollTop();
-    var bottom = top + $(window).height();
+    var ref = ref || $(window);
+
+
+    var top = ref.scrollTop();
+    var bottom = top + ref.height();
 
     var el_top = el.offset().top;
     var el_bottom = el_top + el.height();

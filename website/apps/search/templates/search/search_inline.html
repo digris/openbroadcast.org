@@ -20,30 +20,30 @@
 
     <div>
         <form action="/api/v1/search/" id="search_form">
-            <input type="text" name="q" id="search_input" autocomplete="off" placeholder="Search artists, releases and more...">
+            <input type="text" name="q" id="search_input" autocomplete="off"
+                   placeholder="Search artists, releases and more... [Shift + Space]">
             <input type="hidden" name="format" value="json">
         </form>
     </div>
 
     <div id="search_scope">
 
-        <span><a class="selected btn_" data-ct="all" href="#">All</a></span>
-        <span><a class="btn_" data-ct="alibrary.artist" href="#">Artists</a></span>
-        <span><a class="btn_" data-ct="alibrary.release" href="#">Releases</a></span>
-        <span><a class="btn_" data-ct="alibrary.media" href="#">Tracks</a></span>
-        <span><a class="btn_" data-ct="alibrary.playlist" href="#">Playlists</a></span>
-        <span><a class="btn_" data-ct="profiles.profile" href="#">Users</a></span>
+        <span><a class="selected" data-ct="all" href="#">All</a></span>
+        <span><a data-ct="alibrary.artist" href="#">Artists</a></span>
+        <span><a data-ct="alibrary.release" href="#">Releases</a></span>
+        <span><a data-ct="alibrary.media" href="#">Tracks</a></span>
+        <span><a data-ct="alibrary.playlist" href="#">Playlists</a></span>
+        <span><a data-ct="profiles.profile" href="#">Users</a></span>
 
     </div>
+
 
     <div id="search_results" class="search-results">
 
     </div>
 
 
-
-
-    <div id="search_summary" style="display: none;">
+    <div id="search_summary" style="display: block;">
 
 
         <div id="search_context">

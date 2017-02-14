@@ -71,7 +71,7 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True, db_index=True)
 
     TYPE_CHOICES = (
-        ('person', _('Artist')),
+        ('person', _('Person')),
         ('group', _('Group')),
         ('orchestra', _('Orchestra')),
         ('other', _('Other')),

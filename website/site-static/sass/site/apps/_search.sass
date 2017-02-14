@@ -50,20 +50,33 @@
       border-color: $primary-color-b
 
 .search-mode
+
   #search_scope
     display: block
+    box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
+  .search-results
+    box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
 
 
 .search-results
   padding: 0
   position: absolute
+  width: 100%
+
+
+  //border: 4px solid $primary-color-b
+  //border-top: none
+
+  // 8 entries
+  max-height: 464px
+  overflow-y: auto
 
   //display: none
 
   .loading
-    //background: white
-    padding: 10px
-    margin: 10px 0
+    background: white
+    padding: 10px 0
+    margin: 0
     text-align: center
     i
       font-size: 36px
@@ -72,12 +85,31 @@
       padding: 4px 0
       color: $primary-color-b
 
+  .more
+    background: white
+    padding: 10px 0
+    margin: 0
+    text-align: center
+    a
+      padding: 4px 0
+      color: $primary-color-b
+
   .item
     margin-bottom: 0
-    border-bottom: 1px solid #dddddd
-    background: white
+    //border-bottom: 1px solid #484848
+    //background: #222
+    border-bottom: 1px solid #cccccc
+    background: $white
     cursor: pointer
     position: relative
+
+    padding: 5px
+
+    //&:not(:hover)
+    //  color: $white
+    //  a, p
+    //    color: $white
+
     &.hover,
     &.selected
       background: $primary-color-a-bg-light
@@ -104,9 +136,8 @@
       width: 80%
       margin-left: 2%
 
-      .ctype
-        max-width: 1ch
-        overflow: hidden
+      .object-type
+        opacity: 0.5
 
       .representation
 
