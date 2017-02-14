@@ -34,7 +34,7 @@ INSTALLED_APPS = (
     'gunicorn',
     #'silk',
     'django_date_extensions',
-    'haystack',
+    #'haystack',
     'search',
     'djangocms_sphinxdoc',
 
