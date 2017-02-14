@@ -1,7 +1,7 @@
 ;
 var SearchApp = function () {
     var self = this;
-    this.debug = true;
+    this.debug = false;
     this.base_url = '/api/v1/search/';
     this.form_container;
     this.input_container;
@@ -436,8 +436,6 @@ var SearchApp = function () {
             item = $.extend({}, item, self.ctype_map[item.ct]);
         }
 
-        //console.info('result focus:', el_focus);
-
         self.selected_result = item;
         self.update_result_context(item);
 
@@ -513,10 +511,8 @@ var SearchApp = function () {
 
 
         var q = self.q;
-        console.debug('search, q:', q);
 
         if (q.length < 3) {
-            console.debug('search, q too short - > clear & return');
             self.clear_results();
             return;
         }
@@ -526,8 +522,6 @@ var SearchApp = function () {
         if (ctypes.length > 0) {
             url += '&ct=' + ctypes.join(':');
         }
-
-        console.debug('search, continue with api request');
 
         self.api_request({
             url: url,
@@ -566,8 +560,6 @@ var SearchApp = function () {
      */
     this.api_request = function(options) {
 
-        console.debug('api_request, options:', options);
-
         var defaults = {
             url: null,
             method: 'get',
@@ -603,28 +595,18 @@ var SearchApp = function () {
 
         // abort existing request
         if (self.current_request) {
-
-            console.debug('have current request > abort');
             self.current_request.abort();
         }
 
         self.current_request = $.ajax($.extend({}, defaults, options));
 
-
-        console.debug('created new request');
-
         // global result handling
         self.current_request.success(function(data){
-
-            //console.debug('request success', data);
-            console.debug('meta', data.meta);
-
             self.result_meta = data.meta;
             self.highlight();
         });
         // global release lock
         self.current_request.complete(function(data){
-            console.debug('request complete', data);
             self.lock = false;
             self.update_summary_display();
             self.set_result_focus();
@@ -648,8 +630,6 @@ var SearchApp = function () {
 
 
     this.update_summary_display = function() {
-
-        console.debug('update_summary_display')
 
         var container = self.summary_container.find('.result-meta-container');
 
@@ -692,8 +672,6 @@ var SearchApp = function () {
 
         // load ctypes from cookie
         var ctypes = $.cookie('search_ctypes');
-        console.log('ctypes (cookie)', ctypes);
-
         if(ctypes) {
             self.selected_ctypes = ctypes.split(',');
         } else {
