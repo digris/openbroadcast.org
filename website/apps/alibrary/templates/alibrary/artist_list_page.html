@@ -1,0 +1,38 @@
+{% load i18n adv_cache hash_tags el_pagination_tags  %}
+
+
+
+{% paginate object_list %}
+
+{% for item in object_list %}
+
+{# switching list styles #}
+{% if list_style == "s" %}
+
+    {# cache 600 "artist_list_item_s" item.pk group_hash item.updated #}
+    {% include "alibrary/artist/list_item_s.html" %}
+    {# endcache #}
+
+{% endif %}
+
+{% if list_style == "m" %}
+{% include "alibrary/artist/list_item_m.html" %}
+{% endif %}
+
+
+{% if list_style == "l" %}
+
+    {% include "alibrary/artist/list_item_l.html" %}
+
+
+{% endif %}
+
+
+{% empty %}
+    <p style="padding: 20px; text-align: center;">
+        {% trans 'No results to display.' %}
+    </p>
+{% endfor %}
+
+
+{% show_more %}

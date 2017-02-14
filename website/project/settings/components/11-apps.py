@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'raven.contrib.django.raven_compat',
     'raven.contrib.django.celery',
     'djcelery_email',
+    'el_pagination',
 
 
     'base',

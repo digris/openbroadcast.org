@@ -225,6 +225,9 @@
         <script src="{{ STATIC_URL }}dist/js/ui/dialog.js"></script>
         <script src="{{ STATIC_URL }}dist/js/ui/edit.base.js"></script>
 
+        <script src="{{ STATIC_URL }}el-pagination/js/el-pagination.js"></script>
+
+
 
 
         {% nunjucks_scripts %}
@@ -270,6 +273,8 @@
                 base.ui.load_state();
                 base.ui.tracklist();
                 base.ui.dialog();
+
+                $.endlessPaginate({paginateOnScroll: true});
 
             });
 
