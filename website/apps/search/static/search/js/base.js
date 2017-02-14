@@ -1,7 +1,7 @@
 ;
 var SearchApp = function () {
     var self = this;
-    this.debug = false;
+    this.debug = true;
     this.base_url = '/api/v1/search/';
     this.form_container;
     this.input_container;
@@ -168,6 +168,12 @@ var SearchApp = function () {
 
             var q = $(this).val();
 
+
+            if (self.debug) {
+                console.debug('keyup - q', '"' + q + '"');
+            }
+
+
             if(q.length > 0 && !self.search_mode) {
                 self.enter_search_mode();
             }
@@ -177,6 +183,7 @@ var SearchApp = function () {
             if ($.trim(self.q) != $.trim(q)) {
                 self.q = q;
                 delay(function () {
+                    console.debug('delay search call by 350ms');
                     self.search()
                 }, 350);
             }
@@ -504,9 +511,12 @@ var SearchApp = function () {
      */
     this.search = function () {
 
+
         var q = self.q;
+        console.debug('search, q:', q);
 
         if (q.length < 3) {
+            console.debug('search, q too short - > clear & return');
             self.clear_results();
             return;
         }
@@ -516,6 +526,8 @@ var SearchApp = function () {
         if (ctypes.length > 0) {
             url += '&ct=' + ctypes.join(':');
         }
+
+        console.debug('search, continue with api request');
 
         self.api_request({
             url: url,
@@ -554,6 +566,8 @@ var SearchApp = function () {
      */
     this.api_request = function(options) {
 
+        console.debug('api_request, options:', options);
+
         var defaults = {
             url: null,
             method: 'get',
@@ -589,18 +603,28 @@ var SearchApp = function () {
 
         // abort existing request
         if (self.current_request) {
+
+            console.debug('have current request > abort');
             self.current_request.abort();
         }
 
         self.current_request = $.ajax($.extend({}, defaults, options));
 
+
+        console.debug('created new request');
+
         // global result handling
         self.current_request.success(function(data){
+
+            //console.debug('request success', data);
+            console.debug('meta', data.meta);
+
             self.result_meta = data.meta;
             self.highlight();
         });
         // global release lock
         self.current_request.complete(function(data){
+            console.debug('request complete', data);
             self.lock = false;
             self.update_summary_display();
             self.set_result_focus();
@@ -615,7 +639,7 @@ var SearchApp = function () {
             return;
         }
 
-        $.each(self.q.split(' '), function (i, el) {
+        $.each($.trim(self.q).split(' '), function (i, el) {
             self.results_container.highlight(el);
         })
 
@@ -624,6 +648,8 @@ var SearchApp = function () {
 
 
     this.update_summary_display = function() {
+
+        console.debug('update_summary_display')
 
         var container = self.summary_container.find('.result-meta-container');
 
