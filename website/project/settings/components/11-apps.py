@@ -478,3 +478,6 @@ CHANGETRACKER_TRACKED_MODELS = (
 
 #GRAVATAR_DEFAULT_IMAGE = '/static/img/base/defaults/listview.artist.xl.png'
 GRAVATAR_DEFAULT_IMAGE = 'identicon'
+
+
+EL_PAGINATION_PER_PAGE = 12

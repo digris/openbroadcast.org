@@ -274,7 +274,10 @@
                 base.ui.tracklist();
                 base.ui.dialog();
 
-                $.endlessPaginate({paginateOnScroll: true});
+                $.endlessPaginate({
+                    paginateOnScroll: true,
+                    paginateOnScrollMargin: 400
+                });
 
             });
 
