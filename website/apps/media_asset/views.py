@@ -32,13 +32,7 @@ class WaveformView(View):
 
         waveform, waveform_created = Waveform.objects.get_or_create(media=media, type=type)
 
-        # print 'created: %s' %  waveform_created
-        # print 'uuid: %s' % media_uuid
-        # print 'type: %s' % type
-        # print 'path: %s' % waveform.path
-
-
-        # hack to wait until file is ready
+        # TODO: nasty hack to wait until file is ready
         i = 0
         while waveform.status in [Waveform.INIT, Waveform.PROCESSING]:
             log.debug('waveform not ready yet. sleep for a while')
@@ -81,15 +75,7 @@ class FormatView(View):
 
         format, format_created = Format.objects.get_or_create(media=media, quality=quality, encoding=encoding)
 
-
-        # print 'created: %s' %  format_created
-        # print 'uuid: %s' % media_uuid
-        # print 'quality: %s' % quality
-        # print 'encoding: %s' % encoding
-        # print 'path: %s' % format.path
-
-
-        # hack to wait until file is ready
+        # TODO: nasty hack to wait until file is ready
         i = 0
         while format.status in [Format.INIT, Format.PROCESSING]:
             log.debug('format not ready yet. sleep for a while')

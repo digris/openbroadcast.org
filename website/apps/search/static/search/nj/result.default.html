@@ -1,7 +1,14 @@
-<div class="item hoverable linkable">
+<div class="item hoverable linkable"
+    data-uuid="{{ object.uuid }}"
+    data-id="{{ object.id }}"
+    data-ct="{{ object.ct }}"
+    data-resource_uri="{{ object.resource_uri }}"
+    data-detail_uri="{{ object.detail_uri }}"
+    data-edit_uri="{{ object.edit_uri }}"
+    >
     <div class="row-fluid">
 
-        <div class="span2">
+        <div class="span2 result-image">
             <div>
                 {% if object.image %}
                     <img src="/static/img/base/defaults/listview.release.xl.png" data-src="{{ object.image }}" class="lazyload">
@@ -10,38 +17,16 @@
                 {% endif %}
             </div>
         </div>
-        <div class="span9">
-            <div>
-                <h3><a href="{{ object.detail_uri }}" class="link-main">{{ object.name }}</a> <small class="pull-right">{{ object.ct }}</small></h3>
-                <p></p>
-            </div>
+        <div class="span10 result-body">
 
+            <div class="name">
+                <small class="object-type">{{ object.ct_display }}</small>
+                <a href="{{ object.detail_uri }}" class="link-main" title="{{ object.name }}">{{ object.name|shorten(24) }}</a>
+            </div>
 
             <div class="representation">
                 {{ object.representation }}
             </div>
-
-
-            <!--<div class="meta">
-                <dl>
-
-                    {% for meta in object.meta %}
-                        <dt class="meta-{{ meta.key }}">
-                            {{ meta.label }}:
-                        </dt>
-                        <dd>
-                            {{ meta.value }}
-                        </dd>
-                    {% endfor %}
-
-                </dl>
-
-            </div>-->
-
-            <div class="description">
-                {% if object.description %}{{ object.description }}{% endif %}
-            </div>
-
 
             <div class="tags">
                 {% for tag in object.tags %}
@@ -53,5 +38,3 @@
     </div>
 
 </div>
-
-

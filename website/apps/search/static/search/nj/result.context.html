@@ -1,0 +1,29 @@
+<div class="result-context">
+
+    <ul class="keyboard-shortcuts">
+
+        <li class="separator">
+            <span class="help">{{ object.display_name }} keys</span>
+        </li>
+
+        {% for combo, help in object.keys %}
+
+            <li class="shortcut">
+                <span class="combo">
+
+                    {% for key in combo %}
+                        <span class="key">{{ key }}</span>
+                        {% if not loop.last %}<span class="plus">+</span>{% endif %}
+                    {% endfor %}
+
+                </span>
+                <span class="help">
+                    <span>{{ help }}</span>
+                </span>
+            </li>
+
+        {% endfor %}
+    </ul>
+
+
+</div>

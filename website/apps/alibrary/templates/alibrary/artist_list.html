@@ -1,5 +1,5 @@
 {% extends "layout_base.html" %}
-{% load spurl adv_cache hash_tags i18n truncate_tags dajaxice_templatetags sekizai_tags  %}
+{% load spurl adv_cache hash_tags i18n truncate_tags dajaxice_templatetags sekizai_tags el_pagination_tags %}
 
 {% block heading %}
 <!-- view specific scripts -->
@@ -126,35 +126,8 @@
 
         {% hash_user_groups request.user as group_hash %}
 
-		{% for item in object_list %}
+        {% include page_template %}
 
-		{# switching list styles #}
-		{% if list_style == "s" %}
-
-            {% cache 600 "artist_list_item_s" item.pk group_hash item.updated %}
-            {% include "alibrary/artist/list_item_s.html" %}
-            {% endcache %}
-
-		{% endif %}
-
-		{% if list_style == "m" %}
-		{% include "alibrary/artist/list_item_m.html" %}
-		{% endif %}
-
-
-		{% if list_style == "l" %}
-
-            {% cache 600 "artist_list_item_l" item.pk group_hash item.updated %}{% endcache %}
-            {% include "alibrary/artist/list_item_l.html" %}
-
-
-		{% endif %}
-
-        {% empty %}
-            <p style="padding: 20px; text-align: center;">
-                {% trans 'No results to display.' %}
-            </p>
-        {% endfor %}
 
 	</div>
 

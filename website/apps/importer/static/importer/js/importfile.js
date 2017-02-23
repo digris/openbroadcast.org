@@ -440,7 +440,7 @@ var ImportfileApp = function () {
                             data.ct = 'release';
                         }
 
-                        var d = { item: data }
+                        var d = { item: data };
                         var html = nj.render('importer/nj/popover.html', d);
                         api.set('content.text', html);
                     }, function(xhr, status, error) {

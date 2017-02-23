@@ -1,4 +1,9 @@
 {{ object.name }}
+
+{% if object.aliases.exists %}
+a.k.a. {{ object.get_aliases|join:', ' }}
+{% endif %}
+
 {% for tag in object.tags %}
 {{ tag }},
 {% endfor %}

@@ -15,6 +15,8 @@ from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from tagging.models import Tag
 
+from el_pagination.views import AjaxListView
+
 from alibrary.models import Artist, Label, Release, Media, NameVariation
 from alibrary.forms import ArtistForm, ArtistActionForm, ArtistRelationFormSet, MemberFormSet, AliasFormSet
 from alibrary.filters import ArtistFilter
@@ -50,28 +52,18 @@ ORDER_BY = [
 ]
 
 
-class ArtistListView(PaginationMixin, ListView):
+class ArtistListView(AjaxListView):
     
     # context_object_name = "artist_list"
     #template_name = "alibrary/release_list.html"
+    page_template = 'alibrary/artist_list_page.html'
     
     object = Artist
-    paginate_by = ALIBRARY_PAGINATE_BY_DEFAULT
-    
+
     model = Release
     extra_context = {}
     
-    def get_paginate_by(self, queryset):
-        
-        ipp = self.request.GET.get('ipp', None)
-        if ipp:
-            try:
-                if int(ipp) in ALIBRARY_PAGINATE_BY:
-                    return int(ipp)
-            except Exception, e:
-                pass
 
-        return self.paginate_by
 
     def get_context_data(self, **kwargs):
 
@@ -190,6 +182,155 @@ class ArtistListView(PaginationMixin, ListView):
         # rebuild filter after applying tags
         self.filter = ArtistFilter(self.request.GET, queryset=qs)
         
+        # tagging / cloud generation
+        if qs.exists():
+            tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=10)
+            self.tagcloud = calculate_cloud(tagcloud)
+
+        return qs
+
+
+
+class __ArtistListView(PaginationMixin, ListView):
+
+    # context_object_name = "artist_list"
+    #template_name = "alibrary/release_list.html"
+
+    object = Artist
+    paginate_by = ALIBRARY_PAGINATE_BY_DEFAULT
+
+    model = Release
+    extra_context = {}
+
+    def get_paginate_by(self, queryset):
+
+        ipp = self.request.GET.get('ipp', None)
+        if ipp:
+            try:
+                if int(ipp) in ALIBRARY_PAGINATE_BY:
+                    return int(ipp)
+            except Exception, e:
+                pass
+
+        return self.paginate_by
+
+    def get_context_data(self, **kwargs):
+
+        context = super(ArtistListView, self).get_context_data(**kwargs)
+
+        self.extra_context['filter'] = self.filter
+        self.extra_context['relation_filter'] = self.relation_filter
+        self.extra_context['tagcloud'] = self.tagcloud
+        # for the ordering-box
+        self.extra_context['order_by'] = ORDER_BY
+
+        # active tags
+        if self.request.GET.get('tags', None):
+            tag_ids = []
+            for tag_id in self.request.GET['tags'].split(','):
+                tag_ids.append(int(tag_id))
+            self.extra_context['active_tags'] = tag_ids
+
+        self.extra_context['list_style'] = self.request.GET.get('list_style', 'l')
+
+        self.extra_context['get'] = self.request.GET
+        context.update(self.extra_context)
+
+        return context
+
+
+    def get_queryset(self, **kwargs):
+
+        kwargs = {}
+        self.tagcloud = None
+        q = self.request.GET.get('q', None)
+
+        if q:
+            # qs = Artist.objects.filter(Q(name__istartswith=q) | Q(namevariations__name__istartswith=q)).distinct()
+            # https://lab.hazelfire.com/issues/1477
+            qs = Artist.objects.filter(Q(name__icontains=q) | Q(namevariations__name__icontains=q)).distinct()
+            qs = qs.prefetch_related('media_artist')
+        else:
+            # only display artists with tracks a.t.m.
+            # qs = Artist.objects.filter(media_artist__isnull=False).select_related('media_artist').prefetch_related('media_artist').distinct()
+            qs = Artist.objects.all().prefetch_related('media_artist')
+
+
+        order_by = self.request.GET.get('order_by', 'created')
+        direction = self.request.GET.get('direction', 'descending')
+
+        if order_by and direction:
+            if direction == 'descending':
+                qs = qs.order_by('-%s' % order_by)
+            else:
+                qs = qs.order_by('%s' % order_by)
+
+
+
+        # special relation filters
+        self.relation_filter = []
+
+        artist_filter = self.request.GET.get('artist', None)
+        if artist_filter:
+            qs = qs.filter(media_release__artist__slug=artist_filter).distinct()
+            fa = Artist.objects.filter(slug=artist_filter)[0]
+            f = {'item_type': 'artist' , 'item': fa, 'label': _('Artist')}
+            self.relation_filter.append(f)
+
+        label_filter = self.request.GET.get('label', None)
+        if label_filter:
+            qs = qs.filter(label__slug=label_filter).distinct()
+            fa = Label.objects.filter(slug=label_filter)[0]
+            f = {'item_type': 'label' , 'item': fa, 'label': _('Label')}
+            self.relation_filter.append(f)
+
+        date_start_filter = self.request.GET.get('date_start', None)
+        if date_start_filter:
+
+            qs = qs.filter(date_start__lte='%s-12-31' % date_start_filter, date_start__gte='%s-00-00' % date_start_filter).distinct()
+            f = {'item_type': 'label' , 'item': '%s-12-31' % date_start_filter, 'label': _('Date start')}
+            self.relation_filter.append(f)
+
+        # "extra-filters" (to provide some arbitary searches)
+        extra_filter = self.request.GET.get('extra_filter', None)
+        if extra_filter:
+            if extra_filter == 'possible_duplicates':
+                from django.db.models import Count
+                dupes = Artist.objects.values('name').annotate(Count('id')).order_by().filter(id__count__gt=1)
+                qs = qs.filter(name__in=[item['name'] for item in dupes])
+                if not order_by:
+                    qs = qs.order_by('name')
+
+        # filter by import session
+        import_session = self.request.GET.get('import', None)
+        if import_session:
+            from importer.models import Import
+            from django.contrib.contenttypes.models import ContentType
+            import_session = get_object_or_404(Import, pk=int(import_session))
+            ctype = ContentType.objects.get(model='artist')
+            ids = import_session.importitem_set.filter(content_type=ctype.pk).values_list('object_id',)
+            qs = qs.filter(pk__in=ids).distinct()
+
+        # apply filters
+        self.filter = ArtistFilter(self.request.GET, queryset=qs)
+        # self.filter = ReleaseFilter(self.request.GET, queryset=Release.objects.active().filter(**kwargs))
+
+        qs = self.filter.qs
+
+        stags = self.request.GET.get('tags', None)
+        tstags = []
+        if stags:
+            stags = stags.split(',')
+            for stag in stags:
+                #print int(stag)
+                tstags.append(int(stag))
+
+        if stags:
+            qs = Release.tagged.with_all(tstags, qs)
+
+        # rebuild filter after applying tags
+        self.filter = ArtistFilter(self.request.GET, queryset=qs)
+
         # tagging / cloud generation
         if qs.exists():
             tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=10)

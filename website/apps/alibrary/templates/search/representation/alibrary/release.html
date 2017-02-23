@@ -1,6 +1,9 @@
-2014 UK Compilation by <em>{{ object.get_artist_display }}</em> - released on <em>{{ object.label }}</em>. 12 of 17 Tracks. Added by <em>{{ object.creator.profile.get_display_name }}</em>.
+2014 UK Compilation by <em>{{ object.get_artist_display }}</em>
+
+{% comment %}
 {% if object.description %}
     <p class="description">
         {{ object.description|truncatechars_html:220 }}
     </p>
 {% endif %}
+{% endcomment %}

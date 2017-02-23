@@ -105,10 +105,6 @@ class ReleaseListView(PaginationMixin, ListView):
 
         q = self.request.GET.get('q', None)
 
-
-
-
-
         # haystack version
         if q:
             sqs = SearchQuerySet().models(Release).filter(SQ(content__contains=q) | SQ(name__contains=q))

@@ -120,46 +120,39 @@ class Massimport(BaseModel):
         print('scanning {}'.format(self.directory))
 
         for root, dirs, files in os.walk(self.directory):
+
             for file in files:
-                path = '{}'.format(os.path.join(root, file))
-                rel_path = path.replace(self.directory, '')
 
-                if os.path.isfile(path):
-                    filename, ext = os.path.splitext(path)
+                try:
 
-                    if ext in ALLOWED_EXTENSIONS:
-                        print(' + {}'.format(rel_path))
-                        #
-                        #
-                        # aps_path = os.path.join(self.directory, rel_path)
-                        #
-                        # cache_path = os.path.join(self.abs_cache_directory, rel_path)
-                        # cache_dir = os.path.dirname(cache_path)
-                        #
-                        # try:
-                        #     if not os.path.isdir(cache_dir):
-                        #         os.makedirs(cache_dir)
-                        # except OSError, e:
-                        #     print e
-                        #     pass  # file exists
-                        # # else:
-                        #
-                        # shutil.copyfile(aps_path, cache_path)
+                    path = os.path.join(root.decode('utf-8'), file.decode('utf-8'))
 
+                    rel_path = path.replace(self.directory, '')
 
-                        MassimportFile.objects.get_or_create(
-                            path=rel_path, massimport=self
-                        )
+                    if os.path.isfile(path):
 
-                        stats['added'] += 1
+                        filename, ext = os.path.splitext(path)
+                        if ext in ALLOWED_EXTENSIONS:
+                            MassimportFile.objects.get_or_create(
+                                path=rel_path, massimport=self
+                            )
+
+                            stats['added'] += 1
+
+                        else:
+                            print(' - {}'.format(rel_path))
+                            stats['ignored'] += 1
 
                     else:
-                        print(' - {}'.format(rel_path))
-                        stats['ignored'] += 1
+                        print(' ! {}'.format(rel_path))
+                        stats['missing'] += 1
 
-                else:
-                    print(' ! {}'.format(rel_path))
+                except Exception as e:
+                    print('{}'.format(e))
+                    print(root.decode('ascii', 'ignore'))
+                    print(file.decode('ascii', 'ignore'))
                     stats['missing'] += 1
+
 
         print('----------------------------------------------------------')
         print('ID: {}'.format(self.pk))
@@ -196,7 +189,7 @@ class MassimportFile(BaseModel):
 
     STATUS_CHOICES = ImportFile.STATUS_CHOICES
 
-    status = models.PositiveIntegerField(default=ImportFile.STATUS_INIT, choices=STATUS_CHOICES)
+    status = models.PositiveIntegerField(default=ImportFile.STATUS_INIT, choices=STATUS_CHOICES, db_index=True)
     massimport = models.ForeignKey(Massimport, related_name='files')
     import_file = models.ForeignKey(ImportFile, null=True)
     path = models.CharField(max_length=1024)

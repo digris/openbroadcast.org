@@ -371,7 +371,7 @@ class ImportFile(BaseModel):
     @task
     def identify_task(obj):
 
-        from util.identifier import Identifier
+
 
         pre_sleep = 1
         time.sleep(pre_sleep)
@@ -384,6 +384,7 @@ class ImportFile(BaseModel):
                 log.warning('Unable to determine mimetype: %s' % e)
 
 
+        from util.identifier import Identifier
         identifier = Identifier()
 
         # get import settings

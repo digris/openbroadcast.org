@@ -60,7 +60,7 @@
         </div>
 
 
-        {% include "search/search_inline.html" %}
+        {# include "search/search_inline.html" #}
 
 
         <div id="wrap">
@@ -109,6 +109,8 @@
             <div id="push"></div>
 
         </div>
+
+        {% include "aplayer/_inline.html" %}
 
         <div id="footer">
             {% include "skeleton/footer.html" %}
@@ -223,6 +225,9 @@
         <script src="{{ STATIC_URL }}dist/js/ui/dialog.js"></script>
         <script src="{{ STATIC_URL }}dist/js/ui/edit.base.js"></script>
 
+        <script src="{{ STATIC_URL }}el-pagination/js/el-pagination.js"></script>
+
+
 
 
         {% nunjucks_scripts %}
@@ -268,6 +273,11 @@
                 base.ui.load_state();
                 base.ui.tracklist();
                 base.ui.dialog();
+
+                $.endlessPaginate({
+                    paginateOnScroll: true,
+                    paginateOnScrollMargin: 400
+                });
 
             });
 

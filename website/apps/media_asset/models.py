@@ -98,10 +98,6 @@ class Waveform(TimestampedModel, UUIDModel):
     @current_app.task(filter=task_method, name='Waveform.process_waveform')
     def process_waveform(self):
 
-        print '******'
-        print self
-        print '******'
-
         from util.conversion import any_to_wav
         from util.grapher import create_waveform_image, create_spectrogram_image
 

@@ -79,6 +79,9 @@ aplayer.ui.bind = function() {
 
         }
 
+		console.debug('play:', uri, token, offset, mode, false, source);
+
+
 		aplayer.base.play_in_popup(uri, token, offset, mode, false, source);
 
 	});
