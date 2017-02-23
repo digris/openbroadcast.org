@@ -1,36 +1,28 @@
 {% extends "layout_base.html" %}
 
+{% block heading %}
+<div id="heading">
+    {% include "skeleton/heading.html" %}
+</div>
+{% endblock %}
 
 
+{% block modnav %}
+<div id="modnav">
+    {% include "skeleton/module-navigation.html" %}
+</div>
+{% endblock %}
 
 
-	{% block heading %}
-	<div id="heading">
-		{% include "skeleton/heading.html" %}
-	</div>
-	{% endblock %}
+{% block inner %}
+<div class="content cms">
+    {% block cms_main %}{% endblock %}
+</div>
+{% endblock %}
 
 
-	{% block modnav %}
-	<div id="modnav">
-		{% include "skeleton/module-navigation.html" %}
-	</div>
-	{% endblock %}
-
-
-	{% block inner %}
-	<div class="content cms">
-		{% block cms_main %}{% endblock %}
-	</div>
-	{% endblock %}
-
-
-	{% block sidebar %}
-	<div class="content cms">
-		{% block cms_sidebar %}{% endblock %}
-	</div>
-	{% endblock %}
-
-
-
-
+{% block sidebar %}
+<div class="content cms">
+    {% block cms_sidebar %}{% endblock %}
+</div>
+{% endblock %}
