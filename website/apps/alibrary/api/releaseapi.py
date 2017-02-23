@@ -122,9 +122,11 @@ class ReleaseResource(ModelResource):
 
     def autocomplete_dehydrate(self, bundle, q):
         bundle.data['name'] = bundle.obj.name
-        bundle.data['type'] = bundle.obj.get_type_display()
         bundle.data['id'] = bundle.obj.pk
         bundle.data['ct'] = 'release'
+        bundle.data['releasedate'] = bundle.obj.releasedate
+        bundle.data['artist'] = bundle.obj.get_artists()
+        bundle.data['media_count'] = bundle.obj.media_release.count()
         bundle.data['get_absolute_url'] = bundle.obj.get_absolute_url()
         bundle.data['resource_uri'] = bundle.obj.get_api_url()
         bundle.data['main_image'] = None
