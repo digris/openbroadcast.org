@@ -432,11 +432,6 @@ class ImportFile(BaseModel):
 
             if obp_media_uuid:
 
-                # print '******************************************************************'
-                # print 'got obp match'
-                # print 'obp_media_uuid: %s' % obp_media_uuid
-                # print '******************************************************************'
-
                 try:
                     obj.status = ImportFile.STATUS_DUPLICATE
                     obj.media = Media.objects.get(uuid=obp_media_uuid)
