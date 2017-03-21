@@ -1,0 +1,15 @@
+{% if object.series %}
+    <p>
+        Series: {{ object.series }}{% if object.series_number %} #{{ object.series_number }}{% endif %}
+    </p>
+{% endif %}
+
+{% if object.user %}
+    <p>
+        Author: {% firstof object.user.username object.user %}
+    </p>
+{% endif %}
+
+<p>
+    Type: {{ object.get_type_display }}
+</p>

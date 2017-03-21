@@ -63,6 +63,24 @@ var SearchApp = function () {
                 [['Enter'], 'detail view']
             ]
         },
+        'alibrary.label': {
+            display_name: 'Label',
+            search_url: '/content/library/labels/',
+            keys: [
+                [['e'], 'edit view'],
+                [['Enter'], 'detail view']
+            ]
+        },
+        'alibrary.playlist': {
+            display_name: 'Playlist',
+            search_url: '/content/playlists/',
+            keys: [
+                [['p'], 'play'],
+                [['q'], 'queue'],
+                [['e'], 'edit view'],
+                [['Enter'], 'detail view']
+            ]
+        },
         // profiles
         'profiles.profile': {
             display_name: 'User',
@@ -154,6 +172,18 @@ var SearchApp = function () {
                         break;
                     case 84: // 't'
                         self.toggle_ctype('alibrary.media');
+                        break;
+                    case 76: // 'l'
+                        self.toggle_ctype('alibrary.label');
+                        break;
+                    case 80: // 'p'
+                        self.toggle_ctype('alibrary.playlist');
+                        break;
+                    case 85: // 'u'
+                        self.toggle_ctype('profiles.profile');
+                        break;
+                    case 81: // 'q'
+                        self.toggle_ctype('all');
                         break;
                 }
 

@@ -1,0 +1,31 @@
+{%  if object.country %}
+<em>{{ object.country.iso2_code }}</em> based
+{% endif %}
+
+
+{%  if object.type and object.type != 'unknown' %}
+{{ object.get_type_display }}
+{% endif %}
+Label,
+
+{% if object.date_start %}&nbsp;*{{ object.date_start.year }}{% endif %}
+{% if object.date_end %}&nbsp;&#10013;{{ object.date_end.year }}{% endif %}
+
+{% if object.get_root %}
+    <p class="parent">
+        Umbrella Label: {{object.get_root.name }}
+    </p>
+{% endif %}
+
+{% if object.parent %}
+    <p class="parent">
+        Parent Label: {{object.parent.name }}
+    </p>
+{% endif %}
+
+{% if object.children.exists %}
+    <p class="sub-labels">
+        Parent of: {% for child in object.children.all  %}<em>{{ child }}</em>{% if not forloop.last %}, {% endif %}{% endfor %}
+    </p>
+{% endif %}
+

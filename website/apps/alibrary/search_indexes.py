@@ -1,5 +1,5 @@
 from haystack import indexes
-from alibrary.models import Release, Artist, Media, Label
+from alibrary.models import Release, Artist, Media, Label, Playlist
 
 class ReleaseIndex(indexes.SearchIndex, indexes.Indexable):
 
@@ -35,6 +35,28 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
 
     def get_model(self):
         return Media
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.all()
+
+class LabelIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+    name = indexes.EdgeNgramField(model_attr='name', boost=1.5)
+
+    def get_model(self):
+        return Label
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.all()
+
+class PlaylistIndex(indexes.SearchIndex, indexes.Indexable):
+
+    text = indexes.CharField(document=True, use_template=True)
+    name = indexes.EdgeNgramField(model_attr='name', boost=1.5)
+
+    def get_model(self):
+        return Playlist
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
