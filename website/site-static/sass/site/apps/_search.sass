@@ -4,22 +4,35 @@
   position: relative
 
 #search_form
-
-  height: 32px
+  width: 378px
+  height: 31px
   padding: 0
-  background-color: rgba(255, 255, 255, 0.8)
+  border-bottom: 1px solid $primary-color-b
+  +clearfix()
+
+  .wrapper-icon
+    padding: 4px 0 0 0
+    float: left
+    .icon
+      color: $white
 
   #search_input
-    width: 320px
+    width: 350px
+    height: 27px
     padding: 2px 5px
     border: none
-    background-color: rgba(255, 255, 255, 0.5)
+    color: $white
+    text-transform: uppercase
+    background-color: rgba(255, 255, 255, 0.3)
+    float: right
+    //background: transparent
+
 
     &::placeholder
-      color: #555
+      color: rgba(255, 255, 255, 0.75)
 
     &:focus::placeholder
-      color: rgba(34, 34, 34, 0.36)
+      color: rgba(255, 255, 255, 0.25)
 
 
 

@@ -77,6 +77,7 @@ MEDIATYPE_CHOICES = (
             ('djmix', _('DJ-Mix')),
             ('concert', _('Concert')),
             ('liveact', _('Live Act (PA)')),
+            ('radioshow', _('Radio show')),
         )
     ),
     ('other', _('Other')),
@@ -209,7 +210,7 @@ class Media(MigrationMixin):
         verbose_name="Duration (in ms)",
         blank=True, null=True, editable=False
     )
-    
+
     # relations
     release = models.ForeignKey(
         'alibrary.Release',
@@ -221,7 +222,7 @@ class Media(MigrationMixin):
         blank=True, null=True,
         related_name='media_artist'
     )
-    
+
     # user relations
     owner = models.ForeignKey(
         User,
@@ -248,7 +249,7 @@ class Media(MigrationMixin):
         verbose_name='ISRC',
         max_length=12, null=True, blank=True
     )
-    
+
     # relations a.k.a. links
     relations = GenericRelation(Relation)
     playlist_items = GenericRelation(
@@ -283,7 +284,7 @@ class Media(MigrationMixin):
         related_name='media_license',
         limit_choices_to={'selectable': True}
     )
-    
+
     filename = models.CharField(
         verbose_name=_('Filename'),
         max_length=256, blank=True, null=True
@@ -365,8 +366,8 @@ class Media(MigrationMixin):
             ('admin_media', 'Edit Track (extended)'),
             ('upload_media', 'Upload Track'),
         )
-    
-    
+
+
     def __unicode__(self):
         return self.name
 
@@ -405,14 +406,14 @@ class Media(MigrationMixin):
             return reversion.get_for_object(self)
         except:
             return None
-        
-    
+
+
     def get_last_revision(self):
         try:
             return reversion.get_unique_for_object(self)[0].revision
         except:
             return None
-        
+
     def get_last_editor(self):
         latest_revision = self.get_last_revision()
         if latest_revision:
@@ -456,8 +457,8 @@ class Media(MigrationMixin):
         return reverse('alibrary-media-stream_html5', kwargs={'uuid': self.uuid})
 
     def get_api_url(self):
-        return reverse('api_dispatch_detail', kwargs={  
-            'api_name': 'v1',  
+        return reverse('api_dispatch_detail', kwargs={
+            'api_name': 'v1',
             'resource_name': 'library/track',
             'uuid': self.uuid
         })
@@ -467,14 +468,14 @@ class Media(MigrationMixin):
         if self.release:
             return '<a href="%s">%s</a>' % (reverse("admin:alibrary_release_change", args=(self.release.id,)), self.release.name)
         return None
-    
+
     release_link.allow_tags = True
-    release_link.short_description = "Edit" 
+    release_link.short_description = "Edit"
 
     # TODO: depreciated
     def get_playlink(self):
         return '/api/tracks/%s/#0#replace' % self.uuid
-    
+
     # TODO: depreciated
     def get_download_permissions(self):
         pass
@@ -589,7 +590,7 @@ class Media(MigrationMixin):
     @property
     def appearances(self):
         return self.get_appearances()
-        
+
     def get_appearances(self):
         ps = []
         try:
@@ -597,18 +598,18 @@ class Media(MigrationMixin):
             ps = Playlist.objects.exclude(type='other').filter(items__in=pis).order_by('-type', '-created',).nocache().distinct()
         except Exception, e:
             pass
-        
+
         return ps
 
-    
+
     """
-    creates an echoprint fp and post it to the 
+    creates an echoprint fp and post it to the
     identification server
     """
     def update_echoprint(self):
         #self.update_echoprint_task.delay(self)
         self.update_echoprint_task(self)
-        
+
     @task()
     def update_echoprint_task(obj):
 
@@ -640,7 +641,7 @@ class Media(MigrationMixin):
             return False
 
         # print d
-        
+
         try:
             code = d[0]['code']
             version = d[0]['metadata']['version']
@@ -748,7 +749,7 @@ class Media(MigrationMixin):
 
 
 
-        
+
     def save(self, *args, **kwargs):
 
         # Assign a default license
@@ -829,7 +830,7 @@ class Media(MigrationMixin):
 
 
 
-        
+
 # media post save
 @disable_for_loaddata
 def media_post_save(sender, **kwargs):
@@ -862,8 +863,8 @@ def media_post_save(sender, **kwargs):
 
     invalidate_obj(obj)
 
-post_save.connect(media_post_save, sender=Media) 
-        
+post_save.connect(media_post_save, sender=Media)
+
 
 def media_pre_delete(sender, **kwargs):
 

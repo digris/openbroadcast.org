@@ -19,9 +19,17 @@
 
     <div>
         <form action="/api/v1/search/" id="search_form">
-            <input type="text" name="q" id="search_input" autocomplete="off"
-                   placeholder="Search artists, releases and more... [Shift + Space]">
+
+            <div class="wrapper-icon">
+                <div class="container-icon">
+                    <i class="icon icon-search"></i>
+                </div>
+            </div>
+
+            <input type="text" name="q" id="search_input" autocomplete="off" placeholder="Search artists, releases and more... [Shift + Space]">
+
             <input type="hidden" name="format" value="json">
+
         </form>
     </div>
 
