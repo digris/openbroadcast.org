@@ -4,9 +4,9 @@
 
 {{ object.get_artist_display }}
 
-{% for tag in object.tags %}
-{{ tag }},
-{% endfor %}
+
+{% if object.lyrics %}{{ object.lyrics }}{% endif %}
+
 
 {% if object.release %}
 {% for tag in object.release.tags %}
