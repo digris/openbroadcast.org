@@ -97,7 +97,7 @@
 			<a href="{% spurl base=request.get_full_path set_query="order_by=updated" toggle_query="direction=ascending,descending" %}" style="display: block;">{% trans "Modified" %}</a>
 		</div>
 		<div class="list_header_item c6">
-		&nbsp;			
+		&nbsp;
 		</div>
 	</div>
 	{% endif %}
@@ -126,8 +126,38 @@
 
         {% hash_user_groups request.user as group_hash %}
 
-        {% include page_template %}
+        {# switching list styles #}
+        {% if list_style == "s" %}
 
+            {% for item in object_list %}
+                {% include "alibrary/artist/list_item_s.html" %}
+            {% empty %}
+                <p style="padding: 20px; text-align: center;">
+                    {% trans 'No results to display.' %}
+                </p>
+            {% endfor %}
+
+        {% endif %}
+
+        {% if list_style == "l" %}
+
+            {% for item in object_list %}
+                {% include "alibrary/artist/list_item_l.html" %}
+            {% empty %}
+                <p style="padding: 20px; text-align: center;">
+                    {% trans 'No results to display.' %}
+                </p>
+            {% endfor %}
+
+            {# comment endless pagination template #}
+            {# include page_template #}
+            {# comment #}
+        {%  endif %}
+
+
+        {% if list_style == "m" %}
+        {% include "alibrary/artist/list_item_m.html" %}
+        {% endif %}
 
 	</div>
 

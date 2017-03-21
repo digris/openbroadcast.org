@@ -52,23 +52,36 @@ ORDER_BY = [
 ]
 
 
-class ArtistListView(AjaxListView):
-    
-    # context_object_name = "artist_list"
-    #template_name = "alibrary/release_list.html"
-    page_template = 'alibrary/artist_list_page.html'
-    
+class ArtistListView(PaginationMixin, ListView):
+
     object = Artist
+    paginate_by = ALIBRARY_PAGINATE_BY_DEFAULT
 
     model = Release
+
+    # context_object_name = "artist_list"
+    #template_name = "alibrary/release_list.html"
+    #page_template = 'alibrary/artist_list_page.html'
     extra_context = {}
-    
+
+    def get_paginate_by(self, queryset):
+
+        ipp = self.request.GET.get('ipp', None)
+        if ipp:
+            try:
+                if int(ipp) in ALIBRARY_PAGINATE_BY:
+                    return int(ipp)
+            except Exception as e:
+                pass
+
+        return self.paginate_by
+
 
 
     def get_context_data(self, **kwargs):
 
         context = super(ArtistListView, self).get_context_data(**kwargs)
-        
+
         self.extra_context['filter'] = self.filter
         self.extra_context['relation_filter'] = self.relation_filter
         self.extra_context['tagcloud'] = self.tagcloud
@@ -81,21 +94,21 @@ class ArtistListView(AjaxListView):
             for tag_id in self.request.GET['tags'].split(','):
                 tag_ids.append(int(tag_id))
             self.extra_context['active_tags'] = tag_ids
-    
+
         self.extra_context['list_style'] = self.request.GET.get('list_style', 'l')
-        
+
         self.extra_context['get'] = self.request.GET
         context.update(self.extra_context)
 
         return context
-    
+
 
     def get_queryset(self, **kwargs):
 
         kwargs = {}
         self.tagcloud = None
         q = self.request.GET.get('q', None)
-        
+
         if q:
             # qs = Artist.objects.filter(Q(name__istartswith=q) | Q(namevariations__name__istartswith=q)).distinct()
             # https://lab.hazelfire.com/issues/1477
@@ -106,28 +119,28 @@ class ArtistListView(AjaxListView):
             # qs = Artist.objects.filter(media_artist__isnull=False).select_related('media_artist').prefetch_related('media_artist').distinct()
             qs = Artist.objects.all().prefetch_related('media_artist')
 
-            
+
         order_by = self.request.GET.get('order_by', 'created')
         direction = self.request.GET.get('direction', 'descending')
-        
+
         if order_by and direction:
             if direction == 'descending':
                 qs = qs.order_by('-%s' % order_by)
             else:
                 qs = qs.order_by('%s' % order_by)
-            
-            
-            
+
+
+
         # special relation filters
         self.relation_filter = []
-        
+
         artist_filter = self.request.GET.get('artist', None)
         if artist_filter:
             qs = qs.filter(media_release__artist__slug=artist_filter).distinct()
             fa = Artist.objects.filter(slug=artist_filter)[0]
             f = {'item_type': 'artist' , 'item': fa, 'label': _('Artist')}
             self.relation_filter.append(f)
-            
+
         label_filter = self.request.GET.get('label', None)
         if label_filter:
             qs = qs.filter(label__slug=label_filter).distinct()
@@ -165,7 +178,7 @@ class ArtistListView(AjaxListView):
         # apply filters
         self.filter = ArtistFilter(self.request.GET, queryset=qs)
         # self.filter = ReleaseFilter(self.request.GET, queryset=Release.objects.active().filter(**kwargs))
-        
+
         qs = self.filter.qs
 
         stags = self.request.GET.get('tags', None)
@@ -181,7 +194,7 @@ class ArtistListView(AjaxListView):
 
         # rebuild filter after applying tags
         self.filter = ArtistFilter(self.request.GET, queryset=qs)
-        
+
         # tagging / cloud generation
         if qs.exists():
             tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=10)
@@ -346,12 +359,12 @@ class ArtistDetailView(DetailView):
     model = Artist
     extra_context = {}
 
-    
+
     def render_to_response(self, context):
         return super(ArtistDetailView, self).render_to_response(context, content_type="text/html")
-    
 
-        
+
+
     def get_context_data(self, **kwargs):
 
         context = super(ArtistDetailView, self).get_context_data(**kwargs)
@@ -361,7 +374,7 @@ class ArtistDetailView(DetailView):
         self.extra_context['releases'] = Release.objects.filter(Q(media_release__artist=obj)\
             | Q(album_artists=obj))\
             .distinct()[0:8]
-        
+
         """
         top-flop
         """
@@ -371,18 +384,18 @@ class ArtistDetailView(DetailView):
             media_top = media_top[0:10]
             for media in media_top:
                 m_top.append(media)
-                
+
         self.extra_context['m_top'] = m_top
-        
+
         m_flop = []
         media_flop = Media.objects.filter(artist=obj, votes__vote__lt=0).order_by('votes__vote').distinct()
         if media_flop.count() > 0:
             media_flop = media_flop[0:10]
             for media in media_flop:
                 m_flop.append(media)
-                
+
         self.extra_context['m_flop'] = m_flop
-        
+
 
         self.extra_context['m_contrib'] = Media.objects.filter(extra_artists=obj)[0:48]
         self.extra_context['history'] = reversion.get_unique_for_object(obj)
@@ -501,7 +514,7 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     #         relation.save()
 
 
-    
+
 # autocompleter views
 # TODO: check if still needed. should actually already be handled via api!
 def artist_autocomplete(request):
@@ -509,9 +522,9 @@ def artist_autocomplete(request):
     q = request.GET.get('q', None)
 
     result = []
-    
+
     if q and len(q) > 1:
-        
+
         releases = Release.objects.filter(Q(name__istartswith=q)\
             | Q(media_release__name__icontains=q)\
             | Q(media_release__artist__name__icontains=q)\
@@ -529,7 +542,7 @@ def artist_autocomplete(request):
             for media in release.media_release.filter(artist__name__icontains=q).distinct():
                 if not media.artist in artists:
                     artists.append(media.artist)
-                
+
             if not len(artists) > 0:
                 artists = None
             if not len(medias) > 0:
@@ -540,8 +553,8 @@ def artist_autocomplete(request):
             item['artists'] = artists
             item['medias'] = medias
             item['labels'] = labels
-            
+
             result.append(item)
 
     return render_to_response("alibrary/element/autocomplete.html", { 'query': q, 'result': result }, context_instance=RequestContext(request))
-    
+

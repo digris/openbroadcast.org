@@ -35,11 +35,6 @@ windows:
     - shell_command:
         - cd ~/srv/echoprint-server/solr
         - ./run.sh
+    - shell_command:
+        - cd ~/code/openbroadcast/infrastructure/ansible/
 
-
-- window_name: deploy
-  layout: tiled
-  start_directory: ~/code/openbroadcast/infrastructure/ansible/
-  panes:
-    - pwd
-    - pwd

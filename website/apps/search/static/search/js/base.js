@@ -104,7 +104,7 @@ var SearchApp = function () {
 
             // handle entering search mode & input focus
             if (e.shiftKey && e.keyCode == 32) {
-                e.preventDefault();
+
                 if (self.debug) {
                     console.log('Shift + ', e.keyCode, '-', e.key);
                 }
@@ -127,8 +127,16 @@ var SearchApp = function () {
                     if (self.debug) {
                         console.debug('"shift+s" without search mode. enter search mode');
                     }
-                    e.preventDefault();
-                    self.enter_search_mode();
+
+                    var have_focus = false;
+                    var el_focus = $(':focus');
+                    if(el_focus.length && (el_focus.is('input') || el_focus.is('textarea'))) {
+                        have_focus = true;
+                    }
+                    if(!have_focus) {
+                        e.preventDefault();
+                        self.enter_search_mode();
+                    }
                 }
             }
 
@@ -641,7 +649,7 @@ var SearchApp = function () {
     this.update_result_context = function(item) {
 
         var container = self.summary_container.find('.result-context-container');
-        
+
         if(item) {
             var html = nj.render('search/nj/result.context.html', {object: item});
             container.html(html);
