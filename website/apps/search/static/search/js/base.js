@@ -703,7 +703,7 @@ var SearchApp = function () {
             console.debug('SearchApp - init');
         }
         // hack: move element on home
-        $("#global_search").detach().appendTo('.teaser-container').addClass('search-home');
+        $("#body.home #global_search").detach().appendTo('.teaser-container').addClass('search-home');
 
         self.form_container = $('#search_form');
         self.input_container = $('#search_input');
