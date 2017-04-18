@@ -1,7 +1,7 @@
 ;
 var SearchApp = function () {
     var self = this;
-    this.debug = false;
+    this.debug = true;
     this.base_url = '/api/v1/search/';
     this.form_container;
     this.input_container;
@@ -97,11 +97,8 @@ var SearchApp = function () {
     this.search_more_template = '<div class="more"><a href="#">More Results</a></div>';
 
     // references to platform apps
-    this.collector;
-    this.player;
-
-
-
+    this.collector = null;
+    this.player = null;
 
     this.bindings = function () {
 
@@ -193,7 +190,6 @@ var SearchApp = function () {
         });
 
 
-
         this.input_container.on('keyup', function (e) {
 
 
@@ -205,23 +201,21 @@ var SearchApp = function () {
                 self.keyboard_result_action(e);
             }
 
-            var q = $(this).val();
-
+            // handle multiple whitespaces in input (replace with one 'space' only)
+            var q = $(this).val().replace(/\s\s+/g, ' ');
 
             if (self.debug) {
                 console.debug('keyup - q', '"' + q + '"');
             }
 
-
             if(q.length > 0 && !self.search_mode) {
                 self.enter_search_mode();
             }
 
-
             // check if the querystring actually did change, ignoring whitespace.
             if ($.trim(self.q) != $.trim(q)) {
                 self.q = q;
-                delay(function () {
+                delay_func(function () {
                     console.debug('delay search call by 350ms');
                     self.search()
                 }, 350);
@@ -708,12 +702,15 @@ var SearchApp = function () {
         if (self.debug) {
             console.debug('SearchApp - init');
         }
+        // hack: move element on home
+        $("#global_search").detach().appendTo('.teaser-container').addClass('search-home');
 
         self.form_container = $('#search_form');
         self.input_container = $('#search_input');
         self.scope_container = $('#search_scope');
         self.results_container = $('#search_results');
         self.summary_container = $('#search_summary');
+
 
 
         // load ctypes from cookie
@@ -733,7 +730,7 @@ var SearchApp = function () {
 
 };
 
-var delay = (function () {
+var delay_func = (function () {
     var timer = 0;
     return function (callback, ms) {
         clearTimeout(timer);

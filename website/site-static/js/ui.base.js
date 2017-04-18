@@ -93,11 +93,7 @@ UiStates = function () {
         },
         // save states to cookie
         this.save = function () {
-
-            $.log('save');
             $.cookie(this.cookie_name, JSON.stringify(self.values.items), { expires: 7, path: '/' });
-            $.log('post-save');
-
         }
 };
 
@@ -206,7 +202,7 @@ base.ui.states_custom_update = function (id, state) {
 
         return true;
     }
-    
+
     return false;
 
 };
@@ -432,7 +428,7 @@ base.ui.iface = function () {
         };
 
         base.ui.ajax(url, data);
-        
+
         return false;
     });
 

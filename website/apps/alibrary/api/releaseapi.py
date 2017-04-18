@@ -1,4 +1,4 @@
-from alibrary.models import Release
+from alibrary.models import Release, Media
 from django.conf.urls import url
 from easy_thumbnails.files import get_thumbnailer
 from tastypie import fields
@@ -7,6 +7,7 @@ from tastypie.authorization import Authorization
 from tastypie.cache import SimpleCache
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
+from django.db.models import Q
 from haystack.backends import SQ
 from haystack.query import SearchQuerySet
 
@@ -126,6 +127,7 @@ class ReleaseResource(ModelResource):
         bundle.data['ct'] = 'release'
         bundle.data['releasedate'] = bundle.obj.releasedate
         bundle.data['artist'] = bundle.obj.get_artists()
+        bundle.data['artist_display'] = bundle.obj.get_artist_display()
         bundle.data['media_count'] = bundle.obj.media_release.count()
         bundle.data['get_absolute_url'] = bundle.obj.get_absolute_url()
         bundle.data['resource_uri'] = bundle.obj.get_api_url()
@@ -138,7 +140,8 @@ class ReleaseResource(ModelResource):
             pass
 
         media_list = []
-        # for media in bundle.obj.media_release.filter(Q(name__icontains=q) | Q(artist__name__icontains=q)).distinct():
+        # msqs = SearchQuerySet().models(Media).filter(SQ(content__contains=q) | SQ(content_auto=q))
+        # for media in bundle.obj.media_release.filter(id__in=[result.object.pk for result in msqs]).distinct():
         #    media_list.append({'name': media.name, 'artist': media.artist.name, 'get_absolute_url': media.get_absolute_url()})
 
         bundle.data['media'] = media_list
