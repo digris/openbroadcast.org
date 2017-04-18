@@ -11,6 +11,9 @@ from tastypie.authentication import MultiAuthentication, SessionAuthentication, 
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
+from haystack.backends import SQ
+from haystack.query import SearchQuerySet
+
 
 THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
 
@@ -178,12 +181,13 @@ class MediaResource(ModelResource):
         qs = None
 
         if q and len(q) > 1:
-            qs = Media.objects.order_by('name').filter(name__icontains=q)
-            #qs = Media.objects.order_by('name').filter(Q(name__istartswith=q)\
-            #    | Q(artist__name__icontains=q)\
-            #    | Q(release__name__icontains=q))
 
+            # haystack version
+            sqs = SearchQuerySet().models(Media).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            qs = Media.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
 
+            # ORM version
+            #qs = Media.objects.order_by('name').filter(name__icontains=q)
 
             object_list = qs.distinct()[0:50]
             object_count = qs.distinct().count()

@@ -14,6 +14,8 @@ from guardian.forms import UserObjectPermissionsForm
 from tagging_extra.utils import calculate_cloud
 from pure_pagination.mixins import PaginationMixin
 from tagging.models import Tag
+from haystack.backends import SQ
+from haystack.query import SearchQuerySet
 
 from ..filters import PlaylistFilter
 from ..forms import PlaylistForm, ActionForm
@@ -42,15 +44,15 @@ ORDER_BY = [
 ]
 
 class PlaylistListView(PaginationMixin, ListView):
-    
+
     context_object_name = "playlist_list"
     template_name = "alibrary/playlist_list.html"
-    
+
     paginate_by = ALIBRARY_PAGINATE_BY_DEFAULT
     extra_context = {}
-    
+
     def get_paginate_by(self, queryset):
-        
+
         ipp = self.request.GET.get('ipp', None)
         if ipp:
             try:
@@ -62,11 +64,11 @@ class PlaylistListView(PaginationMixin, ListView):
         return self.paginate_by
 
     def get_context_data(self, **kwargs):
-        
-        
+
+
         context = super(PlaylistListView, self).get_context_data(**kwargs)
-        
-        
+
+
         self.extra_context['filter'] = self.filter
         self.extra_context['relation_filter'] = self.relation_filter
         self.extra_context['tagcloud'] = self.tagcloud
@@ -79,55 +81,60 @@ class PlaylistListView(PaginationMixin, ListView):
             for tag_id in self.request.GET['tags'].split(','):
                 tag_ids.append(int(tag_id))
             self.extra_context['active_tags'] = tag_ids
-        
+
         self.extra_context['list_style'] = self.request.GET.get('list_style', 'l')
         self.extra_context['get'] = self.request.GET
-        
+
         context.update(self.extra_context)
-        
+
         return context
-    
+
 
     def get_queryset(self, **kwargs):
-        
-        
+
+
         self.tagcloud = None
         q = self.request.GET.get('q', None)
 
         #qs = Playlist.objects.all()
+
         if self.request.user.is_authenticated():
             qs = Playlist.objects.filter(~Q(type='basket') | Q(user__pk=self.request.user.pk))
-            #qs = Playlist.objects.filter(~Q(type='basket'))
         else:
             qs = Playlist.objects.exclude(type='basket')
 
         if q:
-            qs = qs.filter(Q(name__icontains=q)\
-            | Q(series__name__icontains=q)\
-            | Q(user__username__istartswith=q))\
-            .distinct()
+            # haystack version
+            sqs = SearchQuerySet().models(Playlist).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            qs = qs.filter(id__in=[result.object.pk for result in sqs]).distinct()
+
+            # ORM version
+            # qs = qs.filter(Q(name__icontains=q)\
+            # | Q(series__name__icontains=q)\
+            # | Q(user__username__istartswith=q))\
+            # .distinct()
 
         order_by = self.request.GET.get('order_by', None)
         direction = self.request.GET.get('direction', None)
-        
+
         if order_by and direction:
             if direction == 'descending':
                 qs = qs.order_by('-%s' % order_by)
             else:
                 qs = qs.order_by('%s' % order_by)
-            
-            
-            
+
+
+
         if 'type' in self.kwargs:
             qs = qs.filter(type=self.kwargs['type'])
-            
+
         if 'user' in self.kwargs:
             user = get_object_or_404(User, username=self.kwargs['user'])
             if 'type' in self.kwargs:
                 qs = qs.filter(type=self.kwargs['type'], user=user)
             else:
                  qs = qs.filter(type__in=['playlist', 'broadcast', 'basket'],user=user)
-            
+
         # special relation filters
         self.relation_filter = []
 
@@ -148,11 +155,11 @@ class PlaylistListView(PaginationMixin, ListView):
 
 
 
-        
+
         # apply filters
         self.filter = PlaylistFilter(self.request.GET, queryset=qs)
         qs = self.filter.qs
-        
+
         stags = self.request.GET.get('tags', None)
         tstags = []
         if stags:
@@ -162,8 +169,8 @@ class PlaylistListView(PaginationMixin, ListView):
 
         if stags:
             qs = Release.tagged.with_all(tstags, qs)
-            
-            
+
+
         # rebuild filter after applying tags
         self.filter = PlaylistFilter(self.request.GET, queryset=qs)
 
@@ -174,7 +181,7 @@ class PlaylistListView(PaginationMixin, ListView):
             self.tagcloud = calculate_cloud(tagcloud)
 
         return qs
-    
+
     """
     def get_queryset(self):
         kwargs = {}
@@ -185,20 +192,20 @@ class PlaylistDetailView(DetailView):
 
     context_object_name = "playlist"
     model = Playlist
-    
+
     def render_to_response(self, context):
         return super(PlaylistDetailView, self).render_to_response(context, content_type="text/html")
-        
+
     def get_context_data(self, **kwargs):
 
         context = super(PlaylistDetailView, self).get_context_data(**kwargs)
         return context
-    
+
 
 class PlaylistCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
-    
+
     model = Playlist
-    
+
     template_name = 'alibrary/playlist_create.html'
     form_class = PlaylistForm
 
@@ -208,13 +215,13 @@ class PlaylistCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
     #@method_decorator(login_required)
     #def dispatch(self, *args, **kwargs):
     #    return super(PlaylistCreateView, self).dispatch(*args, **kwargs)
-        
+
 
     def get_context_data(self, **kwargs):
         context = super(PlaylistCreateView, self).get_context_data(**kwargs)
-        context['action_form'] = ActionForm()        
+        context['action_form'] = ActionForm()
         return context
-    
+
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.user = self.request.user
@@ -254,10 +261,10 @@ class PlaylistDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView
         context = super(PlaylistDeleteView, self).get_context_data(**kwargs)
         return context
 
-    
-    
+
+
 class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    
+
     model = Playlist
     template_name = "alibrary/playlist_edit.html"
     success_url = '#'
@@ -319,12 +326,12 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             form_errors = merge_form_errors([form,])
 
             return self.render_to_response(self.get_context_data(form=form, form_errors=form_errors))
-        
+
 
 
 @login_required
 def playlist_convert(request, pk, type):
-    
+
     playlist = get_object_or_404(Playlist, pk=pk, user=request.user)
 
     playlist, status = playlist.convert_to(type)

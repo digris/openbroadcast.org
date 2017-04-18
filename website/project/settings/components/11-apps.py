@@ -443,10 +443,11 @@ https://github.com/mbi/django-simple-captcha/blob/master/captcha/conf/settings.p
 
 
 
-CAPTCHA_LETTER_ROTATION = (-10, 10)
+CAPTCHA_LETTER_ROTATION = (-12, 12)
 CAPTCHA_BACKGROUND_COLOR = '#fafafa'
 CAPTCHA_FOREGROUND_COLOR = '#6633CC'
-CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
+#CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
 CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)
 CAPTCHA_FILTER_FUNCTIONS = ()
 CAPTCHA_PUNCTUATION = '''_"',.;:-'''

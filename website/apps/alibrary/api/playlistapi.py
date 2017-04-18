@@ -14,6 +14,9 @@ from tastypie.authorization import Authorization
 from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
+from haystack.backends import SQ
+from haystack.query import SearchQuerySet
+
 
 THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
 
@@ -305,9 +308,21 @@ class PlaylistResource(ModelResource):
         qs = None
 
         if q and len(q) > 1:
-            qs = Playlist.objects.order_by('name').filter(Q(name__icontains=q) \
-                                                          | Q(series__name__icontains=q) \
-                                                          | Q(user__username__icontains=q))
+
+            # haystack version
+            sqs = SearchQuerySet().models(Playlist).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            qs = Playlist.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
+
+            # # ORM version
+            # qs = Playlist.objects.order_by('name').filter(Q(name__icontains=q) \
+            #                                               | Q(series__name__icontains=q) \
+            #                                               | Q(user__username__icontains=q))
+
+
+            if request.user.is_authenticated():
+                qs = qs.filter(~Q(type='basket') | Q(user__pk=request.user.pk))
+            else:
+                qs = qs.exclude(type='basket')
 
             if type:
                 qs = qs.filter(type=type)

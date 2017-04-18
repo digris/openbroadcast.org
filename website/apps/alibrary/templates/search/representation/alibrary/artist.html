@@ -1,27 +1,11 @@
-<em>{{ object.country.iso2_code }}</em> based  <em>{{ object.get_type_display }}</em>, {{ object.date_start }} - {{ object.date_end }}
+{% if object.type %}{{ object.get_type_display }}{% endif %}
 
-{% if object.members.exists %}
-    <p class="members">
-        {{ object.get_type_display }} members: {% for member in object.members.all %}<em>{{ member }}</em>{% if not forloop.last %}, {% endif %}{% endfor %}
-    </p>
-{% endif %}
+{% if object.country %}{{ object.country.iso2_code }}{% endif %}
 
-{% if object.aliases.exists %}
-    <p class="aliases">
-        a.k.a. {{ object.get_aliases|join:', ' }}
-    </p>
-{% endif %}
+{% if object.date_start %}&nbsp;*{{ object.date_start.year }}{% endif %}
+{% if object.date_end %}&nbsp;&#10013;{{ object.date_end.year }}{% endif %}
 
 {% if object.get_membership %}
-    <p class="membership">
-
-        Member of: {% for membership in object.get_membership %}<em>{{ membership }}</em>{% if not forloop.last %}, {% endif %}{% endfor %}
-
-    </p>
-{% endif %}
-
-{% if object.biography %}
-    <p class="description">
-        {{ object.biography|truncatechars_html:120 }}
-    </p>
+    <br>
+    Member of: {% for membership in object.get_membership %}{{ membership }}{% if not forloop.last %}, {% endif %}{% endfor %}
 {% endif %}

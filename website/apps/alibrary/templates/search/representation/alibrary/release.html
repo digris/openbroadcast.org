@@ -1,9 +1,9 @@
-2014 UK Compilation by <em>{{ object.get_artist_display }}</em>
+{{ object.get_artist_display }}
 
-{% comment %}
-{% if object.description %}
-    <p class="description">
-        {{ object.description|truncatechars_html:220 }}
-    </p>
-{% endif %}
-{% endcomment %}
+<br>
+{% if object.releasedate_approx %}{{ object.releasedate_approx }}{% endif %}
+
+{% if object.release_country %}{{ object.release_country.iso2_code }}{% endif %}
+
+{% if object.label %}{{ object.label.name}}{% endif %}
+

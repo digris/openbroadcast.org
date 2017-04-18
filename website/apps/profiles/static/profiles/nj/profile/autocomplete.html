@@ -10,7 +10,7 @@
 		{% for item in objects %}
 
 		<div class="item linkable hoverable">
-			
+
 			<div class="row-fluid">
 
 				<div class="span2">
@@ -21,11 +21,14 @@
 					<a href="{{ item.get_absolute_url }}" class="link-main"><h2>{{ item.display_name|highlight(meta.query) }}</h2></a>
                     <span><!--<i class="icon icon-user"></i>-->{{ item.username }}</span><br />
                     <span>{% if item.country %}{{ item.country }}{% endif %} {% if item.city %}{{ item.city }}{% endif %}</span><br />
-                    <span>Member since {{ item.created|format_datetime('date') }}</span>
+
+                    {% if item.date_joined %}
+                        <span>User since: {{ item.date_joined|format_datetime('date') }}</span>
+                    {% endif %}
 				</div>
-				
+
 			</div>
-			
+
 
 
 		</div>

@@ -81,11 +81,11 @@ class ReleaseResource(ModelResource):
         if q and len(q) > 2:
 
             # haystack version
-            # sqs = SearchQuerySet().models(Release).filter(content__contains=q)
-            # qs = Release.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
+            sqs = SearchQuerySet().models(Release).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            qs = Release.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
 
             # ORM version
-            qs = Release.objects.filter(name__icontains=q)
+            # qs = Release.objects.filter(name__icontains=q)
 
         if qs:
             object_list = qs.distinct()[0:20]

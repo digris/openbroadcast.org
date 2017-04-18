@@ -1,1 +1,13 @@
-{{ object.get_type_display }} by <em>{{ object.get_artist_display }}</em>.
+{% load calc %}
+{{ object.get_artist_display }}
+
+<br>
+{% if object.master_duration %}
+{{ object.master_duration|sec_to_time }}
+{% endif %}
+
+{% if object.version %}{{ object.get_version_display }}{% endif %}
+
+
+
+<!-- TODO: 'composers' -->

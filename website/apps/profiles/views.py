@@ -12,6 +12,8 @@ from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, View
 from invitation.models import Invitation
+from haystack.backends import SQ
+from haystack.query import SearchQuerySet
 from tagging_extra.utils import calculate_cloud
 from profiles.filters import ProfileFilter
 from profiles.forms import UserForm, ProfileForm, ServiceFormSet, LinkFormSet, ActionForm
@@ -94,10 +96,15 @@ class ProfileListView(PaginationMixin, ListView):
         q = self.request.GET.get('q', None)
 
         if q:
-            qs = Profile.objects.filter(Q(user__username__istartswith=q) \
-                                        | Q(user__first_name__istartswith=q) \
-                                        | Q(user__last_name__istartswith=q)) \
-                .distinct()
+            # haystack version
+            sqs = SearchQuerySet().models(Profile).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            qs = Profile.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
+
+            # qs = Profile.objects.filter(Q(user__username__istartswith=q) \
+            #                             | Q(user__first_name__istartswith=q) \
+            #                             | Q(user__last_name__istartswith=q)) \
+            #     .distinct()
+
         else:
             qs = Profile.objects.all()
 

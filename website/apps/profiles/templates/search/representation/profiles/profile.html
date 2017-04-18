@@ -1,8 +1,12 @@
-{{ object.city }}, <em>{{ object.country.iso2_code }}</em>
-
-{% if object.biography %}
-    <p class="description">
-        {{ object.biography|truncatechars_html:120 }}
-    </p>
+{% if object.pseudonym  and object.pseudonym != object.get_display_name %}
+    {{ object.pseudonym }}
+    <br>
 {% endif %}
 
+{% if object.city %}
+    {{ object.city }}{% if object.country %},{% endif %}
+{% endif %}
+
+{% if object.country %}
+    {{ object.country.iso2_code }}
+{% endif %}

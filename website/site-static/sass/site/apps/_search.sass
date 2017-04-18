@@ -156,6 +156,8 @@
       width: 80%
       margin-left: 2%
 
+      line-height: 16px
+
       .object-type
         opacity: 0.5
 
@@ -171,19 +173,16 @@
         padding-top: 6px
 
       .tags
+
+        width: 276px
+        opacity: 0.5
+
+        font-size: 11px
         position: absolute
-        bottom: 1px
-        right: 2px
+        bottom: 4px
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
 
-
-        .tag
-          padding: 1px 2px
-          color: #5a5a5a
-          font-size: 11px
-          &:nth-child(n+5)
-            display: none
-          .highlight
-            background: #333
-            color: $primary-color-b-bg-light
 
 

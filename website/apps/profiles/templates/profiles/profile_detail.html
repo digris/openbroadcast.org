@@ -266,7 +266,7 @@
                                 {% for item in object.expertise.all %}
 
                                     <li>
-                                        {{ item.name }}{% if not forloop.last %},&nbsp;    {% endif %}
+                                        {{ item.name }}{% if not forloop.last %}, {% endif %}
 
                                     </li>
 

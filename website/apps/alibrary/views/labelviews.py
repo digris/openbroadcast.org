@@ -13,6 +13,8 @@ from pure_pagination.mixins import PaginationMixin
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from tagging.models import Tag
 import reversion
+from haystack.backends import SQ
+from haystack.query import SearchQuerySet
 
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 
@@ -46,24 +48,24 @@ ORDER_BY = [
 ]
 
 class LabelListView(PaginationMixin, ListView):
-    
+
     # context_object_name = "label_list"
     #template_name = "alibrary/release_list.html"
-    
+
     object = Label
     paginate_by = ALIBRARY_PAGINATE_BY_DEFAULT
-    
+
     model = Release
     extra_context = {}
-    
+
     def get_paginate_by(self, queryset):
-        
+
         ipp = self.request.GET.get('ipp', None)
         if ipp:
             try:
                 if int(ipp) in ALIBRARY_PAGINATE_BY:
                     return int(ipp)
-            except Exception, e:
+            except Exception as e:
                 pass
 
         return self.paginate_by
@@ -84,18 +86,18 @@ class LabelListView(PaginationMixin, ListView):
                 tag_ids.append(int(tag_id))
             self.extra_context['active_tags'] = tag_ids
         #self.extra_context['release_list'] = self.filter
-    
+
         # hard-coded for the moment
-        
+
         self.extra_context['list_style'] = self.request.GET.get('list_style', 'l')
         #self.extra_context['list_style'] = 's'
-        
+
         self.extra_context['get'] = self.request.GET
-        
+
         context.update(self.extra_context)
 
         return context
-    
+
 
     def get_queryset(self, **kwargs):
 
@@ -106,28 +108,35 @@ class LabelListView(PaginationMixin, ListView):
         self.tagcloud = None
 
         q = self.request.GET.get('q', None)
-        
-        qs = Label.objects.active()
-        
+
         if q:
-            qs = qs.filter(name__icontains=q).distinct()
-            
-            
-            
+            # haystack version
+            sqs = SearchQuerySet().models(Label).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            qs = Label.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
+
+            # ORM
+            # qs = qs.filter(name__icontains=q).distinct()
+
+        else:
+            qs = Label.objects.all()
+
+
+
+
         order_by = self.request.GET.get('order_by', 'created')
         direction = self.request.GET.get('direction', 'descending')
-        
+
         if order_by and direction:
             if direction == 'descending':
                 qs = qs.order_by('-%s' % order_by)
             else:
                 qs = qs.order_by('%s' % order_by)
-            
-            
-            
+
+
+
         # special relation filters
         self.relation_filter = []
-        
+
         label_filter = self.request.GET.get('label', None)
         if label_filter:
             qs = qs.filter(media_release__label__slug=label_filter).distinct()
@@ -135,7 +144,7 @@ class LabelListView(PaginationMixin, ListView):
             fa = Label.objects.filter(slug=label_filter)[0]
             f = {'item_type': 'label' , 'item': fa, 'label': _('Label')}
             self.relation_filter.append(f)
-            
+
         label_filter = self.request.GET.get('label', None)
         if label_filter:
             qs = qs.filter(label__slug=label_filter).distinct()
@@ -143,8 +152,8 @@ class LabelListView(PaginationMixin, ListView):
             fa = Label.objects.filter(slug=label_filter)[0]
             f = {'item_type': 'label' , 'item': fa, 'label': _('Label')}
             self.relation_filter.append(f)
-            
-            
+
+
 
         # filter by import session
         import_session = self.request.GET.get('import', None)
@@ -167,15 +176,15 @@ class LabelListView(PaginationMixin, ListView):
                 if not order_by:
                     qs = qs.order_by('name')
 
-        
+
         # apply filters
         self.filter = LabelFilter(self.request.GET, queryset=qs)
-        
+
         qs = self.filter.qs
-        
-        
-        
-        
+
+
+
+
         stags = self.request.GET.get('tags', None)
         #print "** STAGS:"
         #print stags
@@ -185,16 +194,16 @@ class LabelListView(PaginationMixin, ListView):
             for stag in stags:
                 #print int(stag)
                 tstags.append(int(stag))
-        
+
         #print "** TSTAGS:"
         #print tstags
-        
+
         #stags = ('Techno', 'Electronic')
         #stags = (4,)
         if stags:
             qs = Label.tagged.with_all(tstags, qs)
-            
-            
+
+
         # rebuild filter after applying tags
         self.filter = LabelFilter(self.request.GET, queryset=qs)
 
@@ -203,7 +212,7 @@ class LabelListView(PaginationMixin, ListView):
             tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=2)
             self.tagcloud = calculate_cloud(tagcloud)
 
-        
+
         return qs
 
 
@@ -214,12 +223,12 @@ class LabelDetailView(DetailView):
     model = Label
     extra_context = {}
 
-    
+
     def render_to_response(self, context):
         return super(LabelDetailView, self).render_to_response(context, content_type="text/html")
-    
 
-        
+
+
     def get_context_data(self, **kwargs):
 
         context = super(LabelDetailView, self).get_context_data(**kwargs)
@@ -233,7 +242,7 @@ class LabelDetailView(DetailView):
 
         return context
 
-    
+
 
 
 
@@ -339,17 +348,17 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     #     for relation in relations:
     #         relation.save()
 
-    
+
 # autocompleter views
 # TODO: rewrite!
 def label_autocomplete(request):
 
     q = request.GET.get('q', None)
-    
+
     result = []
-    
+
     if q and len(q) > 1:
-        
+
         releases = Release.objects.filter(Q(name__istartswith=q)\
             | Q(media_release__name__icontains=q)\
             | Q(media_release__label__name__icontains=q)\
@@ -367,7 +376,7 @@ def label_autocomplete(request):
             for media in release.media_release.filter(label__name__icontains=q).distinct():
                 if not media.label in labels:
                     labels.append(media.label)
-                
+
             if not len(labels) > 0:
                 labels = None
             if not len(medias) > 0:
@@ -378,17 +387,17 @@ def label_autocomplete(request):
             item['labels'] = labels
             item['medias'] = medias
             item['labels'] = labels
-            
+
             result.append(item)
-        
-    
+
+
     #return HttpResponse(json.dumps(list(result)))
     return render_to_response("alibrary/element/autocomplete.html", { 'query': q, 'result': result }, context_instance=RequestContext(request))
-    
 
 
-    
-    
-    
-    
-    
+
+
+
+
+
+

@@ -9,6 +9,9 @@ from tastypie.authentication import MultiAuthentication, SessionAuthentication, 
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
+from haystack.backends import SQ
+from haystack.query import SearchQuerySet
+
 
 THUMBNAIL_OPT = dict(size=(240, 240), crop=True, bw=False, quality=80)
 
@@ -80,7 +83,12 @@ class ArtistResource(ModelResource):
 
         if q and len(q) > 1:
 
-            qs = Artist.objects.order_by('name').filter(Q(name__istartswith=q) | Q(namevariations__name__istartswith=q))
+            # haystack version
+            sqs = SearchQuerySet().models(Artist).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            qs = Artist.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
+
+            # ORM version
+            # qs = Artist.objects.order_by('name').filter(Q(name__istartswith=q) | Q(namevariations__name__istartswith=q))
 
             object_list = qs.distinct()[0:50]
             object_count = qs.distinct().count()

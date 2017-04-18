@@ -4,6 +4,10 @@
 {{ object.get_aliases|join:', ' }}
 {% endif %}
 
-{% for tag in object.tags %}
-{{ tag }},
-{% endfor %}
+{% if object.members.count > 0 %}
+{% for artist in object.members.all %}{{ artist.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+{% endif %}
+
+{% if object.get_membership %}
+{% for artist in object.get_membership %}{{ artist.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+{% endif %}

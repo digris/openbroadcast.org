@@ -14,6 +14,8 @@ from pure_pagination.mixins import PaginationMixin
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from tagging.models import Tag
+from haystack.backends import SQ
+from haystack.query import SearchQuerySet
 
 from el_pagination.views import AjaxListView
 
@@ -109,15 +111,21 @@ class ArtistListView(PaginationMixin, ListView):
         self.tagcloud = None
         q = self.request.GET.get('q', None)
 
+        # haystack version
         if q:
-            # qs = Artist.objects.filter(Q(name__istartswith=q) | Q(namevariations__name__istartswith=q)).distinct()
-            # https://lab.hazelfire.com/issues/1477
-            qs = Artist.objects.filter(Q(name__icontains=q) | Q(namevariations__name__icontains=q)).distinct()
-            qs = qs.prefetch_related('media_artist')
+            sqs = SearchQuerySet().models(Artist).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            qs = Artist.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
         else:
-            # only display artists with tracks a.t.m.
-            # qs = Artist.objects.filter(media_artist__isnull=False).select_related('media_artist').prefetch_related('media_artist').distinct()
             qs = Artist.objects.all().prefetch_related('media_artist')
+
+        # if q:
+        #     # qs = Artist.objects.filter(Q(name__istartswith=q) | Q(namevariations__name__istartswith=q)).distinct()
+        #     # https://lab.hazelfire.com/issues/1477
+        #     qs = Artist.objects.filter(Q(name__icontains=q) | Q(namevariations__name__icontains=q)).distinct()
+        #     qs = qs.prefetch_related('media_artist')
+        # else:
+        #     # only display artists with tracks a.t.m.
+        #     qs = Artist.objects.all().prefetch_related('media_artist')
 
 
         order_by = self.request.GET.get('order_by', 'created')

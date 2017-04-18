@@ -84,6 +84,7 @@ var SearchApp = function () {
         // profiles
         'profiles.profile': {
             display_name: 'User',
+            search_url: '/network/users/',
             keys: [
                 [['Enter'], 'detail view']
             ]
@@ -604,17 +605,24 @@ var SearchApp = function () {
             timeout: 5000,
             success: function(data) {
 
+                var is_single_ct = self.selected_ctypes.length == 1;
+
                 var results_html = '';
                 $.each(data.objects, (function (i, object) {
-                    results_html += nj.render('search/nj/result.default.html', {object: object, q: self.q});
+                    results_html += nj.render('search/nj/result.default.html', {
+                        object: object,
+                        q: self.q,
+                        is_single_ct: is_single_ct
+                    });
                 }));
                 self.results_container.html(self.results_container.html() + results_html);
+
                 // remove 'loading' message
                 $('.loading', self.results_container).remove();
 
                 // remove 'more' message and append again at the end
                 // only if single content type is in search
-                if(self.selected_ctypes.length == 1) {
+                if(is_single_ct) {
                     $('.more', self.results_container).remove();
                     self.results_container.append(self.search_more_template);
 

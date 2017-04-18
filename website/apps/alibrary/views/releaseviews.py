@@ -60,9 +60,9 @@ class ReleaseListView(PaginationMixin, ListView):
     model = Release
 
     extra_context = {}
-    
+
     def get_paginate_by(self, queryset):
-        
+
         ipp = self.request.GET.get('ipp', None)
         if ipp:
             try:
@@ -95,7 +95,7 @@ class ReleaseListView(PaginationMixin, ListView):
         context.update(self.extra_context)
 
         return context
-    
+
 
     def get_queryset(self, **kwargs):
 
@@ -107,7 +107,7 @@ class ReleaseListView(PaginationMixin, ListView):
 
         # haystack version
         if q:
-            sqs = SearchQuerySet().models(Release).filter(SQ(content__contains=q) | SQ(name__contains=q))
+            sqs = SearchQuerySet().models(Release).filter(SQ(content__contains=q) | SQ(content_auto=q))
             qs = Release.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
         else:
             qs = Release.objects.select_related('license').prefetch_related('media_release').all()
@@ -123,22 +123,22 @@ class ReleaseListView(PaginationMixin, ListView):
         #     qs = Release.objects.filter(name__icontains=q).distinct()
         # else:
         #     qs = Release.objects.select_related('license').prefetch_related('media_release').all()
-            
-            
+
+
         order_by = self.request.GET.get('order_by', 'created')
         direction = self.request.GET.get('direction', 'descending')
-        
+
         if order_by and direction:
             if direction == 'descending':
                 qs = qs.order_by('-%s' % order_by)
             else:
                 qs = qs.order_by('%s' % order_by)
-            
-            
-            
+
+
+
         # special relation filters
         self.relation_filter = []
-        
+
         artist_filter = self.request.GET.get('artist', None)
         if artist_filter:
             #qs = qs.filter(Q(media_release__artist__slug=artist_filter) | Q(media_release__media_artists__slug=artist_filter) | Q(album_artists__slug=artist_filter)).distinct()
@@ -148,7 +148,7 @@ class ReleaseListView(PaginationMixin, ListView):
 
             f = {'item_type': 'artist' , 'item': a, 'label': _('Artist')}
             self.relation_filter.append(f)
-            
+
         label_filter = self.request.GET.get('label', None)
         if label_filter:
             l = get_object_or_404(Label, slug=label_filter)
@@ -222,7 +222,7 @@ class ReleaseListView(PaginationMixin, ListView):
 
 
 
-        
+
         # apply filters
         self.filter = ReleaseFilter(self.request.GET, queryset=qs)
         qs = self.filter.qs
@@ -239,7 +239,7 @@ class ReleaseListView(PaginationMixin, ListView):
 
         # rebuild filter after applying tags
         self.filter = ReleaseFilter(self.request.GET, queryset=qs)
-        
+
         # tagging / cloud generation
         if qs.exists():
             tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=5)
@@ -254,19 +254,19 @@ class ReleaseDetailView(DetailView):
     model = Release
     context_object_name = "release"
     extra_context = {}
-    
+
     def render_to_response(self, context):
         return super(ReleaseDetailView, self).render_to_response(context, content_type="text/html")
-        
+
     def get_context_data(self, **kwargs):
-        
+
         context = super(ReleaseDetailView, self).get_context_data(**kwargs)
         obj = kwargs.get('object', None)
 
         self.extra_context['history'] = reversion.get_unique_for_object(obj)
 
         context.update(self.extra_context)
-        
+
         return context
 
 
@@ -478,19 +478,19 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     def formset_action_valid(self, formset):
         self.do_publish = formset.cleaned_data.get('publish', False)
 
-    
 
 
-    
+
+
 # autocompleter views
 def release_autocomplete(request):
 
     q = request.GET.get('q', None)
-    
+
     result = []
-    
+
     if q and len(q) > 1:
-        
+
         releases = Release.objects.filter(Q(name__istartswith=q)\
             | Q(media_release__name__icontains=q)\
             | Q(media_release__artist__name__icontains=q)\
@@ -508,7 +508,7 @@ def release_autocomplete(request):
             for media in release.media_release.filter(artist__name__icontains=q).distinct():
                 if not media.artist in artists:
                     artists.append(media.artist)
-                
+
             if not len(artists) > 0:
                 artists = None
             if not len(medias) > 0:
@@ -519,11 +519,11 @@ def release_autocomplete(request):
             item['artists'] = artists
             item['medias'] = medias
             item['labels'] = labels
-            
+
             result.append(item)
 
     return render_to_response("alibrary/element/autocomplete.html", { 'query': q, 'result': result }, context_instance=RequestContext(request))
-    
+
 
 
 
@@ -544,27 +544,27 @@ class JSONResponseMixin(object):
         # to do much more complex handling to ensure that arbitrary
         # objects -- such as Django model instances or querysets
         # -- can be serialized as JSON.
-        
+
         ret = {}
-        
+
         release = context['release']
-        
+
         ret['name'] = release.name
         ret['status'] = True
-        
+
         ret['media'] = {};
-        
+
         for media in release.get_media():
             ret['media'][media.id] = {
                                       'name': media.name,
                                       'tracknumber': media.tracknumber,
                                       'url': media.master.url
                                       }
-        
-        
-        
+
+
+
         return json.dumps(ret)
-    
+
 class JSONReleaseDetailView(JSONResponseMixin, ReleaseDetailView):
     pass
 

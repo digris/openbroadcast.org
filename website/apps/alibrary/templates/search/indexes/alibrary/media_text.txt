@@ -1,15 +1,11 @@
 {{ object.name }}
 
-{% if object.release %}{{ object.release.name }}{% endif %}
+{% comment %}{% if object.release %}{{ object.release.name }}{% endif %}{% endcomment %}
 
 {{ object.get_artist_display }}
 
-
 {% if object.lyrics %}{{ object.lyrics }}{% endif %}
 
-
-{% if object.release %}
-{% for tag in object.release.tags %}
-{{ tag }},
-{% endfor %}
+{% if object.extraartist_media.exists %}
+{% for ea in object.extraartist_media.all %}{{ ea.artist.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
 {% endif %}

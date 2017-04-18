@@ -5,6 +5,7 @@ from tastypie.paginator import Paginator
 from django.http import Http404
 from django.template.defaultfilters import truncatechars
 from django.template.loader import get_template
+from django.db.models import Q
 from tastypie import fields
 from django.utils.translation import ugettext as _
 from tastypie.authorization import Authorization
@@ -119,12 +120,8 @@ class GlobalSearchResource(Resource):
 
         q = kwargs.get('query', '')
 
-        #sqs = SearchQuerySet().filter(name__contains=q)
-        #sqs = SearchQuerySet().filter(name_auto=q)
-        sqs = SearchQuerySet().filter(SQ(content__contains=q) | SQ(name=q))
-        #sqs = SearchQuerySet().filter(content=AutoQuery(q))
-        #sqs = SearchQuerySet().filter(SQ(content__fuzzy=q) | SQ(name__fuzzy=q))
-        #sqs = SearchQuerySet().filter(SQ(content__contains=q) | SQ(name__contains=q))
+        # sqs = SearchQuerySet().filter(SQ(content__contains=q) | SQ(name=q))
+        sqs = SearchQuerySet().filter(SQ(content__contains=q) | SQ(content_auto=q))
 
 
         search_models = []
@@ -137,6 +134,14 @@ class GlobalSearchResource(Resource):
                     pass
 
             sqs = sqs.models(*search_models)
+
+
+        # TODO: nasty hack here. filter out 'basket' playlists that do not belong to the authenticated user
+        if request.user.is_authenticated():
+            sqs = sqs.exclude(Q(type='basket') | ~Q(user_pk=request.user.pk))
+        else:
+            sqs = sqs.exclude(type='basket')
+
 
         sqs = sqs.highlight().load_all()
 

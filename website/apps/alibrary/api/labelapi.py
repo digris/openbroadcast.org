@@ -6,6 +6,9 @@ from tastypie.authorization import Authorization
 from tastypie.cache import SimpleCache
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
+from haystack.backends import SQ
+from haystack.query import SearchQuerySet
+
 
 THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
 
@@ -65,13 +68,18 @@ class LabelResource(ModelResource):
 
         qs = None
 
-        if q and len(q) > 1:
+        if q and len(q) > 2:
 
-            if q.startswith("*"):
-                q = q[1:]  # remap q
-                qs = Label.objects.order_by('name').filter(name__icontains=q)
-            else:
-                qs = Label.objects.order_by('name').filter(name__istartswith=q)
+            # haystack version
+            sqs = SearchQuerySet().models(Label).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            qs = Label.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
+
+            # ORM version
+            # if q.startswith("*"):
+            #     q = q[1:]  # remap q
+            #     qs = Label.objects.order_by('name').filter(name__icontains=q)
+            # else:
+            #     qs = Label.objects.order_by('name').filter(name__istartswith=q)
 
             object_list = qs.distinct()[0:50]
             object_count = qs.distinct().count()

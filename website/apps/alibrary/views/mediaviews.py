@@ -10,6 +10,8 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 from django.contrib import messages
+from haystack.backends import SQ
+from haystack.query import SearchQuerySet
 
 from tagging.models import Tag
 import reversion
@@ -71,12 +73,12 @@ class MediaListView(PaginationMixin, ListView):
 
     object = Media
     paginate_by = ALIBRARY_PAGINATE_BY_DEFAULT
-    
+
     model = Media
     extra_context = {}
-    
+
     def get_paginate_by(self, queryset):
-        
+
         ipp = self.request.GET.get('ipp', None)
         if ipp:
             try:
@@ -89,7 +91,7 @@ class MediaListView(PaginationMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(MediaListView, self).get_context_data(**kwargs)
-        
+
         self.extra_context['filter'] = self.filter
         self.extra_context['relation_filter'] = self.relation_filter
         self.extra_context['tagcloud'] = self.tagcloud
@@ -108,37 +110,44 @@ class MediaListView(PaginationMixin, ListView):
         context.update(self.extra_context)
 
         return context
-    
+
 
     def get_queryset(self, **kwargs):
 
         kwargs = {}
         self.tagcloud = None
         q = self.request.GET.get('q', None)
-        
+
+        # haystack version
         if q:
-            #qs = Media.objects.filter(Q(name__icontains=q)\
-            #| Q(release__name__icontains=q)\
-            #| Q(artist__name__icontains=q))\
-            #.distinct()
-            qs = Media.objects.filter(name__icontains=q).distinct()
+            sqs = SearchQuerySet().models(Media).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            qs = Media.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
         else:
             qs = Media.objects.all()
-            
-            
+
+        # if q:
+        #     #qs = Media.objects.filter(Q(name__icontains=q)\
+        #     #| Q(release__name__icontains=q)\
+        #     #| Q(artist__name__icontains=q))\
+        #     #.distinct()
+        #     qs = Media.objects.filter(name__icontains=q).distinct()
+        # else:
+        #     qs = Media.objects.all()
+
+
         order_by = self.request.GET.get('order_by', 'created')
         direction = self.request.GET.get('direction', 'descending')
-        
+
         if order_by and direction:
             if direction == 'descending':
                 qs = qs.order_by('-%s' % order_by)
             else:
                 qs = qs.order_by('%s' % order_by)
 
-            
+
         # special relation filters
         self.relation_filter = []
-        
+
         artist_filter = self.request.GET.get('artist', None)
         if artist_filter:
 
@@ -147,7 +156,7 @@ class MediaListView(PaginationMixin, ListView):
 
             f = {'item_type': 'artist' , 'item': a, 'label': _('Artist')}
             self.relation_filter.append(f)
-            
+
         release_filter = self.request.GET.get('release', None)
         if release_filter:
 
@@ -156,7 +165,7 @@ class MediaListView(PaginationMixin, ListView):
 
             f = {'item_type': 'release' , 'item': r, 'label': _('Release')}
             self.relation_filter.append(f)
-            
+
         # filter by import session
         import_session = self.request.GET.get('import', None)
         if import_session:
@@ -199,15 +208,15 @@ class MediaListView(PaginationMixin, ListView):
 
 
 
-        
+
         # apply filters
         self.filter = MediaFilter(self.request.GET, queryset=qs)
         # self.filter = ReleaseFilter(self.request.GET, queryset=Release.objects.active().filter(**kwargs))
         qs = self.filter.qs
-        
-        
-        
-        
+
+
+
+
         stags = self.request.GET.get('tags', None)
         tstags = []
         if stags:
@@ -218,8 +227,8 @@ class MediaListView(PaginationMixin, ListView):
 
         if stags:
             qs = Media.tagged.with_all(tstags, qs)
-            
-            
+
+
         # rebuild filter after applying tags
         self.filter = MediaFilter(self.request.GET, queryset=qs)
 
@@ -231,7 +240,7 @@ class MediaListView(PaginationMixin, ListView):
 
 
         return qs
-    
+
 
 class MediaDetailView(DetailView):
 
@@ -239,12 +248,12 @@ class MediaDetailView(DetailView):
     extra_context = {}
 
     def get_context_data(self, **kwargs):
-        
+
         context = super(MediaDetailView, self).get_context_data(**kwargs)
         obj = kwargs.get('object', None)
 
         self.extra_context['history'] = reversion.get_unique_for_object(obj)
-        
+
         # foreign appearance
         ps = []
         try:
@@ -252,12 +261,12 @@ class MediaDetailView(DetailView):
             ps = Playlist.objects.exclude(type='basket').filter(items__in=pis)
         except:
             pass
-        
+
         self.extra_context['appearance'] = ps
         context.update(self.extra_context)
-        
+
         return context
-    
+
 
 
 
@@ -350,35 +359,35 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         return HttpResponseRedirect('')
 
 
-    
+
 
 @never_cache
 def media_download(request, slug, format, version):
-    
+
     media = get_object_or_404(Media, slug=slug)
-    version = 'base' 
+    version = 'base'
 
     download_permission = False
 
     if not download_permission:
         return HttpResponseForbidden('forbidden')
-    
+
     if format in ['mp3', 'flac', 'wav']:
         cache_file = media.get_cache_file(format, version).path
     else:
         raise Http404
-    
-    
+
+
     filename = '%02d %s - %s' % (media.tracknumber, media.name.encode('ascii', 'ignore'), media.artist.name.encode('ascii', 'ignore'))
-    
+
     filename = '%s.%s' % (filename, format)
-    
+
     return sendfile(request, cache_file, attachment=True, attachment_filename=filename)
 
 
 @never_cache
 def stream_html5(request, uuid):
-    
+
     media = get_object_or_404(Media, uuid=uuid)
 
     stream_permission = False
@@ -395,7 +404,7 @@ def stream_html5(request, uuid):
     if not stream_permission:
         log.warning('unauthorized attempt by "%s" to download: %s - "%s"' % (request.user.username if request.user else 'unknown', media.pk, media.name))
         raise PermissionDenied
-    
+
     try:
         from atracker.util import create_event
         create_event(request.user, media, None, 'stream')

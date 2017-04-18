@@ -20,7 +20,9 @@
         <div class="span10 result-body">
 
             <div class="name">
-                <small class="object-type">{{ object.ct_display }}</small>
+                {% if not is_single_ct %}
+                    <small class="object-type">{{ object.ct_display }}</small>
+                {% endif %}
                 <a href="{{ object.detail_uri }}" class="link-main" title="{{ object.name }}">{{ object.name|shorten(24) }}</a>
             </div>
 
@@ -30,7 +32,7 @@
 
             <div class="tags">
                 {% for tag in object.tags %}
-                    <span class="tag">{{ tag }}</span>
+                    {{ tag }}{% if not folroop.last %}, {% endif %}
                 {% endfor %}
             </div>
 

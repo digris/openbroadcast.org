@@ -9,6 +9,8 @@ from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
+from haystack.backends import SQ
+from haystack.query import SearchQuerySet
 
 log = logging.getLogger(__name__)
 
@@ -46,6 +48,7 @@ class ProfileResource(ModelResource):
             bundle.data['display_name'] = bundle.obj.get_display_name()
             bundle.data['full_name'] = bundle.obj.get_full_name()
             bundle.data['groups'] = [g.name for g in bundle.obj.user.groups.all()]
+            bundle.data['date_joined'] = bundle.obj.user.date_joined
 
         else:
             bundle.data['username'] = None
@@ -91,9 +94,15 @@ class ProfileResource(ModelResource):
         object_list = []
         qs = None
         if q and len(q) > 1:
-            qs = Profile.objects.filter(Q(user__username__istartswith=q) \
-                                        | Q(user__first_name__istartswith=q) \
-                                        | Q(user__last_name__istartswith=q))
+
+            # haystack version
+            sqs = SearchQuerySet().models(Profile).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            qs = Profile.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
+
+            # ORM version
+            # qs = Profile.objects.filter(Q(user__username__istartswith=q) \
+            #                             | Q(user__first_name__istartswith=q) \
+            #                             | Q(user__last_name__istartswith=q))
 
         if qs:
             object_list = qs.distinct()[0:20]
