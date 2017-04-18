@@ -13,13 +13,15 @@
 	</div>
 
 	<dl class="dl-horizontal main">
-		
-		<dt>
-			{% trans "Username" %}:
-		</dt>
-		<dd>
-			{{ object.user.username }}
-		</dd>
+
+        <!--
+            <dt>
+                {% trans "Username" %}:
+            </dt>
+            <dd>
+                {{ object.user.username }}
+            </dd>
+		-->
 
         {% if object.pseudonym %}
 		<dt>
@@ -30,15 +32,17 @@
 		</dd>
 		{% endif %}
 
-        {% if object.description %}
-		<dt>
-			{% trans "Disambiguation" %}:
-		</dt>
-		<dd>
-			{{ object.description }}
-		</dd>
-		{% endif %}
-		
+        <!--
+            {% if object.description %}
+            <dt>
+                {% trans "Disambiguation" %}:
+            </dt>
+            <dd>
+                {{ object.description }}
+            </dd>
+            {% endif %}
+		-->
+
 		{% if object.mentor %}
 		<dt>
 			{% trans "Mentor" %}:
@@ -51,7 +55,7 @@
 			</ul>
 		</dd>
 		{% endif %}
-		
+
 		{% if object.user.godchildren.count %}
 		<dt>
 			{% trans "Mentoring" %}:
@@ -68,7 +72,7 @@
 			</ul>
 		</dd>
 		{% endif %}
-		
+
 		{% if object.get_groups.count %}
 		<dt>
 			{% trans "Access level" %}:
@@ -85,7 +89,7 @@
 			</ul>
 		</dd>
 		{% endif %}
-	
+
 
         {% if object.link_set.all %}
 		<dt>
@@ -108,11 +112,11 @@
 			{% trans "Edit History" %}:
 		</dt>
 		<dd>
-			
+
 			{% if object.user.date_joined %}
 			<span class="key">{% trans "Date joined" %}:</span> <span class="value">{{ object.user.date_joined|date:"SHORT_DATE_FORMAT" }}</span> |
 			{% endif %}
-			
+
 			{% if object.user.last_login %}
 			<span class="key">{% trans "Last login" %}:</span> <span class="value">{{ object.user.last_login|date:"SHORT_DATE_FORMAT" }}</span> |
 			{% endif %}

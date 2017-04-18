@@ -73,9 +73,9 @@ def provider_search_query(request, *args, **kwargs):
 
         if item_type == 'release' and provider == 'musicbrainz':
             item = Release.objects.get(pk=item_id)
-            # data = {'query': '%s AND artist:%s' % (item.name, item.get_artist_display())}
+            data = {'query': '%s AND artist:%s' % (item.name, item.get_artist_display())}
             # TODO: reason? https://lab.hazelfire.com/issues/1791
-            data = {'query': '%s artist:%s' % (item.name, item.get_artist_display())}
+            # data = {'query': '%s artist:%s' % (item.name, item.get_artist_display())}
 
         if item_type == 'artist' and provider == 'discogs':
             item = Artist.objects.get(pk=item_id)
@@ -170,7 +170,8 @@ def provider_search(request, *args, **kwargs):
                 .replace(')', '\)')\
                 .replace('[', '\[')\
                 .replace(']', '\]')\
-                .replace(':', '\:')
+                .replace(':', '\:')\
+                .replace('artist\:', 'artist:')
 
 
             t_query = urllib.quote(t_query)

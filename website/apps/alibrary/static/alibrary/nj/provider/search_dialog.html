@@ -54,16 +54,6 @@
                     <div class="span10">
                         <strong>{{ result.title }}</strong>
 
-                        <!--<strong>* {{ result.dist }} * {{ result.dist1 * 100 }} * {{ result.dist2 * 100 }} * {{ result.dist3 * 100 }} * </strong>-->
-
-                        <!--
-                        <div style="margin: 3px 0; width: 140px; background: #d44610;">
-                            <div style="height:2px; background: #00bb73; width: {{ result.dist2 * 100 }}%">
-
-                            </div>
-                        </div>
-                        -->
-
                         <ul class="unstyled">
 
                             {% if item_type == "release" %}
@@ -246,7 +236,7 @@
 
 
                         {% if item_type == "label" %}
-                        <strong>{{ result.name }} | {{ result.country }}</strong>
+                        <strong>{{ result.name }}{% if result.country %} | {{ result.country }}{% endif %}</strong>
                         <ul class="unstyled">
 
                             {% if result["life-span"]["begin"] %}
@@ -284,11 +274,22 @@
                                 Artist:
                             </span>
                             <span class="value">
-
                                 <strong>
                                     {{ result["artist-credit"][0]["artist"]["name"] }}
                                 </strong>
+                            </span>
+                            </li>
+                            {% endif %}
 
+                            {% if result["releases"] %}
+                            <li>
+                            <span class="title">
+                                Release:
+                            </span>
+                            <span class="value">
+                                {% for r in result["releases"] %}
+                                    <strong>{{ r["title"] }}</strong>{% if not loop.last %}, {% endif %}
+                                {% endfor %}
                             </span>
                             </li>
                             {% endif %}

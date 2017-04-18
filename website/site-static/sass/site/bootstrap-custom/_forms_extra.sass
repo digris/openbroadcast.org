@@ -19,7 +19,7 @@ form select, form file
 
 // autocomplete
 form input
-  &.autocompletewidget    
+  &.autocompletewidget
     background-image: url(/static/img/css/autocomplete.png) !important
     background-position: center right !important
     background-repeat: no-repeat !important
@@ -181,10 +181,10 @@ form ul.advancedfileinput
 form.form-horizontal
   .controls
     &.field-lookup
-    
+
       input, .field-lookup-holder
         float: left
-        
+
       .field-lookup-holder
         float: right
         margin: 0 0 0 30px
@@ -195,28 +195,28 @@ form.form-horizontal
         span:empty
           background: red
           height: 120px
-        
+
         max-width: 220px
-        
+
         display: none
         padding: 0 4px 0 24px
 
         max-height: 185px
         overflow: auto
-        
+
 
         background-image: url(/static/img/icons/forms/compare.png)
-        background-position: 4px center 
+        background-position: 4px center
         background-repeat: no-repeat
-        
+
         &.hover
           border: 1px solid #999
           cursor: pointer
-        
-        
+
+
         // border: 1px solid #ccc
         color: #5a5a5a
-        
+
         &.lookup-match
           //background-color: $primary-color-a-bg-light !important
           background-color: #ffffff !important
@@ -294,12 +294,12 @@ form.form-horizontal
   &.form-compact
     fieldset
       padding: 0
-    
+
     fieldset
       margin-top: 16px
       .control-group
         padding-left: 2px
-      
+
     legend
       //width: 816px
       width: 826px
@@ -312,11 +312,11 @@ form.form-horizontal
       font-weight: bold
       border-bottom: 1px solid #CCCCCC
 
-    
+
     //legend + .control-group
     //  margin-bottom: 4px
     //  margin-top: 4px
-    
+
     .control-group
       margin-bottom: 4px
 
@@ -344,11 +344,11 @@ body
 
     &.available
       background-color: $primary-color-a-bg-light
-    
+
     &.hover
       background-color: red
-      
-      
+
+
 
 
 
@@ -356,7 +356,7 @@ body
 
 /* specific form styles
  * release edit view*/
-      
+
 // bulk apply form
 div.bulk-edit-container
   padding: 6px
@@ -438,7 +438,7 @@ form.form-horizontal
         ul
           margin-left: 0
           list-style-type: none
-          li input[type="checkbox"] 
+          li input[type="checkbox"]
             float: left
             margin-right: 10px
 
@@ -446,9 +446,9 @@ form.form-horizontal
 
 // inline notes, hints, info etc
 form.form-horizontal
-  
+
   fieldset
-  
+
     div.notes-inline
       color: $grayDark
       padding: 5px 10px
@@ -463,7 +463,7 @@ form.form-horizontal
       p
         color: $grayDark
         width: 80%
-        
+
       // type dependent
       &.notes-info
         color: $gray
@@ -476,7 +476,7 @@ form.form-horizontal
 
       // TODO: define what levels in use / style them in a generic way
 
-          
+
       &.notes-warning
         background-color: $warningBackground
         color: $warningText
@@ -484,7 +484,7 @@ form.form-horizontal
           color: $warningText
         p
           color: $warningText
-          
+
       &.notes-error
         background-color: $errorBackground
         color: $errorText
@@ -492,7 +492,7 @@ form.form-horizontal
           color: $errorText
         p
           color: $errorText
-          
+
       &.notes-success
         background-color: $successBackground
         color: $successText
@@ -500,8 +500,8 @@ form.form-horizontal
           color: $successText
         p
           color: $successText
-      
-      
+
+
 
 
 // hackish here, think about integration
@@ -526,7 +526,7 @@ ul.selectable-deck
   width: 276px
   margin: 10px 0 4px 0
   background-color: transparent !important
-  
+
   > li
     color: #5a5a5a
     border-bottom: 1px solid #ececec
@@ -544,8 +544,10 @@ ul.selectable-deck
       //  width: 16px
       //  height: 16px
 
+form.form-horizontal .selectdatewidget
+  max-width: 92px
+  margin-right: 10px
 
-    
 
 .control-group
   &.error
@@ -590,9 +592,9 @@ form.form-playlist
       input
         padding: 0
         //display: none
-        
+
   // target seasons
-  div.seasons div.controls, 
+  div.seasons div.controls,
   div.weather div.controls
     label
       float: left
@@ -605,14 +607,14 @@ form.form-playlist
       input
         padding: 0
         //display: none
-        
-        
+
+
   // target duration
   div.dayparts div.controls
-  
+
     ul
       padding: 4px 0px 0
-      
+
       li
 
         width: 87px
@@ -624,16 +626,16 @@ form.form-playlist
 
         label
           text-align: center
-        
+
         &:hover
           border-color: #555
-        
+
         &.selected
           background-color: #D4F3DA !important
           border-color: #555
           &:hover
             border-color: #ccc
-          
+
         &:nth-child(2)
           background-color: #FBD1FF
         &:nth-child(3)
@@ -648,15 +650,15 @@ form.form-playlist
           background-color: #BFE9FF
         &:nth-child(8)
           background-color: #BFC7FF
-        
+
       li.title
         color: #5a5a5a
         // font-weight: bold
         border: none
         background-color: $white
         border: 1px solid #ccc
-        text-align: center 
-  
+        text-align: center
+
     label
       //float: left
       //width: 30px

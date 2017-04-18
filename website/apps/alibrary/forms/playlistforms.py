@@ -1,4 +1,5 @@
 import selectable.forms as selectable
+from datetime import date
 from ac_tagging.widgets import TagAutocompleteTagIt
 from alibrary import settings as alibrary_settings
 from alibrary.models import Playlist
@@ -6,6 +7,7 @@ from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Field, Fieldset, Div
 from django import forms
+from django.forms.extras.widgets import SelectDateWidget
 from django.forms import ModelForm, Form
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
@@ -18,21 +20,27 @@ from ..lookups import PlaylistSeriesLookup
 from ..models import Daypart, Season, Weather
 
 ACTION_LAYOUT =  action_layout = FormActions(
-                HTML('<button type="submit" name="save-i-classicon-arrow-upi" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-ok icon-white"></i> Save</button>'),            
+                HTML('<button type="submit" name="save-i-classicon-arrow-upi" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-ok icon-white"></i> Save</button>'),
                 HTML('<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'),
         )
 
 
+
+current_year = date.today().year
+ROTATION_YEAR_CHOICES = [y for y in range(current_year + 10, current_year - 11, -1)]
+
+
+
 class ActionForm(Form):
-    
+
     def __init__(self, *args, **kwargs):
         super(ActionForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.helper.form_tag = False
         self.helper.add_layout(ACTION_LAYOUT)
- 
- 
+
+
 from django.forms import SelectMultiple, CheckboxInput
 from django.utils.encoding import force_unicode
 from itertools import chain
@@ -52,12 +60,12 @@ class DaypartWidget(SelectMultiple):
             if not t_dp_day == dp.get_day_display():
                 row_title = dp.get_day_display()
                 t_dp_day = dp.get_day_display()
-                 
+
             c = [dp.pk, '%02d - %02d' % (dp.time_start.hour, dp.time_end.hour), row_title]
             cs.append(c)
 
         self.choices = cs
-        
+
         if value is None: value = []
         has_id = attrs and 'id' in attrs
         final_attrs = self.build_attrs(attrs, name=name)
@@ -74,10 +82,10 @@ class DaypartWidget(SelectMultiple):
             option_value = force_unicode(option_value)
             rendered_cb = cb.render(name, option_value)
             option_label = conditional_escape(force_unicode(option_label))
-        
+
             if row_title:
                 output.append(u'</ul><ul class="unstyled" style="float: left;"><li class="title">%s</li>' % row_title)
-            
+
             output.append(u'<li><label%s>%s %s</label></li>' % (label_for, rendered_cb, option_label))
 
         return mark_safe(u'\n'.join(output))
@@ -92,23 +100,44 @@ class PlaylistForm(ModelForm):
 
     class Meta:
         model = Playlist
-        #fields = ('name','label','releasetype','release_country','catalognumber','description', 'main_image', 'releasedate', 'd_tags')
-        fields = ('name', 'd_tags', 'description', 'main_image', 'rotation', 'dayparts', 'weather', 'seasons', 'target_duration', 'series', 'series_number')
-        
-        
+        fields = [
+            'name',
+            'd_tags',
+            'description',
+            'main_image',
+            'rotation',
+            'rotation_date_start',
+            'rotation_date_end',
+            'dayparts',
+            'weather',
+            'seasons',
+            'target_duration',
+            'series',
+            'series_number'
+        ]
+
+
+
         widgets = {
-            #{ 'target_duration': forms.RadioSelect() }
+            'rotation_date_start': SelectDateWidget(
+                years=ROTATION_YEAR_CHOICES,
+                empty_label=(_('Year'), _('Month'), _('Day')),
+            ),
+            'rotation_date_end': SelectDateWidget(
+                years=ROTATION_YEAR_CHOICES,
+                empty_label=(_('Year'), _('Month'), _('Day')),
+            ),
         }
-        
+
 
     def __init__(self, *args, **kwargs):
-        
+
         try:
             self.user = kwargs['initial']['user']
             self.instance = kwargs['instance']
         except:
             pass
-        
+
         super(PlaylistForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
@@ -126,9 +155,9 @@ class PlaylistForm(ModelForm):
             self.fields['d_tags'].required = True
 
 
-        
+
         base_layout = Fieldset(
-        
+
                 _('General'),
                 #Div(HTML('<h4>%s</h4><p>%s</p>' % (_('Bulk Edit'), _('Choose Artist name and/or license to apply on every track.'))), css_class='form-help'),
                 Field('name', css_class='input-xlarge'),
@@ -141,7 +170,7 @@ class PlaylistForm(ModelForm):
                 css_class='base'
         )
 
-        
+
         series_layout = Fieldset(
                 "%s %s" % ('<i class="icon-tags"></i>', _('Series')),
                 Div(
@@ -164,9 +193,11 @@ class PlaylistForm(ModelForm):
         rotation_layout = Fieldset(
                 "%s %s" % ('<i class="icon-random"></i>', _('Random Rotation')),
                 'rotation',
+                'rotation_date_start',
+                'rotation_date_end',
                 css_class='rotation'
         )
-        
+
         daypart_layout = Fieldset(
                 "%s %s" % ('<i class="icon-calendar"></i>', _('Best Broadcast...')),
                 Div(
@@ -182,9 +213,9 @@ class PlaylistForm(ModelForm):
                     css_class='weather'
                 ),
                 css_class='daypart'
-                
+
         )
-            
+
         layout = Layout(
                         base_layout,
                         tagging_layout,
@@ -195,9 +226,9 @@ class PlaylistForm(ModelForm):
 
         self.helper.add_layout(layout)
 
-        
 
-    
+
+
     #main_image = forms.Field(widget=FileInput(), required=False)
     main_image = forms.Field(widget=AdvancedFileInput(), required=False)
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))

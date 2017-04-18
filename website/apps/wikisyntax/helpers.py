@@ -1,13 +1,13 @@
 import re
-
+import markdown as mkdn
 from django.conf import settings
 from django.core.cache import cache
 from django.template.defaultfilters import striptags
 from django.utils.safestring import mark_safe
 
 
-def remove_non_a_tags(text):
-	TAG_RE = re.compile(r'</(?!a).*?>|<(?!/)(?!a).*?>')
+def remove_unwanted_tags(text):
+	TAG_RE = re.compile(r'</(?!a|br|p).*?>|<(?!/)(?!a|br|p).*?>')
 	return TAG_RE.sub('', text)
 
 
@@ -16,28 +16,34 @@ def wikisafe_markdown(value):
 	if not value:
 		return
 
-	value = remove_non_a_tags(value)
+	value = remove_unwanted_tags(value)
 
-	import markdown as mkdn
-	#from django.contrib.markup.templatetags.markup import markdown
 	try:
-		return mark_safe(mkdn.markdown(value.replace('[[','LBRACK666').replace(']]','RBRACK666')).replace('LBRACK666','[[').replace('RBRACK666',']]'))
-	except Exception, e:
-		return value
+		html = mark_safe(
+			mkdn.markdown(
+				value.replace('[[','LBRACK666').replace(']]','RBRACK666'),
+				extensions=[
+					'markdown.extensions.nl2br',
+					'markdown.extensions.smart_strong'
+				]
+			).replace('LBRACK666','[[').replace('RBRACK666',']]')
+		)
+	except Exception as e:
+		html = value
+
+	return html
+	return remove_unwanted_tags(html)
 
 class WikiException(Exception): # Raised when a particular string is not found in any of the models.
 	pass
 
 def wikify(match): # Excepts a regexp match
 	wikis = [] # Here we store our wiki model info
-	
-	print match
 
 	for i in settings.WIKISYNTAX:
 
 		name = i[0]
 
-		
 		modstring = i[1]
 		module = __import__(".".join(modstring.split(".")[:-1]))
 		for count, string in enumerate(modstring.split('.')):
@@ -53,21 +59,13 @@ def wikify(match): # Excepts a regexp match
 
 	if '=' in token:
 
-		"""
-		First we're checking if the text is attempting to find a specific type of object.
-
-		Exmaples:
-
-		[[user:Subsume]]
-
-		[[card:Jack of Hearts]]
-
-		"""
-
 		prefix = token.split('=',1)[0].lower().rstrip()
 		name = token.split('=',1)[1].rstrip()
 
-		
+		if name.isdigit():
+			return '{} '.format(name)
+
+
 		for wiki in wikis:
 			if prefix == wiki.name:
 				if wiki.attempt(name,explicit=True):
@@ -78,17 +76,18 @@ def wikify(match): # Excepts a regexp match
 					"""
 					return wiki.render(name,trail=trail,explicit=True)
 				else:
-					
+
 					if prefix == 'a':
-						return '<a href="http://www.discogs.com/search?q=%s&type=artist">%s</a>' % (name, name)
+						return '<a href="https://www.discogs.com/search?q=%s&type=artist">%s</a>' % (name, name)
+
+					if prefix == 'r':
+						return '<a href="https://www.discogs.com/search?q=%s&type=release">%s</a>' % (name, name)
 
 					if prefix == 'l':
-						return '<a href="http://www.discogs.com/search?q=%s&type=label">%s</a>' % (name, name)
-					
+						return '<a href="https://www.discogs.com/search?q=%s&type=label">%s</a>' % (name, name)
+
 					return '* %s *' % name
-				
-				
-					raise WikiException
+
 
 	"""
 	Now we're going to try a generic match across all our wiki objects.

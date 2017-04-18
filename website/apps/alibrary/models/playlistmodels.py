@@ -108,8 +108,21 @@ class Playlist(MigrationMixin, models.Model):
     edit_mode = models.PositiveIntegerField(default=2, choices=EDIT_MODE_CHOICES)
 
     rotation = models.BooleanField(default=True)
+    rotation_date_start = models.DateField(
+        verbose_name=_('Rotate from'),
+        blank=True, null=True
+    )
+    rotation_date_end = models.DateField(
+        verbose_name=_('Rotate until'),
+        blank=True, null=True
+    )
 
-    main_image = models.ImageField(verbose_name=_('Image'), upload_to=upload_image_to, storage=OverwriteStorage(), null=True, blank=True)
+    main_image = models.ImageField(
+        verbose_name=_('Image'),
+        upload_to=upload_image_to,
+        storage=OverwriteStorage(),
+        null=True, blank=True
+    )
 
 
     # relations

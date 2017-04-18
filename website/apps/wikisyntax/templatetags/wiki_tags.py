@@ -33,7 +33,6 @@ class WikiFormat(template.Node):
 		string = self.build_string(context)
 		string = self.process_string(string)
 
-		#content = re.sub('(.*?)(?:(?:\r\n\r\n)*$|\r\n\r\n)','<p>%s</p>\r\n' % r'\1' , content)
 		return string.replace("[[","").replace("]]","")
 
 class WikiBlockFormat(WikiFormat):
@@ -54,9 +53,6 @@ def wikify(parser, token):
 	string = template.Variable(var)
 	return WikiFormat(string)
 
-"""
-
-"""
 
 @register.tag
 def wikiblock(parser, token):
