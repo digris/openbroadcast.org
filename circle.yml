@@ -2,7 +2,7 @@ machine:
   services:
     - redis
   post:
-    - pyenv global 2.7.12
+    - pyenv global 2.7
 
 dependencies:
   post:
