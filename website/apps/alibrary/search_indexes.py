@@ -3,7 +3,7 @@ from alibrary.models import Release, Artist, Media, Label, Playlist
 
 class ReleaseIndex(indexes.SearchIndex, indexes.Indexable):
 
-    text = indexes.CharField(document=True, use_template=True)
+    text = indexes.EdgeNgramField(document=True, use_template=True)
     name = indexes.EdgeNgramField(model_attr='name', boost=1.5)
     releasedate = indexes.DateTimeField(model_attr='releasedate', null=True)
 
@@ -16,7 +16,7 @@ class ReleaseIndex(indexes.SearchIndex, indexes.Indexable):
 
 class ArtistIndex(indexes.SearchIndex, indexes.Indexable):
 
-    text = indexes.CharField(document=True, use_template=True)
+    text = indexes.EdgeNgramField(document=True, use_template=True)
     name = indexes.EdgeNgramField(model_attr='name', boost=1.5)
 
     def get_model(self):
@@ -27,7 +27,7 @@ class ArtistIndex(indexes.SearchIndex, indexes.Indexable):
 
 class MediaIndex(indexes.SearchIndex, indexes.Indexable):
 
-    text = indexes.CharField(document=True, use_template=True)
+    text = indexes.EdgeNgramField(document=True, use_template=True)
     name = indexes.EdgeNgramField(model_attr='name', boost=1.5)
 
     def get_model(self):
@@ -38,7 +38,7 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
 
 class LabelIndex(indexes.SearchIndex, indexes.Indexable):
 
-    text = indexes.CharField(document=True, use_template=True)
+    text = indexes.EdgeNgramField(document=True, use_template=True)
     name = indexes.EdgeNgramField(model_attr='name', boost=1.5)
 
     def get_model(self):
@@ -49,7 +49,7 @@ class LabelIndex(indexes.SearchIndex, indexes.Indexable):
 
 class PlaylistIndex(indexes.SearchIndex, indexes.Indexable):
 
-    text = indexes.CharField(document=True, use_template=True)
+    text = indexes.EdgeNgramField(document=True, use_template=True)
     name = indexes.EdgeNgramField(model_attr='name', boost=1.5)
     type = indexes.CharField(model_attr='type', null=True)
     user_pk = indexes.IntegerField(model_attr='user__pk', null=True)

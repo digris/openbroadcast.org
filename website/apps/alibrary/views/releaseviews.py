@@ -10,6 +10,7 @@ import reversion
 from alibrary.filters import ReleaseFilter
 from haystack.backends import SQ
 from haystack.query import SearchQuerySet
+from haystack.inputs import AutoQuery
 
 from ..forms import ReleaseForm, ReleaseActionForm, ReleaseBulkeditForm, ReleaseRelationFormSet, AlbumartistFormSet, ReleaseMediaFormSet
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
@@ -107,7 +108,8 @@ class ReleaseListView(PaginationMixin, ListView):
 
         # haystack version
         if q:
-            sqs = SearchQuerySet().models(Release).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            # sqs = SearchQuerySet().models(Release).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            sqs = SearchQuerySet().models(Release).filter(content=AutoQuery(q))
             qs = Release.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
         else:
             qs = Release.objects.select_related('license').prefetch_related('media_release').all()

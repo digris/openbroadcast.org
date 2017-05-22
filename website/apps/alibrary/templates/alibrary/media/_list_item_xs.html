@@ -104,7 +104,7 @@
 
             <li>
                 <ul class="unstyled horizontal">
-                    {% cache 0 "media__list_item_xs" item.pk item.updated %}
+                    {% cache 86400 "media__list_item_xs" item.pk item.updated %}
                     {% stats_for_object item %}
                     {% endcache %}
                 </ul>

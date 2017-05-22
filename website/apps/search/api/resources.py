@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from haystack.inputs import AutoQuery
+from haystack.inputs import AutoQuery, Exact, Clean
 from tastypie.paginator import Paginator
 from django.http import Http404
 from django.template.defaultfilters import truncatechars
@@ -121,7 +121,8 @@ class GlobalSearchResource(Resource):
         q = kwargs.get('query', '')
 
         # sqs = SearchQuerySet().filter(SQ(content__contains=q) | SQ(name=q))
-        sqs = SearchQuerySet().filter(SQ(content__contains=q) | SQ(content_auto=q))
+        # sqs = SearchQuerySet().filter(SQ(content__contains=q) | SQ(content_auto=q))
+        sqs = SearchQuerySet().filter(content=AutoQuery(q))
 
 
         search_models = []

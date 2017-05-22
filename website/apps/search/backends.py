@@ -1,7 +1,14 @@
-from django.conf import settings
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
+from django.conf import settings
 from haystack.backends.elasticsearch_backend import ElasticsearchSearchBackend, ElasticsearchSearchEngine
 
+#######################################################################
+# https://wellfire.co/learn/custom-haystack-elasticsearch-backend/
+# http://stackoverflow.com/questions/18201147/django-haystack-how-to-\
+# force-exact-attribute-match-without-stemming
+#######################################################################
 
 class UnstemmedElasticsearchSearchBackend(ElasticsearchSearchBackend):
 
