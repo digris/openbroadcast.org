@@ -411,6 +411,10 @@ ELASTICSEARCH_INDEX_SETTINGS = {
     "settings": {
         "analysis": {
             "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "filter": ["asciifolding", "lowercase"]
+                },
                 "ngram_analyzer": {
                     "type": "custom",
                     "tokenizer": "custom_ngram_tokenizer",
@@ -434,6 +438,18 @@ ELASTICSEARCH_INDEX_SETTINGS = {
                     "min_gram": 2,
                     "max_gram": 12,
                     "token_chars": ["letter", "digit"]
+                }
+            },
+            "filter": {
+                "haystack_ngram": {
+                    "type": "nGram",
+                    "min_gram": 3,
+                    "max_gram": 15
+                },
+                "haystack_edgengram": {
+                    "type": "edgeNGram",
+                    "min_gram": 2,
+                    "max_gram": 15
                 }
             }
         }
