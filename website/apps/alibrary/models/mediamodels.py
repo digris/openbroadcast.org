@@ -109,24 +109,11 @@ class Media(MigrationMixin):
         (99, _('Error')),
     )
 
-    PROCESSED_CHOICES = (
-        (0, _('Waiting')),
-        (1, _('Done')),
-        (99, _('Error')),
-    )
-
     ECHOPRINT_STATUS_CHOICES = (
         (0, _('Init')),
         (1, _('Assigned')),
         (2, _('Error')),
         (3, _('File not suitable')),
-        (99, _('Error')),
-    )
-
-    CONVERSION_STATUS_CHOICES = (
-        (0, _('Init')),
-        (1, _('Completed')),
-        (2, _('Error')),
         (99, _('Error')),
     )
 
@@ -160,17 +147,9 @@ class Media(MigrationMixin):
     publish_date = models.DateTimeField(
         blank=True, null=True
     )
-    processed = models.PositiveIntegerField(
-        default=0,
-        choices=PROCESSED_CHOICES
-    )
     echoprint_status = models.PositiveIntegerField(
         default=0,
         choices=ECHOPRINT_STATUS_CHOICES
-    )
-    conversion_status = models.PositiveIntegerField(
-        default=0,
-        choices=CONVERSION_STATUS_CHOICES
     )
     tracknumber = models.PositiveIntegerField(
         verbose_name=_('Track Number'),
@@ -617,6 +596,8 @@ class Media(MigrationMixin):
 
         ECHOPRINT_CODEGEN_BINARY = getattr(settings, 'ECHOPRINT_CODEGEN_BINARY', None)
 
+        log.debug('update echoprint, using binary: {}'.format(ECHOPRINT_CODEGEN_BINARY))
+
         path = obj.get_master_path()
 
         if not path:
@@ -635,7 +616,7 @@ class Media(MigrationMixin):
 
         try:
             d = json.loads(stdout[0])
-        except ValueError, e:
+        except ValueError as e:
             log.error('unable to load JSON: %s' % e)
 
             return False
@@ -647,7 +628,7 @@ class Media(MigrationMixin):
             version = d[0]['metadata']['version']
             duration = d[0]['metadata']['duration']
 
-        except Exception, e:
+        except Exception as e:
             log.error('unable to extract code: %s' % e)
 
             code = None
@@ -657,30 +638,31 @@ class Media(MigrationMixin):
 
         # skip file if longer than 12 minutes
         if duration and duration > (60 * 12):
+            log.debug('file longer than 12 minutes > skipping echoprint ingestion')
             obj.echoprint_status = 3
             obj.save()
             return
+
+
 
         if code:
 
             try:
 
                 fp.delete(b"%s" % obj.id)
+
                 id = obj.updated.isoformat()
                 code = fp.decode_code_string(code)
 
                 nfp = {
-                        b"track_id": "%s" % obj.id,
-                        b"fp": code,
-                        #"artist": "%s" % obj.artist.id,
-                        #"release": "%s" % obj.artist.id,
-                        b"track": "%s" % obj.uuid,
-                        b"length": duration,
-                        b"codever": "%s" % version,
-                        b"source": "%s" % "NRGFP",
-                        b"import_date": "%sZ" % id
-                        }
-
+                    b"track_id": "%s" % obj.id,
+                    b"fp": code,
+                    b"track": "%s" % obj.uuid,
+                    b"length": duration,
+                    b"codever": "%s" % version,
+                    b"source": "%s" % "NRGFP",
+                    b"import_date": "%sZ" % id
+                }
 
                 # ingest fingerprint into database
                 fp.ingest(nfp, split=False, do_commit=True)
@@ -694,14 +676,8 @@ class Media(MigrationMixin):
                     log.warning('unable to ingest fingerprint for %s' % obj.id)
                     status = 2
 
-                #res = fp.best_match_for_query(code_string=code_pre)
-                #print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-                #print res.score
-                #print res.match()
-                #print '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-
             except Exception as e:
-                log.warning('unable to ingest fingerprint')
+                log.warning('unable to ingest fingerprint: {}'.format(e))
                 status = 2
 
         obj.echoprint_status = status
@@ -762,8 +738,8 @@ class Media(MigrationMixin):
                 license = License.objects.filter(is_default=True)[0]
                 self.license = license
                 log.debug('applied default license: %s' % license.name)
-            except Exception, e:
-                log.warning('unable to apply default license: %s' % e)
+            except Exception as e:
+                log.warning('unable to apply default license: {}'.format(e))
 
 
         self.master_changed = False
@@ -795,12 +771,10 @@ class Media(MigrationMixin):
 
                     # reset processing flags
                     # TODO: this should be refactored / removed. Only master_* related informations are extracted.
-                    self.processed = 0
-                    self.conversion_status = 0
                     self.echoprint_status = 0
 
-            except Exception, e:
-                print '%s' % e
+            except Exception as e:
+                log.warning('unable to update master: {}'.format(e))
 
         if self.version:
             self.version = self.version.lower()
@@ -840,7 +814,7 @@ def media_post_save(sender, **kwargs):
     if obj.master and obj.echoprint_status == 0:
         if AUTOCREATE_ECHOPRINT:
             log.info('Media id: %s - generate echoprint' % (obj.pk))
-            #obj.update_echoprint()
+            obj.update_echoprint()
         else:
             log.info('Media id: %s - skipping echoprint generation' % (obj.pk))
 

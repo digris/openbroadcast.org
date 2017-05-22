@@ -29,7 +29,7 @@ class LabelInline(admin.TabularInline):
 
 class MediaInline(admin.TabularInline):
     model = Media
-    exclude = ['description','slug','processed','echoprint_status','conversion_status', 'd_tags', 'echonest_id', 'lyrics', 'lyrics_language', 'danceability', 'energy', 'liveness', 'loudness', 'speechiness', 'start_of_fade_out', 'echonest_duration', 'tempo', 'key', 'sections','master_sha1', 'base_format', 'base_filesize', 'base_duration', 'base_samplerate', 'base_bitrate', 'filename', 'publish_date', 'status', 'owner', 'creator', 'publisher', 'medianumber', 'master', 'mediatype' ]
+    exclude = ['description','slug','echoprint_status', 'd_tags', 'echonest_id', 'lyrics', 'lyrics_language', 'danceability', 'energy', 'liveness', 'loudness', 'speechiness', 'start_of_fade_out', 'echonest_duration', 'tempo', 'key', 'sections','master_sha1', 'base_format', 'base_filesize', 'base_duration', 'base_samplerate', 'base_bitrate', 'filename', 'publish_date', 'status', 'owner', 'creator', 'publisher', 'medianumber', 'master', 'mediatype' ]
     readonly_fields = ['artist', ]
     extra = 0
 
@@ -37,8 +37,8 @@ class ReleaseExtraartistsInline(admin.TabularInline):
     model = ReleaseExtraartists
     extra=1
     raw_id_fields = ['artist',]
-    
-    
+
+
 class ReleaseAlbumartistsInline(admin.TabularInline):
     model = ReleaseAlbumartists
     extra=2
@@ -46,7 +46,7 @@ class ReleaseAlbumartistsInline(admin.TabularInline):
         (None,               {'fields': ['position', 'join_phrase', 'artist']}),
     ]
     raw_id_fields = ['artist',]
-   
+
 
 class RelationsInline(GenericTabularInline):
     model = Relation
@@ -63,7 +63,7 @@ class ReleaseMediaMediaInline(admin.TabularInline):
 
 class ReleaseMediaInline(admin.TabularInline):
     model = ReleaseMedia
-    extra = 1 
+    extra = 1
     inlines = [ReleaseMediaMediaInline]
 
 class ReleaseAdmin(BaseAdmin):
@@ -167,17 +167,17 @@ class ArtistMembersInline(admin.TabularInline):
     fk_name = 'parent'
     raw_id_fields = ['child',]
     extra=1
-    
+
 class ArtistParentsInline(admin.TabularInline):
     model = Artist.members.through
     fk_name = 'child'
     raw_id_fields = ['parent',]
     extra=1
-    
+
 class ArtistProfessionsInline(admin.TabularInline):
     model = ArtistProfessions
     extra=1
-    
+
 class MediaExtraartistsInline(admin.TabularInline):
     model = MediaExtraartists
     extra=1
@@ -192,17 +192,17 @@ class AgencyArtistInline(admin.TabularInline):
 class NameVariationInline(admin.TabularInline):
     model = NameVariation
     extra = 3
-         
+
 class ArtistAdmin(BaseAdmin):
 
     list_display   = ('name', 'type', 'disambiguation', 'listed',)
     search_fields = ['name', 'media__name',]
     list_filter = ('listed',)
-    
-    # RelationsInline, 
+
+    # RelationsInline,
     inlines = [NameVariationInline, RelationsInline, ArtistProfessionsInline, ArtistMembersInline, ArtistParentsInline, AgencyArtistInline]
 
-    
+
     """"""
     fieldsets = [
         (None,               {'fields': ['name', 'slug', 'main_image', 'real_name', 'country', ('listed', 'disable_link',), 'biography', 'excerpt', ]}),
@@ -216,28 +216,28 @@ class ArtistAdmin(BaseAdmin):
         'last_editor',
         'publisher',
     ]
-    
+
 admin.site.register(Artist, ArtistAdmin)
 admin.site.register(NameVariation)
 
 class LicenseAdmin(reversion.VersionAdmin, TranslatableAdmin):
-    
+
     inline_instances = ('name_translated', 'restricted', 'parent',)
-    
+
     list_display   = ('name', 'parent', 'legacy_id', 'key', 'restricted', 'selectable', 'is_default',)
     search_fields = ('name',)
-    
+
 admin.site.register(License, LicenseAdmin)
-      
-      
-      
-      
+
+
+
+
 class ServiceAdmin(BaseAdmin):
     pass
-    
-admin.site.register(Service, ServiceAdmin)      
-      
-      
+
+admin.site.register(Service, ServiceAdmin)
+
+
 class RelationAdmin(BaseAdmin):
 
     list_display = ('url', 'service', 'name',)
@@ -247,12 +247,12 @@ class RelationAdmin(BaseAdmin):
         (None,               {'fields': ['url', 'service']}),
     ]
     #readonly_fields = ['service']
-    
+
 admin.site.register(Relation, RelationAdmin)
-      
+
 class ProfessionAdmin(admin.ModelAdmin):
     pass
-    
+
 admin.site.register(Profession, ProfessionAdmin)
 
 
@@ -262,13 +262,13 @@ class MediaReleaseInline(admin.TabularInline):
     extra = 1
     raw_id_fields = ['release',]
 
-    
+
 class MediaAdmin(BaseAdmin):
-    
-    list_display   = ('name', 'created', 'release_link', 'artist', 'mediatype', 'tracknumber', 'medianumber', 'duration', 'processed', 'echoprint_status', 'conversion_status',)
+
+    list_display   = ('name', 'created', 'release_link', 'artist', 'mediatype', 'tracknumber', 'medianumber', 'duration', 'echoprint_status',)
     search_fields = ['artist__name', 'release__name', 'name']
-    list_filter = ('mediatype', 'license__name', 'processed', 'echoprint_status', 'conversion_status')
-    
+    list_filter = ('mediatype', 'license__name', 'echoprint_status',)
+
     inlines = [MediaReleaseInline, RelationsInline, MediaExtraartistsInline]
 
     readonly_fields = [
@@ -286,13 +286,13 @@ class MediaAdmin(BaseAdmin):
 
 
     date_hierarchy = 'created'
-    
+
 
     fieldsets = [
-        (None,  {'fields': 
+        (None,  {'fields':
                  ['name', 'slug', 'isrc', 'filename', 'uuid', ('tracknumber', 'medianumber', 'opus_number'), 'mediatype', 'version', ('release', 'release_link'), 'artist', 'license', 'd_tags', 'echonest_id',]
                  }),
-                 
+
         ('Users', {'fields' : ['owner', 'creator', 'last_editor', 'publisher']}),
         ('Text', {'fields' : ['description', 'lyrics',]}),
 
@@ -306,9 +306,9 @@ class MediaAdmin(BaseAdmin):
                 ]
                  }),
 
-        ('Advanced options [Know what you are doing!!!!!!!!]', {
+        ('Analyse & co', {
             'classes': ('uncollapse',),
-            'fields': ('processed','echoprint_status','conversion_status',)
+            'fields': ('echoprint_status',)
         }),
     ]
 
@@ -320,22 +320,22 @@ class MediaAdmin(BaseAdmin):
         'release',
         'artist',
     ]
-    
-    
+
+
 admin.site.register(Media, MediaAdmin)
-    
-    
+
+
 class DistributorLabelInline(admin.TabularInline):
     model = Distributor.labels.through
     extra = 1
-    
+
 class LabelAdmin(BaseAdmin):
-    
+
     # inlines = [LabelInline]
     readonly_fields = ['slug']
-    
+
     inlines = [RelationsInline]
-    
+
     """"""
     fieldsets = [
         (None,               {'fields': ['name', 'slug', 'main_image', 'type', 'description']}),
@@ -352,17 +352,17 @@ class LabelAdmin(BaseAdmin):
         'publisher',
         'parent',
     ]
-    
+
 admin.site.register(Label, LabelAdmin)
-    
+
 class DistributorAdmin(BaseAdmin):
-    
+
     # inlines = [LabelInline]
     #prepopulated_fields = {"slug": ("name",)}
     readonly_fields = ['slug', 'd_tags']
-    
+
     inlines = [DistributorLabelInline, RelationsInline]
-    
+
     """"""
     fieldsets = [
         (None,               {'fields': ['name', 'slug', 'type', 'description']}),
@@ -370,7 +370,7 @@ class DistributorAdmin(BaseAdmin):
         ('Relations', {'fields': ['parent'], 'classes': ['']}),
         ('Users', {'fields' : [('owner', 'creator', 'publisher'),]}),
     ]
-    
+
 admin.site.register(Distributor, DistributorAdmin)
 
 
@@ -394,15 +394,15 @@ admin.site.register(Agency, AgencyAdmin)
 admin.site.register(AgencyScope)
 
 
-    
+
 class PlaylistmediaInline(GenericTabularInline):
     model = PlaylistMedia
     extra=1
-    
+
 class PlaylistItemInline(GenericTabularInline):
     model = PlaylistItem
     extra=1
-    
+
 class PlaylistItemPlaylistInline(admin.TabularInline):
     model = PlaylistItemPlaylist
     inlines = [PlaylistItemInline,]
@@ -419,7 +419,7 @@ def playlists_disable_rotation(modeladmin, request, queryset):
 playlists_disable_rotation.short_description = _('Exclude selected playlists from rotation')
 
 class PlaylistAdmin(GenericAdminModelAdmin):
-    
+
     list_display   = ('name', 'user', 'type', 'duration', 'target_duration', 'is_current', 'rotation', 'updated')
     list_filter = ('type', 'broadcast_status', )
 
@@ -431,21 +431,21 @@ class PlaylistAdmin(GenericAdminModelAdmin):
 
 
     actions = [playlists_enable_rotation, playlists_disable_rotation]
-    
+
     #readonly_fields = ['slug', 'is_current',]
 
-    inlines = [PlaylistItemPlaylistInline] 
- 
+    inlines = [PlaylistItemPlaylistInline]
+
 class PlaylistItemAdmin(GenericAdminModelAdmin):
     pass
-        
+
 class DaypartAdmin(BaseAdmin):
-    
+
     list_display   = ('day', 'time_start', 'time_end', 'active', 'playlist_count',)
     list_filter = ('day', 'active',)
 
 
-    
+
 admin.site.register(Playlist, PlaylistAdmin)
 admin.site.register(Daypart, DaypartAdmin)
 admin.site.register(PlaylistItem, PlaylistItemAdmin)

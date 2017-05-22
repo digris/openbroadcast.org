@@ -306,17 +306,7 @@ class MediaFilter(django_filters.FilterSet):
     master_encoding = CharListFilter(label=_("Format / Codec"))
     master_samplerate = CharListFilter(label=_("Samplerate (Hz)"))
     mediatype = CharListFilter(label=_("Type"))
-    PROCESSED_CHOICES = (
-        (0, _('Waiting')),
-        (1, _('Done')),
-        (99, _('Error')),
-    )
-    CONVERSION_STATUS_CHOICES = (
-        (0, _('Init')),
-        (1, _('Completed')),
-        (2, _('Error')),
-        (99, _('Error')),
-    )
+
     KEY_CHOICES = (
         (0, _('C')),
         (1, _('Db')),
@@ -358,30 +348,7 @@ class MediaFilter(django_filters.FilterSet):
                 ds = self.queryset.values_list(name, flat=False).order_by(name).annotate(
                     n=models.Count("pk", distinct=True)).distinct()
 
-                # TODO: extreme hackish...
-                if name == 'processed':
-                    nd = []
-                    for d in ds:
-                        if d[0] == 'NULL':
-                            pass
-                        else:
-                            if d[0] is not None:
-                                for x in self.PROCESSED_CHOICES:
-                                    if x[0] == d[0]:
-                                        nd.append([d[0], d[1], x[1]])
-
-                    filter_.entries = nd
-
-                if name == 'conversion_status__disabled__':
-                    nd = []
-                    for d in ds:
-                        for x in self.CONVERSION_STATUS_CHOICES:
-                            if x[0] == d[0]:
-                                nd.append([d[0], d[1], x[1]])
-
-                    filter_.entries = nd
-
-                elif name == 'master_encoding':
+                if name == 'master_encoding':
                     nd = []
                     for d in ds:
                         if not d[0] or d[0] == 'NULL':
@@ -561,4 +528,3 @@ class PlaylistFilter(django_filters.FilterSet):
             self._filterlist = flist
 
         return self._filterlist
-    

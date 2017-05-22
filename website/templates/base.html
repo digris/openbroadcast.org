@@ -7,7 +7,7 @@
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
         <meta name="description" content="{% block meta_description %}{% endblock %}" />
         <meta name="keywords" content="{% block meta_keywords %}{% endblock %}" />
-        <meta name="author" content="hazelfire gmbh" />
+        <meta name="author" content="digris AG" />
         <meta name="generator" content="A.W.F." />
         <meta name="version" content="bouncing beaver | 11.09.01 | 201110011" />
 
@@ -227,17 +227,14 @@
 
         <script src="{{ STATIC_URL }}el-pagination/js/el-pagination.js"></script>
 
-
-
-
         {% nunjucks_scripts %}
+            
         {% endcompress %}
         <!-- end: compressor js-post -->
 
         <!-- start: js-post elements added by sub-templates -->
         {% render_block "js-post" %}
         <!-- end: js-post elements added by sub-templates -->
-
 
         <!-- start: js-uncompressed -->
         <script src="{{ STATIC_URL }}js/lib/jquery.pulse.js"></script>

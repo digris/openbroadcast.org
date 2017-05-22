@@ -66,15 +66,15 @@ class Identifier(object):
 
         musicbrainzngs.set_useragent("NRG Processor", "0.01", "http://anorg.net/")
         musicbrainzngs.set_rate_limit(MUSICBRAINZ_RATE_LIMIT)
-        
+
         self.pp = pprint.PrettyPrinter(indent=4)
         self.pp.pprint = lambda d: None
 
         self.file_metadata = None
-        
+
         if MUSICBRAINZ_HOST:
             musicbrainzngs.set_hostname(MUSICBRAINZ_HOST)
-    
+
     """
     look for a duplicate by sha1
     """
@@ -92,7 +92,7 @@ class Identifier(object):
             log.debug(u'no duplicate by SHA1 hash.')
             return None
 
-    
+
     """
     look for a duplicate by metadata
     """
@@ -161,8 +161,8 @@ class Identifier(object):
 
 
         return None
-    
-    
+
+
     def extract_metadata(self, file):
 
 
@@ -170,7 +170,7 @@ class Identifier(object):
             return self.file_metadata
 
         log.info('Extracting metadata for: %s' % (file.path))
-        
+
         enc = locale.getpreferredencoding()
 
 
@@ -218,19 +218,19 @@ class Identifier(object):
 
 
 
-        
+
         # Media
 
         try:
             dataset['media_name'] = meta['title'][0]
         except Exception as e:
             log.info('metadata missing "media_name": %s' % (e))
-            
+
         try:
             dataset['media_mb_id'] = meta['musicbrainz_trackid'][0]
         except Exception as e:
             log.debug('metadata missing "media_mb_id": %s' % (e))
-            
+
         try:
 
             try:
@@ -241,7 +241,7 @@ class Identifier(object):
                 except Exception as e:
                     pass
                 log.debug('metadata missing "media_tracknumber": %s' % (e))
-                
+
             try:
                 tn = meta['tracknumber'][0].split('/')
                 dataset['media_tracknumber'] = int(tn[0])
@@ -252,34 +252,34 @@ class Identifier(object):
 
         except Exception as e:
             print e
-           
+
 
         # try to extract tracknumber from filename
         if 'media_tracknumber' in dataset and not dataset['media_tracknumber']:
-            
+
             t_num = None
-            
+
             path, filename = os.path.split(file.path)
             log.info('Looking for number in filename: %s' % filename)
 
-            
+
             match = re.search("\A\d+", filename)
-            
+
             try:
                 if match:
                     t_num = int(match.group(0))
             except:
                 pass
-            
+
             dataset['media_tracknumber'] = t_num
-           
-            
+
+
         # Artist
         try:
             dataset['artist_name'] = meta['artist'][0]
         except Exception as e:
             pass
-            
+
         try:
             # mutagen metadata contains '/' separated ids for mp3, while a list for flac
             # so we join by '/' to get an unified way.
@@ -288,7 +288,7 @@ class Identifier(object):
             dataset['artist_mb_id'] = '/'.join(meta['musicbrainz_artistid'])
         except Exception as e:
             pass
-            
+
         try:
             dataset['performer_name'] = meta['performer'][0]
         except Exception as e:
@@ -302,33 +302,33 @@ class Identifier(object):
         except Exception as e:
             #print e
             pass
-            
+
         try:
             dataset['release_mb_id'] = meta['musicbrainz_albumid'][0]
         except Exception as e:
             #print e
             pass
-            
+
         try:
             dataset['release_date'] = meta['date'][0]
         except Exception as e:
             #print e
             pass
-            
+
         try:
             dataset['release_releasecountry'] = meta['releasecountry'][0]
         except Exception as e:
             #print e
             pass
-            
+
         try:
             dataset['release_status'] = meta['musicbrainz_albumstatus'][0]
         except Exception as e:
             #print e
             pass
-            
-            
-            
+
+
+
          # Label
         try:
             try:
@@ -336,39 +336,39 @@ class Identifier(object):
             except Exception as e:
                 #print e
                 pass
-                
+
             try:
                 dataset['label_name'] = meta['label'][0]
             except Exception as e:
                 #print e
                 pass
-            
+
         except Exception as e:
             #print e
             pass
 
-            
+
         try:
             dataset['label_code'] = meta['labelno'][0]
         except Exception as e:
             #print e
             pass
-            
-            
-            
+
+
+
         # Misc
         try:
             dataset['media_copyright'] = meta['copyright'][0]
         except Exception as e:
             #print e
             pass
-            
+
         try:
             dataset['media_comment'] = meta['comment'][0]
         except Exception as e:
             #print e
             pass
-            
+
         try:
             dataset['media_bpm'] = meta['bpm'][0]
         except Exception as e:
@@ -398,7 +398,7 @@ class Identifier(object):
         self.file_metadata = dataset
 
         return dataset
-    
+
     """
     acoustid lookup
     returns musicbrainz "recording" ids
@@ -448,7 +448,7 @@ class Identifier(object):
         except:
             return None
 
-       
+
     def get_musicbrainz(self, obj):
 
         log.info('Lookup musicbrainz for importfile id: %s' % obj.pk)
@@ -458,7 +458,7 @@ class Identifier(object):
         """
         tracknumber = None
         releasedate = None
-        
+
         """
         try loading settings
         """
@@ -469,14 +469,14 @@ class Identifier(object):
             log.debug('tracknumber from metadata: %s' % tracknumber)
         except Exception as e:
             log.debug('no tracknumber in metadata')
-            
+
         try:
             releasedate = obj.results_tag['release_date']
             log.debug('releasedate from metadata: %s' % releasedate)
         except Exception as e:
             log.debug('no releasedate in metadata')
 
-        
+
         """
          - loop recording ids
          - query by it and tracknumber (if available)
@@ -520,14 +520,14 @@ class Identifier(object):
         for e in obj.results_acoustid:
             recording_id = e['id']
             log.info('recording mb_id: %s' % recording_id)
-        
+
             """
             search query e.g.:
             http://www.musicbrainz.org/ws/2/recording/?query=rid:1e701b4e-2b6e-4509-af29-b8df2cdc8225%20AND%20number:3&fmt=json
             """
-            
+
             url = 'http://%s/ws/2/recording/?fmt=json&query=rid:%s' % (MUSICBRAINZ_HOST, recording_id)
-            
+
             if tracknumber and not skip_tracknumber:
                 url = '%s%s%s' % (url, '%20AND%20number:', tracknumber)
 
@@ -543,7 +543,7 @@ class Identifier(object):
             if releasedate:
                 url = '%s%s%s' % (url, '%20AND%20date:', releasedate)
             """
-            
+
             log.debug('API url for request: %s' % url)
             r = requests.get(url, timeout=5)
             result = r.json()
@@ -556,7 +556,7 @@ class Identifier(object):
                     if 'releases' in result['recordings'][0]:
 
                         log.info('got releases on api: %s' % len(result['recordings'][0]['releases']))
-                        
+
                         """
                         fix missing dates
                         """
@@ -564,8 +564,8 @@ class Identifier(object):
                             # dummy-date - sorry, none comes first else.
                             if 'date' not in r:
                                 r['date'] = '9999'
-                                
-                        
+
+
                         """
                         try to get the first one, by date
                         """
@@ -583,7 +583,7 @@ class Identifier(object):
                             sorted_releases = result['recordings'][0]['releases']
 
                         #sorted_releases = result['recording'][0]['releases']
-                            
+
 
 
 
@@ -643,11 +643,11 @@ class Identifier(object):
 
 
 
-                            
-                              
-                              
+
+
+
                         for selected_release in selected_releases:
-                            
+
                             selected_release['artist'] = result['recordings'][0]['artist-credit'][0]['artist']
                             selected_release['recording'] = result['recordings'][0]
                             try:
@@ -655,8 +655,8 @@ class Identifier(object):
                             except Exception as e:
                                 pass
                                 #print e
-                            
-                            
+
+
                             #if releasedate:
                             if releasedate and 1 == 2:
                                 #log.debug('got releasedate: %s' % releasedate)
@@ -670,7 +670,7 @@ class Identifier(object):
                                 else:
                                     pass
                                     #log.debug('date mismatch')
-                            
+
                             else:
                                 releases.append(selected_release)
 
@@ -684,42 +684,42 @@ class Identifier(object):
         return releases
 
 
-        
-        
+
+
     def complete_releases(self, releases):
 
         log.info('got %s releases to complete' % len(releases))
-        
+
         completed_releases = []
-        
+
         for release in releases:
             if release['id'] in completed_releases:
                 log.debug('already completed release with id: %s' % release['id'])
                 releases.remove(release)
-                
+
             else:
                 log.debug('complete release with id: %s' % release['id'])
-                
+
                 r_id = release['id']
                 rg_id = release['release-group']['id']
-                
+
                 #print 'r_id: %s' % r_id
                 #print 'rg_id: %s' % rg_id
-                
-                
+
+
                 release['label'] = None
                 release['catalog-number'] = None
                 release['discogs_url'] = None
                 release['discogs_master_url'] = None
                 release['discogs_image'] = None
-                
-                
+
+
                 """
                 get release details
                 """
                 inc = ('labels', 'artists', 'url-rels', 'label-rels',)
                 url = 'http://%s/ws/2/release/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, r_id, "+".join(inc))
-                
+
                 r = requests.get(url, timeout=5)
                 result = r.json()
                 #self.pp.pprint(result)
@@ -730,36 +730,36 @@ class Identifier(object):
                         release['label'] = result['label-info'][0]['label']
                     if 'catalog-number' in result['label-info'][0]:
                         release['catalog-number'] = result['label-info'][0]['catalog-number']
-                    
+
                 # try to get discogs url
                 if 'relations' in result:
                     for relation in result['relations']:
                         if relation['type'] == 'discogs':
                             log.debug('got discogs url from release: %s' % relation['url'])
                             release['discogs_url'] = relation['url']['resource']
-                
-                
-                
+
+
+
                 """
                 get release-group details
                 """
                 inc = ('url-rels',)
                 url = 'http://%s/ws/2/release-group/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, rg_id, "+".join(inc))
-                
+
                 r = requests.get(url, timeout=5)
                 result = r.json()
                 #self.pp.pprint(result)
-                    
+
                 # try to get discogs master-url
                 if 'relations' in result:
                     for relation in result['relations']:
                         if relation['type'] == 'discogs':
                             log.debug('got discogs url from release: %s' % relation['url'])
                             release['discogs_master_url'] = relation['url']['resource']
-                        
-                        
-                        
-                        
+
+
+
+
                 """
                 assign cover image (if available)
                 """
@@ -768,7 +768,7 @@ class Identifier(object):
                         release['discogs_image'] = discogs_image_by_url(release['discogs_url'], 'uri150')
                     except:
                         pass
-                    
+
                 if not release['discogs_image']:
                     try:
                         release['discogs_image'] = discogs_image_by_url(release['discogs_master_url'], 'uri150')
@@ -779,46 +779,46 @@ class Identifier(object):
                 """
                 if not release['discogs_image']:
                     url = 'http://coverartarchive.org/release/%s' % r_id
-                    try:    
+                    try:
                         r = requests.get(url, timeout=5)
                         result = r.json()
                         release['discogs_image'] = result['images'][0]['image']
                     except:
                         pass
-                    
 
-                
+
+
                 completed_releases.append(release['id'])
-            
-        
-        
+
+
+
         return releases
-    
-    
+
+
     """
     formatting method, to have easy to use variables on client side
     """
     def format_releases(self, releases):
 
         log.info('got %s releases to format' % len(releases))
-        
+
         formatted_releases = []
-        
+
         completed_releases = []
-        
-        
+
+
         for release in releases:
-            
+
             if release['id'] in completed_releases:
                 log.debug('already formated release with id: %s' % release['id'])
-                
+
             else:
-            
+
                 log.debug('formating release with id: %s' % release['id'])
                 completed_releases.append(release['id'])
-                
+
                 self.pp.pprint(release)
-                
+
                 # release
                 r = {}
                 r['mb_id'] = None
@@ -829,124 +829,124 @@ class Identifier(object):
                 r['country'] = None
                 r['asin'] = None
                 r['barcode'] = None
-                
+
                 if 'id' in release:
                     r['mb_id'] = release['id']
-                
+
                 if 'title' in release:
                     r['name'] = release['title']
-                
+
                 if 'status' in release:
                     r['status'] = release['status']
-                
+
                 if 'date' in release:
                     r['releasedate'] = release['date']
-                
+
                 if 'country' in release:
                     r['country'] = release['country']
-                
+
                 if 'catalog-number' in release:
                     r['catalognumber'] = release['catalog-number']
-                
-                
+
+
                 # media
                 m = {}
                 m['mb_id'] = None
                 m['name'] = None
                 m['duration'] = None
-                
+
                 if 'recording' in release and release['recording']:
-                    
+
                     if 'title' in release['recording']:
                         m['name'] = release['recording']['title']
-                        
+
                     if 'id' in release['recording']:
                         m['mb_id'] = release['recording']['id']
-                        
+
                     if 'length' in release['recording']:
                         m['duration'] = release['recording']['length']
-                
-                
-                
-                
+
+
+
+
                 # artist
                 a = {}
                 a['mb_id'] = None
                 a['name'] = None
-                
+
                 if 'artist' in release and release['artist']:
-                    
+
                     if 'name' in release['artist']:
                         a['name'] = release['artist']['name']
-                        
+
                     if 'id' in release['artist']:
                         a['mb_id'] = release['artist']['id']
-    
-                
-                
-                
+
+
+
+
                 # label
                 l = {}
                 l['mb_id'] = None
                 l['name'] = None
                 l['code'] = None
-                
-                
+
+
                 if 'label' in release and release['label']:
-                    
+
                     if 'name' in release['label']:
                         l['name'] = release['label']['name']
-                        
+
                     if 'id' in release['label']:
                         l['mb_id'] = release['label']['id']
-                        
+
                     if 'label-code' in release['label']:
                         l['code'] = release['label']['label-code']
-                
-    
-                
-                
-    
-                
-                
+
+
+
+
+
+
+
                 # relation mapping
                 rel = {}
                 rel['discogs_url'] = None
                 rel['discogs_image'] = None
-                
+
                 if 'discogs_image' in release and release['discogs_image']:
                     rel['discogs_image'] = release['discogs_image']
-                
+
                 if 'discogs_url' in release and release['discogs_url']:
                     rel['discogs_url'] = release['discogs_url']
-                    
+
                 elif 'discogs_master_url' in release and release['discogs_master_url']:
                     rel['discogs_url'] = release['discogs_master_url']
-                
-                
-                
-                
+
+
+
+
                 r['media'] = m
                 r['artist'] = a
                 r['label'] = l
                 r['relations'] = rel
-    
-    
+
+
                 formatted_releases.append(r)
-            
-            
+
+
         return formatted_releases
 
-    
-    
+
+
     def complete_musicbrainz(self, results):
-    
+
         release_group_ids = []
-        
+
         rgs = []
-        
+
         master_releases = []
-    
+
         # get all release-group-ids
         i = 0
         for r in results:
@@ -954,38 +954,38 @@ class Identifier(object):
             if i > 3:
                 break
             i+=1
-            
+
             for release in r['recording']['release-list']:
-                
+
                 mb_release = musicbrainzngs.get_release_by_id(id=release['id'], includes=['release-groups'])
                 release_group_id = mb_release['release']['release-group']['id']
-                
-                            
+
+
                 res = {}
                 res['release_group_id'] = release_group_id
                 res['recording'] = r
-                
-                
+
+
                 if release_group_id not in release_group_ids:
                     release_group_ids.append(release_group_id)
-                
+
                 if res not in rgs:
                     rgs.append(res)
-            
-            
-            
-            
+
+
+
+
         #for id in release_group_ids:
         for rg in rgs:
-            
+
             id = rg['release_group_id']
             r = rg['recording']
-            
-            
+
+
             result = musicbrainzngs.get_release_group_by_id(id=id, includes=['releases', 'url-rels'])
-            
+
             releases = result['release-group']['release-list']
-            
+
             try:
                 relations = result['release-group']['url-relation-list']
                 print
@@ -993,25 +993,25 @@ class Identifier(object):
                 print
             except:
                 relations = None
-            
-            
+
+
             try:
-                sorted_releases = sorted(releases, key=lambda k: k['date']) 
+                sorted_releases = sorted(releases, key=lambda k: k['date'])
             except Exception as e:
                 print "SORTING ERROR"
                 sorted_releases = releases
                 print e
-            
+
             # sorted_releases.reverse()
-            
+
             first_release = sorted_releases[0]
-            
+
             print 'releases:'
             print releases
-            
+
             print 'first release'
             print first_release
-            
+
             # look up details for the first release
             result = musicbrainzngs.get_release_by_id(id=first_release['id'], includes=['labels', 'url-rels', 'recordings'])
 
@@ -1024,14 +1024,14 @@ class Identifier(object):
         master_releases = self.format_master_releases(master_releases)
 
         return master_releases
-    
-    
+
+
     """
     pre-apply some formatting & structure to provide straighter trmplateing
     """
     def format_master_releases(self, master_releases):
-        
-        
+
+
         print
         print '***************************************************'
         print 'format_master_releases'
@@ -1040,26 +1040,26 @@ class Identifier(object):
         print
         print '***************************************************'
         print
-        
-        
+
+
         releases = []
-        
+
         for re in master_releases:
-            
+
             release = re['release']
             recording = re['recording']
             relations = re['relations']
-            
+
             print release
-            
+
             print 'recording:'
             print recording
-            
+
             print 'relations:'
             print relations
-            
+
             r = {}
-            
+
             r['mb_id'] = None
             r['name'] = None
             r['releasedate'] = None
@@ -1073,44 +1073,44 @@ class Identifier(object):
                 r['mb_id'] = release['id']
             except:
                 pass
-            
+
             try:
                 r['name'] = release['title']
             except:
                 pass
-            
+
             try:
                 r['releasedate'] = release['date']
             except:
                 pass
-            
+
             try:
                 r['asin'] = release['asin']
             except:
                 pass
-            
+
             try:
                 r['barcode'] = release['barcode']
             except:
                 pass
-            
+
             try:
                 r['status'] = release['status']
             except:
                 pass
-            
+
             try:
                 r['country'] = release['country']
             except:
                 pass
-            
-            
+
+
             # track mapping
             m = {}
             m['mb_id'] = None
             m['name'] = None
             m['duration'] = None
-        
+
             try:
                 m['mb_id'] = recording['recording']['id']
             except:
@@ -1120,13 +1120,13 @@ class Identifier(object):
                 m['name'] = recording['recording']['title']
             except:
                 pass
-            
+
             try:
                 m['duration'] = recording['recording']['length']
             except:
                 pass
-            
-            
+
+
             # try to get media position
             if 'medium-list' in release:
                 print
@@ -1140,66 +1140,66 @@ class Identifier(object):
                     print
                 print '*************************************************************'
                 print '*************************************************************'
-            
-            
+
+
             r['media'] = m
-            
+
             # artist mapping
             a = {}
             a['mb_id'] = None
             a['name'] = None
-            
+
             try:
                 artist = recording['recording']['artist-credit'][0]['artist']
                 print artist
-                
+
                 try:
                     a['mb_id'] = artist['id']
                 except:
                     pass
-                
+
                 try:
                     a['name'] = artist['name']
                 except:
                     pass
             except:
                 pass
-            
-            
+
+
             r['artist'] = a
-            
-            
+
+
             # label related mapping
             l = {}
             l['mb_id'] = None
             l['name'] = 'Unknown'
             l['code'] = None
             l['catalognumber'] = None
-            
+
             try:
                 label = release['label-info-list'][0]['label']
                 print label
-                
+
                 try:
                     l['mb_id'] = label['id']
                 except:
                     pass
-                
+
                 try:
                     l['name'] = label['name']
                 except:
                     pass
-                
+
                 try:
                     l['code'] = label['label-code']
                 except:
                     pass
-                
+
                 try:
                     l['catalognumber'] = release['label-info-list'][0]['catalog-number']
                 except:
                     pass
-                
+
             except Exception as e:
                 print e
                 pass
@@ -1210,23 +1210,23 @@ class Identifier(object):
             rel = {}
             rel['discogs_url'] = None
             rel['discogs_image'] = None
-            
+
             try:
                 try:
                     for relation in relations:
                         if relation['type'] == 'discogs':
                             rel['discogs_url'] = relation['target']
                             rel['discogs_image'] = discogs_image_by_url(relation['target'], 'uri150')
-                            
-                    
+
+
                 except Exception as e:
                     print e
                     pass
-                
+
             except Exception as e:
                 print e
                 pass
-            
+
             r['relations'] = rel
 
             if r not in releases:

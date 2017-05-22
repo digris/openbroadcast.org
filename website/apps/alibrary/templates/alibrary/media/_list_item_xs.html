@@ -117,17 +117,6 @@
     <div class="list_body_item c4">
         <ul class="unstyled">
 
-            {% comment %}
-            <li>{{ item.duration_s|sec_to_time }}</li>
-            <li>
-                {% if item.conversion_status == 0 %}<i class="icon icon-refresh icon-spin_"></i> {% endif %}
-                {% if item.conversion_status == 2 %}<i class="icon-warning-sign"></i> {% endif %}
-                {% if item.conversion_status == 99 %}<i class="icon-warning-sign"></i> {% endif %}
-                {% if item.base_format %}{{ item.base_format|upper }}{% else %}ERROR{% endif %}
-                {% if item.bitrate %}| {{ item.bitrate }} Kbps{% endif %}
-            </li>
-            {% endcomment %}
-
             <li>{{ item.duration_s|sec_to_time }}</li>
             <li>
                 {% if item.master_encoding %}{{ item.master_encoding|upper }}{% else %}ERROR{% endif %}

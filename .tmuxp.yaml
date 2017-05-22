@@ -33,7 +33,7 @@ windows:
         - cd ~/code/openbroadcast/pushy/server/
         - node pushy.js
     - shell_command:
-        - cd ~/srv/echoprint-server/solr
+        - cd ~/srv/echoprint-server/solr/solr
         - ./run.sh
     - shell_command:
         - cd ~/code/openbroadcast/infrastructure/ansible/
