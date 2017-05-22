@@ -16,6 +16,7 @@ from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 from haystack.backends import SQ
 from haystack.query import SearchQuerySet
+from haystack.inputs import AutoQuery
 
 
 THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
@@ -310,7 +311,8 @@ class PlaylistResource(ModelResource):
         if q and len(q) > 1:
 
             # haystack version
-            sqs = SearchQuerySet().models(Playlist).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            #sqs = SearchQuerySet().models(Playlist).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            sqs = SearchQuerySet().models(Playlist).filter(content=AutoQuery(q))
             qs = Playlist.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
 
             # # ORM version

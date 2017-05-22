@@ -10,6 +10,7 @@ from tastypie.utils import trailing_slash
 from django.db.models import Q
 from haystack.backends import SQ
 from haystack.query import SearchQuerySet
+from haystack.inputs import AutoQuery
 
 THUMBNAIL_OPT = dict(size=(240, 240), crop=True, bw=False, quality=80)
 
@@ -82,7 +83,8 @@ class ReleaseResource(ModelResource):
         if q and len(q) > 2:
 
             # haystack version
-            sqs = SearchQuerySet().models(Release).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            #sqs = SearchQuerySet().models(Release).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            sqs = SearchQuerySet().models(Release).filter(content=AutoQuery(q))
             qs = Release.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
 
             # ORM version

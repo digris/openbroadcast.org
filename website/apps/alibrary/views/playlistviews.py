@@ -16,6 +16,7 @@ from pure_pagination.mixins import PaginationMixin
 from tagging.models import Tag
 from haystack.backends import SQ
 from haystack.query import SearchQuerySet
+from haystack.inputs import AutoQuery
 
 from ..filters import PlaylistFilter
 from ..forms import PlaylistForm, ActionForm
@@ -105,7 +106,8 @@ class PlaylistListView(PaginationMixin, ListView):
 
         if q:
             # haystack version
-            sqs = SearchQuerySet().models(Playlist).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            #sqs = SearchQuerySet().models(Playlist).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            sqs = SearchQuerySet().models(Playlist).filter(content=AutoQuery(q))
             qs = qs.filter(id__in=[result.object.pk for result in sqs]).distinct()
 
             # ORM version

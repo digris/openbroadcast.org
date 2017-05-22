@@ -12,6 +12,7 @@ from django.utils.translation import ugettext as _
 from django.contrib import messages
 from haystack.backends import SQ
 from haystack.query import SearchQuerySet
+from haystack.inputs import AutoQuery
 
 from tagging.models import Tag
 import reversion
@@ -120,7 +121,8 @@ class MediaListView(PaginationMixin, ListView):
 
         # haystack version
         if q:
-            sqs = SearchQuerySet().models(Media).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            #sqs = SearchQuerySet().models(Media).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            sqs = SearchQuerySet().models(Media).filter(content=AutoQuery(q))
             qs = Media.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
         else:
             qs = Media.objects.all()
