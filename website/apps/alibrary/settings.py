@@ -15,6 +15,7 @@ DEFAULT_RELEASETYPE_CHOICES = (
             ('audiobook', _('Audiobook')),
             ('spokenword', _('Spokenword')),
             ('interview', _('Interview')),
+            ('jingle', _('Jingle')),
             ('live', _('Live')),
             ('remix', _('Remix')),
             ('broadcast', _('Broadcast')),
