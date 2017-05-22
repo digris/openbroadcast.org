@@ -340,15 +340,7 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         self.object = form.save()
         messages.add_message(self.request, messages.INFO, 'Object updated')
 
-
-
         return HttpResponseRedirect('')
-
-    # TODO: investigate if this can be removed
-    # def formset_relation_valid(self, formset):
-    #     relations = formset.save(commit=False)
-    #     for relation in relations:
-    #         relation.save()
 
 
 # autocompleter views

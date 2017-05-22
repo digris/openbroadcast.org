@@ -9,24 +9,31 @@
 				<span class="opt"></span>
 				<span class="clear"></span>
 			</li>
+            <!--
 			<li class="link ">
 				<span class="left icon"> <a href="{% url "auth_password_change" %}?next={{ object.get_edit_url }}" title="{% trans "Change password" %}">{% trans "Change password" %}</a> </span>
 				<span class="opt"></span>
 				<span class="clear"></span>
 			</li>
+			-->
+			<li class="link ">
+				<span class="left icon"> <a href="{% url "profiles-credentials-edit" %}?next={{ object.get_edit_url }}" title="{% trans "Change Login Details" %}">{% trans "Change Login Details" %}</a> </span>
+				<span class="opt"></span>
+				<span class="clear"></span>
+			</li>
 		</ul>
 	</div>
-	
+
 
 	<div class="social-auth">
-		
+
 		<h4>{% trans "Connected accounts" %}</h4>
 		<ul class="unstyled connected clearfix">
 			{% for service in social_auth.associated %}
 			<li><i class="icon-{{ service.provider }}"></i><span class="service">{{ service|title|truncatechars:24 }}</span><a class="pull-right" href="{% url "socialauth_disconnect" service.provider %}?next={{ request.get_full_path }}">{% trans "disconnect" %}</a></li>
 			{% endfor %}
 		</ul>
-		
+
 		<h4>{% trans "Available accounts" %}</h4>
 		<ul class="unstyled available clearfix">
 			{% for service in social_auth.not_associated %}
@@ -35,5 +42,5 @@
 		</ul>
 	</div>
 
-	
+
 </div>

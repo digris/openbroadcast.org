@@ -98,7 +98,7 @@
             <li>
                 <a href="#uploads" data-toggle="tab">
                     {% trans "Uploads" %}
-                    ({{ uploaded_media.count|add:uploaded_releases.count }})
+                    {% comment %}({{ uploaded_media.count|add:uploaded_releases.count }}){% endcomment %}
                 </a>
             </li>
             {% endif %}
@@ -541,7 +541,10 @@
                     {% url "alibrary-release-list" as release_list %}
                     <a href="{% spurl path=release_list query="creator={{ object.user.username }}" %}">
                         <i class="icon-chevron-sign-right"></i>
+                        {% trans 'Show all uploaded Releases' %}
+                        {% comment %}
                         {% blocktrans with count=uploaded_releases.count %}Show all {{ count }} uploaded Releases{% endblocktrans %}
+                        {% endcomment %}
                     </a>
                 </span>
             </h2>
@@ -563,7 +566,10 @@
                     {% url "alibrary-media-list" as media_list %}
                     <a href="{% spurl path=media_list query="creator={{ object.user.username }}" %}">
                         <i class="icon-chevron-sign-right"></i>
+                        {% trans 'Show all uploaded Tracks' %}
+                        {% comment %}
                         {% blocktrans with count=uploaded_media.count %}Show all {{ count }} uploaded Tracks{% endblocktrans %}
+                        {% endcomment %}
                     </a>
                 </span>
             </h2>

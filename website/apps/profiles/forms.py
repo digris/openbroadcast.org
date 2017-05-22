@@ -33,7 +33,7 @@ class ActionForm(forms.Form):
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
-        exclude = ('user', 'mentor',)
+        exclude = ('user', 'mentor', 'description')
 
         widgets = {
             'image': AdvancedFileInput(image_width=76),
@@ -50,7 +50,7 @@ class ProfileForm(ModelForm):
             Fieldset(
                 _('Appearance'),
                 Field('pseudonym', css_class='input-xlarge'),
-                Field('description', css_class='input-xlarge'),
+                # Field('description', css_class='input-xlarge'),
             )
         )
 
@@ -229,7 +229,12 @@ ServiceFormSet = inlineformset_factory(Profile, Service, form=ServiceForm, extra
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email')
+        fields = (
+            'first_name',
+            'last_name',
+            #'username',
+            'email'
+        )
         help_texts = {
             'username': _('Letters, digits and @/./+/-/_ only'),
         }
@@ -239,10 +244,73 @@ class UserForm(ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 _('User Details'),
-                Field('username', css_class='input-xlarge'),
+                #Field('username', css_class='input-xlarge'),
                 Field('email', css_class='input-xlarge'),
                 Field('first_name', css_class='input-xlarge'),
                 Field('last_name', css_class='input-xlarge'),
             )
         )
         super(UserForm, self).__init__(*args, **kwargs)
+
+
+
+
+
+
+
+class UserCredentialsForm(ModelForm):
+
+    error_messages = {
+        'password_mismatch': _("The two password fields didn't match."),
+    }
+    new_password1 = forms.CharField(label=_("New password"),
+                                    widget=forms.PasswordInput,
+                                    required=False,
+                                    help_text=_("Please make sure to use a 'not so easy to guess' password!"))
+    new_password2 = forms.CharField(label=_("Confirmation"),
+                                    widget=forms.PasswordInput,
+                                    required=False,
+                                    help_text=_("Verify your new password"))
+
+    class Meta:
+        model = User
+        fields = (
+            'username',
+        )
+        help_texts = {
+            'username': _('Letters, digits and @/./+/-/_ only'),
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_class = 'form-horizontal'
+        self.helper.layout = Layout(
+            Fieldset(
+                _('Username / a.k.a. "Login Name"'),
+                Field('username', css_class='input-xlarge'),
+            ),
+            Fieldset(
+                _('Update Password'),
+                Field('new_password1', css_class='input-xlarge'),
+                Field('new_password2', css_class='input-xlarge'),
+            )
+        )
+        super(UserCredentialsForm, self).__init__(*args, **kwargs)
+
+    def clean_new_password2(self):
+        password1 = self.cleaned_data.get('new_password1')
+        password2 = self.cleaned_data.get('new_password2')
+        if password1 and password2:
+            if password1 != password2:
+                raise forms.ValidationError(
+                    self.error_messages['password_mismatch'],
+                    code='password_mismatch',
+                )
+        return password2
+
+
+
+
+
+

@@ -28,12 +28,12 @@ from l10n.models import Country
 DEFAULT_GROUP = 'Listener'
 
 class MigrationMixin(models.Model):
-    
+
     legacy_id = models.IntegerField(null=True, blank=True, editable=False)
     # to find way back to last-last database
     legacy_legacy_id = models.IntegerField(null=True, blank=True, editable=False)
     migrated = models.DateField(null=True, blank=True, editable=False)
-    
+
     class Meta:
         abstract = True
         app_label = 'profiles'
@@ -45,10 +45,10 @@ class MigrationMixin(models.Model):
 def filename_by_uuid(instance, filename):
     filename, extension = os.path.splitext(filename)
     path = "profiles/"
-    
+
     # splitted
     filename = instance.uuid.replace('-', '/')[5:] + extension
-    
+
     return os.path.join(path, filename)
 
 
@@ -61,25 +61,25 @@ class Profile(MigrationMixin):
     )
     #user = models.ForeignKey(User, unique=True)
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
-    
+
     #
     uuid = UUIDField()
-    
+
     # auto-update
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
-    
+
     #
     mentor = models.ForeignKey(User, blank=True, null=True, related_name="godchildren")
-    
+
     #Personal
     gender = models.PositiveSmallIntegerField(_('gender'), choices=GENDER_CHOICES, blank=True, null=True)
     birth_date = models.DateField(_('Date of birth'), blank=True, null=True, help_text=_('Format: YYYY-MM-DD'))
-    
+
     # Profile
     pseudonym = models.CharField(
         blank=True, null=True, max_length=250,
-        help_text=_('Will appear instead of your name & surname')
+        help_text=_('Will appear instead of your first- & last name')
     )
     description = models.CharField(_('Disambiguation'), blank=True, null=True, max_length=250)
     biography = extra.MarkdownTextField(blank=True, null=True)
@@ -90,16 +90,16 @@ class Profile(MigrationMixin):
     mobile = PhoneNumberField(_('mobile'), blank=True, null=True)
     phone = PhoneNumberField(_('phone'), blank=True, null=True)
     fax = PhoneNumberField(_('fax'), blank=True, null=True)
-    
+
     address1 = models.CharField(_('address'), null=True, blank=True, max_length=100)
     address2 = models.CharField(_('address (secondary)'), null=True, blank=True, max_length=100)
     city = models.CharField(_('city'), null=True, blank=True, max_length=100)
     zip = models.CharField(_('zip'), null=True, blank=True, max_length=10)
     country = models.ForeignKey(Country, blank=True, null=True)
-    
+
     iban = models.CharField(_('IBAN'), null=True, blank=True, max_length=120)
     paypal = models.EmailField(_('Paypal'), null=True, blank=True, max_length=200)
-    
+
     # relations
     expertise = models.ManyToManyField('Expertise', verbose_name=_('Fields of expertise'), blank=True)
 
@@ -116,7 +116,7 @@ class Profile(MigrationMixin):
         verbose_name_plural = _('user profiles')
         db_table = 'user_profiles'
         ordering = ('-user__last_login',)
-        
+
         permissions = (
             ('mentor_profiles', _('Mentoring profiles')),
             ('view_profiles_private', _('View private profile-data.')),
@@ -157,7 +157,7 @@ class Profile(MigrationMixin):
             return True
 
         return
-    
+
     def approve(self, mentor, level):
 
         groups_to_add = []
@@ -169,7 +169,7 @@ class Profile(MigrationMixin):
             groups_to_add = ('Radio PRO', 'Mentor',)
 
         groups = Group.objects.filter(name__in=groups_to_add)
-        
+
         for group in groups:
             self.user.groups.add(group)
 
@@ -221,14 +221,14 @@ arating.enable_voting_on(Profile)
 
 
 class Community(MigrationMixin):
-    
+
     uuid = UUIDField(primary_key=False)
     name = models.CharField(max_length=200, db_index=True)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
-    
+
     group = models.OneToOneField(Group, unique=True, null=True, blank=True)
     members = models.ManyToManyField(User, blank=True)
-    
+
     # auto-update
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
@@ -236,13 +236,13 @@ class Community(MigrationMixin):
     # Profile
     description = extra.MarkdownTextField(blank=True, null=True)
     image = models.ImageField(verbose_name=_('Profile Image'), upload_to=filename_by_uuid, null=True, blank=True)
-    
+
     # Contact
     mobile = PhoneNumberField(_('mobile'), blank=True, null=True)
     phone = PhoneNumberField(_('phone'), blank=True, null=True)
     fax = PhoneNumberField(_('fax'), blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
-    
+
     address1 = models.CharField(_('address'), null=True, blank=True, max_length=100)
     address2 = models.CharField(_('address (secondary)'), null=True, blank=True, max_length=100)
     city = models.CharField(_('city'), null=True, blank=True, max_length=100)
@@ -251,7 +251,7 @@ class Community(MigrationMixin):
     country = models.ForeignKey(Country, blank=True, null=True)
     # relations
     expertise = models.ManyToManyField('Expertise', verbose_name=_('Fields of expertise'), blank=True)
-    
+
     # tagging (d_tags = "display tags")
     d_tags = tagging.fields.TagField(verbose_name="Tags", blank=True, null=True)
 
@@ -277,11 +277,11 @@ class Community(MigrationMixin):
         t_tags = ''
         """"""
         for tag in self.tags:
-            t_tags += '%s, ' % tag    
-        
+            t_tags += '%s, ' % tag
+
         self.tags = t_tags;
         self.d_tags = t_tags[:245];
-        
+
         super(Community, self).save(*args, **kwargs)
 
 try:
@@ -296,30 +296,30 @@ def create_profile(sender, instance, created, **kwargs):
 
     if kwargs['raw']:
         return
-    
-    if created:  
+
+    if created:
        profile, created = Profile.objects.get_or_create(user=instance)
-       
+
        default_group, created = Group.objects.get_or_create(name=DEFAULT_GROUP)
        instance.groups.add(default_group)
        instance.save()
-       
-post_save.connect(create_profile, sender=User) 
+
+post_save.connect(create_profile, sender=User)
 
 
 def add_to_group(sender, instance, **kwargs):
     default_group, created = Group.objects.get_or_create(name=DEFAULT_GROUP)
-    
+
     if not instance.groups.filter(pk=default_group.pk).exists():
         instance.groups.add(default_group)
         instance.save()
 
 
 def add_mentor(sender, **kwargs):
-    
+
     user = kwargs.get('new_user', None)
     mentor = kwargs.get('inviting_user', None)
-    if user and mentor:    
+    if user and mentor:
         mentor.godchildren.add(user.profile)
         # send notification to mentor
         pm_write(
@@ -327,9 +327,9 @@ def add_mentor(sender, **kwargs):
                 recipient = mentor,
                 subject = _('%(username)s accepted your invitation' % {'username': user.username}),
                 body = '')
-        
 
-    
+
+
 invitation_accepted.connect(add_mentor)
 
 
@@ -400,19 +400,19 @@ class Link(models.Model):
 
     def __unicode__(self):
         return u"%s" % self.title
-    
-    
 
-    
+
+
+
 class Expertise(models.Model):
-    
+
     name = models.CharField(max_length=512)
-    
+
     class Meta:
         app_label = 'profiles'
         verbose_name = _('Expertise')
         verbose_name_plural = _('Expertise')
         ordering = ('name', )
-        
+
     def __unicode__(self):
         return u"%s" % self.name

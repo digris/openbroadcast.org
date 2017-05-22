@@ -10,13 +10,14 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
-from django.views.generic import DetailView, ListView, View
+from django.views.generic import DetailView, ListView, View, UpdateView
+from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from invitation.models import Invitation
 from haystack.backends import SQ
 from haystack.query import SearchQuerySet
 from tagging_extra.utils import calculate_cloud
 from profiles.filters import ProfileFilter
-from profiles.forms import UserForm, ProfileForm, ServiceFormSet, LinkFormSet, ActionForm
+from profiles.forms import UserForm, ProfileForm, ServiceFormSet, LinkFormSet, ActionForm, UserCredentialsForm
 from profiles.models import Profile, User
 from pure_pagination.mixins import PaginationMixin
 from tagging.models import Tag
@@ -248,6 +249,41 @@ def profile_edit(request, template_name='profiles/profile_form.html'):
             'link_formset': link_formset
         }
     return render_to_response(template_name, context, context_instance=RequestContext(request))
+
+
+
+class UserCredentialsView(LoginRequiredMixin, UpdateView):
+
+    model = User
+    form_class = UserCredentialsForm
+    template_name = 'profiles/credentials_form.html'
+    success_url = '/network/users/edit/'
+
+    def get_object(self):
+        return self.request.user
+
+    def get_initial(self):
+        self.initial.update({
+            'user': self.request.user,
+        })
+        return self.initial
+
+
+    def form_valid(self, form):
+
+        self.object = form.save(commit=False)
+
+        if form.cleaned_data['new_password2']:
+            self.object.set_password(form.cleaned_data['new_password2'])
+
+        self.object = form.save()
+
+        messages.add_message(self.request, messages.INFO, 'Credentials updated')
+
+        return HttpResponseRedirect(self.success_url)
+
+
+
 
 
 # TODO: Implement!
