@@ -534,7 +534,7 @@
 
         <section class="uploads">
 
-            {% if uploaded_releases.count > 0 %}
+            {# if uploaded_releases.count > 0 #}
             <h2>
                 {% trans "Recently added Releases" %}
                 <span class="pull-right">
@@ -556,10 +556,10 @@
                     {% endfor %}
                 </div>
             </div>
-            {% endif %}
+            {# endif #}
 
 
-            {% if uploaded_media.count > 0 %}
+            {# if uploaded_media.count > 0 #}
             <h2 style="margin-top: 24px;">
                 {% trans "Recently added Tracks" %}
                 <span class="pull-right">
@@ -581,7 +581,7 @@
                     {% endfor %}
                 </div>
             </div>
-            {% endif %}
+            {# endif #}
 
         </section>
 
