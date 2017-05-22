@@ -51,7 +51,8 @@ class StationResource(ModelResource):
 
 
 class ChannelResource(ModelResource):
-    station = fields.ForeignKey('abcast.api.StationResource', 'station', null=True, full=True, max_depth=2)
+
+    # station = fields.ForeignKey('abcast.api.StationResource', 'station', null=True, full=True, max_depth=2)
 
     class Meta:
         queryset = Channel.objects.order_by('name').all()

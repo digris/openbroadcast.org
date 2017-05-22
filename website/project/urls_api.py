@@ -37,7 +37,7 @@ api.register(ExportItemResource())
 
 # abcast
 api.register(AbcastBaseResource())
-api.register(StationResource())
+#api.register(StationResource())
 api.register(ChannelResource())
 api.register(JingleResource())
 api.register(JingleSetResource())
