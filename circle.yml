@@ -1,0 +1,18 @@
+machine:
+  services:
+    - redis
+  post:
+    - pyenv global 2.7.12
+
+dependencies:
+  post:
+    - pip install tox
+
+test:
+  override:
+    - tox
+
+general:
+  branches:
+    ignore:
+      - translation

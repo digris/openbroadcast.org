@@ -1,4 +1,3 @@
-# ignore
 .DS_Store
 *.pyc
 .pydev*
@@ -25,7 +24,6 @@ website/media
 website/temp
 website/logs
 website/static
-#website/site-static/css/*
 website/site-static/.sass-cache
 website/data.db
 website/static/CACHE
@@ -33,9 +31,6 @@ website/cache/*
 website/celerybeat*
 util/nginx-dev/*
 
-website/__to_be_removed
 website/fixtures
 
 *.sass-cache*
-
-
