@@ -207,6 +207,13 @@
                                     <span>{{ object.mixdown.status_display }}</span>
                                 </li>
 
+                                {% if object.mixdown.eta %}
+                                    <li>
+                                        <span class="label">{% trans 'ETA.' %}:</span>
+                                        <span>{{ object.mixdown.eta }} {% trans 'seconds' %}</span>
+                                    </li>
+                                {% endif %}
+
                                 {% if object.mixdown.mixdown_file %}
                                     <li>
                                         <span class="label">{% trans 'Download Mixdown' %}:</span>
