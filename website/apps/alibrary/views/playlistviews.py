@@ -22,6 +22,8 @@ from ..filters import PlaylistFilter
 from ..forms import PlaylistForm, ActionForm
 from ..models import Playlist, Release
 
+
+
 ALIBRARY_PAGINATE_BY = getattr(settings, 'ALIBRARY_PAGINATE_BY', (12,24,36,120))
 ALIBRARY_PAGINATE_BY_DEFAULT = getattr(settings, 'ALIBRARY_PAGINATE_BY_DEFAULT', 12)
 
@@ -261,6 +263,7 @@ class PlaylistDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView
 
     def get_context_data(self, **kwargs):
         context = super(PlaylistDeleteView, self).get_context_data(**kwargs)
+
         return context
 
 

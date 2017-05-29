@@ -64,6 +64,12 @@
             <li>
                 <a href="#emissions" data-toggle="tab">{% trans "Emissions" %} ({{ object.get_emissions.count }})</a>
             </li>
+
+            {% if user.profile.enable_alpha_features %}
+                <li>
+                    <a href="#mixdown" data-toggle="tab">{% trans "Mixdown" %}</a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 
@@ -113,18 +119,18 @@
 
             </div>
 
-                <div class="tab-pane" id="description">
+            <div class="tab-pane" id="description">
 
-                    <section class="description">
+                <section class="description">
 
-                        <h2>{% trans "Playlist description" %}</h2>
+                    <h2>{% trans "Playlist description" %}</h2>
 
-                        <div class="description markdown padded-h">
-                            {% wikify object.description %}
-                        </div>
-                    </section>
+                    <div class="description markdown padded-h">
+                        {% wikify object.description %}
+                    </div>
+                </section>
 
-                </div>
+            </div>
 
 
             <div class="tab-pane" id="emissions">
@@ -177,6 +183,49 @@
 
                     </div>
 
+
+                </section>
+
+            </div>
+
+            <div class="tab-pane" id="mixdown">
+
+                <section class="mixdown">
+
+                    <h2>{% trans "Playlist Mixdown" %}</h2>
+
+                    <p>(( Mixdown ))</p>
+
+                    {% if object.mixdown %}
+
+                        <div>
+
+                            <ul>
+
+                                <li>
+                                    <span class="label">{% trans 'Status' %}:</span>
+                                    <span>{{ object.mixdown.status_display }}</span>
+                                </li>
+
+                                {% if object.mixdown.mixdown_file %}
+                                    <li>
+                                        <span class="label">{% trans 'Download Mixdown' %}:</span>
+                                        <a href="{{ object.mixdown.mixdown_file }}">{{ object.mixdown.mixdown_file }}</a>
+                                    </li>
+                                {% endif %}
+
+                            </ul>
+
+                        </div>
+
+                    {% else %}
+
+                        <p>No Mixdown available</p>
+                        <p>
+                            <a href="#" class="btn btn-primary">{% trans 'Create Mixdown' %}</a>
+                        </p>
+
+                    {% endif %}
 
                 </section>
 
