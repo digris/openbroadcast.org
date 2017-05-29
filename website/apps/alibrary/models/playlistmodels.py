@@ -541,6 +541,9 @@ class Playlist(MigrationMixin, models.Model):
     def get_mixdown(self):
         return MixdownAPIClient().get_for_playlist(self)
 
+    def request_mixdown(self):
+        return MixdownAPIClient().request_for_playlist(self)
+
     @cached_property
     def mixdown(self):
         return self.get_mixdown()

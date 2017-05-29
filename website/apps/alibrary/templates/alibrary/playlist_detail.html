@@ -222,7 +222,7 @@
 
                         <p>No Mixdown available</p>
                         <p>
-                            <a href="#" class="btn btn-primary">{% trans 'Create Mixdown' %}</a>
+                            <a href="{% url 'alibrary-playlist-request-mixdown' pk=object.pk %}" class="btn btn-primary">{% trans 'Create Mixdown' %}</a>
                         </p>
 
                     {% endif %}

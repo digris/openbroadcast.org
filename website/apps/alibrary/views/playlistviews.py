@@ -347,3 +347,17 @@ def playlist_convert(request, pk, type):
 
     return HttpResponseRedirect(playlist.get_edit_url())
 
+
+
+@login_required
+def playlist_request_mixdown(request, pk):
+
+    playlist = get_object_or_404(Playlist, pk=pk, user=request.user)
+
+    mixdown = playlist.request_mixdown()
+
+    messages.add_message(request, messages.INFO, _('Requested Mixdown for "%s"' % (playlist.name)))
+
+
+    return HttpResponseRedirect(playlist.get_absolute_url())
+

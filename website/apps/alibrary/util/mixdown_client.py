@@ -26,3 +26,26 @@ class MixdownAPIClient(object):
             return
 
         return r.json()
+
+    def request_for_playlist(self, obj):
+
+        url = '{api_base_url}mixdown/playlist/'.format(
+            api_base_url=API_BASE_URL,
+        )
+
+        log.debug('requesting mixdown from: {}'.format(url))
+
+        data = {
+            'remote_uri': '{}{}'.format('https://www.openbroadcast.org', obj.get_api_url())
+        }
+
+        r = requests.post(url, json=data, timeout=2.0)
+
+        print '-' * 72
+        print r.text
+        print '-' * 72
+
+        if not r.status_code == 200:
+            return
+
+        return r.json()
