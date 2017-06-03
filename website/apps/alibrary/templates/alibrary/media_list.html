@@ -39,13 +39,14 @@
     <!-- end: intra-module navigation -->
 {% endblock %}
 
+
 {% block tagcloud %}
 
     {% include "element/_tagcloud.html" %}
 
 {% endblock %}
 
-
+{% comment %}
 {% block searchbar %}
 
     {% with object=item ct="media" %}
@@ -53,6 +54,7 @@
     {% endwith %}
 
 {% endblock %}
+{% endcomment %}
 
 
 {% block inner %}

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import os
 import reversion
 from django.core import urlresolvers
 from hvad.admin import TranslatableAdmin
@@ -265,11 +266,35 @@ class MediaReleaseInline(admin.TabularInline):
 
 class MediaAdmin(BaseAdmin):
 
-    list_display   = ('name', 'created', 'release_link', 'artist', 'mediatype', 'tracknumber', 'medianumber', 'duration', 'echoprint_status',)
-    search_fields = ['artist__name', 'release__name', 'name']
-    list_filter = ('mediatype', 'license__name', 'echoprint_status',)
+    list_display = [
+        'name',
+        'created',
+        'release_link',
+        'artist',
+        'mediatype',
+        'tracknumber',
+        'medianumber',
+        'duration',
+        'master_status',
+        'fprint_ingested',
+    ]
 
-    inlines = [MediaReleaseInline, RelationsInline, MediaExtraartistsInline]
+    search_fields = [
+        'artist__name',
+        'release__name',
+        'name'
+    ]
+
+    list_filter = (
+        'mediatype',
+        'license__name',
+    )
+
+    inlines = [
+        MediaReleaseInline,
+        RelationsInline,
+        MediaExtraartistsInline
+    ]
 
     readonly_fields = [
         'slug',
@@ -286,6 +311,16 @@ class MediaAdmin(BaseAdmin):
 
 
     date_hierarchy = 'created'
+
+
+
+    def master_status(self, obj):
+        if not obj.master or not obj.master.path:
+            return False
+        return os.path.isfile(obj.master.path)
+
+    master_status.boolean = True
+
 
 
     fieldsets = [

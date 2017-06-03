@@ -120,6 +120,9 @@ INSTALLED_APPS = (
     # api
     'tastypie',
 
+    # platform tools
+    'fprint',
+
     # platform apps
     'profiles',
     'postman',

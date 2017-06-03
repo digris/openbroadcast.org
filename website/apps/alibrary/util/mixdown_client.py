@@ -41,10 +41,6 @@ class MixdownAPIClient(object):
 
         r = requests.post(url, json=data, timeout=2.0)
 
-        print '-' * 72
-        print r.text
-        print '-' * 72
-
         if not r.status_code == 200:
             return
 

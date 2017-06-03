@@ -329,6 +329,11 @@ class Media(MigrationMixin):
     key = models.IntegerField(null=True, blank=True)
     sections = JSONField(blank=True, null=True)
 
+    #######################################################################
+    # fprint data
+    #######################################################################
+    fprint_ingested = models.DateTimeField(null=True, blank=True, editable=False)
+
     objects = models.Manager()
 
     class Meta:
@@ -520,7 +525,7 @@ class Media(MigrationMixin):
     def get_master_path(self):
         try:
             return self.master.path
-        except Exception, e:
+        except Exception as e:
             log.warning('unable to get master path for: %s' % self.name)
 
 
@@ -564,7 +569,7 @@ class Media(MigrationMixin):
 
 
     """
-    TODO: check usage. appearances refactored to media_tags
+    TODO: check usage.
     """
     @property
     def appearances(self):
@@ -575,7 +580,7 @@ class Media(MigrationMixin):
         try:
             pis = PlaylistItem.objects.filter(object_id=self.pk, content_type=ContentType.objects.get_for_model(self))
             ps = Playlist.objects.exclude(type='other').filter(items__in=pis).order_by('-type', '-created',).nocache().distinct()
-        except Exception, e:
+        except Exception as e:
             pass
 
         return ps

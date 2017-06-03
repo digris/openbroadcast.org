@@ -4,8 +4,17 @@
 
 <ul class="unstyled">
     {% show_menu 2 2 0 100 %}
+
+    {% cache 600 "modnav_tagcloud" request.get_full_path %}
+        {% if tagcloud %}
+            <li class="tagcloud-toggle">
+                <a href="#" style="border-right: none;" class="" id="tagcloud_inline_toggle">Tagcloud</a>
+            </li>
+        {% endif %}
+    {% endcache %}
 </ul>
 
+<!--
 {% cache 600 "modnav_tagcloud" request.get_full_path %}
 
     {% if tagcloud %}
@@ -17,5 +26,5 @@
     {% endif %}
 
 {% endcache %}
-
+-->
 <div class="clearfix"></div>

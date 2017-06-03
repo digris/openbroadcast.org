@@ -27,7 +27,7 @@
 
 {% endblock %}
 
-
+{% comment %}
 {% block searchbar %}
 
     {% with object=item ct="profile" %}
@@ -35,6 +35,7 @@
     {% endwith %}
 
 {% endblock %}
+{% endcomment %}
 
 
 {% block inner %}
@@ -82,16 +83,16 @@
 			<a href="{% spurl base=request.get_full_path set_query="order_by=updated" toggle_query="direction=ascending,descending" %}" style="display: block;">{% trans "Modified" %}</a>
 		</div>
 		<div class="list_header_item c6">
-		&nbsp;			
+		&nbsp;
 		</div>
 	</div>
 	{% endif %}
 
 
 	<div class="list_body">
-		
+
 		{% for item in object_list %}
-		
+
 		{% if list_style == "m" %}
 		{% include "profiles/profile/_list_item_m.html" %}
 		{% endif %}
@@ -125,7 +126,7 @@
 		</ul>
 
 	</div>
-	
+
 	<!--
 	<div id="control_selection" class="left control_selection">
 		<span>Selection:</span>

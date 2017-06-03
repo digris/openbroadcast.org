@@ -1,4 +1,4 @@
-{{ object.get_display_name }}
+{{ object.get_full_name }}
 
 {% if object.pseudonym %}{{ object.pseudonym }}{% endif %}
 

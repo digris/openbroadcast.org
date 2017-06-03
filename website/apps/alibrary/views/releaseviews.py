@@ -33,6 +33,7 @@ from ..models import Release, Artist, Label, ReleaseAlbumartists
 ALIBRARY_PAGINATE_BY = getattr(settings, 'ALIBRARY_PAGINATE_BY', (12,24,36,120))
 ALIBRARY_PAGINATE_BY_DEFAULT = getattr(settings, 'ALIBRARY_PAGINATE_BY_DEFAULT', 12)
 
+TAGCLOUD_MIN_COUNT = 5
 
 ORDER_BY = [
     {
@@ -106,7 +107,6 @@ class ReleaseListView(PaginationMixin, ListView):
 
         q = self.request.GET.get('q', None)
 
-        # haystack version
         if q:
             # sqs = SearchQuerySet().models(Release).filter(SQ(content__contains=q) | SQ(content_auto=q))
             sqs = SearchQuerySet().models(Release).filter(content=AutoQuery(q))
@@ -114,17 +114,6 @@ class ReleaseListView(PaginationMixin, ListView):
         else:
             qs = Release.objects.select_related('license').prefetch_related('media_release').all()
 
-
-
-        # if q:
-        #     #qs = Release.objects.filter(Q(name__istartswith=q)\
-        #     #| Q(media_release__name__icontains=q)\
-        #     #| Q(media_release__artist__name__icontains=q)\
-        #     #| Q(label__name__icontains=q))\
-        #     #.distinct()
-        #     qs = Release.objects.filter(name__icontains=q).distinct()
-        # else:
-        #     qs = Release.objects.select_related('license').prefetch_related('media_release').all()
 
 
         order_by = self.request.GET.get('order_by', 'created')
@@ -244,7 +233,7 @@ class ReleaseListView(PaginationMixin, ListView):
 
         # tagging / cloud generation
         if qs.exists():
-            tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=5)
+            tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=TAGCLOUD_MIN_COUNT)
             self.tagcloud = calculate_cloud(tagcloud)
 
         return qs
