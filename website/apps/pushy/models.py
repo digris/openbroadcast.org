@@ -17,7 +17,7 @@ def pushy_publish(channel, key, message):
     rs = redis.StrictRedis(host=pushy_settings.get_redis_host())
     time.sleep(0.005)
     return rs.publish('%s%s' % (channel, key), json.dumps(message))
-    
+
 
 def pushy_post_save(sender, **kwargs):
     rs = redis.StrictRedis(host=pushy_settings.get_redis_host())
@@ -66,7 +66,7 @@ def pushy_post_delete(sender, **kwargs):
     log.debug('route: %s' % obj.get_api_url())
 
     pool.apply_async(pushy_publish(pushy_settings.get_channel(), 'delete', message))
-    
+
 
 
 def setup_signals():
@@ -78,7 +78,7 @@ def setup_signals():
         else:
             post_save.connect(pushy_post_save, sender=model)
             post_delete.connect(pushy_post_delete, sender=model)
-            log.debug('registered pushy signals for %s' % model)
+            #log.debug('registered pushy signals for %s' % model)
 
 
 #setup_signals()

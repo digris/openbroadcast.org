@@ -22,7 +22,7 @@ def clean_directory_tree_reverse(path):
     if path.endswith('/'):
         path = path[:-1]
 
-    log.debug('clean tree: {0}'.format(path))
+    # log.debug('clean tree: {0}'.format(path))
 
     empty = True
     while empty:
@@ -30,7 +30,7 @@ def clean_directory_tree_reverse(path):
 
             if files or dirs:
                 empty = False
-                log.debug('breaking at non-empty directory: {0}'.format(path))
+                #log.debug('breaking at non-empty directory: {0}'.format(path))
                 break
 
             else:

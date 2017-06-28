@@ -121,7 +121,7 @@ INSTALLED_APPS = (
     'tastypie',
 
     # platform tools
-    'fprint',
+    'fprint_client',
 
     # platform apps
     'profiles',

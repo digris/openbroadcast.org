@@ -706,8 +706,8 @@ class Media(MigrationMixin):
         try:
             obj = ew.analyze(obj)
             obj.save()
-        except Exception, e:
-            print e
+        except Exception as e:
+            log.warning('unable to perform echonest analyse')
 
 
     def process_master_info(self, save=False):

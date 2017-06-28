@@ -1,10 +1,8 @@
 #!/usr/bin/python
 # Filename: ffprobe.py
 """
-Python wrapper for ffprobe command line tool. ffprobe must exist in the path.
+Python wrapper for ffprobe command line tool.
 """
-
-
 
 version='0.5'
 
@@ -13,6 +11,11 @@ import re
 import sys
 import os
 import platform
+from django.conf import settings
+
+
+FFPROBE_BINARY = getattr(settings, 'FFPROBE_BINARY')
+
 
 class FFProbe:
 	"""
@@ -23,14 +26,15 @@ class FFProbe:
 		self.video_file=video_file
 		try:
 			with open(os.devnull, 'w') as tempf:
-				subprocess.check_call(["ffprobe","-h"],stdout=tempf,stderr=tempf)
+				subprocess.check_call([FFPROBE_BINARY,"-h"],stdout=tempf,stderr=tempf)
 		except:
-			raise IOError('ffprobe not found.')			
+			raise IOError('ffprobe not found.')
+
 		if os.path.isfile(video_file):
 			if str(platform.system())=='Windows':
-				cmd=["ffprobe","-show_streams",self.video_file]
+				cmd=[FFPROBE_BINARY,"-show_streams", self.video_file]
 			else:
-				cmd=["ffprobe -show_streams "+self.video_file]
+				cmd=[FFPROBE_BINARY + " -show_streams " + self.video_file]
 			p = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
 			self.format=None
 			self.created=None
@@ -135,7 +139,7 @@ class FFStream:
 			if self.__dict__['pix_fmt']:
 				f=self.__dict__['pix_fmt']
 		return f
-	
+
 	def frames(self):
 		"""
 		Returns the length of a video stream in frames. Returns 0 if not a video stream.
@@ -148,7 +152,7 @@ class FFStream:
 				except Exception as e:
 					print "None integer frame count"
 		return f
-	
+
 	def durationSeconds(self):
 		"""
 		Returns the runtime duration of the video stream as a floating point number of seconds.
@@ -162,7 +166,7 @@ class FFStream:
 				except Exception as e:
 					print "None numeric duration"
 		return f
-	
+
 	def language(self):
 		"""
 		Returns language tag of stream. e.g. eng
@@ -171,7 +175,7 @@ class FFStream:
 		if self.__dict__['TAG:language']:
 			lang=self.__dict__['TAG:language']
 		return lang
-	
+
 	def codec(self):
 		"""
 		Returns a string representation of the stream codec.
@@ -180,7 +184,7 @@ class FFStream:
 		if self.__dict__['codec_name']:
 			codec_name=self.__dict__['codec_name']
 		return codec_name
-	
+
 	def codecDescription(self):
 		"""
 		Returns a long representation of the stream codec.
@@ -189,7 +193,7 @@ class FFStream:
 		if self.__dict__['codec_long_name']:
 			codec_d=self.__dict__['codec_long_name']
 		return codec_d
-	
+
 	def codecTag(self):
 		"""
 		Returns a short representative tag of the stream codec.
@@ -198,7 +202,7 @@ class FFStream:
 		if self.__dict__['codec_tag_string']:
 			codec_t=self.__dict__['codec_tag_string']
 		return codec_t
-	
+
 	def bitrate(self):
 		"""
 		Returns bitrate as an integer in bps
@@ -211,6 +215,6 @@ class FFStream:
 				pass
 				#print "None integer bitrate"
 		return b
-			
+
 if __name__ == '__main__':
 	print "Module ffprobe"
