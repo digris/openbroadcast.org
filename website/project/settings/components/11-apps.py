@@ -26,13 +26,14 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
 
+    # object comments
+    # TODO: these are really old apps and should be removed/replaced
     'threadedcomments',
     'fluent_comments',
     'django_comments',
 
     # server
     'gunicorn',
-    #'silk',
     'django_date_extensions',
     'haystack',
     'search',
@@ -53,7 +54,7 @@ INSTALLED_APPS = (
 
     'base',
     'platform_base',
-    #
+
     'api_base',
     'notifications',
     'mailer',
@@ -64,9 +65,6 @@ INSTALLED_APPS = (
     'filer',
     'adv_cache_tag',
     'cacheops',
-    #'reversion',
-    #'changetracker',
-    #'auditlog',
     'django_badbrowser',
     'genericadmin',
     'hvad',
@@ -90,7 +88,6 @@ INSTALLED_APPS = (
     'cms',
     'menus',
     'mptt',
-    #'polymorphic',
     'treebeard',
 
     # cms plugins
@@ -157,9 +154,6 @@ INSTALLED_APPS = (
     'pushy',
     'nunjucks',
 
-    # monitoring / ops / tracking
-    #'opbeat.contrib.django',
-
 )
 
 
@@ -179,7 +173,6 @@ PAGINATION_SETTINGS = {
 }
 
 FORMATS_MEDIA = {
-    #'mp3': ['base', 'low'],
     'mp3': ['base', ],
 }
 
@@ -196,14 +189,12 @@ FILE_PROTECTION_METHOD = 'basic'
 THUMBNAIL_PROCESSORS = (
     'easy_thumbnails.processors.colorspace',
     'easy_thumbnails.processors.autocrop',
-    #'easy_thumbnails.processors.scale_and_crop',
     'filer.thumbnail_processors.scale_and_crop_with_subject_location',
     'easy_thumbnails.processors.filters',
 )
 THUMBNAIL_QUALITY = 80
 THUMBNAIL_BASEDIR = 'thumbnails'
 THUMBNAIL_PRESERVE_EXTENSIONS = ('png',)
-#THUMBNAIL_NAMER = 'easy_thumbnails.namers.hashed'
 
 BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'strong', 'a']
 BLEACH_STRIP_TAGS = True
@@ -476,9 +467,6 @@ ICECAST_PORT = '8000'
 """
 api server
 """
-MUSICBRAINZ_HOST = 'mb.anorg.net'
-MUSICBRAINZ_RATE_LIMIT = False
-
 DISCOGS_HOST = '172.20.10.207:8099'
 DISCOGS_RATE_LIMIT = False
 
@@ -525,7 +513,6 @@ CHANGETRACKER_TRACKED_MODELS = (
     # },
 )
 
-#GRAVATAR_DEFAULT_IMAGE = '/static/img/base/defaults/listview.artist.xl.png'
 GRAVATAR_DEFAULT_IMAGE = 'identicon'
 
 

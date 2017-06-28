@@ -723,7 +723,7 @@ class Media(MigrationMixin):
                 self.master_duration = file_processor.duration
 
             else:
-                log.warning('unable to process audio file')
+                log.warning('unable to process audio file using "FileInfoProcessor"')
 
             if save:
                 self.save()
