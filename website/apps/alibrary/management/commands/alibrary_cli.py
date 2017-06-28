@@ -13,4 +13,4 @@ def cli():
 
 
 cli.add_command(fingerprint.cli)
-#cli.add_command(maintenance.cli)
+cli.add_command(maintenance.cli)
