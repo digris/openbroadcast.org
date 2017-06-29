@@ -16,11 +16,13 @@ def cli():
 
 @cli.command()
 def check():
-    click.secho('--------------------------------------------------------------------', bold=True)
+    """Self-check (refactored to checks - not in use anymore)"""
+    click.echo('depreciated. use \'./manage.py check platform_base\' instead')
 
 
 @cli.command()
 def delete_orphaned_tags():
+    """Delete tags that are not assigned to any objects anymore (e.g. because they were 'merged')."""
 
     from tagging.models import TaggedItem
     to_delete = []
@@ -41,6 +43,7 @@ def delete_orphaned_tags():
 @cli.command()
 @click.option('--age', '-a', type=int, default=MEDIA_ASSET_KEEP_DAYS, help='Clean media assets not accessed for the last {0} days'.format(MEDIA_ASSET_KEEP_DAYS))
 def clean_assets(age):
+    """Delete (cached) media assets (encoded versions, waveforms) that have nt been accessed for x days."""
 
     from media_asset.models import Format
     from media_asset.models import Waveform

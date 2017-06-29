@@ -23,6 +23,7 @@ CHUNK_SIZE = 2
 
 @click.group()
 def cli():
+    """Fingerprint CLI"""
     pass
 
 
@@ -30,6 +31,9 @@ def cli():
 @cli.command()
 @click.option('--force', default=False, is_flag=True, help='Force to rebuild all fingerprints?')
 def update_index(force):
+    """
+    update fingerpint index (via fprint service)
+    """
 
     if force:
         _count = Media.objects.all().update(fprint_ingested=None)
@@ -52,6 +56,10 @@ def update_index(force):
 
 
 def ingest_fingerprint(media):
+    """
+    generates and ingests fingerprint for given media object
+    """
+
 
     client = FprintAPIClient()
 

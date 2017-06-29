@@ -34,6 +34,9 @@ def decode_echoprint(echoprint_b64_zipped):
 
 
 def code_for_path(path):
+    """
+    generates echoprint code for file at given path
+    """
 
     if not os.path.isfile(path):
         return

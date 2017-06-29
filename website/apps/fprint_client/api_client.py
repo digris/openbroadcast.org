@@ -13,12 +13,17 @@ logging.getLogger("urllib3").setLevel(logging.WARNING)
 log = logging.getLogger(__name__)
 
 class FprintAPIClient(object):
+    """
+    API client for fprint service.
+    Handles lookups by code or media object as well as fingerprint ingestion to the service
+    """
 
     def __init__(self):
         pass
 
 
-    def get_for_code(self, obj):
+    @staticmethod
+    def get_for_code(obj):
 
         url = '{api_base_url}fprint/search/'.format(
             api_base_url=API_BASE_URL,
@@ -34,7 +39,8 @@ class FprintAPIClient(object):
         return r.json()
 
 
-    def get_for_media(self, obj):
+    @staticmethod
+    def get_for_media(obj):
 
         url = '{api_base_url}fprint/entry/{uuid}/'.format(
             api_base_url=API_BASE_URL,

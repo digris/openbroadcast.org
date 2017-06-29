@@ -10,6 +10,9 @@ log = logging.getLogger(__name__)
 
 @register()
 def check_binaries(app_configs, **kwargs):
+    """
+    checks existance of configured binaries
+    """
 
     BINARIES_TO_CHECK = [
         'LAME_BINARY',
@@ -62,6 +65,9 @@ def check_binaries(app_configs, **kwargs):
 
 @register()
 def check_directories(app_configs, **kwargs):
+    """
+    check platform directories
+    """
 
     PATHS_TO_CHECK = [
         'MEDIA_ROOT',
@@ -100,6 +106,9 @@ def check_directories(app_configs, **kwargs):
 
 @register()
 def check_apis(app_configs, **kwargs):
+    """
+    check API connection
+    """
 
     SERVICES_TO_CHECK = [
         {
