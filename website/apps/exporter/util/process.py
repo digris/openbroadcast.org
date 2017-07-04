@@ -141,7 +141,7 @@ class Process(object):
         try:
             if not EXPORTER_DEBUG:
                 shutil.rmtree(self.archive_dir, True)
-        except Exception, e:
+        except Exception as e:
             pass
 
 

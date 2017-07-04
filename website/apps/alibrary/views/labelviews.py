@@ -113,7 +113,8 @@ class LabelListView(PaginationMixin, ListView):
         if q:
             # haystack version
             #sqs = SearchQuerySet().models(Label).filter(SQ(content__contains=q) | SQ(content_auto=q))
-            sqs = SearchQuerySet().models(Label).filter(content=AutoQuery(q))
+            #sqs = SearchQuerySet().models(Label).filter(content=AutoQuery(q))
+            sqs = SearchQuerySet().models(Label).filter(text_auto=AutoQuery(q))
             qs = Label.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
 
             # ORM

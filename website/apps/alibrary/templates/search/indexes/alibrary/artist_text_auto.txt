@@ -1,0 +1,13 @@
+{{ object.name }}
+
+{% if object.aliases.exists %}
+{{ object.get_aliases|join:', ' }}
+{% endif %}
+
+{% if object.members.count > 0 %}
+{% for artist in object.members.all %}{{ artist.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+{% endif %}
+
+{% if object.get_membership %}
+{% for artist in object.get_membership %}{{ artist.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+{% endif %}

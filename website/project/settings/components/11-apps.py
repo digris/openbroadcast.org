@@ -450,6 +450,8 @@ ELASTICSEARCH_INDEX_SETTINGS = {
     }
 }
 
+HAYSTACK_DEFAULT_OPERATOR = 'and'
+
 
 """
 streaming server

@@ -1,0 +1,11 @@
+{{ object.name }}
+
+{% if object.series %}{{ object.series }}{% if object.series_number %} #{{ object.series_number }}{% endif %}{% endif %}
+
+{% if object.user %}{% firstof object.user.profile.get_display_name object.user %}{% endif %}
+
+{% if object.description %}{{ object.description }}{% endif %}
+
+{% for item in object.get_items %}
+{% if item.content_object and item.content_object.artist %}{{ item.content_object.artist.name }}{% if not forloop.last %}, {% endif %}{% endif %}
+{% endfor %}

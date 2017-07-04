@@ -210,9 +210,6 @@ class Playlist(MigrationMixin, models.Model):
         except:
             pass
 
-        # TODO: think about what to use as s reference
-        # duration = self.target_duration * 1000
-
         return duration
 
     def get_emissions(self):

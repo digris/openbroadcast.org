@@ -1,4 +1,7 @@
+import logging
 import hashlib
+
+log = logging.getLogger(__name__)
 
 def sha1_by_file(file):
 
@@ -10,7 +13,7 @@ def sha1_by_file(file):
         file.seek(0)
 
         return sha1
-    
+
     except Exception as e:
-        print e
-        return None
+
+        log.warning('unable to create sha1 hash: {}'.format(e))

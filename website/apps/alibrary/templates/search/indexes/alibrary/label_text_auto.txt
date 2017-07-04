@@ -1,0 +1,9 @@
+{{ object.name }}
+
+{% if object.get_root %}{{ object.get_root.name }}{% endif %}
+
+{% if object.parent %}{{ object.parent.name }}{% endif %}
+
+{% for child in object.children.all %}
+{{ sl.name }}{% if not forloop.last %}, {% endif %}
+{% endfor %}

@@ -15,6 +15,7 @@ from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from invitation.models import Invitation
 from haystack.backends import SQ
 from haystack.query import SearchQuerySet
+from haystack.inputs import AutoQuery
 from tagging_extra.utils import calculate_cloud
 from profiles.filters import ProfileFilter
 from profiles.forms import UserForm, ProfileForm, ServiceFormSet, LinkFormSet, ActionForm, UserCredentialsForm
@@ -98,7 +99,8 @@ class ProfileListView(PaginationMixin, ListView):
 
         if q:
             # haystack version
-            sqs = SearchQuerySet().models(Profile).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            #sqs = SearchQuerySet().models(Profile).filter(SQ(content__contains=q) | SQ(content_auto=q))
+            sqs = SearchQuerySet().models(Profile).filter(text_auto=AutoQuery(q))
             qs = Profile.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
 
             # qs = Profile.objects.filter(Q(user__username__istartswith=q) \

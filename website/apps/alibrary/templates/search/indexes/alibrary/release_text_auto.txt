@@ -1,0 +1,9 @@
+{{ object.name }}
+
+{{ object.get_artist_display }}
+
+{{ object.label.name }}
+
+{% for item in object.get_media %}
+{{ item.name }}
+{% endfor %}

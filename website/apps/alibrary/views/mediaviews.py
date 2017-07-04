@@ -85,7 +85,7 @@ class MediaListView(PaginationMixin, ListView):
             try:
                 if int(ipp) in ALIBRARY_PAGINATE_BY:
                     return int(ipp)
-            except Exception, e:
+            except Exception as e:
                 pass
 
         return self.paginate_by
@@ -122,7 +122,8 @@ class MediaListView(PaginationMixin, ListView):
         # haystack version
         if q:
             #sqs = SearchQuerySet().models(Media).filter(SQ(content__contains=q) | SQ(content_auto=q))
-            sqs = SearchQuerySet().models(Media).filter(content=AutoQuery(q))
+            #sqs = SearchQuerySet().models(Media).filter(content=AutoQuery(q))
+            sqs = SearchQuerySet().models(Media).filter(text_auto=AutoQuery(q))
             qs = Media.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
         else:
             qs = Media.objects.all()

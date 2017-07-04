@@ -115,7 +115,9 @@ class ArtistListView(PaginationMixin, ListView):
         # haystack version
         if q:
             #sqs = SearchQuerySet().models(Artist).filter(SQ(content__contains=q) | SQ(content_auto=q))
-            sqs = SearchQuerySet().models(Artist).filter(content=AutoQuery(q))
+            #sqs = SearchQuerySet().models(Artist).filter(content=AutoQuery(q))
+            sqs = SearchQuerySet().models(Artist).filter(text_auto=AutoQuery(q))
+
             qs = Artist.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
         else:
             qs = Artist.objects.all().prefetch_related('media_artist')
