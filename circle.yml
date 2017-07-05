@@ -10,9 +10,9 @@ dependencies:
     - pip install tox
     - pip install numpy==1.8.0
 
-test:
-  override:
-    - tox
+#test:
+#  override:
+#    - tox
 
 general:
   branches:

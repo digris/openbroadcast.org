@@ -1,9 +1,18 @@
-from split_settings.tools import optional, include
+# -*- coding: utf-8 -*-
 import os
+import sys
+from split_settings.tools import optional, include
+
+TESTING = sys.argv[1:2] == ['test']
 
 
-site_settings = os.path.join(os.getcwd(), 'project/local_settings.py')
+if TESTING:
+    site_settings = os.path.join(os.getcwd(), 'project/test_settings.py')
+else:
+    site_settings = os.path.join(os.getcwd(), 'project/local_settings.py')
 
+
+# override site settings from path in environment
 try:
     settings_path = os.environ['SETTINGS_PATH']
     if settings_path:
