@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden, Http404, HttpResponseRedirect, HttpResponseBadRequest
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.cache import never_cache
-from django.db.models import Q
+from django.db.models import Q, Case, When
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
@@ -124,7 +124,10 @@ class MediaListView(PaginationMixin, ListView):
             #sqs = SearchQuerySet().models(Media).filter(SQ(content__contains=q) | SQ(content_auto=q))
             #sqs = SearchQuerySet().models(Media).filter(content=AutoQuery(q))
             sqs = SearchQuerySet().models(Media).filter(text_auto=AutoQuery(q))
-            qs = Media.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
+
+            pk_list = [result.object.pk for result in sqs]
+            preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(pk_list)])
+            qs = Media.objects.filter(id__in=pk_list).order_by(preserved).distinct()
         else:
             qs = Media.objects.all()
 

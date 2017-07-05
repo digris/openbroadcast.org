@@ -656,23 +656,7 @@ class Identifier(object):
                                 pass
                                 #print e
 
-
-                            #if releasedate:
-                            if releasedate and 1 == 2:
-                                #log.debug('got releasedate: %s' % releasedate)
-                                s_rd = releasedate[0:4]
-                                t_rd = selected_release['date'][0:4]
-
-                                #log.debug('compare releasedates: %s | %s' % (s_rd, t_rd))
-
-                                if s_rd == t_rd:
-                                    releases.append(selected_release)
-                                else:
-                                    pass
-                                    #log.debug('date mismatch')
-
-                            else:
-                                releases.append(selected_release)
+                            releases.append(selected_release)
 
         # TODO: think about limits
         releases = releases[0:LIMIT_MB_RELEASES]

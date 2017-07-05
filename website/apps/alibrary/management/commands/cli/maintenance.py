@@ -1,6 +1,7 @@
 import djclick as click
 from django.db import close_old_connections
 from django.contrib.sites.models import Site
+from cacheops import invalidate_obj, invalidate_model
 from alibrary.models import Media
 
 
@@ -27,6 +28,9 @@ def repair_durations(range_limit, dump_to, load_from, tolerance, log_file):
     items_to_reprocess = []
     affected_playlists = []
     affected_playlist_ids = []
+
+    # invalidate cache for Media
+    invalidate_model(Media)
 
     if load_from:
 
@@ -161,10 +165,15 @@ old: {current_duration} new: {new_duration} diff: {diff}
                     })
 
             # update media duration
-            Media.objects.filter(pk=item.pk).update(master_duration=new_duration)
+            Media.objects.filter(pk=item.pk).invalidated_update(master_duration=new_duration)
+            # invalidate cache (ev redundant?)
+            invalidate_obj(item)
+
 
         # loop playlists & print/log info
         for item in affected_playlists:
+
+            invalidate_obj(item['obj'])
 
             current_duration = float(item['current_duration']) / 1000
             new_duration = float(item['obj'].get_duration()) / 1000
@@ -199,11 +208,11 @@ old: {current_duration} new: {new_duration} diff: {diff}
 
 
 
-
-
-
 @cli.command()
 def generate_master_hashes():
+    """
+    Generate missing sha1 hashes
+    """
 
     # mysql does not support remote/streaming cursors
     # to save memory items are loaded from db individually
@@ -224,4 +233,4 @@ def generate_master_hashes():
                 master_sha1 = item.generate_sha1()
 
                 # update media duration
-                Media.objects.filter(pk=item.pk).update(master_sha1=master_sha1)
+                Media.objects.filter(pk=item.pk).invalidated_update(master_sha1=master_sha1)
