@@ -4,7 +4,6 @@ import logging
 from .utils import code_for_path
 
 API_BASE_URL = 'http://localhost:7777/api/v1/'
-#API_BASE_URL = 'http://mixdown.apps.pbi.io/api/v1/'
 
 
 logging.getLogger("requests").setLevel(logging.WARNING)
@@ -76,8 +75,11 @@ class FprintAPIClient(object):
         code = code_for_path(obj.master.path)
 
         data = {
-            #'uuid': str(obj.uuid),
-            'code': code
+            #'uuid': str(obj.uuid), # uuid in uri
+            'code': code,
+            # 'duration': obj.master_duration,
+            # 'name': obj.name,
+            # 'artist_name': obj.artist.name if obj.artist else None
         }
 
         r = requests.put(url, json=data, timeout=2.0)

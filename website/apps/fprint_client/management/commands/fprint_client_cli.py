@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import time
 import sys
@@ -15,17 +15,16 @@ from ...api_client import FprintAPIClient
 
 from alibrary.models import Media
 
-
 DEFAULT_LIMIT = 100
 MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
 
 CHUNK_SIZE = 2
 
+
 @click.group()
 def cli():
     """Fingerprint CLI"""
     pass
-
 
 
 @cli.command()
@@ -41,12 +40,10 @@ def update_index(force):
 
     qs = Media.objects.exclude(master__isnull=True).filter(fprint_ingested__isnull=True)
 
-
     pool = Pool()
     procs = []
 
     for m in qs.iterator():
-
         click.secho('{}'.format(m.pk), fg='cyan')
         procs.append(pool.apply_async(ingest_fingerprint, args=(m,)))
 
@@ -54,12 +51,10 @@ def update_index(force):
     pool.join()
 
 
-
 def ingest_fingerprint(media):
     """
     generates and ingests fingerprint for given media object
     """
-
 
     client = FprintAPIClient()
 
@@ -70,6 +65,5 @@ def ingest_fingerprint(media):
                 fprint_ingested=timezone.now()
             )
 
-    except:
-        click.secho('unable to ingest fprint for media: {}'.format(media.pk))
-
+    except Exception as e:
+        click.secho('unable to ingest fprint for media: {} - {}'.format(media.pk, e))

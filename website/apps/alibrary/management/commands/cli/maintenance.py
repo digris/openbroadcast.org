@@ -2,7 +2,7 @@ import djclick as click
 from django.db import close_old_connections
 from django.contrib.sites.models import Site
 from cacheops import invalidate_obj, invalidate_model
-from alibrary.models import Media
+from alibrary.models import Media, Playlist
 
 
 
@@ -165,8 +165,7 @@ old: {current_duration} new: {new_duration} diff: {diff}
                     })
 
             # update media duration
-            Media.objects.filter(pk=item.pk).invalidated_update(master_duration=new_duration)
-            # invalidate cache (ev redundant?)
+            Media.objects.filter(pk=item.pk).update(master_duration=new_duration)
             invalidate_obj(item)
 
 
@@ -206,6 +205,10 @@ old: {current_duration} new: {new_duration} diff: {diff}
                 ))
                 log_file.flush()
 
+            # update playlist duration
+            Playlist.objects.filter(pk=item.pk).update(duration=new_duration * 1000)
+            invalidate_obj(item)
+
 
 
 @cli.command()
@@ -233,4 +236,4 @@ def generate_master_hashes():
                 master_sha1 = item.generate_sha1()
 
                 # update media duration
-                Media.objects.filter(pk=item.pk).invalidated_update(master_sha1=master_sha1)
+                Media.objects.filter(pk=item.pk).update(master_sha1=master_sha1)
