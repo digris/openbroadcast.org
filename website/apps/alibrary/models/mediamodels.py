@@ -332,7 +332,7 @@ class Media(MigrationMixin):
     #######################################################################
     # fprint data
     #######################################################################
-    fprint_ingested = models.DateTimeField(null=True, blank=True, editable=False)
+    fprint_ingested = models.DateTimeField(null=True, blank=True)
 
     objects = models.Manager()
 

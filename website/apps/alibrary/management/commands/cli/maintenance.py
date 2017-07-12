@@ -14,12 +14,12 @@ def cli():
 
 
 @cli.command()
-@click.option('--range-limit', type=str, help='limit range/offset. e.g. "170:190"')
+@click.option('--limit-range', type=str, help='limit range/offset. e.g. "170:190"')
 @click.option('--dump-to', type=click.File('ab'))
 @click.option('--load-from', type=click.File('rb'))
 @click.option('--tolerance', type=float, default=0.5)
 @click.option('--log-file', type=click.File('wb'))
-def repair_durations(range_limit, dump_to, load_from, tolerance, log_file):
+def repair_durations(limit_range, dump_to, load_from, tolerance, log_file):
     """
     Repair/reprocess master durations.
     """
@@ -34,8 +34,8 @@ def repair_durations(range_limit, dump_to, load_from, tolerance, log_file):
 
     if load_from:
 
-        if range_limit:
-            raise NotImplementedError('--range-limit option not allowed in combination with --load-from')
+        if limit_range:
+            raise NotImplementedError('--limit-range option not allowed in combination with --load-from')
 
         # using `set` to remove duplicate ids
         item_ids = set([
@@ -53,8 +53,8 @@ def repair_durations(range_limit, dump_to, load_from, tolerance, log_file):
         # to save memory items are loaded from db individually
         values = Media.objects.order_by('pk').values('id').nocache()
 
-        if range_limit:
-            _limits = range_limit.split(':')
+        if limit_range:
+            _limits = limit_range.split(':')
             values = values[_limits[0]:_limits[1]]
 
         item_ids = [i['id'] for i in values]
@@ -206,7 +206,7 @@ old: {current_duration} new: {new_duration} diff: {diff}
                 log_file.flush()
 
             # update playlist duration
-            Playlist.objects.filter(pk=item.pk).update(duration=new_duration * 1000)
+            Playlist.objects.filter(pk=item['obj'].pk).update(duration=new_duration * 1000)
             invalidate_obj(item)
 
 

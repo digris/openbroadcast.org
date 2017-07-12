@@ -1,9 +1,10 @@
 import requests
 import logging
+from django.conf import settings
 
 from .utils import code_for_path
 
-API_BASE_URL = 'http://localhost:7777/api/v1/'
+API_BASE_URL = getattr(settings, 'FPRINT_API_BASE_URL', 'http://10.40.10.214:8000/api/v1/')
 
 
 logging.getLogger("requests").setLevel(logging.WARNING)
@@ -21,47 +22,47 @@ class FprintAPIClient(object):
         pass
 
 
-    @staticmethod
-    def get_for_code(obj):
+    # @staticmethod
+    # def get_for_code(obj):
+    #
+    #     url = '{api_base_url}fprint/search/'.format(
+    #         api_base_url=API_BASE_URL,
+    #     )
+    #
+    #     log.debug('loading mixdown from: {}'.format(url))
+    #
+    #     r = requests.get(url, timeout=2.0)
+    #
+    #     if not r.status_code == 200:
+    #         return
+    #
+    #     return r.json()
+    #
+    #
+    # @staticmethod
+    # def get_for_media(obj):
+    #
+    #     url = '{api_base_url}fprint/entry/{uuid}/'.format(
+    #         api_base_url=API_BASE_URL,
+    #         uuid=obj.uuid
+    #     )
+    #
+    #     log.debug('loading fprint entry from: {}'.format(url))
+    #
+    #     r = requests.get(url, timeout=2.0)
+    #
+    #     if not r.status_code == 200:
+    #         return
+    #
+    #     return r.json()
 
-        url = '{api_base_url}fprint/search/'.format(
-            api_base_url=API_BASE_URL,
-        )
 
-        log.debug('loading mixdown from: {}'.format(url))
+    def ingest_for_media(self, obj):
 
-        r = requests.get(url, timeout=2.0)
-
-        if not r.status_code == 200:
-            return
-
-        return r.json()
-
-
-    @staticmethod
-    def get_for_media(obj):
-
-        url = '{api_base_url}fprint/entry/{uuid}/'.format(
-            api_base_url=API_BASE_URL,
-            uuid=obj.uuid
-        )
-
-        log.debug('loading fprint entry from: {}'.format(url))
-
-        r = requests.get(url, timeout=2.0)
-
-        if not r.status_code == 200:
-            return
-
-        return r.json()
-
-
-    def ingest_for_media(self, obj, update=False):
-
-        if not update:
-            existing_entry = self.get_for_media(obj)
-            if existing_entry:
-                return existing_entry
+        # if not update:
+        #     existing_entry = self.get_for_media(obj)
+        #     if existing_entry:
+        #         return existing_entry
 
 
         url = '{api_base_url}fprint/entry/{uuid}/'.format(
@@ -77,12 +78,14 @@ class FprintAPIClient(object):
         data = {
             #'uuid': str(obj.uuid), # uuid in uri
             'code': code,
-            # 'duration': obj.master_duration,
-            # 'name': obj.name,
-            # 'artist_name': obj.artist.name if obj.artist else None
+            'duration': obj.master_duration,
+            'name': obj.name,
+            'artist_name': obj.artist.name if obj.artist else None
         }
 
         r = requests.put(url, json=data, timeout=2.0)
+
+        print(r.text)
 
         if not r.status_code in [200, 201]:
             log.warning('{}'.format(r.text))

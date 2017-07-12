@@ -104,7 +104,6 @@ MIDDLEWARE_CLASSES = (
     #'auditlog.middleware.AuditlogMiddleware',
     'social_auth.middleware.SocialAuthExceptionMiddleware',
     'arating.middleware.AratingIpMiddleware',
-    #'silk.middleware.SilkyMiddleware',
 )
 
 

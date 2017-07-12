@@ -4,9 +4,10 @@ import time
 import sys
 import datetime
 import djclick as click
+from django.db import connections, connection
 from django.conf import settings
 from django.utils import timezone
-from django.db.models import Count
+
 
 from multiprocessing import Pool
 
@@ -29,7 +30,8 @@ def cli():
 
 @cli.command()
 @click.option('--force', default=False, is_flag=True, help='Force to rebuild all fingerprints?')
-def update_index(force):
+@click.option('--async', default=False, is_flag=True, help='Run in async mode (multiprocessing Pool)')
+def update_index(force, async):
     """
     update fingerpint index (via fprint service)
     """
@@ -40,21 +42,33 @@ def update_index(force):
 
     qs = Media.objects.exclude(master__isnull=True).filter(fprint_ingested__isnull=True)
 
-    pool = Pool()
-    procs = []
+    if async:
 
-    for m in qs.iterator():
-        click.secho('{}'.format(m.pk), fg='cyan')
-        procs.append(pool.apply_async(ingest_fingerprint, args=(m,)))
+        pool = Pool()
+        procs = []
 
-    pool.close()
-    pool.join()
+        for m in qs:
+            click.secho('{}'.format(m.pk), fg='cyan')
+            procs.append(pool.apply_async(_ingest_fingerprint, args=(m,)))
+
+        pool.close()
+        pool.join()
 
 
-def ingest_fingerprint(media):
+    else:
+
+        for m in qs:
+            _ingest_fingerprint(m)
+
+
+def _ingest_fingerprint(media):
     """
     generates and ingests fingerprint for given media object
     """
+
+    # close connection, needed for multiprocessing
+    # https://stackoverflow.com/questions/8242837/django-multiprocessing-and-database-connections
+    connection.close()
 
     client = FprintAPIClient()
 

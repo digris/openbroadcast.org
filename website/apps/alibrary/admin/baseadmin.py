@@ -18,8 +18,8 @@ from alibrary.models import (Label, Artist, Media, Release, Playlist, ReleaseExt
 
 THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
 
-class BaseAdmin(GuardedModelAdmin):
 
+class BaseAdmin(GuardedModelAdmin):
     search_fields = ['name']
     save_on_top = True
 
@@ -28,34 +28,41 @@ class LabelInline(admin.TabularInline):
     model = Label
     extra = 1
 
+
 class MediaInline(admin.TabularInline):
     model = Media
-    exclude = ['description','slug','echoprint_status', 'd_tags', 'echonest_id', 'lyrics', 'lyrics_language', 'danceability', 'energy', 'liveness', 'loudness', 'speechiness', 'start_of_fade_out', 'echonest_duration', 'tempo', 'key', 'sections','master_sha1', 'base_format', 'base_filesize', 'base_duration', 'base_samplerate', 'base_bitrate', 'filename', 'publish_date', 'status', 'owner', 'creator', 'publisher', 'medianumber', 'master', 'mediatype' ]
+    exclude = ['description', 'slug', 'echoprint_status', 'd_tags', 'echonest_id', 'lyrics', 'lyrics_language',
+               'danceability', 'energy', 'liveness', 'loudness', 'speechiness', 'start_of_fade_out',
+               'echonest_duration', 'tempo', 'key', 'sections', 'master_sha1', 'base_format', 'base_filesize',
+               'base_duration', 'base_samplerate', 'base_bitrate', 'filename', 'publish_date', 'status', 'owner',
+               'creator', 'publisher', 'medianumber', 'master', 'mediatype']
     readonly_fields = ['artist', ]
     extra = 0
 
+
 class ReleaseExtraartistsInline(admin.TabularInline):
     model = ReleaseExtraartists
-    extra=1
-    raw_id_fields = ['artist',]
+    extra = 1
+    raw_id_fields = ['artist', ]
 
 
 class ReleaseAlbumartistsInline(admin.TabularInline):
     model = ReleaseAlbumartists
-    extra=2
+    extra = 2
     fieldsets = [
-        (None,               {'fields': ['position', 'join_phrase', 'artist']}),
+        (None, {'fields': ['position', 'join_phrase', 'artist']}),
     ]
-    raw_id_fields = ['artist',]
+    raw_id_fields = ['artist', ]
 
 
 class RelationsInline(GenericTabularInline):
     model = Relation
-    extra=2
+    extra = 2
     fieldsets = [
-        (None,               {'fields': ['url', 'name', 'service']}),
+        (None, {'fields': ['url', 'name', 'service']}),
     ]
     readonly_fields = ['service']
+
 
 class ReleaseMediaMediaInline(admin.TabularInline):
     model = Media
@@ -67,11 +74,11 @@ class ReleaseMediaInline(admin.TabularInline):
     extra = 1
     inlines = [ReleaseMediaMediaInline]
 
-class ReleaseAdmin(BaseAdmin):
 
+class ReleaseAdmin(BaseAdmin):
     list_display = (
         'image_display',
-        #'name',
+        # 'name',
         'info_display',
         'meta_display',
         'catalognumber',
@@ -107,12 +114,12 @@ class ReleaseAdmin(BaseAdmin):
     ]
 
     fieldsets = [
-        (None,  {
-                'fields': ['name', 'slug', 'main_image', ('label', 'catalognumber'), ('releasedate', 'release_country', 'license'), ('releasetype',), 'd_tags', 'description']
-                }),
-        ('Users', {'fields' : ['owner', 'creator', 'last_editor', 'publisher']}),
+        (None, {
+            'fields': ['name', 'slug', 'main_image', ('label', 'catalognumber'),
+                       ('releasedate', 'release_country', 'license'), ('releasetype',), 'd_tags', 'description']
+        }),
+        ('Users', {'fields': ['owner', 'creator', 'last_editor', 'publisher']}),
     ]
-
 
     def info_display(self, obj):
 
@@ -128,6 +135,7 @@ class ReleaseAdmin(BaseAdmin):
             label_name=obj.label,
         )
         return tpl
+
     info_display.short_description = _('Release')
     info_display.allow_tags = True
 
@@ -143,6 +151,7 @@ class ReleaseAdmin(BaseAdmin):
             num_tracks=obj.get_media().count(),
         )
         return tpl
+
     meta_display.short_description = _('Metadata')
     meta_display.allow_tags = True
 
@@ -153,36 +162,37 @@ class ReleaseAdmin(BaseAdmin):
             except:
                 pass
         return '-'
+
     image_display.short_description = _('Cover')
     image_display.allow_tags = True
-
-
 
 
 admin.site.register(Release, ReleaseAdmin)
 
 
-
 class ArtistMembersInline(admin.TabularInline):
     model = Artist.members.through
     fk_name = 'parent'
-    raw_id_fields = ['child',]
-    extra=1
+    raw_id_fields = ['child', ]
+    extra = 1
+
 
 class ArtistParentsInline(admin.TabularInline):
     model = Artist.members.through
     fk_name = 'child'
-    raw_id_fields = ['parent',]
-    extra=1
+    raw_id_fields = ['parent', ]
+    extra = 1
+
 
 class ArtistProfessionsInline(admin.TabularInline):
     model = ArtistProfessions
-    extra=1
+    extra = 1
+
 
 class MediaExtraartistsInline(admin.TabularInline):
     model = MediaExtraartists
-    extra=1
-    raw_id_fields = ['artist',]
+    extra = 1
+    raw_id_fields = ['artist', ]
 
 
 class AgencyArtistInline(admin.TabularInline):
@@ -194,21 +204,23 @@ class NameVariationInline(admin.TabularInline):
     model = NameVariation
     extra = 3
 
-class ArtistAdmin(BaseAdmin):
 
-    list_display   = ('name', 'type', 'disambiguation', 'listed',)
-    search_fields = ['name', 'media__name',]
+class ArtistAdmin(BaseAdmin):
+    list_display = ('name', 'type', 'disambiguation', 'listed',)
+    search_fields = ['name', 'media__name', ]
     list_filter = ('listed',)
 
     # RelationsInline,
-    inlines = [NameVariationInline, RelationsInline, ArtistProfessionsInline, ArtistMembersInline, ArtistParentsInline, AgencyArtistInline]
-
+    inlines = [NameVariationInline, RelationsInline, ArtistProfessionsInline, ArtistMembersInline, ArtistParentsInline,
+               AgencyArtistInline]
 
     """"""
     fieldsets = [
-        (None,               {'fields': ['name', 'slug', 'main_image', 'real_name', 'country', ('listed', 'disable_link',), 'biography', 'excerpt', ]}),
-        ('Users', {'fields' : ['owner', 'creator', 'last_editor', 'publisher']}),
-        ('Various', {'fields' : ['booking_contact', 'email',]}),
+        (None, {
+            'fields': ['name', 'slug', 'main_image', 'real_name', 'country', ('listed', 'disable_link',), 'biography',
+                       'excerpt', ]}),
+        ('Users', {'fields': ['owner', 'creator', 'last_editor', 'publisher']}),
+        ('Various', {'fields': ['booking_contact', 'email', ]}),
     ]
 
     raw_id_fields = [
@@ -218,54 +230,57 @@ class ArtistAdmin(BaseAdmin):
         'publisher',
     ]
 
+
 admin.site.register(Artist, ArtistAdmin)
 admin.site.register(NameVariation)
 
-class LicenseAdmin(reversion.VersionAdmin, TranslatableAdmin):
 
+class LicenseAdmin(reversion.VersionAdmin, TranslatableAdmin):
     inline_instances = ('name_translated', 'restricted', 'parent',)
 
-    list_display   = ('name', 'parent', 'legacy_id', 'key', 'restricted', 'selectable', 'is_default',)
+    list_display = ('name', 'parent', 'legacy_id', 'key', 'restricted', 'selectable', 'is_default',)
     search_fields = ('name',)
 
+
 admin.site.register(License, LicenseAdmin)
-
-
 
 
 class ServiceAdmin(BaseAdmin):
     pass
 
+
 admin.site.register(Service, ServiceAdmin)
 
 
 class RelationAdmin(BaseAdmin):
-
     list_display = ('url', 'service', 'name',)
     list_filter = ('service',)
     search_fields = ('url',)
     fieldsets = [
-        (None,               {'fields': ['url', 'service']}),
+        (None, {'fields': ['url', 'service']}),
     ]
-    #readonly_fields = ['service']
+    # readonly_fields = ['service']
+
 
 admin.site.register(Relation, RelationAdmin)
+
 
 class ProfessionAdmin(admin.ModelAdmin):
     pass
 
+
 admin.site.register(Profession, ProfessionAdmin)
 
-
 """"""
+
+
 class MediaReleaseInline(admin.TabularInline):
     model = Release.media.through
     extra = 1
-    raw_id_fields = ['release',]
+    raw_id_fields = ['release', ]
 
 
 class MediaAdmin(BaseAdmin):
-
     list_display = [
         'name',
         'created',
@@ -309,10 +324,7 @@ class MediaAdmin(BaseAdmin):
         'd_tags'
     ]
 
-
     date_hierarchy = 'created'
-
-
 
     def master_status(self, obj):
         if not obj.master or not obj.master.path:
@@ -321,25 +333,35 @@ class MediaAdmin(BaseAdmin):
 
     master_status.boolean = True
 
-
-
     fieldsets = [
-        (None,  {'fields':
-                 ['name', 'slug', 'isrc', 'filename', 'uuid', ('tracknumber', 'medianumber', 'opus_number'), 'mediatype', 'version', ('release', 'release_link'), 'artist', 'license', 'd_tags', 'echonest_id',]
-                 }),
-
-        ('Users', {'fields' : ['owner', 'creator', 'last_editor', 'publisher']}),
-        ('Text', {'fields' : ['description', 'lyrics',]}),
-
-
-        ('Master Audio File',  {
-                'fields': [
-                    'master',
-                    'master_sha1',
-                    ('master_encoding', 'master_bitrate', 'master_samplerate',),
-                    ('master_duration', 'master_filesize')
-                ]
-                 }),
+        (None, {
+            'fields': [
+                'name',
+                'slug',
+                'isrc',
+                'filename',
+                'uuid',
+                ('tracknumber', 'medianumber', 'opus_number'),
+                'mediatype',
+                'version',
+                ('release', 'release_link'),
+                'artist',
+                'license',
+                'd_tags',
+                'echonest_id',
+            ]
+        }),
+        ('Users', {'fields': ['owner', 'creator', 'last_editor', 'publisher']}),
+        ('Text', {'fields': ['description', 'lyrics', ]}),
+        ('Master Audio File', {
+            'fields': [
+                'master',
+                'master_sha1',
+                ('master_encoding', 'master_bitrate', 'master_samplerate',),
+                ('master_duration', 'master_filesize'),
+                'fprint_ingested',
+            ]
+        }),
 
         ('Analyse & co', {
             'classes': ('uncollapse',),
@@ -364,8 +386,8 @@ class DistributorLabelInline(admin.TabularInline):
     model = Distributor.labels.through
     extra = 1
 
-class LabelAdmin(BaseAdmin):
 
+class LabelAdmin(BaseAdmin):
     # inlines = [LabelInline]
     readonly_fields = ['slug']
 
@@ -373,11 +395,11 @@ class LabelAdmin(BaseAdmin):
 
     """"""
     fieldsets = [
-        (None,               {'fields': ['name', 'slug', 'main_image', 'type', 'description']}),
-        ('Contact', {'fields' : ['address', 'country', ('phone', 'fax'), 'email']}),
-        ('Settings', {'fields' : ['listed', 'disable_link', 'disable_editing']}),
-        ('Relations', {'fields': ['parent',], 'classes': ['']}),
-        ('Users', {'fields' : [('owner', 'creator', 'last_editor', 'publisher'),]}),
+        (None, {'fields': ['name', 'slug', 'main_image', 'type', 'description']}),
+        ('Contact', {'fields': ['address', 'country', ('phone', 'fax'), 'email']}),
+        ('Settings', {'fields': ['listed', 'disable_link', 'disable_editing']}),
+        ('Relations', {'fields': ['parent', ], 'classes': ['']}),
+        ('Users', {'fields': [('owner', 'creator', 'last_editor', 'publisher'), ]}),
     ]
 
     raw_id_fields = [
@@ -388,97 +410,102 @@ class LabelAdmin(BaseAdmin):
         'parent',
     ]
 
+
 admin.site.register(Label, LabelAdmin)
 
-class DistributorAdmin(BaseAdmin):
 
+class DistributorAdmin(BaseAdmin):
     # inlines = [LabelInline]
-    #prepopulated_fields = {"slug": ("name",)}
+    # prepopulated_fields = {"slug": ("name",)}
     readonly_fields = ['slug', 'd_tags']
 
     inlines = [DistributorLabelInline, RelationsInline]
 
     """"""
     fieldsets = [
-        (None,               {'fields': ['name', 'slug', 'type', 'description']}),
-        ('Contact', {'fields' : ['address', 'country', ('phone', 'fax'), 'email']}),
+        (None, {'fields': ['name', 'slug', 'type', 'description']}),
+        ('Contact', {'fields': ['address', 'country', ('phone', 'fax'), 'email']}),
         ('Relations', {'fields': ['parent'], 'classes': ['']}),
-        ('Users', {'fields' : [('owner', 'creator', 'publisher'),]}),
+        ('Users', {'fields': [('owner', 'creator', 'publisher'), ]}),
     ]
+
 
 admin.site.register(Distributor, DistributorAdmin)
 
 
-
 class AgencyAdmin(BaseAdmin):
-
     # inlines = [LabelInline]
-    #prepopulated_fields = {"slug": ("name",)}
+    # prepopulated_fields = {"slug": ("name",)}
     readonly_fields = ['slug', 'd_tags']
 
     inlines = [AgencyArtistInline, RelationsInline]
 
     fieldsets = [
-        (None,               {'fields': ['name', 'slug', 'type', 'description']}),
-        ('Contact', {'fields' : ['address', 'country', ('phone', 'fax'), 'email']}),
+        (None, {'fields': ['name', 'slug', 'type', 'description']}),
+        ('Contact', {'fields': ['address', 'country', ('phone', 'fax'), 'email']}),
         ('Relations', {'fields': ['parent'], 'classes': ['']}),
-        ('Users', {'fields' : [('owner', 'creator', 'publisher'),]}),
+        ('Users', {'fields': [('owner', 'creator', 'publisher'), ]}),
     ]
+
 
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(AgencyScope)
 
 
-
 class PlaylistmediaInline(GenericTabularInline):
     model = PlaylistMedia
-    extra=1
+    extra = 1
+
 
 class PlaylistItemInline(GenericTabularInline):
     model = PlaylistItem
-    extra=1
+    extra = 1
+
 
 class PlaylistItemPlaylistInline(admin.TabularInline):
     model = PlaylistItemPlaylist
-    inlines = [PlaylistItemInline,]
-    raw_id_fields = ['item',]
-    extra=1
+    inlines = [PlaylistItemInline, ]
+    raw_id_fields = ['item', ]
+    extra = 1
 
 
 def playlists_enable_rotation(modeladmin, request, queryset):
     queryset.update(rotation=True)
+
+
 playlists_enable_rotation.short_description = _('Include selected playlists in rotation')
+
 
 def playlists_disable_rotation(modeladmin, request, queryset):
     queryset.update(rotation=False)
+
+
 playlists_disable_rotation.short_description = _('Exclude selected playlists from rotation')
 
+
 class PlaylistAdmin(GenericAdminModelAdmin):
+    list_display = ('name', 'user', 'type', 'duration', 'target_duration', 'is_current', 'rotation', 'updated')
+    list_filter = ('type', 'broadcast_status',)
 
-    list_display   = ('name', 'user', 'type', 'duration', 'target_duration', 'is_current', 'rotation', 'updated')
-    list_filter = ('type', 'broadcast_status', )
-
-    search_fields = ['name', 'user__username',]
+    search_fields = ['name', 'user__username', ]
     date_hierarchy = 'created'
 
-
-    raw_id_fields = ['user',]
-
+    raw_id_fields = ['user', ]
 
     actions = [playlists_enable_rotation, playlists_disable_rotation]
 
-    #readonly_fields = ['slug', 'is_current',]
+    # readonly_fields = ['slug', 'is_current',]
 
     inlines = [PlaylistItemPlaylistInline]
+
 
 class PlaylistItemAdmin(GenericAdminModelAdmin):
     pass
 
+
 class DaypartAdmin(BaseAdmin):
-
-    list_display   = ('day', 'time_start', 'time_end', 'active', 'playlist_count',)
+    list_display = ('day', 'time_start', 'time_end', 'active', 'playlist_count',)
     list_filter = ('day', 'active',)
-
 
 
 admin.site.register(Playlist, PlaylistAdmin)
@@ -488,13 +515,13 @@ admin.site.register(PlaylistItem, PlaylistItemAdmin)
 
 class SeasonAdmin(TranslatableAdmin):
     pass
+
+
 class WeatherAdmin(TranslatableAdmin):
     pass
+
 
 admin.site.register(Season, SeasonAdmin)
 admin.site.register(Weather, WeatherAdmin)
 
 admin.site.register(Series)
-
-
-
