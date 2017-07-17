@@ -8,7 +8,7 @@ from django.conf import settings
 
 from .utils import code_for_path
 
-API_BASE_URL = getattr(settings, 'FPRINT_API_BASE_URL', 'http://10.40.10.214:8000/api/v1/')
+API_BASE_URL = getattr(settings, 'FPRINT_API_BASE_URL', 'http://127.0.0.1:7777/api/v1/')
 
 
 logging.getLogger("requests").setLevel(logging.WARNING)
