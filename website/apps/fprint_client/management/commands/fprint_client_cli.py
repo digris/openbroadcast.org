@@ -40,14 +40,15 @@ def update_index(force, async):
         _count = Media.objects.all().update(fprint_ingested=None)
         click.secho('Resetting all fingerprints. ({})'.format(_count), fg='cyan')
 
-    qs = Media.objects.exclude(master__isnull=True).filter(fprint_ingested__isnull=True)
+    qs = Media.objects.exclude(master__isnull=True).filter(fprint_ingested__isnull=True).values('id')
 
     if async:
 
         pool = Pool()
         procs = []
 
-        for m in qs:
+        for item in qs:
+            m = Media.objects.get(pk=item['id'])
             #click.secho('{}'.format(m.pk), fg='cyan')
             procs.append(pool.apply_async(_ingest_fingerprint, args=(m,)))
 
@@ -57,7 +58,8 @@ def update_index(force, async):
 
     else:
 
-        for m in qs:
+        for item in qs:
+            m = Media.objects.get(pk=item['id'])
             _ingest_fingerprint(m)
 
 
