@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
 import requests
 import logging
 from django.conf import settings
@@ -58,6 +62,9 @@ class FprintAPIClient(object):
 
 
     def ingest_for_media(self, obj):
+        """
+        sends code to fprint api
+        """
 
         # if not update:
         #     existing_entry = self.get_for_media(obj)
@@ -84,8 +91,6 @@ class FprintAPIClient(object):
         }
 
         r = requests.put(url, json=data, timeout=2.0)
-
-        print(r.text)
 
         if not r.status_code in [200, 201]:
             log.warning('{}'.format(r.text))

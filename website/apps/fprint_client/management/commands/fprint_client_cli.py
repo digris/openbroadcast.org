@@ -48,7 +48,7 @@ def update_index(force, async):
         procs = []
 
         for m in qs:
-            click.secho('{}'.format(m.pk), fg='cyan')
+            #click.secho('{}'.format(m.pk), fg='cyan')
             procs.append(pool.apply_async(_ingest_fingerprint, args=(m,)))
 
         pool.close()
