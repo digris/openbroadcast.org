@@ -14,6 +14,7 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
 
     media = {}
 
+    """
     print
     print '--------------------------------------------------------------------'
     print '| getting schedule for PYPO                                        |'
@@ -23,7 +24,7 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
     print 'total emissions in range: %s' % es.count()
     print '--------------------------------------------------------------------'
     print
-
+    """
 
     for e in es:
 
@@ -70,7 +71,7 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
                     raise NotImplemented('http transport not implemented anymore')
 
                 if EXCHANGE == 'fs':
-                    uri = co.get_playout_file(absolute=False)
+                    uri = co.get_playout_file(absolute=True)
 
                 data = {
 

@@ -40,23 +40,24 @@ def update_index(force, async):
         _count = Media.objects.all().update(fprint_ingested=None)
         click.secho('Resetting all fingerprints. ({})'.format(_count), fg='cyan')
 
-    # exclude master-less media items and ones with duration longer than 20 minutes
-    qs = Media.objects.exclude(
+    id_list = Media.objects.exclude(
         master__isnull=True
-    ).filter(
+    ).nocache().filter(
         master_duration__lte=(60 * 20),
         fprint_ingested__isnull=True
-    ).values('id',)
+    ).values_list('id', flat=True)
 
-    click.secho('{} media items to process'.format(qs.count()), fg='cyan')
+    click.secho('{} media items to process'.format(id_list.count()), fg='cyan')
 
     if async:
 
-        pool = Pool()
+        pool = Pool(processes=8)
         procs = []
 
-        for item in qs:
-            m = Media.objects.get(pk=item['id'])
+        for id in id_list:
+            # close connection, needed for multiprocessing
+            connection.close()
+            m = Media.objects.get(pk=id)
             #click.secho('{}'.format(m.pk), fg='cyan')
             procs.append(pool.apply_async(_ingest_fingerprint, args=(m,)))
 
@@ -66,8 +67,8 @@ def update_index(force, async):
 
     else:
 
-        for item in qs:
-            m = Media.objects.get(pk=item['id'])
+        for id in id_list:
+            m = Media.objects.get(pk=id)
             _ingest_fingerprint(m)
 
 
@@ -91,3 +92,5 @@ def _ingest_fingerprint(media):
 
     except Exception as e:
         click.secho('unable to ingest fprint for media: {} - {}'.format(media.pk, e))
+
+

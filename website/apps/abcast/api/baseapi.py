@@ -24,35 +24,8 @@ log = logging.getLogger(__name__)
 
 SCHEDULE_AHEAD = 60 * 60 * 6
 
-# class StationResource(ModelResource):
-#     class Meta:
-#         queryset = Station.objects.order_by('name').all()
-#         list_allowed_methods = ['get', ]
-#         detail_allowed_methods = ['get', ]
-#         resource_name = 'abcast/station'
-#         excludes = ['updated', ]
-#         authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication(), Authentication())
-#         authorization = Authorization()
-#         filtering = {
-#             'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
-#         }
-#
-#     def dehydrate(self, bundle):
-#
-#         if bundle.obj.main_image:
-#             opt = dict(size=(70, 70), crop=True, bw=False, quality=80)
-#             try:
-#                 main_image = get_thumbnailer(bundle.obj.main_image).get_thumbnail(opt)
-#                 bundle.data['main_image'] = main_image.url
-#             except:
-#                 pass
-#
-#         return bundle
-
 
 class ChannelResource(ModelResource):
-
-    # station = fields.ForeignKey('abcast.api.StationResource', 'station', null=True, full=True, max_depth=2)
 
     class Meta:
         queryset = Channel.objects.order_by('name').all()
@@ -394,6 +367,7 @@ class ChannelResource(ModelResource):
 # api mapping for airtime / pypo
 ####################################################################
 class BaseResource(Resource):
+
     base_url = Site.objects.get_current().domain
 
     class Meta:

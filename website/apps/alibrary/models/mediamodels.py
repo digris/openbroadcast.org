@@ -36,6 +36,8 @@ from alibrary.util.echonest import EchonestWorker
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object
 
+from media_asset.util import get_format
+
 log = logging.getLogger(__name__)
 
 USE_CELERYD = getattr(settings, 'ALIBRARY_USE_CELERYD', False)
@@ -550,11 +552,21 @@ class Media(MigrationMixin):
 
     def get_playout_file(self, absolute=False):
 
-        abs_path = self.master.path
-        if not absolute:
-            abs_path = abs_path.replace(settings.MEDIA_ROOT + '/', '')
+        #abs_path = self.master.path
 
-        return abs_path
+        format = get_format(self, wait=True)
+        abs_path = format.path
+
+        if not absolute:
+            if settings.MEDIA_ROOT.endswith('/'):
+                path = abs_path.replace(settings.MEDIA_ROOT + '/', '')
+            else:
+                path = abs_path.replace(settings.MEDIA_ROOT, '')
+
+        else:
+            path = abs_path
+
+        return path
 
     def get_duration(self, units='ms'):
 
