@@ -552,10 +552,10 @@ class Media(MigrationMixin):
 
     def get_playout_file(self, absolute=False):
 
-        #abs_path = self.master.path
+        abs_path = self.master.path
 
-        format = get_format(self, wait=True)
-        abs_path = format.path
+        # format = get_format(self, wait=True)
+        # abs_path = format.path
 
         if not absolute:
             if settings.MEDIA_ROOT.endswith('/'):
