@@ -31,12 +31,34 @@ class LabelInline(admin.TabularInline):
 
 class MediaInline(admin.TabularInline):
     model = Media
-    exclude = ['description', 'slug', 'echoprint_status', 'd_tags', 'echonest_id', 'lyrics', 'lyrics_language',
-               'danceability', 'energy', 'liveness', 'loudness', 'speechiness', 'start_of_fade_out',
-               'echonest_duration', 'tempo', 'key', 'sections', 'master_sha1', 'base_format', 'base_filesize',
-               'base_duration', 'base_samplerate', 'base_bitrate', 'filename', 'publish_date', 'status', 'owner',
-               'creator', 'publisher', 'medianumber', 'master', 'mediatype']
-    readonly_fields = ['artist', ]
+
+    fields = [
+        'name',
+        'tracknumber',
+        'opus_number',
+        'version',
+        'artist',
+        'isrc',
+        'license',
+        'original_filename',
+        'master_encoding',
+        'master_bitrate',
+        'master_samplerate',
+        'master_duration',
+    ]
+
+    readonly_fields = [
+        'original_filename',
+        'master_encoding',
+        'master_bitrate',
+        'master_samplerate',
+        'master_duration',
+    ]
+
+    raw_id_fields = [
+        'artist',
+    ]
+
     extra = 0
 
 
@@ -289,7 +311,7 @@ class MediaAdmin(BaseAdmin):
         'mediatype',
         'tracknumber',
         'medianumber',
-        'duration',
+        'master_duration',
         'master_status',
         'fprint_ingested',
     ]
@@ -314,11 +336,6 @@ class MediaAdmin(BaseAdmin):
     readonly_fields = [
         'slug',
         'uuid',
-        'base_format',
-        'base_filesize',
-        'base_duration',
-        'base_samplerate',
-        'base_bitrate',
         'release_link',
         'master_sha1',
         'd_tags'
@@ -348,7 +365,6 @@ class MediaAdmin(BaseAdmin):
                 'artist',
                 'license',
                 'd_tags',
-                'echonest_id',
             ]
         }),
         ('Users', {'fields': ['owner', 'creator', 'last_editor', 'publisher']}),
@@ -359,13 +375,12 @@ class MediaAdmin(BaseAdmin):
                 'master_sha1',
                 ('master_encoding', 'master_bitrate', 'master_samplerate',),
                 ('master_duration', 'master_filesize'),
-                'fprint_ingested',
             ]
         }),
 
         ('Analyse & co', {
             'classes': ('uncollapse',),
-            'fields': ('echoprint_status',)
+            'fields': ('fprint_ingested',)
         }),
     ]
 

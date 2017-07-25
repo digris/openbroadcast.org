@@ -220,7 +220,6 @@ class Identifier(object):
 
 
         # Media
-
         try:
             dataset['media_name'] = meta['title'][0]
         except Exception as e:
@@ -246,12 +245,12 @@ class Identifier(object):
                 tn = meta['tracknumber'][0].split('/')
                 dataset['media_tracknumber'] = int(tn[0])
                 dataset['media_totaltracks'] = int(tn[1])
+
             except Exception as e:
                 pass
-                #print e
 
         except Exception as e:
-            print e
+            log.debug('unable to extract tracknumber from metadata')
 
 
         # try to extract tracknumber from filename
@@ -280,12 +279,14 @@ class Identifier(object):
         except Exception as e:
             pass
 
+
         try:
             # mutagen metadata contains '/' separated ids for mp3, while a list for flac
             # so we join by '/' to get an unified way.
             # the opposite would actually be better, but also would require a lot of refactoring...
             # so a TODO: fix this at some point of time...
             dataset['artist_mb_id'] = '/'.join(meta['musicbrainz_artistid'])
+
         except Exception as e:
             pass
 

@@ -183,8 +183,8 @@
 
                                 <li>
                                     <span class="value">
-                                        {% if object.base_format %}
-                                            {{ object.base_format|upper }} |
+                                        {% if object.master_encoding %}
+                                            {{ object.master_encoding|upper }} |
                                         {% endif %}
                                         {% if object.bitrate %}
                                             {{ object.bitrate }} kbps |

@@ -107,7 +107,7 @@
                     {% trans "Release / Label" %}
                 </div>
                 <div class="list_header_item c4 sortable {% if get.order_by == "duration" %}active{% endif %} {{ get.direction }}">
-                    <a href="{% spurl base=request.get_full_path set_query="order_by=base_duration" toggle_query="direction=ascending,descending" %}"
+                    <a href="{% spurl base=request.get_full_path set_query="order_by=master_duration" toggle_query="direction=ascending,descending" %}"
                        style="display: block;">{% trans "Duration" %}</a>
                 </div>
                 <div class="list_header_item c5">

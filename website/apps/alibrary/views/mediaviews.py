@@ -45,20 +45,12 @@ ORDER_BY = [
         'name': _('Artist name')
     },
     {
-        'key': 'base_duration',
+        'key': 'master_duration',
         'name': _('Duration')
     },
     {
         'key': 'tempo',
         'name': _('BPM')
-    },
-    {
-        'key': 'danceability',
-        'name': _('Danceability')
-    },
-    {
-        'key': 'energy',
-        'name': _('Energy')
     },
     {
         'key': 'updated',

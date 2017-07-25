@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import json
 import logging
 import os
-import subprocess
 import uuid
 import arating
 import audiotools
@@ -23,7 +21,6 @@ from django.db.models.signals import post_save, pre_delete, post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
-from django_extensions.db.fields.json import JSONField
 from ep.API import fp
 from lib.fields.languages import LanguageField
 from base.signals.unsignal import disable_for_loaddata
@@ -32,7 +29,6 @@ from tagging.registry import register as tagging_register
 from alibrary import settings as alibrary_settings
 from alibrary.models.basemodels import MigrationMixin, License, Relation, Profession
 from alibrary.models.playlistmodels import PlaylistItem, Playlist
-from alibrary.util.echonest import EchonestWorker
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object
 
@@ -48,7 +44,6 @@ SOX_BINARY = getattr(settings, 'SOX_BINARY')
 FAAD_BINARY = getattr(settings, 'FAAD_BINARY')
 
 LOOKUP_PROVIDERS = (
-    #('discogs', _('Discogs')),
     ('musicbrainz', _('Musicbrainz')),
 )
 
@@ -111,14 +106,6 @@ class Media(MigrationMixin):
         (99, _('Error')),
     )
 
-    ECHOPRINT_STATUS_CHOICES = (
-        (0, _('Init')),
-        (1, _('Assigned')),
-        (2, _('Error')),
-        (3, _('File not suitable')),
-        (99, _('Error')),
-    )
-
     TRACKNUMBER_CHOICES = ((x, x) for x in range(1, 301))
 
     MEDIANUMBER_CHOICES = ((x, x) for x in range(1, 51))
@@ -148,10 +135,6 @@ class Media(MigrationMixin):
     )
     publish_date = models.DateTimeField(
         blank=True, null=True
-    )
-    echoprint_status = models.PositiveIntegerField(
-        default=0,
-        choices=ECHOPRINT_STATUS_CHOICES
     )
     tracknumber = models.PositiveIntegerField(
         verbose_name=_('Track Number'),
@@ -279,29 +262,6 @@ class Media(MigrationMixin):
         max_length=1024, null=True, blank=True, editable=False
     )
 
-    #######################################################################
-    # File Data
-    #######################################################################
-    base_format = models.CharField(
-        verbose_name=_('Format'),
-        max_length=12, blank=True, null=True
-    )
-    base_filesize = models.PositiveIntegerField(
-        verbose_name=_('Filesize'),
-        blank=True, null=True
-    )
-    base_duration = models.FloatField(
-        verbose_name=_('Duration'),
-        blank=True, null=True
-    )
-    base_samplerate = models.PositiveIntegerField(
-        verbose_name=_('Samplerate'),
-        blank=True, null=True
-    )
-    base_bitrate = models.PositiveIntegerField(
-        verbose_name=_('Bitrate'),
-        blank=True, null=True
-    )
 
     #######################################################################
     # master audio-file data
@@ -317,24 +277,15 @@ class Media(MigrationMixin):
     master_duration = models.FloatField(verbose_name=_('Duration'), blank=True, null=True)
 
     #######################################################################
-    # echonest data
+    # audio properties
     #######################################################################
-    echonest_id = models.CharField(max_length=20, blank=True, null=True)
-    danceability = models.FloatField(null=True, blank=True)
-    energy = models.FloatField(null=True, blank=True)
-    liveness = models.FloatField(null=True, blank=True)
-    loudness = models.FloatField(null=True, blank=True)
-    speechiness = models.FloatField(null=True, blank=True)
-    start_of_fade_out = models.FloatField(null=True, blank=True)
-    echonest_duration = models.FloatField(null=True, blank=True)
     tempo = models.FloatField(null=True, blank=True)
-    key = models.IntegerField(null=True, blank=True)
-    sections = JSONField(blank=True, null=True)
 
     #######################################################################
     # fprint data
     #######################################################################
     fprint_ingested = models.DateTimeField(null=True, blank=True)
+
 
     objects = models.Manager()
 
@@ -598,130 +549,6 @@ class Media(MigrationMixin):
         return ps
 
 
-    """
-    creates an echoprint fp and post it to the
-    identification server
-    """
-    def update_echoprint(self):
-        #self.update_echoprint_task.delay(self)
-        self.update_echoprint_task(self)
-
-    @task()
-    def update_echoprint_task(obj):
-
-        status = 2
-
-        ECHOPRINT_CODEGEN_BINARY = getattr(settings, 'ECHOPRINT_CODEGEN_BINARY', None)
-
-        log.debug('update echoprint, using binary: {}'.format(ECHOPRINT_CODEGEN_BINARY))
-
-        path = obj.get_master_path()
-
-        if not path:
-            log.warning('master_path not available: %s' % path)
-            obj.echoprint_status = 2
-            obj.save()
-            return None
-
-        log.debug('update echoprint: %s' % path)
-        #log.debug('codegen binary: %s' % ECHOPRINT_CODEGEN_BINARY)
-
-        p = subprocess.Popen([
-            ECHOPRINT_CODEGEN_BINARY, path,
-        ], stdout=subprocess.PIPE, close_fds=True)
-        stdout = p.communicate()
-
-        try:
-            d = json.loads(stdout[0])
-        except ValueError as e:
-            log.error('unable to load JSON: %s' % e)
-
-            return False
-
-        # print d
-
-        try:
-            code = d[0]['code']
-            version = d[0]['metadata']['version']
-            duration = d[0]['metadata']['duration']
-
-        except Exception as e:
-            log.error('unable to extract code: %s' % e)
-
-            code = None
-            version = None
-            duration = None
-            status = 2
-
-        # skip file if longer than 12 minutes
-        if duration and duration > (60 * 12):
-            log.debug('file longer than 12 minutes > skipping echoprint ingestion')
-            obj.echoprint_status = 3
-            obj.save()
-            return
-
-
-
-        if code:
-
-            try:
-
-                fp.delete(b"%s" % obj.id)
-
-                id = obj.updated.isoformat()
-                code = fp.decode_code_string(code)
-
-                nfp = {
-                    b"track_id": "%s" % obj.id,
-                    b"fp": code,
-                    b"track": "%s" % obj.uuid,
-                    b"length": duration,
-                    b"codever": "%s" % version,
-                    b"source": "%s" % "NRGFP",
-                    b"import_date": "%sZ" % id
-                }
-
-                # ingest fingerprint into database
-                fp.ingest(nfp, split=False, do_commit=True)
-
-                # try to look up track by id
-                code_for_track = fp.fp_code_for_track_id("%s" % obj.id)
-                if code_for_track:
-                    log.info('successfully ingested fingerprint for %s' % obj.id)
-                    status = 1
-                else:
-                    log.warning('unable to ingest fingerprint for %s' % obj.id)
-                    status = 2
-
-            except Exception as e:
-                log.warning('unable to ingest fingerprint: {}'.format(e))
-                status = 2
-
-        obj.echoprint_status = status
-        obj.save()
-
-
-
-    # echonest analyzer
-    def echonest_analyze(self):
-
-        log.info('Start echonest_analyze: %s' % (self.pk))
-        if USE_CELERYD:
-            self.echonest_analyze_task.delay(self)
-        else:
-            self.echonest_analyze_task(self)
-
-    @task
-    def echonest_analyze_task(obj):
-
-        ew = EchonestWorker()
-        try:
-            obj = ew.analyze(obj)
-            obj.save()
-        except Exception as e:
-            log.warning('unable to perform echonest analyse')
-
-
     def process_master_info(self, save=False):
 
         # read key information from master file
@@ -788,7 +615,7 @@ class Media(MigrationMixin):
 
                     # reset processing flags
                     # TODO: this should be refactored / removed. Only master_* related informations are extracted.
-                    self.echoprint_status = 0
+                    self.fprint_ingested = None
 
             except Exception as e:
                 log.warning('unable to update master: {}'.format(e))
@@ -828,14 +655,16 @@ def media_post_save(sender, **kwargs):
 
     obj = kwargs['instance']
 
-    if obj.master and obj.echoprint_status == 0:
+    if obj.master and not obj.fprint_ingested:
         if AUTOCREATE_ECHOPRINT:
             log.info('Media id: %s - generate echoprint' % (obj.pk))
-            obj.update_echoprint()
+            # TODO: refactor fprint generation to API
+            # obj.update_echoprint()
         else:
             log.info('Media id: %s - skipping echoprint generation' % (obj.pk))
 
     if not obj.folder:
+
         log.debug('no directory for media %s - create it.' % obj.pk)
         directory = get_dir_for_object(obj)
         abs_directory = os.path.join(settings.MEDIA_ROOT, directory)
@@ -865,7 +694,8 @@ def media_pre_delete(sender, **kwargs):
     if obj.master and os.path.isfile(obj.master.path):
         os.unlink(obj.master.path)
 
-    # try to delete fingerprint
+    # delete fingerprint
+    # TODO: rework/implement with fprint api / fprint_client
     try:
         fp.delete(b"%s" % obj.id)
     except Exception as e:

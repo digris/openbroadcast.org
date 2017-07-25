@@ -49,14 +49,6 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
             i_start_str = i_start.strftime('%Y-%m-%d-%H-%M-%S')
             i_end_str = i_end.strftime('%Y-%m-%d-%H-%M-%S')
 
-            #print 'cue_in  -  cue_out  -  fade_in  -  fade_out  -  fade_cross'
-            #print '%06d     %06d      %06d      %06d       %06d' % (item.cue_in, item.cue_out, item.fade_in, item.fade_out, item.fade_cross)
-
-            #print 'offset:     %s' % offset
-
-            #print 'start:      %s' % i_start
-            #print 'end:        %s' % i_end
-
 
             """
             compose media data
@@ -81,6 +73,7 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
                         'fade_in': item.fade_in,
                         'fade_out': item.fade_out,
                         'fade_cross': item.fade_cross / 1000,
+                        # TODO: just enabling crossfade to test new ls version
                         #'fade_cross': float(co.get_duration() - item.cue_out - item.fade_cross) / 1000,
                         #'fade_cross': 0,
                         'replay_gain': 0,
@@ -171,7 +164,7 @@ def get_schedule(range_start=0, range_end=0, channel=None):
     if not isinstance(range_end, datetime.datetime):
         range_end = now + datetime.timedelta(seconds=range_end)
 
-
+    """
     print
     print u'--------------------------------------------------------------------'
     print u'| getting schedule history                                        |'
@@ -180,6 +173,7 @@ def get_schedule(range_start=0, range_end=0, channel=None):
     print u'range_start             : %s ' % range_start
     print u'range_end               : %s ' % range_end
     print
+    """
 
     emissions = Emission.objects.filter(
         time_end__gte=range_start,
@@ -188,9 +182,10 @@ def get_schedule(range_start=0, range_end=0, channel=None):
 
     objects = []
 
-
+    """
     print u'total emissions in range: %s' % emissions.count()
     print u'--------------------------------------------------------------------'
+    """
 
     for emission in emissions:
 

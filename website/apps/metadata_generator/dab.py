@@ -22,16 +22,13 @@ MEDIA_URL = getattr(settings, 'MEDIA_URL')
 DEFAULT_DLS_TEXT = ['Open Broadcast', ]
 
 SLIDE_BASE_IMAGE = getattr(settings, 'DAB_SLIDE_BASE_IMAGE', os.path.join(
-    os.path.dirname(__file__), 'asset', 'slide_base.png')
-                           )
+    os.path.dirname(__file__), 'asset', 'slide_base.png'))
 
 SLIDE_BASE_FONT = getattr(settings, 'DAB_SLIDE_BASE_IMAGE', os.path.join(
-    os.path.dirname(__file__), 'asset', 'HelveticaNeueCyr-Light.otf')
-                          )
+    os.path.dirname(__file__), 'asset', 'HelveticaNeueCyr-Light.otf'))
 
 SLIDE_DEFAULT_IMAGE = getattr(settings, 'DAB_SLIDE_DEFAULT_IMAGE', os.path.join(
-    os.path.dirname(__file__), 'asset', 'default.png')
-                              )
+    os.path.dirname(__file__), 'asset', 'default.png'))
 
 SLIDE_BASE_DIR = os.path.join(MEDIA_ROOT, 'metadata', 'dab')
 SLIDE_BASE_URL = MEDIA_URL + 'metadata/' + 'dab/'
@@ -45,6 +42,11 @@ DLPlusTag = namedtuple('DLPlusTag', ['id', 'start', 'length'])
 
 
 class DABMetadataGenerator(object):
+    """
+    generates metadata to be transmitted over DAB+ (via `ODR-PadEnc`)
+    contents generated are DLS(plus) text and slide images.
+    the slide images are composed out of existing images (cover/artist picture etc) and text overlay.
+    """
     def __init__(self, emission, content_object):
 
         self.emission = emission
@@ -196,39 +198,6 @@ class DABMetadataGenerator(object):
 
         return items
 
-    def __old__get_dls_text(self):
-
-        items = []
-
-        if not (self.emission and self.content_object):
-            return DEFAULT_DLS_TEXT
-
-        text = ''
-        if self.playlist.series:
-            text += '%s ' % self.playlist.series.name
-            if self.playlist.series_number:
-                text += '#%s ' % self.playlist.series_number
-            text += ' - '
-
-        text += '%s\n' % self.playlist.name
-
-        if self.content_object.name:
-            text += '%s by %s - %s\n' % (
-                self.content_object.name, self.content_object.artist.name, self.content_object.release.name)
-
-        if self.playlist.user:
-            text += 'curated by %s' % self.playlist.user.profile.get_display_name()
-
-        items.append(
-            text
-        )
-
-        items.append(
-            '{}'.format(self.playlist.name)
-        )
-
-        return items
-
     def get_slides(self):
 
         if not (self.emission and self.content_object):
@@ -324,8 +293,7 @@ class DABMetadataGenerator(object):
             key = 'default'
             path = os.path.join(SLIDE_BASE_DIR, key + '.png')
             url = SLIDE_BASE_URL + key + '.png'
-            # shutil.copyfile(SLIDE_DEFAULT_IMAGE, path)
-            # return url
+
 
         overlay_image = Image(filename=overlay_image_path)
 
@@ -370,8 +338,6 @@ class DABMetadataGenerator(object):
 
         with Drawing() as draw:
 
-            # add overlay image
-
             size = overlay_image.size
 
             if size[0] > size[1]:
@@ -381,15 +347,10 @@ class DABMetadataGenerator(object):
                 orientation = 'portrait'
                 scale = float(image_display_size[1]) / float(size[0])
 
-            print scale
-            print orientation
-
             overlay_image.resize(int(size[0] * scale), int(size[1] * scale))
 
-            size = overlay_image.size
-            print size
+            #size = overlay_image.size
 
-            # if orientation == 'portrait':
             width = 190
             height = 190
             overlay_image.crop(10, 0, width=width, height=height)

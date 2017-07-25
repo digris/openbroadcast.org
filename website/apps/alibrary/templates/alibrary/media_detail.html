@@ -204,88 +204,6 @@
         {% endif %}
 
 
-        {% if object.echonest_id %}
-            <section class="analyse">
-                <h2>{% trans "Track analysis" %}</h2>
-
-                <table class=" table-condensed" style="width: 100%;">
-                    <thead>
-                    <tr>
-                        <th>{% trans "Tempo" %} [BPM]</th>
-                        <th>{% trans "Loudness" %}</th>
-                        <th>{% trans "Key" %}</th>
-
-                        <th>{% trans "Danceability" %}</th>
-                        <th>{% trans "Energy" %}</th>
-                        <th>{% trans "Liveness" %}</th>
-                        <th>{% trans "Speechiness" %}</th>
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="value">{{ object.tempo }}</td>
-                        <td class="value">{{ object.loudness }}</td>
-                        <td class="value">{{ object.key }}</td>
-
-                        <td class="bar">
-                            {% if object.danceability %}
-                                <div class="holder">
-                                    <div class="indicator" style="width: {{ object.danceability|multiply:100 }}%">
-                                        <span>{{ object.danceability|multiply:100|roundint }}%</span>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <span class="na">-</span>
-                            {% endif %}
-                        </td>
-
-                        <td class="bar">
-                            {% if object.energy %}
-                                <div class="holder">
-                                    <div class="indicator" style="width: {{ object.energy|multiply:100 }}%">
-                                        <span>{{ object.energy|multiply:100|roundint }}%</span>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <span class="na">-</span>
-                            {% endif %}
-                        </td>
-
-                        <td class="bar">
-                            {% if object.liveness %}
-                                <div class="holder">
-                                    <div class="indicator" style="width: {{ object.liveness|multiply:100 }}%">
-                                        <span>{{ object.liveness|multiply:100|roundint }}%</span>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <span class="na">-</span>
-                            {% endif %}
-                        </td>
-
-                        <td class="bar">
-                            {% if object.speechiness %}
-                                <div class="holder">
-                                    <div class="indicator" style="width: {{ object.speechiness|multiply:100 }}%">
-                                        <span>{{ object.speechiness|multiply:100|roundint }}%</span>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <span class="na">-</span>
-                            {% endif %}
-                        </td>
-
-                    </tr>
-                    </tbody>
-                </table>
-
-
-            </section>
-        {% endif %}
-
-
-
         <section class="file-properties">
 
             <h2>{% trans "Audio Properties" %}</h2>
@@ -321,10 +239,10 @@
                     <dt>{% trans "Bitrate" %}</dt>
                     <dd>{% if object.bitrate %}{{ object.bitrate }} Kbps{% else %}-{% endif %}</dd>
 
-                    <!--
-                    <dt>{% trans "Fingerprint" %}</dt>
-                    <dd>{{ object.get_echoprint_status_display }}</dd>
-                    -->
+                    <!---->
+                    <dt>{% trans "UUID" %}</dt>
+                    <dd>{{ object.uuid }}</dd>
+
 
                     <dt>{% trans "Hash" %} (SHA1)</dt>
                     <dd style="font-size: 90%;">{{ object.master_sha1|upper }}</dd>

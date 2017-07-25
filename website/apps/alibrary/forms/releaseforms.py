@@ -358,8 +358,6 @@ class BaseReleaseMediaForm(ModelForm):
     class Meta:
         model = Media
         parent_model = Release
-        #formset = BaseReleaseMediaFormSet
-        #fields = ('name','tracknumber','base_filesize',)
         exclude = []
 
 
@@ -400,7 +398,6 @@ class BaseReleaseMediaForm(ModelForm):
     artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
     TRACKNUMBER_CHOICES =  [('', '---')] + list(((str(x), x) for x in range(1, 301)))
     tracknumber =  forms.ChoiceField(label=_('No.'), required=False, choices=TRACKNUMBER_CHOICES)
-    #filename =  forms.CharField(widget=ReadOnlyField(), label=_('Original File'), required=False)
 
     """
     # publishing disabled
@@ -607,4 +604,3 @@ ReleaseRelationFormSet = generic_inlineformset_factory(Relation,
 
 
 
-    

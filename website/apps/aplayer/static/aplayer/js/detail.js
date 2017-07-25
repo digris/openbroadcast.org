@@ -141,11 +141,7 @@ DetailPlayer = function () {
 
         self.init_waveform();
 
-        // dummy mapping
-        if (data.sections) {
-            var sections = JSON.parse(data.sections);
-            self.init_markers(sections);
-        }
+
     };
 
 
@@ -166,52 +162,6 @@ DetailPlayer = function () {
 
     };
 
-
-    this.init_markers = function (sections) {
-
-        console.debug('init_markers:', sections);
-
-        if (sections.length > 1) {
-
-            $(sections).each(function (i, section) {
-                console.debug('section', section);
-
-                var pos_x = section.start / self.item.duration * 1000 * self.size_x;
-
-                var width_x = section.duration / self.item.duration * 1000 * self.size_x;
-
-                var height = 10;
-
-
-                self.r.rect(pos_x, 90 - height, 1, height).attr({ stroke: "none", fill: '#63c', 'fill-opacity': 0.8 });
-
-                self.r.rect(pos_x + 1, 90 - height, width_x - 1, height).attr({ stroke: "none", fill: '#63c', 'fill-opacity': 0.3 })
-                    .mouseover(function () {
-                        this.animate({"fill-opacity": .55, y: 0, height: 90}, 100);
-                    })
-                    .mouseout(function () {
-                        this.animate({"fill-opacity": .3, y: 90 - height, height: 10}, 100);
-                    })
-                    .click(function (e) {
-                        e.stopPropagation();
-                        var el = this;
-                        var pos_x = el.attrs.x - 1;
-                        var pos = Number(pos_x / self.size_x * self.item.duration / 1000 - 1);
-                        if (pos < 0) {
-                            pos = 0;
-                        }
-                        self.player.seek(pos);
-
-                    });
-
-            });
-
-        }
-
-
-    };
-
-
     this.update = function (aplayer) {
 
         // check if current media is playing
@@ -224,10 +174,7 @@ DetailPlayer = function () {
             var pos_x = self.size_x / 100 * aplayer.states.position_rel;
             self.el_indicator.attr({ x: pos_x + 'px' });
         }
-
-
     };
-
 
     this.events = {
 

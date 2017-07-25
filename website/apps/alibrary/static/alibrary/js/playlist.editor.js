@@ -1406,7 +1406,7 @@ PlaylistEditorItem = function () {
         self.el_indicator.attr({ x: self.abs_to_px(self.player.position) });
 
         // check for neccessary fade
-        
+
         var vol = 0;
         // ins
         if (self.player.position < self.item.cue_in) {

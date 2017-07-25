@@ -307,21 +307,6 @@ class MediaFilter(django_filters.FilterSet):
     master_samplerate = CharListFilter(label=_("Samplerate (Hz)"))
     mediatype = CharListFilter(label=_("Type"))
 
-    KEY_CHOICES = (
-        (0, _('C')),
-        (1, _('Db')),
-        (2, _('D')),
-        (3, _('Eb')),
-        (4, _('E')),
-        (5, _('F')),
-        (6, _('Gb')),
-        (7, _('G')),
-        (8, _('Ab')),
-        (9, _('A')),
-        (10, _('Bb')),
-        (11, _('B')),
-    )
-
     class Meta:
         model = Media
         fields = [
@@ -331,7 +316,6 @@ class MediaFilter(django_filters.FilterSet):
             'master_encoding',
             'master_samplerate',
             'tempo',
-            'key',
             'lyrics_language',
             'version'
         ]
@@ -368,14 +352,6 @@ class MediaFilter(django_filters.FilterSet):
 
                     filter_.entries = nd
 
-                elif name == 'key':
-                    nd = []
-                    for d in ds:
-                        if d[0]:
-                            nd.append([d[0], d[1], self.KEY_CHOICES[d[0]][1]])
-
-                    nd.sort()
-                    filter_.entries = nd
 
                 elif name == 'lyrics_language':
                     from lib.fields.languages import LANGUAGES
