@@ -13,8 +13,6 @@ default_app_config = 'arating.apps.AratingConfig'
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Manager
 
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericRelation
 
 def limit_total_votes(num):
     from arating.models import Vote
@@ -32,7 +30,11 @@ def enable_voting_on(cls, manager_name='objects',
                     add_vote_name='add_vote',
                     remove_vote_name='remove_vote',
                     base_manager=None):
+
     from arating.models import Vote
+    from django.contrib.contenttypes.models import ContentType
+    from django.contrib.contenttypes.fields import GenericRelation
+
     VOTE_TABLE = Vote._meta.db_table
 
     def add_vote(self, token, vote):

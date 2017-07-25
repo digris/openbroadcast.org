@@ -7,6 +7,8 @@ from requests.exceptions import ConnectionError
 from django.core.checks import register, Tags, Error, Warning, Info, Debug, Critical
 from django.conf import settings
 
+REMOTE_API_TIMEOUT = 5.0
+
 log = logging.getLogger(__name__)
 
 @register()
@@ -131,7 +133,7 @@ def check_apis(app_configs, **kwargs):
     for service in SERVICES_TO_CHECK:
 
         try:
-            r = requests.get(service['url'])
+            r = requests.get(service['url'], timeout=REMOTE_API_TIMEOUT)
             status_code = r.status_code
         except ConnectionError:
             status_code = 999

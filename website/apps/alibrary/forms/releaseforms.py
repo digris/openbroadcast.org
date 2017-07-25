@@ -10,7 +10,7 @@ from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Field, Fieldset, Row, Column, LookupField, LookupImageField, Div
 from django import forms
-from django.contrib.contenttypes.generic import BaseGenericInlineFormSet, generic_inlineformset_factory
+from django.contrib.contenttypes.forms import BaseGenericInlineFormSet, generic_inlineformset_factory
 from django.forms import ModelForm, Form
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from django.utils.translation import ugettext as _

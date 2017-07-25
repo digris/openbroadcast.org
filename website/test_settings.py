@@ -339,7 +339,6 @@ CACHEOPS = {
     'alibrary.license': {'ops': ('fetch', 'get', 'count'), 'timeout': 1},
     'tagging.*': {'ops': ('fetch', 'get', 'count'), 'timeout': 60*60},
     'arating.*': {'ops': ('fetch', 'get', 'count'), 'timeout': 60*60*24},
-    'notifications.notification': {'ops': ('count'), 'timeout': 60*60*24},
 }
 CACHEOPS_DEGRADE_ON_FAILURE=False
 CACHEOPS_FAKE = False

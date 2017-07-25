@@ -1,10 +1,4 @@
-{% load i18n guardian_tags activity_tags ctype %}
-
-{# comment #}
-{% get_obj_perms request.user for object as "object_perms" %}
-{% for perm in object_perms %}{% endfor %}
-{# endcomment #}
-
+{% load i18n activity_tags ctype %}
 
 
 <div class="menu-context">

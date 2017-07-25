@@ -12,8 +12,6 @@ INSTALLED_APPS = (
 
     'djangocms_admin_style',
     #'django_slick_admin',
-    'admin_tools',
-    'admin_shortcuts',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -21,7 +19,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.syndication',
     'django.contrib.humanize',
-    'django.contrib.webdesign',
     'django.contrib.admin',
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
@@ -30,6 +27,7 @@ INSTALLED_APPS = (
     # TODO: these are really old apps and should be removed/replaced
     'threadedcomments',
     'fluent_comments',
+    #'django.contrib.comments',
     'django_comments',
 
     # server
@@ -56,12 +54,12 @@ INSTALLED_APPS = (
     'platform_base',
 
     'api_base',
-    'notifications',
+    #'notifications',
     'mailer',
     'djcelery',
     'django_countries',
     'l10n',
-    'guardian',
+    #'guardian',
     'filer',
     'adv_cache_tag',
     'cacheops',
@@ -87,7 +85,7 @@ INSTALLED_APPS = (
     # cms
     'cms',
     'menus',
-    'mptt',
+    #'mptt',
     'treebeard',
 
     # cms plugins
@@ -135,7 +133,6 @@ INSTALLED_APPS = (
     'abcast',
     'autopilot',
     'arating',
-    'backfeed',
     'statistics',
     'wikisyntax',
     'tagging',

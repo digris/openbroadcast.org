@@ -8,7 +8,7 @@ from hvad.admin import TranslatableAdmin
 from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
 from django.utils.translation import ugettext as _
 from easy_thumbnails.files import get_thumbnailer
-from guardian.admin import GuardedModelAdmin
+
 from django.contrib import admin
 from alibrary.models import (Label, Artist, Media, Release, Playlist, ReleaseExtraartists,
                              ReleaseAlbumartists, Relation, ReleaseMedia, MediaExtraartists,
@@ -19,7 +19,9 @@ from alibrary.models import (Label, Artist, Media, Release, Playlist, ReleaseExt
 THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
 
 
-class BaseAdmin(GuardedModelAdmin):
+#from guardian.admin import GuardedModelAdmin
+#class BaseAdmin(GuardedModelAdmin):
+class BaseAdmin(admin.ModelAdmin):
     search_fields = ['name']
     save_on_top = True
 

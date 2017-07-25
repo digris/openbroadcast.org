@@ -308,7 +308,6 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         #context['releasemedia_form'] = ReleaseMediaFormSet(instance=self.object)
         context['user'] = self.request.user
         context['request'] = self.request
-        context['permission_form'] =  UserObjectPermissionsForm(self.request.user, self.object, self.request.POST or None)
 
         return context
 

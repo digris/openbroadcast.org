@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import ugettext as _
 
-from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 
@@ -170,6 +170,9 @@ def setup_generic_relations():
     Set up GenericRelations for actionable models.
     In Django 1.8 Model._meta.module_name was renamed to model_name.
     """
+
+    from django.contrib.contenttypes.fields import GenericRelation
+
     for model in actstream_settings.get_models().values():
         if not model:
             continue

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.contrib import admin
 from hvad.admin import TranslatableAdmin
 from django import forms
@@ -6,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models.fields import TextField
 from models import Subscription, Newsletter
 
+@admin.register(Newsletter)
 class NewsletterAdmin(TranslatableAdmin):
 
     list_display = ['__unicode__', 'backend',]
@@ -15,9 +18,9 @@ class NewsletterAdmin(TranslatableAdmin):
         TextField: {'widget': forms.Textarea(attrs={'rows':3, 'cols':32}) },
     }
 
-    def __init__(self, *args, **kwargs):
-        super(NewsletterAdmin, self).__init__(*args, **kwargs)
-        self.fieldsets = (
+
+    def get_fieldsets(self, request, obj=None):
+        return (
             (None, {
                 'fields':
                     (
@@ -36,8 +39,6 @@ class NewsletterAdmin(TranslatableAdmin):
                 ),
             }),
         )
-
-admin.site.register(Newsletter, NewsletterAdmin)
 
 
 class ActiveSubscriptionFilter(admin.SimpleListFilter):
@@ -60,6 +61,7 @@ class ActiveSubscriptionFilter(admin.SimpleListFilter):
             return queryset.filter(opted_out__isnull=False)
 
 
+@admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
 
     list_display = ['__unicode__', 'name', 'newsletter', 'channel', 'created', 'confirmed', 'opted_out', 'active_display']
@@ -76,4 +78,3 @@ class SubscriptionAdmin(admin.ModelAdmin):
     active_display.boolean = True
 
 
-admin.site.register(Subscription, SubscriptionAdmin)

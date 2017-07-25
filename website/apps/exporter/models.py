@@ -106,7 +106,7 @@ class Export(BaseModel):
         ('api', _('API')),
         ('fs', _('Filesystem')),
     )
-    type = models.CharField(max_length="10", default='web', choices=TYPE_CHOICES)
+    type = models.CharField(max_length=10, default='web', choices=TYPE_CHOICES)
     notes = models.TextField(blank=True, null=True,
                              help_text=_('Optionally, just add some notes to this export if desired.'))
 
@@ -311,7 +311,7 @@ def post_save_exportitem(sender, **kwargs):
         obj.process()
     """
 
-#post_save.connect(post_save_exportitem, sender=ExportItem)      
+#post_save.connect(post_save_exportitem, sender=ExportItem)
 
 def post_delete_exportitem(sender, **kwargs):
     #import shutil
@@ -335,4 +335,3 @@ def cleanup_exports():
     es = Export.objects.filter(created__lte=datetime.datetime.now() - datetime.timedelta(days=7))
     es.delete()
 
-        

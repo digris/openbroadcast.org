@@ -1,4 +1,4 @@
-{% load compress i18n cms_tags sekizai_tags value_from_settings backfeed_tags raven loginas_tags announcements_tags nunjucks_tags %}<!DOCTYPE html>
+{% load compress i18n cms_tags sekizai_tags value_from_settings raven loginas_tags announcements_tags nunjucks_tags %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
         <title>{% block title %}{{ request.current_page.get_title }}{% endblock %}</title>
@@ -141,31 +141,6 @@
         <div class="dialog window" id="dialog_alert" style="display: none;"><!-- dynamic content --></div>
         <div id="fb-root"></div>
 
-
-        {% comment %}
-        <div id="site_panel_container">
-            <!-- start: toggle container -->
-            <div class="toggle-container">
-                <ul>
-                    <li class="hoverable">
-                        <a data-toggle_panel="backfeed" href="#"><span>{% trans 'Feedback' %}</span> <i class="icon icon-envelope"></i></a>
-                    </li>
-                    <li class="hoverable">
-                        <a data-toggle_panel="dashboard" href="#"><span>{% trans 'Dashboard' %}</span> <i class="icon icon-dashboard"></i></a>
-                    </li>
-                </ul>
-            </div>
-            <!-- end: toggle container -->
-
-            <!-- start: content containers -->
-            <div class="content-container">
-                {% if user.is_authenticated %}{% backfeed_inline %}{% endif %}
-                <div id="shortcut_container"></div>
-            </div>
-            <!-- end: content containers -->
-        </div>
-        {% endcomment %}
-
         {% render_block "js" %}
         {% render_block "js-ext" %}
 
@@ -228,7 +203,7 @@
         <script src="{{ STATIC_URL }}el-pagination/js/el-pagination.js"></script>
 
         {% nunjucks_scripts %}
-            
+
         {% endcompress %}
         <!-- end: compressor js-post -->
 

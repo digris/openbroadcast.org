@@ -13,7 +13,7 @@ from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Field, Fieldset, Row, Column, LookupField, LookupImageField
 from django import forms
-from django.contrib.contenttypes.generic import BaseGenericInlineFormSet, generic_inlineformset_factory
+from django.contrib.contenttypes.forms import BaseGenericInlineFormSet, generic_inlineformset_factory
 from django.forms import ModelForm, Form
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from django.utils.translation import ugettext as _
@@ -25,35 +25,35 @@ from tagging.forms import TagField
 log = logging.getLogger(__name__)
 
 ACTION_LAYOUT = FormActions(
-                HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),            
+                HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),
                 HTML('<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'),
         )
 ACTION_LAYOUT_EXTENDED = FormActions(
                 Field('publish', css_class='input-hidden' ),
-                HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),            
-                HTML('<button type="submit" name="save-and-publish" value="save" class="btn pull-right ajax_submit save-and-publish" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-bullhorn icon-white"></i> Save & Publish</button>'),            
+                HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),
+                HTML('<button type="submit" name="save-and-publish" value="save" class="btn pull-right ajax_submit save-and-publish" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-bullhorn icon-white"></i> Save & Publish</button>'),
                 HTML('<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'),
         )
 
 
 class ArtistActionForm(Form):
-    
+
     def __init__(self, *args, **kwargs):
-        self.instance = kwargs.pop('instance', False)        
+        self.instance = kwargs.pop('instance', False)
         super(ArtistActionForm, self).__init__(*args, **kwargs)
-        
+
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.helper.form_tag = False
-        
-        
+
+
         self.helper.add_layout(ACTION_LAYOUT)
         """
         if self.instance and self.instance.publish_date:
             self.helper.add_layout(ACTION_LAYOUT)
         else:
             self.helper.add_layout(ACTION_LAYOUT_EXTENDED)
-        """    
+        """
     publish = forms.BooleanField(required=False)
 
     def save(self, *args, **kwargs):
@@ -77,7 +77,7 @@ class ArtistForm(ModelForm):
                   'd_tags',
                   'ipi_code',
                   'isni_code',)
-        
+
 
     def __init__(self, *args, **kwargs):
 
@@ -85,7 +85,7 @@ class ArtistForm(ModelForm):
         self.instance = kwargs['instance']
 
         super(ArtistForm, self).__init__(*args, **kwargs)
-        
+
         """
         Prototype function, set some fields to readonly depending on permissions
         """
@@ -100,10 +100,10 @@ class ArtistForm(ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_action = ''
         self.helper.form_tag = False
-        
-        
+
+
         base_layout = Fieldset(
-                               
+
                 _('General'),
                 LookupField('name', css_class='input-xlarge'),
                 LookupField('namevariations', css_class='input-xlarge'),
@@ -132,12 +132,12 @@ class ArtistForm(ModelForm):
                 LookupImageField('main_image',),
                 LookupField('remote_image',),
         )
-        
+
         tagging_layout = Fieldset(
                 'Tags',
                 LookupField('d_tags'),
         )
-            
+
         layout = Layout(
             base_layout,
             HTML('<div id="artist_relation_container"></div>'),
@@ -152,9 +152,9 @@ class ArtistForm(ModelForm):
         if self.instance:
             self.fields['namevariations'].initial = ', '.join(self.instance.namevariations.values_list('name', flat=True).distinct())
 
-        
 
-    
+
+
     main_image = forms.Field(label=_('Artist / Band picture'), widget=AdvancedFileInput(), required=False)
     remote_image = forms.URLField(required=False)
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
@@ -163,7 +163,7 @@ class ArtistForm(ModelForm):
 
 
     def clean(self, *args, **kwargs):
-        
+
         cd = super(ArtistForm, self).clean()
 
         if cd.get('remote_image', None):
@@ -175,9 +175,9 @@ class ArtistForm(ModelForm):
 
     def save(self, *args, **kwargs):
         return super(ArtistForm, self).save(*args, **kwargs)
-   
-    
-    
+
+
+
 
 """
 Artists members / membership
@@ -345,7 +345,7 @@ class BaseAliasForm(ModelForm):
 
 
 
-  
+
 class BaseArtistReleationFormSet(BaseGenericInlineFormSet):
 
     def __init__(self, *args, **kwargs):
@@ -359,7 +359,7 @@ class BaseArtistReleationFormSet(BaseGenericInlineFormSet):
         self.helper.form_method = 'post'
         self.helper.form_action = ''
         self.helper.form_tag = False
-        
+
         base_layout = Row(
                 Column(
                        Field('url', css_class='input-xlarge'),
@@ -375,9 +375,9 @@ class BaseArtistReleationFormSet(BaseGenericInlineFormSet):
                        ),
                 css_class='row-fluid relation-row form-autogrow',
         )
- 
+
         self.helper.add_layout(base_layout)
-        
+
 
 
 class BaseArtistReleationForm(StripWhitespaceFormMixin, ModelForm):
@@ -387,7 +387,7 @@ class BaseArtistReleationForm(StripWhitespaceFormMixin, ModelForm):
         parent_model = Artist
         formset = BaseArtistReleationFormSet
         fields = ('url','service',)
-        
+
     def __init__(self, *args, **kwargs):
         super(BaseArtistReleationForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)

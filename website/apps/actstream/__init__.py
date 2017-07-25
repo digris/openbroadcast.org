@@ -1,5 +1,6 @@
 try:
     from actstream.signals import action
+
 except ImportError as e:
     pass
 
