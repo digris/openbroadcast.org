@@ -1,8 +1,10 @@
-from django.conf.urls import url, patterns
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-# app imports
+from django.conf.urls import url
 from alibrary.views import PlaylistListView, PlaylistCreateView, PlaylistDetailView, PlaylistEditView, PlaylistDeleteView, playlist_convert, playlist_request_mixdown
-urlpatterns = patterns('',
+
+urlpatterns = [
 
     url(r'^$', PlaylistListView.as_view(), name='alibrary-playlist-list'),
 
@@ -18,5 +20,4 @@ urlpatterns = patterns('',
 
     url(r'^(?P<pk>\d+)/request-mixdown/$', playlist_request_mixdown, name='alibrary-playlist-request-mixdown'),
 
-
-)
+]

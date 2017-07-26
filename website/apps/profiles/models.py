@@ -20,7 +20,7 @@ from tagging.fields import TagField
 from tagging.registry import register as tagging_register
 
 import arating
-from postman.api import pm_write
+
 from lib.fields import extra
 from invitation.signals import invitation_accepted
 from l10n.models import Country
@@ -322,6 +322,7 @@ def add_mentor(sender, **kwargs):
     if user and mentor:
         mentor.godchildren.add(user.profile)
         # send notification to mentor
+        from postman.api import pm_write
         pm_write(
                 sender = user,
                 recipient = mentor,

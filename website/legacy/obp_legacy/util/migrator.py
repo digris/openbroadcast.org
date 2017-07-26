@@ -1340,8 +1340,6 @@ class PlaylistMigrator(Migrator):
             """
             obj.name = legacy_obj.title
 
-            print '#######################################################'
-            print 'name: %s' % obj.name
 
             """
             legacy status
@@ -1350,7 +1348,6 @@ class PlaylistMigrator(Migrator):
             3: scheduled (not possible to go back)
             4: un-scheduled ?
             """
-            print 'status: %s' % legacy_obj.status
 
             if legacy_obj.status == 1:
                 obj.status = 2
@@ -1577,8 +1574,8 @@ helper
 def id_to_location(id):
     l = "%012d" % id
     return '%d/%d/%d' % (int(l[0:4]), int(l[4:8]), int(l[8:12]))
-    
-    
+
+
 
 
 

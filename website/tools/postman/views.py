@@ -23,8 +23,11 @@ except ImportError:
 from postman.fields import autocompleter_app
 from postman.forms import WriteForm, AnonymousWriteForm, QuickReplyForm, FullReplyForm
 from postman.models import Message, get_order_by
-from postman.urls import OPTION_MESSAGES
+#from postman.urls import OPTION_MESSAGES
 from postman.utils import format_subject, format_body
+
+OPTION_MESSAGES = 'm'
+
 
 log = logging.getLogger(__name__)
 

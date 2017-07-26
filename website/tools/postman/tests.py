@@ -66,10 +66,11 @@ from postman.api import pm_broadcast, pm_write
 from postman.models import ORDER_BY_KEY, ORDER_BY_MAPPER, Message, PendingMessage,\
     STATUS_PENDING, STATUS_ACCEPTED, STATUS_REJECTED,\
     get_order_by, get_user_representation
-from postman.urls import OPTION_MESSAGES
+#from postman.urls import OPTION_MESSAGES
 # because of reload()'s, do "from postman.utils import notification" just before needs
 from postman.utils import format_body, format_subject
 
+OPTION_MESSAGES = 'm'
 
 class GenericTest(TestCase):
     """

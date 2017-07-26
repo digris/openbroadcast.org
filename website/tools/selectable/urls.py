@@ -1,14 +1,11 @@
-try:
-    from django.conf.urls import handler404, handler500, patterns, url
-except ImportError:
-    # Django < 1.4
-    from django.conf.urls import handler404, handler500, patterns, url
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-from selectable import registry
-
+from django.conf.urls import url
+from selectable import registry, views
 
 registry.autodiscover()
 
-urlpatterns = patterns('selectable.views',
-    url(r'^(?P<lookup_name>[-\w]+)/$', 'get_lookup', name="selectable-lookup"),
-)
+urlpatterns = [
+    url(r'^(?P<lookup_name>[-\w]+)/$', views.get_lookup, name="selectable-lookup"),
+]

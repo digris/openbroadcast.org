@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.conf.urls import url, patterns
+
+from django.conf.urls import url
 
 from .views import IPTrackerView
 
-urlpatterns = patterns('exporter.views',
+urlpatterns = [
     url(r'^$', IPTrackerView.as_view(), name='iptracker-index'),
-)
+]

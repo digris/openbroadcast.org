@@ -19,8 +19,10 @@ except ImportError:
     from datetime import datetime
     now = datetime.now
 
-from postman.urls import OPTION_MESSAGES
+#from postman.urls import OPTION_MESSAGES
 from postman.utils import email_visitor, notify_user
+
+OPTION_MESSAGES = 'm'
 
 from cacheops import invalidate_model
 

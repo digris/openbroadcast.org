@@ -1,5 +1,9 @@
-from django.conf.urls import patterns, url
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-urlpatterns = patterns('ac_tagging.views',
-    url(r'^list$', 'list_tags', name='ac_tagging-list'),
-)
+from django.conf.urls import url
+from ac_tagging import views
+
+urlpatterns = [
+    url(r'^list$', views.list_tags, name='ac_tagging-list'),
+]
