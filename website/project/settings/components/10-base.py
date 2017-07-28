@@ -64,6 +64,8 @@ USE_L10N = True
 ROOT_URLCONF = 'project.urls'
 SECRET_KEY = 'test_key'
 
+SITE_URL = 'http://127.0.0.1:8080'
+
 
 
 

@@ -188,56 +188,57 @@
 
             </div>
 
+            {% if user.profile.enable_alpha_features %}
             <div class="tab-pane" id="mixdown">
 
                 <section class="mixdown">
 
                     <h2>{% trans "Playlist Mixdown" %}</h2>
 
-                    <p>(( Mixdown ))</p>
+                    <p>This is an ALPHA feature :)</p>
 
-                    {% if object.mixdown %}
-
+                    {% if object.mixdown_file %}
                         <div>
-
-                            <ul>
-
-                                <li>
-                                    <span class="label">{% trans 'Status' %}:</span>
-                                    <span>{{ object.mixdown.status_display }}</span>
-                                </li>
-
-                                {% if object.mixdown.eta %}
-                                    <li>
-                                        <span class="label">{% trans 'ETA.' %}:</span>
-                                        <span>{{ object.mixdown.eta }} {% trans 'seconds' %}</span>
-                                    </li>
-                                {% endif %}
-
-                                {% if object.mixdown.mixdown_file %}
-                                    <li>
-                                        <span class="label">{% trans 'Download Mixdown' %}:</span>
-                                        <a href="{{ object.mixdown.mixdown_file }}">{{ object.mixdown.mixdown_file }}</a>
-                                    </li>
-                                {% endif %}
-
-                            </ul>
-
-                        </div>
-
-                    {% else %}
-
-                        <p>No Mixdown available</p>
+                            <audio id="mixdown_audio" controls style="width: 100%;">
+                              <source src="{{ object.mixdown_file.url }}" type="audio/mpeg">
+                            </audio>
                         <p>
-                            <a href="{% url 'alibrary-playlist-request-mixdown' pk=object.pk %}" class="btn btn-primary">{% trans 'Create Mixdown' %}</a>
-                        </p>
 
+                            <a href="{% url 'alibrary-playlist-request-mixdown' pk=object.pk %}" class="btn btn-primary icon">
+                                <i class="icon icon-rocket"></i>
+                                {% trans 'Re-create Mixdown' %}
+                                <small>α</small>
+                            </a>
+
+                        </p>
+                        </div>
+                    {% elif object.mixdown  %}
+                        <ul class="status">
+                            <li>
+                                <span class="label">{% trans 'Status' %}:</span>
+                                <span>{{ object.mixdown.status_display }}</span>
+                            </li>
+                            <li>
+                                <span class="label">{% trans 'ETA.' %}:</span>
+                                <span>{{ object.mixdown.eta|date:"TIME_FORMAT" }}</span>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <p>
+
+                            <a href="{% url 'alibrary-playlist-request-mixdown' pk=object.pk %}" class="btn btn-primary icon">
+                                <i class="icon icon-rocket"></i>
+                                {% trans 'Create Mixdown' %}
+                                <small>α</small>
+                            </a>
+
+                        </p>
                     {% endif %}
 
                 </section>
 
             </div>
-
+            {% endif %}
 
         </div>
 

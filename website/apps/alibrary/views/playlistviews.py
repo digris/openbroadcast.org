@@ -355,8 +355,15 @@ def playlist_request_mixdown(request, pk):
     playlist = get_object_or_404(Playlist, pk=pk, user=request.user)
 
     mixdown = playlist.request_mixdown()
+    if not mixdown['status'] == 3:
 
-    messages.add_message(request, messages.INFO, _('Requested Mixdown for "%s"' % (playlist.name)))
+        # delete current mixdown
+        if playlist.mixdown_file:
+            playlist.mixdown_file.delete(False)
+            Playlist.objects.filter(pk=pk).update(mixdown_file=None)
+
+
+    messages.add_message(request, messages.INFO, _(u'Requested Mixdown for "{}" - ETA: {}'.format(playlist.name, mixdown['eta'])))
 
 
     return HttpResponseRedirect(playlist.get_absolute_url())

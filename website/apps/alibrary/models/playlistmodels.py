@@ -21,10 +21,18 @@ from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.fields.json import JSONField
+from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
 from lib.fields import extra
 from tagging.registry import register as tagging_register
 
 from ..util.mixdown_client import MixdownAPIClient
+
+
+try:
+    from urllib.request import urlopen # for python 3.0 and later
+except ImportError:
+    from urllib2 import urlopen # fall back to python 2's urllib2
 
 log = logging.getLogger(__name__)
 
@@ -41,7 +49,11 @@ def filename_by_uuid(instance, filename):
 
 def upload_image_to(instance, filename):
     filename, extension = os.path.splitext(filename)
-    return os.path.join(get_dir_for_object(instance), 'playlists%s' % extension.lower())
+    return os.path.join(get_dir_for_object(instance), 'playlists{}'.format(extension.lower()))
+
+def upload_mixdown_to(instance, filename):
+    filename, extension = os.path.splitext(filename)
+    return os.path.join(get_dir_for_object(instance), 'mixdown{}'.format(extension.lower()))
 
 
 class Season(models.Model):
@@ -160,7 +172,7 @@ class Playlist(MigrationMixin, models.Model):
 
     mixdown_file = models.FileField(
         null=True, blank=True,
-        #upload_to=get_mixdown_upload_path
+        upload_to=upload_mixdown_to
     )
 
     # meta
@@ -532,14 +544,54 @@ class Playlist(MigrationMixin, models.Model):
 
         return status, messages
 
+
     ###################################################################
     # playlist mixdown
     ###################################################################
     def get_mixdown(self):
+        """
+        get mixdown from api 
+        """
         return MixdownAPIClient().get_for_playlist(self)
 
+
     def request_mixdown(self):
+        """
+        request (re-)creation of mixdown
+        """
         return MixdownAPIClient().request_for_playlist(self)
+
+
+    def download_mixdown(self):
+        """
+        download generated mixdown from api & store locally (in `mixdown_file` field)
+        """
+        if not self.mixdown:
+            log.info('mixdown not available on api')
+            return
+
+        if not self.mixdown['status'] == 3:
+            log.info('mixdown not ready on api')
+            return
+
+        url = self.mixdown['mixdown_file']
+
+        log.debug('download mixdown from api: {} > {}'.format(url, self.name))
+
+        f_temp = NamedTemporaryFile(delete=True)
+        f_temp.write(urlopen(url).read())
+        f_temp.flush()
+
+        # wipe existing file
+        try:
+            self.mixdown_file.delete(False)
+        except IOError:
+            pass
+
+        self.mixdown_file.save(url.split('/')[-1], File(f_temp))
+
+        return MixdownAPIClient().request_for_playlist(self)
+
 
     @cached_property
     def mixdown(self):

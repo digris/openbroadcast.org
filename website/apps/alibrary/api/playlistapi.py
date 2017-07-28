@@ -186,8 +186,13 @@ class PlaylistResource(ModelResource):
                 self.wrap_view('collect_specific'), name="playlist_api_collect_specific"),
             url(r"^(?P<resource_name>%s)/collect%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('collect'), name="playlist_api_collect"),
+            # services & hooks
+            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/mixdown-complete%s$" % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('mixdown_complete'), name="alibrary-playlist_api-mixdown_complete"),
+            # autocomplete
             url(r"^(?P<resource_name>%s)/autocomplete%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('autocomplete'), name="alibrary-playlist_api-autocomplete"),
+
             # legacy
             url(r"^(?P<resource_name>%s)/autocomplete-name%s$" % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('autocomplete'), name="alibrary-playlist_api-autocomplete"),
@@ -289,6 +294,37 @@ class PlaylistResource(ModelResource):
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)
+
+
+
+    # services & hooks
+    def mixdown_complete(self, request, **kwargs):
+        """
+        callback from mixdown service.
+        triggers download of processed mixdown file
+        """
+
+        self.method_check(request, allowed=['post'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
+
+        p = Playlist.objects.get(**self.remove_api_resource_names(kwargs))
+
+        try:
+            p.download_mixdown()
+            bundle = {
+                'status': True,
+            }
+        except Exception as e:
+            bundle = {
+                'status': False,
+                'error': '{}'.format(e)
+            }
+
+        self.log_throttled_access(request)
+        return self.create_response(request, bundle)
+
+
 
     def autocomplete(self, request, **kwargs):
 

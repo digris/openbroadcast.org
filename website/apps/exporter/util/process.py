@@ -28,12 +28,13 @@ INCLUDE_README = True
 INCLUDE_HTML_README = True
 INCLUDE_LICENSE = False
 INCLUDE_PLAYLIST = True
+INCLUDE_PLAYLIST_MIXDOWN = True
 DEFAULT_PLAYLIST_FORMAT = 'm3u'
 AVAILABLE_FORMATS = ['mp3', ]
 AVAILABLE_ARCHIVE_FORMATS = ['zip', ]
 
-BASE_URL = 'https://www.openbroadcast.org'
-#BASE_URL = 'http://local.openbroadcast.org:8080'
+SITE_URL = getattr(settings, 'SITE_URL')
+
 
 LAME_BINARY = getattr(settings, 'LAME_BINARY')
 
@@ -214,8 +215,8 @@ class Process(object):
         if image and os.path.isfile(image.path):
             try:
                 shutil.copyfile(image.path, os.path.join(item_cache_dir, IMAGE_FILENAME))
-            except Exception, e:
-                print e
+            except Exception as e:
+                log.warning('unable to copy image: {}'.format(image.path))
 
         if INCLUDE_README:
             self.process_readme(instance=content_object, cache_dir=item_cache_dir)
@@ -230,6 +231,23 @@ class Process(object):
             self.process_license(instance=content_object, cache_dir=item_cache_dir, file_list=self.file_list)
 
         if ct == 'playlist' and INCLUDE_PLAYLIST:
+            self.process_playlist(instance=content_object, cache_dir=item_cache_dir, file_list=self.file_list)
+
+        # include mixdown file in download
+        # TODO: this is an experimental implementation!
+        if ct == 'playlist' and self.user and self.user.profile.enable_alpha_features:
+            if content_object.mixdown_file and os.path.exists(content_object.mixdown_file.path):
+                try:
+                    shutil.copyfile(
+                        content_object.mixdown_file.path,
+                        os.path.join(item_cache_dir, content_object.mixdown_file.name.split('/')[-1])
+                    )
+                    log.debug('include mixdown file for playlist')
+                except Exception as e:
+                    log.warning('unable to copy mixdown file: {}'.format(content_object.mixdown_file.path))
+            else:
+                log.debug('mixdown file not available')
+
             self.process_playlist(instance=content_object, cache_dir=item_cache_dir, file_list=self.file_list)
 
         return None, None
@@ -265,16 +283,14 @@ class Process(object):
         try:
             shutil.copyfile(cache_file, file_path)
 
-        except Exception, e:
-            print e
+        except Exception as e:
             self.messages.append((media, e))
             return
 
         try:
             self.inject_metadata(file_path, media)
 
-        except Exception, e:
-            print e
+        except Exception as e:
             self.messages.append((media, e))
             return
 
@@ -300,7 +316,7 @@ class Process(object):
         template = 'exporter/txt/readme.txt'
 
         with open(os.path.join(cache_dir, 'readme.txt'), "w") as txt:
-            str = render_to_string(template, {'object': instance, 'base_url': BASE_URL })
+            str = render_to_string(template, {'object': instance, 'base_url': SITE_URL })
             txt.write(str.encode('utf8'))
 
 
@@ -318,7 +334,7 @@ class Process(object):
         if ct in ['release',]:
             template = 'exporter/assets/%s.html' % ct
             with open(os.path.join(cache_dir, 'readme.html'), "w") as txt:
-                str = render_to_string(template, {'object': instance, 'base_url': BASE_URL })
+                str = render_to_string(template, {'object': instance, 'base_url': SITE_URL })
                 txt.write(str.encode('utf8'))
 
 
