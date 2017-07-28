@@ -6,7 +6,6 @@ import os
 import uuid
 import arating
 import audiotools
-import reversion
 import tagging
 from base.audio.fileinfo import FileInfoProcessor
 from cacheops import invalidate_obj
@@ -336,30 +335,6 @@ class Media(MigrationMixin):
         """main image referes to release image if available"""
         if self.release:
             return self.release.main_image
-
-    def get_versions(self):
-        try:
-            return reversion.get_for_object(self)
-        except:
-            return None
-
-
-    def get_last_revision(self):
-        try:
-            return reversion.get_unique_for_object(self)[0].revision
-        except:
-            return None
-
-    def get_last_editor(self):
-        latest_revision = self.get_last_revision()
-        if latest_revision:
-            return latest_revision.user
-        else:
-            try:
-                return User.objects.get(username='root')
-            except:
-                pass
-            return None
 
 
     def get_lookup_providers(self):

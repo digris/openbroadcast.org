@@ -26,7 +26,7 @@ def construct(request, form, formsets=None):
             except:
                 pass
 
-            
+
         if len(form.changed_data) > 0:
             change_message.append(_('Changed %s. \n') % get_text_list(convert_changed_list(form.instance, form.changed_data), _('and')))
 
@@ -94,10 +94,12 @@ def convert_changed_list(obj, changed_data):
     cls = type(obj)
     verbose_names = []
     for field in changed_data:
-        try:
-            verbose_names.append(cls._meta.get_field_by_name(field)[0].verbose_name)
-        except Exception:
-            verbose_names.append(field)
+
+        # try:
+        #     verbose_names.append(cls._meta.get_field_by_name(field)[0].verbose_name)
+        # except Exception:
+
+        verbose_names.append(field)
     return verbose_names
 
 

@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 import os
-import reversion
 from django.core import urlresolvers
 from hvad.admin import TranslatableAdmin
 from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
@@ -259,7 +258,7 @@ admin.site.register(Artist, ArtistAdmin)
 admin.site.register(NameVariation)
 
 
-class LicenseAdmin(reversion.VersionAdmin, TranslatableAdmin):
+class LicenseAdmin(TranslatableAdmin):
     inline_instances = ('name_translated', 'restricted', 'parent',)
 
     list_display = ('name', 'parent', 'legacy_id', 'key', 'restricted', 'selectable', 'is_default',)

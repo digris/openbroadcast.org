@@ -12,7 +12,6 @@ from django.utils.translation import ugettext as _
 from pure_pagination.mixins import PaginationMixin
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from tagging.models import Tag
-import reversion
 from haystack.backends import SQ
 from haystack.query import SearchQuerySet
 from haystack.inputs import AutoQuery
@@ -239,7 +238,7 @@ class LabelDetailView(DetailView):
 
         releases = Release.objects.filter(label=obj).order_by('-releasedate').distinct()[:8]
         self.extra_context['releases'] = releases
-        self.extra_context['history'] = reversion.get_unique_for_object(obj)
+        self.extra_context['history'] = []
 
         context.update(self.extra_context)
 
@@ -323,17 +322,6 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         if d_tags:
             msg = change_message.parse_tags(obj=self.object, d_tags=d_tags, msg=msg)
             self.object.tags = d_tags
-
-
-        # with reversion.create_revision():
-        #
-        #     self.object = form.save()
-        #     reversion.set_user(self.request.user)
-        #     reversion.set_comment(msg)
-        #
-        # messages.add_message(self.request, messages.INFO, msg)
-
-        # revisions disabled -> needs refactoring
 
         self.object.last_editor = self.request.user
         actstream.action.send(self.request.user, verb=_('updated'), target=self.object)

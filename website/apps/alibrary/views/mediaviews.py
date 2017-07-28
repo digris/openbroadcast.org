@@ -15,7 +15,6 @@ from haystack.query import SearchQuerySet
 from haystack.inputs import AutoQuery
 
 from tagging.models import Tag
-import reversion
 from sendfile import sendfile
 
 from pure_pagination.mixins import PaginationMixin
@@ -250,7 +249,7 @@ class MediaDetailView(DetailView):
         context = super(MediaDetailView, self).get_context_data(**kwargs)
         obj = kwargs.get('object', None)
 
-        self.extra_context['history'] = reversion.get_unique_for_object(obj)
+        self.extra_context['history'] = []
 
         # foreign appearance
         ps = []
@@ -336,16 +335,6 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             msg = change_message.parse_tags(obj=self.object, d_tags=d_tags, msg=msg)
             self.object.tags = d_tags
 
-        # with reversion.create_revision():
-        #     self.object = form.save()
-        #     reversion.set_user(self.request.user)
-        #     reversion.set_comment(msg)
-        #
-        #     # set actstream (e.v. atracker?)
-        #     if msg != 'Nothing changed':
-        #         actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
-        #
-        # messages.add_message(self.request, messages.INFO, msg)
 
         self.object.last_editor = self.request.user
         actstream.action.send(self.request.user, verb=_('updated'), target=self.object)

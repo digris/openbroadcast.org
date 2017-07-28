@@ -2,11 +2,27 @@ import itertools
 
 from django.conf import settings
 from django.utils.html import conditional_escape
-from crispy_forms.layout import LayoutObject
+from crispy_forms.layout import LayoutObject, Div
 
-from crispy_forms.utils import render_field, flatatt
+from crispy_forms.utils import render_field
 
 TEMPLATE_PACK = getattr(settings, 'CRISPY_TEMPLATE_PACK', 'bootstrap')
+
+
+class Row(Div):
+    """
+    Layout object. It wraps fields in a div whose default class is "formRow". Example::
+        Row('form_field_1', 'form_field_2', 'form_field_3')
+    """
+    css_class = 'form-row'
+
+
+class Column(Div):
+    """
+    Layout object. It wraps fields in a div whose default class is "formColumn". Example::
+        Column('form_field_1', 'form_field_2')
+    """
+    css_class = 'form-column'
 
 
 

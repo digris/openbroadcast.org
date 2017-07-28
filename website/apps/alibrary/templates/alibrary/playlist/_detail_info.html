@@ -101,37 +101,7 @@
         <div class="clear"></div>
         </dd>
 		{% endif %}
-		
-		{% comment %}
-		<dt>
-		{% trans "Edit History" %}:
-		</dt>
-		<dd>
 
-		{% if object.owner %}
-		<span class="key">{% trans "Added by" %}:</span> <span class="value"><a href="{{ object.owner.get_absolute_url }}">{{ object.owner }}</a></span> |
-		{% endif %}
-
-		{% if object.publisher %}
-		<span class="key">{% trans "Published by" %}:</span> <span class="value"><a href="#">{{ object.publisher }}</a></span> |
-		{% endif %}
-
-		{% if object.get_last_revision %}
-		<span class="key">{% trans "Last edit by" %}:</span> <span class="value"><a href="{{ object.get_last_revision.user.get_profile.get_absolute_url }}">{{ object.get_last_revision.user }}</a></span>
-		{% endif %}
-		&nbsp;
-		</dd>
-
-
-
-		<dt>
-			{% trans "Stats" %}:
-		</dt>
-		<dd>
-			<span class="value">{{ object.get_emissions.count }}</span> <span class="key">{% trans "Airplays" %}</span> | <span class="value">{{ object.get_emissions.count }}</span> <span class="key">{% trans "Plays" %}</span> | <span class="value">28</span> <span class="key">{% trans "Downloads" %}</span>
-		</dd>
-
-		{% endcomment %}
 
     {% if object.tags %}
         <dt>

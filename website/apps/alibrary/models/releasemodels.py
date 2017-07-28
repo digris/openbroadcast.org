@@ -10,7 +10,6 @@ from zipfile import ZipFile
 
 import arating
 import requests
-import reversion
 import tagging
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -58,7 +57,7 @@ def upload_cover_to(instance, filename):
     return os.path.join(get_dir_for_object(instance), 'cover%s' % extension.lower())
 
 class Release(MigrationMixin):
-    
+
     # core fields
     name = models.CharField(max_length=200, db_index=True)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
@@ -93,7 +92,7 @@ class Release(MigrationMixin):
         ('bootleg', _('Bootleg')),
         ('other', _('Other')),
     )
-    
+
     releasestatus = models.CharField(max_length=60, blank=True, choices=RELEASESTATUS_CHOICES)
     excerpt = models.TextField(blank=True, null=True)
     description = extra.MarkdownTextField(blank=True, null=True)
@@ -124,27 +123,22 @@ class Release(MigrationMixin):
         verbose_name = _('Release')
         verbose_name_plural = _('Releases')
         ordering = ('-created', )
-        
+
         permissions = (
             ('view_release', 'View Release'),
             ('edit_release', 'Edit Release'),
             ('merge_release', 'Merge Releases'),
             ('admin_release', 'Edit Release (extended)'),
         )
-    
-    
+
+
     def __unicode__(self):
         return self.name
-    
+
     @property
     def classname(self):
         return self.__class__.__name__
-    
-    def get_versions(self):
-        try:
-            return reversion.get_for_object(self)
-        except:
-            return None
+
 
     @property
     def publish_date(self):
@@ -156,32 +150,16 @@ class Release(MigrationMixin):
         for artist in self.extra_artists.all():
             ea.append(artist.name)
         return ea
-    
-    def get_last_revision(self):
-        try:
-            last_version = reversion.get_unique_for_object(self)[0]
-            return last_version.revision
-        except:
-            return None
-        
-    def get_last_editor(self):
-        
-        latest_revision = self.get_last_revision()
-        if latest_revision:
-            return latest_revision.user
 
-        return None
-
-    
     def is_active(self):
         now = date.today()
         try:
             if not self.releasedate:
                 return True
-            
+
             if self.releasedate <= now:
                 return True
-        
+
         except:
             pass
 
@@ -211,16 +189,16 @@ class Release(MigrationMixin):
         return False
 
 
-    
+
     def get_lookup_providers(self):
-        
+
         providers = []
         for key, name in LOOKUP_PROVIDERS:
             relations = self.relations.filter(service=key)
             relation = None
             if relations.count() == 1:
                 relation = relations[0]
-                
+
             providers.append({'key': key, 'name': name, 'relation': relation})
 
         return providers
@@ -238,10 +216,10 @@ class Release(MigrationMixin):
         return reverse("admin:alibrary_release_change", args=(self.pk,))
 
     def get_api_url(self):
-        return reverse('api_dispatch_detail', kwargs={  
-            'api_name': 'v1',  
+        return reverse('api_dispatch_detail', kwargs={
+            'api_name': 'v1',
             'resource_name': 'library/release',
-            'pk': self.pk  
+            'pk': self.pk
         }) + ''
 
     def get_api_simple_url(self):
@@ -250,24 +228,24 @@ class Release(MigrationMixin):
             'resource_name': 'library/simplerelease',
             'pk': self.pk
         }) + ''
-    
-    
+
+
     def get_media(self):
         from alibrary.models import Media
         return Media.objects.filter(release=self)
-    
+
     def get_products(self):
         return self.releaseproduct.all()
-    
+
     def get_media_indicator(self):
-        
+
         media = self.get_media()
         indicator = []
 
         if self.totaltracks:
             for i in range(self.totaltracks):
                 indicator.append(0)
-        
+
             for m in media:
                 try:
                     indicator[m.tracknumber -1 ] = 3
@@ -277,12 +255,12 @@ class Release(MigrationMixin):
         else:
             for m in media:
                 indicator.append(2)
-        
+
         return indicator
-            
-            
-    def get_license(self):        
-        
+
+
+    def get_license(self):
+
         licenses = License.objects.filter(media_license__in=self.get_media()).distinct()
         if not licenses.exists():
             return {'name': _(u'Not Defined')}
@@ -329,52 +307,52 @@ class Release(MigrationMixin):
             for albumartist in self.release_albumartist_release.all():
                 artists.append({'artist': albumartist.artist, 'join_phrase': albumartist.join_phrase})
             return artists
-        
+
 
         medias = self.get_media()
         for media in medias:
             artists.append(media.artist)
-        
+
         artists = list(set(artists))
         if len(artists) > 1:
             from alibrary.models import Artist
             a, c = Artist.objects.get_or_create(name="Various Artists")
             artists = [a]
-            
+
         return artists
 
     def get_extra_artists(self):
 
         artists = []
-        
+
         roles = ReleaseExtraartists.objects.filter(release=self.pk)
-        
+
         for role in roles:
             try:
                 role.artist.profession = role.profession.name
                 artists.append(role.artist)
             except:
                 pass
- 
+
         return artists
-    
+
     def get_downloads(self):
         return None
 
-    
+
     def get_download_url(self, format, version):
-        
+
         return '%sdownload/%s/%s/' % (self.get_absolute_url(), format, version)
 
     def get_cache_file_path(self, format, version):
-        
+
         tmp_directory = TEMP_DIR
         file_name = '%s_%s_%s.%s' % (format, version, str(self.uuid), 'zip')
         tmp_path = '%s/%s' % (tmp_directory, file_name)
-        
+
         return tmp_path
-    
-    
+
+
     def clear_cache_file(self):
 
         tmp_directory = TEMP_DIR
@@ -384,36 +362,36 @@ class Release(MigrationMixin):
         try:
             for version in versions:
                 os.remove(version)
-  
+
         except Exception as e:
             pass
 
     def get_cache_file(self, format, version):
 
         cache_file_path = self.get_cache_file_path(format, version)
-        
+
         if os.path.isfile(cache_file_path):
             logger.info('serving from cache: %s' % (cache_file_path))
             return cache_file_path
-            
+
         else:
             return self.build_cache_file(format, version)
 
     def build_cache_file(self, format, version):
-        
+
         cache_file_path = self.get_cache_file_path(format, version)
-        
+
         logger.info('building cache for: %s' % (cache_file_path))
 
         try:
             os.remove(cache_file_path)
-  
+
         except Exception as e:
             pass
 
 
         archive_file = ZipFile(cache_file_path, "w")
-        
+
         """
         adding corresponding media files
         """
@@ -426,7 +404,7 @@ class Release(MigrationMixin):
 
             archive_file.write(media_cache_file.path, file_name)
 
-            
+
         return cache_file_path
 
     def get_extraimages(self):
@@ -440,22 +418,22 @@ class Release(MigrationMixin):
 
         log = logging.getLogger('alibrary.release.complete_by_mb_id')
         log.info('complete release, r: %s | mb_id: %s' % (obj.name, mb_id))
-        
+
         inc = ('artists', 'url-rels', 'aliases', 'tags', 'recording-rels', 'work-rels', 'work-level-rels', 'artist-credits')
         url = 'http://%s/ws/2/release/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, mb_id, "+".join(inc))
-        
+
         r = requests.get(url)
         result = r.json()
 
-        
-        return obj
-    
-    
 
-    
+        return obj
+
+
+
+
     def save(self, *args, **kwargs):
 
-        self.clear_cache_file()        
+        self.clear_cache_file()
         unique_slugify(self, self.name)
 
         # convert approx date to real one
@@ -465,10 +443,10 @@ class Release(MigrationMixin):
             ad_m = ad.month
             ad_d = ad.day
             if ad_m == 0:
-                ad_m = 1        
+                ad_m = 1
             if ad_d == 0:
                 ad_d = 1
-            
+
             rd = datetime.strptime('%s/%s/%s' % (ad_y, ad_m, ad_d), '%Y/%m/%d')
             self.releasedate = rd
         except:
@@ -508,7 +486,7 @@ arating.enable_voting_on(Release)
 class ReleaseExtraartists(models.Model):
     artist = models.ForeignKey('alibrary.Artist', related_name='release_extraartist_artist')
     release = models.ForeignKey('Release', related_name='release_extraartist_release')
-    profession = models.ForeignKey(Profession, verbose_name='Role/Profession', related_name='release_extraartist_profession', blank=True, null=True)   
+    profession = models.ForeignKey(Profession, verbose_name='Role/Profession', related_name='release_extraartist_profession', blank=True, null=True)
     class Meta:
         app_label = 'alibrary'
         verbose_name = _('Role')
@@ -520,7 +498,7 @@ class ReleaseAlbumartists(models.Model):
 
     join_phrase = models.CharField(verbose_name="join phrase", max_length=12, default=None, choices=alibrary_settings.ARTIST_JOIN_PHRASE_CHOICES, blank=True, null=True)
     position = models.PositiveIntegerField(null=True, blank=True)
-    
+
     class Meta:
         app_label = 'alibrary'
         verbose_name = _('Albumartist')

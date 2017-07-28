@@ -50,16 +50,16 @@
 				<li>
 					{% url "alibrary-release-list" as release_list %}
 					<a href="{% spurl path=release_list query="label={{ object.slug }}" %}" title="{% trans "Only show releases on" %} {{ object.name }}">
-					{{ object.release_label.count }}<i class="icon-search"></i>	
+					{{ object.release_label.count }}<i class="icon-search"></i>
 					</a>
 				</li>
-				{% else %}		
+				{% else %}
 				<li>{{ object.release_label.count }}</li>
 				{% endif %}
 			</ul>
 		</dd>
         {% endcomment %}
-		
+
 
 
 
@@ -205,7 +205,7 @@
 			<ul class="unstyled">
 			{% for relation in object.relations.generic %}
 			<li><a href="{{ relation.url }}" class="skip-external" title="Show on {{ relation.url }}">{{ relation.url }}</a></li>
-			
+
 			{% endfor %}
 			</ul>
 			<div class="clear"></div>
@@ -219,38 +219,16 @@
 
         {% include 'alibrary/element/_edit_timestamps.html' %}
 
-        {% comment %}
-		<dt>
-			{% trans "Edit History" %}:
-		</dt>
-		<dd>
-			
-			{% if object.owner %}
-			<span class="key">{% trans "Added by" %}:</span> <span class="value"><a href="{{ object.owner.get_absolute_url }}">{{ object.owner }}</a></span> |
-			{% endif %}
-			
-			{% if object.publisher %}
-			<span class="key">{% trans "Published by" %}:</span> <span class="value"><a href="#">{{ object.publisher }}</a></span> |
-			{% endif %}
-			
-			{% if object.get_last_revision %}
-			<span class="key">{% trans "Last edit by" %}:</span> <span class="value"><a href="{{ object.get_last_revision.user.get_profile.get_absolute_url }}">{{ object.get_last_revision.user }}</a></span>
-			{% endif %}
-			&nbsp;
-		</dd>
-        {% endcomment %}
-
-		
-    {% if object.tags %}
-        <dt>
-            {% trans "Tags" %}:
-        </dt>
-        <dd>
-            {% for tag in object.tags %}
-                <span class="tag">{{ tag.name|spacify }}</span>
-            {% endfor %}
-        </dd>
-    {% endif %}
+        {% if object.tags %}
+            <dt>
+                {% trans "Tags" %}:
+            </dt>
+            <dd>
+                {% for tag in object.tags %}
+                    <span class="tag">{{ tag.name|spacify }}</span>
+                {% endfor %}
+            </dd>
+        {% endif %}
 
 	</dl>
 

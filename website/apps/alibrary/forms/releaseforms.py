@@ -8,8 +8,8 @@ from ac_tagging.widgets import TagAutocompleteTagIt
 from base.mixins import StripWhitespaceFormMixin
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Layout, Field, Fieldset, Row, Column, Div
-from crispy_forms_extra.layout import LookupField, LookupImageField
+from crispy_forms.layout import HTML, Layout, Field, Fieldset, Div
+from crispy_forms_extra.layout import Row, Column, LookupField, LookupImageField
 from django import forms
 from django.contrib.contenttypes.forms import BaseGenericInlineFormSet, generic_inlineformset_factory
 from django.forms import ModelForm, Form
@@ -28,15 +28,9 @@ from ..util.storage import get_file_from_url
 log = logging.getLogger(__name__)
 
 ACTION_LAYOUT = FormActions(
-                HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),
-                HTML('<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'),
-        )
-ACTION_LAYOUT_EXTENDED = FormActions(
-                Field('publish', css_class='input-hidden' ),
-                HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit save-without-publish" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),
-                HTML('<button type="submit" name="save-and-publish" value="save" class="btn pull-right ajax_submit save-and-publish" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-bullhorn icon-white"></i> Save & Publish</button>'),
-                HTML('<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'),
-        )
+    HTML('<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),
+    HTML('<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'),
+)
 
 
 MAX_TRACKNUMBER = 100 + 1
@@ -51,13 +45,6 @@ class ReleaseActionForm(Form):
         self.helper = FormHelper()
         self.helper.form_tag = False
 
-        """
-        # publishing removed
-        if self.instance and self.instance.publish_date:
-            self.helper.add_layout(ACTION_LAYOUT)
-        else:
-            self.helper.add_layout(ACTION_LAYOUT_EXTENDED)
-        """
         self.helper.add_layout(ACTION_LAYOUT)
 
 
@@ -575,31 +562,49 @@ class BaseReleaseReleationForm(StripWhitespaceFormMixin, ModelForm):
 
 
 
+
 # Compose Formsets
-ReleaseMediaFormSet = inlineformset_factory(Release,
-                                            Media,
-                                            form=BaseReleaseMediaForm,
-                                            formset=BaseReleaseMediaFormSet,
-                                            can_delete=False,
-                                            extra=0,
-                                            fields=('name', 'tracknumber', 'isrc', 'artist', 'license', 'mediatype',),
-                                            can_order=False)
+ReleaseMediaFormSet = inlineformset_factory(
+    Release,
+    Media,
+    form=BaseReleaseMediaForm,
+    formset=BaseReleaseMediaFormSet,
+    can_delete=False,
+    extra=0,
+    fields=[
+        'name',
+        'tracknumber',
+        'isrc',
+        'artist',
+        'license',
+        'mediatype',
+    ],
+    can_order=False
+)
 
-AlbumartistFormSet = inlineformset_factory(Release,
-                                           ReleaseAlbumartists,
-                                           form=BaseAlbumartistForm,
-                                           formset=BaseAlbumartistFormSet,
-                                           extra=15,
-                                           exclude=('position',),
-                                           can_delete=True,
-                                           can_order=False,)
+AlbumartistFormSet = inlineformset_factory(
+    Release,
+    ReleaseAlbumartists,
+    form=BaseAlbumartistForm,
+    formset=BaseAlbumartistFormSet,
+    extra=15,
+    exclude=[
+        'position',
+    ],
+    can_delete=True,
+    can_order=False,
+)
 
-ReleaseRelationFormSet = generic_inlineformset_factory(Relation,
-                                                       form=BaseReleaseReleationForm,
-                                                       formset=BaseReleaseReleationFormSet,
-                                                       extra=15,
-                                                       exclude=('action',),
-                                                       can_delete=True)
+ReleaseRelationFormSet = generic_inlineformset_factory(
+    Relation,
+    form=BaseReleaseReleationForm,
+    formset=BaseReleaseReleationFormSet,
+    extra=15,
+    exclude=[
+        'action',
+    ],
+    can_delete=True
+)
 
 
 

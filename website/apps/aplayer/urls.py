@@ -1,5 +1,9 @@
-from django.conf.urls import patterns, url
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-urlpatterns = patterns('',
-    (r'^popup/$', 'aplayer.views.popup'),
-)
+from django.conf.urls import url
+from aplayer import views
+
+urlpatterns = [
+    url(r'^popup/$', views.popup),
+]

@@ -1,14 +1,16 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.views.generic.base import TemplateView
+
+from invitation import views
 
 TemplateView.as_view(template_name='invitation/invitation_home.html')
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^invitation/$',
         TemplateView.as_view(template_name='invitation/invitation_home.html'),
         name='invitation_home'),
     url(r'^invitation/invite/$',
-        'invitation.views.invite',
+        views.invite,
         name='invitation_invite'),
     url(r'^invitation/invite/complete/$',
         TemplateView.as_view(template_name='invitation/invitation_complete.html'),
@@ -20,6 +22,6 @@ urlpatterns = patterns('',
         TemplateView.as_view(template_name='invitation/invitation_registered.html'),
         name='invitation_registered'),
     url(r'^invitation/accept/(?P<invitation_key>\w+)/$',
-        'invitation.views.register',
+        views.register,
         name='invitation_register'),
-)
+]

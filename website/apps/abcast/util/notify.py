@@ -31,5 +31,5 @@ def start_play(item, channel=None, user=None):
     try:
         from atracker.util import create_event
         create_event(user, item, channel, 'playout')
-    except Exception, e:
+    except Exception as e:
         log.warning('exception: %s' % e)

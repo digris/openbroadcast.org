@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import actstream
-import reversion
 from django.views.generic import DetailView, ListView, UpdateView
 from django.shortcuts import get_object_or_404, render_to_response
 from django.http import HttpResponseRedirect
@@ -260,7 +259,7 @@ class ArtistDetailView(DetailView):
 
 
         self.extra_context['m_contrib'] = Media.objects.filter(extra_artists=obj)[0:48]
-        self.extra_context['history'] = reversion.get_unique_for_object(obj)
+        self.extra_context['history'] = []
         context.update(self.extra_context)
 
         return context
@@ -350,18 +349,9 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             msg = change_message.parse_tags(obj=self.object, d_tags=d_tags, msg=msg)
             self.object.tags = d_tags
 
-
-        # with reversion.create_revision():
-        #     self.object = form.save()
-        #     reversion.set_user(self.request.user)
-        #     reversion.set_comment(msg)
-        #
-        # messages.add_message(self.request, messages.INFO, msg)
-
         self.object.last_editor = self.request.user
         actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
 
-        # revisions disabled -> needs refactoring
         self.object = form.save()
         messages.add_message(self.request, messages.INFO, 'Object updated')
 

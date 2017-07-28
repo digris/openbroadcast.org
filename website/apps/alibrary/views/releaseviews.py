@@ -6,7 +6,6 @@ import json
 from datetime import timedelta
 
 import actstream
-import reversion
 from alibrary.filters import ReleaseFilter
 from haystack.backends import SQ
 from haystack.query import SearchQuerySet
@@ -255,7 +254,7 @@ class ReleaseDetailView(DetailView):
         context = super(ReleaseDetailView, self).get_context_data(**kwargs)
         obj = kwargs.get('object', None)
 
-        self.extra_context['history'] = reversion.get_unique_for_object(obj)
+        self.extra_context['history'] = []
 
         context.update(self.extra_context)
 
@@ -342,55 +341,8 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             self.object.save()
         """
 
-
-        # hm - not so nice. separate revision for media formset:
-        # separate revision needed for media object, as it should only display
-        # changes made to the object itself (and not the release object)
-        # with reversion.create_revision():
-        #
-        #     # hm..
-        #     self.object = form.save()
-        #
-        #     self.formset_media_valid(named_formsets['media'])
-        #     msg = change_message.construct(self.request, None, [named_formsets['media'],])
-        #     reversion.set_user(self.request.user)
-        #     reversion.set_comment(msg)
-        #
-        #     for name, formset in named_formsets.items():
-        #         formset_save_func = getattr(self, 'formset_{0}_valid'.format(name), None)
-        #         if name != 'media':
-        #             if formset_save_func is not None:
-        #                 formset_save_func(formset)
-        #             else:
-        #                 formset.save()
-        #
-        #     # we still need the media formset here to get revision for the whole form
-        #     msg = change_message.construct(self.request, form, [named_formsets['relation'],
-        #                                                         named_formsets['albumartist'],
-        #                                                         named_formsets['media'],])
-        #
-        #     d_tags = form.cleaned_data['d_tags']
-        #     if d_tags:
-        #         msg = change_message.parse_tags(obj=self.object, d_tags=d_tags, msg=msg)
-        #         self.object.tags = d_tags
-        #
-        #     reversion.set_user(self.request.user)
-        #     reversion.set_comment(msg)
-        #
-        #     # set actstream (e.v. atracker?)
-        #     if msg != 'Nothing changed':
-        #         actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
-        #
-        # messages.add_message(self.request, messages.INFO, msg)
-
-
-
-        # revisions disabled -> needs refactoring
-
-
         self.object.last_editor = self.request.user
         actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
-
 
         self.object = form.save()
 

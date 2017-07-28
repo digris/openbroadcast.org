@@ -5,7 +5,6 @@ from django.db import models
 import tagging
 import os
 import logging
-import reversion
 import uuid
 import arating
 from actstream import action
@@ -53,7 +52,7 @@ class Label(MigrationMixin):
     labelcode = models.CharField(max_length=250, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     country = models.ForeignKey(Country, blank=True, null=True)
-    
+
     email = models.EmailField(blank=True, null=True)
     phone = PhoneNumberField(blank=True, null=True)
     fax = PhoneNumberField(blank=True, null=True)
@@ -99,25 +98,6 @@ class Label(MigrationMixin):
 
     def __unicode__(self):
         return self.name
-
-    def get_versions(self):
-        try:
-            return reversion.get_for_object(self)
-        except:
-            return None
-
-    def get_last_revision(self):
-        try:
-            return reversion.get_unique_for_object(self)[0].revision
-        except:
-            return None
-
-    def get_last_editor(self):
-        latest_revision = self.get_last_revision()
-        if latest_revision:
-            return latest_revision.user
-        else:
-            return None
 
     def get_folder(self, name):
         return

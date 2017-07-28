@@ -1,12 +1,14 @@
-from django.conf.urls import patterns, url
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-from abcast.views import schedule, EmissionDetailView, select_playlist, schedule_object, copy_paste_day, delete_day
+from django.conf.urls import url
+from abcast import views
 
-urlpatterns = patterns('',   
-    url(r'^$', schedule, name='abcast-schedule'),              
-    url(r'^emssion/(?P<pk>\d+)/$', EmissionDetailView.as_view(), name='abcast-emission-detail'),
-    url(r'^select-playlist/$', select_playlist, name='abcast-schedule-select-playlist'),  
-    url(r'^schedule-object/$', schedule_object, name='abcast-schedule-schedule-object'),  
-    url(r'^copy-paste-day/$', copy_paste_day, name='abcast-schedule-copy-paste-day'),
-    url(r'^delete-day/$', delete_day, name='abcast-schedule-delete-day'),
-)
+urlpatterns = [
+    url(r'^$', views.schedule, name='abcast-schedule'),
+    url(r'^emssion/(?P<pk>\d+)/$', views.EmissionDetailView.as_view(), name='abcast-emission-detail'),
+    url(r'^select-playlist/$', views.select_playlist, name='abcast-schedule-select-playlist'),
+    url(r'^schedule-object/$', views.schedule_object, name='abcast-schedule-schedule-object'),
+    url(r'^copy-paste-day/$', views.copy_paste_day, name='abcast-schedule-copy-paste-day'),
+    url(r'^delete-day/$', views.delete_day, name='abcast-schedule-delete-day'),
+]

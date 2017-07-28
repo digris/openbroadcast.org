@@ -7,6 +7,7 @@ from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 from urls_api import api
 from django.contrib import admin
 from cms.sitemaps import CMSSitemap
+from django.contrib.sitemaps.views import sitemap
 from alibrary.sitemap import ReleaseSitemap
 
 DEBUG = getattr(settings, 'DEBUG', False)
@@ -67,7 +68,7 @@ urlpatterns = [
 
     url(r'^search/', include('search.urls')),
     url(r'^search-hs/', include('haystack.urls')),
-    url(r'^sitemap.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
+    url(r'^sitemap.xml$', sitemap, {'sitemaps': sitemaps}),
 
     url(r'^player/', include('aplayer.urls')),
     url(r'^media-asset/', include('media_asset.urls')),
@@ -93,8 +94,10 @@ if DEBUG:
     except Exception as e:
         pass
 
+    from django.views.static import serve
+
     urlpatterns += [
-        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+        url(r'^media/(?P<path>.*)$', serve, {
             'document_root': settings.MEDIA_ROOT,
         }),
     ]

@@ -6,7 +6,6 @@ import os
 import uuid
 
 import arating
-import reversion
 import tagging
 from actstream import action
 from alibrary.models import MigrationMixin, Relation, Profession
