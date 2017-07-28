@@ -79,10 +79,10 @@ class BasicNode(template.Node):
         """
         # Nodes are not thread safe in multithreaded environments
         # https://docs.djangoproject.com/en/dev/howto/custom-template-tags/#thread-safety-considerations
-        
+
         #print "%s get-render: start" % strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
         #print "get-render: start"
-        
+
         if self not in context.render_context:
             context.render_context[self] = (
                 template.Variable(self.form),
@@ -94,7 +94,7 @@ class BasicNode(template.Node):
         #print "form pre-resolve"
         actual_form = form.resolve(context)
         #print "form post-resolve"
-        
+
         if self.helper is not None:
             helper = helper.resolve(context)
         else:
@@ -103,7 +103,7 @@ class BasicNode(template.Node):
             helper = FormHelper() if not hasattr(actual_form, 'helper') else actual_form.helper
 
 
-        
+
 
         # We get the response dictionary
         is_formset = isinstance(actual_form, BaseFormSet)
@@ -111,25 +111,25 @@ class BasicNode(template.Node):
         node_context = context.__copy__()
         node_context.update(response_dict)
 
-        
+
 
         # If we have a helper's layout we use it, for the form or the formset's forms
         if helper and helper.layout:
             if not is_formset:
-                
+
                 #print "Not a Formset -> return actual Form"
-                
+
                 actual_form.form_html = helper.render_layout(actual_form, node_context)
             else:
-                
+
                 #print 'Starting Simulated For-loop'
-                 
+
                 forloop = ForLoopSimulator(actual_form)
-                
-                
-                
+
+
+
                 for form in actual_form.forms:
-                    
+
                     node_context.update({'forloop': forloop})
                     form.form_html = helper.render_layout(form, node_context)
                     forloop.iterate()
@@ -194,7 +194,7 @@ whole_uni_form_template = get_template('%s/whole_uni_form.html' % TEMPLATE_PACK)
 
 class CrispyFormNode(BasicNode):
     def render(self, context):
-        
+
         #print "CRISPY: start render"
         c = self.get_render(context)
         #print "CRISPY: got render"

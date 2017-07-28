@@ -9,7 +9,8 @@ from alibrary.util.storage import get_file_from_url
 from base.mixins import StripWhitespaceFormMixin
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Layout, Field, Fieldset, Row, Column, LookupField, LookupImageField
+from crispy_forms.layout import HTML, Layout, Field, Fieldset, Row, Column
+from crispy_forms_extra.layout import LookupField, LookupImageField
 from django import forms
 from django.contrib.contenttypes.forms import BaseGenericInlineFormSet, generic_inlineformset_factory
 from django.forms import ModelForm, Form

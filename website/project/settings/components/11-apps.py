@@ -72,6 +72,7 @@ INSTALLED_APPS = (
     'lib',
     'pure_pagination',
     'crispy_forms',
+    #'crispy_forms_extra',
     'floppyforms',
     'absolute',
     'announcements',

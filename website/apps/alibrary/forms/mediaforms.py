@@ -10,7 +10,8 @@ from alibrary.models import Media, Relation, MediaExtraartists, MediaArtists
 from base.mixins import StripWhitespaceFormMixin
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Layout, Field, Fieldset, Row, Column, LookupField
+from crispy_forms.layout import HTML, Layout, Field, Fieldset, Row, Column
+from crispy_forms_extra.layout import LookupField
 from django import forms
 from django.contrib.contenttypes.forms import BaseGenericInlineFormSet, generic_inlineformset_factory
 from django.forms import ModelForm, Form
