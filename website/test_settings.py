@@ -201,18 +201,6 @@ PUSHY_SETTINGS = {
 }
 
 
-
-
-SOLR_SERVER = {
-    'host': 'localhost',
-    'port': 8502,
-}
-TT_SERVER = {
-    'host': 'localhost',
-    'port': 1978,
-}
-
-
 ANALYTICS_ACCOUNT = 'UA-28856125-1'
 
 #STATIC_URL = 'http://127.0.0.1:8000/static/'

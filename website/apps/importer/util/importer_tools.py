@@ -4,18 +4,18 @@ from __future__ import unicode_literals
 import collections
 import logging
 import os
-import pprint
 import re
 import shutil
 import time
 from Levenshtein import distance
 
-import musicbrainzngs
 import requests
 from actstream import action
 from alibrary.models import NameVariation as ArtistNameVariation
-from alibrary.models import Relation, Release, Artist, Media, MediaExtraartists, Profession, ArtistMembership, \
+from alibrary.models import (
+    Relation, Release, Artist, Media, MediaExtraartists, Profession, ArtistMembership,
     ArtistAlias, MediaArtists
+)
 from alibrary.util import lookup
 from alibrary.util.storage import get_file_from_url
 from celery.task import task
@@ -55,13 +55,6 @@ def masterpath_by_uuid(instance, filename):
 
 class Importer(object):
     def __init__(self, user=None):
-        musicbrainzngs.set_useragent("NRG Processor", "0.01", "http://anorg.net/")
-        musicbrainzngs.set_rate_limit(MUSICBRAINZ_RATE_LIMIT)
-        if MUSICBRAINZ_HOST:
-            musicbrainzngs.set_hostname(MUSICBRAINZ_HOST)
-
-        self.pp = pprint.PrettyPrinter(indent=4)
-        self.pp.pprint = lambda d: None
 
         self.mb_completed = []
         self.user = user

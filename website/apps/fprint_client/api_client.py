@@ -6,7 +6,7 @@ import requests
 import logging
 from django.conf import settings
 
-from .utils import code_for_path
+from .utils import fprint_from_path, code_from_path
 
 API_BASE_URL = getattr(settings, 'FPRINT_API_BASE_URL', 'http://127.0.0.1:7777/api/v1/')
 
@@ -41,8 +41,8 @@ class FprintAPIClient(object):
     #         return
     #
     #     return r.json()
-    #
-    #
+
+
     # @staticmethod
     # def get_for_media(obj):
     #
@@ -59,6 +59,29 @@ class FprintAPIClient(object):
     #         return
     #
     #     return r.json()
+
+
+    @staticmethod
+    def identify(fprint, min_score=0.2):
+
+        url = '{api_base_url}fprint/identify/'.format(
+            api_base_url=API_BASE_URL,
+        )
+
+        log.debug('loading fprint entry from: {}'.format(url))
+
+        fprint.update({
+            'min_score': min_score,
+        })
+
+        try:
+            r = requests.post(url, json=fprint)
+            data = r.json()
+        except:
+            data = []
+
+
+        return data
 
 
     def ingest_for_media(self, obj):
@@ -80,7 +103,7 @@ class FprintAPIClient(object):
         log.debug('ingest fprint entry to: {}'.format(url))
 
 
-        code = code_for_path(obj.master.path)
+        code = code_from_path(obj.master.path)
 
         data = {
             #'uuid': str(obj.uuid), # uuid in uri

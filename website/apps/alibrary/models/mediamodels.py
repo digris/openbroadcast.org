@@ -21,7 +21,6 @@ from django.db.models.signals import post_save, pre_delete, post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
-from ep.API import fp
 from lib.fields.languages import LanguageField
 from base.signals.unsignal import disable_for_loaddata
 from lib.util.sha1 import sha1_by_file
@@ -696,10 +695,6 @@ def media_pre_delete(sender, **kwargs):
 
     # delete fingerprint
     # TODO: rework/implement with fprint api / fprint_client
-    try:
-        fp.delete(b"%s" % obj.id)
-    except Exception as e:
-        log.warning('unable to delete fingerprint for media_id: %s - %s' % (obj.id, e))
 
 pre_delete.connect(media_pre_delete, sender=Media)
 

@@ -14,7 +14,7 @@ from django.utils import timezone
 
 from multiprocessing import Pool
 
-from ...utils import code_for_path
+from ...utils import code_from_path
 from ...api_client import FprintAPIClient
 
 from alibrary.models import Media

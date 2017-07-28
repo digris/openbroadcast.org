@@ -29,7 +29,7 @@ log = logging.getLogger(__name__)
 USE_CELERYD = getattr(settings, 'IMORTER_USE_CELERYD', False)
 AUTOIMPORT_MB = getattr(settings, 'IMORTER_AUTOIMPORT_MB', True)
 
-        
+
 GENERIC_STATUS_CHOICES = (
     (0, _('Init')),
     (1, _('Done')),
@@ -43,7 +43,7 @@ def clean_upload_path(instance, filename):
 
     filename, extension = os.path.splitext(filename)
     valid_chars = "-_.%s%s" % (string.ascii_letters, string.digits)
-    cleaned_filename = unicodedata.normalize('NFKD', filename).encode('ASCII', 'ignore')    
+    cleaned_filename = unicodedata.normalize('NFKD', filename).encode('ASCII', 'ignore')
     folder = "import/%s/" % time.strftime("%Y%m%d%H%M%S", time.gmtime())
     return os.path.join(folder, "%s%s" % (cleaned_filename.lower(), extension.lower()))
 
@@ -53,7 +53,7 @@ class BaseModel(models.Model):
     uuid = UUIDField()
     created = CreationDateTimeField()
     updated = ModificationDateTimeField()
-    
+
     class Meta:
         abstract = True
 
@@ -163,7 +163,7 @@ class Import(BaseModel):
         stats['error'] = self.files.filter(
             status=ImportFile.STATUS_ERROR
         )
-        
+
         return stats
 
     def get_inserts(self):
@@ -195,13 +195,13 @@ class Import(BaseModel):
                       kwargs={'resource_name': 'import', 'api_name': 'v1'}
                       )
         return '%s%s/' % (url, self.pk)
-    
+
     def apply_import_tag(self, importfile, **kwargs):
 
         if 'mb_release_id' in importfile.import_tag:
-        
+
             mb_release_id = importfile.import_tag['mb_release_id']
-            
+
             qs = self.files.exclude(pk=importfile.pk)
             importfiles = qs.filter(status=ImportFile.STATUS_READY)
             for file in importfiles:
@@ -215,7 +215,7 @@ class Import(BaseModel):
                         file.import_tag['name'] = mb['media']['name']
                         file.import_tag['mb_artist_id'] = mb['artist']['mb_id']
                         file.import_tag['mb_track_id'] = mb['media']['mb_id']
-                        
+
                         kwargs['skip_apply_import_tag'] = True
                         file.save(**kwargs)
 
@@ -223,7 +223,7 @@ class Import(BaseModel):
 
     def add_to_playlist(self, item):
         pass
-    
+
     def add_to_collection(self, item):
         pass
 
@@ -256,7 +256,7 @@ class Import(BaseModel):
         if created:
             self.add_to_playlist(item)
             self.add_to_collection(item)
-    
+
         return item
 
     def get_importitems(self):
@@ -282,7 +282,7 @@ class Import(BaseModel):
 
 
 
-    
+
     def get_importitem_ids(self, ctype):
         ii_ids = ImportItem.objects.filter(
             content_type=ctype,
@@ -292,8 +292,8 @@ class Import(BaseModel):
 
     def save(self, *args, **kwargs):
         super(Import, self).save(*args, **kwargs)
- 
-    
+
+
 class ImportFile(BaseModel):
 
     STATUS_INIT = 0
@@ -336,7 +336,7 @@ class ImportFile(BaseModel):
     results_discogs_status = models.PositiveIntegerField(verbose_name=_('Result Musicbrainz'), default=0, choices=GENERIC_STATUS_CHOICES)
     results_discogs = JSONField(blank=True, null=True)
     import_tag = JSONField(blank=True, null=True)
-    
+
     # assigned media object
     media = models.ForeignKey(Media, blank=True, null=True, related_name="importfile_media", on_delete=models.SET_NULL)
 
@@ -348,8 +348,8 @@ class ImportFile(BaseModel):
         verbose_name = _('Import File')
         verbose_name_plural = _('Import Files')
         ordering = ('created', )
-    
-    
+
+
     def __unicode__(self):
         return self.filename
 
@@ -362,12 +362,12 @@ class ImportFile(BaseModel):
 
     def identify(self):
         log.info('Start processing ImportFile: %s at %s' % (self.pk, self.file.path))
-        
+
         if USE_CELERYD:
             self.identify_task.delay(self)
         else:
             self.identify_task(self)
-        
+
     @task
     def identify_task(obj):
 
@@ -417,7 +417,7 @@ class ImportFile(BaseModel):
             # duplicate check by echoprint
             if not media_id:
                 try:
-                    media_id = identifier.id_by_echoprint(obj.file)
+                    media_id = identifier.id_by_fprint(obj.file)
                     log.debug('duplicate by echoprint: %s' % media_id)
                 except:
                     log.warning('unable to identify by echoprint: %s' % media_id)
@@ -492,7 +492,7 @@ class ImportFile(BaseModel):
             obj.status = ImportFile.STATUS_ERROR
             obj.save()
             return
-        
+
         # try to get media by id returned from fingerprinter
         media = None
         if media_id:
@@ -515,8 +515,8 @@ class ImportFile(BaseModel):
                     return
             except:
                 pass
-        
-        
+
+
         if media:
             obj.results_tag = metadata
             obj.media = media
@@ -535,7 +535,7 @@ class ImportFile(BaseModel):
         obj.results_musicbrainz = identifier.get_musicbrainz(obj)
         obj.results_discogs_status = True # TODO: ???
         obj.save()
-        
+
         # requeue if no results yet
         if len(obj.results_musicbrainz) < 1:
             s = {
@@ -551,20 +551,20 @@ class ImportFile(BaseModel):
             obj.status = ImportFile.STATUS_DUPLICATE
             if obj.import_session:
                 obj.import_session.add_importitem(obj)
-        
+
         obj.results_tag_status = True
         obj.save()
 
-    
+
     def do_import(self):
 
         log.debug('Start importing ImportFile: %s at %s' % (self.pk, self.file.path))
-        
+
         if USE_CELERYD:
             self.import_task.delay(self)
         else:
             self.import_task(self)
-        
+
     @task
     def import_task(obj):
 
@@ -574,7 +574,7 @@ class ImportFile(BaseModel):
         # to prevent circular import errors
         from util.importer_tools import Importer
         _importer = Importer(user=obj.import_session.user)
-        
+
         media, status = _importer.run(obj)
 
         if media:
@@ -582,19 +582,19 @@ class ImportFile(BaseModel):
             obj.status = 1
         else:
             obj.status = 99
-        
+
         log.info('Ending import task with status: %s for: %s' % (obj.status, obj.pk))
 
         obj.save()
 
-    
+
     def save(self, skip_apply_import_tag=False, *args, **kwargs):
-        
+
         msg = {'key': 'save', 'content': 'object saved'}
 
         if not self.filename:
             self.filename = self.file.name
-            
+
         # check/update import_tag
         if self.status == ImportFile.STATUS_READY:
             from importer.util.importer_tools import Importer
@@ -607,13 +607,13 @@ class ImportFile(BaseModel):
                 # TODO: this breaks the interface, as nearly infinite loop arises
                 #print 'skipping import_session.apply_import_tag'
                 self.import_session.apply_import_tag(self)
-                
+
         # check import_tag for completeness
         if self.status in [ImportFile.STATUS_READY, ImportFile.STATUS_WARNING]:
             media = self.import_tag.get('name', None)
             artist = self.import_tag.get('artist', None)
             release = self.import_tag.get('release', None)
-            
+
             if media and artist and release:
                 self.status = ImportFile.STATUS_READY
             else:
@@ -642,16 +642,16 @@ def post_save_importfile(sender, **kwargs):
     # finalize the import, fired when user clicks on "start import"
     if obj.status == ImportFile.STATUS_QUEUED:
         obj.do_import()
-      
-post_save.connect(post_save_importfile, sender=ImportFile)      
-  
+
+post_save.connect(post_save_importfile, sender=ImportFile)
+
 def post_delete_importfile(sender, **kwargs):
     obj = kwargs['instance']
     try:
         os.remove(obj.file.path)
     except:
         pass
-      
+
 post_delete.connect(post_delete_importfile, sender=ImportFile)
 
 
@@ -661,15 +661,15 @@ class ImportItem(BaseModel):
     """
     stores relations to objects created/assigned during the specific import
     """
-        
+
     # limit to alibrary objects
     ct_limit = models.Q(app_label = 'alibrary', model = 'media') | \
     models.Q(app_label = 'alibrary', model = 'release') | \
     models.Q(app_label = 'alibrary', model = 'artist') | \
     models.Q(app_label = 'alibrary', model = 'label')
-    
+
     import_session = models.ForeignKey(Import, verbose_name=_('Import'), null=True, related_name='importitem_set')
-    
+
     content_type = models.ForeignKey(ContentType, limit_choices_to = ct_limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
@@ -678,7 +678,7 @@ class ImportItem(BaseModel):
         app_label = 'importer'
         verbose_name = _('Import Item')
         verbose_name_plural = _('Import Items')
-        
+
     def __unicode__(self):
         try:
             return '%s | %s' % (ContentType.objects.get_for_model(self.content_object), self.content_object.name)

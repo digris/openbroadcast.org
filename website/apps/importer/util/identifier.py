@@ -2,7 +2,6 @@
 import os
 import re
 import locale
-import pprint
 import logging
 from mutagen import File as MutagenFile
 from mutagen.easyid3 import EasyID3
@@ -13,7 +12,11 @@ import requests
 import musicbrainzngs
 from lib.util.sha1 import sha1_by_file
 from importer.util.tools import discogs_image_by_url
-from base.audio.echoprint import echoprint_from_path
+
+from alibrary.models import Media
+from fprint_client.api_client import FprintAPIClient
+from fprint_client.utils import fprint_from_path
+
 
 log = logging.getLogger(__name__)
 
@@ -61,14 +64,18 @@ METADATA_SET = {
 
 class Identifier(object):
 
+    """
+    Identifying media files by file
+     - by sha1
+     - by metadata (musicbrainz id)
+     - by fprint (echoprint)
+    """
+
 
     def __init__(self):
 
         musicbrainzngs.set_useragent("NRG Processor", "0.01", "http://anorg.net/")
         musicbrainzngs.set_rate_limit(MUSICBRAINZ_RATE_LIMIT)
-
-        self.pp = pprint.PrettyPrinter(indent=4)
-        self.pp.pprint = lambda d: None
 
         self.file_metadata = None
 
@@ -140,27 +147,20 @@ class Identifier(object):
 
 
     """
-    look for a duplicate by fingerprint
+    look for a duplicate by fprint
     """
-    def id_by_echoprint(self, file):
+    def id_by_fprint(self, file):
 
+        fprint = fprint_from_path(file.path)
+        results = FprintAPIClient().identify(fprint=fprint, min_score=0.25)
 
-        from ep.API import fp
-
-        code, version, duration, echoprint = echoprint_from_path(file.path, offset=10, duration=100)
-
-        try:
-            res = fp.best_match_for_query(code_string=code)
-
-            if res.match():
-                log.info('echoprint match - score: %s trid: %s' % (res.score, res.TRID))
-                return int(res.TRID)
-
-        except Exception as e:
-            log.warning('echoprint error: %s' % (e))
-
-
-        return None
+        if results:
+            log.info('got {} result(s) from fprint api'.format(len(results)))
+            try:
+                return Media.objects.get(uuid=results[0]['uuid']).pk
+            except:
+                log.warning('unable to get media by uuid: {}'.format(results))
+                return
 
 
     def extract_metadata(self, file):
@@ -707,7 +707,7 @@ class Identifier(object):
 
                 r = requests.get(url, timeout=5)
                 result = r.json()
-                #self.pp.pprint(result)
+
 
                 # only apply label info if unique
                 if 'label-info' in result and len(result['label-info']) == 1:
@@ -733,7 +733,6 @@ class Identifier(object):
 
                 r = requests.get(url, timeout=5)
                 result = r.json()
-                #self.pp.pprint(result)
 
                 # try to get discogs master-url
                 if 'relations' in result:
@@ -801,8 +800,6 @@ class Identifier(object):
 
                 log.debug('formating release with id: %s' % release['id'])
                 completed_releases.append(release['id'])
-
-                self.pp.pprint(release)
 
                 # release
                 r = {}
@@ -942,6 +939,7 @@ class Identifier(object):
 
             for release in r['recording']['release-list']:
 
+                # TODO: refactor to plain API call (requests)
                 mb_release = musicbrainzngs.get_release_by_id(id=release['id'], includes=['release-groups'])
                 release_group_id = mb_release['release']['release-group']['id']
 
@@ -966,38 +964,26 @@ class Identifier(object):
             id = rg['release_group_id']
             r = rg['recording']
 
-
+            # TODO: refactor to plain API call (requests)
             result = musicbrainzngs.get_release_group_by_id(id=id, includes=['releases', 'url-rels'])
 
             releases = result['release-group']['release-list']
 
             try:
                 relations = result['release-group']['url-relation-list']
-                print
-                print relations
-                print
             except:
                 relations = None
-
 
             try:
                 sorted_releases = sorted(releases, key=lambda k: k['date'])
             except Exception as e:
-                print "SORTING ERROR"
                 sorted_releases = releases
-                print e
 
             # sorted_releases.reverse()
-
             first_release = sorted_releases[0]
 
-            print 'releases:'
-            print releases
-
-            print 'first release'
-            print first_release
-
             # look up details for the first release
+            # TODO: refactor to plain API call (requests)
             result = musicbrainzngs.get_release_by_id(id=first_release['id'], includes=['labels', 'url-rels', 'recordings'])
 
             res = {}
@@ -1012,20 +998,9 @@ class Identifier(object):
 
 
     """
-    pre-apply some formatting & structure to provide straighter trmplateing
+    pre-apply some formatting & structure to provide straighter templateing
     """
     def format_master_releases(self, master_releases):
-
-
-        print
-        print '***************************************************'
-        print 'format_master_releases'
-        print
-        print master_releases
-        print
-        print '***************************************************'
-        print
-
 
         releases = []
 
@@ -1034,14 +1009,6 @@ class Identifier(object):
             release = re['release']
             recording = re['recording']
             relations = re['relations']
-
-            print release
-
-            print 'recording:'
-            print recording
-
-            print 'relations:'
-            print relations
 
             r = {}
 
@@ -1111,22 +1078,6 @@ class Identifier(object):
             except:
                 pass
 
-
-            # try to get media position
-            if 'medium-list' in release:
-                print
-                print 'got medium list'
-                print '*************************************************************'
-                print release['medium-list']
-                print '*************************************************************'
-                for el in release['medium-list'][0]['track-list']:
-                    print
-                    print el
-                    print
-                print '*************************************************************'
-                print '*************************************************************'
-
-
             r['media'] = m
 
             # artist mapping
@@ -1136,7 +1087,6 @@ class Identifier(object):
 
             try:
                 artist = recording['recording']['artist-credit'][0]['artist']
-                print artist
 
                 try:
                     a['mb_id'] = artist['id']
@@ -1163,8 +1113,6 @@ class Identifier(object):
 
             try:
                 label = release['label-info-list'][0]['label']
-                print label
-
                 try:
                     l['mb_id'] = label['id']
                 except:
@@ -1186,7 +1134,6 @@ class Identifier(object):
                     pass
 
             except Exception as e:
-                print e
                 pass
 
             r['label'] = l
@@ -1205,11 +1152,9 @@ class Identifier(object):
 
 
                 except Exception as e:
-                    print e
                     pass
 
             except Exception as e:
-                print e
                 pass
 
             r['relations'] = rel
@@ -1221,8 +1166,5 @@ class Identifier(object):
 
 
     def mb_order_by_releasedate(self, releases):
-
-        for release in releases:
-            print release
 
         return releases

@@ -33,14 +33,17 @@ def decode_echoprint(echoprint_b64_zipped):
     return offsets, codes
 
 
-def code_for_path(path):
+
+
+def fprint_from_path(path, quiet=False):
     """
-    generates echoprint code for file at given path
+    generates echoprint data (code & metadata) for file at given path
     """
 
     if not os.path.isfile(path):
-        return
-        # raise Exception('file does not exist: {}'.format(path))
+        if quiet:
+            return
+        raise IOError('file does not exist: {}'.format(path))
 
     command = [
         ECHOPRINT_CODEGEN_BINARY,
@@ -49,10 +52,17 @@ def code_for_path(path):
 
     p = subprocess.Popen(command, stdout=subprocess.PIPE, close_fds=True)
 
-    data = json.loads(p.stdout.read())
+    data = json.loads(p.stdout.read())[0]
 
-    # offsets, codes = decode_echoprint(str(data[0]['code']))
+    return data
 
-    code = str(data[0]['code'])
+
+def code_from_path(path, **kwargs):
+    """
+    generates echoprint code for file at given path
+    """
+
+    data = fprint_from_path(path, **kwargs)
+    code = str(data['code'])
 
     return code

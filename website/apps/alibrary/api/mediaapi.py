@@ -4,7 +4,6 @@ from django.conf.urls import url
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseForbidden
 from easy_thumbnails.files import get_thumbnailer
-from ep.API import fp
 from sendfile import sendfile
 from tastypie import fields
 from tastypie.authentication import MultiAuthentication, SessionAuthentication, ApiKeyAuthentication, Authentication
@@ -125,10 +124,7 @@ class MediaResource(ModelResource):
                 except:
                     label_resource = None
 
-
                 bundle.data['label'] = label_resource
-
-
 
 
         return bundle
@@ -143,18 +139,8 @@ class MediaResource(ModelResource):
         orm_filters = super(MediaResource, self).build_filters(filters)
 
         if "code" in filters:
-
-            code = filters['code']
-            res = fp.best_match_for_query(code_string=code, elbow=10)
-
-            try:
-                if res.match():
-                    ids = [int(res.TRID), ]
-                    orm_filters["pk__in"] = ids
-                else:
-                    orm_filters["pk__in"] = ()
-            except Exception as e:
-                pass
+            # re-implement fprint based lookups
+            pass
 
         return orm_filters
 
