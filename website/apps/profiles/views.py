@@ -330,8 +330,8 @@ def respond(request, code):
     Responds to the request with the given response code.
     If ``next`` is in the form, it will redirect instead.
     """
-    if 'next' in request.REQUEST:
-        return HttpResponseRedirect(request.REQUEST['next'])
+    if 'next' in request.GET:
+        return HttpResponseRedirect(request.GET['next'])
     return type('Response%d' % code, (HttpResponse,), {'status_code': code})()
 
 

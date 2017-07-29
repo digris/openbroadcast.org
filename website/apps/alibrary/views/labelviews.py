@@ -329,7 +329,8 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         self.object = form.save()
         messages.add_message(self.request, messages.INFO, 'Object updated')
 
-        return HttpResponseRedirect('')
+        return HttpResponseRedirect(self.object.get_edit_url())
+        # return HttpResponseRedirect('')
 
 
 # autocompleter views

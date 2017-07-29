@@ -131,6 +131,5 @@ class FprintAPIClient(object):
 
         if not r.status_code in [200, 202, 204]:
             log.warning('{}'.format(r.text))
-            return
 
-        return r.json()
+        return r.status_code

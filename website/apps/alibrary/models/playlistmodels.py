@@ -742,11 +742,8 @@ class PlaylistItem(models.Model):
 
 """
 maintenance tasks
-(called via celerybeat, or management command)
+(called via management command)
 """
-
-
-@task
 def self_check_playlists():
     """
     (0, _('Undefined')),

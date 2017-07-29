@@ -5,8 +5,17 @@ import pprint
 from optparse import make_option
 import logging
 
-
 from django.core.management.base import BaseCommand, NoArgsCommand
+
+
+
+
+#######################################################################
+# TODO: legacy commands. refactor to click!
+#######################################################################
+
+
+
 
 
 log = logging.getLogger(__name__)

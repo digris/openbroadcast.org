@@ -14,10 +14,3 @@ def media_post_save(sender, instance, created, **kwargs):
         from .models import Waveform, Format
         Waveform.objects.get_or_create_for_media(media=instance, type=Waveform.WAVEFORM)
         Format.objects.get_or_create_for_media(media=instance, encoding=Format.MP3, quality=Format.DEFAULT)
-
-    # if instance.master:
-    #     from .models import Waveform, Format
-    #     from media_asset.tasks import process_waveform, process_format
-    #     process_waveform.delay(media=instance, type=Waveform.WAVEFORM)
-    #     #process_waveform.delay(media=instance, type=Waveform.SPECTROGRAM)
-    #     process_format.delay(media=instance, encoding=Format.MP3, quality=Format.DEFAULT)

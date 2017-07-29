@@ -355,9 +355,8 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         self.object = form.save()
         messages.add_message(self.request, messages.INFO, 'Object updated')
 
-
-
-        return HttpResponseRedirect('')
+        return HttpResponseRedirect(self.object.get_edit_url())
+        # return HttpResponseRedirect('')
 
     # TODO: investigate if this can be removed
     # def formset_relation_valid(self, formset):

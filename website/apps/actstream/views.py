@@ -16,13 +16,13 @@ PAGINATE_BY = getattr(settings, 'ACTSTREAM_PAGINATE_BY', (30,60,120))
 PAGINATE_BY_DEFAULT = getattr(settings, 'ACTSTREAM_PAGINATE_BY_DEFAULT', 120)
 
 class ActionListView(PaginationMixin, ListView):
-    
+
     context_object_name = "action_list"
     # template_name = "alibrary/artist_list.html"
     paginate_by = PAGINATE_BY_DEFAULT
-    
+
     def get_paginate_by(self, queryset):
-        
+
         ipp = self.request.GET.get('ipp', None)
         if ipp:
             try:
@@ -32,7 +32,7 @@ class ActionListView(PaginationMixin, ListView):
                 pass
 
         return self.paginate_by
-    
+
     def get_queryset(self):
 
         kwargs = {}
@@ -47,7 +47,7 @@ class ActionListView(PaginationMixin, ListView):
         self.filter = ActionFilter(self.request.GET, queryset=qs)
 
         return self.filter.qs
-    
+
 
     def get_context_data(self, **kwargs):
         context = super(ActionListView, self).get_context_data(**kwargs)
@@ -63,10 +63,10 @@ class ActionDetailView(DetailView):
     context_object_name = "action"
     model = Action
 
-    
+
     def render_to_response(self, context):
         return super(ActionDetailView, self).render_to_response(context, content_type="text/html")
-        
+
     def get_context_data(self, **kwargs):
         context = super(ActionDetailView, self).get_context_data(**kwargs)
         return context
@@ -78,8 +78,8 @@ def respond(request, code):
     Responds to the request with the given response code.
     If ``next`` is in the form, it will redirect instead.
     """
-    if 'next' in request.REQUEST:
-        return HttpResponseRedirect(request.REQUEST['next'])
+    if 'next' in request.GET:
+        return HttpResponseRedirect(request.GET['next'])
     return type('Response%d' % code, (HttpResponse, ), {'status_code': code})()
 
 

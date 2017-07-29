@@ -77,16 +77,12 @@ def invite(request, success_url=None,
         form = form_class(request.POST, request.FILES)
         if form.is_valid():
             try:
-                invitation = Invitation.objects.invite(
-                                     request.user, form.cleaned_data["email"], form.cleaned_data["message"])
+                invitation = Invitation.objects.invite(request.user, form.cleaned_data["email"], form.cleaned_data["message"])
             except InvitationError, e:
-                print '****'
-                print e
-                print '****'
                 return HttpResponseRedirect(reverse('invitation_unavailable'))
             invitation.send_email(request=request)
-            if 'next' in request.REQUEST:
-                return HttpResponseRedirect(request.REQUEST['next'])
+            if 'next' in request.GET:
+                return HttpResponseRedirect(request.GET['next'])
             return HttpResponseRedirect(success_url or reverse('invitation_complete'))
     else:
         form = form_class()

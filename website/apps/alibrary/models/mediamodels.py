@@ -32,6 +32,8 @@ from alibrary.models.playlistmodels import PlaylistItem, Playlist
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object
 
+from alibrary.tasks import ingest_fprint_for_media, delete_fprint_for_media
+
 from fprint_client.api_client import FprintAPIClient
 
 USE_CELERYD = getattr(settings, 'ALIBRARY_USE_CELERYD', False)
@@ -627,12 +629,9 @@ def media_post_save(sender, **kwargs):
 
     obj = kwargs['instance']
 
-    if obj.master and not obj.fprint_ingested:
-        if AUTOCREATE_FPRINT:
-            log.info('Media id: {} - generate fprint'.format(obj.pk))
-            result = FprintAPIClient().ingest_for_media(obj)
-            if result:
-                Media.objects.filter(pk=obj.pk).update(fprint_ingested=timezone.now())
+    # ingest fingerprint
+    if (AUTOCREATE_FPRINT and obj.master) and not obj.fprint_ingested:
+        ingest_fprint_for_media.apply_async((obj,))
 
 
     if not obj.folder:
@@ -646,13 +645,14 @@ def media_post_save(sender, **kwargs):
                 os.makedirs(abs_directory, 0755)
 
             obj.folder = directory
-            log.info('creating directory: %s' % abs_directory)
+            log.debug('creating directory: %s' % abs_directory)
 
         except Exception as e:
             log.warning('unable to create directory: %s - %s' % (abs_directory, e))
             obj.folder = None
             obj.status = 99
 
+    # invalidate cache
     invalidate_obj(obj)
 
 post_save.connect(media_post_save, sender=Media)
@@ -667,10 +667,8 @@ def media_pre_delete(sender, **kwargs):
         os.unlink(obj.master.path)
 
     # delete fingerprint
-    try:
-        FprintAPIClient().delete_for_media(obj)
-    except ValueError as e:
-        pass
+    delete_fprint_for_media.apply_async((obj,))
+
 
 pre_delete.connect(media_pre_delete, sender=Media)
 
