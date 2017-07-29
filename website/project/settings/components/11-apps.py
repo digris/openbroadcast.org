@@ -114,6 +114,11 @@ INSTALLED_APPS = [
     # api
     'tastypie',
 
+    # api v2
+    'api_extra', # just styles for drf
+    'rest_framework',
+    'rest_framework.authtoken',
+
     # platform tools
     'fprint_client',
 

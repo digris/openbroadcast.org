@@ -85,6 +85,13 @@ django-threadedcomments==1.0
 
 django-simple-captcha==0.5.1
 
+##################################################################
+# RESTful API (v2)
+# http://www.django-rest-framework.org/#installation
+##################################################################
+djangorestframework==3.6.3
+coreapi==2.3.1
+
 
 ################################################
 # django-cms
