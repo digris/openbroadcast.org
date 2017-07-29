@@ -80,7 +80,6 @@ class FprintAPIClient(object):
         except:
             data = []
 
-
         return data
 
 
@@ -88,12 +87,6 @@ class FprintAPIClient(object):
         """
         sends code to fprint api
         """
-
-        # if not update:
-        #     existing_entry = self.get_for_media(obj)
-        #     if existing_entry:
-        #         return existing_entry
-
 
         url = '{api_base_url}fprint/entry/{uuid}/'.format(
             api_base_url=API_BASE_URL,
@@ -116,6 +109,27 @@ class FprintAPIClient(object):
         r = requests.put(url, json=data, timeout=2.0)
 
         if not r.status_code in [200, 201]:
+            log.warning('{}'.format(r.text))
+            return
+
+        return r.json()
+
+
+    def delete_for_media(self, obj):
+        """
+        sends code to fprint api
+        """
+
+        url = '{api_base_url}fprint/entry/{uuid}/'.format(
+            api_base_url=API_BASE_URL,
+            uuid=obj.uuid,
+        )
+
+        log.debug('delete fprint entry: {}'.format(url))
+
+        r = requests.delete(url, timeout=2.0)
+
+        if not r.status_code in [200, 202, 204]:
             log.warning('{}'.format(r.text))
             return
 

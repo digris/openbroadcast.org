@@ -19,23 +19,23 @@ from django.db import models
 from django.db.models.signals import post_save, pre_delete, post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 from django_extensions.db.fields import AutoSlugField
 from lib.fields.languages import LanguageField
 from base.signals.unsignal import disable_for_loaddata
 from lib.util.sha1 import sha1_by_file
 from tagging.registry import register as tagging_register
+
 from alibrary import settings as alibrary_settings
 from alibrary.models.basemodels import MigrationMixin, License, Relation, Profession
 from alibrary.models.playlistmodels import PlaylistItem, Playlist
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object
 
-from media_asset.util import get_format
-
-log = logging.getLogger(__name__)
+from fprint_client.api_client import FprintAPIClient
 
 USE_CELERYD = getattr(settings, 'ALIBRARY_USE_CELERYD', False)
-AUTOCREATE_ECHOPRINT = getattr(settings, 'ALIBRARY_AUTOCREATE_ECHOPRINT', True)
+AUTOCREATE_FPRINT = getattr(settings, 'ALIBRARY_AUTOCREATE_FPRINT', True)
 
 LAME_BINARY = getattr(settings, 'LAME_BINARY')
 SOX_BINARY = getattr(settings, 'SOX_BINARY')
@@ -87,6 +87,8 @@ VALID_BITRATES = [
 LOSSLESS_CODECS = [
     'wav', 'aif', 'aiff', 'flac',
 ]
+
+log = logging.getLogger(__name__)
 
 
 def upload_master_to(instance, filename):
@@ -479,9 +481,6 @@ class Media(MigrationMixin):
 
         abs_path = self.master.path
 
-        # format = get_format(self, wait=True)
-        # abs_path = format.path
-
         if not absolute:
             if settings.MEDIA_ROOT.endswith('/'):
                 path = abs_path.replace(settings.MEDIA_ROOT + '/', '')
@@ -573,23 +572,22 @@ class Media(MigrationMixin):
             self.process_master_info()
 
         # check if master changed. if yes we need to reprocess the cached files
-        if self.uuid is not None:
+        if self.pk is not None:
 
             try:
-                orig = Media.objects.filter(uuid=self.uuid)[0]
+                orig = Media.objects.filter(pk=self.pk)[0]
                 if orig.master != self.master:
                     log.info('Media id: %s - Master changed from "%s" to "%s"' % (self.pk, orig.master, self.master))
+
+                    # reset processing flags
+                    self.fprint_ingested = None
 
                     # set 'original filename'
                     if not self.original_filename and self.master.name:
                         try:
                             self.original_filename = self.master.name[0:250]
                         except Exception as e:
-                            pass
-
-                    # reset processing flags
-                    # TODO: this should be refactored / removed. Only master_* related informations are extracted.
-                    self.fprint_ingested = None
+                            log.warning('unable to update original_filename on media: {}'.format(self.pk))
 
             except Exception as e:
                 log.warning('unable to update master: {}'.format(e))
@@ -630,12 +628,12 @@ def media_post_save(sender, **kwargs):
     obj = kwargs['instance']
 
     if obj.master and not obj.fprint_ingested:
-        if AUTOCREATE_ECHOPRINT:
-            log.info('Media id: %s - generate echoprint' % (obj.pk))
-            # TODO: refactor fprint generation to API
-            # obj.update_echoprint()
-        else:
-            log.info('Media id: %s - skipping echoprint generation' % (obj.pk))
+        if AUTOCREATE_FPRINT:
+            log.info('Media id: {} - generate fprint'.format(obj.pk))
+            result = FprintAPIClient().ingest_for_media(obj)
+            if result:
+                Media.objects.filter(pk=obj.pk).update(fprint_ingested=timezone.now())
+
 
     if not obj.folder:
 
@@ -669,7 +667,10 @@ def media_pre_delete(sender, **kwargs):
         os.unlink(obj.master.path)
 
     # delete fingerprint
-    # TODO: rework/implement with fprint api / fprint_client
+    try:
+        FprintAPIClient().delete_for_media(obj)
+    except ValueError as e:
+        pass
 
 pre_delete.connect(media_pre_delete, sender=Media)
 

@@ -6,11 +6,12 @@ colorlog==2.6.0
 ipython
 tox
 
-# django-devserver
-# patched devserver to work with django >= 1.8
-# https://github.com/dcramer/django-devserver/pull/129
-git+git://github.com/hzlf/django-devserver#egg=django-devserver
+django-debug-toolbar
+django-debug-toolbar-template-profiler
+django-debug-toolbar-line-profiler
+Pympler==0.5
+line_profiler
 
 sqlparse
 guppy
-line_profiler
+

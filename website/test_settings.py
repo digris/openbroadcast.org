@@ -208,17 +208,9 @@ ANALYTICS_ACCOUNT = 'UA-28856125-1'
 
 DEV_APPS = ()
 
-MIDDLEWARE_CLASSES += (
-    #'devserver.middleware.DevServerMiddleware',
-)
-# INSTALLED_APPS += (
-#    'devserver',
-# )
-
 # devserver neets to come early in installed apps
-INSTALLED_APPS = (
-   #'devserver',
-) + INSTALLED_APPS
+INSTALLED_APPS = [
+] + INSTALLED_APPS
 
 
 POST_MORTEM = False
@@ -248,30 +240,6 @@ GITHUB_API_SECRET = 'a2602afb10e29096b101e3b698403996a6e86d70'
 
 
 
-DEVSERVER_MODULES = (
-    #'devserver.modules.sql.SQLRealTimeModule',
-    'devserver.modules.sql.SQLSummaryModule',
-    'devserver.modules.profile.ProfileSummaryModule',
-
-    # Modules not enabled by default
-    'devserver.modules.ajax.AjaxDumpModule',
-    'devserver.modules.profile.MemoryUseModule',
-    'devserver.modules.cache.CacheSummaryModule',
-    #'devserver.modules.profile.LineProfilerModule',
-)
-
-DEVSERVER_IGNORED_PREFIXES = [
-    '/media',
-    '/uploads',
-    '/static',
-]
-
-DEVSERVER_FILTER_SQL = (
-    re.compile('alibrary_\w+'),  # Filter all queries related to Celery
-)
-
-DEVSERVER_DEFAULT_ADDR = '0.0.0.0'
-DEVSERVER_DEFAULT_PORT = '8080'
 
 
 # file delivery
@@ -578,11 +546,6 @@ LOGGING = {
         'requests': {
             'handlers': ['null'],
             'level': 'ERROR',
-            'propagate': False
-        },
-        'devserver': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
             'propagate': False
         },
         'django.core.mail': {

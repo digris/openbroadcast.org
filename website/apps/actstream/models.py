@@ -94,6 +94,8 @@ class Action(models.Model):
     action_object = GenericForeignKey('action_object_content_type',
         'action_object_object_id')
 
+    data = models.TextField(blank=True, null=True)
+
     timestamp = models.DateTimeField(default=now)
 
     public = models.BooleanField(default=True)
@@ -186,20 +188,6 @@ def setup_generic_relations():
 
             setattr(Action, 'actions_with_%s_%s_as_%s' % (
                 model._meta.app_label, model._meta.model_name, field), None)
-
-
-
-if actstream_settings.USE_JSONFIELD:
-
-    # TODO: clean this up & remove json part
-
-    try:
-        from jsonfield.fields import JSONField
-    except ImportError:
-        raise ImproperlyConfigured('You must have django-jsonfield installed '
-                                'if you wish to use a JSONField on your actions')
-
-    models.TextField(blank=True, null=True).contribute_to_class(Action, 'data')
 
 # connect the signal
 action.connect(action_handler, dispatch_uid='actstream.models')

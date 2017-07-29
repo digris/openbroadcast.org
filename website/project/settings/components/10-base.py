@@ -87,7 +87,7 @@ DATABASES = {
 # middleware
 ################################################################################
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     #'opbeat.contrib.django.middleware.OpbeatAPMMiddleware',
     'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -105,7 +105,7 @@ MIDDLEWARE_CLASSES = (
     #'auditlog.middleware.AuditlogMiddleware',
     'social_auth.middleware.SocialAuthExceptionMiddleware',
     'arating.middleware.AratingIpMiddleware',
-)
+]
 
 
 

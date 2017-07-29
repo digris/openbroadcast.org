@@ -371,8 +371,6 @@ class ImportFile(BaseModel):
     @task
     def identify_task(obj):
 
-
-
         pre_sleep = 1
         time.sleep(pre_sleep)
 
@@ -390,7 +388,7 @@ class ImportFile(BaseModel):
         # get import settings
         reimport_duplicate = obj.settings.get('reimport_duplicate', False)
         if reimport_duplicate:
-            log.debug('duplicate reimport forced for pk: %s' % obj.pk)
+            log.debug('duplicate reimport forced for pk: {}'.format(obj.pk))
 
         if reimport_duplicate:
             media_id = None
@@ -402,25 +400,25 @@ class ImportFile(BaseModel):
             # duplicate check by sha1
             try:
                 media_id = identifier.id_by_sha1(obj.file)
-                log.debug('duplicate by SHA1: %s' % media_id)
+                log.debug('duplicate by SHA1: {}'.format(media_id))
             except:
-                log.warning('unable to identify by sha1: %s' % media_id)
+                log.warning('unable to identify by sha1: {}'.format(media_id))
 
             # duplicate check by name matching
             if not media_id:
                 try:
                     media_id = identifier.id_by_metadata(obj.file)
-                    log.debug('duplicate by metadata: %s' % media_id)
+                    log.debug('duplicate by metadata: : {}'.format(media_id))
                 except:
-                    log.warning('unable to identify by metadata: %s' % media_id)
+                    log.warning('unable to identify by metadata: {}'.format(media_id))
 
             # duplicate check by echoprint
             if not media_id:
                 try:
                     media_id = identifier.id_by_fprint(obj.file)
-                    log.debug('duplicate by echoprint: %s' % media_id)
+                    log.debug('duplicate by fprint: {}'.format(media_id))
                 except:
-                    log.warning('unable to identify by echoprint: %s' % media_id)
+                    log.warning('unable to identify by fprint: {}'.format(media_id))
 
         try:
             metadata = identifier.extract_metadata(obj.file)

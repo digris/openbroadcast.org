@@ -8,7 +8,7 @@ DEBUG = getattr(settings, 'DEBUG')
 # django apps
 ################################################################################
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
 
     'djangocms_admin_style',
     #'django_slick_admin',
@@ -59,7 +59,6 @@ INSTALLED_APPS = (
     'djcelery',
     'django_countries',
     'l10n',
-    #'guardian',
     'filer',
     'adv_cache_tag',
     'cacheops',
@@ -86,7 +85,6 @@ INSTALLED_APPS = (
     # cms
     'cms',
     'menus',
-    #'mptt',
     'treebeard',
 
     # cms plugins
@@ -152,7 +150,7 @@ INSTALLED_APPS = (
     'pushy',
     'nunjucks',
 
-)
+]
 
 
 
@@ -361,7 +359,6 @@ ACTSTREAM_SETTINGS = {
     ),
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': True,
-    'USE_JSONFIELD': True,
     'GFK_FETCH_DEPTH': 1,
 }
 

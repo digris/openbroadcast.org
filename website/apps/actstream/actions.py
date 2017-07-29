@@ -106,6 +106,6 @@ def action_handler(verb, **kwargs):
             setattr(newaction, '%s_object_id' % opt, obj.pk)
             setattr(newaction, '%s_content_type' % opt,
                     ContentType.objects.get_for_model(obj))
-    if settings.USE_JSONFIELD and len(kwargs):
+    if len(kwargs):
         newaction.data = kwargs
     newaction.save()
