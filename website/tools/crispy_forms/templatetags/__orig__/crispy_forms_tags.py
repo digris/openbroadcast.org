@@ -189,11 +189,10 @@ class BasicNode(template.Node):
         return response_dict
 
 
-# whole_uni_formset_template = get_template('%s/whole_uni_formset.html' % TEMPLATE_PACK)
-# whole_uni_form_template = get_template('%s/whole_uni_form.html' % TEMPLATE_PACK)
+whole_uni_formset_template = get_template('%s/whole_uni_formset.html' % TEMPLATE_PACK)
+whole_uni_form_template = get_template('%s/whole_uni_form.html' % TEMPLATE_PACK)
 
 class CrispyFormNode(BasicNode):
-
     def render(self, context):
 
         #print "CRISPY: start render"
@@ -204,12 +203,12 @@ class CrispyFormNode(BasicNode):
             if settings.DEBUG:
                 template = get_template('%s/whole_uni_formset.html' % TEMPLATE_PACK)
             else:
-                template = get_template('%s/whole_uni_formset.html' % TEMPLATE_PACK)
+                template = whole_uni_formset_template
         else:
             if settings.DEBUG:
                 template = get_template('%s/whole_uni_form.html' % TEMPLATE_PACK)
             else:
-                template = get_template('%s/whole_uni_form.html' % TEMPLATE_PACK)
+                template = whole_uni_form_template
 
 
         #print "CRISPY: end render"
@@ -220,7 +219,6 @@ class CrispyFormNode(BasicNode):
 #@register.tag(name="uni_form")
 @register.tag(name="crispy")
 def do_uni_form(parser, token):
-
     """
     You need to pass in at least the form/formset object, and can also pass in the
     optional `crispy_forms.helpers.FormHelper` object.

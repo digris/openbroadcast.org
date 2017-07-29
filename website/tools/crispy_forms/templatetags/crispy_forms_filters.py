@@ -7,8 +7,6 @@ from django import template
 
 
 TEMPLATE_PACK = getattr(settings, 'CRISPY_TEMPLATE_PACK', 'bootstrap')
-uni_formset_template = get_template('%s/uni_formset.html' % TEMPLATE_PACK)
-uni_form_template = get_template('%s/uni_form.html' % TEMPLATE_PACK)
 
 register = template.Library()
 
@@ -26,16 +24,11 @@ def as_crispy_form(form):
         </form>
     """
     if isinstance(form, BaseFormSet):
-        if settings.DEBUG:
-            template = get_template('%s/uni_formset.html' % TEMPLATE_PACK)
-        else:
-            template = uni_formset_template
+        template = get_template('%s/uni_formset.html' % TEMPLATE_PACK)
         c = Context({'formset': form, 'form_show_errors': True})
     else:
-        if settings.DEBUG:
-            template = get_template('%s/uni_form.html' % TEMPLATE_PACK)
-        else:
-            template = uni_form_template
+        template = get_template('%s/uni_form.html' % TEMPLATE_PACK)
+
         c = Context({'form': form, 'form_show_errors': True})
     return template.render(c)
 
