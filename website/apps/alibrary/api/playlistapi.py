@@ -3,7 +3,7 @@ import json
 from abcast.api import JingleResource
 from abcast.models import Jingle
 from alibrary.api import ReleaseResource, MediaResource, SimpleMediaResource
-from alibrary.models import Playlist, PlaylistMedia, Media, PlaylistItemPlaylist, PlaylistItem, Daypart
+from alibrary.models import Playlist, Media, PlaylistItemPlaylist, PlaylistItem, Daypart
 from alibrary.models import Release
 from django.conf.urls import url
 from django.db.models import Q
@@ -53,15 +53,6 @@ class PlaylistItemPlaylistResource(ModelResource):
         always_return_data = True
         authentication = MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
         authorization = Authorization()
-
-
-# TODO: guess this is not used anymore
-class PlaylistMediaResource(ModelResource):
-    media = fields.ToOneField('alibrary.api.MediaResource', 'media', null=True, full=True)
-
-    class Meta:
-        queryset = PlaylistMedia.objects.all()
-        excludes = ['id', ]
 
 
 class DaypartResource(ModelResource):

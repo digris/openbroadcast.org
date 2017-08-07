@@ -10,7 +10,7 @@ from artistmodels import (
 from labelmodels import Label
 from mediamodels import Media, MediaExtraartists, MediaArtists
 from playlistmodels import (
-    Playlist, PlaylistMedia, PlaylistItem, PlaylistItemPlaylist, Season, Weather, Series
+    Playlist, PlaylistItem, PlaylistItemPlaylist, Season, Weather, Series
 )
 from releasemodels import (
     Release, ReleaseExtraartists, ReleaseAlbumartists, ReleaseMedia

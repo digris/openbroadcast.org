@@ -9,6 +9,9 @@ urlpatterns = [
     url(r'^playlist/$', views.playlist_list, name='playlist-list'),
     url(r'^playlist/(?P<uuid>[0-9A-Fa-f-]+)/$', views.playlist_detail, name='playlist-detail'),
 
+    url(r'^artist/$', views.artist_list, name='artist-list'),
+    url(r'^artist/(?P<uuid>[0-9A-Fa-f-]+)/$', views.artist_detail, name='artist-detail'),
+
     url(r'^track/$', views.media_list, name='media-list'),
     url(r'^track/(?P<uuid>[0-9A-Fa-f-]+)/$', views.media_detail, name='media-detail'),
 

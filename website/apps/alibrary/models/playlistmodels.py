@@ -140,8 +140,6 @@ class Playlist(MigrationMixin, models.Model):
 
     # relations
     user = models.ForeignKey(User, null=True, blank=True, default=None)
-    # media = models.ManyToManyField('Media', through='PlaylistMedia', blank=True, null=True)
-
     items = models.ManyToManyField('PlaylistItem', through='PlaylistItemPlaylist', blank=True)
 
     # tagging (d_tags = "display tags")
@@ -429,21 +427,21 @@ class Playlist(MigrationMixin, models.Model):
     old method - for non-generic playlists
     """
 
-    def add_media_by_ids(self, ids):
-
-        from alibrary.models.mediamodels import Media
-
-        log = logging.getLogger('alibrary.playlistmodels.add_media_by_id')
-        log.debug('Media ids: %s' % (ids))
-
-        for id in ids:
-            id = int(id)
-
-            m = Media.objects.get(pk=id)
-            pm = PlaylistMedia(media=m, playlist=self, position=self.media.count())
-            pm.save()
-
-            self.save()
+    # def add_media_by_ids(self, ids):
+    #
+    #     from alibrary.models.mediamodels import Media
+    #
+    #     log = logging.getLogger('alibrary.playlistmodels.add_media_by_id')
+    #     log.debug('Media ids: %s' % (ids))
+    #
+    #     for id in ids:
+    #         id = int(id)
+    #
+    #         m = Media.objects.get(pk=id)
+    #         pm = PlaylistMedia(media=m, playlist=self, position=self.media.count())
+    #         pm.save()
+    #
+    #         self.save()
 
     def convert_to(self, type):
 
@@ -646,32 +644,14 @@ def playlist_post_save(sender, **kwargs):
 post_save.connect(playlist_post_save, sender=Playlist)
 
 
-class PlaylistMedia(models.Model):
-    # playlist = models.ForeignKey('Playlist', related_name='playlist_playlist')
-    # media = models.ForeignKey('Media', related_name='playlist_media')
-
-    # uuid = UUIDField()
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
-
-    playlist = models.ForeignKey('Playlist')
-    media = models.ForeignKey('Media')
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    updated = models.DateTimeField(auto_now=True, editable=False)
-    position = models.PositiveIntegerField(default=0)
-    #
-    cue_in = models.PositiveIntegerField(default=0)
-    cue_out = models.PositiveIntegerField(default=0)
-    fade_in = models.PositiveIntegerField(default=0)
-    fade_out = models.PositiveIntegerField(default=0)
-    fade_cross = models.PositiveIntegerField(default=0)
-
-    class Meta:
-        app_label = 'alibrary'
-
-
 class PlaylistItemPlaylist(models.Model):
-    playlist = models.ForeignKey('Playlist', on_delete=models.CASCADE)
-    item = models.ForeignKey('PlaylistItem', on_delete=models.CASCADE)
+
+    playlist = models.ForeignKey(
+        'Playlist', on_delete=models.CASCADE
+    )
+    item = models.ForeignKey(
+        'PlaylistItem', on_delete=models.CASCADE
+    )
 
     # uuid = UUIDField()
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)

@@ -107,7 +107,7 @@ def check_directories(app_configs, **kwargs):
     return errors
 
 
-@register()
+#@register()
 def check_apis(app_configs, **kwargs):
     """
     check API connection

@@ -12,7 +12,7 @@ from django.contrib import admin
 from alibrary.models import (Label, Artist, Media, Release, Playlist, ReleaseExtraartists,
                              ReleaseAlbumartists, Relation, ReleaseMedia, MediaExtraartists,
                              Agency, NameVariation, License, Service, ArtistProfessions, Profession,
-                             Distributor, AgencyScope, PlaylistMedia, PlaylistItem, PlaylistItemPlaylist,
+                             Distributor, AgencyScope, PlaylistItem, PlaylistItemPlaylist,
                              Daypart, Season, Weather, Series)
 
 THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
@@ -466,11 +466,6 @@ class AgencyAdmin(BaseAdmin):
 
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(AgencyScope)
-
-
-class PlaylistmediaInline(GenericTabularInline):
-    model = PlaylistMedia
-    extra = 1
 
 
 class PlaylistItemInline(GenericTabularInline):
