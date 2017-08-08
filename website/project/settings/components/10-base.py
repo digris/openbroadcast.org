@@ -88,21 +88,22 @@ DATABASES = {
 ################################################################################
 
 MIDDLEWARE_CLASSES = [
-    #'opbeat.contrib.django.middleware.OpbeatAPMMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
     'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # cms
     'django.middleware.locale.LocaleMiddleware',
+
+    # cms
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
-    'base.middleware.xs_sharing.XsSharingMiddleware',
 
-    #'auditlog.middleware.AuditlogMiddleware',
+    'base.middleware.xs_sharing.XsSharingMiddleware',
     'social_auth.middleware.SocialAuthExceptionMiddleware',
     'arating.middleware.AratingIpMiddleware',
 ]

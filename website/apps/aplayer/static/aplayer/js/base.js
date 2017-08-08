@@ -85,6 +85,7 @@ aplayer.jwp = function (container) {
             bufferlength: 1.0,
             securetoken: "Kosif093n203a"
         },
+        debug: true,
         events: {
             onReady: function () {
                 console.debug('jwplayer - onReady', event);
@@ -658,7 +659,7 @@ aplayer.base.prev_next = function (index, uuid) {
     if (index === undefined) {
         var index = 0;
     }
-    
+
     aplayer.states.current = index;
     aplayer.states.uuid = uuid;
     if (index > 0) {
@@ -925,7 +926,7 @@ aplayer.base.controls = function (args) {
 
         } else {
 
-            // console.debug('seek WITHOUT uuid');
+            console.debug('seek WITHOUT uuid:', p);
 
 
             var vc = aplayer.player.getVolume();

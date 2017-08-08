@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse_lazy
 
 from rest_framework import serializers
 from ..models import (
@@ -39,8 +40,23 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
         view_name='api:artist-detail',
         lookup_field='uuid'
     )
-
     artist_display = serializers.CharField(source='get_artist_display')
+
+
+
+    stream_uri = serializers.SerializerMethodField()
+    def get_stream_uri(self, obj, **kwargs):
+        stream_uri = {
+            'uri': reverse_lazy('mediaasset-format', kwargs={
+                'media_uuid': obj.uuid,
+                'quality': 'default',
+                'encoding': 'mp3',
+            }),
+        }
+
+        return stream_uri
+
+
 
     class Meta:
         model = Media
@@ -49,6 +65,7 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
             'url',
             'name',
             'master_duration',
+            'stream_uri',
             'isrc',
             'artist_display',
             'artist',

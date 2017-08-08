@@ -92,15 +92,7 @@
             parent_win = window.opener;
 
             $(document).ready(function() {
-
-                //debug.setLevel(2);
-
-                //if (!nunjucks.env) {
-                //    nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('{{ STATIC_URL }}'));
-                //}
-                //nj = nunjucks.env;
-                //nj = nunjucks_register_filters(nj);
-
+                
                 // set some variables to be available in script file
                 aplayer.vars.swf_url = '{{ STATIC_URL }}aplayer/swf/lib/jwplayer/jwplayer-5.9.swf';
                 aplayer.vars.skin_url = '{{ STATIC_URL }}aplayer/css/lib/jwplayer/ulysses.zip';

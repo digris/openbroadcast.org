@@ -355,6 +355,12 @@ def playlist_request_mixdown(request, pk):
     playlist = get_object_or_404(Playlist, pk=pk, user=request.user)
 
     mixdown = playlist.request_mixdown()
+
+    if not mixdown:
+        messages.add_message(request, messages.WARNING,
+                             _(u'Unable to requested Mixdown for "{}"'.format(playlist.name)))
+        return HttpResponseRedirect(playlist.get_absolute_url())
+
     if not mixdown['status'] == 3:
 
         # delete current mixdown

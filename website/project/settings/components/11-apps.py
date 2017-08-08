@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django_comments',
 
     # server
+    'corsheaders',
     'gunicorn',
     'django_date_extensions',
     'haystack',

@@ -219,8 +219,9 @@
                                 <span>{{ object.mixdown.status_display }}</span>
                             </li>
                             <li>
-                                <span class="label">{% trans 'ETA.' %}:</span>
+                                <span class="label">{% trans 'ETA' %}:</span>
                                 <span>{{ object.mixdown.eta|date:"TIME_FORMAT" }}</span>
+                                <span>("estimated time of arrival")</span>
                             </li>
                         </ul>
                     {% else %}
