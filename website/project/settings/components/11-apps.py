@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     'sekizai',
     'compressor',
     'easy_thumbnails',
+    'versatileimagefield',
 
     # cms
     'cms',
@@ -335,7 +336,7 @@ WIKISYNTAX = (
 WIKISYNTAX_DISABLE_CACHE = False
 
 """
-sendfile, delivers bought relases/tracks
+sendfile
 """
 SENDFILE_BACKEND = 'sendfile.backends.simple'
 

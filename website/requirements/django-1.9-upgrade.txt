@@ -82,7 +82,7 @@ django-sekizai==0.8.2
 django-social-auth==0.7.28
 django-split-settings==0.1.2
 
-
+django_versatileimagefield==1.7.1
 django-simple-captcha==0.5.1
 
 ##################################################################

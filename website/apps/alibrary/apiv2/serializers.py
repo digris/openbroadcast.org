@@ -2,16 +2,21 @@
 from __future__ import unicode_literals
 
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
+from django.conf import settings
 
 from rest_framework import serializers
+
+from versatileimagefield.serializers import VersatileImageFieldSerializer
+
 from ..models import (
-    Artist, Media, Playlist, PlaylistItem, PlaylistItemPlaylist
+    Artist, Release, Media, Playlist, PlaylistItem, PlaylistItemPlaylist
 )
+
+SITE_URL = getattr(settings, 'SITE_URL')
 
 
 class ArtistSerializer(serializers.HyperlinkedModelSerializer):
-
     url = serializers.HyperlinkedIdentityField(
         view_name='api:artist-detail',
         lookup_field='uuid'
@@ -26,6 +31,32 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
+class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name='api:release-detail',
+        lookup_field='uuid'
+    )
+
+    image = serializers.ImageField(
+        source='main_image',
+    )
+
+    detail_url = serializers.URLField(source='get_absolute_url')
+
+    releasedate = serializers.CharField(source='releasedate_approx')
+
+    class Meta:
+        model = Release
+        depth = 1
+        fields = [
+            'url',
+            'detail_url',
+            'name',
+            'image',
+            'releasedate',
+        ]
+
 
 class MediaSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -34,47 +65,65 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='uuid'
     )
 
+    duration = serializers.FloatField(source='master_duration')
+
     artist = serializers.HyperlinkedRelatedField(
         many=False,
         read_only=True,
         view_name='api:artist-detail',
         lookup_field='uuid'
     )
+
+    release = serializers.HyperlinkedRelatedField(
+        many=False,
+        read_only=True,
+        view_name='api:release-detail',
+        lookup_field='uuid'
+    )
+
+
     artist_display = serializers.CharField(source='get_artist_display')
 
 
+    assets = serializers.SerializerMethodField()
+    def get_assets(self, obj, **kwargs):
+        # TODO: propperly serialize assets
 
-    stream_uri = serializers.SerializerMethodField()
-    def get_stream_uri(self, obj, **kwargs):
-        stream_uri = {
-            'uri': reverse_lazy('mediaasset-format', kwargs={
-                'media_uuid': obj.uuid,
-                'quality': 'default',
-                'encoding': 'mp3',
-            }),
+        stream_url = reverse_lazy('mediaasset-format', kwargs={
+            'media_uuid': obj.uuid,
+            'quality': 'default',
+            'encoding': 'mp3',
+        })
+
+        waveform_url = reverse_lazy('mediaasset-waveform', kwargs={
+            'media_uuid': obj.uuid,
+            'type': 'w',
+        })
+
+        assets = {
+            'stream': '{}{}'.format(SITE_URL, stream_url),
+            'waveform': '{}{}'.format(SITE_URL, waveform_url)
         }
 
-        return stream_uri
-
-
+        return assets
 
     class Meta:
         model = Media
         depth = 1
         fields = [
             'url',
+            'uuid',
             'name',
-            'master_duration',
-            'stream_uri',
+            'duration',
+            'assets',
             'isrc',
             'artist_display',
             'artist',
+            'release',
         ]
 
 
-
 class PlaylistItemField(serializers.RelatedField):
-
     """
     A custom field to use for the `item` generic relationship.
     """
@@ -84,7 +133,7 @@ class PlaylistItemField(serializers.RelatedField):
         Serialize tagged objects to a simple textual representation.
         """
         if isinstance(value, Media):
-            #return 'Media: {}'.format(value.pk)
+            # return 'Media: {}'.format(value.pk)
             serializer = MediaSerializer(value, context={'request': self.context['request']})
         elif isinstance(value, Media):
             return 'Jingle: {}'.format(value.pk)
@@ -95,7 +144,6 @@ class PlaylistItemField(serializers.RelatedField):
 
 
 class PlaylistItemSerializer(serializers.ModelSerializer):
-
     # http://www.django-rest-framework.org/api-guide/relations/#generic-relationships
 
     content = PlaylistItemField(read_only=True, source='content_object')
@@ -109,10 +157,10 @@ class PlaylistItemSerializer(serializers.ModelSerializer):
 
 
 class PlaylistItemPlaylistSerializer(serializers.ModelSerializer):
-
-    #item = PlaylistItemSerializer(read_only=True)
+    # item = PlaylistItemSerializer(read_only=True)
 
     content = serializers.SerializerMethodField()
+
     def get_content(self, obj, **kwargs):
 
         # TODO: implement for `Jingle`
@@ -133,12 +181,11 @@ class PlaylistItemPlaylistSerializer(serializers.ModelSerializer):
 
         return serializer.data
 
-
     class Meta:
         model = PlaylistItemPlaylist
         depth = 1
         fields = [
-            #'item',
+            # 'item',
             'content',
             'position',
             'cue_in',
@@ -150,7 +197,6 @@ class PlaylistItemPlaylistSerializer(serializers.ModelSerializer):
 
 
 class PlaylistSerializer(serializers.ModelSerializer):
-
     url = serializers.HyperlinkedIdentityField(
         view_name='api:playlist-detail',
         lookup_field='uuid'

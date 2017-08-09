@@ -366,11 +366,6 @@ class Media(MigrationMixin):
     def get_admin_url(self):
         return reverse("admin:alibrary_media_change", args=(self.pk,))
 
-
-    # TODO: depreciated
-    def get_stream_url(self):
-        return reverse('alibrary-media-stream_html5', kwargs={'uuid': self.uuid})
-
     def get_api_url(self):
         return reverse('api_dispatch_detail', kwargs={
             'api_name': 'v1',

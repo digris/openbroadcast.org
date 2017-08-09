@@ -329,11 +329,7 @@ class SimpleMediaResource(ModelResource):
 
         if obj.master:
             stream = {
-                #'rtmp_app': '%s' % settings.RTMP_APP,
-                #'rtmp_host': 'rtmp://%s:%s/' % (settings.RTMP_HOST, settings.RTMP_PORT),
-                #'file': obj.master,
                 'uuid': obj.uuid,
-                #'uri': obj.get_stream_url(),
                 'uri': reverse_lazy('mediaasset-format', kwargs={
                     'media_uuid': bundle.obj.uuid,
                     'quality': 'default',

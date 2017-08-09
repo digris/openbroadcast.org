@@ -349,59 +349,9 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
 
 
-@never_cache
-def media_download(request, slug, format, version):
-
-    media = get_object_or_404(Media, slug=slug)
-    version = 'base'
-
-    download_permission = False
-
-    if not download_permission:
-        return HttpResponseForbidden('forbidden')
-
-    if format in ['mp3', 'flac', 'wav']:
-        cache_file = media.get_cache_file(format, version).path
-    else:
-        raise Http404
+# @never_cache
+# def media_download(request, slug, format, version):
+#
+#     return sendfile(request, cache_file, attachment=True, attachment_filename=filename)
 
 
-    filename = '%02d %s - %s' % (media.tracknumber, media.name.encode('ascii', 'ignore'), media.artist.name.encode('ascii', 'ignore'))
-
-    filename = '%s.%s' % (filename, format)
-
-    return sendfile(request, cache_file, attachment=True, attachment_filename=filename)
-
-
-@never_cache
-def stream_html5(request, uuid):
-
-    media = get_object_or_404(Media, uuid=uuid)
-
-    stream_permission = False
-
-    if request.user and request.user.has_perm('alibrary.play_media'):
-        stream_permission = True
-
-    # check if unrestricted license
-    #if not stream_permission:
-    #    if media.license and media.license.restricted == False:
-    #        stream_permission = True
-
-
-    if not stream_permission:
-        log.warning('unauthorized attempt by "%s" to download: %s - "%s"' % (request.user.username if request.user else 'unknown', media.pk, media.name))
-        raise PermissionDenied
-
-    try:
-        from atracker.util import create_event
-        create_event(request.user, media, None, 'stream')
-    except:
-        pass
-
-    media_file = media.get_cache_file('mp3', 'base')
-
-    if not media_file:
-        return HttpResponseBadRequest('unable to get cache file')
-
-    return sendfile(request, media_file)

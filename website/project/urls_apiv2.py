@@ -16,6 +16,7 @@ def api_root(request, format=None):
     return Response({
         'library/playlist': reverse('api:playlist-list', request=request, format=format),
         'library/artist': reverse('api:artist-list', request=request, format=format),
+        'library/release': reverse('api:release-list', request=request, format=format),
         'library/track': reverse('api:media-list', request=request, format=format),
         'auth-token': reverse('api:obtain-auth-token', request=request, format=format),
     })

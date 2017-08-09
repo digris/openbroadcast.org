@@ -242,15 +242,10 @@ class Format(TimestampedModel, UUIDModel):
     def __unicode__(self):
         return '%s - %s' % (self.get_encoding_display(), self.get_quality_display())
 
-    # @property
-    # def directory(self):
-    #     #return os.path.join(ASSET_DIR, 'format', self.encoding, self.media_uuid.replace('-', '/'))
-    #     uuid = '%s' % self.media_uuid
-    #     return os.path.join(ASSET_DIR, 'format', uuid.replace('-', '/'))
 
     @property
     def directory(self):
-        uuid = '%s' % self.media_uuid
+        uuid = str(self.media_uuid)
 
         """
         we need to insert an attitional directory here - as else 32000 fs limit could make problems
@@ -261,10 +256,18 @@ class Format(TimestampedModel, UUIDModel):
         return os.path.join(ASSET_DIR, 'format', dir)
 
 
-
     @property
     def path(self):
         return os.path.join(self.directory, self.quality + '.' + self.encoding)
+
+    @property
+    def relative_path(self):
+        # TODO: improve handling of absolute/relative path
+        dir = str(self.media_uuid).replace('-', '/')
+        dir = dir[:2] + '/' + dir[2:4] + '/' + dir[4:6] + '/' + dir[6:]
+
+        return os.path.join('media_asset', 'format', dir, self.quality + '.' + self.encoding)
+
 
     @property
     def filesize_display(self):

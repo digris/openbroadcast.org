@@ -6,8 +6,8 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from .serializers import ArtistSerializer, MediaSerializer, PlaylistSerializer
-from ..models import Artist, Media, Playlist
+from .serializers import ArtistSerializer, ReleaseSerializer, MediaSerializer, PlaylistSerializer
+from ..models import Artist, Release, Media, Playlist
 
 
 
@@ -54,6 +54,22 @@ artist_list = ArtistViewSet.as_view({
     'get': 'list',
 })
 artist_detail = ArtistViewSet.as_view({
+    'get': 'retrieve',
+})
+
+
+class ReleaseViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+
+    queryset = Release.objects.all().order_by('-created')
+    serializer_class = ReleaseSerializer
+    lookup_field = 'uuid'
+
+
+
+release_list = ReleaseViewSet.as_view({
+    'get': 'list',
+})
+release_detail = ReleaseViewSet.as_view({
     'get': 'retrieve',
 })
 

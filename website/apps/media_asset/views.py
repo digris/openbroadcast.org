@@ -10,7 +10,6 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.views.generic import View
 
-
 from models import Waveform, Format
 
 log = logging.getLogger(__name__)
@@ -18,6 +17,8 @@ log = logging.getLogger(__name__)
 WAVEFORM_TYPES = [
     's', 'w'
 ]
+
+NGINX_X_ACCEL_REDIRECT = True
 
 class WaveformView(View):
     """
@@ -65,6 +66,10 @@ class FormatView(View):
 
         stream_permission = False
 
+
+        # TODO: DISABLE DEFAULT PERMISSION!!!!!
+        stream_permission = True
+
         if request.user and request.user.has_perm('alibrary.play_media'):
             stream_permission = True
 
@@ -97,12 +102,26 @@ class FormatView(View):
         Format.objects.filter(pk=format.pk).update(accessed=timezone.now())
 
 
-        data = open(format.path, "rb").read()
-        #return HttpResponse(data, content_type='audio/mpeg')
+        if NGINX_X_ACCEL_REDIRECT:
 
-        response = HttpResponse(data, content_type='audio/mpeg')
-        response['Content-Length'] = format.filesize
+            x_path = '/protected/{}'.format(format.relative_path)
 
-        return response
+            # print('**************************************************************')
+            # print(format.uuid)
+            # print(x_path)
+
+            # serving through nginx
+            response = HttpResponse(content_type='audio/mpeg')
+            response['Content-Length'] = format.filesize
+            response['X-Accel-Redirect'] = x_path
+            return response
+
+        else:
+            # # original part - serving through django
+            data = open(format.path, "rb").read()
+            response = HttpResponse(data, content_type='audio/mpeg')
+            response['Content-Length'] = format.filesize
+
+            return response
 
 
