@@ -1,0 +1,143 @@
+{% extends "layout_edit.html" %}
+
+{% load i18n sekizai_tags straight_include dajaxice_templatetags pushy_tags pageguide_tags %}
+
+{% block object_type %}import{% endblock %}
+
+{% block heading %}
+
+    {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
+
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+
+{% endblock %}
+
+{% block modnav %}
+    <div id="modnav">
+        {% include "skeleton/module-navigation.html" %}
+    </div>
+{% endblock %}
+
+{% block inner %}
+    <div class="item_detail" style="">
+        <section>
+            <div class="row">
+                <div>&nbsp;</div>
+            </div>
+        </section>
+        <div class="clear"></div>
+    </div>
+{% endblock %}
+
+
+{% block sidebar %}
+    <div id="menu_context" class="menu_context">
+        <div class="set">
+            <ul class="unstyled">
+                <li class="link ">
+                    <span class="left icon"> <a href="{% url "importer-import-list" %}" title="{% trans "Back to My Uploads" %}">{% trans "Back to My Uploads" %}</a></span>
+                    <span class="opt"></span>
+                    <span class="clear"></span>
+                </li>
+                <li class="link ">
+                    <span class="left icon"> <a href="{% url "importer-import-create" %}" title="{% trans "New Upload Session" %}">{% trans "New Upload Session" %}</a></span>
+                    <span class="opt"></span>
+                    <span class="clear"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block form %}
+
+    <div class="item_inner">
+
+
+        <div class="row-fluid">
+
+            <div class="columns span12">
+                {{ object.type }}
+                -
+                {{ object.uuid_key }}
+            </div>
+
+            <div class="columns span12">
+
+                {%  for k, v in object.get_stats.iteritems %}
+                    <p>{{ k }}: {{ v|length }}</p>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+
+        <table style="width: 100%;">
+
+            {% for file in object.files.all %}
+
+                <tr>
+
+                    <td>{{ file.get_status_display }}</td>
+                    <td>{{ file.mimetype }}</td>
+                    <td>{{ file }}</td>
+                    <td>{# file.import_tag #}</td>
+                    <td>
+                        {% if file.media %}
+
+                            <a href="{{ file.media.get_absolute_url }}">
+                                {{ file.media.name }}
+                            </a>
+
+
+                            {% if file.media.artist %}
+                                <br>
+                                <a href="{{ file.media.artist.get_absolute_url }}">
+                                    {{ file.media.artist.name }}
+                                </a>
+
+                            {% endif %}
+
+                        {% endif %}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+
+        </table>
+
+
+        <section class="importer-importfiles">
+
+            <div class="listing">
+
+                    {% for file in object.files.all %}
+
+                        <div class="row-fluid">
+
+                            <div class="columns span-12">
+                                {{ file }} - {{ file.get_status_display }}
+                            </div>
+
+
+                        </div>
+
+
+                    {% endfor %}
+
+            </div>
+
+        </section>
+
+    </div>
+
+{% endblock %}
+
+{% block form_sidebar %}{% endblock %}
