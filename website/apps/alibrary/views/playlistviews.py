@@ -10,7 +10,6 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
-from guardian.forms import UserObjectPermissionsForm
 from tagging_extra.utils import calculate_cloud
 from pure_pagination.mixins import PaginationMixin
 from tagging.models import Tag

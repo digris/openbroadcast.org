@@ -7,6 +7,7 @@ from django.conf import settings
 
 from rest_framework import serializers
 
+from easy_thumbnails.templatetags.thumbnail import thumbnail_url
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 
 from ..models import (
@@ -16,11 +17,28 @@ from ..models import (
 SITE_URL = getattr(settings, 'SITE_URL')
 
 
+class ImageSerializer(serializers.ImageField):
+
+    def to_representation(self, instance):
+
+        if not instance:
+            return
+
+        return '{}{}'.format(SITE_URL, thumbnail_url(instance, 'thumbnail_240'))
+
+
 class ArtistSerializer(serializers.HyperlinkedModelSerializer):
+
     url = serializers.HyperlinkedIdentityField(
         view_name='api:artist-detail',
         lookup_field='uuid'
     )
+
+    image = ImageSerializer(
+        source='main_image',
+    )
+
+
 
     class Meta:
         model = Artist
@@ -28,33 +46,7 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
         fields = [
             'url',
             'name',
-        ]
-
-
-class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
-
-    url = serializers.HyperlinkedIdentityField(
-        view_name='api:release-detail',
-        lookup_field='uuid'
-    )
-
-    image = serializers.ImageField(
-        source='main_image',
-    )
-
-    detail_url = serializers.URLField(source='get_absolute_url')
-
-    releasedate = serializers.CharField(source='releasedate_approx')
-
-    class Meta:
-        model = Release
-        depth = 1
-        fields = [
-            'url',
-            'detail_url',
-            'name',
             'image',
-            'releasedate',
         ]
 
 
@@ -81,8 +73,12 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='uuid'
     )
 
-
     artist_display = serializers.CharField(source='get_artist_display')
+
+
+    release_display = serializers.SerializerMethodField()
+    def get_release_display(self, obj, **kwargs):
+        return obj.release.name
 
 
     assets = serializers.SerializerMethodField()
@@ -118,9 +114,61 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
             'assets',
             'isrc',
             'artist_display',
+            'release_display',
             'artist',
             'release',
         ]
+
+
+
+
+class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name='api:release-detail',
+        lookup_field='uuid'
+    )
+
+    image = ImageSerializer(
+        source='main_image',
+    )
+
+    detail_url = serializers.URLField(source='get_absolute_url')
+    releasedate = serializers.CharField(source='releasedate_approx')
+
+
+    media = MediaSerializer(
+        many=True,
+        read_only=True,
+        source='media_release',
+    )
+
+    items = serializers.SerializerMethodField()
+    def get_items(self, obj, **kwargs):
+        items = []
+
+        for media in obj.get_media():
+            serializer = MediaSerializer(media, context={'request': self.context['request']})
+            items.append({
+                'content': serializer.data
+            })
+
+        return items
+
+
+    class Meta:
+        model = Release
+        depth = 1
+        fields = [
+            'url',
+            'detail_url',
+            'name',
+            'image',
+            'releasedate',
+            'media',
+            'items',
+        ]
+
 
 
 class PlaylistItemField(serializers.RelatedField):

@@ -56,7 +56,7 @@
                 <a href="{{ item.get_absolute_url }}" title="{{ item.name }}">
                     {{ item.name|truncate_chars_inner:32 }}
                     {% if item.country %}({{ item.country }}){% endif %}
-                    {% cache 600 "topflop_media" item.pk %}
+                    {% cache 600 "media_topflop" item.pk %}
                     {% topflop_for_object item %}
                     {% endcache %}
                 </a>
@@ -104,7 +104,7 @@
 
             <li>
                 <ul class="unstyled horizontal">
-                    {% cache 86400 "media__list_item_xs" item.pk item.updated %}
+                    {% cache 86400 "media_stats" item.pk item.updated %}
                     {% stats_for_object item %}
                     {% endcache %}
                 </ul>

@@ -199,6 +199,19 @@ THUMBNAIL_QUALITY = 80
 THUMBNAIL_BASEDIR = 'thumbnails'
 THUMBNAIL_PRESERVE_EXTENSIONS = ('png',)
 
+THUMBNAIL_ALIASES = {
+    '': {
+        'thumbnail_240': {
+            'size': (240, 240),
+            'upscale': True,
+            'crop': True,
+            'quality': 80
+        },
+    },
+}
+
+
+
 BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'strong', 'a']
 BLEACH_STRIP_TAGS = True
 
@@ -256,7 +269,7 @@ AUTHENTICATION_BACKENDS = (
 
     'obp_legacy.auth.backends.LegacyBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'guardian.backends.ObjectPermissionBackend',
+    #'guardian.backends.ObjectPermissionBackend',
 )
 TWITTER_CONSUMER_KEY = ''
 TWITTER_CONSUMER_SECRET = ''

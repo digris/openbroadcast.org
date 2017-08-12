@@ -67,8 +67,8 @@ class FormatView(View):
         stream_permission = False
 
 
-        # TODO: DISABLE DEFAULT PERMISSION!!!!!
-        stream_permission = True
+        # # TODO: DISABLE DEFAULT PERMISSION!!!!!
+        # stream_permission = True
 
         if request.user and request.user.has_perm('alibrary.play_media'):
             stream_permission = True
@@ -92,23 +92,37 @@ class FormatView(View):
             time.sleep(2)
             format.refresh_from_db()
 
-        try:
-            from atracker.util import create_event
-            create_event(request.user, media, None, 'stream')
-        except:
-            pass
-
         # set access timestamp
         Format.objects.filter(pk=format.pk).update(accessed=timezone.now())
+
+        # print('*************************')
+        # print(self.request.META)
 
 
         if NGINX_X_ACCEL_REDIRECT:
 
             x_path = '/protected/{}'.format(format.relative_path)
 
-            # print('**************************************************************')
-            # print(format.uuid)
-            # print(x_path)
+
+            # TODO: improve handling of initial / range
+            requested_range = self.request.META.get('HTTP_RANGE', None)
+            if requested_range:
+                requested_range = requested_range.split('=')[1].split('-')
+
+                log.debug(u'requested range %s' % (requested_range))
+                if requested_range and requested_range[0] == '0':
+                    try:
+                        from atracker.util import create_event
+                        create_event(request.user, media, None, 'stream')
+                    except:
+                        pass
+
+                else:
+                    log.debug(u'seek play')
+
+
+
+
 
             # serving through nginx
             response = HttpResponse(content_type='audio/mpeg')
@@ -121,6 +135,12 @@ class FormatView(View):
             data = open(format.path, "rb").read()
             response = HttpResponse(data, content_type='audio/mpeg')
             response['Content-Length'] = format.filesize
+
+            try:
+                from atracker.util import create_event
+                create_event(request.user, media, None, 'stream')
+            except:
+                pass
 
             return response
 

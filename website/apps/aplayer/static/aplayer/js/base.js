@@ -481,7 +481,7 @@ aplayer.base.play_in_popup = function (uri, token, offset, mode, force_seek, sou
  * Possible states:
  * - no window present: create it and load the aplayer html
  * - window present but no bindings: bind (if parent win reloaded in the meantime)
- * - window bresent and attached: use (no reload so far)
+ * - window present and attached: use (no reload so far)
  * In each case - the popup calls the parents 'aplayer.base.remote_player_ready()'
  * when ready - and gets further action from there.
  *********************************************************************************/
