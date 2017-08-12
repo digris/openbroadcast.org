@@ -14,9 +14,11 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
+from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+from django.utils.encoding import force_text
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields.json import JSONField
 from base.signals.unsignal import disable_for_loaddata
@@ -28,6 +30,7 @@ log = logging.getLogger(__name__)
 
 USE_CELERYD = getattr(settings, 'IMORTER_USE_CELERYD', False)
 AUTOIMPORT_MB = getattr(settings, 'IMORTER_AUTOIMPORT_MB', True)
+MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT')
 
 
 GENERIC_STATUS_CHOICES = (
@@ -38,6 +41,28 @@ GENERIC_STATUS_CHOICES = (
     (99, _('Error')),
     (11, _('Other')),
 )
+
+
+def unsafe_join(base, *paths):
+    """
+    Join one or more path components to the base path component intelligently.
+    Return a normalized, absolute version of the final path.
+    Does *not* raise ValueError if the final path isn't located inside of the base path
+    component.
+    """
+    base = force_text(base)
+    paths = [force_text(p) for p in paths]
+    final_path = os.path.abspath(os.path.join(base, *paths))
+
+    return final_path
+
+class UnuspiciousStorage(FileSystemStorage):
+    """
+    Allows accessing files stored outside of `MEDIA_ROOT`
+    """
+    def path(self, name):
+        return unsafe_join(self.location, name)
+
 
 def clean_upload_path(instance, filename):
 
@@ -250,7 +275,7 @@ class Import(BaseModel):
                 import_session=self)[0]
             created = False
         except Exception as e:
-            log.warning('unable to add importitem: {} - {}'.format(item, e))
+            #log.warning('unable to add importitem: {} - {}'.format(item, e))
             pass
 
         if created:
@@ -321,7 +346,7 @@ class ImportFile(BaseModel):
 
     status = models.PositiveIntegerField(default=STATUS_INIT, choices=STATUS_CHOICES)
     filename = models.CharField(max_length=1024, blank=True, null=True)
-    file = models.FileField(max_length=1024, upload_to=clean_upload_path)
+    file = models.FileField(max_length=1024, upload_to=clean_upload_path, storage=UnuspiciousStorage())
     import_session = models.ForeignKey(Import, verbose_name=_('Import'), null=True, related_name='files')
     mimetype = models.CharField(max_length=100, blank=True, null=True)
     messages = JSONField(blank=True, null=True, default=None)
@@ -646,7 +671,10 @@ post_save.connect(post_save_importfile, sender=ImportFile)
 def post_delete_importfile(sender, **kwargs):
     obj = kwargs['instance']
     try:
-        os.remove(obj.file.path)
+        # only delete file if it is in regular `MEDIA_ROOT`
+        # so "unsafe" files via `UnuspiciousStorage` are not affected
+        if obj.file.path.startswith(MEDIA_ROOT):
+            os.remove(obj.file.path)
     except:
         pass
 

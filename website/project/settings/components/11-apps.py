@@ -269,7 +269,6 @@ AUTHENTICATION_BACKENDS = (
 
     'obp_legacy.auth.backends.LegacyBackend',
     'django.contrib.auth.backends.ModelBackend',
-    #'guardian.backends.ObjectPermissionBackend',
 )
 TWITTER_CONSUMER_KEY = ''
 TWITTER_CONSUMER_SECRET = ''

@@ -267,6 +267,8 @@ class Identifier(object):
             try:
                 if match:
                     t_num = int(match.group(0))
+                    if t_num > 99:
+                        t_num = None
             except:
                 pass
 
