@@ -57,9 +57,8 @@ class ImportFileResource(ModelResource):
 
             bundle.data['file'] = request.FILES[u'files[]']
 
-
         except Exception as e:
-            print e
+            print(e)
 
         return super(ImportFileResource, self).obj_create(bundle, request, **kwargs)
 

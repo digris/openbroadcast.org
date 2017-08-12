@@ -118,12 +118,23 @@ class ImportCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
 class ImportUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Import
-    template_name = 'importer/import_form.html'
+    #template_name = 'importer/import_form.html'
 
     fields = "__all__"
 
     permission_required = 'importer.change_import'
     raise_exception = True
+
+
+    def get_template_names(self):
+
+        if self.object.type == Import.TYPE_WEB:
+            template_name = 'importer/import_form.html'
+        else:
+            template_name = 'importer/import_readonly_form.html'
+
+
+        return [template_name]
 
     def dispatch(self, request, *args, **kwargs):
         obj = Import.objects.get(pk=int(kwargs['pk']))

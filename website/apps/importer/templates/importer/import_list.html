@@ -110,7 +110,14 @@
                             <span>{% trans 'Created items' %}:</span>
 
                             {% for key, ct in object.get_importitems.items %}
-                                <a href="{{ ct.url }}?import={{ object.pk }}" title="{% for item in ct.items|dictsort:"name" %}{{ item.name }}{% if not forloop.last %}&#10;{% endif %}{% endfor %}">{{ ct.name }} <span>{{ ct.items|length }}</span></a>
+
+
+                                {% if object.type == 'web' %}
+                                    <a href="{{ ct.url }}?import={{ object.pk }}" title="{% for item in ct.items|dictsort:"name" %}{{ item.name }}{% if not forloop.last %}&#10;{% endif %}{% endfor %}">{{ ct.name }} <span>{{ ct.items|length }}</span></a>
+                                {% else %}
+                                    <a href="{{ ct.url }}?import={{ object.pk }}">{{ ct.name }} <span>{{ ct.items|length }}</span></a>
+                                {% endif %}
+
 
                                 {% if not forloop.last %}<span>&mdash;</span>{% endif %}
 

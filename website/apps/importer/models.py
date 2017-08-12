@@ -6,6 +6,7 @@ import os
 import time
 import unicodedata
 import string
+import ntpath
 import magic
 from alibrary.models import Media, Artist
 from celery.task import task
@@ -376,6 +377,10 @@ class ImportFile(BaseModel):
 
 
     def __unicode__(self):
+
+        if self.file and self.file.path:
+            return ntpath.basename(self.file.path)
+
         return self.filename
 
     def get_api_url(self):
