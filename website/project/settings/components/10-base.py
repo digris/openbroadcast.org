@@ -135,6 +135,15 @@ REST_FRAMEWORK = {
     ],
 }
 
+##################################################################
+# notebook / shell plus
+##################################################################
+NOTEBOOK_ARGUMENTS = [
+    '--allow-root',
+    '--ip', '0.0.0.0',
+    '--port', '7777',
+]
+
 
 MIGRATION_MODULES = {
     # cms base plugins

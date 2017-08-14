@@ -62,7 +62,7 @@ class FprintAPIClient(object):
 
 
     @staticmethod
-    def identify(fprint, min_score=0.2):
+    def identify(fprint, min_score=0.2, duration_tolerance=5.0):
 
         url = '{api_base_url}fprint/identify/'.format(
             api_base_url=API_BASE_URL,
@@ -72,6 +72,7 @@ class FprintAPIClient(object):
 
         fprint.update({
             'min_score': min_score,
+            'duration_tolerance': duration_tolerance,
         })
 
         try:

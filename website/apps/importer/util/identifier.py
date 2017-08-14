@@ -152,7 +152,11 @@ class Identifier(object):
     def id_by_fprint(self, file):
 
         fprint = fprint_from_path(file.path)
-        results = FprintAPIClient().identify(fprint=fprint, min_score=0.25)
+        results = FprintAPIClient().identify(
+            fprint=fprint,
+            min_score=0.12,
+            duration_tolerance=3.0
+        )
 
         if results:
             log.info('got {} result(s) from fprint api'.format(len(results)))

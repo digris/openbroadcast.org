@@ -145,4 +145,4 @@ class ImportUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
     def get_queryset(self):
         kwargs = {}
-        return Import.objects.filter(user=self.request.user)
+        return Import.objects.filter(user=self.request.user).prefetch_related('files', 'files__media')

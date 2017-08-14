@@ -2,7 +2,7 @@
 import logging
 from social_auth.backends.contrib.dropbox import DropboxBackend
 from social_auth.models import UserSocialAuth
-from dropbox import client, session
+#from dropbox import client, session
 from django.conf import settings
 
 DROPBOX_APP_ID = getattr(settings, 'DROPBOX_APP_ID')
@@ -50,15 +50,16 @@ def dropbox_post_connect_tasks(backend, details, response, user=None, is_new=Fal
     print 'token:  %s' % token
     print 'secret: %s' % secret
 
-    sess = session.DropboxSession(DROPBOX_APP_ID, DROPBOX_API_SECRET)
-    sess.set_token(token, secret)
-    c = client.DropboxClient(sess)
+    #sess = session.DropboxSession(DROPBOX_APP_ID, DROPBOX_API_SECRET)
+    #sess.set_token(token, secret)
+    # c = client.DropboxClient(sess)
+    #
+    # oauth2_access_token = c.create_oauth2_access_token()
+    #
+    # print oauth2_access_token
 
-    oauth2_access_token = c.create_oauth2_access_token()
-
-    print oauth2_access_token
-
-    dbx = Dropbox(oauth2_access_token)
+    #dbx = Dropbox(oauth2_access_token)
+    dbx = Dropbox(access_token)
 
 
 
@@ -69,16 +70,9 @@ def dropbox_post_connect_tasks(backend, details, response, user=None, is_new=Fal
         '/Uploads [errors]',
     ]
 
-    for path in paths:
-        try:
-            dbx.files_create_folder(path)
-        except Exception as e:
-            print e
+    # for path in paths:
+    #     try:
+    #         dbx.files_create_folder(path)
+    #     except Exception as e:
+    #         print e
 
-
-    # dbox_session = session.DropboxSession(DROPBOX_APP_ID, DROPBOX_API_SECRET, 'app_folder')
-    #
-    # dbox_session.set_token(secret, token)
-    # dbox_client = client.DropboxClient(dbox_session)
-    #
-    # dbox_client.file_create_folder('just-a-test')
