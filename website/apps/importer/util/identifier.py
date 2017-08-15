@@ -119,8 +119,13 @@ class Identifier(object):
         try:
 
             if 'media_mb_id' in metadata and metadata['media_mb_id']:
-                # don't check for duplicates by name if musicbrainz id available
-                return
+                # check for duplicates my musicbrainz id
+                qs = Media.objects.filter(
+                    relations__url__contains='/recording{}/'.format(metadata['media_mb_id'])
+                )
+                if qs.exists():
+                    return qs[0].pk
+
 
 
             if 'performer_name' in metadata and 'media_name' in metadata and 'release_name' in metadata:
@@ -146,11 +151,11 @@ class Identifier(object):
 
 
 
-    """
-    look for a duplicate by fprint
-    """
-    def id_by_fprint(self, file):
 
+    def id_by_fprint(self, file):
+        """
+        look for a duplicate by fprint
+        """
         fprint = fprint_from_path(file.path)
         results = FprintAPIClient().identify(
             fprint=fprint,

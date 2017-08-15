@@ -442,11 +442,28 @@ class ImportFile(BaseModel):
                 except:
                     log.warning('unable to identify by metadata: {}'.format(media_id))
 
-            # duplicate check by echoprint
+            # duplicate check by fprint
             if not media_id:
                 try:
                     media_id = identifier.id_by_fprint(obj.file)
-                    log.debug('duplicate by fprint: {}'.format(media_id))
+                    log.debug('possible duplicate by fprint: {}'.format(media_id))
+
+                    # if possible duplicate and to be imported file have
+                    # both a musicbrainz recording id then ignore
+                    # the duplicate.
+                    # TODO: this is not so nicely done...
+                    try:
+                        metadata = identifier.extract_metadata(obj.file)
+
+                        if metadata and 'media_mb_id' in metadata and metadata['media_mb_id']:
+
+                            if Media.objects.get(pk=media_id).relations.filter(
+                                    url__contains='musicbrainz.org/recording/'
+                            ).exists():
+                                media_id = None
+                    except:
+                        pass
+
                 except:
                     log.warning('unable to identify by fprint: {}'.format(media_id))
 
