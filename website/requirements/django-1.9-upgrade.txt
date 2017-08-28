@@ -27,6 +27,7 @@ xmltodict==0.9.2
 tqdm==3.8.0
 Wand==0.4.2
 scandir==1.2
+semver==2.7.7
 
 
 ################################################
@@ -86,6 +87,8 @@ django-split-settings==0.1.2
 
 django_versatileimagefield==1.7.1
 django-simple-captcha==0.5.1
+
+jsonfield==2.0.2
 
 ##################################################################
 # RESTful API (v2)

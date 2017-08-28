@@ -576,6 +576,9 @@ class Media(MigrationMixin):
                 if orig.master != self.master:
                     log.info('Media id: %s - Master changed from "%s" to "%s"' % (self.pk, orig.master, self.master))
 
+                    # `_master_changed` can be / is used in signal listeners
+                    self._master_changed = True
+
                     # reset processing flags
                     self.fprint_ingested = None
 
@@ -611,6 +614,9 @@ class Media(MigrationMixin):
                     ea.delete()
             except:
                 pass
+
+        # TODO: remove! just for testing!
+        self._master_changed = True
 
         super(Media, self).save(*args, **kwargs)
 

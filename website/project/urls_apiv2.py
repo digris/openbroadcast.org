@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^$', api_root),
     url(r'^api-token-auth/', auth_views.obtain_auth_token, name='obtain-auth-token'),
     url('^library/', include('alibrary.apiv2.urls')),
+    url('^media-preflight/', include('media_preflight.apiv2.urls')),
 
 ]

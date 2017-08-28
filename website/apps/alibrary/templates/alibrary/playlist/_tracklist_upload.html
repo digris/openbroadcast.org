@@ -46,7 +46,8 @@
             uploader.fileupload_options = {
                 maxFileSize: 1000000000, // 1000 MB
                 minFileSize: 200000,
-                acceptFileTypes: /(\.|\/)(mp3|aif?f|wav|avi|flac|mp4|ogg|m4a)$/i,
+                //acceptFileTypes: /(\.|\/)(mp3|aif?f|wav|avi|flac|mp4|ogg|m4a)$/i,
+                acceptFileTypes: /(\.|\/)(mp3|wav|flac|mp4|ogg|m4a)$/i,
                 sequentialUploads: true,
                 limitConcurrentUploads: 1,
                 autoUpload: true

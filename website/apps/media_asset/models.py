@@ -84,7 +84,7 @@ class Waveform(TimestampedModel, UUIDModel):
         uuid = '%s' % self.media_uuid
 
         """
-        we need to insert an attitional directory here - as else 32000 fs limit could make problems
+        we need to insert an attitional directory here - as else 32000 fs limit (ext3) could make problems
         """
         dir = uuid.replace('-', '/')
         dir = dir[:2] + '/' + dir[2:4] + '/' + dir[4:6] + '/' + dir[6:]

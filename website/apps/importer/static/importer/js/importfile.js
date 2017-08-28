@@ -202,12 +202,10 @@ var ImportfileApp = function () {
             if (el.parents('.base').hasClass('release')) {
                 ct = 'release';
             }
-            ;
 
             if (el.parents('.base').hasClass('artist')) {
                 ct = 'artist';
             }
-            ;
 
 
             if (val) {
@@ -357,7 +355,7 @@ var ImportfileApp = function () {
             var data = {
                 item_id: self.local_data.id,
                 ct: $(this).attr('data-ct')
-            }
+            };
 
             // data = JSON.stringify(data);
 
@@ -595,7 +593,7 @@ var ImportfileApp = function () {
             }
         });
 
-    }
+    };
 
 
     // provider tag parsers
@@ -616,7 +614,7 @@ var ImportfileApp = function () {
             mb_artist_id: mb_tag.artist.mb_id,
             mb_label_id: mb_tag.label.mb_id
 
-        }
+        };
 
         debug.debug('import_tag:', import_tag);
 

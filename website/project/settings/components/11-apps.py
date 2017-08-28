@@ -132,6 +132,7 @@ INSTALLED_APPS = [
     'alibrary',
     'collection',
     'media_asset',
+    'media_preflight',
     'aplayer',
     'importer',
     'massimporter',
