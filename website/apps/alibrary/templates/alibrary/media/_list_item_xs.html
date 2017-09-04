@@ -1,4 +1,4 @@
-{% load calc i18n arating_tags truncate_tags spurl adv_cache hash_tags atracker_tags %}
+{% load calc i18n arating_tags truncate_tags spurl adv_cache hash_tags atracker_tags media_preflight_tags %}
 
 <div class="list_body_row selectable item media {{ item.uuid }} {% if item.creator == user %} owner{% endif %}"
      id="list_item_{{ item.id }}"
@@ -121,6 +121,7 @@
             <li>
                 {% if item.master_encoding %}{{ item.master_encoding|upper }}{% else %}ERROR{% endif %}
                 {% if item.bitrate %}| {{ item.bitrate }} Kbps{% endif %}
+                {% preflight_status_inline item %}
             </li>
 
         </ul>

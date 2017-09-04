@@ -91,10 +91,10 @@ def preflight_check_pre_save(sender, instance, **kwargs):
 
         if instance.result['checks']:
 
-            duration_preflight = next((item.get('duration_preflight') for item in instance.result['checks'] if item.get('duration')), None)
+            duration_preflight = instance.result['checks'].get('duration_preflight')
             duration_master = instance.media.master_duration
 
-            print('diff: {}'.format(abs(duration_preflight - duration_master)))
+            #print('diff: {}'.format(abs(duration_preflight - duration_master)))
 
             if duration_preflight and  (abs(duration_preflight - duration_master) < 2.0):
                 instance.preflight_ok = True

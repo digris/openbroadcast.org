@@ -172,10 +172,10 @@ class Release(MigrationMixin):
             if self.releasedate > datetime.now().date():
                 return True
 
-        if License.objects.filter(media_license__in=self.get_media(),
-                                  is_promotional=True).distinct().exists():
+        if License.objects.filter(
+                media_license__in=self.get_media(),
+                is_promotional=True).distinct().exists():
             return True
-
 
         return False
 
@@ -232,7 +232,7 @@ class Release(MigrationMixin):
 
     def get_media(self):
         from alibrary.models import Media
-        return Media.objects.filter(release=self)
+        return Media.objects.filter(release=self).select_related('artist', 'preflight_check')
 
     def get_products(self):
         return self.releaseproduct.all()
