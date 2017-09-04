@@ -27,6 +27,9 @@ class PreflightCheckAdmin(admin.ModelAdmin):
         'status',
         'preflight_ok',
     ]
+    readonly_fields = [
+        'result',
+    ]
     #date_hierarchy = 'created'
     raw_id_fields = ('media',)
     actions = [preflight_check_set_init]
