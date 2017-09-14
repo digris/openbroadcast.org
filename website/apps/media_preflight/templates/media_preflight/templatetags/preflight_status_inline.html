@@ -4,8 +4,15 @@
             <i class="icon-ok-sign"></i>
         </span>
     {% else %}
-        <span class="preflight-check preflight-check-error">
+        <span class="tooltipable preflight-check preflight-check-error"
+              data-title="{% for k, v in preflight_check.result.errors.iteritems %}
+            <strong>{{ k|upper }}:</strong><br>
+            {{ v }}<br>
+            {% endfor %}">
+
             <i class="icon-warning-sign"></i>
+
+
         </span>
     {% endif %}
 {% else %}

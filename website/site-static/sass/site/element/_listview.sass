@@ -30,8 +30,8 @@
       span.current
         background: $primary-color-a
         color: white
-    
-	
+
+
   .wrapper.list_style
     padding: 2px 0 0 0
     height: 20px
@@ -103,17 +103,17 @@
 
 .listview
   &.container
-  
-  
+
+
     .list_body_row
       ul
         margin: 0
-        
+
       .license // TODO: move to better place
         img
           height: 10px
-  
-    
+
+
     /*background-color: #ababab; */
     display: table
     width: 100%
@@ -165,7 +165,7 @@
         a > small
           color: #5a5a5a
           font-weight: normal
-          		
+
         /* Status dependant styleing */
         &.selection
           //background-color: #E4FFE4
@@ -177,14 +177,14 @@
 
         &.selection.hover
           background-color: #cbe5cb
-		  
-		  
+
+
         &.locked
           background-image: url(/static/img/prototype/list_closed_bg.png)
           background-color: #ffe1d2
         &.hover
           background-color: $hover-bg-color
-		  
+
         /* Unpublished, grey text */
         &.unpublished
           .list_body_item a
@@ -192,12 +192,12 @@
         /* Owner */
         &.owner
           background-image: url(/static/img/prototype/list_closed_bg.png)
-		  
-      
-      
-      
 
-      
+
+
+
+
+
       .list_body_item
         vertical-align: top !important
         display: table-cell
@@ -205,16 +205,16 @@
         color: #666666
         .small
           line-height: 18px
-          
+
         ul.small
-          li 
+          li
             font-weight: normal
             font-size: 90%
             &.highlight
               text-transform: uppercase
               small
                 color: $primary-color-a
-            
+
 
 
 // top-flop badges
@@ -280,7 +280,7 @@
     .hover-image.on-hover
       display: inline
 
-	  
+
 .listview
   &.footer
     border-top: none
@@ -291,18 +291,18 @@
 
     .ipp li
       padding-left: 7px
-    
+
     .ipp a.active
       color: $main-color-b
       padding-left: 2px
       padding-right: 2px
-      
+
     .control_selection
       span
         color: #999999
 
-      
-      
+
+
   &.container
 
 
@@ -384,7 +384,7 @@
         padding: 3px 4px 4px
       .c1
         width: 42px
-		
+
     .list_body_row
       height: 40px
 
@@ -412,7 +412,7 @@
             background-image: url(/static/img/base/listview.row.basket.bg.png)
 
     .list_body_item
-      a 
+      a
         span.filter
           padding: 0 0 0 12px
           /*background-color: #00ffff */
@@ -424,9 +424,9 @@
 
 
 
-              
-              
-      
+
+
+
     .list_body_item.image_center_bg
       background-repeat: no-repeat
       background-position: center
@@ -487,12 +487,12 @@
       .list_body_item
         &.c6
           text-align: right
-          padding-right: 24px 
+          padding-right: 24px
       .c7
         width: 80px
       .c8
         width: 48px
-    
+
     /* releases */
     &.releases.s
       .c1
@@ -527,7 +527,7 @@
         padding-right: 6px
       .c8
         width: 40px
-    
+
     /* playlists */
     &.playlists.s, &.playlist.s
       .c1
@@ -536,12 +536,12 @@
           background-size: 36px 36px
       .c8
         width: 40px
-      
+
     /* artists */
     &.artists.s
       .c1
         &.list_body_item
-          background-image: url(/static/img/base/defaults/listview.artist.xl.png) 
+          background-image: url(/static/img/base/defaults/listview.artist.xl.png)
           background-size: 36px 36px
       .c4
         .relations > ul
@@ -558,7 +558,7 @@
       .c6
         width: 40px
         padding-right: 0px
-		
+
     /* labels */
     &.labels.s
       .c6
@@ -572,7 +572,7 @@
         background-image: url(/static/img/base/defaults/listview.artist.xl.png)
         background-size: 53px auto
 
-		
+
     /* medias */
     &.medias.s
       .c1
@@ -585,7 +585,7 @@
           font-size: 90%
       .c3
         width: auto
-        //max-width: 285px 
+        //max-width: 285px
       .c4
         width: 100px
         // min-width: 170px
@@ -710,25 +710,25 @@
       .playing
         background-color: $primary-color-a-bg-light
 
-		
-		
-		
-/*********************************************************** 
+
+
+
+/***********************************************************
  * Styles Medium
  ***********************************************************/
 .listview
   &.container
-  
+
 
     &.releases.m
       .c1.list_body_item
         background-image: url(/static/img/base/defaults/listview.release.xl.png)
         background-size: 54px 54px
-        
+
     &.artists.m
       .c1.list_body_item
         background-image: url(/static/img/base/defaults/listview.artist.xl.png)
-        background-size: 54px 54px  
+        background-size: 54px 54px
       .c2
         width: 214px
 
@@ -761,18 +761,18 @@
 
       .c5
         width: 40px
-        
+
     &.playlist.m
       .c1.list_body_item
-        background-image: url(/static/img/base/defaults/listview.playlist.xl.png) 
-        background-size: 54px 54px  
+        background-image: url(/static/img/base/defaults/listview.playlist.xl.png)
+        background-size: 54px 54px
       .c2
         // width: 214px
-        
+
     &.profile.m
       .c1.list_body_item
-        background-image: url(/static/img/base/defaults/listview.profile.xl.png) 
-        background-size: 54px 54px  
+        background-image: url(/static/img/base/defaults/listview.profile.xl.png)
+        background-size: 54px 54px
       .c2
         // width: 214px
       .c3
@@ -804,11 +804,11 @@
               background: $primary-color-a
               border-color: $primary-color-a
               color: white
-  
+
     &.m
       font-size: 90%
       .list_body_item, .list_header_item
-        
+
         padding: 2px
       .c1
         width: 84px
@@ -828,7 +828,7 @@
           display: block
           width: 16px
           padding: 2px 0 0 0
-          
+
           a
             display: block
             width: 16px
@@ -864,55 +864,13 @@
       .c4
         width: auto
 
-        // old layout
-          .inner_row
-            &.top
-              height: 16px
-              width: 30px
-            &.bottom
-              position: relative
-              width: 416px
-              height: 44px
-              ul.tags
-                position: absolute
-                bottom: 0
-                right: 0
-                &.second_row
-                  bottom: 22px
-                li
-                  background-image: url(/static/img/base/element.tag.p.png)
-                  background-position: right center
-                  background-repeat: no-repeat
-                  border-left: 1px solid #E3DBF2
-                  height: 18px
-                  margin-bottom: 4px
-                  padding-left: 7px
-                  padding-right: 10px
-                  float: right
-                  margin-right: 4px
-                  &.active
-                    background-image: url(/static/img/base/element.tag.a.png)
-                    border-left: 1px solid #e3ffe8
-                    color: $primary-color-a
-              
-		
 
-
-
-
-
-
-
-
-
-/*********************************************************** 
+/***********************************************************
  * Styles Large
  ***********************************************************/
- 
+
  /* Reset all divs to block display (instead of table-way) */
 
-
-  
 .listview.container
   &.releases.l
     .list_body_row.item
@@ -957,12 +915,12 @@
 
   div.list_body
     display: block
-	
+
     div.break_line
       height: 55px
-	
+
     /* actually not a real 'row' in this style */
-    div.list_body_row 
+    div.list_body_row
       display: block
       float: left
       width: 197px
@@ -975,11 +933,11 @@
       overflow: hidden
       border: 1px solid #EFEFEF
       position: relative
-	  
+
       &.selection
         div.wrapper_info, div.wrapper_action
           background-color: $selection-bg-color
-		  
+
       &.hover
         border-bottom: none
         //background-color: #ffffff
@@ -989,20 +947,20 @@
           //background-color: #F5F5F5
       &.selection.hover
         background-color: $selection-bg-color
-		
+
       &.playing
         ul li
           &.play a
             background-position: 0 -16px
 
-      
-      //&.pos3		
+
+      //&.pos3
       //  margin: 9px 0 0 0
-  
+
       div.list_body_item
         display: block
         border-bottom: none
-		
+
         &.action
           .wrapper
             width: 36px
@@ -1097,7 +1055,7 @@
             border: 1px solid #626262
 
 
-		
+
       /* Adjustable info panel */
       .wrapper_info
         //background-color: #ffffff
@@ -1165,25 +1123,21 @@
       background: none
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+/* preflight check */
+.listview.container
+  .list_body_item
+    .preflight-check
+      //&.preflight-check-ok
+      //  color: $primary-color-a
+      &.preflight-check-error
+        color: $errorText
 
 
 /* license icon display */
 .listview.container
   .list_body_item
 
-		
+
     &.links.external
       ul li
         float: left
@@ -1194,20 +1148,20 @@
             color: $primary-color-b
             text-decoration: none
         // @include link_external
-	  
-	  	
+
+
   &.s
     .list_body_item
       &.license
         background-position: center center
         background-position-y: 5px
-        
+
   &.m
     .list_body_item
       &.license
         background-position: 0 4px
-		
-		
+
+
 /* overrides for states */
 .listview
   &.container.downloads
@@ -1218,36 +1172,36 @@
       img
         width: 16px
         height: 16px
-	  
+
     .list_body_row.init
       .list_body_item
         color: #ababab
       .c1
-        background-image: url(/static/img/base/listview.downloads.init.png)	
-	  
+        background-image: url(/static/img/base/listview.downloads.init.png)
+
     .list_body_row.running
       .list_body_item
         color: #ababab
       .c1
-        background-image: url(/static/img/base/listview.downloads.running.png)	
-	  
+        background-image: url(/static/img/base/listview.downloads.running.png)
+
     .list_body_row.done
       .c1
-        background-image: url(/static/img/base/listview.downloads.done.png)		
-	  
+        background-image: url(/static/img/base/listview.downloads.done.png)
+
     .list_body_row.error
       .list_body_item
         background-color: #fff0e1
         color: #5a5a5a
       .c1
-        background-image: url(/static/img/base/listview.downloads.error.png)	
-		
+        background-image: url(/static/img/base/listview.downloads.error.png)
+
     .list_body_row.done.downloaded
       .list_body_item
         background-color: #E4FFE4
       .c1
         /* background-color: #ff00ff
-        background-image: url(/static/img/base/listview.downloads.downloaded.png)		
+        background-image: url(/static/img/base/listview.downloads.downloaded.png)
 
 
 
