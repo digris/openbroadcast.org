@@ -20,11 +20,8 @@ def media_post_save(sender, instance, created, **kwargs):
 
 
 @receiver(post_delete, sender='alibrary.Media')
-def media_post_delete(sender, instance, created, **kwargs):
+def media_post_delete(sender, instance, **kwargs):
 
     if hasattr(instance, 'preflight_check') and instance.preflight_check:
 
         instance.preflight_check.delete()
-
-
-

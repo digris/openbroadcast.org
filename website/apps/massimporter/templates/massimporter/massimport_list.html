@@ -1,0 +1,142 @@
+{% extends "base/listing.html" %}
+
+{% load i18n sekizai_tags cms_tags humanize %}
+
+{% block object_type %}massimport{% endblock %}
+
+{% block searchbar %}{% endblock %}
+
+{% block heading %}
+
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+
+{% endblock %}
+
+{% block pagination %}{% endblock %}
+{% block ipp %}{% endblock %}
+
+{% block pre_list %}
+
+{% endblock %}
+
+{% block list_inner %}
+
+    <div class="listhead">
+        <div class="pagination-holder">
+            {% include "element/_pagination.html" %}
+        </div>
+    </div>
+
+
+    <div class="listing massimport-list">
+
+        {% for object in object_list %}
+
+            {% ifchanged %}
+                <div class="row-fluid">
+                    <div class="span12">
+                        <h3>{{ object.created|date:'F Y' }}</h3>
+                    </div>
+                </div>
+            {% endifchanged %}
+
+            <div class="item hoverable">
+
+
+                <div class="row-fluid">
+
+                    <div class="span3">
+
+                        <ul>
+
+                            <li>
+                                <a href="{% url 'massimporter-import-detail' uuid=object.uuid %}">Details</a>
+                                <span>ID: {{ object.pk }}</span>
+                            </li>
+
+                            <li>
+                                <span>{% trans 'User' %}:</span>
+                                <a href="{{ object.user.get_absolute_url }}">{% firstof object.user.profile.get_display_name object.user %}</a>
+                            </li>
+
+                            <li>
+                                <!--<span>{% trans 'Created' %}:</span>-->
+                                {{ object.created|date:'DATETIME_FORMAT' }}
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                    <div class="span3">
+
+                        <ul>
+
+                            <li>
+                                <span>{% trans 'Status' %}:</span>
+                                {{ object.get_status_display }}
+                            </li>
+
+                            <li>
+                                <span>{% trans 'Collection' %}:</span>
+                                {{ object.collection_name }}
+                            </li>
+
+                        </ul>
+
+                        <ul>
+                            {% for k, v in object.get_counts.iteritems %}
+                                <li>
+                                    <span>{{ k }}:</span>
+                                    {{ v }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+
+                    <div class="span6">
+
+                        <ul>
+
+                            <li>
+                                <span>{% trans 'Num. Files' %}:</span>
+                                {{ object.files.count }}
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+                <div class="row-fluid">
+
+                    <div class="span12">
+
+                        <ul>
+
+                            <li>
+                                <span>{% trans 'Directory' %}:</span>
+                                {{ object.directory }}
+
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+    {% include "importer/_import_list_sidebar.html" %}
+{% endblock %}

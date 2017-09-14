@@ -60,17 +60,24 @@
         <div class="row-fluid">
 
             <div class="columns span12">
+                <h2>
                 {{ object.type }}
                 -
                 {{ object.uuid_key }}
+                </h2>
             </div>
 
+        </div>
+
+
+        <div class="row-fluid">
+
             <div class="columns span12">
-
+                <p>
                 {%  for k, v in object.get_stats.iteritems %}
-                    <p>{{ k }}: {{ v|length }}</p>
+                    <span><span>{{ k }}</span>: {{ v|length }}</span>
                 {% endfor %}
-
+                </p>
             </div>
 
         </div>
@@ -84,7 +91,7 @@
                 <tr>
 
                     <td>{{ file.get_status_display }}</td>
-                    <td>{{ file.mimetype }}</td>
+                    <td>{{ file.mimetype|default:'-' }}</td>
                     <td>{{ file }}</td>
                     <td>{# file.import_tag #}</td>
                     <td>
@@ -114,27 +121,6 @@
         </table>
 
 
-        <section class="importer-importfiles">
-
-            <div class="listing">
-
-                    {% for file in object.files.all %}
-
-                        <div class="row-fluid">
-
-                            <div class="columns span-12">
-                                {{ file }} - {{ file.get_status_display }}
-                            </div>
-
-
-                        </div>
-
-
-                    {% endfor %}
-
-            </div>
-
-        </section>
 
     </div>
 

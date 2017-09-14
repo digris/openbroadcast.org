@@ -1,0 +1,119 @@
+{% extends "layout_base.html" %}
+
+{% load i18n sekizai_tags straight_include dajaxice_templatetags pushy_tags pageguide_tags %}
+
+{% block object_type %}massimport{% endblock %}
+
+{% block heading %}
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+{% endblock %}
+
+{% block modnav %}
+    <div id="modnav">
+        {% include "skeleton/module-navigation.html" %}
+    </div>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+
+{% block inner %}
+
+
+
+
+    <div class="item">
+
+
+        <div class="row-fluid">
+
+            <div class="span3">
+
+                <ul>
+
+                    <li>
+                        <a href="{% url 'massimporter-import-detail' uuid=object.uuid %}">Details</a>
+                        <span>ID: {{ object.pk }}</span>
+                    </li>
+
+                    <li>
+                        <span>{% trans 'User' %}:</span>
+                        <a href="{{ object.user.get_absolute_url }}">{% firstof object.user.profile.get_display_name object.user %}</a>
+                    </li>
+
+                    <li>
+                        <!--<span>{% trans 'Created' %}:</span>-->
+                        {{ object.created|date:'DATETIME_FORMAT' }}
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <div class="span3">
+
+                <ul>
+
+                    <li>
+                        <span>{% trans 'Status' %}:</span>
+                        {{ object.get_status_display }}
+                    </li>
+
+                    <li>
+                        <span>{% trans 'Collection' %}:</span>
+                        {{ object.collection_name }}
+                    </li>
+
+                </ul>
+
+                <ul>
+                    {% for k, v in object.get_counts.iteritems %}
+                        <li>
+                            <span>{{ k }}:</span>
+                            {{ v }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+
+            <div class="span6">
+
+                <ul>
+
+                    <li>
+                        <span>{% trans 'Num. Files' %}:</span>
+                        {{ object.files.count }}
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div class="row-fluid">
+
+            <div class="span12">
+
+                <ul>
+
+                    <li>
+                        <span>{% trans 'Directory' %}:</span>
+                        {{ object.directory }}
+
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block form_sidebar %}{% endblock %}

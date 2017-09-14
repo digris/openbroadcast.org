@@ -106,6 +106,19 @@ class Massimport(BaseModel):
             self.status = Massimport.STATUS_DONE
             self.save()
 
+
+    def get_counts(self):
+
+        counts = {}
+
+        for status in MassimportFile.STATUS_CHOICES:
+            count = self.files.filter(status=status[0]).count()
+            if count:
+               counts[status[1]] = count
+
+        return counts
+
+
     def scan(self):
 
         stats = {

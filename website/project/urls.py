@@ -66,6 +66,9 @@ urlpatterns = [
         'document_root': settings.MEDIA_ROOT,
     }),
 
+    # massimporter / maintainer extra urls
+    url(r'^extra/', include('massimporter.urls')),
+
     url(r'^docs/', include('djangocms_sphinxdoc.urls')),
 
     url(r'^search/', include('search.urls')),
@@ -74,7 +77,6 @@ urlpatterns = [
 
     url(r'^player/', include('aplayer.urls')),
     url(r'^media-asset/', include('media_asset.urls')),
-
 
     url(r'^webhooks/import/', include('massimporter.webhook.urls')),
 
