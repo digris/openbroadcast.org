@@ -30,6 +30,13 @@ class PreflightCheckAdmin(admin.ModelAdmin):
     readonly_fields = [
         'result',
     ]
+
+    search_fields = [
+        'media__id',
+        'media__uuid',
+        'media__name',
+    ]
+
     #date_hierarchy = 'created'
     raw_id_fields = ('media',)
     actions = [preflight_check_set_init]
