@@ -24,7 +24,7 @@ DEFAULT_DLS_TEXT = ['Open Broadcast', ]
 SLIDE_BASE_IMAGE = getattr(settings, 'DAB_SLIDE_BASE_IMAGE', os.path.join(
     os.path.dirname(__file__), 'asset', 'slide_base.png'))
 
-SLIDE_BASE_FONT = getattr(settings, 'DAB_SLIDE_BASE_IMAGE', os.path.join(
+SLIDE_BASE_FONT = getattr(settings, 'DAB_SLIDE_BASE_FONT', os.path.join(
     os.path.dirname(__file__), 'asset', 'HelveticaNeueCyr-Light.otf'))
 
 SLIDE_DEFAULT_IMAGE = getattr(settings, 'DAB_SLIDE_DEFAULT_IMAGE', os.path.join(
@@ -32,6 +32,10 @@ SLIDE_DEFAULT_IMAGE = getattr(settings, 'DAB_SLIDE_DEFAULT_IMAGE', os.path.join(
 
 SLIDE_BASE_DIR = os.path.join(MEDIA_ROOT, 'metadata', 'dab')
 SLIDE_BASE_URL = MEDIA_URL + 'metadata/' + 'dab/'
+
+
+IMAGE_OUTPUT_FORMAT = 'jpg' # or 'png'
+
 
 INCLUDE_STATION_LOGO = True
 STATION_LOGO_PROBABILITY = 0.3
@@ -285,8 +289,8 @@ class DABMetadataGenerator(object):
 
         if overlay_image_path and os.path.isfile(overlay_image_path):
             key = '%s-%s-%03d' % (self.emission.uuid, self.content_object.uuid, slide_id)
-            path = os.path.join(SLIDE_BASE_DIR, key + '.png')
-            url = SLIDE_BASE_URL + key + '.png'
+            path = os.path.join(SLIDE_BASE_DIR, key + '.{}'.format(IMAGE_OUTPUT_FORMAT))
+            url = SLIDE_BASE_URL + key + '.{}'.format(IMAGE_OUTPUT_FORMAT)
         else:
             # TODO: not used anymore
             overlay_image_path = SLIDE_DEFAULT_IMAGE
@@ -301,6 +305,13 @@ class DABMetadataGenerator(object):
 
             # add overlay image
             draw.composite('over', left=210, top=10, width=100, height=100, image=overlay_image)
+
+            # text settings
+            # draw.font = SLIDE_BASE_FONT
+            # draw.font_size = 14
+            # draw.text_interline_spacing = 8
+            # draw.fill_color = Color('white')
+            # draw.text_antialias = True
 
             # text settings
             draw.font = SLIDE_BASE_FONT
@@ -321,8 +332,14 @@ class DABMetadataGenerator(object):
             # compose image
             with Image(filename=SLIDE_BASE_IMAGE) as image:
                 draw(image)
+
+                if IMAGE_OUTPUT_FORMAT == 'jpg':
+                    image.compression_quality = 70
+                    image.format = 'jpeg'
+
                 image.save(filename=path)
-                image.save(filename=os.path.join(SLIDE_BASE_DIR, 'debug-%s.png' % slide_id))
+                image.save(filename=os.path.join(SLIDE_BASE_DIR, 'debug-{}.{}'.format(slide_id, IMAGE_OUTPUT_FORMAT)))
+
 
         return url
 
@@ -331,8 +348,8 @@ class DABMetadataGenerator(object):
         image_display_size = (300, 190)
 
         key = '%s-%s-%03d' % (self.emission.uuid, self.content_object.uuid, slide_id)
-        path = os.path.join(SLIDE_BASE_DIR, key + '.png')
-        url = SLIDE_BASE_URL + key + '.png'
+        path = os.path.join(SLIDE_BASE_DIR, key + '.{}'.format(IMAGE_OUTPUT_FORMAT))
+        url = SLIDE_BASE_URL + key + '.{}'.format(IMAGE_OUTPUT_FORMAT)
 
         overlay_image = Image(filename=image_path)
 
@@ -371,8 +388,13 @@ class DABMetadataGenerator(object):
             # compose image
             with Image(filename=SLIDE_BASE_IMAGE) as image:
                 draw(image)
+
+                if IMAGE_OUTPUT_FORMAT == 'jpg':
+                    image.compression_quality = 62
+                    image.format = 'jpeg'
+
                 image.save(filename=path)
-                image.save(filename=os.path.join(SLIDE_BASE_DIR, 'debug-%s.png' % slide_id))
+                image.save(filename=os.path.join(SLIDE_BASE_DIR, 'debug-{}.{}'.format(slide_id, IMAGE_OUTPUT_FORMAT)))
 
         return url
 
@@ -382,7 +404,7 @@ class DABMetadataGenerator(object):
         filename_length = 81
 
         for file in os.listdir(SLIDE_BASE_DIR):
-            if file.endswith(".png"):
+            if file.endswith(".png") or file.endswith(".jpg"):
                 path = os.path.join(SLIDE_BASE_DIR, file)
                 fstat = os.stat(path)
                 if len(file) == filename_length and fstat.st_mtime < time.time() - max_age:
