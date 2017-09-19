@@ -92,11 +92,12 @@ class DABMetadataGenerator(object):
         if self.playlist.user:
             author_text = 'curated by {0}'.format(self.playlist.user.profile.get_display_name())
 
-        if series_text:
-            items.append(series_text)
-
         if playlist_text:
-            items.append(playlist_text)
+
+            if series_text:
+                items.append('{} - {}'.format(playlist_text, series_text))
+            else:
+                items.append(playlist_text)
 
         if item_text:
             items.append(item_text)
