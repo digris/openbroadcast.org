@@ -112,7 +112,7 @@ class DABMetadataGenerator(object):
         http://wiki.opendigitalradio.org/Mot-encoder#Usage_of_DL_Plus
         """
         tags = tags or []
-        tag = '##### parameters { #####' + NEWLINE + 'DL_PLUS=1' + NEWLINE
+        tag = '##### parameters { #####' + NEWLINE + 'DL_PLUS=1' + NEWLINE + 'DL_PLUS_ITEM_TOGGLE=0' + NEWLINE + 'DL_PLUS_ITEM_RUNNING=1' + NEWLINE
         for t in tags[0:4]:
             tag += 'DL_PLUS_TAG={0}'.format(' '.join(['{}'.format(b) for b in t])) + NEWLINE
 
@@ -130,7 +130,7 @@ class DABMetadataGenerator(object):
          - 4: Artist
          - 33: program now ('series')
          - 35: program part ('playlist')
-         - 37: editorial ("curated by")
+         - 37: editorial ('curated by')
          - 39: www-radiopage
         """
 
