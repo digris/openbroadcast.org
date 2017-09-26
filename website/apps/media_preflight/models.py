@@ -117,8 +117,6 @@ def preflight_check_post_save(sender, instance, created, **kwargs):
 
     if instance.status < PreflightCheck.STATUS_PROCESSING:
         PreflightCheck.objects.filter(pk=instance.pk).update(status=PreflightCheck.STATUS_PROCESSING)
-
-        pass
         request_check_for_media.apply_async((instance.media,))
         #request_check_for_media(instance.media)
 
@@ -128,6 +126,6 @@ def preflight_check_post_delete(sender, instance, **kwargs):
     """
     delete remote resource.
     """
-
-    delete_check_for_media.apply_async((instance.media,))
-    #delete_check_for_media(instance.media)
+    if instance.media:
+        delete_check_for_media.apply_async((instance.media,))
+        #delete_check_for_media(instance.media)

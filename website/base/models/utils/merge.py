@@ -60,9 +60,13 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
             # The variable name on the related model.
             obj_varname = related_object.field.name
             related_objects = getattr(alias_object, alias_varname)
-            for obj in related_objects.all():
-                setattr(obj, obj_varname, primary_object)
-                obj.save()
+            try:
+                for obj in related_objects.all():
+                    setattr(obj, obj_varname, primary_object)
+                    obj.save()
+            except AttributeError as e:
+                log.warning('unable to handle "related_objects": {}'.format(e))
+                pass
 
         # Migrate all many to many references from alias object to primary object.
         for related_many_object in alias_object._meta.get_all_related_many_to_many_objects():

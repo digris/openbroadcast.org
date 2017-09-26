@@ -32,9 +32,12 @@ windows:
     - shell_command:
         - cd ~/code/openbroadcast/pushy/server/
         - node pushy.js
-#    - shell_command:
-#        - cd ~/srv/echoprint-server/solr/solr
-#        - ./run.sh
     - shell_command:
-        - cd ~/code/openbroadcast/infrastructure/ansible/
+        - rabbitmq-server
+    - shell_command:
+        - cd ~/code/openbroadcast/services/fprint-api && ~/srv/fprint-api/bin/python manage.py runserver 0.0.0.0:7777
+    - shell_command:
+        - cd ~/code/openbroadcast/services/playlist-mixdown-api && ~/srv/playlist-mixdown-api/bin/python manage.py runserver 0.0.0.0:7778
+    - shell_command:
+        - cd ~/code/openbroadcast/services/media-preflight-api && ~/srv/media-preflight-api/bin/python manage.py runserver 0.0.0.0:7779
 
