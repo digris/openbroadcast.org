@@ -422,7 +422,15 @@ class PlaylistFilter(django_filters.FilterSet):
     seasons__name = CharListFilter(label="Season")
     class Meta:
         model = Playlist
-        fields = ['type', 'status', 'target_duration', 'dayparts', 'weather__name', 'seasons__name', 'rotation']
+        fields = [
+            'type',
+            'status',
+            'target_duration',
+            'dayparts',
+            'weather__name',
+            'seasons__name',
+            'rotation'
+        ]
 
     def __init__(self, *args, **kwargs):
         super(PlaylistFilter, self).__init__(*args, **kwargs)
@@ -500,6 +508,20 @@ class PlaylistFilter(django_filters.FilterSet):
 
                 if ds not in flist:
                     flist.append(filter_)
+
+            """
+            add some custom queries
+            TODO: just temporary. refactor to propper solution...
+            """
+            cf = {
+                'label': 'Archive',
+                'name': 'archived_filter',
+                'entries': [
+                    ['no', '', 'Not archived'],
+                    ['yes', '', 'Archived'],
+                ]
+            }
+            flist.append(cf)
 
             self._filterlist = flist
 

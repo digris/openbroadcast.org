@@ -4,16 +4,6 @@
      id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}"
      data-absolute_url="{{ item.get_absolute_url }}">
 
-
-    <div class="wrapper_properties">
-        <!-- property icons-->
-        <ul class="unstyled properties">
-            {% if item.rotation and item.type == 'broadcast' %}
-                <li><i class="icon-refresh" title="{% trans 'In Rotation' %}"></i></li>
-            {% endif %}
-        </ul>
-    </div>
-
     <div class="wrapper_icon">
 
         {% with object=item ct="playlist" %}
@@ -38,6 +28,27 @@
         </ul>
 
     </div>
+
+
+    <div class="wrapper_properties">
+        <!-- property icons-->
+        <ul class="unstyled properties">
+            {% if item.rotation and item.type == 'broadcast' %}
+                <li><i class="icon-refresh" title="{% trans 'In Rotation' %}"></i></li>
+            {% endif %}
+        </ul>
+    </div>
+
+
+    {% if item.is_archived %}
+    <div class="marker">
+        <span>{% trans 'Archived' %}</span>
+    </div>
+    {% elif item.is_upcoming %}
+    <div class="marker">
+        <span>{% trans 'Upcoming' %}</span>
+    </div>
+    {% endif %}
 
     <div class="wrapper_info">
 

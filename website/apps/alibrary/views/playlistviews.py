@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
+from django.utils import timezone
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -155,14 +156,25 @@ class PlaylistListView(PaginationMixin, ListView):
             self.relation_filter.append(f)
 
 
-
-
-
-
-
         # apply filters
         self.filter = PlaylistFilter(self.request.GET, queryset=qs)
         qs = self.filter.qs
+
+        archived_filter = self.request.GET.get('archived_filter', None)
+        if archived_filter:
+
+            if archived_filter == 'yes':
+                qs = qs.filter(
+                    rotation_date_end__lt=timezone.now().date()
+                ).distinct()
+
+            if archived_filter == 'no':
+                qs = qs.exclude(
+                    rotation_date_end__lt=timezone.now().date()
+                ).distinct()
+
+
+
 
         stags = self.request.GET.get('tags', None)
         tstags = []

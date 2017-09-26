@@ -233,7 +233,11 @@ class ReleaseListView(PaginationMixin, ListView):
 
         # tagging / cloud generation
         if qs.exists():
-            tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=TAGCLOUD_MIN_COUNT)
+            if qs.count() < 1000:
+                min_count = 1
+            else:
+                min_count = TAGCLOUD_MIN_COUNT
+            tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=min_count)
             self.tagcloud = calculate_cloud(tagcloud)
 
         return qs

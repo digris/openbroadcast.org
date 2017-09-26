@@ -19,6 +19,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.fields.json import JSONField
 from django.core.files import File
@@ -101,18 +102,29 @@ class Series(models.Model):
         return '%s' % (self.name)
 
 
-# class Playlist(MigrationMixin, CachingMixin, models.Model):
+
+
 class Playlist(MigrationMixin, models.Model):
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
-    # uuid = UUIDField()
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
-    status = models.PositiveIntegerField(default=0, choices=alibrary_settings.PLAYLIST_STATUS_CHOICES)
-    type = models.CharField(max_length=12, default='basket', null=True, choices=alibrary_settings.PLAYLIST_TYPE_CHOICES)
-    broadcast_status = models.PositiveIntegerField(default=0,
-                                                   choices=alibrary_settings.PLAYLIST_BROADCAST_STATUS_CHOICES)
-    broadcast_status_messages = JSONField(blank=True, null=True, default=None)
+    status = models.PositiveIntegerField(
+        default=0,
+        choices=alibrary_settings.PLAYLIST_STATUS_CHOICES
+    )
+    type = models.CharField(
+        max_length=12,
+        default='basket', null=True,
+        choices=alibrary_settings.PLAYLIST_TYPE_CHOICES
+    )
+    broadcast_status = models.PositiveIntegerField(
+        default=0,
+        choices=alibrary_settings.PLAYLIST_BROADCAST_STATUS_CHOICES
+    )
+    broadcast_status_messages = JSONField(
+        blank=True, null=True, default=None
+    )
 
     EDIT_MODE_CHOICES = (
         (0, _('Compact')),
@@ -139,34 +151,75 @@ class Playlist(MigrationMixin, models.Model):
     )
 
     # relations
-    user = models.ForeignKey(User, null=True, blank=True, default=None)
-    items = models.ManyToManyField('PlaylistItem', through='PlaylistItemPlaylist', blank=True)
+    user = models.ForeignKey(
+        User,
+        null=True, blank=True, default=None
+    )
+    items = models.ManyToManyField(
+        'PlaylistItem',
+        through='PlaylistItemPlaylist',
+        blank=True
+    )
 
     # tagging (d_tags = "display tags")
-    d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
+    d_tags = tagging.fields.TagField(
+        max_length=1024,
+        verbose_name='Tags',
+        blank=True, null=True
+    )
 
     # updated/calculated on save
-    duration = models.IntegerField(null=True, default=0)
+    duration = models.IntegerField(
+        null=True, default=0)
 
-    target_duration = models.PositiveIntegerField(default=0, null=True,
-                                                  choices=alibrary_settings.PLAYLIST_TARGET_DURATION_CHOICES)
+    target_duration = models.PositiveIntegerField(
+        default=0, null=True,
+        choices=alibrary_settings.PLAYLIST_TARGET_DURATION_CHOICES
+    )
 
-    dayparts = models.ManyToManyField(Daypart, blank=True, related_name='daypart_plalists')
-    seasons = models.ManyToManyField('Season', blank=True, related_name='season_plalists')
-    weather = models.ManyToManyField('Weather', blank=True, related_name='weather_plalists')
+    dayparts = models.ManyToManyField(
+        Daypart,
+        blank=True,
+        related_name='daypart_plalists'
+    )
+    seasons = models.ManyToManyField(
+        'Season',
+        blank=True,
+        related_name='season_plalists'
+    )
+    weather = models.ManyToManyField(
+        'Weather',
+        blank=True,
+        related_name='weather_plalists'
+    )
 
     # series
-    series = models.ForeignKey(Series, null=True, blank=True, on_delete=models.SET_NULL)
-    series_number = models.PositiveIntegerField(null=True, blank=True)
+    series = models.ForeignKey(
+        Series,
+        null=True, blank=True,
+        on_delete=models.SET_NULL
+    )
+    series_number = models.PositiveIntegerField(
+        null=True, blank=True
+    )
 
     # is currently selected as default?
-    is_current = models.BooleanField(_('Currently selected?'), default=False)
+    is_current = models.BooleanField(
+        _('Currently selected?'),
+        default=False
+    )
 
-    description = extra.MarkdownTextField(blank=True, null=True)
+    description = extra.MarkdownTextField(
+        blank=True, null=True
+    )
 
     # auto-update
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    updated = models.DateTimeField(auto_now=True, editable=False)
+    created = models.DateTimeField(
+        auto_now_add=True, editable=False
+    )
+    updated = models.DateTimeField(
+        auto_now=True, editable=False
+    )
 
     mixdown_file = models.FileField(
         null=True, blank=True,
@@ -594,6 +647,22 @@ class Playlist(MigrationMixin, models.Model):
     @cached_property
     def mixdown(self):
         return self.get_mixdown()
+
+
+    @cached_property
+    def is_archived(self):
+        if not self.type == 'broadcast':
+            return
+        if self.rotation_date_end and self.rotation_date_end < timezone.now().date():
+            return True
+
+
+    @cached_property
+    def is_upcoming(self):
+        if not self.type == 'broadcast':
+            return
+        if self.rotation_date_start and self.rotation_date_start > timezone.now().date():
+            return True
 
 
 
