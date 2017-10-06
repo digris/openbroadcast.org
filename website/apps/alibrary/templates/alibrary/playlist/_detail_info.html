@@ -55,6 +55,24 @@
 			{{ object.get_type_display }}
 		</dd>
 
+		<dt>
+			{% trans "Rotation" %}:
+		</dt>
+		<dd>
+			{{ object.rotation|yesno:',No' }}
+            {% if object.rotation_date_start and object.rotation_date_end %}
+                {{ object.rotation_date_start|date:"DATE_FORMAT" }}
+                -
+                {{ object.rotation_date_end|date:"DATE_FORMAT" }}
+            {% elif object.rotation_date_start %}
+                {% trans 'from' %}
+                {{ object.rotation_date_start|date:"DATE_FORMAT" }}
+            {% elif object.rotation_date_end %}
+                {% trans 'until' %}
+                {{ object.rotation_date_end|date:"DATE_FORMAT" }}
+            {% endif %}
+		</dd>
+
 	</dl>
 
 	<dl class="dl-horizontal sub">

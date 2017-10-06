@@ -64,10 +64,6 @@ class ObjectStatistics(object):
         range_start = (now - relativedelta(months=(month_range - 1))).replace(day=1)
         range_end = last_day_of_month(now)
 
-        print 'range_start: %s' % range_start
-        print 'range_end:   %s' % range_end
-
-
         # generate month_map with zero-counts
         month_map = []
         for i in range(month_range):
