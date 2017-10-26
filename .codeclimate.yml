@@ -31,4 +31,4 @@ exclude_paths:
 - "website/legacy/obp_legacy/*"
 - "website/apps/nunjucks/*"
 - "website/site-static/js/lib/*"
-- "**/js/lib/*"
+- "**/js/lib/**/*"
