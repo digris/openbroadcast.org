@@ -9,7 +9,7 @@ engines:
   radon:
     enabled: true
   fixme:
-    enabled: false
+    enabled: true
 
 
 ratings:
@@ -30,3 +30,4 @@ exclude_paths:
 - "website/tools/*"
 - "website/legacy/obp_legacy/*"
 - "website/apps/nunjucks/*"
+- "website/site-static/js/lib/*"
