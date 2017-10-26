@@ -16,6 +16,7 @@ ratings:
    paths:
    - "**.js"
    - "**.py"
+   - "**.html"
 
 
 languages:
@@ -32,3 +33,4 @@ exclude_paths:
 - "website/apps/nunjucks/*"
 - "website/site-static/js/lib/*"
 - "**/js/lib/**/*"
+- "**/templates.js"
