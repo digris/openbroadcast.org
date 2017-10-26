@@ -7,11 +7,10 @@ var $ = require('gulp-load-plugins')();
 var browserSync = require('browser-sync').create();
 var sass = require('gulp-sass');
 
-console.log(config)
-
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
   'ie_mob >= 10',
+  'ff >= 30',
   'ff >= 30',
   'chrome >= 34',
   'safari >= 7',
