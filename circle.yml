@@ -5,6 +5,9 @@ machine:
     - pyenv global 2.7
 
 dependencies:
+  pre:
+    # TODO: find a better way to prevent 'npm install'
+    - rm package.json
   post:
     - pip install virtualenv
     - pip install tox
