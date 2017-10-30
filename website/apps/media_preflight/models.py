@@ -127,5 +127,8 @@ def preflight_check_post_delete(sender, instance, **kwargs):
     delete remote resource.
     """
     if instance.media:
-        delete_check_for_media.apply_async((instance.media,))
+        try:
+            delete_check_for_media.apply_async((instance.media,))
+        except:
+            pass
         #delete_check_for_media(instance.media)

@@ -121,7 +121,7 @@ class Identifier(object):
             if 'media_mb_id' in metadata and metadata['media_mb_id']:
                 # check for duplicates my musicbrainz id
                 qs = Media.objects.filter(
-                    relations__url__contains='/recording{}/'.format(metadata['media_mb_id'])
+                    relations__url__contains='/recording/{}'.format(metadata['media_mb_id'])
                 )
                 if qs.exists():
                     return qs[0].pk

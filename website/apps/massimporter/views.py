@@ -70,7 +70,7 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
         possible_duplicates = []
         for item in qs_done:
 
-            if not (item.media.master and item.media.master_duration):
+            if not (hasattr(item, 'media') and item.media and item.media.master and item.media.master_duration):
                 continue
 
             # search for exact duplicates by name (title & artist)
