@@ -13,6 +13,11 @@
 {% block modnav %}
     <div id="modnav">
         {% include "skeleton/module-navigation.html" %}
+        <p>
+            Back to <a href="{% url 'massimporter-import-list' %}">Massimport Listing</a>
+            <br>
+            <br>
+        </p>
     </div>
 {% endblock %}
 
@@ -45,14 +50,14 @@
 
                         <li>
                             <span>{% trans 'Collection' %}:</span>
-                            {{ object.collection_name }}
+                            <strong>{{ object.collection_name }}</strong>
                         </li>
 
                     </ul>
 
                 </div>
 
-                <div class="span6">
+                <div class="span5">
 
                     <ul>
 
@@ -142,7 +147,12 @@
 
                 <div class="span12">
 
-                    <h2>{% trans 'Possible Name Mismatch' %}</h2>
+                    <h2>Possible Recognition Mismatch &mdash; "False Positives"</h2>
+
+                    <p class="hint">
+                        Uploaded items that are recognized as duplicates - but the filename of the
+                        uploaded does not contain the name/title of the assigned duplicate.
+                    </p>
 
                     <table>
                         {% for mismatch in possible_name_mismatch %}
@@ -181,7 +191,13 @@
 
                 <div class="span12">
 
-                    <h2>{% trans 'Possible Unrecognized Duplicates' %}</h2>
+                    <h2>Possible Unrecognized Duplicates &mdash; "False Negatives"</h2>
+
+                    <p class="hint">
+                        Each uploaded item is compared to existing tracks on the platform.
+                        <br>
+                        Displayed are tracks that have the exact same title and artist's name.
+                    </p>
 
                     <table>
                         {% for possible_duplicate in possible_duplicates %}

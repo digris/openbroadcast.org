@@ -58,7 +58,6 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
         for item in qs_duplicate:
             m_name = clean_filename(item.media.name)
             m_orig = clean_filename(ntpath.basename(item.filename))
-            # print(u'{}\t\t{}'.format(item.media.name, ntpath.basename(item.filename)))
             if not (m_name.lower() in m_orig.lower()):
                 possible_name_mismatch.append({
                     'item': item,
