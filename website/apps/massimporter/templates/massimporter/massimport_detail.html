@@ -213,8 +213,8 @@
                                     <a href="{{ duplicate_media.release.get_absolute_url }}">
                                         {{ duplicate_media.release.name }}
                                     </a>
-
-                                    {% if not forloop.last %}<br>{% endif %}
+                                    <br>
+                                    {% if forloop.last %}<br>{% endif %}
                                 {% endfor %}
 
                             </td>
