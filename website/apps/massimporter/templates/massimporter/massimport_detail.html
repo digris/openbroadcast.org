@@ -146,17 +146,21 @@
 
                     <table>
                         {% for mismatch in possible_name_mismatch %}
-                        <tr>
+                        <tr class="padded">
                             <td>
-                                <a href="{{ mismatch.media.get_absolute_url }}">
+                                <a class="title" href="{{ mismatch.media.get_absolute_url }}">
                                     {{ mismatch.media.name }}
                                 </a>
-                                <br>
+                                &mdash;
                                 <a href="{{ mismatch.media.release.get_absolute_url }}">
                                     {{ mismatch.media.release.name }}
                                 </a>
                             </td>
-                            <td>{{ mismatch.filename }}</td>
+                            <td>
+                                <span class="title">
+                                    {{ mismatch.filename }}
+                                </span>
+                            </td>
                         </tr>
                         {% empty %}
                             <p>-</p>
@@ -181,15 +185,38 @@
 
                     <table>
                         {% for possible_duplicate in possible_duplicates %}
-                        <tr>
+                        <tr class="padded">
                             <td>
-                                <a href="{{ possible_duplicate.media.get_absolute_url }}">
+                                <a class="title" href="{{ possible_duplicate.media.get_absolute_url }}">
                                     {{ possible_duplicate.media.name }}
                                 </a>
-                                <br>
+                                &mdash;
+                                <a href="{{ possible_duplicate.media.artist.get_absolute_url }}">
+                                    {{ possible_duplicate.media.artist.name }}
+                                </a>
+                                &mdash;
                                 <a href="{{ possible_duplicate.media.release.get_absolute_url }}">
                                     {{ possible_duplicate.media.release.name }}
                                 </a>
+
+                                <br>
+                                {% for duplicate in possible_duplicate.duplicates_qs %}
+
+                                    <a href="{{ duplicate.media.get_absolute_url }}">
+                                        {{ duplicate.media.name }}
+                                    </a>
+                                    &mdash;
+                                    <a href="{{ duplicate.media.artist.get_absolute_url }}">
+                                        {{ duplicate.media.artist.name }}
+                                    </a>
+                                    &mdash;
+                                    <a href="{{ duplicate.media.release.get_absolute_url }}">
+                                        {{ duplicate.media.release.name }}
+                                    </a>
+                                    
+                                    {% if not forloop.last %}<br>{% endif %}
+                                {% endfor %}
+
                             </td>
                             <td>{{ possible_duplicate.duplicates_qs.count }}</td>
                         </tr>
