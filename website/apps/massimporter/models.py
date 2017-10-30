@@ -10,6 +10,7 @@ import uuid
 import locale
 import logging
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
@@ -71,9 +72,18 @@ class Massimport(BaseModel):
         verbose_name_plural = _('Imports')
         ordering = ('-created', )
 
+        permissions = (
+            ('massimport_manage', 'Manage Massimporter Sessions'),
+        )
 
     def __unicode__(self):
         return '{} - {}'.format(self.pk, self.directory)
+
+
+    def get_absolute_url(self):
+        return reverse('massimporter-import-detail', kwargs={
+            'uuid': self.uuid,
+        })
 
     @property
     def cache_directory(self):

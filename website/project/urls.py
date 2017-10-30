@@ -67,7 +67,7 @@ urlpatterns = [
     }),
 
     # massimporter / maintainer extra urls
-    url(r'^extra/', include('massimporter.urls')),
+    url(r'^admin-extra/', include('massimporter.urls')),
 
     url(r'^docs/', include('djangocms_sphinxdoc.urls')),
 

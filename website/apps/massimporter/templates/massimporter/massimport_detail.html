@@ -22,93 +22,187 @@
 {% block inner %}
 
 
+    <div class="item massimport-detail">
+
+        <div class="header">
 
 
-    <div class="item">
+            <div class="row-fluid">
 
+                <div class="span6">
 
-        <div class="row-fluid">
+                    <ul>
 
-            <div class="span3">
-
-                <ul>
-
-                    <li>
-                        <a href="{% url 'massimporter-import-detail' uuid=object.uuid %}">Details</a>
-                        <span>ID: {{ object.pk }}</span>
-                    </li>
-
-                    <li>
-                        <span>{% trans 'User' %}:</span>
-                        <a href="{{ object.user.get_absolute_url }}">{% firstof object.user.profile.get_display_name object.user %}</a>
-                    </li>
-
-                    <li>
-                        <!--<span>{% trans 'Created' %}:</span>-->
-                        {{ object.created|date:'DATETIME_FORMAT' }}
-                    </li>
-
-                </ul>
-
-            </div>
-
-            <div class="span3">
-
-                <ul>
-
-                    <li>
-                        <span>{% trans 'Status' %}:</span>
-                        {{ object.get_status_display }}
-                    </li>
-
-                    <li>
-                        <span>{% trans 'Collection' %}:</span>
-                        {{ object.collection_name }}
-                    </li>
-
-                </ul>
-
-                <ul>
-                    {% for k, v in object.get_counts.iteritems %}
                         <li>
-                            <span>{{ k }}:</span>
-                            {{ v }}
+                            <a href="{% url 'massimporter-import-detail' uuid=object.uuid %}">Details</a>
+                            <span>ID: {{ object.pk }}</span>
                         </li>
-                    {% endfor %}
-                </ul>
+
+                        <li>
+                            <span>{% trans 'User' %}:</span>
+                            <a href="{{ object.user.get_absolute_url }}">{% firstof object.user.profile.get_display_name object.user %}</a>
+                        </li>
+
+                        <li>
+                            <span>{% trans 'Collection' %}:</span>
+                            {{ object.collection_name }}
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <div class="span6">
+
+                    <ul>
+
+                        <li>
+                            <span>{% trans 'Status' %}:</span>
+                            {{ object.get_status_display }}
+                        </li>
+
+                        <li>
+                            <span>{% trans 'Date' %}:</span>
+                            {{ object.created|date:'DATETIME_FORMAT' }}
+                        </li>
+
+                    </ul>
+
+                    <ul>
+                        {% for k, v in object.get_counts.iteritems %}
+                            <li>
+                                <span>{{ k }}:</span>
+                                {{ v }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
 
             </div>
 
-            <div class="span6">
 
-                <ul>
+            <div class="row-fluid">
 
-                    <li>
-                        <span>{% trans 'Num. Files' %}:</span>
-                        {{ object.files.count }}
-                    </li>
-                </ul>
+                <div class="span12">
+
+                    <ul>
+
+                        <li>
+                            <span>{% trans 'Directory' %}:</span>
+                            {{ object.directory }}
+
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="row-fluid">
+
+                <div class="span12">
+
+                    <h2>{% trans 'Summary' %}</h2>
+
+                    <ul>
+
+                        <li>
+                            <span>{% trans 'Num. Files Total' %}:</span>
+                            {{ qs_all.count }}
+                        </li>
+
+                        <li>
+                            <span>{% trans 'Num. Files Imported' %}:</span>
+                            {{ qs_done.count }}
+                        </li>
+
+                        <li>
+                            <span>{% trans 'Num. Files Duplicates' %}:</span>
+                            {{ qs_duplicate.count }}
+                        </li>
+                    </ul>
+
+                </div>
+
 
             </div>
 
         </div>
 
 
-        <div class="row-fluid">
+        <div class="panel">
 
-            <div class="span12">
+            <div class="row-fluid">
 
-                <ul>
+                <div class="span12">
 
-                    <li>
-                        <span>{% trans 'Directory' %}:</span>
-                        {{ object.directory }}
+                    <h2>{% trans 'Possible Name Mismatch' %}</h2>
 
-                    </li>
+                    <table>
+                        {% for mismatch in possible_name_mismatch %}
+                        <tr>
+                            <td>
+                                <a href="{{ mismatch.media.get_absolute_url }}">
+                                    {{ mismatch.media.name }}
+                                </a>
+                                <br>
+                                <a href="{{ mismatch.media.release.get_absolute_url }}">
+                                    {{ mismatch.media.release.name }}
+                                </a>
+                            </td>
+                            <td>{{ mismatch.filename }}</td>
+                        </tr>
+                        {% empty %}
+                            <p>-</p>
+                        {% endfor %}
 
-                </ul>
+                    </table>
+
+                </div>
 
             </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="row-fluid">
+
+                <div class="span12">
+
+                    <h2>{% trans 'Possible Unrecognized Duplicates' %}</h2>
+
+                    <table>
+                        {% for possible_duplicate in possible_duplicates %}
+                        <tr>
+                            <td>
+                                <a href="{{ possible_duplicate.media.get_absolute_url }}">
+                                    {{ possible_duplicate.media.name }}
+                                </a>
+                                <br>
+                                <a href="{{ possible_duplicate.media.release.get_absolute_url }}">
+                                    {{ possible_duplicate.media.release.name }}
+                                </a>
+                            </td>
+                            <td>{{ possible_duplicate.duplicates_qs.count }}</td>
+                        </tr>
+                        {% empty %}
+                            <p>-</p>
+                        {% endfor %}
+
+                    </table>
+
+                </div>
+
+            </div>
+
         </div>
 
     </div>
