@@ -35,7 +35,7 @@
             <div class="row-fluid">
 
                 <div class="span6">
-
+                    
                     <ul>
 
                         <li>
@@ -234,7 +234,9 @@
                                 {% endfor %}
 
                             </td>
-                            <td>{{ possible_duplicate.duplicates_qs.count }}</td>
+                            <td>
+                                <a href="{% url 'alibrary-media-list' %}?artist={{ possible_duplicate.media.artist.slug }}&q={{ possible_duplicate.media.name }}">Search by combo (Title/Artist)</a>
+                            </td>
                         </tr>
                         {% empty %}
                             <p>-</p>
