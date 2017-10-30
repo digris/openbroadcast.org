@@ -200,20 +200,20 @@
                                 </a>
 
                                 <br>
-                                {% for duplicate in possible_duplicate.duplicates_qs %}
+                                {% for duplicate_media in possible_duplicate.duplicates_qs %}
 
-                                    <a href="{{ duplicate.media.get_absolute_url }}">
-                                        {{ duplicate.media.name }}
+                                    <a href="{{ duplicate_media.get_absolute_url }}">
+                                        {{ duplicate_media.name }}
                                     </a>
                                     &mdash;
-                                    <a href="{{ duplicate.media.artist.get_absolute_url }}">
-                                        {{ duplicate.media.artist.name }}
+                                    <a href="{{ duplicate_media.artist.get_absolute_url }}">
+                                        {{ duplicate_media.artist.name }}
                                     </a>
                                     &mdash;
-                                    <a href="{{ duplicate.media.release.get_absolute_url }}">
-                                        {{ duplicate.media.release.name }}
+                                    <a href="{{ duplicate_media.release.get_absolute_url }}">
+                                        {{ duplicate_media.release.name }}
                                     </a>
-                                    
+
                                     {% if not forloop.last %}<br>{% endif %}
                                 {% endfor %}
 
