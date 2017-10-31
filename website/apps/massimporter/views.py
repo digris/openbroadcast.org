@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import json
 import ntpath
+import os
 
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from django import http
@@ -48,7 +49,7 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
         obj = self.object
 
         # summary querysets
-        qs_all = obj.import_session.files.all()
+        qs_all = obj.import_session.files.all().nocache()
         qs_duplicate = qs_all.filter(status=ImportFile.STATUS_DUPLICATE)
         qs_done = qs_all.filter(status=ImportFile.STATUS_DONE)
 
@@ -90,32 +91,7 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
                     'duplicates_qs': duplicates_qs,
                 })
 
-
-
-
-                # possible_duplicates.append(item)
-                # print(u'{}\t{} - {} - {}'.format(item.media.master_duration, m_name, a_name, item.media.release.name))
-                # for dupe in dupe_qs:
-                #     print(
-                #     u'{}\t{} - {} - {}'.format(dupe.master_duration, dupe.name, dupe.artist.name, dupe.release.name))
-                #     # print(dupe_qs.count())
-                #
-                #     # testing fprint
-                #     # print('- get matches via fprint')
-                #     # fprint = fprint_from_path(item.media.master.path)
-                #     # results = FprintAPIClient().identify(fprint=fprint, min_score=FPRINT_MIN_SCORE)
-                #
-                #     # print('fprint num results: {}'.format(len(results)))
-                #
-                #     # for result in results:
-                #     #    print('score: {}'.format(result['score']))
-                #
-                #
-                #     # print('--')
-
-
         context.update({
-            # summary
             'qs_all': qs_all,
             'qs_duplicate': qs_duplicate,
             'qs_done': qs_done,
@@ -127,15 +103,12 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
         return context
 
 
-
-
-
-
-
 def clean_filename(filename):
 
     filename = filename.replace(u"’", u"'")
     filename = filename.replace(u"-", u" ")
     filename = filename.replace(u"_", u" ")
+    filename = filename.lstrip('0123456789.- ')
+    filename = os.path.splitext(filename)[0]
 
     return filename
