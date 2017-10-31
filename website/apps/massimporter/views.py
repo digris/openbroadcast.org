@@ -63,7 +63,7 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
                 possible_name_mismatch.append({
                     'item': item,
                     'media': item.media,
-                    'filename': ntpath.basename(item.filename),
+                    'filename': m_orig,
                 })
 
 

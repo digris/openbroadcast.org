@@ -110,6 +110,7 @@ class Identifier(object):
         try:
             metadata = self.extract_metadata(file)
         except:
+            log.warning('unable to extract metadata for: {}'.format(file.path))
             metadata = None
 
 
@@ -124,6 +125,7 @@ class Identifier(object):
                     relations__url__contains='/recording/{}'.format(metadata['media_mb_id'])
                 )
                 if qs.exists():
+                    log.info('found existing media by mb id: {}'.format(metadata['media_mb_id']))
                     return qs[0].pk
 
 
@@ -131,17 +133,28 @@ class Identifier(object):
             if 'performer_name' in metadata and 'media_name' in metadata and 'release_name' in metadata:
 
                 # TODO: make this matching more inteligent!
-
                 qs = Media.objects.filter(
                     name__istartswith=metadata['media_name'][0:8],
                     artist__name__istartswith=metadata['performer_name'][0:8]
                 )
 
-                if not qs.exists():
+                if qs.exists():
+                    log.info('found existing media by title/artist: {} - {}'.format(
+                        metadata['media_name'][0:8],
+                        metadata['performer_name'][0:8]
+                    ))
+
+                else:
                     qs = Media.objects.filter(
                         name__istartswith=metadata['media_name'][0:8],
                         release__name__istartswith=metadata['release_name'][0:8]
                     )
+
+                    if qs.exists():
+                        log.info('found existing media by title/release: {} - {}'.format(
+                            metadata['media_name'][0:8],
+                            metadata['release_name'][0:8]
+                        ))
 
                 if qs.exists():
                     return qs[0].pk
