@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-default_app_config = 'collection.apps.AlibraryConfig'
+default_app_config = 'collection.apps.CollectionConfig'

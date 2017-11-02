@@ -122,6 +122,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 
     # platform tools
+    'image_placeholder',
+
+    # platform tools
     'fprint_client',
 
     # platform apps
@@ -523,12 +526,6 @@ AJAX_LOOKUP_CHANNELS = {
 # AJAX_SELECT_INLINES = 'inline'
 
 
-CHANGETRACKER_TRACKED_MODELS = (
-    # {
-    #     'model': 'alibrary.label',
-    #     'diff_function': 'bla',
-    # },
-)
 
 GRAVATAR_DEFAULT_IMAGE = 'identicon'
 

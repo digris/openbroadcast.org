@@ -65,9 +65,15 @@ def enable_voting_on(cls, manager_name='objects',
             content_type = ContentType.objects.get_for_model(self.model).id
             downvote_query = '(SELECT COUNT(*) from %s WHERE vote=-1 AND object_id=%s.%s AND content_type_id=%s)' % (VOTE_TABLE, db_table, pk_name, content_type)
             upvote_query = '(SELECT COUNT(*) from %s WHERE vote=1 AND object_id=%s.%s AND content_type_id=%s)' % (VOTE_TABLE, db_table, pk_name, content_type)
-            return super(VotableManager, self).get_queryset().extra(
-                select={upvotes_name: upvote_query,
-                        downvotes_name: downvote_query})
+
+            return super(VotableManager, self).get_queryset()
+
+            # # TODO: this is highly inefficient on large querysets!!!
+            # return super(VotableManager, self).get_queryset().extra(
+            #     select={
+            #         upvotes_name: upvote_query,
+            #         downvotes_name: downvote_query
+            #     })
 
         def from_token(self, token):
             db_table = self.model._meta.db_table
@@ -88,4 +94,3 @@ def enable_voting_on(cls, manager_name='objects',
     cls.add_to_class(total_name, property(get_total))
     cls.add_to_class(add_vote_name, add_vote)
     cls.add_to_class(remove_vote_name, remove_vote)
-    cls.add_to_class("whatever", "whatever_vote")

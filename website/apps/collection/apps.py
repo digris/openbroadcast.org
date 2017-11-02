@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.apps import AppConfig
 
 
-class AlibraryConfig(AppConfig):
+class CollectionConfig(AppConfig):
     name = 'collection'
     verbose_name = "Collection App"
 

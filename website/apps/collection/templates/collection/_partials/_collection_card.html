@@ -1,0 +1,106 @@
+{% load i18n image_placeholder_tags %}
+
+<div class="card artist" data-uuid="{{ object.uuid }}" data-absolute-url='{# object.get_absolute_url #}'>
+
+    <div class="visual">
+
+        <figure>
+            {% if object.key_image %}
+                <img class="lazyload" src="{% image_placeholder size='580x580' %}" data-src="{{ object.key_image.file.crop.580x580 }}" alt="{% trans 'Community Image' %} - {{ object.name }}" />
+            {% else %}
+                <img class="image-placeholder" src="{% image_placeholder size='580x580' %}" alt="{% trans 'image placeholder' %}" />
+            {% endif %}
+        </figure>
+
+        <div class="tags">
+
+            {% for tag in object.tags.names %}
+                <span class="tag">{{ tag }}</span>
+            {% endfor %}
+
+        </div>
+
+        <div class="actions">
+
+            <a href="#" class="action">
+                <i class="fa fa-play-circle fa-2x"></i>
+            </a>
+
+            <a href="#" class="action">
+                <i class="fa fa-plus-circle fa-2x"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="essentials">
+
+        <div class="numbers">
+
+            <div class="number">
+
+
+                <span class="value">{{ object.num_media }}</span>
+                <span class="label" title="{{ contributions_text }}">
+                    {% comment %}Translators: Abbreviation for "contribution" (card display){% endcomment %}
+                    {% trans 'cont.' %}
+                </span>
+            </div>
+
+        </div>
+
+        <h2 class="name">
+            <a class="obj-ref" href="{{ object.get_absolute_url }}">
+                {{object.name}}
+            </a>
+        </h2>
+
+        <p class="text-center">
+            {% if object.year_begin and object.year_end %}
+                <span>*{{ object.year_begin }}</span>
+                -
+                <span>&dagger;{{ object.year_end }}</span>
+            {% elif object.year_begin %}
+                <span>*{{ object.year_begin }}</span>
+            {% elif object.year_end %}
+                <span>&dagger;{{ object.year_end }}</span>
+            {% else %}
+                <span>&nbsp;</span>
+            {% endif %}
+
+
+            {% if object.label_appearances %}
+                <br>
+                {% for label in object.label_appearances %}
+                    <a class="obj-ref" href="{{ label.get_absolute_url }}">
+                        {{ label }}</a>{% if not forloop.last %}<span>,</span>{% endif %}
+                {% endfor %}
+            {% else %}
+                <br><span>&nbsp;</span>
+            {% endif %}
+
+        </p>
+
+
+        <div class="relations text-center">
+            {% for relation in object.service_relations %}
+                {% if relation.icon %}
+                    <a class="service-relation" href="{{ relation.url }}" target="_blank" rel="nofollow"
+                       title="{% trans 'Visit on ' %}{{ relation.get_service_display }}">
+                        <i class="fab {{ relation.icon }}"></i>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!--
+        <div class="relations text-center">
+            {% for relation in object.relations.all %}
+                <span>{{ relation }}</span>
+            {% endfor %}
+        </div>
+        -->
+
+    </div>
+</div>

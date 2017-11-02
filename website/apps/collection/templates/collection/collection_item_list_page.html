@@ -1,0 +1,9 @@
+{% load i18n el_pagination_tags  %}
+
+{% paginate object_list %}
+{% for object in object_list %}
+    <div class="span4">
+        {% include "collection/_partials/_collection_item_card.html" with object=object %}
+    </div>
+{% endfor %}
+{% show_more %}

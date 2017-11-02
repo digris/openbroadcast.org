@@ -1,0 +1,43 @@
+{% extends "collection/base.html" %}
+{% load i18n cms_tags el_pagination_tags %}
+{% block title %}{% trans "Artists" %}{% endblock %}
+{% block body_extra_class %}list-view catalog artist artist-list{% endblock %}
+{% block app_nav %}
+    <nav id="app-nav" class="app-nav">
+        <div class="pullout">
+            <div class="row">
+                <div class="column">
+                    {% page_url 'home' as home_url %}
+                    <a href="{{ home_url }}">{% trans 'Home' %}</a>
+                    &rsaquo; {% trans 'C' %}
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{% block app_content %}
+<section>
+    {% comment %}
+    <div class="filter pullout">
+        <div class="row">
+            <div class="small-12 columns">
+                {% include 'catalog/_partials/_tagcloud.html' %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 columns">
+                {% include 'catalog/_partials/_list_summary.html' %}
+            </div>
+        </div>
+    </div>
+    {% endcomment %}
+    <div class="pullout cards">
+        {% if object_list.exists %}
+            <div class="row small-up-1 medium-up-3 large-up-4 xlarge-up-5 xxlarge-up-6">
+                {% include page_template %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+

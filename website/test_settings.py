@@ -533,11 +533,6 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False
         },
-        'changetracker': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False
-        },
         'postman': {
             'handlers': ['console'],
             'level': 'DEBUG',

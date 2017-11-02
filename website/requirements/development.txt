@@ -15,3 +15,8 @@ line_profiler
 sqlparse
 guppy
 
+
+# statistics
+# -e git+https://github.com/smspillaz/django-qsstats-magic#egg=django-qsstats-magic
+# or
+-e hg+https://bitbucket.org/kmike/django-qsstats-magic#egg=django-qsstats-magic
