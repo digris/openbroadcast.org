@@ -185,7 +185,7 @@ class ArtistListView(PaginationMixin, ListView):
                 duplicates = _relation_qs.values('url').annotate(Count('id')).order_by().filter(id__count__gt=1)
                 qs = qs.filter(relations__url__in=[item['url'] for item in duplicates]).distinct()
                 if not order_by:
-                    qs = qs.order_by('relations__url')
+                    qs = qs.order_by('name')
 
         # filter by import session
         import_session = self.request.GET.get('import', None)
