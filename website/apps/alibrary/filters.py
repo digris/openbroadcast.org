@@ -224,6 +224,7 @@ class ArtistFilter(django_filters.FilterSet):
                 'name': 'extra_filter',
                 'entries': [
                     ['possible_duplicates', '', 'Duplicate detection'],
+                    ['mbid_duplicates', '', 'Duplicate MBID'],
                 ]
             }
             flist.append(cf)

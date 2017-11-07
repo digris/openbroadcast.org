@@ -166,15 +166,26 @@ class ArtistListView(PaginationMixin, ListView):
             f = {'item_type': 'label' , 'item': '%s-12-31' % date_start_filter, 'label': _('Date start')}
             self.relation_filter.append(f)
 
-        # "extra-filters" (to provide some arbitary searches)
+        # "extra-filters" (to provide some arbitrary searches)
         extra_filter = self.request.GET.get('extra_filter', None)
         if extra_filter:
             if extra_filter == 'possible_duplicates':
                 from django.db.models import Count
-                dupes = Artist.objects.values('name').annotate(Count('id')).order_by().filter(id__count__gt=1)
-                qs = qs.filter(name__in=[item['name'] for item in dupes])
+                duplicates = Artist.objects.values('name').annotate(Count('id')).order_by().filter(id__count__gt=1)
+                qs = qs.filter(name__in=[item['name'] for item in duplicates])
                 if not order_by:
                     qs = qs.order_by('name')
+
+            if extra_filter == 'mbid_duplicates':
+                from django.db.models import Count
+                from django.contrib.contenttypes.models import ContentType
+                from ..models.basemodels import Relation
+                _ct = ContentType.objects.get_for_model(Artist)
+                _relation_qs = Relation.objects.filter(content_type=_ct, service__in=['musicbrainz',])
+                duplicates = _relation_qs.values('url').annotate(Count('id')).order_by().filter(id__count__gt=1)
+                qs = qs.filter(relations__url__in=[item['url'] for item in duplicates]).distinct()
+                if not order_by:
+                    qs = qs.order_by('relations__url')
 
         # filter by import session
         import_session = self.request.GET.get('import', None)
@@ -208,8 +219,11 @@ class ArtistListView(PaginationMixin, ListView):
 
         # tagging / cloud generation
         if qs.exists():
-            tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=10)
-            self.tagcloud = calculate_cloud(tagcloud)
+            try:
+                tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=10)
+                self.tagcloud = calculate_cloud(tagcloud)
+            except TypeError:
+                pass
 
         return qs
 
