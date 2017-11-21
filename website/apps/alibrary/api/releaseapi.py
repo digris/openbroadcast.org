@@ -84,7 +84,7 @@ class ReleaseResource(ModelResource):
 
             # haystack version
             #sqs = SearchQuerySet().models(Release).filter(SQ(content__contains=q) | SQ(content_auto=q))
-            sqs = SearchQuerySet().models(Release).filter(content=AutoQuery(q))
+            sqs = SearchQuerySet().models(Release).filter(text_auto=AutoQuery(q))
             qs = Release.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
 
             # ORM version

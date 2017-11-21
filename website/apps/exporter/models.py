@@ -58,7 +58,7 @@ def create_archive_dir(instance):
 
     try:
         os.makedirs(os.path.join(path_full, 'cache/'))
-    except OSError, e:
+    except OSError as e:
         pass # file exists
 
     return path_full
