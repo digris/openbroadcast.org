@@ -42,6 +42,9 @@ include(
     optional('/etc/openbroadcast.org/application-settings.py'),
     optional('/etc/openbroadcast.org/application-secrets.py'),
     optional('/etc/openbroadcast.org/application-logging.py'),
+    # purpose of 'application-extra.py' is to provide ad-hoc settings (debug/notebooks/etc)
+    # overrides & persists ansible based settings
+    optional('/etc/openbroadcast.org/application-extra.py'),
 
     scope=locals()
 )
