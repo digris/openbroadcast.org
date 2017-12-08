@@ -83,6 +83,18 @@ class Label(MigrationMixin):
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
     parent_temporary_id = models.PositiveIntegerField(null=True, blank=True)
 
+    # identifiers
+    ipi_code = models.CharField(
+        verbose_name=_('IPI Code'),
+        max_length=32,
+        blank=True, null=True
+    )
+    isni_code = models.CharField(
+        verbose_name=_('ISNI Code'),
+        max_length=32,
+        blank=True, null=True
+    )
+
     objects = LabelManager()
 
     class Meta:

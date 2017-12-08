@@ -13,7 +13,8 @@ from alibrary.models import Release, Media, Artist, Label, Relation
 
 from ...workflows.musicbrainz import (
     release_fetch_media_mb_ids,
-    artist_crawl_musicbrainz,
+    # metadata crawlers
+    artist_crawl_musicbrainz, label_crawl_musicbrainz,
 )
 
 from ...workflows.artwork import obj_crawl_artwork
@@ -66,7 +67,8 @@ def crawl_releases_for_media_mbid(id):
 @cli.command()
 @click.argument('ct', type=str, nargs=1, required=False)
 @click.option('id', '--id', type=int, required=False)
-def crawl_musicbrainz(ct, id):
+@click.option('cache_for', '--cache', type=int, required=False, default=60 * 10 * 24)
+def crawl_musicbrainz(ct, id, cache_for):
     """
     crawls for (secondary) identifiers.
     give content type(s) as argument(s):
@@ -76,17 +78,25 @@ def crawl_musicbrainz(ct, id):
     changes = []
 
     if ct == 'artist':
-
-        qs = Artist.objects.filter(relations__service='musicbrainz')
+        qs = Artist.objects.filter(relations__service='musicbrainz').distinct()
         _crawl_func = artist_crawl_musicbrainz
+
+    if ct == 'label':
+        qs = Label.objects.filter(relations__service='musicbrainz').distinct()
+        _crawl_func = label_crawl_musicbrainz
 
 
     click.secho('Num. {} objects to process: {}'.format(ct, qs.count()), fg='green')
 
     for obj in qs:
-        _changes = _crawl_func(obj=obj)
-        if _changes:
-            changes.append(_changes)
+        cache_key = 'musicbrainz-{}-{}'.format(ct, obj.pk)
+        if cache.get(cache_key):
+            click.secho('object recently crawled: {}'.format(obj), bg='yellow', fg='black')
+        else:
+            _changes = _crawl_func(obj=obj)
+            if _changes:
+                changes.append(_changes)
+            cache.set(cache_key, 1, cache_for)
 
 
     ###################################################################
@@ -94,11 +104,11 @@ def crawl_musicbrainz(ct, id):
     ###################################################################
     click.secho('#' * 72, fg='green')
 
-    click.secho('Total updated artists objects:    {}'.format(
+    click.secho('Total updated objects:    {}'.format(
         len(changes)
     ), fg='green')
 
-    click.secho('Total updated artists properties: {}'.format(
+    click.secho('Total updated properties: {}'.format(
         sum([len(c) for c in changes])
     ), fg='green')
 
@@ -161,7 +171,7 @@ def crawl_artwork(ct, id, cache_for):
 
 
     click.secho('Num. {} objects to process: {}'.format(ct, qs.count()), fg='green')
-    for obj in qs[0:200]:
+    for obj in qs:
         cache_key = 'artwork-{}-{}'.format(ct, obj.pk)
         if cache.get(cache_key):
             click.secho('object recently crawled: {}'.format(obj), bg='yellow', fg='black')
@@ -217,7 +227,7 @@ def crawl_viaf_isni(cache_for):
     qs = Artist.objects.filter(
         Q(isni_code__isnull=True) | Q(isni_code=''),
         relations__service='viaf'
-    )
+    ).distinct()
 
     for obj in qs:
 
@@ -234,10 +244,10 @@ def crawl_viaf_isni(cache_for):
                 try:
                     data = r.json()
                     isni = data['ISNI'][0]
-                    click.secho('got ISNI {}'.format(isni), fg='red')
+                    click.secho('got ISNI {} for {}'.format(isni, obj), fg='green')
                     type(obj).objects.filter(pk=obj.pk).update(isni_code=isni)
                 except Exception as e:
-                    click.secho('unable to get ISNI {}'.format(e), fg='red')
+                    click.secho('unable to get ISNI for {}'.format(obj), fg='red')
                     pass
 
-            cache.set(cache_key, 1, cache_for)
+        cache.set(cache_key, 1, cache_for)

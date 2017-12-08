@@ -213,6 +213,8 @@ class MBCrawler(object):
             inc='+'.join(self.api_inc)
         )
 
+        log.debug('load data from: {}'.format(url))
+
         try:
             r = requests.get(url)
             return r.json()
@@ -268,16 +270,17 @@ class MBCrawler(object):
         """
         execute default sequence
         """
-        self.load_data_from_api()
+        #self.load_data_from_api()
         self.update_fields()
         self.update_relations()
 
         if self._changes:
             log.info('apply changes on {}: {}'.format(self.obj, self._changes))
+            return self._changes
         else:
             log.debug('no changes for {}'.format(self.obj))
 
-        return self._changes
+
 
 
 
@@ -346,6 +349,69 @@ class MBArtistCrawler(MBCrawler):
 
 
 
+class MBLabelCrawler(MBCrawler):
+    """
+    crawl label metadata
+    """
+
+    mb_ctype = 'label'
+    api_inc = ['url-rels', 'label-rels']
+
+    ###################################################################
+    # direct field mappings
+    ###################################################################
+    def update_fields(self):
+
+        if not self.obj.ipi_code:
+            try:
+                self._changes['ipi_code'] = self._data['ipis'][0]
+            except (IndexError, KeyError, AttributeError):
+                pass
+
+        if not self.obj.isni_code:
+            try:
+                self._changes['isni_code'] = self._data['isnis'][0]
+            except (IndexError, KeyError, AttributeError):
+                pass
+
+        # TODO: map types
+        # if not self.obj.type:
+        #     try:
+        #         self._changes['type'] = self._data['type'].lower()
+        #     except (IndexError, KeyError, AttributeError):
+        #         pass
+
+        if not self.obj.country:
+            try:
+                country_code = self._data['country']
+                self._changes['country'] = Country.objects.get(iso2_code=country_code)
+            except (IndexError, KeyError, AttributeError, Country.DoesNotExist):
+                pass
+
+        if not self.obj.date_start:
+            try:
+                date_start = self._data['life-span']['begin']
+                if date_start:
+                    self._changes['date_start'] = format_approx_date(date_start)
+            except (IndexError, KeyError, AttributeError):
+                pass
+
+        if not self.obj.date_end:
+            try:
+                date_end = self._data['life-span']['end']
+                if date_end:
+                    self._changes['date_end'] = format_approx_date(date_end)
+            except (IndexError, KeyError, AttributeError):
+                pass
+
+
+        # update instance fields
+        if self._changes:
+            type(self.obj).objects.filter(pk=self.obj.pk).update(**self._changes)
+
+
+
+
 
 
 #######################################################################
@@ -353,4 +419,8 @@ class MBArtistCrawler(MBCrawler):
 #######################################################################
 def artist_crawl_musicbrainz(obj):
     c = MBArtistCrawler(obj)
+    return c.run()
+
+def label_crawl_musicbrainz(obj):
+    c = MBLabelCrawler(obj)
     return c.run()
