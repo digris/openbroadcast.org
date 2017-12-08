@@ -62,12 +62,12 @@ def get_file_from_url(url):
             temp_file.flush()
 
             file_obj = File(temp_file)
-        except Exception, e:
+        except Exception as e:
             log.warning('%s' % e)
 
-    except Exception, e:
+    except Exception as e:
         log.warning('%s' % e)
-        pass
+
 
     return file_obj
 
@@ -92,7 +92,7 @@ def get_file_from_path(path, filename=None):
         file_obj = File(temp_file, filename)
 
 
-    except Exception, e:
+    except Exception as e:
         log.warning('%s' % e)
         pass
 

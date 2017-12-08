@@ -134,6 +134,7 @@ INSTALLED_APPS = [
     'invitation',
     'alibrary',
     'collection',
+    'crawler',
     'media_asset',
     'media_preflight',
     'aplayer',

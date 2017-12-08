@@ -106,7 +106,6 @@ class ObjectStatistics(object):
         for item in events:
             for el in month_map:
                 if el['id'] == item['month']:
-                    print item
                     #el['count'] = item['dcount']
                     el['count'] += 1
 

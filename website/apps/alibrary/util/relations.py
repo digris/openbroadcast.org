@@ -1,6 +1,6 @@
 import re
 
-def get_service_by_url(url, service):
+def get_service_by_url(url, service=None):
 
     if url.find('facebook.com') != -1:
         service = 'facebook'
@@ -37,6 +37,9 @@ def get_service_by_url(url, service):
 
     if url.find('twitter.com') != -1:
         service = 'twitter'
+
+    if url.find('wikidata.org') != -1:
+        service = 'wikidata'
 
     if not service:
         service = 'generic'

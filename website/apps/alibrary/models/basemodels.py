@@ -28,7 +28,7 @@ import uuid
 log = logging.getLogger(__name__)
 
 class MigrationMixin(models.Model):
-    
+
     legacy_id = models.IntegerField(null=True, blank=True, editable=False)
     migrated = models.DateField(null=True, blank=True, editable=False)
 
@@ -46,51 +46,51 @@ class Distributor(MigrationMixin):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=400)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
-    
+
     code = models.CharField(max_length=50)
     country = models.ForeignKey(Country, blank=True, null=True)
-    
+
     address = models.TextField(blank=True, null=True)
-    
+
     email = models.EmailField(blank=True, null=True)
     phone = PhoneNumberField(blank=True, null=True)
     fax = PhoneNumberField(blank=True, null=True)
-    
+
     description = extra.MarkdownTextField(blank=True, null=True)
-    
+
     first_placeholder = PlaceholderField('first_placeholder')
-    
+
     # auto-update
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
-    
+
     # relations
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
 
     labels = models.ManyToManyField('Label', through='DistributorLabel', blank=True, related_name="distributors")
-    
+
     # user relations
     owner = models.ForeignKey(User, blank=True, null=True, related_name="distributors_owner", on_delete=models.SET_NULL)
     creator = models.ForeignKey(User, blank=True, null=True, related_name="distributors_creator", on_delete=models.SET_NULL)
     publisher = models.ForeignKey(User, blank=True, null=True, related_name="distributors_publisher", on_delete=models.SET_NULL)
-    
+
     TYPE_CHOICES = (
         ('unknown', _('Unknown')),
         ('major', _('Major')),
         ('indy', _('Independent')),
         ('other', _('Other')),
     )
-    
+
     type = models.CharField(verbose_name="Distributor type", max_length=12, default='unknown', choices=TYPE_CHOICES)
 
 
     # relations a.k.a. links
     relations = GenericRelation('Relation')
-    
+
     # tagging (d_tags = "display tags")
     d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
- 
-    
+
+
     # manager
     objects = models.Manager()
 
@@ -113,30 +113,30 @@ class Distributor(MigrationMixin):
     @models.permalink
     def get_edit_url(self):
         return ('alibrary-distributor-edit', [self.pk])
-    
+
 
     def save(self, *args, **kwargs):
         unique_slugify(self, self.name)
-        
+
         # update d_tags
         t_tags = ''
         for tag in self.tags:
-            t_tags += '%s, ' % tag    
-        
+            t_tags += '%s, ' % tag
+
         self.tags = t_tags
         self.d_tags = t_tags
-        
+
         super(Distributor, self).save(*args, **kwargs)
 
-       
-    
-        
+
+
+
 try:
     tagging_register(Distributor)
 except Exception as e:
     print '***** %s' % e
     pass
-        
+
 
 class DistributorLabel(models.Model):
     distributor = models.ForeignKey('Distributor')
@@ -147,7 +147,7 @@ class DistributorLabel(models.Model):
         app_label = 'alibrary'
         verbose_name = _('Labels in catalog')
         verbose_name_plural = _('Labels in catalog')
-        
+
 
 
 
@@ -280,9 +280,9 @@ class AgencyArtist(models.Model):
 
 
 class License(TranslatableModel, MigrationMixin):
-    
+
     name = models.CharField(max_length=200)
-    
+
     slug = models.SlugField(max_length=100, unique=False)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
@@ -291,11 +291,11 @@ class License(TranslatableModel, MigrationMixin):
 
     iconset =  models.CharField(verbose_name=_("Iconset"), help_text=_("e.g. cc-by, cc-nc, cc-sa"), max_length=36, blank=True, null=True)
 
-    
+
     link = models.URLField(null=True, blank=True)
-    
+
     restricted = models.NullBooleanField(null=True, blank=True)
-    
+
     is_default = models.NullBooleanField(default=False, null=True, blank=True)
     selectable = models.NullBooleanField(default=True, null=True, blank=True)
     is_promotional = models.NullBooleanField(default=False, null=True, blank=True)
@@ -307,7 +307,7 @@ class License(TranslatableModel, MigrationMixin):
         license_text = models.TextField(blank=True, null=True)
     )
 
-    
+
     # auto-update
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
@@ -352,16 +352,16 @@ class ProfessionManager(models.Manager):
 
     def listed(self):
         return self.get_queryset().filter(in_listing=True)
-    
-    
+
+
 class Profession(models.Model):
-    
+
     name = models.CharField(max_length=200)
-    
+
     in_listing = models.BooleanField(default=True, verbose_name='Include in listings')
-    
-    excerpt = models.TextField(blank=True, null=True)  
-    
+
+    excerpt = models.TextField(blank=True, null=True)
+
     # auto-update
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
@@ -374,20 +374,20 @@ class Profession(models.Model):
         verbose_name = _('Role/Profession')
         verbose_name_plural = _('Roles/Profession')
         ordering = ('name', )
-    
+
     def __unicode__(self):
         return self.name
 
 class DaypartManager(models.Manager):
-    
+
     def active(self):
         return self.get_queryset().filter(active=True)
-       
+
 class Daypart(models.Model):
-    
-    
+
+
     active = models.BooleanField(default=True)
-    
+
     DAY_CHOICES = (
         (0, _('Mon')),
         (1, _('Tue')),
@@ -400,9 +400,9 @@ class Daypart(models.Model):
     day = models.PositiveIntegerField(default=0, null=True, choices=DAY_CHOICES)
     time_start = models.TimeField()
     time_end = models.TimeField()
-    
-    
-    
+
+
+
     # manager
     objects = DaypartManager()
 
@@ -412,33 +412,33 @@ class Daypart(models.Model):
         verbose_name = _('Daypart')
         verbose_name_plural = _('Dayparts')
         ordering = ('day', 'time_start' )
-    
+
     def __unicode__(self):
         return "%s | %s - %s" % (self.get_day_display(), self.time_start, self.time_end)
-    
+
     def playlist_count(self):
         return self.daypart_plalists.count()
-    
-    
+
+
 
 
 
 class Service(models.Model):
-    
+
     name = models.CharField(max_length=200)
     key = models.CharField(max_length=200, blank=True, null=True)
     pattern = models.CharField(max_length=256, null=True, blank=True, help_text='Regex to match url against. eg ""')
-    
+
     class Meta:
         app_label = 'alibrary'
         verbose_name = _('Service')
         verbose_name_plural = _('Services')
         ordering = ('name', )
-    
+
     def __unicode__(self):
         return '%s - "%s"' % (self.name, self.pattern)
-    
-    
+
+
 
 class RelationManager(models.Manager):
 
@@ -491,14 +491,15 @@ class RelationManager(models.Manager):
         return sorted
 
 
-    
+
 class Relation(models.Model):
-    
+
     name = models.CharField(max_length=200, blank=True, null=True, help_text=(_('Additionally override the name.')))
     url = models.URLField(max_length=512)
 
     content_type = models.ForeignKey(ContentType)
-    object_id = UUIDField()
+    #object_id = UUIDField()
+    object_id = models.PositiveIntegerField(db_index=True)
     content_object = GenericForeignKey('content_type', 'object_id')
 
     SERVICE_CHOICES = (
@@ -516,13 +517,15 @@ class Relation(models.Model):
         ('musicbrainz', _('Musicbrainz')),
         ('bandcamp', _('Bandcamp')),
         ('itunes', _('iTunes')),
+        ('wikidata', _('wikidata')),
+        ('viaf', _('VIAF')),
         ('official', _('Official website')),
     )
 
-    UNIQUE_SERVICES = [
-        'lastfm',
-        'musicbrainz',
-    ]
+    # UNIQUE_SERVICES = [
+    #     'lastfm',
+    #     'musicbrainz',
+    # ]
 
     service = models.CharField(
         max_length=50,
@@ -551,7 +554,7 @@ class Relation(models.Model):
         verbose_name = _('Relation')
         verbose_name_plural = _('Relations')
         ordering = ('url', )
-    
+
     def __unicode__(self):
         return self.url
 
@@ -565,8 +568,8 @@ class Relation(models.Model):
             # TODO: fix unique problem
             Relation.objects.filter(service=self.service, content_type=self.content_type, object_id=self.object_id).delete()
 
-        super(Relation, self).save(*args, **kwargs)    
-        
+        super(Relation, self).save(*args, **kwargs)
+
 
 
     @property
