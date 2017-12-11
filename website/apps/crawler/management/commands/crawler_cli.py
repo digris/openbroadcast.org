@@ -14,7 +14,8 @@ from alibrary.models import Release, Media, Artist, Label, Relation
 from ...workflows.musicbrainz import (
     release_fetch_media_mb_ids,
     # metadata crawlers
-    artist_crawl_musicbrainz, label_crawl_musicbrainz,
+    artist_crawl_musicbrainz, label_crawl_musicbrainz, release_crawl_musicbrainz,
+    media_crawl_musicbrainz,
 )
 
 from ...workflows.artwork import obj_crawl_artwork
@@ -85,10 +86,18 @@ def crawl_musicbrainz(ct, id, cache_for):
         qs = Label.objects.filter(relations__service='musicbrainz').distinct()
         _crawl_func = label_crawl_musicbrainz
 
+    if ct == 'release':
+        qs = Release.objects.filter(relations__service='musicbrainz').distinct()
+        _crawl_func = release_crawl_musicbrainz
+
+    if ct == 'media':
+        qs = Media.objects.filter(relations__service='musicbrainz').distinct()
+        _crawl_func = media_crawl_musicbrainz
+
 
     click.secho('Num. {} objects to process: {}'.format(ct, qs.count()), fg='green')
 
-    for obj in qs:
+    for obj in qs[0:10000]:
         cache_key = 'musicbrainz-{}-{}'.format(ct, obj.pk)
         if cache.get(cache_key):
             click.secho('object recently crawled: {}'.format(obj), bg='yellow', fg='black')

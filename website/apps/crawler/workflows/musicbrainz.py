@@ -290,6 +290,12 @@ class MBCrawler(object):
 class MBArtistCrawler(MBCrawler):
     """
     crawl artist metadata
+     - ipi_code
+     - isni_code
+     - type
+     - country
+     - date_start
+     - date_end
     """
 
     mb_ctype = 'artist'
@@ -352,6 +358,12 @@ class MBArtistCrawler(MBCrawler):
 class MBLabelCrawler(MBCrawler):
     """
     crawl label metadata
+     - ipi_code
+     - isni_code
+     - country
+     - date_start
+     - date_end
+     - labelcode
     """
 
     mb_ctype = 'label'
@@ -373,13 +385,6 @@ class MBLabelCrawler(MBCrawler):
                 self._changes['isni_code'] = self._data['isnis'][0]
             except (IndexError, KeyError, AttributeError):
                 pass
-
-        # TODO: map types
-        # if not self.obj.type:
-        #     try:
-        #         self._changes['type'] = self._data['type'].lower()
-        #     except (IndexError, KeyError, AttributeError):
-        #         pass
 
         if not self.obj.country:
             try:
@@ -404,6 +409,86 @@ class MBLabelCrawler(MBCrawler):
             except (IndexError, KeyError, AttributeError):
                 pass
 
+        if not self.obj.labelcode:
+            try:
+                self._changes['labelcode'] = '{}'.format(self._data['label-code'])
+            except (IndexError, KeyError, AttributeError):
+                pass
+
+
+        # update instance fields
+        if self._changes:
+            type(self.obj).objects.filter(pk=self.obj.pk).update(**self._changes)
+
+
+
+
+class MBReleaseCrawler(MBCrawler):
+    """
+    crawl label metadata
+     - country_code
+     - releasedate_approx
+     - barcode
+    """
+
+    mb_ctype = 'release'
+    api_inc = ['url-rels',]
+
+    ###################################################################
+    # direct field mappings
+    ###################################################################
+    def update_fields(self):
+
+        if not self.obj.release_country:
+            try:
+                country_code = self._data['country']
+                self._changes['release_country'] = Country.objects.get(iso2_code=country_code)
+            except (IndexError, KeyError, AttributeError, Country.DoesNotExist):
+                pass
+
+        if not self.obj.releasedate_approx:
+            try:
+                releasedate = self._data['date']
+                if releasedate:
+                    self._changes['releasedate_approx'] = format_approx_date(releasedate)
+            except (IndexError, KeyError, AttributeError):
+                pass
+
+        if not self.obj.barcode:
+            try:
+                if self._data['barcode']:
+                    self._changes['barcode'] = self._data['barcode']
+            except (IndexError, KeyError, AttributeError):
+                pass
+
+
+        # update instance fields
+        if self._changes:
+            type(self.obj).objects.filter(pk=self.obj.pk).update(**self._changes)
+
+
+
+
+class MBMediaCrawler(MBCrawler):
+    """
+    crawl label metadata
+     - isrc
+    """
+
+    mb_ctype = 'recording'
+    api_inc = ['url-rels', 'isrcs',]
+
+    ###################################################################
+    # direct field mappings
+    ###################################################################
+    def update_fields(self):
+
+        if not self.obj.isrc:
+            try:
+                self._changes['isrc'] = self._data['isrcs'][0]
+            except (IndexError, KeyError, AttributeError):
+                pass
+
 
         # update instance fields
         if self._changes:
@@ -424,3 +509,12 @@ def artist_crawl_musicbrainz(obj):
 def label_crawl_musicbrainz(obj):
     c = MBLabelCrawler(obj)
     return c.run()
+
+def release_crawl_musicbrainz(obj):
+    c = MBReleaseCrawler(obj)
+    return c.run()
+
+def media_crawl_musicbrainz(obj):
+    c = MBMediaCrawler(obj)
+    return c.run()
+
