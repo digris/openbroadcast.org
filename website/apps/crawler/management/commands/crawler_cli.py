@@ -97,7 +97,7 @@ def crawl_musicbrainz(ct, id, cache_for):
 
     click.secho('Num. {} objects to process: {}'.format(ct, qs.count()), fg='green')
 
-    for obj in qs[0:10000]:
+    for obj in qs:
         cache_key = 'musicbrainz-{}-{}'.format(ct, obj.pk)
         if cache.get(cache_key):
             click.secho('object recently crawled: {}'.format(obj), bg='yellow', fg='black')

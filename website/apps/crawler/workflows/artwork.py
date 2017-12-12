@@ -5,6 +5,7 @@ import logging
 import re
 import os
 import urllib
+import contextlib
 import hashlib
 import requests
 from BeautifulSoup import BeautifulSoup
@@ -228,9 +229,11 @@ class ArtworkCrawler(object):
 
 
         # 3. download image
-        _f = urllib.URLopener()
         log.debug('save {} to {}'.format(image_url, _path_abs))
+        _f = urllib.URLopener()
         _f.retrieve(image_url, _path_abs)
+        _f.close()
+
 
 
         # 4. update item
