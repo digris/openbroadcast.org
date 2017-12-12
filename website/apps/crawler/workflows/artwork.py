@@ -5,6 +5,7 @@ import logging
 import re
 import os
 import urllib
+import time
 import contextlib
 import hashlib
 import requests
@@ -23,6 +24,8 @@ log = logging.getLogger(__name__)
 MUSICBRAINZ_HOST = getattr(settings, 'MUSICBRAINZ_HOST')
 DISCOGS_HOST = getattr(settings, 'DISCOGS_HOST')
 MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT')
+
+SLEEP_ON_429 = 30
 
 
 CRAWLER_HEADERS = {
@@ -85,7 +88,7 @@ class ArtworkCrawler(object):
 
 
 
-    def crawl_for_wikidata_image(slf, url):
+    def crawl_for_wikidata_image(self, url):
         """
         parses wikidata url for id & tries to find valid image url
         """
@@ -125,20 +128,27 @@ class ArtworkCrawler(object):
 
 
 
-    def crawl_for_discogs_image(slf, url):
+    def crawl_for_discogs_image(self, url):
         """
         parses wikidata url for id & tries to find valid image url
+        url format: https://www.discogs.com/label/401445-Zzyzx-Music
         """
         _bits = url.split('/')
-        id = _bits[-1].strip()
+        id = _bits[-1].strip().split('-')[0]
         ctype = _bits[-2].strip()
 
         api_url = 'http://{host}/{ctype}s/{id}'.format(id=id, ctype=ctype, host=DISCOGS_HOST)
         r = requests.get(api_url)
 
-        print(api_url)
+
+
+        if r.status_code == 429:
+            log.warning('too many requests - 429')
+            time.sleep(SLEEP_ON_429)
+            return self.crawl_for_discogs_image(url)
 
         if not r.status_code == 200:
+            log.warning('unable to load data: {} - {}'.format(r.status_code, url))
             return
 
         data = r.json()
@@ -156,13 +166,17 @@ class ArtworkCrawler(object):
             except (KeyError, IndexError):
                 return
 
+        # for unknown reason discogs sometimes
+        if image_url.startswith('https://api-img'):
+            return
+
         # check if url returns 200
         r = requests.head(image_url)
         if r.status_code == 200:
             return image_url
 
 
-    def crawl_for_musicbrainz_image(slf, url):
+    def crawl_for_musicbrainz_image(self, url):
         """
         parses id url for id & tries to find valid image on coverartarchive
         """
@@ -182,7 +196,7 @@ class ArtworkCrawler(object):
             return r2.url
 
 
-    def crawl_for_wikipedia_image(slf, url):
+    def crawl_for_wikipedia_image(self, url):
         """
         parses id url for id & tries to find valid image on coverartarchive
         """

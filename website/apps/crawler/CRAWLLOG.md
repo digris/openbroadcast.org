@@ -65,7 +65,14 @@ Added 26'413 mb id's to tracks!!
 ### Crawl for Artwork
 
  - Images:  
-   `Artist.objects.exclude(Q(main_image__isnull=True) | Q(main_image='')).count()`: ???  
-   `Label.objects.exclude(Q(main_image__isnull=True) | Q(main_image='')).count()`: ???  
-   `Release.objects.exclude(Q(main_image__isnull=True) | Q(main_image='')).count()`: ???  
-
+   `Artist.objects.exclude(Q(main_image__isnull=True) | Q(main_image='')).count()`: 32670  
+   `Label.objects.exclude(Q(main_image__isnull=True) | Q(main_image='')).count()`: 6244  
+   `Release.objects.exclude(Q(main_image__isnull=True) | Q(main_image='')).count()`: 20811 
+   
+   
+   
+    ./manage.py crawler_cli crawl_artwork artist
+    # 32989
+    
+    ./manage.py crawler_cli crawl_artwork label
+    # 6319

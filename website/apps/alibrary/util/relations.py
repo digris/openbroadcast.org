@@ -41,6 +41,18 @@ def get_service_by_url(url, service=None):
     if url.find('wikidata.org') != -1:
         service = 'wikidata'
 
+    if url.find('imdb.com') != -1:
+        service = 'imdb'
+
+    if url.find('viaf.org') != -1:
+        service = 'viaf'
+
+    if url.find('vimeo.com') != -1:
+        service = 'vimeo'
+
+    if url.find('instagram.com') != -1:
+        service = 'instagram'
+
     if not service:
         service = 'generic'
 

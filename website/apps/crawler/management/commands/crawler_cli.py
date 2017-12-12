@@ -18,6 +18,10 @@ from ...workflows.musicbrainz import (
     media_crawl_musicbrainz,
 )
 
+from ...workflows.discogs import (
+    label_crawl_discogs,
+)
+
 from ...workflows.artwork import obj_crawl_artwork
 
 DEFAULT_LIMIT = 100
@@ -55,7 +59,7 @@ def crawl_releases_for_media_mbid(id):
     click.secho('Num. objects to process: {}'.format(qs.count()), fg='green')
 
     total_mb_ids_added = []
-    for obj in qs:
+    for obj in qs.nocache():
         mb_ids_added = release_fetch_media_mb_ids(obj=obj)
         if mb_ids_added:
             total_mb_ids_added += mb_ids_added
@@ -67,13 +71,12 @@ def crawl_releases_for_media_mbid(id):
 
 @cli.command()
 @click.argument('ct', type=str, nargs=1, required=False)
-@click.option('id', '--id', type=int, required=False)
 @click.option('cache_for', '--cache', type=int, required=False, default=60 * 10 * 24)
-def crawl_musicbrainz(ct, id, cache_for):
+def crawl_musicbrainz(ct, cache_for):
     """
     crawls for (secondary) identifiers.
     give content type(s) as argument(s):
-    track, artist, release, label
+    media, artist, release, label
     """
 
     changes = []
@@ -97,8 +100,65 @@ def crawl_musicbrainz(ct, id, cache_for):
 
     click.secho('Num. {} objects to process: {}'.format(ct, qs.count()), fg='green')
 
-    for obj in qs:
+    for obj in qs.nocache():
         cache_key = 'musicbrainz-{}-{}'.format(ct, obj.pk)
+        if cache.get(cache_key):
+            click.secho('object recently crawled: {}'.format(obj), bg='yellow', fg='black')
+        else:
+            _changes = _crawl_func(obj=obj)
+            if _changes:
+                changes.append(_changes)
+            cache.set(cache_key, 1, cache_for)
+
+
+    ###################################################################
+    # summary display
+    ###################################################################
+    click.secho('#' * 72, fg='green')
+
+    click.secho('Total updated objects:    {}'.format(
+        len(changes)
+    ), fg='green')
+
+    click.secho('Total updated properties: {}'.format(
+        sum([len(c) for c in changes])
+    ), fg='green')
+
+
+
+@cli.command()
+@click.argument('ct', type=str, nargs=1, required=False)
+@click.option('cache_for', '--cache', type=int, required=False, default=60 * 10 * 24)
+def crawl_discogs(ct, cache_for):
+    """
+    crawls for (secondary) identifiers.
+    give content type(s) as argument(s):
+    media, artist, release, label
+    """
+
+    changes = []
+
+    # if ct == 'artist':
+    #     qs = Artist.objects.filter(relations__service='musicbrainz').distinct()
+    #     _crawl_func = artist_crawl_musicbrainz
+
+    if ct == 'label':
+        qs = Label.objects.filter(relations__service='discogs').distinct()
+        _crawl_func = label_crawl_discogs
+
+    # if ct == 'release':
+    #     qs = Release.objects.filter(relations__service='musicbrainz').distinct()
+    #     _crawl_func = release_crawl_musicbrainz
+    #
+    # if ct == 'media':
+    #     qs = Media.objects.filter(relations__service='musicbrainz').distinct()
+    #     _crawl_func = media_crawl_musicbrainz
+
+
+    click.secho('Num. {} objects to process: {}'.format(ct, qs.count()), fg='green')
+
+    for obj in qs.nocache()[0:600]:
+        cache_key = 'discogs-meta-{}-{}'.format(ct, obj.pk)
         if cache.get(cache_key):
             click.secho('object recently crawled: {}'.format(obj), bg='yellow', fg='black')
         else:
@@ -132,7 +192,7 @@ def crawl_artwork(ct, id, cache_for):
     """
     crawls for artwork.
     give content type(s) as argument(s):
-    track, artist, release, label
+    artist, release, label
     """
 
 
@@ -160,7 +220,7 @@ def crawl_artwork(ct, id, cache_for):
         ]
 
         qs = Release.objects.filter(
-            #Q(main_image__isnull=True) | Q(main_image=''),
+            Q(main_image__isnull=True) | Q(main_image=''),
             relations__service__in=services
         ).distinct()
 
@@ -180,7 +240,7 @@ def crawl_artwork(ct, id, cache_for):
 
 
     click.secho('Num. {} objects to process: {}'.format(ct, qs.count()), fg='green')
-    for obj in qs:
+    for obj in qs.nocache():
         cache_key = 'artwork-{}-{}'.format(ct, obj.pk)
         if cache.get(cache_key):
             click.secho('object recently crawled: {}'.format(obj), bg='yellow', fg='black')
@@ -238,7 +298,7 @@ def crawl_viaf_isni(cache_for):
         relations__service='viaf'
     ).distinct()
 
-    for obj in qs:
+    for obj in qs.nocache():
 
         cache_key = 'viaf-isni-{}-{}'.format('artist', obj.pk)
 

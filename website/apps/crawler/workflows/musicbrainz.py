@@ -217,10 +217,15 @@ class MBCrawler(object):
 
         try:
             r = requests.get(url)
-            return r.json()
         except Exception as e:
             log.warning('unable to load data from {}'.format(url))
             return
+
+        if not r.status_code == 200:
+            log.warning('unable to load data: {} - {}'.format(r.status_code, url))
+            return
+
+        return r.json()
 
 
 
