@@ -1,4 +1,6 @@
 # Open Broadcast - Platform
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdigris%2Fopenbroadcast.org.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdigris%2Fopenbroadcast.org?ref=badge_shield)
+
 
 
 
@@ -35,3 +37,7 @@ contenttypes \
 
 ./manage.py migrate --no-initial-data
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fdigris%2Fopenbroadcast.org.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fdigris%2Fopenbroadcast.org?ref=badge_large)
