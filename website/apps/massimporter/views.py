@@ -72,14 +72,14 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
             except:
                 directory = None
 
-            try:
-                identifier = Identifier()
-                metadata = identifier.extract_metadata(item.file)
-                print(metadata)
-                mb_uuid = metadata.get('media_mb_id', None)
-
-            except:
-                mb_uuid = None
+            # try:
+            #     identifier = Identifier()
+            #     metadata = identifier.extract_metadata(item.file)
+            #     print(metadata)
+            #     mb_uuid = metadata.get('media_mb_id', None)
+            #
+            # except:
+            #     mb_uuid = None
 
             media_mb_uuid = uuid_by_object(item.media)
 
@@ -90,7 +90,7 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
                     'media_mb_uuid': media_mb_uuid,
                     'filename': m_orig,
                     'directory': directory,
-                    'mb_uuid': mb_uuid,
+                    # 'mb_uuid': mb_uuid,
                 }
 
 

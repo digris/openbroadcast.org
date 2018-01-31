@@ -426,6 +426,7 @@ class ImportFile(BaseModel):
         if not reimport_duplicate:
 
             metadata = identifier.extract_metadata(obj.file)
+
             if not metadata:
                 log.warning('unable to extracted metadata')
 
@@ -452,7 +453,7 @@ class ImportFile(BaseModel):
 
                     # if possible duplicate and to be imported file have
                     # both a musicbrainz recording id then ignore
-                    # the duplicate.
+                    # the assigned duplicate.
                     # TODO: this is not so nicely done...
                     try:
                         if metadata and 'media_mb_id' in metadata and metadata['media_mb_id']:

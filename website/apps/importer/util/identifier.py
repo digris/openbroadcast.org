@@ -134,26 +134,26 @@ class Identifier(object):
 
                 # TODO: make this matching more inteligent!
                 qs = Media.objects.filter(
-                    name__istartswith=metadata['media_name'][0:8],
-                    artist__name__istartswith=metadata['performer_name'][0:8]
+                    name__istartswith=metadata['media_name'][0:16],
+                    artist__name__istartswith=metadata['performer_name'][0:16]
                 )
 
                 if qs.exists():
                     log.info('found existing media by title/artist: {} - {}'.format(
-                        metadata['media_name'][0:8],
-                        metadata['performer_name'][0:8]
+                        metadata['media_name'][0:16],
+                        metadata['performer_name'][0:16]
                     ))
 
                 else:
                     qs = Media.objects.filter(
-                        name__istartswith=metadata['media_name'][0:8],
-                        release__name__istartswith=metadata['release_name'][0:8]
+                        name__istartswith=metadata['media_name'][0:16],
+                        release__name__istartswith=metadata['release_name'][0:16]
                     )
 
                     if qs.exists():
                         log.info('found existing media by title/release: {} - {}'.format(
-                            metadata['media_name'][0:8],
-                            metadata['release_name'][0:8]
+                            metadata['media_name'][0:16],
+                            metadata['release_name'][0:16]
                         ))
 
                 if qs.exists():
