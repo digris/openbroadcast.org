@@ -5,12 +5,12 @@
     <div class="row-fluid">
         <div class="span6">
             <a class="title" href="{{ object.media.get_absolute_url }}">
-                {{ object.media }}
+                {{ object.media|truncatechars:48 }}
             </a>
         </div>
         <div class="span6">
             <a class="title" href="{% url 'admin:importer_importfile_change' object.item.id %}">
-                {{ object.filename }}
+                {{ object.filename|truncatechars:48 }}
             </a>
         </div>
     </div>
@@ -18,11 +18,11 @@
     <div class="row-fluid">
         <div class="span6">
             <a href="{{ object.media.artist.get_absolute_url }}">
-                {{ object.media.artist }}
+                {{ object.media.artist|truncatechars:32 }}
             </a>
             &mdash;
             <a href="{{ object.media.release.get_absolute_url }}">
-                {{ object.media.release }}
+                {{ object.media.release|truncatechars:32 }}
             </a>
             &mdash;
             <span>{{ object.media.master_duration|sec_to_time }}</span>

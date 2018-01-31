@@ -62,7 +62,7 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
         # plausibility check - compare if we can find the title in original filename
         identifier = Identifier()
         possible_name_mismatch = []
-        all_duplicates = []
+        name_matching_duplicates = []
         for item in qs_duplicate.order_by('media__release__name', 'media__name'):
             m_name = clean_filename(item.media.name)
             m_orig = clean_filename(ntpath.basename(item.filename))
@@ -92,9 +92,10 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
 
 
             # append data to all results and 'false positive' list if name mismatch
-            all_duplicates.append(data)
             if not (m_name.lower() in m_orig.lower()):
                 possible_name_mismatch.append(data)
+            else:
+                name_matching_duplicates.append(data)
 
 
         # check for possible unrecognized duplicates
@@ -128,7 +129,7 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
 
             'possible_name_mismatch': possible_name_mismatch,
             'possible_duplicates': possible_duplicates,
-            'all_duplicates': all_duplicates,
+            'name_matching_duplicates': name_matching_duplicates,
         })
 
         return context

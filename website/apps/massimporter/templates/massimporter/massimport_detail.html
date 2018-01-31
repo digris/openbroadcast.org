@@ -265,12 +265,12 @@
                     <h2>Duplicate Report</h2>
 
                     <p class="hint">
-                        Overview of all detected duplicates.
+                        Overview of all detected duplicates ('false positives' excluded).
                     </p>
 
-                    {% if all_duplicates %}
+                    {% if name_matching_duplicates %}
                     <div class="list duplicates">
-                        {% for duplicate in all_duplicates %}
+                        {% for duplicate in name_matching_duplicates %}
                             {% include 'massimporter/_partials/_duplicate_inline.html' with object=duplicate %}
                         {% endfor %}
                     </div>
