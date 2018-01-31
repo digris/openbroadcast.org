@@ -60,7 +60,7 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
 
 
         # plausibility check - compare if we can find the title in original filename
-        identifier = Identifier()
+
         possible_name_mismatch = []
         name_matching_duplicates = []
         for item in qs_duplicate.order_by('media__release__name', 'media__name'):
@@ -72,13 +72,16 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
             except:
                 directory = None
 
-            # try:
-            #     metadata = identifier.extract_metadata(item.file)
-            # except:
-            #     metadata = None
+            try:
+                identifier = Identifier()
+                metadata = identifier.extract_metadata(item.file)
+                print(metadata)
+                mb_uuid = metadata.get('media_mb_id', None)
+
+            except:
+                mb_uuid = None
 
             media_mb_uuid = uuid_by_object(item.media)
-            mb_uuid = item.import_tag.get('mb_track_id', None)
 
 
             data = {
