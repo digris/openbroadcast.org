@@ -38,8 +38,6 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
         source='main_image',
     )
 
-
-
     class Meta:
         model = Artist
         depth = 1

@@ -174,7 +174,7 @@ class DiscogsCrawler(object):
             for url in relations:
 
                 _service = get_service_by_url(url)
-                log.debug('{}: {}'.format(_service, url))
+                # log.debug('{}: {}'.format(_service, url))
 
                 if _service in DISCOGS_RELATION_USE_SERVICES and not strip_http(strip_query_params(url))in _relation_urls:
                     rel = Relation(
@@ -194,7 +194,7 @@ class DiscogsCrawler(object):
         """
         execute default sequence
         """
-        #self.update_fields()
+        self.update_fields()
         self.update_relations()
 
         if self._changes:
@@ -220,7 +220,7 @@ class DiscogsLabelCrawler(DiscogsCrawler):
         if not self.obj.description:
             try:
                 self._changes['description'] = self._data['profile']
-            except (IndexError, KeyError, AttributeError):
+            except (IndexError, KeyError, AttributeError, TypeError):
                 pass
 
         # update instance fields

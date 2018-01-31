@@ -38,14 +38,15 @@
             soundManager.setup({
                 url: '{{ STATIC_URL }}alibrary/js/lib/soundmanager2/swf/',
                 flashVersion: 9,
-                useFlashBlock: true,
+                useHTML5Audio: true,
+                preferFlash: false,
                 debugFlash: false,
                 debugMode: true,
                 flashLoadTimeout: 0,
                 //useFastPolling: true,
                 useHighPerformance: false,
-                flashPollingInterval: 100,
-                html5PollingInterval: 100,
+                flashPollingInterval: 200,
+                html5PollingInterval: 200,
                 onready: function () {
                     alibrary.playlist_editor.init();
                 }
