@@ -1,0 +1,47 @@
+{% load i18n calc %}
+
+<div class="item">
+
+    <div class="row-fluid">
+        <div class="span6">
+            <a class="title" href="{{ object.media.get_absolute_url }}">
+                {{ object.media }}
+            </a>
+        </div>
+        <div class="span6">
+            <a class="title" href="{% url 'admin:importer_importfile_change' object.item.id %}">
+                {{ object.filename }}
+            </a>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span6">
+            <a href="{{ object.media.artist.get_absolute_url }}">
+                {{ object.media.artist }}
+            </a>
+            &mdash;
+            <a href="{{ object.media.release.get_absolute_url }}">
+                {{ object.media.release }}
+            </a>
+            &mdash;
+            <span>{{ object.media.master_duration|sec_to_time }}</span>
+            {% if object.media_mb_uuid %}
+                <br><span>{{ object.media_mb_uuid }}</span>
+            {% endif %}
+        </div>
+        <div class="span6">
+            <span>
+                {{ object.directory }}
+            </span>
+            &mdash;
+            <span>
+                #{{ object.item.pk }}
+            </span>
+            {% if object.mb_uuid %}
+                <br><span>{{ object.mb_uuid }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+</div>

@@ -420,12 +420,14 @@ class ImportFile(BaseModel):
         if reimport_duplicate:
             log.debug('duplicate reimport forced for pk: {}'.format(obj.pk))
 
-        if reimport_duplicate:
-            media_id = None
 
-        else:
+        media_id = None
 
-            media_id = None
+        if not reimport_duplicate:
+
+            metadata = identifier.extract_metadata(obj.file)
+            if not metadata:
+                log.warning('unable to extracted metadata')
 
             # duplicate check by sha1
             try:
@@ -453,8 +455,6 @@ class ImportFile(BaseModel):
                     # the duplicate.
                     # TODO: this is not so nicely done...
                     try:
-                        metadata = identifier.extract_metadata(obj.file)
-
                         if metadata and 'media_mb_id' in metadata and metadata['media_mb_id']:
 
                             if Media.objects.get(pk=media_id).relations.filter(
@@ -466,6 +466,8 @@ class ImportFile(BaseModel):
 
                 except:
                     log.warning('unable to identify by fprint: {}'.format(media_id))
+
+
 
         try:
             metadata = identifier.extract_metadata(obj.file)

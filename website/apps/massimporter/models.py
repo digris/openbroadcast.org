@@ -239,22 +239,11 @@ class MassimportFile(BaseModel):
     def update(self):
 
         if self.import_file:
-
-            # if self.status != self.import_file.status:
-            #     print 'update status from {} to {} for {}'.format(
-            #         self.get_status_display(),
-            #         self.import_file.get_status_display(),
-            #         self.path
-            #     )
-
             self.status = self.import_file.status
-
-
         else:
             self.status = ImportFile.STATUS_INIT
 
         self.save()
-
 
 
     def enqueue(self):

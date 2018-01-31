@@ -14,8 +14,13 @@ from django.utils.functional import lazy
 from django.views.generic import ListView, DetailView
 from .models import Massimport
 from alibrary.models import Media
+from alibrary.util.relations import uuid_by_object
 from importer.models import ImportFile
+from importer.util.identifier import Identifier
+
 from pure_pagination.mixins import PaginationMixin
+
+
 
 
 class MassimportListView(LoginRequiredMixin, PermissionRequiredMixin, PaginationMixin, ListView):
@@ -55,16 +60,41 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
 
 
         # plausibility check - compare if we can find the title in original filename
+        identifier = Identifier()
         possible_name_mismatch = []
-        for item in qs_duplicate:
+        all_duplicates = []
+        for item in qs_duplicate.order_by('media__release__name', 'media__name'):
             m_name = clean_filename(item.media.name)
             m_orig = clean_filename(ntpath.basename(item.filename))
-            if not (m_name.lower() in m_orig.lower()):
-                possible_name_mismatch.append({
+
+            try:
+                directory = item.filename.split(os.sep)[-2]
+            except:
+                directory = None
+
+            # try:
+            #     metadata = identifier.extract_metadata(item.file)
+            # except:
+            #     metadata = None
+
+            media_mb_uuid = uuid_by_object(item.media)
+            mb_uuid = item.import_tag.get('mb_track_id', None)
+
+
+            data = {
                     'item': item,
                     'media': item.media,
+                    'media_mb_uuid': media_mb_uuid,
                     'filename': m_orig,
-                })
+                    'directory': directory,
+                    'mb_uuid': mb_uuid,
+                }
+
+
+            # append data to all results and 'false positive' list if name mismatch
+            all_duplicates.append(data)
+            if not (m_name.lower() in m_orig.lower()):
+                possible_name_mismatch.append(data)
 
 
         # check for possible unrecognized duplicates
@@ -98,6 +128,7 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
 
             'possible_name_mismatch': possible_name_mismatch,
             'possible_duplicates': possible_duplicates,
+            'all_duplicates': all_duplicates,
         })
 
         return context

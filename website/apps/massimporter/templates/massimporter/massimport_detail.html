@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load i18n sekizai_tags straight_include dajaxice_templatetags pushy_tags pageguide_tags %}
+{% load i18n sekizai_tags straight_include dajaxice_templatetags pushy_tags pageguide_tags calc %}
 
 {% block object_type %}massimport{% endblock %}
 
@@ -150,33 +150,17 @@
                     <h2>Possible Recognition Mismatch &mdash; "False Positives"</h2>
 
                     <p class="hint">
-                        Uploaded items that are recognized as duplicates - but the filename of the
-                        uploaded does not contain the name/title of the assigned duplicate.
+                        Uploaded items that are recognized as duplicates, and were skipped - but the filename of the
+                        uploaded track does not contain the name/title of the assigned duplicate.
                     </p>
 
-                    <table>
+                    {% if possible_name_mismatch %}
+                    <div class="list duplicates">
                         {% for mismatch in possible_name_mismatch %}
-                        <tr class="padded">
-                            <td>
-                                <a class="title" href="{{ mismatch.media.get_absolute_url }}">
-                                    {{ mismatch.media.name }}
-                                </a>
-                                &mdash;
-                                <a href="{{ mismatch.media.release.get_absolute_url }}">
-                                    {{ mismatch.media.release.name }}
-                                </a>
-                            </td>
-                            <td>
-                                <span class="title">
-                                    {{ mismatch.filename }}
-                                </span>
-                            </td>
-                        </tr>
-                        {% empty %}
-                            <p>-</p>
+                            {% include 'massimporter/_partials/_duplicate_inline.html' with object=mismatch %}
                         {% endfor %}
-
-                    </table>
+                    </div>
+                    {% endif %}
 
                 </div>
 
@@ -199,56 +183,106 @@
                         Displayed are tracks that have the exact same title and artist's name.
                     </p>
 
-                    <table>
+
+
+                    {% if possible_duplicates %}
+                    <div class="list duplicates">
                         {% for possible_duplicate in possible_duplicates %}
-                        <tr class="padded">
-                            <td>
-                                <a class="title" href="{{ possible_duplicate.media.get_absolute_url }}">
-                                    {{ possible_duplicate.media.name }}
-                                </a>
-                                &mdash;
-                                <a href="{{ possible_duplicate.media.artist.get_absolute_url }}">
-                                    {{ possible_duplicate.media.artist.name }}
-                                </a>
-                                &mdash;
-                                <a href="{{ possible_duplicate.media.release.get_absolute_url }}">
-                                    {{ possible_duplicate.media.release.name }}
-                                </a>
 
-                                <br>
-                                {% for duplicate_media in possible_duplicate.duplicates_qs %}
 
-                                    <a href="{{ duplicate_media.get_absolute_url }}">
-                                        {{ duplicate_media.name }}
-                                    </a>
-                                    &mdash;
-                                    <a href="{{ duplicate_media.artist.get_absolute_url }}">
-                                        {{ duplicate_media.artist.name }}
-                                    </a>
-                                    &mdash;
-                                    <a href="{{ duplicate_media.release.get_absolute_url }}">
-                                        {{ duplicate_media.release.name }}
-                                    </a>
-                                    <br>
-                                    {% if forloop.last %}<br>{% endif %}
-                                {% endfor %}
+                            <div class="item">
 
-                            </td>
-                            <td>
-                                <a href="{% url 'alibrary-media-list' %}?artist={{ possible_duplicate.media.artist.slug }}&q={{ possible_duplicate.media.name }}">Search by combo (Title/Artist)</a>
-                            </td>
-                        </tr>
-                        {% empty %}
-                            <p>-</p>
+                                <div class="row-fluid">
+                                    <div class="span6">
+                                        <a class="title" href="{{ possible_duplicate.media.get_absolute_url }}">
+                                            {{ possible_duplicate.media }}
+                                        </a>
+                                    </div>
+                                    <div class="span6">
+                                        <a href="{% url 'alibrary-media-list' %}?artist={{ possible_duplicate.media.artist.slug }}&q={{ possible_duplicate.media.name }}">Search by combo (Title/Artist)</a>
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid">
+                                    <div class="span6">
+                                        <a href="{{ possible_duplicate.media.artist.get_absolute_url }}">
+                                            {{ possible_duplicate.media.artist }}
+                                        </a>
+                                        &mdash;
+                                        <a href="{{ possible_duplicate.media.release.get_absolute_url }}">
+                                            {{ possible_duplicate.media.release }}
+                                        </a>
+                                        &mdash;
+                                        <span>{{ possible_duplicate.media.master_duration|sec_to_time }}</span>
+                                        {% if possible_duplicate.media_mb_uuid %}
+                                            <br><span>{{ possible_duplicate.media_mb_uuid }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="span6">
+
+                                        {% for duplicate_media in possible_duplicate.duplicates_qs %}
+
+                                            <a href="{{ duplicate_media.get_absolute_url }}">
+                                                {{ duplicate_media.name }}
+                                            </a>
+                                            &mdash;
+                                            <a href="{{ duplicate_media.artist.get_absolute_url }}">
+                                                {{ duplicate_media.artist.name }}
+                                            </a>
+                                            &mdash;
+                                            <a href="{{ duplicate_media.release.get_absolute_url }}">
+                                                {{ duplicate_media.release.name }}
+                                            </a>
+                                            <br>
+                                            {% if forloop.last %}<br>{% endif %}
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+
                         {% endfor %}
-
-                    </table>
+                    </div>
+                    {% endif %}
 
                 </div>
 
             </div>
 
         </div>
+
+
+
+
+        <div class="panel">
+
+            <div class="row-fluid">
+
+                <div class="span12">
+
+                    <h2>Duplicate Report</h2>
+
+                    <p class="hint">
+                        Overview of all detected duplicates.
+                    </p>
+
+                    {% if all_duplicates %}
+                    <div class="list duplicates">
+                        {% for duplicate in all_duplicates %}
+                            {% include 'massimporter/_partials/_duplicate_inline.html' with object=duplicate %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
 
     </div>
 
