@@ -95,6 +95,7 @@ DEFAULT_ARTIST_JOIN_PHRASE_CHOICES = (
     (',', _(',')),
     ('and', _('and')),
     ('feat', _('feat.')),
+    ('feat.', _('feat.')),
     ('presents', _('presents')),
     ('meets', _('meets')),
     ('with', _('with')),

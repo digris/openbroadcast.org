@@ -188,14 +188,7 @@
                                         <a class="title" href="{{ possible_duplicate.media.get_absolute_url }}">
                                             {{ possible_duplicate.media }}
                                         </a>
-                                    </div>
-                                    <div class="span6">
-                                        <a href="{% url 'alibrary-media-list' %}?artist={{ possible_duplicate.media.artist.slug }}&q={{ possible_duplicate.media.name }}">Search by combo (Title/Artist)</a>
-                                    </div>
-                                </div>
-
-                                <div class="row-fluid">
-                                    <div class="span6">
+                                        <br>
                                         <a href="{{ possible_duplicate.media.artist.get_absolute_url }}">
                                             {{ possible_duplicate.media.artist }}
                                         </a>
@@ -211,12 +204,13 @@
                                     </div>
                                     <div class="span6">
 
+
                                         {% for duplicate_media in possible_duplicate.duplicates_qs %}
 
-                                            <a href="{{ duplicate_media.get_absolute_url }}">
+                                            <a class="title" href="{{ duplicate_media.get_absolute_url }}">
                                                 {{ duplicate_media.name }}
                                             </a>
-                                            &mdash;
+                                            <br>
                                             <a href="{{ duplicate_media.artist.get_absolute_url }}">
                                                 {{ duplicate_media.artist.name }}
                                             </a>
@@ -224,12 +218,14 @@
                                             <a href="{{ duplicate_media.release.get_absolute_url }}">
                                                 {{ duplicate_media.release.name }}
                                             </a>
+                                            &mdash;
+                                            <span>{{ duplicate_media.master_duration|sec_to_time }}</span>
                                             <br>
                                             {% if forloop.last %}<br>{% endif %}
                                         {% endfor %}
-
                                     </div>
                                 </div>
+
 
                             </div>
 

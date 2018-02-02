@@ -128,7 +128,7 @@
         <div class="span1 icon-holder">&nbsp;</div>
 
         <div class="span8 information">
-            
+
             <p>File placed in the import-queue.<br/>Please be patient for a while.</p>
 
             <!--
@@ -483,7 +483,6 @@
                            class="release autocomplete"
                            data-ct="release"
                            value="{{ object.import_tag.release }}">
-
                     <div class="ac-result"></div>
                 </div>
             </div>
@@ -500,6 +499,9 @@
                     Assigned
                 </a>
             {% else %}
+                {% if object.import_tag.alibrary_release_matches %}
+                    <a href="#" class="matches"><i class="icon-warning-sign"></i> {{ object.import_tag.alibrary_release_matches }} matches</a>
+                {% endif %}
                 <span class="dim"><i class="icon-plus"></i> Create</span>
             {% endif %}
         </div>

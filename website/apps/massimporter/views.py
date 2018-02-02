@@ -87,12 +87,12 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
             # append data to all results and 'false positive' list if name mismatch
             if not (m_name.lower() in m_orig.lower()):
 
-                try:
-                    identifier = Identifier()
-                    metadata = identifier.extract_metadata(item.file)
-                    data['mb_uuid'] = metadata.get('media_mb_id', None)
-                except:
-                    pass
+                # try:
+                #     identifier = Identifier()
+                #     metadata = identifier.extract_metadata(item.file)
+                #     data['mb_uuid'] = metadata.get('media_mb_id', None)
+                # except:
+                #     pass
 
                 possible_name_mismatch.append(data)
             else:
@@ -114,7 +114,7 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
             # withon a small window of same duration
             d_range = (item.media.master_duration - 1.0, item.media.master_duration + 1.0)
 
-            duplicates_qs = dupe_qs.filter(master_duration__range=d_range)
+            duplicates_qs = dupe_qs.filter(master_duration__range=d_range).order_by('name')
 
             if duplicates_qs.exists():
                 possible_duplicates.append({

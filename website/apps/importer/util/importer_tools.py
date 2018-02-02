@@ -512,23 +512,22 @@ class Importer(object):
             # issue #1876
             # this wrongly assigns a `alibrary_artist_id` in the case the
             # ide/file metadata selection is clicked more than once
-
-            # if a.count() > 0:
-            #     import_tag['alibrary_artist_id'] = a[0].pk
-            #     import_tag['alibrary_artist_resource_uri'] = a[0].get_api_url()
+            if a.count() > 0:
+                import_tag['alibrary_artist_id'] = a[0].pk
+                import_tag['alibrary_artist_resource_uri'] = a[0].get_api_url()
 
 
         if 'release' in import_tag:
             r = Release.objects.filter(name=import_tag['release'])
 
+
             # TODO: investigate this condition
             # issue #1876
             # this wrongly assigns a `alibrary_release_id` in the case the
-            # ide/file metadata selection is clicked more than once
-
-            # if r.count() > 0:
-            #     import_tag['alibrary_release_id'] = r[0].pk
-            #     import_tag['alibrary_release_resource_uri'] = r[0].get_api_url()
+            # id/file metadata selection is clicked more than once
+            if r.count() > 0:
+                import_tag['alibrary_release_id'] = r[0].pk
+                import_tag['alibrary_release_resource_uri'] = r[0].get_api_url()
 
 
         # remove musicbrainz & discogs ids in case that assigned by ID3

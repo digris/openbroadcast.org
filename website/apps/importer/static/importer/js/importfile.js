@@ -27,7 +27,7 @@ var ImportfileApp = function () {
         });
 
 
-        // little hack to periodically try to fix missed updates
+        // ugly hack to periodically try to fix missed updates
         setInterval(function(){
             //console.log('periodic reload to re-check status', self.local_data);
             if(self.local_data && self.local_data.status == 'init') {
@@ -374,7 +374,7 @@ var ImportfileApp = function () {
                         //self.importer.update_summary_display(data);
                         self.importer.update_summary(data);
                         self.importer.pushy_paused = false;
-                    }, 500)
+                    }, 500);
                     console.log(data);
                 },
                 error: function (a, b, c) {
@@ -425,6 +425,7 @@ var ImportfileApp = function () {
 
             content: {
                 text: function(event, api) {
+                    // console.log('AC data', $(this).data());
                     $.ajax({
                         url: $(this).data('resource_uri')
                     })
@@ -437,6 +438,7 @@ var ImportfileApp = function () {
                         if(data.absolute_url.indexOf("/releases/") > -1) {
                             data.ct = 'release';
                         }
+
 
                         var d = { item: data };
                         var html = nj.render('importer/nj/popover.html', d);

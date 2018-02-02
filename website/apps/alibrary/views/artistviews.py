@@ -187,6 +187,9 @@ class ArtistListView(PaginationMixin, ListView):
                 if not order_by:
                     qs = qs.order_by('name')
 
+            if extra_filter == 'type_unknown':
+                qs = qs.filter(Q(type='') | Q(type__isnull=True)).distinct()
+
         # filter by import session
         import_session = self.request.GET.get('import', None)
         if import_session:

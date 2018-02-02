@@ -8,7 +8,7 @@ import unicodedata
 import string
 import ntpath
 import magic
-from alibrary.models import Media, Artist
+from alibrary.models import Media, Artist, Release
 from celery.task import task
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -674,6 +674,13 @@ class ImportFile(BaseModel):
         else:
             num_artist_matches = None
         self.import_tag['alibrary_artist_matches'] = num_artist_matches
+
+        release_name = self.import_tag.get('release', None)
+        if release_name:
+            num_release_matches = Release.objects.filter(name=release_name).count()
+        else:
+            num_release_matches = None
+        self.import_tag['alibrary_release_matches'] = num_release_matches
 
         super(ImportFile, self).save(*args, **kwargs)
 
