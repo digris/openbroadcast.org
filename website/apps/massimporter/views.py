@@ -72,15 +72,6 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
             except:
                 directory = None
 
-            # try:
-            #     identifier = Identifier()
-            #     metadata = identifier.extract_metadata(item.file)
-            #     print(metadata)
-            #     mb_uuid = metadata.get('media_mb_id', None)
-            #
-            # except:
-            #     mb_uuid = None
-
             media_mb_uuid = uuid_by_object(item.media)
 
             data = {
@@ -89,12 +80,20 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
                     'media_mb_uuid': media_mb_uuid,
                     'filename': m_orig,
                     'directory': directory,
-                    # 'mb_uuid': mb_uuid,
+                    'mb_uuid': None,
                 }
 
 
             # append data to all results and 'false positive' list if name mismatch
             if not (m_name.lower() in m_orig.lower()):
+
+                try:
+                    identifier = Identifier()
+                    metadata = identifier.extract_metadata(item.file)
+                    data['mb_uuid'] = metadata.get('media_mb_id', None)
+                except:
+                    pass
+
                 possible_name_mismatch.append(data)
             else:
                 all_duplicates.append(data)
