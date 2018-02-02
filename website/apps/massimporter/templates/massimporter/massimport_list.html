@@ -52,8 +52,7 @@
                         <ul>
 
                             <li>
-                                <a href="{% url 'massimporter-import-detail' uuid=object.uuid %}">Details</a>
-                                <span>ID: {{ object.pk }}</span>
+                                <a class="title" href="{% url 'massimporter-import-detail' uuid=object.uuid %}">Details <span>ID: {{ object.pk }}</span></a>
                             </li>
 
                             <li>
@@ -86,6 +85,7 @@
 
                         </ul>
 
+                        <!--
                         <ul>
                             {% for k, v in object.get_counts.iteritems %}
                                 <li>
@@ -94,6 +94,7 @@
                                 </li>
                             {% endfor %}
                         </ul>
+                        -->
 
                     </div>
 

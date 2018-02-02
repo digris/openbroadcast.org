@@ -34,7 +34,8 @@ class FFProbe:
 			if str(platform.system())=='Windows':
 				cmd=[FFPROBE_BINARY,"-show_streams", self.video_file]
 			else:
-				cmd=[FFPROBE_BINARY + " -show_streams " + self.video_file]
+				cmd=[FFPROBE_BINARY + " -show_streams " + '"{}"'.format(self.video_file)]
+
 			p = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
 			self.format=None
 			self.created=None
@@ -116,7 +117,7 @@ class FFStream:
 
 	def frameSize(self):
 		"""
-		Returns the pixel frame size as an integer tuple (width,height) if the stream is a video stream. 
+		Returns the pixel frame size as an integer tuple (width,height) if the stream is a video stream.
 		Returns None if it is not a video stream.
 		"""
 		size=None

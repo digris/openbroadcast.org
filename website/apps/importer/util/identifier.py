@@ -12,7 +12,7 @@ import requests
 import musicbrainzngs
 from lib.util.sha1 import sha1_by_file
 from importer.util.tools import discogs_image_by_url
-
+from base.audio.fileinfo import FileInfoProcessor
 from alibrary.models import Media
 from fprint_client.api_client import FprintAPIClient
 from fprint_client.utils import fprint_from_path
@@ -30,37 +30,39 @@ LIMIT_MB_RELEASES = 12
 LIMIT_EQUAL_NAMES = 7
 
 METADATA_SET = {
-                # media
-                'obp_media_uuid': None,
-                'media_name': None,
-                'media_mb_id': None,
-                'media_tracknumber': None,
-                'media_totaltracks': None,
-                # artist
-                'artist_name': None,
-                'artist_mb_id': None,
-                'performer_name': None,
-                # release
-                'release_name': None,
-                'release_mb_id': None,
-                'release_date': None,
-                'release_releasecountry': None,
-                'release_catalognumber': None,
-                'release_type': None,
-                'release_status': None,
-                # label
-                'label_name': None,
-                'label_mb_id': None,
-                'label_code': None,
-                # disc
-                'disc_number': None,
-                # media mixed
-                'media_genres' : [],
-                'media_tags' : [],
-                'media_copyright': None,
-                'media_comment': None,
-                'media_bpm': None,
-                }
+    # media
+    'obp_media_uuid': None,
+    'media_name': None,
+    'media_mb_id': None,
+    'media_tracknumber': None,
+    'media_totaltracks': None,
+    # artist
+    'artist_name': None,
+    'artist_mb_id': None,
+    'performer_name': None,
+    # release
+    'release_name': None,
+    'release_mb_id': None,
+    'release_date': None,
+    'release_releasecountry': None,
+    'release_catalognumber': None,
+    'release_type': None,
+    'release_status': None,
+    # label
+    'label_name': None,
+    'label_mb_id': None,
+    'label_code': None,
+    # disc
+    'disc_number': None,
+    # media mixed
+    'media_genres' : [],
+    'media_tags' : [],
+    'media_copyright': None,
+    'media_comment': None,
+    'media_bpm': None,
+    # fileinfo
+    'duration': None,
+}
 
 class Identifier(object):
 
@@ -130,18 +132,18 @@ class Identifier(object):
 
 
 
-            if 'performer_name' in metadata and 'media_name' in metadata and 'release_name' in metadata:
+            if 'artist_name' in metadata and 'media_name' in metadata and 'release_name' in metadata:
 
                 # TODO: make this matching more inteligent!
                 qs = Media.objects.filter(
                     name__istartswith=metadata['media_name'][0:16],
-                    artist__name__istartswith=metadata['performer_name'][0:16]
+                    artist__name__istartswith=metadata['artist_name'][0:16]
                 )
 
                 if qs.exists():
                     log.info('found existing media by title/artist: {} - {}'.format(
                         metadata['media_name'][0:16],
-                        metadata['performer_name'][0:16]
+                        metadata['artist_name'][0:16]
                     ))
 
                 else:
@@ -228,6 +230,18 @@ class Identifier(object):
 
         dataset = dict(METADATA_SET)
 
+        # get file info
+        try:
+            fileinfo = FileInfoProcessor(file.path)
+        except:
+            log.warning('unable to extract fileinfo for: {}'.format(file.path))
+            fileinfo = None
+
+        if fileinfo and fileinfo.audio_stream:
+            dataset['duration'] = fileinfo.duration
+
+
+
         # try to get obp identifyer
         try:
             from mutagen.id3 import ID3
@@ -237,8 +251,6 @@ class Identifier(object):
                 dataset['obp_media_uuid'] = obp_media_uuid
         except:
             pass
-
-
 
 
         # Media

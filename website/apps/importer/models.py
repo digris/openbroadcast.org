@@ -454,7 +454,7 @@ class ImportFile(BaseModel):
                     # if possible duplicate and to be imported file have
                     # both a musicbrainz recording id then ignore
                     # the assigned duplicate.
-                    # TODO: this is not so nicely done...
+                    # TODO: yes - this is not so nicely done...
                     try:
                         if metadata and 'media_mb_id' in metadata and metadata['media_mb_id']:
 

@@ -39,8 +39,8 @@
                     <ul>
 
                         <li>
-                            <a href="{% url 'massimporter-import-detail' uuid=object.uuid %}">Details</a>
-                            <span>ID: {{ object.pk }}</span>
+                            <a class="title" href="{% url 'massimporter-import-detail' uuid=object.uuid %}">Details <span>ID: {{ object.pk }}</span></a>
+
                         </li>
 
                         <li>
@@ -71,15 +71,6 @@
                             {{ object.created|date:'DATETIME_FORMAT' }}
                         </li>
 
-                    </ul>
-
-                    <ul>
-                        {% for k, v in object.get_counts.iteritems %}
-                            <li>
-                                <span>{{ k }}:</span>
-                                {{ v }}
-                            </li>
-                        {% endfor %}
                     </ul>
 
                 </div>
@@ -254,8 +245,6 @@
         </div>
 
 
-
-
         <div class="panel">
 
             <div class="row-fluid">
@@ -265,12 +254,18 @@
                     <h2>Duplicate Report</h2>
 
                     <p class="hint">
-                        Overview of all detected duplicates ('false positives' excluded).
+                        Overview of all detected duplicates.
                     </p>
 
-                    {% if name_matching_duplicates %}
+                    {% if not show_all_duplicates %}
+                        <a href="{% url 'massimporter-import-detail' uuid=object.uuid %}?show-all-duplicates=1">Show all duplicates</a>
+                    {% else %}
+                        <a href="{% url 'massimporter-import-detail' uuid=object.uuid %}">Hide all duplicates</a>
+                    {% endif %}
+
+                    {% if all_duplicates and show_all_duplicates %}
                     <div class="list duplicates">
-                        {% for duplicate in name_matching_duplicates %}
+                        {% for duplicate in all_duplicates %}
                             {% include 'massimporter/_partials/_duplicate_inline.html' with object=duplicate %}
                         {% endfor %}
                     </div>
