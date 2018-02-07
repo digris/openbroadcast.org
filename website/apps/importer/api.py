@@ -34,6 +34,7 @@ class ImportFileResource(ModelResource):
         return bundle
 
     def obj_update(self, bundle, request, **kwargs):
+
         return super(ImportFileResource, self).obj_update(bundle, request, **kwargs)
 
     def obj_create(self, bundle, request, **kwargs):

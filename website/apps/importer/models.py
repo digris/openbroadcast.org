@@ -644,7 +644,8 @@ class ImportFile(BaseModel):
             self.filename = self.file.name
 
         # check/update import_tag
-        if self.status == ImportFile.STATUS_READY:
+        #if self.status == ImportFile.STATUS_READY:
+        if self.status in [ImportFile.STATUS_READY, ImportFile.STATUS_WARNING]:
             from importer.util.importer_tools import Importer
             _importer = Importer(user=self.import_session.user)
             self.import_tag = _importer.complete_import_tag(self)
