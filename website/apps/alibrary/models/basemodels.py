@@ -134,7 +134,6 @@ class Distributor(MigrationMixin):
 try:
     tagging_register(Distributor)
 except Exception as e:
-    print '***** %s' % e
     pass
 
 
@@ -466,6 +465,7 @@ class RelationManager(models.Manager):
                     'facebook',
                     'twitter',
                     'linkedin',
+                    'imdb',
                     ]
 
         objects = {obj.service: obj for obj in qs}
@@ -517,6 +517,7 @@ class Relation(models.Model):
         ('musicbrainz', _('Musicbrainz')),
         ('bandcamp', _('Bandcamp')),
         ('itunes', _('iTunes')),
+        ('imdb', _('IMDb')),
         ('wikidata', _('wikidata')),
         ('viaf', _('VIAF')),
         ('official', _('Official website')),
@@ -583,6 +584,9 @@ class Relation(models.Model):
             icon = 'youtube-play'
 
         if icon == 'discogs_master':
+            icon = 'discogs'
+
+        if icon == 'imdb':
             icon = 'discogs'
 
         return icon

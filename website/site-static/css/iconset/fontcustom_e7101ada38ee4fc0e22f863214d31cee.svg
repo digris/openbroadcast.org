@@ -1,22 +1,22 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
 <!--
-2013-10-3: Created.
+2018-2-7: Created with FontForge (http://fontforge.org)
 -->
-<svg xmlns="http://www.w3.org/2000/svg">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
 <metadata>
-Created by FontForge 20120731 at Thu Oct  3 10:40:46 2013
- By jonas ohrstrom
-Created by jonas ohrstrom with FontForge 2.0 (http://fontforge.sf.net)
+Created by FontForge 20170925 at Wed Feb  7 13:03:13 2018
+ By Jonas Ohrstrom
+Copyright (c) 2018, Jonas Ohrstrom
 </metadata>
 <defs>
 <font id="fontcustom" horiz-adv-x="512" >
   <font-face 
     font-family="fontcustom"
-    font-weight="500"
+    font-weight="400"
     font-stretch="normal"
     units-per-em="512"
-    panose-1="2 0 6 3 0 0 0 0 0 0"
+    panose-1="2 0 5 3 0 0 0 0 0 0"
     ascent="448"
     descent="-64"
     bbox="0 -68 512 448"
@@ -37,8 +37,8 @@ c-3 -7 -4 -14 -7 -21h96zM133 174h60c-3 8 -5 15 -8 22c0 1 -2 1 -3 1h-38c-1 0 -4 -
 c32 -45 34 -111 0 -163zM24 381c8 -3 15 -5 22 -8c-29 -49 -29 -98 0 -147c-7 -3 -15 -5 -22 -8c-32 54 -32 108 0 163zM74 362l24 -9c-21 -36 -21 -71 0 -107c-7 -3 -15 -6 -22 -8c-1 0 -2 0 -3 1c-13 23 -20 48 -17 74c2 18 8 34 18 49zM251 237c-8 3 -15 6 -23 9
 c21 36 21 71 0 107c8 3 15 6 23 9c23 -33 27 -83 0 -125z" />
     <glyph glyph-name="uniF102" unicode="&#xf102;" horiz-adv-x="402" 
-d="M109 202c0 72 20 92 92 92s92 -20 92 -92s-20 -92 -92 -92s-92 20 -92 92zM0 202c0 -123 78 -201 201 -201s201 78 201 201s-78 201 -201 201s-201 -78 -201 -201zM128 201c0 49 24 73 73 73s73 -24 73 -73s-24 -73 -73 -73s-73 24 -73 73zM124 201c0 -51 26 -77 77 -77
-s76 26 76 77s-25 77 -76 77s-77 -26 -77 -77z" />
+d="M109 202c0 51 41 92 92 92s92 -41 92 -92s-41 -92 -92 -92s-92 41 -92 92zM0 202c0 -111 90 -201 201 -201s201 90 201 201s-90 201 -201 201s-201 -90 -201 -201zM128 201c0 40 33 73 73 73s73 -33 73 -73s-33 -73 -73 -73s-73 33 -73 73zM124 201c0 -42 35 -77 77 -77
+s76 35 76 77s-34 77 -76 77s-77 -35 -77 -77z" />
     <glyph glyph-name="uniF103" unicode="&#xf103;" horiz-adv-x="249" 
 d="M249 121l-124 -71l-125 71v142l125 71l124 -71v-142z" />
     <glyph glyph-name="uniF104" unicode="&#xf104;" 
