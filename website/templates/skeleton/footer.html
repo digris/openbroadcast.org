@@ -1,4 +1,4 @@
-{% load cms_tags i18n menu_tags adv_cache version_tags subscription_tags %}
+{% load cms_tags i18n menu_tags adv_cache subscription_tags %}
 
 {% cache 600 "footer" request.get_full_path %}
 <div class="container">
@@ -51,7 +51,7 @@
     <div class="row meta">
         <div class="span9">
             <p class="version">
-                {% version_by_git %}
+                &nbsp;
             </p>
         </div>
         <div class="span3">

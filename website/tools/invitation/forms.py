@@ -7,8 +7,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Layout, Field, Fieldset, Div
-from crispy_forms_extra.layout import Row, Column, LookupField, LookupImageField
+from crispy_forms.layout import Layout, Field
 
 from registration.forms import RegistrationForm
 
@@ -43,18 +42,14 @@ class InvitationForm(forms.Form):
         self.helper.form_tag = False
 
         self.helper.add_layout(Layout(
-
-
             Field('email', css_class='input-xlarge'),
             Field('message', css_class='input-xlarge'),
         ))
 
-
-
     def clean_email(self):
         data = self.cleaned_data['email']
         if User.objects.filter(email=data).exists():
-            raise forms.ValidationError('A user with the e-mail address {} already exists.'.format(data))
+            raise forms.ValidationError(_('A user with the e-mail address {} already exists.').format(data))
 
         return data
 

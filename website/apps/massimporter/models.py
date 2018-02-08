@@ -1,27 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.db.models.signals import post_save, pre_save
-from django.dispatch.dispatcher import receiver
-import os
-import sys
-import time
-import shutil
-import uuid
-import locale
+
 import logging
+import os
+import uuid
+
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext as _
-from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField, UUIDField
-
-from mutagen import File as MutagenFile
-from mutagen.easyid3 import EasyID3
-from mutagen.easymp4 import EasyMP4
-
-from importer.models import ImportFile
+from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
 from importer.models import Import as ImportSession
+from importer.models import ImportFile
 
 log = logging.getLogger(__name__)
 
@@ -32,7 +25,6 @@ ALLOWED_EXTENSIONS = [
     '.m4a',
     '.flac',
 ]
-
 
 class BaseModel(models.Model):
 

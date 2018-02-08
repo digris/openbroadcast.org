@@ -9,19 +9,17 @@ import audiotools
 import tagging
 from base.audio.fileinfo import FileInfoProcessor
 from cacheops import invalidate_obj
-from celery.task import task
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save, pre_delete, post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
-from django.utils import timezone
 from django_extensions.db.fields import AutoSlugField
-from lib.fields.languages import LanguageField
+from base.fields.languages import LanguageField
 from base.signals.unsignal import disable_for_loaddata
 from lib.util.sha1 import sha1_by_file
 from tagging.registry import register as tagging_register
@@ -33,8 +31,6 @@ from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object
 
 from alibrary.tasks import ingest_fprint_for_media, delete_fprint_for_media
-
-from fprint_client.api_client import FprintAPIClient
 
 USE_CELERYD = getattr(settings, 'ALIBRARY_USE_CELERYD', False)
 AUTOCREATE_FPRINT = getattr(settings, 'ALIBRARY_AUTOCREATE_FPRINT', True)

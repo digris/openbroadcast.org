@@ -72,8 +72,6 @@ urlpatterns = [
 
     url(r'^collection/', include('collection.urls', namespace='collection')),
 
-    url(r'^docs/', include('djangocms_sphinxdoc.urls')),
-
     url(r'^search/', include('search.urls')),
     url(r'^search-hs/', include('haystack.urls')),
     url(r'^sitemap.xml$', sitemap, {'sitemaps': sitemaps}),

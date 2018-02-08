@@ -356,7 +356,7 @@ class MediaFilter(django_filters.FilterSet):
 
 
                 elif name == 'lyrics_language':
-                    from lib.fields.languages import LANGUAGES
+                    from base.fields.languages import LANGUAGES
                     nd = []
                     for d in ds:
                         for x in LANGUAGES:
