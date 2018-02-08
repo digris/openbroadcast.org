@@ -1,4 +1,4 @@
-{% load sekizai_tags thumbnail i18n truncate_tags value_from_settings straight_include %}
+{% load sekizai_tags thumbnail i18n truncate_tags straight_include %}
 
 {% addtoblock "js-post" %}
     <script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/tmpl.js"></script>{% endaddtoblock %}
@@ -67,15 +67,10 @@
         {% straight_include "importer/template-upload.html" %}
     </script>
 
-    <!-- Not used a.t.m. -->
     <script id="template-download" type="text/x-tmpl">
         {% straight_include "importer/template-download.html" %}
     </script>
 
-    <!-- The template to handle the ImportFiles -->
-    <script id="template-import" type="text/x-tmpl">
-        {% straight_include "importer/template-import.html" %}
-    </script>
 
 <div id="playlist_editor_upload" class="upload hoverable">
     <div class="uploader">

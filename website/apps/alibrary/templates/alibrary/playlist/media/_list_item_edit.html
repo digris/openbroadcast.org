@@ -1,4 +1,4 @@
-{% load calc i18n truncate_tags arating_tags %}
+{% load i18n calc_tags truncate_tags arating_tags %}
 
 
 
@@ -6,12 +6,12 @@
 
 
 	<div class="row-fluid">
-		
+
 		<div class="span1">
 			{{ item.position }}
 			{{ item.media.get_duration }}
 		</div>
-		
+
 		<div class="span4">
 			<ul class="unstyled">
 				<li class="bold">
@@ -34,22 +34,22 @@
 				</li>
 			</ul>
 		</div>
-		
+
 		<div class="span1">
-			
+
 		</div>
-		
+
 		<div class="span2 fade-cue">
 			<input type="text" value="{{ item.fade_in }}" />
 			<input type="text" value="{{ item.fade_out }}" />
 		</div>
-		
+
 		<div class="span2 fade-cue">
 			<input type="text" value="{{ item.cue_in }}" />
 			<input type="text" value="{{ item.cue_out }}" />
 		</div>
-		
+
 	</div>
 
-	
+
 </div>

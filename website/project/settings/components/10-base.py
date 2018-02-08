@@ -161,6 +161,17 @@ MIGRATION_MODULES = {
 
 }
 
+
+##################################################################
+# exported settings
+##################################################################
+SETTINGS_EXPORT = [
+    'FACEBOOK_APP_ID',
+    'APLAYER_STREAM_MODE',
+]
+
+
+
 IMORTER_USE_CELERYD = True
 EXPORTER_USE_CELERYD = True
 ALIBRARY_USE_CELERYD = True

@@ -7,8 +7,6 @@ from exporter import views
 urlpatterns = [
 
     url(r'^$', views.ExportListView.as_view(), name='exporter-export-list'),
-    url(r'^settings/$', views.ExportListView.as_view(), name='exporter-export-settings'),
-    url(r'^(?P<pk>\d+)/$', views.ExportUpdateView.as_view(), name='exporter-export-update'),
 
     url(r'^delete-all/$', views.ExportDeleteAllView.as_view(), name='exporter-export-delete-all'),
     url(r'^delete/(?P<pk>\d+)/$', views.ExportDeleteView.as_view(), name='exporter-export-delete'),

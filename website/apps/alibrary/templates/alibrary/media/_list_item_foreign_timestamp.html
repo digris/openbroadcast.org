@@ -1,4 +1,4 @@
-{% load calc i18n arating_tags truncate_tags spurl atracker_tags %}
+{% load i18n calc_tags arating_tags truncate_tags spurl atracker_tags %}
 
 <div class="list_body_row selectable item media timestamp {{ item.uuid }}{% if item.creator == user %} owner{% endif %}"
      id="list_item_{{ item.id }}"

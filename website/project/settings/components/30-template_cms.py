@@ -30,6 +30,8 @@ TEMPLATES = [
                 'sekizai.context_processors.sekizai',
                 # messaging
                 'postman.context_processors.inbox',
+                # settings
+                'django_settings_export.settings_export',
                 # authentication
                 'social_auth.context_processors.social_auth_backends',
                 'social_auth.context_processors.backends_data',

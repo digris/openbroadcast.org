@@ -85,6 +85,7 @@ redis==2.10.5
 #redlock==1.2.0
 django-reversion==1.9.3
 django-sekizai==0.10.0
+django-settings-export==1.2.1
 django-social-auth==0.7.28
 django-split-settings==0.1.2
 django-threadedcomments==1.0

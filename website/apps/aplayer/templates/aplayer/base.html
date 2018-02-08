@@ -1,4 +1,4 @@
-{% load cms_tags sekizai_tags compress value_from_settings pushy_tags nunjucks_tags %}<!DOCTYPE html>
+{% load cms_tags sekizai_tags compress pushy_tags nunjucks_tags %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
 
@@ -92,12 +92,12 @@
             parent_win = window.opener;
 
             $(document).ready(function() {
-                
+
                 // set some variables to be available in script file
                 aplayer.vars.swf_url = '{{ STATIC_URL }}aplayer/swf/lib/jwplayer/jwplayer-5.9.swf';
                 aplayer.vars.skin_url = '{{ STATIC_URL }}aplayer/css/lib/jwplayer/ulysses.zip';
 
-                aplayer.vars.stream_mode = '{% value_from_settings "APLAYER_STREAM_MODE" %}';
+                aplayer.vars.stream_mode = '{{ settings.APLAYER_STREAM_MODE }}';
 
 
                 base.ui.init();

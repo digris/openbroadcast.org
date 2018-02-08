@@ -114,9 +114,8 @@ class Export(BaseModel):
     def __unicode__(self):
         return "%s - %s" % (self.user, self.created)
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('exporter-export-update', [str(self.pk)])
+        return None
 
     @models.permalink
     def get_delete_url(self):
@@ -125,9 +124,8 @@ class Export(BaseModel):
 
     @models.permalink
     def get_download_url(self):
-
         return ('exporter-export-download', (), {'uuid': self.uuid, 'token': self.token})
-        #return ('exporter-export-download', [self.uuid])
+
 
     def get_api_url(self):
         url = reverse('api_dispatch_list', kwargs={'resource_name': 'export', 'api_name': 'v1'})

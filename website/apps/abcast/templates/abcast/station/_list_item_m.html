@@ -1,4 +1,4 @@
-{% load thumbnail i18n truncate_tags display_tags arating_tags spurl %}
+{% load thumbnail i18n truncate_tags arating_tags spurl %}
 
 
 
@@ -17,7 +17,7 @@
 			</li>
 		</ul>
 	</div>
-	
+
 	<div class="list_body_item c2">
 		<ul class="unstyled">
 			<li class="bold">
@@ -25,25 +25,25 @@
 				{% if item.country %}({{ item.country }}){% endif %}
 				{% topflop_for_object item %} </a>
 			</li>
-		
+
 			{% if item.user.date_joined %}
 			<li class="small">
 				<span class="key">{% trans "Date joined" %}:</span> <span class="value">{{ item.user.date_joined|date:"SHORT_DATE_FORMAT" }}</span>
 			</li>
 			{% endif %}
-			
+
 			{% if item.user.last_login %}
 			<li class="small">
 				<span class="key">{% trans "Last login" %}:</span> <span class="value">{{ item.user.last_login|date:"SHORT_DATE_FORMAT" }}</span>
 			</li>
 			{% endif %}
-			
+
 		</ul>
 	</div>
 
 	<div class="list_body_item c3">
 		<ul class="unstyled horizontal">
-			
+
 			{% for service in item.service_set.all %}
 			<li>
 			<a href="{{ service.service_url }}" class="skip-external"><i class="icon-link"></i></a>
@@ -65,7 +65,7 @@
 				</div>
 				<div class="clear"></div>
 			</div>
-			  
+
 		</div>
 		<div class="clear"></div>
 		<div class="inner_row bottom left">

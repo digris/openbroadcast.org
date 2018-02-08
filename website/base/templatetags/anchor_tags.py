@@ -23,5 +23,3 @@ def domain_for_url(value):
     parsed_uri = urlparse(value)
     domain = '{uri.netloc}'.format(uri=parsed_uri)
     return domain
-
-#domain_for_url.is_safe = True

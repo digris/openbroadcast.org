@@ -103,7 +103,7 @@ class ExportResource(ModelResource):
         return super(ExportResource, self).obj_create(bundle, request, user=request.user)
 
     def dehydrate(self, bundle):
-        bundle.data['download_url'] = bundle.obj.get_download_url();
+        bundle.data['download_url'] = bundle.obj.get_download_url()
         bundle.data['formatted_filesize'] = dj_filters.filesizeformat(bundle.obj.filesize)
         return bundle
 

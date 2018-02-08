@@ -12,7 +12,6 @@ register = template.Library()
 
 
 @register.assignment_tag
-#@cached_as(User, timeout=120)
 def hash_user_groups(user):
 
     if not user.is_authenticated():

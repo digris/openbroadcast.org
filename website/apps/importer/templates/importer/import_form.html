@@ -133,16 +133,8 @@
 
         <section class="importer-upload">
 
-            <!--
-            <div class="page-header">
-                <h2>{% trans "Upload" %} <small>{% trans "Add/Upload Files to the Import Queue" %}</small></h2>
-            </div>
-            -->
-
-
             {% comment %}
             <div>
-
 
                 <div class="alert alert-warning">
                     <strong>{% trans "Please note!" %}</strong>
@@ -176,8 +168,6 @@
                         Refreshing the browser will not lead to a loss of any uploaded files.{% endblocktrans %}
                     </p>
                 </div>
-
-
 
             </div>
             {% endcomment %}
@@ -260,23 +250,8 @@
     {% straight_include "importer/template-upload.html" %}
     </script>
 
-    <!-- Not used a.t.m. -->
     <script id="template-download" type="text/x-tmpl">
     {% straight_include "importer/template-download.html" %}
-    </script>
-
-    <!-- The template to handle the ImportFiles -->
-    <script id="template-import" type="text/x-tmpl">
-    {% straight_include "importer/template-import.html" %}
-    </script>
-
-    <!-- The template to handle the musicbrainz results -->
-    <script id="template-result-musicbrainz" type="text/x-tmpl">
-    {% straight_include "importer/template-result-musicbrainz.html" %}
-    </script>
-
-    <script id="template-result-imported" type="text/x-tmpl">
-    {% straight_include "importer/template-result-imported.html" %}
     </script>
 
 

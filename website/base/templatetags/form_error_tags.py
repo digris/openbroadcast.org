@@ -3,9 +3,7 @@ from django import forms
 from django.forms.forms import NON_FIELD_ERRORS
 from django.forms.utils import ErrorDict
 
-
 register = template.Library()
-
 
 @register.filter
 def nice_errors(form, non_field_msg='General form errors'):

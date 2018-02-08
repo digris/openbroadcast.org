@@ -1,4 +1,4 @@
-{% load adv_cache thumbnail i18n truncate_tags display_tags arating_tags spurl alibrary_tags %}
+{% load adv_cache thumbnail i18n truncate_tags arating_tags spurl alibrary_tags %}
 
 <div class="list_body_row selectable item label {{ item.uuid }} {% if item.creator == user %} owner{% endif %}"
      id="list_item_{{ item.pk }}"

@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate_tags ctype i18n thumbnail arating_tags markup wiki_tags sekizai_tags activity_tags atracker_tags spurl %}
+{% load i18n truncate_tags ctype_tags thumbnail arating_tags markup_tags wiki_tags sekizai_tags activity_tags atracker_tags spurl %}
 
 {% block heading %}
     <!-- heading / icon (large one) -->
@@ -310,7 +310,7 @@
     <div class="tab-pane" id="following">
 
         <section class="following">
-            {% load ctype %}
+            {% load ctype_tags %}
 
             <h2>{% trans "Following" %}</h2>
 
@@ -361,7 +361,7 @@
 
         <section class="votes">
 
-            {% load ctype %}
+            {% load ctype_tags %}
 
             <h2>{% trans "Upvotes" %}</h2>
 
