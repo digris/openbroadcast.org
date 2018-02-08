@@ -35,7 +35,7 @@ from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.forms.widgets import CheckboxInput
 class AdvancedFileInput(ClearableFileInput):
-    
+
 
 
     #template_with_initial = '<ul class="unstyled"><li>%(initial)s</li><li>%(clear_template)s</li><li>%(input_text)s: %(input)s</li></ul>'
@@ -82,7 +82,7 @@ class AdvancedFileInput(ClearableFileInput):
 
 
         return mark_safe(template % substitutions)
-    
+
 
 
 class MarkdownTextField(TextField):
@@ -120,14 +120,14 @@ class MarkdownTextField(TextField):
             html = markdown(value, safe_mode=self._markdown_safe)
             setattr(model_instance, self._html_field, html)
             return value
-        except Exception, e:
+        except Exception as e:
             #print e
             return ""
 
     def __unicode__ (self):
         return self.attname
-    
-    
+
+
 class ContentTypeRestrictedFileField(FileField):
     """
     Same as FileField, but you can specify:
@@ -149,7 +149,7 @@ class ContentTypeRestrictedFileField(FileField):
         super(ContentTypeRestrictedFileField, self).__init__(**kwargs)
 
 
-    def clean(self, *args, **kwargs):        
+    def clean(self, *args, **kwargs):
         data = super(ContentTypeRestrictedFileField, self).clean(*args, **kwargs)
 
         file = data.file
@@ -161,6 +161,6 @@ class ContentTypeRestrictedFileField(FileField):
             else:
                 raise forms.ValidationError(_('Filetype not supported.'))
         except AttributeError:
-            pass        
+            pass
 
         return data
