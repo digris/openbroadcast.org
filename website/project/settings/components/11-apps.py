@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     'genericadmin',
     'hvad',
     'selectable',
-    'genericrelations',
     'spurl',
     'lib',
     'pure_pagination',

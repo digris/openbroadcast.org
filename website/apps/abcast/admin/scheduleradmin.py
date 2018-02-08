@@ -2,10 +2,9 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from genericrelations.admin import GenericAdminModelAdmin
 from abcast.models import Emission, Daypart, DaypartSet, Weekday
 
-class EmissionAdmin(GenericAdminModelAdmin):
+class EmissionAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'time_start',
@@ -24,7 +23,7 @@ class EmissionAdmin(GenericAdminModelAdmin):
     )
     date_hierarchy = 'time_start'
     readonly_fields = ('duration', 'uuid', 'slug', )
-    
+
 admin.site.register(Emission, EmissionAdmin)
 
 class DaypartInline(admin.TabularInline):
@@ -37,7 +36,7 @@ class DaypartInline(admin.TabularInline):
         'talk',
     ]
 
-class DaypartSetAdmin(GenericAdminModelAdmin):
+class DaypartSetAdmin(admin.ModelAdmin):
     list_display = (
         'channel',
         'time_start',
@@ -46,7 +45,7 @@ class DaypartSetAdmin(GenericAdminModelAdmin):
     list_filter = ('channel',)
     date_hierarchy = 'time_start'
     readonly_fields = ('uuid',)
-    
+
     inlines = [DaypartInline,]
 
 
