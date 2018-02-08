@@ -11,14 +11,20 @@
 {% block heading %}
 
 
-    <!-- jqplot - TODO: maybe move to include -->
+    <!-- jqplot - TODO: move to include -->
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
     {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/statistics.js"></script>{% endaddtoblock %}
     {% addtoblock "js-uncompressed" %}<script src="{{ STATIC_URL }}js/lib/flot-0.8.3/jquery.flot.js"></script>{% endaddtoblock %}
     {% addtoblock "js-uncompressed" %}<script src="{{ STATIC_URL }}js/lib/flot-0.8.3/jquery.flot.time.js"></script>{% endaddtoblock %}
 
     {% addtoblock "js-post" %}
         <script>
+            var exporter = exporter || {};
             $(function () {
+
+                exporter = new ExporterApp();
+                exporter.api_url = '{% url "api_dispatch_list" resource_name='export' api_name='v1'%}';
+                exporter.init();
 
                 // initialize stats app
                 var stats = new StatisticApp;
