@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.db import migrations, models
 import filer.fields.image
 import django_extensions.db.fields
-import lib.fields.extra
+import base.fields.extra
 import abcast.models.jinglemodels
 import django.db.models.deletion
 from django.conf import settings
@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
                 ('slug', django_extensions.db.fields.AutoSlugField(populate_from=b'name', editable=False, blank=True)),
                 ('type', models.CharField(default=b'stream', max_length=12, verbose_name='Type', choices=[(b'stream', 'Stream'), (b'djmon', 'DJ-Monitor')])),
                 ('stream_url', models.CharField(help_text='setting the stream-url overrides server settings', max_length=256, null=True, blank=True)),
-                ('description', lib.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
                 ('rtmp_app', models.CharField(max_length=256, null=True, blank=True)),
                 ('rtmp_path', models.CharField(max_length=256, null=True, blank=True)),
                 ('has_scheduler', models.BooleanField(default=False)),
@@ -224,7 +224,7 @@ class Migration(migrations.Migration):
                 ('teaser', models.CharField(max_length=512, null=True, blank=True)),
                 ('slug', django_extensions.db.fields.AutoSlugField(populate_from=b'name', editable=False, blank=True)),
                 ('type', models.CharField(default=b'stream', max_length=12, verbose_name='Type', choices=[(b'stream', 'Stream'), (b'djmon', 'DJ-Monitor')])),
-                ('description', lib.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
                 ('website', models.URLField(max_length=256, null=True, blank=True)),
                 ('phone', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, verbose_name='phone', blank=True)),
                 ('fax', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, verbose_name='fax', blank=True)),

@@ -10,7 +10,6 @@ import tagging
 from alibrary import settings as alibrary_settings
 from alibrary.models import MigrationMixin, Daypart
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
-from celery.task import task
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -24,7 +23,7 @@ from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.fields.json import JSONField
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
-from lib.fields import extra
+from base.fields import extra
 from tagging.registry import register as tagging_register
 
 from ..util.mixdown_client import MixdownAPIClient

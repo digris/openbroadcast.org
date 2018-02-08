@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 import django_extensions.db.fields
-import lib.fields.extra
+import base.fields.extra
 import tagging.fields
 import profiles.models
 from django.conf import settings
@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('slug', django_extensions.db.fields.AutoSlugField(editable=False, populate_from=b'name', blank=True, overwrite=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
-                ('description', lib.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
                 ('image', models.ImageField(upload_to=profiles.models.filename_by_uuid, null=True, verbose_name='Profile Image', blank=True)),
                 ('mobile', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, verbose_name='mobile', blank=True)),
                 ('phone', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, verbose_name='phone', blank=True)),
@@ -102,7 +102,7 @@ class Migration(migrations.Migration):
                 ('birth_date', models.DateField(help_text='Format: YYYY-MM-DD', null=True, verbose_name='Date of birth', blank=True)),
                 ('pseudonym', models.CharField(max_length=250, null=True, blank=True)),
                 ('description', models.CharField(max_length=250, null=True, verbose_name='Disambiguation', blank=True)),
-                ('biography', lib.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('biography', base.fields.extra.MarkdownTextField(null=True, blank=True)),
                 ('image', models.ImageField(upload_to=profiles.models.filename_by_uuid, null=True, verbose_name='Profile Image', blank=True)),
                 ('mobile', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, verbose_name='mobile', blank=True)),
                 ('phone', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, verbose_name='phone', blank=True)),

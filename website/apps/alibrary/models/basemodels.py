@@ -6,7 +6,7 @@ import logging
 
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import post_delete, post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
@@ -16,13 +16,13 @@ from cms.models.fields import PlaceholderField
 from phonenumber_field.modelfields import PhoneNumberField
 from hvad.models import TranslatableModel, TranslatedFields
 from hvad.manager import TranslationManager
-from django_extensions.db.fields import UUIDField, AutoSlugField
+from django_extensions.db.fields import AutoSlugField
 from l10n.models import Country
 from tagging.registry import register as tagging_register
 
 from alibrary.util.slug import unique_slugify
 from alibrary.util.relations import get_service_by_url
-from lib.fields import extra
+from base.fields import extra
 import uuid
 
 log = logging.getLogger(__name__)

@@ -1,27 +1,22 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-import datetime
 from django.db import models
 import tagging
 import os
 import logging
 import uuid
 import arating
-from actstream import action
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
-from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
-from celery.task import task
+from django.contrib.contenttypes.fields import GenericRelation
 from phonenumber_field.modelfields import PhoneNumberField
 from l10n.models import Country
 from tagging.registry import register as tagging_register
 from django_date_extensions.fields import ApproximateDateField
-from django_extensions.db.fields import UUIDField, AutoSlugField
+from django_extensions.db.fields import AutoSlugField
 from alibrary import settings as alibrary_settings
-from lib.fields import extra
+from base.fields import extra
 from alibrary.models import MigrationMixin
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage

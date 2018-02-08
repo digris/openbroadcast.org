@@ -5,7 +5,7 @@ import datetime
 import arating
 from abcast.util import notify
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -14,16 +14,16 @@ from django.utils.translation import ugettext as _
 from django_extensions.db.fields import UUIDField, CreationDateTimeField, ModificationDateTimeField, AutoSlugField
 from filer.fields.image import FilerImageField
 from l10n.models import Country
-from lib.fields import extra
+from base.fields import extra
 from phonenumber_field.modelfields import PhoneNumberField
 
 
 class BaseModel(models.Model):
-    
+
     uuid = UUIDField()
     created = CreationDateTimeField()
     updated = ModificationDateTimeField()
-    
+
     class Meta:
         abstract = True
 
@@ -33,13 +33,13 @@ class Station(BaseModel):
     name = models.CharField(max_length=256, null=True, blank=True)
     teaser = models.CharField(max_length=512, null=True, blank=True)
     slug = AutoSlugField(populate_from='name')
-    
+
     TYPE_CHOICES = (
         ('stream', _('Stream')),
         ('djmon', _('DJ-Monitor')),
     )
     type = models.CharField(verbose_name=_('Type'), max_length=12, default='stream', choices=TYPE_CHOICES)
-    
+
     main_image = FilerImageField(null=True, blank=True, related_name="station_main_image", rel='')
     description = extra.MarkdownTextField(blank=True, null=True)
     members = models.ManyToManyField(User, through='StationMembers', blank=True)
@@ -97,7 +97,7 @@ class StationMembers(models.Model):
         verbose_name = _('Role')
         verbose_name_plural = _('Roles')
 
-    
+
 """
 Holds what is on air right now
 """
@@ -122,13 +122,13 @@ class Channel(BaseModel):
     name = models.CharField(max_length=256, null=True, blank=True)
     teaser = models.CharField(max_length=512, null=True, blank=True)
     slug = AutoSlugField(populate_from='name')
-    
+
     TYPE_CHOICES = (
         ('stream', _('Stream')),
         ('djmon', _('DJ-Monitor')),
     )
     type = models.CharField(verbose_name=_('Type'), max_length=12, default='stream', choices=TYPE_CHOICES)
-    
+
     stream_url = models.CharField(max_length=256, null=True, blank=True, help_text=_('setting the stream-url overrides server settings'))
     description = extra.MarkdownTextField(blank=True, null=True)
     station = models.ForeignKey('Station', null=True, blank=True, on_delete=models.SET_NULL)
@@ -167,12 +167,12 @@ class Channel(BaseModel):
         return reverse('abcast-station-detail', kwargs={
             'slug': self.station.slug
         })
-    
+
     def get_api_url(self):
-        return reverse('api_dispatch_detail', kwargs={  
-            'api_name': 'v1',  
-            'resource_name': 'abcast/channel',  
-            'pk': self.pk  
+        return reverse('api_dispatch_detail', kwargs={
+            'api_name': 'v1',
+            'resource_name': 'abcast/channel',
+            'pk': self.pk
         }) + ''
 
     def get_dayparts(self, day):
@@ -185,7 +185,7 @@ class Channel(BaseModel):
         if daypart_set:
             for dp in daypart_set.daypart_set.all():
                 dayparts.append(dp)
-        
+
         return dayparts
 
 

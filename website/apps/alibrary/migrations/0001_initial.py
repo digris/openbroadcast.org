@@ -9,10 +9,9 @@ import django_date_extensions.fields
 import cms.models.fields
 from django.conf import settings
 import phonenumber_field.modelfields
-import lib.fields.uuidfield
 import filer.fields.image
 import tagging.fields
-import lib.fields.extra
+import base.fields.extra
 import mptt.fields
 import django.db.models.deletion
 import alibrary.util.storage
@@ -42,7 +41,7 @@ class Migration(migrations.Migration):
                 ('email', models.EmailField(max_length=254, null=True, blank=True)),
                 ('phone', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, blank=True)),
                 ('fax', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, blank=True)),
-                ('description', lib.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
                 ('type', models.CharField(default=b'unknown', max_length=12, verbose_name=b'Agency type', choices=[(b'unknown', 'Unknown'), (b'major', 'Major Agency'), (b'indy', 'Independent Agency')])),
@@ -201,7 +200,7 @@ class Migration(migrations.Migration):
                 ('email', models.EmailField(max_length=254, null=True, blank=True)),
                 ('phone', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, blank=True)),
                 ('fax', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, blank=True)),
-                ('description', lib.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
                 ('type', models.CharField(default=b'unknown', max_length=12, verbose_name=b'Distributor type', choices=[(b'unknown', 'Unknown'), (b'major', 'Major'), (b'indy', 'Independent'), (b'other', 'Other')])),
@@ -266,7 +265,7 @@ class Migration(migrations.Migration):
                 ('phone', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, blank=True)),
                 ('fax', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, blank=True)),
                 ('main_image', models.ImageField(storage=alibrary.util.storage.OverwriteStorage(), upload_to=alibrary.models.labelmodels.upload_image_to, null=True, verbose_name='Logo Image', blank=True)),
-                ('description', lib.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
                 ('date_start', django_date_extensions.fields.ApproximateDateField(max_length=10, null=True, verbose_name=b'Life-span begin', blank=True)),
@@ -349,7 +348,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('legacy_id', models.IntegerField(null=True, editable=False, blank=True)),
                 ('migrated', models.DateField(null=True, editable=False, blank=True)),
-                ('uuid', lib.fields.uuidfield.UUIDField(max_length=36, editable=False, blank=True)),
+                ('uuid', django_extensions.db.fields.UUIDField(max_length=36, editable=False, blank=True)),
                 ('name', models.CharField(max_length=255, db_index=True)),
                 ('slug', django_extensions.db.fields.AutoSlugField(editable=False, populate_from=b'name', blank=True, overwrite=True)),
                 ('status', models.PositiveIntegerField(default=0, choices=[(0, 'Init'), (1, 'Ready'), (3, 'Working'), (4, 'File missing'), (5, 'File error'), (99, 'Error')])),
@@ -477,7 +476,7 @@ class Migration(migrations.Migration):
                 ('target_duration', models.PositiveIntegerField(default=0, null=True, choices=[(900, b'15'), (1800, b'30'), (2700, b'45'), (3600, b'60'), (4500, b'75'), (5400, b'90'), (6300, b'105'), (7200, b'120'), (8100, b'135'), (9000, b'150'), (9900, b'165'), (10800, b'180'), (11700, b'195'), (12600, b'210'), (13500, b'225'), (14400, b'240')])),
                 ('series_number', models.PositiveIntegerField(null=True, blank=True)),
                 ('is_current', models.BooleanField(default=False, verbose_name='Currently selected?')),
-                ('description', lib.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
                 ('description_html', models.TextField(null=True, editable=False, blank=True)),
@@ -593,7 +592,7 @@ class Migration(migrations.Migration):
                 ('asin', models.CharField(max_length=150, blank=True)),
                 ('releasestatus', models.CharField(blank=True, max_length=60, choices=[(None, 'Not set'), (b'official', 'Official'), (b'promo', 'Promo'), (b'bootleg', 'Bootleg'), (b'other', 'Other')])),
                 ('excerpt', models.TextField(null=True, blank=True)),
-                ('description', lib.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
                 ('releasetype', models.CharField(blank=True, max_length=24, null=True, verbose_name=b'Release type', choices=[('General', ((b'album', 'Album'), (b'single', 'Single'), (b'ep', 'EP'), (b'compilation', 'Compilation'), (b'soundtrack', 'Soundtrack'), (b'audiobook', 'Audiobook'), (b'spokenword', 'Spokenword'), (b'interview', 'Interview'), (b'live', 'Live'), (b'remix', 'Remix'), (b'broadcast', 'Broadcast'), (b'djmix', 'DJ-Mix'), (b'mixtape', 'Mixtape'))), (b'other', 'Other')])),
                 ('barcode', models.CharField(max_length=32, null=True, blank=True)),
                 ('d_tags', tagging.fields.TagField(max_length=1024, null=True, verbose_name=b'Tags', blank=True)),
@@ -679,7 +678,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=200)),
                 ('slug', django_extensions.db.fields.AutoSlugField(editable=False, populate_from=b'name', blank=True, overwrite=True)),
                 ('uuid', django_extensions.db.fields.UUIDField(editable=False, blank=True)),
-                ('description', lib.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
                 ('description_html', models.TextField(null=True, editable=False, blank=True)),
             ],
             options={

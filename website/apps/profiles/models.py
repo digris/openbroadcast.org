@@ -21,7 +21,7 @@ from tagging.registry import register as tagging_register
 
 import arating
 
-from lib.fields import extra
+from base.fields import extra
 from invitation.signals import invitation_accepted
 from l10n.models import Country
 

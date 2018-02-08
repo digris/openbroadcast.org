@@ -16,7 +16,7 @@ from django.forms import ModelForm, Form
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateFormField
-from lib.fields.extra import AdvancedFileInput
+from base.fields.extra import AdvancedFileInput
 from lib.widgets.widgets import ReadOnlyIconField
 from pagedown.widgets import PagedownWidget
 from tagging.forms import TagField

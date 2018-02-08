@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.forms.models import inlineformset_factory
 from django.utils.translation import ugettext as _
-from lib.fields.extra import AdvancedFileInput
+from base.fields.extra import AdvancedFileInput
 from pagedown.widgets import PagedownWidget
 from profiles.models import Profile, Link, Service
 from tagging.forms import TagField

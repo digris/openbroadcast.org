@@ -13,18 +13,17 @@ import requests
 import tagging
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+from django.contrib.contenttypes.fields import GenericRelation
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
 from l10n.models import Country
-from lib.fields import extra
+from base.fields import extra
 from tagging.registry import register as tagging_register
 
 from alibrary import settings as alibrary_settings
