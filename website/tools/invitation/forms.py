@@ -23,6 +23,13 @@ class InvitationForm(forms.Form):
     email = forms.EmailField()
     message = forms.CharField(widget=forms.Textarea())
 
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        if User.objects.filter(email=data).exists():
+            raise forms.ValidationError('A user with the e-mail address {} already exists.'.format(data))
+
+        return data
+
 
 class RegistrationFormInvitation(RegistrationForm):
     """

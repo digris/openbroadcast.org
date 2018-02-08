@@ -78,7 +78,7 @@ def invite(request, success_url=None,
         if form.is_valid():
             try:
                 invitation = Invitation.objects.invite(request.user, form.cleaned_data["email"], form.cleaned_data["message"])
-            except InvitationError, e:
+            except InvitationError as e:
                 return HttpResponseRedirect(reverse('invitation_unavailable'))
             invitation.send_email(request=request)
             if 'next' in request.GET:
