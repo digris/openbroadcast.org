@@ -165,7 +165,7 @@ class MediaForm(ModelForm):
         self.helper.add_layout(layout)
 
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
-    release = selectable.AutoCompleteSelectField(ReleaseNameLookup, allow_new=True, required=True, label=_('Release'))
+    release = selectable.AutoCompleteSelectField(ReleaseNameLookup, limit=10, allow_new=True, required=True, label=_('Release'))
 
     name = forms.CharField(required=True, label='Title')
     artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=True, label=_('Artist'))
