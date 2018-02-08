@@ -166,16 +166,6 @@ class MaintenanceWorker(object):
                 # m = Media.objects.get(pk=item.)
 
 
-        if self.action == 'self_check_playlists':
-
-            from alibrary.models.playlistmodels import self_check_playlists
-
-            # reset
-            # ps = Playlist.objects.all()
-            # ps.update(status=1)
-
-            self_check_playlists()
-
 
         if self.action == 'degrade_playlists':
             from alibrary.models.playlistmodels import Playlist

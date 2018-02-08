@@ -25,37 +25,21 @@
         </script>
     {% endaddtoblock %}
 
-
-    <!-- heading / icon (large one) -->
     <div id="heading">
         {% include "skeleton/heading.html" %}
     </div>
-    <!-- heading / icon (large one) -->
 {% endblock %}
+
 
 {% block modnav %}
-<!-- start: intra-module navigation -->
-<div id="modnav">
-	{% include "skeleton/module-navigation.html" %}
-</div>
-<!-- end: intra-module navigation -->
+    <div id="modnav">
+        {% include "skeleton/module-navigation.html" %}
+    </div>
 {% endblock %}
+
 
 {% block tagcloud %}
-
-
-
-{% include "element/_tagcloud.html" %}
-
-{% endblock %}
-
-
-{% block searchbar %}
-
-    {% with object=item ct="playlist" %}
-        {% include "alibrary/element/_searchbar.html" %}
-    {% endwith %}
-
+    {% include "element/_tagcloud.html" %}
 {% endblock %}
 
 
@@ -120,20 +104,20 @@
 
 	<div class="list_body">
 		{% for item in playlist_list %}
-		
+
 		{# switching list styles #}
 		{% if list_style == "s" %}
 		{% include "alibrary/playlist/list_item_s.html" %}
 		{% endif %}
-		
+
 		{% if list_style == "m" %}
 		{% include "alibrary/playlist/list_item_m.html" %}
 		{% endif %}
-		
+
 		{% if list_style == "l" %}
 		{% include "alibrary/playlist/list_item_l.html" %}
 		{% endif %}
-		
+
         {% empty %}
             <p style="padding: 20px; text-align: center;">
                 {% trans 'No results to display.' %}

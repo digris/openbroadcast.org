@@ -64,28 +64,6 @@ PlaylistUi = function () {
             var id = $(this).parents('.playlist_holder').data('object_id');
             var action = $(this).data('action');
 
-
-            //if (action == 'delete') {
-            //
-            //    var options = {
-            //        title: 'Confirm',
-            //        body: '<p>' + 'Are you sure?' + '</p>',
-            //        buttons: [
-            //            {
-            //                label: 'Delete',
-            //                hide: true,
-            //                callback: function(e) {
-            //                    self.delete_playlist(id);
-            //                    conatiner.fadeOut(200)
-            //                }
-            //            }
-            //        ]
-            //    };
-            //
-            //    ui.dialog.show(options);
-            //
-            //}
-
             if (action == 'delete' && confirm('Sure?')) {
                 self.delete_playlist(id);
                 conatiner.fadeOut(200)
@@ -356,7 +334,7 @@ CollectorApp = (function () {
     this.api_url;
     this.playlist_app;
     this.mode = 'main'; // or popup
-    this.qs_limit = 50;
+    this.qs_limit = 100;
 
     this.active_playlist = false;
 
@@ -433,7 +411,7 @@ CollectorApp = (function () {
                 media.push({id: item_id, uuid: item_uuid});
 
                 self.media_to_collect = media;
-                
+
             }
 
             // playlist -> we need to get it's media first
@@ -932,7 +910,7 @@ PlaylistSelector = function () {
                     html += ' selected="selected" ';
                 }
                 html += ' value="' + item.resource_uri + '" ';
-                html += ' >'
+                html += ' >';
                 html += item.name;
                 html += ' [' + item.item_count + ']';
                 html += '</option>';

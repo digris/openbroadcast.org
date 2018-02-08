@@ -27,61 +27,32 @@
         </script>
     {% endaddtoblock %}
 
-
-    <!-- heading / icon (large one) -->
     <div id="heading">
         {% include "skeleton/heading.html" %}
     </div>
-    <!-- heading / icon (large one) -->
-
-
-
-
-
-
 {% endblock %}
 
+
 {% block modnav %}
-    <!-- start: intra-module navigation -->
     <div id="modnav">
         {% include "skeleton/module-navigation.html" %}
     </div>
-    <!-- end: intra-module navigation -->
 {% endblock %}
+
 
 {% block tagcloud %}
-
     {% include "element/_tagcloud.html" %}
-
 {% endblock %}
 
-
-{% comment %}
-{% block searchbar %}
-
-    {% with object=item ct="release" %}
-        {% include "alibrary/element/_searchbar.html" %}
-    {% endwith %}
-
-{% endblock %}
-{% endcomment %}
 
 {% block inner %}
-
-
-
-
 
     <div class="listhead">
 
         <div class="pagination-holder">
             {% include "element/_pagination.html" %}
         </div>
-
-
-
-
-
+    
         <div class="wrapper list_style">
 
             <ul class="unstyled">

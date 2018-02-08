@@ -105,6 +105,7 @@ class PlaylistForm(ModelForm):
             'd_tags',
             'description',
             'main_image',
+            'playout_mode_random',
             'rotation',
             'rotation_date_start',
             'rotation_date_end',
@@ -190,6 +191,12 @@ class PlaylistForm(ModelForm):
                 css_class='tagging'
         )
 
+        playout_mode_layout = Fieldset(
+                "%s %s" % ('<i class="icon-random"></i>', _('Playout Mode')),
+                'playout_mode_random',
+                css_class='playout-mode'
+        )
+
         rotation_layout = Fieldset(
                 "%s %s" % ('<i class="icon-random"></i>', _('Random Rotation')),
                 'rotation',
@@ -217,12 +224,13 @@ class PlaylistForm(ModelForm):
         )
 
         layout = Layout(
-                        base_layout,
-                        tagging_layout,
-                        series_layout,
-                        rotation_layout,
-                        daypart_layout,
-                        )
+            base_layout,
+            tagging_layout,
+            series_layout,
+            playout_mode_layout,
+            rotation_layout,
+            daypart_layout,
+        )
 
         self.helper.add_layout(layout)
 

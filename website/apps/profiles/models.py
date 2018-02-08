@@ -59,7 +59,6 @@ class Profile(MigrationMixin):
         (1, _('Female')),
         (2, _('Other')),
     )
-    #user = models.ForeignKey(User, unique=True)
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
 
     #

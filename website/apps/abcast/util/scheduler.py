@@ -122,9 +122,6 @@ def get_history(range, channel=None):
 
     for emission in emissions:
 
-        print '*******************************'
-        print 'range start: %s' % range_start
-        print 'now: %s' % now
 
         for emission_item in emission.get_timestamped_media():
             emission_item.emission = emission

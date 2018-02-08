@@ -37,7 +37,7 @@ except ImportError:
 
 log = logging.getLogger(__name__)
 
-DURATION_MAX_DIFF = 2500  # ms
+DURATION_MAX_DIFF = 2500  # in ms
 
 
 # TODO: remove. still referenced in migrations, so left here for the moment
@@ -51,6 +51,7 @@ def filename_by_uuid(instance, filename):
 def upload_image_to(instance, filename):
     filename, extension = os.path.splitext(filename)
     return os.path.join(get_dir_for_object(instance), 'playlists{}'.format(extension.lower()))
+
 
 def upload_mixdown_to(instance, filename):
     filename, extension = os.path.splitext(filename)
@@ -126,12 +127,11 @@ class Playlist(MigrationMixin, models.Model):
         blank=True, null=True, default=None
     )
 
-    EDIT_MODE_CHOICES = (
-        (0, _('Compact')),
-        (1, _('Medium')),
-        (2, _('Extended')),
+    playout_mode_random = models.BooleanField(
+        verbose_name=_('Shuffle Playlist'),
+        default=False,
+        help_text=_('If enabled the order of the tracks will be randomized for playout')
     )
-    edit_mode = models.PositiveIntegerField(default=2, choices=EDIT_MODE_CHOICES)
 
     rotation = models.BooleanField(default=True)
     rotation_date_start = models.DateField(
@@ -170,7 +170,8 @@ class Playlist(MigrationMixin, models.Model):
 
     # updated/calculated on save
     duration = models.IntegerField(
-        null=True, default=0)
+        null=True, default=0
+    )
 
     target_duration = models.PositiveIntegerField(
         default=0, null=True,
@@ -423,9 +424,7 @@ class Playlist(MigrationMixin, models.Model):
 
         from alibrary.models.mediamodels import Media
 
-        log = logging.getLogger('alibrary.playlistmodels.add_items_by_ids')
-        log.debug('Media ids: %s' % (ids))
-        log.debug('Content Type: %s' % (ct))
+        log.debug('add media to playlist: {}'.format(', '.join(ids)))
 
         for id in ids:
             id = int(id)
@@ -476,26 +475,6 @@ class Playlist(MigrationMixin, models.Model):
 
         self.save()
 
-    """
-    old method - for non-generic playlists
-    """
-
-    # def add_media_by_ids(self, ids):
-    #
-    #     from alibrary.models.mediamodels import Media
-    #
-    #     log = logging.getLogger('alibrary.playlistmodels.add_media_by_id')
-    #     log.debug('Media ids: %s' % (ids))
-    #
-    #     for id in ids:
-    #         id = int(id)
-    #
-    #         m = Media.objects.get(pk=id)
-    #         pm = PlaylistMedia(media=m, playlist=self, position=self.media.count())
-    #         pm.save()
-    #
-    #         self.save()
-
     def convert_to(self, type):
 
         log.debug('requested to convert "%s" from %s to %s' % (self.name, self.type, type))
@@ -518,7 +497,9 @@ class Playlist(MigrationMixin, models.Model):
         return self, status
 
     def get_items(self):
+
         pis = PlaylistItemPlaylist.objects.filter(playlist=self).order_by('position')
+
         items = []
         for pi in pis:
             item = pi.item
@@ -534,7 +515,7 @@ class Playlist(MigrationMixin, models.Model):
                 # print 'obj duration: %s' % item.content_object.duration_s
                 item.playout_duration = item.content_object.duration_ms - item.cue_in - item.cue_out - item.fade_cross
             except Exception as e:
-                print 'unable to get duration: %s' % e
+                log.warning('unable to get duration: {}'.format(e))
                 item.playout_duration = 0
 
             items.append(item)
@@ -542,7 +523,7 @@ class Playlist(MigrationMixin, models.Model):
 
     def self_check(self):
         """
-        check if everything is fine to be 'schedulable'
+        check if everything is fine to be 'scheduled'
         """
 
         log.info('Self check requested for: %s' % self.name)
@@ -601,7 +582,7 @@ class Playlist(MigrationMixin, models.Model):
     ###################################################################
     def get_mixdown(self):
         """
-        get mixdown from api 
+        get mixdown from api
         """
         return MixdownAPIClient().get_for_playlist(self)
 
@@ -742,7 +723,6 @@ class PlaylistItemPlaylist(models.Model):
     def save(self, *args, **kwargs):
 
         # catch invalid cases
-
         if int(self.fade_cross) > int(self.fade_out):
             self.fade_cross = int(self.fade_out) - 1
 
@@ -787,45 +767,3 @@ class PlaylistItem(models.Model):
 
     def save(self, *args, **kwargs):
         super(PlaylistItem, self).save(*args, **kwargs)
-
-
-"""
-maintenance tasks
-(called via management command)
-"""
-def self_check_playlists():
-    """
-    (0, _('Undefined')),
-    (1, _('OK')),
-    (2, _('Warning')),
-    (99, _('Error')),
-    """
-
-    # do check
-    ps = Playlist.objects.filter(type='broadcast')
-    for p in ps:
-        p.broadcast_status, p.broadcast_status_messages = p.self_check()
-
-        # map to object status (not extremly dry - we know...)
-        if p.broadcast_status == 1:
-            p.status = 1  # 'ready'
-        else:
-            p.status = 99  # 'error'
-
-        p.save()
-
-    # display summary
-    ps = Playlist.objects.filter(type='broadcast').order_by('-broadcast_status')
-    for p in ps:
-        print '------------------------------------------------------------'
-        print '%s - %s (id: %s)' % (p.broadcast_status, p.name, p.pk)
-        print ', '.join(p.broadcast_status_messages)
-        print
-
-    print '============================================================'
-    print 'Total plalyists (broadcast): %s' % ps.count()
-    print 'Undefined:                   %s' % ps.filter(broadcast_status=0).count()
-    print 'OK:                          %s' % ps.filter(broadcast_status=1).count()
-    print 'Warning:                     %s' % ps.filter(broadcast_status=2).count()
-    print 'Error:                       %s' % ps.filter(broadcast_status=99).count()
-    print
