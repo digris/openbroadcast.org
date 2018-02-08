@@ -19,6 +19,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
