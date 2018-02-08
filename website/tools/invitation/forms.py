@@ -1,5 +1,15 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django import forms
 from django.contrib.auth.models import User
+
+from django.utils.translation import ugettext as _
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, Layout, Field, Fieldset, Div
+from crispy_forms_extra.layout import Row, Column, LookupField, LookupImageField
+
 from registration.forms import RegistrationForm
 
 
@@ -20,8 +30,26 @@ def save_user(form_instance):
 
 
 class InvitationForm(forms.Form):
+
     email = forms.EmailField()
     message = forms.CharField(widget=forms.Textarea())
+
+    def __init__(self, *args, **kwargs):
+        super(InvitationForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.form_method = 'post'
+        self.helper.form_action = ''
+        self.helper.form_tag = False
+
+        self.helper.add_layout(Layout(
+
+
+            Field('email', css_class='input-xlarge'),
+            Field('message', css_class='input-xlarge'),
+        ))
+
+
 
     def clean_email(self):
         data = self.cleaned_data['email']
