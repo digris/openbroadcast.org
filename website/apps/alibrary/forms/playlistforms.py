@@ -105,7 +105,7 @@ class PlaylistForm(ModelForm):
             'd_tags',
             'description',
             'main_image',
-            'playout_mode_random',
+            #'playout_mode_random',
             'rotation',
             'rotation_date_start',
             'rotation_date_end',
@@ -227,7 +227,7 @@ class PlaylistForm(ModelForm):
             base_layout,
             tagging_layout,
             series_layout,
-            playout_mode_layout,
+            #playout_mode_layout,
             rotation_layout,
             daypart_layout,
         )
