@@ -391,7 +391,7 @@ class Media(MigrationMixin):
 
     @property
     def has_video(self):
-        return self.relations.filter(service__in=['youtube', 'vimeo']).count() > 0
+        return self.relations.filter(service__in=['youtube', 'vimeo']).exists()
 
     @property
     def get_videos(self):
@@ -403,7 +403,7 @@ class Media(MigrationMixin):
 
     @property
     def get_soundcloud(self):
-        return self.relations.filter(service='soundcloud').all()[0]
+        return self.relations.filter(service='soundcloud').first()
 
     """
     compose artist display as string

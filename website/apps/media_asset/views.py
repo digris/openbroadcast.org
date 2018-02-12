@@ -84,7 +84,7 @@ class FormatView(View):
         i = 0
         while format.status in [Format.INIT, Format.PROCESSING]:
             log.debug('format not ready yet. sleep for a while')
-            if i > 6:
+            if i > 15:
                 log.warning('format creation timeout')
                 return HttpResponse(status=202)
 

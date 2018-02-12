@@ -74,7 +74,8 @@ INSTALLED_APPS = [
     'floppyforms',
     'absolute',
     'announcements',
-    'subscription',
+    # TODO: re-inplement subscription flow if needed in the future
+    #'subscription',
 
     # asset and media handling
     'sekizai',

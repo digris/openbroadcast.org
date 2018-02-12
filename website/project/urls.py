@@ -57,7 +57,6 @@ urlpatterns = [
     url(r'^captcha/', include('captcha.urls')),
 
     url(r"^announcements/", include("announcements.urls")),
-    url(r'^subscription/', include('subscription.urls')),
 
     # filer (protected)
     url(r'^', include('filer.server.urls')),

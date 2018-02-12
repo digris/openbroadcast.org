@@ -41,8 +41,6 @@ class MigrationMixin(models.Model):
 
 class Distributor(MigrationMixin):
 
-    # core fields
-    #uuid = UUIDField(primary_key=False)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=400)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
@@ -83,18 +81,14 @@ class Distributor(MigrationMixin):
 
     type = models.CharField(verbose_name="Distributor type", max_length=12, default='unknown', choices=TYPE_CHOICES)
 
-
     # relations a.k.a. links
     relations = GenericRelation('Relation')
 
     # tagging (d_tags = "display tags")
     d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
 
-
-    # manager
     objects = models.Manager()
 
-    # meta
     class Meta:
         app_label = 'alibrary'
         verbose_name = _('Distributor')
@@ -118,7 +112,6 @@ class Distributor(MigrationMixin):
     def save(self, *args, **kwargs):
         unique_slugify(self, self.name)
 
-        # update d_tags
         t_tags = ''
         for tag in self.tags:
             t_tags += '%s, ' % tag
@@ -127,8 +120,6 @@ class Distributor(MigrationMixin):
         self.d_tags = t_tags
 
         super(Distributor, self).save(*args, **kwargs)
-
-
 
 
 try:
@@ -148,21 +139,8 @@ class DistributorLabel(models.Model):
         verbose_name_plural = _('Labels in catalog')
 
 
-
-
-
-
-
-
-
-
-
-
-
 class Agency(MigrationMixin):
 
-    # core fields
-    #uuid = UUIDField(primary_key=False)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=400)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
@@ -306,8 +284,6 @@ class License(TranslatableModel, MigrationMixin):
         license_text = models.TextField(blank=True, null=True)
     )
 
-
-    # auto-update
     created = models.DateTimeField(auto_now_add=True, editable=False)
     updated = models.DateTimeField(auto_now=True, editable=False)
 
@@ -367,7 +343,6 @@ class Profession(models.Model):
 
     objects = ProfessionManager()
 
-    # meta
     class Meta:
         app_label = 'alibrary'
         verbose_name = _('Role/Profession')
@@ -400,12 +375,8 @@ class Daypart(models.Model):
     time_start = models.TimeField()
     time_end = models.TimeField()
 
-
-
-    # manager
     objects = DaypartManager()
 
-    # meta
     class Meta:
         app_label = 'alibrary'
         verbose_name = _('Daypart')
@@ -449,24 +420,21 @@ class RelationManager(models.Manager):
 
         qs = self.get_queryset().exclude(service__in=['generic', 'official',])
 
-        """
-        try to order by dict
-        """
         services = [
-                    'discogs_master',
-                    'discogs',
-                    'musicbrainz',
-                    'wikipedia',
-                    'soundcloud',
-                    'bandcamp',
-                    'lastfm',
-                    'youtube',
-                    'itunes',
-                    'facebook',
-                    'twitter',
-                    'linkedin',
-                    'imdb',
-                    ]
+            'discogs_master',
+            'discogs',
+            'musicbrainz',
+            'wikipedia',
+            'soundcloud',
+            'bandcamp',
+            'lastfm',
+            'youtube',
+            'itunes',
+            'facebook',
+            'twitter',
+            'linkedin',
+            'imdb',
+        ]
 
         objects = {obj.service: obj for obj in qs}
 
@@ -522,11 +490,6 @@ class Relation(models.Model):
         ('viaf', _('VIAF')),
         ('official', _('Official website')),
     )
-
-    # UNIQUE_SERVICES = [
-    #     'lastfm',
-    #     'musicbrainz',
-    # ]
 
     service = models.CharField(
         max_length=50,
@@ -586,8 +549,6 @@ class Relation(models.Model):
         if icon == 'discogs_master':
             icon = 'discogs'
 
-        if icon == 'imdb':
-            icon = 'discogs'
 
         return icon
 
