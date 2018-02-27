@@ -167,7 +167,6 @@ MIGRATION_MODULES = {
 ##################################################################
 SETTINGS_EXPORT = [
     'FACEBOOK_APP_ID',
-    'APLAYER_STREAM_MODE',
 ]
 
 

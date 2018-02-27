@@ -34,7 +34,6 @@ aplayer.vars.len_interval = 300;
 
 aplayer.vars.debug = true;
 aplayer.vars.version = '0.2.17b';
-// aplayer.vars.stream_mode = 'rtmp';
 aplayer.vars.stream_mode = 'html5';
 
 
@@ -857,27 +856,6 @@ aplayer.base.controls = function (args) {
         setTimeout(function () {
             aplayer.ui.screen_display(index);
         }, 2000);
-
-
-        // mode switch and player initialisation
-        if (aplayer.vars.stream_mode == 'rtmp') {
-
-            // stream.rtmp_host = 'rtmp://localhost:1935/';
-
-            var pl = { 'file': stream.file + '?peter&muster',
-                'streamer': stream.rtmp_host + stream.rtmp_app + '/',
-                'title': stream.media_name,
-                'mediaid': stream.uuid,
-                'index': index
-            };
-
-            aplayer.base.debug('mode: ' + 'rtmp');
-            aplayer.base.debug('file: ' + stream.file);
-            aplayer.base.debug('streamer: ' + stream.rtmp_host + stream.rtmp_app + '/');
-            aplayer.base.debug('title: ' + stream.media_name);
-            aplayer.base.debug('mediaid: ' + stream.uuid);
-            aplayer.base.debug('index: ' + index);
-        }
 
 
         if (aplayer.vars.stream_mode == 'html5') {

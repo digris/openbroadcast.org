@@ -182,8 +182,6 @@ RTMP_HOST = 'local.openbroadcast.org'
 RTMP_APP = 'alibrary'
 RTMP_PORT = '1935'
 
-APLAYER_STREAM_MODE = 'html5' # or 'rtmp' 'html5'
-
 PUSHY_SETTINGS = {
     'MODELS': (
         'alibrary.playlist',

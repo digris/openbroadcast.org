@@ -475,7 +475,6 @@ HAYSTACK_DEFAULT_OPERATOR = 'and'
 streaming server
 """
 
-APLAYER_STREAM_MODE = 'html5'
 
 RTMP_HOST = '127.0.0.2'
 RTMP_APP = 'alibrary'
