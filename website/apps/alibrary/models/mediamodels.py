@@ -763,13 +763,3 @@ def media_artists_post_delete(sender, instance, **kwargs):
     Artist.get_releases.invalidate(instance.artist)
     Artist.get_media.invalidate(instance.artist)
 
-
-def get_raw_image(filename, type):
-    try:
-        f = open(filename, 'rb')
-        data = f.read()
-        f.close()
-
-        return audiotools.Image.new(data, u'', type)
-    except IOError:
-        raise audiotools.InvalidImage(_(u"Unable to open file"))
