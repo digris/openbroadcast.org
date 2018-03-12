@@ -26,41 +26,6 @@ class FprintAPIClient(object):
         pass
 
 
-    # @staticmethod
-    # def get_for_code(obj):
-    #
-    #     url = '{api_base_url}fprint/search/'.format(
-    #         api_base_url=API_BASE_URL,
-    #     )
-    #
-    #     log.debug('loading mixdown from: {}'.format(url))
-    #
-    #     r = requests.get(url, timeout=2.0)
-    #
-    #     if not r.status_code == 200:
-    #         return
-    #
-    #     return r.json()
-
-
-    # @staticmethod
-    # def get_for_media(obj):
-    #
-    #     url = '{api_base_url}fprint/entry/{uuid}/'.format(
-    #         api_base_url=API_BASE_URL,
-    #         uuid=obj.uuid
-    #     )
-    #
-    #     log.debug('loading fprint entry from: {}'.format(url))
-    #
-    #     r = requests.get(url, timeout=2.0)
-    #
-    #     if not r.status_code == 200:
-    #         return
-    #
-    #     return r.json()
-
-
     @staticmethod
     def identify(fprint, min_score=0.2, duration_tolerance=5.0):
 
@@ -99,6 +64,10 @@ class FprintAPIClient(object):
 
         code = code_from_path(obj.master.path)
 
+        if not code:
+            log.warning('unable to generate echoprint code: {}'.format(obj.master.path))
+            return
+
         data = {
             #'uuid': str(obj.uuid), # uuid in uri
             'code': code,
@@ -110,7 +79,11 @@ class FprintAPIClient(object):
         r = requests.put(url, json=data, timeout=2.0)
 
         if not r.status_code in [200, 201]:
-            log.warning('{}'.format(r.text))
+            log.warning('unable to ingest code for {} - status: {} - response: {}'.format(
+                obj.master.path,
+                r.status_code,
+                r.text
+            ))
             return
 
         return r.json()
@@ -131,6 +104,9 @@ class FprintAPIClient(object):
         r = requests.delete(url, timeout=2.0)
 
         if not r.status_code in [200, 202, 204]:
-            log.warning('{}'.format(r.text))
+            log.warning('unable to delete code - status: {} - response: {}'.format(
+                r.status_code,
+                r.text
+            ))
 
         return r.status_code
