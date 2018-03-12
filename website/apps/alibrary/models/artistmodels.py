@@ -269,15 +269,18 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         return Artist.objects.filter(pk__in=self.get_alias_ids([])).exclude(pk=self.pk).distinct()
 
 
+    ###################################################################
+    # TODO: look for a better (=faster) way to get appearances!
+    ###################################################################
     @cached_uuid_aware(timeout=60 * 60 * 24)
     def get_releases(self):
         """ get releases where artist appears """
         from alibrary.models.releasemodels import Release
         try:
-            r = Release.objects.filter(
+            r_qs = Release.objects.filter(
                 Q(media_release__artist__pk=self.pk) | Q(media_release__media_artists__pk=self.pk) | Q(
                     album_artists__pk=self.pk)).nocache().distinct()
-            return r
+            return r_qs
         except Exception as e:
             return []
 
@@ -287,8 +290,8 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         from alibrary.models.mediamodels import Media
         try:
             #m = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk)).nocache().distinct()
-            m = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk) | Q(extra_artists__pk=self.pk)).nocache().distinct()
-            return m
+            m_qs = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk) | Q(extra_artists__pk=self.pk)).nocache().distinct()
+            return m_qs
         except Exception as e:
             return []
 
