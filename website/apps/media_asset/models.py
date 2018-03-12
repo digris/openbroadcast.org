@@ -312,6 +312,7 @@ class Format(TimestampedModel, UUIDModel):
                     LAME_BINARY,
                     wav_path,
                     Format.LAME_OPTIONS[obj.quality],
+                    '--quiet',
                     obj.path
                 ]
 
