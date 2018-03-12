@@ -380,7 +380,13 @@ def clean_assets(days_to_keep=MEDIA_ASSET_KEEP_DAYS):
 
     # delete must be called on each item, to not skip post_delete actions.
     for i in format_qs:
+        # don't delete cache if media is in at least one playlist
+        if i.media.appearances.exists():
+            continue
         i.delete()
 
     for i in waveform_qs:
+        # don't delete cache if media is in at least one playlist
+        if i.media.appearances.exists():
+            continue
         i.delete()
