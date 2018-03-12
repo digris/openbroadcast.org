@@ -28,8 +28,7 @@ def cli():
 @cli.command()
 @click.option('--limit', default=DEFAULT_LIMIT, help='Limit number of entries to process')
 @click.option('--force', default=False, is_flag=True, help='Force to run preflight on all tracks')
-@click.option('--async', default=False, is_flag=True, help='Run in async mode (multiprocessing Pool)')
-def request_checks(limit, force, async):
+def request_checks(limit, force):
     """
     requests preflight checks (via preflight service)
     """
@@ -47,27 +46,9 @@ def request_checks(limit, force, async):
 
     click.secho('{} media items to process'.format(id_list.count()), fg='cyan')
 
-    if async:
-
-        pool = Pool(processes=8)
-        procs = []
-
-        for id in id_list[0:limit]:
-            # close connection, needed for multiprocessing
-            connection.close()
-            m = Media.objects.get(pk=id)
-            #click.secho('{}'.format(m.pk), fg='cyan')
-            procs.append(pool.apply_async(_request_check, args=(m,)))
-
-        pool.close()
-        pool.join()
-
-
-    else:
-
-        for id in id_list[0:limit]:
-            m = Media.objects.get(pk=id)
-            _request_check(m)
+    for id in id_list[0:limit]:
+        m = Media.objects.get(pk=id)
+        _request_check(m)
 
 
 def _request_check(media):

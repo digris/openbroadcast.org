@@ -628,7 +628,7 @@ def media_post_save(sender, **kwargs):
 
     # ingest fingerprint
     if (AUTOCREATE_FPRINT and obj.master) and not obj.fprint_ingested:
-        ingest_fprint_for_media.apply_async((obj,))
+        ingest_fprint_for_media.apply_async((obj.pk,))
 
 
     if not obj.folder:
@@ -664,7 +664,7 @@ def media_pre_delete(sender, **kwargs):
         os.unlink(obj.master.path)
 
     # delete fingerprint
-    delete_fprint_for_media.apply_async((obj,))
+    delete_fprint_for_media.apply_async((obj.pk,))
 
 
 pre_delete.connect(media_pre_delete, sender=Media)
