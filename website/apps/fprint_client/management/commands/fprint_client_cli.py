@@ -40,7 +40,7 @@ def cli():
 
 @cli.command()
 @click.option('--force', default=False, is_flag=True, help='Force to rebuild all fingerprints?')
-def update_index(force, async):
+def update_index(force):
     """
     update fingerpint index (via fprint service)
     """
