@@ -109,8 +109,8 @@ INSTALLED_APPS = [
     'django_gravatar',
     'loginas',
     #'dropbox',
-    'provider',
-    'provider.oauth2',
+    #'provider',
+    #'provider.oauth2',
 
     # api
     'tastypie',

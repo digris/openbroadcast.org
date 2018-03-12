@@ -42,7 +42,7 @@ urlpatterns = [
     url(r'^api/', include(api.urls)),
     # api v2 patterns
     url(r'^api/v2/', include('project.urls_apiv2', namespace='api')),
-    url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
+    #url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
     url(r'^comments/', include('fluent_comments.urls')),
     url(r'^postman/', include('postman.urls')),
     url(r'^selectable/', include('selectable.urls')),
