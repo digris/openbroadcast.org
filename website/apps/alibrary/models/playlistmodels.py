@@ -531,9 +531,7 @@ class Playlist(MigrationMixin, models.Model):
         messages = []
 
         try:
-
             # check ready-status of related media
-
             for item in self.items.all():
                 # log.debug('Self check content object: %s' % item.content_object)
                 # log.debug('Self check master: %s' % item.content_object.master)

@@ -6,6 +6,7 @@ machine:
 
 dependencies:
   post:
+    - easy_install -U setuptools
     - pip install virtualenv
     - pip install tox
     - pip install numpy==1.8.0
