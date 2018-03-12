@@ -36,7 +36,7 @@ def check_binaries(app_configs, **kwargs):
                     'binary missing',
                     hint='binary location {} not specified in settings'.format(key),
                     obj=key,
-                    id='platform_base.E001',
+                    id='base.E001',
                 )
             )
 
@@ -47,7 +47,7 @@ def check_binaries(app_configs, **kwargs):
                     'path does not exist',
                     hint='binary location for {} does not exist at {}'.format(key, path),
                     obj=key,
-                    id='platform_base.E001',
+                    id='base.E001',
                 )
             )
 
@@ -58,7 +58,7 @@ def check_binaries(app_configs, **kwargs):
                     'OK: {}'.format(path),
                     #hint='{} found: {}'.format(key, path),
                     obj=key,
-                    id='platform_base.I001',
+                    id='base.I001',
                 )
             )
 
@@ -88,7 +88,7 @@ def check_directories(app_configs, **kwargs):
                     'path does not exist',
                     hint='location for {} does not exist at {}'.format(key, path),
                     obj=key,
-                    id='platform_base.E002',
+                    id='base.E002',
                 )
             )
 
@@ -99,7 +99,7 @@ def check_directories(app_configs, **kwargs):
                     'OK: {}'.format(path),
                     #hint='{} found: {}'.format(key, path),
                     obj=key,
-                    id='platform_base.I002',
+                    id='base.I002',
                 )
             )
 
@@ -145,7 +145,7 @@ def check_apis(app_configs, **kwargs):
                     'connection error ({})'.format(status_code),
                     hint='unable to connect to: {}'.format(service['url']),
                     obj=service['name'],
-                    id='platform_base.E003',
+                    id='base.E003',
                 )
             )
 
@@ -155,7 +155,7 @@ def check_apis(app_configs, **kwargs):
                 Debug(
                     'OK: {}'.format(service['url']),
                     obj=service['name'],
-                    id='platform_base.I003',
+                    id='base.I003',
                 )
             )
 

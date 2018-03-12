@@ -51,7 +51,6 @@ INSTALLED_APPS = [
 
 
     'base',
-    'platform_base',
 
     'api_base',
     #'notifications',
