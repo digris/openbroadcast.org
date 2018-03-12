@@ -31,18 +31,8 @@ class WaveformView(View):
         type = kwargs.get('type', None)
         media = get_object_or_404(Media, uuid=media_uuid)
 
-        waveform, waveform_created = Waveform.objects.get_or_create(media=media, type=type)
-
-        # TODO: nasty hack to wait until file is ready
-        i = 0
-        while waveform.status in [Waveform.INIT, Waveform.PROCESSING]:
-            log.debug('waveform not ready yet. sleep for a while')
-            if i > 6:
-                log.warning('waveform creation timeout')
-                return HttpResponse(status=202)
-            i += 1
-            time.sleep(2)
-            waveform.refresh_from_db()
+        # request a default waveform  of the 'master'
+        waveform = Waveform.objects.get_or_create_for_media(media=media, type=type, wait=True)
 
         # set access timestamp
         Waveform.objects.filter(pk=waveform.pk).update(accessed=timezone.now())
@@ -78,31 +68,15 @@ class FormatView(View):
             log.warning('unauthorized attempt by "%s" to download: %s - "%s"' % (request.user.username if request.user else 'unknown', media.pk, media.name))
             raise PermissionDenied
 
-        format, format_created = Format.objects.get_or_create(media=media, quality=quality, encoding=encoding)
-
-        # TODO: nasty hack to wait until file is ready
-        i = 0
-        while format.status in [Format.INIT, Format.PROCESSING]:
-            log.debug('format not ready yet. sleep for a while')
-            if i > 15:
-                log.warning('format creation timeout')
-                return HttpResponse(status=202)
-
-            i += 1
-            time.sleep(2)
-            format.refresh_from_db()
+        # request a default encoded version of the 'master'
+        format = Format.objects.get_or_create_for_media(media=media, quality=quality, encoding=encoding, wait=True)
 
         # set access timestamp
         Format.objects.filter(pk=format.pk).update(accessed=timezone.now())
 
-        # print('*************************')
-        # print(self.request.META)
-
-
         if NGINX_X_ACCEL_REDIRECT:
 
             x_path = '/protected/{}'.format(format.relative_path)
-
 
             # TODO: improve handling of initial / range
             requested_range = self.request.META.get('HTTP_RANGE', None)
@@ -119,9 +93,6 @@ class FormatView(View):
 
                 else:
                     log.debug(u'seek play')
-
-
-
 
 
             # serving through nginx
@@ -143,5 +114,3 @@ class FormatView(View):
                 pass
 
             return response
-
-

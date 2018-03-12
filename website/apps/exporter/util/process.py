@@ -251,17 +251,11 @@ class Process(object):
         filename = safe_name(FILENAME_FORMAT % (media.tracknumber, media.name, media.artist.name, self.format))
         file_path = os.path.join(item_cache_dir, filename)
 
-
-        # TODO: modularize and refactor to meaningful names
-        #cache_file = media.get_cache_file('mp3', 'base')
+        # request a default encoded version of the 'master'
         from media_asset.models import Format
-        requested_format = Format.objects.get_or_create_for_media(media)
-        while requested_format.status in [Format.INIT, Format.PROCESSING]:
-            log.debug('format not ready yet. sleep for a while')
-            time.sleep(1)
-            requested_format.refresh_from_db()
-        cache_file = requested_format.path
+        requested_format = Format.objects.get_or_create_for_media(media=media, wait=True)
 
+        cache_file = requested_format.path
 
 
         log.info('processing media: pk %s' % media.pk)

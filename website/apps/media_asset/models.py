@@ -21,6 +21,8 @@ from django.template import defaultfilters
 from base.models import TimestampedModel, UUIDModel
 from base.fs.utils import clean_directory_tree_reverse
 
+#from .tasks import process_waveform_task, process_format_task
+
 log = logging.getLogger(__name__)
 
 BASE_DIR = getattr(settings, 'BASE_DIR', None)
@@ -39,9 +41,17 @@ FORMAT_LOCK_EXPIRE = 60 * 1
 class WaveformManager(models.Manager):
 
     def get_or_create_for_media(self, media, type, **kwargs):
+        wait = kwargs.pop('wait', False)
         waveform, created = self.model.objects.get_or_create(media=media, type=type, **kwargs)
-        log.debug('waveform - get or create for media: %s %s (created: %s)' % (media, type, created))
+
+        log.debug('waveform - get or create for media: %s %s wait: %s (created: %s)' % (media.uuid, type, wait, created))
+
+        if wait and (created or waveform.status < Waveform.DONE):
+            # non-async behaviour
+            waveform.process_waveform()
+
         return waveform
+
 
 class Waveform(TimestampedModel, UUIDModel):
 
@@ -95,7 +105,7 @@ class Waveform(TimestampedModel, UUIDModel):
     def path(self):
         return os.path.join(self.directory, self.type + '.png')
 
-    @current_app.task(filter=task_method, name='Waveform.process_waveform')
+    #@current_app.task(filter=task_method, name='Waveform.process_waveform')
     def process_waveform(self):
 
         from util.conversion import any_to_wav
@@ -147,22 +157,19 @@ class Waveform(TimestampedModel, UUIDModel):
         super(Waveform, self).save(*args, **kwargs)
 
 
-@receiver(post_save, sender=Waveform)
-def waveform_post_save(sender, instance, created, **kwargs):
-    obj = instance
-    do_process = getattr(obj, 'do_process', False)
-    log.debug('waveform_post_save - processing required: %s' % do_process)
-    if do_process:
-        if USE_CELERYD:
-            log.debug('sending job to task queue')
-            obj.process_waveform.apply_async(queue='grapher')
-
-
-
-        else:
-            log.debug('processing task in foreground')
-            obj.process_waveform()
-
+# @receiver(post_save, sender=Waveform)
+# def waveform_post_save(sender, instance, created, **kwargs):
+#     do_process = getattr(instance, 'do_process', False)
+#     log.debug('waveform_post_save - processing required: %s' % do_process)
+#     if do_process:
+#         if USE_CELERYD:
+#             log.debug('sending job to task queue')
+#             process_waveform_task.apply_async((instance.media.pk,))
+#             #obj.process_waveform.apply_async(queue='grapher')
+#         else:
+#             log.debug('processing task in foreground')
+#             process_waveform_task(media_pk=instance.media.pk)
+#             #obj.process_waveform()
 
 
 @receiver(pre_delete, sender=Waveform)
@@ -173,13 +180,26 @@ def waveform_pre_delete(sender, instance, **kwargs):
         clean_directory_tree_reverse(obj.path)
 
 
-
 class FormatManager(models.Manager):
 
     def get_or_create_for_media(self, media, encoding='mp3', quality='default', **kwargs):
 
         format, created = self.model.objects.get_or_create(media=media, encoding=encoding, quality=quality, **kwargs)
-        log.debug('version - get or create for media: %s %s %s (created: %s)' % (media, encoding, quality, created))
+        log.debug('version - get or create for media: %s %s %s (created: %s)' % (media.uuid, encoding, quality, created))
+
+        return format
+
+
+    def get_or_create_for_media(self, media, encoding='mp3', quality='default', **kwargs):
+        wait = kwargs.pop('wait', False)
+        format, created = self.model.objects.get_or_create(media=media, encoding=encoding, quality=quality, **kwargs)
+
+        log.debug(
+            'version - get or create for media: %s %s %s wait: %s (created: %s)' % (media.uuid, encoding, quality, wait, created))
+
+        if wait and (created or format.status < Waveform.DONE):
+            # non-async behaviour
+            format.process_format()
 
         return format
 
@@ -260,6 +280,7 @@ class Format(TimestampedModel, UUIDModel):
     def path(self):
         return os.path.join(self.directory, self.quality + '.' + self.encoding)
 
+
     @property
     def relative_path(self):
         # TODO: improve handling of absolute/relative path
@@ -275,13 +296,13 @@ class Format(TimestampedModel, UUIDModel):
             return defaultfilters.filesizeformat(self.filesize)
 
 
-    @current_app.task(bind=True, filter=task_method, name='Format.process_format')
-    def process_format(self, instance):
+    #@current_app.task(bind=True, filter=task_method, name='Format.process_format')
+    def process_format(self):
 
         from util.conversion import any_to_wav
 
         # e.v. refactor later, so obj instead of self...
-        obj = instance
+        obj = self
         processed = False
 
         log.debug('processing format for media with pk: %s' % obj.media.pk)
@@ -345,20 +366,22 @@ class Format(TimestampedModel, UUIDModel):
 
         super(Format, self).save(*args, **kwargs)
 
-@receiver(post_save, sender=Format)
-def format_post_save(sender, instance, created, **kwargs):
-    obj = instance
-    do_process = getattr(obj, 'do_process', False)
-    log.debug('format_post_save - processing required: %s' % do_process)
 
-    if do_process:
-        if USE_CELERYD:
-            log.debug('sending job to task queue')
-            obj.process_format.apply_async(queue='convert')
-        else:
-            log.debug('processing task in foreground')
-            obj.process_format()
-
+# @receiver(post_save, sender=Format)
+# def format_post_save(sender, instance, created, **kwargs):
+#
+#     do_process = getattr(instance, 'do_process', False)
+#     log.debug('format_post_save - processing required: %s' % do_process)
+#
+#     if do_process:
+#         if USE_CELERYD:
+#             log.debug('sending job to task queue')
+#             process_format_task.apply_async((instance.media.pk,))
+#             #obj.process_format.apply_async(queue='convert')
+#         else:
+#             log.debug('processing task in foreground')
+#             process_format_task(media_pk=instance.media.pk)
+#             #obj.process_format()
 
 
 @receiver(pre_delete, sender=Format)

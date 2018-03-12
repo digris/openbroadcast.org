@@ -284,9 +284,7 @@ class MediaResource(ModelResource):
 
         obj = Media.objects.get(**self.remove_api_resource_names(kwargs))
 
-
         from media_asset.util import get_format
-
         format = get_format(obj, wait=True)
 
         return sendfile(request, format.path)
