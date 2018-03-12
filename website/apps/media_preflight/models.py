@@ -117,7 +117,7 @@ def preflight_check_post_save(sender, instance, created, **kwargs):
 
     if instance.status < PreflightCheck.STATUS_PROCESSING:
         PreflightCheck.objects.filter(pk=instance.pk).update(status=PreflightCheck.STATUS_PROCESSING)
-        request_check_for_media.apply_async((instance.media,))
+        request_check_for_media.apply_async((instance.media.pk,))
         #request_check_for_media(instance.media)
 
 
@@ -128,7 +128,7 @@ def preflight_check_post_delete(sender, instance, **kwargs):
     """
     try:
         if instance.media:
-            delete_check_for_media.apply_async((instance.media,))
+            delete_check_for_media.apply_async((instance.media.pk,))
             # delete_check_for_media(instance.media)
     except:
         pass

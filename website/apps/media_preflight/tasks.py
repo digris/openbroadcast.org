@@ -12,7 +12,10 @@ log = logging.getLogger(__name__)
 
 
 @shared_task
-def request_check_for_media(obj):
+def request_check_for_media(media_id):
+
+    from alibrary.models import Media
+    obj = Media.objects.get(pk=media_id)
 
     client = MediaPreflightAPIClient()
     result = client.request_check_for_media(obj)
@@ -24,7 +27,10 @@ def request_check_for_media(obj):
 
 
 @shared_task
-def delete_check_for_media(obj):
+def delete_check_for_media(media_id):
+
+    from alibrary.models import Media
+    obj = Media.objects.get(pk=media_id)
 
     client = MediaPreflightAPIClient()
     result = client.delete_check_for_media(obj)
