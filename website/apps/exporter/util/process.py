@@ -13,7 +13,6 @@ from django.contrib.sites.models import Site
 from easy_thumbnails.files import get_thumbnailer
 from lib.util.filename import safe_name
 from alibrary.util.relations import uuid_by_object
-#from exporter.util.dbox import Synchronizer
 from atracker.util import create_event
 
 MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
@@ -69,14 +68,6 @@ class Process(object):
         self.format = format.lower()
         self.target = target
         self.archive_format = archive_format
-
-
-        # # just for testing here
-        # dbox = Synchronizer(self.instance.user)
-        # if dbox.dbox_client:
-        #     self.dbox = dbox
-        # else:
-        #     self.dbox = None
 
         if not self.format in AVAILABLE_FORMATS:
             raise Exception('Format not available.')
@@ -299,9 +290,6 @@ class Process(object):
             'directory': item_rel_dir,
             'item': media
         })
-
-        # if self.dbox:
-        #     self.dbox.upload(file_path, filename)
 
         return True
 

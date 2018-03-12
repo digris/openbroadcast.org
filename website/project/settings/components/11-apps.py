@@ -108,7 +108,7 @@ INSTALLED_APPS = [
     'captcha',
     'django_gravatar',
     'loginas',
-    'dropbox',
+    #'dropbox',
     'provider',
     'provider.oauth2',
 
