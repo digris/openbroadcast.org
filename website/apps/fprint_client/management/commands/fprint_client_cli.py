@@ -50,11 +50,12 @@ def update_index(force, async):
         click.secho('Resetting all fingerprints. ({})'.format(_count), fg='cyan')
 
     id_list = Media.objects.exclude(
-        master__isnull=True
-    ).nocache().filter(
+        master__isnull=True,
+        master_duration__lte=20,
+    ).filter(
         master_duration__lte=(60 * 20),
         fprint_ingested__isnull=True
-    ).values_list('id', flat=True)
+    ).nocache().values_list('id', flat=True)
 
     click.secho('{} media items to process'.format(id_list.count()), fg='cyan')
 
