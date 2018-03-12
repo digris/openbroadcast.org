@@ -40,7 +40,6 @@ def cli():
 
 @cli.command()
 @click.option('--force', default=False, is_flag=True, help='Force to rebuild all fingerprints?')
-@click.option('--async', default=False, is_flag=True, help='Run in async mode (multiprocessing Pool)')
 def update_index(force, async):
     """
     update fingerpint index (via fprint service)
@@ -59,27 +58,10 @@ def update_index(force, async):
 
     click.secho('{} media items to process'.format(id_list.count()), fg='cyan')
 
-    if async:
 
-        pool = Pool(processes=8)
-        procs = []
-
-        for id in id_list:
-            # close connection, needed for multiprocessing
-            connection.close()
-            m = Media.objects.get(pk=id)
-            #click.secho('{}'.format(m.pk), fg='cyan')
-            procs.append(pool.apply_async(_ingest_fingerprint, args=(m,)))
-
-        pool.close()
-        pool.join()
-
-
-    else:
-
-        for id in id_list:
-            m = Media.objects.get(pk=id)
-            _ingest_fingerprint(m)
+    for id in id_list:
+        m = Media.objects.get(pk=id)
+        _ingest_fingerprint(m)
 
 
 def _ingest_fingerprint(media):
