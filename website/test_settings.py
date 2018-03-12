@@ -66,6 +66,8 @@ DISCOGS_HOST = '172.20.10.207:8099/discogs-proxy'
 DISCOGS_RATE_LIMIT = False
 
 AUTO_SLUG_FIELD_MAX_UNIQUE_QUERY_ATTEMPTS = 1000
+# changed in django-extensions 1.7.9
+EXTENSIONS_MAX_UNIQUE_QUERY_ATTEMPTS = 1000
 
 
 SESSION_COOKIE_NAME = 'org-openbroadcast-local-session'
