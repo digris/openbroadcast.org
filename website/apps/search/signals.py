@@ -23,7 +23,7 @@ class SearchIndexProcessor(signals.RealtimeSignalProcessor):
                 index = self.connections[using].get_unified_index().get_index(sender)
                 index.update_object(instance, using=using)
 
-                print('updated index for {}'.format(instance))
+                # print('updated index for {}'.format(instance))
 
             except NotHandled as e:
                 pass

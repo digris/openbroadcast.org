@@ -39,6 +39,3 @@ def delete_check_for_media(media_id):
         log.info('Media id: {} - deleted preflight check'.format(obj.pk))
     else:
         log.warning('Media id: {} - unable to delete preflight check'.format(obj.pk))
-
-
-
