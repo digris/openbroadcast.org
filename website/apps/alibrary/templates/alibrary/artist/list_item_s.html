@@ -37,13 +37,13 @@
     {% comment %}{% endcomment %}
 	<div class="list_body_item c3">
 		<ul class="unstyled">
-			{% if item.get_releases.count > 0 %}
+			{% if item.get_releases.exists %}
 			<li>
 				{% url "alibrary-release-list" as release_list %}
 				{% trans "Releases" %}:&nbsp;<a rel="nofollow" href="{% spurl path=release_list query="artist={{ item.slug }}" %}" title="{% trans "Only show releases by" %} {{ item.name }}" style="vertical-align: top;">{{ item.get_releases.count }}<span class="filter icon"></span></a>
 			</li>
 			{% endif %}
-			{% if item.get_media.count > 0 %}
+			{% if item.get_media.exists %}
 			<li>
                 {% url "alibrary-media-list" as media_list %}
 				{% trans "Tracks" %}:&nbsp;<a href="{% spurl path=media_list query="artist={{ item.slug }}" %}" style="vertical-align: top;">{{ item.get_media.count }}<span class="filter icon"></span></a>

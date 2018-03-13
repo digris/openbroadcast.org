@@ -66,20 +66,20 @@
 
     <div class="item_menu" id="item_menu">
         <ul class="nav nav-tabs">
-            <li {% if object.get_media.count > 0 %}class="active"{% endif %}>
+            <li {% if object.media_artist.exists %}class="active"{% endif %}>
                 <a href="#tracklist" data-toggle="tab">{% trans "Overview" %}</a>
             </li>
-            {% if m_contrib.count > 0 %}
-            <li {% if object.get_media.count < 1 %}class="active"{% endif %}>
+            {% if m_contrib.exists %}
+            <li {% if not object.media_artist.exists %}class="active"{% endif %}>
                 <a href="#contribution" data-toggle="tab">{% trans "Credited" %} ({{ m_contrib.count }})</a>
             </li>
             {% endif %}
             {% if object.biography %}
-            <li {% if object.get_media.count < 1  and m_contrib.count < 1 %}class="active"{% endif %}>
+            <li {% if not appearances.media.exists %}class="active"{% endif %}>
                 <a href="#biography" data-toggle="tab">{% trans "Biography" %}</a>
             </li>
             {% endif %}
-            {% if object.agencies.count > 0 %}
+            {% if object.agencies.exists %}
             <li>
                 <a href="#management" data-toggle="tab">{% trans "Management" %}</a>
             </li>
@@ -100,7 +100,7 @@
 
     <div class="tab-content">
 
-    <div class="tab-pane {% if releases.count > 0 %}active{% endif %}" id="tracklist"
+    <div class="tab-pane {% if releases.exists %}active{% endif %}" id="tracklist"
          class="topflop">
 
 
@@ -111,12 +111,12 @@
             <h2 data-guide="top">
                 {% url "alibrary-media-list" as media_list %}
                 {% trans "Top Tracks" %}
-                            <span class="pull-right">
-                                <a href="{% spurl path=media_list query="artist={{ object.slug }}" %}">
-                                    <i class="icon-chevron-sign-right"></i>
-                                    {% blocktrans with count=object.media_artist.count name=object.name %}Show all {{ count }} tracks by {{ name }}{% endblocktrans %}
-                                </a>
-                            </span>
+                <span class="pull-right">
+                    <a href="{% spurl path=media_list query="artist={{ object.slug }}" %}">
+                        <i class="icon-chevron-sign-right"></i>
+                        {% blocktrans with count=object.media_artist.count name=object.name %}Show all {{ count }} tracks by {{ name }}{% endblocktrans %}
+                    </a>
+                </span>
             </h2>
 
             <div class="listview container medias s">
@@ -247,7 +247,7 @@
             <h2>{% trans "Management" %}</h2>
 
 
-            {% if object.agencies.count > 0 %}
+            {% if object.agencies.exists %}
 
 
                 {% for agency in object.agencies.all %}

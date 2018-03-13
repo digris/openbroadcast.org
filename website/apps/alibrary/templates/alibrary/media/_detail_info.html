@@ -124,7 +124,7 @@
     </dl>
 
     {% comment moved to sidebar %}
-	{% if object.relations.generic.count > 0 %}
+	{% if object.relations.generic.exists %}
 	<dl class="dl-horizontal">
 
 		<dt>

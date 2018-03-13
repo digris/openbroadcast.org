@@ -98,18 +98,18 @@
 
 
 
-		{% if object.seasons.count > 0 %}
+		{% if object.seasons.exists %}
 		<dt>{% trans "Broadcast Seasons" %}:</dt>
 		<dd>{% m2m_inline object.seasons.all %}</dd>
 		{% endif %}
 
-		{% if object.weather.count > 0 %}
+		{% if object.weather.exists %}
 		<dt>{% trans "Broadcast Weather" %}:</dt>
 		<dd>{% m2m_inline object.weather.all %}</dd>
 		{% endif %}
 
 
-		{% if object.dayparts.count > 0 %}
+		{% if object.dayparts.exists %}
 		<dt>{% trans "Broadcast Dayparts" %}:</dt>
 		<dd>
             {# dayparts_inline object #}

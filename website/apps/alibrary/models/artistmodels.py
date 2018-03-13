@@ -28,6 +28,9 @@ from django_extensions.db.fields import AutoSlugField
 from l10n.models import Country
 from tagging.registry import register as tagging_register
 
+from .mediamodels import MediaArtists, MediaExtraartists, Media
+from .releasemodels import Release
+
 log = logging.getLogger(__name__)
 
 LOOKUP_PROVIDERS = (
@@ -287,13 +290,40 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
     @cached_uuid_aware(timeout=60 * 60 * 24)
     def get_media(self):
         """ get tracks where artist appears """
-        from alibrary.models.mediamodels import Media
+        #from alibrary.models.mediamodels import Media
+        #print('get_media')
         try:
             #m = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk)).nocache().distinct()
             m_qs = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk) | Q(extra_artists__pk=self.pk)).nocache().distinct()
             return m_qs
         except Exception as e:
             return []
+
+    @cached_uuid_aware(timeout=60 * 60 * 24)
+    def get_media_alt(self):
+        """ get tracks where artist appears """
+        print('get_media_alt')
+        media_ids = []
+
+        qs_a = Media.objects.filter(artist=self).nocache()
+        qs_mediaartist = MediaArtists.objects.filter(artist=self).nocache()
+        qs_credited = MediaExtraartists.objects.filter(artist=self).nocache()
+
+        # if qs_a.exists():
+        #     media_ids += qs_a.values_list('id', flat=True)
+        #
+        # if qs_mediaartist.exists():
+        #     media_ids += qs_mediaartist.values_list('media_id', flat=True)
+        #
+        # if qs_credited.exists():
+        #     media_ids += qs_credited.values_list('media_id', flat=True)
+
+        media_ids += qs_a.values_list('id', flat=True)
+        media_ids += qs_mediaartist.values_list('media_id', flat=True)
+        media_ids += qs_credited.values_list('media_id', flat=True)
+
+        return Media.objects.filter(pk__in=list(set(media_ids)))
+
 
     def appearances(self):
         """ get artists appearances (releases/tracks) """

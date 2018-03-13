@@ -277,6 +277,12 @@ class ArtistDetailView(DetailView):
 
         self.extra_context['m_contrib'] = Media.objects.filter(extra_artists=obj)[0:48]
         self.extra_context['history'] = []
+
+        self.extra_context['appearances'] = {
+            'media': obj.get_media(),
+            'releases': obj.get_releases(),
+        }
+
         context.update(self.extra_context)
 
         return context

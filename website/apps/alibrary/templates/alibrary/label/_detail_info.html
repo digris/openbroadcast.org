@@ -24,7 +24,7 @@
 		</dt>
 		<dd>
 			<ul class="unstyled horizontal">
-				{% if object.release_label.count > 0 %}
+				{% if object.release_label.exists %}
 				<li>
 					{% url "alibrary-release-list" as release_list %}
 					<a href="{% spurl path=release_list query="label={{ object.slug }}" %}" title="{% trans "Only show releases on" %} {{ object.name }}">
@@ -46,7 +46,7 @@
 		</dt>
 		<dd>
 			<ul class="unstyled">
-				{% if object.release_label.count > 0 %}
+				{% if object.release_label.exists %}
 				<li>
 					{% url "alibrary-release-list" as release_list %}
 					<a href="{% spurl path=release_list query="label={{ object.slug }}" %}" title="{% trans "Only show releases on" %} {{ object.name }}">
@@ -78,7 +78,7 @@
 
 
         {% comment "TODO: check distributor url reverses" %}
-		{% if object.distributors.count > 0 %}
+		{% if object.distributors.exists %}
 		<dt>
 			{% trans "Distribution" %}:
 		</dt>
@@ -129,7 +129,7 @@
 		</dd>
 		{% endif %}
 
-		{% if object.children.count > 0 %}
+		{% if object.children.exists %}
 		<dt>
 			{% trans "Sub Labels" %}:
 		</dt>
@@ -176,7 +176,7 @@
 		</dd>
 		{% endif %}
 
-		{% if object.members.count > 0 %}
+		{% if object.members.exists %}
 		<dt>
 			{% trans "Members" %}:
 		</dt>

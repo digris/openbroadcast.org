@@ -32,7 +32,7 @@
                 {{ item.get_type_display }}
             </li>
 
-            {% if item.release_label.count > 0 %}
+            {% if item.release_label.exists %}
                 <li>
                     {% url "alibrary-release-list" as release_list %}
                     {% trans "Releases" %}:&nbsp;<a rel="nofollow" href="{% spurl path=release_list query="label={{ item.slug }}" %}"
@@ -41,7 +41,7 @@
                         class="filter icon"></span></a>
                 </li>
             {% endif %}
-            {% if item.media_artist.count > 0 %}
+            {% if item.media_artist.exists %}
                 <li>
                     {% trans "Tracks" %}:&nbsp;<a href="#"
                                                   style="vertical-align: top;">{{ item.media_artist.count }}<span class="filter icon"></span></a>

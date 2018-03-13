@@ -52,7 +52,7 @@
                     <a href="#description" data-toggle="tab">{% trans "Description" %}</a>
                 </li>
             {% endif %}
-            {% if object.distributors.count > 0 %}
+            {% if object.distributors.exists %}
 			<li>
 				<a href="#distribution" data-toggle="tab">{% trans "Distribution" %}</a>
 			</li>

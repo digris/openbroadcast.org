@@ -4,7 +4,7 @@
 {{ object.get_aliases|join:', ' }}
 {% endif %}
 
-{% if object.members.count > 0 %}
+{% if object.members.exists %}
 {% for artist in object.members.all %}{{ artist.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
 {% endif %}
 

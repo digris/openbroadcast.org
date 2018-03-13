@@ -55,7 +55,7 @@
 
 			<div class="list_body_item">
 				<ul class="unstyled">
-                    {% if item.release_label.count > 0 %}
+                    {% if item.release_label.exists %}
                         <li>
                             {% url "alibrary-release-list" as release_list %}
                             {% trans "Releases" %}:&nbsp;<a rel="nofollow" href="{% spurl path=release_list query="label={{ item.slug }}" %}"

@@ -77,23 +77,23 @@
                 </ul>
 
                 <ul class="unstyled horizontal">
-                    {% if item.appearances.num_releases > 0 %}
+                    {% if item.get_releases.exists %}
                         <li>
                             {% url "alibrary-release-list" as release_list %}
                             {% trans "Releases" %}:&nbsp;<a rel="nofollow"
                                 href="{% spurl path=release_list query="artist={{ item.slug }}" %}"
                                 title="{% trans "Only show releases by" %} {{ item.name }}"
-                                style="vertical-align: top;">{{ item.appearances.num_releases }}<!--<span
+                                style="vertical-align: top;">{{ item.get_releases.count }}<!--<span
                                 class="filter icon"></span>--></a>
                         </li>
                     {% endif %}
-                    {% if item.appearances.num_media > 0 %}
+                    {% if item.get_media.exists %}
                         <li style="padding-left: 30px">
                             {% url "alibrary-media-list" as media_list %}
                             {% trans "Tracks" %}:&nbsp;<a rel="nofollow"
                                 href="{% spurl path=media_list query="artist={{ item.slug }}" %}"
                                 title="{% trans "Only show tracks by" %} {{ item.name }}"
-                                style="vertical-align: top;">{{ item.appearances.num_media }}<!--<span
+                                style="vertical-align: top;">{{ item.get_media.count }}<!--<span
                                 class="filter icon"></span>--></a>
                         </li>
                     {% endif %}

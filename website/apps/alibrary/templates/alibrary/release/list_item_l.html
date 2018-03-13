@@ -12,7 +12,7 @@
 
     <div class="wrapper_icon">
 
-        {% if item.get_media.count > 0 %}
+        {% if item.get_media.exists %}
             {% with object=item ct="release" %}
                 {% include "alibrary/element/_item_actions_primary.html" %}
             {% endwith %}
