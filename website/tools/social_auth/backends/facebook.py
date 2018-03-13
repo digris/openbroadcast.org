@@ -16,6 +16,7 @@ import base64
 import hmac
 import hashlib
 import time
+import json
 from urllib import urlencode
 from urllib2 import HTTPError
 
@@ -140,11 +141,21 @@ class FacebookAuth(BaseOAuth2):
                                        'the app')
 
             response = payload.read()
-            parsed_response = cgi.parse_qs(response)
+            #parsed_response = cgi.parse_qs(response)
+            parsed_response = json.loads(response)
 
-            access_token = parsed_response['access_token'][0]
+            # print('***********************************************')
+            # print(url)
+            # print(response)
+            # print(parsed_response)
+            # print(parsed_response['access_token'])
+            # print(parsed_response['expires_in'])
+            # print('***********************************************')
+
+
+            access_token = parsed_response['access_token']
             if 'expires' in parsed_response:
-                expires = parsed_response['expires'][0]
+                expires = parsed_response['expires']
 
         if 'signed_request' in self.data:
             response = load_signed_request(
