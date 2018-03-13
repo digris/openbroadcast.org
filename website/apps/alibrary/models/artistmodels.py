@@ -276,8 +276,9 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
     # TODO: look for a better (=faster) way to get appearances!
     ###################################################################
     @cached_uuid_aware(timeout=60 * 60 * 24)
-    def get_releases(self):
+    def get_releases_(self):
         """ get releases where artist appears """
+
         from alibrary.models.releasemodels import Release
         try:
             r_qs = Release.objects.filter(
@@ -287,11 +288,32 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         except Exception as e:
             return []
 
+
     @cached_uuid_aware(timeout=60 * 60 * 24)
-    def get_media(self):
+    def get_releases(self):
+        """ get releases where artist appears """
+
+        media_ids = []
+
+        qs_a = Media.objects.filter(artist=self)
+        qs_mediaartist = MediaArtists.objects.filter(artist=self)
+
+        media_ids += qs_a.values_list('id', flat=True)
+        media_ids += qs_mediaartist.values_list('media_id', flat=True)
+
+
+        return Release.objects.filter(
+            Q(media_release__pk__in=media_ids) | Q(album_artists__pk=self.pk)
+        ).distinct()
+
+
+
+
+    @cached_uuid_aware(timeout=60 * 60 * 24)
+    def get_media_(self):
         """ get tracks where artist appears """
         #from alibrary.models.mediamodels import Media
-        #print('get_media')
+
         try:
             #m = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk)).nocache().distinct()
             m_qs = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk) | Q(extra_artists__pk=self.pk)).nocache().distinct()
@@ -300,23 +322,14 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
             return []
 
     @cached_uuid_aware(timeout=60 * 60 * 24)
-    def get_media_alt(self):
+    def get_media(self):
         """ get tracks where artist appears """
-        print('get_media_alt')
+
         media_ids = []
 
-        qs_a = Media.objects.filter(artist=self).nocache()
-        qs_mediaartist = MediaArtists.objects.filter(artist=self).nocache()
-        qs_credited = MediaExtraartists.objects.filter(artist=self).nocache()
-
-        # if qs_a.exists():
-        #     media_ids += qs_a.values_list('id', flat=True)
-        #
-        # if qs_mediaartist.exists():
-        #     media_ids += qs_mediaartist.values_list('media_id', flat=True)
-        #
-        # if qs_credited.exists():
-        #     media_ids += qs_credited.values_list('media_id', flat=True)
+        qs_a = Media.objects.filter(artist=self)
+        qs_mediaartist = MediaArtists.objects.filter(artist=self)
+        qs_credited = MediaExtraartists.objects.filter(artist=self)
 
         media_ids += qs_a.values_list('id', flat=True)
         media_ids += qs_mediaartist.values_list('media_id', flat=True)
