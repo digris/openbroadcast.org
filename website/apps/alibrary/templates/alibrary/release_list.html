@@ -57,13 +57,13 @@
 
             <ul class="unstyled">
                 <li class="left">
-                    <a href="{% spurl base=request.get_full_path set_query="list_style=s" %}" title="Set Style"
+                    <a rel="nofollow" href="{% spurl base=request.get_full_path set_query="list_style=s" %}" title="Set Style"
                        class="action list_style s {% if list_style == "s" %}active{% endif %}"><img
                             src="/static/img/base/spacer.png" width="16" height="16" alt="Disply Type"/></a>
                 </li>
 
                 <li class="left">
-                    <a href="{% spurl base=request.get_full_path set_query="list_style=l" %}" title="Set Style"
+                    <a rel="nofollow" href="{% spurl base=request.get_full_path set_query="list_style=l" %}" title="Set Style"
                        class="action list_style l {% if list_style == "l" %}active{% endif %}"><img
                             src="/static/img/base/spacer.png" width="16" height="16" alt="Disply Type"/></a>
                 </li>
@@ -97,7 +97,7 @@
                     &nbsp;
                 </div>
                 <div class="list_header_item c2 sortable {% if get.order_by == "name" %}active{% endif %} {{ get.direction }}">
-                    <a href="{% spurl base=request.get_full_path set_query="order_by=name" toggle_query="direction=ascending,descending" %}"
+                    <a rel="nofollow" href="{% spurl base=request.get_full_path set_query="order_by=name" toggle_query="direction=ascending,descending" %}"
                        style="display: block;">Name</a>
                 </div>
                 <div class="list_header_item c3">
@@ -110,7 +110,7 @@
                     License
                 </div>
                 <div class="list_header_item c6 sortable {% if get.order_by == "releasedate" %}active{% endif %} {{ get.direction }}">
-                    <a href="{% spurl base=request.get_full_path set_query="order_by=releasedate" toggle_query="direction=ascending,descending" %}"
+                    <a rel="nofollow" href="{% spurl base=request.get_full_path set_query="order_by=releasedate" toggle_query="direction=ascending,descending" %}"
                        style="display: block;">Released</a>
                 </div>
                 <div class="list_header_item c7">
@@ -163,19 +163,19 @@
 
                 {% spurl base=request.get_full_path active_query="ipp=12" as is_active %}
                 <li>
-                    <a class="{% if is_active %}active{% endif %}"
+                    <a rel="nofollow" class="{% if is_active %}active{% endif %}"
                        href="{% spurl base=request.get_full_path set_query="ipp=12" %}">12</a>
                 </li>
 
                 {% spurl base=request.get_full_path active_query="ipp=24" as is_active %}
                 <li>
-                    <a class="{% if is_active %}active{% endif %}"
+                    <a rel="nofollow" class="{% if is_active %}active{% endif %}"
                        href="{% spurl base=request.get_full_path set_query="ipp=24" %}">24</a>
                 </li>
 
                 {% spurl base=request.get_full_path active_query="ipp=36" as is_active %}
                 <li>
-                    <a class="{% if is_active %}active{% endif %}"
+                    <a rel="nofollow" class="{% if is_active %}active{% endif %}"
                        href="{% spurl base=request.get_full_path set_query="ipp=36" %}">36</a>
                 </li>
 

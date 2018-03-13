@@ -41,13 +41,13 @@
 
     {% if item.is_new %}
     <div class="marker new">
-        <span><a href="{% spurl base=request.get_full_path toggle_query="new=1,0" remove_query_param="page" %}" title="{% trans "Show new releases only" %}">new</a></span>
+        <span><a rel="nofollow" href="{% spurl base=request.get_full_path toggle_query="new=1,0" remove_query_param="page" %}" title="{% trans "Show new releases only" %}">new</a></span>
     </div>
     {% endif %}
 
     {% if item.is_promotional %}
     <div class="marker promo">
-        <span><a href="{% spurl base=request.get_full_path toggle_query="promo=1,0" remove_query_param="page" %}" title="{% trans "Show promotional releases only" %}">promo</a></span>
+        <span><a rel="nofollow" href="{% spurl base=request.get_full_path toggle_query="promo=1,0" remove_query_param="page" %}" title="{% trans "Show promotional releases only" %}">promo</a></span>
     </div>
     {% endif %}
 
@@ -101,7 +101,7 @@
                                 {% if artist.get_absolute_url %}
                                     <a href="{{ artist.get_absolute_url }}">{{ artist.name|truncate_chars_inner:32 }}</a>
                                     &nbsp;
-                                    <a href="{% spurl base=request.get_full_path remove_query_param="page" set_query="artist={{ artist.slug }}" %}"
+                                    <a rel="nofollow" href="{% spurl base=request.get_full_path remove_query_param="page" set_query="artist={{ artist.slug }}" %}"
                                        title="{% trans "Only show releases by" %} {{ artist.name }}"
                                        style="vertical-align: top;"><span class="filter icon"></span></a>
                                     {% if not forloop.last %},{% endif %}
@@ -130,7 +130,7 @@
                             <a href="{{ item.label.get_absolute_url }}"
                                title="{{ item.label.name }}">{{ item.label.name|truncate_chars_inner:18 }}</a>
                             &nbsp;
-                            <a href="{% spurl base=request.get_full_path remove_query_param="page" set_query="label={{ item.label.slug }}" %}"
+                            <a rel="nofollow" href="{% spurl base=request.get_full_path remove_query_param="page" set_query="label={{ item.label.slug }}" %}"
                                title="{% trans "Only show releases on" %} {{ item.label.name }}"
                                style="vertical-align: top;"><span class="filter icon"></span></a>
 

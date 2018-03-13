@@ -131,7 +131,7 @@
 
         <ul class="unstyled horizontal">
         {% for relation in item.relations.highlighted %}
-            <li><a class="skip-external" href="{{ relation.url }}" title="Show on {{ relation.get_service_display }}"><i class="icon icon-{{ relation.service }}"></i></a></li>
+            <li><a rel="nofollow" class="skip-external" href="{{ relation.url }}" title="Show on {{ relation.get_service_display }}"><i class="icon icon-{{ relation.service }}"></i></a></li>
 	    {% endfor %}
         </ul>
 

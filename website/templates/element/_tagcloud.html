@@ -18,7 +18,7 @@
                 {% spurl base=request.get_full_path active_mquery="tags={{ tag.pk }}" as is_active %}
                 {% spurl base=request.get_full_path trigger_mquery="tags={{ tag.pk }}&page=1" as tag_url %}
                 {% spurl base=tag_url remove_query_param="page" as tag_url %}
-                <a  rel="nofollow" href="{{ tag_url }}"
+                <a rel="nofollow" href="{{ tag_url }}"
                    data-id="{{ tag.pk }}"
                    class="tag{{ tag.weight }} {% if tag.hide_level > 0 %}tag-hidden{% endif %} level{{ tag.hide_level }} {% if is_active %} on{% endif %}"
                    style="">{{ tag.name }}</a>

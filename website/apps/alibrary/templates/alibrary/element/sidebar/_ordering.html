@@ -15,7 +15,7 @@
                     {% for order in order_by %}
 
                         <li class="{% if get.order_by == order.key %}active{% endif %} {{ get.direction }}">
-                            <a href="{% spurl base=request.get_full_path set_query="order_by={{ order.key }}" toggle_query="direction=ascending,descending" %}"
+                            <a rel="nofollow" href="{% spurl base=request.get_full_path set_query="order_by={{ order.key }}" toggle_query="direction=ascending,descending" %}"
                                style="display: block;">
                                 {% if get.order_by == order.key %}
                                 <span class="pull-right_">

@@ -51,7 +51,7 @@
                         {% if artist.get_absolute_url %}
                             <a href="{{ artist.get_absolute_url }}">{{ artist.name|truncate_chars_inner:32 }}</a>
                             &nbsp;
-                            <a href="{% spurl base=request.get_full_path remove_query_param="page" set_query="artist={{ artist.slug }}" %}"
+                            <a rel="nofollow" href="{% spurl base=request.get_full_path remove_query_param="page" set_query="artist={{ artist.slug }}" %}"
                                title="{% trans "Only show releases by" %} {{ artist.name }}"
                                style="vertical-align: top;"><span class="filter icon"></span></a>
                             {% if not forloop.last %},{% endif %}
@@ -89,7 +89,7 @@
                     {% endif %}
 
                     &nbsp;
-                    <a href="{% spurl base=request.get_full_path remove_query_param="page" set_query="label={{ item.label.slug }}" %}"
+                    <a rel="nofollow" href="{% spurl base=request.get_full_path remove_query_param="page" set_query="label={{ item.label.slug }}" %}"
                        title="{% trans "Only show releases on" %} {{ item.label.name }}"
                        style="vertical-align: top;"><span class="filter icon"></span></a>
 

@@ -29,7 +29,7 @@
 
             {% for filter in relation_filter %}
             <li>
-                <a href="{% spurl base=request.get_full_path remove_query_param="page" remove_query_param=filter.item_type %}"
+                <a rel="nofollow" href="{% spurl base=request.get_full_path remove_query_param="page" remove_query_param=filter.item_type %}"
                    class="lfilter">
                       {{ filter.label }}: {{ filter.item }}
                       <i class="_icon icon-delete">&nbsp;</i>
@@ -47,7 +47,7 @@
 
                     {% if "releasedate=" in request.get_full_path %}
                         <li>
-                            <a href="{% spurl base=request.get_full_path remove_query_param="page" remove_query_param=item.name %}"
+                            <a rel="nofollow" href="{% spurl base=request.get_full_path remove_query_param="page" remove_query_param=item.name %}"
                                class="lfilter">
                                 {% firstof item.label item.name %}:
                                 {% if item.range_start %}{{ item.range_start|date:"Y" }}{% endif %}
@@ -65,7 +65,7 @@
                     {% spurl base=request.get_full_path active_mquery="{{ item.name }}={{ filter_entry.0 }}" as is_active %}
                     {% if is_active %}
                         <li>
-                            <a href="{% spurl base=request.get_full_path remove_query_param="page" trigger_mquery="{{ item.name }}={{ filter_entry.0 }}" %}"
+                            <a rel="nofollow" href="{% spurl base=request.get_full_path remove_query_param="page" trigger_mquery="{{ item.name }}={{ filter_entry.0 }}" %}"
                                class="lfilter">
                                 {% firstof item.label item.name %}: {{ filter_entry.0 }}
                                 <!-- unfortunately no fitting icon... so hacking -->

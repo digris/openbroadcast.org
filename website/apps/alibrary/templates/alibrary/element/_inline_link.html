@@ -3,7 +3,7 @@
 {% if item %}
 
 	{% if item.get_absolute_url %}
-		<a href="{{ item.get_absolute_url }}">{{ item.name|spacify }}</a>
+		<a rel="nofollow" href="{{ item.get_absolute_url }}">{{ item.name|spacify }}</a>
 	{% else %}
 		<span>{{ item.name }}</span>
 	{% endif %}

@@ -433,7 +433,7 @@
 
             <h2>{% trans "Activities" %}
             <span class="pull-right">
-                <a href="{% url "actstream-action-list" %}?username={{ object.user.username }}">
+                <a rel="nofollow" href="{% url "actstream-action-list" %}?username={{ object.user.username }}">
                     <i class="icon-chevron-sign-right"></i>
                     {% trans "Show all activities" %}
                 </a>
@@ -507,12 +507,12 @@
 
             <h2>
                 {% trans "Recently updated Playlists" %}
-                            <span class="pull-right">
-                                <a href="{% spurl path=playlist_list query="user={{ object.user.username }}" %}">
-                                    <i class="icon-chevron-sign-right"></i>
-                                    {% blocktrans with count=broadcasts.count %}Show all {{ count }} user playlists{% endblocktrans %}
-                                </a>
-                            </span>
+                <span class="pull-right">
+                    <a rel="nofollow" href="{% spurl path=playlist_list query="user={{ object.user.username }}" %}">
+                        <i class="icon-chevron-sign-right"></i>
+                        {% blocktrans with count=broadcasts.count %}Show all {{ count }} user playlists{% endblocktrans %}
+                    </a>
+                </span>
             </h2>
 
 
@@ -539,7 +539,7 @@
                 {% trans "Recently added Releases" %}
                 <span class="pull-right">
                     {% url "alibrary-release-list" as release_list %}
-                    <a href="{% spurl path=release_list query="creator={{ object.user.username }}" %}">
+                    <a rel="nofollow" href="{% spurl path=release_list query="creator={{ object.user.username }}" %}">
                         <i class="icon-chevron-sign-right"></i>
                         {% trans 'Show all uploaded Releases' %}
                         {% comment %}
@@ -564,7 +564,7 @@
                 {% trans "Recently added Tracks" %}
                 <span class="pull-right">
                     {% url "alibrary-media-list" as media_list %}
-                    <a href="{% spurl path=media_list query="creator={{ object.user.username }}" %}">
+                    <a rel="nofollow" href="{% spurl path=media_list query="creator={{ object.user.username }}" %}">
                         <i class="icon-chevron-sign-right"></i>
                         {% trans 'Show all uploaded Tracks' %}
                         {% comment %}

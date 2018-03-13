@@ -17,14 +17,14 @@
 				{% if filter_entry|length == 2 %}
 					{% spurl base=request.get_full_path active_mquery="{{ item.name }}={{ filter_entry.0 }}" as is_active %}
 					<div class="boxitem {% if is_active %}minus{% else %}plus{% endif %}">
-						<a id="filterbox_item-{{ filter_entry.0 }}" class="filterbox_item {% if is_active %}on{% endif %}" href="{% spurl base=request.get_full_path remove_query_param="page" trigger_mquery="{{ item.name }}={{ filter_entry.0 }}" %}" style="display: block;">{{ filter_entry.0|title }}<small> ({{ filter_entry.1 }})</small></a>
+						<a rel="nofollow" id="filterbox_item-{{ filter_entry.0 }}" class="filterbox_item {% if is_active %}on{% endif %}" href="{% spurl base=request.get_full_path remove_query_param="page" trigger_mquery="{{ item.name }}={{ filter_entry.0 }}" %}" style="display: block;">{{ filter_entry.0|title }}<small> ({{ filter_entry.1 }})</small></a>
 					</div>
 				{% endif %}
 
 				{% if filter_entry|length == 3 %}
 					{% spurl base=request.get_full_path active_mquery="{{ item.name }}={{ filter_entry.0 }}" as is_active %}
 					<div class="boxitem {% if is_active %}minus{% else %}plus{% endif %}">
-						<a id="filterbox_item-{{ filter_entry.0 }}" class="filterbox_item {% if is_active %}on{% endif %}" href="{% spurl base=request.get_full_path remove_query_param="page" trigger_mquery="{{ item.name }}={{ filter_entry.0 }}" %}" style="display: block;">{{ filter_entry.1|title }}<small> ({{ filter_entry.2 }})</small></a>
+						<a rel="nofollow" id="filterbox_item-{{ filter_entry.0 }}" class="filterbox_item {% if is_active %}on{% endif %}" href="{% spurl base=request.get_full_path remove_query_param="page" trigger_mquery="{{ item.name }}={{ filter_entry.0 }}" %}" style="display: block;">{{ filter_entry.1|title }}<small> ({{ filter_entry.2 }})</small></a>
 					</div>
 				{% endif %}
 
