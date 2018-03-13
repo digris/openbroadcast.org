@@ -73,16 +73,16 @@
     <div class="item_menu" id="item_menu">
         <ul class="nav nav-tabs">
 
-            {% if broadcasts.count %}
+            {% if broadcasts.exists %}
             <li class="active">
                 <a href="#broadcasts" data-toggle="tab">
                     {% trans "Playlists" %}
-                    ({{ broadcasts.count }})
+                    {% comment %}({{ broadcasts.count }}){% endcomment %}
                 </a>
             </li>
             {% endif %}
 
-            <li {% if not broadcasts.count %}class="active"{% endif %}>
+            <li {% if not broadcasts.exists %}class="active"{% endif %}>
                 <a href="#profile" data-toggle="tab">{% trans "Profile" %}</a>
             </li>
 
@@ -94,7 +94,7 @@
                 <a href="#votes" data-toggle="tab">{% trans "Up- & Downvotes" %}</a>
             </li>
 
-            {% if uploaded_media.count > 0 or uploaded_releases.count > 0 %}
+            {% if uploaded_media.exists or uploaded_releases.exists %}
             <li>
                 <a href="#uploads" data-toggle="tab">
                     {% trans "Uploads" %}
@@ -123,7 +123,7 @@
     <div class="tab-content">
 
 
-    <div class="tab-pane {% if not broadcasts.count %}active{% endif %}" id="profile">
+    <div class="tab-pane {% if not broadcasts.exists %}active{% endif %}" id="profile">
 
 
         <section class="profile">
@@ -499,7 +499,7 @@
 
     </div>
 
-    <div class="tab-pane {% if broadcasts.count %}active{% endif %}" id="broadcasts">
+    <div class="tab-pane {% if broadcasts.exists %}active{% endif %}" id="broadcasts">
 
         <section class="broadcasts">
 
@@ -510,7 +510,10 @@
                 <span class="pull-right">
                     <a rel="nofollow" href="{% spurl path=playlist_list query="user={{ object.user.username }}" %}">
                         <i class="icon-chevron-sign-right"></i>
+                        {% comment %}
                         {% blocktrans with count=broadcasts.count %}Show all {{ count }} user playlists{% endblocktrans %}
+                        {% endcomment %}
+                        {% blocktrans %}Show all user playlists{% endblocktrans %}
                     </a>
                 </span>
             </h2>
