@@ -245,7 +245,7 @@ class OAuthBackend(SocialAuthBackend):
                     continue
                 data[alias] = value
 
-            except (TypeError, ValueError), e:
+            except (TypeError, ValueError) as e:
                 raise BackendError('invalid entry: %s' % (entry,))
 
         return data
@@ -345,7 +345,11 @@ class BaseAuth(object):
         self.request = request
         # Use request because some auth providers use POST urls with needed
         # GET parameters on it
-        self.data = request.REQUEST
+        if request.method == 'GET':
+            self.data = request.GET
+        else:
+            self.data = request.POST
+
         self.redirect = redirect
 
     def auth_url(self):
@@ -570,7 +574,7 @@ class OpenIdAuth(BaseAuth):
                 self._openid_request = self.consumer().begin(
                     url_add_parameters(self.openid_url(), extra_params)
                 )
-            except DiscoveryFailure, err:
+            except DiscoveryFailure as err:
                 raise AuthException(self, 'OpenID discovery error: %s' % err)
         return self._openid_request
 
@@ -673,7 +677,7 @@ class ConsumerBasedOAuth(BaseOAuth):
 
         try:
             access_token = self.access_token(token)
-        except HTTPError, e:
+        except HTTPError as e:
             if e.code == 400:
                 raise AuthCanceled(self)
             else:
@@ -851,7 +855,7 @@ class BaseOAuth2(BaseOAuth):
 
         try:
             response = simplejson.loads(dsa_urlopen(request).read())
-        except HTTPError, e:
+        except HTTPError as e:
             if e.code == 400:
                 raise AuthCanceled(self)
             else:
