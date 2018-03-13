@@ -136,21 +136,6 @@ class MaintenanceWorker(object):
                         pass
                         #print '.',
 
-
-        if self.action == 'warm_appearances_cache':
-
-            from alibrary.models import Artist
-            from tqdm import tqdm
-
-
-            for item in tqdm(Artist.objects.order_by('-created').all()):
-
-                item.get_releases()
-                item.get_media()
-
-
-
-
         if self.action == 'clean_playlists':
 
             from alibrary.models import PlaylistItem

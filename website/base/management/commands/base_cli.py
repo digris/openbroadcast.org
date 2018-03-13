@@ -17,7 +17,7 @@ def cli():
 @cli.command()
 def check():
     """Self-check (refactored to checks - not in use anymore)"""
-    click.echo('depreciated. use \'./manage.py check platform_base\' instead')
+    click.echo('depreciated. use \'./manage.py check base\' instead')
 
 
 @cli.command()
@@ -78,3 +78,20 @@ def crawl():
     raise NotImplementedError('crawl command not implemented yet')
 
 
+
+@cli.command()
+@click.option('--ctype', '-t', 'content_types', default=['all'], multiple=True)
+def warm_cache(content_types):
+    """Warm cache for given types."""
+    click.secho('Warming cache for: {}'.format(', '.join(content_types)))
+
+    from alibrary.models import Artist
+
+    if 'artist' in content_types or 'all' in content_types:
+        artist_qs = Artist.objects.order_by('-updated').all()
+
+
+        with click.progressbar(artist_qs, label='Warming cache for {} items'.format(artist_qs.count())) as bar:
+            for item in bar:
+                item.get_releases()
+                item.get_media()
