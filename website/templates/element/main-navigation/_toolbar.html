@@ -55,17 +55,17 @@
             {% else %}
 
                 <li class="login">
-                    <a title="Login" href="{% url "auth_login" %}?next={{ request.get_full_path }}" rel="modal:open">{% trans 'Login' %}</a>
+                    <a rel="nofollow" title="Login" href="{% url "auth_login" %}?next={{ request.get_full_path }}" rel="modal:open">{% trans 'Login' %}</a>
                     {% comment %}{% endcomment %}
                     <ul class="sub-level" style="visibility: hidden;">
 
-                        <li><a href="{% url "auth_login" %}?next={{ request.get_full_path }}"><i class="icon-lock"></i> {% trans 'Login / Sign Up' %}</a></li>
+                        <li><a rel="nofollow" href="{% url "auth_login" %}?next={{ request.get_full_path }}"><i class="icon-lock"></i> {% trans 'Login / Sign Up' %}</a></li>
 
 
                         {% for service in social_auth.backends %}
 
                             <li>
-                                <a href="{% url "socialauth_begin" service %}?next={{ request.get_full_path }}">
+                                <a rel="nofollow" href="{% url "socialauth_begin" service %}?next={{ request.get_full_path }}">
                                     <i class="icon-{{ service }}"></i> {% trans 'Login with' %} {{ service|title }}
                                 </a>
                             </li>
