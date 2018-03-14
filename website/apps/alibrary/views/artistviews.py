@@ -244,12 +244,13 @@ class ArtistDetailView(DetailView):
 
 
     def get_context_data(self, **kwargs):
-
         context = super(ArtistDetailView, self).get_context_data(**kwargs)
-        obj = kwargs.get('object', None)
+        obj = self.object
+
+        extra_context = {}
 
 
-        self.extra_context['releases'] = Release.objects.filter(Q(media_release__artist=obj)\
+        extra_context['releases'] = Release.objects.filter(Q(media_release__artist=obj)\
             | Q(album_artists=obj))\
             .distinct()[0:8]
 
@@ -258,32 +259,30 @@ class ArtistDetailView(DetailView):
         """
         m_top = []
         media_top = Media.objects.filter(artist=obj, votes__vote__gt=0).order_by('-votes__vote').distinct()
-        if media_top.count() > 0:
+        if media_top.exists():
             media_top = media_top[0:10]
             for media in media_top:
                 m_top.append(media)
 
-        self.extra_context['m_top'] = m_top
 
         m_flop = []
         media_flop = Media.objects.filter(artist=obj, votes__vote__lt=0).order_by('votes__vote').distinct()
-        if media_flop.count() > 0:
+        if media_flop.exists():
             media_flop = media_flop[0:10]
             for media in media_flop:
                 m_flop.append(media)
 
-        self.extra_context['m_flop'] = m_flop
+        extra_context['m_top'] = m_top
+        extra_context['m_flop'] = m_flop
 
-
-        self.extra_context['m_contrib'] = Media.objects.filter(extra_artists=obj)[0:48]
-        self.extra_context['history'] = []
-
-        self.extra_context['appearances'] = {
+        extra_context['m_contrib'] = Media.objects.filter(extra_artists=obj)[0:48]
+        extra_context['history'] = []
+        extra_context['appearances'] = {
             'media': obj.get_media(),
             'releases': obj.get_releases(),
         }
 
-        context.update(self.extra_context)
+        context.update(extra_context)
 
         return context
 
@@ -311,12 +310,21 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         return self.initial
 
     def get_context_data(self, **kwargs):
-        ctx = super(ArtistEditView, self).get_context_data(**kwargs)
-        ctx['named_formsets'] = self.get_named_formsets()
-        # TODO: is this a good way to pass the instance main form?
-        ctx['form_errors'] = self.get_form_errors(form=ctx['form'])
+        context = super(ArtistEditView, self).get_context_data(**kwargs)
+        obj = self.object
 
-        return ctx
+        extra_context = {}
+
+        extra_context['named_formsets'] = self.get_named_formsets()
+        extra_context['form_errors'] = self.get_form_errors(form=context['form'])
+        extra_context['appearances'] = {
+            'media': obj.get_media(),
+            'releases': obj.get_releases(),
+        }
+        context.update(extra_context)
+
+        return context
+
 
     def get_named_formsets(self):
 
