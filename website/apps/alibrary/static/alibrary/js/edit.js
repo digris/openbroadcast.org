@@ -85,7 +85,7 @@ var EditUi = function () {
 
 
     this.bindings = function () {
-        
+
         // lookup providers
         var container = $('.lookup.provider.listing');
 
@@ -521,7 +521,7 @@ var EditUi = function () {
 
 
         Dajaxice.alibrary.api_lookup(function (data) {
-            
+
             var lookup_prefix = 'lookup_id_';
 
             $('body').removeClass('api_lookup-progress');
@@ -1148,12 +1148,13 @@ var EditUi = function () {
                 //$("#id_d_tags").tagit("createTag", $.trim(el));
                 $("#id_d_tags").tagit("createTag", $('<input />').html($.trim(el)).text());
             });
+            skip_apply = true;
         }
 
         // handle country mapping (kind of hakish...)
         if (key == 'release_country') {
 
-            console.log('release_country:', val, val.length)
+            console.log('release_country:', val, val.length);
 
             if(val.length < 4) {
                 target = $('#' + self.field_prefix + 'release_country option:contains("' + val + ')")');
