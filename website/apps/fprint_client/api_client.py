@@ -89,14 +89,14 @@ class FprintAPIClient(object):
         return r.json()
 
 
-    def delete_for_media(self, obj):
+    def delete_for_media(self, media_uuid):
         """
         sends code to fprint api
         """
 
         url = '{api_base_url}fprint/entry/{uuid}/'.format(
             api_base_url=API_BASE_URL,
-            uuid=obj.uuid,
+            uuid=media_uuid,
         )
 
         log.debug('delete fprint entry: {}'.format(url))

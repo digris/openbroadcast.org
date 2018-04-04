@@ -1,7 +1,8 @@
 from haystack import indexes
+from celery_haystack.indexes import CelerySearchIndex
 from alibrary.models import Release, Artist, Media, Label, Playlist
 
-class ReleaseIndex(indexes.SearchIndex, indexes.Indexable):
+class ReleaseIndex(CelerySearchIndex, indexes.Indexable):
 
     text = indexes.EdgeNgramField(document=True, use_template=True)
     name = indexes.EdgeNgramField(model_attr='name', boost=1.5)
@@ -16,7 +17,7 @@ class ReleaseIndex(indexes.SearchIndex, indexes.Indexable):
         return self.get_model().objects.all()
 
 
-class ArtistIndex(indexes.SearchIndex, indexes.Indexable):
+class ArtistIndex(CelerySearchIndex, indexes.Indexable):
 
     text = indexes.EdgeNgramField(document=True, use_template=True)
     name = indexes.EdgeNgramField(model_attr='name', boost=1.5)
@@ -29,7 +30,7 @@ class ArtistIndex(indexes.SearchIndex, indexes.Indexable):
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
 
-class MediaIndex(indexes.SearchIndex, indexes.Indexable):
+class MediaIndex(CelerySearchIndex, indexes.Indexable):
 
     text = indexes.EdgeNgramField(document=True, use_template=True)
     name = indexes.EdgeNgramField(model_attr='name', boost=1.5)
@@ -42,7 +43,7 @@ class MediaIndex(indexes.SearchIndex, indexes.Indexable):
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
 
-class LabelIndex(indexes.SearchIndex, indexes.Indexable):
+class LabelIndex(CelerySearchIndex, indexes.Indexable):
 
     text = indexes.EdgeNgramField(document=True, use_template=True)
     name = indexes.EdgeNgramField(model_attr='name', boost=1.5)
@@ -55,7 +56,7 @@ class LabelIndex(indexes.SearchIndex, indexes.Indexable):
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
 
-class PlaylistIndex(indexes.SearchIndex, indexes.Indexable):
+class PlaylistIndex(CelerySearchIndex, indexes.Indexable):
 
     text = indexes.EdgeNgramField(document=True, use_template=True)
     name = indexes.EdgeNgramField(model_attr='name', boost=1.5)

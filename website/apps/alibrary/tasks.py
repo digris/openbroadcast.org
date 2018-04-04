@@ -34,13 +34,10 @@ def ingest_fprint_for_media(media_id):
 
 
 @shared_task
-def delete_fprint_for_media(media_id):
+def delete_fprint_for_media(media_uuid):
 
-    from alibrary.models import Media
-    obj = Media.objects.get(pk=media_id)
-
-    log.info('Media id: {} - delete fprint'.format(obj.pk))
+    log.info('Media id: {} - delete fprint'.format(media_uuid))
     client = FprintAPIClient()
 
-    result = client.delete_for_media(obj)
+    result = client.delete_for_media(media_uuid)
 

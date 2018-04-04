@@ -389,6 +389,7 @@ class Media(MigrationMixin):
     def generate_sha1(self):
         return sha1_by_file(self.master)
 
+    # TODO: improve video/soundcloud handling
     @property
     def has_video(self):
         return self.relations.filter(service__in=['youtube', 'vimeo']).exists()
@@ -405,9 +406,8 @@ class Media(MigrationMixin):
     def get_soundcloud(self):
         return self.relations.filter(service='soundcloud').first()
 
-    """
-    compose artist display as string
-    """
+
+    # TODO: this is ugly - improve!
     def get_artist_display(self):
 
         artist_str = ''
@@ -416,7 +416,10 @@ class Media(MigrationMixin):
             try:
                 for artist in artists:
                     if artist['join_phrase']:
-                        artist_str += ' %s ' % artist['join_phrase']
+                        if artist['join_phrase'] != ',':
+                            artist_str += ' '
+                        artist_str += '%s ' % artist['join_phrase']
+
                     artist_str += artist['artist'].name
             except:
                 artist_str = artists[0].name
@@ -436,7 +439,7 @@ class Media(MigrationMixin):
     def get_mediaartists(self):
 
         artists = []
-        if self.media_artists.count() > 0:
+        if self.media_artists.exists():
             for media_artist in self.media_mediaartist.all():
                 artists.append({'artist': media_artist.artist, 'join_phrase': media_artist.join_phrase})
             return artists
@@ -664,7 +667,7 @@ def media_pre_delete(sender, **kwargs):
         os.unlink(obj.master.path)
 
     # delete fingerprint
-    delete_fprint_for_media.apply_async((obj.pk,))
+    delete_fprint_for_media.apply_async((obj.uuid,))
 
 
 pre_delete.connect(media_pre_delete, sender=Media)

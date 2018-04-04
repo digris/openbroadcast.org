@@ -389,13 +389,6 @@ DOCS_ROOT = '/Users/ohrstrom/code/openbroadcast/documentation/doc/_build/html/'
 DOCS_ACCESS = 'login_required'
 
 
-
-OPBEAT = {
-    'ORGANIZATION_ID': '8e0a58b5230a4f809a910e0dd967a837',
-    'APP_ID': '24231efd3c',
-    'SECRET_TOKEN': 'bdfccf865a357f5c499083d0802af92b431ffe97',
-}
-
 def skip_static_requests(record):
     if record.args[0].startswith('GET /static/'):  # filter whatever you want
         return False

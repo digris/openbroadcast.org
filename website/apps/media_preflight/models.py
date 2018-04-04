@@ -128,7 +128,7 @@ def preflight_check_post_delete(sender, instance, **kwargs):
     """
     try:
         if instance.media:
-            delete_check_for_media.apply_async((instance.media.pk,))
+            delete_check_for_media.apply_async((instance.media.uuid,))
             # delete_check_for_media(instance.media)
     except:
         pass

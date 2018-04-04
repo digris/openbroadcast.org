@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'gunicorn',
     'django_date_extensions',
     'haystack',
+    'celery_haystack',
     'search',
 
     'addthis',
@@ -416,7 +417,7 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-HAYSTACK_SIGNAL_PROCESSOR = 'search.signals.SearchIndexProcessor'
+HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 ELASTICSEARCH_INDEX_SETTINGS = {
     "settings": {

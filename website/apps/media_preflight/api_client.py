@@ -107,14 +107,14 @@ class MediaPreflightAPIClient(object):
 
         return r.json()
 
-    def delete_check_for_media(self, obj):
+    def delete_check_for_media(self, media_uuid):
         """
         sends code to preflight api
         """
 
         url = '{api_base_url}preflight/check/{uuid}/'.format(
             api_base_url=API_BASE_URL,
-            uuid=obj.uuid,
+            uuid=media_uuid,
         )
 
         log.debug('delete media preflight at: {}'.format(url))

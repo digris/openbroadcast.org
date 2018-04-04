@@ -1,7 +1,8 @@
 from haystack import indexes
+from celery_haystack.indexes import CelerySearchIndex
 from profiles.models import Profile
 
-class ProfileIndex(indexes.SearchIndex, indexes.Indexable):
+class ProfileIndex(CelerySearchIndex, indexes.Indexable):
 
     text = indexes.CharField(document=True, use_template=True)
     name = indexes.EdgeNgramField(model_attr='get_display_name', boost=1.5)
