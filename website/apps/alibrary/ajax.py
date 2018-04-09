@@ -14,7 +14,7 @@ from stdnum import ean
 from django.utils.translation import ugettext as _
 import urllib
 from alibrary.models import Release, Relation, Label, Artist, Media
-from base.models.utils.merge import merge_objects, merge_votes, merge_relations
+from base.models.utils.merge import merge_objects, merge_votes, merge_relations, merge_tags
 from lib.util.AsciiDammit import asciiDammit
 
 from alibrary.util.api_compare import get_from_provider
@@ -308,6 +308,7 @@ def merge_items(request, *args, **kwargs):
                 if slave_items and master_item:
                     merge_votes(master_item, slave_items)
                     merge_relations(master_item, slave_items)
+                    merge_tags(master_item, slave_items)
                     master_item = merge_objects(master_item, slave_items)
                     # needed to clear cache
                     for media in master_item.media_release.all():
@@ -345,6 +346,7 @@ def merge_items(request, *args, **kwargs):
                 if slave_items and master_item:
                     merge_votes(master_item, slave_items)
                     merge_relations(master_item, slave_items)
+                    merge_tags(master_item, slave_items)
                     merge_objects(master_item, slave_items)
 
                     # re-attach stored extra artists to master
@@ -371,6 +373,7 @@ def merge_items(request, *args, **kwargs):
                 if slave_items and master_item:
                     merge_votes(master_item, slave_items)
                     merge_relations(master_item, slave_items)
+                    merge_tags(master_item, slave_items)
                     merge_objects(master_item, slave_items)
                     master_item.save()
                     # needed to clear cache
@@ -391,6 +394,7 @@ def merge_items(request, *args, **kwargs):
                 if slave_items and master_item:
                     merge_votes(master_item, slave_items)
                     merge_relations(master_item, slave_items)
+                    merge_tags(master_item, slave_items)
                     merge_objects(master_item, slave_items)
                     master_item.save()
                     # needed to clear cache?

@@ -489,6 +489,8 @@ class Relation(models.Model):
         ('wikidata', _('wikidata')),
         ('viaf', _('VIAF')),
         ('official', _('Official website')),
+        ('vimeo', _('Vimeo')),
+        ('instagram', _('Instagram')),
     )
 
     service = models.CharField(

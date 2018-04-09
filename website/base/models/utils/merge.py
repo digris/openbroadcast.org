@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from django.apps import apps
 from django.db.models import Model
 from django.contrib.contenttypes.fields import GenericForeignKey
+from tagging.models import Tag
 
 log = logging.getLogger(__name__)
 
@@ -92,7 +93,7 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
                 setattr(generic_related_object, field.name, primary_object)
                 try:
                     generic_related_object.save()
-                except:
+                except Exception as e:
                     pass
 
         # Try to fill all missing values in primary object by values of duplicates
@@ -147,5 +148,26 @@ def merge_relations(primary_object, alias_objects):
 
         # delete 'left over' specific relations
         obj.relations.exclude(service='generic').delete()
+
+    return primary_object
+
+
+def merge_tags(primary_object, alias_objects):
+    """
+    merges tags from 'alias_objects' to the master.
+    """
+    print('merging tags')
+    for obj in alias_objects:
+        print('slave {}'.format(obj))
+        for tag in obj.tags.all():
+            print('tag {}'.format(tag))
+            Tag.objects.add_tag(primary_object, '"{}"'.format(tag.name))
+
+    print('tags after save', primary_object.tags.all())
+
+    if primary_object.tags.exists():
+        primary_object.d_tags = ', '.join(t.name for t in primary_object.tags.all())
+
+    print(primary_object.d_tags)
 
     return primary_object
