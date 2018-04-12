@@ -9,15 +9,15 @@
 
 
     {% addtoblock "js-post" %}
-        <script type="text/javascript" src="{{ STATIC_URL }}selectable/js/jquery.dj.selectable.js"></script>
+        <script src="{{ STATIC_URL }}selectable/js/jquery.dj.selectable.js"></script>
     {% endaddtoblock %}
     {% addtoblock "js-post" %}
-        <script type="text/javascript" src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>{% endaddtoblock %}
+        <script src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>{% endaddtoblock %}
 
     {%  comment %}
     <!-- dajaxice is not compatible with socket.io !!!! -->
     {% addtoblock "js-post" %}<!-- pre dajax -->{% dajaxice_js_import %}<!-- post dajax -->{% endaddtoblock %}
-    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>{% endaddtoblock %}
     {%  endcomment %}
 
 

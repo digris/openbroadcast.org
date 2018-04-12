@@ -14,10 +14,10 @@ JingleUi = function() {
 	// this.interval_duration = false;
 	this.api_url = false;
 	this.api_url_simple = false; // used for listings as much faster..
-	
+
 	this.inline_dom_id = 'inline_jingle_holder';
 	this.inline_dom_element;
-	
+
 	this.current_data;
 	this.current_items = [];
 
@@ -32,11 +32,11 @@ JingleUi = function() {
 		if(self.interval_duration) {
 			self.set_interval(self.run_interval, self.interval_duration);
 		}
-		setTimeout(function(){
-			self.run_interval();
-		},1000);
-		
-		
+		// setTimeout(function(){
+		// 	self.run_interval();
+		// },1000);
+
+
 	};
 
 	this.iface = function() {
@@ -61,40 +61,40 @@ JingleUi = function() {
 			}
 		});
 
-		
+
 		// actions
 		$('.jingle_holder > .header a', container).live('click', function(e) {
 			e.preventDefault();
-			
+
 			var id = $(this).parents('.jingle_holder').data('object_id');
 			var action = $(this).data('action');
-			
+
 			if(action == 'delete' && confirm('Sure?')) {
 				// self.delete_jingle(id);
 			}
-			
+
 			//var name = $('input.name', $(this)).val();
 			//self.create_jingle(name);
 		});
 
 		// list-inner items
 		$('.list.item a', self.inline_dom_element).live('click', function(e) {
-			
+
 			e.preventDefault();
 			var container = $(this).parents('.list.item');
 			var action = $(this).data('action');
 			var resource_uri = container.data('resource_uri');
-			
+
 			if(action == 'play') {
 
 			}
 		});
 
 		// selector
-		
+
 		$('#jingles_inline_selector').live('change', function(e){
 			e.preventDefault();
-			
+
 			var resource_uri = $(this).val();
 
 			$('.jingle_holder', self.inline_dom_element).hide();
@@ -106,8 +106,8 @@ JingleUi = function() {
 			},50);
 
 		});
-		
-		
+
+
 
 	};
 
@@ -126,21 +126,21 @@ JingleUi = function() {
 		self.update_jingles();
 
 	};
-	
+
 
 
 	this.update_jingles = function() {
-		
+
 		$.getJSON(self.api_url_simple, function(data) {
 			self.update_jingle_selector(data);
 		});
-		
-		
+
+
 		var resource_uri = $('#default_jingle_set').data('resource_uri');
-		
-		
+
+
 		if (resource_uri != 'init') {
-		
+
 			$.getJSON(resource_uri, function(data) {
 				self.update_jingle_display(data);
 			});
@@ -150,20 +150,20 @@ JingleUi = function() {
 				setTimeout(function(){
 					alibrary.playlist_editor.rebind();
 				}, 500);
-				
+
 			} catch(e) {
 				console.log('error', e);
 			}
-		
+
 	};
-	
+
 	this.update_jingles_callback = function(data) {
 
 		self.update_jingle_display(data);
 		self.update_jingle_selector(data);
 		this.current_data = data;
 	};
-	
+
 	this.update_jingle_display = function(data) {
 
 		var status_map = [];
@@ -192,11 +192,11 @@ JingleUi = function() {
 					if(item.updated != target_element.attr('data-updated')) {
 
 						var html = ich.tpl_jingles_inline({object: item});
-						
+
 						html.attr('data-updated', item.updated);
 						target_element.replaceWith(html);
 					}
-					
+
 				} else {
 
 					var html = ich.tpl_jingles_inline({object: item});
@@ -211,25 +211,25 @@ JingleUi = function() {
 			}
 		//}
 	};
-	
+
 	this.update_jingle_selector = function(data) {
 
 
 		if(data.objects.length > 0) {
-		
+
 			if( ! Object.equals(this.current_data, data)) {
 
                 // TODO: fix ich templates resp refactor to nj
                 // var html = ich.tpl_jingles_inline_selector(data);
                 // $('.jingle-selector', self.inline_dom_element.parent()).html(html);
-	
+
 			} else {
 
 			}
-		
+
 		}
 	};
-	
+
 };
 
 

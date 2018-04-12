@@ -554,41 +554,31 @@ PlaylistEditor = function () {
     // play-flow functions
     this.play_next = function (current_id) {
 
-        //console.debug('play next');
-
-        // get ordered list
-
         var order = [];
 
         $('.item.editable').each(function (i, e) {
             order.push($(e).data('id'));
         });
-
-        //console.debug(self.position_map);
-        //console.debug(self.editor_items);
 
         var current_item_id = self.position_map.indexOf(current_id);
         var next_item_id = self.position_map[current_item_id + 1];
         var next_item = this.editor_items[next_item_id];
 
+        // TODO: hackish way to reset player instances
+        self.unload_player();
+
         next_item.player.play();
 
     };
+
     // play-flow functions
     this.load_next = function (current_id) {
-
-        // console.debug('load next');
-
-        // get ordered list
 
         var order = [];
 
         $('.item.editable').each(function (i, e) {
             order.push($(e).data('id'));
         });
-
-        //console.debug(self.position_map);
-        //console.debug(self.editor_items);
 
         var current_item_id = self.position_map.indexOf(current_id);
         var next_item_id = self.position_map[current_item_id + 1];
@@ -607,6 +597,30 @@ PlaylistEditor = function () {
             }
         }
 
+        // TODO: hackish way to reset player instances
+        self.unload_player();
+
+    };
+
+
+    ///////////////////////////////////////////////////////////////////
+    // reset/unload all player instances
+    // in HTML5 audio mode the browser's (scocket) connection limit
+    // is reached when 6 player instances are in 'standby' mode
+    ///////////////////////////////////////////////////////////////////
+    this.unload_player = function() {
+        console.log('unload player');
+        for (var i in this.editor_items) {
+            if (isInt(i)) {
+                var editor_item = this.editor_items[i];
+                if(! editor_item.dom_element.hasClass('playing')) {
+                    console.log('unload player:', editor_item.item.item.content_object.name);
+                    editor_item.player.unload();
+                } else {
+                    console.log('skip unloading (is playing):', editor_item.item.item.content_object.name);
+                }
+            }
+        }
     };
 
 
@@ -639,7 +653,6 @@ PlaylistEditorItem = function () {
     this.el_envelope;
     this.el_controls_fade;
     this.el_controls_cue;
-    this.el_controls_fade_cross;
 
     this.player;
 
@@ -650,7 +663,7 @@ PlaylistEditorItem = function () {
 
 
     this.interval_duration = false;
-    self.interval_loops;
+    this.interval_loops;
 
     this.duration = 0;
 
@@ -663,7 +676,7 @@ PlaylistEditorItem = function () {
 
     this.r;
 
-    self.editor_container = $('#playlist_editor_list');
+    this.editor_container = $('#playlist_editor_list');
 
     this.listeners;
 
@@ -671,10 +684,10 @@ PlaylistEditorItem = function () {
     this.init = function (item, playlist_editor) {
 
         self.item = item;
-        this.playlist_editor = playlist_editor;
-        this.readonly = playlist_editor.readonly;
-        this.enable_crossfades = playlist_editor.enable_crossfades;
-        this.enable_drag_n_drop = playlist_editor.enable_drag_n_drop;
+        self.playlist_editor = playlist_editor;
+        self.readonly = playlist_editor.readonly;
+        self.enable_crossfades = playlist_editor.enable_crossfades;
+        self.enable_drag_n_drop = playlist_editor.enable_drag_n_drop;
 
         //console.debug('PlaylistEditorItem - init');
         self.api_url = self.item.resource_uri;
@@ -802,6 +815,10 @@ PlaylistEditorItem = function () {
                 }
 
                 self.playlist_editor.stop_all();
+
+                // TODO: hackish way to reset player instances
+                self.playlist_editor.unload_player();
+
                 self.player.play().setPosition(self.item.cue_in);
             }
 
@@ -1330,6 +1347,34 @@ PlaylistEditorItem = function () {
 
     };
 
+    ///////////////////////////////////////////////////////////////////
+    // player / soundmanager2 handling
+    ///////////////////////////////////////////////////////////////////
+
+
+    this.init_player = function () {
+
+        var options = {
+            id: 'player_' + self.item.id,
+            url: self.co.stream.uri,
+            multiShot: false,
+            autoLoad: false,
+            // events
+            onplay: self.events.play,
+            onstop: self.events.stop,
+            onpause: self.events.pause,
+            onresume: self.events.resume,
+            onfinish: self.events.finish,
+
+            whileloading: this.whileloading,
+            whileplaying: this.whileplaying,
+            onload: this.onload
+        };
+
+        soundManager.setup({debugMode: false});
+
+        self.player = soundManager.createSound(options);
+    };
 
     this.events = {
 
@@ -1369,34 +1414,8 @@ PlaylistEditorItem = function () {
     };
 
 
-    this.init_player = function () {
-
-
-        var options = {
-            id: 'player_' + self.item.id,
-            url: self.co.stream.uri,
-            multiShot: false,
-            // autoPlay: true,
-            autoLoad: false,
-            // events
-            onplay: self.events.play,
-            onstop: self.events.stop,
-            onpause: self.events.pause,
-            onresume: self.events.resume,
-            onfinish: self.events.finish,
-
-            whileloading: this.whileloading,
-            whileplaying: this.whileplaying,
-            onload: this.onload
-        };
-
-        soundManager.setup({debugMode: false});
-
-        self.player = soundManager.createSound(options);
-    };
-
-
     this.whileloading = function () {
+        //console.log('PlaylistEditorItem - whileloading', self.player.bytesLoaded);
         var p = self.player.bytesTotal / self.player.bytesLoaded;
         self.el_buffer.attr({width: p * self.size_x});
     };
@@ -1404,6 +1423,9 @@ PlaylistEditorItem = function () {
 
     this.whileplaying = function () {
         self.el_indicator.attr({ x: self.abs_to_px(self.player.position) });
+
+
+        //console.log('PlaylistEditorItem - whileplaying', self.player.position);
 
         // check for neccessary fade
 
@@ -1458,17 +1480,9 @@ PlaylistEditorItem = function () {
         }
 
     };
-
-
+    
     this.onload = function () {
-
-        // / console.debug('sm2 onload');
-
         self.el_buffer.attr({x: self.abs_to_px(self.item.cue_in), width: self.size_x - self.abs_to_px(self.item.cue_in + self.item.cue_out)});
-
-
     };
 
-
 };
-

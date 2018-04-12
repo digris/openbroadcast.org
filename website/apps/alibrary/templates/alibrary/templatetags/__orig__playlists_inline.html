@@ -1,6 +1,6 @@
 {% load sekizai_tags verbatim i18n %}
 
-{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}alibrary/js/playlist.js"></script>{% endaddtoblock %}
+{% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/playlist.js"></script>{% endaddtoblock %}
 {% addtoblock "js-post" %}
 <script>
 	$(function(){
@@ -9,14 +9,14 @@
 		alibrary.playlist = new PlaylistUi();;
 		alibrary.playlist.api_url = "{% url "api_dispatch_list" resource_name='library/playlist' api_name='v1'%}";
 		alibrary.playlist.init();
-		
+
 	});
 </script>
 
 <!-- moustache templates -->
 {% verbatim %}
 <script id="tpl_playlists_inline" type="text/html">
-	
+
 	<div id="playlist_holder_{{ object.id }}" data-object_id="{{ object.id }}" class="playlist_holder " data-updated="{{ object.updated }}">
 
 		<div class="header">
@@ -60,9 +60,9 @@
 		</div>
 
 		<div class="list">
-			
+
 			{{#object.items}}
-			
+
 			<div class="list_item">
 				<div class="right">
 					<a href="#393:3884" title="Remove" class="action delete"><img src="/static/img/base/spacer.png" width="16" height="16" alt="Remove"></a>
@@ -75,13 +75,13 @@
 				</div>
 				<div class="clear"></div>
 			</div>
-			
+
 			{{/object.items}}
-			
+
 		</div>
 
 	</div>
-			
+
 </script>
 {% endverbatim %}
 
@@ -89,15 +89,15 @@
 {% verbatim %}
 <script id="tpl_playlists_inline_selector" type="text/html">
 
-	
+
 <select name="playlists" id="playlists_inline_selector">
 	{{#objects}}
 	<option value="{{ resource_uri }}" {{#is_current}}selected="selected"{{/is_current}}>{{ name }}</option>
 	{{/objects}}
-  
+
 </select>
-	
-	
+
+
 </script>
 {% endverbatim %}
 
@@ -109,7 +109,7 @@
 
 
 <div id="inline_playlist_container" class="">
-	
+
 	<div class="playlist basket ui-persistent open" data-uistate="init" id="playlist_basket">
 
 		<div class="header">
@@ -148,7 +148,7 @@
 						<button type="submit" class="btn btn-primary btn-mini">
 							<i class="icon-ok-sign"></i>
 						</button>
-					</div>					
+					</div>
 				</div>
 			</form>
 
@@ -156,5 +156,5 @@
 
 
 	</div>
-	
+
 </div>

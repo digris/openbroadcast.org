@@ -22,8 +22,8 @@ def discogs_image_by_url(url, type='uri'):
         id = url.split('/')
         id = id[-1]
     except Exception as e:
-        log.warning('unable to extract id: %s' % e)
-        id = None
+        log.debug('unable to extract id: url: {} - {}'.format(url, e))
+        return
 
     if id:
         log.debug('Lookup image for discog id: %s' % (id))
@@ -76,21 +76,21 @@ def discogs_image_by_url(url, type='uri'):
             except:
                 pass
 
-            pass
+
 
 
 def discogs_id_by_url(url, type='uri'):
 
     discogs_id = None
     discogs.user_agent = "NRG Processor 0.01 http://anorg.net/"
-    
+
     try:
         id = url.split('/')
         id = id[-1]
         try:
             return '%s' % int(id)
         except:
-        
+
             if '/master/' in url:
                 log.debug('Type is "master-release"')
                 item = discogs.MasterRelease(int(id))
