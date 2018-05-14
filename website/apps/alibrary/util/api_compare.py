@@ -355,7 +355,8 @@ class MusicbrainzAPILookup(APILookup):
 
         provider_id = uri.split('/')[-1]
 
-        inc = ('aliases', 'url-rels', 'annotation', 'tags', 'artists', 'isrcs', 'artist-credits', 'artist-rels', 'work-rels')
+        #inc = ('aliases', 'url-rels', 'annotation', 'tags', 'artists', 'isrcs', 'artist-credits', 'artist-rels', 'work-rels')
+        inc = ('aliases', 'url-rels', 'annotation', 'tags', 'artists', 'isrcs', 'artist-credits', 'work-rels')
         api_url = 'http://%s/ws/2/recording/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, provider_id, "+".join(inc))
 
         log.info('composed api url: %s' % api_url)

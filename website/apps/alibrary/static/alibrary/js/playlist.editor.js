@@ -42,7 +42,6 @@ PlaylistEditor = function () {
 
         self.dom_element = $('#' + this.dom_id);
 
-        self.iface();
         self.bindings();
 
         // set subscription, if failed an interval and run once
@@ -60,21 +59,11 @@ PlaylistEditor = function () {
 
     };
 
-    // just testing
     this.update = function () {
         self.run_interval();
     };
 
-    this.iface = function () {
-        // this.floating_inline('lookup_providers', 120)
-    };
-
     this.bindings = function () {
-
-
-        /*
-         * Playlist main-editor
-         */
 
         if (!self.readonly) {
 
@@ -83,19 +72,16 @@ PlaylistEditor = function () {
                     placeholder: "item drop-placeholder",
                     axis: "y",
                     cursor: "move",
-                    //cursorAt: { left: 5 },
                     delay: 150,
                     handle: '.base',
                     scroll: false,
                     scrollSensitivity: 5,
                     scrollSpeed: 4
-                    //containment: "parent"
                 }
             );
 
             self.dom_element.disableSelection();
         }
-
 
 
         self.dom_element.on("sortupdate", function (e, ui) {
@@ -105,8 +91,6 @@ PlaylistEditor = function () {
             // check if dropped from outside
             if (dom_item.hasClass('sidebar list item source')) {
 
-                console.debug('dropped from outside');
-
                 var post_data = {};
 
                 // get item details
@@ -115,7 +99,6 @@ PlaylistEditor = function () {
                     type: 'GET',
                     dataType: "json",
                     contentType: "application/json",
-                    //processData:  false,
                     success: function (data) {
                         console.debug(data);
                         try {
@@ -160,13 +143,7 @@ PlaylistEditor = function () {
                     async: false
                 });
 
-
-                // create an entry in the editor list (uuid used for reordering)
-
-
             }
-
-
 
             if (ui.sender && ui.sender[0].id == 'jingle_list') {
                 console.debug('jingle dropped!!');
@@ -609,15 +586,11 @@ PlaylistEditor = function () {
     // is reached when 6 player instances are in 'standby' mode
     ///////////////////////////////////////////////////////////////////
     this.unload_player = function() {
-        console.log('unload player');
         for (var i in this.editor_items) {
             if (isInt(i)) {
                 var editor_item = this.editor_items[i];
                 if(! editor_item.dom_element.hasClass('playing')) {
-                    console.log('unload player:', editor_item.item.item.content_object.name);
                     editor_item.player.unload();
-                } else {
-                    console.log('skip unloading (is playing):', editor_item.item.item.content_object.name);
                 }
             }
         }
@@ -1480,7 +1453,7 @@ PlaylistEditorItem = function () {
         }
 
     };
-    
+
     this.onload = function () {
         self.el_buffer.attr({x: self.abs_to_px(self.item.cue_in), width: self.size_x - self.abs_to_px(self.item.cue_in + self.item.cue_out)});
     };
