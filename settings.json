@@ -1,5 +1,0 @@
-{
-    "local_port" : 3000,
-    "proxy_port" : 8080,
-    "hostname" : "local.openbroadcast.org"
-}
