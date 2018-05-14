@@ -24,13 +24,13 @@ gulp.task('proxy', ['styles'], function () {
         host: 'local.openbroadcast.org',
         open: false,
         proxy: {
-            target: "127.0.0.1:" + 8080
+            target: '127.0.0.1:' + 8080
         },
         ui: {
             port: 3000 + 1
         }
     });
-    gulp.watch("website/site-static/sass/**/*.sass", ['styles']);
+    gulp.watch('website/site-static/sass/**/*.sass', ['styles']);
 });
 
 gulp.task('styles', function () {

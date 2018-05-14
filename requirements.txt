@@ -27,7 +27,6 @@ Wand==0.4.4
 scandir==1.2
 semver==2.7.7
 phonenumbers==8.8.10
-#django-phonenumber-field==0.2.1
 django-phonenumber-field==1.3.0
 
 
@@ -96,9 +95,11 @@ jsonfield==2.0.2
 ##################################################################
 # search
 ##################################################################
+
 django-haystack==2.5.1
 celery-haystack==0.10
 elasticsearch==2.2.0
+
 # transaction hooks are needed by celery-haystack
 # TODO: remove when upgrading django to > 1.8
 django-transaction-hooks==0.2
@@ -170,14 +171,12 @@ django-adv-cache-tag==0.3.0
 -e git+https://github.com/hzlf/graypy.git@master#egg=graypy
 -e git+https://ohrstrom@lab.hazelfire.com/hazelfire/obp/pyacoustid.git@deploy#egg=pyacoustid
 -e git+https://github.com/hzlf/django-announcements@master#egg=django-announcements
-#-e git+https://github.com/hzlf/django-extensions@master#egg=django-extensions
 -e git+https://github.com/hzlf/djangocms-panel@master#egg=djangocms-panel
 
 
 ################################################
 # services
 ################################################
-opbeat==3.3 #https://opbeat.com/hazelfire-llc/obp/module-setup/instructions/
 
 
 ################################################
