@@ -9,10 +9,19 @@ from django.core.urlresolvers import reverse
 from atracker.models import Event
 from atracker.util import summary_for_object
 
-DEFAULT_ACTIONS = ['playout', 'stream', 'download',]
+DEFAULT_ACTIONS = [
+    'playout',
+    'stream',
+    'download',
+]
+
+def last_day_of_month(date):
+    if date.month == 12:
+        return date.replace(day=31)
+    return date.replace(month=date.month+1, day=1) - datetime.timedelta(days=1)
+
 
 class ObjectStatistics(object):
-
     def __init__(self, obj=None, user=None, artist=None, release=None):
         self.obj = obj
         self.user = user
@@ -21,9 +30,7 @@ class ObjectStatistics(object):
 
     def generate(self, actions=DEFAULT_ACTIONS):
 
-
         stats = []
-
         # TODO: maybe modularize!
         for action in actions:
 
@@ -51,9 +58,7 @@ class ObjectStatistics(object):
                         'data': self.get_stats(action)
                 })
 
-
         return stats
-
 
     def get_stats(self, action):
 
@@ -101,7 +106,6 @@ class ObjectStatistics(object):
         else:
             events = Event.objects.filter(event_type__title='%s' % action, created__gte=range_start, created__lte=range_end).extra(select={'month': 'extract( month from created )'}).values('month').annotate(dcount=Count('created'))
 
-
         # map results to month_map (ugly, i know...)
         for item in events:
             for el in month_map:
@@ -109,12 +113,7 @@ class ObjectStatistics(object):
                     #el['count'] = item['dcount']
                     el['count'] += 1
 
-
-
-
         return self.serialize(month_map)
-
-
 
 
     def serialize(self, month_map):
@@ -126,112 +125,3 @@ class ObjectStatistics(object):
 
         return data
 
-
-
-
-
-
-
-class PlatformStatistics(object):
-
-    """
-    generates global overview
-    to be extended...
-    """
-
-    def __init__(self):
-        pass
-
-    def generate(self):
-
-        from alibrary.models import Release, Artist, Media, Label, Playlist
-        stats = []
-
-        # gather release stats
-        num_total = Release.objects.count()
-        num_week = Release.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
-        num_day = Release.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
-
-        num_created_week = Release.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
-        num_created_day = Release.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
-
-        stats.append({
-            'name': 'Releases',
-            'url': reverse('alibrary-release-list'),
-            'stats': {
-                'num_total': num_total,
-                'num_edited_week': num_week,
-                'num_edited_day': num_day,
-                'num_created_week': num_created_week,
-                'num_created_day': num_created_day,
-            }
-        })
-
-        num_total = Artist.objects.count()
-        num_week = Artist.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
-        num_day = Artist.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
-
-        num_created_week = Artist.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
-        num_created_day = Artist.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
-
-        stats.append({
-            'name': 'Artists',
-            'url': reverse('alibrary-artist-list'),
-            'stats': {
-                'num_total': num_total,
-                'num_edited_week': num_week,
-                'num_edited_day': num_day,
-                'num_created_week': num_created_week,
-                'num_created_day': num_created_day,
-            }
-        })
-
-        num_total = Media.objects.count()
-        num_week = Media.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
-        num_day = Media.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
-
-        num_created_week = Media.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
-        num_created_day = Media.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
-
-        stats.append({
-            'name': 'Tracks',
-            'url': reverse('alibrary-media-list'),
-            'stats': {
-                'num_total': num_total,
-                'num_edited_week': num_week,
-                'num_edited_day': num_day,
-                'num_created_week': num_created_week,
-                'num_created_day': num_created_day,
-            }
-        })
-
-        num_total = Label.objects.count()
-        num_week = Label.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
-        num_day = Label.objects.filter(updated__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
-
-        num_created_week = Label.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(days=7))).count()
-        num_created_day = Label.objects.filter(created__gte=(datetime.datetime.utcnow() - datetime.timedelta(hours=24))).count()
-
-        stats.append({
-            'name': 'Labels',
-            'url': reverse('alibrary-label-list'),
-            'stats': {
-                'num_total': num_total,
-                'num_edited_week': num_week,
-                'num_edited_day': num_day,
-                'num_created_week': num_created_week,
-                'num_created_day': num_created_day,
-            }
-        })
-
-
-        return stats
-
-
-
-
-
-def last_day_of_month(date):
-    if date.month == 12:
-        return date.replace(day=31)
-    return date.replace(month=date.month+1, day=1) - datetime.timedelta(days=1)
