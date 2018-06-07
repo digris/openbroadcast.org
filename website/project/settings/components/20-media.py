@@ -6,14 +6,15 @@ BASE_DIR = getattr(settings, 'BASE_DIR')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static-dist')
 STATIC_URL = '/static/'
 
 ADMIN_MEDIA_PREFIX = os.path.join(STATIC_URL, "admin/")
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'site-static'),
+    os.path.join(BASE_DIR, 'static-src'),
 )
 
 STATICFILES_FINDERS = (

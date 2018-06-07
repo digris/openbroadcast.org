@@ -20,6 +20,7 @@ SERVE_MEDIA = False
 COMPRESS_OFFLINE = False
 COMPRESS_ENABLED = True
 
+
 ################################################################################
 # language settings
 ################################################################################
@@ -90,6 +91,7 @@ DATABASES = {
 MIDDLEWARE_CLASSES = [
 
     'corsheaders.middleware.CorsMiddleware',
+    'webpack.middleware.WebpackDevserverMiddleware',
     'raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

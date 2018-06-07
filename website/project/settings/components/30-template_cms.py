@@ -19,6 +19,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': (
                 'django.contrib.auth.context_processors.auth',
+                'webpack.context_processors.webpack_devserver',
                 'django.core.context_processors.i18n',
                 'django.core.context_processors.request',
                 'django.core.context_processors.media',

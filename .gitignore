@@ -23,8 +23,16 @@ website/smedia
 website/media
 website/temp
 website/logs
+
+# static files
 website/static
 website/site-static/.sass-cache
+
+website/static-src/dist
+website/static-src/fonts
+website/static-src/icons
+website/static-src/img
+
 website/data.db
 website/static/CACHE
 website/cache/*

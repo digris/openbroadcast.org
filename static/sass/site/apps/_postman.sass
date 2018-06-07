@@ -1,0 +1,185 @@
+
+
+
+#modnav.postman
+
+  // hack - sorry.
+  &.postman-inbox
+    li.inbox > a
+      color: $primary-color-a
+  &.postman-sent
+    li.sent > a
+      color: $primary-color-a
+  &.postman-trash
+    li.trash > a
+      color: $primary-color-a
+
+
+
+
+#postman.postman
+
+  margin: 10px 0 10px
+  padding: 0 0px
+
+  table#pm_messages
+    width: 100%
+    margin: 10px 0 10px
+
+    thead
+      padding-bottom: 8px
+      tr > th
+        padding: 2px 2px 2px
+        text-align: left
+        font-weight: 300
+        font-style: italic
+        color: #666666
+
+        border-top: 1px solid #bbbbbb
+        border-bottom: 1px solid #bbbbbb
+
+        &.action
+          width: 60px
+        &.sender, &.recipient
+          width: 160px
+        &.date
+          width: 140px
+          text-align: right
+
+    tbody > tr.message
+      border-bottom: 1px solid #f5f5f5
+      //cursor: pointer
+      &:nth-child(even)
+        //background-color: #fafafa
+      &.hover
+        background-color: #f5f5f5
+
+
+      > td
+        padding: 8px 4px 8px
+        text-align: left
+
+        &.select
+          padding-left: 10px
+          //text-align: center
+
+        .subject
+        .body-preview
+          max-width: 350px
+
+        .body-preview
+          padding: 4px 0
+          color: #5a5a5a
+          font-weight: normal
+          font-style: italic
+
+        &.date
+          color: #5a5a5a
+          text-align: right
+
+          .status
+            text-align: right
+            padding: 4px 0
+
+            span
+              color: #999
+
+
+#postman.postman
+  &.inbox
+    .is-new a
+      font-weight: bold
+    .is-replied a
+      font-style: italic
+
+
+
+
+
+
+
+#postman.postman.read
+  // view / write
+  .message
+    // background-color: red
+
+    .header
+      padding: 12px
+
+      .dl-horizontal
+        margin: 0
+        dt
+          width: 70px
+        dd
+          margin-left: 80px
+
+      .sender
+      .subject
+      .date
+        color: #999
+
+      &.main
+        background-color: #f5f5f5
+
+      &.thread
+        background-color: #fcfcfc
+
+
+
+
+
+
+    .body
+      padding: 20px 10px
+      line-height: 180%
+      color: #333
+      font-style: italic
+      //text-align: justify
+      //font-family: monospace
+
+
+#postman.postman.write
+
+
+  .header
+    padding: 12px
+    background-color: #f5f5f5
+
+    .dl-horizontal
+      margin: 0
+      dt
+        width: 70px
+      dd
+        margin-left: 80px
+
+  .body
+    padding: 20px 0 20px 10px
+    line-height: 180%
+    color: #333
+    font-style: italic
+
+    form
+
+      ul
+        > li
+          margin: 0 0 8px 0
+          //clear: both
+
+          label
+            width: 80px
+            float: left
+
+          input, textarea
+            padding: 2px 4px
+
+            width: 732px
+            border: none
+            background-color: rgb(249, 249, 249)
+
+    div.actions
+
+
+
+
+
+

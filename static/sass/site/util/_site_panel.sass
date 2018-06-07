@@ -1,0 +1,61 @@
+#site_panel_container
+  position: fixed
+  bottom: 0
+  width: 100%
+
+
+  .toggle-container
+    width: 1115px
+    margin-left: auto
+    margin-right: auto
+    ul
+      clear: both
+      list-style: none
+
+      li
+        background: $primary-color-a
+        float: right
+        margin-left: 10px
+        padding: 4px 10px
+
+        a
+          padding: 2px 2px
+          text-decoration: none
+          display: block
+          color: white
+          span
+            display: block
+            text-transform: uppercase
+            float: left
+            margin: 3px 0 0 0
+            overflow: hidden
+            width: 0px
+            -webkit-transition: width 0.2s ease-in-out
+
+          i
+            font-size: 20px
+
+      li.hover,
+      li.active
+        background: $primary-color-b
+        a span
+          width: 100px
+
+
+
+
+
+
+  .content-container
+    clear: both
+    > .panel
+      height: 0
+      overflow: hidden
+      -webkit-transition: height 0.01s ease-in-out
+  &.expanded
+    .content-container > .panel
+      height: 300px
+      background: $primary-color-b
+      -webkit-transition: height 0.3s ease-in-out
+
+

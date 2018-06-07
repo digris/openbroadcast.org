@@ -1,0 +1,187 @@
+// handling of global search container
+#global_search
+  float: left
+  position: relative
+
+#search_form
+  width: 378px
+  height: 31px
+  padding: 0
+  border-bottom: 1px solid $primary-color-b
+  +clearfix()
+
+  .wrapper-icon
+    padding: 4px 0 0 0
+    float: left
+    .icon
+      color: $white
+
+  #search_input
+    width: 350px
+    height: 27px
+    padding: 2px 5px
+    border: none
+    color: $white
+    //text-transform: uppercase
+    background-color: rgba(255, 255, 255, 0.3)
+    float: right
+    //background: transparent
+
+    &::placeholder
+      color: rgba(255, 255, 255, 0.75)
+
+    &:focus::placeholder
+      color: rgba(255, 255, 255, 0.25)
+
+
+
+#search_scope
+  display: none
+  background: white
+  +clearfix()
+
+
+  border-bottom: 1px solid #dddddd
+
+  // display: none
+
+  //text-align: center
+  padding: 0 0 0 4px
+  span
+    padding: 5px 0
+    display: block
+    float: left
+  a
+    padding: 2px 4px
+    text-decoration: none
+    background: #e8e8e8
+    margin: 0 2px 0 0
+
+    //color: #999999
+    &.selected, &:hover
+      background: $primary-color-b
+      color: white
+      border-color: $primary-color-b
+
+.search-mode
+
+  #search_scope
+    margin-left: 19px
+    width: 355px
+    display: block
+    box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
+  .search-results
+    margin-left: 19px
+    width: 359px
+    box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
+
+
+
+.search-results
+  padding: 0
+  position: absolute
+  //width: 100%
+
+
+  //border: 4px solid $primary-color-b
+  //border-top: none
+
+  // 8 entries
+  max-height: 464px
+  overflow-y: auto
+
+  //display: none
+
+  .loading
+    background: white
+    padding: 10px 0
+    margin: 0
+    text-align: center
+    i
+      font-size: 36px
+      color: $primary-color-b
+    p
+      padding: 4px 0
+      color: $primary-color-b
+
+  .more
+    background: white
+    padding: 10px 0
+    margin: 0
+    text-align: center
+    a
+      padding: 4px 0
+      color: $primary-color-b
+
+  .item
+    margin-bottom: 0
+    //border-bottom: 1px solid #484848
+    //background: #222
+    border-bottom: 1px solid #cccccc
+    background: $white
+    cursor: pointer
+    position: relative
+
+    padding: 5px
+
+    //&:not(:hover)
+    //  color: $white
+    //  a, p
+    //    color: $white
+
+    &.hover,
+    &.selected
+      background: $primary-color-a-bg-light
+
+
+    .highlight
+      //background: $primary-color-a-bg-light
+      //padding: 0 4px
+      font-weight: 900 !important
+
+    .meta dl
+      margin: 2px 0
+      +clearfix
+      dt
+        width: 80px
+        float: left
+
+
+
+    .result-image
+      width: 18%
+
+    .result-body
+      width: 80%
+      margin-left: 2%
+
+      line-height: 16px
+
+      .object-type
+        opacity: 0.5
+
+      .representation
+
+        font-size: 11px
+        em
+          font-style: normal
+          font-weight: 400
+          //background: $primary-color-a-bg-light
+
+      .description
+        padding-top: 6px
+
+      .tags
+
+        width: 268px
+        opacity: 0.5
+
+        font-size: 11px
+        position: absolute
+        bottom: 4px
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+
+
+

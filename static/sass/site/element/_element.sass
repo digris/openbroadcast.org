@@ -1,0 +1,177 @@
+ul.indicator
+  max-height: 28px
+  overflow: hidden
+  li.indicator
+    float: left
+    margin: 3px 1px 0 0
+    padding: 0 0 0 0
+    background-color: #bababa
+    height: 10px
+    width: 2px
+    &.q0
+      background-color: #bababa
+    &.q1
+      background-color: #777777
+    &.q2
+      background-color: #f4b700
+    &.q3
+      background-color: $primary-color-a
+
+	  
+	  
+// license styles
+a.iconset.iconset-license
+  color: #5a5a5a
+  font-size: 16px
+  &:hover
+    color: $primary-color-b
+    text-decoration: none
+  i
+    padding-right: 4px
+
+	
+	
+div.term
+  &.inline
+    padding: 20px 0 10px 0
+    width: $width-inner_content
+    .container
+      height: 300px
+      overflow: auto
+      padding: 20px 10px
+      border: 1px solid #FFEE00
+      color: #000000
+      background-color: #FFFCDE
+      h1,h2
+        margin-bottom: 12px !important
+      p
+        margin-bottom: 12px
+      .title .sub
+        padding: 0 0 10px 0
+	  
+    .actions
+      padding: 20px 10px 0
+
+	
+div.slideout.base
+  padding: 18px 18px 0px 18px
+  width: 320px
+  background: #fff
+  border: 1px solid $primary-color-a
+  display: none
+  a.handle
+    top: -1px !important
+  
+  div.inner.feedback
+    h3
+      padding: 0 0 7px 0
+    p
+      padding: 0 0 7px 0
+    div.form_row
+      padding: 4px 0
+      clear: both
+      div.form_col
+        float: left
+        &.c1
+          width: 65px
+          padding: 4px 0 0 0
+        &.submit
+          padding: 7px 0 0 0
+        &.c2
+          input
+            width: 249px
+            border: 1px solid #a5a5a5
+            background-color: #fefefe
+            &.locked
+              color: #999999
+          select
+            width: 251px
+            border: 1px solid #a5a5a5
+            background-color: #fefefe
+        textarea
+          width: 304px
+          padding: 5px
+          border: 1px solid #a5a5a5
+          background-color: #fefefe
+		  
+        input.error, select.error, textarea.error
+          border: 1px solid #ff8a00
+		  
+		  
+		  
+		  
+		  
+/* Devices - EXPERIMENTAL
+#splitpane-content .devices
+  /*background-color: #ff00ff
+  
+
+  
+  .list, .form
+
+    .device_header
+      padding: 3px 10px
+      font-weight: bold
+
+    .device_list
+      border-top: 1px solid #a5a5a5
+      border-bottom: 1px solid #a5a5a5
+      background-color: #fafafa
+      padding: 3px 10px
+      .offline
+        color: #bb0000
+	  
+  
+  .device_id
+    width: 200px
+  .updated
+    width: 120px
+  .delete
+    text-align: right
+  .link
+    color: #666666
+    font-size: 92%
+	
+  .form
+    padding: 24px 10px 10px 10px
+    background-color: #fafafa
+    ul
+      &.device_register
+        padding: 5px 0
+        span.error
+          color: #aa0000
+		
+    submit, input
+      background-color: #ffffff
+      border: 1px solid #BBBBBB
+      color: #5A5A5A
+      padding: 2px
+
+  
+  
+
+
+#private_site_message
+  background-color: $primary-color-b
+  z-index: 999
+  position: fixed
+  width: 100%
+  bottom: 0
+
+  .inner
+    width: 1120px
+    margin: 0 auto
+    padding: 10px 0 20px
+
+    p, a
+      color: #fff
+      font-size: 13px
+      margin-bottom: 2px
+      a
+        text-decoration: underline
+
+    h2
+      color: #fff
+      margin-bottom: 0px
+
+  

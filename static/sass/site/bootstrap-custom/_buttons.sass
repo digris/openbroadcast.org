@@ -1,0 +1,188 @@
+////////////////////////////////////////////////////////////////////////////////////////////////
+// button styles
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+$color-adjust: -15
+$hover-radius: 5px
+
+// base
+.btn
+  color: #000
+  background: #fff
+  font-weight: 300
+  display: inline-block
+  padding: 4px 10px 2px // bottom was 4px
+  margin-bottom: 0
+  text-align: center
+  vertical-align: middle
+  border: 2px solid #000
+  cursor: pointer
+  text-transform: uppercase
+  transition: border-radius 0.1s ease-out, background-color 0.1s ease-out
+  // For input.btn
+  font-size: $baseFontSize
+  line-height: $baseLineHeight
+
+// Hover state
+.btn:hover
+  color: #fff
+  text-decoration: none
+  background-color: #000
+  border-radius: $hover-radius
+
+// Focus state for keyboard and accessibility
+.btn:focus
+  +tab-focus
+
+// Active state
+.btn.active,
+.btn:active
+  outline: 0
+
+// Disabled state
+.btn.disabled,
+.btn[disabled]
+  cursor: not-allowed
+  +opacity(65)
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// sizes
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+.btn-large
+  padding: 9px 32px
+  font-size: $baseFontSize + 2px
+  line-height: normal
+
+//.btn-large [class^="icon-"]
+.btn-large.icon
+  padding: 9px 32px 9px 20px
+  i
+    padding-right: 11px
+
+
+.btn-small
+  font-weight: normal
+  padding: 5px 9px
+  font-size: $baseFontSize - 2px
+  line-height: $baseLineHeight - 2px
+
+.btn-small [class^="icon-"]
+  margin-top: -1px
+
+.btn-mini
+  border-width: 1px
+  font-weight: normal
+  padding: 2px 6px
+  font-size: $baseFontSize - 2px
+  line-height: $baseLineHeight - 4px
+  &:hover
+    border-radius: $hover-radius - 2
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// colors / additional styles
+////////////////////////////////////////////////////////////////////////////////////////////////
+.btn-primary,
+.btn-secondary,
+.btn-warning,
+.btn-danger,
+.btn-success,
+.btn-info,
+.btn-inverse
+  &:hover,
+  &.active
+    color: $white
+
+// primary buttons
+.btn-primary
+  color: $primary-color-b
+  border-color: $primary-color-b
+  &:hover
+    background-color: $primary-color-b
+
+
+.btn-secondary
+  color: $primary-color-a
+  border-color: $primary-color-a
+  &:hover
+    background-color: $primary-color-a
+
+
+.btn-abort
+  color: $gray
+  border-color: $gray !important
+  &:hover
+    background-color: $gray
+
+
+
+
+// additional buttons - not sure if used anywhere...
+.btn-warning
+  color: $orange
+  border-color: $orange
+  &:hover
+    background-color: $orange
+
+.btn-danger
+  color: $pink
+  border-color: $pink
+  &:hover
+    background-color: $pink
+
+.btn-success
+  @extend .btn-secondary
+
+.btn-info
+  color: $blue
+  border-color: $blue
+  &:hover
+    background-color: $blue
+
+
+.btn-inverse
+  color: #fff
+  background: #000
+  &:hover
+    color: $primary-color-a
+
+
+// additional button elements
+.btn > small
+  text-transform: none
+  padding-left: 4px
+  font-size: 88%
+  opacity: 0.8
+  vertical-align: super
+  line-height: 0
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+// cross-browser. TODO: still needed??
+////////////////////////////////////////////////////////////////////////////////////////////////
+button.btn,
+input[type="submit"].btn
+  // Firefox 3.6 only I believe
+  &::-moz-focus-inner
+    padding: 0
+    border: 0
+  // IE7 has some default padding on button controls
+  *padding-top: 2px
+  *padding-bottom: 2px
+  &.large
+    *padding-top: 7px
+    *padding-bottom: 7px
+  &.small
+    *padding-top: 3px
+    *padding-bottom: 3px
+    
+    
+// override for actions
+form.form-horizontal
+  .form-actions
+    input, button
+      margin-left: 10px
+      min-width: 90px
+
+//
+.btn-group > .pull-right
+  float: right

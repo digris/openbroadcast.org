@@ -1,0 +1,158 @@
+// handling of global search container
+#global_search
+  //display: none
+
+body.global-search
+  #wrap
+    display: none
+  #global_search
+    display: block
+    min-height: 100%
+    .search-container
+      padding: 60px 0 40px
+
+  // sidebar / meta
+  #search_summary
+    margin: 83px 0 0 0
+    border-top: 1px solid #ddd
+    padding-top: 10px
+
+
+    .keyboard-shortcuts
+      padding: 0 0
+
+    .result-meta-container
+      margin-top: 20px
+      padding-top: 4px
+      border-top: 1px solid #ddd
+
+
+
+
+#search_form
+  padding: 4px 0
+  #search_input
+    width: 98.2%
+    padding: 6px 6px
+
+
+#search_scope
+  text-align: center
+  padding: 20px 0 10px
+  span
+    padding: 4px
+  a
+    //color: #999999
+    &.selected
+      background: $primary-color-b
+      color: white
+      border-color: $primary-color-b
+
+
+.search-results
+  padding: 20px 0
+
+  .loading
+    //background: white
+    padding: 10px
+    margin: 10px 0
+    text-align: center
+    i
+      font-size: 36px
+      color: $primary-color-b
+    p
+      padding: 4px 0
+      color: $primary-color-b
+
+  .item
+    margin-bottom: 20px
+    background: white
+    cursor: pointer
+    position: relative
+    &.hover,
+    &.selected
+      background: $primary-color-a-bg-light
+
+
+    .highlight
+      //background: $primary-color-a-bg-light
+      //padding: 0 4px
+      font-weight: 900 !important
+
+    .meta dl
+      margin: 2px 0
+      +clearfix
+      dt
+        width: 80px
+        float: left
+
+      dt
+
+    .representation
+      em
+        font-style: normal
+        font-weight: 400
+        //background: $primary-color-a-bg-light
+
+    .description
+      padding-top: 6px
+
+    .tags
+      position: absolute
+      bottom: 4px
+      right: 4px
+
+
+      .tag
+        padding: 2px 4px
+        background: #333
+        color: white
+        &:nth-child(n+6)
+          display: none
+        .highlight
+          background: #333
+          color: $primary-color-b-bg-light
+
+
+
+// TODO: make global if used elsewhere
+ul.keyboard-shortcuts
+
+  li.separator
+    padding: 14px 3px 4px
+
+  li.shortcut
+    +clearfix
+    padding: 3px
+    .combo
+      +clearfix
+      float: left
+      width: 90px
+      span
+        display: block
+        float: left
+        padding: 1px 4px
+        &.key
+          background: white
+          border: 1px solid #ddd
+          border-bottom-color: #bbb
+          border-right-color: #bbb
+          min-width: 14px
+          text-align: center
+          //box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.1)
+          border-radius: 3px
+          font-family: "Monospace 821 BT", monospace
+
+
+    .help
+      float: left
+      span
+        text-transform: capitalize
+        display: block
+        padding: 1px 4px
+
+
+// TODO: just a quick hack for transfer effect
+body.global-search
+  .ui-effects-transfer
+    background: rgba(102, 51, 204, 0.25)

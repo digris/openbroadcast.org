@@ -1,30 +1,36 @@
-{% load cms_tags sekizai_tags compress pushy_tags nunjucks_tags %}<!DOCTYPE html>
+{% load cms_tags sekizai_tags compress static pushy_tags nunjucks_tags %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
 
         <title>Open Broadcast - Platform Player</title>
 
-        {% compress css %}
 
-        {% endcompress %}
-
+        <!--
         <link href="{{ STATIC_URL }}css/aplayer.css" media="screen, projection" rel="stylesheet" type="text/css" />
         <link href="{{ STATIC_URL }}css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+        -->
 
         <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/base/favicon.png" />
         <link rel="shortcut icon" type="image/x-icon" href="{{ STATIC_URL }}img/base/favicon.png">
 
         {% render_block "css" %}
 
-        <!-- start: compressor js-head -->
-        <script src="{{ STATIC_URL }}js/lib/jquery-1.8.3.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery-ui-1.9.2.custom.min.js"></script>
+
+        <!-- start: legacy jquery -->
+        <script src="{% static 'js/lib/jquery-1.8.3.js' %}"></script>
+        <script src="{% static 'js/lib/jquery-ui-1.9.2.custom.min.js' %}"></script>
+        <!-- end: legacy jquery -->
+
         {% pushy_scripts %}
-        <!-- end: compressor js-head -->
 
         <!-- start: js-head elements added by sub-templates -->
         {% render_block "js-head" %}
         <!-- end: js-head elements added by sub-templates -->
+
+        <!-- start: webpack bundle handling -->
+        <link rel="stylesheet" href="{% static 'dist/css/bundle.css' %}"/>
+        <script src="{% static 'js/bundle.js' %}"></script>
+        <!-- end: webpack bundle handling -->
 
     </head>
 
@@ -46,7 +52,7 @@
         <!-- start: compressor js-post -->
         {% compress js %}
         <script src="{{ STATIC_URL }}js/lib/ba-debug.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/nunjucks/filters.js"></script>
+        <!--<script src="{{ STATIC_URL }}js/lib/nunjucks/filters.js"></script>-->
         <script src="{{ STATIC_URL }}js/lib/jquery.cookie.min.js"></script>
         <script src="{{ STATIC_URL }}js/lib/jquery.jgrowl.min.js"></script>
         <script src="{{ STATIC_URL }}js/lib/jquery.shorten.js"></script>

@@ -1,0 +1,738 @@
+@charset "UTF-8"
+
+@import site/variables
+@import site/util/datepicker
+
+body.scheduler
+  #modnav
+    border-bottom-color: #999999
+    
+
+// themes
+$theme-0-dark: $primary-color-a
+$theme-0-bright: $primary-color-a-bg-light
+
+$theme-1-dark: $primary-color-b
+$theme-1-bright: $primary-color-b-bg-light
+
+$theme-2-dark: #cc33b9
+$theme-2-bright: #f2cced
+
+$theme-3-dark: #3391cc
+$theme-3-bright: #cce3f2
+
+$theme-4-dark: #cc6833
+$theme-4-bright: #f2dacc
+
+// styles popup
+.popup-emission,
+.tooltip-emission
+  width: 400px !important
+  
+  // content
+  > div
+    section.title
+
+      h3
+        margin-bottom: 0
+        line-height: 20px
+        color: #fff
+        small
+          text-transform: none !important
+        span.label
+          text-transform: none !important
+          display: block
+          float: left
+          width: 43px
+
+      ul
+        margin-top: 10px
+      ul > li
+        i
+          margin-right: 4px
+
+        a
+          color: white
+        small
+          font-size: 92%
+          color: #a5a5a5
+
+          
+    section.description
+      padding-top: 10px
+      p
+        color: #efefef
+
+      .description
+        //border-top: 1px solid #5a5a5a
+        //border-bottom: 1px solid #5a5a5a
+        max-height: 260px
+        overflow: hidden
+        padding: 10px 0
+
+
+      .markdown-remove
+        *
+          color: #efefef
+          font-size: 12px
+          line-height: 14px
+          margin: 2px 0 !important
+          padding: 2px 0
+
+      .object-links
+        padding: 12px 0
+
+      a
+        padding: 2px 4px 3px 4px
+        color: white
+        text-decoration: none
+        &:hover
+          background: $primary-color-b
+
+        
+    section.form
+      label
+        color: #efefef
+        
+    section.form
+      fieldset.color
+        .controls
+          height: 40px
+          label
+            height: 24px
+            width: 14px
+            float: left
+            padding-top: 0
+            border: 4px solid #333
+            &.selected
+              border-color: $primary-color-b
+              
+            &.theme-0
+              background: $theme-0-dark
+              
+            &.theme-1
+              background: $theme-1-dark
+              
+            &.theme-2
+              background: $theme-2-dark
+              
+            &.theme-3
+              background: $theme-3-dark
+              
+            &.theme-4
+              background: $theme-4-dark
+
+// sidebar
+// datepicker
+#inline_calendar
+  margin: 46px 0 20px
+
+// object placement (drag n drop)
+.object-to-schedule
+  cursor: pointer
+
+  strong a
+    color: white
+
+  background: #333
+  border: 1px solid #444
+  padding: 2px 4px
+  color: white
+  p
+    color: #ccc
+
+  img
+    width: 44px
+    height: 44px
+
+  // while dragging on scheduler
+  &.ui-draggable-dragging
+
+    background: #999
+    opacity: 0.7
+
+    padding: 0 !important
+    // width: 108px !important
+    .item-list
+      display: none
+    .tags
+      display: none
+
+    img, small, li
+      display: none
+      
+    &.colision
+      //background: #f99
+      
+      
+      
+      
+      
+
+
+.emission
+  position: absolute
+  cursor: default
+  color: #222
+  -moz-user-select: none
+  background: $primary-color-a-bg-light
+  a
+    color: #333 !important
+    font-size: 90%
+  &.colision
+    background: #f99 !important
+  &.ui-draggable-dragging
+    // width: 108px !important
+    > *
+      border-right: none
+      
+  &.___autopilot
+    background: #D9FAFF
+    dl
+      border-color: #C0D3F3
+      
+  &.theme-0
+    background: $theme-0-bright
+    dl
+      border-color: $theme-0-dark
+      
+  &.theme-1
+    background: $theme-1-bright
+    dl
+      border-color: $theme-1-dark
+      
+  &.theme-2
+    background: $theme-2-bright
+    dl
+      border-color: $theme-2-dark
+      
+  &.theme-3
+    background: $theme-3-bright
+    dl
+      border-color: $theme-3-dark
+      
+  &.theme-4
+    background: $theme-4-bright
+    dl
+      border-color: $theme-4-dark
+    
+  dt
+    margin-top: -1px
+    font: bold 10px Arial, sans-serif
+    white-space: nowrap
+    overflow: hidden
+    padding: 0 0 1px
+    text-align: left
+  dl
+    margin: 0
+    padding: 0 0 1px
+    border-left: 1px solid
+    border-right: 1px solid
+    border-color: rgb(149, 209, 130)
+    overflow: hidden
+  dd
+    margin: 0
+    overflow: hidden
+    padding: 0 1px
+    font: 12px Arial, sans-serif
+    text-align: left
+    word-wrap: break-word    
+
+  dd, dt
+    padding: 0 2px 0 4px
+  dl
+    //padding: 2px 0 1px
+    padding: 0 0 0 0
+    position: relative
+    .time
+      position: absolute
+      bottom: 1px
+      right: 2px
+      font-weight: normal
+      font-size: 90%
+
+  dd
+    line-height: 1.1
+      
+      
+.emission.hover
+  cursor: move
+  dl
+    border-right-width: 26px
+      
+      
+
+#scrolltimedeventswk
+  overflow: hidden
+
+
+
+
+
+.current-time-marker
+  position: absolute
+  left: 0
+  width: 100%
+  top: 0
+  height: 0
+  overflow: hidden
+  border-top: 1px solid red
+  opacity: 0.2
+  display: none
+  &.today
+    opacity: 1
+    border-top: 1px solid red
+    
+
+.current-time-arrow
+  position: absolute
+  width: 5px
+  height: 10px
+  // background: green
+  display: none
+  
+  width: 0 
+  height: 0 
+  border-top: 5px solid transparent
+  border-bottom: 5px solid transparent
+  
+  border-left: 5px solid red
+
+
+// range navigation
+#scheduler_navigation
+  ul
+    position: relative
+    li
+      a
+        font-size: 130%
+        background: $body-color-shaded-bg
+        padding: 1px 5px
+        font-size: 12px
+        color: #999
+        margin-right: 6px
+        &:hover
+          text-decoration: none
+          background: $primary-color-b
+          color: white
+        i
+          padding-right: 4px
+
+
+
+      &.pull-right
+        position: absolute
+        right: 0
+        a
+          margin-left: 6px
+          margin-right: 0
+      &.week-number
+        width: 38%
+        color: #999
+        text-transform: uppercase
+        text-align: center
+
+
+ul.day-actions
+  height: 14px
+  margin-bottom: 0
+  li
+    padding: 0 4px 0 0
+    float: right
+    a
+      font-size: 90%
+      
+ 
+input.autocomplete
+  width: 250px    
+  height: 16px
+  padding: 2px 4px
+.ac-result
+  position: absolute
+  z-index: 1000
+  background: white
+  width: 260px
+  .listing
+    .item
+      margin-bottom: 0
+      padding: 4px
+      background-color: yellow
+      border-bottom: 1px solid #eeeeee
+      background: #333
+      color: #fff
+      img
+        width: 63px
+        height: 63px
+      &.hover
+        background-color: $primary-color-a-bg-light
+        color: #000
+
+
+
+// TODO: rework
+
+.tg-hourmarkers
+  width: 830px !important
+
+.tg-dualmarker, .tg-dualmarker60
+  border-bottom: 1px dotted #ddd
+  border-top: 1px solid #ddd
+  font-size: 1px
+  
+  
+.tg-markercell
+  .tg-quartermarker
+    
+    border-top: 1px dotted #ddd
+    border-bottom: 1px dotted #eee // 15-min markers
+    font-size: 1px
+    &:first-child
+      border-top: 1px solid #ddd
+      border-bottom: 1px dotted #eee // 15-min markers
+  
+  .tg-quartermarker
+    height: 10px
+    margin-bottom: 10px
+    
+
+  &.marker-limit
+    border-top: 1px solid #a9a9a9
+    height: 41px
+    .tg-quartermarker
+      &:first-child
+        border-top: none !important
+  
+  
+  
+  
+  
+  
+  
+
+#calcontent
+  &.eui-s
+    .calListLabel, .calListLabel-sel
+      line-height: 24px
+  &.eui-t
+    .calListLabel, .calListLabel-sel
+      line-height: 20px
+
+.calListLabel
+  color: #555555
+
+.calListLabelOuter-hvr
+  background: #eeeeee
+
+.drag-chip .cbrd
+  padding: 1px 0 0
+
+.chip-border
+  border-bottom: 2px solid
+  border-left: 2px solid
+  border-top: 2px solid
+  margin: -2px 0 -2px -2px
+
+.chip-color
+  border-color: white
+
+.chip-color-today
+  border-color: #f1f1f1
+
+.cbrd
+  border: 1px solid
+  -moz-border-radius: 0
+  -webkit-border-radius: 0
+
+
+.chip a
+  &:link, &:visited, &:active
+    text-decoration: none
+    color: white
+
+.chip .location
+  display: block
+  font-style: normal
+
+
+
+// week stuff
+.wk-table
+  margin: 0
+  padding: 0
+
+.wk-weektop
+  table-layout: fixed
+  width: 100%
+  overflow: hidden
+  font-size: 11px
+  line-height: 14px
+  margin-top: 10px
+
+.wk-dayname
+  font-weight: normal
+  color: #555
+  padding: 2px 4px
+  white-space: nowrap
+  font-size: 12px
+  padding: 4px
+  font-style: italic
+
+.wk-today
+  background-color: #fff
+  color: #222
+  font-weight: bold
+
+.wk-full-mode
+  .wk-today
+    background: #f1f1f1
+    border-left: 1px solid #ddd
+    border-top: 1px solid #dddddd
+  .wk-today-last
+    border-right: 1px solid #dddddd
+  .wk-tomorrow
+    border-left: 1px solid #dddddd
+
+.wk-dummyth
+  vertical-align: top
+  padding: 0
+
+.wk-allday
+  background-color: #fff
+  font-size: 11px
+  line-height: 14px
+  border-color: #e7ebef
+  border-style: solid
+  border-width: 0
+  font-size: 12px
+  line-height: 10px
+
+.wk-allday-pos
+  position: relative
+
+.wk-allday .st-grid
+  padding: 1px 1px 0
+
+.wk-webcontent-td
+  font-size: 0
+  height: 5px
+
+.wk-scrolltimedevents
+  position: relative
+  overflow-y: scroll
+  overflow-x: hidden
+  border-top: 1px solid #ddd
+  border-left: 0 none
+  border-bottom: 1px solid #ddd
+  padding: 0
+  font-size: 11px
+  line-height: normal
+  direction: ltr
+
+.wk-scrolltimedevents
+  font-size: 12px
+
+.wk-border
+  border-bottom: 1px solid #ddd
+  margin-right: 0
+
+.wbkt.wk-scrolltimedevents
+  border-top: none
+  border-bottom: none
+
+
+
+
+
+
+
+.tg-mainwrapper
+  position: relative
+
+.tg-timedevents
+  //background-color: #fff
+  border-bottom: 1px solid #ddd
+  margin-top: -1px
+  table-layout: fixed
+  width: 100%
+  margin-top: -2px
+
+.wbkt .tg-timedevents
+  border-right: 1px solid #dddddd
+
+.tg-times-pri
+  //background-color: #fff
+  color: #555
+  padding: 0 0 0
+  text-align: right
+  vertical-align: top
+
+.tg-times-sec
+  background-color: #fff
+  color: #555
+  padding: 1px 0 0
+  text-align: right
+  vertical-align: top
+  background-color: #fff
+  color: #aaadbc
+
+.tg-times-start
+  background-color: #fff7d7
+  color: #555
+  padding: 1px 0 0
+  text-align: right
+  vertical-align: top
+  padding-right: 2px
+
+.tg-times-end
+  background-color: #fff7d7
+  color: #555
+  padding: 1px 0 0
+  text-align: right
+  vertical-align: top
+  padding-right: 2px
+  background-color: #d9f2db
+
+.tg-time-pri, .tg-time-sec
+  border-bottom: 1px solid #a9a9a9
+  padding-right: 4px
+  span
+    color: #999
+    line-height: 24px
+
+.tg-time-pri-last, .tg-time-sec-last, .tg-times-start-last, .tg-times-end-last
+  border-bottom: none
+
+.tg-time-sec, .tg-time-start, .tg-time-end
+  border-bottom: 1px solid #e7ebef
+
+.tg-times-pri, .tg-times-sec
+  border-left: 1px solid #dddddd
+
+.ep-scg
+  .tg-times-pri, .tg-times-sec
+    border-left: none
+  .tg-timesnotlast
+    border-right: 1px solid #dddddd
+
+.tg-col, .tg-col-today
+  border-left: 1px solid #ddd
+  vertical-align: top
+
+.tg-col-overlaywrapper
+  position: relative
+  height: 0
+
+.tg-gutter
+  position: relative
+  height: 0
+  margin-right: 10px
+  width: 109px
+
+.tg-col-eventwrapper
+  position: relative
+  cursor: default
+
+.tg-today
+  //background-color: rgba(50, 201, 3, 0.12)
+  background-color: rgba(3, 201, 84, 0.12)
+
+.tg-weekend
+  background-color: rgba(3, 3, 3, 0.03)
+
+.bg-exists .tg-today
+  background-color: #eee
+  opacity: .5
+  filter: alpha(opacity = 50)
+
+.tg-spanningwrapper
+  position: relative
+  margin: 1px 0 0 1px
+
+.tg-chipspanningwrapper
+  line-height: 0
+  margin: 0 10px 0 1px
+  z-index: 1
+
+.tg-hourmarkers
+  position: absolute
+  width: 100%
+
+.tg-markercell
+  height: 42px
+
+.tg-markercell60
+  height: 60px
+
+.tg-dualmarker, .tg-dualmarker60
+  border-bottom: 1px dotted #ddd
+  border-top: 1px solid #ddd
+  font-size: 1px
+
+.tg-dualmarker
+  height: 20px
+  margin-bottom: 20px
+
+.tg-dualmarker60
+  height: 29px
+  margin-bottom: 29px
+
+
+
+
+
+#mainbody
+  margin-left: 0px
+  padding-top: 14px
+  width: 830px
+  
+
+.dp-cell.dp-dayh
+  text-align: center
+
+.calHeader, #dp_0_cur
+  color: #222
+  font-weight: normal
+  line-height: 30px
+  padding: 0
+  position: relative
+
+.calHeader, .goog-zippy-expanded .monthtableSpace
+  margin-left: -16px
+  margin-right: -5px
+
+.calHeader
+  padding: 2px 0
+
+.calHeaderSpace
+  margin-left: 4px
+
+.calHeader:hover
+  background-color: #eeeeee
+
+#calcontent
+  &.eui-s
+    .calHeader, #dp_0_cur
+      line-height: 24px
+  &.eui-t
+    .calHeader, #dp_0_cur
+      line-height: 20px
+
+.st-grid
+  .te-t, .te-s
+    font-size: 100%
+
+
+
+// tooltips
+.qtip-daypart-hint
+  padding: 10px !important
+  h4
+    margin-bottom: 10px
+
+  .info
+
+    p
+      color: white
+    span
+      padding-left: 10px
+      color: #999

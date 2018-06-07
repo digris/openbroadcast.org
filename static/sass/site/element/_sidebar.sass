@@ -1,0 +1,529 @@
+/* sidebar */
+
+
+
+// rework
+.sidebar div.menu-context
+  .action-group
+    ul
+      margin-bottom: 25px
+      border-top: 1px solid $separator-line-color
+      li
+        border-bottom: 1px solid $separator-line-color
+        a
+          display: block
+          //padding: 2px 0
+          padding: 3px 0 4px
+          i
+            padding: 3px 0 3px 5px
+            width: 20px
+            display: block
+            float: left
+          span
+
+          small
+            padding-right: 3px
+
+          &.hover
+            background: $primary-color-b-bg-light
+            text-decoration: none
+
+          // state specific styles
+          &.disabled
+            cursor: wait
+            color: #BBBBBB
+            &.hover
+              background: #efefef
+
+// rework end
+
+
+
+div.row .sidebar
+  div.menu_context
+    div.set
+      border-top: 1px solid #AAAAAA
+      margin-bottom: 23px
+      
+      ul
+        li
+          border-bottom: 1px solid #CCCCCC
+          padding: 3px 0 2px 19px
+          background-repeat: no-repeat
+          background-position: 0 3px
+          background-image: url("/static/img/prototype/action.png")
+          
+          a:link, a:visited
+            text-decoration: none
+          
+          &:hover
+            background-color: $primary-color-b-bg-light
+            cursor: pointer
+            
+          &.action,&.link
+            &.disabled
+              cursor: wait
+              background-image: none
+              a:link, a:visited, span
+                color: #BBBBBB
+                cursor: wait
+              &:hover
+                background-color: transparent
+            &.locked
+              cursor: wait
+              background-image: none
+              display: none
+              .opt
+                display: none
+              a:link, a:visited, span
+                color: #BBBBBB !important
+                text-decoration: line-through !important
+                cursor: wait !important
+              &:hover
+                background-color: transparent
+            
+          span
+            display: block
+            padding: 0 5px 0 0 
+            
+          span.opt
+            color: $main-link-color
+            
+          &.notes
+            background-image: none
+            padding-left: 3px
+            p
+              padding: 0
+              margin-bottom: 0
+            &:hover
+              background-color: transparent
+              
+            
+  
+div.row .sidebar div.boxitem
+  select.year, select.time, select.sorting, select.country
+    background-color: #ffffff
+    border: 1px solid #BBBBBB
+    color: #5A5A5A
+    &.keys
+      width: 100px
+      margin-right: 7px
+    &.direction
+      width: 80px
+    &.country
+      width: 140px
+      overflow: hidden
+          
+
+div.row .sidebar div.box.sorting
+  /* margin-bottom: 23px
+  /* border-bottom: 1px solid #ccc
+
+#filterbox-sort_default .opt
+  display: none	  
+		  
+		  
+		  
+/* Playlists (a.k.a. Basket) */
+div.row .sidebar
+  div.playlist
+    margin-top: 24px
+    border-left: 1px solid white
+    border-right: 1px solid white
+    border-top: 1px solid #CCCCCC
+    border-bottom: 1px solid #CCCCCC
+    
+    background-image: none
+
+    div.wrapper, div.form
+      display: none
+    
+    
+    &.expanded
+      border: 1px solid #CCCCCC
+      background-color: #F5F5F5
+      padding: 0 2px 2px 2px
+      div.wrapper, div.form
+        display: block
+		
+      div.header
+        padding-right: 4px
+        background-image: url("/static/img/prototype/box_handler_on.png")
+		
+    &.close
+      background-color: #FFFFFF
+      padding: 0 2px 0 2px
+      div.wrapper, div.form
+        display: none
+    
+    div.header
+      background-image: url("/static/img/prototype/box_handler.png")
+      background-repeat: no-repeat
+      color: #333333
+      padding: 3px 6px 2px 19px
+      border-bottom: none
+      /*background-color: #ff00ff*/
+
+        
+	  
+    div.wrapper
+      div.playlist_holder
+      
+
+        
+        // changed to single list holder
+        // border: 1px solid #BBBBBB
+        // margin: 0 0 4px 0
+        // background-color: #DDDDDD
+        div.header
+          background-image: none !important
+        // end cange
+        
+        
+        &.open
+          padding: 0 0 4px 0		
+          /*border: 1px solid #CCCCCC*/
+          div.panel, div.list
+            display: block
+		
+          div.header
+            background-image: url("/static/img/prototype/box_handler_on.png")
+			
+			
+        &.close
+          div.panel, div.list
+            display: none
+		
+          div.header
+            background-image: url("/static/img/prototype/box_handler.png")
+		
+		
+        div.header
+          /*background-color: #00ffff*/
+          //padding: 1px 0 1px 19px
+          padding: 1px 0 1px 3px // removed icon padding
+
+          a.action
+            display: block
+            width: 16px
+            background-position: 0 1px
+            background-repeat: no-repeat
+            padding: 0 0 0 0
+            &:hover
+              background-position: 0 -15px
+            &.delete
+              background-image: url(/static/img/base/sidebar.box.remove.png)
+            &.edit
+              background-image: url(/static/img/base/sidebar.box.edit.png)
+            &.play
+              background-image: url(/static/img/base/sidebar.box.play.png)
+              background-color: #d6def7
+            &.downloadable
+              background-image: url(/static/img/base/listview.row.download.bg.png)
+		
+		
+        div.panel
+          padding: 4px 0 0 0
+          div.edit
+            display: none
+            padding: 0 2px 7px 2px
+            input
+              // @include shaded_input
+              width: 98%
+              
+          div.convert
+		  
+            padding: 0 2px 0 2px
+            a
+              text-align: center
+              display: block
+              background-color: $primary-color-a
+              color: #ffffff
+
+          div.duration
+            color: #00ffff
+            text-align: right
+            padding: 0 2px 0 0
+            font-size: 80%
+            color: #a9a9a9
+		
+		
+        div.list
+          div.list.item
+            color: #0000ff
+            background-color: #EEEEEE
+            border-bottom: 1px solid #CCCCCC
+            &:first-child
+              border-top: 1px solid #CCCCCC
+			  
+            div.title
+              margin: 0 0 0 4px
+              
+            &.ct-jingle
+              background-color: #F8F3FF
+
+			
+            a.action
+              display: block
+              width: 16px
+              background-position: 0 1px
+              background-repeat: no-repeat
+              padding: 0 0 0 0
+              &:hover
+                background-position: 0 -15px
+              &.delete
+                background-image: url(/static/img/base/sidebar.item.remove.png)
+              &.play
+                background-image: url(/static/img/base/sidebar.item.play.png)
+                background-color: #d6def7
+    
+    
+    
+    div.form
+      color: #333333
+      padding: 3px 0 2px 0
+      border-bottom: none
+      /*background-color: #ff00ff*/
+      margin-bottom: 0
+      form
+        margin: 0 0 0 0
+     
+      form.select
+        label
+          display: none
+        select
+          width: 254px
+          height: 23px
+          padding: 0 1px 0 4px
+          line-height: 13px
+     
+      form.create
+        margin-top: 10px
+        input.name
+          height: 15px
+          margin-top: 2px
+          width: 224px
+
+      input.create__
+        background-color: #ffffff
+        border: 1px solid #bbbbbb
+        color: #5a5a5a
+        width: 84px
+
+
+      select.default
+        background-color: #ffffff
+        border: 1px solid #BBBBBB
+        color: #5A5A5A
+        width: 86px
+        
+        
+        
+
+div.row .sidebar
+  select
+    font-family: Arial,Helvetica,sans-serif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+/* Playlists (a.k.a. Basket) */
+div.row .sidebar
+  div.jingle
+    margin-top: 24px
+    border-left: 1px solid white
+    border-right: 1px solid white
+    border-top: 1px solid #CCCCCC
+    border-bottom: 1px solid #CCCCCC
+    
+    background-image: none
+
+    div.wrapper, div.form
+      display: none
+    
+    
+    &.expanded
+      border: 1px solid #CCCCCC
+      background-color: #F5F5F5
+      padding: 0 2px 2px 2px
+      div.wrapper, div.form
+        display: block
+    
+      div.header
+        padding-right: 4px
+        background-image: url("/static/img/prototype/box_handler_on.png")
+    
+    &.close
+      background-color: #FFFFFF
+      padding: 0 2px 0 2px
+      div.wrapper, div.form
+        display: none
+    
+    div.header
+      background-image: url("/static/img/prototype/box_handler.png")
+      background-repeat: no-repeat
+      color: #333333
+      padding: 3px 6px 2px 19px
+      
+      border-bottom: none
+      /*background-color: #ff00ff*/
+
+        
+    
+    div.wrapper
+      div.jingle_holder
+        // changed to single list holder
+        // border: 1px solid #BBBBBB
+        // margin: 0 0 4px 0
+        // background-color: #DDDDDD
+        div.header
+          background-image: none !important
+        // end cange
+        
+
+        &.open
+          padding: 0 0 4px 0    
+          /*border: 1px solid #CCCCCC*/
+          div.panel, div.list
+            display: block
+    
+          div.header
+            background-image: url("/static/img/prototype/box_handler_on.png")
+      
+      
+        &.close
+          div.panel, div.list
+            display: none
+    
+          div.header
+            background-image: url("/static/img/prototype/box_handler.png")
+    
+    
+        div.header
+          /*background-color: #00ffff*/
+          // padding: 1px 0 1px 19px
+          padding: 1px 0 1px 3px // removed icon padding
+
+          a.action
+            display: block
+            width: 16px
+            background-position: 0 1px
+            background-repeat: no-repeat
+            padding: 0 0 0 0
+            &:hover
+              background-position: 0 -15px
+            &.delete
+              background-image: url(/static/img/base/sidebar.box.remove.png)
+            &.edit
+              background-image: url(/static/img/base/sidebar.box.edit.png)
+            &.play
+              background-image: url(/static/img/base/sidebar.box.play.png)
+              background-color: #d6def7
+            &.downloadable
+              background-image: url(/static/img/base/listview.row.download.bg.png)
+    
+    
+        div.panel
+          padding: 4px 0 0 0
+          div.edit
+            display: none
+            padding: 0 2px 7px 2px
+            input
+              //@include shaded_input
+              width: 98%
+              
+          div.convert
+      
+            padding: 0 2px 0 2px
+            a
+              text-align: center
+              display: block
+              background-color: $primary-color-a
+              color: #ffffff
+
+          div.duration
+            color: #00ffff
+            text-align: right
+            padding: 0 2px 0 0
+            font-size: 80%
+            color: #a9a9a9
+    
+    
+        div.list
+          div.list.item
+            color: #0000ff
+            background-color: #EEEEEE
+            border-bottom: 1px solid #CCCCCC
+            &:first-child
+              border-top: 1px solid #CCCCCC
+        
+            div.title
+              margin: 0 0 0 4px
+      
+            a.action
+              display: block
+              width: 16px
+              background-position: 0 1px
+              background-repeat: no-repeat
+              padding: 0 0 0 0
+              &:hover
+                background-position: 0 -15px
+              &.delete
+                background-image: url(/static/img/base/sidebar.item.remove.png)
+              &.play
+                background-image: url(/static/img/base/sidebar.item.play.png)
+                background-color: #d6def7
+    
+    
+    
+    div.form
+      color: #333333
+      padding: 3px 0 2px 0
+      border-bottom: none
+      /*background-color: #ff00ff*/
+      margin-bottom: 0
+      form
+        margin: 0 0 0 0
+     
+      form.select
+        label
+          display: none
+        select
+          width: 254px
+          height: 23px
+          padding: 0 1px 0 4px
+          line-height: 13px
+     
+      form.create
+        margin-top: 10px
+        input.name
+          height: 15px
+          margin-top: 2px
+          width: 224px
+
+      input.create__
+        background-color: #ffffff
+        border: 1px solid #bbbbbb
+        color: #5a5a5a
+        width: 84px
+
+
+      select.default
+        background-color: #ffffff
+        border: 1px solid #BBBBBB
+        color: #5A5A5A
+        width: 86px
+            

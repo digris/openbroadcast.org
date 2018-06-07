@@ -1,0 +1,176 @@
+// TODO: investigate. seems to be obsolete
+
+
+.boxy-wrapper
+  position: absolute
+  &.fixed
+    position: fixed
+
+/* Modal
+
+.boxy-modal-blackout
+  position: absolute
+  background-color: transparent
+  background: url('/static/img/base/overlay.bg.png')
+  opacity: 0.25 !important
+  filter: alpha(opacity = 25) !important
+  left: 0
+  top: 0
+
+/* Border
+
+.boxy-wrapper
+  empty-cells: show
+  .top-left, .top-right, .bottom-right, .bottom-left
+    width: 8px
+    height: 8px
+    padding: 0
+  .top-left
+    background: url('/static/img/plugins/boxy/boxy-nw.png')
+  .top-right
+    background: url('/static/img/plugins/boxy/boxy-ne.png')
+  .bottom-right
+    background: url('/static/img/plugins/boxy/boxy-se.png')
+  .bottom-left
+    background: url('/static/img/plugins/boxy/boxy-sw.png')
+  .top-left
+    #background: none
+    #filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/boxy-nw.png')
+  .top-right
+    #background: none
+    #filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/boxy-ne.png')
+  .bottom-right
+    #background: none
+    #filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/boxy-se.png')
+  .bottom-left
+    #background: none
+    #filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/images/boxy-sw.png')
+  .top, .bottom
+    height: 8px
+    background-color: black
+    opacity: 0.4
+    filter: alpha(opacity = 40)
+    padding: 0
+  .left, .right
+    width: 8px
+    background-color: black
+    opacity: 0.4
+    filter: alpha(opacity = 40)
+    padding: 0
+  .title-bar
+    background-color: $primary-color-a
+    padding: 6px
+    position: relative
+    &.dragging
+      cursor: move
+    h2
+      font-size: 12px
+      color: white
+      line-height: 1
+      margin: 0
+      padding: 0
+      font-weight: normal
+    .close
+      color: white
+      position: absolute
+      top: 6px
+      right: 6px
+      font-size: 90%
+      line-height: 1
+
+
+
+.boxy-inner
+  background-color: white
+  padding: 0
+
+.boxy-content
+  padding: 0
+  &.inline
+    div.title
+      padding: 14px 14px 7px 14px
+    div.content
+      padding: 7px 0px 7px 14px
+    div.action
+      padding: 0px 0px 0px 14px
+      border-top: 1px solid #999999
+      text-align: right
+      a
+        background-position: 2px 4px
+        /* border-left: 1px solid #999999 */
+        padding: 4px 8px 4px 19px
+        float: right
+        display: block
+        &:hover
+          background-color: #efe6ff
+          text-decoration: none
+
+
+
+.boxy-wrapper
+  &.fixed
+    width: 640px
+    min-height: 80px
+
+  .question
+    width: 350px
+    min-height: 80px
+  .answers
+    text-align: right
+
+  td.left, td.right
+    float: none
+
+  .top-left, .top-right, .bottom-left, .bottom-right
+    opacity: 0.7 !important
+    filter: alpha(opacity = 70) !important
+
+/* style resets */
+.boxy-content
+  p
+    color: #333333
+  ul
+    padding: 2px 0 7px 20px
+    li
+      list-style-type: disc
+      color: #666666
+      /*padding: 20px
+
+/* Specific content */
+
+
+/* Merger */
+
+.boxy-content
+  &.merge
+    /*background-color: #ff00ff*/
+    .content
+      div.image
+        width: 48px
+      div.name
+        width: 220px
+      div.label
+        width: 180px
+      div.updated
+        width: 70px
+      div.select
+        width: 24px
+        padding: 0 0 0 10px
+
+    div.item_title
+      font-weight: bold
+      margin: 20px 0 10px 0
+
+    div.items_wrapper
+      margin: 10px 0 0 0
+
+    div.item_holder
+      margin: 2px 20px 2px 0
+      padding: 2px 2px 2px 2px
+      border-bottom: 1px solid #dfdfdf
+      &:first-child
+        border-top: 1px solid #dfdfdf
+
+
+  &.message
+    padding: 15px

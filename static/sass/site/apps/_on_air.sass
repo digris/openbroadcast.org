@@ -1,0 +1,173 @@
+$on-air-fg: #333
+$on-air-bg: #f5f5f5
+
+.on-air-container
+  padding: 0
+  background: white
+
+  > .actions
+    display: none
+    a
+      text-transform: uppercase
+      &.btn
+        background-color: $primary-color-a
+        border: none
+
+
+  .channel
+    padding: 0 5px
+
+
+  .emission
+    background: $on-air-bg
+    color: $on-air-fg
+    margin-bottom: 2px
+    padding: 0 5px 2px
+    a
+      color: $on-air-fg
+
+    h3, p
+      color: $on-air-fg !important
+
+    &:hover
+      background: $primary-color-a-bg-light
+
+
+
+    section.title
+      small
+        line-height: 22px
+        .btn
+          color: white
+          background-color: $primary-color-a
+          border: none
+          height: 16px
+          padding: 1px 4px
+          line-height: 16px
+
+    section.description
+      display: none
+      padding-bottom: 3px
+
+      img
+        width: 100% !important
+
+    .__legacy__
+      background: $on-air-bg
+      color: white
+      margin-bottom: 2px
+      a
+        color: white
+
+      ul
+        margin: 0
+        padding: 0
+
+      padding: 0 5px
+      // background: orange
+      .name
+        text-transform: uppercase
+      small
+        font-size: 80%
+        color: #a5a5a5
+
+  .items
+
+    .item
+      +clearfix()
+      background: $on-air-bg
+      margin-bottom: 2px
+      color: $on-air-fg
+
+      // hide in small view
+      img.artist, .rating-inline
+        display: none
+
+      a
+        color: $on-air-fg
+      .image
+        width: 64px
+        padding: 5px
+        float: left
+        img
+          width: 64px
+          width: 100%
+      .information
+        padding: 5px
+        float: left
+
+      &.playing
+        background: $on-air-bg
+        // hide in small view
+        img.artist, .rating-inline
+          display: block
+
+        .image
+          padding: 5px
+          width: 250px
+          position: relative
+
+          img
+            width: 250px
+
+            &.artist
+              position: absolute
+              top: 5px
+              left: 5px
+              opacity: 0
+              -webkit-transition: opacity 0.5s
+              &.visible
+                opacity: 1
+                -webkit-transition: opacity 0.2s
+
+        .information
+          color: $on-air-fg
+          float: none
+          clear: both
+          a
+            color: $on-air-fg
+
+      &:hover
+        background: $primary-color-a-bg-light
+
+
+    //
+      > div
+
+        padding: 0
+        height: 54px
+        overflow: hidden
+        margin-bottom: 4px
+        span.playing
+          display: none
+
+      > div.playing
+        background: $primary-color-a-bg-light
+        span.playing
+          display: inline
+
+  .count
+    padding: 0 5px
+    
+
+
+// overrides for full-width
+
+#on_air_home
+
+  margin-bottom: 20px
+  padding-bottom: 20px
+  border-bottom: 4px solid #f5f5f5
+
+  .items
+    .item.on-air
+      position: relative
+      .information
+        width: 559px
+        float: left
+        clear: none
+      &.playing
+        .information
+          position: absolute
+          bottom: 0
+          left: 259px

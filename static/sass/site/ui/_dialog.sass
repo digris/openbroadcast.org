@@ -1,0 +1,289 @@
+/*!
+ * qTip2 - Pretty powerful tooltips - v2.0.1-4-g
+ * http://qtip2.com
+ *
+ * Copyright (c) 2013 Craig Michael Thompson
+ * Released under the MIT, GPL licenses
+ * http://jquery.org/license
+ *
+ * Date: Fri Jan 4 2013 04:05 GMT+0000
+ * Plugins: svg ajax tips modal viewport imagemap ie6
+ * Styles: basic css3
+
+/* Core qTip styles
+
+
+
+
+$ui-dialog-background: #222 !default
+$ui-dialog-text-color: #fff !default
+$ui-dialog-title-background: $primary-color-b !default
+$ui-dialog-title-color: #fff !default
+
+
+#qtip-overlay
+
+  position: fixed
+  left: -10000em
+  top: -10000em
+  &.blurs
+    cursor: pointer
+  div
+    position: absolute
+    left: 0
+    top: 0
+    width: 100%
+    height: 100%
+    background-color: black
+    opacity: 0.4
+
+
+.qtip
+
+  position: absolute
+  left: -28000px
+  top: -28000px
+  display: none
+  max-width: 640px
+  min-width: 400px
+  min-height: 180px
+  font-size: $baseFontSize
+  font-family: $baseFontFamily
+  line-height: $baseLineHeight
+  border: 4px solid transparent
+  background: $ui-dialog-background
+  direction: ltr
+
+  .qtip-titlebar
+    background: $ui-dialog-title-background
+    color: $ui-dialog-title-color
+    position: relative
+    padding: 5px 35px 5px 10px
+    overflow: hidden
+    text-transform: uppercase
+    + .qtip-content
+      border-top-width: 0 !important
+
+    .qtip-close
+      color: $ui-dialog-title-color
+      text-decoration: none
+      opacity: 0.5
+      position: absolute
+      right: 4px
+      top: 0
+      cursor: pointer
+      outline: none
+      font-size: 24px
+      &:hover
+        opacity: 1.0
+
+
+  .qtip-content
+
+    //position: relative
+    padding: 10px 10px
+    overflow: hidden
+    text-align: left
+    word-wrap: break-word
+    color: $ui-dialog-text-color
+
+    p
+      color: $ui-dialog-text-color
+
+  // context based colors
+  border-color: $primary-color-b
+  // defaults
+
+
+
+  // specific
+  &.warning
+    border-color: #f00
+
+
+  .qtip-content .actions
+    position: absolute
+    bottom: 6px
+    right: 6px
+    .btn
+      min-width: 120px
+
+
+
+
+  .qtip-tip
+    //display: none !important
+    margin: 0 auto
+    overflow: hidden
+    z-index: 10
+    position: absolute
+    color: #123456
+    background: transparent
+    border: 0 dashed transparent
+    .qtip-vml
+      position: absolute
+      color: #123456
+      background: transparent
+      border: 0 dashed transparent
+    canvas
+      top: 0
+      left: 0
+    .qtip-vml
+      behavior: url(#default#VML)
+      display: inline-block
+      visibility: visible
+
+
+
+.__refactoring__
+
+
+  /* Default close button class
+
+  .qtip-close
+    position: absolute
+    right: -9px
+    top: -9px
+    cursor: pointer
+    outline: medium none
+    border-width: 1px
+    border-style: solid
+    border-color: transparent
+
+  .qtip-titlebar .qtip-close
+    right: 4px
+    top: 50%
+    margin-top: -9px
+
+  * html .qtip-titlebar .qtip-close
+    top: 16px
+
+  /* IE fix
+
+  .qtip-titlebar .ui-icon
+    display: block
+    text-indent: -1000em
+    direction: ltr
+    vertical-align: middle
+
+  .qtip-icon
+    .ui-icon
+      display: block
+      text-indent: -1000em
+      direction: ltr
+      vertical-align: middle
+      -moz-border-radius: 3px
+      -webkit-border-radius: 3px
+      border-radius: 3px
+      text-decoration: none
+      width: 18px
+      height: 14px
+      text-align: center
+      text-indent: 0
+      font: normal bold 10px / 13px Tahoma, sans-serif
+      color: inherit
+      background: transparent none no-repeat -100em -100em
+    -moz-border-radius: 3px
+    -webkit-border-radius: 3px
+    border-radius: 3px
+    text-decoration: none
+
+  /* Applied to 'focused' tooltips e.g. most recently displayed/interacted with
+
+
+  /* Applied on hover of tooltips i.e. added/removed on mouseenter/mouseleave respectively
+
+  /* Default tooltip style
+
+  .qtip-default
+    border-width: 1px
+    border-style: solid
+    border-color: #333
+    background-color: #333
+    color: #fff
+    .qtip-titlebar
+      background-color: #FFEF93
+    .qtip-icon
+      border-color: #CCC
+      background: #F1F1F1
+      color: #777
+    .qtip-titlebar .qtip-close
+      border-color: #AAA
+      color: #111
+
+  /*! Light tooltip style
+
+  .qtip-light
+    background-color: white
+    border-color: #E2E2E2
+    color: #454545
+    .qtip-titlebar
+      background-color: #f1f1f1
+
+  /*! Dark tooltip style
+
+  .dialog-base
+    -webkit-box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4)
+    -moz-box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4)
+    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.4)
+    background-color: $white
+    color: #111
+    border: 0 dashed transparent
+    .qtip-titlebar
+      background-color: $primary-color-a
+      color: white
+      border: 0 dashed transparent
+    .qtip-icon
+      border-color: $black
+    .qtip-titlebar .ui-state-hover
+      border-color: #696952
+      color: $white
+
+  .qtip-shadow
+    -webkit-box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15)
+    -moz-box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15)
+    box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.15)
+
+  .qtip-rounded
+    -moz-border-radius: 2px
+    -webkit-border-radius: 2px
+    border-radius: 2px
+
+  .qtip-rounded .qtip-titlebar
+    -moz-border-radius: 2px 2px 0 0
+    -webkit-border-radius: 2px 2px 0 0
+    border-radius: 2px 2px 0 0
+
+
+
+  .qtip
+    &:not(.ie9haxors) div
+      &.qtip-content, &.qtip-titlebar
+        filter: none
+        -ms-filter: none
+    .qtip-tip
+      display: none !important
+      margin: 0 auto
+      overflow: hidden
+      z-index: 10
+      position: absolute
+      color: #123456
+      background: transparent
+      border: 0 dashed transparent
+      .qtip-vml
+        position: absolute
+        color: #123456
+        background: transparent
+        border: 0 dashed transparent
+      canvas
+        top: 0
+        left: 0
+      .qtip-vml
+        behavior: url(#default#VML)
+        display: inline-block
+        visibility: visible
+
+
+
+  .qtipmodal-ie6fix
+    position: absolute !important

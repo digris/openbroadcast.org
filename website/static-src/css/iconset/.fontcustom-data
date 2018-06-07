@@ -1,0 +1,35 @@
+{
+  "fonts": [
+
+  ],
+  "glyphs": [
+    "bandcamp",
+    "broadcast",
+    "discogs",
+    "hex",
+    "lastfm-sign",
+    "lastfm",
+    "license-cc-by",
+    "license-cc-cc",
+    "license-cc-nc",
+    "license-cc-nd",
+    "license-cc-pd",
+    "license-cc-remix",
+    "license-cc-sa",
+    "license-cc-share",
+    "license-cc-zero",
+    "license-copyright",
+    "musicbrainz",
+    "satellite",
+    "schedule",
+    "soundcloud-sign",
+    "soundcloud",
+    "tree",
+    "wikipedia"
+  ],
+  "templates": [
+    "fontcustom.css",
+    "fontcustom-preview.html"
+  ],
+  "file_name": "fontcustom_db5c207e50843bf3473157a4bf96a4f2"
+}

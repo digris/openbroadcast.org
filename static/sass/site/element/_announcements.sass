@@ -1,0 +1,30 @@
+#site_announcements
+
+  max-width: 830px
+
+  .announcement
+    background-color: #f9f9f9
+    padding: 10px
+    margin-top: 10px
+    margin-bottom: 10px
+    border: 1px solid #f2f2f2
+
+    p:last-child
+      margin-bottom: 0
+
+
+    &.info
+      background-color: $infoBackground
+      border-color: $infoBorder
+      p
+        color: $infoText
+
+    &.warning
+      background-color: $errorBackground
+      border-color: $errorBorder
+      p
+        color: $errorText
+
+
+    a.announcement-dismiss
+      //color: red

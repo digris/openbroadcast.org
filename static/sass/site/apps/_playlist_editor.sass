@@ -1,0 +1,505 @@
+// hack
+.tab-pane .alert
+  margin-top: 20px
+
+
+#playlist_editor
+
+  &.condensed
+    .item
+      height: 34px !important
+      transition: height 0.5s
+
+      li.small, span
+        display: none
+
+      &.drop-placeholder
+        height: 65px !important
+
+      .fade-cue input
+        width: 55px !important
+
+      .base
+        background: $body-color-shaded-bg
+
+    .waveform
+      display: none
+      transition: display 0.5s
+
+  margin: 20px 0 20px
+
+
+  .list_header
+
+    .row-fluid
+      > div
+        padding: 8px 0
+        margin: 1px 0
+
+
+    ul#editor_mode_switch
+
+      > li
+        margin-left: 10px
+        a:hover
+          text-decoration: none
+          color: $green
+
+
+  .list_body
+    .item
+
+      //border-bottom: 1px solid #efefef !important
+      background: $body-color-bg
+
+      // display: block
+      height: 100px
+
+      > div
+        background-color: $body-color-shaded-bg
+
+
+      &.drop-placeholder
+        height: 130px
+        width: 100%
+        //background-color: $primary-color-a-bg-light !important
+        background-color: #333333 !important
+
+      &.ui-sortable-helper
+        opacity: 0.8
+        > div
+          background: $primary-color-a-bg-light !important
+
+      .row-fluid.base
+        //background-color: #fff
+        > div
+          padding: 5px
+          margin: 1px 0
+
+      .row-fluid.playhead
+        > div
+          // padding: 5px
+        .waveform
+          background-color: $body-color-shaded-bg
+          background-size: 100% 30px
+          height: 30px
+        .envelope
+          opacity: 0.6
+          border-bottom: 30px solid transparent
+          border-left: 30px solid #efefef
+          border-right: 70px solid #efefef
+          height: 0
+          // width: 423px
+
+      &.hover
+        background: transparent
+        a
+          text-decoration: none
+
+        .row-fluid.playhead
+          .waveform
+            background-color: $primary-color-a-bg-light
+          .envelope
+            opacity: 0.5
+            border-bottom-color: $primary-color-a-bg-light
+            border-left-color: transparent
+            border-right-color: transparent
+
+      &.readonly
+        height: 68px !important
+
+      .waveform
+        width: 100%
+        height: 40px
+
+      .fade-cue
+        .row-fluid > div
+          text-align: right
+          padding: 0 0 0 0
+          margin-left: 4px
+          input
+            margin: 0
+
+          span
+            text-align: right
+            color: #5a5a5a
+            color: rgba(90, 90, 90, 0)
+            padding-right: 2px
+        input
+          font-size: 11px
+          width: 60px
+          height: 14px
+          margin-right: 4px
+          background-color: transparent
+          border: 1px dotted transparent
+          text-align: right
+          padding: 1px 2px 1px 0
+
+
+
+
+      // placeholder, after drop or upload
+      &.temporary
+        background: #efefef
+        padding: 10px
+        height: 30px
+        i
+          font-size: 300%
+          margin-right: 10px
+
+
+    [class^="visible-while-"], [class*=" visible-while-"]
+      display: none
+
+    .paused
+      .visible-while-paused
+        display: inline-block
+
+    .playing
+      // override
+      background-color: transparent
+      a
+        color: $primary-color-a !important
+      .visible-while-playing
+        display: inline-block
+      .hidden-while-playing
+        display: none
+
+    .hover .fade-cue
+
+      input
+        background-color: white
+        border: 1px dotted #bbb
+
+
+
+
+  // search & upload container
+  .add-content
+    margin-top: 20px
+    background: #efefef
+    .info
+      padding: 10px 10px 0
+      p
+        padding: 5px 0 0 0
+
+
+  // autocomplete / search:
+  .list_search
+    background: #efefef
+
+    &.hover, &.focus
+      background: $primary-color-b-bg-light
+
+    form
+      padding: 10px
+      margin-bottom: 0
+      input
+        width: 806px
+
+      ::-webkit-input-placeholder
+        color: #777
+
+      ::-moz-placeholder
+        color: #777
+
+
+
+    .result
+      z-index: 10
+      position: absolute
+      background: #333
+      width: 830px
+      // override
+      .listing
+        .item
+          cursor: pointer
+          padding: 5px
+          clear: both
+          border-bottom: 1px solid #666
+          .image
+            width: 60px
+            float: left
+            img
+              width: 40px
+              height: 40px
+          .information
+            color: white
+            span.title
+              font-weight: bold
+              font-size: 110%
+              small
+                font-size: 94%
+                font-weight: normal
+
+            //width: 300px
+            ul
+              margin: 0 0 0px 25px
+
+          &.hover
+            background: $primary-color-a-bg-light
+            .information
+              color: #333
+
+
+
+
+  .summary
+
+    &.error
+      background-color: $warningBackground
+
+
+    border-top: 1px solid #efefef !important
+
+    .row-fluid
+      //background-color: #fff
+      > div
+        padding: 5px
+        margin: 1px 0
+
+
+    span
+      text-align: right
+      color: #5a5a5a
+      padding-right: 2px
+
+      &.duration-total
+        font-weight: bold
+        // color: green
+
+      &.duration-difference
+        color: red
+
+
+
+// sidebar
+.playlist-edit.transform
+
+  // override global siebar styles
+
+  .criterias
+    margin-top: 20px
+    .title
+      font-weight: bold
+
+  .action-group ul
+    border-top: 1px solid #ccc !important
+
+
+  &.listing
+    &.fixed
+      position: fixed
+      width: 260px
+      top: 120px
+
+  .item
+    padding: 2px 4px 2px 4px
+    margin: 5px 0 5px 0
+    // border-bottom: 1px solid #efefef
+    background-color: #fafafa
+
+    a.toggle
+      color: #333
+      &:hover
+        text-decoration: none
+
+
+    .information
+      // display: none
+      p
+        padding: 4px 0 0 0
+        margin: 0
+
+      dl
+        margin: 0
+        dt
+          font-weight: normal
+          text-align: left
+        dd
+          font-style: italic
+          text-align: right
+          padding-right: 4px
+        dd, dt
+          &.mark
+            font-weight: bold
+            color: orangered
+
+    .title
+      // font-weight: bold
+      font-weight: normal
+
+    &.warning
+      background-color: $warningBackground
+      //color: $warningText
+      .information
+        display: block
+
+    &.success
+      background-color: $successBackground
+      //color: $successText
+
+
+
+    &.hover
+      &.done
+        background-color: $primary-color-a-bg-light
+
+      &.duplicate
+        // background-color: $duplicateBackground
+
+      &.ready
+        background-color: $primary-color-a-bg-light
+
+
+
+#playlist_editor
+
+
+  // inline upload
+  .upload
+    background: #efefef
+
+    &.hover
+      background: $primary-color-b-bg-light
+
+
+    .hint
+      padding: 10px 10px 5px
+      border-bottom: 1px solid $grayLighter
+      p
+        text-align: center
+        color: $gray
+      .expandable
+        display: none
+
+    form, table
+      padding: 10px
+      margin-bottom: 0
+      width: 806px
+
+      .fileupload-buttonbar
+        position: relative
+        input
+          position: absolute
+          top: 0
+          right: 0
+          margin: 0
+          border: solid transparent
+          border-width: 0
+          opacity: 0
+          filter: alpha(opacity=0)
+          -moz-transform: translate(-300px, 0) scale(4)
+          direction: ltr
+          cursor: pointer
+          width: 100%
+        span
+          width: 786px
+
+      // upload items
+    table > .files
+      background: white
+      .progress-holder
+        width: 200px
+      .preview, .start
+        // display: none
+      .cancel
+        text-align: right
+
+
+    .importfile.item
+      padding: 5px 0
+      margin-bottom: 2px
+      background: #fafafa
+      h3
+        padding-left: 10px
+        font-family: Helvetica, Arial, sans-serif
+        font-size: 12px
+        text-transform: none
+        font-style: normal
+      .image
+        img
+          width: 60px
+          height: 60px
+
+      &.done, &.duplicate
+        display: none
+
+      &.ready
+        background: #fafafa
+
+
+      i.icon-large
+        padding: 3px 0 0 10px
+        display: block
+        background-repeat: no-repeat
+        font-size: 24px
+
+      // metadata source selection
+      div.result-set
+        i.icon
+          color: $grayLighter
+        &.selected i.icon
+          color: $primary-color-a
+
+      .btn-mini
+        text-transform: none !important
+
+
+
+      .result-set
+        padding: 2px 0
+        border-bottom: 1px solid white
+        ul
+          margin-bottom: 0
+        img
+          width: 60px
+          height: 60px
+        &.selected
+          background-color: $primary-color-a-bg-light
+        &.hover
+          background-color: $primary-color-a-bg-light
+
+        &.provider-tag
+          .checkbox input
+            display: none
+
+        ul
+          margin: 0
+          > li
+            &.small
+              font-size: 11px
+            &.key
+              font-weight: bold
+              padding: 0 5px 0 0
+              width: 50px
+            &.value
+
+      // hide elements
+      .advanced-fields, .toggle
+        display: none
+
+      .form-result
+        margin: 10px 0
+        h4
+          display: none
+        .row-fluid
+          label, input
+            margin: 0
+
+      // progress
+      .progress
+        width: 100%
+        height: 2px
+        background: #dadada
+        margin: 0 5px
+        width: 808px
+        .bar
+          background: $primary-color-a
+          padding: 0
+
+
+#playlist_editor .importfile.item
+  .result-set
+    &:nth-of-type(1n+6)
+      display: none

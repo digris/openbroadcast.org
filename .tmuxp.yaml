@@ -18,7 +18,8 @@ windows:
     - shell_command:
         - cd website
         - celery -A project worker -c 2 -Q convert,grapher -l INFO
-    - ./node_modules/gulp/bin/gulp.js watch
+    - shell_command:
+        - npm run watch
     - cd website
 
 
