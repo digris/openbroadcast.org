@@ -219,9 +219,6 @@ THUMBNAIL_ALIASES = {
 BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'strong', 'a']
 BLEACH_STRIP_TAGS = True
 
-CMS_GIT_FILE = os.path.join(BASE_DIR, 'changelog.txt')
-
-
 ################################################################################
 # accounts / user handling
 ################################################################################
