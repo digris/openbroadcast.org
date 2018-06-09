@@ -55,8 +55,6 @@ urlpatterns = [
     url(r'^sa/', include('social_auth.urls')),
     url(r'^captcha/', include('captcha.urls')),
 
-    url(r"^announcements/", include("announcements.urls")),
-
     # filer (protected)
     url(r'^', include('filer.server.urls')),
     # only devel

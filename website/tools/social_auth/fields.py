@@ -15,7 +15,8 @@ class JSONField(models.TextField):
     """Simple JSON field that stores python structures as JSON strings
     on database.
     """
-    __metaclass__ = models.SubfieldBase
+
+    #__metaclass__ = models.SubfieldBase
 
     def to_python(self, value):
         """
@@ -27,7 +28,7 @@ class JSONField(models.TextField):
         if isinstance(value, basestring):
             try:
                 return simplejson.loads(value)
-            except Exception, e:
+            except Exception as e:
                 raise ValidationError(str(e))
         else:
             return value
@@ -39,14 +40,14 @@ class JSONField(models.TextField):
             super(JSONField, self).validate(value, model_instance)
             try:
                 simplejson.loads(value)
-            except Exception, e:
+            except Exception as e:
                 raise ValidationError(str(e))
 
     def get_prep_value(self, value):
         """Convert value to JSON string before save"""
         try:
             return simplejson.dumps(value)
-        except Exception, e:
+        except Exception as e:
             raise ValidationError(str(e))
 
     def value_to_string(self, obj):
@@ -56,10 +57,3 @@ class JSONField(models.TextField):
     def value_from_object(self, obj):
         """Return value dumped to string."""
         return self.get_prep_value(self._get_val_from_obj(obj))
-
-
-try:
-    from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ["^social_auth\.fields\.JSONField"])
-except:
-    pass

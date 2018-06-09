@@ -7,6 +7,7 @@ from django.db import models
 from django import forms
 from django.forms import ValidationError
 from django.utils import dateformat
+from django.utils.translation import ugettext_lazy as _
 
 from widgets import PrettyDateInput
 
@@ -77,12 +78,12 @@ class ApproximateDate(object):
         if other is None:
             return False
         elif self.future or other.future:
-            if self.future: 
+            if self.future:
                 return False   # regardless of other.future it won't be less
             else:
                 return True    # we were not in future so they are
         elif self.past or other.past:
-            if other.past: 
+            if other.past:
                 return False   # regardless of self.past it won't be more
             else:
                 return True    # we were not in past so they are
@@ -99,7 +100,7 @@ class ApproximateDate(object):
 
     def __ge__(self, other):
         return self > other or self == other
-    
+
     def __len__(self):
         return len( self.__repr__() )
 
@@ -109,6 +110,8 @@ class ApproximateDateField(models.CharField):
     """A model field to store ApproximateDate objects in the database
        (as a CharField because MySQLdb intercepts dates from the
        database and forces them to be datetime.date()s."""
+
+
     __metaclass__ = models.SubfieldBase
 
     def __init__(self, *args, **kwargs):
@@ -132,9 +135,9 @@ class ApproximateDateField(models.CharField):
         year, month, day = map(int, value.split('-'))
         try:
             return ApproximateDate(year, month, day)
-        except ValueError, e:
+        except ValueError as e:
             msg = _('Invalid date: %s') % _(str(e))
-            raise exceptions.ValidationError(msg)
+            raise Exception(msg)
 
     # note - could rename to 'get_prep_value' but would break 1.1 compatability
     def get_db_prep_value(self, value, connection=None, prepared=False):
@@ -227,7 +230,7 @@ DAY_MONTH_INPUT_FORMATS = (
 # year if the day is before the current date). If future=False, it does
 # the same but in the past.
 class PrettyDateField(forms.fields.Field):
-    widget = PrettyDateInput 
+    widget = PrettyDateInput
 
     def __init__(self, future=None, *args, **kwargs):
         self.future = future

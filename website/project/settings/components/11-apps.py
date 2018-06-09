@@ -65,9 +65,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'floppyforms',
     'absolute',
-    'announcements',
-    # TODO: re-inplement subscription flow if needed in the future
-    #'subscription',
 
     # asset and media handling
     'sekizai',

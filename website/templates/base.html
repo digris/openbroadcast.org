@@ -1,4 +1,4 @@
-{% load compress i18n cms_tags sekizai_tags raven static loginas_tags announcements_tags nunjucks_tags %}<!DOCTYPE html>
+{% load compress i18n cms_tags sekizai_tags raven static loginas_tags nunjucks_tags %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
         <title>{% block title %}{{ request.current_page.get_title }}{% endblock %}</title>
@@ -72,8 +72,6 @@
             {% block teaser %}{% endblock %}
 
             <div class="container main">
-
-                {% include "element/_site_announcements.html" %}
 
                 <header class="subhead">
                     <div class="row">
