@@ -5,6 +5,7 @@
 .idea
 .tmp
 .tox
+src
 
 temp/
 
