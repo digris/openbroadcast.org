@@ -23,12 +23,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
 
-    # object comments
-    # TODO: these are really old apps and should be removed/replaced
-    # 'threadedcomments',
-    # 'fluent_comments',
-    # 'django_comments',
-
     # server
     'corsheaders',
     'gunicorn',
