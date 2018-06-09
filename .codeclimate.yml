@@ -11,13 +11,11 @@ engines:
   fixme:
     enabled: true
 
-
 ratings:
    paths:
    - "**.js"
    - "**.py"
    - "**.html"
-
 
 languages:
   JavaScript: true
