@@ -1,0 +1,171 @@
+################################################
+# notes
+################################################
+# numpy has to be installed manually:
+# pip install numpy==1.8.0
+
+################################################
+# core
+################################################
+Django==1.8.19
+
+
+################################################
+# general tools
+################################################
+
+# BeautifulSoup==3.2.1
+
+Markdown==2.4
+Pillow==2.9.0
+URLObject==2.3.4
+discogs-client==1.1.1
+mailchimp==2.0.9
+mimeparse==0.1.3
+# numpy==1.8.0 numpy has to be installed 'manually' before installing requirements.txt
+python-Levenshtein==0.11.2
+python-dateutil==1.5
+python-magic==0.4.6
+python-stdnum==1.0
+requests==2.8.1
+urllib3==1.7.1
+xmltodict==0.9.2
+tqdm==3.8.0
+Wand==0.4.4
+scandir==1.2
+semver==2.7.7
+phonenumbers==8.8.10
+django-phonenumber-field==1.3.0
+
+
+################################################
+# server
+################################################
+gunicorn==19.7.1
+#futures==3.2.0
+uwsgi==2.0.15
+celery==3.1.18
+mysqlclient
+raven==5.31.0
+django_cors_headers==2.1.0
+
+
+################################################
+# django modules
+################################################
+django-absolute
+django-addthis==3.0.0
+django-auditlog==0.3.2
+django-avatar==2.0
+django-badbrowser==1.0.7
+django-braces==1.8.1
+django-cache-machine==0.9
+django-cacheops==2.4.3
+django-celery==3.2.1
+django-celery-email==1.1.3
+django-click==1.2.0
+django-compressor==1.6
+django-countries==3.3
+django-dajax==0.9.2
+django-dajaxice==0.7
+django-el-pagination==3.0.1
+django-email-obfuscator==0.1.2
+# last version of django-extensions with uuid field
+django-extensions==1.7.9
+#django-filer==1.2.8
+django-filer==1.3.0
+django-filter==0.11.0
+django-floppyforms==1.7.0
+django-gravatar2==1.4.0
+django-guardian==1.3
+django-hvad==1.8.0
+django-mailer==0.1.0
+django-missing==0.1.11
+django-model-utils==2.3.1
+django-mptt==0.7.4
+django-oauth2-provider==0.2.6.1
+django-polymorphic==0.7.2
+django-redis==4.2.0
+redis==2.10.5
+#redlock==1.2.0
+django-sekizai==0.10.0
+django-settings-export==1.2.1
+django-social-auth==0.7.28
+django-split-settings==0.1.2
+
+django_versatileimagefield==1.7.1
+django-simple-captcha==0.5.1
+
+jsonfield==2.0.2
+
+##################################################################
+# search
+##################################################################
+
+django-haystack==2.5.1
+celery-haystack==0.10
+elasticsearch==2.2.0
+
+# transaction hooks are needed by celery-haystack
+# TODO: remove when upgrading django to > 1.8
+django-transaction-hooks==0.2
+
+##################################################################
+# RESTful API (v2)
+# http://www.django-rest-framework.org/#installation
+##################################################################
+djangorestframework==3.6.3
+coreapi==2.3.1
+
+
+################################################
+# django-cms
+################################################
+# django-cms==3.4.1
+# django-cms 3.4 does not work! introduces strange error:
+# https://sentry.pbi.io/pbi/open-broadcast-platform/issues/40/
+django-cms==3.4.6
+django-treebeard==4.2.1
+djangocms-admin-style==1.2.8
+djangocms-column==1.6.0
+djangocms-file==0.1
+djangocms-link==1.6.2
+djangocms-picture==0.1
+djangocms-snippet==1.5
+djangocms-teaser==0.1
+djangocms-text-ckeditor==3.3.1
+djangocms-video==0.1
+cmsplugin-filer==0.10.2
+
+################################################
+# admin addons
+################################################
+#django-admin-shortcuts==1.2.5
+#django-admin-tools==0.5.1
+
+################################################
+# media & audio related
+################################################
+audioread==1.0.1
+scikits.audiolab==0.10.2
+
+################################################
+# custom repos
+################################################
+django-adv-cache-tag==1.1.1
+
+-e git://github.com/hzlf/python-audio-tools.git@master#egg=python-audio-tools
+-e git+https://github.com/hzlf/graypy.git@master#egg=graypy
+-e git+https://ohrstrom@lab.hazelfire.com/hazelfire/obp/pyacoustid.git@deploy#egg=pyacoustid
+-e git+https://github.com/hzlf/django-announcements@master#egg=django-announcements
+-e git+https://github.com/hzlf/djangocms-panel@master#egg=djangocms-panel
+
+
+################################################
+# services
+################################################
+
+
+################################################
+# metrics & insights
+################################################
