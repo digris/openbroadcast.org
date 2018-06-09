@@ -7,11 +7,9 @@ from datetime import timedelta
 
 import actstream
 from alibrary.filters import ReleaseFilter
-from haystack.backends import SQ
 from haystack.query import SearchQuerySet
 from haystack.inputs import AutoQuery
 
-from ..forms import ReleaseForm, ReleaseActionForm, ReleaseBulkeditForm, ReleaseRelationFormSet, AlbumartistFormSet, ReleaseMediaFormSet
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from django import http
 from django.conf import settings
@@ -28,6 +26,7 @@ from base.models.utils.merge import merge_objects
 from pure_pagination.mixins import PaginationMixin
 from tagging.models import Tag
 from ..models import Release, Artist, Label, ReleaseAlbumartists
+from ..forms import ReleaseForm, ReleaseActionForm, ReleaseBulkeditForm, ReleaseRelationFormSet, AlbumartistFormSet, ReleaseMediaFormSet
 
 ALIBRARY_PAGINATE_BY = getattr(settings, 'ALIBRARY_PAGINATE_BY', (12,24,36,120))
 ALIBRARY_PAGINATE_BY_DEFAULT = getattr(settings, 'ALIBRARY_PAGINATE_BY_DEFAULT', 12)

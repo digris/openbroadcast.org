@@ -11,8 +11,8 @@ from easy_thumbnails.files import get_thumbnailer
 from django.contrib import admin
 from alibrary.models import (Label, Artist, Media, Release, Playlist, ReleaseExtraartists,
                              ReleaseAlbumartists, Relation, ReleaseMedia, MediaExtraartists,
-                             Agency, NameVariation, License, Service, ArtistProfessions, Profession,
-                             Distributor, AgencyScope, PlaylistItem, PlaylistItemPlaylist,
+                             NameVariation, License, ArtistProfessions, Profession,
+                             Distributor, PlaylistItem, PlaylistItemPlaylist,
                              Daypart, Season, Weather, Series)
 
 THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
@@ -217,27 +217,37 @@ class MediaExtraartistsInline(admin.TabularInline):
     extra = 1
     raw_id_fields = ['artist', ]
 
-
-class AgencyArtistInline(admin.TabularInline):
-    model = Agency.artists.through
-    extra = 1
-
-
 class NameVariationInline(admin.TabularInline):
     model = NameVariation
     extra = 3
 
 
 class ArtistAdmin(BaseAdmin):
-    list_display = ('name', 'type', 'disambiguation', 'listed',)
-    search_fields = ['name', 'media__name', ]
-    list_filter = ('listed',)
+
+    list_display = [
+        'name',
+        'type',
+        'disambiguation',
+        'listed',
+    ]
+    search_fields = [
+        'name',
+        'media__name',
+    ]
+    list_filter = [
+        'listed',
+    ]
 
     # RelationsInline,
-    inlines = [NameVariationInline, RelationsInline, ArtistProfessionsInline, ArtistMembersInline, ArtistParentsInline,
-               AgencyArtistInline]
+    inlines = [
+        NameVariationInline,
+        RelationsInline,
+        ArtistProfessionsInline,
+        ArtistMembersInline,
+        ArtistParentsInline,
+    ]
 
-    """"""
+
     fieldsets = [
         (None, {
             'fields': ['name', 'slug', 'main_image', 'real_name', 'country', ('listed', 'disable_link',), 'biography',
@@ -267,12 +277,6 @@ class LicenseAdmin(TranslatableAdmin):
 
 admin.site.register(License, LicenseAdmin)
 
-
-class ServiceAdmin(BaseAdmin):
-    pass
-
-
-admin.site.register(Service, ServiceAdmin)
 
 
 class RelationAdmin(BaseAdmin):
@@ -431,41 +435,26 @@ admin.site.register(Label, LabelAdmin)
 
 
 class DistributorAdmin(BaseAdmin):
-    # inlines = [LabelInline]
-    # prepopulated_fields = {"slug": ("name",)}
+
+    list_display = [
+        'name',
+        'email',
+        'country',
+        'address',
+        'created',
+    ]
+
     readonly_fields = ['slug', 'd_tags']
 
     inlines = [DistributorLabelInline, RelationsInline]
 
-    """"""
     fieldsets = [
         (None, {'fields': ['name', 'slug', 'type', 'description']}),
         ('Contact', {'fields': ['address', 'country', ('phone', 'fax'), 'email']}),
         ('Relations', {'fields': ['parent'], 'classes': ['']}),
-        ('Users', {'fields': [('owner', 'creator', 'publisher'), ]}),
     ]
-
 
 admin.site.register(Distributor, DistributorAdmin)
-
-
-class AgencyAdmin(BaseAdmin):
-    # inlines = [LabelInline]
-    # prepopulated_fields = {"slug": ("name",)}
-    readonly_fields = ['slug', 'd_tags']
-
-    inlines = [AgencyArtistInline, RelationsInline]
-
-    fieldsets = [
-        (None, {'fields': ['name', 'slug', 'type', 'description']}),
-        ('Contact', {'fields': ['address', 'country', ('phone', 'fax'), 'email']}),
-        ('Relations', {'fields': ['parent'], 'classes': ['']}),
-        ('Users', {'fields': [('owner', 'creator', 'publisher'), ]}),
-    ]
-
-
-admin.site.register(Agency, AgencyAdmin)
-admin.site.register(AgencyScope)
 
 
 class PlaylistItemInline(GenericTabularInline):

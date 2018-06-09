@@ -26,6 +26,8 @@ from django.core.files.temp import NamedTemporaryFile
 from base.fields import extra
 from tagging.registry import register as tagging_register
 
+from base.mixins import TimestampedModelMixin
+
 from ..util.mixdown_client import MixdownAPIClient
 
 
@@ -104,7 +106,7 @@ class Series(models.Model):
 
 
 
-class Playlist(MigrationMixin, models.Model):
+class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
@@ -211,14 +213,6 @@ class Playlist(MigrationMixin, models.Model):
 
     description = extra.MarkdownTextField(
         blank=True, null=True
-    )
-
-    # auto-update
-    created = models.DateTimeField(
-        auto_now_add=True, editable=False
-    )
-    updated = models.DateTimeField(
-        auto_now=True, editable=False
     )
 
     mixdown_file = models.FileField(
@@ -691,7 +685,7 @@ def playlist_post_save(sender, **kwargs):
 post_save.connect(playlist_post_save, sender=Playlist)
 
 
-class PlaylistItemPlaylist(models.Model):
+class PlaylistItemPlaylist(TimestampedModelMixin, models.Model):
 
     playlist = models.ForeignKey(
         'Playlist', on_delete=models.CASCADE
@@ -700,13 +694,9 @@ class PlaylistItemPlaylist(models.Model):
         'PlaylistItem', on_delete=models.CASCADE
     )
 
-    # uuid = UUIDField()
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
-
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    updated = models.DateTimeField(auto_now=True, editable=False)
     position = models.PositiveIntegerField(default=0)
-    #
+
     cue_in = models.PositiveIntegerField(default=0)
     cue_out = models.PositiveIntegerField(default=0)
     fade_in = models.PositiveIntegerField(default=0)

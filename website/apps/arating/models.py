@@ -3,17 +3,15 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-
 from django.utils.translation import ugettext as _
-
-from base.models import TimestampedModel
+from base.mixins import TimestampedModelMixin
 
 VOTE_CHOICES = (
     (+1, '+1'),
     (-1, '-1'),
 )
 
-class Vote(TimestampedModel):
+class Vote(TimestampedModelMixin, models.Model):
 
     vote = models.SmallIntegerField(choices=VOTE_CHOICES)
     user = models.ForeignKey(User, related_name="votes")

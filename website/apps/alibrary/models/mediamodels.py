@@ -21,6 +21,7 @@ from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
 from base.fields.languages import LanguageField
 from base.signals.unsignal import disable_for_loaddata
+from base.mixins import TimestampedModelMixin, UUIDModelMixin
 from lib.util.sha1 import sha1_by_file
 from tagging.registry import register as tagging_register
 
@@ -93,7 +94,7 @@ def upload_master_to(instance, filename):
     filename, extension = os.path.splitext(filename)
     return os.path.join(get_dir_for_object(instance), 'master%s' % extension.lower())
 
-class Media(MigrationMixin):
+class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     STATUS_CHOICES = (
         (0, _('Init')),
@@ -105,12 +106,8 @@ class Media(MigrationMixin):
     )
 
     TRACKNUMBER_CHOICES = ((x, x) for x in range(1, 301))
-
     MEDIANUMBER_CHOICES = ((x, x) for x in range(1, 51))
 
-    uuid = models.UUIDField(
-        default=uuid.uuid4, editable=False
-    )
     lock = models.PositiveIntegerField(
         default=0, editable=False
     )
@@ -124,12 +121,6 @@ class Media(MigrationMixin):
     status = models.PositiveIntegerField(
         default=0,
         choices=STATUS_CHOICES
-    )
-    created = models.DateTimeField(
-        auto_now_add=True, editable=False
-    )
-    updated = models.DateTimeField(
-        auto_now=True, editable=False
     )
     publish_date = models.DateTimeField(
         blank=True, null=True

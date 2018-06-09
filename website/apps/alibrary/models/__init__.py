@@ -1,8 +1,8 @@
 #-*- coding: utf-8 -*-
 
 from basemodels import (
-    MigrationMixin, Relation, Profession, Agency,
-    License, Service, Distributor, AgencyScope, Daypart
+    MigrationMixin, Relation, Profession,
+    License, Distributor, Daypart
 )
 from artistmodels import (
     Artist, ArtistProfessions, NameVariation, ArtistMembership, ArtistAlias

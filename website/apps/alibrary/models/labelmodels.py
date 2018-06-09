@@ -17,6 +17,7 @@ from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
 from alibrary import settings as alibrary_settings
 from base.fields import extra
+from base.mixins import TimestampedModelMixin, UUIDModelMixin
 from alibrary.models import MigrationMixin
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
@@ -38,9 +39,8 @@ class LabelManager(models.Manager):
     def active(self):
         return self.get_queryset().exclude(listed=False)
 
-class Label(MigrationMixin):
+class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
 
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=400)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
 
@@ -53,9 +53,6 @@ class Label(MigrationMixin):
     fax = PhoneNumberField(blank=True, null=True)
     main_image = models.ImageField(verbose_name=_('Logo Image'), upload_to=upload_image_to, storage=OverwriteStorage(), null=True, blank=True)
     description = extra.MarkdownTextField(blank=True, null=True)
-
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    updated = models.DateTimeField(auto_now=True, editable=False)
 
     date_start = ApproximateDateField(verbose_name="Life-span begin", blank=True, null=True)
     date_end = ApproximateDateField(verbose_name="Life-span end", blank=True, null=True)
@@ -165,39 +162,10 @@ class Label(MigrationMixin):
 
         return last_parent
 
-
-
     def save(self, *args, **kwargs):
         unique_slugify(self, self.name)
         super(Label, self).save(*args, **kwargs)
 
 
-
-
 tagging_register(Label)
 arating.enable_voting_on(Label)
-
-
-# @receiver(post_save, sender=Label, dispatch_uid="label_post_save")
-# def action_handler_task(sender, instance, created, **kwargs):
-#
-#     if created and instance.creator:
-#         action.send(instance.creator, verb=_('created'), target=instance)
-#
-#     elif instance.last_editor:
-#         action.send(instance.last_editor, verb=_('updated'), target=instance)
-
-
-# def action_handler(sender, instance, created, **kwargs):
-#     action_handler_task.delay(instance, created)
-#
-# post_save.connect(action_handler, sender=Label)
-#
-# @task
-# def action_handler_task(instance, created):
-#
-#     if created and instance.creator:
-#         action.send(instance.creator, verb=_('created'), target=instance)
-#
-#     elif instance.last_editor:
-#         action.send(instance.last_editor, verb=_('updated'), target=instance)

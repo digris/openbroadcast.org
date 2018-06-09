@@ -79,12 +79,6 @@
                 <a href="#biography" data-toggle="tab">{% trans "Biography" %}</a>
             </li>
             {% endif %}
-            {% if object.agencies.exists %}
-            <li>
-                <a href="#management" data-toggle="tab">{% trans "Management" %}</a>
-            </li>
-            {% endif %}
-
             <li>
                 <a href="#history" data-toggle="tab">{% trans "Edit History" %}</a>
             </li>
@@ -241,66 +235,6 @@
         </section>
 
     </div>
-
-    <div class="tab-pane" id="management">
-        <section class="description">
-            <h2>{% trans "Management" %}</h2>
-
-
-            {% if object.agencies.exists %}
-
-
-                {% for agency in object.agencies.all %}
-
-                    <dl class="dl-horizontal">
-
-                        <dt>{% trans "Agency" %}</dt>
-                        <dd>
-                            <ul class="unstyled">
-                                <li>{{ agency.name }}</li>
-                                {% if  agency.address %}
-                                    <li>{{ agency.address|linebreaksbr }}</li>
-                                {% endif %}
-                                {% if  agency.country %}
-                                    <li>{{ agency.country }}</li>
-                                {% endif %}
-                            </ul>
-                        </dd>
-
-                        <dt>{% trans "Scope" %}</dt>
-                        <dd>
-                            {% for aa in agency.agencyartist_set.all %}
-                                {% for scope in aa.scopes.all %}
-                                    {{ scope }}
-                                    {% if not forloop.last %}, {% endif %}
-                                {% endfor %}
-                            {% endfor %}
-                        </dd>
-
-                        <dt>{% trans "Countries" %}</dt>
-                        <dd>
-                            {% for aa in agency.agencyartist_set.all %}
-                                {% for country in aa.countries.all %}
-                                    {{ country.iso2_code }}
-                                    {% if not forloop.last %}, {% endif %}
-                                {% endfor %}
-                            {% endfor %}
-                        </dd>
-
-                    </dl>
-
-
-                {% endfor %}
-
-
-
-
-            {% endif %}
-        </section>
-
-    </div>
-
-
 
     <div class="tab-pane" id="statistics">
 

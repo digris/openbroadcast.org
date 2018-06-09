@@ -23,8 +23,9 @@ from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
 from l10n.models import Country
-from base.fields import extra
 from tagging.registry import register as tagging_register
+from base.fields import extra
+from base.mixins import TimestampedModelMixin, UUIDModelMixin
 
 from alibrary import settings as alibrary_settings
 from ..models import Relation, License, MigrationMixin, Profession
@@ -36,7 +37,6 @@ logger = logging.getLogger(__name__)
 MUSICBRAINZ_HOST = getattr(settings, 'MUSICBRAINZ_HOST', 'musicbrainz.org')
 
 TEMP_DIR = getattr(settings, 'TEMP_DIR', None)
-FORCE_CATALOGNUMBER = False
 LOOKUP_PROVIDERS = (
     ('discogs', _('Discogs')),
     ('musicbrainz', _('Musicbrainz')),
@@ -56,7 +56,7 @@ def upload_cover_to(instance, filename):
     filename, extension = os.path.splitext(filename)
     return os.path.join(get_dir_for_object(instance), 'cover%s' % extension.lower())
 
-class Release(MigrationMixin):
+class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     # core fields
     name = models.CharField(max_length=200, db_index=True)
@@ -64,16 +64,8 @@ class Release(MigrationMixin):
     license = models.ForeignKey(License, blank=True, null=True, related_name='release_license')
     release_country = models.ForeignKey(Country, blank=True, null=True)
 
-    #uuid = UUIDField(primary_key=False)
-    #uuid = UUIDField()
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
-
     main_image = models.ImageField(verbose_name=_('Cover'), upload_to=upload_cover_to, storage=OverwriteStorage(), null=True, blank=True)
-
-    if FORCE_CATALOGNUMBER:
-        catalognumber = models.CharField(max_length=50)
-    else:
-        catalognumber = models.CharField(max_length=50, blank=True, null=True)
+    catalognumber = models.CharField(max_length=50, blank=True, null=True)
 
     """
     releasedate stores the 'real' time, approx is for inputs
@@ -113,11 +105,8 @@ class Release(MigrationMixin):
     relations = GenericRelation(Relation)
     d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
 
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    updated = models.DateTimeField(auto_now=True, editable=False)
     objects = ReleaseManager()
 
-    # meta
     class Meta:
         app_label = 'alibrary'
         verbose_name = _('Release')
@@ -144,12 +133,6 @@ class Release(MigrationMixin):
     def publish_date(self):
         # compatibility hack TODO: refactor all dependencies
         return datetime.utcnow()
-
-    def get_extra_artists(self):
-        ea = []
-        for artist in self.extra_artists.all():
-            ea.append(artist.name)
-        return ea
 
     def is_active(self):
         now = date.today()

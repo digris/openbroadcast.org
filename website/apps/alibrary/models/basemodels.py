@@ -3,16 +3,15 @@ from __future__ import unicode_literals
 
 import tagging
 import logging
+import uuid
 
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
-from cms.models.fields import PlaceholderField
 from phonenumber_field.modelfields import PhoneNumberField
 from hvad.models import TranslatableModel, TranslatedFields
 from hvad.manager import TranslationManager
@@ -23,7 +22,8 @@ from tagging.registry import register as tagging_register
 from alibrary.util.slug import unique_slugify
 from alibrary.util.relations import get_service_by_url
 from base.fields import extra
-import uuid
+from base.mixins import TimestampedModelMixin, UUIDModelMixin
+
 
 log = logging.getLogger(__name__)
 
@@ -39,38 +39,12 @@ class MigrationMixin(models.Model):
         verbose_name_plural = _('MigrationMixins')
         ordering = ('pk', )
 
-class Distributor(MigrationMixin):
 
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=400)
-    slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
-
-    code = models.CharField(max_length=50)
-    country = models.ForeignKey(Country, blank=True, null=True)
-
-    address = models.TextField(blank=True, null=True)
-
-    email = models.EmailField(blank=True, null=True)
-    phone = PhoneNumberField(blank=True, null=True)
-    fax = PhoneNumberField(blank=True, null=True)
-
-    description = extra.MarkdownTextField(blank=True, null=True)
-
-    first_placeholder = PlaceholderField('first_placeholder')
-
-    # auto-update
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    updated = models.DateTimeField(auto_now=True, editable=False)
-
-    # relations
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
-
-    labels = models.ManyToManyField('Label', through='DistributorLabel', blank=True, related_name="distributors")
-
-    # user relations
-    owner = models.ForeignKey(User, blank=True, null=True, related_name="distributors_owner", on_delete=models.SET_NULL)
-    creator = models.ForeignKey(User, blank=True, null=True, related_name="distributors_creator", on_delete=models.SET_NULL)
-    publisher = models.ForeignKey(User, blank=True, null=True, related_name="distributors_publisher", on_delete=models.SET_NULL)
+class Distributor(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
+    """
+    TODO: suggest to remove 'distributor' implementation.
+    it is not used at the moment (90 entries, last 2014...)
+    """
 
     TYPE_CHOICES = (
         ('unknown', _('Unknown')),
@@ -79,13 +53,57 @@ class Distributor(MigrationMixin):
         ('other', _('Other')),
     )
 
-    type = models.CharField(verbose_name="Distributor type", max_length=12, default='unknown', choices=TYPE_CHOICES)
+    type = models.CharField(
+        verbose_name="Distributor type",
+        max_length=12, default='unknown',
+        choices=TYPE_CHOICES
+    )
+    slug = AutoSlugField(
+        populate_from='name',
+        editable=True, blank=True, overwrite=True
+    )
+    name = models.CharField(
+        max_length=400
+    )
+    description = extra.MarkdownTextField(
+        blank=True, null=True
+    )
+    code = models.CharField(
+        max_length=50
+    )
+    address = models.TextField(
+        blank=True, null=True
+    )
+    email = models.EmailField(
+        blank=True, null=True
+    )
+    phone = PhoneNumberField(
+        blank=True, null=True
+    )
+    fax = PhoneNumberField(
+        blank=True, null=True
+    )
+    country = models.ForeignKey(
+        Country,
+        blank=True, null=True
+    )
 
-    # relations a.k.a. links
+    # relations
+    parent = models.ForeignKey(
+        'self',
+        null=True, blank=True,
+        related_name='children'
+    )
+    labels = models.ManyToManyField(
+        'Label',
+        through='DistributorLabel', blank=True,
+        related_name="distributors"
+    )
     relations = GenericRelation('Relation')
-
-    # tagging (d_tags = "display tags")
-    d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
+    d_tags = tagging.fields.TagField(
+        verbose_name="Tags",
+        max_length=1024, blank=True, null=True
+    )
 
     objects = models.Manager()
 
@@ -98,8 +116,6 @@ class Distributor(MigrationMixin):
     def __unicode__(self):
         return self.name
 
-
-
     @models.permalink
     def get_absolute_url(self):
         return ('alibrary-distributor-detail', [self.slug])
@@ -107,7 +123,6 @@ class Distributor(MigrationMixin):
     @models.permalink
     def get_edit_url(self):
         return ('alibrary-distributor-edit', [self.pk])
-
 
     def save(self, *args, **kwargs):
         unique_slugify(self, self.name)
@@ -129,154 +144,71 @@ except Exception as e:
 
 
 class DistributorLabel(models.Model):
-    distributor = models.ForeignKey('Distributor')
-    label = models.ForeignKey('Label')
-    exclusive = models.BooleanField(default=False)
-    countries = models.ManyToManyField(Country, related_name="distribution_countries")
+
+    distributor = models.ForeignKey(
+        'Distributor'
+    )
+    label = models.ForeignKey(
+        'Label'
+    )
+    exclusive = models.BooleanField(
+        default=False
+    )
+    countries = models.ManyToManyField(
+        Country,
+        related_name="distribution_countries"
+    )
+
     class Meta:
         app_label = 'alibrary'
         verbose_name = _('Labels in catalog')
         verbose_name_plural = _('Labels in catalog')
 
 
-class Agency(MigrationMixin):
 
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=400)
-    slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
+class License(TranslatableModel, MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
 
-    country = models.ForeignKey(Country, blank=True, null=True)
-    address = models.TextField(blank=True, null=True)
-
-    email = models.EmailField(blank=True, null=True)
-    phone = PhoneNumberField(blank=True, null=True)
-    fax = PhoneNumberField(blank=True, null=True)
-
-    description = extra.MarkdownTextField(blank=True, null=True)
-
-    # auto-update
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    updated = models.DateTimeField(auto_now=True, editable=False)
-
-    # relations
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
-
-    artists = models.ManyToManyField('Artist', through='AgencyArtist', blank=True, related_name="agencies")
-
-    # user relations
-    owner = models.ForeignKey(User, blank=True, null=True, related_name="agencies_owner", on_delete=models.SET_NULL)
-    creator = models.ForeignKey(User, blank=True, null=True, related_name="agencies_creator", on_delete=models.SET_NULL)
-    publisher = models.ForeignKey(User, blank=True, null=True, related_name="agencies_publisher", on_delete=models.SET_NULL)
-
-    TYPE_CHOICES = (
-        ('unknown', _('Unknown')),
-        ('major', _('Major Agency')),
-        ('indy', _('Independent Agency')),
+    slug = models.SlugField(
+        max_length=100, unique=False
     )
-    type = models.CharField(verbose_name="Agency type", max_length=12, default='unknown', choices=TYPE_CHOICES)
-
-    # relations a.k.a. links
-    relations = GenericRelation('Relation')
-
-    # tagging (d_tags = "display tags")
-    d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
-
-
-    # manager
-    objects = models.Manager()
-
-    # meta
-    class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Agency')
-        verbose_name_plural = _('Agencies')
-        ordering = ('name', )
-
-    def __unicode__(self):
-        return self.name
-
-
-
-    @models.permalink
-    def get_absolute_url(self):
-        if self.disable_link:
-            return None
-
-        return ('alibrary-agency-detail', [self.slug])
-
-    @models.permalink
-    def get_edit_url(self):
-        return ('alibrary-agency-edit', [self.pk])
-
-
-    def save(self, *args, **kwargs):
-
-        unique_slugify(self, self.name)
-
-        # update d_tags
-        t_tags = ''
-        for tag in self.tags:
-            t_tags += '%s, ' % tag
-
-        self.tags = t_tags;
-        self.d_tags = t_tags;
-
-        super(Agency, self).save(*args, **kwargs)
-
-
-
-
-try:
-    tagging.register(Agency)
-except:
-    pass
-
-
-class AgencyScope(models.Model):
-    name = models.CharField(max_length=300)
-    class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Scope (Agency)')
-        verbose_name_plural = _('Scopes (Agency)')
-
-    def __unicode__(self):
-        return self.name
-
-
-class AgencyArtist(models.Model):
-    agency = models.ForeignKey('Agency')
-    artist = models.ForeignKey('Artist')
-    exclusive = models.BooleanField(default=False)
-    countries = models.ManyToManyField(Country, related_name="agency_countries")
-    scopes = models.ManyToManyField(AgencyScope, related_name="agency_scopes")
-    class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Managing')
-        verbose_name_plural = _('Managing')
-
-
-
-class License(TranslatableModel, MigrationMixin):
-
-    name = models.CharField(max_length=200)
-
-    slug = models.SlugField(max_length=100, unique=False)
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
-
-    key = models.CharField(verbose_name=_("License key"), help_text=_("used e.g. for the icon-names"), max_length=36, blank=True, null=True)
-    version = models.CharField(verbose_name=_("License version"), help_text=_("e.g. 2.5 CH"), max_length=36, blank=True, null=True)
-
-    iconset =  models.CharField(verbose_name=_("Iconset"), help_text=_("e.g. cc-by, cc-nc, cc-sa"), max_length=36, blank=True, null=True)
-
-
-    link = models.URLField(null=True, blank=True)
-
-    restricted = models.NullBooleanField(null=True, blank=True)
-
-    is_default = models.NullBooleanField(default=False, null=True, blank=True)
-    selectable = models.NullBooleanField(default=True, null=True, blank=True)
-    is_promotional = models.NullBooleanField(default=False, null=True, blank=True)
-
+    name = models.CharField(
+        max_length=200
+    )
+    key = models.CharField(
+        verbose_name=_("License key"),
+        max_length=36, blank=True, null=True,
+        help_text=_("used e.g. for the icon-names")
+    )
+    restricted = models.NullBooleanField(
+        null=True, blank=True
+    )
+    version = models.CharField(
+        verbose_name=_("License version"),
+        max_length=36, blank=True, null=True,
+        help_text=_("e.g. 2.5 CH")
+    )
+    iconset =  models.CharField(
+        verbose_name=_("Iconset"),
+        max_length=36, blank=True, null=True,
+        help_text=_("e.g. cc-by, cc-nc, cc-sa")
+    )
+    link = models.URLField(
+        null=True, blank=True
+    )
+    parent = models.ForeignKey(
+        'self',
+        null=True, blank=True,
+        related_name='license_children'
+    )
+    is_default = models.NullBooleanField(
+        default=False, null=True, blank=True
+    )
+    selectable = models.NullBooleanField(
+        default=True, null=True, blank=True
+    )
+    is_promotional = models.NullBooleanField(
+        default=False, null=True, blank=True
+    )
 
     translations = TranslatedFields(
         name_translated = models.CharField(max_length=200),
@@ -284,13 +216,7 @@ class License(TranslatableModel, MigrationMixin):
         license_text = models.TextField(blank=True, null=True)
     )
 
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    updated = models.DateTimeField(auto_now=True, editable=False)
-
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='license_children')
-
     objects = TranslationManager()
-
 
     class Meta:
         app_label = 'alibrary'
@@ -329,17 +255,18 @@ class ProfessionManager(models.Manager):
         return self.get_queryset().filter(in_listing=True)
 
 
-class Profession(models.Model):
+class Profession(TimestampedModelMixin, models.Model):
 
-    name = models.CharField(max_length=200)
-
-    in_listing = models.BooleanField(default=True, verbose_name='Include in listings')
-
-    excerpt = models.TextField(blank=True, null=True)
-
-    # auto-update
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    updated = models.DateTimeField(auto_now=True, editable=False)
+    name = models.CharField(
+        max_length=200
+    )
+    in_listing = models.BooleanField(
+        verbose_name='Include in listings',
+        default=True,
+    )
+    excerpt = models.TextField(
+        blank=True, null=True
+    )
 
     objects = ProfessionManager()
 
@@ -352,15 +279,14 @@ class Profession(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class DaypartManager(models.Manager):
 
     def active(self):
         return self.get_queryset().filter(active=True)
 
+
 class Daypart(models.Model):
-
-
-    active = models.BooleanField(default=True)
 
     DAY_CHOICES = (
         (0, _('Mon')),
@@ -371,9 +297,16 @@ class Daypart(models.Model):
         (5, _('Sat')),
         (6, _('Sun')),
     )
-    day = models.PositiveIntegerField(default=0, null=True, choices=DAY_CHOICES)
+
+    day = models.PositiveIntegerField(
+        default=0, null=True,
+        choices=DAY_CHOICES
+    )
     time_start = models.TimeField()
     time_end = models.TimeField()
+    active = models.BooleanField(
+        default=True
+    )
 
     objects = DaypartManager()
 
@@ -388,25 +321,6 @@ class Daypart(models.Model):
 
     def playlist_count(self):
         return self.daypart_plalists.count()
-
-
-
-
-
-class Service(models.Model):
-
-    name = models.CharField(max_length=200)
-    key = models.CharField(max_length=200, blank=True, null=True)
-    pattern = models.CharField(max_length=256, null=True, blank=True, help_text='Regex to match url against. eg ""')
-
-    class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Service')
-        verbose_name_plural = _('Services')
-        ordering = ('name', )
-
-    def __unicode__(self):
-        return '%s - "%s"' % (self.name, self.pattern)
 
 
 
@@ -460,15 +374,7 @@ class RelationManager(models.Manager):
 
 
 
-class Relation(models.Model):
-
-    name = models.CharField(max_length=200, blank=True, null=True, help_text=(_('Additionally override the name.')))
-    url = models.URLField(max_length=512)
-
-    content_type = models.ForeignKey(ContentType)
-    #object_id = UUIDField()
-    object_id = models.PositiveIntegerField(db_index=True)
-    content_object = GenericForeignKey('content_type', 'object_id')
+class Relation(TimestampedModelMixin, models.Model):
 
     SERVICE_CHOICES = (
         ('', _('Not specified')),
@@ -493,25 +399,41 @@ class Relation(models.Model):
         ('instagram', _('Instagram')),
     )
 
+    ACTION_CHOICES = (
+        ('information', _('Information')),
+        ('buy', _('Buy')),
+    )
+
     service = models.CharField(
         max_length=50,
         choices=SERVICE_CHOICES, blank=True, null=True, editable=True,
         default='generic',
         db_index=True
     )
-
-    ACTION_CHOICES = (
-        ('information', _('Information')),
-        ('buy', _('Buy')),
+    action = models.CharField(
+        max_length=50, default='information',
+        choices=ACTION_CHOICES
     )
-    action = models.CharField(max_length=50, default='information', choices=ACTION_CHOICES)
+    name = models.CharField(
+        max_length=200, blank=True, null=True,
+        help_text=_('Additionally override the name.')
+    )
+    url = models.URLField(
+        max_length=512
+    )
+    content_type = models.ForeignKey(
+        ContentType
+    )
+    object_id = models.PositiveIntegerField(
+        db_index=True
+    )
+    content_object = GenericForeignKey(
+        'content_type', 'object_id'
+    )
 
     @property
-    def _service(cls):
-        return cls.service
-
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    updated = models.DateTimeField(auto_now=True, editable=False)
+    def _service(self):
+        return self.service
 
     objects = RelationManager()
 
@@ -537,20 +459,18 @@ class Relation(models.Model):
         super(Relation, self).save(*args, **kwargs)
 
 
-
     @property
     def service_icon(self):
         icon = self.service
 
         if icon == 'itunes':
-            icon = 'apple'
+            return 'apple'
 
         if icon == 'youtube':
-            icon = 'youtube-play'
+            return 'youtube-play'
 
         if icon == 'discogs_master':
-            icon = 'discogs'
-
+            return 'discogs'
 
         return icon
 
@@ -558,7 +478,6 @@ class Relation(models.Model):
 @receiver(post_save, sender=Relation)
 def relation_post_save(sender, instance, signal, created, **kwargs):
     if instance.url[-4:] == 'None':
-        #log.debug('deleting wrongly formated relation')
         instance.delete()
 
 def update_relations():

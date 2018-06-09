@@ -18,7 +18,7 @@ from django.dispatch import receiver
 from django.core.cache import cache
 from django.utils.translation import ugettext as _
 from django.template import defaultfilters
-from base.models import TimestampedModel, UUIDModel
+from base.mixins import TimestampedModelMixin, UUIDModelMixin
 from base.fs.utils import clean_directory_tree_reverse
 
 #from .tasks import process_waveform_task, process_format_task
@@ -53,7 +53,7 @@ class WaveformManager(models.Manager):
         return waveform
 
 
-class Waveform(TimestampedModel, UUIDModel):
+class Waveform(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     INIT = 0
     DONE = 1
@@ -183,14 +183,6 @@ def waveform_pre_delete(sender, instance, **kwargs):
 class FormatManager(models.Manager):
 
     def get_or_create_for_media(self, media, encoding='mp3', quality='default', **kwargs):
-
-        format, created = self.model.objects.get_or_create(media=media, encoding=encoding, quality=quality, **kwargs)
-        log.debug('version - get or create for media: %s %s %s (created: %s)' % (media.uuid, encoding, quality, created))
-
-        return format
-
-
-    def get_or_create_for_media(self, media, encoding='mp3', quality='default', **kwargs):
         wait = kwargs.pop('wait', False)
         format, created = self.model.objects.get_or_create(media=media, encoding=encoding, quality=quality, **kwargs)
 
@@ -204,7 +196,7 @@ class FormatManager(models.Manager):
         return format
 
 
-class Format(TimestampedModel, UUIDModel):
+class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     INIT = 0
     DONE = 1
