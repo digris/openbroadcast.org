@@ -11,12 +11,13 @@ jobs:
       - checkout
 #      - run: sudo chown -R circleci:circleci /usr/local/bin
 #      - run: sudo chown -R circleci:circleci /usr/local/lib/python/site-packages
+      - run: sudo apt-get update && sudo apt-get install -y libsndfile-dev sox libsox-fmt-all ffmpeg
       - restore_cache:
           key: deps9-{{ .Branch }}-{{ checksum "requirements.txt" }}
       - run:
           command: |
-            sudo pip install numpy==1.8.0
-            sudo pip install -r requirements.txt
+            sudo pip install numpy==1.8.0 --quiet
+            sudo pip install -r requirements.txt --quiet
       - save_cache:
           key: deps9-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
