@@ -18,15 +18,15 @@
 
 {% block inner %}
 <div class="item_detail" style="">
-	
-	
+
+
 	<section>
 		<div class="row iteminfo">
-		
+
 			<div class="span7 container_content">
 				<h2>{{ object.get_releasetype_display }}: {{ object.name|truncate_chars_inner:40 }}</h2>
 							<dl class="dl-horizontal main">
-	
+
 					<dt>{% trans "Artist" %}:</dt>
 					<dd>
 						{% for artist in object.get_artists %}
@@ -36,18 +36,18 @@
 							{% endwith %}
 						{% endfor %}
 					</dd>
-	
+
 					<dt>{% trans "Label" %}:</dt>
 					<dd>
 						{% with item=object.label %}
 							{% include "alibrary/element/_inline_link.html" %}
 						{% endwith %}
 					</dd>
-	
+
 				</dl>
-				
+
 				<dl class="dl-horizontal license">
-	
+
 					<dt>{% trans "License" %}:</dt>
 					<dd>
 						<div class="license {% if object.get_license %}{{ object.get_license.key }}{% endif %}">
@@ -56,49 +56,49 @@
 						{% endif %}
 						</div>
 					</dd>
-	
+
 				</dl>
-				
-	
-				
+
+
+
 				<dl class="dl-horizontal links external">
-	
+
 					<dt>{% trans "Show on" %}:</dt>
 					<dd>
 						<a href="http://www.discogs.com/release/3572034" title="Show on Discogs" class="external discogs"><img src="/static/img/base/spacer.png" alt="Discogs" style="width: 16px; height: 16px;"></a>
 					</dd>
-	
+
 				</dl>
-				
-				
+
+
 				<dl class="dl-horizontal sub">
-	
+
 					<dt>{% trans "Release date" %}:</dt>
 					<dd>
 						{{ object.releasedate|date:"SHORT_DATE_FORMAT" }}
 					</dd>
-	
+
 					<dt>{% trans "Stats" %}:</dt>
 					<dd>
 						{% with item=object.label %}
 							{% include "alibrary/element/_inline_link.html" %}
 						{% endwith %}
 					</dd>
-	
+
 					<dt>{% trans "Tags" %}:</dt>
 					<dd>
 						{% for tag in object.tags %}
 							{{ tag.name }}{% if not forloop.last %},{% endif %}
 						{% endfor %}
 					</dd>
-	
+
 				</dl>
-				
+
 			</div>
-			
+
 			<div class="span2">
-				
-				
+
+
 				<div class="image">
 					{% if object.main_image %}
 					<a href="{% thumbnail object.main_image 800x800 crop upscale %}" class="zoomable cboxElement">
@@ -106,22 +106,22 @@
 					</a>
 					{% endif %}
 				</div>
-				
+
 				<div class="rating">
 					{% rating_for_object object %}
 				</div>
-				
-				
-			</div>
-		
-		
-	
 
-		
+
+			</div>
+
+
+
+
+
 
 	</div>
 	</section>
-	
+
 	<div class="item_menu" id="item_menu">
 		<ul class="">
 			<li class="on"><a class="on" href="#">Tracklist</a></li>
@@ -129,20 +129,20 @@
 		</ul>
 	</div>
 	<div class="clear"></div>
-	
-	
+
+
 	<div class="item_inner">
 		<div class="listview container medias inner s">
 			<div class="list_header"></div>
-			
+
 			<div class="list_body">
 			{% for item in object.get_media %}
 				{% include "alibrary/media/_list_item_xs.html" %}
 			{% endfor %}
 			</div>
 		</div>
-		
-		
+
+
 		<div class="notes expandable close">
 			<div class="header">
 				<span>Notes</span>
@@ -160,6 +160,4 @@
 
 	{% endblock %}
 
-	{% block sidebar %}
-	{% include "dummy/release_listing_sidebar.html" %}
-	{% endblock %}
+	{% block sidebar %}{% endblock %}
