@@ -121,12 +121,10 @@ module.exports = {
             '/': {
                 target: 'http://127.0.0.1:8080',
                 onProxyReq: proxyReq => {
-                    // add header to let django know about getting a devserver request
                     proxyReq.setHeader(DEVSERVER_HEADER, 'on');
                 }
             },
 
         }
-
     }
 };
