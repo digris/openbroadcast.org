@@ -167,7 +167,7 @@ scikits.audiolab==0.10.2
 # NOTE: pip uninstall django-adv-cache-tag
 django-adv-cache-tag==0.3.0
 
--e git://github.com/hzlf/python-audio-tools.git@master#egg=python-audio-tools-master
+-e git://github.com/hzlf/python-audio-tools.git@master#egg=python-audio-tools
 -e git+https://github.com/hzlf/graypy.git@master#egg=graypy
 -e git+https://ohrstrom@lab.hazelfire.com/hazelfire/obp/pyacoustid.git@deploy#egg=pyacoustid
 -e git+https://github.com/hzlf/django-announcements@master#egg=django-announcements
