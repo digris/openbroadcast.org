@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load i18n calc_tags truncate_tags thumbnail arating_tags wiki_tags comments atracker_tags sekizai_tags url_tags alibrary_tags media_tags video_tags addthis %}
+{% load i18n calc_tags truncate_tags thumbnail arating_tags wiki_tags atracker_tags sekizai_tags url_tags alibrary_tags media_tags video_tags addthis %}
 
 
 {% block title %}{{ object.name }} - {{ object.get_artist_display }}{% endblock %}
@@ -326,14 +326,10 @@
 
 
     <div class="tab-pane" id="history">
-
         <section class="history">
-
             <h2>{% trans "Edit history" %}</h2>
-
             {% include "alibrary/element/_object_history.html" %}
         </section>
-
     </div>
 
     <div class="tab-pane" id="statistics">
@@ -365,11 +361,6 @@
 
     </div>
 
-    </section>
-
-
-    <section class="comments on-site">
-        {% include "element/chat/_object_comments.html" %}
     </section>
 
     </div>

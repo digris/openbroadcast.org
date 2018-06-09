@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate_tags i18n thumbnail arating_tags wiki_tags comments atracker_tags dajaxice_templatetags sekizai_tags alibrary_tags url_tags addthis %}
+{% load truncate_tags i18n thumbnail arating_tags wiki_tags atracker_tags dajaxice_templatetags sekizai_tags alibrary_tags url_tags addthis %}
 
 
 {% block title %}{{ object.name }}{% if object.get_artist_display %} - {{ object.get_artist_display }}{% endif %}
@@ -144,16 +144,11 @@
                 </div>
 
                 <div class="tab-pane" id="history">
-
                     <section class="history">
-
                         <h2>{% trans "Edit history" %}</h2>
-
                         {% include "alibrary/element/_object_history.html" %}
                     </section>
-
                 </div>
-
 
                 <div class="tab-pane" id="statistics">
 
@@ -179,10 +174,6 @@
                 </div>
             </div>
 
-        </section>
-
-        <section class="comments on-site">
-            {% include "element/chat/_object_comments.html" %}
         </section>
 
     </div>

@@ -25,10 +25,9 @@ INSTALLED_APPS = [
 
     # object comments
     # TODO: these are really old apps and should be removed/replaced
-    'threadedcomments',
-    'fluent_comments',
-    #'django.contrib.comments',
-    'django_comments',
+    # 'threadedcomments',
+    # 'fluent_comments',
+    # 'django_comments',
 
     # server
     'corsheaders',
@@ -169,9 +168,6 @@ INSTALLED_APPS = [
 # app specific settings
 ################################################################################
 
-COMMENTS_APP = 'fluent_comments'
-COMMENT_MAX_LENGTH = 800
-FLUENT_COMMENTS_EXCLUDE_FIELDS = ['title', 'email', 'name', 'url', ]
 
 
 PAGINATION_SETTINGS = {
