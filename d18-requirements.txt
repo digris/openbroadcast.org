@@ -116,9 +116,9 @@ coreapi==2.3.1
 # django-cms==3.4.1
 # django-cms 3.4 does not work! introduces strange error:
 # https://sentry.pbi.io/pbi/open-broadcast-platform/issues/40/
-django-cms==3.4.6
+django-cms==3.4.5
 django-treebeard==4.2.1
-djangocms-admin-style==1.2.8
+djangocms-admin-style==0.2.8
 djangocms-column==1.6.0
 djangocms-file==0.1
 djangocms-link==1.6.2

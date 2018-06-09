@@ -10,7 +10,7 @@ DEBUG = getattr(settings, 'DEBUG')
 
 INSTALLED_APPS = [
 
-    'djangocms_admin_style',
+    #'djangocms_admin_style',
     #'django_slick_admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

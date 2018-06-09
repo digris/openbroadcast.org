@@ -1,4 +1,4 @@
-from django.db.models.signals import post_syncdb
+# from django.db.models.signals import post_syncdb
 from django.contrib.auth.models import User
 from invitation import models
 
@@ -16,4 +16,4 @@ def create_stats_for_existing_users(sender, **kwargs):
         print "Created InvitationStats for %s existing Users" % count
 
 
-post_syncdb.connect(create_stats_for_existing_users, sender=models)
+# post_syncdb.connect(create_stats_for_existing_users, sender=models)

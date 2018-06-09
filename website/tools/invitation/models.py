@@ -322,15 +322,16 @@ class InvitationStats(models.Model):
         if self.accepted + count > self.sent:
             raise InvitationError('There can\'t be more accepted ' \
                                   'invitations than sent invitations.')
-        """ 
+        """
         self.accepted = models.F('accepted') + count
         self.save()
     mark_accepted.alters_data = True
 
 
-def create_stats(sender, instance, created, raw, **kwargs):
-    if created and not raw:
-        InvitationStats.objects.create(user=instance)
-models.signals.post_save.connect(create_stats,
-                                 sender=User,
-                                 dispatch_uid='invitation.models.create_stats')
+# def create_stats(sender, instance, created, raw, **kwargs):
+#     if created and not raw:
+#         InvitationStats.objects.create(user=instance)
+#
+# models.signals.post_save.connect(create_stats,
+#                                  sender=User,
+#                                  dispatch_uid='invitation.models.create_stats')

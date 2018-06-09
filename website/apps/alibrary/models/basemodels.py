@@ -255,7 +255,7 @@ class ProfessionManager(models.Manager):
         return self.get_queryset().filter(in_listing=True)
 
 
-class Profession(TimestampedModelMixin, models.Model):
+class Profession(models.Model):
 
     name = models.CharField(
         max_length=200
