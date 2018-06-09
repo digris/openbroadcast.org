@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     'hvad',
     'selectable',
     'spurl',
-    'lib',
     'pure_pagination',
     'crispy_forms_extra',
     'crispy_forms',
