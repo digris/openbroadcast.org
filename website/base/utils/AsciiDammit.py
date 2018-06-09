@@ -214,21 +214,3 @@ def demoronise(t):
 
     http://www.fourmilab.ch/webtools/demoroniser/"""
     return asciiDammit(t, 1)
-
-if __name__ == '__main__':
-    french = '\x93Sacr\xe9 bleu!\x93'
-    print "\nFirst we mangle some French."
-    print asciiDammit(french)
-    print htmlDammit(french)
-
-    print "\nAnd now we fix the MS-quotes but leave the French alone."
-    print demoronise(french)
-    print htmlDammit(french, 1)
-
-    print "\nLet's try some french in unicode"
-    frenchu = u'sacré bleu'
-    print asciiDammit(frenchu)
-
-    dejavu = u'Déjà Vu'
-    print "\nIt's usually a glitch in the Matrix. It happens when they change something."
-    print asciiDammit(dejavu)

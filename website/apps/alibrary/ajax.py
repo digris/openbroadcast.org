@@ -15,7 +15,7 @@ from django.utils.translation import ugettext as _
 import urllib
 from alibrary.models import Release, Relation, Label, Artist, Media
 from base.models.utils.merge import merge_objects, merge_votes, merge_relations, merge_tags
-from lib.util.AsciiDammit import asciiDammit
+from base.utils.AsciiDammit import asciiDammit
 
 from alibrary.util.api_compare import get_from_provider
 from alibrary.util.api_search import discogs_ordered_search
@@ -129,7 +129,6 @@ def provider_search(request, *args, **kwargs):
     if provider == 'discogs':
 
         #query = re.sub('[^A-Za-z0-9 :]+', '', query)
-        #query = asciiDammit(query)
         query = query.replace('(', '')
         query = query.replace(')', '')
 

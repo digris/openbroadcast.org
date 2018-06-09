@@ -3,9 +3,34 @@ from __future__ import unicode_literals
 
 import logging
 import os
+import string
+import hashlib
+
+from base.utils.AsciiDammit import asciiDammit
+
+VALID_CHARS = "-_.()[] %s%s" % (string.ascii_letters, string.digits)
+EXCLUDE_CHARS = "/\\'"
 
 log = logging.getLogger(__name__)
 
+def safe_filename(str):
+
+    return asciiDammit(str.replace('/', ' '))
+
+
+def sha1_by_file(file):
+
+    try:
+        sha = hashlib.sha1()
+        file.seek(0)
+        sha.update(file.read())
+        sha1 = sha.hexdigest()
+        file.seek(0)
+
+        return sha1
+
+    except Exception as e:
+        log.warning('unable to create sha1 hash: {}'.format(e))
 
 
 def clean_directory_tree_reverse(path):
@@ -36,3 +61,5 @@ def clean_directory_tree_reverse(path):
             else:
                 os.rmdir(path)
                 path = os.path.dirname(path)
+
+

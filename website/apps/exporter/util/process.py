@@ -4,14 +4,13 @@ import os
 import time
 import shutil
 import logging
-import subprocess
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
 from easy_thumbnails.files import get_thumbnailer
-from lib.util.filename import safe_name
+from base.fs.utils import safe_filename
 from alibrary.util.relations import uuid_by_object
 from atracker.util import create_event
 
@@ -153,24 +152,24 @@ class Process(object):
             image = content_object.main_image
             if content_object.get_artist_display:
                 item_rel_dir = os.path.join(
-                    safe_name(content_object.get_artist_display()),
-                    safe_name(content_object.name)
+                    safe_filename(content_object.get_artist_display()),
+                    safe_filename(content_object.name)
                 )
             else:
-                item_rel_dir = safe_name(content_object.get_artist_display())
+                item_rel_dir = safe_filename(content_object.get_artist_display())
 
 
         if ct == 'track':
             media_set = [content_object]
             if content_object.artist and content_object.release:
                 item_rel_dir = os.path.join(
-                    safe_name(content_object.artist.name),
-                    safe_name(content_object.release.name)
+                    safe_filename(content_object.artist.name),
+                    safe_filename(content_object.release.name)
                 )
             elif content_object.artist:
-                item_rel_dir = safe_name(content_object.artist.name)
+                item_rel_dir = safe_filename(content_object.artist.name)
             else:
-                item_rel_dir = safe_name(content_object.name)
+                item_rel_dir = safe_filename(content_object.name)
 
 
         if ct == 'playlist':
@@ -181,16 +180,16 @@ class Process(object):
 
             if content_object.user and content_object.user.get_full_name():
                 item_rel_dir = '%s (%s)' % (
-                    safe_name(content_object.name),
-                    safe_name(content_object.user.get_full_name())
+                    safe_filename(content_object.name),
+                    safe_filename(content_object.user.get_full_name())
                 )
             else:
-                item_rel_dir = safe_name(content_object.name)
+                item_rel_dir = safe_filename(content_object.name)
 
 
         item_cache_dir = os.path.join(
             self.archive_cache_dir,
-            safe_name(item_rel_dir)
+            safe_filename(item_rel_dir)
         )
         if not os.path.exists(item_cache_dir):
             os.makedirs(item_cache_dir)
@@ -248,7 +247,7 @@ class Process(object):
         """
         copy media to directory & applying metadata
         """
-        filename = safe_name(FILENAME_FORMAT % (media.tracknumber, media.name, media.artist.name, self.format))
+        filename = safe_filename(FILENAME_FORMAT % (media.tracknumber, media.name, media.artist.name, self.format))
         file_path = os.path.join(item_cache_dir, filename)
 
         # request a default encoded version of the 'master'
@@ -343,7 +342,7 @@ class Process(object):
         template = 'exporter/m3u/playlist.m3u'
 
         #filename 'playlist.m3u'
-        filename = '{0}.m3u'.format(safe_name(instance.name))
+        filename = '{0}.m3u'.format(safe_filename(instance.name))
 
         with open(os.path.join(cache_dir, filename), "w") as txt:
             str = render_to_string(template, {'object': instance, 'file_list': file_list})

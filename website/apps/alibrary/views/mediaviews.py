@@ -26,8 +26,7 @@ from alibrary.forms import MediaForm, MediaActionForm, MediaRelationFormSet, Ext
 from alibrary.filters import MediaFilter
 
 from tagging_extra.utils import calculate_cloud
-from lib.util import change_message
-from lib.util.form_errors import merge_form_errors
+from base.utils.form_errors import merge_form_errors
 
 import logging
 log = logging.getLogger(__name__)
@@ -329,11 +328,8 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             else:
                 formset.save()
 
-        msg = change_message.construct(self.request, form, [named_formsets['relation'], named_formsets['extraartist'],])
-
         d_tags = form.cleaned_data['d_tags']
         if d_tags:
-            msg = change_message.parse_tags(obj=self.object, d_tags=d_tags, msg=msg)
             self.object.tags = d_tags
 
 

@@ -22,7 +22,7 @@ from django_extensions.db.fields import AutoSlugField
 from base.fields.languages import LanguageField
 from base.signals.unsignal import disable_for_loaddata
 from base.mixins import TimestampedModelMixin, UUIDModelMixin
-from lib.util.sha1 import sha1_by_file
+from base.fs.utils import sha1_by_file
 from tagging.registry import register as tagging_register
 
 from alibrary import settings as alibrary_settings

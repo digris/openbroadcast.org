@@ -3,20 +3,20 @@ import os
 import re
 import locale
 import logging
+import acoustid
+import requests
+import musicbrainzngs
+
 from mutagen import File as MutagenFile
 from mutagen.easyid3 import EasyID3
 from mutagen.easymp4 import EasyMP4
 from django.conf import settings
-import acoustid
-import requests
-import musicbrainzngs
-from lib.util.sha1 import sha1_by_file
+from base.fs.utils import sha1_by_file
 from importer.util.tools import discogs_image_by_url
 from base.audio.fileinfo import FileInfoProcessor
 from alibrary.models import Media
 from fprint_client.api_client import FprintAPIClient
 from fprint_client.utils import fprint_from_path
-
 
 log = logging.getLogger(__name__)
 

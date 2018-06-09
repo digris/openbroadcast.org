@@ -24,8 +24,7 @@ from alibrary.forms import ArtistForm, ArtistActionForm, ArtistRelationFormSet, 
 from alibrary.filters import ArtistFilter
 
 from tagging_extra.utils import calculate_cloud
-from lib.util import change_message
-from lib.util.form_errors import merge_form_errors
+from base.utils.form_errors import merge_form_errors
 
 ALIBRARY_PAGINATE_BY = getattr(settings, 'ALIBRARY_PAGINATE_BY', (12,24,36,120))
 ALIBRARY_PAGINATE_BY_DEFAULT = getattr(settings, 'ALIBRARY_PAGINATE_BY_DEFAULT', 12)
@@ -359,10 +358,6 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             else:
                 formset.save()
 
-        msg = change_message.construct(self.request, form, [named_formsets['relation'],
-                                                            named_formsets['member'],
-                                                            named_formsets['alias'], ])
-
 
         # TODO: implement in a better way
         namevariations_text = form.cleaned_data['namevariations']
@@ -377,7 +372,6 @@ class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
         d_tags = form.cleaned_data['d_tags']
         if d_tags:
-            msg = change_message.parse_tags(obj=self.object, d_tags=d_tags, msg=msg)
             self.object.tags = d_tags
 
         self.object.last_editor = self.request.user

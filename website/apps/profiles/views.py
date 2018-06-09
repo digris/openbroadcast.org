@@ -219,7 +219,7 @@ def profile_edit(request, template_name='profiles/profile_form.html'):
             return HttpResponseRedirect(reverse('profiles-profile-edit'))
         else:
 
-            from lib.util.form_errors import merge_form_errors
+            from base.utils.form_errors import merge_form_errors
             form_errors = merge_form_errors([
                 user_form,
                 profile_form,

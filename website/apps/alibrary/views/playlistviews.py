@@ -338,7 +338,7 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             return HttpResponseRedirect('#')
         else:
 
-            from lib.util.form_errors import merge_form_errors
+            from base.utils.form_errors import merge_form_errors
             form_errors = merge_form_errors([form,])
 
             return self.render_to_response(self.get_context_data(form=form, form_errors=form_errors))

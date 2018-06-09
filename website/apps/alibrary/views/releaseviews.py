@@ -21,7 +21,7 @@ from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, UpdateView
 from tagging_extra.utils import calculate_cloud
-from lib.util.form_errors import merge_form_errors
+from base.utils.form_errors import merge_form_errors
 from base.models.utils.merge import merge_objects
 from pure_pagination.mixins import PaginationMixin
 from tagging.models import Tag
