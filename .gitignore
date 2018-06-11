@@ -26,7 +26,7 @@ website/temp
 website/logs
 
 # static files
-website/static
+website/static/*
 website/site-static/.sass-cache
 
 website/static-src/dist

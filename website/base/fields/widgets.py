@@ -1,14 +1,9 @@
-from django.utils.html import escape, conditional_escape
 from django.utils.safestring import mark_safe
-from django.forms.widgets import ClearableFileInput, CheckboxInput, Widget
-
-
-from filer.models import File, Image
-
-
+from django.forms.widgets import ClearableFileInput, Widget
+#from filer.models import File, Image
 
 class ReadOnlyField(Widget):
-    
+
     def render(self, name, value, attrs=None):
 
         return mark_safe('<div  class="form-extra readonly %s"><span>%s</span></div>' % (name, value))
@@ -58,27 +53,32 @@ class AdvancedFileInput(ClearableFileInput):
         substitutions['input'] = super(ClearableFileInput, self).render(name, value, attrs)
 
 
-        file = File.objects.get(pk=value)
-
-
-        if file.url:
-
-            template = self.template_with_initial
-            if self.preview:
-                substitutions['initial'] = (u'<a href="{0}">{1}</a><br>\
-                <a href="{0}" target="_blank"><img src="{0}" width="{2}"></a>'.format
-                    (escape(file.url),'.',
-                     self.image_width))
-            else:
-                substitutions['initial'] = (u'<a href="{0}">{1}</a>'.format
-                    (escape(value.url),'.'))
-            if not self.is_required:
-                checkbox_name = self.clear_checkbox_name(name)
-                checkbox_id = self.clear_checkbox_id(checkbox_name)
-                substitutions['clear_checkbox_name'] = conditional_escape(checkbox_name)
-                substitutions['clear_checkbox_id'] = conditional_escape(checkbox_id)
-                substitutions['clear'] = CheckboxInput().render(checkbox_name, False, attrs={'id': checkbox_id})
-                substitutions['clear_template'] = self.template_with_clear % substitutions
+        # file = File.objects.get(pk=value)
+        #
+        #
+        # print('************************')
+        # print(file)
+        # print('************************')
+        #
+        #
+        # if file.url:
+        #
+        #     template = self.template_with_initial
+        #     if self.preview:
+        #         substitutions['initial'] = (u'<a href="{0}">{1}</a><br>\
+        #         <a href="{0}" target="_blank"><img src="{0}" width="{2}"></a>'.format
+        #             (escape(file.url),'.',
+        #              self.image_width))
+        #     else:
+        #         substitutions['initial'] = (u'<a href="{0}">{1}</a>'.format
+        #             (escape(value.url),'.'))
+        #     if not self.is_required:
+        #         checkbox_name = self.clear_checkbox_name(name)
+        #         checkbox_id = self.clear_checkbox_id(checkbox_name)
+        #         substitutions['clear_checkbox_name'] = conditional_escape(checkbox_name)
+        #         substitutions['clear_checkbox_id'] = conditional_escape(checkbox_id)
+        #         substitutions['clear'] = CheckboxInput().render(checkbox_name, False, attrs={'id': checkbox_id})
+        #         substitutions['clear_template'] = self.template_with_clear % substitutions
 
         return mark_safe(template % substitutions)
 

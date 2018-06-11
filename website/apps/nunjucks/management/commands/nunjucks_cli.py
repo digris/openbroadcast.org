@@ -52,9 +52,10 @@ class Command(NoArgsCommand):
         for finder in finders.get_finders():
             for path, storage in finder.list([]):
 
+
                 # TOTO: find a correct way to get nj-paths
                 if '/nj/' in path:
-
+                    print(path)
                     compiled_template = self.compiler.compile_template(storage.path(path))
                     compiled_template = re.sub('/Users/ohrstrom/Documents/Code/openbroadcast.org/website/apps/(\w*)/static/', '', compiled_template)
                     templates.append( {
@@ -63,9 +64,10 @@ class Command(NoArgsCommand):
                         }
                     )
 
-
+        print(templates)
 
         tpl = render_to_string('nunjucks/compile/templates.js', {'templates': templates})
+
         file = codecs.open(target, "w", "utf-8")
         file.write(tpl)
         file.close()
