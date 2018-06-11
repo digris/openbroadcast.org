@@ -9,11 +9,12 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django_extensions.db.fields import AutoSlugField
 from django.conf import settings
 from celery.task import task
-from abcast.models import BaseModel, Channel
+from base.mixins import TimestampedModelMixin, UUIDModelMixin
+from abcast.models import Channel
 
 log = logging.getLogger(__name__)
 
@@ -30,7 +31,7 @@ class EmissionManager(models.Manager):
         return self.get_queryset().filter(time_end__lt=now)
 
 
-class Emission(BaseModel):
+class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     name = models.CharField(max_length=200, db_index=True)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
@@ -41,7 +42,7 @@ class Emission(BaseModel):
         (2, _('Error')),
     )
     status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
-    
+
     COLOR_CHOICES = (
         (0, _('Theme 1')),
         (1, _('Theme 2')),
@@ -62,18 +63,17 @@ class Emission(BaseModel):
         ('autopilot', _('Autopilot')),
     )
     source = models.CharField(verbose_name=_('Source'), max_length=12, default='user', choices=SOURCE_CHOICES)
-    
-    
+
+
     time_start = models.DateTimeField(blank=True, null=True)
     time_end = models.DateTimeField(blank=True, null=True)
-    
-    # eventually use this
+
     duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", blank=True, null=True, editable=False)
 
     user = models.ForeignKey(User, blank=True, null=True, related_name="scheduler_emissions", on_delete=models.SET_NULL)
     channel = models.ForeignKey(Channel, blank=True, null=True, related_name="scheduler_emissions", on_delete=models.SET_NULL)
-    
-    
+
+
     """
     content
     content objects have to implement certain methosds/properties:
@@ -84,7 +84,7 @@ class Emission(BaseModel):
     content_type = models.ForeignKey(ContentType, limit_choices_to = ct_limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    
+
     locked = models.BooleanField(default=False)
 
     objects = EmissionManager()
@@ -98,22 +98,22 @@ class Emission(BaseModel):
         permissions = (
             ('schedule_emission', 'Schedule Emission'),
         )
-    
-    
+
+
     def __unicode__(self):
         return u'%s' % self.name
-    
-    
+
+
     @models.permalink
-    def get_absolute_url(self):      
+    def get_absolute_url(self):
         return 'abcast-emission-detail', [self.pk]
-    
-    
+
+
     def get_api_url(self):
-        return reverse('api_dispatch_detail', kwargs={  
-            'api_name': 'v1',  
-            'resource_name': 'abcast/emission',  
-            'pk': self.pk  
+        return reverse('api_dispatch_detail', kwargs={
+            'api_name': 'v1',
+            'resource_name': 'abcast/emission',
+            'pk': self.pk
         }) + ''
 
 
@@ -132,12 +132,12 @@ class Emission(BaseModel):
 
         if self.locked:
             return self.locked
-        
+
         lock = False
         if self.time_start < datetime.datetime.now():
             lock = True
         return lock
-    
+
     @property
     def is_playing(self):
         playing = False
@@ -170,7 +170,7 @@ class Emission(BaseModel):
             self.time_end = self.time_start + datetime.timedelta(milliseconds=self.duration)
 
         super(Emission, self).save(*args, **kwargs)
-        
+
 
 def post_save_emission(sender, **kwargs):
 
@@ -246,11 +246,11 @@ def pre_delete_emission(sender, **kwargs):
 
 
 pre_delete.connect(pre_delete_emission, sender=Emission)
-        
-        
-        
-class DaypartSet(BaseModel):
-    
+
+
+
+class DaypartSet(models.Model):
+
     channel = models.ForeignKey(Channel, blank=False, null=True, related_name="daypartsets", on_delete=models.SET_NULL)
 
     time_start = models.DateField(blank=False, null=True)
@@ -260,12 +260,12 @@ class DaypartSet(BaseModel):
         app_label = 'abcast'
         verbose_name = _('Daypart set')
         verbose_name_plural = _('Daypart sets')
-        ordering = ('created', )
-    
-    
+        ordering = ('time_start', )
+
+
     def __unicode__(self):
         return u'%s' % self.time_start
-        
+
 
 
 
@@ -287,13 +287,13 @@ class Weekday(models.Model):
         verbose_name = _('Weekay')
         verbose_name_plural = _('Weekays')
         ordering = ('day', )
-    
-    
+
+
     def __unicode__(self):
         return u'%s' % self.get_day_display()
-    
 
-class Daypart(BaseModel):
+
+class Daypart(models.Model):
 
     DAY_CHOICES = (
         (0, _('Mon')),
@@ -306,10 +306,10 @@ class Daypart(BaseModel):
     )
     daypartset = models.ForeignKey(DaypartSet, blank=False, null=True, on_delete=models.SET_NULL)
     weekdays = models.ManyToManyField(Weekday, blank=True)
-    
+
     time_start = models.TimeField()
     time_end = models.TimeField()
-    
+
     name = models.CharField(max_length=128, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     mood = models.TextField(null=True, blank=True)
@@ -325,8 +325,8 @@ class Daypart(BaseModel):
         verbose_name = _('Daypart')
         verbose_name_plural = _('Dayparts')
         ordering = ('position', 'time_start', )
-    
-    
+
+
     def __unicode__(self):
         return u'%s - %s' % (self.time_start, self.time_end)
 

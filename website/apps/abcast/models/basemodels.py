@@ -11,46 +11,77 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext as _
-from django_extensions.db.fields import UUIDField, CreationDateTimeField, ModificationDateTimeField, AutoSlugField
-from filer.fields.image import FilerImageField
+from django_extensions.db.fields import AutoSlugField
 from l10n.models import Country
 from base.fields import extra
+from base.mixins import TimestampedModelMixin, UUIDModelMixin
 from phonenumber_field.modelfields import PhoneNumberField
 
-
-class BaseModel(models.Model):
-
-    uuid = UUIDField()
-    created = CreationDateTimeField()
-    updated = ModificationDateTimeField()
-
-    class Meta:
-        abstract = True
-
-
-class Station(BaseModel):
-
-    name = models.CharField(max_length=256, null=True, blank=True)
-    teaser = models.CharField(max_length=512, null=True, blank=True)
-    slug = AutoSlugField(populate_from='name')
+class Station(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     TYPE_CHOICES = (
         ('stream', _('Stream')),
         ('djmon', _('DJ-Monitor')),
     )
-    type = models.CharField(verbose_name=_('Type'), max_length=12, default='stream', choices=TYPE_CHOICES)
+    type = models.CharField(
+        verbose_name=_('Type'),
+        max_length=12, default='stream',
+        choices=TYPE_CHOICES
+    )
 
-    main_image = FilerImageField(null=True, blank=True, related_name="station_main_image", rel='')
-    description = extra.MarkdownTextField(blank=True, null=True)
-    members = models.ManyToManyField(User, through='StationMembers', blank=True)
-    website = models.URLField(max_length=256, null=True, blank=True)
-    phone = PhoneNumberField(_('phone'), blank=True, null=True)
-    fax = PhoneNumberField(_('fax'), blank=True, null=True)
-    address1 = models.CharField(_('address'), null=True, blank=True, max_length=100)
-    address2 = models.CharField(_('address (secondary)'), null=True, blank=True, max_length=100)
-    city = models.CharField(_('city'), null=True, blank=True, max_length=100)
-    zip = models.CharField(_('zip'), null=True, blank=True, max_length=10)
-    country = models.ForeignKey(Country, blank=True, null=True)
+    name = models.CharField(
+        max_length=256, null=True, blank=True
+    )
+    slug = AutoSlugField(
+        populate_from='name'
+    )
+    teaser = models.CharField(
+        max_length=512, null=True, blank=True
+    )
+    main_image = models.ImageField(
+        verbose_name=_('Image'),
+        upload_to='abcast/station',
+        null=True, blank=True
+    )
+    description = extra.MarkdownTextField(
+        blank=True, null=True
+    )
+    members = models.ManyToManyField(
+        User,
+        through='StationMembers',
+        blank=True
+    )
+    website = models.URLField(
+        max_length=256, null=True, blank=True
+    )
+    phone = PhoneNumberField(
+        _('phone'),
+        blank=True, null=True
+    )
+    fax = PhoneNumberField(
+        _('fax'),
+        blank=True, null=True
+    )
+    address1 = models.CharField(
+        _('address'),
+        null=True, blank=True, max_length=100
+    )
+    address2 = models.CharField(
+        _('address (secondary)'),
+        null=True, blank=True, max_length=100
+    )
+    city = models.CharField(
+        _('city'),
+        null=True, blank=True, max_length=100
+    )
+    zip = models.CharField(
+        _('zip'),
+        null=True, blank=True, max_length=10
+    )
+    country = models.ForeignKey(
+        Country,
+        blank=True, null=True
+    )
 
     class Meta:
         app_label = 'abcast'
@@ -73,9 +104,11 @@ arating.enable_voting_on(Station)
 
 
 
-class Role(BaseModel):
+class Role(models.Model):
 
-    name = models.CharField(max_length=200)
+    name = models.CharField(
+        max_length=200
+    )
 
     class Meta:
         app_label = 'abcast'
@@ -88,9 +121,18 @@ class Role(BaseModel):
 
 
 class StationMembers(models.Model):
-    user = models.ForeignKey(User, related_name='station_membership')
-    station = models.ForeignKey(Station)
-    roles = models.ManyToManyField(Role, blank=True, related_name='memgership_roles')
+    user = models.ForeignKey(
+        User,
+        related_name='station_membership'
+    )
+    station = models.ForeignKey(
+        Station
+    )
+    roles = models.ManyToManyField(
+        Role,
+        blank=True,
+        related_name='memgership_roles'
+    )
 
     class Meta:
         app_label = 'abcast'
@@ -101,56 +143,109 @@ class StationMembers(models.Model):
 """
 Holds what is on air right now
 """
-class OnAirItem(BaseModel):
+class OnAirItem(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(
+        ContentType
+    )
     object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey(
+        'content_type', 'object_id'
+    )
 
     class Meta:
         app_label = 'abcast'
         verbose_name = _('On Air')
         verbose_name_plural = _('On Air')
-        unique_together = ('content_type', 'object_id',)
+        unique_together = (
+            'content_type',
+            'object_id',
+        )
 
     def __unicode__(self):
         return "%s : %s" % (self.channel.pk, self.channel.pk)
 
 
-class Channel(BaseModel):
+class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
-    name = models.CharField(max_length=256, null=True, blank=True)
-    teaser = models.CharField(max_length=512, null=True, blank=True)
-    slug = AutoSlugField(populate_from='name')
+    name = models.CharField(
+        max_length=256, null=True, blank=True
+    )
+    teaser = models.CharField(
+        max_length=512, null=True, blank=True
+    )
+    slug = AutoSlugField(
+        populate_from='name'
+    )
 
     TYPE_CHOICES = (
         ('stream', _('Stream')),
         ('djmon', _('DJ-Monitor')),
     )
-    type = models.CharField(verbose_name=_('Type'), max_length=12, default='stream', choices=TYPE_CHOICES)
-
-    stream_url = models.CharField(max_length=256, null=True, blank=True, help_text=_('setting the stream-url overrides server settings'))
-    description = extra.MarkdownTextField(blank=True, null=True)
-    station = models.ForeignKey('Station', null=True, blank=True, on_delete=models.SET_NULL)
-    rtmp_app = models.CharField(max_length=256, null=True, blank=True)
-    rtmp_path = models.CharField(max_length=256, null=True, blank=True)
-    has_scheduler = models.BooleanField(default=False)
-    mount = models.CharField(max_length=64, null=True, blank=True)
+    type = models.CharField(
+        verbose_name=_('Type'),
+        max_length=12,
+        default='stream', choices=TYPE_CHOICES
+    )
+    stream_url = models.CharField(
+        max_length=256, null=True, blank=True,
+        help_text=_('setting the stream-url overrides server settings')
+    )
+    description = extra.MarkdownTextField(
+        blank=True, null=True
+    )
+    station = models.ForeignKey(
+        'Station',
+        null=True, blank=True,
+        on_delete=models.SET_NULL
+    )
+    rtmp_app = models.CharField(
+        max_length=256, null=True, blank=True
+    )
+    rtmp_path = models.CharField(
+        max_length=256, null=True, blank=True
+    )
+    has_scheduler = models.BooleanField(
+        default=False
+    )
+    mount = models.CharField(
+        max_length=64, null=True, blank=True
+    )
 
     # credentials for tunein api
-    tunein_station_id = models.CharField(max_length=16, null=True, blank=True)
-    tunein_partner_id = models.CharField(max_length=16, null=True, blank=True)
-    tunein_partner_key = models.CharField(max_length=16, null=True, blank=True)
+    tunein_station_id = models.CharField(
+        max_length=16, null=True, blank=True
+    )
+    tunein_partner_id = models.CharField(
+        max_length=16, null=True, blank=True
+    )
+    tunein_partner_key = models.CharField(
+        max_length=16, null=True, blank=True
+    )
 
     # credentials for icecast2 metadata
-    icecast2_server = models.CharField(max_length=256, null=True, blank=True)
-    icecast2_mountpoint = models.CharField(max_length=128, null=True, blank=True)
-    icecast2_admin_user = models.CharField(max_length=128, null=True, blank=True)
-    icecast2_admin_pass = models.CharField(max_length=128, null=True, blank=True)
+    icecast2_server = models.CharField(
+        max_length=256, null=True, blank=True
+    )
+    icecast2_mountpoint = models.CharField(
+        max_length=128, null=True, blank=True
+    )
+    icecast2_admin_user = models.CharField(
+        max_length=128, null=True, blank=True
+    )
+    icecast2_admin_pass = models.CharField(
+        max_length=128, null=True, blank=True
+    )
 
-    on_air_type = models.ForeignKey(ContentType, null=True, blank=True)
-    on_air_id = models.PositiveIntegerField(null=True, blank=True)
-    on_air = GenericForeignKey('on_air_type', 'on_air_id')
+    on_air_type = models.ForeignKey(
+        ContentType, null=True, blank=True
+    )
+    on_air_id = models.PositiveIntegerField(
+        null=True, blank=True
+    )
+    on_air = GenericForeignKey(
+        'on_air_type', 'on_air_id'
+    )
 
     class Meta:
         app_label = 'abcast'

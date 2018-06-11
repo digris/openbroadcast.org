@@ -44,7 +44,6 @@ class DaypartSetAdmin(admin.ModelAdmin):
     )
     list_filter = ('channel',)
     date_hierarchy = 'time_start'
-    readonly_fields = ('uuid',)
 
     inlines = [DaypartInline,]
 
