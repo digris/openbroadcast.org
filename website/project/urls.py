@@ -10,6 +10,8 @@ from cms.sitemaps import CMSSitemap
 from django.contrib.sitemaps.views import sitemap
 from alibrary.sitemap import ReleaseSitemap
 
+from loginas.views import user_login as loginas_user
+
 DEBUG = getattr(settings, 'DEBUG', False)
 
 def handler500(request):
@@ -42,7 +44,7 @@ urlpatterns = [
     url(r'^api/', include(api.urls)),
     # api v2 patterns
     url(r'^api/v2/', include('project.urls_apiv2', namespace='api')),
-    #url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
+
     url(r'^postman/', include('postman.urls')),
     url(r'^selectable/', include('selectable.urls')),
     url(r'^ip/', include('iptracker.urls')),
@@ -51,16 +53,15 @@ urlpatterns = [
     # registration
     #url(r'^accounts/', include('invitation.urls')),
     url(r'^accounts/', include('registration.backends.simple.urls')),
-    url(r"^accounts/login_as/(?P<user_id>.+)/$", "loginas.views.user_login", name="loginas-user-login"),
+
+    #url(r"^accounts/login_as/(?P<user_id>.+)/$", "loginas.views.user_login", name="loginas-user-login"),
+    url(r"^accounts/login_as/(?P<user_id>.+)/$", loginas_user, name="loginas-user-login"),
+
     url(r'^sa/', include('social_auth.urls')),
     url(r'^captcha/', include('captcha.urls')),
 
     # filer (protected)
     url(r'^', include('filer.server.urls')),
-    # only devel
-    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
-        'document_root': settings.MEDIA_ROOT,
-    }),
 
     # massimporter / maintainer extra urls
     url(r'^admin-extra/', include('massimporter.urls')),

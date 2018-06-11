@@ -222,11 +222,11 @@ class Resource(object):
                     patch_cache_control(response, no_cache=True)
 
                 return response
-            except (BadRequest, fields.ApiFieldError), e:
+            except (BadRequest, fields.ApiFieldError) as e:
                 return http.HttpBadRequest(e.args[0])
-            except ValidationError, e:
+            except ValidationError as e:
                 return http.HttpBadRequest(', '.join(e.messages))
-            except Exception, e:
+            except Exception as e:
                 if hasattr(e, 'response'):
                     return e.response
 
@@ -344,10 +344,12 @@ class Resource(object):
             urls += self.override_urls()
 
         urls += self.base_urls()
-        urlpatterns = patterns('',
-            *urls
-        )
-        return urlpatterns
+        return urls
+        # TODO: investigate if no side effects
+        # urlpatterns = patterns('',
+        #     *urls
+        # )
+        # return urlpatterns
 
     def determine_format(self, request):
         """

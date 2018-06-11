@@ -100,7 +100,9 @@ class Api(object):
 
         for name in sorted(self._registry.keys()):
             self._registry[name].api_name = self.api_name
-            pattern_list.append((r"^(?P<api_name>%s)/" % self.api_name, include(self._registry[name].urls)))
+            # refactored to `url`
+            # https://github.com/django-tastypie/django-tastypie/blob/v0.13.0/tastypie/api.py
+            pattern_list.append(url(r"^(?P<api_name>%s)/" % self.api_name, include(self._registry[name].urls)))
 
         urlpatterns = self.prepend_urls()
 
@@ -108,9 +110,13 @@ class Api(object):
             warnings.warn("'override_urls' is a deprecated method & will be removed by v1.0.0. Please rename your method to ``prepend_urls``.")
             urlpatterns += self.override_urls()
 
-        urlpatterns += patterns('',
-            *pattern_list
-        )
+        for pattern in pattern_list:
+            urlpatterns.append(pattern)
+
+        # urlpatterns += patterns('',
+        #     *pattern_list
+        # )
+
         return urlpatterns
 
     def top_level(self, request, api_name=None):

@@ -1,7 +1,7 @@
 ################################################
 # core
 ################################################
-Django==1.8.19
+Django==1.10.8
 
 
 ################################################
@@ -51,8 +51,9 @@ django-auditlog==0.3.2
 django-avatar==2.0
 django-badbrowser==1.0.7
 django-braces==1.8.1
-django-cache-machine==0.9
-django-cacheops==2.4.3
+#django-cache-machine==0.9
+#django-cacheops==2.4.3
+django-cacheops==4.0.6
 django-celery==3.2.1
 django-celery-email==1.1.3
 django-click==1.2.0
@@ -77,7 +78,9 @@ django-missing==0.1.11
 django-model-utils==2.3.1
 django-mptt==0.7.4
 django-oauth2-provider==0.2.6.1
-django-polymorphic==0.7.2
+https://django-polymorphic.readthedocs.io/en/stable/changelog.html
+# 1.2 is last version with django 1.9 support
+django-polymorphic==1.2
 django-redis==4.2.0
 redis==2.10.5
 #redlock==1.2.0
@@ -117,15 +120,15 @@ coreapi==2.3.1
 # django-cms==3.4.1
 # django-cms 3.4 does not work! introduces strange error:
 # https://sentry.pbi.io/pbi/open-broadcast-platform/issues/40/
-django-cms==3.4.5
+django-cms==3.4.6
 django-treebeard==4.2.1
-djangocms-admin-style==0.2.8
+djangocms-admin-style==1.2.8
 djangocms-column==1.6.0
 djangocms-file==0.1
 djangocms-link==1.6.2
-djangocms-picture==0.1
+#djangocms-picture==0.1
 djangocms-snippet==1.5
-djangocms-teaser==0.1
+#djangocms-teaser==0.1
 djangocms-text-ckeditor==3.3.1
 djangocms-video==0.1
 cmsplugin-filer==0.10.2
@@ -152,6 +155,7 @@ django-adv-cache-tag==0.3.0
 -e git://github.com/hzlf/python-audio-tools.git@master#egg=python-audio-tools
 -e git+https://github.com/hzlf/graypy.git@master#egg=graypy
 -e git+https://ohrstrom@lab.hazelfire.com/hazelfire/obp/pyacoustid.git@deploy#egg=pyacoustid
+-e git+https://github.com/hzlf/django-announcements@master#egg=django-announcements
 -e git+https://github.com/hzlf/djangocms-panel@master#egg=djangocms-panel
 
 

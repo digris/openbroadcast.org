@@ -1,19 +1,19 @@
 from django.contrib import admin
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.contrib.contenttypes.admin import GenericTabularInline, GenericStackedInline
 
 from genericadmin.views import generic_lookup, get_generic_rel_list
 
-JS_PATH = getattr(settings, 'GENERICADMIN_JS', 'genericadmin/js/') 
+JS_PATH = getattr(settings, 'GENERICADMIN_JS', 'genericadmin/js/')
 
 class BaseGenericModelAdmin(object):
     class Media:
         js = ()
 
     content_type_lookups = {}
-    
+
     def __init__(self, model, admin_site):
         self.grappelli = False
         try:
@@ -31,11 +31,11 @@ class BaseGenericModelAdmin(object):
     def get_urls(self):
         base_urls = super(BaseGenericModelAdmin, self).get_urls()
         opts = self.get_generic_relation_options()
-        custom_urls = patterns('',
+        custom_urls = [
             url(r'^obj/$', self.admin_site.admin_view(generic_lookup), name='admin_genericadmin_obj_lookup'),
-            url(r'^get-generic-rel-list/$', self.admin_site.admin_view(get_generic_rel_list), kwargs=opts, 
+            url(r'^get-generic-rel-list/$', self.admin_site.admin_view(get_generic_rel_list), kwargs=opts,
                 name='admin_genericadmin_rel_list'),
-        )
+        ]
         return custom_urls + base_urls
 
     def get_generic_relation_options(self):
@@ -62,7 +62,7 @@ class GenericAdminModelAdmin(BaseGenericModelAdmin, admin.ModelAdmin):
 
 
 class GenericTabularInline(BaseGenericModelAdmin, GenericTabularInline):
-    """Model admin for generic tabular inlines. """ 
+    """Model admin for generic tabular inlines. """
 
 
 class GenericStackedInline(BaseGenericModelAdmin, GenericStackedInline):
