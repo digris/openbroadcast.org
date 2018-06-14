@@ -1,0 +1,56 @@
+POST http://localhost:9201/movies/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "match": {
+      "name.edgengram": "the"
+    }
+  },
+    "highlight" : {
+    "fields" : {
+        "name" : {}
+    }
+  }
+}
+
+//{
+//    "query": {
+//        "match" : {
+//            "name.edgengram" : {
+//                "query": "america the",
+//                "operator" : "and"
+//            }
+//        }
+//    }
+//}
+
+//{
+//    "query": {
+//        "match" : {
+//            "name.edgengram" : {
+//                "query": "america",
+//                "fuzziness": "AUTO",
+//                "operator" : "and"
+//            }
+//        }
+//    },
+//    "highlight" : {
+//        "fields" : {
+//            "name" : {"type" : "plain"}
+//        }
+//    }
+//}
+
+//{
+//    "query": {
+//        "match" : {
+//            "name" : {
+//                "query": "america the",
+//                "operator" : "and"
+//            }
+//        }
+//    }
+//}
+
+###

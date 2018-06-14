@@ -69,8 +69,8 @@ urlpatterns = [
 
     url(r'^collection/', include('collection.urls', namespace='collection')),
 
-    url(r'^search/', include('search.urls')),
-    url(r'^search-hs/', include('haystack.urls')),
+    # url(r'^search/', include('search.urls')),
+    # url(r'^search-hs/', include('haystack.urls')),
     url(r'^sitemap.xml$', sitemap, {'sitemaps': sitemaps}),
 
     url(r'^player/', include('aplayer.urls')),

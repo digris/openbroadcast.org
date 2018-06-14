@@ -20,6 +20,10 @@ def pushy_publish(channel, key, message):
 
 
 def pushy_post_save(sender, **kwargs):
+
+    if kwargs.get('raw'):
+        return
+
     rs = redis.StrictRedis(host=pushy_settings.get_redis_host())
     obj = kwargs['instance']
     created = kwargs['created']

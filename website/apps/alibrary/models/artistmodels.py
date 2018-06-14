@@ -16,13 +16,14 @@ from base.mixins import TimestampedModelMixin
 from celery.task import task
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, NoReverseMatch
 from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
+from django.utils import translation
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
 from l10n.models import Country
@@ -221,10 +222,17 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
     def get_absolute_url(self):
         if self.disable_link:
             return None
-        return reverse('alibrary-artist-detail', kwargs={
-            'pk': self.pk,
-            'slug': self.slug,
-        })
+        try:
+            return reverse('alibrary-artist-detail', kwargs={
+                'pk': self.pk,
+                'slug': self.slug,
+            })
+        except NoReverseMatch:
+            translation.activate('en')
+            return reverse('alibrary-artist-detail', kwargs={
+                'pk': self.pk,
+                'slug': self.slug,
+            })
 
     def get_edit_url(self):
         return reverse("alibrary-artist-edit", args=(self.pk,))

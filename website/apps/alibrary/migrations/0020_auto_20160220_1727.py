@@ -5,14 +5,19 @@ from django.db import migrations, models
 import uuid
 
 def concat_uuid(apps, schema_editor):
+
     qs = apps.get_model("alibrary", "Label")
-    for object in qs.objects.all():
+    for object in qs.objects.using(schema_editor.connection.alias).all():
         qs.objects.filter(pk=object.pk).update(uuid=object.uuid.replace('-', ''))
 
 
-sql_uuid_migration = """
-alter table alibrary_label alter column uuid type uuid using uuid::uuid;
-"""
+def forwards(apps, schema_editor):
+    if not schema_editor.connection.vendor == 'postgresql':
+        print('db backend not postgres - skipping table update')
+        return
+    migrations.RunSQL(
+        "alter table alibrary_label alter column uuid type uuid using uuid::uuid;")
+
 
 class Migration(migrations.Migration):
 
@@ -22,7 +27,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunPython(concat_uuid),
-        migrations.RunSQL(sql_uuid_migration, None, [
+        migrations.RunPython(forwards, None, [
             migrations.AlterField(
                 model_name='label',
                 name='uuid',

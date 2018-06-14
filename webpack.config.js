@@ -3,6 +3,7 @@
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const path = require('path');
 
 const DEV_MODE = process.env.NODE_ENV !== 'production';
@@ -45,6 +46,12 @@ module.exports = {
                         includePaths: ['./static/js/'],
                     },
                 }
+            }, {
+                test: /\.css$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader'
+                ]
             },
             {
                 test: /\.sass$/,
@@ -68,6 +75,7 @@ module.exports = {
                             }
                         },
                     },
+
                     {
                         loader: 'postcss-loader',
                     }
@@ -100,7 +108,8 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
-        })
+        }),
+        new VueLoaderPlugin()
     ],
     resolve: {
         alias: {

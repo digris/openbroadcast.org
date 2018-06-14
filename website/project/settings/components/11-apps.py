@@ -29,6 +29,9 @@ INSTALLED_APPS = [
     'django_date_extensions',
     'haystack',
     'celery_haystack',
+
+    'django_elasticsearch_dsl',
+
     'search',
 
     'addthis',
@@ -389,9 +392,9 @@ WAVEFORM_SIZES = {
 }
 
 
-"""
-Search
-"""
+#######################################################################
+# search
+#######################################################################
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'search.backends.UnstemmedElasticsearchSearchEngine',
@@ -452,6 +455,18 @@ ELASTICSEARCH_INDEX_SETTINGS = {
 }
 
 HAYSTACK_DEFAULT_OPERATOR = 'and'
+
+
+#######################################################################
+# search v2
+#######################################################################
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
+
+
 
 
 """

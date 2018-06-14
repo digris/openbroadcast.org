@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('contenttypes', '0002_remove_content_type_name'),
         ('filer', '0002_auto_20150606_2003'),
-        ('l10n', '__first__'),
+        ('l10n', '0001_initial'),
     ]
 
     operations = [

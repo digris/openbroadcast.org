@@ -21,12 +21,16 @@ def concat_uuids(apps, schema_editor):
 
     for item in items:
         qs = apps.get_model("alibrary", item)
-        for object in qs.objects.all():
+        for object in qs.objects.using(schema_editor.connection.alias).all():
             qs.objects.filter(pk=object.pk).update(uuid=object.uuid.replace('-', ''))
 
 
 
-sql_uuid_migration = """
+def forwards(apps, schema_editor):
+    if not schema_editor.connection.vendor == 'postgresql':
+        print('db backend not postgres - skipping table update')
+        return
+    migrations.RunSQL("""
 alter table alibrary_agency alter column uuid type uuid using uuid::uuid;
 alter table alibrary_distributor alter column uuid type uuid using uuid::uuid;
 alter table alibrary_media alter column uuid type uuid using uuid::uuid;
@@ -36,7 +40,8 @@ alter table alibrary_playlistitemplaylist alter column uuid type uuid using uuid
 alter table alibrary_playlistmedia alter column uuid type uuid using uuid::uuid;
 alter table alibrary_release alter column uuid type uuid using uuid::uuid;
 alter table alibrary_series alter column uuid type uuid using uuid::uuid;
-"""
+""")
+
 
 
 class Migration(migrations.Migration):
@@ -48,7 +53,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RunPython(concat_uuids),
 
-        migrations.RunSQL(sql_uuid_migration, None, [
+        migrations.RunPython(forwards, None, [
 
             migrations.AlterField(
                 model_name='agency',

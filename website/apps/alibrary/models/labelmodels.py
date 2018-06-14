@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 from django.db import models
 import tagging
 import os
@@ -8,7 +9,8 @@ import uuid
 import arating
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
+from django.utils import translation
+from django.core.urlresolvers import reverse, NoReverseMatch
 from django.contrib.contenttypes.fields import GenericRelation
 from phonenumber_field.modelfields import PhoneNumberField
 from l10n.models import Country
@@ -123,10 +125,17 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     def get_absolute_url(self):
         if self.disable_link:
             return None
-        return reverse('alibrary-label-detail', kwargs={
-            'pk': self.pk,
-            'slug': self.slug,
-        })
+        try:
+            return reverse('alibrary-label-detail', kwargs={
+                'pk': self.pk,
+                'slug': self.slug,
+            })
+        except NoReverseMatch:
+            translation.activate('en')
+            return reverse('alibrary-label-detail', kwargs={
+                'pk': self.pk,
+                'slug': self.slug,
+            })
 
     def get_edit_url(self):
         return reverse("alibrary-label-edit", args=(self.pk,))

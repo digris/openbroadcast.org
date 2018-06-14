@@ -4,10 +4,13 @@ from __future__ import unicode_literals
 from django.db import migrations, models
 import uuid
 
-sql_uuid_migration = """
-alter table massimporter_massimport alter column uuid type uuid using uuid::uuid;
-alter table massimporter_massimportfile alter column uuid type uuid using uuid::uuid;
-"""
+
+def forwards(apps, schema_editor):
+    if not schema_editor.connection.vendor == 'postgresql':
+        print('db backend not postgres - skipping table update')
+        return
+    migrations.RunSQL("""alter table massimporter_massimport alter column uuid type uuid using uuid::uuid;
+alter table massimporter_massimportfile alter column uuid type uuid using uuid::uuid;""")
 
 class Migration(migrations.Migration):
 
@@ -17,7 +20,7 @@ class Migration(migrations.Migration):
 
     operations = [
 
-        migrations.RunSQL(sql_uuid_migration, None, [
+        migrations.RunPython(forwards, None, [
             migrations.AlterField(
                 model_name='massimport',
                 name='uuid',

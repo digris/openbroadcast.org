@@ -9,3 +9,25 @@ import '../sass/scheduler.sass'
 
 // global stylesheet import
 import '../sass/bundle.sass';
+
+
+//
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex);
+
+import SearchApp from './apps/search-app.vue';
+
+
+$(function () {
+    let s = new Vue({
+        el: '#search_app_ng',
+        render: h => h(SearchApp, {
+            props: {
+                search_scope: 'bar'
+            }
+        })
+    });
+
+});

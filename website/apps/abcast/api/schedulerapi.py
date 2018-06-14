@@ -45,9 +45,9 @@ class PlaylistResource(ModelResource):
         resource_name = 'simpleplaylist'
         #excludes = ['updated',]
         include_absolute_url = True
-        
+
         always_return_data = True
-        
+
         authentication =  MultiAuthentication(SessionAuthentication(), ApiKeyAuthentication())
         authorization = Authorization()
         filtering = {
@@ -64,7 +64,7 @@ class EmissionResource(ModelResource):
     co_to = {
              Playlist: PlaylistResource,
              }
-    
+
     content_object = GenericForeignKeyField(to=co_to, attribute='content_object', null=False, full=True)
 
     class Meta:
@@ -106,13 +106,13 @@ class EmissionResource(ModelResource):
 
 
     def dehydrate(self, bundle):
-        
+
         obj = bundle.obj
-        
+
         bundle.data['locked'] = obj.has_lock
         bundle.data['playing'] = obj.is_playing
         bundle.data['type_display'] = obj.get_type_display()
-        
+
         bundle.data['overlap'] = False
         if obj.time_start.hour < SCHEDULER_OFFSET:
                 tt = obj.time_start + datetime.timedelta(days=-1)
@@ -120,7 +120,7 @@ class EmissionResource(ModelResource):
                 bundle.data['overlap'] = True
         else:
             bundle.data['day_id'] = obj.time_start.strftime("%Y-%m-%d")
-        
+
         if obj.user:
             bundle.data['user'] = {
                                     'username': obj.user.username,
@@ -162,10 +162,10 @@ class EmissionResource(ModelResource):
         return bundle
 
 
-    
+
     # additional methods
     def prepend_urls(self):
-        
+
         return [
             url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/reschedule%s$" % (
                 self._meta.resource_name, trailing_slash()),
@@ -194,14 +194,14 @@ class EmissionResource(ModelResource):
             e.locked = True
         else:
             e.locked = False
-            
+
         e.color = int(color)
         data = {}
-        
+
         e.save()
 
         #action.send(request.user, verb='updated', target=e.content_object)
-        
+
         return self.json_response(request, data)
 
     def reschedule(self, request, **kwargs):
@@ -214,7 +214,7 @@ class EmissionResource(ModelResource):
 
         top = data.get('top', None)
         left = data.get('left', None)
-        
+
         num_days = data.get('num_days', SCHEDULER_NUM_DAYS)
         channel_id = data.get('channel_id', SCHEDULER_DEFAULT_CHANNEL_ID)
 
@@ -227,15 +227,15 @@ class EmissionResource(ModelResource):
         pph = SCHEDULER_PPH
         # ppd = SCHEDULER_PPD
         ppd = (SCHEDULER_GRID_WIDTH - SCHEDULER_GRID_OFFSET) / int(num_days)
-        
+
         top = float(top) / pph * 60
         #offset_min = int(15 * round(float(top)/15))
         offset_min = int(5 * round(float(top)/5))
-    
+
         left = float(left) / ppd
         offset_d = int(round(float(left)))
-    
-        
+
+
         log.debug('minutes (offset): %s' % offset_min)
         log.debug('days (offset): %s' % offset_d)
 
@@ -257,16 +257,16 @@ class EmissionResource(ModelResource):
 
         log.debug('time_start: %s' % time_start)
         log.debug('time_end: %s' % time_end)
-    
+
         success = True
-    
+
         # check if in past
         now = datetime.datetime.now()
         lock_end = now + datetime.timedelta(seconds=SCHEDULER_LOCK_AHEAD)
         if lock_end > time_start:
             data = { 'message': _('You cannot schedule emissions in the past.') }
             success = False
-        
+
         # check if slot is free
         es = Emission.objects.filter(time_end__gt=time_start + datetime.timedelta(seconds=2),
                                      time_start__lt=time_end,
@@ -301,32 +301,31 @@ class EmissionResource(ModelResource):
             data['status'] = True
 
             action.send(request.user, verb='rescheduled', target=e.content_object)
-        
-        
+
+
         # always save to trigger push-update
         e.save()
-        
-        
-        
+
+
+
         return self.json_response(request, data)
 
 
 
 
     def json_response(self, request, data):
-        
+
         self.method_check(request, allowed=['get', 'post'])
         self.is_authenticated(request)
         self.throttle_check(request)
         self.log_throttled_access(request)
-        
+
         return HttpResponse(json.dumps(data), content_type='application/json; charset=utf8')
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+

@@ -1,0 +1,19 @@
+POST http://localhost:9201/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "prefix": {
+      "name.keywordstring": "sony"
+    }
+  }
+}
+
+<> 2018-06-14T114310.200.json
+<> 2018-06-14T114213.200.json
+<> 2018-06-14T114158.200.json
+<> 2018-06-14T114143.200.json
+<> 2018-06-14T114117.200.json
+<> 2018-06-14T113546.200.json
+
+###

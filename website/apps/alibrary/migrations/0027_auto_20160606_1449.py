@@ -4,6 +4,16 @@ from __future__ import unicode_literals
 from django.db import migrations, models
 
 
+def forwards(apps, schema_editor):
+    if not schema_editor.connection.vendor == 'postgresql':
+        print('db backend not postgres - skipping table update')
+        return
+    else:
+        print('db backend is postgres - skipping table update')
+    migrations.RunSQL(
+        "alter table alibrary_artist alter column uuid type uuid using uuid::uuid;")
+
+
 class Migration(migrations.Migration):
 
     dependencies = [

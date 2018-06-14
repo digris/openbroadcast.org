@@ -369,6 +369,7 @@ class ChannelResource(ModelResource):
 class BaseResource(Resource):
 
     base_url = Site.objects.get_current().domain
+    #base_url = 'foo'
 
     class Meta:
         # queryset = ImportFile.objects.all()

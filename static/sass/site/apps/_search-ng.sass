@@ -1,0 +1,74 @@
+///////////////////////////////////////////////////////////////////////
+// ng-search app - serves as a replacement for 'search' once
+// completed
+///////////////////////////////////////////////////////////////////////
+
+
+
+%search-result-item
+  display: flex
+  padding: 8px 8px
+  margin: 0 0 0
+  border-bottom: 1px solid #afafaf
+  background: white
+
+  &.active
+    background: $primary-color-a-bg-light
+
+  .controls
+
+    &.controls-image
+      figure
+        background: #afafaf
+        margin: 0
+        padding: 0
+        img
+          width: 60px
+          height: 60px
+
+    &.controls-meta
+      flex-grow: 1
+      padding: 0 8px
+
+
+
+
+.search-app
+
+  margin-top: 100px
+
+  .search-input-container
+    background: white
+
+    input
+      background: black
+      width: 350px
+      height: 27px
+      padding: 2px 5px
+      border: none
+      color: $white
+      //text-transform: uppercase
+      //background-color: rgba(255, 255, 255, 0.3)
+      //background: transparent
+
+      &::placeholder
+        color: rgba(255, 255, 255, 0.75)
+
+      &:focus::placeholder
+        color: rgba(255, 255, 255, 0.25)
+
+  .search-result-container
+    display: none
+    position: absolute
+    width: 100%
+    border: 1px solid black
+
+    &.expanded
+      display: block
+
+    .search-result
+      @extend %search-result-item
+
+
+    //.search-result.active
+    //  background: yellow
