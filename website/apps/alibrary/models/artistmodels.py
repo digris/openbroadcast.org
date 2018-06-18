@@ -253,7 +253,6 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         return self.biography
 
     @cached_property
-    #@property
     def get_membership(self):
         """ get artists group/band membership """
         return [m.parent for m in ArtistMembership.objects.filter(child=self)]

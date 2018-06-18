@@ -1,6 +1,7 @@
 import store from "../store";
 import axios from 'axios';
 import debounce from 'debounce';
+import ClickOutside from 'vue-click-outside';
 
 const api_client = axios.create({
     xsrfHeaderName: 'X-CSRFTOKEN',
@@ -27,41 +28,71 @@ export default {
     data() {
         return {
             loading: false,
+            active: false,
             search_input_has_focus: false,
             search_query_string: '',
             search_query: null,
-            search_total_results: null,
+            search_total_results: 0,
             search_results: [],
             selected_search_result: -1,
 
             //
-            search_scope: null
+            search_scope: null,
+            search_scopes: [
+                {
+                    ct: '_all', name: 'All'
+                },
+                {
+                    ct: 'alibrary.artist', name: 'Artist', shortcut: 'a'
+                },
+                {
+                    ct: 'alibrary.label', name: 'Label', shortcut: 'l'
+                }
+            ]
         }
     },
-    mounted () {
+    mounted() {
+    },
+    directives: {
+        ClickOutside
     },
     computed: {
         settings: () => store.state.settings,
         result_is_visible: function () {
             return this.search_results.length > 0;
-        }
+        },
+        // search_total_results: function() {
+        //     return this.search_results.length;
+        // }
     },
     methods: {
 
         // store methods
         //update_settings: (key, value) => store.commit('update_settings', {key: key, value: value}),
 
-        update_settings: function(key, value) {
+        update_settings: function (key, value) {
 
             store.commit('update_settings', {key: key, value: value})
 
             // query needs to be refreshed if mode changes
-            if(key === 'search_exact_match_mode') {
+            if (key === 'search_exact_match_mode') {
                 this.load_search_results();
             }
 
         },
-
+        ///////////////////////////////////////////////////////////////
+        // component activation / deactivation
+        ///////////////////////////////////////////////////////////////
+        activate_search: function(e) {
+            console.log('activate search mode');
+            this.active = true;
+        },
+        deactivate_search: function(e) {
+            console.log('deactivate search mode');
+            this.search_results = [];
+            this.search_query_string = '';
+            this.active = false;
+        },
 
         ///////////////////////////////////////////////////////////////
         // input field handling
@@ -72,8 +103,9 @@ export default {
 
             this.search_query_string = q;
 
-            if (q.length > 0) {
+            if (q.length > 1) {
                 //this.search_results = dummy_results;
+                this.parse_query_string(q);
                 this.load_search_results({q: q});
             } else {
                 this.search_results = [];
@@ -81,12 +113,14 @@ export default {
 
         },
         search_input_focus: function () {
+            this.activate_search();
             this.search_input_has_focus = true;
         },
         search_input_blur: function () {
             this.search_input_has_focus = false;
         },
         search_input_esc: debounce(function (e) {
+            //this.deactivate_search();
             this.search_query_string = '';
             this.search_results = [];
         }, 100),
@@ -133,8 +167,29 @@ export default {
                 document.location.href = item.url;
 
                 //Turbolinks.visit(item.detail_url);
+            } else {
+                alert(this.search_query_string)
             }
 
+        },
+
+        ///////////////////////////////////////////////////////////////
+        // parse query string
+        ///////////////////////////////////////////////////////////////
+        parse_query_string: function (q) {
+
+            if (q && q.length >= 2 && q[1] === ':') {
+                let shortcut = q[0];
+
+                let scope = this.search_scopes.find((scope) => {
+                    return scope.shortcut === shortcut
+                });
+                this.set_search_scope(scope.ct);
+
+                console.log('shortcut detected:', shortcut, scope);
+
+
+            }
         },
 
         ///////////////////////////////////////////////////////////////
@@ -146,6 +201,7 @@ export default {
             } else {
                 this.search_scope = null;
             }
+            this.load_search_results();
         },
 
 
@@ -154,22 +210,20 @@ export default {
         ///////////////////////////////////////////////////////////////
         load_search_results: function (query = false) {
 
-            if(! query) {
+            if (!query) {
                 query = {
                     q: this.search_query_string
                 }
             }
-            console.debug('query', query);
-
-            if(query.q.length < 1) {
+            if (query.q.length < 1) {
                 this.search_results = [];
-                this.search_total_results = null;
+                this.search_total_results = 0;
                 return
             }
 
-            // add settings
-            //query['exact_match'] = this.settings.search_exact_match_mode;
+            // add search options
             query['exact'] = (this.settings.search_exact_match_mode ? 1 : 0);
+            query['ct'] = this.search_scope;
 
 
             console.debug('query', query);
@@ -185,6 +239,9 @@ export default {
                     // TODO: make this less ugly...
                     $.each(response.data.results, (i, el) => {
                         el.selected = false;
+                        el.scope = this.search_scopes.find((scope) => {
+                            return scope.ct === el.ct
+                        });
                     });
 
                     this.search_total_results = response.data.total;

@@ -17,7 +17,9 @@
         {% if item.main_image %}
         <div class="image-container centered">
             <div class="padder"></div>
+            {% comment %}{% endcomment %}
             <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{% thumbnail item.main_image 197x197 upscale subject_location=item.main_image.subject_location %}" class="lazyload" />
+
         </div>
         {% endif %}
 

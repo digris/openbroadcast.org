@@ -1,0 +1,29 @@
+{% load spurl %}
+
+
+<div style="display: none;" id="tagcloud_inline" data-uistate="init" class="tagcloud inline ui-persistent">
+
+    <ul class="horizontal tag-level unstyled pull-right">
+        <li><a class="toggle-level" data-taglevel="1" href="#">&nbsp;+&nbsp;</a></li>
+        <li><a class="toggle-level" data-taglevel="4" href="#">&nbsp;++&nbsp;</a></li>
+        <li><a class="toggle-level" data-taglevel="6" href="#">&nbsp;+++&nbsp;</a></li>
+    </ul>
+
+    <div class="clear"></div>
+    <div class="cloud-container">
+        {% for tag in tagcloud %}
+            {% spurl base=request.get_full_path active_mquery="search_tags={{ tag.name }}" as is_active %}
+            {% spurl base=request.get_full_path trigger_mquery="search_tags={{ tag.name }}&page=1" as tag_url %}
+            {% spurl base=tag_url remove_query_param="page" as tag_url %}
+            <a rel="nofollow" href="{{ tag_url }}"
+               data-id="{{ tag.pk }}"
+               class="tag{{ tag.weight }} {% if tag.hide_level > 0 %}tag-hidden{% endif %} level{{ tag.hide_level }} {% if is_active %} on{% endif %}"
+               style="">{{ tag.name }}</a>
+        {% endfor %}
+    </div>
+
+    <div class="clear"></div>
+
+</div>
+
+

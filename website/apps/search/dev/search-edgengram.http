@@ -1,18 +1,53 @@
-POST http://localhost:9201/movies/_search
+POST http://localhost:9201/_search
 Content-Type: application/json
 
+
+
 {
-  "query": {
-    "match": {
-      "name.edgengram": "the"
+    "query": {
+        "bool": {
+            "must": {
+                "multi_match" : {
+                  "query":    "Uwe Schmidt",
+                  "type":       "best_fields",
+                  "fields": [
+                      "autocomplete^3",
+                      "name^3",
+                      "*_name",
+                      "aliases.name"
+                      ],
+                  "operator":   "and"
+                },
+                "term": {
+                    "tags": "foo"
+                }
+            },
+            "filter": {
+                "term": {
+                    "country": "DE"
+                }
+            }
+        }
     }
-  },
-    "highlight" : {
-    "fields" : {
-        "name" : {}
-    }
-  }
 }
+
+
+
+//{
+//  "query": {
+//    "multi_match" : {
+//      "query":    "Uwe Schmidt",
+//      "type":       "best_fields",
+//      "fields": [
+//          "autocomplete^3",
+//          "name^3",
+//          "*_name",
+//          "aliases.name"
+//          ],
+//      "operator":   "and"
+//    }
+//  }
+//}
 
 //{
 //    "query": {

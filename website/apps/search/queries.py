@@ -20,7 +20,7 @@ ALL_DOCUMENT_CLASSES = [
 #     pass
 
 
-def format_results(results):
+def format_search_results(results):
 
     ignored_keys = [
         'autocomplete',
@@ -60,7 +60,21 @@ def format_results(results):
     return response
 
 
-def autocomplete_search(q, exact_mode=False):
+def autocomplete_search(q, doc_type=None, exact_mode=False):
+
+    query = autocomplete_query(q, exact_mode)
+
+    s = Search().index('_all')
+
+    if doc_type:
+        s = s.doc_type(doc_type)
+
+    s = s.query("match", autocomplete=query)
+
+    return format_search_results(s.execute())
+
+
+def autocomplete_query(q, exact_mode=False):
 
     _ac_query = {
         'query': q,
@@ -72,7 +86,5 @@ def autocomplete_search(q, exact_mode=False):
             'fuzziness': 'AUTO',
         })
 
-    s = Search().index('_all')
-    s = s.query("match", autocomplete=_ac_query)
+    return _ac_query
 
-    return format_results(s.execute())

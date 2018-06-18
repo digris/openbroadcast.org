@@ -1,0 +1,18 @@
+POST http://localhost:9201/labels/_search
+Content-Type: application/json
+
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "autocomplete":   "sony"        }},
+        { "term" : { "tags" : "Electronic" } },
+        { "term" : { "tags" : "Dance" } }
+      ]
+
+
+    }
+  }
+}
+
+###

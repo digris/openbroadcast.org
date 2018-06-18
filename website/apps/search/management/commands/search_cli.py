@@ -101,7 +101,7 @@ def label(query):
     _query = {
         "query": {
             "match" : {
-                "name.edgengram" : {
+                "autocomplete" : {
                     "query": query,
                     "fuzziness": "AUTO",
                     "operator" : "and"

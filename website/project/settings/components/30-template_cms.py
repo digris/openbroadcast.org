@@ -79,15 +79,17 @@ CMS_PLUGIN_PROCESSORS = ()
 CMS_SEO_FIELDS = True
 
 CMS_CACHE_DURATIONS = {
-    'menus': 0,
-    'content': 0,
-    'permissions': 0,
+    'menus': 3600,
+    'content': 600,
+    'permissions': 300,
 }
 
 COLUMN_WIDTH_CHOICES = (
     ('33.33%', '33%'),
     ('50%', '50%'),
 )
+
+CMS_TOOLBAR_ANONYMOUS_ON = False
 
 
 CKEDITOR_SETTINGS = {

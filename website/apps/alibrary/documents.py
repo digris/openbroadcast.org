@@ -18,102 +18,41 @@ library_index = Index('library')
 artist_index = Index('artists')
 label_index = Index('labels')
 
-
-# @artist_index.doc_type
-# class ArtistDocument(DocType):
-#
-#     aliases = TextField()
-#     members = TextField()
-#     tags = KeywordField()
-#     country = KeywordField(attr='country.iso2_code')
-#
-#     description = TextField(attr='biography')
-#
-#     # date_start = DateField(attr='date_start')
-#     # date_end = DateField(attr='date_end')
-#
-#     #name_suggest = CompletionField(attr='name')
-#
-#     def prepare_aliases(self, instance):
-#         return [i.name for i in instance.aliases.all()]
-#
-#     def prepare_tags(self, instance):
-#         return [i.name for i in instance.tags.all()]
-#
-#     def prepare_members(self, instance):
-#         return [i.name for i in instance.members.all()]
-#
-#     class Meta:
-#         model = Artist
-#         queryset_pagination = 1000
-#         doc_type = 'alibrary.artist'
-#
-#         fields = [
-#             'name',
-#             'real_name',
-#             'type',
-#         ]
-
-
+# autocomplete tokenizer
 edge_ngram_tokenizer = tokenizer(
     'edge_ngram_tokenizer',
     type='edge_ngram',
     min_gram=1,
     max_gram=12,
-    token_chars=['letter']
+    # TODO: investigate
+    token_chars=['letter', 'digit']
 )
 
 
-keyword_analyzer = analyzer(
-    'keyword_analyzer',
-    tokenizer="keyword",
-    filter=["lowercase", "asciifolding", "trim"],
-    type='custom',
-    char_filter=[]
-)
+# keyword_analyzer = analyzer(
+#     'keyword_analyzer',
+#     tokenizer="keyword",
+#     filter=["lowercase", "asciifolding", "trim"],
+#     type='custom',
+#     char_filter=[]
+# )
 
+# autocomplete analyzer
 edge_ngram_analyzer = analyzer(
     'edge_ngram_analyzer',
     tokenizer=edge_ngram_tokenizer,
     filter=["lowercase"],
 )
 
+# autocomplete *search* analyzer
 edge_ngram_search_analyzer = analyzer(
     'edge_ngram_search_analyzer',
     tokenizer="lowercase",
 )
 
 
-
-def format_field_for_suggestion(text):
-    text_list = text.split(' ')
-    l = len(text_list)
-    final_text_list = [text_list[x:l] for x in range(l)]
-    final_text = [' '.join(x).lower() for x in final_text_list]
-    return final_text
-
-
 class LibraryBaseDocument(object):
-
-    ###################################################################
-    # field preparation
-    ###################################################################
-    def prepare_autocomplete(self, instance):
-        raise NotImplementedError('prepare_autocomplete needs to be implemented')
-
-    def prepare_name(self, instance):
-        return instance.name.strip()
-
-    def prepare_tags(self, instance):
-        return [i.strip() for i in instance.d_tags.split(',') if len(i) > 2]
-        #return [i.name for i in instance.tags.all()]
-
-    def prepare_image(self, instance):
-        if hasattr(instance, 'main_image') and instance.main_image:
-            try:
-                return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
-            except InvalidImageFormatError:
-                pass
+    pass
 
 
 @label_index.doc_type
@@ -124,10 +63,6 @@ class LabelDocument(LibraryBaseDocument, DocType):
         queryset_pagination = 1000
         doc_type = 'alibrary.label'
 
-        fields = [
-            'type',
-        ]
-
     autocomplete = fields.TextField(
         analyzer=edge_ngram_analyzer,
         search_analyzer=edge_ngram_search_analyzer,
@@ -135,12 +70,21 @@ class LabelDocument(LibraryBaseDocument, DocType):
 
     url = fields.KeywordField(attr='get_absolute_url')
     api_url = fields.KeywordField(attr='get_api_url')
+    created = fields.DateField()
+    updated = fields.DateField()
 
-    name = fields.TextField()
+    name = fields.TextField(fielddata=True)
     tags = KeywordField()
+
+    # tags = fields.NestedField(properties={
+    #     'name': fields.KeywordField(),
+    #     'id': fields.IntegerField(),
+    # })
+
+
     image = KeywordField()
 
-
+    type = fields.KeywordField()
 
     year_start = fields.IntegerField()
     year_end = fields.IntegerField()
@@ -163,6 +107,21 @@ class LabelDocument(LibraryBaseDocument, DocType):
             text += [instance.country.iso2_code]
 
         return text
+
+    def prepare_name(self, instance):
+        return instance.name.strip()
+
+    def prepare_tags(self, instance):
+        return [i.strip() for i in instance.d_tags.split(',') if len(i) > 2]
+        #return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
+
+    def prepare_image(self, instance):
+        if hasattr(instance, 'main_image') and instance.main_image:
+            try:
+                return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
+            except InvalidImageFormatError:
+                pass
+
 
     def prepare_year_start(self, instance):
         if instance.date_start:
@@ -187,10 +146,6 @@ class ArtistDocument(LibraryBaseDocument, DocType):
         queryset_pagination = 1000
         doc_type = 'alibrary.artist'
 
-        fields = [
-            'type',
-        ]
-
     autocomplete = fields.TextField(
         analyzer=edge_ngram_analyzer,
         search_analyzer=edge_ngram_search_analyzer,
@@ -198,10 +153,20 @@ class ArtistDocument(LibraryBaseDocument, DocType):
 
     url = fields.KeywordField(attr='get_absolute_url')
     api_url = fields.KeywordField(attr='get_api_url')
+    created = fields.DateField()
+    updated = fields.DateField()
 
-    name = fields.TextField()
+    # 'fielddata' is needed for sorting on the filed
+    name = fields.TextField(fielddata=True)
+    real_name = fields.TextField()
+    namevariations = fields.TextField()
     tags = KeywordField()
+
     image = KeywordField()
+
+    type = fields.KeywordField()
+    ipi_code = fields.KeywordField()
+    isni_code = fields.KeywordField()
 
     year_start = fields.IntegerField()
     year_end = fields.IntegerField()
@@ -211,11 +176,46 @@ class ArtistDocument(LibraryBaseDocument, DocType):
 
 
     ###################################################################
+    # relation fields
+    ###################################################################
+    # namevariations
+
+    aliases = fields.NestedField(properties={
+        'name': fields.TextField(),
+        'real_name': fields.TextField(),
+        'pk': fields.IntegerField(),
+    })
+
+    members = fields.NestedField(properties={
+        'name': fields.TextField(),
+        'real_name': fields.TextField(),
+        'pk': fields.IntegerField(),
+    })
+
+    ###################################################################
     # field preparation
     ###################################################################
     def prepare_autocomplete(self, instance):
         text = [instance.name.strip()]
+        text += [i.name.strip() for i in instance.namevariations.all()]
         return text
+
+    def prepare_name(self, instance):
+        return instance.name.strip()
+
+    def prepare_namevariations(self, instance):
+        return [i.name.strip() for i in instance.namevariations.all()]
+
+    def prepare_tags(self, instance):
+        return [i.strip() for i in instance.d_tags.split(',') if len(i) > 2]
+        #return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
+
+    def prepare_image(self, instance):
+        if hasattr(instance, 'main_image') and instance.main_image:
+            try:
+                return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
+            except InvalidImageFormatError:
+                pass
 
     def prepare_year_start(self, instance):
         if instance.date_start:
@@ -229,82 +229,7 @@ class ArtistDocument(LibraryBaseDocument, DocType):
     # custom queryset
     ###################################################################
     def get_queryset(self):
-        return super(ArtistDocument, self).get_queryset().select_related('country')
+        return super(ArtistDocument, self).get_queryset().filter(listed=True).select_related('country').prefetch_related('aliases', 'members')
 
 
 
-
-
-# @label_index.doc_type
-# class LabelDocument(DocType):
-#
-#     class Meta:
-#         model = Label
-#         queryset_pagination = 1000
-#         doc_type = 'alibrary.label'
-#
-#         fields = [
-#             'type',
-#         ]
-#
-#     autocomplete = fields.TextField(
-#         analyzer=edge_ngram_analyzer,
-#         search_analyzer=edge_ngram_search_analyzer,
-#     )
-#
-#     name = fields.TextField()
-#     tags = KeywordField()
-#     url = fields.KeywordField(attr='get_absolute_url')
-#     api_url = fields.KeywordField(attr='get_api_url')
-#     image = KeywordField()
-#     year_start = fields.IntegerField()
-#     year_end = fields.IntegerField()
-#
-#     description = fields.TextField(attr='description')
-#     country = KeywordField(attr='country.iso2_code')
-#
-#
-#     ###################################################################
-#     # field preparation
-#     ###################################################################
-#     def prepare_autocomplete(self, instance):
-#         text = [instance.name.strip()]
-#         # TODO: check what exact fields needed
-#         if instance.parent:
-#             text += [instance.parent.name.strip()]
-#         if instance.get_root():
-#             text += [instance.get_root().name.strip()]
-#         if instance.country:
-#             text += [instance.country.iso2_code]
-#
-#         return text
-#
-#     def prepare_name(self, instance):
-#         return instance.name.strip()
-#
-#     def prepare_tags(self, instance):
-#         return [i.strip() for i in instance.d_tags.split(',') if len(i) > 2]
-#         #return [i.name for i in instance.tags.all()]
-#
-#     def prepare_image(self, instance):
-#         if hasattr(instance, 'main_image') and instance.main_image:
-#             try:
-#                 return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
-#             except InvalidImageFormatError:
-#                 pass
-#
-#     def prepare_year_start(self, instance):
-#         if instance.date_start:
-#             return instance.date_start.year
-#
-#     def prepare_year_end(self, instance):
-#         if instance.date_end:
-#             return instance.date_end.year
-#
-#
-#     ###################################################################
-#     # custom queryset
-#     ###################################################################
-#     def get_queryset(self):
-#         return super(LabelDocument, self).get_queryset().select_related('country', 'parent')
-#

@@ -1,6 +1,6 @@
 import math
 
-from django.utils.translation import ugettext as _
+
 
 
 # Font size distribution algorithms
@@ -17,12 +17,12 @@ def _calculate_tag_weight(weight, max_weight, distribution):
 
     .. _`Tag Cloud`: http://www.artweb-design.de/projects/mephisto-plugin-tag-cloud
     """
-    
+
     if distribution == LINEAR or max_weight == 1:
         return weight
     elif distribution == LOGARITHMIC:
         return math.log(weight) * max_weight / math.log(max_weight)
-    raise ValueError(_('Invalid distribution algorithm specified: %s.') % distribution)
+    raise ValueError('Invalid distribution algorithm specified: %s.' % distribution)
 
 def calculate_cloud(tags, steps=6, distribution=LOGARITHMIC, group_by=10):
 
@@ -35,7 +35,7 @@ def calculate_cloud(tags, steps=6, distribution=LOGARITHMIC, group_by=10):
         groups = []
         for i in range(steps):
             groups.append(0)
-        
+
         hidden = []
         for i in range(steps):
             hidden.append(0)
@@ -66,7 +66,5 @@ def calculate_cloud(tags, steps=6, distribution=LOGARITHMIC, group_by=10):
                 tag.hide_level = hidden[tag.weight -1]
             except Exception as e:
                 pass
-        
 
-        
     return tags

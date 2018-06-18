@@ -1,0 +1,76 @@
+{% extends "layout_base.html" %}
+{% load spurl adv_cache hash_tags i18n truncate_tags dajaxice_templatetags sekizai_tags %}
+
+{% block heading %}
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+{% endblock %}
+
+{% block modnav %}
+    <div id="modnav">
+        {% include "skeleton/module-navigation.html" %}
+    </div>
+{% endblock %}
+
+{% block tagcloud %}
+    {% include "search/tagcloud.html" %}
+{% endblock %}
+
+{% block searchbar %}
+    {% with object=item ct="artist" %}
+        {% include "alibrary/element/_searchbar.html" %}
+    {% endwith %}
+{% endblock %}
+
+{% block inner %}
+
+    <div class="listhead">
+        <div class="pagination-holder">
+            {% include "search/pagination.html" %}
+        </div>
+    </div>
+
+    <div class="listview container artists l">
+
+        <div class="list_body">
+
+            {% hash_user_groups request.user as group_hash %}
+
+            {% for item in object_list %}
+                {% include "alibrary/artist/list_item_l.html" %}
+            {% empty %}
+                <p style="padding: 20px; text-align: center;">
+                    {% trans 'No results to display.' %}
+                </p>
+            {% endfor %}
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block sidebar %}
+    {% include "alibrary/artist/sidebar/_list.html" %}
+
+    {% for filter in filters %}
+        <div class="filter">
+            <div class="filter-header">
+                {% trans "Filter" %}: {{ filter.title|title }}
+            </div>
+            <div class="filter-options">
+                {% for option in filter.options %}
+                    {% spurl base=request.get_full_path set_query="{{ option.query_key }}={{ option.query_value }}" as toggle_url %}
+                    <span {% if option.selected %}style="font-weight: bold;"{% endif %}>
+                        <a href="{{ toggle_url }}">
+                            {{ option.name }}
+                            ({{ option.num }})
+                        </a>
+                    </span>
+                    <br>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}

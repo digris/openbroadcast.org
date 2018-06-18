@@ -13,10 +13,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.apps import apps
 
-from ..queries import autocomplete_search, format_results
+from ..queries import autocomplete_search, format_search_results
 
 
-# def format_results(results):
+# def format_search_results(results):
 #
 #     results = results.to_dict()
 #
@@ -55,9 +55,13 @@ def search_global(request):
 
     if q:
         q = q.strip().lower()
+        if len(q) > 1 and q[1] == ':':
+            q = q[2:].strip()
 
-        response = autocomplete_search(q, exact_mode=exact_mode)
-        # response = format_results(results)
+        doc_type = request.GET.get('ct', None)
+
+        response = autocomplete_search(q, doc_type=doc_type, exact_mode=exact_mode)
+        # response = format_search_results(results)
 
         return Response(response)
 
