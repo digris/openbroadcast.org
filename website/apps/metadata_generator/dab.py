@@ -341,6 +341,12 @@ class DABMetadataGenerator(object):
                 image.save(filename=path)
                 image.save(filename=os.path.join(SLIDE_BASE_DIR, 'debug-{}.{}'.format(slide_id, IMAGE_OUTPUT_FORMAT)))
 
+        try:
+            overlay_image.close()
+        except Exception as e:
+            # TODO: use narrowed exception(s)
+            log.warning('unable to close magick/wand overlay image - {}'.format(e))
+
 
         return url
 
@@ -396,6 +402,12 @@ class DABMetadataGenerator(object):
 
                 image.save(filename=path)
                 image.save(filename=os.path.join(SLIDE_BASE_DIR, 'debug-{}.{}'.format(slide_id, IMAGE_OUTPUT_FORMAT)))
+
+        try:
+            overlay_image.close()
+        except Exception as e:
+            # TODO: use narrowed exception(s)
+            log.warning('unable to close magick/wand overlay image - {}'.format(e))
 
         return url
 
