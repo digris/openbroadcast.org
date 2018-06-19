@@ -13,6 +13,15 @@
         <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/base/favicon.png" />
         <link rel="shortcut icon" type="image/x-icon" href="{{ STATIC_URL }}img/base/favicon.png">
 
+
+        <!-- start: legacy css assets -->
+        <!-- start: icon fonts -->
+        <link type="text/css" href="{% static 'css/iconset/fontcustom.css' %}" rel="stylesheet" />
+        <link type="text/css" href="{% static 'css/fontawesome-3.2.1/font-awesome.css' %}" rel="stylesheet" />
+        <!-- end: icon fonts -->
+        <link type="text/css" href="{% static 'selectable/css/dj.selectable.css' %}" rel="stylesheet" />
+        <!-- end: legacy css assets -->
+
         {% render_block "css" %}
 
 
@@ -28,8 +37,17 @@
         <!-- end: js-head elements added by sub-templates -->
 
         <!-- start: webpack bundle handling -->
-        <link rel="stylesheet" href="{% static 'dist/css/bundle.css' %}"/>
-        <script src="{% static 'js/bundle.js' %}"></script>
+        {% if webpack_devserver %}
+            <link rel="stylesheet" href="{% static 'css/bundle.css' %}"/>
+        {% else %}
+            <link rel="stylesheet" href="{% static 'dist/css/bundle.css' %}"/>
+        {% endif %}
+
+        {% if webpack_devserver %}
+            <script src="{% static 'js/bundle.js' %}"></script>
+        {% else %}
+            <script src="{% static 'dist/js/bundle.js' %}"></script>
+        {% endif %}
         <!-- end: webpack bundle handling -->
 
     </head>
