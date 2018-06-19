@@ -31,14 +31,15 @@ def parse_search_query(request):
         if key.startswith(search_prefix):
             _searches[key.replace(search_prefix, '')] = [v.strip() for v in value.split(':')]
 
-
         if key.startswith(filter_prefix):
             _filters[key.replace(filter_prefix, '')] = [v.strip() for v in value.split(':')]
+
+        if key.startswith(option_prefix):
+            _options[key.replace(option_prefix, '')] = value == '1'
 
     _order_by = request.GET.get('order_by', None)
 
     if not _order_by and _searches.get('q'):
-        print('default order to priority')
         order_by = ()
     elif _order_by:
         order_by = (_order_by)

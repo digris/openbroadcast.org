@@ -56,6 +56,7 @@
     {% loginas_is_active as loginas_active %}
     <body id="body"
           class="base {% block body_class %}{% endblock %}{% if user.is_authenticated %} authenticated{% endif %} {% if loginas_active %}loginas-active{% endif %}"
+          data-scope="{% block scope %}{% endblock %}"
           data-spy="scroll"
           data-target=".subnav"
           data-offset="50">

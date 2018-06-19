@@ -69,18 +69,35 @@ class LabelSearch(FacetedSearch):
 
         s = search
 
-        if not query:
+        _searches = query.get('searches', None)
+        _options = query.get('options', None)
+
+        print('/////////////////////////////////////////')
+        print('searches: {}'.format(_searches))
+        print('options: {}'.format(_options))
+        print(_options.get('exact', False))
+        print('/////////////////////////////////////////')
+
+        if not _searches:
             return s
 
         # elasticsearch 'must' queries
         _musts = []
 
-        for key, value in query.iteritems():
+        for key, value in _searches.iteritems():
             # not particularly nice
             # 'q' - the main search query
             if key == 'q':
+
+                if _options.get('exact', False):
+                    _q = ESQ('match', autocomplete={'query': ' '.join(value), 'operator': 'and'})
+                    print('EXACT')
+                else:
+                    _q = ESQ('match', autocomplete={'query': ' '.join(value), 'operator': 'and', 'fuzziness': 'AUTO'})
+                    print('FUZZY')
+
                 _musts.append(
-                    ESQ('match', autocomplete={'query': ' '.join(value), 'operator': 'and', 'fuzziness': 'AUTO'}),
+                    _q,
                 )
 
             # 'tags' - 'intersection-like' tagcloud
@@ -117,7 +134,7 @@ class LabelListView(ListView):
 
         # initialize search class
         s = self.search_class(
-            query=search_query['searches'],
+            query=search_query,
             filters=search_query['filters'],
             sort=search_query['order_by']
         )

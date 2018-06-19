@@ -59,6 +59,8 @@ def search_global(request):
             q = q[2:].strip()
 
         doc_type = request.GET.get('ct', None)
+        if doc_type == '_all':
+            doc_type = None
 
         response = autocomplete_search(q, doc_type=doc_type, exact_mode=exact_mode)
         # response = format_search_results(results)

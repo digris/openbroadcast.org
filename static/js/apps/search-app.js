@@ -37,19 +37,35 @@ export default {
             selected_search_result: -1,
 
             //
-            search_scope: null,
+            search_scope: '_all',
             search_scopes: [
                 {
-                    ct: '_all', name: 'All'
+                    ct: '_all',
+                    name: 'All'
                 },
                 {
-                    ct: 'alibrary.artist', name: 'Artist', shortcut: 'a'
+                    ct: 'alibrary.artist',
+                    name: 'Artist',
+                    shortcut: 'a',
+                    list_url: '/content/library/artists/'
                 },
                 {
-                    ct: 'alibrary.label', name: 'Label', shortcut: 'l'
+                    ct: 'alibrary.label',
+                    name: 'Label',
+                    shortcut: 'l',
+                    list_url: '/content/library/labels/'
                 }
             ]
         }
+    },
+    created() {
+        let scope = $('body').data('scope');
+
+        if(scope !== undefined) {
+            console.log('scope:', scope);
+            this.search_scope = scope;
+        }
+
     },
     mounted() {
     },
@@ -72,7 +88,7 @@ export default {
 
         update_settings: function (key, value) {
 
-            store.commit('update_settings', {key: key, value: value})
+            store.commit('update_settings', {key: key, value: value});
 
             // query needs to be refreshed if mode changes
             if (key === 'search_exact_match_mode') {
@@ -149,7 +165,7 @@ export default {
 
         },
         // result navigation
-        navigate_to_selected_search_result: function (e) {
+        navigate_to_selection: function (e) {
 
             let item = null;
 
@@ -163,12 +179,28 @@ export default {
             if (item !== undefined) {
                 this.search_results = [];
                 this.search_query_string = '';
-
                 document.location.href = item.url;
 
                 //Turbolinks.visit(item.detail_url);
             } else {
-                alert(this.search_query_string)
+
+                //alert(this.search_query_string);
+                let scope = this.search_scopes.find((scope) => {
+                    return scope.ct === this.search_scope
+                });
+
+                let q = this.search_query_string;
+                if(q[1] === ':') {
+                    q = $.trim(q.substr(2));
+                }
+
+                let params = {
+                    search_q: q,
+                    option_exact: (this.settings.search_exact_match_mode ? 1 : 0)
+                };
+
+                document.location.href = scope.list_url + '?' + $.param(params);
+
             }
 
         },
@@ -236,9 +268,14 @@ export default {
                 .then((response) => {
                     this.loading = false;
 
+                    let max_score = response.data.max_score;
+
                     // TODO: make this less ugly...
                     $.each(response.data.results, (i, el) => {
                         el.selected = false;
+                        //el.score = el.score / max_score;
+                        el.top_hit = el.score > 10;
+                        el.top_hit = (el.score / max_score) > 0.7;
                         el.scope = this.search_scopes.find((scope) => {
                             return scope.ct === el.ct
                         });

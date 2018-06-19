@@ -34,7 +34,9 @@
         "dist": "NODE_ENV=production webpack --mode production"
     },
     "private": true,
-    "devDependencies": {},
+    "devDependencies": {
+        "source-map-explorer": "^1.5.0"
+    },
     "name": "openbroadcast.org",
     "version": "0.0.1",
     "main": "./static/js/bundle.js",
