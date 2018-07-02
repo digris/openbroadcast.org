@@ -91,7 +91,7 @@ export default {
             store.commit('update_settings', {key: key, value: value});
 
             // query needs to be refreshed if mode changes
-            if (key === 'search_exact_match_mode') {
+            if (key === 'search_fuzzy_match_mode') {
                 this.load_search_results();
             }
 
@@ -196,7 +196,7 @@ export default {
 
                 let params = {
                     search_q: q,
-                    option_exact: (this.settings.search_exact_match_mode ? 1 : 0)
+                    option_fuzzy: (this.settings.search_fuzzy_match_mode ? 1 : 0)
                 };
 
                 document.location.href = scope.list_url + '?' + $.param(params);
@@ -254,7 +254,7 @@ export default {
             }
 
             // add search options
-            query['exact'] = (this.settings.search_exact_match_mode ? 1 : 0);
+            query['fuzzy'] = (this.settings.search_fuzzy_match_mode ? 1 : 0);
             query['ct'] = this.search_scope;
 
 

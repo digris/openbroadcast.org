@@ -51,6 +51,12 @@ $search-inner-width: $search-outer-width - $search-margin-left
   margin-top: 100px
   z-index: 9999
 
+
+  &.active
+    .search-input,
+    .search-display-wrapper
+      box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
+
   .search-input-container
     //background: white
     //box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
@@ -63,12 +69,13 @@ $search-inner-width: $search-outer-width - $search-margin-left
     .search-input
 
       width: $search-inner-width - 4px
-      background: white
-      border: 2px solid white
-      box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
+      background: $white
+      border: 2px solid $white
+      //box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
 
       input
-        background: black
+        //background: black
+        background: rgba(0, 0, 0, 0.8)
         //width: 350px
         width: $search-inner-width - 4px - 10px
         height: 27px
@@ -89,7 +96,7 @@ $search-inner-width: $search-outer-width - $search-margin-left
 
   .search-display-wrapper
     background: white
-    box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
+    //box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
     position: absolute
     width: $search-inner-width
     margin-left: $search-margin-left
@@ -132,7 +139,7 @@ $search-inner-width: $search-outer-width - $search-margin-left
         &.selected
           background: $primary-color-b
           a
-            color: white
+            color: $white
 
 
   .search-result-container

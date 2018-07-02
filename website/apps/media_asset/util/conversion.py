@@ -20,6 +20,7 @@ def any_to_wav(src, dst=None):
     log.info('any to wav: %s > %s' % (src, dst))
 
     if not os.path.isfile(src):
+        log.error('unable to access %s' % src)
         raise IOError('unable to access %s' % src)
 
 

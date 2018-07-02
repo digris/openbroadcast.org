@@ -62,7 +62,8 @@ class LabelSearch(FacetedSearch):
         'tags': TermsFacet(field='tags', size=100),
         'country': TermsFacet(field='country', size=500),
         'type': TermsFacet(field='type'),
-        # 'publishing_frequency': DateHistogramFacet(field='published_from', interval='month')
+
+        #'duplicates': TermsFacet(field='exact_name', size=100, min_doc_count=2),
     }
 
     def query(self, search, query):
@@ -71,12 +72,6 @@ class LabelSearch(FacetedSearch):
 
         _searches = query.get('searches', None)
         _options = query.get('options', None)
-
-        print('/////////////////////////////////////////')
-        print('searches: {}'.format(_searches))
-        print('options: {}'.format(_options))
-        print(_options.get('exact', False))
-        print('/////////////////////////////////////////')
 
         if not _searches:
             return s
@@ -89,18 +84,18 @@ class LabelSearch(FacetedSearch):
             # 'q' - the main search query
             if key == 'q':
 
-                if _options.get('exact', False):
-                    _q = ESQ('match', autocomplete={'query': ' '.join(value), 'operator': 'and'})
-                    print('EXACT')
-                else:
+                if _options.get('fuzzy', True):
                     _q = ESQ('match', autocomplete={'query': ' '.join(value), 'operator': 'and', 'fuzziness': 'AUTO'})
                     print('FUZZY')
+                else:
+                    _q = ESQ('match', autocomplete={'query': ' '.join(value), 'operator': 'and'})
+                    print('EXACT')
 
                 _musts.append(
                     _q,
                 )
 
-            # 'tags' - 'intersection-like' tagcloud
+            # 'tags' - for 'intersection-style' tagcloud
             if key == 'tags':
                 print(value)
                 for tag in value:
@@ -115,22 +110,16 @@ class LabelSearch(FacetedSearch):
 
 
 
-
-
-
-
 class LabelListView(ListView):
 
     model = Label
     template_name = 'alibrary/label_list_ng.html'
     search_class = LabelSearch
-    search_result = None
+    _search_result = None
 
     def get_queryset(self, **kwargs):
 
         search_query = parse_search_query(request=self.request)
-
-        order_by = self.request.GET.get('order_by', None)
 
         # initialize search class
         s = self.search_class(
@@ -142,8 +131,6 @@ class LabelListView(ListView):
 
         # handle pagination
         pagination_query = parse_pagination_query(request=self.request)
-        print(pagination_query)
-
         s = s[pagination_query['start']:pagination_query['end']]
 
 
@@ -159,7 +146,7 @@ class LabelListView(ListView):
 
 
         # add search result as reference
-        self.search_result = result
+        self._search_result = result
 
         qs = qs.select_related('country').prefetch_related('release_label', 'creator', 'creator__profile')
 
@@ -169,7 +156,7 @@ class LabelListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(LabelListView, self).get_context_data(**kwargs)
 
-        search_result = self.search_result
+        search_result = self._search_result
         pagination_query = parse_pagination_query(request=self.request)
         pagination = get_pagination_data(search_result, pagination_query)
         tagcloud = get_tagcloud_data(search_result.facets.tags)

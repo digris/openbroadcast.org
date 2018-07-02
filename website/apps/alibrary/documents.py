@@ -10,13 +10,14 @@ from elasticsearch_dsl.serializer import serializer
 from django_elasticsearch_dsl import DocType, Index, TextField, CompletionField, KeywordField, DateField, fields
 from easy_thumbnails.files import get_thumbnailer
 from easy_thumbnails.exceptions import InvalidImageFormatError
-from .models import Artist, Label
+from .models import Artist, Label, Release, Media, Playlist
 
 THUMBNAIL_OPT = dict(size=(197, 197), crop=True, upscale=True)
 
 library_index = Index('library')
 artist_index = Index('artists')
 label_index = Index('labels')
+release_index = Index('releases')
 
 # autocomplete tokenizer
 edge_ngram_tokenizer = tokenizer(
@@ -41,13 +42,21 @@ edge_ngram_tokenizer = tokenizer(
 edge_ngram_analyzer = analyzer(
     'edge_ngram_analyzer',
     tokenizer=edge_ngram_tokenizer,
-    filter=["lowercase"],
+    filter=['lowercase', 'asciifolding'],
 )
 
 # autocomplete *search* analyzer
 edge_ngram_search_analyzer = analyzer(
     'edge_ngram_search_analyzer',
-    tokenizer="lowercase",
+    tokenizer='lowercase',
+)
+
+
+# asciifolding analyzer
+asciifolding_analyzer = analyzer(
+    'asciifolding_analyzer',
+    tokenizer='standard',
+    filter=['lowercase', 'asciifolding'],
 )
 
 
@@ -74,6 +83,7 @@ class LabelDocument(LibraryBaseDocument, DocType):
     updated = fields.DateField()
 
     name = fields.TextField(fielddata=True)
+    exact_name = fields.KeywordField(attr='name')
     tags = KeywordField()
 
     # tags = fields.NestedField(properties={
@@ -178,14 +188,11 @@ class ArtistDocument(LibraryBaseDocument, DocType):
     ###################################################################
     # relation fields
     ###################################################################
-    # namevariations
-
     aliases = fields.NestedField(properties={
         'name': fields.TextField(),
         'real_name': fields.TextField(),
         'pk': fields.IntegerField(),
     })
-
     members = fields.NestedField(properties={
         'name': fields.TextField(),
         'real_name': fields.TextField(),
@@ -229,7 +236,80 @@ class ArtistDocument(LibraryBaseDocument, DocType):
     # custom queryset
     ###################################################################
     def get_queryset(self):
-        return super(ArtistDocument, self).get_queryset().filter(listed=True).select_related('country').prefetch_related('aliases', 'members')
+        return super(ArtistDocument, self).get_queryset().filter(listed=True).select_related(
+            'country'
+        ).prefetch_related(
+            'aliases', 'members'
+        )
 
 
 
+@release_index.doc_type
+class ReleaseDocument(LibraryBaseDocument, DocType):
+
+    class Meta:
+        model = Release
+        queryset_pagination = 1000
+        doc_type = 'alibrary.release'
+
+    autocomplete = fields.TextField(
+        analyzer=edge_ngram_analyzer,
+        search_analyzer=edge_ngram_search_analyzer,
+    )
+
+    url = fields.KeywordField(attr='get_absolute_url')
+    api_url = fields.KeywordField(attr='get_api_url')
+    created = fields.DateField()
+    updated = fields.DateField()
+
+    # 'fielddata' is needed for sorting on the filed
+    name = fields.TextField(
+        fielddata=True
+    )
+    # name = fields.TextField(
+    #     analyzer=asciifolding_analyzer,
+    #     fielddata=True
+    # )
+    tags = KeywordField()
+
+    image = KeywordField()
+
+    type = fields.KeywordField(attr='releasetype')
+    barcode = fields.KeywordField()
+
+    description = fields.TextField()
+    country = KeywordField(attr='release_country.iso2_code')
+
+    num_media = fields.IntegerField()
+
+    ###################################################################
+    # field preparation
+    ###################################################################
+    def prepare_autocomplete(self, instance):
+        text = [instance.name.strip()]
+        return text
+
+    def prepare_name(self, instance):
+        return instance.name.strip()
+
+    def prepare_tags(self, instance):
+        return [i.strip() for i in instance.d_tags.split(',') if len(i) > 2]
+        #return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
+
+    def prepare_image(self, instance):
+        if hasattr(instance, 'main_image') and instance.main_image:
+            try:
+                return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
+            except InvalidImageFormatError:
+                pass
+
+    def prepare_num_media(self, instance):
+        return instance.media_release.count()
+
+    ###################################################################
+    # custom queryset
+    ###################################################################
+    def get_queryset(self):
+        return super(ReleaseDocument, self).get_queryset().all().select_related(
+            'release_country'
+        ).prefetch_related('media_release')

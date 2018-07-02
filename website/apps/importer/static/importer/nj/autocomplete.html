@@ -3,21 +3,21 @@
 	<div class="listing">
 		{% for item in objects %}
 		<div class="item hoverable" data-id="{{ item.id }}" data-name="{{ item.name }}" data-ct="{{ item.ct }}">
-			
+
 			<div class="row-fluid">
-				
+
 				<div class="span3">
-					
+
 					{% if item.main_image %}
 					<img src="{{ item.main_image }}" />
 					{% else %}
-					<img src="/static/img/base/defaults/listview.{{ item.ct }}.xl.png" width="90" height="90" />
+					<img src="/static/img/base/defaults/listview.release.xl.png" width="90" height="90" />
 					{% endif %}
-					
+
 				</div>
-				
+
 				<div class="span9">
-					
+
 					<ul class="unstyled">
 
                         {% if item.ct == 'release' %}
@@ -47,13 +47,51 @@
                                 </span>
                             </li>
                             {% endif %}
-
 						{% endif %}
-						
+
+                        <!-- TODO: remove legacy templates above once search is refactored to V2 -->
+                        {% if item.ct == 'alibrary.artist' %}
+                            <li>
+                                <strong>{{ item.name }}</strong>
+                                {% if item.country %}
+                                    <small>({{ item.country }})</small>
+                                {% endif %}
+                                {% if item.type %}
+                                    <small class="pull-right">{{ item.type }}</small>
+                                {% endif %}
+                            </li>
+                            {% if item.real_name %}
+                                <li>{{ item.real_name|shorten(36) }}</li>
+                            {% endif %}
+
+                            {% if item.year_start or item.year_end %}
+                            <li>
+                                <span class="value">
+                                    {% if item.year_start %}*{{ item.year_start }}{% endif %} {% if item.year_end %}✝{{ item.year_end }}{% endif %}
+                                </span>
+                            </li>
+                            {% endif %}
+						{% endif %}
+
+                        {% if item.ct == 'alibrary.release' %}
+                            <li>
+                                <strong>{{ item.name }}</strong>
+                                {% if item.country %}
+                                    <small>({{ item.country }})</small>
+                                {% endif %}
+                                {% if item.releasedate %}
+                                    <small class="pull-right">{{ item.releasedate }}</small>
+                                {% endif %}
+                            </li>
+                            <li>{% for artist in item.artist %}{{ artist }}{% if not loop.last %}, {% endif %}{% endfor %}</li>
+                            <li>Tracks: {{ item.num_media }}</li>
+						{% endif %}
+
+
 					</ul>
 
 				</div>
-				
+
 			</div>
 
 		</div>

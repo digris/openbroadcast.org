@@ -18,10 +18,12 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 import SearchApp from './apps/search-app.vue';
+import ListFilter from './element/listfilter';
 
 
 $(function () {
-    let s = new Vue({
+
+    const s = new Vue({
         el: '#search_app_ng',
         render: h => h(SearchApp, {
             props: {
@@ -29,5 +31,7 @@ $(function () {
             }
         })
     });
+
+    const f = new ListFilter({});
 
 });

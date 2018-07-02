@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from elasticsearch_dsl import FacetedSearch, TermsFacet, DateHistogramFacet
 from django_elasticsearch_dsl.search import Search
+from base.utils.fold_to_ascii import fold
 from alibrary.documents import ArtistDocument, LabelDocument
 
 ALL_DOCUMENT_CLASSES = [
@@ -60,28 +61,32 @@ def format_search_results(results):
     return response
 
 
-def autocomplete_search(q, doc_type=None, exact_mode=False):
+def autocomplete_search(q, doc_type=None, fuzzy_mode=False):
 
-    query = autocomplete_query(q, exact_mode)
+    query = autocomplete_query(q, fuzzy_mode)
 
     s = Search().index('_all')
 
     if doc_type:
         s = s.doc_type(doc_type)
 
+
+    print('*** QUERY')
+    print(query)
+
     s = s.query("match", autocomplete=query)
 
     return format_search_results(s.execute())
 
 
-def autocomplete_query(q, exact_mode=False):
+def autocomplete_query(q, fuzzy_mode=False):
 
     _ac_query = {
-        'query': q,
+        'query': fold(q),
         'operator': 'and'
     }
 
-    if not exact_mode:
+    if fuzzy_mode:
         _ac_query.update({
             'fuzziness': 'AUTO',
         })

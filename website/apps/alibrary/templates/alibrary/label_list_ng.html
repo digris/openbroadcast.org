@@ -54,14 +54,23 @@
     {% include "alibrary/label/sidebar/_list.html" %}
 
     {% for filter in filters %}
-        <div class="filter">
+        <div class="filter expanded{% if filter.num_selected %} has-selection{% endif %}" data-listfilter="{{ filter.key }}">
             <div class="filter-header">
-                {% trans "Filter" %}: {{ filter.title|title }}
+
+                <div class="filter-header-icon">
+                    <span class="uc-icon">&#9658;</span>
+                </div>
+                <div class="filter-header-title">
+                    {% trans "Filter" %}: {{ filter.title|title }}
+                </div>
+                <div class="filter-header-count">
+                    <span>{{ filter.num_selected }}</span>/<span>{{ filter.options|length }}</span>
+                </div>
             </div>
             <div class="filter-options">
                 {% for option in filter.options %}
                     {% spurl base=request.get_full_path set_query="{{ option.query_key }}={{ option.query_value }}" as toggle_url %}
-                    <span {% if option.selected %}style="font-weight: bold;"{% endif %}>
+                    <span {% if option.selected %}class="selected"{% endif %}>
                         <a href="{{ toggle_url }}">
                             {{ option.name }}
                             ({{ option.num }})

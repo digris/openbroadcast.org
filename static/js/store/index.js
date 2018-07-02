@@ -13,7 +13,7 @@ const api_client = axios.create({
 export default new Vuex.Store({
     state: {
         settings: {
-            search_exact_match_mode: false
+            search_fuzzy_match_mode: false
         },
     },
     mutations: {

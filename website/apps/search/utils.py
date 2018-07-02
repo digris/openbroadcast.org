@@ -149,15 +149,8 @@ def get_filter_data(facets):
         if key in _ignore_keys:
             continue
 
-
         options = getattr(facets, key)
         selected_options = [o[0] for o in options if o[2] == True]
-
-        print('////////// options {} /////////////'.format(key))
-        print(options)
-        print(selected_options)
-        print('/////////////////////////////////////')
-
 
         _options = []
 
@@ -178,12 +171,12 @@ def get_filter_data(facets):
                 'query_value': _query,
             })
 
-
         _filters.append({
             'title': key,
-            'options': _options
+            'key': key,
+            'options': _options,
+            'num_selected': len(selected_options),
         })
-
 
     return _filters
 

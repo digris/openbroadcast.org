@@ -14,7 +14,8 @@ import tagging
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, NoReverseMatch
+from django.utils import translation
 from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save, post_delete
@@ -187,10 +188,18 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         return providers
 
     def get_absolute_url(self):
-        return reverse('alibrary-release-detail', kwargs={
-            'pk': self.pk,
-            'slug': self.slug,
-        })
+        try:
+            return reverse('alibrary-release-detail', kwargs={
+                'pk': self.pk,
+                'slug': self.slug,
+            })
+        except NoReverseMatch:
+            translation.activate('en')
+            return reverse('alibrary-release-detail', kwargs={
+                'pk': self.pk,
+                'slug': self.slug,
+            })
+
 
     def get_edit_url(self):
         return reverse("alibrary-release-edit", args=(self.pk,))

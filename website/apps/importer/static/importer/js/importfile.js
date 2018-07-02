@@ -398,19 +398,29 @@ var ImportfileApp = function () {
 
         var import_tag = self.local_data.import_tag;
 
-        if (ct == 'release') {
+        if (ct === 'release') {
             import_tag['release'] = name;
             import_tag['alibrary_release_id'] = id;
             delete import_tag['force_release'];
         }
 
-        if (ct == 'artist') {
+        if (ct === 'artist') {
             import_tag['artist'] = name;
             import_tag['alibrary_artist_id'] = id;
             delete import_tag['force_artist'];
         }
 
-        debug.debug('ac', id, name, ct);
+        // TODO: remove legacy templates above once search is refactored to V2
+        if (ct === 'alibrary.release') {
+            import_tag['release'] = name;
+            import_tag['alibrary_release_id'] = id;
+            delete import_tag['force_release'];
+        }
+        if (ct === 'alibrary.artist') {
+            import_tag['artist'] = name;
+            import_tag['alibrary_artist_id'] = id;
+            delete import_tag['force_artist'];
+        }
 
         self.set_import_tag(import_tag);
     };
@@ -628,40 +638,33 @@ var ImportfileApp = function () {
 
 ImportfileAcApp = function () {
 
-    var self = this;
+    let self = this;
     this.template = 'importer/nj/autocomplete.html';
     this.q_min = 3;
     this.timeout = false;
 
     this.search = function (q, ct, target) {
-
-        var url = '/api/v1/library/' + ct + '/autocomplete/?q=' + q + '&';
-
+        //var url = '/api/v1/library/' + ct + '/autocomplete/?q=' + q + '&';
+        let url = `/api/v2/search/alibrary.${ct}/?q=${q}`;
         if (q.length >= this.q_min) {
-
             if(self.timeout) {
                 clearTimeout(self.timeout);
             }
-
             self.timeout = setTimeout(function(){
                 $.get(url, function (data) {
                     self.display(target, data);
                     clearTimeout(self.timeout);
                 });
-            }, 300)
-
+            }, 100)
         } else {
             target.html('');
-            // a bit hackish..
         }
-
     };
 
     this.display = function (target, data) {
-        console.log(data);
-        html = nj.render(self.template, data);
+        console.table(data.results);
+        html = nj.render(self.template, {objects: data.results});
         target.html(html);
     };
-
 
 };
