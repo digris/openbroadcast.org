@@ -20,8 +20,9 @@ Vue.use(Vuex);
 import SearchApp from './apps/search-app.vue';
 import ListFilter from './element/listfilter';
 
+import AutocompleteWidgets from './element/autocomplete-widget';
 
-$(function () {
+$(() => {
 
     const s = new Vue({
         el: '#search_app_ng',
@@ -33,5 +34,6 @@ $(function () {
     });
 
     const f = new ListFilter({});
+    const _acw = new AutocompleteWidgets({debug: true});
 
 });

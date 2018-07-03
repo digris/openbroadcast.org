@@ -5,7 +5,9 @@ import store from 'store';
 class ListFilter {
 
     constructor(opts) {
-        console.log('ListFilter:', opts);
+        this.debug = opts.debug || false;
+        if (this.debug)  console.log('ListFilter:', opts);
+
         this.store_key = 'ui-listfilter-expanded';
         this.expanded_filters = [];
 
@@ -49,7 +51,9 @@ class ListFilter {
         this.apply_state();
     };
     apply_state() {
-        console.log('state:', this.expanded_filters);
+
+        if (this.debug) console.log('state:', this.expanded_filters);
+
         $('[data-listfilter]').each((i, item) => {
             let el = $(item);
             if(this.expanded_filters.includes(el.data('listfilter'))) {

@@ -80,28 +80,29 @@ class LabelSearch(FacetedSearch):
         _musts = []
 
         for key, value in _searches.iteritems():
-            # not particularly nice
+            # not particularly nice - maybe there is a better way to build queries here
             # 'q' - the main search query
             if key == 'q':
-
                 if _options.get('fuzzy', True):
                     _q = ESQ('match', autocomplete={'query': ' '.join(value), 'operator': 'and', 'fuzziness': 'AUTO'})
-                    print('FUZZY')
                 else:
                     _q = ESQ('match', autocomplete={'query': ' '.join(value), 'operator': 'and'})
-                    print('EXACT')
-
                 _musts.append(
                     _q,
                 )
 
             # 'tags' - for 'intersection-style' tagcloud
-            if key == 'tags':
-                print(value)
+            elif key == 'tags':
                 for tag in value:
                     _musts.append(
                         ESQ('term', tags=tag)
                     )
+            else:
+                for v in value:
+                    _musts.append(
+                        ESQ('term', **{key: v})
+                    )
+                #s = s.highlight(key)
 
         if _musts:
             s.query = ESQ('bool', must=_musts)
@@ -121,6 +122,8 @@ class LabelListView(ListView):
 
         search_query = parse_search_query(request=self.request)
 
+        # print(search_query)
+
         # initialize search class
         s = self.search_class(
             query=search_query,
@@ -129,14 +132,21 @@ class LabelListView(ListView):
         )
 
 
+
         # handle pagination
         pagination_query = parse_pagination_query(request=self.request)
         s = s[pagination_query['start']:pagination_query['end']]
 
 
+
+
         # execute elasticsearch query
         result = s.execute()
         formatted_result = format_search_results(result)
+
+        # for hit in result:
+        #     for fragment in hit.meta.highlight.description:
+        #         print(fragment)
 
 
         # get object pks and create corresponding queryset
@@ -159,14 +169,13 @@ class LabelListView(ListView):
         search_result = self._search_result
         pagination_query = parse_pagination_query(request=self.request)
         pagination = get_pagination_data(search_result, pagination_query)
-        tagcloud = get_tagcloud_data(search_result.facets.tags)
+        tagcloud = get_tagcloud_data(tags=search_result.facets.tags, request=self.request)
 
         context.update({
             'facets': search_result.facets,
             'num_results': search_result.hits.total,
             'pagination': pagination,
             'tagcloud': tagcloud,
-            #'filters': get_filter_data([f for f in search_result.facets if not f == 'tags']),
             'filters': get_filter_data(search_result.facets),
         })
 

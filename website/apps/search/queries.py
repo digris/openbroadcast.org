@@ -61,9 +61,13 @@ def format_search_results(results):
     return response
 
 
-def autocomplete_search(q, doc_type=None, fuzzy_mode=False):
+def autocomplete_search(q, doc_type=None, fuzzy_mode=False, **kwargs):
 
     query = autocomplete_query(q, fuzzy_mode)
+    limit = kwargs.get('limit', 20)
+    offset = kwargs.get('offset', 0)
+    if limit and limit > 100:
+        limit = 100
 
     s = Search().index('_all')
 
@@ -71,10 +75,11 @@ def autocomplete_search(q, doc_type=None, fuzzy_mode=False):
         s = s.doc_type(doc_type)
 
 
-    print('*** QUERY')
-    print(query)
+    s = s[offset:limit + offset]
 
-    s = s.query("match", autocomplete=query)
+    s = s.query('match', autocomplete=query)
+    #s = s.query('multi_match', query='independent', fields=['description'])
+    #s = s.highlight('description')
 
     return format_search_results(s.execute())
 

@@ -131,11 +131,14 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                 'slug': self.slug,
             })
         except NoReverseMatch:
-            translation.activate('en')
-            return reverse('alibrary-label-detail', kwargs={
-                'pk': self.pk,
-                'slug': self.slug,
-            })
+            try:
+                translation.activate('en')
+                return reverse('alibrary-label-detail', kwargs={
+                    'pk': self.pk,
+                    'slug': self.slug,
+                })
+            except NoReverseMatch:
+                return '/content/library/labels/{}-{}/'.format(self.pk, self.slug)
 
     def get_edit_url(self):
         return reverse("alibrary-label-edit", args=(self.pk,))

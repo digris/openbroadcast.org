@@ -9,9 +9,11 @@
 
 .prettyprint {
   padding: 8px;
-  background-color: #ffffff;
+    background: transparent;
+    border: none;
+  /*background-color: #ffffff;
   border: 1px solid #e6e6e6;
-  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.06);
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.06);*/
 }
 .prettyprint.linenums {
   -webkit-box-shadow: inset 40px 0 0 #fbfbfc, inset 41px 0 0 #ececf0;

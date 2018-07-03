@@ -1,0 +1,38 @@
+.autocomplete-widget-results
+
+  .results-header
+    background: #333
+    text-align: right
+    padding: 8px 4px
+    .close
+      color: $white
+      text-transform: uppercase
+      &:hover
+        cursor: pointer
+        text-decoration: underline
+
+  .result
+    background: #333
+    padding: 4px
+    color: $white
+    display: flex
+    border-top: 1px solid $white
+
+    &.selected,
+    &:hover
+      background: $primary-color-a-bg-light
+      color: $black
+
+    .image
+      figure
+        margin: 0
+        width: 64px
+        height: 64px
+        background: rgba(255, 255, 255, 0.25)
+
+    .meta
+      flex-grow: 1
+      padding: 0 10px
+
+    .aux
+      text-transform: capitalize

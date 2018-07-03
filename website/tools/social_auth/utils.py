@@ -1,10 +1,8 @@
 import time
 import random
 import hashlib
-import urlparse
 import urllib
 import logging
-from urllib2 import urlopen
 from cgi import parse_qsl
 
 from collections import defaultdict
@@ -15,6 +13,14 @@ from django.apps import apps
 from django.contrib.contenttypes.models import ContentType
 from django.utils.functional import SimpleLazyObject
 from importlib import import_module
+
+
+try:
+    from urllib.parse import urlparse
+    from urllib.request import urlopen
+except ImportError:
+    from urlparse import urlparse
+    from urllib2 import urlopen
 
 
 try:

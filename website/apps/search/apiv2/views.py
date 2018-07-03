@@ -21,6 +21,8 @@ def search_global(request, **kwargs):
 
     q = request.GET.get('q', None)
     fuzzy_mode = request.GET.get('fuzzy', False) == '1'
+    limit = int(request.GET.get('limit', 20))
+    offset = int(request.GET.get('offset', 0))
     # get ct from either GET or kwargs
     doc_type = request.GET.get('ct', kwargs.get('ct', None))
 
@@ -32,7 +34,7 @@ def search_global(request, **kwargs):
         if doc_type == '_all':
             doc_type = None
 
-        response = autocomplete_search(q, doc_type=doc_type, fuzzy_mode=fuzzy_mode)
+        response = autocomplete_search(q, doc_type=doc_type, fuzzy_mode=fuzzy_mode, limit=limit, offset=offset)
 
         return Response(response)
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import unicode_literals, absolute_import
 
 import logging
 
@@ -21,6 +21,8 @@ from base.fields.widgets import ReadOnlyIconField
 from pagedown.widgets import PagedownWidget
 from tagging.forms import TagField
 
+from search.forms import fields as search_fields
+
 from ..lookups import ReleaseLabelLookup, ArtistLookup
 from ..models import Release, Relation, Media, License, Label, ReleaseAlbumartists
 from ..util.storage import get_file_from_url
@@ -38,18 +40,15 @@ MAX_TRACKNUMBER = 100 + 1
 
 class ReleaseActionForm(Form):
 
+    publish = forms.BooleanField(label=_('Save & Publish'), required=False)
+
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop('instance', False)
         super(ReleaseActionForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_tag = False
-
         self.helper.add_layout(ACTION_LAYOUT)
-
-
-    publish = forms.BooleanField(label=_('Save & Publish'), required=False)
-
 
     def clean(self, *args, **kwargs):
 
@@ -102,34 +101,32 @@ class ReleaseBulkeditForm(Form):
         if self.disable_license:
             form_class = 'hidden'
 
-        if self.instance:
-
-            base_layout = Div(
-                    Div(HTML('<p>"%s": %s</p>' % (_('Bulk Edit'), _('Choose Artist name and/or license to apply on each track.')))),
-                    Row(
-                        Column(
-                               Field('bulk_artist_name', css_class='input-xlarge'),
-                               css_class='main'
-                               ),
-                        Column(
-                               HTML('<button type="button" id="bulk_apply_artist_name" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> %s</button>' % _('Apply Artist to all tracks')),
-                               css_class='side'
-                               ),
-                        css_class='bulkedit-row row-fluid',
-                    ),
-                    Row(
-                        Column(
-                               Field('bulk_license', css_class=form_class),
-                               css_class='main'
-                               ),
-                        Column(
-                               HTML('<button type="button" id="bulk_apply_license" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> %s</button>' % _('Apply License to all tracks')),
-                               css_class='side'
-                               ),
-                        css_class='bulkedit-row row-fluid',
-                    ),
-                    css_class='bulk_edit',
-            )
+        base_layout = Div(
+                Div(HTML('<p>"%s": %s</p>' % (_('Bulk Edit'), _('Choose Artist name and/or license to apply on each track.')))),
+                Row(
+                    Column(
+                           Field('bulk_artist_name', css_class='input-xlarge'),
+                           css_class='main'
+                           ),
+                    Column(
+                           HTML('<button type="button" id="bulk_apply_artist_name" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> %s</button>' % _('Apply Artist to all tracks')),
+                           css_class='side'
+                           ),
+                    css_class='bulkedit-row row-fluid',
+                ),
+                Row(
+                    Column(
+                           Field('bulk_license', css_class=form_class),
+                           css_class='main'
+                           ),
+                    Column(
+                           HTML('<button type="button" id="bulk_apply_license" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> %s</button>' % _('Apply License to all tracks')),
+                           css_class='side'
+                           ),
+                    css_class='bulkedit-row row-fluid',
+                ),
+                css_class='bulk_edit',
+        )
 
         self.helper.add_layout(base_layout)
 
@@ -194,11 +191,6 @@ class ReleaseForm(ModelForm):
                 name='Not on Label / Self Released',
                 slug='not-on-label-self-released'
             )
-        #
-        # if c:
-        #     noton_label.name = 'Not on Label / Self Released'
-        #     noton_label.save()
-
 
         base_layout = Fieldset(
             _('General'),
@@ -252,8 +244,10 @@ class ReleaseForm(ModelForm):
     remote_image = forms.URLField(required=False)
     releasedate_approx = ApproximateDateFormField(label="Releasedate", required=False)
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
-    #d_tags = TagField()
-    label = selectable.AutoCompleteSelectField(ReleaseLabelLookup, allow_new=True, required=False)
+
+    #label = selectable.AutoCompleteSelectField(ReleaseLabelLookup, allow_new=True, required=False)
+    label = search_fields.AutocompleteField('alibrary.label', allow_new=True, required=False)
+
     description = forms.CharField(widget=PagedownWidget(), required=False)
 
 
@@ -279,12 +273,7 @@ class ReleaseForm(ModelForm):
         return cd
 
     def save(self, *args, **kwargs):
-
-        # update actstream
-
         return super(ReleaseForm, self).save(*args, **kwargs)
-
-
 
 
 
@@ -292,52 +281,9 @@ class ReleaseForm(ModelForm):
 
 class BaseReleaseMediaFormSet(BaseInlineFormSet):
 
-
     def __init__(self, *args, **kwargs):
-
         self.instance = kwargs['instance']
-
-
         super(BaseReleaseMediaFormSet, self).__init__(*args, **kwargs)
-
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-
-        base_layout = Row(
-                Column(
-                       Field('tracknumber', css_class='input-small'),
-                       Field('mediatype', css_class='input-small'),
-                       Field('license', css_class='input-small'),
-                       #Field('DELETE', css_class='input-mini'),
-                       css_class='span3'
-                       ),
-                Column(
-                        LookupField('name', css_class='input-large'),
-                        LookupField('artist', css_class='input-large'),
-                        LookupField('isrc', css_class='input-large'),
-                        HTML('<span>*%s*</span>' % self.instance.name),
-                       css_class='span5'
-                       ),
-                css_class='releasemedia-row row-fluid',
-        )
-
-
-        self.helper.add_layout(base_layout)
-
-
-
-
-    def add_fields(self, form, index):
-        # allow the super class to create the fields as usual
-        super(BaseReleaseMediaFormSet, self).add_fields(form, index)
-
-        # created the nested formset
-        try:
-            instance = self.get_queryset()[index]
-            pk_value = instance.pk
-        except IndexError:
-            instance=None
-            pk_value = hash(form.prefix)
 
 
 
@@ -374,71 +320,44 @@ class BaseReleaseMediaForm(ModelForm):
                 css_class='releasemedia-row row-fluid',
         )
 
-
         self.helper.add_layout(base_layout)
 
-        """
-        # publishing removed
-        if self.instance and self.instance.release and self.instance.release.publish_date:
-            self.fields['license'].widget.attrs['readonly'] = True
-        """
 
-    artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
+    #artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
+    artist = search_fields.AutocompleteField('alibrary.artist', allow_new=True, required=False)
     TRACKNUMBER_CHOICES =  [('', '---')] + list(((str(x), x) for x in range(1, 301)))
     tracknumber =  forms.ChoiceField(label=_('No.'), required=False, choices=TRACKNUMBER_CHOICES)
 
-    """
-    # publishing disabled
-    def clean_license(self):
-        instance = getattr(self, 'instance', None)
-        if instance and instance.release.publish_date:
-            return instance.license
-        else:
-            return self.cleaned_data['license']
-    """
-
     def clean(self, *args, **kwargs):
-
         cd = super(BaseReleaseMediaForm, self).clean()
-        try:
-            # hack. allow_new in AutoCompleteSelectField does _not_ automatically create new objects???
-            artist = cd['artist']
-            if not artist.pk:
-                pass
-                #artist.save()
-        except:
-            pass
 
         try:
-            tracknumber = cd['tracknumber']
-            try:
-                cd['tracknumber'] = int(cd['tracknumber'])
-            except:
-                cd['tracknumber'] = None
-
+            cd['tracknumber'] = int(cd['tracknumber'])
         except:
-            pass
+            cd['tracknumber'] = None
 
         return cd
 
 
-"""
-Album Artists
-"""
+
 class BaseAlbumartistFormSet(BaseInlineFormSet):
 
-
     def __init__(self, *args, **kwargs):
-
         self.instance = kwargs['instance']
-
         super(BaseAlbumartistFormSet, self).__init__(*args, **kwargs)
 
+
+class BaseAlbumartistForm(ModelForm):
+
+    class Meta:
+        model = ReleaseAlbumartists
+        parent_model = Release
+        fields = ('artist', 'join_phrase', 'position',)
+
+    def __init__(self, *args, **kwargs):
+        instance = getattr(self, 'instance', None)
+        super(BaseAlbumartistForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_id = "id_artists_form_%s" % 'inline'
-        self.helper.form_class = 'form-horizontal'
-        self.helper.form_method = 'post'
-        self.helper.form_action = ''
         self.helper.form_tag = False
 
         base_layout = Row(
@@ -459,62 +378,40 @@ class BaseAlbumartistFormSet(BaseInlineFormSet):
 
         self.helper.add_layout(base_layout)
 
-
-
-
-    def add_fields(self, form, index):
-        # allow the super class to create the fields as usual
-        super(BaseAlbumartistFormSet, self).add_fields(form, index)
-
-        # created the nested formset
-        try:
-            instance = self.get_queryset()[index]
-            pk_value = instance.pk
-        except IndexError:
-            instance = None
-            pk_value = hash(form.prefix)
-
-
-class BaseAlbumartistForm(ModelForm):
-
-    class Meta:
-        model = ReleaseAlbumartists
-        parent_model = Release
-        fields = ('artist', 'join_phrase', 'position',)
-
-    def __init__(self, *args, **kwargs):
-        super(BaseAlbumartistForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
-
-
     def clean_artist(self):
-
         artist = self.cleaned_data['artist']
         if artist and not artist.pk:
             log.debug('saving not existant artist: %s' % artist.name)
             artist.save()
-
         return artist
 
-    artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
-
-
-
+    #artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
+    artist = search_fields.AutocompleteField('alibrary.artist', allow_new=True, required=False)
 
 
 
 class BaseReleaseReleationFormSet(BaseGenericInlineFormSet):
 
     def __init__(self, *args, **kwargs):
-
         self.instance = kwargs['instance']
         super(BaseReleaseReleationFormSet, self).__init__(*args, **kwargs)
 
+
+class BaseReleaseReleationForm(StripWhitespaceFormMixin, ModelForm):
+
+    class Meta:
+        model = Relation
+        parent_model = Release
+        fields = ('url','service')
+
+    def __init__(self, *args, **kwargs):
+        super(BaseReleaseReleationForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        self.fields['service'].widget.instance = instance
+        if instance and instance.id:
+            self.fields['service'].widget.attrs['readonly'] = True
+
         self.helper = FormHelper()
-        self.helper.form_id = "id_releasemediainline_form_%s" % 'asdfds'
-        self.helper.form_class = 'form-horizontal'
-        self.helper.form_method = 'post'
-        self.helper.form_action = ''
         self.helper.form_tag = False
 
         base_layout = Row(
@@ -535,32 +432,11 @@ class BaseReleaseReleationFormSet(BaseGenericInlineFormSet):
 
         self.helper.add_layout(base_layout)
 
-
-
-class BaseReleaseReleationForm(StripWhitespaceFormMixin, ModelForm):
-
-    class Meta:
-        model = Relation
-        parent_model = Release
-        fields = ('url','service')
-
-    def __init__(self, *args, **kwargs):
-        super(BaseReleaseReleationForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
-        self.fields['service'].widget.instance = instance
-        if instance and instance.id:
-            self.fields['service'].widget.attrs['readonly'] = True
-
     def clean_service(self):
         return self.instance.service
 
-    #def clean_url(self):
-    #    return self.cleaned_data.get('url', '').strip()
-
     service = forms.CharField(label='', widget=ReadOnlyIconField(**{'url': 'whatever'}), required=False)
     url = forms.URLField(label=_('Website / URL'), required=False)
-
-
 
 
 # Compose Formsets
@@ -605,8 +481,3 @@ ReleaseRelationFormSet = generic_inlineformset_factory(
     ],
     can_delete=True
 )
-
-
-
-
-

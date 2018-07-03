@@ -81,3 +81,7 @@ pre {
 #filtersModal .modal-body h2 {
     margin-top: 0
 }
+
+.request-info .prettyprint {
+    border-bottom: 1px solid black;
+}

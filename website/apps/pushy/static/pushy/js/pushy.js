@@ -17,49 +17,40 @@ PushyApp = function() {
 			self.connect();
 		}, 100);
 	};
-	
+
 	this.connect = function() {
-
-
 		try {
-
 			self.socket = io.connect(self.socket_url);
-
 			self.socket.on('push', function(data) {
 
 				if(self.debug){
 					console.log('PushyApp - push:', data);
 				}
-
 				if(data.type == 'create') {
 					if(self.debug){
 						console.log('PushyApp - create:', data.route);
 					}
 					self.trigger(data);
 				}
-
 				if(data.type == 'update') {
 					if(self.debug){
 						console.log('PushyApp - update:', data.route);
 					}
 					self.trigger(data);
 				}
-
 				if(data.type == 'delete') {
 					if(self.debug){
 						console.log('PushyApp - delete:', data.route);
 					}
 					self.trigger(data);
 				}
-
 			});
-
 		} catch(e) {
 			//alert('Unable to connect to socket-server');
 			console.error('Unable to connect to socket-server', e);
 		}
 	};
-	
+
 	this.subscribe = function(route, callback) {
 		if(self.debug){
 			console.log('PushyApp - subscribe:', route);
@@ -69,7 +60,7 @@ PushyApp = function() {
 			callback: callback
 		});
 	};
-	
+
 	this.trigger = function(data) {
 		if(self.debug){
 			console.log('PushyApp - trigger:', data);
@@ -84,4 +75,4 @@ PushyApp = function() {
 	this.bindings = function() {
 
 	};
-}; 	
+};

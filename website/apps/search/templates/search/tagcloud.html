@@ -1,6 +1,5 @@
 {% load spurl %}
 
-
 <div style="display: none;" id="tagcloud_inline" data-uistate="init" class="tagcloud inline ui-persistent">
 
     <ul class="horizontal tag-level unstyled pull-right">
@@ -10,14 +9,19 @@
     </ul>
 
     <div class="clear"></div>
-    <div class="cloud-container">
+    <div class="cloud-container" style="width: 760px;">
         {% for tag in tagcloud %}
-            {% spurl base=request.get_full_path active_mquery="search_tags={{ tag.name }}" as is_active %}
-            {% spurl base=request.get_full_path trigger_mquery="search_tags={{ tag.name }}&page=1" as tag_url %}
+
+            {% if tag.query %}
+                {% spurl base=request.get_full_path set_query="search_tags={{ tag.query }}" as tag_url %}
+            {% else %}
+                {% spurl base=request.get_full_path remove_query_param="search_tags" as tag_url %}
+            {% endif %}
+
             {% spurl base=tag_url remove_query_param="page" as tag_url %}
             <a rel="nofollow" href="{{ tag_url }}"
                data-id="{{ tag.pk }}"
-               class="tag{{ tag.weight }} {% if tag.hide_level > 0 %}tag-hidden{% endif %} level{{ tag.hide_level }} {% if is_active %} on{% endif %}"
+               class="tag{{ tag.weight }} {% if tag.hide_level > 0 %}tag-hidden{% endif %} level{{ tag.hide_level }} {% if tag.selected %} on{% endif %}"
                style="">{{ tag.name }}</a>
         {% endfor %}
     </div>

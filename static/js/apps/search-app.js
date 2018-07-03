@@ -62,7 +62,7 @@ export default {
         let scope = $('body').data('scope');
 
         if(scope !== undefined) {
-            console.log('scope:', scope);
+            // console.log('scope:', scope);
             this.search_scope = scope;
         }
 
@@ -104,7 +104,6 @@ export default {
             this.active = true;
         },
         deactivate_search: function(e) {
-            console.log('deactivate search mode');
             this.search_results = [];
             this.search_query_string = '';
             this.active = false;

@@ -21,7 +21,7 @@
 
 {% block searchbar %}
     {% with object=item ct="label" %}
-        {% include "alibrary/element/_searchbar.html" %}
+        {# include "alibrary/element/_searchbar.html" #}
     {% endwith %}
 {% endblock %}
 
@@ -69,7 +69,14 @@
             </div>
             <div class="filter-options">
                 {% for option in filter.options %}
+
                     {% spurl base=request.get_full_path set_query="{{ option.query_key }}={{ option.query_value }}" as toggle_url %}
+                    {% spurl base=toggle_url remove_query_param="page" as toggle_url %}
+
+                    {% if not option.query_value %}
+                        {% spurl base=toggle_url remove_query_param=option.query_key as toggle_url %}
+                    {% endif %}
+
                     <span {% if option.selected %}class="selected"{% endif %}>
                         <a href="{{ toggle_url }}">
                             {{ option.name }}

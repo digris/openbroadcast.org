@@ -202,7 +202,17 @@ def _calculate_tag_weight(weight, max_weight, distribution):
         return math.log(weight) * max_weight / math.log(max_weight)
     raise ValueError('Invalid distribution algorithm specified: %s.' % distribution)
 
-def get_tagcloud_data(tags, steps=6, distribution=LOGARITHMIC, group_by=10):
+def get_tagcloud_data(tags, request, steps=6, distribution=LOGARITHMIC, group_by=10):
+
+    # currently selected tags in request
+    current_tags = request.GET.get('search_tags', None)
+    if current_tags and current_tags != '':
+        current_tags = [t.strip() for t in current_tags.split(':')]
+    else:
+        current_tags = []
+
+    print('current_tags', current_tags)
+
 
     # map to dict
     tags = [{'name': t[0], 'count': t[1], 'selected': t[2], 'weight': 1} for t in tags]
@@ -247,5 +257,15 @@ def get_tagcloud_data(tags, steps=6, distribution=LOGARITHMIC, group_by=10):
                 tag['hide_level'] = hidden[tag['weight'] -1]
             except Exception as e:
                 pass
+
+
+            if tag['name'] in current_tags:
+                tag['selected'] = True
+                tag['query'] = ':'.join(sorted([t for t in current_tags if not t == tag['name']]))
+            else:
+                tag['query'] = ':'.join(sorted([tag['name']] + current_tags))
+
+
+        tags = sorted(tags, key=lambda k: k['name'])
 
     return tags

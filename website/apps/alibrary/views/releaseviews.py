@@ -253,16 +253,12 @@ class ReleaseDetailView(DetailView):
         return super(ReleaseDetailView, self).render_to_response(context, content_type="text/html")
 
     def get_context_data(self, **kwargs):
-
         context = super(ReleaseDetailView, self).get_context_data(**kwargs)
-        obj = kwargs.get('object', None)
 
         self.extra_context['history'] = []
-
         context.update(self.extra_context)
 
         return context
-
 
 
 
@@ -425,94 +421,3 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
     def formset_action_valid(self, formset):
         self.do_publish = formset.cleaned_data.get('publish', False)
-
-
-
-
-
-# autocompleter views
-def release_autocomplete(request):
-
-    q = request.GET.get('q', None)
-
-    result = []
-
-    if q and len(q) > 1:
-
-        releases = Release.objects.filter(Q(name__istartswith=q)\
-            | Q(media_release__name__icontains=q)\
-            | Q(media_release__artist__name__icontains=q)\
-            | Q(label__name__icontains=q))\
-            .distinct()
-        for release in releases:
-            item = {}
-            item['release'] = release
-            medias = []
-            artists = []
-            labels = []
-            for media in release.media_release.filter(name__icontains=q).distinct():
-                if not media in medias:
-                    medias.append(media)
-            for media in release.media_release.filter(artist__name__icontains=q).distinct():
-                if not media.artist in artists:
-                    artists.append(media.artist)
-
-            if not len(artists) > 0:
-                artists = None
-            if not len(medias) > 0:
-                medias = None
-            if not len(labels) > 0:
-                labels = None
-
-            item['artists'] = artists
-            item['medias'] = medias
-            item['labels'] = labels
-
-            result.append(item)
-
-    return render_to_response("alibrary/element/autocomplete.html", { 'query': q, 'result': result }, context_instance=RequestContext(request))
-
-
-
-
-class JSONResponseMixin(object):
-    def render_to_response(self, context):
-        "Returns a JSON response containing 'context' as payload"
-        return self.get_json_response(self.convert_context_to_json(context))
-
-    def get_json_response(self, content, **httpresponse_kwargs):
-        "Construct an `HttpResponse` object."
-        return http.HttpResponse(content,
-                                 content_type='application/json',
-                                 **httpresponse_kwargs)
-
-    def convert_context_to_json(self, context):
-        "Convert the context dictionary into a JSON object"
-        # Note: This is *EXTREMELY* naive; in reality, you'll need
-        # to do much more complex handling to ensure that arbitrary
-        # objects -- such as Django model instances or querysets
-        # -- can be serialized as JSON.
-
-        ret = {}
-
-        release = context['release']
-
-        ret['name'] = release.name
-        ret['status'] = True
-
-        ret['media'] = {};
-
-        for media in release.get_media():
-            ret['media'][media.id] = {
-                                      'name': media.name,
-                                      'tracknumber': media.tracknumber,
-                                      'url': media.master.url
-                                      }
-
-
-
-        return json.dumps(ret)
-
-class JSONReleaseDetailView(JSONResponseMixin, ReleaseDetailView):
-    pass
-

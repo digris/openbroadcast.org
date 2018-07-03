@@ -116,7 +116,11 @@
                     </p>
                 </div>
 
-                {% crispy named_formsets.albumartist %}
+                {# crispy named_formsets.albumartist #}
+
+                {% for form in named_formsets.albumartist %}
+                    {% crispy form %}
+                {% endfor %}
 
             </fieldset>
 
@@ -127,7 +131,11 @@
                 </legend>
 
 
-                {% crispy named_formsets.relation %}
+                {# crispy named_formsets.relation #}
+                {% for form in named_formsets.relation %}
+                    {% crispy form %}
+                {% endfor %}
+
                 <div class="lookup-container"></div>
 
             </fieldset>
@@ -175,8 +183,8 @@
 
                 {# crispy named_formsets.media #}
 
-                {% for mf in named_formsets.media %}
-                    {% crispy mf %}
+                {% for form in named_formsets.media %}
+                    {% crispy form %}
                 {% endfor %}
 
 

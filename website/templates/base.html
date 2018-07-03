@@ -38,16 +38,11 @@
         <!-- end: js-head elements added by sub-templates -->
 
         <!-- start: webpack bundle handling -->
-        {% if webpack_devserver %}
-            <link rel="stylesheet" href="{% static 'css/bundle.css' %}"/>
-        {% else %}
+        {% if not webpack_devserver %}
             <link rel="stylesheet" href="{% static 'dist/css/bundle.css' %}"/>
-        {% endif %}
-
-        {% if webpack_devserver %}
-            <script src="{% static 'js/bundle.js' %}"></script>
-        {% else %}
             <script src="{% static 'dist/js/bundle.js' %}"></script>
+        {% else %}
+            <script src="{% static 'js/bundle.js' %}"></script>
         {% endif %}
         <!-- end: webpack bundle handling -->
 
