@@ -32,14 +32,14 @@
             {% include "search/pagination.html" %}
         </div>
     </div>
-    <div class="listview container labels l">
+    <div class="listview container medias s">
 
         <div class="list_body">
 
             {% hash_user_groups request.user as group_hash %}
 
             {% for item in object_list %}
-                {% include "alibrary/label/list_item_l.html" %}
+                {% include "alibrary/media/list_item_s.html" %}
             {% empty %}
                 <p style="padding: 20px; text-align: center;">
                     {% trans 'No results to display.' %}
@@ -51,7 +51,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% include "alibrary/label/sidebar/_list.html" %}
+    {% include "alibrary/media/sidebar/_list.html" %}
 
     {% for filter in filters %}
         <div class="filter expanded{% if filter.num_selected %} has-selection{% endif %}" data-listfilter="{{ filter.key }}">

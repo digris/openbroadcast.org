@@ -123,18 +123,6 @@
 
     </div>
 
-    <!-- License -->
-    {% comment %}
-    <div class="list_body_item c5 license {% if item.license %}{{ item.license.key }}{% endif %}">
-        {% if item.license %}
-            <a href="{{ item.license.get_absolute_url }}" title="{% trans "License details" %}"
-               class="iconset iconset-license">{{ item.license.iconset_display }}</a>
-        {% else %}
-            &nbsp;
-        {% endif %}
-    </div>
-    {% endcomment %}
-
     <!-- Relations -->
     <div class="list_body_item c5 relations">
 

@@ -5,7 +5,6 @@ from django.db import models
 import tagging
 import os
 import logging
-import uuid
 import arating
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
@@ -31,52 +30,113 @@ LOOKUP_PROVIDERS = (
     ('musicbrainz', _('Musicbrainz')),
 )
 
+
 def upload_image_to(instance, filename):
     filename, extension = os.path.splitext(filename)
     return os.path.join(get_dir_for_object(instance), 'logo%s' % extension.lower())
 
 
 class LabelManager(models.Manager):
-
     def active(self):
         return self.get_queryset().exclude(listed=False)
 
+
 class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
 
-    name = models.CharField(max_length=400)
-    slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
-
-    labelcode = models.CharField(max_length=250, blank=True, null=True)
-    address = models.TextField(blank=True, null=True)
-    country = models.ForeignKey(Country, blank=True, null=True)
-
-    email = models.EmailField(blank=True, null=True)
-    phone = PhoneNumberField(blank=True, null=True)
-    fax = PhoneNumberField(blank=True, null=True)
-    main_image = models.ImageField(verbose_name=_('Logo Image'), upload_to=upload_image_to, storage=OverwriteStorage(), null=True, blank=True)
-    description = extra.MarkdownTextField(blank=True, null=True)
-
-    date_start = ApproximateDateField(verbose_name="Life-span begin", blank=True, null=True)
-    date_end = ApproximateDateField(verbose_name="Life-span end", blank=True, null=True)
-
-    owner = models.ForeignKey(User, blank=True, null=True, related_name="labels_owner", on_delete=models.SET_NULL)
-    creator = models.ForeignKey(User, blank=True, null=True, related_name="labels_creator", on_delete=models.SET_NULL)
-    last_editor = models.ForeignKey(User, blank=True, null=True, related_name="labels_last_editor", on_delete=models.SET_NULL)
-    publisher = models.ForeignKey(User, blank=True, null=True, related_name="labels_publisher", on_delete=models.SET_NULL)
-
-    listed = models.BooleanField(verbose_name='Include in listings', default=True, help_text=_('Should this Label be shown on the default Label-list?'))
-    disable_link = models.BooleanField(verbose_name='Disable Link', default=False, help_text=_('Disable Linking. Useful e.g. for "Unknown Label"'))
-    disable_editing = models.BooleanField(verbose_name='Disable Editing', default=False, help_text=_('Disable Editing. Useful e.g. for "Unknown Label"'))
-
-    type = models.CharField(verbose_name="Label type", max_length=128, default='unknown', choices=alibrary_settings.LABELTYPE_CHOICES)
-
+    name = models.CharField(
+        max_length=400
+    )
+    slug = AutoSlugField(
+        populate_from='name',
+        editable=True, blank=True, overwrite=True
+    )
+    labelcode = models.CharField(
+        max_length=250, blank=True, null=True
+    )
+    address = models.TextField(
+        blank=True, null=True
+    )
+    country = models.ForeignKey(
+        Country,
+        blank=True, null=True
+    )
+    email = models.EmailField(
+        blank=True, null=True
+    )
+    phone = PhoneNumberField(
+        blank=True, null=True
+    )
+    fax = PhoneNumberField(
+        blank=True, null=True
+    )
+    main_image = models.ImageField(
+        verbose_name=_('Logo Image'),
+        upload_to=upload_image_to,
+        storage=OverwriteStorage(),
+        null=True, blank=True
+    )
+    description = extra.MarkdownTextField(
+        blank=True, null=True
+    )
+    date_start = ApproximateDateField(
+        verbose_name="Life-span begin",
+        blank=True, null=True
+    )
+    date_end = ApproximateDateField(
+        verbose_name="Life-span end",
+        blank=True, null=True
+    )
+    owner = models.ForeignKey(
+        User,
+        blank=True, null=True, on_delete=models.SET_NULL,
+        related_name="labels_owner"
+    )
+    creator = models.ForeignKey(
+        User,
+        blank=True, null=True, on_delete=models.SET_NULL,
+        related_name="labels_creator")
+    last_editor = models.ForeignKey(
+        User,
+        blank=True, null=True, on_delete=models.SET_NULL,
+        related_name="labels_last_editor"
+    )
+    publisher = models.ForeignKey(
+        User,
+        blank=True, null=True, on_delete=models.SET_NULL,
+        related_name="labels_publisher"
+    )
+    listed = models.BooleanField(
+        verbose_name='Include in listings',
+        default=True,
+        help_text=_('Should this Label be shown on the default Label-list?')
+    )
+    disable_link = models.BooleanField(
+        verbose_name='Disable Link',
+        default=False,
+        help_text=_('Disable Linking. Useful e.g. for "Unknown Label"')
+    )
+    disable_editing = models.BooleanField(
+        verbose_name='Disable Editing',
+        default=False,
+        help_text=_('Disable Editing. Useful e.g. for "Unknown Label"')
+    )
+    type = models.CharField(
+        verbose_name="Label type",
+        max_length=128,
+        default='unknown',
+        choices=alibrary_settings.LABELTYPE_CHOICES
+    )
     relations = GenericRelation('Relation')
-    d_tags = tagging.fields.TagField(max_length=1024,verbose_name="Tags", blank=True, null=True)
+    d_tags = tagging.fields.TagField(
+        verbose_name="Tags",
+        max_length=1024, blank=True, null=True
+    )
 
     # refactoring parent handling
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='children')
-    parent_temporary_id = models.PositiveIntegerField(null=True, blank=True)
-
+    parent = models.ForeignKey(
+        'self', null=True, blank=True,
+        related_name='children'
+    )
     # identifiers
     ipi_code = models.CharField(
         verbose_name=_('IPI Code'),
@@ -131,14 +191,12 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                 'slug': self.slug,
             })
         except NoReverseMatch:
-            try:
-                translation.activate('en')
-                return reverse('alibrary-label-detail', kwargs={
-                    'pk': self.pk,
-                    'slug': self.slug,
-                })
-            except NoReverseMatch:
-                return '/content/library/labels/{}-{}/'.format(self.pk, self.slug)
+            translation.activate('en')
+            return reverse('alibrary-label-detail', kwargs={
+                'pk': self.pk,
+                'slug': self.slug,
+            })
+
 
     def get_edit_url(self):
         return reverse("alibrary-label-edit", args=(self.pk,))

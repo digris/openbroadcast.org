@@ -4,19 +4,6 @@
     .search-app {
         position: relative;
     }
-    /*
-    .search-display-wrapper {
-        position: absolute;
-        width: 100%;
-    }
-
-    .search-result-container {
-        width: 100%;
-    }
-    .search-result-container.expanded {
-        display: block;
-    }
-    */
 </style>
 
 <template>
@@ -90,6 +77,7 @@
                     <div class="controls controls-meta">
                         <span class="title">
                             <a v-on:click="navigate_to_item($event, item)">{{ item.name }}<!-- | {{ item.score }} - {{ item.top_hit }}--></a>
+                            <span v-if="item.artist_display"><br>{{ item.artist_display }}</span>
                         </span>
                         <br>
                         <span v-for="(tag, index) in item.tags.slice(0, 4)">

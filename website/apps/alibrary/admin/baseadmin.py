@@ -271,7 +271,7 @@ admin.site.register(NameVariation)
 class LicenseAdmin(TranslatableAdmin):
     inline_instances = ('name_translated', 'restricted', 'parent',)
 
-    list_display = ('name', 'parent', 'legacy_id', 'key', 'restricted', 'selectable', 'is_default',)
+    #list_display = ('name', 'parent', 'legacy_id', 'key', 'restricted', 'selectable', 'is_default',)
     search_fields = ('name',)
 
 

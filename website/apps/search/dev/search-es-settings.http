@@ -1,0 +1,10 @@
+PUT http://localhost:9201/_cluster/settings
+Content-Type: application/json
+
+{
+  "transient": {
+    "cluster.routing.allocation.disk.watermark.flood_stage": "99%"
+  }
+}
+
+###

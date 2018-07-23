@@ -29,6 +29,7 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
+                exclude: [/node_modules/],
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -113,7 +114,7 @@ module.exports = {
     ],
     resolve: {
         alias: {
-            'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack
+            'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
         }
     },
     // optimization: {

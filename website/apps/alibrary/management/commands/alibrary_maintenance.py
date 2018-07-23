@@ -160,12 +160,9 @@ class MaintenanceWorker(object):
 
 
 
-
         if self.action == 'map_tags':
 
             from alibrary.models import Media
-
-
             if self.id:
                 items = Media.objects.filter(id=self.id)
             else:
@@ -177,29 +174,6 @@ class MaintenanceWorker(object):
                     if item.release and item.release.tags.count() > 0:
                         item.tags = item.release.tags
                         item.save()
-
-
-        if self.action == 'set_parent_temporary_id':
-
-            from alibrary.models import Label
-            labels = Label.objects.exclude(parent__isnull=True)
-
-            for label in labels:
-                Label.objects.filter(pk=label.pk).update(parent_temporary_id=label.parent.pk)
-
-
-        if self.action == 'update_label_tree':
-
-            from alibrary.models import Label
-            labels = Label.objects.exclude(parent_temporary_id__isnull=True)
-
-            for label in labels:
-                parent_label = Label.objects.get(pk=label.parent_temporary_id)
-                Label.objects.filter(pk=label.pk).update(parent=parent_label)
-
-                #Label.objects.filter(pk=label.pk).update(parent_temporary_id=label.parent.pk)
-
-
 
 
 class Command(NoArgsCommand):

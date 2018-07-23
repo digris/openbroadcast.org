@@ -50,11 +50,29 @@ export default {
                     list_url: '/content/library/artists/'
                 },
                 {
+                    ct: 'alibrary.media',
+                    name: 'Track',
+                    shortcut: 't',
+                    list_url: '/content/library/tracks/'
+                },
+                {
                     ct: 'alibrary.label',
                     name: 'Label',
                     shortcut: 'l',
                     list_url: '/content/library/labels/'
-                }
+                },
+                {
+                    ct: 'alibrary.playlist',
+                    name: 'Playlist',
+                    shortcut: 'p',
+                    list_url: '/content/library/playlists/'
+                },
+                {
+                    ct: 'profiles.profile',
+                    name: 'User',
+                    shortcut: 'u',
+                    list_url: '/network/users/'
+                },
             ]
         }
     },

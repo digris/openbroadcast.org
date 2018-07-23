@@ -224,11 +224,19 @@ class License(TranslatableModel, MigrationMixin, UUIDModelMixin, TimestampedMode
         verbose_name_plural = _('Licenses')
         ordering = ('parent__name', 'name', )
 
+
     def __unicode__(self):
         if self.parent:
             return '%s - %s' % (self.parent.name, self.name)
         else:
             return '%s' % (self.name)
+
+
+    @property
+    def title(self):
+        if self.parent:
+            return '{} - {}'.format(self.parent.name, self.name)
+        return self.name
 
 
     def get_absolute_url(self):

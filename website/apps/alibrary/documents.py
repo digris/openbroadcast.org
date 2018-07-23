@@ -96,13 +96,13 @@ class LabelDocument(LibraryBaseDocument, DocType):
 
     image = KeywordField()
 
-    type = fields.KeywordField()
+    type = fields.KeywordField(attr='get_type_display')
 
     year_start = fields.IntegerField()
     year_end = fields.IntegerField()
 
     description = fields.TextField(attr='description')
-    country = KeywordField(attr='country.iso2_code')
+    country = KeywordField(attr='country.printable_name')
 
 
     ###################################################################
@@ -341,23 +341,44 @@ class MediaDocument(LibraryBaseDocument, DocType):
         fielddata=True
     )
 
+    artist_display = fields.TextField(
+        attr='get_artist_display'
+    )
+
     tags = KeywordField()
     image = KeywordField()
 
-    type = fields.KeywordField(attr='mediatype')
+    type = fields.KeywordField(attr='get_mediatype_display')
+    version = fields.KeywordField(attr='get_version_display')
     #barcode = fields.KeywordField()
 
     description = fields.TextField()
     lyrics = fields.TextField()
+    lyrics_language = fields.KeywordField(attr='get_lyrics_language_display')
     #country = KeywordField(attr='release_country.iso2_code')
 
     #num_media = fields.IntegerField()
+
+    # audio-properties
+    duration = fields.IntegerField(attr='master_duration')
+    bitrate = fields.IntegerField(attr='master_bitrate')
+    samplerate = fields.IntegerField(attr='master_samplerate')
+    encoding = fields.KeywordField(attr='master_encoding')
+    tempo = fields.FloatField(attr='tempo')
+
+    # license = fields.NestedField(properties={
+    #     'name': fields.KeywordField(),
+    #     'id': fields.IntegerField(),
+    # })
+
+    license = fields.KeywordField()
 
     ###################################################################
     # field preparation
     ###################################################################
     def prepare_autocomplete(self, instance):
         text = [instance.name.strip()]
+        text += [instance.get_artist_display()]
         return text
 
     def prepare_name(self, instance):
@@ -374,8 +395,20 @@ class MediaDocument(LibraryBaseDocument, DocType):
             except InvalidImageFormatError:
                 pass
 
-    def prepare_num_media(self, instance):
-        return instance.media_release.count()
+    def prepare_license(self, instance):
+
+        if instance.license:
+            return instance.license.title
+            # return {
+            #     'id': instance.license.pk,
+            #     'name': instance.license.name,
+            # }
+
+    def prepare_encoding(self, instance):
+        if instance.master_encoding:
+            return instance.master_encoding.upper()
+
+
 
     ###################################################################
     # custom queryset
@@ -383,4 +416,6 @@ class MediaDocument(LibraryBaseDocument, DocType):
     def get_queryset(self):
         return super(MediaDocument, self).get_queryset().all().select_related(
             'release', 'artist', 'license'
+        ).prefetch_related(
+            'media_artists', 'extra_artists'
         )

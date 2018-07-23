@@ -56,6 +56,15 @@
     .selected > a
       color: $primary-color-a
 
+    .option > a
+      display: flex
+      .option-name
+        flex-grow: 1
+      .option-count
+        padding-right: 4px
+        color: $black
+        opacity: 0.5
+
 
 .sidebar .filter
   @extend %filter

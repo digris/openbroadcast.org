@@ -161,7 +161,7 @@ def get_filter_data(facets):
             else:
                 _q = selected_options + [option[0]]
 
-            _query = ':'.join(_q)
+            _query = ':'.join((str(x) for x in _q))
 
             _options.append({
                 'name': option[0],
@@ -211,8 +211,8 @@ def get_tagcloud_data(tags, request, steps=6, distribution=LOGARITHMIC, group_by
     else:
         current_tags = []
 
-    print('current_tags', current_tags)
 
+    print(tags)
 
     # map to dict
     tags = [{'name': t[0], 'count': t[1], 'selected': t[2], 'weight': 1} for t in tags]
@@ -222,6 +222,11 @@ def get_tagcloud_data(tags, request, steps=6, distribution=LOGARITHMIC, group_by
         min_weight = float(min(counts))
         max_weight = float(max(counts))
         thresholds = _calculate_thresholds(min_weight, max_weight, steps)
+
+        print('counts', counts)
+        print('min_weight', min_weight)
+        print('max_weight', max_weight)
+        print('thresholds', thresholds)
 
         groups = []
         for i in range(steps):
