@@ -228,11 +228,6 @@ class PlaylistCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
     permission_required = 'alibrary.add_playlist'
     raise_exception = True
 
-    #@method_decorator(login_required)
-    #def dispatch(self, *args, **kwargs):
-    #    return super(PlaylistCreateView, self).dispatch(*args, **kwargs)
-
-
     def get_context_data(self, **kwargs):
         context = super(PlaylistCreateView, self).get_context_data(**kwargs)
         context['action_form'] = ActionForm()
@@ -316,9 +311,13 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         context = super(PlaylistEditView, self).get_context_data(**kwargs)
 
         context['action_form'] = ActionForm()
-        #context['releasemedia_form'] = ReleaseMediaFormSet(instance=self.object)
         context['user'] = self.request.user
         context['request'] = self.request
+
+        if self.request.user.has_perm('importer.add_import') and not self.object.type == 'broadcast':
+            context['can_upload_media'] = True
+        else:
+            context['can_upload_media'] = False
 
         return context
 
