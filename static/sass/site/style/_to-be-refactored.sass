@@ -1223,50 +1223,51 @@ div
 
 /* TABLE ----------------------------------
 
-.header
+table
+  .header
   border-bottom: 1px solid #ddd
   padding-bottom: 5px
 
-.table
-  //border-top:1px solid #bbb;
-  color: #666
-  h3
-    color: #333
-  &.noline, td.noline
-    border: none
-  tr.error
-    background-color: #fedede
-  td.error
-    color: #ff0000
-  th
-    font-weight: normal
-    padding: 4px 6px 2px 6px
-    font-style: italic
-    color: #666666
-    font-weight: 300
-
-    &.icon
-      padding: 2px 0px 0px 6px
-    &.selected
-      padding-right: 21px
-      background-image: url(/static/img/prototype/table_order.png)
-      background-repeat: no-repeat
-      background-position: right
-      background-color: #ccc
-      text-decoration: none
-  td
+  .table
+    //border-top:1px solid #bbb;
     color: #666
-    background: $body-color-shaded-bg
-    padding: 6px 6px 5px 6px
-    border-bottom: 4px solid $body-color-bg
-    line-height: 19px
+    h3
+      color: #333
+    &.noline, td.noline
+      border: none
+    tr.error
+      background-color: #fedede
+    td.error
+      color: #ff0000
+    th
+      font-weight: normal
+      padding: 4px 6px 2px 6px
+      font-style: italic
+      color: #666666
+      font-weight: 300
 
-  tr:hover td
-    background: $hover-bg-color !important
+      &.icon
+        padding: 2px 0px 0px 6px
+      &.selected
+        padding-right: 21px
+        background-image: url(/static/img/prototype/table_order.png)
+        background-repeat: no-repeat
+        background-position: right
+        background-color: #ccc
+        text-decoration: none
+    td
+      color: #666
+      background: $body-color-shaded-bg
+      padding: 6px 6px 5px 6px
+      border-bottom: 4px solid $body-color-bg
+      line-height: 19px
 
-.table span
-  color: #999
-  //font-size:11px;
+    tr:hover td
+      background: $hover-bg-color !important
+
+  .table span
+    color: #999
+    //font-size:11px;
 
 .label2
   color: #333

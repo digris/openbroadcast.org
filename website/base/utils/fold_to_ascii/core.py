@@ -14,11 +14,11 @@ default_translate_table = defaultdict(none_factory, mapping.translate_table)
 def fold(unicode_string, replacement=u''):
     """Fold unicode_string to ASCII.
 
-Unmapped characters should be replaced with empty string by default, or other
-replacement if provided.
+    Unmapped characters should be replaced with empty string by default, or other
+    replacement if provided.
 
-All astral plane characters are always removed, even if a replacement is
-provided.
+    All astral plane characters are always removed, even if a replacement is
+    provided.
     """
 
     if unicode_string is None:
@@ -41,8 +41,7 @@ provided.
         def replacement_factory():
             return replacement
 
-        translate_table = defaultdict(replacement_factory,
-                                      mapping.translate_table)
+        translate_table = defaultdict(replacement_factory, mapping.translate_table)
     else:
         translate_table = default_translate_table
 

@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import math
 from django.conf import settings
 
-PAGINATE_BY_DEFAULT = getattr(settings, 'PAGINATE_BY_DEFAULT', 12)
+PAGINATE_BY_DEFAULT = getattr(settings, 'PAGINATE_BY_DEFAULT', 24)
 
 
 def parse_search_query(request):
@@ -114,9 +114,6 @@ def get_pagination_pages(num_pages, current_page):
     return pages
 
 
-
-
-
 def get_pagination_data(result, query):
 
     current_page = query.get('page')
@@ -134,6 +131,69 @@ def get_pagination_data(result, query):
     }
 
     return pagination
+
+
+def get_ordering_data(order_options, search_query, request):
+
+    #order_by = request.GET.get('order_by')
+    order_by = search_query['order_by']
+    ordering_data = []
+
+    # if order_by and order_by.startswith('-'):
+    #     direction = 'desc'
+    #     key = order_by.lstrip('-')
+    # elif order_by:
+    #     direction = 'asc'
+    #     key = order_by
+    # else:
+    #     direction = 'asc'
+    #     ordering_data = []
+    #     key = None
+
+    if order_by:
+        selected_key = order_by.lstrip('-')
+        selected_direction = 'desc' if order_by.startswith('-') else 'asc'
+    else:
+        selected_key = None
+        selected_direction = None
+
+
+    if search_query.get('searches'):
+        ordering_data.append({
+            'name': 'Best match',
+            'query_key': 'order_by',
+            'query_value': None,
+            'direction': None,
+            'selected': selected_key == None,
+        })
+
+
+    for option in order_options:
+
+        if selected_key == option['key']:
+            selected = True
+            if selected_direction == 'asc':
+                query = '-' + option['key']
+            else:
+                query = option['key']
+        else:
+            selected = False
+            if option['default_direction'] == 'desc':
+                query = '-' + option['key']
+            else:
+                query = option['key']
+
+
+        ordering_data.append({
+            'name': option['name'],
+            'query_key': 'order_by',
+            'query_value': query,
+            'direction': selected_direction if selected else option['default_direction'],
+            'selected': selected,
+        })
+
+
+    return ordering_data
 
 
 def get_filter_data(facets):

@@ -1,0 +1,139 @@
+
+$topbar-height: 32px
+
+.topbar
+  background: linear-gradient(to right, #ffffff 0%, #6633CC 80%)
+  position: fixed
+  top: 0
+  width: 100%
+  height: $topbar-height
+  z-index: 99
+  display: flex
+  flex-direction: row
+  letter-spacing: 1px
+
+  // main elements
+  .branding
+    //background: rgba(255, 69, 0, 0.4)
+    padding: 7px 20px
+    font-size: 13px
+    a
+      color: #333
+
+  .main-menu
+    font-size: 13px
+    text-transform: uppercase
+
+    //flex-grow: 0
+    .menu
+      display: flex
+      // first level
+      > li
+        padding: 7px 20px
+        &:hover,
+        &.selected
+          background: #f5f5f5
+        a
+          color: #000
+          text-decoration: none
+
+      // second level
+      .children
+        display: none
+        background: rgba(245, 245, 245, 0.91)
+        position: fixed
+        top: 32px
+        left: 0
+        width: 100%
+
+
+        &.active
+          display: flex
+
+        > li
+          padding: 7px 10px
+
+          a
+            color: #000
+            text-decoration: none
+            padding-right: 20px
+            border-right: 1px solid #000
+
+          &:hover,
+          &.selected
+            a
+              color: $primary-color-a
+
+          &:last-child
+            a
+              border-right: none
+
+
+
+  .global-search
+    // color: green
+    flex-grow: 1
+    margin-left: auto
+
+  .account-menu
+    font-size: 13px
+    text-transform: uppercase
+    background: #000
+
+    &.is-authenticated
+      min-width: 200px
+
+
+    .menu
+      display: flex
+
+      // first level
+      > li
+        padding: 7px 10px
+        //background: #000
+        color: #fff
+        &:hover
+          background: #333
+        a
+          color: #fff
+          text-decoration: none
+          display: block
+
+        &.account
+          flex-grow: 1
+
+        &.login
+          padding-left: 20px
+          padding-right: 20px
+
+      // second level
+      .children
+        display: none
+        position: absolute
+        top: 32px
+        min-width: 200px
+        right: 0
+        background: #000
+
+        > li
+          padding: 7px 10px
+          &:hover
+            background: #333
+          a
+            color: #fff
+            text-decoration: none
+            padding-right: 10px
+            text-transform: none
+            display: block
+
+
+      .account:hover
+        .children
+          display: block
+
+      .login:hover
+        .children
+          display: block
+
+      .message-notification.has-unread
+        background: $primary-color-a !important

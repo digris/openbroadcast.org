@@ -2,10 +2,6 @@
 
 {% load menu_tags %}
 
-{% block toolbar %}
-{% include "element/main-navigation/_toolbar.html" %}
-{% endblock %}
-
 {% block main %}
 <div class="row">
 	<section>
@@ -17,7 +13,7 @@
 			{% block sidebar %}{% endblock %}
 		</div>
 	</section>
-	
+
 	<section>
 		<div class="span9">
 			{% block form %}{% endblock %}
@@ -27,6 +23,6 @@
 			{% block form_sidebar %}{% endblock %}
 		</div>
 	</section>
-	
+
 </div>
 {% endblock %}

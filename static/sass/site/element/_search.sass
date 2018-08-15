@@ -1,9 +1,12 @@
 /* search */
 
+// refactored to 'apps/_search.sass'
+// TODO: remove file
+
 $ac-width: 830px
 
 
-div.autocomplete
+div.__autocomplete
 
   &.holder
     position: absolute
@@ -11,8 +14,7 @@ div.autocomplete
     // background-color: whiteSmoke
     background-color: #333333
     z-index: 1001
-    margin-top: 0px
-
+    margin-top: 0
 
     .btn.exit
       position: absolute
@@ -30,32 +32,32 @@ div.autocomplete
       border: 1px solid #999
       border-top: none
       border-right: 1px solid #cccccc
-      
+
       h1, h2, h3
         font-size: 12px !important
         line-height: 15px !important
 
         .type
           text-transform: capitalize
-      
+
       .linkable
         cursor: pointer
-      
+
       .search
         color: white
         padding: 5px
-        
+
         h1
           margin-bottom: 0px !important
 
         h1, p
           color: white
-      
+
       .listing
 
         max-height: 491px
         overflow: auto
-      
+
         .item
           // fix col widths
           .row-fluid > .span2
@@ -71,29 +73,29 @@ div.autocomplete
           border-top: 1px solid #CCC
           background-repeat: no-repeat
           background-position: top right
-          
+
           padding: 5px
           min-height: 42px
-          
+
           h2
             color: white
             text-transform: uppercase
             margin-bottom: 0px !important
-          
+
           .related
-          
+
             > span
               float: left
               margin-right: 4px
               text-transform: none
-              
+
             ul
               +clearfix()
               list-style: none !important
               margin-left: 0
               li
                 margin-right: 10px
-          
+
           em.highlight
             //background: $primary-color-a-bg-light
             color: $primary-color-a-bg-light
@@ -103,7 +105,7 @@ div.autocomplete
             //text-decoration: underline
             font-style: italic
             font-weight: bold
-            
+
           &.hover
             background-color: $primary-color-a-bg-light
             color: #333
@@ -118,11 +120,10 @@ div.autocomplete
 
 
             // color: $primary-color-a
-        
-        
-      
-    
-  
 
 
-            
+
+
+
+
+

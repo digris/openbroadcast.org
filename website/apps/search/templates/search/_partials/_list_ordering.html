@@ -1,0 +1,38 @@
+{% load spurl i18n %}
+
+<div class="ordering" data-listfilter="ordering">
+    <div class="header">
+        <div class="header-icon">
+            <span class="uc-icon">&#9658;</span>
+        </div>
+        <div class="header-title">
+            {% trans "Ordering" %}
+        </div>
+    </div>
+    <div class="options">
+    {% for option in ordering %}
+        {% if option.query_value %}
+            {% spurl base=request.get_full_path set_query="{{ option.query_key }}={{ option.query_value }}" as toggle_url %}
+        {% else %}
+            {% spurl base=request.get_full_path remove_query_param=option.query_key as toggle_url %}
+        {% endif %}
+        <span class="option{% if option.selected %} selected{% endif %}">
+            <a href="{{ toggle_url }}" rel="nofollow">
+                <span class="option-name">{{ option.name }}</span>
+                {% if option.direction %}
+                    <span class="option-direction">
+                        {% if option.selected %}
+                            <span class="direction-indicator">
+                                {% if option.direction == 'asc' %}⌃{% else %}⌄{% endif %}
+                            </span>
+                            <span class="direction-label">
+                                {{ option.direction }}
+                            </span>
+                        {% endif %}
+                    </span>
+                {% endif %}
+            </a>
+        </span>
+    {% endfor %}
+    </div>
+</div>

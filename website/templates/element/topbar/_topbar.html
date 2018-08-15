@@ -1,0 +1,69 @@
+{% load menu_tags i18n %}
+
+<div class="topbar">
+
+    <div class="branding">
+        <a href="/" title="Open Broadcast Platform - Home">Open Broadcast</a>
+    </div>
+
+    <div class="main-menu">
+        <ul class="menu menu-level-1" id="main_menu">
+           {% show_menu 0 1 100 100 "element/topbar/_menu.html" %}
+        </ul>
+    </div>
+
+    <div class="global-search">
+        <div id="search_app"></div>
+    </div>
+
+    <div class="account-menu{% if user.is_authenticated %} is-authenticated{% endif %}">
+        <ul class="menu" id="account_menu">
+        {% if user.is_authenticated %}
+            <li class="account">
+                <a href="{% url "profiles-profile-detail" user.username %}">{{ user.profile.get_display_name }}</a>
+                <ul class="children">
+                    <li>
+                        <a href="{% url "auth_logout" %}?next=/">
+                            {% trans 'Logout' %}
+                        </a>
+                    </li>
+                    {% if user.is_staff %}
+                        <li>
+                            <a href="/admin/">
+                                {% trans 'Administration' %}
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+            <li class="message-notification{% if postman_unread_count %} has-unread{% endif %}">
+                <a href="{% url "postman_inbox" %}">
+                    <i class="icon-envelope-alt"></i>
+                    <span class="count">{{ postman_unread_count }}</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="login">
+                <a rel="nofollow" title="Login" href="{% url "auth_login" %}?next={{ request.get_full_path }}" rel="modal:open">
+                    {% trans 'Login' %}
+                </a>
+                <ul class="children">
+                    <li>
+                        <a rel="nofollow" href="{% url "auth_login" %}?next={{ request.get_full_path }}">
+                            {% trans 'Login / Sign Up' %}
+                        </a>
+                    </li>
+                    {% for service in social_auth.backends %}
+                        <li>
+                            <a rel="nofollow" href="{% url "socialauth_begin" service %}?next={{ request.get_full_path }}">
+                                <i class="icon-{{ service }}"></i> {% trans 'Login with' %} {{ service|title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endif %}
+        </ul>
+    </div>
+
+</div>

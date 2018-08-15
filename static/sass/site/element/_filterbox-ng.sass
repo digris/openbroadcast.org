@@ -1,6 +1,6 @@
 @charset "UTF-8"
 
-%filter
+%option-box
 
   border-bottom: 1px solid $separator-line-color
   transition: background 0.2s
@@ -9,13 +9,13 @@
     background: $white
     transition: none
 
-    .filter-header-icon
+    .header-icon
       .uc-icon
         transform: rotate(90deg)
         transform-origin: center center
         transition: none
 
-    .filter-options
+    .options
       height: auto
       padding-top: 2px
       padding-bottom: 4px
@@ -23,12 +23,12 @@
   &.has-selection
     background: $primary-color-a-bg-light
 
-  .filter-header
+  .header
     display: flex
     padding: 2px 4px
     cursor: pointer
 
-    .filter-header-icon
+    .header-icon
       width: 18px
 
       .uc-icon
@@ -40,13 +40,13 @@
         text-align: center
         opacity: 0.5
 
-    .filter-header-title
+    .header-title
       flex-grow: 1
 
-    .filter-header-count
+    .header-count
       opacity: 0.5
 
-  .filter-options
+  .options
     padding: 0 2px 0 22px
     height: 0
     overflow: hidden
@@ -64,7 +64,22 @@
         padding-right: 4px
         color: $black
         opacity: 0.5
+      .option-direction
+        padding-right: 4px
+        color: $black
+        opacity: 0.5
+        .direction-label
+          text-transform: uppercase
+        .direction-indicator
+          font-family: 'Arial Unicode MS', 'Consolas', sans-serif
+          font-size: 18px
+          line-height: 13px
 
 
 .sidebar .filter
-  @extend %filter
+  @extend %option-box
+
+
+
+.sidebar .ordering
+  @extend %option-box

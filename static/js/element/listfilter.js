@@ -19,7 +19,7 @@ class ListFilter {
         // $(document).on('page:change', (e) => {
         //     this.set_counters();
         // });
-        $(document).on('click', '[data-listfilter] .filter-header', (e) => {
+        $(document).on('click', '[data-listfilter] .header', (e) => {
             let el = $(e.currentTarget).parents('[data-listfilter]');
             let key = el.data('listfilter');
             this.toggle_filter(key);

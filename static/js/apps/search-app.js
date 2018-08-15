@@ -35,6 +35,10 @@ export default {
             search_total_results: 0,
             search_results: [],
             selected_search_result: -1,
+            search_display_box: {
+                left: 0,
+                width: 100
+            },
 
             //
             search_scope: '_all',
@@ -86,6 +90,7 @@ export default {
 
     },
     mounted() {
+
     },
     directives: {
         ClickOutside
@@ -94,10 +99,7 @@ export default {
         settings: () => store.state.settings,
         result_is_visible: function () {
             return this.search_results.length > 0;
-        },
-        // search_total_results: function() {
-        //     return this.search_results.length;
-        // }
+        }
     },
     methods: {
 
@@ -118,7 +120,11 @@ export default {
         // component activation / deactivation
         ///////////////////////////////////////////////////////////////
         activate_search: function(e) {
-            console.log('activate search mode');
+
+            // TODO: improve size/position handling
+            this.search_display_box.left = $('.controls.search-input').position().left;
+            this.search_display_box.width = $('.controls.search-input').width();
+
             this.active = true;
         },
         deactivate_search: function(e) {

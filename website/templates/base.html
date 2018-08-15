@@ -59,27 +59,18 @@
         {% cms_toolbar %}
         <div id="dim_content" style="display: none;"></div>
 
+        {% comment %}
         <div class="main-navigation">
             {% block toolbar %}{% endblock %}
         </div>
+        {% endcomment %}
+
+        {% include "element/topbar/_topbar.html" %}
+
 
         <div id="wrap">
 
             {% block teaser %}{% endblock %}
-
-
-
-            <div class="container pre">
-                <div class="row">
-                    <div class="span12">
-                        <hr>
-                        <div id="search_app_ng">...</div>
-                        <hr>
-                    </div>
-                </div>
-            </div>
-
-
 
             <div class="container main">
 

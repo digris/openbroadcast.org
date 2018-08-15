@@ -20,7 +20,11 @@ from elasticsearch_dsl import Q as ESQ
 from tagging_extra.utils import calculate_cloud
 from base.utils.form_errors import merge_form_errors
 from search.queries import format_search_results
-from search.utils import parse_search_query, parse_pagination_query, get_pagination_data, get_tagcloud_data, get_filter_data
+# from search.utils import (
+#     parse_search_query, parse_pagination_query, get_pagination_data, get_tagcloud_data,
+#     get_filter_data, get_sorting_data
+# )
+from search import utils as search_utils
 
 from alibrary.models import Label, Release
 from alibrary.forms import LabelForm, LabelActionForm, LabelRelationFormSet
@@ -40,16 +44,19 @@ log = logging.getLogger(__name__)
 
 ORDER_BY = [
     {
-        'key': 'name',
-        'name': _('Name')
+        'key': 'created',
+        'name': _('Creation date'),
+        'default_direction': 'desc',
     },
     {
         'key': 'updated',
-        'name': _('Last modified')
+        'name': _('Modification date'),
+        'default_direction': 'asc',
     },
     {
-        'key': 'created',
-        'name': _('Creation date')
+        'key': 'name',
+        'name': _('Name'),
+        'default_direction': 'asc',
     },
 ]
 
@@ -116,13 +123,12 @@ class LabelListView(ListView):
     model = Label
     template_name = 'alibrary/label_list_ng.html'
     search_class = LabelSearch
+    _search_query = None
     _search_result = None
 
     def get_queryset(self, **kwargs):
 
-        search_query = parse_search_query(request=self.request)
-
-        # print(search_query)
+        search_query = search_utils.parse_search_query(request=self.request)
 
         # initialize search class
         s = self.search_class(
@@ -132,12 +138,9 @@ class LabelListView(ListView):
         )
 
 
-
         # handle pagination
-        pagination_query = parse_pagination_query(request=self.request)
+        pagination_query = search_utils.parse_pagination_query(request=self.request)
         s = s[pagination_query['start']:pagination_query['end']]
-
-
 
 
         # execute elasticsearch query
@@ -155,7 +158,8 @@ class LabelListView(ListView):
         qs = qs.order_by(Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(pks)]))
 
 
-        # add search result as reference
+        # add search query & result as reference
+        self._search_query = search_query
         self._search_result = result
 
         qs = qs.select_related('country').prefetch_related('release_label', 'creator', 'creator__profile')
@@ -167,16 +171,33 @@ class LabelListView(ListView):
         context = super(LabelListView, self).get_context_data(**kwargs)
 
         search_result = self._search_result
-        pagination_query = parse_pagination_query(request=self.request)
-        pagination = get_pagination_data(search_result, pagination_query)
-        tagcloud = get_tagcloud_data(tags=search_result.facets.tags, request=self.request)
+        pagination_query = search_utils.parse_pagination_query(
+            request=self.request
+        )
+        pagination = search_utils.get_pagination_data(
+            result=search_result,
+            query=pagination_query
+        )
+        tagcloud = search_utils.get_tagcloud_data(
+            tags=search_result.facets.tags,
+            request=self.request
+        )
+        filters = search_utils.get_filter_data(
+            facets=search_result.facets
+        )
+        ordering = search_utils.get_ordering_data(
+            order_options=ORDER_BY,
+            search_query=self._search_query,
+            request=self.request
+        )
 
         context.update({
             'facets': search_result.facets,
             'num_results': search_result.hits.total,
             'pagination': pagination,
             'tagcloud': tagcloud,
-            'filters': get_filter_data(search_result.facets),
+            'filters': filters,
+            'ordering': ordering,
         })
 
         return context
@@ -201,11 +222,6 @@ class LabelDetailView(DetailView):
         context.update(self.extra_context)
 
         return context
-
-
-
-
-
 
 
 
@@ -286,57 +302,6 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
         return HttpResponseRedirect(self.object.get_edit_url())
         # return HttpResponseRedirect('')
-
-
-# autocompleter views
-# TODO: remove
-# def label_autocomplete(request):
-#
-#     q = request.GET.get('q', None)
-#
-#     result = []
-#
-#     if q and len(q) > 1:
-#
-#         releases = Release.objects.filter(Q(name__istartswith=q)\
-#             | Q(media_release__name__icontains=q)\
-#             | Q(media_release__label__name__icontains=q)\
-#             | Q(label__name__icontains=q))\
-#             .distinct()
-#         for release in releases:
-#             item = {}
-#             item['release'] = release
-#             medias = []
-#             labels = []
-#             labels = []
-#             for media in release.media_release.filter(name__icontains=q).distinct():
-#                 if not media in medias:
-#                     medias.append(media)
-#             for media in release.media_release.filter(label__name__icontains=q).distinct():
-#                 if not media.label in labels:
-#                     labels.append(media.label)
-#
-#             if not len(labels) > 0:
-#                 labels = None
-#             if not len(medias) > 0:
-#                 medias = None
-#             if not len(labels) > 0:
-#                 labels = None
-#
-#             item['labels'] = labels
-#             item['medias'] = medias
-#             item['labels'] = labels
-#
-#             result.append(item)
-#
-#
-#     #return HttpResponse(json.dumps(list(result)))
-#     return render_to_response("alibrary/element/autocomplete.html", { 'query': q, 'result': result }, context_instance=RequestContext(request))
-
-
-
-
-
 
 
 

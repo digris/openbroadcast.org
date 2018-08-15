@@ -6,6 +6,11 @@
 
 $search-inner-border-color: #eaeaea
 
+$search-outer-width: 480px
+$search-margin-left: 30px // offset for icon
+$search-inner-width: $search-outer-width - $search-margin-left
+
+
 %search-result-item
   display: flex
   padding: 8px 8px
@@ -45,7 +50,7 @@ $search-inner-border-color: #eaeaea
 
   //margin-top: 100px
   z-index: 9999
-  position: relative
+
 
   &.active
     .search-input,
@@ -53,31 +58,39 @@ $search-inner-border-color: #eaeaea
       box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
 
   .search-input-container
+    //background: white
+    //box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
+
     display: flex
-    max-width: 420px
-    margin-left: auto
+
     .search-input-icon
-      width: 24px
-      padding-top: 7px
+      width: $search-margin-left
+      padding-top: 6px
       .icon
         font-size: 16px
         color: white
 
     .search-input
-      flex-grow: 1
-      display: flex
+
+      width: $search-inner-width - 4px
+      //background: $white
+      //border: 2px solid $white
+      //box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
+
       input
-        flex-grow: 1
-        font-size: 13px
-        font-family: 'Helvetica neue', sans-serif
-        letter-spacing: 1px
-        font-weight: 300
+        //background: black
+        //background: rgba(0, 0, 0, 0.8)
         background: rgba(255, 255, 255, 0.2)
-        //width: $search-inner-width - 10px
+        //width: 350px
+        width: $search-inner-width - 10px
+        //width: $search-inner-width - 4px - 10px
         height: 28px
-        padding: 2px 8px
+        padding: 2px 5px
         border: none
         color: $white
+        //text-transform: uppercase
+        //background-color: rgba(255, 255, 255, 0.3)
+        //background: transparent
 
         &::placeholder
           color: rgba(255, 255, 255, 0.75)
@@ -85,11 +98,14 @@ $search-inner-border-color: #eaeaea
         &:focus::placeholder
           color: rgba(255, 255, 255, 0.25)
 
+
+
   .search-display-container
     background: white
+    //box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25)
     position: absolute
-    min-width: 340px
-    // position & width is dynamically set in vue during render
+    width: $search-inner-width - 4px
+    margin-left: $search-margin-left
 
   .search-options-container
     display: none
@@ -100,14 +116,20 @@ $search-inner-border-color: #eaeaea
     padding: 8px
     background: white
     border-bottom: 1px solid $search-inner-border-color
+    //border-top: none
 
     .setting
       cursor: pointer
+
+    //  i
+    //    font-size: 20px
+
 
   .search-scope-container
     padding: 8px
     background: white
     border-bottom: 1px solid $search-inner-border-color
+    //border-top: none
     .scopes
       display: flex
 
@@ -125,13 +147,22 @@ $search-inner-border-color: #eaeaea
           a
             color: $white
 
+
   .search-result-container
     display: none
     max-height: 50vh
     overflow-y: auto
+    //position: absolute
+    //width: 100%
+    //border: 1px solid $search-inner-border-color
 
     &.expanded
       display: block
 
     .search-result
       @extend %search-result-item
+
+
+    //.search-result.active
+    //  background: yellow
+

@@ -1,0 +1,13 @@
+{% load menu_tags %}
+{% for child in children %}
+<li class="{% if child.selected or child.ancestor %} selected{% endif %}{% if child.children %} has-children{% endif %}"
+    data-id="{{ child.id }}"
+    data-level="{{ child.level }}">
+	<a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>
+	{% if child.children %}
+    <ul class="children hide_" data-parent-id="{{ child.id }}">
+        {% show_menu from_level to_level extra_inactive extra_active template "" "" child %}
+    </ul>
+    {% endif %}
+</li>
+{% endfor %}

@@ -6,6 +6,7 @@
 .tmp
 .tox
 src
+dev/
 
 temp/
 

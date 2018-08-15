@@ -1,11 +1,5 @@
 <script src="./search-app.js"></script>
 
-<style scoped>
-    .search-app {
-        position: relative;
-    }
-</style>
-
 <template>
     <div class="search-app"  v-bind:class="{ active: active }" v-click-outside="deactivate_search">
 
@@ -28,7 +22,8 @@
                        @keydown.enter="navigate_to_selection($event)">
             </div>
         </div>
-        <div class="search-display-wrapper">
+
+        <div class="search-display-container" v-bind:style="{ left: search_display_box.left + 'px',  width: search_display_box.width + 'px' }">
             <div v-bind:class="{ expanded: active }" class="search-options-container">
                 <div class="search-settings-container">
                     <span v-if="settings.search_fuzzy_match_mode">
@@ -91,4 +86,5 @@
             </div>
         </div>
     </div>
+
 </template>
