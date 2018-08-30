@@ -49,9 +49,9 @@ def schedule(request):
         num_days = 14
 
     data['num_days'] = num_days
-    
+
     days = []
-    today = datetime.datetime.now() 
+    today = datetime.datetime.now()
     today = datetime.datetime(today.year, today.month, today.day)
     offset = datetime.timedelta(days=-today.weekday() + int(data['days_offset']))
     for day in range(int(num_days)):
@@ -59,15 +59,15 @@ def schedule(request):
         #date = date.strftime("%a, %d %b %Y %H:%M:%S +0000")
         days.append( date )
         offset += datetime.timedelta(days=1)
-        
-    
+
+
     data['today'] = today
     data['days'] = days
-    
+
     data['pph'] = SCHEDULER_PPH
     data['ppd'] = (SCHEDULER_GRID_WIDTH - SCHEDULER_GRID_OFFSET) / int(num_days)
     data['offset'] = SCHEDULER_OFFSET
-    
+
     # build a range-filter string for the API
     range_start = days[0] + datetime.timedelta(hours=SCHEDULER_OFFSET)
     range_end = days[-1] + datetime.timedelta(hours=SCHEDULER_OFFSET + 24)
@@ -88,7 +88,7 @@ def schedule(request):
 
 
     data['station_time'] = datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
-        
+
     # look for a selected playlist in session
     playlist_id = request.session.get('scheduler_selected_playlist_id', None)
     if playlist_id:
@@ -116,13 +116,13 @@ def schedule(request):
     # log.debug('schedule offset: %s' % offset)
     # log.debug('schedule today: %s' % today)
     # log.debug('schedule playlist_id: %s' % playlist_id)
-    
-    
+
+
     return render_to_response('abcast/schedule.html', data, context_instance=RequestContext(request))
 
 
 class EmissionListView(ListView):
-    
+
     model = Emission
     extra_context = {}
 
@@ -132,31 +132,31 @@ class EmissionListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(EmissionListView, self).get_context_data(**kwargs)
-        
-        self.extra_context['list_style'] = self.request.GET.get('list_style', 's')        
+
+        self.extra_context['list_style'] = self.request.GET.get('list_style', 's')
         self.extra_context['get'] = self.request.GET
 
         days = []
-        today = datetime.datetime.now() 
+        today = datetime.datetime.now()
         offset = datetime.timedelta(days=-today.weekday())
         for day in range(7):
             date = today + offset
             days.append( date )
             offset += datetime.timedelta(days=1)
-        
+
         self.extra_context['today'] = today
         self.extra_context['days'] = days
-        
+
         context.update(self.extra_context)
 
         return context
-    
+
 
     def get_queryset(self, **kwargs):
 
         kwargs = {}
         q = self.request.GET.get('q', None)
-        
+
         if q:
             qs = Emission.objects.filter(Q(name__istartswith=q)).distinct()
         else:
@@ -185,7 +185,7 @@ views for playlist / emission selection
 """
 def select_playlist(request):
 
-    playlist_id = request.GET.get('playlist_id', None) 
+    playlist_id = request.GET.get('playlist_id', None)
     next = request.GET.get('next', None)
 
     if not playlist_id:
@@ -195,8 +195,8 @@ def select_playlist(request):
         playlist = Playlist.objects.get(pk=playlist_id)
     except Playlist.DoesNotExist:
         log.warning('playlist does not exists. (id: %s)' % playlist_id)
-        raise Http404   
-    
+        raise Http404
+
     request.session['scheduler_selected_playlist_id'] = playlist.pk
     # try to build history
     history = request.session.get('scheduler_selected_playlist_history', [])
@@ -207,7 +207,7 @@ def select_playlist(request):
 
     log.debug('nex: %s' % next)
     log.debug('playlist_id: %s' % playlist_id)
-    
+
     if next:
         return redirect(next)
 
@@ -232,7 +232,7 @@ def schedule_object(request):
 
 
     data = json.loads(request.body)
-    
+
     ct = data.get('ct', None)
     obj_id = data.get('obj_id', None)
     top = data.get('top', None)
@@ -242,11 +242,11 @@ def schedule_object(request):
     channel_id = data.get('channel_id', SCHEDULER_DEFAULT_CHANNEL_ID)
     channel = Channel.objects.get(pk=channel_id)
     color = data.get('color', 0)
-    
+
     num_days = data.get('num_days', SCHEDULER_NUM_DAYS)
-    
+
     log.debug('content type: %s' % ct)
-    
+
     if ct == 'playlist':
         obj = Playlist.objects.get(pk=int(obj_id))
         log.debug('object to schedule: %s' % obj.name)
@@ -262,34 +262,34 @@ def schedule_object(request):
 
     top = float(top) / pph * 60
     offset_min = int(15 * round(float(top)/15))
-    
+
     left = float(left) / ppd
     offset_d = int(round(float(left)))
 
     log.debug('minutes (offset): %s' % offset_min)
     log.debug('days (offset): %s' % offset_d)
-    
+
     # calculate actual date/time for position
     schedule_start = datetime.datetime.strptime('%s 00:00' % range_start, '%Y-%m-%d %H:%M')
     # add offsets
     time_start = schedule_start + datetime.timedelta(minutes=offset_min)
     time_start = time_start + datetime.timedelta(days=offset_d)
-    
+
     time_start = time_start + datetime.timedelta(hours=SCHEDULER_OFFSET)
-    
+
     # time_end = time_start + datetime.timedelta(milliseconds=obj.get_duration())
     # for duration calculation we use the 'target duration' (to avoid blocked slots)
     time_end = time_start + datetime.timedelta(seconds=obj.target_duration)
 
     log.debug('time_start: %s' % time_start)
     log.debug('time_end: %s' % time_end)
-    
+
     # check if in past
     now = datetime.datetime.now()
     lock_end = now + datetime.timedelta(seconds=SCHEDULER_LOCK_AHEAD)
     if lock_end > time_start:
         return { 'message': _('You cannot schedule emissions in the past.') }
-    
+
     # check if slot is free
     # hm just allow some seconds of tolerance (in case of mini-overlaps)
     es = Emission.objects.filter(
@@ -306,14 +306,14 @@ def schedule_object(request):
         except:
             pass
         return { 'message': message }
-    
-    
+
+
     # if no errors so far -> create emission and attach object
     e = Emission(content_object=obj, time_start=time_start, user=request.user, channel=channel, color=color)
     e.save()
 
     action.send(request.user, verb='scheduled', target=e.content_object)
-    
+
 
     data = {
             'status': True,
@@ -321,7 +321,7 @@ def schedule_object(request):
             }
 
     return HttpResponse(json.dumps(data), content_type='application/json')
- 
+
 
 """
 copy a day to another
@@ -339,21 +339,21 @@ def copy_paste_day(request):
     target = data.get('target', None)
     channel_id = data.get('channel_id', SCHEDULER_DEFAULT_CHANNEL_ID)
     channel = Channel.objects.get(pk=channel_id)
-    
+
     log.debug('copy from: %s to %s' % (source, target))
-    
+
     if channel and source and target:
         source = datetime.datetime.strptime(source, '%Y-%m-%d')
         target = datetime.datetime.strptime(target, '%Y-%m-%d')
-        
+
         offset = (target - source)
-        
+
         source_start = source + datetime.timedelta(hours=SCHEDULER_OFFSET)
         source_end = source_start + datetime.timedelta(hours=24)
 
         log.debug('source: %s to %s' % (source_start, source_end))
         log.debug('offset: %s' % offset)
-        
+
         # get emissions
         es = Emission.objects.filter(time_start__gte=source_start, time_end__lte=source_end, channel=channel)
         for e in es:
@@ -426,4 +426,4 @@ def delete_day(request):
 
     return HttpResponse(json.dumps(data), content_type='application/json')
 
- 
+

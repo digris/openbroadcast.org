@@ -1,0 +1,2 @@
+
+from .generator import DABMetadataGenerator
