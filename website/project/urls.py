@@ -74,6 +74,8 @@ urlpatterns = [
     url(r'^sitemap.xml$', sitemap, {'sitemaps': sitemaps}),
 
     url(r'^player/', include('aplayer.urls')),
+    url(r'^player-ng/', include('player.urls', namespace='player')),
+
     url(r'^media-asset/', include('media_asset.urls')),
 
     url(r'^webhooks/import/', include('massimporter.webhook.urls')),

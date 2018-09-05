@@ -1,0 +1,28 @@
+{% load i18n raven static %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+    <head>
+        <title>{% block title %}Player{% endblock %}</title>
+
+        <meta charset="utf-8">
+        <meta name="author" content="digris AG" />
+
+        <link rel="icon" type="image/png" href="{% static 'img/base/favicon.png' %}" />
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/base/favicon.png' %}">
+
+        <!-- start: webpack bundle handling -->
+        {% if not webpack_devserver %}
+            <link rel="stylesheet" href="{% static 'dist/css/bundle.css' %}"/>
+            <script src="{% static 'dist/js/bundle.js' %}"></script>
+        {% else %}
+            <script src="{% static 'js/bundle.js' %}"></script>
+        {% endif %}
+        <!-- end: webpack bundle handling -->
+
+    </head>
+
+    <body class="player">
+        <div class="player-app-container">
+            <div id="player_app">(( player app ))</div>
+        </div>
+    </body>
+</html>

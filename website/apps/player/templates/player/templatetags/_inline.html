@@ -1,0 +1,324 @@
+{% verbatim %}
+<div id="player_app" class="player-app">
+
+    <!-- start: player inner section -->
+    <div class="player-container">
+
+        <div class="controls controls-left">
+            <div class="button-panel">
+                <button v-on:click="play_previous($event)">
+                    <i class="mi">fast_rewind</i>
+                </button>
+                <button v-if="state.play_state == 'playing'" v-on:click="handle_media(playing_now, 'pause', $event)">
+                    <i class="mi">pause</i>
+                </button>
+                <button v-else v-on:click="handle_media(playing_now, 'play', $event)">
+                    <i class="mi">play_arrow</i>
+                </button>
+                <button v-on:click="play_next($event)">
+                    <i class="mi">fast_forward</i>
+                </button>
+                <button v-on:click="play_next($event)">
+                    <i class="mi">library_music</i>
+                </button>
+            </div>
+        </div>
+
+        <div class="controls controls-playhead">
+            <div class="waveform-container">
+                <canvas id="waveform_canvas"
+                        v-on:click="handle_media(current_sound, 'seek', $event)"
+                        width="480"
+                        height="50">
+                </canvas>
+            </div>
+        </div>
+
+        <!--
+        <div class="controls controls-volume">
+            <div class="button-panel">
+                <button v-on:click="play_previous($event)">
+                    <i class="fal fa-volume-up"></i>
+                </button>
+            </div>
+        </div>
+        -->
+
+        <div class="controls controls-current-item">
+
+            <div class="metadata-panel">
+                <div class="image">
+                    <div v-if="(playing_now.release_data && playing_now.release_data.image)">
+                        <a v-bind:href="playing_now.release_detail_url">
+                            <figure>
+                                <img v-bind:src="playing_now.release_data.image"/>
+                            </figure>
+                        </a>
+                    </div>
+                    <div v-else>
+                        <figure>
+                            <img/>
+                        </figure>
+                    </div>
+                </div>
+                <div class="text">
+                    <div v-if="(playing_now)">
+                        <div class="text-primary">
+                            <a v-bind:href="playing_now.detail_url">
+                                {{ playing_now.name }}
+                            </a>
+                        </div>
+                        <div class="text-secondary">
+                            <span>
+                                by
+                                <a v-bind:href="playing_now.artist_detail_url">
+                                    {{ playing_now.artist_display }}
+                                </a>
+                            </span>
+                            &mdash;
+                            <span>
+                                <a v-bind:href="playing_now.release_detail_url">
+                                    {{ playing_now.release_display }}
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="controls controls-right">
+
+            <div class="button-panel">
+
+                <!--
+                <button>
+                    <i class="mi">more_horiz</i>
+                </button>
+                -->
+
+                <button data-ctx-menu class="context-menu">
+
+                    <i data-ctx-menu-toggle class="mi">more_horiz</i>
+
+                    <div data-ctx-menu-panel class="context-menu-panel">
+
+                        <ul class="context-menu-actions">
+
+                            <li class="action">
+                                <span class="mic">
+                                    <i class="mi">file_download</i>
+                                </span>
+                                <a data-turbolinks="false"
+                                   v-bind:href="playing_now.detail_url">
+                                    Download
+                                </a>
+                            </li>
+
+                            <li class="separator"></li>
+
+                            <li class="action">
+                                <span class="mic">
+                                    <i class="mi">playlist_add</i>
+                                </span>
+                                <span href="#">Add to Playlist</span>
+                            </li>
+
+                            <li class="separator"></li>
+
+                        </ul>
+
+                    </div>
+
+                </button>
+
+
+                <button v-on:click="toggle_playlist_expanded($event)">
+                    <i class="mi">list</i>
+                </button>
+            </div>
+
+        </div>
+        <!-- end: player inner section -->
+
+
+    </div>
+
+
+    <div v-bind:class="{ expanded: playlist_is_visible }" class="playlist-container">
+
+        <div class="playlist">
+
+            <div v-for="item in playlist" v-bind:class="item.play_state" v-bind:data-uuid="item.uuid"
+                 class="playlist-item">
+
+                <div class="controls controls-left">
+
+                    <div class="button-panel">
+
+                        <button v-if="item.playing" v-on:click="handle_media(item, 'pause', $event)">
+                            <!--<i class="fal fa-pause"></i>-->
+                            <i class="mi">pause</i>
+                        </button>
+                        <button v-else v-on:click="handle_media(item, 'play', $event)">
+                            <!--<i class="mi">play_arrow</i>-->
+                            <i class="mi">play_arrow</i>
+                        </button>
+
+                        <button>
+                            <!--<i class="mi">play_arrow</i>-->
+                            <i class="mi">more_horiz</i>
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+                <div class="controls controls-playhead">
+
+                    <div class="playhead">
+
+                        <div class="time-left">
+                            <span v-if="(item.playhead_abs_time)">
+                                {{ item.playhead_abs_time | ms_to_time }}
+                            </span>
+                            <span v-else>
+                                00:00
+                            </span>
+
+                        </div>
+
+                        <div class="seek-bar">
+
+                            <svg width="100%" height="13"
+                                v-on:click="handle_media(item, 'seek', $event)">
+                                <rect width="100%" y="6" height="1" style="fill:rgba(200,200,200,0.8)"/>
+                                <rect v-bind:width="item.playhead_position + '%'" y="6" height="1" style="fill:rgb(96, 0, 255)"/>
+                                <circle v-if="(item.playing)" v-bind:cx="item.playhead_handler_position + '%'" cy="6.5" r="4" style="fill:rgb(96, 0, 255)" />
+                            </svg>
+
+                        </div>
+
+                        <div class="time-right">
+                            {{ item.duration | sec_to_time }}
+                        </div>
+
+                    </div>
+
+
+                    <!--
+                    <span>{{ item.duration | sec_to_time }}</span>
+
+                    &mdash;
+                    -->
+
+                    <!--
+                    <span v-if="(item.playing && item.playhead_abs_time)">
+                        *{{ item.playhead_abs_time | ms_to_time }}*
+                        *{{ item.playhead_position }}*
+                    </span>
+                    <span v-else>---</span>
+                    -->
+
+
+                </div>
+
+                <div class="controls controls-duration">
+
+                    &nbsp;
+                </div>
+
+                <div class="controls controls-current-item">
+
+                    <div class="metadata-panel">
+                        <div class="image">
+                            <div v-if="(item.release_data && item.release_data.image)">
+                                <figure>
+                                    <img v-bind:src="item.release_data.image"/>
+                                </figure>
+                            </div>
+                            <div v-else>
+                                <figure>
+                                    <img/>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="text">
+
+                            <div class="text-primary">
+                                <a v-bind:href="item.detail_url">
+                                    {{ item.name }}
+                                </a>
+                            </div>
+                            <div class="text-secondary">
+                            <span>
+                                by
+                                <a v-bind:href="item.artist_detail_url">
+                                    {{ item.artist_display }}
+                                </a>
+                            </span>
+                                &mdash;
+                                <span>
+                                <a v-bind:href="item.release_detail_url">
+                                    {{ item.release_display }}
+                                </a>
+                            </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="controls controls-right">
+
+                    <div class="button-panel">
+
+                        <!--
+                        <button v-on:click="play_previous($event)">
+                            <i class="fal fa-heart"></i>
+                        </button>
+                        -->
+
+
+                        <button v-bind:class="{ disabled: item.playing }"
+                                v-on:click="handle_media(item, 'remove', $event)">
+                            <!--<i class="fal fa-trash-alt"></i>-->
+                            <i class="mi">remove</i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div v-bind:class="{ expanded: playlist_is_visible }" class="settings-container">
+
+        <div class="row">
+            <div class="small-12 column">
+                <div class="settings">
+                    settings:
+                    <span v-if="settings.autoplay">
+                        <span @click="update_settings('autoplay', false)">[X] Autoplay</span>
+                    </span>
+                    <span v-else>
+                        <span @click="update_settings('autoplay', true)">[ ] Autoplay</span>
+                    </span>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+{% endverbatim %}
