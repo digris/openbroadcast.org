@@ -7,7 +7,9 @@
 .tox
 src
 
+dev/
 temp/
+logs/
 
 .ipynb_checkpoints
 db_dumps/
