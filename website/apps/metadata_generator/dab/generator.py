@@ -22,13 +22,13 @@ MEDIA_URL = getattr(settings, 'MEDIA_URL')
 DEFAULT_DLS_TEXT = ['Open Broadcast', ]
 
 SLIDE_BASE_IMAGE = getattr(settings, 'DAB_SLIDE_BASE_IMAGE', os.path.join(
-    os.path.dirname(__file__), 'asset', 'slide_base.png'))
+    os.path.dirname(os.path.dirname(__file__)), 'asset', 'slide_base.png'))
 
 SLIDE_BASE_FONT = getattr(settings, 'DAB_SLIDE_BASE_FONT', os.path.join(
-    os.path.dirname(__file__), 'asset', 'HelveticaNeueCyr-Light.otf'))
+    os.path.dirname(os.path.dirname(__file__)), 'asset', 'HelveticaNeueCyr-Light.otf'))
 
 SLIDE_DEFAULT_IMAGE = getattr(settings, 'DAB_SLIDE_DEFAULT_IMAGE', os.path.join(
-    os.path.dirname(__file__), 'asset', 'default.png'))
+    os.path.dirname(os.path.dirname(__file__)), 'asset', 'default.png'))
 
 SLIDE_BASE_DIR = os.path.join(MEDIA_ROOT, 'metadata', 'dab')
 SLIDE_BASE_URL = MEDIA_URL + 'metadata/' + 'dab/'
