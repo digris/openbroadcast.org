@@ -692,10 +692,24 @@ aplayer.base.on_complete = function () {
 
     if (aplayer.states.next) {
 
-        setTimeout(
-            aplayer.base.controls({action: 'play', index: aplayer.states.next }),
-            200
-        )
+        aplayer.base.controls({action: 'play', index: aplayer.states.next });
+
+        setTimeout(function(){
+            console.debug('checking if player stuck in PAUSED (500ms)');
+            if(aplayer.player.getState() === 'PAUSED') {
+                console.debug('player PAUSED - try to play');
+                aplayer.player.play()
+            }
+        }, 500);
+
+        setTimeout(function(){
+            console.debug('checking if player stuck in PAUSED (1500ms)');
+            if(aplayer.player.getState() === 'PAUSED') {
+                console.debug('player PAUSED - try to play');
+                aplayer.player.play()
+            }
+        }, 1500);
+
         // aplayer.controls('play', aplayer.states.next);
     }
 };
