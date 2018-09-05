@@ -8,7 +8,9 @@
 src
 dev/
 
+dev/
 temp/
+logs/
 
 .ipynb_checkpoints
 db_dumps/
