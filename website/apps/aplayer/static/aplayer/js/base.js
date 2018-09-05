@@ -691,7 +691,11 @@ aplayer.base.on_play = function (index, uuid) {
 aplayer.base.on_complete = function () {
 
     if (aplayer.states.next) {
-        aplayer.base.controls({action: 'play', index: aplayer.states.next });
+
+        setTimeout(
+            aplayer.base.controls({action: 'play', index: aplayer.states.next }),
+            200
+        )
         // aplayer.controls('play', aplayer.states.next);
     }
 };
