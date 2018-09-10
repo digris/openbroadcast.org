@@ -7,123 +7,123 @@
 {% load crispy_forms_tags i18n sekizai_tags %}
 
 {% block heading %}
-{% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>{% endaddtoblock %}
-<!-- heading / icon (large one) -->
-<div id="heading">
-	{% with page_title="My Profile" %}
-	{% include "skeleton/heading.html" %}
-	{% endwith %}
-</div>
-<!-- heading / icon (large one) -->
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>{% endaddtoblock %}
+    <!-- heading / icon (large one) -->
+    <div id="heading">
+        {% with page_title="My Profile" %}
+            {% include "skeleton/heading.html" %}
+        {% endwith %}
+    </div>
+    <!-- heading / icon (large one) -->
 {% endblock %}
 
 {% block modnav %}
-<!-- start: intra-module navigation -->
-<div id="modnav">
-	{% include "skeleton/module-navigation.html" %}
-</div>
-<!-- end: intra-module navigation -->
+    <!-- start: intra-module navigation -->
+    <div id="modnav">
+        {% include "skeleton/module-navigation.html" %}
+    </div>
+    <!-- end: intra-module navigation -->
 {% endblock %}
 
 {% block inner %}
-<div class="item_detail" style="">
+    <div class="item_detail" style="">
 
-	<section class="shaded">
-		<div class="row iteminfo release">
-			{% include "profiles/profile/_detail_info.html" %}
-		</div>
-	</section>
+        <section class="shaded">
+            <div class="row iteminfo release">
+                {% include "profiles/profile/_detail_info.html" %}
+            </div>
+        </section>
 
-	<div class="item_menu" id="item_menu"></div>
+        <div class="item_menu" id="item_menu"></div>
 
-	<div class="clear"></div>
+        <div class="clear"></div>
 
-</div>
+    </div>
 {% endblock %}
 
 {% block sidebar %}
-{% include "profiles/profile/sidebar/_edit.html" %}
+    {% include "profiles/profile/sidebar/_edit.html" %}
 {% endblock %}
 
 
 {% block form %}
 
     {% if form_errors %}
-    {% include "element/forms/_merged_form_errors.html" %}
+        {% include "element/forms/_merged_form_errors.html" %}
     {% endif %}
 
-<form action="." method="post" enctype="multipart/form-data" class="profile_form form-horizontal form-compact">
-	{% csrf_token %}
+    <form action="." method="post" enctype="multipart/form-data" class="profile_form form-horizontal form-compact">
+        {% csrf_token %}
 
-	{% crispy action_form %}
+        {% crispy action_form %}
 
-	<table>
-		{% crispy user_form %}
-		{% crispy profile_form %}
-	</table>
+        <table>
+            {% crispy user_form %}
+            {% crispy profile_form %}
+        </table>
 
-	{% crispy action_form %}
+        {% crispy action_form %}
 
-	<fieldset>
+        <fieldset>
 
-		<legend>
-			{% trans "Communication / Services" %}
-		</legend>
+            <legend>
+                {% trans "Communication / Services" %}
+            </legend>
 
-		<div class="notes-inline notes">
-			<h4></h4>
-			<p>
-				{% trans "Flickr, Twitter, etc." %}
-			</p>
-		</div>
+            <div class="notes-inline notes">
+                <h4></h4>
+                <p>
+                    {% trans "Flickr, Twitter, etc." %}
+                </p>
+            </div>
 
-		{{ service_formset.management_form }}
+            {{ service_formset.management_form }}
 
-		{% for form in service_formset.forms %}
-		{% crispy form %}
-		{% endfor %}
+            {% for form in service_formset.forms %}
+                {% crispy form %}
+            {% endfor %}
 
-		<p class="dim">
-			{% trans "To add more links than displayed save and continue editing." %}
-		</p>
+            <p class="dim">
+                {% trans "To add more links than displayed save and continue editing." %}
+            </p>
 
-	</fieldset>
+        </fieldset>
 
-	<fieldset>
+        <fieldset>
 
-		<legend>
-			{% trans "Personal Links" %}
-		</legend>
+            <legend>
+                {% trans "Personal Links" %}
+            </legend>
 
-		<div class="notes-inline notes">
-			<h4></h4>
-			<p>
-				{% trans "Example: Your blog, you personal site, etc." %}
-			</p>
-		</div>
+            <div class="notes-inline notes">
+                <h4></h4>
+                <p>
+                    {% trans "Example: Your blog, you personal site, etc." %}
+                </p>
+            </div>
 
-		{{ link_formset.management_form }}
+            {{ link_formset.management_form }}
 
-		{% for form in link_formset.forms %}
-		{% crispy form %}
-		{% endfor %}
-		<p class="dim">
-			{% trans "To add more links than displayed save and continue editing." %}
-		</p>
-	</fieldset>
+            {% for form in link_formset.forms %}
+                {% crispy form %}
+            {% endfor %}
+            <p class="dim">
+                {% trans "To add more links than displayed save and continue editing." %}
+            </p>
+        </fieldset>
 
-	{% crispy action_form %}
+        {% crispy action_form %}
 
-</form>
+    </form>
 {% endblock %}
 
 
 
 {% block form_sidebar %}
 
-<div class="sidebar form-sidebar holder">
-	{% include "profiles/profile/sidebar/_edit_transform.html" %}
-</div>
+    <div class="sidebar form-sidebar holder">
+        {% include "profiles/profile/sidebar/_edit_transform.html" %}
+    </div>
 
 
 {% endblock %}
