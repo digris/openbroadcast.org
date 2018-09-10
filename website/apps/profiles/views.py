@@ -24,36 +24,6 @@ from search.views import BaseFacetedSearch, BaseSearchListView
 
 from .documents import ProfileDocument
 
-PAGINATE_BY = getattr(settings, 'PROFILES_PAGINATE_BY', (12, 24, 36))
-PAGINATE_BY_DEFAULT = getattr(settings, 'PROFILES_PAGINATE_BY_DEFAULT', 12)
-
-# ORDER_BY = [
-#     {
-#         'key': 'user__first_name',
-#         'name': _('Name')
-#     },
-#     {
-#         'key': 'user__last_name',
-#         'name': _('Surname')
-#     },
-#     {
-#         'key': 'user__username',
-#         'name': _('Username')
-#     },
-#     {
-#         'key': 'created',
-#         'name': _('Date joined')
-#     },
-#     {
-#         'key': 'updated',
-#         'name': _('Last modified')
-#     },
-#     {
-#         'key': 'user__last_login',
-#         'name': _('Last login')
-#     },
-# ]
-
 
 class ProfileSearch(BaseFacetedSearch):
     doc_types = [ProfileDocument]
@@ -116,6 +86,7 @@ class ProfileListView(BaseSearchListView):
 
 
 class ProfileDetailView(DetailView):
+
     context_object_name = "profile"
     model = Profile
     slug_field = 'user__username'
@@ -133,13 +104,14 @@ class ProfileDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = kwargs
         context_object_name = self.get_context_object_name(self.object)
+
         # get contributions
         # TODO: this is kind of a hack...
-        # if self.request.user == self.object.user:
-        #     context['broadcasts'] = Playlist.objects.filter(user=self.object.user).order_by('-updated')
-        # else:
-        #     context['broadcasts'] = Playlist.objects.filter(user=self.object.user).exclude(type='basket').order_by(
-        #         '-updated')
+        if self.request.user == self.object.user:
+            context['broadcasts'] = Playlist.objects.filter(user=self.object.user).order_by('-updated')
+        else:
+            context['broadcasts'] = Playlist.objects.filter(user=self.object.user).exclude(type='basket').order_by(
+                '-updated')
 
 
         release_qs = Release.objects.filter(
@@ -191,16 +163,7 @@ class ProfileDetailView(DetailView):
         return context
 
 
-def profile_detail(request, username):
-    try:
-        user = User.objects.get(username__iexact=username)
-    except User.DoesNotExist:
-        raise Http404
-    profile = Profile.objects.get(user=user)
-    context = {'object': profile}
-    return render_to_response('profiles/profile_detail.html', context, context_instance=RequestContext(request))
-
-
+# TODO: refactor to CBV
 @login_required
 def profile_edit(request, template_name='profiles/profile_form.html'):
     """Edit profile."""
@@ -217,7 +180,6 @@ def profile_edit(request, template_name='profiles/profile_form.html'):
             user_form.save()
             link_formset.save()
             service_formset.save()
-            # return HttpResponseRedirect(reverse('profile_detail', kwargs={'username': request.user.username}))
             return HttpResponseRedirect(reverse('profiles-profile-edit'))
         else:
 
@@ -337,28 +299,15 @@ def respond(request, code):
     return type('Response%d' % code, (HttpResponse,), {'status_code': code})()
 
 
-"""
-invitation based views / hackish here but still better than in invitation module...
-"""
-
-
+#######################################################################
+# invitation based views / hackish here but still better than in
+# invitation module..
+#######################################################################
 class InvitationListView(PaginationMixin, ListView):
 
     template_name = "profiles/invitation_list.html"
-    paginate_by = PAGINATE_BY
+    paginate_by = 36
     extra_context = {}
-
-    def get_paginate_by(self, queryset):
-
-        ipp = self.request.GET.get('ipp', PAGINATE_BY_DEFAULT)
-        if ipp:
-            try:
-                if int(ipp) in PAGINATE_BY:
-                    return int(ipp)
-            except Exception as e:
-                pass
-
-        return self.paginate_by
 
     def get_context_data(self, **kwargs):
 

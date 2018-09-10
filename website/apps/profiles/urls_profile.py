@@ -1,6 +1,7 @@
-from django.conf.urls import url, include
-from profiles.views import InvitationListView, InvitationDeleteView, ProfileListView, profile_mentor, profile_approve, ProfileDetailView, UserCredentialsView
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals, absolute_import
 
+from django.conf.urls import url, include
 from profiles import views
 
 urlpatterns = [
