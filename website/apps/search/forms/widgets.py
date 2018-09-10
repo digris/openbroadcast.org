@@ -1,22 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
 
-import json
-
 from django import forms
-from django.conf import settings
-from django.forms.utils import flatatt
-from django.utils.http import urlencode
-from django.utils.safestring import mark_safe
-
-from selectable import __version__
-from selectable.compat import force_text
-from selectable.forms.base import import_lookup_class
 
 __all__ = (
     'AutocompleteWidget',
 )
-
 
 class AutocompleteInputWidget(forms.TextInput):
     """
@@ -52,7 +41,6 @@ class AutocompleteWidget(forms.MultiWidget):
                 attrs=kwargs.get('attrs'),
             ),
             forms.HiddenInput(attrs={'data-autocomplete-widget-type': 'hidden'})
-            #forms.TextInput(attrs={'data-autocomplete-widget-type': 'hidden'})
         ]
         super(AutocompleteWidget, self).__init__(widgets, *args, **kwargs)
 

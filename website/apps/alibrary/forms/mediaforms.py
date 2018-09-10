@@ -3,9 +3,7 @@ from __future__ import unicode_literals
 
 import logging
 
-import selectable.forms as selectable
 from ac_tagging.widgets import TagAutocompleteTagIt
-from alibrary.lookups import ReleaseNameLookup, ArtistLookup
 from alibrary.models import Media, Relation, MediaExtraartists, MediaArtists
 from base.mixins import StripWhitespaceFormMixin
 from crispy_forms.bootstrap import FormActions
@@ -20,6 +18,8 @@ from django.utils.translation import ugettext as _
 from base.fields.widgets import ReadOnlyIconField
 from pagedown.widgets import PagedownWidget
 from tagging.forms import TagField
+
+from search.forms import fields as search_fields
 
 log = logging.getLogger(__name__)
 
@@ -165,10 +165,10 @@ class MediaForm(ModelForm):
         self.helper.add_layout(layout)
 
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
-    release = selectable.AutoCompleteSelectField(ReleaseNameLookup, limit=10, allow_new=True, required=True, label=_('Release'))
+    release = search_fields.AutocompleteField('alibrary.release', allow_new=True, required=False, label=_('Release'))
 
     name = forms.CharField(required=True, label='Title')
-    artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=True, label=_('Artist'))
+    artist = search_fields.AutocompleteField('alibrary.artist', allow_new=True, required=False, label=_('Artist'))
     description = forms.CharField(widget=PagedownWidget(), required=False)
 
     def clean_license(self):
@@ -273,7 +273,7 @@ class BaseExtraartistForm(ModelForm):
 
         self.fields['profession'].label = _('Credited as')
 
-    artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False, label=_('Artist'))
+    artist = search_fields.AutocompleteField('alibrary.artist', allow_new=True, required=False, label=_('Artist'))
 
     def clean_artist(self):
 
@@ -354,7 +354,7 @@ class BaseMediaartistForm(ModelForm):
 
         return artist
 
-    artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
+    artist = search_fields.AutocompleteField('alibrary.artist', allow_new=True, required=False)
 
 
 class BaseMediaReleationFormSet(BaseGenericInlineFormSet):

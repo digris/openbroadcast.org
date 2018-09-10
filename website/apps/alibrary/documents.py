@@ -9,7 +9,7 @@ from django_elasticsearch_dsl import DocType, Index, KeywordField, fields
 from easy_thumbnails.files import get_thumbnailer
 from easy_thumbnails.exceptions import InvalidImageFormatError
 from search.elasticsearch_utils import edge_ngram_analyzer, edge_ngram_search_analyzer
-from .models import Artist, Label, Release, Media, Playlist
+from .models import Artist, Label, Release, Media, Playlist, Series
 
 THUMBNAIL_OPT = dict(size=(197, 197), crop=True, upscale=True)
 
@@ -18,8 +18,6 @@ artist_index = Index('artists')
 label_index = Index('labels')
 release_index = Index('releases')
 media_index = Index('media')
-
-playlist_index = Index('playlists')
 
 @label_index.doc_type
 class LabelDocument(DocType):
@@ -407,6 +405,8 @@ class MediaDocument(DocType):
 
 
 
+playlist_index = Index('playlists')
+
 @playlist_index.doc_type
 class PlaylistDocument(DocType):
 
@@ -508,3 +508,35 @@ class PlaylistDocument(DocType):
     # ###################################################################
     # def get_queryset(self):
     #     return super(PlaylistDocument, self).get_queryset().exclude(type='basket')
+
+
+
+
+series_index = Index('series')
+
+@series_index.doc_type
+class SeriesDocument(DocType):
+
+    class Meta:
+        model = Series
+        queryset_pagination = 1000
+        doc_type = 'alibrary.series'
+
+    autocomplete = fields.TextField(
+        analyzer=edge_ngram_analyzer,
+        search_analyzer=edge_ngram_search_analyzer,
+    )
+
+    name = fields.TextField(
+        fielddata=True
+    )
+
+    ###################################################################
+    # field preparation
+    ###################################################################
+    def prepare_autocomplete(self, instance):
+        text = [instance.name.strip()]
+        return text
+
+    def prepare_name(self, instance):
+        return instance.name.strip()

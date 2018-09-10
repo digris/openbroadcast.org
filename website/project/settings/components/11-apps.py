@@ -406,56 +406,56 @@ HAYSTACK_CONNECTIONS = {
 
 #HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
-# ELASTICSEARCH_INDEX_SETTINGS = {
-#     "settings": {
-#         "analysis": {
-#             "analyzer": {
-#                 "default": {
-#                     "type": "standard",
-#                     "filter": ["asciifolding", "lowercase"]
-#                 },
-#                 "ngram_analyzer": {
-#                     "type": "custom",
-#                     "tokenizer": "custom_ngram_tokenizer",
-#                     "filter": ["asciifolding", "lowercase"]
-#                 },
-#                 "edgengram_analyzer": {
-#                     "type": "custom",
-#                     "tokenizer": "custom_edgengram_tokenizer",
-#                     "filter": ["asciifolding", "lowercase"]
-#                 }
-#             },
-#             "tokenizer": {
-#                 "custom_ngram_tokenizer": {
-#                     "type": "nGram",
-#                     "min_gram": 3,
-#                     "max_gram": 12,
-#                     "token_chars": ["letter", "digit"]
-#                 },
-#                 "custom_edgengram_tokenizer": {
-#                     "type": "edgeNGram",
-#                     "min_gram": 2,
-#                     "max_gram": 12,
-#                     "token_chars": ["letter", "digit"]
-#                 }
-#             },
-#             "filter": {
-#                 "haystack_ngram": {
-#                     "type": "nGram",
-#                     "min_gram": 3,
-#                     "max_gram": 15
-#                 },
-#                 "haystack_edgengram": {
-#                     "type": "edgeNGram",
-#                     "min_gram": 2,
-#                     "max_gram": 15
-#                 }
-#             }
-#         }
-#     }
-# }
-#
-# HAYSTACK_DEFAULT_OPERATOR = 'and'
+ELASTICSEARCH_INDEX_SETTINGS = {
+    "settings": {
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "standard",
+                    "filter": ["asciifolding", "lowercase"]
+                },
+                "ngram_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "custom_ngram_tokenizer",
+                    "filter": ["asciifolding", "lowercase"]
+                },
+                "edgengram_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "custom_edgengram_tokenizer",
+                    "filter": ["asciifolding", "lowercase"]
+                }
+            },
+            "tokenizer": {
+                "custom_ngram_tokenizer": {
+                    "type": "nGram",
+                    "min_gram": 3,
+                    "max_gram": 12,
+                    "token_chars": ["letter", "digit"]
+                },
+                "custom_edgengram_tokenizer": {
+                    "type": "edgeNGram",
+                    "min_gram": 2,
+                    "max_gram": 12,
+                    "token_chars": ["letter", "digit"]
+                }
+            },
+            "filter": {
+                "haystack_ngram": {
+                    "type": "nGram",
+                    "min_gram": 3,
+                    "max_gram": 15
+                },
+                "haystack_edgengram": {
+                    "type": "edgeNGram",
+                    "min_gram": 2,
+                    "max_gram": 15
+                }
+            }
+        }
+    }
+}
+
+HAYSTACK_DEFAULT_OPERATOR = 'and'
 
 
 #######################################################################

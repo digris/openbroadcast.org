@@ -7,24 +7,17 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect, HttpResponseForbidden
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, View, UpdateView
-from braces.views import PermissionRequiredMixin, LoginRequiredMixin
+from braces.views import LoginRequiredMixin
 from invitation.models import Invitation
-from haystack.backends import SQ
-from haystack.query import SearchQuerySet
-from haystack.inputs import AutoQuery
-from tagging_extra.utils import calculate_cloud
-from profiles.filters import ProfileFilter
 from profiles.forms import UserForm, ProfileForm, ServiceFormSet, LinkFormSet, ActionForm, UserCredentialsForm
 from profiles.models import Profile, User
 from pure_pagination.mixins import PaginationMixin
-from tagging.models import Tag
 
 from elasticsearch_dsl import TermsFacet
 from search.views import BaseFacetedSearch, BaseSearchListView
@@ -60,8 +53,6 @@ PAGINATE_BY_DEFAULT = getattr(settings, 'PROFILES_PAGINATE_BY_DEFAULT', 12)
 #         'name': _('Last login')
 #     },
 # ]
-
-
 
 
 class ProfileSearch(BaseFacetedSearch):

@@ -3,7 +3,6 @@ from __future__ import unicode_literals, absolute_import
 
 import logging
 
-import selectable.forms as selectable
 from ac_tagging.widgets import TagAutocompleteTagIt
 from base.mixins import StripWhitespaceFormMixin
 from crispy_forms.bootstrap import FormActions
@@ -23,7 +22,6 @@ from tagging.forms import TagField
 
 from search.forms import fields as search_fields
 
-from ..lookups import ReleaseLabelLookup, ArtistLookup
 from ..models import Release, Relation, Media, License, Label, ReleaseAlbumartists
 from ..util.storage import get_file_from_url
 
@@ -130,7 +128,7 @@ class ReleaseBulkeditForm(Form):
 
         self.helper.add_layout(base_layout)
 
-    bulk_artist_name = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False, label=_('Artist'))
+    bulk_artist_name = search_fields.AutocompleteField('alibrary.artist', allow_new=True, required=False, label=_('Artist'))
     bulk_license = forms.ModelChoiceField(queryset=License.objects.filter(selectable=True), required=False, label=_('License'))
 
     def save(self, *args, **kwargs):
@@ -245,7 +243,6 @@ class ReleaseForm(ModelForm):
     releasedate_approx = ApproximateDateFormField(label="Releasedate", required=False)
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
 
-    #label = selectable.AutoCompleteSelectField(ReleaseLabelLookup, allow_new=True, required=False)
     label = search_fields.AutocompleteField('alibrary.label', allow_new=True, required=False)
 
     description = forms.CharField(widget=PagedownWidget(), required=False)
@@ -323,7 +320,6 @@ class BaseReleaseMediaForm(ModelForm):
         self.helper.add_layout(base_layout)
 
 
-    #artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
     artist = search_fields.AutocompleteField('alibrary.artist', allow_new=True, required=False)
     TRACKNUMBER_CHOICES =  [('', '---')] + list(((str(x), x) for x in range(1, 301)))
     tracknumber =  forms.ChoiceField(label=_('No.'), required=False, choices=TRACKNUMBER_CHOICES)
@@ -385,7 +381,6 @@ class BaseAlbumartistForm(ModelForm):
             artist.save()
         return artist
 
-    #artist = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False)
     artist = search_fields.AutocompleteField('alibrary.artist', allow_new=True, required=False)
 
 

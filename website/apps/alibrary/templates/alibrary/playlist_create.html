@@ -6,9 +6,6 @@
 
 {% block heading %} <!-- heading / icon (large one) -->
     {% addtoblock "js-post" %}
-        <script src="{{ STATIC_URL }}selectable/js/jquery.dj.selectable.js"></script>
-    {% endaddtoblock %}
-    {% addtoblock "js-post" %}
         <script src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>{% endaddtoblock %}
     {% addtoblock "js-post" %}{% dajaxice_js_import %}{% endaddtoblock %}
     {% addtoblock "js-post" %}

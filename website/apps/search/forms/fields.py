@@ -2,15 +2,9 @@
 from __future__ import unicode_literals, absolute_import
 
 from django import forms
-from django.apps import apps
-from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import EMPTY_VALUES
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.contenttypes.models import ContentType
-
-from selectable.forms.base import import_lookup_class
-#from selectable.forms.widgets import AutoCompleteSelectWidget
 
 from .utils import get_model_class, get_model_data
 from .widgets import AutocompleteWidget

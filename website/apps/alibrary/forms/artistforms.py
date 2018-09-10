@@ -3,9 +3,7 @@ from __future__ import unicode_literals
 
 import logging
 
-import selectable.forms as selectable
 from ac_tagging.widgets import TagAutocompleteTagIt
-from alibrary.lookups import ArtistLookup
 from alibrary.models import Artist, Relation, ArtistAlias, ArtistMembership
 from alibrary.util.storage import get_file_from_url
 from base.mixins import StripWhitespaceFormMixin
@@ -22,6 +20,8 @@ from base.fields.extra import AdvancedFileInput
 from base.fields.widgets import ReadOnlyIconField
 from pagedown.widgets import PagedownWidget
 from tagging.forms import TagField
+
+from search.forms import fields as search_fields
 
 log = logging.getLogger(__name__)
 
@@ -240,7 +240,7 @@ class BaseMemberForm(ModelForm):
         super(BaseMemberForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
 
-    child = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False, label=_('Member'))
+    child = search_fields.AutocompleteField('alibrary.artist', allow_new=True, required=False, label=_('Member'))
 
     def clean_child(self):
 
@@ -325,7 +325,8 @@ class BaseAliasForm(ModelForm):
         super(BaseAliasForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
 
-    child = selectable.AutoCompleteSelectField(ArtistLookup, allow_new=True, required=False, label=_('Alias'))
+    child = search_fields.AutocompleteField('alibrary.artist', allow_new=True, required=False, label=_('Alias'))
+
 
     def clean_child(self):
 

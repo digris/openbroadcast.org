@@ -1,4 +1,6 @@
-import selectable.forms as selectable
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from datetime import date
 from ac_tagging.widgets import TagAutocompleteTagIt
 from alibrary import settings as alibrary_settings
@@ -16,7 +18,8 @@ from base.fields.extra import AdvancedFileInput
 from pagedown.widgets import PagedownWidget
 from tagging.forms import TagField
 
-from ..lookups import PlaylistSeriesLookup
+from search.forms import fields as search_fields
+
 from ..models import Daypart, Season, Weather
 
 ACTION_LAYOUT =  action_layout = FormActions(
@@ -244,7 +247,7 @@ class PlaylistForm(ModelForm):
 
     rotation = forms.BooleanField(required=False, label=_('Include in rotation'), help_text=_('Allow this broadcast to be aired at random time if nothing else is scheduled.'))
 
-    series = selectable.AutoCompleteSelectField(PlaylistSeriesLookup, allow_new=True, required=False)
+    series = search_fields.AutocompleteField('alibrary.series', allow_new=True, required=False)
 
     target_duration = forms.ChoiceField(widget=forms.RadioSelect, choices=alibrary_settings.PLAYLIST_TARGET_DURATION_CHOICES, required=False)
     dayparts = forms.ModelMultipleChoiceField(label='...%s' % _('Dayparts'), widget=DaypartWidget(), queryset=Daypart.objects.active(), required=False)
