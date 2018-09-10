@@ -1,10 +1,8 @@
 {% load menu_tags adv_cache %}
 
-
-
 <ul class="unstyled">
     {% show_menu 2 2 0 100 %}
-
+    {% comment %}
     {% cache 600 "modnav_tagcloud" request.get_full_path %}
         {% if tagcloud %}
             <li class="tagcloud-toggle">
@@ -12,9 +10,10 @@
             </li>
         {% endif %}
     {% endcache %}
+    {% endcomment %}
 </ul>
 
-<!--
+{% comment %}
 {% cache 600 "modnav_tagcloud" request.get_full_path %}
 
     {% if tagcloud %}
@@ -26,5 +25,5 @@
     {% endif %}
 
 {% endcache %}
--->
+{% endcomment %}
 <div class="clearfix"></div>

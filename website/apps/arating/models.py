@@ -13,7 +13,7 @@ VOTE_CHOICES = (
 
 class Vote(TimestampedModelMixin, models.Model):
 
-    vote = models.SmallIntegerField(choices=VOTE_CHOICES)
+    vote = models.SmallIntegerField(choices=VOTE_CHOICES, db_index=True)
     user = models.ForeignKey(User, related_name="votes")
 
     # generic foreign key to the model being voted upon

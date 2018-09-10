@@ -1,14 +1,13 @@
-{% load spurl i18n %}
+{% load spurl i18n text_tags %}
 
 {% for filter in filters %}
     <div class="filter {% if filter.num_selected %} has-selection{% endif %}" data-listfilter="{{ filter.key }}">
         <div class="header">
-
             <div class="header-icon">
                 <span class="uc-icon">&#9658;</span>
             </div>
             <div class="header-title">
-                {% trans "Filter" %}: {{ filter.title|title }}
+                {% trans "Filter" %}: {{ filter.title|text_replace:"_: "|title }}
             </div>
             <div class="header-count">
                 <span>{{ filter.num_selected }}</span>/<span>{{ filter.options|length }}</span>
@@ -16,20 +15,19 @@
         </div>
         <div class="options">
             {% for option in filter.options %}
-
-                {% spurl base=request.get_full_path set_query="{{ option.query_key }}={{ option.query_value }}" as toggle_url %}
-                {% spurl base=toggle_url remove_query_param="page" as toggle_url %}
-
-                {% if not option.query_value %}
-                    {% spurl base=toggle_url remove_query_param=option.query_key as toggle_url %}
+                {% if option.num %}
+                    {% spurl base=request.get_full_path set_query="{{ option.query_key }}={{ option.query_value }}" as toggle_url %}
+                    {% spurl base=toggle_url remove_query_param="page" as toggle_url %}
+                    {% if not option.query_value %}
+                        {% spurl base=toggle_url remove_query_param=option.query_key as toggle_url %}
+                    {% endif %}
+                    <span class="option{% if option.selected %} selected{% endif %}">
+                        <a href="{{ toggle_url }}" rel="nofollow">
+                            <span class="option-name">{{ option.name }}</span>
+                            <span class="option-count">{{ option.num }}</span>
+                        </a>
+                    </span>
                 {% endif %}
-
-                <span class="option{% if option.selected %} selected{% endif %}">
-                    <a href="{{ toggle_url }}" rel="nofollow">
-                        <span class="option-name">{{ option.name }}</span>
-                        <span class="option-count">{{ option.num }}</span>
-                    </a>
-                </span>
             {% endfor %}
         </div>
     </div>

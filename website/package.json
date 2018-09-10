@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "vue-click-outside": "^1.0.7",
-    "vue-loader": "15.2.0"
-  }
-}

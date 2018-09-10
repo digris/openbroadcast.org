@@ -39,8 +39,6 @@ class AutocompleteField(forms.Field):
             allow_new=self.allow_new
         )
 
-        print(kwargs['widget'].media)
-
         super(AutocompleteField, self).__init__(*args, **kwargs)
 
 

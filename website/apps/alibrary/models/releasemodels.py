@@ -151,7 +151,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
 
     @property
     def is_promotional(self):
-        # TODO: refactor to license query
+        # TODO: refactor query to reduce db hits
         if self.releasedate:
             if self.releasedate > datetime.now().date():
                 return True

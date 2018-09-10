@@ -508,7 +508,7 @@
             <h2>
                 {% trans "Recently updated Playlists" %}
                 <span class="pull-right">
-                    <a rel="nofollow" href="{% spurl path=playlist_list query="user={{ object.user.username }}" %}">
+                    <a rel="nofollow" href="{% spurl path=playlist_list query="search_user={{ object.user.username }}" %}">
                         <i class="icon-chevron-sign-right"></i>
                         {% comment %}
                         {% blocktrans with count=broadcasts.count %}Show all {{ count }} user playlists{% endblocktrans %}
@@ -542,7 +542,7 @@
                 {% trans "Recently added Releases" %}
                 <span class="pull-right">
                     {% url "alibrary-release-list" as release_list %}
-                    <a rel="nofollow" href="{% spurl path=release_list query="creator={{ object.user.username }}" %}">
+                    <a rel="nofollow" href="{% spurl path=release_list query="search_creator={{ object.user.username }}" %}">
                         <i class="icon-chevron-sign-right"></i>
                         {% trans 'Show all uploaded Releases' %}
                         {% comment %}
@@ -567,7 +567,7 @@
                 {% trans "Recently added Tracks" %}
                 <span class="pull-right">
                     {% url "alibrary-media-list" as media_list %}
-                    <a rel="nofollow" href="{% spurl path=media_list query="creator={{ object.user.username }}" %}">
+                    <a rel="nofollow" href="{% spurl path=media_list query="search_creator={{ object.user.username }}" %}">
                         <i class="icon-chevron-sign-right"></i>
                         {% trans 'Show all uploaded Tracks' %}
                         {% comment %}

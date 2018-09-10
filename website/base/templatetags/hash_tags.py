@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from django import template
-from cacheops import cached_as
 
 try:
     from django.contrib.auth import get_user_model

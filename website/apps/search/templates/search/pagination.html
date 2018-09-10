@@ -1,28 +1,30 @@
 {% load i18n spurl %}
 
 <p class="pagination">
-    {% if pagination.previous_page %}
-        {% spurl base=request.get_full_path set_query="page={{ pagination.previous_page }}" as previous_page_url %}
-        <a rel="nofollow" href="{{ previous_page_url }}" class="prev">&lsaquo;&lsaquo; {% trans "previous" %}</a>
-    {% else %}
-        <span class="disabled prev">&lsaquo;&lsaquo; {% trans "previous" %}</span>
-    {% endif %}
-    {% for page_number in pagination.pages %}
-        {% if page_number %}
-            {% ifequal page_number pagination.current_page %}
-                <span class="current page">{{ page_number }}</span>
-            {% else %}
-                {% spurl base=request.get_full_path set_query="page={{ page_number }}" as page_url %}
-                <a rel="nofollow" href="{{ page_url }}" class="page">{{ page_number }}</a>
-            {% endifequal %}
+    {% if pagination.num_pages > 1 %}
+        {% if pagination.previous_page %}
+            {% spurl base=request.get_full_path set_query="page={{ pagination.previous_page }}" as previous_page_url %}
+            <a rel="nofollow" href="{{ previous_page_url }}" class="prev">&lsaquo;&lsaquo; {% trans "previous" %}</a>
         {% else %}
-            ...
+            <span class="disabled prev">&lsaquo;&lsaquo; {% trans "previous" %}</span>
         {% endif %}
-    {% endfor %}
-    {% if pagination.next_page %}
-        {% spurl base=request.get_full_path set_query="page={{ pagination.next_page }}" as next_page_url %}
-        <a rel="nofollow" href="{{ next_page_url }}" class="next">{% trans "next" %} &rsaquo;&rsaquo;</a>
-    {% else %}
-        <span class="disabled next">{% trans "next" %} &rsaquo;&rsaquo;</span>
+        {% for page_number in pagination.pages %}
+            {% if page_number %}
+                {% ifequal page_number pagination.current_page %}
+                    <span class="current page">{{ page_number }}</span>
+                {% else %}
+                    {% spurl base=request.get_full_path set_query="page={{ page_number }}" as page_url %}
+                    <a rel="nofollow" href="{{ page_url }}" class="page">{{ page_number }}</a>
+                {% endifequal %}
+            {% else %}
+                ...
+            {% endif %}
+        {% endfor %}
+        {% if pagination.next_page %}
+            {% spurl base=request.get_full_path set_query="page={{ pagination.next_page }}" as next_page_url %}
+            <a rel="nofollow" href="{{ next_page_url }}" class="next">{% trans "next" %} &rsaquo;&rsaquo;</a>
+        {% else %}
+            <span class="disabled next">{% trans "next" %} &rsaquo;&rsaquo;</span>
+        {% endif %}
     {% endif %}
 </p>

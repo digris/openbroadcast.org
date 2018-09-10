@@ -1,7 +1,7 @@
 {% extends "layout_base.html" %}
 {% load adv_cache hash_tags i18n static dajaxice_templatetags sekizai_tags %}
 
-{% block scope %}alibrary.label{% endblock %}
+{% block scope %}alibrary.playlist{% endblock %}
 
 {% block heading %}
     <!--
@@ -36,7 +36,7 @@
 {% endblock %}
 
 {% block searchbar %}
-    {% with object=item ct="label" %}
+    {% with object=item ct="playlist" %}
         {# include "alibrary/element/_searchbar.html" #}
     {% endwith %}
 {% endblock %}
@@ -47,11 +47,13 @@
             {% include "search/pagination.html" %}
         </div>
     </div>
-    <div class="listview container labels l">
+    <div class="listview container playlist l">
         <div class="list_body">
-            {# hash_user_groups request.user as group_hash #}
+            {% hash_user_groups request.user as group_hash %}
             {% for item in object_list %}
-                {% include "alibrary/label/list_item_l.html" %}
+                {% cache 600 "playlist_list_item_l" item.pk group_hash item.updated %}{% endcache %}
+                    {% include "alibrary/playlist/list_item_l.html" %}
+
             {% empty %}
                 <p style="padding: 20px; text-align: center;">
                     {% trans 'No results to display.' %}
@@ -67,7 +69,7 @@
 {% endblock %}
 
 {% block sidebar %}
-    {% include "alibrary/label/sidebar/_list.html" %}
+    {% include "alibrary/playlist/sidebar/_list.html" %}
     {% include "search/_partials/_list_ordering.html" with ordering=ordering %}
     {% include "search/_partials/_list_filter.html" with filters=filters %}
 {% endblock %}

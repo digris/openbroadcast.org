@@ -6,11 +6,8 @@ from alibrary.views import PlaylistListView, PlaylistCreateView, PlaylistDetailV
 
 urlpatterns = [
 
-    url(r'^$', PlaylistListView.as_view(), name='alibrary-playlist-list'),
-
-    url(r'^type/(?P<type>[-\w]+)/user/(?P<user>[-\w]+)/', PlaylistListView.as_view(), name='alibrary-playlist-type-list'),
-    url(r'^type/(?P<type>[-\w]+)/', PlaylistListView.as_view(), name='alibrary-playlist-type-list'),
-    url(r'^user/(?P<user>[-\w]+)/', PlaylistListView.as_view(), name='alibrary-playlist-user-list'),
+    url(r'^$', PlaylistListView.as_view(scope='public'), name='alibrary-playlist-list'),
+    url(r'^own/$', PlaylistListView.as_view(scope='own'), name='alibrary-playlist-list-own'),
 
     url(r'^create/$', PlaylistCreateView.as_view(), name='alibrary-playlist-create'),
     url(r'^(?P<slug>[-\w]+)/$', PlaylistDetailView.as_view(), name='alibrary-playlist-detail'),

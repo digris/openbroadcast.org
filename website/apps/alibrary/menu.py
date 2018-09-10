@@ -7,9 +7,9 @@ from cms.menu_bases import CMSAttachMenu
 
 
 class LibraryMenu(CMSAttachMenu):
-    
+
     name = _("Library Menu")
-    
+
     def get_nodes(self, request):
         nodes = []
         """
@@ -26,9 +26,9 @@ class LibraryMenu(CMSAttachMenu):
         )
         nodes.append(node)
         """
-        
+
         return nodes
-    
+
 menu_pool.register_menu(LibraryMenu)
 
 
@@ -37,9 +37,9 @@ menu_pool.register_menu(LibraryMenu)
 
 
 class ReleaseMenu(CMSAttachMenu):
-    
+
     name = _("Release Menu")
-    
+
     def get_nodes(self, request):
         nodes = []
         """
@@ -54,31 +54,31 @@ class ReleaseMenu(CMSAttachMenu):
                 #print 'added'
             except Exception, e:
                 print e
-        """    
+        """
 
         return nodes
-    
+
 menu_pool.register_menu(ReleaseMenu)
 
 
 
 class MediaMenu(CMSAttachMenu):
-    
+
     name = _("Media/Track Menu")
-    
+
     def get_nodes(self, request):
         nodes = []
         return nodes
-    
+
 menu_pool.register_menu(MediaMenu)
 
 
 
 
 class ArtistMenu(CMSAttachMenu):
-    
+
     name = _("Artist Menu")
-    
+
     def get_nodes(self, request):
         nodes = []
         """
@@ -96,68 +96,29 @@ class ArtistMenu(CMSAttachMenu):
         """
 
         return nodes
-    
+
 menu_pool.register_menu(ArtistMenu)
 
 class LabelMenu(CMSAttachMenu):
-    
+
     name = _("Label Menu")
-    
+
     def get_nodes(self, request):
         nodes = []
         return nodes
-    
+
 menu_pool.register_menu(LabelMenu)
 
 
 class PlaylistMenu(CMSAttachMenu):
-    
+
     name = _("Playlist Menu")
-    
+
     def get_nodes(self, request):
         nodes = []
 
-
-        """
         node = NavigationNode(
-            _('Broadcast Playlists'),
-            reverse('alibrary-playlist-type-list', args=['broadcast']),
-            301
-        )
-        nodes.append(node)
-
-        node = NavigationNode(
-            _('My Broadcast Playlists'),
-            reverse('alibrary-playlist-type-list', kwargs={'type': 'broadcast', 'user': request.user}),
-            302
-        )
-        nodes.append(node)
-        
-        node = NavigationNode(
-            _('All Shared Playlists'),
-            reverse('alibrary-playlist-type-list', args=['playlist']),
-            311
-        )
-        nodes.append(node)
-        
-        node = NavigationNode(
-            _('My Shared Playlists'),
-            reverse('alibrary-playlist-type-list', kwargs={'type': 'playlist', 'user': request.user}),
-            312
-        )
-        nodes.append(node)
-        
-        node = NavigationNode(
-            _('My Private Playlists'),
-            reverse('alibrary-playlist-type-list', kwargs={'type': 'basket', 'user': request.user}),
-            321
-        )
-        nodes.append(node)
-        """
-
-
-        node = NavigationNode(
-            _('All Playlists'),
+            _('Public Playlists'),
             reverse('alibrary-playlist-list'),
             301
         )
@@ -165,25 +126,25 @@ class PlaylistMenu(CMSAttachMenu):
 
         node = NavigationNode(
             _('My Playlists'),
-            reverse('alibrary-playlist-user-list', kwargs={'user': request.user}),
+            reverse('alibrary-playlist-list-own'),
             302
         )
         nodes.append(node)
 
-        
+
         return nodes
-    
+
 menu_pool.register_menu(PlaylistMenu)
 
 
 class LicenseMenu(CMSAttachMenu):
-    
+
     name = _("License Menu")
-    
+
     def get_nodes(self, request):
         nodes = []
         return nodes
-    
+
 menu_pool.register_menu(LicenseMenu)
 
 
@@ -234,9 +195,9 @@ class Level(Modifier):
 
     def mark_levels(self, node, post_cut):
         for child in node.children:
-            
+
             # print child
-            
+
             if post_cut:
                 child.menu_level = node.menu_level + 1
             else:

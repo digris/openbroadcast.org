@@ -177,9 +177,8 @@ class Profile(MigrationMixin):
 
     @property
     def age(self):
-        TODAY = datetime.date.today()
         if self.birth_date:
-            return u"%s" % relativedelta.relativedelta(TODAY, self.birth_date).years
+            return u"%s" % relativedelta.relativedelta(datetime.date.today(), self.birth_date).years
         else:
             return None
 
@@ -199,11 +198,6 @@ class Profile(MigrationMixin):
             'resource_name': 'profile',
             'pk': self.pk
         })
-
-    @property
-    def sms_address(self):
-        if (self.mobile and self.mobile_provider):
-            return u"%s@%s" % (re.sub('-', '', self.mobile), self.mobile_provider.domain)
 
     def get_groups(self):
         return self.user.groups

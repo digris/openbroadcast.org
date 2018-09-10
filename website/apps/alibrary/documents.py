@@ -5,11 +5,10 @@ from __future__ import unicode_literals
 elasticsearch index documents
 """
 
-from elasticsearch_dsl import analyzer, tokenizer
-from elasticsearch_dsl.serializer import serializer
-from django_elasticsearch_dsl import DocType, Index, TextField, CompletionField, KeywordField, DateField, fields
+from django_elasticsearch_dsl import DocType, Index, KeywordField, fields
 from easy_thumbnails.files import get_thumbnailer
 from easy_thumbnails.exceptions import InvalidImageFormatError
+from search.elasticsearch_utils import edge_ngram_analyzer, edge_ngram_search_analyzer
 from .models import Artist, Label, Release, Media, Playlist
 
 THUMBNAIL_OPT = dict(size=(197, 197), crop=True, upscale=True)
@@ -20,53 +19,10 @@ label_index = Index('labels')
 release_index = Index('releases')
 media_index = Index('media')
 
-# autocomplete tokenizer
-edge_ngram_tokenizer = tokenizer(
-    'edge_ngram_tokenizer',
-    type='edge_ngram',
-    min_gram=1,
-    max_gram=12,
-    # TODO: investigate
-    token_chars=['letter', 'digit']
-)
-
-
-# keyword_analyzer = analyzer(
-#     'keyword_analyzer',
-#     tokenizer="keyword",
-#     filter=["lowercase", "asciifolding", "trim"],
-#     type='custom',
-#     char_filter=[]
-# )
-
-# autocomplete analyzer
-edge_ngram_analyzer = analyzer(
-    'edge_ngram_analyzer',
-    tokenizer=edge_ngram_tokenizer,
-    filter=['lowercase', 'asciifolding'],
-)
-
-# autocomplete *search* analyzer
-edge_ngram_search_analyzer = analyzer(
-    'edge_ngram_search_analyzer',
-    tokenizer='lowercase',
-)
-
-
-# asciifolding analyzer
-asciifolding_analyzer = analyzer(
-    'asciifolding_analyzer',
-    tokenizer='standard',
-    filter=['lowercase', 'asciifolding'],
-)
-
-
-class LibraryBaseDocument(object):
-    pass
-
+playlist_index = Index('playlists')
 
 @label_index.doc_type
-class LabelDocument(LibraryBaseDocument, DocType):
+class LabelDocument(DocType):
 
     class Meta:
         model = Label
@@ -93,6 +49,8 @@ class LabelDocument(LibraryBaseDocument, DocType):
     #     'id': fields.IntegerField(),
     # })
 
+    creator = fields.KeywordField(attr='creator.username')
+
 
     image = KeywordField()
 
@@ -111,10 +69,12 @@ class LabelDocument(LibraryBaseDocument, DocType):
     def prepare_autocomplete(self, instance):
         text = [instance.name.strip()]
         # TODO: check what exact fields needed
-        if instance.parent:
-            text += [instance.parent.name.strip()]
-        if instance.get_root():
-            text += [instance.get_root().name.strip()]
+        # if instance.labelcode:
+        #     text += [instance.labelcode.strip()]
+        # if instance.get_root():
+        #     text += [instance.get_root().name.strip()]
+        # if instance.parent:
+        #     text += [instance.parent.name.strip()]
         if instance.country:
             text += [instance.country.iso2_code]
 
@@ -151,7 +111,7 @@ class LabelDocument(LibraryBaseDocument, DocType):
 
 
 @artist_index.doc_type
-class ArtistDocument(LibraryBaseDocument, DocType):
+class ArtistDocument(DocType):
 
     class Meta:
         model = Artist
@@ -174,9 +134,11 @@ class ArtistDocument(LibraryBaseDocument, DocType):
     namevariations = fields.TextField()
     tags = KeywordField()
 
+    creator = fields.KeywordField(attr='creator.username')
+
     image = KeywordField()
 
-    type = fields.KeywordField()
+    type = fields.KeywordField(attr='get_type_display')
     ipi_code = fields.KeywordField()
     isni_code = fields.KeywordField()
 
@@ -184,7 +146,7 @@ class ArtistDocument(LibraryBaseDocument, DocType):
     year_end = fields.IntegerField()
 
     description = fields.TextField(attr='biography')
-    country = KeywordField(attr='country.iso2_code')
+    country = KeywordField(attr='country.printable_name')
 
 
     ###################################################################
@@ -206,14 +168,14 @@ class ArtistDocument(LibraryBaseDocument, DocType):
     ###################################################################
     def prepare_autocomplete(self, instance):
         text = [instance.name.strip()]
-        text += [i.name.strip() for i in instance.namevariations.all()]
+        text += [i.name.strip() for i in instance.namevariations.nocache().all()]
         return text
 
     def prepare_name(self, instance):
         return instance.name.strip()
 
     def prepare_namevariations(self, instance):
-        return [i.name.strip() for i in instance.namevariations.all()]
+        return [i.name.strip() for i in instance.namevariations.nocache().all()]
 
     def prepare_tags(self, instance):
         return [i.strip() for i in instance.d_tags.split(',') if len(i) > 2]
@@ -247,7 +209,7 @@ class ArtistDocument(LibraryBaseDocument, DocType):
 
 
 @release_index.doc_type
-class ReleaseDocument(LibraryBaseDocument, DocType):
+class ReleaseDocument(DocType):
 
     class Meta:
         model = Release
@@ -274,13 +236,18 @@ class ReleaseDocument(LibraryBaseDocument, DocType):
     # )
     tags = KeywordField()
 
+    creator = fields.KeywordField(attr='creator.username')
+
     image = KeywordField()
 
-    type = fields.KeywordField(attr='releasetype')
+    type = fields.KeywordField(attr='get_releasetype_display')
+    label_type = fields.KeywordField(attr='label.get_type_display')
     barcode = fields.KeywordField()
 
+    releasedate_year = fields.IntegerField()
+
     description = fields.TextField()
-    country = KeywordField(attr='release_country.iso2_code')
+    country = KeywordField(attr='release_country.printable_name')
 
     num_media = fields.IntegerField()
 
@@ -308,6 +275,10 @@ class ReleaseDocument(LibraryBaseDocument, DocType):
     def prepare_num_media(self, instance):
         return instance.media_release.count()
 
+    def prepare_releasedate_year(self, instance):
+        if instance.releasedate:
+            return instance.releasedate.year
+
     ###################################################################
     # custom queryset
     ###################################################################
@@ -319,7 +290,7 @@ class ReleaseDocument(LibraryBaseDocument, DocType):
 
 
 @media_index.doc_type
-class MediaDocument(LibraryBaseDocument, DocType):
+class MediaDocument(DocType):
 
     class Meta:
         model = Media
@@ -341,11 +312,17 @@ class MediaDocument(LibraryBaseDocument, DocType):
         fielddata=True
     )
 
-    artist_display = fields.TextField(
+    artist_display = fields.KeywordField(
         attr='get_artist_display'
+    )
+    release_display = fields.KeywordField(
+        attr='release.name'
     )
 
     tags = KeywordField()
+
+    creator = fields.KeywordField(attr='creator.username')
+
     image = KeywordField()
 
     type = fields.KeywordField(attr='get_mediatype_display')
@@ -379,6 +356,8 @@ class MediaDocument(LibraryBaseDocument, DocType):
     def prepare_autocomplete(self, instance):
         text = [instance.name.strip()]
         text += [instance.get_artist_display()]
+        if instance.release:
+            text += [instance.release.name]
         return text
 
     def prepare_name(self, instance):
@@ -419,3 +398,113 @@ class MediaDocument(LibraryBaseDocument, DocType):
         ).prefetch_related(
             'media_artists', 'extra_artists'
         )
+
+
+
+
+
+
+
+
+
+@playlist_index.doc_type
+class PlaylistDocument(DocType):
+
+    class Meta:
+        model = Playlist
+        queryset_pagination = 1000
+        doc_type = 'alibrary.playlist'
+
+    autocomplete = fields.TextField(
+        analyzer=edge_ngram_analyzer,
+        search_analyzer=edge_ngram_search_analyzer,
+    )
+
+    url = fields.KeywordField(attr='get_absolute_url')
+    api_url = fields.KeywordField(attr='get_api_url')
+    created = fields.DateField()
+    updated = fields.DateField()
+
+    # 'fielddata' is needed for sorting on the filed
+    name = fields.TextField(
+        fielddata=True
+    )
+    tags = KeywordField()
+
+    user = fields.KeywordField(attr='user.username')
+
+    image = KeywordField()
+
+    type = fields.KeywordField(attr='get_type_display')
+    status = fields.KeywordField(attr='get_status_display')
+    target_duration = fields.KeywordField()
+    weather = fields.KeywordField()
+    seasons = fields.KeywordField()
+    series = fields.KeywordField()
+    daypart_days = fields.KeywordField()
+    daypart_slots = fields.KeywordField()
+
+    description = fields.TextField()
+
+    num_emissions = fields.IntegerField()
+
+    ###################################################################
+    # field preparation
+    ###################################################################
+    def prepare_autocomplete(self, instance):
+        # if instance.type == 'basket':
+        #     return
+        text = [instance.name.strip()]
+        return text
+
+    def prepare_name(self, instance):
+        return instance.name.strip()
+
+    def prepare_tags(self, instance):
+        return [i.strip() for i in instance.d_tags.split(',') if len(i) > 2]
+        #return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
+
+    def prepare_image(self, instance):
+        if hasattr(instance, 'main_image') and instance.main_image:
+            try:
+                return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
+            except InvalidImageFormatError:
+                pass
+
+    def prepare_target_duration(self, instance):
+        if instance.target_duration:
+            return '{} Minutes'.format(instance.get_target_duration_display())
+        return
+
+
+    def prepare_series(self, instance):
+        if instance.series and instance.series_number:
+            return '{} #{}'.format(instance.series, instance.series_number)
+        elif instance.series:
+            return instance.series.name
+        return
+
+
+    def prepare_weather(self, instance):
+        return [w.name.strip() for w in instance.weather.all()]
+
+    def prepare_seasons(self, instance):
+        return [s.name.strip() for s in instance.seasons.all()]
+
+    def prepare_daypart_days(self, instance):
+        return [d.get_day_display() for d in instance.dayparts.all()]
+
+    def prepare_daypart_slots(self, instance):
+        return ['{} - {}'.format(d.time_start, d.time_end) for d in instance.dayparts.all()]
+
+    def prepare_num_emissions(self, instance):
+        return instance.get_emissions().count()
+
+
+    # TODO: add 'in rotation' and 'is archived'
+
+    # ###################################################################
+    # # custom queryset
+    # ###################################################################
+    # def get_queryset(self):
+    #     return super(PlaylistDocument, self).get_queryset().exclude(type='basket')

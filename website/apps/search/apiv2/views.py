@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from haystack.query import SearchQuerySet
-
 # from elasticsearch_dsl import DocType, Date, Search
 # from elasticsearch_dsl.query import MultiMatch, Match, Fuzzy, Term, Q
 

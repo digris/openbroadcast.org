@@ -85,7 +85,7 @@
                         <a href="{{ item.user.get_absolute_url }}">{{ item.user.profile.get_display_name }}</a>
 
                         {% url "alibrary-playlist-list" as playlist_list %}
-                        <a href="{% spurl path=playlist_list query="user={{ item.user.username }}" %}"
+                        <a href="{% spurl path=playlist_list query="search_user={{ item.user.username }}" %}"
                            title="{% trans "Only show playlists by" %} {{ item.user.profile.get_display_name }}"
                            style="vertical-align: top;"><span class="filter icon"></span></a>
 

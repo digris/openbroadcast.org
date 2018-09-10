@@ -3,13 +3,11 @@
 
 // table width: 830px
 
-.listhead
-  //padding: 4px 2px 3px 5px
+.list-header,
+.list-footer
   padding: 15px 2px 2px 5px
-  //border-bottom: 1px solid #bbb
   font-size: 90%
   height: 20px
-  // margin-top: 36px
   margin-top: 2px
 
   .pagination-holder
@@ -31,7 +29,7 @@
         background: $primary-color-a
         color: white
 
-
+  // TODO: depreciated - list-styles will be removed
   .wrapper.list_style
     padding: 2px 0 0 0
     height: 20px
@@ -42,7 +40,7 @@
 
     a.action.list_style
       padding: 0 0 0 2px
-      background-position: 0px 0px
+      background-position: 0 0
       display: block
       height: 16px
       &:hover, &.active
@@ -575,6 +573,7 @@
 
     /* medias */
     &.medias.s
+      margin-top: 12px
       .c1
         width: 40px
         li
