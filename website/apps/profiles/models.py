@@ -193,11 +193,12 @@ class Profile(MigrationMixin):
         return reverse("admin:profiles_profile_change", args=(self.pk,))
 
     def get_api_url(self):
-        return reverse('api_dispatch_detail', kwargs={
-            'api_name': 'v1',
-            'resource_name': 'profile',
-            'pk': self.pk
-        })
+        return None
+        # return reverse('api_dispatch_detail', kwargs={
+        #     'api_name': 'v1',
+        #     'resource_name': 'profile',
+        #     'pk': self.pk
+        # })
 
     def get_groups(self):
         return self.user.groups
