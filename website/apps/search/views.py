@@ -14,6 +14,11 @@ from . import utils
 __all__ = ['BaseFacetedSearch', 'BaseSearchListView']
 
 
+
+class SearchQueryException(Exception):
+    pass
+
+
 class BaseFacetedSearch(FacetedSearch):
     doc_types = []
     fields = ['tags', 'name',]
@@ -101,7 +106,10 @@ class BaseSearchListView(ListView):
         s = s[pagination_query['start']:pagination_query['end']]
 
         # execute elasticsearch query
-        result = s.execute()
+        try:
+            result = s.execute()
+        except Exception as e:
+            raise SearchQueryException('Unable to execute search query: {}'.format(e))
         formatted_result = format_search_results(result)
 
         # get object pks and create corresponding queryset

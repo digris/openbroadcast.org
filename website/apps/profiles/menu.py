@@ -7,9 +7,9 @@ from cms.menu_bases import CMSAttachMenu
 
 
 class ProfileMenu(CMSAttachMenu):
-    
+
     name = _("Profile Menu")
-    
+
     def get_nodes(self, request):
         nodes = []
 
@@ -19,16 +19,16 @@ class ProfileMenu(CMSAttachMenu):
             110
         )
         nodes.append(node)
-        
+
         if request.user.is_active:
             node = NavigationNode(
                 _('My Profile'),
-                reverse('profiles-profile-detail', args=[request.user.username]),
+                reverse('profiles-profile-detail', kwargs={ 'username': request.user.username }),
                 111
             )
             nodes.append(node)
-            
-            
+
+
             node = NavigationNode(
                 _('Edit my Profile'),
                 reverse('profiles-profile-edit'),
@@ -44,9 +44,9 @@ class ProfileMenu(CMSAttachMenu):
                 123
             )
             nodes.append(node)
-        
+
         return nodes
-    
+
 menu_pool.register_menu(ProfileMenu)
 
 

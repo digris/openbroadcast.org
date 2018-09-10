@@ -183,7 +183,7 @@ class Profile(MigrationMixin):
             return None
 
     def get_absolute_url(self):
-        return reverse('profiles-profile-detail', kwargs={ 'slug': self.user.username })
+        return reverse('profiles-profile-detail', kwargs={ 'username': self.user.username })
 
     @models.permalink
     def get_edit_url(self):
@@ -265,7 +265,7 @@ class Community(MigrationMixin):
     """
     @permalink
     def get_absolute_url(self):
-        return ('profiles-profile-detail', None, { 'slug': self.user.username })
+        return ('profiles-profile-detail', None, { 'username': self.user.username })
     """
     def save(self, *args, **kwargs):
         t_tags = ''

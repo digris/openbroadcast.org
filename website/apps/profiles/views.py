@@ -87,19 +87,28 @@ class ProfileListView(BaseSearchListView):
 
 class ProfileDetailView(DetailView):
 
-    context_object_name = "profile"
     model = Profile
-    slug_field = 'user__username'
-    queryset = Profile.objects.select_related(
-        'mentor',
-        'country',
-    ).prefetch_related(
-        'link_set',
-        'user__votes',
-    )
+    template_name = 'profiles/profile_detail_ng.html'
+    #context_object_name = "profile"
 
-    def render_to_response(self, context):
-        return super(ProfileDetailView, self).render_to_response(context, content_type="text/html")
+    # queryset = Profile.objects.select_related(
+    #     'mentor',
+    #     'country',
+    # ).prefetch_related(
+    #     'link_set',
+    #     'user__votes',
+    # )
+
+    def get_object(self, queryset=None):
+
+        profile = get_object_or_404(
+            self.model,
+            user__username=self.kwargs['username']
+        )
+
+        return profile
+
+
 
     def get_context_data(self, **kwargs):
         context = kwargs

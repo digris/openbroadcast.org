@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     'django_badbrowser',
     'genericadmin',
     'hvad',
-    'selectable',
     'spurl',
     'pure_pagination',
     'crispy_forms_extra',
@@ -325,8 +324,6 @@ POSTMAN_SHOW_USER_AS = 'get_full_name'
 # other...
 PRETTIFY = True
 
-
-SELECTABLE_MAX_LIMIT = 10
 
 """
 wikisyntax, eg allows tor resolve [a:Artists Name] to object
