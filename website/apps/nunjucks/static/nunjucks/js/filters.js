@@ -16,7 +16,7 @@ var nunjucks_register_filters = function (nj) {
         } else {
             return str;
         }
-        
+
     });
 
 
@@ -195,6 +195,7 @@ var nunjucks_register_filters = function (nj) {
         }
 
         time = Math.abs(time);
+        time = Math.round(time);
 
 
         var seconds = time % 60 * 60;

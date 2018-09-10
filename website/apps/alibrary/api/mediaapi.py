@@ -10,9 +10,6 @@ from tastypie.authentication import MultiAuthentication, SessionAuthentication, 
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
-from haystack.backends import SQ
-from haystack.query import SearchQuerySet
-from haystack.inputs import AutoQuery
 
 
 THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
@@ -148,84 +145,84 @@ class MediaResource(ModelResource):
     def prepend_urls(self):
 
         return [
-              url(r"^(?P<resource_name>%s)/autocomplete%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('autocomplete'), name="alibrary-media_api-autocomplete"),
+              # url(r"^(?P<resource_name>%s)/autocomplete%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('autocomplete'), name="alibrary-media_api-autocomplete"),
               url(r"^(?P<resource_name>%s)/(?P<uuid>\w[\w/-]*)/vote%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('vote'), name="alibrary-media_api-vote"),
               url(r"^(?P<resource_name>%s)/(?P<uuid>\w[\w/-]*)/stats%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('stats'), name="alibrary-media_api-stats"),
               url(r"^(?P<resource_name>%s)/(?P<uuid>\w[\w/-]*)/stream.mp3$" % self._meta.resource_name, self.wrap_view('stream_file'), name="alibrary-media_api-stream"),
         ]
 
-    def autocomplete(self, request, **kwargs):
-
-        self.method_check(request, allowed=['get'])
-        self.throttle_check(request)
-
-        q = request.GET.get('q', None)
-        result = []
-        object_list = []
-        objects = []
-        object_count = 0
-
-        qs = None
-
-        if q and len(q) > 1:
-
-            # haystack version
-            #sqs = SearchQuerySet().models(Media).filter(SQ(content__contains=q) | SQ(content_auto=q))
-            sqs = SearchQuerySet().models(Media).filter(content=AutoQuery(q))
-            qs = Media.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
-
-            # ORM version
-            #qs = Media.objects.order_by('name').filter(name__icontains=q)
-
-            object_list = qs.distinct()[0:50]
-            object_count = qs.distinct().count()
-
-            for result in object_list:
-                bundle = self.build_bundle(obj=result, request=request)
-                bundle = self.autocomplete_dehydrate(bundle, q)
-                objects.append(bundle)
-
-
-        data = {
-            'meta': {
-                     'query': q,
-                     'total_count': object_count
-                     },
-            'objects': objects,
-        }
-
-
-
-        self.log_throttled_access(request)
-        return self.create_response(request, data)
-
-
-
-    def autocomplete_dehydrate(self, bundle, q):
-
-        bundle.data['name'] = bundle.obj.name
-        bundle.data['id'] = bundle.obj.pk
-        bundle.data['ct'] = 'media'
-        bundle.data['get_absolute_url'] = bundle.obj.get_absolute_url()
-        bundle.data['resource_uri'] = bundle.obj.get_api_url()
-        bundle.data['main_image'] = None
-        bundle.data['duration'] = bundle.obj.get_duration()
-        try:
-            bundle.data['artist'] = bundle.obj.artist.name
-        except:
-            bundle.data['artist'] = None
-        try:
-            bundle.data['release'] = bundle.obj.release.name
-        except:
-            bundle.data['release'] = None
-        try:
-            opt = THUMBNAIL_OPT
-            main_image = get_thumbnailer(bundle.obj.release.main_image).get_thumbnail(opt)
-            bundle.data['main_image'] = main_image.url
-        except:
-            pass
-
-        return bundle
+    # def autocomplete(self, request, **kwargs):
+    #
+    #     self.method_check(request, allowed=['get'])
+    #     self.throttle_check(request)
+    #
+    #     q = request.GET.get('q', None)
+    #     result = []
+    #     object_list = []
+    #     objects = []
+    #     object_count = 0
+    #
+    #     qs = None
+    #
+    #     if q and len(q) > 1:
+    #
+    #         # haystack version
+    #         #sqs = SearchQuerySet().models(Media).filter(SQ(content__contains=q) | SQ(content_auto=q))
+    #         sqs = SearchQuerySet().models(Media).filter(content=AutoQuery(q))
+    #         qs = Media.objects.filter(id__in=[result.object.pk for result in sqs]).distinct()
+    #
+    #         # ORM version
+    #         #qs = Media.objects.order_by('name').filter(name__icontains=q)
+    #
+    #         object_list = qs.distinct()[0:50]
+    #         object_count = qs.distinct().count()
+    #
+    #         for result in object_list:
+    #             bundle = self.build_bundle(obj=result, request=request)
+    #             bundle = self.autocomplete_dehydrate(bundle, q)
+    #             objects.append(bundle)
+    #
+    #
+    #     data = {
+    #         'meta': {
+    #                  'query': q,
+    #                  'total_count': object_count
+    #                  },
+    #         'objects': objects,
+    #     }
+    #
+    #
+    #
+    #     self.log_throttled_access(request)
+    #     return self.create_response(request, data)
+    #
+    #
+    #
+    # def autocomplete_dehydrate(self, bundle, q):
+    #
+    #     bundle.data['name'] = bundle.obj.name
+    #     bundle.data['id'] = bundle.obj.pk
+    #     bundle.data['ct'] = 'media'
+    #     bundle.data['get_absolute_url'] = bundle.obj.get_absolute_url()
+    #     bundle.data['resource_uri'] = bundle.obj.get_api_url()
+    #     bundle.data['main_image'] = None
+    #     bundle.data['duration'] = bundle.obj.get_duration()
+    #     try:
+    #         bundle.data['artist'] = bundle.obj.artist.name
+    #     except:
+    #         bundle.data['artist'] = None
+    #     try:
+    #         bundle.data['release'] = bundle.obj.release.name
+    #     except:
+    #         bundle.data['release'] = None
+    #     try:
+    #         opt = THUMBNAIL_OPT
+    #         main_image = get_thumbnailer(bundle.obj.release.main_image).get_thumbnail(opt)
+    #         bundle.data['main_image'] = main_image.url
+    #     except:
+    #         pass
+    #
+    #     return bundle
 
 
     def vote(self, request, **kwargs):

@@ -99,12 +99,7 @@ jsonfield==2.0.2
 # search
 ##################################################################
 
-#django-haystack==2.5.1
-#celery-haystack==0.10
-#elasticsearch==2.2.0
-
 # search v2
-# for haystack compatibility 2.2.0 is needed - later upgrade to 6.1
 # elasticsearch-dsl > 6.1 does not work:
 # https://github.com/sabricot/django-elasticsearch-dsl/issues/119
 # elasticsearch-dsl==2.2.0
@@ -114,7 +109,7 @@ django-elasticsearch-dsl==0.5.0
 
 # transaction hooks are needed by celery-haystack
 # TODO: remove when upgrading django to > 1.8
-django-transaction-hooks==0.2
+# django-transaction-hooks==0.2
 
 ##################################################################
 # RESTful API (v2)

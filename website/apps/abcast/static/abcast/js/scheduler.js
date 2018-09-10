@@ -54,7 +54,7 @@ SchedulerApp = function () {
 
         self.dom_element = $('#tgTable');
 
-        self.ac = new BaseAcApp();
+        self.ac = new PlaylistAcApp();
 
         self.iface();
         // self.bindings(); // called from display method
@@ -92,7 +92,8 @@ SchedulerApp = function () {
             var q = $(this).val();
             var ct = $(this).attr('data-ct');
             var target = $('.ac-result', $(this).parent());
-            var extra_query = 'type=broadcast&broadcast_status=1';
+            //var extra_query = 'type=broadcast&broadcast_status=1';
+            var extra_query = 'filter_status=Ready&filter_type=Broadcasts';
 
             if (e.keyCode == 13 || e.keyCode == 9) {
                 return false;
@@ -262,38 +263,27 @@ SchedulerApp = function () {
 
         });
 
-
-        /* TODO: find a way to handle vanished items
-         $('.container.scheduler .emission.delete-flag').fadeOut(500);
-         setTimeout(function() {
-         $('.container.scheduler .emission.delete-flag').remove();
-         }, 500)
-         */
-
     };
 
     // handling of selected object (to place in schedule)
     this.set_selection = function (ct, resource_uri) {
 
-
         $.get(resource_uri + '?all=1', function (data) {
             self.selected_object = data;
             self.display_selection(data);
+
             // call view to save state to session. (hmm...what for?)
             // maybe to let the backend know what is active right now
             if (data.id != undefined) {
                 var url = '/program/scheduler/select-playlist/?playlist_id=' + data.id;
                 $.get(url, function (data) {
+                    // no callback here
                 })
             }
         });
     };
     this.set_history = function (playlist_ids) {
-
-
         // TODO: implement
-
-
     };
 
 
@@ -546,7 +536,7 @@ var EmissionApp = function () {
                     }
                 });
             }
-            
+
             if (action == 'delete') {
 
                 var url = self.api_url;
@@ -888,7 +878,7 @@ function sortObject(obj) {
 }
 
 
-BaseAcApp = function () {
+PlaylistAcApp = function () {
 
     var self = this;
     this.template = 'abcast/nj/autocomplete.html';
@@ -896,7 +886,8 @@ BaseAcApp = function () {
 
     this.search = function (q, ct, target, extra_query) {
 
-        var url = '/api/v1/library/' + ct + '/autocomplete-name/?q=' + q + '&';
+        //var url = '/api/v1/library/' + ct + '/autocomplete-name/?q=' + q + '&';
+        var url = '/api/v2/search/alibrary.playlist/?q=' + q + '&';
 
         if (extra_query != undefined) {
             url += extra_query;

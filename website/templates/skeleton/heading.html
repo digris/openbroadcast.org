@@ -5,13 +5,6 @@
 
     <div class="global-search">
         &nbsp;
-        {% comment %}
-        <form method="get" action="/search/" class="autocomplete-me">
-            <input type="text" id="id_q" name="q" autocomplete="off" placeholder="Global Search">
-            <input type="submit" value="Search!">
-        </form>
-        {% endcomment %}
-
     </div>
 
     <div class="page-title">
@@ -27,34 +20,6 @@
     <div class="clear"></div>
 
 </div>
-
-{% comment %}
-<div class="row-fluid">
-    <div class="span7">
-        <div id="global_search"
-             style="padding: 24px 10px 24px 10px; font-size: 32px;">
-            <form method="get" action="/search/" class="autocomplete-me">
-                <input type="text" id="id_q" name="q" autocomplete="off" placeholder="Global Search">
-                <input type="submit" value="Search!">
-            </form>
-        </div>
-    </div>
-    <div class="span5">
-
-        <div class="icontitle green pull-right"
-             style="padding: 24px 10px 24px 10px; font-size: 32px;">
-
-            {% if page_title %}
-                {{ page_title }}
-            {% else %}
-                {% page_attribute "page_title" %}
-            {% endif %}
-
-        </div>
-    </div>
-
-</div>
-{% endcomment %}
 
 <script>
     // In a perfect world, this would be its own library file that got included

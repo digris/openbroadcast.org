@@ -384,15 +384,21 @@ ListEditUi = function () {
 
     };
 
+    /******************************************************************
+     * re-assignment flow
+     * TODO: refactor to propper UI
+     * already changed: use v2 search API instead of legacy autocomplete
+     ******************************************************************/
     this.reassign_autocomplete = function(container, q) {
 
-        var url = '/api/v1/library/release/autocomplete-name/'
+        var url = '/api/v1/library/release/autocomplete-name/';
+        var url = '/api/v2/search/alibrary.release/';
 
         if (q.length >= 3) {
             $.get(url + '?q=' + q, function (data) {
 
-                if(data.objects.length) {
-                    var html = nj.render('alibrary/nj/reassign/reassign_dialog_search_result.html', data);
+                if(data.results.length) {
+                    var html = nj.render('alibrary/nj/reassign/reassign_dialog_search_result.html', {objects: data.results});
                     $('#search_result', container).html(html);
                 } else {
                     $('#search_result', container).html('');
@@ -403,10 +409,7 @@ ListEditUi = function () {
         }
 
     };
-
-
     this.reassign_dialog_update = function (data) {
-
 
         // not so nice, but have to map type as names differ in api
         var item_type = data.item_type;
@@ -427,7 +430,6 @@ ListEditUi = function () {
             }, 100)
 
         });
-
     };
 
 

@@ -1,38 +1,26 @@
 
-
-    <div class="listing">
-        {% for item in objects %}
-
-            <div class="item hoverable clearfix" data-resource_uri="{{ item.resource_uri }}">
-
-                <div class="">
-
-                    <div class="image">
-                        <img src="{{ item.main_image }}"/>
-                    </div>
-
-                    <div class="information">
-
-                        <span class="title">{{ item.name|highlight(meta.query) }}<small class="pull-right">{{ item.duration|ms2time }}</small></span>
-
-                        <div class="related">
-                            <ul class="unstyled horizontal">
-                                {% if item.artist %}
-                                    <li><small>by:</small> {{ item.artist|highlight(meta.query) }}</li>
-                                {% endif %}
-                                {% if item.release %}
-                                    <li><small>on:</small> {{ item.release|highlight(meta.query) }}</li>
-                                {% endif %}
-                            </ul>
-
-                        </div>
-
-                    </div>
-
+<div class="listing">
+    {% for item in results %}
+        <div class="item hoverable clearfix" data-resource_uri="{{ item.api_url }}">
+            <div class="">
+                <div class="image">
+                    <img src="{{ item.image }}"/>
                 </div>
+                <div class="information">
+                    <span class="title">{{ item.name }}<small class="pull-right">{{ item.duration|s2time }}</small></span>
+                    <div class="related">
+                        <ul class="unstyled horizontal">
+                            {% if item.artist_display %}
+                                <li><small>by:</small> {{ item.artist_display }}</li>
+                            {% endif %}
 
+                            {% if item.release_display %}
+                                <li><small>&nbsp;on:</small> {{ item.release_display }}</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
             </div>
-
-        {% endfor %}
-    </div>
-
+        </div>
+    {% endfor %}
+</div>

@@ -1,37 +1,56 @@
 <div class="result">
 
 	<div class="listing">
-		{% for item in objects %}
-		<div class="item hoverable" data-id="{{ item.id }}" data-name="{{ item.name }}" data-ct="{{ item.ct }}" data-resource_uri="{{ item.resource_uri }}">
-			
+		{% for item in results %}
+		<div class="item hoverable" data-id="{{ item.id }}" data-name="{{ item.name }}" data-ct="{{ item.ct }}" data-resource_uri="{{ item.api_url }}">
+
 			<div class="row-fluid">
-				
+
 				<div class="span3">
-					
-					{% if item.main_image %}
-					<img src="{{ item.main_image }}" />
+
+					{% if item.image %}
+					<img src="{{ item.image }}" />
 					{% else %}
 					<img src="/static/img/base/defaults/listview.{{ item.ct }}.xl.png" width="90" height="90" />
 					{% endif %}
-					
+
 				</div>
-				
+
 				<div class="span9">
 
 					<ul class="unstyled">
-						
-						<li><strong>{{ item.name|truncate_chars_inner(30)|highlight(meta.query) }}</strong>  <small class="pull-right">{{ item.releasedate }}</small></li>
+
+                        {% if item.series %}
+						<li>
+                            <strong>
+                                {{ item.series|truncate_chars_inner(30) }}
+                            </strong>
+                        </li>
+                        {% endif %}
+
+						<li>
+                            <strong>
+                                {{ item.name|truncate_chars_inner(30) }}
+                            </strong>
+                            <small class="pull-right">{{ item.releasedate }}</small>
+                        </li>
 						<li>
 							<span>{{ item.user }}</span>
 							|
-							<span>{{ item.target_duration / 60 }} min</span>
+							<span>{{ item.target_duration }}</span>
 						</li>
-						<li><span>{{ item.tags|shorten(30) }}</span></li>
+						<li>
+                            {% for tag in item.tags %}
+                                {% if loop.index0 < 3 %}
+                                <span>{{ tag }}</span>{% if loop.index0 < 2 %},{% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </li>
 
 					</ul>
-					
+
 				</div>
-				
+
 			</div>
 
 		</div>

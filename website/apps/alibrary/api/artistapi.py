@@ -9,10 +9,6 @@ from tastypie.authentication import MultiAuthentication, SessionAuthentication, 
 from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
-from haystack.backends import SQ
-from haystack.query import SearchQuerySet
-from haystack.inputs import AutoQuery
-
 
 THUMBNAIL_OPT = dict(size=(240, 240), crop=True, bw=False, quality=80)
 

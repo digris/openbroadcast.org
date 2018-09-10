@@ -9,7 +9,7 @@ from exporter.api import ExportResource, ExportItemResource
 from importer.api import ImportResource, ImportFileResource
 # from profiles.api import ProfileResource, UserResource
 from profiles.api import UserResource
-from search.api.resources import GlobalSearchResource
+#from search.api.resources import GlobalSearchResource
 from tastypie.api import Api
 
 api = Api()
@@ -56,8 +56,8 @@ api.register(VoteResource())
 # atracker
 api.register(EventResource())
 
-# search
-api.register(GlobalSearchResource())
+# search - v1
+# api.register(GlobalSearchResource())
 
 # statistics (for entities)
 # api.register(StatisticResource())

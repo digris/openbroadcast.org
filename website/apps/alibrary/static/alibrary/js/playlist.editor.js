@@ -200,12 +200,13 @@ PlaylistEditor = function () {
 
         /*
          * playlist autocompletion
-         * to search libraery for more tracks & adding them to the current playlist
+         * to search library for more tracks & adding them to the current playlist
          */
 
         // autocomplete search box TODO: maybe move
         self.ac = new AutocompleteApp();
-        self.ac.api_url = '/api/v1/library/track/autocomplete/';
+        //self.ac.api_url = '/api/v1/library/track/autocomplete/';
+        self.ac.api_url = '/api/v2/search/alibrary.media/';
         self.ac.container = $("#playlist_editor_search .result");
         this.ac.template = 'alibrary/nj/playlist/editor_search.html';
 
@@ -220,10 +221,7 @@ PlaylistEditor = function () {
 
         // Select on 'ENTER' >TODO: implement
         $("#playlist_editor_search").on('keyup', 'input', function (e) {
-
             var q = $(this).val();
-
-
             if (e.keyCode == 13 || e.keyCode == 9) {
                 // e.preventDefault();
                 var uri = util.uri_param_insert(window.location.href, 'q', q, true);
@@ -231,18 +229,9 @@ PlaylistEditor = function () {
                 window.location = uri;
                 return false;
             } else {
-
-                console.debug(q);
-
-
-
-                // autocomplete
                 util.delay(function(){
                     self.ac.search(q);
-                }, 500 );
-
-                //self.ac.search(q);
-
+                }, 50 );
             }
 
         });

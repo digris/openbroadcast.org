@@ -228,6 +228,11 @@ class ReleaseDocument(DocType):
     name = fields.TextField(
         fielddata=True
     )
+
+    artist_display = fields.KeywordField(
+        attr='get_artist_display'
+    )
+
     # name = fields.TextField(
     #     analyzer=asciifolding_analyzer,
     #     fielddata=True
@@ -455,6 +460,10 @@ class PlaylistDocument(DocType):
         # if instance.type == 'basket':
         #     return
         text = [instance.name.strip()]
+        if instance.series and instance.series_number:
+            text += ['{} #{}'.format(instance.series, instance.series_number)]
+        elif instance.series:
+            text += [instance.series.name]
         return text
 
     def prepare_name(self, instance):
