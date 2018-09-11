@@ -196,7 +196,7 @@ def get_ordering_data(order_options, search_query, request):
     return ordering_data
 
 
-def get_filter_data(facets):
+def get_filter_data(facets, facets_definition=None):
 
     _ignore_keys = [
         'tags',
@@ -204,10 +204,17 @@ def get_filter_data(facets):
 
     _filters = []
 
-    for key in dir(facets):
+    if facets_definition:
+        keys = [f[0] for f in facets_definition if not f[0] in _ignore_keys]
+    else:
+        keys = [k for k in dir(facets) if k in _ignore_keys]
 
-        if key in _ignore_keys:
-            continue
+    print('get_filter_data keys:', keys)
+
+    for key in keys:
+
+        # if key in _ignore_keys:
+        #     continue
 
         options = getattr(facets, key)
         selected_options = [o[0] for o in options if o[2] == True]

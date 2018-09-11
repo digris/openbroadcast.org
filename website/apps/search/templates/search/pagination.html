@@ -4,6 +4,9 @@
     {% if pagination.num_pages > 1 %}
         {% if pagination.previous_page %}
             {% spurl base=request.get_full_path set_query="page={{ pagination.previous_page }}" as previous_page_url %}
+            {% if pagination.previous_page == 1 %}
+                {% spurl base=previous_page_url remove_query_param="page" as previous_page_url %}
+            {% endif %}
             <a rel="nofollow" href="{{ previous_page_url }}" class="prev">&lsaquo;&lsaquo; {% trans "previous" %}</a>
         {% else %}
             <span class="disabled prev">&lsaquo;&lsaquo; {% trans "previous" %}</span>
@@ -14,6 +17,9 @@
                     <span class="current page">{{ page_number }}</span>
                 {% else %}
                     {% spurl base=request.get_full_path set_query="page={{ page_number }}" as page_url %}
+                    {% if page_number == 1 %}
+                        {% spurl base=page_url remove_query_param="page" as page_url %}
+                    {% endif %}
                     <a rel="nofollow" href="{{ page_url }}" class="page">{{ page_number }}</a>
                 {% endifequal %}
             {% else %}

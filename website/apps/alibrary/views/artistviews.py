@@ -27,16 +27,16 @@ class ArtistSearch(BaseFacetedSearch):
     doc_types = [ArtistDocument]
     fields = ['tags', 'name', ]
 
-    facets = {
-        'tags': TermsFacet(field='tags', size=100),
-        'country': TermsFacet(field='country', size=500, order={'_key': 'asc'}),
-        'type': TermsFacet(field='type', order={'_key': 'asc'}),
-    }
+    facets = [
+        ('tags', TermsFacet(field='tags', size=100)),
+        ('country', TermsFacet(field='country', size=500, order={'_key': 'asc'})),
+        ('type', TermsFacet(field='type', size=20, order={'_key': 'asc'})),
+    ]
 
 
 class ArtistListView(BaseSearchListView):
     model = Artist
-    template_name = 'alibrary/artist_list_ng.html'
+    template_name = 'alibrary/artist_list.html'
     search_class = ArtistSearch
     order_by = [
         {

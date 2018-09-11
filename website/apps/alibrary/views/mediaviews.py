@@ -27,30 +27,30 @@ class MediaSearch(BaseFacetedSearch):
     doc_types = [MediaDocument]
     fields = ['tags', 'name', ]
 
-    facets = {
-        'tags': TermsFacet(field='tags', size=100),
-        'type': TermsFacet(field='type', size=100, order={'_key': 'asc'}),
-        'version': TermsFacet(field='version', size=100, order={'_key': 'asc'}),
-        'bitrate': RangeFacet(field='bitrate', ranges=[
+    facets = [
+        ('tags', TermsFacet(field='tags', size=100)),
+        ('type', TermsFacet(field='type', size=20, order={'_key': 'asc'})),
+        ('version', TermsFacet(field='version', size=100, order={'_key': 'asc'})),
+        ('bitrate', RangeFacet(field='bitrate', ranges=[
             ('Low', (0, 100)),
             ('Medium', (100, 200)),
             ('High', (200, None))
-        ]),
-        'samplerate': RangeFacet(field='samplerate', ranges=[
+        ])),
+        ('samplerate', RangeFacet(field='samplerate', ranges=[
             ('Low', (0, 44100)),
             ('Medium', (44100, 48000)),
             ('High', (48000, None))
-        ]),
-        'encoding': TermsFacet(field='encoding', size=100),
-        'license': TermsFacet(field='license'),
-        'lyrics_language': TermsFacet(field='lyrics_language'),
-        # 'duplicates': TermsFacet(field='name', size=100, min_doc_count=2),
-    }
+        ])),
+        ('encoding', TermsFacet(field='encoding', size=100)),
+        ('license', TermsFacet(field='license')),
+        ('lyrics_language', TermsFacet(field='lyrics_language')),
+        #('key', __paste__),
+    ]
 
 
 class MediaListView(BaseSearchListView):
     model = Media
-    template_name = 'alibrary/media_list_ng.html'
+    template_name = 'alibrary/media_list.html'
     search_class = MediaSearch
     order_by = [
         {

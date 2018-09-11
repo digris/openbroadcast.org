@@ -452,6 +452,8 @@ class PlaylistDocument(DocType):
     description = fields.TextField()
 
     num_emissions = fields.IntegerField()
+    state_flags = fields.KeywordField()
+
 
     ###################################################################
     # field preparation
@@ -504,10 +506,23 @@ class PlaylistDocument(DocType):
         return [d.get_day_display() for d in instance.dayparts.all()]
 
     def prepare_daypart_slots(self, instance):
-        return ['{} - {}'.format(d.time_start, d.time_end) for d in instance.dayparts.all()]
+        return ['{:%H} - {:%H}h'.format(d.time_start, d.time_end) for d in instance.dayparts.all()]
 
     def prepare_num_emissions(self, instance):
         return instance.get_emissions().count()
+
+    def prepare_state_flags(self, instance):
+        flags = []
+        if instance.is_archived:
+            flags += ['Archived - Yes']
+        elif instance.type == 'broadcast':
+            flags += ['Archived - No']
+        if instance.rotation:
+            flags += ['In Rotation - Yes']
+        elif instance.type == 'broadcast':
+            flags += ['In Rotation - No']
+
+        return flags
 
 
     # TODO: add 'in rotation' and 'is archived'

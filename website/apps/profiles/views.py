@@ -29,17 +29,17 @@ class ProfileSearch(BaseFacetedSearch):
     doc_types = [ProfileDocument]
     fields = ['tags', 'name', ]
 
-    facets = {
-        'tags': TermsFacet(field='tags', size=100),
-        'country': TermsFacet(field='country', size=500, order={'_key': 'asc'}),
-        'expertise': TermsFacet(field='expertise'),
-        'access_level': TermsFacet(field='groups'),
-    }
+    facets = [
+        ('tags', TermsFacet(field='tags', size=100)),
+        ('country', TermsFacet(field='country', size=500, order={'_key': 'asc'})),
+        ('expertise', TermsFacet(field='expertise')),
+        ('access_level', TermsFacet(field='groups')),
+    ]
 
 
 class ProfileListView(BaseSearchListView):
     model = Profile
-    template_name = 'profiles/profile_list_ng.html'
+    template_name = 'profiles/profile_list.html'
     search_class = ProfileSearch
     order_by = [
         {

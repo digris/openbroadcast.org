@@ -29,12 +29,9 @@ class ReleaseSearch(BaseFacetedSearch):
     doc_types = [ReleaseDocument]
     fields = ['tags', 'name', ]
 
-    facets = {
-        'tags': TermsFacet(field='tags', size=100),
-        'type': TermsFacet(field='type', size=20, order={'_key': 'asc'}),
-        'country': TermsFacet(field='country', size=500, order={'_key': 'asc'}),
-        'label_type': TermsFacet(field='label_type', size=100),
-        'releasedate': RangeFacet(field='releasedate_year', ranges=[
+    facets = [
+        ('tags', TermsFacet(field='tags', size=100)),
+        ('releasedate', RangeFacet(field='releasedate_year', ranges=[
             ('Before 1940\'s', (0, 1940)),
             ('40\'s', (1940, 1950)),
             ('50\'s', (1950, 1960)),
@@ -45,13 +42,18 @@ class ReleaseSearch(BaseFacetedSearch):
             ('2000\'s', (2000, 2010)),
             ('2010\'s', (2010, 2020)),
             ('This Year', (2018, 2019)),
-        ]),
-    }
+        ])),
+        ('type', TermsFacet(field='type', size=20, order={'_key': 'asc'})),
+        ('country', TermsFacet(field='country', size=500, order={'_key': 'asc'})),
+        ('label_type', TermsFacet(field='label_type', size=100)),
+        #('key', __paste__),
+    ]
+
 
 
 class ReleaseListView(BaseSearchListView):
     model = Release
-    template_name = 'alibrary/release_list_ng.html'
+    template_name = 'alibrary/release_list.html'
     search_class = ReleaseSearch
     order_by = [
         {

@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
-from elasticsearch_dsl import TermsFacet
+from elasticsearch_dsl import TermsFacet, RangeFacet
 
 from base.utils.form_errors import merge_form_errors
 from search.views import BaseFacetedSearch, BaseSearchListView
@@ -25,17 +25,27 @@ class LabelSearch(BaseFacetedSearch):
     doc_types = [LabelDocument]
     fields = ['tags', 'name', ]
 
-    facets = {
-        'tags': TermsFacet(field='tags', size=100),
-        'country': TermsFacet(field='country', size=500, order={'_key': 'asc'}),
-        'type': TermsFacet(field='type', order={'_key': 'asc'}),
-        # 'duplicates': TermsFacet(field='exact_name', size=100, min_doc_count=2),
-    }
-
+    facets = [
+        ('tags', TermsFacet(field='tags', size=100)),
+        ('country', TermsFacet(field='country', size=500, order={'_key': 'asc'})),
+        ('type', TermsFacet(field='type', size=20, order={'_key': 'asc'})),
+        ('established', RangeFacet(field='year_start', ranges=[
+            ('Before 1940\'s', (0, 1940)),
+            ('40\'s', (1940, 1950)),
+            ('50\'s', (1950, 1960)),
+            ('60\'s', (1960, 1970)),
+            ('70\'s', (1970, 1980)),
+            ('80\'s', (1980, 1990)),
+            ('90\'s', (1990, 2000)),
+            ('2000\'s', (2000, 2010)),
+            ('2010\'s', (2010, 2020)),
+            ('This Year', (2018, 2019)),
+        ])),
+    ]
 
 class LabelListView(BaseSearchListView):
     model = Label
-    template_name = 'alibrary/label_list_ng.html'
+    template_name = 'alibrary/label_list.html'
     search_class = LabelSearch
     order_by = [
         {

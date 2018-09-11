@@ -24,32 +24,32 @@ from ..documents import PlaylistDocument
 log = logging.getLogger(__name__)
 
 
+
 class PlaylistSearch(BaseFacetedSearch):
     doc_types = [PlaylistDocument]
     fields = ['tags', 'name', ]
 
-    facets = {
-        'tags': TermsFacet(field='tags', size=100),
-        'type': TermsFacet(field='type', size=100, order={'_key': 'asc'}),
-        'status': TermsFacet(field='status', size=100, order={'_key': 'asc'}),
-        'weather': TermsFacet(field='weather', size=100, order={'_key': 'asc'}),
-        'seasons': TermsFacet(field='seasons', size=100, order={'_key': 'asc'}),
-        'daypart_days': TermsFacet(field='daypart_days', size=100),
-        'daypart_slots': TermsFacet(field='daypart_slots', size=100, order={'_key': 'asc'}),
-        'target_duration': TermsFacet(field='target_duration', size=100),
-        #'num_emissions': TermsFacet(field='num_emissions', size=100),
-        'num_emissions': RangeFacet(field='num_emissions', ranges=[
-            ('None', (0, 1)),
+    facets = [
+        ('tags', TermsFacet(field='tags', size=100)),
+        ('type', TermsFacet(field='type', size=100, order={'_key': 'asc'})),
+        ('status', TermsFacet(field='status', size=100, order={'_key': 'asc'})),
+        ('weather', TermsFacet(field='weather', size=100, order={'_key': 'asc'})),
+        ('seasons', TermsFacet(field='seasons', size=100, order={'_key': 'asc'})),
+        ('daypart_days', TermsFacet(field='daypart_days', size=100, order={'_key': 'asc'})),
+        ('daypart_slots', TermsFacet(field='daypart_slots', size=100, order={'_key': 'asc'})),
+        ('target_duration', TermsFacet(field='target_duration', size=100)),
+        ('num_emissions', RangeFacet(field='num_emissions', ranges=[
+            ('0', (0, 1)),
             ('1 - 10', (1, 10)),
             ('11 - 50', (11, 50)),
             ('More than 50', (50, None)),
-        ]),
-    }
-
+        ])),
+        ('flags', TermsFacet(field='state_flags', order={'_key': 'asc'})),
+    ]
 
 class PlaylistListView(BaseSearchListView):
     model = Playlist
-    template_name = 'alibrary/playlist_list_ng.html'
+    template_name = 'alibrary/playlist_list.html'
     search_class = PlaylistSearch
     scope = 'public'
     order_by = [

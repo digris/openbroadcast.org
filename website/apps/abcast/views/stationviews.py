@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals, absolute_import
+
 from abcast.filters import StationFilter
 from abcast.models import Station
 from django.conf import settings
@@ -7,14 +10,10 @@ from tagging_extra.utils import calculate_cloud
 from pure_pagination.mixins import PaginationMixin
 from tagging.models import Tag
 
-PAGINATE_BY = getattr(settings, 'PAGINATE_BY', (12,24,36,120))
-PAGINATE_BY_DEFAULT = getattr(settings, 'AGINATE_BY_DEFAULT', 12)
-
-
 class StationListView(PaginationMixin, ListView):
 
     object = Station
-    paginate_by = PAGINATE_BY_DEFAULT
+    paginate_by = 24
 
     model = Station
     extra_context = {}
@@ -22,18 +21,6 @@ class StationListView(PaginationMixin, ListView):
     def __init__(self, **kwargs):
         super(StationListView, self).__init__(**kwargs)
         self.relation_filter = []
-
-    def get_paginate_by(self, queryset):
-
-        ipp = self.request.GET.get('ipp', None)
-        if ipp:
-            try:
-                if int(ipp) in PAGINATE_BY:
-                    return int(ipp)
-            except Exception as e:
-                pass
-
-        return PAGINATE_BY_DEFAULT
 
     def get_context_data(self, **kwargs):
         context = super(StationListView, self).get_context_data(**kwargs)
@@ -57,8 +44,7 @@ class StationListView(PaginationMixin, ListView):
         q = self.request.GET.get('q', None)
 
         if q:
-            qs = Station.objects.filter(Q(name__istartswith=q))\
-            .distinct()
+            qs = Station.objects.filter(Q(name__istartswith=q)).distinct()
         else:
             qs = Station.objects.all()
 

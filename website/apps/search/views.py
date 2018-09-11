@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
 
+from collections import OrderedDict
 from django.views.generic import ListView
 from django.db.models import Case, When
+from django.http import HttpResponseBadRequest
 
 from elasticsearch_dsl import FacetedSearch
 from elasticsearch_dsl import Q as ESQ
@@ -14,6 +16,9 @@ from . import utils
 __all__ = ['BaseFacetedSearch', 'BaseSearchListView']
 
 
+
+class SearchFacetException(Exception):
+    pass
 
 class SearchQueryException(Exception):
     pass
@@ -27,6 +32,14 @@ class BaseFacetedSearch(FacetedSearch):
         # https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html
         # 'tags': TermsFacet(field='tags', size=100),
     }
+
+    def __init__(self, **kwargs):
+
+        if not isinstance(self.facets, (list, OrderedDict)):
+            raise SearchFacetException('facets attribute must be a list or ordered dict')
+
+        self.facets = OrderedDict(self.facets)
+        super(BaseFacetedSearch, self).__init__(**kwargs)
 
     def query(self, search, query):
 
@@ -87,6 +100,12 @@ class BaseSearchListView(ListView):
     order_by = []
     _search_result = None
 
+    def get(self, request, *args, **kwargs):
+        try:
+            return super(BaseSearchListView, self).get(request, *args, **kwargs)
+        except (SearchFacetException, SearchQueryException) as e:
+            return HttpResponseBadRequest('{}'.format(e))
+
     def get_search_query(self, **kwargs):
         return utils.parse_search_query(request=self.request)
 
@@ -110,6 +129,7 @@ class BaseSearchListView(ListView):
             result = s.execute()
         except Exception as e:
             raise SearchQueryException('Unable to execute search query: {}'.format(e))
+
         formatted_result = format_search_results(result)
 
         # get object pks and create corresponding queryset
@@ -156,7 +176,8 @@ class BaseSearchListView(ListView):
             tagcloud = []
 
         filters = utils.get_filter_data(
-            facets=search_result.facets
+            facets=search_result.facets,
+            facets_definition=self.search_class.facets
         )
         ordering = utils.get_ordering_data(
             order_options=self.order_by,
@@ -165,7 +186,7 @@ class BaseSearchListView(ListView):
         )
 
         context.update({
-            'facets': search_result.facets,
+            # 'facets': search_result.facets,
             # 'num_results': search_result.hits.total,
             'pagination': pagination,
             'tagcloud': tagcloud,
