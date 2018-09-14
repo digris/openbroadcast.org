@@ -105,11 +105,12 @@ $search-inner-border-color: #eaeaea
       cursor: pointer
 
   .search-scope-container
-    padding: 8px
+    padding: 8px 8px 6px
     background: white
     border-bottom: 1px solid $search-inner-border-color
     .scopes
       display: flex
+      flex-flow: wrap
 
       .scope-label
         padding: 2px 0
@@ -118,6 +119,7 @@ $search-inner-border-color: #eaeaea
         margin: 0 2px 0 0
         padding: 2px 10px
         background: #e8e8e8
+        margin-bottom: 2px
         a
           text-decoration: none
         &.selected

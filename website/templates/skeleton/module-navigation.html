@@ -11,11 +11,13 @@
         {% endif %}
     {% endcache %}
     {% endcomment %}
-</ul>
-<ul class="unstyled pull-right">
-    <li>
-        <a href="#" style="border-right: none;" class="" id="tagcloud_inline_toggle">Tagcloud</a>
-    </li>
+    {% if tagcloud %}
+        <li class="tagcloud-toggle">
+            <a href="#" style="border-right: none;" class="" id="tagcloud_inline_toggle">Tagcloud</a>
+        </li>
+    {% endif %}
+
+
 </ul>
 {% comment %}
 {% cache 600 "modnav_tagcloud" request.get_full_path %}
