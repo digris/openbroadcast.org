@@ -64,6 +64,8 @@ CELERY_ROUTES = {
 
     'exporter.models.process_task': {'queue': 'export'},
 
+    'search.signals.handle_save_task': {'queue': 'index'},
+
 }
 
 CELERYBEAT_SCHEDULE = {

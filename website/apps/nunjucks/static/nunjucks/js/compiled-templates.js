@@ -41,15 +41,14 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLook
 output += " keys</span>\n        </li>\n\n        ";
 frame = frame.push();
 var t_3 = runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"keys");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_1;
+if(t_3) {var t_1;
 if(runtime.isArray(t_3)) {
 var t_2 = t_3.length;
 for(t_1=0; t_1 < t_3.length; t_1++) {
-var t_4 = t_3[t_1][0];
-frame.set("[object Object]", t_3[t_1][0]);
-var t_5 = t_3[t_1][1];
-frame.set("[object Object]", t_3[t_1][1]);
+var t_4 = t_3[t_1][0]
+frame.set("combo", t_3[t_1][0]);
+var t_5 = t_3[t_1][1]
+frame.set("help", t_3[t_1][1]);
 frame.set("loop.index", t_1 + 1);
 frame.set("loop.index0", t_1);
 frame.set("loop.revindex", t_2 - t_1);
@@ -60,8 +59,7 @@ frame.set("loop.length", t_2);
 output += "\n\n            <li class=\"shortcut\">\n                <span class=\"combo\">\n\n                    ";
 frame = frame.push();
 var t_8 = t_4;
-if(t_8) {t_8 = runtime.fromIterator(t_8);
-var t_7 = t_8.length;
+if(t_8) {var t_7 = t_8.length;
 for(var t_6=0; t_6 < t_8.length; t_6++) {
 var t_9 = t_8[t_6];
 frame.set("key", t_9);
@@ -107,8 +105,7 @@ frame.set("loop.length", t_2);
 output += "\n\n            <li class=\"shortcut\">\n                <span class=\"combo\">\n\n                    ";
 frame = frame.push();
 var t_14 = t_10;
-if(t_14) {t_14 = runtime.fromIterator(t_14);
-var t_13 = t_14.length;
+if(t_14) {var t_13 = t_14.length;
 for(var t_12=0; t_12 < t_14.length; t_12++) {
 var t_15 = t_14[t_12];
 frame.set("key", t_15);
@@ -207,8 +204,7 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLook
 output += "\n            </div>\n\n            <div class=\"tags\">\n                ";
 frame = frame.push();
 var t_3 = runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"tags");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("tag", t_4);
@@ -262,8 +258,7 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLook
 output += "\"\n\t\t</p>\n        <a class=\"exit btn\">close <i class=\"icon icon-remove-sign\"></i></a>\n\t</div>\n\t<div class=\"listing\">\n\t\t";
 frame = frame.push();
 var t_3 = runtime.contextOrFrameLookup(context, frame, "objects");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("item", t_4);
@@ -397,8 +392,7 @@ output += "\n\n        <p class=\"notice\">\n        You don't have any playlist
 output += "\n\n        ";
 frame = frame.push();
 var t_3 = runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "data")),"objects");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("item", t_4);
@@ -413,15 +407,15 @@ output += "\n            ";
 var tasks = [];
 tasks.push(
 function(callback) {
-env.getTemplate("alibrary/nj/playlist/select_popup_item.html", false, "alibrary/nj/playlist/select_popup.html", false, function(t_6,t_5) {
-if(t_6) { cb(t_6); return; }
+env.getTemplate("alibrary/nj/playlist/select_popup_item.html", false, "alibrary/nj/playlist/select_popup.html", null, function(t_7,t_5) {
+if(t_7) { cb(t_7); return; }
 callback(null,t_5);});
 });
 tasks.push(
 function(template, callback){
-template.render(context.getVariables(), frame, function(t_8,t_7) {
+template.render(context.getVariables(), frame, function(t_8,t_6) {
 if(t_8) { cb(t_8); return; }
-callback(null,t_7);});
+callback(null,t_6);});
 });
 tasks.push(
 function(result, callback){
@@ -466,11 +460,10 @@ var colno = null;
 var output = "";
 try {
 var parentTemplate = null;
-output += "\n\n    <div class=\"listing\">\n        ";
+output += "\n<div class=\"listing\">\n    ";
 frame = frame.push();
-var t_3 = runtime.contextOrFrameLookup(context, frame, "objects");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+var t_3 = runtime.contextOrFrameLookup(context, frame, "results");
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("item", t_4);
@@ -481,34 +474,34 @@ frame.set("loop.revindex0", t_2 - t_1 - 1);
 frame.set("loop.first", t_1 === 0);
 frame.set("loop.last", t_1 === t_2 - 1);
 frame.set("loop.length", t_2);
-output += "\n\n            <div class=\"item hoverable clearfix\" data-resource_uri=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"resource_uri"), env.opts.autoescape);
-output += "\">\n\n                <div class=\"\">\n\n                    <div class=\"image\">\n                        <img src=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"main_image"), env.opts.autoescape);
-output += "\"/>\n                    </div>\n\n                    <div class=\"information\">\n\n                        <span class=\"title\">";
-output += runtime.suppressValue(env.getFilter("highlight").call(context, runtime.memberLookup((t_4),"name"),runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "meta")),"query")), env.opts.autoescape);
+output += "\n        <div class=\"item hoverable clearfix\" data-resource_uri=\"";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"api_url"), env.opts.autoescape);
+output += "\">\n            <div class=\"\">\n                <div class=\"image\">\n                    <img src=\"";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"image"), env.opts.autoescape);
+output += "\"/>\n                </div>\n                <div class=\"information\">\n                    <span class=\"title\">";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"name"), env.opts.autoescape);
 output += "<small class=\"pull-right\">";
-output += runtime.suppressValue(env.getFilter("ms2time").call(context, runtime.memberLookup((t_4),"duration")), env.opts.autoescape);
-output += "</small></span>\n\n                        <div class=\"related\">\n                            <ul class=\"unstyled horizontal\">\n                                ";
-if(runtime.memberLookup((t_4),"artist")) {
-output += "\n                                    <li><small>by:</small> ";
-output += runtime.suppressValue(env.getFilter("highlight").call(context, runtime.memberLookup((t_4),"artist"),runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "meta")),"query")), env.opts.autoescape);
-output += "</li>\n                                ";
+output += runtime.suppressValue(env.getFilter("s2time").call(context, runtime.memberLookup((t_4),"duration")), env.opts.autoescape);
+output += "</small></span>\n                    <div class=\"related\">\n                        <ul class=\"unstyled horizontal\">\n                            ";
+if(runtime.memberLookup((t_4),"artist_display")) {
+output += "\n                                <li><small>by:</small> ";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"artist_display"), env.opts.autoescape);
+output += "</li>\n                            ";
 ;
 }
-output += "\n                                ";
-if(runtime.memberLookup((t_4),"release")) {
-output += "\n                                    <li><small>on:</small> ";
-output += runtime.suppressValue(env.getFilter("highlight").call(context, runtime.memberLookup((t_4),"release"),runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "meta")),"query")), env.opts.autoescape);
-output += "</li>\n                                ";
+output += "\n\n                            ";
+if(runtime.memberLookup((t_4),"release_display")) {
+output += "\n                                <li><small>&nbsp;on:</small> ";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"release_display"), env.opts.autoescape);
+output += "</li>\n                            ";
 ;
 }
-output += "\n                            </ul>\n\n                        </div>\n\n                    </div>\n\n                </div>\n\n            </div>\n\n        ";
+output += "\n                        </ul>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ";
 ;
 }
 }
 frame = frame.pop();
-output += "\n    </div>\n\n";
+output += "\n</div>\n";
 if(parentTemplate) {
 parentTemplate.rootRenderFunc(env, context, frame, runtime, cb);
 } else {
@@ -690,8 +683,7 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLook
 output += "\"\n\t\t</p>\n        <a class=\"exit btn\">close <i class=\"icon icon-remove-sign\"></i></a>\n\t</div>\n    <div class=\"listing\">\n        ";
 frame = frame.push();
 var t_3 = runtime.contextOrFrameLookup(context, frame, "objects");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("item", t_4);
@@ -912,8 +904,7 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLook
 output += "000\n\t\t\t</div>\n\t\t</div>\n\n\t\t<div class=\"list\">\n\t\t\t\n\n\t\t\t";
 frame = frame.push();
 var t_3 = runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"items");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("item", t_4);
@@ -1053,8 +1044,7 @@ try {
 var parentTemplate = null;
 frame = frame.push();
 var t_3 = runtime.contextOrFrameLookup(context, frame, "objects");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("object", t_4);
@@ -1069,10 +1059,10 @@ output += "\n    <div class=\"item result hoverable\" data-id=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"id"), env.opts.autoescape);
 output += "\" data-uuid=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"uuid"), env.opts.autoescape);
-output += "\">\n\n\n        <div class=\"row-fluid\">\n\n            <div class=\"span2\">\n                ";
-if(runtime.memberLookup((t_4),"main_image")) {
+output += "\">\n        <div class=\"row-fluid\">\n            <div class=\"span2\">\n                ";
+if(runtime.memberLookup((t_4),"image")) {
 output += "\n                    <img src=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"main_image"), env.opts.autoescape);
+output += runtime.suppressValue(runtime.memberLookup((t_4),"image"), env.opts.autoescape);
 output += "\">\n                ";
 ;
 }
@@ -1080,34 +1070,14 @@ else {
 output += "\n                    <img src=\"/static/img/base/defaults/listview.release.xl.png\">\n                ";
 ;
 }
-output += "\n\n            </div>\n\n            <div class=\"span10\">\n\n                <strong>";
+output += "\n\n            </div>\n            <div class=\"span10\">\n                <strong>";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"name"), env.opts.autoescape);
-output += "</strong>\n\n                <ul class=\"unstyled\">\n\n                    <li>\n                        <span class=\"value\">\n                            ";
-frame = frame.push();
-var t_7 = runtime.memberLookup((t_4),"artist");
-if(t_7) {t_7 = runtime.fromIterator(t_7);
-var t_6 = t_7.length;
-for(var t_5=0; t_5 < t_7.length; t_5++) {
-var t_8 = t_7[t_5];
-frame.set("a", t_8);
-frame.set("loop.index", t_5 + 1);
-frame.set("loop.index0", t_5);
-frame.set("loop.revindex", t_6 - t_5);
-frame.set("loop.revindex0", t_6 - t_5 - 1);
-frame.set("loop.first", t_5 === 0);
-frame.set("loop.last", t_5 === t_6 - 1);
-frame.set("loop.length", t_6);
-output += "\n                                <strong>";
-output += runtime.suppressValue(t_8, env.opts.autoescape);
-output += "</strong>\n                            ";
-;
-}
-}
-frame = frame.pop();
-output += "\n                        </span>\n                    </li>\n\n                    <li>\n                        <span class=\"value\">\n                            <strong>";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"media_count"), env.opts.autoescape);
-output += "</strong>\n                        </span>\n                        <span class=\"title\">Tracks</span>\n                    </li>\n\n                    <li>\n                        <span class=\"value\">\n                            <strong>";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"releasedate"), env.opts.autoescape);
+output += "</strong>\n                <ul class=\"unstyled\">\n                    <li>\n                        <span class=\"value\">\n                            ";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"artist_display"), env.opts.autoescape);
+output += "\n                        </span>\n                    </li>\n                    <li>\n                        <span class=\"value\">\n                            <strong>";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"num_media"), env.opts.autoescape);
+output += "</strong>\n                        </span>\n                        <span class=\"title\">Tracks</span>\n                    </li>\n                    <li>\n                        <span class=\"value\">\n                            <strong>";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"releasedate_year"), env.opts.autoescape);
 output += "</strong>\n                        </span>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </div>\n";
 ;
 }
@@ -1148,8 +1118,7 @@ output += "\n\n        <p>\n            Sorry - but we could not find any object
 output += "\n\n    ";
 frame = frame.push();
 var t_3 = runtime.contextOrFrameLookup(context, frame, "objects");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("object", t_4);
@@ -1227,8 +1196,7 @@ output += runtime.suppressValue(runtime.memberLookup((t_4),"release_country"), e
 output += "</strong>\n                                    </span>\n                                </li>\n                                <li>\n                                    <span class=\"title\">\n                                        Artist:\n                                    </span>\n                                    <span class=\"value\">\n                                        ";
 frame = frame.push();
 var t_7 = runtime.memberLookup((t_4),"artist");
-if(t_7) {t_7 = runtime.fromIterator(t_7);
-var t_6 = t_7.length;
+if(t_7) {var t_6 = t_7.length;
 for(var t_5=0; t_5 < t_7.length; t_5++) {
 var t_8 = t_7[t_5];
 frame.set("artist", t_8);
@@ -1471,8 +1439,7 @@ output += "\n\n        <p>\n            Sorry - but we could not find any result
 output += "\n\n    ";
 frame = frame.push();
 var t_3 = runtime.contextOrFrameLookup(context, frame, "results");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("result", t_4);
@@ -1523,8 +1490,7 @@ output += runtime.suppressValue(runtime.memberLookup((t_4),"catno"), env.opts.au
 output += "</strong>\n                                    </span>\n                                </li>\n\n                                <li>\n                                    <span class=\"title\">\n                                        Format:\n                                    </span>\n                                    <span class=\"value\">\n                                        <strong>\n                                            ";
 frame = frame.push();
 var t_7 = runtime.memberLookup((t_4),"format");
-if(t_7) {t_7 = runtime.fromIterator(t_7);
-var t_6 = t_7.length;
+if(t_7) {var t_6 = t_7.length;
 for(var t_5=0; t_5 < t_7.length; t_5++) {
 var t_8 = t_7[t_5];
 frame.set("k", t_8);
@@ -1585,8 +1551,7 @@ if(runtime.memberLookup((t_4),"artist-credit")) {
 output += "\n                                ";
 frame = frame.push();
 var t_11 = runtime.memberLookup((t_4),"artist-credit");
-if(t_11) {t_11 = runtime.fromIterator(t_11);
-var t_10 = t_11.length;
+if(t_11) {var t_10 = t_11.length;
 for(var t_9=0; t_9 < t_11.length; t_9++) {
 var t_12 = t_11[t_9];
 frame.set("a", t_12);
@@ -1621,8 +1586,7 @@ if(runtime.memberLookup((t_4),"label-info")) {
 output += "\n                                ";
 frame = frame.push();
 var t_15 = runtime.memberLookup((t_4),"label-info");
-if(t_15) {t_15 = runtime.fromIterator(t_15);
-var t_14 = t_15.length;
+if(t_15) {var t_14 = t_15.length;
 for(var t_13=0; t_13 < t_15.length; t_13++) {
 var t_16 = t_15[t_13];
 frame.set("l", t_16);
@@ -1733,8 +1697,7 @@ if(runtime.memberLookup((t_4),"releases")) {
 output += "\n                            <li>\n                            <span class=\"title\">\n                                Release:\n                            </span>\n                            <span class=\"value\">\n                                ";
 frame = frame.push();
 var t_19 = runtime.memberLookup((t_4),"releases");
-if(t_19) {t_19 = runtime.fromIterator(t_19);
-var t_18 = t_19.length;
+if(t_19) {var t_18 = t_19.length;
 for(var t_17=0; t_17 < t_19.length; t_17++) {
 var t_20 = t_19[t_17];
 frame.set("r", t_20);
@@ -1856,8 +1819,7 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLook
 output += "\"\n\t\t</p>\n        <a class=\"exit btn\">close <i class=\"icon icon-remove-sign\"></i></a>\n\t</div>\n    <div class=\"listing\">\n        ";
 frame = frame.push();
 var t_3 = runtime.contextOrFrameLookup(context, frame, "objects");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("item", t_4);
@@ -1911,8 +1873,7 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLook
 output += "\"\n\t\t</p>\n        <a class=\"exit btn\">close <i class=\"icon icon-remove-sign\"></i></a>\n\t</div>\n\t<div class=\"listing\">\n\t\t";
 frame = frame.push();
 var t_3 = runtime.contextOrFrameLookup(context, frame, "objects");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("item", t_4);
@@ -1970,8 +1931,7 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLook
 output += "\"\n\t\t</p>\n        <a class=\"exit btn\">close <i class=\"icon icon-remove-sign\"></i></a>\n\t</div>\n    <div class=\"listing\">\n        ";
 frame = frame.push();
 var t_3 = runtime.contextOrFrameLookup(context, frame, "objects");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("item", t_4);
@@ -2031,8 +1991,7 @@ if(runtime.memberLookup((t_4),"namevariations")) {
 output += "\n                                <ul class=\"unstyled horizontal\">\n                                    ";
 frame = frame.push();
 var t_7 = runtime.memberLookup((t_4),"namevariations");
-if(t_7) {t_7 = runtime.fromIterator(t_7);
-var t_6 = t_7.length;
+if(t_7) {var t_6 = t_7.length;
 for(var t_5=0; t_5 < t_7.length; t_5++) {
 var t_8 = t_7[t_5];
 frame.set("name", t_8);
@@ -2094,8 +2053,7 @@ output += runtime.suppressValue(runtime.memberLookup((runtime.contextOrFrameLook
 output += "\"\n\t\t</p>\n        <a class=\"exit btn\">close <i class=\"icon icon-remove-sign\"></i></a>\n\t</div>\n\t<div class=\"listing\">\n\t\t";
 frame = frame.push();
 var t_3 = runtime.contextOrFrameLookup(context, frame, "objects");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("item", t_4);
@@ -2233,8 +2191,7 @@ output += "</small>\n                ";
 output += "\n\n            </span>\n\n\n        </div>\n    </div>\n\n    <div class=\"span4 image\">\n        <div class=\"padded-x padded-y\">\n\n            ";
 frame = frame.push();
 var t_3 = runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"images");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("image", t_4);
@@ -2528,8 +2485,7 @@ if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "item")),"
 output += "\n                        <li>";
 frame = frame.push();
 var t_3 = runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "item")),"artist");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("artist", t_4);
@@ -2868,8 +2824,7 @@ output += "\n        <div class=\"hint\">\n            <p>\n                <em>
 output += "\n\n    <div class=\"musicbrainz-tag-holder\">\n\n\n\n        ";
 frame = frame.push();
 var t_3 = runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "object")),"results_musicbrainz");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("item", t_4);
@@ -3064,8 +3019,7 @@ var parentTemplate = null;
 output += "<div class=\"result\">\n\n\t<div class=\"listing\">\n\t\t";
 frame = frame.push();
 var t_3 = runtime.contextOrFrameLookup(context, frame, "objects");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("item", t_4);
@@ -3102,8 +3056,7 @@ output += runtime.suppressValue(runtime.memberLookup((t_4),"releasedate"), env.o
 output += "</small></li>\n                            <li>";
 frame = frame.push();
 var t_7 = runtime.memberLookup((t_4),"artist");
-if(t_7) {t_7 = runtime.fromIterator(t_7);
-var t_6 = t_7.length;
+if(t_7) {var t_6 = t_7.length;
 for(var t_5=0; t_5 < t_7.length; t_5++) {
 var t_8 = t_7[t_5];
 frame.set("artist", t_8);
@@ -3239,8 +3192,7 @@ output += "</small>\n                                ";
 output += "\n                            </li>\n                            <li>";
 frame = frame.push();
 var t_11 = runtime.memberLookup((t_4),"artist");
-if(t_11) {t_11 = runtime.fromIterator(t_11);
-var t_10 = t_11.length;
+if(t_11) {var t_10 = t_11.length;
 for(var t_9=0; t_9 < t_11.length; t_9++) {
 var t_12 = t_11[t_9];
 frame.set("artist", t_12);
@@ -3745,9 +3697,8 @@ try {
 var parentTemplate = null;
 output += "<div class=\"result\">\n\n\t<div class=\"listing\">\n\t\t";
 frame = frame.push();
-var t_3 = runtime.contextOrFrameLookup(context, frame, "objects");
-if(t_3) {t_3 = runtime.fromIterator(t_3);
-var t_2 = t_3.length;
+var t_3 = runtime.contextOrFrameLookup(context, frame, "results");
+if(t_3) {var t_2 = t_3.length;
 for(var t_1=0; t_1 < t_3.length; t_1++) {
 var t_4 = t_3[t_1];
 frame.set("item", t_4);
@@ -3765,11 +3716,11 @@ output += runtime.suppressValue(runtime.memberLookup((t_4),"name"), env.opts.aut
 output += "\" data-ct=\"";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"ct"), env.opts.autoescape);
 output += "\" data-resource_uri=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"resource_uri"), env.opts.autoescape);
-output += "\">\n\t\t\t\n\t\t\t<div class=\"row-fluid\">\n\t\t\t\t\n\t\t\t\t<div class=\"span3\">\n\t\t\t\t\t\n\t\t\t\t\t";
-if(runtime.memberLookup((t_4),"main_image")) {
+output += runtime.suppressValue(runtime.memberLookup((t_4),"api_url"), env.opts.autoescape);
+output += "\">\n\n\t\t\t<div class=\"row-fluid\">\n\n\t\t\t\t<div class=\"span3\">\n\n\t\t\t\t\t";
+if(runtime.memberLookup((t_4),"image")) {
 output += "\n\t\t\t\t\t<img src=\"";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"main_image"), env.opts.autoescape);
+output += runtime.suppressValue(runtime.memberLookup((t_4),"image"), env.opts.autoescape);
 output += "\" />\n\t\t\t\t\t";
 ;
 }
@@ -3779,17 +3730,53 @@ output += runtime.suppressValue(runtime.memberLookup((t_4),"ct"), env.opts.autoe
 output += ".xl.png\" width=\"90\" height=\"90\" />\n\t\t\t\t\t";
 ;
 }
-output += "\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t\t<div class=\"span9\">\n\n\t\t\t\t\t<ul class=\"unstyled\">\n\t\t\t\t\t\t\n\t\t\t\t\t\t<li><strong>";
-output += runtime.suppressValue(env.getFilter("highlight").call(context, env.getFilter("truncate_chars_inner").call(context, runtime.memberLookup((t_4),"name"),30),runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "meta")),"query")), env.opts.autoescape);
-output += "</strong>  <small class=\"pull-right\">";
+output += "\n\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"span9\">\n\n\t\t\t\t\t<ul class=\"unstyled\">\n\n                        ";
+if(runtime.memberLookup((t_4),"series")) {
+output += "\n\t\t\t\t\t\t<li>\n                            <strong>\n                                ";
+output += runtime.suppressValue(env.getFilter("truncate_chars_inner").call(context, runtime.memberLookup((t_4),"series"),30), env.opts.autoescape);
+output += "\n                            </strong>\n                        </li>\n                        ";
+;
+}
+output += "\n\n\t\t\t\t\t\t<li>\n                            <strong>\n                                ";
+output += runtime.suppressValue(env.getFilter("truncate_chars_inner").call(context, runtime.memberLookup((t_4),"name"),30), env.opts.autoescape);
+output += "\n                            </strong>\n                            <small class=\"pull-right\">";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"releasedate"), env.opts.autoescape);
-output += "</small></li>\n\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t<span>";
+output += "</small>\n                        </li>\n\t\t\t\t\t\t<li>\n\t\t\t\t\t\t\t<span>";
 output += runtime.suppressValue(runtime.memberLookup((t_4),"user"), env.opts.autoescape);
 output += "</span>\n\t\t\t\t\t\t\t|\n\t\t\t\t\t\t\t<span>";
-output += runtime.suppressValue(runtime.memberLookup((t_4),"target_duration") / 60, env.opts.autoescape);
-output += " min</span>\n\t\t\t\t\t\t</li>\n\t\t\t\t\t\t<li><span>";
-output += runtime.suppressValue(env.getFilter("shorten").call(context, runtime.memberLookup((t_4),"tags"),30), env.opts.autoescape);
-output += "</span></li>\n\n\t\t\t\t\t</ul>\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\t\n\t\t\t</div>\n\n\t\t</div>\n\t\t";
+output += runtime.suppressValue(runtime.memberLookup((t_4),"target_duration"), env.opts.autoescape);
+output += "</span>\n\t\t\t\t\t\t</li>\n\t\t\t\t\t\t<li>\n                            ";
+frame = frame.push();
+var t_7 = runtime.memberLookup((t_4),"tags");
+if(t_7) {var t_6 = t_7.length;
+for(var t_5=0; t_5 < t_7.length; t_5++) {
+var t_8 = t_7[t_5];
+frame.set("tag", t_8);
+frame.set("loop.index", t_5 + 1);
+frame.set("loop.index0", t_5);
+frame.set("loop.revindex", t_6 - t_5);
+frame.set("loop.revindex0", t_6 - t_5 - 1);
+frame.set("loop.first", t_5 === 0);
+frame.set("loop.last", t_5 === t_6 - 1);
+frame.set("loop.length", t_6);
+output += "\n                                ";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index0") < 3) {
+output += "\n                                <span>";
+output += runtime.suppressValue(t_8, env.opts.autoescape);
+output += "</span>";
+if(runtime.memberLookup((runtime.contextOrFrameLookup(context, frame, "loop")),"index0") < 2) {
+output += ",";
+;
+}
+output += "\n                                ";
+;
+}
+output += "\n                            ";
+;
+}
+}
+frame = frame.pop();
+output += "\n                        </li>\n\n\t\t\t\t\t</ul>\n\n\t\t\t\t</div>\n\n\t\t\t</div>\n\n\t\t</div>\n\t\t";
 ;
 }
 }
