@@ -48,11 +48,12 @@
         </div>
     </div>
     <div class="listview container artists l">
-
         <div class="list_body">
-            {# hash_user_groups request.user as group_hash #}
+            {% hash_user_groups request.user as group_hash %}
             {% for item in object_list %}
-                {% include "alibrary/artist/list_item_l.html" %}
+                {% cache 600 "artist_list_item" item.pk group_hash item.updated %}
+                    {% include "alibrary/artist/list_item_l.html" %}
+                {% endcache %}
             {% empty %}
                 <p style="padding: 20px; text-align: center;">
                     {% trans 'No results to display.' %}

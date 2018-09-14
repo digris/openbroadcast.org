@@ -12,6 +12,7 @@ from rest_framework.decorators import api_view
 from django.apps import apps
 
 from ..queries import autocomplete_search, format_search_results
+from .. import utils
 
 
 @api_view()
@@ -24,6 +25,8 @@ def search_global(request, **kwargs):
     # get ct from either GET or kwargs
     doc_type = request.GET.get('ct', kwargs.get('ct', None))
 
+
+
     if q:
         q = q.strip().lower()
         if len(q) > 1 and q[1] == ':':
@@ -32,7 +35,9 @@ def search_global(request, **kwargs):
         if doc_type == '_all':
             doc_type = None
 
-        response = autocomplete_search(q, doc_type=doc_type, fuzzy_mode=fuzzy_mode, limit=limit, offset=offset)
+        search_filters = utils.parse_search_query(request=request)['filters']
+
+        response = autocomplete_search(q, doc_type=doc_type, fuzzy_mode=fuzzy_mode, limit=limit, offset=offset, filters=search_filters)
 
         return Response(response)
 

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from elasticsearch_dsl import FacetedSearch, TermsFacet, DateHistogramFacet
 from django_elasticsearch_dsl.search import Search
+from elasticsearch_dsl import Q as ESQ
 from base.utils.fold_to_ascii import fold
 from alibrary.documents import ArtistDocument, LabelDocument
 
@@ -66,6 +66,8 @@ def autocomplete_search(q, doc_type=None, fuzzy_mode=False, **kwargs):
     query = autocomplete_query(q, fuzzy_mode)
     limit = kwargs.get('limit', 20)
     offset = kwargs.get('offset', 0)
+    filters = kwargs.get('filters', {})
+
     if limit and limit > 100:
         limit = 100
 
@@ -74,12 +76,14 @@ def autocomplete_search(q, doc_type=None, fuzzy_mode=False, **kwargs):
     if doc_type:
         s = s.doc_type(doc_type)
 
+    s = s.query('match', autocomplete=query)
+
+    # TODO: implement in a generic way
+    # add filters like: `&filter_status=Ready&filter_type=Broadcasts`
+    for key, value in filters.iteritems():
+        s = s.query('term', **{key: value[0]})
 
     s = s[offset:limit + offset]
-
-    s = s.query('match', autocomplete=query)
-    #s = s.query('multi_match', query='independent', fields=['description'])
-    #s = s.highlight('description')
 
     return format_search_results(s.execute())
 

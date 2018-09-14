@@ -34,6 +34,7 @@ export default {
                 {
                     ct: '_all',
                     name: 'All',
+                    shortcut: '_',
                 },
                 {
                     ct: 'alibrary.artist',
@@ -206,6 +207,10 @@ export default {
                     return scope.ct === this.search_scope
                 });
 
+                if(scope.list_url === undefined) {
+                    return;
+                }
+
                 let q = this.search_query_string;
                 if(q[1] === ':') {
                     q = $.trim(q.substr(2));
@@ -261,7 +266,60 @@ export default {
         ///////////////////////////////////////////////////////////////
         // data handling / ajax loading
         ///////////////////////////////////////////////////////////////
-        load_search_results: function (query = false) {
+        // load_search_results: function (query = false) {
+        //
+        //     if (!query) {
+        //         query = {
+        //             q: this.search_query_string
+        //         }
+        //     }
+        //     if (query.q.length < 1) {
+        //         this.search_results = [];
+        //         this.search_total_results = 0;
+        //         return
+        //     }
+        //
+        //     // add search options
+        //     query['fuzzy'] = (this.settings.search_fuzzy_match_mode ? 1 : 0);
+        //     query['ct'] = this.search_scope;
+        //
+        //
+        //     console.debug('query', query);
+        //     this.loading = true;
+        //
+        //     // "http://api.icndb.com/jokes/random/10"
+        //     let url = '/api/v2/search/global/';
+        //
+        //     api_client.get(url, {params: query})
+        //         .then((response) => {
+        //             this.loading = false;
+        //
+        //             let max_score = response.data.max_score;
+        //
+        //             // TODO: make this less ugly...
+        //             $.each(response.data.results, (i, el) => {
+        //                 el.selected = false;
+        //                 //el.score = el.score / max_score;
+        //                 el.top_hit = el.score > 8;
+        //                 //el.top_hit = (el.score / max_score) > 0.7;
+        //                 el.scope = this.search_scopes.find((scope) => {
+        //                     return scope.ct === el.ct
+        //                 });
+        //             });
+        //
+        //             this.search_total_results = response.data.total;
+        //             this.search_results = response.data.results;
+        //
+        //         }, (error) => {
+        //             this.loading = false;
+        //         })
+        // },
+
+
+        ///////////////////////////////////////////////////////////////
+        // data handling / ajax loading
+        ///////////////////////////////////////////////////////////////
+        load_search_results: debounce(function (query = false) {
 
             if (!query) {
                 query = {
@@ -308,7 +366,8 @@ export default {
                 }, (error) => {
                     this.loading = false;
                 })
-        },
+
+        }, 350),
 
     }
 }
