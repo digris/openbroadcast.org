@@ -34,8 +34,6 @@ export default {
                 {
                     ct: '_all',
                     name: 'All',
-                    shortcut: null,
-                    list_url: null
                 },
                 {
                     ct: 'alibrary.artist',
@@ -65,7 +63,7 @@ export default {
                     ct: 'alibrary.playlist',
                     name: 'Playlist',
                     shortcut: 'p',
-                    list_url: '/content/library/playlists/'
+                    list_url: '/content/playlists/'
                 },
                 {
                     ct: 'profiles.profile',
@@ -222,6 +220,10 @@ export default {
 
             }
 
+        },
+        // result navigation
+        navigate_to_item: function (e, item) {
+            document.location.href = item.url;
         },
 
         ///////////////////////////////////////////////////////////////
