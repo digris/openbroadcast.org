@@ -8,18 +8,6 @@ const api_client = axios.create({
     xsrfCookieName: 'csrftoken',
 });
 
-
-let dummy_results = [
-    {
-        name: 'foo',
-        selected: false,
-    },
-    {
-        name: 'bar',
-        selected: false,
-    },
-];
-
 export default {
     name: 'SearchApp',
     // props: [
@@ -45,13 +33,21 @@ export default {
             search_scopes: [
                 {
                     ct: '_all',
-                    name: 'All'
+                    name: 'All',
+                    shortcut: null,
+                    list_url: null
                 },
                 {
                     ct: 'alibrary.artist',
                     name: 'Artist',
                     shortcut: 'a',
                     list_url: '/content/library/artists/'
+                },
+                {
+                    ct: 'alibrary.release',
+                    name: 'Release',
+                    shortcut: 'r',
+                    list_url: '/content/library/releases/'
                 },
                 {
                     ct: 'alibrary.media',
@@ -83,8 +79,8 @@ export default {
     created() {
         let scope = $('body').data('scope');
 
-        if(scope !== undefined) {
-            // console.log('scope:', scope);
+        if(scope !== undefined && scope !== '') {
+            console.log('scope:', scope);
             this.search_scope = scope;
         }
 
@@ -297,8 +293,8 @@ export default {
                     $.each(response.data.results, (i, el) => {
                         el.selected = false;
                         //el.score = el.score / max_score;
-                        el.top_hit = el.score > 10;
-                        el.top_hit = (el.score / max_score) > 0.7;
+                        el.top_hit = el.score > 8;
+                        //el.top_hit = (el.score / max_score) > 0.7;
                         el.scope = this.search_scopes.find((scope) => {
                             return scope.ct === el.ct
                         });

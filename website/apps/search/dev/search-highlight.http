@@ -1,13 +1,19 @@
-POST http://localhost:9201/labels/_search
+POST http://10.10.8.107:9200/playlists/_search
 Content-Type: application/json
 
 {
-    "query" : {
-        "match": { "description": "distortion" }
+    "query": {
+        "multi_match": {
+            "query": "Karl Popper philosophy",
+            "fields": [
+                "name",
+                "description"
+            ]
+        }
     },
-    "highlight" : {
-        "fields" : {
-            "description" : {}
+    "highlight": {
+        "fields": {
+            "description": {}
         }
     }
 }
