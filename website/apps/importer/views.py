@@ -38,7 +38,17 @@ class ImportListView(LoginRequiredMixin, PermissionRequiredMixin, PaginationMixi
 
     def get_queryset(self):
         kwargs = {}
-        return Import.objects.filter(user=self.request.user)
+
+        qs = self.model.objects.filter(user=self.request.user)
+
+        qs = qs.select_related(
+            'user',
+        ).prefetch_related(
+            'files',
+            'importitem_set',
+        )
+
+        return qs
 
 
 class ImportDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):

@@ -9,6 +9,9 @@ from django_elasticsearch_dsl import DocType, Index, KeywordField, fields
 from easy_thumbnails.files import get_thumbnailer
 from easy_thumbnails.exceptions import InvalidImageFormatError
 from search.elasticsearch_utils import edge_ngram_analyzer, edge_ngram_search_analyzer
+
+from importer.util.importitem import get_import_sessions_for_obj
+
 from .models import Artist, Label, Release, Media, Playlist, Series
 
 THUMBNAIL_OPT = dict(size=(197, 197), crop=True, upscale=True)
@@ -60,6 +63,7 @@ class LabelDocument(DocType):
     description = fields.TextField(attr='description')
     country = KeywordField(attr='country.printable_name')
 
+    import_ids = fields.KeywordField()
 
     ###################################################################
     # field preparation
@@ -100,6 +104,10 @@ class LabelDocument(DocType):
     def prepare_year_end(self, instance):
         if instance.date_end:
             return instance.date_end.year
+
+    def prepare_import_ids(self, instance):
+        ids = [str(i.uuid) for i in get_import_sessions_for_obj(instance)]
+        return list(set(ids))
 
     ###################################################################
     # custom queryset
@@ -161,6 +169,8 @@ class ArtistDocument(DocType):
         'pk': fields.IntegerField(),
     })
 
+    import_ids = fields.KeywordField()
+
     ###################################################################
     # field preparation
     ###################################################################
@@ -193,6 +203,10 @@ class ArtistDocument(DocType):
     def prepare_year_end(self, instance):
         if instance.date_end:
             return instance.date_end.year
+
+    def prepare_import_ids(self, instance):
+        ids = [str(i.uuid) for i in get_import_sessions_for_obj(instance)]
+        return list(set(ids))
 
     ###################################################################
     # custom queryset
@@ -255,6 +269,8 @@ class ReleaseDocument(DocType):
     num_media = fields.IntegerField()
 
     artist_ids = fields.KeywordField()
+    label_ids = fields.KeywordField()
+    import_ids = fields.KeywordField()
 
     ###################################################################
     # field preparation
@@ -293,6 +309,17 @@ class ReleaseDocument(DocType):
             ids += [str(artist.uuid)]
         for artist in instance.extra_artists.all():
             ids += [str(artist.uuid)]
+        return list(set(ids))
+
+    # add related label ids (in this case only one, but keep it as a list for consistency)
+    def prepare_label_ids(self, instance):
+        ids = []
+        if instance.label:
+            ids += [str(instance.label.uuid)]
+        return list(set(ids))
+
+    def prepare_import_ids(self, instance):
+        ids = [str(i.uuid) for i in get_import_sessions_for_obj(instance)]
         return list(set(ids))
 
     ###################################################################
@@ -370,6 +397,10 @@ class MediaDocument(DocType):
 
     license = fields.KeywordField()
 
+    artist_ids = fields.KeywordField()
+    release_ids = fields.KeywordField()
+    import_ids = fields.KeywordField()
+
     ###################################################################
     # field preparation
     ###################################################################
@@ -408,6 +439,28 @@ class MediaDocument(DocType):
             return instance.master_encoding.upper()
 
 
+    # add all related (appearing artist, extra artist) (uu)ids to the document
+    def prepare_artist_ids(self, instance):
+        ids = []
+        if instance.artist:
+            ids += [str(instance.artist.uuid)]
+        for artist in instance.media_artists.all():
+            ids += [str(artist.uuid)]
+        for artist in instance.extra_artists.all():
+            ids += [str(artist.uuid)]
+        return list(set(ids))
+
+    # add related release ids (in this case only one, but keep it as a list for consistency)
+    def prepare_release_ids(self, instance):
+        ids = []
+        if instance.release:
+            ids += [str(instance.release.uuid)]
+        return list(set(ids))
+
+    def prepare_import_ids(self, instance):
+        ids = [str(i.uuid) for i in get_import_sessions_for_obj(instance)]
+        return list(set(ids))
+
 
     ###################################################################
     # custom queryset
@@ -418,11 +471,6 @@ class MediaDocument(DocType):
         ).prefetch_related(
             'media_artists', 'extra_artists'
         )
-
-
-
-
-
 
 
 
@@ -541,8 +589,6 @@ class PlaylistDocument(DocType):
 
         return flags
 
-
-    # TODO: add 'in rotation' and 'is archived'
 
     # ###################################################################
     # # custom queryset

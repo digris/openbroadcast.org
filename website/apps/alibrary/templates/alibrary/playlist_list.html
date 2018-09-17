@@ -57,7 +57,7 @@
             {% hash_user_groups request.user as group_hash %}
             {% for item in object_list %}
                 {% cache 600 "playlist_list_item_l" item.pk group_hash item.updated %}{% endcache %}
-                    {% include "alibrary/playlist/list_item_l.html" %}
+                    {% include "alibrary/playlist/list_item.html" %}
 
             {% empty %}
                 <p style="padding: 20px; text-align: center;">

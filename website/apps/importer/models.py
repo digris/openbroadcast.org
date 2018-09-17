@@ -723,9 +723,9 @@ class ImportItem(BaseModel):
 
     # limit to alibrary objects
     ct_limit = models.Q(app_label = 'alibrary', model = 'media') | \
-    models.Q(app_label = 'alibrary', model = 'release') | \
-    models.Q(app_label = 'alibrary', model = 'artist') | \
-    models.Q(app_label = 'alibrary', model = 'label')
+        models.Q(app_label = 'alibrary', model = 'release') | \
+        models.Q(app_label = 'alibrary', model = 'artist') | \
+        models.Q(app_label = 'alibrary', model = 'label')
 
     import_session = models.ForeignKey(Import, verbose_name=_('Import'), null=True, related_name='importitem_set')
 

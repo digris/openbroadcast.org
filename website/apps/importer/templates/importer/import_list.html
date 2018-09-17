@@ -111,13 +111,11 @@
 
                             {% for key, ct in object.get_importitems.items %}
 
-
                                 {% if object.type == 'web' %}
-                                    <a href="{{ ct.url }}?import={{ object.pk }}" title="{% for item in ct.items|dictsort:"name" %}{{ item.name }}{% if not forloop.last %}&#10;{% endif %}{% endfor %}">{{ ct.name }} <span>{{ ct.items|length }}</span></a>
+                                    <a href="{{ ct.url }}?search_import_ids={{ object.uuid }}" title="{% for item in ct.items|dictsort:"name" %}{{ item.name }}{% if not forloop.last %}&#10;{% endif %}{% endfor %}">{{ ct.name }} <span>{{ ct.items|length }}</span></a>
                                 {% else %}
-                                    <a href="{{ ct.url }}?import={{ object.pk }}">{{ ct.name }} <span>{{ ct.items|length }}</span></a>
+                                    <a href="{{ ct.url }}?search_import_ids={{ object.uuid }}">{{ ct.name }} <span>{{ ct.items|length }}</span></a>
                                 {% endif %}
-
 
                                 {% if not forloop.last %}<span>&mdash;</span>{% endif %}
 
@@ -133,7 +131,6 @@
                     <td style="width: 340px;">
                         <a href="{{ object.get_absolute_url }}">
                             {{ object.created|date:'DATETIME_FORMAT' }}
-                        <!--{% trans 'Added' %} {{ object.created|timesince }} ago-->
                         </a>
 
                         {% if  object.notes %}
@@ -143,54 +140,10 @@
                     </td>
 
                     <td class="">
-
-                        {% comment %}
-                        <div class="btn-group pull-right">
-                            <button class="btn btn-mini btn-primary" data-toggle="dropdown">
-                                {% trans "Actions" %}
-                            </button>
-                            <button class="btn btn-mini  btn-primary dropdown-toggle" data-toggle="dropdown">
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="{{ object.get_absolute_url }}"><i class="icon-edit"></i> {% trans "Details" %}</a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="icon-cloud-upload"></i> {% trans "Archive" %}</a>
-                                </li>
-                                <li>
-                                    <a class="transform-post reload" href="{{ object.get_delete_url }}"><i class="icon-trash"></i> {% trans "Delete" %}</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <span>&nbsp;{% trans "Created items"  %}</span>
-                                </li>
-                                <li>
-                                    <a href="{% url "alibrary-release-list" %}?import={{ object.pk }}">{% trans "Releases"  %}</a>
-                                </li>
-                                <li>
-                                    <a href="{% url "alibrary-artist-list" %}?import={{ object.pk }}">{% trans "Artists"  %}</a>
-                                </li>
-                                <li>
-                                    <a href="{% url "alibrary-media-list" %}?import={{ object.pk }}">{% trans "Tracks"  %}</a>
-                                </li>
-                                <li>
-                                    <a href="{% url "alibrary-label-list" %}?import={{ object.pk }}">{% trans "Labels"  %}</a>
-                                </li>
-
-                            </ul>
-
-                        </div>
-                        {% endcomment %}
-
                         <p>
                             <small>ID: {{ object.pk }}</small>
                         </p>
-
-
                     </td>
-
 
                 </tr>
 

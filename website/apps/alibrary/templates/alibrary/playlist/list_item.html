@@ -5,11 +5,9 @@
      data-absolute_url="{{ item.get_absolute_url }}">
 
     <div class="wrapper_icon">
-
         {% with object=item ct="playlist" %}
             {% include "alibrary/element/_item_actions_primary.html" %}
         {% endwith %}
-
     </div>
 
     <div class="spacer tag-cloud">
@@ -26,9 +24,7 @@
                 <li data-id="{{ tag.pk }}">{{ tag.name|truncate_chars_inner:10 }}</li>
             {% endfor %}
         </ul>
-
     </div>
-
 
     <div class="wrapper_properties">
         <!-- property icons-->
@@ -38,7 +34,6 @@
             {% endif %}
         </ul>
     </div>
-
 
     {% if item.is_archived %}
     <div class="marker">
@@ -51,9 +46,7 @@
     {% endif %}
 
     <div class="wrapper_info">
-
         <div class="wrapper_inner">
-
             <div class="list_body_item">
                 <ul class="title">
                     <li class="bold">
@@ -77,9 +70,7 @@
                             <span class="small">{{ item.get_type_display }}</span>
                         </span>
                     </li>
-
                 </ul>
-
                 <ul class="unstyled">
                     <li>
                         <a href="{{ item.user.get_absolute_url }}">{{ item.user.profile.get_display_name }}</a>
@@ -100,22 +91,14 @@
                         {% endif %}
 
                     </li>
-
                 </ul>
-
             </div>
-
-
         </div>
-
     </div>
 
 
     <div class="wrapper_action">
-
-
         <ul class="unstyled action secondary horizontal clearfix">
-
             <li>
                 <a href="#"
                    class="{% if not perms.alibrary.downoad_media %} disabled{% endif %}"
@@ -126,7 +109,6 @@
                     <i class="icon icon-download-alt"></i>
                 </a>
             </li>
-
             <li>
                 <a href="#"
                    class="{% if not user.is_authenticated %} disabled{% endif %}"
@@ -135,7 +117,6 @@
                     <i class="icon icon-plus"></i>
                 </a>
             </li>
-
             <li>
                 <a href="{{ item.get_edit_url }}"
                    class="{% if user.is_authenticated and user == item.user %}{% else %} disabled{% endif %}"
@@ -143,7 +124,6 @@
                     <i class="icon icon-edit"></i>
                 </a>
             </li>
-
             {% if perms.alibrary.schedule_playlist and item.type == "broadcast" and item.broadcast_status == 1 %}
             <li>
                 <a href="{% url "abcast-schedule-select-playlist"  %}?playlist_id={{ item.pk }}&next={% url "abcast-schedule" %}"
@@ -157,11 +137,8 @@
                 </a>
             </li>
             {% endif %}
-
         </ul>
-
     </div>
-
 
     <div class="durations" style="position: absolute; bottom: 0; left: 5px; color: #999;">
         {{ item.duration|divide:1000|sec_to_time }}
@@ -170,14 +147,4 @@
         {% endif %}
     </div>
 
-
-
-
-
-
-
-
 </div>
-
-
-

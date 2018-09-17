@@ -92,7 +92,7 @@
                     <h2>
                         {% trans "Releases" %}
                         <span class="pull-right">
-                            <a href="{% spurl path=release_list query="label={{ object.slug }}" %}">
+                            <a href="{% spurl path=release_list query="search_label_ids={{ object.uuid }}" %}">
                                 <i class="icon-chevron-sign-right"></i>
                                 {% blocktrans with count=object.release_label.count name=object.name %}Show all {{ count }} releases on {{ name }}{% endblocktrans %}
                             </a>
@@ -106,7 +106,7 @@
                         <div class="list_body">
 
                             {% for item in releases %}
-                                {% include "alibrary/release/list_item_l.html" %}
+                                {% include "alibrary/release/list_item.html" %}
                             {% endfor %}
                         </div>
                     </div>

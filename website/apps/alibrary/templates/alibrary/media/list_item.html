@@ -73,9 +73,9 @@
                     {% else %}
                         <span>{{ item.artist.name|truncate_chars_inner:28 }}</span>
                     {% endif %}
-
                     &nbsp;
-                    <a rel="nofollow" href="{% spurl base=request.get_full_path remove_query_param="page" set_query="search_artist_display={{ item.get_artist_display }}" %}"
+                    {% url "alibrary-media-list" as media_list %}
+                    <a rel="nofollow" href="{% spurl path=release_list query="search_artist_ids={{ item.artist.uuid }}" %}"
                        title="{% trans "Only show tracks by" %} {{ item.artist.name }}"
                        style="vertical-align: top;"><span class="filter icon"></span></a>
 
@@ -115,9 +115,9 @@
                     {% else %}
                         <span>{{ item.release.name|truncate_chars_inner:28 }}</span>
                     {% endif %}
-
                     &nbsp;
-                    <a rel="nofollow" href="{% spurl base=request.get_full_path remove_query_param="page" set_query="search_release_display={{ item.release.name }}" %}"
+                    {% url "alibrary-media-list" as media_list %}
+                    <a rel="nofollow" href="{% spurl path=release_list query="search_release_ids={{ item.release.uuid }}" %}"
                        title="{% trans "Only show tracks on" %} {{ item.release.name }}"
                        style="vertical-align: top;"><span class="filter icon"></span></a>
 

@@ -35,7 +35,7 @@
 				{% if appearances.media.exists %}
 				<li>
 					{% url "alibrary-media-list" as media_list %}
-					<a href="{% spurl path=media_list query="artist={{ object.slug }}" %}" title="{% trans "Only show tracks by" %} {{ object.name }}">
+					<a href="{% spurl path=media_list query="search_artist_ids={{ object.uuid }}" %}" title="{% trans "Only show tracks by" %} {{ object.name }}">
 					{{ appearances.media.count }} {% trans 'Tracks' %}
 					</a>
 				</li>

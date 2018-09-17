@@ -56,7 +56,7 @@
         <div class="list_body">
             {% hash_user_groups request.user as group_hash %}
             {% for item in object_list %}
-                {% include "alibrary/media/list_item_s.html" %}
+                {% include "alibrary/media/list_item.html" %}
             {% empty %}
                 <p style="padding: 20px; text-align: center;">
                     {% trans 'No results to display.' %}

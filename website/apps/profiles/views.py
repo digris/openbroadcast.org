@@ -88,7 +88,7 @@ class ProfileListView(BaseSearchListView):
 class ProfileDetailView(DetailView):
 
     model = Profile
-    template_name = 'profiles/profile_detail_ng.html'
+    template_name = 'profiles/profile_detail.html'
     #context_object_name = "profile"
 
     # queryset = Profile.objects.select_related(

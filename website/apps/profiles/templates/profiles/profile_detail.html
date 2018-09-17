@@ -3,32 +3,10 @@
 {% load i18n truncate_tags ctype_tags thumbnail arating_tags markup_tags wiki_tags sekizai_tags activity_tags atracker_tags spurl %}
 
 {% block heading %}
-    <!-- heading / icon (large one) -->
-
-    <!-- statistic tools -->
-    {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/statistics.js"></script>{% endaddtoblock %}
-
-    <!-- jqplot - TODO: maybe move to include -->
-    {% addtoblock "js-uncompressed" %}<script src="{{ STATIC_URL }}js/lib/flot-0.8.3/jquery.flot.js"></script>{% endaddtoblock %}
-    {% addtoblock "js-uncompressed" %}<script src="{{ STATIC_URL }}js/lib/flot-0.8.3/jquery.flot.time.js"></script>{% endaddtoblock %}
-
 
     {% addtoblock "js-post" %}
         <script>
             $(function () {
-                // initialize stats app
-                var stats = new StatisticApp;
-                stats.resource_uri = '{{ object.get_api_url }}';
-                // stats.dom_id = 'statistics_container'; // this is the default anyway
-
-                stats.init();
-
-                // trigger to actually _load_ the stats
-                $('a[data-toggle="tab"]').on('shown', function (e) {
-                    if($(e.target).attr('href') == '#statistics') {
-                        stats.show();
-                    }
-                });
 
                 // quick'n'dirty follow/unfollow AJAX implementation
                 $('table.follows').on('click', '[data-action="trigger_follow"]', function(e){
@@ -60,9 +38,6 @@
 
 {% block inner %}
     <div class="item_detail" style="">
-
-
-{% comment %}<h1>+{{ object.get_api_url }}+</h1>{% endcomment %}
 
     <section class="shaded">
         <div class="row iteminfo release">
@@ -105,12 +80,6 @@
             <li>
                 <a href="#activities" data-toggle="tab">{% trans "Activities" %}</a>
             </li>
-
-            {% comment %}
-            <li>
-                <a href="#statistics" data-toggle="tab">{% trans "Statistics" %}</a>
-            </li>
-            {% endcomment %}
 
 
         </ul>
@@ -523,7 +492,7 @@
 
                 <div class="list_body">
                     {% for item in broadcasts|slice:":8" %}
-                        {% include "alibrary/playlist/list_item_l.html" %}
+                        {% include "alibrary/playlist/list_item.html" %}
                     {% endfor %}
                 </div>
             </div>
@@ -555,7 +524,7 @@
             <div class="listview container release l">
                 <div class="list_body">
                     {% for item in uploaded_releases|slice:":8" %}
-                        {% include "alibrary/release/list_item_l.html" %}
+                        {% include "alibrary/release/list_item.html" %}
                     {% endfor %}
                 </div>
             </div>

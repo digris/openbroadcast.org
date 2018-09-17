@@ -17,8 +17,6 @@
 	</div>
 
 	<dl class="dl-horizontal main">
-
-
     	<dt>
 			{% trans "Appearance" %}:
 		</dt>
@@ -27,41 +25,16 @@
 				{% if object.release_label.exists %}
 				<li>
 					{% url "alibrary-release-list" as release_list %}
-					<a href="{% spurl path=release_list query="label={{ object.slug }}" %}" title="{% trans "Only show releases on" %} {{ object.name }}">
+					<a href="{% spurl path=release_list query="search_label_ids={{ object.uuid }}" %}" title="{% trans "Only show releases on" %} {{ object.name }}">
 					{{ object.release_label.count }} {% trans 'Releases' %}
 					</a>
 				</li>
 				{% else %}
 				<li>{{ object.release_label.count }} {% trans 'Releases' %}</li>
 				{% endif %}
-
 			</ul>
             <div class="clear"></div>
 		</dd>
-
-
-        {% comment %}
-		<dt>
-			{% trans "Releases" %}:
-		</dt>
-		<dd>
-			<ul class="unstyled">
-				{% if object.release_label.exists %}
-				<li>
-					{% url "alibrary-release-list" as release_list %}
-					<a href="{% spurl path=release_list query="label={{ object.slug }}" %}" title="{% trans "Only show releases on" %} {{ object.name }}">
-					{{ object.release_label.count }}<i class="icon-search"></i>
-					</a>
-				</li>
-				{% else %}
-				<li>{{ object.release_label.count }}</li>
-				{% endif %}
-			</ul>
-		</dd>
-        {% endcomment %}
-
-
-
 
 		{% if object.labelcode %}
 		<dt>
@@ -73,9 +46,6 @@
 			</ul>
 		</dd>
 		{% endif %}
-
-
-
 
         {% comment "TODO: check distributor url reverses" %}
 		{% if object.distributors.exists %}
@@ -111,8 +81,6 @@
 			</ul>
 		</dd>
 		{% endif %}
-
-
 
 		{% if object.parent %}
 		<dt>
@@ -190,35 +158,10 @@
 		</dd>
 		{% endif %}
 
-
 	</dl>
-
-
-
-	{% comment %}
-	<dl class="dl-horizontal">
-
-		<dt>
-			{% trans "Links" %}:
-		</dt>
-		<dd class="horizontal">
-			<ul class="unstyled">
-			{% for relation in object.relations.generic %}
-			<li><a href="{{ relation.url }}" class="skip-external" title="Show on {{ relation.url }}">{{ relation.url }}</a></li>
-
-			{% endfor %}
-			</ul>
-			<div class="clear"></div>
-		</dd>
-
-	</dl>
-	{% endcomment %}
-
 
 	<dl class="dl-horizontal sub">
-
         {% include 'alibrary/element/_edit_timestamps.html' %}
-
         {% if object.tags %}
             <dt>
                 {% trans "Tags" %}:
@@ -229,13 +172,11 @@
                 {% endfor %}
             </dd>
         {% endif %}
-
 	</dl>
 
 </div>
 
 <div class="span3 padded-h padded-v">
-
 	<div class="image">
 		{% if object.main_image %}
         <div class="align">
@@ -249,5 +190,4 @@
 	<div class="rating">
 		{% rating_for_object object %}
 	</div>
-
 </div>
