@@ -254,6 +254,8 @@ class ReleaseDocument(DocType):
 
     num_media = fields.IntegerField()
 
+    artist_ids = fields.KeywordField()
+
     ###################################################################
     # field preparation
     ###################################################################
@@ -282,13 +284,28 @@ class ReleaseDocument(DocType):
         if instance.releasedate:
             return instance.releasedate.year
 
+    # add all related (appearing artist, extra artist) (uu)ids to the document
+    def prepare_artist_ids(self, instance):
+        ids = []
+        for media in instance.get_media():
+            ids += [str(media.artist.uuid)]
+        for artist in instance.album_artists.all():
+            ids += [str(artist.uuid)]
+        for artist in instance.extra_artists.all():
+            ids += [str(artist.uuid)]
+        return list(set(ids))
+
     ###################################################################
     # custom queryset
     ###################################################################
     def get_queryset(self):
         return super(ReleaseDocument, self).get_queryset().all().select_related(
             'release_country'
-        ).prefetch_related('media_release')
+        ).prefetch_related(
+            'media_release',
+            'extra_artists',
+            'album_artists',
+        )
 
 
 

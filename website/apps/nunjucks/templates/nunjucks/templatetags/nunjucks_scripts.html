@@ -1,5 +1,5 @@
 {% if DEBUG %}
-    <script src="{{ STATIC_URL }}nunjucks/js/lib/nunjucks-1.3.3.js"></script>
+    <script src="{{ STATIC_URL }}nunjucks/js/lib/nunjucks-3.1.3.js"></script>
     <script src="{{ STATIC_URL }}nunjucks/js/filters.js"></script>
     <script>
         var env = nunjucks.configure('/static', { autoescape: false });
@@ -7,7 +7,7 @@
     </script>
 
 {% else %}
-    <script src="{{ STATIC_URL }}nunjucks/js/lib/nunjucks-slim-1.3.3.js"></script>
+    <script src="{{ STATIC_URL }}nunjucks/js/lib/nunjucks-slim-3.1.3.js"></script>
     <script src="{{ STATIC_URL }}nunjucks/js/filters.js"></script>
     <script src="{{ STATIC_URL }}nunjucks/js/compiled-templates.js"></script>
     <script>

@@ -26,7 +26,7 @@
 				{% if appearances.releases.exists %}
 				<li>
 					{% url "alibrary-release-list" as release_list %}
-					<a href="{% spurl path=release_list query="artist={{ object.slug }}" %}" title="{% trans "Only show releases by" %} {{ object.name }}">
+					<a href="{% spurl path=release_list query="search_artist_ids={{ object.uuid }}" %}" title="{% trans "Only show releases by" %} {{ object.name }}">
 					{{ appearances.releases.count }} {% trans 'Releases' %}
 					</a>
 				</li>

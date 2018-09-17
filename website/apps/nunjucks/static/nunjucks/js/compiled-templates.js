@@ -404,27 +404,13 @@ frame.set("loop.first", t_1 === 0);
 frame.set("loop.last", t_1 === t_2 - 1);
 frame.set("loop.length", t_2);
 output += "\n            ";
-var tasks = [];
-tasks.push(
-function(callback) {
 env.getTemplate("alibrary/nj/playlist/select_popup_item.html", false, "alibrary/nj/playlist/select_popup.html", null, function(t_7,t_5) {
 if(t_7) { cb(t_7); return; }
-callback(null,t_5);});
-});
-tasks.push(
-function(template, callback){
-template.render(context.getVariables(), frame, function(t_8,t_6) {
+t_5.render(context.getVariables(), frame, function(t_8,t_6) {
 if(t_8) { cb(t_8); return; }
-callback(null,t_6);});
-});
-tasks.push(
-function(result, callback){
-output += result;
-callback(null);
-});
-env.waterfall(tasks, function(){
+output += t_6
 output += "\n        ";
-});
+})});
 }
 }
 frame = frame.pop();

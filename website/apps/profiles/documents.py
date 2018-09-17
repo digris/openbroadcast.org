@@ -4,7 +4,9 @@ from __future__ import unicode_literals
 """
 elasticsearch index documents
 """
-
+from actstream.models import actor_stream
+from django.utils import timezone
+from datetime import timedelta
 from django_elasticsearch_dsl import DocType, Index, KeywordField, fields
 from easy_thumbnails.files import get_thumbnailer
 from easy_thumbnails.exceptions import InvalidImageFormatError
@@ -66,6 +68,9 @@ class ProfileDocument(DocType):
     country = KeywordField(attr='country.printable_name')
 
 
+    # recent_activity = fields.IntegerField()
+
+
     ###################################################################
     # field preparation
     ###################################################################
@@ -101,8 +106,12 @@ class ProfileDocument(DocType):
                 return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
             except InvalidImageFormatError as e:
                 pass
-    #
-    #
+
+    # def prepare_recent_activity(self, instance):
+    #     return actor_stream(instance.user).filter(
+    #         timestamp__gte=timezone.now() - timedelta(days=365)
+    #     ).count()
+
     # def prepare_year_start(self, instance):
     #     if instance.date_start:
     #         return instance.date_start.year
