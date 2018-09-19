@@ -185,7 +185,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     creator = models.ForeignKey(
         User,
         blank=True, null=True, on_delete=models.SET_NULL,
-        related_name="media_creator"
+        related_name="created_media"
     )
     last_editor = models.ForeignKey(
         User,

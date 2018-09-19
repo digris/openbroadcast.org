@@ -43,6 +43,17 @@ class ActionListView(PaginationMixin, ListView):
             user = get_object_or_404(User, username=user_filter)
             qs = qs.filter(actor_object_id=user.pk).distinct()
 
+
+        qs = qs.select_related(
+                'actor_content_type',
+                'target_content_type',
+                'action_object_content_type',
+            ).prefetch_related(
+                'actor',
+                'target',
+                'action_object',
+            )
+
         # apply filters
         self.filter = ActionFilter(self.request.GET, queryset=qs)
 

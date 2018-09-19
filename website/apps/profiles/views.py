@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
 
-from actstream.models import Follow, actor_stream
+from actstream.models import Action, Follow, actor_stream
 from alibrary.models import Playlist, Release, Media
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponseRedirect, HttpResponseForbidden
+from django.http import Http404, HttpResponseRedirect, HttpResponseForbidden, HttpResponseBadRequest
 from django.http import HttpResponse
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, View, UpdateView
@@ -85,6 +85,167 @@ class ProfileListView(BaseSearchListView):
 
 
 
+class ProfileDetailViewNG(DetailView):
+
+    model = Profile
+    template_name = 'profiles/profile_detail_ng.html'
+    section_template_base = 'profiles/_partials/_profile_detail'
+    section = None
+    sections = [
+        ('playlists', _('Playlists')),
+        ('profile', _('Profile')),
+        ('uploads', _('Uploads')),
+        ('activities', _('Activities')),
+    ]
+
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(
+            self.model,
+            uuid=self.kwargs['uuid']
+        )
+        return obj
+
+
+    def get_section_menu(self, object, section):
+        menu = []
+        for key, title in self.sections:
+            # TODO: find a better way
+            if key == 'playlists' and not self.object.user.playlists.exclude(type='basket').exists():
+                continue
+
+            if key == 'uploads' and not self.object.user.created_media.exists():
+                continue
+
+            menu.append({
+                'active': key == section,
+                'title': title,
+                'url': reverse('profiles-profile-detail-ng', kwargs={'uuid': object.uuid, 'section': key})
+            })
+
+        return menu
+
+
+    def get_section_template(self):
+        template = '{base}_{section}.html'.format(
+            base=self.section_template_base,
+            section=self.section
+        )
+        return template
+
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileDetailViewNG, self).get_context_data(**kwargs)
+        section = kwargs.get('section')
+
+        section_menu = self.get_section_menu(object=self.object, section=section)
+
+        ###############################################################
+        # generic context, needed for all sections
+        ###############################################################
+        context.update({
+            'section': section,
+            'section_menu': section_menu,
+            'section_template': self.get_section_template(),
+        })
+
+        ###############################################################
+        # section specific context
+        ###############################################################
+        if section == 'playlists':
+            playlist_qs = self.object.user.playlists.exclude(type='basket').order_by('-created')
+            playlist_qs = playlist_qs.select_related(
+                'user',
+            ).prefetch_related(
+                'items'
+            )
+            context.update({
+                'playlists': playlist_qs,
+            })
+
+        if section == 'uploads':
+            release_qs = Release.objects.filter(
+                creator=self.object.user
+            ).select_related(
+                'label',
+                'release_country',
+                'creator',
+                'creator__profile',
+            ).prefetch_related(
+                'media',
+                'media__artist',
+                'media__license',
+                'extra_artists',
+                'album_artists',
+            ).order_by('-created')
+
+            media_qs = Media.objects.filter(
+                creator=self.object.user
+            ).select_related(
+                'release',
+                'artist',
+            ).prefetch_related(
+                'media_artists',
+                'extra_artists',
+            ).order_by('-created')
+
+            context.update({
+                'uploads': {
+                    'releases': release_qs,
+                    'media': media_qs,
+                },
+            })
+
+        if section == 'activities':
+            activity_qs = actor_stream(self.object.user).select_related(
+                # 'actor_content_type',
+                # 'target_content_type',
+                # 'action_object_content_type',
+            ).prefetch_related(
+                'actor',
+                'target',
+                'action_object',
+            ).order_by('-pk')
+
+            # activity_qs = Action.objects.filter(
+            #     actor_content_type__id=3,
+            #     actor_object_id=self.object.user.pk
+            # ).order_by('-pk')
+
+            context.update({
+                'activities': activity_qs,
+            })
+
+
+        return context
+
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.section = self.kwargs.get('section')
+
+        ###############################################################
+        # if no section given, redirect to default section
+        ###############################################################
+        if not self.section:
+            if self.object.user.playlists.exclude(type='basket').exists():
+                section = 'playlists'
+            else:
+                section = 'profile'
+            return redirect('profiles-profile-detail-ng', uuid=self.object.uuid, section=self.section)
+
+        if not self.section in [s[0] for s in self.sections]:
+            return HttpResponseBadRequest('invalid section "{}"'.format(self.section))
+
+        context = self.get_context_data(object=self.object, section=self.section)
+        return self.render_to_response(context)
+
+
+
+
+
+#######################################################################
+# TODO: views below here need to be reviewed / refacored
+#######################################################################
 class ProfileDetailView(DetailView):
 
     model = Profile

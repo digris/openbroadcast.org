@@ -177,8 +177,7 @@ def register(request,
             user_registered.send(sender="invitation",
                                  user=new_user,
                                  request=request)
-            # return HttpResponseRedirect(success_url or reverse('invitation_registered'))
-            # return HttpResponseRedirect(success_url or reverse('profiles-profile-detail', kwargs={'slug':new_user.username}))
+
 
             """
             bit hackish... authenticate & login the user

@@ -52,8 +52,6 @@ django-auditlog==0.3.2
 django-avatar==2.0
 django-badbrowser==1.0.7
 django-braces==1.8.1
-#django-cache-machine==0.9
-#django-cacheops==2.4.3
 django-cacheops==4.0.7
 django-celery==3.2.1
 django-celery-email==1.1.3
@@ -67,7 +65,6 @@ django-el-pagination==3.0.1
 django-email-obfuscator==0.1.2
 # last version of django-extensions with uuid field
 django-extensions==1.7.9
-#django-filer==1.2.8
 django-filer==1.3.0
 django-filter==0.11.0
 django-floppyforms==1.7.0
@@ -84,7 +81,6 @@ django-oauth2-provider==0.2.6.1
 django-polymorphic==1.2
 django-redis==4.2.0
 redis==2.10.5
-#redlock==1.2.0
 django-sekizai==0.10.0
 django-settings-export==1.2.1
 django-social-auth==0.7.28
@@ -102,14 +98,9 @@ jsonfield==2.0.2
 # search v2
 # elasticsearch-dsl > 6.1 does not work:
 # https://github.com/sabricot/django-elasticsearch-dsl/issues/119
-# elasticsearch-dsl==2.2.0
 elasticsearch-dsl==6.1.0
 django-elasticsearch-dsl==0.5.0
 
-
-# transaction hooks are needed by celery-haystack
-# TODO: remove when upgrading django to > 1.8
-# django-transaction-hooks==0.2
 
 ##################################################################
 # RESTful API (v2)
@@ -131,9 +122,7 @@ djangocms-admin-style==1.2.8
 djangocms-column==1.6.0
 djangocms-file==0.1
 djangocms-link==1.6.2
-#djangocms-picture==0.1
 djangocms-snippet==1.5
-#djangocms-teaser==0.1
 djangocms-text-ckeditor==3.3.1
 djangocms-video==0.1
 cmsplugin-filer==0.10.2
@@ -141,8 +130,7 @@ cmsplugin-filer==0.10.2
 ################################################
 # admin addons
 ################################################
-#django-admin-shortcuts==1.2.5
-#django-admin-tools==0.5.1
+
 
 ################################################
 # media & audio related
@@ -160,7 +148,6 @@ django-adv-cache-tag==0.3.0
 -e git://github.com/hzlf/python-audio-tools.git@master#egg=python-audio-tools
 -e git+https://github.com/hzlf/graypy.git@master#egg=graypy
 -e git+https://ohrstrom@lab.hazelfire.com/hazelfire/obp/pyacoustid.git@deploy#egg=pyacoustid
--e git+https://github.com/hzlf/django-announcements@master#egg=django-announcements
 -e git+https://github.com/hzlf/djangocms-panel@master#egg=djangocms-panel
 
 

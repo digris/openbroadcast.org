@@ -1,4 +1,18 @@
-// Imports -------------------------------------------------------------------
+@charset "UTF-8"
 
-//@import "base"
-@import "admin/base"
+$color-primary: #6633CC
+$color-secondary: #00bb73
+
+@import settings/base
+@import mixins/base
+@import components/base
+@import admin_tools/base
+
+
+body.slick-admin #header-logo
+  display: none
+
+//./node_modules/.bin/node-sass \
+//--include-path ./node_modules/django-slick-admin-styles/sass \
+//./static/sass/admin.sass  \
+//./website/static-src/django_slick_admin/css/django-slick-admin.css

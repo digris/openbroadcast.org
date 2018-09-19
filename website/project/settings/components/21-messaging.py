@@ -2,6 +2,7 @@
 import os
 from datetime import timedelta
 from django.conf import settings
+from celery.schedules import crontab
 BASE_DIR = getattr(settings, 'BASE_DIR')
 DEBUG = getattr(settings, 'DEBUG')
 
@@ -41,20 +42,18 @@ CELERY_IMPORTS = (
     'base.pypo.gateway',
     'djcelery_email.tasks',
     'media_asset.tasks',
-    #'celery_haystack.tasks',
+    'search.tasks',
 )
 
 CELERY_ROUTES = {
-    # assign import task to single-instance worker
-    'importer.models.import_task': {'queue': 'import'},
+
+    'importer.models.import_task': {'queue': 'import'}, # NOTE: assign import task to single-instance worker
     'importer.models.identify_task': {'queue': 'process'},
     'importer.util.importer_tools.mb_complete_media_task': {'queue': 'complete'},
 
-    #
     'alibrary.models.generate_media_versions_task': {'queue': 'convert'},
     'alibrary.models.create_waveform_image': {'queue': 'convert'},
 
-    #
     'media_asset.models.process_waveform': {'queue': 'grapher'},
     'media_asset.models.process_format': {'queue': 'convert'},
     'media_asset.process_waveform': {'queue': 'grapher'},
@@ -63,9 +62,8 @@ CELERY_ROUTES = {
     'media_asset.tasks.process_format': {'queue': 'convert'},
 
     'exporter.models.process_task': {'queue': 'export'},
-
     'search.signals.handle_save_task': {'queue': 'index'},
-
+    #'search.tasks.update_index': {'queue': 'index'},
 }
 
 CELERYBEAT_SCHEDULE = {
@@ -81,6 +79,10 @@ CELERYBEAT_SCHEDULE = {
         'task': 'media_asset.models.clean_assets',
         'schedule': timedelta(hours=24),
     },
+    # 'update-search-index': {
+    #     'task': 'search.tasks.update_index',
+    #     'schedule': crontab(minute='*'),
+    # },
 }
 
 CELERY_EMAIL_TASK_CONFIG = {
@@ -88,6 +90,8 @@ CELERY_EMAIL_TASK_CONFIG = {
     'rate_limit' : '50/m',
 }
 
+
+ELASTICSEARCH_DSL_SIGNAL_PROCESSOR = 'search.signals.CelerySignalProcessor'
 
 """
 using django pushy

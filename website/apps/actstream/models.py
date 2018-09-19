@@ -78,7 +78,7 @@ class Action(models.Model):
     actor_object_id = models.CharField(max_length=255)
     actor = GenericForeignKey('actor_content_type', 'actor_object_id')
 
-    verb = models.CharField(max_length=255)
+    verb = models.CharField(max_length=255, db_index=True)
     description = models.TextField(blank=True, null=True)
 
     target_content_type = models.ForeignKey(ContentType, related_name='target',
@@ -96,7 +96,7 @@ class Action(models.Model):
 
     data = models.TextField(blank=True, null=True)
 
-    timestamp = models.DateTimeField(default=now)
+    timestamp = models.DateTimeField(default=now, db_index=True)
 
     public = models.BooleanField(default=True)
 

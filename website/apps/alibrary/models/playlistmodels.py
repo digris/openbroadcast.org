@@ -154,7 +154,8 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     # relations
     user = models.ForeignKey(
         User,
-        null=True, blank=True, default=None
+        null=True, blank=True, default=None,
+        related_name='playlists'
     )
     items = models.ManyToManyField(
         'PlaylistItem',

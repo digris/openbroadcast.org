@@ -2140,6 +2140,10 @@ dir-glob@^2.0.0:
     arrify "^1.0.1"
     path-type "^3.0.0"
 
+"django-slick-admin-styles@https://github.com/palmbeach-interactive/django-slick-admin-styles":
+  version "0.1.7"
+  resolved "https://github.com/palmbeach-interactive/django-slick-admin-styles#b40d77008dbc112700d2c5fc2c1b75b96b6bb08f"
+
 dns-equal@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/dns-equal/-/dns-equal-1.0.0.tgz#b39e7f1da6eb0a75ba9c17324b34753c47e0654d"

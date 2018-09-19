@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.conf.urls import patterns
 from django import forms
-from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 from tagging.models import Tag, TaggedItem

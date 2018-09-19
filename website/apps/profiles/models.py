@@ -262,11 +262,7 @@ class Community(MigrationMixin):
     def __unicode__(self):
         return u"%s" % self.name
 
-    """
-    @permalink
-    def get_absolute_url(self):
-        return ('profiles-profile-detail', None, { 'username': self.user.username })
-    """
+
     def save(self, *args, **kwargs):
         t_tags = ''
         """"""
