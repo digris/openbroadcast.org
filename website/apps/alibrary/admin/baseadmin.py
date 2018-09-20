@@ -182,7 +182,7 @@ class ReleaseAdmin(BaseAdmin):
         if obj.main_image:
             try:
                 return '<img src="%s" />' % (get_thumbnailer(obj.main_image).get_thumbnail(THUMBNAIL_OPT).url)
-            except:
+            except Exception as e:
                 pass
         return '-'
 

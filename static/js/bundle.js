@@ -39,6 +39,8 @@ $(() => {
 
     const t = new Topbar();
     const f = new ListFilter({});
-    const _acw = new AutocompleteWidgets({debug: true});
+    const _acw = new AutocompleteWidgets();
+
+    console.info('jquery bundle:', $.fn.jquery)
 
 });

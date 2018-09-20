@@ -66,6 +66,7 @@ class ProfileDocument(DocType):
     #
     # description = fields.TextField(attr='description')
     country = KeywordField(attr='country.printable_name')
+    country_code = KeywordField(attr='country.iso2_code')
 
 
     # recent_activity = fields.IntegerField()

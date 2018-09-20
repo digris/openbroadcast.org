@@ -1,9 +1,13 @@
 .autocomplete-widget-results
 
+  position: absolute
+  width: 376px
+  z-index: 10
+
   .results-header
     background: #333
-    text-align: right
-    padding: 8px 4px
+    text-align: center
+    padding: 4px 4px
     .close
       color: $white
       text-transform: uppercase
@@ -11,28 +15,55 @@
         cursor: pointer
         text-decoration: underline
 
-  .result
+  .results-list
     background: #333
-    padding: 4px
-    color: $white
-    display: flex
-    border-top: 1px solid $white
+    text-align: right
+    padding: 0
 
-    &.selected,
-    &:hover
-      background: $primary-color-a-bg-light
-      color: $black
+    max-height: 649px
+    overflow-y: auto
+    overflow-x: hidden
 
-    .image
-      figure
-        margin: 0
-        width: 64px
-        height: 64px
-        background: rgba(255, 255, 255, 0.25)
+    .result
+      background: #333
+      padding: 4px
+      color: $white
+      display: flex
+      border-top: 1px solid $white
 
-    .meta
-      flex-grow: 1
-      padding: 0 10px
+      &.selected,
+      &:hover
+        background: $primary-color-a-bg-light
+        color: $black
+        .image
+          figure
+            background: rgba(0, 0, 0, 0.25)
+      .image
+        figure
+          margin: 0
+          width: 64px
+          height: 64px
+          background: rgba(255, 255, 255, 0.25)
+          img
+            width: 100%
+            height: 100%
+            image-rendering: pixelated
 
-    .aux
-      text-transform: capitalize
+      .meta
+        flex-grow: 1
+        padding: 0 4px 0 10px
+        text-align: left
+        .name
+          font-weight: 500
+          white-space: nowrap
+          overflow: hidden
+          text-overflow: ellipsis
+          width: 180px
+        small
+          font-weight: 300
+          opacity: 0.7
+
+      .aux
+        padding: 0 4px 0 0
+        text-transform: capitalize
+        white-space: nowrap

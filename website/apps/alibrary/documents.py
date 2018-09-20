@@ -62,6 +62,7 @@ class LabelDocument(DocType):
 
     description = fields.TextField(attr='description')
     country = KeywordField(attr='country.printable_name')
+    country_code = KeywordField(attr='country.iso2_code')
 
     import_ids = fields.KeywordField()
 
@@ -153,6 +154,7 @@ class ArtistDocument(DocType):
 
     description = fields.TextField(attr='biography')
     country = KeywordField(attr='country.printable_name')
+    country_code = KeywordField(attr='country.iso2_code')
 
 
     ###################################################################
@@ -247,6 +249,10 @@ class ReleaseDocument(DocType):
         attr='get_artist_display'
     )
 
+    label_display = fields.KeywordField(
+        attr='label.name'
+    )
+
     # name = fields.TextField(
     #     analyzer=asciifolding_analyzer,
     #     fielddata=True
@@ -262,9 +268,11 @@ class ReleaseDocument(DocType):
     barcode = fields.KeywordField()
 
     releasedate_year = fields.IntegerField()
+    catalognumber = fields.KeywordField()
 
     description = fields.TextField()
     country = KeywordField(attr='release_country.printable_name')
+    country_code = KeywordField(attr='release_country.iso2_code')
 
     num_media = fields.IntegerField()
 

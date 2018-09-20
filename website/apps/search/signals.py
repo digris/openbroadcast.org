@@ -36,7 +36,6 @@ class CelerySignalProcessor(BaseSignalProcessor):
 
 
     def handle_save(self, sender, instance, **kwargs):
-        print('handle_save (delegate to task)', instance)
         pk = instance.pk
         app_label = instance._meta.app_label
         model_name = instance._meta.concrete_model.__name__
@@ -46,8 +45,5 @@ class CelerySignalProcessor(BaseSignalProcessor):
     @shared_task()
     def handle_save_task(pk, app_label, model_name):
         instance = apps.get_model(app_label, model_name).objects.get(pk=pk)
-
-        print('handle_save_task - instance', instance)
-
         registry.update(instance)
         registry.update_related(instance)

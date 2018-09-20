@@ -612,8 +612,6 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
 
 
-
-
 # media post save
 @disable_for_loaddata
 def media_post_save(sender, **kwargs):

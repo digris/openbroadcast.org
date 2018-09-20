@@ -1221,7 +1221,8 @@ var EditUi = function () {
 
         // hack for autocomlete fields - trigger search dialog
         if (key.endsWith('_0')) {
-            target.djselectable('search', $.decodeHTML(val));
+            var e = new CustomEvent('autocomplete:changed', {detail: { value: val }});
+            target.parent()[0].dispatchEvent(e);
         }
 
     };

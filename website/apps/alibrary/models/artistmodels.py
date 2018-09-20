@@ -283,20 +283,6 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
     # TODO: look for a better (=faster) way to get appearances!
     ###################################################################
     @cached_uuid_aware(timeout=60 * 60 * 24)
-    def get_releases_(self):
-        """ get releases where artist appears """
-
-        from alibrary.models.releasemodels import Release
-        try:
-            r_qs = Release.objects.filter(
-                Q(media_release__artist__pk=self.pk) | Q(media_release__media_artists__pk=self.pk) | Q(
-                    album_artists__pk=self.pk)).nocache().distinct()
-            return r_qs
-        except Exception as e:
-            return []
-
-
-    @cached_uuid_aware(timeout=60 * 60 * 24)
     def get_releases(self):
         """ get releases where artist appears """
 
@@ -308,25 +294,10 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         media_ids += qs_a.values_list('id', flat=True)
         media_ids += qs_mediaartist.values_list('media_id', flat=True)
 
-
         return Release.objects.filter(
             Q(media_release__pk__in=media_ids) | Q(album_artists__pk=self.pk)
         ).distinct()
 
-
-
-
-    @cached_uuid_aware(timeout=60 * 60 * 24)
-    def get_media_(self):
-        """ get tracks where artist appears """
-        #from alibrary.models.mediamodels import Media
-
-        try:
-            #m = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk)).nocache().distinct()
-            m_qs = Media.objects.filter(Q(artist=self) | Q(media_artists__pk=self.pk) | Q(extra_artists__pk=self.pk)).nocache().distinct()
-            return m_qs
-        except Exception as e:
-            return []
 
     @cached_uuid_aware(timeout=60 * 60 * 24)
     def get_media(self):
