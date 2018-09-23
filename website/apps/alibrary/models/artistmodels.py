@@ -219,6 +219,9 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         return self.__class__.__name__
 
 
+    def get_ct(self):
+        return '{}.{}'.format(self._meta.app_label, self.__class__.__name__).lower()
+
     def get_absolute_url(self):
         if self.disable_link:
             return None

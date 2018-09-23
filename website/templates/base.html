@@ -66,29 +66,20 @@
 
         {% include "element/topbar/_topbar.html" %}
 
-
         <div id="wrap">
-
             {% block teaser %}{% endblock %}
-
             <div class="container main">
-
                 <header class="subhead">
                     <div class="row">
-
                         <div class="span9">
                             {% block heading %}{% endblock %}
                             <div class="subnav">
                                 {% block modnav %}{% endblock %}
                             </div>
                         </div>
-
                         <div class="span3"></div>
-
                     </div>
-
                 </header>
-
                 <section id="global">
                     {% if messages %}
                         <div class="row">
@@ -103,7 +94,6 @@
                     {% endif %}
                     {% block main %}{% endblock %}
                 </section>
-
             </div>
 
             <div id="push"></div>
@@ -136,6 +126,9 @@
         </section>
         {% endif %}
 
+
+        <!-- TODO: just temporary... -->
+        <div id="player_app"></div>
 
 
         <div id="refresh"></div>

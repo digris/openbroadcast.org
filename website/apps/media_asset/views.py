@@ -5,9 +5,10 @@ import os
 import time
 from alibrary.models import Media
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.conf import settings
 from django.views.generic import View
 
 from models import Waveform, Format
@@ -18,7 +19,8 @@ WAVEFORM_TYPES = [
     's', 'w'
 ]
 
-NGINX_X_ACCEL_REDIRECT = True
+NGINX_X_ACCEL_REDIRECT = getattr(settings, 'NGINX_X_ACCEL_REDIRECT', True)
+
 
 class WaveformView(View):
     """
@@ -37,7 +39,10 @@ class WaveformView(View):
         # set access timestamp
         Waveform.objects.filter(pk=waveform.pk).update(accessed=timezone.now())
 
-        waveform_data = open(waveform.path, "rb").read()
+        try:
+            waveform_data = open(waveform.path, "rb").read()
+        except Exception as e:
+            return HttpResponseBadRequest('{}'.format(e))
         return HttpResponse(waveform_data, content_type='image/png')
 
 

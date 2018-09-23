@@ -47,7 +47,16 @@ module.exports = {
                         includePaths: ['./static/js/'],
                     },
                 }
-            }, {
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader',
+                    'sass-loader'
+                ]
+            },
+            {
                 test: /\.css$/,
                 use: [
                     'vue-style-loader',

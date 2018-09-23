@@ -19,6 +19,7 @@ def api_root(request, format=None):
         'library/release': reverse('api:release-list', request=request, format=format),
         'library/track': reverse('api:media-list', request=request, format=format),
         'search': reverse('api:search-index', request=request, format=format),
+        'player': reverse('api:player-index', request=request, format=format),
         'auth-token': reverse('api:obtain-auth-token', request=request, format=format),
     })
 
@@ -29,6 +30,7 @@ urlpatterns = [
     url(r'^api-token-auth/', auth_views.obtain_auth_token, name='obtain-auth-token'),
     url('^library/', include('alibrary.apiv2.urls')),
     url('^search/', include('search.apiv2.urls')),
+    url('^player/', include('player.apiv2.urls')),
     url('^media-preflight/', include('media_preflight.apiv2.urls')),
 
 ]

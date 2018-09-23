@@ -1,12 +1,10 @@
-;
-
 import store from 'store';
+
+const DEBUG = false;
 
 class ListFilter {
 
-    constructor(opts) {
-        this.debug = opts.debug || false;
-        if (this.debug)  console.log('ListFilter:', opts);
+    constructor() {
 
         this.store_key = 'ui-listfilter-expanded';
         this.expanded_filters = [];
@@ -52,7 +50,7 @@ class ListFilter {
     };
     apply_state() {
 
-        if (this.debug) console.log('state:', this.expanded_filters);
+        if (DEBUG) console.log('state:', this.expanded_filters);
 
         $('[data-listfilter]').each((i, item) => {
             let el = $(item);

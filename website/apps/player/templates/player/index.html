@@ -1,10 +1,12 @@
 {% load i18n raven static %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
-        <title>{% block title %}Player{% endblock %}</title>
 
         <meta charset="utf-8">
+        <meta name='viewport' content='width=device-width, maximum-scale=1.0, minimum-scale=1.0, initial-scale=1.0' />
         <meta name="author" content="digris AG" />
+
+        <title>Open Broadcast - Platform Player</title>
 
         <link rel="icon" type="image/png" href="{% static 'img/base/favicon.png' %}" />
         <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/base/favicon.png' %}">
@@ -18,11 +20,15 @@
         {% endif %}
         <!-- end: webpack bundle handling -->
 
+        <!-- start: legacy css assets -->
+        <!-- start: icon fonts -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <!-- end: icon fonts -->
+        <!-- end: legacy css assets -->
+
     </head>
 
-    <body class="player">
-        <div class="player-app-container">
-            <div id="player_app">(( player app ))</div>
-        </div>
+    <body class="player" data-player-mode="master">
+        <div id="player_app">(( player app ))</div>
     </body>
 </html>

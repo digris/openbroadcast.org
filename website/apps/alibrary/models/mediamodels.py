@@ -341,6 +341,9 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
         return providers
 
+    def get_ct(self):
+        return '{}.{}'.format(self._meta.app_label, self.__class__.__name__).lower()
+
     def get_absolute_url(self):
         return reverse('alibrary-media-detail', kwargs={
             'pk': self.pk,

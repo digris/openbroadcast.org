@@ -242,6 +242,9 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     def sorted_items(self):
         return self.items.order_by('playlistitemplaylist__position')
 
+    def get_ct(self):
+        return '{}.{}'.format(self._meta.app_label, self.__class__.__name__).lower()
+
     def get_absolute_url(self):
         return reverse('alibrary-playlist-detail', kwargs={
             'slug': self.slug,

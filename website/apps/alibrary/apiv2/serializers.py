@@ -34,6 +34,8 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='uuid'
     )
 
+    ct = serializers.CharField(source='get_ct')
+
     image = ImageSerializer(
         source='main_image',
     )
@@ -43,6 +45,8 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
         depth = 1
         fields = [
             'url',
+            'ct',
+            'uuid',
             'name',
             'image',
         ]
@@ -54,6 +58,8 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
         view_name='api:media-detail',
         lookup_field='uuid'
     )
+
+    ct = serializers.CharField(source='get_ct')
 
     duration = serializers.FloatField(source='master_duration')
 
@@ -73,11 +79,9 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
 
     artist_display = serializers.CharField(source='get_artist_display')
 
-
     release_display = serializers.SerializerMethodField()
     def get_release_display(self, obj, **kwargs):
         return obj.release.name
-
 
     assets = serializers.SerializerMethodField()
     def get_assets(self, obj, **kwargs):
@@ -106,6 +110,7 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
         depth = 1
         fields = [
             'url',
+            'ct',
             'uuid',
             'name',
             'duration',
@@ -118,14 +123,14 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
-
-
 class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
 
     url = serializers.HyperlinkedIdentityField(
         view_name='api:release-detail',
         lookup_field='uuid'
     )
+
+    ct = serializers.CharField(source='get_ct')
 
     image = ImageSerializer(
         source='main_image',
@@ -134,17 +139,9 @@ class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
     detail_url = serializers.URLField(source='get_absolute_url')
     releasedate = serializers.CharField(source='releasedate_approx')
 
-
-    media = MediaSerializer(
-        many=True,
-        read_only=True,
-        source='media_release',
-    )
-
     items = serializers.SerializerMethodField()
     def get_items(self, obj, **kwargs):
         items = []
-
         for media in obj.get_media():
             serializer = MediaSerializer(media, context={'request': self.context['request']})
             items.append({
@@ -159,11 +156,12 @@ class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
         depth = 1
         fields = [
             'url',
+            'ct',
+            'uuid',
             'detail_url',
             'name',
             'image',
             'releasedate',
-            'media',
             'items',
         ]
 
@@ -248,6 +246,8 @@ class PlaylistSerializer(serializers.ModelSerializer):
         lookup_field='uuid'
     )
 
+    ct = serializers.CharField(source='get_ct')
+
     items = PlaylistItemPlaylistSerializer(source='playlistitemplaylist_set', many=True)
 
     tags = serializers.StringRelatedField(many=True)
@@ -257,6 +257,8 @@ class PlaylistSerializer(serializers.ModelSerializer):
         depth = 1
         fields = [
             'url',
+            'ct',
+            'uuid',
             'name',
             'main_image',
             'tags',
