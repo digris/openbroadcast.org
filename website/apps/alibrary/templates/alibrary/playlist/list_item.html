@@ -1,7 +1,10 @@
 {% load i18n calc_tags thumbnail truncate_tags arating_tags spurl %}
 
 <div class="list_body_row selectable clickable item playlist published {% if item.user == request.user %}owner{% endif %} view edit stream collect download"
-     id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}"
+     id="list_item_{{ item.pk }}"
+     data-ct="{{ item.get_ct }}"
+     data-uuid="{{ item.uuid }}"
+     data-resource_uri="{{ item.get_api_url }}"
      data-absolute_url="{{ item.get_absolute_url }}">
 
     <div class="wrapper_icon">

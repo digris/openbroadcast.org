@@ -1385,6 +1385,10 @@ camelcase@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-4.1.0.tgz#d545635be1e33c542649c69173e5de6acfae34dd"
 
+can-autoplay@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/can-autoplay/-/can-autoplay-3.0.0.tgz#fc2de8f1d41b36f6d860d9336b66841d30f8b62d"
+
 caniuse-api@^1.5.2:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/caniuse-api/-/caniuse-api-1.6.1.tgz#b534e7c734c4f81ec5fbe8aca2ad24354b962c6c"
@@ -6005,9 +6009,9 @@ sort-keys@^2.0.0:
   dependencies:
     is-plain-obj "^1.0.0"
 
-soundmanager2@^2.97.20170602:
-  version "2.97.20170602"
-  resolved "https://registry.yarnpkg.com/soundmanager2/-/soundmanager2-2.97.20170602.tgz#fe3bc731bfc4d54c1364e71980263e6816981879"
+"soundmanager2@https://github.com/scottschiller/SoundManager2#sm2-html5only":
+  version "2.97.20170601"
+  resolved "https://github.com/scottschiller/SoundManager2#2ec654332c5e4cb211fed37fa12947587e333915"
 
 source-list-map@^2.0.0:
   version "2.0.0"

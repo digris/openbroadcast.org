@@ -79,6 +79,10 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
 
     artist_display = serializers.CharField(source='get_artist_display')
 
+    image = ImageSerializer(
+        source='release.main_image',
+    )
+
     release_display = serializers.SerializerMethodField()
     def get_release_display(self, obj, **kwargs):
         return obj.release.name
@@ -112,6 +116,7 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
             'url',
             'ct',
             'uuid',
+            'image',
             'name',
             'duration',
             'assets',

@@ -17,6 +17,7 @@ Vue.use(Vuex);
 
 import SearchApp from './apps/search-app.vue';
 import PlayerApp from './apps/player/player-app.vue';
+import PlayerControlApp from './apps/player/player-control-app.vue';
 import Topbar from './element/topbar';
 import ListFilter from './element/listfilter';
 
@@ -41,14 +42,23 @@ $(() => {
         });
     }
 
-    // const player_app_el = document.getElementById('player_app');
-    // if(player_app_el) {
-    //     if (DEBUG) console.debug('initialize PlayerApp:', player_app_el);
-    //     const _PlayerApp = new Vue({
-    //         el: player_app_el,
-    //         render: h => h(PlayerApp)
-    //     })
-    // }
+    const player_app_el = document.getElementById('player_app');
+    if(player_app_el) {
+        if (DEBUG) console.debug('initialize PlayerApp:', player_app_el);
+        const _PlayerApp = new Vue({
+            el: player_app_el,
+            render: h => h(PlayerApp)
+        })
+    }
+
+    const player_control_app_el = document.getElementById('player_control_app');
+    if(player_control_app_el) {
+        if (DEBUG) console.debug('initialize PlayerControlApp:', player_control_app_el);
+        const _PlayerControlApp = new Vue({
+            el: player_control_app_el,
+            render: h => h(PlayerControlApp)
+        })
+    }
 
 
     const _Topbar = new Topbar();

@@ -9,17 +9,8 @@ edge_ngram_tokenizer = tokenizer(
     type='edge_ngram',
     min_gram=1,
     max_gram=12,
-    # TODO: investigate
     token_chars=['letter', 'digit']
 )
-
-# keyword_analyzer = analyzer(
-#     'keyword_analyzer',
-#     tokenizer="keyword",
-#     filter=["lowercase", "asciifolding", "trim"],
-#     type='custom',
-#     char_filter=[]
-# )
 
 # autocomplete analyzer
 edge_ngram_analyzer = analyzer(
@@ -28,15 +19,24 @@ edge_ngram_analyzer = analyzer(
     filter=['lowercase', 'asciifolding'],
 )
 
+# autocomplete *search*  tokenizer
+edge_ngram_search_tokenizer = tokenizer(
+    'edge_ngram_search_tokenizer',
+    type='edge_ngram',
+    token_chars=['letter', 'digit']
+)
+
+search_tokenizer = tokenizer(
+    'search_tokenizer',
+    type='standard',
+    token_chars=['letter', 'digit']
+)
+
 # autocomplete *search* analyzer
 edge_ngram_search_analyzer = analyzer(
     'edge_ngram_search_analyzer',
-    tokenizer='lowercase',
-)
-
-# asciifolding analyzer
-asciifolding_analyzer = analyzer(
-    'asciifolding_analyzer',
-    tokenizer='standard',
+    #tokenizer=edge_ngram_search_tokenizer,
+    tokenizer=search_tokenizer,
     filter=['lowercase', 'asciifolding'],
+    #tokenizer='lowercase',
 )
