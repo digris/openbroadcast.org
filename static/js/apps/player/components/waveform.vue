@@ -10,7 +10,8 @@
         },
         computed: {
             position: function () {
-                return this.item.playhead_position - 0.3;
+                return (this.item.playhead_position > 0.3) ? this.item.playhead_position - 0.3 : 0;
+                //return this.item.playhead_position - 0.3;
             },
             cue_fade_points: function () {
                 let item = this.item;
@@ -20,21 +21,29 @@
                 let x3 = Math.floor(item.fade_from / item.duration * 100);
                 let x4 = Math.floor(item.to / item.duration * 100);
 
-                return `${x1},20 ${x2},0 ${x3},0 ${x4},20`
+                //console.debug('cue_fade_points', `${x1},30 ${x2},0 ${x3},0 ${x4},30`)
+
+                return `${x1},30 ${x2},0 ${x3},0 ${x4},30`
             },
             mask_left: function () {
                 let item = this.item;
 
                 let x1 = Math.floor(item.from / item.duration * 100);
                 let x2 = Math.floor(item.fade_to / item.duration * 100);
-                return `0,0 ${x2},0 ${x1},20 0,20`
+
+                //console.debug('mask_left', `0,0 ${x2},0 ${x1},30 0,30`)
+
+                return `0,0 ${x2},0 ${x1},30 0,30`
             },
             mask_right: function () {
                 let item = this.item;
 
                 let x3 = Math.floor(item.fade_from / item.duration * 100);
                 let x4 = Math.floor(item.to / item.duration * 100);
-                return `${x3},0 100,0 100,20 ${x4},20`
+
+                //console.debug('mask_right', `${x3},0 100,0 100,30 ${x4},30`)
+
+                return `${x3},0 100,0 100,30 ${x4},30`
             },
             mask_style: function () {
                 if (this.item.is_playing) {
@@ -68,23 +77,23 @@
     .waveform {
         cursor: crosshair;
         position: relative;
-        height: 20px;
+        height: 30px;
         .waveform-rubberband {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 20px;
+            height: 30px;
         }
         .waveform-image {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 20px;
+            height: 30px;
             img {
                 width: 100%;
-                height: 20px;
+                height: 30px;
             }
         }
     }
@@ -93,8 +102,8 @@
 <template>
     <div @click="seek($event)" class="waveform">
         <div class="waveform-rubberband">
-            <svg width="100%" height="20px" viewBox="0 0 100 20" preserveAspectRatio="none">
-                <rect :width="position" height="20" style="fill:rgba(100,100,100,0.8)"></rect>
+            <svg width="100%" height="30px" viewBox="0 0 100 30" preserveAspectRatio="none">
+                <rect :width="position" height="30" style="fill:rgba(100,100,100,0.8)"></rect>
                 <polygon
                     :points="cue_fade_points"
                     style="fill:rgba(0,0,0,0.25);">>

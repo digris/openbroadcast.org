@@ -3,7 +3,7 @@
 <style lang="scss" scoped>
     @import '../../../sass/site/variables';
     .player-control-app {
-        display: none;
+        display: block;
         background: white;
         position: fixed;
         z-index: 99;
@@ -13,7 +13,7 @@
 </style>
 
 <template>
-    <div class="player-control-app player-control-container">
+    <div v-if="enabled" class="player-control-app player-control-container">
         <div class="debug-container">
             <button @click="player_play_all">PLAY ALL ON PAGE</button>
             <p>

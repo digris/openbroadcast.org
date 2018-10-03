@@ -18,7 +18,7 @@
 
         main {
             flex: 1; /* takes the remaining height of the "container" div */
-            //overflow: auto; /* to scroll just the "main" div */
+            overflow: auto; /* to scroll just the "main" div */
         }
 
         footer {
@@ -29,9 +29,10 @@
     }
 
     .player-current-item {
-        min-height: 112px;
+        min-height: 132px;
         .primary-content {
             display: flex;
+            padding: 10px;
             .meta {
                 flex-grow: 1;
             }
@@ -51,8 +52,20 @@
         }
     }
 
+    .player-current-item-loading {
+        min-height: 112px;
+        background: $primary-color-b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 150%;
+        font-weight: 300;
+
+    }
+
     .player-controls {
-        border-top: 1px solid black;
+        //border-top: 1px solid black;
         padding: 4px 0;
         display: flex;
         align-items: center;
@@ -65,8 +78,8 @@
     }
 
     .player-content {
-        border-top: 1px solid black;
-        border-bottom: 1px solid black;
+        //border-top: 1px solid black;
+        //border-bottom: 1px solid black;
         flex-direction: column; /* stacks them vertically */
         height: 100%; /* needs to take the parents height, alternative: body {display: flex} */
     }
@@ -141,11 +154,11 @@
 
                     <div class="primary-content">
                         <div class="meta">
-                            <span>{{ player_current_media.content.name }}</span>
+                            <a href="#">{{ player_current_media.content.name }}</a>
                             <br>
-                            <span>{{ player_current_media.content.artist_display }}</span>
-                            |
-                            <span>{{ player_current_media.content.release_display }}</span>
+                            <a href="#">{{ player_current_media.content.artist_display }}</a>
+                            <br>
+                            <a href="#">{{ player_current_media.content.release_display }}</a>
                         </div>
 
                         <div class="visual">
@@ -161,8 +174,8 @@
                     </div>
 
                 </div>
-                <div v-else>
-                    (( nothing to see here... ))
+                <div v-else class="player-current-item-loading">
+                    loading...
                 </div>
             </div>
 
@@ -192,18 +205,20 @@
             <div class="player-content">
 
                 <div v-if="(items_to_play && can_autoplay )" class="items-to-play">
-
-                    <item-container
-                        v-for="item_to_play in items_to_play"
-                        v-bind:key="item_to_play.uuid"
-                        v-bind:item_to_play="item_to_play"
-                        @play="player_controls('play', ...arguments)"
-                        @pause="player_controls('pause', ...arguments)"
-                        @seek="player_controls('seek', ...arguments)"
-                    >
-
-                    </item-container>
-
+                    <div v-for="item_to_play in items_to_play" v-bind:key="item_to_play.uuid">
+                        <div class="item-to-play">
+                            <span class="name">{{ item_to_play.name }}</span>
+                        </div>
+                        <media
+                            v-for="item in item_to_play.items"
+                            v-bind:key="item.key"
+                            v-bind:item="item"
+                            @play="player_controls('play', ...arguments)"
+                            @pause="player_controls('pause', ...arguments)"
+                            @seek="player_controls('seek', ...arguments)"
+                        >
+                        </media>
+                    </div>
                 </div>
 
                 <div v-if="(! can_autoplay)" class="autoplay-container">
@@ -218,7 +233,6 @@
                     </div>
                 </div>
 
-
             </div>
         </main>
 
@@ -227,39 +241,6 @@
                 (( footer ))
             </div>
         </footer>
-
-        <div class="debug-container">
-            <button @click="player_play_all">PLAY ALL ON PAGE</button>
-
-            <div class="controls">
-
-                <span @click="player_pasue">pause</span>
-                <span @click="player_resume">resume</span>
-                <span @click="player_play">play</span>
-                <span @click="player_seek">seek</span>
-
-            </div>
-
-
-            <ul>
-                <li @click="player_load_from_api">player_load_from_api</li>
-            </ul>
-
-            <!--
-            <div>
-                <h4>heartbeat</h4>
-                <div v-for="payload in heartbeat_payloads">
-                    {{ payload }}<br>
-                </div>
-                <h4>actions</h4>
-                <div v-for="payload in action_payloads">
-                    {{ payload }}<br>
-                </div>
-            </div>
-            -->
-
-        </div>
-
 
     </div>
 

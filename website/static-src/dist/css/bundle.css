@@ -7612,9 +7612,6 @@ body.player {
   width: 100vw;
   background: #fafafa; }
 
-.player-app.is-master {
-  background: rgba(110, 255, 228, 0.51); }
-
 .player-app.is-slave {
   background: rgba(110, 255, 228, 0.51);
   position: fixed;
@@ -7623,10 +7620,12 @@ body.player {
 
 .player-app .debug-container {
   background: rgba(255, 255, 255, 0.81);
-  border-top: 2px solid red;
+  border: 2px solid red;
   position: fixed;
-  bottom: 0;
-  width: 100%; }
+  bottom: 20px;
+  left: 20px;
+  width: 200px;
+  height: 160px; }
 
 .tab-pane .alert {
   margin-top: 20px; }
@@ -11862,27 +11861,27 @@ ul.day-actions {
     ul.day-actions li a {
       font-size: 90%; }
 
-input.autocomplete {
+.scheduler input.autocomplete {
   width: 250px;
   height: 16px;
   padding: 2px 4px; }
 
-.ac-result {
+.scheduler .ac-result {
   position: absolute;
   z-index: 1000;
   background: white;
   width: 260px; }
-  .ac-result .listing .item {
+  .scheduler .ac-result .listing .item {
     margin-bottom: 0;
     padding: 4px;
     background-color: yellow;
     border-bottom: 1px solid #eeeeee;
     background: #333;
     color: #fff; }
-    .ac-result .listing .item img {
+    .scheduler .ac-result .listing .item img {
       width: 63px;
       height: 63px; }
-    .ac-result .listing .item.hover {
+    .scheduler .ac-result .listing .item.hover {
       background-color: #BCF5E0;
       color: #000; }
 

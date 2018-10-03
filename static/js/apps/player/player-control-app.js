@@ -22,6 +22,8 @@ const PlayerControlApp = Vue.extend({
             player_url: '/player-ng/',
             heartbeat_payloads: [],
             action_payloads: [],
+            // just temporary
+            enabled: false
         }
     },
     mounted: function () {
@@ -47,6 +49,46 @@ const PlayerControlApp = Vue.extend({
         });
 
         if (DEBUG) console.groupEnd();
+
+
+        // temporary: check if controls should be displayed
+        // localStorage.setItem('_dev_player_control_visible', 'yes');
+        if(localStorage.getItem('_dev_player_enabled') === 'yes') {
+            this.enabled = true;
+        }
+
+        if(this.enabled) {
+            console.info('PlayerControlApp enabled (dev mode)');
+            // remove play (click) handlers or 'old' player
+            $('.playable.popup').removeClass('popup');
+            // re-bind
+            $(document).on('click', '.playable', (e) => {
+                e.preventDefault();
+                console.warn(e.currentTarget);
+
+                let el = $(e.currentTarget).parents('[data-uuid]');
+                console.warn(el.data());
+
+                let ct = el.data('ct');
+                if(ct.substring(0,9) !== 'alibrary.') {
+                    ct = `alibrary.${ct}`;
+                }
+
+                this.send_action({
+                    do: 'load',
+                    items: [
+                        {
+                            ct: ct,
+                            uuid: el.data('uuid')
+                        },
+                    ]
+                })
+
+            });
+
+        } else {
+            if (DEBUG) console.debug('PlayerControlApp disabled (dev mode)');
+        }
     },
 
     methods: {

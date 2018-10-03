@@ -6,8 +6,7 @@ import APIClient from '../../api/client';
 
 import ItemContainer from './components/item-container.vue';
 import Waveform from './components/waveform.vue'
-
-
+import Media from './components/media.vue'
 
 const DEBUG = true;
 const POPUP_SIZE = {width: 600, height: 800};
@@ -34,6 +33,7 @@ const pre_process_item = (item) => {
     // set properties needed for display
     item.errors = [];
     item.is_playing = false;
+    item.is_buffering = false;
     item.playhead_position = 0;
     item.playhead_position_ms = 0;
 
@@ -52,9 +52,17 @@ const pre_process_item = (item) => {
 
     // absolute timestamps for fade
     item.fade_to = (item.fade_in === undefined) ? item.from : item.from + item.fade_in;
-    item.fade_from = (item.fade_out === undefined) ? null : item.to - item.fade_out;
+    item.fade_from = (item.fade_out === undefined) ? item.to : item.to - item.fade_out;
 
-    console.log('processed item:', item);
+    // console.table({
+    //     duration: item.duration,
+    //     from: item.from,
+    //     to: item.to,
+    //     fade_to: item.fade_to,
+    //     fade_from: item.fade_from,
+    // });
+
+    //console.log('processed item:', item);
 
     return item;
 };
@@ -122,7 +130,8 @@ const PlayerApp = Vue.extend({
     //name: 'PlayerApp',
     components: {
         ItemContainer,
-        Waveform
+        Media,
+        Waveform,
     },
     data() {
         return {
@@ -375,6 +384,7 @@ const PlayerApp = Vue.extend({
                             // item.duration = this.player.duration;
                             item.playhead_position = Math.round(this.player.position / item.duration * 10000) / 100;
                             item.playhead_position_ms = this.player.position;
+                            item.is_buffering = this.player.isBuffering;
 
                             if (this.player.position < item.from) {
                                 //console.warn('reached cue out -> stopping', 'to:', item.to)
