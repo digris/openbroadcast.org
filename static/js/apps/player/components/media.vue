@@ -213,10 +213,15 @@
             </div>
 
             <div class="time">
-                <small v-if="item.is_playing">{{ item.playhead_position_ms | ms_to_time }}</small>
+
+                <small v-if="item.is_buffering">buffering</small>
+                <small v-if="(! item.is_buffering && item.is_playing)">{{ item.playhead_position_ms | ms_to_time }}</small>
+
+
+
                 {{ item.duration | ms_to_time }}
                 <br>
-                <small v-if="item.is_buffering">buffering</small>
+
                 <!--
                 {{ item.from | ms_to_time }} - {{ item.to | ms_to_time }}
                 -->

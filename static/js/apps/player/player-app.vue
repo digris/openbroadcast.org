@@ -78,11 +78,24 @@
     }
 
     .player-content {
+        position: relative;
         //border-top: 1px solid black;
         //border-bottom: 1px solid black;
         flex-direction: column; /* stacks them vertically */
         height: 100%; /* needs to take the parents height, alternative: body {display: flex} */
+
+
+        .item-to-play {
+            //border: 2px solid blue;
+            background: #fff;
+            //padding: 4px 4px 4px 24px;
+            margin: 2px 0;
+        }
+
     }
+
+
+
 
     .player-footer {
         border-top: 1px solid black;
@@ -133,6 +146,20 @@
             justify-content: center;
             flex-direction: row;
         }
+    }
+
+    .loading-container {
+        background: rgba(255, 255, 255, 0.8);
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 99;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+
     }
 
 
@@ -208,7 +235,6 @@
                     <div v-for="item_to_play in items_to_play" v-bind:key="item_to_play.uuid">
                         <div class="item-to-play">
                             <span class="name">{{ item_to_play.name }}</span>
-                        </div>
                         <media
                             v-for="item in item_to_play.items"
                             v-bind:key="item.key"
@@ -218,6 +244,7 @@
                             @seek="player_controls('seek', ...arguments)"
                         >
                         </media>
+                        </div>
                     </div>
                 </div>
 
@@ -231,6 +258,12 @@
                         (( text about autoplay... ))
                     </span>
                     </div>
+                </div>
+
+                <div v-if="loading" class="loading-container">
+                    <span class="loading-info">
+                        (( loading ))
+                    </span>
                 </div>
 
             </div>

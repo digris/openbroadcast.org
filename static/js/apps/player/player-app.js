@@ -324,12 +324,16 @@ const PlayerApp = Vue.extend({
             if (action.do === 'load') {
                 // load playlist data from API
 
-                this.items_to_play = [];
+                this.loading = true;
+                //this.items_to_play = [];
+
 
                 const url = '/api/v2/player/play/';
                 APIClient.put(url, {items: action.items})
                     .then((response) => {
                         console.log(response.data.results);
+
+                        this.loading = false;
                         let results = pre_process_loaded_items(response.data.results);
                         this.items_to_play = results;
 
@@ -339,7 +343,8 @@ const PlayerApp = Vue.extend({
                         })
 
                     }, (error) => {
-                        console.error('Player - error loading item', error)
+                        console.error('Player - error loading item', error);
+                        this.loading = false;
                     });
             }
 

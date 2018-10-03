@@ -10,6 +10,8 @@ from rest_framework import serializers
 from easy_thumbnails.templatetags.thumbnail import thumbnail_url
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 
+from media_asset.models import Format, Waveform
+
 from ..models import (
     Artist, Release, Media, Playlist, PlaylistItem, PlaylistItemPlaylist
 )
@@ -107,6 +109,12 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
             'waveform': '{}{}'.format(SITE_URL, waveform_url)
         }
 
+        # TODO: check if this is a good idea...
+        # request asset generation for media
+        # print('request asset generation for {}'.format(obj))
+        Format.objects.get_or_create_for_media(media=obj)
+        Waveform.objects.get_or_create_for_media(media=obj, type=Waveform.WAVEFORM)
+
         return assets
 
     class Meta:
@@ -148,6 +156,7 @@ class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
     def get_items(self, obj, **kwargs):
         items = []
         for media in obj.get_media():
+
             serializer = MediaSerializer(media, context={'request': self.context['request']})
             items.append({
                 'content': serializer.data
