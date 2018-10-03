@@ -51,8 +51,8 @@ const PlayerControlApp = Vue.extend({
         if (DEBUG) console.groupEnd();
 
 
-        // temporary: check if controls should be displayed
-        // localStorage.setItem('_dev_player_control_visible', 'yes');
+        // TODO: temporary: check if controls should be displayed
+        // localStorage.setItem('_dev_player_enabled', 'yes');
         if(localStorage.getItem('_dev_player_enabled') === 'yes') {
             this.enabled = true;
         }
@@ -64,16 +64,11 @@ const PlayerControlApp = Vue.extend({
             // re-bind
             $(document).on('click', '.playable', (e) => {
                 e.preventDefault();
-                console.warn(e.currentTarget);
-
                 let el = $(e.currentTarget).parents('[data-uuid]');
-                console.warn(el.data());
-
                 let ct = el.data('ct');
                 if(ct.substring(0,9) !== 'alibrary.') {
                     ct = `alibrary.${ct}`;
                 }
-
                 this.send_action({
                     do: 'load',
                     items: [
@@ -83,7 +78,6 @@ const PlayerControlApp = Vue.extend({
                         },
                     ]
                 })
-
             });
 
         } else {
