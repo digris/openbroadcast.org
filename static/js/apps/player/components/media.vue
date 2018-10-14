@@ -246,9 +246,6 @@
 
                 <small v-if="item.is_buffering">buffering</small>
                 <small v-if="(! item.is_buffering && item.is_playing)">{{ item.playhead_position_ms | ms_to_time }}</small>
-
-
-
                 {{ item.duration | ms_to_time }}
                 <br>
 
@@ -261,7 +258,7 @@
             </div>
 
             <div class="actions">
-                (( actions ))
+                ((actions))
             </div>
         </div>
 

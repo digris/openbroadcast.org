@@ -114,6 +114,12 @@
             }
         }
     }
+
+
+    svg polyline {
+      shape-rendering: geometricPrecision;
+    }
+
 </style>
 
 <template>
@@ -141,7 +147,7 @@
 
                 <!---->
                 <polyline v-if="has_cue_or_fade" :points="rubberband_points"
-                     style="stroke:rgb(102,51,204); fill:none;" stroke-width="0.2"></polyline>
+                     style="stroke:rgb(102,51,204); fill:none;" stroke-width="0.3"></polyline>
 
             </svg>
         </div>
