@@ -25,10 +25,6 @@
 
                 return ` ${x1},30 ${x1},15 ${x2},0 ${x3},0 ${x4},15 ${x4},30`
             },
-            has_cue_or_fade: function() {
-                let item = this.item;
-                return (item.from > 0 || item.to !== item.duration) || (item.from !== item.fade_to || item.to !== item.fade_from);
-            },
             rubberband_points: function () {
                 let item = this.item;
 
@@ -37,20 +33,35 @@
                 let x3 = Math.floor(item.fade_from / item.duration * 100);
                 let x4 = Math.floor(item.to / item.duration * 100);
 
-                return `0,28 ${x1},28 ${x2},2 ${x3},2 ${x4},28 100,28`
+                return `0,15 ${x1},15 ${x2},1 ${x3},1 ${x4},15 100,15`
             },
             mask_left: function () {
                 let item = this.item;
-                let x = Math.floor(item.from / item.duration * 100);
-                return `0,0 ${x},0 ${x},30 0,30`
+
+                let x1 = Math.floor(item.from / item.duration * 100);
+                let x2 = Math.floor(item.fade_to / item.duration * 100);
+
+                //console.debug('mask_left', `0,0 ${x2},0 ${x1},30 0,30`)
+
+                return `0,0 ${x2},0 ${x1},15 0,30`
             },
             mask_right: function () {
                 let item = this.item;
-                let x = Math.floor(item.to / item.duration * 100);
-                return `${x},0 100,0 100,30 ${x},30`
+
+                let x3 = Math.floor(item.fade_from / item.duration * 100);
+                let x4 = Math.floor(item.to / item.duration * 100);
+
+                //console.debug('mask_right', `${x3},0 100,0 100,30 ${x4},30`)
+
+                return `${x3},0 100,0 100,30 ${x4},30 ${x4},15`
             },
             mask_style: function () {
-                return 'fill:rgba(255,255,255,0.7);';
+                if (this.item.is_playing) {
+                    //return 'fill:rgba(188,245,224,0.7);';
+                    return 'fill:rgba(255,255,255,0.7);';
+                } else {
+                    return 'fill:rgba(255,255,255,0.7);';
+                }
             }
         },
         methods: {
@@ -120,18 +131,18 @@
     <div @click="seek($event)" class="waveform">
         <div class="waveform-rubberband">
             <svg width="100%" height="30px" viewBox="0 0 100 30" preserveAspectRatio="none">
+                <!--
+                <rect width="100%" height="30" style="fill:rgba(100,100,100,0.8)"></rect>
+                <rect :width="position" height="30" style="fill:rgba(100,100,100,0.8)"></rect>
+                -->
+                <!--
+                <polygon
+                    :points="cue_fade_points"
+                    style="fill:rgba(0,0,0,0.25);">>
+                </polygon>
+                -->
 
-                <!-- full size waveform bg -->
-                <rect width="100%" height="30" style="fill:rgb(165,165,165)"></rect>
 
-                <!-- progress bg -->
-                <rect :width="position" height="30" style="fill:rgb(34,34,34)"></rect>
-
-                <!-- cue masks (left & right) -->
-                <polygon :points="mask_left" :style="mask_style"></polygon>
-                <polygon :points="mask_right" :style="mask_style"></polygon>
-
-                <!-- waveform image -->
                 <image
                     v-if="(item.content && item.content.assets.waveform)"
                     width="100%"
@@ -139,16 +150,25 @@
                     preserveAspectRatio="none"
                     v-bind:xlink:href="item.content.assets.waveform"></image>
 
-                <!---->
-                <polyline v-if="has_cue_or_fade" :points="rubberband_points"
-                     style="stroke:rgb(102,51,204); fill:none;" stroke-width="0.2"></polyline>
+                <polygon
+                    :points="mask_left"
+                    :style="mask_style"></polygon>
+
+                <polygon
+                    :points="mask_right"
+                    :style="mask_style"></polygon>
+
+
+                <polyline :points="rubberband_points"
+                    fill="none" stroke="red" stroke-width="0.5"></polyline>
 
             </svg>
         </div>
 
-
         <div class="progress-container">
-            <div class="progress-indicator" v-bind:style="{ width: position + '%' }"></div>
+            <div class="progress-indicator" v-bind:style="{ width: position + '%' }">
+
+            </div>
         </div>
 
         <!--

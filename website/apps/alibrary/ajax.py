@@ -409,9 +409,7 @@ def merge_items(request, *args, **kwargs):
 
             if master_item and data['status']:
                 actstream.action.send(request.user, verb=_('merged to'), target=master_item)
-
                 pass
-
 
 
         except Exception as e:

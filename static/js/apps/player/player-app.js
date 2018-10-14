@@ -9,11 +9,8 @@ import Waveform from './components/waveform.vue'
 import Media from './components/media.vue'
 
 const DEBUG = true;
-const POPUP_SIZE = {width: 600, height: 800};
-
 
 const exchange = tabex.client();
-
 
 const pre_process_loaded_items = (results) => {
 
@@ -348,13 +345,22 @@ const PlayerApp = Vue.extend({
                     });
             }
 
-            if (action.do === 'pause') {
-                this.player.pause();
+            if (action.do === 'stop') {
+                this.player.pause().setPosition(action.item.from);
 
                 if (action.item) {
                     action.item.is_playing = false;
-                    action.item.content.isrc = '-';
                 }
+            }
+
+            if (action.do === 'pause') {
+                this.player.pause();
+
+                /**/
+                if (action.item) {
+                    action.item.is_playing = false;
+                }
+
             }
 
             if (action.do === 'seek') {
@@ -419,11 +425,16 @@ const PlayerApp = Vue.extend({
                         },
                         onerror: (error, info) => {
                             this.player.stop();
-                            item.errors.push({
+                            // item.errors.push({
+                            //     code: error,
+                            //     info: info
+                            // });
+                            item.errors = [{
                                 code: error,
                                 info: info
-                            });
-                            console.error('onerror:', error, info)
+                            }];
+                            console.error('onerror:', error, info);
+                            this.player_play_offset(1, item);
                         }
                     };
 
@@ -437,10 +448,7 @@ const PlayerApp = Vue.extend({
                             item = reset_item(item);
                         });
                     });
-
-
                     item.is_playing = true;
-                    item.content.isrc = '+';
                 }
 
             }
@@ -470,10 +478,16 @@ const PlayerApp = Vue.extend({
             let index = all_media.findIndex((element) => element.key === media.key) + offset;
 
             if(index < 0 || index > (all_media.length - 1)) {
+                console.warn('player_play_offset index not available', index);
+                this.player.stop();
+                if (this.player_current_media) {
+                    media.is_playing = false;
+                    this.player_current_media.is_playing = false;
+                }
                 return;
             }
 
-            console.warn('player_get_next_sound', index);
+            console.log('player_get_next_sound', index);
 
 
             this.send_action({
@@ -529,6 +543,33 @@ const PlayerApp = Vue.extend({
                 // TODO: this likely will not work when emmited via local storage...
                 item: item
             })
+        },
+
+
+        /**********************************************************
+         * visit item detail
+         **********************************************************/
+        visit: function (content, scope) {
+            if (DEBUG) console.debug('visit:', content, scope);
+
+            const url = (scope === 'media') ? content.url : content[scope];
+
+            APIClient.get(url)
+                .then((response) => {
+                    console.log(response.data);
+
+                    const detail_url = response.data.detail_url;
+
+                    if (DEBUG) console.debug('visit:', detail_url);
+
+                    if(window.opener) {
+                        window.opener.location.href = detail_url;
+                        window.opener.focus();
+                    }
+
+                }, (error) => {
+                    console.error('Player - error loading item', error);
+                });
         },
 
 

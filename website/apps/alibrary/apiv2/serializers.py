@@ -38,6 +38,8 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
 
     ct = serializers.CharField(source='get_ct')
 
+    detail_url = serializers.URLField(source='get_absolute_url')
+
     image = ImageSerializer(
         source='main_image',
     )
@@ -48,6 +50,7 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
         fields = [
             'url',
             'ct',
+            'detail_url',
             'uuid',
             'name',
             'image',
@@ -62,6 +65,8 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     ct = serializers.CharField(source='get_ct')
+
+    detail_url = serializers.URLField(source='get_absolute_url')
 
     duration = serializers.FloatField(source='master_duration')
 
@@ -123,6 +128,7 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
         fields = [
             'url',
             'ct',
+            'detail_url',
             'uuid',
             'image',
             'name',

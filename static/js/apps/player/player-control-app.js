@@ -4,11 +4,10 @@ import APIClient from '../../api/client';
 
 const DEBUG = true;
 
-const POPUP_SIZE = {width: 600, height: 800};
+const POPUP_SIZE = {width: 400, height: 800};
 
 
 const exchange = tabex.client();
-
 
 //const PlayerApp = new Vue({
 const PlayerControlApp = Vue.extend({

@@ -136,20 +136,52 @@
         &.is-playing {
             background: $primary-color-a-bg-light;
         }
+        &.has-errors {
+            cursor: not-allowed;
+            background: #fffdea;
+            .primary-content {
+                opacity: 0.5;
+                filter: grayscale(100);
+            }
+        }
         .primary-content {
             padding: 2px 4px;
             display: flex;
+
+            .controls {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                span {
+                    width: 20px;
+                    height: 20px;
+                    padding-top: 2px;
+                    text-align: center;
+                    display: block;
+                    cursor: pointer;
+                    opacity: 0.75;
+                }
+            }
+
             .meta {
                 padding-left: 10px;
                 flex-grow: 1;
             }
             .time {
                 padding-right: 10px;
+                font-size: 90%;
                 small {
                     opacity: 0.5;
                 }
             }
         }
+
+        .errors {
+            padding: 0 0 2px 34px;
+            color: #d47327;
+            font-size: 90%;
+        }
+
         .playhead {
             cursor: crosshair;
             height: 10px;
@@ -191,25 +223,23 @@
 </style>
 
 <template>
-    <div :key="item.key" class="item" v-bind:class="{ 'is-playing': item.is_playing }">
+    <div :key="item.key" class="item" v-bind:class="{ 'is-playing': item.is_playing, 'has-errors': item.errors.length }">
         <div class="primary-content">
             <div class="controls">
                 <span v-if="(! item.is_playing)" @click="$emit('play', item)">
                     <i class="fa fa-play"></i>
                 </span>
                 <span v-else @click="$emit('pause', item)">
-                    <i class="fa fa-stop"></i>
+                    <i class="fa fa-pause"></i>
                 </span>
             </div>
 
             <div class="meta">
-                <!--<span>Playing: {{ item.is_playing }}{{ item.playhead_position }}</span><br>-->
                 <span>{{ item.content.name }}</span>
                 <br>
-                <a href="#">{{ item.content.artist_display }}</a>
+                <a href="#" @click.prevent="$emit('visit', item.content, 'artist')">{{ item.content.artist_display }}</a>
                 |
-                <a href="#">{{ item.content.release_display }}</a>
-
+                <a href="#" @click.prevent="$emit('visit', item.content, 'release')">{{ item.content.release_display }}</a>
             </div>
 
             <div class="time">
@@ -236,9 +266,11 @@
         </div>
 
 
-        <div v-if="item.errors">
+        <div v-if="item.errors" class="errors">
             <div v-for="error in item.errors">
-                {{ error }}
+                <span>Error: {{ error.code }}</span>
+                &mdash;
+                <span>{{ error.info }}</span>
             </div>
         </div>
 

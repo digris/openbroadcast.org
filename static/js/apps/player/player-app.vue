@@ -22,7 +22,6 @@
         }
 
         footer {
-            background: red;
             height: 24px;
         }
 
@@ -86,38 +85,23 @@
 
 
         .item-to-play {
-            //border: 2px solid blue;
             background: #fff;
-            //padding: 4px 4px 4px 24px;
-            margin: 2px 0;
+            margin: 0 0 10px;
+
+            .header {
+                padding: 2px 2px 2px 5px;
+                background: #fff;
+                border-top: 1px solid #eaeaea;
+                border-bottom: 1px solid #eaeaea;
+            }
         }
 
     }
-
-
-
 
     .player-footer {
-        border-top: 1px solid black;
+        border-top: 1px solid #eaeaea;
+        padding: 2px 2px 0 5px;
     }
-
-    /*
-    .autoplay-container {
-        background: $primary-color-b;
-        display: flex;
-        height: 100%;
-        align-items: center;
-        justify-content: center;
-        flex-direction: row;
-        .autoplay-panel {
-            flex-grow: 1;
-            flex-shrink: 1;
-            flex-basis: auto;
-            color: white;
-            text-align: center;
-        }
-    }
-    */
 
     .autoplay-container {
         background: $primary-color-b;
@@ -181,11 +165,11 @@
 
                     <div class="primary-content">
                         <div class="meta">
-                            <a href="#">{{ player_current_media.content.name }}</a>
+                            <a href="#" @click.prevent="visit(player_current_media.content, 'media')">{{ player_current_media.content.name }}</a>
                             <br>
-                            <a href="#">{{ player_current_media.content.artist_display }}</a>
+                            <a href="#" @click.prevent="visit(player_current_media.content, 'artist')">{{ player_current_media.content.artist_display }}</a>
                             <br>
-                            <a href="#">{{ player_current_media.content.release_display }}</a>
+                            <a href="#" @click.prevent="visit(player_current_media.content, 'release')">{{ player_current_media.content.release_display }}</a>
                         </div>
 
                         <div class="visual">
@@ -212,9 +196,11 @@
                     <a v-on:click.prevent="player_play_offset(-1, player_current_media)">
                         <i class="fa fa-step-backward"></i>
                     </a>
+                    <!--
                     <a v-on:click.prevent="player_controls('stop')">
                         <i class="fa fa-stop"></i>
                     </a>
+                    -->
                     <a v-on:click.prevent="player_controls('pause')">
                         <i class="fa fa-pause"></i>
                     </a>
@@ -234,16 +220,20 @@
                 <div v-if="(items_to_play && can_autoplay )" class="items-to-play">
                     <div v-for="item_to_play in items_to_play" v-bind:key="item_to_play.uuid">
                         <div class="item-to-play">
-                            <span class="name">{{ item_to_play.name }}</span>
-                        <media
-                            v-for="item in item_to_play.items"
-                            v-bind:key="item.key"
-                            v-bind:item="item"
-                            @play="player_controls('play', ...arguments)"
-                            @pause="player_controls('pause', ...arguments)"
-                            @seek="player_controls('seek', ...arguments)"
-                        >
-                        </media>
+
+                            <div class="header">
+                                <span class="name">{{ item_to_play.name }} {{ item_to_play.ct }}</span>
+                            </div>
+
+
+                            <media
+                                v-for="item in item_to_play.items"
+                                v-bind:key="item.key"
+                                v-bind:item="item"
+                                @play="player_controls('play', ...arguments)"
+                                @pause="player_controls('pause', ...arguments)"
+                                @seek="player_controls('seek', ...arguments)"
+                                @visit="visit(...arguments)"></media>
                         </div>
                     </div>
                 </div>
