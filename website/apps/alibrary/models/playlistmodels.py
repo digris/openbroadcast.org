@@ -238,10 +238,6 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     def __unicode__(self):
         return self.name
 
-    @property
-    def sorted_items(self):
-        return self.items.order_by('playlistitemplaylist__position')
-
     def get_ct(self):
         return '{}.{}'.format(self._meta.app_label, self.__class__.__name__).lower()
 
@@ -417,6 +413,10 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         return transformation
 
+
+    ###################################################################
+    # legacy version - used in tastypie API (v1)
+    ###################################################################
     def add_items_by_ids(self, ids, ct, timing=None):
 
         from alibrary.models.mediamodels import Media
@@ -458,6 +458,30 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                         pass
 
         self.save()
+
+
+    def add_item(self, item, cue_and_fade=None, commit=True):
+
+        log.debug('add item to playlist: {}'.format(item))
+
+
+        playlist_item = PlaylistItem(
+            content_object=item
+        )
+        playlist_item.save()
+
+
+        playlist_item_playlist = PlaylistItemPlaylist(
+            item=playlist_item,
+            playlist=self,
+            position=self.items.count()
+        )
+        playlist_item_playlist.save()
+
+
+        if commit:
+            self.save()
+
 
     def reorder_items_by_uuids(self, uuids):
 
@@ -619,6 +643,13 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         return MixdownAPIClient().request_for_playlist(self)
 
+    @property
+    def sorted_items(self):
+        return self.items.order_by('playlistitemplaylist__position')
+
+    @cached_property
+    def num_media(self):
+        return self.items.count()
 
     @cached_property
     def mixdown(self):
@@ -632,7 +663,6 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         if self.rotation_date_end and self.rotation_date_end < timezone.now().date():
             return True
 
-
     @cached_property
     def is_upcoming(self):
         if not self.type == 'broadcast':
@@ -640,7 +670,13 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         if self.rotation_date_start and self.rotation_date_start > timezone.now().date():
             return True
 
-
+    @cached_property
+    def series_display(self):
+        if not self.series:
+            return
+        if self.series_number:
+            return '{} #{}'.format(self.series.name, self.series_number)
+        return self.series.name
 
     def save(self, *args, **kwargs):
 

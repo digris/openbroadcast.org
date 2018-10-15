@@ -18,6 +18,7 @@ Vue.use(Vuex);
 import SearchApp from './apps/search-app.vue';
 import PlayerApp from './apps/player/player-app.vue';
 import PlayerControlApp from './apps/player/player-control-app.vue';
+import CollectorApp from './apps/collector/collector-app.vue';
 import Topbar from './element/topbar';
 import ListFilter from './element/listfilter';
 
@@ -60,6 +61,14 @@ $(() => {
         })
     }
 
+    const collector_app_el = document.getElementById('collector_app');
+    if(collector_app_el) {
+        if (DEBUG) console.debug('initialize CollectorApp:', collector_app_el);
+        const _CollectorApp = new Vue({
+            el: collector_app_el,
+            render: h => h(CollectorApp)
+        })
+    }
 
     const _Topbar = new Topbar();
     const _ListFilter = new ListFilter();

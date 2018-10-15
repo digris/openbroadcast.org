@@ -113,7 +113,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-direction: row;
+        flex-direction: column;
         .autoplay-panel {
             cursor: pointer;
             width: 240px;
@@ -130,10 +130,22 @@
             justify-content: center;
             flex-direction: row;
         }
+        .autoplay-info {
+            display: block;
+
+            p {
+                text-align: center;
+                max-width: 320px;
+                padding: 0;
+                margin-top: 20px;
+                color: white;
+            }
+
+        }
     }
 
     .loading-container {
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.9);
         position: absolute;
         top: 0;
         height: 100%;
@@ -144,6 +156,18 @@
         justify-content: center;
         flex-direction: row;
 
+    }
+
+    .fade-enter-active {
+        transition: all .05s;
+    }
+
+    .fade-leave-active {
+        transition: all .3s;
+    }
+
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
     }
 
 
@@ -161,8 +185,8 @@
 
         <header>
             <div class="player-current-item">
-                <div v-if="player_current_media" v-bind:key="player_current_media.content.uuid">
 
+                <div v-if="player_current_media" v-bind:key="player_current_media.content.uuid">
                     <div class="primary-content">
                         <div class="meta">
                             <a href="#" @click.prevent="visit(player_current_media.content, 'media')">{{ player_current_media.content.name }}</a>
@@ -219,49 +243,60 @@
 
                 <div v-if="(items_to_play && can_autoplay )" class="items-to-play">
                     <div v-for="item_to_play in items_to_play" v-bind:key="item_to_play.uuid">
-                        <div class="item-to-play">
+                        <transition name="fade">
+                            <div class="item-to-play">
 
-                            <div class="header">
-                                <span class="name">{{ item_to_play.name }} {{ item_to_play.ct }}</span>
+                                <div class="header">
+                                    <span class="name">{{ item_to_play.name }} {{ item_to_play.ct }}</span>
+                                </div>
+
+                                <media
+                                    v-for="item in item_to_play.items"
+                                    v-bind:key="item.key"
+                                    v-bind:item="item"
+                                    @play="player_controls('play', ...arguments)"
+                                    @pause="player_controls('pause', ...arguments)"
+                                    @seek="player_controls('seek', ...arguments)"
+                                    @visit="visit(...arguments)"></media>
                             </div>
+                        </transition>
+                    </div>
+                </div>
 
 
-                            <media
-                                v-for="item in item_to_play.items"
-                                v-bind:key="item.key"
-                                v-bind:item="item"
-                                @play="player_controls('play', ...arguments)"
-                                @pause="player_controls('pause', ...arguments)"
-                                @seek="player_controls('seek', ...arguments)"
-                                @visit="visit(...arguments)"></media>
+                <transition name="fade">
+                    <div v-if="(! can_autoplay)" class="autoplay-container">
+                        <div @click="player_resume_blocked_autoplay"  class="autoplay-panel">
+                            <span @click="player_resume_blocked_autoplay" class="autoplay-button">
+                                Click to play
+                            </span>
                         </div>
-                    </div>
-                </div>
 
-                <div v-if="(! can_autoplay)" class="autoplay-container">
-                    <div @click="player_resume_blocked_autoplay"  class="autoplay-panel">
-                    <span @click="player_resume_blocked_autoplay" class="autoplay-button">
-                        (( CLICK ME TO PLAY))
-                    </span>
-                        <br>
-                        <span class="autoplay-info">
-                        (( text about autoplay... ))
-                    </span>
-                    </div>
-                </div>
+                        <div class="autoplay-info">
+                            <p>
+                                Your browser prevents audio from automatically playing.<br>
+                                When opening the Open Broadcast player for the first time you have
+                                to manually start the playback.
+                            </p>
+                        </div>
 
-                <div v-if="loading" class="loading-container">
-                    <span class="loading-info">
-                        (( loading ))
-                    </span>
-                </div>
+                    </div>
+                </transition>
+
+                <transition name="fade">
+                    <div v-if="loading" class="loading-container">
+                        <span class="loading-info">
+                            <loader></loader>
+                        </span>
+                    </div>
+                </transition>
 
             </div>
         </main>
 
         <footer>
             <div class="player-footer">
-                (( footer ))
+                (( footer )) <span @click="add_all_to_playlist">Add all</span>
             </div>
         </footer>
 

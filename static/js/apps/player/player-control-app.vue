@@ -19,9 +19,6 @@
             <p>
                 has master: {{ has_master }}
             </p>
-            <ul>
-                <li @click="player_load_from_api">player_load_from_api</li>
-            </ul>
         </div>
     </div>
 </template>

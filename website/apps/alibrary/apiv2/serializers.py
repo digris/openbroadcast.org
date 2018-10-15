@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.conf import settings
 
 from rest_framework import serializers
+from rest_flex_fields import FlexFieldsModelSerializer
 
 from easy_thumbnails.templatetags.thumbnail import thumbnail_url
 from versatileimagefield.serializers import VersatileImageFieldSerializer
@@ -260,13 +261,19 @@ class PlaylistItemPlaylistSerializer(serializers.ModelSerializer):
         ]
 
 
-class PlaylistSerializer(serializers.ModelSerializer):
+class PlaylistSerializer(FlexFieldsModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='api:playlist-detail',
         lookup_field='uuid'
     )
 
     ct = serializers.CharField(source='get_ct')
+
+    image = ImageSerializer(
+        source='main_image',
+    )
+
+    detail_url = serializers.URLField(source='get_absolute_url')
 
     items = PlaylistItemPlaylistSerializer(source='playlistitemplaylist_set', many=True)
 
@@ -279,9 +286,13 @@ class PlaylistSerializer(serializers.ModelSerializer):
             'url',
             'ct',
             'uuid',
+            'detail_url',
             'name',
-            'main_image',
+            'series_display',
+            'image',
             'tags',
             'mixdown_file',
             'items',
+            'num_media',
+            'duration',
         ]

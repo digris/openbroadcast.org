@@ -52,11 +52,11 @@ const PlayerControlApp = Vue.extend({
 
         // TODO: temporary: check if controls should be displayed
         // localStorage.setItem('_dev_player_enabled', 'yes');
-        if(localStorage.getItem('_dev_player_enabled') === 'yes') {
+        if (localStorage.getItem('_dev_player_enabled') === 'yes') {
             this.enabled = true;
         }
 
-        if(this.enabled) {
+        if (this.enabled) {
             console.info('PlayerControlApp enabled (dev mode)');
             // remove play (click) handlers or 'old' player
             $('.playable.popup').removeClass('popup');
@@ -65,11 +65,17 @@ const PlayerControlApp = Vue.extend({
                 e.preventDefault();
                 let el = $(e.currentTarget).parents('[data-uuid]');
                 let ct = el.data('ct');
-                if(ct.substring(0,9) !== 'alibrary.') {
+                let mode = $(e.currentTarget).data('mode');
+                if (ct.substring(0, 9) !== 'alibrary.') {
                     ct = `alibrary.${ct}`;
                 }
+
                 this.send_action({
                     do: 'load',
+                    opts: {
+                        mode: mode,
+                        offset: 0
+                    },
                     items: [
                         {
                             ct: ct,
@@ -210,25 +216,6 @@ const PlayerControlApp = Vue.extend({
         //     if (DEBUG) console.debug('player_control', a, b, c);
         // },
 
-        player_load_from_api: function () {
-            this.send_action({
-                do: 'load',
-                items: [
-                    // {
-                    //     ct: 'alibrary.release',
-                    //     uuid: '0068bec3-f08b-4b98-a476-1550d46c0271'
-                    // },
-                    // {
-                    //     ct: 'alibrary.release',
-                    //     uuid: '3e971e13-bcf6-49e7-ae0f-9f05c29a3bb1'
-                    // },
-                    {
-                        ct: 'alibrary.playlist',
-                        uuid: '197d9367-aa1c-4c7a-91d0-c4ea6875fd86'
-                    },
-                ]
-            })
-        },
 
         player_play_all: function () {
             console.log('player_play_all')
@@ -239,7 +226,7 @@ const PlayerControlApp = Vue.extend({
                     uuid: $(el).data('uuid')
                 };
                 //if (i < 4) {
-                    _items.push(_item)
+                _items.push(_item)
                 //}
 
             });

@@ -209,8 +209,6 @@ def get_filter_data(facets, facets_definition=None):
     else:
         keys = [k for k in dir(facets) if k in _ignore_keys]
 
-    print('get_filter_data keys:', keys)
-
     for key in keys:
 
         # if key in _ignore_keys:

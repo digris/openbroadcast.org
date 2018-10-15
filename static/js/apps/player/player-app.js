@@ -7,6 +7,7 @@ import APIClient from '../../api/client';
 import ItemContainer from './components/item-container.vue';
 import Waveform from './components/waveform.vue'
 import Media from './components/media.vue'
+import Loader from '../../components/loader.vue'
 
 const DEBUG = true;
 
@@ -129,6 +130,7 @@ const PlayerApp = Vue.extend({
         ItemContainer,
         Media,
         Waveform,
+        Loader
     },
     data() {
         return {
@@ -324,6 +326,13 @@ const PlayerApp = Vue.extend({
                 this.loading = true;
                 //this.items_to_play = [];
 
+                const opts = action.opts || {};
+
+                console.warn('opts', opts);
+
+                let mode = opts.mode || 'replace';
+                let offset = opts.offset || 0;
+
 
                 const url = '/api/v2/player/play/';
                 APIClient.put(url, {items: action.items})
@@ -332,12 +341,19 @@ const PlayerApp = Vue.extend({
 
                         this.loading = false;
                         let results = pre_process_loaded_items(response.data.results);
-                        this.items_to_play = results;
 
-                        this.handle_action({
-                            do: 'play',
-                            item: results[0].items[0]
-                        })
+
+                        if (mode === 'replace') {
+                            this.items_to_play = results;
+                            this.handle_action({
+                                do: 'play',
+                                item: results[0].items[offset]
+                            })
+                        }
+
+                        if (mode === 'queue') {
+                            this.items_to_play = this.items_to_play = this.items_to_play.concat(results);
+                        }
 
                     }, (error) => {
                         console.error('Player - error loading item', error);
@@ -392,6 +408,12 @@ const PlayerApp = Vue.extend({
                         // to: 20000,
                         // whileplaying: this.player_whileplaying
                         whileplaying: () => {
+
+                            // TODO: hack - assume browser can autoplay if playing...
+                            if (!this.can_autoplay && this.player.position > 10) {
+                                this.can_autoplay = true;
+                            }
+
                             // item.duration = this.player.duration;
                             item.playhead_position = Math.round(this.player.position / item.duration * 10000) / 100;
                             item.playhead_position_ms = this.player.position;
@@ -448,7 +470,9 @@ const PlayerApp = Vue.extend({
                             item = reset_item(item);
                         });
                     });
+
                     item.is_playing = true;
+
                 }
 
             }
@@ -461,8 +485,13 @@ const PlayerApp = Vue.extend({
         },
 
         player_resume_blocked_autoplay: function () {
-            console.warn('player_resume_blocked_autoplay');
-            this.player.stop().play();
+            console.info('player_resume_blocked_autoplay');
+
+            this.handle_action({
+                do: 'play',
+                item: this.items_to_play[0].items[0]
+            });
+
             this.can_autoplay = true;
         },
 
@@ -477,7 +506,7 @@ const PlayerApp = Vue.extend({
 
             let index = all_media.findIndex((element) => element.key === media.key) + offset;
 
-            if(index < 0 || index > (all_media.length - 1)) {
+            if (index < 0 || index > (all_media.length - 1)) {
                 console.warn('player_play_offset index not available', index);
                 this.player.stop();
                 if (this.player_current_media) {
@@ -562,7 +591,7 @@ const PlayerApp = Vue.extend({
 
                     if (DEBUG) console.debug('visit:', detail_url);
 
-                    if(window.opener) {
+                    if (window.opener) {
                         window.opener.location.href = detail_url;
                         window.opener.focus();
                     }
@@ -577,26 +606,21 @@ const PlayerApp = Vue.extend({
         //     if (DEBUG) console.debug('player_control', a, b, c);
         // },
 
+        add_all_to_playlist: function () {
+            let _items = []
 
-        player_load_from_api: function () {
-            this.send_action({
-                do: 'load',
-                items: [
-                    {
-                        ct: 'alibrary.release',
-                        uuid: '0068bec3-f08b-4b98-a476-1550d46c0271'
-                    },
-                    {
-                        ct: 'alibrary.release',
-                        uuid: '3e971e13-bcf6-49e7-ae0f-9f05c29a3bb1'
-                    },
-                    // {
-                    //     ct: 'alibrary.playlist',
-                    //     uuid: 'd856729f-9549-4411-b445-dcf42be56aca'
-                    // }
-                ]
-            })
+            // TODO: find a better way to set all other items to 'stopped'
+            this.items_to_play.forEach((item_to_play) => {
+                item_to_play.items.forEach((item) => {
+                    _items.push(item)
+                });
+            });
+
+            const _e = new CustomEvent('collector:collect', {detail: _items});
+            window.dispatchEvent(_e);
+
         },
+
 
         player_play_all: function () {
             console.log('player_play_all')
