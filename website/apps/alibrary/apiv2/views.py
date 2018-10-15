@@ -54,7 +54,15 @@ class PlaylistViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
 
             try:
                 obj = apps.get_model(*obj_ct.split('.')).objects.get(uuid=obj_uuid)
-                playlist.add_item(item=obj, commit=False)
+
+                cue_and_fade = {
+                    'fade_in': item.get('fade_in', 0),
+                    'fade_out': item.get('fade_out', 0),
+                    'cue_in': item.get('cue_in', 0),
+                    'cue_out': item.get('cue_out', 0),
+                }
+
+                playlist.add_item(item=obj, cue_and_fade=cue_and_fade, commit=False)
 
             except ObjectDoesNotExist:
                 raise Http404

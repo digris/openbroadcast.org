@@ -459,7 +459,9 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         self.save()
 
-
+    ###################################################################
+    # new version - used in DRF API (v245)
+    ###################################################################
     def add_item(self, item, cue_and_fade=None, commit=True):
 
         log.debug('add item to playlist: {}'.format(item))
@@ -476,6 +478,13 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
             playlist=self,
             position=self.items.count()
         )
+
+        if cue_and_fade:
+            playlist_item_playlist.fade_in = cue_and_fade['fade_in']
+            playlist_item_playlist.fade_out = cue_and_fade['fade_out']
+            playlist_item_playlist.cue_in = cue_and_fade['cue_in']
+            playlist_item_playlist.cue_out = cue_and_fade['cue_out']
+
         playlist_item_playlist.save()
 
 
