@@ -3,6 +3,7 @@ import tabex from 'tabex';
 import canAutoPlay from 'can-autoplay';
 import soundmanager from 'soundmanager2/script/soundmanager2-html5';
 import APIClient from '../../api/client';
+import {visit_by_resource} from '../../utils/visit-by-resource';
 
 import ItemContainer from './components/item-container.vue';
 import Waveform from './components/waveform.vue'
@@ -578,28 +579,29 @@ const PlayerApp = Vue.extend({
         /**********************************************************
          * visit item detail
          **********************************************************/
-        visit: function (content, scope) {
-            if (DEBUG) console.debug('visit:', content, scope);
-
-            const url = (scope === 'media') ? content.url : content[scope];
-
-            APIClient.get(url)
-                .then((response) => {
-                    console.log(response.data);
-
-                    const detail_url = response.data.detail_url;
-
-                    if (DEBUG) console.debug('visit:', detail_url);
-
-                    if (window.opener) {
-                        window.opener.location.href = detail_url;
-                        window.opener.focus();
-                    }
-
-                }, (error) => {
-                    console.error('Player - error loading item', error);
-                });
-        },
+        visit: visit_by_resource,
+        // visit: function (content, scope) {
+        //     if (DEBUG) console.debug('visit:', content, scope);
+        //
+        //     const url = (scope === undefined) ? content.url : content[scope];
+        //
+        //     APIClient.get(url)
+        //         .then((response) => {
+        //             console.log(response.data);
+        //
+        //             const detail_url = response.data.detail_url;
+        //
+        //             if (DEBUG) console.debug('visit:', detail_url);
+        //
+        //             if (window.opener) {
+        //                 window.opener.location.href = detail_url;
+        //                 window.opener.focus();
+        //             }
+        //
+        //         }, (error) => {
+        //             console.error('Player - error loading item', error);
+        //         });
+        // },
 
 
         // player_control: function (a, b, c) {
@@ -607,7 +609,7 @@ const PlayerApp = Vue.extend({
         // },
 
         add_all_to_playlist: function () {
-            let _items = []
+            let _items = [];
 
             // TODO: find a better way to set all other items to 'stopped'
             this.items_to_play.forEach((item_to_play) => {

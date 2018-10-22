@@ -40,27 +40,43 @@
             min-width: 150px;
             min-height: 150px;
             width: 100vw;
-            height: 100vh;
-        }
-        .modal-topbar {
-            background: #000;
+            height: 100%;
+
             display: flex;
-            height: 28px;
-            .modal-topbar-title {
-                flex-grow: 1;
+            flex-direction: column;
+
+            header {
+
             }
-            .modal-topbar-menu {
+
+            main {
+                flex: 1;
+                overflow: auto;
+            }
+
+            .modal-topbar {
+                background: #000;
                 display: flex;
-                a {
-                    background: $primary-color-b;
-                    color: #fff;
-                    //line-height: 28px;
-                    display: block;
-                    padding: 6px 10px 0 10px;
-                    text-transform: uppercase;
+                height: 28px;
+                .modal-topbar-title {
+                    flex-grow: 1;
+                }
+                .modal-topbar-menu {
+                    display: flex;
+                    a {
+                        background: $primary-color-b;
+                        color: #fff;
+                        //line-height: 28px;
+                        display: block;
+                        padding: 6px 10px 0 10px;
+                        text-transform: uppercase;
+                    }
                 }
             }
+
+
         }
+
     }
 
     // transitions
@@ -82,15 +98,19 @@
     <transition name="modal">
         <div class="modal-mask" @click="close" v-show="show">
             <div class="modal-container" v-bind:class="scope" @click.stop>
-                <div class="modal-topbar">
-                    <div class="modal-topbar-title">
-                        <slot name="title"></slot>
+                <header>
+                    <div class="modal-topbar">
+                        <div class="modal-topbar-title">
+                            <slot name="title"></slot>
+                        </div>
+                        <div class="modal-topbar-menu">
+                            <a @click="close" class="">Close (esc)</a>
+                        </div>
                     </div>
-                    <div class="modal-topbar-menu">
-                        <a @click="close" class="">Close (esc)</a>
-                    </div>
-                </div>
-                <slot name="content"></slot>
+                </header>
+                <main>
+                    <slot name="content"></slot>
+                </main>
             </div>
         </div>
     </transition>

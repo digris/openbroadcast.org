@@ -1,21 +1,60 @@
 <script>
 
+    import {tween} from 'shifty';
     import Loader from '../../../components/loader.vue';
+    import Visual from '../../../components/visual.vue';
     import {template_filters} from '../../../utils/template-filters';
 
     export default {
         props: [
-            'item'
+            'item',
+            'actions',
         ],
+        data() {
+            return {
+                number: 10000,
+                tweened_num_media: 0,
+                tweened_duration: 0
+            }
+        },
         components: {
-            Loader
+            Loader,
+            Visual
         },
         computed: {
-
+            animated_duration: function () {
+                return (this.tweened_duration === 0) ? this.item.duration : this.tweened_duration;
+            },
+            animated_num_media: function () {
+                return this.tweened_num_media;
+            },
         },
-        methods: {
-
+        watch: {
+            number: function (newValue, oldValue) {
+                tween({
+                    from: {n: oldValue},
+                    to: {n: newValue},
+                    duration: 800,
+                    easing: 'easeOutQuad',
+                    step: (state) => {
+                        this.tweened_num_media = state.n.toFixed(0)
+                    }
+                })
+            },
+            'item.duration': function (newValue, oldValue) {
+                tween({
+                    from: {n: oldValue},
+                    to: {n: newValue},
+                    duration: 500,
+                    easing: 'easeOutQuad',
+                    step: (state) => {
+                        console.log(state);
+                        this.tweened_duration = state.n.toFixed(0)
+                    }
+                })
+            }
         },
+        methods: {},
         filters: template_filters,
     }
 </script>
@@ -26,7 +65,6 @@
     .item {
         display: flex;
         position: relative;
-        //margin-bottom: 6px;
         padding: 6px;
         border-bottom: 1px solid #444444;
 
@@ -37,63 +75,48 @@
             background: rgba($primary-color-b, 0.2);
         }
 
-        &.is-updated {
-            // animation: highlight-change-bg .5s;
-            .counts span {
-                animation: highlight-change 3s;
-            }
-        }
         .visual {
-            width: 64px;
+            width: 52px;
             figure {
                 margin: 0;
             }
         }
         .information {
             flex-grow: 1;
-            padding: 6px 10px 0;
+            padding: 0 10px 0;
             color: #fff;
+            .name {
+                color: #fff;
+                text-decoration: none;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
         }
         .actions {
+
+            .button-group {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
             .button {
                 border: 1px solid #a5a5a5;
                 text-transform: uppercase;
                 color: #a5a5a5;
                 transition: border-radius 0.2s;
+                padding: 0 12px;
                 &:hover {
                     background: $primary-color-b;
                     border-color: $primary-color-b;
                     color: #fff;
                     border-radius: 3px;
-
+                    text-decoration: none;
                 }
             }
         }
-
-        @keyframes highlight-change-bg {
-            0% {
-                background: transparent;
-            }
-            70% {
-                background: $primary-color-b;
-            }
-            100% {
-                background: transparent;
-            }
-        }
-
-        @keyframes highlight-change {
-            0% {
-                background: $primary-color-b;
-            }
-            80% {
-                background: $primary-color-b;
-            }
-            100% {
-                background: transparent;
-            }
-        }
-
 
         // TODO: make loading container more generic
         .loading-container {
@@ -125,34 +148,29 @@
 <template>
     <div :key="item.uuid" class="item" v-bind:class="{ 'is-loading': item.loading, 'is-updated': item.updated }">
         <div class="visual">
-            <figure>
-                <img v-if="(item.image)" v-bind:src="item.image"/>
-                <img v-else
-                     src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                     width="120"
-                     height="120">
-            </figure>
+            <visual v-bind:url="item.image"></visual>
         </div>
         <div class="information">
-            <span class="name">
-                 {{ item.name }}
-            </span>
+            <a class="name" href="#" @click.prevent="$emit('visit', item)">{{ item.name }}</a>
             <div v-if="item.series_display">
                 <span>{{ item.series_display }}</span>
             </div>
 
             <div class="counts">
-                <span>{{ item.duration | ms_to_time }}</span>
+                <span>{{ animated_duration | ms_to_time }}</span>
                 &mdash;
                 <span>{{ item.num_media }} tracks</span>
             </div>
-
         </div>
         <div class="actions">
             <div class="button-group">
-                <a @click="$emit('add', item)"
+                <a v-if="(actions.indexOf('add') > -1)" @click="$emit('add', item)"
                    class="button hollow">
                     Add
+                </a>
+                <a v-if="(actions.indexOf('visit') > -1)" @click="$emit('visit', item)"
+                   class="button hollow">
+                    Visit playlist
                 </a>
             </div>
         </div>

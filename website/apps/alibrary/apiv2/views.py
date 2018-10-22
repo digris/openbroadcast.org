@@ -17,6 +17,29 @@ from ..models import Artist, Release, Media, Playlist
 
 log = logging.getLogger(__name__)
 
+
+# TODO: find a better place...
+def add_items_to_playlist(items, playlist):
+
+    for item in items:
+
+        obj_ct = item['content'].get('ct')
+        obj_uuid = item['content'].get('uuid')
+
+        log.debug('item requested to collect: {} {}'.format(obj_ct, obj_uuid))
+        obj = apps.get_model(*obj_ct.split('.')).objects.get(uuid=obj_uuid)
+
+        cue_and_fade = {
+            'fade_in': item.get('fade_in', 0),
+            'fade_out': item.get('fade_out', 0),
+            'cue_in': item.get('cue_in', 0),
+            'cue_out': item.get('cue_out', 0),
+        }
+
+        playlist.add_item(item=obj, cue_and_fade=cue_and_fade, commit=False)
+
+
+
 class PlaylistViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
     queryset = Playlist.objects.all().order_by('-created')
@@ -40,37 +63,11 @@ class PlaylistViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
         initialize scanning & redirect to detail view
         """
         playlist = self.get_object()
-        print('***********************')
-        print(self.request.data)
-
         items_to_collect = self.request.data.get('items_to_collect', [])
 
-        for item in items_to_collect:
-
-            obj_ct = item['content'].get('ct')
-            obj_uuid = item['content'].get('uuid')
-
-            log.debug('item requested to collect: {} {}'.format(obj_ct, obj_uuid))
-
-            try:
-                obj = apps.get_model(*obj_ct.split('.')).objects.get(uuid=obj_uuid)
-
-                cue_and_fade = {
-                    'fade_in': item.get('fade_in', 0),
-                    'fade_out': item.get('fade_out', 0),
-                    'cue_in': item.get('cue_in', 0),
-                    'cue_out': item.get('cue_out', 0),
-                }
-
-                playlist.add_item(item=obj, cue_and_fade=cue_and_fade, commit=False)
-
-            except ObjectDoesNotExist:
-                raise Http404
+        add_items_to_playlist(items_to_collect, playlist)
 
         playlist.save()
-
-        # import time
-        # time.sleep(2.0)
 
         serializer = PlaylistSerializer(
             playlist,
@@ -83,11 +80,19 @@ class PlaylistViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
         """
         initialize scanning & redirect to detail view
         """
+        name = self.request.data.get('name')
+        type = self.request.data.get('type')
+        items_to_collect = self.request.data.get('items_to_collect', [])
+
         playlist = Playlist(
-            name=self.request.data.get('name'),
+            name=name,
             user=request.user,
-            type='basket'
+            type=type
         )
+
+        playlist.save()
+
+        add_items_to_playlist(items_to_collect, playlist)
 
         playlist.save()
 

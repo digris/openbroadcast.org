@@ -5926,6 +5926,10 @@ shelljs@^0.8.0:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
+shifty@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/shifty/-/shifty-2.6.0.tgz#843f25e6523cd3663dc02b550bb7d96e469602b1"
+
 shvl@^1.3.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/shvl/-/shvl-1.3.1.tgz#6c20a17b4a20b08e9f8cab60c50a92229fcc176e"

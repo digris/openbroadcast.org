@@ -77,7 +77,7 @@
         cursor: crosshair;
         position: relative;
         height: 30px;
-        background: black;
+        //background: black;
         .waveform-rubberband {
             position: absolute;
             top: 0;

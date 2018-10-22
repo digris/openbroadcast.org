@@ -21,6 +21,7 @@
         "postcss-cli": "^5.0.0",
         "postcss-loader": "^2.1.5",
         "sass-loader": "^7.0.1",
+        "shifty": "^2.6.0",
         "soundmanager2": "https://github.com/scottschiller/SoundManager2#sm2-html5only",
         "store": "^2.0.12",
         "style-loader": "^0.21.0",

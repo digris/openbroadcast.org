@@ -8,17 +8,17 @@
     }
 
     .player-container {
-        display: flex; /* displays flex-items (children) inline */
-        flex-direction: column; /* stacks them vertically */
-        height: 100%; /* needs to take the parents height, alternative: body {display: flex} */
+        display: flex;
+        flex-direction: column;
+        height: 100%;
 
         header {
             background: #fff;
         }
 
         main {
-            flex: 1; /* takes the remaining height of the "container" div */
-            overflow: auto; /* to scroll just the "main" div */
+            flex: 1;
+            overflow: auto;
         }
 
         footer {
@@ -43,7 +43,7 @@
             }
         }
         .plahead {
-            height: 24px;
+            height: 30px;
             img {
                 height: 32px;
                 width: 100%;
@@ -189,7 +189,7 @@
                 <div v-if="player_current_media" v-bind:key="player_current_media.content.uuid">
                     <div class="primary-content">
                         <div class="meta">
-                            <a href="#" @click.prevent="visit(player_current_media.content, 'media')">{{ player_current_media.content.name }}</a>
+                            <a href="#" @click.prevent="visit(player_current_media.content)">{{ player_current_media.content.name }}</a>
                             <br>
                             <a href="#" @click.prevent="visit(player_current_media.content, 'artist')">{{ player_current_media.content.artist_display }}</a>
                             <br>

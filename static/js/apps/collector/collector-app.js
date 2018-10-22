@@ -2,15 +2,20 @@ import Vue from 'vue';
 import APIClient from '../../api/client';
 import debounce from 'debounce';
 import Modal from '../../components/modal.vue';
+import Visual from '../../components/visual.vue';
+import Loader from '../../components/loader.vue';
 import Playlist from './components/playlist.vue'
 import {template_filters} from '../../utils/template-filters';
+import {visit_by_resource} from '../../utils/visit-by-resource';
 
 const DEBUG = true;
 
 const CollectorApp = Vue.extend({
     components: {
         Modal,
-        Playlist
+        Loader,
+        Playlist,
+        Visual
     },
     data() {
         return {
@@ -21,7 +26,12 @@ const CollectorApp = Vue.extend({
             query_string: '',
             playlists: [],
 
-            new_playlist_name: ''
+            create_playlist_data: {
+                name: '',
+                type: 'playlist',
+                errors: [],
+                created: null
+            }
         }
     },
     mounted: function () {
@@ -33,6 +43,7 @@ const CollectorApp = Vue.extend({
         window.addEventListener('collector:collect', (e) => {
             if (DEBUG) console.info('collector:collect', e.detail);
             this.items_to_collect = e.detail;
+            this.scope = 'list';
             this.show_modal = true;
             this.load_playlists();
         }, false);
@@ -42,8 +53,19 @@ const CollectorApp = Vue.extend({
     filters: template_filters,
     computed: {},
     methods: {
-        set_scope: function (scope) {
-            this.scope = scope;
+
+        ///////////////////////////////////////////////////////////////
+        // generic
+        ///////////////////////////////////////////////////////////////
+        close: function () {
+            this.show_modal = false;
+        },
+
+        ///////////////////////////////////////////////////////////////
+        // add to playlist
+        ///////////////////////////////////////////////////////////////
+        set_scope_list: function () {
+            this.scope = 'list';
         },
         update_query_string: function (e) {
             const q = e.target.value;
@@ -80,14 +102,14 @@ const CollectorApp = Vue.extend({
 
             playlist.num_media = playlist.num_media + 1;
             playlist.loading = true;
-            playlist.updated = false;
+            //playlist.updated = false;
 
 
             APIClient.put(playlist.url, {items_to_collect: items_to_collect})
                 .then((response) => {
                     if (index > -1) {
                         this.$set(this.playlists, index, response.data)
-                        response.data.updated = true;
+                        //response.data.updated = true;
                     }
                 }, (error) => {
                     console.error('error putting data', error);
@@ -95,39 +117,73 @@ const CollectorApp = Vue.extend({
                 });
         },
 
-        update_new_playlist_name: function (e) {
-            this.new_playlist_name = e.target.value;
+        ///////////////////////////////////////////////////////////////
+        // playlist create
+        ///////////////////////////////////////////////////////////////
+        set_scope_create: function () {
+            this.scope = 'create';
+
+            let initial = {
+                name: '',
+                type: this.create_playlist_data.type,
+                errors: [],
+                created: null
+            };
+
+            this.create_playlist_data = initial;
+
+            setTimeout(() => {
+                this.$refs.playlist_create_name.focus();
+            }, 1)
+
         },
         create_playlist: function () {
-            const name = this.new_playlist_name;
+
+            let data = this.create_playlist_data;
+
+            // validate
+            data.errors = [];
+
+            if (!data.name) {
+                data.errors.push("Name required.");
+            }
+
+            if (data.errors.length > 0) {
+                console.warn('form errors:', data.errors);
+                return;
+            }
+
 
             const url = '/api/v2/library/playlist/';
             const payload = {
-                name: name,
+                name: data.name,
+                type: data.type,
+                items_to_collect: this.items_to_collect
             };
 
+            this.loading = true;
+
+            /**/
             APIClient.post(url, payload)
                 .then((response) => {
                     console.log(response.data);
 
-                    //this.add_items_to_playlist(response.data, this.items_to_collect);
-
-
-                    this.scope = 'list';
-                    this.query_string = '';
+                    this.create_playlist_data = {
+                        name: '',
+                        type: this.create_playlist_data.type,
+                        errors: [],
+                        created: response.data
+                    };
+                    this.loading = false;
                     this.load_playlists();
-
-
                 }, (error) => {
                     console.error('error posting data', error);
-                    playlist.loading = true;
+                    this.loading = false;
                 });
 
-        },
 
-        close: function () {
-            this.show_modal = false;
-        }
+        },
+        visit: visit_by_resource,
     }
 });
 

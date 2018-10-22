@@ -1,0 +1,628 @@
+body
+  font-size: 12px
+  font-family: $baseFontFamily
+  font-weight: 300
+  line-height: 18px
+  color: #222
+  background: $body-color-bg
+  margin: 0
+  padding: 0 0 0 0
+  overflow: auto
+  height: 100%
+
+  #wrap
+    min-height: 100%
+    height: 100%
+    margin: 0 auto -80px
+
+  #push
+    height: 130px
+
+
+  #cms_toolbar-toggle
+    top: 40px
+
+  &.toolbar-visible
+    #cms_toolbar-toggle
+      top: 0
+    .navbar-fixed-top
+      top: 43px
+    .container.main
+      margin-top: 103px
+
+div.container.main
+  margin-top: 70px
+
+.topnav
+  margin-bottom: 75px
+
+
+.subhead
+  .subnav
+    padding: 0 0 0 0
+
+
+.dl-horizontal
+  dt
+    float: left
+    clear: left
+    width: 120px
+  dd
+    margin-left: 130px
+
+
+#footer
+  min-height: 130px
+  background-color: #000
+
+  .row.meta
+    margin-bottom: 10px
+
+  h4
+    color: #a5a5a5
+    margin-bottom: 12px
+
+  p, ul, ol, dl
+    font-size: 13px
+    color: #999
+    a, a.external
+      color: #999
+      text-decoration: underline
+      &:hover
+        color: $primary-color-b
+
+    a.external
+      padding-left: 0
+      background-image: none
+
+  .container
+    padding: 20px 0 0 0
+
+  p.address
+    margin: 0
+    padding-right: 0
+
+  dl.contact
+    dt, dd
+      color: #999
+    dt
+      opacity: 1.0
+
+  p.credit,
+  p.version
+    margin: 0
+    padding-right: 0
+    color: #777
+    span.key
+      padding-right: 4px
+    span.value
+      padding-right: 14px
+    a, a.external
+      color: #999
+
+// heading new
+header.subhead
+  margin-top: 50px
+
+
+
+#heading
+
+  display: none
+
+  position: relative
+  width: 830px
+  padding: 12px 0 24px
+
+  .page-title
+    float: left
+    width: 330px
+    h1
+      margin: 0 0 0 0 !important
+      padding: 0 0 0 0 !important
+      font-size: 32px
+      line-height: 32px
+      text-align: right
+      color: $primary-color-a
+
+  .global-search
+    float: left
+    width: 500px
+    form
+      margin: 0 0 0 0 !important
+      padding: 0 0 0 0 !important
+      input
+        border: none
+        height: 19px
+        padding: 6px
+
+      .ac-results
+        background: #333
+        position: absolute
+        top: 44px
+        width: 830px
+        a
+          color: white
+          padding: 8px !important
+
+  &.heading-alt
+
+    padding-bottom: 12px
+    margin-bottom: 12px
+    border-bottom: 1px solid #eee
+
+    .page-title
+      float: left
+      width: 330px
+      h1
+        margin: 0 0 0 0 !important
+        padding: 0 0 0 0 !important
+        font-size: 32px
+        line-height: 32px
+        text-align: left
+        color: $primary-color-b
+        font-weight: bold
+
+        span.extra
+          font-weight: normal !important
+          text-transform: lowercase
+
+
+#modnav
+  //margin: 0 250px 6px 0
+  // UNBORDERING
+  //border-bottom: 1px solid #999
+  //border-bottom: 1px solid #fff
+  ul
+    margin: 0 0 10px
+    clear: both
+  li
+    height: 28px
+    //list-style: none
+    float: left
+    a
+      font-size: $toolbar-font-size
+      text-transform: uppercase
+      color: #666
+      text-decoration: none
+      padding: 0 7px 0 7px
+      border-right: 1px solid #999
+      letter-spacing: 1px
+
+    &:last-child a
+      border-right: none
+
+    &.on, &.selected
+      a
+        color: $primary-color-a
+        text-decoration: none
+        padding: 0 7px 0 7px
+      &:hover
+        color: $primary-color-a
+
+    &.tagcloud-toggle
+      float: right
+
+
+.item_inner
+  .notes
+    margin: 24px 0 0 0
+    .header
+      cursor: pointer
+      border-top: 1px solid #CCCCCC
+      border-bottom: 1px dotted #CCCCCC
+      padding: 2px 0 2px 0
+      background-repeat: no-repeat
+      span
+        font-weight: bold
+        padding-left: 20px
+    &.close .header
+      background-image: url(/static/img/prototype/box_handler.png)
+    &.open .header
+      background-image: url(/static/img/prototype/box_handler_on.png)
+    &.close .description
+      display: none
+    &.open .description
+      display: block
+    .description
+      padding: 2px 10px 2px 20px
+
+
+/* ---------- reseting tags ----------
+
+ul, li, table, form, p, h1, h2, h3
+  margin: 0
+  padding: 0
+  text-indent: 0
+
+ul
+  list-style-type: none
+  &.text
+    margin: 8px 0 10px 0 !important
+    padding: 0 !important
+    li
+      margin: 0 !important
+      padding: 0 180px 0 19px
+
+
+table
+  border-collapse: collapse
+  empty-cells: show
+  td
+    vertical-align: top
+
+img
+  border: none
+
+input, textarea
+  margin: 0
+  padding: 0
+
+
+/* ---------- general classes ----------
+a
+  color: $primary-color-b
+  text-decoration: none
+  cursor: pointer
+  &:hover
+    text-decoration: underline
+  &.noline:hover
+    text-decoration: none
+  &.extern
+    padding-right: 17px
+  &.mail
+    padding-left: 19px
+
+p
+  color: #666
+  padding-right: 25px
+
+.on
+  color: $primary-color-a
+
+.clear
+  clear: both !important
+  border: 0 !important
+  padding: 0 !important
+  td
+    border: 0 !important
+    padding: 0 !important
+h1
+  font-size: 26px
+  //font-weight:normal;
+  margin-bottom: 30px !important
+
+h2
+  color: #333333
+  font-size: 16px
+  font-weight: normal
+
+h3
+  font-size: 12px
+  font-weight: bold
+  text-transform: uppercase
+
+h4
+  font-size: 12px
+  font-weight: normal
+  text-transform: uppercase
+  margin: 0
+  padding: 0
+
+.text
+  color: #666 !important
+  padding-right: 50px
+
+.light
+  color: #c0e5c4
+
+#tooltip
+  display: none
+  position: absolute
+  background: #ff00ff
+  padding: 5px
+
+
+table
+
+  border-bottom: 1px solid #ddd
+  padding-bottom: 5px
+
+  .table
+    //border-top:1px solid #bbb;
+    color: #666
+    h3
+      color: #333
+    &.noline, td.noline
+      border: none
+    tr.error
+      background-color: #fedede
+    td.error
+      color: #ff0000
+    th
+      padding: 4px 6px 2px 6px
+      font-style: italic
+      color: #666666
+      font-weight: 300
+
+      &.icon
+        padding: 2px 0 0 6px
+      &.selected
+        padding-right: 21px
+        background-repeat: no-repeat
+        background-position: right
+        background-color: #ccc
+        text-decoration: none
+    td
+      color: #666
+      background: $body-color-shaded-bg
+      padding: 6px 6px 5px 6px
+      border-bottom: 4px solid $body-color-bg
+      line-height: 19px
+
+    tr:hover td
+      background: $hover-bg-color !important
+
+  .table span
+    color: #999
+
+  tr > td
+    border-top: none !important
+
+
+  &.none
+    border: none !important
+    height: auto !important
+    background: none !important
+    color: #000000
+    padding: 0 !important
+    td, tr
+      border: none !important
+      height: auto !important
+      background: none !important
+      color: #000000
+      padding: 0 !important
+      &:hover
+        border: none !important
+        height: auto !important
+        background: none !important
+        color: #000000
+        padding: 0 !important
+  &.event
+    width: 100% !important
+  &.forum
+    background: #f5f5f5
+    td
+      padding: 8px 30px 8px 0
+      &.exp, &.expanded
+        background-position: 0 5px
+
+
+  .formaction
+    padding: 25px 0 30px 5px
+    border-bottom: none
+  .formaction_box
+    /*|s|
+    padding: 15px 15px 15px 5px
+    border-bottom: none
+  div.time
+    float: right
+    color: #999
+
+.selectable tr
+  &:hover
+    background-color: $hover-bg-color
+    cursor: pointer
+  &.locked
+    &:hover
+      background-color: $hover-bg-color
+      cursor: default
+
+a#tagcloud_inline_toggle
+  background-image: url(/static/img/base/tagcloud.open_close.png)
+  background-repeat: no-repeat
+  background-position: right top
+  padding: 0 18px 0 0 !important
+  &.active
+    background-position: right -16px
+
+.tagcloud
+  a
+    display: block
+    float: left
+    padding: 1px 5px 1px 5px
+    margin: 2px 2px 0 0
+    background: #f1f1f1
+    border: 1px solid #d9ccf0
+    &.on
+      background: #d4f3da
+      border: 1px solid #a9e1b4
+  &.inline a
+    display: block
+    float: left
+    padding: 1px 5px 1px 5px
+    margin: 2px 2px 0 0
+    background: transparent
+    border: none
+    text-transform: uppercase
+
+    span
+      font-size: 80%
+      padding: 0 0 0 4px
+
+
+div.tagcloud.inline
+  //border-bottom: 1px solid #BBBBBB
+  margin-bottom: 14px
+  padding-bottom: 2px !important
+  overflow: hidden
+  position: relative
+
+  .cloud-container
+    width: 800px
+
+  ul.tag-level
+    float: right
+    margin: 0
+    padding: 0 4px 4px 4px
+    background: $body-color-bg
+    position: absolute
+    top: 0
+    right: 0
+    a
+      padding: 0
+      margin: 0
+
+.tagcloud.inline a
+
+  &.on
+    background: #d4f3da
+
+  &:hover
+    text-decoration: none
+    color: #ffffff
+    background-color: $primary-color-b
+
+  &.on
+    background: $primary-color-a
+    color: white
+
+  &.tag-hidden
+    display: none
+
+  &.tag1
+    font-size: 84%
+  &.tag2
+    font-size: 88%
+  &.tag3
+    font-size: 92%
+  &.tag4
+    font-size: 98%
+  &.tag5
+    font-size: 108%
+  &.tag6
+    font-size: 112%
+  &.tag7
+    font-size: 114%
+  &.tag8
+    font-size: 118%
+  &.tag9
+    font-size: 124%
+  &.tag10
+    font-size: 130%
+
+.broadcasttime
+  border-spacing: 2px
+  border-collapse: separate
+  td
+    text-align: center
+    width: 14%
+    padding: 2px 2px 0 2px !important
+    background: #ddd
+    border: 1px solid #bbb
+    color: $primary-color-b
+    cursor: pointer
+    background-image: url(/static/img/prototype/white_50.png)
+    &.on
+      border: 1px solid #666
+      color: #333
+      background-image: none
+
+
+//.button
+//  display: inline
+//  padding: 3px 10px 3px 10px
+//  margin: 0 5px 0 0
+//  color: #f4ebfd
+//  background: url(/static/img/prototype/formbut_bg_a.png)
+//  border: 1px solid #774488
+//  border-top: 1px solid #8a63d9
+//
+//a.button
+//  color: #f4ebfd
+//  &:hover
+//    background: url(/static/img/prototype/formbut_bg_a_on.png)
+//    border: 1px solid #669966
+//    border-top: 1px solid #3db502
+//    color: #ddfedd
+//    text-decoration: none
+//
+//.button
+//  &.off
+//    background: url(/static/img/prototype/formbut_bg.png)
+//    border: 1px solid #888
+//    border-top: 1px solid #999
+//    color: #fff
+//    &:hover
+//      background: url(/static/img/prototype/formbut_bg_off.png)
+//      border: 1px solid #666
+//      border-top: 1px solid #888
+//      color: #fff
+//  &.second
+//    background: #d4d2f7
+//    border: 1px solid #d4d2f7
+//    //border-top:1px solid #999;
+//    color: $primary-color-b
+//    &:hover
+//      background: url(/static/img/prototype/formbut_bg_off.png)
+//      border: 1px solid #666
+//      border-top: 1px solid #888
+//      color: #fff
+
+.right
+  float: right
+
+.nomargin
+  margin: 0 !important
+
+.nopadding
+  padding: 0 !important
+
+.hidden
+  display: none
+
+.drag
+  position: absolute
+  padding: 5px 10px 5px 10px
+  border: 1px solid #666
+  background: #eee
+  width: 160px
+
+
+
+/* jquery ui - needed?
+.selectable .ui-selected
+  background-color: #e4ffe4
+  a
+    color: #555
+  &:hover
+    background-color: #e4ffe4
+
+.ui-dialog
+  padding: 0
+  border: 1px solid #666
+
+.dialog-content
+  padding: 10px
+
+.ui-dialog-content
+  padding: 0 !important
+
+.ui-widget-header
+  border: 0
+  border-bottom: 1px solid #999
+  padding: 0
+  //background:#ccc;
+
+.ui-dialog-titlebar
+  padding: 3px 0 0 7px !important
+  background-color: #666 !important
+
+.ui-dialog-title
+  //text-transform:none !important;
+  font-size: 11px
+
+.box .ui-widget-header
+  background: #ccc !important
+
+

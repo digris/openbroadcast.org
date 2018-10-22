@@ -15,7 +15,8 @@
         data() {
             return {
                 seek_active: false,
-                seek_position: null
+                seek_position: null,
+                is_hover: false
             }
         },
         mounted: function () {
@@ -27,6 +28,11 @@
             },
         },
         methods: {
+
+
+
+
+
             seek: function (item, e) {
                 const x = e.clientX;
                 //const w = e.target.getBoundingClientRect().width;
@@ -66,6 +72,7 @@
     @import '../../../../sass/site/variables';
 
     .item {
+        position: relative;
         color: #5a5a5a;
         background: #fafafa;
         border-bottom: 1px solid #eaeaea;
@@ -108,6 +115,32 @@
                     opacity: 0.5;
                 }
             }
+            .actions {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                span {
+                    width: 20px;
+                    height: 20px;
+                    padding-top: 2px;
+                    text-align: center;
+                    display: block;
+                    cursor: pointer;
+                    opacity: 0.75;
+                }
+            }
+
+
+            .__expandable-actions {
+                position: absolute;
+                background: red;
+                height: 100%;
+                top: 0;
+                right: 0;
+                z-index: 20;
+                width: 20px;
+            }
+
         }
         .errors {
             padding: 0 0 2px 34px;
@@ -154,7 +187,7 @@
 </style>
 
 <template>
-    <div :key="item.key" class="item" v-bind:class="{ 'is-playing': item.is_playing, 'has-errors': item.errors.length }">
+    <div :key="item.key" class="item" @mouseover="is_hover=true" @mouseleave="is_hover=false" v-bind:class="{ 'is-playing': item.is_playing, 'has-errors': item.errors.length }">
         <div class="primary-content">
             <div class="controls">
                 <span v-if="(! item.is_playing)" @click="$emit('play', item)">
@@ -177,12 +210,22 @@
                 {{ item.duration | ms_to_time }}
             </div>
 
-            <div class="actions">
-                <span @click="collect(item, $event)">((collect))</span>
+            <!--
+            <div class="expandable-actions">
+                ...
             </div>
+            -->
+
+            <!---->
+            <div class="actions">
+                <span @click="collect(item, $event)">
+                    <i class="fa fa-plus"></i>
+                </span>
+            </div>
+
         </div>
 
-        <div v-if="item.errors" class="errors">
+        <div v-if="item.errors.length" class="errors">
             <div v-for="error in item.errors">
                 <span>Error: {{ error.code }}</span>
                 &mdash;

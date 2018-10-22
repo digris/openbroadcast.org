@@ -49,7 +49,7 @@ def playlist_list(request, **kwargs):
         )
 
     serializer = PlaylistSerializer(
-        qs[0:20],
+        qs[0:100],
         many=True,
         context={'request': request}
     )
