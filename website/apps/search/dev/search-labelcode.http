@@ -1,4 +1,4 @@
-POST http://localhost:9201/labels/_search
+POST http://localhost:9200/releases/_search
 Content-Type: application/json
 
 {
@@ -10,7 +10,7 @@ Content-Type: application/json
             "must": [
                 {
                     "term": {
-                        "labelcode": "LC1000250"
+                        "name": "tetra"
                     }
                 }
             ]

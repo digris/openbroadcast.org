@@ -76,7 +76,13 @@ class FprintAPIClient(object):
             'artist_name': obj.artist.name if obj.artist else None
         }
 
-        r = requests.put(url, json=data, timeout=2.0)
+
+        # TODO: add exception handling
+        try:
+            r = requests.put(url, json=data, timeout=2.0)
+        except requests.exceptions.ConnectionError as e:
+            log.warning('unable to process request: {}'.format(e))
+            return
 
         if not r.status_code in [200, 201]:
             log.warning('unable to ingest code for {} - status: {} - response: {}'.format(

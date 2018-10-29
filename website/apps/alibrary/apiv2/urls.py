@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
 
     url(r'^playlist/$', views.playlist_list, name='playlist-list'),
+    url(r'^playlist/collect/$', views.playlist_list_collect, name='playlist-list-collect'),
     url(r'^playlist/(?P<uuid>[0-9A-Fa-f-]+)/$', views.playlist_detail, name='playlist-detail'),
 
     url(r'^artist/$', views.artist_list, name='artist-list'),

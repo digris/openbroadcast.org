@@ -90,8 +90,11 @@ class MediaPreflightAPIClient(object):
         log.debug('request media preflight at: {}'.format(url))
 
         # TODO: add exception handling
-
-        r = requests.get(url, timeout=REQUEST_TIMEOUT, headers=self.headers)
+        try:
+            r = requests.get(url, timeout=REQUEST_TIMEOUT, headers=self.headers)
+        except requests.exceptions.ConnectionError as e:
+            log.warning('unable to process request: {}'.format(e))
+            return
 
         if not r.status_code == 200:
             log.debug('entry does not exist > PUT')

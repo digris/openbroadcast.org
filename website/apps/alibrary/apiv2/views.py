@@ -4,11 +4,9 @@ from __future__ import unicode_literals
 import logging
 
 from django.apps import apps
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404, HttpResponseBadRequest
+from django.db.models import Q
 
 from rest_framework import mixins
-from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -48,14 +46,50 @@ class PlaylistViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
 
     def list(self, request, *args, **kwargs):
         queryset = Playlist.objects.all().order_by('-created')
-        serializer = PlaylistSerializer(
-            queryset,
-            many=True,
-            context={'request': request}
-        )
-        return Response({
-            'results': serializer.data
-        })
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+    def list_collect(self, request, *args, **kwargs):
+        """
+        list current user 'collectable' playlists
+        (private & public playlist)
+        """
+
+        q = request.GET.get('q', '').strip()
+
+        queryset = Playlist.objects.filter(
+            user=request.user,
+            type__in=['basket', 'playlist']
+        ).order_by('-updated')
+
+        if q != '':
+            queryset = queryset.filter(
+                Q(name__istartswith=q) | Q(series__name__istartswith=q)
+            )
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+        # serializer = PlaylistSerializer(
+        #     queryset,
+        #     many=True,
+        #     context={'request': request}
+        # )
+        # return Response({
+        #     'results': serializer.data
+        # })
 
 
     def add_items(self, request, uuid=None, *args, **kwargs):
@@ -108,6 +142,9 @@ class PlaylistViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
 playlist_list = PlaylistViewSet.as_view({
     'get': 'list',
     'post': 'create',
+})
+playlist_list_collect = PlaylistViewSet.as_view({
+    'get': 'list_collect',
 })
 playlist_detail = PlaylistViewSet.as_view({
     'get': 'retrieve',

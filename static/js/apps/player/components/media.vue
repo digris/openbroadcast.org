@@ -3,7 +3,7 @@
     import Waveform from './waveform.vue';
     import {template_filters} from '../../../utils/template-filters';
 
-    const DEBUG = true;
+    const DEBUG = false;
 
     export default {
         props: [
@@ -28,19 +28,11 @@
             },
         },
         methods: {
-
-
-
-
-
             seek: function (item, e) {
                 const x = e.clientX;
                 //const w = e.target.getBoundingClientRect().width;
                 const w = window.innerWidth;
                 const p = Math.round((x / w) * 100);
-
-                // console.debug('$emit', 'seek', p, item);
-
                 this.$emit('seek', item, p);
             },
             seek_move: function(e) {
@@ -56,7 +48,9 @@
                 // console.log('seek_leave > remove listener', e);
                 document.removeEventListener('mousemove', this.seek_move);
             },
-
+            remove: function (item, e) {
+                this.$emit('remove', item);
+            },
             // TODO: just testing...
             collect: function(item, e) {
                 const _e = new CustomEvent('collector:collect', {detail: [item] });
@@ -110,6 +104,7 @@
             }
             .time {
                 padding-right: 10px;
+                padding-top: 8px;
                 font-size: 90%;
                 small {
                     opacity: 0.5;
@@ -218,6 +213,9 @@
 
             <!---->
             <div class="actions">
+                <span @click="remove(item, $event)">
+                    <i class="fa fa-ban"></i>
+                </span>
                 <span @click="collect(item, $event)">
                     <i class="fa fa-plus"></i>
                 </span>

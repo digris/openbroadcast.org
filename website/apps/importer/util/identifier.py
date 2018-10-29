@@ -554,146 +554,147 @@ class Identifier(object):
         
         """
         releases = []
-        for e in obj.results_acoustid:
-            recording_id = e['id']
-            log.info('recording mb_id: %s' % recording_id)
+        if obj.results_acoustid:
+            for e in obj.results_acoustid:
+                recording_id = e['id']
+                log.info('recording mb_id: %s' % recording_id)
 
-            """
-            search query e.g.:
-            http://www.musicbrainz.org/ws/2/recording/?query=rid:1e701b4e-2b6e-4509-af29-b8df2cdc8225%20AND%20number:3&fmt=json
-            """
+                """
+                search query e.g.:
+                http://www.musicbrainz.org/ws/2/recording/?query=rid:1e701b4e-2b6e-4509-af29-b8df2cdc8225%20AND%20number:3&fmt=json
+                """
 
-            url = 'http://%s/ws/2/recording/?fmt=json&query=rid:%s' % (MUSICBRAINZ_HOST, recording_id)
+                url = 'http://%s/ws/2/recording/?fmt=json&query=rid:%s' % (MUSICBRAINZ_HOST, recording_id)
 
-            if tracknumber and not skip_tracknumber:
-                url = '%s%s%s' % (url, '%20AND%20number:', tracknumber)
-
-
-            #mdata = MutagenFile(obj.file.path)
-            #qdur = (float(mdata.info.length * 1000) / 2000.0)
-            #print 'QDUR: %s' % qdur
-            #url = '%s%s%s' % (url, '%20AND%20qdur:', qdur)
+                if tracknumber and not skip_tracknumber:
+                    url = '%s%s%s' % (url, '%20AND%20number:', tracknumber)
 
 
-
-            """    
-            if releasedate:
-                url = '%s%s%s' % (url, '%20AND%20date:', releasedate)
-            """
-
-            log.debug('API url for request: %s' % url)
-            r = requests.get(url, timeout=5)
-            result = r.json()
-
-            if 'recordings' in result:
-
-                log.info('recording on API mb_id: %s' % recording_id)
-                if len(result['recordings']) > 0:
-
-                    if 'releases' in result['recordings'][0]:
-
-                        log.info('got releases on api: %s' % len(result['recordings'][0]['releases']))
-
-                        """
-                        fix missing dates
-                        """
-                        for r in result['recordings'][0]['releases']:
-                            # dummy-date - sorry, none comes first else.
-                            if 'date' not in r:
-                                r['date'] = '9999'
-
-
-                        """
-                        try to get the first one, by date
-                        """
-                        try:
-                            sorted_releases = sorted(result['recordings'][0]['releases'], key=lambda k: k['date'])
-                            release = sorted_releases[0]
-                            log.debug('Sorting OK!')
-                            # reset dummy-date
-                            if release['date'] == '9999':
-                                release['date'] = None
-                            log.info('First Date: %s' % release['date'])
-
-                        except Exception as e:
-                            log.warning('Unable to sort by date: %s' % e)
-                            sorted_releases = result['recordings'][0]['releases']
-
-                        #sorted_releases = result['recording'][0]['releases']
+                #mdata = MutagenFile(obj.file.path)
+                #qdur = (float(mdata.info.length * 1000) / 2000.0)
+                #print 'QDUR: %s' % qdur
+                #url = '%s%s%s' % (url, '%20AND%20qdur:', qdur)
 
 
 
+                """    
+                if releasedate:
+                    url = '%s%s%s' % (url, '%20AND%20date:', releasedate)
+                """
 
-                        """
-                        1. implementation
-                        pull out a selection of gathered releases.
-                        basically we limit releases with equal names
-                        """
+                log.debug('API url for request: %s' % url)
+                r = requests.get(url, timeout=5)
+                result = r.json()
 
-                        """
-                        selected_releases = []
-                        if len(sorted_releases) > 1:
-                            # get releases with unique name
-                            count = 0
-                            current_names = []
-                            for t_rel in sorted_releases:
-                                if (not t_rel['title'] in current_names and count < LIMIT_MB_RELEASES):
-                                    log.debug('adding new release name to results: %s' % t_rel['title'])
-                                    current_names.append(t_rel['title'])
-                                    selected_releases.append(t_rel)
-                                    count += 1
-                                else:
-                                    pass
-                                    #log.debug('release name already in results: %s' % t_rel['title'])
+                if 'recordings' in result:
 
-                        else:
-                            selected_releases.append(sorted_releases[0])
-                        """
+                    log.info('recording on API mb_id: %s' % recording_id)
+                    if len(result['recordings']) > 0:
 
+                        if 'releases' in result['recordings'][0]:
 
-                        """
-                        2. implementation
-                        pull out a selection of gathered releases.
-                        basically we limit releases with equal names
-                        """
-                        selected_releases = []
+                            log.info('got releases on api: %s' % len(result['recordings'][0]['releases']))
 
-                        if len(sorted_releases) > 1:
-                            named_releases = {}
-                            for t_rel in sorted_releases:
-                                if (not t_rel['title'] in named_releases):
-                                    named_releases[t_rel['title']] = []
-                                    named_releases[t_rel['title']].append(t_rel)
-                                    #log.debug('adding new release name: "%s"' % t_rel['title'])
-                                else:
-                                    named_releases[t_rel['title']].append(t_rel)
-                                    #log.debug('appending to existing: "%s"' % t_rel['title'])
-
-                            for k, v in named_releases.iteritems():
-                                #log.debug('got %s releases for "%s"' % (len(v), k))
-                                selected_releases += v[0:LIMIT_EQUAL_NAMES]
-
-                            #selected_releases.append(sorted_releases[0])
-
-                        else:
-                            selected_releases.append(sorted_releases[0])
+                            """
+                            fix missing dates
+                            """
+                            for r in result['recordings'][0]['releases']:
+                                # dummy-date - sorry, none comes first else.
+                                if 'date' not in r:
+                                    r['date'] = '9999'
 
 
-
-
-
-
-                        for selected_release in selected_releases:
-
-                            selected_release['artist'] = result['recordings'][0]['artist-credit'][0]['artist']
-                            selected_release['recording'] = result['recordings'][0]
+                            """
+                            try to get the first one, by date
+                            """
                             try:
-                                selected_release['recordings']['releases'] = None
-                            except Exception as e:
-                                pass
-                                #print e
+                                sorted_releases = sorted(result['recordings'][0]['releases'], key=lambda k: k['date'])
+                                release = sorted_releases[0]
+                                log.debug('Sorting OK!')
+                                # reset dummy-date
+                                if release['date'] == '9999':
+                                    release['date'] = None
+                                log.info('First Date: %s' % release['date'])
 
-                            releases.append(selected_release)
+                            except Exception as e:
+                                log.warning('Unable to sort by date: %s' % e)
+                                sorted_releases = result['recordings'][0]['releases']
+
+                            #sorted_releases = result['recording'][0]['releases']
+
+
+
+
+                            """
+                            1. implementation
+                            pull out a selection of gathered releases.
+                            basically we limit releases with equal names
+                            """
+
+                            """
+                            selected_releases = []
+                            if len(sorted_releases) > 1:
+                                # get releases with unique name
+                                count = 0
+                                current_names = []
+                                for t_rel in sorted_releases:
+                                    if (not t_rel['title'] in current_names and count < LIMIT_MB_RELEASES):
+                                        log.debug('adding new release name to results: %s' % t_rel['title'])
+                                        current_names.append(t_rel['title'])
+                                        selected_releases.append(t_rel)
+                                        count += 1
+                                    else:
+                                        pass
+                                        #log.debug('release name already in results: %s' % t_rel['title'])
+    
+                            else:
+                                selected_releases.append(sorted_releases[0])
+                            """
+
+
+                            """
+                            2. implementation
+                            pull out a selection of gathered releases.
+                            basically we limit releases with equal names
+                            """
+                            selected_releases = []
+
+                            if len(sorted_releases) > 1:
+                                named_releases = {}
+                                for t_rel in sorted_releases:
+                                    if (not t_rel['title'] in named_releases):
+                                        named_releases[t_rel['title']] = []
+                                        named_releases[t_rel['title']].append(t_rel)
+                                        #log.debug('adding new release name: "%s"' % t_rel['title'])
+                                    else:
+                                        named_releases[t_rel['title']].append(t_rel)
+                                        #log.debug('appending to existing: "%s"' % t_rel['title'])
+
+                                for k, v in named_releases.iteritems():
+                                    #log.debug('got %s releases for "%s"' % (len(v), k))
+                                    selected_releases += v[0:LIMIT_EQUAL_NAMES]
+
+                                #selected_releases.append(sorted_releases[0])
+
+                            else:
+                                selected_releases.append(sorted_releases[0])
+
+
+
+
+
+
+                            for selected_release in selected_releases:
+
+                                selected_release['artist'] = result['recordings'][0]['artist-credit'][0]['artist']
+                                selected_release['recording'] = result['recordings'][0]
+                                try:
+                                    selected_release['recordings']['releases'] = None
+                                except Exception as e:
+                                    pass
+                                    #print e
+
+                                releases.append(selected_release)
 
         # TODO: think about limits
         releases = releases[0:LIMIT_MB_RELEASES]

@@ -21,7 +21,7 @@ windows:
     - shell_command:
         - npm run watch
     - shell_command:
-        - ~/.dotfiles/bin/elasticsearch -Ehttp.port=9201
+        - ~/.dotfiles/bin/elasticsearch -Ehttp.port=9200
     - cd website
 
 

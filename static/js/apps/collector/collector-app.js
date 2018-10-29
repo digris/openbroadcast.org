@@ -75,10 +75,12 @@ const CollectorApp = Vue.extend({
         },
         load_playlists: debounce(function () {
 
-            const url = '/api/v2/collector/playlist/';
+            //const url = '/api/v2/collector/playlist/';
+            const url = '/api/v2/library/playlist/collect/';
             const payload = {
                 q: this.query_string,
-                fields: ['url', 'uuid', 'name', 'series_display', 'num_media', 'duration', 'image'].join(',')
+                limit: 20,
+                fields: ['url', 'uuid', 'name', 'item_appearances', 'series_display', 'num_media', 'duration', 'image'].join(',')
             };
 
             $.ajax(url, {
@@ -102,18 +104,15 @@ const CollectorApp = Vue.extend({
 
             playlist.num_media = playlist.num_media + 1;
             playlist.loading = true;
-            //playlist.updated = false;
-
 
             APIClient.put(playlist.url, {items_to_collect: items_to_collect})
                 .then((response) => {
                     if (index > -1) {
                         this.$set(this.playlists, index, response.data)
-                        //response.data.updated = true;
                     }
                 }, (error) => {
                     console.error('error putting data', error);
-                    playlist.loading = true;
+                    playlist.loading = false;
                 });
         },
 

@@ -8,6 +8,7 @@
     export default {
         props: [
             'item',
+            'items_to_collect',
             'actions',
         ],
         data() {
@@ -22,6 +23,15 @@
             Visual
         },
         computed: {
+            in_playlist: function() {
+              if(! this.items_to_collect || this.items_to_collect.length !== 1) {
+                  return false
+              }
+
+              const content = this.items_to_collect[0].content;
+              return this.item.item_appearances.includes(`${content.ct}:${content.uuid}`);
+
+            },
             animated_duration: function () {
                 return (this.tweened_duration === 0) ? this.item.duration : this.tweened_duration;
             },
@@ -37,7 +47,7 @@
                     duration: 800,
                     easing: 'easeOutQuad',
                     step: (state) => {
-                        this.tweened_num_media = state.n.toFixed(0)
+                        this.tweened_num_media = state.n.toFixed(0);
                     }
                 })
             },
@@ -48,8 +58,7 @@
                     duration: 500,
                     easing: 'easeOutQuad',
                     step: (state) => {
-                        console.log(state);
-                        this.tweened_duration = state.n.toFixed(0)
+                        this.tweened_duration = state.n.toFixed(0);
                     }
                 })
             }
@@ -151,11 +160,13 @@
             <visual v-bind:url="item.image"></visual>
         </div>
         <div class="information">
-            <a class="name" href="#" @click.prevent="$emit('visit', item)">{{ item.name }}</a>
+            <a class="name" href="#" @click.prevent="$emit('visit', item)">
+                <i v-if="in_playlist" class="fa fa-star"></i>
+                {{ item.name }}
+            </a>
             <div v-if="item.series_display">
                 <span>{{ item.series_display }}</span>
             </div>
-
             <div class="counts">
                 <span>{{ animated_duration | ms_to_time }}</span>
                 &mdash;

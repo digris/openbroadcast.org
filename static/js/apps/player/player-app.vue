@@ -98,10 +98,12 @@
 
     }
 
+    /*
     .player-footer {
         border-top: 1px solid #eaeaea;
         padding: 2px 2px 0 5px;
     }
+    */
 
     .autoplay-container {
         background: $primary-color-b;
@@ -242,12 +244,12 @@
             <div class="player-content">
 
                 <div v-if="(items_to_play && can_autoplay )" class="items-to-play">
-                    <div v-for="item_to_play in items_to_play" v-bind:key="item_to_play.uuid">
+                    <div v-for="item_to_play in items_to_play" v-bind:key="item_to_play.uuid" v-if="(item_to_play.items && item_to_play.items.length > 0)">
                         <transition name="fade">
                             <div class="item-to-play">
 
                                 <div class="header">
-                                    <span class="name">{{ item_to_play.name }} {{ item_to_play.ct }}</span>
+                                    <span class="name">{{ item_to_play.name }}<!-- {{ item_to_play.ct }}--></span>
                                 </div>
 
                                 <media
@@ -257,6 +259,7 @@
                                     @play="player_controls('play', ...arguments)"
                                     @pause="player_controls('pause', ...arguments)"
                                     @seek="player_controls('seek', ...arguments)"
+                                    @remove="player_controls('remove', ...arguments)"
                                     @visit="visit(...arguments)"></media>
                             </div>
                         </transition>
@@ -295,9 +298,13 @@
         </main>
 
         <footer>
+            <playerfooter v-bind:items_to_play="items_to_play"></playerfooter>
+
+            <!--
             <div class="player-footer">
                 (( footer )) <span @click="add_all_to_playlist">Add all</span>
             </div>
+            -->
         </footer>
 
     </div>

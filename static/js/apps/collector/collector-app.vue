@@ -320,6 +320,7 @@
                             v-for="item in playlists"
                             v-bind:key="item.uuid"
                             v-bind:item="item"
+                            v-bind:items_to_collect="items_to_collect"
                             v-bind:actions="['add']"
                             @visit="visit(...arguments)"
                             @add="add_item_to_playlist(...arguments)"></playlist>
@@ -333,6 +334,7 @@
                             <playlist
                                 v-bind:key="create_playlist_data.created.uuid"
                                 v-bind:item="create_playlist_data.created"
+                                v-bind:items_to_collect="items_to_collect"
                                 v-bind:actions="['visit']"
                                 @visit="visit(...arguments)">
                                 </playlist>

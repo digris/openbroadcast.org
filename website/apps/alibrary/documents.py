@@ -94,7 +94,7 @@ class LabelDocument(DocType):
         if hasattr(instance, 'main_image') and instance.main_image:
             try:
                 return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
-            except InvalidImageFormatError:
+            except (InvalidImageFormatError, AttributeError):
                 pass
 
 
@@ -195,7 +195,7 @@ class ArtistDocument(DocType):
         if hasattr(instance, 'main_image') and instance.main_image:
             try:
                 return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
-            except InvalidImageFormatError:
+            except (InvalidImageFormatError, AttributeError):
                 pass
 
     def prepare_year_start(self, instance):
@@ -298,7 +298,7 @@ class ReleaseDocument(DocType):
         if hasattr(instance, 'main_image') and instance.main_image:
             try:
                 return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
-            except InvalidImageFormatError:
+            except (InvalidImageFormatError, AttributeError):
                 pass
 
     def prepare_num_media(self, instance):
@@ -430,7 +430,7 @@ class MediaDocument(DocType):
         if hasattr(instance, 'release') and hasattr(instance.release, 'main_image'):
             try:
                 return get_thumbnailer(instance.release.main_image).get_thumbnail(THUMBNAIL_OPT).url
-            except InvalidImageFormatError:
+            except (InvalidImageFormatError, AttributeError):
                 pass
 
     def prepare_license(self, instance):
@@ -552,7 +552,7 @@ class PlaylistDocument(DocType):
         if hasattr(instance, 'main_image') and instance.main_image:
             try:
                 return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
-            except InvalidImageFormatError:
+            except (InvalidImageFormatError, AttributeError):
                 pass
 
     def prepare_target_duration(self, instance):

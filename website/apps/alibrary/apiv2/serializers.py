@@ -279,6 +279,12 @@ class PlaylistSerializer(FlexFieldsModelSerializer):
 
     tags = serializers.StringRelatedField(many=True)
 
+    item_appearances = serializers.SerializerMethodField()
+    def get_item_appearances(self, obj, **kwargs):
+        items = ['{}:{}'.format(co.content_object.get_ct(), co.content_object.uuid) for co in obj.get_items()]
+        return items
+
+
     class Meta:
         model = Playlist
         depth = 1
@@ -293,6 +299,7 @@ class PlaylistSerializer(FlexFieldsModelSerializer):
             'tags',
             'mixdown_file',
             'items',
+            'item_appearances',
             'num_media',
             'duration',
         ]

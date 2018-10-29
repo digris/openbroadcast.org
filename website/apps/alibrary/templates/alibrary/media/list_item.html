@@ -14,8 +14,9 @@
             <li class="square">
                 <a href="#"
                    class="playable popup{% if not perms.alibrary.play_media %} disabled{% endif %}"
-                   data-ct="media_set"
-                   data-offset="{{ forloop.counter0 }}"
+                   data-ct="media"
+                   data-uuid="{{ item.uuid }}"
+                   data-offset="0"
                    data-mode="replace"
                    title="{% trans "Play" %}">
                     <i class="icon icon-play"></i>
@@ -26,11 +27,12 @@
                 <a href="#"
                    class="playable popup{% if not perms.alibrary.play_media %} disabled{% endif %}"
                    data-ct="media"
+                   data-uuid="{{ item.uuid }}"
                    data-resource_uri="{{ item.get_api_url }}"
                    data-offset="0"
                    data-mode="queue"
                    title="{% trans "Queue" %}">
-                    <i class="icon icon-reorder"></i></a>
+                    <i class="icon icon-reorder"></i>
                 </a>
             </li>
         </ul>

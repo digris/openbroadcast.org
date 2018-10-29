@@ -8,6 +8,7 @@ import {visit_by_resource} from '../../utils/visit-by-resource';
 import ItemContainer from './components/item-container.vue';
 import Waveform from './components/waveform.vue'
 import Media from './components/media.vue'
+import Playerfooter from './components/playerfooter.vue'
 import Loader from '../../components/loader.vue'
 
 const DEBUG = true;
@@ -20,7 +21,6 @@ const pre_process_loaded_items = (results) => {
         item_to_play.items.forEach((item, j) => {
             item = pre_process_item(item);
             item.key = `${item.content.uuid}-${i}-${item_to_play.uuid}-${j}`;
-            console.warn(item.key)
         });
     });
 
@@ -105,15 +105,6 @@ const audio_level_for_position = (item, position) => {
         level = (1 - (position - item.fade_from) / (item.to - item.fade_from));
     }
 
-
-    // if(position <= item.from || position >= item.to) {
-    //     return 0;
-    // }
-    //
-    // if(position > item.fade_to || position < item.fade_from) {
-    //     return 1;
-    // }
-
     return level
 };
 
@@ -130,6 +121,7 @@ const PlayerApp = Vue.extend({
     components: {
         ItemContainer,
         Media,
+        Playerfooter,
         Waveform,
         Loader
     },
@@ -155,25 +147,6 @@ const PlayerApp = Vue.extend({
         player_playing: function () {
             return (this.player && this.player.playState === 1)
         },
-        // media_list: function() {
-        //     let all_media = [];
-        //     this.items_to_play.forEach((item_to_play) => {
-        //         item_to_play.items.forEach((media) => {
-        //             all_media.push(media)
-        //         });
-        //     });
-        //     return all_media;
-        // },
-        // next_sound: function (media) {
-        //     // if no media given lookup is relative to 'player_current_media'
-        //
-        //     media = (media === undefined) ? this.player_current_media : media;
-        //
-        //     let index = this.media_list.findIndex((element) => {return element.media.uuid === media.uuid});
-        //
-        //     return index;
-        //
-        // },
     },
     filters: {
         sec_to_time: function (value) {
@@ -223,15 +196,6 @@ const PlayerApp = Vue.extend({
             receiver: 'slave',
             signal: 'ready'
         });
-
-        // set a periodic heartbeat - just in case...
-        // setInterval(() => {
-        //     this.heartbeat_send({
-        //         sender: 'master',
-        //         receiver: 'slave',
-        //         signal: 'ready'
-        //     });
-        // }, 6000);
 
         // inform the 'slave(s)' in case of destruction
         window.addEventListener('beforeunload', (e) => {
@@ -323,17 +287,11 @@ const PlayerApp = Vue.extend({
 
             if (action.do === 'load') {
                 // load playlist data from API
-
                 this.loading = true;
-                //this.items_to_play = [];
 
                 const opts = action.opts || {};
-
-                console.warn('opts', opts);
-
                 let mode = opts.mode || 'replace';
                 let offset = opts.offset || 0;
-
 
                 const url = '/api/v2/player/play/';
                 APIClient.put(url, {items: action.items})
@@ -373,7 +331,6 @@ const PlayerApp = Vue.extend({
             if (action.do === 'pause') {
                 this.player.pause();
 
-                /**/
                 if (action.item) {
                     action.item.is_playing = false;
                 }
@@ -405,9 +362,6 @@ const PlayerApp = Vue.extend({
                         //url: 'http://local.openbroadcast.org:8080/media-asset/format/427d5dbc-6997-40a8-bebd-faa9a056ec7f/default.mp3',
                         //url: 'https://www.openbroadcast.org/media-asset/format/b92f4fc9-24e6-41e2-af9e-ac1fc8dbab84/default.mp3',
                         url: item.content.assets.stream,
-                        // from: item.from,
-                        // to: 20000,
-                        // whileplaying: this.player_whileplaying
                         whileplaying: () => {
 
                             // TODO: hack - assume browser can autoplay if playing...
@@ -476,6 +430,30 @@ const PlayerApp = Vue.extend({
 
                 }
 
+            }
+
+            if (action.do === 'remove') {
+
+                // TODO: find a better way to remove item
+                this.items_to_play.forEach((item_to_play) => {
+                    item_to_play.items.forEach((item, index) => {
+                        if(item.key === action.item.key) {
+                            console.warn('delete:', item.key, index)
+                            if(item.is_playing) {
+                                alert('cannot remove playing item')
+                            } else {
+                                Vue.delete(item_to_play.items, index)
+                            }
+                        }
+                    });
+                });
+
+                // console.debug(this.items_to_play[0].items[3])
+                //
+                // Vue.delete(this.items_to_play[0].items, 3)
+
+                //this.items_to_play = []
+                //console.debug('remove', action.item.key)
             }
 
         },
@@ -608,20 +586,20 @@ const PlayerApp = Vue.extend({
         //     if (DEBUG) console.debug('player_control', a, b, c);
         // },
 
-        add_all_to_playlist: function () {
-            let _items = [];
-
-            // TODO: find a better way to set all other items to 'stopped'
-            this.items_to_play.forEach((item_to_play) => {
-                item_to_play.items.forEach((item) => {
-                    _items.push(item)
-                });
-            });
-
-            const _e = new CustomEvent('collector:collect', {detail: _items});
-            window.dispatchEvent(_e);
-
-        },
+        // add_all_to_playlist: function () {
+        //     let _items = [];
+        //
+        //     // TODO: find a better way to set all other items to 'stopped'
+        //     this.items_to_play.forEach((item_to_play) => {
+        //         item_to_play.items.forEach((item) => {
+        //             _items.push(item)
+        //         });
+        //     });
+        //
+        //     const _e = new CustomEvent('collector:collect', {detail: _items});
+        //     window.dispatchEvent(_e);
+        //
+        // },
 
 
         player_play_all: function () {

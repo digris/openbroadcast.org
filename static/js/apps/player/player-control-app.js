@@ -50,7 +50,11 @@ const PlayerControlApp = Vue.extend({
         if (DEBUG) console.groupEnd();
 
 
-        // TODO: temporary: check if controls should be displayed
+        /**********************************************************
+         * temporary for parallel legacy / ng situation
+         **********************************************************/
+
+        // temporary: check if controls should be displayed
         // localStorage.setItem('_dev_player_enabled', 'yes');
         if (localStorage.getItem('_dev_player_enabled') === 'yes') {
             this.enabled = true;
@@ -58,14 +62,18 @@ const PlayerControlApp = Vue.extend({
 
         if (this.enabled) {
             console.info('PlayerControlApp enabled (dev mode)');
+
             // remove play (click) handlers or 'old' player
             $('.playable.popup').removeClass('popup');
+
             // re-bind
             $(document).on('click', '.playable', (e) => {
                 e.preventDefault();
-                let el = $(e.currentTarget).parents('[data-uuid]');
+                //let el = $(e.currentTarget).parents('[data-uuid]');
+                let el = $(e.currentTarget);
                 let ct = el.data('ct');
-                let mode = $(e.currentTarget).data('mode');
+                let mode = el.data('mode');
+                let offset = el.data('offset') || 0;
                 if (ct.substring(0, 9) !== 'alibrary.') {
                     ct = `alibrary.${ct}`;
                 }
@@ -74,7 +82,7 @@ const PlayerControlApp = Vue.extend({
                     do: 'load',
                     opts: {
                         mode: mode,
-                        offset: 0
+                        offset: offset
                     },
                     items: [
                         {
@@ -136,15 +144,6 @@ const PlayerControlApp = Vue.extend({
             //lsbridge.send(CONTROLS_NAMESPACE, payload);
             exchange.emit('player.controls', payload);
         },
-        // controls_receive: function (payload) {
-        //     if (DEBUG) console.debug('controls_receive', payload);
-        //     if (this.is_slave) {
-        //         return;
-        //     }
-        //     if (DEBUG) console.debug('controls_receive', payload);
-        //     this.handle_action(payload.action);
-        // },
-
 
         /**********************************************************
          * send action to player (from 'local' or 'remote' source)
@@ -212,23 +211,14 @@ const PlayerControlApp = Vue.extend({
             })
         },
 
-        // player_control: function (a, b, c) {
-        //     if (DEBUG) console.debug('player_control', a, b, c);
-        // },
-
-
         player_play_all: function () {
-            console.log('player_play_all')
             let _items = [];
-            $('[data-ct="release"][data-uuid]').each((i, el) => {
+            $('.playable[data-mode="replace"][data-ct="release"][data-uuid]').each((i, el) => {
                 let _item = {
                     ct: 'alibrary.release',
                     uuid: $(el).data('uuid')
                 };
-                //if (i < 4) {
                 _items.push(_item)
-                //}
-
             });
 
             this.send_action({
