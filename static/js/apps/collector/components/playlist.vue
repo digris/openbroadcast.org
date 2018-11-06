@@ -11,16 +11,16 @@
             'items_to_collect',
             'actions',
         ],
+        components: {
+            Loader,
+            Visual
+        },
         data() {
             return {
                 number: 10000,
                 tweened_num_media: 0,
                 tweened_duration: 0
             }
-        },
-        components: {
-            Loader,
-            Visual
         },
         computed: {
             in_playlist: function() {

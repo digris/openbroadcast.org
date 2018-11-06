@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import tabex from 'tabex';
 import canAutoPlay from 'can-autoplay';
+import NoSleep from 'nosleep.js';
 import soundmanager from 'soundmanager2/script/soundmanager2-html5';
 import APIClient from '../../api/client';
 import {visit_by_resource} from '../../utils/visit-by-resource';
@@ -14,6 +15,7 @@ import Loader from '../../components/loader.vue'
 const DEBUG = true;
 
 const exchange = tabex.client();
+const noSleep = new NoSleep();
 
 const pre_process_loaded_items = (results) => {
 
@@ -182,10 +184,10 @@ const PlayerApp = Vue.extend({
         canAutoPlay.audio().then(({result}) => {
             if (result === true) {
                 this.can_autoplay = true;
-                console.warn('can autoplay: YES')
+                if (DEBUG) console.info('can autoplay: YES')
             } else {
                 this.can_autoplay = false;
-                console.warn('can autoplay: NO')
+                if (DEBUG) console.warn('can autoplay: NO')
             }
         });
 
@@ -281,7 +283,7 @@ const PlayerApp = Vue.extend({
         handle_action: function (action) {
             if (DEBUG) console.debug('handle_action', action);
             //this.action_payloads.push(action);
-            this.action_payloads = [action]
+            this.action_payloads = [action];
 
             console.info(this.player);
 
@@ -311,7 +313,7 @@ const PlayerApp = Vue.extend({
                         }
 
                         if (mode === 'queue') {
-                            this.items_to_play = this.items_to_play = this.items_to_play.concat(results);
+                            this.items_to_play = this.items_to_play.concat(results);
                         }
 
                     }, (error) => {
@@ -448,30 +450,27 @@ const PlayerApp = Vue.extend({
                     });
                 });
 
-                // console.debug(this.items_to_play[0].items[3])
-                //
-                // Vue.delete(this.items_to_play[0].items, 3)
-
-                //this.items_to_play = []
-                //console.debug('remove', action.item.key)
             }
 
         },
 
         player_whileplaying: function () {
-            console.log(this.player.position, this.player.duration)
-            console.log(this.player)
+            console.log(this.player.position, this.player.duration);
+            console.log(this.player);
         },
 
         player_resume_blocked_autoplay: function () {
-            console.info('player_resume_blocked_autoplay');
 
-            this.handle_action({
-                do: 'play',
-                item: this.items_to_play[0].items[0]
-            });
+            if(this.items_to_play.length > 0 && this.items_to_play[0].items.length > 0) {
+                this.handle_action({
+                    do: 'play',
+                    item: this.items_to_play[0].items[0]
+                });
+            }
 
             this.can_autoplay = true;
+
+            noSleep.enable();
         },
 
         player_play_offset: function (offset, media) {
@@ -512,27 +511,14 @@ const PlayerApp = Vue.extend({
          **********************************************************/
         initialize_player: function () {
             if (DEBUG) console.debug('initialize_player');
-            // initialize soundmanager
             soundManager.setup({
-                //preferFlash: false,
                 forceUseGlobalHTML5Audio: true,
                 html5PollingInterval: 100,
                 debugMode: DEBUG,
-                onready: (a, b, c, d) => {
-
-                    // just simulating delay...
-                    //setTimeout(() => {
+                onready: () => {
                     this.player = soundManager.createSound({
                         multiShot: false,
                         id: 'player_app_player',
-                        // whileplaying: self.backend.whileplaying,
-                        // onbufferchange: self.backend.onbufferchange,
-                        // onfinish: self.backend.onfinish
-
-                        // onload: (a, b, c) => {
-                        //     console.error('onload:', a, b, c);
-                        // }
-
                     });
                 }
             });

@@ -8,7 +8,7 @@ edge_ngram_tokenizer = tokenizer(
     'edge_ngram_tokenizer',
     type='edge_ngram',
     min_gram=1,
-    max_gram=12,
+    max_gram=20,
     token_chars=['letter', 'digit']
 )
 

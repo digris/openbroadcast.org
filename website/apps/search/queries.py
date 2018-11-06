@@ -2,24 +2,7 @@
 from __future__ import unicode_literals
 
 from django_elasticsearch_dsl.search import Search
-from elasticsearch_dsl import Q as ESQ
 from base.utils.fold_to_ascii import fold
-from alibrary.documents import ArtistDocument, LabelDocument
-
-ALL_DOCUMENT_CLASSES = [
-    ArtistDocument,
-    LabelDocument
-]
-
-# class GlobalSearch(FacetedSearch):
-#     doc_types = ALL_DOCUMENT_CLASSES
-#     fields = ['name', 'description']
-#
-# def global_search_query(query=None):
-#     s = GlobalSearch(query)
-#
-#     pass
-
 
 def format_search_results(results):
 

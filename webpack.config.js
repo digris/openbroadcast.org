@@ -154,7 +154,8 @@ module.exports = {
         port: 3000,
         compress: true,
         disableHostCheck: true,
-        host: 'local.openbroadcast.org',
+        //host: 'local.openbroadcast.org',
+        host: '0.0.0.0',
         headers: {
             'Access-Control-Allow-Origin': '*'
         },
