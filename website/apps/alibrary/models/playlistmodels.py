@@ -730,7 +730,7 @@ arating.enable_voting_on(Playlist)
 @receiver(post_save, sender=Playlist)
 def playlist_post_save(sender, instance, **kwargs):
 
-    if not instance.pe == 'broadcast':
+    if not instance.type == 'broadcast':
         return
 
     if instance.mixdown_file:
