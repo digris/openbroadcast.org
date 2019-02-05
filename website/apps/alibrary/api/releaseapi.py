@@ -219,7 +219,7 @@ class ReleaseResource(ModelResource):
 
         release = Release.objects.get(**self.remove_api_resource_names(kwargs))
 
-        from statistics.util import ObjectStatistics
+        from statistics.utils.legacy import ObjectStatistics
         ostats = ObjectStatistics(release=release)
         stats = ostats.generate()
 

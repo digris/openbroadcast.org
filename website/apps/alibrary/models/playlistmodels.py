@@ -16,6 +16,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 from django.utils import timezone
@@ -726,12 +727,22 @@ except Exception as e:
 arating.enable_voting_on(Playlist)
 
 
-def playlist_post_save(sender, **kwargs):
-    # obj = kwargs['instance']
-    pass
+@receiver(post_save, sender=Playlist)
+def playlist_post_save(sender, instance, **kwargs):
+
+    if not instance.pe == 'broadcast':
+        return
+
+    if instance.mixdown_file:
+        return
+
+    if instance.mixdown:
+        return
+
+    log.debug('no mixdown yet for {} - request to generate'.format(instance.name))
+    instance.request_mixdown()
 
 
-post_save.connect(playlist_post_save, sender=Playlist)
 
 
 class PlaylistItemPlaylist(TimestampedModelMixin, models.Model):
@@ -781,8 +792,10 @@ class PlaylistItemPlaylist(TimestampedModelMixin, models.Model):
 
 
 class PlaylistItem(models.Model):
-    # uuid = UUIDField()
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+
+    uuid = models.UUIDField(
+        default=uuid.uuid4, editable=False
+    )
 
     class Meta:
         app_label = 'alibrary'
@@ -790,11 +803,14 @@ class PlaylistItem(models.Model):
         verbose_name_plural = _('Playlist Items')
         # ordering = ('-created', )
 
-    ct_limit = models.Q(app_label='alibrary', model='media') | models.Q(app_label='alibrary',
-                                                                        model='release') | models.Q(app_label='abcast',
-                                                                                                    model='jingle')
+    ct_limit = models.Q(app_label='alibrary', model='media') | \
+               models.Q(app_label='alibrary', model='release') | \
+               models.Q(app_label='abcast', model='jingle')
 
-    content_type = models.ForeignKey(ContentType, limit_choices_to=ct_limit)
+    content_type = models.ForeignKey(
+        ContentType,
+        limit_choices_to=ct_limit
+    )
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 

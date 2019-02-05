@@ -3,11 +3,8 @@ import time
 import datetime
 from dateutil.relativedelta import relativedelta
 from django.db.models import Count
-from django.db import connection
 from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
 from atracker.models import Event
-from atracker.util import summary_for_object
 
 DEFAULT_ACTIONS = [
     'playout',

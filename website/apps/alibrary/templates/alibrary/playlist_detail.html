@@ -65,7 +65,7 @@
                 <a href="#emissions" data-toggle="tab">{% trans "Emissions" %} ({{ object.get_emissions.count }})</a>
             </li>
 
-            {% if user.profile.enable_alpha_features %}
+            {% if user.profile.enable_alpha_features and object.type == 'broadcast' %}
                 <li>
                     <a href="#mixdown" data-toggle="tab">{% trans "Mixdown" %}</a>
                 </li>
@@ -116,39 +116,24 @@
 
             <div class="tab-pane" id="history">
 
-
             </div>
 
             <div class="tab-pane" id="description">
-
                 <section class="description">
-
                     <h2>{% trans "Playlist description" %}</h2>
-
                     <div class="description markdown padded-h">
                         {% wikify object.description %}
                     </div>
                 </section>
-
             </div>
 
 
             <div class="tab-pane" id="emissions">
-
                 <section class="emissions">
-
                     <h2>{% trans "Emissions" %}</h2>
-
-
                     <div class="emission-list">
-
                         {% for item in object.get_emissions %}
-
                             {% ifchanged %}<h4>{{ item.time_start|date:"F Y" }}</h4>{% endifchanged %}
-
-                            <!-- actual entry -->
-
-
                             <div class="row-fluid">
                                 <div class="span1">
                                     {{ item.time_start|date:"D d" }}
@@ -174,43 +159,20 @@
                                     {% endif %}
                                 </div>
                             </div>
-
-
-
-
                         {% endfor %}
-
-
                     </div>
-
-
                 </section>
-
             </div>
 
-            {% if user.profile.enable_alpha_features %}
+            {% if user.profile.enable_alpha_features and object.type == 'broadcast' %}
             <div class="tab-pane" id="mixdown">
-
                 <section class="mixdown">
-
                     <h2>{% trans "Playlist Mixdown" %}</h2>
-
-                    <p>This is an ALPHA feature :)</p>
-
                     {% if object.mixdown_file %}
                         <div>
                             <audio id="mixdown_audio" controls style="width: 100%;">
                               <source src="{{ object.mixdown_file.url }}" type="audio/mpeg">
                             </audio>
-                        <p>
-
-                            <a href="{% url 'alibrary-playlist-request-mixdown' pk=object.pk %}" class="btn btn-primary icon">
-                                <i class="icon icon-rocket"></i>
-                                {% trans 'Re-create Mixdown' %}
-                                <small>α</small>
-                            </a>
-
-                        </p>
                         </div>
                     {% elif object.mixdown  %}
                         <ul class="status">
@@ -224,20 +186,8 @@
                                 <span>("estimated time of arrival")</span>
                             </li>
                         </ul>
-                    {% else %}
-                        <p>
-
-                            <a href="{% url 'alibrary-playlist-request-mixdown' pk=object.pk %}" class="btn btn-primary icon">
-                                <i class="icon icon-rocket"></i>
-                                {% trans 'Create Mixdown' %}
-                                <small>α</small>
-                            </a>
-
-                        </p>
                     {% endif %}
-
                 </section>
-
             </div>
             {% endif %}
 

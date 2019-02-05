@@ -210,6 +210,9 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         object_id_field="object_id"
     )
 
+    # reverse generic relation for atracker events
+    events = GenericRelation('atracker.Event')
+
     # tagging (d_tags = "display tags")
     d_tags = tagging.fields.TagField(
         verbose_name="Tags",

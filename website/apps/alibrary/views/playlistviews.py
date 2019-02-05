@@ -263,27 +263,3 @@ def playlist_convert(request, pk, type):
                              _('There occured an error while converting "%s"' % (playlist.name)))
 
     return HttpResponseRedirect(playlist.get_edit_url())
-
-
-@login_required
-def playlist_request_mixdown(request, pk):
-    playlist = get_object_or_404(Playlist, pk=pk, user=request.user)
-
-    mixdown = playlist.request_mixdown()
-
-    if not mixdown:
-        messages.add_message(request, messages.WARNING,
-                             _(u'Unable to requested Mixdown for "{}"'.format(playlist.name)))
-        return HttpResponseRedirect(playlist.get_absolute_url())
-
-    if not mixdown['status'] == 3:
-
-        # delete current mixdown
-        if playlist.mixdown_file:
-            playlist.mixdown_file.delete(False)
-            Playlist.objects.filter(pk=pk).update(mixdown_file=None)
-
-    messages.add_message(request, messages.INFO,
-                         _(u'Requested Mixdown for "{}" - ETA: {}'.format(playlist.name, mixdown['eta'])))
-
-    return HttpResponseRedirect(playlist.get_absolute_url())

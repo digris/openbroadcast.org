@@ -258,7 +258,7 @@ class MediaResource(ModelResource):
 
         obj = Media.objects.get(**self.remove_api_resource_names(kwargs))
 
-        from statistics.util import ObjectStatistics
+        from statistics.utils.legacy import ObjectStatistics
         ostats = ObjectStatistics(obj=obj)
         stats = ostats.generate()
 

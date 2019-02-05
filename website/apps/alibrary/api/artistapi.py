@@ -142,7 +142,7 @@ class ArtistResource(ModelResource):
 
         artist = Artist.objects.get(**self.remove_api_resource_names(kwargs))
 
-        from statistics.util import ObjectStatistics
+        from statistics.utils.legacy import ObjectStatistics
         ostats = ObjectStatistics(artist=artist)
         stats = ostats.generate()
 

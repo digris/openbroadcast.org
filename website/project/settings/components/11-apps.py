@@ -147,7 +147,6 @@ INSTALLED_APPS = [
 
     # legacy & migration
     'obp_legacy',
-    #'apiv1cache',
 
     # platform tools
     'pushy',
