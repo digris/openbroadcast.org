@@ -50,6 +50,8 @@ CELERY_ROUTES = {
     'importer.models.import_task': {'queue': 'import'}, # NOTE: assign import task to single-instance worker
     'importer.models.identify_task': {'queue': 'process'},
     'importer.util.importer_tools.mb_complete_media_task': {'queue': 'complete'},
+    'importer.util.importer_tools.mb_complete_release_task': {'queue': 'complete'},
+    'importer.util.importer_tools.mb_complete_artist_task': {'queue': 'complete'},
 
     'alibrary.models.generate_media_versions_task': {'queue': 'convert'},
     'alibrary.models.create_waveform_image': {'queue': 'convert'},
