@@ -16,10 +16,16 @@
             <li class="square">
                 <a href="#"
                    class="playable popup{% if not perms.alibrary.play_media %} disabled{% endif %}"
+                   {% comment load all tracks on 'play' %}
                    data-ct="release"
                    data-uuid="{{ item.release.uuid }}"
                    data-resource_uri="{{ item.release.get_api_url }}"
                    data-offset="{{ forloop.counter0 }}"
+                   {% endcomment %}
+                   data-ct="media"
+                   data-uuid="{{ item.uuid }}"
+                   data-resource_uri="{{ item.get_api_url }}"
+                   data-offset="0"
                    data-mode="replace"
                    title="{% trans "Play" %}">
                     <i class="icon icon-play"></i>

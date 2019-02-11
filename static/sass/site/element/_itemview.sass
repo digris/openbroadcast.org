@@ -48,8 +48,6 @@
       opacity: 0.25
       transition: opacity 0.2s
       li
-        //background: $primary-color-a
-        //border-radius: 3px
         width: 36px
         text-align: center
         padding: 2px
@@ -80,173 +78,173 @@
 // inner listing & sections
 .item_detail .item_inner section
 
-
+  margin-top: 24px
 
   h2
     font-size: 16px
     color: #a5a5a5
 
-  .s .list_body_row.item
-    &:first-child
-      .list_body_item
-        border-top: 1px solid #dddddd
+  // TODO: implement propperly when refactoring templates / styling
+  .controls-container
+    display: flex
+    justify-content: flex-start
 
-  &.top, &.flop, &.contribution
-    margin-top: 15px
+    .actions
+      &--list
+        @include list-actions
 
-  &.description
-    margin-top: 15px
-
-  &.tracklist
-    margin-top: 15px
-    .markdown
-      // +markdown()
-
-  &.profile
-    margin-top: 15px
-    .markdown
-      // +markdown()
-
-  &.activities
-    margin-top: 15px
-
-  &.broadcasts
-    margin-top: 15px
-
-  &.lyrics
-    margin-top: 15px
-
-  &.uploads
-    margin-top: 15px
-
-  &.emissions
-    margin-top: 15px
-
-  &.soundcloud
-    margin-top: 15px
-
-  &.distribution
-    margin-top: 15px
-
-  &.following
-    margin-top: 15px
-    // TODO: maybe move to other place later on
-    table.follows
-      width: 100%
-      .ctype
-        width: 100px
-      .item
-      .actions
-        text-align: right
-        width: 120px
-
-
-      tr.hover > td
-        background-color: $primary-color-a-bg-light
-
-    table.follows .actions
-      a
-        width: 110px
-        display: block
-        //background: greenyellow
-        text-align: left
-        padding: 2px 4px 0px 4px
-
-        &:hover
-          span > i
-            padding-right: 6px
-
-        text-decoration: none
-
-        // show/hide dependig on current state
-        .start-following
-          display: inline
-        .stop-following
-          display: none
-
-        &.following
-          .start-following
-            display: none
-          .stop-following
-            display: inline
-
-        // text
-        > span.start-following
-          color: $linkColor
-          &:hover
-            color: $linkColorHover
-
-        > span.stop-following
-          color: $gray
-          &:hover
-            color: $grayDark
-
-  &.votes
-    margin-top: 15px
-
-    .listing
-      min-height: 50px
-
-      // grid hack
-      .span3
-        width: 256px
-        margin-left: 27px
-
-      .item
-        min-height: 50px
-        box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1)
-        padding: 10px 10px 10px 90px
-        margin-bottom: 10px
-        background-size: 70px !important
-        background-repeat: no-repeat !important
-        cursor: pointer
-        background: $body-color-shaded-bg
-        &.ctype
-          background: transparent
-          text-align: center
-        &.hover
-          background: $primary-color-a-bg-light
-
-
-      &.voted-up
-        //background: green
-      &.voted-down
-        //background: red
-
-
-
-
-
-  &.history
-    margin-top: 15px
-    div.item
-      border-bottom: 1px solid #dddddd
-      ul
-        //color: red
-      p
-        color: #5a5a5a
-        font-size: 90%
-
-  &.appearance
-    margin-top: 15px
-
-  &.video
-    margin-top: 15px
-
-  &.statistics
-    margin-top: 15px
-
-
-  &.media
-    margin-top: 15px
-
-  &.mixdown
-    margin-top: 15px
-
-
-
-
-
+  // TODO: check section styles
+  //&.top, &.flop, &.contribution
+  //  margin-top: 15px
+  //
+  //&.description
+  //  margin-top: 15px
+  //
+  //&.tracklist
+  //  margin-top: 15px
+  //  .markdown
+  //    // +markdown()
+  //
+  //&.profile
+  //  margin-top: 15px
+  //  .markdown
+  //    // +markdown()
+  //
+  //&.activities
+  //  margin-top: 15px
+  //
+  //&.broadcasts
+  //  margin-top: 15px
+  //
+  //&.lyrics
+  //  margin-top: 15px
+  //
+  //&.uploads
+  //  margin-top: 15px
+  //
+  //&.emissions
+  //  margin-top: 15px
+  //
+  //&.soundcloud
+  //  margin-top: 15px
+  //
+  //&.distribution
+  //  margin-top: 15px
+  //
+  //&.following
+  //  margin-top: 15px
+  //  // TODO: maybe move to other place later on
+  //  table.follows
+  //    width: 100%
+  //    .ctype
+  //      width: 100px
+  //    .item
+  //    .actions
+  //      text-align: right
+  //      width: 120px
+  //
+  //
+  //    tr.hover > td
+  //      background-color: $primary-color-a-bg-light
+  //
+  //  table.follows .actions
+  //    a
+  //      width: 110px
+  //      display: block
+  //      //background: greenyellow
+  //      text-align: left
+  //      padding: 2px 4px 0px 4px
+  //
+  //      &:hover
+  //        span > i
+  //          padding-right: 6px
+  //
+  //      text-decoration: none
+  //
+  //      // show/hide dependig on current state
+  //      .start-following
+  //        display: inline
+  //      .stop-following
+  //        display: none
+  //
+  //      &.following
+  //        .start-following
+  //          display: none
+  //        .stop-following
+  //          display: inline
+  //
+  //      // text
+  //      > span.start-following
+  //        color: $linkColor
+  //        &:hover
+  //          color: $linkColorHover
+  //
+  //      > span.stop-following
+  //        color: $gray
+  //        &:hover
+  //          color: $grayDark
+  //
+  //&.votes
+  //  margin-top: 15px
+  //
+  //  .listing
+  //    min-height: 50px
+  //
+  //    // grid hack
+  //    .span3
+  //      width: 256px
+  //      margin-left: 27px
+  //
+  //    .item
+  //      min-height: 50px
+  //      box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.1)
+  //      padding: 10px 10px 10px 90px
+  //      margin-bottom: 10px
+  //      background-size: 70px !important
+  //      background-repeat: no-repeat !important
+  //      cursor: pointer
+  //      background: $body-color-shaded-bg
+  //      &.ctype
+  //        background: transparent
+  //        text-align: center
+  //      &.hover
+  //        background: $primary-color-a-bg-light
+  //
+  //
+  //    &.voted-up
+  //      //background: green
+  //    &.voted-down
+  //      //background: red
+  //
+  //
+  //
+  //
+  //
+  //&.history
+  //  margin-top: 15px
+  //  div.item
+  //    border-bottom: 1px solid #dddddd
+  //    ul
+  //      //color: red
+  //    p
+  //      color: #5a5a5a
+  //      font-size: 90%
+  //
+  //&.appearance
+  //  margin-top: 15px
+  //
+  //&.video
+  //  margin-top: 15px
+  //
+  //&.statistics
+  //  margin-top: 15px
+  //
+  //
+  //&.media
+  //  margin-top: 15px
+  //
+  //&.mixdown
+  //  margin-top: 15px
 
 
 
@@ -256,9 +254,6 @@
   font-size: 90%
   line-height: 11px
   text-align: left
-
-
-
 
   .image
     text-align: right
@@ -274,34 +269,24 @@
         max-height: 170px
 
     img
-      //padding-right: 14px
-      //vertical-align: middle
       width: 170px
       max-height: 170px
-      //height: 135px
 
   .rating
-    //padding-right: 14px
     margin-top: 4px
 
-  h2
-    //margin-bottom: 16px
-    //font-size: 180%
-
   .container_content
-    // padding: 15px 15px 0
 
     dl
       padding: 0
-      margin: 0
       list-style-type: none
       width: 100%
       margin: 0 0 7px
+
       &.contact
         div p
           line-height: 140%
           padding: 0 0 11px !important
-
 
       span.tag
         margin: 2px 2px 0 0
@@ -310,8 +295,6 @@
         color: white
         border: 1px solid #333
         text-transform: uppercase
-
-
 
       &.license
         p
@@ -342,15 +325,9 @@
         dd
           float: none
 
-
-
-
-
-
     li
       padding: 0
       margin: 0
-
 
     p
       color: #666666
@@ -435,9 +412,6 @@
 .item_menu
   padding: 0px
   margin: 0px
-  // UNBORDERING
-  //border-bottom: 1px solid #bbb
-  //border-bottom: 1px solid #fff
   background-color: $body-color-shaded-bg
   height: auto
   float: left
@@ -455,12 +429,8 @@
     margin-left: 0px
   li
     float: left
-    margin: 0
-    padding: 0
-    // UNBORDERING
-    border: 1px solid #bbb
     border: none
-    padding: 0px
+    padding: 0
     margin: 0 0 -1px 10px
     &.spacer
       border: none
@@ -480,10 +450,7 @@
       display: block
       margin: 0
       text-decoration: none
-      //text-transform: uppercase
       font-size: $toolbar-font-size
-      // UNBORDERING
-      padding: 5px 10px
       padding: 2px 10px
       &.on, &.active
         border-bottom: #fff
@@ -500,10 +467,6 @@
         border-bottom: none
         background-color: #e1e1e1
         color: #c1c1c1
-
-
-
-
 
 
 div.item_inner
@@ -523,7 +486,6 @@ div.item_inner
 section.item_inner .tab-pane
   section.profile
     &.information
-      // background: red
       h4
         text-transform: none
         color: #a5a5a5
@@ -531,11 +493,8 @@ section.item_inner .tab-pane
         margin: 4px 0 8px
 
 
-
-
 // relations in sidebar
 .sidebar
-
 
   .listing
     &.relations
@@ -543,8 +502,6 @@ section.item_inner .tab-pane
       .social
         height: 24px
         margin: 2px 0 8px
-
-
 
       .relations > ul
         li

@@ -62,7 +62,7 @@ class ReleaseListView(BaseSearchListView):
             'default_direction': 'asc',
         },
         {
-            'key': 'releasedate',
+            'key': 'releasedate_year',
             'name': _('Releasedate'),
             'default_direction': 'asc',
         },
@@ -107,10 +107,9 @@ class ReleaseDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ReleaseDetailView, self).get_context_data(**kwargs)
-
-        self.extra_context['history'] = []
-        context.update(self.extra_context)
-
+        context.update({
+            'history': []
+        })
         return context
 
 
@@ -187,8 +186,12 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             self.object.save()
         """
 
-        self.object.last_editor = self.request.user
+
         actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
+
+        # self.object.last_editor = self.request.user
+        # we pass last editor as attribut (not to field directly) and handle information in save()
+        self.object._last_editor = self.request.user
 
         self.object = form.save()
 
@@ -210,31 +213,36 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
         return HttpResponseRedirect(self.object.get_edit_url())
 
+
     def formset_media_valid(self, formset):
         media = formset.save(commit=False)
 
         # TODO: this is extremely ugly!! refactor!
-
         import hashlib
         for m in media:
-
             if m.artist and not m.artist.pk:
                 key = hashlib.md5(m.artist.name.encode('ascii', 'ignore')).hexdigest()
                 try:
                     artist = self.created_artists[key]
-                except Exception as e:
+                except KeyError as e:
                     m.artist.save()
                     artist = m.artist
                     self.created_artists[key] = artist
 
                 m.artist = artist
-                m.save()
-            else:
-                m.save()
+
+            # pass last editor
+            m.last_editor = self.request.user
+
+            # hackish way to handle 'ghost tags'
+            m.d_tags = ','.join(t.name for t in m.tags)
+
+            m.save()
 
             if formset.has_changed():
                 # set actstream (e.v. atracker?)
                 actstream.action.send(self.request.user, verb=_('updated'), target=m)
+
 
     def formset_albumartist_valid(self, formset):
 
@@ -251,7 +259,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             key = hashlib.md5(albumartist.artist.name.encode('ascii', 'ignore')).hexdigest()
             try:
                 artist = self.created_artists[key]
-            except Exception as e:
+            except KeyError as e:
                 pass
             else:
                 delete_pk = albumartist.artist.pk

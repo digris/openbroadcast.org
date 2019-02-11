@@ -9,7 +9,6 @@
 {% block heading %} <!-- heading / icon (large one) -->
 
     {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/lib/raphael-min.js"></script>{% endaddtoblock %}
-    {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}aplayer/js/detail.js"></script>{% endaddtoblock %}
     {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
 
     <!-- statistic tools -->
@@ -24,18 +23,6 @@
     {% addtoblock "js-post" %}
         <script>
             $(function () {
-
-                detail_player = new DetailPlayer;
-                detail_player.dom_id = 'aplayer_detail';
-                detail_player.api_url = '{{ object.get_api_url }}';
-
-                // passing permissions (only for display, handling of perms in api/views)
-                detail_player.perms = {
-                    'play': {% if perms.alibrary.play_media %}true{% else %}false{% endif %},
-                    'add': {% if user.is_authenticated %}true{% else %}false{% endif %}
-                };
-                detail_player.init();
-                window.detail_player = detail_player;
 
                 // initialize exporter app
                 exporter = new ExporterApp();
@@ -55,8 +42,6 @@
                         stats.show();
                     }
                 })
-
-
             });
         </script>
     {% endaddtoblock %}
@@ -64,14 +49,12 @@
     <div id="heading">
         {% include "skeleton/heading.html" %}
     </div>
-    <!-- heading / icon (large one) -->
 {% endblock %}
 
-{% block modnav %} <!-- start: intra-module navigation -->
+{% block modnav %}
     <div id="modnav">
         {% include "skeleton/module-navigation.html" %}
     </div>
-    <!-- end: intra-module navigation -->
 {% endblock %}
 
 {% block inner %}
@@ -84,49 +67,46 @@
             {% include "alibrary/media/_detail_info.html" %}
         </div>
 
-        <div id="aplayer_detail">
-            <p class="notice">{% trans "Loading player" %}</p>
+        <div class="foo" style="padding: 10px 10px;">
+            {% url 'mediaasset-waveform' type='waveform' media_uuid=object.uuid as waveform_url %}
+            <img
+                style="background: #333; height: 50px; width: 100%;"
+                src="{{ waveform_url }}" />
+
+                {% with object=object ct="media" %}
+                    {% include "alibrary/element/_item_primary_actions.html" %}
+                {% endwith %}
+
         </div>
+
 
     </section>
 
     <div class="item_menu" id="item_menu">
         <ul class="nav nav-tabs">
-
-
-
-
             {% if object.appearances.exists %}
                 <li class="active">
-                    <a href="#appearance" data-toggle="tab">{% trans "Appearance" %}
-                        {% comment %}({{ object.appearances.count }}){% endcomment %}</a>
+                    <a href="#appearance" data-toggle="tab">{% trans "Appearance" %}</a>
                 </li>
             {% endif %}
-
             <li {% if not object.appearances.exists %}class="active"{% endif %}>
                 <a href="#overview_" data-toggle="tab">{% trans "File Info" %}</a>
             </li>
-
             {% if object.has_video %}
                 <li>
                     <a href="#video" data-toggle="tab">{% trans "Video Clip" %}</a>
                 </li>
             {% endif %}
-
             {% if object.has_soundcloud %}
                 <li>
                     <a href="#soundcloud" data-toggle="tab">{% trans "Soundcloud" %}</a>
                 </li>
             {% endif %}
-
             {% if object.lyrics %}
                 <li>
                     <a href="#lyrics" data-toggle="tab">{% trans "Lyrics" %}</a>
                 </li>
             {% endif %}
-            <li>
-                <a href="#history" data-toggle="tab">{% trans "Edit History" %}</a>
-            </li>
             <li>
                 <a href="#statistics" data-toggle="tab">{% trans "Statistics" %}</a>
             </li>
@@ -139,43 +119,27 @@
 
     <div class="tab-content">
 
-
     {% if object.appearances.exists %}
     <div class="tab-pane active" id="appearance">
-
         <section class="appearance">
-
-            <h2>{% trans "Playlists using this track" %}</h2>
-
             <div class="listview container playlist s">
-
                 <div class="list_body">
-
                     {% with highlight=object extended=1 %}
-
                         {% appearance_for_media media=object user=request.user as appearances %}
-
                         {% for item in appearances %}
                             {% include "alibrary/playlist/list_item_s.html" %}
                         {% endfor %}
                     {% endwith %}
                 </div>
             </div>
-
-
         </section>
-
     </div>
     {% endif %}
-
-
 
     <div class="tab-pane{% if not object.appearances.exists %} active{% endif %}" id="overview_">
 
         {% if object.description %}
             <section class="description">
-                <h2>{% trans "Track description" %}</h2>
-
                 <div class="description markdown padded-h">
                     {% wikify object.description %}
                 </div>
@@ -183,110 +147,77 @@
         {% endif %}
 
         {% if object.extraartist_media.exists %}
-        <section>
-
-
-            <h2 style="margin-top: 20px;">{% trans "Credits & Credited Artists" %}</h2>
-
-
-            <ul class="__horizontal unstyled small">
-                {% for ea in object.extraartist_media.all %}
-                    <li>
-                        <a href="{{ ea.artist.get_absolute_url }}">{{ ea.artist.name }}</a>
-                        {% if ea.profession.name %}
-                        <small>[{{ ea.profession.name }}]</small>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-
-        </section>
+            <section>
+                <h2 style="margin-top: 20px;">{% trans "Credits & Credited Artists" %}</h2>
+                <ul class="__horizontal unstyled small">
+                    {% for ea in object.extraartist_media.all %}
+                        <li>
+                            <a href="{{ ea.artist.get_absolute_url }}">{{ ea.artist.name }}</a>
+                            {% if ea.profession.name %}
+                            <small>[{{ ea.profession.name }}]</small>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
         {% endif %}
 
 
         <section class="file-properties">
+            <div class="row-fluid">
+                <div class="span6">
+                    <dl class="dl-horizontal" style="margin-top: 0;">
 
-            <h2>{% trans "Audio Properties" %}</h2>
+                        <dt>{% trans "Format" %}</dt>
+                        <dd>{{ object.master_encoding|upper }}</dd>
 
+                        <dt>{% trans "Filesize" %}</dt>
+                        <dd>{{ object.master_filesize|filesizeformat }}</dd>
 
-        <div class="row-fluid">
+                        <dt>{% trans "Samplerate" %}</dt>
+                        <dd>{% if object.master_samplerate %}{{ object.master_samplerate }} Hz{% else %}-{% endif %}</dd>
 
-            <div class="span6">
+                        {% if object.original_filename %}
+                        <dt>{% trans "Original Filename" %}</dt>
+                        <dd>{{ object.original_filename }}</dd>
+                        {% endif %}
 
-                <dl class="dl-horizontal" style="margin-top: 0;">
+                    </dl>
+                </div>
 
-                    <dt>{% trans "Format" %}</dt>
-                    <dd>{{ object.master_encoding|upper }}</dd>
+                <div class="span6">
 
-                    <dt>{% trans "Filesize" %}</dt>
-                    <dd>{{ object.master_filesize|filesizeformat }}</dd>
+                    <dl class="dl-horizontal" style="margin-top: 0;">
 
-                    <dt>{% trans "Samplerate" %}</dt>
-                    <dd>{% if object.master_samplerate %}{{ object.master_samplerate }} Hz{% else %}-{% endif %}</dd>
+                        <dt>{% trans "Bitrate" %}</dt>
+                        <dd>{% if object.bitrate %}{{ object.bitrate }} Kbps{% else %}-{% endif %}</dd>
 
-                    {% if object.original_filename %}
-                    <dt>{% trans "Original Filename" %}</dt>
-                    <dd>{{ object.original_filename }}</dd>
-                    {% endif %}
+                        <dt>{% trans "UUID" %}</dt>
+                        <dd>{{ object.uuid }}</dd>
 
-                </dl>
+                        <dt>{% trans "Hash" %} (SHA1)</dt>
+                        <dd style="font-size: 90%;">{{ object.master_sha1|upper }}</dd>
+
+                    </dl>
+                </div>
             </div>
-
-            <div class="span6">
-
-                <dl class="dl-horizontal" style="margin-top: 0;">
-
-                    <dt>{% trans "Bitrate" %}</dt>
-                    <dd>{% if object.bitrate %}{{ object.bitrate }} Kbps{% else %}-{% endif %}</dd>
-
-                    <!---->
-                    <dt>{% trans "UUID" %}</dt>
-                    <dd>{{ object.uuid }}</dd>
-
-
-                    <dt>{% trans "Hash" %} (SHA1)</dt>
-                    <dd style="font-size: 90%;">{{ object.master_sha1|upper }}</dd>
-
-
-                </dl>
-            </div>
-
-        </div>
-
         </section>
-
-
     </div>
-
 
     {% if object.has_video %}
         <div class="tab-pane" id="video">
-
             <section class="video">
-
-                <h2>{% trans "Video Clip" %}</h2>
-
                 {% for video in object.get_videos %}
                     {% video_by_url video %}
                 {% endfor %}
-
             </section>
-
         </div>
     {% endif %}
 
-
-
     {% if object.has_soundcloud %}
         <div class="tab-pane" id="soundcloud">
-
             <section class="soundcloud">
-
-                <h2>{% trans "Soundcloud" %}</h2>
-
-
                 <div id="soundcloud_player">{% trans "Loading track from soundcloud..." %}</div>
-
                 {% addtoblock "js-uncompressed" %}
                 <script>
                     $.getJSON('http://soundcloud.com/oembed?callback=?',
@@ -302,42 +233,20 @@
                     )
                 </script>
                 {% endaddtoblock %}
-
-
             </section>
-
         </div>
     {% endif %}
-
 
     {% if object.lyrics %}
         <div class="tab-pane" id="lyrics">
-
             <section class="lyrics">
-
-                <h2>{% trans "Lyrics" %}</h2>
-
                 {{ object.lyrics|linebreaks }}
-
             </section>
-
         </div>
     {% endif %}
 
-
-    <div class="tab-pane" id="history">
-        <section class="history">
-            <h2>{% trans "Edit history" %}</h2>
-            {% include "alibrary/element/_object_history.html" %}
-        </section>
-    </div>
-
     <div class="tab-pane" id="statistics">
-
         <section class="statistics">
-
-            <h2>{% trans "Statistics" %}</h2>
-
             <div id="statistics_container" style="min-height: 240px;">
                 <div class="message">{% trans "Loading statistics" %}</div>
                 <!-- dynamic content -->
@@ -346,17 +255,9 @@
                 <ul class="unstyled pull-right" id="plot_choices"></ul>
             </div>
 
-
             <h2 style="margin-top: 24px;">{% trans "Airplays" %}</h2>
-
             {% events_for_object_by_verb object "playout" %}
-
-
-            {% comment %}{% events_for_object object %}{% endcomment %}
-
         </section>
-
-
     </div>
 
     </div>

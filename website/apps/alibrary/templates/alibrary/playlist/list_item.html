@@ -9,7 +9,7 @@
 
     <div class="wrapper_icon">
         {% with object=item ct="playlist" %}
-            {% include "alibrary/element/_item_actions_primary.html" %}
+            {% include "alibrary/element/_item_primary_actions.html" %}
         {% endwith %}
     </div>
 
@@ -145,8 +145,12 @@
 
     <div class="durations" style="position: absolute; bottom: 0; left: 5px; color: #999;">
         {{ item.duration|divide:1000|sec_to_time }}
+        {% if item.last_emission %}
+            <span class="small" title="{% trans 'Last emission' %}">{{ item.last_emission.time_start|date:'SHORT_DATE_FORMAT' }}</span>
+        {% else %}
         {% if item.target_duration %}
             <span class="small">{% trans "of" %} {{ item.target_duration|sec_to_time }}</span>
+        {% endif %}
         {% endif %}
     </div>
 

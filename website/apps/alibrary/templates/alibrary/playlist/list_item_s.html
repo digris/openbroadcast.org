@@ -11,7 +11,7 @@
          {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 36x36 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}>
 
         {% with object=item ct="playlist" %}
-            {% include "alibrary/element/_item_actions_primary.html" %}
+            {% include "alibrary/element/_item_primary_actions.html" %}
         {% endwith %}
 
     </div>

@@ -71,7 +71,7 @@ urlpatterns = [
     # url(r'^search/', include('search.urls')),
     url(r'^sitemap.xml$', sitemap, {'sitemaps': sitemaps}),
 
-    url(r'^player/', include('aplayer.urls')),
+    # url(r'^player/', include('aplayer.urls')),
     url(r'^player-ng/', include('player.urls', namespace='player')),
 
     url(r'^media-asset/', include('media_asset.urls')),

@@ -13,7 +13,7 @@
 </style>
 
 <template>
-    <div v-if="enabled" class="player-control-app player-control-container">
+    <div class="player-control-app player-control-container">
         <div class="debug-container">
             <button @click="player_play_all">PLAY ALL ON PAGE</button>
             <p>

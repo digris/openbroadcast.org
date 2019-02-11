@@ -3,11 +3,7 @@
 {% load truncate_tags i18n thumbnail arating_tags wiki_tags sekizai_tags alibrary_tags url_tags spurl addthis %}
 
 {% block heading %}
-    <!-- view specific scripts -->
-
-
     {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
-
     {% addtoblock "js-post" %}
         <script>
             var exporter = exporter || {};
@@ -18,19 +14,15 @@
             });
         </script>
     {% endaddtoblock %}
-
-    <!-- heading / icon (large one) -->
     <div id="heading">
         {% include "skeleton/heading.html" %}
     </div>
-    <!-- heading / icon (large one) -->
 {% endblock %}
 
-{% block modnav %} <!-- start: intra-module navigation -->
+{% block modnav %}
 <div id="modnav">
 	{% include "skeleton/module-navigation.html" %}
 </div>
-<!-- end: intra-module navigation -->
 {% endblock %}
 
 {% block inner %}
@@ -58,9 +50,6 @@
 			</li>
             {% endif %}
 			<li>
-				<a href="#history" data-toggle="tab">{% trans "Edit History" %}</a>
-			</li>
-			<li>
 				<a href="#statistics" data-toggle="tab">{% trans "Statistics" %}</a>
 			</li>
 		</ul>
@@ -69,105 +58,57 @@
 	<div class="clear"></div>
 
 	<section class="tabbed item_inner">
-
 		<div class="tab-content">
-
 			<div class="tab-pane active" id="overview" class="topflop">
-
-
-                {% comment %}
-				<section class="description">
-					<h2>{% trans "Label description" %}</h2>
-					<div class="description markdown padded-h">
-						{% wikify object.description %}
-					</div>
-
-				</section>
-			    {% endcomment %}
-
-
                 <section class="top">
                     {% url "alibrary-release-list" as release_list %}
-
                     <h2>
                         {% trans "Releases" %}
                         <span class="pull-right">
                             <a href="{% spurl path=release_list query="search_label_ids={{ object.uuid }}" %}">
                                 <i class="icon-chevron-sign-right"></i>
-                                {% blocktrans with count=object.release_label.count name=object.name %}Show all {{ count }} releases on {{ name }}{% endblocktrans %}
+                                {% blocktrans with name=object.name %}Show all releases on {{ name }}{% endblocktrans %}
                             </a>
                         </span>
                     </h2>
-
                     <div class="listview container releases inner l">
-
                         <div class="list_header"></div>
-
                         <div class="list_body">
-
                             {% for item in releases %}
                                 {% include "alibrary/release/list_item.html" %}
                             {% endfor %}
                         </div>
                     </div>
-
                 </section>
-
 			</div>
 
-
-
             <div class="tab-pane" id="description">
-
                 <section class="description">
-
-                    <h2>{% trans "Label description" %}</h2>
-
                     <div class="description markdown padded-h">
                         {% wikify object.description %}
                     </div>
                 </section>
-
             </div>
 
-			<div class="tab-pane" id="history">
-				<section class="history">
-					<h2>{% trans "Edit history" %}</h2>
-					{% include "alibrary/element/_object_history.html" %}
-				</section>
-			</div>
-
-        <div class="tab-pane" id="statistics">
-
-            <section class="statistics">
-
-                <h2>{% trans "Statistics" %} (Not implemented yet)</h2>
-
-                <p>
-                    <a class="btn" href="#">
-                        <i class="icon icon-floppy"></i>
-                        {% trans 'Download Statistics (last 12 months)' %}
-                    </a>
-                </p>
-
-            </section>
-
-
-        </div>
+            <div class="tab-pane" id="statistics">
+                <section class="statistics">
+                    <p>
+                        <a class="btn" href="#">
+                            <i class="icon icon-floppy"></i>
+                            {% trans 'Download Statistics (last 12 months)' %}
+                        </a>
+                    </p>
+                </section>
+            </div>
 
 
 			<div class="tab-pane" id="distribution">
 
 				<section class="distribution">
 
-					<h2>{% trans "Distribution" %}</h2>
-
-
-
                     {% for dl in object.distributorlabel_set.all %}
 
                     <h4>{{ dl.distributor }}</h4>
-
 
                     {% if dl.distributor.address %}
                     <dt>
@@ -194,22 +135,17 @@
                     </dd>
                     {% endif %}
 
-                    <dt>
-                        {% trans "Countries" %}:
-                    </dt>
-                    <dd>
-                        <ul class="unstyled horizontal_">
-                            {% for country in dl.countries.all %}<li>{{ country }}{% if not forloop.last %}, {% endif %} &nbsp;</li>{% endfor %}
-                        </ul>
-                    </dd>
-
-
-                    <div class="clear"></div>
-                    <br>
-                    <br>
-
+                    {% if dl.countries.exists %}
+                        <dt>
+                            {% trans "Countries" %}:
+                        </dt>
+                        <dd>
+                            <ul class="unstyled horizontal_">
+                                {% for country in dl.countries.all %}<li>{{ country }}{% if not forloop.last %}, {% endif %} &nbsp;</li>{% endfor %}
+                            </ul>
+                        </dd>
+                    {% endif %}
                     {% endfor %}
-
 
 				</section>
 

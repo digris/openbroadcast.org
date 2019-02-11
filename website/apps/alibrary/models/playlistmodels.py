@@ -688,6 +688,17 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
             return '{} #{}'.format(self.series.name, self.series_number)
         return self.series.name
 
+    @cached_property
+    def last_emission(self):
+
+        qs = self.get_emissions()
+        qs = qs.filter(time_start__lte=timezone.now())
+
+        if not qs.exists():
+            return
+
+        return qs.first()
+
     def save(self, *args, **kwargs):
 
         # status update

@@ -2,14 +2,10 @@
 
 {% load truncate_tags i18n thumbnail arating_tags wiki_tags atracker_tags dajaxice_templatetags sekizai_tags alibrary_tags url_tags addthis %}
 
-
-{% block title %}{{ object.name }}{% if object.get_artist_display %} - {{ object.get_artist_display }}{% endif %}
-    | {% endblock %}
+{% block title %}{{ object.name }}{% if object.get_artist_display %} - {{ object.get_artist_display }}{% endif %} | {% endblock %}
 {% block meta_description %}{{ object.description|truncatewords:20 }}{% endblock %}
-{% block meta_keywords %}{% for tag in object.tags %}{{ tag.name }}{% if not forloop.last %}, {% endif %}
-{% endfor %}{% endblock %}
+{% block meta_keywords %}{% for tag in object.tags %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endblock %}
 {% block meta_opengraph %}{% include "alibrary/opengraph/_release.html" %}{% endblock %}
-
 
 {% block heading %}
     <!-- view specific scripts -->
@@ -49,32 +45,18 @@
         </script>
     {% endaddtoblock %}
 
-    <!-- heading / icon (large one) -->
     <div id="heading">
         {% include "skeleton/heading.html" %}
     </div>
-    <!-- heading / icon (large one) -->
 {% endblock %}
 
-{% block modnav %} <!-- start: intra-module navigation -->
+{% block modnav %}
     <div id="modnav">
         {% include "skeleton/module-navigation.html" %}
     </div>
-    <!-- end: intra-module navigation -->
 {% endblock %}
 
-
-{% comment %}{% block searchbar %}
-
-    {% with object=item ct="release" %}
-        {% include "alibrary/element/_searchbar.html" %}
-    {% endwith %}
-
-{% endblock %}{% endcomment %}
-
 {% block inner %}
-
-
 
     <div class="item_detail" style="">
 
@@ -95,93 +77,55 @@
                     </li>
                 {% endif %}
                 <li>
-                    <a href="#history" data-toggle="tab">{% trans "Edit History" %}</a>
-                </li>
-                <li>
                     <a href="#statistics" data-toggle="tab">{% trans "Statistics" %}</a>
                 </li>
-
             </ul>
         </div>
 
         <div class="clear"></div>
 
         <section class="tabbed item_inner">
-
             <div class="tab-content">
-
                 <div class="tab-pane active" id="tracklist">
-
                     <section class="tracklist">
 
-                        <h2>{% trans "Tracklist" %}</h2>
-
-                        <!--
-                        <div class="controls">
-                            {% with object=object ct="release" %}
-                                {% include "alibrary/element/_item_actions_primary.html" %}
-                            {% endwith %}
+                        <div class="controls-container">
+                            <div class="controls">
+                                {% with object=object ct="release" %}
+                                    {% include "alibrary/element/_list_primary_actions.html" %}
+                                {% endwith %}
+                            </div>
                         </div>
-                        -->
 
                         <div class="listview container medias inner s">
-
                             <div class="list_body">
                                 {% for item in object.get_media %}
                                     {% include "alibrary/media/_list_item_xs.html" %}
                                 {% endfor %}
                             </div>
-
                         </div>
-
                     </section>
-
                 </div>
 
                 <div class="tab-pane" id="description">
-
                     <section class="description">
-
-                        <h2>{% trans "Release description" %}</h2>
-
                         <div class="description markdown padded-h">
                             {% wikify object.description %}
                         </div>
                     </section>
-
-                </div>
-
-                <div class="tab-pane" id="history">
-                    <section class="history">
-                        <h2>{% trans "Edit history" %}</h2>
-                        {% include "alibrary/element/_object_history.html" %}
-                    </section>
                 </div>
 
                 <div class="tab-pane" id="statistics">
-
                     <section class="statistics">
-
-                        <h2>{% trans "Statistics" %}</h2>
-
                         <div id="statistics_container" style="min-height: 240px;">
                             <div class="message">{% trans "Loading statistics" %}</div>
-                            <!-- dynamic content -->
                         </div>
                         <div class="choices-container">
                             <ul class="unstyled pull-right" id="plot_choices"></ul>
                         </div>
-
                     </section>
-
-                </div>
-
-
-                <div class="tab-pane" id="broadcasts">
-                    ...
                 </div>
             </div>
-
         </section>
 
     </div>

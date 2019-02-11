@@ -10,7 +10,7 @@
     <div class="wrapper_icon">
         {% if item.get_media.exists %}
             {% with object=item ct="release" %}
-                {% include "alibrary/element/_item_actions_primary.html" %}
+                {% include "alibrary/element/_item_primary_actions.html" %}
             {% endwith %}
         {% endif %}
     </div>

@@ -18,8 +18,8 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .serializers import MediaObjSerializer
-from alibrary.apiv2.serializers import ReleaseSerializer, PlaylistSerializer, MediaSerializer
+from .serializers import MediaObjSerializer, ArtistObjSerializer
+from alibrary.apiv2.serializers import ReleaseSerializer, PlaylistSerializer
 
 SITE_URL = getattr(settings, 'SITE_URL')
 
@@ -27,6 +27,7 @@ SERIALIZER_MAP = {
     'alibrary.release': ReleaseSerializer,
     'alibrary.playlist': PlaylistSerializer,
     'alibrary.media': MediaObjSerializer,
+    'alibrary.artist': ArtistObjSerializer,
 }
 
 log = logging.getLogger(__name__)

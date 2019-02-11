@@ -3,12 +3,8 @@
 {% load truncate_tags i18n thumbnail arating_tags wiki_tags sekizai_tags addthis %}
 
 {% block heading %}
-    <!-- view specific scripts -->
 
-
-    {% addtoblock "js-post" %}
-        <script src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
-
+    {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
     {% addtoblock "js-post" %}
         <script>
             var exporter = exporter || {};
@@ -20,23 +16,18 @@
         </script>
     {% endaddtoblock %}
 
-    <!-- heading / icon (large one) -->
     <div id="heading">
         {% include "skeleton/heading.html" %}
     </div>
-    <!-- heading / icon (large one) -->
 {% endblock %}
 
-{% block modnav %} <!-- start: intra-module navigation -->
+{% block modnav %}
     <div id="modnav">
         {% include "skeleton/module-navigation.html" %}
     </div>
-    <!-- end: intra-module navigation -->
 {% endblock %}
 
 {% block inner %}
-
-
 
     <div class="item_detail">
 
@@ -56,15 +47,9 @@
                     <a href="#description" data-toggle="tab">{% trans "Description" %}</a>
                 </li>
             {% endif %}
-            <!--
-            <li>
-                <a href="#history" data-toggle="tab">{% trans "Edit History" %}</a>
-            </li>
-            -->
             <li>
                 <a href="#emissions" data-toggle="tab">{% trans "Emissions" %} ({{ object.get_emissions.count }})</a>
             </li>
-
             {% if user.profile.enable_alpha_features and object.type == 'broadcast' %}
                 <li>
                     <a href="#mixdown" data-toggle="tab">{% trans "Mixdown" %}</a>
@@ -83,54 +68,39 @@
 
                 <section class="tracklist">
 
-                    <h2>{% trans "Tracklist" %}</h2>
+                    <div class="controls-container">
+                        <div class="controls">
+                            {% with object=object ct="playlist" %}
+                                {% include "alibrary/element/_list_primary_actions.html" %}
+                            {% endwith %}
+                        </div>
+                    </div>
 
                     <div class="listview container medias s">
-
                         <div class="list_body">
-
                             {% for item in object.sorted_items.all %}
-
                                 {% if item.content_type.model == "media" %}
-
                                     {% with item=item.content_object %}
                                         {% include "alibrary/media/_list_item_foreign_xs.html" %}
                                     {% endwith %}
                                 {% endif %}
-
-                                {% if item.content_type.model == "release" %}
-                                    {% with item=item.content_object %}
-                                        <h1>{{ item.name }}</h1>
-                                    {% endwith %}
-                                {% endif %}
-
-
                             {% endfor %}
-
                         </div>
                     </div>
-
                 </section>
-
-            </div>
-
-            <div class="tab-pane" id="history">
 
             </div>
 
             <div class="tab-pane" id="description">
                 <section class="description">
-                    <h2>{% trans "Playlist description" %}</h2>
                     <div class="description markdown padded-h">
                         {% wikify object.description %}
                     </div>
                 </section>
             </div>
 
-
             <div class="tab-pane" id="emissions">
                 <section class="emissions">
-                    <h2>{% trans "Emissions" %}</h2>
                     <div class="emission-list">
                         {% for item in object.get_emissions %}
                             {% ifchanged %}<h4>{{ item.time_start|date:"F Y" }}</h4>{% endifchanged %}
@@ -167,7 +137,6 @@
             {% if user.profile.enable_alpha_features and object.type == 'broadcast' %}
             <div class="tab-pane" id="mixdown">
                 <section class="mixdown">
-                    <h2>{% trans "Playlist Mixdown" %}</h2>
                     {% if object.mixdown_file %}
                         <div>
                             <audio id="mixdown_audio" controls style="width: 100%;">
@@ -190,12 +159,8 @@
                 </section>
             </div>
             {% endif %}
-
         </div>
-
     </section>
-
-
     </div>
 
     {# TODO: how to handle privat/public playlists? #}

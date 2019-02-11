@@ -3,6 +3,7 @@
     <li class="square">
         <a href="#"
            class="playable popup{% if not perms.alibrary.play_media %} disabled{% endif %}"
+           data-playable
            data-ct="{{ ct }}"
            data-uuid="{{ object.uuid }}"
            data-resource_uri="{{ object.get_api_url }}"
@@ -15,6 +16,7 @@
     <li class="square">
         <a href="#"
            class="playable popup{% if not perms.alibrary.play_media %} disabled{% endif %}"
+           data-playable
            data-ct="{{ ct }}"
            data-uuid="{{ object.uuid }}"
            data-resource_uri="{{ object.get_api_url }}"

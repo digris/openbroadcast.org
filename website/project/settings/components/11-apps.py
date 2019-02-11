@@ -127,7 +127,7 @@ INSTALLED_APPS = [
     'crawler',
     'media_asset',
     'media_preflight',
-    'aplayer',
+    #'aplayer',
     'player',
     'importer',
     'massimporter',
