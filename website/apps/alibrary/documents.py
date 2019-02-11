@@ -502,7 +502,7 @@ class PlaylistDocument(DocType):
     api_url = fields.KeywordField(attr='get_api_url')
     created = fields.DateField()
     updated = fields.DateField()
-    last_emission_days_ago = fields.DateField()
+    last_emission = fields.DateField()
 
     # 'fielddata' is needed for sorting on the filed
     name = fields.TextField(
