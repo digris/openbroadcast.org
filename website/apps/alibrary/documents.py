@@ -502,6 +502,7 @@ class PlaylistDocument(DocType):
     api_url = fields.KeywordField(attr='get_api_url')
     created = fields.DateField()
     updated = fields.DateField()
+    last_emission_days_ago = fields.DateField()
 
     # 'fielddata' is needed for sorting on the filed
     name = fields.TextField(
@@ -568,6 +569,9 @@ class PlaylistDocument(DocType):
             return instance.series.name
         return
 
+    def prepare_last_emission(self, instance):
+        if instance.last_emission:
+            return instance.last_emission.time_start
 
     def prepare_weather(self, instance):
         return [w.name.strip() for w in instance.weather.all()]

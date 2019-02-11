@@ -145,12 +145,16 @@
 
     <div class="durations" style="position: absolute; bottom: 0; left: 5px; color: #999;">
         {{ item.duration|divide:1000|sec_to_time }}
-        {% if item.last_emission %}
-            <span class="small" title="{% trans 'Last emission' %}">{{ item.last_emission.time_start|date:'SHORT_DATE_FORMAT' }}</span>
+
+        {% if item.is_broadcast %}
+            {% if item.last_emission %}
+                &mdash;
+                <span class="small" title="{% trans 'Last emission' %}: {{ item.last_emission.time_start|timesince }} {% trans 'ago' %}">{{ item.last_emission.time_start|date:'SHORT_DATE_FORMAT' }}</span>
+            {% endif %}
         {% else %}
-        {% if item.target_duration %}
-            <span class="small">{% trans "of" %} {{ item.target_duration|sec_to_time }}</span>
-        {% endif %}
+            {% if item.target_duration %}
+                <span class="small">{% trans "of" %} {{ item.target_duration|sec_to_time }}</span>
+            {% endif %}
         {% endif %}
     </div>
 

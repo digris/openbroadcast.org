@@ -108,6 +108,20 @@ class Series(models.Model):
 
 
 class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
+
+    TYPE_BASKET = 'basket'
+    TYPE_PLAYLIST = 'playlist'
+    TYPE_BROADCAST = 'broadcast'
+    TYPE_OTHER = 'other'
+
+    TYPE_CHOICES = (
+        (TYPE_BASKET, _('Private Playlist')),
+        (TYPE_PLAYLIST, _('Public Playlist')),
+        (TYPE_BROADCAST, _('Broadcast')),
+        (TYPE_OTHER, _('Other')),
+    )
+
+
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
@@ -119,7 +133,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     type = models.CharField(
         max_length=12,
         default='basket', null=True,
-        choices=alibrary_settings.PLAYLIST_TYPE_CHOICES
+        choices=TYPE_CHOICES
     )
     broadcast_status = models.PositiveIntegerField(
         default=0,
@@ -665,6 +679,14 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     def mixdown(self):
         return self.get_mixdown()
 
+    # provide type-based properties
+    @property
+    def is_broadcast(self):
+        return self.type == Playlist.TYPE_BROADCAST
+
+    @property
+    def is_playlist(self):
+        return self.type == Playlist.TYPE_PLAYLIST
 
     @cached_property
     def is_archived(self):

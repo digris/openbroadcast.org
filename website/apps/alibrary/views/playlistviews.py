@@ -2,6 +2,7 @@
 from __future__ import unicode_literals, absolute_import
 
 import logging
+import datetime
 
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from django.conf import settings
@@ -12,8 +13,9 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 from django.views.generic import DetailView, UpdateView, CreateView, DeleteView
-from elasticsearch_dsl import TermsFacet, RangeFacet
+from elasticsearch_dsl import TermsFacet, RangeFacet, DateHistogramFacet
 
 from search.views import BaseFacetedSearch, BaseSearchListView
 
@@ -44,6 +46,25 @@ class PlaylistSearch(BaseFacetedSearch):
             ('11 - 50', (11, 50)),
             ('More than 50', (50, None)),
         ])),
+        ('last_emission', RangeFacet(field='last_emission', ranges=[
+            # ('old', (None, '2016-01-01')),
+            # ('2016', ('2016-01-01', '2016-12-31')),
+            # ('2018', ('2018-01-01', '2018-12-31')),
+            # ('recent', ('2019-01-01', None)),
+            ('Last 7 days', (
+                str((timezone.now() - datetime.timedelta(days=7)).date()),
+                None
+            )),
+            ('Last month', (
+                str((timezone.now() - datetime.timedelta(days=30)).date()),
+                None
+            )),
+            ('More than a month ago', (
+                None,
+                str((timezone.now() - datetime.timedelta(days=30)).date())
+            )),
+        ])),
+        #('last_emission', DateHistogramFacet(field='last_emission', interval='month')),
         ('flags', TermsFacet(field='state_flags', order={'_key': 'asc'})),
     ]
 
@@ -61,6 +82,11 @@ class PlaylistListView(BaseSearchListView):
         {
             'key': 'num_emissions',
             'name': _('Num Emissions'),
+            'default_direction': 'desc',
+        },
+        {
+            'key': 'last_emission',
+            'name': _('Last Emission'),
             'default_direction': 'desc',
         },
         {
