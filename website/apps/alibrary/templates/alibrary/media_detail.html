@@ -68,7 +68,7 @@
         </div>
 
         <div class="foo" style="padding: 10px 10px;">
-            {% url 'mediaasset-waveform' type='waveform' media_uuid=object.uuid as waveform_url %}
+            {% url 'mediaasset-waveform' type='w' media_uuid=object.uuid as waveform_url %}
             <img
                 style="background: #333; height: 50px; width: 100%;"
                 src="{{ waveform_url }}" />
