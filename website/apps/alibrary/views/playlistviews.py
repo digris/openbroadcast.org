@@ -32,7 +32,7 @@ class PlaylistSearch(BaseFacetedSearch):
     fields = ['tags', 'name', ]
 
     facets = [
-        ('tags', TermsFacet(field='tags', size=100)),
+        ('tags', TermsFacet(field='tags', size=240)),
         ('type', TermsFacet(field='type', size=100, order={'_key': 'asc'})),
         ('status', TermsFacet(field='status', size=100, order={'_key': 'asc'})),
         ('weather', TermsFacet(field='weather', size=100, order={'_key': 'asc'})),

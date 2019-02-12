@@ -30,7 +30,7 @@ class ReleaseSearch(BaseFacetedSearch):
     fields = ['tags', 'name', ]
 
     facets = [
-        ('tags', TermsFacet(field='tags', size=100)),
+        ('tags', TermsFacet(field='tags', size=200)),
         ('releasedate', RangeFacet(field='releasedate_year', ranges=[
             ('Before 1940\'s', (0, 1940)),
             ('40\'s', (1940, 1950)),

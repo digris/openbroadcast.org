@@ -50,7 +50,7 @@
             <li>
                 <a href="#emissions" data-toggle="tab">{% trans "Emissions" %} ({{ object.get_emissions.count }})</a>
             </li>
-            {% if user.profile.enable_alpha_features and object.type == 'broadcast' %}
+            {% if object.is_broadcast and object.mixdown %}
                 <li>
                     <a href="#mixdown" data-toggle="tab">{% trans "Mixdown" %}</a>
                 </li>
@@ -101,40 +101,45 @@
 
             <div class="tab-pane" id="emissions">
                 <section class="emissions">
-                    <div class="emission-list">
-                        {% for item in object.get_emissions %}
-                            {% ifchanged %}<h4>{{ item.time_start|date:"F Y" }}</h4>{% endifchanged %}
-                            <div class="row-fluid">
-                                <div class="span1">
-                                    {{ item.time_start|date:"D d" }}
+                    {% for item in object.get_emissions %}
+                        {% ifchanged %}
+                            <div class="separator">
+                                <h4>{{ item.time_start|date:"F Y" }}</h4>
+                            </div>
+                        {% endifchanged %}
+                        <div class="emission">
+                            <div class="emission__airtime">
+                                <div class="emission__airtime__day">
+                                    {{ item.time_start|date:"D. jS" }}
                                 </div>
-                                <div class="span2">
-                                    {{ item.time_start|date:"H:i:s" }}
-                                </div>
-
-                                {% if item.channel %}
-                                <div class="span5">
-                                    <a href="{# item.channel.get_absolute_url #}">
-                                        {{ item.channel.name }} | {{ item.channel.station.name }}
-                                    </a>
-                                </div>
-                                {% endif %}
-                                <div class="span4">
-                                    {% if  item.user %}
-                                        <a href="{{ item.user.get_absolute_url }}">
-                                            {% firstof item.user.get_full_name item.user.username %}
-                                        </a>
-                                    {% else %}
-                                        {% trans "Autopilot" %}
-                                    {% endif %}
+                                <div class="emission__airtime__time">
+                                    {{ item.time_start|date:"H:i" }}
                                 </div>
                             </div>
-                        {% endfor %}
-                    </div>
+                            {% if item.channel %}
+                            <div class="emission__channel">
+                                {% trans 'Channel' %}:
+                                <a href="{{ item.channel.get_absolute_url }}">
+                                    {{ item.channel.name }}
+                                </a>
+                            </div>
+                            {% endif %}
+                            <div class="emission__user">
+                                {% trans 'Programmed by' %}:
+                                {% if item.user %}
+                                    <a href="{{ item.user.get_absolute_url }}">
+                                        {% firstof item.user.get_full_name item.user.username %}
+                                    </a>
+                                {% else %}
+                                    {% trans "Autopilot" %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
                 </section>
             </div>
 
-            {% if user.profile.enable_alpha_features and object.type == 'broadcast' %}
+            {% if object.is_broadcast and object.mixdown %}
             <div class="tab-pane" id="mixdown">
                 <section class="mixdown">
                     {% if object.mixdown_file %}
