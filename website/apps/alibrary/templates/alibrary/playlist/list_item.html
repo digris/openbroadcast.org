@@ -1,5 +1,9 @@
 {% load i18n calc_tags thumbnail truncate_tags arating_tags spurl %}
 
+{% comment %}
+<span>{{ search_result.last_emission|slice:'0:10' }}</span>
+{% endcomment %}
+
 <div class="list_body_row selectable clickable item playlist published {% if item.user == request.user %}owner{% endif %} view edit stream collect download"
      id="list_item_{{ item.pk }}"
      data-ct="{{ item.get_ct }}"
@@ -113,14 +117,6 @@
                 </a>
             </li>
             <li>
-                <a href="#"
-                   class="{% if not user.is_authenticated %} disabled{% endif %}"
-                   data-action="collect"
-                   title="{% trans "Add to playlist" %}">
-                    <i class="icon icon-plus"></i>
-                </a>
-            </li>
-            <li>
                 <a href="{{ item.get_edit_url }}"
                    class="{% if user.is_authenticated and user == item.user %}{% else %} disabled{% endif %}"
                    title="{% trans "Edit" %}">
@@ -149,13 +145,19 @@
         {% if item.is_broadcast %}
             {% if item.last_emission %}
                 &mdash;
-                <span class="small" title="{% trans 'Last emission' %}: {{ item.last_emission.time_start|timesince }} {% trans 'ago' %}">{{ item.last_emission.time_start|date:'SHORT_DATE_FORMAT' }}</span>
+                <span
+                    class="small"
+                    title="{% trans 'Last emission' %}: {{ item.last_emission.time_start|timesince }} {% trans 'ago' %}">
+                    {{ item.last_emission.time_start|date:'SHORT_DATE_FORMAT' }}
+                </span>
             {% endif %}
+
         {% else %}
             {% if item.target_duration %}
                 <span class="small">{% trans "of" %} {{ item.target_duration|sec_to_time }}</span>
             {% endif %}
         {% endif %}
+
     </div>
 
 </div>

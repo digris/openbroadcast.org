@@ -117,6 +117,7 @@
                 color: #a5a5a5;
                 transition: border-radius 0.2s;
                 padding: 0 12px;
+                margin-left: 4px;
                 &:hover {
                     background: $primary-color-b;
                     border-color: $primary-color-b;
@@ -175,6 +176,10 @@
         </div>
         <div class="actions">
             <div class="button-group">
+                <a v-if="(actions.indexOf('add-and-close') > -1)" @click="$emit('add', item, true)"
+                   class="button hollow">
+                    Add & close
+                </a>
                 <a v-if="(actions.indexOf('add') > -1)" @click="$emit('add', item)"
                    class="button hollow">
                     Add

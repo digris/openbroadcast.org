@@ -127,7 +127,9 @@
 
 
         <!-- TODO: just temporary... -->
-        <div id="player_control_app"></div>
+        <div id="player_control_app">(( loading player app ))</div>
+
+        <div id="collector_app">(( loading collector app ))</div>
 
 
         <div id="refresh"></div>
@@ -250,6 +252,8 @@
             });
         </script>
 
+        {% comment %}
+        # TODO: completely remove related code
         <script src="{{ STATIC_URL }}alibrary/js/playlist.js"></script>
         <script>
             var alibrary = alibrary || {};
@@ -260,6 +264,7 @@
                 alibrary.collector.init();
             });
         </script>
+        {% endcomment %}
 
 
         <script>

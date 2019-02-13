@@ -11,7 +11,7 @@ from alibrary import settings as alibrary_settings
 from alibrary.models import MigrationMixin, Daypart
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -236,6 +236,8 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         upload_to=upload_mixdown_to
     )
 
+    emissions = GenericRelation('abcast.Emission')
+
     # meta
     class Meta:
         app_label = 'alibrary'
@@ -284,6 +286,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         return duration
 
+    # TODO: remove usages and use generic reverse 'emissions' instead
     def get_emissions(self):
         from abcast.models import Emission
         ctype = ContentType.objects.get_for_model(self)
@@ -669,7 +672,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     @property
     def sorted_items(self):
-        return self.items.order_by('playlistitemplaylist__position')
+        return self.items.order_by('playlist_items__position')
 
     @cached_property
     def num_media(self):
@@ -690,14 +693,14 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     @cached_property
     def is_archived(self):
-        if not self.type == 'broadcast':
+        if not self.type == Playlist.TYPE_BROADCAST:
             return
         if self.rotation_date_end and self.rotation_date_end < timezone.now().date():
             return True
 
     @cached_property
     def is_upcoming(self):
-        if not self.type == 'broadcast':
+        if not self.type == Playlist.TYPE_BROADCAST:
             return
         if self.rotation_date_start and self.rotation_date_start > timezone.now().date():
             return True
@@ -712,14 +715,14 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     @cached_property
     def last_emission(self):
-
-        qs = self.get_emissions()
-        qs = qs.filter(time_start__lte=timezone.now())
-
-        if not qs.exists():
-            return
-
-        return qs.first()
+        ###############################################################
+        # we cannot filter a prefetched qs - so to avoid
+        # additional queries we have to loop the qs and 'filter'
+        # 'manually'
+        ###############################################################
+        for emission in self.emissions.all():
+            if emission.time_start < timezone.now():
+                return emission
 
     def save(self, *args, **kwargs):
 
@@ -736,19 +739,13 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         self.duration = duration
 
-        """
-        TODO: maybe move
-        """
+        # TODO: maybe move
         self.broadcast_status, self.broadcast_status_messages = self.self_check()
-        # print '%s - %s (id: %s)' % (self.broadcast_status, self.name, self.pk)
-        # print ', '.join(self.broadcast_status_messages)
-        # map to object status (not extremly dry - we know...)
         if self.broadcast_status == 1:
             self.status = 1  # 'ready'
         else:
             self.status = 99  # 'error'
 
-        # self.user = request.user
         super(Playlist, self).save(*args, **kwargs)
 
 
@@ -781,10 +778,12 @@ def playlist_post_save(sender, instance, **kwargs):
 class PlaylistItemPlaylist(TimestampedModelMixin, models.Model):
 
     playlist = models.ForeignKey(
-        'Playlist', on_delete=models.CASCADE
+        'Playlist', on_delete=models.CASCADE,
+        related_name='playlist_items'
     )
     item = models.ForeignKey(
-        'PlaylistItem', on_delete=models.CASCADE
+        'PlaylistItem', on_delete=models.CASCADE,
+        related_name='playlist_items'
     )
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)

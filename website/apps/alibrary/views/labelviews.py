@@ -13,6 +13,7 @@ from elasticsearch_dsl import TermsFacet, RangeFacet
 
 from base.utils.form_errors import merge_form_errors
 from search.views import BaseFacetedSearch, BaseSearchListView
+from search.duplicate_detection import get_ids_for_possible_duplicates
 
 from ..forms import LabelForm, LabelActionForm, LabelRelationFormSet
 from ..models import Label, Release
@@ -66,7 +67,16 @@ class LabelListView(BaseSearchListView):
     ]
 
     def get_queryset(self, **kwargs):
-        qs = super(LabelListView, self).get_queryset(**kwargs)
+
+        limit_ids = None
+
+        # TODO: special purpose filters. should be moved to generic place & add parameter validation
+        duplicate_filter = self.request.GET.get('duplicate_filter', None)
+        if duplicate_filter:
+            fields = duplicate_filter.split(':')
+            limit_ids = get_ids_for_possible_duplicates('labels', fields)
+
+        qs = super(LabelListView, self).get_queryset(limit_ids=limit_ids, **kwargs)
 
         qs = qs.select_related(
             'country'

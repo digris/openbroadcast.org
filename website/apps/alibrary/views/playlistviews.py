@@ -138,6 +138,7 @@ class PlaylistListView(BaseSearchListView):
             'dayparts',
             'seasons',
             'weather',
+            'emissions',
         )
 
         # TODO: refactor enumerations

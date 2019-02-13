@@ -15,6 +15,7 @@ from elasticsearch_dsl import TermsFacet, RangeFacet
 from base.utils.form_errors import merge_form_errors
 from base.models.utils.merge import merge_objects
 from search.views import BaseFacetedSearch, BaseSearchListView
+from search.duplicate_detection import get_ids_for_possible_duplicates
 
 from ..forms import (ReleaseForm, ReleaseActionForm, ReleaseBulkeditForm,
                      ReleaseRelationFormSet, AlbumartistFormSet, ReleaseMediaFormSet)
@@ -79,7 +80,24 @@ class ReleaseListView(BaseSearchListView):
     ]
 
     def get_queryset(self, **kwargs):
-        qs = super(ReleaseListView, self).get_queryset(**kwargs)
+
+        limit_ids = None
+
+        # TODO: special purpose filters. should be moved to generic place & add parameter validation
+        duplicate_filter = self.request.GET.get('duplicate_filter', None)
+        if duplicate_filter:
+            fields = duplicate_filter.split(':')
+            limit_ids = get_ids_for_possible_duplicates('releases', fields)
+
+
+        # from collection.models import Collection
+        # limit_ids = [i for i in Collection.objects.get(
+        #     pk=3
+        # ).items.filter(
+        #     content_type__id=108
+        # ).values_list('object_id', flat=True)]
+
+        qs = super(ReleaseListView, self).get_queryset(limit_ids=limit_ids, **kwargs)
 
         qs = qs.select_related(
             'label',

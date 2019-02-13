@@ -13,6 +13,7 @@ def format_search_results(results):
     results = results.to_dict()
 
     _results = []
+    _results_by_id = {}
 
     for hit in results['hits']['hits']:
 
@@ -27,15 +28,15 @@ def format_search_results(results):
             if not k in [ignored_keys]:
                 item[k] = v
 
-        _results.append(item)
 
-        # _results.append({
-        #     'name': source['name'],
-        #     'tags': source['tags'],
-        # })
+
+        _results.append(item)
+        _results_by_id[int(hit['_id'])] = item
+
 
     response = {
         'results': _results,
+        'results_by_id': _results_by_id,
         #'results_raw': results['hits']['hits'],
         'total': results['hits']['total'],
         'max_score': results['hits']['max_score'],

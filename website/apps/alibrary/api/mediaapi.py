@@ -339,5 +339,6 @@ class SimpleMediaResource(ModelResource):
         bundle.data['waveform_image'] = reverse_lazy('mediaasset-waveform', kwargs={'media_uuid': bundle.obj.uuid, 'type': 'w'})
         bundle.data['spectrogram_image'] = reverse_lazy('mediaasset-waveform', kwargs={'media_uuid': bundle.obj.uuid, 'type': 's'})
 
+        bundle.data['artist_display'] = bundle.obj.get_artist_display()
 
         return bundle

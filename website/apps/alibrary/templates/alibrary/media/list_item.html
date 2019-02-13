@@ -1,4 +1,8 @@
-{% load i18n calc_tags arating_tags truncate_tags spurl adv_cache hash_tags %}
+{% load i18n calc_tags arating_tags truncate_tags spurl adv_cache hash_tags datetime_tags %}
+
+{% comment %}
+{{ search_result.duration }}
+{% endcomment %}
 
 <div class="list_body_row selectable item media {{ item.uuid }} {% if item.creator == user %} owner{% endif %}"
      id="list_item_{{ item.id }}"
@@ -150,11 +154,20 @@
     <div class="list_body_item c4">
         <ul class="unstyled">
 
-            <li>{{ item.duration_s|sec_to_time }}</li>
             <li>
+                {{ item.duration_s|sec_to_time }} |
                 {% if item.master_encoding %}{{ item.master_encoding|upper }}{% else %}ERROR{% endif %}
                 {% if item.bitrate %}| {{ item.bitrate }} Kbps{% endif %}
             </li>
+
+
+            {% comment %}{% endcomment %}
+            {% if search_result.last_emission %}
+                <li
+                    title="{% trans 'Last emission' %}: {{ search_result.last_emission|parse_datetime|timesince }} {% trans 'ago' %} - {% trans 'Num. emissions' %}: {{ search_result.num_emissions }}">
+                    <span>{{ search_result.last_emission|parse_datetime|date:'SHORT_DATE_FORMAT' }}</span>
+                </li>
+            {% endif %}
 
         </ul>
 
@@ -183,15 +196,6 @@
                    data-action="download"
                    title="{% trans "Download" %}">
                     <i class="icon icon-download-alt"></i>
-                </a>
-            </li>
-
-            <li>
-                <a href="#"
-                   class="{% if not user.is_authenticated %} disabled{% endif %}"
-                   data-action="collect"
-                   title="{% trans "Add to playlist" %}">
-                    <i class="icon icon-plus"></i>
                 </a>
             </li>
 

@@ -275,7 +275,7 @@ class PlaylistSerializer(FlexFieldsModelSerializer):
 
     detail_url = serializers.URLField(source='get_absolute_url')
 
-    items = PlaylistItemPlaylistSerializer(source='playlistitemplaylist_set', many=True)
+    items = PlaylistItemPlaylistSerializer(source='playlist_items', many=True)
 
     tags = serializers.StringRelatedField(many=True)
 

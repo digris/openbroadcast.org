@@ -51,7 +51,6 @@
             remove: function (item, e) {
                 this.$emit('remove', item);
             },
-            // TODO: just testing...
             collect: function(item, e) {
                 const _e = new CustomEvent('collector:collect', {detail: [item] });
                 window.dispatchEvent(_e);

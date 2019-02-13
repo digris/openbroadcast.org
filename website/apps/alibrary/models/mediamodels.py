@@ -403,6 +403,26 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     def get_soundcloud(self):
         return self.relations.filter(service='soundcloud').first()
 
+    @property
+    def emissions(self):
+        from abcast.models import Emission
+        playlist_qs = self.get_appearances()
+
+        emission_qs = Emission.objects.past().filter(
+            object_id__in=[i.pk for i in playlist_qs.all()],
+            content_type=ContentType.objects.get_for_model(Playlist)
+
+        ).order_by(
+            '-time_start'
+        ).distinct()
+
+        return emission_qs
+
+    @property
+    def last_emission(self):
+        return self.emissions.first()
+
+
 
     # TODO: this is ugly - improve!
     def get_artist_display(self):
@@ -497,22 +517,33 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
             return int(self.master_duration)
 
 
-    """
-    TODO: check usage.
-    """
+    # TODO: check usage.
     @property
     def appearances(self):
         return self.get_appearances()
 
     def get_appearances(self):
-        ps = []
-        try:
-            pis = PlaylistItem.objects.filter(object_id=self.pk, content_type=ContentType.objects.get_for_model(self))
-            ps = Playlist.objects.exclude(type='other').filter(items__in=pis).order_by('-type', '-created',).nocache().distinct()
-        except Exception as e:
-            pass
+        # better approach:
+        # Playlist.objects.filter(playlist_items__item__object_id=m.pk, playlist_items__item__content_type=ContentType.objects.get_for_model(Media))
+        qs = Playlist.objects.filter(
+            playlist_items__item__object_id=self.pk,
+            playlist_items__item__content_type=ContentType.objects.get_for_model(self)
+        ).exclude(
+            type=Playlist.TYPE_OTHER
+        ).order_by(
+            '-type', '-created'
+        ).nocache().distinct()
 
-        return ps
+        return qs
+
+        # ps = []
+        # try:
+        #     pis = PlaylistItem.objects.filter(object_id=self.pk, content_type=ContentType.objects.get_for_model(self))
+        #     ps = Playlist.objects.exclude(type='other').filter(items__in=pis).order_by('-type', '-created',).nocache().distinct()
+        # except Exception as e:
+        #     pass
+        #
+        # return ps
 
 
     def process_master_info(self, save=False):
