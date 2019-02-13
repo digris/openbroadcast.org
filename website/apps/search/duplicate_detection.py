@@ -21,7 +21,7 @@ def get_ids_for_possible_duplicates(index=None, fields=[]):
         _script += 'doc[\'{}.raw\'].value + '.format(field)
 
     response = client.search(
-        index="releases",
+        index=index,
         body={
             "aggs": {
                 "duplicates": {
@@ -36,8 +36,6 @@ def get_ids_for_possible_duplicates(index=None, fields=[]):
                                 "_source": {
                                     "includes": [
                                         "id",
-                                        "name",
-                                        "artist_display"
                                     ]
                                 },
                                 "size": 20

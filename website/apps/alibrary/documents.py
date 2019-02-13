@@ -35,6 +35,8 @@ class LabelDocument(DocType):
         search_analyzer=edge_ngram_search_analyzer,
     )
 
+    # id = fields.IntegerField()
+
     url = fields.KeywordField(attr='get_absolute_url')
     api_url = fields.KeywordField(attr='get_api_url')
     created = fields.DateField()

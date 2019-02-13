@@ -165,7 +165,7 @@
             {% if search_result.last_emission %}
                 <li
                     title="{% trans 'Last emission' %}: {{ search_result.last_emission|parse_datetime|timesince }} {% trans 'ago' %} - {% trans 'Num. emissions' %}: {{ search_result.num_emissions }}">
-                    <span>{{ search_result.last_emission|parse_datetime|date:'SHORT_DATE_FORMAT' }}</span>
+                    <span>Last emission: {{ search_result.last_emission|parse_datetime|date:'SHORT_DATE_FORMAT' }}</span>
                 </li>
             {% endif %}
 
