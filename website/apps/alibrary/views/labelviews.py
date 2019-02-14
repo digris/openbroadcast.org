@@ -4,10 +4,12 @@ from __future__ import unicode_literals, absolute_import
 import actstream
 import logging
 
-from django.views.generic import DetailView, UpdateView
-from django.http import HttpResponseRedirect
+from django.views.generic import View, DetailView, UpdateView
+from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse, FileResponse
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from elasticsearch_dsl import TermsFacet, RangeFacet
 
@@ -18,6 +20,11 @@ from search.duplicate_detection import get_ids_for_possible_duplicates
 from ..forms import LabelForm, LabelActionForm, LabelRelationFormSet
 from ..models import Label, Release
 from ..documents import LabelDocument
+
+try:
+    import cStringIO as StringIO
+except ImportError:
+    import StringIO
 
 log = logging.getLogger(__name__)
 
@@ -102,6 +109,8 @@ class LabelDetailView(DetailView):
         self.extra_context['releases'] = releases
         self.extra_context['history'] = []
 
+        self.extra_context['download_statistics_for_years'] = range(timezone.now().year, obj.created.year - 1, -1)
+
         context.update(self.extra_context)
 
         return context
@@ -180,3 +189,37 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         messages.add_message(self.request, messages.INFO, 'Object updated')
 
         return HttpResponseRedirect(self.object.get_edit_url())
+
+
+
+class LabelStatisticsDownloadView(View):
+
+    def get(self, request, **kwargs):
+
+        from statistics.label_statistics import summary_for_label_as_xls
+
+        obj = get_object_or_404(Label, pk=kwargs.get('pk'))
+
+        filename = 'Airplay statistics - {label}.xlsx'.format(
+            label=obj.name
+        )
+
+        output = StringIO.StringIO()
+
+        summary_for_label_as_xls(
+            label=obj,
+            event_type_id=3,
+            output=output
+        )
+
+        output.seek(0)
+
+        response = FileResponse(output.read(), content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
+        return response
+
+
+        response = HttpResponse(output.read(), content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+
+        return response

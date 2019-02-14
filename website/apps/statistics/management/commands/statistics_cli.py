@@ -4,8 +4,9 @@ import datetime
 
 import djclick as click
 from alibrary.models import Label
-from ...utils.queries import get_media_for_label
-from ...utils.output import airplays_for_label_as_xls
+from atracker.models import EventType
+from ...label_statistics import yearly_summary_for_label_as_xls, summary_for_label_as_xls
+
 
 @click.group()
 def cli():
@@ -16,30 +17,28 @@ def cli():
 @cli.command()
 @click.argument('scope', nargs=1)
 @click.option('-i', '--id', required=True)
-@click.option('-y', '--year', type=int)
-def generate(scope, id, year):
+@click.option('-y', '--year', type=int, required=False)
+@click.option('-p', '--path', type=click.Path(), required=False)
+def generate(scope, id, year, path):
 
-    print('generate statistics: {} - {} - {}'.format(scope, id, year))
+    print('generate statistics: {} - {} - {} - {}'.format(scope, id, year, path))
+
+    event_type_id = EventType.objects.get(title=scope).pk
 
     label = Label.objects.get(pk=id)
 
-    start = datetime.datetime.combine(
-        datetime.date(year, 1, 1),
-        datetime.time.min
-    )
+    if year:
 
-    end = datetime.datetime.combine(
-        datetime.date(year, 12, 31),
-        datetime.time.max
-    )
+        yearly_summary_for_label_as_xls(
+            year=year,
+            label=label,
+            event_type_id=event_type_id,
+            output=path
+        )
 
-    objects = get_media_for_label(label, start, end, 3)
-
-    for obj in objects:
-        print(obj.time_series)
-
-    tot = sum([i.num_airplays for i in objects])
-    print(tot)
-
-
-    f = airplays_for_label_as_xls(label, objects, year)
+    else:
+        summary_for_label_as_xls(
+            label=label,
+            event_type_id=event_type_id,
+            output=path
+        )

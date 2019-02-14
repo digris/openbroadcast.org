@@ -78,18 +78,6 @@ class ObjectStatistics(object):
                     created__gte=range_start,
                     created__lte=range_end).extra(select={'month': 'extract( month from created )'}).values('month').annotate(dcount=Count('created'))
 
-
-        # if self.obj:
-        #     truncate_date = connection.ops.date_trunc_sql('month', 'created')
-        #     qs = Event.objects.by_obj(obj=self.obj).filter(
-        #             event_type__title='%s' % action,
-        #             created__gte=range_start,
-        #             created__lte=range_end).extra({'month': truncate_date})
-        #
-        #     events = qs.values('month').annotate(count=Count('pk')).order_by('month')
-        #     return [[int((time.mktime(e['month'].timetuple()))) * 1000, e['count']] for e in events]
-
-
         elif self.user:
             events = Event.objects.filter(user=self.user, event_type__title='%s' % action, created__gte=range_start, created__lte=range_end).extra(select={'month': 'extract( month from created )'}).values('month').annotate(dcount=Count('created'))
         elif self.artist:

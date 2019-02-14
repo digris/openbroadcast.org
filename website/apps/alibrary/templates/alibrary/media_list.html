@@ -51,10 +51,25 @@
         <div class="pagination-holder">
             {% include "search/pagination.html" %}
         </div>
+
+        <!--
+        <div class="controls-container">
+            <div class="controls">
+                {% with object=object ct="list" %}
+                    {% include "alibrary/element/_list_primary_actions.html" %}
+                {% endwith %}
+            </div>
+        </div>
+        -->
+
     </div>
     <div class="listview container medias s">
         <div class="list_body">
+
             {% hash_user_groups request.user as group_hash %}
+
+
+
 
             {% for item in object_list %}
                 {% include "alibrary/media/list_item.html" with search_result=search_results_by_id|get_dict_item:item.pk %}

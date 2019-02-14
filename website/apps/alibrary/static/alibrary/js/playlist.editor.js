@@ -784,15 +784,6 @@ PlaylistEditorItem = function () {
 
             if (action == 'play') {
 
-                // try to pause aplayer - hackish..
-                try {
-                    if (aplayer.inline.player.states.state == 'playing') {
-                        aplayer.inline.player.base.controls({action: 'pause' })
-                    }
-                } catch (e) {
-
-                }
-
                 self.playlist_editor.stop_all();
 
                 // TODO: hackish way to reset player instances

@@ -3,9 +3,10 @@
 import logging
 import qsstats
 
-from django.db.models import Count
-
+from time import time
+from django.db.models import Count, Prefetch
 from alibrary.models import Media
+from atracker.models import Event
 
 log = logging.getLogger(__name__)
 
@@ -16,11 +17,14 @@ def get_events(obj, event_type_id, start, end):
     # attention! this takes ~1 second per item!
     #######################################################################
 
-    log.debug('get_events: {}'.format(obj))
+    # log.debug('get_events: {}'.format(obj))
 
     qs = obj.events.filter(
         event_type_id=event_type_id
     )
+
+    # qs = obj.events
+
     qss = qsstats.QuerySetStats(qs, 'created')
     time_series = qss.time_series(start, end, 'months')
 
@@ -47,13 +51,16 @@ def get_media_for_label(label, start, end, event_type_id):
             end
         ]
     ).annotate(
-        num_airplays=Count('events')
+        num_events=Count('events')
     ).select_related(
         'release',
         'release__label',
         'artist',
     ).prefetch_related(
-        'events',
+        Prefetch(
+            'events',
+            queryset=Event.objects.filter(event_type__id=event_type_id)
+        )
     ).order_by(
         'release__name',
         'name'
@@ -64,7 +71,7 @@ def get_media_for_label(label, start, end, event_type_id):
     # 'annotate' the objects with time_series information
     #######################################################################
     objects = []
-    for obj in qs[0:1]:
+    for obj in qs:
         time_series = get_events(obj, event_type_id, start, end)
         obj.time_series = time_series
 

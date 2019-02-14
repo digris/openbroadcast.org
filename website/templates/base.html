@@ -99,8 +99,6 @@
 
         </div>
 
-        {# include "aplayer/_inline.html" #}
-
         <div id="footer">
             {% include "skeleton/footer.html" %}
         </div>
@@ -226,7 +224,6 @@
             $(document).ready(function () {
                 debug.setLevel(2);
                 base.ui.init();
-                // aplayer.ui.init(); // TODO: refactor
                 base.ui.skeleton();
                 base.ui.iface();
                 base.ui.loading();

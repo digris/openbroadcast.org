@@ -93,10 +93,13 @@
             <div class="tab-pane" id="statistics">
                 <section class="statistics">
                     <p>
-                        <a class="btn" href="#">
-                            <i class="icon icon-floppy"></i>
-                            {% trans 'Download Statistics (last 12 months)' %}
+
+                        {% url 'alibrary-label-statistics-download' pk=object.pk as statistics_download_url %}
+                        <a href="{{ statistics_download_url }}" target="_blank">
+                            {% blocktrans with label=object.name %}Airplay statistics - {{ label }}{% endblocktrans %}.xlsx
                         </a>
+                        <br>
+
                     </p>
                 </section>
             </div>
