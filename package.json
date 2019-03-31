@@ -7,7 +7,7 @@
         "babel-preset-env": "^1.6.1",
         "can-autoplay": "^3.0.0",
         "copy-webpack-plugin": "^4.5.1",
-        "css-loader": "^0.28.11",
+        "css-loader": "^1.0.0",
         "debounce": "^1.1.0",
         "django-slick-admin-styles": "https://github.com/palmbeach-interactive/django-slick-admin-styles",
         "file-loader": "^1.1.11",
