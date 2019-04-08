@@ -7,12 +7,13 @@ import logging
 from django.views.generic import View, DetailView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse, FileResponse
 from django.contrib import messages
+from django.core.cache import cache
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.utils import timezone
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from elasticsearch_dsl import TermsFacet, RangeFacet
-
+from wsgiref.util import FileWrapper
 from base.utils.form_errors import merge_form_errors
 from search.views import BaseFacetedSearch, BaseSearchListView
 from search.duplicate_detection import get_ids_for_possible_duplicates
@@ -22,9 +23,11 @@ from ..models import Label, Release
 from ..documents import LabelDocument
 
 try:
-    import cStringIO as StringIO
+    from StringIO import StringIO as BytesIO
 except ImportError:
-    import StringIO
+    from io import BytesIO
+
+STATISTICS_CACHE_DURATION = 60 * 60
 
 log = logging.getLogger(__name__)
 
@@ -204,22 +207,22 @@ class LabelStatisticsDownloadView(View):
             label=obj.name
         )
 
-        output = StringIO.StringIO()
+        cache_key = 'label-statistics-{0}'.format(obj.pk)
+        statistics = cache.get(cache_key)
 
-        summary_for_label_as_xls(
-            label=obj,
-            event_type_id=3,
-            output=output
-        )
+        if not statistics:
+            output = BytesIO()
+            summary_for_label_as_xls(
+                label=obj,
+                event_type_id=3,
+                output=output
+            )
+            output.seek(0)
+            statistics = output.read()
+            cache.set(cache_key, statistics, STATISTICS_CACHE_DURATION)
 
-        output.seek(0)
-
-        response = FileResponse(output.read(), content_type='application/ms-excel')
+        wrapper = FileWrapper(BytesIO(statistics))
+        response = StreamingHttpResponse(wrapper, content_type='application/ms-excel')
         response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
-        return response
-
-
-        response = HttpResponse(output.read(), content_type='application/ms-excel')
-        response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
 
         return response

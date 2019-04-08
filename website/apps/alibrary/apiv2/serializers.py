@@ -93,7 +93,7 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
 
     release_display = serializers.SerializerMethodField()
     def get_release_display(self, obj, **kwargs):
-        return obj.release.name
+        return obj.release.name if obj.release else None
 
     assets = serializers.SerializerMethodField()
     def get_assets(self, obj, **kwargs):

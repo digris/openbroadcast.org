@@ -10,7 +10,7 @@
      data-item_uuid="{{ item.uuid }}"
      data-id="{{ item.id }}"
      data-uuid="{{ item.uuid }}"
-     data-ct="media">
+     data-ct="{{ item.get_ct }}">
 
     <!-- Play icon -->
     <div class="list_body_item c1 action">
@@ -18,7 +18,7 @@
             <li class="square">
                 <a href="#"
                    class="playable popup{% if not perms.alibrary.play_media %} disabled{% endif %}"
-                   data-ct="media"
+                   data-ct="{{ item.get_ct }}"
                    data-uuid="{{ item.uuid }}"
                    data-offset="0"
                    data-mode="replace"
@@ -30,7 +30,7 @@
             <li class="square">
                 <a href="#"
                    class="playable popup{% if not perms.alibrary.play_media %} disabled{% endif %}"
-                   data-ct="media"
+                   data-ct="{{ item.get_ct }}"
                    data-uuid="{{ item.uuid }}"
                    data-resource_uri="{{ item.get_api_url }}"
                    data-offset="0"

@@ -51,6 +51,13 @@
         <div class="pagination-holder">
             {% include "search/pagination.html" %}
         </div>
+        <div class="controls-container">
+            <div class="controls">
+                {% with object=None ct="alibrary.release" %}
+                    {% include "alibrary/element/_list_primary_actions.html" %}
+                {% endwith %}
+            </div>
+        </div>
     </div>
     <div class="listview container release l">
         <div class="list_body">

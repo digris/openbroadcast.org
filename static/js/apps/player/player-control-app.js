@@ -60,26 +60,42 @@ const PlayerControlApp = Vue.extend({
         $(document).on('click', '.playable, [data-playable]', (e) => {
             e.preventDefault();
             //let el = $(e.currentTarget).parents('[data-uuid]');
-            let el = $(e.currentTarget);
+            const el = $(e.currentTarget);
             let ct = el.data('ct');
-            let mode = el.data('mode');
-            let offset = el.data('offset') || 0;
+            const uuid = el.data('uuid');
+            const mode = el.data('mode');
+            const offset = el.data('offset') || 0;
             // TODO: propperly implement ctypes
             if (ct.substring(0, 9) !== 'alibrary.') {
+                console.warn('depreciated ct - please always use "app.type" format.', ct);
                 ct = `alibrary.${ct}`;
             }
+
+            const items = [];
+
+            if(uuid) {
+                items.push({
+                    ct: ct,
+                    uuid: el.data('uuid')
+                })
+            } else {
+                console.warn('no uuid provided');
+                // TODO: a quick'n'dirty way to load items present on the current page
+                $(`.item[data-ct="${ct}"]`).each((i, item) => {
+                    items.push({
+                        ct: ct,
+                        uuid: $(item).data('uuid')
+                    })
+                });
+            }
+
             this.send_action({
                 do: 'load',
                 opts: {
                     mode: mode,
                     offset: offset
                 },
-                items: [
-                    {
-                        ct: ct,
-                        uuid: el.data('uuid')
-                    },
-                ]
+                items: items
             })
         });
     },

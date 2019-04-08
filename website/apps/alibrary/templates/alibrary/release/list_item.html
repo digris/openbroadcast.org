@@ -5,11 +5,11 @@
      data-id="{{ item.id }}"
      data-absolute_url="{{ item.get_absolute_url }}"
      data-uuid="{{ item.uuid }}"
-     data-ct="release">
+     data-ct="{{ item.get_ct }}">
 
     <div class="wrapper_icon">
         {% if item.get_media.exists %}
-            {% with object=item ct="release" %}
+            {% with object=item ct=item.get_ct %}
                 {% include "alibrary/element/_item_primary_actions.html" %}
             {% endwith %}
         {% endif %}

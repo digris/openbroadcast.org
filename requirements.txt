@@ -161,4 +161,5 @@ django-adv-cache-tag==0.3.0
 # metrics, statistics & insights
 ################################################
 XlsxWriter==1.1.2
+django-qsstats-magic==1.0.0
 #pygal==2.4.0

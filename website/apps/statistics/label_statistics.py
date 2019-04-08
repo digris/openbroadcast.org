@@ -9,7 +9,7 @@ from .utils.queries import get_media_for_label
 from .utils.output import label_statistics_as_xls
 
 TITLE_MAP = {
-    'playout': 'Aitplay statistics',
+    'playout': 'Airplay statistics',
     'download': 'Download statistics',
     'stream': 'Stream statistics',
 }

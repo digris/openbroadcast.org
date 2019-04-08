@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.conf import settings
 
 SITE_URL = getattr(settings, 'SITE_URL')
+ISRC_HINT_TEXT = '''Please be aware that collecting societies only will distribute the earnings propperly if an ISRC code is present.'''
 
 log = logging.getLogger(__name__)
 
@@ -62,6 +63,10 @@ def label_statistics_as_xls(label, years, title=None, output=None):
         'italic': 1,
     })
 
+    isrc_hint = workbook.add_format({
+        'color': 'red',
+    })
+
 
     ###################################################################
     # add statistics as sheet per year
@@ -72,7 +77,7 @@ def label_statistics_as_xls(label, years, title=None, output=None):
         end = year.get('end')
         objects = year.get('objects')
 
-        first_row = 6
+        first_row = 7
         last_row = len(objects) - 1 + first_row
         total_events = sum([i.num_events for i in objects])
 
@@ -87,7 +92,9 @@ def label_statistics_as_xls(label, years, title=None, output=None):
         worksheet.merge_range('A2:C2', 'Label: {}'.format(label.name), bold)
         worksheet.merge_range('A3:C3', 'Total: {}'.format(total_events), bold)
 
-        worksheet.merge_range('A4:C4', 'File created: {}'.format(timezone.now()), small)
+        worksheet.merge_range('A4:C4', '{}'.format(ISRC_HINT_TEXT), isrc_hint)
+
+        worksheet.merge_range('A5:C5', 'File created: {}'.format(timezone.now()), small)
 
         worksheet.write('A{}'.format(first_row), 'Title', border_bottom)
         worksheet.write('B{}'.format(first_row), 'Artist', border_bottom)

@@ -147,7 +147,7 @@
                 &mdash;
                 <span
                     class="small"
-                    title="{% trans 'Last emission' %}: {{ item.last_emission.time_start|timesince }} {% trans 'ago' %}">
+                    title="{% trans 'Last emission' %}: {{ item.last_emission.time_start|timesince }} {% trans 'ago' %} - {% trans 'Num. emissions' %}: {{ search_result.num_emissions }}">
                     {{ item.last_emission.time_start|date:'SHORT_DATE_FORMAT' }}
                 </span>
             {% endif %}

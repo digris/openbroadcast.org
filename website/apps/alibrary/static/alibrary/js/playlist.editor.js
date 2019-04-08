@@ -746,6 +746,8 @@ PlaylistEditorItem = function () {
                     duration: self.co.duration
                 };
 
+                console.debug('collect - item:', item);
+
                 var _e = new CustomEvent('collector:collect', {detail: [item] });
                 window.dispatchEvent(_e);
             }

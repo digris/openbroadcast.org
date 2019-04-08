@@ -4,8 +4,10 @@
         class="action action--primary{% if not perms.alibrary.play_media %} action--disabled{% endif %}"
         data-playable
         data-ct="{{ ct }}"
+        {% if object %}
         data-uuid="{{ object.uuid }}"
         data-resource_uri="{{ object.get_api_url }}"
+        {% endif %}
         data-offset=0
         data-mode="replace">
         <i class="icon icon-play"></i>
@@ -15,8 +17,10 @@
         class="action action--primary{% if not perms.alibrary.play_media %} action--disabled{% endif %}"
         data-playable
         data-ct="{{ ct }}"
+        {% if object %}
         data-uuid="{{ object.uuid }}"
         data-resource_uri="{{ object.get_api_url }}"
+        {% endif %}
         data-offset=0
         data-mode="queue">
         <i class="icon icon-reorder"></i>
