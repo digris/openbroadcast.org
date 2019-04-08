@@ -6,7 +6,7 @@ from django.utils import timezone
 from atracker.models import EventType
 
 from .utils.queries import get_media_for_label
-from .utils.output import label_statistics_as_xls
+from .utils.xls_output_label import label_statistics_as_xls
 
 TITLE_MAP = {
     'playout': 'Airplay statistics',
