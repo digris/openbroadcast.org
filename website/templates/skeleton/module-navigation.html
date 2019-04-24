@@ -2,34 +2,10 @@
 
 <ul class="unstyled">
     {% show_menu 2 2 0 100 %}
-    {% comment %}
-    {% cache 600 "modnav_tagcloud" request.get_full_path %}
-        {% if tagcloud %}
-            <li class="tagcloud-toggle">
-                <a href="#" style="border-right: none;" class="" id="tagcloud_inline_toggle">Tagcloud</a>
-            </li>
-        {% endif %}
-    {% endcache %}
-    {% endcomment %}
     {% if tagcloud %}
         <li class="tagcloud-toggle">
             <a href="#" style="border-right: none;" class="" id="tagcloud_inline_toggle">Tagcloud</a>
         </li>
     {% endif %}
-
-
 </ul>
-{% comment %}
-{% cache 600 "modnav_tagcloud" request.get_full_path %}
-
-    {% if tagcloud %}
-    <ul class="unstyled pull-right">
-        <li>
-            <a href="#" style="border-right: none;" class="" id="tagcloud_inline_toggle">Tagcloud</a>
-        </li>
-    </ul>
-    {% endif %}
-
-{% endcache %}
-{% endcomment %}
 <div class="clearfix"></div>

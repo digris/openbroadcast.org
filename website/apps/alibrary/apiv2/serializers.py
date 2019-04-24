@@ -93,7 +93,7 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
 
     release_display = serializers.SerializerMethodField()
     def get_release_display(self, obj, **kwargs):
-        return obj.release.name
+        return obj.release.name if obj.release else None
 
     assets = serializers.SerializerMethodField()
     def get_assets(self, obj, **kwargs):
@@ -275,7 +275,7 @@ class PlaylistSerializer(FlexFieldsModelSerializer):
 
     detail_url = serializers.URLField(source='get_absolute_url')
 
-    items = PlaylistItemPlaylistSerializer(source='playlistitemplaylist_set', many=True)
+    items = PlaylistItemPlaylistSerializer(source='playlist_items', many=True)
 
     tags = serializers.StringRelatedField(many=True)
 

@@ -62,7 +62,7 @@ class FormatView(View):
         stream_permission = False
 
 
-        # # TODO: DISABLE DEFAULT PERMISSION!!!!!
+        # TODO: DISABLE DEFAULT PERMISSION!!!!!
         # stream_permission = True
 
         if request.user and request.user.has_perm('alibrary.play_media'):

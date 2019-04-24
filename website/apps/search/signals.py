@@ -6,7 +6,6 @@ cause things to index.
 
 from __future__ import absolute_import
 
-from celery.exceptions import ImproperlyConfigured
 from django.db import models
 from django.apps import apps
 

@@ -206,6 +206,9 @@ class MBCrawler(object):
         load data from mb service
         """
 
+        if not self.mb_id:
+            return {}
+
         url = 'http://{host}/ws/2/{mb_ctype}/{mb_id}/?fmt=json&inc={inc}'.format(
             host=MUSICBRAINZ_HOST,
             mb_id=self.mb_id,
@@ -219,11 +222,11 @@ class MBCrawler(object):
             r = requests.get(url)
         except Exception as e:
             log.warning('unable to load data from {}'.format(url))
-            return
+            return {}
 
         if not r.status_code == 200:
             log.warning('unable to load data: {} - {}'.format(r.status_code, url))
-            return
+            return {}
 
         return r.json()
 
@@ -491,7 +494,7 @@ class MBMediaCrawler(MBCrawler):
         if not self.obj.isrc:
             try:
                 self._changes['isrc'] = self._data['isrcs'][0]
-            except (IndexError, KeyError, AttributeError):
+            except (IndexError, KeyError, AttributeError, TypeError):
                 pass
 
 

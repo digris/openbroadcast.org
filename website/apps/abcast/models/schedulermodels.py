@@ -93,7 +93,8 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
         app_label = 'abcast'
         verbose_name = _('Emission')
         verbose_name_plural = _('Emissions')
-        ordering = ('created', )
+        # ordering = ('created', )
+        ordering = ('-time_start', )
 
         permissions = (
             ('schedule_emission', 'Schedule Emission'),

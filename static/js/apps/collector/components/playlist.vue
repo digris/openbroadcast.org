@@ -27,10 +27,8 @@
               if(! this.items_to_collect || this.items_to_collect.length !== 1) {
                   return false
               }
-
               const content = this.items_to_collect[0].content;
               return this.item.item_appearances.includes(`${content.ct}:${content.uuid}`);
-
             },
             animated_duration: function () {
                 return (this.tweened_duration === 0) ? this.item.duration : this.tweened_duration;
@@ -117,6 +115,7 @@
                 color: #a5a5a5;
                 transition: border-radius 0.2s;
                 padding: 0 12px;
+                margin-left: 4px;
                 &:hover {
                     background: $primary-color-b;
                     border-color: $primary-color-b;
@@ -162,6 +161,11 @@
         <div class="information">
             <a class="name" href="#" @click.prevent="$emit('visit', item)">
                 <i v-if="in_playlist" class="fa fa-star"></i>
+                <!--
+                TODO: currently uses 'old' icon font style when running in main window, but
+                      fontawesome icon syntax in popup. this should be unified at some point of time.
+                -->
+                <i v-if="in_playlist" class="icon icon-star"></i>
                 {{ item.name }}
             </a>
             <div v-if="item.series_display">
@@ -175,6 +179,10 @@
         </div>
         <div class="actions">
             <div class="button-group">
+                <a v-if="(actions.indexOf('add-and-close') > -1)" @click="$emit('add', item, true)"
+                   class="button hollow">
+                    Add & close
+                </a>
                 <a v-if="(actions.indexOf('add') > -1)" @click="$emit('add', item)"
                    class="button hollow">
                     Add

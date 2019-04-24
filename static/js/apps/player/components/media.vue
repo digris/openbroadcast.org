@@ -20,7 +20,7 @@
             }
         },
         mounted: function () {
-            if (DEBUG) console.debug('Waveform - mounted');
+            if (DEBUG) console.debug('media - mounted');
         },
         computed: {
             position: function () {
@@ -51,7 +51,6 @@
             remove: function (item, e) {
                 this.$emit('remove', item);
             },
-            // TODO: just testing...
             collect: function(item, e) {
                 const _e = new CustomEvent('collector:collect', {detail: [item] });
                 window.dispatchEvent(_e);
@@ -232,9 +231,7 @@
         </div>
         <div v-if="item.is_playing" class="playhead" @click="seek(item, $event)" v-on:mouseover="seek_enter(item, $event)"  v-on:mouseleave="seek_leave(item, $event)">
             <div class="progress-container">
-                <div class="progress-indicator" v-bind:style="{ width: position + '%' }">
-
-                </div>
+                <div class="progress-indicator" v-bind:style="{ width: position + '%' }"></div>
             </div>
             <div class="seek-container" v-bind:style="{ width: seek_position + '%' }"></div>
         </div>

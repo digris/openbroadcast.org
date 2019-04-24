@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import glob
 import logging
 import os
+import inspect
 import uuid
 from datetime import datetime, date, timedelta
 from zipfile import ZipFile
@@ -447,6 +448,14 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
             self.releasedate = rd
         except:
             self.releasedate = None
+
+        if hasattr(self, '_last_editor') and getattr(self, '_last_editor'):
+            last_editor = getattr(self, '_last_editor')
+            self.last_editor = last_editor
+        else:
+            last_editor = None
+
+        logger.debug('saved release id: {} - user: {} - caller: {}'.format(self.pk, last_editor, inspect.stack()[1][3]))
 
         super(Release, self).save(*args, **kwargs)
 

@@ -58,6 +58,3 @@ api.register(EventResource())
 
 # search - v1
 # api.register(GlobalSearchResource())
-
-# statistics (for entities)
-# api.register(StatisticResource())

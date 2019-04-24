@@ -4,19 +4,30 @@ from __future__ import unicode_literals, absolute_import
 import actstream
 import logging
 
-from django.views.generic import DetailView, UpdateView
-from django.http import HttpResponseRedirect
+from django.views.generic import View, DetailView, UpdateView
+from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse, FileResponse
 from django.contrib import messages
+from django.core.cache import cache
+from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from elasticsearch_dsl import TermsFacet, RangeFacet
-
+from wsgiref.util import FileWrapper
 from base.utils.form_errors import merge_form_errors
 from search.views import BaseFacetedSearch, BaseSearchListView
+from search.duplicate_detection import get_ids_for_possible_duplicates
 
 from ..forms import LabelForm, LabelActionForm, LabelRelationFormSet
 from ..models import Label, Release
 from ..documents import LabelDocument
+
+try:
+    from StringIO import StringIO as BytesIO
+except ImportError:
+    from io import BytesIO
+
+STATISTICS_CACHE_DURATION = 60 * 60
 
 log = logging.getLogger(__name__)
 
@@ -66,7 +77,16 @@ class LabelListView(BaseSearchListView):
     ]
 
     def get_queryset(self, **kwargs):
-        qs = super(LabelListView, self).get_queryset(**kwargs)
+
+        limit_ids = None
+
+        # TODO: special purpose filters. should be moved to generic place & add parameter validation
+        duplicate_filter = self.request.GET.get('duplicate_filter', None)
+        if duplicate_filter:
+            fields = duplicate_filter.split(':')
+            limit_ids = get_ids_for_possible_duplicates('labels', fields)
+
+        qs = super(LabelListView, self).get_queryset(limit_ids=limit_ids, **kwargs)
 
         qs = qs.select_related(
             'country'
@@ -91,6 +111,8 @@ class LabelDetailView(DetailView):
         releases = Release.objects.filter(label=obj).order_by('-releasedate').distinct()[:8]
         self.extra_context['releases'] = releases
         self.extra_context['history'] = []
+
+        self.extra_context['download_statistics_for_years'] = range(timezone.now().year, obj.created.year - 1, -1)
 
         context.update(self.extra_context)
 
@@ -170,3 +192,37 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         messages.add_message(self.request, messages.INFO, 'Object updated')
 
         return HttpResponseRedirect(self.object.get_edit_url())
+
+
+
+class LabelStatisticsDownloadView(View):
+
+    def get(self, request, **kwargs):
+
+        from statistics.label_statistics import summary_for_label_as_xls
+
+        obj = get_object_or_404(Label, pk=kwargs.get('pk'))
+
+        filename = 'Airplay statistics - {label}.xlsx'.format(
+            label=obj.name
+        )
+
+        cache_key = 'label-statistics-{0}'.format(obj.pk)
+        statistics = cache.get(cache_key)
+
+        if not statistics:
+            output = BytesIO()
+            summary_for_label_as_xls(
+                label=obj,
+                event_type_id=3,
+                output=output
+            )
+            output.seek(0)
+            statistics = output.read()
+            cache.set(cache_key, statistics, STATISTICS_CACHE_DURATION)
+
+        wrapper = FileWrapper(BytesIO(statistics))
+        response = StreamingHttpResponse(wrapper, content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
+
+        return response

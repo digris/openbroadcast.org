@@ -10,7 +10,6 @@
 
 {% block heading %}
 
-
     <!-- jqplot - TODO: move to include -->
     {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
     {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/statistics.js"></script>{% endaddtoblock %}
@@ -37,8 +36,6 @@
                         stats.show();
                     }
                 })
-
-
             });
         </script>
     {% endaddtoblock %}
@@ -48,11 +45,10 @@
     </div>
 {% endblock %}
 
-{% block modnav %} <!-- start: intra-module navigation -->
+{% block modnav %}
     <div id="modnav">
         {% include "skeleton/module-navigation.html" %}
     </div>
-    <!-- end: intra-module navigation -->
 {% endblock %}
 
 {% block inner %}
@@ -80,9 +76,6 @@
             </li>
             {% endif %}
             <li>
-                <a href="#history" data-toggle="tab">{% trans "Edit History" %}</a>
-            </li>
-            <li>
                 <a href="#statistics" data-toggle="tab">{% trans "Statistics" %}</a>
             </li>
         </ul>
@@ -94,8 +87,7 @@
 
     <div class="tab-content">
 
-    <div class="tab-pane {% if releases.exists %}active{% endif %}" id="tracklist"
-         class="topflop">
+    <div class="tab-pane {% if releases.exists %}active{% endif %}" id="tracklist" class="topflop">
 
 
         {% if m_top %}
@@ -109,7 +101,7 @@
                     {% url "alibrary-media-list" as media_list %}
                     <a href="{% spurl path=media_list query="search_artist_ids={{ object.uuid }}" %}">
                         <i class="icon-chevron-sign-right"></i>
-                        {% blocktrans with count=object.media_artist.count name=object.name %}Show all {{ count }} tracks by {{ name }}{% endblocktrans %}
+                        {% blocktrans with name=object.name %}Show all tracks by {{ name }}{% endblocktrans %}
                     </a>
                 </span>
             </h2>
@@ -187,26 +179,12 @@
 
     </div>
 
-    <div class="tab-pane" id="history">
-        <section class="history">
-            <h2>{% trans "Edit history" %}</h2>
-            {% include "alibrary/element/_object_history.html" %}
-        </section>
-    </div>
-
-    <div class="tab-pane {% if releases.count < 1 and m_contrib > 1 %}active{% endif %}"
-         id="contribution">
-
+    {% comment %}{% endcomment %}
+    <div class="tab-pane {% if not releases.exists and m_contrib > 1 %}active{% endif %}" id="contribution">
         <section class="contribution">
-
-            <h2>{% trans "Appears on" %}</h2>
-
             <div class="listview container medias s">
-
                 <div class="list_header"></div>
-
                 <div class="list_body">
-
                     {% with highlight=object extended=1 %}
                         {% for item in m_contrib %}
                             {% include "alibrary/media/_list_item_foreign_xs.html" %}
@@ -214,29 +192,20 @@
                     {% endwith %}
                 </div>
             </div>
-
         </section>
-
     </div>
+
 
     <div class="tab-pane" id="biography">
         <section class="description">
-            <h2>{% trans "Biography" %}</h2>
-
             <div class="description markdown padded-h">
                 {% wikify object.biography %}
             </div>
-
         </section>
-
     </div>
 
     <div class="tab-pane" id="statistics">
-
         <section class="statistics">
-
-            <h2>{% trans "Statistics" %}</h2>
-
             <div id="statistics_container" style="min-height: 240px;">
                 <div class="message">{% trans "Loading statistics" %}</div>
                 <!-- dynamic content -->
@@ -244,13 +213,7 @@
             <div class="choices-container">
                 <ul class="unstyled pull-right" id="plot_choices"></ul>
             </div>
-
         </section>
-
-    </div>
-
-    <div class="tab-pane" id="broadcasts">
-        ...
     </div>
 
     </div>

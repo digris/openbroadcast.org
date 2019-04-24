@@ -76,12 +76,12 @@ DEFAULT_PLAYLIST_STATUS_CHOICES = (
     (11, _('Other')),
 )
 
-DEFAULT_PLAYLIST_TYPE_CHOICES = (
-    ('basket', _('Private Playlist')),
-    ('playlist', _('Public Playlist')),
-    ('broadcast', _('Broadcasts')),
-    ('other', _('Other')),
-)
+# DEFAULT_PLAYLIST_TYPE_CHOICES = (
+#     ('basket', _('Private Playlist')),
+#     ('playlist', _('Public Playlist')),
+#     ('broadcast', _('Broadcasts')),
+#     ('other', _('Other')),
+# )
 
 DEFAULT_PLAYLIST_BROADCAST_STATUS_CHOICES = (
     (0, _('Undefined')),
@@ -104,9 +104,9 @@ DEFAULT_ARTIST_JOIN_PHRASE_CHOICES = (
 )
 
 
-"""
-choice settings
-"""
+
+# choice settings
+# TODO: where possible implement choices directly in models
 RELEASETYPE_CHOICES = getattr(
     settings,
     'ALIBRARY_RELEASETYPE_CHOICES',
@@ -128,11 +128,11 @@ PLAYLIST_STATUS_CHOICES = getattr(
     'ALIBRARY_PLAYLIST_STATUS_CHOICES',
     DEFAULT_PLAYLIST_STATUS_CHOICES
 )
-PLAYLIST_TYPE_CHOICES = getattr(
-    settings,
-    'ALIBRARY_PLAYLIST_TYPE_CHOICES',
-    DEFAULT_PLAYLIST_TYPE_CHOICES
-)
+# PLAYLIST_TYPE_CHOICES = getattr(
+#     settings,
+#     'ALIBRARY_PLAYLIST_TYPE_CHOICES',
+#     DEFAULT_PLAYLIST_TYPE_CHOICES
+# )
 PLAYLIST_BROADCAST_STATUS_CHOICES = getattr(
     settings,
     'ALIBRARY_PLAYLIST_BROADCAST_STATUS_CHOICES',

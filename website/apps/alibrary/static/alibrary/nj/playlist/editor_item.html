@@ -43,6 +43,10 @@
                 </li>
                 <li class="small relations">
 
+                    {% if object.item.content_object.artist_display %}
+                        <span>{{ object.item.content_object.artist_display }}</span>
+                    {% endif %}
+
                     {% if object.item.content_object.artist %}
                         <span>
 						<a href="{{ object.item.content_object.artist.absolute_url }}"
@@ -149,9 +153,11 @@
             <ul class="unstyled">
                 <li>
 
+                    <!---->
                     <a href="#" data-action="collect" class=" pull-right">
                         &nbsp;&nbsp;<i class="icon-plus icon-large"></i>
                     </a>
+
 
                     {% if not readonly %}
                         <a href="#" data-action="delete" class=" pull-right">

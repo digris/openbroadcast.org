@@ -51,9 +51,14 @@ CELERY_ROUTES = {
     'importer.models.identify_task': {'queue': 'process'},
     'importer.util.importer_tools.mb_complete_media_task': {'queue': 'complete'},
 
+    # TODO: check if completion tasks have to run on single-concurency instance
+    'importer.util.importer_tools.mb_complete_release_task': {'queue': 'complete'},
+    'importer.util.importer_tools.mb_complete_artist_task': {'queue': 'complete'},
+
     'alibrary.models.generate_media_versions_task': {'queue': 'convert'},
     'alibrary.models.create_waveform_image': {'queue': 'convert'},
 
+    'media_asset.tasks.process_assets_for_media': {'queue': 'convert'},
     'media_asset.models.process_waveform': {'queue': 'grapher'},
     'media_asset.models.process_format': {'queue': 'convert'},
     'media_asset.process_waveform': {'queue': 'grapher'},

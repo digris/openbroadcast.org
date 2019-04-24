@@ -1,0 +1,29 @@
+{% load i18n  %}
+<ul class="unstyled action">
+    <li class="square">
+        <a href="#"
+           class="playable popup{% if not perms.alibrary.play_media %} disabled{% endif %}"
+           data-playable
+           data-ct="{{ ct }}"
+           data-uuid="{{ object.uuid }}"
+           data-resource_uri="{{ object.get_api_url }}"
+           data-offset=0
+           data-mode="replace"
+           title="{% trans "Play" %}">
+            <i class="icon icon-play"></i>
+        </a>
+    </li>
+    <li class="square">
+        <a href="#"
+           class="playable popup{% if not perms.alibrary.play_media %} disabled{% endif %}"
+           data-playable
+           data-ct="{{ ct }}"
+           data-uuid="{{ object.uuid }}"
+           data-resource_uri="{{ object.get_api_url }}"
+           data-offset=0
+           data-mode="queue"
+           title="{% trans "Queue" %}">
+            <i class="icon icon-reorder"></i>
+        </a>
+    </li>
+</ul>

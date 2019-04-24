@@ -54,6 +54,14 @@
 
 
 
+  .controls-container
+    margin-top: -5px
+    .actions
+      &--list
+        @include list-actions
+
+
+
 
 
 
@@ -320,6 +328,7 @@
           color: #a5a5a5 !important
           background: transparent !important
           cursor: not-allowed
+          pointer-events: none
           i
             color: #a5a5a5 !important
 
@@ -351,29 +360,6 @@
           &:hover > a
             color: $primary-color-a !important
             background: transparent
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     &.s
       font-size: 90%
@@ -586,7 +572,7 @@
         width: auto
         //max-width: 285px
       .c4
-        width: 100px
+        width: 140px
         // min-width: 170px
       .c5
         width: 68px

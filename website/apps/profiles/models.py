@@ -13,7 +13,7 @@ from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
 from django.core.urlresolvers import reverse
 
-from django_extensions.db.fields import AutoSlugField, UUIDField
+from django_extensions.db.fields import AutoSlugField
 from phonenumber_field.modelfields import PhoneNumberField
 
 from tagging.fields import TagField
@@ -24,6 +24,9 @@ import arating
 from base.fields import extra
 from invitation.signals import invitation_accepted
 from l10n.models import Country
+
+
+from base.mixins import TimestampedModelMixin, UUIDModelMixin
 
 DEFAULT_GROUP = 'Listener'
 
@@ -45,45 +48,57 @@ class MigrationMixin(models.Model):
 def filename_by_uuid(instance, filename):
     filename, extension = os.path.splitext(filename)
     path = "profiles/"
-
-    # splitted
-    filename = instance.uuid.replace('-', '/')[5:] + extension
-
+    filename = str(instance.uuid).replace('-', '/')[5:] + extension
     return os.path.join(path, filename)
 
 
-class Profile(MigrationMixin):
-    """Profile model"""
+class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
+
     GENDER_CHOICES = (
         (0, _('Male')),
         (1, _('Female')),
         (2, _('Other')),
     )
-    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User,
+        unique=True,
+        on_delete=models.CASCADE
+    )
 
-    #
-    uuid = UUIDField()
-
-    # auto-update
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    updated = models.DateTimeField(auto_now=True, editable=False)
-
-    #
-    mentor = models.ForeignKey(User, blank=True, null=True, related_name="godchildren")
+    mentor = models.ForeignKey(
+        User,
+        blank=True, null=True,
+        related_name="godchildren"
+    )
 
     #Personal
-    gender = models.PositiveSmallIntegerField(_('gender'), choices=GENDER_CHOICES, blank=True, null=True)
-    birth_date = models.DateField(_('Date of birth'), blank=True, null=True, help_text=_('Format: YYYY-MM-DD'))
-
-    # Profile
+    gender = models.PositiveSmallIntegerField(
+        _('gender'),
+        choices=GENDER_CHOICES,
+        blank=True, null=True
+    )
+    birth_date = models.DateField(
+        _('Date of birth'),
+        blank=True, null=True,
+        help_text=_('Format: YYYY-MM-DD')
+    )
     pseudonym = models.CharField(
         blank=True, null=True, max_length=250,
         help_text=_('Will appear instead of your first- & last name')
     )
-    description = models.CharField(_('Disambiguation'), blank=True, null=True, max_length=250)
-    biography = extra.MarkdownTextField(blank=True, null=True)
+    description = models.CharField(
+        _('Disambiguation'),
+        blank=True, null=True, max_length=250
+    )
+    biography = extra.MarkdownTextField(
+        blank=True, null=True
+    )
 
-    image = models.ImageField(verbose_name=_('Profile Image'), upload_to=filename_by_uuid, null=True, blank=True)
+    image = models.ImageField(
+        verbose_name=_('Profile Image'),
+        upload_to=filename_by_uuid,
+        null=True, blank=True
+    )
 
     # Contact (personal)
     mobile = PhoneNumberField(_('mobile'), blank=True, null=True)
@@ -182,6 +197,9 @@ class Profile(MigrationMixin):
         else:
             return None
 
+    def get_ct(self):
+        return '{}.{}'.format(self._meta.app_label, self.__class__.__name__).lower()
+
     def get_absolute_url(self):
         return reverse('profiles-profile-detail', kwargs={ 'username': self.user.username })
 
@@ -214,9 +232,9 @@ except:
 arating.enable_voting_on(Profile)
 
 
-class Community(MigrationMixin):
+class Community(UUIDModelMixin, MigrationMixin):
 
-    uuid = UUIDField(primary_key=False)
+    # uuid = UUIDField(primary_key=False)
     name = models.CharField(max_length=200, db_index=True)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
 

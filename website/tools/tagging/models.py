@@ -16,6 +16,8 @@ from tagging.utils import calculate_cloud
 from tagging.utils import parse_tag_input
 from tagging.utils import get_queryset_and_model
 
+from base.mixins import TimestampedModelMixin
+
 
 qn = connection.ops.quote_name
 
@@ -470,7 +472,7 @@ class TaggedItemManager(models.Manager):
 ##########
 
 @python_2_unicode_compatible
-class Tag(models.Model):
+class Tag(TimestampedModelMixin, models.Model):
     """
     A tag.
     """

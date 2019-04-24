@@ -28,34 +28,42 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: rgba(#222, 1);
+        background: rgba(#222, .2);
         display: flex;
         align-items: center;
         justify-content: center;
+
         .modal-container {
             border: 10px solid #222;
+            background: #222;
             border-top: none;
             position: fixed;
             z-index: 99;
             min-width: 150px;
             min-height: 150px;
-            width: 100vw;
-            height: 100%;
-
             display: flex;
             flex-direction: column;
+
+
+            width: 40vw;
+            height: 50%;
+
+            // full-size display in popup
+            @media only screen and (max-width: 800px) {
+                width: 100vw;
+                height: 100%;
+            }
+
 
             header {
 
             }
-
             main {
                 flex: 1;
                 overflow: auto;
             }
-
             .modal-topbar {
-                background: #000;
+                background: #222;
                 display: flex;
                 height: 28px;
                 .modal-topbar-title {
@@ -73,10 +81,7 @@
                     }
                 }
             }
-
-
         }
-
     }
 
     // transitions

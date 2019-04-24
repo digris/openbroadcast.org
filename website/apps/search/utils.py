@@ -227,7 +227,7 @@ def get_filter_data(facets, facets_definition=None):
                 _q = selected_options + [option[0]]
 
             #_query = ':'.join((str(x) for x in _q))
-            _query = ':'.join((x for x in _q))
+            _query = ':'.join(x for x in _q)
 
             _options.append({
                 'name': option[0],

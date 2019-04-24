@@ -14,7 +14,7 @@ from elasticsearch_dsl import Search
 
 @click.group()
 def cli():
-    """Massimporter CLI"""
+    """Search CLI"""
     pass
 
 

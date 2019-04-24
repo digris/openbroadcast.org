@@ -11,11 +11,12 @@ from alibrary import settings as alibrary_settings
 from alibrary.models import MigrationMixin, Daypart
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 from django.utils import timezone
@@ -107,6 +108,20 @@ class Series(models.Model):
 
 
 class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
+
+    TYPE_BASKET = 'basket'
+    TYPE_PLAYLIST = 'playlist'
+    TYPE_BROADCAST = 'broadcast'
+    TYPE_OTHER = 'other'
+
+    TYPE_CHOICES = (
+        (TYPE_BASKET, _('Private Playlist')),
+        (TYPE_PLAYLIST, _('Public Playlist')),
+        (TYPE_BROADCAST, _('Broadcast')),
+        (TYPE_OTHER, _('Other')),
+    )
+
+
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
@@ -118,7 +133,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     type = models.CharField(
         max_length=12,
         default='basket', null=True,
-        choices=alibrary_settings.PLAYLIST_TYPE_CHOICES
+        choices=TYPE_CHOICES
     )
     broadcast_status = models.PositiveIntegerField(
         default=0,
@@ -221,6 +236,8 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         upload_to=upload_mixdown_to
     )
 
+    emissions = GenericRelation('abcast.Emission')
+
     # meta
     class Meta:
         app_label = 'alibrary'
@@ -269,6 +286,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         return duration
 
+    # TODO: remove usages and use generic reverse 'emissions' instead
     def get_emissions(self):
         from abcast.models import Emission
         ctype = ContentType.objects.get_for_model(self)
@@ -654,7 +672,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     @property
     def sorted_items(self):
-        return self.items.order_by('playlistitemplaylist__position')
+        return self.items.order_by('playlist_items__position')
 
     @cached_property
     def num_media(self):
@@ -664,17 +682,25 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     def mixdown(self):
         return self.get_mixdown()
 
+    # provide type-based properties
+    @property
+    def is_broadcast(self):
+        return self.type == Playlist.TYPE_BROADCAST
+
+    @property
+    def is_playlist(self):
+        return self.type == Playlist.TYPE_PLAYLIST
 
     @cached_property
     def is_archived(self):
-        if not self.type == 'broadcast':
+        if not self.type == Playlist.TYPE_BROADCAST:
             return
         if self.rotation_date_end and self.rotation_date_end < timezone.now().date():
             return True
 
     @cached_property
     def is_upcoming(self):
-        if not self.type == 'broadcast':
+        if not self.type == Playlist.TYPE_BROADCAST:
             return
         if self.rotation_date_start and self.rotation_date_start > timezone.now().date():
             return True
@@ -686,6 +712,17 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         if self.series_number:
             return '{} #{}'.format(self.series.name, self.series_number)
         return self.series.name
+
+    @cached_property
+    def last_emission(self):
+        ###############################################################
+        # we cannot filter a prefetched qs - so to avoid
+        # additional queries we have to loop the qs and 'filter'
+        # 'manually'
+        ###############################################################
+        for emission in self.emissions.all():
+            if emission.time_start < timezone.now():
+                return emission
 
     def save(self, *args, **kwargs):
 
@@ -702,19 +739,13 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         self.duration = duration
 
-        """
-        TODO: maybe move
-        """
+        # TODO: maybe move
         self.broadcast_status, self.broadcast_status_messages = self.self_check()
-        # print '%s - %s (id: %s)' % (self.broadcast_status, self.name, self.pk)
-        # print ', '.join(self.broadcast_status_messages)
-        # map to object status (not extremly dry - we know...)
         if self.broadcast_status == 1:
             self.status = 1  # 'ready'
         else:
             self.status = 99  # 'error'
 
-        # self.user = request.user
         super(Playlist, self).save(*args, **kwargs)
 
 
@@ -726,21 +757,33 @@ except Exception as e:
 arating.enable_voting_on(Playlist)
 
 
-def playlist_post_save(sender, **kwargs):
-    # obj = kwargs['instance']
-    pass
+@receiver(post_save, sender=Playlist)
+def playlist_post_save(sender, instance, **kwargs):
+
+    if not instance.type == 'broadcast':
+        return
+
+    if instance.mixdown_file:
+        return
+
+    if instance.mixdown:
+        return
+
+    log.debug('no mixdown yet for {} - request to generate'.format(instance.name))
+    instance.request_mixdown()
 
 
-post_save.connect(playlist_post_save, sender=Playlist)
 
 
 class PlaylistItemPlaylist(TimestampedModelMixin, models.Model):
 
     playlist = models.ForeignKey(
-        'Playlist', on_delete=models.CASCADE
+        'Playlist', on_delete=models.CASCADE,
+        related_name='playlist_items'
     )
     item = models.ForeignKey(
-        'PlaylistItem', on_delete=models.CASCADE
+        'PlaylistItem', on_delete=models.CASCADE,
+        related_name='playlist_items'
     )
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
@@ -781,8 +824,10 @@ class PlaylistItemPlaylist(TimestampedModelMixin, models.Model):
 
 
 class PlaylistItem(models.Model):
-    # uuid = UUIDField()
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+
+    uuid = models.UUIDField(
+        default=uuid.uuid4, editable=False
+    )
 
     class Meta:
         app_label = 'alibrary'
@@ -790,11 +835,14 @@ class PlaylistItem(models.Model):
         verbose_name_plural = _('Playlist Items')
         # ordering = ('-created', )
 
-    ct_limit = models.Q(app_label='alibrary', model='media') | models.Q(app_label='alibrary',
-                                                                        model='release') | models.Q(app_label='abcast',
-                                                                                                    model='jingle')
+    ct_limit = models.Q(app_label='alibrary', model='media') | \
+               models.Q(app_label='alibrary', model='release') | \
+               models.Q(app_label='abcast', model='jingle')
 
-    content_type = models.ForeignKey(ContentType, limit_choices_to=ct_limit)
+    content_type = models.ForeignKey(
+        ContentType,
+        limit_choices_to=ct_limit
+    )
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
 

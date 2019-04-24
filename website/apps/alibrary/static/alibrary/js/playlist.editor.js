@@ -731,8 +731,29 @@ PlaylistEditorItem = function () {
 
             var action = $(this).data('action');
 
-            if (action == 'delete') {
 
+            // TODO: this is just a temporary workaround to be able to 'collect' tracks in playlist edit mode.
+            if (action == 'collect') {
+                // map content object to v2 api
+                var item = {
+                    content: {
+                        name: self.co.name,
+                        uuid: self.co.uuid,
+                        ct: 'alibrary.media',
+                        url: '/api/v2/library/track/' + self.co.uuid + '/',
+                        image: null,
+                    },
+                    duration: self.co.duration
+                };
+
+                console.debug('collect - item:', item);
+
+                var _e = new CustomEvent('collector:collect', {detail: [item] });
+                window.dispatchEvent(_e);
+            }
+
+
+            if (action == 'delete') {
                 var options = {
                     title: 'Confirm',
                     body: '<p>' + 'Are you sure?' + '</p>',
@@ -759,22 +780,11 @@ PlaylistEditorItem = function () {
                         }
                     ]
                 };
-
                 ui.dialog.show(options);
-
             }
 
 
             if (action == 'play') {
-
-                // try to pause aplayer - hackish..
-                try {
-                    if (aplayer.inline.player.states.state == 'playing') {
-                        aplayer.inline.player.base.controls({action: 'pause' })
-                    }
-                } catch (e) {
-
-                }
 
                 self.playlist_editor.stop_all();
 
