@@ -161,7 +161,6 @@ const PlayerApp = Vue.extend({
     mounted: function () {
         if (DEBUG) console.group('PlayerApp');
 
-
         /**********************************************************
          * subscribe to local-storage based channels.
          * 'heartbeat' channel is used to handle/establish

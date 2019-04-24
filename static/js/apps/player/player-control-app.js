@@ -21,8 +21,6 @@ const PlayerControlApp = Vue.extend({
             player_url: '/player-ng/',
             heartbeat_payloads: [],
             action_payloads: [],
-            // just temporary
-            enabled: false
         }
     },
     mounted: function () {
@@ -53,49 +51,53 @@ const PlayerControlApp = Vue.extend({
         /**********************************************************
          * temporary for parallel legacy / ng situation
          **********************************************************/
+        console.info('PlayerControlApp enabled (dev mode)');
 
-        // temporary: check if controls should be displayed
-        // localStorage.setItem('_dev_player_enabled', 'yes');
-        if (localStorage.getItem('_dev_player_enabled') === 'yes') {
-            this.enabled = true;
-        }
+        // remove play (click) handlers or 'old' player
+        $('.playable.popup').removeClass('popup');
 
-        if (this.enabled) {
-            console.info('PlayerControlApp enabled (dev mode)');
+        // re-bind
+        $(document).on('click', '.playable, [data-playable]', (e) => {
+            e.preventDefault();
+            //let el = $(e.currentTarget).parents('[data-uuid]');
+            const el = $(e.currentTarget);
+            let ct = el.data('ct');
+            const uuid = el.data('uuid');
+            const mode = el.data('mode');
+            const offset = el.data('offset') || 0;
+            // TODO: propperly implement ctypes
+            if (ct.substring(0, 9) !== 'alibrary.') {
+                console.warn('depreciated ct - please always use "app.type" format.', ct);
+                ct = `alibrary.${ct}`;
+            }
 
-            // remove play (click) handlers or 'old' player
-            $('.playable.popup').removeClass('popup');
+            const items = [];
 
-            // re-bind
-            $(document).on('click', '.playable', (e) => {
-                e.preventDefault();
-                //let el = $(e.currentTarget).parents('[data-uuid]');
-                let el = $(e.currentTarget);
-                let ct = el.data('ct');
-                let mode = el.data('mode');
-                let offset = el.data('offset') || 0;
-                if (ct.substring(0, 9) !== 'alibrary.') {
-                    ct = `alibrary.${ct}`;
-                }
-
-                this.send_action({
-                    do: 'load',
-                    opts: {
-                        mode: mode,
-                        offset: offset
-                    },
-                    items: [
-                        {
-                            ct: ct,
-                            uuid: el.data('uuid')
-                        },
-                    ]
+            if(uuid) {
+                items.push({
+                    ct: ct,
+                    uuid: el.data('uuid')
                 })
-            });
+            } else {
+                console.warn('no uuid provided');
+                // TODO: a quick'n'dirty way to load items present on the current page
+                $(`.item[data-ct="${ct}"]`).each((i, item) => {
+                    items.push({
+                        ct: ct,
+                        uuid: $(item).data('uuid')
+                    })
+                });
+            }
 
-        } else {
-            if (DEBUG) console.debug('PlayerControlApp disabled (dev mode)');
-        }
+            this.send_action({
+                do: 'load',
+                opts: {
+                    mode: mode,
+                    offset: offset
+                },
+                items: items
+            })
+        });
     },
 
     methods: {

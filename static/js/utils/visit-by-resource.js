@@ -12,6 +12,8 @@ export const visit_by_resource = function (item, scope) {
             if (window.opener) {
                 window.opener.location.href = detail_url;
                 window.opener.focus();
+            } else {
+                window.location.href = detail_url;
             }
         }, (error) => {
             console.error('error loading item', error);

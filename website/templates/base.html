@@ -99,8 +99,6 @@
 
         </div>
 
-        {% include "aplayer/_inline.html" %}
-
         <div id="footer">
             {% include "skeleton/footer.html" %}
         </div>
@@ -127,7 +125,9 @@
 
 
         <!-- TODO: just temporary... -->
-        <div id="player_control_app"></div>
+        <div id="player_control_app">(( loading player app ))</div>
+
+        <div id="collector_app">(( loading collector app ))</div>
 
 
         <div id="refresh"></div>
@@ -224,7 +224,6 @@
             $(document).ready(function () {
                 debug.setLevel(2);
                 base.ui.init();
-                aplayer.ui.init(); // TODO: refactor
                 base.ui.skeleton();
                 base.ui.iface();
                 base.ui.loading();
@@ -250,6 +249,8 @@
             });
         </script>
 
+        {% comment %}
+        # TODO: completely remove related code
         <script src="{{ STATIC_URL }}alibrary/js/playlist.js"></script>
         <script>
             var alibrary = alibrary || {};
@@ -260,6 +261,7 @@
                 alibrary.collector.init();
             });
         </script>
+        {% endcomment %}
 
 
         <script>

@@ -78,10 +78,9 @@ class Event(models.Model):
         verbose_name=_('Type'),
         related_name='events',
     )
-    
+
     archived = models.BooleanField(default=False)
     distributed = models.BooleanField(default=False)
-
 
     # Generic FK to the object this event is attached to
     content_type = models.ForeignKey(
@@ -89,7 +88,10 @@ class Event(models.Model):
         related_name='event_content_objects',
         null=True, blank=True
     )
-    object_id = models.PositiveIntegerField(null=True, blank=True)
+    object_id = models.PositiveIntegerField(
+        null=True, blank=True,
+        db_index=True
+    )
     content_object = GenericForeignKey('content_type', 'object_id')
 
     # Generic FK to the object that created this event
@@ -101,7 +103,7 @@ class Event(models.Model):
     event_object_id = models.PositiveIntegerField(null=True, blank=True)
     event_content_object = GenericForeignKey(
         'event_content_type', 'event_object_id')
-    
+
     objects = EventManager()
 
 
@@ -159,9 +161,9 @@ class Event(models.Model):
         if self.created.year != now().year:
             return date(self.created, 'd F Y')
         return date(self.created, 'd F')
-    
-    
-    
+
+
+
 def actstream_link(sender, instance, created, **kwargs):
     from actstream import action
     try:

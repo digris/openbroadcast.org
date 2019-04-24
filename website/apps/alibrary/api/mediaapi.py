@@ -258,7 +258,7 @@ class MediaResource(ModelResource):
 
         obj = Media.objects.get(**self.remove_api_resource_names(kwargs))
 
-        from statistics.util import ObjectStatistics
+        from statistics.utils.legacy import ObjectStatistics
         ostats = ObjectStatistics(obj=obj)
         stats = ostats.generate()
 
@@ -339,5 +339,6 @@ class SimpleMediaResource(ModelResource):
         bundle.data['waveform_image'] = reverse_lazy('mediaasset-waveform', kwargs={'media_uuid': bundle.obj.uuid, 'type': 'w'})
         bundle.data['spectrogram_image'] = reverse_lazy('mediaasset-waveform', kwargs={'media_uuid': bundle.obj.uuid, 'type': 's'})
 
+        bundle.data['artist_display'] = bundle.obj.get_artist_display()
 
         return bundle

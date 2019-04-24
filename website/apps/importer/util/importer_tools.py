@@ -264,6 +264,7 @@ class Importer(object):
         if not r:
             log.info(u'no release yet, so create it: %s' % release)
             r = Release(name=release)
+            r.creator = self.user
             r.save()
             r_created = True
 

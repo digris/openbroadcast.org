@@ -1052,6 +1052,7 @@ base.ui.tagcloud = function () {
 
     });
 
+    /*
     $('.tag-level a', '#tagcloud_inline').live('click', function (e) {
         e.preventDefault();
         var level = $(this).data('taglevel');
@@ -1067,6 +1068,7 @@ base.ui.tagcloud = function () {
         }
 
     });
+    */
 
     // aply "highlight" class for selected tag(s)
     $('#tagcloud_inline .cloud-container a.on').each(function(i, el){

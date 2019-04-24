@@ -11,12 +11,13 @@ from easy_thumbnails.templatetags.thumbnail import thumbnail_url
 #from ..models import PlayerItem
 
 from alibrary.models import Media
-from alibrary.apiv2.serializers import MediaSerializer
+from alibrary.apiv2.serializers import MediaSerializer, ArtistSerializer
 
 SITE_URL = getattr(settings, 'SITE_URL')
 
 log = logging.getLogger(__name__)
 
+# for consistency - player expects list/items
 class MediaObjSerializer(serializers.ModelSerializer):
 
     url = serializers.HyperlinkedIdentityField(
@@ -47,5 +48,32 @@ class MediaObjSerializer(serializers.ModelSerializer):
             'ct',
             'uuid',
             'detail_url',
+            'items',
+        ]
+
+
+
+class ArtistObjSerializer(ArtistSerializer):
+
+    items = serializers.SerializerMethodField()
+    def get_items(self, obj, **kwargs):
+        items = []
+        for media in obj.get_media()[0:20]:
+
+            serializer = MediaSerializer(media, context={'request': self.context['request']})
+            items.append({
+                'content': serializer.data
+            })
+
+        return items
+
+    class Meta(ArtistSerializer.Meta):
+        fields = [
+            'url',
+            'ct',
+            'detail_url',
+            'uuid',
+            'name',
+            'image',
             'items',
         ]

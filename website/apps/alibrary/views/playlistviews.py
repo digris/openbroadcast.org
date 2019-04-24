@@ -2,6 +2,7 @@
 from __future__ import unicode_literals, absolute_import
 
 import logging
+import datetime
 
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from django.conf import settings
@@ -12,8 +13,9 @@ from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 from django.views.generic import DetailView, UpdateView, CreateView, DeleteView
-from elasticsearch_dsl import TermsFacet, RangeFacet
+from elasticsearch_dsl import TermsFacet, RangeFacet, DateHistogramFacet
 
 from search.views import BaseFacetedSearch, BaseSearchListView
 
@@ -30,7 +32,7 @@ class PlaylistSearch(BaseFacetedSearch):
     fields = ['tags', 'name', ]
 
     facets = [
-        ('tags', TermsFacet(field='tags', size=100)),
+        ('tags', TermsFacet(field='tags', size=240)),
         ('type', TermsFacet(field='type', size=100, order={'_key': 'asc'})),
         ('status', TermsFacet(field='status', size=100, order={'_key': 'asc'})),
         ('weather', TermsFacet(field='weather', size=100, order={'_key': 'asc'})),
@@ -44,6 +46,25 @@ class PlaylistSearch(BaseFacetedSearch):
             ('11 - 50', (11, 50)),
             ('More than 50', (50, None)),
         ])),
+        ('last_emission', RangeFacet(field='last_emission', ranges=[
+            # ('old', (None, '2016-01-01')),
+            # ('2016', ('2016-01-01', '2016-12-31')),
+            # ('2018', ('2018-01-01', '2018-12-31')),
+            # ('recent', ('2019-01-01', None)),
+            ('Last 7 days', (
+                str((timezone.now() - datetime.timedelta(days=7)).date()),
+                None
+            )),
+            ('Last month', (
+                str((timezone.now() - datetime.timedelta(days=30)).date()),
+                None
+            )),
+            ('More than a month ago', (
+                None,
+                str((timezone.now() - datetime.timedelta(days=30)).date())
+            )),
+        ])),
+        #('last_emission', DateHistogramFacet(field='last_emission', interval='month')),
         ('flags', TermsFacet(field='state_flags', order={'_key': 'asc'})),
     ]
 
@@ -61,6 +82,11 @@ class PlaylistListView(BaseSearchListView):
         {
             'key': 'num_emissions',
             'name': _('Num Emissions'),
+            'default_direction': 'desc',
+        },
+        {
+            'key': 'last_emission',
+            'name': _('Last Emission'),
             'default_direction': 'desc',
         },
         {
@@ -112,6 +138,7 @@ class PlaylistListView(BaseSearchListView):
             'dayparts',
             'seasons',
             'weather',
+            'emissions',
         )
 
         # TODO: refactor enumerations
@@ -263,27 +290,3 @@ def playlist_convert(request, pk, type):
                              _('There occured an error while converting "%s"' % (playlist.name)))
 
     return HttpResponseRedirect(playlist.get_edit_url())
-
-
-@login_required
-def playlist_request_mixdown(request, pk):
-    playlist = get_object_or_404(Playlist, pk=pk, user=request.user)
-
-    mixdown = playlist.request_mixdown()
-
-    if not mixdown:
-        messages.add_message(request, messages.WARNING,
-                             _(u'Unable to requested Mixdown for "{}"'.format(playlist.name)))
-        return HttpResponseRedirect(playlist.get_absolute_url())
-
-    if not mixdown['status'] == 3:
-
-        # delete current mixdown
-        if playlist.mixdown_file:
-            playlist.mixdown_file.delete(False)
-            Playlist.objects.filter(pk=pk).update(mixdown_file=None)
-
-    messages.add_message(request, messages.INFO,
-                         _(u'Requested Mixdown for "{}" - ETA: {}'.format(playlist.name, mixdown['eta'])))
-
-    return HttpResponseRedirect(playlist.get_absolute_url())

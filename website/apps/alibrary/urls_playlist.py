@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.conf.urls import url
-from alibrary.views import PlaylistListView, PlaylistCreateView, PlaylistDetailView, PlaylistEditView, PlaylistDeleteView, playlist_convert, playlist_request_mixdown
+from alibrary.views import PlaylistListView, PlaylistCreateView, PlaylistDetailView, PlaylistEditView, PlaylistDeleteView, playlist_convert
 
 urlpatterns = [
 
@@ -14,7 +14,5 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/edit/$', PlaylistEditView.as_view(), name='alibrary-playlist-edit'),
     url(r'^(?P<pk>\d+)/delete/$', PlaylistDeleteView.as_view(), name='alibrary-playlist-delete'),
     url(r'^(?P<pk>\d+)/convert/(?P<type>[-\w]+)/$', playlist_convert, name='alibrary-playlist-convert'),
-
-    url(r'^(?P<pk>\d+)/request-mixdown/$', playlist_request_mixdown, name='alibrary-playlist-request-mixdown'),
 
 ]

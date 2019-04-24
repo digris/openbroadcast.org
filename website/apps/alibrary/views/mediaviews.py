@@ -2,6 +2,7 @@
 from __future__ import unicode_literals, absolute_import
 
 import actstream
+import datetime
 import logging
 
 from django.views.generic import DetailView, UpdateView
@@ -9,12 +10,14 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 from django.contrib import messages
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from elasticsearch_dsl import TermsFacet, RangeFacet
 
 from base.utils.form_errors import merge_form_errors
 from search.views import BaseFacetedSearch, BaseSearchListView
+from search.duplicate_detection import get_ids_for_possible_duplicates
 
 from ..models import Media, Playlist, PlaylistItem
 from ..forms import MediaForm, MediaActionForm, MediaRelationFormSet, ExtraartistFormSet, MediaartistFormSet
@@ -31,6 +34,26 @@ class MediaSearch(BaseFacetedSearch):
         ('tags', TermsFacet(field='tags', size=100)),
         ('type', TermsFacet(field='type', size=20, order={'_key': 'asc'})),
         ('version', TermsFacet(field='version', size=100, order={'_key': 'asc'})),
+        ('num_emissions', RangeFacet(field='num_emissions', ranges=[
+            ('0', (0, 1)),
+            ('1 - 10', (1, 10)),
+            ('11 - 50', (11, 50)),
+            ('More than 50', (51, None)),
+        ])),
+        ('last_emission', RangeFacet(field='last_emission', ranges=[
+            ('Last 7 days', (
+                str((timezone.now() - datetime.timedelta(days=7)).date()),
+                None
+            )),
+            ('Last month', (
+                str((timezone.now() - datetime.timedelta(days=30)).date()),
+                None
+            )),
+            ('More than a month ago', (
+                None,
+                str((timezone.now() - datetime.timedelta(days=30)).date())
+            )),
+        ])),
         ('bitrate', RangeFacet(field='bitrate', ranges=[
             ('Low', (0, 100)),
             ('Medium', (100, 200)),
@@ -74,6 +97,16 @@ class MediaListView(BaseSearchListView):
         #     'default_direction': 'asc',
         # },
         {
+            'key': 'num_emissions',
+            'name': _('Num Emissions'),
+            'default_direction': 'desc',
+        },
+        {
+            'key': 'last_emission',
+            'name': _('Last Emission'),
+            'default_direction': 'desc',
+        },
+        {
             'key': 'updated',
             'name': _('Last modified'),
             'default_direction': 'desc',
@@ -86,10 +119,24 @@ class MediaListView(BaseSearchListView):
     ]
 
     def get_queryset(self, **kwargs):
-        qs = super(MediaListView, self).get_queryset(**kwargs)
+
+        limit_ids = None
+
+        # TODO: special purpose filters. should be moved to generic place & add parameter validation
+        duplicate_filter = self.request.GET.get('duplicate_filter', None)
+        if duplicate_filter:
+            fields = duplicate_filter.split(':')
+            limit_ids = get_ids_for_possible_duplicates('media', fields)
+
+        qs = super(MediaListView, self).get_queryset(limit_ids=limit_ids, **kwargs)
 
         qs = qs.select_related('release', 'artist', 'license').prefetch_related('media_artists', 'extra_artists')
+
         return qs
+
+    def get_context_data(self, **kwargs):
+        context = super(MediaListView, self).get_context_data(**kwargs)
+        return context
 
 
 class MediaDetailView(DetailView):

@@ -1,5 +1,10 @@
 {% load spurl adv_cache hash_tags %}
 
+{% comment %}
+TODO: legacy template. check usage & remove.
+{% endcomment %}
+
+
 {% spurl base=request.get_full_path remove_query_param="page" as cache_key %}
 
 {% cache 3600 "tagcloud" cache_key %}

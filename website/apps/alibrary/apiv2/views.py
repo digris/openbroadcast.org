@@ -93,9 +93,7 @@ class PlaylistViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
 
 
     def add_items(self, request, uuid=None, *args, **kwargs):
-        """
-        initialize scanning & redirect to detail view
-        """
+
         playlist = self.get_object()
         items_to_collect = self.request.data.get('items_to_collect', [])
 
@@ -111,9 +109,7 @@ class PlaylistViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
 
 
     def create(self, request, uuid=None, *args, **kwargs):
-        """
-        initialize scanning & redirect to detail view
-        """
+
         name = self.request.data.get('name')
         type = self.request.data.get('type')
         items_to_collect = self.request.data.get('items_to_collect', [])

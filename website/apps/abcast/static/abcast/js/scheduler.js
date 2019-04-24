@@ -92,8 +92,7 @@ SchedulerApp = function () {
             var q = $(this).val();
             var ct = $(this).attr('data-ct');
             var target = $('.ac-result', $(this).parent());
-            //var extra_query = 'type=broadcast&broadcast_status=1';
-            var extra_query = 'filter_status=Ready&filter_type=Broadcasts';
+            var extra_query = 'filter_status=Ready&filter_type=Broadcast';
 
             if (e.keyCode == 13 || e.keyCode == 9) {
                 return false;

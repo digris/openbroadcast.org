@@ -26,7 +26,7 @@ class SearchQueryException(Exception):
 
 class BaseFacetedSearch(FacetedSearch):
     doc_types = []
-    fields = ['tags', 'name',]
+    fields = ['tags', 'name', 'id',]
 
     facets = {
         # https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html
@@ -67,6 +67,12 @@ class BaseFacetedSearch(FacetedSearch):
                     _q,
                 )
 
+            # 'id' - for pre-filtered querysets
+            elif key == 'ids':
+                _musts.append(
+                    ESQ('terms', _id=value)
+                )
+
             # 'tags' - for 'intersection-style' tagcloud
             elif key == 'tags':
                 for tag in value:
@@ -99,6 +105,7 @@ class BaseSearchListView(ListView):
     search_class = None
     order_by = []
     _search_result = None
+    _formatted__search_result = None
 
     def get(self, request, *args, **kwargs):
         try:
@@ -109,9 +116,12 @@ class BaseSearchListView(ListView):
     def get_search_query(self, **kwargs):
         return utils.parse_search_query(request=self.request)
 
-    def get_queryset(self, **kwargs):
+    def get_queryset(self, limit_ids=None, **kwargs):
 
         search_query = self.get_search_query()
+
+        if limit_ids:
+            search_query['searches']['ids'] = limit_ids
 
         # initialize search class
         s = self.search_class(
@@ -140,6 +150,7 @@ class BaseSearchListView(ListView):
         # add search query & result as reference
         self._search_query = search_query
         self._search_result = result
+        self._formatted__search_result = formatted_result
 
         return qs
 
@@ -148,6 +159,7 @@ class BaseSearchListView(ListView):
         context = super(BaseSearchListView, self).get_context_data(**kwargs)
 
         search_result = self._search_result
+        formatted__search_result = self._formatted__search_result
         pagination_query = utils.parse_pagination_query(
             request=self.request
         )
@@ -188,6 +200,8 @@ class BaseSearchListView(ListView):
         context.update({
             # 'facets': search_result.facets,
             # 'num_results': search_result.hits.total,
+            'search_result': search_result, # raw search result
+            'search_results_by_id': formatted__search_result.get('results_by_id', {}),
             'pagination': pagination,
             'tagcloud': tagcloud,
             'filters': filters,

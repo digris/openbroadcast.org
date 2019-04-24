@@ -35,12 +35,20 @@ class LabelDocument(DocType):
         search_analyzer=edge_ngram_search_analyzer,
     )
 
+    # id = fields.IntegerField()
+
     url = fields.KeywordField(attr='get_absolute_url')
     api_url = fields.KeywordField(attr='get_api_url')
     created = fields.DateField()
     updated = fields.DateField()
 
-    name = fields.TextField(fielddata=True)
+    name = fields.TextField(
+        fielddata=True,
+        fields={
+            'raw': {'type': 'keyword'}
+        }
+    )
+    # TODO: remove 'exact_name' from index/document
     exact_name = fields.KeywordField(attr='name')
     tags = KeywordField()
     labelcode = KeywordField()
@@ -130,14 +138,25 @@ class ArtistDocument(DocType):
         search_analyzer=edge_ngram_search_analyzer,
     )
 
+    # id = fields.IntegerField()
+
     url = fields.KeywordField(attr='get_absolute_url')
     api_url = fields.KeywordField(attr='get_api_url')
     created = fields.DateField()
     updated = fields.DateField()
 
     # 'fielddata' is needed for sorting on the filed
-    name = fields.TextField(fielddata=True)
-    real_name = fields.TextField()
+    name = fields.TextField(
+        fielddata=True,
+        fields={
+            'raw': {'type': 'keyword'}
+        }
+    )
+    real_name = fields.TextField(
+        fields={
+            'raw': {'type': 'keyword'}
+        }
+    )
     namevariations = fields.TextField()
     tags = KeywordField()
 
@@ -235,6 +254,8 @@ class ReleaseDocument(DocType):
         search_analyzer=edge_ngram_search_analyzer,
     )
 
+    # id = fields.IntegerField()
+
     url = fields.KeywordField(attr='get_absolute_url')
     api_url = fields.KeywordField(attr='get_api_url')
     created = fields.DateField()
@@ -242,15 +263,24 @@ class ReleaseDocument(DocType):
 
     # 'fielddata' is needed for sorting on the filed
     name = fields.TextField(
-        fielddata=True
+        fielddata=True,
+        fields={
+            'raw': {'type': 'keyword'}
+        }
     )
 
     artist_display = fields.KeywordField(
-        attr='get_artist_display'
+        attr='get_artist_display',
+        fields={
+            'raw': {'type': 'keyword'}
+        }
     )
 
     label_display = fields.KeywordField(
-        attr='label.name'
+        attr='label.name',
+        fields={
+            'raw': {'type': 'keyword'}
+        }
     )
 
     # name = fields.TextField(
@@ -364,17 +394,28 @@ class MediaDocument(DocType):
 
     # 'fielddata' is needed for sorting on the filed
     name = fields.TextField(
-        fielddata=True
+        fielddata=True,
+        fields={
+            'raw': {'type': 'keyword'}
+        }
     )
 
     artist_display = fields.KeywordField(
-        attr='get_artist_display'
+        attr='get_artist_display',
+        fields={
+            'raw': {'type': 'keyword'}
+        }
     )
     release_display = fields.KeywordField(
-        attr='release.name'
+        attr='release.name',
+        fields={
+            'raw': {'type': 'keyword'}
+        }
     )
 
     tags = KeywordField()
+
+    # id = fields.IntegerField()
 
     creator = fields.KeywordField(attr='creator.username')
 
@@ -389,8 +430,6 @@ class MediaDocument(DocType):
     lyrics_language = fields.KeywordField(attr='get_lyrics_language_display')
     #country = KeywordField(attr='release_country.iso2_code')
 
-    #num_media = fields.IntegerField()
-
     # audio-properties
     duration = fields.IntegerField(attr='master_duration')
     bitrate = fields.IntegerField(attr='master_bitrate')
@@ -404,6 +443,9 @@ class MediaDocument(DocType):
     # })
 
     license = fields.KeywordField()
+
+    last_emission = fields.DateField()
+    num_emissions = fields.IntegerField()
 
     artist_ids = fields.KeywordField()
     release_ids = fields.KeywordField()
@@ -441,6 +483,14 @@ class MediaDocument(DocType):
             #     'id': instance.license.pk,
             #     'name': instance.license.name,
             # }
+
+    def prepare_last_emission(self, instance):
+        if instance.last_emission:
+            return instance.last_emission.time_start
+
+    def prepare_num_emissions(self, instance):
+        qs = instance.emissions
+        return qs.count()
 
     def prepare_encoding(self, instance):
         if instance.master_encoding:
@@ -524,6 +574,7 @@ class PlaylistDocument(DocType):
 
     description = fields.TextField()
 
+    last_emission = fields.DateField()
     num_emissions = fields.IntegerField()
     state_flags = fields.KeywordField()
 
@@ -568,6 +619,12 @@ class PlaylistDocument(DocType):
             return instance.series.name
         return
 
+    def prepare_last_emission(self, instance):
+        if instance.last_emission:
+            return instance.last_emission.time_start
+
+    def prepare_num_emissions(self, instance):
+        return instance.get_emissions().count()
 
     def prepare_weather(self, instance):
         return [w.name.strip() for w in instance.weather.all()]
@@ -580,9 +637,6 @@ class PlaylistDocument(DocType):
 
     def prepare_daypart_slots(self, instance):
         return ['{:%H} - {:%H}h'.format(d.time_start, d.time_end) for d in instance.dayparts.all()]
-
-    def prepare_num_emissions(self, instance):
-        return instance.get_emissions().count()
 
     def prepare_state_flags(self, instance):
         flags = []

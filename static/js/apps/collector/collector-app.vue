@@ -321,7 +321,7 @@
                             v-bind:key="item.uuid"
                             v-bind:item="item"
                             v-bind:items_to_collect="items_to_collect"
-                            v-bind:actions="['add']"
+                            v-bind:actions="['add', 'add-and-close']"
                             @visit="visit(...arguments)"
                             @add="add_item_to_playlist(...arguments)"></playlist>
                     </div>

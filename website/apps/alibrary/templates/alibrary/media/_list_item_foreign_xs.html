@@ -152,15 +152,6 @@
                 </a>
             </li>
 
-            <li>
-                <a href="#"
-                   class="{% if not user.is_authenticated %} disabled{% endif %}"
-                   data-action="collect"
-                   title="{% trans "Add to playlist" %}">
-                    <i class="icon icon-plus"></i>
-                </a>
-            </li>
-
             {% if  perms.alibrary.change_media %}
                 <li>
                     <a href="{{ item.get_edit_url }}"

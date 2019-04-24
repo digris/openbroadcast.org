@@ -87,7 +87,19 @@ class TagMergeForm(forms.Form):
 class CustomTagAdmin(admin.ModelAdmin):
     form = TagAdminForm
 
-    list_display = ('name', 'usage_info')
+    list_display = (
+        'name',
+        'usage_info',
+        'created',
+        'updated',
+    )
+
+    date_hierarchy = 'created'
+
+    list_filter = [
+        'created',
+        'updated',
+    ]
 
     search_fields = ('name',)
 

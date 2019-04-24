@@ -15,6 +15,7 @@ from elasticsearch_dsl import TermsFacet, RangeFacet
 from base.utils.form_errors import merge_form_errors
 from base.models.utils.merge import merge_objects
 from search.views import BaseFacetedSearch, BaseSearchListView
+from search.duplicate_detection import get_ids_for_possible_duplicates
 
 from ..forms import (ReleaseForm, ReleaseActionForm, ReleaseBulkeditForm,
                      ReleaseRelationFormSet, AlbumartistFormSet, ReleaseMediaFormSet)
@@ -30,7 +31,7 @@ class ReleaseSearch(BaseFacetedSearch):
     fields = ['tags', 'name', ]
 
     facets = [
-        ('tags', TermsFacet(field='tags', size=100)),
+        ('tags', TermsFacet(field='tags', size=200)),
         ('releasedate', RangeFacet(field='releasedate_year', ranges=[
             ('Before 1940\'s', (0, 1940)),
             ('40\'s', (1940, 1950)),
@@ -62,7 +63,7 @@ class ReleaseListView(BaseSearchListView):
             'default_direction': 'asc',
         },
         {
-            'key': 'releasedate',
+            'key': 'releasedate_year',
             'name': _('Releasedate'),
             'default_direction': 'asc',
         },
@@ -79,7 +80,24 @@ class ReleaseListView(BaseSearchListView):
     ]
 
     def get_queryset(self, **kwargs):
-        qs = super(ReleaseListView, self).get_queryset(**kwargs)
+
+        limit_ids = None
+
+        # TODO: special purpose filters. should be moved to generic place & add parameter validation
+        duplicate_filter = self.request.GET.get('duplicate_filter', None)
+        if duplicate_filter:
+            fields = duplicate_filter.split(':')
+            limit_ids = get_ids_for_possible_duplicates('releases', fields)
+
+
+        # from collection.models import Collection
+        # limit_ids = [i for i in Collection.objects.get(
+        #     pk=3
+        # ).items.filter(
+        #     content_type__id=108
+        # ).values_list('object_id', flat=True)]
+
+        qs = super(ReleaseListView, self).get_queryset(limit_ids=limit_ids, **kwargs)
 
         qs = qs.select_related(
             'label',
@@ -107,10 +125,9 @@ class ReleaseDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ReleaseDetailView, self).get_context_data(**kwargs)
-
-        self.extra_context['history'] = []
-        context.update(self.extra_context)
-
+        context.update({
+            'history': []
+        })
         return context
 
 
@@ -187,8 +204,12 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             self.object.save()
         """
 
-        self.object.last_editor = self.request.user
+
         actstream.action.send(self.request.user, verb=_('updated'), target=self.object)
+
+        # self.object.last_editor = self.request.user
+        # we pass last editor as attribut (not to field directly) and handle information in save()
+        self.object._last_editor = self.request.user
 
         self.object = form.save()
 
@@ -210,31 +231,36 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
         return HttpResponseRedirect(self.object.get_edit_url())
 
+
     def formset_media_valid(self, formset):
         media = formset.save(commit=False)
 
         # TODO: this is extremely ugly!! refactor!
-
         import hashlib
         for m in media:
-
             if m.artist and not m.artist.pk:
                 key = hashlib.md5(m.artist.name.encode('ascii', 'ignore')).hexdigest()
                 try:
                     artist = self.created_artists[key]
-                except Exception as e:
+                except KeyError as e:
                     m.artist.save()
                     artist = m.artist
                     self.created_artists[key] = artist
 
                 m.artist = artist
-                m.save()
-            else:
-                m.save()
+
+            # pass last editor
+            m.last_editor = self.request.user
+
+            # hackish way to handle 'ghost tags'
+            m.d_tags = ','.join(t.name for t in m.tags)
+
+            m.save()
 
             if formset.has_changed():
                 # set actstream (e.v. atracker?)
                 actstream.action.send(self.request.user, verb=_('updated'), target=m)
+
 
     def formset_albumartist_valid(self, formset):
 
@@ -251,7 +277,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
             key = hashlib.md5(albumartist.artist.name.encode('ascii', 'ignore')).hexdigest()
             try:
                 artist = self.created_artists[key]
-            except Exception as e:
+            except KeyError as e:
                 pass
             else:
                 delete_pk = albumartist.artist.pk
