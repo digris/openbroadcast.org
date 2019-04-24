@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.conf import settings
 
 SITE_URL = getattr(settings, 'SITE_URL')
-ISRC_HINT_TEXT = '''Please be aware that collecting societies only will distribute the earnings propperly if an ISRC code is present.'''
+ISRC_HINT_TEXT = '''Please be aware that collecting societies only will distribute the earnings properly if an ISRC code is present.'''
 
 log = logging.getLogger(__name__)
 
