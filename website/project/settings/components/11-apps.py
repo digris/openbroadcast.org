@@ -140,7 +140,6 @@ INSTALLED_APPS = [
     'tagging_extra',
     'ac_tagging',
     'actstream',
-    'pageguide',
     'metadata_generator',
 
     # legacy & migration

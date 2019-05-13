@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate_tags i18n thumbnail arating_tags wiki_tags atracker_tags spurl alibrary_tags url_tags sekizai_tags pageguide_tags addthis %}
+{% load truncate_tags i18n thumbnail arating_tags wiki_tags atracker_tags spurl alibrary_tags url_tags sekizai_tags addthis %}
 
 
 {% block title %}{{ object.name }}
@@ -221,8 +221,6 @@
     </section>
 
     </div>
-
-    {% pageguide_inline 'alibrary.artist.detail' %}
 
     {% addthis_widget %}
 
