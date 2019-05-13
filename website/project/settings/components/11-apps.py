@@ -141,7 +141,6 @@ INSTALLED_APPS = [
     'ac_tagging',
     'actstream',
     'pageguide',
-    'iptracker',
     'metadata_generator',
 
     # legacy & migration

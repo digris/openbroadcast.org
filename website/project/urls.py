@@ -46,7 +46,6 @@ urlpatterns = [
     url(r'^api/v2/', include('project.urls_apiv2', namespace='api')),
 
     url(r'^postman/', include('postman.urls')),
-    url(r'^ip/', include('iptracker.urls')),
     url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
 
     # registration
