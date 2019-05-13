@@ -99,7 +99,7 @@
 
         <section class="shaded">
             <div class="row iteminfo playlist">
-                {% include "alibrary/playlist/_detail_info.html" %}
+                {% include "alibrary/playlist/_header.html" %}
             </div>
         </section>
 
@@ -197,22 +197,9 @@
     </div>
 {% endblock %}
 
-{% comment %}{% endcomment %}
 {% block form_sidebar %}
-
     <div class="sidebar form-sidebar holder">
-
         {% include "alibrary/playlist/sidebar/_edit_transform.html" %}
-
     </div>
-
-    <div class="sidebar holder">
-        {# playlists_inline #}
-    </div>
-
-    <div class="sidebar holder">
-        {# jingles_inline #}
-    </div>
-
 {% endblock %}
 

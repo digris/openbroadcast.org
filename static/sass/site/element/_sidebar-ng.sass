@@ -1,0 +1,36 @@
+@charset "UTF-8"
+
+
+.content__sidebar .menu-context
+
+  .action-group
+    ul
+
+      margin-bottom: 25px
+      border-top: 1px solid $separator-line-color
+
+      li
+        border-bottom: 1px solid $separator-line-color
+
+        a
+          display: block
+          padding: 3px 0 4px
+
+          i
+            padding: 3px 0 3px 5px
+            width: 20px
+            display: block
+            float: left
+
+          small
+            padding-right: 3px
+
+          &.hover
+            background: $primary-color-b-bg-light
+            text-decoration: none
+
+          &.disabled
+            cursor: wait
+            color: #BBBBBB
+            &.hover
+              background: #efefef

@@ -4,10 +4,6 @@
 {% block scope %}alibrary.release{% endblock %}
 
 {% block heading %}
-    <!--
-    view specific scripts
-    TODO: JS list-view functionality has to be refactored
-    -->
     {% addtoblock "js-post" %}{% dajaxice_js_import %}{% endaddtoblock %}
     {% addtoblock "js-post" %}<script src="{% static 'alibrary/js/list.js' %}"></script>{% endaddtoblock %}
     {% addtoblock "js-post" %}<script src="{% static 'exporter/js/base.js' %}"></script>{% endaddtoblock %}
@@ -24,7 +20,6 @@
             });
         </script>
     {% endaddtoblock %}
-
     <div id="heading">
         {% include "skeleton/heading.html" %}
     </div>
@@ -74,12 +69,6 @@
         </div>
     </div>
     <div class="list-footer">
-        <div class="left selection-control-holder">
-            <span>Selection:</span>
-            <a href="#selection:invert" class="action">Invert</a>
-            <a href="#selection:all" class="action">All</a>
-            <a href="#selection:clear" class="action">None</a>
-        </div>
         <div class="pagination-holder">
             {% include "search/pagination.html" %}
         </div>

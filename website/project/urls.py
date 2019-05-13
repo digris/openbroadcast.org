@@ -31,8 +31,8 @@ sitemaps = {
 }
 
 admin.autodiscover()
-admin.site.site_header = "Open Broadcast"
-admin.site.site_title = "Open Broadcast"
+admin.site.site_header = "open broadcast"
+admin.site.site_title = "open broadcast"
 
 dajaxice_autodiscover()
 

@@ -1,28 +1,16 @@
 {% extends "base.html" %}
 
-{% load menu_tags %}
-
 {% block main %}
-<div class="row">
-	<section>
-		<div class="span9">
-			{% block inner %}{% endblock %}
-		</div>
-
-		<div class="span3 sidebar">
-			{% block sidebar %}{% endblock %}
-		</div>
-	</section>
-
-	<section>
-		<div class="span9">
-			{% block form %}{% endblock %}
-		</div>
-
-		<div class="span3 form_sidebar">
-			{% block form_sidebar %}{% endblock %}
-		</div>
-	</section>
-
-</div>
+    <div class="content__primary">
+        {% block inner %}{% endblock %}
+    </div>
+    <div class="content__sidebar">
+        {% block sidebar %}{% endblock %}
+    </div>
+    <div class="content__primary">
+        {% block form %}{% endblock %}
+    </div>
+    <div class="content__sidebar">
+        {% block form_sidebar %}{% endblock %}
+    </div>
 {% endblock %}

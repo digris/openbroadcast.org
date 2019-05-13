@@ -56,7 +56,7 @@
 
     <section class="shaded">
         <div class="row iteminfo release">
-            {% include "alibrary/artist/_detail_info.html" %}
+            {% include "alibrary/artist/_header.html" %}
         </div>
     </section>
 
@@ -230,11 +230,9 @@
 
 {% block sidebar %}
     {% include "alibrary/artist/sidebar/_detail.html" %}
-
     <div class="listing relations">
         <div class="item relations">
             {% all_relations_inline object %}
         </div>
     </div>
-
 {% endblock %}

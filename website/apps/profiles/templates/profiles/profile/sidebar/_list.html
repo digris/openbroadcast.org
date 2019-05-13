@@ -1,6 +1,16 @@
-{% load spurl %}
+{% load i18n %}
 
-{% include "profiles/profile/sidebar/context/_list.html" %}
-{% include "profiles/element/sidebar/_ordering.html" %}
-{% include "profiles/profile/sidebar/_filter.html" %}
-
+<div class="menu-context">
+    <div class="action-group">
+        <ul>
+            {% if user.is_authenticated %}
+                <li>
+                    <a class="hoverable{% if not perms.invitation.add_invitation %} disabled{% endif %}" href="{% url "invitation_invite" %}?next={{ request.get_full_path }}" title="{% trans "Invite new users" %}">
+                        <i class="icon icon-user"></i>
+                        <span>{% trans "Invite new users" %}</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

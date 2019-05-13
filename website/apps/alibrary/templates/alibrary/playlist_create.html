@@ -62,32 +62,20 @@
         </style>
     {% endaddtoblock %}
 
-
     <div id="heading">
         {% include "skeleton/heading.html" %}
     </div>
-    <!-- heading / icon (large one) -->
 {% endblock %}
 
-{% block modnav %} <!-- start: intra-module navigation -->
+{% block modnav %}
     <div id="modnav">
         {% include "skeleton/module-navigation.html" %}
     </div>
-    <!-- end: intra-module navigation -->
 {% endblock %}
 
-{% block inner %}
-    <div class="item_create" style="">
-        <div class="alert alert-info">
-            <strong>{% trans "Playlist creation" %}</strong>
-            {% trans "Bla Bla..." %}
-        </div>
-    </div>
-{% endblock %}
+{% block inner %}{% endblock %}
 
-{% block sidebar %}
-    {% include "alibrary/playlist/sidebar/_edit.html" %}
-{% endblock %}
+{% block sidebar %}{% endblock %}
 
 {% block form %}
     <div class="item_inner">
@@ -104,11 +92,5 @@
     </div>
 {% endblock %}
 
-{% block form_sidebar %}
-    <div class="sidebar form-sidebar holder">
-        {% with providers=object.get_lookup_providers %}
-            {% include "alibrary/form_lookup/_providers.html" %}
-        {% endwith %}
-    </div>
-{% endblock %}
+{% block form_sidebar %}{% endblock %}
 

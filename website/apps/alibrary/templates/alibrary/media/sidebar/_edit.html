@@ -1,4 +1,25 @@
-{% load spurl %}
+{% load i18n %}
 
-{% include "alibrary/media/sidebar/context/_edit.html" %}
-
+<div class="menu-context">
+    <div class="action-group">
+        <ul>
+            {% if perms.alibrary.change_artist %}
+                <li>
+                    <a class="hoverable" href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
+                        <i class="icon icon-angle-left"></i>
+                        <span>{% trans "Back to Detail-View" %}</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if perms.alibrary.change_artist and user.is_staff %}
+                <li>
+                    <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
+                       title="{% trans "Administration view" %}">
+                        <i class="icon icon-lock"></i>
+                        <span>{% trans "Administration view" %}</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

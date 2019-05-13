@@ -378,13 +378,13 @@ class Process(object):
 
         # user data
         if INCLUDE_USER and self.user:
-            tags.add(TXXX(encoding=3, desc='Open Broadcast User', text=u'%s' % self.user.email))
+            tags.add(TXXX(encoding=3, desc='open broadcast user', text=u'%s' % self.user.email))
 
         # track-level metadata
         tags.add(TIT2(encoding=3, text=u'%s' % media.name))
-        tags.add(UFID(encoding=3, owner='http://openbroadcast.org', data=u'%s' % media.uuid))
+        tags.add(UFID(encoding=3, owner='https://openbroadcast.org', data=u'%s' % media.uuid))
 
-        tags.add(TXXX(encoding=3, desc='Open Broadcast API', text=u'http://%s%s' % (self.current_site.domain, media.get_api_url())))
+        tags.add(TXXX(encoding=3, desc='open broadcast API', text=u'https://%s%s' % (self.current_site.domain, media.get_api_url())))
         # remove genre
         tags.add(TCON(encoding=3, text=u''))
         tags.add(TMED(encoding=3, text=u'Digital Media'))

@@ -48,22 +48,20 @@
 
 
 {% block pre_list %}
-<section>
-    <div class="heading">
+<section class="page-disclaimer page-disclaimer--import">
+    <div class="page-disclaimer__content">
         {% static_placeholder 'exporter_introduction' %}
     </div>
-	<div>
+	<div class="page-disclaimer__appendix">
         <div class="btn-group">
-
             <a id="accept_toc" class="btn btn-primary btn pull-right" href="#">
-                <i class="icon-legal icon-white"></i>
                 <span> {% trans "I do accept the terms and conditions" %}</span>
             </a>
 	    </div>
 	</div>
 </section>
-
 {% endblock %}
+
 
 {% block list_inner %}
 

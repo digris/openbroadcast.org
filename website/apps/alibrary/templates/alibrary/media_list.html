@@ -40,12 +40,6 @@
     {% include "search/tagcloud.html" %}
 {% endblock %}
 
-{% block searchbar %}
-    {% with object=item ct="label" %}
-        {# include "alibrary/element/_searchbar.html" #}
-    {% endwith %}
-{% endblock %}
-
 {% block inner %}
     <div class="list-header">
         <div class="pagination-holder">

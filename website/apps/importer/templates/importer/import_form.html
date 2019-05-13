@@ -41,18 +41,20 @@
 
 
 {% block sidebar %}
-    <div id="menu_context" class="menu_context">
-        <div class="set">
+    <div id="menu_context" class="menu-context">
+        <div class="action-group">
             <ul class="unstyled">
-                <li class="link ">
-                    <span class="left icon"> <a href="{% url "importer-import-list" %}" title="{% trans "Back to My Uploads" %}">{% trans "Back to My Uploads" %}</a></span>
-                    <span class="opt"></span>
-                    <span class="clear"></span>
+                <li class="link">
+                    <a class="hoverable" href="{% url "importer-import-list" %}" title="{% trans "Back to My Uploads" %}">
+                        <i class="icon icon-angle-left"></i>
+                        <span>{% trans "Back to My Uploads" %}</span>
+                    </a>
                 </li>
-                <li class="link ">
-                    <span class="left icon"> <a href="{% url "importer-import-create" %}" title="{% trans "New Upload Session" %}">{% trans "New Upload Session" %}</a></span>
-                    <span class="opt"></span>
-                    <span class="clear"></span>
+                <li class="link">
+                    <a class="hoverable" href="{% url "importer-import-create" %}" title="{% trans "New Upload Session" %}">
+                        <i class="icon icon-plus"></i>
+                        <span>{% trans "New Upload Session" %}</span>
+                    </a>
                 </li>
             </ul>
         </div>

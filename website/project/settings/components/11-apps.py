@@ -145,7 +145,7 @@ INSTALLED_APPS = [
     'metadata_generator',
 
     # legacy & migration
-    'obp_legacy',
+    # 'obp_legacy',
 
     # platform tools
     'pushy',
@@ -238,23 +238,7 @@ AUTHENTICATION_BACKENDS = (
     'social_auth.backends.google.GoogleOAuth2Backend',
     'social_auth.backends.contrib.dropbox.DropboxBackend',
     'social_auth.backends.contrib.soundcloud.SoundcloudBackend',
-    #'social_auth.backends.contrib.stackoverflow.StackoverflowBackend',
-    #'social_auth.backends.yahoo.YahooBackend',
-    #'social_auth.backends.browserid.BrowserIDBackend',
-    #'social_auth.backends.contrib.linkedin.LinkedinBackend',
-    #'social_auth.backends.contrib.disqus.DisqusBackend',
-    #'social_auth.backends.contrib.livejournal.LiveJournalBackend',
-    #'social_auth.backends.contrib.orkut.OrkutBackend',
-    #'social_auth.backends.contrib.foursquare.FoursquareBackend',
     'social_auth.backends.contrib.github.GithubBackend',
-    #'social_auth.backends.contrib.vk.VKOAuth2Backend',
-    #'social_auth.backends.contrib.live.LiveBackend',
-    #'social_auth.backends.contrib.skyrock.SkyrockBackend',
-    #'social_auth.backends.contrib.yahoo.YahooOAuthBackend',
-    #'social_auth.backends.contrib.readability.ReadabilityBackend',
-    #'social_auth.backends.contrib.fedora.FedoraBackend',
-    #'social_auth.backends.OpenIDBackend',
-
     'obp_legacy.auth.backends.LegacyBackend',
     'django.contrib.auth.backends.ModelBackend',
 )

@@ -1,6 +1,7 @@
 /* sidebar */
 
-
+// TODO: these styles are disabled (not included anymore) in stylesheet
+// kept here as a reference
 
 // rework
 .sidebar div.menu-context
@@ -44,7 +45,7 @@ div.row .sidebar
     div.set
       border-top: 1px solid #AAAAAA
       margin-bottom: 23px
-      
+
       ul
         li
           border-bottom: 1px solid #CCCCCC
@@ -52,14 +53,14 @@ div.row .sidebar
           background-repeat: no-repeat
           background-position: 0 3px
           background-image: url("/static/img/prototype/action.png")
-          
+
           a:link, a:visited
             text-decoration: none
-          
+
           &:hover
             background-color: $primary-color-b-bg-light
             cursor: pointer
-            
+
           &.action,&.link
             &.disabled
               cursor: wait
@@ -81,14 +82,14 @@ div.row .sidebar
                 cursor: wait !important
               &:hover
                 background-color: transparent
-            
+
           span
             display: block
-            padding: 0 5px 0 0 
-            
+            padding: 0 5px 0 0
+
           span.opt
             color: $main-link-color
-            
+
           &.notes
             background-image: none
             padding-left: 3px
@@ -97,9 +98,9 @@ div.row .sidebar
               margin-bottom: 0
             &:hover
               background-color: transparent
-              
-            
-  
+
+
+
 div.row .sidebar div.boxitem
   select.year, select.time, select.sorting, select.country
     background-color: #ffffff
@@ -113,17 +114,8 @@ div.row .sidebar div.boxitem
     &.country
       width: 140px
       overflow: hidden
-          
 
-div.row .sidebar div.box.sorting
-  /* margin-bottom: 23px
-  /* border-bottom: 1px solid #ccc
 
-#filterbox-sort_default .opt
-  display: none	  
-		  
-		  
-		  
 /* Playlists (a.k.a. Basket) */
 div.row .sidebar
   div.playlist
@@ -132,30 +124,30 @@ div.row .sidebar
     border-right: 1px solid white
     border-top: 1px solid #CCCCCC
     border-bottom: 1px solid #CCCCCC
-    
+
     background-image: none
 
     div.wrapper, div.form
       display: none
-    
-    
+
+
     &.expanded
       border: 1px solid #CCCCCC
       background-color: #F5F5F5
       padding: 0 2px 2px 2px
       div.wrapper, div.form
         display: block
-		
+
       div.header
         padding-right: 4px
         background-image: url("/static/img/prototype/box_handler_on.png")
-		
+
     &.close
       background-color: #FFFFFF
       padding: 0 2px 0 2px
       div.wrapper, div.form
         display: none
-    
+
     div.header
       background-image: url("/static/img/prototype/box_handler.png")
       background-repeat: no-repeat
@@ -164,13 +156,13 @@ div.row .sidebar
       border-bottom: none
       /*background-color: #ff00ff*/
 
-        
-	  
+
+
     div.wrapper
       div.playlist_holder
-      
 
-        
+
+
         // changed to single list holder
         // border: 1px solid #BBBBBB
         // margin: 0 0 4px 0
@@ -178,26 +170,26 @@ div.row .sidebar
         div.header
           background-image: none !important
         // end cange
-        
-        
+
+
         &.open
-          padding: 0 0 4px 0		
+          padding: 0 0 4px 0
           /*border: 1px solid #CCCCCC*/
           div.panel, div.list
             display: block
-		
+
           div.header
             background-image: url("/static/img/prototype/box_handler_on.png")
-			
-			
+
+
         &.close
           div.panel, div.list
             display: none
-		
+
           div.header
             background-image: url("/static/img/prototype/box_handler.png")
-		
-		
+
+
         div.header
           /*background-color: #00ffff*/
           //padding: 1px 0 1px 19px
@@ -220,8 +212,8 @@ div.row .sidebar
               background-color: #d6def7
             &.downloadable
               background-image: url(/static/img/base/listview.row.download.bg.png)
-		
-		
+
+
         div.panel
           padding: 4px 0 0 0
           div.edit
@@ -230,9 +222,9 @@ div.row .sidebar
             input
               // @include shaded_input
               width: 98%
-              
+
           div.convert
-		  
+
             padding: 0 2px 0 2px
             a
               text-align: center
@@ -246,8 +238,8 @@ div.row .sidebar
             padding: 0 2px 0 0
             font-size: 80%
             color: #a9a9a9
-		
-		
+
+
         div.list
           div.list.item
             color: #0000ff
@@ -255,14 +247,14 @@ div.row .sidebar
             border-bottom: 1px solid #CCCCCC
             &:first-child
               border-top: 1px solid #CCCCCC
-			  
+
             div.title
               margin: 0 0 0 4px
-              
+
             &.ct-jingle
               background-color: #F8F3FF
 
-			
+
             a.action
               display: block
               width: 16px
@@ -276,9 +268,9 @@ div.row .sidebar
               &.play
                 background-image: url(/static/img/base/sidebar.item.play.png)
                 background-color: #d6def7
-    
-    
-    
+
+
+
     div.form
       color: #333333
       padding: 3px 0 2px 0
@@ -287,7 +279,7 @@ div.row .sidebar
       margin-bottom: 0
       form
         margin: 0 0 0 0
-     
+
       form.select
         label
           display: none
@@ -296,7 +288,7 @@ div.row .sidebar
           height: 23px
           padding: 0 1px 0 4px
           line-height: 13px
-     
+
       form.create
         margin-top: 10px
         input.name
@@ -316,9 +308,9 @@ div.row .sidebar
         border: 1px solid #BBBBBB
         color: #5A5A5A
         width: 86px
-        
-        
-        
+
+
+
 
 div.row .sidebar
   select
@@ -339,7 +331,7 @@ div.row .sidebar
 
 
 
-      
+
 /* Playlists (a.k.a. Basket) */
 div.row .sidebar
   div.jingle
@@ -348,41 +340,41 @@ div.row .sidebar
     border-right: 1px solid white
     border-top: 1px solid #CCCCCC
     border-bottom: 1px solid #CCCCCC
-    
+
     background-image: none
 
     div.wrapper, div.form
       display: none
-    
-    
+
+
     &.expanded
       border: 1px solid #CCCCCC
       background-color: #F5F5F5
       padding: 0 2px 2px 2px
       div.wrapper, div.form
         display: block
-    
+
       div.header
         padding-right: 4px
         background-image: url("/static/img/prototype/box_handler_on.png")
-    
+
     &.close
       background-color: #FFFFFF
       padding: 0 2px 0 2px
       div.wrapper, div.form
         display: none
-    
+
     div.header
       background-image: url("/static/img/prototype/box_handler.png")
       background-repeat: no-repeat
       color: #333333
       padding: 3px 6px 2px 19px
-      
+
       border-bottom: none
       /*background-color: #ff00ff*/
 
-        
-    
+
+
     div.wrapper
       div.jingle_holder
         // changed to single list holder
@@ -392,26 +384,26 @@ div.row .sidebar
         div.header
           background-image: none !important
         // end cange
-        
+
 
         &.open
-          padding: 0 0 4px 0    
+          padding: 0 0 4px 0
           /*border: 1px solid #CCCCCC*/
           div.panel, div.list
             display: block
-    
+
           div.header
             background-image: url("/static/img/prototype/box_handler_on.png")
-      
-      
+
+
         &.close
           div.panel, div.list
             display: none
-    
+
           div.header
             background-image: url("/static/img/prototype/box_handler.png")
-    
-    
+
+
         div.header
           /*background-color: #00ffff*/
           // padding: 1px 0 1px 19px
@@ -434,8 +426,8 @@ div.row .sidebar
               background-color: #d6def7
             &.downloadable
               background-image: url(/static/img/base/listview.row.download.bg.png)
-    
-    
+
+
         div.panel
           padding: 4px 0 0 0
           div.edit
@@ -444,9 +436,9 @@ div.row .sidebar
             input
               //@include shaded_input
               width: 98%
-              
+
           div.convert
-      
+
             padding: 0 2px 0 2px
             a
               text-align: center
@@ -460,8 +452,8 @@ div.row .sidebar
             padding: 0 2px 0 0
             font-size: 80%
             color: #a9a9a9
-    
-    
+
+
         div.list
           div.list.item
             color: #0000ff
@@ -469,10 +461,10 @@ div.row .sidebar
             border-bottom: 1px solid #CCCCCC
             &:first-child
               border-top: 1px solid #CCCCCC
-        
+
             div.title
               margin: 0 0 0 4px
-      
+
             a.action
               display: block
               width: 16px
@@ -486,9 +478,9 @@ div.row .sidebar
               &.play
                 background-image: url(/static/img/base/sidebar.item.play.png)
                 background-color: #d6def7
-    
-    
-    
+
+
+
     div.form
       color: #333333
       padding: 3px 0 2px 0
@@ -497,7 +489,7 @@ div.row .sidebar
       margin-bottom: 0
       form
         margin: 0 0 0 0
-     
+
       form.select
         label
           display: none
@@ -506,7 +498,7 @@ div.row .sidebar
           height: 23px
           padding: 0 1px 0 4px
           line-height: 13px
-     
+
       form.create
         margin-top: 10px
         input.name
@@ -526,4 +518,3 @@ div.row .sidebar
         border: 1px solid #BBBBBB
         color: #5A5A5A
         width: 86px
-            

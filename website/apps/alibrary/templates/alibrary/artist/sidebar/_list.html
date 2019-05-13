@@ -1,14 +1,17 @@
-{% load spurl adv_cache %}
+{% load i18n %}
 
-{% include "alibrary/artist/sidebar/context/_list.html" %}
-{% include "alibrary/element/sidebar/_ordering.html" %}
-
-{% spurl base=request.get_full_path remove_query_param="page" as cache_key %}
-
-{% cache 3600 "list_filter" cache_key %}
-{% include "alibrary/artist/sidebar/_filter.html" %}
-{% endcache %}
-
-{% if user.is_authenticated %}
-{% include "alibrary/sidebar/_playlist.html" %}
-{% endif %}
+<div class="menu-context">
+    <div class="action-group">
+        <ul>
+            {% if perms.alibrary.merge_media %}
+                <li class="action">
+                    <a class="hoverable disabled selection-required selection-multiple" href="#" data-action="merge" data-ct="artist" title="{% trans "Merge Selection" %}">
+                        <i class="icon icon-align-justify"></i>
+                        <span>{% trans "Merge Selection" %}</span>
+                        <small class="opt pull-right"></small>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

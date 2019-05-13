@@ -56,7 +56,7 @@
 			<a href="{% spurl base=request.get_full_path set_query="order_by=updated" toggle_query="direction=ascending,descending" %}" style="display: block;">{% trans "Modified" %}</a>
 		</div>
 		<div class="list_header_item c6">
-		&nbsp;			
+		&nbsp;
 		</div>
 	</div>
 	{% endif %}
@@ -146,23 +146,18 @@
 
 {% block sidebar %}
 <div class="menu-context">
-
     <div class="action-group">
-        <ul class="unstyled">
-
+        <ul>
             {% if user.is_authenticated %}
-                <li class="link">
+                <li>
                     <a class="hoverable{% if not perms.invitation.add_invitation %}  disabled{% endif %}" href="{% url "invitation_invite" %}?next={{ request.get_full_path }}" title="{% trans "Invite new users" %}">
                         <i class="icon icon-user"></i>
                         <span>{% trans "Invite new users" %}</span>
-                        <small class="opt pull-right"></small>
                     </a>
                 </li>
             {% endif %}
-
         </ul>
     </div>
-
 </div>
 {% endblock %}
 

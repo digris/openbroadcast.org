@@ -1,20 +1,11 @@
 {% extends "base.html" %}
 
-{% load menu_tags %}
-
 {% block main %}
-<div class="row">
-	<section>
-		<div class="span9">
-			{% block tagcloud %}{% endblock %}
-			{% block searchbar %}{% endblock %}
-			{% block inner %}{% endblock %}
-		</div>
-
-		<div class="span3 sidebar">
-			{% block sidebar %}{% endblock %}
-		</div>
-
-	</section>
-</div>
+    <div class="content__primary">
+        {% block tagcloud %}{% endblock %}
+        {% block inner %}{% endblock %}
+    </div>
+    <div class="content__sidebar">
+        {% block sidebar %}{% endblock %}
+    </div>
 {% endblock %}

@@ -5,39 +5,23 @@
 {% block object_type %}import{% endblock %}
 
 {% block heading %}
-
     <div id="heading">
         {% include "skeleton/heading.html" %}
     </div>
-
 {% endblock %}
 
 {% block list_inner %}
-
-{% addtoblock "js-post" %}
-<script type="text/javascript">
-
-</script>
-{% endaddtoblock %}
-
-<section>
-	
-	<div class="page-header">
-		<h2>Upload <small>Add/Upload Files to the Import Queue</small></h2>
-	</div>
-
-	<div class="uploader">
-	{% crispy form %}
-    </div>
-
-</section>
-
-
-
-
+    <section>
+        <div class="page-header">
+            <h2>Upload</h2>
+        </div>
+        <div class="uploader">
+            {% crispy form %}
+        </div>
+    </section>
 {% endblock %}
 
 
 {% block sidebar %}
-{% include "importer/_import_list_sidebar.html" %}
+    {% include "importer/_import_list_sidebar.html" %}
 {% endblock %}

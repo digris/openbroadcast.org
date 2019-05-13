@@ -18,20 +18,7 @@ PAGINATE_BY_DEFAULT = getattr(settings, 'ACTSTREAM_PAGINATE_BY_DEFAULT', 120)
 class ActionListView(PaginationMixin, ListView):
 
     context_object_name = "action_list"
-    # template_name = "alibrary/artist_list.html"
-    paginate_by = PAGINATE_BY_DEFAULT
-
-    def get_paginate_by(self, queryset):
-
-        ipp = self.request.GET.get('ipp', None)
-        if ipp:
-            try:
-                if int(ipp) in PAGINATE_BY:
-                    return int(ipp)
-            except Exception as e:
-                pass
-
-        return self.paginate_by
+    paginate_by = 120
 
     def get_queryset(self):
 
@@ -54,7 +41,7 @@ class ActionListView(PaginationMixin, ListView):
                 'action_object',
             )
 
-        # apply filters
+        # apply (legacy) filters
         self.filter = ActionFilter(self.request.GET, queryset=qs)
 
         return self.filter.qs
@@ -62,26 +49,9 @@ class ActionListView(PaginationMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ActionListView, self).get_context_data(**kwargs)
-
         context.update({'filter': self.filter})
         context['filter'] = self.filter
-        # context['user_stream'] = actor_stream(self.request.user)
         return context
-
-
-class ActionDetailView(DetailView):
-
-    context_object_name = "action"
-    model = Action
-
-
-    def render_to_response(self, context):
-        return super(ActionDetailView, self).render_to_response(context, content_type="text/html")
-
-    def get_context_data(self, **kwargs):
-        context = super(ActionDetailView, self).get_context_data(**kwargs)
-        return context
-
 
 
 def respond(request, code):

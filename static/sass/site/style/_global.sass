@@ -1,14 +1,54 @@
 @charset "UTF-8"
 
+$g-content-max-width: 1115px
+
+// global skeleton
 html,
 body
   min-height: 100%
+  height: 100%
+  display: flex
+  flex-direction: column
 
+
+.base
+
+  main
+    flex-grow: 1
+    // padding-top: main navigation height + offset
+    padding-top: 64px + 64px
+    padding-bottom: 48px
+    max-width: $g-content-max-width
+    width: 100%
+    margin: 0 auto
+
+    > .heading
+      display: grid
+      grid-template-columns: calc(100% - 260px - 24px) 260px
+      grid-column-gap: 24px
+
+    > .content
+      display: grid
+      grid-template-columns: calc(100% - 260px - 24px) 260px
+      grid-column-gap: 24px
+
+
+  footer
+    background: black
+
+
+// cms page default styles
+.cms-page
+  main
+    max-width: $g-content-max-width - 128px
+    > .content
+      display: flex
+      flex-direction: column
+
+
+// heading font settings
+// TODO: move to appropriate place
 body
-  a.external
-    background-image: url(/static/img/base/link.external.png)
-    background-repeat: no-repeat
-    padding-left: 16px
 
   h1, h2, h3, h4
     font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif
@@ -19,14 +59,5 @@ body
     font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif
     font-weight: 200
 
-body.no-scroll
-  width: 100%
-  position: fixed
-  overflow-y: scroll
-
-section#global
-  .heading
-    background: red
-    padding: 0 10px 10px 10px
-    background: $body-color-shaded-bg
-    margin-bottom: 10px
+  section#global .heading
+    background: black

@@ -37,39 +37,27 @@
 
 {% block inner %}
 
-
     <div class="alert alert-warning">
         <strong>{% trans "Confirm delete" %}</strong>
-
         <p>
             {% trans "Are you sure you want do telete" %}"{{ object }}"?
             <br>
-            {% trans "This action cannot be reverted confirmed." %}
+            {% trans "This action cannot be reverted once confirmed." %}
 
         </p>
-
         <form method="post">{% csrf_token %}
             <button type="submit" class="btn btn-danger">
                 <i class="icon icon-trash"></i> {% trans "Delete" %} {{ object }}</button>
         </form>
     </div>
 
-
-
     <div class="item_detail">
-
         <section class="shaded">
             <div class="row iteminfo release">
-                {% include "alibrary/playlist/_detail_info.html" %}
+                {% include "alibrary/playlist/_header.html" %}
             </div>
         </section>
-
-
     </div>
-
-
-
-
 {% endblock %}
 
 {% block sidebar %}

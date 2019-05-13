@@ -1,12 +1,26 @@
-{% load spurl adv_cache %}
+{% load i18n %}
 
-{% include "alibrary/release/sidebar/context/_list.html" %}
-{% include "alibrary/element/sidebar/_ordering.html" %}
-
-{% cache 600 "list_filter" request.get_full_path %}
-{% include "alibrary/release/sidebar/_filter.html" %}
-{% endcache %}
-
-{% if user.is_authenticated %}
-{% include "alibrary/sidebar/_playlist.html" %}
-{% endif %}
+<div class="menu-context">
+    <div class="action-group">
+        <ul class="unstyled">
+            {% if perms.alibrary.downoad_media %}
+                <li class="action">
+                    <a class="hoverable disabled selection-required selection-any" href="#" data-action="download" data-ct="media_set"  title="{% trans "Download Selection" %}">
+                        <i class="icon icon-download-alt"></i>
+                        <span>{% trans "Download Selection" %}</span>
+                        <small class="opt pull-right"></small>
+                    </a>
+                </li>
+            {% endif %}
+            {% if perms.alibrary.merge_release %}
+                <li class="action">
+                    <a class="hoverable disabled selection-required selection-multiple" href="#" data-action="merge" data-ct="release" title="{% trans "Merge Selection" %}">
+                        <i class="icon icon-align-justify"></i>
+                        <span>{% trans "Merge Selection" %}</span>
+                        <small class="opt pull-right"></small>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

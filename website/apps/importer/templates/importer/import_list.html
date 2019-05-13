@@ -19,15 +19,14 @@
 
 
 {% block pre_list %}
-<section>
-    <div class="heading">
+<section class="page-disclaimer page-disclaimer--import">
+    <div class="page-disclaimer__content">
         {% static_placeholder 'importer_introduction' %}
     </div>
-	<div>
+	<div class="page-disclaimer__appendix">
         <div class="btn-group">
             <a class="btn btn-primary btn pull-right" href="{% url "importer-import-create" %}">
-                <i class="icon-cloud-upload icon-white"></i>
-                <span> {% trans "Upload Music" %}</span>
+                <span> {% trans "Accept Terms & Upload Music" %}</span>
             </a>
 	    </div>
 	</div>

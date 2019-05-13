@@ -1,5 +1,18 @@
-{% load spurl %}
+{% load i18n %}
 
-{% include "alibrary/playlist/sidebar/context/_list.html" %}
-{% include "alibrary/element/sidebar/_ordering.html" %}
-{% include "alibrary/playlist/sidebar/_filter.html" %}
+<div class="menu-context">
+    <div class="action-group">
+        <ul>
+            {% if perms.alibrary.add_playlist %}
+                <li>
+                    <a class="hoverable"
+                       href="{% url "alibrary-playlist-create" %}"
+                       title="{% trans "Create a playlist" %}">
+                        <i class="icon icon-reorder"></i>
+                        <span>{% trans "Create a playlist" %}</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

@@ -49,9 +49,9 @@ class LegacyBackend(object):
             try:
                 user = User.objects.get(username=username)
                 user.set_password(password)
+                user.save()
 
             except User.DoesNotExist:
                 pass
 
         return user
-

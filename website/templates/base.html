@@ -15,7 +15,6 @@
         <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/base/favicon.png" />
         <link rel="shortcut icon" type="image/x-icon" href="{{ STATIC_URL }}img/base/favicon.png">
 
-
         <!-- start: legacy css assets -->
         <!-- start: icon fonts -->
         <link type="text/css" href="{% static 'css/iconset/fontcustom.css' %}" rel="stylesheet" />
@@ -48,6 +47,7 @@
     </head>
 
     {% loginas_is_active as loginas_active %}
+
     <body id="body"
           class="base {% block body_class %}{% endblock %}{% if user.is_authenticated %} authenticated{% endif %} {% if loginas_active %}loginas-active{% endif %}"
           data-scope="{% block scope %}{% endblock %}"
@@ -57,14 +57,28 @@
 
         {% cms_toolbar %}
 
-        {% comment %}
-        <div class="main-navigation">
-            {% block toolbar %}{% endblock %}
-        </div>
-        {% endcomment %}
-
         {% include "element/topbar/_topbar.html" %}
 
+        {% block teaser %}{% endblock %}
+
+        <main class="main">
+            <div class="heading">
+                {% block heading %}{% endblock %}
+                <nav class="subnav">
+                    {% block modnav %}{% endblock %}
+                </nav>
+            </div>
+            <div class="content">
+                {% comment %}{% endcomment %}
+                {% block main %}{% endblock %}
+            </div>
+        </main>
+
+        <footer>
+            {% include "skeleton/footer.html" %}
+        </footer>
+
+        {% comment %}
         <div id="wrap">
             {% block teaser %}{% endblock %}
             <div class="container main">
@@ -102,12 +116,10 @@
         <div id="footer">
             {% include "skeleton/footer.html" %}
         </div>
-
+        {% endcomment %}
 
         {% block user_panels %}
-        {% if user.is_authenticated %}
-            {# include "element/_quicklinks_panel.html" #}
-        {% else %}
+        {% if not user.is_authenticated %}
             {% include "element/_private_site_panel.html" %}
         {% endif %}
         {% endblock %}
@@ -123,12 +135,9 @@
         </section>
         {% endif %}
 
-
         <!-- TODO: just temporary... -->
         <div id="player_control_app">(( loading player app ))</div>
-
         <div id="collector_app">(( loading collector app ))</div>
-
 
         <div id="refresh"></div>
         <div class="dialog window" id="dialog_alert" style="display: none;"><!-- dynamic content --></div>
@@ -137,11 +146,9 @@
         {% render_block "js" %}
         {% render_block "js-ext" %}
 
-        <!-- start: fast-load scripts -->
         {% compress js %}
         <script src="{{ STATIC_URL }}js/lib/lazysizes.js"></script>
         {% endcompress %}
-        <!-- end: fast-scripts -->
 
         <!-- start: compressor js-post -->
         {% compress js %}
@@ -192,9 +199,6 @@
         <script src="{{ STATIC_URL }}js/ui/dialog.js"></script>
         <script src="{{ STATIC_URL }}js/ui/edit.base.js"></script>
 
-
-        <script src="{{ STATIC_URL }}el-pagination/js/el-pagination.js"></script>
-
         {% nunjucks_scripts %}
 
         {% endcompress %}
@@ -227,7 +231,6 @@
                 base.ui.skeleton();
                 base.ui.iface();
                 base.ui.loading();
-                //base.ui.toolbar();
                 base.ui.searchbar();
                 base.ui.tagcloud();
                 base.ui.sidebar();
@@ -236,12 +239,6 @@
                 base.ui.load_state();
                 base.ui.tracklist();
                 base.ui.dialog();
-
-                $.endlessPaginate({
-                    paginateOnScroll: true,
-                    paginateOnScrollMargin: 400
-                });
-
             });
 
             $(window).unload(function () {
@@ -249,25 +246,11 @@
             });
         </script>
 
-        {% comment %}
-        # TODO: completely remove related code
-        <script src="{{ STATIC_URL }}alibrary/js/playlist.js"></script>
         <script>
-            var alibrary = alibrary || {};
-            $(function(){
-                alibrary.collector = new CollectorApp;
-                alibrary.collector.api_url = "{% url "api_dispatch_list" resource_name='library/playlist' api_name='v1'%}";
-                alibrary.collector.mode = 'main';
-                alibrary.collector.init();
-            });
-        </script>
-        {% endcomment %}
 
-
-        <script>
             var base = base || {};
-            base.vars = base.vars || {};
 
+            base.vars = base.vars || {};
             base.vars.context = 'content';
             base.vars.section = 'library';
             base.vars.subset = 'releases';
@@ -276,12 +259,9 @@
             base.vars.legacy_url = 'https://www.openbroadcast.org/';
             base.vars.js_path = '/media/js/';
             base.vars.irc_chat_url = 'http://webchat.freenode.net/?channels=openbroadcast';
-
             base.vars.ga_track_events = false;
-
             base.vars.user_id = '5';
             base.vars.username = 'jonas';
-
             base.vars.list_highlight = false;
 
         </script>
@@ -303,7 +283,6 @@
         <script src="https://cdn.ravenjs.com/3.7.0/raven.min.js"></script>
         <script>Raven.config('{% sentry_public_dsn 'https' %}').install()</script>
 
-        {% comment %}{% endcomment %}
         <script>(function(d, s, id) {
           var js, fjs = d.getElementsByTagName(s)[0];
           if (d.getElementById(id)) return;

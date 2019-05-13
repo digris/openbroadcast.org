@@ -1,22 +1,17 @@
-{% extends "cms_base.html" %}
+{% extends "base.html" %}
 
-{% load cms_tags abcast_tags %}
+{% load cms_tags %}
 
-
-{% block body_class %}home{% endblock %}
+{% block body_class %}cms-page cms-page--home{% endblock %}
 
 {% block heading %}{% endblock %}
-
-<div id="heading" class="heading heading-alt">
-    {% include "skeleton/heading_alt.html" %}
-</div>
 
 {% block teaser %}
     <section class="teaser">
         <div class="teaser-container">
             <div class="background"></div>
             <div class="text">
-                <h1>openbroadcast.org</h1>
+                <h1>open broadcast platform</h1>
                 <h2>an independent media platform <br>for music & radio professionals</h2>
                 <div class="global-search">
                     <div id="search_app_home"></div>
@@ -29,60 +24,40 @@
 
 {% block main %}
 
-    <div class="row">
-		<div class="span10 offset1">
-            <div class="sign-up">
-
-                <div class="actions">
-                    <p>
-                        {% if not user.is_authenticated %}
-                        <a href="{% url "registration_register" %}" class="btn btn-primary btn-large icon"><i class="icon-user"></i> Create your Account</a>
-                        {% else %}
-                        {% endif %}
-                    </p>
-                </div>
-
+    <section>
+        <div class="sign-up">
+            <div class="actions">
+                <p>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url "registration_register" %}" class="btn btn-primary btn-large icon"><i class="icon-user"></i> Create your Account</a>
+                    {% else %}
+                    {% endif %}
+                </p>
             </div>
-		</div>
-    </div>
+        </div>
+    </section>
 
+    <section class="cms-placeholder cms-placeholder--main">
+        {% placeholder "main" or %}empty{% endplaceholder %}
+    </section>
 
-    <div class="row">
-		<div class="span10 offset1">
-            {% placeholder "main" or %}empty{% endplaceholder %}
-		</div>
-    </div>
-
-
-    <div class="row">
-		<div class="span10 offset1">
-            <div class="sign-up">
-
-                <div class="text">
-                    <h1>openbroadcast.org</h1>
-                    <h2>an independent media platform <br>for music & radio professionals</h2>
-                </div>
-
-                <div class="actions">
-                    <p>
-                        {% if not user.is_authenticated %}
-                        <a href="{% url "registration_register" %}" class="btn btn-primary btn-large icon"><i class="icon-user"></i> Create your Account</a>
-                        {% else %}
-                        {% endif %}
-                    </p>
-                </div>
-
+    <section>
+        <div class="sign-up">
+            <div class="text">
+                <h1>open broadcast platform</h1>
+                <h2>an independent media platform <br>for music & radio professionals</h2>
             </div>
-		</div>
-    </div>
+            <div class="actions">
+                <p>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url "registration_register" %}" class="btn btn-primary btn-large icon"><i class="icon-user"></i> Create your Account</a>
+                    {% else %}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </section>
 
-
-
-{% endblock %}
-
-
-{% block footer %}
-	{% placeholder "footer" inherit or %}{% show_placeholder "footer" "base" %}{% endplaceholder %}
 {% endblock %}
 
 {% block user_panels %}{% endblock %}

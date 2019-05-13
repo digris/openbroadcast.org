@@ -1,17 +1,9 @@
-{% extends "cms_base.html" %}
+{% extends "base.html" %}
 
 {% load cms_tags %}
 
+{% block body_class %}cms-page cms-page--default{% endblock %}
+
 {% block main %}
 	{% placeholder "main" or %}{% endplaceholder %}
-{% endblock %}
-
-
-{% block cms_sidebar %}
-	{% placeholder "sidebar" or %}{% endplaceholder %}
-{% endblock %}
-
-
-{% block footer %}
-	{% placeholder "footer" inherit or %}{% show_placeholder "footer" "base" %}{% endplaceholder %}
 {% endblock %}

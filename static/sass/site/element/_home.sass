@@ -30,7 +30,7 @@ $h2-font-weight: 600
 ///////////////////////////////////////////////////////////////
 // teaser styles
 ///////////////////////////////////////////////////////////////
-body.home
+body.cms-page--home
   section.teaser
     position: relative
     .teaser-container
@@ -47,7 +47,7 @@ body.home
       position: absolute
       top: 0
       width: 100%
-      padding: 50px 0 0 0
+      padding: 68px 0 0 0
 
       @extend %typography-teaser
       h1, h2
@@ -57,7 +57,7 @@ body.home
 ///////////////////////////////////////////////////////////////
 // frontpage search
 ///////////////////////////////////////////////////////////////
-body.home
+body.cms-page--home
   .teaser .global-search
     display: flex
     //background: red
@@ -75,51 +75,19 @@ body.home
           background: rgba(0, 0, 0, 0.8)
           border: 1px solid #fff
 
-    //position: absolute
-    //top: 220px
-    //left: 0
-    //width: 100%
-    //
-    //.global-search-container
-    //  width: 388px
-    //  margin: 0 auto
-    //
-    //  #search_form
-    //    height: 31px
-    //    padding: 0
-    //    border-bottom: none
-    //
-    //    .wrapper-icon
-    //      width: 30px
-    //      i
-    //        font-size: 24px
-    //
-    //  #search_input
-    //    width: 332px
-    //    border: 2px solid white
-    //    background-color: rgba(0, 0, 0, 0.50)
-    //    &:focus
-    //      background: rgba(0, 0, 0, 0.70)
-    //
-    //
-    //
-    //  #search_scope
-    //    margin-left: 32px
-    //    width: 342px
-    //  .search-results
-    //    margin-left: 32px
-    //    width: 346px
-
 
 ///////////////////////////////////////////////////////////////
 // cms content / panels
 ///////////////////////////////////////////////////////////////
-body.home
+body.cms-page--home
 
-  .container.main
-    margin-top: 50px
-    .subhead
-      display: none
+  main
+    padding-top: 64px
+
+  section
+
+    &.cms-placeholder--main
+      margin-top: 24px
 
     // plugin panels
     .panel
@@ -161,7 +129,7 @@ body.home
 ///////////////////////////////////////////////////////////////
 // panel extra classes
 ///////////////////////////////////////////////////////////////
-body.home
+body.cms-page--home
 
   .panel.numbered-columns
     .column
