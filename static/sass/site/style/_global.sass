@@ -10,6 +10,15 @@ body
   display: flex
   flex-direction: column
 
+  font-size: 12px
+  font-family: $baseFontFamily
+  font-weight: 300
+  line-height: 18px
+  color: #222
+  background: $body-color-bg
+  margin: 0
+  padding: 0
+
 
 .base
 
@@ -26,6 +35,7 @@ body
       display: grid
       grid-template-columns: calc(100% - 260px - 24px) 260px
       grid-column-gap: 24px
+      margin-bottom: 24px
 
     > .content
       display: grid
@@ -38,6 +48,7 @@ body
 
 
 // cms page default styles
+// TODO: move to appropriate place
 .cms-page
   main
     max-width: $g-content-max-width - 128px
@@ -45,19 +56,13 @@ body
       display: flex
       flex-direction: column
 
-
-// heading font settings
-// TODO: move to appropriate place
-body
-
-  h1, h2, h3, h4
-    font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif
-    font-weight: 200
-    color: #5a5a5a
-
-  .subhead .icontitle
-    font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif
-    font-weight: 200
-
-  section#global .heading
-    background: black
+  &--default
+    main
+      max-width: 900px
+      > .content
+        padding: 14px
+        background: #fff
+        h1, h2, h3, h4, h5, h6
+          margin: 0 0 8px 0
+        p, ul, ol
+          margin: 0 0 14px 0

@@ -25,33 +25,21 @@
     </div>
 {% endblock %}
 
-{% block modnav %}
-    <div id="modnav">
-        {% include "skeleton/module-navigation.html" %}
-    </div>
-{% endblock %}
-
 {% block tagcloud %}
     {% include "search/tagcloud.html" %}
 {% endblock %}
 
-{% block searchbar %}
-    {% with object=item ct="label" %}
-        {# include "alibrary/element/_searchbar.html" #}
-    {% endwith %}
-{% endblock %}
-
 {% block inner %}
     <div class="list-header">
-        <div class="pagination-holder">
-            {% include "search/pagination.html" %}
-        </div>
         <div class="controls-container">
             <div class="controls">
                 {% with object=None ct="alibrary.release" %}
                     {% include "alibrary/element/_list_primary_actions.html" %}
                 {% endwith %}
             </div>
+        </div>
+        <div class="pagination-container">
+            {% include "search/pagination.html" %}
         </div>
     </div>
     <div class="listview container release l">
@@ -69,7 +57,7 @@
         </div>
     </div>
     <div class="list-footer">
-        <div class="pagination-holder">
+        <div class="pagination-container">
             {% include "search/pagination.html" %}
         </div>
     </div>

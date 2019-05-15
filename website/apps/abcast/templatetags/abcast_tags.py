@@ -4,10 +4,6 @@ from abcast.models import Channel
 
 register = template.Library()
 
-@register.inclusion_tag('abcast/templatetags/jingles_inline.html', takes_context=True)
-def jingles_inline(context):
-    return context
-
 @register.inclusion_tag('abcast/templatetags/on_air_inline.html', takes_context=True)
 def on_air_inline(context, channel_id=None):
 

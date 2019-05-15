@@ -9,12 +9,6 @@
     </div>
 {% endblock %}
 
-{% block modnav %}
-    <div id="modnav">
-        {% include "skeleton/module-navigation.html" %}
-    </div>
-{% endblock %}
-
 {% block tagcloud %}
     {% include "search/tagcloud.html" %}
 {% endblock %}
@@ -27,7 +21,7 @@
 
 {% block inner %}
     <div class="list-header">
-        <div class="pagination-holder">
+        <div class="pagination-container">
             {% include "search/pagination.html" %}
         </div>
     </div>
@@ -36,7 +30,7 @@
             {%  hash_user_groups request.user as group_hash %}
             {% for item in object_list %}
                 {% cache 600 "profile_list_item_l" item.pk group_hash item.updated item %}
-                {% include "profiles/profile/_list_item_l.html" %}
+                {% include "profiles/profile/_list_item.html" %}
                 {% endcache %}
             {% empty %}
                 <p style="padding: 20px; text-align: center;">
@@ -46,7 +40,7 @@
         </div>
     </div>
     <div class="list-footer">
-        <div class="pagination-holder">
+        <div class="pagination-container">
             {% include "search/pagination.html" %}
         </div>
     </div>

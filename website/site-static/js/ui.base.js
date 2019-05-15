@@ -285,14 +285,7 @@ function HashTable(obj) {
 };
 
 
-/* AJAX Indicator */
-base.ui.loading = function () {
-    $(document).ajaxStart(function () {
-        $('body').addClass('ajax_loading');
-    }).ajaxStop(function () {
-            $('body').removeClass('ajax_loading');
-        });
-};
+
 
 /*
  * Periodical UI refresh frequency degrades continuosely
@@ -532,41 +525,6 @@ base.ui.iface = function () {
 
         return false;
     });
-
-
-    /*
-     * Play multiple items
-     * This function is not really nice... just here as it could be handy
-     * (It also is not a requirement. If it does not work it just will be removed)
-     */
-    $('.action.selection_play a').live('click', function () {
-
-        if ($(this).hasClass('disabled')) {
-            return false;
-        }
-
-        var item_type = $(this).attr('href').substring(1);
-
-        var uri = base.vars.base_url + 'multiplay/play.json?' + item_type + '_ids=';
-
-        $('.list_body_row.selection').each(function (index) {
-            var item_id = $(this).attr('id').split("_").pop();
-            uri = uri + item_id + ',';
-            if (base.ui.use_effects) {
-                $(this).effect("transfer", { to: "#pplayer_inline" }, 300);
-            }
-
-        });
-
-        var offset = 0;
-        var mode = 'replace';
-        var token = 'xx-yy-zz';
-
-        base.ui.play_popup(uri, token, offset, mode);
-
-        return false;
-    });
-
 
 
     /*
@@ -1649,152 +1607,6 @@ base.ui.save_state = function (key, val, action) {
 
 };
 
-/*
- * Popup-player handling
- */
-
-base.ui.play = new Object;
-
-base.ui.play_popup = function (uri, token, offset, mode) {
-
-    if (mode === undefined) {
-        mode = "replace";
-    }
-    if (offset === undefined) {
-        offset = 0;
-    }
-
-    base.ui.play.uri = uri;
-    base.ui.play.token = token;
-    base.ui.play.offset = offset;
-    base.ui.play.mode = mode;
-
-    pplayer = base.ui.grab_player(true, true);
-
-};
-
-/*
- * This function is called in case the player was open before.
- * Tries to re-attach it to the main window
- */
-base.ui.pplayer_do_grab = function () {
-    pplayer = base.ui.grab_player(true, false);
-};
-
-
-/*
- * Player ready function, gets called either by the 'grap_player function' (if
- * existing player) or hrough the document ready function from the popup window
- */
-base.ui.pplayer_ready = function (pplayer) {
-
-    pplayer.load(base.ui.play.uri, base.ui.play.token, base.ui.play.offset, base.ui.play.mode);
-
-    pplayer = pplayer;
-
-    // save player state, so wen recall its object on subsequent requests
-    // base.ui.save_state('pplayer_open', 1, false); // moved to server-side script
-};
-
-base.ui.pplayer_status = function (obj) {
-    // $.log(obj.position);
-    // $('#v15_experimental').html(obj.position);
-};
-
-// Function gets called by pplayer.ui.update() from the popup
-base.ui.pplayer_update = function (item) {
-
-    if (!item) {
-        item = new Object;
-        item.name = '';
-        item.release = '';
-        item.artist = '';
-        item.id = 0;
-        item.release_id = 0;
-    }
-
-    var name = (item.name != undefined) ? item.name : '';
-    var release = (item.release != undefined) ? item.release : '';
-    var artist = (item.artist != undefined) ? item.artist : '';
-
-
-    // Update media-display
-    $('#pplayer_inline_scroll .name').html('<a href="' + item.release_url + '">' + name + '</a>');
-    $('#pplayer_inline_scroll .release').html('<a href="' + item.release_url + '">' + release + '</a>');
-    $('#pplayer_inline_scroll .artist').html('<a href="' + item.artist_url + '">' + artist + '</a>');
-
-
-    console.info('playing track', item.id)
-    console.info('playing release', item.release_id)
-
-    // try to set indicator for playing track
-    $('.listview.container.medias .list_body_row').removeClass('playing');
-    $('.listview.container.medias #list_item_' + item.id).addClass('playing');
-    $('.listview.container.releases .list_body_row').removeClass('playing');
-    $('.listview.container.releases #list_item_' + item.release_id).addClass('playing');
-
-};
-// Progress update
-base.ui.pplayer_progress_update = function (sound) {
-    // Just a dummy to test - maybe usefull somewhere in The Future™
-    // $('.listview.container.medias .list_body_row.playing .c6').html(sound.position);
-};
-
-
-base.ui.grab_player = function (force, focus) {
-
-    if (force === undefined) {
-        force = false;
-    }
-    if (focus === undefined) {
-        focus = false;
-    }
-
-    var pplayer_win = window.open('', 'pplayer', 'width=362, height=570');
-
-    if (pplayer_win) {
-
-        pplayer_win.opener = window;
-        pplayer = pplayer_win.pplayer;
-
-        // load the player page if necessary
-        if (typeof (pplayer_win.loaded) == 'undefined') {
-            pplayer_win.location.href = '/player';
-        } else {
-            if (pplayer && force) {
-                // player is allready ready, so call pplayer_ready directly
-                base.ui.pplayer_ready(pplayer);
-            }
-        }
-
-    } else {
-
-        // Show dialog
-        var message = '<p><br />&nbsp;Unable to open the Player-window. Please set your browser to allow popups from this site.<br /><br /></p>';
-        boxy = new Boxy(message);
-    }
-
-    if (focus) {
-        pplayer_win.focus();
-    }
-
-    // little hackish - update the pplayer_inline
-    try {
-        var index = pplayer.sound_current.split("_").pop();
-
-        // var item = pplayer.playlist[index];
-        var item = pplayer.current_item;
-
-        base.ui.pplayer_update(item);
-    }
-    catch (err) {
-
-    }
-    ;
-
-
-    return pplayer;
-};
 
 
 /*

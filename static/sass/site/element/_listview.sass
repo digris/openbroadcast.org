@@ -1,64 +1,75 @@
 @charset "UTF-8"
 
 
-// table width: 830px
-
 .list-header,
 .list-footer
-  padding: 15px 2px 2px 5px
-  font-size: 90%
-  height: 20px
-  margin-top: 2px
+  display: flex
+  align-items: center
+  justify-content: flex-end
 
-  .pagination-holder
-    float: right
+  .pagination-container
+    flex-grow: 1
+    display: flex
+    justify-content: flex-end
 
-    p.pagination
-      padding: 0 0 0 0
-      margin: 0 0 0 0
-      font-size: 100%
-      span, a
-        padding: 4px 6px 3px
-      a
-        background: $body-color-shaded-bg
-        &:hover
-          background: $primary-color-b
-          color: white
-          text-decoration: none
-      span.current
-        background: $primary-color-a
+    span, a
+      display: inline-flex
+      align-items: center
+      padding: 0 7px
+      height: 24px
+
+    span
+      color: #a5a5a5
+    a
+      background: $body-color-shaded-bg
+      &:hover
+        background: $primary-color-b
         color: white
-
-  // TODO: depreciated - list-styles will be removed
-  .wrapper.list_style
-    padding: 2px 0 0 0
-    height: 20px
-    float: left
-
-    > div
-      background-color: #ff0000
-
-    a.action.list_style
-      padding: 0 0 0 2px
-      background-position: 0 0
-      display: block
-      height: 16px
-      &:hover, &.active
-        background-position: 0 -16px
-      &.s
-        background-image: url('/static/img/base/listview.style.s.png')
-      &.m
-        background-image: url('/static/img/base/listview.style.m.png')
-      &.l
-        background-image: url('/static/img/base/listview.style.l.png')
-
-
+        text-decoration: none
+    span.current
+      background: $primary-color-a
+      color: white
 
   .controls-container
-    margin-top: -5px
     .actions
       &--list
         @include list-actions
+
+
+.list-footer
+  margin-top: 14px
+
+//.list-header,
+//.list-footer
+//  padding: 15px 2px 2px 5px
+//  font-size: 90%
+//  height: 20px
+//  margin-top: 2px
+//
+//  .pagination-holder
+//    float: right
+//
+//    p.pagination
+//      padding: 0 0 0 0
+//      margin: 0 0 0 0
+//      font-size: 100%
+//      span, a
+//        padding: 4px 6px 3px
+//      a
+//        background: $body-color-shaded-bg
+//        &:hover
+//          background: $primary-color-b
+//          color: white
+//          text-decoration: none
+//      span.current
+//        background: $primary-color-a
+//        color: white
+//
+//  .controls-container
+//    margin-top: -5px
+//    .actions
+//      &--list
+//        @include list-actions
 
 
 
@@ -1100,11 +1111,12 @@
     tr:first-child > td
       border-top: none
     tr.day-separator > td
-      padding: 10px
-      text-align: center
+      padding: 10px 2px 4px
+      // text-align: center
       text-transform: capitalize
-      color: #5a5a5a
-      font-style: italic
+      color: #888888
+      border-bottom: 1px solid #dedede
+      // font-style: italic
       background: none
 
 

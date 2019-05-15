@@ -22,20 +22,17 @@
 
 {% endblock %}
 
-{% block modnav %}
-    <div id="modnav">
-        {% include "skeleton/module-navigation.html" %}
-    </div>
-{% endblock %}
-
 {% block inner %}
-    <div class="item_detail" style="">
-        <section>
-            <div class="row">
-                <div>&nbsp;</div>
-            </div>
-        </section>
-        <div class="clear"></div>
+    <div class="alert alert-info">
+        <strong>{% trans "Please note!" %}</strong>
+        <p>
+            {% blocktrans %}Do not upload more than maximum 30 tracks per "Upload Session"{% endblocktrans %}
+        </p>
+        <p>
+            {% blocktrans %}You don't have to wait until the import is complete.{% endblocktrans %}<br>
+            {% url 'importer-import-create' as new_upload_url %}
+            {% blocktrans %}As soon as the files are queued you can continue uploading with starting a <a href="{{ new_upload_url }}">new upload session</a>.{% endblocktrans %}
+        </p>
     </div>
 {% endblock %}
 
@@ -135,60 +132,7 @@
 
         <section class="importer-upload">
 
-            {% comment %}
-            <div>
 
-                <div class="alert alert-warning">
-                    <strong>{% trans "Please note!" %}</strong>
-                    <p>
-                        {% blocktrans %}The upload system tries to identify as exact as possible - however this is not so easy to do...
-                        You REALLY should process your files with the awesome "Picard" metadata-tagger prior to uploading them!!!{% endblocktrans %}
-
-                    </p><p>
-                        <strong>
-                        {% blocktrans %}Doing so will save you a lot of work when adding music to the Open Broadcast library!{% endblocktrans %}
-                        </strong>
-                        <br>
-
-                        <strong>
-                            {% blocktrans %}If picard does not recognize your files, Open Broadcast will neither.{% endblocktrans %}
-                        </strong>
-                    </p>
-
-                    <ul>
-                        <li><a href="https://musicbrainz.org/doc/MusicBrainz_Picard">MusicBrainz Picard</a></li>
-                        <li><a href="https://musicbrainz.org/doc/How_to_Tag_Files_With_Picard">{% trans "How to Tag Files With Picard" %}</a></li>
-                        <li>{% trans "If this all sounds too complicated, please don't hesitate to contact our" %} <a href="#">support</a></li>
-                    </ul>
-                </div>
-
-
-                <div class="alert alert-info">
-                    <strong>{% trans "Hint!" %}</strong>
-                    <p>
-                        {% blocktrans %}If the imports seem to freeze for a longer time you can try to just refresh the browser window. [CTRL/CMD]+[R] or <i class="icon-refresh"></i>.<br>
-                        Refreshing the browser will not lead to a loss of any uploaded files.{% endblocktrans %}
-                    </p>
-                </div>
-
-            </div>
-            {% endcomment %}
-
-            <div>
-
-                <div class="alert alert-info">
-                    <strong>{% trans "Please note!" %}</strong>
-                    <p>
-                        {% blocktrans %}Do not upload more than maximum 30 tracks per "Upload Session"{% endblocktrans %}
-                    </p>
-                    <p>
-                        {% blocktrans %}You don't have to wait until the import is complete.{% endblocktrans %}<br>
-                        {% url 'importer-import-create' as new_upload_url %}
-                        {% blocktrans %}As soon as the files are queued you can continue uploading with starting a <a href="{{ new_upload_url }}">new upload session</a>.{% endblocktrans %}
-                    </p>
-                </div>
-
-            </div>
 
             <div class="uploader">
 
@@ -210,7 +154,7 @@
 
                     </div>
 
-                    <table role="presentation" class="table table-condensed"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+                    <table role="presentation" class="table"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
                 </form>
 
             </div>

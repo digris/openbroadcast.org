@@ -29,18 +29,12 @@
 
 {% endblock %}
 
-{% block modnav %}
-    <div id="modnav">
-        {% include "skeleton/module-navigation.html" %}
-    </div>
-{% endblock %}
-
 {% block inner %}
     <div class="item_detail">
 
     <section class="shaded">
         <div class="row iteminfo release">
-            {% include "profiles/profile/_detail_info.html" %}
+            {% include "profiles/profile/_header.html" %}
         </div>
     </section>
 
@@ -86,6 +80,6 @@
 
 {% block sidebar %}
     {% include "profiles/profile/sidebar/_detail.html" %}
-	{% include "profiles/profile/sidebar/_edit_transform.html" %}
+	{% include "profiles/profile/sidebar/_mentoring.html" %}
 {% endblock %}
 

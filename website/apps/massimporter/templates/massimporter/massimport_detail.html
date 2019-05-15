@@ -10,15 +10,13 @@
     </div>
 {% endblock %}
 
-{% block modnav %}
-    <div id="modnav">
-        {% include "skeleton/module-navigation.html" %}
-        <p>
-            Back to <a href="{% url 'massimporter-import-list' %}">Massimport Listing</a>
-            <br>
-            <br>
-        </p>
-    </div>
+{% block menubar %}
+    {% include "skeleton/_menubar.html" %}
+    <p>
+        Back to <a href="{% url 'massimporter-import-list' %}">Massimport Listing</a>
+        <br>
+        <br>
+    </p>
 {% endblock %}
 
 {% block sidebar %}{% endblock %}

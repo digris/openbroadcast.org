@@ -1,0 +1,35 @@
+@charset "UTF-8"
+
+.menubar
+
+  display: flex
+
+  &__primary
+    flex-grow: 1
+
+  > ul
+    display: flex
+    > li
+      color: #666
+      font-size: $toolbar-font-size
+      text-transform: uppercase
+      text-decoration: none
+      display: inline-block
+
+      > a
+        color: inherit
+        text-decoration: inherit
+        letter-spacing: 1px
+        border-right: 1px solid #999
+        display: inline-block
+        padding: 0 7px
+
+      &.selected
+        color: $primary-color-a
+
+      &:hover
+        color: $primary-color-a
+
+      &:last-child
+        > a
+          border-right: 0

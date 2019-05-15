@@ -25,7 +25,7 @@ p
 
 h1, h2, h3, h4, h5, h6
   margin: 0
-  // font-weight: bold
+  font-weight: normal
   color: $grayDark
   text-rendering: optimizelegibility
   // Fix the character spacing for headings
@@ -34,36 +34,66 @@ h1, h2, h3, h4, h5, h6
     color: #aaaaaa
 
 h1
-  font-size: $baseFontSizeH1
-  line-height: $baseLineHeightH1
+  font-size: 26px
+  line-height: 26px * 1.5
   small
-    font-size: $smallFontSizeH1
+    font-size: 16px
+
 h2
-  font-size: $baseFontSizeH2
-  line-height: $baseLineHeightH2
-  small
-    font-size: $smallFontSizeH2
-h3
-  font-size: $baseFontSizeH3
-  line-height: $baseLineHeightH3
-  small
-    font-size: $smallFontSizeH3
-
-h4, h5, h6
-  line-height: $baseLineHeight
-
-h4
-  font-size: 14px
+  font-size: 16px
+  line-height: 16px * 1.5
   small
     font-size: 12px
 
+h3
+  font-size: 14px
+  line-height: 14px * 1.5
+  small
+    font-size: 12px
+
+h4
+  font-size: 12px
+  line-height: 12px * 1.5
+
 h5
   font-size: 12px
+  line-height: 12px * 1.5
 
 h6
-  font-size: 11px
-  color: $grayLight
-  text-transform: uppercase
+  font-size: 12px
+  line-height: 12px * 1.5
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////
+// overrides that need refactoring/review
+///////////////////////////////////////////////////////////////////////
+//h1
+//  font-size: 26px
+//  margin-bottom: 30px !important
+//
+//h2
+//  color: #333333
+//  font-size: 16px
+//  font-weight: normal
+//
+//h3
+//  font-size: 12px
+//  font-weight: bold
+//
+//h4
+//  font-size: 12px
+//  font-weight: normal
+//  margin: 0
+//  padding: 0
+
+
+
+
+
 
 // Page header
 .page-header
@@ -198,7 +228,7 @@ blockquote
 
 q:before,
 q:after,
-blockquote:before, 
+blockquote:before,
 blockquote:after
   content: ""
 

@@ -1,7 +1,0 @@
-{% if object.user %}
-    Author: {% firstof object.user.profile.get_display_name object.user %}
-{% endif %}
-<br>
-{% if object.series %}
-    Series: {{ object.series }}{% if object.series_number %} #{{ object.series_number }}{% endif %}
-{% endif %}

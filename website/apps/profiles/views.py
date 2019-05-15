@@ -324,8 +324,10 @@ class ProfileDetailView(DetailView):
         # votes
         # vs = Vote.objects.filter(user=u).order_by('-vote', '-created')
         # TODO: rewrite queryset. this generates a tremendous amount of db-hits!
-        context['upvotes'] = self.object.user.votes.filter(vote__gt=0).order_by('content_type__model', '-created')
-        context['downvotes'] = self.object.user.votes.filter(vote__lt=0).order_by('content_type__model', '-created')
+        # context['upvotes'] = self.object.user.votes.filter(vote__gt=0).order_by('content_type__model', '-created')
+        # context['downvotes'] = self.object.user.votes.filter(vote__lt=0).order_by('content_type__model', '-created')
+        context['upvotes'] = self.object.user.votes.filter(vote__gt=0).order_by('-created')
+        context['downvotes'] = self.object.user.votes.filter(vote__lt=0).order_by('-created')
 
         if context_object_name:
             context[context_object_name] = self.object

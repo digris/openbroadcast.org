@@ -17,20 +17,12 @@
     <!-- heading / icon (large one) -->
 {% endblock %}
 
-{% block modnav %}
-    <!-- start: intra-module navigation -->
-    <div id="modnav">
-        {% include "skeleton/module-navigation.html" %}
-    </div>
-    <!-- end: intra-module navigation -->
-{% endblock %}
-
 {% block inner %}
     <div class="item_detail" style="">
 
         <section class="shaded">
             <div class="row iteminfo release">
-                {% include "profiles/profile/_detail_info.html" %}
+                {% include "profiles/profile/_header.html" %}
             </div>
         </section>
 
@@ -122,7 +114,7 @@
 {% block form_sidebar %}
 
     <div class="sidebar form-sidebar holder">
-        {% include "profiles/profile/sidebar/_edit_transform.html" %}
+        {% include "profiles/profile/sidebar/_mentoring.html" %}
     </div>
 
 

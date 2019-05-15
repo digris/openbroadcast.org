@@ -1,0 +1,14 @@
+{% load menu_tags adv_cache %}
+
+<ul class="menubar__primary">
+    {% show_menu 2 2 0 100 %}
+</ul>
+
+<ul class="menubar__secondary">
+    {% if tagcloud %}
+        <li class="tagcloud-toggle">
+            <a href="#" data-tagcloud-toggle>Tagcloud</a>
+            <i class="icon icon-angle-down"></i>
+        </li>
+    {% endif %}
+</ul>

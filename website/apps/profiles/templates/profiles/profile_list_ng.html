@@ -9,12 +9,6 @@
     </div>
 {% endblock %}
 
-{% block modnav %}
-    <div id="modnav">
-        {% include "skeleton/module-navigation.html" %}
-    </div>
-{% endblock %}
-
 {% block tagcloud %}
     {% include "search/tagcloud.html" %}
 {% endblock %}
@@ -27,7 +21,7 @@
 
 {% block inner %}
     <div class="list-header">
-        <div class="pagination-holder">
+        <div class="pagination-container">
             {% include "search/pagination.html" %}
         </div>
     </div>
@@ -46,7 +40,7 @@
         </div>
     </div>
     <div class="list-footer">
-        <div class="pagination-holder">
+        <div class="pagination-container">
             {% include "search/pagination.html" %}
         </div>
     </div>

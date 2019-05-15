@@ -7,16 +7,11 @@
 </div>
 {% endblock %}
 
-{% block modnav %}
-<div id="modnav">
-
+{% block menubar %}
     <ul class="unstyled">
         <li class="descendant"><a href="{% spurl base=url set_query="num_days=7" %}" rel="nofollow">{% trans "One week" %}</a></li>
         <li class="descendant"><a href="{% spurl base=url set_query="num_days=14" %}" rel="nofollow">{% trans "Two weeks" %}</a></li>
     </ul>
-    <div class="clearfix"></div>
-
-</div>
 {% endblock %}
 
 {% block body_class %}scheduler{% endblock %}

@@ -64,9 +64,16 @@
         <main class="main">
             <div class="heading">
                 {% block heading %}{% endblock %}
-                <nav class="subnav">
-                    {% block modnav %}{% endblock %}
+                <div>
+                <nav class="menubar">
+                    {% block menubar %}
+                        {% include "skeleton/_menubar.html" %}
+                    {% endblock %}
                 </nav>
+                <div id="tagcloud" class="tagcloud">
+                    {% block tagcloud %}{% endblock %}
+                </div>
+                </div>
             </div>
             <div class="content">
                 {% comment %}{% endcomment %}
@@ -77,46 +84,6 @@
         <footer>
             {% include "skeleton/footer.html" %}
         </footer>
-
-        {% comment %}
-        <div id="wrap">
-            {% block teaser %}{% endblock %}
-            <div class="container main">
-                <header class="subhead">
-                    <div class="row">
-                        <div class="span9">
-                            {% block heading %}{% endblock %}
-                            <div class="subnav">
-                                {% block modnav %}{% endblock %}
-                            </div>
-                        </div>
-                        <div class="span3"></div>
-                    </div>
-                </header>
-                <section id="global">
-                    {% if messages %}
-                        <div class="row">
-                            <div class="span9 messages">
-                                {% for message in messages %}
-                                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                                        {{ message|linebreaksbr }}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% block main %}{% endblock %}
-                </section>
-            </div>
-
-            <div id="push"></div>
-
-        </div>
-
-        <div id="footer">
-            {% include "skeleton/footer.html" %}
-        </div>
-        {% endcomment %}
 
         {% block user_panels %}
         {% if not user.is_authenticated %}
@@ -230,13 +197,11 @@
                 base.ui.init();
                 base.ui.skeleton();
                 base.ui.iface();
-                base.ui.loading();
                 base.ui.searchbar();
                 base.ui.tagcloud();
                 base.ui.sidebar();
                 base.ui.listview();
                 base.ui.itemview();
-                base.ui.load_state();
                 base.ui.tracklist();
                 base.ui.dialog();
             });

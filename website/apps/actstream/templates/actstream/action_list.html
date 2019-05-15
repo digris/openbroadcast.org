@@ -1,12 +1,6 @@
 {% extends "layout_base.html" %}
 {% load spurl cache i18n truncate_tags ctype_tags cache activity_tags humanize %}
 
-{% block modnav %}
-    <div id="modnav">
-        {% include "skeleton/module-navigation.html" %}
-    </div>
-{% endblock %}
-
 {% block tagcloud %}{% endblock %}
 
 {% block searchbar %}{% endblock %}
@@ -14,15 +8,13 @@
 {% block inner %}
 
     <div class="list-header">
-        <div class="pagination-holder">
+        <div class="pagination-container">
             {% include "element/_pagination.html" %}
         </div>
     </div>
 
-    <div class="listview container actions {{ list_style }}">
-
-        <table class="table table-condensed striped action">
-
+    <div class="listview container actions">
+        <table class="table table--default">
             <tbody>
             {% for action in action_list %}
                 {% ifchanged %}
@@ -44,18 +36,14 @@
                     </td>
                     <td>
                         {% if action.actor %}
-
                             {% if action.actor == user and 1 == 2 %}
                                 {% trans "You" %}
                             {% else %}
                                 <a href="{{ action.actor.get_absolute_url }}">{{ action.actor.profile.get_display_name }}</a>
                             {% endif %}
-
                         {% endif %}
-
                         {% comment %}TODO: sorry - ugly remapping. needs to be refactored{% endcomment %}
                         {{ action.verb }}
-
                         {% if action.target %}
                             {% if action.target.username %}
                                 <a href="{{ action.target.get_absolute_url }}">"{% firstof action.target.get_full_name|truncate_chars_inner:60 action.target.username|truncate_chars_inner:60 %}"</a>
@@ -75,7 +63,7 @@
     </div>
 
     <div class="list-footer">
-        <div class="pagination-holder">
+        <div class="pagination-container">
             {% include "element/_pagination.html" %}
         </div>
     </div>

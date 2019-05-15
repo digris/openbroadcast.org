@@ -20,6 +20,7 @@ import PlayerApp from './apps/player/player-app.vue';
 import PlayerControlApp from './apps/player/player-control-app.vue';
 import CollectorApp from './apps/collector/collector-app.vue';
 import Topbar from './element/topbar';
+import Tagcloud from './element/tagcloud';
 import ListFilter from './element/listfilter';
 
 import AutocompleteWidgets from './element/autocomplete-widget';
@@ -71,6 +72,7 @@ $(() => {
     }
 
     const _Topbar = new Topbar();
+    const _Tagcloud = new Tagcloud();
     const _ListFilter = new ListFilter();
     const _AutocompleteWidgets= new AutocompleteWidgets();
 

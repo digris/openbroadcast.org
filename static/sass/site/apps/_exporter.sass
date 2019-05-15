@@ -4,19 +4,19 @@
 
 div.listview.export
 
-  thead th
-
-    font-weight: normal
-    font-style: italic
-    color: #999
-    border: none
+  //thead th
+  //
+  //  font-weight: normal
+  //  font-style: italic
+  //  color: #999
+  //  border: none
 
 
   [class^="visible-while-"], [class*=" visible-while-"]
     display: none
-    
+
   .item
-  
+
     &.init
       .visible-while-init
         display: inline-block
@@ -25,27 +25,27 @@ div.listview.export
       .visible-while-done
         display: inline-block
         color: $successTextAlt
-        
+
     &.downloaded
       .visible-while-downloaded
         display: inline-block
         color: $successText
-        
+
     &.ready
       .visible-while-ready
         display: inline-block
-  
+
     &.progress
       .visible-while-progress
         display: inline-block
-  
+
     &.error
       td
         background-color: $errorBackground
       .visible-while-error
         display: inline-block
         color: $errorText
-        
+
 
 
     td small
@@ -62,4 +62,4 @@ div.listview.export
         a
           color: $linkColor
           cursor: pointer
-        
+

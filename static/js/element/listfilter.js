@@ -1,14 +1,12 @@
 import store from 'store';
 
 const DEBUG = false;
+const STORE_KEY = 'ui-listfilter-expanded';
 
 class ListFilter {
 
     constructor() {
-
-        this.store_key = 'ui-listfilter-expanded';
         this.expanded_filters = [];
-
         this.load_state();
         this.bindings();
     };
@@ -41,11 +39,11 @@ class ListFilter {
 
     };
     load_state() {
-        this.expanded_filters = store.get(this.store_key, []);
+        this.expanded_filters = store.get(STORE_KEY, []);
         this.apply_state();
     };
     save_state() {
-        store.set(this.store_key, this.expanded_filters);
+        store.set(STORE_KEY, this.expanded_filters);
         this.apply_state();
     };
     apply_state() {

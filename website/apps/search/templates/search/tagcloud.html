@@ -1,22 +1,16 @@
 {% load adv_cache spurl i18n %}
 
 {% cache 600 "tagcloud" request.get_full_path %}{% endcache %}
-<div style="display: none;" id="tagcloud_inline" data-uistate="init" class="tagcloud inline ui-persistent">
-    <div class="cloud-container">
-        {% for tag in tagcloud %}
 
-            {% if tag.query %}
-                {% spurl base=request.get_full_path set_query="search_tags={{ tag.query }}" as tag_url %}
-            {% else %}
-                {% spurl base=request.get_full_path remove_query_param="search_tags" as tag_url %}
-            {% endif %}
-
-            {% spurl base=tag_url remove_query_param="page" as tag_url %}
-            <a rel="nofollow" href="{{ tag_url }}"
-               data-id="{{ tag.pk }}"
-               class="tag{{ tag.weight }} level{{ tag.hide_level }} {% if tag.selected %} on{% endif %}"
-               title="{% trans 'Usage' %}: {{ tag.count }}"
-               style="">{{ tag.name }}</a>
-        {% endfor %}
-    </div>
-</div>
+{% for tag in tagcloud %}
+    {% if tag.query %}
+        {% spurl base=request.get_full_path set_query="search_tags={{ tag.query }}" as tag_url %}
+    {% else %}
+        {% spurl base=request.get_full_path remove_query_param="search_tags" as tag_url %}
+    {% endif %}
+    {% spurl base=tag_url remove_query_param="page" as tag_url %}
+    <a rel="nofollow" href="{{ tag_url }}"
+       class="tag tag--weight-{{ tag.weight }}{% if tag.selected %} selected{% endif %}"
+       title="{% trans 'Usage' %}: {{ tag.count }}"
+       style="">{{ tag.name }}</a>
+{% endfor %}

@@ -1,4 +1,4 @@
-{% extends "base/generic.html" %}
+{% extends "layout_base.html" %}
 
 {% load i18n sekizai_tags dajaxice_templatetags crispy_forms_tags %}
 
@@ -10,11 +10,8 @@
     </div>
 {% endblock %}
 
-{% block list_inner %}
+{% block inner %}
     <section>
-        <div class="page-header">
-            <h2>Upload</h2>
-        </div>
         <div class="uploader">
             {% crispy form %}
         </div>

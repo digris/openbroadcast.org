@@ -1,5 +1,0 @@
-{{ object.get_full_name }}
-
-{% if object.pseudonym %}{{ object.pseudonym }}{% else %}{{ object.user.username }}{% endif %}
-
-{% for e in object.expertise.all %}{{ e.name }}{% if not forloop.last %}, {% endif %}{% endfor %}

@@ -1,6 +1,0 @@
-{% if object.type and object.type != 'unknown' %}{{ object.get_type_display }}{% endif %}
-
-{% if object.country %}{{ object.country.iso2_code }}{% endif %}
-
-{% if object.date_start %}&nbsp;*{{ object.date_start.year }}{% endif %}
-{% if object.date_end %}&nbsp;&#10013;{{ object.date_end.year }}{% endif %}

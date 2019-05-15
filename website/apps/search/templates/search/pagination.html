@@ -1,6 +1,6 @@
 {% load i18n spurl %}
 
-<p class="pagination">
+<div class="pagination">
     {% if pagination.num_pages > 1 %}
         {% if pagination.previous_page %}
             {% spurl base=request.get_full_path set_query="page={{ pagination.previous_page }}" as previous_page_url %}
@@ -33,4 +33,4 @@
             <span class="disabled next">{% trans "next" %} &rsaquo;&rsaquo;</span>
         {% endif %}
     {% endif %}
-</p>
+</div>

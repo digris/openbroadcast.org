@@ -1,4 +1,4 @@
-{% extends "layout_base.html" %}
+{% extends "base/listing.html" %}
 
 {% load i18n sekizai_tags pushy_tags cms_tags %}
 
@@ -7,13 +7,16 @@
 {% block pagination %}{% endblock %}
 {% block ipp %}{% endblock %}
 
-{% block heading %}
+
+
+{% block heading %} <!-- heading / icon (large one) -->
     {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
     {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}js/lib/ICanHaz.js"></script>{% endaddtoblock %}
     {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
 
     {% addtoblock "js-post" %}
         <script type="text/javascript">
+
             $(document).ready(function () {
 
                 $(function () {
@@ -30,46 +33,57 @@
                     $('#export_list_holder').css('opacity', 1);
                     exporter.toc_accepted = true;
                 })
+
+
+
             });
         </script>
     {% endaddtoblock %}
+
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+    <!-- heading / icon (large one) -->
 {% endblock %}
 
-{% block inner %}
-    <section class="page-disclaimer page-disclaimer--import">
-        <div class="page-disclaimer__content">
-            {% static_placeholder 'exporter_introduction' %}
-        </div>
-        <div class="page-disclaimer__appendix">
-            <div class="btn-group">
-                <a id="accept_toc" class="btn btn-primary btn pull-right" href="#">
-                    <span> {% trans "I do accept the terms and conditions" %}</span>
-                </a>
-            </div>
-        </div>
-    </section>
-    <div class="listview container export">
-        <table class="table table--default">
-            <thead>
-                <tr>
-                    <th>&nbsp;</th>
-                    <th>{% trans "Name" %}</th>
-                    <th>{% trans "Queue Time" %}</th>
-                    <th>{% trans "Last Download" %}</th>
-                    <th>{% trans "Size" %}</th>
-                    <th>{% trans "Link" %}</th>
-                    <!--<th>{% trans "Actions" %}</th>-->
-                </tr>
-            </thead>
-            <tbody id="export_list_holder">
-                <!-- CONTENT INSERTED FROM JS -->
-            </tbody>
-        </table>
-        <div>
-            <a href="{% url "exporter-export-delete-all" %}" class="btn btn-primary btn-small pull-right icon">
-            {% trans "Archive all downloads" %}
+
+{% block pre_list %}
+<section class="page-disclaimer page-disclaimer--import">
+    <div class="page-disclaimer__content">
+        {% static_placeholder 'exporter_introduction' %}
+    </div>
+	<div class="page-disclaimer__appendix">
+        <div class="btn-group">
+            <a id="accept_toc" class="btn btn-primary btn pull-right" href="#">
+                <span> {% trans "I do accept the terms and conditions" %}</span>
             </a>
-        </div>
+	    </div>
+	</div>
+</section>
+{% endblock %}
+
+
+{% block list_inner %}
+    <table class="table table--default">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>{% trans "Name" %}</th>
+                <th>{% trans "Queue Time" %}</th>
+                <th>{% trans "Last Download" %}</th>
+                <th>{% trans "Size" %}</th>
+                <th>{% trans "Link" %}</th>
+                <!--<th>{% trans "Actions" %}</th>-->
+            </tr>
+        </thead>
+        <tbody id="export_list_holder">
+            <!-- CONTENT INSERTED FROM JS -->
+        </tbody>
+    </table>
+    <div>
+        <a href="{% url "exporter-export-delete-all" %}" class="btn btn-primary btn-small pull-right icon">
+        {% trans "Archive all downloads" %}
+        </a>
     </div>
 {% endblock %}
 

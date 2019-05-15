@@ -9,27 +9,7 @@
 {% endblock %}
 
 
-{% block modnav %}
-<div id="modnav">
-	{% include "skeleton/module-navigation.html" %}
-</div>
-{% endblock %}
-
-
-{% block tagcloud %}
-<!-- TODO: Modularize TagCloud -->
-{% endblock %}
-
-
-{% block searchbar %}
-<div class="searchbar">
-	{% if tagcloud %}
-	<div class="tagbar"></div>
-	{% endif %}
-</div>
-<div id="autocomplete_holder" class="autocomplete holder"></div>
-{% endblock %}
-
+{% block tagcloud %}{% endblock %}
 
 {% block inner %}
 
@@ -37,11 +17,9 @@
 	{% block pre_list %}{% endblock %}
 </div>
 
-
-
 <div class="list-header">
     {% block pagination %}
-        <div style="float: right;">
+        <div>
             {% include "element/_pagination.html" %}
         </div>
     {% endblock %}

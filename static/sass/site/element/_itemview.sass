@@ -291,14 +291,58 @@ div.item_inner
 
 
 /* specific items, maybe move to other files some time.. */
-section.item_inner .tab-pane
+.content .tab-pane
+
   section.profile
+
+    // ugly workaround (while getting rid of bootstrap grid)
+    .row-fluid
+      display: flex
+      margin-bottom: 14px
+
     &.information
       h4
         text-transform: none
         color: #a5a5a5
       dl
         margin: 4px 0 8px
+
+  section.following
+    table.follows
+      margin-top: 0
+
+      .ctype
+        width: 110px
+
+      .actions
+        text-align: right
+
+        .stop-following
+          display: none
+
+        .following
+          .start-following
+            display: none
+          .stop-following
+            display: block
+
+  section.votes
+
+    .listing
+      margin: 14px 0 24px
+      .item
+        padding: 4px
+        background: #fff
+        background-repeat: no-repeat
+        background-position: right
+        background-size: contain
+        min-height: 80px
+        margin-bottom: 14px
+        cursor: pointer
+
+        &:hover
+          background-color: $primary-color-a-bg-light
+
 
 
 // relations in sidebar

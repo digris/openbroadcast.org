@@ -1,0 +1,55 @@
+{% load i18n %}
+
+{% if object.user == request.user %}
+    <div id="profile_transform" class="playlist-edit transform listing menu-context">
+        {% if not object.is_approved %}
+            <div class="page-header">
+                <h2>{% trans "Get reviewed" %}
+                    <small></small>
+                </h2>
+                <p>{% trans "In order to gain full access to the platform your profile needs to be reviewed by a mentor." %}</p>
+                {% if object.mentor %}
+                    <p>{% trans "Your mentor is" %}
+                        <a href="{{ object.mentor.get_absolute_url }}">{% firstof object.mentor.get_full_name object.mentor.username %}</a>.
+                    </p>
+                {% endif %}
+            </div>
+            {% if object.mentor %}
+                <div class="set">
+                    <ul class="unstyled">
+                        <li class="action {% if not object.mentor %}disabled{% endif %} selection_single">
+                            <span class="left icon"><a
+                                href="{% url "postman_write" object.mentor.username %}?subject={% trans "Please review my profile" %}"
+                                title="{% trans "Request a profile-review" %}"><i
+                                class="icon-unlock"></i> {% trans "Request a profile-review" %}</a> </span>
+                            <span class="opt"></span>
+                            <span class="clear"></span>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+            <div>
+            {% if object.mentor %}
+                <p>
+                    {% trans "Please complete your profile adequately* before asking for a review." %}<br/>
+                    {% trans "Your mentor will check if your profile is more or less complete, so consider to add at least" %}:
+                </p>
+                <ul>
+                    <li>{% trans "Full name" %}</li>
+                    <li>{% trans "A description" %}</li>
+                    <li>{% trans "usefull contact information" %}</li>
+                    <li>{% trans "the more - the better" %} :)</li>
+                </ul>
+            {% else %}
+                <p>{% blocktrans with url='/network/users/' %}
+                    You don't have a mentor yet, please  <a href="{{ url }}">look out</a> for one if you'd like to
+                    get additional privileges.
+                {% endblocktrans %}</p>
+            {% endif %}
+            </div>
+        {% endif %}
+        <div class="summary-holder">
+
+        </div>
+    </div>
+{% endif %}

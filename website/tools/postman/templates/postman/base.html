@@ -10,20 +10,18 @@
 </div>
 {% endblock %}
 
-{% block modnav %}
-<div id="modnav" class="postman postman-{% block pm_context_class %}{% endblock %}">
-<ul>
-	<li class="inbox">
+{% block menubar %}
+<ul class="menubar__primary menubar--postman menubar--postman--{% block pm_context_class %}{% endblock %}">
+	<li class="child inbox">
 		<a href="{% url 'postman_inbox' %}">{% trans "Inbox" %}{% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a>
 	</li>
-	<li class="sent">
+	<li class="child sent">
 		<a href="{% url 'postman_sent' %}">{% trans "Sent Messages" %}</a>
 	</li>
-	<li class="trash">
+	<li class="child trash">
 		<a href="{% url 'postman_trash' %}">{% trans "Trash" %}</a>
 	</li>
 </ul>
-</div>
 {% endblock %}
 
 

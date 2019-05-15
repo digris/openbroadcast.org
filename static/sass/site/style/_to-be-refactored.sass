@@ -1,0 +1,190 @@
+
+
+
+// heading font settings
+// TODO: move to appropriate place
+body
+
+  h1, h2, h3, h4
+    font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif
+    font-weight: 200
+    color: #5a5a5a
+
+  .subhead .icontitle
+    font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif
+    font-weight: 200
+
+  section#global .heading
+    background: black
+
+
+// refactoring styles from 'legacy-shizzle' ... :(
+// TODO: move to appropriate place
+body
+  #cms_toolbar-toggle
+    top: 40px
+  &.toolbar-visible
+    #cms_toolbar-toggle
+      top: 0
+    .navbar-fixed-top
+      top: 43px
+    .container.main
+      margin-top: 103px
+
+
+// TODO: implement as mixin
+.dl-horizontal
+  dt
+    float: left
+    clear: left
+    width: 120px
+  dd
+    margin-left: 130px
+
+
+///////////////////////////////////////////////////////////////////////
+// resets
+// TODO: clean styles
+///////////////////////////////////////////////////////////////////////
+ul, li, table, form, p, h1, h2, h3
+  margin: 0
+  padding: 0
+  text-indent: 0
+
+ul
+  list-style-type: none
+  &.text
+    margin: 8px 0 10px 0 !important
+    padding: 0 !important
+    li
+      margin: 0 !important
+      padding: 0 180px 0 19px
+
+
+
+
+
+.table
+  width: 100%
+
+  thead
+    th
+      color: #999
+      font-weight: normal
+      text-align: left
+
+  &--default
+    margin: 14px 0
+    border-collapse: separate
+    border-spacing: 0 5px
+
+
+
+  //tbody
+  //  tr
+  //    border-bottom: 1px solid red
+
+
+img
+  border: none
+
+input, textarea
+  margin: 0
+  padding: 0
+
+.hidden
+  display: none
+
+
+// TODO: implement propperly
+#heading
+  display: none
+
+
+///////////////////////////////////////////////////////////////////////
+// tagcloud
+// NOTE: refactored to _tagcloud.sass
+///////////////////////////////////////////////////////////////////////
+//.tagcloud
+//  a
+//    display: block
+//    float: left
+//    padding: 1px 5px 1px 5px
+//    margin: 2px 2px 0 0
+//    background: #f1f1f1
+//    border: 1px solid #d9ccf0
+//    &.on
+//      background: #d4f3da
+//      border: 1px solid #a9e1b4
+//  &.inline a
+//    display: block
+//    float: left
+//    padding: 1px 5px 1px 5px
+//    margin: 2px 2px 0 0
+//    background: transparent
+//    border: none
+//    text-transform: uppercase
+//
+//    span
+//      font-size: 80%
+//      padding: 0 0 0 4px
+//
+//div.tagcloud.inline
+//  //border-bottom: 1px solid #BBBBBB
+//  margin-bottom: 14px
+//  padding-bottom: 2px !important
+//  overflow: hidden
+//  position: relative
+//
+//  .cloud-container
+//    width: 800px
+//
+//  ul.tag-level
+//    float: right
+//    margin: 0
+//    padding: 0 4px 4px 4px
+//    background: $body-color-bg
+//    position: absolute
+//    top: 0
+//    right: 0
+//    a
+//      padding: 0
+//      margin: 0
+//
+//.tagcloud.inline a
+//
+//  &.on
+//    background: #d4f3da
+//
+//  &:hover
+//    text-decoration: none
+//    color: #ffffff
+//    background-color: $primary-color-b
+//
+//  &.on
+//    background: $primary-color-a
+//    color: white
+//
+//  &.tag-hidden
+//    display: none
+//
+//  &.tag1
+//    font-size: 84%
+//  &.tag2
+//    font-size: 88%
+//  &.tag3
+//    font-size: 92%
+//  &.tag4
+//    font-size: 98%
+//  &.tag5
+//    font-size: 108%
+//  &.tag6
+//    font-size: 112%
+//  &.tag7
+//    font-size: 114%
+//  &.tag8
+//    font-size: 118%
+//  &.tag9
+//    font-size: 124%
+//  &.tag10
+//    font-size: 130%
