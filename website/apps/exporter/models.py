@@ -11,13 +11,13 @@ from django.core.files import File as DjangoFile
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.urlresolvers import reverse
-from django.template.loader import render_to_string
 from django.conf import settings
 from celery.task import task
 from util.process import Process
-from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField, UUIDField
+
+from base.mixins import TimestampedModelMixin, UUIDModelMixin
 
 
 log = logging.getLogger(__name__)
@@ -64,17 +64,7 @@ def create_archive_dir(instance):
     return path_full
 
 
-class BaseModel(models.Model):
-    created = CreationDateTimeField()
-    updated = ModificationDateTimeField()
-
-    uuid = UUIDField()
-
-    class Meta:
-        abstract = True
-
-
-class Export(BaseModel):
+class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
     FORMAT_CHOICES = (
         ('mp3', _('MP3')),
         ('flac', _('Flac')),
@@ -248,7 +238,7 @@ def generate_export_filename(qs):
     return filename
 
 
-class ExportItem(BaseModel):
+class ExportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
     class Meta:
         app_label = 'exporter'
         verbose_name = _('Export Item')

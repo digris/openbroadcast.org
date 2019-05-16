@@ -12,7 +12,7 @@ from alibrary.models import Media, Artist, Release
 from celery.task import task
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.core.files.storage import FileSystemStorage
@@ -23,8 +23,8 @@ from django.utils.encoding import force_text
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields.json import JSONField
 from base.signals.unsignal import disable_for_loaddata
-from django_extensions.db.fields import UUIDField, CreationDateTimeField, ModificationDateTimeField
 
+from base.mixins import TimestampedModelMixin, UUIDModelMixin
 from .signals import importitem_created
 
 log = logging.getLogger(__name__)
@@ -74,17 +74,7 @@ def clean_upload_path(instance, filename):
     return os.path.join(folder, "%s%s" % (cleaned_filename.lower(), extension.lower()))
 
 
-class BaseModel(models.Model):
-
-    uuid = UUIDField()
-    created = CreationDateTimeField()
-    updated = ModificationDateTimeField()
-
-    class Meta:
-        abstract = True
-
-
-class Import(BaseModel):
+class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     STATUS_INIT = 0
     STATUS_DONE = 1
@@ -320,7 +310,7 @@ class Import(BaseModel):
         super(Import, self).save(*args, **kwargs)
 
 
-class ImportFile(BaseModel):
+class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     STATUS_INIT = 0
     STATUS_DONE = 1
@@ -715,7 +705,7 @@ post_delete.connect(post_delete_importfile, sender=ImportFile)
 
 
 
-class ImportItem(BaseModel):
+class ImportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     """
     stores relations to objects created/assigned during the specific import

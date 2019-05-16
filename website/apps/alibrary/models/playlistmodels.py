@@ -91,7 +91,6 @@ class Weather(models.Model):
 class Series(models.Model):
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
-    # uuid = UUIDField()
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     description = extra.MarkdownTextField(blank=True, null=True)
 
