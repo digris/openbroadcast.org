@@ -687,50 +687,9 @@ var EmissionApp = function () {
             }
         });
 
-
-        // self.dom_element.qtip({
-        //     content: {
-        //         text: function (api) {
-        //             return $(this).attr('data-tip');
-        //         }
-        //     },
-        //     position: {
-        //         my: 'left top',
-        //         at: 'top right',
-        //     },
-        //     style: {
-        //         classes: 'qtip-default'
-        //     },
-        //     show: {
-        //         delay: 10
-        //     },
-        //     hide: {
-        //         delay: 10
-        //     }
-        // });
-
     };
 
     this.drag_handler = function (e, ui) {
-
-
-        /*
-         var collision = $(event.target).collision("div.chip.fix", {
-         mode : "collision",
-         colliderData : "cdata",
-         as : "<div/>"
-         });
-
-         if (collision.length > 1) {
-         for (var i = 1; i < collision.length; i++) {
-         var hit = collision[i];
-         var c = $(hit).data("cdata");
-         $(c).addClass('colision');
-         }
-         } else {
-         $(event.target).removeClass('colision');
-         }
-         */
 
         if (e.type == 'dragstop') {
 

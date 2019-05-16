@@ -27,11 +27,12 @@ CELERY_RESULT_BACKEND = 'djcelery.backends.cache:CacheBackend'
 #CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 # broker settings, used to compose connection for playout messaging
-BROKER_HOST = "localhost"
-BROKER_PORT = 5672
-BROKER_USER = "obp"
-BROKER_PASSWORD = "obp"
-BROKER_VHOST_PYPO = "playout"
+# configured via BROKER_URL
+# BROKER_HOST = "localhost"
+# BROKER_PORT = 5672
+# BROKER_USER = "obp"
+# BROKER_PASSWORD = "obp"
+# BROKER_VHOST_PYPO = "playout"
 
 # base broker url - used for task servers
 BROKER_URL = 'amqp://obp:obp@127.0.0.1:5672/openbroadcast.org'

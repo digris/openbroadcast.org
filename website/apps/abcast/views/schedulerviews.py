@@ -112,57 +112,8 @@ def schedule(request):
         data['playlist_history'] = mark_safe(json.dumps(history))
         """
 
-
-    # log.debug('schedule offset: %s' % offset)
-    # log.debug('schedule today: %s' % today)
-    # log.debug('schedule playlist_id: %s' % playlist_id)
-
-
     return render_to_response('abcast/schedule.html', data, context_instance=RequestContext(request))
 
-
-class EmissionListView(ListView):
-
-    model = Emission
-    extra_context = {}
-
-    def __init__(self, **kwargs):
-        super(EmissionListView, self).__init__(**kwargs)
-        self.tagcloud = None
-
-    def get_context_data(self, **kwargs):
-        context = super(EmissionListView, self).get_context_data(**kwargs)
-
-        self.extra_context['list_style'] = self.request.GET.get('list_style', 's')
-        self.extra_context['get'] = self.request.GET
-
-        days = []
-        today = datetime.datetime.now()
-        offset = datetime.timedelta(days=-today.weekday())
-        for day in range(7):
-            date = today + offset
-            days.append( date )
-            offset += datetime.timedelta(days=1)
-
-        self.extra_context['today'] = today
-        self.extra_context['days'] = days
-
-        context.update(self.extra_context)
-
-        return context
-
-
-    def get_queryset(self, **kwargs):
-
-        kwargs = {}
-        q = self.request.GET.get('q', None)
-
-        if q:
-            qs = Emission.objects.filter(Q(name__istartswith=q)).distinct()
-        else:
-            qs = Emission.objects.all()
-
-        return qs
 
 class EmissionDetailView(DetailView):
 

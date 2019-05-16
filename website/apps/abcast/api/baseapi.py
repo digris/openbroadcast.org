@@ -525,6 +525,9 @@ class BaseResource(Resource):
         return self.json_response(request, data)
 
     def notify_start_play(self, request, **kwargs):
+        # called from playout on every track change
+        # e.g.:
+        # /api/v1/abcast/base/notify-media-item-start-play/?api_key=***&media_id=<media_uuid>&channel_id=<channel_uuid>
 
         media_uuid = request.GET.get('media_id', None)
         channel_uuid = request.GET.get('channel_id', None)

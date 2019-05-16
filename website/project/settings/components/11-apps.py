@@ -143,7 +143,7 @@ INSTALLED_APPS = [
     'metadata_generator',
 
     # legacy & migration
-    # 'obp_legacy',
+    'obp_legacy',
 
     # platform tools
     'pushy',
