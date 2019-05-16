@@ -6,41 +6,14 @@ ORDER_BY_FIELD = 'o'
 
 from django.db import models
 
-class CharListFilter(django_filters.Filter):
-
-    def filter(self, qs, value):
-        if not value:
-            return qs
-        if isinstance(value, (list, tuple)):
-            lookup = str(value[1])
-            if not lookup:
-                lookup = 'exact'
-            value = value[0]
-        else:
-            values = value.split(',')
-            lookup = self.lookup_type
-            
-        if value and values:
-            if len(values) > 1:
-                lookup = 'in'
-                return qs.filter(**{'%s__%s' % (self.name, lookup): values})
-            else:
-                return qs.filter(**{'%s__%s' % (self.name, lookup): value})
-        
-        return qs
-
-
 class ActionFilter(django_filters.FilterSet):
-
-    verb = CharListFilter(label="Action")
-    target_content_type = CharListFilter(label="Object type")
     class Meta:
         model = Action
-        fields = [
-            'verb',
-            'target_content_type'
-        ]
-    
+        fields = {
+            'verb': ['exact'],
+            'target_content_type': ['exact'],
+        }
+
     @property
     def filterlist(self):
         flist = []
@@ -64,6 +37,5 @@ class ActionFilter(django_filters.FilterSet):
                     flist.append(filter_)
 
             self._filterlist = flist
-        
-        return self._filterlist
 
+        return self._filterlist
