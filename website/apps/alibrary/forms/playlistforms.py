@@ -9,7 +9,8 @@ from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Field, Fieldset, Div
 from django import forms
-from django.forms.extras.widgets import SelectDateWidget
+# from django.forms.extras.widgets import SelectDateWidget
+from django.forms.widgets import SelectDateWidget
 from django.forms import ModelForm, Form
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe

@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
 
-from abcast.filters import StationFilter
 from abcast.models import Station
-from django.conf import settings
 from django.db.models import Q
 from django.views.generic import DetailView, ListView
-from tagging_extra.utils import calculate_cloud
 from pure_pagination.mixins import PaginationMixin
-from tagging.models import Tag
 
 class StationListView(PaginationMixin, ListView):
 
@@ -24,10 +20,6 @@ class StationListView(PaginationMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(StationListView, self).get_context_data(**kwargs)
-
-        self.extra_context['filter'] = self.filter
-        self.extra_context['relation_filter'] = self.relation_filter
-        self.extra_context['tagcloud'] = self.tagcloud
         self.extra_context['list_style'] = self.request.GET.get('list_style', 's')
         self.extra_context['get'] = self.request.GET
         context.update(self.extra_context)
@@ -36,10 +28,6 @@ class StationListView(PaginationMixin, ListView):
 
 
     def get_queryset(self, **kwargs):
-
-        kwargs = {}
-
-        self.tagcloud = None
 
         q = self.request.GET.get('q', None)
 
@@ -57,25 +45,6 @@ class StationListView(PaginationMixin, ListView):
                 qs = qs.order_by('-%s' % order_by)
             else:
                 qs = qs.order_by('%s' % order_by)
-
-        # apply filters
-        self.filter = StationFilter(self.request.GET, queryset=qs)
-        qs = self.filter.qs
-
-        stags = self.request.GET.get('tags', None)
-        tstags = []
-        if stags:
-            stags = stags.split(',')
-            for stag in stags:
-                tstags.append(int(stag))
-
-        # rebuild filter after applying tags
-        self.filter = StationFilter(self.request.GET, queryset=qs)
-
-        # tagging / cloud generation
-        tagcloud = Tag.objects.usage_for_queryset(qs, counts=True, min_count=0)
-
-        self.tagcloud = calculate_cloud(tagcloud)
 
         return qs
 
