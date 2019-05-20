@@ -58,8 +58,8 @@ CMS_LANGUAGES = {
 
 TIME_ZONE = 'Europe/Zurich'
 SITE_ID = 1
-USE_I18N = True
-USE_L10N = False
+USE_I18N = False
+USE_L10N = True
 ROOT_URLCONF = 'project.urls'
 SECRET_KEY = 'test_key'
 

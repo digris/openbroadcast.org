@@ -9,7 +9,6 @@ import subprocess
 import tempfile
 
 from celery import current_app
-from celery.contrib.methods import task_method
 from celery.task import task
 from django.conf import settings
 from django.db import models
