@@ -122,8 +122,8 @@ django-treebeard==4.2.1
 djangocms-admin-style==1.2.8
 djangocms-column==1.6.0
 djangocms-file==0.1
-djangocms-link==1.6.2
-djangocms-snippet==1.5
+djangocms-link==1.7.2
+djangocms-snippet==1.7.1
 djangocms-text-ckeditor==3.3.1
 djangocms-video==0.1
 cmsplugin-filer==0.10.2
