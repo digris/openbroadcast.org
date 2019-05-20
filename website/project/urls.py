@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import include, url
 
-from django.views.defaults import page_not_found, server_error
 from django.conf import settings
 from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 from urls_api import api

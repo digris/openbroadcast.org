@@ -27,8 +27,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'gunicorn',
     'django_date_extensions',
-    #'haystack',
-    #'celery_haystack',
 
     'django_elasticsearch_dsl',
 

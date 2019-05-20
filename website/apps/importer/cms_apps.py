@@ -5,11 +5,11 @@ from cms.apphook_pool import apphook_pool
 from .cms_menus import ImportMenu
 
 
+@apphook_pool.register
 class ImportApp(CMSApp):
 
     name = _("Import App")
-    urls = ["importer.urls_import"]
     menus = [ImportMenu]
 
-apphook_pool.register(ImportApp)
-
+    def get_urls(self, page=None, language=None, **kwargs):
+        return ['importer.urls_import',]

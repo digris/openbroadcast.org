@@ -5,25 +5,30 @@ from cms.apphook_pool import apphook_pool
 from .cms_menus import SchedulerMenu
 
 
+@apphook_pool.register
 class JingleApp(CMSApp):
 
     name = _("Jingle App")
-    urls = ["abcast.urls_jingle"]
 
-apphook_pool.register(JingleApp)
+    def get_urls(self, page=None, language=None, **kwargs):
+        return ['abcast.urls_jingle',]
 
+
+
+@apphook_pool.register
 class SchedulerApp(CMSApp):
 
     name = _("Scheduler App")
-    urls = ["abcast.urls_scheduler"]
     menus = [SchedulerMenu]
 
-apphook_pool.register(SchedulerApp)
+    def get_urls(self, page=None, language=None, **kwargs):
+        return ['abcast.urls_scheduler',]
 
+
+@apphook_pool.register
 class StationApp(CMSApp):
 
     name = _("Station App")
-    urls = ["abcast.urls_station"]
 
-
-apphook_pool.register(StationApp)
+    def get_urls(self, page=None, language=None, **kwargs):
+        return ['abcast.urls_station',]

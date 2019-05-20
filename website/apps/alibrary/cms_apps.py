@@ -5,64 +5,80 @@ from cms.apphook_pool import apphook_pool
 from .cms_menus import ReleaseMenu, ArtistMenu, LibraryMenu, MediaMenu, LabelMenu, PlaylistMenu, LicenseMenu
 
 
+@apphook_pool.register
 class ReleaseApp(CMSApp):
 
     name = _("Release App")
-    urls = ["alibrary.urls_release"]
     menus = [ReleaseMenu]
 
-apphook_pool.register(ReleaseApp)
+    def get_urls(self, page=None, language=None, **kwargs):
+        return ['alibrary.urls_release',]
 
 
+@apphook_pool.register
 class ArtistApp(CMSApp):
 
     name = _("Artist App")
-    urls = ["alibrary.urls_artist"]
     menus = [ArtistMenu]
 
-apphook_pool.register(ArtistApp)
+    def get_urls(self, page=None, language=None, **kwargs):
+        return ['alibrary.urls_artist',]
 
 
+@apphook_pool.register
 class LabelApp(CMSApp):
-    #app_name = "labels"
+    # app_name = "alibrary"
     name = _("Label App")
-    urls = ["alibrary.urls_label"]
     menus = [LabelMenu]
 
-apphook_pool.register(LabelApp)
+    def get_urls(self, page=None, language=None, **kwargs):
+        return ['alibrary.urls_label',]
 
 
+@apphook_pool.register
 class MediaApp(CMSApp):
-
+    # app_name = 'alibrary-media'
     name = _("Media App")
-    urls = ["alibrary.urls_media"]
-    menus = [MediaMenu]
 
-apphook_pool.register(MediaApp)
+    def get_urls(self, page=None, language=None, **kwargs):
+        return ['alibrary.urls_media',]
 
-
-class LibraryApp(CMSApp):
-
-    name = _("Library App")
-    urls = ["alibrary.urls_library"]
-    menus = [LibraryMenu]
-
-apphook_pool.register(LibraryApp)
+    def get_menus(self, page=None, language=None, **kwargs):
+        return [MediaMenu]
 
 
+@apphook_pool.register
 class PlaylistApp(CMSApp):
 
     name = _("Playlist App")
-    urls = ["alibrary.urls_playlist"]
     menus = [PlaylistMenu]
 
-apphook_pool.register(PlaylistApp)
+    def get_urls(self, page=None, language=None, **kwargs):
+        return ['alibrary.urls_playlist',]
 
 
+@apphook_pool.register
 class LicenseApp(CMSApp):
 
     name = _("License App")
-    urls = ["alibrary.urls_license"]
     menus = [LicenseMenu]
 
-apphook_pool.register(LicenseApp)
+    def get_urls(self, page=None, language=None, **kwargs):
+        return ['alibrary.urls_license',]
+
+
+#######################################################################
+# library app replaces single apps for:
+# - release
+# - artist
+# - media
+# - label
+#######################################################################
+@apphook_pool.register
+class LibraryApp(CMSApp):
+    app_name = 'library'
+    name = _("Library App")
+    menus = [LibraryMenu]
+
+    def get_urls(self, page=None, language=None, **kwargs):
+        return ['alibrary.urls_library',]

@@ -8,7 +8,6 @@
 src
 dev/
 
-dev/
 temp/
 logs/
 
@@ -27,6 +26,7 @@ website/smedia
 website/media
 website/temp
 website/logs
+website/apps/dev
 
 # static files
 website/static/*

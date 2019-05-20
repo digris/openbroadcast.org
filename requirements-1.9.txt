@@ -1,3 +1,8 @@
 Django==1.9.13
 django-mptt==0.8.7.9
 django-filter==1.1.0
+
+# cms upgrade steps
+django-cms==3.5.3
+djangocms-snippet==2.2.0
+djangocms-link==2.2.1

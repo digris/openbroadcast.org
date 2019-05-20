@@ -352,6 +352,10 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
             'pk': self.pk,
             'slug': self.slug,
         })
+        # return reverse('library:media-detail', kwargs={
+        #     'pk': self.pk,
+        #     'slug': self.slug,
+        # })
 
     def get_edit_url(self):
         return reverse("alibrary-media-edit", args=(self.pk,))

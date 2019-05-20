@@ -8,4 +8,4 @@ class AlibraryConfig(AppConfig):
     verbose_name = "Library App"
 
     def ready(self):
-        import alibrary.signals
+        import alibrary.signals  # noqa

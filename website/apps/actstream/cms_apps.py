@@ -5,10 +5,11 @@ from cms.apphook_pool import apphook_pool
 from .cms_menus import ActionMenu
 
 
+@apphook_pool.register
 class ActionApp(CMSApp):
 
     name = _("Action App")
-    urls = ["actstream.urls_actstream"]
     menus = [ActionMenu]
 
-apphook_pool.register(ActionApp)
+    def get_urls(self, page=None, language=None, **kwargs):
+        return ['actstream.urls_actstream',]

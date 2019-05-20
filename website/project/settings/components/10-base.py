@@ -31,7 +31,7 @@ LANGUAGE_CODE = 'en'
 
 LANGUAGES = [
     ('en', _(u'Englisch')),
-    ('de', _(u'Deutsch')),
+    # ('de', _(u'Deutsch')),
 ]
 
 CMS_LANGUAGES = {
@@ -60,8 +60,8 @@ CMS_LANGUAGES = {
 
 TIME_ZONE = 'Europe/Zurich'
 SITE_ID = 1
-USE_I18N = False
-USE_L10N = True
+USE_I18N = True
+USE_L10N = False
 ROOT_URLCONF = 'project.urls'
 SECRET_KEY = 'test_key'
 
@@ -104,6 +104,7 @@ MIDDLEWARE_CLASSES = [
     # cms
     'cms.middleware.page.CurrentPageMiddleware',
     'cms.middleware.user.CurrentUserMiddleware',
+    'cms.middleware.language.LanguageCookieMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
 
     'base.middleware.xs_sharing.XsSharingMiddleware',
@@ -150,8 +151,8 @@ NOTEBOOK_ARGUMENTS = [
 
 MIGRATION_MODULES = {
     # cms base plugins
-    'djangocms_snippet': 'djangocms_snippet.migrations_django',
-    'djangocms_link': 'djangocms_link.migrations_django',
+    # 'djangocms_snippet': 'djangocms_snippet.migrations_django',
+    # 'djangocms_link': 'djangocms_link.migrations_django',
 
     # filer plugins
     'cmsplugin_filer_file': 'cmsplugin_filer_file.migrations_django',

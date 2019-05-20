@@ -5,11 +5,13 @@ from cms.apphook_pool import apphook_pool
 from .cms_menus import ExportMenu
 
 
+@apphook_pool.register
 class ExportApp(CMSApp):
 
     name = _("Export App")
-    urls = ["exporter.urls_export"]
     menus = [ExportMenu]
 
-apphook_pool.register(ExportApp)
+    def get_urls(self, page=None, language=None, **kwargs):
+        return ["exporter.urls_export"]
+
 
