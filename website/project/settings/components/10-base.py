@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-import djcelery
 from django.core.urlresolvers import reverse_lazy
 
-djcelery.setup_loader()
 gettext = _ = lambda s: s
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 TEMP_DIR = os.path.join(BASE_DIR, 'temp')

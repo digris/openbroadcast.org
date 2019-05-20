@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'sendfile',
     'missing', # http://django-missing.readthedocs.org/
     'raven.contrib.django.raven_compat',
-    'raven.contrib.django.celery',
-    'djcelery_email',
+    # 'raven.contrib.django.celery',
+    # 'djcelery_email',
     'el_pagination',
 
 
@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'api_base',
     #'notifications',
     'mailer',
-    'djcelery',
     'django_countries',
     'l10n',
     'filer',

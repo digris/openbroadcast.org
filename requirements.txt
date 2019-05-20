@@ -39,7 +39,7 @@ futures==3.2.0
 uwsgi==2.0.15
 celery==3.1.18
 MySQL-python==1.2.5
-raven==5.31.0
+raven==5.33
 django_cors_headers==2.1.0
 
 
