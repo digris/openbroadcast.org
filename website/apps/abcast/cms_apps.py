@@ -6,16 +6,6 @@ from .cms_menus import SchedulerMenu
 
 
 @apphook_pool.register
-class JingleApp(CMSApp):
-
-    name = _("Jingle App")
-
-    def get_urls(self, page=None, language=None, **kwargs):
-        return ['abcast.urls_jingle',]
-
-
-
-@apphook_pool.register
 class SchedulerApp(CMSApp):
 
     name = _("Scheduler App")

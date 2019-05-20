@@ -448,10 +448,6 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
             if ct == 'media':
                 co = Media.objects.get(pk=id)
 
-            if ct == 'jingle':
-                from abcast.models import Jingle
-                co = Jingle.objects.get(pk=id)
-
             if co:
 
                 i = PlaylistItem(content_object=co)
@@ -835,8 +831,7 @@ class PlaylistItem(models.Model):
         # ordering = ('-created', )
 
     ct_limit = models.Q(app_label='alibrary', model='media') | \
-               models.Q(app_label='alibrary', model='release') | \
-               models.Q(app_label='abcast', model='jingle')
+               models.Q(app_label='alibrary', model='release')
 
     content_type = models.ForeignKey(
         ContentType,

@@ -19,17 +19,6 @@ def concat_uuids(apps, schema_editor):
 
 
 
-def forwards(apps, schema_editor):
-    if not schema_editor.connection.vendor == 'postgresql':
-        print('db backend not postgres - skipping table update')
-        return
-    migrations.RunSQL("""
-alter table user_profiles alter column uuid type uuid using uuid::uuid;
-alter table profiles_community alter column uuid type uuid using uuid::uuid;
-""")
-
-
-
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -40,16 +29,15 @@ class Migration(migrations.Migration):
 
         migrations.RunPython(concat_uuids),
 
-        migrations.RunPython(forwards, None, [
-            migrations.AlterField(
-                model_name='community',
-                name='uuid',
-                field=models.UUIDField(default=uuid.uuid4, editable=False, db_index=True),
-            ),
-            migrations.AlterField(
-                model_name='profile',
-                name='uuid',
-                field=models.UUIDField(default=uuid.uuid4, editable=False, db_index=True),
-            ),
-        ]),
+        migrations.AlterField(
+            model_name='community',
+            name='uuid',
+            field=models.UUIDField(default=uuid.uuid4, editable=False, db_index=True),
+        ),
+        migrations.AlterField(
+            model_name='profile',
+            name='uuid',
+            field=models.UUIDField(default=uuid.uuid4, editable=False, db_index=True),
+        ),
+
     ]

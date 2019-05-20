@@ -1,5 +1,5 @@
 from abcast.api import BaseResource as AbcastBaseResource
-from abcast.api import ChannelResource, JingleResource, JingleSetResource, EmissionResource
+from abcast.api import ChannelResource, EmissionResource
 from alibrary.api import MediaResource, SimpleMediaResource, ReleaseResource, SimpleReleaseResource, ArtistResource, \
     LabelResource, SimplePlaylistResource, PlaylistResource, PlaylistItemPlaylistResource
 from api_base.api import BaseResource
@@ -40,8 +40,6 @@ api.register(ExportItemResource())
 api.register(AbcastBaseResource())
 #api.register(StationResource())
 api.register(ChannelResource())
-api.register(JingleResource())
-api.register(JingleSetResource())
 
 # scheduler
 api.register(EmissionResource())

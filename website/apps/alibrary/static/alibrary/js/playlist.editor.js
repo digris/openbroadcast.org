@@ -107,11 +107,7 @@ PlaylistEditor = function () {
                                 ct: data.item.content_type
                             }
                         } catch (e) {
-                            post_data = {
-                                ids: [data.id].join(','),
-                                // TODO: modularize: expose type in api
-                                ct: 'jingle'
-                            }
+                            post_data = {}
                         }
                     },
                     async: false
@@ -145,6 +141,7 @@ PlaylistEditor = function () {
 
             }
 
+            /*
             if (ui.sender && ui.sender[0].id == 'jingle_list') {
                 console.debug('jingle dropped!!');
             }
@@ -152,6 +149,7 @@ PlaylistEditor = function () {
             if (ui.sender && ui.sender[0].id == 'inline_playlist_holder') {
                 console.debug('jingle dropped!!');
             }
+            */
 
             self.reorder();
 
@@ -286,12 +284,6 @@ PlaylistEditor = function () {
          * Sidebar, dragable playlists (a.k.a. baskets)
          */
         $('#inline_playlist_holder .list').sortable({
-            placeholder: "item drop-placeholder",
-            connectWith: self.dom_element,
-            helper: "clone"
-        });
-
-        $('#inline_jingle_holder .list').sortable({
             placeholder: "item drop-placeholder",
             connectWith: self.dom_element,
             helper: "clone"
@@ -501,11 +493,6 @@ PlaylistEditor = function () {
                         this.editor_items[item.id].init(item, self);
                     }
 
-                    if (content_type == 'jingle') {
-                        this.editor_items[item.id] = new PlaylistEditorItem();
-                        this.editor_items[item.id].init(item, self);
-                    }
-
                 }
 
                 self.current_items[item.id] = item;
@@ -665,16 +652,6 @@ PlaylistEditorItem = function () {
                 object: self.item,
                 readonly: self.readonly,
                 enable_crossfades: self.enable_crossfades
-            });
-        }
-
-        if (self.ct == 'jingle') {
-
-            this.waveform_fill = '90-#aaa-#63c:50-#aaa';
-
-            html = nj.render('alibrary/nj/playlist/editor_item.html', {
-                object: self.item,
-                readonly: self.readonly
             });
         }
 

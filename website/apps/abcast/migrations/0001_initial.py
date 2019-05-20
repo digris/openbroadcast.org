@@ -5,7 +5,7 @@ from django.db import migrations, models
 import filer.fields.image
 import django_extensions.db.fields
 import base.fields.extra
-import abcast.models.jinglemodels
+# import abcast.models.jinglemodels
 import django.db.models.deletion
 from django.conf import settings
 import phonenumber_field.modelfields
@@ -154,7 +154,7 @@ class Migration(migrations.Migration):
                 ('type', models.CharField(default=b'jingle', max_length=12, verbose_name='Type', choices=[(b'jingle', 'Jingle'), (b'placeholder', 'Placeholder')])),
                 ('description', models.TextField(null=True, verbose_name=b'Extra Description', blank=True)),
                 ('duration', models.PositiveIntegerField(null=True, verbose_name=b'Duration (in ms)', blank=True)),
-                ('master', models.FileField(max_length=1024, null=True, upload_to=abcast.models.jinglemodels.masterpath_by_uuid, blank=True)),
+                ('master', models.FileField(max_length=1024, null=True, upload_to='jingle', blank=True)),
                 ('master_sha1', models.CharField(db_index=True, max_length=64, null=True, blank=True)),
                 ('folder', models.CharField(max_length=1024, null=True, editable=False, blank=True)),
                 ('artist', models.ForeignKey(related_name='jingle_artist', blank=True, to='alibrary.Artist', null=True)),

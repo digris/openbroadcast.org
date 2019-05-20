@@ -158,23 +158,6 @@ base.ui.states_custom_update = function (id, state) {
         return true;
     }
 
-    if (id == 'jingle_basket') {
-
-        if (state == 'expanded') {
-            el.addClass('expanded');
-        }
-        if (state == 'hidden') {
-            el.removeClass('expanded');
-        }
-
-        return true;
-    }
-
-    if (id == 'default_jingle_set') {
-        el.data('resource_uri', state);
-        return true;
-    }
-
 
     if (id.substring(0, 9) == 'filterbox') {
 

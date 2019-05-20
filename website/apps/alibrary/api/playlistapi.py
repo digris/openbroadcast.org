@@ -1,7 +1,5 @@
 import json
 
-from abcast.api import JingleResource
-from abcast.models import Jingle
 from alibrary.api import ReleaseResource, MediaResource, SimpleMediaResource
 from alibrary.models import Playlist, Media, PlaylistItemPlaylist, PlaylistItem, Daypart
 from alibrary.models import Release
@@ -23,7 +21,6 @@ class PlaylistItemResource(ModelResource):
     co_to = {
         Release: ReleaseResource,
         Media: SimpleMediaResource,
-        Jingle: JingleResource,
     }
 
     content_object = GenericForeignKeyField(to=co_to, attribute='content_object', null=False, full=True)
