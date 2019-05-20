@@ -144,7 +144,7 @@
 
 	<div class="image">
 		{% if object.main_image %}
-		<a href="{% thumbnail object.main_image 1200x1200 upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.main_image 172x172 crop upscale subject_location=object.main_image.subject_location %}" alt="Cover" /> </a>
+		<a href="{% thumbnail object.main_image 1200x1200 upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.main_image 172x172 crop upscale %}" alt="Cover" /> </a>
         {% else %}
 		<img src="/static/img/base/defaults/listview.playlist.xl.png" alt="{% trans "No cover available" %}" />
 		{% endif %}

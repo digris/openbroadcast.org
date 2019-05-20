@@ -1,7 +1,7 @@
 {% load thumbnail i18n truncate_tags highlight_tags %}
 
-<!-- 
-	OBSOLETE - refactored to nj/api	
+<!--
+	OBSOLETE - refactored to nj/api
 -->
 
 <div class="result">
@@ -14,7 +14,7 @@
 	</div>
 	<div class="listing">
 		{% for item in result %}
-		<div class="item linkable hoverable" style="background-image: url({% thumbnail item.release.main_image 50x50 crop upscale subject_location=item.release.main_image.subject_location %});">
+		<div class="item linkable hoverable" style="background-image: url({% thumbnail item.release.main_image 50x50 crop upscale %});">
 			<h2><a href="{{ item.release.get_absolute_url }}" class="link-main">{{ item.release.name|highlight:query }}{% if item.release.catalognumber %} [{{ item.release.catalognumber }}]{% endif %}</a></h2>
 
 			<div class="related">

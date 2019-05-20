@@ -8,7 +8,7 @@
      id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}">
 
     <div class="list_body_item c1 image_center_bg"
-         {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 36x36 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}>
+         {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 36x36 crop upscale %});"{% endif %}>
 
         {% with object=item ct="playlist" %}
             {% include "alibrary/element/_item_primary_actions.html" %}

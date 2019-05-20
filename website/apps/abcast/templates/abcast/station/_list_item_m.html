@@ -4,7 +4,7 @@
 
 <div class="list_body_row selectable item profile {% if item.user == user %}owner{% endif %} {% if item.user == user %}owner{% endif %} view edit" id="list_item_{{ item.pk }}" data-resource_uri="{{ item.get_api_url }}">
 
-	<div class="list_body_item c1 image_center_bg" {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 54x54 crop upscale subject_location=item.main_image.subject_location %});"{% endif %}>
+	<div class="list_body_item c1 image_center_bg" {% if item.main_image %}style="background-image: url({% thumbnail item.main_image 54x54 crop upscale %});"{% endif %}>
 		<ul class="unstyled">
 			<li class="play">
 				{% if item.is_approved %}

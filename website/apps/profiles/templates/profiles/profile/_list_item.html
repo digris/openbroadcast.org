@@ -7,7 +7,7 @@
      data-resource_uri="{{ item.get_api_url }}"
      data-absolute_url="{{ item.get_absolute_url }}"
     {% if item.image %}
-     style="background-image: url({% thumbnail item.image 200x200 crop upscale subject_location=item.image.subject_location %});"
+     style="background-image: url({% thumbnail item.image 200x200 crop upscale %});"
     {% else %}
         style="background-image: url({% gravatar_url item.user.email 200 %});"
     {% endif %}>

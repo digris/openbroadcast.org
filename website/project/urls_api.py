@@ -7,9 +7,7 @@ from arating.api import VoteResource
 from atracker.api import EventResource
 from exporter.api import ExportResource, ExportItemResource
 from importer.api import ImportResource, ImportFileResource
-# from profiles.api import ProfileResource, UserResource
 from profiles.api import UserResource
-#from search.api.resources import GlobalSearchResource
 from tastypie.api import Api
 
 api = Api()

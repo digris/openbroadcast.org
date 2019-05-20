@@ -180,7 +180,7 @@
 	<div class="image">
 		{% if object.main_image %}
         <div class="align">
-		    <a href="{% thumbnail object.main_image 1200x1200 upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.main_image 170x170 upscale subject_location=object.main_image.subject_location %}" alt="Cover" /> </a>
+		    <a href="{% thumbnail object.main_image 1200x1200 upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.main_image 170x170 upscale %}" alt="Cover" /> </a>
 		</div>
         {% else %}
 		<img src="/static/img/base/defaults/listview.artist.xl.png" alt="{% trans "No cover available" %}" />

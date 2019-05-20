@@ -58,9 +58,6 @@ urlpatterns = [
     url(r'^sa/', include('social_auth.urls')),
     url(r'^captcha/', include('captcha.urls')),
 
-    # filer (protected)
-    #url(r'^', include('filer.server.urls')),
-
     # massimporter / maintainer extra urls
     url(r'^admin-extra/', include('massimporter.urls')),
 

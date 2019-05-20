@@ -152,12 +152,6 @@ MIGRATION_MODULES = {
     # 'djangocms_snippet': 'djangocms_snippet.migrations_django',
     # 'djangocms_link': 'djangocms_link.migrations_django',
 
-    # filer plugins
-    'cmsplugin_filer_file': 'cmsplugin_filer_file.migrations_django',
-    'cmsplugin_filer_folder': 'cmsplugin_filer_folder.migrations_django',
-    'cmsplugin_filer_link': 'cmsplugin_filer_link.migrations_django',
-    'cmsplugin_filer_image': 'cmsplugin_filer_image.migrations_django',
-
     # self maintained modules
     'cms_redirects': 'cms_redirects.migrations_django',
 

@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'mailer',
     'django_countries',
     'l10n',
-    'filer',
     'adv_cache_tag',
     'cacheops',
     'django_badbrowser',
@@ -167,17 +166,11 @@ FILE_UPLOAD_HANDLERS = (
     'django.core.files.uploadhandler.TemporaryFileUploadHandler',
 )
 
-# filer
-FILER_IS_PUBLIC_DEFAULT = True
-FILER_ENABLE_PERMISSIONS = True
-FILER_STATICMEDIA_PREFIX = '/static/filer/'
-FILE_PROTECTION_METHOD = 'basic'
-
 THUMBNAIL_PROCESSORS = (
     'easy_thumbnails.processors.colorspace',
     'easy_thumbnails.processors.autocrop',
-    'filer.thumbnail_processors.scale_and_crop_with_subject_location',
     'easy_thumbnails.processors.filters',
+    'easy_thumbnails.processors.scale_and_crop',
 )
 THUMBNAIL_QUALITY = 80
 THUMBNAIL_BASEDIR = 'thumbnails'

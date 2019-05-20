@@ -152,7 +152,7 @@
 
 	<div class="image">
 		{% if object.image %}
-		<a href="{% thumbnail object.image 1200x1200 crop upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.image 172x172 crop upscale subject_location=object.image.subject_location %}" alt="Cover" /> </a>
+		<a href="{% thumbnail object.image 1200x1200 crop upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.image 172x172 crop upscale %}" alt="Cover" /> </a>
 		{% else %}
 
         {% gravatar object.user.email 500 %}

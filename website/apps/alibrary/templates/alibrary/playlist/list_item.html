@@ -22,7 +22,7 @@
         {% if item.main_image %}
         <div class="image-container centered">
             <div class="padder"></div>
-            <img src="/static/img/base/defaults/listview.release.xl.png" data-src="{% thumbnail item.main_image 197x197 crop upscale subject_location=item.main_image.subject_location %}" class="lazyload" />
+            <img src="/static/img/base/defaults/listview.release.xl.png" data-src="{% thumbnail item.main_image 197x197 crop upscale %}" class="lazyload" />
         </div>
         {% endif %}
 

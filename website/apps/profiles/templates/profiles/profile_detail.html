@@ -307,7 +307,7 @@
                     <div class="span3">
                         <div class="item hoverable linkable {{ vote.content_object|ct_name_by_object }}"
                             {% if vote.content_object.main_image %}
-                             style="background-image: url({% thumbnail vote.content_object.main_image 200x200 crop upscale subject_location=vote.content_object.main_image.subject_location %});"
+                             style="background-image: url({% thumbnail vote.content_object.main_image 200x200 crop upscale %});"
                             {% else %}
                              style="background-image: url(/static/img/base/defaults/listview.artist.xl.png)"
                             {% endif %}>
@@ -328,7 +328,7 @@
                     <div class="span3">
                         <div class="item hoverable linkable {{ vote.content_object|ct_name_by_object }}"
                             {% if vote.content_object.main_image %}
-                             style="background-image: url({% thumbnail vote.content_object.main_image 200x200 crop upscale subject_location=vote.content_object.main_image.subject_location %});"
+                             style="background-image: url({% thumbnail vote.content_object.main_image 200x200 crop upscale %});"
                             {% else %}
                              style="background-image: url(/static/img/base/defaults/listview.artist.xl.png)"
                             {% endif %}>

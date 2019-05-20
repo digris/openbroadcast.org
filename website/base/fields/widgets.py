@@ -1,6 +1,5 @@
 from django.utils.safestring import mark_safe
 from django.forms.widgets import ClearableFileInput, Widget
-#from filer.models import File, Image
 
 class ReadOnlyField(Widget):
 
