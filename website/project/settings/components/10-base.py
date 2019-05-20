@@ -149,8 +149,8 @@ NOTEBOOK_ARGUMENTS = [
 
 MIGRATION_MODULES = {
     # cms base plugins
-    # 'djangocms_snippet': 'djangocms_snippet.migrations_django',
-    # 'djangocms_link': 'djangocms_link.migrations_django',
+    'djangocms_snippet': 'djangocms_snippet.migrations_django',
+    'djangocms_link': 'djangocms_link.migrations_django',
 
     # filer plugins
     'cmsplugin_filer_file': 'cmsplugin_filer_file.migrations_django',

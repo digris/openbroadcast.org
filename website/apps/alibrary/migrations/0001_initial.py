@@ -1,0 +1,736 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import migrations, models
+import alibrary.models.mediamodels
+import alibrary.models.playlistmodels
+import django_extensions.db.fields
+import django_extensions.db.fields.json
+import django_date_extensions.fields
+from django.conf import settings
+import phonenumber_field.modelfields
+import uuid
+import base.fields.languages
+import alibrary.models.artistmodels
+import alibrary.models.releasemodels
+import tagging.fields
+import alibrary.models.labelmodels
+import django.db.models.deletion
+import alibrary.util.storage
+import base.fields.extra
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('l10n', '0001_initial'),
+        ('contenttypes', '0002_remove_content_type_name'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name='Artist',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
+                ('updated', models.DateTimeField(auto_now=True, db_index=True)),
+                ('legacy_id', models.IntegerField(null=True, editable=False, blank=True)),
+                ('migrated', models.DateField(null=True, editable=False, blank=True)),
+                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False)),
+                ('name', models.CharField(max_length=250, db_index=True)),
+                ('slug', django_extensions.db.fields.AutoSlugField(editable=False, populate_from='name', blank=True, overwrite=True)),
+                ('type', models.CharField(blank=True, max_length=128, null=True, verbose_name='Artist type', choices=[('person', 'Person'), ('group', 'Group'), ('orchestra', 'Orchestra'), ('other', 'Other')])),
+                ('main_image', models.ImageField(storage=alibrary.util.storage.OverwriteStorage(), upload_to=alibrary.models.artistmodels.upload_image_to, null=True, verbose_name='Image', blank=True)),
+                ('real_name', models.CharField(max_length=250, null=True, blank=True)),
+                ('disambiguation', models.CharField(max_length=256, null=True, blank=True)),
+                ('booking_contact', models.CharField(max_length=256, null=True, verbose_name='Booking', blank=True)),
+                ('email', models.EmailField(max_length=256, null=True, verbose_name='E-Mail', blank=True)),
+                ('date_start', django_date_extensions.fields.ApproximateDateField(help_text='date of formation / date of birth', null=True, verbose_name='Begin', blank=True)),
+                ('date_end', django_date_extensions.fields.ApproximateDateField(help_text='date of breakup / date of death', null=True, verbose_name='End', blank=True)),
+                ('listed', models.BooleanField(default=True, help_text='Should this Artist be shown on the default Artist-list?', verbose_name='Include in listings')),
+                ('disable_link', models.BooleanField(default=False, help_text='Disable Linking. Useful e.g. for "Varius Artists"', verbose_name='Disable Link')),
+                ('disable_editing', models.BooleanField(default=False, help_text='Disable Editing. Useful e.g. for "Unknown Artist"', verbose_name='Disable Editing')),
+                ('excerpt', models.TextField(null=True, blank=True)),
+                ('biography', models.TextField(null=True, blank=True)),
+                ('d_tags', tagging.fields.TagField(max_length=1024, null=True, verbose_name='Tags', blank=True)),
+                ('ipi_code', models.CharField(max_length=32, null=True, verbose_name='IPI Code', blank=True)),
+                ('isni_code', models.CharField(max_length=32, null=True, verbose_name='ISNI Code', blank=True)),
+            ],
+            options={
+                'ordering': ('name',),
+                'verbose_name': 'Artist',
+                'verbose_name_plural': 'Artists',
+            },
+        ),
+        migrations.CreateModel(
+            name='ArtistAlias',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('child', models.ForeignKey(related_name='alias_child', to='alibrary.Artist')),
+                ('parent', models.ForeignKey(related_name='alias_parent', to='alibrary.Artist')),
+            ],
+            options={
+                'verbose_name': 'Alias',
+                'verbose_name_plural': 'Aliases',
+            },
+        ),
+        migrations.CreateModel(
+            name='ArtistMembership',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('child', models.ForeignKey(related_name='artist_child', blank=True, to='alibrary.Artist', null=True)),
+                ('parent', models.ForeignKey(related_name='artist_parent', blank=True, to='alibrary.Artist', null=True)),
+            ],
+            options={
+                'verbose_name': 'Membersip',
+                'verbose_name_plural': 'Membersips',
+            },
+        ),
+        migrations.CreateModel(
+            name='ArtistProfessions',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('artist', models.ForeignKey(to='alibrary.Artist')),
+            ],
+            options={
+                'verbose_name': 'Profession',
+                'verbose_name_plural': 'Professions',
+            },
+        ),
+        migrations.CreateModel(
+            name='Daypart',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('day', models.PositiveIntegerField(default=0, null=True, choices=[(0, 'Mon'), (1, 'Tue'), (2, 'Wed'), (3, 'Thu'), (4, 'Fri'), (5, 'Sat'), (6, 'Sun')])),
+                ('time_start', models.TimeField()),
+                ('time_end', models.TimeField()),
+                ('active', models.BooleanField(default=True)),
+            ],
+            options={
+                'ordering': ('day', 'time_start'),
+                'verbose_name': 'Daypart',
+                'verbose_name_plural': 'Dayparts',
+            },
+        ),
+        migrations.CreateModel(
+            name='Distributor',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
+                ('updated', models.DateTimeField(auto_now=True, db_index=True)),
+                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)),
+                ('legacy_id', models.IntegerField(null=True, editable=False, blank=True)),
+                ('migrated', models.DateField(null=True, editable=False, blank=True)),
+                ('type', models.CharField(default='unknown', max_length=12, verbose_name='Distributor type', choices=[('unknown', 'Unknown'), ('major', 'Major'), ('indy', 'Independent'), ('other', 'Other')])),
+                ('slug', django_extensions.db.fields.AutoSlugField(editable=False, populate_from='name', blank=True, overwrite=True)),
+                ('name', models.CharField(max_length=400)),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('code', models.CharField(max_length=50)),
+                ('address', models.TextField(null=True, blank=True)),
+                ('email', models.EmailField(max_length=254, null=True, blank=True)),
+                ('phone', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, blank=True)),
+                ('fax', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, blank=True)),
+                ('d_tags', tagging.fields.TagField(max_length=1024, null=True, verbose_name='Tags', blank=True)),
+                ('country', models.ForeignKey(blank=True, to='l10n.Country', null=True)),
+            ],
+            options={
+                'ordering': ('name',),
+                'verbose_name': 'Distributor',
+                'verbose_name_plural': 'Distributors',
+            },
+        ),
+        migrations.CreateModel(
+            name='DistributorLabel',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('exclusive', models.BooleanField(default=False)),
+                ('countries', models.ManyToManyField(related_name='distribution_countries', to='l10n.Country')),
+                ('distributor', models.ForeignKey(to='alibrary.Distributor')),
+            ],
+            options={
+                'verbose_name': 'Labels in catalog',
+                'verbose_name_plural': 'Labels in catalog',
+            },
+        ),
+        migrations.CreateModel(
+            name='Label',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
+                ('updated', models.DateTimeField(auto_now=True, db_index=True)),
+                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)),
+                ('legacy_id', models.IntegerField(null=True, editable=False, blank=True)),
+                ('migrated', models.DateField(null=True, editable=False, blank=True)),
+                ('name', models.CharField(max_length=400)),
+                ('slug', django_extensions.db.fields.AutoSlugField(editable=False, populate_from='name', blank=True, overwrite=True)),
+                ('labelcode', models.CharField(max_length=250, null=True, blank=True)),
+                ('address', models.TextField(null=True, blank=True)),
+                ('email', models.EmailField(max_length=254, null=True, blank=True)),
+                ('phone', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, blank=True)),
+                ('fax', phonenumber_field.modelfields.PhoneNumberField(max_length=128, null=True, blank=True)),
+                ('main_image', models.ImageField(storage=alibrary.util.storage.OverwriteStorage(), upload_to=alibrary.models.labelmodels.upload_image_to, null=True, verbose_name='Logo Image', blank=True)),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('date_start', django_date_extensions.fields.ApproximateDateField(null=True, verbose_name='Life-span begin', blank=True)),
+                ('date_end', django_date_extensions.fields.ApproximateDateField(null=True, verbose_name='Life-span end', blank=True)),
+                ('listed', models.BooleanField(default=True, help_text='Should this Label be shown on the default Label-list?', verbose_name='Include in listings')),
+                ('disable_link', models.BooleanField(default=False, help_text='Disable Linking. Useful e.g. for "Unknown Label"', verbose_name='Disable Link')),
+                ('disable_editing', models.BooleanField(default=False, help_text='Disable Editing. Useful e.g. for "Unknown Label"', verbose_name='Disable Editing')),
+                ('type', models.CharField(default='unknown', max_length=128, verbose_name='Label type', choices=[(b'unknown', 'Unknown'), (b'major', 'Major Label'), (b'indy', 'Independent Label'), (b'net', 'Netlabel'), (b'event', 'Event Label')])),
+                ('d_tags', tagging.fields.TagField(max_length=1024, null=True, verbose_name='Tags', blank=True)),
+                ('ipi_code', models.CharField(max_length=32, null=True, verbose_name='IPI Code', blank=True)),
+                ('isni_code', models.CharField(max_length=32, null=True, verbose_name='ISNI Code', blank=True)),
+                ('country', models.ForeignKey(blank=True, to='l10n.Country', null=True)),
+                ('creator', models.ForeignKey(related_name='labels_creator', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('last_editor', models.ForeignKey(related_name='labels_last_editor', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('owner', models.ForeignKey(related_name='labels_owner', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('parent', models.ForeignKey(related_name='children', blank=True, to='alibrary.Label', null=True)),
+                ('publisher', models.ForeignKey(related_name='labels_publisher', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'ordering': ('name',),
+                'verbose_name': 'Label',
+                'verbose_name_plural': 'Labels',
+                'permissions': (('merge_label', 'Merge Labels'),),
+            },
+        ),
+        migrations.CreateModel(
+            name='License',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
+                ('updated', models.DateTimeField(auto_now=True, db_index=True)),
+                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)),
+                ('legacy_id', models.IntegerField(null=True, editable=False, blank=True)),
+                ('migrated', models.DateField(null=True, editable=False, blank=True)),
+                ('slug', models.SlugField(max_length=100)),
+                ('name', models.CharField(max_length=200)),
+                ('key', models.CharField(help_text='used e.g. for the icon-names', max_length=36, null=True, verbose_name='License key', blank=True)),
+                ('restricted', models.NullBooleanField()),
+                ('version', models.CharField(help_text='e.g. 2.5 CH', max_length=36, null=True, verbose_name='License version', blank=True)),
+                ('iconset', models.CharField(help_text='e.g. cc-by, cc-nc, cc-sa', max_length=36, null=True, verbose_name='Iconset', blank=True)),
+                ('link', models.URLField(null=True, blank=True)),
+                ('is_default', models.NullBooleanField(default=False)),
+                ('selectable', models.NullBooleanField(default=True)),
+                ('is_promotional', models.NullBooleanField(default=False)),
+                ('parent', models.ForeignKey(related_name='license_children', blank=True, to='alibrary.License', null=True)),
+            ],
+            options={
+                'ordering': ('parent__name', 'name'),
+                'verbose_name': 'License',
+                'verbose_name_plural': 'Licenses',
+            },
+        ),
+        migrations.CreateModel(
+            name='LicenseTranslation',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name_translated', models.CharField(max_length=200)),
+                ('excerpt', models.TextField(null=True, blank=True)),
+                ('license_text', models.TextField(null=True, blank=True)),
+                ('language_code', models.CharField(max_length=15, db_index=True)),
+                ('master', models.ForeignKey(related_name='translations', editable=False, to='alibrary.License')),
+            ],
+            options={
+                'managed': True,
+                'abstract': False,
+                'db_table': 'alibrary_license_translation',
+                'db_tablespace': '',
+                'default_permissions': (),
+            },
+        ),
+        migrations.CreateModel(
+            name='Media',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
+                ('updated', models.DateTimeField(auto_now=True, db_index=True)),
+                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)),
+                ('legacy_id', models.IntegerField(null=True, editable=False, blank=True)),
+                ('migrated', models.DateField(null=True, editable=False, blank=True)),
+                ('lock', models.PositiveIntegerField(default=0, editable=False)),
+                ('name', models.CharField(max_length=255, db_index=True)),
+                ('slug', django_extensions.db.fields.AutoSlugField(editable=False, populate_from='name', blank=True, overwrite=True)),
+                ('status', models.PositiveIntegerField(default=0, choices=[(0, 'Init'), (1, 'Ready'), (3, 'Working'), (4, 'File missing'), (5, 'File error'), (99, 'Error')])),
+                ('publish_date', models.DateTimeField(null=True, blank=True)),
+                ('tracknumber', models.PositiveIntegerField(blank=True, null=True, verbose_name='Track Number', choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10), (11, 11), (12, 12), (13, 13), (14, 14), (15, 15), (16, 16), (17, 17), (18, 18), (19, 19), (20, 20), (21, 21), (22, 22), (23, 23), (24, 24), (25, 25), (26, 26), (27, 27), (28, 28), (29, 29), (30, 30), (31, 31), (32, 32), (33, 33), (34, 34), (35, 35), (36, 36), (37, 37), (38, 38), (39, 39), (40, 40), (41, 41), (42, 42), (43, 43), (44, 44), (45, 45), (46, 46), (47, 47), (48, 48), (49, 49), (50, 50), (51, 51), (52, 52), (53, 53), (54, 54), (55, 55), (56, 56), (57, 57), (58, 58), (59, 59), (60, 60), (61, 61), (62, 62), (63, 63), (64, 64), (65, 65), (66, 66), (67, 67), (68, 68), (69, 69), (70, 70), (71, 71), (72, 72), (73, 73), (74, 74), (75, 75), (76, 76), (77, 77), (78, 78), (79, 79), (80, 80), (81, 81), (82, 82), (83, 83), (84, 84), (85, 85), (86, 86), (87, 87), (88, 88), (89, 89), (90, 90), (91, 91), (92, 92), (93, 93), (94, 94), (95, 95), (96, 96), (97, 97), (98, 98), (99, 99), (100, 100), (101, 101), (102, 102), (103, 103), (104, 104), (105, 105), (106, 106), (107, 107), (108, 108), (109, 109), (110, 110), (111, 111), (112, 112), (113, 113), (114, 114), (115, 115), (116, 116), (117, 117), (118, 118), (119, 119), (120, 120), (121, 121), (122, 122), (123, 123), (124, 124), (125, 125), (126, 126), (127, 127), (128, 128), (129, 129), (130, 130), (131, 131), (132, 132), (133, 133), (134, 134), (135, 135), (136, 136), (137, 137), (138, 138), (139, 139), (140, 140), (141, 141), (142, 142), (143, 143), (144, 144), (145, 145), (146, 146), (147, 147), (148, 148), (149, 149), (150, 150), (151, 151), (152, 152), (153, 153), (154, 154), (155, 155), (156, 156), (157, 157), (158, 158), (159, 159), (160, 160), (161, 161), (162, 162), (163, 163), (164, 164), (165, 165), (166, 166), (167, 167), (168, 168), (169, 169), (170, 170), (171, 171), (172, 172), (173, 173), (174, 174), (175, 175), (176, 176), (177, 177), (178, 178), (179, 179), (180, 180), (181, 181), (182, 182), (183, 183), (184, 184), (185, 185), (186, 186), (187, 187), (188, 188), (189, 189), (190, 190), (191, 191), (192, 192), (193, 193), (194, 194), (195, 195), (196, 196), (197, 197), (198, 198), (199, 199), (200, 200), (201, 201), (202, 202), (203, 203), (204, 204), (205, 205), (206, 206), (207, 207), (208, 208), (209, 209), (210, 210), (211, 211), (212, 212), (213, 213), (214, 214), (215, 215), (216, 216), (217, 217), (218, 218), (219, 219), (220, 220), (221, 221), (222, 222), (223, 223), (224, 224), (225, 225), (226, 226), (227, 227), (228, 228), (229, 229), (230, 230), (231, 231), (232, 232), (233, 233), (234, 234), (235, 235), (236, 236), (237, 237), (238, 238), (239, 239), (240, 240), (241, 241), (242, 242), (243, 243), (244, 244), (245, 245), (246, 246), (247, 247), (248, 248), (249, 249), (250, 250), (251, 251), (252, 252), (253, 253), (254, 254), (255, 255), (256, 256), (257, 257), (258, 258), (259, 259), (260, 260), (261, 261), (262, 262), (263, 263), (264, 264), (265, 265), (266, 266), (267, 267), (268, 268), (269, 269), (270, 270), (271, 271), (272, 272), (273, 273), (274, 274), (275, 275), (276, 276), (277, 277), (278, 278), (279, 279), (280, 280), (281, 281), (282, 282), (283, 283), (284, 284), (285, 285), (286, 286), (287, 287), (288, 288), (289, 289), (290, 290), (291, 291), (292, 292), (293, 293), (294, 294), (295, 295), (296, 296), (297, 297), (298, 298), (299, 299), (300, 300)])),
+                ('opus_number', models.CharField(max_length=200, null=True, blank=True)),
+                ('medianumber', models.PositiveIntegerField(blank=True, null=True, verbose_name='a.k.a. "Disc number', choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10), (11, 11), (12, 12), (13, 13), (14, 14), (15, 15), (16, 16), (17, 17), (18, 18), (19, 19), (20, 20), (21, 21), (22, 22), (23, 23), (24, 24), (25, 25), (26, 26), (27, 27), (28, 28), (29, 29), (30, 30), (31, 31), (32, 32), (33, 33), (34, 34), (35, 35), (36, 36), (37, 37), (38, 38), (39, 39), (40, 40), (41, 41), (42, 42), (43, 43), (44, 44), (45, 45), (46, 46), (47, 47), (48, 48), (49, 49), (50, 50)])),
+                ('mediatype', models.CharField(default='song', max_length=128, verbose_name='Type', choices=[('Single content recording', (('song', 'Song'), ('acappella', 'A cappella'), ('soundeffects', 'Sound effects'), ('soundtrack', 'Soundtrack'), ('spokenword', 'Spokenword'), ('interview', 'Interview'), ('jingle', 'Jingle'))), ('Multiple content recording', (('djmix', 'DJ-Mix'), ('concert', 'Concert'), ('liveact', 'Live Act (PA)'), ('radioshow', 'Radio show'))), ('other', 'Other'), (None, 'Unknown')])),
+                ('version', models.CharField(default='track', max_length=12, null=True, blank=True, choices=[('original', 'Original'), ('track', 'Track'), ('remix', 'Remix'), ('cover', 'Cover'), ('live', 'Live Version'), ('studio', 'Studio Version'), ('radio', 'Radio Version'), ('demo', 'Demo Version'), ('other', 'Other')])),
+                ('description', models.TextField(null=True, verbose_name='Extra Description / Tracklist', blank=True)),
+                ('lyrics', models.TextField(null=True, blank=True)),
+                ('lyrics_language', base.fields.languages.LanguageField(blank=True, max_length=5, null=True, choices=[(b'aa', 'Afar'), (b'ab', 'Abkhazian'), (b'af', 'Afrikaans'), (b'ak', 'Akan'), (b'sq', 'Albanian'), (b'am', 'Amharic'), (b'ar', 'Arabic'), (b'an', 'Aragonese'), (b'hy', 'Armenian'), (b'as', 'Assamese'), (b'av', 'Avaric'), (b'ae', 'Avestan'), (b'ay', 'Aymara'), (b'az', 'Azerbaijani'), (b'ba', 'Bashkir'), (b'bm', 'Bambara'), (b'eu', 'Basque'), (b'be', 'Belarusian'), (b'bn', 'Bengali'), (b'bh', 'Bihari languages'), (b'bi', 'Bislama'), (b'bo', 'Tibetan'), (b'bs', 'Bosnian'), (b'br', 'Breton'), (b'bg', 'Bulgarian'), (b'my', 'Burmese'), (b'ca', 'Catalan; Valencian'), (b'cs', 'Czech'), (b'ch', 'Chamorro'), (b'ce', 'Chechen'), (b'zh', 'Chinese'), (b'cu', 'Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic'), (b'cv', 'Chuvash'), (b'kw', 'Cornish'), (b'co', 'Corsican'), (b'cr', 'Cree'), (b'cy', 'Welsh'), (b'cs', 'Czech'), (b'da', 'Danish'), (b'dv', 'Divehi; Dhivehi; Maldivian'), (b'nl', 'Dutch; Flemish'), (b'dz', 'Dzongkha'), (b'el', 'Greek, Modern (1453-)'), (b'en', 'English'), (b'eo', 'Esperanto'), (b'et', 'Estonian'), (b'eu', 'Basque'), (b'ee', 'Ewe'), (b'fo', 'Faroese'), (b'fa', 'Persian'), (b'fj', 'Fijian'), (b'fi', 'Finnish'), (b'fr', 'French'), (b'fr', 'French'), (b'fy', 'Western Frisian'), (b'ff', 'Fulah'), (b'ka', 'Georgian'), (b'de', 'German'), (b'gd', 'Gaelic; Scottish Gaelic'), (b'ga', 'Irish'), (b'gl', 'Galician'), (b'gv', 'Manx'), (b'el', 'Greek, Modern (1453-)'), (b'gn', 'Guarani'), (b'gu', 'Gujarati'), (b'ht', 'Haitian; Haitian Creole'), (b'ha', 'Hausa'), (b'he', 'Hebrew'), (b'hz', 'Herero'), (b'hi', 'Hindi'), (b'ho', 'Hiri Motu'), (b'hr', 'Croatian'), (b'hu', 'Hungarian'), (b'hy', 'Armenian'), (b'ig', 'Igbo'), (b'is', 'Icelandic'), (b'io', 'Ido'), (b'ii', 'Sichuan Yi; Nuosu'), (b'iu', 'Inuktitut'), (b'ie', 'Interlingue; Occidental'), (b'ia', 'Interlingua (International Auxiliary Language Association)'), (b'id', 'Indonesian'), (b'ik', 'Inupiaq'), (b'is', 'Icelandic'), (b'it', 'Italian'), (b'jv', 'Javanese'), (b'ja', 'Japanese'), (b'kl', 'Kalaallisut; Greenlandic'), (b'kn', 'Kannada'), (b'ks', 'Kashmiri'), (b'ka', 'Georgian'), (b'kr', 'Kanuri'), (b'kk', 'Kazakh'), (b'km', 'Central Khmer'), (b'ki', 'Kikuyu; Gikuyu'), (b'rw', 'Kinyarwanda'), (b'ky', 'Kirghiz; Kyrgyz'), (b'kv', 'Komi'), (b'kg', 'Kongo'), (b'ko', 'Korean'), (b'kj', 'Kuanyama; Kwanyama'), (b'ku', 'Kurdish'), (b'lo', 'Lao'), (b'la', 'Latin'), (b'lv', 'Latvian'), (b'li', 'Limburgan; Limburger; Limburgish'), (b'ln', 'Lingala'), (b'lt', 'Lithuanian'), (b'lb', 'Luxembourgish; Letzeburgesch'), (b'lu', 'Luba-Katanga'), (b'lg', 'Ganda'), (b'mk', 'Macedonian'), (b'mh', 'Marshallese'), (b'ml', 'Malayalam'), (b'mi', 'Maori'), (b'mr', 'Marathi'), (b'ms', 'Malay'), (b'mk', 'Macedonian'), (b'mg', 'Malagasy'), (b'mt', 'Maltese'), (b'mn', 'Mongolian'), (b'mi', 'Maori'), (b'ms', 'Malay'), (b'my', 'Burmese'), (b'na', 'Nauru'), (b'nv', 'Navajo; Navaho'), (b'nr', 'Ndebele, South; South Ndebele'), (b'nd', 'Ndebele, North; North Ndebele'), (b'ng', 'Ndonga'), (b'ne', 'Nepali'), (b'nl', 'Dutch; Flemish'), (b'nn', 'Norwegian Nynorsk; Nynorsk, Norwegian'), (b'nb', 'Bokmal, Norwegian; Norwegian Bokmal'), (b'no', 'Norwegian'), (b'ny', 'Chichewa; Chewa; Nyanja'), (b'oc', 'Occitan (post 1500)'), (b'oj', 'Ojibwa'), (b'or', 'Oriya'), (b'om', 'Oromo'), (b'os', 'Ossetian; Ossetic'), (b'pa', 'Panjabi; Punjabi'), (b'fa', 'Persian'), (b'pi', 'Pali'), (b'pl', 'Polish'), (b'pt', 'Portuguese'), (b'ps', 'Pushto; Pashto'), (b'qu', 'Quechua'), (b'rm', 'Romansh'), (b'ro', 'Romanian; Moldavian; Moldovan'), (b'ro', 'Romanian; Moldavian; Moldovan'), (b'rn', 'Rundi'), (b'ru', 'Russian'), (b'sg', 'Sango'), (b'sa', 'Sanskrit'), (b'si', 'Sinhala; Sinhalese'), (b'sk', 'Slovak'), (b'sk', 'Slovak'), (b'sl', 'Slovenian'), (b'se', 'Northern Sami'), (b'sm', 'Samoan'), (b'sn', 'Shona'), (b'sd', 'Sindhi'), (b'so', 'Somali'), (b'st', 'Sotho, Southern'), (b'es', 'Spanish; Castilian'), (b'sq', 'Albanian'), (b'sc', 'Sardinian'), (b'sr', 'Serbian'), (b'ss', 'Swati'), (b'su', 'Sundanese'), (b'sw', 'Swahili'), (b'sv', 'Swedish'), (b'de-ch', 'Swiss German'), (b'ty', 'Tahitian'), (b'ta', 'Tamil'), (b'tt', 'Tatar'), (b'te', 'Telugu'), (b'tg', 'Tajik'), (b'tl', 'Tagalog'), (b'th', 'Thai'), (b'bo', 'Tibetan'), (b'ti', 'Tigrinya'), (b'to', 'Tonga (Tonga Islands)'), (b'tn', 'Tswana'), (b'ts', 'Tsonga'), (b'tk', 'Turkmen'), (b'tr', 'Turkish'), (b'tw', 'Twi'), (b'ug', 'Uighur; Uyghur'), (b'uk', 'Ukrainian'), (b'ur', 'Urdu'), (b'uz', 'Uzbek'), (b've', 'Venda'), (b'vi', 'Vietnamese'), (b'vo', 'Volapuk'), (b'cy', 'Welsh'), (b'wa', 'Walloon'), (b'wo', 'Wolof'), (b'xh', 'Xhosa'), (b'yi', 'Yiddish'), (b'yo', 'Yoruba'), (b'za', 'Zhuang; Chuang'), (b'zh', 'Chinese'), (b'zu', 'Zulu')])),
+                ('duration', models.PositiveIntegerField(verbose_name='Duration (in ms)', null=True, editable=False, blank=True)),
+                ('isrc', models.CharField(max_length=12, null=True, verbose_name='ISRC', blank=True)),
+                ('d_tags', tagging.fields.TagField(max_length=1024, null=True, verbose_name='Tags', blank=True)),
+                ('filename', models.CharField(max_length=256, null=True, verbose_name='Filename', blank=True)),
+                ('original_filename', models.CharField(max_length=256, null=True, verbose_name='Original filename', blank=True)),
+                ('folder', models.CharField(max_length=1024, null=True, editable=False, blank=True)),
+                ('master', models.FileField(max_length=1024, null=True, upload_to=alibrary.models.mediamodels.upload_master_to, blank=True)),
+                ('master_sha1', models.CharField(db_index=True, max_length=64, null=True, blank=True)),
+                ('master_encoding', models.CharField(max_length=16, null=True, blank=True)),
+                ('master_bitrate', models.PositiveIntegerField(null=True, verbose_name='Bitrate', blank=True)),
+                ('master_filesize', models.PositiveIntegerField(null=True, verbose_name='Filesize', blank=True)),
+                ('master_samplerate', models.PositiveIntegerField(null=True, verbose_name='Samplerate', blank=True)),
+                ('master_duration', models.FloatField(null=True, verbose_name='Duration', blank=True)),
+                ('tempo', models.FloatField(null=True, blank=True)),
+                ('fprint_ingested', models.DateTimeField(null=True, blank=True)),
+                ('artist', models.ForeignKey(related_name='media_artist', blank=True, to='alibrary.Artist', null=True)),
+                ('creator', models.ForeignKey(related_name='created_media', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+            ],
+            options={
+                'ordering': ('medianumber', 'tracknumber', 'name'),
+                'verbose_name': 'Track',
+                'verbose_name_plural': 'Tracks',
+                'permissions': (('play_media', 'Play Track'), ('downoad_media', 'Download Track'), ('merge_media', 'Merge Tracks'), ('reassign_media', 'Re-assign Tracks'), ('admin_media', 'Edit Track (extended)'), ('upload_media', 'Upload Track')),
+            },
+        ),
+        migrations.CreateModel(
+            name='MediaArtists',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('join_phrase', models.CharField(default=None, choices=[(b'&', '&'), (b',', ','), (b'and', 'and'), (b'feat', 'feat.'), (b'feat.', 'feat.'), (b'presents', 'presents'), (b'meets', 'meets'), (b'with', 'with'), (b'vs', 'vs.'), (b'-', '-')], max_length=12, blank=True, null=True, verbose_name='join phrase')),
+                ('position', models.PositiveIntegerField(null=True, blank=True)),
+                ('artist', models.ForeignKey(related_name='artist_mediaartist', to='alibrary.Artist')),
+                ('media', models.ForeignKey(related_name='media_mediaartist', to='alibrary.Media')),
+            ],
+            options={
+                'ordering': ('position',),
+                'verbose_name': 'Artist (title credited)',
+                'verbose_name_plural': 'Artists (title credited)',
+            },
+        ),
+        migrations.CreateModel(
+            name='MediaExtraartists',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('artist', models.ForeignKey(related_name='extraartist_artist', blank=True, to='alibrary.Artist', null=True)),
+                ('media', models.ForeignKey(related_name='extraartist_media', blank=True, to='alibrary.Media', null=True)),
+            ],
+            options={
+                'ordering': ('artist__name', 'profession__name'),
+            },
+        ),
+        migrations.CreateModel(
+            name='NameVariation',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=250, db_index=True)),
+                ('artist', models.ForeignKey(related_name='namevariations', blank=True, to='alibrary.Artist', null=True)),
+            ],
+            options={
+                'ordering': ('name',),
+                'verbose_name': 'Name variation',
+                'verbose_name_plural': 'Name variation',
+            },
+        ),
+        migrations.CreateModel(
+            name='Playlist',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
+                ('updated', models.DateTimeField(auto_now=True, db_index=True)),
+                ('legacy_id', models.IntegerField(null=True, editable=False, blank=True)),
+                ('migrated', models.DateField(null=True, editable=False, blank=True)),
+                ('name', models.CharField(max_length=200)),
+                ('slug', django_extensions.db.fields.AutoSlugField(editable=False, populate_from='name', blank=True, overwrite=True)),
+                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False)),
+                ('status', models.PositiveIntegerField(default=0, choices=[(0, 'Init'), (1, 'Ready'), (2, 'In progress'), (3, 'Scheduled'), (4, 'Descheduled'), (99, 'Error'), (11, 'Other')])),
+                ('type', models.CharField(default='basket', max_length=12, null=True, choices=[('basket', 'Private Playlist'), ('playlist', 'Public Playlist'), ('broadcast', 'Broadcast'), ('other', 'Other')])),
+                ('broadcast_status', models.PositiveIntegerField(default=0, choices=[(0, 'Undefined'), (1, 'OK'), (2, 'Warning'), (99, 'Error')])),
+                ('broadcast_status_messages', django_extensions.db.fields.json.JSONField(default=None, null=True, blank=True)),
+                ('playout_mode_random', models.BooleanField(default=False, help_text='If enabled the order of the tracks will be randomized for playout', verbose_name='Shuffle Playlist')),
+                ('rotation', models.BooleanField(default=True)),
+                ('rotation_date_start', models.DateField(null=True, verbose_name='Rotate from', blank=True)),
+                ('rotation_date_end', models.DateField(null=True, verbose_name='Rotate until', blank=True)),
+                ('main_image', models.ImageField(storage=alibrary.util.storage.OverwriteStorage(), upload_to=alibrary.models.playlistmodels.upload_image_to, null=True, verbose_name='Image', blank=True)),
+                ('d_tags', tagging.fields.TagField(max_length=1024, null=True, verbose_name='Tags', blank=True)),
+                ('duration', models.IntegerField(default=0, null=True)),
+                ('target_duration', models.PositiveIntegerField(default=0, null=True, choices=[(900, b'15'), (1800, b'30'), (2700, b'45'), (3600, b'60'), (4500, b'75'), (5400, b'90'), (6300, b'105'), (7200, b'120'), (8100, b'135'), (9000, b'150'), (9900, b'165'), (10800, b'180'), (11700, b'195'), (12600, b'210'), (13500, b'225'), (14400, b'240')])),
+                ('series_number', models.PositiveIntegerField(null=True, blank=True)),
+                ('is_current', models.BooleanField(default=False, verbose_name='Currently selected?')),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('mixdown_file', models.FileField(null=True, upload_to=alibrary.models.playlistmodels.upload_mixdown_to, blank=True)),
+                ('dayparts', models.ManyToManyField(related_name='daypart_plalists', to='alibrary.Daypart', blank=True)),
+            ],
+            options={
+                'ordering': ('-updated',),
+                'verbose_name': 'Playlist',
+                'verbose_name_plural': 'Playlists',
+                'permissions': (('view_playlist', 'View Playlist'), ('edit_playlist', 'Edit Playlist'), ('schedule_playlist', 'Schedule Playlist'), ('admin_playlist', 'Edit Playlist (extended)')),
+            },
+        ),
+        migrations.CreateModel(
+            name='PlaylistItem',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False)),
+                ('object_id', models.PositiveIntegerField()),
+                ('content_type', models.ForeignKey(to='contenttypes.ContentType')),
+            ],
+            options={
+                'verbose_name': 'Playlist Item',
+                'verbose_name_plural': 'Playlist Items',
+            },
+        ),
+        migrations.CreateModel(
+            name='PlaylistItemPlaylist',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
+                ('updated', models.DateTimeField(auto_now=True, db_index=True)),
+                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False)),
+                ('position', models.PositiveIntegerField(default=0)),
+                ('cue_in', models.PositiveIntegerField(default=0)),
+                ('cue_out', models.PositiveIntegerField(default=0)),
+                ('fade_in', models.PositiveIntegerField(default=0)),
+                ('fade_out', models.PositiveIntegerField(default=0)),
+                ('fade_cross', models.PositiveIntegerField(default=0)),
+                ('item', models.ForeignKey(related_name='playlist_items', to='alibrary.PlaylistItem')),
+                ('playlist', models.ForeignKey(related_name='playlist_items', to='alibrary.Playlist')),
+            ],
+            options={
+                'ordering': ('position',),
+            },
+        ),
+        migrations.CreateModel(
+            name='Profession',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=200)),
+                ('in_listing', models.BooleanField(default=True, verbose_name='Include in listings')),
+                ('excerpt', models.TextField(null=True, blank=True)),
+            ],
+            options={
+                'ordering': ('name',),
+                'verbose_name': 'Role/Profession',
+                'verbose_name_plural': 'Roles/Profession',
+            },
+        ),
+        migrations.CreateModel(
+            name='Relation',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
+                ('updated', models.DateTimeField(auto_now=True, db_index=True)),
+                ('service', models.CharField(default='generic', choices=[('', 'Not specified'), ('generic', 'Generic'), ('facebook', 'Facebook'), ('youtube', 'YouTube'), ('discogs', 'Discogs'), ('lastfm', 'Last.fm'), ('linkedin', 'Linked In'), ('soundcloud', 'Soundcloud'), ('twitter', 'Twitter'), ('discogs_master', 'Discogs | master-release'), ('wikipedia', 'Wikipedia'), ('musicbrainz', 'Musicbrainz'), ('bandcamp', 'Bandcamp'), ('itunes', 'iTunes'), ('imdb', 'IMDb'), ('wikidata', 'wikidata'), ('viaf', 'VIAF'), ('official', 'Official website'), ('vimeo', 'Vimeo'), ('instagram', 'Instagram')], max_length=50, blank=True, null=True, db_index=True)),
+                ('action', models.CharField(default='information', max_length=50, choices=[('information', 'Information'), ('buy', 'Buy')])),
+                ('name', models.CharField(help_text='Additionally override the name.', max_length=200, null=True, blank=True)),
+                ('url', models.URLField(max_length=512)),
+                ('object_id', models.PositiveIntegerField(db_index=True)),
+                ('content_type', models.ForeignKey(to='contenttypes.ContentType')),
+            ],
+            options={
+                'ordering': ('url',),
+                'verbose_name': 'Relation',
+                'verbose_name_plural': 'Relations',
+            },
+        ),
+        migrations.CreateModel(
+            name='Release',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
+                ('updated', models.DateTimeField(auto_now=True, db_index=True)),
+                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)),
+                ('legacy_id', models.IntegerField(null=True, editable=False, blank=True)),
+                ('migrated', models.DateField(null=True, editable=False, blank=True)),
+                ('name', models.CharField(max_length=200, db_index=True)),
+                ('slug', django_extensions.db.fields.AutoSlugField(editable=False, populate_from='name', blank=True, overwrite=True)),
+                ('main_image', models.ImageField(storage=alibrary.util.storage.OverwriteStorage(), upload_to=alibrary.models.releasemodels.upload_cover_to, null=True, verbose_name='Cover', blank=True)),
+                ('catalognumber', models.CharField(max_length=50, null=True, blank=True)),
+                ('releasedate', models.DateField(null=True, blank=True)),
+                ('releasedate_approx', django_date_extensions.fields.ApproximateDateField(null=True, verbose_name='Releasedate', blank=True)),
+                ('pressings', models.PositiveIntegerField(default=0)),
+                ('totaltracks', models.IntegerField(blank=True, null=True, verbose_name='Total Tracks', choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6), (7, 7), (8, 8), (9, 9), (10, 10), (11, 11), (12, 12), (13, 13), (14, 14), (15, 15), (16, 16), (17, 17), (18, 18), (19, 19), (20, 20), (21, 21), (22, 22), (23, 23), (24, 24), (25, 25), (26, 26), (27, 27), (28, 28), (29, 29), (30, 30), (31, 31), (32, 32), (33, 33), (34, 34), (35, 35), (36, 36), (37, 37), (38, 38), (39, 39), (40, 40), (41, 41), (42, 42), (43, 43), (44, 44), (45, 45), (46, 46), (47, 47), (48, 48), (49, 49), (50, 50), (51, 51), (52, 52), (53, 53), (54, 54), (55, 55), (56, 56), (57, 57), (58, 58), (59, 59), (60, 60), (61, 61), (62, 62), (63, 63), (64, 64), (65, 65), (66, 66), (67, 67), (68, 68), (69, 69), (70, 70), (71, 71), (72, 72), (73, 73), (74, 74), (75, 75), (76, 76), (77, 77), (78, 78), (79, 79), (80, 80), (81, 81), (82, 82), (83, 83), (84, 84), (85, 85), (86, 86), (87, 87), (88, 88), (89, 89), (90, 90), (91, 91), (92, 92), (93, 93), (94, 94), (95, 95), (96, 96), (97, 97), (98, 98), (99, 99), (100, 100), (101, 101), (102, 102), (103, 103), (104, 104), (105, 105), (106, 106), (107, 107), (108, 108), (109, 109), (110, 110), (111, 111), (112, 112), (113, 113), (114, 114), (115, 115), (116, 116), (117, 117), (118, 118), (119, 119), (120, 120), (121, 121), (122, 122), (123, 123), (124, 124), (125, 125), (126, 126), (127, 127), (128, 128), (129, 129), (130, 130), (131, 131), (132, 132), (133, 133), (134, 134), (135, 135), (136, 136), (137, 137), (138, 138), (139, 139), (140, 140), (141, 141), (142, 142), (143, 143), (144, 144), (145, 145), (146, 146), (147, 147), (148, 148), (149, 149), (150, 150), (151, 151), (152, 152), (153, 153), (154, 154), (155, 155), (156, 156), (157, 157), (158, 158), (159, 159), (160, 160), (161, 161), (162, 162), (163, 163), (164, 164), (165, 165), (166, 166), (167, 167), (168, 168), (169, 169), (170, 170), (171, 171), (172, 172), (173, 173), (174, 174), (175, 175), (176, 176), (177, 177), (178, 178), (179, 179), (180, 180), (181, 181), (182, 182), (183, 183), (184, 184), (185, 185), (186, 186), (187, 187), (188, 188), (189, 189), (190, 190), (191, 191), (192, 192), (193, 193), (194, 194), (195, 195), (196, 196), (197, 197), (198, 198), (199, 199), (200, 200), (201, 201), (202, 202), (203, 203), (204, 204), (205, 205), (206, 206), (207, 207), (208, 208), (209, 209), (210, 210), (211, 211), (212, 212), (213, 213), (214, 214), (215, 215), (216, 216), (217, 217), (218, 218), (219, 219), (220, 220), (221, 221), (222, 222), (223, 223), (224, 224), (225, 225), (226, 226), (227, 227), (228, 228), (229, 229), (230, 230), (231, 231), (232, 232), (233, 233), (234, 234), (235, 235), (236, 236), (237, 237), (238, 238), (239, 239), (240, 240), (241, 241), (242, 242), (243, 243), (244, 244), (245, 245), (246, 246), (247, 247), (248, 248), (249, 249), (250, 250), (251, 251), (252, 252), (253, 253), (254, 254), (255, 255), (256, 256), (257, 257), (258, 258), (259, 259), (260, 260), (261, 261), (262, 262), (263, 263), (264, 264), (265, 265), (266, 266), (267, 267), (268, 268), (269, 269), (270, 270), (271, 271), (272, 272), (273, 273), (274, 274), (275, 275), (276, 276), (277, 277), (278, 278), (279, 279), (280, 280), (281, 281), (282, 282), (283, 283), (284, 284), (285, 285), (286, 286), (287, 287), (288, 288), (289, 289), (290, 290), (291, 291), (292, 292), (293, 293), (294, 294), (295, 295), (296, 296), (297, 297), (298, 298), (299, 299), (300, 300)])),
+                ('asin', models.CharField(max_length=150, blank=True)),
+                ('releasestatus', models.CharField(blank=True, max_length=60, choices=[(None, 'Not set'), ('official', 'Official'), ('promo', 'Promo'), ('bootleg', 'Bootleg'), ('other', 'Other')])),
+                ('excerpt', models.TextField(null=True, blank=True)),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
+                ('releasetype', models.CharField(blank=True, max_length=24, null=True, verbose_name='Release type', choices=[('General', ((b'album', 'Album'), (b'single', 'Single'), (b'ep', 'EP'), (b'compilation', 'Compilation'), (b'soundtrack', 'Soundtrack'), (b'audiobook', 'Audiobook'), (b'spokenword', 'Spokenword'), (b'interview', 'Interview'), (b'jingle', 'Jingle'), (b'live', 'Live'), (b'remix', 'Remix'), (b'broadcast', 'Broadcast'), (b'djmix', 'DJ-Mix'), (b'mixtape', 'Mixtape'))), (b'other', 'Other')])),
+                ('barcode', models.CharField(max_length=32, null=True, blank=True)),
+                ('d_tags', tagging.fields.TagField(max_length=1024, null=True, verbose_name='Tags', blank=True)),
+            ],
+            options={
+                'ordering': ('-created',),
+                'verbose_name': 'Release',
+                'verbose_name_plural': 'Releases',
+                'permissions': (('view_release', 'View Release'), ('edit_release', 'Edit Release'), ('merge_release', 'Merge Releases'), ('admin_release', 'Edit Release (extended)')),
+            },
+        ),
+        migrations.CreateModel(
+            name='ReleaseAlbumartists',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('join_phrase', models.CharField(default=None, choices=[(b'&', '&'), (b',', ','), (b'and', 'and'), (b'feat', 'feat.'), (b'feat.', 'feat.'), (b'presents', 'presents'), (b'meets', 'meets'), (b'with', 'with'), (b'vs', 'vs.'), (b'-', '-')], max_length=12, blank=True, null=True, verbose_name='join phrase')),
+                ('position', models.PositiveIntegerField(null=True, blank=True)),
+                ('artist', models.ForeignKey(related_name='release_albumartist_artist', to='alibrary.Artist')),
+                ('release', models.ForeignKey(related_name='release_albumartist_release', to='alibrary.Release')),
+            ],
+            options={
+                'ordering': ('position',),
+                'verbose_name': 'Albumartist',
+                'verbose_name_plural': 'Albumartists',
+            },
+        ),
+        migrations.CreateModel(
+            name='ReleaseExtraartists',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('artist', models.ForeignKey(related_name='release_extraartist_artist', to='alibrary.Artist')),
+                ('profession', models.ForeignKey(related_name='release_extraartist_profession', verbose_name='Role/Profession', blank=True, to='alibrary.Profession', null=True)),
+                ('release', models.ForeignKey(related_name='release_extraartist_release', to='alibrary.Release')),
+            ],
+            options={
+                'verbose_name': 'Role',
+                'verbose_name_plural': 'Roles',
+            },
+        ),
+        migrations.CreateModel(
+            name='ReleaseMedia',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('position', models.PositiveIntegerField(null=True, blank=True)),
+                ('media', models.ForeignKey(to='alibrary.Media')),
+                ('release', models.ForeignKey(to='alibrary.Release')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ReleaseRelations',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('relation', models.ForeignKey(related_name='release_relation_relation', to='alibrary.Relation')),
+                ('release', models.ForeignKey(related_name='release_relation_release', to='alibrary.Release')),
+            ],
+            options={
+                'verbose_name': 'Relation',
+                'verbose_name_plural': 'Relations',
+            },
+        ),
+        migrations.CreateModel(
+            name='Season',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=200)),
+                ('date_start', models.DateField(null=True, blank=True)),
+                ('date_end', models.DateField(null=True, blank=True)),
+            ],
+            options={
+                'ordering': ('-name',),
+                'verbose_name': 'Season',
+                'verbose_name_plural': 'Seasons',
+            },
+        ),
+        migrations.CreateModel(
+            name='Series',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=200)),
+                ('slug', django_extensions.db.fields.AutoSlugField(editable=False, populate_from='name', blank=True, overwrite=True)),
+                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False)),
+                ('description', base.fields.extra.MarkdownTextField(null=True, blank=True)),
+            ],
+            options={
+                'ordering': ('-name',),
+                'verbose_name': 'Series',
+                'verbose_name_plural': 'Series',
+            },
+        ),
+        migrations.CreateModel(
+            name='Weather',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=200)),
+            ],
+            options={
+                'ordering': ('-name',),
+                'verbose_name': 'Weather',
+                'verbose_name_plural': 'Weather',
+            },
+        ),
+        migrations.AddField(
+            model_name='release',
+            name='album_artists',
+            field=models.ManyToManyField(related_name='release_albumartists', through='alibrary.ReleaseAlbumartists', to='alibrary.Artist', blank=True),
+        ),
+        migrations.AddField(
+            model_name='release',
+            name='creator',
+            field=models.ForeignKey(related_name='releases_creator', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='release',
+            name='extra_artists',
+            field=models.ManyToManyField(to='alibrary.Artist', through='alibrary.ReleaseExtraartists', blank=True),
+        ),
+        migrations.AddField(
+            model_name='release',
+            name='label',
+            field=models.ForeignKey(related_name='release_label', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='alibrary.Label', null=True),
+        ),
+        migrations.AddField(
+            model_name='release',
+            name='last_editor',
+            field=models.ForeignKey(related_name='releases_last_editor', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='release',
+            name='license',
+            field=models.ForeignKey(related_name='release_license', blank=True, to='alibrary.License', null=True),
+        ),
+        migrations.AddField(
+            model_name='release',
+            name='media',
+            field=models.ManyToManyField(related_name='releases', through='alibrary.ReleaseMedia', to='alibrary.Media', blank=True),
+        ),
+        migrations.AddField(
+            model_name='release',
+            name='owner',
+            field=models.ForeignKey(related_name='releases_owner', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='release',
+            name='publisher',
+            field=models.ForeignKey(related_name='releases_publisher', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='release',
+            name='release_country',
+            field=models.ForeignKey(blank=True, to='l10n.Country', null=True),
+        ),
+        migrations.AddField(
+            model_name='playlist',
+            name='items',
+            field=models.ManyToManyField(to='alibrary.PlaylistItem', through='alibrary.PlaylistItemPlaylist', blank=True),
+        ),
+        migrations.AddField(
+            model_name='playlist',
+            name='seasons',
+            field=models.ManyToManyField(related_name='season_plalists', to='alibrary.Season', blank=True),
+        ),
+        migrations.AddField(
+            model_name='playlist',
+            name='series',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.SET_NULL, blank=True, to='alibrary.Series', null=True),
+        ),
+        migrations.AddField(
+            model_name='playlist',
+            name='user',
+            field=models.ForeignKey(related_name='playlists', default=None, blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='playlist',
+            name='weather',
+            field=models.ManyToManyField(related_name='weather_plalists', to='alibrary.Weather', blank=True),
+        ),
+        migrations.AddField(
+            model_name='mediaextraartists',
+            name='profession',
+            field=models.ForeignKey(related_name='media_extraartist_profession', verbose_name='Role/Profession', blank=True, to='alibrary.Profession', null=True),
+        ),
+        migrations.AddField(
+            model_name='media',
+            name='extra_artists',
+            field=models.ManyToManyField(to='alibrary.Artist', through='alibrary.MediaExtraartists', blank=True),
+        ),
+        migrations.AddField(
+            model_name='media',
+            name='last_editor',
+            field=models.ForeignKey(related_name='media_last_editor', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='media',
+            name='license',
+            field=models.ForeignKey(related_name='media_license', on_delete=django.db.models.deletion.PROTECT, blank=True, to='alibrary.License', null=True),
+        ),
+        migrations.AddField(
+            model_name='media',
+            name='media_artists',
+            field=models.ManyToManyField(related_name='credited', through='alibrary.MediaArtists', to='alibrary.Artist', blank=True),
+        ),
+        migrations.AddField(
+            model_name='media',
+            name='owner',
+            field=models.ForeignKey(related_name='media_owner', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='media',
+            name='publisher',
+            field=models.ForeignKey(related_name='media_publisher', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='media',
+            name='release',
+            field=models.ForeignKey(related_name='media_release', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='alibrary.Release', null=True),
+        ),
+        migrations.AddField(
+            model_name='distributorlabel',
+            name='label',
+            field=models.ForeignKey(to='alibrary.Label'),
+        ),
+        migrations.AddField(
+            model_name='distributor',
+            name='labels',
+            field=models.ManyToManyField(related_name='distributors', through='alibrary.DistributorLabel', to='alibrary.Label', blank=True),
+        ),
+        migrations.AddField(
+            model_name='distributor',
+            name='parent',
+            field=models.ForeignKey(related_name='children', blank=True, to='alibrary.Distributor', null=True),
+        ),
+        migrations.AddField(
+            model_name='artistprofessions',
+            name='profession',
+            field=models.ForeignKey(to='alibrary.Profession'),
+        ),
+        migrations.AddField(
+            model_name='artistmembership',
+            name='profession',
+            field=models.ForeignKey(related_name='artist_membership_profession', blank=True, to='alibrary.Profession', null=True),
+        ),
+        migrations.AddField(
+            model_name='artist',
+            name='aliases',
+            field=models.ManyToManyField(related_name='artist_aliases', through='alibrary.ArtistAlias', to='alibrary.Artist', blank=True),
+        ),
+        migrations.AddField(
+            model_name='artist',
+            name='country',
+            field=models.ForeignKey(blank=True, to='l10n.Country', null=True),
+        ),
+        migrations.AddField(
+            model_name='artist',
+            name='creator',
+            field=models.ForeignKey(related_name='artists_creator', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='artist',
+            name='last_editor',
+            field=models.ForeignKey(related_name='artists_last_editor', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='artist',
+            name='members',
+            field=models.ManyToManyField(to='alibrary.Artist', through='alibrary.ArtistMembership'),
+        ),
+        migrations.AddField(
+            model_name='artist',
+            name='owner',
+            field=models.ForeignKey(related_name='artists_owner', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AddField(
+            model_name='artist',
+            name='professions',
+            field=models.ManyToManyField(to='alibrary.Profession', through='alibrary.ArtistProfessions'),
+        ),
+        migrations.AddField(
+            model_name='artist',
+            name='publisher',
+            field=models.ForeignKey(related_name='artists_publisher', on_delete=django.db.models.deletion.SET_NULL, blank=True, to=settings.AUTH_USER_MODEL, null=True),
+        ),
+        migrations.AlterUniqueTogether(
+            name='licensetranslation',
+            unique_together=set([('language_code', 'master')]),
+        ),
+    ]
