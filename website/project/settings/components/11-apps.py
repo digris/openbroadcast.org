@@ -87,8 +87,6 @@ INSTALLED_APPS = [
     'dajax',
     'email_obfuscator',
 
-    #'stepguide',
-
     # users / auth
     'avatar',
     'registration',
