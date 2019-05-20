@@ -1,5 +1,5 @@
 Django==1.9.13
-django-mptt==0.8.7.9
+django-mptt==0.8.7
 django-filter==1.1.0
 
 # cms upgrade steps

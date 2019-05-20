@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'missing', # http://django-missing.readthedocs.org/
     'raven.contrib.django.raven_compat',
     # 'raven.contrib.django.celery',
-    # 'djcelery_email',
+    'djcelery_email',
     'el_pagination',
 
 
