@@ -441,3 +441,12 @@ GRAVATAR_DEFAULT_IMAGE = 'identicon'
 
 
 EL_PAGINATION_PER_PAGE = 12
+
+
+DATE_EXTENSIONS_DATE_INPUT_FORMATS = (
+    '%Y-%m-%d', '%d/%m/%Y','%d.%m.%Y', '%d/%m/%y', # '2006-10-25', '25/10/2006', '13/11/2020'
+    '%b %d %Y', '%b %d, %Y',            # 'Oct 25 2006', 'Oct 25, 2006'
+    '%d %b %Y', '%d %b, %Y',            # '25 Oct 2006', '25 Oct, 2006'
+    '%B %d %Y', '%B %d, %Y',            # 'October 25 2006', 'October 25, 2006'
+    '%d %B %Y', '%d %B, %Y',            # '25 October 2006', '25 October, 2006'
+)
