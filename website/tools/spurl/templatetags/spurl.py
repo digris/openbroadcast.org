@@ -13,7 +13,7 @@ from django.template import Template, Library, Node, TemplateSyntaxError
 register = Library()
 
 TRUE_RE = re.compile(r'^(true|on)$', flags=re.IGNORECASE)
-
+TEMPLATE_DEBUG = getattr(settings, 'TEMPLATE_DEBUG', False)
 
 def convert_to_boolean(string_or_boolean):
     if isinstance(string_or_boolean, bool):
@@ -324,7 +324,7 @@ class SpurlURLBuilder(object):
         that takes into account the tags and filter of the parser
         that rendered the parent template"""
 
-        if settings.TEMPLATE_DEBUG:
+        if TEMPLATE_DEBUG:
             from django.template.debug import DebugLexer, DebugParser
             lexer_class, parser_class = DebugLexer, DebugParser
         else:
@@ -351,7 +351,7 @@ class SpurlURLBuilder(object):
         self.context.autoescape = False
 
         template = Template('')
-        if settings.TEMPLATE_DEBUG:
+        if TEMPLATE_DEBUG:
             origin = StringOrigin(template_string)
         else:
             origin = None
