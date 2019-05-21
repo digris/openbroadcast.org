@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'l10n',
     'adv_cache_tag',
     'cacheops',
-    'django_badbrowser',
     'genericadmin',
     'hvad',
     'spurl',
@@ -87,7 +86,7 @@ INSTALLED_APPS = [
     'email_obfuscator',
 
     # users / auth
-    'avatar',
+    # 'avatar',
     'registration',
     'social_auth',
     'captcha',
@@ -150,16 +149,9 @@ INSTALLED_APPS = [
 ################################################################################
 # app specific settings
 ################################################################################
-
-
-
 PAGINATION_SETTINGS = {
     'PAGE_RANGE_DISPLAYED': 6,
     'MARGIN_PAGES_DISPLAYED': 3,
-}
-
-FORMATS_MEDIA = {
-    'mp3': ['base', ],
 }
 
 FILE_UPLOAD_HANDLERS = (
@@ -175,7 +167,6 @@ THUMBNAIL_PROCESSORS = (
 THUMBNAIL_QUALITY = 80
 THUMBNAIL_BASEDIR = 'thumbnails'
 THUMBNAIL_PRESERVE_EXTENSIONS = ('png',)
-
 THUMBNAIL_ALIASES = {
     '': {
         'thumbnail_240': {
@@ -186,12 +177,6 @@ THUMBNAIL_ALIASES = {
         },
     },
 }
-
-
-
-BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'em', 'strong', 'a']
-BLEACH_STRIP_TAGS = True
-
 ################################################################################
 # accounts / user handling
 ################################################################################
@@ -289,13 +274,10 @@ POSTMAN_SHOW_USER_AS = 'get_full_name'
 
 
 
-# other...
-PRETTIFY = True
 
-
-"""
-wikisyntax, eg allows tor resolve [a:Artists Name] to object
-"""
+################################################################################
+# wikisyntax, eg allows tor resolve [a:Artists Name] to object
+################################################################################
 WIKISYNTAX = (
     ('r', 'alibrary.util.object_linker.WikiRelease'),
     ('a', 'alibrary.util.object_linker.WikiArtist'),
@@ -307,17 +289,6 @@ WIKISYNTAX_DISABLE_CACHE = False
 sendfile
 """
 SENDFILE_BACKEND = 'sendfile.backends.simple'
-
-BADBROWSER_REQUIREMENTS = (
-    ("firefox", "3.0"),
-    ("chrome", "10.0"),
-    ("microsoft internet explorer", "8"),
-    ("opera", None), # None indicates no support for the given browser, whatever the version
-)
-BADBROWSER_SUGGEST = ("firefox", "chrome", "safari", "opera", "microsoft internet explorer")
-#BADBROWSER_BASE_TEMPLATE = "base.html"
-
-
 
 
 ACTSTREAM_SETTINGS = {
@@ -335,26 +306,6 @@ ACTSTREAM_SETTINGS = {
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': True,
     'GFK_FETCH_DEPTH': 1,
-}
-
-"""
-stream - defaults to: mp3, highest available bitrate.
-would theoretically be possible to implement bitrate-switching
-depending on users connection.
-"""
-FORMATS_STREAM = {
-    'mp3': [128],
-}
-FORMATS_DOWNLOAD = {
-    'mp3': [192],
-    'flac': ['base'],
-    'wav': ['base'],
-}
-
-WAVEFORM_SIZES = {
-    's': [100, 20],
-    'm': [300, 30],
-    'l': [600, 100],
 }
 
 
@@ -392,14 +343,10 @@ DISCOGS_HOST = '172.20.10.207:8099'
 DISCOGS_RATE_LIMIT = False
 
 
-
-"""
-captcha
-https://github.com/mbi/django-simple-captcha/blob/master/captcha/conf/settings.py
-"""
-
-
-
+#######################################################################
+# captcha
+# https://github.com/mbi/django-simple-captcha/blob/master/captcha/conf/settings.py
+#######################################################################
 CAPTCHA_LETTER_ROTATION = (-12, 12)
 CAPTCHA_BACKGROUND_COLOR = '#fafafa'
 CAPTCHA_FOREGROUND_COLOR = '#6633CC'
@@ -415,24 +362,9 @@ CAPTCHA_FIELD_TEMPLATE = 'captcha/field.html'
 
 MEDIA_ASSET_KEEP_DAYS = 60
 
-
-
-"""
-ajax lookups
-"""
-AJAX_LOOKUP_CHANNELS = {
-    'aliases': {'model': 'alibrary.artist', 'search_field': 'name'}
-}
-# AJAX_SELECT_BOOTSTRAP = True
-# AJAX_SELECT_INLINES = 'inline'
-
-
-
 GRAVATAR_DEFAULT_IMAGE = 'identicon'
 
-
 EL_PAGINATION_PER_PAGE = 12
-
 
 DATE_EXTENSIONS_DATE_INPUT_FORMATS = (
     '%Y-%m-%d', '%d/%m/%Y','%d.%m.%Y', '%d/%m/%y', # '2006-10-25', '25/10/2006', '13/11/2020'

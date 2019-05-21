@@ -1,6 +1,25 @@
 
 $topbar-height: 32px
 
+
+// cms edit-mode
+.cms-ready
+  .topbar
+    transition: top 200ms
+  .menu
+    .children
+      transition: top 200ms
+
+.cms-toolbar-expanded,
+.cms-toolbar-expanding
+  .topbar
+    top: 46px
+    .main-menu
+      .menu
+        .children
+          top: 78px
+
+
 .topbar
   background: linear-gradient(to right, #ffffff 0%, #6633CC 80%)
   position: fixed
