@@ -237,6 +237,7 @@ class UserResource(ModelResource):
         extra_data = data['extra_data']
         user = json.loads(data['user'])
 
+        # TODO: review social auth handling
         user_qs = User.objects.filter(social_auth__provider=provider, social_auth__uid=uid)
 
         if not user_qs.exists():
@@ -258,7 +259,7 @@ class UserResource(ModelResource):
             remote_user.last_name = user['last_name']
             remote_user.save()
 
-            from social_auth.models import UserSocialAuth
+            from social_django.models import UserSocialAuth
             social_user = UserSocialAuth(
                 user=remote_user,
                 provider=provider,

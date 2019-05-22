@@ -1,16 +1,6 @@
 #-*- coding: utf-8 -*-
 
-import os
 import djclick as click
-from django.contrib.auth.models import User
-from django.conf import settings
-
-from massimporter.models import Massimport, MassimportFile
-
-from elasticsearch import Elasticsearch
-from elasticsearch_dsl import Search
-
-
 
 @click.group()
 def cli():

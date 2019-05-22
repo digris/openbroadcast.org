@@ -52,10 +52,15 @@ urlpatterns = [
     #url(r'^accounts/', include('invitation.urls')),
     url(r'^accounts/', include('registration.backends.simple.urls')),
 
+    # refactoring account (login/registration/logout)
+    url("^account/", include("account.urls", namespace="account")),
+    url(r"^s/", include("social_django.urls", namespace="social")),
+    # url("^account/", include("django.contrib.auth.urls")),
+
     #url(r"^accounts/login_as/(?P<user_id>.+)/$", "loginas.views.user_login", name="loginas-user-login"),
     url(r"^accounts/login_as/(?P<user_id>.+)/$", loginas_user, name="loginas-user-login"),
 
-    url(r'^sa/', include('social_auth.urls')),
+
     url(r'^captcha/', include('captcha.urls')),
 
     # massimporter / maintainer extra urls

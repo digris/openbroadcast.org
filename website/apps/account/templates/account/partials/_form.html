@@ -1,0 +1,33 @@
+{% load i18n %}
+<form method="post" class="form form--default form--account">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form.visible_fields %}
+        <div class="input-container{% if field.errors %} input-container--has-errors{% endif %}" id="input_{{ field.id_for_label }}">
+            <div class="input-container__field">
+                {{ field.label_tag }}
+                {{ field }}
+            </div>
+            <div class="input-container__appendix">
+                {% if field.help_text and not field.errors %}
+                <div class="input-container__field-help">
+                    <span>{{ field.help_text|safe }}</span>
+                </div>
+                {% endif %}
+                {% if field.errors %}
+                    <div class="input-container__field-errors">
+                     {% for error in field.errors %}
+                        <span>{{ error|escape }}</span>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    {% for field in form.hidden_fields %}
+        {{ field }}
+    {% endfor %}
+    <div class="actions">
+        <button class="actions__action btn btn-primary" type="submit">{{ submit_text }}</button>
+    </div>
+</form>

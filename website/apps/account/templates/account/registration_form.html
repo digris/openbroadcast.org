@@ -1,0 +1,38 @@
+{% extends "account/base.html" %}
+{% load i18n account_tags crispy_forms_tags %}
+
+{% block title %}{% trans "Login" %}{% endblock %}
+
+{% block app_content %}
+        <div class="title">
+            <h2>{% trans "Register account"|title %}</h2>
+        </div>
+        <div class="form-prefix">
+            <p>
+                (( text ))
+            </p>
+        </div>
+        <div class="form-container">
+            {% include 'account/partials/_form.html' with submit_text='Create Account' %}
+        </div>
+        <div class="form-appendix">
+            <span class="alt">
+                <i class="icon icon-double-angle-right"></i>
+                <a href="{% url 'account:login' %}">{% trans 'Login with your existing account' %}</a>
+            </span>
+            <span class="alt">
+                <i class="icon icon-double-angle-right"></i>
+                <a href="{% url 'account:password-recover' %}">{% trans 'Reset password' %}</a>
+            </span>
+        </div>
+        <div class="form-separator">
+            {% trans 'Or connect with an existing account:' %}
+        </div>
+        <div class="social-login-container">
+            {% for backend in backends.backends %}
+                <div class="auth-social auth-social-{{ backend }}" data-turbolinks="false">
+                    {# backend_detail backend #}
+                </div>
+            {% endfor %}
+        </div>
+{% endblock %}

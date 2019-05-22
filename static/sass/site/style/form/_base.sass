@@ -1,0 +1,39 @@
+@charset "UTF-8"
+
+@import mixins
+
+// TODO: new form styles. will replace bootstrap / crispy-forms
+// will replace bootstrap forms time by time
+
+
+.form
+  &--default
+    textarea,
+    select,
+    input
+      // remove webkit glow
+      outline: none
+      border: 1px solid $grayLight
+      &:hover
+        border-color: $gray
+      &:focus
+        border-color: $grayDark
+
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active
+      -webkit-box-shadow: 0 0 0 30px white inset
+
+
+    //.input-container
+    //  @include input-container
+
+    .errorlist
+      &.nonfield
+        padding: 10px 10px 8px
+        margin: 8px 0 16px
+        border: 1px solid $orange
+        color: $black
+

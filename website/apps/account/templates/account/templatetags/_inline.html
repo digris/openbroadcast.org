@@ -1,0 +1,40 @@
+{% load static i18n account_tags %}
+
+{% if user.is_authenticated %}
+
+    <li class="profile">
+        <a href="{% url 'contentmanager:account-detail' uuid=user.uuid %}">
+            <i class="fa fa-user fa-fw"></i>
+            {% trans 'Account Settings' %}
+        </a>
+    </li>
+
+    <li class="highlight">
+        <a href="{% url 'contentmanager:dashboard-index' %}">
+            <i class="fa fa-dot-circle fa-fw" aria-hidden="true"></i>
+            {% trans "Dashboard"|title %}
+        </a>
+    </li>
+
+    <li class="separator"></li>
+
+    <li>
+        <a data-turbolinks="false" href="{% url 'account:logout' %}?next=/">
+            <i class="fa fa-sign-out fa-fw"></i>
+            {% trans 'Log out' %}
+        </a>
+    </li>
+
+{% else %}
+
+
+    <li><a href="{% url 'account:register' %}">{% trans 'Sign up' %}</a></li>
+    <li><a href="{% url 'account:password_recover' %}">{% trans 'Reset Password' %}</a></li>
+
+    {% for backend in backends.backends %}
+        <li class="auth-extra auth-extra-{{ backend }}" data-turbolinks="false">
+         {% backend_detail backend %}
+        </li>
+    {% endfor %}
+
+{% endif %}

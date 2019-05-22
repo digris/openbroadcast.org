@@ -19,15 +19,20 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': (
                 'django.contrib.auth.context_processors.auth',
+                # social auth
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
+                #
                 'webpack.context_processors.webpack_devserver',
                 #
                 'django.template.context_processors.i18n',
                 'django.template.context_processors.request',
                 'django.template.context_processors.media',
                 'django.template.context_processors.static',
-                #
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.debug',
+                #
+                # 'navutils.context_processors.menus',
                 'absolute.context_processors.absolute',
                 'cms.context_processors.cms_settings',
                 'sekizai.context_processors.sekizai',
@@ -36,9 +41,6 @@ TEMPLATES = [
                 # settings
                 'django_settings_export.settings_export',
                 # authentication
-                'social_auth.context_processors.social_auth_backends',
-                'social_auth.context_processors.backends_data',
-                'social_auth.context_processors.social_auth_login_redirect',
             ),
             'loaders': [
                 #('django.template.loaders.cached.Loader', [

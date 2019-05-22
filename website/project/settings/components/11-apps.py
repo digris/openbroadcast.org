@@ -88,7 +88,8 @@ INSTALLED_APPS = [
     # users / auth
     # 'avatar',
     'registration',
-    'social_auth',
+    #'social_auth',
+    'social_django',
     'captcha',
     'django_gravatar',
     'loginas',
@@ -112,6 +113,7 @@ INSTALLED_APPS = [
 
     # platform apps
     'profiles',
+    'account',
     'postman',
     'atracker',
     'invitation',
@@ -137,6 +139,8 @@ INSTALLED_APPS = [
 
     # legacy & migration
     'obp_legacy',
+
+    # 'navutils',
 
     # platform tools
     'pushy',
@@ -180,83 +184,98 @@ THUMBNAIL_ALIASES = {
 ################################################################################
 # accounts / user handling
 ################################################################################
-
+AUTH_USER_MODEL = 'auth.User'
 AUTH_PROFILE_MODULE = "profiles.Profile"
 ANONYMOUS_USER_ID = -1
-LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
 LOGIN_URL = '/accounts/login/'
 LOGOUT_URL = '/accounts/signout/'
 LOGIN_REDIRECT_URL = "/"
-
-USERENA_ACTIVATION_REQUIRED = False
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = True
-ACCOUNT_EMAIL_AUTHENTICATION = False
-ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = True
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = True
-SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
-SOCIALACCOUNT_AUTO_SIGNUP = True
-EMAIL_CONFIRMATION_DAYS = 5
-
-"""
-socialauth
-"""
 ACCOUNT_ACTIVATION_DAYS = 7
 AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.google.GoogleOAuth2Backend',
-    'social_auth.backends.contrib.dropbox.DropboxBackend',
-    'social_auth.backends.contrib.soundcloud.SoundcloudBackend',
-    'social_auth.backends.contrib.github.GithubBackend',
+    "social_core.backends.google.GoogleOAuth2",
+    "social_core.backends.facebook.FacebookOAuth2",
+    # "social_core.backends.vk.VKOAuth2",
+    # 'social_core.backends.twitter.TwitterOAuth',
+    # "social_core.backends.spotify.SpotifyOAuth2",
+    #
     'obp_legacy.auth.backends.LegacyBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
-TWITTER_CONSUMER_KEY = ''
-TWITTER_CONSUMER_SECRET = ''
-FACEBOOK_APP_ID = ''
-FACEBOOK_API_SECRET = ''
-FACEBOOK_EXTENDED_PERMISSIONS = ['email', ]
-LINKEDIN_CONSUMER_KEY = ''
-LINKEDIN_CONSUMER_SECRET = ''
-GOOGLE_OAUTH2_CLIENT_ID = ''
-GOOGLE_OAUTH2_CLIENT_SECRET = ''
-FOURSQUARE_CONSUMER_KEY = ''
-FOURSQUARE_CONSUMER_SECRET = ''
-YAHOO_CONSUMER_KEY = ''
-YAHOO_CONSUMER_SECRET = ''
-GITHUB_APP_ID = ''
-GITHUB_API_SECRET = ''
-DROPBOX_APP_ID = ''
-DROPBOX_API_SECRET = ''
-SOUNDCLOUD_CLIENT_ID = ''
-SOUNDCLOUD_CLIENT_SECRET = ''
+
+
+################################################################################
+# social auth
+################################################################################
+##################################################################
+# social auth
+##################################################################
+
+SOCIAL_AUTH_PIPELINE = (
+    "social_core.pipeline.social_auth.social_details",
+    "social_core.pipeline.social_auth.social_uid",
+    "social_core.pipeline.social_auth.auth_allowed",
+    "social_core.pipeline.social_auth.social_user",
+    "social_core.pipeline.user.get_username",
+    "social_core.pipeline.social_auth.associate_by_email",
+    "social_core.pipeline.user.create_user",
+    "social_core.pipeline.social_auth.associate_user",
+    "social_core.pipeline.social_auth.load_extra_data",
+    "social_core.pipeline.user.user_details",
+    "account.social_auth_pipeline.user_details.get_details",
+)
+
+SOCIAL_AUTH_USER_MODEL = "auth.User"
+SOCIAL_AUTH_EMAIL_FORM_URL = "account:login"
+
+# github
+SOCIAL_AUTH_GITHUB_KEY = ""
+SOCIAL_AUTH_GITHUB_SECRET = ""
+SOCIAL_AUTH_GITHUB_SCOPE = ["user:email"]
+
+# facebook
+SOCIAL_AUTH_FACEBOOK_KEY = ""
+SOCIAL_AUTH_FACEBOOK_SECRET = ""
+SOCIAL_AUTH_FACEBOOK_SCOPE = ["email", "public_profile"]
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {"fields": "id,name,email"}
+
+# google oauth2
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ""
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ""
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    "https://www.googleapis.com/auth/plus.me",
+    "https://www.googleapis.com/auth/plus.login",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
+    #
+    # 'https://www.googleapis.com/auth/contacts.readonly',
+    # 'https://www.googleapis.com/auth/user.addresses.read',
+    # 'https://www.googleapis.com/auth/user.birthday.read',
+    # 'https://www.googleapis.com/auth/user.emails.read',
+    # 'https://www.googleapis.com/auth/user.phonenumbers.read',
+]
+
+# vk
+SOCIAL_AUTH_VK_OAUTH2_KEY = ""
+SOCIAL_AUTH_VK_OAUTH2_SECRET = ""
+# SOCIAL_AUTH_VK_OAUTH2_SCOPE = {
+#     'fields': 'email',
+# }
+
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ["email", "audio", "status"]
+
+SOCIAL_AUTH_SPOTIFY_KEY = ""
+SOCIAL_AUTH_SPOTIFY_SECRET = ""
+
 
 # invitation
 INVITATION_INVITE_ONLY = False
 INVITATION_EXPIRE_DAYS = 10
 INVITATION_INITIAL_INVITATIONS = 5
 
-SOCIAL_AUTH_SLUGIFY_USERNAMES = True
-# SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
-
-LOGIN_REDIRECT_URL = '/accounts/%(username)s/'
-LOGIN_URL = '/accounts/login/'
-LOGOUT_URL = '/accounts/signout/'
-LOGIN_REDIRECT_URL = "/"
-
 LOGIN_ERROR_URL = LOGIN_URL
 
-SOCIAL_AUTH_PIPELINE = (
-    'social_auth.backends.pipeline.social.social_auth_user',
-    'social_auth.backends.pipeline.user.get_username',
-    'social_auth.backends.pipeline.user.create_user',
-    'social_auth.backends.pipeline.social.associate_user',
-    'social_auth.backends.pipeline.social.load_extra_data',
-    'social_auth.backends.pipeline.user.update_user_details',
-    'base.social_auth_extra.pipeline.post_connect_tasks',
-)
+
 
 ################################################################################
 # Messaging
@@ -265,15 +284,8 @@ SOCIAL_AUTH_PIPELINE = (
 
 POSTMAN_DISALLOW_ANONYMOUS = True
 POSTMAN_DISALLOW_MULTIRECIPIENTS = True
-# POSTMAN_DISALLOW_COPIES_ON_REPLY = True  # default is False
-# POSTMAN_DISABLE_USER_EMAILING = True  # default is False
 POSTMAN_AUTO_MODERATE_AS = True  # default is None
 POSTMAN_SHOW_USER_AS = 'get_full_name'
-# POSTMAN_NOTIFIER_APP = None  # default is 'notification'
-# POSTMAN_MAILER_APP = 'mailer'
-
-
-
 
 ################################################################################
 # wikisyntax, eg allows tor resolve [a:Artists Name] to object
@@ -348,15 +360,17 @@ DISCOGS_RATE_LIMIT = False
 # https://github.com/mbi/django-simple-captcha/blob/master/captcha/conf/settings.py
 #######################################################################
 CAPTCHA_LETTER_ROTATION = (-12, 12)
-CAPTCHA_BACKGROUND_COLOR = '#fafafa'
-CAPTCHA_FOREGROUND_COLOR = '#6633CC'
-#CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
-CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
+# CAPTCHA_BACKGROUND_COLOR = '#fafafa'
+# CAPTCHA_FOREGROUND_COLOR = '#6633CC'
+CAPTCHA_BACKGROUND_COLOR = '#ffffff'
+CAPTCHA_FOREGROUND_COLOR = '#333333'
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
+#CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
 CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)
 CAPTCHA_FILTER_FUNCTIONS = ()
 CAPTCHA_PUNCTUATION = '''_"',.;:-'''
-CAPTCHA_LENGTH = 6
-CAPTCHA_IMAGE_SIZE = (120, 30)
+CAPTCHA_LENGTH = 8
+CAPTCHA_IMAGE_SIZE = (160, 28)
 CAPTCHA_FIELD_TEMPLATE = 'captcha/field.html'
 
 

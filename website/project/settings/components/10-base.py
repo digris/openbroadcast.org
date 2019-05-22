@@ -106,7 +106,6 @@ MIDDLEWARE_CLASSES = [
     'cms.middleware.toolbar.ToolbarMiddleware',
 
     'base.middleware.xs_sharing.XsSharingMiddleware',
-    'social_auth.middleware.SocialAuthExceptionMiddleware',
     'arating.middleware.AratingIpMiddleware',
 ]
 

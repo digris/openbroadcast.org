@@ -1,15 +1,12 @@
 #-*- coding: utf-8 -*-
 
-import os
 import requests
 import djclick as click
 from django.db.models import Q
-from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.cache import caches
-from django.contrib.contenttypes.models import ContentType
 
-from alibrary.models import Release, Media, Artist, Label, Relation
+from alibrary.models import Release, Media, Artist, Label
 
 from ...workflows.musicbrainz import (
     release_fetch_media_mb_ids,

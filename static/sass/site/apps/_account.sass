@@ -1,0 +1,162 @@
+@charset "UTF-8"
+
+@import ../style/form/mixins
+
+.app--account
+
+  //.content__primary
+  //  background: yellow
+
+  main
+    // reset grid
+    >.content
+      display: flex
+      justify-content: center
+
+      .content__primary
+        width: 100%
+        max-width: 600px
+        padding: 12px
+        background: #fff
+
+
+
+  .form-prefix
+    padding: 16px 0
+
+  .form-appendix
+    padding: 16px 0
+    background: #fff
+    .alt
+      display: block
+      padding: 2px 0
+
+  .form-separator
+    padding: 4px
+    border-top: 1px solid #aaa
+
+  .form--account
+
+    padding: 10px 0
+
+    .input-container
+      @include input-container
+
+      label
+        min-width: 140px
+
+      input
+        width: 100%
+
+      &__field-errors
+        text-align: right
+
+    .actions
+      @include form-actions
+
+
+    .captcha-container
+      display: flex
+      width: 100%
+
+      .captcha-text
+        flex-grow: 1
+        margin-right: 12px
+
+      .captcha-image
+        overflow: hidden
+
+  // TODO: check for more generic solution to handle checkbox inputs
+  #input_id_tos
+    margin-left: 132px
+    .input-container__field
+      display: flex
+      align-items: center
+      input[type="checkbox"]
+        cursor: pointer
+        -webkit-appearance: none
+        -moz-appearance: none
+        position: relative
+        box-sizing: content-box
+        width: 16px
+        height: 16px
+        border: 1px solid #333
+        // transition: all 240ms
+        flex: 0 0 16px
+        border-color: $grayLight
+        color: transparent
+        &:focus
+          outline: 0 none
+          box-shadow: none
+          border-color: $grayLight
+          background: $white
+        &:hover
+          outline: 0 none
+          box-shadow: none
+          border-color: $gray
+          color: $grayLight
+        &:checked
+          color: #000
+          border-color: $gray
+        &:after
+          position: absolute
+          top: 0
+          bottom: 0
+          left: 0
+          right: 0
+          content: "\2573"
+          font-size: 22px
+          line-height: 24px
+          text-align: center
+      label
+        order: 2
+        padding-left: 12px
+
+    .input-container__field-errors
+      padding-left: 36px
+      text-align: left
+
+
+
+  .social-login-container
+    display: flex
+    flex-direction: column
+    .auth-social
+      //padding: 0 !important;
+      margin-bottom: 2px
+    .auth-social
+      flex-grow: 1
+      .auth-social-button
+        display: flex
+        //color: $black;
+        padding: 6px 6px
+        width: 100%
+        transition: background 0.2s
+        background: rgba(0, 0, 0, 0.1)
+        &:hover
+          //ackground: rgba($primary-color, .05);
+          //background: $primary-color;
+          // color: $white;
+        //@include clearfix;
+        .icon-container
+          display: block
+          float: left
+          margin-right: 14px
+          img.icon
+            height: 18px
+            filter: grayscale(100%)
+        .text-container
+          display: block
+          float: left
+          padding-top: 2px
+      // provider styles
+      .auth-social-button-google
+        //color: $black;
+        &:hover
+          img.icon
+            filter: grayscale(0%)
+      .auth-social-button-facebook
+        //color: $black;
+        &:hover
+          img.icon
+            filter: brightness(500%)
