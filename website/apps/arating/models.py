@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext as _
 from base.mixins import TimestampedModelMixin
@@ -14,7 +14,7 @@ VOTE_CHOICES = (
 class Vote(TimestampedModelMixin, models.Model):
 
     vote = models.SmallIntegerField(choices=VOTE_CHOICES, db_index=True)
-    user = models.ForeignKey(User, related_name="votes")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="votes")
 
     # generic foreign key to the model being voted upon
     content_type = models.ForeignKey(ContentType)

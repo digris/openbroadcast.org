@@ -1,17 +1,17 @@
 import datetime
 import random
+import hashlib
+import app_settings
+import signals
+
 from django.db import models
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
-import hashlib
-from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.sites.requests import RequestSite
 from django.contrib import messages
-import app_settings
-import signals
 
 
 def performance_calculator_invite_only(invitation_stats):
@@ -107,7 +107,7 @@ class InvitationManager(models.Manager):
 
 
 class Invitation(models.Model):
-    user = models.ForeignKey(User, related_name='invitations')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='invitations')
     email = models.EmailField(_(u'e-mail'))
     message = models.TextField(null=True)
     key = models.CharField(_(u'invitation key'), max_length=40, unique=True)
@@ -246,7 +246,7 @@ class InvitationStatsManager(models.Manager):
 class InvitationStats(models.Model):
     """Store invitation statistics for ``user``.
     """
-    user = models.OneToOneField(User,
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 related_name='invitation_stats')
     available = models.IntegerField(_(u'available invitations'),
                                     default=app_settings.INITIAL_INVITATIONS)
@@ -327,11 +327,3 @@ class InvitationStats(models.Model):
         self.save()
     mark_accepted.alters_data = True
 
-
-# def create_stats(sender, instance, created, raw, **kwargs):
-#     if created and not raw:
-#         InvitationStats.objects.create(user=instance)
-#
-# models.signals.post_save.connect(create_stats,
-#                                  sender=User,
-#                                  dispatch_uid='invitation.models.create_stats')

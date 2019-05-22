@@ -16,11 +16,8 @@ from __future__ import unicode_literals
 
 from django import forms
 from django.conf import settings
-try:
-    from django.contrib.auth import get_user_model  # Django 1.5
-except ImportError:
-    from postman.future_1_5 import get_user_model
 from django.db import transaction
+from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext, ugettext_lazy as _
 
 from postman.models import Message
@@ -117,8 +114,7 @@ class BaseWriteForm(forms.ModelForm):
 
         recipients = self.cleaned_data.get('recipients', [])
         if hacked_recipient:
-            from django.contrib.auth.models import User
-            recipients = [User.objects.get(username=hacked_recipient)]
+            recipients = [get_user_model().objects.get(username=hacked_recipient)]
 
         if parent and not parent.thread_id:  # at the very first reply, make it a conversation
             parent.thread = parent

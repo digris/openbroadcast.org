@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import datetime
 import arating
 from abcast.util import notify
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
@@ -16,6 +16,7 @@ from l10n.models import Country
 from base.fields import extra
 from base.mixins import TimestampedModelMixin, UUIDModelMixin
 from phonenumber_field.modelfields import PhoneNumberField
+
 
 class Station(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
@@ -47,7 +48,7 @@ class Station(TimestampedModelMixin, UUIDModelMixin, models.Model):
         blank=True, null=True
     )
     members = models.ManyToManyField(
-        User,
+        settings.AUTH_USER_MODEL,
         through='StationMembers',
         blank=True
     )
@@ -122,7 +123,7 @@ class Role(models.Model):
 
 class StationMembers(models.Model):
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         related_name='station_membership'
     )
     station = models.ForeignKey(

@@ -7,20 +7,16 @@ import uuid
 
 import arating
 import tagging
-from actstream import action
 from alibrary.models import MigrationMixin, Relation, Profession
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
 from base.cacheops_extra import cached_uuid_aware
 from base.mixins import TimestampedModelMixin
-from celery.task import task
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.db import models
 from django.db.models import Q
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 from django.utils import translation
@@ -167,25 +163,25 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     # user relations
     owner = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True, null=True,
         related_name="artists_owner",
         on_delete=models.SET_NULL
     )
     creator = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True, null=True,
         related_name="artists_creator",
         on_delete=models.SET_NULL
     )
     last_editor = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True, null=True,
         related_name="artists_last_editor",
         on_delete=models.SET_NULL
     )
     publisher = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True, null=True,
         related_name="artists_publisher",
         on_delete=models.SET_NULL

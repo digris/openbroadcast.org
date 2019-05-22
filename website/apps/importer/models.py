@@ -11,7 +11,6 @@ import magic
 from alibrary.models import Media, Artist, Release
 from celery.task import task
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
@@ -101,7 +100,7 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
     )
 
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True, null=True,
         related_name="import_user",
         on_delete=models.SET_NULL

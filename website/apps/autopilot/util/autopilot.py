@@ -11,7 +11,7 @@ from abcast.models import Daypart as BroadcastDaypart
 from alibrary.models import Daypart as PlaylistDaypart
 from alibrary.models import Playlist
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db.models import Q, Max, Min
 
 log = logging.getLogger(__name__)
@@ -26,7 +26,7 @@ class Autopilot(object):
     def __init__(self, channel_id, username):
 
         self.channel = Channel.objects.get(pk=channel_id)
-        self.user = User.objects.get(username=username)
+        self.user = get_user_model().objects.get(username=username)
         self.dayparts = BroadcastDaypart.objects.filter(
             daypartset__channel=self.channel,
             enable_autopilot=True

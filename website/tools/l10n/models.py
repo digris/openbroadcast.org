@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
 from django.conf import settings
 
 CONTINENTS = (
@@ -119,9 +118,9 @@ Email: %(email)s""")
 ADDRESS_TEMPLATE = getattr(settings, 'SHOP_ADDRESS_TEMPLATE',
                            BASE_ADDRESS_TEMPLATE)
 class Address(models.Model):
-    user_shipping = models.OneToOneField(User, related_name='shipping_address',
+    user_shipping = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='shipping_address',
                                          blank=True, null=True)
-    user_billing = models.OneToOneField(User, related_name='billing_address',
+    user_billing = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='billing_address',
                                         blank=True, null=True)
 
     name = models.CharField(_('Name'), max_length=255)
@@ -135,8 +134,8 @@ class Address(models.Model):
     # additional fields
     email = models.EmailField(_('EMail'), max_length=255)
     #company = models.CharField(_('Company'), max_length=255, null=True, blank=True)
-    
-    
+
+
     class Meta(object):
         abstract = True
         verbose_name = _('Address')

@@ -5,7 +5,7 @@ import logging
 import datetime
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
@@ -70,7 +70,7 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     duration = models.PositiveIntegerField(verbose_name="Duration (in ms)", blank=True, null=True, editable=False)
 
-    user = models.ForeignKey(User, blank=True, null=True, related_name="scheduler_emissions", on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name="scheduler_emissions", on_delete=models.SET_NULL)
     channel = models.ForeignKey(Channel, blank=True, null=True, related_name="scheduler_emissions", on_delete=models.SET_NULL)
 
 

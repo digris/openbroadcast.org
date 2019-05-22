@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import template
 
-try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-except ImportError:
-    from django.contrib.auth.models import User
-
 register = template.Library()
-
 
 @register.assignment_tag
 def hash_user_groups(user):

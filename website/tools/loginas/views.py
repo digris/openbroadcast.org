@@ -5,11 +5,7 @@ from django.core.exceptions import ImproperlyConfigured, PermissionDenied
 from django.shortcuts import redirect
 from importlib import import_module
 from django.utils import six
-try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-except ImportError:
-    from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 
 def _load_module(path):
@@ -49,7 +45,7 @@ def user_login(request, user_id):
     else:
         raise ImproperlyConfigured("The CAN_LOGIN_AS setting is neither a valid module nor callable.")
 
-    user = User.objects.get(pk=user_id)
+    user = get_user_model().objects.get(pk=user_id)
 
     login_as_allowed = False
     returning_user = False

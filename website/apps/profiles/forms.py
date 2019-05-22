@@ -6,7 +6,7 @@ from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Fieldset, Div, Field, Row, Column
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.forms import ModelForm
 from django.forms.models import inlineformset_factory
 from django.utils.translation import ugettext as _
@@ -228,7 +228,7 @@ ServiceFormSet = inlineformset_factory(Profile, Service, form=ServiceForm, extra
 
 class UserForm(ModelForm):
     class Meta:
-        model = User
+        model = get_user_model()
         fields = (
             'first_name',
             'last_name',
@@ -273,7 +273,7 @@ class UserCredentialsForm(ModelForm):
                                     help_text=_("Verify your new password"))
 
     class Meta:
-        model = User
+        model = get_user_model()
         fields = (
             'username',
         )

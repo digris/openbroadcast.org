@@ -4,7 +4,7 @@ from uuid import uuid4
 
 from django.conf.urls import *
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.http import HttpResponseForbidden
 from django.utils.translation import ugettext as _
 from profiles.exceptions import APIBadRequest
@@ -26,7 +26,7 @@ class UserResource(ModelResource):
     profile = fields.ForeignKey('profiles.api.ProfileResource', 'profile', null=True, full=True)
 
     class Meta:
-        queryset = User.objects.all()
+        queryset = get_user_model().objects.all()
         detail_uri_name = 'username'
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post', 'patch', 'delete']
@@ -149,11 +149,11 @@ class UserResource(ModelResource):
         error = None
 
         if key == 'email':
-            if User.objects.filter(email=value).exists():
+            if get_user_model().objects.filter(email=value).exists():
                 error = _('That email is already used.')
 
         if key == 'username':
-            if User.objects.filter(username=value).exists():
+            if get_user_model().objects.filter(username=value).exists():
                 error = _('That username is already used.')
 
 
@@ -192,7 +192,7 @@ class UserResource(ModelResource):
                 )
 
 
-        user = User.objects.create_user(username=data['username'],
+        user = get_user_model().objects.create_user(username=data['username'],
                                         email=data['email'],
                                         password=data['password'])
 
@@ -238,7 +238,7 @@ class UserResource(ModelResource):
         user = json.loads(data['user'])
 
         # TODO: review social auth handling
-        user_qs = User.objects.filter(social_auth__provider=provider, social_auth__uid=uid)
+        user_qs = get_user_model().objects.filter(social_auth__provider=provider, social_auth__uid=uid)
 
         if not user_qs.exists():
             """
@@ -248,10 +248,10 @@ class UserResource(ModelResource):
             # TODO: hack!!! try to create unique username
             username = user['username']
 
-            while User.objects.filter(username=username).exists():
+            while get_user_model().objects.filter(username=username).exists():
                 username += uuid4().get_hex()[:8]
 
-            remote_user = User.objects.create_user(username=username,
+            remote_user = get_user_model().objects.create_user(username=username,
                                             email=user['email'],
                                             password=None)
 

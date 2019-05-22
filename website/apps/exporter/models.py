@@ -8,7 +8,6 @@ import logging
 from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.core.files import File as DjangoFile
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -76,7 +75,7 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
         verbose_name_plural = _('Exports')
         ordering = ('created', )
 
-    user = models.ForeignKey(User, blank=True, null=True, related_name="exports", on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name="exports", on_delete=models.SET_NULL)
     status = models.PositiveIntegerField(default=0, choices=GENERIC_STATUS_CHOICES)
 
     status_msg = models.CharField(max_length=512, blank=True, null=True)

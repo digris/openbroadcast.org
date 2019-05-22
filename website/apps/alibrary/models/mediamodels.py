@@ -10,7 +10,6 @@ import tagging
 from base.audio.fileinfo import FileInfoProcessor
 from cacheops import invalidate_obj
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
@@ -178,22 +177,22 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
     # user relations
     owner = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True, null=True, on_delete=models.SET_NULL,
         related_name="media_owner"
     )
     creator = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True, null=True, on_delete=models.SET_NULL,
         related_name="created_media"
     )
     last_editor = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True, null=True, on_delete=models.SET_NULL,
         related_name="media_last_editor"
     )
     publisher = models.ForeignKey(
-        User, blank=True, null=True, on_delete=models.SET_NULL,
+        settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.SET_NULL,
         related_name="media_publisher"
     )
 

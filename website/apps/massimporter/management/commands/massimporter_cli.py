@@ -2,7 +2,7 @@
 
 import os
 import djclick as click
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.conf import settings
 
 from massimporter.models import Massimport, MassimportFile
@@ -197,7 +197,7 @@ def start(path, limit, username, collection):
     if not path.endswith('/'):
         path += '/'
 
-    if not User.objects.filter(username=username).exists():
+    if not get_user_model().objects.filter(username=username).exists():
         click.secho('User does not exist: {}'.format(username), bold=True, fg='red')
         return
 
@@ -208,7 +208,7 @@ def start(path, limit, username, collection):
 
     massimport = Massimport(
         directory=path,
-        user=User.objects.get(username=username),
+        user=get_user_model().objects.get(username=username),
         collection_name=collection
     )
 

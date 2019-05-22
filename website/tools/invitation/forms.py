@@ -2,8 +2,7 @@
 from __future__ import unicode_literals
 
 from django import forms
-from django.contrib.auth.models import User
-
+from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 
 from crispy_forms.helper import FormHelper
@@ -23,7 +22,7 @@ def save_user(form_instance):
     username = form_instance.cleaned_data['username']
     email = form_instance.cleaned_data['email']
     password = form_instance.cleaned_data['password1']
-    new_user = User.objects.create_user(username, email, password)
+    new_user = get_user_model().objects.create_user(username, email, password)
     new_user.save()
     return new_user
 
@@ -48,7 +47,7 @@ class InvitationForm(forms.Form):
 
     def clean_email(self):
         data = self.cleaned_data['email']
-        if User.objects.filter(email=data).exists():
+        if get_user_model().objects.filter(email=data).exists():
             raise forms.ValidationError(_('A user with the e-mail address {} already exists.').format(data))
 
         return data

@@ -1,7 +1,7 @@
 import md5
 import logging
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from obp_legacy.models_legacy import ElggUsers as LegacyUser
 
@@ -24,8 +24,8 @@ class LegacyBackend(object):
 
     def get_user(self, user_id):
         try:
-            return User.objects.get(pk=user_id)
-        except User.DoesNotExist:
+            return get_user_model().objects.get(pk=user_id)
+        except get_user_model().DoesNotExist:
             return None
 
 
@@ -47,11 +47,11 @@ class LegacyBackend(object):
             log.info('pw md5   : %s' % (lu.password))
 
             try:
-                user = User.objects.get(username=username)
+                user = get_user_model().objects.get(username=username)
                 user.set_password(password)
                 user.save()
 
-            except User.DoesNotExist:
+            except get_user_model().DoesNotExist:
                 pass
 
         return user

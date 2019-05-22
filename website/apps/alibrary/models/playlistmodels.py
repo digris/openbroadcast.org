@@ -10,7 +10,7 @@ import tagging
 from alibrary import settings as alibrary_settings
 from alibrary.models import MigrationMixin, Daypart
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
@@ -167,7 +167,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     # relations
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         null=True, blank=True, default=None,
         related_name='playlists'
     )

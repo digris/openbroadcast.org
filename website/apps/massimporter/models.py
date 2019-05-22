@@ -6,7 +6,6 @@ import os
 import uuid
 
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
@@ -48,7 +47,7 @@ class Massimport(BaseModel):
         (STATUS_ERROR, _(u'Error')),
     )
 
-    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, on_delete=models.SET_NULL)
     status = models.PositiveIntegerField(default=STATUS_INIT, choices=STATUS_CHOICES)
     directory = models.CharField(max_length=1024)
     uuid = models.UUIDField(default=uuid.uuid4)

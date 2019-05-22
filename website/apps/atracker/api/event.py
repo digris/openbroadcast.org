@@ -3,7 +3,7 @@ import logging
 from atracker.models import Event
 from atracker.util import create_event
 from django.conf.urls import url
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from tastypie.authentication import MultiAuthentication, Authentication, SessionAuthentication, ApiKeyAuthentication
 from tastypie.authorization import Authorization
@@ -84,7 +84,7 @@ class EventResource(ModelResource):
             log.debug('creating event on _behalf_ of user with id: %s' % user_id)
 
             if request.user.has_perm('atracker.track_for_user'):
-                user = User.objects.get(pk=user_id)
+                user = get_user_model().objects.get(pk=user_id)
                 log.info('voting for user by id: %s' % user.username)
             else:
                 log.warning('no permission for %s to vote in behalf of %s' % (request.user, user_id))

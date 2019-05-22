@@ -13,7 +13,6 @@ import arating
 import requests
 import tagging
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericRelation
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.utils import translation
@@ -94,10 +93,10 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
     label = models.ForeignKey('alibrary.Label', blank=True, null=True, related_name='release_label', on_delete=models.SET_NULL)
     media = models.ManyToManyField('alibrary.Media', through='ReleaseMedia', blank=True, related_name="releases")
 
-    owner = models.ForeignKey(User, blank=True, null=True, related_name="releases_owner", on_delete=models.SET_NULL)
-    creator = models.ForeignKey(User, blank=True, null=True, related_name="releases_creator", on_delete=models.SET_NULL)
-    last_editor = models.ForeignKey(User, blank=True, null=True, related_name="releases_last_editor", on_delete=models.SET_NULL)
-    publisher = models.ForeignKey(User, blank=True, null=True, related_name="releases_publisher", on_delete=models.SET_NULL)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name="releases_owner", on_delete=models.SET_NULL)
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name="releases_creator", on_delete=models.SET_NULL)
+    last_editor = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name="releases_last_editor", on_delete=models.SET_NULL)
+    publisher = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name="releases_publisher", on_delete=models.SET_NULL)
 
     barcode = models.CharField(max_length=32, blank=True, null=True)
 

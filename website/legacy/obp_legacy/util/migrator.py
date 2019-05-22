@@ -9,6 +9,7 @@ from django.core.validators import email_re
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 from html2text import html2text
+from django.contrib.auth import get_user_model
 from tagging.models import Tag
 from django.conf import settings
 
@@ -194,7 +195,7 @@ class ReleaseMigrator(Migrator):
             User mapping
             """
             try:
-                legacy_user = Users.objects.using('legacy').get(id=legacy_obj.user_id)
+                legacy_user = get_user_model().objects.using('legacy').get(id=legacy_obj.user_id)
                 log.debug('mapping user')
                 item, s = get_user_by_legacy_object(legacy_user)
                 if item:
@@ -320,7 +321,7 @@ class MediaMigrator(Migrator):
             User mapping
             """
             try:
-                legacy_user = Users.objects.using('legacy').get(id=legacy_obj.user_id)
+                legacy_user = get_user_model().objects.using('legacy').get(id=legacy_obj.user_id)
                 log.debug('mapping user')
                 item, s = get_user_by_legacy_object(legacy_user)
                 if item:
@@ -569,7 +570,7 @@ class ArtistMigrator(Migrator):
             User mapping
             """
             try:
-                legacy_user = Users.objects.using('legacy').get(id=legacy_obj.user_id)
+                legacy_user = get_user_model().objects.using('legacy').get(id=legacy_obj.user_id)
                 log.debug('mapping user')
                 item, s = get_user_by_legacy_object(legacy_user)
                 if item:
@@ -747,7 +748,7 @@ class LabelMigrator(Migrator):
             User mapping
             """
             try:
-                legacy_user = Users.objects.using('legacy').get(id=legacy_obj.user_id)
+                legacy_user = get_user_model().objects.using('legacy').get(id=legacy_obj.user_id)
                 log.debug('mapping user')
                 item, s = get_user_by_legacy_object(legacy_user)
                 if item:
@@ -864,7 +865,8 @@ class LegacyUserMigrator(Migrator):
 
         force = True
 
-        from django.contrib.auth.models import User, Group
+        from django.contrib.auth.models import Group
+        from django.contrib.auth import get_user_model
         from profiles.models import Profile, Link, Service, ServiceType, Expertise, Community
         from obp_legacy.models_legacy import *
         from phonenumber_field.validators import validate_international_phonenumber
@@ -874,7 +876,7 @@ class LegacyUserMigrator(Migrator):
         log = logging.getLogger('util.migrator.run')
         log.info('migrate user: %s' % legacy_obj.username)
 
-        user, created = User.objects.get_or_create(username=legacy_obj.username)
+        user, created = get_user_model().objects.get_or_create(username=legacy_obj.username)
         obj = user.profile
 
         if created or force:
@@ -894,7 +896,7 @@ class LegacyUserMigrator(Migrator):
             """
             Try to get legacy id (not legacy_legacy_id)
             """
-            obj.legacy_id = Users.objects.using('legacy').get(legacy_id=legacy_obj.ident).id
+            obj.legacy_id = get_user_model().objects.using('legacy').get(legacy_id=legacy_obj.ident).id
 
             """
             user.last_login = legacy_obj.created
@@ -975,7 +977,7 @@ class LegacyUserMigrator(Migrator):
             try:
                 group_ids = ElggFriends.objects.using('legacy_legacy').values_list('friend', flat=True).filter(owner=legacy_obj.ident)
                 friends = ElggUsers.objects.using('legacy_legacy').values_list('username', flat=True).filter(ident__in=group_ids, user_type='person')
-                users = User.objects.filter(username__in=[username for username in friends.all()])
+                users = get_user_model().objects.filter(username__in=[username for username in friends.all()])
 
                 print users
                 from actstream.actions import follow
@@ -1397,7 +1399,7 @@ class PlaylistMigrator(Migrator):
             User mapping
             """
             try:
-                legacy_user = Users.objects.using('legacy').get(legacy_id=legacy_obj.owner)
+                legacy_user = get_user_model().objects.using('legacy').get(legacy_id=legacy_obj.owner)
                 log.debug('mapping user')
                 item, s = get_user_by_legacy_object(legacy_user)
                 if item:

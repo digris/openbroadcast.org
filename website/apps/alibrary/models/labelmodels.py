@@ -6,7 +6,7 @@ import tagging
 import os
 import logging
 import arating
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.utils import translation
 from django.core.urlresolvers import reverse, NoReverseMatch
@@ -87,21 +87,21 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         blank=True, null=True
     )
     owner = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True, null=True, on_delete=models.SET_NULL,
         related_name="labels_owner"
     )
     creator = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True, null=True, on_delete=models.SET_NULL,
         related_name="labels_creator")
     last_editor = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True, null=True, on_delete=models.SET_NULL,
         related_name="labels_last_editor"
     )
     publisher = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True, null=True, on_delete=models.SET_NULL,
         related_name="labels_publisher"
     )
