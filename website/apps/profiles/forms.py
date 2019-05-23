@@ -7,6 +7,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Fieldset, Div, Field, Row, Column
 from django import forms
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.forms.models import inlineformset_factory
 from django.utils.translation import ugettext as _
@@ -83,7 +84,7 @@ class ProfileForm(ModelForm):
                 Field('fax', css_class='input-xlarge'),
                 Field('address1', css_class='input-xlarge'),
                 Field('address2', css_class='input-xlarge'),
-                Field('state', css_class='input-xlarge'),
+                #Field('state', css_class='input-xlarge'),
                 Field('city', css_class='input-xlarge'),
                 Field('zip', css_class='input-xlarge'),
                 Field('country', css_class='input-xlarge'),
@@ -232,7 +233,6 @@ class UserForm(ModelForm):
         fields = (
             'first_name',
             'last_name',
-            #'username',
             'email'
         )
         help_texts = {
@@ -244,13 +244,21 @@ class UserForm(ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 _('User Details'),
-                #Field('username', css_class='input-xlarge'),
                 Field('email', css_class='input-xlarge'),
                 Field('first_name', css_class='input-xlarge'),
                 Field('last_name', css_class='input-xlarge'),
             )
         )
         super(UserForm, self).__init__(*args, **kwargs)
+
+
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if get_user_model().objects.filter(email=email).exclude(pk=self.instance.pk).exists():
+            raise ValidationError('This e-mail address is already in use.')
+
+        return email
 
 
 

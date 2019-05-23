@@ -1,12 +1,10 @@
 {% load i18n %}
 
 {% if object.user == request.user %}
-    <div id="profile_transform" class="playlist-edit transform listing menu-context">
+    <div class="menu-context mentoring-panel">
         {% if not object.is_approved %}
-            <div class="page-header">
-                <h2>{% trans "Get reviewed" %}
-                    <small></small>
-                </h2>
+            <div class="menu-context--prefix">
+                <span class="title">{% trans "Get reviewed" %}</span>
                 <p>{% trans "In order to gain full access to the platform your profile needs to be reviewed by a mentor." %}</p>
                 {% if object.mentor %}
                     <p>{% trans "Your mentor is" %}
@@ -15,30 +13,27 @@
                 {% endif %}
             </div>
             {% if object.mentor %}
-                <div class="set">
-                    <ul class="unstyled">
-                        <li class="action {% if not object.mentor %}disabled{% endif %} selection_single">
-                            <span class="left icon"><a
-                                href="{% url "postman_write" object.mentor.username %}?subject={% trans "Please review my profile" %}"
-                                title="{% trans "Request a profile-review" %}"><i
-                                class="icon-unlock"></i> {% trans "Request a profile-review" %}</a> </span>
-                            <span class="opt"></span>
-                            <span class="clear"></span>
+                <div class="action-group">
+                    <ul>
+                        <li>
+                            <a class="hoverable" href="{% url "postman_write" object.mentor.username %}?subject={% trans "Please review my profile" %}" title="Request a profile-review">
+                                <i class="icon icon-unlock"></i>
+                                <span>{% trans "Request a profile-review" %}</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
             {% endif %}
-            <div>
+            <div class="menu-context--appendix">
             {% if object.mentor %}
                 <p>
                     {% trans "Please complete your profile adequately* before asking for a review." %}<br/>
-                    {% trans "Your mentor will check if your profile is more or less complete, so consider to add at least" %}:
+                    {% trans "Consider to add at least" %}:
                 </p>
                 <ul>
                     <li>{% trans "Full name" %}</li>
                     <li>{% trans "A description" %}</li>
                     <li>{% trans "usefull contact information" %}</li>
-                    <li>{% trans "the more - the better" %} :)</li>
                 </ul>
             {% else %}
                 <p>{% blocktrans with url='/network/users/' %}
@@ -48,8 +43,5 @@
             {% endif %}
             </div>
         {% endif %}
-        <div class="summary-holder">
-
-        </div>
     </div>
 {% endif %}

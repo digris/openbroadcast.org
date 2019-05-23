@@ -68,7 +68,7 @@
 
   // TODO: check for more generic solution to handle checkbox inputs
   #input_id_tos
-    margin-left: 132px
+    margin-left: 152px
     .input-container__field
       display: flex
       align-items: center
@@ -119,44 +119,24 @@
 
 
   .social-login-container
-    display: flex
-    flex-direction: column
+    margin-top: 12px
+    display: grid
+    grid-template-columns: calc(50% - 6px) calc(50% - 6px)
+    grid-gap: 12px
+
     .auth-social
-      //padding: 0 !important;
-      margin-bottom: 2px
-    .auth-social
-      flex-grow: 1
-      .auth-social-button
-        display: flex
-        //color: $black;
-        padding: 6px 6px
-        width: 100%
-        transition: background 0.2s
-        background: rgba(0, 0, 0, 0.1)
-        &:hover
-          //ackground: rgba($primary-color, .05);
-          //background: $primary-color;
-          // color: $white;
-        //@include clearfix;
-        .icon-container
-          display: block
-          float: left
-          margin-right: 14px
-          img.icon
-            height: 18px
-            filter: grayscale(100%)
-        .text-container
-          display: block
-          float: left
-          padding-top: 2px
-      // provider styles
-      .auth-social-button-google
-        //color: $black;
-        &:hover
-          img.icon
-            filter: grayscale(0%)
-      .auth-social-button-facebook
-        //color: $black;
-        &:hover
-          img.icon
-            filter: brightness(500%)
+      padding: 10px
+      display: flex
+      align-items: center
+      text-decoration: none
+      color: #222
+      background: #e5e5e5
+      transition: background 200ms
+      &:hover
+        background: $primary-color-b
+        // border-radius: 4px
+        color: $white
+
+      .icon
+        width: 22px
+        font-size: 16px

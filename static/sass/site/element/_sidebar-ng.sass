@@ -3,14 +3,29 @@
 
 .content__sidebar .menu-context
 
+  &--prefix
+    padding-bottom: 12px
+    .title
+      font-size: 120%
+
+  &--appendix
+    padding-bottom: 12px
+
+  &--prefix,
+  &--appendix,
+    ul
+      list-style-type: circle
+      list-style-position: inside
+
   .action-group
     ul
-
-      margin-bottom: 25px
+      margin-bottom: 12px
       border-top: 1px solid $separator-line-color
 
       li
         border-bottom: 1px solid $separator-line-color
+        display: inline-block
+        width: 100%
 
         a
           display: block

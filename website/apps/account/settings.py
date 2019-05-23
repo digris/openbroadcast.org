@@ -9,27 +9,27 @@ BACKEND_DETAILS = {
     "email": {
         "name": "Login",
         "icon": "icon-email-secure slim",
-        "hint": _("your Email Account"),
+        "cta": _("Continue with your Email account"),
     },
     "facebook": {
         "name": "Facebook",
-        "icon": "facebook",
-        "hint": _("Continue with Facebook"),
+        "icon": "icon-facebook",
+        "cta": _("Continue with Facebook"),
     },
     "google-oauth2": {
         "name": "Google",
-        "icon": "google",
-        "hint": _("your Google Account"),
+        "icon": "icon-google-plus",
+        "cta": _("Continue with Google"),
     },
     "github": {
         "name": "Github",
         "icon": "github",
-        "hint": _("your Github Account"),
+        "cta": _("Continue with Github"),
     },
-    "vk-oauth2": {"name": "VK", "icon": "vk", "hint": _("your VK Account")},
+    "vk-oauth2": {"name": "VK", "icon": "vk", "hint": _("Continue with VK")},
     "spotify": {
         "name": "Spotify",
         "icon": "spotify",
-        "hint": _("your Spotify Account"),
+        "cta": _("Continue with Spotify"),
     },
 }

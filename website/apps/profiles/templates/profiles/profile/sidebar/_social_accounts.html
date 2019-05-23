@@ -1,0 +1,31 @@
+{% load i18n account_tags %}
+
+<div class="menu-context social-auth-panel">
+    <div class="menu-context--prefix">
+        <span class="title">{% trans "Accounts" %}</span>
+    </div>
+    <div class="action-group">
+        <ul>
+            {% for backend in backends.associated %}
+                {% backend_detail_as backend.provider as backend_detail %}
+                <li>
+                    <a class="hoverable" href="{% url "social:disconnect" backend.provider %}?next={{ request.get_full_path }}" title="Disconnect Account">
+                        <i class="icon {{ backend_detail.icon }}"></i>
+                        <span>{{ backend_detail.name }}</span>
+                        <span class="opt pull-right">{% trans "disconnect" %}</span>
+                    </a>
+                </li>
+            {% endfor %}
+            {% for backend in backends.not_associated %}
+                {% backend_detail_as backend as backend_detail %}
+                <li>
+                    <a class="hoverable" href="{% url "social:begin" backend %}?next={{ request.get_full_path }}" title="Connect Account">
+                        <i class="icon {{ backend_detail.icon }}"></i>
+                        <span>{{ backend_detail.name }}</span>
+                        <span class="opt pull-right">{% trans "connect" %}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
