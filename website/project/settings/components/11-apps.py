@@ -69,6 +69,9 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'versatileimagefield',
 
+
+    'account',
+
     # cms
     'cms',
     'menus',
@@ -113,7 +116,6 @@ INSTALLED_APPS = [
 
     # platform apps
     'profiles',
-    'account',
     'postman',
     'atracker',
     'invitation',
@@ -224,7 +226,7 @@ SOCIAL_AUTH_PIPELINE = (
     "account.social_auth_pipeline.user_details.get_details",
 )
 
-SOCIAL_AUTH_USER_MODEL = "auth.User"
+SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL
 SOCIAL_AUTH_EMAIL_FORM_URL = "account:login"
 
 # github
@@ -305,6 +307,7 @@ SENDFILE_BACKEND = 'sendfile.backends.simple'
 
 ACTSTREAM_SETTINGS = {
     'MODELS': (
+        # 'account.user',
         'auth.user',
         'auth.group',
         'alibrary.release',

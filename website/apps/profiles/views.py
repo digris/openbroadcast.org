@@ -16,7 +16,8 @@ from django.views.generic import DetailView, ListView, View, UpdateView
 from braces.views import LoginRequiredMixin
 from invitation.models import Invitation
 from profiles.forms import UserForm, ProfileForm, ServiceFormSet, LinkFormSet, ActionForm, UserCredentialsForm
-from profiles.models import Profile, User
+from profiles.models import Profile
+from django.contrib.auth import get_user_model
 from pure_pagination.mixins import PaginationMixin
 
 from elasticsearch_dsl import TermsFacet
@@ -392,7 +393,7 @@ def profile_edit(request, template_name='profiles/profile_form.html'):
 
 class UserCredentialsView(LoginRequiredMixin, UpdateView):
 
-    model = User
+    model = get_user_model()
     form_class = UserCredentialsForm
     template_name = 'profiles/credentials_form.html'
     success_url = '/network/users/edit/'

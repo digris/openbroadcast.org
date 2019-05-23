@@ -1,7 +1,8 @@
 """Models for the ``object_events`` app."""
 import logging
-from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
 from django.template.defaultfilters import date
@@ -62,7 +63,7 @@ class Event(models.Model):
 
     """
     user = models.ForeignKey(
-        'auth.User',
+        settings.AUTH_USER_MODEL,
         verbose_name=_('User'),
         related_name='atracker_events',
         null=True, blank=True,

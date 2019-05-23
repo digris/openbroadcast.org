@@ -9,7 +9,9 @@ import tagging
 from dateutil import relativedelta
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.core.urlresolvers import reverse
 
@@ -60,13 +62,13 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         (2, _('Other')),
     )
     user = models.OneToOneField(
-        User,
+        settings.AUTH_USER_MODEL,
         unique=True,
         on_delete=models.CASCADE
     )
 
     mentor = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True, null=True,
         related_name="godchildren"
     )
@@ -238,7 +240,7 @@ class Community(UUIDModelMixin, MigrationMixin):
     slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
 
     group = models.OneToOneField(Group, unique=True, null=True, blank=True)
-    members = models.ManyToManyField(User, blank=True)
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 
     # auto-update
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -311,7 +313,8 @@ def create_profile(sender, instance, created, **kwargs):
        instance.groups.add(default_group)
        instance.save()
 
-post_save.connect(create_profile, sender=User)
+# TODO: implement signal
+# post_save.connect(create_profile, sender=get_user_model())
 
 
 def add_to_group(sender, instance, **kwargs):
