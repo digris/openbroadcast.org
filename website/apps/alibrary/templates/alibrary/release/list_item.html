@@ -57,6 +57,11 @@
                             {% endcomment %}
 
                         </a>
+                        {% comment %}
+                        <thumb-rating
+                            obj-uuid="{{ item.uuid }}"
+                            obj-ct="{{ item.get_ct }}"></thumb-rating>
+                        {% endcomment %}
                     </li>
                     <li>
                         {% for artist in item.get_artists %}

@@ -23,13 +23,17 @@ body
 .base
 
   main
-    flex-grow: 1
+    height: 100%
     // padding-top: main navigation height + offset
     padding-top: 64px + 64px
     padding-bottom: 48px
     max-width: $g-content-max-width
     width: 100%
     margin: 0 auto
+
+    // we need an intermediate container for vue.js
+    .app-container
+      flex-grow: 1
 
     > .heading
       display: grid

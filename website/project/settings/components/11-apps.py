@@ -189,17 +189,17 @@ THUMBNAIL_ALIASES = {
 AUTH_USER_MODEL = 'auth.User'
 AUTH_PROFILE_MODULE = "profiles.Profile"
 ANONYMOUS_USER_ID = -1
-LOGIN_URL = '/accounts/login/'
-LOGOUT_URL = '/accounts/signout/'
+LOGIN_URL = '/account/login/'
+LOGOUT_URL = '/account/logout/'
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_ACTIVATION_DAYS = 7
 AUTHENTICATION_BACKENDS = (
     "social_core.backends.google.GoogleOAuth2",
     "social_core.backends.facebook.FacebookOAuth2",
+    # "social_core.backends.soundcloud.SoundcloudOAuth2",
     # "social_core.backends.vk.VKOAuth2",
-    # 'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.twitter.TwitterOAuth',
     # "social_core.backends.spotify.SpotifyOAuth2",
-    #
     'obp_legacy.auth.backends.LegacyBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
@@ -268,6 +268,9 @@ SOCIAL_AUTH_VK_OAUTH2_SCOPE = ["email", "audio", "status"]
 
 SOCIAL_AUTH_SPOTIFY_KEY = ""
 SOCIAL_AUTH_SPOTIFY_SECRET = ""
+
+SOCIAL_AUTH_SOUNDCLOUD_KEY = ""
+SOCIAL_AUTH_SOUNDCLOUD_SECRET = ""
 
 
 # invitation

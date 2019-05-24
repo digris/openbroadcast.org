@@ -2,84 +2,28 @@
 
 {% load i18n truncate_tags ctype_tags thumbnail arating_tags markup_tags wiki_tags sekizai_tags activity_tags atracker_tags spurl %}
 
-{% block heading %}
-
-    {% addtoblock "js-post" %}
-        <script>
-            $(function () {
-
-                // quick'n'dirty follow/unfollow AJAX implementation
-                $('table.follows').on('click', '[data-action="trigger_follow"]', function(e){
-                    e.preventDefault();
-                    var el = $(this);
-                    var url = el.attr('href').split("?")[0];
-                    $.get(url, function(data){
-                        el.toggleClass('following');
-                    });
-                })
-            });
-        </script>
-    {% endaddtoblock %}
-
-    <div id="heading">
-        {% with page_title="My Profile" %}
-        {% include "skeleton/heading.html" %}
-        {% endwith %}
-    </div>
-
-{% endblock %}
+{% block heading %}{% endblock %}
 
 {% block inner %}
-    <div class="item_detail">
-
-    <section class="shaded">
-        <div class="row iteminfo release">
-            {% include "profiles/profile/_header.html" %}
-        </div>
-    </section>
-
-    <div>
-        <ul class="nav nav-tabs">
-
-            {% for item in section_menu %}
-                <li {% if item.active %}class="active"{% endif %}>
-                    <a href="{{ item.url }}">{{ item.title }}</a>
-                </li>
-            {% endfor %}
-
-        </ul>
+<div class="item item--detail item--profile">
+    <div class="item--header">
+        {% include "profiles/profile/_header_ng.html" %}
     </div>
-
+    <nav class="item--section-menu">
+        {% for item in section_menu %}
+            <div class="menu-item{% if item.active %} menu-item--active{% endif %}">
+                <a href="{{ item.url }}">{{ item.title }}</a>
+            </div>
+        {% endfor %}
+    </nav>
+    <div class="item--body">
+        <h4>Activities</h4>
+        <div>{{ activities }}</div>
+    </div>
 </div>
-
-    <div>
-        {{ section_menu }}
-    </div>
-
-    <h2>{{ section_template }}</h2>
-
-    <h4>Playlists</h4>
-    <div>{{ playlists }}</div>
-
-    <h4>Uploads</h4>
-    <div>{{ uploads }}</div>
-
-    <h4>Activities</h4>
-    <div>{{ activities }}</div>
-
-    {% for action in activities|slice:'0:100' %}
-        <ul>
-            <li>{{  action.target|ct_name_by_object|title }}</li>
-            <li>{{ action.verb }}</li>
-            <li>{{ action.target }}</li>
-            <li>{{  action.timestamp }}</li>
-        </ul>
-    {% endfor %}
-
 {% endblock %}
 
 {% block sidebar %}
     {% include "profiles/profile/sidebar/_detail.html" %}
 	{% include "profiles/profile/sidebar/_mentoring.html" %}
 {% endblock %}
-

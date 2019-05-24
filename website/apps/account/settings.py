@@ -16,6 +16,16 @@ BACKEND_DETAILS = {
         "icon": "icon-facebook",
         "cta": _("Continue with Facebook"),
     },
+    "soundcloud": {
+        "name": "Soundcloud",
+        "icon": "icon-soundcloud",
+        "cta": _("Continue with Soundcloud"),
+    },
+    "twitter": {
+        "name": "Twitter",
+        "icon": "icon-twitter",
+        "cta": _("Continue with Twitter"),
+    },
     "google-oauth2": {
         "name": "Google",
         "icon": "icon-google-plus",

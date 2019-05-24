@@ -57,50 +57,65 @@
 
         {% cms_toolbar %}
 
-        {% include "element/topbar/_topbar.html" %}
+        <div id="app" class="app-container">
 
-        {% block teaser %}{% endblock %}
+            {% include "element/topbar/_topbar.html" %}
 
-        <main class="main">
-            <div class="heading">
-                {% block heading %}{% endblock %}
+            {% block teaser %}{% endblock %}
+
+            <main class="main">
+                <!--
+                {% block messages %}
+                    {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                        <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                {% endblock %}
+                -->
+                <div class="heading">
+                    {% block heading %}{% endblock %}
+                    <div>
+                    <nav class="menubar">
+                        {% block menubar %}
+                            {% include "skeleton/_menubar.html" %}
+                        {% endblock %}
+                    </nav>
+                    <div id="tagcloud" class="tagcloud">
+                        {% block tagcloud %}{% endblock %}
+                    </div>
+                    </div>
+                </div>
+                <div class="content">
+                    {% comment %}{% endcomment %}
+                    {% block main %}{% endblock %}
+                </div>
+            </main>
+
+            <footer>
+                {% include "skeleton/footer.html" %}
+            </footer>
+
+            {% block user_panels %}
+            {% if not user.is_authenticated %}
+                {% include "element/_private_site_panel.html" %}
+            {% endif %}
+            {% endblock %}
+
+            {% if loginas_active %}
+            <section id="loginas_message">
                 <div>
-                <nav class="menubar">
-                    {% block menubar %}
-                        {% include "skeleton/_menubar.html" %}
-                    {% endblock %}
-                </nav>
-                <div id="tagcloud" class="tagcloud">
-                    {% block tagcloud %}{% endblock %}
+                    <h2>WARNING: Currently logged in as user "{{ user }}"!</h2>
+                    <p>
+                        <a href="{% url "loginas-user-login" loginas_active %}" class="btn btn-primary">Back to own account</a>
+                    </p>
                 </div>
-                </div>
-            </div>
-            <div class="content">
-                {% comment %}{% endcomment %}
-                {% block main %}{% endblock %}
-            </div>
-        </main>
+            </section>
+            {% endif %}
 
-        <footer>
-            {% include "skeleton/footer.html" %}
-        </footer>
-
-        {% block user_panels %}
-        {% if not user.is_authenticated %}
-            {% include "element/_private_site_panel.html" %}
-        {% endif %}
-        {% endblock %}
-
-        {% if loginas_active %}
-        <section id="loginas_message">
-            <div>
-                <h2>WARNING: Currently logged in as user "{{ user }}"!</h2>
-                <p>
-                    <a href="{% url "loginas-user-login" loginas_active %}" class="btn btn-primary">Back to own account</a>
-                </p>
-            </div>
-        </section>
-        {% endif %}
+        </div>
 
         <!-- TODO: just temporary... -->
         <div id="player_control_app">(( loading player app ))</div>

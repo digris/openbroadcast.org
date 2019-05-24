@@ -1,0 +1,43 @@
+{% load truncate_tags i18n thumbnail arating_tags spacify_tags gravatar %}
+
+<div class="header__primary">
+
+    <div class="title title--primary">
+        <h2>First Title</h2>
+        <small>Single (CH)</small>
+    </div>
+    <div class="title title--secondary">
+        <h3>by <a href="#">First Title</a></h3>
+        <!--
+            <small>Musician, Folk</small>
+        -->
+    </div>
+
+
+</div>
+<div class="header__secondary">
+
+    <div class="visual visual--lightbox" data-slideshow-container="">
+        <figure>
+            <img src="https://secure.gravatar.com/avatar/5cf42e3c9a94279c6e46ce647727ec5f.jpg?s=500&r=g&d=identicon">
+        </figure>
+    </div>
+</div>
+
+<div class="header__primary">
+    <div class="tags">
+        {% for tag in object.tags %}
+            <span class="tag">{{ tag.name|spacify }}</span>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="header__secondary">
+    <div class="rating">
+        {# rating_for_object object #}
+        <thumb-rating
+            obj-uuid="{{ object.uuid }}"
+            obj-ct="{{ object.get_ct }}"></thumb-rating>
+
+    </div>
+</div>

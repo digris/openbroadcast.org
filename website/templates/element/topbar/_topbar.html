@@ -1,4 +1,4 @@
-{% load menu_tags i18n %}
+{% load i18n menu_tags account_tags %}
 
 <div class="topbar">
 
@@ -23,7 +23,7 @@
                 <a href="{% url "profiles-profile-detail" user.username %}">{{ user.profile.get_display_name }}</a>
                 <ul class="children">
                     <li>
-                        <a href="{% url "auth_logout" %}?next=/">
+                        <a href="{% url "account:logout" %}?next=/">
                             {% trans 'Logout' %}
                         </a>
                     </li>
@@ -44,19 +44,28 @@
             </li>
         {% else %}
             <li class="login">
-                <a rel="nofollow" title="Login" href="{% url "auth_login" %}?next={{ request.get_full_path }}" rel="modal:open">
+                <a rel="nofollow" title="Login" href="{% url "account:login" %}?next={{ request.get_full_path }}" rel="modal:open">
                     {% trans 'Login' %}
                 </a>
                 <ul class="children">
                     <li>
-                        <a rel="nofollow" href="{% url "auth_login" %}?next={{ request.get_full_path }}">
-                            {% trans 'Login / Sign Up' %}
+                        <a rel="nofollow" href="{% url "account:login" %}?next={{ request.get_full_path }}">
+                            {% trans 'Login' %}
                         </a>
                     </li>
-                    {% for service in social_auth.backends %}
+                    <li>
+                        <a rel="nofollow" href="{% url "account:register" %}?next={{ request.get_full_path }}">
+                            {% trans 'Create Account' %}
+                        </a>
+                    </li>
+                    {% for backend in backends.backends %}
+                        {% backend_detail_as backend as backend_detail %}
                         <li>
-                            <a rel="nofollow" href="{% url "socialauth_begin" service %}?next={{ request.get_full_path }}">
-                                <i class="icon-{{ service }}"></i> {% trans 'Login with' %} {{ service|title }}
+                            <a href="{% url "social:begin" backend %}?next={{ request.get_full_path }}" class="auth-social auth-social-{{ backend }}"
+                               rel="nofollow"
+                               data-turbolinks="false">
+                                <i class="icon {{ backend_detail.icon }}"></i>
+                                <span>{{ backend_detail.cta }}</span>
                             </a>
                         </li>
                     {% endfor %}

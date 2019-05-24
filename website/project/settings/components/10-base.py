@@ -96,6 +96,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'account.middleware.SocialAuthExceptionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.locale.LocaleMiddleware',
 
@@ -109,8 +110,6 @@ MIDDLEWARE_CLASSES = [
     'arating.middleware.AratingIpMiddleware',
 ]
 
-
-
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 
@@ -118,8 +117,6 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 ABSOLUTE_URL_OVERRIDES = {
     "auth.user": lambda o: "/network/users/%s/" % o.username,
 }
-
-
 
 ##################################################################
 # API v2

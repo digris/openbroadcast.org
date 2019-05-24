@@ -9,11 +9,18 @@
             {% for backend in backends.associated %}
                 {% backend_detail_as backend.provider as backend_detail %}
                 <li>
-                    <a class="hoverable" href="{% url "social:disconnect" backend.provider %}?next={{ request.get_full_path }}" title="Disconnect Account">
-                        <i class="icon {{ backend_detail.icon }}"></i>
-                        <span>{{ backend_detail.name }}</span>
-                        <span class="opt pull-right">{% trans "disconnect" %}</span>
-                    </a>
+                    <form method="post" action="{% url "social:disconnect_individual" backend.provider backend.id %}?next={{ request.get_full_path }}">
+                        {% csrf_token %}
+                        <a
+                            class="hoverable"
+                            onclick="$(this).parents('form:first').submit();"
+                            href="#"
+                            title="Disconnect Account">
+                            <i class="icon {{ backend_detail.icon }}"></i>
+                            <span>{{ backend_detail.name }}</span>
+                            <span class="opt pull-right">{% trans "disconnect" %}</span>
+                        </a>
+                    </form>
                 </li>
             {% endfor %}
             {% for backend in backends.not_associated %}

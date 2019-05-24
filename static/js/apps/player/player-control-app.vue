@@ -11,3 +11,5 @@
         left: 10px;
     }
 </style>
+
+<template></template>

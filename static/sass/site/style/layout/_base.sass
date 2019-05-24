@@ -1,0 +1,26 @@
+@charset "UTF-8"
+
+@import mixins
+
+
+.content__primary
+  > .item
+    display: flex
+    flex-direction: column
+
+
+  .item
+
+    &--header
+      @include item-header
+
+    &--section-menu
+      @include section-menu
+      padding-top: 20px
+
+    &--body
+      @include item-body
+      margin-top: 20px
+
+
+
