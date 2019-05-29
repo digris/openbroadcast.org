@@ -1,0 +1,61 @@
+{% load i18n truncate_tags arating_tags %}
+
+<div class="card card--playlist">
+    <div class="card__visual">
+        <div class="image">
+            <figure>
+                <img src="https://openbroadcast.org/media/thumbnails/alibrary/playlist/952/27ec/416c/a034/3d83475f663d/playlists.gif.1200x1200_q80_upscale.png">
+            </figure>
+        </div>
+        <div class="tags">
+            {% for tag in object.tags|slice:":8" %}
+                <span class="tag">{{ tag.name|truncate_chars_inner:10 }}</span>
+            {% endfor %}
+        </div>
+        <div class="actions">
+            <object-actions
+                obj-ct="{{ object.get_ct }}"
+                obj-uuid="{{ object.uuid }}"
+                actions="play,queue,download,queue-edit-and-foo-and-more,anoter,list,x,blup">
+            </object-actions>
+        </div>
+    </div>
+    <div class="card__body">
+
+        <div>
+            <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">
+                {{ object.name|truncate_chars_inner:24 }}
+                {% if object.country %}({{ object.country }}){% endif %}
+            </a>
+        </div>
+        <div>
+            {% topflop_for_object object %}
+        </div>
+
+        <div>
+            {% if object.series %}
+                {{ object.series.name|truncate_chars_inner:24 }}
+                {% if object.series_number %}
+                    #{{ object.series_number }}
+                {% endif %}
+            {% endif %}
+        </div>
+        <div>
+            {{ object.get_type_display }}
+        </div>
+
+        <div>
+            <a href="{{ object.user.get_absolute_url }}">{{ object.user.profile.get_display_name }}</a>
+        </div>
+        <div>
+            {% if object.type == 'broadcast' %}
+                {{ object.get_status_display }}
+            {% endif %}
+        </div>
+
+
+    </div>
+    <div class="card__footer">
+        (( footer ))
+    </div>
+</div>

@@ -1,0 +1,7 @@
+<div class="list list--grid">
+{% for playlist in playlists %}
+    <div class="list-item">
+        {% include 'alibrary/playlist/_card.html' with object=playlist %}
+    </div>
+{% endfor %}
+</div>

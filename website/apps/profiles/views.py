@@ -90,14 +90,27 @@ class ProfileDetailViewNG(DetailView):
 
     model = Profile
     template_name = 'profiles/profile_detail_ng.html'
-    section_template_base = 'profiles/_partials/_profile_detail'
+    section_template_base = 'profiles/profile/_detail'
     section = None
     sections = [
         ('playlists', _('Playlists')),
         ('profile', _('Profile')),
+        ('votes', _('Up- & Downvotes')),
         ('uploads', _('Uploads')),
         ('activities', _('Activities')),
     ]
+
+    def dispatch(self, request, *args, **kwargs):
+
+        print(kwargs.get('section'))
+
+        self.section = self.get_default_section(self.get_object(), kwargs.get('section'))
+
+        if not self.section in [s[0] for s in self.sections]:
+            return HttpResponseBadRequest('invalid section "{}"'.format(self.section))
+
+        return super(ProfileDetailViewNG, self).dispatch(request, *args, **kwargs)
+
 
     def get_object(self, queryset=None):
         obj = get_object_or_404(
@@ -105,6 +118,18 @@ class ProfileDetailViewNG(DetailView):
             uuid=self.kwargs['uuid']
         )
         return obj
+
+
+    def get_default_section(self, obj, section):
+
+        # get default section if not provided
+        if not section:
+            if obj.user.playlists.exclude(type='basket').exists():
+                section = 'playlists'
+            else:
+                section = 'profile'
+
+        return section
 
 
     def get_section_menu(self, object, section):
@@ -136,15 +161,14 @@ class ProfileDetailViewNG(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProfileDetailViewNG, self).get_context_data(**kwargs)
-        section = kwargs.get('section')
 
-        section_menu = self.get_section_menu(object=self.object, section=section)
+        section_menu = self.get_section_menu(object=self.object, section=self.section)
 
         ###############################################################
         # generic context, needed for all sections
         ###############################################################
         context.update({
-            'section': section,
+            'section': self.section,
             'section_menu': section_menu,
             'section_template': self.get_section_template(),
         })
@@ -152,7 +176,7 @@ class ProfileDetailViewNG(DetailView):
         ###############################################################
         # section specific context
         ###############################################################
-        if section == 'playlists':
+        if self.section == 'playlists':
             playlist_qs = self.object.user.playlists.exclude(type='basket').order_by('-created')
             playlist_qs = playlist_qs.select_related(
                 'user',
@@ -163,7 +187,7 @@ class ProfileDetailViewNG(DetailView):
                 'playlists': playlist_qs,
             })
 
-        if section == 'uploads':
+        if self.section == 'uploads':
             release_qs = Release.objects.filter(
                 creator=self.object.user
             ).select_related(
@@ -196,7 +220,7 @@ class ProfileDetailViewNG(DetailView):
                 },
             })
 
-        if section == 'activities':
+        if self.section == 'activities':
             activity_qs = actor_stream(self.object.user).select_related(
                 # 'actor_content_type',
                 # 'target_content_type',
@@ -221,24 +245,7 @@ class ProfileDetailViewNG(DetailView):
 
 
     def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        self.section = self.kwargs.get('section')
-
-        ###############################################################
-        # if no section given, redirect to default section
-        ###############################################################
-        if not self.section:
-            if self.object.user.playlists.exclude(type='basket').exists():
-                section = 'playlists'
-            else:
-                section = 'profile'
-            return redirect('profiles-profile-detail-ng', uuid=self.object.uuid, section=self.section)
-
-        if not self.section in [s[0] for s in self.sections]:
-            return HttpResponseBadRequest('invalid section "{}"'.format(self.section))
-
-        context = self.get_context_data(object=self.object, section=self.section)
-        return self.render_to_response(context)
+        return super(ProfileDetailViewNG, self).get(request, *args, **kwargs)
 
 
 

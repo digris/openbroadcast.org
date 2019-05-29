@@ -3,7 +3,7 @@ import '../sass/screen.sass'
 import '../sass/scheduler.sass'
 
 // global stylesheet import
-import '../sass/bundle.sass';
+// import '../style/main.scss';
 
 // site apps
 import AppInitializer from './initializer'

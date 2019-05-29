@@ -14,15 +14,6 @@
 
 	<dl class="dl-horizontal main">
 
-        <!--
-            <dt>
-                {% trans "Username" %}:
-            </dt>
-            <dd>
-                {{ object.user.username }}
-            </dd>
-		-->
-
         {% if object.pseudonym %}
 		<dt>
 			{% trans "Pseudonym" %}:
@@ -31,17 +22,6 @@
 			{{ object.pseudonym }}
 		</dd>
 		{% endif %}
-
-        <!--
-            {% if object.description %}
-            <dt>
-                {% trans "Disambiguation" %}:
-            </dt>
-            <dd>
-                {{ object.description }}
-            </dd>
-            {% endif %}
-		-->
 
 		{% if object.mentor %}
 		<dt>

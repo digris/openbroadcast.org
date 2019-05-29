@@ -1,8 +1,6 @@
 @charset "UTF-8"
 
 
-
-
 =item-header()
   background: $white
 
@@ -24,6 +22,18 @@
           margin-left: 10px
           opacity: 0.7
 
+      .meta
+        &__item
+          display: grid
+          grid-template-columns: 120px minmax(auto, 60%)
+
+          a, span
+            white-space: nowrap
+
+          &__grid
+            display: grid
+            grid-template-columns: fit-content(50%) fit-content(50%)
+            grid-column-gap: 8px
 
     &__secondary
 
@@ -40,9 +50,12 @@
         display: flex
         justify-content: center
 
-    .tags
-      tag
-        background: black
+  .tags
+    .tag
+      background: black
+      padding: 2px 4px 1px
+      color: #fff
+      text-transform: uppercase
 
 
 =section-menu
@@ -56,7 +69,6 @@
   justify-content: center
 
   .menu-item
-    padding: 1px 12px
     margin: 0 0 -1px 10px
     border: 1px solid $bg-color
     border-bottom-color: $border-color
@@ -66,6 +78,8 @@
     background: $bg-color
 
     a
+      padding: 1px 12px
+      display: inline-block
       color: inherit
       text-decoration: inherit
 
@@ -86,4 +100,4 @@
 
 
 =item-body
-  background: orange
+  background: transparent

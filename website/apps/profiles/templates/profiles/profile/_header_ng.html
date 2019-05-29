@@ -3,14 +3,78 @@
 <div class="header__primary">
 
     <div class="title title--primary">
-        <h2>First Title</h2>
-        <small>Single (CH)</small>
+        <h2>{% firstof object.user.get_full_name|truncate_chars_inner:40  object.user.username %}</h2>
+        <small>
+            {% if object.city %}{{ object.city }}{% endif %}
+            {% if object.city and object.country %}, {% endif %}
+            {% if object.country %}{{ object.country }}{% endif %}
+        </small>
     </div>
     <div class="title title--secondary">
-        <h3>by <a href="#">First Title</a></h3>
-        <!--
-            <small>Musician, Folk</small>
-        -->
+        <h3>a.k.a. {{ object.pseudonym }}</h3>
+    </div>
+
+    <div class="meta">
+
+        {% if object.mentor %}
+            <div class="meta__item">
+                <div>
+                    {% trans "Mentor" %}:
+                </div>
+                <div>
+                    <a href="{{ object.mentor.get_absolute_url }}">{% firstof object.mentor.get_full_name object.mentor.username %}</a>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if object.user.godchildren.count %}
+            <div class="meta__item">
+                <div>
+                    {% trans "Mentoring" %}:
+                </div>
+                <div>
+                    {% for profile in object.user.godchildren.all %}
+                        <a href="{{ profile.user.get_absolute_url }}">{% firstof profile.user.get_full_name profile.user.username %}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if object.get_groups.count %}
+            <div class="meta__item">
+                <div>
+                    {% trans "Access level" %}:
+                </div>
+                <div>
+                    {% for group in object.get_groups.all %}
+                        {{ group }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if object.get_groups.count %}
+            <div class="meta__item">
+                <div>
+                    {% trans "History" %}:
+                </div>
+                <div class="meta__item__grid">
+                    <div>
+                        {% trans 'joined'|title %}:
+                    </div>
+                    <div>
+                        {{ object.user.date_joined|date:"SHORT_DATE_FORMAT" }}
+                    </div>
+                    <div>
+                        {% trans 'last login'|title %}:
+                    </div>
+                    <div>
+                        {{ object.user.last_login|date:"SHORT_DATE_FORMAT" }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
     </div>
 
 
@@ -35,9 +99,11 @@
 <div class="header__secondary">
     <div class="rating">
         {# rating_for_object object #}
+        <!--
         <thumb-rating
             obj-uuid="{{ object.uuid }}"
             obj-ct="{{ object.get_ct }}"></thumb-rating>
+        -->
 
     </div>
 </div>

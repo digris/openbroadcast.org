@@ -1,0 +1,59 @@
+@charset "UTF-8"
+
+
+=grid-layout($gutter: 14px)
+  display: grid
+  grid-template-columns: repeat(4, 1fr)
+  grid-auto-rows: minmax(100px, auto)
+  grid-gap: $gutter
+
+
+
+=card
+  background: #fff
+  &:hover
+    background: #0e90d2
+
+  .card
+
+    &__visual
+      position: relative
+
+      .image
+        figure
+          margin: 0
+
+      .tags
+        position: absolute
+        bottom: 6px
+        right: 0
+        text-align: right
+        .tag
+          background: black
+          display: inline-block
+          padding: 2px 4px 1px
+          margin: 2px 0 0 2px
+          color: #fff
+          text-transform: uppercase
+          white-space: nowrap
+
+      .actions
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        display: flex
+        align-items: center
+        justify-content: center
+
+    &__body
+      padding: 4px
+      display: grid
+      grid-template-columns: auto auto
+
+
+=list-item--grid
+  // background: $white
+  @include card
+

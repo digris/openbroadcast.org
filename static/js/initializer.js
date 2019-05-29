@@ -23,6 +23,7 @@ import AutocompleteWidgets from './element/autocomplete-widget';
 
 //
 import ThumbRating from './components/rating/ThumbRating.vue';
+import ObjectActions from './components/ObjectActions/ObjectActions.vue';
 
 Vue.use(Vuex);
 
@@ -38,6 +39,7 @@ class AppInitializer {
           el: '#app',
             components: {
               'thumb-rating': ThumbRating,
+              'object-actions': ObjectActions,
             }
         });
 
