@@ -8,16 +8,7 @@
 
 
     {% addtoblock "js-post" %} <script src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>{% endaddtoblock %}
-
-    {%  comment %}
-    <!-- dajaxice is not compatible with socket.io !!!! -->
-    {% addtoblock "js-post" %}<!-- pre dajax -->{% dajaxice_js_import %}<!-- post dajax -->{% endaddtoblock %}
-    {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>{% endaddtoblock %}
-    {%  endcomment %}
-
-
     {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
-
 
     {% addtoblock "js-post" %}
         {%  comment %}{%  endcomment %}
@@ -81,9 +72,6 @@
         </style>
     {% endaddtoblock %}
 
-    <div id="heading">
-        {% include "skeleton/heading.html" %}
-    </div>
 {% endblock %}
 
 {% block inner %}
@@ -129,7 +117,6 @@
 
                 <div class="tab-pane active" id="metadata">
 
-                {% comment %}{% endcomment %}
                     {% if form_errors %}
                     {% include "element/forms/_merged_form_errors.html" %}
                     {% endif %}
@@ -139,9 +126,6 @@
                         {% include "element/forms/_form_errors.html" %}
                         {% endwith %}
                     {% endif %}
-
-
-
 
                     <form class="form-horizontal form-compact form-playlist"
                           method="post"
@@ -155,12 +139,8 @@
 
                     </form>
 
-
-
                 </div>
 
-
-                {% comment %}{% endcomment %}
                 <div class="tab-pane" id="tracklist_editor">
 
                     {% if object.type == "broadcast" %}

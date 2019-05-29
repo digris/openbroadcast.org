@@ -84,21 +84,5 @@
     <div id="playlist_editor_list" class="list_body">
         <!-- loaded via nj -->
     </div>
-
-    {% if can_upload_media %}
-        <div class="add-content">
-            <div class="info">
-                <h4><i class="icon-plus-sign"></i> {% trans "Add more tracks" %}</h4>
-                <p>{% trans "Use the form below to search the library for music" %}</p>
-            </div>
-            <div id="playlist_editor_search" class="list_search hoverable">
-                <form>
-                    <input type="text" placeholder="{% trans "Type here to search for music" %}"/>
-                </form>
-                <div class="result"></div>
-            </div>
-            {% include "alibrary/playlist/_tracklist_upload.html" %}
-        </div>
-    {% endif %}
-
+    
 </div>
