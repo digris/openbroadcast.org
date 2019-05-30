@@ -18,8 +18,6 @@
     {% addtoblock "js-uncompressed" %}<script src="{{ STATIC_URL }}js/lib/flot-0.8.3/jquery.flot.js"></script>{% endaddtoblock %}
     {% addtoblock "js-uncompressed" %}<script src="{{ STATIC_URL }}js/lib/flot-0.8.3/jquery.flot.time.js"></script>{% endaddtoblock %}
 
-    {% addtoblock "js-uncompressed" %}<!--<script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-572c880b2e9ced75"></script>-->{% endaddtoblock %}
-
     {% addtoblock "js-post" %}
         <script>
             $(function () {
@@ -45,6 +43,8 @@
             });
         </script>
     {% endaddtoblock %}
+
+    {% addtoblock "js-uncompressed" %}{% addthis_widget %}{% endaddtoblock %}
 
     <div id="heading">
         {% include "skeleton/heading.html" %}
@@ -260,7 +260,7 @@
 
     </div>
 
-    {% addthis_widget %}
+
 
 
 {% endblock %}

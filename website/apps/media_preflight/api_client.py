@@ -88,6 +88,7 @@ class MediaPreflightAPIClient(object):
         files = {'media_file': open(obj.master.path, 'rb')}
 
         log.debug('request media preflight at: {}'.format(url))
+        log.debug('request media preflight payload: {}'.format(data))
 
         # TODO: add exception handling
         try:

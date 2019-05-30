@@ -75,29 +75,14 @@
 
     {% addtoblock "js-post" %}
     <script type="text/javascript">
-
-    $(document).ready(function() {
-
         $(function () {
-
-            importer.ui = new ImporterUi();
-            importer.ui.api_url = "{% url "api_dispatch_list" resource_name='import' api_name='v1'%}{{ object.id }}/";
-            importer.ui.fileupload_id = 'fileupload';
-            importer.ui.fileupload_options = {
-                autoUpload: true,
-                maxNumberOfFiles: 30,
-                maxFileSize: 1000000000, // 1000 MB
-                minFileSize: 200000,
-                //acceptFileTypes: /(\.|\/)(mp3|aif?f|wav|avi|flac|mp4|m4a)$/i,
-                acceptFileTypes: /(\.|\/)(mp3|wav|flac|mp4|ogg|m4a)$/i,
-                sequentialUploads: false,
-                limitConcurrentUploads: 3
-           };
-
-           importer.ui.init();
-
+            setTimeout(function(){
+                importer.ui = new ImporterUi();
+                importer.ui.api_url = "{% url "api_dispatch_list" resource_name='import' api_name='v1'%}{{ object.id }}/";
+                importer.ui.init();
+            }, 500)
         });
-    });
+
     </script>
     {% endaddtoblock %}
 
@@ -147,11 +132,12 @@
                                 <span> Add Files</span>
                                 <input type="file" name="files[]" multiple>
                             </span>&nbsp;&nbsp;
+                            <!--
                             <button type="submit" class="btn btn-primary start">
                                 <i class="icon-upload icon-white"></i>
                                 <span> Start upload</span>
                             </button>&nbsp;&nbsp;
-
+                            -->
                     </div>
 
                     <table role="presentation" class="table"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>

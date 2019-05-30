@@ -2,11 +2,11 @@
 from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 
+import json
 import logging
 
 from django.conf import settings
-from django.core.urlresolvers import reverse_lazy, reverse
-from rest_framework.reverse import reverse as api_reverse
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import pre_save, post_save, post_delete
 from django.dispatch import receiver
@@ -82,31 +82,32 @@ def preflight_check_pre_save(sender, instance, **kwargs):
     initiate preflight check (intermediate step here to handle async)
     """
 
+    log.debug('pre-save - status: {}'.format(instance.get_status_display()))
+
     if instance.result:
+
+        result = json.loads(instance.result)
 
         instance.status = PreflightCheck.STATUS_DONE
 
-        if instance.result['errors']:
+        if result['errors']:
             instance.preflight_ok = False
 
-        if instance.result['checks']:
+        if result['checks']:
 
-            duration_preflight = instance.result['checks'].get('duration_preflight')
+            duration_preflight = result['checks'].get('duration_preflight')
             duration_master = instance.media.master_duration
 
             #print('diff: {}'.format(abs(duration_preflight - duration_master)))
 
-            if duration_preflight and  (abs(duration_preflight - duration_master) < 2.0):
+            if duration_preflight and duration_master and (abs(duration_preflight - duration_master) < 2.0):
                 instance.preflight_ok = True
 
             else:
                 instance.preflight_ok = False
-                instance.result['errors']['duration'] = 'duration mismatch - master: {} preflight: {}'.format(
+                result['errors']['duration'] = 'duration mismatch - master: {} preflight: {}'.format(
                     duration_master, duration_preflight
                 )
-
-
-
 
 
 @receiver(post_save, sender=PreflightCheck)
@@ -114,6 +115,8 @@ def preflight_check_post_save(sender, instance, created, **kwargs):
     """
     initiate preflight check (intermediate step here to handle async)
     """
+
+    log.debug('post-save - status: {}'.format(instance.get_status_display()))
 
     if instance.status < PreflightCheck.STATUS_PROCESSING:
         PreflightCheck.objects.filter(pk=instance.pk).update(status=PreflightCheck.STATUS_PROCESSING)

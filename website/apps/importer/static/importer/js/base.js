@@ -3,6 +3,18 @@ var importer = importer || {};
 importer.base = importer.base || {};
 importer.ui = importer.ui || {};
 
+var FILEUPLOAD_OPTIONS = {
+    autoUpload: true,
+    maxNumberOfFiles: 50,
+    maxFileSize: 1000000000, // 1000 MB
+    minFileSize: 200000,
+    //acceptFileTypes: /(\.|\/)(mp3|aif?f|wav|avi|flac|mp4|m4a)$/i,
+    acceptFileTypes: /(\.|\/)(mp3|wav|flac|mp4|ogg|m4a)$/i,
+    sequentialUploads: false,
+    limitConcurrentUploads: 3
+};
+
+
 var ImporterUi = function() {
 
 	var self = this;
@@ -16,12 +28,10 @@ var ImporterUi = function() {
     this.pushy_paused = false;
 	this.importfiles = [];
     this.summary;
-	this.fileupload_id = false;
-	this.fileupload_options = false;
 	this.current_data = [];
 	this.musicbrainz_data = [];
-	this.init = function() {
 
+	this.init = function() {
 
 		// addditional helpers for templates (https://github.com/blueimp/JavaScript-Templates)
 		// TODO: rebuild upload, if possible use nunjucks
@@ -29,8 +39,9 @@ var ImporterUi = function() {
 
 
 		self.iface();
-		self.fileupload = $('#' + self.fileupload_id);
-		self.fileupload.fileupload('option', self.fileupload_options);
+		self.fileupload = $('#fileupload');
+		self.fileupload.fileupload();
+		self.fileupload.fileupload('option', FILEUPLOAD_OPTIONS);
 		self.bindings();
 
 		pushy.subscribe(self.api_url, function() {
@@ -105,32 +116,32 @@ var ImporterUi = function() {
 
 
 		});
-		
-		
+
+
 		/* summary actions */
 		var container = $('#import_summary');
 		$(container).on('click', 'a.toggle', function(e){
 
 			e.preventDefault();
 			var cls = $(this).data('toggle');
-			
+
 			if($(this).data('toggle-active') == 0) {
-				
+
 				$('i', this).removeClass('icon-angle-down');
 				$('i', this).addClass('icon-angle-up');
-				
+
 				$('.importfile.' + cls).fadeIn(100);
 				$(this).data('toggle-active', 1);
 			} else {
-				
+
 				$('i', this).removeClass('icon-angle-up');
 				$('i', this).addClass('icon-angle-down');
-				
+
 				$('.importfile.' + cls).fadeOut(300);
 				$(this).data('toggle-active', 0);
 			}
 
-			
+
 		});
 
 		// "add all to playlist"
@@ -146,7 +157,7 @@ var ImporterUi = function() {
 			});
 
 			var data = {
-				ids: ids.join(','), 
+				ids: ids.join(','),
 				ct: 'media'
 			};
 
@@ -188,35 +199,35 @@ var ImporterUi = function() {
 		var form_result = $('.form-result', el);
 
 		var import_tag = {
-		
-			name: $('input.name', form_result).val(), 
-			release: $('input.release', form_result).val(), 
-			releasedate: $('input.releasedate', form_result).val(), 
-			artist: $('input.artist', form_result).val(), 
-			tracknumber: $('input.tracknumber', form_result).val(), 
-			
-			mb_track_id: $('input.mb-track-id', form_result).val(), 
-			mb_artist_id: $('input.mb-artist-id', form_result).val(), 
-			mb_release_id: $('input.mb-release-id', form_result).val(), 
+
+			name: $('input.name', form_result).val(),
+			release: $('input.release', form_result).val(),
+			releasedate: $('input.releasedate', form_result).val(),
+			artist: $('input.artist', form_result).val(),
+			tracknumber: $('input.tracknumber', form_result).val(),
+
+			mb_track_id: $('input.mb-track-id', form_result).val(),
+			mb_artist_id: $('input.mb-artist-id', form_result).val(),
+			mb_release_id: $('input.mb-release-id', form_result).val(),
 		};
-		
+
 		if(! (import_tag.name && import_tag.artist)) {
 			alert('Missing fields!!');
 			return;
 		}
-		
-		var data = { 
-			status: 6, 
-			import_tag: import_tag 
+
+		var data = {
+			status: 6,
+			import_tag: import_tag
 		};
-		
+
 
 		el.removeClass('working');
 		el.addClass('queued');
-		
+
 		$('.result-set', el).hide(100);
 		$('.result-actions', el).hide(200);
-		
+
 		$.ajax({
 			type: "PUT",
 			url: item.resource_uri,
@@ -227,7 +238,7 @@ var ImporterUi = function() {
 			success: function(data) {
 				debug.debug(data);
 				form_result.hide();
-				
+
 			}
 		});
 	};
@@ -362,7 +373,7 @@ var ImporterUi = function() {
 
 	};
 
-	
+
 	this.update_summary_display = function() {
 
 		var container = $('#import_summary');
@@ -382,34 +393,34 @@ var ImporterUi = function() {
 
 
 		$('.importfile', holder).each(function(i, item) {
-			
+
 			//debug.debug(i);
 			//debug.debug(item);
-			
+
 			var selected = $('.result-set.musicbrainz-tag.selected, .result-set.musicbrainz-tag.choosen', item)
-			
+
 			debug.debug('media-id', $('.media-id', selected).val());
 			debug.debug('release-id', $('.release-id', selected).val());
 			debug.debug('artist-id', $('.artist-id', selected).val());
-			
+
 			var result_form = $('.form-result', item);
 			// ids
 			$('.mb-track-id', result_form).val($('.media-id', selected).val())
 			$('.mb-artist-id', result_form).val($('.artist-id', selected).val())
 			$('.mb-release-id', result_form).val($('.release-id', selected).val())
-			
+
 			// other data
 			$('.releasedate', result_form).val($('.releasedate', selected).val())
 			$('.catalognumber', result_form).val($('.catalognumber', selected).val())
 			$('.release', result_form).val($('.release', selected).val())
 			$('.artist', result_form).val($('.artist', selected).val())
 			$('.name', result_form).val($('.name', selected).val())
-			
+
 			// selected.hide(20000);
 
-			
+
 		});
-	
+
 	};
 
 	this.update_best_match = function(data) {
@@ -433,7 +444,7 @@ var ImporterUi = function() {
 
 				try {
 					item.results_musicbrainz = JSON.parse(item.results_musicbrainz);
-					
+
 				} catch(err) {
 					//debug.debug(err);
 				}
@@ -461,7 +472,7 @@ var ImporterUi = function() {
 		active_releases = sortObject(active_releases);
 
 		// debug.debug(active_releases.reverse());
-		
+
 		var hits = active_releases.reverse().slice()
 		var top_hit = active_releases[0]['key'];
 
@@ -469,53 +480,53 @@ var ImporterUi = function() {
 		//debug.debug(top_hit);
 
 		// set selection state
-		
+
 		for (var i in data) {
 			var item = data[i];
 			var target_result = $('#importfile_result_' + item.id);
 
 			$('.result-set.musicbrainz-tag', target_result).removeClass('selected');
-			
+
 			// check if manually choosen
 			if(!$('.result-set.musicbrainz-tag', target_result).hasClass('choosen')) {
-			
-			
+
+
 				if (item.status > 0) {
-					
+
 					//debug.debug(item.results_musicbrainz);
-	
+
 					if (item.id in self.current_data) {
-	
+
 						if (item.results_musicbrainz) {
-	
-							//debug.debug('ok');	
-							
+
+							//debug.debug('ok');
+
 							for (var k in item.results_musicbrainz) {
 								var res = item.results_musicbrainz[k]
 								//debug.debug(res['mb_id']);
-	
+
 								if (res['mb_id'] == top_hit) {
 									// debug.debug('top-match');
 									$('.result-set.musicbrainz-tag.mb_id-' + res['mb_id'], target_result).addClass('selected');
 								} else {
 									//debug.debug('NOOOOOOO-match');
 								}
-	
+
 							}
 						}
 					}
-	
+
 				}
-			
-				
+
+
 			}
 
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
 		}
 
 	};
@@ -549,7 +560,7 @@ var ImporterUi = function() {
 				item.results_tag = false;
 				debug.debug(err);
 			}
-			
+
 			// check if in dom
 
             //alert($('#' + item.uuid).length)
@@ -559,7 +570,7 @@ var ImporterUi = function() {
                 //alert('does not exist')
 
 				debug.debug('element not existent in dom');
-				
+
 				// add container
                 if(force_update) {
                     $('#' + item.uuid).html('')
@@ -578,15 +589,15 @@ var ImporterUi = function() {
                 if(!force_update) {
                     ifa.bindings();
                 }
-				
+
 				self.importfiles.push(ifa);
-				
+
 			} else {
 				debug.debug('element exists in dom');
 
 
 			};
-			
+
 		});
 
 

@@ -1,18 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import time
-import sys
-import datetime
-import requests
-import subprocess
-import json
 import djclick as click
 
-from django.db import connections, connection
-from django.conf import settings
-from django.utils import timezone
-from multiprocessing import Pool
-
+from django.db import connection
 from alibrary.models import Media
 from media_preflight.models import PreflightCheck
 

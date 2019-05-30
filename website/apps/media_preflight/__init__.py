@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+import logging
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 
@@ -9,6 +11,9 @@ __version__ = '0.0.1'
 
 default_app_config = 'media_preflight.apps.MediaPreflightConfig'
 
+log = logging.getLogger(__name__)
+
+
 @receiver(post_save, sender='alibrary.Media')
 def media_post_save(sender, instance, created, **kwargs):
 
@@ -17,6 +22,7 @@ def media_post_save(sender, instance, created, **kwargs):
 
         from .models import PreflightCheck
         preflight_check, _c = PreflightCheck.objects.get_or_create(media=instance)
+        log.debug('initialized preflight check - media id: {} - check id: {}'.format(instance.pk, preflight_check.pk))
 
 
 @receiver(post_delete, sender='alibrary.Media')

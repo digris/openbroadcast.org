@@ -35,14 +35,13 @@ class AppInitializer {
         if (DEBUG) console.debug('AppInitializer - constructor');
 
         // initialize vue root app
-        new Vue({
-          el: '#app',
-            components: {
-              'thumb-rating': ThumbRating,
-              'object-actions': ObjectActions,
-            }
-        });
-
+        // new Vue({
+        //   el: '#app',
+        //     components: {
+        //       'thumb-rating': ThumbRating,
+        //       'object-actions': ObjectActions,
+        //     }
+        // });
 
         this.apps = [];
         this.bindings();

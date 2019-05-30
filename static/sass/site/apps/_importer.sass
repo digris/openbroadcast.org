@@ -103,6 +103,7 @@ section.importer-upload
 
     .progress .bar
       background: $primary-color-b
+      height: 4px
 
 section.importer-importfiles
 
@@ -125,7 +126,7 @@ section.importer-importfiles
         .expandable
           display: none
 
-      
+
       // TODO: check. seems to be in 'queued' mode only
       .icon-holder
         padding-top: 12px
@@ -139,7 +140,7 @@ section.importer-importfiles
       &.info
         background-color: $infoBackground
         color: $infoText
-          
+
       &.warning
         h3
           background-color: $warningBackground
@@ -147,7 +148,7 @@ section.importer-importfiles
       &.error
         background-color: $errorBackground
         color: $errorText
-    
+
       &.success
         background-color: $successBackground
         color: $successText
@@ -165,7 +166,7 @@ section.importer-importfiles
       &.ready
         .icon-blank:before
           content: "\f096" // icon-refresh
-    
+
       &.working
         .icon-blank:before
           content: "\f021" // icon-refresh
@@ -182,24 +183,24 @@ section.importer-importfiles
             height: 4px
             background: $primary-color-a
 
-    
+
       &.duplicate
         background-color: $duplicateBackground
         color: #5a5a5a
         .icon-blank:before
           content: "\f0c5" // icon-check
-            
+
         div.status-imported
           display: block
         div.status-duplicate
           display: block
-    
+
       &.done
         background-color: $success-color-bg
         color: #5a5a5a
         .icon-blank:before
           content: "\f046" // icon-copy
-            
+
         div.status-imported
           display: block
 
@@ -225,7 +226,7 @@ section.importer-importfiles
           margin-right: 10px
           width: 70px
           height: 70px
-        
+
       div.status-queue
         .information
           min-height: 80px
@@ -241,40 +242,40 @@ section.importer-importfiles
           font-size: 10px
         i
           margin-right: 8px
-      
-      
+
+
       // element styleing
       div.result-set
         padding: 5px 0
         border-bottom: 1px solid $grayLighter
-        
+
         img
           margin-right: 4px
           width: 66px
           height: 66px
-        
+
         &.provider-tag
           font-size: 11px !important
           input[type='checkbox']
             display: none
-            
+
         .subset
           display: block
-          
+
         &.hover
           background-color: lighten($successBackground, 7%)
           cursor: pointer
-            
+
         &.choosen
           background-color: $successBackground
           .subset
             display: block
-            
+
         &.selected
           background-color: lighten($successBackground, 5%)
           .subset
             display: block
-          
+
         ul
           margin: 0
           > li
@@ -286,10 +287,10 @@ section.importer-importfiles
               width: 50px
 
       form.form-result
-      
+
         .missing input
           background-color: $warningBackground
-      
+
         .base
           padding-top: 0 !important
         .ac-result
@@ -311,7 +312,7 @@ section.importer-importfiles
               &.hover
                 background-color: $primary-color-a-bg-light
                 color: $black
-              
+
 
       // action form
       div.result-actions
@@ -335,7 +336,7 @@ section.importer-importfiles
         margin-bottom: 0
       .input-minitext
         font-size: 10px
-      
+
 
 
 // sidebar
@@ -370,15 +371,15 @@ section.importer-importfiles
       &:hover
         text-decoration: none
 
-    
+
 
     &.hover
       &.done
         background-color: $primary-color-a-bg-light
-        
+
       &.duplicate
         background-color: $duplicateBackground
-  
+
       &.ready
         background-color: $primary-color-a-bg-light
 
@@ -443,10 +444,13 @@ span.dim
 
 .fileupload-buttonbar
   .btn, .toggle
+    width: 100%
+    padding: 4px 0
     margin-bottom: 5px
 
 .files .progress
   width: 200px
+  background: #fafafa
 
 .fileupload-loading
   position: absolute

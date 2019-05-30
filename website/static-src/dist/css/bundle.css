@@ -2147,7 +2147,8 @@ body {
   padding-bottom: 48px;
   max-width: 1115px;
   width: 100%;
-  margin: 0 auto; }
+  margin: 0 auto;
+  min-height: calc(100vh - 128px); }
   .base main .app-container {
     flex-grow: 1; }
   .base main > .heading {
@@ -2430,6 +2431,15 @@ footer {
       .content__primary .item--header .header__primary .title small {
         margin-left: 10px;
         opacity: 0.7; }
+    .content__primary .item--header .header__primary .meta__item {
+      display: grid;
+      grid-template-columns: 120px minmax(auto, 60%); }
+      .content__primary .item--header .header__primary .meta__item a, .content__primary .item--header .header__primary .meta__item span {
+        white-space: nowrap; }
+      .content__primary .item--header .header__primary .meta__item__grid {
+        display: grid;
+        grid-template-columns: fit-content(50%) fit-content(50%);
+        grid-column-gap: 8px; }
   .content__primary .item--header .header__secondary .visual {
     max-width: 190px;
     max-height: 190px; }
@@ -2440,8 +2450,11 @@ footer {
     float: none;
     display: flex;
     justify-content: center; }
-  .content__primary .item--header .header .tags tag {
-    background: black; }
+  .content__primary .item--header .tags .tag {
+    background: black;
+    padding: 2px 4px 1px;
+    color: #fff;
+    text-transform: uppercase; }
 
 .content__primary .item--section-menu {
   border-bottom: 1px solid #ddd;
@@ -2450,7 +2463,6 @@ footer {
   justify-content: center;
   padding-top: 20px; }
   .content__primary .item--section-menu .menu-item {
-    padding: 1px 12px;
     margin: 0 0 -1px 10px;
     border: 1px solid #F5F5F5;
     border-bottom-color: #ddd;
@@ -2458,6 +2470,8 @@ footer {
     color: #a5a5a5;
     background: #F5F5F5; }
     .content__primary .item--section-menu .menu-item a {
+      padding: 1px 12px;
+      display: inline-block;
       color: inherit;
       text-decoration: inherit; }
     .content__primary .item--section-menu .menu-item:hover {
@@ -2473,8 +2487,48 @@ footer {
         background: #F5F5F5; }
 
 .content__primary .item--body {
-  background: orange;
+  background: transparent;
   margin-top: 20px; }
+
+.content__primary .list--grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(100px, auto);
+  grid-gap: 14px; }
+  .content__primary .list--grid .list-item {
+    background: #fff; }
+    .content__primary .list--grid .list-item:hover {
+      background: #0e90d2; }
+    .content__primary .list--grid .list-item .card__visual {
+      position: relative; }
+      .content__primary .list--grid .list-item .card__visual .image figure {
+        margin: 0; }
+      .content__primary .list--grid .list-item .card__visual .tags {
+        position: absolute;
+        bottom: 6px;
+        right: 0;
+        text-align: right; }
+        .content__primary .list--grid .list-item .card__visual .tags .tag {
+          background: black;
+          display: inline-block;
+          padding: 2px 4px 1px;
+          margin: 2px 0 0 2px;
+          color: #fff;
+          text-transform: uppercase;
+          white-space: nowrap; }
+      .content__primary .list--grid .list-item .card__visual .actions {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center; }
+    .content__primary .list--grid .list-item .card__body {
+      padding: 4px;
+      display: grid;
+      grid-template-columns: auto auto; }
 
 body h1, body h2, body h3, body h4 {
   font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
@@ -4676,7 +4730,8 @@ section.importer-upload tbody.files button {
   min-width: 80px; }
 
 section.importer-upload tbody.files .progress .bar {
-  background: #6633CC; }
+  background: #6633CC;
+  height: 4px; }
 
 section.importer-importfiles .listing .item {
   background: #fff;
@@ -4928,10 +4983,13 @@ span.dim {
     cursor: pointer; }
 
 .fileupload-buttonbar .btn, .fileupload-buttonbar .toggle {
+  width: 100%;
+  padding: 4px 0;
   margin-bottom: 5px; }
 
 .files .progress {
-  width: 200px; }
+  width: 200px;
+  background: #fafafa; }
 
 .fileupload-loading {
   position: absolute;
@@ -8382,7 +8440,6 @@ ul.day-actions {
   .qtip-daypart-hint .info span {
     padding-left: 10px;
     color: #999; }
-
 
 
 /*# sourceMappingURL=bundle.css.map*/
