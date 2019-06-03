@@ -36,7 +36,6 @@ INSTALLED_APPS = [
 
     # tools
     'django_extensions',
-    'django_filters',
     'sendfile',
     'missing', # http://django-missing.readthedocs.org/
     'raven.contrib.django.raven_compat',
@@ -107,6 +106,7 @@ INSTALLED_APPS = [
     'api_extra', # just styles for drf
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters',
 
     # platform tools
     'image_placeholder',

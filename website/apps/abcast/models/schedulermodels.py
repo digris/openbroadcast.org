@@ -104,6 +104,8 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
     def __unicode__(self):
         return u'%s' % self.name
 
+    def get_ct(self):
+        return '{}.{}'.format(self._meta.app_label, self.__class__.__name__).lower()
 
     @models.permalink
     def get_absolute_url(self):
@@ -141,10 +143,11 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     @property
     def is_playing(self):
-        playing = False
-        if self.time_start < datetime.datetime.now() < self.time_end:
-            playing = True
-        return playing
+        return self.time_start < datetime.datetime.now() < self.time_end
+
+    @property
+    def is_history(self):
+        return self.time_end < datetime.datetime.now()
 
 
     def get_timestamped_media(self):

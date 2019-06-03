@@ -13,6 +13,7 @@ from rest_framework.authtoken import views as auth_views
 @permission_classes([AllowAny])
 def api_root(request, format=None):
     return Response({
+        'abcast/emission': reverse('api:emission-list', request=request, format=format),
         'library/playlist': reverse('api:playlist-list', request=request, format=format),
         'library/artist': reverse('api:artist-list', request=request, format=format),
         'library/release': reverse('api:release-list', request=request, format=format),
@@ -27,6 +28,7 @@ def api_root(request, format=None):
 urlpatterns = [
     url(r'^$', api_root),
     url(r'^api-token-auth/', auth_views.obtain_auth_token, name='obtain-auth-token'),
+    url('^abcast/', include('abcast.apiv2.urls')),
     url('^library/', include('alibrary.apiv2.urls')),
     url('^search/', include('search.apiv2.urls')),
     url('^player/', include('player.apiv2.urls')),

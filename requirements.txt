@@ -64,7 +64,8 @@ django-el-pagination==3.0.1
 django-email-obfuscator==0.1.2
 # last version of django-extensions with uuid field
 django-extensions==1.7.9
-django-filter==0.15.3
+# django-filter==0.15.3
+django-filter==1.1.0
 django-floppyforms==1.7.0
 django-gravatar2==1.4.0
 django-guardian==1.3

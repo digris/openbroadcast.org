@@ -12,6 +12,7 @@ from easy_thumbnails.templatetags.thumbnail import thumbnail_url
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 
 from media_asset.models import Format, Waveform
+from profiles.apiv2.serializers import ProfileSerializer
 
 from ..models import (
     Artist, Release, Media, Playlist, PlaylistItem, PlaylistItemPlaylist
@@ -275,11 +276,23 @@ class PlaylistSerializer(FlexFieldsModelSerializer):
 
     detail_url = serializers.URLField(source='get_absolute_url')
 
+
     items = PlaylistItemPlaylistSerializer(source='playlist_items', many=True)
 
     tags = serializers.StringRelatedField(many=True)
 
+    user = serializers.SerializerMethodField(
+        source='user'
+    )
+
     item_appearances = serializers.SerializerMethodField()
+
+    def get_user(self, obj):
+        if not (obj.user and getattr(obj.user, 'profile')):
+            return
+        return ProfileSerializer(obj.user.profile, context=self.context).data
+
+
     def get_item_appearances(self, obj, **kwargs):
         items = ['{}:{}'.format(co.content_object.get_ct(), co.content_object.uuid) for co in obj.get_items()]
         return items
@@ -297,6 +310,7 @@ class PlaylistSerializer(FlexFieldsModelSerializer):
             'series_display',
             'image',
             'tags',
+            'user',
             'mixdown_file',
             'items',
             'item_appearances',
