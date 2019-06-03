@@ -2182,6 +2182,19 @@ body {
       margin: 0 0 8px 0; }
     .cms-page--default main > .content p, .cms-page--default main > .content ul, .cms-page--default main > .content ol {
       margin: 0 0 14px 0; }
+    .cms-page--default main > .content ul, .cms-page--default main > .content ol {
+      margin-left: 14px; }
+      .cms-page--default main > .content ul li, .cms-page--default main > .content ol li {
+        margin-bottom: 4px; }
+      .cms-page--default main > .content ul.footnotes, .cms-page--default main > .content ol.footnotes {
+        opacity: .7;
+        font-style: italic; }
+    .cms-page--default main > .content ul {
+      list-style-type: circle; }
+    .cms-page--default main > .content .hint--info {
+      padding: 10px;
+      margin-bottom: 10px;
+      background: #E2D7F9; }
 
 .cms-ready .topbar {
   transition: top 200ms; }
