@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse_lazy, reverse
 from django.conf import settings
-
 from rest_framework import serializers
 from rest_flex_fields import FlexFieldsModelSerializer
-
-from easy_thumbnails.templatetags.thumbnail import thumbnail_url
-
 from api_extra.serializers import ImageSerializer, AbsoluteUURLField
-
 from alibrary.models import Playlist
 from alibrary.apiv2.serializers import PlaylistSerializer
 from profiles.apiv2.serializers import ProfileSerializer
@@ -23,37 +16,15 @@ SITE_URL = getattr(settings, 'SITE_URL')
 class EmissionContentObjectSerializer(serializers.ModelSerializer):
 
     def to_representation(self, obj):
-        """
-        Serialize bookmark instances using a bookmark serializer,
-        and note instances using a note serializer.
-        """
-
-        print('****************')
-        print(obj)
         filter_fields = self.context['request'].GET.get('fields', '').split(',')
-        print(filter_fields)
-
         co_filter_fields = [f.lstrip('co.') for f in filter_fields if f.startswith('co.')]
 
-        print(co_filter_fields)
-        print('---')
-
         if isinstance(obj, Playlist):
-
-            fields = [
-                'url',
-                'uuid',
-                'mixdown_file',
-            ]
-            if 'co.items' in filter_fields:
-                fields.append('items')
-
             serializer = PlaylistSerializer(obj, context=self.context, fields=co_filter_fields)
         else:
             raise Exception('Unexpected type of content object')
 
         return serializer.data
-
 
 
 class EmissionSerializer(FlexFieldsModelSerializer):
