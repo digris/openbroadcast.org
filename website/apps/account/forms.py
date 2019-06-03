@@ -5,6 +5,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.utils.safestring import mark_safe
 from captcha.fields import CaptchaField
 
 from django.contrib.auth.forms import (
@@ -52,9 +53,9 @@ class RegistrationForm(BaseUserCreationForm):
 
     tos = forms.BooleanField(
         widget=forms.CheckboxInput,
-        label=_('I have read and agree to the privacy policy.'),
+        label=mark_safe(_('I have read and agree to the <a target="_blank" href="/about/terms-and-conditions/">terms and conditions</a> and <a target="_blank" href="/about/data-use-policy/">data use policy</a>')),
         error_messages={
-            'required': _('You must agree to the privacy policy to register.'),
+            'required': _('You must agree to the terms and conditions and data use policy to register.'),
         }
     )
     # TODO: implement own loqic without password repeat

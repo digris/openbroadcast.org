@@ -31,6 +31,11 @@ BACKEND_DETAILS = {
         "icon": "icon-google-plus",
         "cta": _("Continue with Google"),
     },
+    "dropbox-oauth2": {
+        "name": "Dropbox",
+        "icon": "icon-dropbox",
+        "cta": _("Continue with Dropbox"),
+    },
     "github": {
         "name": "Github",
         "icon": "github",

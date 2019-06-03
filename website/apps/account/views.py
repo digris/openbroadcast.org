@@ -76,7 +76,9 @@ class LogoutView(LoginRequiredMixin, RedirectView):
         redirect_to = self.request.GET.get(REDIRECT_FIELD_NAME)
         if redirect_to and is_safe_url(url=redirect_to, host=self.request.get_host()):
             return redirect_to
-        return super(LogoutView, self).get_redirect_url(*args, **kwargs)
+        else:
+            redirect_to = super(LogoutView, self).get_redirect_url(*args, **kwargs)
+        return redirect_to
 
 
 class LoginView(AnonymousRequiredMixin, SetPickupCookieMixin, FormView):
