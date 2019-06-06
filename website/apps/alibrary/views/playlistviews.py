@@ -90,6 +90,11 @@ class PlaylistListView(BaseSearchListView):
             'default_direction': 'desc',
         },
         {
+            'key': 'next_emission',
+            'name': _('Next Emission'),
+            'default_direction': 'asc',
+        },
+        {
             'key': 'duration',
             'name': _('Duration'),
             'default_direction': 'asc',

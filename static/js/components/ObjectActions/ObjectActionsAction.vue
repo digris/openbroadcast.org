@@ -5,18 +5,19 @@ const DEBUG = false;
 export default {
     name: 'ObjectActionsAction',
     props: {
-        name: String,
+        action: Object,
     }
 }
 </script>
 <style lang="scss" scoped>
     .action {
         cursor: pointer;
-        padding: 4px 10px;
+        padding: 8px 12px;
         display: flex;
+        min-width: 120px;
 
         &:hover {
-            background: blue;
+            background: #00bb73;
             color: #fff;
         }
 
@@ -35,10 +36,10 @@ export default {
         @click="$emit('click')"
         class="action">
         <div class="action__icon">
-            P
+            <i v-bind:class="action.icon" class="fa"></i>
         </div>
         <div class="action__name">
-            {{ name }}
+            {{ action.title }}
         </div>
     </div>
 </template>

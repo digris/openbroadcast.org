@@ -5,12 +5,49 @@
     import PlayerControlApp from '../../apps/player/player-control-app';
     import ClickOutside from 'vue-click-outside';
     import ObjectActionsAction from './ObjectActionsAction.vue';
+    import ObjectActionsPlay from './ObjectActionsPlay.vue';
 
+    const ACTION_MAP = {
+        play: {
+            icon: 'fa-play',
+            title: 'Play'
+        },
+        queue: {
+            icon: 'fa-pause',
+            title: 'Queue'
+        },
+        download: {
+            icon: 'fa-download',
+            title: 'Download'
+        },
+        edit: {
+            icon: 'fa-pencil',
+            title: 'Edit'
+        },
+        schedule: {
+            icon: 'fa-calendar',
+            title: 'Schedule'
+        },
+    };
+
+    const parseActionKey = function(key) {
+        let action = ACTION_MAP[key];
+        if(action === undefined) {
+            return {
+                key: key,
+                title: key,
+                icon: null,
+            }
+        }
+        action.key = key;
+        return action;
+    };
 
     export default {
         name: 'ObjectActions',
         components: {
             'action': ObjectActionsAction,
+            'play': ObjectActionsPlay,
         },
         directives: {
             ClickOutside,
@@ -33,10 +70,11 @@
                 const keys = this.actions.split(',');
                 let actions = [];
                 keys.forEach((key) => {
-                    actions.push({
-                        'key': key,
-                        'name': key,
-                    })
+                    actions.push(parseActionKey(key));
+                    // actions.push({
+                    //     'key': key,
+                    //     'name': key,
+                    // })
                 });
 
                 return actions
@@ -86,27 +124,39 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        opacity: 0;
 
         &:hover {
-            .primary-actions {
-                opacity: 1;
-                background: rgba(#000, .5);
-            }
+            background: rgba(#000, .5);
+            opacity: 1;
         }
 
-        .primary-actions {
-            opacity: .4;
+        .actions {
             // background: rgba(#000, .5);
             display: flex;
             justify-content: center;
-            padding: 8px;
-            border-radius: 4px;
 
             .action {
                 font-size: 32px;
                 color: #fff;
                 cursor: pointer;
                 margin: 0 8px;
+
+                &--primary {
+                    width: 48%;
+
+                    .circle-button {
+                        width: 60px;
+                        height: 60px;
+                        background: black;
+                        border-radius: 30px;
+                        display: block;
+                    }
+                }
+
+                &--secondary {
+                    width: 24%;
+                }
             }
 
         }
@@ -121,12 +171,14 @@
             filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.1));
 
             &__triangle {
+                opacity: 0;
                 background: white;
                 margin: 0 auto;
                 width: 20px;
                 height: 10px;
                 clip-path: polygon(50% 0%, 100% 100%, 0 100%);
             }
+
             &__list {
                 background: white;
             }
@@ -140,16 +192,19 @@
     <div
         class="object-actions">
         <div
-            class="primary-actions">
+            class="actions">
             <div
-                class="action action--primary">
-                <div
-                    @click="handleAction(primaryAction.key)">
-                    <i class="fa fa-play"></i>
-                </div>
+                class="action action--secondary">
+                <div></div>
             </div>
             <div
                 class="action action--primary">
+                <play
+                    @click="toggleSecondaryActions">
+                </play>
+            </div>
+            <div
+                class="action action--secondary">
                 <div
                     @click="toggleSecondaryActions">
                     <i class="fa fa-ellipsis-h"></i>
@@ -160,15 +215,15 @@
             class="secondary-actions"
             v-if="secondaryActionsVisible"
             v-click-outside="hideSecondaryActions">
-                <div class="secondary-actions__triangle"></div>
-                <div
-                    class="secondary-actions__list"
-                    v-for="action in secondaryActions"
-                    v-bind:key="action.key">
-                    <action
-                        @click="handleAction(action.key)"
-                        :name="action.name"></action>
-                </div>
+            <div class="secondary-actions__triangle"></div>
+            <div
+                class="secondary-actions__list"
+                v-for="action in secondaryActions"
+                v-bind:key="action.key">
+                <action
+                    @click="handleAction(action.key)"
+                    :action="action"></action>
+            </div>
         </div>
     </div>
 </template>

@@ -575,6 +575,7 @@ class PlaylistDocument(DocType):
     description = fields.TextField()
 
     last_emission = fields.DateField()
+    next_emission = fields.DateField()
     num_emissions = fields.IntegerField()
     state_flags = fields.KeywordField()
 
@@ -611,7 +612,6 @@ class PlaylistDocument(DocType):
             return '{} Minutes'.format(instance.get_target_duration_display())
         return
 
-
     def prepare_series(self, instance):
         if instance.series and instance.series_number:
             return '{} #{}'.format(instance.series, instance.series_number)
@@ -622,6 +622,10 @@ class PlaylistDocument(DocType):
     def prepare_last_emission(self, instance):
         if instance.last_emission:
             return instance.last_emission.time_start
+
+    def prepare_next_emission(self, instance):
+        if instance.next_emission:
+            return instance.next_emission.time_start
 
     def prepare_num_emissions(self, instance):
         return instance.get_emissions().count()

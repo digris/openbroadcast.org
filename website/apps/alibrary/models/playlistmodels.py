@@ -715,8 +715,19 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         # additional queries we have to loop the qs and 'filter'
         # 'manually'
         ###############################################################
-        for emission in self.emissions.all():
+        for emission in self.emissions.order_by('-time_start'):
             if emission.time_start < timezone.now():
+                return emission
+
+    @cached_property
+    def next_emission(self):
+        ###############################################################
+        # we cannot filter a prefetched qs - so to avoid
+        # additional queries we have to loop the qs and 'filter'
+        # 'manually'
+        ###############################################################
+        for emission in self.emissions.order_by('time_start'):
+            if emission.time_start > timezone.now():
                 return emission
 
     def save(self, *args, **kwargs):

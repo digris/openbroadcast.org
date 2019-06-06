@@ -109,9 +109,6 @@ INSTALLED_APPS = [
     'django_filters',
 
     # platform tools
-    'image_placeholder',
-
-    # platform tools
     'fprint_client',
 
     # platform apps

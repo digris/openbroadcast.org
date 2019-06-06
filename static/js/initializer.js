@@ -20,6 +20,7 @@ import Topbar from './element/topbar';
 import Tagcloud from './element/tagcloud';
 import ListFilter from './element/listfilter';
 import AutocompleteWidgets from './element/autocomplete-widget';
+import LayzImageLoader from './utils/lazy-image-loader';
 
 //
 import ThumbRating from './components/rating/ThumbRating.vue';
@@ -35,13 +36,13 @@ class AppInitializer {
         if (DEBUG) console.debug('AppInitializer - constructor');
 
         // initialize vue root app
-        // new Vue({
-        //   el: '#app',
-        //     components: {
-        //       'thumb-rating': ThumbRating,
-        //       'object-actions': ObjectActions,
-        //     }
-        // });
+        new Vue({
+          el: '#app',
+            components: {
+              'thumb-rating': ThumbRating,
+              'object-actions': ObjectActions,
+            }
+        });
 
         this.apps = [];
         this.bindings();
@@ -100,6 +101,7 @@ class AppInitializer {
         const _Tagcloud = new Tagcloud();
         const _ListFilter = new ListFilter();
         const _AutocompleteWidgets= new AutocompleteWidgets();
+        const _LayzImageLoader= new LayzImageLoader();
 
 
     };

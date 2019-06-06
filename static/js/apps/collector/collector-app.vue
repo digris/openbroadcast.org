@@ -30,7 +30,7 @@
 
         }
 
-        main {
+        .content-container {
             flex: 1;
             display: flex;
         }
@@ -303,7 +303,7 @@
                 </div>
             </header>
 
-            <main>
+            <div class="content-container">
 
                 <div v-if="(scope === 'list')" class="playlist-search">
                     <div class="input-container">
@@ -391,7 +391,7 @@
 
 
                 </div>
-            </main>
+            </div>
 
         </div>
     </modal>

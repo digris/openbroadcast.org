@@ -1,0 +1,14 @@
+{% if url %}
+    <img
+        class="lazy-image"
+        width="{{ size.0 }}"
+        height="{{ size.1 }}"
+        src="{{ placeholder }}"
+        data-src="{{ url}}">
+{% else %}
+    <img
+        class="lazy-image lazy-image--missing"
+        width="{{ size.0 }}"
+        height="{{ size.1 }}"
+        src="{{ placeholder }}">
+{% endif %}

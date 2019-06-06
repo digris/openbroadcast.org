@@ -1,5 +1,5 @@
 <div class="list list--grid">
-{% for playlist in playlists %}
+{% for playlist in playlists|slice:"0:" %}
     <div class="list-item">
         {% include 'alibrary/playlist/_card.html' with object=playlist %}
     </div>

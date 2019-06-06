@@ -80,11 +80,15 @@
 
 </div>
 <div class="header__secondary">
-
-    <div class="visual visual--lightbox" data-slideshow-container="">
-        <figure>
-            <img src="https://secure.gravatar.com/avatar/5cf42e3c9a94279c6e46ce647727ec5f.jpg?s=500&r=g&d=identicon">
-        </figure>
+    <div class="visual visual--lightbox" data-slideshow-container>
+        {% if not object.image %}
+            {% gravatar object.user.email 500 %}
+            <!--<img class="image-placeholder" src="{# image_placeholder size='280x280' #}" alt="{% trans 'image placeholder' %}"/>-->
+        {% else %}
+            <figure class="lightbox--image-container" data-src="{% thumbnail object.image 1200x1200 crop upscale %}">
+                <img src="{% thumbnail object.image 280x280 crop upscale %}">
+            </figure>
+        {% endif %}
     </div>
 </div>
 

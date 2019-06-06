@@ -6,7 +6,7 @@ from alibrary.models import Playlist, Release, Media
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import Http404, HttpResponseRedirect, HttpResponseForbidden, HttpResponseBadRequest
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
@@ -102,10 +102,14 @@ class ProfileDetailViewNG(DetailView):
 
     def dispatch(self, request, *args, **kwargs):
 
-        print(kwargs.get('section'))
+        # get default section if none provided
+        if not kwargs.get('section'):
+            obj = self.get_object()
+            section = self.get_default_section(obj)
+            redirect_to = reverse_lazy('profiles-profile-detail-ng', kwargs={'uuid': obj.uuid, 'section': section})
+            return redirect(redirect_to)
 
-        self.section = self.get_default_section(self.get_object(), kwargs.get('section'))
-
+        self.section = kwargs.get('section')
         if not self.section in [s[0] for s in self.sections]:
             return HttpResponseBadRequest('invalid section "{}"'.format(self.section))
 
@@ -120,16 +124,11 @@ class ProfileDetailViewNG(DetailView):
         return obj
 
 
-    def get_default_section(self, obj, section):
-
-        # get default section if not provided
-        if not section:
-            if obj.user.playlists.exclude(type='basket').exists():
-                section = 'playlists'
-            else:
-                section = 'profile'
-
-        return section
+    def get_default_section(self, obj):
+        if obj.user.playlists.exclude(type='basket').exists():
+            return 'playlists'
+        else:
+            return 'profile'
 
 
     def get_section_menu(self, object, section):

@@ -1,23 +1,24 @@
-{% load i18n truncate_tags arating_tags %}
+{% load i18n lazy_image_tags truncate_tags arating_tags %}
 
 <div class="card card--playlist">
     <div class="card__visual">
         <div class="image">
-            <figure>
-                <img src="https://openbroadcast.org/media/thumbnails/alibrary/playlist/952/27ec/416c/a034/3d83475f663d/playlists.gif.1200x1200_q80_upscale.png">
-            </figure>
-        </div>
-        <div class="tags">
-            {% for tag in object.tags|slice:":8" %}
-                <span class="tag">{{ tag.name|truncate_chars_inner:10 }}</span>
-            {% endfor %}
+            {% lazy_image object.main_image 'crop' '270x270' %}
         </div>
         <div class="actions">
             <object-actions
                 obj-ct="{{ object.get_ct }}"
                 obj-uuid="{{ object.uuid }}"
-                actions="play,queue,download,queue-edit-and-foo-and-more,anoter,list,x,blup">
+                actions="play,queue,download,edit,schedule">
             </object-actions>
+        </div>
+        <div class="flags">
+            <span class="flag">{{ object.get_type_display }}</span>
+        </div>
+        <div class="tags">
+            {% for tag in object.tags|slice:":8" %}
+                <span class="tag">{{ tag.name|truncate_chars_inner:10 }}</span>
+            {% endfor %}
         </div>
     </div>
     <div class="card__body">
@@ -41,7 +42,7 @@
             {% endif %}
         </div>
         <div>
-            {{ object.get_type_display }}
+            {# object.get_type_display #}
         </div>
 
         <div>
@@ -49,7 +50,7 @@
         </div>
         <div>
             {% if object.type == 'broadcast' %}
-                {{ object.get_status_display }}
+                {# object.get_status_display #}
             {% endif %}
         </div>
 

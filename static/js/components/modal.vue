@@ -55,10 +55,10 @@
             }
 
 
-            header {
+            .content-header {
 
             }
-            main {
+            .content-slot {
                 flex: 1;
                 overflow: auto;
             }
@@ -103,7 +103,7 @@
     <transition name="modal">
         <div class="modal-mask" @click="close" v-show="show">
             <div class="modal-container" v-bind:class="scope" @click.stop>
-                <header>
+                <div class="content-header">
                     <div class="modal-topbar">
                         <div class="modal-topbar-title">
                             <slot name="title"></slot>
@@ -112,10 +112,10 @@
                             <a @click="close" class="">Close (esc)</a>
                         </div>
                     </div>
-                </header>
-                <main>
+                </div>
+                <div class="content-slot">
                     <slot name="content"></slot>
-                </main>
+                </div>
             </div>
         </div>
     </transition>
