@@ -1,4 +1,4 @@
-{% load i18n lazy_image_tags truncate_tags arating_tags %}
+{% load i18n playlist_tags calc_tags lazy_image_tags truncate_tags arating_tags %}
 
 <div class="card card--playlist">
     <div class="card__visual">
@@ -12,8 +12,20 @@
                 actions="play,queue,download,edit,schedule">
             </object-actions>
         </div>
-        <div class="flags">
-            <span class="flag">{{ object.get_type_display }}</span>
+        <div class="card__visual__top">
+            <div class="flags">
+                <span class="flag">{{ object.get_type_display }}</span>
+            </div>
+            {% if object.is_broadcast %}
+                {% nearby_scheduled_as object as is_nearby_scheduled %}
+                <div class="indicators">
+                    <emission-history
+                        obj-ct="{{ object.get_ct }}"
+                        obj-uuid="{{ object.uuid }}"
+                        :has-warning="{% if is_nearby_scheduled %}true{% else %}false{% endif %}">
+                    </emission-history>
+                </div>
+            {% endif %}
         </div>
         <div class="tags">
             {% for tag in object.tags|slice:":8" %}
@@ -23,14 +35,15 @@
     </div>
     <div class="card__body">
 
-        <div>
+        <div class="card__body__primary">
             <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">
                 {{ object.name|truncate_chars_inner:24 }}
                 {% if object.country %}({{ object.country }}){% endif %}
             </a>
         </div>
         <div>
-            {% topflop_for_object object %}
+            {# topflop_for_object object #}
+            -
         </div>
 
         <div>
@@ -39,6 +52,8 @@
                 {% if object.series_number %}
                     #{{ object.series_number }}
                 {% endif %}
+            {% else %}
+                -
             {% endif %}
         </div>
         <div>
@@ -51,6 +66,11 @@
         <div>
             {% if object.type == 'broadcast' %}
                 {# object.get_status_display #}
+            {% endif %}
+            {% if object.target_duration %}
+                {{ object.target_duration|sec_to_time }}
+            {% else %}
+                {{ object.duration|divide:1000|sec_to_time }}
             {% endif %}
         </div>
 

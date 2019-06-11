@@ -12,6 +12,7 @@
 
 import Vue from 'vue';
 import Vuex from 'vuex';
+import store from './store/index';
 import SearchApp from './apps/search-app.vue';
 import PlayerApp from './apps/player/player-app.vue';
 import PlayerControlApp from './apps/player/player-control-app.vue';
@@ -23,10 +24,11 @@ import AutocompleteWidgets from './element/autocomplete-widget';
 import LayzImageLoader from './utils/lazy-image-loader';
 
 //
+import Scheduler from './components/scheduler/Scheduler.vue';
+//
 import ThumbRating from './components/rating/ThumbRating.vue';
 import ObjectActions from './components/ObjectActions/ObjectActions.vue';
-
-Vue.use(Vuex);
+import EmissionHistory from './components/EmissionHistory/EmissionHistory.vue';
 
 const DEBUG = false;
 
@@ -38,9 +40,12 @@ class AppInitializer {
         // initialize vue root app
         new Vue({
           el: '#app',
+            store,
             components: {
+              'scheduler': Scheduler,
               'thumb-rating': ThumbRating,
               'object-actions': ObjectActions,
+              'emission-history': EmissionHistory,
             }
         });
 

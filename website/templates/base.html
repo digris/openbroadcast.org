@@ -93,10 +93,16 @@
                     </div>
                     </div>
                 </div>
-                <div class="content">
-                    {% comment %}{% endcomment %}
-                    {% block main %}{% endblock %}
-                </div>
+                {% block main-content %}
+                    {% comment %}
+                    the 'main-content' block is used to mount full-area vuejs components
+                    see scheduler component for example.
+                    {% endcomment %}
+                    <div class="content">
+                        {% comment %}{% endcomment %}
+                        {% block main %}{% endblock %}
+                    </div>
+                {% endblock %}
             </main>
 
             <footer>

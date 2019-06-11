@@ -1,5 +1,7 @@
 /* === dont forget to import scss to main.js file === */
 
+require("babel-polyfill");
+
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -18,7 +20,10 @@ const STATIC_SRC = path.resolve(__dirname, 'static');
 const DEVSERVER_HEADER = 'X-WEBPACK-DEVSERVER';
 
 module.exports = {
-    entry: './static/js/bundle.js',
+    entry: {
+        'bundle': ["babel-polyfill", "./static/js/bundle.js"],
+    },
+    // entry: './static/js/bundle.js',
     output: {
         path: DEV_MODE ? path.resolve(STATIC_ROOT, 'js') : path.resolve(STATIC_ROOT, 'dist', 'js'),
         filename: "bundle.js",

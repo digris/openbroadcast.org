@@ -1,16 +1,15 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
-import axios from 'axios';
+import schedule from './_schedule';
 
 Vue.use(Vuex);
 
-const api_client = axios.create({
-    xsrfHeaderName: 'X-CSRFTOKEN',
-    xsrfCookieName: 'csrftoken',
-});
-
 export default new Vuex.Store({
+    namespaced: true,
+    modules: {
+        schedule,
+    },
     state: {
         settings: {
             search_fuzzy_match_mode: false
@@ -24,7 +23,10 @@ export default new Vuex.Store({
     actions: {},
     plugins: [
         createPersistedState({
-            key: 'store'
+            key: 'store',
+            paths: [
+                'settings',
+            ]
         })
     ]
 

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load adv_cache hash_tags i18n static dajaxice_templatetags sekizai_tags dict_tags %}
+
+{% block scope %}abcast.scheduler{% endblock %}
+
+{% block tagcloud %}{% endblock %}
+
+{% block main-content %}
+
+    <scheduler
+        channel-uuid="foo-bar"></scheduler>
+
+{% endblock %}

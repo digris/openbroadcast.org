@@ -63,6 +63,24 @@ class PlaylistSearch(BaseFacetedSearch):
                 None,
                 str((timezone.now() - datetime.timedelta(days=30)).date())
             )),
+            # ('Exclude 48 hours', (
+            #     None,
+            #     str((timezone.now() - datetime.timedelta(hours=48)).date())
+            # )),
+        ])),
+        ('next_emission', RangeFacet(field='next_emission', ranges=[
+            # ('old', (None, '2016-01-01')),
+            # ('2016', ('2016-01-01', '2016-12-31')),
+            # ('2018', ('2018-01-01', '2018-12-31')),
+            # ('recent', ('2019-01-01', None)),
+            ('Next 7 days', (
+                None,
+                str((timezone.now() + datetime.timedelta(days=7)).date())
+            )),
+            # ('Exclude 48 hours', (
+            #     str((timezone.now() + datetime.timedelta(hours=48)).date()),
+            #     None
+            # )),
         ])),
         #('last_emission', DateHistogramFacet(field='last_emission', interval='month')),
         ('flags', TermsFacet(field='state_flags', order={'_key': 'asc'})),
@@ -151,6 +169,10 @@ class PlaylistListView(BaseSearchListView):
             qs = qs.exclude(type='basket')
 
         return qs
+
+
+class PlaylistListViewNG(PlaylistListView):
+    template_name = 'alibrary/playlist_list_ng.html'
 
 
 class PlaylistDetailView(DetailView):

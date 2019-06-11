@@ -12,7 +12,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 
 log = logging.getLogger(__name__)
 
@@ -378,3 +378,7 @@ def delete_day(request):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
+
+
+class SchedulerIndexNG(TemplateView):
+    template_name = 'abcast/scheduler_ng.html'

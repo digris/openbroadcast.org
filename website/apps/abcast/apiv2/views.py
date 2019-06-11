@@ -3,9 +3,13 @@ from __future__ import unicode_literals
 
 import logging
 
+from django.apps import apps
+from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_flex_fields import FlexFieldsModelViewSet
-from .serializers import EmissionSerializer
+from .serializers import EmissionSerializer, EmissionHistorySerializer
 from ..models import Emission
 
 log = logging.getLogger(__name__)
@@ -41,3 +45,21 @@ emission_list = EmissionViewSet.as_view({
 emission_detail = EmissionViewSet.as_view({
     'get': 'retrieve',
 })
+
+
+class EmissionHistory(APIView):
+
+    def get_object(self):
+        obj_ct = self.kwargs.get('obj_ct')
+        obj_uuid = self.kwargs.get('obj_uuid')
+
+        return get_object_or_404(apps.get_model(*obj_ct.split(".")), uuid=obj_uuid)
+
+    def get(self, request, obj_ct, obj_uuid):
+
+        obj = self.get_object()
+        serializer = EmissionHistorySerializer(instance=obj.emissions.order_by('-time_start'), many=True)
+
+        return Response(serializer.data)
+
+emission_history = EmissionHistory.as_view()

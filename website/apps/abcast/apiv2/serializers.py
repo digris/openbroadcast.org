@@ -94,3 +94,15 @@ class EmissionSerializer(FlexFieldsModelSerializer):
     # expandable_fields = {
     #     'co': (EmissionContentObjectSerializer, {'source': 'content_object'})
     # }
+
+
+class EmissionHistorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Emission
+        fields = [
+            'uuid',
+            'time_start',
+            'time_end',
+            'duration',
+        ]

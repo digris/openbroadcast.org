@@ -30,18 +30,25 @@
         figure
           margin: 0
 
-      .flags
+      &__top
         position: absolute
+        display: flex
         top: 0
         left: 0
-        .flag
-          background: rgba(#fff, .8)
-          display: inline-block
-          padding: 2px 4px 1px
-          margin: 0 2px 0 0
-          color: #333
-          // text-transform: uppercase
-          white-space: nowrap
+        width: 100%
+
+        .flags
+          .flag
+            background: rgba(#fff, .8)
+            display: inline-block
+            padding: 2px 4px 1px
+            margin: 0 2px 0 0
+            color: #333
+            // text-transform: uppercase
+            white-space: nowrap
+
+        .indicators
+          margin-left: auto
 
       .tags
         position: absolute
@@ -69,9 +76,13 @@
         justify-content: center
 
     &__body
-      padding: 4px
+      padding: 0 4px 4px 4px
       display: grid
       grid-template-columns: auto auto
+
+      &__primary
+        font-size: 110%
+        line-height: 120%
 
 
 =list-item--grid

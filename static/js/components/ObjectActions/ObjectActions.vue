@@ -71,10 +71,6 @@
                 let actions = [];
                 keys.forEach((key) => {
                     actions.push(parseActionKey(key));
-                    // actions.push({
-                    //     'key': key,
-                    //     'name': key,
-                    // })
                 });
 
                 return actions
@@ -166,7 +162,7 @@
             flex-direction: column;
             position: absolute;
             top: 55%;
-            left: 15%;
+            right: 4px;
             z-index: 999;
             filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.1));
 
