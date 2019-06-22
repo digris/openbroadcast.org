@@ -24,7 +24,9 @@ export default {
    }
 </style>
 <template>
-    <div class="play-icon-container">
+    <div
+        @click="$emit('click')"
+        class="play-icon-container">
         <svg version="1.1"
              id="Icon"
              xmlns="http://www.w3.org/2000/svg"

@@ -40,7 +40,7 @@
                 <div class="search-scope-container">
                     <ul class="scopes">
                         <!--<li class="scope-label"><span>Scope:</span></li>-->
-                        <li v-for="scope in search_scopes" v-bind:class="{ selected: search_scope === scope.ct }" class="scope">
+                        <li v-for="scope in search_scopes" :key="scope.ct" :class="{ selected: search_scope === scope.ct }" class="scope">
                             <a @click="set_search_scope(scope.ct)" href="#">{{ scope.name }}</a>
                         </li>
                     </ul>
@@ -72,7 +72,7 @@
                             <span v-if="item.artist_display"><br>{{ item.artist_display }}</span>
                         </span>
                         <br>
-                        <span v-for="(tag, index) in item.tags.slice(0, 4)">
+                        <span v-for="(tag, index) in item.tags.slice(0, 4)" :key="index">
                             {{ tag }}<span v-if="index != item.tags.slice(0, 4).length - 1">,</span>
                         </span>
                     </div>

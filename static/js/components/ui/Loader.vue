@@ -4,7 +4,7 @@
     }
 </script>
 <style lang="scss" scoped>
-    @import '../../sass/site/variables';
+    @import '../../../sass/site/variables';
 
     .spinner {
         margin: 100px auto;

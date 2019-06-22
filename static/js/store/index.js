@@ -1,14 +1,17 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
-import schedule from './_schedule';
+import createMutationsSharer from 'vuex-shared-mutations';
+import scheduler from './_scheduler';
+import objectHistory from './_objectHistory';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     namespaced: true,
     modules: {
-        schedule,
+        scheduler,
+        objectHistory,
     },
     state: {
         settings: {
@@ -26,8 +29,15 @@ export default new Vuex.Store({
             key: 'store',
             paths: [
                 'settings',
+                'scheduler.settings',
+                'scheduler.clipboard',
+            ]
+        }),
+        createMutationsSharer({
+            predicate: [
+                'scheduler/addToClipboard',
+                'scheduler/clearClipboard',
             ]
         })
     ]
-
 });

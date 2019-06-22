@@ -43,6 +43,11 @@ class CelerySignalProcessor(BaseSignalProcessor):
 
     @shared_task()
     def handle_save_task(pk, app_label, model_name):
-        instance = apps.get_model(app_label, model_name).objects.get(pk=pk)
-        registry.update(instance)
-        registry.update_related(instance)
+        model_cls = apps.get_model(app_label, model_name)
+        try:
+            instance = model_cls.objects.get(pk=pk)
+            registry.update(instance)
+            registry.update_related(instance)
+        except model_cls.DoesNotExist:
+            # it can happen that the instance is already deleted before processed.
+            pass

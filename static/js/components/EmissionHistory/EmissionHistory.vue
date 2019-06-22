@@ -37,7 +37,7 @@
         },
         computed: {
             emissionHistory() {
-                return this.$store.getters['schedule/objectHistoryByKey'](this.objCt, this.objUuid);
+                return this.$store.getters['objectHistory/objectHistoryByKey'](this.objCt, this.objUuid);
             },
 
             pastEmissions() {
@@ -81,7 +81,7 @@
         },
         methods: {
             loadHistory: function (e) {
-                this.$store.dispatch('schedule/loadObjectHistory', {objCt: this.objCt, objUuid: this.objUuid});
+                this.$store.dispatch('objectHistory/loadObjectHistory', {objCt: this.objCt, objUuid: this.objUuid});
             },
             showNearbyEmissions: function (e) {
                 if (!this.emissionHistory) {
@@ -102,11 +102,9 @@
             },
             showMatrix: function() {
                 this.matrixVisible = true;
-                console.debug('show matrix')
             },
             hideMatrix: function() {
                 this.matrixVisible = false;
-                console.debug('hide matrix')
             },
         },
         filters: {
@@ -178,6 +176,7 @@
             min-width: 640px;
             z-index: 999;
             transform: translateX(-50%);
+            background: white;
         }
     }
 </style>

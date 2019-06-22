@@ -1,16 +1,22 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals, absolute_import
+
 import datetime
-from django.contrib.sites.models import Site
-from abcast.models import Emission
+import logging
+
+from django.utils import timezone
+from abcast.models import Emission, Channel
 
 EXCHANGE = 'fs' # 'fs' or 'http'
+
+log = logging.getLogger(__name__)
+
 
 def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
 
     es = Emission.objects.filter(time_end__gte=range_start, time_start__lte=range_end)
     if exclude:
         es = es.exclude(pk__in=exclude)
-
-    base_url = Site.objects.get_current().domain
 
     media = {}
 
@@ -105,7 +111,6 @@ def get_history(range, channel=None):
     EMISSION_LIMIT = 4
 
     emissions = Emission.objects.filter(time_start__lte=now, channel=channel).order_by('-time_start')[0:EMISSION_LIMIT]
-    base_url = Site.objects.get_current().domain
 
     objects = []
 
@@ -207,3 +212,41 @@ def get_schedule(range_start=0, range_end=0, channel=None):
 
     return objects
 
+
+def check_slot_availability(time_start, time_end, excluded_emission=None, channel=None):
+
+    log.debug('checking for slot availability: {} - {} ({})'.format(time_start, time_end, channel))
+    now = timezone.now()
+
+    if time_start < now:
+        return False, 'You cannot schedule in the past.'
+
+    if time_start < now + datetime.timedelta(minutes=2):
+        return False, 'You cannot schedule less than 2 minutes in advance'
+
+    if time_start.hour < 6 <= time_end.hour:
+        return False, 'You cannot schedule overlapping days'
+
+    overlapping_qs = Emission.objects.filter(
+        time_end__gt=time_start + datetime.timedelta(seconds=2),
+        time_start__lt=time_end - datetime.timedelta(seconds=2),
+    )
+
+    if excluded_emission:
+        overlapping_qs = overlapping_qs.exclude(pk=excluded_emission.pk)
+
+    if channel:
+        overlapping_qs = overlapping_qs.filter(channel=channel)
+
+    if overlapping_qs.exists():
+        message = 'The desired time slot does not seem to be available.'
+        for emission in overlapping_qs:
+            message += '\n{:%H:%M:%S} to {:%H:%M:%S}: {}'.format(
+                emission.time_start,
+                emission.time_end,
+                emission.name
+            )
+        return False, message
+
+
+    return True, None

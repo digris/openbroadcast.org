@@ -1,8 +1,5 @@
 <script>
-    import debounce from 'debounce';
-    import Waveform from './waveform.vue';
     import {template_filters} from '../../../utils/template-filters';
-
     const DEBUG = false;
 
     export default {
@@ -10,7 +7,7 @@
             'item'
         ],
         components: {
-            Waveform
+
         },
         data() {
             return {
@@ -203,14 +200,6 @@
                 <small v-if="(! item.is_buffering && item.is_playing)">{{ item.playhead_position_ms | ms_to_time }}</small>
                 {{ item.duration | ms_to_time }}
             </div>
-
-            <!--
-            <div class="expandable-actions">
-                ...
-            </div>
-            -->
-
-            <!---->
             <div class="actions">
                 <span @click="remove(item, $event)">
                     <i class="fa fa-ban"></i>
@@ -219,11 +208,9 @@
                     <i class="fa fa-plus"></i>
                 </span>
             </div>
-
         </div>
-
         <div v-if="item.errors.length" class="errors">
-            <div v-for="error in item.errors">
+            <div v-for="(item, index) in item.errors" :key="('error' + index)">
                 <span>Error: {{ error.code }}</span>
                 &mdash;
                 <span>{{ error.info }}</span>
@@ -237,3 +224,4 @@
         </div>
     </div>
 </template>
+

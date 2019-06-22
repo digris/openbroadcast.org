@@ -244,6 +244,7 @@
             <div class="player-content">
 
                 <div v-if="(items_to_play && can_autoplay )" class="items-to-play">
+                    <!-- eslint-disable-next-line vue/no-use-v-if-with-v-for -->
                     <div v-for="item_to_play in items_to_play" v-bind:key="item_to_play.uuid" v-if="(item_to_play.items && item_to_play.items.length > 0)">
                         <transition name="fade">
                             <div class="item-to-play">
@@ -265,7 +266,6 @@
                         </transition>
                     </div>
                 </div>
-
 
                 <transition name="fade">
                     <div v-if="(! can_autoplay)" class="autoplay-container">

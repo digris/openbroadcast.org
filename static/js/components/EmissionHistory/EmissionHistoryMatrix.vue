@@ -107,8 +107,10 @@
     .emission-history {
         cursor: crosshair;
         &__grid {
-            background: white;
+            // background: white;
             display: flex;
+            border-top: 1px solid $border-color;
+            border-left: 1px solid $border-color;
 
             &__legend,
             &__day {
@@ -175,7 +177,6 @@
     <div class="emission-history">
 
         <div class="emission-history__grid">
-
             <div
                 class="emission-history__grid__legend">
                 <div
@@ -184,15 +185,16 @@
                 </div>
                 <div
                     class="emission-history__grid__legend__slot"
-                    v-for="slot in legend">
+                    v-for="(slot, index) in legend"
+                    :key="`slot-${index}`">
                     {{ slot.label }}
                 </div>
             </div>
-
             <div
                 class="emission-history__grid__day"
                 :class="{ 'is-weekend': day.isWeekend,  'is-today': day.isToday }"
-                v-for="day in days">
+                v-for="(day, index) in days"
+                :key="`day-${index}`">
                 <div
                     class="emission-history__grid__day__header">
                     {{ day.dayName }}
@@ -200,10 +202,10 @@
                 <div
                     class="emission-history__grid__day__slot"
                     :class="{ 'has-emission': slot.emissions.length, 'has-warning': slot.hasWarning }"
-                    v-for="slot in day.slots">
+                    v-for="(slot, index) in day.slots"
+                    :key="`day-slot-${index}`">
                 </div>
             </div>
-
         </div>
     </div>
 </template>

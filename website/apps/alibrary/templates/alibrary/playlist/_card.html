@@ -7,9 +7,23 @@
         </div>
         <div class="actions">
             <object-actions
-                obj-ct="{{ object.get_ct }}"
-                obj-uuid="{{ object.uuid }}"
-                actions="play,queue,download,edit,schedule">
+                ct="{{ object.get_ct }}"
+                uuid="{{ object.uuid }}"
+                url="{% url 'api:playlist-detail' object.uuid %}"
+                edit-url="{% url 'alibrary-playlist-edit' object.pk %}"
+                {% if perms.alibrary.play_media %}
+                    :can-play="(true)"
+                {% endif %}
+                {% if perms.alibrary.downoad_media %}
+                    :can-download="(true)"
+                {% endif %}
+                {% if user.is_authenticated and user == object.user %}
+                    :can-edit="(true)"
+                {% endif %}
+                {% if perms.alibrary.schedule_playlist and object.type == "broadcast" %}
+                    :can-schedule="(true)"
+                {% endif %}
+                actions="play,queue,download,edit,schedule,clipboard">
             </object-actions>
         </div>
         <div class="card__visual__top">

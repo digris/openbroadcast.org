@@ -62,7 +62,7 @@ class SetPickupCookieMixin(View):
 
 
 
-class LogoutView(LoginRequiredMixin, RedirectView):
+class LogoutView(LoginRequiredMixin, View):
     """
     Provides users the ability to logout
     """
@@ -70,15 +70,16 @@ class LogoutView(LoginRequiredMixin, RedirectView):
 
     def get(self, request, *args, **kwargs):
         auth_logout(request)
-        return super(LogoutView, self).get(request, *args, **kwargs)
+        return redirect('/')
+        # return super(LogoutView, self).get(request, *args, **kwargs)
 
-    def get_redirect_url(self, *args, **kwargs):
-        redirect_to = self.request.GET.get(REDIRECT_FIELD_NAME)
-        if redirect_to and is_safe_url(url=redirect_to, host=self.request.get_host()):
-            return redirect_to
-        else:
-            redirect_to = super(LogoutView, self).get_redirect_url(*args, **kwargs)
-        return redirect_to
+    # def get_redirect_url(self, *args, **kwargs):
+    #     redirect_to = self.request.GET.get(REDIRECT_FIELD_NAME)
+    #     if redirect_to and is_safe_url(url=redirect_to, host=self.request.get_host()):
+    #         return redirect_to
+    #     else:
+    #         redirect_to = super(LogoutView, self).get_redirect_url(*args, **kwargs)
+    #     return redirect_to
 
 
 class LoginView(AnonymousRequiredMixin, SetPickupCookieMixin, FormView):

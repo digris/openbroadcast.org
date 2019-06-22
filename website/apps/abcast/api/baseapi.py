@@ -4,7 +4,7 @@ import json
 import logging
 
 from abcast.models import Station, Channel, Emission
-from abcast.util import scheduler
+from abcast.utils import scheduler
 from django.conf import settings
 from django.conf.urls import url
 from django.contrib.sites.models import Site

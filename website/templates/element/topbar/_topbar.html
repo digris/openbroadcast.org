@@ -23,7 +23,7 @@
                 <a href="{% url "profiles-profile-detail" user.username %}">{{ user.profile.get_display_name }}</a>
                 <ul class="children">
                     <li>
-                        <a href="{% url "account:logout" %}?next=/">
+                        <a href="{% url "account:logout" %}">
                             {% trans 'Logout' %}
                         </a>
                     </li>

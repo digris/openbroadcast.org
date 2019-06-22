@@ -6,6 +6,7 @@ const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 const path = require('path');
 
 const DEV_MODE = process.env.NODE_ENV !== 'production';
@@ -21,7 +22,10 @@ const DEVSERVER_HEADER = 'X-WEBPACK-DEVSERVER';
 
 module.exports = {
     entry: {
-        'bundle': ["babel-polyfill", "./static/js/bundle.js"],
+        'bundle': [
+            "babel-polyfill",
+            "./static/js/bundle.js"
+        ],
     },
     // entry: './static/js/bundle.js',
     output: {
@@ -32,6 +36,14 @@ module.exports = {
     devtool: 'source-map',
     module: {
         rules: [
+            {
+                enforce: 'pre',
+                test: /\.(js|vue)$/,
+                loader: 'eslint-loader',
+                exclude: [
+                    /node_modules/,
+                ]
+            },
             {
                 test: /\.js$/,
                 exclude: [/node_modules/],
@@ -119,12 +131,15 @@ module.exports = {
                 from: path.resolve(STATIC_SRC, 'img'),
                 to: path.resolve(STATIC_ROOT, 'img')
             }
-        ], {debug: 'info'}),
+        ], {debug: 'warn'}),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
         }),
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new StyleLintPlugin({
+            files: ['**/*.{vue}'],
+        })
     ],
     resolve: {
         alias: {

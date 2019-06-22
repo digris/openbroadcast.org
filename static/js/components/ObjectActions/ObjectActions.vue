@@ -8,10 +8,6 @@
     import ObjectActionsPlay from './ObjectActionsPlay.vue';
 
     const ACTION_MAP = {
-        play: {
-            icon: 'fa-play',
-            title: 'Play'
-        },
         queue: {
             icon: 'fa-pause',
             title: 'Queue'
@@ -28,19 +24,10 @@
             icon: 'fa-calendar',
             title: 'Schedule'
         },
-    };
-
-    const parseActionKey = function(key) {
-        let action = ACTION_MAP[key];
-        if(action === undefined) {
-            return {
-                key: key,
-                title: key,
-                icon: null,
-            }
-        }
-        action.key = key;
-        return action;
+        clipboard: {
+            icon: 'fa-calendar',
+            title: 'Add to clipboard'
+        },
     };
 
     export default {
@@ -53,9 +40,37 @@
             ClickOutside,
         },
         props: {
-            objCt: String,
-            objUuid: String,
-            actions: String
+            ct: {
+                type: String,
+                required: true,
+            },
+            uuid: {
+                type: String,
+                required: true,
+            },
+            url: {
+                type: String,
+                required: true,
+            },
+            editUrl: {
+                type: String,
+            },
+            canPlay: {
+                type: Boolean,
+                default: false,
+            },
+            canDownload: {
+                type: Boolean,
+                default: false,
+            },
+            canEdit: {
+                type: Boolean,
+                default: false,
+            },
+            canSchedule: {
+                type: Boolean,
+                default: false,
+            },
         },
         data() {
             return {
@@ -66,48 +81,98 @@
             this.playerControl = new PlayerControlApp();
         },
         computed: {
-            parsedActions: function () {
-                const keys = this.actions.split(',');
-                let actions = [];
-                keys.forEach((key) => {
-                    actions.push(parseActionKey(key));
-                });
+            actions: function () {
+                const actions = [];
 
-                return actions
-            },
-            primaryAction: function () {
-                if (this.parsedActions.length < 1) {
-                    return null;
+                if (this.canPlay) {
+                    actions.push({
+                        key: 'queue',
+                        icon: 'fa-pause',
+                        title: 'Queue',
+                    })
                 }
-                return this.parsedActions[0];
-            },
-            secondaryActions: function () {
-                if (this.parsedActions.length < 2) {
-                    return null;
+
+                if (this.canDownload) {
+                    actions.push({
+                        key: 'download',
+                        icon: 'fa-download',
+                        title: 'Download',
+                    })
                 }
-                return this.parsedActions.slice(1)
+
+                if (this.canEdit) {
+                    actions.push({
+                        key: 'edit',
+                        icon: 'fa-pencil',
+                        title: 'Edit',
+                    })
+                }
+
+                if (this.canSchedule) {
+                    actions.push({
+                        key: 'clipboard',
+                        icon: 'fa-calendar',
+                        title: 'Add to clipboard',
+                    })
+                }
+
+                return actions;
             },
         },
         methods: {
             toggleSecondaryActions: function (e) {
                 this.secondaryActionsVisible = !this.secondaryActionsVisible;
             },
-            hideSecondaryActions: function (e) {
-                this.secondaryActionsVisible = false;
+            hideSecondaryActions: function (e, el) {
+                console.debug(el, e, 'click outside...');
+                // if(this.secondaryActionsVisible) {
+                //     this.secondaryActionsVisible = false;
+                // }
+
             },
             handleAction: function (key) {
 
+                console.debug('handleAction', key);
+                this.secondaryActionsVisible = false;
 
-                this.playerControl.send_action({
-                    do: 'load',
-                    // opts: {
-                    //   mode: 'queue',
-                    // },
-                    items: [{
-                        ct: this.objCt,
-                        uuid: this.objUuid,
-                    }]
-                });
+                // TODO: handle actions...
+                if (key === 'play') {
+                    this.playerControl.send_action({
+                        do: 'load',
+                        // opts: {
+                        //   mode: 'queue',
+                        // },
+                        items: [{
+                            ct: this.ct,
+                            uuid: this.uuid,
+                        }]
+                    });
+                }
+                if (key === 'queue') {
+                    this.playerControl.send_action({
+                        do: 'load',
+                        opts: {
+                            mode: 'queue',
+                        },
+                        items: [{
+                            ct: this.ct,
+                            uuid: this.uuid,
+                        }]
+                    });
+                }
+                if (key === 'edit') {
+                    document.location.href = this.editUrl;
+                }
+
+                if (key === 'clipboard') {
+                    const co = {
+                        name: '...loading...',
+                        ct: this.ct,
+                        uuid: this.uuid,
+                        url: this.url,
+                    };
+                    this.$store.dispatch('scheduler/addToClipboard', co);
+                }
             },
         },
     }
@@ -196,12 +261,14 @@
             <div
                 class="action action--primary">
                 <play
-                    @click="toggleSecondaryActions">
+                    v-if="canPlay"
+                    @click="handleAction('play')">
                 </play>
             </div>
             <div
                 class="action action--secondary">
                 <div
+                    v-if="(actions && actions.length)"
                     @click="toggleSecondaryActions">
                     <i class="fa fa-ellipsis-h"></i>
                 </div>
@@ -214,7 +281,7 @@
             <div class="secondary-actions__triangle"></div>
             <div
                 class="secondary-actions__list"
-                v-for="action in secondaryActions"
+                v-for="action in actions"
                 v-bind:key="action.key">
                 <action
                     @click="handleAction(action.key)"

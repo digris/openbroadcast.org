@@ -185,7 +185,7 @@
                 </div>
 
                 <div v-if="item.errors">
-                    <div v-for="error in item.errors">
+                    <div v-for="(item, index) in item.errors" :key="('error' + index)">
                         {{ error }}
                     </div>
                 </div>

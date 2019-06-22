@@ -5,17 +5,28 @@
     export default {
         name: 'Visual',
         props: [
-            'url'
+            'url',
         ],
         data() {
             return {
                 placeholder_image: PLACEHOLDER_IMAGE,
             }
         },
+        computed: {
+            imageUrl: function() {
+
+                // TODO: debug hack only
+                if(this.url && this.url.endsWith(':8000')) {
+                    return null;
+                }
+
+                return this.url;
+            }
+        },
     }
 </script>
 <style lang="scss" scoped>
-    @import '../../sass/site/variables';
+    @import '../../../sass/site/variables';
     figure {
         margin: 0;
         img {
@@ -30,7 +41,7 @@
 </style>
 <template>
     <figure>
-        <img v-if="(url)" v-bind:src="url"/>
-        <img v-else v-bind:src="placeholder_image" class="placeholder">
+        <img v-if="(imageUrl)" :src="imageUrl"/>
+        <img v-else :src="placeholder_image" class="placeholder">
     </figure>
 </template>

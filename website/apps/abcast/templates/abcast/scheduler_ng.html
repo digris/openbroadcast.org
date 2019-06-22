@@ -4,10 +4,10 @@
 {% block scope %}abcast.scheduler{% endblock %}
 
 {% block tagcloud %}{% endblock %}
+{% block menubar %}{% endblock %}
 
 {% block main-content %}
-
     <scheduler
-        channel-uuid="foo-bar"></scheduler>
-
+        :read-only="({% if read_only %}true{% else %}false{% endif %})"
+        channel-uuid="{{ channel.uuid }}"></scheduler>
 {% endblock %}

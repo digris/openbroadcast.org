@@ -17,7 +17,7 @@ class EmissionContentObjectSerializer(serializers.ModelSerializer):
 
     def to_representation(self, obj):
         filter_fields = self.context['request'].GET.get('fields', '').split(',')
-        co_filter_fields = [f.lstrip('co.') for f in filter_fields if f.startswith('co.')]
+        co_filter_fields = [f[3:] for f in filter_fields if f.startswith('co.')]
 
         if isinstance(obj, Playlist):
             serializer = PlaylistSerializer(obj, context=self.context, fields=co_filter_fields)
@@ -61,6 +61,8 @@ class EmissionSerializer(FlexFieldsModelSerializer):
     is_history = serializers.BooleanField()
 
     def get_co(self, obj):
+        if not obj.content_object:
+            return
         return EmissionContentObjectSerializer(obj.content_object, context=self.context).data
 
     def get_user(self, obj):
@@ -74,6 +76,7 @@ class EmissionSerializer(FlexFieldsModelSerializer):
         depth = 2
         fields = [
             'url',
+            'updated',
             'ct',
             'uuid',
             'user',
@@ -89,6 +92,8 @@ class EmissionSerializer(FlexFieldsModelSerializer):
             'duration',
             'series',
             'image',
+            'color',
+            'has_lock',
         ]
 
     # expandable_fields = {

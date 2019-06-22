@@ -8,8 +8,7 @@ from alibrary.models import Playlist
 from django.conf import settings
 from django.db.models import Q
 from django.http import HttpResponse, Http404
-from django.shortcuts import redirect
-from django.shortcuts import render_to_response
+from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, TemplateView
@@ -381,4 +380,18 @@ def delete_day(request):
 
 
 class SchedulerIndexNG(TemplateView):
+
     template_name = 'abcast/scheduler_ng.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SchedulerIndexNG, self).get_context_data(**kwargs)
+
+        channel_id = 1
+        read_only = not self.request.user.is_authenticated() or not self.request.user.has_perm('abcast.schedule_emission')
+
+        context.update({
+            'channel': get_object_or_404(Channel, id=channel_id),
+            'read_only': read_only,
+        })
+
+        return context

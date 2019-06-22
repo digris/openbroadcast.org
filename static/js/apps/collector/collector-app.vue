@@ -267,7 +267,7 @@
                         (( multiple)) {{ items_to_collect.length }}
                     </p>
                 </div>
-                <div v-else v-for="item_to_collect in items_to_collect" class="item-to-collect">
+                <div v-else v-for="item_to_collect in items_to_collect" :key="item_to_collect.uuid" class="item-to-collect">
                     <div class="item">
                         <div class="visual">
                             <visual v-bind:url="item_to_collect.content.image"></visual>
@@ -371,7 +371,7 @@
                             <div v-if="create_playlist_data.errors.length" class="form-errors">
                                 <span>Please correct the following error(s):</span>
                                 <ul>
-                                    <li v-for="error in create_playlist_data.errors">{{ error }}</li>
+                                    <li v-for="error in create_playlist_data.errors" :key="error">{{ error }}</li>
                                 </ul>
                             </div>
 
@@ -388,11 +388,8 @@
                             </span>
                         </div>
                     </transition>
-
-
                 </div>
             </div>
-
         </div>
     </modal>
 </template>

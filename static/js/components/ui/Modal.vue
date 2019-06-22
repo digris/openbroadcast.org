@@ -19,7 +19,7 @@
     }
 </script>
 <style lang="scss" scoped>
-    @import '../../sass/site/variables';
+    @import '../../../sass/site/variables';
 
     .modal-mask {
         position: fixed;
@@ -40,6 +40,7 @@
             position: fixed;
             z-index: 99;
             min-width: 150px;
+            max-width: 800px;
             min-height: 150px;
             display: flex;
             flex-direction: column;
@@ -47,6 +48,7 @@
 
             width: 40vw;
             height: 50%;
+
 
             // full-size display in popup
             @media only screen and (max-width: 800px) {
@@ -94,7 +96,7 @@
     }
 
     .modal-enter, .modal-leave-to {
-        transform: translateY(100vh);
+        // transform: translateY(100vh);
         opacity: 0;
     }
 

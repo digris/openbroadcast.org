@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 import datetime
 import arating
-from abcast.util import notify
+from abcast.utils import notify
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType

@@ -119,8 +119,8 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
         # TODO: check if this is a good idea...
         # request asset generation for media
         # print('request asset generation for {}'.format(obj))
-        Format.objects.get_or_create_for_media(media=obj)
-        Waveform.objects.get_or_create_for_media(media=obj, type=Waveform.WAVEFORM)
+        # Format.objects.get_or_create_for_media(media=obj)
+        # Waveform.objects.get_or_create_for_media(media=obj, type=Waveform.WAVEFORM)
 
         return assets
 

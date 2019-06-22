@@ -315,6 +315,7 @@ def create_profile(sender, instance, created, **kwargs):
 
 # TODO: implement signal
 # post_save.connect(create_profile, sender=get_user_model())
+post_save.connect(create_profile, sender=settings.AUTH_USER_MODEL)
 
 
 def add_to_group(sender, instance, **kwargs):

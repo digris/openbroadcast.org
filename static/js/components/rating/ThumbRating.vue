@@ -18,9 +18,6 @@
       // this.$store.dispatch('rating/get_votes', {obj_ct: 'alibrary.media', obj_pk: this.media.id});
     },
     computed: {
-      user() {
-        // return this.$store.getters['account/user'];
-      },
       key() {
         if (!this.media) {
           return null;
@@ -31,6 +28,9 @@
         if (!this.key) {
           return null;
         }
+
+        return [];
+
 
         // const votes = this.$store.getters['rating/votes'][this.key];
         //
