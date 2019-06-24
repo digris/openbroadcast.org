@@ -3,12 +3,14 @@
     const DEBUG = true;
     import Visual from '../ui/Visual.vue';
     import EmissionHistory from '../EmissionHistory/EmissionHistory.vue';
+    import ObjectActions from '../../components/ObjectActions/ObjectActions.vue';
 
     export default {
         name: 'SchedulerClipboardItem',
         components: {
             'emission-history': EmissionHistory,
             'visual': Visual,
+            'object-actions': ObjectActions,
         },
         props: {
             item: Object,
@@ -33,11 +35,16 @@
 
         &__visual {
             width: 64px;
+            position: relative;
             img {
                 background: deepskyblue;
             }
             figure {
                 height: 64px;
+            }
+            .object-actions {
+                top: 0;
+                position: absolute;
             }
         }
 
@@ -48,6 +55,11 @@
 
         &__header {
             display: flex;
+
+            .title {
+                color: inherit;
+            }
+
             .emission-history {
                 flex-grow: 1;
             }
@@ -64,13 +76,23 @@
         class="clipboard-item">
         <div class="clipboard-item__visual">
             <visual :url="item.image"></visual>
+            <object-actions
+                :scale="(.6)"
+                :ct="item.ct"
+                :uuid="item.uuid"
+                :url="item.url"
+                :can-play="(true)">
+            </object-actions>
         </div>
         <div class="clipboard-item__body">
             <div class="clipboard-item__header">
-                <div>
+                <a
+                    :href="item.detailUrl"
+                    target="_blank"
+                    class="title">
                     <span v-if="item.seriesDisplay">{{ item.seriesDisplay }}<br></span>
                     {{ item.name }}
-                </div>
+                </a>
                 <emission-history
                     :obj-ct="item.ct"
                     :obj-uuid="item.uuid">

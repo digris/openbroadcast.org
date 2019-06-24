@@ -47,7 +47,7 @@
 
 
             width: 40vw;
-            height: 50%;
+            // height: 60%;
 
 
             // full-size display in popup

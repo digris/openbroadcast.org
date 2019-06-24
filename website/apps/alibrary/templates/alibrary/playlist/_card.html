@@ -13,6 +13,7 @@
                 edit-url="{% url 'alibrary-playlist-edit' object.pk %}"
                 {% if perms.alibrary.play_media %}
                     :can-play="(true)"
+                    :can-queue="(true)"
                 {% endif %}
                 {% if perms.alibrary.downoad_media %}
                     :can-download="(true)"

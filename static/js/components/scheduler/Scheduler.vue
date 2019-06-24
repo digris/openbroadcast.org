@@ -43,7 +43,7 @@
             }
         },
         mounted: function () {
-            // document.body.classList.add('is-fullscreen');
+
             // this.setSchedulerSizes();
             this.$nextTick(() => {
                this.setSchedulerSizes();
@@ -101,7 +101,6 @@
             setSchedulerSizes: function() {
                 const calendarContainer = this.$refs['calendar'];
                 const rect = calendarContainer.$el.getBoundingClientRect();
-                // console.debug('container ref', rect, calendarContainer);
                 const calendarWidth = rect.width;
                 console.debug('calendarWidth', calendarWidth);
 

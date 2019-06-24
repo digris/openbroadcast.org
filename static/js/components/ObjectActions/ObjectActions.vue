@@ -40,6 +40,10 @@
             ClickOutside,
         },
         props: {
+            scale: {
+                type: Number,
+                default: 1,
+            },
             ct: {
                 type: String,
                 required: true,
@@ -56,6 +60,10 @@
                 type: String,
             },
             canPlay: {
+                type: Boolean,
+                default: false,
+            },
+            canQueue: {
                 type: Boolean,
                 default: false,
             },
@@ -84,7 +92,7 @@
             actions: function () {
                 const actions = [];
 
-                if (this.canPlay) {
+                if (this.canQueue) {
                     actions.push({
                         key: 'queue',
                         icon: 'fa-pause',
@@ -253,6 +261,7 @@
     <div
         class="object-actions">
         <div
+            :style="{transform: `scale(${scale})`}"
             class="actions">
             <div
                 class="action action--secondary">
