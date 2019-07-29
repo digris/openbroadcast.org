@@ -48,10 +48,9 @@ def lazy_image(image, type, size, alt=None):
     else:
         url = None
 
-    if not url:
-        import random
-        url = 'https://picsum.photos/200?random={}'.format(random.randint(1,1000))
-
+    # if not url:
+    #     import random
+    #     url = 'https://picsum.photos/200?random={}'.format(random.randint(1,1000))
 
     context = {
         "image": image,

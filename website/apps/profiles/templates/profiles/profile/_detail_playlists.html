@@ -1,7 +1,16 @@
+{% load i18n spurl %}
 <div class="list list--grid">
-{% for playlist in playlists|slice:"0:" %}
+{% for playlist in playlists|slice:"0:16" %}
     <div class="list-item">
         {% include 'alibrary/playlist/_card.html' with object=playlist %}
     </div>
 {% endfor %}
+</div>
+<div class="list-appendix">
+    {% url "alibrary-playlist-list" as playlist_list %}
+    <div class="action action--show-all">
+        <a rel="nofollow" href="{% spurl path=playlist_list query="search_user={{ object.user.username }}" %}">
+            {% blocktrans with user=object %}Show all playlists by {{ user }}{% endblocktrans %}
+        </a>
+    </div>
 </div>

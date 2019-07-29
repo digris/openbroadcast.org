@@ -18,7 +18,6 @@ from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from django.utils.translation import ugettext as _
 from base.fields.extra import AdvancedFileInput
 from base.fields.widgets import ReadOnlyIconField
-from pagedown.widgets import PagedownWidget
 from tagging.forms import TagField
 
 from search.forms import fields as search_fields
@@ -160,7 +159,7 @@ class ArtistForm(ModelForm):
     remote_image = forms.URLField(required=False)
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
     namevariations = forms.CharField(widget=forms.Textarea(attrs={'rows':'2'}), required=False, label=_('Variations'))
-    biography = forms.CharField(widget=PagedownWidget(), required=False)
+    biography = forms.CharField(widget=forms.Textarea(), required=False)
 
 
     def clean(self, *args, **kwargs):

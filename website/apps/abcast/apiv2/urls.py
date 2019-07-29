@@ -15,5 +15,8 @@ urlpatterns = [
         r"^history-for-object/(?P<obj_ct>[a-z-_\.]+):(?P<obj_uuid>[0-9A-Fa-f-]+)/$",
         views.emission_history,
         name="emission-history",
-    )
+    ),
+
+    # schedule data needed for playout / pzpo
+    url(r'^schedule/$', views.playout_schedule, name='playout-schedule'),
 ]

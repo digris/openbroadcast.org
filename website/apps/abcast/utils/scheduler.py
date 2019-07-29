@@ -224,7 +224,8 @@ def check_slot_availability(time_start, time_end, excluded_emission=None, channe
     if time_start < now + datetime.timedelta(minutes=2):
         return False, 'You cannot schedule less than 2 minutes in advance'
 
-    if time_start.hour < 6 <= time_end.hour:
+    # if time_start.hour < 6 <= time_end.hour:
+    if time_start.hour < 6 <= (time_end - datetime.timedelta(seconds=2)).hour:
         return False, 'You cannot schedule overlapping days'
 
     overlapping_qs = Emission.objects.filter(

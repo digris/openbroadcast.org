@@ -1,0 +1,117 @@
+@charset "UTF-8";
+
+@mixin item-header {
+  background: $white;
+  display: grid;
+  grid-template-columns: auto 190px;
+
+  .header {
+    &__primary {
+      flex-grow: 1;
+      padding: 10px;
+
+      .title {
+        display: flex;
+        align-items: baseline;
+        margin-bottom: 4px;
+
+        small {
+          margin-left: 10px;
+          opacity: 0.7;
+        }
+      }
+
+      .meta {
+        &__item {
+          display: grid;
+          grid-template-columns: 120px minmax(auto, 60%);
+
+          a, span {
+            white-space: nowrap;
+          }
+
+          &__grid {
+            display: grid;
+            grid-template-columns: fit-content(50%) fit-content(50%);
+            grid-column-gap: 8px;
+          }
+        }
+      }
+    }
+
+    &__secondary {
+      .visual {
+        max-width: 190px;
+        max-height: 190px;
+
+        figure {
+          margin: 0;
+        }
+      }
+
+      .rating {
+        margin: 5px auto;
+        float: none;
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+
+  .tags {
+    .tag {
+      background: black;
+      padding: 2px 4px 1px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+  }
+}
+
+@mixin section-menu {
+  $border-color: #ddd;
+  $bg-color: #F5F5F5;
+
+  border-bottom: 1px solid $border-color;
+  background: $white;
+  display: flex;
+  justify-content: center;
+
+  .menu-item {
+    margin: 0 0 -1px 10px;
+    border: 1px solid $bg-color;
+    border-bottom-color: $border-color;
+    text-decoration: none;
+    color: #a5a5a5;
+    background: $bg-color;
+
+    a {
+      padding: 1px 12px;
+      display: inline-block;
+      color: inherit;
+      text-decoration: inherit;
+    }
+
+    &:hover {
+      // color: $secondary-color;
+      color: v(secondary-color);
+      background: $white;
+    }
+
+    &--active {
+      border-bottom: 0;
+      color: #777777;
+      background: $bg-color;
+      border-color: #cccccc;
+
+      &:hover {
+        color: inherit;
+        background: $bg-color;
+      }
+    }
+  }
+}
+
+@mixin item-body {
+  background: transparent;
+}

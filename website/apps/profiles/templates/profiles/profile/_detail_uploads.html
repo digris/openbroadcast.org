@@ -1,0 +1,18 @@
+{% load i18n spurl %}
+{% comment %}
+<div class="list list--grid">
+{% for release in uploads.releases|slice:"0:8" %}
+    <div class="list-item">
+        {% include 'alibrary/playlist/_card.html' with object=release %}
+    </div>
+{% endfor %}
+</div>
+{% endcomment %}
+<div class="list-appendix">
+    {% url "alibrary-release-list" as release_list %}
+    <div class="action action--show-all">
+        <a rel="nofollow" href="{% spurl path=release_list query="search_creator={{ object.user.username }}" %}">
+            {% blocktrans with user=object %}Show all releases uploaded by {{ user }}{% endblocktrans %}
+        </a>
+    </div>
+</div>

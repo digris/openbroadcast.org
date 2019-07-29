@@ -37,7 +37,7 @@ const mutations = {
 const actions = {
     loadObjectHistory: async (context, {objCt, objUuid}) => {
         const key = generateKey(objCt, objUuid);
-        const url = `${HISTORY_ENDPOINT}${key}`;
+        const url = `${HISTORY_ENDPOINT}${key}/`;
         context.commit('setObjectHistory', {key: key, payload: []});
         if (DEBUG) console.debug('actions - loadObjectHistory', url);
         APIClient.get(url).then((response) => {

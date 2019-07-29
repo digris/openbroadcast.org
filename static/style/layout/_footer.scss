@@ -1,3 +1,48 @@
 // -----------------------------------------------------------------------------
 // This file contains all styles related to the footer of the site/application.
 // -----------------------------------------------------------------------------
+
+footer {
+  background: #000;
+  .footer {
+    max-width: $g-content-max-width;
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px 0 12px;
+    color: #cdcdcd;
+
+    &__primary {
+
+      display: flex;
+
+      h4, p, dl, a {
+        color: inherit;
+      }
+      h4 {
+        margin-bottom: 12px;
+      }
+      p, dl {
+        margin: 0;
+      }
+    }
+
+    &__address {
+      padding-right: 64px;
+    }
+
+    &__links {
+
+    }
+
+    &__appendix {
+      p {
+          text-align: right;
+          color: inherit;
+      }
+      a {
+        color: #fff;
+      }
+    }
+
+  }
+}

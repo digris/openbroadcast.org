@@ -3,15 +3,11 @@
     const DEBUG = false;
     import {backgroundColors} from './constants';
     import {hexToRGBA} from './utils';
-    import SchedulerCalendarEmissionContent from './SchedulerCalendarEmissionContent.vue';
 
     export default {
         name: 'SchedulerCalendarEmission',
         props: {
             emission: Object,
-        },
-        components: {
-            // 'content-obj': SchedulerCalendarEmissionContent,
         },
         data() {
             return {
@@ -36,7 +32,8 @@
             style() {
                 const color = backgroundColors[this.emission.obj.color];
                 return {
-                    backgroundColor: hexToRGBA(color, .8),
+                    // backgroundColor: hexToRGBA(color, .8),
+                    borderColor: hexToRGBA(color, 1),
                 }
             },
         }
@@ -48,44 +45,41 @@
         .emission {
             // border: 1px solid rgba(0, 0, 0, 0.25);
             margin: 1px 0 1px 1px;
-            background: rgba(132, 255, 166, 0.85);
+            background: rgba(255, 255, 255, 0.80);
             height: calc(100% - 1px);
             cursor: pointer;
-            font-size: 80%;
             transition: background 200ms;
             position: relative;
-
             display: flex;
             flex-direction: column;
-
-            &__title {
-                background: rgba(0, 0, 0, 0.025);
-                padding: 0 4px;
-            }
+            border-left: 2px solid #fff;
 
             &:hover {
                 background: rgba(126, 235, 157, 0.85);
             }
 
+            &__title {
+                background: rgba(0, 0, 0, .025);
+                padding: 0 4px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+            &:hover & {
+                &__title {
+                    overflow: visible;
+                    white-space: normal;
+                    z-index: 999;
+                }
+            }
+
             &.is-highlighted {
-                background: rgba(235, 88, 0, 0.85) !important;
+                background: rgba(235, 193, 64, 0.85) !important;
             }
 
             &.is-dragged {
                 opacity: .2;
-            }
-
-            &__visual {
-                height: auto;
-                overflow: hidden;
-                img {
-                    filter: grayscale(1);
-                    opacity: .2;
-                    max-height: 100%;
-                    width: 100%;
-                    object-fit: cover;
-                    object-position: center;
-                }
             }
 
             // detail block, visible on hover
@@ -112,6 +106,10 @@
             class="emission__title">
             <span v-if="emission.obj.series">
                 {{ emission.obj.series }}
+                <!--
+                <br>
+                <small>{{ emission.obj.name }}</small>
+                -->
             </span>
             <span v-else>
                 {{ emission.obj.name }}
@@ -126,14 +124,7 @@
         -->
         <div v-if="detailsVisible"
             class="emission__details">
-
             {{ emission.obj.co.name }}
-
-            <!--
-            <content-obj
-                size="small"
-                :content-obj="emission.obj.co"></content-obj>
-            -->
         </div>
 
     </div>

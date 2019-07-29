@@ -1,0 +1,199 @@
+///////////////////////////////////////////////////////////////////////
+// ng-search app - serves as a replacement for 'search' once
+// completed
+///////////////////////////////////////////////////////////////////////
+
+$search-inner-border-color: #eaeaea;
+
+%search-result-item {
+  display: flex;
+  padding: 8px 8px;
+  margin: 0 0 0;
+  border-bottom: 1px solid $search-inner-border-color;
+  border-top: none;
+  background: white;
+
+  &.top-hit {
+    background: rgba($primary-color-light, 0.2);
+
+    .title {
+      font-weight: bold;
+    }
+  }
+
+  &.active,
+  &:hover {
+    background: $secondary-color-light;
+  }
+
+  .controls {
+    &.controls-image {
+      figure {
+        background: $search-inner-border-color;
+        margin: 0;
+        padding: 0;
+
+        img {
+          width: 60px;
+          height: 60px;
+        }
+      }
+    }
+
+    &.controls-meta {
+      flex-grow: 1;
+      padding: 0 8px;
+    }
+  }
+}
+
+.search-app {
+  //margin-top: 100px
+  z-index: 9999;
+  position: relative;
+
+  &.active {
+    .search-input,
+    .search-display-container {
+      box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  .search-input-container {
+    display: flex;
+    max-width: 420px;
+    margin-left: auto;
+
+    .search-input-icon {
+      width: 24px;
+      padding-top: 7px;
+
+      .icon {
+        font-size: 16px;
+        color: white;
+      }
+    }
+
+    .search-input {
+      flex-grow: 1;
+      display: flex;
+
+      input {
+        flex-grow: 1;
+        font-size: 13px;
+        font-family: "Helvetica neue", sans-serif;
+        letter-spacing: 1px;
+        font-weight: 300;
+        background: rgba(255, 255, 255, 0.2);
+
+        //width: $search-inner-width - 10px
+        height: 32px;
+        padding: 2px 8px;
+        border: none;
+        color: $white;
+
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.75);
+        }
+
+        &:focus::placeholder {
+          color: rgba(255, 255, 255, 0.25);
+        }
+      }
+    }
+  }
+
+  .search-display-container {
+    background: white;
+    position: absolute;
+    min-width: 340px;
+
+    // position & width is dynamically set in vue during render
+
+  }
+
+  .search-options-container {
+    display: none;
+
+    &.expanded {
+      display: block;
+    }
+  }
+
+  .search-settings-container {
+    padding: 8px;
+    background: white;
+    border-bottom: 1px solid $search-inner-border-color;
+
+    .setting {
+      cursor: pointer;
+    }
+  }
+
+  .search-scope-container {
+    padding: 8px 8px 6px;
+    background: white;
+    border-bottom: 1px solid $search-inner-border-color;
+
+    .scopes {
+      display: flex;
+      flex-flow: wrap;
+
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+
+      .scope-label {
+        padding: 2px 0;
+      }
+
+      .scope {
+        margin: 0 2px 0 0;
+        padding: 2px 10px;
+        background: #e8e8e8;
+        margin-bottom: 2px;
+
+        a {
+          text-decoration: none;
+        }
+
+        &.selected {
+          background: $primary-color;
+
+          a {
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+
+  .search-result-container {
+    display: none;
+    max-height: 50vh;
+    overflow-y: auto;
+
+    &.expanded {
+      display: block;
+    }
+
+    .search-result {
+      @extend %search-result-item;
+    }
+  }
+
+  .search-footer-container {
+    .search-actions {
+      padding: 8px;
+      background: white;
+      border-top: 1px solid $search-inner-border-color;
+      display: flex;
+
+      .search-action {
+        display: block;
+        text-align: center;
+        width: 100%;
+      }
+    }
+  }
+}

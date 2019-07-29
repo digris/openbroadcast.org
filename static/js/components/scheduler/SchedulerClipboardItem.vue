@@ -19,7 +19,14 @@
         //
         // },
         methods: {},
-        computed: {}
+        computed: {
+            duration() {
+                if(!this.item) {
+                    return null;
+                }
+                return new Date(this.item.duration).toISOString().substr(11, 8);
+            }
+        }
     }
 </script>
 <style lang="scss" scoped>
@@ -99,7 +106,7 @@
                 </emission-history>
             </div>
             <div class="clipboard-item__description">
-                <p>foo the bar</p>
+                <p>{{ duration }}</p>
             </div>
         </div>
     </div>

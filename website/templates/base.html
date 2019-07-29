@@ -35,6 +35,14 @@
         <script src="{% static 'js/lib/jquery-1.8.3.js' %}"></script>
         <script src="{% static 'js/lib/jquery-ui-1.9.2.custom.min.js' %}"></script>
         <!-- end: legacy jquery -->
+        <script>
+            {% comment %}
+            we need to delay jQuery (legacy) ready function until vuejs app is ready
+            'hold ready' will be released once the main app is mounted.
+            see `initializer.AppInitializer`
+            {% endcomment %}
+            window.jQuery.holdReady(true);
+        </script>
 
         <!-- start: js-head elements added by sub-templates -->
         {% render_block "js-head" %}
@@ -180,9 +188,11 @@
         <script src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-button.js"></script>
 
         <script src="{{ STATIC_URL }}js/lib/ICanHaz.js"></script>
+        {% comment %}
         <script src="{{ STATIC_URL }}js/lib/pagedown/Markdown.Converter.js"></script>
         <script src="{{ STATIC_URL }}js/lib/pagedown/Markdown.Sanitizer.js"></script>
         <script src="{{ STATIC_URL }}js/lib/pagedown/Markdown.Editor.js"></script>
+        {% endcomment %}
         <script src="{{ STATIC_URL }}ac_tagging/js/ac_tagging.js"></script>
         <script src="{{ STATIC_URL }}arating/js/base.js"></script>
 

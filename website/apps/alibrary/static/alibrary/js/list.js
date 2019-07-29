@@ -28,6 +28,9 @@ ListEditUi = function () {
 
 
     this.init = function () {
+
+        console.debug('ListEditUi - init');
+
         self.bindings();
     };
 
@@ -35,7 +38,6 @@ ListEditUi = function () {
 
         // lookup providers
         var container = $('.action-group');
-
         $(container).on('click', "li.action a:not('.disabled')", function (e) {
             e.preventDefault();
             var action = $(this).data('action');

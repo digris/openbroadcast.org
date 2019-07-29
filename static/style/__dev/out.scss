@@ -1,0 +1,46 @@
+.list-header,
+.list-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  .pagination-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+
+    span, a {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 7px;
+      height: 24px;
+    }
+
+    span {
+      color: #a5a5a5;
+    }
+
+    a {
+      background: $body-color-shaded-bg;
+
+      &:hover {
+        background: $primary-color-b;
+        color: white;
+        text-decoration: none;
+      }
+    }
+
+    span.current {
+      background: $primary-color-a;
+      color: white;
+    }
+  }
+
+  .controls-container {
+    .actions {
+      &--list {
+        @include list-actions;
+      }
+    }
+  }
+}

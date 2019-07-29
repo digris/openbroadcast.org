@@ -1,0 +1,69 @@
+@charset "UTF-8";
+
+@import "mixins/detail";
+@import "mixins/list";
+
+.content__primary {
+  > .item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item {
+    &--header {
+      @include item-header;
+    }
+
+    &--section-menu {
+      @include section-menu;
+
+      padding-top: 20px;
+    }
+
+    &--body {
+      @include item-body;
+
+      margin-top: 20px;
+    }
+  }
+
+  .list {
+    &--grid {
+      @include grid-layout;
+
+      .list-item {
+        @include list-item--grid;
+      }
+    }
+  }
+
+  .list-header,
+  .list-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    .pagination-container {
+      @include pagination;
+    }
+
+  }
+
+  .list-header {
+    margin-bottom: 20px;
+  }
+
+  .list-footer {
+    margin-top: 20px;
+  }
+
+  .list-appendix {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+
+    .action {
+      font-size: 120%;
+    }
+  }
+}

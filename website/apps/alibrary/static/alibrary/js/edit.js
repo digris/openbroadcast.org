@@ -1189,27 +1189,6 @@ var EditUi = function () {
             skip_apply = true;
         }
 
-        // handle pagedown-preview
-        if (key == 'description') {
-
-            try {
-                setTimeout(function(){
-                    pd_editor.refreshPreview()
-                }, 200)
-            } catch (e) {
-            }
-        }
-        // handle pagedown-preview
-        if (key == 'biography') {
-
-            try {
-                setTimeout(function(){
-                    pd_editor.refreshPreview()
-                }, 200)
-            } catch (e) {
-            }
-        }
-
         // apply feedback
         el.parent().removeClass('lookup-diff');
         el.parent().addClass('lookup-match');

@@ -51,18 +51,6 @@ class EmissionViewSet(FlexFieldsModelViewSet):
         qs = qs.prefetch_related('content_object')
         return qs
 
-    # def dispatch(self, request, *args, **kwargs):
-    #
-    #     if not request.method.upper() == 'GET':
-    #
-    #         if not request.user.is_authenticated():
-    #             raise Exception('not authenticated')
-    #
-    #         if not request.user.has_perms('alibrary.schedule_playlist'):
-    #             raise Exception('no permission')
-    #
-    #     return super(EmissionViewSet, self).dispatch(request, *args, **kwargs)
-
     def create(self, request, *args, **kwargs):
 
         obj_ct = request.data.get('obj_ct')
@@ -154,3 +142,31 @@ class EmissionHistory(APIView):
 
 
 emission_history = EmissionHistory.as_view()
+
+
+class PlayoutSchedule(APIView):
+
+    def get_object(self):
+        obj_ct = self.kwargs.get('obj_ct')
+        obj_uuid = self.kwargs.get('obj_uuid')
+
+        return get_object_or_404(apps.get_model(*obj_ct.split(".")), uuid=obj_uuid)
+
+    def get(self, request):
+
+        time_start = datetime.datetime.now()
+        time_end = time_start + datetime.timedelta(seconds=60 * 60 * 4)
+
+        from ..utils.playout import get_playout_schedule
+
+        r = get_playout_schedule(time_start, time_end)
+
+        # print(r)
+
+        # obj = self.get_object()
+        # serializer = EmissionHistorySerializer(instance=obj.emissions.order_by('-time_start'), many=True)
+
+        return Response(r)
+
+
+playout_schedule = PlayoutSchedule.as_view()

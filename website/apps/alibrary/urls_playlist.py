@@ -14,6 +14,6 @@ urlpatterns = [
     url(r'^(?P<slug>[-\w]+)/$', views.PlaylistDetailView.as_view(), name='alibrary-playlist-detail'),
     url(r'^(?P<pk>\d+)/edit/$', views.PlaylistEditView.as_view(), name='alibrary-playlist-edit'),
     url(r'^(?P<pk>\d+)/delete/$', views.PlaylistDeleteView.as_view(), name='alibrary-playlist-delete'),
-    url(r'^(?P<pk>\d+)/convert/(?P<type>[-\w]+)/$', views.playlist_convert, name='alibrary-playlist-convert'),
+    url(r'^(?P<pk>\d+)/convert/(?P<playlist_type>[-\w]+)/$', views.playlist_convert, name='alibrary-playlist-convert'),
 
 ]

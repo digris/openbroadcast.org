@@ -1,9 +1,29 @@
+$g-content-max-width: 1115px;
 
+// global skeleton
+html,
+body {
+  min-height: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  font-family: $text-font-stack;
+  font-weight: 300;
+  line-height: 18px;
+  color: v(text-color);
+  background: v(page-bg-color);
+  margin: 0;
+  padding: 0;
+}
 
 
 body.base {
+
+  // background: var(--primary-color);
+  // background: v(primary-color);
+
   &.is-fullscreen {
-    // background: #fff !important;
 
     .topbar {
       display: none;
@@ -25,3 +45,43 @@ body.base {
 
   }
 }
+
+
+
+
+body.base {
+  main {
+    height: 100%;
+    // padding-top: main navigation height + offset
+    padding-top: 64px + 64px;
+    padding-bottom: 48px;
+    max-width: $g-content-max-width;
+    width: 100%;
+    margin: 0 auto;
+    min-height: calc(100vh - 128px);
+    // we need an intermediate container for vue.js
+    .app-container {
+      flex-grow: 1;
+    }
+    > .heading {
+      display: grid;
+      grid-template-columns: calc(100% - 260px - 24px) 260px;
+      grid-column-gap: 24px;
+      margin-bottom: 24px;
+    }
+    > .content {
+      display: grid;
+      grid-template-columns: calc(100% - 260px - 24px) 260px;
+      grid-column-gap: 24px;
+      .content__primary {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+  footer {
+    background: black;
+  }
+}
+
+

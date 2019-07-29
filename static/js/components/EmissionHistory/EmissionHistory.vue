@@ -101,6 +101,7 @@
                 }
             },
             showMatrix: function() {
+                this.loadHistory();
                 this.matrixVisible = true;
             },
             hideMatrix: function() {
@@ -171,7 +172,8 @@
 
         &__matrix-container {
             position: absolute;
-            border: 1px solid #000;
+            border: 1px solid #bcbcbc;
+            box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.05);
             top: 21px;
             min-width: 640px;
             z-index: 999;

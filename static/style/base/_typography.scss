@@ -7,3 +7,17 @@ body {
   font-size: $base-font-size;
   font-weight: $base-font-weight;
 }
+
+h1,
+h2 {
+  font-size: 1.6rem;
+  font-weight: $base-font-weight;
+  margin: 0;
+}
+
+h3,
+h4 {
+  font-size: 1.2rem;
+  font-weight: $base-font-weight;
+  margin: 0;
+}

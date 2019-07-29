@@ -16,7 +16,6 @@ from django.forms import ModelForm, Form
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from django.utils.translation import ugettext as _
 from base.fields.widgets import ReadOnlyIconField
-from pagedown.widgets import PagedownWidget
 from tagging.forms import TagField
 
 from search.forms import fields as search_fields
@@ -169,7 +168,7 @@ class MediaForm(ModelForm):
 
     name = forms.CharField(required=True, label='Title')
     artist = search_fields.AutocompleteField('alibrary.artist', allow_new=True, required=False, label=_('Artist'))
-    description = forms.CharField(widget=PagedownWidget(), required=False)
+    description = forms.CharField(widget=forms.Textarea(), required=False)
 
     def clean_license(self):
         instance = getattr(self, 'instance', None)

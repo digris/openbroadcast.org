@@ -2,10 +2,8 @@
 
 {% cache 600 "footer" request.get_full_path %}
     <div class="footer">
-
         <div class="footer__primary">
             <div class="footer__address">
-                <!--<h4>{% trans 'Address' %}</h4>-->
                 <p>
                     open broadcast<br>
                     Renggerstrasse 31<br>
@@ -14,21 +12,18 @@
                 </p>
             </div>
             <div class="footer__links">
-                <!--<h4>{% trans 'Links' %}</h4>-->
-                <dl class="dl-horizontal">
-                    <dt>General contact</dt>
-                    <dd><a href="mailto:info@openbroadcast.org">info@openbroadcast.org</a></dd>
-                    <dt>Support</dt>
-                    <dd><a href="mailto:support@openbroadcast.org">support@openbroadcast.org</a></dd>
-                    <dt>Issue Tracker</dt>
-                    <dd><a href="https://lab.hazelfire.com/projects/openbroadcast-org/" target="_blank">lab.hazelfire.com/projects/openbroadcast-org</a>
-                    </dd>
-                </dl>
+                <p>
+                    <span>General contact:</span>
+                    <a href="mailto:info@openbroadcast.org">info@openbroadcast.org</a>
+                </p>
+                <p>
+                    <span>Support:</span>
+                    <a href="mailto:support@openbroadcast.org">support@openbroadcast.org</a>
+                </p>
             </div>
         </div>
         <div class="footer__appendix">
             <p>developed by <a href="http://hazelfire.com" target="_blank">hazelfire GmbH</a></p>
         </div>
-
     </div>
 {% endcache %}

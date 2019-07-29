@@ -60,7 +60,6 @@
             {# topflop_for_object object #}
             -
         </div>
-
         <div>
             {% if object.series %}
                 {{ object.series.name|truncate_chars_inner:24 }}
@@ -74,7 +73,6 @@
         <div>
             {# object.get_type_display #}
         </div>
-
         <div>
             <a href="{{ object.user.get_absolute_url }}">{{ object.user.profile.get_display_name }}</a>
         </div>
@@ -88,10 +86,10 @@
                 {{ object.duration|divide:1000|sec_to_time }}
             {% endif %}
         </div>
-
-
     </div>
+    <!--
     <div class="card__footer">
         (( footer ))
     </div>
+    -->
 </div>

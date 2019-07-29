@@ -19,7 +19,6 @@ from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 from base.fields.extra import AdvancedFileInput
-from pagedown.widgets import PagedownWidget
 from tagging.forms import TagField
 
 from search.forms import fields as search_fields
@@ -244,10 +243,10 @@ class PlaylistForm(ModelForm):
 
 
 
-    #main_image = forms.Field(widget=FileInput(), required=False)
+    # main_image = forms.Field(widget=FileInput(), required=False)
     main_image = forms.Field(widget=AdvancedFileInput(), required=False)
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
-    description = forms.CharField(widget=PagedownWidget(), required=False)
+    description = forms.CharField(widget=forms.Textarea(), required=False)
 
     rotation = forms.BooleanField(required=False, label=_('Include in rotation'), help_text=_('Allow this broadcast to be aired at random time if nothing else is scheduled.'))
 

@@ -180,7 +180,8 @@ class ProfileDetailViewNG(DetailView):
             playlist_qs = playlist_qs.select_related(
                 'user',
             ).prefetch_related(
-                'items'
+                'items',
+                'emissions',
             )
             context.update({
                 'playlists': playlist_qs,

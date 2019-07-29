@@ -1,0 +1,190 @@
+// -----------------------------------------------------------------------------
+// Global Topbar styling
+// -----------------------------------------------------------------------------
+
+
+
+$topbar-height: 32px;
+
+// cms edit-mode
+.cms-ready {
+  .topbar {
+    transition: top 200ms;
+  }
+  .menu {
+    .children {
+      transition: top 200ms;
+    }
+  }
+}
+
+.cms-toolbar-expanded,
+.cms-toolbar-expanding {
+  .topbar {
+    top: 46px;
+    .main-menu {
+      .menu {
+        .children {
+          top: 78px;
+        }
+      }
+    }
+  }
+}
+
+.topbar {
+  background: linear-gradient(to right, white 0%, #6633cc 80%);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: $topbar-height;
+  z-index: 99;
+  display: flex;
+  flex-direction: row;
+  letter-spacing: 1px;
+  // main elements
+  .branding {
+    //background: rgba(255, 69, 0, 0.4)
+    padding: 7px 20px;
+    font-size: 13px;
+    a {
+      color: #333333;
+    }
+  }
+  .main-menu {
+    font-size: 13px;
+    text-transform: uppercase;
+
+
+
+
+    //flex-grow: 0
+    .menu {
+      display: flex;
+      list-style-type: none;
+      margin: 0;
+      // first level
+      > li {
+        padding: 7px 20px;
+        &:hover,
+        &.selected {
+          background: whitesmoke;
+        }
+        a {
+          color: black;
+          text-decoration: none;
+        }
+      }
+      // second level
+      .children {
+        display: none;
+        background: rgba(245, 245, 245, 0.91);
+        position: fixed;
+        top: 32px;
+        left: 0;
+        width: 100%;
+        list-style-type: none;
+        &.active {
+          display: flex;
+        }
+        > li {
+          padding: 7px 10px;
+          a {
+            color: black;
+            text-decoration: none;
+            padding-right: 20px;
+            border-right: 1px solid black;
+          }
+          &:hover,
+          &.selected {
+            a {
+              color: $secondary-color;
+            }
+          }
+          &:last-child {
+            a {
+              border-right: none;
+            }
+          }
+        }
+      }
+    }
+  }
+  .global-search {
+    // color: green
+    flex-grow: 1;
+    margin-left: auto;
+  }
+  .account-menu {
+    font-size: 13px;
+    text-transform: uppercase;
+    background: black;
+    &.is-authenticated {
+      min-width: 200px;
+    }
+    .menu {
+      display: flex;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      // first level
+      > li {
+        padding: 7px 10px;
+        //background: #000
+        color: white;
+        &:hover {
+          background: #333333;
+        }
+        a {
+          color: white;
+          text-decoration: none;
+          display: block;
+        }
+        &.account {
+          flex-grow: 1;
+        }
+        &.login {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
+      // second level
+      .children {
+        list-style-type: none;
+        display: none;
+        position: absolute;
+        padding: 0;
+        top: 32px;
+        min-width: 200px;
+        right: 0;
+        background: black;
+        > li {
+          padding: 7px 10px;
+          &:hover {
+            background: #333333;
+          }
+          a {
+            color: white;
+            text-decoration: none;
+            padding-right: 10px;
+            text-transform: none;
+            display: block;
+          }
+        }
+      }
+      .account:hover {
+        .children {
+          display: block;
+        }
+      }
+      .login:hover {
+        .children {
+          display: block;
+        }
+      }
+      .message-notification.has-unread {
+        background: $secondary-color !important;
+      }
+    }
+  }
+}

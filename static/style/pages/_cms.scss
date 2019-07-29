@@ -1,0 +1,48 @@
+
+//// cms page default styles
+//// TODO: move to appropriate place
+body.cms-page {
+  main {
+    max-width: $g-content-max-width - 128px;
+    > .content {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  &--default {
+    main {
+      max-width: 900px;
+      > .content {
+        padding: 14px;
+        background: white;
+        h1, h2, h3, h4, h5, h6 {
+          margin: 0 0 8px 0;
+        }
+        p, ul, ol {
+          margin: 0 0 14px 0;
+        }
+        ul, ol {
+          margin-left: 14px;
+          li {
+            margin-bottom: 4px;
+          }
+          &.footnotes {
+            opacity: 0.7;
+            font-style: italic;
+          }
+        }
+        ul {
+          list-style-type: circle;
+        }
+        //
+        .hint {
+          &--info {
+            padding: 10px;
+            margin-bottom: 10px;
+            background: rgba($primary-color, .2);
+          }
+        }
+      }
+    }
+  }
+}

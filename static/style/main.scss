@@ -20,16 +20,26 @@
 // 4. Layout-related sections
 @import
   'layout/global',
-  'layout/header',
+  'layout/forms',
+  'layout/topbar',
+  'layout/menubar',
+  'layout/tagcloud',
+  'layout/sidebar',
+  'layout/filterbox',
+  'layout/search',
   'layout/footer';
 
 // 5. Components
 @import
+  'components/lazy-image',
   'components/button';
 
 // 6. Page-specific styles
 @import
-  'pages/home';
+  'pages/home',
+  'pages/content',
+  'pages/account',
+  'pages/cms';
 
 // 7. Themes
 @import

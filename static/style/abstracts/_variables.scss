@@ -17,20 +17,33 @@ $text-font-stack: 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvet
 $code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Monaco', monospace !default;
 
 
-
+$g-content-max-width: 1115px !default;
 
 
 /// Copy text color
 /// @type Color
 $text-color: rgb(34, 34, 34) !default;
 
+/// White
+/// @type Color
+$white: rgb(255, 255, 255) !default;
+$black: rgb(0, 0, 0) !default;
+
 /// Main brand color
 /// @type Color
 $primary-color: rgb(102, 51, 204) !default;
 
+/// Main brand color
+/// @type Color
+$primary-color-light: rgb(226, 215, 249) !default;
+
 /// Secondary brand color
 /// @type Color
 $secondary-color: rgb(0, 187, 115) !default;
+
+/// Secondary brand color
+/// @type Color
+$secondary-color-light: rgb(188, 245, 224) !default;
 
 /// Light grey
 /// @type Color
@@ -45,7 +58,10 @@ $mid-grey: rgb(153, 153, 153) !default;
 $dark-grey: rgb(68, 68, 68) !default;
 
 
+$page-bg-color: rgb(245, 245, 245) !default;
 
+$warning-color: rgb(215, 100, 46) !default;
+$error-color: rgb(198, 14, 29) !default;
 
 
 /// Container's maximum width
@@ -75,3 +91,15 @@ $breakpoints: (
 /// @example scss - When using a CDN
 ///   $base-url: 'http://cdn.example.com/assets/';
 $base-url: '/static/' !default;
+
+
+
+/// Expose variables in native CSS
+:root {
+  --text-color: #{$text-color};
+  --page-bg-color: #{$page-bg-color};
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --primary-color-light: #{$primary-color-light};
+  --secondary-color-light: #{$secondary-color-light};
+}

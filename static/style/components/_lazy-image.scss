@@ -1,0 +1,11 @@
+.lazy-image {
+  image-rendering: pixelated;
+
+  &--loaded {
+    image-rendering: initial;
+  }
+
+  &--missing {
+    background: rgba(#f9f9f9, 0.8);
+  }
+}

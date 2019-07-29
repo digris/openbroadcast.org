@@ -102,10 +102,7 @@
                 const calendarContainer = this.$refs['calendar'];
                 const rect = calendarContainer.$el.getBoundingClientRect();
                 const calendarWidth = rect.width;
-                console.debug('calendarWidth', calendarWidth);
-
                 this.calendarWidth = calendarWidth;
-
             },
             updatePixelHeightPerHour: function(value) {
                 let settings = Object.assign({}, this.settings);

@@ -1,0 +1,106 @@
+@charset "UTF-8";
+
+@mixin input-container {
+  margin: 0 0 8px 0;
+  display: flex;
+  flex-direction: column;
+
+  &__field {
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+    label {
+      margin-right: 12px;
+      font-weight: 300;
+    }
+
+    input {
+      padding: 4px;
+      transition-property: none;
+    }
+
+    .fl-wrap-input {
+      width: 100%;
+    }
+  }
+
+  &__field-help {
+    display: none;
+    width: 100%;
+    font-size: 80%;
+    opacity: 0.8;
+  }
+
+  &__field-errors {
+    width: 100%;
+    color: $error-color;
+    padding-top: 4px;
+  }
+
+  &--has-errors {
+    input {
+      border-color: $error-color;
+    }
+  }
+}
+
+@mixin form-actions {
+  display: flex;
+  align-items: flex-end;
+  align-content: center;
+  flex-direction: column;
+  margin: 24px 0 8px;
+
+  &__action {
+    min-width: 160px;
+
+    // width: 100%
+    // background: $primary-color;
+    // color: $white;
+    // padding: 12px 24px
+    // text-transform: uppercase;
+    // font-weight: 400;
+    &:hover {
+      // box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+
+.form {
+  &--default {
+    textarea,
+    select,
+    input {
+      // remove webkit glow
+      outline: none;
+      border: 1px solid $light-grey;
+
+      &:hover {
+        border-color: $mid-grey;
+      }
+
+      &:focus {
+        border-color: $mid-grey;
+        background: $primary-color-light;
+      }
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px white inset;
+    }
+
+    .errorlist {
+      &.nonfield {
+        padding: 10px 10px 8px;
+        margin: 8px 0 16px;
+        border: 1px solid $warning-color;
+        color: $black;
+      }
+    }
+  }
+}

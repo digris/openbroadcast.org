@@ -17,7 +17,6 @@ from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateFormField
 from base.fields.extra import AdvancedFileInput
 from base.fields.widgets import ReadOnlyIconField
-from pagedown.widgets import PagedownWidget
 from tagging.forms import TagField
 
 from search.forms import fields as search_fields
@@ -245,7 +244,7 @@ class ReleaseForm(ModelForm):
 
     label = search_fields.AutocompleteField('alibrary.label', allow_new=True, required=False)
 
-    description = forms.CharField(widget=PagedownWidget(), required=False)
+    description = forms.CharField(widget=forms.Textarea(), required=False)
 
 
 

@@ -12,7 +12,6 @@ from django.forms import ModelForm
 from django.forms.models import inlineformset_factory
 from django.utils.translation import ugettext as _
 from base.fields.extra import AdvancedFileInput
-from pagedown.widgets import PagedownWidget
 from profiles.models import Profile, Link, Service
 from tagging.forms import TagField
 
@@ -140,7 +139,7 @@ class ProfileForm(ModelForm):
 
         self.helper.add_layout(layout)
 
-    biography = forms.CharField(widget=PagedownWidget(), required=False)
+    biography = forms.CharField(widget=forms.Textarea(), required=False)
     d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
 
     def clean_user(self):

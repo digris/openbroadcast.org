@@ -46,6 +46,10 @@ class AppInitializer {
               'thumb-rating': ThumbRating,
               'object-actions': ObjectActions,
               'emission-history': EmissionHistory,
+            },
+            mounted() {
+              // tell jQuery (legacy) to continue
+              window.jQuery.holdReady(false);
             }
         });
 

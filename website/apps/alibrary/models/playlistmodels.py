@@ -518,23 +518,24 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         self.save()
 
-    def convert_to(self, type):
+    def convert_to(self, playlist_type):
 
-        log.debug('requested to convert "%s" from %s to %s' % (self.name, self.type, type))
+        log.debug('requested to convert "%s" from %s to %s' % (self.name, self.type, playlist_type))
 
-        if type == 'broadcast':
+        if playlist_type == 'broadcast':
             self.broadcast_status, self.broadcast_status_messages = self.self_check()
 
-        transformation = self.get_transform_status(type)
+        transformation = self.get_transform_status(playlist_type)
         status = transformation['status']
 
-        if type == 'broadcast' and status:
+        if playlist_type == 'broadcast' and status:
             _status, messages = self.self_check()
             if _status == 1:
                 status = True
 
         if status:
-            self.type = type
+            self.type = playlist_type
+            self.created = timezone.now()
             self.save()
 
         return self, status

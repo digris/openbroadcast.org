@@ -305,10 +305,10 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
 
 @login_required
-def playlist_convert(request, pk, type):
+def playlist_convert(request, pk, playlist_type):
     playlist = get_object_or_404(Playlist, pk=pk, user=request.user)
 
-    playlist, status = playlist.convert_to(type)
+    playlist, status = playlist.convert_to(playlist_type)
     if status:
         messages.add_message(request, messages.INFO,
                              _('Successfully converted "%s" to "%s"' % (playlist.name, playlist.get_type_display())))

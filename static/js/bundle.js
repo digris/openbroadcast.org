@@ -1,6 +1,6 @@
 // legacy stylesheet imports
-import '../sass/screen.sass'
-import '../sass/scheduler.sass'
+// import '../sass/screen.sass'
+// import '../sass/scheduler.sass'
 
 // global stylesheet import
 import '../style/main.scss';
@@ -10,7 +10,8 @@ import AppInitializer from './initializer'
 
 const DEBUG = true;
 
-$((e) => {
+// $((e) => {
+document.addEventListener("DOMContentLoaded", () => {
     // initializer has to wait for dom ready, as
     // vue apps need container to mount
     const initializer = new AppInitializer({});

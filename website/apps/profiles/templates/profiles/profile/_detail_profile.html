@@ -1,0 +1,78 @@
+{% load i18n markup_tags wiki_tags %}
+
+<div class="profile-details profile-details--public">
+
+
+    {% if object.biography %}
+        <div class="markdown markdown--inline">
+            {{ object.biography|markdown }}
+        </div>
+    {% endif %}
+    (( public profile ))
+
+</div>
+
+{% if user == object.user or perms.profiles.view_profiles_private or user == object.mentor %}
+<div class="profile-details profile-details--private">
+
+    <div class="profile-details__contact">
+        <h3>{% trans 'Contact' %}</h3>
+
+        <div class="___">
+            <div>
+                {% trans 'Address' %}
+            </div>
+            <div>
+                {% if object.address1 %}
+                    {{ object.address1 }}
+                    <br>
+                {% endif %}
+
+                {% if object.address2 %}
+                    {{ object.address2 }}
+                    <br>
+                {% endif %}
+
+                {% if object.zip or object.city %}
+                    {{ object.zip }} {{ object.city }}
+                    <br>
+                {% endif %}
+
+                {% if object.country %}
+                    {{ object.country.name }}
+                    <br>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if object.user.email %}
+            <div class="___">
+                <div>
+                    {% trans 'E-Mail' %}
+                </div>
+                <div>
+                    <a href="mailto:{{ object.user.email }}">{{ object.user.email }}</a>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if object.phone %}
+            <div class="___">
+                <div>
+                    {% trans 'Phone' %}
+                </div>
+                <div>
+                    {{ object.phone }}
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+    <div class="profile-details__personal">
+        <h3>{% trans 'Details' %}</h3>
+        (( personal ))
+    </div>
+
+</div>
+{% endif %}

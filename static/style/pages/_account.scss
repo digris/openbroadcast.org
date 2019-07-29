@@ -1,0 +1,175 @@
+@charset "UTF-8";
+
+body.app--account {
+
+  main {
+    // reset grid
+    > .content {
+      display: flex;
+      justify-content: center;
+
+      .content__primary {
+        width: 100%;
+        max-width: 600px;
+        padding: 12px;
+        background: #fff;
+      }
+    }
+  }
+
+  .form-prefix {
+    padding: 16px 0;
+  }
+
+  .form-appendix {
+    padding: 16px 0;
+    background: #fff;
+
+    .alt {
+      display: block;
+      padding: 2px 0;
+    }
+  }
+
+  .form-separator {
+    padding: 4px;
+    border-top: 1px solid #aaa;
+  }
+
+  .form--account {
+    padding: 10px 0;
+
+    .input-container {
+      @include input-container;
+
+      label {
+        min-width: 140px;
+      }
+
+      input {
+        width: 100%;
+        height: 28px;
+      }
+
+      &__field-errors {
+        text-align: right;
+      }
+    }
+
+    .actions {
+      @include form-actions;
+    }
+
+    .captcha-container {
+      display: flex;
+      width: 100%;
+
+      .captcha-text {
+        flex-grow: 1;
+
+        // margin-right: 12px
+
+      }
+
+      .captcha-image {
+        overflow: hidden;
+      }
+    }
+  }
+
+  // TODO: check for more generic solution to handle checkbox inputs
+  #input_id_tos {
+    margin-left: 152px;
+
+    .input-container__field {
+      display: flex;
+      align-items: center;
+
+      input[type="checkbox"] {
+        cursor: pointer;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        position: relative;
+        box-sizing: content-box;
+        width: 16px;
+        height: 16px;
+        border: 1px solid #333;
+
+        // transition: all 240ms
+        flex: 0 0 16px;
+        border-color: $light-grey;
+        color: transparent;
+
+        &:focus {
+          outline: 0 none;
+          box-shadow: none;
+          border-color: $light-grey;
+          background: $white;
+        }
+
+        &:hover {
+          outline: 0 none;
+          box-shadow: none;
+          border-color: $mid-grey;
+          color: $light-grey;
+        }
+
+        &:checked {
+          color: #000;
+          border-color: $mid-grey;
+        }
+
+        &:after {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          content: "╳";
+          font-size: 22px;
+          line-height: 24px;
+          text-align: center;
+        }
+      }
+
+      label {
+        order: 2;
+        padding-left: 12px;
+      }
+    }
+
+    .input-container__field-errors {
+      padding-left: 36px;
+      text-align: left;
+    }
+  }
+
+  .social-login-container {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: calc(50% - 6px) calc(50% - 6px);
+    grid-gap: 12px;
+
+    .auth-social {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #222;
+      background: #e5e5e5;
+      transition: background 200ms;
+
+      &:hover {
+        background: $primary-color;
+
+        // border-radius: 4px
+        color: $white;
+      }
+
+      .icon {
+        width: 22px;
+        font-size: 16px;
+      }
+    }
+  }
+}

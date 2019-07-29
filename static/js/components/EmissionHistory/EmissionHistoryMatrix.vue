@@ -56,11 +56,9 @@
         methods: {
             getEmissionsForRange: function (timeStart, timeEnd) {
 
-                // timeStart = timeStart.add(5, 'second');
-                // timeEnd = timeEnd.subtract(20, 'second');
-
-                timeStart = timeStart.add(3540, 'second');
-                timeEnd = timeEnd.subtract(20, 'second');
+                // add offset to catch short or overlapping entries
+                timeStart = timeStart.add(3570, 'second');
+                timeEnd = timeEnd.subtract(3570, 'second');
 
                 return this.emissionHistory.filter((emission) => {
                     return (dayjs(emission.timeStart).isBefore(timeStart) && dayjs(emission.timeEnd).isAfter(timeEnd))
@@ -139,7 +137,6 @@
                 }
             }
 
-
             &__legend {
                 &__slot {
                     font-size: 90%;
@@ -181,7 +178,7 @@
                 class="emission-history__grid__legend">
                 <div
                     class="emission-history__grid__legend__header">
-                    .
+                    &nbsp;
                 </div>
                 <div
                     class="emission-history__grid__legend__slot"

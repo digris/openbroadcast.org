@@ -7,7 +7,28 @@
 {% load crispy_forms_tags i18n sekizai_tags %}
 
 {% block heading %}
-    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}
+        <script src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>
+        <script>
+            $(function () {
+                setTimeout(function() {
+                    init_jQueryTagit({
+                        objectId: 'id_d_tags',
+                        sourceUrl: '/ac_tagging/list',
+                        fieldName: 'd_tags',
+                        minLength: 1,
+                        removeConfirmation: true,
+                        caseSensitive: false,
+                        animate: true,
+                        maxLength: 50,
+                        maxTags: 9,
+                        onTagClicked: null,
+                        onMaxTagsExceeded: null,
+                    });
+                }, 500);
+            });
+        </script>
+    {% endaddtoblock %}
     <!-- heading / icon (large one) -->
     <div id="heading">
         {% with page_title="My Profile" %}

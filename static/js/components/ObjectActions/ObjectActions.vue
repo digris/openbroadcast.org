@@ -7,29 +7,6 @@
     import ObjectActionsAction from './ObjectActionsAction.vue';
     import ObjectActionsPlay from './ObjectActionsPlay.vue';
 
-    const ACTION_MAP = {
-        queue: {
-            icon: 'fa-pause',
-            title: 'Queue'
-        },
-        download: {
-            icon: 'fa-download',
-            title: 'Download'
-        },
-        edit: {
-            icon: 'fa-pencil',
-            title: 'Edit'
-        },
-        schedule: {
-            icon: 'fa-calendar',
-            title: 'Schedule'
-        },
-        clipboard: {
-            icon: 'fa-calendar',
-            title: 'Add to clipboard'
-        },
-    };
-
     export default {
         name: 'ObjectActions',
         components: {
@@ -120,7 +97,7 @@
                     actions.push({
                         key: 'clipboard',
                         icon: 'fa-calendar',
-                        title: 'Add to clipboard',
+                        title: 'Add to scheduler',
                     })
                 }
 

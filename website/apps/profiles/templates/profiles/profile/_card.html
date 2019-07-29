@@ -1,0 +1,47 @@
+{% load i18n playlist_tags calc_tags lazy_image_tags spacify_tags truncate_tags arating_tags gravatar %}
+
+<div class="card card--profile">
+    <div class="card__visual">
+        <div class="image">
+            {% lazy_image object.image 'crop' '270x270' %}
+            {% comment %}
+            {% if object.image %}
+                {% lazy_image object.image 'crop' '270x270' %}
+            {% else %}
+                <img src="{% gravatar_url object.user.email 200 %}" style="filter: grayscale(100%)">
+            {% endif %}
+            {% endcomment %}
+        </div>
+
+        <div class="card__visual__top">
+            <div class="flags">
+                <span class="flag">
+                    {% if object.is_approved %}
+                        <i class="icon-star" title="{% trans 'Approved user' %}"></i>
+                    {% else %}
+                        <i class="icon-star-empty"></i>
+                    {% endif %}
+                </span>
+                <span class="flag">
+                    {{ object.get_groups.first.name }}
+                </span>
+            </div>
+        </div>
+        <div class="tags">
+            {% for tag in object.tags|slice:":4" %}
+                <span class="tag">{{ tag.name|truncate_chars_inner:10 }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card__body">
+        <div class="card__body__primary">
+            <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">
+                {{ object.name|truncate_chars_inner:20 }}
+                {% if object.country %}({{ object.country.iso2_code }}){% endif %}
+            </a>
+        </div>
+        <div>
+            {{ object.user.date_joined|date:"Y" }}
+        </div>
+    </div>
+</div>

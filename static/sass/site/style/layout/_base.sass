@@ -1,34 +1,40 @@
 @charset "UTF-8"
 
-@import item-mixins
-@import list-mixins
-
-
-.content__primary
-  > .item
-    display: flex
-    flex-direction: column
-
-
-  .item
-
-    &--header
-      @include item-header
-
-    &--section-menu
-      @include section-menu
-      padding-top: 20px
-
-    &--body
-      @include item-body
-      margin-top: 20px
-
-
-
-  .list
-    &--grid
-      @include grid-layout
-
-      .list-item
-        @include list-item--grid
-
+//@import item-mixins
+//@import list-mixins
+//
+//
+//.content__primary
+//  > .item
+//    display: flex
+//    flex-direction: column
+//
+//
+//  .item
+//
+//    &--header
+//      @include item-header
+//
+//    &--section-menu
+//      @include section-menu
+//      padding-top: 20px
+//
+//    &--body
+//      @include item-body
+//      margin-top: 20px
+//
+//
+//  .list
+//    &--grid
+//      @include grid-layout
+//
+//      .list-item
+//        @include list-item--grid
+//
+//  .list-appendix
+//    margin: 20px 0
+//    display: flex
+//    justify-content: center
+//
+//    .action
+//      font-size: 120%

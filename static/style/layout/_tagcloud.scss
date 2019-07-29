@@ -1,0 +1,53 @@
+@charset "UTF-8";
+
+$tag-sizes: 84% 88% 92% 98% 108% 112% 114% 118% 124% 130%;
+
+.tagcloud-toggle {
+  cursor: pointer;
+
+  .icon {
+    display: inline-block;
+    transition: transform 200ms;
+  }
+
+  &--expanded {
+    .icon {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.tagcloud {
+  display: none;
+
+  &--expanded {
+    display: block;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 1px 5px 1px 5px;
+    margin: 2px 2px 0 0;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    &.selected {
+      color: $white;
+      background: $secondary-color;
+    }
+
+    &:hover {
+      color: $white;
+      background: $primary-color;
+    }
+
+    // sizing
+    @each $tag-size in $tag-sizes {
+      $i: index($tag-sizes, $tag-size);
+
+      &--weight-#{$i} {
+        font-size: $tag-size;
+      }
+    }
+  }
+}
