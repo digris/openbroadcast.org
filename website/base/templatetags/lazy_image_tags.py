@@ -38,7 +38,8 @@ def lazy_image(image, type, size, alt=None):
         thumbnailer = get_thumbnailer(image)
         opts = {
             'crop': type == 'crop',
-            'size': _size
+            'size': _size,
+            'upscale': True
         }
         try:
             url = thumbnailer.get_thumbnail(opts).url

@@ -8,7 +8,7 @@ urlpatterns = [
 
     url(r'^$', views.PlaylistListViewNG.as_view(scope='public'), name='alibrary-playlist-list'),
     url(r'^legacy/$', views.PlaylistListView.as_view(scope='public'), name='alibrary-playlist-list-legacy'),
-    url(r'^own/$', views.PlaylistListView.as_view(scope='own'), name='alibrary-playlist-list-own'),
+    url(r'^own/$', views.PlaylistListViewNG.as_view(scope='own'), name='alibrary-playlist-list-own'),
 
     url(r'^create/$', views.PlaylistCreateView.as_view(), name='alibrary-playlist-create'),
     url(r'^(?P<slug>[-\w]+)/$', views.PlaylistDetailView.as_view(), name='alibrary-playlist-detail'),
