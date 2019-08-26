@@ -56,7 +56,7 @@ const PlayerControlApp = Vue.extend({
         // remove play (click) handlers or 'old' player
         $('.playable.popup').removeClass('popup');
 
-        // re-bind
+        // re-bind legacy action handling
         $(document).on('click', '.playable, [data-playable]', (e) => {
             e.preventDefault();
             //let el = $(e.currentTarget).parents('[data-uuid]');
@@ -98,20 +98,25 @@ const PlayerControlApp = Vue.extend({
                 items: items
             })
         });
+
+        window.addEventListener('player:controls', (e) => {
+            if (DEBUG) console.info('player:controls', e.detail);
+            this.send_action(e.detail);
+        }, false);
+
     },
 
     methods: {
 
         /**********************************************************
          * hartbeat
-         * wrapper around lsbridge to handle channel & timestamp
+         * wrapper around exxchange to handle channel & timestamp
          **********************************************************/
         heartbeat_send: function (payload) {
             if (DEBUG) console.debug('heartbeat_send', payload);
             // for some reason we need to add a timestamp (resp. a changed value)
             // subsequent sending of identical data does not trigger 'receive'
             payload.ts = Date.now();
-            //lsbridge.send(HEARTBEAT_NAMESPACE, payload);
             exchange.emit('player.heartbeat', payload);
         },
 
@@ -138,12 +143,11 @@ const PlayerControlApp = Vue.extend({
 
         /**********************************************************
          * controls
-         * wrapper around lsbridge to handle channel & timestamp
+         * wrapper around exchange to handle channel & timestamp
          **********************************************************/
         controls_send: function (payload) {
             if (DEBUG) console.debug('controls_send', payload);
             payload.ts = Date.now();
-            //lsbridge.send(CONTROLS_NAMESPACE, payload);
             exchange.emit('player.controls', payload);
         },
 

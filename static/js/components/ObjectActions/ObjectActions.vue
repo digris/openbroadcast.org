@@ -1,8 +1,8 @@
 <script>
 
-    const DEBUG = false;
+    const DEBUG = true;
 
-    import PlayerControlApp from '../../apps/player/player-control-app';
+    // import PlayerControlApp from '../../apps/player/player-control-app';
     import ClickOutside from 'vue-click-outside';
     import ObjectActionsAction from './ObjectActionsAction.vue';
     import ObjectActionsPlay from './ObjectActionsPlay.vue';
@@ -63,7 +63,7 @@
             }
         },
         mounted: function () {
-            this.playerControl = new PlayerControlApp();
+            // this.playerControl = new PlayerControlApp();
         },
         computed: {
             actions: function () {
@@ -122,7 +122,7 @@
 
                 // TODO: handle actions...
                 if (key === 'play') {
-                    this.playerControl.send_action({
+                    this.playerControls({
                         do: 'load',
                         // opts: {
                         //   mode: 'queue',
@@ -134,7 +134,7 @@
                     });
                 }
                 if (key === 'queue') {
-                    this.playerControl.send_action({
+                    this.playerControls({
                         do: 'load',
                         opts: {
                             mode: 'queue',
@@ -159,6 +159,11 @@
                     this.$store.dispatch('scheduler/addToClipboard', co);
                 }
             },
+            playerControls: function(action) {
+                const _e = new CustomEvent('player:controls', {detail: action});
+                if (DEBUG) console.debug('playerControls emit action', _e);
+                window.dispatchEvent(_e);
+            }
         },
     }
 </script>
