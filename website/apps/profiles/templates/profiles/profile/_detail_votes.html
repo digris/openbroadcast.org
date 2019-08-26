@@ -1,0 +1,22 @@
+{% load i18n %}
+
+<div class="list-prefix">
+    <h2>{% trans 'Upvotes' %}</h2>
+</div>
+<div class="list list--grid">
+{% for vote in upvotes|slice:"0:96" %}
+    <div class="list-item">
+        {% include 'arating/_object_card.html' with object=vote.content_object content_type=vote.content_type %}
+    </div>
+{% endfor %}
+</div>
+<div class="list-prefix">
+    <h2>{% trans 'Downvotes' %}</h2>
+</div>
+<div class="list list--grid">
+{% for vote in downvotes|slice:"0:96" %}
+    <div class="list-item">
+        {% include 'arating/_object_card.html' with object=vote.content_object content_type=vote.content_type %}
+    </div>
+{% endfor %}
+</div>

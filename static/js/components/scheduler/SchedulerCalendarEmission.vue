@@ -32,7 +32,7 @@
             style() {
                 const color = backgroundColors[this.emission.obj.color];
                 return {
-                    // backgroundColor: hexToRGBA(color, .8),
+                    backgroundColor: hexToRGBA(color, .2),
                     borderColor: hexToRGBA(color, 1),
                 }
             },

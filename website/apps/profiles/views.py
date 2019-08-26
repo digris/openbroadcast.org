@@ -86,7 +86,7 @@ class ProfileListView(BaseSearchListView):
 
 
 
-class ProfileDetailViewNG(DetailView):
+class ProfileDetailView(DetailView):
 
     model = Profile
     template_name = 'profiles/profile_detail_ng.html'
@@ -106,14 +106,14 @@ class ProfileDetailViewNG(DetailView):
         if not kwargs.get('section'):
             obj = self.get_object()
             section = self.get_default_section(obj)
-            redirect_to = reverse_lazy('profiles-profile-detail-ng', kwargs={'uuid': obj.uuid, 'section': section})
+            redirect_to = reverse_lazy('profiles-profile-detail', kwargs={'uuid': obj.uuid, 'section': section})
             return redirect(redirect_to)
 
         self.section = kwargs.get('section')
         if not self.section in [s[0] for s in self.sections]:
             return HttpResponseBadRequest('invalid section "{}"'.format(self.section))
 
-        return super(ProfileDetailViewNG, self).dispatch(request, *args, **kwargs)
+        return super(ProfileDetailView, self).dispatch(request, *args, **kwargs)
 
 
     def get_object(self, queryset=None):
@@ -144,7 +144,7 @@ class ProfileDetailViewNG(DetailView):
             menu.append({
                 'active': key == section,
                 'title': title,
-                'url': reverse('profiles-profile-detail-ng', kwargs={'uuid': object.uuid, 'section': key})
+                'url': reverse('profiles-profile-detail', kwargs={'uuid': object.uuid, 'section': key})
             })
 
         return menu
@@ -159,7 +159,7 @@ class ProfileDetailViewNG(DetailView):
 
 
     def get_context_data(self, **kwargs):
-        context = super(ProfileDetailViewNG, self).get_context_data(**kwargs)
+        context = super(ProfileDetailView, self).get_context_data(**kwargs)
 
         section_menu = self.get_section_menu(object=self.object, section=self.section)
 
@@ -220,6 +220,17 @@ class ProfileDetailViewNG(DetailView):
                 },
             })
 
+        if self.section == 'votes':
+            vote_qs = self.object.user.votes.order_by('-created').prefetch_related('content_object')
+
+            upvotes = [v for v in vote_qs if v.vote > 0]
+            downvotes = [v for v in vote_qs if v.vote < 0]
+
+            context.update({
+                'upvotes': upvotes,
+                'downvotes': downvotes,
+            })
+
         if self.section == 'activities':
             activity_qs = actor_stream(self.object.user).select_related(
                 # 'actor_content_type',
@@ -245,7 +256,7 @@ class ProfileDetailViewNG(DetailView):
 
 
     def get(self, request, *args, **kwargs):
-        return super(ProfileDetailViewNG, self).get(request, *args, **kwargs)
+        return super(ProfileDetailView, self).get(request, *args, **kwargs)
 
 
 
@@ -254,19 +265,10 @@ class ProfileDetailViewNG(DetailView):
 #######################################################################
 # TODO: views below here need to be reviewed / refacored
 #######################################################################
-class ProfileDetailView(DetailView):
+class LegacyProfileDetailView(DetailView):
 
     model = Profile
     template_name = 'profiles/profile_detail.html'
-    #context_object_name = "profile"
-
-    # queryset = Profile.objects.select_related(
-    #     'mentor',
-    #     'country',
-    # ).prefetch_related(
-    #     'link_set',
-    #     'user__votes',
-    # )
 
     def get_object(self, queryset=None):
 
@@ -277,70 +279,74 @@ class ProfileDetailView(DetailView):
 
         return profile
 
+    def get(self, request, *args, **kwargs):
+        profile = self.get_object()
+        url = reverse_lazy('profiles-profile-detail', kwargs={'uuid': str(profile.uuid)})
+        return redirect(url)
 
-
-    def get_context_data(self, **kwargs):
-        context = kwargs
-        context_object_name = self.get_context_object_name(self.object)
-
-        # get contributions
-        # TODO: this is kind of a hack...
-        if self.request.user == self.object.user:
-            context['broadcasts'] = Playlist.objects.filter(user=self.object.user).order_by('-updated')
-        else:
-            context['broadcasts'] = Playlist.objects.filter(user=self.object.user).exclude(type='basket').order_by(
-                '-updated')
-
-
-        release_qs = Release.objects.filter(
-            creator=self.object.user
-        ).select_related(
-            'label',
-            'release_country',
-            'creator',
-            'creator__profile',
-        ).prefetch_related(
-            'media',
-            'media__artist',
-            'media__license',
-            'extra_artists',
-            'album_artists',
-        ).order_by('-created')
-
-
-        media_qs = Media.objects.filter(
-            creator=self.object.user
-        ).select_related(
-            'release',
-            'artist',
-        ).prefetch_related(
-            'media_artists',
-            'extra_artists',
-        ).order_by('-created')
-
-        context['uploaded_releases'] = release_qs
-        context['uploaded_media'] = media_qs
-
-        # context['uploaded_releases'] = Release.objects.filter(creator=self.object.user).order_by('-created')
-        # context['uploaded_media'] = Media.objects.filter(creator=self.object.user).order_by('-created')
-
-        context['user_stream'] = actor_stream(self.object.user)[0:20]
-
-        context['following'] = Follow.objects.following(self.object.user)
-        context['followers'] = Follow.objects.followers(self.object.user)
-
-        # votes
-        # vs = Vote.objects.filter(user=u).order_by('-vote', '-created')
-        # TODO: rewrite queryset. this generates a tremendous amount of db-hits!
-        # context['upvotes'] = self.object.user.votes.filter(vote__gt=0).order_by('content_type__model', '-created')
-        # context['downvotes'] = self.object.user.votes.filter(vote__lt=0).order_by('content_type__model', '-created')
-        context['upvotes'] = self.object.user.votes.filter(vote__gt=0).order_by('-created')
-        context['downvotes'] = self.object.user.votes.filter(vote__lt=0).order_by('-created')
-
-        if context_object_name:
-            context[context_object_name] = self.object
-
-        return context
+    #
+    # def get_context_data(self, **kwargs):
+    #     context = kwargs
+    #     context_object_name = self.get_context_object_name(self.object)
+    #
+    #     # get contributions
+    #     # TODO: this is kind of a hack...
+    #     if self.request.user == self.object.user:
+    #         context['broadcasts'] = Playlist.objects.filter(user=self.object.user).order_by('-updated')
+    #     else:
+    #         context['broadcasts'] = Playlist.objects.filter(user=self.object.user).exclude(type='basket').order_by(
+    #             '-updated')
+    #
+    #
+    #     release_qs = Release.objects.filter(
+    #         creator=self.object.user
+    #     ).select_related(
+    #         'label',
+    #         'release_country',
+    #         'creator',
+    #         'creator__profile',
+    #     ).prefetch_related(
+    #         'media',
+    #         'media__artist',
+    #         'media__license',
+    #         'extra_artists',
+    #         'album_artists',
+    #     ).order_by('-created')
+    #
+    #
+    #     media_qs = Media.objects.filter(
+    #         creator=self.object.user
+    #     ).select_related(
+    #         'release',
+    #         'artist',
+    #     ).prefetch_related(
+    #         'media_artists',
+    #         'extra_artists',
+    #     ).order_by('-created')
+    #
+    #     context['uploaded_releases'] = release_qs
+    #     context['uploaded_media'] = media_qs
+    #
+    #     # context['uploaded_releases'] = Release.objects.filter(creator=self.object.user).order_by('-created')
+    #     # context['uploaded_media'] = Media.objects.filter(creator=self.object.user).order_by('-created')
+    #
+    #     context['user_stream'] = actor_stream(self.object.user)[0:20]
+    #
+    #     context['following'] = Follow.objects.following(self.object.user)
+    #     context['followers'] = Follow.objects.followers(self.object.user)
+    #
+    #     # votes
+    #     # vs = Vote.objects.filter(user=u).order_by('-vote', '-created')
+    #     # TODO: rewrite queryset. this generates a tremendous amount of db-hits!
+    #     # context['upvotes'] = self.object.user.votes.filter(vote__gt=0).order_by('content_type__model', '-created')
+    #     # context['downvotes'] = self.object.user.votes.filter(vote__lt=0).order_by('content_type__model', '-created')
+    #     context['upvotes'] = self.object.user.votes.filter(vote__gt=0).order_by('-created')
+    #     context['downvotes'] = self.object.user.votes.filter(vote__lt=0).order_by('-created')
+    #
+    #     if context_object_name:
+    #         context[context_object_name] = self.object
+    #
+    #     return context
 
 
 # TODO: refactor to CBV

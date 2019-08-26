@@ -194,7 +194,7 @@ def post_save_export(sender, **kwargs):
     if kwargs['created']:
         if obj.user and obj.user.profile:
             from pushy.util import pushy_custom
-            pushy_custom(obj.user.profile.uuid)
+            pushy_custom(str(obj.user.profile.uuid))
 
     obj.export_items.update(status=1)
 

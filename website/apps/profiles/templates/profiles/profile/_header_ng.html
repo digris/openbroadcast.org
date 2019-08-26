@@ -10,9 +10,11 @@
             {% if object.country %}{{ object.country }}{% endif %}
         </small>
     </div>
-    <div class="title title--secondary">
-        <h3>a.k.a. {{ object.pseudonym }}</h3>
-    </div>
+    {% if object.pseudonym %}
+        <div class="title title--secondary">
+            <h3>a.k.a. {{ object.pseudonym }}</h3>
+        </div>
+    {% endif %}
 
     <div class="meta">
 
@@ -95,7 +97,7 @@
 <div class="header__primary">
     <div class="tags">
         {% for tag in object.tags %}
-            <span class="tag">{{ tag.name|spacify }}</span>
+            <span class="tag tag--{{ tag.type }}" title="{{ tag.type }}">{{ tag.name|spacify }}</span>
         {% endfor %}
     </div>
 </div>

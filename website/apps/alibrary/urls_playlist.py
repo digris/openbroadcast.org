@@ -6,8 +6,8 @@ from . import views
 
 urlpatterns = [
 
-    url(r'^$', views.PlaylistListView.as_view(scope='public'), name='alibrary-playlist-list'),
-    url(r'^ng/$', views.PlaylistListViewNG.as_view(scope='public'), name='alibrary-playlist-list-ng'),
+    url(r'^$', views.PlaylistListViewNG.as_view(scope='public'), name='alibrary-playlist-list'),
+    url(r'^legacy/$', views.PlaylistListView.as_view(scope='public'), name='alibrary-playlist-list-legacy'),
     url(r'^own/$', views.PlaylistListView.as_view(scope='own'), name='alibrary-playlist-list-own'),
 
     url(r'^create/$', views.PlaylistCreateView.as_view(), name='alibrary-playlist-create'),

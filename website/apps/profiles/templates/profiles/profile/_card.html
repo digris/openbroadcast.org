@@ -35,7 +35,8 @@
     </div>
     <div class="card__body">
         <div class="card__body__primary">
-            <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">
+            {% url 'profiles-profile-detail' uuid=object.uuid as profile_url %}
+            <a href="{{ profile_url }}" title="{{ object.name }}">
                 {{ object.name|truncate_chars_inner:20 }}
                 {% if object.country %}({{ object.country.iso2_code }}){% endif %}
             </a>

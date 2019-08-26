@@ -1,1 +1,9 @@
-{{ activities }}
+{% load i18n %}
+<div class="list-appendix">
+    {% url "alibrary-media-list" as media_list %}
+    <div class="action action--show-all">
+        <a rel="nofollow" href="{% url "actstream-action-list" %}?username={{ object.user.username }}">
+            {% trans "Show all activities" %}
+        </a>
+    </div>
+</div>

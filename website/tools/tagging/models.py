@@ -473,12 +473,27 @@ class TaggedItemManager(models.Manager):
 
 @python_2_unicode_compatible
 class Tag(TimestampedModelMixin, models.Model):
-    """
-    A tag.
-    """
+
+    TYPE_GENRE = 'genre'
+    TYPE_SUB_GENRE = 'sub-genre'
+    TYPE_MOOD = 'mood'
+
+    TYPE_CHOICES = (
+        (TYPE_GENRE, 'Genre'),
+        (TYPE_SUB_GENRE, 'Sub-Genre'),
+        (TYPE_MOOD, 'Mood'),
+    )
+
     name = models.CharField(
         _('name'), max_length=settings.MAX_TAG_LENGTH,
         unique=True, db_index=True)
+
+    type = models.CharField(
+        choices=TYPE_CHOICES,
+        default=TYPE_GENRE,
+        max_length=32,
+        null=True, blank=True, db_index=True
+    )
 
     objects = TagManager()
 

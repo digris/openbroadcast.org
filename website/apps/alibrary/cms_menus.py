@@ -12,28 +12,9 @@ class LibraryMenu(CMSAttachMenu):
 
     def get_nodes(self, request):
         nodes = []
-        """
-        node = NavigationNode(
-            _('Releases'),
-            reverse('alibrary-release-list', args=[]),
-            123
-        )
-        nodes.append(node)
-        node = NavigationNode(
-            _('Artists'),
-            reverse('ArtistListlView', args=[]),
-            123
-        )
-        nodes.append(node)
-        """
-
         return nodes
 
 menu_pool.register_menu(LibraryMenu)
-
-
-
-
 
 
 class ReleaseMenu(CMSAttachMenu):
@@ -42,20 +23,6 @@ class ReleaseMenu(CMSAttachMenu):
 
     def get_nodes(self, request):
         nodes = []
-        """
-        for release in Release.objects.active():
-            try:
-                node = NavigationNode(
-                    release.name,
-                    reverse('alibrary-release-detail', args=[release.slug]),
-                    release.pk
-                )
-                nodes.append(node)
-                #print 'added'
-            except Exception, e:
-                print e
-        """
-
         return nodes
 
 menu_pool.register_menu(ReleaseMenu)
@@ -73,28 +40,12 @@ class MediaMenu(CMSAttachMenu):
 menu_pool.register_menu(MediaMenu)
 
 
-
-
 class ArtistMenu(CMSAttachMenu):
 
     name = _("Artist Menu")
 
     def get_nodes(self, request):
         nodes = []
-        """
-        for artist in Artist.objects.listed():
-            try:
-                node = NavigationNode(
-                    artist.name,
-                    reverse('alibrary-artist-detail', args=[artist.slug]),
-                    artist.pk
-                )
-                nodes.append(node)
-                print 'added'
-            except Exception, e:
-                print e
-        """
-
         return nodes
 
 menu_pool.register_menu(ArtistMenu)

@@ -52,22 +52,25 @@
 
         <div class="card__body__primary">
             <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">
-                {{ object.name|truncate_chars_inner:24 }}
+                {{ object.name|truncate_chars_inner:22 }}
                 {% if object.country %}({{ object.country }}){% endif %}
             </a>
         </div>
         <div>
-            {# topflop_for_object object #}
-            -
+            {% if object.is_broadcast %}
+                <span class="dim" title="{% trans 'Total num. emissions' %}">
+                    {{ search_result.num_emissions }}
+                </span>
+            {% endif %}
         </div>
         <div>
             {% if object.series %}
-                {{ object.series.name|truncate_chars_inner:24 }}
+                {{ object.series.name|truncate_chars_inner:20 }}
                 {% if object.series_number %}
                     #{{ object.series_number }}
                 {% endif %}
             {% else %}
-                -
+                &nbsp;
             {% endif %}
         </div>
         <div>

@@ -168,17 +168,6 @@ class BaseSearchListView(ListView):
             query=pagination_query
         )
 
-        # _key = 'tagcloud_{}'.format(self.request.get_full_path())
-        # _tagcloud = cache.get(_key)
-        # if _tagcloud is not None:
-        #     tagcloud = _tagcloud
-        # else:
-        #     tagcloud = utils.get_tagcloud_data(
-        #         tags=search_result.facets.tags,
-        #         request=self.request
-        #     )
-        #     cache.get(_key, tagcloud, 600)
-
         try:
             tagcloud = utils.get_tagcloud_data(
                 tags=search_result.facets.tags,

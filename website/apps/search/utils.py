@@ -277,9 +277,6 @@ def get_tagcloud_data(tags, request, steps=6, distribution=LOGARITHMIC, group_by
     else:
         current_tags = []
 
-
-    # print(tags)
-
     # map to dict
     tags = [{'name': t[0], 'count': t[1], 'selected': t[2], 'weight': 1} for t in tags]
 

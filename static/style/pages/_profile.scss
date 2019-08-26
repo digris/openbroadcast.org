@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+
+@mixin profile-details {
+
+  .profile-details {
+    margin-bottom: 24px;
+
+    p,
+    h2,
+    h3 {
+      margin: 0 0 4px;
+    }
+
+    &--grid {
+      display: grid;
+
+      &--2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      &--4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+    }
+  }
+
+}
+
+.content__primary {
+  > .item {
+      &--profile {
+        @include profile-details;
+      }
+  }
+}

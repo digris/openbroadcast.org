@@ -43,6 +43,10 @@
     align-items: center;
     justify-content: flex-end;
 
+    .controls-container {
+      @include list-controls;
+    }
+
     .pagination-container {
       @include pagination;
     }
@@ -55,6 +59,12 @@
 
   .list-footer {
     margin-top: 20px;
+  }
+
+  .list-prefix {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
   }
 
   .list-appendix {

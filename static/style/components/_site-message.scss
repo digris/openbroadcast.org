@@ -1,0 +1,32 @@
+.site-message {
+
+  background-color: $primary-color;
+  color: $white;
+  z-index: 999;
+  position: fixed;
+  width: 100%;
+
+  .inner {
+    width: 1120px;
+    margin: 0 auto;
+    padding: 10px 0 20px;
+
+    h2 {
+      margin: 0 0 .75rem 0;
+    }
+
+    p {
+      font-size: 120%;
+      line-height: 180%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+    }
+  }
+
+  &--bottom {
+    bottom: 0;
+  }
+}

@@ -38,50 +38,6 @@ class TagMergeForm(forms.Form):
 
     master = forms.ModelChoiceField(queryset=None, required=True)
 
-    #master = forms.ModelChoiceField(queryset=Tag.objects.all()[0:10])
-
-# class CustomTagAdmin(admin.ModelAdmin):
-#
-#     form = TagAdminForm
-#
-#     list_display = ('name', 'usage_info')
-#
-#     search_fields = ('name',)
-#
-#     actions = [
-#         'merge_tags',
-#     ]
-#
-#     def usage_info(self, obj):
-#         return '{}'.format(obj.items.count())
-#
-#     usage_info.short_description = _('Usage')
-#     usage_info.allow_tags = True
-#
-#
-#     def merge_tags(self, request, queryset):
-#
-#         print '--**--**--**--**--**'
-#
-#         if 'do_action' in request.POST:
-#             form = TagMergeForm(request.POST)
-#             if form.is_valid():
-#                 master = form.cleaned_data['master']
-#                 print '******************************'
-#                 print master
-#                 return
-#         else:
-#             form = TagMergeForm(queryset=queryset)
-#
-#         return render(request, 'admin/tagging/merge_form.html',
-#                       {'title': u'Choose Master Tag',
-#                        'objects': queryset,
-#                        'form': form})
-#
-#
-#     merge_tags.short_description = _('Merge selected tags')
-
-
 
 
 class CustomTagAdmin(admin.ModelAdmin):
@@ -90,6 +46,7 @@ class CustomTagAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'usage_info',
+        'type',
         'created',
         'updated',
     )
@@ -97,11 +54,16 @@ class CustomTagAdmin(admin.ModelAdmin):
     date_hierarchy = 'created'
 
     list_filter = [
+        'type',
         'created',
         'updated',
     ]
 
     search_fields = ('name',)
+
+    list_editable = [
+        'type',
+    ]
 
     actions = [
         merge_tags,

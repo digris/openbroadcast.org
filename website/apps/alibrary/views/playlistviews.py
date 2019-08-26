@@ -63,6 +63,10 @@ class PlaylistSearch(BaseFacetedSearch):
                 None,
                 str((timezone.now() - datetime.timedelta(days=30)).date())
             )),
+            ('More than year month ago', (
+                None,
+                str((timezone.now() - datetime.timedelta(days=365)).date())
+            )),
             # ('Exclude 48 hours', (
             #     None,
             #     str((timezone.now() - datetime.timedelta(hours=48)).date())

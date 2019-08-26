@@ -23,7 +23,7 @@ class ProfileMenu(CMSAttachMenu):
         if request.user.is_active:
             node = NavigationNode(
                 _('My Profile'),
-                reverse('profiles-profile-detail', kwargs={ 'username': request.user.username }),
+                reverse('profiles-profile-detail', kwargs={ 'uuid': str(request.user.profile.uuid) }),
                 111
             )
             nodes.append(node)

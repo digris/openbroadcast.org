@@ -32,6 +32,7 @@
 // 5. Components
 @import
   'components/lazy-image',
+  'components/site-message',
   'components/button';
 
 // 6. Page-specific styles
@@ -39,6 +40,7 @@
   'pages/home',
   'pages/content',
   'pages/account',
+  'pages/profile',
   'pages/cms';
 
 // 7. Themes

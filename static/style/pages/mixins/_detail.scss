@@ -64,6 +64,16 @@
       padding: 2px 4px 1px;
       color: #fff;
       text-transform: uppercase;
+
+      &--sub-genre {
+        background: #79000b;
+      }
+
+      &--mood {
+        background: #00aeff;
+      }
+
+
     }
   }
 }

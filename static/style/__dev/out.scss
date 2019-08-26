@@ -1,45 +1,55 @@
-.list-header,
-.list-footer {
+@mixin list-actions {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
 
-  .pagination-container {
-    flex-grow: 1;
-    display: flex;
-    justify-content: flex-end;
+  .action {
+    display: inline-block;
+    padding: 1px 14px 0;
+    margin: 0 5px;
 
-    span, a {
-      display: inline-flex;
-      align-items: center;
-      padding: 0 7px;
-      height: 24px;
+    &:first-child {
+      margin-left: 0;
     }
 
-    span {
-      color: #a5a5a5;
+    &:last-child {
+      margin-right: 0;
     }
 
-    a {
-      background: $body-color-shaded-bg;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    .icon {
+      padding-right: 6px;
+    }
+
+    background-color: $white;
+    color: $primary-color-b;
+    border: 2px solid $primary-color-b;
+
+    &:hover {
+      // border-radius: 4px
+      color: $white;
+      background-color: $primary-color-b;
+    }
+
+    &--primary {
+      color: $primary-color-a;
+      border-color: $primary-color-a;
 
       &:hover {
-        background: $primary-color-b;
-        color: white;
-        text-decoration: none;
+        // background-color: $primary-color-a
+        background-color: $primary-color-b;
+        border-color: $primary-color-b;
       }
     }
 
-    span.current {
-      background: $primary-color-a;
-      color: white;
-    }
-  }
+    &--disabled {
+      cursor: not-allowed;
+      pointer-events: none;
+      filter: grayscale(100%);
+      opacity: 0.5;
 
-  .controls-container {
-    .actions {
-      &--list {
-        @include list-actions;
+      * {
+        cursor: not-allowed;
       }
     }
   }

@@ -1,0 +1,21 @@
+{% load i18n lazy_image_tags truncate_tags %}
+
+<div class="card card--rating">
+    <div class="card__visual">
+        <div class="image">
+            {% lazy_image object.main_image 'crop' '270x270' %}
+        </div>
+        <div class="card__visual__top">
+            <div class="flags">
+                <span class="flag">{{ content_type }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="card__body">
+        <div class="card__body__primary">
+            <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">
+                {{ object.name|truncate_chars_inner:24 }}
+            </a>
+        </div>
+    </div>
+</div>

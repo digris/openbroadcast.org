@@ -142,3 +142,68 @@
       color: $white;
     }
 }
+
+@mixin list-actions {
+  display: flex;
+
+  .action {
+    display: inline-block;
+    padding: 1px 14px 0;
+    margin: 0 5px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    text-transform: uppercase;
+    cursor: pointer;
+
+    .icon {
+      padding-right: 6px;
+    }
+
+    background-color: $white;
+    color: $primary-color;
+    border: 2px solid $primary-color;
+
+    &:hover {
+      // border-radius: 4px
+      color: $white;
+      background-color: $primary-color;
+    }
+
+    &--primary {
+      color: $secondary-color;
+      border-color: $secondary-color;
+
+      &:hover {
+        // background-color: $primary-color-a
+        background-color: $primary-color;
+        border-color: $primary-color;
+      }
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+      pointer-events: none;
+      filter: grayscale(100%);
+      opacity: 0.5;
+
+      * {
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+@mixin list-controls {
+    .actions {
+      &--list {
+        @include list-actions;
+      }
+    }
+}
