@@ -49,7 +49,9 @@ class AppInitializer {
             },
             mounted() {
               // tell jQuery (legacy) to continue
-              window.jQuery.holdReady(false);
+              if(window.jQuery) {
+                window.jQuery.holdReady(false);
+              }
             }
         });
 
