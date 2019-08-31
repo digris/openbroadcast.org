@@ -15,8 +15,10 @@ from rest_framework.status import HTTP_201_CREATED
 from rest_framework.views import APIView
 
 from .serializers import EmissionSerializer, EmissionHistorySerializer
-from ..models import Emission
+from ..models import Emission, Channel
 from ..utils.scheduler import check_slot_availability
+
+DEFAULT_CHANNEL_ID = 1
 
 log = logging.getLogger(__name__)
 
@@ -72,10 +74,13 @@ class EmissionViewSet(FlexFieldsModelViewSet):
         if not available:
             raise ValidationError(message)
 
+        channel = Channel.objects.filter(pk=DEFAULT_CHANNEL_ID).first()
+
         emission = Emission(
             content_object=content_object,
             time_start=time_start,
             user=request.user,
+            channel=channel,
             color=color,
         )
 
