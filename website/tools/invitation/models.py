@@ -1,17 +1,19 @@
 import datetime
 import random
 import hashlib
-from . import app_settings
-from . import signals
 
 from django.db import models
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.sites.models import Site
 from django.contrib.sites.requests import RequestSite
 from django.contrib import messages
+
+from . import app_settings
+from . import signals
 
 
 def performance_calculator_invite_only(invitation_stats):
@@ -65,13 +67,16 @@ class InvitationManager(models.Manager):
             pass
         if invitation is None:
             user.invitation_stats.use()
-            key = '%s%0.16f%s%s' % (settings.SECRET_KEY,
-                                    random.random(),
-                                    user.email,
-                                    email)
+            key = "%s%0.16f%s%s" % (
+                settings.SECRET_KEY,
+                random.random(),
+                user.email,
+                email,
+            )
             key = hashlib.sha1(key).hexdigest()
             invitation = self.create(user=user, email=email, key=key, message=message)
         return invitation
+
     invite.alters_data = True
 
     def find(self, invitation_key):
@@ -95,42 +100,46 @@ class InvitationManager(models.Manager):
         """Filter valid invitations.
         """
         expiration = datetime.datetime.now() - datetime.timedelta(
-                                                     app_settings.EXPIRE_DAYS)
+            app_settings.EXPIRE_DAYS
+        )
         return self.get_queryset().filter(date_invited__gte=expiration)
 
     def invalid(self):
         """Filter invalid invitation.
         """
         expiration = datetime.datetime.now() - datetime.timedelta(
-                                                     app_settings.EXPIRE_DAYS)
+            app_settings.EXPIRE_DAYS
+        )
         return self.get_queryset().filter(date_invited__le=expiration)
 
 
+@python_2_unicode_compatible
 class Invitation(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='invitations')
-    email = models.EmailField(_(u'e-mail'))
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="invitations")
+    email = models.EmailField(_(u"e-mail"))
     message = models.TextField(null=True)
-    key = models.CharField(_(u'invitation key'), max_length=40, unique=True)
-    date_invited = models.DateTimeField(_(u'date invited'),
-                                        default=datetime.datetime.now)
+    key = models.CharField(_(u"invitation key"), max_length=40, unique=True)
+    date_invited = models.DateTimeField(
+        _(u"date invited"), default=datetime.datetime.now
+    )
 
     objects = InvitationManager()
 
     class Meta:
-        verbose_name = _(u'invitation')
-        verbose_name_plural = _(u'invitations')
-        ordering = ('-date_invited',)
+        verbose_name = _(u"invitation")
+        verbose_name_plural = _(u"invitations")
+        ordering = ("-date_invited",)
 
-    def __unicode__(self):
-        return _('%(username)s invited %(email)s on %(date)s') % {
-            'username': self.user.username,
-            'email': self.email,
-            'date': str(self.date_invited.date()),
+    def __str__(self):
+        return _("%(username)s invited %(email)s on %(date)s") % {
+            "username": self.user.username,
+            "email": self.email,
+            "date": str(self.date_invited.date()),
         }
 
     @models.permalink
     def get_absolute_url(self):
-        return ('invitation_register', (), {'invitation_key': self.key})
+        return ("invitation_register", (), {"invitation_key": self.key})
 
     @property
     def _expires_at(self):
@@ -146,8 +155,9 @@ class Invitation(models.Model):
         """Return a ``datetime.date()`` object representing expiration date.
         """
         return self._expires_at.date()
-    expiration_date.short_description = _(u'expiration date')
-    expiration_date.admin_order_field = 'date_invited'
+
+    expiration_date.short_description = _(u"expiration date")
+    expiration_date.admin_order_field = "date_invited"
 
     def send_email(self, email=None, site=None, request=None):
         """
@@ -185,17 +195,26 @@ class Invitation(models.Model):
                 site = Site.objects.get_current()
             elif request is not None:
                 site = RequestSite(request)
-        subject = render_to_string('invitation/invitation_email_subject.txt',
-                                   {'invitation': self, 'site': site})
+        subject = render_to_string(
+            "invitation/invitation_email_subject.txt",
+            {"invitation": self, "site": site},
+        )
         # Email subject *must not* contain newlines
-        subject = ''.join(subject.splitlines())
-        message = render_to_string('invitation/invitation_email.txt', {
-            'invitation': self,
-            'expiration_days': app_settings.EXPIRE_DAYS,
-            'site': site
-        })
+        subject = "".join(subject.splitlines())
+        message = render_to_string(
+            "invitation/invitation_email.txt",
+            {
+                "invitation": self,
+                "expiration_days": app_settings.EXPIRE_DAYS,
+                "site": site,
+            },
+        )
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
-        messages.add_message(request, messages.SUCCESS, _('Invitation sent to %(email)s.')% {'email': email})
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            _("Invitation sent to %(email)s.") % {"email": email},
+        )
         signals.invitation_sent.send(sender=self)
 
     def mark_accepted(self, new_user):
@@ -206,10 +225,11 @@ class Invitation(models.Model):
         instance is deleted.
         """
         self.user.invitation_stats.mark_accepted()
-        signals.invitation_accepted.send(sender=self,
-                                         inviting_user=self.user,
-                                         new_user=new_user)
+        signals.invitation_accepted.send(
+            sender=self, inviting_user=self.user, new_user=new_user
+        )
         self.delete()
+
     mark_accepted.alters_data = True
 
 
@@ -218,7 +238,7 @@ class InvitationStatsManager(models.Manager):
         rewarded_users = 0
         invitations_given = 0
         if not isinstance(count, int) and not callable(count):
-            raise TypeError('Count must be int or callable.')
+            raise TypeError("Count must be int or callable.")
         if user is None:
             qs = self.get_queryset()
         else:
@@ -236,32 +256,37 @@ class InvitationStatsManager(models.Manager):
 
     def reward(self, user=None, reward_count=app_settings.INITIAL_INVITATIONS):
         def count(user):
-            if user.invitation_stats.performance >= \
-                                                app_settings.REWARD_THRESHOLD:
+            if user.invitation_stats.performance >= app_settings.REWARD_THRESHOLD:
                 return reward_count
             return 0
+
         return self.give_invitations(user, count)
 
 
+@python_2_unicode_compatible
 class InvitationStats(models.Model):
     """Store invitation statistics for ``user``.
     """
-    user = models.OneToOneField(settings.AUTH_USER_MODEL,
-                                related_name='invitation_stats')
-    available = models.IntegerField(_(u'available invitations'),
-                                    default=app_settings.INITIAL_INVITATIONS)
-    sent = models.IntegerField(_(u'invitations sent'), default=0)
-    accepted = models.IntegerField(_(u'invitations accepted'), default=0)
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, related_name="invitation_stats"
+    )
+    available = models.IntegerField(
+        _(u"available invitations"), default=app_settings.INITIAL_INVITATIONS
+    )
+    sent = models.IntegerField(_(u"invitations sent"), default=0)
+    accepted = models.IntegerField(_(u"invitations accepted"), default=0)
 
     objects = InvitationStatsManager()
 
     class Meta:
-        verbose_name = verbose_name_plural = _(u'invitation stats')
-        ordering = ('-user',)
+        verbose_name = verbose_name_plural = _(u"invitation stats")
+        ordering = ("-user",)
 
-    def __unicode__(self):
-        return _(u'invitation stats for %(username)s') % {
-                                               'username': self.user.username}
+    def __str__(self):
+        return _(u"invitation stats for %(username)s") % {
+            "username": self.user.username
+        }
 
     @property
     def performance(self):
@@ -280,9 +305,10 @@ class InvitationStats(models.Model):
 
         ``invitation.signals.invitation_added`` is sent at the end.
         """
-        self.available = models.F('available') + count
+        self.available = models.F("available") + count
         self.save()
         signals.invitation_added.send(sender=self, user=self.user, count=count)
+
     add_available.alters_data = True
 
     def use(self, count=1):
@@ -299,11 +325,12 @@ class InvitationStats(models.Model):
         """
         if app_settings.INVITE_ONLY:
             if self.available - count >= 0:
-                self.available = models.F('available') - count
+                self.available = models.F("available") - count
             else:
-                raise InvitationError('No available invitations.')
-        self.sent = models.F('sent') + count
+                raise InvitationError("No available invitations.")
+        self.sent = models.F("sent") + count
         self.save()
+
     use.alters_data = True
 
     def mark_accepted(self, count=1):
@@ -323,7 +350,7 @@ class InvitationStats(models.Model):
             raise InvitationError('There can\'t be more accepted ' \
                                   'invitations than sent invitations.')
         """
-        self.accepted = models.F('accepted') + count
+        self.accepted = models.F("accepted") + count
         self.save()
-    mark_accepted.alters_data = True
 
+    mark_accepted.alters_data = True

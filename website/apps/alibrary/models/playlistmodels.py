@@ -19,6 +19,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
 from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.fields.json import JSONField
@@ -33,9 +34,9 @@ from ..util.mixdown_client import MixdownAPIClient
 
 
 try:
-    from urllib.request import urlopen # for python 3.0 and later
+    from urllib.request import urlopen  # for python 3.0 and later
 except ImportError:
-    from urllib2 import urlopen # fall back to python 2's urllib2
+    from urllib2 import urlopen  # fall back to python 2's urllib2
 
 log = logging.getLogger(__name__)
 
@@ -46,221 +47,198 @@ DURATION_MAX_DIFF = 2500  # in ms
 def filename_by_uuid(instance, filename):
     filename, extension = os.path.splitext(filename)
     path = "playlists/"
-    filename = str(instance.uuid).replace('-', '/') + extension
+    filename = str(instance.uuid).replace("-", "/") + extension
     return os.path.join(path, filename)
 
 
 def upload_image_to(instance, filename):
     filename, extension = os.path.splitext(filename)
-    return os.path.join(get_dir_for_object(instance), 'playlists{}'.format(extension.lower()))
+    return os.path.join(
+        get_dir_for_object(instance), "playlists{}".format(extension.lower())
+    )
 
 
 def upload_mixdown_to(instance, filename):
     filename, extension = os.path.splitext(filename)
-    return os.path.join(get_dir_for_object(instance), 'mixdown{}'.format(extension.lower()))
+    return os.path.join(
+        get_dir_for_object(instance), "mixdown{}".format(extension.lower())
+    )
 
 
+@python_2_unicode_compatible
 class Season(models.Model):
     name = models.CharField(max_length=200)
     date_start = models.DateField(null=True, blank=True)
     date_end = models.DateField(null=True, blank=True)
 
     class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Season')
-        verbose_name_plural = _('Seasons')
-        ordering = ('-name',)
+        app_label = "alibrary"
+        verbose_name = _("Season")
+        verbose_name_plural = _("Seasons")
+        ordering = ("-name",)
 
-    def __unicode__(self):
-        return '%s' % (self.name)
+    def __str__(self):
+        return "%s" % (self.name)
 
 
+@python_2_unicode_compatible
 class Weather(models.Model):
     name = models.CharField(max_length=200)
 
     class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Weather')
-        verbose_name_plural = _('Weather')
-        ordering = ('-name',)
+        app_label = "alibrary"
+        verbose_name = _("Weather")
+        verbose_name_plural = _("Weather")
+        ordering = ("-name",)
 
-    def __unicode__(self):
-        return '%s' % (self.name)
+    def __str__(self):
+        return "%s" % (self.name)
 
 
+@python_2_unicode_compatible
 class Series(models.Model):
     name = models.CharField(max_length=200)
-    slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
+    slug = AutoSlugField(
+        populate_from="name", editable=True, blank=True, overwrite=True
+    )
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     description = extra.MarkdownTextField(blank=True, null=True)
 
     class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Series')
-        verbose_name_plural = _('Series')
-        ordering = ('-name',)
+        app_label = "alibrary"
+        verbose_name = _("Series")
+        verbose_name_plural = _("Series")
+        ordering = ("-name",)
 
-    def __unicode__(self):
-        return '%s' % (self.name)
-
-
+    def __str__(self):
+        return "%s" % (self.name)
 
 
+@python_2_unicode_compatible
 class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
-    TYPE_BASKET = 'basket'
-    TYPE_PLAYLIST = 'playlist'
-    TYPE_BROADCAST = 'broadcast'
-    TYPE_OTHER = 'other'
+    TYPE_BASKET = "basket"
+    TYPE_PLAYLIST = "playlist"
+    TYPE_BROADCAST = "broadcast"
+    TYPE_OTHER = "other"
 
     TYPE_CHOICES = (
-        (TYPE_BASKET, _('Private Playlist')),
-        (TYPE_PLAYLIST, _('Public Playlist')),
-        (TYPE_BROADCAST, _('Broadcast')),
-        (TYPE_OTHER, _('Other')),
+        (TYPE_BASKET, _("Private Playlist")),
+        (TYPE_PLAYLIST, _("Public Playlist")),
+        (TYPE_BROADCAST, _("Broadcast")),
+        (TYPE_OTHER, _("Other")),
     )
 
-
     name = models.CharField(max_length=200)
-    slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
+    slug = AutoSlugField(
+        populate_from="name", editable=True, blank=True, overwrite=True
+    )
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     status = models.PositiveIntegerField(
-        default=0,
-        choices=alibrary_settings.PLAYLIST_STATUS_CHOICES
+        default=0, choices=alibrary_settings.PLAYLIST_STATUS_CHOICES
     )
     type = models.CharField(
-        max_length=12,
-        default='basket', null=True,
-        choices=TYPE_CHOICES
+        max_length=12, default="basket", null=True, choices=TYPE_CHOICES
     )
     broadcast_status = models.PositiveIntegerField(
-        default=0,
-        choices=alibrary_settings.PLAYLIST_BROADCAST_STATUS_CHOICES
+        default=0, choices=alibrary_settings.PLAYLIST_BROADCAST_STATUS_CHOICES
     )
-    broadcast_status_messages = JSONField(
-        blank=True, null=True, default=None
-    )
+    broadcast_status_messages = JSONField(blank=True, null=True, default=None)
 
     playout_mode_random = models.BooleanField(
-        verbose_name=_('Shuffle Playlist'),
+        verbose_name=_("Shuffle Playlist"),
         default=False,
-        help_text=_('If enabled the order of the tracks will be randomized for playout')
+        help_text=_(
+            "If enabled the order of the tracks will be randomized for playout"
+        ),
     )
 
     rotation = models.BooleanField(default=True)
     rotation_date_start = models.DateField(
-        verbose_name=_('Rotate from'),
-        blank=True, null=True
+        verbose_name=_("Rotate from"), blank=True, null=True
     )
     rotation_date_end = models.DateField(
-        verbose_name=_('Rotate until'),
-        blank=True, null=True
+        verbose_name=_("Rotate until"), blank=True, null=True
     )
 
     main_image = models.ImageField(
-        verbose_name=_('Image'),
+        verbose_name=_("Image"),
         upload_to=upload_image_to,
         storage=OverwriteStorage(),
-        null=True, blank=True
+        null=True,
+        blank=True,
     )
 
     # relations
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        null=True, blank=True, default=None,
-        related_name='playlists'
+        null=True,
+        blank=True,
+        default=None,
+        related_name="playlists",
     )
     items = models.ManyToManyField(
-        'PlaylistItem',
-        through='PlaylistItemPlaylist',
-        blank=True
+        "PlaylistItem", through="PlaylistItemPlaylist", blank=True
     )
 
     # tagging (d_tags = "display tags")
     d_tags = tagging.fields.TagField(
-        max_length=1024,
-        verbose_name='Tags',
-        blank=True, null=True
+        max_length=1024, verbose_name="Tags", blank=True, null=True
     )
 
     # updated/calculated on save
-    duration = models.IntegerField(
-        null=True, default=0
-    )
+    duration = models.IntegerField(null=True, default=0)
 
     target_duration = models.PositiveIntegerField(
-        default=0, null=True,
-        choices=alibrary_settings.PLAYLIST_TARGET_DURATION_CHOICES
+        default=0, null=True, choices=alibrary_settings.PLAYLIST_TARGET_DURATION_CHOICES
     )
 
     dayparts = models.ManyToManyField(
-        Daypart,
-        blank=True,
-        related_name='daypart_plalists'
+        Daypart, blank=True, related_name="daypart_plalists"
     )
     seasons = models.ManyToManyField(
-        'Season',
-        blank=True,
-        related_name='season_plalists'
+        "Season", blank=True, related_name="season_plalists"
     )
     weather = models.ManyToManyField(
-        'Weather',
-        blank=True,
-        related_name='weather_plalists'
+        "Weather", blank=True, related_name="weather_plalists"
     )
 
     # series
-    series = models.ForeignKey(
-        Series,
-        null=True, blank=True,
-        on_delete=models.SET_NULL
-    )
-    series_number = models.PositiveIntegerField(
-        null=True, blank=True
-    )
+    series = models.ForeignKey(Series, null=True, blank=True, on_delete=models.SET_NULL)
+    series_number = models.PositiveIntegerField(null=True, blank=True)
 
     # is currently selected as default?
-    is_current = models.BooleanField(
-        _('Currently selected?'),
-        default=False
-    )
+    is_current = models.BooleanField(_("Currently selected?"), default=False)
 
-    description = extra.MarkdownTextField(
-        blank=True, null=True
-    )
+    description = extra.MarkdownTextField(blank=True, null=True)
 
-    mixdown_file = models.FileField(
-        null=True, blank=True,
-        upload_to=upload_mixdown_to
-    )
+    mixdown_file = models.FileField(null=True, blank=True, upload_to=upload_mixdown_to)
 
-    emissions = GenericRelation('abcast.Emission')
+    emissions = GenericRelation("abcast.Emission")
 
     # meta
     class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Playlist')
-        verbose_name_plural = _('Playlists')
-        ordering = ('-updated',)
+        app_label = "alibrary"
+        verbose_name = _("Playlist")
+        verbose_name_plural = _("Playlists")
+        ordering = ("-updated",)
 
         permissions = (
-            ('view_playlist', 'View Playlist'),
-            ('edit_playlist', 'Edit Playlist'),
-            ('schedule_playlist', 'Schedule Playlist'),
-            ('admin_playlist', 'Edit Playlist (extended)'),
+            ("view_playlist", "View Playlist"),
+            ("edit_playlist", "Edit Playlist"),
+            ("schedule_playlist", "Schedule Playlist"),
+            ("admin_playlist", "Edit Playlist (extended)"),
         )
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_ct(self):
-        return '{}.{}'.format(self._meta.app_label, self.__class__.__name__).lower()
+        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
 
     def get_absolute_url(self):
-        return reverse('alibrary-playlist-detail', kwargs={
-            'slug': self.slug,
-        })
+        return reverse("alibrary-playlist-detail", kwargs={"slug": self.slug})
 
     def get_edit_url(self):
         return reverse("alibrary-playlist-edit", args=(self.pk,))
@@ -288,40 +266,60 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     # TODO: remove usages and use generic reverse 'emissions' instead
     def get_emissions(self):
         from abcast.models import Emission
+
         ctype = ContentType.objects.get_for_model(self)
-        emissions = Emission.objects.filter(content_type__pk=ctype.id, object_id=self.id).order_by('-time_start')
+        emissions = Emission.objects.filter(
+            content_type__pk=ctype.id, object_id=self.id
+        ).order_by("-time_start")
         return emissions
 
     def get_api_url(self):
-        return reverse('api_dispatch_detail', kwargs={
-            'api_name': 'v1',
-            'resource_name': 'library/playlist',
-            'pk': self.pk
-        }) + ''
+        return (
+            reverse(
+                "api_dispatch_detail",
+                kwargs={
+                    "api_name": "v1",
+                    "resource_name": "library/playlist",
+                    "pk": self.pk,
+                },
+            )
+            + ""
+        )
 
     def get_api_simple_url(self):
-        return reverse('api_dispatch_detail', kwargs={
-            'api_name': 'v1',
-            'resource_name': 'library/simpleplaylist',
-            'pk': self.pk
-        }) + ''
+        return (
+            reverse(
+                "api_dispatch_detail",
+                kwargs={
+                    "api_name": "v1",
+                    "resource_name": "library/simpleplaylist",
+                    "pk": self.pk,
+                },
+            )
+            + ""
+        )
 
     def can_be_deleted(self):
 
         can_delete = False
-        reason = _('This playlist cannot be deleted.')
+        reason = _("This playlist cannot be deleted.")
 
-        if self.type == 'basket':
+        if self.type == "basket":
             can_delete = True
             reason = None
 
-        if self.type == 'playlist':
+        if self.type == "playlist":
             can_delete = False
-            reason = _('Playlist "%s" is public. It cannot be deleted anymore.' % self.name)
+            reason = _(
+                'Playlist "%s" is public. It cannot be deleted anymore.' % self.name
+            )
 
-        if self.type == 'broadcast':
+        if self.type == "broadcast":
             can_delete = False
-            reason = _('Playlist "%s" published for broadcast. It cannot be deleted anymore.' % self.name)
+            reason = _(
+                'Playlist "%s" published for broadcast. It cannot be deleted anymore.'
+                % self.name
+            )
 
         return can_delete, reason
 
@@ -354,48 +352,52 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         criterias = []
 
         # "basket" only used while dev...
-        if target_type == 'basket':
+        if target_type == "basket":
             status = True
 
-        if target_type == 'playlist':
+        if target_type == "playlist":
             status = True
             # tags
             tag_count = self.tags.count()
             if tag_count < 1:
                 status = False
             criteria = {
-                'key': 'tags',
-                'name': _('Tags'),
-                'status': tag_count > 0,
-                'warning': _('Please add some tags'),
+                "key": "tags",
+                "name": _("Tags"),
+                "status": tag_count > 0,
+                "warning": _("Please add some tags"),
             }
             criterias.append(criteria)
             # scheduled
-            if self.type == 'broadcast':
+            if self.type == "broadcast":
                 schedule_count = self.get_emissions().count()
                 if schedule_count > 0:
                     status = False
                 criteria = {
-                    'key': 'scheduled',
-                    'name': _('Playlist already scheduled') if schedule_count > 0 else _('Playlist not scheduled'),
-                    'status': schedule_count < 1,
-                    'warning': _(
-                        'This playlist has already ben scheduled %s times. Remove all scheduler entries to "un-broadcast" this playlist.' % schedule_count),
+                    "key": "scheduled",
+                    "name": _("Playlist already scheduled")
+                    if schedule_count > 0
+                    else _("Playlist not scheduled"),
+                    "status": schedule_count < 1,
+                    "warning": _(
+                        'This playlist has already ben scheduled %s times. Remove all scheduler entries to "un-broadcast" this playlist.'
+                        % schedule_count
+                    ),
                 }
                 if schedule_count > 0:
                     criterias.append(criteria)
 
-        if target_type == 'broadcast':
+        if target_type == "broadcast":
             status = True
             # tags
             tag_count = self.tags.count()
             if tag_count < 1:
                 status = False
             criteria = {
-                'key': 'tags',
-                'name': _('Tags'),
-                'status': tag_count > 0,
-                'warning': _('Please add some tags'),
+                "key": "tags",
+                "name": _("Tags"),
+                "status": tag_count > 0,
+                "warning": _("Please add some tags"),
             }
             criterias.append(criteria)
 
@@ -404,10 +406,10 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
             if not dp_count:
                 status = False
             criteria = {
-                'key': 'dayparts',
-                'name': _('Dayparts'),
-                'status': dp_count > 0,
-                'warning': _('Please specify the dayparts'),
+                "key": "dayparts",
+                "name": _("Dayparts"),
+                "status": dp_count > 0,
+                "warning": _("Please specify the dayparts"),
             }
             criterias.append(criteria)
 
@@ -415,21 +417,17 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
             if not self.broadcast_status == 1:
                 status = False
             criteria = {
-                'key': 'duration',
-                'name': _('Duration'),
-                'status': True if self.broadcast_status == 1 else False,
-                'warning': _('Durations do not match'),
+                "key": "duration",
+                "name": _("Duration"),
+                "status": True if self.broadcast_status == 1 else False,
+                "warning": _("Durations do not match"),
                 # 'warning': ', '.join(self.broadcast_status_messages),
             }
             criterias.append(criteria)
 
-        transformation = {
-            'criterias': criterias,
-            'status': status
-        }
+        transformation = {"criterias": criterias, "status": status}
 
         return transformation
-
 
     ###################################################################
     # legacy version - used in tastypie API (v1)
@@ -438,14 +436,14 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         from alibrary.models.mediamodels import Media
 
-        log.debug('add media to playlist: {}'.format(', '.join(ids)))
+        log.debug("add media to playlist: {}".format(", ".join(ids)))
 
         for id in ids:
             id = int(id)
 
             co = None
 
-            if ct == 'media':
+            if ct == "media":
                 co = Media.objects.get(pk=id)
 
             if co:
@@ -457,15 +455,16 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                 item, created = PlaylistItem.objects.get_or_create(object_id=co.pk, content_type=ctype)
                 """
 
-                pi, created = PlaylistItemPlaylist.objects.get_or_create(item=i, playlist=self,
-                                                                         position=self.items.count())
+                pi, created = PlaylistItemPlaylist.objects.get_or_create(
+                    item=i, playlist=self, position=self.items.count()
+                )
 
                 if timing:
                     try:
-                        pi.fade_in = timing['fade_in']
-                        pi.fade_out = timing['fade_out']
-                        pi.cue_in = timing['cue_in']
-                        pi.cue_out = timing['cue_out']
+                        pi.fade_in = timing["fade_in"]
+                        pi.fade_out = timing["fade_out"]
+                        pi.cue_in = timing["cue_in"]
+                        pi.cue_out = timing["cue_out"]
                         pi.save()
                     except:
                         pass
@@ -477,33 +476,25 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     ###################################################################
     def add_item(self, item, cue_and_fade=None, commit=True):
 
-        log.debug('add item to playlist: {}'.format(item))
+        log.debug("add item to playlist: {}".format(item))
 
-
-        playlist_item = PlaylistItem(
-            content_object=item
-        )
+        playlist_item = PlaylistItem(content_object=item)
         playlist_item.save()
 
-
         playlist_item_playlist = PlaylistItemPlaylist(
-            item=playlist_item,
-            playlist=self,
-            position=self.items.count()
+            item=playlist_item, playlist=self, position=self.items.count()
         )
 
         if cue_and_fade:
-            playlist_item_playlist.fade_in = cue_and_fade['fade_in']
-            playlist_item_playlist.fade_out = cue_and_fade['fade_out']
-            playlist_item_playlist.cue_in = cue_and_fade['cue_in']
-            playlist_item_playlist.cue_out = cue_and_fade['cue_out']
+            playlist_item_playlist.fade_in = cue_and_fade["fade_in"]
+            playlist_item_playlist.fade_out = cue_and_fade["fade_out"]
+            playlist_item_playlist.cue_in = cue_and_fade["cue_in"]
+            playlist_item_playlist.cue_out = cue_and_fade["cue_out"]
 
         playlist_item_playlist.save()
 
-
         if commit:
             self.save()
-
 
     def reorder_items_by_uuids(self, uuids):
 
@@ -520,15 +511,18 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     def convert_to(self, playlist_type):
 
-        log.debug('requested to convert "%s" from %s to %s' % (self.name, self.type, playlist_type))
+        log.debug(
+            'requested to convert "%s" from %s to %s'
+            % (self.name, self.type, playlist_type)
+        )
 
-        if playlist_type == 'broadcast':
+        if playlist_type == "broadcast":
             self.broadcast_status, self.broadcast_status_messages = self.self_check()
 
         transformation = self.get_transform_status(playlist_type)
-        status = transformation['status']
+        status = transformation["status"]
 
-        if playlist_type == 'broadcast' and status:
+        if playlist_type == "broadcast" and status:
             _status, messages = self.self_check()
             if _status == 1:
                 status = True
@@ -542,7 +536,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     def get_items(self):
 
-        pis = PlaylistItemPlaylist.objects.filter(playlist=self).order_by('position')
+        pis = PlaylistItemPlaylist.objects.filter(playlist=self).order_by("position")
 
         items = []
         for pi in pis:
@@ -557,9 +551,14 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                 # print '// getting duration for:'
                 # print '%s - %s' % (item.content_object.pk, item.content_object.name)
                 # print 'obj duration: %s' % item.content_object.duration_s
-                item.playout_duration = item.content_object.duration_ms - item.cue_in - item.cue_out - item.fade_cross
+                item.playout_duration = (
+                    item.content_object.duration_ms
+                    - item.cue_in
+                    - item.cue_out
+                    - item.fade_cross
+                )
             except Exception as e:
-                log.warning('unable to get duration: {}'.format(e))
+                log.warning("unable to get duration: {}".format(e))
                 item.playout_duration = 0
 
             items.append(item)
@@ -570,7 +569,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         check if everything is fine to be 'scheduled'
         """
 
-        log.info('Self check requested for: %s' % self.name)
+        log.info("Self check requested for: %s" % self.name)
 
         status = 1  # set to 'OK'
         messages = []
@@ -587,9 +586,15 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                     with open(item.content_object.master.path):
                         pass
                 except IOError as e:
-                    log.warning(_('File does not exists: %s | %s') % (e, item.content_object.master.path))
+                    log.warning(
+                        _("File does not exists: %s | %s")
+                        % (e, item.content_object.master.path)
+                    )
                     status = 99
-                    messages.append(_('File does not exists: %s | %s') % (e, item.content_object.master.path))
+                    messages.append(
+                        _("File does not exists: %s | %s")
+                        % (e, item.content_object.master.path)
+                    )
 
                 """
                 pip = PlaylistItemPlaylist.objects.get(playlist=self, item=item)
@@ -604,20 +609,27 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
             """
             diff = self.get_duration() - self.target_duration * 1000
             if abs(diff) > DURATION_MAX_DIFF:
-                messages.append(_('durations do not match. difference is: %s seconds' % int(diff / 1000)))
-                log.warning('durations do not match. difference is: %s seconds' % int(diff / 1000))
+                messages.append(
+                    _(
+                        "durations do not match. difference is: %s seconds"
+                        % int(diff / 1000)
+                    )
+                )
+                log.warning(
+                    "durations do not match. difference is: %s seconds"
+                    % int(diff / 1000)
+                )
                 status = 2
 
         except Exception as e:
-            messages.append(_('Validation error: %s ' % e))
-            log.warning('validation error: %s ' % e)
+            messages.append(_("Validation error: %s " % e))
+            log.warning("validation error: %s " % e)
             status = 99
 
         if status == 1:
             log.info('Playlist "%s" checked - all fine!' % (self.name))
 
         return status, messages
-
 
     ###################################################################
     # playlist mixdown
@@ -628,29 +640,27 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         """
         return MixdownAPIClient().get_for_playlist(self)
 
-
     def request_mixdown(self):
         """
         request (re-)creation of mixdown
         """
         return MixdownAPIClient().request_for_playlist(self)
 
-
     def download_mixdown(self):
         """
         download generated mixdown from api & store locally (in `mixdown_file` field)
         """
         if not self.mixdown:
-            log.info('mixdown not available on api')
+            log.info("mixdown not available on api")
             return
 
-        if not self.mixdown['status'] == 3:
-            log.info('mixdown not ready on api')
+        if not self.mixdown["status"] == 3:
+            log.info("mixdown not ready on api")
             return
 
-        url = self.mixdown['mixdown_file']
+        url = self.mixdown["mixdown_file"]
 
-        log.debug('download mixdown from api: {} > {}'.format(url, self.name))
+        log.debug("download mixdown from api: {} > {}".format(url, self.name))
 
         f_temp = NamedTemporaryFile(delete=True)
         f_temp.write(urlopen(url).read())
@@ -662,13 +672,13 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         except IOError:
             pass
 
-        self.mixdown_file.save(url.split('/')[-1], File(f_temp))
+        self.mixdown_file.save(url.split("/")[-1], File(f_temp))
 
         return MixdownAPIClient().request_for_playlist(self)
 
     @property
     def sorted_items(self):
-        return self.items.order_by('playlist_items__position')
+        return self.items.order_by("playlist_items__position")
 
     @cached_property
     def num_media(self):
@@ -698,7 +708,10 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     def is_upcoming(self):
         if not self.type == Playlist.TYPE_BROADCAST:
             return
-        if self.rotation_date_start and self.rotation_date_start > timezone.now().date():
+        if (
+            self.rotation_date_start
+            and self.rotation_date_start > timezone.now().date()
+        ):
             return True
 
     @cached_property
@@ -706,7 +719,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         if not self.series:
             return
         if self.series_number:
-            return '{} #{}'.format(self.series.name, self.series_number)
+            return "{} #{}".format(self.series.name, self.series_number)
         return self.series.name
 
     @cached_property
@@ -716,7 +729,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         # additional queries we have to loop the qs and 'filter'
         # 'manually'
         ###############################################################
-        for emission in self.emissions.order_by('-time_start'):
+        for emission in self.emissions.order_by("-time_start"):
             if emission.time_start < timezone.now():
                 return emission
 
@@ -727,7 +740,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         # additional queries we have to loop the qs and 'filter'
         # 'manually'
         ###############################################################
-        for emission in self.emissions.order_by('time_start'):
+        for emission in self.emissions.order_by("time_start"):
             if emission.time_start > timezone.now():
                 return emission
 
@@ -751,7 +764,6 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         # handle series numbering
 
-
         super(Playlist, self).save(*args, **kwargs)
 
 
@@ -766,7 +778,7 @@ arating.enable_voting_on(Playlist)
 @receiver(post_save, sender=Playlist)
 def playlist_post_save(sender, instance, **kwargs):
 
-    if not instance.type == 'broadcast':
+    if not instance.type == "broadcast":
         return
 
     if instance.mixdown_file:
@@ -775,21 +787,17 @@ def playlist_post_save(sender, instance, **kwargs):
     if instance.mixdown:
         return
 
-    log.debug('no mixdown yet for {} - request to generate'.format(instance.name))
+    log.debug("no mixdown yet for {} - request to generate".format(instance.name))
     instance.request_mixdown()
-
-
 
 
 class PlaylistItemPlaylist(TimestampedModelMixin, models.Model):
 
     playlist = models.ForeignKey(
-        'Playlist', on_delete=models.CASCADE,
-        related_name='playlist_items'
+        "Playlist", on_delete=models.CASCADE, related_name="playlist_items"
     )
     item = models.ForeignKey(
-        'PlaylistItem', on_delete=models.CASCADE,
-        related_name='playlist_items'
+        "PlaylistItem", on_delete=models.CASCADE, related_name="playlist_items"
     )
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
@@ -802,8 +810,8 @@ class PlaylistItemPlaylist(TimestampedModelMixin, models.Model):
     fade_cross = models.PositiveIntegerField(default=0)
 
     class Meta:
-        app_label = 'alibrary'
-        ordering = ('position',)
+        app_label = "alibrary"
+        ordering = ("position",)
 
     def save(self, *args, **kwargs):
 
@@ -829,30 +837,27 @@ class PlaylistItemPlaylist(TimestampedModelMixin, models.Model):
         super(PlaylistItemPlaylist, self).save(*args, **kwargs)
 
 
+@python_2_unicode_compatible
 class PlaylistItem(models.Model):
 
-    uuid = models.UUIDField(
-        default=uuid.uuid4, editable=False
-    )
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Playlist Item')
-        verbose_name_plural = _('Playlist Items')
+        app_label = "alibrary"
+        verbose_name = _("Playlist Item")
+        verbose_name_plural = _("Playlist Items")
         # ordering = ('-created', )
 
-    ct_limit = models.Q(app_label='alibrary', model='media') | \
-               models.Q(app_label='alibrary', model='release')
-
-    content_type = models.ForeignKey(
-        ContentType,
-        limit_choices_to=ct_limit
+    ct_limit = models.Q(app_label="alibrary", model="media") | models.Q(
+        app_label="alibrary", model="release"
     )
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
 
-    def __unicode__(self):
-        return '%s' % (self.pk)
+    content_type = models.ForeignKey(ContentType, limit_choices_to=ct_limit)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey("content_type", "object_id")
+
+    def __str__(self):
+        return "%s" % (self.pk)
 
     def save(self, *args, **kwargs):
         super(PlaylistItem, self).save(*args, **kwargs)

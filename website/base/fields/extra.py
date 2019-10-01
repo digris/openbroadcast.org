@@ -8,27 +8,34 @@ from markdown import markdown
 from django.forms import forms
 from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import python_2_unicode_compatible
 
 
-
-#from django.utils.html import conditional_escape, format_html, format_html_join
+# from django.utils.html import conditional_escape, format_html, format_html_join
 from django.forms.widgets import ClearableFileInput
 
-class ExtraClearableFileInput(ClearableFileInput):
-    initial_text = _('Currently')
-    input_text = _('Change')
-    clear_checkbox_label = _('Clear')
 
-    template_with_initial = '<ul><li>%(initial)s</li><li>%(clear_template)s</li><li>%(input_text)s: %(input)s</li></ul>'
-    template_with_clear = '%(clear)s <label for="%(clear_checkbox_id)s">%(clear_checkbox_label)s</label>'
+class ExtraClearableFileInput(ClearableFileInput):
+    initial_text = _("Currently")
+    input_text = _("Change")
+    clear_checkbox_label = _("Clear")
+
+    template_with_initial = "<ul><li>%(initial)s</li><li>%(clear_template)s</li><li>%(input_text)s: %(input)s</li></ul>"
+    template_with_clear = (
+        '%(clear)s <label for="%(clear_checkbox_id)s">%(clear_checkbox_label)s</label>'
+    )
+
 
 class PreviewImageInput(ClearableFileInput):
-    initial_text = _('Currently')
-    input_text = _('Change')
-    clear_checkbox_label = _('Clear')
+    initial_text = _("Currently")
+    input_text = _("Change")
+    clear_checkbox_label = _("Clear")
 
-    template_with_initial = '<h1>%(initial)s</h1><ul><li>%(initial)s</li><li>%(clear_template)s</li><li>%(input_text)s: %(input)s</li></ul>'
-    template_with_clear = '%(clear)s <label for="%(clear_checkbox_id)s">%(clear_checkbox_label)s</label>'
+    template_with_initial = "<h1>%(initial)s</h1><ul><li>%(initial)s</li><li>%(clear_template)s</li><li>%(input_text)s: %(input)s</li></ul>"
+    template_with_clear = (
+        '%(clear)s <label for="%(clear_checkbox_id)s">%(clear_checkbox_label)s</label>'
+    )
+
 
 from django.utils.html import escape, conditional_escape
 from django.utils.safestring import mark_safe
@@ -37,60 +44,72 @@ from django.forms.widgets import CheckboxInput
 try:
     from django.utils.encoding import force_unicode
 except ImportError:
+
     def force_unicode(val):
         return val
 
+
 class AdvancedFileInput(ClearableFileInput):
 
-
-
-    #template_with_initial = '<ul class="unstyled"><li>%(initial)s</li><li>%(clear_template)s</li><li>%(input_text)s: %(input)s</li></ul>'
+    # template_with_initial = '<ul class="unstyled"><li>%(initial)s</li><li>%(clear_template)s</li><li>%(input_text)s: %(input)s</li></ul>'
     template_with_initial = '<ul class="advancedfileinput unstyled"><li>%(initial)s</li><li>%(input_text)s: %(input)s</li></ul>'
-    template_with_clear = '%(clear)s <label for="%(clear_checkbox_id)s">%(clear_checkbox_label)s</label>'
+    template_with_clear = (
+        '%(clear)s <label for="%(clear_checkbox_id)s">%(clear_checkbox_label)s</label>'
+    )
 
     def __init__(self, *args, **kwargs):
 
-        self.url_length = kwargs.pop('url_length', 30)
-        self.preview = kwargs.pop('preview', True)
-        self.image_width = kwargs.pop('image_width', 125)
+        self.url_length = kwargs.pop("url_length", 30)
+        self.preview = kwargs.pop("preview", True)
+        self.image_width = kwargs.pop("image_width", 125)
         super(AdvancedFileInput, self).__init__(*args, **kwargs)
 
-    def render(self, name, value, attrs=None,):
+    def render(self, name, value, attrs=None):
 
         substitutions = {
-            'initial_text': self.initial_text,
-            'input_text': self.input_text,
-            'clear_template': '',
-            'clear_checkbox_label': self.clear_checkbox_label,
+            "initial_text": self.initial_text,
+            "input_text": self.input_text,
+            "clear_template": "",
+            "clear_checkbox_label": self.clear_checkbox_label,
         }
-        template = u'%(input)s'
+        template = u"%(input)s"
 
-        substitutions['input'] = super(ClearableFileInput, self).render(name, value, attrs)
+        substitutions["input"] = super(ClearableFileInput, self).render(
+            name, value, attrs
+        )
 
         if value and hasattr(value, "url"):
 
             template = self.template_with_initial
             if self.preview:
-                #substitutions['initial'] = (u'<a href="{0}" target="_blank"><img src="{0}" width="{1}"></a><br>'.format
+                # substitutions['initial'] = (u'<a href="{0}" target="_blank"><img src="{0}" width="{1}"></a><br>'.format
                 #    (escape(value.url), self.image_width))
-                substitutions['initial'] = (u'<div data-image_url="{0}"><img class="placeholder" src="{0}" width="{1}"></div>'.format
-                    (escape(value.url), self.image_width))
+                substitutions[
+                    "initial"
+                ] = u'<div data-image_url="{0}"><img class="placeholder" src="{0}" width="{1}"></div>'.format(
+                    escape(value.url), self.image_width
+                )
             else:
-                substitutions['initial'] = (u'<a href="{0}">{1}</a>'.format
-                    (escape(value.url),'...'+escape(force_unicode(value))[-self.url_length:]))
+                substitutions["initial"] = u'<a href="{0}">{1}</a>'.format(
+                    escape(value.url),
+                    "..." + escape(force_unicode(value))[-self.url_length :],
+                )
             if not self.is_required:
                 checkbox_name = self.clear_checkbox_name(name)
                 checkbox_id = self.clear_checkbox_id(checkbox_name)
-                substitutions['clear_checkbox_name'] = conditional_escape(checkbox_name)
-                substitutions['clear_checkbox_id'] = conditional_escape(checkbox_id)
-                substitutions['clear'] = CheckboxInput().render(checkbox_name, False, attrs={'id': checkbox_id})
-                substitutions['clear_template'] = self.template_with_clear % substitutions
-
+                substitutions["clear_checkbox_name"] = conditional_escape(checkbox_name)
+                substitutions["clear_checkbox_id"] = conditional_escape(checkbox_id)
+                substitutions["clear"] = CheckboxInput().render(
+                    checkbox_name, False, attrs={"id": checkbox_id}
+                )
+                substitutions["clear_template"] = (
+                    self.template_with_clear % substitutions
+                )
 
         return mark_safe(template % substitutions)
 
 
-
+@python_2_unicode_compatible
 class MarkdownTextField(TextField):
     """
     A TextField that automatically implements DB-cached Markdown translation.
@@ -110,27 +129,28 @@ class MarkdownTextField(TextField):
     database duplicate column error will be raised.
 
     """
-    def __init__ (self, *args, **kwargs):
-        self._markdown_safe = not kwargs.pop('allow_html', True)
-        self._html_field_suffix = kwargs.pop('html_field_suffix', '_html')
+
+    def __init__(self, *args, **kwargs):
+        self._markdown_safe = not kwargs.pop("allow_html", True)
+        self._html_field_suffix = kwargs.pop("html_field_suffix", "_html")
         super(MarkdownTextField, self).__init__(*args, **kwargs)
 
-    def contribute_to_class (self, cls, name):
+    def contribute_to_class(self, cls, name):
         self._html_field = "%s%s" % (name, self._html_field_suffix)
-        #TextField(blank=True, null=True, editable=False).contribute_to_class(cls, self._html_field)
+        # TextField(blank=True, null=True, editable=False).contribute_to_class(cls, self._html_field)
         super(MarkdownTextField, self).contribute_to_class(cls, name)
 
-    def pre_save (self, model_instance, add):
+    def pre_save(self, model_instance, add):
         try:
             value = getattr(model_instance, self.attname)
             html = markdown(value, safe_mode=self._markdown_safe)
             setattr(model_instance, self._html_field, html)
             return value
         except Exception as e:
-            #print e
+            # print e
             return ""
 
-    def __unicode__ (self):
+    def __str__(self):
         return self.attname
 
 
@@ -148,12 +168,14 @@ class ContentTypeRestrictedFileField(FileField):
             250MB - 214958080
             500MB - 429916160
     """
-    def __init__(self, content_types=None,max_upload_size=104857600, **kwargs):
-        self.content_types = kwargs.pop('video/avi', 'video/mp4', 'video/3gp', 'video/wmp', 'video/flv', 'video/mov')
+
+    def __init__(self, content_types=None, max_upload_size=104857600, **kwargs):
+        self.content_types = kwargs.pop(
+            "video/avi", "video/mp4", "video/3gp", "video/wmp", "video/flv", "video/mov"
+        )
         self.max_upload_size = max_upload_size
 
         super(ContentTypeRestrictedFileField, self).__init__(**kwargs)
-
 
     def clean(self, *args, **kwargs):
         data = super(ContentTypeRestrictedFileField, self).clean(*args, **kwargs)
@@ -163,9 +185,15 @@ class ContentTypeRestrictedFileField(FileField):
             content_type = file.content_type
             if content_type in self.content_types:
                 if file._size > self.max_upload_size:
-                    raise forms.ValidationError(_('Please keep filesize under %s. Current filesize %s') % (filesizeformat(self.max_upload_size), filesizeformat(file._size)))
+                    raise forms.ValidationError(
+                        _("Please keep filesize under %s. Current filesize %s")
+                        % (
+                            filesizeformat(self.max_upload_size),
+                            filesizeformat(file._size),
+                        )
+                    )
             else:
-                raise forms.ValidationError(_('Filetype not supported.'))
+                raise forms.ValidationError(_("Filetype not supported."))
         except AttributeError:
             pass
 

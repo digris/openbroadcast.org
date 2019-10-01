@@ -21,6 +21,7 @@ from django.db.models import Q
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
+from django.utils.encoding import python_2_unicode_compatible
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
 from l10n.models import Country
@@ -35,37 +36,45 @@ from ..util.storage import get_dir_for_object, OverwriteStorage
 
 logger = logging.getLogger(__name__)
 
-MUSICBRAINZ_HOST = getattr(settings, 'MUSICBRAINZ_HOST', 'musicbrainz.org')
+MUSICBRAINZ_HOST = getattr(settings, "MUSICBRAINZ_HOST", "musicbrainz.org")
 
-TEMP_DIR = getattr(settings, 'TEMP_DIR', None)
-LOOKUP_PROVIDERS = (
-    ('discogs', _('Discogs')),
-    ('musicbrainz', _('Musicbrainz')),
-)
+TEMP_DIR = getattr(settings, "TEMP_DIR", None)
+LOOKUP_PROVIDERS = (("discogs", _("Discogs")), ("musicbrainz", _("Musicbrainz")))
+
 
 class ReleaseManager(models.Manager):
-
     def active(self):
         now = datetime.now()
         return self.get_queryset().filter(
-                Q(publish_date__isnull=True) |
-                Q(publish_date__lte=now)
-                )
+            Q(publish_date__isnull=True) | Q(publish_date__lte=now)
+        )
 
 
 def upload_cover_to(instance, filename):
     filename, extension = os.path.splitext(filename)
-    return os.path.join(get_dir_for_object(instance), 'cover%s' % extension.lower())
+    return os.path.join(get_dir_for_object(instance), "cover%s" % extension.lower())
 
+
+@python_2_unicode_compatible
 class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     # core fields
     name = models.CharField(max_length=200, db_index=True)
-    slug = AutoSlugField(populate_from='name', editable=True, blank=True, overwrite=True)
-    license = models.ForeignKey(License, blank=True, null=True, related_name='release_license')
+    slug = AutoSlugField(
+        populate_from="name", editable=True, blank=True, overwrite=True
+    )
+    license = models.ForeignKey(
+        License, blank=True, null=True, related_name="release_license"
+    )
     release_country = models.ForeignKey(Country, blank=True, null=True)
 
-    main_image = models.ImageField(verbose_name=_('Cover'), upload_to=upload_cover_to, storage=OverwriteStorage(), null=True, blank=True)
+    main_image = models.ImageField(
+        verbose_name=_("Cover"),
+        upload_to=upload_cover_to,
+        storage=OverwriteStorage(),
+        null=True,
+        blank=True,
+    )
     catalognumber = models.CharField(max_length=50, blank=True, null=True)
 
     """
@@ -73,62 +82,116 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
     lik 2012-12 etc.
     """
     releasedate = models.DateField(blank=True, null=True)
-    releasedate_approx = ApproximateDateField(verbose_name="Releasedate", blank=True, null=True)
+    releasedate_approx = ApproximateDateField(
+        verbose_name="Releasedate", blank=True, null=True
+    )
     pressings = models.PositiveIntegerField(default=0)
     TOTALTRACKS_CHOICES = ((x, x) for x in range(1, 301))
-    totaltracks = models.IntegerField(verbose_name=_('Total Tracks'), blank=True, null=True, choices=TOTALTRACKS_CHOICES)
+    totaltracks = models.IntegerField(
+        verbose_name=_("Total Tracks"),
+        blank=True,
+        null=True,
+        choices=TOTALTRACKS_CHOICES,
+    )
     asin = models.CharField(max_length=150, blank=True)
     RELEASESTATUS_CHOICES = (
-        (None, _('Not set')),
-        ('official', _('Official')),
-        ('promo', _('Promo')),
-        ('bootleg', _('Bootleg')),
-        ('other', _('Other')),
+        (None, _("Not set")),
+        ("official", _("Official")),
+        ("promo", _("Promo")),
+        ("bootleg", _("Bootleg")),
+        ("other", _("Other")),
     )
 
-    releasestatus = models.CharField(max_length=60, blank=True, choices=RELEASESTATUS_CHOICES)
+    releasestatus = models.CharField(
+        max_length=60, blank=True, choices=RELEASESTATUS_CHOICES
+    )
     excerpt = models.TextField(blank=True, null=True)
     description = extra.MarkdownTextField(blank=True, null=True)
-    releasetype = models.CharField(verbose_name="Release type", max_length=24, blank=True, null=True, choices=alibrary_settings.RELEASETYPE_CHOICES)
-    label = models.ForeignKey('alibrary.Label', blank=True, null=True, related_name='release_label', on_delete=models.SET_NULL)
-    media = models.ManyToManyField('alibrary.Media', through='ReleaseMedia', blank=True, related_name="releases")
+    releasetype = models.CharField(
+        verbose_name="Release type",
+        max_length=24,
+        blank=True,
+        null=True,
+        choices=alibrary_settings.RELEASETYPE_CHOICES,
+    )
+    label = models.ForeignKey(
+        "alibrary.Label",
+        blank=True,
+        null=True,
+        related_name="release_label",
+        on_delete=models.SET_NULL,
+    )
+    media = models.ManyToManyField(
+        "alibrary.Media", through="ReleaseMedia", blank=True, related_name="releases"
+    )
 
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name="releases_owner", on_delete=models.SET_NULL)
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name="releases_creator", on_delete=models.SET_NULL)
-    last_editor = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name="releases_last_editor", on_delete=models.SET_NULL)
-    publisher = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name="releases_publisher", on_delete=models.SET_NULL)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        related_name="releases_owner",
+        on_delete=models.SET_NULL,
+    )
+    creator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        related_name="releases_creator",
+        on_delete=models.SET_NULL,
+    )
+    last_editor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        related_name="releases_last_editor",
+        on_delete=models.SET_NULL,
+    )
+    publisher = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        related_name="releases_publisher",
+        on_delete=models.SET_NULL,
+    )
 
     barcode = models.CharField(max_length=32, blank=True, null=True)
 
-    extra_artists = models.ManyToManyField('alibrary.Artist', through='ReleaseExtraartists', blank=True)
-    album_artists = models.ManyToManyField('alibrary.Artist', through='ReleaseAlbumartists', related_name="release_albumartists", blank=True)
+    extra_artists = models.ManyToManyField(
+        "alibrary.Artist", through="ReleaseExtraartists", blank=True
+    )
+    album_artists = models.ManyToManyField(
+        "alibrary.Artist",
+        through="ReleaseAlbumartists",
+        related_name="release_albumartists",
+        blank=True,
+    )
 
     relations = GenericRelation(Relation)
-    d_tags = tagging.fields.TagField(max_length=1024, verbose_name="Tags", blank=True, null=True)
+    d_tags = tagging.fields.TagField(
+        max_length=1024, verbose_name="Tags", blank=True, null=True
+    )
 
     objects = ReleaseManager()
 
     class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Release')
-        verbose_name_plural = _('Releases')
-        ordering = ('-created', )
+        app_label = "alibrary"
+        verbose_name = _("Release")
+        verbose_name_plural = _("Releases")
+        ordering = ("-created",)
 
         permissions = (
-            ('view_release', 'View Release'),
-            ('edit_release', 'Edit Release'),
-            ('merge_release', 'Merge Releases'),
-            ('admin_release', 'Edit Release (extended)'),
+            ("view_release", "View Release"),
+            ("edit_release", "Edit Release"),
+            ("merge_release", "Merge Releases"),
+            ("admin_release", "Edit Release (extended)"),
         )
 
-
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     @property
     def classname(self):
         return self.__class__.__name__
-
 
     @property
     def publish_date(self):
@@ -156,9 +219,13 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
             if self.releasedate > datetime.now().date():
                 return True
 
-        if License.objects.filter(
-                media_license__in=self.get_media(),
-                is_promotional=True).distinct().exists():
+        if (
+            License.objects.filter(
+                media_license__in=self.get_media(), is_promotional=True
+            )
+            .distinct()
+            .exists()
+        ):
             return True
 
         return False
@@ -167,12 +234,13 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
     def is_new(self):
         if self.is_promotional:
             return False
-        if self.releasedate and self.releasedate >= (datetime.now()-timedelta(days=72)).date():
+        if (
+            self.releasedate
+            and self.releasedate >= (datetime.now() - timedelta(days=72)).date()
+        ):
             return True
 
         return False
-
-
 
     def get_lookup_providers(self):
 
@@ -183,27 +251,23 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
             if relations.count() == 1:
                 relation = relations[0]
 
-            providers.append({'key': key, 'name': name, 'relation': relation})
+            providers.append({"key": key, "name": name, "relation": relation})
 
         return providers
 
-
     def get_ct(self):
-        return '{}.{}'.format(self._meta.app_label, self.__class__.__name__).lower()
+        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
 
     def get_absolute_url(self):
         try:
-            return reverse('alibrary-release-detail', kwargs={
-                'pk': self.pk,
-                'slug': self.slug,
-            })
+            return reverse(
+                "alibrary-release-detail", kwargs={"pk": self.pk, "slug": self.slug}
+            )
         except NoReverseMatch:
-            translation.activate('en')
-            return reverse('alibrary-release-detail', kwargs={
-                'pk': self.pk,
-                'slug': self.slug,
-            })
-
+            translation.activate("en")
+            return reverse(
+                "alibrary-release-detail", kwargs={"pk": self.pk, "slug": self.slug}
+            )
 
     def get_edit_url(self):
         return reverse("alibrary-release-edit", args=(self.pk,))
@@ -212,23 +276,37 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         return reverse("admin:alibrary_release_change", args=(self.pk,))
 
     def get_api_url(self):
-        return reverse('api_dispatch_detail', kwargs={
-            'api_name': 'v1',
-            'resource_name': 'library/release',
-            'pk': self.pk
-        }) + ''
+        return (
+            reverse(
+                "api_dispatch_detail",
+                kwargs={
+                    "api_name": "v1",
+                    "resource_name": "library/release",
+                    "pk": self.pk,
+                },
+            )
+            + ""
+        )
 
     def get_api_simple_url(self):
-        return reverse('api_dispatch_detail', kwargs={
-            'api_name': 'v1',
-            'resource_name': 'library/simplerelease',
-            'pk': self.pk
-        }) + ''
-
+        return (
+            reverse(
+                "api_dispatch_detail",
+                kwargs={
+                    "api_name": "v1",
+                    "resource_name": "library/simplerelease",
+                    "pk": self.pk,
+                },
+            )
+            + ""
+        )
 
     def get_media(self):
         from alibrary.models import Media
-        return Media.objects.filter(release=self).select_related('artist', 'preflight_check')
+
+        return Media.objects.filter(release=self).select_related(
+            "artist", "preflight_check"
+        )
 
     def get_products(self):
         return self.releaseproduct.all()
@@ -244,7 +322,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
 
             for m in media:
                 try:
-                    indicator[m.tracknumber -1 ] = 3
+                    indicator[m.tracknumber - 1] = 3
                 except Exception as e:
                     pass
 
@@ -254,12 +332,11 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
 
         return indicator
 
-
     def get_license(self):
 
         licenses = License.objects.filter(media_license__in=self.get_media()).distinct()
         if not licenses.exists():
-            return {'name': _(u'Not Defined')}
+            return {"name": _("Not Defined")}
 
         if licenses.count() > 1:
             license, created = License.objects.get_or_create(name="Multiple")
@@ -268,42 +345,45 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         if licenses.count() == 1:
             return licenses[0]
 
-
     """
     compose artist display as string
     """
+
     def get_artist_display(self):
 
-        artist_str = ''
+        artist_str = ""
         artists = self.get_artists()
         if len(artists) > 1:
             try:
                 for artist in artists:
-                    if artist['join_phrase']:
-                        artist_str += ' %s ' % artist['join_phrase']
-                    artist_str += artist['artist'].name
+                    if artist["join_phrase"]:
+                        artist_str += " %s " % artist["join_phrase"]
+                    artist_str += artist["artist"].name
             except:
-                artist_str = artists[0]['artist'].name
+                artist_str = artists[0]["artist"].name
         else:
             try:
-                artist_str = artists[0]['artist'].name
+                artist_str = artists[0]["artist"].name
             except:
                 try:
                     artist_str = artists[0].name
                 except:
-                    artist_str = _('Unknown Artist')
+                    artist_str = _("Unknown Artist")
 
         return artist_str
-
 
     def get_artists(self):
 
         artists = []
         if self.album_artists.count() > 0:
             for albumartist in self.release_albumartist_release.all():
-                artists.append({'artist': albumartist.artist, 'join_phrase': albumartist.join_phrase})
+                artists.append(
+                    {
+                        "artist": albumartist.artist,
+                        "join_phrase": albumartist.join_phrase,
+                    }
+                )
             return artists
-
 
         medias = self.get_media()
         for media in medias:
@@ -312,6 +392,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         artists = list(set(artists))
         if len(artists) > 1:
             from alibrary.models import Artist
+
             a, c = Artist.objects.get_or_create(name="Various Artists")
             artists = [a]
 
@@ -335,25 +416,23 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
     def get_downloads(self):
         return None
 
-
     def get_download_url(self, format, version):
 
-        return '%sdownload/%s/%s/' % (self.get_absolute_url(), format, version)
+        return "%sdownload/%s/%s/" % (self.get_absolute_url(), format, version)
 
     def get_cache_file_path(self, format, version):
 
         tmp_directory = TEMP_DIR
-        file_name = '%s_%s_%s.%s' % (format, version, str(self.uuid), 'zip')
-        tmp_path = '%s/%s' % (tmp_directory, file_name)
+        file_name = "%s_%s_%s.%s" % (format, version, str(self.uuid), "zip")
+        tmp_path = "%s/%s" % (tmp_directory, file_name)
 
         return tmp_path
-
 
     def clear_cache_file(self):
 
         tmp_directory = TEMP_DIR
-        pattern = '*%s.zip' % (str(self.uuid))
-        versions = glob.glob('%s/%s' % (tmp_directory, pattern))
+        pattern = "*%s.zip" % (str(self.uuid))
+        versions = glob.glob("%s/%s" % (tmp_directory, pattern))
 
         try:
             for version in versions:
@@ -367,7 +446,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         cache_file_path = self.get_cache_file_path(format, version)
 
         if os.path.isfile(cache_file_path):
-            logger.info('serving from cache: %s' % (cache_file_path))
+            logger.info("serving from cache: %s" % (cache_file_path))
             return cache_file_path
 
         else:
@@ -377,14 +456,13 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
 
         cache_file_path = self.get_cache_file_path(format, version)
 
-        logger.info('building cache for: %s' % (cache_file_path))
+        logger.info("building cache for: %s" % (cache_file_path))
 
         try:
             os.remove(cache_file_path)
 
         except Exception as e:
             pass
-
 
         archive_file = ZipFile(cache_file_path, "w")
 
@@ -395,37 +473,48 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
             media_cache_file = media.inject_metadata(format, version)
 
             # filename for the file archive
-            file_name = '%02d - %s - %s' % (media.tracknumber, media.artist.name, media.name)
-            file_name = '%s.%s' % (file_name.encode('ascii', 'ignore'), format)
+            file_name = "%02d - %s - %s" % (
+                media.tracknumber,
+                media.artist.name,
+                media.name,
+            )
+            file_name = "%s.%s" % (file_name.encode("ascii", "ignore"), format)
 
             archive_file.write(media_cache_file.path, file_name)
-
 
         return cache_file_path
 
     def get_extraimages(self):
         return None
 
-
     # OBSOLETE
     def complete_by_mb_id(self, mb_id):
 
         obj = self
 
-        log = logging.getLogger('alibrary.release.complete_by_mb_id')
-        log.info('complete release, r: %s | mb_id: %s' % (obj.name, mb_id))
+        log = logging.getLogger("alibrary.release.complete_by_mb_id")
+        log.info("complete release, r: %s | mb_id: %s" % (obj.name, mb_id))
 
-        inc = ('artists', 'url-rels', 'aliases', 'tags', 'recording-rels', 'work-rels', 'work-level-rels', 'artist-credits')
-        url = 'http://%s/ws/2/release/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, mb_id, "+".join(inc))
+        inc = (
+            "artists",
+            "url-rels",
+            "aliases",
+            "tags",
+            "recording-rels",
+            "work-rels",
+            "work-level-rels",
+            "artist-credits",
+        )
+        url = "http://%s/ws/2/release/%s/?fmt=json&inc=%s" % (
+            MUSICBRAINZ_HOST,
+            mb_id,
+            "+".join(inc),
+        )
 
         r = requests.get(url)
         result = r.json()
 
-
         return obj
-
-
-
 
     def save(self, *args, **kwargs):
 
@@ -443,22 +532,24 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
             if ad_d == 0:
                 ad_d = 1
 
-            rd = datetime.strptime('%s/%s/%s' % (ad_y, ad_m, ad_d), '%Y/%m/%d')
+            rd = datetime.strptime("%s/%s/%s" % (ad_y, ad_m, ad_d), "%Y/%m/%d")
             self.releasedate = rd
         except:
             self.releasedate = None
 
-        if hasattr(self, '_last_editor') and getattr(self, '_last_editor'):
-            last_editor = getattr(self, '_last_editor')
+        if hasattr(self, "_last_editor") and getattr(self, "_last_editor"):
+            last_editor = getattr(self, "_last_editor")
             self.last_editor = last_editor
         else:
             last_editor = None
 
-        logger.debug('saved release id: {} - user: {} - caller: {}'.format(self.pk, last_editor, inspect.stack()[1][3]))
+        logger.debug(
+            "saved release id: {} - user: {} - caller: {}".format(
+                self.pk, last_editor, inspect.stack()[1][3]
+            )
+        )
 
         super(Release, self).save(*args, **kwargs)
-
-
 
 
 @receiver(post_save, sender=Release)
@@ -487,51 +578,76 @@ except Exception as e:
 
 arating.enable_voting_on(Release)
 
+
 class ReleaseExtraartists(models.Model):
-    artist = models.ForeignKey('alibrary.Artist', related_name='release_extraartist_artist')
-    release = models.ForeignKey('Release', related_name='release_extraartist_release')
-    profession = models.ForeignKey(Profession, verbose_name='Role/Profession', related_name='release_extraartist_profession', blank=True, null=True)
+    artist = models.ForeignKey(
+        "alibrary.Artist", related_name="release_extraartist_artist"
+    )
+    release = models.ForeignKey("Release", related_name="release_extraartist_release")
+    profession = models.ForeignKey(
+        Profession,
+        verbose_name="Role/Profession",
+        related_name="release_extraartist_profession",
+        blank=True,
+        null=True,
+    )
+
     class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Role')
-        verbose_name_plural = _('Roles')
+        app_label = "alibrary"
+        verbose_name = _("Role")
+        verbose_name_plural = _("Roles")
 
+
+@python_2_unicode_compatible
 class ReleaseAlbumartists(models.Model):
-    artist = models.ForeignKey('alibrary.Artist', related_name='release_albumartist_artist')
-    release = models.ForeignKey('Release', related_name='release_albumartist_release')
+    artist = models.ForeignKey(
+        "alibrary.Artist", related_name="release_albumartist_artist"
+    )
+    release = models.ForeignKey("Release", related_name="release_albumartist_release")
 
-    join_phrase = models.CharField(verbose_name="join phrase", max_length=12, default=None, choices=alibrary_settings.ARTIST_JOIN_PHRASE_CHOICES, blank=True, null=True)
+    join_phrase = models.CharField(
+        verbose_name="join phrase",
+        max_length=12,
+        default=None,
+        choices=alibrary_settings.ARTIST_JOIN_PHRASE_CHOICES,
+        blank=True,
+        null=True,
+    )
     position = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Albumartist')
-        verbose_name_plural = _('Albumartists')
-        ordering = ('position', )
+        app_label = "alibrary"
+        verbose_name = _("Albumartist")
+        verbose_name_plural = _("Albumartists")
+        ordering = ("position",)
 
-    def __unicode__(self):
-        return '{0} - {1} {2}'.format(self.release, self.join_phrase, self.artist)
+    def __str__(self):
+        return "{0} - {1} {2}".format(self.release, self.join_phrase, self.artist)
+
 
 @receiver(post_delete, sender=ReleaseAlbumartists)
 def release_albumartists_post_delete(sender, instance, **kwargs):
     # clear caches
     from alibrary.models import Artist
+
     Artist.get_releases.invalidate(instance.artist)
     Artist.get_media.invalidate(instance.artist)
 
 
 class ReleaseRelations(models.Model):
-    relation = models.ForeignKey('Relation', related_name='release_relation_relation')
-    release = models.ForeignKey('Release', related_name='release_relation_release')
+    relation = models.ForeignKey("Relation", related_name="release_relation_relation")
+    release = models.ForeignKey("Release", related_name="release_relation_release")
+
     class Meta:
-        app_label = 'alibrary'
-        verbose_name = _('Relation')
-        verbose_name_plural = _('Relations')
+        app_label = "alibrary"
+        verbose_name = _("Relation")
+        verbose_name_plural = _("Relations")
 
 
 class ReleaseMedia(models.Model):
-    release = models.ForeignKey('Release')
-    media = models.ForeignKey('alibrary.Media')
+    release = models.ForeignKey("Release")
+    media = models.ForeignKey("alibrary.Media")
     position = models.PositiveIntegerField(null=True, blank=True)
+
     class Meta:
-        app_label = 'alibrary'
+        app_label = "alibrary"

@@ -1,25 +1,29 @@
-import datetime
 import hmac
 import time
+
 from django.conf import settings
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from tastypie.utils import now
 
 try:
     from hashlib import sha1
 except ImportError:
     import sha
+
     sha1 = sha.sha
 
 
+@python_2_unicode_compatible
 class ApiAccess(models.Model):
     """A simple model for use with the ``CacheDBThrottle`` behaviors."""
+
     identifier = models.CharField(max_length=255)
-    url = models.CharField(max_length=255, blank=True, default='')
-    request_method = models.CharField(max_length=10, blank=True, default='')
+    url = models.CharField(max_length=255, blank=True, default="")
+    request_method = models.CharField(max_length=10, blank=True, default="")
     accessed = models.PositiveIntegerField()
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s @ %s" % (self.identifier, self.accessed)
 
     def save(self, *args, **kwargs):
@@ -27,16 +31,17 @@ class ApiAccess(models.Model):
         return super(ApiAccess, self).save(*args, **kwargs)
 
 
-if 'django.contrib.auth' in settings.INSTALLED_APPS:
+if "django.contrib.auth" in settings.INSTALLED_APPS:
     import uuid
     from django.conf import settings
 
+    @python_2_unicode_compatible
     class ApiKey(models.Model):
-        user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='api_key')
-        key = models.CharField(max_length=256, blank=True, default='')
+        user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="api_key")
+        key = models.CharField(max_length=256, blank=True, default="")
         created = models.DateTimeField(default=now)
 
-        def __unicode__(self):
+        def __str__(self):
             return u"%s for %s" % (self.key, self.user)
 
         def save(self, *args, **kwargs):
@@ -51,10 +56,9 @@ if 'django.contrib.auth' in settings.INSTALLED_APPS:
             # Hmac that beast.
             return hmac.new(str(new_uuid), digestmod=sha1).hexdigest()
 
-
     def create_api_key(sender, **kwargs):
         """
         A signal for hooking up automatic ``ApiKey`` creation.
         """
-        if kwargs.get('created') is True:
-            ApiKey.objects.create(user=kwargs.get('instance'))
+        if kwargs.get("created") is True:
+            ApiKey.objects.create(user=kwargs.get("instance"))
