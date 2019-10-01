@@ -9,6 +9,7 @@
 
 from django.db import models
 
+
 class Artists(models.Model):
     id = models.IntegerField(primary_key=True)
     tagquality = models.IntegerField()
@@ -50,9 +51,11 @@ class Artists(models.Model):
     migrated = models.DateTimeField(null=True, blank=True)
     total_downloads = models.IntegerField()
     total_plays = models.IntegerField()
+
     class Meta:
-        db_table = u'artists'
+        db_table = u"artists"
         managed = False
+
 
 class Labels(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -88,10 +91,10 @@ class Labels(models.Model):
     lastfm_url = models.CharField(max_length=750, blank=True)
     lastfm_status = models.IntegerField()
     wikipedia_url = models.CharField(max_length=750, blank=True)
-    
+
     facebook_url = models.CharField(max_length=750, blank=True)
     soundcloud_url = models.CharField(max_length=750, blank=True)
-    
+
     various_links = models.TextField(blank=True)
     website = models.CharField(max_length=750, blank=True)
     parent_labelid = models.IntegerField(null=True, blank=True)
@@ -99,8 +102,9 @@ class Labels(models.Model):
     lock = models.IntegerField()
     autopublish = models.IntegerField()
     migrated = models.DateTimeField(null=True, blank=True)
+
     class Meta:
-        db_table = u'labels'
+        db_table = u"labels"
         managed = False
 
 
@@ -112,8 +116,9 @@ class Licenses(models.Model):
     version = models.IntegerField()
     restricted = models.IntegerField()
     lock = models.IntegerField()
+
     class Meta:
-        db_table = u'licenses'
+        db_table = u"licenses"
         managed = False
 
 
@@ -139,7 +144,9 @@ class Medias(models.Model):
     bitrate_mode = models.CharField(max_length=36, blank=True)
     lossless = models.IntegerField(null=True, blank=True)
     encoder_options = models.CharField(max_length=36, blank=True)
-    compression_ratio = models.DecimalField(null=True, max_digits=14, decimal_places=4, blank=True)
+    compression_ratio = models.DecimalField(
+        null=True, max_digits=14, decimal_places=4, blank=True
+    )
     encoding = models.CharField(max_length=36, blank=True)
     path = models.CharField(max_length=512, blank=True)
     parentdirectory = models.CharField(max_length=512, blank=True)
@@ -176,19 +183,19 @@ class Medias(models.Model):
     mb_releaseid = models.CharField(max_length=108, blank=True)
     mb_artistid = models.CharField(max_length=108, blank=True)
     mb_releaseartistid = models.CharField(max_length=108, blank=True)
-    
+
     wikipedia_url = models.CharField(max_length=750, blank=True)
     soundcloud_url = models.CharField(max_length=750, blank=True)
     youtube_url = models.CharField(max_length=750, blank=True)
-    
+
     musicip_puid = models.CharField(max_length=108, blank=True)
     ofa_fingerprint = models.CharField(max_length=512, blank=True)
     musicmagic_data = models.TextField(blank=True)
     musicmagic_fingerprint = models.TextField(blank=True)
-    
+
     lyricsfly_mediaid = models.CharField(max_length=150, blank=True)
     lyricsfly_status = models.IntegerField()
-    
+
     chartlyrics_status = models.IntegerField()
     tagquality = models.IntegerField(null=True, blank=True)
     orig_title = models.CharField(max_length=750, blank=True)
@@ -216,8 +223,9 @@ class Medias(models.Model):
     migrated = models.DateTimeField(null=True, blank=True)
     total_downloads = models.IntegerField()
     total_plays = models.IntegerField()
+
     class Meta:
-        db_table = u'medias'
+        db_table = u"medias"
         managed = False
 
 
@@ -233,8 +241,9 @@ class Ntags(models.Model):
     artist_count = models.IntegerField()
     transmission_count = models.IntegerField()
     playlist_count = models.IntegerField()
+
     class Meta:
-        db_table = u'ntags'
+        db_table = u"ntags"
         managed = False
 
 
@@ -268,8 +277,9 @@ class Playlists(models.Model):
     subtype = models.CharField(max_length=30)
     lock = models.IntegerField()
     legacy_id = models.IntegerField()
+
     class Meta:
-        db_table = u'playlists'
+        db_table = u"playlists"
         managed = False
 
 
@@ -334,8 +344,9 @@ class Releases(models.Model):
     total_downloads = models.IntegerField(blank=True)
     total_plays = models.IntegerField(blank=True)
     status_viral = models.IntegerField(blank=True)
+
     class Meta:
-        db_table = u'releases'
+        db_table = u"releases"
         managed = False
 
 
@@ -353,8 +364,9 @@ class Users(models.Model):
     logins = models.IntegerField()
     last_login = models.IntegerField(null=True, blank=True)
     client_ip = models.CharField(max_length=45, blank=True)
+
     class Meta:
-        db_table = u'users'
+        db_table = u"users"
         managed = False
 
 
@@ -363,8 +375,9 @@ class ArtistsMedias(models.Model):
     media = models.ForeignKey(Medias)
     artist = models.ForeignKey(Artists)
     created = models.DateTimeField(null=True, blank=True)
+
     class Meta:
-        db_table = u'artists_medias'
+        db_table = u"artists_medias"
         managed = False
 
 
@@ -373,8 +386,9 @@ class ArtistsReleases(models.Model):
     release = models.ForeignKey(Releases)
     artist = models.ForeignKey(Artists)
     created = models.DateTimeField(null=True, blank=True)
+
     class Meta:
-        db_table = u'artists_releases'
+        db_table = u"artists_releases"
         managed = False
 
 
@@ -383,8 +397,9 @@ class NtagsArtists(models.Model):
     ntag_id = models.IntegerField()
     artist_id = models.IntegerField()
     created = models.DateTimeField()
+
     class Meta:
-        db_table = u'ntags_artists'
+        db_table = u"ntags_artists"
         managed = False
 
 
@@ -393,8 +408,9 @@ class NtagsLabels(models.Model):
     ntag_id = models.IntegerField()
     label_id = models.IntegerField()
     created = models.DateTimeField()
+
     class Meta:
-        db_table = u'ntags_labels'
+        db_table = u"ntags_labels"
         managed = False
 
 
@@ -403,8 +419,9 @@ class NtagsMedias(models.Model):
     ntag_id = models.IntegerField()
     media_id = models.IntegerField()
     created = models.DateTimeField()
+
     class Meta:
-        db_table = u'ntags_medias'
+        db_table = u"ntags_medias"
         managed = False
 
 
@@ -413,8 +430,9 @@ class NtagsPlaylists(models.Model):
     ntag_id = models.IntegerField()
     playlist_id = models.IntegerField()
     created = models.DateTimeField()
+
     class Meta:
-        db_table = u'ntags_playlists'
+        db_table = u"ntags_playlists"
         managed = False
 
 
@@ -423,8 +441,9 @@ class NtagsReleases(models.Model):
     ntag_id = models.IntegerField()
     release_id = models.IntegerField()
     created = models.DateTimeField()
+
     class Meta:
-        db_table = u'ntags_releases'
+        db_table = u"ntags_releases"
         managed = False
 
 
@@ -433,8 +452,9 @@ class NtagsTransmissions(models.Model):
     ntag_id = models.IntegerField()
     transmission_id = models.IntegerField()
     created = models.DateTimeField()
+
     class Meta:
-        db_table = u'ntags_transmissions'
+        db_table = u"ntags_transmissions"
         managed = False
 
 
@@ -449,8 +469,9 @@ class MediasPlaylists(models.Model):
     fade_cross = models.IntegerField()
     cue_in = models.IntegerField()
     cue_out = models.IntegerField()
+
     class Meta:
-        db_table = u'medias_playlists'
+        db_table = u"medias_playlists"
         managed = False
 
 
@@ -459,8 +480,9 @@ class MediasReleases(models.Model):
     media = models.ForeignKey(Medias)
     release = models.ForeignKey(Releases)
     created = models.DateTimeField(null=True, blank=True)
+
     class Meta:
-        db_table = u'medias_releases'
+        db_table = u"medias_releases"
         managed = False
 
 
@@ -469,6 +491,7 @@ class LabelsReleases(models.Model):
     label = models.ForeignKey(Labels)
     release = models.ForeignKey(Releases)
     created = models.DateTimeField(null=True, blank=True)
+
     class Meta:
-        db_table = u'labels_releases'
+        db_table = u"labels_releases"
         managed = False

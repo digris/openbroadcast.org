@@ -66,8 +66,6 @@ class ReleaseMigrator(Migrator):
             obj.created = legacy_obj.created
             obj.updated = legacy_obj.updated
 
-            print '*****************************'
-
             if legacy_obj.catalognumber:
                 log.debug('catalognumber: %s' % legacy_obj.catalognumber)
                 obj.catalognumber = legacy_obj.catalognumber

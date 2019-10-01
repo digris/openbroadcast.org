@@ -17,8 +17,8 @@ class LegacyBackend(object):
 
     def authenticate(self, username=None, password=None):
 
-        log = logging.getLogger('%s.%s' % (__name__, 'authenticate'))
-        log.info('legacy login: %s | %s' % (username, '*******************'))
+        log = logging.getLogger("%s.%s" % (__name__, "authenticate"))
+        log.info("legacy login: %s | %s" % (username, "*******************"))
 
         return self.legacy_auth(username, password)
 
@@ -28,23 +28,23 @@ class LegacyBackend(object):
         except get_user_model().DoesNotExist:
             return None
 
-
     def legacy_auth(self, username=None, password=None):
 
-        log = logging.getLogger('%s.%s' % (__name__, 'legacy_auth'))
+        log = logging.getLogger("%s.%s" % (__name__, "legacy_auth"))
 
         user = None
         try:
-            lu = LegacyUser.objects.using('legacy_legacy').get(username=username,
-                                                               password=md5.new(password).hexdigest())
+            lu = LegacyUser.objects.using("legacy_legacy").get(
+                username=username, password=md5.new(password).hexdigest()
+            )
 
         except LegacyUser.DoesNotExist:
             lu = None
 
         if lu:
-            log.info('username : %s' % (lu.username))
-            log.info('email    : %s' % (lu.email))
-            log.info('pw md5   : %s' % (lu.password))
+            log.info("username : %s" % (lu.username))
+            log.info("email    : %s" % (lu.email))
+            log.info("pw md5   : %s" % (lu.password))
 
             try:
                 user = get_user_model().objects.get(username=username)
