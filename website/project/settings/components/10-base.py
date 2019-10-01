@@ -10,7 +10,6 @@ TEMP_DIR = os.path.join(BASE_DIR, 'temp')
 # subdirectory for apps
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 sys.path.insert(0, os.path.join(BASE_DIR, 'tools'))
-sys.path.insert(0, os.path.join(BASE_DIR, 'cmsplugins'))
 sys.path.insert(0, os.path.join(BASE_DIR, 'legacy'))
 
 DEBUG = False
