@@ -737,14 +737,10 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         if self.status == 0:
             self.status = 2
 
-        duration = 0
         try:
-            duration = self.get_duration()
-
+            self.duration = self.get_duration()
         except Exception as e:
-            pass
-
-        self.duration = duration
+            self.duration = 0
 
         # TODO: maybe move
         self.broadcast_status, self.broadcast_status_messages = self.self_check()
@@ -752,6 +748,9 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
             self.status = 1  # 'ready'
         else:
             self.status = 99  # 'error'
+
+        # handle series numbering
+
 
         super(Playlist, self).save(*args, **kwargs)
 

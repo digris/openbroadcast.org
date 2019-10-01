@@ -32,7 +32,7 @@
             style() {
                 const color = backgroundColors[this.emission.obj.color];
                 return {
-                    backgroundColor: hexToRGBA(color, .2),
+                    backgroundColor: hexToRGBA(color, .50),
                     borderColor: hexToRGBA(color, 1),
                 }
             },
@@ -52,7 +52,8 @@
             position: relative;
             display: flex;
             flex-direction: column;
-            border-left: 2px solid #fff;
+            border-top: 2px solid #fff;
+            border-bottom: 1px solid #fff;
 
             &:hover {
                 background: rgba(126, 235, 157, 0.85);
@@ -76,6 +77,7 @@
 
             &.is-highlighted {
                 background: rgba(235, 193, 64, 0.85) !important;
+                border-color: rgba(235, 193, 64, 0.85) !important;
             }
 
             &.is-dragged {
@@ -86,10 +88,19 @@
             &__details {
                 background: #000;
                 position: absolute;
-                top: 0;
+                top: -2px;
                 left: calc(100% + 4px);
                 color: white;
                 min-width: 140px;
+                padding: 2px 4px 2px;
+
+                &__visual {
+                    max-width: 120px;
+                    img {
+                        max-width: 70px;
+                        // object-fit: fill;
+                    }
+                }
             }
         }
 </style>
@@ -124,7 +135,14 @@
         -->
         <div v-if="detailsVisible"
             class="emission__details">
-            {{ emission.obj.co.name }}
+            {{ emission.obj.co.name }}<br>
+            <div
+                v-if="emission.obj.image"
+                class="emission__details__visual">
+                <img :src="emission.obj.image">
+            </div>
+            {{ emission.obj.timeStart }}<br>
+            {{ emission.obj.timeEnd }}
         </div>
 
     </div>

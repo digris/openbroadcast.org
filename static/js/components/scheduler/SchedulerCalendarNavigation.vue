@@ -140,12 +140,6 @@
                 Reset
             </span>
             <span
-                :class="{ 'is-current': snapMinutes === 5 }"
-                class="action"
-                @click.prevent="$emit('setSnapMinutes', 5)">
-                5
-            </span>
-            <span
                 :class="{ 'is-current': snapMinutes === 15 }"
                 class="action"
                 @click.prevent="$emit('setSnapMinutes', 15)">

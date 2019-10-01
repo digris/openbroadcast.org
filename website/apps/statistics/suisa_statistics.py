@@ -33,8 +33,6 @@ def monthly_for_channel_as_xls(channel, year, month, output=None):
         datetime.time.max
     )
 
-    print('start:', start, 'end:', end)
-
     statistics_as_csv(
         channel=channel,
         start=start,
@@ -43,5 +41,3 @@ def monthly_for_channel_as_xls(channel, year, month, output=None):
     )
 
     return output
-
-

@@ -102,6 +102,7 @@
             border-bottom: 1px solid $border-color;
             &:nth-child(even) {
                 border-bottom-style: dotted;
+                border-bottom-color: rgba($border-color, .4);
             }
         }
         &__dayparts {
@@ -165,14 +166,14 @@
                 &.is-today {
 
                     border-top: 1px solid $border-color;
-                    background: rgba(3, 201, 84, 0.12);
+                    b// ackground: rgba(3, 201, 84, 0.12);
 
                     .day-header {
                         // font-weight: 400;
                     }
 
                     .day-column {
-                        background: rgba(3, 201, 84, 0.12);
+                        // background: rgba(3, 201, 84, 0.12);
                     }
                 }
             }
