@@ -49,13 +49,13 @@ class ASFTags(list, DictMixin, Metadata):
 
         """
         values = [value for (k, value) in self if k == key]
-        if not values: raise KeyError, key
+        if not values: raise KeyError(key)
         else: return values
 
     def __delitem__(self, key):
         """Delete all values associated with the key."""
         to_delete = filter(lambda x: x[0] == key, self)
-        if not to_delete: raise KeyError, key
+        if not to_delete: raise KeyError(key)
         else: map(self.remove, to_delete)
 
     def __contains__(self, key):
@@ -654,7 +654,7 @@ class ASF(FileType):
     def __read_file(self, fileobj):
         header = fileobj.read(30)
         if len(header) != 30 or header[:16] != HeaderObject.GUID:
-            raise ASFHeaderError, "Not an ASF file."
+            raise ASFHeaderError("Not an ASF file.")
 
         self.extended_content_description_obj = None
         self.content_description_obj = None

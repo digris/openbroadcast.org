@@ -5,7 +5,7 @@ from importlib import import_module
 
 def get_performance_func(settings):
     performance_func = getattr(settings, 'INVITATION_PERFORMANCE_FUNC', None)
-    if isinstance(performance_func, (str, unicode)):
+    if isinstance(performance_func, str):
         module_name, func_name = performance_func.rsplit('.', 1)
         try:
             performance_func = getattr(import_module(module_name), func_name)

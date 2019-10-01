@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import unicode_literals, absolute_import
 
 import logging
 
-from django.db.models.signals import post_save, pre_save
 from django.dispatch.dispatcher import receiver
 
 from importer.signals import importitem_created
-from models import Collection
+from .models import Collection
 from .util import add_to_collection
 
 log = logging.getLogger(__name__)

@@ -6,8 +6,13 @@ from textwrap import TextWrapper
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
-from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext, ugettext_lazy as _
+
+try:
+    from django.utils.encoding import force_unicode
+except ImportError:
+    def force_unicode(val):
+        return val
 
 # make use of a favourite notifier app such as django-notification
 # but if not installed or not desired, fallback will be to do basic emailing

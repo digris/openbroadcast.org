@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import os
 import time
 import hashlib
@@ -14,7 +15,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from celery.task import task
-from util.process import Process
+from .util.process import Process
 
 from base.mixins import TimestampedModelMixin, UUIDModelMixin
 

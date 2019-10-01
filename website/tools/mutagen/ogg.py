@@ -456,7 +456,7 @@ class OggFileType(FileType):
                     denom = self.info.fps
                 self.info.length = samples / float(denom)
 
-            except error, e:
+            except error as e:
                 raise self._Error, e, sys.exc_info()[2]
             except EOFError:
                 raise self._Error, "no appropriate stream found"
@@ -475,7 +475,7 @@ class OggFileType(FileType):
         fileobj = open(filename, "rb+")
         try:
             try: self.tags._inject(fileobj)
-            except error, e:
+            except error as e:
                 raise self._Error, e, sys.exc_info()[2]
             except EOFError:
                 raise self._Error, "no appropriate stream found"
@@ -492,7 +492,7 @@ class OggFileType(FileType):
         fileobj = open(filename, "rb+")
         try:
             try: self.tags._inject(fileobj)
-            except error, e:
+            except error as e:
                 raise self._Error, e, sys.exc_info()[2]
             except EOFError:
                 raise self._Error, "no appropriate stream found"

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import unicode_literals, absolute_import
 
 from django.conf.urls import include, url
-from views import WaveformView, FormatView
+from .views import WaveformView, FormatView
 
 urlpatterns = [
     url(r'^waveform/(?P<type>[-\w]+)/(?P<media_uuid>[-\w]+).png$', WaveformView.as_view(), name='mediaasset-waveform'),

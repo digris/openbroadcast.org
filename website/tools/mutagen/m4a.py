@@ -50,7 +50,7 @@ __all__ = ['M4A', 'Open', 'delete', 'M4ACover']
 
 class M4ACover(str):
     """A cover artwork.
-    
+
     Attributes:
     imageformat -- format of the image (either FORMAT_JPEG or FORMAT_PNG)
     """
@@ -119,7 +119,7 @@ class Atom(object):
             if child.name == remaining[0]:
                 return child[remaining[1:]]
         else:
-            raise KeyError, "%r not found" % remaining[0]
+            raise KeyError("%r not found" % remaining[0])
 
     def __repr__(self):
         klass = self.__class__.__name__
@@ -172,7 +172,7 @@ class Atoms(object):
             if child.name == names[0]:
                 return child[names[1:]]
         else:
-            raise KeyError, "%s not found" % names[0]
+            raise KeyError("%s not found" % names[0])
 
     def __repr__(self):
         return "\n".join([repr(child) for child in self.atoms])
@@ -202,7 +202,7 @@ class M4ATags(DictProxy, Metadata):
 
     def load(self, atoms, fileobj):
         try: ilst = atoms["moov.udta.meta.ilst"]
-        except KeyError, key:
+        except KeyError as key:
             raise M4AMetadataError(key)
         for atom in ilst.children:
             fileobj.seek(atom.offset + 8)
@@ -477,12 +477,12 @@ class M4A(FileType):
         try:
             atoms = Atoms(fileobj)
             try: self.info = M4AInfo(atoms, fileobj)
-            except StandardError, err:
+            except StandardError as err:
                 raise M4AStreamInfoError, err, sys.exc_info()[2]
             try: self.tags = M4ATags(atoms, fileobj)
             except M4AMetadataError:
                 self.tags = None
-            except StandardError, err:
+            except StandardError as err:
                 raise M4AMetadataError, err, sys.exc_info()[2]
         finally:
             fileobj.close()

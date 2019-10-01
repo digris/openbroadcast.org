@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import unicode_literals, absolute_import
 from django.conf.urls import include, url
 
 from django.conf import settings
 from dajaxice.core import dajaxice_autodiscover, dajaxice_config
-from urls_api import api
 from django.contrib import admin
 from cms.sitemaps import CMSSitemap
 from django.contrib.sitemaps.views import sitemap
 from alibrary.sitemap import ReleaseSitemap
+
+from .urls_api import api
 
 from loginas.views import user_login as loginas_user
 

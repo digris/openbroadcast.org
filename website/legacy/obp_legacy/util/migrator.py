@@ -94,13 +94,13 @@ class ReleaseMigrator(Migrator):
                 if len(legacy_obj.releasecountry) == 2:
                     try:
                         releasecountry = Country.objects.get(iso2_code=legacy_obj.releasecountry)
-                    except Exception, e:
+                    except Exception as e:
                         pass
 
                 else:
                     try:
                         releasecountry = Country.objects.get(printable_name=legacy_obj.releasecountry)
-                    except Exception, e:
+                    except Exception as e:
                         pass
 
                 if releasecountry:
@@ -125,7 +125,7 @@ class ReleaseMigrator(Migrator):
 
                         valid_date = time.strptime('%s' % date, '%Y-%m-%d')
                         obj.releasedate_approx = '%s' % date
-                    except Exception, e:
+                    except Exception as e:
                         print 'Invalid date!'
                         print e
 
@@ -178,7 +178,7 @@ class ReleaseMigrator(Migrator):
                             log.debug('url (from various): %s' % rel.url)
                             rel.save()
 
-                    except ValidationError, e:
+                    except ValidationError as e:
                         print e
 
             """
@@ -213,7 +213,7 @@ class ReleaseMigrator(Migrator):
                     t = Ntags.objects.using('legacy').get(id=nt.ntag_id)
                     log.debug('tag for object: %s' % t.name)
                     Tag.objects.add_tag(obj, u'"%s"' % t.name[:30])
-                except Exception, e:
+                except Exception as e:
                     print e
 
             """
@@ -228,7 +228,7 @@ class ReleaseMigrator(Migrator):
                 else:
                     log.debug('image does not exist at: %s' % img_path)
 
-            except Exception, e:
+            except Exception as e:
                 log.warning('unable to get image: %s - %s' % (img_path, e))
 
             obj.save()
@@ -338,7 +338,7 @@ class MediaMigrator(Migrator):
                     t = Ntags.objects.using('legacy').get(id=nt.ntag_id)
                     log.debug('tag for object: %s' % t.name)
                     Tag.objects.add_tag(obj, u'"%s"' % t.name[:30])
-                except Exception, e:
+                except Exception as e:
                     print e
 
 
@@ -354,7 +354,7 @@ class MediaMigrator(Migrator):
                 try:
                     license_id = MediasReleases.objects.using('legacy').filter(media=legacy_obj)[0].release.license_id
                     log.debug('got license from release - license id: %s' % license_id)
-                except Exception, e:
+                except Exception as e:
                     log.warning('unable to find license: %s' % e)
 
             if license_id:
@@ -424,7 +424,7 @@ class MediaMigrator(Migrator):
 
             try:
                 pass
-            except Exception, e:
+            except Exception as e:
                 print e
 
 
@@ -482,13 +482,13 @@ class ArtistMigrator(Migrator):
                 if len(legacy_obj.country) == 2:
                     try:
                         country = Country.objects.get(iso2_code=legacy_obj.country)
-                    except Exception, e:
+                    except Exception as e:
                         pass
 
                 else:
                     try:
                         country = Country.objects.get(printable_name=legacy_obj.country)
-                    except Exception, e:
+                    except Exception as e:
                         pass
 
                 if country:
@@ -563,7 +563,7 @@ class ArtistMigrator(Migrator):
                             log.debug('url (from various): %s' % rel.url)
                             rel.save()
 
-                    except ValidationError, e:
+                    except ValidationError as e:
                         print e
 
             """
@@ -588,7 +588,7 @@ class ArtistMigrator(Migrator):
                     t = Ntags.objects.using('legacy').get(id=nt.ntag_id)
                     log.debug('tag for object: %s' % t.name)
                     Tag.objects.add_tag(obj, u'"%s"' % t.name[:30])
-                except Exception, e:
+                except Exception as e:
                     print e
 
             """
@@ -603,7 +603,7 @@ class ArtistMigrator(Migrator):
                 else:
                     log.debug('image does not exist at: %s' % img_path)
 
-            except Exception, e:
+            except Exception as e:
                 log.warning('unable to get image: %s - %s' % (img_path, e))
 
             obj.save()
@@ -672,13 +672,13 @@ class LabelMigrator(Migrator):
                 if len(legacy_obj.country) == 2:
                     try:
                         country = Country.objects.get(iso2_code=legacy_obj.country)
-                    except Exception, e:
+                    except Exception as e:
                         pass
 
                 else:
                     try:
                         country = Country.objects.get(printable_name=legacy_obj.country)
-                    except Exception, e:
+                    except Exception as e:
                         pass
 
                 if country:
@@ -741,7 +741,7 @@ class LabelMigrator(Migrator):
                             log.debug('url (from various): %s' % rel.url)
                             rel.save()
 
-                    except ValidationError, e:
+                    except ValidationError as e:
                         print e
 
             """
@@ -766,7 +766,7 @@ class LabelMigrator(Migrator):
                     t = Ntags.objects.using('legacy').get(id=nt.ntag_id)
                     log.debug('tag for object: %s' % t.name)
                     Tag.objects.add_tag(obj, u'"%s"' % t.name[:30])
-                except Exception, e:
+                except Exception as e:
                     print e
 
             """
@@ -781,7 +781,7 @@ class LabelMigrator(Migrator):
                 else:
                     log.debug('image does not exist at: %s' % img_path)
 
-            except Exception, e:
+            except Exception as e:
                 log.warning('unable to get image: %s - %s' % (img_path, e))
 
             obj.save()
@@ -955,7 +955,7 @@ class LegacyUserMigrator(Migrator):
                         else:
                             log.debug('image does not exist at: %s' % img_path)
 
-                    except Exception, e:
+                    except Exception as e:
                         log.warning('unable to get image: %s - %s' % (img_path, e))
 
 
@@ -987,7 +987,7 @@ class LegacyUserMigrator(Migrator):
                 #communities = Community.objects.filter(name__in=[name for name in groups.all()])
                 #for community in communities:
                 #    community.members.add(user)
-            except Exception, e:
+            except Exception as e:
                 print e
                 pass
 
@@ -1022,7 +1022,7 @@ class LegacyUserMigrator(Migrator):
                         if len(tag) > 2:
                             try:
                                 Tag.objects.add_tag(obj, u'"%s"' % tag[:30])
-                            except Exception, e:
+                            except Exception as e:
                                 print e
 
                 if item.name == 'formats':
@@ -1033,7 +1033,7 @@ class LegacyUserMigrator(Migrator):
                         if len(tag) > 2:
                             try:
                                 Tag.objects.add_tag(obj, u'"%s"' % tag[:30])
-                            except Exception, e:
+                            except Exception as e:
                                 print e
 
                 """
@@ -1082,13 +1082,13 @@ class LegacyUserMigrator(Migrator):
                     if len(item.value) == 2:
                         try:
                             country = Country.objects.get(iso2_code=item.value)
-                        except Exception, e:
+                        except Exception as e:
                             pass
 
                     else:
                         try:
                             country = Country.objects.get(printable_name=item.value)
-                        except Exception, e:
+                        except Exception as e:
                             pass
 
                     if country:
@@ -1122,7 +1122,7 @@ class LegacyUserMigrator(Migrator):
                     try:
                         valid_date = time.strptime('%s' % item.value, '%Y-%m-%d')
                         obj.birth_date = item.value
-                    except Exception, e:
+                    except Exception as e:
                         print e
 
 
@@ -1212,7 +1212,7 @@ class CommunityMigrator(Migrator):
                 img_url = 'https://www.openbroadcast.org/_icon/user/%s/h/300/w/300/302' % icon
                 log.debug('download image: %s' % img_url)
             #obj.image = img
-        except Exception, e:
+        except Exception as e:
             print e
             pass
 
@@ -1242,7 +1242,7 @@ class CommunityMigrator(Migrator):
                     if len(tag) > 2:
                         try:
                             Tag.objects.add_tag(obj, u'"%s"' % tag[:30])
-                        except Exception, e:
+                        except Exception as e:
                             print e
 
 
@@ -1274,13 +1274,13 @@ class CommunityMigrator(Migrator):
                 if len(item.value) == 2:
                     try:
                         country = Country.objects.get(iso2_code=item.value)
-                    except Exception, e:
+                    except Exception as e:
                         pass
 
                 else:
                     try:
                         country = Country.objects.get(printable_name=item.value)
-                    except Exception, e:
+                    except Exception as e:
                         pass
 
                 if country:
@@ -1377,7 +1377,7 @@ class PlaylistMigrator(Migrator):
                 try:
                     log.debug('tag for object: %s' % nt.tag)
                     Tag.objects.add_tag(obj, u'"%s"' % nt.tag[:30])
-                except Exception, e:
+                except Exception as e:
                     print e
 
             if legacy_obj.intro:
@@ -1404,7 +1404,7 @@ class PlaylistMigrator(Migrator):
                 item, s = get_user_by_legacy_object(legacy_user)
                 if item:
                     obj.user = item
-            except Exception, e:
+            except Exception as e:
                 print e
                 pass
 
@@ -1461,7 +1461,7 @@ class PlaylistMigrator(Migrator):
                         daypart_ids.append(dp_pk)
 
                     obj.dayparts = Daypart.objects.filter(pk__in=daypart_ids)
-                except Exception, e:
+                except Exception as e:
                     print 'unable to sassign daypart: %s' % e
 
 

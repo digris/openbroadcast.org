@@ -5,6 +5,7 @@ from collections import OrderedDict
 from django.views.generic import ListView
 from django.db.models import Case, When
 from django.http import HttpResponseBadRequest
+from django.core.exceptions import SuspiciousOperation
 
 from elasticsearch_dsl import FacetedSearch
 from elasticsearch_dsl import Q as ESQ
@@ -124,11 +125,14 @@ class BaseSearchListView(ListView):
             search_query['searches']['ids'] = limit_ids
 
         # initialize search class
-        s = self.search_class(
-            query=search_query,
-            filters=search_query['filters'],
-            sort=search_query['order_by']
-        )
+        try:
+            s = self.search_class(
+                query=search_query,
+                filters=search_query['filters'],
+                sort=search_query['order_by']
+            )
+        except KeyError:
+            raise SearchQueryException('Invalid search criteria')
 
         # handle pagination
         pagination_query = utils.parse_pagination_query(request=self.request)

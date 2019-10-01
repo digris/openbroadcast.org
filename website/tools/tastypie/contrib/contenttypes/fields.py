@@ -20,9 +20,18 @@ class GenericForeignKeyField(fields.ToOneField):
         if len(to) <= 0:
             raise ValueError('to field must have some values')
 
-        for k, v in to.iteritems():
-            if not issubclass(k, models.Model) or not issubclass(v, Resource):
-                raise ValueError('to field must map django models to tastypie resources')
+        try:
+            for k, v in to.iteritems():
+                if not issubclass(k, models.Model) or not issubclass(v, Resource):
+                    raise ValueError('to field must map django models to tastypie resources')
+        except AttributeError:
+            for k, v in to.items():
+                # TODO: check python3 compatibility
+                # https://stackoverflow.com/questions/30418481/error-dict-object-has-no-attribute-iteritems
+                pass
+                # if not issubclass(k, models.Model) or not issubclass(v, Resource):
+                #     raise ValueError('to field must map django models to tastypie resources')
+
 
         super(GenericForeignKeyField, self).__init__(to, attribute, **kwargs)
 

@@ -26,12 +26,13 @@ def make_messages():
     elif os.path.isdir('locale'):
         localedir = os.path.abspath('locale')
     else:
-        print "This script should be run from the django svn tree or your project or app tree."
-        print "If you did indeed run it from the svn checkout or your project or application,"
-        print "maybe you are just missing the conf/locale (in the django tree) or locale (for project"
-        print "and application) directory?"
-        print "make-messages.py doesn't create it automatically, you have to create it by hand if"
-        print "you want to enable i18n for your project or application."
+        pass
+        # print "This script should be run from the django svn tree or your project or app tree."
+        # print "If you did indeed run it from the svn checkout or your project or application,"
+        # print "maybe you are just missing the conf/locale (in the django tree) or locale (for project"
+        # print "and application) directory?"
+        # print "make-messages.py doesn't create it automatically, you have to create it by hand if"
+        # print "you want to enable i18n for your project or application."
         sys.exit(1)
 
     (opts, args) = getopt.getopt(sys.argv[1:], 'l:d:va')
@@ -52,11 +53,11 @@ def make_messages():
             all = True
 
     if domain not in ('django', 'djangojs'):
-        print "currently make-messages.py only supports domains 'django' and 'djangojs'"
+        #print "currently make-messages.py only supports domains 'django' and 'djangojs'"
         sys.exit(1)
     if (lang is None and not all) or domain is None:
-        print "usage: make-messages.py -l <language>"
-        print "   or: make-messages.py -a"
+        #print "usage: make-messages.py -l <language>"
+        #print "   or: make-messages.py -a"
         sys.exit(1)
 
     languages = []
@@ -68,7 +69,7 @@ def make_messages():
 
     for lang in languages:
 
-        print "processing language", lang
+        #print "processing language", lang
         basedir = os.path.join(localedir, lang, 'LC_MESSAGES')
         if not os.path.isdir(basedir):
             os.makedirs(basedir)
@@ -96,8 +97,8 @@ def make_messages():
                 msgs = stdout.read()
                 errors = stderr.read()
                 if errors:
-                    print "errors happened while running xgettext on %s" % file
-                    print errors
+                    # print "errors happened while running xgettext on %s" % file
+                    # print errors
                     sys.exit(8)
                 old = '#: '+os.path.join(dirpath, thefile)[2:]
                 new = '#: '+os.path.join(dirpath, file)[2:]
@@ -119,8 +120,8 @@ def make_messages():
                 msgs = stdout.read()
                 errors = stderr.read()
                 if errors:
-                    print "errors happened while running xgettext on %s" % file
-                    print errors
+                    # print "errors happened while running xgettext on %s" % file
+                    # print errors
                     sys.exit(8)
                 if thefile != file:
                     old = '#: '+os.path.join(dirpath, thefile)[2:]
@@ -141,8 +142,8 @@ def make_messages():
             msgs = stdout.read()
             errors = stderr.read()
             if errors:
-                print "errors happened while running msguniq"
-                print errors
+                # print "errors happened while running msguniq"
+                # print errors
                 sys.exit(8)
             open(potfile, 'w').write(msgs)
             if os.path.exists(pofile):
@@ -150,8 +151,8 @@ def make_messages():
                 msgs = stdout.read()
                 errors = stderr.read()
                 if errors:
-                    print "errors happened while running msgmerge"
-                    print errors
+                    # print "errors happened while running msgmerge"
+                    # print errors
                     sys.exit(8)
             open(pofile, 'wb').write(msgs)
             os.unlink(potfile)

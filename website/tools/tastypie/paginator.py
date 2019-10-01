@@ -1,6 +1,10 @@
 from django.conf import settings
 from tastypie.exceptions import BadRequest
-from urllib import urlencode
+
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
 
 
 class Paginator(object):

@@ -3,7 +3,11 @@ from __future__ import unicode_literals
 
 from django import template
 from django.template.defaultfilters import stringfilter
-from urlparse import urlparse
+
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib.parse import urlparse
 
 register = template.Library()
 

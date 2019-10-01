@@ -90,16 +90,16 @@ class VComment(mutagen.Metadata, list):
                 except (OverflowError, MemoryError):
                     raise error("cannot read %d bytes, too large" % length)
                 try: tag, value = string.split('=', 1)
-                except ValueError, err:
+                except ValueError as err:
                     if errors == "ignore":
                         continue
                     elif errors == "replace":
                         tag, value = u"unknown%d" % i, string
                     else:
-                        raise VorbisEncodingError, str(err), sys.exc_info()[2]
+                        raise VorbisEncodingError(str(err), sys.exc_info()[2])
                 try: tag = tag.encode('ascii', errors)
                 except UnicodeEncodeError:
-                    raise VorbisEncodingError, "invalid tag name %r" % tag
+                    raise VorbisEncodingError("invalid tag name %r" % tag)
                 else:
                     if is_valid_key(tag): self.append((tag, value))
             if framing and not ord(fileobj.read(1)) & 0x01:
@@ -181,14 +181,14 @@ class VCommentDict(VComment, DictMixin):
         """
         key = key.lower().encode('ascii')
         values = [value for (k, value) in self if k.lower() == key]
-        if not values: raise KeyError, key
+        if not values: raise KeyError(key)
         else: return values
 
     def __delitem__(self, key):
         """Delete all values associated with the key."""
         key = key.lower().encode('ascii')
         to_delete = filter(lambda x: x[0].lower() == key, self)
-        if not to_delete:raise KeyError, key
+        if not to_delete:raise KeyError(key)
         else: map(self.remove, to_delete)
 
     def __contains__(self, key):

@@ -653,7 +653,7 @@ class ToOneField(RelatedField):
                 raise ApiFieldError("The model '%r' has an empty attribute '%s' and doesn't allow a null value." % (previous_obj, attr))
 
             return None
-        
+
 
         self.fk_resource = self.get_related_resource(foreign_obj)
         fk_bundle = Bundle(obj=foreign_obj, request=bundle.request)
@@ -824,7 +824,7 @@ class TimeField(ApiField):
     def to_time(self, s):
         try:
             dt = parse(s)
-        except ValueError, e:
+        except ValueError as e:
             raise ApiFieldError(str(e))
         else:
             return datetime.time(dt.hour, dt.minute, dt.second)

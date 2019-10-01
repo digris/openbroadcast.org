@@ -15,7 +15,7 @@ from arating.models import VOTE_CHOICES
 def vote(request, content_type, object_id, vote=0, can_vote_test=None,
               redirect_url=None, template_name=None, template_loader=loader,
               extra_context=None, context_processors=None, mimetype=None):
- 
+
 
     if isinstance(content_type, ContentType):
         pass
@@ -48,15 +48,15 @@ def vote(request, content_type, object_id, vote=0, can_vote_test=None,
             vobj.vote = vote
             vobj.save()
     else:
-        Vote.objects.filter(content_type=content_type, 
-                            object_id=object_id, user=request.user).delete() 
+        Vote.objects.filter(content_type=content_type,
+                            object_id=object_id, user=request.user).delete()
 
     # build the response
     if redirect_url:
         return HttpResponseRedirect(redirect_url)
     elif template_name:
         content_obj = content_type.get_object_for_this_type(pk=object_id)
-        c = RequestContext(request, {'content_obj':content_obj}, 
+        c = RequestContext(request, {'content_obj':content_obj},
                            context_processors)
 
         # copy extra_context into context, calling any callables
@@ -69,25 +69,25 @@ def vote(request, content_type, object_id, vote=0, can_vote_test=None,
         t = template_loader.get_template(template_name)
         body = t.render(c)
     else:
-        
+
         object = content_type.model_class().objects.filter(pk=object_id)[0]
-    
+
         try:
             user_vote = object.votes.filter(user=request.user)[0].vote
         except (TypeError, IndexError) as e:
             user_vote = None
-        
+
         choices = []
         for choice in reversed(VOTE_CHOICES):
-            print 'choice: %s user_vote: %s' % (choice[0], user_vote)
+            # print 'choice: %s user_vote: %s' % (choice[0], user_vote)
             count = object.votes.filter(vote=choice[0]).count()
             tc = {'key': choice[0], 'count': count, 'active': user_vote==choice[0] }
             choices.append(tc)
-            
-        
+
+
         data = {'choices': choices}
 
-        
+
     return HttpResponse(json.dumps(data), content_type="application/json")
     #return HttpResponse(data, content_type=mimetype)
 

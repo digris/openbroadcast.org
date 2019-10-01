@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-import logging
-import os
+from __future__ import absolute_import
 
-import time
+import logging
+
 from alibrary.models import Media
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.conf import settings
 from django.views.generic import View
 
-from models import Waveform, Format
+from .models import Waveform, Format
 
 log = logging.getLogger(__name__)
 

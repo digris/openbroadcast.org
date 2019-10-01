@@ -12,45 +12,47 @@ from tastypie.api import Api
 
 api = Api()
 
-# base
-api.register(BaseResource())
 
-# library
-api.register(MediaResource())
-api.register(SimpleMediaResource())
-api.register(ReleaseResource())
-api.register(SimpleReleaseResource())
-api.register(ArtistResource())
-api.register(LabelResource())
-api.register(SimplePlaylistResource())
-api.register(PlaylistResource())
-api.register(PlaylistItemPlaylistResource())
+try:
 
-# importer
-api.register(ImportResource())
-api.register(ImportFileResource())
+    # base
+    api.register(BaseResource())
 
-# exporter
-api.register(ExportResource())
-api.register(ExportItemResource())
+    # library
+    api.register(MediaResource())
+    api.register(SimpleMediaResource())
+    api.register(ReleaseResource())
+    api.register(SimpleReleaseResource())
+    api.register(ArtistResource())
+    api.register(LabelResource())
+    api.register(SimplePlaylistResource())
+    api.register(PlaylistResource())
+    api.register(PlaylistItemPlaylistResource())
 
-# abcast
-api.register(AbcastBaseResource())
-#api.register(StationResource())
-api.register(ChannelResource())
+    # importer
+    api.register(ImportResource())
+    api.register(ImportFileResource())
 
-# scheduler
-api.register(EmissionResource())
+    # exporter
+    api.register(ExportResource())
+    api.register(ExportItemResource())
 
-# profiles
-# api.register(ProfileResource())
-api.register(UserResource())
+    # abcast
+    api.register(AbcastBaseResource())
+    api.register(ChannelResource())
 
-# rating
-api.register(VoteResource())
+    # scheduler
+    api.register(EmissionResource())
 
-# atracker
-api.register(EventResource())
+    # profiles
+    # api.register(ProfileResource())
+    api.register(UserResource())
 
-# search - v1
-# api.register(GlobalSearchResource())
+    # rating
+    api.register(VoteResource())
+
+    # atracker
+    api.register(EventResource())
+
+except:
+    pass

@@ -52,7 +52,7 @@ class MPEGInfo(object):
         (2, 1): [0, 32, 48, 56, 64, 80, 96, 112,128,144,160,176,192,224,256],
         (2, 2): [0,  8, 16, 24, 32, 40, 48,  56, 64, 80, 96,112,128,144,160],
         }
-        
+
     __BITRATE[(2, 3)] = __BITRATE[(2, 2)]
     for i in range(1, 4): __BITRATE[(2.5, i)] = __BITRATE[(2, i)]
 
@@ -95,7 +95,7 @@ class MPEGInfo(object):
         # and 90% through the file.
         for i in [offset, 0.3 * size, 0.6 * size, 0.9 * size]:
             try: self.__try(fileobj, int(i), size - offset)
-            except error, e: pass
+            except error as e: pass
             else: break
         # If we can't find any two consecutive frames, try to find just
         # one frame back at the original offset given.

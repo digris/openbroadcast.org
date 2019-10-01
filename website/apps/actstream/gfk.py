@@ -1,6 +1,10 @@
 from django.db.models import Manager
 from django.db.models.query import QuerySet, EmptyQuerySet
-from django.utils.encoding import smart_unicode
+
+try:
+    from django.utils.encoding import smart_unicode
+except ImportError:
+    from django.utils.encoding import smart_str as smart_unicode
 
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey

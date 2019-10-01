@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from django.contrib import admin
-from models import FAQ, FAQCateqory
+from .models import FAQ, FAQCateqory
 
 class FAQAdmin(admin.ModelAdmin):
-    
+
     list_display = ['question', 'get_answer', 'category', 'lang', 'weight',]
     list_filter = ['category', 'lang']
 

@@ -59,8 +59,6 @@ class WebookView(View):
                 'Unable to extract payload'
             )
 
-        print payload
-
         for account in payload['list_folder']['accounts']:
             process_user(account)
 

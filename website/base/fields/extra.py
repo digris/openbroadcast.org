@@ -31,9 +31,15 @@ class PreviewImageInput(ClearableFileInput):
     template_with_clear = '%(clear)s <label for="%(clear_checkbox_id)s">%(clear_checkbox_label)s</label>'
 
 from django.utils.html import escape, conditional_escape
-from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.forms.widgets import CheckboxInput
+
+try:
+    from django.utils.encoding import force_unicode
+except ImportError:
+    def force_unicode(val):
+        return val
+
 class AdvancedFileInput(ClearableFileInput):
 
 

@@ -1,8 +1,8 @@
 import datetime
 import random
 import hashlib
-import app_settings
-import signals
+from . import app_settings
+from . import signals
 
 from django.db import models
 from django.core.mail import send_mail

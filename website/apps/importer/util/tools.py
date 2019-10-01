@@ -106,7 +106,7 @@ def discogs_id_by_url(url, type='uri'):
             time.sleep(1.1)
             return item.data['id']
 
-    except Exception, e:
+    except Exception as e:
         log.info('Unable to get id: %s', e)
 
     return None

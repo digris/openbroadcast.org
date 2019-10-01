@@ -80,7 +80,7 @@ class ID3(DictProxy, mutagen.Metadata):
             if size < 0:
                 raise ValueError('Requested bytes (%s) less than zero' % size)
             if size > self.__filesize:
-                raise EOFError('Requested %#x of %#x (%s)' % 
+                raise EOFError('Requested %#x of %#x (%s)' %
                         (long(size), long(self.__filesize), self.filename))
         except AttributeError: pass
         data = self.__fileobj.read(size)
@@ -117,18 +117,18 @@ class ID3(DictProxy, mutagen.Metadata):
                 self.size = 0
                 raise ID3NoHeaderError("%s: too small (%d bytes)" %(
                     filename, self.__filesize))
-            except (ID3NoHeaderError, ID3UnsupportedVersionError), err:
+            except (ID3NoHeaderError, ID3UnsupportedVersionError) as err:
                 self.size = 0
                 import sys
                 stack = sys.exc_info()[2]
                 try: self.__fileobj.seek(-128, 2)
-                except EnvironmentError: raise err, None, stack
+                except EnvironmentError: raise err(None, stack)
                 else:
                     frames = ParseID3v1(self.__fileobj.read(128))
                     if frames is not None:
                         self.version = (1, 1)
                         map(self.add, frames.values())
-                    else: raise err, None, stack
+                    else: raise err(None, stack)
             else:
                 frames = self.__known_frames
                 if frames is None:
@@ -310,7 +310,7 @@ class ID3(DictProxy, mutagen.Metadata):
                 data = data[10+size:]
                 if size == 0: continue # drop empty frames
                 try: tag = frames[name]
-                except KeyError: 
+                except KeyError:
                     if is_valid_frame_id(name): yield header + framedata
                 else:
                     try: yield self.__load_framedata(tag, flags, framedata)
@@ -337,7 +337,7 @@ class ID3(DictProxy, mutagen.Metadata):
 
     def __load_framedata(self, tag, flags, framedata):
         return tag.fromData(self, flags, framedata)
-            
+
     f_unsynch = property(lambda s: bool(s.__flags & 0x80))
     f_extended = property(lambda s: bool(s.__flags & 0x40))
     f_experimental = property(lambda s: bool(s.__flags & 0x20))
@@ -372,7 +372,7 @@ class ID3(DictProxy, mutagen.Metadata):
         if not framedata:
             try:
                 self.delete(filename)
-            except EnvironmentError, err:
+            except EnvironmentError as err:
                 from errno import ENOENT
                 if err.errno != ENOENT: raise
             return
@@ -382,7 +382,7 @@ class ID3(DictProxy, mutagen.Metadata):
 
         if filename is None: filename = self.filename
         try: f = open(filename, 'rb+')
-        except IOError, err:
+        except IOError as err:
             from errno import ENOENT
             if err.errno != ENOENT: raise
             f = open(filename, 'ab') # create, then reopen
@@ -410,7 +410,7 @@ class ID3(DictProxy, mutagen.Metadata):
 
             try:
                 f.seek(-128, 2)
-            except IOError, err:
+            except IOError as err:
                 # If the file is too small, that's OK - it just means
                 # we're certain it doesn't have a v1 tag.
                 from errno import EINVAL
@@ -429,7 +429,7 @@ class ID3(DictProxy, mutagen.Metadata):
             else:
                 offset = idx - len(data)
                 has_v1 = True
-                
+
             f.seek(offset, 2)
             if v1 == 1 and has_v1 or v1 == 2:
                 f.write(MakeID3v1(self))
@@ -601,7 +601,7 @@ class BitPaddedInt(int):
         # PCNT and POPM use growing integers of at least 4 bytes as counters.
         if width == -1: width = max(4, len(bytes))
         if len(bytes) > width:
-            raise ValueError, 'Value too wide (%d bytes)' % len(bytes)
+            raise ValueError('Value too wide (%d bytes)' % len(bytes))
         else: bytes.extend([0] * (width-len(bytes)))
         if bigendian: bytes.reverse()
         return ''.join(map(chr, bytes))
@@ -684,7 +684,7 @@ class EncodingSpec(ByteSpec):
     def validate(self, frame, value):
         if 0 <= value <= 3: return value
         if value is None: return None
-        raise ValueError, 'Invalid Encoding: %r' % value
+        raise ValueError('Invalid Encoding: %r' % value)
 
 class StringSpec(Spec):
     def __init__(self, name, length):
@@ -697,7 +697,7 @@ class StringSpec(Spec):
     def validate(s, frame, value):
         if value is None: return None
         if isinstance(value, basestring) and len(value) == s.len: return value
-        raise ValueError, 'Invalid StringSpec[%d] data: %r' % (s.len, value)
+        raise ValueError('Invalid StringSpec[%d] data: %r' % (s.len, value))
 
 class BinaryDataSpec(Spec):
     def read(self, frame, data): return data, ''
@@ -771,10 +771,10 @@ class MultiSpec(Spec):
             if len(self.specs) == 1:
                 return [self.specs[0].validate(frame, v) for v in value]
             else:
-                return [ 
+                return [
                     [s.validate(frame, v) for (v,s) in zip(val, self.specs)]
                     for val in value ]
-        raise ValueError, 'Invalid MultiSpec data: %r' % value
+        raise ValueError('Invalid MultiSpec data: %r' % value)
 
 class EncodedNumericTextSpec(EncodedTextSpec): pass
 class EncodedNumericPartTextSpec(EncodedTextSpec): pass
@@ -843,7 +843,7 @@ class TimeStampSpec(EncodedTextSpec):
 
     def validate(self, frame, value):
         try: return ID3TimeStamp(value)
-        except TypeError: raise ValueError, "Invalid ID3TimeStamp: %r" % value
+        except TypeError: raise ValueError("Invalid ID3TimeStamp: %r" % value)
 
 class ChannelSpec(ByteSpec):
     (OTHER, MASTER, FRONTRIGHT, FRONTLEFT, BACKRIGHT, BACKLEFT, FRONTCENTRE,
@@ -954,7 +954,7 @@ class ASPIIndexSpec(Spec):
         else:
             warn("invalid bit count in ASPI (%d)" % frame.b, ID3Warning)
             return [], data
-        
+
         indexes = data[:frame.N * size]
         data = data[frame.N * size:]
         return list(struct.unpack(">" + format * frame.N, indexes)), data
@@ -1064,21 +1064,21 @@ class Frame(object):
                 data = data[4:]
             if tflags & Frame.FLAG24_UNSYNCH or id3.f_unsynch:
                 try: data = unsynch.decode(data)
-                except ValueError, err:
+                except ValueError as err:
                     if id3.PEDANTIC:
-                        raise ID3BadUnsynchData, '%s: %r' % (err, data)
+                        raise ID3BadUnsynchData('%s: %r' % (err, data))
             if tflags & Frame.FLAG24_ENCRYPT:
                 raise ID3EncryptionUnsupportedError
             if tflags & Frame.FLAG24_COMPRESS:
                 try: data = data.decode('zlib')
-                except zlibError, err:
+                except zlibError as err:
                     # the initial mutagen that went out with QL 0.12 did not
                     # write the 4 bytes of uncompressed size. Compensate.
                     data = datalen_bytes + data
                     try: data = data.decode('zlib')
-                    except zlibError, err:
+                    except zlibError as err:
                         if id3.PEDANTIC:
-                            raise ID3BadCompressedData, '%s: %r' % (err, data)
+                            raise ID3BadCompressedData('%s: %r' % (err, data))
 
         elif (2,3,0) <= id3.version:
             if tflags & Frame.FLAG23_COMPRESS:
@@ -1088,9 +1088,9 @@ class Frame(object):
                 raise ID3EncryptionUnsupportedError
             if tflags & Frame.FLAG23_COMPRESS:
                 try: data = data.decode('zlib')
-                except zlibError, err:
+                except zlibError as err:
                     if id3.PEDANTIC:
-                        raise ID3BadCompressedData, '%s: %r' % (err, data)
+                        raise ID3BadCompressedData('%s: %r' % (err, data))
 
         frame = cls()
         frame._rawdata = data
@@ -1465,7 +1465,7 @@ class USLT(Frame):
     def __unicode__(self): return self.text
     def __eq__(self, other): return self.text == other
     __hash__ = Frame.__hash__
-    
+
 class SYLT(Frame):
     """Synchronised lyrics/text."""
 
@@ -1606,7 +1606,7 @@ class POPM(FrameOpt):
     """
     _framespec = [ Latin1TextSpec('email'), ByteSpec('rating') ]
     _optionalspec = [ IntegerSpec('count') ]
-                   
+
     HashKey = property(lambda s: '%s:%s' % (s.FrameID, s.email))
 
     def __eq__(self, other): return self.rating == other
@@ -1628,7 +1628,7 @@ class GEOB(Frame):
     data -- raw data, as a byte string
     """
     _framespec = [ EncodingSpec('encoding'), Latin1TextSpec('mime'),
-        EncodedTextSpec('filename'), EncodedTextSpec('desc'), 
+        EncodedTextSpec('filename'), EncodedTextSpec('desc'),
         BinaryDataSpec('data') ]
     HashKey = property(lambda s: '%s:%s' % (s.FrameID, s.desc))
 
@@ -1791,7 +1791,7 @@ class GRID(FrameOpt):
     def __unicode__(self): return self.owner
     def __eq__(self, other): return self.owner == other or self.group == other
     __hash__ = FrameOpt.__hash__
-    
+
 
 class PRIV(Frame):
     """Private frame."""
@@ -2025,13 +2025,13 @@ def MakeID3v1(id3):
     v1["year"] = (year + "\x00\x00\x00\x00")[:4]
 
     return ("TAG%(title)s%(artist)s%(album)s%(year)s%(comment)s"
-            "%(track)s%(genre)s") % v1 
+            "%(track)s%(genre)s") % v1
 
 class ID3FileType(mutagen.FileType):
     """An unknown type of file with ID3 tags."""
 
     ID3 = ID3
-    
+
     class _Info(object):
         length = 0
         def __init__(self, fileobj, offset): pass

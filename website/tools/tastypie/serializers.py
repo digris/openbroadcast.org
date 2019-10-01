@@ -2,12 +2,15 @@ import datetime
 import json
 import django
 
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
-from django.utils.encoding import force_unicode
+# from django.utils.encoding import force_unicode
 from tastypie.bundle import Bundle
 from tastypie.exceptions import UnsupportedFormat
 from tastypie.utils import format_datetime, format_date, format_time, make_naive
@@ -26,6 +29,12 @@ try:
     import biplist
 except ImportError:
     biplist = None
+
+try:
+    from django.utils.encoding import force_unicode
+except ImportError:
+    def force_unicode(val):
+        return val
 
 
 # Ugh & blah.

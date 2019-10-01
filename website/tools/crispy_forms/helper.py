@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from django.conf import settings
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.utils.safestring import mark_safe
-from layout import Layout, LayoutSlice
-
-from utils import render_field, flatatt
+from .layout import Layout, LayoutSlice
+from .utils import render_field, flatatt
 
 
 class FormHelpersException(Exception):

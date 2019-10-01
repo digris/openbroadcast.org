@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__ import unicode_literals, absolute_import
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from models import Waveform, Format
+from .models import Waveform, Format
 
 
 def waveform_set_init(modeladmin, request, queryset):

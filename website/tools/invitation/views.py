@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.template import RequestContext
@@ -6,8 +9,8 @@ from django.utils.translation import ugettext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.admin.views.decorators import staff_member_required
-from models import InvitationError, Invitation, InvitationStats
-from forms import InvitationForm, RegistrationFormInvitation
+from .models import InvitationError, Invitation, InvitationStats
+from .forms import InvitationForm, RegistrationFormInvitation
 from registration.signals import user_registered
 
 

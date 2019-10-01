@@ -18,7 +18,7 @@ class SpecifiedFields(ModelResource):
 
         try:
             self.specified_fields = fields.split(',')
-        except Exception, e:
+        except Exception as e:
             self.specified_fields.append(fields)
 
         # make `distinct` default for m2m filters
@@ -26,7 +26,7 @@ class SpecifiedFields(ModelResource):
         for field in filters:
             try:
                 related = objects.model._meta.get_field_by_name(field)[0]
-            except Exception, e:
+            except Exception as e:
                 related = False
             if related and related.get_internal_type() == 'ManyToManyField':
                 has_m2m = True
@@ -38,7 +38,7 @@ class SpecifiedFields(ModelResource):
 
             try:
                 fields = specified_field.split('__')
-            except Exception, e:
+            except Exception as e:
                 continue
 
             # Only adds fields that exist for this model

@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 from django.template import Context
 from django.template.loader import render_to_string
 from django.forms.utils import flatatt
 
-from layout import LayoutObject, Field
-from utils import render_field
+from .layout import LayoutObject, Field
+from .utils import render_field
 
 
 class AppendedText(Field):

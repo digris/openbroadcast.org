@@ -31,7 +31,7 @@ ALPHA_BASE = 0
 try:
     import scikits.audiolab as audiolab
 except ImportError:
-    print "WARNING: audiolab is not installed so wav2png will not work"
+    print ("WARNING: audiolab is not installed so wav2png will not work")
 
 def get_max_level(filename):
     max_value = 0
@@ -249,7 +249,7 @@ class WaveformImage(object):
     def __init__(self, image_width, image_height, palette=1):
 
         if image_height % 2 == 0:
-            raise Exception, "Height should be uneven: images look much better at uneven height"
+            raise Exception("Height should be uneven: images look much better at uneven height")
 
         #background_color = (245, 245, 245, 255)
         background_color = (255, 255, 255, 255)
@@ -367,7 +367,7 @@ class WaveformImage(object):
 
         try:
             self.image.save(filename)
-        except Exception, e:
+        except Exception as e:
             print e
 
 class SpectrogramImage(object):

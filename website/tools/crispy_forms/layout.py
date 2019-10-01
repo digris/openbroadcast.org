@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
 import itertools
 
 from django.conf import settings
@@ -5,7 +8,7 @@ from django.template import Context, Template
 from django.template.loader import render_to_string
 from django.utils.html import conditional_escape
 
-from utils import render_field, flatatt
+from .utils import render_field, flatatt
 
 TEMPLATE_PACK = getattr(settings, 'CRISPY_TEMPLATE_PACK', 'bootstrap')
 
@@ -387,7 +390,8 @@ class Field(LayoutObject):
         if not hasattr(self, 'attrs'):
             self.attrs = {}
 
-        if kwargs.has_key('css_class'):
+        # if kwargs.has_key('css_class'):
+        if 'css_class' in kwargs:
             if 'class' in self.attrs:
                 self.attrs['class'] += " %s" % kwargs.pop('css_class')
             else:

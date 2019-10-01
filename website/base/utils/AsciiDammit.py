@@ -29,7 +29,13 @@ __license__ = "Public domain"
 import re
 import string
 import types
-from unidecode import unidecode
+
+try:
+    from unidecode import unidecode
+except ImportError:
+    # TODO: check for side-effects
+    def unidecode(val):
+        return unidecode
 
 
 CHARS = { '\x80' : ('EUR', 'euro'),

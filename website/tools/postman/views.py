@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-import urlparse
+# import urlparse
 import logging
 from django.conf import settings
 from django.contrib import messages
@@ -14,6 +14,12 @@ from django.http import Http404
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
+
+try:
+    from urlparse import urlparse
+except ImportError:
+    from urllib.parse import urlparse
+
 try:
     from django.utils.timezone import now  # Django 1.4 aware datetimes
 except ImportError:

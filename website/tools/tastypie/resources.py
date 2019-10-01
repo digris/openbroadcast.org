@@ -176,7 +176,16 @@ class Resource(object):
     __metaclass__ = DeclarativeMetaclass
 
     def __init__(self, api_name=None):
-        self.fields = deepcopy(self.base_fields)
+
+        print('------------')
+        print(self.base_fields)
+        print('------------')
+
+        try:
+            self.fields = deepcopy(self.base_fields)
+        except:
+            from copy import copy
+            self.fields = {k: copy(v) for k, v in self.base_fields.items()}
 
         if not api_name is None:
             self._meta.api_name = api_name

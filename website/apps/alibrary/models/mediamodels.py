@@ -5,7 +5,6 @@ import logging
 import os
 import uuid
 import arating
-import audiotools
 import tagging
 from base.audio.fileinfo import FileInfoProcessor
 from cacheops import invalidate_obj
@@ -671,7 +670,7 @@ def media_post_save(sender, **kwargs):
 
         try:
             if not os.path.exists(abs_directory):
-                os.makedirs(abs_directory, 0755)
+                os.makedirs(abs_directory, 0o755)
 
             obj.folder = directory
             log.debug('creating directory: %s' % abs_directory)

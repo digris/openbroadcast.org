@@ -42,7 +42,7 @@ __all__ = ['MP4', 'Open', 'delete', 'MP4Cover']
 
 class MP4Cover(str):
     """A cover artwork.
-    
+
     Attributes:
     imageformat -- format of the image (either FORMAT_JPEG or FORMAT_PNG)
     """
@@ -121,7 +121,7 @@ class Atom(object):
             if child.name == remaining[0]:
                 return child[remaining[1:]]
         else:
-            raise KeyError, "%r not found" % remaining[0]
+            raise KeyError("%r not found" % remaining[0])
 
     def __repr__(self):
         klass = self.__class__.__name__
@@ -174,7 +174,7 @@ class Atoms(object):
             if child.name == names[0]:
                 return child[names[1:]]
         else:
-            raise KeyError, "%s not found" % names[0]
+            raise KeyError("%s not found" % names[0])
 
     def __repr__(self):
         return "\n".join([repr(child) for child in self.atoms])
@@ -242,7 +242,7 @@ class MP4Tags(DictProxy, Metadata):
 
     def load(self, atoms, fileobj):
         try: ilst = atoms["moov.udta.meta.ilst"]
-        except KeyError, key:
+        except KeyError as key:
             raise MP4MetadataError(key)
         for atom in ilst.children:
             fileobj.seek(atom.offset + 8)
@@ -277,7 +277,7 @@ class MP4Tags(DictProxy, Metadata):
             info = self.__atoms.get(key[:4], (None, type(self).__render_text))
             try:
                 values.append(info[1](self, key, value, *info[2:]))
-            except (TypeError, ValueError), s:
+            except (TypeError, ValueError) as s:
                 raise MP4MetadataValueError, s, sys.exc_info()[2]
         data = Atom.render("ilst", "".join(values))
 
@@ -654,7 +654,7 @@ class MP4(FileType):
     """
 
     MP4Tags = MP4Tags
-    
+
     _mimes = ["audio/mp4", "audio/x-m4a", "audio/mpeg4", "audio/aac"]
 
     def load(self, filename):
@@ -663,12 +663,12 @@ class MP4(FileType):
         try:
             atoms = Atoms(fileobj)
             try: self.info = MP4Info(atoms, fileobj)
-            except StandardError, err:
+            except StandardError as err:
                 raise MP4StreamInfoError, err, sys.exc_info()[2]
             try: self.tags = self.MP4Tags(atoms, fileobj)
             except MP4MetadataError:
                 self.tags = None
-            except StandardError, err:
+            except StandardError as err:
                 raise MP4MetadataError, err, sys.exc_info()[2]
         finally:
             fileobj.close()
