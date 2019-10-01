@@ -36,11 +36,7 @@ BACKEND_DETAILS = {
         "icon": "icon-dropbox",
         "cta": _("Continue with Dropbox"),
     },
-    "github": {
-        "name": "Github",
-        "icon": "github",
-        "cta": _("Continue with Github"),
-    },
+    "github": {"name": "Github", "icon": "github", "cta": _("Continue with Github")},
     "vk-oauth2": {"name": "VK", "icon": "vk", "hint": _("Continue with VK")},
     "spotify": {
         "name": "Spotify",

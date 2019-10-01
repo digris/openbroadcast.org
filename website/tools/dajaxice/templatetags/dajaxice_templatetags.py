@@ -10,7 +10,7 @@ staticfiles_storage = get_storage_class(settings.STATICFILES_STORAGE)()
 
 register = template.Library()
 
-log = logging.getLogger('dajaxice')
+log = logging.getLogger("dajaxice")
 
 
 @register.simple_tag(takes_context=True)
@@ -21,16 +21,20 @@ def dajaxice_js_import(context, csrf=True):
     the dajaxice_js_import template tag will make django set the csrftoken
     cookie on the current request."""
 
-    csrf = csrf != 'nocsrf'
-    request = context.get('request')
+    csrf = csrf != "nocsrf"
+    request = context.get("request")
 
     if request and csrf:
         get_token(request)
     elif csrf:
-        log.warning("The 'request' object must be accesible within the "
-                    "context. You must add 'django.contrib.messages.context"
-                    "_processors.request' to your TEMPLATE_CONTEXT_PROCESSORS "
-                    "and render your views using a RequestContext.")
+        log.warning(
+            "The 'request' object must be accesible within the "
+            "context. You must add 'django.contrib.messages.context"
+            "_processors.request' to your TEMPLATE_CONTEXT_PROCESSORS "
+            "and render your views using a RequestContext."
+        )
 
-    url = staticfiles_storage.url('dajaxice/dajaxice.core.js')
-    return mark_safe('<script src="%s" type="text/javascript" charset="utf-8"></script>' % url)
+    url = staticfiles_storage.url("dajaxice/dajaxice.core.js")
+    return mark_safe(
+        '<script src="%s" type="text/javascript" charset="utf-8"></script>' % url
+    )

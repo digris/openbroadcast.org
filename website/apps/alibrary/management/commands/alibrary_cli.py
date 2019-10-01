@@ -12,5 +12,5 @@ def cli():
     pass
 
 
-#cli.add_command(fingerprint.cli)
+# cli.add_command(fingerprint.cli)
 cli.add_command(maintenance.cli)

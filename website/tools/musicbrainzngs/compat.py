@@ -28,35 +28,47 @@ import sys
 _ver = sys.version_info
 
 #: Python 2.x?
-is_py2 = (_ver[0] == 2)
+is_py2 = _ver[0] == 2
 
 #: Python 3.x?
-is_py3 = (_ver[0] == 3)
+is_py3 = _ver[0] == 3
 
 # ---------
 # Specifics
 # ---------
 
 if is_py2:
-	from StringIO import StringIO
-	from urllib2 import HTTPPasswordMgr, HTTPDigestAuthHandler, Request,\
-						HTTPHandler, build_opener, HTTPError, URLError,\
-						build_opener
-	from httplib import BadStatusLine, HTTPException
-	from urlparse import urlunparse
-	from urllib import urlencode
+    from StringIO import StringIO
+    from urllib2 import (
+        HTTPPasswordMgr,
+        HTTPDigestAuthHandler,
+        Request,
+        HTTPHandler,
+        build_opener,
+        HTTPError,
+        URLError,
+        build_opener,
+    )
+    from httplib import BadStatusLine, HTTPException
+    from urlparse import urlunparse
+    from urllib import urlencode
 
-	bytes = str
-	unicode = unicode
-	basestring = basestring
+    bytes = str
+    unicode = unicode
+    basestring = basestring
 elif is_py3:
-	from io import StringIO
-	from urllib.request import HTTPPasswordMgr, HTTPDigestAuthHandler, Request,\
-								HTTPHandler, build_opener
-	from urllib.error import HTTPError, URLError
-	from http.client import HTTPException, BadStatusLine
-	from urllib.parse import urlunparse, urlencode
+    from io import StringIO
+    from urllib.request import (
+        HTTPPasswordMgr,
+        HTTPDigestAuthHandler,
+        Request,
+        HTTPHandler,
+        build_opener,
+    )
+    from urllib.error import HTTPError, URLError
+    from http.client import HTTPException, BadStatusLine
+    from urllib.parse import urlunparse, urlencode
 
-	unicode = str
-	bytes = bytes
-	basestring = (str,bytes)
+    unicode = str
+    bytes = bytes
+    basestring = (str, bytes)

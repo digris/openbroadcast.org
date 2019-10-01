@@ -16,15 +16,20 @@ class RegistrationView(BaseRegistrationView):
     up and logged in).
 
     """
+
     def register(self, request, **cleaned_data):
-        username, email, password = cleaned_data['username'], cleaned_data['email'], cleaned_data['password1']
+        username, email, password = (
+            cleaned_data["username"],
+            cleaned_data["email"],
+            cleaned_data["password1"],
+        )
         get_user_model().objects.create_user(username, email, password)
 
         new_user = authenticate(username=username, password=password)
         login(request, new_user)
-        signals.user_registered.send(sender=self.__class__,
-                                     user=new_user,
-                                     request=request)
+        signals.user_registered.send(
+            sender=self.__class__, user=new_user, request=request
+        )
         return new_user
 
     def registration_allowed(self, request):
@@ -40,8 +45,8 @@ class RegistrationView(BaseRegistrationView):
           ``False``, registration is not permitted.
 
         """
-        return getattr(settings, 'REGISTRATION_OPEN', True)
+        return getattr(settings, "REGISTRATION_OPEN", True)
 
     def get_success_url(self, request, user):
-        return reverse('profiles-profile-edit')
-        #return (user.get_absolute_url(), (), {})
+        return reverse("profiles-profile-edit")
+        # return (user.get_absolute_url(), (), {})

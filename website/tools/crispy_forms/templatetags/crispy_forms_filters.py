@@ -6,12 +6,13 @@ from django.template.loader import get_template
 from django import template
 
 
-TEMPLATE_PACK = getattr(settings, 'CRISPY_TEMPLATE_PACK', 'bootstrap')
+TEMPLATE_PACK = getattr(settings, "CRISPY_TEMPLATE_PACK", "bootstrap")
 
 register = template.Library()
 
-@register.filter(name='as_uni_form')
-@register.filter(name='crispy')
+
+@register.filter(name="as_uni_form")
+@register.filter(name="crispy")
 def as_crispy_form(form):
     """
     The original and still very useful way to generate a div elegant form/formset::
@@ -24,16 +25,17 @@ def as_crispy_form(form):
         </form>
     """
     if isinstance(form, BaseFormSet):
-        template = get_template('%s/uni_formset.html' % TEMPLATE_PACK)
-        c = Context({'formset': form, 'form_show_errors': True})
+        template = get_template("%s/uni_formset.html" % TEMPLATE_PACK)
+        c = Context({"formset": form, "form_show_errors": True})
     else:
-        template = get_template('%s/uni_form.html' % TEMPLATE_PACK)
+        template = get_template("%s/uni_form.html" % TEMPLATE_PACK)
 
-        c = Context({'form': form, 'form_show_errors': True})
+        c = Context({"form": form, "form_show_errors": True})
     return template.render(c)
 
-@register.filter(name='as_uni_errors')
-@register.filter(name='as_crispy_errors')
+
+@register.filter(name="as_uni_errors")
+@register.filter(name="as_crispy_errors")
 def as_crispy_errors(form):
     """
     Renders only form errors the same way as django-crispy-forms::
@@ -42,15 +44,16 @@ def as_crispy_errors(form):
         {{ form|as_crispy_errors }}
     """
     if isinstance(form, BaseFormSet):
-        template = get_template('%s/errors_formset.html' % TEMPLATE_PACK)
-        c = Context({'formset': form})
+        template = get_template("%s/errors_formset.html" % TEMPLATE_PACK)
+        c = Context({"formset": form})
     else:
-        template = get_template('%s/errors.html' % TEMPLATE_PACK)
-        c = Context({'form':form})
+        template = get_template("%s/errors.html" % TEMPLATE_PACK)
+        c = Context({"form": form})
     return template.render(c)
 
-@register.filter(name='as_uni_field')
-@register.filter(name='as_crispy_field')
+
+@register.filter(name="as_uni_field")
+@register.filter(name="as_crispy_field")
 def as_crispy_field(field):
     """
     Renders a form field like a django-crispy-forms field::
@@ -58,6 +61,6 @@ def as_crispy_field(field):
         {% load crispy_forms_tags %}
         {{ form.field|as_crispy_field }}
     """
-    template = get_template('%s/field.html' % TEMPLATE_PACK)
-    c = Context({'field':field, 'form_show_errors': True})
+    template = get_template("%s/field.html" % TEMPLATE_PACK)
+    c = Context({"field": field, "form_show_errors": True})
     return template.render(c)

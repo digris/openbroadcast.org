@@ -7,22 +7,16 @@ from cms.menu_bases import CMSAttachMenu
 
 
 class ImportMenu(CMSAttachMenu):
-    
+
     name = _("Import Menu")
-    
+
     def get_nodes(self, request):
         nodes = []
 
-        node = NavigationNode(
-            _('My Uploads'),
-            reverse('importer-import-list'),
-            181
-        )
+        node = NavigationNode(_("My Uploads"), reverse("importer-import-list"), 181)
         nodes.append(node)
 
-        
         return nodes
-    
+
+
 menu_pool.register_menu(ImportMenu)
-
-

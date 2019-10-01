@@ -8,6 +8,7 @@ from actstream import settings
 
 try:
     from django.utils import timezone
+
     now = timezone.now
 except ImportError:
     now = datetime.datetime.now
@@ -35,12 +36,14 @@ def follow(user, obj, send_action=True, actor_only=True):
     from actstream.models import Follow, action
 
     check_actionable_model(obj)
-    follow, created = Follow.objects.get_or_create(user=user,
+    follow, created = Follow.objects.get_or_create(
+        user=user,
         object_id=obj.pk,
         content_type=ContentType.objects.get_for_model(obj),
-        actor_only=actor_only)
+        actor_only=actor_only,
+    )
     if send_action and created:
-        action.send(user, verb=_('started following'), target=obj)
+        action.send(user, verb=_("started following"), target=obj)
     return follow
 
 
@@ -58,10 +61,11 @@ def unfollow(user, obj, send_action=False):
     from actstream.models import Follow, action
 
     check_actionable_model(obj)
-    Follow.objects.filter(user=user, object_id=obj.pk,
-        content_type=ContentType.objects.get_for_model(obj)).delete()
+    Follow.objects.filter(
+        user=user, object_id=obj.pk, content_type=ContentType.objects.get_for_model(obj)
+    ).delete()
     if send_action:
-        action.send(user, verb=_('stopped following'), target=obj)
+        action.send(user, verb=_("stopped following"), target=obj)
 
 
 def is_following(user, obj):
@@ -77,8 +81,13 @@ def is_following(user, obj):
     from actstream.models import Follow
 
     check_actionable_model(obj)
-    return bool(Follow.objects.filter(user=user, object_id=obj.pk,
-        content_type=ContentType.objects.get_for_model(obj)).count())
+    return bool(
+        Follow.objects.filter(
+            user=user,
+            object_id=obj.pk,
+            content_type=ContentType.objects.get_for_model(obj),
+        ).count()
+    )
 
 
 def action_handler(verb, **kwargs):
@@ -87,25 +96,28 @@ def action_handler(verb, **kwargs):
     """
     from actstream.models import Action
 
-    kwargs.pop('signal', None)
-    actor = kwargs.pop('sender')
+    kwargs.pop("signal", None)
+    actor = kwargs.pop("sender")
     check_actionable_model(actor)
     newaction = Action(
         actor_content_type=ContentType.objects.get_for_model(actor),
         actor_object_id=actor.pk,
         verb=unicode(verb),
-        public=bool(kwargs.pop('public', True)),
-        description=kwargs.pop('description', None),
-        timestamp=kwargs.pop('timestamp', now())
+        public=bool(kwargs.pop("public", True)),
+        description=kwargs.pop("description", None),
+        timestamp=kwargs.pop("timestamp", now()),
     )
 
-    for opt in ('target', 'action_object'):
+    for opt in ("target", "action_object"):
         obj = kwargs.pop(opt, None)
         if not obj is None:
             check_actionable_model(obj)
-            setattr(newaction, '%s_object_id' % opt, obj.pk)
-            setattr(newaction, '%s_content_type' % opt,
-                    ContentType.objects.get_for_model(obj))
+            setattr(newaction, "%s_object_id" % opt, obj.pk)
+            setattr(
+                newaction,
+                "%s_content_type" % opt,
+                ContentType.objects.get_for_model(obj),
+            )
     if len(kwargs):
         newaction.data = kwargs
     newaction.save()

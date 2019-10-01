@@ -16,7 +16,7 @@ class VirtualStorage(finders.FileSystemStorage):
 
     def get_or_create_file(self, path):
         if path not in self.files:
-            return ''
+            return ""
 
         data = getattr(self, self.files[path])()
 
@@ -29,7 +29,7 @@ class VirtualStorage(finders.FileSystemStorage):
                 raise Exception("Invalid data")
         except Exception:
             handle, tmp_path = tempfile.mkstemp()
-            tmp_file = open(tmp_path, 'w')
+            tmp_file = open(tmp_path, "w")
             tmp_file.write(data)
             tmp_file.close()
             self._files_cache[path] = tmp_path
@@ -43,7 +43,7 @@ class VirtualStorage(finders.FileSystemStorage):
         folders, files = [], []
         for f in self.files:
             if f.startswith(path):
-                f = f.replace(path, '', 1)
+                f = f.replace(path, "", 1)
                 if os.sep in f:
                     folders.append(f.split(os.sep, 1)[0])
                 else:
@@ -60,15 +60,15 @@ class VirtualStorage(finders.FileSystemStorage):
 
 class DajaxiceStorage(VirtualStorage):
 
-    files = {os.path.join('dajaxice', 'dajaxice.core.js'): 'dajaxice_core_js'}
+    files = {os.path.join("dajaxice", "dajaxice.core.js"): "dajaxice_core_js"}
 
     def dajaxice_core_js(self):
         from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 
         dajaxice_autodiscover()
 
-        c = Context({'dajaxice_config': dajaxice_config})
-        return get_template(os.path.join('dajaxice', 'dajaxice.core.js')).render(c)
+        c = Context({"dajaxice_config": dajaxice_config})
+        return get_template(os.path.join("dajaxice", "dajaxice.core.js")).render(c)
 
 
 class DajaxiceFinder(finders.BaseStorageFinder):

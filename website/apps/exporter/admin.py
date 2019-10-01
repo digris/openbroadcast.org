@@ -9,15 +9,23 @@ class ExportExportItemInline(admin.TabularInline):
 
 
 class ExportAdmin(admin.ModelAdmin):
-    list_display = ('filename', 'created', 'user', 'status', 'type', 'fileformat', 'filesize')
-    list_filter = ('status', 'type', 'fileformat',)
-    readonly_fields = ('created', 'updated', 'token',)
-    date_hierarchy = 'created'
+    list_display = (
+        "filename",
+        "created",
+        "user",
+        "status",
+        "type",
+        "fileformat",
+        "filesize",
+    )
+    list_filter = ("status", "type", "fileformat")
+    readonly_fields = ("created", "updated", "token")
+    date_hierarchy = "created"
     inlines = [ExportExportItemInline]
 
 
 class ExportItemAdmin(admin.ModelAdmin):
-    list_display = ('content_object', 'export_session',)
+    list_display = ("content_object", "export_session")
 
 
 admin.site.register(Export, ExportAdmin)

@@ -18,7 +18,7 @@ register = Library()
 
 class AutoPaginateNode(Node):
     def render(self, context):
-        return ''
+        return ""
 
 
 @register.tag
@@ -28,7 +28,7 @@ def autopaginate(parser, token):
 
 class PaginateNode(Node):
     def render(self, context):
-        return ''
+        return ""
 
 
 @register.tag

@@ -9,6 +9,7 @@ class TaggingConfig(AppConfig):
     """
     Config for Tagging application.
     """
-    name = 'tagging'
-    label = 'tagging'
-    verbose_name = _('Tagging')
+
+    name = "tagging"
+    label = "tagging"
+    verbose_name = _("Tagging")

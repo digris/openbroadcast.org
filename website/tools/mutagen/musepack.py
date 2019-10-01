@@ -24,9 +24,13 @@ from mutagen.apev2 import APEv2File, error, delete
 from mutagen.id3 import BitPaddedInt
 from mutagen._util import cdata
 
-class MusepackHeaderError(error): pass
+
+class MusepackHeaderError(error):
+    pass
+
 
 RATES = [44100, 48000, 37800, 32000]
+
 
 class MusepackInfo(object):
     """Musepack stream information.
@@ -67,10 +71,8 @@ class MusepackInfo(object):
             frames = cdata.uint_le(header[4:8])
             flags = cdata.uint_le(header[8:12])
 
-            self.title_peak, self.title_gain = struct.unpack(
-                "<Hh", header[12:16])
-            self.album_peak, self.album_gain = struct.unpack(
-                "<Hh", header[16:20])
+            self.title_peak, self.title_gain = struct.unpack("<Hh", header[12:16])
+            self.album_peak, self.album_gain = struct.unpack("<Hh", header[16:20])
             self.title_gain /= 100.0
             self.album_gain /= 100.0
             self.title_peak /= 65535.0
@@ -81,10 +83,10 @@ class MusepackInfo(object):
         # SV4-SV6
         else:
             header_dword = cdata.uint_le(header[0:4])
-            self.version = (header_dword >> 11) & 0x03FF;
+            self.version = (header_dword >> 11) & 0x03FF
             if self.version < 4 or self.version > 6:
                 raise MusepackHeaderError("not a Musepack file")
-            self.bitrate = (header_dword >> 23) & 0x01FF;
+            self.bitrate = (header_dword >> 23) & 0x01FF
             self.sample_rate = 44100
             if self.version >= 5:
                 frames = cdata.uint_le(header[4:8])
@@ -100,12 +102,18 @@ class MusepackInfo(object):
 
     def pprint(self):
         if self.version >= 7:
-            rg_data = ", Gain: %+0.2f (title), %+0.2f (album)" %(
-                self.title_gain, self.album_gain)
+            rg_data = ", Gain: %+0.2f (title), %+0.2f (album)" % (
+                self.title_gain,
+                self.album_gain,
+            )
         else:
             rg_data = ""
         return "Musepack, %.2f seconds, %d Hz%s" % (
-            self.length, self.sample_rate, rg_data)
+            self.length,
+            self.sample_rate,
+            rg_data,
+        )
+
 
 class Musepack(APEv2File):
     _Info = MusepackInfo
@@ -113,6 +121,8 @@ class Musepack(APEv2File):
 
     def score(filename, fileobj, header):
         return header.startswith("MP+") + filename.endswith(".mpc")
+
     score = staticmethod(score)
+
 
 Open = Musepack

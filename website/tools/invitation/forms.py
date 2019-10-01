@@ -19,9 +19,9 @@ def save_user(form_instance):
     ``django-registration``s ``RegistrationForm``. Required form fields
     are ``username``, ``email`` and ``password1``.
     """
-    username = form_instance.cleaned_data['username']
-    email = form_instance.cleaned_data['email']
-    password = form_instance.cleaned_data['password1']
+    username = form_instance.cleaned_data["username"]
+    email = form_instance.cleaned_data["email"]
+    password = form_instance.cleaned_data["password1"]
     new_user = get_user_model().objects.create_user(username, email, password)
     new_user.save()
     return new_user
@@ -35,20 +35,24 @@ class InvitationForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(InvitationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_class = 'form-horizontal'
-        self.helper.form_method = 'post'
-        self.helper.form_action = ''
+        self.helper.form_class = "form-horizontal"
+        self.helper.form_method = "post"
+        self.helper.form_action = ""
         self.helper.form_tag = False
 
-        self.helper.add_layout(Layout(
-            Field('email', css_class='input-xlarge'),
-            Field('message', css_class='input-xlarge'),
-        ))
+        self.helper.add_layout(
+            Layout(
+                Field("email", css_class="input-xlarge"),
+                Field("message", css_class="input-xlarge"),
+            )
+        )
 
     def clean_email(self):
-        data = self.cleaned_data['email']
+        data = self.cleaned_data["email"]
         if get_user_model().objects.filter(email=data).exists():
-            raise forms.ValidationError(_('A user with the e-mail address {} already exists.').format(data))
+            raise forms.ValidationError(
+                _("A user with the e-mail address {} already exists.").format(data)
+            )
 
         return data
 
@@ -62,16 +66,17 @@ class RegistrationFormInvitation(RegistrationForm):
     activation is required. For this reason ``email`` field always return
     the value of ``email`` argument given the constructor.
     """
+
     def __init__(self, email, *args, **kwargs):
         super(RegistrationFormInvitation, self).__init__(*args, **kwargs)
         self._make_email_immutable(email)
 
     def _make_email_immutable(self, email):
-        self._email = self.initial['email'] = email
-        if 'email' in self.data:
+        self._email = self.initial["email"] = email
+        if "email" in self.data:
             self.data = self.data.copy()
-            self.data['email'] = email
-        self.fields['email'].widget.attrs.update({'readonly': True})
+            self.data["email"] = email
+        self.fields["email"].widget.attrs.update({"readonly": True})
 
     def clean_email(self):
         return self._email

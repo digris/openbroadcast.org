@@ -10,27 +10,31 @@ from tastypie.utils import trailing_slash
 
 
 class ImportFileResource(ModelResource):
-    import_session = fields.ForeignKey('importer.api.ImportResource', 'import_session', null=True, full=False)
+    import_session = fields.ForeignKey(
+        "importer.api.ImportResource", "import_session", null=True, full=False
+    )
 
-    media = fields.ForeignKey('alibrary.api.MediaResource', 'media', null=True, full=True)
+    media = fields.ForeignKey(
+        "alibrary.api.MediaResource", "media", null=True, full=True
+    )
 
     class Meta:
         queryset = ImportFile.objects.all()
-        list_allowed_methods = ['get', 'post']
-        detail_allowed_methods = ['get', 'post', 'put', 'delete', ]
-        resource_name = 'importfile'
-        excludes = ['type', ]
+        list_allowed_methods = ["get", "post"]
+        detail_allowed_methods = ["get", "post", "put", "delete"]
+        resource_name = "importfile"
+        excludes = ["type"]
         authentication = Authentication()
         authorization = Authorization()
         always_return_data = True
         filtering = {
-            'import_session': ALL_WITH_RELATIONS,
-            'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
-            'import_session__uuid_key': ['exact', ],
+            "import_session": ALL_WITH_RELATIONS,
+            "created": ["exact", "range", "gt", "gte", "lt", "lte"],
+            "import_session__uuid_key": ["exact"],
         }
 
     def dehydrate(self, bundle):
-        bundle.data['status'] = bundle.obj.get_status_display().lower()
+        bundle.data["status"] = bundle.obj.get_status_display().lower()
         return bundle
 
     def obj_update(self, bundle, request, **kwargs):
@@ -42,21 +46,23 @@ class ImportFileResource(ModelResource):
         Little hack to play with jquery fileupload
         """
         try:
-            import_id = request.GET.get('import_session', None)
-            uuid_key = request.GET.get('import_session__uuid_key', None)
+            import_id = request.GET.get("import_session", None)
+            uuid_key = request.GET.get("import_session__uuid_key", None)
 
             if import_id:
                 imp = Import.objects.get(pk=import_id)
-                bundle.data['import_session'] = imp
+                bundle.data["import_session"] = imp
 
             elif uuid_key:
-                imp, created = Import.objects.get_or_create(uuid_key=uuid_key, user=request.user)
-                bundle.data['import_session'] = imp
+                imp, created = Import.objects.get_or_create(
+                    uuid_key=uuid_key, user=request.user
+                )
+                bundle.data["import_session"] = imp
 
             else:
-                bundle.data['import_session'] = None
+                bundle.data["import_session"] = None
 
-            bundle.data['file'] = request.FILES[u'files[]']
+            bundle.data["file"] = request.FILES[u"files[]"]
 
         except Exception as e:
             print(e)
@@ -65,25 +71,27 @@ class ImportFileResource(ModelResource):
 
 
 class ImportResource(ModelResource):
-    files = fields.ToManyField('importer.api.ImportFileResource', 'files', full=True, null=True)
+    files = fields.ToManyField(
+        "importer.api.ImportFileResource", "files", full=True, null=True
+    )
 
     class Meta:
         queryset = Import.objects.all()
-        list_allowed_methods = ['get', 'post']
-        detail_allowed_methods = ['get', 'post', 'put', 'delete']
-        resource_name = 'import'
-        excludes = ['updated', ]
+        list_allowed_methods = ["get", "post"]
+        detail_allowed_methods = ["get", "post", "put", "delete"]
+        resource_name = "import"
+        excludes = ["updated"]
         include_absolute_url = True
         authentication = Authentication()
         authorization = Authorization()
         always_return_data = True
         filtering = {
-            'created': ['exact', 'range', 'gt', 'gte', 'lt', 'lte'],
-            'uuid_key': ['exact', ],
+            "created": ["exact", "range", "gt", "gte", "lt", "lte"],
+            "uuid_key": ["exact"],
         }
 
     def dehydrate(self, bundle):
-        bundle.data['inserts'] = bundle.obj.get_inserts()
+        bundle.data["inserts"] = bundle.obj.get_inserts()
         return bundle
 
     def save_related(self, obj):
@@ -92,24 +100,36 @@ class ImportResource(ModelResource):
     def prepend_urls(self):
 
         return [
-            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/import-all%s$" % (
-            self._meta.resource_name, trailing_slash()), self.wrap_view('import_all'), name="importer_api_import_all"),
-            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/apply-to-all%s$" % (
-            self._meta.resource_name, trailing_slash()), self.wrap_view('apply_to_all'),
-                name="importer_api_apply_to_all"),
-            url(r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/retry-pending%s$" % (
-            self._meta.resource_name, trailing_slash()), self.wrap_view('retry_pending'),
-                name="importer_api_retry_pending"),
+            url(
+                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/import-all%s$"
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view("import_all"),
+                name="importer_api_import_all",
+            ),
+            url(
+                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/apply-to-all%s$"
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view("apply_to_all"),
+                name="importer_api_apply_to_all",
+            ),
+            url(
+                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/retry-pending%s$"
+                % (self._meta.resource_name, trailing_slash()),
+                self.wrap_view("retry_pending"),
+                name="importer_api_retry_pending",
+            ),
         ]
 
     def import_all(self, request, **kwargs):
 
-        self.method_check(request, allowed=['get'])
+        self.method_check(request, allowed=["get"])
         self.is_authenticated(request)
         self.throttle_check(request)
 
         import_session = Import.objects.get(**self.remove_api_resource_names(kwargs))
-        import_files = import_session.files.filter(status=2, import_session=import_session)
+        import_files = import_session.files.filter(
+            status=2, import_session=import_session
+        )
 
         for import_file in import_files:
             import_file.status = 6
@@ -127,19 +147,21 @@ class ImportResource(ModelResource):
 
     def apply_to_all(self, request, **kwargs):
 
-        self.method_check(request, allowed=['post'])
+        self.method_check(request, allowed=["post"])
         self.is_authenticated(request)
         self.throttle_check(request)
 
         import_session = Import.objects.get(**self.remove_api_resource_names(kwargs))
 
-        item_id = request.POST.get('item_id', None)
-        ct = request.POST.get('ct', None)
+        item_id = request.POST.get("item_id", None)
+        ct = request.POST.get("ct", None)
 
         if not (ct and item_id):
             raise ImmediateHttpResponse(response=HttpResponse(status=410))
 
-        import_files = import_session.files.filter(status__in=(2, 4), import_session=import_session)
+        import_files = import_session.files.filter(
+            status__in=(2, 4), import_session=import_session
+        )
         source = import_files.filter(pk=item_id)
         # exclude current one
         import_files = import_files.exclude(pk=item_id)
@@ -154,11 +176,21 @@ class ImportResource(ModelResource):
             for import_file in import_files:
                 dit = import_file.import_tag
 
-                if ct == 'artist':
-                    map = ('artist', 'alibrary_artist_id', 'mb_artist_id', 'force_artist')
+                if ct == "artist":
+                    map = (
+                        "artist",
+                        "alibrary_artist_id",
+                        "mb_artist_id",
+                        "force_artist",
+                    )
 
-                if ct == 'release':
-                    map = ('release', 'alibrary_release_id', 'mb_release_id', 'force_release')
+                if ct == "release":
+                    map = (
+                        "release",
+                        "alibrary_release_id",
+                        "mb_release_id",
+                        "force_release",
+                    )
 
                 for key in map:
                     src = sit.get(key, None)
@@ -179,18 +211,20 @@ class ImportResource(ModelResource):
 
     def retry_pending(self, request, **kwargs):
 
-        self.method_check(request, allowed=['post'])
+        self.method_check(request, allowed=["post"])
         self.is_authenticated(request)
         self.throttle_check(request)
 
         import_session = Import.objects.get(**self.remove_api_resource_names(kwargs))
-        import_files = import_session.files.filter(status=0, import_session=import_session)
+        import_files = import_session.files.filter(
+            status=0, import_session=import_session
+        )
 
         for import_file in import_files:
             import_file.status = 3
             import_file.save()
 
-        bundle = {'count': import_files.count()}
+        bundle = {"count": import_files.count()}
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)

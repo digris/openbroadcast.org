@@ -15,15 +15,16 @@ log = logging.getLogger(__name__)
 def request_check_for_media(media_id):
 
     from alibrary.models import Media
+
     obj = Media.objects.get(pk=media_id)
 
     client = MediaPreflightAPIClient()
     result = client.request_check_for_media(obj)
 
     if result:
-        log.info('Media id: {} - requested preflight check'.format(obj.pk))
+        log.info("Media id: {} - requested preflight check".format(obj.pk))
     else:
-        log.warning('Media id: {} - unable to request preflight check'.format(obj.pk))
+        log.warning("Media id: {} - unable to request preflight check".format(obj.pk))
 
 
 @shared_task
@@ -33,6 +34,8 @@ def delete_check_for_media(media_uuid):
     result = client.delete_check_for_media(media_uuid)
 
     if result:
-        log.info('Media id: {} - deleted preflight check'.format(media_uuid))
+        log.info("Media id: {} - deleted preflight check".format(media_uuid))
     else:
-        log.warning('Media id: {} - unable to delete preflight check'.format(media_uuid))
+        log.warning(
+            "Media id: {} - unable to delete preflight check".format(media_uuid)
+        )

@@ -17,7 +17,7 @@ class ActionManager(GFKManager):
         """
         Only return public actions
         """
-        kwargs['public'] = True
+        kwargs["public"] = True
         return self.filter(*args, **kwargs)
 
     @stream
@@ -51,9 +51,11 @@ class ActionManager(GFKManager):
         """
         ctype = ContentType.objects.get_for_model(model)
         return self.public(
-            (Q(target_content_type=ctype) |
-            Q(action_object_content_type=ctype) |
-            Q(actor_content_type=ctype)),
+            (
+                Q(target_content_type=ctype)
+                | Q(action_object_content_type=ctype)
+                | Q(actor_content_type=ctype)
+            ),
             **kwargs
         )
 
@@ -68,9 +70,11 @@ class ActionManager(GFKManager):
         actors_by_content_type = defaultdict(lambda: [])
         others_by_content_type = defaultdict(lambda: [])
 
-        follow_gfks = apps.get_model('actstream', 'follow').objects.filter(
-            user=object).values_list('content_type_id',
-                                     'object_id', 'actor_only')
+        follow_gfks = (
+            apps.get_model("actstream", "follow")
+            .objects.filter(user=object)
+            .values_list("content_type_id", "object_id", "actor_only")
+        )
 
         if not follow_gfks:
             return qs.none()
@@ -82,16 +86,18 @@ class ActionManager(GFKManager):
 
         for content_type_id, object_ids in actors_by_content_type.iteritems():
             q = q | Q(
-                actor_content_type=content_type_id,
-                actor_object_id__in=object_ids,
+                actor_content_type=content_type_id, actor_object_id__in=object_ids
             )
         for content_type_id, object_ids in others_by_content_type.iteritems():
-            q = q | Q(
-                target_content_type=content_type_id,
-                target_object_id__in=object_ids,
-            ) | Q(
-                action_object_content_type=content_type_id,
-                action_object_object_id__in=object_ids,
+            q = (
+                q
+                | Q(
+                    target_content_type=content_type_id, target_object_id__in=object_ids
+                )
+                | Q(
+                    action_object_content_type=content_type_id,
+                    action_object_object_id__in=object_ids,
+                )
             )
         qs = qs.filter(q, **kwargs)
         return qs
@@ -122,10 +128,13 @@ class FollowManager(GFKManager):
         """
         Returns a list of User objects who are following the given actor (eg my followers).
         """
-        return [follow.user for follow in self.filter(
-            content_type=ContentType.objects.get_for_model(actor),
-            object_id=actor.pk
-        ).select_related('user')]
+        return [
+            follow.user
+            for follow in self.filter(
+                content_type=ContentType.objects.get_for_model(actor),
+                object_id=actor.pk,
+            ).select_related("user")
+        ]
 
     def following(self, user, *models):
         """
@@ -135,7 +144,9 @@ class FollowManager(GFKManager):
         """
         qs = self.filter(user=user)
         if len(models):
-            qs = qs.filter(content_type__in=(
-                ContentType.objects.get_for_model(model) for model in models)
+            qs = qs.filter(
+                content_type__in=(
+                    ContentType.objects.get_for_model(model) for model in models
+                )
             )
         return [follow.follow_object for follow in qs.fetch_generic_relations()]

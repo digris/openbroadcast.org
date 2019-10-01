@@ -11,6 +11,6 @@ from django import template
 register = template.Library()
 
 
-@register.inclusion_tag('admin/postman/pendingmessage/submit_line.html')
+@register.inclusion_tag("admin/postman/pendingmessage/submit_line.html")
 def postman_submit_row():
     return {}

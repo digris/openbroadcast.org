@@ -8,7 +8,6 @@ from celery import shared_task
 from django.utils import timezone
 
 
-
 from fprint_client.api_client import FprintAPIClient
 
 log = logging.getLogger(__name__)
@@ -18,26 +17,23 @@ log = logging.getLogger(__name__)
 def ingest_fprint_for_media(media_id):
 
     from alibrary.models import Media
+
     obj = Media.objects.get(pk=media_id)
 
     client = FprintAPIClient()
     result = client.ingest_for_media(obj)
 
     if result:
-        log.info('Media id: {} - ingested fprint'.format(obj.pk))
-        type(obj).objects.filter(pk=obj.pk).update(
-            fprint_ingested=timezone.now()
-        )
+        log.info("Media id: {} - ingested fprint".format(obj.pk))
+        type(obj).objects.filter(pk=obj.pk).update(fprint_ingested=timezone.now())
     else:
-        log.warning('Media id: {} - unable to ingest fprint'.format(obj.pk))
-
+        log.warning("Media id: {} - unable to ingest fprint".format(obj.pk))
 
 
 @shared_task
 def delete_fprint_for_media(media_uuid):
 
-    log.info('Media id: {} - delete fprint'.format(media_uuid))
+    log.info("Media id: {} - delete fprint".format(media_uuid))
     client = FprintAPIClient()
 
     result = client.delete_for_media(media_uuid)
-

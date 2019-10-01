@@ -14,16 +14,16 @@ from l10n.models import Country
 
 log = logging.getLogger(__name__)
 
-MUSICBRAINZ_HOST = getattr(settings, 'MUSICBRAINZ_HOST', None)
-DISCOGS_HOST = getattr(settings, 'DISCOGS_HOST', None)
+MUSICBRAINZ_HOST = getattr(settings, "MUSICBRAINZ_HOST", None)
+DISCOGS_HOST = getattr(settings, "DISCOGS_HOST", None)
 
-MUSICBRAINZ_404_MESSAGE = '''
+MUSICBRAINZ_404_MESSAGE = """
 We could not find the requested data on our Musicbrainz mirror server.<br>
 This is a known issue and we're working on improving synchronisation of external data sources.
-'''
+"""
+
 
 class APILookup(object):
-
     def __init__(self, obj):
         self.obj = obj
         self.type = obj.__class__.__name__.lower()
@@ -35,30 +35,45 @@ class MusicbrainzAPILookup(APILookup):
     """
 
     def get_data(self, uri=None):
-        log.debug('run musicbrainz lookup for %s - %s' % (self.obj, self.type))
+        log.debug("run musicbrainz lookup for %s - %s" % (self.obj, self.type))
 
         if not uri:
-            uri = self.obj.relations.filter(service='musicbrainz')[0].url
-        log.debug('musicbrainz uri: %s' % uri)
+            uri = self.obj.relations.filter(service="musicbrainz")[0].url
+        log.debug("musicbrainz uri: %s" % uri)
 
         # for consistency uri is handled in resp. method
-        return getattr(self, 'get_%s' % self.type)(uri)
-
+        return getattr(self, "get_%s" % self.type)(uri)
 
     def get_release(self, uri):
 
-        provider_id = uri.split('/')[-1]
-        inc = ('aliases', 'url-rels', 'annotation', 'tags', 'artist-rels', 'recordings', 'artists', 'labels', 'release-groups', 'artist-credits', 'isrcs')
-        api_url = 'http://%s/ws/2/release/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, provider_id, "+".join(inc))
+        provider_id = uri.split("/")[-1]
+        inc = (
+            "aliases",
+            "url-rels",
+            "annotation",
+            "tags",
+            "artist-rels",
+            "recordings",
+            "artists",
+            "labels",
+            "release-groups",
+            "artist-credits",
+            "isrcs",
+        )
+        api_url = "http://%s/ws/2/release/%s/?fmt=json&inc=%s" % (
+            MUSICBRAINZ_HOST,
+            provider_id,
+            "+".join(inc),
+        )
 
-        log.info('composed api url: %s' % api_url)
+        log.info("composed api url: %s" % api_url)
 
         r = requests.get(api_url)
 
         if r.status_code == 404:
-            return {'error': MUSICBRAINZ_404_MESSAGE}
+            return {"error": MUSICBRAINZ_404_MESSAGE}
 
-        data= r.json()
+        data = r.json()
 
         res = {}
         d_tags = []
@@ -66,138 +81,140 @@ class MusicbrainzAPILookup(APILookup):
         for k in data:
             mk = k
 
-            if k == 'annotation':
-                mk = 'description'
+            if k == "annotation":
+                mk = "description"
 
-            if k == 'title':
-                mk = 'name'
+            if k == "title":
+                mk = "name"
 
-            if k == 'country':
-                mk = 'release_country'
+            if k == "country":
+                mk = "release_country"
 
-            if k == 'date':
-                mk = 'releasedate_approx'
+            if k == "date":
+                mk = "releasedate_approx"
 
-            if k == 'label-info':
+            if k == "label-info":
                 try:
-                    if 'label' in data[k][0] and 'name' in data[k][0]['label']:
-                        res['label_0'] = data[k][0]['label']['name']
+                    if "label" in data[k][0] and "name" in data[k][0]["label"]:
+                        res["label_0"] = data[k][0]["label"]["name"]
 
-                    if 'catalog-number' in data[k][0]:
-                        res['catalognumber'] = data[k][0]['catalog-number']
+                    if "catalog-number" in data[k][0]:
+                        res["catalognumber"] = data[k][0]["catalog-number"]
 
                 except:
                     pass
 
-            if k == 'release-group':
+            if k == "release-group":
                 try:
-                    res['releasetype'] = data[k]['primary-type']
+                    res["releasetype"] = data[k]["primary-type"]
 
                 except:
                     pass
 
-
-            if k == 'relations':
+            if k == "relations":
                 mapped = []
                 for rel in data[k]:
-                    if 'url' in rel:
-                        mapped.append({
-                            'uri': rel['url']['resource'],
-                            'service': get_service_by_url(rel['url']['resource'], None),
-                            })
+                    if "url" in rel:
+                        mapped.append(
+                            {
+                                "uri": rel["url"]["resource"],
+                                "service": get_service_by_url(
+                                    rel["url"]["resource"], None
+                                ),
+                            }
+                        )
                 data[k] = mapped
 
-            if k == 'media':
+            if k == "media":
                 mapped_media = []
                 pos = 0
                 disc_no = 0
 
                 for disc in data[k]:
                     disc_no += 1
-                    for m in disc['tracks']:
+                    for m in disc["tracks"]:
                         pos += 1
 
-                        if 'artist-credit' in m:
-                            track_artists = m['artist-credit']
+                        if "artist-credit" in m:
+                            track_artists = m["artist-credit"]
                         else:
                             track_artists = []
 
-                        if 'recording' in m and 'isrcs' in m['recording']:
-                            isrcs = m['recording']['isrcs']
+                        if "recording" in m and "isrcs" in m["recording"]:
+                            isrcs = m["recording"]["isrcs"]
                         else:
                             isrcs = []
 
-                        mapped_media.append({
-                            'number': '%s' % (pos),
-                            'position': '%s-%s' % (disc_no, pos),
-                            'duration': m['length'],
-                            'title': m['title'],
-                            'artists': track_artists,
-                            'isrcs': isrcs,
-                            })
+                        mapped_media.append(
+                            {
+                                "number": "%s" % (pos),
+                                "position": "%s-%s" % (disc_no, pos),
+                                "duration": m["length"],
+                                "title": m["title"],
+                                "artists": track_artists,
+                                "isrcs": isrcs,
+                            }
+                        )
 
-
-
-            if k == 'tags':
+            if k == "tags":
                 try:
                     d = data[k]
                     for v in d:
-                        d_tags.append(v['name'])
+                        d_tags.append(v["name"])
                 except:
                     pass
-
 
             res[mk] = data[k]
 
         # try to remap country
-        if 'release_country' in res:
+        if "release_country" in res:
             try:
-                c = Country.objects.get(iso2_code=res['release_country'])
+                c = Country.objects.get(iso2_code=res["release_country"])
             except:
                 pass
 
         try:
-            url = 'http://coverartarchive.org/release/%s' % id
+            url = "http://coverartarchive.org/release/%s" % id
             r = requests.get(url)
             if r.ok:
-                res['main_image'] = r.json()['images'][0]['image']
-                res['remote_image'] = r.json()['images'][0]['image']
+                res["main_image"] = r.json()["images"][0]["image"]
+                res["remote_image"] = r.json()["images"][0]["image"]
         except:
             pass
-
-
 
         try:
             num_tracks = 0
-            for x in data['media']:
-                num_tracks += int(x['track-count'])
-            res['totaltracks'] = num_tracks if num_tracks > 0 else None
+            for x in data["media"]:
+                num_tracks += int(x["track-count"])
+            res["totaltracks"] = num_tracks if num_tracks > 0 else None
         except:
             pass
 
-        res['d_tags'] = ', '.join(d_tags)
+        res["d_tags"] = ", ".join(d_tags)
 
         # disable tags on mb
-        res['d_tags'] = res['tags'] = ''
+        res["d_tags"] = res["tags"] = ""
 
-
-        res['tracklist'] = mapped_media
+        res["tracklist"] = mapped_media
 
         return res
 
-
     def get_artist(self, uri):
 
-        provider_id = uri.split('/')[-1]
-        inc = ('aliases', 'url-rels', 'annotation', 'tags', 'artist-rels')
-        api_url = 'http://%s/ws/2/artist/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, provider_id, "+".join(inc))
+        provider_id = uri.split("/")[-1]
+        inc = ("aliases", "url-rels", "annotation", "tags", "artist-rels")
+        api_url = "http://%s/ws/2/artist/%s/?fmt=json&inc=%s" % (
+            MUSICBRAINZ_HOST,
+            provider_id,
+            "+".join(inc),
+        )
 
-        log.info('composed api url: %s' % api_url)
+        log.info("composed api url: %s" % api_url)
 
         r = requests.get(api_url)
 
         if r.status_code == 404:
-            return {'error': MUSICBRAINZ_404_MESSAGE}
+            return {"error": MUSICBRAINZ_404_MESSAGE}
 
         data = r.json()
 
@@ -205,215 +222,243 @@ class MusicbrainzAPILookup(APILookup):
         d_tags = []
         for k in data:
             mk = k
-            if k == 'annotation':
-                mk = 'description'
+            if k == "annotation":
+                mk = "description"
 
-            if k == 'life-span':
-                if 'begin' in data[k]:
-                    res['date_start'] = data[k]['begin']
+            if k == "life-span":
+                if "begin" in data[k]:
+                    res["date_start"] = data[k]["begin"]
 
-                if 'end' in data[k]:
-                    res['date_end'] = data[k]['end']
+                if "end" in data[k]:
+                    res["date_end"] = data[k]["end"]
 
-            if k == 'relations':
+            if k == "relations":
                 mapped = []
                 for rel in data[k]:
-                    if 'url' in rel:
-                        mapped.append({
-                            'uri': rel['url']['resource'],
-                            'service': get_service_by_url(rel['url']['resource'], None),
-                            })
+                    if "url" in rel:
+                        mapped.append(
+                            {
+                                "uri": rel["url"]["resource"],
+                                "service": get_service_by_url(
+                                    rel["url"]["resource"], None
+                                ),
+                            }
+                        )
                 data[k] = mapped
 
-            if k == 'ipis':
+            if k == "ipis":
                 try:
                     d = data[k]
-                    res['ipi_code'] = d[0]
+                    res["ipi_code"] = d[0]
                 except:
                     pass
 
-            if k == 'isni':
+            if k == "isni":
                 try:
                     d = data[k]
-                    res['isni_code'] = d
+                    res["isni_code"] = d
                 except:
                     pass
 
-            if k == 'tags':
+            if k == "tags":
                 try:
                     d = data[k]
                     for v in d:
-                        d_tags.append(v['name'])
+                        d_tags.append(v["name"])
                 except:
                     pass
 
             res[mk] = data[k]
 
-        res['d_tags'] = ', '.join(d_tags)
+        res["d_tags"] = ", ".join(d_tags)
 
         # disable tags on mb
-        res['d_tags'] = res['tags'] = ''
-
+        res["d_tags"] = res["tags"] = ""
 
         # temporary hack to get isni
         # http://tickets.musicbrainz.org/browse/MBS-8762
-        api_url = 'http://%s/ws/2/artist/%s/?fmt=xml&inc=%s' % (MUSICBRAINZ_HOST, provider_id, "+".join(inc))
-        log.info('composed api url: %s' % api_url)
+        api_url = "http://%s/ws/2/artist/%s/?fmt=xml&inc=%s" % (
+            MUSICBRAINZ_HOST,
+            provider_id,
+            "+".join(inc),
+        )
+        log.info("composed api url: %s" % api_url)
         r = requests.get(api_url)
         if r.status_code == 200:
             import xmltodict
             import json
+
             try:
-                isni_code = json.loads(json.dumps(xmltodict.parse(r.text)))['metadata']['artist']['isni-list']['isni']
+                isni_code = json.loads(json.dumps(xmltodict.parse(r.text)))["metadata"][
+                    "artist"
+                ]["isni-list"]["isni"]
                 if isinstance(isni_code, types.ListType):
-                    res['isni_code'] = isni_code[0]
+                    res["isni_code"] = isni_code[0]
                 else:
-                    res['isni_code'] = isni_code
+                    res["isni_code"] = isni_code
             except:
                 pass
 
-
         return res
-
 
     def get_label(self, uri):
 
-        provider_id = uri.split('/')[-1]
-        inc = ('aliases', 'url-rels', 'annotation', 'tags',)
-        api_url = 'http://%s/ws/2/label/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, provider_id, "+".join(inc))
+        provider_id = uri.split("/")[-1]
+        inc = ("aliases", "url-rels", "annotation", "tags")
+        api_url = "http://%s/ws/2/label/%s/?fmt=json&inc=%s" % (
+            MUSICBRAINZ_HOST,
+            provider_id,
+            "+".join(inc),
+        )
 
-        log.info('composed api url: %s' % api_url)
+        log.info("composed api url: %s" % api_url)
 
         r = requests.get(api_url)
 
         if r.status_code == 404:
-            return {'error': MUSICBRAINZ_404_MESSAGE}
+            return {"error": MUSICBRAINZ_404_MESSAGE}
 
-        data= r.json()
+        data = r.json()
 
         res = {}
         d_tags = []
         for k in data:
 
             mk = k
-            if k == 'label-code':
-                mk = 'labelcode'
+            if k == "label-code":
+                mk = "labelcode"
 
-            if k == 'annotation':
-                mk = 'description'
+            if k == "annotation":
+                mk = "description"
 
             # wrong type-map
-            if k == 'type':
-                mk = '__unused__'
+            if k == "type":
+                mk = "__unused__"
 
-            if k == 'life-span':
-                if 'begin' in data[k]:
-                    res['date_start'] = data[k]['begin']
+            if k == "life-span":
+                if "begin" in data[k]:
+                    res["date_start"] = data[k]["begin"]
 
-                if 'end' in data[k]:
-                    res['date_end'] = data[k]['end']
+                if "end" in data[k]:
+                    res["date_end"] = data[k]["end"]
 
-            if k == 'parent_label':
-                res['parent_0'] = data[k]['name']
+            if k == "parent_label":
+                res["parent_0"] = data[k]["name"]
 
-
-            if k == 'relations':
+            if k == "relations":
                 mapped = []
                 for rel in data[k]:
-                    if 'url' in rel:
-                        mapped.append({
-                            'uri': rel['url']['resource'],
-                            'service': get_service_by_url(rel['url']['resource'], None),
-                            })
+                    if "url" in rel:
+                        mapped.append(
+                            {
+                                "uri": rel["url"]["resource"],
+                                "service": get_service_by_url(
+                                    rel["url"]["resource"], None
+                                ),
+                            }
+                        )
                 data[k] = mapped
 
-            if k == 'tags':
+            if k == "tags":
                 try:
                     d = data[k]
                     for v in d:
-                        d_tags.append(v['name'])
+                        d_tags.append(v["name"])
                 except:
                     pass
 
             res[mk] = data[k]
 
-        if 'country' in res:
+        if "country" in res:
             try:
-                c = Country.objects.get(iso2_code=res['country'])
+                c = Country.objects.get(iso2_code=res["country"])
             except:
                 pass
 
-        res['d_tags'] = ', '.join(d_tags)
+        res["d_tags"] = ", ".join(d_tags)
 
         # disable tags on mb
-        res['d_tags'] = res['tags'] = ''
+        res["d_tags"] = res["tags"] = ""
 
         return res
 
-
     def get_media(self, uri):
 
-        provider_id = uri.split('/')[-1]
+        provider_id = uri.split("/")[-1]
 
-        #inc = ('aliases', 'url-rels', 'annotation', 'tags', 'artists', 'isrcs', 'artist-credits', 'artist-rels', 'work-rels')
-        inc = ('aliases', 'url-rels', 'annotation', 'tags', 'artists', 'isrcs', 'artist-credits', 'work-rels')
-        api_url = 'http://%s/ws/2/recording/%s/?fmt=json&inc=%s' % (MUSICBRAINZ_HOST, provider_id, "+".join(inc))
+        # inc = ('aliases', 'url-rels', 'annotation', 'tags', 'artists', 'isrcs', 'artist-credits', 'artist-rels', 'work-rels')
+        inc = (
+            "aliases",
+            "url-rels",
+            "annotation",
+            "tags",
+            "artists",
+            "isrcs",
+            "artist-credits",
+            "work-rels",
+        )
+        api_url = "http://%s/ws/2/recording/%s/?fmt=json&inc=%s" % (
+            MUSICBRAINZ_HOST,
+            provider_id,
+            "+".join(inc),
+        )
 
-        log.info('composed api url: %s' % api_url)
+        log.info("composed api url: %s" % api_url)
 
         r = requests.get(api_url)
 
         if r.status_code == 404:
-            return {'error': MUSICBRAINZ_404_MESSAGE}
+            return {"error": MUSICBRAINZ_404_MESSAGE}
 
-        data= r.json()
+        data = r.json()
 
         res = {}
         d_tags = []
         for k in data:
             mk = k
-            if k == 'title':
-                mk = 'name'
+            if k == "title":
+                mk = "name"
 
-            if k == 'annotation':
-                mk = 'description'
+            if k == "annotation":
+                mk = "description"
 
             # we just take the first isrc code..
-            if k == 'isrcs' and len(data['isrcs']) > 0:
-                res['isrc'] = data['isrcs'][0]
+            if k == "isrcs" and len(data["isrcs"]) > 0:
+                res["isrc"] = data["isrcs"][0]
 
-            if k == 'relations':
+            if k == "relations":
                 mapped = []
                 for rel in data[k]:
-                    if 'url' in rel:
-                        mapped.append({
-                            'uri': rel['url']['resource'],
-                            'service': get_service_by_url(rel['url']['resource'], None),
-                            })
+                    if "url" in rel:
+                        mapped.append(
+                            {
+                                "uri": rel["url"]["resource"],
+                                "service": get_service_by_url(
+                                    rel["url"]["resource"], None
+                                ),
+                            }
+                        )
                 data[k] = mapped
 
-            if k == 'tags':
+            if k == "tags":
                 try:
                     d = data[k]
                     for v in d:
-                        d_tags.append(v['name'])
+                        d_tags.append(v["name"])
                 except:
                     pass
 
             res[mk] = data[k]
 
-        res['d_tags'] = ', '.join(d_tags)
+        res["d_tags"] = ", ".join(d_tags)
 
         # TODO: implement artist mapping
         # res['artist_0'] = 'peter'
 
         # disable tags on mb
-        res['d_tags'] = res['tags'] = ''
-
+        res["d_tags"] = res["tags"] = ""
 
         return res
-
-
 
 
 class DiscogsAPILookup(APILookup):
@@ -422,15 +467,14 @@ class DiscogsAPILookup(APILookup):
     """
 
     def get_data(self, uri=None):
-        log.debug('run discogs lookup for %s - %s' % (self.obj, self.type))
+        log.debug("run discogs lookup for %s - %s" % (self.obj, self.type))
 
         if not uri:
-            uri = self.obj.relations.filter(service='discogs')[0].url
-        log.debug('discogs uri: %s' % uri)
+            uri = self.obj.relations.filter(service="discogs")[0].url
+        log.debug("discogs uri: %s" % uri)
 
         # for consistency uri is handled in resp. method
-        return getattr(self, 'get_%s' % self.type)(uri)
-
+        return getattr(self, "get_%s" % self.type)(uri)
 
     def map_image(self, d):
         """
@@ -439,8 +483,8 @@ class DiscogsAPILookup(APILookup):
         image = None
         try:
             for v in d:
-                if v['type'] == 'primary':
-                    image = v['resource_url']
+                if v["type"] == "primary":
+                    image = v["resource_url"]
         except:
             pass
 
@@ -448,13 +492,12 @@ class DiscogsAPILookup(APILookup):
         if not image:
             try:
                 for v in d:
-                    if v['type'] == 'secondary':
-                        image = v['resource_url']
+                    if v["type"] == "secondary":
+                        image = v["resource_url"]
             except:
                 pass
 
         return image
-
 
     def reformat_name(self, name):
         """
@@ -464,17 +507,15 @@ class DiscogsAPILookup(APILookup):
         e.g. "Tone Control Music, The (2)" becomes "The Tone Control Music"
         """
 
-        p = ' \([0-9]+\)'
-        name = re.sub(p, '', name)
+        p = " \([0-9]+\)"
+        name = re.sub(p, "", name)
 
-        if name[-5:] == ', The':
-            name = 'The %s' % name[:-5]
-        if name[-4:] == ',The':
-            name = 'The %s' % name[:-4]
+        if name[-5:] == ", The":
+            name = "The %s" % name[:-5]
+        if name[-4:] == ",The":
+            name = "The %s" % name[:-4]
 
         return name.strip()
-
-
 
     def get_release(self, uri):
 
@@ -485,19 +526,18 @@ class DiscogsAPILookup(APILookup):
          for releases it is fine to just take the last bit
         """
 
-        provider_id = uri.split('/')[-1]
+        provider_id = uri.split("/")[-1]
 
-        if '/release/' in uri:
-            api_url = 'http://%s/releases/%s' % (DISCOGS_HOST, provider_id)
+        if "/release/" in uri:
+            api_url = "http://%s/releases/%s" % (DISCOGS_HOST, provider_id)
 
-        if '/master/' in uri:
-            api_url = 'http://%s/masters/%s' % (DISCOGS_HOST, provider_id)
+        if "/master/" in uri:
+            api_url = "http://%s/masters/%s" % (DISCOGS_HOST, provider_id)
 
-
-        log.info('composed api url: %s' % api_url)
+        log.info("composed api url: %s" % api_url)
 
         r = requests.get(api_url)
-        data= r.json()
+        data = r.json()
 
         res = {}
         d_tags = []
@@ -507,54 +547,51 @@ class DiscogsAPILookup(APILookup):
 
             mk = k
 
-            #if k == 'title':
+            # if k == 'title':
             #    mk = 'name'
 
-            if k == 'title':
+            if k == "title":
                 # reformat numbering & 'The' and strip blank characters
-                res['name'] = self.reformat_name(data[k])
+                res["name"] = self.reformat_name(data[k])
 
-            if k == 'artists':
+            if k == "artists":
                 reformated_artists = []
-                for item in data['artists']:
-                    if 'name' in item:
-                        item['name'] = self.reformat_name(item['name'])
+                for item in data["artists"]:
+                    if "name" in item:
+                        item["name"] = self.reformat_name(item["name"])
                         reformated_artists.append(item)
-                res['artists'] = reformated_artists
+                res["artists"] = reformated_artists
 
+            if k == "notes":
+                mk = "description"
 
-            if k == 'notes':
-                mk = 'description'
+            if k == "released_formatted":
+                mk = "releasedate_approx"
 
-            if k == 'released_formatted':
-                mk = 'releasedate_approx'
-
-            if k == 'formats':
+            if k == "formats":
                 try:
                     d = data[k]
-                    if len(d[0]['descriptions']) > 1:
-                        res['releasetype'] = d[0]['descriptions'][1]
+                    if len(d[0]["descriptions"]) > 1:
+                        res["releasetype"] = d[0]["descriptions"][1]
                     else:
-                        res['releasetype'] = d[0]['descriptions'][0]
+                        res["releasetype"] = d[0]["descriptions"][0]
 
                 except:
                     pass
 
+            if k == "country":
+                mk = "release_country"
 
-            if k == 'country':
-                mk = 'release_country'
-
-            if k == 'labels':
+            if k == "labels":
                 try:
                     d = data[k][0]
-                    res['label_0'] = self.reformat_name(d['name'])
-                    res['catalognumber'] = d['catno']
+                    res["label_0"] = self.reformat_name(d["name"])
+                    res["catalognumber"] = d["catno"]
                 except:
                     pass
-
 
             # tagging
-            if k == 'styles':
+            if k == "styles":
                 try:
                     d = data[k]
                     for v in d:
@@ -562,7 +599,7 @@ class DiscogsAPILookup(APILookup):
                 except:
                     pass
 
-            if k == 'genres':
+            if k == "genres":
                 try:
                     d = data[k]
                     for v in d:
@@ -570,44 +607,43 @@ class DiscogsAPILookup(APILookup):
                 except:
                     pass
 
-
-            if k == 'urls':
+            if k == "urls":
                 mapped = []
                 for rel in data[k]:
-                    relations.append({
-                        'uri': rel,
-                        'service': get_service_by_url(rel, None),
-                        })
+                    relations.append(
+                        {"uri": rel, "service": get_service_by_url(rel, None)}
+                    )
 
             # image
-            if k == 'images':
-                res['remote_image'] = res['main_image'] = self.map_image(data[k])
+            if k == "images":
+                res["remote_image"] = res["main_image"] = self.map_image(data[k])
 
             res[mk] = data[k]
 
         try:
-            res['totaltracks'] = len(data['tracklist'])
+            res["totaltracks"] = len(data["tracklist"])
         except:
             pass
 
-        res['d_tags'] = ', '.join(d_tags)
-        res['relations'] = relations
+        res["d_tags"] = ", ".join(d_tags)
+        res["relations"] = relations
 
         # remap borgious countries
         try:
-            if res['release_country'].upper() == 'UK':
-                res['release_country'] = 'GB'
+            if res["release_country"].upper() == "UK":
+                res["release_country"] = "GB"
         except:
             pass
 
-
         # reformat tracklist
-        res['tracklist'] = []
-        for track in data['tracklist']:
+        res["tracklist"] = []
+        for track in data["tracklist"]:
 
-            if 'artists' in track:
+            if "artists" in track:
                 try:
-                    track['artists'][0]['name'] = self.reformat_name(track['artists'][0]['name'])
+                    track["artists"][0]["name"] = self.reformat_name(
+                        track["artists"][0]["name"]
+                    )
                 except:
                     pass
             """
@@ -615,16 +651,13 @@ class DiscogsAPILookup(APILookup):
             https://lab.hazelfire.com/issues/1622
             """
             try:
-                track['title'] = track['title'].replace('\x92', "'").strip()
+                track["title"] = track["title"].replace("\x92", "'").strip()
             except Exception as e:
                 pass
 
-            res['tracklist'].append(track)
-
-
+            res["tracklist"].append(track)
 
         return res
-
 
     def get_artist(self, uri):
 
@@ -635,43 +668,42 @@ class DiscogsAPILookup(APILookup):
          for artists, we neet to take the last bit, split it by '-' and use the first element
         """
 
-        provider_id = uri.split('/')[-1].split('-')[0]
-        api_url = 'http://%s/artists/%s' % (DISCOGS_HOST, provider_id)
+        provider_id = uri.split("/")[-1].split("-")[0]
+        api_url = "http://%s/artists/%s" % (DISCOGS_HOST, provider_id)
 
-        log.info('composed api url: %s' % api_url)
+        log.info("composed api url: %s" % api_url)
 
         r = requests.get(api_url)
-        data= r.json()
+        data = r.json()
 
         res = {}
-        d_tags = [] # needed as merged from different keys
+        d_tags = []  # needed as merged from different keys
         relations = []
 
         for k in data:
 
-            if k == 'profile':
-                mk = 'biography'
+            if k == "profile":
+                mk = "biography"
 
-            if k == 'realname':
-                mk = 'real_name'
+            if k == "realname":
+                mk = "real_name"
 
-            if k == 'namevariations':
-                res['namevariations'] = ', '.join(data[k])
+            if k == "namevariations":
+                res["namevariations"] = ", ".join(data[k])
 
-            if k == 'name':
+            if k == "name":
                 # reformat numbering & 'The'
                 res[k] = self.reformat_name(data[k])
 
-            if k == 'urls':
+            if k == "urls":
                 mapped = []
                 for rel in data[k]:
-                    relations.append({
-                        'uri': rel,
-                        'service': get_service_by_url(rel, None),
-                        })
+                    relations.append(
+                        {"uri": rel, "service": get_service_by_url(rel, None)}
+                    )
 
-            if k == 'images':
-                res['remote_image'] = res['main_image'] = self.map_image(data[k])
+            if k == "images":
+                res["remote_image"] = res["main_image"] = self.map_image(data[k])
 
             try:
                 if not mk in res:
@@ -679,13 +711,10 @@ class DiscogsAPILookup(APILookup):
             except:
                 pass
 
-
-        res['d_tags'] = ', '.join(d_tags)
-        res['relations'] = relations
-
+        res["d_tags"] = ", ".join(d_tags)
+        res["relations"] = relations
 
         return res
-
 
     def get_label(self, uri):
 
@@ -696,45 +725,41 @@ class DiscogsAPILookup(APILookup):
          for labels, we neet to take the last bit, split it by '-' and use the first element
         """
 
-        provider_id = uri.split('/')[-1].split('-')[0]
-        api_url = 'http://%s/labels/%s' % (DISCOGS_HOST, provider_id)
+        provider_id = uri.split("/")[-1].split("-")[0]
+        api_url = "http://%s/labels/%s" % (DISCOGS_HOST, provider_id)
 
-        log.info('composed api url: %s' % api_url)
+        log.info("composed api url: %s" % api_url)
 
         r = requests.get(api_url)
-        data= r.json()
+        data = r.json()
 
         res = {}
-        d_tags = [] # needed as merged from different keys
+        d_tags = []  # needed as merged from different keys
         relations = []
-
 
         for k in data:
 
-            if k == 'name':
+            if k == "name":
                 res[k] = self.reformat_name(data[k])
 
-            if k == 'profile':
-                mk = 'description'
+            if k == "profile":
+                mk = "description"
 
-            if k == 'contact_info':
-                mk = 'address'
+            if k == "contact_info":
+                mk = "address"
 
-            if k == 'parent_label':
-                res['parent_0'] = self.reformat_name(data[k]['name'])
+            if k == "parent_label":
+                res["parent_0"] = self.reformat_name(data[k]["name"])
 
-            if k == 'urls':
+            if k == "urls":
                 mapped = []
                 for rel in data[k]:
-                    relations.append({
-                        'uri': rel,
-                        'service': get_service_by_url(rel, None),
-                        })
+                    relations.append(
+                        {"uri": rel, "service": get_service_by_url(rel, None)}
+                    )
 
-            if k == 'images':
-                res['remote_image'] = res['main_image'] = self.map_image(data[k])
-
-
+            if k == "images":
+                res["remote_image"] = res["main_image"] = self.map_image(data[k])
 
             try:
                 if not mk in res:
@@ -742,45 +767,41 @@ class DiscogsAPILookup(APILookup):
             except:
                 pass
 
-
-        res['d_tags'] = ', '.join(d_tags)
-        res['relations'] = relations
+        res["d_tags"] = ", ".join(d_tags)
+        res["relations"] = relations
 
         return res
 
 
-
-
 def get_from_provider(item_type, item_id, provider, api_url=None):
 
-    log.debug('get_from_provider: %s - id: %s - provider: %s - %s' % (item_type, item_id, provider, api_url))
-
+    log.debug(
+        "get_from_provider: %s - id: %s - provider: %s - %s"
+        % (item_type, item_id, provider, api_url)
+    )
 
     # get source object
     obj = None
-    if item_type == 'release':
+    if item_type == "release":
         obj = Release.objects.get(pk=item_id)
 
-    if item_type == 'artist':
+    if item_type == "artist":
         obj = Artist.objects.get(pk=item_id)
 
-    if item_type == 'media':
+    if item_type == "media":
         obj = Media.objects.get(pk=item_id)
 
-    if item_type == 'label':
+    if item_type == "label":
         obj = Label.objects.get(pk=item_id)
 
-
-    if obj and provider == 'musicbrainz':
+    if obj and provider == "musicbrainz":
         lookup = MusicbrainzAPILookup(obj=obj)
         return lookup.get_data(uri=api_url)
 
-    if obj and provider == 'discogs':
+    if obj and provider == "discogs":
         lookup = DiscogsAPILookup(obj=obj)
         return lookup.get_data(uri=api_url)
 
-
-
-    log.debug('item to process: %s - %s' % (obj.pk, obj))
+    log.debug("item to process: %s - %s" % (obj.pk, obj))
 
     return {}

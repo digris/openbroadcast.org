@@ -11,6 +11,7 @@ REMOTE_API_TIMEOUT = 5.0
 
 log = logging.getLogger(__name__)
 
+
 @register()
 def check_binaries(app_configs, **kwargs):
     """
@@ -18,11 +19,11 @@ def check_binaries(app_configs, **kwargs):
     """
 
     BINARIES_TO_CHECK = [
-        'LAME_BINARY',
-        'SOX_BINARY',
-        'FAAD_BINARY',
-        'FFPROBE_BINARY',
-        'ECHOPRINT_CODEGEN_BINARY',
+        "LAME_BINARY",
+        "SOX_BINARY",
+        "FAAD_BINARY",
+        "FFPROBE_BINARY",
+        "ECHOPRINT_CODEGEN_BINARY",
     ]
 
     errors = []
@@ -33,10 +34,10 @@ def check_binaries(app_configs, **kwargs):
 
             errors.append(
                 Error(
-                    'binary missing',
-                    hint='binary location {} not specified in settings'.format(key),
+                    "binary missing",
+                    hint="binary location {} not specified in settings".format(key),
                     obj=key,
-                    id='base.E001',
+                    id="base.E001",
                 )
             )
 
@@ -44,10 +45,12 @@ def check_binaries(app_configs, **kwargs):
 
             errors.append(
                 Error(
-                    'path does not exist',
-                    hint='binary location for {} does not exist at {}'.format(key, path),
+                    "path does not exist",
+                    hint="binary location for {} does not exist at {}".format(
+                        key, path
+                    ),
                     obj=key,
-                    id='base.E001',
+                    id="base.E001",
                 )
             )
 
@@ -55,13 +58,12 @@ def check_binaries(app_configs, **kwargs):
 
             errors.append(
                 Debug(
-                    'OK: {}'.format(path),
-                    #hint='{} found: {}'.format(key, path),
+                    "OK: {}".format(path),
+                    # hint='{} found: {}'.format(key, path),
                     obj=key,
-                    id='base.I001',
+                    id="base.I001",
                 )
             )
-
 
     return errors
 
@@ -72,9 +74,7 @@ def check_directories(app_configs, **kwargs):
     check platform directories
     """
 
-    PATHS_TO_CHECK = [
-        'MEDIA_ROOT',
-    ]
+    PATHS_TO_CHECK = ["MEDIA_ROOT"]
 
     errors = []
 
@@ -85,10 +85,10 @@ def check_directories(app_configs, **kwargs):
 
             errors.append(
                 Error(
-                    'path does not exist',
-                    hint='location for {} does not exist at {}'.format(key, path),
+                    "path does not exist",
+                    hint="location for {} does not exist at {}".format(key, path),
                     obj=key,
-                    id='base.E002',
+                    id="base.E002",
                 )
             )
 
@@ -96,18 +96,17 @@ def check_directories(app_configs, **kwargs):
 
             errors.append(
                 Debug(
-                    'OK: {}'.format(path),
-                    #hint='{} found: {}'.format(key, path),
+                    "OK: {}".format(path),
+                    # hint='{} found: {}'.format(key, path),
                     obj=key,
-                    id='base.I002',
+                    id="base.I002",
                 )
             )
-
 
     return errors
 
 
-#@register()
+# @register()
 def check_apis(app_configs, **kwargs):
     """
     check API connection
@@ -115,17 +114,16 @@ def check_apis(app_configs, **kwargs):
 
     SERVICES_TO_CHECK = [
         {
-            'name': 'Musicbrainz API',
-            'url': 'http://{}/ws/2/artist/1582a5b8-538e-45e7-9ae4-4099439a0e79'.format(getattr(settings, 'MUSICBRAINZ_HOST')),
+            "name": "Musicbrainz API",
+            "url": "http://{}/ws/2/artist/1582a5b8-538e-45e7-9ae4-4099439a0e79".format(
+                getattr(settings, "MUSICBRAINZ_HOST")
+            ),
         },
         {
-            'name': 'Discogs API',
-            'url': 'http://{}/labels/1'.format(getattr(settings, 'DISCOGS_HOST'))
+            "name": "Discogs API",
+            "url": "http://{}/labels/1".format(getattr(settings, "DISCOGS_HOST")),
         },
-        {
-            'name': 'Fingerprinting API',
-            'url': getattr(settings, 'FPRINT_API_BASE_URL')
-        }
+        {"name": "Fingerprinting API", "url": getattr(settings, "FPRINT_API_BASE_URL")},
     ]
 
     errors = []
@@ -133,7 +131,7 @@ def check_apis(app_configs, **kwargs):
     for service in SERVICES_TO_CHECK:
 
         try:
-            r = requests.get(service['url'], timeout=REMOTE_API_TIMEOUT)
+            r = requests.get(service["url"], timeout=REMOTE_API_TIMEOUT)
             status_code = r.status_code
         except ConnectionError:
             status_code = 999
@@ -142,10 +140,10 @@ def check_apis(app_configs, **kwargs):
 
             errors.append(
                 Error(
-                    'connection error ({})'.format(status_code),
-                    hint='unable to connect to: {}'.format(service['url']),
-                    obj=service['name'],
-                    id='base.E003',
+                    "connection error ({})".format(status_code),
+                    hint="unable to connect to: {}".format(service["url"]),
+                    obj=service["name"],
+                    id="base.E003",
                 )
             )
 
@@ -153,11 +151,8 @@ def check_apis(app_configs, **kwargs):
 
             errors.append(
                 Debug(
-                    'OK: {}'.format(service['url']),
-                    obj=service['name'],
-                    id='base.I003',
+                    "OK: {}".format(service["url"]), obj=service["name"], id="base.I003"
                 )
             )
-
 
     return errors

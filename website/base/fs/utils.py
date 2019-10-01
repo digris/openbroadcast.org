@@ -13,9 +13,10 @@ EXCLUDE_CHARS = "/\\'"
 
 log = logging.getLogger(__name__)
 
+
 def safe_filename(str):
 
-    return asciiDammit(str.replace('/', ' '))
+    return asciiDammit(str.replace("/", " "))
 
 
 def sha1_by_file(file):
@@ -30,7 +31,7 @@ def sha1_by_file(file):
         return sha1
 
     except Exception as e:
-        log.warning('unable to create sha1 hash: {}'.format(e))
+        log.warning("unable to create sha1 hash: {}".format(e))
 
 
 def clean_directory_tree_reverse(path):
@@ -42,9 +43,9 @@ def clean_directory_tree_reverse(path):
         path = os.path.dirname(path)
 
     if not os.path.isdir(path):
-        raise IOError('Path does not seem to be a directory: {0}'.format(path))
+        raise IOError("Path does not seem to be a directory: {0}".format(path))
 
-    if path.endswith('/'):
+    if path.endswith("/"):
         path = path[:-1]
 
     # log.debug('clean tree: {0}'.format(path))
@@ -55,11 +56,9 @@ def clean_directory_tree_reverse(path):
 
             if files or dirs:
                 empty = False
-                #log.debug('breaking at non-empty directory: {0}'.format(path))
+                # log.debug('breaking at non-empty directory: {0}'.format(path))
                 break
 
             else:
                 os.rmdir(path)
                 path = os.path.dirname(path)
-
-

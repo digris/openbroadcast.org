@@ -23,8 +23,14 @@ import struct
 from mutagen._vorbis import VCommentDict
 from mutagen.ogg import OggPage, OggFileType, error as OggError
 
-class error(OggError): pass
-class OggTheoraHeaderError(error): pass
+
+class error(OggError):
+    pass
+
+
+class OggTheoraHeaderError(error):
+    pass
+
 
 class OggTheoraInfo(object):
     """Ogg Theora stream information.
@@ -41,13 +47,13 @@ class OggTheoraInfo(object):
         while not page.packets[0].startswith("\x80theora"):
             page = OggPage(fileobj)
         if not page.first:
-            raise OggTheoraHeaderError(
-                "page has ID header, but doesn't start a stream")
+            raise OggTheoraHeaderError("page has ID header, but doesn't start a stream")
         data = page.packets[0]
         vmaj, vmin = struct.unpack("2B", data[7:9])
         if (vmaj, vmin) != (3, 2):
             raise OggTheoraHeaderError(
-                "found Theora version %d.%d != 3.2" % (vmaj, vmin))
+                "found Theora version %d.%d != 3.2" % (vmaj, vmin)
+            )
         fps_num, fps_den = struct.unpack(">2I", data[22:30])
         self.fps = fps_num / float(fps_den)
         self.bitrate = struct.unpack(">I", data[37:40] + "\x00")[0]
@@ -55,6 +61,7 @@ class OggTheoraInfo(object):
 
     def pprint(self):
         return "Ogg Theora, %.2f seconds, %d bps" % (self.length, self.bitrate)
+
 
 class OggTheoraCommentDict(VCommentDict):
     """Theora comments embedded in an Ogg bitstream."""
@@ -91,6 +98,7 @@ class OggTheoraCommentDict(VCommentDict):
         new_pages = OggPage.from_packets(packets, old_pages[0].sequence)
         OggPage.replace(fileobj, old_pages, new_pages)
 
+
 class OggTheora(OggFileType):
     """An Ogg Theora file."""
 
@@ -100,11 +108,15 @@ class OggTheora(OggFileType):
     _mimes = ["video/x-theora"]
 
     def score(filename, fileobj, header):
-        return (header.startswith("OggS") *
-                (("\x80theora" in header) + ("\x81theora" in header)))
+        return header.startswith("OggS") * (
+            ("\x80theora" in header) + ("\x81theora" in header)
+        )
+
     score = staticmethod(score)
 
+
 Open = OggTheora
+
 
 def delete(filename):
     """Remove tags from a file."""

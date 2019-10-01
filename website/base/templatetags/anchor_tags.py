@@ -11,19 +11,22 @@ except ImportError:
 
 register = template.Library()
 
+
 @register.filter
 @stringfilter
 def dehttp(value):
-    value = value.replace('http://', '').replace('https://', '')
-    if value[-1] == '/':
+    value = value.replace("http://", "").replace("https://", "")
+    if value[-1] == "/":
         return value[:-1]
     return value
 
+
 dehttp.is_safe = True
+
 
 @register.filter
 @stringfilter
 def domain_for_url(value):
     parsed_uri = urlparse(value)
-    domain = '{uri.netloc}'.format(uri=parsed_uri)
+    domain = "{uri.netloc}".format(uri=parsed_uri)
     return domain

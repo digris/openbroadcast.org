@@ -25,10 +25,13 @@ log = logging.getLogger(__name__)
 
 class EmissionPermission(permissions.BasePermission):
     message = "insufficient permission"
+
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return request.user.is_authenticated() and request.user.has_perm('abcast.schedule_emission')
+        return request.user.is_authenticated() and request.user.has_perm(
+            "abcast.schedule_emission"
+        )
 
 
 class EmissionFilter(filters.FilterSet):
@@ -38,37 +41,39 @@ class EmissionFilter(filters.FilterSet):
 
     class Meta:
         model = Emission
-        fields = ['time_start']
+        fields = ["time_start"]
 
 
 class EmissionViewSet(FlexFieldsModelViewSet):
-    queryset = Emission.objects.all().order_by('-time_start')
-    lookup_field = 'uuid'
+    queryset = Emission.objects.all().order_by("-time_start")
+    lookup_field = "uuid"
     permission_classes = (EmissionPermission,)
     serializer_class = EmissionSerializer
     filter_class = EmissionFilter
 
     def get_queryset(self):
         qs = super(EmissionViewSet, self).get_queryset()
-        qs = qs.prefetch_related('content_object')
+        qs = qs.prefetch_related("content_object")
         return qs
 
     def create(self, request, *args, **kwargs):
 
-        obj_ct = request.data.get('obj_ct')
-        obj_uuid = request.data.get('obj_uuid')
-        time_start = datetime.datetime.strptime(request.data.get('time_start'), '%Y-%m-%d %H:%M')
-        color = request.data.get('color', 0)
+        obj_ct = request.data.get("obj_ct")
+        obj_uuid = request.data.get("obj_uuid")
+        time_start = datetime.datetime.strptime(
+            request.data.get("time_start"), "%Y-%m-%d %H:%M"
+        )
+        color = request.data.get("color", 0)
 
         # raise ValidationError('you cannot schedule in the past...')
         content_object = get_object_or_404(
-            apps.get_model(*obj_ct.split(".")),
-            uuid=obj_uuid
+            apps.get_model(*obj_ct.split(".")), uuid=obj_uuid
         )
 
         available, message = check_slot_availability(
             time_start=time_start,
-            time_end=time_start + datetime.timedelta(milliseconds=content_object.duration)
+            time_end=time_start
+            + datetime.timedelta(milliseconds=content_object.duration),
         )
 
         if not available:
@@ -85,7 +90,7 @@ class EmissionViewSet(FlexFieldsModelViewSet):
         )
 
         emission.save()
-        serializer = EmissionSerializer(emission, context={'request': request})
+        serializer = EmissionSerializer(emission, context={"request": request})
 
         # serializer = self.get_serializer(data=request.data)
         # serializer.is_valid(raise_exception=False)
@@ -98,12 +103,15 @@ class EmissionViewSet(FlexFieldsModelViewSet):
 
         emission = self.get_object()
 
-        if request.data.get('time_start'):
-            time_start = datetime.datetime.strptime(request.data.get('time_start'), '%Y-%m-%d %H:%M')
+        if request.data.get("time_start"):
+            time_start = datetime.datetime.strptime(
+                request.data.get("time_start"), "%Y-%m-%d %H:%M"
+            )
             available, message = check_slot_availability(
                 time_start=time_start,
-                time_end=time_start + datetime.timedelta(milliseconds=emission.content_object.duration),
-                excluded_emission=emission
+                time_end=time_start
+                + datetime.timedelta(milliseconds=emission.content_object.duration),
+                excluded_emission=emission,
             )
 
             if not available:
@@ -115,33 +123,30 @@ class EmissionViewSet(FlexFieldsModelViewSet):
         instance = self.get_object()
 
         if instance.has_lock:
-            raise ValidationError('Emission is locked.')
+            raise ValidationError("Emission is locked.")
 
         return super(EmissionViewSet, self).destroy(request, *args, **kwargs)
 
-emission_list = EmissionViewSet.as_view({
-    'get': 'list',
-    'post': 'create',
-})
 
-emission_detail = EmissionViewSet.as_view({
-    'get': 'retrieve',
-    'patch': 'partial_update',
-    'delete': 'destroy',
-})
+emission_list = EmissionViewSet.as_view({"get": "list", "post": "create"})
+
+emission_detail = EmissionViewSet.as_view(
+    {"get": "retrieve", "patch": "partial_update", "delete": "destroy"}
+)
 
 
 class EmissionHistory(APIView):
-
     def get_object(self):
-        obj_ct = self.kwargs.get('obj_ct')
-        obj_uuid = self.kwargs.get('obj_uuid')
+        obj_ct = self.kwargs.get("obj_ct")
+        obj_uuid = self.kwargs.get("obj_uuid")
 
         return get_object_or_404(apps.get_model(*obj_ct.split(".")), uuid=obj_uuid)
 
     def get(self, request, obj_ct, obj_uuid):
         obj = self.get_object()
-        serializer = EmissionHistorySerializer(instance=obj.emissions.order_by('-time_start'), many=True)
+        serializer = EmissionHistorySerializer(
+            instance=obj.emissions.order_by("-time_start"), many=True
+        )
 
         return Response(serializer.data)
 
@@ -150,10 +155,9 @@ emission_history = EmissionHistory.as_view()
 
 
 class PlayoutSchedule(APIView):
-
     def get_object(self):
-        obj_ct = self.kwargs.get('obj_ct')
-        obj_uuid = self.kwargs.get('obj_uuid')
+        obj_ct = self.kwargs.get("obj_ct")
+        obj_uuid = self.kwargs.get("obj_uuid")
 
         return get_object_or_404(apps.get_model(*obj_ct.split(".")), uuid=obj_uuid)
 

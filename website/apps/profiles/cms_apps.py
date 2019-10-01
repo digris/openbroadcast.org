@@ -15,4 +15,4 @@ class ProfileApp(CMSApp):
     menus = [ProfileMenu]
 
     def get_urls(self, page=None, language=None, **kwargs):
-        return ['profiles.urls_profile',]
+        return ["profiles.urls_profile"]

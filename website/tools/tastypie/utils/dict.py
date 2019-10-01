@@ -5,8 +5,8 @@ def dict_strip_unicode_keys(uni_dict):
     Useful for converting a dict to a kwarg-able format.
     """
     data = {}
-    
+
     for key, value in uni_dict.items():
         data[str(key)] = value
-    
+
     return data

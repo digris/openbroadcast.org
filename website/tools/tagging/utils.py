@@ -29,8 +29,8 @@ def parse_tag_input(input):
     # Special case - if there are no commas or double quotes in the
     # input, we don't *do* a recall... I mean, we know we only need to
     # split on spaces.
-    if ',' not in input and '"' not in input:
-        words = list(set(split_strip(input, ' ')))
+    if "," not in input and '"' not in input:
+        words = list(set(split_strip(input, " ")))
         words.sort()
         return words
 
@@ -47,7 +47,7 @@ def parse_tag_input(input):
             c = next(i)
             if c == '"':
                 if buffer:
-                    to_be_split.append(''.join(buffer))
+                    to_be_split.append("".join(buffer))
                     buffer = []
                 # Find the matching quote
                 open_quote = True
@@ -56,27 +56,27 @@ def parse_tag_input(input):
                     buffer.append(c)
                     c = next(i)
                 if buffer:
-                    word = ''.join(buffer).strip()
+                    word = "".join(buffer).strip()
                     if word:
                         words.append(word)
                     buffer = []
                 open_quote = False
             else:
-                if not saw_loose_comma and c == ',':
+                if not saw_loose_comma and c == ",":
                     saw_loose_comma = True
                 buffer.append(c)
     except StopIteration:
         # If we were parsing an open quote which was never closed treat
         # the buffer as unquoted.
         if buffer:
-            if open_quote and ',' in buffer:
+            if open_quote and "," in buffer:
                 saw_loose_comma = True
-            to_be_split.append(''.join(buffer))
+            to_be_split.append("".join(buffer))
     if to_be_split:
         if saw_loose_comma:
-            delimiter = ','
+            delimiter = ","
         else:
-            delimiter = ' '
+            delimiter = " "
         for chunk in to_be_split:
             words.extend(split_strip(chunk, delimiter))
     words = list(set(words))
@@ -84,7 +84,7 @@ def parse_tag_input(input):
     return words
 
 
-def split_strip(input, delimiter=','):
+def split_strip(input, delimiter=","):
     """
     Splits ``input`` on ``delimiter``, stripping each resulting string
     and returning a list of non-empty strings.
@@ -110,17 +110,17 @@ def edit_string_for_tags(tags):
     use_commas = False
     for tag in tags:
         name = tag.name
-        if ',' in name:
+        if "," in name:
             names.append('"%s"' % name)
             continue
-        elif ' ' in name:
+        elif " " in name:
             if not use_commas:
                 use_commas = True
         names.append(name)
     if use_commas:
-        glue = ', '
+        glue = ", "
     else:
-        glue = ' '
+        glue = " "
     return glue.join(names)
 
 
@@ -159,6 +159,7 @@ def get_tag_list(tags):
 
     """
     from tagging.models import Tag
+
     if isinstance(tags, Tag):
         return [tags]
     elif isinstance(tags, QuerySet) and tags.model is Tag:
@@ -171,25 +172,27 @@ def get_tag_list(tags):
         contents = set()
         for item in tags:
             if isinstance(item, six.string_types):
-                contents.add('string')
+                contents.add("string")
             elif isinstance(item, Tag):
-                contents.add('tag')
+                contents.add("tag")
             elif isinstance(item, six.integer_types):
-                contents.add('int')
+                contents.add("int")
         if len(contents) == 1:
-            if 'string' in contents:
-                return Tag.objects.filter(name__in=[force_text(tag)
-                                                    for tag in tags])
-            elif 'tag' in contents:
+            if "string" in contents:
+                return Tag.objects.filter(name__in=[force_text(tag) for tag in tags])
+            elif "tag" in contents:
                 return tags
-            elif 'int' in contents:
+            elif "int" in contents:
                 return Tag.objects.filter(id__in=tags)
         else:
             raise ValueError(
-                _('If a list or tuple of tags is provided, '
-                  'they must all be tag names, Tag objects or Tag ids.'))
+                _(
+                    "If a list or tuple of tags is provided, "
+                    "they must all be tag names, Tag objects or Tag ids."
+                )
+            )
     else:
-        raise ValueError(_('The tag input given was invalid.'))
+        raise ValueError(_("The tag input given was invalid."))
 
 
 def get_tag(tag):
@@ -204,6 +207,7 @@ def get_tag(tag):
     If no matching tag can be found, ``None`` will be returned.
     """
     from tagging.models import Tag
+
     if isinstance(tag, Tag):
         return tag
 
@@ -234,8 +238,7 @@ def _calculate_tag_weight(weight, max_weight, distribution):
         return weight
     elif distribution == LOGARITHMIC:
         return math.log(weight) * max_weight / math.log(max_weight)
-    raise ValueError(
-        _('Invalid distribution algorithm specified: %s.') % distribution)
+    raise ValueError(_("Invalid distribution algorithm specified: %s.") % distribution)
 
 
 def calculate_cloud(tags, steps=4, distribution=LOGARITHMIC):
@@ -258,8 +261,7 @@ def calculate_cloud(tags, steps=4, distribution=LOGARITHMIC):
         thresholds = _calculate_thresholds(min_weight, max_weight, steps)
         for tag in tags:
             font_set = False
-            tag_weight = _calculate_tag_weight(
-                tag.count, max_weight, distribution)
+            tag_weight = _calculate_tag_weight(tag.count, max_weight, distribution)
             for i in range(steps):
                 if not font_set and tag_weight <= thresholds[i]:
                     tag.font_size = i + 1

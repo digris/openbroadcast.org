@@ -12,21 +12,34 @@ from tastypie.utils import dict_strip_unicode_keys, make_aware
 
 class NOT_PROVIDED:
     def __str__(self):
-        return 'No default provided.'
+        return "No default provided."
 
 
-DATE_REGEX = re.compile('^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2}).*?$')
-DATETIME_REGEX = re.compile('^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})(T|\s+)(?P<hour>\d{2}):(?P<minute>\d{2}):(?P<second>\d{2}).*?$')
+DATE_REGEX = re.compile("^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2}).*?$")
+DATETIME_REGEX = re.compile(
+    "^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})(T|\s+)(?P<hour>\d{2}):(?P<minute>\d{2}):(?P<second>\d{2}).*?$"
+)
 
 
 # All the ApiField variants.
 
+
 class ApiField(object):
     """The base implementation of a field used by the resources."""
-    dehydrated_type = 'string'
-    help_text = ''
 
-    def __init__(self, attribute=None, default=NOT_PROVIDED, null=False, blank=False, readonly=False, unique=False, help_text=None):
+    dehydrated_type = "string"
+    help_text = ""
+
+    def __init__(
+        self,
+        attribute=None,
+        default=NOT_PROVIDED,
+        null=False,
+        blank=False,
+        readonly=False,
+        unique=False,
+        help_text=None,
+    ):
         """
         Sets up the field. This is generally called when the containing
         ``Resource`` is initialized.
@@ -95,7 +108,7 @@ class ApiField(object):
         """
         if self.attribute is not None:
             # Check for `__` in the field for looking through the relation.
-            attrs = self.attribute.split('__')
+            attrs = self.attribute.split("__")
             current_object = bundle.obj
 
             for attr in attrs:
@@ -114,7 +127,10 @@ class ApiField(object):
                         # accesses will fail miserably.
                         break
                     else:
-                        raise ApiFieldError("The object '%r' has an empty attribute '%s' and doesn't allow a default or null value." % (previous_object, attr))
+                        raise ApiFieldError(
+                            "The object '%r' has an empty attribute '%s' and doesn't allow a default or null value."
+                            % (previous_object, attr)
+                        )
 
             if callable(current_object):
                 current_object = current_object()
@@ -143,10 +159,15 @@ class ApiField(object):
         if self.readonly:
             return None
         if not bundle.data.has_key(self.instance_name):
-            if getattr(self, 'is_related', False) and not getattr(self, 'is_m2m', False):
+            if getattr(self, "is_related", False) and not getattr(
+                self, "is_m2m", False
+            ):
                 # We've got an FK (or alike field) & a possible parent object.
                 # Check for it.
-                if bundle.related_obj and bundle.related_name in (self.attribute, self.instance_name):
+                if bundle.related_obj and bundle.related_name in (
+                    self.attribute,
+                    self.instance_name,
+                ):
                     return bundle.related_obj
             if self.blank:
                 return None
@@ -162,7 +183,10 @@ class ApiField(object):
             elif self.null:
                 return None
             else:
-                raise ApiFieldError("The '%s' field has no data and doesn't allow a default or null value." % self.instance_name)
+                raise ApiFieldError(
+                    "The '%s' field has no data and doesn't allow a default or null value."
+                    % self.instance_name
+                )
 
         return bundle.data[self.instance_name]
 
@@ -173,7 +197,8 @@ class CharField(ApiField):
 
     Covers both ``models.CharField`` and ``models.TextField``.
     """
-    dehydrated_type = 'string'
+
+    dehydrated_type = "string"
     help_text = 'Unicode string data. Ex: "Hello World"'
 
     def convert(self, value):
@@ -189,7 +214,8 @@ class FileField(ApiField):
 
     Covers both ``models.FileField`` and ``models.ImageField``.
     """
-    dehydrated_type = 'string'
+
+    dehydrated_type = "string"
     help_text = 'A file URL as a string. Ex: "http://media.example.com/media/photos/my_photo.jpg"'
 
     def convert(self, value):
@@ -199,7 +225,7 @@ class FileField(ApiField):
         try:
             # Try to return the URL if it's a ``File``, falling back to the string
             # itself if it's been overridden or is a default.
-            return getattr(value, 'url', value)
+            return getattr(value, "url", value)
         except ValueError:
             return None
 
@@ -211,8 +237,9 @@ class IntegerField(ApiField):
     Covers ``models.IntegerField``, ``models.PositiveIntegerField``,
     ``models.PositiveSmallIntegerField`` and ``models.SmallIntegerField``.
     """
-    dehydrated_type = 'integer'
-    help_text = 'Integer data. Ex: 2673'
+
+    dehydrated_type = "integer"
+    help_text = "Integer data. Ex: 2673"
 
     def convert(self, value):
         if value is None:
@@ -225,8 +252,9 @@ class FloatField(ApiField):
     """
     A floating point field.
     """
-    dehydrated_type = 'float'
-    help_text = 'Floating point numeric data. Ex: 26.73'
+
+    dehydrated_type = "float"
+    help_text = "Floating point numeric data. Ex: 26.73"
 
     def convert(self, value):
         if value is None:
@@ -239,8 +267,9 @@ class DecimalField(ApiField):
     """
     A decimal field.
     """
-    dehydrated_type = 'decimal'
-    help_text = 'Fixed precision numeric data. Ex: 26.73'
+
+    dehydrated_type = "decimal"
+    help_text = "Fixed precision numeric data. Ex: 26.73"
 
     def convert(self, value):
         if value is None:
@@ -263,8 +292,9 @@ class BooleanField(ApiField):
 
     Covers both ``models.BooleanField`` and ``models.NullBooleanField``.
     """
-    dehydrated_type = 'boolean'
-    help_text = 'Boolean data. Ex: True'
+
+    dehydrated_type = "boolean"
+    help_text = "Boolean data. Ex: True"
 
     def convert(self, value):
         if value is None:
@@ -277,7 +307,8 @@ class ListField(ApiField):
     """
     A list field.
     """
-    dehydrated_type = 'list'
+
+    dehydrated_type = "list"
     help_text = "A list of data. Ex: ['abc', 26.73, 8]"
 
     def convert(self, value):
@@ -291,7 +322,8 @@ class DictField(ApiField):
     """
     A dictionary field.
     """
-    dehydrated_type = 'dict'
+
+    dehydrated_type = "dict"
     help_text = "A dictionary of data. Ex: {'price': 26.73, 'name': 'Daniel'}"
 
     def convert(self, value):
@@ -305,7 +337,8 @@ class DateField(ApiField):
     """
     A date field.
     """
-    dehydrated_type = 'date'
+
+    dehydrated_type = "date"
     help_text = 'A date as a string. Ex: "2010-11-10"'
 
     def convert(self, value):
@@ -317,21 +350,26 @@ class DateField(ApiField):
 
             if match:
                 data = match.groupdict()
-                return datetime_safe.date(int(data['year']), int(data['month']), int(data['day']))
+                return datetime_safe.date(
+                    int(data["year"]), int(data["month"]), int(data["day"])
+                )
             else:
-                raise ApiFieldError("Date provided to '%s' field doesn't appear to be a valid date string: '%s'" % (self.instance_name, value))
+                raise ApiFieldError(
+                    "Date provided to '%s' field doesn't appear to be a valid date string: '%s'"
+                    % (self.instance_name, value)
+                )
 
         return value
 
     def hydrate(self, bundle):
         value = super(DateField, self).hydrate(bundle)
 
-        if value and not hasattr(value, 'year'):
+        if value and not hasattr(value, "year"):
             try:
                 # Try to rip a date/datetime out of it.
                 value = make_aware(parse(value))
 
-                if hasattr(value, 'hour'):
+                if hasattr(value, "hour"):
                     value = value.date()
             except ValueError:
                 pass
@@ -343,7 +381,8 @@ class DateTimeField(ApiField):
     """
     A datetime field.
     """
-    dehydrated_type = 'datetime'
+
+    dehydrated_type = "datetime"
     help_text = 'A date & time as a string. Ex: "2010-11-10T03:07:43"'
 
     def convert(self, value):
@@ -355,16 +394,28 @@ class DateTimeField(ApiField):
 
             if match:
                 data = match.groupdict()
-                return make_aware(datetime_safe.datetime(int(data['year']), int(data['month']), int(data['day']), int(data['hour']), int(data['minute']), int(data['second'])))
+                return make_aware(
+                    datetime_safe.datetime(
+                        int(data["year"]),
+                        int(data["month"]),
+                        int(data["day"]),
+                        int(data["hour"]),
+                        int(data["minute"]),
+                        int(data["second"]),
+                    )
+                )
             else:
-                raise ApiFieldError("Datetime provided to '%s' field doesn't appear to be a valid datetime string: '%s'" % (self.instance_name, value))
+                raise ApiFieldError(
+                    "Datetime provided to '%s' field doesn't appear to be a valid datetime string: '%s'"
+                    % (self.instance_name, value)
+                )
 
         return value
 
     def hydrate(self, bundle):
         value = super(DateTimeField, self).hydrate(bundle)
 
-        if value and not hasattr(value, 'year'):
+        if value and not hasattr(value, "year"):
             try:
                 # Try to rip a date/datetime out of it.
                 value = make_aware(parse(value))
@@ -390,12 +441,28 @@ class RelatedField(ApiField):
     very well. The subclasses use Django's ORM layer to make things go, though
     there is no ORM-specific code at this level.
     """
-    dehydrated_type = 'related'
+
+    dehydrated_type = "related"
     is_related = True
     self_referential = False
-    help_text = 'A related resource. Can be either a URI or set of nested resource data.'
+    help_text = (
+        "A related resource. Can be either a URI or set of nested resource data."
+    )
 
-    def __init__(self, to, attribute, related_name=None, default=NOT_PROVIDED, null=False, blank=False, readonly=False, full=False, unique=False, help_text=None, max_depth=None):
+    def __init__(
+        self,
+        to,
+        attribute,
+        related_name=None,
+        default=NOT_PROVIDED,
+        null=False,
+        blank=False,
+        readonly=False,
+        full=False,
+        unique=False,
+        help_text=None,
+        max_depth=None,
+    ):
         """
         Builds the field and prepares it to access to related data.
 
@@ -447,7 +514,7 @@ class RelatedField(ApiField):
         self._to_class = None
         self.max_depth = max_depth
 
-        if self.to == 'self':
+        if self.to == "self":
             self.self_referential = True
             self._to_class = self.__class__
 
@@ -460,7 +527,7 @@ class RelatedField(ApiField):
         # Check if we're self-referential and hook it up.
         # We can't do this quite like Django because there's no ``AppCache``
         # here (which I think we should avoid as long as possible).
-        if self.self_referential or self.to == 'self':
+        if self.self_referential or self.to == "self":
             self._to_class = cls
 
     def get_related_resource(self, related_instance):
@@ -491,20 +558,26 @@ class RelatedField(ApiField):
             return self._to_class
 
         # It's a string. Let's figure it out.
-        if '.' in self.to:
+        if "." in self.to:
             # Try to import.
-            module_bits = self.to.split('.')
-            module_path, class_name = '.'.join(module_bits[:-1]), module_bits[-1]
+            module_bits = self.to.split(".")
+            module_path, class_name = ".".join(module_bits[:-1]), module_bits[-1]
             module = importlib.import_module(module_path)
         else:
             # We've got a bare class name here, which won't work (No AppCache
             # to rely on). Try to throw a useful error.
-            raise ImportError("Tastypie requires a Python-style path (<module.module.Class>) to lazy load related resources. Only given '%s'." % self.to)
+            raise ImportError(
+                "Tastypie requires a Python-style path (<module.module.Class>) to lazy load related resources. Only given '%s'."
+                % self.to
+            )
 
         self._to_class = getattr(module, class_name, None)
 
         if self._to_class is None:
-            raise ImportError("Module '%s' does not appear to have a class called '%s'." % (module_path, class_name))
+            raise ImportError(
+                "Module '%s' does not appear to have a class called '%s'."
+                % (module_path, class_name)
+            )
 
         return self._to_class
 
@@ -514,18 +587,22 @@ class RelatedField(ApiField):
         from ``full_dehydrate`` for the related resource.
         """
         if self.full:
-            depth = getattr(bundle, 'depth', None)
+            depth = getattr(bundle, "depth", None)
             if depth is None:
                 depth = self.max_depth
             if depth is None or depth:
                 # ZOMG extra data and big payloads.
-                bundle = related_resource.build_bundle(obj=related_resource.instance, request=bundle.request)
+                bundle = related_resource.build_bundle(
+                    obj=related_resource.instance, request=bundle.request
+                )
                 bundle.depth = depth
                 return related_resource.full_dehydrate(bundle)
         # If not full or we've run out of depth, Be a good netizen.
         return related_resource.get_resource_uri(bundle)
 
-    def resource_from_uri(self, fk_resource, uri, request=None, related_obj=None, related_name=None):
+    def resource_from_uri(
+        self, fk_resource, uri, request=None, related_obj=None, related_name=None
+    ):
         """
         Given a URI is provided, the related resource is attempted to be
         loaded based on the identifiers in the URI.
@@ -535,9 +612,13 @@ class RelatedField(ApiField):
             bundle = fk_resource.build_bundle(obj=obj, request=request)
             return fk_resource.full_dehydrate(bundle)
         except ObjectDoesNotExist:
-            raise ApiFieldError("Could not find the provided object via resource URI '%s'." % uri)
+            raise ApiFieldError(
+                "Could not find the provided object via resource URI '%s'." % uri
+            )
 
-    def resource_from_data(self, fk_resource, data, request=None, related_obj=None, related_name=None):
+    def resource_from_data(
+        self, fk_resource, data, request=None, related_obj=None, related_name=None
+    ):
         """
         Given a dictionary-like structure is provided, a fresh related
         resource is created using that data.
@@ -561,11 +642,17 @@ class RelatedField(ApiField):
         except NotFound:
             try:
                 # Attempt lookup by primary key
-                lookup_kwargs = dict((k, v) for k, v in data.iteritems() if getattr(fk_resource, k).unique)
+                lookup_kwargs = dict(
+                    (k, v)
+                    for k, v in data.iteritems()
+                    if getattr(fk_resource, k).unique
+                )
 
                 if not lookup_kwargs:
                     raise NotFound()
-                return fk_resource.obj_update(fk_bundle, skip_errors=True, **lookup_kwargs)
+                return fk_resource.obj_update(
+                    fk_bundle, skip_errors=True, **lookup_kwargs
+                )
             except NotFound:
                 fk_bundle = fk_resource.full_hydrate(fk_bundle)
                 fk_resource.is_valid(fk_bundle, request)
@@ -573,7 +660,9 @@ class RelatedField(ApiField):
         except MultipleObjectsReturned:
             return fk_resource.full_hydrate(fk_bundle)
 
-    def resource_from_pk(self, fk_resource, obj, request=None, related_obj=None, related_name=None):
+    def resource_from_pk(
+        self, fk_resource, obj, request=None, related_obj=None, related_name=None
+    ):
         """
         Given an object with a ``pk`` attribute, the related resource
         is attempted to be loaded via that PK.
@@ -581,7 +670,9 @@ class RelatedField(ApiField):
         bundle = fk_resource.build_bundle(obj=obj, request=request)
         return fk_resource.full_dehydrate(bundle)
 
-    def build_related_resource(self, value, request=None, related_obj=None, related_name=None):
+    def build_related_resource(
+        self, value, request=None, related_obj=None, related_name=None
+    ):
         """
         Returns a bundle of data built by the related resource, usually via
         ``hydrate`` with the data provided.
@@ -591,9 +682,9 @@ class RelatedField(ApiField):
         """
         self.fk_resource = self.to_class()
         kwargs = {
-            'request': request,
-            'related_obj': related_obj,
-            'related_name': related_name,
+            "request": request,
+            "related_obj": related_obj,
+            "related_name": related_name,
         }
 
         if isinstance(value, basestring):
@@ -602,16 +693,19 @@ class RelatedField(ApiField):
         elif isinstance(value, Bundle):
             # We got a valid bundle object, the RelatedField had full=True
             return value
-        elif hasattr(value, 'items'):
+        elif hasattr(value, "items"):
             # We've got a data dictionary.
             # Since this leads to creation, this is the only one of these
             # methods that might care about "parent" data.
             return self.resource_from_data(self.fk_resource, value, **kwargs)
-        elif hasattr(value, 'pk'):
+        elif hasattr(value, "pk"):
             # We've got an object with a primary key.
             return self.resource_from_pk(self.fk_resource, value, **kwargs)
         else:
-            raise ApiFieldError("The '%s' field was given data that was not a URI, not a dictionary-alike and does not have a 'pk' attribute: %s." % (self.instance_name, value))
+            raise ApiFieldError(
+                "The '%s' field was given data that was not a URI, not a dictionary-alike and does not have a 'pk' attribute: %s."
+                % (self.instance_name, value)
+            )
 
 
 class ToOneField(RelatedField):
@@ -620,15 +714,37 @@ class ToOneField(RelatedField):
 
     This subclass requires Django's ORM layer to work properly.
     """
-    help_text = 'A single related resource. Can be either a URI or set of nested resource data.'
 
-    def __init__(self, to, attribute, related_name=None, default=NOT_PROVIDED,
-                 null=False, blank=False, readonly=False, full=False,
-                 unique=False, help_text=None, max_depth=None):
+    help_text = (
+        "A single related resource. Can be either a URI or set of nested resource data."
+    )
+
+    def __init__(
+        self,
+        to,
+        attribute,
+        related_name=None,
+        default=NOT_PROVIDED,
+        null=False,
+        blank=False,
+        readonly=False,
+        full=False,
+        unique=False,
+        help_text=None,
+        max_depth=None,
+    ):
         super(ToOneField, self).__init__(
-            to, attribute, related_name=related_name, default=default,
-            null=null, blank=blank, readonly=readonly, full=full,
-            unique=unique, help_text=help_text, max_depth=max_depth
+            to,
+            attribute,
+            related_name=related_name,
+            default=default,
+            null=null,
+            blank=blank,
+            readonly=readonly,
+            full=full,
+            unique=unique,
+            help_text=help_text,
+            max_depth=max_depth,
         )
         self.fk_resource = None
 
@@ -636,7 +752,7 @@ class ToOneField(RelatedField):
         foreign_obj = None
 
         if isinstance(self.attribute, basestring):
-            attrs = self.attribute.split('__')
+            attrs = self.attribute.split("__")
             foreign_obj = bundle.obj
 
             for attr in attrs:
@@ -650,14 +766,16 @@ class ToOneField(RelatedField):
 
         if not foreign_obj:
             if not self.null:
-                raise ApiFieldError("The model '%r' has an empty attribute '%s' and doesn't allow a null value." % (previous_obj, attr))
+                raise ApiFieldError(
+                    "The model '%r' has an empty attribute '%s' and doesn't allow a null value."
+                    % (previous_obj, attr)
+                )
 
             return None
 
-
         self.fk_resource = self.get_related_resource(foreign_obj)
         fk_bundle = Bundle(obj=foreign_obj, request=bundle.request)
-        depth = getattr(bundle, 'depth', None)
+        depth = getattr(bundle, "depth", None)
         if depth is None:
             depth = self.max_depth
         if depth is not None:
@@ -672,10 +790,12 @@ class ToOneField(RelatedField):
 
         return self.build_related_resource(value, request=bundle.request)
 
+
 class ForeignKey(ToOneField):
     """
     A convenience subclass for those who prefer to mirror ``django.db.models``.
     """
+
     pass
 
 
@@ -683,6 +803,7 @@ class OneToOneField(ToOneField):
     """
     A convenience subclass for those who prefer to mirror ``django.db.models``.
     """
+
     pass
 
 
@@ -696,23 +817,46 @@ class ToManyField(RelatedField):
     any other field. ``hydrate_m2m`` actually handles the data and relations.
     This is due to the way Django implements M2M relationships.
     """
-    is_m2m = True
-    help_text = 'Many related resources. Can be either a list of URIs or list of individually nested resource data.'
 
-    def __init__(self, to, attribute, related_name=None, default=NOT_PROVIDED,
-                 null=False, blank=False, readonly=False, full=False,
-                 unique=False, help_text=None, max_depth=None):
+    is_m2m = True
+    help_text = "Many related resources. Can be either a list of URIs or list of individually nested resource data."
+
+    def __init__(
+        self,
+        to,
+        attribute,
+        related_name=None,
+        default=NOT_PROVIDED,
+        null=False,
+        blank=False,
+        readonly=False,
+        full=False,
+        unique=False,
+        help_text=None,
+        max_depth=None,
+    ):
         super(ToManyField, self).__init__(
-            to, attribute, related_name=related_name, default=default,
-            null=null, blank=blank, readonly=readonly, full=full,
-            unique=unique, help_text=help_text, max_depth=max_depth
+            to,
+            attribute,
+            related_name=related_name,
+            default=default,
+            null=null,
+            blank=blank,
+            readonly=readonly,
+            full=full,
+            unique=unique,
+            help_text=help_text,
+            max_depth=max_depth,
         )
         self.m2m_bundles = []
 
     def dehydrate(self, bundle):
         if not bundle.obj or not bundle.obj.pk:
             if not self.null:
-                raise ApiFieldError("The model '%r' does not have a primary key and can not be used in a ToMany context." % bundle.obj)
+                raise ApiFieldError(
+                    "The model '%r' does not have a primary key and can not be used in a ToMany context."
+                    % bundle.obj
+                )
 
             return []
 
@@ -721,7 +865,7 @@ class ToManyField(RelatedField):
         attr = self.attribute
 
         if isinstance(self.attribute, basestring):
-            attrs = self.attribute.split('__')
+            attrs = self.attribute.split("__")
             the_m2ms = bundle.obj
 
             for attr in attrs:
@@ -739,14 +883,17 @@ class ToManyField(RelatedField):
 
         if not the_m2ms:
             if not self.null:
-                raise ApiFieldError("The model '%r' has an empty attribute '%s' and doesn't allow a null value." % (previous_obj, attr))
+                raise ApiFieldError(
+                    "The model '%r' has an empty attribute '%s' and doesn't allow a null value."
+                    % (previous_obj, attr)
+                )
 
             return []
 
         self.m2m_resources = []
         m2m_dehydrated = []
 
-        depth = getattr(bundle, 'depth', None)
+        depth = getattr(bundle, "depth", None)
         if depth is None:
             depth = self.max_depth
         # TODO: Also model-specific and leaky. Relies on there being a
@@ -774,7 +921,10 @@ class ToManyField(RelatedField):
             elif self.null:
                 return []
             else:
-                raise ApiFieldError("The '%s' field has no data and doesn't allow a null value." % self.instance_name)
+                raise ApiFieldError(
+                    "The '%s' field has no data and doesn't allow a null value."
+                    % self.instance_name
+                )
 
         m2m_hydrated = []
 
@@ -782,13 +932,11 @@ class ToManyField(RelatedField):
             if value is None:
                 continue
 
-            kwargs = {
-                'request': bundle.request,
-            }
+            kwargs = {"request": bundle.request}
 
             if self.related_name:
-                kwargs['related_obj'] = bundle.obj
-                kwargs['related_name'] = self.related_name
+                kwargs["related_obj"] = bundle.obj
+                kwargs["related_name"] = self.related_name
 
             m2m_hydrated.append(self.build_related_resource(value, **kwargs))
 
@@ -799,6 +947,7 @@ class ManyToManyField(ToManyField):
     """
     A convenience subclass for those who prefer to mirror ``django.db.models``.
     """
+
     pass
 
 
@@ -806,11 +955,12 @@ class OneToManyField(ToManyField):
     """
     A convenience subclass for those who prefer to mirror ``django.db.models``.
     """
+
     pass
 
 
 class TimeField(ApiField):
-    dehydrated_type = 'time'
+    dehydrated_type = "time"
     help_text = 'A time as string. Ex: "20:05:23"'
 
     def dehydrate(self, obj):

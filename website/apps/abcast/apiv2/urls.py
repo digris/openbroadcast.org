@@ -5,10 +5,17 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^emission/$', views.emission_list, name='emission-list'),
-    url(r'^emission/(?P<uuid>[0-9A-Fa-f-]+)/$', views.emission_detail, name='emission-detail'),
-    url(r'^channel/(?P<channel_uuid>[0-9A-Fa-f-]+)/emission/$', views.emission_list, name='channel-emission-list'),
-
+    url(r"^emission/$", views.emission_list, name="emission-list"),
+    url(
+        r"^emission/(?P<uuid>[0-9A-Fa-f-]+)/$",
+        views.emission_detail,
+        name="emission-detail",
+    ),
+    url(
+        r"^channel/(?P<channel_uuid>[0-9A-Fa-f-]+)/emission/$",
+        views.emission_list,
+        name="channel-emission-list",
+    ),
     # emission history for object
     # TODO: implement 'channel-aware' variant
     url(
@@ -16,7 +23,6 @@ urlpatterns = [
         views.emission_history,
         name="emission-history",
     ),
-
     # schedule data needed for playout / pzpo
-    url(r'^schedule/$', views.playout_schedule, name='playout-schedule'),
+    url(r"^schedule/$", views.playout_schedule, name="playout-schedule"),
 ]

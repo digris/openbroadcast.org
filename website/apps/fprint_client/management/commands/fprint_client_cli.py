@@ -20,16 +20,16 @@ from ...api_client import FprintAPIClient
 from alibrary.models import Media
 
 DEFAULT_LIMIT = 100
-MEDIA_ROOT = getattr(settings, 'MEDIA_ROOT', None)
+MEDIA_ROOT = getattr(settings, "MEDIA_ROOT", None)
 
 CHUNK_SIZE = 2
 
 
-ECHOPRINT_CODEGEN_BINARY = 'echoprint-codegen'
+ECHOPRINT_CODEGEN_BINARY = "echoprint-codegen"
 
 # FPRINT_API_URL = 'http://10.40.10.214:8000'
-FPRINT_API_URL = 'http://172.20.10.240:8000'
-#FPRINT_API_URL = 'http://127.0.0.1:7777'
+FPRINT_API_URL = "http://172.20.10.240:8000"
+# FPRINT_API_URL = 'http://127.0.0.1:7777'
 
 
 @click.group()
@@ -39,7 +39,9 @@ def cli():
 
 
 @cli.command()
-@click.option('--force', default=False, is_flag=True, help='Force to rebuild all fingerprints?')
+@click.option(
+    "--force", default=False, is_flag=True, help="Force to rebuild all fingerprints?"
+)
 def update_index(force):
     """
     update fingerpint index (via fprint service)
@@ -47,18 +49,16 @@ def update_index(force):
 
     if force:
         _count = Media.objects.all().update(fprint_ingested=None)
-        click.secho('Resetting all fingerprints. ({})'.format(_count), fg='cyan')
+        click.secho("Resetting all fingerprints. ({})".format(_count), fg="cyan")
 
-    id_list = Media.objects.exclude(
-        master__isnull=True,
-        master_duration__lte=20,
-    ).filter(
-        master_duration__lte=(60 * 20),
-        fprint_ingested__isnull=True
-    ).nocache().values_list('id', flat=True)
+    id_list = (
+        Media.objects.exclude(master__isnull=True, master_duration__lte=20)
+        .filter(master_duration__lte=(60 * 20), fprint_ingested__isnull=True)
+        .nocache()
+        .values_list("id", flat=True)
+    )
 
-    click.secho('{} media items to process'.format(id_list.count()), fg='cyan')
-
+    click.secho("{} media items to process".format(id_list.count()), fg="cyan")
 
     for id in id_list:
         m = Media.objects.get(pk=id)
@@ -79,42 +79,34 @@ def _ingest_fingerprint(media):
     try:
 
         if client.ingest_for_media(obj=media):
-            Media.objects.filter(pk=media.pk).update(
-                fprint_ingested=timezone.now()
-            )
+            Media.objects.filter(pk=media.pk).update(fprint_ingested=timezone.now())
 
     except Exception as e:
-        click.secho('unable to ingest fprint for media: {} - {}'.format(media.pk, e))
-
-
+        click.secho("unable to ingest fprint for media: {} - {}".format(media.pk, e))
 
 
 @cli.command()
-@click.option('--limit', default=100, type=int)
-@click.option('--offset', default=0, type=int)
+@click.option("--limit", default=100, type=int)
+@click.option("--offset", default=0, type=int)
 def test_media(limit, offset):
 
-    qs = Media.objects.exclude(
-        master__isnull=True
-    ).nocache().filter(
-        master_duration__lte=(60 * 20),
-        fprint_ingested__isnull=False
+    qs = (
+        Media.objects.exclude(master__isnull=True)
+        .nocache()
+        .filter(master_duration__lte=(60 * 20), fprint_ingested__isnull=False)
     )
 
-    for item in qs[offset:(offset + limit)]:
+    for item in qs[offset : (offset + limit)]:
 
-        click.secho(u'testing fprint: {} - {}'.format(item.uuid, item.name), fg='cyan')
+        click.secho(u"testing fprint: {} - {}".format(item.uuid, item.name), fg="cyan")
 
-        command = [
-            ECHOPRINT_CODEGEN_BINARY,
-            item.master.path
-        ]
+        command = [ECHOPRINT_CODEGEN_BINARY, item.master.path]
 
         p = subprocess.Popen(command, stdout=subprocess.PIPE, close_fds=True)
 
         data = json.loads(p.stdout.read())[0]
 
-        url = '{}/api/v1/fprint/identify/'.format(FPRINT_API_URL)
+        url = "{}/api/v1/fprint/identify/".format(FPRINT_API_URL)
 
         r = requests.post(url, json=data)
 
@@ -122,14 +114,12 @@ def test_media(limit, offset):
 
         if results:
             top_match = results[0]
-            uuid = top_match['uuid']
-            score = top_match['score']
+            uuid = top_match["uuid"]
+            score = top_match["score"]
 
             if str(uuid) == str(item.uuid):
-                click.secho(u'score: {}'.format(score), fg='green')
+                click.secho(u"score: {}".format(score), fg="green")
             else:
-                click.secho(u'score: {}'.format(score), fg='yellow')
+                click.secho(u"score: {}".format(score), fg="yellow")
         else:
-            click.secho(u'no results for: {}'.format(item.uuid), fg='red')
-
-
+            click.secho(u"no results for: {}".format(item.uuid), fg="red")

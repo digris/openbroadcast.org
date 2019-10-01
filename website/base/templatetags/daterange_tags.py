@@ -4,7 +4,8 @@ from django import template
 
 register = template.Library()
 
-@register.filter 
+
+@register.filter
 def xxxx_to_now(value):
     value = int(value)
 

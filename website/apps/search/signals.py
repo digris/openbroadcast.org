@@ -16,7 +16,6 @@ from django_elasticsearch_dsl.registries import registry
 
 
 class CelerySignalProcessor(BaseSignalProcessor):
-
     def setup(self):
         # Listen to all model saves.
         models.signals.post_save.connect(self.handle_save)
@@ -33,13 +32,11 @@ class CelerySignalProcessor(BaseSignalProcessor):
         models.signals.m2m_changed.disconnect(self.handle_m2m_changed)
         models.signals.pre_delete.disconnect(self.handle_pre_delete)
 
-
     def handle_save(self, sender, instance, **kwargs):
         pk = instance.pk
         app_label = instance._meta.app_label
         model_name = instance._meta.concrete_model.__name__
         self.handle_save_task.delay(pk, app_label, model_name)
-
 
     @shared_task()
     def handle_save_task(pk, app_label, model_name):

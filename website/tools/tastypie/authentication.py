@@ -15,6 +15,7 @@ try:
     from hashlib import sha1
 except ImportError:
     import sha
+
     sha1 = sha.sha
 
 try:
@@ -39,6 +40,7 @@ class Authentication(object):
 
     By default, this indicates the user is always authenticated.
     """
+
     def __init__(self, require_active=True):
         self.require_active = require_active
 
@@ -57,7 +59,10 @@ class Authentication(object):
 
         This implementation returns a combination of IP address and hostname.
         """
-        return "%s_%s" % (request.META.get('REMOTE_ADDR', 'noaddr'), request.META.get('REMOTE_HOST', 'nohost'))
+        return "%s_%s" % (
+            request.META.get("REMOTE_ADDR", "noaddr"),
+            request.META.get("REMOTE_HOST", "nohost"),
+        )
 
     def check_active(self, user):
         """
@@ -88,7 +93,8 @@ class BasicAuthentication(Authentication):
         The realm to use in the ``HttpUnauthorized`` response.  Default:
         ``django-tastypie``.
     """
-    def __init__(self, backend=None, realm='django-tastypie', **kwargs):
+
+    def __init__(self, backend=None, realm="django-tastypie", **kwargs):
         super(BasicAuthentication, self).__init__(**kwargs)
         self.backend = backend
         self.realm = realm
@@ -96,7 +102,7 @@ class BasicAuthentication(Authentication):
     def _unauthorized(self):
         response = HttpUnauthorized()
         # FIXME: Sanitize realm.
-        response['WWW-Authenticate'] = 'Basic Realm="%s"' % self.realm
+        response["WWW-Authenticate"] = 'Basic Realm="%s"' % self.realm
         return response
 
     def is_authenticated(self, request, **kwargs):
@@ -107,18 +113,18 @@ class BasicAuthentication(Authentication):
         Should return either ``True`` if allowed, ``False`` if not or an
         ``HttpResponse`` if you need something custom.
         """
-        if not request.META.get('HTTP_AUTHORIZATION'):
+        if not request.META.get("HTTP_AUTHORIZATION"):
             return self._unauthorized()
 
         try:
-            (auth_type, data) = request.META['HTTP_AUTHORIZATION'].split()
-            if auth_type.lower() != 'basic':
+            (auth_type, data) = request.META["HTTP_AUTHORIZATION"].split()
+            if auth_type.lower() != "basic":
                 return self._unauthorized()
             user_pass = base64.b64decode(data)
         except:
             return self._unauthorized()
 
-        bits = user_pass.split(':', 1)
+        bits = user_pass.split(":", 1)
 
         if len(bits) != 2:
             return self._unauthorized()
@@ -143,7 +149,7 @@ class BasicAuthentication(Authentication):
 
         This implementation returns the user's basic auth username.
         """
-        return request.META.get('REMOTE_USER', 'nouser')
+        return request.META.get("REMOTE_USER", "nouser")
 
 
 class ApiKeyAuthentication(Authentication):
@@ -154,20 +160,23 @@ class ApiKeyAuthentication(Authentication):
     a different model, override the ``get_key`` method to perform the key check
     as suits your needs.
     """
+
     def _unauthorized(self):
         return HttpUnauthorized()
 
     def extract_credentials(self, request):
-        if request.META.get('HTTP_AUTHORIZATION') and request.META['HTTP_AUTHORIZATION'].lower().startswith('apikey '):
-            (auth_type, data) = request.META['HTTP_AUTHORIZATION'].split()
+        if request.META.get("HTTP_AUTHORIZATION") and request.META[
+            "HTTP_AUTHORIZATION"
+        ].lower().startswith("apikey "):
+            (auth_type, data) = request.META["HTTP_AUTHORIZATION"].split()
 
-            if auth_type.lower() != 'apikey':
+            if auth_type.lower() != "apikey":
                 raise ValueError("Incorrect authorization header.")
 
-            username, api_key = data.split(':', 1)
+            username, api_key = data.split(":", 1)
         else:
-            username = request.GET.get('username') or request.POST.get('username')
-            api_key = request.GET.get('api_key') or request.POST.get('api_key')
+            username = request.GET.get("username") or request.POST.get("username")
+            api_key = request.GET.get("api_key") or request.POST.get("api_key")
 
         return username, api_key
 
@@ -189,7 +198,10 @@ class ApiKeyAuthentication(Authentication):
 
         try:
             user = get_user_model().objects.get(username=username)
-        except (get_user_model().DoesNotExist, get_user_model().MultipleObjectsReturned):
+        except (
+            get_user_model().DoesNotExist,
+            get_user_model().MultipleObjectsReturned,
+        ):
             return self._unauthorized()
 
         if not self.check_active(user):
@@ -219,7 +231,7 @@ class ApiKeyAuthentication(Authentication):
         This implementation returns the user's username.
         """
         username, api_key = self.extract_credentials(request)
-        return username or 'nouser'
+        return username or "nouser"
 
 
 class SessionAuthentication(Authentication):
@@ -232,6 +244,7 @@ class SessionAuthentication(Authentication):
 
     Requires a valid CSRF token.
     """
+
     def is_authenticated(self, request, **kwargs):
         """
         Checks to make sure the user is logged in & has a Django session.
@@ -241,27 +254,27 @@ class SessionAuthentication(Authentication):
         # wrong.
         # We also can't risk accessing ``request.POST``, which will break with
         # the serialized bodies.
-        if request.method in ('GET', 'HEAD', 'OPTIONS', 'TRACE'):
+        if request.method in ("GET", "HEAD", "OPTIONS", "TRACE"):
             return request.user.is_authenticated()
 
-        if getattr(request, '_dont_enforce_csrf_checks', False):
+        if getattr(request, "_dont_enforce_csrf_checks", False):
             return request.user.is_authenticated()
 
-        csrf_token = _sanitize_token(request.COOKIES.get(settings.CSRF_COOKIE_NAME, ''))
+        csrf_token = _sanitize_token(request.COOKIES.get(settings.CSRF_COOKIE_NAME, ""))
 
         if request.is_secure():
-            referer = request.META.get('HTTP_REFERER')
+            referer = request.META.get("HTTP_REFERER")
 
             if referer is None:
                 return False
 
-            good_referer = 'https://%s/' % request.get_host()
+            good_referer = "https://%s/" % request.get_host()
 
             # TODO: re-implement origin check
             # if not same_origin(referer, good_referer):
             #     return False
 
-        request_csrf_token = request.META.get('HTTP_X_CSRFTOKEN', '')
+        request_csrf_token = request.META.get("HTTP_X_CSRFTOKEN", "")
 
         if not constant_time_compare(request_csrf_token, csrf_token):
             return False
@@ -294,19 +307,24 @@ class DigestAuthentication(Authentication):
         The realm to use in the ``HttpUnauthorized`` response.  Default:
         ``django-tastypie``.
     """
-    def __init__(self, backend=None, realm='django-tastypie', **kwargs):
+
+    def __init__(self, backend=None, realm="django-tastypie", **kwargs):
         super(DigestAuthentication, self).__init__(**kwargs)
         self.backend = backend
         self.realm = realm
 
         if python_digest is None:
-            raise ImproperlyConfigured("The 'python_digest' package could not be imported. It is required for use with the 'DigestAuthentication' class.")
+            raise ImproperlyConfigured(
+                "The 'python_digest' package could not be imported. It is required for use with the 'DigestAuthentication' class."
+            )
 
     def _unauthorized(self):
         response = HttpUnauthorized()
         new_uuid = uuid.uuid4()
         opaque = hmac.new(str(new_uuid), digestmod=sha1).hexdigest()
-        response['WWW-Authenticate'] = python_digest.build_digest_challenge(time.time(), getattr(settings, 'SECRET_KEY', ''), self.realm, opaque, False)
+        response["WWW-Authenticate"] = python_digest.build_digest_challenge(
+            time.time(), getattr(settings, "SECRET_KEY", ""), self.realm, opaque, False
+        )
         return response
 
     def is_authenticated(self, request, **kwargs):
@@ -316,21 +334,25 @@ class DigestAuthentication(Authentication):
         Should return either ``True`` if allowed, ``False`` if not or an
         ``HttpResponse`` if you need something custom.
         """
-        if not request.META.get('HTTP_AUTHORIZATION'):
+        if not request.META.get("HTTP_AUTHORIZATION"):
             return self._unauthorized()
 
         try:
-            (auth_type, data) = request.META['HTTP_AUTHORIZATION'].split(' ', 1)
+            (auth_type, data) = request.META["HTTP_AUTHORIZATION"].split(" ", 1)
 
-            if auth_type.lower() != 'digest':
+            if auth_type.lower() != "digest":
                 return self._unauthorized()
         except:
             return self._unauthorized()
 
-        digest_response = python_digest.parse_digest_credentials(request.META['HTTP_AUTHORIZATION'])
+        digest_response = python_digest.parse_digest_credentials(
+            request.META["HTTP_AUTHORIZATION"]
+        )
 
         # FIXME: Should the nonce be per-user?
-        if not python_digest.validate_nonce(digest_response.nonce, getattr(settings, 'SECRET_KEY', '')):
+        if not python_digest.validate_nonce(
+            digest_response.nonce, getattr(settings, "SECRET_KEY", "")
+        ):
             return self._unauthorized()
 
         user = self.get_user(digest_response.username)
@@ -341,8 +363,11 @@ class DigestAuthentication(Authentication):
 
         expected = python_digest.calculate_request_digest(
             request.method,
-            python_digest.calculate_partial_digest(digest_response.username, self.realm, api_key),
-            digest_response)
+            python_digest.calculate_partial_digest(
+                digest_response.username, self.realm, api_key
+            ),
+            digest_response,
+        )
 
         if not digest_response.response == expected:
             return self._unauthorized()
@@ -357,7 +382,10 @@ class DigestAuthentication(Authentication):
 
         try:
             user = get_user_model().objects.get(username=username)
-        except (get_user_model().DoesNotExist, get_user_model().MultipleObjectsReturned):
+        except (
+            get_user_model().DoesNotExist,
+            get_user_model().MultipleObjectsReturned,
+        ):
             return False
 
         return user
@@ -385,11 +413,11 @@ class DigestAuthentication(Authentication):
 
         This implementation returns the user's username.
         """
-        if hasattr(request, 'user'):
-            if hasattr(request.user, 'username'):
+        if hasattr(request, "user"):
+            if hasattr(request.user, "username"):
                 return request.user.username
 
-        return 'nouser'
+        return "nouser"
 
 
 class OAuthAuthentication(Authentication):
@@ -400,26 +428,45 @@ class OAuthAuthentication(Authentication):
     This does *NOT* provide OAuth authentication in your API, strictly
     consumption.
     """
+
     def __init__(self, **kwargs):
         super(OAuthAuthentication, self).__init__(**kwargs)
 
         if oauth2 is None:
-            raise ImproperlyConfigured("The 'python-oauth2' package could not be imported. It is required for use with the 'OAuthAuthentication' class.")
+            raise ImproperlyConfigured(
+                "The 'python-oauth2' package could not be imported. It is required for use with the 'OAuthAuthentication' class."
+            )
 
         if oauth_provider is None:
-            raise ImproperlyConfigured("The 'django-oauth-plus' package could not be imported. It is required for use with the 'OAuthAuthentication' class.")
+            raise ImproperlyConfigured(
+                "The 'django-oauth-plus' package could not be imported. It is required for use with the 'OAuthAuthentication' class."
+            )
 
     def is_authenticated(self, request, **kwargs):
         from oauth_provider.store import store, InvalidTokenError
 
         if self.is_valid_request(request):
             oauth_request = oauth_provider.utils.get_oauth_request(request)
-            consumer = store.get_consumer(request, oauth_request, oauth_request.get_parameter('oauth_consumer_key'))
+            consumer = store.get_consumer(
+                request,
+                oauth_request,
+                oauth_request.get_parameter("oauth_consumer_key"),
+            )
 
             try:
-                token = store.get_access_token(request, oauth_request, consumer, oauth_request.get_parameter('oauth_token'))
+                token = store.get_access_token(
+                    request,
+                    oauth_request,
+                    consumer,
+                    oauth_request.get_parameter("oauth_token"),
+                )
             except oauth_provider.store.InvalidTokenError:
-                return oauth_provider.utils.send_oauth_error(oauth2.Error(_('Invalid access token: %s') % oauth_request.get_parameter('oauth_token')))
+                return oauth_provider.utils.send_oauth_error(
+                    oauth2.Error(
+                        _("Invalid access token: %s")
+                        % oauth_request.get_parameter("oauth_token")
+                    )
+                )
 
             try:
                 self.validate_token(request, consumer, token)
@@ -433,9 +480,13 @@ class OAuthAuthentication(Authentication):
                 request.user = token.user
                 return True
 
-            return oauth_provider.utils.send_oauth_error(oauth2.Error(_('You are not allowed to access this resource.')))
+            return oauth_provider.utils.send_oauth_error(
+                oauth2.Error(_("You are not allowed to access this resource."))
+            )
 
-        return oauth_provider.utils.send_oauth_error(oauth2.Error(_('Invalid request parameters.')))
+        return oauth_provider.utils.send_oauth_error(
+            oauth2.Error(_("Invalid request parameters."))
+        )
 
     def is_in(self, params):
         """
@@ -460,7 +511,9 @@ class OAuthAuthentication(Authentication):
         return self.is_in(auth_params) or self.is_in(request.REQUEST)
 
     def validate_token(self, request, consumer, token):
-        oauth_server, oauth_request = oauth_provider.utils.initialize_server_request(request)
+        oauth_server, oauth_request = oauth_provider.utils.initialize_server_request(
+            request
+        )
         return oauth_server.verify_request(oauth_request, consumer, token)
 
 
@@ -468,6 +521,7 @@ class MultiAuthentication(object):
     """
     An authentication backend that tries a number of backends in order.
     """
+
     def __init__(self, *backends, **kwargs):
         super(MultiAuthentication, self).__init__(**kwargs)
         self.backends = backends
@@ -502,4 +556,4 @@ class MultiAuthentication(object):
         try:
             return request._authentication_backend.get_identifier(request)
         except AttributeError:
-            return 'nouser'
+            return "nouser"

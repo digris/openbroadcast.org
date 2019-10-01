@@ -5,7 +5,7 @@ from invitation.app_settings import INVITE_ONLY
 register = template.Library()
 
 
-@register.inclusion_tag('admin/invitation/invitationstats/_reward_link.html')
+@register.inclusion_tag("admin/invitation/invitationstats/_reward_link.html")
 def admin_reward_link():
     """
     Adds a reward action if INVITE_ONLY is ``True``.
@@ -14,10 +14,10 @@ def admin_reward_link():
 
         {% admin_reward_link %}
     """
-    return {'INVITE_ONLY': INVITE_ONLY}
+    return {"INVITE_ONLY": INVITE_ONLY}
 
 
-@register.inclusion_tag('invitation/templatetags/_invitations_by_user.html')
+@register.inclusion_tag("invitation/templatetags/_invitations_by_user.html")
 def invitations_by_user(user):
     """
     Adds a reward action if INVITE_ONLY is ``True``.
@@ -26,4 +26,4 @@ def invitations_by_user(user):
 
         {% admin_reward_link %}
     """
-    return {'INVITE_ONLY': INVITE_ONLY}
+    return {"INVITE_ONLY": INVITE_ONLY}

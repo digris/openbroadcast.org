@@ -12,10 +12,10 @@ class ModelTagManager(models.Manager):
     """
     A manager for retrieving tags for a particular model.
     """
+
     def get_queryset(self):
         ctype = ContentType.objects.get_for_model(self.model)
-        return Tag.objects.filter(
-            items__content_type__pk=ctype.pk).distinct()
+        return Tag.objects.filter(items__content_type__pk=ctype.pk).distinct()
 
     def cloud(self, *args, **kwargs):
         return Tag.objects.cloud_for_model(self.model, *args, **kwargs)
@@ -31,6 +31,7 @@ class ModelTaggedItemManager(models.Manager):
     """
     A manager for retrieving model instances based on their tags.
     """
+
     def related_to(self, obj, queryset=None, num=None):
         if queryset is None:
             return TaggedItem.objects.get_related(obj, self.model, num=num)
@@ -56,6 +57,7 @@ class TagDescriptor(object):
     model classes and simple retrieval, updating and deletion of tags
     for model instances.
     """
+
     def __get__(self, instance, owner):
         if not instance:
             tag_manager = ModelTagManager()

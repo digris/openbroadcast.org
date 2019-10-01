@@ -26,20 +26,21 @@ def _unicode(string, encoding=None):
         unicode_string = string.decode(encoding, "ignore")
     else:
         unicode_string = compat.unicode(string)
-    return unicode_string.replace('\x00', '').strip()
+    return unicode_string.replace("\x00", "").strip()
+
 
 def bytes_to_elementtree(bytes_or_file):
-	"""Given a bytestring or a file-like object that will produce them,
+    """Given a bytestring or a file-like object that will produce them,
 	parse and return an ElementTree.
 	"""
-	if isinstance(bytes_or_file, compat.basestring):
-		s = bytes_or_file
-	else:
-		s = bytes_or_file.read()
+    if isinstance(bytes_or_file, compat.basestring):
+        s = bytes_or_file
+    else:
+        s = bytes_or_file.read()
 
-	if compat.is_py3:
-		s = _unicode(s, "utf-8")
+    if compat.is_py3:
+        s = _unicode(s, "utf-8")
 
-	f = compat.StringIO(s)
-	tree = ET.ElementTree(file=f)
-	return tree
+    f = compat.StringIO(s)
+    tree = ET.ElementTree(file=f)
+    return tree

@@ -28,6 +28,7 @@ import warnings
 
 import mutagen._util
 
+
 class Metadata(object):
     """An abstract dict-like object.
 
@@ -46,6 +47,7 @@ class Metadata(object):
 
     def delete(self, filename=None):
         raise NotImplementedError
+
 
 class FileType(mutagen._util.DictMixin):
     """An abstract object wrapping tags and audio stream information.
@@ -69,8 +71,9 @@ class FileType(mutagen._util.DictMixin):
 
     def __init__(self, filename=None, *args, **kwargs):
         if filename is None:
-            warnings.warn("FileType constructor requires a filename",
-                          DeprecationWarning)
+            warnings.warn(
+                "FileType constructor requires a filename", DeprecationWarning
+            )
         else:
             self.load(filename, *args, **kwargs)
 
@@ -82,8 +85,10 @@ class FileType(mutagen._util.DictMixin):
 
         If the file has no tags at all, a KeyError is raised.
         """
-        if self.tags is None: raise KeyError(key)
-        else: return self.tags[key]
+        if self.tags is None:
+            raise KeyError(key)
+        else:
+            return self.tags[key]
 
     def __setitem__(self, key, value):
         """Set a metadata tag.
@@ -100,16 +105,20 @@ class FileType(mutagen._util.DictMixin):
 
         If the file has no tags at all, a KeyError is raised.
         """
-        if self.tags is None: raise KeyError(key)
-        else: del(self.tags[key])
+        if self.tags is None:
+            raise KeyError(key)
+        else:
+            del self.tags[key]
 
     def keys(self):
         """Return a list of keys in the metadata tag.
 
         If the file has no tags at all, an empty list is returned.
         """
-        if self.tags is None: return []
-        else: return self.tags.keys()
+        if self.tags is None:
+            return []
+        else:
+            return self.tags.keys()
 
     def delete(self, filename=None):
         """Remove tags from a file."""
@@ -119,7 +128,8 @@ class FileType(mutagen._util.DictMixin):
             else:
                 warnings.warn(
                     "delete(filename=...) is deprecated, reload the file",
-                    DeprecationWarning)
+                    DeprecationWarning,
+                )
             return self.tags.delete(filename)
 
     def save(self, filename=None, **kwargs):
@@ -128,19 +138,22 @@ class FileType(mutagen._util.DictMixin):
             filename = self.filename
         else:
             warnings.warn(
-                "save(filename=...) is deprecated, reload the file",
-                DeprecationWarning)
+                "save(filename=...) is deprecated, reload the file", DeprecationWarning
+            )
         if self.tags is not None:
             return self.tags.save(filename, **kwargs)
-        else: raise ValueError("no tags in file")
+        else:
+            raise ValueError("no tags in file")
 
     def pprint(self):
         """Print stream information and comment key=value pairs."""
         stream = "%s (%s)" % (self.info.pprint(), self.mime[0])
-        try: tags = self.tags.pprint()
+        try:
+            tags = self.tags.pprint()
         except AttributeError:
             return stream
-        else: return stream + ((tags and "\n" + tags) or "")
+        else:
+            return stream + ((tags and "\n" + tags) or "")
 
     def add_tags(self):
         raise NotImplementedError
@@ -148,12 +161,13 @@ class FileType(mutagen._util.DictMixin):
     def __get_mime(self):
         mimes = []
         for Kind in type(self).__mro__:
-            for mime in getattr(Kind, '_mimes', []):
+            for mime in getattr(Kind, "_mimes", []):
                 if mime not in mimes:
                     mimes.append(mime)
         return mimes
 
     mime = property(__get_mime)
+
 
 def File(filename, options=None, easy=False):
     """Guess the type of the file and try to open it.
@@ -169,6 +183,7 @@ def File(filename, options=None, easy=False):
         from mutagen.asf import ASF
         from mutagen.apev2 import APEv2File
         from mutagen.flac import FLAC
+
         if easy:
             from mutagen.easyid3 import EasyID3FileType as ID3FileType
         else:
@@ -181,11 +196,13 @@ def File(filename, options=None, easy=False):
         from mutagen.oggspeex import OggSpeex
         from mutagen.oggtheora import OggTheora
         from mutagen.oggvorbis import OggVorbis
+
         if easy:
             from mutagen.trueaudio import EasyTrueAudio as TrueAudio
         else:
             from mutagen.trueaudio import TrueAudio
         from mutagen.wavpack import WavPack
+
         if easy:
             from mutagen.easymp4 import EasyMP4 as MP4
         else:
@@ -193,9 +210,24 @@ def File(filename, options=None, easy=False):
         from mutagen.musepack import Musepack
         from mutagen.monkeysaudio import MonkeysAudio
         from mutagen.optimfrog import OptimFROG
-        options = [MP3, TrueAudio, OggTheora, OggSpeex, OggVorbis, OggFLAC,
-                   FLAC, APEv2File, MP4, ID3FileType, WavPack, Musepack,
-                   MonkeysAudio, OptimFROG, ASF]
+
+        options = [
+            MP3,
+            TrueAudio,
+            OggTheora,
+            OggSpeex,
+            OggVorbis,
+            OggFLAC,
+            FLAC,
+            APEv2File,
+            MP4,
+            ID3FileType,
+            WavPack,
+            Musepack,
+            MonkeysAudio,
+            OptimFROG,
+            ASF,
+        ]
 
     if not options:
         return None
@@ -206,12 +238,15 @@ def File(filename, options=None, easy=False):
         # Sort by name after score. Otherwise import order affects
         # Kind sort order, which affects treatment of things with
         # equals scores.
-        results = [(Kind.score(filename, fileobj, header), Kind.__name__)
-                   for Kind in options]
+        results = [
+            (Kind.score(filename, fileobj, header), Kind.__name__) for Kind in options
+        ]
     finally:
         fileobj.close()
     results = zip(results, options)
     results.sort()
     (score, name), Kind = results[-1]
-    if score > 0: return Kind(filename)
-    else: return None
+    if score > 0:
+        return Kind(filename)
+    else:
+        return None

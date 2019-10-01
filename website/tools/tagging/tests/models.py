@@ -18,7 +18,7 @@ class Parrot(models.Model):
         return self.state
 
     class Meta:
-        ordering = ['state']
+        ordering = ["state"]
 
 
 @python_2_unicode_compatible
@@ -29,7 +29,7 @@ class Link(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
 
 
 @python_2_unicode_compatible
@@ -40,11 +40,11 @@ class Article(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
 
 
 class FormTest(models.Model):
-    tags = TagField('Test', help_text='Test')
+    tags = TagField("Test", help_text="Test")
 
 
 class FormTestNull(models.Model):

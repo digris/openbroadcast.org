@@ -1,7 +1,16 @@
 from abcast.api import BaseResource as AbcastBaseResource
 from abcast.api import ChannelResource, EmissionResource
-from alibrary.api import MediaResource, SimpleMediaResource, ReleaseResource, SimpleReleaseResource, ArtistResource, \
-    LabelResource, SimplePlaylistResource, PlaylistResource, PlaylistItemPlaylistResource
+from alibrary.api import (
+    MediaResource,
+    SimpleMediaResource,
+    ReleaseResource,
+    SimpleReleaseResource,
+    ArtistResource,
+    LabelResource,
+    SimplePlaylistResource,
+    PlaylistResource,
+    PlaylistItemPlaylistResource,
+)
 from api_base.api import BaseResource
 from arating.api import VoteResource
 from atracker.api import EventResource

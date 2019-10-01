@@ -2,7 +2,7 @@ import logging
 
 from importlib import import_module
 
-log = logging.getLogger('dajaxice')
+log = logging.getLogger("dajaxice")
 
 
 class DajaxiceFunction(object):
@@ -33,8 +33,8 @@ class DajaxiceModule(object):
 
         # If this is not the final function name (there are more modules)
         # split the name again an register a new submodule.
-        if '.' in name:
-            module, extra = name.split('.', 1)
+        if "." in name:
+            module, extra = name.split(".", 1)
             if module not in self.submodules:
                 self.submodules[module] = DajaxiceModule(module)
             self.submodules[module].add(extra, function)
@@ -43,12 +43,11 @@ class DajaxiceModule(object):
 
 
 class Dajaxice(object):
-
     def __init__(self):
         self._registry = {}
         self._modules = None
 
-    def register(self, function, name=None, method='POST'):
+    def register(self, function, name=None, method="POST"):
         """
         Register this function as a dajaxice function.
 
@@ -59,22 +58,20 @@ class Dajaxice(object):
 
         # Generate a default name
         if not name:
-            module = ''.join(str(function.__module__).rsplit('.ajax', 1))
-            name = '.'.join((module, function.__name__))
+            module = "".join(str(function.__module__).rsplit(".ajax", 1))
+            name = ".".join((module, function.__name__))
 
-        if ':' in name:
-            log.error('Ivalid function name %s.' % name)
+        if ":" in name:
+            log.error("Ivalid function name %s." % name)
             return
 
         # Check for already registered functions
         if name in self._registry:
-            log.error('%s was already registered.' % name)
+            log.error("%s was already registered." % name)
             return
 
         # Create the dajaxice function.
-        function = DajaxiceFunction(function=function,
-                                    name=name,
-                                    method=method)
+        function = DajaxiceFunction(function=function, name=name, method=method)
 
         # Register this new ajax function
         self._registry[name] = function
@@ -86,8 +83,8 @@ class Dajaxice(object):
     def clean_method(self, method):
         """ Clean the http method. """
         method = method.upper()
-        if method not in ['GET', 'POST']:
-            method = 'POST'
+        if method not in ["GET", "POST"]:
+            method = "POST"
         return method
 
     def get(self, name):
@@ -102,6 +99,7 @@ class Dajaxice(object):
             for name, function in self._registry.items():
                 self._modules.add(name, function)
         return self._modules
+
 
 LOADING_DAJAXICE = False
 
@@ -128,7 +126,7 @@ def dajaxice_autodiscover():
             continue
 
         try:
-            imp.find_module('ajax', app_path)
+            imp.find_module("ajax", app_path)
         except ImportError:
             continue
 

@@ -16,15 +16,14 @@ def uuid_func_cache_key(func, args, kwargs, extra=None):
     """
 
     factors = [func.__module__, func.__name__, args, kwargs, extra]
-    if hasattr(func, '__code__'):
+    if hasattr(func, "__code__"):
         factors.append(func.__code__.co_firstlineno)
 
     for arg in args:
-        if hasattr(arg, 'uuid'):
+        if hasattr(arg, "uuid"):
             factors.append(arg.uuid)
 
     return md5hex(json.dumps(factors, sort_keys=True, default=str))
-
 
 
 def cached_uuid_aware(timeout=None, extra=None, key_func=uuid_func_cache_key):

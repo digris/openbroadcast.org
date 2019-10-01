@@ -10,14 +10,19 @@ log = logging.getLogger(__name__)
 # shortcuts
 def get_format(media, quality=Format.DEFAULT, encoding=Format.MP3, wait=False):
 
-
     if isinstance(media, str):
-        log.debug('not a media instance - try to get by uuid: %s' % media.uuid)
+        log.debug("not a media instance - try to get by uuid: %s" % media.uuid)
         from alibrary.models import Media
+
         media = Media.objects.get(uuid=media)
 
-    log.debug('getting format: %s - quality: %s - encoding: %s' % (media.uuid, quality, encoding))
+    log.debug(
+        "getting format: %s - quality: %s - encoding: %s"
+        % (media.uuid, quality, encoding)
+    )
 
-    format = Format.objects.get_or_create_for_media(media=media, quality=quality, encoding=encoding, wait=wait)
+    format = Format.objects.get_or_create_for_media(
+        media=media, quality=quality, encoding=encoding, wait=wait
+    )
 
     return format

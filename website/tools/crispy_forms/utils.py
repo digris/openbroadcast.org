@@ -11,11 +11,22 @@ from django.utils.functional import SimpleLazyObject
 
 # Global field template, default template used for rendering a field. This way we avoid
 # loading the template every time render_field is called without a template
-TEMPLATE_PACK = getattr(settings, 'CRISPY_TEMPLATE_PACK', 'bootstrap')
-default_field_template = SimpleLazyObject(lambda: get_template("%s/field.html" % TEMPLATE_PACK))
+TEMPLATE_PACK = getattr(settings, "CRISPY_TEMPLATE_PACK", "bootstrap")
+default_field_template = SimpleLazyObject(
+    lambda: get_template("%s/field.html" % TEMPLATE_PACK)
+)
 
 
-def render_field(field, form, form_style, context, template=None, labelclass=None, layout_object=None, attrs=None):
+def render_field(
+    field,
+    form,
+    form_style,
+    context,
+    template=None,
+    labelclass=None,
+    layout_object=None,
+    attrs=None,
+):
     """
     Renders a django-crispy-forms field
 
@@ -36,9 +47,9 @@ def render_field(field, form, form_style, context, template=None, labelclass=Non
 
     :attrs: Attributes for the field's widget
     """
-    FAIL_SILENTLY = getattr(settings, 'CRISPY_FAIL_SILENTLY', True)
+    FAIL_SILENTLY = getattr(settings, "CRISPY_FAIL_SILENTLY", True)
 
-    if hasattr(field, 'render'):
+    if hasattr(field, "render"):
         return field.render(form, form_style, context)
     else:
         # This allows fields to be unicode strings, always they don't use non ASCII
@@ -57,7 +68,7 @@ def render_field(field, form, form_style, context, template=None, labelclass=Non
         # Injecting HTML attributes into field's widget, Django handles rendering these
         field_instance = form.fields[field]
         if attrs is not None:
-            widgets = getattr(field_instance.widget, 'widgets', [field_instance.widget,])
+            widgets = getattr(field_instance.widget, "widgets", [field_instance.widget])
 
             # We use attrs as a dictionary later, so here we make a copy
             list_attrs = attrs
@@ -65,14 +76,16 @@ def render_field(field, form, form_style, context, template=None, labelclass=Non
                 list_attrs = [attrs] * len(widgets)
 
             for index, (widget, attr) in enumerate(zip(widgets, list_attrs)):
-                if hasattr(field_instance.widget, 'widgets'):
-                    if 'type' in attr and attr['type'] == "hidden":
+                if hasattr(field_instance.widget, "widgets"):
+                    if "type" in attr and attr["type"] == "hidden":
                         field_instance.widget.widgets[index].is_hidden = True
-                        field_instance.widget.widgets[index] = field_instance.hidden_widget()
+                        field_instance.widget.widgets[
+                            index
+                        ] = field_instance.hidden_widget()
 
                     field_instance.widget.widgets[index].attrs.update(attr)
                 else:
-                    if 'type' in attr and attr['type'] == "hidden":
+                    if "type" in attr and attr["type"] == "hidden":
                         field_instance.widget.is_hidden = True
                         field_instance.widget = field_instance.hidden_widget()
 
@@ -83,7 +96,9 @@ def render_field(field, form, form_style, context, template=None, labelclass=Non
             raise Exception("Could not resolve form field '%s'." % field)
         else:
             field_instance = None
-            logging.warning("Could not resolve form field '%s'." % field, exc_info=sys.exc_info())
+            logging.warning(
+                "Could not resolve form field '%s'." % field, exc_info=sys.exc_info()
+            )
 
     if not field in form.rendered_fields:
         form.rendered_fields.add(field)
@@ -91,10 +106,13 @@ def render_field(field, form, form_style, context, template=None, labelclass=Non
         if not FAIL_SILENTLY:
             raise Exception("A field should only be rendered once: %s" % field)
         else:
-            logging.warning("A field should only be rendered once: %s" % field, exc_info=sys.exc_info())
+            logging.warning(
+                "A field should only be rendered once: %s" % field,
+                exc_info=sys.exc_info(),
+            )
 
     if field_instance is None:
-        html = ''
+        html = ""
     else:
         bound_field = BoundField(form, field_instance, field)
 
@@ -107,11 +125,13 @@ def render_field(field, form, form_style, context, template=None, labelclass=Non
         if layout_object is not None:
             layout_object.bound_fields.append(bound_field)
 
-        context.update({
-            'field': bound_field,
-            'labelclass': labelclass,
-            'flat_attrs': flatatt(attrs if isinstance(attrs, dict) else {}),
-        })
+        context.update(
+            {
+                "field": bound_field,
+                "labelclass": labelclass,
+                "flat_attrs": flatatt(attrs if isinstance(attrs, dict) else {}),
+            }
+        )
         html = template.render(context)
 
     return html
@@ -125,7 +145,12 @@ def flatatt(attrs):
     XML-style pairs.  It is assumed that the keys do not need to be XML-escaped.
     If the passed dictionary is empty, then return an empty string.
     """
-    return u''.join([u' %s="%s"' % (k.replace('_', '-'), conditional_escape(v)) for k, v in attrs.items()])
+    return u"".join(
+        [
+            u' %s="%s"' % (k.replace("_", "-"), conditional_escape(v))
+            for k, v in attrs.items()
+        ]
+    )
 
 
 def render_crispy_form(form, helper=None, context=None):
@@ -137,14 +162,11 @@ def render_crispy_form(form, helper=None, context=None):
     from crispy_forms.templatetags.crispy_forms_tags import CrispyFormNode
 
     if helper is not None:
-        node = CrispyFormNode('form', 'helper')
+        node = CrispyFormNode("form", "helper")
     else:
-        node = CrispyFormNode('form', None)
+        node = CrispyFormNode("form", None)
 
-    node_context = Context({
-        'form': form,
-        'helper': helper
-    })
+    node_context = Context({"form": form, "helper": helper})
 
     if context is not None:
         node_context.update(context)

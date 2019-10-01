@@ -13,33 +13,21 @@ def preflight_check_set_init(modeladmin, request, queryset):
         item.result = None
         item.preflight_ok = False
         item.save()
+
+
 preflight_check_set_init.short_description = "Reprocess selected"
+
 
 @admin.register(PreflightCheck)
 class PreflightCheckAdmin(admin.ModelAdmin):
-    list_display = [
-        '__str__',
-        'media_display',
-        'result',
-        'status',
-        'preflight_ok',
-    ]
-    list_filter = [
-        'status',
-        'preflight_ok',
-    ]
-    readonly_fields = [
-        'result',
-    ]
+    list_display = ["__str__", "media_display", "result", "status", "preflight_ok"]
+    list_filter = ["status", "preflight_ok"]
+    readonly_fields = ["result"]
 
-    search_fields = [
-        'media__id',
-        'media__uuid',
-        'media__name',
-    ]
+    search_fields = ["media__id", "media__uuid", "media__name"]
 
-    #date_hierarchy = 'created'
-    raw_id_fields = ('media',)
+    # date_hierarchy = 'created'
+    raw_id_fields = ("media",)
     actions = [preflight_check_set_init]
 
     def media_display(self, obj):
@@ -48,8 +36,9 @@ class PreflightCheckAdmin(admin.ModelAdmin):
                 admin_url=obj.media.get_admin_url(),
                 name=obj.media.name[0:48],
                 public_url=obj.media.get_absolute_url(),
-                uuid=obj.media.uuid
+                uuid=obj.media.uuid,
             )
-        return '-'
-    media_display.short_description = _('Media')
+        return "-"
+
+    media_display.short_description = _("Media")
     media_display.allow_tags = True

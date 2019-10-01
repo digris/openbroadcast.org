@@ -11,27 +11,27 @@ from .util import add_to_collection
 
 log = logging.getLogger(__name__)
 
+
 @receiver(importitem_created)
 def add_importitem_to_collection(sender, **kwargs):
 
     try:
 
-        content_object = kwargs.get('content_object')
-        user = kwargs.get('user')
-        collection_name = kwargs.get('collection_name', 'Contributions')
+        content_object = kwargs.get("content_object")
+        user = kwargs.get("user")
+        collection_name = kwargs.get("collection_name", "Contributions")
 
-        log.debug('adding "{}" to collection "{}" (by {})'.format(
-            content_object, collection_name, user
-        ))
+        log.debug(
+            'adding "{}" to collection "{}" (by {})'.format(
+                content_object, collection_name, user
+            )
+        )
 
         collection, collection_created = Collection.objects.get_or_create(
-            name=collection_name,
-            owner=user
+            name=collection_name, owner=user
         )
 
         add_to_collection(object=content_object, user=user, collection=collection)
 
     except Exception as e:
-        log.debug('unable to add to collection. {}'.format(e))
-
-
+        log.debug("unable to add to collection. {}".format(e))

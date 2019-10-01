@@ -1,1 +1,1 @@
-from alibrary.admin.baseadmin import * 
+from alibrary.admin.baseadmin import *

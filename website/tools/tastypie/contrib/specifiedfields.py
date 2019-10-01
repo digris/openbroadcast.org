@@ -1,7 +1,7 @@
 from tastypie.resources import ModelResource
 
-class SpecifiedFields(ModelResource):
 
+class SpecifiedFields(ModelResource):
     def get_object_list(self, request):
 
         filters = super(SpecifiedFields, self).build_filters()
@@ -10,14 +10,14 @@ class SpecifiedFields(ModelResource):
 
         objects = super(SpecifiedFields, self).get_object_list(request)
 
-        distinct = request.GET.get('distinct', False) == 'true'
+        distinct = request.GET.get("distinct", False) == "true"
         fields = request.GET.get("fields", False)
 
         if not fields:
             return objects
 
         try:
-            self.specified_fields = fields.split(',')
+            self.specified_fields = fields.split(",")
         except Exception as e:
             self.specified_fields.append(fields)
 
@@ -28,7 +28,7 @@ class SpecifiedFields(ModelResource):
                 related = objects.model._meta.get_field_by_name(field)[0]
             except Exception as e:
                 related = False
-            if related and related.get_internal_type() == 'ManyToManyField':
+            if related and related.get_internal_type() == "ManyToManyField":
                 has_m2m = True
 
         only_fields = []
@@ -37,7 +37,7 @@ class SpecifiedFields(ModelResource):
         for specified_field in self.specified_fields:
 
             try:
-                fields = specified_field.split('__')
+                fields = specified_field.split("__")
             except Exception as e:
                 continue
 
@@ -51,7 +51,7 @@ class SpecifiedFields(ModelResource):
 
             # Set `select_related` for related fields
             if len(fields) > 1:
-                select_related.append('__'.join(fields[0:len(fields) - 1]))
+                select_related.append("__".join(fields[0 : len(fields) - 1]))
 
         if len(only_fields):
             objects = objects.only(*only_fields)
@@ -81,7 +81,7 @@ class SpecifiedFields(ModelResource):
         for field_name, field_object in self.fields.items():
 
             # A touch leaky but it makes URI resolution work.
-            if getattr(field_object, 'dehydrated_type', None) == 'related':
+            if getattr(field_object, "dehydrated_type", None) == "related":
                 field_object.api_name = self._meta.api_name
                 field_object.resource_name = self._meta.resource_name
 
@@ -99,7 +99,7 @@ class SpecifiedFields(ModelResource):
         # Dehydrate each field including related ones
         for row in self.specified_fields:
 
-            f = row.split('__')
+            f = row.split("__")
 
             bundle.data[row] = reduce(getattr, f, bundle.obj)
 
@@ -108,4 +108,3 @@ class SpecifiedFields(ModelResource):
             if method:
                 bundle.data[f[0]] = method()
         return bundle
-

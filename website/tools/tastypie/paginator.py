@@ -19,7 +19,17 @@ class Paginator(object):
     ``total_count`` of resources seen and convenience links to the
     ``previous``/``next`` pages of data as available.
     """
-    def __init__(self, request_data, objects, resource_uri=None, limit=None, offset=0, max_limit=1000, collection_name='objects'):
+
+    def __init__(
+        self,
+        request_data,
+        objects,
+        resource_uri=None,
+        limit=None,
+        offset=0,
+        max_limit=1000,
+        collection_name="objects",
+    ):
         """
         Instantiates the ``Paginator`` and allows for some configuration.
 
@@ -62,17 +72,23 @@ class Paginator(object):
         Default is 20 per page.
         """
 
-        limit = self.request_data.get('limit', self.limit)
+        limit = self.request_data.get("limit", self.limit)
         if limit is None:
-            limit = getattr(settings, 'API_LIMIT_PER_PAGE', 20)
+            limit = getattr(settings, "API_LIMIT_PER_PAGE", 20)
 
         try:
             limit = int(limit)
         except ValueError:
-            raise BadRequest("Invalid limit '%s' provided. Please provide a positive integer." % limit)
+            raise BadRequest(
+                "Invalid limit '%s' provided. Please provide a positive integer."
+                % limit
+            )
 
         if limit < 0:
-            raise BadRequest("Invalid limit '%s' provided. Please provide a positive integer >= 0." % limit)
+            raise BadRequest(
+                "Invalid limit '%s' provided. Please provide a positive integer >= 0."
+                % limit
+            )
 
         if self.max_limit and (not limit or limit > self.max_limit):
             # If it's more than the max, we're only going to return the max.
@@ -92,16 +108,21 @@ class Paginator(object):
         """
         offset = self.offset
 
-        if 'offset' in self.request_data:
-            offset = self.request_data['offset']
+        if "offset" in self.request_data:
+            offset = self.request_data["offset"]
 
         try:
             offset = int(offset)
         except ValueError:
-            raise BadRequest("Invalid offset '%s' provided. Please provide an integer." % offset)
+            raise BadRequest(
+                "Invalid offset '%s' provided. Please provide an integer." % offset
+            )
 
         if offset < 0:
-            raise BadRequest("Invalid offset '%s' provided. Please provide a positive integer >= 0." % offset)
+            raise BadRequest(
+                "Invalid offset '%s' provided. Please provide a positive integer >= 0."
+                % offset
+            )
 
         return offset
 
@@ -112,7 +133,7 @@ class Paginator(object):
         if limit == 0:
             return self.objects[offset:]
 
-        return self.objects[offset:offset + limit]
+        return self.objects[offset : offset + limit]
 
     def get_count(self):
         """
@@ -132,7 +153,7 @@ class Paginator(object):
         if offset - limit < 0:
             return None
 
-        return self._generate_uri(limit, offset-limit)
+        return self._generate_uri(limit, offset - limit)
 
     def get_next(self, limit, offset, count):
         """
@@ -142,7 +163,7 @@ class Paginator(object):
         if offset + limit >= count:
             return None
 
-        return self._generate_uri(limit, offset+limit)
+        return self._generate_uri(limit, offset + limit)
 
     def _generate_uri(self, limit, offset):
         if self.resource_uri is None:
@@ -151,32 +172,29 @@ class Paginator(object):
         try:
             # QueryDict has a urlencode method that can handle multiple values for the same key
             request_params = self.request_data.copy()
-            if 'limit' in request_params:
-                del request_params['limit']
-            if 'offset' in request_params:
-                del request_params['offset']
-            request_params.update({'limit': limit, 'offset': offset})
+            if "limit" in request_params:
+                del request_params["limit"]
+            if "offset" in request_params:
+                del request_params["offset"]
+            request_params.update({"limit": limit, "offset": offset})
             encoded_params = request_params.urlencode()
         except AttributeError:
             request_params = {}
 
             for k, v in self.request_data.items():
                 if isinstance(v, unicode):
-                    request_params[k] = v.encode('utf-8')
+                    request_params[k] = v.encode("utf-8")
                 else:
                     request_params[k] = v
 
-            if 'limit' in request_params:
-                del request_params['limit']
-            if 'offset' in request_params:
-                del request_params['offset']
-            request_params.update({'limit': limit, 'offset': offset})
+            if "limit" in request_params:
+                del request_params["limit"]
+            if "offset" in request_params:
+                del request_params["offset"]
+            request_params.update({"limit": limit, "offset": offset})
             encoded_params = urlencode(request_params)
 
-        return '%s?%s' % (
-            self.resource_uri,
-            encoded_params
-        )
+        return "%s?%s" % (self.resource_uri, encoded_params)
 
     def page(self):
         """
@@ -189,17 +207,10 @@ class Paginator(object):
         offset = self.get_offset()
         count = self.get_count()
         objects = self.get_slice(limit, offset)
-        meta = {
-            'offset': offset,
-            'limit': limit,
-            'total_count': count,
-        }
+        meta = {"offset": offset, "limit": limit, "total_count": count}
 
         if limit:
-            meta['previous'] = self.get_previous(limit, offset)
-            meta['next'] = self.get_next(limit, offset, count)
+            meta["previous"] = self.get_previous(limit, offset)
+            meta["next"] = self.get_next(limit, offset, count)
 
-        return {
-            self.collection_name: objects,
-            'meta': meta,
-        }
+        return {self.collection_name: objects, "meta": meta}

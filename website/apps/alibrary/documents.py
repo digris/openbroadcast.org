@@ -16,40 +16,34 @@ from .models import Artist, Label, Release, Media, Playlist, Series
 
 THUMBNAIL_OPT = dict(size=(197, 197), crop=True, upscale=True)
 
-library_index = Index('library')
-artist_index = Index('artists')
-label_index = Index('labels')
-release_index = Index('releases')
-media_index = Index('media')
+library_index = Index("library")
+artist_index = Index("artists")
+label_index = Index("labels")
+release_index = Index("releases")
+media_index = Index("media")
+
 
 @label_index.doc_type
 class LabelDocument(DocType):
-
     class Meta:
         model = Label
         queryset_pagination = 1000
-        doc_type = 'alibrary.label'
+        doc_type = "alibrary.label"
 
     autocomplete = fields.TextField(
-        analyzer=edge_ngram_analyzer,
-        search_analyzer=edge_ngram_search_analyzer,
+        analyzer=edge_ngram_analyzer, search_analyzer=edge_ngram_search_analyzer
     )
 
     # id = fields.IntegerField()
 
-    url = fields.KeywordField(attr='get_absolute_url')
-    api_url = fields.KeywordField(attr='get_api_url')
+    url = fields.KeywordField(attr="get_absolute_url")
+    api_url = fields.KeywordField(attr="get_api_url")
     created = fields.DateField()
     updated = fields.DateField()
 
-    name = fields.TextField(
-        fielddata=True,
-        fields={
-            'raw': {'type': 'keyword'}
-        }
-    )
+    name = fields.TextField(fielddata=True, fields={"raw": {"type": "keyword"}})
     # TODO: remove 'exact_name' from index/document
-    exact_name = fields.KeywordField(attr='name')
+    exact_name = fields.KeywordField(attr="name")
     tags = KeywordField()
     labelcode = KeywordField()
 
@@ -58,19 +52,18 @@ class LabelDocument(DocType):
     #     'id': fields.IntegerField(),
     # })
 
-    creator = fields.KeywordField(attr='creator.username')
-
+    creator = fields.KeywordField(attr="creator.username")
 
     image = KeywordField()
 
-    type = fields.KeywordField(attr='get_type_display')
+    type = fields.KeywordField(attr="get_type_display")
 
     year_start = fields.IntegerField()
     year_end = fields.IntegerField()
 
-    description = fields.TextField(attr='description')
-    country = KeywordField(attr='country.printable_name')
-    country_code = KeywordField(attr='country.iso2_code')
+    description = fields.TextField(attr="description")
+    country = KeywordField(attr="country.printable_name")
+    country_code = KeywordField(attr="country.iso2_code")
 
     import_ids = fields.KeywordField()
 
@@ -95,16 +88,19 @@ class LabelDocument(DocType):
         return instance.name.strip()
 
     def prepare_tags(self, instance):
-        return [i.strip() for i in instance.d_tags.split(',') if len(i) > 2]
-        #return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
+        return [i.strip() for i in instance.d_tags.split(",") if len(i) > 2]
+        # return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
 
     def prepare_image(self, instance):
-        if hasattr(instance, 'main_image') and instance.main_image:
+        if hasattr(instance, "main_image") and instance.main_image:
             try:
-                return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
+                return (
+                    get_thumbnailer(instance.main_image)
+                    .get_thumbnail(THUMBNAIL_OPT)
+                    .url
+                )
             except (InvalidImageFormatError, AttributeError):
                 pass
-
 
     def prepare_year_start(self, instance):
         if instance.date_start:
@@ -122,73 +118,69 @@ class LabelDocument(DocType):
     # custom queryset
     ###################################################################
     def get_queryset(self):
-        return super(LabelDocument, self).get_queryset().select_related('country', 'parent')
+        return (
+            super(LabelDocument, self)
+            .get_queryset()
+            .select_related("country", "parent")
+        )
 
 
 @artist_index.doc_type
 class ArtistDocument(DocType):
-
     class Meta:
         model = Artist
         queryset_pagination = 1000
-        doc_type = 'alibrary.artist'
+        doc_type = "alibrary.artist"
 
     autocomplete = fields.TextField(
-        analyzer=edge_ngram_analyzer,
-        search_analyzer=edge_ngram_search_analyzer,
+        analyzer=edge_ngram_analyzer, search_analyzer=edge_ngram_search_analyzer
     )
 
     # id = fields.IntegerField()
 
-    url = fields.KeywordField(attr='get_absolute_url')
-    api_url = fields.KeywordField(attr='get_api_url')
+    url = fields.KeywordField(attr="get_absolute_url")
+    api_url = fields.KeywordField(attr="get_api_url")
     created = fields.DateField()
     updated = fields.DateField()
 
     # 'fielddata' is needed for sorting on the filed
-    name = fields.TextField(
-        fielddata=True,
-        fields={
-            'raw': {'type': 'keyword'}
-        }
-    )
-    real_name = fields.TextField(
-        fields={
-            'raw': {'type': 'keyword'}
-        }
-    )
+    name = fields.TextField(fielddata=True, fields={"raw": {"type": "keyword"}})
+    real_name = fields.TextField(fields={"raw": {"type": "keyword"}})
     namevariations = fields.TextField()
     tags = KeywordField()
 
-    creator = fields.KeywordField(attr='creator.username')
+    creator = fields.KeywordField(attr="creator.username")
 
     image = KeywordField()
 
-    type = fields.KeywordField(attr='get_type_display')
+    type = fields.KeywordField(attr="get_type_display")
     ipi_code = fields.KeywordField()
     isni_code = fields.KeywordField()
 
     year_start = fields.IntegerField()
     year_end = fields.IntegerField()
 
-    description = fields.TextField(attr='biography')
-    country = KeywordField(attr='country.printable_name')
-    country_code = KeywordField(attr='country.iso2_code')
-
+    description = fields.TextField(attr="biography")
+    country = KeywordField(attr="country.printable_name")
+    country_code = KeywordField(attr="country.iso2_code")
 
     ###################################################################
     # relation fields
     ###################################################################
-    aliases = fields.NestedField(properties={
-        'name': fields.TextField(),
-        'real_name': fields.TextField(),
-        'pk': fields.IntegerField(),
-    })
-    members = fields.NestedField(properties={
-        'name': fields.TextField(),
-        'real_name': fields.TextField(),
-        'pk': fields.IntegerField(),
-    })
+    aliases = fields.NestedField(
+        properties={
+            "name": fields.TextField(),
+            "real_name": fields.TextField(),
+            "pk": fields.IntegerField(),
+        }
+    )
+    members = fields.NestedField(
+        properties={
+            "name": fields.TextField(),
+            "real_name": fields.TextField(),
+            "pk": fields.IntegerField(),
+        }
+    )
 
     import_ids = fields.KeywordField()
 
@@ -207,13 +199,17 @@ class ArtistDocument(DocType):
         return [i.name.strip() for i in instance.namevariations.nocache().all()]
 
     def prepare_tags(self, instance):
-        return [i.strip() for i in instance.d_tags.split(',') if len(i) > 2]
-        #return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
+        return [i.strip() for i in instance.d_tags.split(",") if len(i) > 2]
+        # return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
 
     def prepare_image(self, instance):
-        if hasattr(instance, 'main_image') and instance.main_image:
+        if hasattr(instance, "main_image") and instance.main_image:
             try:
-                return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
+                return (
+                    get_thumbnailer(instance.main_image)
+                    .get_thumbnail(THUMBNAIL_OPT)
+                    .url
+                )
             except (InvalidImageFormatError, AttributeError):
                 pass
 
@@ -233,54 +229,42 @@ class ArtistDocument(DocType):
     # custom queryset
     ###################################################################
     def get_queryset(self):
-        return super(ArtistDocument, self).get_queryset().filter(listed=True).select_related(
-            'country'
-        ).prefetch_related(
-            'aliases', 'members'
+        return (
+            super(ArtistDocument, self)
+            .get_queryset()
+            .filter(listed=True)
+            .select_related("country")
+            .prefetch_related("aliases", "members")
         )
-
 
 
 @release_index.doc_type
 class ReleaseDocument(DocType):
-
     class Meta:
         model = Release
         queryset_pagination = 1000
-        doc_type = 'alibrary.release'
+        doc_type = "alibrary.release"
 
     autocomplete = fields.TextField(
-        analyzer=edge_ngram_analyzer,
-        search_analyzer=edge_ngram_search_analyzer,
+        analyzer=edge_ngram_analyzer, search_analyzer=edge_ngram_search_analyzer
     )
 
     # id = fields.IntegerField()
 
-    url = fields.KeywordField(attr='get_absolute_url')
-    api_url = fields.KeywordField(attr='get_api_url')
+    url = fields.KeywordField(attr="get_absolute_url")
+    api_url = fields.KeywordField(attr="get_api_url")
     created = fields.DateField()
     updated = fields.DateField()
 
     # 'fielddata' is needed for sorting on the filed
-    name = fields.TextField(
-        fielddata=True,
-        fields={
-            'raw': {'type': 'keyword'}
-        }
-    )
+    name = fields.TextField(fielddata=True, fields={"raw": {"type": "keyword"}})
 
     artist_display = fields.KeywordField(
-        attr='get_artist_display',
-        fields={
-            'raw': {'type': 'keyword'}
-        }
+        attr="get_artist_display", fields={"raw": {"type": "keyword"}}
     )
 
     label_display = fields.KeywordField(
-        attr='label.name',
-        fields={
-            'raw': {'type': 'keyword'}
-        }
+        attr="label.name", fields={"raw": {"type": "keyword"}}
     )
 
     # name = fields.TextField(
@@ -289,20 +273,20 @@ class ReleaseDocument(DocType):
     # )
     tags = KeywordField()
 
-    creator = fields.KeywordField(attr='creator.username')
+    creator = fields.KeywordField(attr="creator.username")
 
     image = KeywordField()
 
-    type = fields.KeywordField(attr='get_releasetype_display')
-    label_type = fields.KeywordField(attr='label.get_type_display')
+    type = fields.KeywordField(attr="get_releasetype_display")
+    label_type = fields.KeywordField(attr="label.get_type_display")
     barcode = fields.KeywordField()
 
     releasedate_year = fields.IntegerField()
     catalognumber = fields.KeywordField()
 
     description = fields.TextField()
-    country = KeywordField(attr='release_country.printable_name')
-    country_code = KeywordField(attr='release_country.iso2_code')
+    country = KeywordField(attr="release_country.printable_name")
+    country_code = KeywordField(attr="release_country.iso2_code")
 
     num_media = fields.IntegerField()
 
@@ -321,13 +305,17 @@ class ReleaseDocument(DocType):
         return instance.name.strip()
 
     def prepare_tags(self, instance):
-        return [i.strip() for i in instance.d_tags.split(',') if len(i) > 2]
-        #return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
+        return [i.strip() for i in instance.d_tags.split(",") if len(i) > 2]
+        # return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
 
     def prepare_image(self, instance):
-        if hasattr(instance, 'main_image') and instance.main_image:
+        if hasattr(instance, "main_image") and instance.main_image:
             try:
-                return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
+                return (
+                    get_thumbnailer(instance.main_image)
+                    .get_thumbnail(THUMBNAIL_OPT)
+                    .url
+                )
             except (InvalidImageFormatError, AttributeError):
                 pass
 
@@ -364,78 +352,64 @@ class ReleaseDocument(DocType):
     # custom queryset
     ###################################################################
     def get_queryset(self):
-        return super(ReleaseDocument, self).get_queryset().all().select_related(
-            'release_country'
-        ).prefetch_related(
-            'media_release',
-            'extra_artists',
-            'album_artists',
+        return (
+            super(ReleaseDocument, self)
+            .get_queryset()
+            .all()
+            .select_related("release_country")
+            .prefetch_related("media_release", "extra_artists", "album_artists")
         )
-
 
 
 @media_index.doc_type
 class MediaDocument(DocType):
-
     class Meta:
         model = Media
         queryset_pagination = 1000
-        doc_type = 'alibrary.media'
+        doc_type = "alibrary.media"
 
     autocomplete = fields.TextField(
-        analyzer=edge_ngram_analyzer,
-        search_analyzer=edge_ngram_search_analyzer,
+        analyzer=edge_ngram_analyzer, search_analyzer=edge_ngram_search_analyzer
     )
 
-    url = fields.KeywordField(attr='get_absolute_url')
-    api_url = fields.KeywordField(attr='get_api_url')
+    url = fields.KeywordField(attr="get_absolute_url")
+    api_url = fields.KeywordField(attr="get_api_url")
     created = fields.DateField()
     updated = fields.DateField()
 
     # 'fielddata' is needed for sorting on the filed
-    name = fields.TextField(
-        fielddata=True,
-        fields={
-            'raw': {'type': 'keyword'}
-        }
-    )
+    name = fields.TextField(fielddata=True, fields={"raw": {"type": "keyword"}})
 
     artist_display = fields.KeywordField(
-        attr='get_artist_display',
-        fields={
-            'raw': {'type': 'keyword'}
-        }
+        attr="get_artist_display", fields={"raw": {"type": "keyword"}}
     )
     release_display = fields.KeywordField(
-        attr='release.name',
-        fields={
-            'raw': {'type': 'keyword'}
-        }
+        attr="release.name", fields={"raw": {"type": "keyword"}}
     )
 
     tags = KeywordField()
 
     # id = fields.IntegerField()
 
-    creator = fields.KeywordField(attr='creator.username')
+    creator = fields.KeywordField(attr="creator.username")
 
     image = KeywordField()
 
-    type = fields.KeywordField(attr='get_mediatype_display')
-    version = fields.KeywordField(attr='get_version_display')
-    #barcode = fields.KeywordField()
+    type = fields.KeywordField(attr="get_mediatype_display")
+    version = fields.KeywordField(attr="get_version_display")
+    # barcode = fields.KeywordField()
 
     description = fields.TextField()
     lyrics = fields.TextField()
-    lyrics_language = fields.KeywordField(attr='get_lyrics_language_display')
-    #country = KeywordField(attr='release_country.iso2_code')
+    lyrics_language = fields.KeywordField(attr="get_lyrics_language_display")
+    # country = KeywordField(attr='release_country.iso2_code')
 
     # audio-properties
-    duration = fields.IntegerField(attr='master_duration')
-    bitrate = fields.IntegerField(attr='master_bitrate')
-    samplerate = fields.IntegerField(attr='master_samplerate')
-    encoding = fields.KeywordField(attr='master_encoding')
-    tempo = fields.FloatField(attr='tempo')
+    duration = fields.IntegerField(attr="master_duration")
+    bitrate = fields.IntegerField(attr="master_bitrate")
+    samplerate = fields.IntegerField(attr="master_samplerate")
+    encoding = fields.KeywordField(attr="master_encoding")
+    tempo = fields.FloatField(attr="tempo")
 
     # license = fields.NestedField(properties={
     #     'name': fields.KeywordField(),
@@ -465,13 +439,17 @@ class MediaDocument(DocType):
         return instance.name.strip()
 
     def prepare_tags(self, instance):
-        return [i.strip() for i in instance.d_tags.split(',') if len(i) > 2]
-        #return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
+        return [i.strip() for i in instance.d_tags.split(",") if len(i) > 2]
+        # return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
 
     def prepare_image(self, instance):
-        if hasattr(instance, 'release') and hasattr(instance.release, 'main_image'):
+        if hasattr(instance, "release") and hasattr(instance.release, "main_image"):
             try:
-                return get_thumbnailer(instance.release.main_image).get_thumbnail(THUMBNAIL_OPT).url
+                return (
+                    get_thumbnailer(instance.release.main_image)
+                    .get_thumbnail(THUMBNAIL_OPT)
+                    .url
+                )
             except (InvalidImageFormatError, AttributeError):
                 pass
 
@@ -496,7 +474,6 @@ class MediaDocument(DocType):
         if instance.master_encoding:
             return instance.master_encoding.upper()
 
-
     # add all related (appearing artist, extra artist) (uu)ids to the document
     def prepare_artist_ids(self, instance):
         ids = []
@@ -519,52 +496,48 @@ class MediaDocument(DocType):
         ids = [str(i.uuid) for i in get_import_sessions_for_obj(instance)]
         return list(set(ids))
 
-
     ###################################################################
     # custom queryset
     ###################################################################
     def get_queryset(self):
-        return super(MediaDocument, self).get_queryset().all().select_related(
-            'release', 'artist', 'license'
-        ).prefetch_related(
-            'media_artists', 'extra_artists'
+        return (
+            super(MediaDocument, self)
+            .get_queryset()
+            .all()
+            .select_related("release", "artist", "license")
+            .prefetch_related("media_artists", "extra_artists")
         )
 
 
+playlist_index = Index("playlists")
 
-
-playlist_index = Index('playlists')
 
 @playlist_index.doc_type
 class PlaylistDocument(DocType):
-
     class Meta:
         model = Playlist
         queryset_pagination = 1000
-        doc_type = 'alibrary.playlist'
+        doc_type = "alibrary.playlist"
 
     autocomplete = fields.TextField(
-        analyzer=edge_ngram_analyzer,
-        search_analyzer=edge_ngram_search_analyzer,
+        analyzer=edge_ngram_analyzer, search_analyzer=edge_ngram_search_analyzer
     )
 
-    url = fields.KeywordField(attr='get_absolute_url')
-    api_url = fields.KeywordField(attr='get_api_url')
+    url = fields.KeywordField(attr="get_absolute_url")
+    api_url = fields.KeywordField(attr="get_api_url")
     created = fields.DateField()
     updated = fields.DateField()
 
     # 'fielddata' is needed for sorting on the filed
-    name = fields.TextField(
-        fielddata=True
-    )
+    name = fields.TextField(fielddata=True)
     tags = KeywordField()
 
-    user = fields.KeywordField(attr='user.username')
+    user = fields.KeywordField(attr="user.username")
 
     image = KeywordField()
 
-    type = fields.KeywordField(attr='get_type_display')
-    status = fields.KeywordField(attr='get_status_display')
+    type = fields.KeywordField(attr="get_type_display")
+    status = fields.KeywordField(attr="get_status_display")
     target_duration = fields.KeywordField()
     weather = fields.KeywordField()
     seasons = fields.KeywordField()
@@ -579,7 +552,6 @@ class PlaylistDocument(DocType):
     num_emissions = fields.IntegerField()
     state_flags = fields.KeywordField()
 
-
     ###################################################################
     # field preparation
     ###################################################################
@@ -588,7 +560,7 @@ class PlaylistDocument(DocType):
         #     return
         text = [instance.name.strip()]
         if instance.series and instance.series_number:
-            text += ['{} #{}'.format(instance.series, instance.series_number)]
+            text += ["{} #{}".format(instance.series, instance.series_number)]
         elif instance.series:
             text += [instance.series.name]
         return text
@@ -597,24 +569,28 @@ class PlaylistDocument(DocType):
         return instance.name.strip()
 
     def prepare_tags(self, instance):
-        return [i.strip() for i in instance.d_tags.split(',') if len(i) > 2]
-        #return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
+        return [i.strip() for i in instance.d_tags.split(",") if len(i) > 2]
+        # return [{'id': i.pk, 'name': i.name} for i in instance.tags.all()]
 
     def prepare_image(self, instance):
-        if hasattr(instance, 'main_image') and instance.main_image:
+        if hasattr(instance, "main_image") and instance.main_image:
             try:
-                return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
+                return (
+                    get_thumbnailer(instance.main_image)
+                    .get_thumbnail(THUMBNAIL_OPT)
+                    .url
+                )
             except (InvalidImageFormatError, AttributeError):
                 pass
 
     def prepare_target_duration(self, instance):
         if instance.target_duration:
-            return '{} Minutes'.format(instance.get_target_duration_display())
+            return "{} Minutes".format(instance.get_target_duration_display())
         return
 
     def prepare_series(self, instance):
         if instance.series and instance.series_number:
-            return '{} #{}'.format(instance.series, instance.series_number)
+            return "{} #{}".format(instance.series, instance.series_number)
         elif instance.series:
             return instance.series.name
         return
@@ -640,21 +616,23 @@ class PlaylistDocument(DocType):
         return [d.get_day_display() for d in instance.dayparts.all()]
 
     def prepare_daypart_slots(self, instance):
-        return ['{:%H} - {:%H}h'.format(d.time_start, d.time_end) for d in instance.dayparts.all()]
+        return [
+            "{:%H} - {:%H}h".format(d.time_start, d.time_end)
+            for d in instance.dayparts.all()
+        ]
 
     def prepare_state_flags(self, instance):
         flags = []
         if instance.is_archived:
-            flags += ['Archived - Yes']
-        elif instance.type == 'broadcast':
-            flags += ['Archived - No']
+            flags += ["Archived - Yes"]
+        elif instance.type == "broadcast":
+            flags += ["Archived - No"]
         if instance.rotation:
-            flags += ['In Rotation - Yes']
-        elif instance.type == 'broadcast':
-            flags += ['In Rotation - No']
+            flags += ["In Rotation - Yes"]
+        elif instance.type == "broadcast":
+            flags += ["In Rotation - No"]
 
         return flags
-
 
     # ###################################################################
     # # custom queryset
@@ -663,26 +641,21 @@ class PlaylistDocument(DocType):
     #     return super(PlaylistDocument, self).get_queryset().exclude(type='basket')
 
 
+series_index = Index("series")
 
-
-series_index = Index('series')
 
 @series_index.doc_type
 class SeriesDocument(DocType):
-
     class Meta:
         model = Series
         queryset_pagination = 1000
-        doc_type = 'alibrary.series'
+        doc_type = "alibrary.series"
 
     autocomplete = fields.TextField(
-        analyzer=edge_ngram_analyzer,
-        search_analyzer=edge_ngram_search_analyzer,
+        analyzer=edge_ngram_analyzer, search_analyzer=edge_ngram_search_analyzer
     )
 
-    name = fields.TextField(
-        fielddata=True
-    )
+    name = fields.TextField(fielddata=True)
 
     ###################################################################
     # field preparation

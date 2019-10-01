@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 #######################################################################
 class PlayerIndexView(TemplateView):
 
-    template_name = 'player/index.html'
+    template_name = "player/index.html"
 
     def get_context_data(self, **kwargs):
         context = super(PlayerIndexView, self).get_context_data(**kwargs)

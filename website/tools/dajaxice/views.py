@@ -8,7 +8,7 @@ from django.http import HttpResponse, Http404
 from dajaxice.exceptions import FunctionNotCallableError
 from dajaxice.core import dajaxice_functions, dajaxice_config
 
-log = logging.getLogger('dajaxice')
+log = logging.getLogger("dajaxice")
 
 
 def safe_dict(d):
@@ -17,7 +17,7 @@ def safe_dict(d):
     http://www.gossamer-threads.com/lists/python/bugs/684379
     """
     if isinstance(d, dict):
-        return dict([(k.encode('utf-8'), safe_dict(v)) for k, v in d.iteritems()])
+        return dict([(k.encode("utf-8"), safe_dict(v)) for k, v in d.iteritems()])
     elif isinstance(d, list):
         return [safe_dict(x) for x in d]
     else:
@@ -36,10 +36,10 @@ class DajaxiceRequest(View):
         if dajaxice_functions.is_callable(name, request.method):
 
             function = dajaxice_functions.get(name)
-            data = getattr(request, function.method).get('argv', '')
+            data = getattr(request, function.method).get("argv", "")
 
             # Clean the argv
-            if data != 'undefined':
+            if data != "undefined":
                 try:
                     data = safe_dict(json.loads(data))
                 except Exception:
@@ -54,7 +54,7 @@ class DajaxiceRequest(View):
                 if settings.DEBUG:
                     raise
                 response = dajaxice_config.DAJAXICE_EXCEPTION
-            if django.get_version() >= '1.7':
+            if django.get_version() >= "1.7":
                 return HttpResponse(response, content_type="application/x-json")
             else:
                 return HttpResponse(response, mimetype="application/x-json")

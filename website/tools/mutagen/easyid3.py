@@ -21,7 +21,8 @@ from mutagen import Metadata
 from mutagen._util import DictMixin, dict_match
 from mutagen.id3 import ID3, error, delete, ID3FileType
 
-__all__ = ['EasyID3', 'Open', 'delete']
+__all__ = ["EasyID3", "Open", "delete"]
+
 
 class EasyID3KeyError(KeyError, ValueError, error):
     """Raised when trying to get/set an invalid key.
@@ -29,6 +30,7 @@ class EasyID3KeyError(KeyError, ValueError, error):
     Subclasses both KeyError and ValueError for API compatibility,
     catching KeyError is preferred.
     """
+
 
 class EasyID3(DictMixin, Metadata):
     """A file with an ID3 tag.
@@ -71,9 +73,8 @@ class EasyID3(DictMixin, Metadata):
     SetFallback = None
     DeleteFallback = None
     ListFallback = None
-    
-    def RegisterKey(cls, key,
-                    getter=None, setter=None, deleter=None, lister=None):
+
+    def RegisterKey(cls, key, getter=None, setter=None, deleter=None, lister=None):
         """Register a new key mapping.
 
         A key mapping is four functions, a getter, setter, deleter,
@@ -99,6 +100,7 @@ class EasyID3(DictMixin, Metadata):
             cls.Delete[key] = deleter
         if lister is not None:
             cls.List[key] = lister
+
     RegisterKey = classmethod(RegisterKey)
 
     def RegisterTextKey(cls, key, frameid):
@@ -109,6 +111,7 @@ class EasyID3(DictMixin, Metadata):
         function:
             EasyID3.RegisterTextKey("title", "TIT2")
         """
+
         def getter(id3, key):
             return list(id3[frameid])
 
@@ -122,9 +125,10 @@ class EasyID3(DictMixin, Metadata):
                 frame.text = value
 
         def deleter(id3, key):
-            del(id3[frameid])
+            del id3[frameid]
 
         cls.RegisterKey(key, getter, setter, deleter)
+
     RegisterTextKey = classmethod(RegisterTextKey)
 
     def RegisterTXXXKey(cls, key, desc):
@@ -136,6 +140,7 @@ class EasyID3(DictMixin, Metadata):
             EasyID3.RegisterTXXXKey('barcode', 'BARCODE').        
         """
         frameid = "TXXX:" + desc
+
         def getter(id3, key):
             return list(id3[frameid])
 
@@ -146,16 +151,17 @@ class EasyID3(DictMixin, Metadata):
                 enc = 0
                 # Store 8859-1 if we can, per MusicBrainz spec.
                 for v in value:
-                    if max(v) > u'\x7f':
+                    if max(v) > u"\x7f":
                         enc = 3
                 id3.add(mutagen.id3.TXXX(encoding=enc, text=value, desc=desc))
             else:
                 frame.text = value
 
         def deleter(id3, key):
-            del(id3[frameid])
+            del id3[frameid]
 
         cls.RegisterKey(key, getter, setter, deleter)
+
     RegisterTXXXKey = classmethod(RegisterTXXXKey)
 
     def __init__(self, filename=None):
@@ -166,11 +172,11 @@ class EasyID3(DictMixin, Metadata):
         if filename is not None:
             self.load(filename)
 
-    filename = property(lambda s: s.__id3.filename,
-                        lambda s, fn: setattr(s.__id3, 'filename', fn))
+    filename = property(
+        lambda s: s.__id3.filename, lambda s, fn: setattr(s.__id3, "filename", fn)
+    )
 
-    _size = property(lambda s: s._id3.size,
-                     lambda s, fn: setattr(s.__id3, '_size', fn))
+    _size = property(lambda s: s._id3.size, lambda s, fn: setattr(s.__id3, "_size", fn))
 
     def __getitem__(self, key):
         key = key.lower()
@@ -218,10 +224,13 @@ class EasyID3(DictMixin, Metadata):
                 strings.append("%s=%s" % (key, value))
         return "\n".join(strings)
 
+
 Open = EasyID3
+
 
 def genre_get(id3, key):
     return id3["TCON"].genres
+
 
 def genre_set(id3, key, value):
     try:
@@ -232,17 +241,22 @@ def genre_set(id3, key, value):
         frame.encoding = 3
         frame.genres = value
 
+
 def genre_delete(id3, key):
-    del(id3["TCON"])
+    del id3["TCON"]
+
 
 def date_get(id3, key):
     return [stamp.text for stamp in id3["TDRC"].text]
 
+
 def date_set(id3, key, value):
     id3.add(mutagen.id3.TDRC(encoding=3, text=value))
 
+
 def date_delete(id3, key):
-    del(id3["TDRC"])
+    del id3["TDRC"]
+
 
 def performer_get(id3, key):
     people = []
@@ -258,7 +272,8 @@ def performer_get(id3, key):
         return people
     else:
         raise KeyError(key)
-    
+
+
 def performer_set(id3, key, value):
     wanted_role = key.split(":", 1)[1]
     try:
@@ -272,6 +287,7 @@ def performer_set(id3, key, value):
         people.append((wanted_role, v))
     mcl.people = people
 
+
 def performer_delete(id3, key):
     wanted_role = key.split(":", 1)[1]
     try:
@@ -284,22 +300,26 @@ def performer_delete(id3, key):
     elif people:
         mcl.people = people
     else:
-        del(id3["TMCL"])
-        
+        del id3["TMCL"]
+
+
 def performer_list(id3, key):
-    try: mcl = id3["TMCL"]
+    try:
+        mcl = id3["TMCL"]
     except KeyError:
         return []
     else:
         return list(set("performer:" + p[0] for p in mcl.people))
 
+
 def musicbrainz_trackid_get(id3, key):
-    return [id3["UFID:http://musicbrainz.org"].data.decode('ascii')]
+    return [id3["UFID:http://musicbrainz.org"].data.decode("ascii")]
+
 
 def musicbrainz_trackid_set(id3, key, value):
     if len(value) != 1:
         raise ValueError("only one track ID may be set per song")
-    value = value[0].encode('ascii')
+    value = value[0].encode("ascii")
     try:
         frame = id3["UFID:http://musicbrainz.org"]
     except KeyError:
@@ -308,8 +328,10 @@ def musicbrainz_trackid_set(id3, key, value):
     else:
         frame.data = value
 
+
 def musicbrainz_trackid_delete(id3, key):
-    del(id3["UFID:http://musicbrainz.org"])
+    del id3["UFID:http://musicbrainz.org"]
+
 
 def website_get(id3, key):
     urls = [frame.url for frame in id3.getall("WOAR")]
@@ -318,13 +340,16 @@ def website_get(id3, key):
     else:
         raise EasyID3KeyError(key)
 
+
 def website_set(id3, key, value):
     id3.delall("WOAR")
     for v in value:
         id3.add(mutagen.id3.WOAR(url=v))
 
+
 def website_delete(id3, key):
     id3.delall("WOAR")
+
 
 def gain_get(id3, key):
     try:
@@ -333,6 +358,7 @@ def gain_get(id3, key):
         raise EasyID3KeyError(key)
     else:
         return [u"%+f dB" % frame.gain]
+
 
 def gain_set(id3, key, value):
     if len(value) != 1:
@@ -345,6 +371,7 @@ def gain_set(id3, key, value):
         id3.add(frame)
     frame.gain = gain
 
+
 def gain_delete(id3, key):
     try:
         frame = id3["RVA2:" + key[11:-5]]
@@ -354,7 +381,8 @@ def gain_delete(id3, key):
         if frame.peak:
             frame.gain = 0.0
         else:
-            del(id3["RVA2:" + key[11:-5]])
+            del id3["RVA2:" + key[11:-5]]
+
 
 def peak_get(id3, key):
     try:
@@ -363,6 +391,7 @@ def peak_get(id3, key):
         raise EasyID3KeyError(key)
     else:
         return [u"%f" % frame.peak]
+
 
 def peak_set(id3, key, value):
     if len(value) != 1:
@@ -377,6 +406,7 @@ def peak_set(id3, key, value):
         id3.add(frame)
     frame.peak = peak
 
+
 def peak_delete(id3, key):
     try:
         frame = id3["RVA2:" + key[11:-5]]
@@ -386,7 +416,8 @@ def peak_delete(id3, key):
         if frame.gain:
             frame.peak = 0.0
         else:
-            del(id3["RVA2:" + key[11:-5]])
+            del id3["RVA2:" + key[11:-5]]
+
 
 def peakgain_list(id3, key):
     keys = []
@@ -395,10 +426,11 @@ def peakgain_list(id3, key):
         keys.append("replaygain_%s_peak" % frame.desc)
     return keys
 
+
 for frameid, key in {
     "TALB": "album",
     "TBPM": "bpm",
-    "TCMP": "compilation", # iTunes extension
+    "TCMP": "compilation",  # iTunes extension
     "TCOM": "composer",
     "TCOP": "copyright",
     "TENC": "encodedby",
@@ -409,34 +441,37 @@ for frameid, key in {
     "TIT2": "title",
     "TIT3": "version",
     "TPE1": "artist",
-    "TPE2": "performer", 
+    "TPE2": "performer",
     "TPE3": "conductor",
     "TPE4": "arranger",
     "TPOS": "discnumber",
     "TPUB": "organization",
     "TRCK": "tracknumber",
     "TOLY": "author",
-    "TSO2": "albumartistsort", # iTunes extension
+    "TSO2": "albumartistsort",  # iTunes extension
     "TSOA": "albumsort",
-    "TSOC": "composersort", # iTunes extension
+    "TSOC": "composersort",  # iTunes extension
     "TSOP": "artistsort",
     "TSOT": "titlesort",
     "TSRC": "isrc",
     "TSST": "discsubtitle",
-    }.iteritems():
+}.iteritems():
     EasyID3.RegisterTextKey(key, frameid)
 
 EasyID3.RegisterKey("genre", genre_get, genre_set, genre_delete)
 EasyID3.RegisterKey("date", date_get, date_set, date_delete)
 EasyID3.RegisterKey(
-    "performer:*", performer_get, performer_set, performer_delete,
-    performer_list)
-EasyID3.RegisterKey("musicbrainz_trackid", musicbrainz_trackid_get,
-                    musicbrainz_trackid_set, musicbrainz_trackid_delete)
-EasyID3.RegisterKey("website", website_get, website_set, website_delete)
-EasyID3.RegisterKey("website", website_get, website_set, website_delete)
+    "performer:*", performer_get, performer_set, performer_delete, performer_list
+)
 EasyID3.RegisterKey(
-    "replaygain_*_gain", gain_get, gain_set, gain_delete, peakgain_list)
+    "musicbrainz_trackid",
+    musicbrainz_trackid_get,
+    musicbrainz_trackid_set,
+    musicbrainz_trackid_delete,
+)
+EasyID3.RegisterKey("website", website_get, website_set, website_delete)
+EasyID3.RegisterKey("website", website_get, website_set, website_delete)
+EasyID3.RegisterKey("replaygain_*_gain", gain_get, gain_set, gain_delete, peakgain_list)
 EasyID3.RegisterKey("replaygain_*_peak", peak_get, peak_set, peak_delete)
 
 # At various times, information for this came from
@@ -457,9 +492,11 @@ for desc, key in {
     u"ASIN": "asin",
     u"ALBUMARTISTSORT": "albumartistsort",
     u"BARCODE": "barcode",
-    }.iteritems():
+}.iteritems():
     EasyID3.RegisterTXXXKey(key, desc)
+
 
 class EasyID3FileType(ID3FileType):
     """Like ID3FileType, but uses EasyID3 for tags."""
+
     ID3 = EasyID3

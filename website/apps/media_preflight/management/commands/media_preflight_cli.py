@@ -16,8 +16,12 @@ def cli():
 
 
 @cli.command()
-@click.option('--limit', default=DEFAULT_LIMIT, help='Limit number of entries to process')
-@click.option('--force', default=False, is_flag=True, help='Force to run preflight on all tracks')
+@click.option(
+    "--limit", default=DEFAULT_LIMIT, help="Limit number of entries to process"
+)
+@click.option(
+    "--force", default=False, is_flag=True, help="Force to run preflight on all tracks"
+)
 def request_checks(limit, force):
     """
     requests preflight checks (via preflight service)
@@ -25,16 +29,21 @@ def request_checks(limit, force):
 
     if force:
         _count = PreflightCheck.objects.all().delete()
-        click.secho('Deleted all existing preflighjt checks. ({})'.format(_count), fg='cyan')
+        click.secho(
+            "Deleted all existing preflighjt checks. ({})".format(_count), fg="cyan"
+        )
 
-    id_list = Media.objects.exclude(
-        #master__isnull=True
-        master=''
-    ).nocache().filter(
-        preflight_check__isnull=True
-    ).values_list('id', flat=True)
+    id_list = (
+        Media.objects.exclude(
+            # master__isnull=True
+            master=""
+        )
+        .nocache()
+        .filter(preflight_check__isnull=True)
+        .values_list("id", flat=True)
+    )
 
-    click.secho('{} media items to process'.format(id_list.count()), fg='cyan')
+    click.secho("{} media items to process".format(id_list.count()), fg="cyan")
 
     for id in id_list[0:limit]:
         m = Media.objects.get(pk=id)
@@ -51,7 +60,7 @@ def _request_check(media):
     try:
         _p, _c = PreflightCheck.objects.get_or_create(media=media)
 
-
     except Exception as e:
-        click.secho('unable to request preflight check for media: {} - {}'.format(media.pk, e))
-
+        click.secho(
+            "unable to request preflight check for media: {} - {}".format(media.pk, e)
+        )

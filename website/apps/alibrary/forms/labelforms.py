@@ -10,7 +10,10 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Field, Fieldset, Row, Column
 from crispy_forms_extra.layout import LookupField, LookupImageField
 from django import forms
-from django.contrib.contenttypes.forms import BaseGenericInlineFormSet, generic_inlineformset_factory
+from django.contrib.contenttypes.forms import (
+    BaseGenericInlineFormSet,
+    generic_inlineformset_factory,
+)
 from django.forms import ModelForm, Form
 from django.forms.widgets import FileInput
 from django.utils.translation import ugettext as _
@@ -21,29 +24,33 @@ from search.forms import fields as search_fields
 
 ACTION_LAYOUT = action_layout = FormActions(
     HTML(
-        '<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),
+        '<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'
+    ),
     HTML(
-        '<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'),
+        '<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'
+    ),
 )
 ACTION_LAYOUT_EXTENDED = action_layout = FormActions(
-    Field('publish', css_class='input-hidden'),
+    Field("publish", css_class="input-hidden"),
     HTML(
-        '<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'),
+        '<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'
+    ),
     HTML(
-        '<button type="submit" name="save-and-publish" value="save" class="btn pull-right ajax_submit save-and-publish" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-bullhorn icon-white"></i> Save & Publish</button>'),
+        '<button type="submit" name="save-and-publish" value="save" class="btn pull-right ajax_submit save-and-publish" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-bullhorn icon-white"></i> Save & Publish</button>'
+    ),
     HTML(
-        '<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'),
+        '<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'
+    ),
 )
 
 
 class LabelActionForm(Form):
-
     def __init__(self, *args, **kwargs):
-        self.instance = kwargs.pop('instance', False)
+        self.instance = kwargs.pop("instance", False)
         super(LabelActionForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_class = 'form-horizontal'
+        self.helper.form_class = "form-horizontal"
         self.helper.form_tag = False
 
         self.helper.add_layout(ACTION_LAYOUT)
@@ -63,27 +70,29 @@ class LabelActionForm(Form):
 class LabelForm(ModelForm):
     class Meta:
         model = Label
-        fields = ('name',
-                  'type',
-                  'labelcode',
-                  'parent',
-                  'date_start',
-                  'date_end',
-                  'description',
-                  'address',
-                  'country',
-                  'phone',
-                  'fax',
-                  'email',
-                  'main_image',
-                  'd_tags')
+        fields = (
+            "name",
+            "type",
+            "labelcode",
+            "parent",
+            "date_start",
+            "date_end",
+            "description",
+            "address",
+            "country",
+            "phone",
+            "fax",
+            "email",
+            "main_image",
+            "d_tags",
+        )
 
     def __init__(self, *args, **kwargs):
 
-        self.user = kwargs['initial']['user']
-        self.instance = kwargs['instance']
+        self.user = kwargs["initial"]["user"]
+        self.instance = kwargs["instance"]
 
-        self.label = kwargs.pop('label', None)
+        self.label = kwargs.pop("label", None)
 
         super(LabelForm, self).__init__(*args, **kwargs)
 
@@ -96,69 +105,65 @@ class LabelForm(ModelForm):
         """
 
         self.helper = FormHelper()
-        self.helper.form_id = "id_feedback_form_%s" % 'asd'
-        self.helper.form_class = 'form-horizontal'
-        self.helper.form_method = 'post'
-        self.helper.form_action = ''
+        self.helper.form_id = "id_feedback_form_%s" % "asd"
+        self.helper.form_class = "form-horizontal"
+        self.helper.form_method = "post"
+        self.helper.form_action = ""
         self.helper.form_tag = False
 
         base_layout = Fieldset(
-
-            _('General'),
-            LookupField('name', css_class='input-xlarge'),
-            LookupField('type', css_class='input-xlarge'),
-            LookupField('labelcode', css_class='input-xlarge'),
-            LookupField('parent', css_class='input-xlarge'),
+            _("General"),
+            LookupField("name", css_class="input-xlarge"),
+            LookupField("type", css_class="input-xlarge"),
+            LookupField("labelcode", css_class="input-xlarge"),
+            LookupField("parent", css_class="input-xlarge"),
         )
 
         activity_layout = Fieldset(
-            _('Activity'),
-            LookupField('date_start', css_class='input-xlarge'),
-            LookupField('date_end', css_class='input-xlarge'),
+            _("Activity"),
+            LookupField("date_start", css_class="input-xlarge"),
+            LookupField("date_end", css_class="input-xlarge"),
         )
 
         contact_layout = Fieldset(
-            _('Contact'),
-            LookupField('address', css_class='input-xlarge'),
-            LookupField('country', css_class='input-xlarge'),
-            LookupField('phone', css_class='input-xlarge'),
-            LookupField('fax', css_class='input-xlarge'),
-            LookupField('email', css_class='input-xlarge'),
+            _("Contact"),
+            LookupField("address", css_class="input-xlarge"),
+            LookupField("country", css_class="input-xlarge"),
+            LookupField("phone", css_class="input-xlarge"),
+            LookupField("fax", css_class="input-xlarge"),
+            LookupField("email", css_class="input-xlarge"),
         )
 
         meta_layout = Fieldset(
-            'Meta',
-            LookupField('description', css_class='input-xxlarge'),
-            LookupImageField('main_image', ),
-            LookupField('remote_image', ),
+            "Meta",
+            LookupField("description", css_class="input-xxlarge"),
+            LookupImageField("main_image"),
+            LookupField("remote_image"),
         )
 
-        tagging_layout = Fieldset(
-            'Tags',
-            LookupField('d_tags'),
-        )
+        tagging_layout = Fieldset("Tags", LookupField("d_tags"))
 
         layout = Layout(
-            base_layout,
-            activity_layout,
-            contact_layout,
-            meta_layout,
-            tagging_layout,
+            base_layout, activity_layout, contact_layout, meta_layout, tagging_layout
         )
 
         self.helper.add_layout(layout)
 
     main_image = forms.Field(widget=FileInput(), required=False)
     remote_image = forms.URLField(required=False)
-    d_tags = TagField(widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_('Tags'))
+    d_tags = TagField(
+        widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_("Tags")
+    )
     description = forms.CharField(widget=forms.Textarea(), required=False)
-    parent = search_fields.AutocompleteField('alibrary.label', allow_new=True, required=False, label=_('Parent Label'))
+    parent = search_fields.AutocompleteField(
+        "alibrary.label", allow_new=True, required=False, label=_("Parent Label")
+    )
 
     def clean(self, *args, **kwargs):
         cd = super(LabelForm, self).clean()
 
         try:
-            parent = cd['parent']
+            parent = cd["parent"]
             if not parent.pk:
                 parent.creator = self.user
                 parent.save()
@@ -167,14 +172,16 @@ class LabelForm(ModelForm):
 
         try:
             if parent.pk == self.instance.pk:
-                self._errors["parent"] = self.error_class([_('The parent label can not be itself!')])
+                self._errors["parent"] = self.error_class(
+                    [_("The parent label can not be itself!")]
+                )
         except:
             pass
 
-        if cd.get('remote_image', None):
-            remote_file = get_file_from_url(cd['remote_image'])
+        if cd.get("remote_image", None):
+            remote_file = get_file_from_url(cd["remote_image"])
             if remote_file:
-                cd['main_image'] = remote_file
+                cd["main_image"] = remote_file
 
         return cd
 
@@ -183,32 +190,24 @@ class LabelForm(ModelForm):
 
 
 class BaseLabelReleationFormSet(BaseGenericInlineFormSet):
-
     def __init__(self, *args, **kwargs):
-        self.instance = kwargs['instance']
+        self.instance = kwargs["instance"]
         super(BaseLabelReleationFormSet, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_id = "id_releasemediainline_form_%s" % 'asdfds'
-        self.helper.form_class = 'form-horizontal'
-        self.helper.form_method = 'post'
-        self.helper.form_action = ''
+        self.helper.form_id = "id_releasemediainline_form_%s" % "asdfds"
+        self.helper.form_class = "form-horizontal"
+        self.helper.form_method = "post"
+        self.helper.form_action = ""
         self.helper.form_tag = False
 
         base_layout = Row(
             Column(
-                Field('url', css_class='input-xlarge'),
-                css_class='span6 relation-url'
+                Field("url", css_class="input-xlarge"), css_class="span6 relation-url"
             ),
-            Column(
-                Field('service', css_class='input-mini'),
-                css_class='span4'
-            ),
-            Column(
-                Field('DELETE', css_class='input-mini'),
-                css_class='span2'
-            ),
-            css_class='row-fluid relation-row form-autogrow',
+            Column(Field("service", css_class="input-mini"), css_class="span4"),
+            Column(Field("DELETE", css_class="input-mini"), css_class="span2"),
+            css_class="row-fluid relation-row form-autogrow",
         )
 
         self.helper.add_layout(base_layout)
@@ -219,20 +218,20 @@ class BaseLabelReleationForm(StripWhitespaceFormMixin, ModelForm):
         model = Relation
         parent_model = Label
         formset = BaseLabelReleationFormSet
-        fields = ('url', 'service',)
+        fields = ("url", "service")
 
     def __init__(self, *args, **kwargs):
         super(BaseLabelReleationForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, 'instance', None)
-        self.fields['service'].widget.instance = instance
+        instance = getattr(self, "instance", None)
+        self.fields["service"].widget.instance = instance
         if instance and instance.id:
-            self.fields['service'].widget.attrs['readonly'] = True
+            self.fields["service"].widget.attrs["readonly"] = True
 
     def clean_service(self):
         return self.instance.service
 
-    service = forms.CharField(label='', widget=ReadOnlyIconField(), required=False)
-    url = forms.URLField(label=_('Website / URL'), required=False)
+    service = forms.CharField(label="", widget=ReadOnlyIconField(), required=False)
+    url = forms.URLField(label=_("Website / URL"), required=False)
 
 
 LabelRelationFormSet = generic_inlineformset_factory(
@@ -240,6 +239,6 @@ LabelRelationFormSet = generic_inlineformset_factory(
     form=BaseLabelReleationForm,
     formset=BaseLabelReleationFormSet,
     extra=15,
-    exclude=('action',),
-    can_delete=True
+    exclude=("action",),
+    can_delete=True,
 )

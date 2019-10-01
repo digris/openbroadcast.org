@@ -1,7 +1,8 @@
 from django.apps import AppConfig
 
+
 class AratingConfig(AppConfig):
-    name = 'arating'
+    name = "arating"
     verbose_name = "Rating"
 
     def ready(self):

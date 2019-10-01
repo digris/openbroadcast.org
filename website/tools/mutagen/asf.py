@@ -15,9 +15,17 @@ import struct
 from mutagen import FileType, Metadata
 from mutagen._util import insert_bytes, delete_bytes, DictMixin
 
-class error(IOError): pass
-class ASFError(error): pass
-class ASFHeaderError(error): pass
+
+class error(IOError):
+    pass
+
+
+class ASFError(error):
+    pass
+
+
+class ASFHeaderError(error):
+    pass
 
 
 class ASFInfo(object):
@@ -31,7 +39,11 @@ class ASFInfo(object):
 
     def pprint(self):
         s = "Windows Media Audio %d bps, %s Hz, %d channels, %.2f seconds" % (
-            self.bitrate, self.sample_rate, self.channels, self.length)
+            self.bitrate,
+            self.sample_rate,
+            self.channels,
+            self.length,
+        )
         return s
 
 
@@ -49,20 +61,26 @@ class ASFTags(list, DictMixin, Metadata):
 
         """
         values = [value for (k, value) in self if k == key]
-        if not values: raise KeyError(key)
-        else: return values
+        if not values:
+            raise KeyError(key)
+        else:
+            return values
 
     def __delitem__(self, key):
         """Delete all values associated with the key."""
         to_delete = filter(lambda x: x[0] == key, self)
-        if not to_delete: raise KeyError(key)
-        else: map(self.remove, to_delete)
+        if not to_delete:
+            raise KeyError(key)
+        else:
+            map(self.remove, to_delete)
 
     def __contains__(self, key):
         """Return true if the key has any values."""
         for k, value in self:
-            if k == key: return True
-        else: return False
+            if k == key:
+                return True
+        else:
+            return False
 
     def __setitem__(self, key, values):
         """Set a key's value or values.
@@ -74,8 +92,10 @@ class ASFTags(list, DictMixin, Metadata):
         """
         if not isinstance(values, list):
             values = [values]
-        try: del(self[key])
-        except KeyError: pass
+        try:
+            del self[key]
+        except KeyError:
+            pass
         for value in values:
             if key in _standard_attribute_names:
                 value = unicode(value)
@@ -104,10 +124,10 @@ class ASFTags(list, DictMixin, Metadata):
 
 class ASFBaseAttribute(object):
     """Generic attribute."""
+
     TYPE = None
 
-    def __init__(self, value=None, data=None, language=None,
-                 stream=None, **kwargs):
+    def __init__(self, value=None, data=None, language=None, stream=None, **kwargs):
         self.language = language
         self.stream = stream
         if data:
@@ -130,8 +150,12 @@ class ASFBaseAttribute(object):
     def render(self, name):
         name = name.encode("utf-16-le") + "\x00\x00"
         data = self._render()
-        return (struct.pack("<H", len(name)) + name +
-                struct.pack("<HH", self.TYPE, len(data)) + data)
+        return (
+            struct.pack("<H", len(name))
+            + name
+            + struct.pack("<HH", self.TYPE, len(data))
+            + data
+        )
 
     def render_m(self, name):
         name = name.encode("utf-16-le") + "\x00\x00"
@@ -139,8 +163,11 @@ class ASFBaseAttribute(object):
             data = self._render(dword=False)
         else:
             data = self._render()
-        return (struct.pack("<HHHHI", 0, self.stream or 0, len(name),
-                            self.TYPE, len(data)) + name + data)
+        return (
+            struct.pack("<HHHHI", 0, self.stream or 0, len(name), self.TYPE, len(data))
+            + name
+            + data
+        )
 
     def render_ml(self, name):
         name = name.encode("utf-16-le") + "\x00\x00"
@@ -148,11 +175,23 @@ class ASFBaseAttribute(object):
             data = self._render(dword=False)
         else:
             data = self._render()
-        return (struct.pack("<HHHHI", self.language or 0, self.stream or 0,
-                            len(name), self.TYPE, len(data)) + name + data)
+        return (
+            struct.pack(
+                "<HHHHI",
+                self.language or 0,
+                self.stream or 0,
+                len(name),
+                self.TYPE,
+                len(data),
+            )
+            + name
+            + data
+        )
+
 
 class ASFUnicodeAttribute(ASFBaseAttribute):
     """Unicode string attribute."""
+
     TYPE = 0x0000
 
     def parse(self, data):
@@ -175,6 +214,7 @@ class ASFUnicodeAttribute(ASFBaseAttribute):
 
 class ASFByteArrayAttribute(ASFBaseAttribute):
     """Byte array attribute."""
+
     TYPE = 0x0001
 
     def parse(self, data):
@@ -197,6 +237,7 @@ class ASFByteArrayAttribute(ASFBaseAttribute):
 
 class ASFBoolAttribute(ASFBaseAttribute):
     """Bool attribute."""
+
     TYPE = 0x0002
 
     def parse(self, data, dword=True):
@@ -228,6 +269,7 @@ class ASFBoolAttribute(ASFBaseAttribute):
 
 class ASFDWordAttribute(ASFBaseAttribute):
     """DWORD attribute."""
+
     TYPE = 0x0003
 
     def parse(self, data):
@@ -253,6 +295,7 @@ class ASFDWordAttribute(ASFBaseAttribute):
 
 class ASFQWordAttribute(ASFBaseAttribute):
     """QWORD attribute."""
+
     TYPE = 0x0004
 
     def parse(self, data):
@@ -278,6 +321,7 @@ class ASFQWordAttribute(ASFBaseAttribute):
 
 class ASFWordAttribute(ASFBaseAttribute):
     """WORD attribute."""
+
     TYPE = 0x0005
 
     def parse(self, data):
@@ -303,6 +347,7 @@ class ASFWordAttribute(ASFBaseAttribute):
 
 class ASFGUIDAttribute(ASFBaseAttribute):
     """GUID attribute."""
+
     TYPE = 0x0006
 
     def parse(self, data):
@@ -331,6 +376,7 @@ QWORD = ASFQWordAttribute.TYPE
 WORD = ASFWordAttribute.TYPE
 GUID = ASFGUIDAttribute.TYPE
 
+
 def ASFValue(value, kind, **kwargs):
     for t, c in _attribute_types.items():
         if kind == t:
@@ -349,17 +395,12 @@ _attribute_types = {
 }
 
 
-_standard_attribute_names = [
-    "Title",
-    "Author",
-    "Copyright",
-    "Description",
-    "Rating"
-]
+_standard_attribute_names = ["Title", "Author", "Copyright", "Description", "Rating"]
 
 
 class BaseObject(object):
     """Base ASF object."""
+
     GUID = None
 
     def parse(self, asf, data, fileobj, size):
@@ -373,17 +414,20 @@ class BaseObject(object):
 
 class UnknownObject(BaseObject):
     """Unknown ASF object."""
+
     def __init__(self, guid):
         self.GUID = guid
 
 
 class HeaderObject(object):
     """ASF header."""
+
     GUID = "\x30\x26\xB2\x75\x8E\x66\xCF\x11\xA6\xD9\x00\xAA\x00\x62\xCE\x6C"
 
 
 class ContentDescriptionObject(BaseObject):
     """Content description."""
+
     GUID = "\x33\x26\xB2\x75\x8E\x66\xCF\x11\xA6\xD9\x00\xAA\x00\x62\xCE\x6C"
 
     def parse(self, asf, data, fileobj, size):
@@ -405,7 +449,8 @@ class ContentDescriptionObject(BaseObject):
             Author=author,
             Copyright=copyright,
             Description=desc,
-            Rating=rating).items():
+            Rating=rating,
+        ).items():
             if value is not None:
                 asf.tags[key] = value
 
@@ -416,6 +461,7 @@ class ContentDescriptionObject(BaseObject):
                 return value[0].encode("utf-16-le") + "\x00\x00"
             else:
                 return ""
+
         texts = map(render_text, _standard_attribute_names)
         data = struct.pack("<HHHHH", *map(len, texts)) + "".join(texts)
         return self.GUID + struct.pack("<Q", 24 + len(data)) + data
@@ -423,6 +469,7 @@ class ContentDescriptionObject(BaseObject):
 
 class ExtendedContentDescriptionObject(BaseObject):
     """Extended content description."""
+
     GUID = "\x40\xA4\xD0\xD2\x07\xE3\xD2\x11\x97\xF0\x00\xA0\xC9\x5E\xA8\x50"
 
     def parse(self, asf, data, fileobj, size):
@@ -431,13 +478,13 @@ class ExtendedContentDescriptionObject(BaseObject):
         num_attributes, = struct.unpack("<H", data[0:2])
         pos = 2
         for i in range(num_attributes):
-            name_length, = struct.unpack("<H", data[pos:pos+2])
+            name_length, = struct.unpack("<H", data[pos : pos + 2])
             pos += 2
-            name = data[pos:pos+name_length].decode("utf-16-le").strip("\x00")
+            name = data[pos : pos + name_length].decode("utf-16-le").strip("\x00")
             pos += name_length
-            value_type, value_length = struct.unpack("<HH", data[pos:pos+4])
+            value_type, value_length = struct.unpack("<HH", data[pos : pos + 4])
             pos += 4
-            value = data[pos:pos+value_length]
+            value = data[pos : pos + value_length]
             pos += value_length
             attr = _attribute_types[value_type](data=value)
             asf.tags.append((name, attr))
@@ -451,6 +498,7 @@ class ExtendedContentDescriptionObject(BaseObject):
 
 class FilePropertiesObject(BaseObject):
     """File properties."""
+
     GUID = "\xA1\xDC\xAB\x8C\x47\xA9\xCF\x11\x8E\xE4\x00\xC0\x0C\x20\x53\x65"
 
     def parse(self, asf, data, fileobj, size):
@@ -461,6 +509,7 @@ class FilePropertiesObject(BaseObject):
 
 class StreamPropertiesObject(BaseObject):
     """Stream properties."""
+
     GUID = "\x91\x07\xDC\xB7\xB7\xA9\xCF\x11\x8E\xE6\x00\xC0\x0C\x20\x53\x65"
 
     def parse(self, asf, data, fileobj, size):
@@ -473,6 +522,7 @@ class StreamPropertiesObject(BaseObject):
 
 class HeaderExtensionObject(BaseObject):
     """Header extension."""
+
     GUID = "\xb5\x03\xbf_.\xa9\xcf\x11\x8e\xe3\x00\xc0\x0c Se"
 
     def parse(self, asf, data, fileobj, size):
@@ -482,25 +532,31 @@ class HeaderExtensionObject(BaseObject):
         datapos = 0
         self.objects = []
         while datapos < datasize:
-            guid, size = struct.unpack("<16sQ", data[22+datapos:22+datapos+24])
+            guid, size = struct.unpack("<16sQ", data[22 + datapos : 22 + datapos + 24])
             if guid in _object_types:
                 obj = _object_types[guid]()
             else:
                 obj = UnknownObject(guid)
-            obj.parse(asf, data[22+datapos+24:22+datapos+size], fileobj, size)
+            obj.parse(asf, data[22 + datapos + 24 : 22 + datapos + size], fileobj, size)
             self.objects.append(obj)
             datapos += size
 
     def render(self, asf):
         data = "".join([obj.render(asf) for obj in self.objects])
-        return (self.GUID + struct.pack("<Q", 24 + 16 + 6 + len(data)) +
-                "\x11\xD2\xD3\xAB\xBA\xA9\xcf\x11" +
-                "\x8E\xE6\x00\xC0\x0C\x20\x53\x65" +
-                "\x06\x00" + struct.pack("<I", len(data)) + data)
+        return (
+            self.GUID
+            + struct.pack("<Q", 24 + 16 + 6 + len(data))
+            + "\x11\xD2\xD3\xAB\xBA\xA9\xcf\x11"
+            + "\x8E\xE6\x00\xC0\x0C\x20\x53\x65"
+            + "\x06\x00"
+            + struct.pack("<I", len(data))
+            + data
+        )
 
 
 class MetadataObject(BaseObject):
     """Metadata description."""
+
     GUID = "\xea\xcb\xf8\xc5\xaf[wH\x84g\xaa\x8cD\xfaL\xca"
 
     def parse(self, asf, data, fileobj, size):
@@ -509,28 +565,29 @@ class MetadataObject(BaseObject):
         num_attributes, = struct.unpack("<H", data[0:2])
         pos = 2
         for i in range(num_attributes):
-            (reserved, stream, name_length, value_type,
-             value_length) = struct.unpack("<HHHHI", data[pos:pos+12])
+            (reserved, stream, name_length, value_type, value_length) = struct.unpack(
+                "<HHHHI", data[pos : pos + 12]
+            )
             pos += 12
-            name = data[pos:pos+name_length].decode("utf-16-le").strip("\x00")
+            name = data[pos : pos + name_length].decode("utf-16-le").strip("\x00")
             pos += name_length
-            value = data[pos:pos+value_length]
+            value = data[pos : pos + value_length]
             pos += value_length
-            args = {'data': value, 'stream': stream}
+            args = {"data": value, "stream": stream}
             if value_type == 2:
-                args['dword'] = False
+                args["dword"] = False
             attr = _attribute_types[value_type](**args)
             asf.tags.append((name, attr))
 
     def render(self, asf):
         attrs = asf.to_metadata.items()
         data = "".join([attr.render_m(name) for (name, attr) in attrs])
-        return (self.GUID + struct.pack("<QH", 26 + len(data), len(attrs)) +
-                data)
+        return self.GUID + struct.pack("<QH", 26 + len(data), len(attrs)) + data
 
 
 class MetadataLibraryObject(BaseObject):
     """Metadata library description."""
+
     GUID = "\x94\x1c#D\x98\x94\xd1I\xa1A\x1d\x13NEpT"
 
     def parse(self, asf, data, fileobj, size):
@@ -539,24 +596,24 @@ class MetadataLibraryObject(BaseObject):
         num_attributes, = struct.unpack("<H", data[0:2])
         pos = 2
         for i in range(num_attributes):
-            (language, stream, name_length, value_type,
-             value_length) = struct.unpack("<HHHHI", data[pos:pos+12])
+            (language, stream, name_length, value_type, value_length) = struct.unpack(
+                "<HHHHI", data[pos : pos + 12]
+            )
             pos += 12
-            name = data[pos:pos+name_length].decode("utf-16-le").strip("\x00")
+            name = data[pos : pos + name_length].decode("utf-16-le").strip("\x00")
             pos += name_length
-            value = data[pos:pos+value_length]
+            value = data[pos : pos + value_length]
             pos += value_length
-            args = {'data': value, 'language': language, 'stream': stream}
+            args = {"data": value, "language": language, "stream": stream}
             if value_type == 2:
-                args['dword'] = False
+                args["dword"] = False
             attr = _attribute_types[value_type](**args)
             asf.tags.append((name, attr))
 
     def render(self, asf):
         attrs = asf.to_metadata_library
         data = "".join([attr.render_ml(name) for (name, attr) in attrs])
-        return (self.GUID + struct.pack("<QH", 26 + len(data), len(attrs)) +
-                data)
+        return self.GUID + struct.pack("<QH", 26 + len(data), len(attrs)) + data
 
 
 _object_types = {
@@ -573,8 +630,13 @@ _object_types = {
 class ASF(FileType):
     """An ASF file, probably containing WMA or WMV."""
 
-    _mimes = ["audio/x-ms-wma", "audio/x-ms-wmv", "video/x-ms-asf",
-              "audio/x-wma", "video/x-wmv"]
+    _mimes = [
+        "audio/x-ms-wma",
+        "audio/x-ms-wmv",
+        "video/x-ms-asf",
+        "audio/x-wma",
+        "video/x-wmv",
+    ]
 
     def load(self, filename):
         self.filename = filename
@@ -601,43 +663,48 @@ class ASF(FileType):
             if name in _standard_attribute_names:
                 continue
             large_value = value.data_size() > 0xFFFF
-            if (value.language is None and value.stream is None and
-                name not in self.to_extended_content_description and
-                not large_value):
+            if (
+                value.language is None
+                and value.stream is None
+                and name not in self.to_extended_content_description
+                and not large_value
+            ):
                 self.to_extended_content_description[name] = value
-            elif (value.language is None and value.stream is not None and
-                  name not in self.to_metadata and not large_value):
+            elif (
+                value.language is None
+                and value.stream is not None
+                and name not in self.to_metadata
+                and not large_value
+            ):
                 self.to_metadata[name] = value
             else:
                 self.to_metadata_library.append((name, value))
 
         # Add missing objects
         if not self.content_description_obj:
-            self.content_description_obj = \
-                ContentDescriptionObject()
+            self.content_description_obj = ContentDescriptionObject()
             self.objects.append(self.content_description_obj)
         if not self.extended_content_description_obj:
-            self.extended_content_description_obj = \
-                ExtendedContentDescriptionObject()
+            self.extended_content_description_obj = ExtendedContentDescriptionObject()
             self.objects.append(self.extended_content_description_obj)
         if not self.header_extension_obj:
-            self.header_extension_obj = \
-                HeaderExtensionObject()
+            self.header_extension_obj = HeaderExtensionObject()
             self.objects.append(self.header_extension_obj)
         if not self.metadata_obj:
-            self.metadata_obj = \
-                MetadataObject()
+            self.metadata_obj = MetadataObject()
             self.header_extension_obj.objects.append(self.metadata_obj)
         if not self.metadata_library_obj:
-            self.metadata_library_obj = \
-                MetadataLibraryObject()
+            self.metadata_library_obj = MetadataLibraryObject()
             self.header_extension_obj.objects.append(self.metadata_library_obj)
 
         # Render the header
         data = "".join([obj.render(self) for obj in self.objects])
-        data = (HeaderObject.GUID +
-                struct.pack("<QL", len(data) + 30, len(self.objects)) +
-                "\x01\x02" + data)
+        data = (
+            HeaderObject.GUID
+            + struct.pack("<QL", len(data) + 30, len(self.objects))
+            + "\x01\x02"
+            + data
+        )
 
         fileobj = open(self.filename, "rb+")
         try:
@@ -679,6 +746,8 @@ class ASF(FileType):
 
     def score(filename, fileobj, header):
         return header.startswith(HeaderObject.GUID) * 2
+
     score = staticmethod(score)
+
 
 Open = ASF

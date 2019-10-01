@@ -12,7 +12,7 @@ def cli():
 
 
 @cli.command()
-@click.option('media_id', '--media-id', '-m', type=int, required=True)
+@click.option("media_id", "--media-id", "-m", type=int, required=True)
 def now_playing(media_id):
     """
     local data example:

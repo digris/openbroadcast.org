@@ -8,14 +8,14 @@ import django.utils.timezone
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('actstream', '0002_auto_20160526_1618'),
-    ]
+    dependencies = [("actstream", "0002_auto_20160526_1618")]
 
     operations = [
         migrations.AlterField(
-            model_name='action',
-            name='timestamp',
-            field=models.DateTimeField(db_index=True, default=django.utils.timezone.now),
-        ),
+            model_name="action",
+            name="timestamp",
+            field=models.DateTimeField(
+                db_index=True, default=django.utils.timezone.now
+            ),
+        )
     ]

@@ -1,6 +1,7 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import djclick as click
+
 
 @click.group()
 def cli():
@@ -9,10 +10,10 @@ def cli():
 
 
 @cli.command()
-@click.option('--query', '-q', type=unicode, required=False)
+@click.option("--query", "-q", type=unicode, required=False)
 def label(query):
 
-    click.echo(u'query: {}'.format(query))
+    click.echo(u"query: {}".format(query))
 
     from datetime import date
 
@@ -23,12 +24,12 @@ def label(query):
     class LabelSearch(FacetedSearch):
         doc_types = [LabelDocument]
         # fields that should be searched
-        fields = ['tags', 'name',]
+        fields = ["tags", "name"]
 
         facets = {
             # use bucket aggregations to define facets
             #'tags': TermsFacet(field='tags', size=5),
-            'country': TermsFacet(field='country'),
+            "country": TermsFacet(field="country"),
             #'publishing_frequency': DateHistogramFacet(field='published_from', interval='month')
         }
 
@@ -37,8 +38,6 @@ def label(query):
         #     # s = super().search()
         #     s = super(BlogSearch, self).search(*args, **kwargs)
         #     return s.filter('range', publish_from={'lte': 'now/h'})
-
-
 
         def query(self, search, query):
             """
@@ -50,19 +49,12 @@ def label(query):
                 return search.update_from_dict(query)
             return search
 
-
-
-    #bs = BlogSearch('python web', {'publishing_frequency': date(2015, 6)})
-
+    # bs = BlogSearch('python web', {'publishing_frequency': date(2015, 6)})
 
     _query = {
         "query": {
-            "match" : {
-                "autocomplete" : {
-                    "query": query,
-                    "fuzziness": "AUTO",
-                    "operator" : "and"
-                }
+            "match": {
+                "autocomplete": {"query": query, "fuzziness": "AUTO", "operator": "and"}
             }
         },
         # "highlight" : {
@@ -72,5 +64,4 @@ def label(query):
         # }
     }
 
-    s = LabelSearch(query=_query, filters={'country': ['CH', 'JP']})
-
+    s = LabelSearch(query=_query, filters={"country": ["CH", "JP"]})

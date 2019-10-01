@@ -10,15 +10,12 @@ from django.core.urlresolvers import reverse
 
 
 if sys.version_info[0] == 3:
-    string_types = str,
+    string_types = (str,)
 else:
-    string_types = basestring,
+    string_types = (basestring,)
 
 
-ModelData = namedtuple(
-    'ModelData',
-    ['model_class', 'url']
-)
+ModelData = namedtuple("ModelData", ["model_class", "url"])
 
 
 def get_model_class(ctype):
@@ -27,7 +24,7 @@ def get_model_class(ctype):
     """
 
     if isinstance(ctype, string_types):
-        model_class = apps.get_model(*ctype.split('.'))
+        model_class = apps.get_model(*ctype.split("."))
     else:
         model_class = ctype
 
@@ -39,11 +36,11 @@ def get_model_data(ctype):
     model_class = get_model_class(ctype)
     model_ct = ContentType.objects.get_for_model(model_class)
 
-    url = reverse('api:search-by-ctype', kwargs={'ct': '{}.{}'.format(model_ct.app_label, model_ct.model)})
-
-    d = ModelData(
-        model_class=model_class,
-        url=url,
+    url = reverse(
+        "api:search-by-ctype",
+        kwargs={"ct": "{}.{}".format(model_ct.app_label, model_ct.model)},
     )
+
+    d = ModelData(model_class=model_class, url=url)
 
     return d

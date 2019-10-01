@@ -19,41 +19,31 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-#from .serializers import ReleaseSerializer
+# from .serializers import ReleaseSerializer
 from alibrary.apiv2.serializers import PlaylistSerializer
 from alibrary.models.playlistmodels import Playlist
 
-SITE_URL = getattr(settings, 'SITE_URL')
+SITE_URL = getattr(settings, "SITE_URL")
 
-SERIALIZER_MAP = {
-    'alibrary.playlist': PlaylistSerializer,
-}
+SERIALIZER_MAP = {"alibrary.playlist": PlaylistSerializer}
 
 log = logging.getLogger(__name__)
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def playlist_list(request, **kwargs):
 
     results = []
 
-    q = request.GET.get('q', '').strip()
+    q = request.GET.get("q", "").strip()
 
     qs = Playlist.objects.filter(
-        user=request.user,
-        type__in=['basket', 'playlist']
-    ).order_by('-updated')
+        user=request.user, type__in=["basket", "playlist"]
+    ).order_by("-updated")
 
-    if q != '':
-        qs = qs.filter(
-            Q(name__istartswith=q) | Q(series__name__istartswith=q)
-        )
+    if q != "":
+        qs = qs.filter(Q(name__istartswith=q) | Q(series__name__istartswith=q))
 
-    serializer = PlaylistSerializer(
-        qs[0:100],
-        many=True,
-        context={'request': request}
-    )
+    serializer = PlaylistSerializer(qs[0:100], many=True, context={"request": request})
 
-    return Response({
-        'results': serializer.data,
-    })
+    return Response({"results": serializer.data})

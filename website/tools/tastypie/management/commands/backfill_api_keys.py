@@ -8,7 +8,7 @@ class Command(NoArgsCommand):
 
     def handle_noargs(self, **options):
         """Goes through all users and adds API keys for any that don't have one."""
-        self.verbosity = int(options.get('verbosity', 1))
+        self.verbosity = int(options.get("verbosity", 1))
 
         for user in get_user_model().objects.all().iterator():
             try:

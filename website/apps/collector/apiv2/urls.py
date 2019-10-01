@@ -8,13 +8,19 @@ from rest_framework.reverse import reverse
 
 from . import views
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def collector_api_root(request, format=None):
-    return Response({
-        'playlist': reverse('api:collector-playlist-list', request=request, format=format),
-    })
+    return Response(
+        {
+            "playlist": reverse(
+                "api:collector-playlist-list", request=request, format=format
+            )
+        }
+    )
+
 
 urlpatterns = [
-    url(r'^$', collector_api_root, name='collector-index'),
-    url(r'^playlist/$', views.playlist_list, name='collector-playlist-list'),
+    url(r"^$", collector_api_root, name="collector-index"),
+    url(r"^playlist/$", views.playlist_list, name="collector-playlist-list"),
 ]

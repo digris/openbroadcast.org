@@ -8,10 +8,10 @@ class HttpCreated(HttpResponse):
     status_code = 201
 
     def __init__(self, *args, **kwargs):
-        location = kwargs.pop('location', '')
+        location = kwargs.pop("location", "")
 
         super(HttpCreated, self).__init__(*args, **kwargs)
-        self['Location'] = location
+        self["Location"] = location
 
 
 class HttpAccepted(HttpResponse):
@@ -72,4 +72,3 @@ class HttpApplicationError(HttpResponse):
 
 class HttpNotImplemented(HttpResponse):
     status_code = 501
-

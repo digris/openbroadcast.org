@@ -4,7 +4,7 @@ from django.apps import AppConfig
 
 
 class AlibraryConfig(AppConfig):
-    name = 'alibrary'
+    name = "alibrary"
     verbose_name = "Library App"
 
     def ready(self):

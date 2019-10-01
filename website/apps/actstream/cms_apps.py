@@ -12,4 +12,4 @@ class ActionApp(CMSApp):
     menus = [ActionMenu]
 
     def get_urls(self, page=None, language=None, **kwargs):
-        return ['actstream.urls_actstream',]
+        return ["actstream.urls_actstream"]

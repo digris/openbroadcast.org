@@ -8,14 +8,16 @@ from rest_framework.reverse import reverse
 
 from . import views
 
-@api_view(['GET'])
+
+@api_view(["GET"])
 def search_api_root(request, format=None):
-    return Response({
-        'search': reverse('api:search-global', request=request, format=format),
-    })
+    return Response(
+        {"search": reverse("api:search-global", request=request, format=format)}
+    )
+
 
 urlpatterns = [
-    url(r'^$', search_api_root, name='search-index'),
-    url(r'^global/$', views.search_global, name='search-global'),
-    url(r'^(?P<ct>[a-z.]+)/$', views.search_global, name='search-by-ctype'),
+    url(r"^$", search_api_root, name="search-index"),
+    url(r"^global/$", views.search_global, name="search-global"),
+    url(r"^(?P<ct>[a-z.]+)/$", views.search_global, name="search-by-ctype"),
 ]

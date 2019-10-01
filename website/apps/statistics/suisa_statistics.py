@@ -17,27 +17,22 @@ from .utils.csv_output_suisa import statistics_as_csv
 
 log = logging.getLogger(__name__)
 
+
 def monthly_for_channel_as_xls(channel, year, month, output=None):
 
-    log.debug('generating statistics for "{}" - year: {} - month: {}'.format(
-        channel, year, month
-    ))
-
-    start = datetime.datetime.combine(
-        datetime.date(year, month, 1),
-        datetime.time.min
+    log.debug(
+        'generating statistics for "{}" - year: {} - month: {}'.format(
+            channel, year, month
+        )
     )
+
+    start = datetime.datetime.combine(datetime.date(year, month, 1), datetime.time.min)
 
     end = datetime.datetime.combine(
         datetime.date(year, month, calendar.monthrange(year, month)[1]),
-        datetime.time.max
+        datetime.time.max,
     )
 
-    statistics_as_csv(
-        channel=channel,
-        start=start,
-        end=end,
-        output=output
-    )
+    statistics_as_csv(channel=channel, start=start, end=end, output=output)
 
     return output

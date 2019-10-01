@@ -10,9 +10,7 @@ except ImportError:
     from urllib2 import urlopen
 
 
-def get_details(
-    backend, strategy, details, response, user=None, *args, **kwargs
-):
+def get_details(backend, strategy, details, response, user=None, *args, **kwargs):
 
     if not user:
         return
@@ -117,7 +115,6 @@ def get_details(
     #             pass
 
     if backend.name == "google-oauth2":
-
 
         print(response)
 

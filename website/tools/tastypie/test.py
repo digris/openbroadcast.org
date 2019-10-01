@@ -25,9 +25,9 @@ class TestApiClient(object):
         Given a short name (such as ``json`` or ``xml``), returns the full content-type
         for it (``application/json`` or ``application/xml`` in this case).
         """
-        return self.serializer.content_types.get(short_format, 'json')
+        return self.serializer.content_types.get(short_format, "json")
 
-    def get(self, uri, format='json', data=None, authentication=None, **kwargs):
+    def get(self, uri, format="json", data=None, authentication=None, **kwargs):
         """
         Performs a simulated ``GET`` request to the provided URI.
 
@@ -48,18 +48,18 @@ class TestApiClient(object):
         for details.
         """
         content_type = self.get_content_type(format)
-        kwargs['HTTP_ACCEPT'] = content_type
+        kwargs["HTTP_ACCEPT"] = content_type
 
         # GET & DELETE are the only times we don't serialize the data.
         if data is not None:
-            kwargs['data'] = data
+            kwargs["data"] = data
 
         if authentication is not None:
-            kwargs['HTTP_AUTHORIZATION'] = authentication
+            kwargs["HTTP_AUTHORIZATION"] = authentication
 
         return self.client.get(uri, **kwargs)
 
-    def post(self, uri, format='json', data=None, authentication=None, **kwargs):
+    def post(self, uri, format="json", data=None, authentication=None, **kwargs):
         """
         Performs a simulated ``POST`` request to the provided URI.
 
@@ -85,17 +85,17 @@ class TestApiClient(object):
         for details.
         """
         content_type = self.get_content_type(format)
-        kwargs['content_type'] = content_type
+        kwargs["content_type"] = content_type
 
         if data is not None:
-            kwargs['data'] = self.serializer.serialize(data, format=content_type)
+            kwargs["data"] = self.serializer.serialize(data, format=content_type)
 
         if authentication is not None:
-            kwargs['HTTP_AUTHORIZATION'] = authentication
+            kwargs["HTTP_AUTHORIZATION"] = authentication
 
         return self.client.post(uri, **kwargs)
 
-    def put(self, uri, format='json', data=None, authentication=None, **kwargs):
+    def put(self, uri, format="json", data=None, authentication=None, **kwargs):
         """
         Performs a simulated ``PUT`` request to the provided URI.
 
@@ -121,17 +121,17 @@ class TestApiClient(object):
         for details.
         """
         content_type = self.get_content_type(format)
-        kwargs['content_type'] = content_type
+        kwargs["content_type"] = content_type
 
         if data is not None:
-            kwargs['data'] = self.serializer.serialize(data, format=content_type)
+            kwargs["data"] = self.serializer.serialize(data, format=content_type)
 
         if authentication is not None:
-            kwargs['HTTP_AUTHORIZATION'] = authentication
+            kwargs["HTTP_AUTHORIZATION"] = authentication
 
         return self.client.put(uri, **kwargs)
 
-    def patch(self, uri, format='json', data=None, authentication=None, **kwargs):
+    def patch(self, uri, format="json", data=None, authentication=None, **kwargs):
         """
         Performs a simulated ``PATCH`` request to the provided URI.
 
@@ -157,28 +157,28 @@ class TestApiClient(object):
         for details.
         """
         content_type = self.get_content_type(format)
-        kwargs['content_type'] = content_type
+        kwargs["content_type"] = content_type
 
         if data is not None:
-            kwargs['data'] = self.serializer.serialize(data, format=content_type)
+            kwargs["data"] = self.serializer.serialize(data, format=content_type)
 
         if authentication is not None:
-            kwargs['HTTP_AUTHORIZATION'] = authentication
+            kwargs["HTTP_AUTHORIZATION"] = authentication
 
         # This hurts because Django doesn't support PATCH natively.
         parsed = urlparse(uri)
         r = {
-            'CONTENT_LENGTH': len(kwargs['data']),
-            'CONTENT_TYPE': content_type,
-            'PATH_INFO': self.client._get_path(parsed),
-            'QUERY_STRING': parsed[4],
-            'REQUEST_METHOD': 'PATCH',
-            'wsgi.input': FakePayload(kwargs['data']),
+            "CONTENT_LENGTH": len(kwargs["data"]),
+            "CONTENT_TYPE": content_type,
+            "PATH_INFO": self.client._get_path(parsed),
+            "QUERY_STRING": parsed[4],
+            "REQUEST_METHOD": "PATCH",
+            "wsgi.input": FakePayload(kwargs["data"]),
         }
         r.update(kwargs)
         return self.client.request(**r)
 
-    def delete(self, uri, format='json', data=None, authentication=None, **kwargs):
+    def delete(self, uri, format="json", data=None, authentication=None, **kwargs):
         """
         Performs a simulated ``DELETE`` request to the provided URI.
 
@@ -199,14 +199,14 @@ class TestApiClient(object):
         for details.
         """
         content_type = self.get_content_type(format)
-        kwargs['content_type'] = content_type
+        kwargs["content_type"] = content_type
 
         # GET & DELETE are the only times we don't serialize the data.
         if data is not None:
-            kwargs['data'] = data
+            kwargs["data"] = data
 
         if authentication is not None:
-            kwargs['HTTP_AUTHORIZATION'] = authentication
+            kwargs["HTTP_AUTHORIZATION"] = authentication
 
         return self.client.delete(uri, **kwargs)
 
@@ -215,6 +215,7 @@ class ResourceTestCase(TestCase):
     """
     A useful base class for the start of testing Tastypie APIs.
     """
+
     def setUp(self):
         super(ResourceTestCase, self).setUp()
         self.serializer = Serializer()
@@ -236,7 +237,9 @@ class ResourceTestCase(TestCase):
                 # Then the usual tests...
 
         """
-        raise NotImplementedError("You must return the class for your Resource to test.")
+        raise NotImplementedError(
+            "You must return the class for your Resource to test."
+        )
 
     def create_basic(self, username, password):
         """
@@ -244,14 +247,15 @@ class ResourceTestCase(TestCase):
         Auth.
         """
         import base64
-        return 'Basic %s' % base64.b64encode(':'.join([username, password]))
+
+        return "Basic %s" % base64.b64encode(":".join([username, password]))
 
     def create_apikey(self, username, api_key):
         """
         Creates & returns the HTTP ``Authorization`` header for use with
         ``ApiKeyAuthentication``.
         """
-        return 'ApiKey %s:%s' % (username, api_key)
+        return "ApiKey %s:%s" % (username, api_key)
 
     def create_digest(self, username, api_key, method, uri):
         """
@@ -266,9 +270,15 @@ class ResourceTestCase(TestCase):
             username,
             method.upper(),
             uri,
-            1, # nonce_count
-            digest_challenge=python_digest.build_digest_challenge(time.time(), getattr(settings, 'SECRET_KEY', ''), 'django-tastypie', opaque, False),
-            password=api_key
+            1,  # nonce_count
+            digest_challenge=python_digest.build_digest_challenge(
+                time.time(),
+                getattr(settings, "SECRET_KEY", ""),
+                "django-tastypie",
+                opaque,
+                False,
+            ),
+            password=api_key,
         )
 
     def create_oauth(self, user):
@@ -278,30 +288,35 @@ class ResourceTestCase(TestCase):
         from oauth_provider.models import Consumer, Token, Resource
 
         # Necessary setup for ``oauth_provider``.
-        resource, _ = Resource.objects.get_or_create(url='test', defaults={
-            'name': 'Test Resource'
-        })
-        consumer, _ = Consumer.objects.get_or_create(key='123', defaults={
-            'name': 'Test',
-            'description': 'Testing...'
-        })
-        token, _ = Token.objects.get_or_create(key='foo', token_type=Token.ACCESS, defaults={
-            'consumer': consumer,
-            'resource': resource,
-            'secret': '',
-            'user': user,
-        })
+        resource, _ = Resource.objects.get_or_create(
+            url="test", defaults={"name": "Test Resource"}
+        )
+        consumer, _ = Consumer.objects.get_or_create(
+            key="123", defaults={"name": "Test", "description": "Testing..."}
+        )
+        token, _ = Token.objects.get_or_create(
+            key="foo",
+            token_type=Token.ACCESS,
+            defaults={
+                "consumer": consumer,
+                "resource": resource,
+                "secret": "",
+                "user": user,
+            },
+        )
 
         # Then generate the header.
         oauth_data = {
-            'oauth_consumer_key': '123',
-            'oauth_nonce': 'abc',
-            'oauth_signature': '&',
-            'oauth_signature_method': 'PLAINTEXT',
-            'oauth_timestamp': str(int(time.time())),
-            'oauth_token': 'foo',
+            "oauth_consumer_key": "123",
+            "oauth_nonce": "abc",
+            "oauth_signature": "&",
+            "oauth_signature_method": "PLAINTEXT",
+            "oauth_timestamp": str(int(time.time())),
+            "oauth_token": "foo",
         }
-        return 'OAuth %s' % ','.join([key+'='+value for key, value in oauth_data.items()])
+        return "OAuth %s" % ",".join(
+            [key + "=" + value for key, value in oauth_data.items()]
+        )
 
     def assertHttpOK(self, resp):
         """
@@ -441,7 +456,7 @@ class ResourceTestCase(TestCase):
         * The content is valid JSON
         """
         self.assertHttpOK(resp)
-        self.assertTrue(resp['Content-Type'].startswith('application/json'))
+        self.assertTrue(resp["Content-Type"].startswith("application/json"))
         self.assertValidJSON(resp.content)
 
     def assertValidXMLResponse(self, resp):
@@ -454,7 +469,7 @@ class ResourceTestCase(TestCase):
         * The content is valid XML
         """
         self.assertHttpOK(resp)
-        self.assertTrue(resp['Content-Type'].startswith('application/xml'))
+        self.assertTrue(resp["Content-Type"].startswith("application/xml"))
         self.assertValidXML(resp.content)
 
     def assertValidYAMLResponse(self, resp):
@@ -467,7 +482,7 @@ class ResourceTestCase(TestCase):
         * The content is valid YAML
         """
         self.assertHttpOK(resp)
-        self.assertTrue(resp['Content-Type'].startswith('text/yaml'))
+        self.assertTrue(resp["Content-Type"].startswith("text/yaml"))
         self.assertValidYAML(resp.content)
 
     def assertValidPlistResponse(self, resp):
@@ -480,7 +495,7 @@ class ResourceTestCase(TestCase):
         * The content is valid binary plist data
         """
         self.assertHttpOK(resp)
-        self.assertTrue(resp['Content-Type'].startswith('application/x-plist'))
+        self.assertTrue(resp["Content-Type"].startswith("application/x-plist"))
         self.assertValidPlist(resp.content)
 
     def deserialize(self, resp):
@@ -491,9 +506,9 @@ class ResourceTestCase(TestCase):
 
         It returns a Python datastructure (typically a ``dict``) of the serialized data.
         """
-        return self.serializer.deserialize(resp.content, format=resp['Content-Type'])
+        return self.serializer.deserialize(resp.content, format=resp["Content-Type"])
 
-    def serialize(self, data, format='application/json'):
+    def serialize(self, data, format="application/json"):
         """
         Given a Python datastructure (typically a ``dict``) & a desired content-type,
         this method will return a serialized string of that data.

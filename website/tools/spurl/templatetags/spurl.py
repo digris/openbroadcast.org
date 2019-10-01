@@ -12,8 +12,9 @@ from django.template import Template, Library, Node, TemplateSyntaxError
 
 register = Library()
 
-TRUE_RE = re.compile(r'^(true|on)$', flags=re.IGNORECASE)
-TEMPLATE_DEBUG = getattr(settings, 'TEMPLATE_DEBUG', False)
+TRUE_RE = re.compile(r"^(true|on)$", flags=re.IGNORECASE)
+TEMPLATE_DEBUG = getattr(settings, "TEMPLATE_DEBUG", False)
+
 
 def convert_to_boolean(string_or_boolean):
     if isinstance(string_or_boolean, bool):
@@ -23,7 +24,6 @@ def convert_to_boolean(string_or_boolean):
 
 
 class SpurlURLBuilder(object):
-
     def __init__(self, args, context, tags, filters):
         self.args = args
         self.context = context
@@ -43,20 +43,18 @@ class SpurlURLBuilder(object):
 
             if self.autoescape:
                 url = escape(url)
-                url = url.replace('%20', '+')
-                url = url.replace('%2C', ',')
-                url = url.replace('&amp;', '&')
-
+                url = url.replace("%20", "+")
+                url = url.replace("%2C", ",")
+                url = url.replace("&amp;", "&")
 
         except Exception as e:
             url = self.url
 
-
         return url
 
     def handle_argument(self, argument, value):
-        argument = smart_str(argument, 'ascii')
-        handler_name = 'handle_%s' % argument
+        argument = smart_str(argument, "ascii")
+        handler_name = "handle_%s" % argument
         handler = getattr(self, handler_name, None)
 
         if handler is not None:
@@ -69,7 +67,7 @@ class SpurlURLBuilder(object):
 
     def handle_secure(self, value):
         is_secure = convert_to_boolean(value)
-        scheme = 'https' if is_secure else 'http'
+        scheme = "https" if is_secure else "http"
         self.url = self.url.with_scheme(scheme)
 
     def handle_query(self, value):
@@ -98,9 +96,6 @@ class SpurlURLBuilder(object):
             query_to_set = QueryString(query_to_set).dict
         self.url = self.url.set_query_params(**query_to_set)
 
-
-
-
     def handle_active_query(self, value):
         query_to_toggle = self.prepare_value(value)
         if isinstance(query_to_toggle, basestring):
@@ -112,9 +107,6 @@ class SpurlURLBuilder(object):
                 self.url = True
             else:
                 self.url = False
-
-
-
 
     def handle_set_query_from(self, value):
         url = URLObject(value)
@@ -130,7 +122,7 @@ class SpurlURLBuilder(object):
         current_query = self.url.query.dict
         for key, value in query_to_toggle.items():
             if isinstance(value, basestring):
-                value = value.split(',')
+                value = value.split(",")
             first, second = value
             if key in current_query and first in current_query[key]:
                 self.url = self.url.set_query_param(key, second)
@@ -172,7 +164,7 @@ class SpurlURLBuilder(object):
             # check if current query has multiple items
             try:
                 ext = current_query[key]
-                ext = ext.split(',')
+                ext = ext.split(",")
             except Exception as e:
                 ext = None
 
@@ -192,7 +184,6 @@ class SpurlURLBuilder(object):
 
                 self.url = self.url.set_query_param(key, ",".join(ext))
 
-
             elif ext and len(ext) == 1:
 
                 # param already here > append
@@ -203,7 +194,6 @@ class SpurlURLBuilder(object):
 
                 self.url = self.url.set_query_param(key, ",".join(ext))
 
-
             else:
 
                 if isinstance(value, basestring):
@@ -212,14 +202,12 @@ class SpurlURLBuilder(object):
                 if key in current_query and value in current_query[key]:
                     # unset
                     pass
-                    #self.url = self.url.del_query_param(key)
+                    # self.url = self.url.del_query_param(key)
                 else:
                     # set
                     self.url = self.url.set_query_param(key, value)
 
     def handle_active_mquery(self, value):
-
-
 
         active = None
 
@@ -237,7 +225,7 @@ class SpurlURLBuilder(object):
             # check if current query has multiple items
             try:
                 ext = current_query[key]
-                ext = ext.split(',')
+                ext = ext.split(",")
             except Exception as e:
                 ext = None
 
@@ -247,8 +235,6 @@ class SpurlURLBuilder(object):
                     active = True
 
         self.url = active
-
-
 
     def handle_scheme(self, value):
         self.url = self.url.with_scheme(value)
@@ -280,7 +266,7 @@ class SpurlURLBuilder(object):
     def handle_add_path_from(self, value):
         url = URLObject(value)
         path_to_add = url.path
-        if path_to_add.startswith('/'):
+        if path_to_add.startswith("/"):
             path_to_add = path_to_add[1:]
         self.url = self.url.add_path(path_to_add)
 
@@ -304,7 +290,7 @@ class SpurlURLBuilder(object):
 
     def set_sensible_defaults(self):
         if self.url.hostname and not self.url.scheme:
-            self.url = self.url.with_scheme('http')
+            self.url = self.url.with_scheme("http")
 
     def prepare_value(self, value):
         """Prepare a value by unescaping embedded template tags
@@ -317,7 +303,7 @@ class SpurlURLBuilder(object):
     def unescape_tags(self, template_string):
         """Spurl allows the use of templatetags inside templatetags, if
         the inner templatetags are escaped - {\% and %\}"""
-        return template_string.replace('{\%', '{%').replace('%\}', '%}')
+        return template_string.replace("{\%", "{%").replace("%\}", "%}")
 
     def compile_string(self, template_string, origin):
         """Re-implementation of django.template.base.compile_string
@@ -326,6 +312,7 @@ class SpurlURLBuilder(object):
 
         if TEMPLATE_DEBUG:
             from django.template.debug import DebugLexer, DebugParser
+
             lexer_class, parser_class = DebugLexer, DebugParser
         else:
             lexer_class, parser_class = Lexer, Parser
@@ -350,7 +337,7 @@ class SpurlURLBuilder(object):
         original_autoescape = self.context.autoescape
         self.context.autoescape = False
 
-        template = Template('')
+        template = Template("")
         if TEMPLATE_DEBUG:
             origin = StringOrigin(template_string)
         else:
@@ -364,7 +351,6 @@ class SpurlURLBuilder(object):
 
 
 class SpurlNode(Node):
-
     def __init__(self, args, tags, filters, asvar=None):
         self.args = args
         self.asvar = asvar
@@ -378,7 +364,7 @@ class SpurlNode(Node):
 
         if self.asvar:
             context[self.asvar] = url
-            return ''
+            return ""
 
         return url
 
@@ -393,7 +379,7 @@ def spurl(parser, token):
     asvar = None
     bits = bits[1:]
 
-    if len(bits) >= 2 and bits[-2] == 'as':
+    if len(bits) >= 2 and bits[-2] == "as":
         asvar = bits[-1]
         bits = bits[:-2]
 

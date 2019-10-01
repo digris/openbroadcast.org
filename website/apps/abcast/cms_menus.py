@@ -5,6 +5,7 @@ from menus.base import NavigationNode
 from menus.menu_pool import menu_pool
 from cms.menu_bases import CMSAttachMenu
 
+
 class SchedulerMenu(CMSAttachMenu):
 
     name = _("Scheduler Menu")
@@ -12,19 +13,12 @@ class SchedulerMenu(CMSAttachMenu):
     def get_nodes(self, request):
         nodes = []
 
-        node = NavigationNode(
-            _('Week'),
-            '#',
-            7202
-        )
+        node = NavigationNode(_("Week"), "#", 7202)
         nodes.append(node)
-        node = NavigationNode(
-            _('Two weeks'),
-            '#',
-            7203
-        )
+        node = NavigationNode(_("Two weeks"), "#", 7203)
         nodes.append(node)
 
         return nodes
+
 
 menu_pool.register_menu(SchedulerMenu)

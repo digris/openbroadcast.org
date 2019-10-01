@@ -6,14 +6,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('actstream', '0001_initial'),
-    ]
+    dependencies = [("actstream", "0001_initial")]
 
     operations = [
         migrations.AlterField(
-            model_name='action',
-            name='data',
+            model_name="action",
+            name="data",
             field=models.TextField(null=True, blank=True),
-        ),
+        )
     ]

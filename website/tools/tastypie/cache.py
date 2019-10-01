@@ -7,6 +7,7 @@ class NoCache(object):
 
     Does nothing save for simulating the cache API.
     """
+
     def __init__(self, varies=None, *args, **kwargs):
         """
         Optionally accepts a ``varies`` list that will be used in the
@@ -41,9 +42,7 @@ class NoCache(object):
         """
         No-op for returning values for cache-control
         """
-        return {
-            'no_cache': True,
-        }
+        return {"no_cache": True}
 
 
 class SimpleCache(NoCache):
@@ -81,10 +80,7 @@ class SimpleCache(NoCache):
         cache.set(key, value, timeout)
 
     def cache_control(self):
-        control = {
-            'max_age': self.timeout,
-            's_maxage': self.timeout,
-        }
+        control = {"max_age": self.timeout, "s_maxage": self.timeout}
 
         if self.public is not None:
             control["public"] = self.public

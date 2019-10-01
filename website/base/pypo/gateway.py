@@ -7,13 +7,13 @@ from django.conf import settings
 
 log = logging.getLogger(__name__)
 
-USE_CELERYD = getattr(settings, 'PYPO_USE_CELERYD', False)
-PLAYOUT_BROKER_URL = getattr(settings, 'PLAYOUT_BROKER_URL', False)
+USE_CELERYD = getattr(settings, "PYPO_USE_CELERYD", False)
+PLAYOUT_BROKER_URL = getattr(settings, "PLAYOUT_BROKER_URL", False)
 
-BROKER_QUEUE = 'pypo-fetch'
+BROKER_QUEUE = "pypo-fetch"
+
 
 class PypoGateway(object):
-
     def __init__(self):
         pass
 
@@ -25,7 +25,7 @@ class PypoGateway(object):
 
     @task
     def send_task(obj, message):
-        log.info('send message: %s' % message['event_type'])
+        log.info("send message: %s" % message["event_type"])
         try:
 
             connection = Connection(PLAYOUT_BROKER_URL)
@@ -36,7 +36,7 @@ class PypoGateway(object):
             connection.close()
 
         except Exception as e:
-            log.error('error sending message: %s' % e)
+            log.error("error sending message: %s" % e)
 
 
 def send(message):

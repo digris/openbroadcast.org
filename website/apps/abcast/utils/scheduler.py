@@ -7,7 +7,7 @@ import logging
 from django.utils import timezone
 from abcast.models import Emission, Channel
 
-EXCHANGE = 'fs' # 'fs' or 'http'
+EXCHANGE = "fs"  # 'fs' or 'http'
 
 log = logging.getLogger(__name__)
 
@@ -42,19 +42,20 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
             if not co or not co.get_duration():
                 return
             i_start = e_start + datetime.timedelta(milliseconds=offset)
-            i_end = e_start + datetime.timedelta(milliseconds=offset + co.get_duration())
-
+            i_end = e_start + datetime.timedelta(
+                milliseconds=offset + co.get_duration()
+            )
 
             # i_end needs cue / cross calculations
             # TODO: verify calculations!!!!
             # i_end = i_end - datetime.timedelta(milliseconds=( item.cue_in + item.cue_out + item.fade_cross ))
-            i_end = i_end - datetime.timedelta(milliseconds=( item.cue_in + item.cue_out ))
-
+            i_end = i_end - datetime.timedelta(
+                milliseconds=(item.cue_in + item.cue_out)
+            )
 
             # map to ugly airtime format
-            i_start_str = i_start.strftime('%Y-%m-%d-%H-%M-%S')
-            i_end_str = i_end.strftime('%Y-%m-%d-%H-%M-%S')
-
+            i_start_str = i_start.strftime("%Y-%m-%d-%H-%M-%S")
+            i_end_str = i_end.strftime("%Y-%m-%d-%H-%M-%S")
 
             """
             compose media data
@@ -65,42 +66,39 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
 
                 uri = None
 
-                if EXCHANGE == 'http':
-                    raise NotImplemented('http transport not implemented anymore')
+                if EXCHANGE == "http":
+                    raise NotImplemented("http transport not implemented anymore")
 
-                if EXCHANGE == 'fs':
+                if EXCHANGE == "fs":
                     uri = co.get_playout_file(absolute=True)
 
                 data = {
+                    "id": str(co.uuid),
+                    "cue_in": float(item.cue_in) / 1000,
+                    "cue_out": float(co.get_duration() - item.cue_out) / 1000,
+                    "fade_in": item.fade_in,
+                    "fade_out": item.fade_out,
+                    "fade_cross": item.fade_cross / 1000,
+                    # TODO: just enabling crossfade to test new ls version
+                    #'fade_cross': float(co.get_duration() - item.cue_out - item.fade_cross) / 1000,
+                    #'fade_cross': 0,
+                    "replay_gain": 0,
+                    "independent_event": False,
+                    "start": "%s" % i_start_str,
+                    "end": "%s" % i_end_str,
+                    "artist": "artsi",
+                    "title": "fartsi",
+                    "show_name": "%s" % e.name,
+                    "uri": uri,
+                    "row_id": str(co.uuid),
+                    "type": "file",
+                }
 
-                        'id': str(co.uuid),
-                        'cue_in': float(item.cue_in) / 1000,
-                        'cue_out': float(co.get_duration() - item.cue_out) / 1000,
-                        'fade_in': item.fade_in,
-                        'fade_out': item.fade_out,
-                        'fade_cross': item.fade_cross / 1000,
-                        # TODO: just enabling crossfade to test new ls version
-                        #'fade_cross': float(co.get_duration() - item.cue_out - item.fade_cross) / 1000,
-                        #'fade_cross': 0,
-                        'replay_gain': 0,
-                        'independent_event': False,
-                        'start': "%s" % i_start_str,
-                        'end': "%s" % i_end_str,
-                        'artist': 'artsi',
-                        'title': 'fartsi',
-                        'show_name': "%s" % e.name,
-                        'uri': uri,
-                        'row_id': str(co.uuid),
-                        'type': "file",
+                media["%s" % i_start_str] = data
 
-                        }
-
-                media['%s' % i_start_str] = data
-
-            offset += ( co.get_duration() - (item.cue_in + item.cue_out + item.fade_cross ) )
+            offset += co.get_duration() - (item.cue_in + item.cue_out + item.fade_cross)
 
     return media
-
 
 
 def get_history(range, channel=None):
@@ -110,7 +108,9 @@ def get_history(range, channel=None):
 
     EMISSION_LIMIT = 4
 
-    emissions = Emission.objects.filter(time_start__lte=now, channel=channel).order_by('-time_start')[0:EMISSION_LIMIT]
+    emissions = Emission.objects.filter(time_start__lte=now, channel=channel).order_by(
+        "-time_start"
+    )[0:EMISSION_LIMIT]
 
     objects = []
 
@@ -127,29 +127,29 @@ def get_history(range, channel=None):
 
     for emission in emissions:
 
-
         for emission_item in emission.get_timestamped_media():
             emission_item.emission = emission
 
             if range_start < emission_item.timestamp < now:
 
-                #print '////////////////////////////////'
-                #print 'is %s > %s ?' % (emission_item.timestamp, range_start)
-                #print 'is %s < %s ?' % (emission_item.timestamp, now)
-                #print
+                # print '////////////////////////////////'
+                # print 'is %s > %s ?' % (emission_item.timestamp, range_start)
+                # print 'is %s < %s ?' % (emission_item.timestamp, now)
+                # print
 
-                objects.append({
-                    'emission': emission.get_api_url(),
-                    'item': emission_item.content_object.get_api_url(),
-                    'time_start': emission_item.timestamp,
-                    'time_end': None,
-                    'verbose_name': emission_item.content_object.name,
-                })
+                objects.append(
+                    {
+                        "emission": emission.get_api_url(),
+                        "item": emission_item.content_object.get_api_url(),
+                        "time_start": emission_item.timestamp,
+                        "time_end": None,
+                        "verbose_name": emission_item.content_object.name,
+                    }
+                )
 
     objects.reverse()
 
     return objects[1:]
-
 
 
 def get_schedule(range_start=0, range_end=0, channel=None):
@@ -178,9 +178,8 @@ def get_schedule(range_start=0, range_end=0, channel=None):
     """
 
     emissions = Emission.objects.filter(
-        time_end__gte=range_start,
-        time_start__lte=range_end,
-        channel=channel).order_by('-time_start')
+        time_end__gte=range_start, time_start__lte=range_end, channel=channel
+    ).order_by("-time_start")
 
     objects = []
 
@@ -195,18 +194,25 @@ def get_schedule(range_start=0, range_end=0, channel=None):
 
             # map timestamps
             emission_item.time_start = emission_item.timestamp
-            emission_item.time_end = emission_item.timestamp + datetime.timedelta(milliseconds=emission_item.playout_duration)
+            emission_item.time_end = emission_item.timestamp + datetime.timedelta(
+                milliseconds=emission_item.playout_duration
+            )
 
             # check if ranges apply
-            if emission_item.time_end >= range_start and emission_item.time_start <= range_end:
+            if (
+                emission_item.time_end >= range_start
+                and emission_item.time_start <= range_end
+            ):
 
-                objects.append({
-                    'emission': emission.get_api_url(),
-                    'item': emission_item.content_object.get_api_url(),
-                    'time_start': emission_item.time_start,
-                    'time_end': emission_item.time_end,
-                    'verbose_name': emission_item.content_object.name,
-                })
+                objects.append(
+                    {
+                        "emission": emission.get_api_url(),
+                        "item": emission_item.content_object.get_api_url(),
+                        "time_start": emission_item.time_start,
+                        "time_end": emission_item.time_end,
+                        "verbose_name": emission_item.content_object.name,
+                    }
+                )
 
     objects.reverse()
 
@@ -215,18 +221,22 @@ def get_schedule(range_start=0, range_end=0, channel=None):
 
 def check_slot_availability(time_start, time_end, excluded_emission=None, channel=None):
 
-    log.debug('checking for slot availability: {} - {} ({})'.format(time_start, time_end, channel))
+    log.debug(
+        "checking for slot availability: {} - {} ({})".format(
+            time_start, time_end, channel
+        )
+    )
     now = timezone.now()
 
     if time_start < now:
-        return False, 'You cannot schedule in the past.'
+        return False, "You cannot schedule in the past."
 
     if time_start < now + datetime.timedelta(minutes=2):
-        return False, 'You cannot schedule less than 2 minutes in advance'
+        return False, "You cannot schedule less than 2 minutes in advance"
 
     # if time_start.hour < 6 <= time_end.hour:
     if time_start.hour < 6 <= (time_end - datetime.timedelta(seconds=2)).hour:
-        return False, 'You cannot schedule overlapping days'
+        return False, "You cannot schedule overlapping days"
 
     overlapping_qs = Emission.objects.filter(
         time_end__gt=time_start + datetime.timedelta(seconds=2),
@@ -240,14 +250,11 @@ def check_slot_availability(time_start, time_end, excluded_emission=None, channe
         overlapping_qs = overlapping_qs.filter(channel=channel)
 
     if overlapping_qs.exists():
-        message = 'The desired time slot does not seem to be available.'
+        message = "The desired time slot does not seem to be available."
         for emission in overlapping_qs:
-            message += '\n{:%H:%M:%S} to {:%H:%M:%S}: {}'.format(
-                emission.time_start,
-                emission.time_end,
-                emission.name
+            message += "\n{:%H:%M:%S} to {:%H:%M:%S}: {}".format(
+                emission.time_start, emission.time_end, emission.name
             )
         return False, message
-
 
     return True, None

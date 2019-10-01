@@ -47,6 +47,7 @@ class RegistrationView(BaseRegistrationView):
     fields and supported operations.
     
     """
+
     def register(self, request, **cleaned_data):
         """
         Given a username, email address and password, register a new
@@ -71,16 +72,21 @@ class RegistrationView(BaseRegistrationView):
         class of this backend as the sender.
 
         """
-        username, email, password = cleaned_data['username'], cleaned_data['email'], cleaned_data['password1']
+        username, email, password = (
+            cleaned_data["username"],
+            cleaned_data["email"],
+            cleaned_data["password1"],
+        )
         if Site._meta.installed:
             site = Site.objects.get_current()
         else:
             site = RequestSite(request)
-        new_user = RegistrationProfile.objects.create_inactive_user(username, email,
-                                                                    password, site)
-        signals.user_registered.send(sender=self.__class__,
-                                     user=new_user,
-                                     request=request)
+        new_user = RegistrationProfile.objects.create_inactive_user(
+            username, email, password, site
+        )
+        signals.user_registered.send(
+            sender=self.__class__, user=new_user, request=request
+        )
         return new_user
 
     def registration_allowed(self, request):
@@ -96,7 +102,7 @@ class RegistrationView(BaseRegistrationView):
           ``False``, registration is not permitted.
         
         """
-        return getattr(settings, 'REGISTRATION_OPEN', True)
+        return getattr(settings, "REGISTRATION_OPEN", True)
 
     def get_success_url(self, request, user):
         """
@@ -104,7 +110,7 @@ class RegistrationView(BaseRegistrationView):
         user registration.
         
         """
-        return ('registration_complete', (), {})
+        return ("registration_complete", (), {})
 
 
 class ActivationView(BaseActivationView):
@@ -121,10 +127,10 @@ class ActivationView(BaseActivationView):
         """
         activated_user = RegistrationProfile.objects.activate_user(activation_key)
         if activated_user:
-            signals.user_activated.send(sender=self.__class__,
-                                        user=activated_user,
-                                        request=request)
+            signals.user_activated.send(
+                sender=self.__class__, user=activated_user, request=request
+            )
         return activated_user
 
     def get_success_url(self, request, user):
-        return ('registration_activation_complete', (), {})
+        return ("registration_activation_complete", (), {})

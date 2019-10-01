@@ -1,56 +1,60 @@
 from django.utils.safestring import mark_safe
 from django.forms.widgets import ClearableFileInput, Widget
 
-class ReadOnlyField(Widget):
 
+class ReadOnlyField(Widget):
     def render(self, name, value, attrs=None):
 
-        return mark_safe('<div  class="form-extra readonly %s"><span>%s</span></div>' % (name, value))
-        #return mark_safe('<ul class="links external"><li class="icon external %s"></li></ul>' % value)
+        return mark_safe(
+            '<div  class="form-extra readonly %s"><span>%s</span></div>' % (name, value)
+        )
+        # return mark_safe('<ul class="links external"><li class="icon external %s"></li></ul>' % value)
 
 
 class ReadOnlyIconField(Widget):
-
     def __init__(self, *args, **kwargs):
-        self.url = kwargs.pop('url',None)
+        self.url = kwargs.pop("url", None)
         super(ReadOnlyIconField, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
 
-        if not value or value in ['generic', 'official']:
-            value = 'angle-right'
+        if not value or value in ["generic", "official"]:
+            value = "angle-right"
 
         # TODO: very ugly... sorry
-        if value == 'itunes':
-            value = 'apple'
+        if value == "itunes":
+            value = "apple"
 
         if self.instance and self.instance.url:
-            return mark_safe('<ul class="relations external %s unstyled"><li><a class="skip-external" href="%s"><i class="icon-%s"></i></a></li></ul>' % (value, self.instance.url, value))
+            return mark_safe(
+                '<ul class="relations external %s unstyled"><li><a class="skip-external" href="%s"><i class="icon-%s"></i></a></li></ul>'
+                % (value, self.instance.url, value)
+            )
         else:
-            return mark_safe('')
+            return mark_safe("")
 
 
 class AdvancedFileInput(ClearableFileInput):
-
     def __init__(self, *args, **kwargs):
 
-        self.url_length = kwargs.pop('url_length',30)
-        self.preview = kwargs.pop('preview',True)
-        self.image_width = kwargs.pop('image_width',100)
+        self.url_length = kwargs.pop("url_length", 30)
+        self.preview = kwargs.pop("preview", True)
+        self.image_width = kwargs.pop("image_width", 100)
         super(AdvancedFileInput, self).__init__(*args, **kwargs)
 
-    def render(self, name, value, attrs=None,):
+    def render(self, name, value, attrs=None):
 
         substitutions = {
-            'initial_text': '',
-            'input_text': self.input_text,
-            'clear_template': '',
-            'clear_checkbox_label': '',
+            "initial_text": "",
+            "input_text": self.input_text,
+            "clear_template": "",
+            "clear_checkbox_label": "",
         }
-        template = u'%(input)s'
+        template = u"%(input)s"
 
-        substitutions['input'] = super(ClearableFileInput, self).render(name, value, attrs)
-
+        substitutions["input"] = super(ClearableFileInput, self).render(
+            name, value, attrs
+        )
 
         # file = File.objects.get(pk=value)
         #
@@ -80,4 +84,3 @@ class AdvancedFileInput(ClearableFileInput):
         #         substitutions['clear_template'] = self.template_with_clear % substitutions
 
         return mark_safe(template % substitutions)
-

@@ -10,7 +10,7 @@ from tagging.models import Tag
 log = logging.getLogger(__name__)
 
 # TODO: investigate if non-atomic transactions here are a problem
-#@transaction.atomic
+# @transaction.atomic
 def merge_objects(primary_object, alias_objects=None, keep_old=False):
 
     """
@@ -35,22 +35,30 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
     primary_class = primary_object.__class__
 
     if not issubclass(primary_class, Model):
-        raise TypeError('Only django.db.models.Model subclasses can be merged')
+        raise TypeError("Only django.db.models.Model subclasses can be merged")
 
     for alias_object in alias_objects:
         if not isinstance(alias_object, primary_class):
             pass
-            #raise TypeError('Only models of same class can be merged')
+            # raise TypeError('Only models of same class can be merged')
 
     # Get a list of all GenericForeignKeys in all models
     # TODO: this is a bit of a hack, since the generics framework should provide a similar
     # method to the ForeignKey field for accessing the generic related fields.
     generic_fields = []
     for model in apps.get_models():
-        for field_name, field in filter(lambda x: isinstance(x[1], GenericForeignKey), model.__dict__.iteritems()):
+        for field_name, field in filter(
+            lambda x: isinstance(x[1], GenericForeignKey), model.__dict__.iteritems()
+        ):
             generic_fields.append(field)
 
-    blank_local_fields = set([field.attname for field in primary_object._meta.local_fields if getattr(primary_object, field.attname) in [None, '']])
+    blank_local_fields = set(
+        [
+            field.attname
+            for field in primary_object._meta.local_fields
+            if getattr(primary_object, field.attname) in [None, ""]
+        ]
+    )
 
     # Loop through all alias objects and migrate their data to the primary object.
     for alias_object in alias_objects:
@@ -71,7 +79,9 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
                 pass
 
         # Migrate all many to many references from alias object to primary object.
-        for related_many_object in alias_object._meta.get_all_related_many_to_many_objects():
+        for (
+            related_many_object
+        ) in alias_object._meta.get_all_related_many_to_many_objects():
             alias_varname = related_many_object.get_accessor_name()
             obj_varname = related_many_object.field.name
 
@@ -101,7 +111,7 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
         filled_up = set()
         for field_name in blank_local_fields:
             val = getattr(alias_object, field_name)
-            if val not in [None, '']:
+            if val not in [None, ""]:
                 setattr(primary_object, field_name, val)
                 filled_up.add(field_name)
         blank_local_fields -= filled_up
@@ -137,7 +147,9 @@ def merge_relations(primary_object, alias_objects):
     """
 
     # get available 'specific' relations for the master object
-    master_services = [r.service for r in primary_object.relations.exclude(service='generic')]
+    master_services = [
+        r.service for r in primary_object.relations.exclude(service="generic")
+    ]
 
     for obj in alias_objects:
         # only take specific services into account that are not defined on master
@@ -148,7 +160,7 @@ def merge_relations(primary_object, alias_objects):
             r.save()
 
         # delete 'left over' specific relations
-        obj.relations.exclude(service='generic').delete()
+        obj.relations.exclude(service="generic").delete()
 
     return primary_object
 
@@ -157,17 +169,17 @@ def merge_tags(primary_object, alias_objects):
     """
     merges tags from 'alias_objects' to the master.
     """
-    print('merging tags')
+    print("merging tags")
     for obj in alias_objects:
-        print('slave {}'.format(obj))
+        print("slave {}".format(obj))
         for tag in obj.tags.all():
-            print('tag {}'.format(tag))
+            print("tag {}".format(tag))
             Tag.objects.add_tag(primary_object, '"{}"'.format(tag.name))
 
-    print('tags after save', primary_object.tags.all())
+    print("tags after save", primary_object.tags.all())
 
     if primary_object.tags.exists():
-        primary_object.d_tags = ', '.join(t.name for t in primary_object.tags.all())
+        primary_object.d_tags = ", ".join(t.name for t in primary_object.tags.all())
 
     print(primary_object.d_tags)
 

@@ -17,62 +17,48 @@ def merge_tags(modeladmin, request, queryset):
 
         for pk in item_pks:
             try:
-                TaggedItem.objects.filter(
-                    pk=pk
-                ).update(tag=main)
+                TaggedItem.objects.filter(pk=pk).update(tag=main)
             except Exception as e:
                 print(e)
 
         tag.delete()
 
-    modeladmin.message_user(request, "%s is merged with other places, now you can give it a canonical name." % main)
+    modeladmin.message_user(
+        request,
+        "%s is merged with other places, now you can give it a canonical name." % main,
+    )
 
 
-merge_tags.short_description = _('Merge selected tags')
+merge_tags.short_description = _("Merge selected tags")
+
 
 class TagMergeForm(forms.Form):
-
     def __init__(self, queryset, *args, **kwargs):
         super(TagMergeForm, self).__init__(*args, **kwargs)
-        self.fields['master'].queryset = queryset
+        self.fields["master"].queryset = queryset
 
     master = forms.ModelChoiceField(queryset=None, required=True)
-
 
 
 class CustomTagAdmin(admin.ModelAdmin):
     form = TagAdminForm
 
-    list_display = (
-        'name',
-        'usage_info',
-        'type',
-        'created',
-        'updated',
-    )
+    list_display = ("name", "usage_info", "type", "created", "updated")
 
-    date_hierarchy = 'created'
+    date_hierarchy = "created"
 
-    list_filter = [
-        'type',
-        'created',
-        'updated',
-    ]
+    list_filter = ["type", "created", "updated"]
 
-    search_fields = ('name',)
+    search_fields = ("name",)
 
-    list_editable = [
-        'type',
-    ]
+    list_editable = ["type"]
 
-    actions = [
-        merge_tags,
-    ]
+    actions = [merge_tags]
 
     def usage_info(self, obj):
-        return '{}'.format(obj.items.nocache().count())
+        return "{}".format(obj.items.nocache().count())
 
-    usage_info.short_description = _('Usage')
+    usage_info.short_description = _("Usage")
     usage_info.allow_tags = True
 
 

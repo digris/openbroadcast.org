@@ -25,8 +25,14 @@ from mutagen._vorbis import VCommentDict
 from mutagen.ogg import OggPage, OggFileType, error as OggError
 from mutagen._util import cdata
 
-class error(OggError): pass
-class OggSpeexHeaderError(error): pass
+
+class error(OggError):
+    pass
+
+
+class OggSpeexHeaderError(error):
+    pass
+
 
 class OggSpeexInfo(object):
     """Ogg Speex stream information.
@@ -47,8 +53,7 @@ class OggSpeexInfo(object):
         while not page.packets[0].startswith("Speex   "):
             page = OggPage(fileobj)
         if not page.first:
-            raise OggSpeexHeaderError(
-                "page has ID header, but doesn't start a stream")
+            raise OggSpeexHeaderError("page has ID header, but doesn't start a stream")
         self.sample_rate = cdata.uint_le(page.packets[0][36:40])
         self.channels = cdata.uint_le(page.packets[0][48:52])
         self.bitrate = max(0, cdata.int_le(page.packets[0][52:56]))
@@ -56,6 +61,7 @@ class OggSpeexInfo(object):
 
     def pprint(self):
         return "Ogg Speex, %.2f seconds" % self.length
+
 
 class OggSpeexVComment(VCommentDict):
     """Speex comments embedded in an Ogg bitstream."""
@@ -104,6 +110,7 @@ class OggSpeexVComment(VCommentDict):
         new_pages = OggPage.from_packets(packets, old_pages[0].sequence)
         OggPage.replace(fileobj, old_pages, new_pages)
 
+
 class OggSpeex(OggFileType):
     """An Ogg Speex file."""
 
@@ -113,10 +120,13 @@ class OggSpeex(OggFileType):
     _mimes = ["audio/x-speex"]
 
     def score(filename, fileobj, header):
-        return (header.startswith("OggS") * ("Speex   " in header))
+        return header.startswith("OggS") * ("Speex   " in header)
+
     score = staticmethod(score)
 
+
 Open = OggSpeex
+
 
 def delete(filename):
     """Remove tags from a file."""

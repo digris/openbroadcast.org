@@ -10,7 +10,8 @@ import itertools
 
 from django.conf import settings
 
-ECHOPRINT_CODEGEN_BINARY = getattr(settings, 'ECHOPRINT_CODEGEN_BINARY', None)
+ECHOPRINT_CODEGEN_BINARY = getattr(settings, "ECHOPRINT_CODEGEN_BINARY", None)
+
 
 def split_seq(iterable, size):
     it = iter(iterable)
@@ -28,11 +29,9 @@ def decode_echoprint(echoprint_b64_zipped):
     zipped = base64.urlsafe_b64decode(echoprint_b64_zipped)
     unzipped = zlib.decompress(zipped)
     N = len(unzipped)
-    offsets = [int(''.join(o), 16) for o in split_seq(unzipped[:N/2], 5)]
-    codes = [int(''.join(o), 16) for o in split_seq(unzipped[N/2:], 5)]
+    offsets = [int("".join(o), 16) for o in split_seq(unzipped[: N / 2], 5)]
+    codes = [int("".join(o), 16) for o in split_seq(unzipped[N / 2 :], 5)]
     return offsets, codes
-
-
 
 
 def fprint_from_path(path, quiet=False):
@@ -43,12 +42,9 @@ def fprint_from_path(path, quiet=False):
     if not os.path.isfile(path):
         if quiet:
             return
-        raise IOError('file does not exist: {}'.format(path))
+        raise IOError("file does not exist: {}".format(path))
 
-    command = [
-        ECHOPRINT_CODEGEN_BINARY,
-        path
-    ]
+    command = [ECHOPRINT_CODEGEN_BINARY, path]
 
     p = subprocess.Popen(command, stdout=subprocess.PIPE, close_fds=True)
 
@@ -63,6 +59,6 @@ def code_from_path(path, **kwargs):
     """
 
     data = fprint_from_path(path, **kwargs)
-    code = str(data['code'])
+    code = str(data["code"])
 
     return code

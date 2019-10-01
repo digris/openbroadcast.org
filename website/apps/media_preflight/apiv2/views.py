@@ -12,24 +12,22 @@ from .serializers import PreflightCheckSerializer
 from ..models import PreflightCheck
 
 
-
-
-
-class PreflightCheckViewSet(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class PreflightCheckViewSet(
+    mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
+):
 
     queryset = PreflightCheck.objects.all()
     serializer_class = PreflightCheckSerializer
     # lookup_field = 'media__uuid'
 
     def get_object(self):
-        obj = get_object_or_404(PreflightCheck, media__uuid=self.kwargs.get('uuid'))
+        obj = get_object_or_404(PreflightCheck, media__uuid=self.kwargs.get("uuid"))
         return obj
 
     def perform_update(self, serializer):
         serializer.save()
 
 
-preflight_check_detail = PreflightCheckViewSet.as_view({
-    'get': 'retrieve',
-    'patch': 'update',
-})
+preflight_check_detail = PreflightCheckViewSet.as_view(
+    {"get": "retrieve", "patch": "update"}
+)

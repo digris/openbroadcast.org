@@ -18,6 +18,7 @@ class _RequestPassingFormView(FormView):
     enable finer-grained processing.
     
     """
+
     def get(self, request, *args, **kwargs):
         # Pass request to get_form_class and get_form for per-request
         # form control.
@@ -62,11 +63,12 @@ class RegistrationView(_RequestPassingFormView):
     Base class for user registration views.
     
     """
-    disallowed_url = 'registration_disallowed'
+
+    disallowed_url = "registration_disallowed"
     form_class = RegistrationForm
-    http_method_names = ['get', 'post', 'head', 'options', 'trace']
+    http_method_names = ["get", "post", "head", "options", "trace"]
     success_url = None
-    template_name = 'registration/registration_form.html'
+    template_name = "registration/registration_form.html"
 
     def dispatch(self, request, *args, **kwargs):
         """
@@ -81,7 +83,7 @@ class RegistrationView(_RequestPassingFormView):
     def form_valid(self, request, form):
         new_user = self.register(request, **form.cleaned_data)
         success_url = self.get_success_url(request, new_user)
-        
+
         # success_url may be a simple string, or a tuple providing the
         # full argument set for redirect(). Attempting to unpack it
         # tells us which one it is.
@@ -107,22 +109,23 @@ class RegistrationView(_RequestPassingFormView):
         
         """
         raise NotImplementedError
-                
+
 
 class ActivationView(TemplateView):
     """
     Base class for user activation views.
     
     """
-    http_method_names = ['get']
-    template_name = 'registration/activate.html'
+
+    http_method_names = ["get"]
+    template_name = "registration/activate.html"
 
     def get(self, request, *args, **kwargs):
         activated_user = self.activate(request, *args, **kwargs)
         if activated_user:
-            signals.user_activated.send(sender=self.__class__,
-                                        user=activated_user,
-                                        request=request)
+            signals.user_activated.send(
+                sender=self.__class__, user=activated_user, request=request
+            )
             success_url = self.get_success_url(request, activated_user)
             try:
                 to, args, kwargs = success_url

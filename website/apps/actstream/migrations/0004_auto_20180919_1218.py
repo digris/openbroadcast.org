@@ -7,14 +7,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('actstream', '0003_auto_20180919_1156'),
-    ]
+    dependencies = [("actstream", "0003_auto_20180919_1156")]
 
     operations = [
         migrations.AlterField(
-            model_name='action',
-            name='verb',
+            model_name="action",
+            name="verb",
             field=models.CharField(db_index=True, max_length=255),
-        ),
+        )
     ]

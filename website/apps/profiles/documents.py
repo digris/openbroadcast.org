@@ -15,29 +15,28 @@ from .models import Profile
 
 THUMBNAIL_OPT = dict(size=(197, 197), crop=True, upscale=True)
 
-profile_index = Index('profiles')
+profile_index = Index("profiles")
+
 
 @profile_index.doc_type
 class ProfileDocument(DocType):
-
     class Meta:
         model = Profile
         queryset_pagination = 1000
-        doc_type = 'profiles.profile'
+        doc_type = "profiles.profile"
 
     autocomplete = fields.TextField(
-        analyzer=edge_ngram_analyzer,
-        search_analyzer=edge_ngram_search_analyzer,
+        analyzer=edge_ngram_analyzer, search_analyzer=edge_ngram_search_analyzer
     )
 
-    url = fields.KeywordField(attr='get_absolute_url')
-    api_url = fields.KeywordField(attr='get_api_url')
+    url = fields.KeywordField(attr="get_absolute_url")
+    api_url = fields.KeywordField(attr="get_api_url")
     created = fields.DateField()
     updated = fields.DateField()
 
     # time/date properties from user model
-    date_joined = fields.DateField(attr='user.date_joined')
-    last_login = fields.DateField(attr='user.last_login')
+    date_joined = fields.DateField(attr="user.date_joined")
+    last_login = fields.DateField(attr="user.last_login")
 
     name = fields.TextField(fielddata=True)
     # exact_name = fields.KeywordField(attr='name')
@@ -45,7 +44,6 @@ class ProfileDocument(DocType):
 
     expertise = KeywordField()
     groups = KeywordField()
-
 
     # labelcode = KeywordField()
     #
@@ -65,12 +63,10 @@ class ProfileDocument(DocType):
     # year_end = fields.IntegerField()
     #
     # description = fields.TextField(attr='description')
-    country = KeywordField(attr='country.printable_name')
-    country_code = KeywordField(attr='country.iso2_code')
-
+    country = KeywordField(attr="country.printable_name")
+    country_code = KeywordField(attr="country.iso2_code")
 
     # recent_activity = fields.IntegerField()
-
 
     ###################################################################
     # field preparation
@@ -88,12 +84,13 @@ class ProfileDocument(DocType):
             text += [instance.country.iso2_code]
 
         return text
+
     #
     def prepare_name(self, instance):
         return instance.get_display_name().strip()
 
     def prepare_tags(self, instance):
-        return [i.strip() for i in instance.d_tags.split(',') if len(i) > 2]
+        return [i.strip() for i in instance.d_tags.split(",") if len(i) > 2]
 
     def prepare_groups(self, instance):
         return [g.name.strip() for g in instance.user.groups.all()]
@@ -102,9 +99,13 @@ class ProfileDocument(DocType):
         return [e.name.strip() for e in instance.expertise.all()]
 
     def prepare_image(self, instance):
-        if hasattr(instance, 'main_image') and instance.main_image:
+        if hasattr(instance, "main_image") and instance.main_image:
             try:
-                return get_thumbnailer(instance.main_image).get_thumbnail(THUMBNAIL_OPT).url
+                return (
+                    get_thumbnailer(instance.main_image)
+                    .get_thumbnail(THUMBNAIL_OPT)
+                    .url
+                )
             except InvalidImageFormatError as e:
                 pass
 
@@ -125,5 +126,6 @@ class ProfileDocument(DocType):
     # custom queryset
     ###################################################################
     def get_queryset(self):
-        return super(ProfileDocument, self).get_queryset().select_related('user', 'mentor')
-
+        return (
+            super(ProfileDocument, self).get_queryset().select_related("user", "mentor")
+        )

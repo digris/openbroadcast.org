@@ -3,9 +3,8 @@ from __future__ import unicode_literals, absolute_import
 
 from django import forms
 
-__all__ = (
-    'AutocompleteWidget',
-)
+__all__ = ("AutocompleteWidget",)
+
 
 class AutocompleteInputWidget(forms.TextInput):
     """
@@ -14,15 +13,15 @@ class AutocompleteInputWidget(forms.TextInput):
 
     def __init__(self, lookup_model, *args, **kwargs):
         self.lookup_model = lookup_model
-        self.allow_new = kwargs.pop('allow_new', False)
+        self.allow_new = kwargs.pop("allow_new", False)
         super(AutocompleteInputWidget, self).__init__(*args, **kwargs)
 
     def build_attrs(self, extra_attrs=None, **kwargs):
         attrs = super(AutocompleteInputWidget, self).build_attrs(extra_attrs, **kwargs)
-        attrs['autocomplete'] = 'off'
-        attrs['data-autocomplete-widget-url'] = self.lookup_model.url
-        attrs['data-autocomplete-widget-type'] = 'text'
-        attrs['data-autocomplete-widget-allow-new'] = str(self.allow_new).lower()
+        attrs["autocomplete"] = "off"
+        attrs["data-autocomplete-widget-url"] = self.lookup_model.url
+        attrs["data-autocomplete-widget-type"] = "text"
+        attrs["data-autocomplete-widget-allow-new"] = str(self.allow_new).lower()
         return attrs
 
 
@@ -33,14 +32,14 @@ class AutocompleteWidget(forms.MultiWidget):
 
     def __init__(self, lookup_model, *args, **kwargs):
         self.lookup_model = lookup_model
-        self.allow_new = kwargs.pop('allow_new', False)
+        self.allow_new = kwargs.pop("allow_new", False)
         widgets = [
             AutocompleteInputWidget(
                 lookup_model=lookup_model,
                 allow_new=self.allow_new,
-                attrs=kwargs.get('attrs'),
+                attrs=kwargs.get("attrs"),
             ),
-            forms.HiddenInput(attrs={'data-autocomplete-widget-type': 'hidden'})
+            forms.HiddenInput(attrs={"data-autocomplete-widget-type": "hidden"}),
         ]
         super(AutocompleteWidget, self).__init__(widgets, *args, **kwargs)
 

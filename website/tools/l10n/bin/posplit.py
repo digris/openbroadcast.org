@@ -8,6 +8,7 @@ __version__ = "0.1"
 
 USAGE = """pybuild [options] filename1 filename2 ..."""
 
+
 def posplit(fname, rules):
     sections = make_sections(fname)
     rules.set_header(sections[0])
@@ -18,12 +19,13 @@ def posplit(fname, rules):
         section.apply_rules(rules)
         section.do_copy()
         ix += 1
-        #print ix
+        # print ix
+
 
 def make_sections(fname):
     sections = []
-    f = open(fname, 'r')
-    section=Section()
+    f = open(fname, "r")
+    section = Section()
     for line in f.xreadlines():
         if line and line.endswith("\n"):
             line = line[:-1]
@@ -38,8 +40,8 @@ def make_sections(fname):
 
     return sections
 
-class RuleSet(object):
 
+class RuleSet(object):
     def __init__(self, fname):
         self.rules = []
         self.fname = fname
@@ -61,7 +63,7 @@ class RuleSet(object):
         giftcertificate=apps/payment/modules/giftcertificate
         local_settings-customize.py=nostrip:projects/template/
         """
-        f = open(self.fname, 'r')
+        f = open(self.fname, "r")
         for line in f.xreadlines():
             if line and line.endswith("\n"):
                 line = line[:-1]
@@ -83,20 +85,20 @@ class RuleSet(object):
 
     def open_pofile(self, dest):
         if not dest in self.files:
-            #print "making: %s" % dest
+            # print "making: %s" % dest
             fname = os.path.join(dest, self.pofile)
             d, n = os.path.split(fname)
             if not os.path.exists(d):
                 # print "Making directory: %s" % d
                 os.makedirs(d)
             # print "opening: %s" % fname
-            f = open(fname, 'w')
+            f = open(fname, "w")
             f.write("\n".join(self.header.lines))
             f.write("\n\n")
             self.files[dest] = f
         else:
             pass
-            #print "reusing: %s" % dest
+            # print "reusing: %s" % dest
 
         return self.files[dest]
 
@@ -106,16 +108,17 @@ class RuleSet(object):
     def set_pofile(self, fname):
         self.pofile = fname
 
+
 class Rule(object):
     def __init__(self, line):
         try:
-            k, v = line.split('=')
+            k, v = line.split("=")
         except:
             # print "error: '%s'" % line
             raise
         opt = "STRIP"
-        if v.find(':') > -1:
-            opt, v = v.split(':')
+        if v.find(":") > -1:
+            opt, v = v.split(":")
 
         self.parent = None
         self.key = k
@@ -131,12 +134,12 @@ class Rule(object):
 
         if self.option == "STRIP":
             if target.startswith(self.key):
-                target = target[len(self.key):]
+                target = target[len(self.key) :]
 
         return target
 
     def do_copy(self, targets, lines):
-        if not self.option=='IGNORE':
+        if not self.option == "IGNORE":
             f = self.parent.open_pofile(self.dest)
             targets = ["#: %s" % self.apply(tgt) for tgt in targets]
             f.write("\n".join(targets))
@@ -145,10 +148,10 @@ class Rule(object):
             f.write("\n\n")
 
     def __str__(self):
-        return("Rule: %s=(%s) %s" % (self.key, self.option, self.dest))
+        return "Rule: %s=(%s) %s" % (self.key, self.option, self.dest)
+
 
 class Section(object):
-
     def __init__(self):
         self.targets = []
         self.decisions = {}
@@ -178,34 +181,38 @@ class Section(object):
             rule.do_copy(targets, self.lines)
 
     def __unicode__(self):
-        out = ['TARGETS: ',]
+        out = ["TARGETS: "]
         out.extend(self.targets)
-        out.append('DECISIONS: ')
+        out.append("DECISIONS: ")
         for k, v in self.decisions.items():
-            out.append('%s = %s' % (k.key, ", ".join(v)))
+            out.append("%s = %s" % (k.key, ", ".join(v)))
 
-        out.append('LINES:')
+        out.append("LINES:")
         out.extend(self.lines)
         return "\n".join(out)
 
 
 def main(args):
-    parser = OptionParser(USAGE, version = __version__)
+    parser = OptionParser(USAGE, version=__version__)
 
-    parser.add_option('-c','--conf', dest='conf',
-                      default='posplit.rules',
-                      help="the posplit rules file")
+    parser.add_option(
+        "-c",
+        "--conf",
+        dest="conf",
+        default="posplit.rules",
+        help="the posplit rules file",
+    )
 
     opts, fnames = parser.parse_args(args)
 
     if not fnames:
-        #print "Need at least one filename"
-        #print USAGE
+        # print "Need at least one filename"
+        # print USAGE
         sys.exit(2)
 
     if not opts.conf:
-        #print "Need a config file"
-        #print USAGE
+        # print "Need a config file"
+        # print USAGE
         sys.exit(2)
 
     rules = RuleSet(opts.conf)
@@ -213,5 +220,6 @@ def main(args):
     for fname in fnames:
         posplit(fname, rules)
 
-if __name__=='__main__':
+
+if __name__ == "__main__":
     main(sys.argv[1:])

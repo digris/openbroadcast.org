@@ -23,14 +23,16 @@ def apply_extra_context(context, extra_context=None):
 
 
 @login_required
-def invite(request, success_url=None,
-           form_class=InvitationForm,
-           template_name='invitation/invitation_form.html',
-           extra_context=None):
+def invite(
+    request,
+    success_url=None,
+    form_class=InvitationForm,
+    template_name="invitation/invitation_form.html",
+    extra_context=None,
+):
 
-    if not request.user.has_perm('invitation.add_invitation'):
-        return HttpResponseForbidden('Unauthorized')
-
+    if not request.user.has_perm("invitation.add_invitation"):
+        return HttpResponseForbidden("Unauthorized")
 
     """
     Create an invitation and send invitation email.
@@ -76,33 +78,37 @@ def invite(request, success_url=None,
     :form:
         The invitation form.
     """
-    if request.method == 'POST':
+    if request.method == "POST":
         form = form_class(request.POST, request.FILES)
         if form.is_valid():
             try:
-                invitation = Invitation.objects.invite(request.user, form.cleaned_data["email"], form.cleaned_data["message"])
+                invitation = Invitation.objects.invite(
+                    request.user,
+                    form.cleaned_data["email"],
+                    form.cleaned_data["message"],
+                )
             except InvitationError as e:
-                return HttpResponseRedirect(reverse('invitation_unavailable'))
+                return HttpResponseRedirect(reverse("invitation_unavailable"))
             invitation.send_email(request=request)
-            if 'next' in request.GET:
-                return HttpResponseRedirect(request.GET['next'])
-            return HttpResponseRedirect(success_url or reverse('invitation_complete'))
+            if "next" in request.GET:
+                return HttpResponseRedirect(request.GET["next"])
+            return HttpResponseRedirect(success_url or reverse("invitation_complete"))
     else:
         form = form_class()
     context = apply_extra_context(RequestContext(request), extra_context)
-    return render_to_response(template_name,
-                              {'form': form},
-                              context_instance=context)
+    return render_to_response(template_name, {"form": form}, context_instance=context)
 
 
-def register(request,
-             invitation_key,
-             wrong_key_template='invitation/wrong_invitation_key.html',
-             redirect_to_if_authenticated='/',
-             success_url=None,
-             form_class=RegistrationFormInvitation,
-             template_name='registration/registration_form.html',
-             extra_context=None):
+def register(
+    request,
+    invitation_key,
+    wrong_key_template="invitation/wrong_invitation_key.html",
+    redirect_to_if_authenticated="/",
+    success_url=None,
+    form_class=RegistrationFormInvitation,
+    template_name="registration/registration_form.html",
+    extra_context=None,
+):
     """
     Allow a new user to register via invitation.
 
@@ -169,32 +175,29 @@ def register(request,
         invitation = Invitation.objects.find(invitation_key)
     except Invitation.DoesNotExist:
         context = apply_extra_context(RequestContext(request), extra_context)
-        return render_to_response(wrong_key_template,
-                                  {'invitation_key': invitation_key},
-                                  context_instance=context)
-    if request.method == 'POST':
+        return render_to_response(
+            wrong_key_template,
+            {"invitation_key": invitation_key},
+            context_instance=context,
+        )
+    if request.method == "POST":
         form = form_class(invitation.email, request.POST, request.FILES)
         if form.is_valid():
             new_user = form.save()
             invitation.mark_accepted(new_user)
-            user_registered.send(sender="invitation",
-                                 user=new_user,
-                                 request=request)
-
+            user_registered.send(sender="invitation", user=new_user, request=request)
 
             """
             bit hackish... authenticate & login the user
             """
-            new_user.backend = 'django.contrib.auth.backends.ModelBackend'
+            new_user.backend = "django.contrib.auth.backends.ModelBackend"
             login(request, new_user)
             return HttpResponseRedirect(new_user.get_absolute_url())
-            #return HttpResponseRedirect(success_url or reverse('auth_login'))
+            # return HttpResponseRedirect(success_url or reverse('auth_login'))
     else:
         form = form_class(invitation.email)
     context = apply_extra_context(RequestContext(request), extra_context)
-    return render_to_response(template_name,
-                              {'form': form},
-                              context_instance=context)
+    return render_to_response(template_name, {"form": form}, context_instance=context)
 
 
 @staff_member_required
@@ -205,12 +208,12 @@ def reward(request):
     """
     rewarded_users, invitations_given = InvitationStats.objects.reward()
     if rewarded_users:
-        message = ugettext(u'%(users)s users are given a total of ' \
-                           u'%(invitations)s invitations.') % {
-                                            'users': rewarded_users,
-                                            'invitations': invitations_given}
+        message = ugettext(
+            u"%(users)s users are given a total of " u"%(invitations)s invitations."
+        ) % {"users": rewarded_users, "invitations": invitations_given}
     else:
-        message = ugettext(u'No user has performance above ' \
-                           u'threshold, no invitations awarded.')
+        message = ugettext(
+            u"No user has performance above " u"threshold, no invitations awarded."
+        )
     request.user.message_set.create(message=message)
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))

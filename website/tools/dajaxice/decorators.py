@@ -43,6 +43,8 @@ def dajaxice_register(*dargs, **dkwargs):
         @functools.wraps(function)
         def wrapper(request, *args, **kwargs):
             return function(request, *args, **kwargs)
+
         dajaxice_functions.register(function, *dargs, **dkwargs)
         return wrapper
+
     return decorator

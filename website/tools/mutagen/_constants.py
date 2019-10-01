@@ -148,6 +148,6 @@ GENRES = [
     u"Thrash Metal",
     u"Anime",
     u"Jpop",
-    u"Synthpop"
-    ]
+    u"Synthpop",
+]
 """The ID3v1 genre list."""

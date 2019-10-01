@@ -7,7 +7,7 @@ from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from django import http
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
-from django.http import (HttpResponseRedirect, HttpResponseForbidden)
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.utils.functional import lazy
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView, View
 from importer.forms import ImportCreateModelForm
@@ -22,18 +22,20 @@ class JSONResponseMixin(object):
 
     def get_json_response(self, content, **httpresponse_kwargs):
         "Construct an `HttpResponse` object."
-        return http.HttpResponse(content,
-                                 content_type='application/json',
-                                 **httpresponse_kwargs)
+        return http.HttpResponse(
+            content, content_type="application/json", **httpresponse_kwargs
+        )
 
     def convert_context_to_json(self, context):
-        return json.dumps(context['result'])
+        return json.dumps(context["result"])
 
 
-class ImportListView(LoginRequiredMixin, PermissionRequiredMixin, PaginationMixin, ListView):
+class ImportListView(
+    LoginRequiredMixin, PermissionRequiredMixin, PaginationMixin, ListView
+):
     model = Import
     paginate_by = 12
-    permission_required = 'importer.add_import'
+    permission_required = "importer.add_import"
     raise_exception = True
 
     def get_queryset(self):
@@ -41,12 +43,7 @@ class ImportListView(LoginRequiredMixin, PermissionRequiredMixin, PaginationMixi
 
         qs = self.model.objects.filter(user=self.request.user)
 
-        qs = qs.select_related(
-            'user',
-        ).prefetch_related(
-            'files',
-            'importitem_set',
-        )
+        qs = qs.select_related("user").prefetch_related("files", "importitem_set")
 
         return qs
 
@@ -55,11 +52,11 @@ class ImportDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Import
     success_url = lazy(reverse, str)("importer-import-list")
 
-    permission_required = 'importer.delete_import'
+    permission_required = "importer.delete_import"
     raise_exception = True
 
     def dispatch(self, request, *args, **kwargs):
-        obj = Import.objects.get(pk=int(kwargs['pk']))
+        obj = Import.objects.get(pk=int(kwargs["pk"]))
         if not obj.user == request.user:
             raise PermissionDenied
 
@@ -73,7 +70,7 @@ class ImportDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
 class ImportDeleteAllView(LoginRequiredMixin, PermissionRequiredMixin, View):
     url = lazy(reverse, str)("importer-import-list")
 
-    permission_required = 'importer.delete_import'
+    permission_required = "importer.delete_import"
     raise_exception = True
 
     def get(self, request, *args, **kwargs):
@@ -84,7 +81,9 @@ class ImportDeleteAllView(LoginRequiredMixin, PermissionRequiredMixin, View):
         return HttpResponseRedirect(self.url)
 
 
-class ImportModifyView(LoginRequiredMixin, PermissionRequiredMixin, JSONResponseMixin, UpdateView):
+class ImportModifyView(
+    LoginRequiredMixin, PermissionRequiredMixin, JSONResponseMixin, UpdateView
+):
     model = Import
 
     def get_queryset(self):
@@ -99,9 +98,12 @@ class ImportModifyView(LoginRequiredMixin, PermissionRequiredMixin, JSONResponse
     def render_to_response(self, context):
         # Look for a 'format=json' GET argument
         meta = self.request.META
-        if meta.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest' or "json" in meta.get(
-                "CONTENT_TYPE") or 1 == 1:
-            context['result'] = {'status': True}
+        if (
+            meta.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
+            or "json" in meta.get("CONTENT_TYPE")
+            or 1 == 1
+        ):
+            context["result"] = {"status": True}
 
             return JSONResponseMixin.render_to_response(self, context)
         else:
@@ -111,10 +113,10 @@ class ImportModifyView(LoginRequiredMixin, PermissionRequiredMixin, JSONResponse
 class ImportCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Import
 
-    permission_required = 'importer.add_import'
+    permission_required = "importer.add_import"
     raise_exception = True
 
-    template_name = 'importer/import_create.html'
+    template_name = "importer/import_create.html"
     form_class = ImportCreateModelForm
 
     # success_url = lazy(reverse, str)("feedback-feedback-list")
@@ -128,26 +130,24 @@ class ImportCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
 class ImportUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Import
-    #template_name = 'importer/import_form.html'
+    # template_name = 'importer/import_form.html'
 
     fields = "__all__"
 
-    permission_required = 'importer.change_import'
+    permission_required = "importer.change_import"
     raise_exception = True
-
 
     def get_template_names(self):
 
         if self.object.type == Import.TYPE_WEB:
-            template_name = 'importer/import_form.html'
+            template_name = "importer/import_form.html"
         else:
-            template_name = 'importer/import_readonly_form.html'
-
+            template_name = "importer/import_readonly_form.html"
 
         return [template_name]
 
     def dispatch(self, request, *args, **kwargs):
-        obj = Import.objects.get(pk=int(kwargs['pk']))
+        obj = Import.objects.get(pk=int(kwargs["pk"]))
         if not obj.user == request.user:
             raise PermissionDenied
 
@@ -155,4 +155,6 @@ class ImportUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
     def get_queryset(self):
         kwargs = {}
-        return Import.objects.filter(user=self.request.user).prefetch_related('files', 'files__media')
+        return Import.objects.filter(user=self.request.user).prefetch_related(
+            "files", "files__media"
+        )

@@ -26,53 +26,60 @@ from postman.utils import WRAP_WIDTH
 
 class BaseWriteForm(forms.ModelForm):
     """The base class for other forms."""
+
     class Meta:
         model = Message
-        fields = ('body',)
+        fields = ("body",)
         widgets = {
             # for better confort, ensure a 'cols' of at least
             # the 'width' of the body quote formatter.
-            'body': forms.Textarea(attrs={'cols': WRAP_WIDTH, 'rows': 12}),
+            "body": forms.Textarea(attrs={"cols": WRAP_WIDTH, "rows": 12})
         }
 
-    error_css_class = 'error'
-    required_css_class = 'required'
+    error_css_class = "error"
+    required_css_class = "required"
 
     def __init__(self, *args, **kwargs):
-        sender = kwargs.pop('sender', None)
-        exchange_filter = kwargs.pop('exchange_filter', None)
-        user_filter = kwargs.pop('user_filter', None)
-        max = kwargs.pop('max', None)
-        channel = kwargs.pop('channel', None)
+        sender = kwargs.pop("sender", None)
+        exchange_filter = kwargs.pop("exchange_filter", None)
+        user_filter = kwargs.pop("user_filter", None)
+        max = kwargs.pop("max", None)
+        channel = kwargs.pop("channel", None)
         super(BaseWriteForm, self).__init__(*args, **kwargs)
 
-        self.fields['body'].label = _("Message")
+        self.fields["body"].label = _("Message")
 
-        self.instance.sender = sender if (sender and sender.is_authenticated()) else None
+        self.instance.sender = (
+            sender if (sender and sender.is_authenticated()) else None
+        )
         if exchange_filter:
             self.exchange_filter = exchange_filter
-        if 'recipients' in self.fields:
-            if user_filter and hasattr(self.fields['recipients'], 'user_filter'):
-                self.fields['recipients'].user_filter = user_filter
+        if "recipients" in self.fields:
+            if user_filter and hasattr(self.fields["recipients"], "user_filter"):
+                self.fields["recipients"].user_filter = user_filter
 
-            if getattr(settings, 'POSTMAN_DISALLOW_MULTIRECIPIENTS', False):
+            if getattr(settings, "POSTMAN_DISALLOW_MULTIRECIPIENTS", False):
                 max = 1
-            if max is not None and hasattr(self.fields['recipients'], 'set_max') \
-            and getattr(self, 'can_overwrite_limits', True):
-                self.fields['recipients'].set_max(max)
+            if (
+                max is not None
+                and hasattr(self.fields["recipients"], "set_max")
+                and getattr(self, "can_overwrite_limits", True)
+            ):
+                self.fields["recipients"].set_max(max)
 
-            if channel and hasattr(self.fields['recipients'], 'set_arg'):
-                self.fields['recipients'].set_arg(channel)
+            if channel and hasattr(self.fields["recipients"], "set_arg"):
+                self.fields["recipients"].set_arg(channel)
 
     error_messages = {
-        'filtered': _("Writing to some users is not possible: {users}."),
-        'filtered_user': _("{username}"),
-        'filtered_user_with_reason': _("{username} ({reason})"),
+        "filtered": _("Writing to some users is not possible: {users}."),
+        "filtered_user": _("{username}"),
+        "filtered_user_with_reason": _("{username} ({reason})"),
     }
+
     def clean_recipients(self):
         """Check no filter prohibit the exchange."""
-        recipients = self.cleaned_data['recipients']
-        exchange_filter = getattr(self, 'exchange_filter', None)
+        recipients = self.cleaned_data["recipients"]
+        exchange_filter = getattr(self, "exchange_filter", None)
         if exchange_filter:
             errors = []
             filtered_names = []
@@ -84,20 +91,28 @@ class BaseWriteForm(forms.ModelForm):
                         recipients.remove(u)
                         filtered_names.append(
                             self.error_messages[
-                                'filtered_user_with_reason' if reason else 'filtered_user'
+                                "filtered_user_with_reason"
+                                if reason
+                                else "filtered_user"
                             ].format(username=u.get_username(), reason=reason)
                         )
                 except forms.ValidationError as e:
                     recipients.remove(u)
                     errors.extend(e.messages)
             if filtered_names:
-                errors.append(self.error_messages['filtered'].format(users=', '.join(filtered_names)))
+                errors.append(
+                    self.error_messages["filtered"].format(
+                        users=", ".join(filtered_names)
+                    )
+                )
             if errors:
                 raise forms.ValidationError(errors)
         return recipients
 
     @transaction.atomic
-    def save(self, recipient=None, parent=None, auto_moderators=None, hacked_recipient=None):
+    def save(
+        self, recipient=None, parent=None, auto_moderators=None, hacked_recipient=None
+    ):
         """
         Save as many messages as there are recipients.
 
@@ -112,11 +127,13 @@ class BaseWriteForm(forms.ModelForm):
 
         auto_moderators = auto_moderators or []
 
-        recipients = self.cleaned_data.get('recipients', [])
+        recipients = self.cleaned_data.get("recipients", [])
         if hacked_recipient:
             recipients = [get_user_model().objects.get(username=hacked_recipient)]
 
-        if parent and not parent.thread_id:  # at the very first reply, make it a conversation
+        if (
+            parent and not parent.thread_id
+        ):  # at the very first reply, make it a conversation
             parent.thread = parent
             parent.save()
             # but delay the setting of parent.replied_at to the moderation step
@@ -150,7 +167,7 @@ class BaseWriteForm(forms.ModelForm):
             self.instance.notify_users(initial_status)
             # some resets for next reuse
             if not isinstance(r, get_user_model()):
-                self.instance.email = ''
+                self.instance.email = ""
             self.instance.set_moderation(*initial_moderation)
             self.instance.set_dates(*initial_dates)
         return is_successful
@@ -158,32 +175,35 @@ class BaseWriteForm(forms.ModelForm):
 
 class WriteForm(BaseWriteForm):
     """The form for an authenticated user, to compose a message."""
+
     # specify help_text only to avoid the possible default 'Enter text to search.' of ajax_select v1.2.5
     # recipients = CommaSeparatedUserField(label=(_("Recipients"), _("Recipient")), help_text='')
 
     class Meta(BaseWriteForm.Meta):
-        #fields = ('recipients', 'subject', 'body')
-        fields = ('subject', 'body')
+        # fields = ('recipients', 'subject', 'body')
+        fields = ("subject", "body")
 
 
 class AnonymousWriteForm(BaseWriteForm):
     """The form for an anonymous user, to compose a message."""
+
     # The 'max' customization should not be permitted here.
     # The features available to anonymous users should be kept to the strict minimum.
     can_overwrite_limits = False
 
     email = forms.EmailField(label=_("Email"))
-    #recipients = CommaSeparatedUserField(label=(_("Recipients"), _("Recipient")), help_text='', max=1)  # one recipient is enough
+    # recipients = CommaSeparatedUserField(label=(_("Recipients"), _("Recipient")), help_text='', max=1)  # one recipient is enough
 
     class Meta(BaseWriteForm.Meta):
-        #fields = ('email', 'recipients', 'subject', 'body')
-        fields = ('email', 'subject', 'body')
+        # fields = ('email', 'recipients', 'subject', 'body')
+        fields = ("email", "subject", "body")
 
 
 class BaseReplyForm(BaseWriteForm):
     """The base class for a reply to a message."""
+
     def __init__(self, *args, **kwargs):
-        recipient = kwargs.pop('recipient', None)
+        recipient = kwargs.pop("recipient", None)
         super(BaseReplyForm, self).__init__(*args, **kwargs)
         self.recipient = recipient
 
@@ -204,17 +224,22 @@ class QuickReplyForm(BaseReplyForm):
     The recipient is imposed and a default value for the subject will be provided.
 
     """
+
     pass
 
 
-allow_copies = not getattr(settings, 'POSTMAN_DISALLOW_COPIES_ON_REPLY', False)
+allow_copies = not getattr(settings, "POSTMAN_DISALLOW_COPIES_ON_REPLY", False)
+
+
 class FullReplyForm(BaseReplyForm):
     """The complete reply form."""
+
     """
     if allow_copies:
         recipients = CommaSeparatedUserField(
             label=(_("Additional recipients"), _("Additional recipient")), help_text='', required=False)
     """
+
     class Meta(BaseReplyForm.Meta):
         # fields = (['recipients'] if allow_copies else []) + ['subject', 'body']
-        fields = ['subject', 'body']
+        fields = ["subject", "body"]

@@ -7,6 +7,7 @@ class Validation(object):
     """
     A basic validation stub that does no validation.
     """
+
     def __init__(self, **kwargs):
         pass
 
@@ -35,11 +36,14 @@ class FormValidation(Validation):
     ``Form`` (or ``ModelForm``, though ``save`` will never be called) class.
     This form will be used to validate the data in ``bundle.data``.
     """
-    def __init__(self, **kwargs):
-        if not 'form_class' in kwargs:
-            raise ImproperlyConfigured("You must provide a 'form_class' to 'FormValidation' classes.")
 
-        self.form_class = kwargs.pop('form_class')
+    def __init__(self, **kwargs):
+        if not "form_class" in kwargs:
+            raise ImproperlyConfigured(
+                "You must provide a 'form_class' to 'FormValidation' classes."
+            )
+
+        self.form_class = kwargs.pop("form_class")
         super(FormValidation, self).__init__(**kwargs)
 
     def form_args(self, bundle):
@@ -49,15 +53,15 @@ class FormValidation(Validation):
         if data is None:
             data = {}
 
-        kwargs = {'data': {}}
+        kwargs = {"data": {}}
 
-        if hasattr(bundle.obj, 'pk'):
+        if hasattr(bundle.obj, "pk"):
             if issubclass(self.form_class, ModelForm):
-                kwargs['instance'] = bundle.obj
+                kwargs["instance"] = bundle.obj
 
-            kwargs['data'] = model_to_dict(bundle.obj)
+            kwargs["data"] = model_to_dict(bundle.obj)
 
-        kwargs['data'].update(data)
+        kwargs["data"].update(data)
         return kwargs
 
     def is_valid(self, bundle, request=None):
@@ -88,6 +92,7 @@ class CleanedDataFormValidation(FormValidation):
     ``Form`` (or ``ModelForm``, though ``save`` will never be called) class.
     This form will be used to validate the data in ``bundle.data``.
     """
+
     def is_valid(self, bundle, request=None):
         """
         Checks ``bundle.data``to ensure it is valid & replaces it with the

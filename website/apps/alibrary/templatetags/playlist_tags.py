@@ -10,10 +10,14 @@ register = template.Library()
 def nearby_scheduled_as(obj, num_hours=48):
 
     now = timezone.now()
-    if obj.last_emission and obj.last_emission.time_start > now - timedelta(hours=num_hours):
+    if obj.last_emission and obj.last_emission.time_start > now - timedelta(
+        hours=num_hours
+    ):
         return True
 
-    if obj.next_emission and obj.next_emission.time_start < now + timedelta(hours=num_hours):
+    if obj.next_emission and obj.next_emission.time_start < now + timedelta(
+        hours=num_hours
+    ):
         return True
 
     return False

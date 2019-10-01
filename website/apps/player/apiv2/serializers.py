@@ -3,17 +3,18 @@ from __future__ import unicode_literals
 
 import logging
 import random
-#from catalog.models import Media
+
+# from catalog.models import Media
 from django.conf import settings
 from rest_framework import serializers
 from easy_thumbnails.templatetags.thumbnail import thumbnail_url
 
-#from ..models import PlayerItem
+# from ..models import PlayerItem
 
 from alibrary.models import Media
 from alibrary.apiv2.serializers import MediaSerializer, ArtistSerializer
 
-SITE_URL = getattr(settings, 'SITE_URL')
+SITE_URL = getattr(settings, "SITE_URL")
 
 log = logging.getLogger(__name__)
 
@@ -21,59 +22,41 @@ log = logging.getLogger(__name__)
 class MediaObjSerializer(serializers.ModelSerializer):
 
     url = serializers.HyperlinkedIdentityField(
-        view_name='api:media-detail',
-        lookup_field='uuid'
+        view_name="api:media-detail", lookup_field="uuid"
     )
 
-    ct = serializers.CharField(source='get_ct')
+    ct = serializers.CharField(source="get_ct")
 
-    detail_url = serializers.URLField(source='release.get_absolute_url')
+    detail_url = serializers.URLField(source="release.get_absolute_url")
 
     items = serializers.SerializerMethodField()
+
     def get_items(self, obj, **kwargs):
         items = []
-        serializer = MediaSerializer(obj, context={'request': self.context['request']})
-        items.append({
-            'content': serializer.data
-        })
+        serializer = MediaSerializer(obj, context={"request": self.context["request"]})
+        items.append({"content": serializer.data})
         return items
-
 
     class Meta:
         model = Media
         depth = 1
-        fields = [
-            'name',
-            'url',
-            'ct',
-            'uuid',
-            'detail_url',
-            'items',
-        ]
-
+        fields = ["name", "url", "ct", "uuid", "detail_url", "items"]
 
 
 class ArtistObjSerializer(ArtistSerializer):
 
     items = serializers.SerializerMethodField()
+
     def get_items(self, obj, **kwargs):
         items = []
         for media in obj.get_media()[0:20]:
 
-            serializer = MediaSerializer(media, context={'request': self.context['request']})
-            items.append({
-                'content': serializer.data
-            })
+            serializer = MediaSerializer(
+                media, context={"request": self.context["request"]}
+            )
+            items.append({"content": serializer.data})
 
         return items
 
     class Meta(ArtistSerializer.Meta):
-        fields = [
-            'url',
-            'ct',
-            'detail_url',
-            'uuid',
-            'name',
-            'image',
-            'items',
-        ]
+        fields = ["url", "ct", "detail_url", "uuid", "name", "image", "items"]

@@ -38,7 +38,7 @@ def get_dir_for_object(obj, prefix=None, app_dir=None, object_dir=None):
         except:
             app_dir = None
 
-    path = os.path.join(object_dir, str(obj.uuid).replace('-', '/')[5:])
+    path = os.path.join(object_dir, str(obj.uuid).replace("-", "/")[5:])
 
     if app_dir:
         path = os.path.join(app_dir, path)
@@ -50,13 +50,13 @@ def get_dir_for_object(obj, prefix=None, app_dir=None, object_dir=None):
 
 
 def safe_filename(str):
-    log.debug('make safe: %s' % str)
-    str = unicodedata.normalize('NFKD', str)
-    return ''.join(ch for ch in str if ch not in "/\\'")
+    log.debug("make safe: %s" % str)
+    str = unicodedata.normalize("NFKD", str)
+    return "".join(ch for ch in str if ch not in "/\\'")
 
 
 def get_file_from_url(url):
-    log.info('try to get file from url: %s' % url)
+    log.info("try to get file from url: %s" % url)
     file_obj = None
 
     try:
@@ -68,21 +68,20 @@ def get_file_from_url(url):
 
             file_obj = File(temp_file)
         except Exception as e:
-            log.warning('%s' % e)
+            log.warning("%s" % e)
 
     except Exception as e:
-        log.warning('%s' % e)
-
+        log.warning("%s" % e)
 
     return file_obj
 
 
 def get_file_from_path(path, filename=None):
-    log.info('try to get file from path: %s' % path)
+    log.info("try to get file from path: %s" % path)
     file_obj = None
 
     try:
-        f = open(path, 'r')
+        f = open(path, "r")
         temp_file = NamedTemporaryFile(delete=True)
         temp_file.write(f.read())
         temp_file.flush()
@@ -96,9 +95,8 @@ def get_file_from_path(path, filename=None):
 
         file_obj = File(temp_file, filename)
 
-
     except Exception as e:
-        log.warning('%s' % e)
+        log.warning("%s" % e)
         pass
 
     return file_obj

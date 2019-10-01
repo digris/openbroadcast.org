@@ -12,7 +12,7 @@ class SchedulerApp(CMSApp):
     menus = [SchedulerMenu]
 
     def get_urls(self, page=None, language=None, **kwargs):
-        return ['abcast.urls_scheduler',]
+        return ["abcast.urls_scheduler"]
 
 
 @apphook_pool.register
@@ -21,4 +21,4 @@ class StationApp(CMSApp):
     name = _("Station App")
 
     def get_urls(self, page=None, language=None, **kwargs):
-        return ['abcast.urls_station',]
+        return ["abcast.urls_station"]

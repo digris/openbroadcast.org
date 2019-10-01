@@ -6,7 +6,8 @@ from django.contrib.contenttypes.admin import GenericTabularInline, GenericStack
 
 from genericadmin.views import generic_lookup, get_generic_rel_list
 
-JS_PATH = getattr(settings, 'GENERICADMIN_JS', 'genericadmin/js/')
+JS_PATH = getattr(settings, "GENERICADMIN_JS", "genericadmin/js/")
+
 
 class BaseGenericModelAdmin(object):
     class Media:
@@ -20,11 +21,11 @@ class BaseGenericModelAdmin(object):
             media = list(self.Media.js)
         except:
             media = []
-        #if 'grappelli' in settings.INSTALLED_APPS:
+        # if 'grappelli' in settings.INSTALLED_APPS:
         #    media.append(JS_PATH + 'genericadmin-grappelli.js')
         #    self.grappelli = True
-        #if not self.grappelli:
-        media.append(JS_PATH + 'genericadmin.js')
+        # if not self.grappelli:
+        media.append(JS_PATH + "genericadmin.js")
         self.Media.js = tuple(media)
         super(BaseGenericModelAdmin, self).__init__(model, admin_site)
 
@@ -32,28 +33,38 @@ class BaseGenericModelAdmin(object):
         base_urls = super(BaseGenericModelAdmin, self).get_urls()
         opts = self.get_generic_relation_options()
         custom_urls = [
-            url(r'^obj/$', self.admin_site.admin_view(generic_lookup), name='admin_genericadmin_obj_lookup'),
-            url(r'^get-generic-rel-list/$', self.admin_site.admin_view(get_generic_rel_list), kwargs=opts,
-                name='admin_genericadmin_rel_list'),
+            url(
+                r"^obj/$",
+                self.admin_site.admin_view(generic_lookup),
+                name="admin_genericadmin_obj_lookup",
+            ),
+            url(
+                r"^get-generic-rel-list/$",
+                self.admin_site.admin_view(get_generic_rel_list),
+                kwargs=opts,
+                name="admin_genericadmin_rel_list",
+            ),
         ]
         return custom_urls + base_urls
 
     def get_generic_relation_options(self):
         """ Return a dictionary of keywords that are fed to the get_generic_rel_list view """
-        return {'url_params': self.content_type_lookups,
-                'blacklist': self.get_blacklisted_relations(),
-                'whitelist': self.get_whitelisted_relations()}
+        return {
+            "url_params": self.content_type_lookups,
+            "blacklist": self.get_blacklisted_relations(),
+            "whitelist": self.get_whitelisted_relations(),
+        }
 
     def get_blacklisted_relations(self):
         try:
             return self.content_type_blacklist
-        except (AttributeError, ):
+        except (AttributeError,):
             return ()
 
     def get_whitelisted_relations(self):
         try:
             return self.content_type_whitelist
-        except (AttributeError, ):
+        except (AttributeError,):
             return ()
 
 
@@ -67,4 +78,3 @@ class GenericTabularInline(BaseGenericModelAdmin, GenericTabularInline):
 
 class GenericStackedInline(BaseGenericModelAdmin, GenericStackedInline):
     """Model admin for generic stacked inlines. """
-

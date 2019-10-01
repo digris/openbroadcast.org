@@ -26,8 +26,14 @@ from cStringIO import StringIO
 from mutagen.flac import StreamInfo, VCFLACDict
 from mutagen.ogg import OggPage, OggFileType, error as OggError
 
-class error(OggError): pass
-class OggFLACHeaderError(error): pass
+
+class error(OggError):
+    pass
+
+
+class OggFLACHeaderError(error):
+    pass
+
 
 class OggFLACStreamInfo(StreamInfo):
     """Ogg FLAC general header and stream info.
@@ -48,12 +54,12 @@ class OggFLACStreamInfo(StreamInfo):
         while not page.packets[0].startswith("\x7FFLAC"):
             page = OggPage(data)
         major, minor, self.packets, flac = struct.unpack(
-            ">BBH4s", page.packets[0][5:13])
+            ">BBH4s", page.packets[0][5:13]
+        )
         if flac != "fLaC":
             raise OggFLACHeaderError("invalid FLAC marker (%r)" % flac)
         elif (major, minor) != (1, 0):
-            raise OggFLACHeaderError(
-                "unknown mapping version: %d.%d" % (major, minor))
+            raise OggFLACHeaderError("unknown mapping version: %d.%d" % (major, minor))
         self.serial = page.serial
 
         # Skip over the block header.
@@ -63,8 +69,9 @@ class OggFLACStreamInfo(StreamInfo):
     def pprint(self):
         return "Ogg " + super(OggFLACStreamInfo, self).pprint()
 
+
 class OggFLACVComment(VCFLACDict):
-    def load(self, data, info, errors='replace'):
+    def load(self, data, info, errors="replace"):
         # data should be pointing at the start of an Ogg page, after
         # the first FLAC page.
         pages = []
@@ -107,6 +114,7 @@ class OggFLACVComment(VCFLACDict):
         new_pages = OggPage.from_packets(packets, old_pages[0].sequence)
         OggPage.replace(fileobj, old_pages, new_pages)
 
+
 class OggFLAC(OggFileType):
     """An Ogg FLAC file."""
 
@@ -116,11 +124,13 @@ class OggFLAC(OggFileType):
     _mimes = ["audio/x-oggflac"]
 
     def score(filename, fileobj, header):
-        return (header.startswith("OggS") * (
-            ("FLAC" in header) + ("fLaC" in header)))
+        return header.startswith("OggS") * (("FLAC" in header) + ("fLaC" in header))
+
     score = staticmethod(score)
 
+
 Open = OggFLAC
+
 
 def delete(filename):
     """Remove tags from a file."""

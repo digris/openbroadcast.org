@@ -13,5 +13,3 @@ class ExportApp(CMSApp):
 
     def get_urls(self, page=None, language=None, **kwargs):
         return ["exporter.urls_export"]
-
-

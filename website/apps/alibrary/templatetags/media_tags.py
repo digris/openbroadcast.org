@@ -7,23 +7,21 @@ from django.db.models import Q
 
 register = template.Library()
 
+
 @register.assignment_tag
 def appearance_for_media(media, include_private=False, user=None):
 
     pis = PlaylistItem.objects.filter(
-        object_id=media.pk,
-        content_type=ContentType.objects.get_for_model(media)
+        object_id=media.pk, content_type=ContentType.objects.get_for_model(media)
     )
 
     qs = Playlist.objects.filter(items__in=pis)
 
     if user and user.is_authenticated():
-        qs = qs.exclude(
-            Q(type='other') | (Q(type='basket') & ~Q(user=user)),
-        )
+        qs = qs.exclude(Q(type="other") | (Q(type="basket") & ~Q(user=user)))
     elif include_private:
-        qs = qs.exclude(type='other')
+        qs = qs.exclude(type="other")
     else:
-        qs = qs.exclude(type__in=['other', 'basket'])
+        qs = qs.exclude(type__in=["other", "basket"])
 
-    return qs.order_by('-type', '-created',).nocache().distinct()
+    return qs.order_by("-type", "-created").nocache().distinct()

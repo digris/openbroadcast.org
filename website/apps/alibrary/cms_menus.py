@@ -14,6 +14,7 @@ class LibraryMenu(CMSAttachMenu):
         nodes = []
         return nodes
 
+
 menu_pool.register_menu(LibraryMenu)
 
 
@@ -25,8 +26,8 @@ class ReleaseMenu(CMSAttachMenu):
         nodes = []
         return nodes
 
-menu_pool.register_menu(ReleaseMenu)
 
+menu_pool.register_menu(ReleaseMenu)
 
 
 class MediaMenu(CMSAttachMenu):
@@ -36,6 +37,7 @@ class MediaMenu(CMSAttachMenu):
     def get_nodes(self, request):
         nodes = []
         return nodes
+
 
 menu_pool.register_menu(MediaMenu)
 
@@ -48,7 +50,9 @@ class ArtistMenu(CMSAttachMenu):
         nodes = []
         return nodes
 
+
 menu_pool.register_menu(ArtistMenu)
+
 
 class LabelMenu(CMSAttachMenu):
 
@@ -57,6 +61,7 @@ class LabelMenu(CMSAttachMenu):
     def get_nodes(self, request):
         nodes = []
         return nodes
+
 
 menu_pool.register_menu(LabelMenu)
 
@@ -69,21 +74,17 @@ class PlaylistMenu(CMSAttachMenu):
         nodes = []
 
         node = NavigationNode(
-            _('Public Playlists'),
-            reverse('alibrary-playlist-list'),
-            301
+            _("Public Playlists"), reverse("alibrary-playlist-list"), 301
         )
         nodes.append(node)
 
         node = NavigationNode(
-            _('My Playlists'),
-            reverse('alibrary-playlist-list-own'),
-            302
+            _("My Playlists"), reverse("alibrary-playlist-list-own"), 302
         )
         nodes.append(node)
 
-
         return nodes
+
 
 menu_pool.register_menu(PlaylistMenu)
 
@@ -96,40 +97,15 @@ class LicenseMenu(CMSAttachMenu):
         nodes = []
         return nodes
 
+
 menu_pool.register_menu(LicenseMenu)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 class Level(Modifier):
     """
     marks all node levels
     """
+
     post_cut = True
 
     def modify(self, request, nodes, namespace, root_id, post_cut, breadcrumb):
@@ -154,5 +130,6 @@ class Level(Modifier):
             else:
                 child.level = node.level + 1
             self.mark_levels(child, post_cut)
+
 
 menu_pool.register_modifier(Level)

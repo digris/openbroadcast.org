@@ -14,12 +14,22 @@ from mutagen.id3 import ID3FileType, BitPaddedInt, delete
 
 __all__ = ["MP3", "Open", "delete", "MP3"]
 
-class error(RuntimeError): pass
-class HeaderNotFoundError(error, IOError): pass
-class InvalidMPEGHeader(error, IOError): pass
+
+class error(RuntimeError):
+    pass
+
+
+class HeaderNotFoundError(error, IOError):
+    pass
+
+
+class InvalidMPEGHeader(error, IOError):
+    pass
+
 
 # Mode values.
 STEREO, JOINTSTEREO, DUALCHANNEL, MONO = range(4)
+
 
 class MPEGInfo(object):
     """MPEG audio stream information
@@ -47,21 +57,22 @@ class MPEGInfo(object):
     # Map (version, layer) tuples to bitrates.
     __BITRATE = {
         (1, 1): range(0, 480, 32),
-        (1, 2): [0, 32, 48, 56, 64, 80, 96, 112,128,160,192,224,256,320,384],
-        (1, 3): [0, 32, 40, 48, 56, 64, 80, 96, 112,128,160,192,224,256,320],
-        (2, 1): [0, 32, 48, 56, 64, 80, 96, 112,128,144,160,176,192,224,256],
-        (2, 2): [0,  8, 16, 24, 32, 40, 48,  56, 64, 80, 96,112,128,144,160],
-        }
+        (1, 2): [0, 32, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 384],
+        (1, 3): [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320],
+        (2, 1): [0, 32, 48, 56, 64, 80, 96, 112, 128, 144, 160, 176, 192, 224, 256],
+        (2, 2): [0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160],
+    }
 
     __BITRATE[(2, 3)] = __BITRATE[(2, 2)]
-    for i in range(1, 4): __BITRATE[(2.5, i)] = __BITRATE[(2, i)]
+    for i in range(1, 4):
+        __BITRATE[(2.5, i)] = __BITRATE[(2, i)]
 
     # Map version to sample rates.
     __RATES = {
         1: [44100, 48000, 32000],
         2: [22050, 24000, 16000],
-        2.5: [11025, 12000, 8000]
-        }
+        2.5: [11025, 12000, 8000],
+    }
 
     sketchy = False
 
@@ -74,7 +85,8 @@ class MPEGInfo(object):
         loading files significantly faster.
         """
 
-        try: size = os.path.getsize(fileobj.name)
+        try:
+            size = os.path.getsize(fileobj.name)
         except (IOError, OSError, AttributeError):
             fileobj.seek(0, 2)
             size = fileobj.tell()
@@ -83,20 +95,26 @@ class MPEGInfo(object):
         if offset is None:
             fileobj.seek(0, 0)
             idata = fileobj.read(10)
-            try: id3, insize = struct.unpack('>3sxxx4s', idata)
-            except struct.error: id3, insize = '', 0
+            try:
+                id3, insize = struct.unpack(">3sxxx4s", idata)
+            except struct.error:
+                id3, insize = "", 0
             insize = BitPaddedInt(insize)
-            if id3 == 'ID3' and insize > 0:
+            if id3 == "ID3" and insize > 0:
                 offset = insize
-            else: offset = 0
+            else:
+                offset = 0
 
         # Try to find two valid headers (meaning, very likely MPEG data)
         # at the given offset, 30% through the file, 60% through the file,
         # and 90% through the file.
         for i in [offset, 0.3 * size, 0.6 * size, 0.9 * size]:
-            try: self.__try(fileobj, int(i), size - offset)
-            except error as e: pass
-            else: break
+            try:
+                self.__try(fileobj, int(i), size - offset)
+            except error as e:
+                pass
+            else:
+                break
         # If we can't find any two consecutive frames, try to find just
         # one frame back at the original offset given.
         else:
@@ -116,7 +134,7 @@ class MPEGInfo(object):
 
         frame_1 = data.find("\xff")
         while 0 <= frame_1 <= len(data) - 4:
-            frame_data = struct.unpack(">I", data[frame_1:frame_1 + 4])[0]
+            frame_data = struct.unpack(">I", data[frame_1 : frame_1 + 4])[0]
             if (frame_data >> 16) & 0xE0 != 0xE0:
                 frame_1 = data.find("\xff", frame_1 + 2)
             else:
@@ -132,10 +150,16 @@ class MPEGInfo(object):
                 copyright = (frame_data >> 3) & 0x1
                 original = (frame_data >> 2) & 0x1
                 emphasis = (frame_data >> 0) & 0x3
-                if (version == 1 or layer == 0 or sample_rate == 0x3 or
-                    bitrate == 0 or bitrate == 0xF):
+                if (
+                    version == 1
+                    or layer == 0
+                    or sample_rate == 0x3
+                    or bitrate == 0
+                    or bitrate == 0xF
+                ):
                     frame_1 = data.find("\xff", frame_1 + 2)
-                else: break
+                else:
+                    break
         else:
             raise HeaderNotFoundError("can't sync to an MPEG frame")
 
@@ -165,8 +189,7 @@ class MPEGInfo(object):
             if possible > len(data) + 4:
                 raise HeaderNotFoundError("can't sync to second MPEG frame")
             try:
-                frame_data = struct.unpack(
-                    ">H", data[possible:possible + 2])[0]
+                frame_data = struct.unpack(">H", data[possible : possible + 2])[0]
             except struct.error:
                 raise HeaderNotFoundError("can't sync to second MPEG frame")
             if frame_data & 0xFFE0 != 0xFFE0:
@@ -187,26 +210,26 @@ class MPEGInfo(object):
             # calculation.
             try:
                 vbri = data[:-24].index("VBRI")
-            except ValueError: pass
+            except ValueError:
+                pass
             else:
                 # If a VBRI header was found, this is definitely MPEG audio.
                 self.sketchy = False
-                vbri_version = struct.unpack('>H', data[vbri + 4:vbri + 6])[0]
+                vbri_version = struct.unpack(">H", data[vbri + 4 : vbri + 6])[0]
                 if vbri_version == 1:
-                    frame_count = struct.unpack(
-                        '>I', data[vbri + 14:vbri + 18])[0]
+                    frame_count = struct.unpack(">I", data[vbri + 14 : vbri + 18])[0]
                     samples = float(frame_size * frame_count)
                     self.length = (samples / self.sample_rate) or self.length
         else:
             # If a Xing header was found, this is definitely MPEG audio.
             self.sketchy = False
-            flags = struct.unpack('>I', data[xing + 4:xing + 8])[0]
+            flags = struct.unpack(">I", data[xing + 4 : xing + 8])[0]
             if flags & 0x1:
-                frame_count = struct.unpack('>I', data[xing + 8:xing + 12])[0]
+                frame_count = struct.unpack(">I", data[xing + 8 : xing + 12])[0]
                 samples = float(frame_size * frame_count)
                 self.length = (samples / self.sample_rate) or self.length
             if flags & 0x2:
-                bytes = struct.unpack('>I', data[xing + 12:xing + 16])[0]
+                bytes = struct.unpack(">I", data[xing + 12 : xing + 16])[0]
                 self.bitrate = int((bytes * 8) // self.length)
 
         # If the bitrate * the length is nowhere near the file
@@ -215,33 +238,45 @@ class MPEGInfo(object):
         fileobj.seek(2, 0)
         size = fileobj.tell()
         expected = (self.bitrate / 8) * self.length
-        if not (size / 2 < expected < size * 2) and size > 2**16:
+        if not (size / 2 < expected < size * 2) and size > 2 ** 16:
             self.length = size / float(self.bitrate * 8)
 
     def pprint(self):
         s = "MPEG %s layer %d, %d bps, %s Hz, %.2f seconds" % (
-            self.version, self.layer, self.bitrate, self.sample_rate,
-            self.length)
-        if self.sketchy: s += " (sketchy)"
+            self.version,
+            self.layer,
+            self.bitrate,
+            self.sample_rate,
+            self.length,
+        )
+        if self.sketchy:
+            s += " (sketchy)"
         return s
+
 
 class MP3(ID3FileType):
     """An MPEG audio (usually MPEG-1 Layer 3) file."""
 
     _Info = MPEGInfo
-    _mimes = ["audio/mp3", "audio/x-mp3", "audio/mpeg", "audio/mpg",
-              "audio/x-mpeg"]
+    _mimes = ["audio/mp3", "audio/x-mp3", "audio/mpeg", "audio/mpg", "audio/x-mpeg"]
 
     def score(filename, fileobj, header):
         filename = filename.lower()
-        return (header.startswith("ID3") * 2 + filename.endswith(".mp3") +
-                filename.endswith(".mp2") + filename.endswith(".mpg") +
-                filename.endswith(".mpeg"))
+        return (
+            header.startswith("ID3") * 2
+            + filename.endswith(".mp3")
+            + filename.endswith(".mp2")
+            + filename.endswith(".mpg")
+            + filename.endswith(".mpeg")
+        )
+
     score = staticmethod(score)
+
 
 Open = MP3
 
+
 class EasyMP3(MP3):
     """Like MP3, but uses EasyID3 for tags."""
-    from mutagen.easyid3 import EasyID3 as ID3
 
+    from mutagen.easyid3 import EasyID3 as ID3

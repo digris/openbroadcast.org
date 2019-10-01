@@ -7,20 +7,16 @@ from cms.menu_bases import CMSAttachMenu
 
 
 class ExportMenu(CMSAttachMenu):
-    
+
     name = _("Export Menu")
-    
+
     def get_nodes(self, request):
         nodes = []
-        
+
         """"""
-        node = NavigationNode(
-            _('My Downloads'),
-            reverse('exporter-export-list'),
-            191,
-        )
+        node = NavigationNode(_("My Downloads"), reverse("exporter-export-list"), 191)
         nodes.append(node)
-        
+
         """
         node = NavigationNode(
             _('Settings'),
@@ -30,8 +26,8 @@ class ExportMenu(CMSAttachMenu):
         )
         nodes.append(node)
         """
-        
-        
+
         return nodes
-    
+
+
 menu_pool.register_menu(ExportMenu)

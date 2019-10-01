@@ -4,6 +4,7 @@ import dateutil.parser
 
 register = template.Library()
 
+
 @register.filter
 def parse_datetime(str):
     return dateutil.parser.parse(str)

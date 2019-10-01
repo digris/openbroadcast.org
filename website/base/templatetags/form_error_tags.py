@@ -5,8 +5,9 @@ from django.forms.utils import ErrorDict
 
 register = template.Library()
 
+
 @register.filter
-def nice_errors(form, non_field_msg='General form errors'):
+def nice_errors(form, non_field_msg="General form errors"):
     nice_errors = ErrorDict()
     if isinstance(form, forms.BaseForm):
         for field, errors in form.errors.items():

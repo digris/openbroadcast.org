@@ -13,10 +13,6 @@ log = logging.getLogger(__name__)
 @receiver(post_save, sender=Emission)
 def emission_post_save(sender, instance, created, **kwargs):
 
-    log.debug(
-        "emission saved - {} - {}".format(
-            instance, instance.content_object
-        )
-    )
+    log.debug("emission saved - {} - {}".format(instance, instance.content_object))
 
     registry.update(instance.content_object)

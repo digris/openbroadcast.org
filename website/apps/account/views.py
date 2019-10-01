@@ -7,7 +7,12 @@ from braces.views import AnonymousRequiredMixin, LoginRequiredMixin
 from django.utils.http import is_safe_url
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import View, FormView, RedirectView, TemplateView
-from django.contrib.auth import REDIRECT_FIELD_NAME, authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth import (
+    REDIRECT_FIELD_NAME,
+    authenticate,
+    login as auth_login,
+    logout as auth_logout,
+)
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
@@ -32,7 +37,6 @@ log = logging.getLogger(__name__)
 PICKUP_COOKIE_NAME = "login-pickup"
 
 
-
 class SetPickupCookieMixin(View):
 
     pickup_cookie_name = PICKUP_COOKIE_NAME
@@ -42,18 +46,17 @@ class SetPickupCookieMixin(View):
 
         redirect_to = self.request.GET.get(REDIRECT_FIELD_NAME)
         if redirect_to and is_safe_url(url=redirect_to, host=self.request.get_host()):
-            self.pickup_cookie_dict = {
-                "location": redirect_to,
-            }
+            self.pickup_cookie_dict = {"location": redirect_to}
         else:
             self.pickup_cookie_dict = None
 
         return super(SetPickupCookieMixin, self).dispatch(request, *args, **kwargs)
 
-
     def render_to_response(self, context, **response_kwargs):
 
-        response = super(SetPickupCookieMixin, self).render_to_response(context, **response_kwargs)
+        response = super(SetPickupCookieMixin, self).render_to_response(
+            context, **response_kwargs
+        )
 
         if self.pickup_cookie_dict:
             response.set_cookie(PICKUP_COOKIE_NAME, json.dumps(self.pickup_cookie_dict))
@@ -61,16 +64,16 @@ class SetPickupCookieMixin(View):
         return response
 
 
-
 class LogoutView(LoginRequiredMixin, View):
     """
     Provides users the ability to logout
     """
-    url = '/'
+
+    url = "/"
 
     def get(self, request, *args, **kwargs):
         auth_logout(request)
-        return redirect('/')
+        return redirect("/")
         # return super(LogoutView, self).get(request, *args, **kwargs)
 
     # def get_redirect_url(self, *args, **kwargs):
@@ -86,12 +89,13 @@ class LoginView(AnonymousRequiredMixin, SetPickupCookieMixin, FormView):
     """
     Provides the ability to login as a user with a username (or e-mail) and password
     """
-    success_url = reverse_lazy('account:login-pickup')
+
+    success_url = reverse_lazy("account:login-pickup")
     form_class = AuthenticationForm
     # redirect_field_name = REDIRECT_FIELD_NAME
-    template_name = 'account/login_form.html'
+    template_name = "account/login_form.html"
 
-    @method_decorator(sensitive_post_parameters('password'))
+    @method_decorator(sensitive_post_parameters("password"))
     @method_decorator(csrf_protect)
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
@@ -115,12 +119,13 @@ class RegistrationView(AnonymousRequiredMixin, FormView):
     """
     Provides the ability to login as a user with a username (or e-mail) and password
     """
-    success_url = reverse_lazy('account:login-pickup')
+
+    success_url = reverse_lazy("account:login-pickup")
     form_class = RegistrationForm
     redirect_field_name = REDIRECT_FIELD_NAME
-    template_name = 'account/registration_form.html'
+    template_name = "account/registration_form.html"
 
-    @method_decorator(sensitive_post_parameters('password'))
+    @method_decorator(sensitive_post_parameters("password"))
     @method_decorator(csrf_protect)
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
@@ -153,7 +158,7 @@ class RegistrationView(AnonymousRequiredMixin, FormView):
             redirect_to = self.success_url
 
         if self.request.user and self.request.user.is_staff:
-            redirect_to += '?toolbar_off'
+            redirect_to += "?toolbar_off"
 
         return redirect_to
 
@@ -161,38 +166,38 @@ class RegistrationView(AnonymousRequiredMixin, FormView):
 class PasswordRecoverView(AnonymousRequiredMixin, FormView):
 
     form_class = PasswordRequestResetForm
-    template_name = 'account/password_recover_form.html'
+    template_name = "account/password_recover_form.html"
 
     def form_valid(self, form):
 
         print(form)
 
         form.save(
-            subject_template_name='account/password_recover_email_subject.txt',
-            email_template_name='account/password_recover_email.txt',
+            subject_template_name="account/password_recover_email_subject.txt",
+            email_template_name="account/password_recover_email.txt",
         )
         return super(PasswordRecoverView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('account:password-recover-sent')
+        return reverse("account:password-recover-sent")
 
 
 class PasswordRecoverSentView(AnonymousRequiredMixin, TemplateView):
 
-    template_name = 'account/password_recover_sent.html'
+    template_name = "account/password_recover_sent.html"
 
 
 class PasswordRecoverResetView(AnonymousRequiredMixin, FormView):
     form_class = PasswordResetForm
     token_expires = None
-    template_name = 'account/password_recover_reset_form.html'
-    success_url = reverse_lazy('account:login-pickup')
+    template_name = "account/password_recover_reset_form.html"
+    success_url = reverse_lazy("account:login-pickup")
 
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
 
-        uidb64 = self.kwargs.get('uidb64')
-        token = self.kwargs.get('token')
+        uidb64 = self.kwargs.get("uidb64")
+        token = self.kwargs.get("token")
 
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
@@ -205,9 +210,6 @@ class PasswordRecoverResetView(AnonymousRequiredMixin, FormView):
 
         self.user = user
         return super(PasswordRecoverResetView, self).dispatch(request, *args, **kwargs)
-
-
-
 
     def invalid_token(self):
         return self.render_to_response(self.get_context_data(invalid_token=True))
@@ -225,37 +227,35 @@ class PasswordRecoverResetView(AnonymousRequiredMixin, FormView):
     # def get(self, request, **kwargs):
     #     pass
 
-
     def get_form_kwargs(self):
         kwargs = super(PasswordRecoverResetView, self).get_form_kwargs()
-        kwargs['user'] = self.user
+        kwargs["user"] = self.user
         return kwargs
 
     def get_context_data(self, **kwargs):
         ctx = super(PasswordRecoverResetView, self).get_context_data(**kwargs)
 
-        if 'invalid_token' not in ctx:
+        if "invalid_token" not in ctx:
 
-            uidb64 = self.kwargs.get('uidb64')
-            token = self.kwargs.get('token')
+            uidb64 = self.kwargs.get("uidb64")
+            token = self.kwargs.get("token")
 
-            ctx.update({
-                'uidb64': uidb64,
-                'token': token,
-                'valid': self.check_token(uidb64, token),
-            })
+            ctx.update(
+                {
+                    "uidb64": uidb64,
+                    "token": token,
+                    "valid": self.check_token(uidb64, token),
+                }
+            )
 
         return ctx
-
 
     def form_valid(self, form):
         form.save()
         # not so nice, needed to force `authenticate`
-        self.user.backend = 'django.contrib.auth.backends.ModelBackend'
+        self.user.backend = "django.contrib.auth.backends.ModelBackend"
         auth_login(self.request, self.user)
         return redirect(self.get_success_url())
-
-
 
 
 class LoginPickupView(LoginRequiredMixin, View):
@@ -273,12 +273,10 @@ class LoginPickupView(LoginRequiredMixin, View):
                 url = cookie.get("location", "/")
 
             except Exception as e:
-                log.warning(
-                    "unable to decode login-pickup cookie: {}".format(e)
-                )
+                log.warning("unable to decode login-pickup cookie: {}".format(e))
 
         if request.user and request.user.is_staff:
-            url += '?toolbar_off'
+            url += "?toolbar_off"
 
         response = redirect(url)
         response.delete_cookie(self.pickup_cookie_name)

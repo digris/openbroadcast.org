@@ -1,14 +1,14 @@
 import math
 
 
-
-
 # Font size distribution algorithms
 LOGARITHMIC, LINEAR = 1, 2
+
 
 def _calculate_thresholds(min_weight, max_weight, steps):
     delta = (max_weight - min_weight) / float(steps)
     return [min_weight + i * delta for i in range(1, steps + 1)]
+
 
 def _calculate_tag_weight(weight, max_weight, distribution):
     """
@@ -22,7 +22,8 @@ def _calculate_tag_weight(weight, max_weight, distribution):
         return weight
     elif distribution == LOGARITHMIC:
         return math.log(weight) * max_weight / math.log(max_weight)
-    raise ValueError('Invalid distribution algorithm specified: %s.' % distribution)
+    raise ValueError("Invalid distribution algorithm specified: %s." % distribution)
+
 
 def calculate_cloud(tags, steps=6, distribution=LOGARITHMIC, group_by=10):
 
@@ -55,15 +56,15 @@ def calculate_cloud(tags, steps=6, distribution=LOGARITHMIC, group_by=10):
         for i in reversed(groups):
             hide_level = 0
             for x in range(1, steps + 1):
-                if total > group_by *x:
-                    hide_level +=1
+                if total > group_by * x:
+                    hide_level += 1
             hidden[cnt] = hide_level
             total += i
             cnt -= 1
 
         for tag in tags:
             try:
-                tag.hide_level = hidden[tag.weight -1]
+                tag.hide_level = hidden[tag.weight - 1]
             except Exception as e:
                 pass
 

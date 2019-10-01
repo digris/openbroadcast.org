@@ -19,31 +19,32 @@ class BaseThrottle(object):
         * ``expiration`` - the length of time to retain the times the user
           has accessed the api in the cache. Default is 604800 (1 week).
     """
+
     def __init__(self, throttle_at=150, timeframe=3600, expiration=None):
         self.throttle_at = throttle_at
         # In seconds, please.
         self.timeframe = timeframe
-        
+
         if expiration is None:
             # Expire in a week.
             expiration = 604800
-        
+
         self.expiration = int(expiration)
-    
+
     def convert_identifier_to_key(self, identifier):
         """
         Takes an identifier (like a username or IP address) and converts it
         into a key usable by the cache system.
         """
         bits = []
-        
+
         for char in identifier:
-            if char.isalnum() or char in ['_', '.', '-']:
+            if char.isalnum() or char in ["_", ".", "-"]:
                 bits.append(char)
-        
-        safe_string = ''.join(bits)
+
+        safe_string = "".join(bits)
         return "%s_accesses" % safe_string
-    
+
     def should_be_throttled(self, identifier, **kwargs):
         """
         Returns whether or not the user has exceeded their throttle limit.
@@ -52,7 +53,7 @@ class BaseThrottle(object):
         throttle the user.
         """
         return False
-    
+
     def accessed(self, identifier, **kwargs):
         """
         Handles recording the user's access.
@@ -66,6 +67,7 @@ class CacheThrottle(BaseThrottle):
     """
     A throttling mechanism that uses just the cache.
     """
+
     def should_be_throttled(self, identifier, **kwargs):
         """
         Returns whether or not the user has exceeded their throttle limit.
@@ -77,22 +79,22 @@ class CacheThrottle(BaseThrottle):
         the user should be throttled.
         """
         key = self.convert_identifier_to_key(identifier)
-        
+
         # Make sure something is there.
         cache.add(key, [])
-        
+
         # Weed out anything older than the timeframe.
         minimum_time = int(time.time()) - int(self.timeframe)
         times_accessed = [access for access in cache.get(key) if access >= minimum_time]
         cache.set(key, times_accessed, self.expiration)
-        
+
         if len(times_accessed) >= int(self.throttle_at):
             # Throttle them.
             return True
-        
+
         # Let them through.
         return False
-    
+
     def accessed(self, identifier, **kwargs):
         """
         Handles recording the user's access.
@@ -113,6 +115,7 @@ class CacheDBThrottle(CacheThrottle):
     This is useful for tracking/aggregating usage through time, to possibly
     build a statistics interface or a billing mechanism.
     """
+
     def accessed(self, identifier, **kwargs):
         """
         Handles recording the user's access.
@@ -123,10 +126,11 @@ class CacheDBThrottle(CacheThrottle):
         # Do the import here, instead of top-level, so that the model is
         # only required when using this throttling mechanism.
         from tastypie.models import ApiAccess
+
         super(CacheDBThrottle, self).accessed(identifier, **kwargs)
         # Write out the access to the DB for logging purposes.
         ApiAccess.objects.create(
             identifier=identifier,
-            url=kwargs.get('url', ''),
-            request_method=kwargs.get('request_method', '')
+            url=kwargs.get("url", ""),
+            request_method=kwargs.get("request_method", ""),
         )

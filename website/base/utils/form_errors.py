@@ -4,7 +4,8 @@ from django.forms.formsets import BaseFormSet
 from django.forms.forms import NON_FIELD_ERRORS
 from django.forms.utils import ErrorDict
 
-NON_FIELD_MESSAGE = _('General form errors')
+NON_FIELD_MESSAGE = _("General form errors")
+
 
 def merge_form_errors(forms_to_merge=None):
     forms_to_merge = forms_to_merge or []
@@ -29,7 +30,7 @@ def merge_form_errors(forms_to_merge=None):
                     else:
                         key = inner_form.fields[field].label
                         if not key:
-                            key = 'Other'
+                            key = "Other"
 
                     form_errors[key] = errors
 

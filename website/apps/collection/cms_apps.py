@@ -10,12 +10,11 @@ from django.utils.translation import ugettext_lazy as _
 # collection app
 #######################################################################
 class CollectionApp(CMSApp):
-    name = _('Collection App')
-    app_name = 'collection'
+    name = _("Collection App")
+    app_name = "collection"
 
     def get_urls(self, page=None, language=None, **kwargs):
-        return [
-            'collection.urls',
-        ]
+        return ["collection.urls"]
+
 
 apphook_pool.register(CollectionApp)

@@ -11,7 +11,7 @@ def none_factory():
 default_translate_table = defaultdict(none_factory, mapping.translate_table)
 
 
-def fold(unicode_string, replacement=u''):
+def fold(unicode_string, replacement=u""):
     """Fold unicode_string to ASCII.
 
     Unmapped characters should be replaced with empty string by default, or other
@@ -22,22 +22,23 @@ def fold(unicode_string, replacement=u''):
     """
 
     if unicode_string is None:
-        return u''
+        return u""
 
     if type(unicode_string) != unicode:
-        raise TypeError('cannot fold bytestring')
+        raise TypeError("cannot fold bytestring")
 
     if type(replacement) != unicode:
-        raise TypeError('cannot replace using bytestring')
+        raise TypeError("cannot replace using bytestring")
 
     try:
         # If string contains only ASCII characters, just return it.
-        unicode_string.decode('ascii')
+        unicode_string.decode("ascii")
         return unicode_string
     except (UnicodeDecodeError, UnicodeEncodeError) as ex:
         pass
 
     if replacement:
+
         def replacement_factory():
             return replacement
 

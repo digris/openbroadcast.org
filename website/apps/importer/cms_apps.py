@@ -12,4 +12,4 @@ class ImportApp(CMSApp):
     menus = [ImportMenu]
 
     def get_urls(self, page=None, language=None, **kwargs):
-        return ['importer.urls_import',]
+        return ["importer.urls_import"]

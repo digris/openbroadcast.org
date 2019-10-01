@@ -9,16 +9,19 @@ class TimestampedModelMixin(models.Model):
     An abstract base class model that provides self-managed "created" and
     "updated" fields.
     """
+
     created = models.DateTimeField(auto_now_add=True, editable=False, db_index=True)
     updated = models.DateTimeField(auto_now=True, editable=False, db_index=True)
 
     class Meta:
         abstract = True
 
+
 class UUIDModelMixin(models.Model):
     """ UUIDModelMixin
     An abstract base class model that provides a self-managed "uuid" field.
     """
+
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)
 
     class Meta:
@@ -30,7 +33,7 @@ class StripWhitespaceFormMixin(object):
     def full_clean(self):
         # self.data can be dict (usually empty) or QueryDict here.
         self.data = self.data.copy()
-        is_querydict = hasattr(self.data, 'setlist')
+        is_querydict = hasattr(self.data, "setlist")
         strip = lambda val: val.strip()
         for k in list(self.data.keys()):
             if is_querydict:

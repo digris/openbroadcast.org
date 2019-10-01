@@ -14,25 +14,21 @@ from ..models import Profile
 log = logging.getLogger(__name__)
 
 
-class ProfileViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class ProfileViewSet(
+    mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
+):
 
-    queryset = Profile.objects.all().order_by('-created')
+    queryset = Profile.objects.all().order_by("-created")
     serializer_class = ProfileSerializer
-    lookup_field = 'uuid'
-
+    lookup_field = "uuid"
 
     def get_object(self):
-        if self.kwargs.get('user_id'):
-            return get_object_or_404(Profile, user__id=self.kwargs.get('user_id'))
+        if self.kwargs.get("user_id"):
+            return get_object_or_404(Profile, user__id=self.kwargs.get("user_id"))
 
-        return get_object_or_404(Profile, uuid=self.kwargs.get('uuid'))
+        return get_object_or_404(Profile, uuid=self.kwargs.get("uuid"))
 
 
+profile_list = ProfileViewSet.as_view({"get": "list"})
 
-profile_list = ProfileViewSet.as_view({
-    'get': 'list',
-})
-
-profile_detail = ProfileViewSet.as_view({
-    'get': 'retrieve',
-})
+profile_detail = ProfileViewSet.as_view({"get": "retrieve"})

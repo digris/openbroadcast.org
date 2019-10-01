@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.views.generic import DetailView, ListView
 from pure_pagination.mixins import PaginationMixin
 
+
 class StationListView(PaginationMixin, ListView):
 
     object = Station
@@ -20,31 +21,29 @@ class StationListView(PaginationMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(StationListView, self).get_context_data(**kwargs)
-        self.extra_context['list_style'] = self.request.GET.get('list_style', 's')
-        self.extra_context['get'] = self.request.GET
+        self.extra_context["list_style"] = self.request.GET.get("list_style", "s")
+        self.extra_context["get"] = self.request.GET
         context.update(self.extra_context)
 
         return context
 
-
     def get_queryset(self, **kwargs):
 
-        q = self.request.GET.get('q', None)
+        q = self.request.GET.get("q", None)
 
         if q:
             qs = Station.objects.filter(Q(name__istartswith=q)).distinct()
         else:
             qs = Station.objects.all()
 
-
-        order_by = self.request.GET.get('order_by', None)
-        direction = self.request.GET.get('direction', None)
+        order_by = self.request.GET.get("order_by", None)
+        direction = self.request.GET.get("direction", None)
 
         if order_by and direction:
-            if direction == 'descending':
-                qs = qs.order_by('-%s' % order_by)
+            if direction == "descending":
+                qs = qs.order_by("-%s" % order_by)
             else:
-                qs = qs.order_by('%s' % order_by)
+                qs = qs.order_by("%s" % order_by)
 
         return qs
 
@@ -56,13 +55,15 @@ class StationDetailView(DetailView):
     extra_context = {}
 
     def render_to_response(self, context, **kwargs):
-        return super(StationDetailView, self).render_to_response(context, content_type="text/html")
+        return super(StationDetailView, self).render_to_response(
+            context, content_type="text/html"
+        )
 
     def get_context_data(self, **kwargs):
 
-        obj = kwargs.get('object', None)
+        obj = kwargs.get("object", None)
         context = super(StationDetailView, self).get_context_data(**kwargs)
-        self.extra_context['members'] = obj.members.all()
+        self.extra_context["members"] = obj.members.all()
         context.update(self.extra_context)
 
         return context

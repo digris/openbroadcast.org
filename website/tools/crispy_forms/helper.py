@@ -14,6 +14,7 @@ class FormHelpersException(Exception):
     We want to catch form helper errors as soon as possible because
     debugging templatetags is never fun.
     """
+
     pass
 
 
@@ -39,7 +40,7 @@ class DynamicLayoutHandler(object):
         """
         Returns a LayoutSlice pointing to fields with widgets of `widget_type`
         """
-        assert(self.layout is not None and self.form is not None)
+        assert self.layout is not None and self.form is not None
         layout_field_names = self.layout.get_field_names()
 
         # Let's filter all fields with widgets like widget_type
@@ -63,7 +64,7 @@ class DynamicLayoutHandler(object):
             if hasattr(self, key):
                 return getattr(self, key)
 
-            assert(self.layout is not None)
+            assert self.layout is not None
             layout_field_names = self.layout.get_field_names()
 
             filtered_field = []
@@ -150,12 +151,13 @@ class FormHelper(DynamicLayoutHandler):
         {% load crispy_forms_tags %}
         {% crispy form %}
     """
-    _form_method = 'post'
-    _form_action = ''
-    _form_style = 'default'
+
+    _form_method = "post"
+    _form_action = ""
+    _form_style = "default"
     form = None
-    form_id = ''
-    form_class = ''
+    form_id = ""
+    form_class = ""
     layout = None
     form_tag = True
     form_error_title = None
@@ -180,9 +182,11 @@ class FormHelper(DynamicLayoutHandler):
         return self._form_method
 
     def set_form_method(self, method):
-        if method.lower() not in ('get', 'post'):
-            raise FormHelpersException('Only GET and POST are valid in the \
-                    form_method helper attribute')
+        if method.lower() not in ("get", "post"):
+            raise FormHelpersException(
+                "Only GET and POST are valid in the \
+                    form_method helper attribute"
+            )
 
         self._form_method = method.lower()
 
@@ -203,15 +207,17 @@ class FormHelper(DynamicLayoutHandler):
 
     def get_form_style(self):
         if self._form_style == "default":
-            return ''
+            return ""
 
         if self._form_style == "inline":
-            return 'inlineLabels'
+            return "inlineLabels"
 
     def set_form_style(self, style):
-        if style.lower() not in ('default', 'inline'):
-            raise FormHelpersException('Only default and inline are valid in the \
-                    form_style helper attribute')
+        if style.lower() not in ("default", "inline"):
+            raise FormHelpersException(
+                "Only default and inline are valid in the \
+                    form_style helper attribute"
+            )
 
         self._form_style = style.lower()
 
@@ -241,8 +247,8 @@ class FormHelper(DynamicLayoutHandler):
         # If the user has meta fields defined, not included in the layout
         # we suppose they need to be rendered. Othewise we renderd the
         # layout fields strictly
-        if getattr(form, 'Meta', None):
-            current_fields = set(getattr(form, 'fields', []))
+        if getattr(form, "Meta", None):
+            current_fields = set(getattr(form, "fields", []))
             left_fields_to_render = current_fields - form.rendered_fields
 
             for field in left_fields_to_render:
@@ -255,41 +261,45 @@ class FormHelper(DynamicLayoutHandler):
         Used by crispy_forms_tags to get helper attributes
         """
         items = {}
-        items['form_method'] = self.form_method.strip()
-        items['form_tag'] = self.form_tag
-        items['form_style'] = self.form_style.strip()
-        items['form_show_errors'] = self.form_show_errors
-        items['help_text_inline'] = self.help_text_inline
-        items['html5_required'] = self.html5_required
+        items["form_method"] = self.form_method.strip()
+        items["form_tag"] = self.form_tag
+        items["form_style"] = self.form_style.strip()
+        items["form_show_errors"] = self.form_show_errors
+        items["help_text_inline"] = self.help_text_inline
+        items["html5_required"] = self.html5_required
 
-        items['attrs'] = {}
+        items["attrs"] = {}
         if self.attrs:
-            items['attrs'] = self.attrs.copy()
+            items["attrs"] = self.attrs.copy()
         if self.form_action:
-            items['attrs']['action'] = self.form_action.strip()
+            items["attrs"]["action"] = self.form_action.strip()
         if self.form_id:
-            items['attrs']['id'] = self.form_id.strip()
+            items["attrs"]["id"] = self.form_id.strip()
         if self.form_class:
             # uni_form TEMPLATE PACK has a uniForm class by default
-            if getattr(settings, 'CRISPY_TEMPLATE_PACK', 'bootstrap') == 'uni_form':
-                items['attrs']['class'] = "uniForm %s" % self.form_class.strip()
+            if getattr(settings, "CRISPY_TEMPLATE_PACK", "bootstrap") == "uni_form":
+                items["attrs"]["class"] = "uniForm %s" % self.form_class.strip()
             else:
-                items['attrs']['class'] = self.form_class.strip()
+                items["attrs"]["class"] = self.form_class.strip()
         else:
-            if getattr(settings, 'CRISPY_TEMPLATE_PACK', 'bootstrap') == 'uni_form':
-                items['attrs']['class'] = "uniForm"
+            if getattr(settings, "CRISPY_TEMPLATE_PACK", "bootstrap") == "uni_form":
+                items["attrs"]["class"] = "uniForm"
 
-        items['flat_attrs'] = flatatt(items['attrs'])
+        items["flat_attrs"] = flatatt(items["attrs"])
 
         if self.inputs:
-            items['inputs'] = self.inputs
+            items["inputs"] = self.inputs
         if self.form_error_title:
-            items['form_error_title'] = self.form_error_title.strip()
+            items["form_error_title"] = self.form_error_title.strip()
         if self.formset_error_title:
-            items['formset_error_title'] = self.formset_error_title.strip()
+            items["formset_error_title"] = self.formset_error_title.strip()
 
         for attribute_name, value in self.__dict__.items():
-            if attribute_name not in items and attribute_name not in ['layout', 'inputs'] and not attribute_name.startswith('_'):
+            if (
+                attribute_name not in items
+                and attribute_name not in ["layout", "inputs"]
+                and not attribute_name.startswith("_")
+            ):
                 items[attribute_name] = value
 
         return items

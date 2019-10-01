@@ -1,1 +1,1 @@
-CRISPY_TEMPLATE_PACK = 'uni_form'
+CRISPY_TEMPLATE_PACK = "uni_form"

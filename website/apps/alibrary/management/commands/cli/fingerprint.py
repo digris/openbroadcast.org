@@ -1,2 +1,1 @@
 import djclick as click
-

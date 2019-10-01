@@ -13,35 +13,29 @@ class ProfileMenu(CMSAttachMenu):
     def get_nodes(self, request):
         nodes = []
 
-        node = NavigationNode(
-            _('All Users'),
-            reverse('profiles-profile-list'),
-            110
-        )
+        node = NavigationNode(_("All Users"), reverse("profiles-profile-list"), 110)
         nodes.append(node)
 
         if request.user.is_active:
             node = NavigationNode(
-                _('My Profile'),
-                reverse('profiles-profile-detail', kwargs={ 'uuid': str(request.user.profile.uuid) }),
-                111
+                _("My Profile"),
+                reverse(
+                    "profiles-profile-detail",
+                    kwargs={"uuid": str(request.user.profile.uuid)},
+                ),
+                111,
             )
             nodes.append(node)
 
-
             node = NavigationNode(
-                _('Edit my Profile'),
-                reverse('profiles-profile-edit'),
-                121
+                _("Edit my Profile"), reverse("profiles-profile-edit"), 121
             )
             nodes.append(node)
 
-        if request.user.has_perm('invitation.change_invitation'):
+        if request.user.has_perm("invitation.change_invitation"):
 
             node = NavigationNode(
-                _('My Invitations'),
-                reverse('profiles-invitations'),
-                123
+                _("My Invitations"), reverse("profiles-invitations"), 123
             )
             nodes.append(node)
 
