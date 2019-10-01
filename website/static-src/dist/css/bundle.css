@@ -2461,17 +2461,12 @@ textarea {
       display: table-cell; }
       .listview.container .list_header .list_header_item.sortable {
         background-position: right center;
-        background-repeat: no-repeat;
-        background-image: url("/static/img/prototype/table_order_indicator.png"); }
+        background-repeat: no-repeat; }
       .listview.container .list_header .list_header_item.active {
         background-color: #CCCCCC;
         background-color: #fafafa;
         background-position: right center;
         background-repeat: no-repeat; }
-        .listview.container .list_header .list_header_item.active.ascending {
-          background-image: url("/static/img/prototype/table_order_asc.png"); }
-        .listview.container .list_header .list_header_item.active.descending {
-          background-image: url("/static/img/prototype/table_order_desc.png"); }
       .listview.container .list_header .list_header_item a {
         color: #666666; }
 
@@ -2491,20 +2486,16 @@ textarea {
     .listview.container .list_body .list_body_row.selection {
       background-color: #E2D7F9; }
       .listview.container .list_body .list_body_row.selection li.indicator {
-        background-image: url(/static/img/base/listview.row.selection.bg.png);
         background-repeat: no-repeat;
         background-position: 0 -16px; }
     .listview.container .list_body .list_body_row.selection.hover {
       background-color: #cbe5cb; }
     .listview.container .list_body .list_body_row.locked {
-      background-image: url(/static/img/prototype/list_closed_bg.png);
       background-color: #ffe1d2; }
     .listview.container .list_body .list_body_row.hover {
       background-color: #BCF5E0; }
     .listview.container .list_body .list_body_row.unpublished .list_body_item a {
       color: #666666; }
-    .listview.container .list_body .list_body_row.owner {
-      background-image: url(/static/img/prototype/list_closed_bg.png); }
   .listview.container .list_body .list_body_item {
     vertical-align: top !important;
     display: table-cell;
@@ -2653,12 +2644,6 @@ textarea {
           background-repeat: no-repeat; }
           .listview.container .list_body_item.action div.wrapper div ul li a:hover {
             background-position: 0 -16px; }
-        .listview.container .list_body_item.action div.wrapper div ul li.play a {
-          background-image: url(/static/img/base/listview.row.play.button.png); }
-        .listview.container .list_body_item.action div.wrapper div ul li.download a {
-          background-image: url(/static/img/base/listview.row.download.bg.png); }
-        .listview.container .list_body_item.action div.wrapper div ul li.basket a {
-          background-image: url(/static/img/base/listview.row.basket.bg.png); }
   .listview.container .list_body_item a span.filter {
     padding: 0 0 0 12px;
     /*background-color: #00ffff */
@@ -2693,15 +2678,6 @@ textarea {
         background-repeat: no-repeat; }
         .listview.container.s .c1 ul li a:hover {
           background-position: 0 -16px; }
-      .listview.container.s .c1 ul li.play a {
-        background-image: url(/static/img/base/listview.row.play.button.png); }
-      .listview.container.s .c1 ul li.play span {
-        background-image: url(/static/img/base/listview.row.play.button.disabled.png);
-        display: block;
-        width: 16px;
-        height: 16px;
-        background-position: 0 0;
-        background-repeat: no-repeat; }
   .listview.container.s .playing ul li.play a {
     background-position: 0 -16px; }
   .listview.container.s .c2 {
@@ -2751,7 +2727,6 @@ textarea {
   .listview.container.releases.s .c8 {
     width: 40px; }
   .listview.container.playlists.s .c1.list_body_item, .listview.container.playlist.s .c1.list_body_item {
-    background-image: url(/static/img/base/defaults/listview.playlist.s.png);
     background-size: 36px 36px; }
   .listview.container.playlists.s .c8, .listview.container.playlist.s .c8 {
     width: 40px; }
@@ -2919,7 +2894,6 @@ textarea {
   background-size: 54px 54px; }
 
 .listview.container.profile.m .c1.list_body_item {
-  background-image: url(/static/img/base/defaults/listview.profile.xl.png);
   background-size: 54px 54px; }
 
 .listview.container.profile.m .c3 {
@@ -2970,15 +2944,6 @@ textarea {
         background-repeat: no-repeat; }
         .listview.container.m .c1 ul li a:hover {
           background-position: 0 -16px; }
-      .listview.container.m .c1 ul li.play a {
-        background-image: url(/static/img/base/listview.row.play.button.png); }
-      .listview.container.m .c1 ul li.play span {
-        background-image: url(/static/img/base/listview.row.play.button.disabled.png);
-        display: block;
-        width: 16px;
-        height: 16px;
-        background-position: 0 0;
-        background-repeat: no-repeat; }
   .listview.container.m .playing ul li.play a {
     background-position: 0 -16px; }
   .listview.container.m .c2 {
@@ -3186,31 +3151,15 @@ textarea {
 .listview.container.downloads .list_body_row.init .list_body_item {
   color: #ababab; }
 
-.listview.container.downloads .list_body_row.init .c1 {
-  background-image: url(/static/img/base/listview.downloads.init.png); }
-
 .listview.container.downloads .list_body_row.running .list_body_item {
   color: #ababab; }
-
-.listview.container.downloads .list_body_row.running .c1 {
-  background-image: url(/static/img/base/listview.downloads.running.png); }
-
-.listview.container.downloads .list_body_row.done .c1 {
-  background-image: url(/static/img/base/listview.downloads.done.png); }
 
 .listview.container.downloads .list_body_row.error .list_body_item {
   background-color: #fff0e1;
   color: #5a5a5a; }
 
-.listview.container.downloads .list_body_row.error .c1 {
-  background-image: url(/static/img/base/listview.downloads.error.png); }
-
 .listview.container.downloads .list_body_row.done.downloaded .list_body_item {
   background-color: #E4FFE4; }
-
-.listview.container.downloads .list_body_row.done.downloaded .c1 {
-  /* background-color: #ff00ff */
-  background-image: url(/static/img/base/listview.downloads.downloaded.png); }
 
 /* highlighter */
 .listview.container .list_body span.highlight {
@@ -3287,7 +3236,6 @@ textarea {
       .searchbar .filter-bar a:hover {
         text-decoration: none; }
   .searchbar i._icon.icon-delete {
-    background-image: url(/static/img/prototype/tag_remove.png);
     background-position: 0 11px;
     white-space: nowrap;
     padding: 0 0 0 12px; }
@@ -3798,25 +3746,6 @@ body.error .error-message .solution {
 .main .legal-text a {
   padding: 0; }
 
-.addon.holder.countdown {
-  background-color: #262626;
-  width: 98px;
-  padding: 12px 4px 4px 4px;
-  background-image: url("/static/img/plugins/countdown/header.png");
-  background-repeat: no-repeat;
-  background-position: 4px 4px; }
-  .addon.holder.countdown #countdown {
-    margin-top: 4px;
-    padding-left: 4px; }
-  .addon.holder.countdown .separator {
-    color: transparent;
-    padding: 4px;
-    background-color: transparent;
-    width: 1px;
-    overflow: hidden; }
-  .addon.holder.countdown .digit {
-    padding: 0; }
-
 /* ui stuff (jquery) */
 .ui-effects-transfer {
   border: 1px dotted #999999;
@@ -4137,13 +4066,11 @@ div.social-auth ul.social-auth > li {
   font-size: 24px; }
 
 .importer-importfiles i.icon-id3 {
-  background-image: url(/static/img/icons/metadata.providers/id3v2.png) !important;
   background-position: 0 0;
   width: 22px;
   height: 22px; }
 
 .importer-importfiles i.icon-musicbrainz_ {
-  background-image: url(/static/img/icons/metadata.providers/musicbrainz.png) !important;
   background-position: 0 0;
   width: 22px;
   height: 22px; }
@@ -5762,7 +5689,8 @@ body.loginas-active .navbar.navbar-fixed-top .container {
 body.player {
   height: 100vh;
   width: 100vw;
-  background: #fafafa; }
+  background: #fafafa;
+  overflow-x: hidden; }
 
 .player-app.is-slave {
   background: rgba(110, 255, 228, 0.51);
