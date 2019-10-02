@@ -138,6 +138,7 @@ class ResourceOptions(object):
 
 class DeclarativeMetaclass(type):
     def __new__(cls, name, bases, attrs):
+
         attrs["base_fields"] = {}
         declared_fields = {}
 
@@ -204,10 +205,6 @@ class Resource(object):
     __metaclass__ = DeclarativeMetaclass
 
     def __init__(self, api_name=None):
-
-        print("------------")
-        print(self.base_fields)
-        print("------------")
 
         try:
             self.fields = deepcopy(self.base_fields)

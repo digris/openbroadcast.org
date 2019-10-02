@@ -50,7 +50,7 @@ class ActionForm(Form):
 
 
 from django.forms import SelectMultiple, CheckboxInput
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 from itertools import chain
 
 
@@ -85,7 +85,7 @@ class DaypartWidget(SelectMultiple):
         has_id = attrs and "id" in attrs
         final_attrs = self.build_attrs(attrs, name=name)
         output = ['<ul class="unstyled" style="float: left;">']
-        str_values = set([force_unicode(v) for v in value])
+        str_values = set([force_text(v) for v in value])
         for i, (option_value, option_label, row_title) in enumerate(
             chain(self.choices, choices)
         ):
@@ -98,9 +98,9 @@ class DaypartWidget(SelectMultiple):
             cb = CheckboxInput(
                 final_attrs, check_test=lambda value: value in str_values
             )
-            option_value = force_unicode(option_value)
+            option_value = force_text(option_value)
             rendered_cb = cb.render(name, option_value)
-            option_label = conditional_escape(force_unicode(option_label))
+            option_label = conditional_escape(force_text(option_label))
 
             if row_title:
                 output.append(

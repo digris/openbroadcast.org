@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate_tags i18n thumbnail arating_tags wiki_tags atracker_tags spurl alibrary_tags url_tags sekizai_tags addthis %}
+{% load truncate_tags i18n thumbnail arating_tags wiki_tags atracker_tags spurl alibrary_tags sekizai_tags addthis %}
 
 
 {% block title %}{{ object.name }}
@@ -22,7 +22,7 @@
             $(function () {
 
                 exporter = new ExporterApp();
-                exporter.api_url = '{% url "api_dispatch_list" resource_name='export' api_name='v1'%}';
+                exporter.api_url = '{% url "api_dispatch_list" resource_name='export' api_name='v1' %}';
                 exporter.init();
 
                 // initialize stats app

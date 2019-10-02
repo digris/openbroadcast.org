@@ -1,6 +1,6 @@
 import logging
 import time
-import discogs_client as discogs
+import discogs_client
 import requests
 from django.conf import settings
 
@@ -12,8 +12,6 @@ log = logging.getLogger(__name__)
 def discogs_image_by_url(url, type="uri"):
 
     image = None
-    discogs.user_agent = "NRG Processor 0.01 http://anorg.net/"
-
     log.debug("search image for %s" % url)
 
     try:
@@ -77,27 +75,37 @@ def discogs_image_by_url(url, type="uri"):
 
 def discogs_id_by_url(url, type="uri"):
 
+    # TODO: refactor id extraction to get rid of `discogs_client`
+    # TODO: `discogs_client` v1.1.1 does not work anyway, as API changed.
+
     discogs_id = None
-    discogs.user_agent = "NRG Processor 0.01 http://anorg.net/"
+    discogs_client.user_agent = "NRG Processor 0.0.1 http://anorg.net/"
 
     try:
         id = url.split("/")
         id = id[-1]
+
         try:
             return "%s" % int(id)
+
         except:
+
+            item = None
 
             if "/master/" in url:
                 log.debug('Type is "master-release"')
-                item = discogs.MasterRelease(int(id))
+                item = discogs_client.MasterRelease(int(id))
 
             if "/release/" in url:
                 log.debug('Type is "release"')
-                item = discogs.Release(int(id))
+                item = discogs_client.Release(int(id))
 
             if "/artist/" in url:
                 log.debug('Type is "artist"')
-                item = discogs.Artist(id)
+                item = discogs_client.Artist(id)
+
+            if not item:
+                return
 
             time.sleep(1.1)
             return item.data["id"]

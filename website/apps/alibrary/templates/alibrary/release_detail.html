@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate_tags i18n thumbnail arating_tags wiki_tags atracker_tags dajaxice_templatetags sekizai_tags alibrary_tags url_tags addthis %}
+{% load truncate_tags i18n thumbnail arating_tags wiki_tags atracker_tags dajaxice_templatetags sekizai_tags alibrary_tags addthis %}
 
 {% block title %}{{ object.name }}{% if object.get_artist_display %} - {{ object.get_artist_display }}{% endif %} | {% endblock %}
 {% block meta_description %}{{ object.description|truncatewords:20 }}{% endblock %}
@@ -27,7 +27,7 @@
 
                 // initialize exporter app
                 exporter = new ExporterApp();
-                exporter.api_url = '{% url "api_dispatch_list" resource_name='export' api_name='v1'%}';
+                exporter.api_url = '{% url "api_dispatch_list" resource_name='export' api_name='v1' %}';
                 exporter.init();
 
                 // initialize stats app

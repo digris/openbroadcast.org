@@ -169,7 +169,7 @@ AUTHENTICATION_BACKENDS = (
     # 'social_core.backends.twitter.TwitterOAuth',
     # 'social_core.backends.dropbox.DropboxOAuth2',
     # "social_core.backends.spotify.SpotifyOAuth2",
-    "obp_legacy.auth.backends.LegacyBackend",
+    # "obp_legacy.auth.backends.LegacyBackend",
     "django.contrib.auth.backends.ModelBackend",
 )
 

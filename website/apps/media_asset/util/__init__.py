@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import logging
-import time
 
 from media_asset.models import Format
 

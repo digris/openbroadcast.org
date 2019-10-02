@@ -1,10 +1,10 @@
-# Copyright 2006 Joe Wreschnig
+# -*- coding: utf-8 -*-
+# Copyright (C) 2006  Joe Wreschnig
 #
 # This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License version 2 as
-# published by the Free Software Foundation.
-#
-# $Id: ogg.py 3975 2007-01-13 21:51:17Z piman $
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 
 """Read and write Ogg bitstreams and pages.
 
@@ -20,14 +20,16 @@ import struct
 import sys
 import zlib
 
-from cStringIO import StringIO
-
 from mutagen import FileType
-from mutagen._util import cdata, insert_bytes, delete_bytes
+from mutagen._util import cdata, resize_bytes, MutagenError, loadfile, seek_end
+from ._compat import cBytesIO, reraise, chr_, izip, xrange
 
-class error(IOError):
+
+class error(MutagenError):
     """Ogg stream parsing errors."""
+
     pass
+
 
 class OggPage(object):
     """A single Ogg page (not necessarily a single encoded packet).
@@ -40,13 +42,15 @@ class OggPage(object):
     to the start of the next page.
 
     Attributes:
-    version -- stream structure version (currently always 0)
-    position -- absolute stream position (default -1)
-    serial -- logical stream serial number (default 0)
-    sequence -- page sequence number within logical stream (default 0)
-    offset -- offset this page was read from (default None)
-    complete -- if the last packet on this page is complete (default True)
-    packets -- list of raw packet data (default [])
+        version (`int`): stream structure version (currently always 0)
+        position (`int`): absolute stream position (default -1)
+        serial (`int`): logical stream serial number (default 0)
+        sequence (`int`): page sequence number within logical stream
+            (default 0)
+        offset (`int` or `None`): offset this page was read from (default None)
+        complete (`bool`): if the last packet on this page is complete
+            (default True)
+        packets (list[bytes]): list of raw packet data (default [])
 
     Note that if 'complete' is false, the next page's 'continued'
     property must be true (so set both when constructing pages).
@@ -57,13 +61,15 @@ class OggPage(object):
 
     version = 0
     __type_flags = 0
-    position = 0L
+    position = 0
     serial = 0
     sequence = 0
     offset = None
     complete = True
 
     def __init__(self, fileobj=None):
+        """Raises error, IOError, EOFError"""
+
         self.packets = []
 
         if fileobj is None:
@@ -76,15 +82,23 @@ class OggPage(object):
             raise EOFError
 
         try:
-            (oggs, self.version, self.__type_flags, self.position,
-             self.serial, self.sequence, crc, segments) = struct.unpack(
-                "<4sBBqIIiB", header)
+            (
+                oggs,
+                self.version,
+                self.__type_flags,
+                self.position,
+                self.serial,
+                self.sequence,
+                crc,
+                segments,
+            ) = struct.unpack("<4sBBqIIiB", header)
         except struct.error:
             raise error("unable to read full header; got %r" % header)
 
-        if oggs != "OggS":
-            raise error("read %r, expected %r, at 0x%x" % (
-                oggs, "OggS", fileobj.tell() - 27))
+        if oggs != b"OggS":
+            raise error(
+                "read %r, expected %r, at 0x%x" % (oggs, b"OggS", fileobj.tell() - 27)
+            )
 
         if self.version != 0:
             raise error("version %r unsupported" % self.version)
@@ -94,7 +108,7 @@ class OggPage(object):
         lacing_bytes = fileobj.read(segments)
         if len(lacing_bytes) != segments:
             raise error("unable to read %r lacing bytes" % segments)
-        for c in map(ord, lacing_bytes):
+        for c in bytearray(lacing_bytes):
             total += c
             if c < 255:
                 lacings.append(total)
@@ -103,26 +117,38 @@ class OggPage(object):
             lacings.append(total)
             self.complete = False
 
-        self.packets = map(fileobj.read, lacings)
-        if map(len, self.packets) != lacings:
+        self.packets = [fileobj.read(l) for l in lacings]
+        if [len(p) for p in self.packets] != lacings:
             raise error("unable to read full data")
 
     def __eq__(self, other):
         """Two Ogg pages are the same if they write the same data."""
         try:
-            return (self.write() == other.write())
+            return self.write() == other.write()
         except AttributeError:
             return False
 
     __hash__ = object.__hash__
 
     def __repr__(self):
-        attrs = ['version', 'position', 'serial', 'sequence', 'offset',
-                 'complete', 'continued', 'first', 'last']
+        attrs = [
+            "version",
+            "position",
+            "serial",
+            "sequence",
+            "offset",
+            "complete",
+            "continued",
+            "first",
+            "last",
+        ]
         values = ["%s=%r" % (attr, getattr(self, attr)) for attr in attrs]
         return "<%s %s, %d bytes in %d packets>" % (
-            type(self).__name__, " ".join(values), sum(map(len, self.packets)),
-            len(self.packets))
+            type(self).__name__,
+            " ".join(values),
+            sum(map(len, self.packets)),
+            len(self.packets),
+        )
 
     def write(self):
         """Return a string encoding of the page header and data.
@@ -132,32 +158,44 @@ class OggPage(object):
         """
 
         data = [
-            struct.pack("<4sBBqIIi", "OggS", self.version, self.__type_flags,
-                        self.position, self.serial, self.sequence, 0)
-            ]
+            struct.pack(
+                "<4sBBqIIi",
+                b"OggS",
+                self.version,
+                self.__type_flags,
+                self.position,
+                self.serial,
+                self.sequence,
+                0,
+            )
+        ]
 
         lacing_data = []
         for datum in self.packets:
             quot, rem = divmod(len(datum), 255)
-            lacing_data.append("\xff" * quot + chr(rem))
-        lacing_data = "".join(lacing_data)
-        if not self.complete and lacing_data.endswith("\x00"):
+            lacing_data.append(b"\xff" * quot + chr_(rem))
+        lacing_data = b"".join(lacing_data)
+        if not self.complete and lacing_data.endswith(b"\x00"):
             lacing_data = lacing_data[:-1]
-        data.append(chr(len(lacing_data)))
+        data.append(chr_(len(lacing_data)))
         data.append(lacing_data)
         data.extend(self.packets)
-        data = "".join(data)
+        data = b"".join(data)
 
         # Python's CRC is swapped relative to Ogg's needs.
-        crc = ~zlib.crc32(data.translate(cdata.bitswap), -1)
-        # Although we're using to_int_be, this actually makes the CRC
+        # crc32 returns uint prior to py2.6 on some platforms, so force uint
+        crc = (~zlib.crc32(data.translate(cdata.bitswap), -1)) & 0xFFFFFFFF
+        # Although we're using to_uint_be, this actually makes the CRC
         # a proper le integer, since Python's CRC is byteswapped.
-        crc = cdata.to_int_be(crc).translate(cdata.bitswap)
+        crc = cdata.to_uint_be(crc).translate(cdata.bitswap)
         data = data[:22] + crc + data[26:]
         return data
 
-    def __size(self):
-        size = 27 # Initial header size
+    @property
+    def size(self):
+        """Total frame size."""
+
+        size = 27  # Initial header size
         for datum in self.packets:
             quot, rem = divmod(len(datum), 255)
             size += quot + 1
@@ -168,29 +206,33 @@ class OggPage(object):
         size += sum(map(len, self.packets))
         return size
 
-    size = property(__size, doc="Total frame size.")
-
     def __set_flag(self, bit, val):
         mask = 1 << bit
-        if val: self.__type_flags |= mask
-        else: self.__type_flags &= ~mask
+        if val:
+            self.__type_flags |= mask
+        else:
+            self.__type_flags &= ~mask
 
     continued = property(
         lambda self: cdata.test_bit(self.__type_flags, 0),
         lambda self, v: self.__set_flag(0, v),
-        doc="The first packet is continued from the previous page.")
+        doc="The first packet is continued from the previous page.",
+    )
 
     first = property(
         lambda self: cdata.test_bit(self.__type_flags, 1),
         lambda self, v: self.__set_flag(1, v),
-        doc="This is the first page of a logical bitstream.")
+        doc="This is the first page of a logical bitstream.",
+    )
 
     last = property(
         lambda self: cdata.test_bit(self.__type_flags, 2),
         lambda self, v: self.__set_flag(2, v),
-        doc="This is the last page of a logical bitstream.")
+        doc="This is the last page of a logical bitstream.",
+    )
 
-    def renumber(klass, fileobj, serial, start):
+    @staticmethod
+    def renumber(fileobj, serial, start):
         """Renumber pages belonging to a specified logical stream.
 
         fileobj must be opened with mode r+b or w+b.
@@ -212,7 +254,8 @@ class OggPage(object):
 
         number = start
         while True:
-            try: page = OggPage(fileobj)
+            try:
+                page = OggPage(fileobj)
             except EOFError:
                 break
             else:
@@ -226,9 +269,9 @@ class OggPage(object):
             fileobj.write(page.write())
             fileobj.seek(page.offset + page.size, 0)
             number += 1
-    renumber = classmethod(renumber)
 
-    def to_packets(klass, pages, strict=False):
+    @staticmethod
+    def to_packets(pages, strict=False):
         """Construct a list of packet data from a list of Ogg pages.
 
         If strict is true, the first page must start a new packet,
@@ -245,24 +288,59 @@ class OggPage(object):
             if not pages[-1].complete:
                 raise ValueError("last packet does not complete")
         elif pages and pages[0].continued:
-            packets.append("")
+            packets.append([b""])
 
         for page in pages:
             if serial != page.serial:
                 raise ValueError("invalid serial number in %r" % page)
             elif sequence != page.sequence:
                 raise ValueError("bad sequence number in %r" % page)
-            else: sequence += 1
+            else:
+                sequence += 1
 
-            if page.continued: packets[-1] += page.packets[0]
-            else: packets.append(page.packets[0])
-            packets.extend(page.packets[1:])
+            if page.continued:
+                packets[-1].append(page.packets[0])
+            else:
+                packets.append([page.packets[0]])
+            packets.extend([p] for p in page.packets[1:])
 
-        return packets
-    to_packets = classmethod(to_packets)
+        return [b"".join(p) for p in packets]
 
-    def from_packets(klass, packets, sequence=0,
-                     default_size=4096, wiggle_room=2048):
+    @classmethod
+    def _from_packets_try_preserve(cls, packets, old_pages):
+        """Like from_packets but in case the size and number of the packets
+        is the same as in the given pages the layout of the pages will
+        be copied (the page size and number will match).
+
+        If the packets don't match this behaves like::
+
+            OggPage.from_packets(packets, sequence=old_pages[0].sequence)
+        """
+
+        old_packets = cls.to_packets(old_pages)
+
+        if [len(p) for p in packets] != [len(p) for p in old_packets]:
+            # doesn't match, fall back
+            return cls.from_packets(packets, old_pages[0].sequence)
+
+        new_data = b"".join(packets)
+        new_pages = []
+        for old in old_pages:
+            new = OggPage()
+            new.sequence = old.sequence
+            new.complete = old.complete
+            new.continued = old.continued
+            new.position = old.position
+            for p in old.packets:
+                data, new_data = new_data[: len(p)], new_data[len(p) :]
+                new.packets.append(data)
+            new_pages.append(new)
+        assert not new_data
+
+        return new_pages
+
+    @staticmethod
+    def from_packets(packets, sequence=0, default_size=4096, wiggle_room=2048):
         """Construct a list of Ogg pages from a list of packet data.
 
         The algorithm will generate pages of approximately
@@ -289,7 +367,7 @@ class OggPage(object):
         page.sequence = sequence
 
         for packet in packets:
-            page.packets.append("")
+            page.packets.append(b"")
             while packet:
                 data, packet = packet[:chunk_size], packet[chunk_size:]
                 if page.size < default_size and len(page.packets) < 255:
@@ -303,7 +381,7 @@ class OggPage(object):
                     if page.packets[-1]:
                         page.complete = False
                         if len(page.packets) == 1:
-                            page.position = -1L
+                            page.position = -1
                     else:
                         page.packets.pop(-1)
                     pages.append(page)
@@ -314,15 +392,15 @@ class OggPage(object):
 
                 if len(packet) < wiggle_room:
                     page.packets[-1] += packet
-                    packet = ""
+                    packet = b""
 
         if page.packets:
             pages.append(page)
 
         return pages
-    from_packets = classmethod(from_packets)
 
-    def replace(klass, fileobj, old_pages, new_pages):
+    @classmethod
+    def replace(cls, fileobj, old_pages, new_pages):
         """Replace old_pages with new_pages within fileobj.
 
         old_pages must have come from reading fileobj originally.
@@ -334,9 +412,12 @@ class OggPage(object):
         such, it must be opened r+b or w+b.
         """
 
+        if not len(old_pages) or not len(new_pages):
+            raise ValueError("empty pages list not allowed")
+
         # Number the new pages starting from the first old page.
         first = old_pages[0].sequence
-        for page, seq in zip(new_pages, range(first, first + len(new_pages))):
+        for page, seq in izip(new_pages, xrange(first, first + len(new_pages))):
             page.sequence = seq
             page.serial = old_pages[0].serial
 
@@ -348,26 +429,30 @@ class OggPage(object):
         new_pages[-1].last = old_pages[-1].last
         new_pages[-1].complete = old_pages[-1].complete
         if not new_pages[-1].complete and len(new_pages[-1].packets) == 1:
-            new_pages[-1].position = -1L
+            new_pages[-1].position = -1
 
-        new_data = "".join(map(klass.write, new_pages))
+        new_data = [cls.write(p) for p in new_pages]
 
-        # Make room in the file for the new data.
-        delta = len(new_data)
-        fileobj.seek(old_pages[0].offset, 0)
-        insert_bytes(fileobj, delta, old_pages[0].offset)
-        fileobj.seek(old_pages[0].offset, 0)
-        fileobj.write(new_data)
-        new_data_end = old_pages[0].offset + delta
+        # Add dummy data or merge the remaining data together so multiple
+        # new pages replace an old one
+        pages_diff = len(old_pages) - len(new_data)
+        if pages_diff > 0:
+            new_data.extend([b""] * pages_diff)
+        elif pages_diff < 0:
+            new_data[pages_diff - 1 :] = [b"".join(new_data[pages_diff - 1 :])]
 
-        # Go through the old pages and delete them. Since we shifted
-        # the data down the file, we need to adjust their offsets. We
-        # also need to go backwards, so we don't adjust the deltas of
-        # the other pages.
-        old_pages.reverse()
-        for old_page in old_pages:
-            adj_offset = old_page.offset + delta
-            delete_bytes(fileobj, old_page.size, adj_offset)
+        # Replace pages one by one. If the sizes match no resize happens.
+        offset_adjust = 0
+        new_data_end = None
+        assert len(old_pages) == len(new_data)
+        for old_page, data in izip(old_pages, new_data):
+            offset = old_page.offset + offset_adjust
+            data_size = len(data)
+            resize_bytes(fileobj, old_page.size, data_size, offset)
+            fileobj.seek(offset, 0)
+            fileobj.write(data)
+            new_data_end = offset + data_size
+            offset_adjust += data_size - old_page.size
 
         # Finally, if there's any discrepency in length, we need to
         # renumber the pages for the logical stream.
@@ -375,10 +460,10 @@ class OggPage(object):
             fileobj.seek(new_data_end, 0)
             serial = new_pages[-1].serial
             sequence = new_pages[-1].sequence + 1
-            klass.renumber(fileobj, serial, sequence)
-    replace = classmethod(replace)
+            cls.renumber(fileobj, serial, sequence)
 
-    def find_last(klass, fileobj, serial):
+    @staticmethod
+    def find_last(fileobj, serial, finishing=False):
         """Find the last page of the stream 'serial'.
 
         If the file is not multiplexed this function is fast. If it is,
@@ -386,115 +471,148 @@ class OggPage(object):
 
         This finds the last page in the actual file object, or the last
         page in the stream (with eos set), whichever comes first.
+
+        If finishing is True it returns the last page which contains a packet
+        finishing on it. If there exist pages but none with finishing packets
+        returns None.
+
+        Returns None in case no page with the serial exists.
+        Raises error in case this isn't a valid ogg stream.
+        Raises IOError.
         """
 
         # For non-muxed streams, look at the last page.
-        try: fileobj.seek(-256*256, 2)
-        except IOError:
-            # The file is less than 64k in length.
-            fileobj.seek(0)
+        seek_end(fileobj, 256 * 256)
+
         data = fileobj.read()
-        try: index = data.rindex("OggS")
+        try:
+            index = data.rindex(b"OggS")
         except ValueError:
             raise error("unable to find final Ogg header")
-        stringobj = StringIO(data[index:])
+        bytesobj = cBytesIO(data[index:])
+
+        def is_valid(page):
+            return not finishing or page.position != -1
+
         best_page = None
         try:
-            page = OggPage(stringobj)
+            page = OggPage(bytesobj)
         except error:
             pass
         else:
-            if page.serial == serial:
-                if page.last: return page
-                else: best_page = page
-            else: best_page = None
+            if page.serial == serial and is_valid(page):
+                if page.last:
+                    return page
+                else:
+                    best_page = page
+            else:
+                best_page = None
 
         # The stream is muxed, so use the slow way.
         fileobj.seek(0)
         try:
             page = OggPage(fileobj)
-            while not page.last:
+            while True:
+                if page.serial == serial:
+                    if is_valid(page):
+                        best_page = page
+                    if page.last:
+                        break
                 page = OggPage(fileobj)
-                while page.serial != serial:
-                    page = OggPage(fileobj)
-                best_page = page
-            return page
+            return best_page
         except error:
             return best_page
         except EOFError:
             return best_page
-    find_last = classmethod(find_last)
+
 
 class OggFileType(FileType):
-    """An generic Ogg file."""
+    """OggFileType(filething)
+
+    An generic Ogg file.
+
+    Arguments:
+        filething (filething)
+    """
 
     _Info = None
     _Tags = None
     _Error = None
     _mimes = ["application/ogg", "application/x-ogg"]
 
-    def load(self, filename):
-        """Load file information from a filename."""
+    @loadfile()
+    def load(self, filething):
+        """load(filething)
 
-        self.filename = filename
-        fileobj = open(filename, "rb")
+        Load file information from a filename.
+
+        Args:
+            filething (filething)
+        Raises:
+            mutagen.MutagenError
+        """
+
+        fileobj = filething.fileobj
+
         try:
-            try:
-                self.info = self._Info(fileobj)
-                self.tags = self._Tags(fileobj, self.info)
+            self.info = self._Info(fileobj)
+            self.tags = self._Tags(fileobj, self.info)
+            self.info._post_tags(fileobj)
+        except (error, IOError) as e:
+            reraise(self._Error, e, sys.exc_info()[2])
+        except EOFError:
+            raise self._Error("no appropriate stream found")
 
-                if self.info.length:
-                    # The streaminfo gave us real length information,
-                    # don't waste time scanning the Ogg.
-                    return
+    @loadfile(writable=True)
+    def delete(self, filething=None):
+        """delete(filething=None)
 
-                last_page = OggPage.find_last(fileobj, self.info.serial)
-                samples = last_page.position
-                try:
-                    denom = self.info.sample_rate
-                except AttributeError:
-                    denom = self.info.fps
-                self.info.length = samples / float(denom)
-
-            except error as e:
-                raise self._Error, e, sys.exc_info()[2]
-            except EOFError:
-                raise self._Error, "no appropriate stream found"
-        finally:
-            fileobj.close()
-
-    def delete(self, filename=None):
-        """Remove tags from a file.
+        Remove tags from a file.
 
         If no filename is given, the one most recently loaded is used.
+
+        Args:
+            filething (filething)
+        Raises:
+            mutagen.MutagenError
         """
-        if filename is None:
-            filename = self.filename
+
+        fileobj = filething.fileobj
 
         self.tags.clear()
-        fileobj = open(filename, "rb+")
+        # TODO: we should delegate the deletion to the subclass and not through
+        # _inject.
         try:
-            try: self.tags._inject(fileobj)
+            try:
+                self.tags._inject(fileobj, lambda x: 0)
             except error as e:
-                raise self._Error, e, sys.exc_info()[2]
+                reraise(self._Error, e, sys.exc_info()[2])
             except EOFError:
-                raise self._Error, "no appropriate stream found"
-        finally:
-            fileobj.close()
+                raise self._Error("no appropriate stream found")
+        except IOError as e:
+            reraise(self._Error, e, sys.exc_info()[2])
 
-    def save(self, filename=None):
-        """Save a tag to a file.
+    def add_tags(self):
+        raise self._Error
+
+    @loadfile(writable=True)
+    def save(self, filething=None, padding=None):
+        """save(filething=None, padding=None)
+
+        Save a tag to a file.
 
         If no filename is given, the one most recently loaded is used.
+
+        Args:
+            filething (filething)
+            padding (:obj:`mutagen.PaddingFunction`)
+        Raises:
+            mutagen.MutagenError
         """
-        if filename is None:
-            filename = self.filename
-        fileobj = open(filename, "rb+")
+
         try:
-            try: self.tags._inject(fileobj)
-            except error as e:
-                raise self._Error, e, sys.exc_info()[2]
-            except EOFError:
-                raise self._Error, "no appropriate stream found"
-        finally:
-            fileobj.close()
+            self.tags._inject(filething.fileobj, padding)
+        except (IOError, error) as e:
+            reraise(self._Error, e, sys.exc_info()[2])
+        except EOFError:
+            raise self._Error("no appropriate stream found")

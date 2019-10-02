@@ -16,7 +16,7 @@ class ActionFilter(django_filters.FilterSet):
     def filterlist(self):
         flist = []
         if not hasattr(self, "_filterlist"):
-            for name, filter_ in self.filters.iteritems():
+            for name, filter_ in self.filters.items():
                 qs = (
                     self.queryset.values_list(name, flat=False)
                     .order_by(name)

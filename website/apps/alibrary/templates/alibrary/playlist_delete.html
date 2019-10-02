@@ -4,23 +4,6 @@
 
 {% block heading %}
     <!-- view specific scripts -->
-
-
-    {% addtoblock "js-post" %}
-        <script src="{{ STATIC_URL }}exporter/js/base.js"></script>
-    {% endaddtoblock %}
-
-    {% addtoblock "js-post" %}
-        <script>
-            var exporter = exporter || {};
-            $(function () {
-                exporter = new ExporterApp();
-                exporter.api_url = '{% url "api_dispatch_list" resource_name='export' api_name='v1'%}';
-                exporter.init();
-            });
-        </script>
-    {% endaddtoblock %}
-
     <div id="heading">
         {% include "skeleton/heading.html" %}
     </div>

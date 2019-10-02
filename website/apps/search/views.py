@@ -58,7 +58,7 @@ class BaseFacetedSearch(FacetedSearch):
         _musts = []
         _must_nots = []
 
-        for key, value in _searches.iteritems():
+        for key, value in _searches.items():
             # not particularly nice - maybe there is a better way to build queries here
             # 'q' - the main search query
             if key == "q":

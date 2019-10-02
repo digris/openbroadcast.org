@@ -136,7 +136,7 @@ MIGRATION_MODULES = {
 ##################################################################
 # exported settings
 ##################################################################
-SETTINGS_EXPORT = ["FACEBOOK_APP_ID"]
+SETTINGS_EXPORT = ["FACEBOOK_APP_ID", "SITE_URL"]
 
 
 IMORTER_USE_CELERYD = True

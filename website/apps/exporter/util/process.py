@@ -63,7 +63,7 @@ class Process(object):
         self.user = instance.user
         self.format = format.lower()
         self.target = target
-        self.archive_format = archive_format
+        self.archive_format = str(archive_format)
 
         if not self.format in AVAILABLE_FORMATS:
             raise Exception("Format not available.")
@@ -95,7 +95,7 @@ class Process(object):
                 self.archive_path,
                 self.archive_format,
                 self.archive_cache_dir,
-                verbose=1,
+                verbose=True,
             )
 
             if os.path.isfile(self.archive_path + ".%s" % self.archive_format):
@@ -390,6 +390,10 @@ class Process(object):
 
     def metadata_mp3_mutagen(self, path, media):
 
+        from mutagen import version_string as mutagen_version
+
+        log.debug("mutagen {} - injecting id3 metadata".format(mutagen_version))
+
         from mutagen.mp3 import MP3
         from mutagen.id3 import (
             ID3,
@@ -410,7 +414,10 @@ class Process(object):
 
         try:
             tags = ID3(path)
-        except Exception:
+            # log.debug("existing tags: {}".format(tags))
+        except Exception as e:
+
+            # log.debug("no existing tags: {}".format(e))
 
             """
             kindf of hackish - mutagen does complain if no id3 headers - so just create some

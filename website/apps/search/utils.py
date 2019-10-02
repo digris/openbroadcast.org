@@ -22,7 +22,7 @@ def parse_search_query(request):
     _filters = {}
     _options = {}
 
-    for key, value in request.GET.iteritems():
+    for key, value in request.GET.items():
         # print(key, value)
 
         if not value or len(value) < 1:
@@ -101,7 +101,7 @@ def get_pagination_pages(num_pages, current_page):
         left_side = current_page
         right_side = PAGE_RANGE_DISPLAYED - left_side
 
-    for page in xrange(1, num_pages + 1):
+    for page in range(1, num_pages + 1):
         if page <= MARGIN_PAGES_DISPLAYED:
             pages.append(page)
             continue

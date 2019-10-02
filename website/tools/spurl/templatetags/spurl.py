@@ -9,6 +9,10 @@ from django.template.base import Lexer, Parser
 from django.template.defaulttags import kwarg_re
 from django.template import Template, Library, Node, TemplateSyntaxError
 
+try:
+    from builtins import str
+except ImportError:
+    str = unicode
 
 register = Library()
 
@@ -19,7 +23,7 @@ TEMPLATE_DEBUG = getattr(settings, "TEMPLATE_DEBUG", False)
 def convert_to_boolean(string_or_boolean):
     if isinstance(string_or_boolean, bool):
         return string_or_boolean
-    if isinstance(string_or_boolean, basestring):
+    if isinstance(string_or_boolean, str):
         return bool(TRUE_RE.match(string_or_boolean))
 
 
@@ -82,7 +86,7 @@ class SpurlURLBuilder(object):
 
     def handle_add_query(self, value):
         query_to_add = self.prepare_value(value)
-        if isinstance(query_to_add, basestring):
+        if isinstance(query_to_add, str):
             query_to_add = QueryString(query_to_add).dict
         self.url = self.url.add_query_params(**query_to_add)
 
@@ -92,13 +96,13 @@ class SpurlURLBuilder(object):
 
     def handle_set_query(self, value):
         query_to_set = self.prepare_value(value)
-        if isinstance(query_to_set, basestring):
+        if isinstance(query_to_set, str):
             query_to_set = QueryString(query_to_set).dict
         self.url = self.url.set_query_params(**query_to_set)
 
     def handle_active_query(self, value):
         query_to_toggle = self.prepare_value(value)
-        if isinstance(query_to_toggle, basestring):
+        if isinstance(query_to_toggle, str):
             query_to_toggle = QueryString(query_to_toggle).dict
         current_query = self.url.query.dict
         for key, value in query_to_toggle.items():
@@ -117,11 +121,11 @@ class SpurlURLBuilder(object):
 
     def handle_toggle_query(self, value):
         query_to_toggle = self.prepare_value(value)
-        if isinstance(query_to_toggle, basestring):
+        if isinstance(query_to_toggle, str):
             query_to_toggle = QueryString(query_to_toggle).dict
         current_query = self.url.query.dict
         for key, value in query_to_toggle.items():
-            if isinstance(value, basestring):
+            if isinstance(value, str):
                 value = value.split(",")
             first, second = value
             if key in current_query and first in current_query[key]:
@@ -131,12 +135,12 @@ class SpurlURLBuilder(object):
 
     def handle_trigger_query(self, value):
         query_to_trigger = self.prepare_value(value)
-        if isinstance(query_to_trigger, basestring):
+        if isinstance(query_to_trigger, str):
             query_to_trigger = QueryString(query_to_trigger).dict
         current_query = self.url.query.dict
         for key, value in query_to_trigger.items():
 
-            if isinstance(value, basestring):
+            if isinstance(value, str):
                 value = value
 
             if key in current_query and value in current_query[key]:
@@ -149,7 +153,7 @@ class SpurlURLBuilder(object):
     def handle_trigger_mquery(self, value):
 
         query_to_trigger = self.prepare_value(value)
-        if isinstance(query_to_trigger, basestring):
+        if isinstance(query_to_trigger, str):
             query_to_trigger = QueryString(query_to_trigger).dict
         current_query = self.url.query.dict
 
@@ -196,7 +200,7 @@ class SpurlURLBuilder(object):
 
             else:
 
-                if isinstance(value, basestring):
+                if isinstance(value, str):
                     value = value
 
                 if key in current_query and value in current_query[key]:
@@ -212,7 +216,7 @@ class SpurlURLBuilder(object):
         active = None
 
         query_to_trigger = self.prepare_value(value)
-        if isinstance(query_to_trigger, basestring):
+        if isinstance(query_to_trigger, str):
             query_to_trigger = QueryString(query_to_trigger).dict
         current_query = self.url.query.dict
 
@@ -295,7 +299,7 @@ class SpurlURLBuilder(object):
     def prepare_value(self, value):
         """Prepare a value by unescaping embedded template tags
         and rendering through Django's template system"""
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             value = self.unescape_tags(value)
             value = self.render_template(value)
         return value
