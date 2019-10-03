@@ -187,7 +187,7 @@
         methods: {
 
             // hover / highlight handling
-            highlightEmission: function (uuid) {
+            highlightEmission: function (uuid, minCount=2) {
                 if(this.readOnly) {
                     return;
                 }
@@ -199,7 +199,7 @@
                         count++;
                     }
                 }
-                if(count > 1) {
+                if(count >= minCount) {
                     this.highlightedObjUuid = uuid;
                 }
             },
@@ -426,7 +426,7 @@
         watch: {
             highlightObjUuid: function (uuid) {
                 if(uuid) {
-                    this.highlightEmission(uuid);
+                    this.highlightEmission(uuid, 1);
                 } else {
                     this.unhighlightEmission();
                 }

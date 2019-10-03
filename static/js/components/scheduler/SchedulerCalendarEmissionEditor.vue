@@ -194,26 +194,16 @@
         <div
             slot="title"
             v-if="emission">
-                   <span>
-                       {{ emission.timeStart|date('HH:mm') }}
-                       -
-                       {{ emission.timeEnd|date('HH:mm') }}
-                   </span>
-                <span> / </span>
-                <span>
-                       {{ emission.timeStart|date('dd. D MMM. YYYY') }}
-                   </span>
-
-                <span> / </span>
-
-                <span
-                    v-if="(emission && emission.user)"
-                    class="scheduling-programmer">
-                        by:
+            <span>{{ emission.timeStart|date('HH:mm') }}-{{ emission.timeEnd|date('HH:mm') }}</span>
+            <span> / </span>
+            <span>{{ emission.timeStart|date('dd. D MMM. YYYY') }}</span>
+            <span
+                v-if="(emission && emission.user)"
+                class="scheduling-programmer">
+                        / by:
                         <user-inline
                             v-if="emission.user"
-                            :user="emission.user"></user-inline>
-                   </span>
+                            :user="emission.user"></user-inline></span>
 
         </div>
 

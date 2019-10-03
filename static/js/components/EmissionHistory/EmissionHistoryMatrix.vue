@@ -47,14 +47,9 @@
         }
 
         const slotHourStart = timeStart.hour();
-        // const slotHourEnd = timeEnd.hour();
-
-        // const slotHourStart = (timeStart.hour() === 0) ? 24 : timeStart.hour();
         const slotHourEnd = (timeEnd.hour() === 0) ? 24 : timeEnd.hour();
 
-        let match = false;
-
-        daypartsForDay.forEach((daypart, index) => {
+        return daypartsForDay.some((daypart) => {
 
             let daypartHourStart = parseInt(daypart.start.substr(0,2));
             let daypartHourEnd = parseInt(daypart.end.substr(0,2));
@@ -62,16 +57,11 @@
             daypartHourStart = (daypartHourStart === 24) ? 0 : daypartHourStart;
             daypartHourEnd = (daypartHourEnd === 0) ? 24 : daypartHourEnd;
 
-
             if((slotHourStart >= daypartHourStart) && (slotHourEnd <= daypartHourEnd)) {
-
-                console.debug('s', slotHourStart, 'ds', daypartHourStart, 'e', slotHourEnd, 'de', daypartHourEnd);
-
-                match = true;
+                return true;
             }
         });
 
-        return match;
 
     };
 

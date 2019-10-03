@@ -12,20 +12,21 @@
         },
         data() {
             return {
-                detailsVisible: false,
+                isHover: false,
             }
         },
         methods: {
             dblclick: function () {
                 this.$emit('dblclick', this.emission.obj.uuid);
+                this.isHover = false;
             },
             onMouseOver: function () {
                 this.$emit('mouseover', this.emission.obj.co.uuid);
-                this.detailsVisible = true;
+                this.isHover = true;
             },
             onMouseLeave: function () {
                 this.$emit('mouseleave');
-                this.detailsVisible = false;
+                this.isHover = false;
             },
 
         },
@@ -33,7 +34,7 @@
             style() {
                 const color = backgroundColors[this.emission.obj.color];
                 return {
-                    backgroundColor: hexToRGBA(color, .50),
+                    backgroundColor: (this.isHover) ? hexToRGBA(color, 1) : hexToRGBA(color, .50),
                     borderColor: hexToRGBA(color, 1),
                 }
             },
@@ -50,7 +51,7 @@
             background: rgba(255, 255, 255, 0.80);
             height: calc(100% - 1px);
             cursor: pointer;
-            transition: background 200ms;
+            transition: background 100ms;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -58,7 +59,9 @@
             border-bottom: 1px solid #fff;
 
             &:hover {
-                background: rgba(126, 235, 157, 0.85);
+                // background: rgba(126, 235, 157, 0.85);
+                min-height: 20px;
+                z-index: 201;
             }
 
             &__title {
@@ -140,7 +143,7 @@
                 {{ emission.obj.name }}
             </span>
         </div>
-        <div v-if="detailsVisible"
+        <div v-if="isHover"
             class="emission__details">
             <div
                 class="emission__details__title">

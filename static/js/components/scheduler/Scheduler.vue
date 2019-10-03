@@ -143,7 +143,7 @@
             clipboardItemMouseenter: function(uuid) {
                 this.highlightObjUuid = uuid;
             },
-            clipboardItemMouseleave: function(uuid) {
+            clipboardItemMouseleave: function() {
                 this.highlightObjUuid = null;
             },
         },
