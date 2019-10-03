@@ -83,6 +83,7 @@
                         display: block;
                         padding: 6px 10px 0 10px;
                         text-transform: uppercase;
+                        cursor: pointer;
                     }
                 }
             }

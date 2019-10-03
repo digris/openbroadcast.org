@@ -37,6 +37,9 @@
             clearClipboard: function () {
                 this.$store.dispatch('scheduler/clearClipboard');
             },
+            deleteItem: function (uuid) {
+                this.$store.dispatch('scheduler/removeFromClipboard', uuid);
+            },
         },
         computed: {
             clipboardItems() {
@@ -133,6 +136,7 @@
                         </template>
                         <clipboard-item
                             :item="item"
+                            @delete="deleteItem"
                             @mouseenter="$emit('itemMouseenter', item.uuid)"
                             @mouseleave="$emit('itemMouseleave', item.uuid)"></clipboard-item>
                     </drag>

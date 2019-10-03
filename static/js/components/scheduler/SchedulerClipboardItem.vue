@@ -34,6 +34,7 @@
         background: #fff;
         display: flex;
         cursor: pointer;
+        position: relative;
 
         &:hover {
             background: rgba(126, 235, 157, 0.85);
@@ -63,17 +64,31 @@
         &__header {
             display: flex;
 
+            &:hover {
+                z-index: 999;
+            }
+
             .title {
                 color: inherit;
             }
 
             .emission-history {
                 flex-grow: 1;
+                z-index: 1001;
             }
         }
 
         &__description {
             opacity: .7;
+        }
+
+        &__secondary-actions {
+            position: absolute;
+            bottom: 1px;
+            right: 3px;
+            a {
+                color: inherit;
+            }
         }
     }
 </style>
@@ -109,6 +124,9 @@
             </div>
             <div class="clipboard-item__description">
                 <p>{{ duration }}</p>
+            </div>
+            <div class="clipboard-item__secondary-actions">
+                <a href="#" @click.prevent="$emit('delete', item.uuid)">delete</a>
             </div>
         </div>
     </div>

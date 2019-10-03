@@ -156,7 +156,7 @@
 
         // border: 10px solid greenyellow;
 
-        --slot-height: 20px;
+        --slot-height: 18px;
 
         //--border-color: #c9c9c9;
         //--border-color-light: #efefef;

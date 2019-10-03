@@ -7,7 +7,7 @@ import Vue from 'vue';
 
 import APIClient from "../api/caseTranslatingClient";
 
-const DEBUG = false;
+const DEBUG = true;
 const DEFAULT_SCHEDULER_CONFIG = {
     numDays: 7,
     daysOffset: 0,
@@ -84,6 +84,14 @@ const mutations = {
             state.clipboard.unshift(payload);
         } else {
             Vue.set(state.clipboard, index, payload);
+        }
+    },
+    removeFromClipboard: (state, uuid) => {
+        if (DEBUG) console.debug('mutations - removeFromClipboard', uuid);
+
+        const index = state.clipboard.findIndex((item) => item.uuid === uuid);
+        if (index > -1) {
+            Vue.delete(state.clipboard, index);
         }
     },
     clearClipboard: (state) => {
@@ -169,11 +177,15 @@ const actions = {
         context.commit('addToClipboard', payload);
         APIClient.get(payload.url).then((response) => {
             context.commit('addToClipboard', response.data);
-        })
-        // .catch(() => {
-        //     console.warn('error');
-        // });
+        }).catch(() => {
+            console.warn('error');
+        });
     },
+    removeFromClipboard: async (context, uuid) => {
+        if (DEBUG) console.debug('actions - removeFromClipboard', uuid);
+        context.commit('removeFromClipboard', uuid);
+    },
+
     clearClipboard: (context) => {
         if (DEBUG) console.debug('actions - clearClipboard');
         context.commit('clearClipboard');
