@@ -3,7 +3,7 @@
     import {tween} from 'shifty';
     import Loader from '../../../components/ui/Loader.vue';
     import Visual from '../../../components/ui/Visual.vue';
-    import {template_filters} from '../../../utils/template-filters';
+    import {templateFilters} from '../../../utils/template-filters';
 
     export default {
         props: [
@@ -62,7 +62,7 @@
             }
         },
         methods: {},
-        filters: template_filters,
+        filters: templateFilters,
     }
 </script>
 

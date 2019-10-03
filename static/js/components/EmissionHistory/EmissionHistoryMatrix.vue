@@ -159,10 +159,10 @@
 
                 &__slot {
                     &.has-emission {
-                        background: #00bb73;
+                        background: #999;
                     }
                     &.has-warning {
-                        background: orangered;
+                        background: #999;
                     }
                 }
             }

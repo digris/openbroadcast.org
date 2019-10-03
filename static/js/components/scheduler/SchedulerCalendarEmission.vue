@@ -3,6 +3,7 @@
     const DEBUG = false;
     import {backgroundColors} from './constants';
     import {hexToRGBA} from './utils';
+    import {templateFilters} from '../../utils/template-filters';
 
     export default {
         name: 'SchedulerCalendarEmission',
@@ -36,7 +37,8 @@
                     borderColor: hexToRGBA(color, 1),
                 }
             },
-        }
+        },
+        filters: templateFilters,
     }
 </script>
 <style lang="scss" scoped>
@@ -93,13 +95,25 @@
                 color: white;
                 min-width: 140px;
                 padding: 2px 4px 2px;
+                z-index: 999;
+                    text-align: center;
+
+                &__title {
+                    margin-top: 4px;
+                }
 
                 &__visual {
-                    max-width: 120px;
+                    margin-top: 8px;
+                    max-width: 130px;
+                    text-align: center;
                     img {
-                        max-width: 70px;
+                        max-width: 90px;
                         // object-fit: fill;
                     }
+                }
+
+                &__appendix {
+                    margin: 4px 0 4px;
                 }
             }
         }
@@ -126,23 +140,33 @@
                 {{ emission.obj.name }}
             </span>
         </div>
-        <!--
-        <div
-            v-if="emission.obj.image"
-            class="emission__visual">
-            <img :src="emission.obj.image">
-        </div>
-        -->
         <div v-if="detailsVisible"
             class="emission__details">
-            {{ emission.obj.co.name }}<br>
+            <div
+                class="emission__details__title">
+                <span v-if="emission.obj.series">
+                    {{ emission.obj.series }}
+                    <br>
+                    <span>{{ emission.obj.name }}</span>
+                </span>
+                <span v-else>
+                    {{ emission.obj.name }}
+                </span>
+            </div>
             <div
                 v-if="emission.obj.image"
                 class="emission__details__visual">
                 <img :src="emission.obj.image">
             </div>
-            {{ emission.obj.timeStart }}<br>
-            {{ emission.obj.timeEnd }}
+            <div
+                class="emission__details__appendix">
+                <span>
+                    {{ emission.obj.timeStart|date('HH:mm') }}
+                    -
+                    {{ emission.obj.timeEnd|date('HH:mm') }}
+                </span>
+            </div>
+
         </div>
 
     </div>

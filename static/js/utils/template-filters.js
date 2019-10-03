@@ -1,3 +1,9 @@
+
+import dayjs from 'dayjs';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+
+dayjs.extend(advancedFormat);
+
 const _ms_to_time = function (ms) {
     if (ms === undefined) {
         return '';
@@ -57,11 +63,19 @@ export function ms_to_time(ms) {
     return _ms_to_time(ms)
 }
 
-export const template_filters = {
+export function dayjsFormat(value, format) {
+    const datetime = (typeof value === 'string') ? dayjs(value): value;
+    return datetime.format(format);
+}
+
+export const templateFilters = {
     s_to_time: function (value) {
-        return s_to_time(value)
+        return s_to_time(value);
     },
     ms_to_time: function (value) {
-        return ms_to_time(value)
+        return ms_to_time(value);
+    },
+    date: function (value, format) {
+        return dayjsFormat(value, format);
     }
 };

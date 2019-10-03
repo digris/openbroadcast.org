@@ -1,5 +1,5 @@
 <script>
-    import {template_filters} from '../../../utils/template-filters';
+    import {templateFilters} from '../../../utils/template-filters';
     const DEBUG = false;
 
     export default {
@@ -53,7 +53,7 @@
                 window.dispatchEvent(_e);
             }
         },
-        filters: template_filters,
+        filters: templateFilters,
     }
 
 </script>

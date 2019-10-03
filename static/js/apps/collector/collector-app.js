@@ -5,7 +5,7 @@ import Modal from '../../components/ui/Modal.vue';
 import Visual from '../../components/ui/Visual.vue';
 import Loader from '../../components/ui/Loader.vue';
 import Playlist from './components/playlist.vue'
-import {template_filters} from '../../utils/template-filters';
+import {templateFilters} from '../../utils/template-filters';
 import {visit_by_resource} from '../../utils/visit-by-resource';
 
 const DEBUG = true;
@@ -50,7 +50,7 @@ const CollectorApp = Vue.extend({
 
         if (DEBUG) console.groupEnd();
     },
-    filters: template_filters,
+    filters: templateFilters,
     computed: {},
     methods: {
 
