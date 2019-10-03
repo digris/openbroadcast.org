@@ -55,17 +55,17 @@
             position: relative;
             display: flex;
             flex-direction: column;
-            border-top: 1px solid #fff;
-            border-bottom: 1px solid #fff;
+            border-top: 2px solid #fff;
+            border-bottom: 2px solid #fff;
 
             &:hover {
                 // background: rgba(126, 235, 157, 0.85);
                 min-height: 20px;
-                z-index: 201;
+                z-index: 90;
             }
 
             &__title {
-                background: rgba(0, 0, 0, .025);
+                // background: rgba(0, 0, 0, .025);
                 padding: 0 4px;
                 overflow: hidden;
                 white-space: nowrap;
@@ -76,7 +76,7 @@
                 &__title {
                     overflow: visible;
                     white-space: normal;
-                    z-index: 999;
+                    z-index: 91;
                 }
             }
 

@@ -65,7 +65,7 @@
             display: flex;
 
             &:hover {
-                z-index: 999;
+                z-index: 91;
             }
 
             .title {
@@ -74,7 +74,7 @@
 
             .emission-history {
                 flex-grow: 1;
-                z-index: 1001;
+                z-index: 92;
             }
         }
 
