@@ -54,7 +54,7 @@
             position: relative;
             display: flex;
             flex-direction: column;
-            border-top: 2px solid #fff;
+            border-top: 1px solid #fff;
             border-bottom: 1px solid #fff;
 
             &:hover {

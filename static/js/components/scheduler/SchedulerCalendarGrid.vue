@@ -1,5 +1,6 @@
 <script>
     const DEBUG = false;
+    import {templateFilters} from '../../utils/template-filters';
 
     const DAYPARTS = [
         {
@@ -84,17 +85,25 @@
                 });
                 return dayparts;
             },
-        }
+        },
+        filters: templateFilters,
     }
 </script>
 <style lang="scss" scoped>
 
     $border-color: #dadada;
     $border-dark-color: #a5a5a5;
+    $background-color: #ffffff;
 
     .scheduler-grid {
         position: relative;
         height: 100%;
+
+
+
+        background: $background-color;
+
+
         &__row {
             position: absolute;
             width: calc(100% - 61px);
@@ -113,15 +122,14 @@
             display: flex;
             flex-direction: column;
             border: 1px solid $border-color;
+
             &__daypart {
                 width: 100%;
                 border-bottom: 1px solid $border-dark-color;
                 position: absolute;
-
                 &:last-child {
                     border-bottom: 0;
                 }
-
                 .daypart-label {
                     width: 61px;
                     text-align: right;
@@ -134,8 +142,15 @@
         &__days {
             // background: blue;
             height: 100%;
-            margin-left: 61px;
+            // margin-left: 61px;
             display: flex;
+
+            &__placeholder_hack {
+                width: 61px;
+                height: 50px;
+                background: #f5f5f5;
+            }
+
             &__day {
 
                 height: 100%;
@@ -143,33 +158,47 @@
                 .day-header {
                     height: 50px;
                     display: flex;
+                    flex-direction: column;
                     justify-content: center;
+                    align-items: center;
                     padding: 6px 0 0 0;
+
+                    background: #f5f5f5;
 
                     .day-label {
                         display: inline-block;
                         width: 30px;
+                        text-align: center;
+                    }
+
+                    .day-date {
+                        display: inline-block;
+                        width: 28px;
+                        margin-left: 2px;
+                        text-align: center;
                     }
                 }
 
                 .day-column {
                     height: calc(100% - 50px);
                     border-left: 1px solid $border-color;
+                    background: $background-color;
                 }
 
                 &.is-weekend {
                     .day-column {
-                        background: rgba(3, 3, 3, 0.04);
+                        // background: rgba(3, 3, 3, 0.04);
+                        background: rgba(0,0,0, .025);
                     }
                 }
 
                 &.is-today {
 
-                    border-top: 1px solid $border-color;
-                    b// ackground: rgba(3, 201, 84, 0.12);
+                    // border-top: 1px solid $border-color;
+                    // background: rgba(3, 201, 84, 0.12);
 
                     .day-header {
-                        // font-weight: 400;
+                        font-weight: 400;
                     }
 
                     .day-column {
@@ -202,6 +231,10 @@
             </div>
 
             <div class="scheduler-grid__days">
+
+                <div
+                    class="scheduler-grid__days__placeholder_hack"></div>
+
                 <div
                     v-for="(day, index) in days"
                     :key="`day-row-${index}`"
@@ -209,7 +242,10 @@
                     class="scheduler-grid__days__day">
                     <div
                         class="day-header">
-                        <span class="day-label">{{ day.dayName }}</span>
+                        <span
+                            class="day-label">{{ day.dayName }}</span>
+                        <span
+                            class="day-date">{{ day.timeStart|date('D.') }}</span>
                     </div>
                     <div
                         class="day-column"></div>

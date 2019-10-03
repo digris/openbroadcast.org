@@ -49,11 +49,14 @@
             readOnly: Boolean,
             days: Array,
             emissions: Object,
+            highlightObjUuid: String,
         },
         data() {
             return {
+                // NOTE: "highlighted" vs "highlight"
+                // `highlightObjUuid` is a prop and used to trigger highlighting from component "outside"
                 highlightedObjUuid: null,
-                // highlightedObjUuid: '415fe31d-b903-4b84-9372-29187e0fe3a7',
+
                 draggedEmissionUuid: null,
                 emissionPlaceholder: {
                     visible: false,
@@ -420,6 +423,15 @@
                 this.emissionInEditorUuid = null;
             },
         },
+        watch: {
+            highlightObjUuid: function (uuid) {
+                if(uuid) {
+                    this.highlightEmission(uuid);
+                } else {
+                    this.unhighlightEmission();
+                }
+            }
+        },
     }
 </script>
 <style lang="scss" scoped>
@@ -437,9 +449,8 @@
             height: 100%;
 
             .emission-container {
-                // draggable element
                 position: absolute;
-                // transition: left 200ms, top 200ms;
+                background: #ffffff;
             }
         }
 
@@ -546,7 +557,6 @@
         ref="calendar"
         class="calendar">
 
-        <!---->
         <grid
             :pixel-height-per-hour="pixelHeightPerHour"
             :days="days"></grid>

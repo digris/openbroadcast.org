@@ -4,9 +4,11 @@
 
     import dayjs from 'dayjs';
     import advancedFormat from 'dayjs/plugin/advancedFormat';
+
     dayjs.extend(advancedFormat);
     import {backgroundColors} from './constants';
     import {hexToRGBA} from './utils';
+    import {templateFilters} from '../../utils/template-filters';
     import SchedulerCalendarEmissionContent from './SchedulerCalendarEmissionContent.vue';
     import Modal from '../../components/ui/Modal.vue';
     import UserInline from '../../components/ui/UserInline.vue';
@@ -33,20 +35,23 @@
             close: function () {
                 this.$emit('close');
             },
-            loadEmissionDetails: function() {
-                if(this.uuid) {
+            loadEmissionDetails: function () {
+                if (this.uuid) {
                     const dispatch = this.$store.dispatch('scheduler/loadEmission', this.uuid);
                 }
             },
-            setColor: function(color) {
+            setColor: function (color) {
                 this.updateEmission({
-                   color: color,
+                    color: color,
                 });
             },
-            updateEmission: function(payload) {
-                const dispatch = this.$store.dispatch('scheduler/updateEmission', {emission: this.emission, payload: payload});
+            updateEmission: function (payload) {
+                const dispatch = this.$store.dispatch('scheduler/updateEmission', {
+                    emission: this.emission,
+                    payload: payload
+                });
             },
-            deleteEmission: function() {
+            deleteEmission: function () {
                 const dispatch = this.$store.dispatch('scheduler/deleteEmission', this.uuid);
                 dispatch.then((response) => {
                     this.$emit('close');
@@ -57,10 +62,13 @@
             },
             // history
             loadEmissionHistory: function () {
-                if(!this.contentObj) {
+                if (!this.contentObj) {
                     return;
                 }
-                this.$store.dispatch('objectHistory/loadObjectHistory', {objCt: this.contentObj.ct, objUuid: this.contentObj.uuid});
+                this.$store.dispatch('objectHistory/loadObjectHistory', {
+                    objCt: this.contentObj.ct,
+                    objUuid: this.contentObj.uuid
+                });
             },
         },
         computed: {
@@ -68,19 +76,19 @@
                 return this.uuid != null;
             },
             emission() {
-                if(!this.uuid) {
+                if (!this.uuid) {
                     return null;
                 }
                 return this.$store.getters['scheduler/emissionByUuid'](this.uuid);
             },
             contentObj() {
-                if(!this.emission) {
+                if (!this.emission) {
                     return null;
                 }
                 return this.emission.co;
             },
             contentObjStyle() {
-                if(!this.contentObj) {
+                if (!this.contentObj) {
                     return null;
                 }
                 const color = backgroundColors[this.emission.color];
@@ -91,14 +99,14 @@
 
             },
             emissionHistory() {
-                if(!this.contentObj) {
+                if (!this.contentObj) {
                     return null;
                 }
                 console.debug('history', this.contentObj.ct, this.contentObj.uuid);
                 return this.$store.getters['objectHistory/objectHistoryByKey'](this.contentObj.ct, this.contentObj.uuid);
             },
             formattedTimes() {
-                if(!this.emission) {
+                if (!this.emission) {
                     return null;
                 }
                 const start = dayjs(this.emission.timeStart);
@@ -116,6 +124,7 @@
                 this.loadEmissionHistory();
             }
         },
+        filters: templateFilters
     }
 </script>
 <style lang="scss" scoped>
@@ -129,36 +138,32 @@
             margin: 20px 0;
         }
 
-        &__scheduling {
-            text-align: center;
-            .scheduling-timing {
-                font-size: 150%;
-                line-height: 160%;
-            }
-        }
-
         &__history {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            margin: 20px 0;
         }
 
         &__actions {
             display: flex;
             flex-direction: column;
+
             .background-colors {
                 display: flex;
                 width: 100%;
+
                 .color {
                     flex-grow: 1;
-                    padding: 8px;
+                    padding: 0px;
                     cursor: pointer;
                 }
             }
 
             .delete {
                 margin-top: 16px;
+
                 &__confirm {
                     text-align: center;
                     border: 2px solid #6633CC;
@@ -185,6 +190,33 @@
     <modal
         :show="visible"
         @close="close">
+
+        <div
+            slot="title"
+            v-if="emission">
+                   <span>
+                       {{ emission.timeStart|date('HH:mm') }}
+                       -
+                       {{ emission.timeEnd|date('HH:mm') }}
+                   </span>
+                <span> / </span>
+                <span>
+                       {{ emission.timeStart|date('dd. D MMM. YYYY') }}
+                   </span>
+
+                <span> / </span>
+
+                <span
+                    v-if="(emission && emission.user)"
+                    class="scheduling-programmer">
+                        by:
+                        <user-inline
+                            v-if="emission.user"
+                            :user="emission.user"></user-inline>
+                   </span>
+
+        </div>
+
         <div slot="content" class="emission-editor">
             <content-obj
                 v-if="contentObj"
@@ -192,29 +224,11 @@
                 :content-obj="contentObj"
             ></content-obj>
             <div
-                class="emission-editor__scheduling">
-               <div
-                   v-if="formattedTimes"
-                   class="scheduling-timing">
-                   <span>{{ formattedTimes.date }}</span>
-                   <br>
-                   <span>{{ formattedTimes.start }}</span>
-                   &mdash;
-                   <span>{{ formattedTimes.end }}</span>
-               </div>
-               <div
-                   v-if="(emission && emission.user)"
-                   class="scheduling-programmer">
-                    by:
-                    <user-inline
-                        v-if="emission.user"
-                        :user="emission.user"></user-inline>
-               </div>
-            </div>
-            <div
                 class="emission-editor__history">
                 <matrix
                     v-if="emissionHistory"
+                    theme="dark"
+                    :obj-uuid="( (contentObj) ? contentObj.uuid : null )"
                     :emission-history="emissionHistory"
                 ></matrix>
             </div>
@@ -228,7 +242,7 @@
                         :style="{'background-color': color}"
                         @click="setColor(index)"
                         class="color">
-                        <span>{{ color }}{{ index }}</span>
+                        <span>#</span>
                     </div>
                 </div>
                 <div

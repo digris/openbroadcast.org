@@ -262,6 +262,8 @@ class PlaylistSerializer(FlexFieldsModelSerializer):
 
     item_appearances = serializers.SerializerMethodField()
 
+    dayparts = serializers.SerializerMethodField()
+
     def get_user(self, obj):
         if not (obj.user and getattr(obj.user, "profile")):
             return
@@ -273,6 +275,13 @@ class PlaylistSerializer(FlexFieldsModelSerializer):
             for co in obj.get_items()
         ]
         return items
+
+    def get_dayparts(self, obj, **kwargs):
+
+        return [
+            {"day": dp.day, "start": dp.time_start, "end": dp.time_end}
+            for dp in obj.dayparts.active()
+        ]
 
     class Meta:
         model = Playlist
@@ -292,4 +301,5 @@ class PlaylistSerializer(FlexFieldsModelSerializer):
             "item_appearances",
             "num_media",
             "duration",
+            "dayparts",
         ]

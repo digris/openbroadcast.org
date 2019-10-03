@@ -113,18 +113,6 @@
         @dragleave="dragleave"
         @drop="drop">
         <div class="clipboard">
-            <!--
-            <div class="clipboard__header">
-                (( Board))
-            </div>
-            <div class="clipboard__search">
-                (( search))
-            </div>
-            -->
-            <div
-                :class="{ 'clipboard__dropzone--is-active': dropActive }"
-                class="clipboard__dropzone">
-            </div>
 
             <div class="clipboard__actions">
                 <span
@@ -140,14 +128,19 @@
                         v-for="item in clipboardItems"
                         :key="item.uuid + item.ct"
                         :transfer-data="item">
-                        <!---->
                         <template slot="image">
                             <div style="background: yellow; z-index: 1001;">(( DRAG ))</div>
                         </template>
                         <clipboard-item
-                            :item="item"></clipboard-item>
+                            :item="item"
+                            @mouseenter="$emit('itemMouseenter', item.uuid)"
+                            @mouseleave="$emit('itemMouseleave', item.uuid)"></clipboard-item>
                     </drag>
                 </transition-group>
+            </div>
+            <div
+                :class="{ 'clipboard__dropzone--is-active': dropActive }"
+                class="clipboard__dropzone">
             </div>
         </div>
     </drop>

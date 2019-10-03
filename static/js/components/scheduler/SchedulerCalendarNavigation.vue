@@ -9,6 +9,7 @@
 
         props: {
             settings: Object,
+            isFullscreen: Boolean,
         },
         components: {
             'color-chooser': ColorChooser,
@@ -158,6 +159,12 @@
                 :colors="emissionColors"
                 :selected-color="emissionColor">
             </color-chooser>
+            <span
+                :class="{ 'is-current': isFullscreen }"
+                class="action"
+                @click.prevent="$emit('toggleFullscreen')">
+                FS
+            </span>
 
         </div>
 

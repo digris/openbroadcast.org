@@ -30,7 +30,6 @@ const mutations = {
     setObjectHistory: (state, {key, payload}) => {
         if (DEBUG) console.debug('mutations - setObjectHistory', key, payload);
         Vue.set(state.objectHistory, key, payload);
-
     },
 };
 

@@ -40,18 +40,15 @@
                 calendarWidth: 0,
                 dayRange: null,
                 isFullscreen: false,
+                highlightObjUuid: null,
             }
         },
         mounted: function () {
-
-            // this.setSchedulerSizes();
             this.$nextTick(() => {
                this.setSchedulerSizes();
             });
-
             // recalculate sizes on resize
             window.onresize = debounce(() => this.setSchedulerSizes(), 20);
-
             this.updateSchedule();
         },
         computed: {
@@ -80,7 +77,6 @@
                 return null;
             },
             days() {
-                //
                 const days = [];
                 for (let i = 0; i < this.settings.numDays; i++) {
                     const offset = i - this.offset;
@@ -97,7 +93,6 @@
             }
         },
         methods: {
-
             setSchedulerSizes: function() {
                 const calendarContainer = this.$refs['calendar'];
                 const rect = calendarContainer.$el.getBoundingClientRect();
@@ -129,29 +124,28 @@
                 settings.emissionColor = parseInt(color);
                 this.updateSettings(settings);
             },
-
             updateSettings: function (settings) {
                 this.$store.dispatch('scheduler/setSettings', settings);
             },
             setDefaultSettings: function () {
                 this.$store.dispatch('scheduler/setDefaultSettings');
             },
-
             updateSchedule: function () {
                 const timeStart = this.dayStart.timeStart.format('YYYY-MM-DD HH:mm');
                 const timeEnd = this.dayEnd.timeEnd.add(6, 'hour').format('YYYY-MM-DD HH:mm');
-
-                console.debug('range to load:', timeStart, timeEnd)
-
                 this.$store.dispatch('scheduler/loadSchedule', {timeStart: timeStart, timeEnd: timeEnd});
             },
-
             debouncedUpdateSchedule: debounce(function () {
                 console.debug('debounced updateSchedule');
                 this.updateSchedule();
             }, 250),
-
-
+            // TODO: check implementation
+            clipboardItemMouseenter: function(uuid) {
+                this.highlightObjUuid = uuid;
+            },
+            clipboardItemMouseleave: function(uuid) {
+                this.highlightObjUuid = null;
+            },
         },
         watch: {
             settings: function (o, n) {
@@ -166,41 +160,20 @@
         },
     }
 </script>
+
 <style lang="scss" scoped>
-    .content {
-        // background: yellow;
-    }
-
-    .calendar-header {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-    }
-
     .calendar-navigation {
-        margin-bottom: 20px;
+        margin-bottom: 24px;
     }
-
 </style>
 
 <template>
     <layout-base
-
         :fullscreen="isFullscreen">
-
-        <div class="calendar-header">
-            <h2>
-                {{ dayStart.timeStart.format('ddd. D MMMM YYYY') }}
-                &mdash;
-                {{ dayEnd.timeStart.format('ddd. D MMMM YYYY') }}
-
-                <span
-                    @click="isFullscreen = !isFullscreen"
-                >FS</span>
-            </h2>
-        </div>
         <calendar-navigation
             :settings="settings"
+            :isFullscreen="isFullscreen"
+            @toggleFullscreen="isFullscreen = !isFullscreen"
             @updateDaysOffset="updateDaysOffset"
             @setNumDays="setNumDays"
             @decreaseVerticalSize="updatePixelHeightPerHour(-6)"
@@ -216,12 +189,15 @@
             :settings="settings"
             :emissions="emissions"
             :days="days"
+            :highlightObjUuid="highlightObjUuid"
             @updateDaysOffset="updateDaysOffset"
         ></calendar>
         <template v-slot:sidebar>
             <clipboard
-                style="margin-top: 136px;"
-                v-if="(! readOnly)"></clipboard>
+                style="margin-top: 89px;"
+                v-if="(! readOnly)"
+                @itemMouseenter="clipboardItemMouseenter"
+                @itemMouseleave="clipboardItemMouseleave"></clipboard>
         </template>
     </layout-base>
 </template>

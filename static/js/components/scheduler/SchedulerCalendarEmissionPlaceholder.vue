@@ -44,21 +44,21 @@
 </script>
 <style lang="scss" scoped>
     .emission-placeholder {
-        // background: yellow;
+
         position: absolute;
         z-index: 999;
         pointer-events: none;
-
         margin: 1px 0 1px 1px;
-        background: rgba(0, 0, 0, 0.85);
+        background: rgba(#6633CC, 0.85);
         height: calc(100% - 1px);
-        font-size: 80%;
-
+        // font-size: 80%;
         transition: none;
 
         &__title {
             background: rgba(0, 0, 0, 0.025);
             padding: 0 4px;
+            margin-top: 4px;
+            color: #ffffff;
         }
     }
 

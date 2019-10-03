@@ -80,7 +80,9 @@
 
 <template>
     <div
-        class="clipboard-item">
+        class="clipboard-item"
+        @mouseenter="$emit('mouseenter')"
+        @mouseleave="$emit('mouseleave')">
         <div class="clipboard-item__visual">
             <visual :url="item.image"></visual>
             <object-actions

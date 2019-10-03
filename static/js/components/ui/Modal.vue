@@ -70,6 +70,8 @@
                 height: 28px;
                 .modal-topbar-title {
                     flex-grow: 1;
+                    color: #FFFFFF;
+                    padding: 6px 0 0 0;
                 }
                 .modal-topbar-menu {
                     display: flex;

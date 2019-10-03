@@ -233,6 +233,7 @@
             class="emission-history__matrix-container"
             v-if="matrixVisible">
                 <matrix
+                    :obj-uuid="objUuid"
                     :emission-history="emissionHistory"
                 ></matrix>
         </div>

@@ -4,6 +4,7 @@ import createPersistedState from 'vuex-persistedstate';
 import createMutationsSharer from 'vuex-shared-mutations';
 import scheduler from './_scheduler';
 import objectHistory from './_objectHistory';
+import library from './_library';
 
 Vue.use(Vuex);
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     modules: {
         scheduler,
         objectHistory,
+        library,
     },
     state: {
         settings: {
