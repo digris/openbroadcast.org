@@ -47,6 +47,7 @@
 
 
             width: 40vw;
+            min-width: 800px;
             // height: 60%;
 
 
