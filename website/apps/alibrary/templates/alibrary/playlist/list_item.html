@@ -123,6 +123,7 @@
                     <i class="icon icon-edit"></i>
                 </a>
             </li>
+            {% comment %}
             {% if perms.alibrary.schedule_playlist and item.type == "broadcast" and item.broadcast_status == 1 %}
             <li>
                 <a href="{% url "abcast-schedule-select-playlist"  %}?playlist_id={{ item.pk }}&next={% url "abcast-schedule" %}"
@@ -136,6 +137,7 @@
                 </a>
             </li>
             {% endif %}
+            {% endcomment %}
         </ul>
     </div>
 

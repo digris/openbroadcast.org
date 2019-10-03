@@ -10,27 +10,6 @@
 		<dd>
             <a target="_blank" href="{{ object.website }}">{{ object.website }}</a>
 		</dd>
-		{% if object.channel_set.count %}
-		<dt>
-			{% trans "Channels" %}:
-		</dt>
-		<dd>
-			<ul class="unstyled">
-				<li>
-				{% for channel in object.channel_set.all %}
-				<span>
-                    {% if channel.has_scheduler %}
-					<a href="{% url "abcast-schedule" %}?channel_id={{ channel.pk }}">{{ channel.name }}</a>
-                    {%  else %}
-                    {{ channel.name }}
-                    {% endif %}
-                    {% if not forloop.last %}, {% endif %}
-				</span>
-				{% endfor %}
-				</li>
-			</ul>
-		</dd>
-		{% endif %}
 	</dl>
 </div>
 

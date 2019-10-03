@@ -143,5 +143,8 @@
                 class="clipboard__dropzone">
             </div>
         </div>
+        <div style="margin: 10px 0 0 4px;">
+            <a href="/program/scheduler/legacy/">Old Scheduler</a>
+        </div>
     </drop>
 </template>

@@ -38,6 +38,7 @@
                     </a>
                 </li>
             {% endif %}
+            {% comment %}
             {% if perms.alibrary.schedule_playlist and object.type == "broadcast" and object.broadcast_status == 1 %}
                 <li>
                     <a class="hoverable"
@@ -48,6 +49,7 @@
                     </a>
                 </li>
             {% endif %}
+            {% endcomment %}
             {% if user.is_authenticated %}
                 <li>
                     <a class="hoverable" href="{% follow_all_url object %}?next={{ request.get_full_path }}"

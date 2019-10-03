@@ -153,25 +153,6 @@
     </div>
 
 
-    <!-- channel selector
-    <div id="channel_selection" class="holder-selection">
-        <h4>{% trans "Channel selection" %}</h4>
-        <ul class="unstyled">
-            {% for c in channels %}
-                <li class="channel {% if channel.pk == c.pk %}active{% endif %}">
-                    <ul class="unstyled hoverable">
-                        <li><a href="{% url "abcast-schedule" %}?channel_id={{ c.pk }}">{{ c.name }}</a></li>
-                        <li>{% trans "Station" %}: {{ c.station.name }}</li>
-                    </ul>
-
-
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    -->
-
-
     {# block.super #}
     <div id="container_selection" class="holder-selection"></div>
 {% endblock %}

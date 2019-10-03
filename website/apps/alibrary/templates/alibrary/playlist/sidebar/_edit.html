@@ -9,6 +9,7 @@
                     <span>{% trans "Back to Detail-View" %}</span>
                 </a>
             </li>
+            {% comment %}
             {% if perms.alibrary.schedule_playlist and object.type == "broadcast" and object.broadcast_status == 1 %}
                 <li>
                     <a class="hoverable"
@@ -19,6 +20,7 @@
                     </a>
                 </li>
             {% endif %}
+            {% endcomment %}
             {% if user.is_authenticated and user == object.user %}
                 <li>
                     <a class="hoverable" href="{{ object.get_delete_url }}" title="{% trans "Delete" %}">

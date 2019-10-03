@@ -5,7 +5,9 @@ from django.conf.urls import url
 from abcast import views
 
 urlpatterns = [
-    url(r"^$", views.schedule, name="abcast-schedule"),
+    url(r"^$", views.SchedulerIndexNG.as_view(), name="scheduler-index-ng"),
+    # legacy views
+    url(r"^legacy/$", views.schedule, name="abcast-schedule"),
     url(
         r"^emssion/(?P<pk>\d+)/$",
         views.EmissionDetailView.as_view(),
@@ -27,6 +29,4 @@ urlpatterns = [
         name="abcast-schedule-copy-paste-day",
     ),
     url(r"^delete-day/$", views.delete_day, name="abcast-schedule-delete-day"),
-    # next-gen views
-    url(r"^ng/$", views.SchedulerIndexNG.as_view(), name="scheduler-index-ng"),
 ]
