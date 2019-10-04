@@ -72,7 +72,7 @@
     @import '../../../../sass/site/variables';
     .player-footer {
         border-top: 1px solid #eaeaea;
-        padding: 3px 6px 1px 6px;
+        padding: 5px 6px 1px 6px;
         display: flex;
         color: #fff;
 

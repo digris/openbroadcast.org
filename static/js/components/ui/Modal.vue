@@ -55,6 +55,7 @@
             @media only screen and (max-width: 800px) {
                 width: 100vw;
                 height: 100%;
+                min-width: unset;
             }
 
 
