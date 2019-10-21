@@ -1,0 +1,52 @@
+{% extends "layout_base.html" %}
+{% load adv_cache hash_tags i18n static dajaxice_templatetags sekizai_tags dict_tags %}
+
+{% block scope %}alibrary.release{% endblock %}
+
+{% block tagcloud %}
+    {% include "search/tagcloud.html" %}
+{% endblock %}
+
+{% block inner %}
+
+    <div class="list-header">
+        <div class="controls-container">
+            <div class="controls">
+                {% with object=None ct="alibrary.release" %}
+                    {% include "alibrary/element/_list_primary_actions.html" %}
+                {% endwith %}
+            </div>
+        </div>
+        <div class="pagination-container">
+            {% include "search/pagination.html" %}
+        </div>
+    </div>
+    <div class="list-body">
+        <div class="list list--grid">
+        {% hash_user_groups request.user as group_hash %}
+        {% for object in object_list %}
+            <div class="list-item">
+                {% comment %}
+                {% cache 600 "release_list_card" item.pk group_hash item.updated %}
+
+                {% endcache %}
+                {% endcomment %}
+
+                {% include 'alibrary/release/_card.html' with search_result=search_results_by_id|get_dict_item:object.pk %}
+
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    <div class="list-footer">
+        <div class="pagination-container">
+            {% include "search/pagination.html" %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "alibrary/release/sidebar/_list.html" %}
+    {% include "search/_partials/_list_ordering.html" with ordering=ordering %}
+    {% include "search/_partials/_list_filter.html" with filters=filters %}
+{% endblock %}

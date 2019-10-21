@@ -8,8 +8,8 @@
 
         <title>open broadcast - Player</title>
 
-        <link rel="icon" type="image/png" href="{% static 'img/base/favicon.png' %}" />
-        <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/base/favicon.png' %}">
+        <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/base/favicon.png" />
+        <link rel="shortcut icon" type="image/x-icon" href="{{ STATIC_URL }}img/base/favicon.png">
 
         <!-- start: webpack bundle handling -->
         {% if not webpack_devserver %}

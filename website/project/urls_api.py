@@ -65,4 +65,3 @@ try:
 
 except Exception as e:
     print("unable to register API (v1) resources: {}".format(e))
-    pass

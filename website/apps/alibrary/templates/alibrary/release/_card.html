@@ -1,0 +1,110 @@
+{% load i18n spurl playlist_tags calc_tags lazy_image_tags truncate_tags arating_tags %}
+
+<div class="card card--release">
+    <div class="card__visual">
+        <div class="image">
+            {% lazy_image object.main_image 'crop' '270x270' %}
+        </div>
+        <div class="actions">
+            <object-actions
+                ct="{{ object.get_ct }}"
+                uuid="{{ object.uuid }}"
+                url="{% url 'api:release-detail' object.uuid %}"
+                edit-url="{% url 'alibrary-release-edit' object.pk %}"
+                {% if perms.alibrary.play_media %}
+                    :can-play="(true)"
+                    :can-queue="(true)"
+                {% endif %}
+                {% if perms.alibrary.downoad_media %}
+                    :can-download="(true)"
+                {% endif %}
+                {% if perms.alibrary.change_release %}
+                    :can-edit="(true)"
+                {% endif %}
+                actions="play,queue,download,edit">
+            </object-actions>
+        </div>
+        <div class="card__visual__top">
+            <div class="flags">
+                {% if object.is_new %}{% trans 'new' %}{% endif %}
+                {% if object.is_promotional %}{% trans 'promo' %}{% endif %}
+            </div>
+        </div>
+        <div class="tags">
+            {% for tag in object.tags|slice:":8" %}
+                <span class="tag">{{ tag.name|truncate_chars_inner:10 }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card__body">
+
+        <div class="card__body__primary">
+            <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">
+                {{ object.name|truncate_chars_inner:22 }}
+                {% if object.release_country %}({{ object.release_country.iso2_code }}){% endif %}
+            </a>
+        </div>
+        <div>
+
+        </div>
+        <div>
+            {% for artist in object.get_artists %}
+                {% if "join_phrase" in artist %}
+                    {% if artist.join_phrase %}{{ artist.join_phrase }}{% endif %}
+                    {% if artist.artist.get_absolute_url %}
+                        <a href="{{ artist.artist.get_absolute_url }}"
+                           title="{{ artist.artist.name }}">{{ artist.artist.name|truncate_chars_inner:12 }}</a>
+                    {% else %}
+                        <span>{{ artist.artist.name|truncate_chars_inner:12 }}</span>
+                    {% endif %}
+                {% else %}
+                    {% if artist.get_absolute_url %}
+                        <a href="{{ artist.get_absolute_url }}">{{ artist.name|truncate_chars_inner:32 }}</a>{% if not forloop.last %},{% endif %}
+                    {% else %}
+                        <span>{{ artist.name|truncate_chars_inner:32 }}</span>{% if not forloop.last %},
+                    {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% empty %}
+                -
+            {% endfor %}
+        </div>
+        <div>
+            {{ object.get_media.count }}{% if object.totaltracks %}/{{ object.totaltracks }}{% endif %}
+        </div>
+
+
+        <div>
+            {% if object.label %}
+                <a href="{{ object.label.get_absolute_url }}"
+                   title="{{ object.label.name }}">{{ object.label.name|truncate_chars_inner:18 }}</a>
+            {% else %}
+                -
+            {% endif %}
+        </div>
+
+        <div>
+            {{ object.releasedate|date:"Y/m/d"|default:'' }}
+        </div>
+
+
+        <div>
+            <a href="{{ object.creator.get_absolute_url }}">{{ object.creator.profile.get_display_name|truncate_chars:16 }}</a>
+        </div>
+        <div>
+            {% if object.type == 'broadcast' %}
+                {# object.get_status_display #}
+            {% endif %}
+            {% if object.target_duration %}
+                {{ object.target_duration|sec_to_time }}
+            {% else %}
+                {{ object.duration|divide:1000|sec_to_time }}
+            {% endif %}
+        </div>
+    </div>
+    <!--
+    <div class="card__footer">
+        (( footer ))
+    </div>
+    -->
+</div>
