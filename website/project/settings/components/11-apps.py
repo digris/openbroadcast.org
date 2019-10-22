@@ -162,8 +162,8 @@ LOGOUT_URL = "/account/logout/"
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_ACTIVATION_DAYS = 7
 AUTHENTICATION_BACKENDS = (
-    "social_core.backends.google.GoogleOAuth2",
     "social_core.backends.facebook.FacebookOAuth2",
+    "social_core.backends.google.GoogleOAuth2",
     # "social_core.backends.soundcloud.SoundcloudOAuth2",
     # "social_core.backends.vk.VKOAuth2",
     # 'social_core.backends.twitter.TwitterOAuth',

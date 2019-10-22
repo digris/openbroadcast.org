@@ -32,8 +32,10 @@ body.app--account {
   }
 
   .form-separator {
-    padding: 4px;
-    border-top: 1px solid #aaa;
+    padding: 4px 0;
+    margin: 16px 0;
+    border-top: 1px solid #eee;
+
   }
 
   .form--account {
@@ -145,31 +147,69 @@ body.app--account {
   }
 
   .social-login-container {
-    margin-top: 12px;
+    margin: 20px 0 10px;
     display: grid;
     grid-template-columns: calc(50% - 6px) calc(50% - 6px);
     grid-gap: 12px;
 
     .auth-social {
-      padding: 10px;
+      padding: 8px 10px;
       display: flex;
       align-items: center;
+      justify-content: center;
       text-decoration: none;
+      font-size: 14px;
       color: #222;
       background: #e5e5e5;
-      transition: background 200ms;
+      border: 1px solid transparent;
+      transition: background 200ms, border-radius 100ms;
 
       &:hover {
-        background: $primary-color;
-
-        // border-radius: 4px
-        color: $white;
+        border-radius: 6px;
       }
 
       .icon {
-        width: 22px;
-        font-size: 16px;
+        height: 20px;
+      }
+
+      .icon-container {
+        display: block;
+        float: left;
+        margin-right: 14px;
+      }
+
+      .text-container {
+        display: block;
+        float: left;
+        padding-top: 2px;
       }
     }
+
+    .auth-social-facebook {
+      color: #fff;
+      background: #1877F2;
+
+      .icon-container {
+        img.icon {
+          height: 24px;
+        }
+      }
+
+      &:hover {
+        background: #1877F2;
+      }
+    }
+
+    .auth-social-google-oauth2 {
+      color: #5a5a5a;
+      background: white;
+      border-color: #5a5a5a;
+
+      &:hover {
+        color: #5a5a5a;
+        background: white;
+      }
+    }
+
   }
 }

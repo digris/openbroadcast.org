@@ -14,7 +14,7 @@ from django.contrib.auth import get_user_model
 from django.http import Http404
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
-from .serializers import EventSerializer
+from .serializers import ObjectEventSerializer
 from ..models import Event
 
 USER_MODEL = settings.AUTH_USER_MODEL
@@ -55,6 +55,6 @@ class ObjectEventView(APIView):
         log.debug("event PUT ct: {} - id: {} - user: {}".format(_ct, obj.pk, user))
 
         event = Event.create_event(user, obj, event_type=event_type)
-        serializer = EventSerializer(event)
+        serializer = ObjectEventSerializer(event)
 
         return Response(serializer.data)

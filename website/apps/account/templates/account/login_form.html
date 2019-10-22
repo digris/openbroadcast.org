@@ -9,13 +9,13 @@
     <div class="title">
         <h2>{% trans "login"|title %}</h2>
     </div>
-    <div class="form-prefix">
-        <!--
-        <p>
-            (( text ))
-        </p>
-        -->
+
+    {% include 'account/partials/_social_auth_login.html' %}
+
+    <div class="form-separator">
+        {% trans 'Or continue with' %}
     </div>
+
     <div class="form-container">
         {% include 'account/partials/_form.html' with submit_text='Login' %}
     </div>
@@ -29,8 +29,5 @@
             <a href="{% url 'account:password-recover' %}">{% trans 'Reset password' %}</a>
         </span>
     </div>
-    <div class="form-separator">
-        {% trans 'Or connect with an existing account:' %}
-    </div>
-    {% include 'account/partials/_social_auth_login.html' %}
+
 {% endblock %}

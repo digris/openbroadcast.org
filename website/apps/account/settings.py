@@ -13,8 +13,8 @@ BACKEND_DETAILS = {
     },
     "facebook": {
         "name": "Facebook",
-        "icon": "icon-facebook",
-        "cta": _("Continue with Facebook"),
+        "icon": "facebook",
+        "cta": _("Login with Facebook"),
     },
     "soundcloud": {
         "name": "Soundcloud",
@@ -28,8 +28,8 @@ BACKEND_DETAILS = {
     },
     "google-oauth2": {
         "name": "Google",
-        "icon": "icon-google-plus",
-        "cta": _("Continue with Google"),
+        "icon": "google",
+        "cta": _("Login with Google"),
     },
     "dropbox-oauth2": {
         "name": "Dropbox",

@@ -1,4 +1,5 @@
 {% load account_tags %}
+{% comment %}
 <div class="social-login-container">
     {% for backend in backends.backends %}
         {% backend_detail_as backend as backend_detail %}
@@ -6,6 +7,22 @@
            data-turbolinks="false">
             <i class="icon {{ backend_detail.icon }}"></i>
             <span>{{ backend_detail.cta }}</span>
+        </a>
+    {% endfor %}
+</div>
+{% endcomment %}
+<div class="social-login-container">
+    {% for backend in backends.backends %}
+        {% backend_detail_as backend as backend_detail %}
+        <a href="{% url "social:begin" backend %}"
+           class="auth-social auth-social-{{ backend }}"
+           data-turbolinks="false">
+            <span class="icon-container">
+                <img class="icon icon-brand" src="/static/icons/brands/{{ backend_detail.icon }}.svg" />
+            </span>
+            <span class="text-container">
+                {{ backend_detail.cta }}
+            </span>
         </a>
     {% endfor %}
 </div>

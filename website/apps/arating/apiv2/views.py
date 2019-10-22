@@ -47,6 +47,8 @@ class ObjectRatingView(APIView):
         else:
             user = request.user
 
+        log.debug("vote GET obj: {} - user: {}".format(obj, user))
+
         serializer = ObjectRatingSerializer(instance=obj, user=user)
         return Response(serializer.data)
 
@@ -83,8 +85,8 @@ class ObjectRatingView(APIView):
             raise ValidationError("invalid value")
 
         log.debug(
-            "vote PUT ct: {} - id: {} - user: {} - vote: {}".format(
-                _ct, obj.pk, user, vote
+            "vote PUT ct: {} - id: {} - user: {} - user id: {} - vote: {}".format(
+                _ct, obj.pk, user, user.pk, vote
             )
         )
 
