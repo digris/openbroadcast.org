@@ -16,7 +16,7 @@ from rest_framework.views import APIView
 
 from .serializers import EmissionSerializer, EmissionHistorySerializer
 from ..models import Emission, Channel
-from ..utils.scheduler import check_slot_availability
+from ..utils import scheduler
 
 DEFAULT_CHANNEL_ID = 1
 
@@ -70,7 +70,7 @@ class EmissionViewSet(FlexFieldsModelViewSet):
             apps.get_model(*obj_ct.split(".")), uuid=obj_uuid
         )
 
-        available, message = check_slot_availability(
+        available, message = scheduler.check_slot_availability(
             time_start=time_start,
             time_end=time_start
             + datetime.timedelta(milliseconds=content_object.duration),
@@ -107,7 +107,7 @@ class EmissionViewSet(FlexFieldsModelViewSet):
             time_start = datetime.datetime.strptime(
                 request.data.get("time_start"), "%Y-%m-%d %H:%M"
             )
-            available, message = check_slot_availability(
+            available, message = scheduler.check_slot_availability(
                 time_start=time_start,
                 time_end=time_start
                 + datetime.timedelta(milliseconds=emission.content_object.duration),
@@ -154,12 +154,52 @@ class EmissionHistory(APIView):
 emission_history = EmissionHistory.as_view()
 
 
-class PlayoutSchedule(APIView):
-    def get_object(self):
-        obj_ct = self.kwargs.get("obj_ct")
-        obj_uuid = self.kwargs.get("obj_uuid")
+class FlattenedSchedule(APIView):
+    """
+    "flattened" data for channel's schedule:
+        ...
+        {
+            "emission": "/api/v1/abcast/emission/28169/",
+            "item": "/api/v1/library/track/95d416f8-6343-448e-8928-953cc127ede6/",
+            "time_start": "2019-10-23T11:37:29.279000",
+            "time_end": "2019-10-23T11:40:38.529000",
+            "verbose_name": "CafiCreme Dda proc"
+        },
+        ...
 
-        return get_object_or_404(apps.get_model(*obj_ct.split(".")), uuid=obj_uuid)
+    """
+
+    def get(self, request):
+        _time_range = request.GET.get("time_range")
+        if _time_range:
+            time_range = list(map(int, _time_range.split(",")))
+        else:
+            time_range = (-3600, 3600)
+
+        channel = Channel.objects.get(pk=1)
+
+        schedule = scheduler.get_schedule(
+            range_start=abs(time_range[0]), range_end=time_range[1], channel=channel
+        )
+
+        return Response({"meta": {"total_count": len(schedule)}, "objects": schedule})
+
+
+flattened_schedule = FlattenedSchedule.as_view()
+
+
+class PlayoutSchedule(APIView):
+
+    """
+    raw / track-based schedule for playout (pypo)
+    # TODO: check implementation in pypo (currently not used)
+    """
+
+    # def get_object(self):
+    #     obj_ct = self.kwargs.get("obj_ct")
+    #     obj_uuid = self.kwargs.get("obj_uuid")
+    #
+    #     return get_object_or_404(apps.get_model(*obj_ct.split(".")), uuid=obj_uuid)
 
     def get(self, request):
 

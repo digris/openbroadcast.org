@@ -23,6 +23,10 @@ urlpatterns = [
         views.emission_history,
         name="emission-history",
     ),
-    # schedule data needed for playout / pzpo
-    url(r"^schedule/$", views.playout_schedule, name="playout-schedule"),
+    # schedule data needed for radio site
+    # TODO: implement multi-channel version
+    url(r"^flattened-schedule/$", views.flattened_schedule, name="flattened-schedule"),
+    # schedule data needed for playout / pypo
+    # TODO: check implementation in pypo (currently not used)
+    url(r"^playout-schedule/$", views.playout_schedule, name="playout-schedule"),
 ]
