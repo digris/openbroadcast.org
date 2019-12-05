@@ -1,4 +1,4 @@
-Django==1.10.8
+Django==1.11.23
 django-cacheops==4.1
 
 
