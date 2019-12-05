@@ -111,7 +111,7 @@ class Series(models.Model):
         ordering = ("-name",)
 
     def __str__(self):
-        return "%s" % (self.name)
+        return "{}".format(self.name)
 
 
 @python_2_unicode_compatible
@@ -754,6 +754,20 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
             self.duration = self.get_duration()
         except Exception as e:
             self.duration = 0
+
+        # auto-add incremented series number
+        if self.series and not self.series_number:
+            _qs = (
+                type(self)
+                .objects.filter(series=self.series)
+                .exclude(pk=self.pk)
+                .order_by("-series_number")
+            )
+            _p = _qs.first()
+            if _p and _p.series_number:
+                self.series_number = _p.series_number + 1
+            else:
+                self.series_number = 1
 
         # TODO: maybe move
         self.broadcast_status, self.broadcast_status_messages = self.self_check()

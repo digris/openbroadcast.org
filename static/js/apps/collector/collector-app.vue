@@ -117,10 +117,8 @@
         height: 100%;
 
         .input-container {
-
             margin: 12px 0;
             padding: 6px;
-
             .input-group {
                 .input-group-field {
                     box-sizing: border-box;
@@ -132,15 +130,13 @@
                     border: 1px solid #444444;
                 }
             }
-
         }
-
         .list-container {
             @include custom-scroll-bar;
             flex: 1;
             overflow: auto;
+            max-height: 70vh;
         }
-
     }
 
     .playlist-create {

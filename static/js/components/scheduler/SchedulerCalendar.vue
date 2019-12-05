@@ -138,19 +138,15 @@
             },
             mappedEmissions() {
                 const emissions = [];
+
                 for (let uuid in this.emissions) {
                     const emission = this.emissions[uuid];
-                    // const timeStart = dayjs(emission.timeStart);
                     const timeStart = emission.timeStartObj;
-                    const timeDiff = timeStart.diff(this.dayStart.timeStart, 'second');
 
-                    // console.table({
-                    //     name: emission.name,
-                    //     timeStart: emission.timeStart,
-                    //     parsedTimeStart: timeStart.format('YYYY-MM-DD HH:mm:ss'),
-                    //     schedulerTimeStart: this.dayStart.timeStart.format('YYYY-MM-DD HH:mm:ss'),
-                    //     timeDiff: timeDiff
-                    // });
+                    // TODO: how to better handle DST ??
+                    // for now this atleast fixes the display. but maybe this should be handled in general...
+                    const UTCDiff = this.dayStart.timeStart.utcOffset() - timeStart.utcOffset();
+                    const timeDiff = timeStart.diff(this.dayStart.timeStart.add(UTCDiff, 'minute'), 'second');
 
                     // exclude items out of displayed range
                     if (timeDiff < 0 || timeDiff >= (60 * 60 * 24 * this.days.length)) {
@@ -171,18 +167,10 @@
                             width: this.pixelWidthPerDay + 'px'
                         }
                     })
-
                 }
                 return emissions;
             },
-            // currentTimePosition(timeDiff) {
-            //     const dayOffset = Math.floor(timeDiff / SECONDS_PER_DAY);
-            //     const secondsOffset = timeDiff - (dayOffset * SECONDS_PER_DAY);
-            //     return {
-            //         x: this.pixelWidthPerDay * dayOffset,
-            //         y: this.pixelHeightPerHour * secondsOffset / 60 / 60
-            //     };
-            // },
+
         },
         methods: {
 
@@ -228,6 +216,9 @@
             timeDiffToPosition: function (timeDiff) {
                 const dayOffset = Math.floor(timeDiff / SECONDS_PER_DAY);
                 const secondsOffset = timeDiff - (dayOffset * SECONDS_PER_DAY);
+
+                // console.table(timeDiff, dayOffset, secondsOffset);
+
                 return {
                     x: this.pixelWidthPerDay * dayOffset,
                     y: this.pixelHeightPerHour * secondsOffset / 60 / 60
@@ -305,22 +296,12 @@
 
 
             dragover: function (transferData, e) {
-
                 const position = this.eventToXY({e});
-                // if (DEBUG) console.debug('dragover', position);
 
                 if(position) {
-
                     // TODO: should not be needed!
                     this.emissionPlaceholder.visible = true;
                     this.emissionPlaceholder.position = position;
-
-                    // this.emissionPlaceholder.style = {
-                    //     left: position.x + 'px',
-                    //     top: position.y + 'px',
-                    //     width: this.pixelWidthPerDay + 'px',
-                    //     height: (transferData.duration / 60 / 60 / 1000 * this.pixelHeightPerHour) + 'px',
-                    // };
                 }
 
             },
@@ -347,9 +328,6 @@
                     console.debug('added item to scheduler', transferData);
                     this.createEmission(transferData, formattedTimeStart);
                 }
-
-
-                // this.updateEmission(transferData, formattedTimeStart);
 
             },
 

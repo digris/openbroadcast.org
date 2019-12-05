@@ -514,6 +514,10 @@ admin.site.register(Daypart, DaypartAdmin)
 admin.site.register(PlaylistItem, PlaylistItemAdmin)
 
 
+class SeriesAdmin(admin.ModelAdmin):
+    pass
+
+
 class SeasonAdmin(TranslatableAdmin):
     pass
 
@@ -525,4 +529,4 @@ class WeatherAdmin(TranslatableAdmin):
 admin.site.register(Season, SeasonAdmin)
 admin.site.register(Weather, WeatherAdmin)
 
-admin.site.register(Series)
+admin.site.register(Series, SeriesAdmin)

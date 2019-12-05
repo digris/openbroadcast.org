@@ -4,8 +4,10 @@ from __future__ import unicode_literals
 import datetime
 import logging
 
+from operator import itemgetter
 from django.apps import apps
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django_filters import rest_framework as filters
 from rest_flex_fields import FlexFieldsModelViewSet
 from rest_framework import permissions
@@ -14,7 +16,11 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
 from rest_framework.views import APIView
 
-from .serializers import EmissionSerializer, EmissionHistorySerializer
+from .serializers import (
+    EmissionSerializer,
+    EmissionHistorySerializer,
+    PlayoutScheduleSerializer,
+)
 from ..models import Emission, Channel
 from ..utils import scheduler
 
@@ -192,30 +198,37 @@ class PlayoutSchedule(APIView):
 
     """
     raw / track-based schedule for playout (pypo)
-    # TODO: check implementation in pypo (currently not used)
+    # TODO: check implementation in pypo (currently not used, see pypo-ng)
     """
 
-    # def get_object(self):
-    #     obj_ct = self.kwargs.get("obj_ct")
-    #     obj_uuid = self.kwargs.get("obj_uuid")
-    #
-    #     return get_object_or_404(apps.get_model(*obj_ct.split(".")), uuid=obj_uuid)
+    def get_content_items(self, emissions, time_start, time_end):
+        for emission in emissions:
+            for content_item in emission.get_content_items():
+                if (
+                    content_item.time_end >= time_start
+                    and content_item.time_start <= time_end
+                ):
+                    yield content_item
 
     def get(self, request):
 
-        time_start = datetime.datetime.now()
-        time_end = time_start + datetime.timedelta(seconds=60 * 60 * 4)
+        time_start = timezone.now() - datetime.timedelta(seconds=60 * 30)
+        time_end = timezone.now() + datetime.timedelta(seconds=60 * 30)
 
-        from ..utils.playout import get_playout_schedule
+        emissions = Emission.objects.filter(
+            time_end__gte=time_start, time_start__lte=time_end
+        )
 
-        r = get_playout_schedule(time_start, time_end)
+        print("time_start", time_start)
+        print("time_end", time_end)
 
-        # print(r)
+        content_items = list(self.get_content_items(emissions, time_start, time_end))
+        print("emissions", emissions)
+        print("content_items", content_items)
 
-        # obj = self.get_object()
-        # serializer = EmissionHistorySerializer(instance=obj.emissions.order_by('-time_start'), many=True)
-
-        return Response(r)
+        # serializer = PlayoutScheduleSerializer(instance=emissions)
+        serializer = PlayoutScheduleSerializer(instance=content_items)
+        return Response(serializer.data)
 
 
 playout_schedule = PlayoutSchedule.as_view()

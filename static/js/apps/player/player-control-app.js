@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import tabex from 'tabex';
-import APIClient from '../../api/client';
 
 const DEBUG = true;
 

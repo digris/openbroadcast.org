@@ -85,12 +85,46 @@ class EmissionSerializer(FlexFieldsModelSerializer):
             "has_lock",
         ]
 
-    # expandable_fields = {
-    #     'co': (EmissionContentObjectSerializer, {'source': 'content_object'})
-    # }
-
 
 class EmissionHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Emission
         fields = ["uuid", "time_start", "time_end", "duration"]
+
+
+class PlayoutScheduleItemSerializer(serializers.Serializer):
+    uuid = serializers.UUIDField()
+    time_start = serializers.DateTimeField()
+    time_end = serializers.DateTimeField()
+    fade_in = serializers.IntegerField()
+    fade_out = serializers.IntegerField()
+    fade_cross = serializers.IntegerField()
+    cue_in = serializers.IntegerField()
+    cue_out = serializers.IntegerField()
+    duration = serializers.IntegerField(source="playout_duration")
+
+    obi_ct = serializers.CharField(source="content_object.get_ct")
+    obi_uuid = serializers.UUIDField(source="content_object.uuid")
+    obj_name = serializers.CharField(source="content_object.name")
+    obj_master = serializers.CharField(source="content_object.master")
+
+
+class PlayoutScheduleSerializer(serializers.Serializer):
+    """
+    flat list of items including absolute timestamps
+    """
+
+    def __init__(self, **kwargs):
+        super(PlayoutScheduleSerializer, self).__init__(**kwargs)
+
+    count = serializers.SerializerMethodField()
+    results = serializers.SerializerMethodField()
+
+    def get_count(self, objects):
+        return len(objects)
+
+    def get_results(self, objects):
+        for content_item in objects:
+            yield PlayoutScheduleItemSerializer(content_item).data
+
+        # return [e.uuid for e in emissions]

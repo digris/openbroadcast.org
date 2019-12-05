@@ -154,16 +154,39 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
         return self.time_end < datetime.datetime.now()
 
     def get_timestamped_media(self):
+        # TODO: to be depreciated. check usage and remove after
 
         items = self.content_object.get_items()
         offset = 0
         for item in items:
             item.timestamp = self.time_start + datetime.timedelta(milliseconds=offset)
-            if item.timestamp > datetime.datetime.now():
-                item.is_future = True
+            item.is_future = item.timestamp > datetime.datetime.now()
             offset += item.playout_duration
 
         return items
+
+    def get_content_items(self):
+        """
+        generate flatened list of items including absolute start/end times
+        """
+        start_offset_ms = 0
+        emission_time_start = self.time_start
+        content_items = self.content_object.get_items()
+        annotated_content_items = []
+
+        for item in content_items:
+            # TODO: fine a better way than modify the object in-place
+            item.time_start = emission_time_start + datetime.timedelta(
+                milliseconds=start_offset_ms
+            )
+            item.time_end = item.time_start + datetime.timedelta(
+                milliseconds=item.playout_duration
+            )
+            start_offset_ms += item.playout_duration
+
+            annotated_content_items.append(item)
+
+        return annotated_content_items
 
     def save(self, *args, **kwargs):
 

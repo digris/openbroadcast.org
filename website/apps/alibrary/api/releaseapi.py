@@ -13,7 +13,7 @@ from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
 
-THUMBNAIL_OPT = dict(size=(240, 240), crop=True, bw=False, quality=80)
+THUMBNAIL_OPT = dict(size=(480, 480), crop=True, bw=False, upscale=True, quality=80)
 
 
 class ReleaseResource(ModelResource):
