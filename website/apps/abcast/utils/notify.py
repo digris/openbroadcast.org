@@ -12,6 +12,8 @@ from metadata_generator.radioplayer.generator import set_radioplayer_metadata
 
 log = logging.getLogger(__name__)
 
+# TODO: metadata related updates should be moved to open broadcast "radio"
+
 
 def start_play(item, channel=None, user=None):
     log.debug("item: %s - channel: %s - user: %s" % (item, channel, user))

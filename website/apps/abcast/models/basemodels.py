@@ -3,13 +3,11 @@ from __future__ import unicode_literals
 
 import datetime
 import arating
-from abcast.utils import notify
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import post_save
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
@@ -234,15 +232,3 @@ class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):
         }
 
         return on_air
-
-
-def post_save_channel(sender, **kwargs):
-
-    obj = kwargs["instance"]
-    try:
-        notify.start_play(obj.on_air, obj)
-    except Exception as e:
-        pass
-
-
-post_save.connect(post_save_channel, sender=Channel)

@@ -2,9 +2,13 @@
 *.pyc
 .pydev*
 
-.idea
 .tmp
 .tox
+
+# shared run configurations
+.idea/*
+!.idea/runConfigurations/
+
 src
 dev/
 

@@ -7,6 +7,7 @@ from django.conf import settings
 
 from rest_framework import serializers
 from rest_flex_fields import FlexFieldsModelSerializer
+from rest_flex_fields.serializers import FlexFieldsSerializerMixin
 
 from easy_thumbnails.templatetags.thumbnail import thumbnail_url
 from versatileimagefield.serializers import VersatileImageFieldSerializer
@@ -35,7 +36,9 @@ class ImageSerializer(serializers.ImageField):
         return "{}{}".format(SITE_URL, thumbnail_url(instance, "thumbnail_240"))
 
 
-class ArtistSerializer(serializers.HyperlinkedModelSerializer):
+class ArtistSerializer(
+    FlexFieldsModelSerializer, serializers.HyperlinkedModelSerializer
+):
 
     url = serializers.HyperlinkedIdentityField(
         view_name="api:artist-detail", lookup_field="uuid"
@@ -129,7 +132,9 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
-class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
+class ReleaseSerializer(
+    FlexFieldsSerializerMixin, serializers.HyperlinkedModelSerializer
+):
 
     url = serializers.HyperlinkedIdentityField(
         view_name="api:release-detail", lookup_field="uuid"
@@ -141,19 +146,19 @@ class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
 
     detail_url = serializers.URLField(source="get_absolute_url")
     releasedate = serializers.CharField(source="releasedate_approx")
+    media = MediaSerializer(many=True, read_only=True, source="get_media")
 
-    items = serializers.SerializerMethodField()
-
-    def get_items(self, obj, **kwargs):
-        items = []
-        for media in obj.get_media():
-
-            serializer = MediaSerializer(
-                media, context={"request": self.context["request"]}
-            )
-            items.append({"content": serializer.data})
-
-        return items
+    # items = serializers.SerializerMethodField()
+    # def get_items(self, obj, **kwargs):
+    #     items = []
+    #     for media in obj.get_media():
+    #
+    #         serializer = MediaSerializer(
+    #             media, context={"request": self.context["request"]}
+    #         )
+    #         items.append({"content": serializer.data})
+    #
+    #     return items
 
     class Meta:
         model = Release
@@ -166,7 +171,8 @@ class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
             "name",
             "image",
             "releasedate",
-            "items",
+            # "items",
+            "media",
         ]
 
 

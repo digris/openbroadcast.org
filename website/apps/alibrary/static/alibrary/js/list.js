@@ -393,7 +393,6 @@ ListEditUi = function () {
      ******************************************************************/
     this.reassign_autocomplete = function(container, q) {
 
-        var url = '/api/v1/library/release/autocomplete-name/';
         var url = '/api/v2/search/alibrary.release/';
 
         if (q.length >= 3) {
