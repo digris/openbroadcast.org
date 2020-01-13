@@ -378,6 +378,7 @@ class MediaDocument(DocType):
     updated = fields.DateField()
 
     # 'fielddata' is needed for sorting on the filed
+    # TODO: investigate - "raw" seems to break sorting. use name.raw for `sort` parameter
     name = fields.TextField(fielddata=True, fields={"raw": {"type": "keyword"}})
 
     artist_display = fields.KeywordField(

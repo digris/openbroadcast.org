@@ -73,7 +73,7 @@ class LabelListView(BaseSearchListView):
     order_by = [
         {"key": "created", "name": _("Creation date"), "default_direction": "desc"},
         {"key": "updated", "name": _("Modification date"), "default_direction": "asc"},
-        {"key": "name", "name": _("Name"), "default_direction": "asc"},
+        {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
     ]
 
     def get_queryset(self, **kwargs):

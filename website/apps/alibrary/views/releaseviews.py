@@ -68,7 +68,7 @@ class ReleaseListView(BaseSearchListView):
     template_name = "alibrary/release_list.html"
     search_class = ReleaseSearch
     order_by = [
-        {"key": "name", "name": _("Name"), "default_direction": "asc"},
+        {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
         {
             "key": "releasedate_year",
             "name": _("Releasedate"),

@@ -115,8 +115,8 @@ class MediaListView(BaseSearchListView):
     template_name = "alibrary/media_list.html"
     search_class = MediaSearch
     order_by = [
-        {"key": "name", "name": _("Name"), "default_direction": "asc"},
-        {"key": "artist_display", "name": _("Artist name"), "default_direction": "asc"},
+        {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
+        {"key": "artist_display.raw", "name": _("Artist name"), "default_direction": "asc"},
         {"key": "duration", "name": _("Duration"), "default_direction": "asc"},
         # {
         #     'key': 'tempo',
