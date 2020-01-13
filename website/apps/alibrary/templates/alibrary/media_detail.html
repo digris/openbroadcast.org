@@ -158,44 +158,38 @@
 
 
         <section class="file-properties">
-            <div class="row-fluid">
-                <div class="span6">
-                    <dl class="dl-horizontal" style="margin-top: 0;">
+            <dl class="dl-horizontal" style="margin-top: 0;">
 
-                        <dt>{% trans "Format" %}</dt>
-                        <dd>{{ object.master_encoding|upper }}</dd>
+                <dt>{% trans "Codec" %}</dt>
+                <dd>
+                    {{ object.master_encoding|upper }}
+                    {% if object.bitrate %} - {{ object.bitrate }} Kbps{% endif %}
+                    {% if object.master_samplerate %} - {{ object.master_samplerate }} Hz{% endif %}
+                    {% if object.master_filesize %} - {{ object.master_filesize|filesizeformat }}{% endif %}
+                </dd>
 
-                        <dt>{% trans "Filesize" %}</dt>
-                        <dd>{{ object.master_filesize|filesizeformat }}</dd>
+                <dt>{% trans "UUID" %}</dt>
+                <dd>{{ object.uuid }}</dd>
 
-                        <dt>{% trans "Samplerate" %}</dt>
-                        <dd>{% if object.master_samplerate %}{{ object.master_samplerate }} Hz{% else %}-{% endif %}</dd>
+                {% if object.original_filename %}
+                    <dt>{% trans "Original Filename" %}</dt>
+                    <dd>{{ object.original_filename }}</dd>
+                {% endif %}
 
-                        {% if object.original_filename %}
-                        <dt>{% trans "Original Filename" %}</dt>
-                        <dd>{{ object.original_filename }}</dd>
-                        {% endif %}
+                {% if object.preflight_check and not object.preflight_check.preflight_ok %}
+                    <hr>
+                    <dt>{% trans "Preflight" %}</dt>
+                    <dd>
+                        <code style="font-size: 90%;">
+                            {{ object.preflight_check.result }}
+                        </code>
+                    </dd>
+                {% endif %}
 
-                    </dl>
-                </div>
 
-                <div class="span6">
-
-                    <dl class="dl-horizontal" style="margin-top: 0;">
-
-                        <dt>{% trans "Bitrate" %}</dt>
-                        <dd>{% if object.bitrate %}{{ object.bitrate }} Kbps{% else %}-{% endif %}</dd>
-
-                        <dt>{% trans "UUID" %}</dt>
-                        <dd>{{ object.uuid }}</dd>
-
-                        <dt>{% trans "Hash" %} (SHA1)</dt>
-                        <dd style="font-size: 90%;">{{ object.master_sha1|upper }}</dd>
-
-                    </dl>
-                </div>
-            </div>
+            </dl>
         </section>
+
     </div>
 
     {% if object.has_video %}
