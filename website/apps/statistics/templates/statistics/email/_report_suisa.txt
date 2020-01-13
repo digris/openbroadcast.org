@@ -1,0 +1,7 @@
+Playout report:
+
+Channel:   {{ channel }}
+Period:    {{ month }}-{{ year }}
+File:      {{ filename }}
+
+{% include "email/footer.txt" %}

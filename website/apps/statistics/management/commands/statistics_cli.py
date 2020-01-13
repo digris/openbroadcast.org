@@ -9,7 +9,9 @@ from ...label_statistics import (
     yearly_summary_for_label_as_xls,
     summary_for_label_as_xls,
 )
-from ...suisa_statistics import monthly_for_channel_as_xls
+
+# from ...suisa_statistics import monthly_for_channel_as_xls
+from ...suisa_statistics import monthly_statistics_as_email
 
 
 @click.group()
@@ -48,8 +50,8 @@ def label_statistics(scope, id, year, path):
 @click.option("-i", "--channel-id", "channel_id", required=True)
 @click.option("-y", "--year", type=int, required=False)
 @click.option("-m", "--month", type=int, required=False)
-@click.option("-p", "--path", type=click.Path(), required=False)
-def suisa_statistics(channel_id, year, month, path):
+@click.option("-e", "--email", "email_addresses", multiple=True, required=True)
+def suisa_statistics(channel_id, year, month, email_addresses):
     """
     usage:
 
@@ -71,13 +73,13 @@ def suisa_statistics(channel_id, year, month, path):
             month = now.month - 1
 
     click.echo(
-        "generate label statistics: channel: {} - year: {} - month: {} - output: {}".format(
-            channel_id, year, month, path
+        "generate label statistics: channel: {} - year: {} - month: {} - to: {}".format(
+            channel_id, year, month, ", ".join(email_addresses)
         )
     )
 
     channel = Channel.objects.get(pk=channel_id)
-
-    click.secho("{}".format(channel))
-
-    monthly_for_channel_as_xls(channel=channel, year=year, month=month, output=path)
+    
+    monthly_statistics_as_email(
+        channel=channel, year=year, month=month, email_addresses=email_addresses
+    )

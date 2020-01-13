@@ -94,7 +94,7 @@ def statistics_as_csv(channel, start, end, output=None):
 
     # output = output or '{}_{}_{:02d}.csv'.format(channel.name, year, month)
 
-    log.info("output to: {}".format(output))
+    log.debug("output to: {}".format(output))
 
     with codecs.open(output, mode="wb", encoding="utf-8") as csv_file:
 

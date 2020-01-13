@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     # tools
     "django_extensions",
     "sendfile",
-    "missing",  # http://django-missing.readthedocs.org/
+    # "missing",  # http://django-missing.readthedocs.org/
     "raven.contrib.django.raven_compat",
     # 'raven.contrib.django.celery',
     "djcelery_email",
