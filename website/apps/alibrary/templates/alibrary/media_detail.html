@@ -176,7 +176,7 @@
                     <dd>{{ object.original_filename }}</dd>
                 {% endif %}
 
-                {% if object.preflight_check and not object.preflight_check.preflight_ok %}
+                {% if object.preflight_check and object.preflight_check.result and not object.preflight_check.preflight_ok %}
                     <hr>
                     <dt>{% trans "Preflight" %}</dt>
                     <dd>
@@ -185,8 +185,7 @@
                         </code>
                     </dd>
                 {% endif %}
-
-
+            
             </dl>
         </section>
 
