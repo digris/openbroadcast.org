@@ -55,7 +55,7 @@ def suisa_statistics(channel_id, year, month, email_addresses):
     """
     usage:
 
-        ./manage.py statistics_cli suisa_statistics -i 1 -y 2019 -m 03
+        ./manage.py statistics_cli suisa_statistics -i 1 -y 2019 -m 03 -e foo@example.org
 
     If not both 'year' and 'month' are specified the last completed month will be used.
     """
@@ -73,13 +73,13 @@ def suisa_statistics(channel_id, year, month, email_addresses):
             month = now.month - 1
 
     click.echo(
-        "generate label statistics: channel: {} - year: {} - month: {} - to: {}".format(
+        "generate suisa report: channel: {} - year: {} - month: {} - to: {}".format(
             channel_id, year, month, ", ".join(email_addresses)
         )
     )
 
     channel = Channel.objects.get(pk=channel_id)
-    
+
     monthly_statistics_as_email(
         channel=channel, year=year, month=month, email_addresses=email_addresses
     )

@@ -28,7 +28,6 @@ def monthly_statistics_as_email(channel, year, month, email_addresses):
 
     with tempfile.NamedTemporaryFile() as f:
         statistics_as_csv(channel=channel, start=start, end=end, output=f.name)
-
         f.seek(0)
 
         tpl = get_template("statistics/email/_report_suisa.txt")
@@ -40,15 +39,14 @@ def monthly_statistics_as_email(channel, year, month, email_addresses):
             channel_name=channel.name, year=year, month=month,
         )
         body = tpl.render(
-            {"channel": channel, "month": month, "year": year, "filename": filename,}
+            {"channel": channel, "month": month, "year": year, "filename": filename}
         )
 
-        email = EmailMessage(
-            subject, body, "no-reply@openbroadcast.org", email_addresses,
-        )
+        for email_address in email_addresses:
+            email = EmailMessage(
+                subject, body, "no-reply@openbroadcast.org", [email_address],
+            )
+            email.attach(filename, f.read(), "text/csv")
+            email.send(fail_silently=False)
 
-        email.attach(filename, f.read(), "text/csv")
-
-        email.send(fail_silently=False)
-
-    return 1
+    return
