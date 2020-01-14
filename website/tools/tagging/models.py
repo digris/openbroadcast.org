@@ -479,22 +479,19 @@ class TaggedItemManager(models.Manager):
             return []
 
 
-##########
-# Models #
-##########
-
-
 @python_2_unicode_compatible
 class Tag(TimestampedModelMixin, models.Model):
 
     TYPE_GENRE = "genre"
-    TYPE_SUB_GENRE = "sub-genre"
     TYPE_MOOD = "mood"
+    TYPE_DESCRIPTIVE = "descriptive"
+    TYPE_EVENT = "event"
 
     TYPE_CHOICES = (
         (TYPE_GENRE, "Genre"),
-        (TYPE_SUB_GENRE, "Sub-Genre"),
         (TYPE_MOOD, "Mood"),
+        (TYPE_DESCRIPTIVE, "Descriptive"),
+        (TYPE_EVENT, "Event"),
     )
 
     name = models.CharField(
