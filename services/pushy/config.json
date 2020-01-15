@@ -1,0 +1,9 @@
+{
+    "port" : 8180,
+    "pattern" : "org_openbroadcast_prod_*",
+    "saveLiveEdit" : false,
+    "redis": {
+        "host": "127.0.0.1",
+        "port": 6379
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "port" : 8081,
+    "pattern" : "org_openbroadcast_prod_*",
+    "saveLiveEdit" : true,
+    "redis": {
+        "host": "172.20.10.203",
+        "port": 6379
+    },
+    "ssl": {
+        "cert": "/root/keys/ssl/openbroadcast.org/openbroadcast.org.crt",
+        "key": "/root/keys/ssl/openbroadcast.org/openbroadcast.org.priv.key"
+    }
+}
