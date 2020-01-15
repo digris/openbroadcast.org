@@ -150,7 +150,7 @@ class ReleaseSerializer(
 
     # TODO: `items` is used for player only. find a way to unify this.
     items = serializers.SerializerMethodField()
-    
+
     def get_items(self, obj, **kwargs):
         items = []
         for media in obj.get_media():

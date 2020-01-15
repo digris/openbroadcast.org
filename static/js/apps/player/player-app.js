@@ -55,16 +55,6 @@ const pre_process_item = (item) => {
     item.fade_to = (item.fade_in === undefined) ? item.from : item.from + item.fade_in;
     item.fade_from = (item.fade_out === undefined) ? item.to : item.to - item.fade_out;
 
-    // console.table({
-    //     duration: item.duration,
-    //     from: item.from,
-    //     to: item.to,
-    //     fade_to: item.fade_to,
-    //     fade_from: item.fade_from,
-    // });
-
-    //console.log('processed item:', item);
-
     return item;
 };
 
@@ -543,49 +533,6 @@ const PlayerApp = Vue.extend({
          * visit item detail
          **********************************************************/
         visit: visit_by_resource,
-        // visit: function (content, scope) {
-        //     if (DEBUG) console.debug('visit:', content, scope);
-        //
-        //     const url = (scope === undefined) ? content.url : content[scope];
-        //
-        //     APIClient.get(url)
-        //         .then((response) => {
-        //             console.log(response.data);
-        //
-        //             const detail_url = response.data.detail_url;
-        //
-        //             if (DEBUG) console.debug('visit:', detail_url);
-        //
-        //             if (window.opener) {
-        //                 window.opener.location.href = detail_url;
-        //                 window.opener.focus();
-        //             }
-        //
-        //         }, (error) => {
-        //             console.error('Player - error loading item', error);
-        //         });
-        // },
-
-
-        // player_control: function (a, b, c) {
-        //     if (DEBUG) console.debug('player_control', a, b, c);
-        // },
-
-        // add_all_to_playlist: function () {
-        //     let _items = [];
-        //
-        //     // TODO: find a better way to set all other items to 'stopped'
-        //     this.items_to_play.forEach((item_to_play) => {
-        //         item_to_play.items.forEach((item) => {
-        //             _items.push(item)
-        //         });
-        //     });
-        //
-        //     const _e = new CustomEvent('collector:collect', {detail: _items});
-        //     window.dispatchEvent(_e);
-        //
-        // },
-
 
         player_play_all: function () {
             console.log('player_play_all')
@@ -626,16 +573,10 @@ const PlayerApp = Vue.extend({
         player_play: function () {
             this.player.stop();
 
-
-            //this.player.setPosition(5000);
-
             this.player.play({
                 from: 5000,
                 to: 10000,
                 whileplaying: this.player_whileplaying
-                // whileplaying: () => {
-                //     console.log(this.player.position)
-                // }
             })
             //this.player.stop();
 

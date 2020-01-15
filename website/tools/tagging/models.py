@@ -523,7 +523,7 @@ class Tag(TimestampedModelMixin, models.Model):
 
 
 @python_2_unicode_compatible
-class TaggedItem(models.Model):
+class TaggedItem(TimestampedModelMixin, models.Model):
     """
     Holds the relationship between a tag and the item being tagged.
     """

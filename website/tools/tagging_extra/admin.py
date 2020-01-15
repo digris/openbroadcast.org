@@ -64,3 +64,24 @@ class CustomTagAdmin(admin.ModelAdmin):
 
 admin.site.unregister(Tag)
 admin.site.register(Tag, CustomTagAdmin)
+
+
+class CustomTaggedItemAdmin(admin.ModelAdmin):
+
+    list_display = ["tag", "content_type", "object", "created"]
+
+    date_hierarchy = "created"
+
+    list_filter = [
+        "tag__type",
+        "created",
+        "updated",
+    ]
+
+    search_fields = [
+        "tag__name",
+    ]
+
+
+admin.site.unregister(TaggedItem)
+admin.site.register(TaggedItem, CustomTaggedItemAdmin)
