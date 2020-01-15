@@ -40,7 +40,7 @@ def play(request, **kwargs):
     items_to_play = request.data.get("items")
 
     if not items_to_play:
-        return HttpResponseBadRequest("no items requestsd")
+        return HttpResponseBadRequest("no items requested")
 
     for item in items_to_play:
         obj_ct = item.get("ct")

@@ -486,12 +486,16 @@ class Tag(TimestampedModelMixin, models.Model):
     TYPE_MOOD = "mood"
     TYPE_DESCRIPTIVE = "descriptive"
     TYPE_EVENT = "event"
+    TYPE_INSTRUMENT = "instrument"
+    TYPE_PROFESSION = "profession"
 
     TYPE_CHOICES = (
         (TYPE_GENRE, "Genre"),
         (TYPE_MOOD, "Mood"),
         (TYPE_DESCRIPTIVE, "Descriptive"),
         (TYPE_EVENT, "Event"),
+        (TYPE_INSTRUMENT, "Instrument"),
+        (TYPE_PROFESSION, "Profession"),
     )
 
     name = models.CharField(

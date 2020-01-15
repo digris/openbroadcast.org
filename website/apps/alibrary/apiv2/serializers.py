@@ -148,17 +148,19 @@ class ReleaseSerializer(
     releasedate = serializers.CharField(source="releasedate_approx")
     media = MediaSerializer(many=True, read_only=True, source="get_media")
 
-    # items = serializers.SerializerMethodField()
-    # def get_items(self, obj, **kwargs):
-    #     items = []
-    #     for media in obj.get_media():
-    #
-    #         serializer = MediaSerializer(
-    #             media, context={"request": self.context["request"]}
-    #         )
-    #         items.append({"content": serializer.data})
-    #
-    #     return items
+    # TODO: `items` is used for player only. find a way to unify this.
+    items = serializers.SerializerMethodField()
+    
+    def get_items(self, obj, **kwargs):
+        items = []
+        for media in obj.get_media():
+
+            serializer = MediaSerializer(
+                media, context={"request": self.context["request"]}
+            )
+            items.append({"content": serializer.data})
+
+        return items
 
     class Meta:
         model = Release
@@ -171,8 +173,9 @@ class ReleaseSerializer(
             "name",
             "image",
             "releasedate",
-            # "items",
             "media",
+            # TODO: `items` is used for player only. find a way to unify this.
+            "items",
         ]
 
 
