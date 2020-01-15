@@ -113,7 +113,6 @@
                 // if(this.secondaryActionsVisible) {
                 //     this.secondaryActionsVisible = false;
                 // }
-
             },
             handleAction: function (key) {
 

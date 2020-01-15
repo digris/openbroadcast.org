@@ -131,7 +131,7 @@ class PlaylistSearch(BaseFacetedSearch):
 
 class PlaylistListView(BaseSearchListView):
     model = Playlist
-    template_name = "alibrary/playlist_list.html"
+    template_name = "alibrary/playlist/list.html"
     search_class = PlaylistSearch
     scope = "public"
     order_by = [
@@ -164,8 +164,6 @@ class PlaylistListView(BaseSearchListView):
         else:
             serach_query["searches"].update({"type": ["-Private Playlist"]})
 
-        # print(serach_query)
-
         return serach_query
 
     def get_queryset(self, **kwargs):
@@ -182,13 +180,10 @@ class PlaylistListView(BaseSearchListView):
         return qs
 
 
-class PlaylistListViewNG(PlaylistListView):
-    template_name = "alibrary/playlist_list_ng.html"
-
-
 class PlaylistDetailView(DetailView):
     context_object_name = "playlist"
     model = Playlist
+    template_name = "alibrary/playlist/detail.html"
 
     def render_to_response(self, context):
         return super(PlaylistDetailView, self).render_to_response(

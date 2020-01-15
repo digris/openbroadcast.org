@@ -12,6 +12,7 @@
 
 import Vue from 'vue';
 import Vuex from 'vuex';
+import settings from './settings';
 import store from './store/index';
 import SearchApp from './apps/search-app.vue';
 import PlayerApp from './apps/player/player-app.vue';
@@ -29,6 +30,8 @@ import Scheduler from './components/scheduler/Scheduler.vue';
 import ThumbRating from './components/rating/ThumbRating.vue';
 import ObjectActions from './components/ObjectActions/ObjectActions.vue';
 import EmissionHistory from './components/EmissionHistory/EmissionHistory.vue';
+import Visual from './components/ui/Visual.vue';
+import VisualWithActions from './components/ui/VisualWithActions.vue';
 
 const DEBUG = false;
 
@@ -42,6 +45,10 @@ class AppInitializer {
           el: '#app',
             store,
             components: {
+              // generic ui components
+              'visual': Visual,
+              'visual-with-actions': VisualWithActions,
+              //
               'scheduler': Scheduler,
               'thumb-rating': ThumbRating,
               'object-actions': ObjectActions,

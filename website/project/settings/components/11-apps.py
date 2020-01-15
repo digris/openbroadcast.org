@@ -93,6 +93,7 @@ INSTALLED_APPS = [
     # platform tools
     "fprint_client",
     # platform apps
+    "object_actions",
     "profiles",
     "postman",
     "atracker",

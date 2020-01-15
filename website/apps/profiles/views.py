@@ -52,7 +52,7 @@ class ProfileSearch(BaseFacetedSearch):
 
 class ProfileListView(BaseSearchListView):
     model = Profile
-    template_name = "profiles/profile_list.html"
+    template_name = "profiles/profile/list.html"
     search_class = ProfileSearch
     order_by = [
         {"key": "created", "name": _("Creation date"), "default_direction": "desc"},
@@ -75,7 +75,7 @@ class ProfileListView(BaseSearchListView):
 class ProfileDetailView(DetailView):
 
     model = Profile
-    template_name = "profiles/profile_detail_ng.html"
+    template_name = "profiles/profile/detail.html"
     section_template_base = "profiles/profile/_detail"
     section = None
     sections = [
@@ -231,92 +231,6 @@ class ProfileDetailView(DetailView):
 
     def get(self, request, *args, **kwargs):
         return super(ProfileDetailView, self).get(request, *args, **kwargs)
-
-
-#######################################################################
-# TODO: views below here need to be reviewed / refacored
-#######################################################################
-class LegacyProfileDetailView(DetailView):
-
-    model = Profile
-    template_name = "profiles/profile_detail.html"
-
-    def get_object(self, queryset=None):
-
-        profile = get_object_or_404(self.model, user__username=self.kwargs["username"])
-
-        return profile
-
-    def get(self, request, *args, **kwargs):
-        profile = self.get_object()
-        url = reverse_lazy(
-            "profiles-profile-detail", kwargs={"uuid": str(profile.uuid)}
-        )
-        return redirect(url)
-
-    #
-    # def get_context_data(self, **kwargs):
-    #     context = kwargs
-    #     context_object_name = self.get_context_object_name(self.object)
-    #
-    #     # get contributions
-    #     # TODO: this is kind of a hack...
-    #     if self.request.user == self.object.user:
-    #         context['broadcasts'] = Playlist.objects.filter(user=self.object.user).order_by('-updated')
-    #     else:
-    #         context['broadcasts'] = Playlist.objects.filter(user=self.object.user).exclude(type='basket').order_by(
-    #             '-updated')
-    #
-    #
-    #     release_qs = Release.objects.filter(
-    #         creator=self.object.user
-    #     ).select_related(
-    #         'label',
-    #         'release_country',
-    #         'creator',
-    #         'creator__profile',
-    #     ).prefetch_related(
-    #         'media',
-    #         'media__artist',
-    #         'media__license',
-    #         'extra_artists',
-    #         'album_artists',
-    #     ).order_by('-created')
-    #
-    #
-    #     media_qs = Media.objects.filter(
-    #         creator=self.object.user
-    #     ).select_related(
-    #         'release',
-    #         'artist',
-    #     ).prefetch_related(
-    #         'media_artists',
-    #         'extra_artists',
-    #     ).order_by('-created')
-    #
-    #     context['uploaded_releases'] = release_qs
-    #     context['uploaded_media'] = media_qs
-    #
-    #     # context['uploaded_releases'] = Release.objects.filter(creator=self.object.user).order_by('-created')
-    #     # context['uploaded_media'] = Media.objects.filter(creator=self.object.user).order_by('-created')
-    #
-    #     context['user_stream'] = actor_stream(self.object.user)[0:20]
-    #
-    #     context['following'] = Follow.objects.following(self.object.user)
-    #     context['followers'] = Follow.objects.followers(self.object.user)
-    #
-    #     # votes
-    #     # vs = Vote.objects.filter(user=u).order_by('-vote', '-created')
-    #     # TODO: rewrite queryset. this generates a tremendous amount of db-hits!
-    #     # context['upvotes'] = self.object.user.votes.filter(vote__gt=0).order_by('content_type__model', '-created')
-    #     # context['downvotes'] = self.object.user.votes.filter(vote__lt=0).order_by('content_type__model', '-created')
-    #     context['upvotes'] = self.object.user.votes.filter(vote__gt=0).order_by('-created')
-    #     context['downvotes'] = self.object.user.votes.filter(vote__lt=0).order_by('-created')
-    #
-    #     if context_object_name:
-    #         context[context_object_name] = self.object
-    #
-    #     return context
 
 
 # TODO: refactor to CBV

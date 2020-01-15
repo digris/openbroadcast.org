@@ -7,17 +7,12 @@ from . import views
 urlpatterns = [
     url(
         r"^$",
-        views.PlaylistListViewNG.as_view(scope="public"),
+        views.PlaylistListView.as_view(scope="public"),
         name="alibrary-playlist-list",
     ),
     url(
-        r"^legacy/$",
-        views.PlaylistListView.as_view(scope="public"),
-        name="alibrary-playlist-list-legacy",
-    ),
-    url(
         r"^own/$",
-        views.PlaylistListViewNG.as_view(scope="own"),
+        views.PlaylistListView.as_view(scope="own"),
         name="alibrary-playlist-list-own",
     ),
     url(

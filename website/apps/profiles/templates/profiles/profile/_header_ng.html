@@ -1,4 +1,4 @@
-{% load truncate_tags i18n thumbnail arating_tags spacify_tags gravatar %}
+{% load truncate_tags i18n thumbnail arating_tags spacify_tags gravatar object_action_tags %}
 
 <div class="header__primary">
 
@@ -82,15 +82,14 @@
 
 </div>
 <div class="header__secondary">
-    <div class="visual visual--lightbox" data-slideshow-container>
-        {% if not object.image %}
-            {% gravatar object.user.email 500 %}
-            <!--<img class="image-placeholder" src="{# image_placeholder size='280x280' #}" alt="{% trans 'image placeholder' %}"/>-->
-        {% else %}
-            <figure class="lightbox--image-container" data-src="{% thumbnail object.image 1200x1200 crop upscale %}">
-                <img src="{% thumbnail object.image 280x280 crop upscale %}">
-            </figure>
-        {% endif %}
+    <div class="visual">
+        <visual-with-actions
+            ct="{{ object.get_ct }}"
+            uuid="{{ object.uuid }}"
+            image-url="{% thumbnail object.image 280x280 crop upscale %}"
+            large-image-url="{% thumbnail object.image 1200x1200 crop upscale %}"
+            :actions='{% get_object_actions_as_json object user %}'>
+        </visual-with-actions>
     </div>
 </div>
 
@@ -110,6 +109,5 @@
             obj-uuid="{{ object.uuid }}"
             obj-ct="{{ object.get_ct }}"></thumb-rating>
         -->
-
     </div>
 </div>

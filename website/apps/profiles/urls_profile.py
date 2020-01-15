@@ -50,9 +50,4 @@ urlpatterns = [
         views.ProfileDetailView.as_view(),
         name="profiles-profile-detail",
     ),
-    url(
-        r"^(?P<username>[-\w.-_@]+)/$",
-        views.LegacyProfileDetailView.as_view(),
-        name="profiles-profile-detail-legacy",
-    ),
 ]

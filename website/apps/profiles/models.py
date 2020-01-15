@@ -197,7 +197,6 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
 
     def get_absolute_url(self):
-        # return reverse('profiles-profile-detail-legacy', kwargs={ 'username': self.user.username })
         return reverse("profiles-profile-detail", kwargs={"uuid": str(self.uuid)})
 
     @models.permalink

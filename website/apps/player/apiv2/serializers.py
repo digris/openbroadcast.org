@@ -60,3 +60,29 @@ class ArtistObjSerializer(ArtistSerializer):
 
     class Meta(ArtistSerializer.Meta):
         fields = ["url", "ct", "detail_url", "uuid", "name", "image", "items"]
+
+
+class ProfileObjSerializer(ArtistSerializer):
+
+    items = serializers.SerializerMethodField()
+
+    def get_items(self, obj, **kwargs):
+        items = []
+
+        # TODO: highly experimental... play user's recent "likes"
+        qs = obj.user.votes.filter(vote__gt=0, content_type_id=104).order_by("-created").prefetch_related(
+            "content_object"
+        )
+
+        # for media in qs.all()[0:30]:
+        for media in [r.content_object for r in qs.all()[0:30]]:
+
+            serializer = MediaSerializer(
+                media, context={"request": self.context["request"]}
+            )
+            items.append({"content": serializer.data})
+
+        return items
+
+    class Meta(ArtistSerializer.Meta):
+        fields = ["url", "ct", "detail_url", "uuid", "name", "image", "items"]

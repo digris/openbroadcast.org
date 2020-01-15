@@ -40,6 +40,7 @@
     }
 
     &__secondary {
+      padding: 10px;
       .visual {
         max-width: 190px;
         max-height: 190px;
@@ -65,14 +66,21 @@
       color: #fff;
       text-transform: uppercase;
 
-      &--sub-genre {
-        background: #79000b;
-      }
+      //&--sub-genre {
+      //  background: #79000b;
+      //}
 
-      &--mood {
-        background: #00aeff;
-      }
+      //&--mood {
+      //  background: #00aeff;
+      //}
 
+    }
+    .tag__ {
+      background: #fff;
+      padding: 2px 4px 1px;
+      color: #999;
+      border: 1px solid #c7c7c7;
+      text-transform: uppercase;
     }
   }
 }
@@ -84,7 +92,7 @@
   border-bottom: 1px solid $border-color;
   background: $white;
   display: flex;
-  justify-content: center;
+  // justify-content: center;
 
   .menu-item {
     margin: 0 0 -1px 10px;
