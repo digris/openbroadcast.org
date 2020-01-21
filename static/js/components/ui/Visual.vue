@@ -4,10 +4,18 @@
 
     export default {
         name: 'Visual',
-        props: [
-            'url',
-            'zoomUrl',
-        ],
+        props: {
+            url: {
+                type: String,
+                required: false,
+                default: null,
+            },
+            zoomUrl: {
+                type: String,
+                required: false,
+                default: null,
+            },
+        },
         data() {
             return {
                 placeholder_image: settings.PLACEHOLDER_IMAGE,
@@ -40,9 +48,16 @@
     }
 </style>
 <template>
-    <figure>
-        <img v-if="(imageUrl)" :src="imageUrl"/>
-        <img v-else :src="placeholder_image" class="placeholder">
-        <slot name="actions"></slot>
-    </figure>
+  <figure>
+    <img
+      v-if="(imageUrl)"
+      :src="imageUrl"
+    >
+    <img
+      v-else
+      :src="placeholder_image"
+      class="placeholder"
+    >
+    <slot name="actions" />
+  </figure>
 </template>

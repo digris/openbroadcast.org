@@ -35,6 +35,7 @@
             },
             editUrl: {
                 type: String,
+                default: null,
             },
             canPlay: {
                 type: Boolean,
@@ -61,9 +62,6 @@
             return {
                 secondaryActionsVisible: false,
             }
-        },
-        mounted: function () {
-            // this.playerControl = new PlayerControlApp();
         },
         computed: {
             actions: function () {
@@ -103,6 +101,9 @@
 
                 return actions;
             },
+        },
+        mounted: function () {
+            // this.playerControl = new PlayerControlApp();
         },
         methods: {
             toggleSecondaryActions: function (e) {
@@ -239,44 +240,53 @@
 </style>
 
 <template>
+  <div
+    class="object-actions"
+  >
     <div
-        class="object-actions">
+      :style="{transform: `scale(${scale})`}"
+      class="actions"
+    >
+      <div
+        class="action action--secondary"
+      >
+        <div />
+      </div>
+      <div
+        class="action action--primary"
+      >
+        <play
+          v-if="canPlay"
+          @click="handleAction('play')"
+        />
+      </div>
+      <div
+        class="action action--secondary"
+      >
         <div
-            :style="{transform: `scale(${scale})`}"
-            class="actions">
-            <div
-                class="action action--secondary">
-                <div></div>
-            </div>
-            <div
-                class="action action--primary">
-                <play
-                    v-if="canPlay"
-                    @click="handleAction('play')">
-                </play>
-            </div>
-            <div
-                class="action action--secondary">
-                <div
-                    v-if="(actions && actions.length)"
-                    @click="toggleSecondaryActions">
-                    <i class="fa fa-ellipsis-h"></i>
-                </div>
-            </div>
+          v-if="(actions && actions.length)"
+          @click="toggleSecondaryActions"
+        >
+          <i class="fa fa-ellipsis-h" />
         </div>
-        <div
-            class="secondary-actions"
-            v-if="secondaryActionsVisible"
-            v-click-outside="hideSecondaryActions">
-            <div class="secondary-actions__triangle"></div>
-            <div
-                class="secondary-actions__list"
-                v-for="action in actions"
-                v-bind:key="action.key">
-                <action
-                    @click="handleAction(action.key)"
-                    :action="action"></action>
-            </div>
-        </div>
+      </div>
     </div>
+    <div
+      v-if="secondaryActionsVisible"
+      v-click-outside="hideSecondaryActions"
+      class="secondary-actions"
+    >
+      <div class="secondary-actions__triangle" />
+      <div
+        v-for="action in actions"
+        :key="action.key"
+        class="secondary-actions__list"
+      >
+        <action
+          :action="action"
+          @click="handleAction(action.key)"
+        />
+      </div>
+    </div>
+  </div>
 </template>

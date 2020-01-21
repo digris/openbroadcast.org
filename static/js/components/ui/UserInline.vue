@@ -6,14 +6,14 @@
 
     export default {
         name: 'UserInline',
+        components: {
+            'visual': Visual,
+        },
         props: {
             user: {
                 type: Object,
                 required: true,
             },
-        },
-        components: {
-            'visual': Visual,
         },
         data() {
             return {
@@ -59,29 +59,35 @@
 
 </style>
 <template>
+  <div
+    class="user-inline"
+  >
     <div
-        class="user-inline">
-        <div
-            @mouseover="mouseover"
-            @mouseleave="mouseleave">
-            <a
-                :href="user.detailUrl"
-                target="_blank"
-                class="user-inline__display-name">{{ user.displayName }}</a>
-        </div>
-        <div
-            v-if="detailsVisible"
-            class="user-info">
-            <div
-                class="user-info__visual">
-                <visual :url="user.image"></visual>
-            </div>
-            <div
-                class="user-info__details">
-                <div>
-                    {{ user.displayName }} <span v-if="user.country">{{ user.country }}</span>
-                </div>
-            </div>
-        </div>
+      @mouseover="mouseover"
+      @mouseleave="mouseleave"
+    >
+      <a
+        :href="user.detailUrl"
+        target="_blank"
+        class="user-inline__display-name"
+      >{{ user.displayName }}</a>
     </div>
+    <div
+      v-if="detailsVisible"
+      class="user-info"
+    >
+      <div
+        class="user-info__visual"
+      >
+        <visual :url="user.image" />
+      </div>
+      <div
+        class="user-info__details"
+      >
+        <div>
+          {{ user.displayName }} <span v-if="user.country">{{ user.country }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

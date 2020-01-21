@@ -16,60 +16,25 @@
 
     export default {
         name: 'SchedulerCalendarEmissionEditor',
-        props: {
-            uuid: String,
-        },
         components: {
             'modal': Modal,
             'user-inline': UserInline,
             'matrix': EmissionHistoryMatrix,
             'content-obj': SchedulerCalendarEmissionContent,
         },
+        filters: templateFilters,
+        props: {
+            uuid: {
+                type: String,
+                required: false,
+                default: null,
+            },
+        },
         data() {
             return {
                 // visible: true,
                 backgroundColors: backgroundColors,
             }
-        },
-        methods: {
-            close: function () {
-                this.$emit('close');
-            },
-            loadEmissionDetails: function () {
-                if (this.uuid) {
-                    const dispatch = this.$store.dispatch('scheduler/loadEmission', this.uuid);
-                }
-            },
-            setColor: function (color) {
-                this.updateEmission({
-                    color: color,
-                });
-            },
-            updateEmission: function (payload) {
-                const dispatch = this.$store.dispatch('scheduler/updateEmission', {
-                    emission: this.emission,
-                    payload: payload
-                });
-            },
-            deleteEmission: function () {
-                const dispatch = this.$store.dispatch('scheduler/deleteEmission', this.uuid);
-                dispatch.then((response) => {
-                    this.$emit('close');
-                }, (error) => {
-                    console.warn('error', error.message, error.response);
-                });
-
-            },
-            // history
-            loadEmissionHistory: function () {
-                if (!this.contentObj) {
-                    return;
-                }
-                this.$store.dispatch('objectHistory/loadObjectHistory', {
-                    objCt: this.contentObj.ct,
-                    objUuid: this.contentObj.uuid
-                });
-            },
         },
         computed: {
             visible() {
@@ -124,7 +89,46 @@
                 this.loadEmissionHistory();
             }
         },
-        filters: templateFilters
+        methods: {
+            close: function () {
+                this.$emit('close');
+            },
+            loadEmissionDetails: function () {
+                if (this.uuid) {
+                    const dispatch = this.$store.dispatch('scheduler/loadEmission', this.uuid);
+                }
+            },
+            setColor: function (color) {
+                this.updateEmission({
+                    color: color,
+                });
+            },
+            updateEmission: function (payload) {
+                const dispatch = this.$store.dispatch('scheduler/updateEmission', {
+                    emission: this.emission,
+                    payload: payload
+                });
+            },
+            deleteEmission: function () {
+                const dispatch = this.$store.dispatch('scheduler/deleteEmission', this.uuid);
+                dispatch.then((response) => {
+                    this.$emit('close');
+                }, (error) => {
+                    console.warn('error', error.message, error.response);
+                });
+
+            },
+            // history
+            loadEmissionHistory: function () {
+                if (!this.contentObj) {
+                    return;
+                }
+                this.$store.dispatch('objectHistory/loadObjectHistory', {
+                    objCt: this.contentObj.ct,
+                    objUuid: this.contentObj.uuid
+                });
+            },
+        }
     }
 </script>
 <style lang="scss" scoped>
@@ -187,64 +191,75 @@
 </style>
 
 <template>
-    <modal
-        :show="visible"
-        @close="close">
+  <modal
+    :show="visible"
+    @close="close"
+  >
+    <div
+      v-if="emission"
+      slot="title"
+    >
+      <span>{{ emission.timeStart|date('HH:mm') }}-{{ emission.timeEnd|date('HH:mm') }}</span>
+      <span> / </span>
+      <span>{{ emission.timeStart|date('dd. D MMM. YYYY') }}</span>
+      <span
+        v-if="(emission && emission.user)"
+        class="scheduling-programmer"
+      >
+        / by:
+        <user-inline
+          v-if="emission.user"
+          :user="emission.user"
+        /></span>
+    </div>
 
+    <div
+      slot="content"
+      class="emission-editor"
+    >
+      <content-obj
+        v-if="contentObj"
+        :style="contentObjStyle"
+        :content-obj="contentObj"
+      />
+      <div
+        class="emission-editor__history"
+      >
+        <matrix
+          v-if="emissionHistory"
+          theme="dark"
+          :obj-uuid="( (contentObj) ? contentObj.uuid : null )"
+          :emission-history="emissionHistory"
+        />
+      </div>
+      <div
+        class="emission-editor__actions"
+      >
         <div
-            slot="title"
-            v-if="emission">
-            <span>{{ emission.timeStart|date('HH:mm') }}-{{ emission.timeEnd|date('HH:mm') }}</span>
-            <span> / </span>
-            <span>{{ emission.timeStart|date('dd. D MMM. YYYY') }}</span>
-            <span
-                v-if="(emission && emission.user)"
-                class="scheduling-programmer">
-                        / by:
-                        <user-inline
-                            v-if="emission.user"
-                            :user="emission.user"></user-inline></span>
-
+          class="background-colors"
+        >
+          <div
+            v-for="(color, index) in backgroundColors"
+            :key="(`${color}`)"
+            :style="{'background-color': color}"
+            class="color"
+            @click="setColor(index)"
+          >
+            <span>#</span>
+          </div>
         </div>
-
-        <div slot="content" class="emission-editor">
-            <content-obj
-                v-if="contentObj"
-                :style="contentObjStyle"
-                :content-obj="contentObj"
-            ></content-obj>
-            <div
-                class="emission-editor__history">
-                <matrix
-                    v-if="emissionHistory"
-                    theme="dark"
-                    :obj-uuid="( (contentObj) ? contentObj.uuid : null )"
-                    :emission-history="emissionHistory"
-                ></matrix>
-            </div>
-            <div
-                class="emission-editor__actions">
-                <div
-                    class="background-colors">
-                    <div
-                        v-for="(color, index) in backgroundColors"
-                        :key="(`${color}`)"
-                        :style="{'background-color': color}"
-                        @click="setColor(index)"
-                        class="color">
-                        <span>#</span>
-                    </div>
-                </div>
-                <div
-                    v-if="(contentObj && !emission.hasLock)"
-                    class="delete">
-                    <div
-                        @click="deleteEmission"
-                        class="delete__confirm">
-                        <span>Remove emission</span>
-                    </div>
-                </div>
-            </div>
+        <div
+          v-if="(contentObj && !emission.hasLock)"
+          class="delete"
+        >
+          <div
+            class="delete__confirm"
+            @click="deleteEmission"
+          >
+            <span>Remove emission</span>
+          </div>
         </div>
-    </modal>
+      </div>
+    </div>
+  </modal>
 </template>

@@ -1,8 +1,11 @@
 <script>
     export default {
-        props: [
-            'item'
-        ],
+        props: {
+            item: {
+                type: Object,
+                required: true,
+            },
+        },
         data() {
             return {
                 greeting: 'Hello',
@@ -123,44 +126,74 @@
 </style>
 
 <template>
-    <div @click="seek($event)" class="waveform">
-        <div class="waveform-rubberband">
-            <svg width="100%" height="30px" viewBox="0 0 100 30" preserveAspectRatio="none">
+  <div
+    class="waveform"
+    @click="seek($event)"
+  >
+    <div class="waveform-rubberband">
+      <svg
+        width="100%"
+        height="30px"
+        viewBox="0 0 100 30"
+        preserveAspectRatio="none"
+      >
 
-                <!-- full size waveform bg -->
-                <rect width="100%" height="30" style="fill:rgb(165,165,165)"></rect>
+        <!-- full size waveform bg -->
+        <rect
+          width="100%"
+          height="30"
+          style="fill:rgb(165,165,165)"
+        />
 
-                <!-- progress bg -->
-                <rect :width="position" height="30" style="fill:rgb(34,34,34)"></rect>
+        <!-- progress bg -->
+        <rect
+          :width="position"
+          height="30"
+          style="fill:rgb(34,34,34)"
+        />
 
-                <!-- cue masks (left & right) -->
-                <polygon :points="mask_left" :style="mask_style"></polygon>
-                <polygon :points="mask_right" :style="mask_style"></polygon>
+        <!-- cue masks (left & right) -->
+        <polygon
+          :points="mask_left"
+          :style="mask_style"
+        />
+        <polygon
+          :points="mask_right"
+          :style="mask_style"
+        />
 
-                <!-- waveform image -->
-                <image
-                    v-if="(item.content && item.content.assets.waveform)"
-                    width="100%"
-                    height="100%"
-                    preserveAspectRatio="none"
-                    v-bind:xlink:href="item.content.assets.waveform"></image>
+        <!-- waveform image -->
+        <image
+          v-if="(item.content && item.content.assets.waveform)"
+          width="100%"
+          height="100%"
+          preserveAspectRatio="none"
+          :xlink:href="item.content.assets.waveform"
+        />
 
-                <!---->
-                <polyline v-if="has_cue_or_fade" :points="rubberband_points"
-                     style="stroke:rgb(102,51,204); fill:none;" stroke-width="0.3"></polyline>
+        <!---->
+        <polyline
+          v-if="has_cue_or_fade"
+          :points="rubberband_points"
+          style="stroke:rgb(102,51,204); fill:none;"
+          stroke-width="0.3"
+        />
 
-            </svg>
-        </div>
+      </svg>
+    </div>
 
 
-        <div class="progress-container">
-            <div class="progress-indicator" v-bind:style="{ width: position + '%' }"></div>
-        </div>
+    <div class="progress-container">
+      <div
+        class="progress-indicator"
+        :style="{ width: position + '%' }"
+      />
+    </div>
 
-        <!--
+    <!--
         <div v-if="(item.content && item.content.assets.waveform)" class="waveform-image">
             <img v-bind:src="item.content.assets.waveform"/>
         </div>
         -->
-    </div>
+  </div>
 </template>

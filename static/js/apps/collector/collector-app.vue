@@ -255,31 +255,46 @@
 </style>
 
 <template>
-    <modal :show="show_modal" :scope="scope" @close="show_modal=false">
-        <div slot="content" class="collector-app collector-container">
-            <header>
-                <div v-if="(items_to_collect && items_to_collect.length > 1)" class="batch-collect">
-                    <p>
-                        (( multiple)) {{ items_to_collect.length }}
-                    </p>
-                </div>
-                <div v-else v-for="item_to_collect in items_to_collect" :key="item_to_collect.uuid" class="item-to-collect">
-                    <div class="item">
-                        <div class="visual">
-                            <visual v-bind:url="item_to_collect.content.image"></visual>
-                        </div>
-                        <div class="information">
-                            {{ item_to_collect.content.name }}
-                            <br>
-                            {{ item_to_collect.content.artist_display }}
-                            |
-                            {{ item_to_collect.content.release_display }}
-                            <br>
-                            {{item_to_collect.duration | ms_to_time}}
-                        </div>
-                    </div>
-                </div>
-                <!--
+  <modal
+    :show="show_modal"
+    :scope="scope"
+    @close="show_modal=false"
+  >
+    <div
+      slot="content"
+      class="collector-app collector-container"
+    >
+      <header>
+        <div
+          v-if="(items_to_collect && items_to_collect.length > 1)"
+          class="batch-collect"
+        >
+          <p>
+            (( multiple)) {{ items_to_collect.length }}
+          </p>
+        </div>
+        <div
+          v-for="item_to_collect in items_to_collect"
+          v-else
+          :key="item_to_collect.uuid"
+          class="item-to-collect"
+        >
+          <div class="item">
+            <div class="visual">
+              <visual :url="item_to_collect.content.image" />
+            </div>
+            <div class="information">
+              {{ item_to_collect.content.name }}
+              <br>
+              {{ item_to_collect.content.artist_display }}
+              |
+              {{ item_to_collect.content.release_display }}
+              <br>
+              {{ item_to_collect.duration | ms_to_time }}
+            </div>
+          </div>
+        </div>
+        <!--
                 <div class="settings-container">
                     <div class="setting">
                         <input type="checkbox" id="copy_cue_and_fade" value="html-news" name="user-age"> <label
@@ -287,105 +302,152 @@
                     </div>
                 </div>
                 -->
-                <div class="tabbed-navigation">
-                    <div @click.prevent="set_scope_list" v-bind:class="{ selected: (scope === 'list') }"
-                         class="tab-selector">
-                        <span>Your Playlists</span>
-                    </div>
-                    <div @click.prevent="set_scope_create" v-bind:class="{ selected: (scope === 'create') }"
-                         class="tab-selector">
-                        <span>New Playlist</span>
-                    </div>
-                </div>
-            </header>
-
-            <div class="content-container">
-
-                <div v-if="(scope === 'list')" class="playlist-search">
-                    <div class="input-container">
-                        <div class="input-group">
-                            <input class="input-group-field"
-                                   type="text"
-                                   placeholder="Search playlists"
-                                   :value="query_string"
-                                   @input="update_query_string">
-                        </div>
-                    </div>
-                    <div v-if="playlists" class="list-container scrollable">
-                        <playlist
-                            v-for="item in playlists"
-                            v-bind:key="item.uuid"
-                            v-bind:item="item"
-                            v-bind:items_to_collect="items_to_collect"
-                            v-bind:actions="['add', 'add-and-close']"
-                            @visit="visit(...arguments)"
-                            @add="add_item_to_playlist(...arguments)"></playlist>
-                    </div>
-                </div>
-
-                <div v-if="(scope === 'create')" class="playlist-create">
-
-                    <transition name="fade">
-                        <div v-if="create_playlist_data.created" class="playlist-created-container">
-                            <playlist
-                                v-bind:key="create_playlist_data.created.uuid"
-                                v-bind:item="create_playlist_data.created"
-                                v-bind:items_to_collect="items_to_collect"
-                                v-bind:actions="['visit']"
-                                @visit="visit(...arguments)">
-                                </playlist>
-                        </div>
-                    </transition>
-
-                    <form v-if="(! create_playlist_data.created)" @submit.prevent="create_playlist">
-                        <div class="input-container">
-                            <div class="input-group">
-                                <label for="playlist_create_name">Playlist title *</label>
-                                <input class="input-group-field"
-                                       id="playlist_create_name"
-                                       ref="playlist_create_name"
-                                       type="text"
-                                       autofocus
-                                       autocomplete="off"
-                                       v-model="create_playlist_data.name">
-                            </div>
-                            <div class="input-group">
-                                <div class="horizontal-radio-group">
-                                    <span class="title">Playlist will be</span>
-                                    <label>
-                                        <input v-model="create_playlist_data.type" type="radio" name="type"
-                                               value="basket"/>private
-                                    </label>
-
-                                    <label>
-                                        <input v-model="create_playlist_data.type" type="radio" name="type"
-                                               value="playlist"/>public
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div v-if="create_playlist_data.errors.length" class="form-errors">
-                                <span>Please correct the following error(s):</span>
-                                <ul>
-                                    <li v-for="error in create_playlist_data.errors" :key="error">{{ error }}</li>
-                                </ul>
-                            </div>
-
-                            <div class="input-group submit">
-                                <input type="submit" value="Save" class="button">
-                            </div>
-                        </div>
-                    </form>
-
-                    <transition name="fade">
-                        <div v-if="loading" class="loading-container">
-                            <span class="loading-info">
-                                <loader></loader>
-                            </span>
-                        </div>
-                    </transition>
-                </div>
-            </div>
+        <div class="tabbed-navigation">
+          <div
+            :class="{ selected: (scope === 'list') }"
+            class="tab-selector"
+            @click.prevent="set_scope_list"
+          >
+            <span>Your Playlists</span>
+          </div>
+          <div
+            :class="{ selected: (scope === 'create') }"
+            class="tab-selector"
+            @click.prevent="set_scope_create"
+          >
+            <span>New Playlist</span>
+          </div>
         </div>
-    </modal>
+      </header>
+
+      <div class="content-container">
+        <div
+          v-if="(scope === 'list')"
+          class="playlist-search"
+        >
+          <div class="input-container">
+            <div class="input-group">
+              <input
+                class="input-group-field"
+                type="text"
+                placeholder="Search playlists"
+                :value="query_string"
+                @input="update_query_string"
+              >
+            </div>
+          </div>
+          <div
+            v-if="playlists"
+            class="list-container scrollable"
+          >
+            <playlist
+              v-for="item in playlists"
+              :key="item.uuid"
+              :item="item"
+              :items_to_collect="items_to_collect"
+              :actions="['add', 'add-and-close']"
+              @visit="visit(...arguments)"
+              @add="add_item_to_playlist(...arguments)"
+            />
+          </div>
+        </div>
+
+        <div
+          v-if="(scope === 'create')"
+          class="playlist-create"
+        >
+          <transition name="fade">
+            <div
+              v-if="create_playlist_data.created"
+              class="playlist-created-container"
+            >
+              <playlist
+                :key="create_playlist_data.created.uuid"
+                :item="create_playlist_data.created"
+                :items_to_collect="items_to_collect"
+                :actions="['visit']"
+                @visit="visit(...arguments)"
+              />
+            </div>
+          </transition>
+
+          <form
+            v-if="(! create_playlist_data.created)"
+            @submit.prevent="create_playlist"
+          >
+            <div class="input-container">
+              <div class="input-group">
+                <label for="playlist_create_name">Playlist title *</label>
+                <input
+                  id="playlist_create_name"
+                  ref="playlist_create_name"
+                  v-model="create_playlist_data.name"
+                  class="input-group-field"
+                  type="text"
+                  autofocus
+                  autocomplete="off"
+                >
+              </div>
+              <div class="input-group">
+                <div class="horizontal-radio-group">
+                  <span class="title">Playlist will be</span>
+                  <label>
+                    <input
+                      v-model="create_playlist_data.type"
+                      type="radio"
+                      name="type"
+                      value="basket"
+                    >private
+                  </label>
+
+                  <label>
+                    <input
+                      v-model="create_playlist_data.type"
+                      type="radio"
+                      name="type"
+                      value="playlist"
+                    >public
+                  </label>
+                </div>
+              </div>
+
+              <div
+                v-if="create_playlist_data.errors.length"
+                class="form-errors"
+              >
+                <span>Please correct the following error(s):</span>
+                <ul>
+                  <li
+                    v-for="error in create_playlist_data.errors"
+                    :key="error"
+                  >
+                    {{ error }}
+                  </li>
+                </ul>
+              </div>
+
+              <div class="input-group submit">
+                <input
+                  type="submit"
+                  value="Save"
+                  class="button"
+                >
+              </div>
+            </div>
+          </form>
+
+          <transition name="fade">
+            <div
+              v-if="loading"
+              class="loading-container"
+            >
+              <span class="loading-info">
+                <loader />
+              </span>
+            </div>
+          </transition>
+        </div>
+      </div>
+    </div>
+  </modal>
 </template>

@@ -8,6 +8,7 @@
             id: {
                 type: String,
                 required: false,
+                default: null,
             },
             autogrow: {
                 type: Boolean,
@@ -20,6 +21,7 @@
                 autogrowNumRowsVisible: 1
             }
         },
+        computed: {},
         mounted: function () {
             if (this.autogrow) {
                 if (DEBUG) {
@@ -67,7 +69,6 @@
                 });
             }
         },
-        computed: {},
     }
 
 </script>
@@ -94,9 +95,10 @@
     }
 </style>
 <template>
-    <div
-        :class="{'autogrow': autogrow}"
-        class="formset">
-        <slot></slot>
-    </div>
+  <div
+    :class="{'autogrow': autogrow}"
+    class="formset"
+  >
+    <slot />
+  </div>
 </template>

@@ -28,14 +28,19 @@
             imageUrl: {
                 type: String,
                 required: false,
+                default: null,
             },
             largeImageUrl: {
                 type: String,
                 required: false,
+                default: null,
             },
             actions: {
                 type: Array,
                 required: false,
+                default: function () {
+                    return [];
+                },
             },
         },
         data() {
@@ -44,6 +49,24 @@
                 isHover: false,
                 lightboxVisible: false,
                 secondaryActionsVisible: false,
+            }
+        },
+        computed: {
+            canPlay: function () {
+                return this.actions.findIndex((action) => action.key === 'play') > -1;
+            },
+            primaryAction: function () {
+                const index = this.actions.findIndex((action) => action.key === 'play');
+                if (index < 0) {
+                    return null;
+                }
+                return this.actions[index];
+                // return this.actions.findIndex((action) => action.key === 'play') > -1;
+            },
+            secondaryActions: function () {
+                // play is considered to be the primary / first action.
+                // so return all actions except play.
+                return this.actions.filter(action => action.key !== 'play');
             }
         },
         methods: {
@@ -97,24 +120,6 @@
             playerControls: function (action) {
                 const _e = new CustomEvent('player:controls', {detail: action});
                 window.dispatchEvent(_e);
-            }
-        },
-        computed: {
-            canPlay: function () {
-                return this.actions.findIndex((action) => action.key === 'play') > -1;
-            },
-            primaryAction: function () {
-                const index = this.actions.findIndex((action) => action.key === 'play');
-                if (index < 0) {
-                    return null;
-                }
-                return this.actions[index];
-                // return this.actions.findIndex((action) => action.key === 'play') > -1;
-            },
-            secondaryActions: function () {
-                // play is considered to be the primary / first action.
-                // so return all actions except play.
-                return this.actions.filter(action => action.key !== 'play');
             }
         },
     }
@@ -234,71 +239,84 @@
 
 </style>
 <template>
+  <div
+    class="visual-with-actions"
+    @mouseover="onMouseOver"
+    @mouseleave="onMouseLeave"
+  >
+    <lazy-image :src="imageUrl" />
+
     <div
-        class="visual-with-actions"
-        @mouseover="onMouseOver"
-        @mouseleave="onMouseLeave">
+      class="mask"
+      :class="{ 'mask--visible': isHover }"
+    />
 
-        <lazy-image :src="imageUrl"></lazy-image>
-
+    <div
+      v-if="isHover"
+      class="panel"
+    >
+      <div
+        class="panel__top"
+      />
+      <div
+        class="panel__middle"
+      >
         <div
-            class="mask"
-            :class="{ 'mask--visible': isHover }">
+          class="actions"
+        >
+          <div
+            class="actions__rating"
+          >
+            <!--R-->
+          </div>
+          <div
+            class="actions__play"
+          >
+            <play
+              v-if="primaryAction"
+              @click="handleAction(primaryAction)"
+            />
+          </div>
+          <div
+            class="actions__secondary"
+          >
+            <div
+              v-if="(secondaryActions && secondaryActions.length)"
+              class="toggle"
+              :class="{ 'toggle--active': secondaryActionsVisible }"
+              @click="toggleSecondaryActions"
+            >
+              <i class="fa fa-ellipsis-h" />
+            </div>
+            <context-menu
+              :visible="secondaryActionsVisible"
+              :actions="secondaryActions"
+              @click="handleAction"
+            />
+          </div>
         </div>
-
+      </div>
+      <div
+        class="panel__bottom"
+        @click="showLightbox"
+      >
         <div
-            class="panel"
-            v-if="isHover">
-            <div
-                class="panel__top">
-            </div>
-            <div
-                class="panel__middle">
-                <div
-                    class="actions">
-                    <div
-                        class="actions__rating">
-                        <!--R-->
-                    </div>
-                    <div
-                        class="actions__play">
-                        <play
-                            v-if="primaryAction"
-                            @click="handleAction(primaryAction)">
-                        </play>
-                    </div>
-                    <div
-                        class="actions__secondary">
-                        <div
-                            class="toggle"
-                            :class="{ 'toggle--active': secondaryActionsVisible }"
-                            v-if="(secondaryActions && secondaryActions.length)"
-                            @click="toggleSecondaryActions">
-                            <i class="fa fa-ellipsis-h"></i>
-                        </div>
-                        <context-menu
-                            :visible="secondaryActionsVisible"
-                            :actions="secondaryActions"
-                            @click="handleAction">
-                        </context-menu>
-                    </div>
-                </div>
-            </div>
-            <div
-                class="panel__bottom"
-                @click="showLightbox">
-
-                <div class="thumbnails" v-if="largeImageUrl">
-                    <div class="thumbnail">
-                        <!--<img :src="imageUrl">-->
-                        <lazy-image :src="imageUrl"></lazy-image>
-                    </div>
-                </div>
-
-            </div>
+          v-if="largeImageUrl"
+          class="thumbnails"
+        >
+          <div class="thumbnail">
+            <!--<img :src="imageUrl">-->
+            <lazy-image :src="imageUrl" />
+          </div>
         </div>
-
-        <lightbox v-if="largeImageUrl" :visible="lightboxVisible" :image-url="largeImageUrl" @close="hideLightbox"></lightbox>
-
+      </div>
     </div>
+
+    <lightbox
+      v-if="largeImageUrl"
+      :visible="lightboxVisible"
+      :image-url="largeImageUrl"
+      @close="hideLightbox"
+    />
+  </div>
 </template>

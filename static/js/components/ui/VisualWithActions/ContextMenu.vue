@@ -78,22 +78,27 @@
 
 </style>
 <template>
-    <transition name="fade">
-        <div
-            class="context-menu"
-            v-if="visible">
-            <div
-                class="menu-item"
-                v-for="action in actions"
-                :key="action.key"
-                @click="handleAction(action)">
-                <div class="menu-item__icon">
-                    <i :class="getIconClass(action)" class="fa"></i>
-                </div>
-                <div class="menu-item__name">
-                    {{ action.title }}
-                </div>
-            </div>
+  <transition name="fade">
+    <div
+      v-if="visible"
+      class="context-menu"
+    >
+      <div
+        v-for="action in actions"
+        :key="action.key"
+        class="menu-item"
+        @click="handleAction(action)"
+      >
+        <div class="menu-item__icon">
+          <i
+            :class="getIconClass(action)"
+            class="fa"
+          />
         </div>
-    </transition>
+        <div class="menu-item__name">
+          {{ action.title }}
+        </div>
+      </div>
+    </div>
+  </transition>
 </template>

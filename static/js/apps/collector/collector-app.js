@@ -17,6 +17,7 @@ const CollectorApp = Vue.extend({
         Playlist,
         Visual
     },
+    filters: templateFilters,
     data() {
         return {
             loading: false,
@@ -34,6 +35,7 @@ const CollectorApp = Vue.extend({
             }
         }
     },
+    computed: {},
     mounted: function () {
         if (DEBUG) console.group('CollectorApp');
 
@@ -50,8 +52,6 @@ const CollectorApp = Vue.extend({
 
         if (DEBUG) console.groupEnd();
     },
-    filters: templateFilters,
-    computed: {},
     methods: {
 
         ///////////////////////////////////////////////////////////////
@@ -94,14 +94,14 @@ const CollectorApp = Vue.extend({
         // method called from ui
         add_item_to_playlist: function (playlist, close) {
             if (DEBUG) console.info('add_item_to_playlist', playlist.name, close);
-            this.add_items_to_playlist(playlist, this.items_to_collect);
+            this.add_itemsToPlaylist(playlist, this.items_to_collect);
             if(close) {
                 this.close()
             }
         },
         // method for API communication
-        add_items_to_playlist: function (playlist, items_to_collect) {
-            if (DEBUG) console.info('add_items_to_playlist', playlist.name, items_to_collect);
+        add_itemsToPlaylist: function (playlist, items_to_collect) {
+            if (DEBUG) console.info('add_itemsToPlaylist', playlist.name, items_to_collect);
 
             const index = this.playlists.findIndex((element) => element.uuid === playlist.uuid);
 

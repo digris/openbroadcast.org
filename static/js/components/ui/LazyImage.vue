@@ -13,10 +13,12 @@
             width: {
                 type: Number,
                 required: false,
+                default: null,
             },
             height: {
                 type: Number,
                 required: false,
+                default: null,
             },
         },
         data() {
@@ -25,6 +27,23 @@
                 isLoading: false,
                 isLoaded: false,
                 isVisible: false,
+            }
+        },
+        computed: {
+            canPlay: function () {
+                return false;
+            },
+            imageSource: function() {
+                if(this.isLoaded) {
+                    return this.src;
+                }
+                return this.placeholderImage;
+            },
+            imageWidth: function() {
+                return this.width;
+            },
+            imageHeight: function() {
+                return this.height;
             }
         },
         mounted: function () {
@@ -56,23 +75,6 @@
 
             },
         },
-        computed: {
-            canPlay: function () {
-                return false;
-            },
-            imageSource: function() {
-                if(this.isLoaded) {
-                    return this.src;
-                }
-                return this.placeholderImage;
-            },
-            imageWidth: function() {
-                return this.width;
-            },
-            imageHeight: function() {
-                return this.height;
-            }
-        },
     }
 
     function isInViewport(element) {
@@ -91,8 +93,6 @@
     img {
         max-width: 100%;
         max-height: 100%;
-        /*width: 100%;*/
-        /*height: 100%;*/
         transition: opacity 200ms;
         &.placeholder {
             image-rendering: pixelated;
@@ -101,7 +101,8 @@
     }
 </style>
 <template>
-    <img
-        :class="{placeholder: !isLoaded}"
-        :src="imageSource">
+  <img
+    :class="{placeholder: !isLoaded}"
+    :src="imageSource"
+  >
 </template>

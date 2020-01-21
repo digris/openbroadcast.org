@@ -7,13 +7,26 @@
 
     export default {
         name: 'SchedulerCalendarEmission',
+        filters: templateFilters,
         props: {
-            emission: Object,
+            emission: {
+                type: Object,
+                required: true,
+            }
         },
         data() {
             return {
                 isHover: false,
             }
+        },
+        computed: {
+            style() {
+                const color = backgroundColors[this.emission.obj.color];
+                return {
+                    backgroundColor: (this.isHover) ? hexToRGBA(color, 1) : hexToRGBA(color, .50),
+                    borderColor: hexToRGBA(color, 1),
+                }
+            },
         },
         methods: {
             dblclick: function () {
@@ -30,16 +43,6 @@
             },
 
         },
-        computed: {
-            style() {
-                const color = backgroundColors[this.emission.obj.color];
-                return {
-                    backgroundColor: (this.isHover) ? hexToRGBA(color, 1) : hexToRGBA(color, .50),
-                    borderColor: hexToRGBA(color, 1),
-                }
-            },
-        },
-        filters: templateFilters,
     }
 </script>
 <style lang="scss" scoped>
@@ -123,54 +126,59 @@
 </style>
 
 <template>
+  <div
+    :style="style"
+    :class="{ 'is-highlighted': emission.highlighted, 'is-dragged': emission.dragged }"
+    class="emission"
+    @dblclick="dblclick"
+    @mouseover="onMouseOver"
+    @mouseleave="onMouseLeave"
+  >
     <div
-        @dblclick="dblclick"
-        @mouseover="onMouseOver"
-        @mouseleave="onMouseLeave"
-        :style="style"
-        :class="{ 'is-highlighted': emission.highlighted, 'is-dragged': emission.dragged }"
-        class="emission">
-        <div
-            class="emission__title">
-            <span v-if="emission.obj.series">
-                {{ emission.obj.series }}
-                <!--
+      class="emission__title"
+    >
+      <span v-if="emission.obj.series">
+        {{ emission.obj.series }}
+        <!--
                 <br>
                 <small>{{ emission.obj.name }}</small>
                 -->
-            </span>
-            <span v-else>
-                {{ emission.obj.name }}
-            </span>
-        </div>
-        <div v-if="isHover"
-            class="emission__details">
-            <div
-                class="emission__details__title">
-                <span v-if="emission.obj.series">
-                    {{ emission.obj.series }}
-                    <br>
-                    <span>{{ emission.obj.name }}</span>
-                </span>
-                <span v-else>
-                    {{ emission.obj.name }}
-                </span>
-            </div>
-            <div
-                v-if="emission.obj.image"
-                class="emission__details__visual">
-                <img :src="emission.obj.image">
-            </div>
-            <div
-                class="emission__details__appendix">
-                <span>
-                    {{ emission.obj.timeStart|date('HH:mm') }}
-                    -
-                    {{ emission.obj.timeEnd|date('HH:mm') }}
-                </span>
-            </div>
-
-        </div>
-
+      </span>
+      <span v-else>
+        {{ emission.obj.name }}
+      </span>
     </div>
+    <div
+      v-if="isHover"
+      class="emission__details"
+    >
+      <div
+        class="emission__details__title"
+      >
+        <span v-if="emission.obj.series">
+          {{ emission.obj.series }}
+          <br>
+          <span>{{ emission.obj.name }}</span>
+        </span>
+        <span v-else>
+          {{ emission.obj.name }}
+        </span>
+      </div>
+      <div
+        v-if="emission.obj.image"
+        class="emission__details__visual"
+      >
+        <img :src="emission.obj.image">
+      </div>
+      <div
+        class="emission__details__appendix"
+      >
+        <span>
+          {{ emission.obj.timeStart|date('HH:mm') }}
+          -
+          {{ emission.obj.timeEnd|date('HH:mm') }}
+        </span>
+      </div>
+    </div>
+  </div>
 </template>

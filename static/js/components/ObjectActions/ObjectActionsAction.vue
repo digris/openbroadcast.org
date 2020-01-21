@@ -5,7 +5,10 @@ const DEBUG = false;
 export default {
     name: 'ObjectActionsAction',
     props: {
-        action: Object,
+        action: {
+            type: Object,
+            required: true,
+        },
     }
 }
 </script>
@@ -32,14 +35,18 @@ export default {
 </style>
 
 <template>
-    <div
-        @click="$emit('click')"
-        class="action">
-        <div class="action__icon">
-            <i v-bind:class="action.icon" class="fa"></i>
-        </div>
-        <div class="action__name">
-            {{ action.title }}
-        </div>
+  <div
+    class="action"
+    @click="$emit('click')"
+  >
+    <div class="action__icon">
+      <i
+        :class="action.icon"
+        class="fa"
+      />
     </div>
+    <div class="action__name">
+      {{ action.title }}
+    </div>
+  </div>
 </template>

@@ -67,9 +67,19 @@
 
     export default {
         name: 'EmissionHistoryMatrix',
+        filters: templateFilters,
         props: {
-            emissionHistory: Array,
-            objUuid: String,
+            emissionHistory: {
+                type: Array,
+                required: false,
+                default: function () {
+                    return [];
+                },
+            },
+            objUuid: {
+                type: String,
+                required: true,
+            },
             theme: {
                 type: String,
                 default: 'light',
@@ -77,9 +87,6 @@
                     return ['dark', 'light'].indexOf(value) !== -1;
                 }
             },
-        },
-        mounted: function () {
-            this.$store.dispatch('library/loadPlaylist', {uuid: this.objUuid});
         },
         computed: {
             days() {
@@ -99,6 +106,9 @@
             playlist() {
                 return this.$store.getters['library/playlistsByUuid'](this.objUuid);
             },
+        },
+        mounted: function () {
+            this.$store.dispatch('library/loadPlaylist', {uuid: this.objUuid});
         },
         methods: {
             getEmissionsForRange: function (timeStart, timeEnd) {
@@ -140,14 +150,14 @@
 
                     slots.push({
                         timeStart: timeStart,
-                        label: `${timeStart.format('HH')} - ${timeEnd.format('HH')}`,
+                        // label: `${timeStart.format('HH')} - ${timeEnd.format('HH')}`,
+                        label: `${timeStart.format('H')}h`,
                         hasDaypartMarker: DAYPART_MARKERS.includes(timeStart.$H)
                     })
                 }
                 return slots;
             }
-        },
-        filters: templateFilters
+        }
     }
 </script>
 <style lang="scss" scoped>
@@ -156,7 +166,7 @@
 
         // border: 10px solid greenyellow;
 
-        --slot-height: 18px;
+        --slot-height: 16px;
 
         //--border-color: #c9c9c9;
         //--border-color-light: #efefef;
@@ -187,7 +197,7 @@
 
             display: grid;
             grid-template-rows: 20px auto;
-            grid-template-columns: 60px auto;
+            grid-template-columns: 30px auto;
             grid-template-areas: "dayparts header" "dayparts matrix";
 
             &__dayparts {
@@ -301,84 +311,53 @@
 </style>
 
 <template>
-    <div
-        class="emission-history"
-        :class="{ 'emission-history--dark': (theme === 'dark') }">
-        <div class="grid">
-
-            <div class="grid__dayparts">
-                <div
-                    v-for="(slot, index) in legend"
-                    class="grid__dayparts__slot"
-                    :class="{ 'has-daypart-marker': slot.hasDaypartMarker }"
-                    :key="`slot-${index}`">
-                    {{ slot.label }}
-                </div>
-            </div>
-
-            <div class="grid__header">
-                <div
-                    class="grid__header__day"
-                    :class="{ 'is-weekend': day.isWeekend,  'is-today': day.isToday }"
-                    v-for="(day, index) in days"
-                    :key="`day-${index}`">
-                    {{ day.dayName }}
-                </div>
-            </div>
-
-            <div class="grid__matrix">
-                <div
-                    class="grid__matrix__day"
-                    :class="{ 'is-weekend': day.isWeekend,  'is-today': day.isToday }"
-                    v-for="(day, index) in days"
-                    :key="`day-${index}`">
-                    <div
-                        class="grid__matrix__slot"
-                        :class="{ 'has-emission': slot.emissions.length, 'has-daypart-marker': slot.hasDaypartMarker, 'has-daypart-match': slot.hasDaypartMatch }"
-                        v-for="(slot, index) in day.slots"
-                        :key="`day-slot-${index}`">
-
-                        <div
-                            v-if="( slot.emissions.length)"
-                            class="grid__matrix__slot__emission">
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-
-            <!--
-            <div
-                class="grid__legend">
-                <div
-                    class="grid__legend__header">
-                    &nbsp;
-                </div>
-                <div
-                    class="grid__legend__slot"
-                    v-for="(slot, index) in legend"
-                    :key="`slot-${index}`">
-                    {{ slot.label }}
-                </div>
-            </div>
-            <div
-                class="grid__day"
-                :class="{ 'is-weekend': day.isWeekend,  'is-today': day.isToday }"
-                v-for="(day, index) in days"
-                :key="`day-${index}`">
-                <div
-                    class="grid__day__header">
-                    {{ day.dayName }}
-                </div>
-                <div
-                    class="grid__day__slot"
-                    :class="{ 'has-emission': slot.emissions.length }"
-                    v-for="(slot, index) in day.slots"
-                    :key="`day-slot-${index}`">
-                </div>
-            </div>
-            -->
+  <div
+    class="emission-history"
+    :class="{ 'emission-history--dark': (theme === 'dark') }"
+  >
+    <div class="grid">
+      <div class="grid__dayparts">
+        <div
+          v-for="(slot, index) in legend"
+          :key="`slot-${index}`"
+          class="grid__dayparts__slot"
+          :class="{ 'has-daypart-marker': slot.hasDaypartMarker }"
+        >
+          <span v-if="slot.hasDaypartMarker">{{ slot.label }}</span>
         </div>
+      </div>
+
+      <div class="grid__header">
+        <div
+          v-for="(day, index) in days"
+          :key="`day-${index}`"
+          class="grid__header__day"
+          :class="{ 'is-weekend': day.isWeekend, 'is-today': day.isToday }"
+        >
+          {{ day.dayName }}
+        </div>
+      </div>
+
+      <div class="grid__matrix">
+        <div
+          v-for="(day, dayIndex) in days"
+          :key="`day-${dayIndex}`"
+          class="grid__matrix__day"
+          :class="{ 'is-weekend': day.isWeekend, 'is-today': day.isToday }"
+        >
+          <div
+            v-for="(slot, slotIndex) in day.slots"
+            :key="`day-slot-${slotIndex}`"
+            class="grid__matrix__slot"
+            :class="{ 'has-emission': slot.emissions.length, 'has-daypart-marker': slot.hasDaypartMarker, 'has-daypart-match': slot.hasDaypartMatch }"
+          >
+            <div
+              v-if="( slot.emissions.length)"
+              class="grid__matrix__slot__emission"
+            />
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>

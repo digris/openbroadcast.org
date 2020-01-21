@@ -24,6 +24,23 @@
                 arrowCounter: 0,
             };
         },
+        watch: {
+            items: function (val, oldValue) {
+
+                // actually compare them
+                if (val !== oldValue) {
+                    this.results = val;
+                    this.isLoading = false;
+                    this.isOpen = true;
+                }
+            },
+        },
+        mounted() {
+            document.addEventListener('click', this.handleClickOutside)
+        },
+        destroyed() {
+            document.removeEventListener('click', this.handleClickOutside)
+        },
 
         methods: {
             onChange() {
@@ -80,62 +97,45 @@
                     this.arrowCounter = -1;
                 }
             }
-        },
-        watch: {
-            items: function (val, oldValue) {
-
-                // actually compare them
-                if (val !== oldValue) {
-                    this.results = val;
-                    this.isLoading = false;
-                    this.isOpen = true;
-                }
-            },
-        },
-        mounted() {
-            document.addEventListener('click', this.handleClickOutside)
-        },
-        destroyed() {
-            document.removeEventListener('click', this.handleClickOutside)
         }
     };
 </script>
 
 <template>
-    <div class="autocomplete">
-        <input
-            type="text"
-            maxlength="50"
-            placeholder="Add Tag"
-            @input="onChange"
-            v-model="search"
-            @keydown.down.prevent="onArrowDown"
-            @keydown.up.prevent="onArrowUp"
-            @keydown.enter.prevent="onEnter"
-            @keydown.188.prevent="onEnter"
-        />
-        <ul
-            v-show="isOpen"
-            class="autocomplete__results"
-        >
-            <li
-                class="loading"
-                v-if="isLoading"
-            >
-                Loading tags...
-            </li>
-            <li
-                v-else
-                v-for="(result, i) in results"
-                :key="i"
-                @click="setResult(result)"
-                class="autocomplete__result"
-                :class="{ 'is-active': i === arrowCounter }"
-            >
-                {{ result }}
-            </li>
-        </ul>
-    </div>
+  <div class="autocomplete">
+    <input
+      v-model="search"
+      type="text"
+      maxlength="50"
+      placeholder="Add Tag"
+      @input="onChange"
+      @keydown.down.prevent="onArrowDown"
+      @keydown.up.prevent="onArrowUp"
+      @keydown.enter.prevent="onEnter"
+      @keydown.188.prevent="onEnter"
+    >
+    <ul
+      v-show="isOpen"
+      class="autocomplete__results"
+    >
+      <li
+        v-if="isLoading"
+        class="loading"
+      >
+        Loading tags...
+      </li>
+      <li
+        v-for="(result, i) in results"
+        v-else
+        :key="i"
+        class="autocomplete__result"
+        :class="{ 'is-active': i === arrowCounter }"
+        @click="setResult(result)"
+      >
+        {{ result }}
+      </li>
+    </ul>
+  </div>
 </template>
 
 <style lang="scss" scoped>

@@ -4,20 +4,28 @@
     import {templateFilters} from '../../../utils/template-filters';
 
     export default {
-        props: [
-            'items_to_play',
-        ],
+        components: {
+        },
+        filters: templateFilters,
+        props: {
+            itemsToPlay: {
+                type: Array,
+                required: false,
+                default: function () {
+                    return [];
+                },
+            },
+        },
+
         data() {
             return {
                 tweened_duration: 0
             }
         },
-        components: {
-        },
         computed: {
             duration: function() {
               let duration = 0;
-                this.items_to_play.forEach((item_to_play) => {
+                this.itemsToPlay.forEach((item_to_play) => {
                     item_to_play.items.forEach((item) => {
                         duration += item.duration;
                     });
@@ -55,7 +63,7 @@
         methods: {
             add_all_to_playlist: function () {
                 let _items = [];
-                this.items_to_play.forEach((item_to_play) => {
+                this.itemsToPlay.forEach((item_to_play) => {
                     item_to_play.items.forEach((item) => {
                         _items.push(item)
                     });
@@ -64,7 +72,6 @@
                 window.dispatchEvent(_e);
             },
         },
-        filters: templateFilters,
     }
 </script>
 
@@ -101,17 +108,19 @@
 </style>
 
 <template>
-    <div class="player-footer">
-        <div class="information">
-            Total: <span>{{ animated_duration | ms_to_time }}</span>
-        </div>
-        <div class="actions">
-            <div class="button-group">
-                <a @click.prevent="add_all_to_playlist"
-                   class="button hollow">
-                    Add all to playlist
-                </a>
-            </div>
-        </div>
+  <div class="player-footer">
+    <div class="information">
+      Total: <span>{{ animated_duration | ms_to_time }}</span>
     </div>
+    <div class="actions">
+      <div class="button-group">
+        <a
+          class="button hollow"
+          @click.prevent="add_all_to_playlist"
+        >
+          Add all to playlist
+        </a>
+      </div>
+    </div>
+  </div>
 </template>

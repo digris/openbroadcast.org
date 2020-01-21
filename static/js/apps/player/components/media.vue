@@ -3,11 +3,15 @@
     const DEBUG = false;
 
     export default {
-        props: [
-            'item'
-        ],
         components: {
 
+        },
+        filters: templateFilters,
+        props: {
+            item: {
+                type: Object,
+                required: true,
+            },
         },
         data() {
             return {
@@ -16,13 +20,13 @@
                 is_hover: false
             }
         },
-        mounted: function () {
-            if (DEBUG) console.debug('media - mounted');
-        },
         computed: {
             position: function () {
                 return (this.item.playhead_position > 0.3) ? this.item.playhead_position - 0.3 : 0;
             },
+        },
+        mounted: function () {
+            if (DEBUG) console.debug('media - mounted');
         },
         methods: {
             seek: function (item, e) {
@@ -53,7 +57,6 @@
                 window.dispatchEvent(_e);
             }
         },
-        filters: templateFilters,
     }
 
 </script>
@@ -178,50 +181,86 @@
 </style>
 
 <template>
-    <div :key="item.key" class="item" @mouseover="is_hover=true" @mouseleave="is_hover=false" v-bind:class="{ 'is-playing': item.is_playing, 'has-errors': item.errors.length }">
-        <div class="primary-content">
-            <div class="controls">
-                <span v-if="(! item.is_playing)" @click="$emit('play', item)">
-                    <i class="fa fa-play"></i>
-                </span>
-                <span v-else @click="$emit('pause', item)">
-                    <i class="fa fa-pause"></i>
-                </span>
-            </div>
-            <div class="meta">
-                <span>{{ item.content.name }}</span>
-                <br>
-                <a href="#" @click.prevent="$emit('visit', item.content, 'artist')">{{ item.content.artist_display }}</a>
-                |
-                <a href="#" @click.prevent="$emit('visit', item.content, 'release')">{{ item.content.release_display }}</a>
-            </div>
-            <div class="time">
-                <small v-if="item.is_buffering">buff</small>
-                <small v-if="(! item.is_buffering && item.is_playing)">{{ item.playhead_position_ms | ms_to_time }}</small>
-                {{ item.duration | ms_to_time }}
-            </div>
-            <div class="actions">
-                <span @click="remove(item, $event)">
-                    <i class="fa fa-ban"></i>
-                </span>
-                <span @click="collect(item, $event)">
-                    <i class="fa fa-plus"></i>
-                </span>
-            </div>
-        </div>
-        <div v-if="item.errors.length" class="errors">
-            <div v-for="(item, index) in item.errors" :key="('error' + index)">
-                <span>Error: {{ error.code }}</span>
-                &mdash;
-                <span>{{ error.info }}</span>
-            </div>
-        </div>
-        <div v-if="item.is_playing" class="playhead" @click="seek(item, $event)" v-on:mouseover="seek_enter(item, $event)"  v-on:mouseleave="seek_leave(item, $event)">
-            <div class="progress-container">
-                <div class="progress-indicator" v-bind:style="{ width: position + '%' }"></div>
-            </div>
-            <div class="seek-container" v-bind:style="{ width: seek_position + '%' }"></div>
-        </div>
+  <div
+    :key="item.key"
+    class="item"
+    :class="{ 'is-playing': item.is_playing, 'has-errors': item.errors.length }"
+    @mouseover="is_hover=true"
+    @mouseleave="is_hover=false"
+  >
+    <div class="primary-content">
+      <div class="controls">
+        <span
+          v-if="(! item.is_playing)"
+          @click="$emit('play', item)"
+        >
+          <i class="fa fa-play" />
+        </span>
+        <span
+          v-else
+          @click="$emit('pause', item)"
+        >
+          <i class="fa fa-pause" />
+        </span>
+      </div>
+      <div class="meta">
+        <span>{{ item.content.name }}</span>
+        <br>
+        <a
+          href="#"
+          @click.prevent="$emit('visit', item.content, 'artist')"
+        >{{ item.content.artist_display }}</a>
+        |
+        <a
+          href="#"
+          @click.prevent="$emit('visit', item.content, 'release')"
+        >{{ item.content.release_display }}</a>
+      </div>
+      <div class="time">
+        <small v-if="item.is_buffering">buff</small>
+        <small v-if="(! item.is_buffering && item.is_playing)">{{ item.playhead_position_ms | ms_to_time }}</small>
+        {{ item.duration | ms_to_time }}
+      </div>
+      <div class="actions">
+        <span @click="remove(item, $event)">
+          <i class="fa fa-ban" />
+        </span>
+        <span @click="collect(item, $event)">
+          <i class="fa fa-plus" />
+        </span>
+      </div>
     </div>
+    <div
+      v-if="item.errors.length"
+      class="errors"
+    >
+      <div
+        v-for="(error, index) in item.errors"
+        :key="('error' + index)"
+      >
+        <span>Error: {{ error.code }}</span>
+        &mdash;
+        <span>{{ error.info }}</span>
+      </div>
+    </div>
+    <div
+      v-if="item.is_playing"
+      class="playhead"
+      @click="seek(item, $event)"
+      @mouseover="seek_enter(item, $event)"
+      @mouseleave="seek_leave(item, $event)"
+    >
+      <div class="progress-container">
+        <div
+          class="progress-indicator"
+          :style="{ width: position + '%' }"
+        />
+      </div>
+      <div
+        class="seek-container"
+        :style="{ width: seek_position + '%' }"
+      />
+    </div>
+  </div>
 </template>
 

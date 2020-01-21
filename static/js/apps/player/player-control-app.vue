@@ -13,5 +13,5 @@
 </style>
 
 <template>
-    <div></div>
+  <div />
 </template>

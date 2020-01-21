@@ -21,10 +21,12 @@
             label: {
                 type: String,
                 required: false,
+                default: null,
             },
             hideLabel: {
                 type: String,
                 required: false,
+                default: null,
             },
             errors: {
                 type: Array,
@@ -36,6 +38,7 @@
             help: {
                 type: String,
                 required: false,
+                default: null,
             },
             isCheckbox: {
                 type: Boolean,
@@ -51,6 +54,28 @@
                 suggestedTags: [],
                 validationErrors: [],
             }
+        },
+        computed: {
+            combinedErrors: function() {
+                return [...this.errors, ...this.validationErrors];
+            },
+            hasErrors: function () {
+                return (this.combinedErrors && this.combinedErrors.length);
+            }
+        },
+        watch: {
+            tags: function (tags) {
+                if(tags.length > this.maxTags) {
+                    this.validationErrors.push({
+                        code: 'max-tags',
+                        message: `A maximum of ${this.maxTags} tags are allowed.`,
+                    })
+                } else {
+                    this.validationErrors = [];
+                    this.writeTagsToInput();
+                }
+
+            },
         },
         mounted: function () {
             this.readTagsFromInput();
@@ -87,68 +112,76 @@
                 input.value = this.tags.map(tag => `"${tag}"`).join(',');
             },
         },
-        watch: {
-            tags: function (tags) {
-                if(tags.length > this.maxTags) {
-                    this.validationErrors.push({
-                        code: 'max-tags',
-                        message: `A maximum of ${this.maxTags} tags are allowed.`,
-                    })
-                } else {
-                    this.validationErrors = [];
-                    this.writeTagsToInput();
-                }
-
-            },
-        },
-        computed: {
-            combinedErrors: function() {
-                return [...this.errors, ...this.validationErrors];
-            },
-            hasErrors: function () {
-                return (this.combinedErrors && this.combinedErrors.length);
-            }
-        },
     }
 </script>
 <template>
+  <div
+    :class="{'has-error': hasErrors, 'no-label': hideLabel}"
+    class="input-container input-container--tag"
+  >
     <div
-        :class="{'has-error': hasErrors, 'no-label': hideLabel}"
-        class="input-container input-container--tag">
-        <div v-if="(!hideLabel)" class="label" :for="id">
-            {{ label }}
-            <span v-if="required" class="label__required">*</span>
-        </div>
-
-        <div class="raw-field" ref="field" style="display: none;">
-            <slot name="default"></slot>
-        </div>
-
-        <div class="field input-container__input">
-            <input-autocomplete
-                class="input-container__autocomplete"
-                :is-async="true"
-                :items="suggestedTags"
-                @input="autocomleteInput"
-                @result="autocompleteResult">
-            </input-autocomplete>
-            <div class="input-container__tags">
-                <span v-for="(tag, index) in tags" :key="`tag-${index}`" class="tag">
-                    {{ tag }}
-                    <span class="tag__remove" @click="removeTag(index)">x</span>
-                </span>
-            </div>
-        </div>
-
-        <div class="appendix">
-            <div v-if="hasErrors" class="errors">
-                <p v-for="(error, index) in combinedErrors" :key="(index + error.code)">
-                    {{ error.message }}
-                </p>
-            </div>
-            <p v-if="help" class="help">{{ help }}</p>
-        </div>
+      v-if="(!hideLabel && label)"
+      class="label"
+      :for="id"
+    >
+      {{ label }}
+      <span
+        v-if="required"
+        class="label__required"
+      >*</span>
     </div>
+
+    <div
+      ref="field"
+      class="raw-field"
+      style="display: none;"
+    >
+      <slot name="default" />
+    </div>
+
+    <div class="field input-container__input">
+      <input-autocomplete
+        class="input-container__autocomplete"
+        :is-async="true"
+        :items="suggestedTags"
+        @input="autocomleteInput"
+        @result="autocompleteResult"
+      />
+      <div class="input-container__tags">
+        <span
+          v-for="(tag, index) in tags"
+          :key="`tag-${index}`"
+          class="tag"
+        >
+          {{ tag }}
+          <span
+            class="tag__remove"
+            @click="removeTag(index)"
+          >x</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="appendix">
+      <div
+        v-if="hasErrors"
+        class="errors"
+      >
+        <p
+          v-for="(error, index) in combinedErrors"
+          :key="(index + error.code)"
+        >
+          {{ error.message }}
+        </p>
+      </div>
+      <p
+        v-if="help"
+        class="help"
+      >
+        {{ help }}
+      </p>
+    </div>
+  </div>
 </template>
 <style lang="scss" scoped>
 

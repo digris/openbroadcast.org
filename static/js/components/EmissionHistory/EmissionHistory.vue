@@ -21,19 +21,36 @@
         directives: {
             ClickOutside,
         },
+        filters: {
+            // dateTime: function (value) {
+            //     if (!value) return '';
+            //     console.debug(value, dayjs(value).format('DD/MM/YYYY'));
+            //     return dayjs(value).format('DD/MM/YYYY');
+            // },
+            relativeDateTime: function (value) {
+                if (!value) return '';
+                return dayjs(value).fromNow();
+            },
+        },
         props: {
-            objCt: String,
-            objUuid: String,
-            hasWarning: Boolean
+            objCt: {
+                type: String,
+                required: true,
+            },
+            objUuid: {
+                type: String,
+                required: true,
+            },
+            hasWarning: {
+                type: Boolean,
+                default: false,
+            },
         },
         data() {
             return {
                 nearbyEmissionsVisible: false,
                 matrixVisible: false,
             }
-        },
-        mounted: function () {
-
         },
         computed: {
             emissionHistory() {
@@ -79,6 +96,9 @@
                 return Math.abs(time.diff(now, 'hour')) < NEARBY_HOURS;
             }
         },
+        mounted: function () {
+
+        },
         methods: {
             loadHistory: function (e) {
                 this.$store.dispatch('objectHistory/loadObjectHistory', {objCt: this.objCt, objUuid: this.objUuid});
@@ -106,17 +126,6 @@
             },
             hideMatrix: function() {
                 this.matrixVisible = false;
-            },
-        },
-        filters: {
-            // dateTime: function (value) {
-            //     if (!value) return '';
-            //     console.debug(value, dayjs(value).format('DD/MM/YYYY'));
-            //     return dayjs(value).format('DD/MM/YYYY');
-            // },
-            relativeDateTime: function (value) {
-                if (!value) return '';
-                return dayjs(value).fromNow();
             },
         }
     }
@@ -184,58 +193,66 @@
 </style>
 
 <template>
+  <div
+    v-click-outside="hideMatrix"
+    :class="{ 'emission-history--has-warning': hasWarning }"
+    class="emission-history"
+  >
     <div
-        v-click-outside="hideMatrix"
-        :class="{ 'emission-history--has-warning': hasWarning }"
-        class="emission-history">
-        <div
-            @mouseover="showNearbyEmissions"
-            @mouseleave="hideNearbyEmissions"
-            @click="toggleMatrix"
-            class="emission-history__indicator">
-            <span>H</span>
-        </div>
-        <div
-            v-if="nearbyEmissionsVisible"
-            class="emission-history__nearby-emissions">
-            <div
-                :class="{ 'has-warning': lastEmissionWarning }"
-                >
-                <span>Last emission</span>
-                <ul>
-                    <li
-                        v-if="lastEmission">
-                        {{ lastEmission.timeStart | relativeDateTime }}
-                    </li>
-                    <li
-                        v-else>
-                        No emissions yet
-                    </li>
-                </ul>
-            </div>
-            <div
-                :class="{ 'has-warning': nextEmissionWarning }"
-                >
-                <span>Next emission</span>
-                <ul>
-                    <li
-                        v-if="nextEmission">
-                        {{ nextEmission.timeStart | relativeDateTime }}
-                    </li>
-                    <li
-                        v-else>
-                        No emission schduled
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div
-            class="emission-history__matrix-container"
-            v-if="matrixVisible">
-                <matrix
-                    :obj-uuid="objUuid"
-                    :emission-history="emissionHistory"
-                ></matrix>
-        </div>
+      class="emission-history__indicator"
+      @mouseover="showNearbyEmissions"
+      @mouseleave="hideNearbyEmissions"
+      @click="toggleMatrix"
+    >
+      <span>H</span>
     </div>
+    <div
+      v-if="nearbyEmissionsVisible"
+      class="emission-history__nearby-emissions"
+    >
+      <div
+        :class="{ 'has-warning': lastEmissionWarning }"
+      >
+        <span>Last emission</span>
+        <ul>
+          <li
+            v-if="lastEmission"
+          >
+            {{ lastEmission.timeStart | relativeDateTime }}
+          </li>
+          <li
+            v-else
+          >
+            No emissions yet
+          </li>
+        </ul>
+      </div>
+      <div
+        :class="{ 'has-warning': nextEmissionWarning }"
+      >
+        <span>Next emission</span>
+        <ul>
+          <li
+            v-if="nextEmission"
+          >
+            {{ nextEmission.timeStart | relativeDateTime }}
+          </li>
+          <li
+            v-else
+          >
+            No emission schduled
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      v-if="matrixVisible"
+      class="emission-history__matrix-container"
+    >
+      <matrix
+        :obj-uuid="objUuid"
+        :emission-history="emissionHistory"
+      />
+    </div>
+  </div>
 </template>

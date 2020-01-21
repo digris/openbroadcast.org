@@ -20,6 +20,11 @@
                 items: []
             }
         },
+        computed: {
+            clipboardItems() {
+                return this.$store.getters['scheduler/clipboard'];
+            },
+        },
         methods: {
             dragenter: function (transferData, e) {
                 if (DEBUG) console.debug('dragenter', transferData, e);
@@ -39,11 +44,6 @@
             },
             deleteItem: function (uuid) {
                 this.$store.dispatch('scheduler/removeFromClipboard', uuid);
-            },
-        },
-        computed: {
-            clipboardItems() {
-                return this.$store.getters['scheduler/clipboard'];
             },
         }
     }
@@ -111,44 +111,50 @@
 </style>
 
 <template>
-    <drop
-        @dragenter="dragenter"
-        @dragleave="dragleave"
-        @drop="drop">
-        <div class="clipboard">
-
-            <div class="clipboard__actions">
-                <span
-                    class="action"
-                    @click="clearClipboard">Clear Clipboard</span>
-            </div>
-            <div class="clipboard__items">
-                <transition-group
-                    name="items"
-                    tag="div"
-                    mode="in-out">
-                    <drag
-                        v-for="item in clipboardItems"
-                        :key="item.uuid + item.ct"
-                        :transfer-data="item">
-                        <template slot="image">
-                            <div style="background: yellow; z-index: 1001;">(( DRAG ))</div>
-                        </template>
-                        <clipboard-item
-                            :item="item"
-                            @delete="deleteItem"
-                            @mouseenter="$emit('itemMouseenter', item.uuid)"
-                            @mouseleave="$emit('itemMouseleave', item.uuid)"></clipboard-item>
-                    </drag>
-                </transition-group>
-            </div>
-            <div
-                :class="{ 'clipboard__dropzone--is-active': dropActive }"
-                class="clipboard__dropzone">
-            </div>
-        </div>
-        <div style="margin: 10px 0 0 4px;">
-            <a href="/program/scheduler/legacy/">Old Scheduler</a>
-        </div>
-    </drop>
+  <drop
+    @dragenter="dragenter"
+    @dragleave="dragleave"
+    @drop="drop"
+  >
+    <div class="clipboard">
+      <div class="clipboard__actions">
+        <span
+          class="action"
+          @click="clearClipboard"
+        >Clear Clipboard</span>
+      </div>
+      <div class="clipboard__items">
+        <transition-group
+          name="items"
+          tag="div"
+          mode="in-out"
+        >
+          <drag
+            v-for="item in clipboardItems"
+            :key="item.uuid + item.ct"
+            :transfer-data="item"
+          >
+            <template slot="image">
+              <div style="background: yellow; z-index: 1001;">
+                (( DRAG ))
+              </div>
+            </template>
+            <clipboard-item
+              :item="item"
+              @delete="deleteItem"
+              @mouseenter="$emit('itemMouseenter', item.uuid)"
+              @mouseleave="$emit('itemMouseleave', item.uuid)"
+            />
+          </drag>
+        </transition-group>
+      </div>
+      <div
+        :class="{ 'clipboard__dropzone--is-active': dropActive }"
+        class="clipboard__dropzone"
+      />
+    </div>
+    <div style="margin: 10px 0 0 4px;">
+      <a href="/program/scheduler/legacy/">Old Scheduler</a>
+    </div>
+  </drop>
 </template>

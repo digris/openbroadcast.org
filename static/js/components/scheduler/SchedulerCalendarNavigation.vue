@@ -6,21 +6,26 @@
 
     export default {
         name: 'SchedulerCalendarNavigation',
-
-        props: {
-            settings: Object,
-            isFullscreen: Boolean,
-        },
         components: {
             'color-chooser': ColorChooser,
+        },
+        props: {
+            settings: {
+                type: Object,
+                required: false,
+                default: function () {
+                    return {};
+                },
+            },
+            isFullscreen: {
+                type: Boolean,
+                default: false,
+            },
         },
         data() {
             return {
                 emissionColors: backgroundColors,
             }
-        },
-        methods: {
-
         },
         computed: {
             numDays() {
@@ -41,6 +46,9 @@
                 }
                 return null;
             }
+        },
+        methods: {
+
         }
     }
 </script>
@@ -91,95 +99,105 @@
 </style>
 
 <template>
-    <div class="calendar-navigation">
-
-        <div class="calendar-navigation__left">
-            <span
-                class="action"
-                @click.prevent="$emit('updateDaysOffset', 7)">
-                &#x3C; Week
-            </span>
-            <span
-                class="action"
-                @click.prevent="$emit('updateDaysOffset', 1)">
-                &#x3C; Day
-            </span>
-        </div>
-
-        <div class="calendar-navigation__center">
-            <span
-                class="action"
-                @click.prevent="$emit('decreaseVerticalSize')">
-                -
-            </span>
-            <span
-                class="action"
-                @click.prevent="$emit('increaseVerticalSize')">
-                +
-            </span>
-            <span
-                :class="{ 'is-current': numDays === 7 }"
-                class="action"
-                @click.prevent="$emit('setNumDays', 7)">
-                7 Days
-            </span>
-            <span
-                :class="{ 'is-current': numDays === 14 }"
-                class="action"
-                @click.prevent="$emit('setNumDays', 14)">
-                14 Days
-            </span>
-            <span
-                :class="{ 'is-current': numDays === 28 }"
-                class="action"
-                @click.prevent="$emit('setNumDays', 28)">
-                28 Days
-            </span>
-            <span
-                class="action"
-                @click.prevent="$emit('reset')">
-                Reset
-            </span>
-            <span
-                :class="{ 'is-current': snapMinutes === 15 }"
-                class="action"
-                @click.prevent="$emit('setSnapMinutes', 15)">
-                15
-            </span>
-            <span
-                :class="{ 'is-current': snapMinutes === 30 }"
-                class="action"
-                @click.prevent="$emit('setSnapMinutes', 30)">
-                30
-            </span>
-            <color-chooser
-                @select="$emit('setColor', $event)"
-                :width="(48)"
-                :height="(22)"
-                :colors="emissionColors"
-                :selected-color="emissionColor">
-            </color-chooser>
-            <span
-                :class="{ 'is-current': isFullscreen }"
-                class="action"
-                @click.prevent="$emit('toggleFullscreen')">
-                FS
-            </span>
-
-        </div>
-
-        <div class="calendar-navigation__right">
-            <span
-                class="action"
-                @click.prevent="$emit('updateDaysOffset', -1)">
-                Day &#x3E;
-            </span>
-            <span
-                class="action"
-                @click.prevent="$emit('updateDaysOffset', -7)">
-                Week &#x3E;
-            </span>
-        </div>
-
+  <div class="calendar-navigation">
+    <div class="calendar-navigation__left">
+      <span
+        class="action"
+        @click.prevent="$emit('updateDaysOffset', 7)"
+      >
+        &#x3C; Week
+      </span>
+      <span
+        class="action"
+        @click.prevent="$emit('updateDaysOffset', 1)"
+      >
+        &#x3C; Day
+      </span>
     </div>
+
+    <div class="calendar-navigation__center">
+      <span
+        class="action"
+        @click.prevent="$emit('decreaseVerticalSize')"
+      >
+        -
+      </span>
+      <span
+        class="action"
+        @click.prevent="$emit('increaseVerticalSize')"
+      >
+        +
+      </span>
+      <span
+        :class="{ 'is-current': numDays === 7 }"
+        class="action"
+        @click.prevent="$emit('setNumDays', 7)"
+      >
+        7 Days
+      </span>
+      <span
+        :class="{ 'is-current': numDays === 14 }"
+        class="action"
+        @click.prevent="$emit('setNumDays', 14)"
+      >
+        14 Days
+      </span>
+      <span
+        :class="{ 'is-current': numDays === 28 }"
+        class="action"
+        @click.prevent="$emit('setNumDays', 28)"
+      >
+        28 Days
+      </span>
+      <span
+        class="action"
+        @click.prevent="$emit('reset')"
+      >
+        Reset
+      </span>
+      <span
+        :class="{ 'is-current': snapMinutes === 15 }"
+        class="action"
+        @click.prevent="$emit('setSnapMinutes', 15)"
+      >
+        15
+      </span>
+      <span
+        :class="{ 'is-current': snapMinutes === 30 }"
+        class="action"
+        @click.prevent="$emit('setSnapMinutes', 30)"
+      >
+        30
+      </span>
+      <color-chooser
+        :width="(48)"
+        :height="(22)"
+        :colors="emissionColors"
+        :selected-color="emissionColor"
+        @select="$emit('setColor', $event)"
+      />
+      <span
+        :class="{ 'is-current': isFullscreen }"
+        class="action"
+        @click.prevent="$emit('toggleFullscreen')"
+      >
+        FS
+      </span>
+    </div>
+
+    <div class="calendar-navigation__right">
+      <span
+        class="action"
+        @click.prevent="$emit('updateDaysOffset', -1)"
+      >
+        Day &#x3E;
+      </span>
+      <span
+        class="action"
+        @click.prevent="$emit('updateDaysOffset', -7)"
+      >
+        Week &#x3E;
+      </span>
+    </div>
+  </div>
 </template>

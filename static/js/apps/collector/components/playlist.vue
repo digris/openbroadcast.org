@@ -6,14 +6,28 @@
     import {templateFilters} from '../../../utils/template-filters';
 
     export default {
-        props: [
-            'item',
-            'items_to_collect',
-            'actions',
-        ],
         components: {
             Loader,
             Visual
+        },
+        filters: templateFilters,
+        props: {
+            item: {
+                type: Object,
+                required: true,
+            },
+            itemsToCollect: {
+                type: Array,
+                default: function () {
+                    return [];
+                },
+            },
+            actions: {
+                type: Array,
+                default: function () {
+                    return [];
+                },
+            },
         },
         data() {
             return {
@@ -62,7 +76,6 @@
             }
         },
         methods: {},
-        filters: templateFilters,
     }
 </script>
 
@@ -154,51 +167,74 @@
 </style>
 
 <template>
-    <div :key="item.uuid" class="item" v-bind:class="{ 'is-loading': item.loading, 'is-updated': item.updated }">
-        <div class="visual">
-            <visual v-bind:url="item.image"></visual>
-        </div>
-        <div class="information">
-            <a class="name" href="#" @click.prevent="$emit('visit', item)">
-                <i v-if="in_playlist" class="fa fa-star"></i>
-                <!--
+  <div
+    :key="item.uuid"
+    class="item"
+    :class="{ 'is-loading': item.loading, 'is-updated': item.updated }"
+  >
+    <div class="visual">
+      <visual :url="item.image" />
+    </div>
+    <div class="information">
+      <a
+        class="name"
+        href="#"
+        @click.prevent="$emit('visit', item)"
+      >
+        <i
+          v-if="in_playlist"
+          class="fa fa-star"
+        />
+        <!--
                 TODO: currently uses 'old' icon font style when running in main window, but
                       fontawesome icon syntax in popup. this should be unified at some point of time.
                 <i v-if="in_playlist" class="icon icon-star"></i>
                 -->
-                {{ item.name }}
-            </a>
-            <div v-if="item.series_display">
-                <span>{{ item.series_display }}</span>
-            </div>
-            <div class="counts">
-                <span>{{ animated_duration | ms_to_time }}</span>
-                &mdash;
-                <span>{{ item.num_media }} tracks</span>
-            </div>
-        </div>
-        <div class="actions">
-            <div class="button-group">
-                <a v-if="(actions.indexOf('add-and-close') > -1)" @click="$emit('add', item, true)"
-                   class="button hollow">
-                    Add & close
-                </a>
-                <a v-if="(actions.indexOf('add') > -1)" @click="$emit('add', item)"
-                   class="button hollow">
-                    Add
-                </a>
-                <a v-if="(actions.indexOf('visit') > -1)" @click="$emit('visit', item)"
-                   class="button hollow">
-                    Visit playlist
-                </a>
-            </div>
-        </div>
-        <transition name="fade">
-            <div v-if="item.loading" class="loading-container">
-                <span class="loading-info">
-                    <loader></loader>
-                </span>
-            </div>
-        </transition>
+        {{ item.name }}
+      </a>
+      <div v-if="item.series_display">
+        <span>{{ item.series_display }}</span>
+      </div>
+      <div class="counts">
+        <span>{{ animated_duration | ms_to_time }}</span>
+        &mdash;
+        <span>{{ item.num_media }} tracks</span>
+      </div>
     </div>
+    <div class="actions">
+      <div class="button-group">
+        <a
+          v-if="(actions.indexOf('add-and-close') > -1)"
+          class="button hollow"
+          @click="$emit('add', item, true)"
+        >
+          Add & close
+        </a>
+        <a
+          v-if="(actions.indexOf('add') > -1)"
+          class="button hollow"
+          @click="$emit('add', item)"
+        >
+          Add
+        </a>
+        <a
+          v-if="(actions.indexOf('visit') > -1)"
+          class="button hollow"
+          @click="$emit('visit', item)"
+        >
+          Visit playlist
+        </a>
+      </div>
+    </div>
+    <transition name="fade">
+      <div
+        v-if="item.loading"
+        class="loading-container"
+      >
+        <span class="loading-info">
+          <loader />
+        </span>
+      </div>
+    </transition>
+  </div>
 </template>

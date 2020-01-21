@@ -4,18 +4,20 @@
 
   export default {
     name: 'ThumbRating',
-    props: [
-      'objCt',
-      'objUuid',
-    ],
+    props: {
+        objCt: {
+            type: String,
+            required: true,
+        },
+        objUuid: {
+            type: String,
+            required: true,
+        },
+    },
     data() {
       return {
 
       }
-    },
-    mounted: function () {
-      // const key = `${this.obj_ct}:${this.media.id}`;
-      // this.$store.dispatch('rating/get_votes', {obj_ct: 'alibrary.media', obj_pk: this.media.id});
     },
     computed: {
       key() {
@@ -40,6 +42,10 @@
         //
         // return votes;
       },
+    },
+    mounted: function () {
+      // const key = `${this.obj_ct}:${this.media.id}`;
+      // this.$store.dispatch('rating/get_votes', {obj_ct: 'alibrary.media', obj_pk: this.media.id});
     },
     methods: {
       vote: function (value) {
@@ -120,70 +126,105 @@
 </style>
 
 <template>
-    <div class="thumb-rating" data-account-login-required>
-        <div @click.prevent="vote(1)" class="vote vote--up">
-            <span data-livefg class="vote__value">
-                <span v-if="(votes)">{{ votes.up }}</span>
-                <span v-else>-</span>
-            </span>
-            <svg version="1.1"
-                 id="Layer_1"
-                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                 x="0px" y="0px"
-                 width="33px" height="33px"
-                 viewBox="0 0 33 33" xml:space="preserve">
-                <g>
-                    <polyline
-                            fill-opacity="0.1"
-                            data-livefill-inverse
-                            stroke="#000000"
-                            stroke-width="2"
-                            data-livestroke
-                            stroke-miterlimit="10"
-                            points="8,15 14,15 20,1 23,1 23,14,32,14 32,26 29,31 19,31 16,29 8,29"/>
-                    <rect
-                            x="1" y="13"
-                            fill-opacity="0.1"
-                            data-livefill-inverse
-                            stroke="#000000"
-                            stroke-width="2"
-                            data-livestroke
-                            stroke-miterlimit="10"
-                            width="8" height="18"/>
-                </g>
-            </svg>
-        </div>
-        <div @click.prevent="vote(-1)" class="vote vote--down">
-            <svg version="1.1"
-                 id="Layer_1"
-                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                 x="0px" y="0px"
-                 width="34px" height="33px"
-                 viewBox="0 0 34 32" xml:space="preserve">
-                <g>
-                    <polyline
-                            fill-opacity="0.1"
-                            data-livefill-inverse
-                            stroke="#000000"
-                            stroke-width="2"
-                            data-livestroke
-                            stroke-miterlimit="10"
-                            points="8,15 14,15 20,1 23,1 23,14,32,14 32,26 29,31 19,31 16,29 8,29"/>
-                    <rect
-                            x="1" y="13"
-                            fill-opacity="0.1"
-                            data-livefill-inverse
-                            stroke="#000000"
-                            stroke-width="2"
-                            data-livestroke
-                            stroke-miterlimit="10"
-                            width="8" height="18"/>
-                </g>
-            </svg>
-            <span data-livefg class="vote__value">
-                <span v-if="(votes)">{{ votes.down }}</span>
-                <span v-else>-</span>
-            </span>
-        </div>
+  <div
+    class="thumb-rating"
+    data-account-login-required
+  >
+    <div
+      class="vote vote--up"
+      @click.prevent="vote(1)"
+    >
+      <span
+        data-livefg
+        class="vote__value"
+      >
+        <span v-if="(votes)">{{ votes.up }}</span>
+        <span v-else>-</span>
+      </span>
+      <svg
+        id="Layer_1"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        width="33px"
+        height="33px"
+        viewBox="0 0 33 33"
+        xml:space="preserve"
+      >
+        <g>
+          <polyline
+            fill-opacity="0.1"
+            data-livefill-inverse
+            stroke="#000000"
+            stroke-width="2"
+            data-livestroke
+            stroke-miterlimit="10"
+            points="8,15 14,15 20,1 23,1 23,14,32,14 32,26 29,31 19,31 16,29 8,29"
+          />
+          <rect
+            x="1"
+            y="13"
+            fill-opacity="0.1"
+            data-livefill-inverse
+            stroke="#000000"
+            stroke-width="2"
+            data-livestroke
+            stroke-miterlimit="10"
+            width="8"
+            height="18"
+          />
+        </g>
+      </svg>
     </div>
+    <div
+      class="vote vote--down"
+      @click.prevent="vote(-1)"
+    >
+      <svg
+        id="Layer_1"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        width="34px"
+        height="33px"
+        viewBox="0 0 34 32"
+        xml:space="preserve"
+      >
+        <g>
+          <polyline
+            fill-opacity="0.1"
+            data-livefill-inverse
+            stroke="#000000"
+            stroke-width="2"
+            data-livestroke
+            stroke-miterlimit="10"
+            points="8,15 14,15 20,1 23,1 23,14,32,14 32,26 29,31 19,31 16,29 8,29"
+          />
+          <rect
+            x="1"
+            y="13"
+            fill-opacity="0.1"
+            data-livefill-inverse
+            stroke="#000000"
+            stroke-width="2"
+            data-livestroke
+            stroke-miterlimit="10"
+            width="8"
+            height="18"
+          />
+        </g>
+      </svg>
+      <span
+        data-livefg
+        class="vote__value"
+      >
+        <span v-if="(votes)">{{ votes.down }}</span>
+        <span v-else>-</span>
+      </span>
+    </div>
+  </div>
 </template>

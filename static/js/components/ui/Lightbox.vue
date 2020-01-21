@@ -18,17 +18,17 @@
                 required: true,
             },
         },
-        methods: {
-            close: function () {
-                this.$emit('close');
-            }
-        },
         mounted: function () {
             document.addEventListener('keydown', (e) => {
                 if (this.visible && e.keyCode === 27) {
                     this.close();
                 }
             });
+        },
+        methods: {
+            close: function () {
+                this.$emit('close');
+            }
         }
     }
 </script>
@@ -74,11 +74,15 @@
 
 </style>
 <template>
-    <transition name="lightbox">
-        <div class="lightbox-mask" @click="close" v-if="visible">
-            <div class="content">
-                <lazy-image :src="imageUrl"></lazy-image>
-            </div>
-        </div>
-    </transition>
+  <transition name="lightbox">
+    <div
+      v-if="visible"
+      class="lightbox-mask"
+      @click="close"
+    >
+      <div class="content">
+        <lazy-image :src="imageUrl" />
+      </div>
+    </div>
+  </transition>
 </template>

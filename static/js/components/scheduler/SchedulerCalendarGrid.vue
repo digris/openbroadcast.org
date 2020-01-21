@@ -57,12 +57,20 @@
 
     export default {
         name: 'SchedulerCalendarGrid',
-
+        filters: templateFilters,
         props: {
-            days: Array,
-            pixelHeightPerHour: Number,
+            days: {
+                type: Array,
+                required: false,
+                default: function () {
+                    return [];
+                },
+            },
+            pixelHeightPerHour: {
+                type: Number,
+                required: true,
+            },
         },
-        methods: {},
         computed: {
             timeGrid() {
                 const rows = [];
@@ -89,7 +97,7 @@
               return this.days.length;
             },
         },
-        filters: templateFilters,
+        methods: {},
     }
 </script>
 <style lang="scss" scoped>
@@ -222,45 +230,55 @@
 </style>
 
 <template>
+  <div
+    class="scheduler-grid"
+  >
     <div
-        class="scheduler-grid">
-            <div
-                class="scheduler-grid__row"
-                :style="{ top: row.top + 50 + 'px' }"
-                v-for="(row, index) in timeGrid"
-                :key="`grid-row-${index}`"></div>
+      v-for="(row, index) in timeGrid"
+      :key="`grid-row-${index}`"
+      class="scheduler-grid__row"
+      :style="{ top: row.top + 50 + 'px' }"
+    />
 
-            <div class="scheduler-grid__dayparts">
-                <div
-                    class="scheduler-grid__dayparts__daypart"
-                    :style="{ top: daypart.top + 'px', height: daypart.height + 'px' }"
-                    v-for="(daypart, index) in daypartGrid"
-                    :key="`grid-daypart-${index}`">
-                    <span
-                        class="daypart-label">{{ daypart.label }}</span>
-                </div>
-            </div>
-
-            <div class="scheduler-grid__days">
-
-                <div
-                    class="scheduler-grid__days__placeholder_hack"></div>
-
-                <div
-                    v-for="(day, index) in days"
-                    :key="`day-row-${index}`"
-                    :class="{ 'is-weekend': day.isWeekend, 'is-today': day.isToday }"
-                    class="scheduler-grid__days__day">
-                    <div
-                        class="day-header" :class="{ 'day-header--small': (numDays > 14) }">
-                        <span
-                            class="day-label">{{ day.dayName }}</span>
-                        <span
-                            class="day-date">{{ day.timeStart|date('D.') }}</span>
-                    </div>
-                    <div
-                        class="day-column"></div>
-                </div>
-            </div>
+    <div class="scheduler-grid__dayparts">
+      <div
+        v-for="(daypart, index) in daypartGrid"
+        :key="`grid-daypart-${index}`"
+        class="scheduler-grid__dayparts__daypart"
+        :style="{ top: daypart.top + 'px', height: daypart.height + 'px' }"
+      >
+        <span
+          class="daypart-label"
+        >{{ daypart.label }}</span>
+      </div>
     </div>
+
+    <div class="scheduler-grid__days">
+      <div
+        class="scheduler-grid__days__placeholder_hack"
+      />
+
+      <div
+        v-for="(day, index) in days"
+        :key="`day-row-${index}`"
+        :class="{ 'is-weekend': day.isWeekend, 'is-today': day.isToday }"
+        class="scheduler-grid__days__day"
+      >
+        <div
+          class="day-header"
+          :class="{ 'day-header--small': (numDays > 14) }"
+        >
+          <span
+            class="day-label"
+          >{{ day.dayName }}</span>
+          <span
+            class="day-date"
+          >{{ day.timeStart|date('D.') }}</span>
+        </div>
+        <div
+          class="day-column"
+        />
+      </div>
+    </div>
+  </div>
 </template>

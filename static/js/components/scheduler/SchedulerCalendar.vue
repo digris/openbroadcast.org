@@ -4,7 +4,6 @@
     const PPH = 48; // 'pixels per hour'
     const SECONDS_PER_DAY = 60 * 60 * 24;
 
-
     import {Drag, Drop} from 'vue-drag-drop';
     import throttle from 'lodash.throttle';
     import uuid from 'uuid/v4';
@@ -43,13 +42,34 @@
         },
         directives: {},
         props: {
-            width: Number,
-            settings: Object,
-            channelUuid: String,
-            readOnly: Boolean,
-            days: Array,
-            emissions: Object,
-            highlightObjUuid: String,
+            width: {
+                type: Number,
+                default: 0,
+            },
+            settings: {
+                type: Object,
+                default: function () {
+                    return {};
+                },
+            },
+            readOnly: {
+                type: Boolean,
+                default: false,
+            },
+            days: {
+                type: Array,
+                default: function () {
+                    return [];
+                },
+            },
+            emissions: {
+                type: Object,
+                default: null,
+            },
+            highlightObjUuid: {
+                type: String,
+                default: null,
+            },
         },
         data() {
             return {
@@ -97,22 +117,6 @@
                 currentTimeY: 0,
                 currentTimeTimer: null,
             }
-        },
-        mounted: function () {
-
-            const container = this.$refs['calendar'];
-            const node = container.getElementsByClassName("emissions")[0];
-            const rect = node.getBoundingClientRect();
-
-            // current time handler
-            this.currentTimeTimer = setInterval(() => {
-                const currentTime = dayjs();
-                const dayStart = currentTime.hour(6).minute(0).second(0).millisecond(0);
-                const timeDiff = currentTime.diff(dayStart, 'second');
-                this.currentTimeY = Math.round(this.pixelHeightPerHour * timeDiff / 60 / 60) + 50;
-                this.currentTime = currentTime;
-            }, 1000);
-
         },
         computed: {
             pixelHeightPerHour() {
@@ -170,6 +174,31 @@
                 }
                 return emissions;
             },
+
+        },
+        watch: {
+            highlightObjUuid: function (uuid) {
+                if(uuid) {
+                    this.highlightEmission(uuid, 1);
+                } else {
+                    this.unhighlightEmission();
+                }
+            }
+        },
+        mounted: function () {
+
+            const container = this.$refs['calendar'];
+            const node = container.getElementsByClassName("emissions")[0];
+            const rect = node.getBoundingClientRect();
+
+            // current time handler
+            this.currentTimeTimer = setInterval(() => {
+                const currentTime = dayjs();
+                const dayStart = currentTime.hour(6).minute(0).second(0).millisecond(0);
+                const timeDiff = currentTime.diff(dayStart, 'second');
+                this.currentTimeY = Math.round(this.pixelHeightPerHour * timeDiff / 60 / 60) + 50;
+                this.currentTime = currentTime;
+            }, 1000);
 
         },
         methods: {
@@ -401,15 +430,6 @@
                 this.emissionInEditorUuid = null;
             },
         },
-        watch: {
-            highlightObjUuid: function (uuid) {
-                if(uuid) {
-                    this.highlightEmission(uuid, 1);
-                } else {
-                    this.unhighlightEmission();
-                }
-            }
-        },
     }
 </script>
 <style lang="scss" scoped>
@@ -530,93 +550,109 @@
 </style>
 
 <template>
+  <div
+    ref="calendar"
+    :style="{ height: calendarHeight + 50 + 'px' }"
+    class="calendar"
+  >
+    <grid
+      :pixel-height-per-hour="pixelHeightPerHour"
+      :days="days"
+    />
+
+    <drop
+      class="emissions"
+      @dragenter="dragenter"
+      @dragleave="dragleave"
+      @dragover="dragover"
+      @drop="drop"
+    >
+      <emission-placeholder
+        :pixel-width-per-day="pixelWidthPerDay"
+        :pixel-height-per-hour="pixelHeightPerHour"
+        :placeholder="emissionPlaceholder"
+      />
+
+      <transition-group
+        name="emission-list"
+        tag="div"
+      >
+        <drag
+          v-for="emission in mappedEmissions"
+          :key="emission.obj.uuid"
+          class="emission-container"
+          :draggable="(! readOnly && ! emission.obj.hasLock)"
+          :transfer-data="emission.obj"
+          :style="emission.style"
+          @drag="emissionDrag"
+        >
+          <template slot="image">
+            <div><!-- empty drag handler --></div>
+          </template>
+
+          <emission
+            :emission="emission"
+            @dblclick="showEmissionEditor"
+            @mouseover="highlightEmission"
+            @mouseleave="unhighlightEmission"
+          />
+        </drag>
+      </transition-group>
+    </drop>
+
     <div
-        :style="{ height: calendarHeight + 50 + 'px' }"
-        ref="calendar"
-        class="calendar">
+      v-if="currentTime"
+      :style="{ top: currentTimeY + 'px'}"
+      class="current-time"
+    >
+      <div
+        class="current-time__time"
+      >
+        {{ currentTime.format('H:mm:s') }}
+      </div>
+      <div
+        class="current-time__marker current-time__marker--left"
+      />
+      <div
+        class="current-time__marker current-time__marker--right"
+      />
+      <div
+        class="current-time__line"
+      />
+    </div>
 
-        <grid
-            :pixel-height-per-hour="pixelHeightPerHour"
-            :days="days"></grid>
-
-        <drop
-            @dragenter="dragenter"
-            @dragleave="dragleave"
-            @dragover="dragover"
-            @drop="drop"
-            class="emissions">
-
-            <emission-placeholder
-                :pixelWidthPerDay="pixelWidthPerDay"
-                :pixelHeightPerHour="pixelHeightPerHour"
-                :placeholder="emissionPlaceholder"
-                ></emission-placeholder>
-
-            <transition-group name="emission-list" tag="div">
-                <drag
-                    v-for="emission in mappedEmissions"
-                    class="emission-container"
-                    @drag="emissionDrag"
-                    :draggable="(! readOnly && ! emission.obj.hasLock)"
-                    :key="emission.obj.uuid"
-                    :transfer-data="emission.obj"
-                    :style="emission.style">
-
-                    <template slot="image">
-                        <div><!-- empty drag handler --></div>
-                    </template>
-
-                    <emission
-                        :emission="emission"
-                        @dblclick="showEmissionEditor"
-                        @mouseover="highlightEmission"
-                        @mouseleave="unhighlightEmission"
-                    ></emission>
-                </drag>
-            </transition-group>
-
-        </drop>
-
+    <transition
+      name="fade-in-out"
+    >
+      <div
+        v-if="(errors && errors.length)"
+        class="errors-container"
+        @click="resetErrors"
+      >
         <div
-            v-if="currentTime"
-            :style="{ top: currentTimeY + 'px'}"
-            class="current-time">
-            <div
-                class="current-time__time">
-                {{ currentTime.format('H:mm:s') }}
-            </div>
-            <div
-                class="current-time__marker current-time__marker--left"></div>
-            <div
-                class="current-time__marker current-time__marker--right"></div>
-            <div
-                class="current-time__line"></div>
+          v-for="error in errors"
+          :key="error.uuid"
+          class="errors"
+        >
+          <p
+            v-for="(message, index) in error.messages"
+            :key="`error-message-${index}`"
+            class="error"
+          >
+            {{ message }}
+          </p>
         </div>
+      </div>
+    </transition>
 
-        <transition
-            name="fade-in-out">
-            <div
-                v-if="(errors && errors.length)"
-                @click="resetErrors"
-                class="errors-container">
-                <div
-                    v-for="error in errors"
-                    class="errors"
-                    :key="error.uuid">
-                    <p
-                        v-for="(message, index) in error.messages"
-                        class="error"
-                        :key="`error-message-${index}`">{{ message }}</p>
-                </div>
+    <h1>** {{ emissionInEditorUuid }} **</h1>
 
-            </div>
-        </transition>
+    <emission-editor
+      :uuid="emissionInEditorUuid"
+      @close="closeEmissionEditor"
+    />
 
-        <emission-editor
-            @close="closeEmissionEditor"
-            :uuid="emissionInEditorUuid"></emission-editor>
-
-        <!--
+    <!--
         <div>
             bounds: {{ calendarBounds }}<br>
             ERRORS: {{ errors }}<br>
@@ -625,5 +661,5 @@
             DRAG: {{ draggedEmissionUuid }}<br>
         </div>
         -->
-    </div>
+  </div>
 </template>

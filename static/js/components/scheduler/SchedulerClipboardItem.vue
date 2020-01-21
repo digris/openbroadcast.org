@@ -13,12 +13,11 @@
             'object-actions': ObjectActions,
         },
         props: {
-            item: Object,
+            item: {
+                type: Object,
+                required: true,
+            },
         },
-        // data() {
-        //
-        // },
-        methods: {},
         computed: {
             duration() {
                 if(!this.item) {
@@ -26,7 +25,11 @@
                 }
                 return new Date(this.item.duration).toISOString().substr(11, 8);
             }
-        }
+        },
+        // data() {
+        //
+        // },
+        methods: {}
     }
 </script>
 <style lang="scss" scoped>
@@ -94,40 +97,45 @@
 </style>
 
 <template>
-    <div
-        class="clipboard-item"
-        @mouseenter="$emit('mouseenter')"
-        @mouseleave="$emit('mouseleave')">
-        <div class="clipboard-item__visual">
-            <visual :url="item.image"></visual>
-            <object-actions
-                :scale="(.6)"
-                :ct="item.ct"
-                :uuid="item.uuid"
-                :url="item.url"
-                :can-play="(true)">
-            </object-actions>
-        </div>
-        <div class="clipboard-item__body">
-            <div class="clipboard-item__header">
-                <a
-                    :href="item.detailUrl"
-                    target="_blank"
-                    class="title">
-                    <span v-if="item.seriesDisplay">{{ item.seriesDisplay }}<br></span>
-                    {{ item.name }}
-                </a>
-                <emission-history
-                    :obj-ct="item.ct"
-                    :obj-uuid="item.uuid">
-                </emission-history>
-            </div>
-            <div class="clipboard-item__description">
-                <p>{{ duration }}</p>
-            </div>
-            <div class="clipboard-item__secondary-actions">
-                <a href="#" @click.prevent="$emit('delete', item.uuid)">delete</a>
-            </div>
-        </div>
+  <div
+    class="clipboard-item"
+    @mouseenter="$emit('mouseenter')"
+    @mouseleave="$emit('mouseleave')"
+  >
+    <div class="clipboard-item__visual">
+      <visual :url="item.image" />
+      <object-actions
+        :scale="(.6)"
+        :ct="item.ct"
+        :uuid="item.uuid"
+        :url="item.url"
+        :can-play="(true)"
+      />
     </div>
+    <div class="clipboard-item__body">
+      <div class="clipboard-item__header">
+        <a
+          :href="item.detailUrl"
+          target="_blank"
+          class="title"
+        >
+          <span v-if="item.seriesDisplay">{{ item.seriesDisplay }}<br></span>
+          {{ item.name }}
+        </a>
+        <emission-history
+          :obj-ct="item.ct"
+          :obj-uuid="item.uuid"
+        />
+      </div>
+      <div class="clipboard-item__description">
+        <p>{{ duration }}</p>
+      </div>
+      <div class="clipboard-item__secondary-actions">
+        <a
+          href="#"
+          @click.prevent="$emit('delete', item.uuid)"
+        >delete</a>
+      </div>
+    </div>
+  </div>
 </template>

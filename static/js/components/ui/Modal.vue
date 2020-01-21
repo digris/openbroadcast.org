@@ -2,11 +2,16 @@
     const DEBUG = true;
     export default {
         name: 'Modal',
-        props: ['show', 'scope'],
-        methods: {
-            close: function () {
-                this.$emit('close');
-            }
+        props: {
+            show: {
+                type: Boolean,
+                default: false,
+            },
+            scope: {
+                type: String,
+                required: false,
+                default: '',
+            },
         },
         mounted: function () {
             document.addEventListener('keydown', (e) => {
@@ -15,6 +20,11 @@
                     this.close();
                 }
             });
+        },
+        methods: {
+            close: function () {
+                this.$emit('close');
+            }
         }
     }
 </script>
@@ -107,23 +117,34 @@
 
 </style>
 <template>
-    <transition name="modal">
-        <div class="modal-mask" @click="close" v-show="show">
-            <div class="modal-container" v-bind:class="scope" @click.stop>
-                <div class="content-header">
-                    <div class="modal-topbar">
-                        <div class="modal-topbar-title">
-                            <slot name="title"></slot>
-                        </div>
-                        <div class="modal-topbar-menu">
-                            <a @click="close" class="">Close (esc)</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="content-slot">
-                    <slot name="content"></slot>
-                </div>
+  <transition name="modal">
+    <div
+      v-show="show"
+      class="modal-mask"
+      @click="close"
+    >
+      <div
+        class="modal-container"
+        :class="scope"
+        @click.stop
+      >
+        <div class="content-header">
+          <div class="modal-topbar">
+            <div class="modal-topbar-title">
+              <slot name="title" />
             </div>
+            <div class="modal-topbar-menu">
+              <a
+                class=""
+                @click="close"
+              >Close (esc)</a>
+            </div>
+          </div>
         </div>
-    </transition>
+        <div class="content-slot">
+          <slot name="content" />
+        </div>
+      </div>
+    </div>
+  </transition>
 </template>

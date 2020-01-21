@@ -7,18 +7,24 @@
 
     export default {
         name: 'SchedulerCalendarEmissionContent',
-        props: {
-            contentObj: Object,
-            size: String,
-        },
         components: {
             'visual': Visual,
             'tags': Tags,
             'user-inline': UserInline,
             'object-actions': ObjectActions,
         },
-        methods: {},
-        computed: {}
+        props: {
+            contentObj: {
+                type: Object,
+                required: true,
+            },
+            size: {
+                type: String,
+                default: "small",
+            },
+        },
+        computed: {},
+        methods: {}
     }
 </script>
 <style lang="scss" scoped>
@@ -65,40 +71,45 @@
 </style>
 
 <template>
-    <div
-        v-if="contentObj"
-        :class="{'content-object--small': (size === 'small')}"
-        class="content-object">
-        <div class="content-object__visual">
-            <visual :url="contentObj.image"></visual>
-            <object-actions
-                :ct="contentObj.ct"
-                :uuid="contentObj.uuid"
-                :url="contentObj.url"
-                :can-play="(true)"
-                :can-schedule="(true)">
-            </object-actions>
-        </div>
-        <div class="content-object__details">
-            <a
-                :href="contentObj.detailUrl"
-                target="_blank"
-                class="content-object__details__title">
-                <span
-                    v-if="contentObj.seriesDisplay">{{ contentObj.seriesDisplay }}<br></span>
-                <span>{{ contentObj.name }}</span>
-            </a>
-            <div class="content-object__details__body">
-                Editor:
-                <user-inline
-                    v-if="contentObj.user"
-                    :user="contentObj.user"></user-inline>
-            </div>
-            <div class="content-object__details__tags">
-                <tags
-                    theme="light"
-                    :tags="contentObj.tags"></tags>
-            </div>
-        </div>
+  <div
+    v-if="contentObj"
+    :class="{'content-object--small': (size === 'small')}"
+    class="content-object"
+  >
+    <div class="content-object__visual">
+      <visual :url="contentObj.image" />
+      <object-actions
+        :ct="contentObj.ct"
+        :uuid="contentObj.uuid"
+        :url="contentObj.url"
+        :can-play="(true)"
+        :can-schedule="(true)"
+      />
     </div>
+    <div class="content-object__details">
+      <a
+        :href="contentObj.detailUrl"
+        target="_blank"
+        class="content-object__details__title"
+      >
+        <span
+          v-if="contentObj.seriesDisplay"
+        >{{ contentObj.seriesDisplay }}<br></span>
+        <span>{{ contentObj.name }}</span>
+      </a>
+      <div class="content-object__details__body">
+        Editor:
+        <user-inline
+          v-if="contentObj.user"
+          :user="contentObj.user"
+        />
+      </div>
+      <div class="content-object__details__tags">
+        <tags
+          theme="light"
+          :tags="contentObj.tags"
+        />
+      </div>
+    </div>
+  </div>
 </template>

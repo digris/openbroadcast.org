@@ -24,24 +24,40 @@ export default {
    }
 </style>
 <template>
-    <div
-        @click="$emit('click')"
-        class="play-icon-container">
-        <svg version="1.1"
-             id="Icon"
-             xmlns="http://www.w3.org/2000/svg"
-             xmlns:xlink="http://www.w3.org/1999/xlink"
-             x="0px"
-             y="0px"
-             width="56px"
-             height="56px"
-             viewBox="0 0 56 56"
-             style="enable-background:new 0 0 56 56;"
-             xml:space="preserve">
-            <g id="playIcon">
-                <circle fill="#000" stroke="#fff" d="circle" class="st0" cx="28" cy="28" r="27"/>
-                <polygon fill="#fff" id="triangle" class="st1" points="21,16.5 41,28 21,39.5 	"/>
-            </g>
-        </svg>
-    </div>
+  <div
+    class="play-icon-container"
+    @click="$emit('click')"
+  >
+    <svg
+      id="Icon"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      x="0px"
+      y="0px"
+      width="56px"
+      height="56px"
+      viewBox="0 0 56 56"
+      style="enable-background:new 0 0 56 56;"
+      xml:space="preserve"
+    >
+      <g id="playIcon">
+        <circle
+          fill="#000"
+          stroke="#fff"
+          d="circle"
+          class="st0"
+          cx="28"
+          cy="28"
+          r="27"
+        />
+        <polygon
+          id="triangle"
+          fill="#fff"
+          class="st1"
+          points="21,16.5 41,28 21,39.5 	"
+        />
+      </g>
+    </svg>
+  </div>
 </template>

@@ -20,10 +20,12 @@
                 default: 16,
             },
             optionWidth: {
-                type: Number
+                type: Number,
+                default: null,
             },
             optionHeight: {
-                type: Number
+                type: Number,
+                default: null,
             },
         },
         data() {
@@ -92,25 +94,27 @@
     }
 </style>
 <template>
+  <div
+    class="color-chooser"
+  >
     <div
-        class="color-chooser">
+      :style="style"
+      @mouseover="mouseover"
+      @mouseleave="mouseleave"
+    >
+      <div
+        v-if="optionsVisible"
+        :style="{top: height + 'px'}"
+        class="color-chooser__options"
+      >
         <div
-            :style="style"
-            @mouseover="mouseover"
-            @mouseleave="mouseleave">
-            <div
-                v-if="optionsVisible"
-                :style="{top: height + 'px'}"
-                class="color-chooser__options">
-                <div
-                    v-for="color in colorOptions"
-                    @click="selectColor(color.index)"
-                    :key="`${color.value}-${color.index}`"
-                    :style="color.style"
-                    class="color-chooser__options__option">
-                </div>
-            </div>
-        </div>
-
+          v-for="color in colorOptions"
+          :key="`${color.value}-${color.index}`"
+          :style="color.style"
+          class="color-chooser__options__option"
+          @click="selectColor(color.index)"
+        />
+      </div>
     </div>
+  </div>
 </template>

@@ -5,16 +5,24 @@
     export default {
         name: 'SchedulerCalendarEmissionPlaceholder',
         props: {
-            placeholder: Object,
-            pixelWidthPerDay: Number,
-            pixelHeightPerHour: Number,
+            placeholder: {
+                type: Object,
+                required: true,
+            },
+            pixelWidthPerDay: {
+                type: Number,
+                required: true,
+            },
+            pixelHeightPerHour: {
+                type: Number,
+                required: true,
+            },
         },
         data() {
             return {
                 detailsVisible: false,
             }
         },
-        methods: {},
         computed: {
             visible() {
                 return this.placeholder.visible
@@ -39,7 +47,8 @@
                     top: `${this.position.y}px`,
                 }
             },
-        }
+        },
+        methods: {}
     }
 </script>
 <style lang="scss" scoped>
@@ -76,22 +85,25 @@
 </style>
 
 <template>
-    <transition
-        name="fade-in-out">
-        <div
-            v-if="visible"
-            class="emission-placeholder"
-            :style="style">
-            <div
-                v-if="placeholder.transferData"
-                class="emission-placeholder__title">
-                <span v-if="placeholder.transferData.series">
-                    {{ placeholder.transferData.series }}
-                </span>
-                <span v-else>
-                    {{ placeholder.transferData.name }}
-                </span>
-            </div>
-        </div>
-    </transition>
+  <transition
+    name="fade-in-out"
+  >
+    <div
+      v-if="visible"
+      class="emission-placeholder"
+      :style="style"
+    >
+      <div
+        v-if="placeholder.transferData"
+        class="emission-placeholder__title"
+      >
+        <span v-if="placeholder.transferData.series">
+          {{ placeholder.transferData.series }}
+        </span>
+        <span v-else>
+          {{ placeholder.transferData.name }}
+        </span>
+      </div>
+    </div>
+  </transition>
 </template>

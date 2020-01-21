@@ -32,12 +32,16 @@
     }
 </style>
 <template>
+  <div
+    v-if="tags && tags.length"
+    class="tags"
+  >
     <div
-        v-if="tags && tags.length"
-        class="tags">
-        <div
-            v-for="(tag, index) in tags"
-            :key="`tag-${index}`"
-            class="tags__tag">{{ tag }}</div>
+      v-for="(tag, index) in tags"
+      :key="`tag-${index}`"
+      class="tags__tag"
+    >
+      {{ tag }}
     </div>
+  </div>
 </template>

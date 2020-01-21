@@ -32,8 +32,10 @@
         },
         directives: {},
         props: {
-            channelUuid: String,
-            readOnly: Boolean,
+            readOnly: {
+                type: Boolean,
+                default: false,
+            }
         },
         data() {
             return {
@@ -42,14 +44,6 @@
                 isFullscreen: false,
                 highlightObjUuid: null,
             }
-        },
-        mounted: function () {
-            this.$nextTick(() => {
-               this.setSchedulerSizes();
-            });
-            // recalculate sizes on resize
-            window.onresize = debounce(() => this.setSchedulerSizes(), 20);
-            this.updateSchedule();
         },
         computed: {
             settings() {
@@ -91,6 +85,25 @@
                 }
                 return days;
             }
+        },
+        watch: {
+            settings: function (o, n) {
+                this.debouncedUpdateSchedule();
+            },
+            isFullscreen: function (o, n) {
+                this.$nextTick(() => {
+                   this.setSchedulerSizes();
+                });
+
+            },
+        },
+        mounted: function () {
+            this.$nextTick(() => {
+               this.setSchedulerSizes();
+            });
+            // recalculate sizes on resize
+            window.onresize = debounce(() => this.setSchedulerSizes(), 20);
+            this.updateSchedule();
         },
         methods: {
             setSchedulerSizes: function() {
@@ -147,17 +160,6 @@
                 this.highlightObjUuid = null;
             },
         },
-        watch: {
-            settings: function (o, n) {
-                this.debouncedUpdateSchedule();
-            },
-            isFullscreen: function (o, n) {
-                this.$nextTick(() => {
-                   this.setSchedulerSizes();
-                });
-
-            },
-        },
     }
 </script>
 
@@ -168,36 +170,38 @@
 </style>
 
 <template>
-    <layout-base
-        :fullscreen="isFullscreen">
-        <calendar-navigation
-            :settings="settings"
-            :isFullscreen="isFullscreen"
-            @toggleFullscreen="isFullscreen = !isFullscreen"
-            @updateDaysOffset="updateDaysOffset"
-            @setNumDays="setNumDays"
-            @decreaseVerticalSize="updatePixelHeightPerHour(-6)"
-            @increaseVerticalSize="updatePixelHeightPerHour(6)"
-            @setSnapMinutes="setSnapMinutes"
-            @setColor="setColor"
-            @reset="setDefaultSettings"></calendar-navigation>
-        <calendar
-            ref="calendar"
-            :channel-uuid="channelUuid"
-            :read-only="readOnly"
-            :width="calendarWidth"
-            :settings="settings"
-            :emissions="emissions"
-            :days="days"
-            :highlightObjUuid="highlightObjUuid"
-            @updateDaysOffset="updateDaysOffset"
-        ></calendar>
-        <template v-slot:sidebar>
-            <clipboard
-                style="margin-top: 89px;"
-                v-if="(! readOnly)"
-                @itemMouseenter="clipboardItemMouseenter"
-                @itemMouseleave="clipboardItemMouseleave"></clipboard>
-        </template>
-    </layout-base>
+  <layout-base
+    :fullscreen="isFullscreen"
+  >
+    <calendar-navigation
+      :settings="settings"
+      :is-fullscreen="isFullscreen"
+      @toggleFullscreen="isFullscreen = !isFullscreen"
+      @updateDaysOffset="updateDaysOffset"
+      @setNumDays="setNumDays"
+      @decreaseVerticalSize="updatePixelHeightPerHour(-6)"
+      @increaseVerticalSize="updatePixelHeightPerHour(6)"
+      @setSnapMinutes="setSnapMinutes"
+      @setColor="setColor"
+      @reset="setDefaultSettings"
+    />
+    <calendar
+      ref="calendar"
+      :read-only="readOnly"
+      :width="calendarWidth"
+      :settings="settings"
+      :emissions="emissions"
+      :days="days"
+      :highlight-obj-uuid="highlightObjUuid"
+      @updateDaysOffset="updateDaysOffset"
+    />
+    <template v-slot:sidebar>
+      <clipboard
+        v-if="(! readOnly)"
+        style="margin-top: 89px;"
+        @itemMouseenter="clipboardItemMouseenter"
+        @itemMouseleave="clipboardItemMouseleave"
+      />
+    </template>
+  </layout-base>
 </template>

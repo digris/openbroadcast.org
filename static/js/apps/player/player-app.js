@@ -12,7 +12,7 @@ import Media from './components/media.vue'
 import Playerfooter from './components/playerfooter.vue'
 import Loader from '../../components/ui/Loader.vue'
 
-const DEBUG = true;
+const DEBUG = false;
 
 const exchange = tabex.client();
 const noSleep = new NoSleep();
@@ -28,6 +28,7 @@ const pre_process_loaded_items = (results) => {
 
     return results;
 };
+
 
 const pre_process_item = (item) => {
 
@@ -117,6 +118,14 @@ const PlayerApp = Vue.extend({
         Waveform,
         Loader
     },
+    filters: {
+        sec_to_time: function (value) {
+            return ms_to_time(value * 1000)
+        },
+        ms_to_time: function (value) {
+            return ms_to_time(value)
+        }
+    },
     data() {
         return {
             loading: false,
@@ -124,7 +133,7 @@ const PlayerApp = Vue.extend({
             heartbeat_payloads: [],
             action_payloads: [],
 
-            items_to_play: [],
+            itemsToPlay: [],
             // player backend
             player: null,
             volume: 90,
@@ -139,14 +148,6 @@ const PlayerApp = Vue.extend({
         player_playing: function () {
             return (this.player && this.player.playState === 1)
         },
-    },
-    filters: {
-        sec_to_time: function (value) {
-            return ms_to_time(value * 1000)
-        },
-        ms_to_time: function (value) {
-            return ms_to_time(value)
-        }
     },
     mounted: function () {
         if (DEBUG) console.group('PlayerApp');
@@ -274,8 +275,6 @@ const PlayerApp = Vue.extend({
             //this.action_payloads.push(action);
             this.action_payloads = [action];
 
-            console.info(this.player);
-
             if (action.do === 'load') {
                 // load playlist data from API
                 this.loading = true;
@@ -294,7 +293,7 @@ const PlayerApp = Vue.extend({
 
 
                         if (mode === 'replace') {
-                            this.items_to_play = results;
+                            this.itemsToPlay = results;
                             this.handle_action({
                                 do: 'play',
                                 item: results[0].items[offset]
@@ -302,7 +301,7 @@ const PlayerApp = Vue.extend({
                         }
 
                         if (mode === 'queue') {
-                            this.items_to_play = this.items_to_play.concat(results);
+                            this.itemsToPlay = this.itemsToPlay.concat(results);
                         }
 
                     }, (error) => {
@@ -344,8 +343,6 @@ const PlayerApp = Vue.extend({
                 if (action.item) {
 
                     const item = action.item;
-
-                    console.debug('action.item', item);
 
                     this.player_current_media = item;
 
@@ -411,7 +408,7 @@ const PlayerApp = Vue.extend({
                     this.player.setPosition(item.from);
 
                     // TODO: find a better way to set all other items to 'stopped'
-                    this.items_to_play.forEach((item_to_play) => {
+                    this.itemsToPlay.forEach((item_to_play) => {
                         item_to_play.items.forEach((item) => {
                             item = reset_item(item);
                         });
@@ -426,7 +423,7 @@ const PlayerApp = Vue.extend({
             if (action.do === 'remove') {
 
                 // TODO: find a better way to remove item
-                this.items_to_play.forEach((item_to_play) => {
+                this.itemsToPlay.forEach((item_to_play) => {
                     item_to_play.items.forEach((item, index) => {
                         if(item.key === action.item.key) {
                             console.warn('delete:', item.key, index)
@@ -450,10 +447,10 @@ const PlayerApp = Vue.extend({
 
         player_resume_blocked_autoplay: function () {
 
-            if(this.items_to_play.length > 0 && this.items_to_play[0].items.length > 0) {
+            if(this.itemsToPlay.length > 0 && this.itemsToPlay[0].items.length > 0) {
                 this.handle_action({
                     do: 'play',
-                    item: this.items_to_play[0].items[0]
+                    item: this.itemsToPlay[0].items[0]
                 });
             }
 
@@ -465,7 +462,7 @@ const PlayerApp = Vue.extend({
         player_play_offset: function (offset, media) {
 
             let all_media = [];
-            this.items_to_play.forEach((item_to_play) => {
+            this.itemsToPlay.forEach((item_to_play) => {
                 item_to_play.items.forEach((media) => {
                     all_media.push(media)
                 });
