@@ -1,0 +1,120 @@
+{% extends "layout_edit.html" %}
+
+{% load i18n crispy_forms_tags sekizai_tags %}
+
+{% block heading %}
+  {% comment %}
+  {% addtoblock "js-post" %}
+    <script src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>
+    <script>
+      $(function () {
+        setTimeout(function () {
+          init_jQueryTagit({
+            objectId: 'id_d_tags',
+            sourceUrl: '/ac_tagging/list',
+            fieldName: 'd_tags',
+            minLength: 1,
+            removeConfirmation: true,
+            caseSensitive: false,
+            animate: true,
+            maxLength: 50,
+            maxTags: 9,
+            onTagClicked: null,
+            onMaxTagsExceeded: null,
+          });
+        }, 500);
+      });
+    </script>
+  {% endaddtoblock %}
+  {% endcomment %}
+{% endblock %}
+
+{% block inner %}
+  <div class="item item--edit item--profile">
+    <div class="item--header">
+      {% include "profiles/profile/_header_ng.html" %}
+    </div>
+    <nav class="item--section-menu">
+      {% for item in section_menu %}
+        <div class="menu-item{% if item.active %} menu-item--active{% endif %}">
+          <a href="{{ item.url }}">{{ item.title }}</a>
+        </div>
+      {% endfor %}
+    </nav>
+  </div>
+{% endblock %}
+
+{% block sidebar %}
+  {% include "profiles/profile/sidebar/_edit.html" %}
+{% endblock %}
+
+{% block form %}
+  <div class="edit edit--profile">
+    <form
+            class="form form--vue form--profile"
+            method="post"
+            enctype="multipart/form-data">
+
+      {% csrf_token %}
+      {{ form.management_form }}
+      {{ named_formsets.action.management_form }}
+      {{ named_formsets.relation.management_form }}
+
+      <div class="actions">
+        <button
+                class="actions__action button button--cancel"
+                type="cancel">
+          {% trans 'Cancel' %}
+        </button>
+        <button
+                class="actions__action button button--primary"
+                type="submit">
+          <!--<i class="icon-save"></i>-->
+          {% trans 'Save' %}
+        </button>
+      </div>
+
+      {% crispy user_form %}
+      {% crispy form %}
+
+      <fieldset>
+
+        <legend>
+          {% trans "Personal Links" %}
+        </legend>
+
+        <div class="fieldset-hint fieldset-hint--info">
+          <p>
+            {% trans "Example: Your blog, you personal site, etc." %}
+          </p>
+        </div>
+
+        <formset :autogrow="(true)">
+          {% for form in named_formsets.relation %}
+            {% crispy form %}
+          {% endfor %}
+        </formset>
+
+      </fieldset>
+
+      <div class="actions">
+        <button
+                class="actions__action button button--cancel"
+                type="cancel">
+          {% trans 'Cancel' %}
+        </button>
+        <button
+                class="actions__action button button--primary"
+                type="submit">
+          {% trans 'Save' %}
+        </button>
+      </div>
+
+    </form>
+  </div>
+{% endblock %}
+
+{% block form_sidebar %}
+  {% include "profiles/profile/sidebar/_mentoring.html" %}
+  {% include "profiles/profile/sidebar/_social_accounts.html" %}
+{% endblock %}

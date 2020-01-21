@@ -34,7 +34,11 @@
   }
 
   i {
-    display: none;
+    display: inline-flex;
+    align-items: center;
+    margin-right: .5rem;
+    line-height: inherit;
+    color: inherit;
   }
 
 }
@@ -53,10 +57,18 @@
     cursor: not-allowed;
   }
 
+  &--cancel {
+    @include button($color: #A5A5A5);
+    &:hover {
+      color: white;
+    }
+  }
+
   // button sizes
   &--l {
     padding: 0 16px;
     height: 24px;
+    line-height: 24px;
     &:hover {
       border-radius: 4px;
     }
@@ -66,6 +78,7 @@
     padding: 0 20px;
     font-size: 120%;
     height: 32px;
+    line-height: 32px;
     &:hover {
       border-radius: 8px;
     }

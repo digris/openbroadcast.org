@@ -42,7 +42,7 @@ body.app--account {
     padding: 10px 0;
 
     .input-container {
-      @include input-container;
+      @include input-container-flex;
 
       label {
         min-width: 140px;
@@ -59,7 +59,8 @@ body.app--account {
     }
 
     .actions {
-      @include form-actions;
+      // TODO: refactor to generic form mixin
+      @include form-default-actions;
     }
 
     .captcha-container {

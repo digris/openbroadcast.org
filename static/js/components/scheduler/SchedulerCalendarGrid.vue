@@ -85,6 +85,9 @@
                 });
                 return dayparts;
             },
+            numDays() {
+              return this.days.length;
+            },
         },
         filters: templateFilters,
     }
@@ -162,7 +165,6 @@
                     justify-content: center;
                     align-items: center;
                     padding: 6px 0 0 0;
-
                     background: #f5f5f5;
 
                     .day-label {
@@ -176,6 +178,14 @@
                         width: 28px;
                         margin-left: 2px;
                         text-align: center;
+                    }
+
+                    &--small {
+                        font-size: 80%;
+                        .day-label,
+                        .day-date {
+                            width: unset;
+                        }
                     }
                 }
 
@@ -198,6 +208,7 @@
                     // background: rgba(3, 201, 84, 0.12);
 
                     .day-header {
+                        color: orangered;
                         font-weight: 400;
                     }
 
@@ -241,7 +252,7 @@
                     :class="{ 'is-weekend': day.isWeekend, 'is-today': day.isToday }"
                     class="scheduler-grid__days__day">
                     <div
-                        class="day-header">
+                        class="day-header" :class="{ 'day-header--small': (numDays > 14) }">
                         <span
                             class="day-label">{{ day.dayName }}</span>
                         <span

@@ -592,4 +592,4 @@ const PlayerApp = Vue.extend({
     }
 });
 
-module.exports = PlayerApp;
+export default PlayerApp;

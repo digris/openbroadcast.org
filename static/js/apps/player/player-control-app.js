@@ -236,4 +236,4 @@ const PlayerControlApp = Vue.extend({
     }
 });
 
-module.exports = PlayerControlApp;
+export default PlayerControlApp;

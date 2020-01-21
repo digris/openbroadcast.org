@@ -43,6 +43,7 @@ urlpatterns = [
     url("^abcast/", include("abcast.apiv2.urls")),
     url("^library/", include("alibrary.apiv2.urls")),
     url("^search/", include("search.apiv2.urls")),
+    url("^tags/", include("tagging_extra.apiv2.urls")),
     url("^player/", include("player.apiv2.urls")),
     url("^profiles/", include("profiles.apiv2.urls")),
     url("^collector/", include("collector.apiv2.urls")),

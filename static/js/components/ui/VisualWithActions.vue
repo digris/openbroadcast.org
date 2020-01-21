@@ -1,14 +1,18 @@
 <script>
 
     import settings from '../../settings';
+    import LazyImage from './LazyImage.vue';
     import Lightbox from './Lightbox.vue';
     import Play from './VisualWithActions/Play.vue';
     import ContextMenu from './VisualWithActions/ContextMenu.vue';
+
+    const DEBUG = true;
 
     export default {
         name: 'VisualWithActions',
         components: {
             'lightbox': Lightbox,
+            'lazy-image': LazyImage,
             'play': Play,
             'context-menu': ContextMenu,
         },
@@ -120,16 +124,6 @@
 
         margin: 0;
         position: relative;
-
-        img {
-            width: 100%;
-            height: 100%;
-
-            &.placeholder {
-                image-rendering: pixelated;
-                opacity: 0.5;
-            }
-        }
 
         .mask {
             position: absolute;
@@ -245,13 +239,7 @@
         @mouseover="onMouseOver"
         @mouseleave="onMouseLeave">
 
-        <img
-            v-if="(imageUrl)"
-            :src="imageUrl">
-        <img
-            v-else
-            :src="placeholderImage"
-            class="placeholder">
+        <lazy-image :src="imageUrl"></lazy-image>
 
         <div
             class="mask"
@@ -302,14 +290,15 @@
 
                 <div class="thumbnails" v-if="largeImageUrl">
                     <div class="thumbnail">
-                        <img :src="largeImageUrl">
+                        <!--<img :src="imageUrl">-->
+                        <lazy-image :src="imageUrl"></lazy-image>
                     </div>
                 </div>
 
             </div>
         </div>
 
-        <lightbox :visible="lightboxVisible" :image-url="largeImageUrl" @close="hideLightbox"></lightbox>
+        <lightbox v-if="largeImageUrl" :visible="lightboxVisible" :image-url="largeImageUrl" @close="hideLightbox"></lightbox>
 
     </div>
 </template>

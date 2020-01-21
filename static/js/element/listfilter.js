@@ -1,4 +1,5 @@
 import store from 'store';
+import LazyImageLoader from "../utils/lazy-image-loader";
 
 const DEBUG = false;
 const STORE_KEY = 'ui-listfilter-expanded';
@@ -63,4 +64,4 @@ class ListFilter {
 
 }
 
-module.exports = ListFilter;
+export default ListFilter;

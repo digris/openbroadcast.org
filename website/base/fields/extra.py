@@ -50,9 +50,10 @@ except ImportError:
 
 
 class AdvancedFileInput(ClearableFileInput):
+    input_text = ''
 
     # template_with_initial = '<ul class="unstyled"><li>%(initial)s</li><li>%(clear_template)s</li><li>%(input_text)s: %(input)s</li></ul>'
-    template_with_initial = '<ul class="advancedfileinput unstyled"><li>%(initial)s</li><li>%(input_text)s: %(input)s</li></ul>'
+    template_with_initial = '<ul class="advancedfileinput unstyled fileinput--inline"><li>%(initial)s</li><li>%(input_text)s %(input)s</li></ul>'
     template_with_clear = (
         '%(clear)s <label for="%(clear_checkbox_id)s">%(clear_checkbox_label)s</label>'
     )

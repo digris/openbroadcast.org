@@ -1,7 +1,12 @@
 <script>
 
+    import LazyImage from './LazyImage.vue';
+
     export default {
         name: 'Lightbox',
+        components: {
+            'lazy-image': LazyImage,
+        },
         props: {
             visible: {
                 type: Boolean,
@@ -72,7 +77,7 @@
     <transition name="lightbox">
         <div class="lightbox-mask" @click="close" v-if="visible">
             <div class="content">
-                <img :src="imageUrl">
+                <lazy-image :src="imageUrl"></lazy-image>
             </div>
         </div>
     </transition>

@@ -1,16 +1,14 @@
-{% load i18n playlist_tags calc_tags lazy_image_tags spacify_tags truncate_tags arating_tags gravatar %}
+{% load i18n thumbnail playlist_tags calc_tags lazy_image_tags spacify_tags truncate_tags arating_tags gravatar object_action_tags %}
 
 <div class="card card--profile">
     <div class="card__visual">
         <div class="image">
-            {% lazy_image object.image 'crop' '270x270' %}
-            {% comment %}
-            {% if object.image %}
-                {% lazy_image object.image 'crop' '270x270' %}
-            {% else %}
-                <img src="{% gravatar_url object.user.email 200 %}" style="filter: grayscale(100%)">
-            {% endif %}
-            {% endcomment %}
+            <visual-with-actions
+                ct="{{ object.get_ct }}"
+                uuid="{{ object.uuid }}"
+                image-url="{% thumbnail object.image 280x280 crop upscale %}"
+                :actions="{% get_object_actions_as_json object user %}">
+            </visual-with-actions>
         </div>
 
         <div class="card__visual__top">

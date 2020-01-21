@@ -28,8 +28,15 @@ class ProfileMenu(CMSAttachMenu):
             nodes.append(node)
 
             node = NavigationNode(
-                _("Edit my Profile"), reverse("profiles-profile-edit"), 121
+                _("Edit my Profile"),
+                # reverse("profiles-profile-edit"),
+                reverse(
+                    "profiles-profile-edit-ng",
+                    kwargs={"uuid": str(request.user.profile.uuid)},
+                ),
+                121,
             )
+
             nodes.append(node)
 
         if request.user.has_perm("invitation.change_invitation"):

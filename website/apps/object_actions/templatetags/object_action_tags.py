@@ -16,4 +16,4 @@ def get_object_actions_as_json(obj, user):
     used to pass as `props` to vue.js components.
     generate json formatted actions for given object.
     """
-    return json.dumps(get_object_actions_for_user(obj, user), indent=4)
+    return json.dumps(get_object_actions_for_user(obj, user), indent=4).replace('"', "'")

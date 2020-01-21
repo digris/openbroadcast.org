@@ -1,6 +1,7 @@
 import axios from 'axios';
 import debounce from 'debounce';
 import nunjucks from 'nunjucks';
+import APIClient from "../api/caseTranslatingClient";
 
 const DEBUG = false;
 
@@ -301,8 +302,4 @@ class AutocompleteWidgets {
 
 
 
-
-
-
-
-module.exports = AutocompleteWidgets;
+export default AutocompleteWidgets;

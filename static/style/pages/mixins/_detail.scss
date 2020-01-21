@@ -16,15 +16,25 @@
         margin-bottom: 4px;
 
         small {
+          font-size: 1.2rem;
+          font-weight: 200;
+          color: #5a5a5a;
           margin-left: 10px;
-          opacity: 0.7;
         }
       }
 
       .meta {
+
+        line-height: 150%;
+
         &__item {
           display: grid;
           grid-template-columns: 120px minmax(auto, 60%);
+
+          margin-bottom: .5rem;
+          &:last-child {
+            margin-bottom: 0;
+          }
 
           a, span {
             white-space: nowrap;
@@ -44,6 +54,11 @@
       .visual {
         max-width: 190px;
         max-height: 190px;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
 
         figure {
           margin: 0;

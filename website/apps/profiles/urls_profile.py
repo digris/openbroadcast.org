@@ -46,6 +46,11 @@ urlpatterns = [
         name="profiles-profile-mentor-approve",
     ),
     url(
+        r"^(?P<uuid>[0-9a-f-]+)/edit/$",
+        views.ProfileEditView.as_view(),
+        name="profiles-profile-edit-ng",
+    ),
+    url(
         r"^(?P<uuid>[0-9a-f-]+)/(?:(?P<section>[-\w]+)/)?$",
         views.ProfileDetailView.as_view(),
         name="profiles-profile-detail",

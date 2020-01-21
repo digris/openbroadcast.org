@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "spurl",
     "pure_pagination",
     "crispy_forms_extra",
+    "crispy_forms_vue",
     "crispy_forms",
     "floppyforms",
     "absolute",

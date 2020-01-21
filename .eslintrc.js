@@ -4,9 +4,10 @@ module.exports = {
     node: true,
   },
   extends: [
-    'plugin:vue/essential',
+    'plugin:vue/recommended',
     // '@vue/airbnb',
   ],
+  // parser: "babel-eslint",
   rules: {
     // camelcase: [2, { properties: 'always' }],
     'no-console': 'off',
@@ -14,6 +15,10 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
   },
   parserOptions: {
-
+    "parser": "babel-eslint",
+    "sourceType": "module"
   },
+  plugins: [
+    "vue",
+  ]
 };

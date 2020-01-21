@@ -10,4 +10,4 @@ const APIClient = applyConverters(axios.create({
     }
 }));
 
-module.exports = APIClient;
+export default APIClient;

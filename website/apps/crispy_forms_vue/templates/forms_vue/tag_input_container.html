@@ -1,0 +1,11 @@
+{% load crispy_forms_field %}
+
+<tag-input-container
+  id="{{ field.auto_id }}"
+  :errors="({{ field.errors.as_json }})"
+  {% if flat_attrs %}{{ flat_attrs }}{% endif %}
+  {% if field.label %}label="{{ field.label|safe }}"{% endif %}
+  {% if field.help_text %}help="{{ field.help_text }}"{% endif %}
+  {% if field.field.required %}:required="(true)"{% endif %}>
+  {% crispy_field field %}
+</tag-input-container>

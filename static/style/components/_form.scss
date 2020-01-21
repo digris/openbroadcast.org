@@ -1,0 +1,302 @@
+@charset "UTF-8";
+
+@mixin input-container-flex {
+  // flex based input container. used only in account app
+  // TODO: refactor to grid layout.
+  margin: 0 0 8px 0;
+  display: flex;
+  flex-direction: column;
+
+  &__field {
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+    label {
+      margin-right: 12px;
+      font-weight: 300;
+    }
+
+    input {
+      padding: 4px;
+      transition-property: none;
+    }
+
+    .fl-wrap-input {
+      width: 100%;
+    }
+  }
+
+  &__field-help {
+    display: none;
+    width: 100%;
+    font-size: 80%;
+    opacity: 0.8;
+  }
+
+  &__field-errors {
+    width: 100%;
+    color: $error-color;
+    padding-top: 4px;
+  }
+
+  &--has-errors {
+    input {
+      border-color: $error-color;
+    }
+  }
+}
+
+@mixin input-container-grid {
+  display: grid;
+
+  .label {
+    grid-area: label;
+  }
+
+  .field {
+    grid-area: field;
+  }
+
+  .appendix {
+    grid-area: appendix;
+  }
+
+  grid-template-columns: 120px auto;
+  grid-template-areas: "label field" ". appendix";
+
+  &.is-checkbox {
+    grid-template-columns: 2rem auto;
+    grid-template-areas: "field label" "appendix appendix";
+  }
+
+  &.no-label {
+    grid-template-columns: auto;
+    grid-template-areas: "field" "appendix";
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    min-height: 2rem;
+    padding: .25rem .5rem;
+  }
+
+  .label {
+    min-height: 2rem;
+    display: flex;
+    align-items: flex-start;
+    line-height: 2rem;
+
+    &__required {
+      display: inline-block;
+      padding-left: .25rem;
+      color: red;
+    }
+  }
+
+  .field {
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      column-count: 4;
+      column-gap: 2rem;
+
+      li {
+        display: flex;
+        width: 100%;
+        align-items: center;
+
+        label {
+          display: flex;
+          align-items: center;
+
+          input {
+            margin-right: 1rem;
+            height: 2rem;
+            width: 2rem;
+          }
+        }
+      }
+    }
+  }
+
+  .appendix {
+    padding: .25rem .5rem;
+
+    .help {
+      opacity: .5;
+    }
+
+    .errors {
+      // font-weight: 700;
+    }
+  }
+
+  &.has-error {
+    .appendix {
+      .errors {
+        color: red;
+      }
+    }
+
+    input,
+    textarea,
+    select {
+      background: #ffd7c3;
+      border-color: red;
+    }
+  }
+}
+
+@mixin form-default-actions {
+
+  display: flex;
+  justify-content: end;
+
+  &__action {
+    min-width: 10rem;
+    margin: 0 0 0 1rem;
+
+    padding: 0 20px;
+    height: 28px;
+    line-height: 28px;
+
+    &:hover {
+      border-radius: 4px;
+    }
+  }
+}
+
+@mixin form-grid {
+  .form-grid-container {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+  .form-grid-cell {
+    //display: grid;
+    //grid-auto-flow: column;
+    //grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+}
+
+
+@mixin fileinput {
+  .fileinput--inline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 100px auto;
+    grid-gap: 1rem;
+
+    li:nth-child(2) {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+
+      input {
+        height: 100%;
+      }
+    }
+  }
+}
+
+
+@mixin form-default-input {
+  textarea,
+  select,
+  input {
+    // remove webkit glow
+    outline: none;
+    border: 1px solid $light-grey;
+
+    &:hover {
+      border-color: $mid-grey;
+    }
+
+    &:focus {
+      border-color: $mid-grey;
+      background: $primary-color-light;
+    }
+
+  }
+
+  textarea {
+    line-height: 150%;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset;
+  }
+
+}
+
+@mixin form-default-layout {
+
+  .form {
+
+    @include form-grid;
+    @include form-default-input;
+
+    .actions {
+      @include form-default-actions;
+    }
+
+    fieldset {
+      margin: .5rem 0 1rem;
+      padding: 0 0 10px;
+
+      legend {
+        color: inherit;
+        margin-bottom: 0;
+        font-size: 1.4rem;
+        line-height: 2rem;
+        border-bottom: 1px solid #e5e5e5;
+        width: 100%;
+        opacity: .75;
+      }
+
+      > :nth-child(2) {
+        // border: 10px solid orangered;
+      }
+
+    }
+
+    .fieldset-hint {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: #e2d7f9;
+    }
+
+    // defined / styled in component
+    // TODO: is it a good idea to have `input-container` styles inside vue component?
+    .input-container {
+      margin: .5rem 0;
+
+      @include fileinput;
+    }
+  }
+
+  .form-prefix {
+    background: deepskyblue;
+  }
+
+  .form-appendix {
+    background: hotpink;
+  }
+
+}

@@ -1,6 +1,4 @@
-/* === dont forget to import scss to main.js file === */
-
-require("babel-polyfill");
+require("@babel/polyfill");
 
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -23,7 +21,7 @@ const DEVSERVER_HEADER = 'X-WEBPACK-DEVSERVER';
 module.exports = {
     entry: {
         'bundle': [
-            "babel-polyfill",
+            "@babel/polyfill",
             "./static/js/bundle.js"
         ],
     },
@@ -49,11 +47,11 @@ module.exports = {
                 exclude: [/node_modules/],
                 use: {
                     loader: 'babel-loader',
-                    options: {
-                        presets: [
-                            'env'
-                        ]
-                    }
+                    // options: {
+                    //     presets: [
+                    //         'env'
+                    //     ]
+                    // }
                 }
             },
             {

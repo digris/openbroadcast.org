@@ -1,3 +1,7 @@
+<lazy-image
+        src="{{ url}}"></lazy-image>
+
+{% comment %}
 {% if url %}
     <img
         class="lazy-image"
@@ -12,3 +16,4 @@
         height="{{ size.1 }}"
         src="{{ placeholder }}">
 {% endif %}
+{% endcomment %}

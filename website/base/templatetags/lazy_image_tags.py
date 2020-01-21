@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django import template
+from django.conf import settings
 from fractions import Fraction
 from easy_thumbnails.files import get_thumbnailer
 from easy_thumbnails.exceptions import InvalidImageFormatError, EasyThumbnailsError
@@ -43,12 +44,14 @@ def lazy_image(image, type, size, alt=None):
         except (InvalidImageFormatError, EasyThumbnailsError) as e:
             print("unable to generate thumbnail: {}".format(e))
             url = None
+
+        if not url and settings.DEBUG:
+            import random
+            url = 'https://picsum.photos/200?random={}'.format(random.randint(1,1000))
+
     else:
         url = None
 
-    # if not url:
-    #     import random
-    #     url = 'https://picsum.photos/200?random={}'.format(random.randint(1,1000))
 
     context = {"image": image, "size": _size, "url": url, "placeholder": placeholder}
 

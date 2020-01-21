@@ -18,6 +18,7 @@ quote_type = single
 max_line_length = 120
 indent_style = space
 quote_type = double
+indent_size = 2
 
 [*.{scss,sass}]
 max_line_length = 120

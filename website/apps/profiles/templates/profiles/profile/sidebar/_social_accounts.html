@@ -16,7 +16,7 @@
                             onclick="$(this).parents('form:first').submit();"
                             href="#"
                             title="Disconnect Account">
-                            <i class="icon {{ backend_detail.icon }}"></i>
+                            <!--<i class="icon {{ backend_detail.icon }}"></i>-->
                             <span>{{ backend_detail.name }}</span>
                             <span class="opt pull-right">{% trans "disconnect" %}</span>
                         </a>
@@ -27,7 +27,7 @@
                 {% backend_detail_as backend as backend_detail %}
                 <li>
                     <a class="hoverable" href="{% url "social:begin" backend %}?next={{ request.get_full_path }}" title="Connect Account">
-                        <i class="icon {{ backend_detail.icon }}"></i>
+                        <!--<i class="icon {{ backend_detail.icon }}"></i>-->
                         <span>{{ backend_detail.name }}</span>
                         <span class="opt pull-right">{% trans "connect" %}</span>
                     </a>

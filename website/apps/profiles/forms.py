@@ -1,19 +1,25 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from ac_tagging.widgets import TagAutocompleteTagIt
-from crispy_forms.bootstrap import FormActions
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Layout, Fieldset, Div, Field, Row, Column
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.forms.models import inlineformset_factory
 from django.utils.translation import ugettext as _
+
+
+from crispy_forms.bootstrap import FormActions
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, Layout, Fieldset, Div, Field, Row, Column
+from crispy_forms_vue.layout import Cell, Grid, InputContainer, TagInputContainer
+
+from tagging.forms import TagField
+from tagging_extra.widgets import TagAutocompleteWidget
+from ac_tagging.widgets import TagAutocompleteTagIt
+
 from base.fields.extra import AdvancedFileInput
 from profiles.models import Profile, Link, Service
-from tagging.forms import TagField
 
 ACTION_LAYOUT = action_layout = FormActions(
     HTML(
@@ -35,26 +41,37 @@ class ActionForm(forms.Form):
 
 
 class ProfileForm(ModelForm):
+
     class Meta:
         model = Profile
         exclude = ("user", "mentor", "description")
 
         widgets = {
-            "image": AdvancedFileInput(image_width=76),
+            "image": AdvancedFileInput(image_width=100),
             "expertise": forms.CheckboxSelectMultiple(),
+            # "tags": TagAutocompleteWidget(required=False, label=_("Tags"), options={'max_tags': 9}),
         }
+
+    # d_tags = TagField(
+    #     # widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_("Tags"),
+    #     # NOTE: see `instance` in `__init__` below.
+    #     widget=TagAutocompleteWidget(required=False, label=_("Tags"), options={'max_tags': 9})
+    # )
+
+    tags = TagField(required=False, label=_("Tags"))
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, "instance", None)
 
         self.helper = FormHelper()
         self.helper.form_tag = False
+        # self.fields['d_tags'].widget.instance = instance
 
         appearance_layout = Layout(
             Fieldset(
                 _("Appearance"),
-                Field("pseudonym", css_class="input-xlarge"),
-                # Field('description', css_class='input-xlarge'),
+                InputContainer("pseudonym"),
             )
         )
 
@@ -63,19 +80,17 @@ class ProfileForm(ModelForm):
                 _("Personal Information"),
                 Div(
                     HTML(
-                        "<p>%s</p>"
-                        % (
-                            _(
-                                "Your birth date is only visible to your mentor, and to team-members with administrative rights."
-                            )
-                        )
+                        'Your birth date is only visible to your mentor, and to team-members with administrative rights.'
                     ),
-                    css_class="notes-form notes-inline notes-info",
+                    css_class="fieldset-hint fieldset-hint--info",
                 ),
-                Field("gender", css_class="input-xlarge"),
-                Field("birth_date", css_class="input-xlarge"),
-                Field("biography", css_class="input-xlarge"),
-                Div(Field("image"), css_class="input-image"),
+                Grid(
+                  Cell(InputContainer("gender")),
+                  Cell(InputContainer("birth_date", data_picker=True)),
+                ),
+
+                InputContainer("biography"),
+                InputContainer("image"),
             )
         )
         contact_layout = Layout(
@@ -83,24 +98,30 @@ class ProfileForm(ModelForm):
                 _("Contact"),
                 Div(
                     HTML(
-                        "<p>%s</p>"
-                        % (
-                            _(
-                                'Except for "City" and "Country", this information is only visible to your mentor, and to team-members with administrative rights.'
-                            )
-                        )
+                        'Except for "City" and "Country", this information is only visible to your mentor, and to team-members with administrative rights.'
                     ),
-                    css_class="notes-form notes-inline notes-info",
+                    css_class="fieldset-hint fieldset-hint--info",
                 ),
-                Field("mobile", css_class="input-xlarge"),
-                Field("phone", css_class="input-xlarge"),
-                Field("fax", css_class="input-xlarge"),
-                Field("address1", css_class="input-xlarge"),
-                Field("address2", css_class="input-xlarge"),
-                # Field('state', css_class='input-xlarge'),
-                Field("city", css_class="input-xlarge"),
-                Field("zip", css_class="input-xlarge"),
-                Field("country", css_class="input-xlarge"),
+
+                Grid(
+                    Cell(InputContainer("address1")),
+                ),
+
+                Grid(
+                    Cell(InputContainer("address2")),
+                ),
+
+                Grid(
+                    Cell(InputContainer("city")),
+                    Cell(InputContainer("zip")),
+                    Cell(InputContainer("country")),
+                ),
+
+                Grid(
+                    Cell(InputContainer("mobile")),
+                    Cell(InputContainer("phone")),
+                    Cell(InputContainer("fax")),
+                ),
             )
         )
         account_layout = Layout(
@@ -108,36 +129,40 @@ class ProfileForm(ModelForm):
                 _("Accounts"),
                 Div(
                     HTML(
-                        "<p>%s</p>"
-                        % (
-                            _(
-                                "In case you see a reason to recieve some money from us :) This information is not visible on the plattform."
-                            )
-                        )
+                        "In case you see a reason to recieve some money from us :) This information is not visible on the plattform."
                     ),
-                    css_class="notes-form notes-inline notes-info",
+                    css_class="fieldset-hint fieldset-hint--info",
                 ),
-                Field("iban", css_class="input-xlarge"),
-                Field("paypal", css_class="input-xlarge"),
+                Grid(
+                    Cell(InputContainer("iban")),
+                    Cell(InputContainer("paypal")),
+                ),
             )
         )
         settings_layout = Layout(
             Fieldset(
                 _("Settings"),
-                # Div(
-                #        HTML('<h2>%s</h2><p>%s</p>' % (_('Account data'), _('In case you see a reason to recieve some money from us :) This information is not visible on the plattform.'))),
-                #        css_class='notes-form notes-inline notes-info',
-                # ),
-                Field("enable_alpha_features", css_class="input-xlarge"),
+                InputContainer("enable_alpha_features"),
             )
         )
         skills_layout = Layout(
             Fieldset(
-                _("Skills & Knowledge"), Field("expertise", css_class="input-xlarge")
+                _("Skills & Knowledge"),
+                InputContainer("expertise", hide_label=True)
             )
         )
 
-        tagging_layout = Fieldset("Tags", "d_tags")
+        # tagging_layout = Fieldset("Tags", "d_tags")
+        tagging_layout = Layout(
+            # Fieldset(
+            #     _("Tags"),
+            #     InputContainer("d_tags", hide_label=True)
+            # ),
+            Fieldset(
+                _("N-Tags"),
+                TagInputContainer("tags", hide_label=True)
+            )
+        )
 
         layout = Layout(
             appearance_layout,
@@ -150,11 +175,6 @@ class ProfileForm(ModelForm):
         )
 
         self.helper.add_layout(layout)
-
-    biography = forms.CharField(widget=forms.Textarea(), required=False)
-    d_tags = TagField(
-        widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_("Tags")
-    )
 
     def clean_user(self):
         return self.instance.user
@@ -171,13 +191,11 @@ class LinkForm(ModelForm):
 
         self.helper = FormHelper()
         self.helper.form_tag = False
-        layout_profile = Layout(Fieldset(_("Link"), "url", "title", "DELETE"))
-
-        base_layout = Row(
-            Column(Field("url", css_class="input-medium"), css_class="span5"),
-            Column(Field("title", css_class="input-medium"), css_class="span5"),
-            Column(Field("DELETE", css_class="input-mini"), css_class="span2 delete"),
-            css_class="row-fluid link-row form-autogrow",
+        base_layout = Grid(
+            Cell(InputContainer("url")),
+            Cell(InputContainer("title")),
+            Cell(InputContainer("DELETE")),
+            data_autogrow='autogrow'
         )
 
         self.helper.add_layout(base_layout)
@@ -218,12 +236,15 @@ class UserForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
+        self.helper.form_tag = False
         self.helper.layout = Layout(
             Fieldset(
                 _("User Details"),
-                Field("email", css_class="input-xlarge"),
-                Field("first_name", css_class="input-xlarge"),
-                Field("last_name", css_class="input-xlarge"),
+                InputContainer("email"),
+                Grid(
+                    Cell(InputContainer("first_name")),
+                    Cell(InputContainer("last_name")),
+                ),
             )
         )
         super(UserForm, self).__init__(*args, **kwargs)
@@ -248,36 +269,50 @@ class UserCredentialsForm(ModelForm):
         label=_("New password"),
         widget=forms.PasswordInput,
         required=False,
-        help_text=_("Please make sure to use a 'not so easy to guess' password!"),
+        # help_text=_("Please make sure to use a 'not so easy to guess' password!"),
     )
     new_password2 = forms.CharField(
         label=_("Confirmation"),
         widget=forms.PasswordInput,
         required=False,
-        help_text=_("Verify your new password"),
+        # help_text=_("Verify your new password"),
     )
 
     class Meta:
         model = get_user_model()
-        fields = ("username",)
+        fields = ("username", "email")
         help_texts = {"username": _("Letters, digits and @/./+/-/_ only")}
 
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_tag = False
-        self.helper.form_class = "form-horizontal"
         self.helper.layout = Layout(
             Fieldset(
-                _('Username / a.k.a. "Login Name"'),
-                Field("username", css_class="input-xlarge"),
+                _('Email & Username/"Login Name"'),
+                InputContainer("email"),
+                InputContainer("username"),
             ),
             Fieldset(
                 _("Update Password"),
-                Field("new_password1", css_class="input-xlarge"),
-                Field("new_password2", css_class="input-xlarge"),
+                Grid(
+                    Cell(InputContainer("new_password1")),
+                    Cell(InputContainer("new_password2")),
+                ),
             ),
         )
         super(UserCredentialsForm, self).__init__(*args, **kwargs)
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if (
+            get_user_model()
+            .objects.filter(email=email)
+            .exclude(pk=self.instance.pk)
+            .exists()
+        ):
+            raise ValidationError("This e-mail address is already in use.")
+
+        return email
 
     def clean_new_password2(self):
         password1 = self.cleaned_data.get("new_password1")

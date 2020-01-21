@@ -189,4 +189,4 @@ const CollectorApp = Vue.extend({
     }
 });
 
-module.exports = CollectorApp;
+export default CollectorApp;

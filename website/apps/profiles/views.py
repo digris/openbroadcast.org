@@ -7,6 +7,8 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.core.exceptions import PermissionDenied
+from base.utils.form_errors import merge_form_errors
 from django.http import (
     Http404,
     HttpResponseRedirect,
@@ -18,7 +20,7 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, View, UpdateView
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, PermissionRequiredMixin
 from invitation.models import Invitation
 from profiles.forms import (
     UserForm,
@@ -233,6 +235,90 @@ class ProfileDetailView(DetailView):
         return super(ProfileDetailView, self).get(request, *args, **kwargs)
 
 
+
+
+class ProfileEditView(LoginRequiredMixin, UpdateView):
+    model = Profile
+    form_class = ProfileForm
+    template_name = "profiles/profile/edit.html"
+    raise_exception = True
+    success_url = "#"
+
+    def get_object(self, queryset=None):
+        obj = get_object_or_404(self.model, uuid=self.kwargs["uuid"])
+        if not obj.user == self.request.user:
+            raise PermissionDenied()
+
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileEditView, self).get_context_data(**kwargs)
+        context.update({
+            'user_form': UserForm(self.request.POST or None, instance=self.request.user),
+            'named_formsets': self.get_named_formsets(),
+            'form_errors': self.get_form_errors(form=context['form']),
+        })
+
+        return context
+
+    def get_initial(self):
+        initial = super(ProfileEditView, self).get_initial()
+        initial.update({"tags": ",".join(t.name for t in self.object.tags.all())})
+        return initial
+
+    def get_named_formsets(self):
+
+        return {
+            "action": ActionForm(
+                self.request.POST or None, prefix="action"
+            ),
+            "relation": LinkFormSet(
+                self.request.POST or None, instance=self.object, prefix="relation"
+            ),
+        }
+
+    def get_form_errors(self, form=None):
+
+        named_formsets = self.get_named_formsets()
+        named_formsets.update({"form": form})
+        form_errors = merge_form_errors(
+            [formset for name, formset in named_formsets.items()]
+        )
+
+        return form_errors
+
+    def form_valid(self, form):
+
+        named_formsets = self.get_named_formsets()
+        if not all((x.is_valid() for x in named_formsets.values())):
+            return self.render_to_response(self.get_context_data(form=form))
+
+        user_form = UserForm(self.request.POST, instance=self.request.user)
+        if not user_form.is_valid():
+            return self.render_to_response(self.get_context_data(form=form))
+
+        self.user_object = user_form.save()
+
+        self.object = form.save(commit=False)
+        self.object.tags = form.cleaned_data.get("tags", "").lower()
+        self.object = form.save()
+
+        for name, formset in named_formsets.items():
+            formset_save_func = getattr(self, "formset_{0}_valid".format(name), None)
+
+            if formset_save_func is not None:
+                formset_save_func(formset)
+            elif hasattr(formset, 'save'):
+                formset.save()
+
+        messages.add_message(self.request, messages.INFO, "Profile updated")
+
+        return HttpResponseRedirect(self.get_success_url())
+        # return HttpResponseRedirect(self.object.get_edit_url())
+
+
+
+
 # TODO: refactor to CBV
 @login_required
 def profile_edit(request, template_name="profiles/profile_form.html"):
@@ -296,8 +382,9 @@ class UserCredentialsView(LoginRequiredMixin, UpdateView):
 
     model = get_user_model()
     form_class = UserCredentialsForm
-    template_name = "profiles/credentials_form.html"
-    success_url = "/network/users/edit/"
+    # template_name = "profiles/credentials_form.html"
+    template_name = "profiles/profile/edit_credentials.html"
+    # success_url = "/network/users/edit/"
 
     def get_object(self):
         return self.request.user
@@ -305,6 +392,12 @@ class UserCredentialsView(LoginRequiredMixin, UpdateView):
     def get_initial(self):
         self.initial.update({"user": self.request.user})
         return self.initial
+
+    def get_success_url(self):
+        return reverse(
+            "profiles-profile-edit-ng",
+            kwargs={"uuid": str(self.request.user.profile.uuid)},
+        )
 
     def form_valid(self, form):
 
@@ -317,7 +410,7 @@ class UserCredentialsView(LoginRequiredMixin, UpdateView):
 
         messages.add_message(self.request, messages.INFO, "Credentials updated")
 
-        return HttpResponseRedirect(self.success_url)
+        return HttpResponseRedirect(self.get_success_url())
 
 
 # TODO: Implement!

@@ -31,7 +31,13 @@ import ThumbRating from './components/rating/ThumbRating.vue';
 import ObjectActions from './components/ObjectActions/ObjectActions.vue';
 import EmissionHistory from './components/EmissionHistory/EmissionHistory.vue';
 import Visual from './components/ui/Visual.vue';
+import LazyImage from './components/ui/LazyImage.vue';
 import VisualWithActions from './components/ui/VisualWithActions.vue';
+// forms
+import Formset from './components/form/Formset.vue';
+import InputContainer from './components/form/InputContainer.vue';
+import TagInputContainer from './components/form/TagInputContainer.vue';
+import APIClient from "./api/caseTranslatingClient";
 
 const DEBUG = false;
 
@@ -47,7 +53,12 @@ class AppInitializer {
             components: {
               // generic ui components
               'visual': Visual,
+              'lazy-image': LazyImage,
               'visual-with-actions': VisualWithActions,
+              // form ui components
+              'formset': Formset,
+              'input-container': InputContainer,
+              'tag-input-container': TagInputContainer,
               //
               'scheduler': Scheduler,
               'thumb-rating': ThumbRating,
@@ -125,4 +136,4 @@ class AppInitializer {
     };
 }
 
-module.exports = AppInitializer;
+export default AppInitializer;

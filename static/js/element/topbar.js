@@ -33,4 +33,4 @@ class Topbar {
     };
 }
 
-module.exports = Topbar;
+export default Topbar;

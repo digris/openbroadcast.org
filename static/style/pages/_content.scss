@@ -1,7 +1,10 @@
 @charset "UTF-8";
 
+@import "../components/form";
+
 @import "mixins/detail";
 @import "mixins/list";
+@import "mixins/edit";
 
 .content__primary {
   > .item {
@@ -9,6 +12,7 @@
     flex-direction: column;
   }
 
+  // detail views
   .item {
     &--header {
       @include item-header;
@@ -27,6 +31,7 @@
     }
   }
 
+  // list views
   .list {
     &--grid {
       @include grid-layout;
@@ -76,4 +81,15 @@
       font-size: 120%;
     }
   }
+
+  // form views
+  .edit {
+    @include form-default-layout;
+
+    margin: 2rem 0 1rem 0;
+
+    //@include form-vue;
+    //@include form-grid;
+  }
+
 }

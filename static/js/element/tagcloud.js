@@ -43,4 +43,4 @@ class Tagcloud {
     };
 }
 
-module.exports = Tagcloud;
+export default Tagcloud;

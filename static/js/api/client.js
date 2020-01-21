@@ -9,4 +9,4 @@ const APIClient = axios.create({
     }
 });
 
-module.exports = APIClient;
+export default APIClient;

@@ -53,7 +53,7 @@ class LazyImageLoader {
     };
 }
 
-module.exports = LazyImageLoader;
+export default LazyImageLoader;
 
 
 // https://gist.github.com/jjmu15/8646226

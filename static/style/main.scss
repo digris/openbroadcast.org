@@ -20,7 +20,7 @@
 // 4. Layout-related sections
 @import
   'layout/global',
-  'layout/forms',
+  // 'layout/forms',
   'layout/topbar',
   'layout/menubar',
   'layout/tagcloud',
@@ -33,6 +33,7 @@
 @import
   'components/lazy-image',
   'components/site-message',
+  'components/form',
   'components/button';
 
 // 6. Page-specific styles

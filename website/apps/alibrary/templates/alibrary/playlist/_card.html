@@ -1,7 +1,17 @@
-{% load i18n playlist_tags calc_tags lazy_image_tags truncate_tags arating_tags %}
+{% load i18n thumbnail playlist_tags calc_tags lazy_image_tags truncate_tags arating_tags object_action_tags %}
 
 <div class="card card--playlist">
     <div class="card__visual">
+        <div class="image">
+            <visual-with-actions
+                ct="{{ object.get_ct }}"
+                uuid="{{ object.uuid }}"
+                image-url="{% thumbnail object.image 280x280 crop upscale %}"
+                :actions="{% get_object_actions_as_json object user %}">
+            </visual-with-actions>
+        </div>
+
+        {% comment %}
         <div class="image">
             {% lazy_image object.main_image 'crop' '270x270' %}
         </div>
@@ -27,6 +37,7 @@
                 actions="play,queue,download,edit,schedule,clipboard">
             </object-actions>
         </div>
+        {% endcomment %}
         <div class="card__visual__top">
             <div class="flags">
                 <span class="flag">{{ object.get_type_display }}</span>

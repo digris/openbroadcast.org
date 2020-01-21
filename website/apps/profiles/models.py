@@ -113,9 +113,9 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
     )
 
     # tagging (d_tags = "display tags")
-    d_tags = tagging.fields.TagField(
-        max_length=1024, verbose_name="Tags", blank=True, null=True
-    )
+    # d_tags = tagging.fields.TagField(
+    #     max_length=1024, verbose_name="Tags", blank=True, null=True
+    # )
 
     # alpha features
     enable_alpha_features = models.BooleanField(default=False)
@@ -199,9 +199,12 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
     def get_absolute_url(self):
         return reverse("profiles-profile-detail", kwargs={"uuid": str(self.uuid)})
 
-    @models.permalink
     def get_edit_url(self):
-        return ("profiles-profile-edit",)
+        return reverse("profiles-profile-edit-ng", kwargs={"uuid": str(self.uuid)})
+
+    # @models.permalink
+    # def get_edit_url(self):
+    #     return ("profiles-profile-edit",)
 
     def get_admin_url(self):
         return reverse("admin:profiles_profile_change", args=(self.pk,))
@@ -221,10 +224,9 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         super(Profile, self).save(*args, **kwargs)
 
 
-try:
-    tagging_register(Profile)
-except:
-    pass
+
+tagging_register(Profile)
+
 
 arating.enable_voting_on(Profile)
 
@@ -273,7 +275,8 @@ class Community(UUIDModelMixin, MigrationMixin):
     )
 
     # tagging (d_tags = "display tags")
-    d_tags = tagging.fields.TagField(verbose_name="Tags", blank=True, null=True)
+    # d_tags = tagging.fields.TagField(verbose_name="Tags", blank=True, null=True)
+    tags = tagging.fields.TagField(verbose_name="Tags", blank=True, null=True)
 
     class Meta:
         app_label = "profiles"
@@ -289,13 +292,13 @@ class Community(UUIDModelMixin, MigrationMixin):
         return "%s" % self.name
 
     def save(self, *args, **kwargs):
-        t_tags = ""
-        """"""
-        for tag in self.tags:
-            t_tags += "%s, " % tag
-
-        self.tags = t_tags
-        self.d_tags = t_tags[:245]
+        # t_tags = ""
+        # """"""
+        # for tag in self.tags:
+        #     t_tags += "%s, " % tag
+        #
+        # self.tags = t_tags
+        # self.d_tags = t_tags[:245]
 
         super(Community, self).save(*args, **kwargs)
 
