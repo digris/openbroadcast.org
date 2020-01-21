@@ -6,14 +6,13 @@
 import '../style/main.scss';
 
 // site apps
-import AppInitializer from './initializer'
+import AppInitializer from './initializer';
 
 const DEBUG = true;
 
 // $((e) => {
-document.addEventListener("DOMContentLoaded", () => {
-    // initializer has to wait for dom ready, as
-    // vue apps need container to mount
-    const initializer = new AppInitializer({});
+document.addEventListener('DOMContentLoaded', () => {
+  // initializer has to wait for dom ready, as
+  // vue apps need container to mount
+  const initializer = new AppInitializer({});
 });
-

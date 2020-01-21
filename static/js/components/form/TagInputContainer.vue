@@ -1,118 +1,117 @@
 <script>
 
-    import APIClient from '../../api/caseTranslatingClient';
-    import TagInputAutocomplete from "./TagInputAutocomplete.vue";
+import APIClient from '../../api/caseTranslatingClient';
+import TagInputAutocomplete from './TagInputAutocomplete.vue';
 
-    export default {
-        name: 'TagInputContainer',
-        components: {
-            'input-autocomplete': TagInputAutocomplete,
-        },
-        props: {
-            id: {
-                type: String,
-                required: true,
-            },
-            required: {
-                type: Boolean,
-                required: false,
-                default: false,
-            },
-            label: {
-                type: String,
-                required: false,
-                default: null,
-            },
-            hideLabel: {
-                type: String,
-                required: false,
-                default: null,
-            },
-            errors: {
-                type: Array,
-                required: false,
-                default: function () {
-                    return [];
-                },
-            },
-            help: {
-                type: String,
-                required: false,
-                default: null,
-            },
-            isCheckbox: {
-                type: Boolean,
-                required: false,
-                default: false,
-            },
-        },
-        data: function () {
-            return {
-                tags: [],
-                newTag: "",
-                maxTags: 3,
-                suggestedTags: [],
-                validationErrors: [],
-            }
-        },
-        computed: {
-            combinedErrors: function() {
-                return [...this.errors, ...this.validationErrors];
-            },
-            hasErrors: function () {
-                return (this.combinedErrors && this.combinedErrors.length);
-            }
-        },
-        watch: {
-            tags: function (tags) {
-                if(tags.length > this.maxTags) {
-                    this.validationErrors.push({
-                        code: 'max-tags',
-                        message: `A maximum of ${this.maxTags} tags are allowed.`,
-                    })
-                } else {
-                    this.validationErrors = [];
-                    this.writeTagsToInput();
-                }
-
-            },
-        },
-        mounted: function () {
-            this.readTagsFromInput();
-        },
-        methods: {
-            removeTag: function (index) {
-                const tags = [...this.tags];
-                tags.splice(index, 1);
-                this.tags = tags;
-            },
-            autocomleteInput: function (input) {
-                const url = '/api/v2/tags/tag/';
-                const params = {
-                    q: input
-                };
-                APIClient.get(url, {params: params}).then((response) => {
-                    this.suggestedTags = response.data.results;
-                }).catch(() => {
-                    this.suggestedTags = [];
-                });
-            },
-            autocompleteResult: function (result) {
-                console.debug('autocompleteResult', result);
-                this.tags.unshift(result);
-            },
-            readTagsFromInput: function () {
-                // console.debug('this.$refs', this.$refs);
-                const input = this.$refs.field.querySelector("input");
-                this.tags = input.value.split(",");
-            },
-            writeTagsToInput: function () {
-                const input = this.$refs.field.querySelector("input");
-                // input.value = this.tags.join(",");
-                input.value = this.tags.map(tag => `"${tag}"`).join(',');
-            },
-        },
-    }
+export default {
+  name: 'TagInputContainer',
+  components: {
+    'input-autocomplete': TagInputAutocomplete,
+  },
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+    required: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    label: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    hideLabel: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    errors: {
+      type: Array,
+      required: false,
+      default() {
+        return [];
+      },
+    },
+    help: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    isCheckbox: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      tags: [],
+      newTag: '',
+      maxTags: 3,
+      suggestedTags: [],
+      validationErrors: [],
+    };
+  },
+  computed: {
+    combinedErrors() {
+      return [...this.errors, ...this.validationErrors];
+    },
+    hasErrors() {
+      return (this.combinedErrors && this.combinedErrors.length);
+    },
+  },
+  watch: {
+    tags(tags) {
+      if (tags.length > this.maxTags) {
+        this.validationErrors.push({
+          code: 'max-tags',
+          message: `A maximum of ${this.maxTags} tags are allowed.`,
+        });
+      } else {
+        this.validationErrors = [];
+        this.writeTagsToInput();
+      }
+    },
+  },
+  mounted() {
+    this.readTagsFromInput();
+  },
+  methods: {
+    removeTag(index) {
+      const tags = [...this.tags];
+      tags.splice(index, 1);
+      this.tags = tags;
+    },
+    autocomleteInput(input) {
+      const url = '/api/v2/tags/tag/';
+      const params = {
+        q: input,
+      };
+      APIClient.get(url, { params }).then((response) => {
+        this.suggestedTags = response.data.results;
+      }).catch(() => {
+        this.suggestedTags = [];
+      });
+    },
+    autocompleteResult(result) {
+      console.debug('autocompleteResult', result);
+      this.tags.unshift(result);
+    },
+    readTagsFromInput() {
+      // console.debug('this.$refs', this.$refs);
+      const input = this.$refs.field.querySelector('input');
+      this.tags = input.value.split(',');
+    },
+    writeTagsToInput() {
+      const input = this.$refs.field.querySelector('input');
+      // input.value = this.tags.join(",");
+      input.value = this.tags.map((tag) => `"${tag}"`).join(',');
+    },
+  },
+};
 </script>
 <template>
   <div
@@ -189,42 +188,43 @@
     @import '../../../style/components/form';
 
     .input-container {
-        @include input-container-grid;
+      @include input-container-grid;
 
-        &__input {
-            display: flex;
-            min-height: 100px;
-        }
-        &__autocomplete {
-            padding-right: 4px;
-            width: 220px;
-        }
-        &__tags {
-            flex-grow: 1;
-        }
+      &__input {
+        display: flex;
+        min-height: 100px;
+      }
+
+      &__autocomplete {
+        padding-right: 4px;
+        width: 220px;
+      }
+
+      &__tags {
+        flex-grow: 1;
+      }
     }
 
     .tag {
-        display: inline-flex;
+      display: inline-flex;
+      height: 22px;
+      line-height: 22px;
+      background: black;
+      margin: 0 4px 4px 0;
+      padding: 0 10px;
+      text-transform: uppercase;
+      color: white;
 
-        height: 22px;
-        line-height: 22px;
-        background: black;
-        margin: 0 4px 4px 0;
-        padding: 0 10px;
-        text-transform: uppercase;
+      &__remove {
+        padding: 0 0 0 0.5rem;
         color: white;
+        cursor: pointer;
+        opacity: 0.5;
 
-        &__remove {
-            padding: 0 0 0 .5rem;
-            color: white;
-            cursor: pointer;
-            opacity: .5;
-
-            &:hover {
-                opacity: 1;
-            }
+        &:hover {
+          opacity: 1;
         }
+      }
     }
 
 </style>

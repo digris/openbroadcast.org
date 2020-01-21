@@ -1,72 +1,78 @@
 <script>
 
-    import Visual from '../ui/Visual.vue';
-    import Tags from '../../components/ui/Tags.vue';
-    import UserInline from '../../components/ui/UserInline.vue';
-    import ObjectActions from '../../components/ObjectActions/ObjectActions.vue';
+import Visual from '../ui/Visual.vue';
+import Tags from '../ui/Tags.vue';
+import UserInline from '../ui/UserInline.vue';
+import ObjectActions from '../ObjectActions/ObjectActions.vue';
 
-    export default {
-        name: 'SchedulerCalendarEmissionContent',
-        components: {
-            'visual': Visual,
-            'tags': Tags,
-            'user-inline': UserInline,
-            'object-actions': ObjectActions,
-        },
-        props: {
-            contentObj: {
-                type: Object,
-                required: true,
-            },
-            size: {
-                type: String,
-                default: "small",
-            },
-        },
-        computed: {},
-        methods: {}
-    }
+export default {
+  name: 'SchedulerCalendarEmissionContent',
+  components: {
+    visual: Visual,
+    tags: Tags,
+    'user-inline': UserInline,
+    'object-actions': ObjectActions,
+  },
+  props: {
+    contentObj: {
+      type: Object,
+      required: true,
+    },
+    size: {
+      type: String,
+      default: 'small',
+    },
+  },
+  computed: {},
+  methods: {},
+};
 </script>
 <style lang="scss" scoped>
     .content-object {
+      display: flex;
+
+      &__visual {
+        flex: 0 0 140px;
+        position: relative;
+
+        figure {
+          background: rgba(255, 255, 255, 0.1);
+          height: 140px;
+        }
+
+        .object-actions {
+          top: 0;
+          position: absolute;
+          color: #000;
+        }
+      }
+
+      &__details {
+        flex-grow: 1;
+        padding: 4px 10px;
         display: flex;
-        &__visual {
-            flex: 0 0 140px;
-            position: relative;
-            figure {
-                background: rgba(255, 255, 255, 0.10);
-                height: 140px;
-            }
-            .object-actions {
-                top: 0;
-                position: absolute;
-                color: #000;
-            }
-        }
-        &__details {
-            flex-grow: 1;
-            padding: 4px 10px;
-            display: flex;
-            flex-direction: column;
-            &__title {
-                font-size: 120%;
-                margin-bottom: 4px;
-                color: inherit;
-            }
-            &__body {
-                flex-grow: 1;
-            }
+        flex-direction: column;
+
+        &__title {
+          font-size: 120%;
+          margin-bottom: 4px;
+          color: inherit;
         }
 
-        &--small {
-            .content-object__visual {
-                flex: 0 0 90px;
-                figure {
-                    height: 90px;
-                }
-            }
+        &__body {
+          flex-grow: 1;
         }
+      }
 
+      &--small {
+        .content-object__visual {
+          flex: 0 0 90px;
+
+          figure {
+            height: 90px;
+          }
+        }
+      }
     }
 </style>
 

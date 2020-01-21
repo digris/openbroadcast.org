@@ -1,75 +1,75 @@
 <script>
-    export default {
-        props: {
-            item: {
-                type: Object,
-                required: true,
-            },
-        },
-        data() {
-            return {
-                greeting: 'Hello',
-            }
-        },
-        computed: {
-            position: function () {
-                return (this.item.playhead_position > 0.3) ? this.item.playhead_position - 0.3 : 0;
-                //return this.item.playhead_position - 0.3;
-            },
-            cue_fade_points: function () {
-                let item = this.item;
+export default {
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      greeting: 'Hello',
+    };
+  },
+  computed: {
+    position() {
+      return (this.item.playhead_position > 0.3) ? this.item.playhead_position - 0.3 : 0;
+      // return this.item.playhead_position - 0.3;
+    },
+    cue_fade_points() {
+      const { item } = this;
 
-                let x1 = Math.floor(item.from / item.duration * 100);
-                let x2 = Math.floor(item.fade_to / item.duration * 100);
-                let x3 = Math.floor(item.fade_from / item.duration * 100);
-                let x4 = Math.floor(item.to / item.duration * 100);
+      const x1 = Math.floor(item.from / item.duration * 100);
+      const x2 = Math.floor(item.fade_to / item.duration * 100);
+      const x3 = Math.floor(item.fade_from / item.duration * 100);
+      const x4 = Math.floor(item.to / item.duration * 100);
 
-                //console.debug('cue_fade_points', `${x1},30 ${x2},0 ${x3},0 ${x4},30`)
+      // console.debug('cue_fade_points', `${x1},30 ${x2},0 ${x3},0 ${x4},30`)
 
-                return ` ${x1},30 ${x1},15 ${x2},0 ${x3},0 ${x4},15 ${x4},30`
-            },
-            has_cue_or_fade: function() {
-                let item = this.item;
-                return (item.from > 0 || item.to !== item.duration) || (item.from !== item.fade_to || item.to !== item.fade_from);
-            },
-            rubberband_points: function () {
-                let item = this.item;
+      return ` ${x1},30 ${x1},15 ${x2},0 ${x3},0 ${x4},15 ${x4},30`;
+    },
+    has_cue_or_fade() {
+      const { item } = this;
+      return (item.from > 0 || item.to !== item.duration) || (item.from !== item.fade_to || item.to !== item.fade_from);
+    },
+    rubberband_points() {
+      const { item } = this;
 
-                let x1 = Math.floor(item.from / item.duration * 100);
-                let x2 = Math.floor(item.fade_to / item.duration * 100);
-                let x3 = Math.floor(item.fade_from / item.duration * 100);
-                let x4 = Math.floor(item.to / item.duration * 100);
+      const x1 = Math.floor(item.from / item.duration * 100);
+      const x2 = Math.floor(item.fade_to / item.duration * 100);
+      const x3 = Math.floor(item.fade_from / item.duration * 100);
+      const x4 = Math.floor(item.to / item.duration * 100);
 
-                return `0,28 ${x1},28 ${x2},2 ${x3},2 ${x4},28 100,28`
-            },
-            mask_left: function () {
-                let item = this.item;
-                let x = Math.floor(item.from / item.duration * 100);
-                return `0,0 ${x},0 ${x},30 0,30`
-            },
-            mask_right: function () {
-                let item = this.item;
-                let x = Math.floor(item.to / item.duration * 100);
-                return `${x},0 100,0 100,30 ${x},30`
-            },
-            mask_style: function () {
-                return 'fill:rgba(255,255,255,0.7);';
-            }
-        },
-        methods: {
-            seek: function (e) {
-                const x = e.clientX;
-                //const w = e.target.getBoundingClientRect().width;
-                const w = window.innerWidth;
-                const p = Math.round((x / w) * 1000) / 10;
+      return `0,28 ${x1},28 ${x2},2 ${x3},2 ${x4},28 100,28`;
+    },
+    mask_left() {
+      const { item } = this;
+      const x = Math.floor(item.from / item.duration * 100);
+      return `0,0 ${x},0 ${x},30 0,30`;
+    },
+    mask_right() {
+      const { item } = this;
+      const x = Math.floor(item.to / item.duration * 100);
+      return `${x},0 100,0 100,30 ${x},30`;
+    },
+    mask_style() {
+      return 'fill:rgba(255,255,255,0.7);';
+    },
+  },
+  methods: {
+    seek(e) {
+      const x = e.clientX;
+      // const w = e.target.getBoundingClientRect().width;
+      const w = window.innerWidth;
+      const p = Math.round((x / w) * 1000) / 10;
 
-                console.debug('waveform - $emit', 'seek', p);
+      console.debug('waveform - $emit', 'seek', p);
 
-                this.$emit('seek', this.item, p);
-            },
-        },
+      this.$emit('seek', this.item, p);
+    },
+  },
 
-    }
+};
 
 </script>
 
@@ -77,47 +77,50 @@
     @import '../../../../sass/site/variables';
 
     .waveform {
-        cursor: crosshair;
-        position: relative;
+      cursor: crosshair;
+      position: relative;
+      height: 30px;
+      //background: black;
+      .waveform-rubberband {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
         height: 30px;
-        //background: black;
-        .waveform-rubberband {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 30px;
-            z-index: 3;
-        }
-        .waveform-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 30px;
-            z-index: 2;
-            img {
-                width: 100%;
-                height: 30px;
-            }
-        }
-        .progress-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            z-index: 99;
-            .progress-indicator {
-                height: 100%;
-                top: 0;
-                left: 0;
-                width: 0;
-                position: absolute;
-                border-right: 1px solid $primary-color-a;
-            }
-        }
-    }
+        z-index: 3;
+      }
 
+      .waveform-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 30px;
+        z-index: 2;
+
+        img {
+          width: 100%;
+          height: 30px;
+        }
+      }
+
+      .progress-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        z-index: 99;
+
+        .progress-indicator {
+          height: 100%;
+          top: 0;
+          left: 0;
+          width: 0;
+          position: absolute;
+          border-right: 1px solid $primary-color-a;
+        }
+      }
+    }
 
     svg polyline {
       shape-rendering: geometricPrecision;
@@ -142,14 +145,14 @@
         <rect
           width="100%"
           height="30"
-          style="fill:rgb(165,165,165)"
+          style="fill: rgb(165, 165, 165);"
         />
 
         <!-- progress bg -->
         <rect
           :width="position"
           height="30"
-          style="fill:rgb(34,34,34)"
+          style="fill: rgb(34, 34, 34);"
         />
 
         <!-- cue masks (left & right) -->
@@ -175,7 +178,7 @@
         <polyline
           v-if="has_cue_or_fade"
           :points="rubberband_points"
-          style="stroke:rgb(102,51,204); fill:none;"
+          style="stroke: rgb(102, 51, 204); fill: none;"
           stroke-width="0.3"
         />
 

@@ -109,7 +109,6 @@ $search-inner-border-color: #eaeaea;
     min-width: 340px;
 
     // position & width is dynamically set in vue during render
-
   }
 
   .search-options-container {
@@ -138,7 +137,6 @@ $search-inner-border-color: #eaeaea;
     .scopes {
       display: flex;
       flex-flow: wrap;
-
       list-style-type: none;
       margin: 0;
       padding: 0;

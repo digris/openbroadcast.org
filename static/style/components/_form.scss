@@ -49,19 +49,6 @@
 
 @mixin input-container-grid {
   display: grid;
-
-  .label {
-    grid-area: label;
-  }
-
-  .field {
-    grid-area: field;
-  }
-
-  .appendix {
-    grid-area: appendix;
-  }
-
   grid-template-columns: 120px auto;
   grid-template-areas: "label field" ". appendix";
 
@@ -80,10 +67,11 @@
   select {
     width: 100%;
     min-height: 2rem;
-    padding: .25rem .5rem;
+    padding: 0.25rem 0.5rem;
   }
 
   .label {
+    grid-area: label;
     min-height: 2rem;
     display: flex;
     align-items: flex-start;
@@ -91,12 +79,13 @@
 
     &__required {
       display: inline-block;
-      padding-left: .25rem;
+      padding-left: 0.25rem;
       color: red;
     }
   }
 
   .field {
+    grid-area: field;
     min-height: 2rem;
     display: flex;
     align-items: center;
@@ -129,10 +118,11 @@
   }
 
   .appendix {
-    padding: .25rem .5rem;
+    grid-area: appendix;
+    padding: 0.25rem 0.5rem;
 
     .help {
-      opacity: .5;
+      opacity: 0.5;
     }
 
     .errors {
@@ -157,14 +147,12 @@
 }
 
 @mixin form-default-actions {
-
   display: flex;
   justify-content: end;
 
   &__action {
     min-width: 10rem;
     margin: 0 0 0 1rem;
-
     padding: 0 20px;
     height: 28px;
     line-height: 28px;
@@ -182,13 +170,13 @@
     column-gap: 2rem;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   }
+
   .form-grid-cell {
     //display: grid;
     //grid-auto-flow: column;
     //grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   }
 }
-
 
 @mixin fileinput {
   .fileinput--inline {
@@ -212,7 +200,6 @@
   }
 }
 
-
 @mixin form-default-input {
   textarea,
   select,
@@ -229,7 +216,6 @@
       border-color: $mid-grey;
       background: $primary-color-light;
     }
-
   }
 
   textarea {
@@ -242,13 +228,10 @@
   input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px white inset;
   }
-
 }
 
 @mixin form-default-layout {
-
   .form {
-
     @include form-grid;
     @include form-default-input;
 
@@ -257,7 +240,7 @@
     }
 
     fieldset {
-      margin: .5rem 0 1rem;
+      margin: 0.5rem 0 1rem;
       padding: 0 0 10px;
 
       legend {
@@ -267,13 +250,12 @@
         line-height: 2rem;
         border-bottom: 1px solid #e5e5e5;
         width: 100%;
-        opacity: .75;
+        opacity: 0.75;
       }
 
       > :nth-child(2) {
         // border: 10px solid orangered;
       }
-
     }
 
     .fieldset-hint {
@@ -285,7 +267,7 @@
     // defined / styled in component
     // TODO: is it a good idea to have `input-container` styles inside vue component?
     .input-container {
-      margin: .5rem 0;
+      margin: 0.5rem 0;
 
       @include fileinput;
     }
@@ -298,5 +280,4 @@
   .form-appendix {
     background: hotpink;
   }
-
 }

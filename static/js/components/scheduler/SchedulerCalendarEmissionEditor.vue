@@ -1,192 +1,188 @@
 <script>
 
-    const DEBUG = true;
+import dayjs from 'dayjs';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import { backgroundColors } from './constants';
+import { hexToRGBA } from './utils';
+import { templateFilters } from '../../utils/template-filters';
+import SchedulerCalendarEmissionContent from './SchedulerCalendarEmissionContent.vue';
+import Modal from '../ui/Modal.vue';
+import UserInline from '../ui/UserInline.vue';
+import EmissionHistoryMatrix from '../EmissionHistory/EmissionHistoryMatrix.vue';
 
-    import dayjs from 'dayjs';
-    import advancedFormat from 'dayjs/plugin/advancedFormat';
+const DEBUG = true;
 
-    dayjs.extend(advancedFormat);
-    import {backgroundColors} from './constants';
-    import {hexToRGBA} from './utils';
-    import {templateFilters} from '../../utils/template-filters';
-    import SchedulerCalendarEmissionContent from './SchedulerCalendarEmissionContent.vue';
-    import Modal from '../../components/ui/Modal.vue';
-    import UserInline from '../../components/ui/UserInline.vue';
-    import EmissionHistoryMatrix from '../EmissionHistory/EmissionHistoryMatrix.vue';
+dayjs.extend(advancedFormat);
 
-    export default {
-        name: 'SchedulerCalendarEmissionEditor',
-        components: {
-            'modal': Modal,
-            'user-inline': UserInline,
-            'matrix': EmissionHistoryMatrix,
-            'content-obj': SchedulerCalendarEmissionContent,
-        },
-        filters: templateFilters,
-        props: {
-            uuid: {
-                type: String,
-                required: false,
-                default: null,
-            },
-        },
-        data() {
-            return {
-                // visible: true,
-                backgroundColors: backgroundColors,
-            }
-        },
-        computed: {
-            visible() {
-                return this.uuid != null;
-            },
-            emission() {
-                if (!this.uuid) {
-                    return null;
-                }
-                return this.$store.getters['scheduler/emissionByUuid'](this.uuid);
-            },
-            contentObj() {
-                if (!this.emission) {
-                    return null;
-                }
-                return this.emission.co;
-            },
-            contentObjStyle() {
-                if (!this.contentObj) {
-                    return null;
-                }
-                const color = backgroundColors[this.emission.color];
-                return {
-                    backgroundColor: hexToRGBA(color, .2),
-                    //backgroundColor: `rgba(${color}, .2)`,
-                }
-
-            },
-            emissionHistory() {
-                if (!this.contentObj) {
-                    return null;
-                }
-                console.debug('history', this.contentObj.ct, this.contentObj.uuid);
-                return this.$store.getters['objectHistory/objectHistoryByKey'](this.contentObj.ct, this.contentObj.uuid);
-            },
-            formattedTimes() {
-                if (!this.emission) {
-                    return null;
-                }
-                const start = dayjs(this.emission.timeStart);
-                const end = dayjs(this.emission.timeEnd);
-                return {
-                    date: start.format('ddd. D MMMM YYYY'),
-                    start: start.format('H:mm'),
-                    end: end.format('H:mm'),
-                }
-            }
-        },
-        watch: {
-            uuid: function (oldUuid, newUuid) {
-                this.loadEmissionDetails();
-                this.loadEmissionHistory();
-            }
-        },
-        methods: {
-            close: function () {
-                this.$emit('close');
-            },
-            loadEmissionDetails: function () {
-                if (this.uuid) {
-                    const dispatch = this.$store.dispatch('scheduler/loadEmission', this.uuid);
-                }
-            },
-            setColor: function (color) {
-                this.updateEmission({
-                    color: color,
-                });
-            },
-            updateEmission: function (payload) {
-                const dispatch = this.$store.dispatch('scheduler/updateEmission', {
-                    emission: this.emission,
-                    payload: payload
-                });
-            },
-            deleteEmission: function () {
-                const dispatch = this.$store.dispatch('scheduler/deleteEmission', this.uuid);
-                dispatch.then((response) => {
-                    this.$emit('close');
-                }, (error) => {
-                    console.warn('error', error.message, error.response);
-                });
-
-            },
-            // history
-            loadEmissionHistory: function () {
-                if (!this.contentObj) {
-                    return;
-                }
-                this.$store.dispatch('objectHistory/loadObjectHistory', {
-                    objCt: this.contentObj.ct,
-                    objUuid: this.contentObj.uuid
-                });
-            },
-        }
-    }
+export default {
+  name: 'SchedulerCalendarEmissionEditor',
+  components: {
+    modal: Modal,
+    'user-inline': UserInline,
+    matrix: EmissionHistoryMatrix,
+    'content-obj': SchedulerCalendarEmissionContent,
+  },
+  filters: templateFilters,
+  props: {
+    uuid: {
+      type: String,
+      required: false,
+      default: null,
+    },
+  },
+  data() {
+    return {
+      // visible: true,
+      backgroundColors,
+    };
+  },
+  computed: {
+    visible() {
+      return this.uuid != null;
+    },
+    emission() {
+      if (!this.uuid) {
+        return null;
+      }
+      return this.$store.getters['scheduler/emissionByUuid'](this.uuid);
+    },
+    contentObj() {
+      if (!this.emission) {
+        return null;
+      }
+      return this.emission.co;
+    },
+    contentObjStyle() {
+      if (!this.contentObj) {
+        return null;
+      }
+      const color = backgroundColors[this.emission.color];
+      return {
+        backgroundColor: hexToRGBA(color, 0.2),
+        // backgroundColor: `rgba(${color}, .2)`,
+      };
+    },
+    emissionHistory() {
+      if (!this.contentObj) {
+        return null;
+      }
+      console.debug('history', this.contentObj.ct, this.contentObj.uuid);
+      return this.$store.getters['objectHistory/objectHistoryByKey'](this.contentObj.ct, this.contentObj.uuid);
+    },
+    formattedTimes() {
+      if (!this.emission) {
+        return null;
+      }
+      const start = dayjs(this.emission.timeStart);
+      const end = dayjs(this.emission.timeEnd);
+      return {
+        date: start.format('ddd. D MMMM YYYY'),
+        start: start.format('H:mm'),
+        end: end.format('H:mm'),
+      };
+    },
+  },
+  watch: {
+    uuid(oldUuid, newUuid) {
+      this.loadEmissionDetails();
+      this.loadEmissionHistory();
+    },
+  },
+  methods: {
+    close() {
+      this.$emit('close');
+    },
+    loadEmissionDetails() {
+      if (this.uuid) {
+        const dispatch = this.$store.dispatch('scheduler/loadEmission', this.uuid);
+      }
+    },
+    setColor(color) {
+      this.updateEmission({
+        color,
+      });
+    },
+    updateEmission(payload) {
+      const dispatch = this.$store.dispatch('scheduler/updateEmission', {
+        emission: this.emission,
+        payload,
+      });
+    },
+    deleteEmission() {
+      const dispatch = this.$store.dispatch('scheduler/deleteEmission', this.uuid);
+      dispatch.then((response) => {
+        this.$emit('close');
+      }, (error) => {
+        console.warn('error', error.message, error.response);
+      });
+    },
+    // history
+    loadEmissionHistory() {
+      if (!this.contentObj) {
+        return;
+      }
+      this.$store.dispatch('objectHistory/loadObjectHistory', {
+        objCt: this.contentObj.ct,
+        objUuid: this.contentObj.uuid,
+      });
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
     .emission-editor {
-        color: white;
-        height: 100%;
+      color: white;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .content-object {
+        margin: 20px 0;
+      }
+
+      &__history {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      &__actions {
         display: flex;
         flex-direction: column;
 
-        .content-object {
-            margin: 20px 0;
-        }
+        .background-colors {
+          display: flex;
+          width: 100%;
 
-        &__history {
+          .color {
             flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            margin: 20px 0;
+            padding: 0;
+            cursor: pointer;
+          }
         }
 
-        &__actions {
-            display: flex;
-            flex-direction: column;
+        .delete {
+          margin-top: 16px;
 
-            .background-colors {
-                display: flex;
-                width: 100%;
+          &__confirm {
+            text-align: center;
+            border: 2px solid #63c;
+            background: #fff;
+            color: #63c;
+            font-size: 120%;
+            padding: 6px;
+            cursor: pointer;
 
-                .color {
-                    flex-grow: 1;
-                    padding: 0px;
-                    cursor: pointer;
-                }
+            &:hover {
+              color: #fff;
+              background: #63c;
+              border-radius: 4px;
             }
-
-            .delete {
-                margin-top: 16px;
-
-                &__confirm {
-                    text-align: center;
-                    border: 2px solid #6633CC;
-                    background: #fff;
-                    color: #6633CC;
-                    font-size: 120%;
-                    padding: 6px;
-                    cursor: pointer;
-
-                    &:hover {
-                        color: #fff;
-                        background: #6633CC;
-                        border-radius: 4px;
-                    }
-                }
-            }
-
+          }
         }
-
+      }
     }
 </style>
 

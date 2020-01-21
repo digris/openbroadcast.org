@@ -2,7 +2,7 @@
 
 .content__sidebar .menu-context {
 
-  $separator-line-color: #CCCCCC;
+  $separator-line-color: #ccc;
 
   &--prefix {
     padding-bottom: 12px;
@@ -35,10 +35,9 @@
         display: inline-block;
         width: 100%;
 
-
         a {
           display: block;
-          padding: 3px 0 4px .5rem;
+          padding: 3px 0 4px 0.5rem;
           // padding-left: .5rem;
 
           i {
@@ -59,7 +58,7 @@
 
           &.disabled {
             cursor: wait;
-            color: #BBBBBB;
+            color: #bbb;
 
             &.hover {
               background: #efefef;

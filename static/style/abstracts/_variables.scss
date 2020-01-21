@@ -2,8 +2,6 @@
 // This file contains all application-wide Sass variables.
 // -----------------------------------------------------------------------------
 
-
-
 $base-font-size: 12px;
 $base-font-weight: 300;
 
@@ -11,14 +9,11 @@ $base-font-weight: 300;
 /// @type List
 $text-font-stack: 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif !default;
 
-
 /// Code (monospace) font family
 /// @type List
 $code-font-stack: 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Monaco', monospace !default;
 
-
 $g-content-max-width: 1115px !default;
-
 
 /// Copy text color
 /// @type Color
@@ -57,20 +52,14 @@ $mid-grey: rgb(153, 153, 153) !default;
 /// @type Color
 $dark-grey: rgb(68, 68, 68) !default;
 
-
 $page-bg-color: rgb(245, 245, 245) !default;
 
 $warning-color: rgb(215, 100, 46) !default;
 $error-color: rgb(198, 14, 29) !default;
 
-
 /// Container's maximum width
 /// @type Length
 $max-width: 1180px !default;
-
-
-
-
 
 /// Breakpoints map
 /// @prop {String} keys - Keys are identifiers mapped to a given length
@@ -81,18 +70,11 @@ $breakpoints: (
   'large': 1400px,
 ) !default;
 
-
-
-
-
-
 /// Relative or absolute URL where all assets are served from
 /// @type String
 /// @example scss - When using a CDN
 ///   $base-url: 'http://cdn.example.com/assets/';
 $base-url: '/static/' !default;
-
-
 
 /// Expose variables in native CSS
 :root {

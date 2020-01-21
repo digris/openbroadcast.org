@@ -1,35 +1,43 @@
 .menubar {
   display: flex;
+
   &__primary {
     flex-grow: 1;
     margin: 0;
     padding: 0;
   }
+
   &__secondary {
     margin: 0;
     padding: 0;
   }
+
   > ul {
     display: flex;
+
     > li {
-      color: #666666;
+      color: #666;
       text-transform: uppercase;
       text-decoration: none;
       display: inline-block;
+
       > a {
         color: inherit;
         text-decoration: inherit;
         letter-spacing: 1px;
-        border-right: 1px solid #999999;
+        border-right: 1px solid #999;
         display: inline-block;
         padding: 0 7px;
       }
+
       &.selected {
         color: $secondary-color;
       }
+
       &:hover {
         color: $secondary-color;
       }
+
       &:last-child {
         > a {
           border-right: 0;

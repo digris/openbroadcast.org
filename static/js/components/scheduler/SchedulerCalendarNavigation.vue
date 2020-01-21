@@ -1,100 +1,103 @@
 <script>
 
-    const DEBUG = false;
-    import {backgroundColors} from './constants';
-    import ColorChooser from '../../components/ui/ColorChooser.vue';
+import { backgroundColors } from './constants';
+import ColorChooser from '../ui/ColorChooser.vue';
 
-    export default {
-        name: 'SchedulerCalendarNavigation',
-        components: {
-            'color-chooser': ColorChooser,
-        },
-        props: {
-            settings: {
-                type: Object,
-                required: false,
-                default: function () {
-                    return {};
-                },
-            },
-            isFullscreen: {
-                type: Boolean,
-                default: false,
-            },
-        },
-        data() {
-            return {
-                emissionColors: backgroundColors,
-            }
-        },
-        computed: {
-            numDays() {
-                if(this.settings && this.settings.numDays) {
-                    return this.settings.numDays;
-                }
-                return null;
-            },
-            snapMinutes() {
-                if(this.settings && this.settings.snapMinutes) {
-                    return this.settings.snapMinutes;
-                }
-                return null;
-            },
-            emissionColor() {
-                if(this.settings && this.settings.emissionColor != undefined) {
-                    return this.settings.emissionColor;
-                }
-                return null;
-            }
-        },
-        methods: {
+const DEBUG = false;
 
-        }
-    }
+export default {
+  name: 'SchedulerCalendarNavigation',
+  components: {
+    'color-chooser': ColorChooser,
+  },
+  props: {
+    settings: {
+      type: Object,
+      required: false,
+      default() {
+        return {};
+      },
+    },
+    isFullscreen: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      emissionColors: backgroundColors,
+    };
+  },
+  computed: {
+    numDays() {
+      if (this.settings && this.settings.numDays) {
+        return this.settings.numDays;
+      }
+      return null;
+    },
+    snapMinutes() {
+      if (this.settings && this.settings.snapMinutes) {
+        return this.settings.snapMinutes;
+      }
+      return null;
+    },
+    emissionColor() {
+      if (this.settings && this.settings.emissionColor != undefined) {
+        return this.settings.emissionColor;
+      }
+      return null;
+    },
+  },
+  methods: {
+
+  },
+};
 </script>
 <style lang="scss" scoped>
     .calendar-navigation {
+      display: flex;
+
+      .action {
+        cursor: pointer;
+        background: white;
+        padding: 1px 8px;
+        display: inline-flex;
+        border: 1px solid #dadada;
+
+        &:hover {
+          background: #63c;
+          border-color: #63c;
+          border-radius: 2px;
+          color: white;
+        }
+
+        &.is-current {
+          border-color: #63c;
+        }
+      }
+
+      &__center {
+        flex-grow: 1;
         display: flex;
+        justify-content: center;
 
         .action {
-            cursor: pointer;
-            background: white;
-            padding: 1px 8px;
-            display: inline-flex;
-            border: 1px solid #dadada;
-            &:hover {
-                background: #6633CC;
-                border-color: #6633CC;
-                border-radius: 2px;
-                color: white;
-            }
-            &.is-current {
-                border-color: #6633CC;
-            }
+          margin-left: 2px;
+          margin-right: 2px;
         }
+      }
 
-        &__center {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            .action {
-                margin-left: 2px;
-                margin-right: 2px;
-            }
+      &__left {
+        .action {
+          margin-right: 4px;
         }
+      }
 
-        &__left {
-            .action {
-                margin-right: 4px;
-            }
+      &__right {
+        .action {
+          margin-left: 4px;
         }
-
-        &__right {
-            .action {
-                margin-left: 4px;
-            }
-        }
-
+      }
     }
 </style>
 

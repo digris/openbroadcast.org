@@ -1,51 +1,51 @@
 <script>
-    export default {
-        name: 'InputContainer',
-        props: {
-            id: {
-                type: String,
-                required: true,
-            },
-            required: {
-                type: Boolean,
-                required: false,
-                default: false,
-            },
-            label: {
-                type: String,
-                required: false,
-                default: null,
-            },
-            hideLabel: {
-                type: String,
-                required: false,
-                default: null,
-            },
-            errors: {
-                type: Array,
-                required: false,
-                default: function () {
-                    return [];
-                },
-            },
-            help: {
-                type: String,
-                required: false,
-                default: null,
-            },
-            isCheckbox: {
-                type: Boolean,
-                required: false,
-                default: false,
-            },
-        },
-        computed: {
-            hasErrors: function () {
-                return (this.errors && this.errors.length);
-            }
-        },
-        methods: {},
-    }
+export default {
+  name: 'InputContainer',
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+    required: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    label: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    hideLabel: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    errors: {
+      type: Array,
+      required: false,
+      default() {
+        return [];
+      },
+    },
+    help: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    isCheckbox: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+  computed: {
+    hasErrors() {
+      return (this.errors && this.errors.length);
+    },
+  },
+  methods: {},
+};
 </script>
 <template>
   <div
@@ -93,7 +93,7 @@
     @import '../../../style/components/form';
 
     .input-container {
-        @include input-container-grid;
+      @include input-container-grid;
     }
 
 </style>

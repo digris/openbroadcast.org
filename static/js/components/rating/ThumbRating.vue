@@ -1,126 +1,126 @@
 <script>
 
-  const DEBUG = false;
+const DEBUG = false;
 
-  export default {
-    name: 'ThumbRating',
-    props: {
-        objCt: {
-            type: String,
-            required: true,
-        },
-        objUuid: {
-            type: String,
-            required: true,
-        },
+export default {
+  name: 'ThumbRating',
+  props: {
+    objCt: {
+      type: String,
+      required: true,
     },
-    data() {
-      return {
+    objUuid: {
+      type: String,
+      required: true,
+    },
+  },
+  data() {
+    return {
 
+    };
+  },
+  computed: {
+    key() {
+      if (!this.media) {
+        return null;
       }
+      return `${this.objCt}:${this.objUuid}`;
     },
-    computed: {
-      key() {
-        if (!this.media) {
-          return null;
-        }
-        return `${this.objCt}:${this.objUuid}`
-      },
-      votes() {
-        if (!this.key) {
-          return null;
-        }
+    votes() {
+      if (!this.key) {
+        return null;
+      }
 
-        return [];
+      return [];
 
 
-        // const votes = this.$store.getters['rating/votes'][this.key];
-        //
-        // if (typeof votes === 'undefined') {
-        //   this.$store.dispatch('rating/get_votes', this.key);
-        // }
-        //
-        // return votes;
-      },
+      // const votes = this.$store.getters['rating/votes'][this.key];
+      //
+      // if (typeof votes === 'undefined') {
+      //   this.$store.dispatch('rating/get_votes', this.key);
+      // }
+      //
+      // return votes;
     },
-    mounted: function () {
-      // const key = `${this.obj_ct}:${this.media.id}`;
-      // this.$store.dispatch('rating/get_votes', {obj_ct: 'alibrary.media', obj_pk: this.media.id});
+  },
+  mounted() {
+    // const key = `${this.obj_ct}:${this.media.id}`;
+    // this.$store.dispatch('rating/get_votes', {obj_ct: 'alibrary.media', obj_pk: this.media.id});
+  },
+  methods: {
+    vote(value) {
+      if (!this.key) {
+        return null;
+      }
+      if (DEBUG) console.debug('vote', value);
+      // this.$store.dispatch('rating/update_vote', {key: this.key, value: value});
     },
-    methods: {
-      vote: function (value) {
-        if (!this.key) {
-          return null;
-        }
-        if (DEBUG) console.debug('vote', value);
-        // this.$store.dispatch('rating/update_vote', {key: this.key, value: value});
-      },
-    }
-  }
+  },
+};
 </script>
 <style lang="scss" scoped>
     .thumb-rating {
-        height: 60px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
+
     .vote {
-        align-self: center;
-        cursor: pointer;
-        position: relative;
-        display: flex;
-        flex-direction: row;
+      align-self: center;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      flex-direction: row;
 
+      svg {
+        margin: 0 20px;
+
+        rect,
+        polyline {
+          transition: fill-opacity 200ms;
+        }
+      }
+
+      &:hover {
         svg {
-            margin: 0 20px;
-
-            rect,
-            polyline {
-                transition: fill-opacity 200ms;
-            }
+          rect,
+          polyline {
+            fill-opacity: 0.4;
+          }
         }
+      }
 
-        &:hover {
-            svg {
-                rect,
-                polyline {
-                    fill-opacity: 0.4;
-                }
-            }
+      &--down {
+        svg {
+          transform: rotateZ(180deg);
+          top: 12px;
+          position: relative;
         }
+      }
 
-        &--down {
-            svg {
-                transform: rotateZ(180deg);
-                top: 12px;
-                position: relative;
-            }
-        }
+      &__value {
+        font-size: 105%;
+        line-height: 42px;
+      }
 
+      &--up & {
         &__value {
-            font-size: 105%;
-            line-height: 42px;
+          margin-right: 10px;
         }
+      }
 
-        &--up & {
-            &__value {
-                margin-right: 10px;
-            }
+      &--down & {
+        &__value {
+          margin-left: 10px;
         }
-
-        &--down & {
-            &__value {
-                margin-left: 10px;
-            }
-        }
-
+      }
     }
 
     .separator {
-        width: 2px;
-        height: 60px;
-        margin: 0 20px;
+      width: 2px;
+      height: 60px;
+      margin: 0 20px;
     }
 
 </style>

@@ -12,7 +12,9 @@ module.exports = {
   rules: {
     // camelcase: [2, { properties: 'always' }],
     'camelcase': 'off',
+    'no-undef': 'off',
     'no-console': 'off',
+    'no-param-reassign': 'off',
     // 'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
   },

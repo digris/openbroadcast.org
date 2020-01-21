@@ -1,98 +1,103 @@
 <script>
 
-    const DEBUG = true;
-    import Visual from '../ui/Visual.vue';
-    import EmissionHistory from '../EmissionHistory/EmissionHistory.vue';
-    import ObjectActions from '../../components/ObjectActions/ObjectActions.vue';
+import Visual from '../ui/Visual.vue';
+import EmissionHistory from '../EmissionHistory/EmissionHistory.vue';
+import ObjectActions from '../ObjectActions/ObjectActions.vue';
 
-    export default {
-        name: 'SchedulerClipboardItem',
-        components: {
-            'emission-history': EmissionHistory,
-            'visual': Visual,
-            'object-actions': ObjectActions,
-        },
-        props: {
-            item: {
-                type: Object,
-                required: true,
-            },
-        },
-        computed: {
-            duration() {
-                if(!this.item) {
-                    return null;
-                }
-                return new Date(this.item.duration).toISOString().substr(11, 8);
-            }
-        },
-        // data() {
-        //
-        // },
-        methods: {}
-    }
+const DEBUG = true;
+
+export default {
+  name: 'SchedulerClipboardItem',
+  components: {
+    'emission-history': EmissionHistory,
+    visual: Visual,
+    'object-actions': ObjectActions,
+  },
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    duration() {
+      if (!this.item) {
+        return null;
+      }
+      return new Date(this.item.duration).toISOString().substr(11, 8);
+    },
+  },
+  // data() {
+  //
+  // },
+  methods: {},
+};
 </script>
 <style lang="scss" scoped>
     .clipboard-item {
-        background: #fff;
-        display: flex;
-        cursor: pointer;
+      background: #fff;
+      display: flex;
+      cursor: pointer;
+      position: relative;
+
+      &:hover {
+        background: rgba(126, 235, 157, 0.85);
+        z-index: 999;
+      }
+
+      &__visual {
+        width: 64px;
         position: relative;
 
+        img {
+          background: deepskyblue;
+        }
+
+        figure {
+          height: 64px;
+        }
+
+        .object-actions {
+          top: 0;
+          position: absolute;
+        }
+      }
+
+      &__body {
+        flex-grow: 1;
+        padding: 0 0 2px 8px;
+      }
+
+      &__header {
+        display: flex;
+
         &:hover {
-            background: rgba(126, 235, 157, 0.85);
-            z-index: 999;
+          z-index: 91;
         }
 
-        &__visual {
-            width: 64px;
-            position: relative;
-            img {
-                background: deepskyblue;
-            }
-            figure {
-                height: 64px;
-            }
-            .object-actions {
-                top: 0;
-                position: absolute;
-            }
+        .title {
+          color: inherit;
         }
 
-        &__body {
-            flex-grow: 1;
-            padding: 0 0 2px 8px;
+        .emission-history {
+          flex-grow: 1;
+          z-index: 92;
         }
+      }
 
-        &__header {
-            display: flex;
+      &__description {
+        opacity: 0.7;
+      }
 
-            &:hover {
-                z-index: 91;
-            }
+      &__secondary-actions {
+        position: absolute;
+        bottom: 1px;
+        right: 3px;
 
-            .title {
-                color: inherit;
-            }
-
-            .emission-history {
-                flex-grow: 1;
-                z-index: 92;
-            }
+        a {
+          color: inherit;
         }
-
-        &__description {
-            opacity: .7;
-        }
-
-        &__secondary-actions {
-            position: absolute;
-            bottom: 1px;
-            right: 3px;
-            a {
-                color: inherit;
-            }
-        }
+      }
     }
 </style>
 

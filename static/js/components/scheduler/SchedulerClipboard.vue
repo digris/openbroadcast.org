@@ -1,111 +1,114 @@
 <script>
 
-    const DEBUG = true;
-    import {Drag, Drop} from 'vue-drag-drop';
-    import SchedulerClipboardItem from './SchedulerClipboardItem.vue';
+import { Drag, Drop } from 'vue-drag-drop';
+import SchedulerClipboardItem from './SchedulerClipboardItem.vue';
 
-    export default {
-        name: 'SchedulerClipboard',
-        components: {
-            'drag': Drag,
-            'drop': Drop,
-            'clipboard-item': SchedulerClipboardItem,
-        },
-        props: {
-            // emission: Object,
-        },
-        data() {
-            return {
-                dropActive: false,
-                items: []
-            }
-        },
-        computed: {
-            clipboardItems() {
-                return this.$store.getters['scheduler/clipboard'];
-            },
-        },
-        methods: {
-            dragenter: function (transferData, e) {
-                if (DEBUG) console.debug('dragenter', transferData, e);
-                this.dropActive = true;
-            },
-            dragleave: function (transferData, e) {
-                if (DEBUG) console.debug('dragleave', transferData, e);
-                this.dropActive = false;
-            },
-            drop: function (transferData, e) {
-                if (DEBUG) console.debug('drop', transferData, e);
-                this.dropActive = false;
-                this.$store.dispatch('scheduler/addToClipboard', transferData.co);
-            },
-            clearClipboard: function () {
-                this.$store.dispatch('scheduler/clearClipboard');
-            },
-            deleteItem: function (uuid) {
-                this.$store.dispatch('scheduler/removeFromClipboard', uuid);
-            },
-        }
-    }
+const DEBUG = true;
+
+export default {
+  name: 'SchedulerClipboard',
+  components: {
+    drag: Drag,
+    drop: Drop,
+    'clipboard-item': SchedulerClipboardItem,
+  },
+  props: {
+    // emission: Object,
+  },
+  data() {
+    return {
+      dropActive: false,
+      items: [],
+    };
+  },
+  computed: {
+    clipboardItems() {
+      return this.$store.getters['scheduler/clipboard'];
+    },
+  },
+  methods: {
+    dragenter(transferData, e) {
+      if (DEBUG) console.debug('dragenter', transferData, e);
+      this.dropActive = true;
+    },
+    dragleave(transferData, e) {
+      if (DEBUG) console.debug('dragleave', transferData, e);
+      this.dropActive = false;
+    },
+    drop(transferData, e) {
+      if (DEBUG) console.debug('drop', transferData, e);
+      this.dropActive = false;
+      this.$store.dispatch('scheduler/addToClipboard', transferData.co);
+    },
+    clearClipboard() {
+      this.$store.dispatch('scheduler/clearClipboard');
+    },
+    deleteItem(uuid) {
+      this.$store.dispatch('scheduler/removeFromClipboard', uuid);
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
     .clipboard {
-        // background: limegreen;
+      // background: limegreen;
 
-        /*> div {*/
-        /*background: orangered;*/
-        /*}*/
+      /* > div { */
 
-        &__dropzone {
-            height: 40px;
-            background: white;
-            pointer-events: none;
+      /* background: orangered; */
 
-            &--is-active {
-                // height: 100px;
-                background: greenyellow;
-            }
+      /* } */
+
+      &__dropzone {
+        height: 40px;
+        background: white;
+        pointer-events: none;
+
+        &--is-active {
+          // height: 100px;
+          background: greenyellow;
         }
+      }
 
-        &__actions {
+      &__actions {
+        padding: 8px 0;
+        display: flex;
 
-            padding: 8px 0;
-            display: flex;
+        .action {
+          flex-grow: 1;
+          justify-content: center;
+          cursor: pointer;
+          background: white;
+          padding: 1px 8px;
+          display: inline-flex;
+          border: 1px solid #dadada;
 
-            .action {
-                flex-grow: 1;
-                justify-content: center;
-                cursor: pointer;
-                background: white;
-                padding: 1px 8px;
-                display: inline-flex;
-                border: 1px solid #dadada;
-                &:hover {
-                    background: #6633CC;
-                    border-color: #6633CC;
-                    border-radius: 2px;
-                    color: white;
-                }
-            }
-
+          &:hover {
+            background: #63c;
+            border-color: #63c;
+            border-radius: 2px;
+            color: white;
+          }
         }
+      }
 
-        &__items {
-
-            .clipboard-item {
-                margin-bottom: 4px;
-            }
+      &__items {
+        .clipboard-item {
+          margin-bottom: 4px;
         }
+      }
     }
-
 
     .items-leave-active {
       transition: opacity 600ms;
     }
+
     .items-enter-active {
       transition: opacity 600ms;
     }
-    .items-enter, .items-leave-to {
+
+    .items-enter,
+    .items-leave-to {
       opacity: 0;
     }
 </style>

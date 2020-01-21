@@ -1,40 +1,40 @@
 <script>
 
-    // NOTE:
-    // this is the vue-pendant of django template 'templates/layout_base.html'
-    // vue-version is used to handle apps with sidebar
+// NOTE:
+// this is the vue-pendant of django template 'templates/layout_base.html'
+// vue-version is used to handle apps with sidebar
 
-    const DEBUG = true;
+const DEBUG = true;
 
-    export default {
-        name: 'LayoutBase',
-        props: {
-            fullscreen: {
-                type: Boolean,
-                default: false,
-            },
-        },
-        watch: {
-            fullscreen: function (a, n) {
-                if (DEBUG) console.debug('fullscreen', this.fullscreen);
-                if(this.fullscreen) {
-                    this.enterFullscreen();
-                } else {
-                    this.exitFullscreen();
-                }
-            }
-        },
-        methods: {
-            enterFullscreen: function () {
-                if (DEBUG) console.debug('enterFullscreen');
-                document.body.classList.add('is-fullscreen');
-            },
-            exitFullscreen: function () {
-                if (DEBUG) console.debug('exitFullscreen');
-                document.body.classList.remove('is-fullscreen');
-            },
-        }
-    }
+export default {
+  name: 'LayoutBase',
+  props: {
+    fullscreen: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  watch: {
+    fullscreen(a, n) {
+      if (DEBUG) console.debug('fullscreen', this.fullscreen);
+      if (this.fullscreen) {
+        this.enterFullscreen();
+      } else {
+        this.exitFullscreen();
+      }
+    },
+  },
+  methods: {
+    enterFullscreen() {
+      if (DEBUG) console.debug('enterFullscreen');
+      document.body.classList.add('is-fullscreen');
+    },
+    exitFullscreen() {
+      if (DEBUG) console.debug('exitFullscreen');
+      document.body.classList.remove('is-fullscreen');
+    },
+  },
+};
 </script>
 
 <template>

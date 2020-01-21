@@ -3,25 +3,28 @@
 const DEBUG = false;
 
 export default {
-    name: 'Play',
-}
+  name: 'Play',
+};
 </script>
 <style lang="scss" scoped>
-   .play-icon-container {
-       transition: transform 100ms;
-       cursor: pointer;
-       &:hover {
-           transform: scale(1.1);
-           svg {
-               circle {
-                   stroke: #00bb73;
-               }
-               polygon {
-                   fill: #00bb73;
-               }
-           }
-       }
-   }
+    .play-icon-container {
+      transition: transform 100ms;
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.1);
+
+        svg {
+          circle {
+            stroke: #00bb73;
+          }
+
+          polygon {
+            fill: #00bb73;
+          }
+        }
+      }
+    }
 </style>
 <template>
   <div

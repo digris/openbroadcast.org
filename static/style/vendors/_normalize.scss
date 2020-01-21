@@ -90,7 +90,7 @@ hr {
  */
 
 pre {
-  font-family: monospace, monospace; /* 1 */
+  font-family: monospace; /* 1 */
   font-size: 1em; /* 2 */
 }
 
@@ -129,21 +129,14 @@ abbr[title] {
 }
 
 /**
- * Prevent the duplicate application of `bolder` by the next rule in Safari 6.
+ * 1. Prevent the duplicate application of `bolder` by the next rule in Safari 6.
+ # 2. Add the correct font weight in Chrome, Edge, and Safari.
  */
 
 b,
 strong {
-  font-weight: inherit;
-}
-
-/**
- * Add the correct font weight in Chrome, Edge, and Safari.
- */
-
-b,
-strong {
-  font-weight: bolder;
+  font-weight: inherit; /* 1 */
+  font-weight: bolder; /* 2 */
 }
 
 /**
@@ -154,7 +147,7 @@ strong {
 code,
 kbd,
 samp {
-  font-family: monospace, monospace; /* 1 */
+  font-family: monospace; /* 1 */
   font-size: 1em; /* 2 */
 }
 
@@ -329,7 +322,7 @@ button:-moz-focusring,
 fieldset {
   border: 0;
   margin: 0;
-  padding: .3em 0;
+  padding: 0.3em 0;
 }
 
 /**

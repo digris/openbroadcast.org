@@ -17,14 +17,12 @@ body {
   padding: 0;
 }
 
-
 body.base {
 
   // background: var(--primary-color);
   // background: v(primary-color);
 
   &.is-fullscreen {
-
     .topbar {
       display: none;
     }
@@ -36,20 +34,14 @@ body.base {
     .main {
       height: 100%;
       padding-top: 0;
-      padding-bottom:0;
+      padding-bottom: 0;
       max-width: calc(100vw - 40px);
       width: 100%;
       margin: 0 auto;
       min-height: 100vh;
     }
-
   }
-}
 
-
-
-
-body.base {
   main {
     height: 100%;
     // padding-top: main navigation height + offset
@@ -63,25 +55,27 @@ body.base {
     .app-container {
       flex-grow: 1;
     }
+
     > .heading {
       display: grid;
       grid-template-columns: calc(100% - 260px - 24px) 260px;
       grid-column-gap: 24px;
       margin-bottom: 24px;
     }
+
     > .content {
       display: grid;
       grid-template-columns: calc(100% - 260px - 24px) 260px;
       grid-column-gap: 24px;
+
       .content__primary {
         display: flex;
         flex-direction: column;
       }
     }
   }
+
   footer {
     background: black;
   }
 }
-
-

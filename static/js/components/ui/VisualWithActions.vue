@@ -1,240 +1,235 @@
 <script>
 
-    import settings from '../../settings';
-    import LazyImage from './LazyImage.vue';
-    import Lightbox from './Lightbox.vue';
-    import Play from './VisualWithActions/Play.vue';
-    import ContextMenu from './VisualWithActions/ContextMenu.vue';
+import settings from '../../settings';
+import LazyImage from './LazyImage.vue';
+import Lightbox from './Lightbox.vue';
+import Play from './VisualWithActions/Play.vue';
+import ContextMenu from './VisualWithActions/ContextMenu.vue';
 
-    const DEBUG = true;
+const DEBUG = true;
 
-    export default {
-        name: 'VisualWithActions',
-        components: {
-            'lightbox': Lightbox,
-            'lazy-image': LazyImage,
-            'play': Play,
-            'context-menu': ContextMenu,
-        },
-        props: {
-            ct: {
-                type: String,
-                required: true,
-            },
-            uuid: {
-                type: String,
-                required: true,
-            },
-            imageUrl: {
-                type: String,
-                required: false,
-                default: null,
-            },
-            largeImageUrl: {
-                type: String,
-                required: false,
-                default: null,
-            },
-            actions: {
-                type: Array,
-                required: false,
-                default: function () {
-                    return [];
-                },
-            },
-        },
-        data() {
-            return {
-                placeholderImage: settings.PLACEHOLDER_IMAGE,
-                isHover: false,
-                lightboxVisible: false,
-                secondaryActionsVisible: false,
-            }
-        },
-        computed: {
-            canPlay: function () {
-                return this.actions.findIndex((action) => action.key === 'play') > -1;
-            },
-            primaryAction: function () {
-                const index = this.actions.findIndex((action) => action.key === 'play');
-                if (index < 0) {
-                    return null;
-                }
-                return this.actions[index];
-                // return this.actions.findIndex((action) => action.key === 'play') > -1;
-            },
-            secondaryActions: function () {
-                // play is considered to be the primary / first action.
-                // so return all actions except play.
-                return this.actions.filter(action => action.key !== 'play');
-            }
-        },
-        methods: {
-            onMouseOver: function () {
-                this.isHover = true;
-            },
-            onMouseLeave: function () {
-                this.isHover = false;
-                this.hideSecondaryActions();
-            },
-            toggleSecondaryActions: function () {
-                if (this.secondaryActionsVisible) {
-                    this.hideSecondaryActions();
-                } else {
-                    this.showSecondaryActions();
-                }
-            },
-            showSecondaryActions: function () {
-                this.secondaryActionsVisible = true;
-            },
-            hideSecondaryActions: function () {
-                this.secondaryActionsVisible = false;
-            },
-            showLightbox: function () {
-                this.lightboxVisible = true;
-            },
-            hideLightbox: function () {
-                this.lightboxVisible = false;
-            },
-            handleAction: function (action) {
-                this.hideSecondaryActions();
-                console.debug('handleAction', action);
+export default {
+  name: 'VisualWithActions',
+  components: {
+    lightbox: Lightbox,
+    'lazy-image': LazyImage,
+    play: Play,
+    'context-menu': ContextMenu,
+  },
+  props: {
+    ct: {
+      type: String,
+      required: true,
+    },
+    uuid: {
+      type: String,
+      required: true,
+    },
+    imageUrl: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    largeImageUrl: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    actions: {
+      type: Array,
+      required: false,
+      default() {
+        return [];
+      },
+    },
+  },
+  data() {
+    return {
+      placeholderImage: settings.PLACEHOLDER_IMAGE,
+      isHover: false,
+      lightboxVisible: false,
+      secondaryActionsVisible: false,
+    };
+  },
+  computed: {
+    canPlay() {
+      return this.actions.findIndex((action) => action.key === 'play') > -1;
+    },
+    primaryAction() {
+      const index = this.actions.findIndex((action) => action.key === 'play');
+      if (index < 0) {
+        return null;
+      }
+      return this.actions[index];
+      // return this.actions.findIndex((action) => action.key === 'play') > -1;
+    },
+    secondaryActions() {
+      // play is considered to be the primary / first action.
+      // so return all actions except play.
+      return this.actions.filter((action) => action.key !== 'play');
+    },
+  },
+  methods: {
+    onMouseOver() {
+      this.isHover = true;
+    },
+    onMouseLeave() {
+      this.isHover = false;
+      this.hideSecondaryActions();
+    },
+    toggleSecondaryActions() {
+      if (this.secondaryActionsVisible) {
+        this.hideSecondaryActions();
+      } else {
+        this.showSecondaryActions();
+      }
+    },
+    showSecondaryActions() {
+      this.secondaryActionsVisible = true;
+    },
+    hideSecondaryActions() {
+      this.secondaryActionsVisible = false;
+    },
+    showLightbox() {
+      this.lightboxVisible = true;
+    },
+    hideLightbox() {
+      this.lightboxVisible = false;
+    },
+    handleAction(action) {
+      this.hideSecondaryActions();
+      console.debug('handleAction', action);
 
-                // just redirect to url if present
-                if (action.url) {
-                    document.location.href = action.url;
-                    return;
-                }
+      // just redirect to url if present
+      if (action.url) {
+        document.location.href = action.url;
+        return;
+      }
 
-                // TODO: implement in a modular way...
-                if (action.key === 'play') {
-                    this.playerControls({
-                        do: 'load',
-                        items: [{
-                            ct: this.ct,
-                            uuid: this.uuid,
-                        }]
-                    });
-                }
-            },
-            playerControls: function (action) {
-                const _e = new CustomEvent('player:controls', {detail: action});
-                window.dispatchEvent(_e);
-            }
-        },
-    }
+      // TODO: implement in a modular way...
+      if (action.key === 'play') {
+        this.playerControls({
+          do: 'load',
+          items: [{
+            ct: this.ct,
+            uuid: this.uuid,
+          }],
+        });
+      }
+    },
+    playerControls(action) {
+      const _e = new CustomEvent('player:controls', { detail: action });
+      window.dispatchEvent(_e);
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
     .visual-with-actions {
+      margin: 0;
+      position: relative;
 
-        margin: 0;
-        position: relative;
+      .mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        opacity: 0;
+        transition: opacity 200ms;
 
-        .mask {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            opacity: .0;
-            transition: opacity 200ms;
+        &--visible {
+          opacity: 0.65;
+        }
+      }
 
-            &--visible {
-                opacity: .65;
-            }
+      .panel {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-rows: 30% auto 30%;
+
+        &__middle {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
 
-        .panel {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: grid;
-            grid-template-rows: 30% auto 30%;
+        &__bottom {
+          display: flex;
+          align-items: flex-end;
+        }
+      }
 
-            &__middle {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
+      .actions {
+        display: grid;
+        grid-template-columns: 30% auto 30%;
 
-            &__bottom {
-                display: flex;
-                align-items: flex-end;
-            }
-
+        &__rating,
+        &__play,
+        &__secondary {
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
-        .actions {
-            display: grid;
-            grid-template-columns: 30% auto 30%;
-
-            &__rating,
-            &__play,
-            &__secondary {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            &__rating {
-                // background: red;
-            }
-
-            &__play {
-                // background: deepskyblue;
-            }
-
-            &__secondary {
-                position: relative;
-
-                .toggle {
-                    cursor: pointer;
-
-                    > i {
-                        color: white;
-                        font-size: 32px;
-                        line-height: 32px;
-                        transition: transform 200ms;
-                    }
-
-                    //&:hover {
-                    //    > i {
-                    //        color: red;
-                    //    }
-                    //}
-                    &--active {
-                        > i {
-                            transform: rotate(-90deg);
-                        }
-                    }
-                }
-
-                .context-menu {
-                    margin-top: 48px;
-                    margin-right: 4px;
-                    background: white;
-                }
-
-
-            }
+        &__rating {
+          // background: red;
         }
 
-        .thumbnails {
-            margin: 0 0 0 6px;
-
-            .thumbnail {
-                cursor: pointer;
-
-                img {
-                    width: 32px;
-                    height: 32px;
-                }
-            }
+        &__play {
+          // background: deepskyblue;
         }
 
+        &__secondary {
+          position: relative;
+
+          .toggle {
+            cursor: pointer;
+
+            > i {
+              color: white;
+              font-size: 32px;
+              line-height: 32px;
+              transition: transform 200ms;
+            }
+
+            //&:hover {
+            //    > i {
+            //        color: red;
+            //    }
+            //}
+            &--active {
+              > i {
+                transform: rotate(-90deg);
+              }
+            }
+          }
+
+          .context-menu {
+            margin-top: 48px;
+            margin-right: 4px;
+            background: white;
+          }
+        }
+      }
+
+      .thumbnails {
+        margin: 0 0 0 6px;
+
+        .thumbnail {
+          cursor: pointer;
+
+          img {
+            width: 32px;
+            height: 32px;
+          }
+        }
+      }
     }
 
 </style>

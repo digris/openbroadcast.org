@@ -1,177 +1,181 @@
 <script src="./player-app.js"></script>
 
 <style lang="scss" scoped>
-    @import '../../../sass/site/variables';
+  @import '../../../sass/site/variables';
 
-    .player-app {
-        background: white;
+  .player-app {
+    background: white;
+  }
+
+  .player-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    header {
+      background: #fff;
     }
 
-    .player-container {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-
-        header {
-            background: #fff;
-        }
-
-        main {
-            flex: 1;
-            overflow: auto;
-        }
-
-        footer {
-            height: 32px;
-        }
-
+    main {
+      flex: 1;
+      overflow: auto;
     }
 
-    .player-current-item {
-        min-height: 132px;
-        .primary-content {
-            display: flex;
-            padding: 10px;
-            .meta {
-                flex-grow: 1;
-            }
-            .visual {
-                img {
-                    width: 80px;
-                    height: 80px;
-                }
-            }
+    footer {
+      height: 32px;
+    }
+  }
+
+  .player-current-item {
+    min-height: 132px;
+
+    .primary-content {
+      display: flex;
+      padding: 10px;
+
+      .meta {
+        flex-grow: 1;
+      }
+
+      .visual {
+        img {
+          width: 80px;
+          height: 80px;
         }
-        .plahead {
-            height: 30px;
-            img {
-                height: 32px;
-                width: 100%;
-            }
-        }
+      }
     }
 
-    .player-current-item-loading {
-        min-height: 112px;
-        background: $primary-color-b;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 150%;
-        font-weight: 300;
+    .plahead {
+      height: 30px;
 
+      img {
+        height: 32px;
+        width: 100%;
+      }
     }
+  }
 
-    .player-controls {
-        //border-top: 1px solid black;
-        padding: 4px 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        .button-panel .fa {
-            font-size: 20px;
-            color: #a5a5a5;
-            margin: 0 4px;
-        }
+  .player-current-item-loading {
+    min-height: 112px;
+    background: $primary-color-b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 150%;
+    font-weight: 300;
+  }
+
+  .player-controls {
+    //border-top: 1px solid black;
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .button-panel .fa {
+      font-size: 20px;
+      color: #a5a5a5;
+      margin: 0 4px;
     }
+  }
 
-    .player-content {
-        position: relative;
-        //border-top: 1px solid black;
-        //border-bottom: 1px solid black;
-        flex-direction: column; /* stacks them vertically */
-        height: 100%; /* needs to take the parents height, alternative: body {display: flex} */
+  .player-content {
+    position: relative;
+    //border-top: 1px solid black;
+    //border-bottom: 1px solid black;
+    flex-direction: column; /* stacks them vertically */
+    height: 100%; /* needs to take the parents height, alternative: body {display: flex} */
 
+    .item-to-play {
+      background: #fff;
+      margin: 0 0 10px;
 
-        .item-to-play {
-            background: #fff;
-            margin: 0 0 10px;
-
-            .header {
-                padding: 2px 2px 2px 5px;
-                background: #fff;
-                border-top: 1px solid #eaeaea;
-                border-bottom: 1px solid #eaeaea;
-            }
-        }
-
+      .header {
+        padding: 2px 2px 2px 5px;
+        background: #fff;
+        border-top: 1px solid #eaeaea;
+        border-bottom: 1px solid #eaeaea;
+      }
     }
+  }
 
-    /*
+  /*
     .player-footer {
         border-top: 1px solid #eaeaea;
         padding: 2px 2px 0 5px;
     }
     */
 
-    .autoplay-container {
-        background: $primary-color-b;
-        position: fixed;
-        top: 0;
-        height: 100%;
-        width: 100%;
-        z-index: 99;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        .autoplay-panel {
-            cursor: pointer;
-            width: 240px;
-            height: 240px;
-            border-radius: 120px;
-            background: white;
-            /*flex-grow: 1;*/
-            /*flex-shrink: 1;*/
-            flex-basis: auto;
-            color: $primary-color-b;;
-            text-align: center;
-            align-items: center;
-            display: flex;
-            justify-content: center;
-            flex-direction: row;
-        }
-        .autoplay-info {
-            display: block;
+  .autoplay-container {
+    background: $primary-color-b;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 
-            p {
-                text-align: center;
-                max-width: 320px;
-                padding: 0;
-                margin-top: 20px;
-                color: white;
-            }
+    .autoplay-panel {
+      cursor: pointer;
+      width: 240px;
+      height: 240px;
+      border-radius: 120px;
+      background: white;
 
-        }
+      /* flex-grow: 1; */
+
+      /* flex-shrink: 1; */
+      flex-basis: auto;
+      color: $primary-color-b;
+      text-align: center;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
     }
 
-    .loading-container {
-        background: rgba(255, 255, 255, 0.9);
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: 100%;
-        z-index: 99;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: row;
+    .autoplay-info {
+      display: block;
 
+      p {
+        text-align: center;
+        max-width: 320px;
+        padding: 0;
+        margin-top: 20px;
+        color: white;
+      }
     }
+  }
 
-    .fade-enter-active {
-        transition: all .05s;
-    }
+  .loading-container {
+    background: rgba(255, 255, 255, 0.9);
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  }
 
-    .fade-leave-active {
-        transition: all .3s;
-    }
+  .fade-enter-active {
+    transition: all 0.05s;
+  }
 
-    .fade-enter, .fade-leave-to {
-        opacity: 0;
-    }
+  .fade-leave-active {
+    transition: all 0.3s;
+  }
 
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
 
 </style>
 

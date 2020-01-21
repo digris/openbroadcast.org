@@ -4,6 +4,7 @@
 
 footer {
   background: #000;
+
   .footer {
     max-width: $g-content-max-width;
     width: 100%;
@@ -12,16 +13,21 @@ footer {
     color: #cdcdcd;
 
     &__primary {
-
       display: flex;
 
-      h4, p, dl, a {
+      h4,
+      p,
+      dl,
+      a {
         color: inherit;
       }
+
       h4 {
         margin-bottom: 12px;
       }
-      p, dl {
+
+      p,
+      dl {
         margin: 0;
       }
     }
@@ -30,19 +36,19 @@ footer {
       padding-right: 64px;
     }
 
-    &__links {
-
-    }
+    //&__links {
+    //
+    //}
 
     &__appendix {
       p {
-          text-align: right;
-          color: inherit;
+        text-align: right;
+        color: inherit;
       }
+
       a {
         color: #fff;
       }
     }
-
   }
 }

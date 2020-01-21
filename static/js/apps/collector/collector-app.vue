@@ -1,256 +1,254 @@
 <script src="./collector-app.js"></script>
 
 <style lang="scss" scoped>
-    @import '../../../sass/site/variables';
+  @import '../../../sass/site/variables';
 
-    // custom scroll-bar
-    @mixin custom-scroll-bar() {
-        &::-webkit-scrollbar {
-            border-radius: 0;
-            height: 10px;
-            width: 4px;
+  // custom scroll-bar
+  @mixin custom-scroll-bar() {
+    &::-webkit-scrollbar {
+      border-radius: 0;
+      height: 10px;
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #fff;
+      border-radius: 0;
+    }
+
+    &::-webkit-scrollbar-track {
+      border-radius: 0;
+    }
+  }
+
+  .collector-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .content-container {
+      flex: 1;
+      display: flex;
+    }
+  }
+
+  .batch-collect {
+    padding: 20px 6px;
+
+    p {
+      color: #fff;
+    }
+  }
+
+  .item-to-collect {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: #fff;
+    padding: 6px;
+
+    .item {
+      // background: rgba(#000, .9);
+      display: flex;
+
+      .visual {
+        width: 52px;
+
+        figure {
+          margin: 0;
+        }
+      }
+
+      .information {
+        flex-grow: 1;
+        padding: 2px 10px;
+      }
+    }
+  }
+
+  .settings-container {
+    padding: 0 6px 6px 80px;
+
+    .setting {
+      display: flex;
+
+      label {
+        color: rgba(255, 255, 255, 0.7);
+        padding-left: 10px;
+        margin-top: 4px;
+      }
+
+      input {
+        //position: relative;
+      }
+    }
+  }
+
+  .tabbed-navigation {
+    display: flex;
+    border-bottom: 1px solid $primary-color-b;
+
+    .tab-selector {
+      flex-grow: 1;
+      text-align: center;
+      color: #fff;
+      padding: 2px;
+      cursor: pointer;
+      text-transform: uppercase;
+      margin: 0 6px;
+
+      &:not(:last-child) {
+        margin-right: 1px;
+      }
+
+      &:hover {
+        background: #000;
+      }
+
+      &.selected {
+        background: $primary-color-b;
+      }
+    }
+  }
+
+  .playlist-search {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    height: 100%;
+
+    .input-container {
+      margin: 12px 0;
+      padding: 6px;
+
+      .input-group {
+        .input-group-field {
+          box-sizing: border-box;
+          padding-left: 6px;
+          height: 26px;
+          width: 100%;
+          background: transparent;
+          color: #fff;
+          border: 1px solid #444;
+        }
+      }
+    }
+
+    .list-container {
+      @include custom-scroll-bar;
+
+      flex: 1;
+      overflow: auto;
+      max-height: 70vh;
+    }
+  }
+
+  .playlist-create {
+    width: 100%;
+    position: relative;
+
+    .playlist-created-container {
+      margin-top: 20px;
+    }
+
+    .input-container {
+      margin: 12px 0;
+      padding: 6px;
+
+      .input-group {
+        margin-bottom: 12px;
+
+        .title {
+          color: rgba(255, 255, 255, 0.7);
         }
 
-        &::-webkit-scrollbar-thumb {
+        label {
+          color: #fff;
+        }
+
+        .input-group-field {
+          box-sizing: border-box;
+          padding-left: 6px;
+          height: 26px;
+          width: 100%;
+          background: transparent;
+          color: #fff;
+          border: 1px solid #444;
+        }
+
+        &.submit {
+          padding: 20px 0 0 0;
+          text-align: center;
+
+          .button {
+            border: 2px solid $primary-color-b;
             background: #fff;
-            border-radius: 0;
-        }
-
-        &::-webkit-scrollbar-track {
-            border-radius: 0;
-        }
-    }
-
-    .collector-container {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-
-        header {
-
-        }
-
-        .content-container {
-            flex: 1;
-            display: flex;
-        }
-
-    }
-
-    .batch-collect {
-        padding: 20px 6px;
-        p {
-            color: #fff;
-        }
-    }
-
-    .item-to-collect {
-        margin-top: 10px;
-        margin-bottom: 10px;
-        color: #fff;
-        padding: 6px;
-        .item {
-            // background: rgba(#000, .9);
-            display: flex;
-            .visual {
-                width: 52px;
-                figure {
-                    margin: 0;
-                }
-            }
-            .information {
-                flex-grow: 1;
-                padding: 2px 10px;
-            }
-        }
-    }
-
-    .settings-container {
-        padding: 0 6px 6px 80px;
-        .setting {
-            display: flex;
-            label {
-                color: rgba(255, 255, 255, 0.7);
-                padding-left: 10px;
-                margin-top: 4px;
-            }
-            input {
-                //position: relative;
-            }
-        }
-    }
-
-    .tabbed-navigation {
-        display: flex;
-        border-bottom: 1px solid $primary-color-b;
-        .tab-selector {
-            flex-grow: 1;
-            text-align: center;
-            color: #fff;
-            padding: 2px;
-            cursor: pointer;
             text-transform: uppercase;
-            margin: 0 6px;
-            &:not(:last-child) {
-                margin-right: 1px;
-            }
+            color: $primary-color-b;
+            transition: border-radius 0.2s;
+            padding: 6px 24px;
 
             &:hover {
-                background: #000;
+              background: $primary-color-b;
+              color: #fff;
+              border-radius: 4px;
+              text-decoration: none;
             }
-
-            &.selected {
-                background: $primary-color-b;
-            }
+          }
         }
-    }
+      }
 
-    .playlist-search .input-container {
-
-    }
-
-    .playlist-search {
-
+      .horizontal-radio-group {
         display: flex;
-        flex-grow: 1;
-        flex-direction: column;
-        height: 100%;
-
-        .input-container {
-            margin: 12px 0;
-            padding: 6px;
-            .input-group {
-                .input-group-field {
-                    box-sizing: border-box;
-                    padding-left: 6px;
-                    height: 26px;
-                    width: 100%;
-                    background: transparent;
-                    color: #fff;
-                    border: 1px solid #444444;
-                }
-            }
-        }
-        .list-container {
-            @include custom-scroll-bar;
-            flex: 1;
-            overflow: auto;
-            max-height: 70vh;
-        }
-    }
-
-    .playlist-create {
-        width: 100%;
-        position: relative;
-
-        .playlist-created-container {
-            margin-top: 20px;
-        }
-
-        .input-container {
-
-            margin: 12px 0;
-            padding: 6px;
-
-            .input-group {
-
-                margin-bottom: 12px;
-
-                .title {
-                    color: rgba(255, 255, 255, 0.7);
-                }
-
-                label {
-                    color: #fff;
-                }
-
-                .input-group-field {
-                    box-sizing: border-box;
-                    padding-left: 6px;
-                    height: 26px;
-                    width: 100%;
-                    background: transparent;
-                    color: #fff;
-                    border: 1px solid #444444;
-                }
-
-                &.submit {
-                    padding: 20px 0 0 0;
-                    text-align: center;
-
-                    .button {
-                        border: 2px solid $primary-color-b;
-                        background: #fff;
-                        text-transform: uppercase;
-                        color: $primary-color-b;
-                        transition: border-radius 0.2s;
-                        padding: 6px 24px;
-
-                        &:hover {
-                            background: $primary-color-b;
-                            color: #fff;
-                            border-radius: 4px;
-                            text-decoration: none;
-                        }
-                    }
-
-                }
-
-            }
-
-            .horizontal-radio-group {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                .title {
-                    margin-right: 20px;
-                }
-
-                label {
-                    display: flex;
-                    color: rgba(255, 255, 255, 0.7);
-                    margin: 0 20px 0 0
-                }
-
-                input {
-                    margin-right: 6px;
-                }
-            }
-
-            .form-errors {
-                color: orangered;
-                text-align: center;
-            }
-
-        }
-    }
-
-    .loading-container {
-        background: rgba(34, 34, 34, 1);
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: 100%;
-        z-index: 99;
-        display: flex;
-        align-items: center;
         justify-content: center;
-        flex-direction: row;
+        align-items: center;
 
-    }
+        .title {
+          margin-right: 20px;
+        }
 
-    .fade-enter-active {
-        transition: all .5s;
-    }
+        label {
+          display: flex;
+          color: rgba(255, 255, 255, 0.7);
+          margin: 0 20px 0 0;
+        }
 
-    .fade-leave-active {
-        transition: all 0.5s;
-    }
+        input {
+          margin-right: 6px;
+        }
+      }
 
-    .fade-enter, .fade-leave-to {
-        opacity: 0;
+      .form-errors {
+        color: orangered;
+        text-align: center;
+      }
     }
+  }
+
+  .loading-container {
+    background: rgba(34, 34, 34, 1);
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  .fade-enter-active {
+    transition: all 0.5s;
+  }
+
+  .fade-leave-active {
+    transition: all 0.5s;
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
 
 </style>
 
@@ -294,14 +292,6 @@
             </div>
           </div>
         </div>
-        <!--
-                <div class="settings-container">
-                    <div class="setting">
-                        <input type="checkbox" id="copy_cue_and_fade" value="html-news" name="user-age"> <label
-                        for="copy_cue_and_fade">Copy cue and fade</label>
-                    </div>
-                </div>
-                -->
         <div class="tabbed-navigation">
           <div
             :class="{ selected: (scope === 'list') }"

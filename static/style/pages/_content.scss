@@ -1,7 +1,6 @@
 @charset "UTF-8";
 
 @import "../components/form";
-
 @import "mixins/detail";
 @import "mixins/list";
 @import "mixins/edit";
@@ -55,7 +54,6 @@
     .pagination-container {
       @include pagination;
     }
-
   }
 
   .list-header {
@@ -91,5 +89,4 @@
     //@include form-vue;
     //@include form-grid;
   }
-
 }

@@ -1,6 +1,11 @@
 {
-    "extends": "stylelint-config-standard",
+    "extends": [
+        "stylelint-scss",
+        "stylelint-config-standard"
+    ],
     "rules": {
-        "indentation": 2
+        "indentation": 2,
+        "at-rule-no-unknown": null,
+        "no-descending-specificity": null
     }
 }

@@ -14,7 +14,9 @@
     &:focus {
       @content;
     }
-  } @else {
+  }
+
+  @else {
     &:hover,
     &:active,
     &:focus {
@@ -31,7 +33,6 @@
     @content;
   }
 }
-
 
 /// Minimalistic breakpoint helpers
 @mixin sm {

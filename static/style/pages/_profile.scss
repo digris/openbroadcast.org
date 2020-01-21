@@ -1,8 +1,6 @@
 @charset "UTF-8";
 
-
 @mixin profile-details {
-
   .profile-details {
     margin-bottom: 24px;
 
@@ -22,16 +20,14 @@
       &--4 {
         grid-template-columns: repeat(4, 1fr);
       }
-
     }
   }
-
 }
 
 .content__primary {
   > .item {
-      &--profile {
-        @include profile-details;
-      }
+    &--profile {
+      @include profile-details;
+    }
   }
 }

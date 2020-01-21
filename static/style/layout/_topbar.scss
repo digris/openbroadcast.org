@@ -2,8 +2,6 @@
 // Global Topbar styling
 // -----------------------------------------------------------------------------
 
-
-
 $topbar-height: 32px;
 
 // cms edit-mode
@@ -11,6 +9,7 @@ $topbar-height: 32px;
   .topbar {
     transition: top 200ms;
   }
+
   .menu {
     .children {
       transition: top 200ms;
@@ -22,6 +21,7 @@ $topbar-height: 32px;
 .cms-toolbar-expanding {
   .topbar {
     top: 46px;
+
     .main-menu {
       .menu {
         .children {
@@ -33,7 +33,7 @@ $topbar-height: 32px;
 }
 
 .topbar {
-  background: linear-gradient(to right, white 0%, #6633cc 80%);
+  background: linear-gradient(to right, white 0%, #63c 80%);
   position: fixed;
   top: 0;
   width: 100%;
@@ -47,16 +47,15 @@ $topbar-height: 32px;
     //background: rgba(255, 69, 0, 0.4)
     padding: 7px 20px;
     font-size: 13px;
+
     a {
-      color: #333333;
+      color: #333;
     }
   }
+
   .main-menu {
     font-size: 13px;
     text-transform: uppercase;
-
-
-
 
     //flex-grow: 0
     .menu {
@@ -66,10 +65,12 @@ $topbar-height: 32px;
       // first level
       > li {
         padding: 7px 20px;
+
         &:hover,
         &.selected {
           background: whitesmoke;
         }
+
         a {
           color: black;
           text-decoration: none;
@@ -84,23 +85,28 @@ $topbar-height: 32px;
         left: 0;
         width: 100%;
         list-style-type: none;
+
         &.active {
           display: flex;
         }
+
         > li {
           padding: 7px 10px;
+
           a {
             color: black;
             text-decoration: none;
             padding-right: 20px;
             border-right: 1px solid black;
           }
+
           &:hover,
           &.selected {
             a {
               color: $secondary-color;
             }
           }
+
           &:last-child {
             a {
               border-right: none;
@@ -110,18 +116,22 @@ $topbar-height: 32px;
       }
     }
   }
+
   .global-search {
     // color: green
     flex-grow: 1;
     margin-left: auto;
   }
+
   .account-menu {
     font-size: 13px;
     text-transform: uppercase;
     background: black;
+
     &.is-authenticated {
       min-width: 200px;
     }
+
     .menu {
       display: flex;
       list-style-type: none;
@@ -132,17 +142,21 @@ $topbar-height: 32px;
         padding: 7px 10px;
         //background: #000
         color: white;
+
         &:hover {
-          background: #333333;
+          background: #333;
         }
+
         a {
           color: white;
           text-decoration: none;
           display: block;
         }
+
         &.account {
           flex-grow: 1;
         }
+
         &.login {
           padding-left: 20px;
           padding-right: 20px;
@@ -158,11 +172,14 @@ $topbar-height: 32px;
         min-width: 200px;
         right: 0;
         background: black;
+
         > li {
           padding: 7px 10px;
+
           &:hover {
-            background: #333333;
+            background: #333;
           }
+
           a {
             color: white;
             text-decoration: none;
@@ -172,16 +189,19 @@ $topbar-height: 32px;
           }
         }
       }
+
       .account:hover {
         .children {
           display: block;
         }
       }
+
       .login:hover {
         .children {
           display: block;
         }
       }
+
       .message-notification.has-unread {
         background: $secondary-color !important;
       }

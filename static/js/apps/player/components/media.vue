@@ -1,63 +1,64 @@
 <script>
-    import {templateFilters} from '../../../utils/template-filters';
-    const DEBUG = false;
+import { templateFilters } from '../../../utils/template-filters';
 
-    export default {
-        components: {
+const DEBUG = false;
 
-        },
-        filters: templateFilters,
-        props: {
-            item: {
-                type: Object,
-                required: true,
-            },
-        },
-        data() {
-            return {
-                seek_active: false,
-                seek_position: null,
-                is_hover: false
-            }
-        },
-        computed: {
-            position: function () {
-                return (this.item.playhead_position > 0.3) ? this.item.playhead_position - 0.3 : 0;
-            },
-        },
-        mounted: function () {
-            if (DEBUG) console.debug('media - mounted');
-        },
-        methods: {
-            seek: function (item, e) {
-                const x = e.clientX;
-                //const w = e.target.getBoundingClientRect().width;
-                const w = window.innerWidth;
-                const p = Math.round((x / w) * 100);
-                this.$emit('seek', item, p);
-            },
-            seek_move: function(e) {
-                // console.debug('seek_move', e);
-                this.seek_position = Math.round(e.clientX / window.innerWidth * 100);
-            },
-            seek_enter: function(e) {
-                //console.log('seek_enter > add listener', e);
-                document.removeEventListener('mousemove', this.seek_move);
-                document.addEventListener('mousemove', this.seek_move);
-            },
-            seek_leave: function(e) {
-                // console.log('seek_leave > remove listener', e);
-                document.removeEventListener('mousemove', this.seek_move);
-            },
-            remove: function (item, e) {
-                this.$emit('remove', item);
-            },
-            collect: function(item, e) {
-                const _e = new CustomEvent('collector:collect', {detail: [item] });
-                window.dispatchEvent(_e);
-            }
-        },
-    }
+export default {
+  components: {
+
+  },
+  filters: templateFilters,
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      seek_active: false,
+      seek_position: null,
+      is_hover: false,
+    };
+  },
+  computed: {
+    position() {
+      return (this.item.playhead_position > 0.3) ? this.item.playhead_position - 0.3 : 0;
+    },
+  },
+  mounted() {
+    if (DEBUG) console.debug('media - mounted');
+  },
+  methods: {
+    seek(item, e) {
+      const x = e.clientX;
+      // const w = e.target.getBoundingClientRect().width;
+      const w = window.innerWidth;
+      const p = Math.round((x / w) * 100);
+      this.$emit('seek', item, p);
+    },
+    seek_move(e) {
+      // console.debug('seek_move', e);
+      this.seek_position = Math.round(e.clientX / window.innerWidth * 100);
+    },
+    seek_enter(e) {
+      // console.log('seek_enter > add listener', e);
+      document.removeEventListener('mousemove', this.seek_move);
+      document.addEventListener('mousemove', this.seek_move);
+    },
+    seek_leave(e) {
+      // console.log('seek_leave > remove listener', e);
+      document.removeEventListener('mousemove', this.seek_move);
+    },
+    remove(item, e) {
+      this.$emit('remove', item);
+    },
+    collect(item, e) {
+      const _e = new CustomEvent('collector:collect', { detail: [item] });
+      window.dispatchEvent(_e);
+    },
+  },
+};
 
 </script>
 
@@ -65,118 +66,133 @@
     @import '../../../../sass/site/variables';
 
     .item {
-        position: relative;
-        color: #5a5a5a;
-        background: #fafafa;
-        border-bottom: 1px solid #eaeaea;
-        &.is-playing {
-            background: $primary-color-a-bg-light;
-        }
-        &.has-errors {
-            cursor: not-allowed;
-            background: #fffdea;
-            .primary-content {
-                opacity: 0.5;
-                filter: grayscale(100);
-            }
-        }
+      position: relative;
+      color: #5a5a5a;
+      background: #fafafa;
+      border-bottom: 1px solid #eaeaea;
+
+      &.is-playing {
+        background: $primary-color-a-bg-light;
+      }
+
+      &.has-errors {
+        cursor: not-allowed;
+        background: #fffdea;
+
         .primary-content {
-            padding: 2px 4px;
-            display: flex;
-            .controls {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                span {
-                    width: 20px;
-                    height: 20px;
-                    padding-top: 2px;
-                    text-align: center;
-                    display: block;
-                    cursor: pointer;
-                    opacity: 0.75;
-                }
-            }
-            .meta {
-                padding-left: 10px;
-                flex-grow: 1;
-            }
-            .time {
-                padding-right: 10px;
-                padding-top: 8px;
-                font-size: 90%;
-                small {
-                    opacity: 0.5;
-                }
-            }
-            .actions {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                span {
-                    width: 20px;
-                    height: 20px;
-                    padding-top: 2px;
-                    text-align: center;
-                    display: block;
-                    cursor: pointer;
-                    opacity: 0.75;
-                }
-            }
-
-
-            .__expandable-actions {
-                position: absolute;
-                background: red;
-                height: 100%;
-                top: 0;
-                right: 0;
-                z-index: 20;
-                width: 20px;
-            }
-
+          opacity: 0.5;
+          filter: grayscale(100);
         }
-        .errors {
-            padding: 0 0 2px 34px;
-            color: #d47327;
-            font-size: 90%;
+      }
+
+      .primary-content {
+        padding: 2px 4px;
+        display: flex;
+
+        .controls {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          span {
+            width: 20px;
+            height: 20px;
+            padding-top: 2px;
+            text-align: center;
+            display: block;
+            cursor: pointer;
+            opacity: 0.75;
+          }
         }
-        .playhead {
-            cursor: crosshair;
-            height: 10px;
-            position: relative;
-            .progress-container {
-                position: absolute;
-                width: 100%;
-                z-index: 9;
-                background: white;
-                height: 2px;
-                top: 5px;
-                .progress-indicator {
-                    height: 2px;
-                    top: 0;
-                    left: 0;
-                    width: 25%;
-                    position: absolute;
-                    background: $primary-color-a;
-                }
-            }
-            .seek-container {
-                background: rgba(255, 165, 0, 0.05);
-                border-right: 1px solid $primary-color-b;
-                position: absolute;
-                top: 0;
-                height: 12px;
-                width: 50%;
-                z-index: 10;
-                display: none;
-            }
-            &:hover {
-                .seek-container {
-                    display: block;
-                }
-            }
+
+        .meta {
+          padding-left: 10px;
+          flex-grow: 1;
         }
+
+        .time {
+          padding-right: 10px;
+          padding-top: 8px;
+          font-size: 90%;
+
+          small {
+            opacity: 0.5;
+          }
+        }
+
+        .actions {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          span {
+            width: 20px;
+            height: 20px;
+            padding-top: 2px;
+            text-align: center;
+            display: block;
+            cursor: pointer;
+            opacity: 0.75;
+          }
+        }
+
+        .__expandable-actions {
+          position: absolute;
+          background: red;
+          height: 100%;
+          top: 0;
+          right: 0;
+          z-index: 20;
+          width: 20px;
+        }
+      }
+
+      .errors {
+        padding: 0 0 2px 34px;
+        color: #d47327;
+        font-size: 90%;
+      }
+
+      .playhead {
+        cursor: crosshair;
+        height: 10px;
+        position: relative;
+
+        .progress-container {
+          position: absolute;
+          width: 100%;
+          z-index: 9;
+          background: white;
+          height: 2px;
+          top: 5px;
+
+          .progress-indicator {
+            height: 2px;
+            top: 0;
+            left: 0;
+            width: 25%;
+            position: absolute;
+            background: $primary-color-a;
+          }
+        }
+
+        .seek-container {
+          background: rgba(255, 165, 0, 0.05);
+          border-right: 1px solid $primary-color-b;
+          position: absolute;
+          top: 0;
+          height: 12px;
+          width: 50%;
+          z-index: 10;
+          display: none;
+        }
+
+        &:hover {
+          .seek-container {
+            display: block;
+          }
+        }
+      }
     }
 </style>
 
@@ -263,4 +279,3 @@
     </div>
   </div>
 </template>
-

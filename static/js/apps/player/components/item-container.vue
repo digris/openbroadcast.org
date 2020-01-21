@@ -1,84 +1,83 @@
 <script>
-    import Waveform from './waveform.vue'
+import Waveform from './waveform.vue';
 
-    export default {
-        components: {
-            Waveform
-        },
-        filters: {
-            sec_to_time: function (value) {
-                return ms_to_time(value * 1000)
-            },
-            ms_to_time: function (value) {
-                return ms_to_time(value)
-            }
-        },
-        props: {
-            itemToPlay: {
-                type: Object,
-                required: true,
-            },
-        },
-        methods: {
-            seek: function (item, e) {
-                const x = e.clientX;
-                const w = window.innerWidth;
-                const p = Math.round((x / w) * 100);
-                this.$emit('seek', item, p);
-            },
-        },
+export default {
+  components: {
+    Waveform,
+  },
+  filters: {
+    sec_to_time(value) {
+      return ms_to_time(value * 1000);
+    },
+    ms_to_time(value) {
+      return ms_to_time(value);
+    },
+  },
+  props: {
+    itemToPlay: {
+      type: Object,
+      required: true,
+    },
+  },
+  methods: {
+    seek(item, e) {
+      const x = e.clientX;
+      const w = window.innerWidth;
+      const p = Math.round((x / w) * 100);
+      this.$emit('seek', item, p);
+    },
+  },
+};
+
+const ms_to_time = function (time) {
+  if (time === undefined) {
+    return '';
+  }
+
+  if (time === 0) {
+    return '00:00';
+  }
+
+  time = Math.abs(time);
+
+  const millis = time % 1000;
+  time = parseInt(time / 1000);
+  const seconds = time % 60;
+  time = parseInt(time / 60);
+  const minutes = time % 60;
+  time = parseInt(time / 60);
+  const hours = time % 24;
+  let out = '';
+
+  if (hours && hours > 0) {
+    if (hours < 10) {
+      out += '0';
     }
+    out += `${hours}:`;
+  } else {
+    // out += '0' + ':';
+  }
 
-    const ms_to_time = function (time) {
+  if (minutes && minutes > 0) {
+    if (minutes < 10) {
+      out += '0';
+    }
+    out += `${minutes}:`;
+  } else {
+    out += '00' + ':';
+  }
 
-        if (time === undefined) {
-            return '';
-        }
+  if (seconds && seconds > 0) {
+    if (seconds < 10) {
+      out += '0';
+    }
+    out += `${seconds}`;
+  } else {
+    out += '00' + '';
+  }
 
-        if (time === 0) {
-            return '00:00';
-        }
-
-        time = Math.abs(time);
-
-        let millis = time % 1000;
-        time = parseInt(time / 1000);
-        let seconds = time % 60;
-        time = parseInt(time / 60);
-        let minutes = time % 60;
-        time = parseInt(time / 60);
-        let hours = time % 24;
-        let out = "";
-
-        if (hours && hours > 0) {
-            if (hours < 10) {
-                out += '0';
-            }
-            out += hours + ':';
-        } else {
-            // out += '0' + ':';
-        }
-
-        if (minutes && minutes > 0) {
-            if (minutes < 10) {
-                out += '0';
-            }
-            out += minutes + ':';
-        } else {
-            out += '00' + ':';
-        }
-
-        if (seconds && seconds > 0) {
-            if (seconds < 10) {
-                out += '0';
-            }
-            out += seconds + '';
-        } else {
-            out += '00' + '';
-        }
-
-        return out.trim();
-    };
+  return out.trim();
+};
 
 
 </script>
@@ -87,38 +86,41 @@
     @import '../../../../sass/site/variables';
 
     .item-to-play {
-        //background: $primary-color-a;
-        .item-to-play-header {
-            color: blue;
-        }
-        .item-to-play-content {
-            .item {
-                color: #5a5a5a;
-                background: #fafafa;
-                border-bottom: 1px solid #eaeaea;
-                margin-bottom: 4px;
-                &.is-playing {
-                    background: $primary-color-a-bg-light;
-                }
-                .primary-content {
-                    padding: 2px 4px;
-                    display: flex;
-                    .meta {
-                        padding-left: 10px;
-                        flex-grow: 1;
-                    }
-                    .time {
-                        padding-right: 10px;
-                        small {
-                            opacity: 0.5;
-                        }
-                    }
-                }
-                .playhead {
+      //background: $primary-color-a;
+      .item-to-play-header {
+        color: blue;
+      }
 
-                }
+      .item-to-play-content {
+        .item {
+          color: #5a5a5a;
+          background: #fafafa;
+          border-bottom: 1px solid #eaeaea;
+          margin-bottom: 4px;
+
+          &.is-playing {
+            background: $primary-color-a-bg-light;
+          }
+
+          .primary-content {
+            padding: 2px 4px;
+            display: flex;
+
+            .meta {
+              padding-left: 10px;
+              flex-grow: 1;
             }
+
+            .time {
+              padding-right: 10px;
+
+              small {
+                opacity: 0.5;
+              }
+            }
+          }
         }
+      }
     }
 </style>
 

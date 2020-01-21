@@ -24,19 +24,19 @@
       }
 
       .meta {
-
         line-height: 150%;
 
         &__item {
           display: grid;
           grid-template-columns: 120px minmax(auto, 60%);
+          margin-bottom: 0.5rem;
 
-          margin-bottom: .5rem;
           &:last-child {
             margin-bottom: 0;
           }
 
-          a, span {
+          a,
+          span {
             white-space: nowrap;
           }
 
@@ -51,6 +51,7 @@
 
     &__secondary {
       padding: 10px;
+
       .visual {
         max-width: 190px;
         max-height: 190px;
@@ -88,8 +89,8 @@
       //&--mood {
       //  background: #00aeff;
       //}
-
     }
+
     .tag__ {
       background: #fff;
       padding: 2px 4px 1px;
@@ -102,7 +103,7 @@
 
 @mixin section-menu {
   $border-color: #ddd;
-  $bg-color: #F5F5F5;
+  $bg-color: #f5f5f5;
 
   border-bottom: 1px solid $border-color;
   background: $white;
@@ -131,9 +132,9 @@
 
     &--active {
       border-bottom: 0;
-      color: #777777;
+      color: #777;
       background: $bg-color;
-      border-color: #cccccc;
+      border-color: #ccc;
 
       &:hover {
         color: inherit;

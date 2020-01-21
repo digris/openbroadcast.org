@@ -3,34 +3,35 @@
 const DEBUG = false;
 
 export default {
-    name: 'ObjectActionsAction',
-    props: {
-        action: {
-            type: Object,
-            required: true,
-        },
-    }
-}
+  name: 'ObjectActionsAction',
+  props: {
+    action: {
+      type: Object,
+      required: true,
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
     .action {
-        cursor: pointer;
-        padding: 8px 12px;
-        display: flex;
-        min-width: 120px;
+      cursor: pointer;
+      padding: 8px 12px;
+      display: flex;
+      min-width: 120px;
 
-        &:hover {
-            background: #00bb73;
-            color: #fff;
-        }
+      &:hover {
+        background: #00bb73;
+        color: #fff;
+      }
 
-        &__icon {
-            width: 20px;
-        }
-        &__name {
-            flex-grow: 1;
-            white-space: nowrap;
-        }
+      &__icon {
+        width: 20px;
+      }
+
+      &__name {
+        flex-grow: 1;
+        white-space: nowrap;
+      }
     }
 </style>
 
