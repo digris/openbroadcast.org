@@ -1,4 +1,3 @@
 # open broadcast - platform
 
-[![Actions Status](https://github.com/{owner}/{repo}/workflows/{workflow_name}/badge.svg)](https://github.com/{owner}/{repo}/actions)
-
+[![Actions Status](https://github.com/digris/openbroadcast.org/workflows/CI/badge.svg)](https://github.com/digris/openbroadcast.org/actions)
