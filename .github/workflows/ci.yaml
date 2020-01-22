@@ -19,4 +19,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install -g yarn
       - run: yarn install --dev
-      - run: stylelint "./static/style/**/*.scss"
+      - name: lint scss & vue with stylelint
+        run: ./node_modules/.bin/stylelint "./static/style/**/*.scss"
+      - name: lint javascript with eslint
+        run: ./node_modules/.bin/eslint ./static/js --ext .vue,.js
