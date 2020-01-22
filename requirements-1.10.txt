@@ -1,6 +1,0 @@
-Django==1.10.8
-django-cacheops==4.1
-
-
-# NOTES:
-# after upgrading cacheops, run: ./manage.py invalidate all

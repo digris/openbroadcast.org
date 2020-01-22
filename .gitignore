@@ -11,6 +11,7 @@
 
 src
 dev/
+local/
 
 temp/
 logs/
@@ -20,6 +21,8 @@ notes/
 db_dumps/
 
 *node_modules*
+
+
 
 util/remote_to_local.conf
 tools/*/env
