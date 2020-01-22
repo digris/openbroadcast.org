@@ -195,11 +195,6 @@ export default {
           v-if="in_playlist"
           class="fa fa-star"
         />
-        <!--
-                TODO: currently uses 'old' icon font style when running in main window, but
-                      fontawesome icon syntax in popup. this should be unified at some point of time.
-                <i v-if="in_playlist" class="icon icon-star"></i>
-                -->
         {{ item.name }}
       </a>
       <div v-if="item.series_display">
