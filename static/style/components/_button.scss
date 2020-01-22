@@ -6,26 +6,29 @@
   @if $hover-color == null {
     $hover-color: $color;
   }
-
-  color: $color;
-  background: $white;
   display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
   // align-content: center;
   padding: 2px 10px;
-  border: 2px solid $color;
-  text-decoration: none;
-  text-transform: uppercase;
-  cursor: pointer;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
+
+  color: $color;
   font-weight: $base-font-weight;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  background: $white;
+  border: 2px solid $color;
+  cursor: pointer;
+
   transition: border-radius 100ms;
 
   &:hover {
-    text-decoration: none;
-    background: $hover-color;
     color: get-contrast-color($hover-color);
+    text-decoration: none;
+
+    background: $hover-color;
     border-radius: 4px;
   }
 
@@ -33,8 +36,9 @@
     display: inline-flex;
     align-items: center;
     margin-right: 0.5rem;
-    line-height: inherit;
+
     color: inherit;
+    line-height: inherit;
   }
 }
 
@@ -48,9 +52,9 @@
 
   &--disabled {
     @include button($color: #A5A5A5);
+    cursor: not-allowed;
 
     pointer-events: none;
-    cursor: not-allowed;
   }
 
   &--cancel {
@@ -63,8 +67,9 @@
 
   // button sizes
   &--l {
-    padding: 0 16px;
     height: 24px;
+    padding: 0 16px;
+
     line-height: 24px;
 
     &:hover {
@@ -73,9 +78,10 @@
   }
 
   &--xl {
-    padding: 0 20px;
-    font-size: 120%;
     height: 32px;
+    padding: 0 20px;
+
+    font-size: 120%;
     line-height: 32px;
 
     &:hover {

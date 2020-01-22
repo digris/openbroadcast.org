@@ -32,31 +32,35 @@ export default {
       display: flex;
 
       &__visual {
-        flex: 0 0 140px;
         position: relative;
 
+        flex: 0 0 140px;
+
         figure {
-          background: rgba(255, 255, 255, 0.1);
           height: 140px;
+
+          background: rgba(255, 255, 255, 0.1);
         }
 
         .object-actions {
-          top: 0;
           position: absolute;
+          top: 0;
+
           color: #000;
         }
       }
 
       &__details {
-        flex-grow: 1;
-        padding: 4px 10px;
         display: flex;
         flex-direction: column;
+        flex-grow: 1;
+        padding: 4px 10px;
 
         &__title {
-          font-size: 120%;
           margin-bottom: 4px;
+
           color: inherit;
+          font-size: 120%;
         }
 
         &__body {

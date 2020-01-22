@@ -8,8 +8,9 @@ export default {
 </script>
 <style lang="scss" scoped>
     .play-icon-container {
-      transition: transform 100ms;
       cursor: pointer;
+
+      transition: transform 100ms;
 
       &:hover {
         transform: scale(1.1);

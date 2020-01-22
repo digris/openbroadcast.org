@@ -33,35 +33,39 @@ export default {
 
   .modal-mask {
     position: fixed;
-    z-index: 99;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(#222, 0.2);
+    z-index: 99;
+
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(#222, 0.2);
 
     .modal-container {
-      border: 10px solid #222;
-      background: #222;
-      border-top: none;
       position: fixed;
       z-index: 99;
-      max-width: 800px;
-      min-height: 150px;
+
       display: flex;
       flex-direction: column;
       width: 40vw;
       min-width: 800px;
+      max-width: 800px;
+      min-height: 150px;
+
+      background: #222;
+      border: 10px solid #222;
+      border-top: none;
       // height: 60%;
 
       // full-size display in popup
       @media only screen and (max-width: 800px) {
         width: 100vw;
-        height: 100%;
         min-width: unset;
+        height: 100%;
       }
 
       .content-slot {
@@ -70,26 +74,30 @@ export default {
       }
 
       .modal-topbar {
-        background: #222;
         display: flex;
         height: 28px;
 
+        background: #222;
+
         .modal-topbar-title {
           flex-grow: 1;
-          color: #fff;
           padding: 6px 0 0 0;
+
+          color: #fff;
         }
 
         .modal-topbar-menu {
           display: flex;
 
           a {
-            background: $primary-color-b;
-            color: #fff;
             //line-height: 28px;
             display: block;
             padding: 6px 10px 0 10px;
+
+            color: #fff;
             text-transform: uppercase;
+
+            background: $primary-color-b;
             cursor: pointer;
           }
         }

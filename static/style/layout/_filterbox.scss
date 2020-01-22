@@ -4,16 +4,19 @@ $separator-line-color: #ccc;
 
 %option-box {
   border-bottom: 1px solid $separator-line-color;
+
   transition: background 0.2s;
 
   &.expanded {
     background: $white;
+
     transition: none;
 
     .header-icon {
       .uc-icon {
         transform: rotate(90deg);
         transform-origin: center center;
+
         transition: none;
       }
     }
@@ -32,6 +35,7 @@ $separator-line-color: #ccc;
   .header {
     display: flex;
     padding: 2px 4px;
+
     cursor: pointer;
 
     .header-icon {
@@ -41,9 +45,11 @@ $separator-line-color: #ccc;
         display: block;
         width: 18px;
         height: 18px;
+
         font-size: 11px;
         line-height: 18px;
         text-align: center;
+
         opacity: 0.5;
       }
     }
@@ -58,9 +64,10 @@ $separator-line-color: #ccc;
   }
 
   .options {
-    padding: 0 2px 0 22px;
     height: 0;
+    padding: 0 2px 0 22px;
     overflow: hidden;
+
     transition: height 0.2s;
 
     .selected,
@@ -77,13 +84,17 @@ $separator-line-color: #ccc;
 
       .option-count {
         padding-right: 4px;
+
         color: $black;
+
         opacity: 0.5;
       }
 
       .option-direction {
         padding-right: 4px;
+
         color: $black;
+
         opacity: 0.5;
 
         .direction-label {
@@ -91,8 +102,8 @@ $separator-line-color: #ccc;
         }
 
         .direction-indicator {
-          font-family: "Arial Unicode MS", "Consolas", sans-serif;
           font-size: 18px;
+          font-family: "Arial Unicode MS", "Consolas", sans-serif;
           line-height: 13px;
         }
       }

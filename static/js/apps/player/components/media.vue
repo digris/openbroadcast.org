@@ -38,24 +38,23 @@ export default {
       this.$emit('seek', item, p);
     },
     seek_move(e) {
-      // console.debug('seek_move', e);
-      this.seek_position = Math.round(e.clientX / window.innerWidth * 100);
+      this.seek_position = Math.round((e.clientX / window.innerWidth) * 100);
     },
-    seek_enter(e) {
+    seek_enter() {
       // console.log('seek_enter > add listener', e);
       document.removeEventListener('mousemove', this.seek_move);
       document.addEventListener('mousemove', this.seek_move);
     },
-    seek_leave(e) {
+    seek_leave() {
       // console.log('seek_leave > remove listener', e);
       document.removeEventListener('mousemove', this.seek_move);
     },
-    remove(item, e) {
+    remove(item) {
       this.$emit('remove', item);
     },
-    collect(item, e) {
-      const _e = new CustomEvent('collector:collect', { detail: [item] });
-      window.dispatchEvent(_e);
+    collect(item) {
+      const e = new CustomEvent('collector:collect', { detail: [item] });
+      window.dispatchEvent(e);
     },
   },
 };
@@ -67,7 +66,9 @@ export default {
 
     .item {
       position: relative;
+
       color: #5a5a5a;
+
       background: #fafafa;
       border-bottom: 1px solid #eaeaea;
 
@@ -76,8 +77,8 @@ export default {
       }
 
       &.has-errors {
-        cursor: not-allowed;
         background: #fffdea;
+        cursor: not-allowed;
 
         .primary-content {
           opacity: 0.5;
@@ -86,8 +87,8 @@ export default {
       }
 
       .primary-content {
-        padding: 2px 4px;
         display: flex;
+        padding: 2px 4px;
 
         .controls {
           display: flex;
@@ -95,24 +96,27 @@ export default {
           justify-content: center;
 
           span {
+            display: block;
             width: 20px;
             height: 20px;
             padding-top: 2px;
+
             text-align: center;
-            display: block;
+
             cursor: pointer;
             opacity: 0.75;
           }
         }
 
         .meta {
-          padding-left: 10px;
           flex-grow: 1;
+          padding-left: 10px;
         }
 
         .time {
-          padding-right: 10px;
           padding-top: 8px;
+          padding-right: 10px;
+
           font-size: 90%;
 
           small {
@@ -126,11 +130,13 @@ export default {
           justify-content: center;
 
           span {
+            display: block;
             width: 20px;
             height: 20px;
             padding-top: 2px;
+
             text-align: center;
-            display: block;
+
             cursor: pointer;
             opacity: 0.75;
           }
@@ -138,53 +144,64 @@ export default {
 
         .__expandable-actions {
           position: absolute;
-          background: red;
-          height: 100%;
           top: 0;
           right: 0;
           z-index: 20;
+
           width: 20px;
+          height: 100%;
+
+          background: red;
         }
       }
 
       .errors {
         padding: 0 0 2px 34px;
+
         color: #d47327;
         font-size: 90%;
       }
 
       .playhead {
-        cursor: crosshair;
-        height: 10px;
         position: relative;
+
+        height: 10px;
+
+        cursor: crosshair;
 
         .progress-container {
           position: absolute;
-          width: 100%;
-          z-index: 9;
-          background: white;
-          height: 2px;
           top: 5px;
+          z-index: 9;
+
+          width: 100%;
+          height: 2px;
+
+          background: white;
 
           .progress-indicator {
-            height: 2px;
+            position: absolute;
             top: 0;
             left: 0;
+
             width: 25%;
-            position: absolute;
+            height: 2px;
+
             background: $primary-color-a;
           }
         }
 
         .seek-container {
-          background: rgba(255, 165, 0, 0.05);
-          border-right: 1px solid $primary-color-b;
           position: absolute;
           top: 0;
-          height: 12px;
-          width: 50%;
           z-index: 10;
+
           display: none;
+          width: 50%;
+          height: 12px;
+
+          background: rgba(255, 165, 0, 0.05);
+          border-right: 1px solid $primary-color-b;
         }
 
         &:hover {
@@ -234,7 +251,9 @@ export default {
       </div>
       <div class="time">
         <small v-if="item.is_buffering">buff</small>
-        <small v-if="(! item.is_buffering && item.is_playing)">{{ item.playhead_position_ms | ms_to_time }}</small>
+        <small v-if="(! item.is_buffering && item.is_playing)">
+          {{ item.playhead_position_ms | ms_to_time }}
+        </small>
         {{ item.duration | ms_to_time }}
       </div>
       <div class="actions">

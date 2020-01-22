@@ -35,19 +35,23 @@ export default {
 </script>
 <style lang="scss" scoped>
     .clipboard-item {
-      background: #fff;
-      display: flex;
-      cursor: pointer;
       position: relative;
 
+      display: flex;
+
+      background: #fff;
+      cursor: pointer;
+
       &:hover {
-        background: rgba(126, 235, 157, 0.85);
         z-index: 999;
+
+        background: rgba(126, 235, 157, 0.85);
       }
 
       &__visual {
-        width: 64px;
         position: relative;
+
+        width: 64px;
 
         img {
           background: deepskyblue;
@@ -58,8 +62,8 @@ export default {
         }
 
         .object-actions {
-          top: 0;
           position: absolute;
+          top: 0;
         }
       }
 
@@ -80,8 +84,9 @@ export default {
         }
 
         .emission-history {
-          flex-grow: 1;
           z-index: 92;
+
+          flex-grow: 1;
         }
       }
 
@@ -91,8 +96,8 @@ export default {
 
       &__secondary-actions {
         position: absolute;
-        bottom: 1px;
         right: 3px;
+        bottom: 1px;
 
         a {
           color: inherit;

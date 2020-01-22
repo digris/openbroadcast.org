@@ -196,8 +196,8 @@ export default {
       }
 
       &__autocomplete {
-        padding-right: 4px;
         width: 220px;
+        padding-right: 4px;
       }
 
       &__tags {
@@ -208,16 +208,20 @@ export default {
     .tag {
       display: inline-flex;
       height: 22px;
-      line-height: 22px;
-      background: black;
       margin: 0 4px 4px 0;
       padding: 0 10px;
-      text-transform: uppercase;
+
       color: white;
+      line-height: 22px;
+      text-transform: uppercase;
+
+      background: black;
 
       &__remove {
         padding: 0 0 0 0.5rem;
+
         color: white;
+
         cursor: pointer;
         opacity: 0.5;
 

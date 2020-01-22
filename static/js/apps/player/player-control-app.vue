@@ -4,12 +4,14 @@
   @import '../../../sass/site/variables';
 
   .player-control-app {
-    display: block;
-    background: white;
     position: fixed;
-    z-index: 99;
     bottom: 10px;
     left: 10px;
+    z-index: 99;
+
+    display: block;
+
+    background: white;
   }
 </style>
 

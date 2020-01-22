@@ -23,7 +23,7 @@ const CollectorApp = Vue.extend({
       loading: false,
       scope: 'list',
       show_modal: false,
-      items_to_collect: null,
+      itemsToCollect: null,
       query_string: '',
       playlists: [],
 
@@ -44,7 +44,7 @@ const CollectorApp = Vue.extend({
 
     window.addEventListener('collector:collect', (e) => {
       if (DEBUG) console.info('collector:collect', e.detail);
-      this.items_to_collect = e.detail;
+      this.itemsToCollect = e.detail;
       this.scope = 'list';
       this.show_modal = true;
       this.load_playlists();
@@ -93,21 +93,21 @@ const CollectorApp = Vue.extend({
     // method called from ui
     add_item_to_playlist(playlist, close) {
       if (DEBUG) console.info('add_item_to_playlist', playlist.name, close);
-      this.add_itemsToPlaylist(playlist, this.items_to_collect);
+      this.add_items_to_playlist(playlist, this.itemsToCollect);
       if (close) {
         this.close();
       }
     },
     // method for API communication
-    add_itemsToPlaylist(playlist, items_to_collect) {
-      if (DEBUG) console.info('add_itemsToPlaylist', playlist.name, items_to_collect);
+    add_items_to_playlist(playlist, itemsToCollect) {
+      if (DEBUG) console.info('add_items_to_playlist', playlist.name, itemsToCollect);
 
       const index = this.playlists.findIndex((element) => element.uuid === playlist.uuid);
 
       playlist.num_media += 1;
       playlist.loading = true;
 
-      APIClient.put(playlist.url, { items_to_collect })
+      APIClient.put(playlist.url, { itemsToCollect })
         .then((response) => {
           if (index > -1) {
             this.$set(this.playlists, index, response.data);
@@ -157,7 +157,7 @@ const CollectorApp = Vue.extend({
       const payload = {
         name: data.name,
         type: data.type,
-        items_to_collect: this.items_to_collect,
+        itemsToCollect: this.itemsToCollect,
       };
 
       this.loading = true;

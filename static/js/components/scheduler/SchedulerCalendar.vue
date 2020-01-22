@@ -435,84 +435,97 @@ export default {
         position: absolute;
         top: 50px;
         left: 61px;
+
         width: calc(100% - 61px);
         height: 100%;
 
         .emission-container {
           position: absolute;
+
           background: #fff;
         }
       }
 
       .current-time {
         position: absolute;
+
         width: 100%;
 
         &__line {
           //background: orangered;
           height: 0;
+
           border-bottom: 1px dotted rgba(255, 69, 0, 0.5);
         }
 
         &__time {
           position: absolute;
-          color: orangered;
+          top: -5px;
           // left: -45px;
           left: -60px;
+
+          color: orangered;
           font-size: 11px;
           line-height: 11px;
-          top: -5px;
         }
 
         &__marker {
           position: absolute;
+          top: 0;
 
           /* height: 10px; */
 
           /* width: 10px; */
           width: 0;
           height: 0;
+
           border-style: solid;
-          top: 0;
           transform: translate(0, -4.5px);
 
           &--left {
             left: -10px;
-            border-width: 5px 0 5px 8px;
+
             border-color: transparent transparent transparent orangered;
+            border-width: 5px 0 5px 8px;
           }
 
           &--right {
             right: -10px;
-            border-width: 5px 8px 5px 0;
+
             border-color: transparent orangered transparent transparent;
+            border-width: 5px 8px 5px 0;
           }
         }
       }
 
       .errors-container {
         position: fixed;
-        z-index: 1001;
         top: 0;
         left: 0;
+        z-index: 1001;
+
         width: 100%;
         height: 100%;
+
         background: rgba(26, 5, 0, 0.66);
 
         .errors {
-          background: orangered;
-          color: white;
           position: absolute;
           top: 50%;
           left: 50%;
-          transform: translate(-50%, -50%);
+
           padding: 20px;
 
+          color: white;
+
+          background: orangered;
+          transform: translate(-50%, -50%);
+
           .error {
-            white-space: pre-line;
-            text-align: left;
             font-size: 120%;
             line-height: 180%;
+            white-space: pre-line;
+            text-align: left;
           }
         }
       }

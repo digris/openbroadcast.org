@@ -58,17 +58,19 @@ export default {
       display: flex;
 
       .action {
-        cursor: pointer;
-        background: white;
-        padding: 1px 8px;
         display: inline-flex;
+        padding: 1px 8px;
+
+        background: white;
         border: 1px solid #dadada;
+        cursor: pointer;
 
         &:hover {
+          color: white;
+
           background: #63c;
           border-color: #63c;
           border-radius: 2px;
-          color: white;
         }
 
         &.is-current {
@@ -77,13 +79,13 @@ export default {
       }
 
       &__center {
-        flex-grow: 1;
         display: flex;
+        flex-grow: 1;
         justify-content: center;
 
         .action {
-          margin-left: 2px;
           margin-right: 2px;
+          margin-left: 2px;
         }
       }
 

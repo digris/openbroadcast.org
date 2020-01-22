@@ -137,14 +137,17 @@ export default {
       position: relative;
 
       &__indicator {
-        background: white;
-        height: 21px;
-        width: 21px;
-        display: inline-flex;
-        justify-content: center;
         position: absolute;
         right: 0;
+
+        display: inline-flex;
+        justify-content: center;
+        width: 21px;
+        height: 21px;
+
         font-weight: 400;
+
+        background: white;
         cursor: pointer;
       }
 
@@ -153,42 +156,49 @@ export default {
 
         #{ $self }__indicator {
           color: white;
+
           background: orangered;
         }
       }
 
       &__nearby-emissions {
         position: absolute;
-        background: white;
-        right: 0;
         top: 21px;
+        right: 0;
+
         width: 197px;
 
+        background: white;
+
         > div {
-          padding: 2px 6px;
-          border-left: 4px solid limegreen;
-          background: rgba(50, 205, 50, 0.15);
           margin: 1px 0;
+          padding: 2px 6px;
+
+          background: rgba(50, 205, 50, 0.15);
+          border-left: 4px solid limegreen;
 
           &.has-warning {
+            color: orangered;
+            font-weight: 400;
+
+            background: rgba(255, 69, 0, 0.15);
             // background: red;
             border-left: 4px solid orangered;
-            color: orangered;
-            background: rgba(255, 69, 0, 0.15);
-            font-weight: 400;
           }
         }
       }
 
       &__matrix-container {
         position: absolute;
+        top: 21px;
+        z-index: 999;
+
+        min-width: 640px;
+
+        background: white;
         border: 1px solid #bcbcbc;
         box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.05);
-        top: 21px;
-        min-width: 640px;
-        z-index: 999;
         transform: translateX(-50%);
-        background: white;
       }
     }
 </style>

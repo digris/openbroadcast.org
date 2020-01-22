@@ -38,10 +38,10 @@ export default {
   },
   computed: {
     in_playlist() {
-      if (!this.items_to_collect || this.items_to_collect.length !== 1) {
+      if (!this.itemsToCollect || this.itemsToCollect.length !== 1) {
         return false;
       }
-      const { content } = this.items_to_collect[0];
+      const { content } = this.itemsToCollect[0];
       return this.item.item_appearances.includes(`${content.ct}:${content.uuid}`);
     },
     animated_duration() {
@@ -63,6 +63,7 @@ export default {
         },
       });
     },
+    // eslint-disable-next-line func-names
     'item.duration': function (newValue, oldValue) {
       tween({
         from: { n: oldValue },
@@ -83,9 +84,11 @@ export default {
     @import '../../../../sass/site/variables';
     // list styling
     .item {
-      display: flex;
       position: relative;
+
+      display: flex;
       padding: 6px;
+
       border-bottom: 1px solid #444;
 
       &:first-child {
@@ -107,6 +110,7 @@ export default {
       .information {
         flex-grow: 1;
         padding: 0 10px 0;
+
         color: #fff;
 
         .name {
@@ -121,43 +125,49 @@ export default {
 
       .actions {
         .button-group {
-          height: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
+          height: 100%;
         }
 
         .button {
-          border: 1px solid #a5a5a5;
-          text-transform: uppercase;
-          color: #a5a5a5;
-          transition: border-radius 0.2s;
-          padding: 0 12px;
           margin-left: 4px;
+          padding: 0 12px;
+
+          color: #a5a5a5;
+          text-transform: uppercase;
+
+          border: 1px solid #a5a5a5;
+
+          transition: border-radius 0.2s;
 
           &:hover {
+            color: #fff;
+            text-decoration: none;
+
             background: $primary-color-b;
             border-color: $primary-color-b;
-            color: #fff;
             border-radius: 3px;
-            text-decoration: none;
           }
         }
       }
 
       // TODO: make loading container more generic
       .loading-container {
-        background: #222;
         position: absolute;
-        height: 100%;
-        width: 100%;
         top: 0;
         left: 0;
         z-index: 99;
+
         display: flex;
+        flex-direction: row;
         align-items: center;
         justify-content: center;
-        flex-direction: row;
+        width: 100%;
+        height: 100%;
+
+        background: #222;
       }
 
       .fade-enter-active {

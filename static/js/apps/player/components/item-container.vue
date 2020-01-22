@@ -1,6 +1,52 @@
 <script>
 import Waveform from './waveform.vue';
 
+function ms_to_time(time) {
+  if (time === undefined) {
+    return '';
+  }
+
+  if (time === 0) {
+    return '00:00';
+  }
+
+  time = Math.abs(time);
+
+  const seconds = (parseInt(time, 10) / 1000) % 60;
+  const minutes = (parseInt(time, 10) / 60) % 60;
+  const hours = (parseInt(time, 10) / 60) % 24;
+  let out = '';
+
+  if (hours && hours > 0) {
+    if (hours < 10) {
+      out += '0';
+    }
+    out += `${hours}:`;
+  } else {
+    // out += '0' + ':';
+  }
+
+  if (minutes && minutes > 0) {
+    if (minutes < 10) {
+      out += '0';
+    }
+    out += `${minutes}:`;
+  } else {
+    out += '00:';
+  }
+
+  if (seconds && seconds > 0) {
+    if (seconds < 10) {
+      out += '0';
+    }
+    out += `${seconds}`;
+  } else {
+    out += '00';
+  }
+
+  return out.trim();
+}
+
 export default {
   components: {
     Waveform,
@@ -29,56 +75,6 @@ export default {
   },
 };
 
-const ms_to_time = function (time) {
-  if (time === undefined) {
-    return '';
-  }
-
-  if (time === 0) {
-    return '00:00';
-  }
-
-  time = Math.abs(time);
-
-  const millis = time % 1000;
-  time = parseInt(time / 1000);
-  const seconds = time % 60;
-  time = parseInt(time / 60);
-  const minutes = time % 60;
-  time = parseInt(time / 60);
-  const hours = time % 24;
-  let out = '';
-
-  if (hours && hours > 0) {
-    if (hours < 10) {
-      out += '0';
-    }
-    out += `${hours}:`;
-  } else {
-    // out += '0' + ':';
-  }
-
-  if (minutes && minutes > 0) {
-    if (minutes < 10) {
-      out += '0';
-    }
-    out += `${minutes}:`;
-  } else {
-    out += '00' + ':';
-  }
-
-  if (seconds && seconds > 0) {
-    if (seconds < 10) {
-      out += '0';
-    }
-    out += `${seconds}`;
-  } else {
-    out += '00' + '';
-  }
-
-  return out.trim();
-};
-
 
 </script>
 
@@ -93,22 +89,24 @@ const ms_to_time = function (time) {
 
       .item-to-play-content {
         .item {
+          margin-bottom: 4px;
+
           color: #5a5a5a;
+
           background: #fafafa;
           border-bottom: 1px solid #eaeaea;
-          margin-bottom: 4px;
 
           &.is-playing {
             background: $primary-color-a-bg-light;
           }
 
           .primary-content {
-            padding: 2px 4px;
             display: flex;
+            padding: 2px 4px;
 
             .meta {
-              padding-left: 10px;
               flex-grow: 1;
+              padding-left: 10px;
             }
 
             .time {

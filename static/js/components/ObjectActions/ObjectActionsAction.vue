@@ -14,14 +14,16 @@ export default {
 </script>
 <style lang="scss" scoped>
     .action {
-      cursor: pointer;
-      padding: 8px 12px;
       display: flex;
       min-width: 120px;
+      padding: 8px 12px;
+
+      cursor: pointer;
 
       &:hover {
-        background: #00bb73;
         color: #fff;
+
+        background: #00bb73;
       }
 
       &__icon {
@@ -30,6 +32,7 @@ export default {
 
       &__name {
         flex-grow: 1;
+
         white-space: nowrap;
       }
     }

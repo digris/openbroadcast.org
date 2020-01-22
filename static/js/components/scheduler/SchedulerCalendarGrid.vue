@@ -109,77 +109,89 @@ export default {
 
     .scheduler-grid {
       position: relative;
+
       height: 100%;
+
       background: $background-color;
 
       &__row {
         position: absolute;
+
         width: calc(100% - 61px);
         margin-left: 61px;
+
         border-bottom: 1px solid $border-color;
 
         &:nth-child(even) {
-          border-bottom-style: dotted;
           border-bottom-color: rgba($border-color, 0.4);
+          border-bottom-style: dotted;
         }
       }
 
       &__dayparts {
-        height: calc(100% - 50px);
         position: absolute;
-        width: 100%;
-        margin-top: 50px;
+
         display: flex;
         flex-direction: column;
+        width: 100%;
+        height: calc(100% - 50px);
+        margin-top: 50px;
+
         border: 1px solid $border-color;
 
         &__daypart {
-          width: 100%;
-          border-bottom: 1px solid $border-dark-color;
           position: absolute;
+
+          width: 100%;
+
+          border-bottom: 1px solid $border-dark-color;
 
           &:last-child {
             border-bottom: 0;
           }
 
           .daypart-label {
-            width: 61px;
-            text-align: right;
-            padding: 4px 4px 0 0;
-            color: #333;
             display: inline-block;
+            width: 61px;
+            padding: 4px 4px 0 0;
+
+            color: #333;
+            text-align: right;
           }
         }
       }
 
       &__days {
-        // background: blue;
-        height: 100%;
         // margin-left: 61px;
         display: flex;
+        // background: blue;
+        height: 100%;
 
         &__placeholder_hack {
           width: 61px;
           height: 50px;
+
           background: #f5f5f5;
         }
 
         &__day {
-          height: 100%;
           flex-grow: 1;
+          height: 100%;
 
           .day-header {
-            height: 50px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            height: 50px;
             padding: 6px 0 0 0;
+
             background: #f5f5f5;
 
             .day-label {
               display: inline-block;
               width: 30px;
+
               text-align: center;
             }
 
@@ -187,6 +199,7 @@ export default {
               display: inline-block;
               width: 28px;
               margin-left: 2px;
+
               text-align: center;
             }
 
@@ -202,8 +215,9 @@ export default {
 
           .day-column {
             height: calc(100% - 50px);
-            border-left: 1px solid $border-color;
+
             background: $background-color;
+            border-left: 1px solid $border-color;
           }
 
           &.is-weekend {

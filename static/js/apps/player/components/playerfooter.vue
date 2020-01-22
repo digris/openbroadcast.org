@@ -62,14 +62,14 @@ export default {
   },
   methods: {
     add_all_to_playlist() {
-      const _items = [];
+      const items = [];
       this.itemsToPlay.forEach((item_to_play) => {
         item_to_play.items.forEach((item) => {
-          _items.push(item);
+          items.push(item);
         });
       });
-      const _e = new CustomEvent('collector:collect', { detail: _items });
-      window.dispatchEvent(_e);
+      const e = new CustomEvent('collector:collect', { detail: items });
+      window.dispatchEvent(e);
     },
   },
 };
@@ -79,10 +79,12 @@ export default {
     @import '../../../../sass/site/variables';
 
     .player-footer {
-      border-top: 1px solid #eaeaea;
-      padding: 5px 6px 1px 6px;
       display: flex;
+      padding: 5px 6px 1px 6px;
+
       color: #fff;
+
+      border-top: 1px solid #eaeaea;
 
       .information {
         flex-grow: 1;
@@ -90,18 +92,22 @@ export default {
 
       .actions {
         .button {
-          border: 1px solid $primary-color-b;
-          text-transform: uppercase;
-          color: $primary-color-b;
-          transition: border-radius 0.2s;
           padding: 0 12px;
 
+          color: $primary-color-b;
+          text-transform: uppercase;
+
+          border: 1px solid $primary-color-b;
+
+          transition: border-radius 0.2s;
+
           &:hover {
+            color: #fff;
+            text-decoration: none;
+
             background: $primary-color-b;
             border-color: $primary-color-b;
-            color: #fff;
             border-radius: 3px;
-            text-decoration: none;
           }
         }
       }

@@ -33,19 +33,23 @@ $topbar-height: 32px;
 }
 
 .topbar {
-  background: linear-gradient(to right, white 0%, #63c 80%);
   position: fixed;
   top: 0;
-  width: 100%;
-  height: $topbar-height;
   z-index: 99;
+
   display: flex;
   flex-direction: row;
+  width: 100%;
+  height: $topbar-height;
+
   letter-spacing: 1px;
+
+  background: linear-gradient(to right, white 0%, #63c 80%);
   // main elements
   .branding {
     //background: rgba(255, 69, 0, 0.4)
     padding: 7px 20px;
+
     font-size: 13px;
 
     a {
@@ -60,8 +64,9 @@ $topbar-height: 32px;
     //flex-grow: 0
     .menu {
       display: flex;
-      list-style-type: none;
       margin: 0;
+
+      list-style-type: none;
       // first level
       > li {
         padding: 7px 20px;
@@ -78,13 +83,15 @@ $topbar-height: 32px;
       }
       // second level
       .children {
-        display: none;
-        background: rgba(245, 245, 245, 0.91);
         position: fixed;
         top: 32px;
         left: 0;
+
+        display: none;
         width: 100%;
+
         list-style-type: none;
+        background: rgba(245, 245, 245, 0.91);
 
         &.active {
           display: flex;
@@ -94,9 +101,11 @@ $topbar-height: 32px;
           padding: 7px 10px;
 
           a {
+            padding-right: 20px;
+
             color: black;
             text-decoration: none;
-            padding-right: 20px;
+
             border-right: 1px solid black;
           }
 
@@ -126,6 +135,7 @@ $topbar-height: 32px;
   .account-menu {
     font-size: 13px;
     text-transform: uppercase;
+
     background: black;
 
     &.is-authenticated {
@@ -134,9 +144,10 @@ $topbar-height: 32px;
 
     .menu {
       display: flex;
-      list-style-type: none;
       margin: 0;
       padding: 0;
+
+      list-style-type: none;
       // first level
       > li {
         padding: 7px 10px;
@@ -148,9 +159,10 @@ $topbar-height: 32px;
         }
 
         a {
+          display: block;
+
           color: white;
           text-decoration: none;
-          display: block;
         }
 
         &.account {
@@ -158,19 +170,21 @@ $topbar-height: 32px;
         }
 
         &.login {
-          padding-left: 20px;
           padding-right: 20px;
+          padding-left: 20px;
         }
       }
       // second level
       .children {
-        list-style-type: none;
-        display: none;
         position: absolute;
-        padding: 0;
         top: 32px;
-        min-width: 200px;
         right: 0;
+
+        display: none;
+        min-width: 200px;
+        padding: 0;
+
+        list-style-type: none;
         background: black;
 
         > li {
@@ -181,11 +195,12 @@ $topbar-height: 32px;
           }
 
           a {
-            color: white;
-            text-decoration: none;
-            padding-right: 10px;
-            text-transform: none;
             display: block;
+            padding-right: 10px;
+
+            color: white;
+            text-transform: none;
+            text-decoration: none;
           }
         }
       }

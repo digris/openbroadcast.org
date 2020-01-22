@@ -11,6 +11,7 @@ body.app--account {
         width: 100%;
         max-width: 600px;
         padding: 12px;
+
         background: #fff;
       }
     }
@@ -22,6 +23,7 @@ body.app--account {
 
   .form-appendix {
     padding: 16px 0;
+
     background: #fff;
 
     .alt {
@@ -31,8 +33,9 @@ body.app--account {
   }
 
   .form-separator {
-    padding: 4px 0;
     margin: 16px 0;
+    padding: 4px 0;
+
     border-top: 1px solid #eee;
   }
 
@@ -86,49 +89,56 @@ body.app--account {
       align-items: center;
 
       input[type="checkbox"] {
-        cursor: pointer;
-        -webkit-appearance: none;
-        -moz-appearance: none;
         position: relative;
-        box-sizing: content-box;
-        width: 16px;
-        height: 16px;
-        border: 1px solid #333;
 
         // transition: all 240ms
         flex: 0 0 16px;
-        border-color: $light-grey;
+        box-sizing: content-box;
+        width: 16px;
+        height: 16px;
+
         color: transparent;
 
+        border: 1px solid #333;
+        border-color: $light-grey;
+        cursor: pointer;
+
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
         &:focus {
+          background: $white;
+          border-color: $light-grey;
           outline: 0 none;
           box-shadow: none;
-          border-color: $light-grey;
-          background: $white;
         }
 
         &:hover {
+          color: $light-grey;
+
+          border-color: $mid-grey;
           outline: 0 none;
           box-shadow: none;
-          border-color: $mid-grey;
-          color: $light-grey;
         }
 
         &:checked {
           color: #000;
+
           border-color: $mid-grey;
         }
 
         &::after {
           position: absolute;
           top: 0;
+          right: 0;
           bottom: 0;
           left: 0;
-          right: 0;
-          content: "╳";
+
           font-size: 22px;
           line-height: 24px;
           text-align: center;
+
+          content: "╳";
         }
       }
 
@@ -140,26 +150,30 @@ body.app--account {
 
     .input-container__field-errors {
       padding-left: 36px;
+
       text-align: left;
     }
   }
 
   .social-login-container {
-    margin: 20px 0 10px;
     display: grid;
-    grid-template-columns: calc(50% - 6px) calc(50% - 6px);
     grid-gap: 12px;
+    grid-template-columns: calc(50% - 6px) calc(50% - 6px);
+    margin: 20px 0 10px;
 
     .auth-social {
-      padding: 8px 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-decoration: none;
-      font-size: 14px;
+      padding: 8px 10px;
+
       color: #222;
+      font-size: 14px;
+      text-decoration: none;
+
       background: #e5e5e5;
       border: 1px solid transparent;
+
       transition: background 200ms, border-radius 100ms;
 
       &:hover {
@@ -185,6 +199,7 @@ body.app--account {
 
     .auth-social-facebook {
       color: #fff;
+
       background: #1877f2;
 
       .icon-container {
@@ -200,11 +215,13 @@ body.app--account {
 
     .auth-social-google-oauth2 {
       color: #5a5a5a;
+
       background: white;
       border-color: #5a5a5a;
 
       &:hover {
         color: #5a5a5a;
+
         background: white;
       }
     }

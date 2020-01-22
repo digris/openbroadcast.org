@@ -1,9 +1,10 @@
 @charset "UTF-8";
 
 @mixin item-header {
-  background: $white;
   display: grid;
   grid-template-columns: auto 190px;
+
+  background: $white;
 
   .header {
     &__primary {
@@ -16,10 +17,11 @@
         margin-bottom: 4px;
 
         small {
-          font-size: 1.2rem;
-          font-weight: 200;
-          color: #5a5a5a;
           margin-left: 10px;
+
+          color: #5a5a5a;
+          font-weight: 200;
+          font-size: 1.2rem;
         }
       }
 
@@ -42,8 +44,8 @@
 
           &__grid {
             display: grid;
-            grid-template-columns: fit-content(50%) fit-content(50%);
             grid-column-gap: 8px;
+            grid-template-columns: fit-content(50%) fit-content(50%);
           }
         }
       }
@@ -67,20 +69,22 @@
       }
 
       .rating {
-        margin: 5px auto;
-        float: none;
         display: flex;
         justify-content: center;
+        float: none;
+        margin: 5px auto;
       }
     }
   }
 
   .tags {
     .tag {
-      background: black;
       padding: 2px 4px 1px;
+
       color: #fff;
       text-transform: uppercase;
+
+      background: black;
 
       //&--sub-genre {
       //  background: #79000b;
@@ -92,11 +96,13 @@
     }
 
     .tag__ {
-      background: #fff;
       padding: 2px 4px 1px;
+
       color: #999;
-      border: 1px solid #c7c7c7;
       text-transform: uppercase;
+
+      background: #fff;
+      border: 1px solid #c7c7c7;
     }
   }
 }
@@ -104,40 +110,47 @@
 @mixin section-menu {
   $border-color: #ddd;
   $bg-color: #f5f5f5;
+  display: flex;
+
+  background: $white;
 
   border-bottom: 1px solid $border-color;
-  background: $white;
-  display: flex;
   // justify-content: center;
 
   .menu-item {
     margin: 0 0 -1px 10px;
+
+    color: #a5a5a5;
+    text-decoration: none;
+
+    background: $bg-color;
     border: 1px solid $bg-color;
     border-bottom-color: $border-color;
-    text-decoration: none;
-    color: #a5a5a5;
-    background: $bg-color;
 
     a {
-      padding: 1px 12px;
       display: inline-block;
+      padding: 1px 12px;
+
       color: inherit;
       text-decoration: inherit;
     }
 
     &:hover {
       color: v(secondary-color);
+
       background: $white;
     }
 
     &--active {
-      border-bottom: 0;
       color: #777;
+
       background: $bg-color;
       border-color: #ccc;
+      border-bottom: 0;
 
       &:hover {
         color: inherit;
+
         background: $bg-color;
       }
     }

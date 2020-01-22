@@ -17,6 +17,7 @@ body.cms-page {
 
       > .content {
         padding: 14px;
+
         background: white;
 
         h1,
@@ -43,8 +44,9 @@ body.cms-page {
           }
 
           &.footnotes {
-            opacity: 0.7;
             font-style: italic;
+
+            opacity: 0.7;
           }
         }
 
@@ -54,8 +56,9 @@ body.cms-page {
         //
         .hint {
           &--info {
-            padding: 10px;
             margin-bottom: 10px;
+            padding: 10px;
+
             background: rgba($primary-color, 0.2);
           }
         }

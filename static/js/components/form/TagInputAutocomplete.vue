@@ -137,35 +137,41 @@ export default {
 <style lang="scss" scoped>
     .autocomplete {
       position: relative;
+
       display: inline-block;
       width: 100%;
 
       input {
-        height: 22px;
-        line-height: 22px;
-        padding: 0 0.5rem;
         width: 100%;
+        height: 22px;
+        padding: 0 0.5rem;
+
+        line-height: 22px;
       }
 
       &__results {
-        padding: 0;
-        margin: 0;
-        // border: 1px solid #eeeeee;
-        overflow: auto;
+        position: absolute;
+        z-index: 10;
+
         min-width: 100%;
         min-height: 40px;
-        position: absolute;
+        margin: 0;
+        padding: 0;
+        // border: 1px solid #eeeeee;
+        overflow: auto;
+
         background: white;
-        z-index: 10;
         border: 1px solid #ededed;
         // border-top: 0;
         box-shadow: 1px 2px 3px 1px rgba(#000, 0.2);
       }
 
       &__result {
-        list-style: none;
-        text-align: left;
         padding: 0.5rem;
+
+        text-align: left;
+
+        list-style: none;
         cursor: pointer;
 
         &.is-active,

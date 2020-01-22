@@ -40,23 +40,27 @@ export default {
 <style lang="scss" scoped>
     .context-menu {
       position: absolute;
-      min-width: 150px;
       top: 0;
       right: 0;
+      z-index: 999;
+
       display: flex;
       flex-direction: column;
-      z-index: 999;
+      min-width: 150px;
+
       filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.1));
 
       .menu-item {
-        cursor: pointer;
-        padding: 10px 14px;
         display: flex;
         width: 100%;
+        padding: 10px 14px;
+
+        cursor: pointer;
 
         &:hover {
-          background: #00bb73;
           color: #fff;
+
+          background: #00bb73;
         }
 
         &__icon {
@@ -65,6 +69,7 @@ export default {
 
         &__name {
           flex-grow: 1;
+
           white-space: nowrap;
         }
       }

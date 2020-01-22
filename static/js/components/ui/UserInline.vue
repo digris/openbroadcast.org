@@ -32,8 +32,9 @@ export default {
 </script>
 <style lang="scss" scoped>
     .user-inline {
-      display: inline-block;
       position: relative;
+
+      display: inline-block;
 
       a {
         color: inherit;
@@ -41,11 +42,14 @@ export default {
     }
 
     .user-info {
-      background: #fff;
-      color: #222;
       position: absolute;
-      width: 200px;
+
       display: flex;
+      width: 200px;
+
+      color: #222;
+
+      background: #fff;
       box-shadow: 2px 2px 2px 2px rgba(#000, 0.1);
 
       &__visual {
@@ -57,8 +61,9 @@ export default {
       }
 
       &__details {
-        white-space: nowrap;
         padding: 4px 6px;
+
+        white-space: nowrap;
       }
     }
 

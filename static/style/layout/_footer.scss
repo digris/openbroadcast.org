@@ -6,10 +6,11 @@ footer {
   background: #000;
 
   .footer {
-    max-width: $g-content-max-width;
     width: 100%;
+    max-width: $g-content-max-width;
     margin: 0 auto;
     padding: 24px 0 12px;
+
     color: #cdcdcd;
 
     &__primary {
@@ -42,8 +43,8 @@ footer {
 
     &__appendix {
       p {
-        text-align: right;
         color: inherit;
+        text-align: right;
       }
 
       a {

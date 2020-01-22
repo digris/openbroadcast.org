@@ -7,6 +7,7 @@ $tag-sizes: 84% 88% 92% 98% 108% 112% 114% 118% 124% 130%;
 
   .icon {
     display: inline-block;
+
     transition: transform 200ms;
   }
 
@@ -26,18 +27,21 @@ $tag-sizes: 84% 88% 92% 98% 108% 112% 114% 118% 124% 130%;
 
   .tag {
     display: inline-block;
-    padding: 1px 5px 1px 5px;
     margin: 2px 2px 0 0;
-    text-decoration: none;
+    padding: 1px 5px 1px 5px;
+
     text-transform: uppercase;
+    text-decoration: none;
 
     &.selected {
       color: $white;
+
       background: $secondary-color;
     }
 
     &:hover {
       color: $white;
+
       background: $primary-color;
     }
 

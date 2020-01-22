@@ -1,9 +1,12 @@
 .site-message {
-  background-color: $primary-color;
-  color: $white;
-  z-index: 999;
   position: fixed;
+  z-index: 999;
+
   width: 100%;
+
+  color: $white;
+
+  background-color: $primary-color;
 
   .inner {
     width: 1120px;

@@ -92,10 +92,12 @@ function isInViewport(element) {
     img {
       max-width: 100%;
       max-height: 100%;
+
       transition: opacity 200ms;
 
       &.placeholder {
         image-rendering: pixelated;
+
         opacity: 0.5;
       }
     }

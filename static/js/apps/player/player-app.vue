@@ -49,34 +49,37 @@
       height: 30px;
 
       img {
-        height: 32px;
         width: 100%;
+        height: 32px;
       }
     }
   }
 
   .player-current-item-loading {
-    min-height: 112px;
-    background: $primary-color-b;
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 112px;
+
     color: white;
-    font-size: 150%;
     font-weight: 300;
+    font-size: 150%;
+
+    background: $primary-color-b;
   }
 
   .player-controls {
-    //border-top: 1px solid black;
-    padding: 4px 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    //border-top: 1px solid black;
+    padding: 4px 0;
 
     .button-panel .fa {
-      font-size: 20px;
-      color: #a5a5a5;
       margin: 0 4px;
+
+      color: #a5a5a5;
+      font-size: 20px;
     }
   }
 
@@ -88,11 +91,13 @@
     height: 100%; /* needs to take the parents height, alternative: body {display: flex} */
 
     .item-to-play {
-      background: #fff;
       margin: 0 0 10px;
+
+      background: #fff;
 
       .header {
         padding: 2px 2px 2px 5px;
+
         background: #fff;
         border-top: 1px solid #eaeaea;
         border-bottom: 1px solid #eaeaea;
@@ -108,60 +113,67 @@
     */
 
   .autoplay-container {
-    background: $primary-color-b;
     position: fixed;
     top: 0;
-    height: 100%;
-    width: 100%;
     z-index: 99;
+
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+    background: $primary-color-b;
 
     .autoplay-panel {
-      cursor: pointer;
-      width: 240px;
-      height: 240px;
-      border-radius: 120px;
-      background: white;
+      display: flex;
 
       /* flex-grow: 1; */
 
       /* flex-shrink: 1; */
       flex-basis: auto;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      width: 240px;
+      height: 240px;
+
       color: $primary-color-b;
       text-align: center;
-      align-items: center;
-      display: flex;
-      justify-content: center;
-      flex-direction: row;
+
+      background: white;
+      border-radius: 120px;
+      cursor: pointer;
     }
 
     .autoplay-info {
       display: block;
 
       p {
-        text-align: center;
         max-width: 320px;
-        padding: 0;
         margin-top: 20px;
+        padding: 0;
+
         color: white;
+        text-align: center;
       }
     }
   }
 
   .loading-container {
-    background: rgba(255, 255, 255, 0.9);
     position: absolute;
     top: 0;
-    height: 100%;
-    width: 100%;
     z-index: 99;
+
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    flex-direction: row;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(255, 255, 255, 0.9);
   }
 
   .fade-enter-active {

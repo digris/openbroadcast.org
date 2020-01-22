@@ -182,24 +182,26 @@ export default {
       }
 
       .grid {
-        cursor: pointer;
-        font-size: 90%;
         display: grid;
+        grid-template-areas: "dayparts header" "dayparts matrix";
         grid-template-rows: 20px auto;
         grid-template-columns: 30px auto;
-        grid-template-areas: "dayparts header" "dayparts matrix";
+
+        font-size: 90%;
+
+        cursor: pointer;
 
         &__dayparts {
           grid-area: dayparts;
-          margin-top: 20px;
           width: 100%;
+          margin-top: 20px;
           // background: var(--border-color);
 
           &__slot {
-            height: var(--slot-height);
             display: flex;
-            justify-content: flex-end;
             align-items: center;
+            justify-content: flex-end;
+            height: var(--slot-height);
             padding-right: 6px;
 
             /* border-bottom: 1px solid var(--border-color-light); */
@@ -217,10 +219,10 @@ export default {
         }
 
         &__header {
-          grid-area: header;
-          height: 20px;
           display: grid;
+          grid-area: header;
           grid-template-columns: repeat(28, 1fr);
+          height: 20px;
 
           &__day {
             /* border-right: 1px solid var(--border-color); */
@@ -232,16 +234,17 @@ export default {
             /* } */
 
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
           }
         }
 
         &__matrix {
-          grid-area: matrix;
-          width: 100%;
           display: grid;
+          grid-area: matrix;
           grid-template-columns: repeat(28, 1fr);
+          width: 100%;
+
           cursor: crosshair;
 
           &__day {
@@ -262,6 +265,7 @@ export default {
 
           &__slot {
             height: var(--slot-height);
+
             border-bottom: 1px solid var(--border-color-light);
 
             &:first-child {
@@ -284,6 +288,7 @@ export default {
             &__emission {
               width: 100%;
               height: 100%;
+
               background: var(--slot-with-emission-color);
             }
           }

@@ -6,9 +6,10 @@
   // custom scroll-bar
   @mixin custom-scroll-bar() {
     &::-webkit-scrollbar {
-      border-radius: 0;
-      height: 10px;
       width: 4px;
+      height: 10px;
+
+      border-radius: 0;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -27,8 +28,8 @@
     height: 100%;
 
     .content-container {
-      flex: 1;
       display: flex;
+      flex: 1;
     }
   }
 
@@ -43,8 +44,9 @@
   .item-to-collect {
     margin-top: 10px;
     margin-bottom: 10px;
-    color: #fff;
     padding: 6px;
+
+    color: #fff;
 
     .item {
       // background: rgba(#000, .9);
@@ -72,9 +74,10 @@
       display: flex;
 
       label {
-        color: rgba(255, 255, 255, 0.7);
-        padding-left: 10px;
         margin-top: 4px;
+        padding-left: 10px;
+
+        color: rgba(255, 255, 255, 0.7);
       }
 
       input {
@@ -85,16 +88,19 @@
 
   .tabbed-navigation {
     display: flex;
+
     border-bottom: 1px solid $primary-color-b;
 
     .tab-selector {
       flex-grow: 1;
-      text-align: center;
-      color: #fff;
-      padding: 2px;
-      cursor: pointer;
-      text-transform: uppercase;
       margin: 0 6px;
+      padding: 2px;
+
+      color: #fff;
+      text-align: center;
+      text-transform: uppercase;
+
+      cursor: pointer;
 
       &:not(:last-child) {
         margin-right: 1px;
@@ -112,8 +118,8 @@
 
   .playlist-search {
     display: flex;
-    flex-grow: 1;
     flex-direction: column;
+    flex-grow: 1;
     height: 100%;
 
     .input-container {
@@ -123,11 +129,13 @@
       .input-group {
         .input-group-field {
           box-sizing: border-box;
-          padding-left: 6px;
-          height: 26px;
           width: 100%;
-          background: transparent;
+          height: 26px;
+          padding-left: 6px;
+
           color: #fff;
+
+          background: transparent;
           border: 1px solid #444;
         }
       }
@@ -137,14 +145,15 @@
       @include custom-scroll-bar;
 
       flex: 1;
-      overflow: auto;
       max-height: 70vh;
+      overflow: auto;
     }
   }
 
   .playlist-create {
-    width: 100%;
     position: relative;
+
+    width: 100%;
 
     .playlist-created-container {
       margin-top: 20px;
@@ -167,31 +176,38 @@
 
         .input-group-field {
           box-sizing: border-box;
-          padding-left: 6px;
-          height: 26px;
           width: 100%;
-          background: transparent;
+          height: 26px;
+          padding-left: 6px;
+
           color: #fff;
+
+          background: transparent;
           border: 1px solid #444;
         }
 
         &.submit {
           padding: 20px 0 0 0;
+
           text-align: center;
 
           .button {
-            border: 2px solid $primary-color-b;
-            background: #fff;
-            text-transform: uppercase;
-            color: $primary-color-b;
-            transition: border-radius 0.2s;
             padding: 6px 24px;
 
+            color: $primary-color-b;
+            text-transform: uppercase;
+
+            background: #fff;
+            border: 2px solid $primary-color-b;
+
+            transition: border-radius 0.2s;
+
             &:hover {
-              background: $primary-color-b;
               color: #fff;
-              border-radius: 4px;
               text-decoration: none;
+
+              background: $primary-color-b;
+              border-radius: 4px;
             }
           }
         }
@@ -199,8 +215,8 @@
 
       .horizontal-radio-group {
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
 
         .title {
           margin-right: 20px;
@@ -208,8 +224,9 @@
 
         label {
           display: flex;
-          color: rgba(255, 255, 255, 0.7);
           margin: 0 20px 0 0;
+
+          color: rgba(255, 255, 255, 0.7);
         }
 
         input {
@@ -225,16 +242,18 @@
   }
 
   .loading-container {
-    background: rgba(34, 34, 34, 1);
     position: absolute;
     top: 0;
-    height: 100%;
-    width: 100%;
     z-index: 99;
+
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    flex-direction: row;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(34, 34, 34, 1);
   }
 
   .fade-enter-active {
@@ -264,15 +283,15 @@
     >
       <header>
         <div
-          v-if="(items_to_collect && items_to_collect.length > 1)"
+          v-if="(itemsToCollect && itemsToCollect.length > 1)"
           class="batch-collect"
         >
           <p>
-            (( multiple)) {{ items_to_collect.length }}
+            (( multiple)) {{ itemsToCollect.length }}
           </p>
         </div>
         <div
-          v-for="item_to_collect in items_to_collect"
+          v-for="item_to_collect in itemsToCollect"
           v-else
           :key="item_to_collect.uuid"
           class="item-to-collect"
@@ -334,7 +353,7 @@
               v-for="item in playlists"
               :key="item.uuid"
               :item="item"
-              :items_to_collect="items_to_collect"
+              :items-to-collect="itemsToCollect"
               :actions="['add', 'add-and-close']"
               @visit="visit(...arguments)"
               @add="add_item_to_playlist(...arguments)"
@@ -354,7 +373,7 @@
               <playlist
                 :key="create_playlist_data.created.uuid"
                 :item="create_playlist_data.created"
-                :items_to_collect="items_to_collect"
+                :items-to-collect="itemsToCollect"
                 :actions="['visit']"
                 @visit="visit(...arguments)"
               />

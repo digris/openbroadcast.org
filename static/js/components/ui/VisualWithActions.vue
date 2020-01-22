@@ -126,17 +126,21 @@ export default {
 </script>
 <style lang="scss" scoped>
     .visual-with-actions {
-      margin: 0;
       position: relative;
+
+      margin: 0;
 
       .mask {
         position: absolute;
         top: 0;
         left: 0;
+
         width: 100%;
         height: 100%;
+
         background: #000;
         opacity: 0;
+
         transition: opacity 200ms;
 
         &--visible {
@@ -148,10 +152,11 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+
         display: grid;
         grid-template-rows: 30% auto 30%;
+        width: 100%;
+        height: 100%;
 
         &__middle {
           display: flex;
@@ -195,6 +200,7 @@ export default {
               color: white;
               font-size: 32px;
               line-height: 32px;
+
               transition: transform 200ms;
             }
 
@@ -213,6 +219,7 @@ export default {
           .context-menu {
             margin-top: 48px;
             margin-right: 4px;
+
             background: white;
           }
         }

@@ -4,12 +4,16 @@ engines:
     config:
       languages:
       - python
-  pep8:
-    enabled: true
   radon:
     enabled: true
   fixme:
     enabled: true
+  bandit:
+    enabled: true
+  pylint:
+    enabled: true
+    plugins:
+      - django
 
 ratings:
    paths:
@@ -33,6 +37,7 @@ exclude_paths:
 - "website/legacy/*"
 - "website/apps/nunjucks/*"
 - "website/apps/ac_tagging/*"
+- "website/apps/importer/*"
 - "website/static-src/*"
 - "website/**/static/*"
 - "static/sass/*"

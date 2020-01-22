@@ -140,7 +140,10 @@ module.exports = {
         }),
         new VueLoaderPlugin(),
         new StyleLintPlugin({
-            files: ['**/*.vue'],
+            files: [
+              './static/js/**/*.vue',
+              './static/style/**/*.scss',
+            ],
         })
     ],
     resolve: {

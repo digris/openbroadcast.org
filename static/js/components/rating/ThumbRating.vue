@@ -60,18 +60,20 @@ export default {
 </script>
 <style lang="scss" scoped>
     .thumb-rating {
-      height: 60px;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      height: 60px;
     }
 
     .vote {
-      align-self: center;
-      cursor: pointer;
       position: relative;
+
       display: flex;
       flex-direction: row;
+      align-self: center;
+
+      cursor: pointer;
 
       svg {
         margin: 0 20px;
@@ -93,9 +95,10 @@ export default {
 
       &--down {
         svg {
-          transform: rotateZ(180deg);
-          top: 12px;
           position: relative;
+          top: 12px;
+
+          transform: rotateZ(180deg);
         }
       }
 

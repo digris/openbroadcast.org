@@ -19,8 +19,8 @@
   &--prefix,
   &--appendix {
     ul {
-      list-style-type: circle;
       list-style-position: inside;
+      list-style-type: circle;
     }
   }
 
@@ -28,12 +28,14 @@
     ul {
       margin: 0 0 12px 0;
       padding: 0;
+
       border-top: 1px solid $separator-line-color;
 
       li {
-        border-bottom: 1px solid $separator-line-color;
         display: inline-block;
         width: 100%;
+
+        border-bottom: 1px solid $separator-line-color;
 
         a {
           display: block;
@@ -41,10 +43,10 @@
           // padding-left: .5rem;
 
           i {
-            padding: 3px 0 3px 0;
-            width: 20px;
             display: block;
             float: left;
+            width: 20px;
+            padding: 3px 0 3px 0;
           }
 
           small {
@@ -52,13 +54,15 @@
           }
 
           &.hover {
-            background: $primary-color-light;
             text-decoration: none;
+
+            background: $primary-color-light;
           }
 
           &.disabled {
-            cursor: wait;
             color: #bbb;
+
+            cursor: wait;
 
             &.hover {
               background: #efefef;

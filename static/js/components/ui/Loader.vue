@@ -7,18 +7,21 @@ export default {
   @import '../../../sass/site/variables';
 
   .spinner {
-    margin: 100px auto;
     width: 50px;
     height: 40px;
-    text-align: center;
+    margin: 100px auto;
+
     font-size: 10px;
+    text-align: center;
   }
 
   .spinner > div {
-    background-color: $primary-color-b;
-    height: 100%;
-    width: 6px;
     display: inline-block;
+    width: 6px;
+    height: 100%;
+
+    background-color: $primary-color-b;
+
     -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
     animation: sk-stretchdelay 1.2s infinite ease-in-out;
   }
@@ -59,13 +62,13 @@ export default {
     0%,
     40%,
     100% {
-      transform: scaleY(0.4);
       -webkit-transform: scaleY(0.4);
+      transform: scaleY(0.4);
     }
 
     20% {
-      transform: scaleY(1);
       -webkit-transform: scaleY(1);
+      transform: scaleY(1);
     }
   }
 
