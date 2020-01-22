@@ -34,6 +34,7 @@ exclude_paths:
 - "website/apps/nunjucks/*"
 - "website/apps/ac_tagging/*"
 - "website/static-src/*"
+- "website/**/static/*"
 - "static/sass/*"
 - "**/js/lib/**/*"
 - "**/templates.js"
