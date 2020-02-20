@@ -114,9 +114,9 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
     )
 
     # tagging (d_tags = "display tags")
-    # d_tags = tagging.fields.TagField(
-    #     max_length=1024, verbose_name="Tags", blank=True, null=True
-    # )
+    d_tags = tagging.fields.TagField(
+        max_length=1024, verbose_name="Tags", blank=True, null=True
+    )
 
     # alpha features
     enable_alpha_features = models.BooleanField(default=False)

@@ -1,6 +1,6 @@
 // legacy stylesheet imports
-// import '../sass/screen.sass';
-// import '../sass/scheduler.sass';
+import '../sass/screen.sass';
+import '../sass/scheduler.sass';
 
 // iconset & fonts
 require('../font/icons.font');

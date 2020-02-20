@@ -24,9 +24,9 @@ module.exports = {
       "@babel/polyfill",
       "./static/js/bundle.js"
     ],
-    'legacy': [
-      "./static/js/legacy.js"
-    ],
+    // 'legacy': [
+    //   "./static/js/legacy.js"
+    // ],
   },
   // entry: './static/js/bundle.js',
   output: {
