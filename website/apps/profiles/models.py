@@ -95,6 +95,7 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
     mobile = PhoneNumberField(_("mobile"), blank=True, null=True)
     phone = PhoneNumberField(_("phone"), blank=True, null=True)
     fax = PhoneNumberField(_("fax"), blank=True, null=True)
+    skype = models.CharField(_("Skype"), blank=True, null=True, max_length=100)
 
     address1 = models.CharField(_("address"), null=True, blank=True, max_length=100)
     address2 = models.CharField(
@@ -397,7 +398,6 @@ class ServiceType(models.Model):
 
 @python_2_unicode_compatible
 class Service(models.Model):
-    """Service model"""
 
     service = models.ForeignKey(ServiceType)
     profile = models.ForeignKey(Profile)
@@ -412,6 +412,9 @@ class Service(models.Model):
 
     def __str__(self):
         return "%s" % self.username
+
+    def get_url(self):
+        return 'asdadsd'
 
     @property
     def service_url(self):

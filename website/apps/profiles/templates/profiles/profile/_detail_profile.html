@@ -76,6 +76,7 @@
         </div>
     {% endif %}
 
+    {% comment %}
     {% if object.service_set.exists %}
         <div class="profile-details__generic">
             <h3>{% trans "Communication" %}</h3>
@@ -91,5 +92,6 @@
             {% endfor %}
         </div>
     {% endif %}
+    {% endcomment %}
 
 </div>
