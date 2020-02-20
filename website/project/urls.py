@@ -59,7 +59,7 @@ urlpatterns = [
     url(r"^collection/", include("collection.urls", namespace="collection")),
     # url(r'^search/', include('search.urls')),
     url(r"^sitemap.xml$", sitemap, {"sitemaps": sitemaps}),
-    url(r"^player-ng/", include("player.urls", namespace="player")),
+    url(r"^player/", include("player.urls", namespace="player")),
     url(r"^media-asset/", include("media_asset.urls")),
     url(r"^webhooks/import/", include("massimporter.webhook.urls")),
 ]

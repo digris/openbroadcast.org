@@ -2,6 +2,9 @@
 // import '../sass/screen.sass';
 // import '../sass/scheduler.sass';
 
+// iconset & fonts
+require('../font/icons.font');
+
 // global stylesheet import
 import '../style/main.scss';
 

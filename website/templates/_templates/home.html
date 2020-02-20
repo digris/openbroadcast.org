@@ -29,8 +29,7 @@
             <div class="actions">
                 <p>
                     {% if not user.is_authenticated %}
-                    <a href="{% url "account:register" %}" class="button button--primary button--xl"><i class="icon-user"></i> Create your Account</a>
-                    {% else %}
+                    <a href="{% url "account:register" %}" class="button button--primary button--xl">Create your Account</a>
                     {% endif %}
                 </p>
             </div>
@@ -50,8 +49,7 @@
             <div class="actions">
                 <p>
                     {% if not user.is_authenticated %}
-                    <a href="{% url "account:register" %}" class="button button--primary button--xl"><i class="icon-user"></i> Create your Account</a>
-                    {% else %}
+                    <a href="{% url "account:register" %}" class="button button--primary button--xl">Create your Account</a>
                     {% endif %}
                 </p>
             </div>

@@ -50,7 +50,7 @@ export default {
     return {
       tags: [],
       newTag: '',
-      maxTags: 3,
+      maxTags: 9,
       suggestedTags: [],
       validationErrors: [],
     };
@@ -97,18 +97,18 @@ export default {
       });
     },
     autocompleteResult(result) {
-      console.debug('autocompleteResult', result);
       this.tags.unshift(result);
     },
     readTagsFromInput() {
-      // console.debug('this.$refs', this.$refs);
       const input = this.$refs.field.querySelector('input');
-      this.tags = input.value.split(',');
+      if(input.value) {
+        this.tags = input.value.split(',');
+      }
     },
     writeTagsToInput() {
       const input = this.$refs.field.querySelector('input');
       // input.value = this.tags.join(",");
-      input.value = this.tags.map((tag) => `"${tag}"`).join(',');
+      input.value = this.tags.map((tag) => `"${tag}"`).join(',').toLowerCase();
     },
   },
 };
@@ -190,9 +190,16 @@ export default {
     .input-container {
       @include input-container-grid;
 
+      padding-top: 8px;
+
       &__input {
         display: flex;
         min-height: 100px;
+
+        &.field {
+          align-items: flex-start;
+        }
+
       }
 
       &__autocomplete {

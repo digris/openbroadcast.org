@@ -6,7 +6,7 @@ import requests
 import logging
 from django.conf import settings
 
-from .utils import fprint_from_path, code_from_path
+from .utils import code_from_path
 
 API_BASE_URL = getattr(settings, "FPRINT_API_BASE_URL", "http://127.0.0.1:7777/api/v1/")
 
@@ -56,7 +56,11 @@ class FprintAPIClient(object):
 
         log.debug("ingest fprint entry to: {}".format(url))
 
-        code = code_from_path(obj.master.path)
+        # TODO: implement exception handling
+        try:
+            code = code_from_path(obj.master.path)
+        except:
+            return
 
         if not code:
             log.warning("unable to generate echoprint code: {}".format(obj.master.path))

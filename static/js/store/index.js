@@ -5,6 +5,7 @@ import createMutationsSharer from 'vuex-shared-mutations';
 import scheduler from './_scheduler';
 import objectHistory from './_objectHistory';
 import library from './_library';
+import player from './_player';
 
 Vue.use(Vuex);
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     scheduler,
     objectHistory,
     library,
+    player,
   },
   state: {
     settings: {

@@ -12,8 +12,7 @@
             {% if user == object.user %}
             <li class="link">
                 <a class="hoverable" href="{{ object.get_edit_url }}" title="{% trans "Edit" %}">
-                    <i class="icon icon-edit"></i>
-                    <span>{% trans "Edit" %}</span>
+                    {% trans "Edit" %}
                 </a>
             </li>
             {% endif %}
@@ -21,8 +20,7 @@
             {% if user.is_staff %}
             <li class="link">
                 <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}" title="{% trans "Administration view" %}">
-                    <i class="icon icon-lock"></i>
-                    <span>{% trans "Administration view" %}</span>
+                    {% trans "Administration view" %}
                 </a>
             </li>
             {% endif %}
@@ -30,8 +28,7 @@
             {% if user.is_staff %}
             <li class="link">
                 <a class="hoverable" href="{% url "loginas-user-login" object.user.pk %}" title="{% trans "Login as user" %}">
-                    <i class="icon icon-key"></i>
-                    <span>{% trans "Login as user" %}</span>
+                    {% trans "Login as user" %}
                 </a>
             </li>
             {% endif %}
@@ -39,8 +36,7 @@
             {% if user.is_authenticated and not user == object.user %}
             <li class="link">
                 <a class="hoverable" href="{% url "postman_write" object.user.username %}" title="{% trans "Send Message" %}">
-                    <i class="icon icon-envelope"></i>
-                    <span>{% trans "Send Message" %}</span>
+                    {% trans "Send Message" %}
                 </a>
             </li>
             {% endif %}
@@ -50,21 +46,15 @@
                 <li class="link">
                     <a class="hoverable" href="{% follow_all_url object.user %}?next={{ request.get_full_path }}" title="{% trans "Follow/unfollow" %}">
                     {% if request.user|is_following:object.user %}
-                        <i class="icon icon-unlink"></i>
-                        <span>{% trans "Stop following" %} {{ object.user|ct_name_by_object }}</span>
+                        {% trans "Stop following" %} {{ object.user|ct_name_by_object }}
                     {% else %}
-                        <i class="icon icon-link"></i>
-                        <span>{% trans "Follow" %} {{ object.user|ct_name_by_object }}</span>
+                        {% trans "Follow" %} {{ object.user|ct_name_by_object }}
                     {% endif %}
                 </a>
                 </li>
             {% endif %}
 
-
-
             {% mentor_for_user object user %}
-
-
 
         </ul>
     </div>

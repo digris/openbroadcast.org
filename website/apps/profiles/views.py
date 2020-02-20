@@ -300,7 +300,7 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         self.user_object = user_form.save()
 
         self.object = form.save(commit=False)
-        self.object.tags = form.cleaned_data.get("tags", "").lower()
+        self.object.tags = form.cleaned_data.get("tags")
         self.object = form.save()
 
         for name, formset in named_formsets.items():
@@ -416,11 +416,6 @@ class UserCredentialsView(LoginRequiredMixin, UpdateView):
 # TODO: Implement!
 def profile_force_login(request, username):
     raise NotImplementedError("Not implemented yet.")
-
-
-"""
-mentoring views
-"""
 
 
 @login_required

@@ -54,16 +54,16 @@ def check_binaries(app_configs, **kwargs):
                 )
             )
 
-        else:
-
-            errors.append(
-                Debug(
-                    "OK: {}".format(path),
-                    # hint='{} found: {}'.format(key, path),
-                    obj=key,
-                    id="base.I001",
-                )
-            )
+        # else:
+        #
+        #     errors.append(
+        #         Debug(
+        #             "OK: {}".format(path),
+        #             # hint='{} found: {}'.format(key, path),
+        #             obj=key,
+        #             id="base.I001",
+        #         )
+        #     )
 
     return errors
 
@@ -92,16 +92,16 @@ def check_directories(app_configs, **kwargs):
                 )
             )
 
-        else:
-
-            errors.append(
-                Debug(
-                    "OK: {}".format(path),
-                    # hint='{} found: {}'.format(key, path),
-                    obj=key,
-                    id="base.I002",
-                )
-            )
+        # else:
+        #
+        #     errors.append(
+        #         Debug(
+        #             "OK: {}".format(path),
+        #             # hint='{} found: {}'.format(key, path),
+        #             obj=key,
+        #             id="base.I002",
+        #         )
+        #     )
 
     return errors
 
@@ -147,12 +147,12 @@ def check_apis(app_configs, **kwargs):
                 )
             )
 
-        else:
-
-            errors.append(
-                Debug(
-                    "OK: {}".format(service["url"]), obj=service["name"], id="base.I003"
-                )
-            )
+        # else:
+        #
+        #     errors.append(
+        #         Debug(
+        #             "OK: {}".format(service["url"]), obj=service["name"], id="base.I003"
+        #         )
+        #     )
 
     return errors

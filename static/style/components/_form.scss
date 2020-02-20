@@ -282,7 +282,7 @@
     // defined / styled in component
     // TODO: is it a good idea to have `input-container` styles inside vue component?
     .input-container {
-      margin: 0.5rem 0;
+      margin: 0.25rem 0;
 
       @include fileinput;
     }

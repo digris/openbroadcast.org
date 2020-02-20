@@ -100,7 +100,10 @@ SESSION_SERIALIZER = "django.contrib.sessions.serializers.PickleSerializer"
 
 
 # profiles & co
-ABSOLUTE_URL_OVERRIDES = {"auth.user": lambda o: "/network/users/%s/" % o.username}
+# ABSOLUTE_URL_OVERRIDES = {"auth.user": lambda o: "/network/users/%s/" % o.username}
+ABSOLUTE_URL_OVERRIDES = {
+    "auth.user": lambda u: "/network/users/%s/" % u.profile.uuid
+}
 
 ##################################################################
 # API v2
@@ -145,3 +148,10 @@ ALIBRARY_USE_CELERYD = True
 ABCAST_USE_CELERYD = True
 MEDIA_ASSET_USE_CELERYD = True
 PYPO_USE_CELERYD = True
+
+
+
+##################################################################
+# system checks
+##################################################################
+SILENCED_SYSTEM_CHECKS = ["fields.W342"]

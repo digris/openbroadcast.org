@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import tabex from 'tabex';
 
+import settings from '../../settings';
+
 const DEBUG = true;
 
 const POPUP_SIZE = { width: 400, height: 800 };
@@ -17,13 +19,20 @@ const PlayerControlApp = Vue.extend({
     return {
       has_master: false,
       master_window: null,
-      player_url: '/player-ng/',
       heartbeat_payloads: [],
       action_payloads: [],
     };
   },
+  computed: {
+    player_url: function () {
+      if(settings.enableAlphaFeatures) {
+        return '/player/next/';
+      }
+      return '/player/';
+    }
+  },
   mounted() {
-    if (DEBUG) console.group('PlayerControlApp');
+    if (DEBUG) console.group('PlayerControlApp', settings);
 
     exchange.on('player.heartbeat', this.heartbeat_receive);
     // exchange.on('player.controls', this.controls_receive);

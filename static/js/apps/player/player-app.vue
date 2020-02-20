@@ -246,7 +246,7 @@
           v-else
           class="player-current-item-loading"
         >
-          loading...
+          <!--loading...-->
         </div>
       </div>
 
@@ -256,11 +256,6 @@
           <a @click.prevent="player_play_offset(-1, player_current_media)">
             <i class="fa fa-step-backward" />
           </a>
-          <!--
-                    <a v-on:click.prevent="player_controls('stop')">
-                        <i class="fa fa-stop"></i>
-                    </a>
-                    -->
           <a @click.prevent="player_controls('pause')">
             <i class="fa fa-pause" />
           </a>
@@ -350,12 +345,6 @@
 
     <footer>
       <playerfooter :items-to-play="itemsToPlay" />
-
-      <!--
-            <div class="player-footer">
-                (( footer )) <span @click="add_all_to_playlist">Add all</span>
-            </div>
-            -->
     </footer>
   </div>
 </template>

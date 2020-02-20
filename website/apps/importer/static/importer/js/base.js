@@ -7,8 +7,7 @@ var FILEUPLOAD_OPTIONS = {
     autoUpload: true,
     maxNumberOfFiles: 50,
     maxFileSize: 1000000000, // 1000 MB
-    minFileSize: 200000,
-    //acceptFileTypes: /(\.|\/)(mp3|aif?f|wav|avi|flac|mp4|m4a)$/i,
+    minFileSize: 10000,
     acceptFileTypes: /(\.|\/)(mp3|wav|flac|mp4|ogg|m4a)$/i,
     sequentialUploads: false,
     limitConcurrentUploads: 3

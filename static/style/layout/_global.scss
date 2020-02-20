@@ -47,7 +47,8 @@ body.base {
   main {
     width: 100%;
     max-width: $g-content-max-width;
-    height: 100%;
+    // TODO: verify layout without 100% height
+    // height: 100%;
     min-height: calc(100vh - 128px);
     margin: 0 auto;
     // padding-top: main navigation height + offset

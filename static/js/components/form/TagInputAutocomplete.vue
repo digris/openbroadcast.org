@@ -21,7 +21,7 @@ export default {
       results: [],
       search: '',
       isLoading: false,
-      arrowCounter: 0,
+      arrowCounter: -1,
     };
   },
   watch: {
@@ -108,10 +108,11 @@ export default {
       @keydown.down.prevent="onArrowDown"
       @keydown.up.prevent="onArrowUp"
       @keydown.enter.prevent="onEnter"
+      @keydown.tab.prevent="onEnter"
       @keydown.188.prevent="onEnter"
     >
     <ul
-      v-show="isOpen"
+      v-show="(isOpen && results.length)"
       class="autocomplete__results"
     >
       <li

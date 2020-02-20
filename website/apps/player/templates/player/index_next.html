@@ -11,23 +11,20 @@
   <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/base/favicon.png"/>
   <link rel="shortcut icon" type="image/x-icon" href="{{ STATIC_URL }}img/base/favicon.png">
 
-  <!-- start: webpack bundle handling -->
   {% if not webpack_devserver %}
     <link rel="stylesheet" href="{% static 'dist/css/bundle.css' %}"/>
     <script src="{% static 'dist/js/bundle.js' %}"></script>
   {% else %}
     <script src="{% static 'js/bundle.js' %}"></script>
   {% endif %}
-  <!-- end: webpack bundle handling -->
 
-  <!-- start: icon fonts -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  <!-- end: icon fonts -->
+  <script src="https://kit.fontawesome.com/07013da322.js" crossorigin="anonymous"></script>
 
 </head>
 
 <body class="player" data-player-mode="master">
-    <div id="player_app">(( player app ))</div>
-    <div id="collector_app">(( loading collector app ))</div>
+<div id="app">
+  <player mode="master">(( loading player ))</player>
+</div>
 </body>
 </html>

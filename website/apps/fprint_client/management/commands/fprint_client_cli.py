@@ -1,20 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import time
-import sys
-import datetime
 import requests
 import subprocess
 import json
 import djclick as click
-from django.db import connections, connection
+
+from django.db import connection
 from django.conf import settings
 from django.utils import timezone
 
-
-from multiprocessing import Pool
-
-from ...utils import code_from_path
 from ...api_client import FprintAPIClient
 
 from alibrary.models import Media

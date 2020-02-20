@@ -9,13 +9,9 @@
 {% endif %}
 
 {% for action in actions %}
-
 <li class="link">
     <a class="hoverable" href="{{ action.url }}?next={{ user.get_absolute_url }}" title="{{ action.name }}">
-        <i class="icon icon-{{ action.icon }}"></i>
-        <span>{{ action.name }}</span>
+        {{ action.name }}
     </a>
 </li>
-
 {% endfor %}
-

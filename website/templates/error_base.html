@@ -4,116 +4,117 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>{% block title %}{% endblock %}</title>
     <style type="text/css" media="screen">
-        body {
-            background-color: #fff;
-            margin: 0;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
+    body {
+      margin: 0;
 
-        .container {
-            margin: 50px auto 40px auto;
-            max-width: 800px;
-            text-align: center;
-        }
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-        a {
-            color: #0B0;
-            text-decoration: none;
-        }
+      background-color: #fff;
+    }
 
-        a:hover {
-            text-decoration: underline;
-        }
+    .container {
+      max-width: 800px;
+      margin: 50px auto 40px auto;
 
-        h1 {
-            letter-spacing: -1px;
-            line-height: 60px;
-            font-size: 32px;
-            color: #0B0;
-            margin: 0px;
-            text-shadow: 0 1px 0 #fff;
-            font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
-            font-weight: 200;
-        }
+      text-align: center;
+    }
 
-        p {
-            color: rgba(0, 0, 0, 0.5);
-            margin: 10px 0 10px;
-            font-size: 18px;
-            font-weight: 200;
-            line-height: 1.6em;
-        }
+    a {
+      color: #0B0;
+      text-decoration: none;
+    }
 
-        ul {
-            list-style: none;
-            margin: 25px 0;
-            padding: 0;
-        }
+    a:hover {
+      text-decoration: underline;
+    }
 
-        li {
-            display: table-cell;
-            font-weight: bold;
-            width: 1%;
-        }
+    h1 {
+      margin: 0px;
 
-        .logo {
-            display: inline-block;
-            margin-top: 35px;
-        }
+      color: #0B0;
+      font-weight: 200;
+      font-size: 32px;
+      font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
+      line-height: 60px;
+      letter-spacing: -1px;
+      text-shadow: 0 1px 0 #fff;
+    }
 
-        .logo-img-2x {
-            display: none;
-        }
+    p {
+      margin: 10px 0 10px;
 
-        @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (   min--moz-device-pixel-ratio: 2), only screen and (     -o-min-device-pixel-ratio: 2/1), only screen and (        min-device-pixel-ratio: 2), only screen and (                min-resolution: 192dpi), only screen and (                min-resolution: 2dppx) {
-            .logo-img-1x {
-                display: none;
-            }
+      color: rgba(0, 0, 0, 0.5);
+      font-weight: 200;
+      font-size: 18px;
+      line-height: 1.6em;
+    }
 
-            .logo-img-2x {
-                display: inline-block;
-            }
-        }
+    ul {
+      margin: 25px 0;
+      padding: 0;
 
-        #suggestions {
-            margin-top: 35px;
-            color: #ccc;
-        }
+      list-style: none;
+    }
 
-        #suggestions a {
-            color: #666666;
-            font-weight: 200;
-            font-size: 14px;
-            margin: 0 10px;
-        }
+    li {
+      display: table-cell;
+      width: 1%;
 
-        /* buttons */
-        .btn {
-            padding: 6px 50px;
-            color: #0B0;
-            background-color: #fff;
-            border: 1px solid #0b0;
-            border-radius: 2px;
-            box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.25);
-        }
+      font-weight: bold;
+    }
 
+    .logo {
+      display: inline-block;
+      margin-top: 35px;
+    }
 
+    .logo-img-2x {
+      display: none;
+    }
+
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (   min--moz-device-pixel-ratio: 2), only screen and (     -o-min-device-pixel-ratio: 2/1), only screen and (        min-device-pixel-ratio: 2), only screen and (                min-resolution: 192dpi), only screen and (                min-resolution: 2dppx) {
+      .logo-img-1x {
+        display: none;
+      }
+
+      .logo-img-2x {
+        display: inline-block;
+      }
+    }
+
+    #suggestions {
+      margin-top: 35px;
+
+      color: #ccc;
+    }
+
+    #suggestions a {
+      margin: 0 10px;
+
+      color: #666666;
+      font-weight: 200;
+      font-size: 14px;
+    }
+
+    .btn {
+      padding: 6px 50px;
+
+      color: #0B0;
+
+      background-color: #fff;
+      border: 1px solid #0b0;
+      border-radius: 2px;
+      box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.25);
+    }
     </style>
-
 </head>
 <body class="{% block body-class %}{% endblock %}">
-
 <div class="container">
     {% block content %}{% endblock %}
-
     <div id="suggestions">
         <a href="mailto:support@openbroadcast.org">Contact Support</a> &mdash;
         <a href="https://lab.hazelfire.com/projects/openbroadcast-org/issues/new">Issue Tracker</a>
     </div>
-
 </div>
-
-
-
 </body>
 </html>

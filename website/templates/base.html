@@ -44,6 +44,14 @@
             window.jQuery.holdReady(true);
         </script>
 
+        <script>
+
+          document.settings = {
+            enableAlphaFeatures: {% if user.is_authenticated and user.profile.enable_alpha_features %}true{% else %}false{% endif %},
+          }
+
+        </script>
+
         <!-- start: js-head elements added by sub-templates -->
         {% render_block "js-head" %}
         <!-- end: js-head elements added by sub-templates -->
@@ -51,9 +59,11 @@
         <!-- start: webpack bundle handling -->
         {% if not webpack_devserver %}
             <link rel="stylesheet" href="{% static 'dist/css/bundle.css' %}"/>
+            <link rel="stylesheet" href="{% static 'dist/css/legacy.css' %}"/>
             <script src="{% static 'dist/js/bundle.js' %}"></script>
         {% else %}
             <script src="{% static 'js/bundle.js' %}"></script>
+            <script src="{% static 'js/legacy.js' %}"></script>
         {% endif %}
         <!-- end: webpack bundle handling -->
 

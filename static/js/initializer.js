@@ -25,6 +25,7 @@ import AutocompleteWidgets from './element/autocomplete-widget';
 import LayzImageLoader from './utils/lazy-image-loader';
 
 //
+import Player from './components/Player/Player.vue';
 import Scheduler from './components/scheduler/Scheduler.vue';
 //
 import ThumbRating from './components/rating/ThumbRating.vue';
@@ -60,6 +61,7 @@ class AppInitializer {
         'tag-input-container': TagInputContainer,
         //
         scheduler: Scheduler,
+        player: Player,
         'thumb-rating': ThumbRating,
         'object-actions': ObjectActions,
         'emission-history': EmissionHistory,

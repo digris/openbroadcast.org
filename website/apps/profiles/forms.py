@@ -41,7 +41,6 @@ class ActionForm(forms.Form):
 
 
 class ProfileForm(ModelForm):
-
     class Meta:
         model = Profile
         exclude = ("user", "mentor", "description")
@@ -49,6 +48,7 @@ class ProfileForm(ModelForm):
         widgets = {
             "image": AdvancedFileInput(image_width=100),
             "expertise": forms.CheckboxSelectMultiple(),
+            # "birth_date": forms.TextInput(attrs={"type": "date"}),
             # "tags": TagAutocompleteWidget(required=False, label=_("Tags"), options={'max_tags': 9}),
         }
 
@@ -69,10 +69,7 @@ class ProfileForm(ModelForm):
         # self.fields['d_tags'].widget.instance = instance
 
         appearance_layout = Layout(
-            Fieldset(
-                _("Appearance"),
-                InputContainer("pseudonym"),
-            )
+            Fieldset(_("Appearance"), InputContainer("pseudonym"),)
         )
 
         profile_layout = Layout(
@@ -80,15 +77,14 @@ class ProfileForm(ModelForm):
                 _("Personal Information"),
                 Div(
                     HTML(
-                        'Your birth date is only visible to your mentor, and to team-members with administrative rights.'
+                        "Your birth date is only visible to your mentor, and to team-members with administrative rights."
                     ),
                     css_class="fieldset-hint fieldset-hint--info",
                 ),
                 Grid(
-                  Cell(InputContainer("gender")),
-                  Cell(InputContainer("birth_date", data_picker=True)),
+                    Cell(InputContainer("gender")),
+                    Cell(InputContainer("birth_date")),
                 ),
-
                 InputContainer("biography"),
                 InputContainer("image"),
             )
@@ -102,21 +98,13 @@ class ProfileForm(ModelForm):
                     ),
                     css_class="fieldset-hint fieldset-hint--info",
                 ),
-
-                Grid(
-                    Cell(InputContainer("address1")),
-                ),
-
-                Grid(
-                    Cell(InputContainer("address2")),
-                ),
-
+                Grid(Cell(InputContainer("address1")),),
+                Grid(Cell(InputContainer("address2")),),
                 Grid(
                     Cell(InputContainer("city")),
                     Cell(InputContainer("zip")),
                     Cell(InputContainer("country")),
                 ),
-
                 Grid(
                     Cell(InputContainer("mobile")),
                     Cell(InputContainer("phone")),
@@ -133,22 +121,15 @@ class ProfileForm(ModelForm):
                     ),
                     css_class="fieldset-hint fieldset-hint--info",
                 ),
-                Grid(
-                    Cell(InputContainer("iban")),
-                    Cell(InputContainer("paypal")),
-                ),
+                Grid(Cell(InputContainer("iban")), Cell(InputContainer("paypal")),),
             )
         )
         settings_layout = Layout(
-            Fieldset(
-                _("Settings"),
-                InputContainer("enable_alpha_features"),
-            )
+            Fieldset(_("Settings"), InputContainer("enable_alpha_features"),)
         )
         skills_layout = Layout(
             Fieldset(
-                _("Skills & Knowledge"),
-                InputContainer("expertise", hide_label=True)
+                _("Skills & Knowledge"), InputContainer("expertise", hide_label=True)
             )
         )
 
@@ -158,10 +139,7 @@ class ProfileForm(ModelForm):
             #     _("Tags"),
             #     InputContainer("d_tags", hide_label=True)
             # ),
-            Fieldset(
-                _("N-Tags"),
-                TagInputContainer("tags", hide_label=True)
-            )
+            Fieldset(_("Tags"), TagInputContainer("tags", hide_label=True))
         )
 
         layout = Layout(
@@ -179,6 +157,18 @@ class ProfileForm(ModelForm):
     def clean_user(self):
         return self.instance.user
 
+    # def clean_tags(self):
+    #     return self.cleaned_data["tags"].lower()
+    #     # tags = self.cleaned_data["tags"]
+    #     # if len(tags) < 3:
+    #     #     return None
+    #     #
+    #     # print('---', tags)
+    #     #
+    #     # return tags.lower()
+
+
+
 
 class LinkForm(ModelForm):
     class Meta:
@@ -195,7 +185,7 @@ class LinkForm(ModelForm):
             Cell(InputContainer("url")),
             Cell(InputContainer("title")),
             Cell(InputContainer("DELETE")),
-            data_autogrow='autogrow'
+            data_autogrow="autogrow",
         )
 
         self.helper.add_layout(base_layout)

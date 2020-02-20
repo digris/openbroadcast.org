@@ -6,19 +6,11 @@
         <ul>
             <li>
                 <a class="hoverable" href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
-                    <!--
-                    <i class="icon icon-angle-left"></i>
-                    <span>{% trans "Back to Detail-View" %}</span>
-                    -->
                     {% trans "Back to Detail-View" %}
                 </a>
             </li>
             <li>
                 <a class="hoverable" href="{% url "profiles-credentials-edit" %}?next={{ object.get_edit_url }}" title="{% trans "Change Login / Password" %}">
-                    <!--
-                    <i class="icon icon-lock"></i>
-                    <span>{% trans "Change Login / Password" %}</span>
-                    -->
                     {% trans "Change Login / Password" %}
                 </a>
             </li>
