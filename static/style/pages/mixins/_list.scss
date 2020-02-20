@@ -31,7 +31,8 @@
       //}
 
       .image {
-        display: contents;
+        // display: contents;
+        display: block;
 
         img {
           width: 100%;
