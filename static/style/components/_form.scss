@@ -157,7 +157,7 @@
 
 @mixin form-default-actions {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 
   &__action {
     min-width: 10rem;

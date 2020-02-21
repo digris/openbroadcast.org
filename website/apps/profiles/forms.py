@@ -43,7 +43,7 @@ class ActionForm(forms.Form):
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
-        exclude = ("user", "mentor", "description")
+        exclude = ("user", "mentor", "description", "fax", "d_tags")
 
         widgets = {
             "image": AdvancedFileInput(image_width=100),
@@ -108,7 +108,7 @@ class ProfileForm(ModelForm):
                 Grid(
                     Cell(InputContainer("mobile")),
                     Cell(InputContainer("phone")),
-                    Cell(InputContainer("fax")),
+                    Cell(InputContainer("skype")),
                 ),
             )
         )
