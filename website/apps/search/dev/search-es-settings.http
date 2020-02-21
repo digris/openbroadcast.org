@@ -1,4 +1,4 @@
-PUT http://localhost:9200/_cluster/settings
+PUT  http://10.35.30.231:9200/_cluster/settings
 Content-Type: application/json
 
 {

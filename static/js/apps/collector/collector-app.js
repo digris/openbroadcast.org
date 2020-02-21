@@ -92,7 +92,7 @@ const CollectorApp = Vue.extend({
     }, 200),
     // method called from ui
     add_item_to_playlist(playlist, close) {
-      if (DEBUG) console.info('add_item_to_playlist', playlist.name, close);
+      if (DEBUG) console.info('add_item_to_playlist', playlist.name, this.itemsToCollect);
       this.add_items_to_playlist(playlist, this.itemsToCollect);
       if (close) {
         this.close();

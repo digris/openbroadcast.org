@@ -372,6 +372,7 @@ class MediaDocument(DocType):
         analyzer=edge_ngram_analyzer, search_analyzer=edge_ngram_search_analyzer
     )
 
+    uuid = KeywordField()
     url = fields.KeywordField(attr="get_absolute_url")
     api_url = fields.KeywordField(attr="get_api_url")
     created = fields.DateField()

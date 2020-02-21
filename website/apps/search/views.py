@@ -106,7 +106,7 @@ class BaseSearchListView(ListView):
     search_class = None
     order_by = []
     _search_result = None
-    _formatted__search_result = None
+    _formatted_search_result = None
 
     def get(self, request, *args, **kwargs):
         try:
@@ -154,7 +154,7 @@ class BaseSearchListView(ListView):
         # add search query & result as reference
         self._search_query = search_query
         self._search_result = result
-        self._formatted__search_result = formatted_result
+        self._formatted_search_result = formatted_result
 
         return qs
 
@@ -162,7 +162,7 @@ class BaseSearchListView(ListView):
         context = super(BaseSearchListView, self).get_context_data(**kwargs)
 
         search_result = self._search_result
-        formatted__search_result = self._formatted__search_result
+        formatted_search_result = self._formatted_search_result
         pagination_query = utils.parse_pagination_query(request=self.request)
         pagination = utils.get_pagination_data(
             result=search_result, query=pagination_query
@@ -189,7 +189,7 @@ class BaseSearchListView(ListView):
                 # 'facets': search_result.facets,
                 # 'num_results': search_result.hits.total,
                 "search_result": search_result,  # raw search result
-                "search_results_by_id": formatted__search_result.get(
+                "search_results_by_id": formatted_search_result.get(
                     "results_by_id", {}
                 ),
                 "pagination": pagination,

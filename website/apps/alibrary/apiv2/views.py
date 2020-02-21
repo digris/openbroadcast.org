@@ -99,7 +99,10 @@ class PlaylistViewSet(
     def add_items(self, request, uuid=None, *args, **kwargs):
 
         playlist = self.get_object()
-        items_to_collect = self.request.data.get("items_to_collect", [])
+        # items_to_collect = self.request.data.get("items_to_collect", [])
+        items_to_collect = self.request.data.get("itemsToCollect", [])
+
+        print('add_items_to_playlist', items_to_collect, playlist)
 
         add_items_to_playlist(items_to_collect, playlist)
 
@@ -112,7 +115,8 @@ class PlaylistViewSet(
 
         name = self.request.data.get("name")
         type = self.request.data.get("type")
-        items_to_collect = self.request.data.get("items_to_collect", [])
+        # items_to_collect = self.request.data.get("items_to_collect", [])
+        items_to_collect = self.request.data.get("itemsToCollect", [])
 
         playlist = Playlist(name=name, user=request.user, type=type)
 

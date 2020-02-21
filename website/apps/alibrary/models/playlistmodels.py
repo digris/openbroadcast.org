@@ -574,6 +574,8 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         status = 1  # set to 'OK'
         messages = []
 
+        # return status, messages
+
         try:
             # check ready-status of related media
             for item in self.items.all():

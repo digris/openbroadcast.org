@@ -172,10 +172,19 @@ export default {
     <player-panel class="player__panel">
       (( panel ))
     </player-panel>
-    <player-controls class="player__controls" :has-next="hasNext" :has-previous="hasPrevious" @next="playNext" @previous="playPrevious">
+    <player-controls
+      class="player__controls"
+      :has-next="hasNext"
+      :has-previous="hasPrevious"
+      @next="playNext"
+      @previous="playPrevious"
+    >
       (( controls ))
     </player-controls>
-    <player-list class="player__list" :items="items">
+    <player-list
+      class="player__list"
+      :items="items"
+    >
       (( list ))
     </player-list>
     <div style="display: none;">

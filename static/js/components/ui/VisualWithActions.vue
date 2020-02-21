@@ -124,122 +124,6 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-    .visual-with-actions {
-      position: relative;
-
-      margin: 0;
-
-      .mask {
-        position: absolute;
-        top: 0;
-        left: 0;
-
-        width: 100%;
-        height: 100%;
-
-        background: #000;
-        opacity: 0;
-
-        transition: opacity 200ms;
-
-        &--visible {
-          opacity: 0.65;
-        }
-      }
-
-      .panel {
-        position: absolute;
-        top: 0;
-        left: 0;
-
-        display: grid;
-        grid-template-rows: 30% auto 30%;
-        width: 100%;
-        height: 100%;
-
-        &__middle {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
-
-        &__bottom {
-          display: flex;
-          align-items: flex-end;
-        }
-      }
-
-      .actions {
-        display: grid;
-        grid-template-columns: 30% auto 30%;
-
-        &__rating,
-        &__play,
-        &__secondary {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        &__rating {
-          // background: red;
-        }
-
-        &__play {
-          // background: deepskyblue;
-        }
-
-        &__secondary {
-          position: relative;
-
-          .toggle {
-            cursor: pointer;
-
-            > i {
-              color: white;
-              font-size: 32px;
-              line-height: 32px;
-
-              transition: transform 200ms;
-            }
-
-            //&:hover {
-            //    > i {
-            //        color: red;
-            //    }
-            //}
-            &--active {
-              > i {
-                transform: rotate(-90deg);
-              }
-            }
-          }
-
-          .context-menu {
-            margin-top: 48px;
-            margin-right: 4px;
-
-            background: white;
-          }
-        }
-      }
-
-      .thumbnails {
-        margin: 0 0 0 6px;
-
-        .thumbnail {
-          cursor: pointer;
-
-          img {
-            width: 32px;
-            height: 32px;
-          }
-        }
-      }
-    }
-
-</style>
 <template>
   <div
     class="visual-with-actions"
@@ -322,3 +206,120 @@ export default {
     />
   </div>
 </template>
+<style lang="scss" scoped>
+  .visual-with-actions {
+    position: relative;
+
+    height: 100%;
+    margin: 0;
+
+    .mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      background: #000;
+      opacity: 0;
+
+      transition: opacity 200ms;
+
+      &--visible {
+        opacity: 0.65;
+      }
+    }
+
+    .panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      display: grid;
+      grid-template-rows: 30% auto 30%;
+      width: 100%;
+      height: 100%;
+
+      &__middle {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      &__bottom {
+        display: flex;
+        align-items: flex-end;
+      }
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 30% auto 30%;
+
+      &__rating,
+      &__play,
+      &__secondary {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      &__rating {
+        // background: red;
+      }
+
+      &__play {
+        // background: deepskyblue;
+      }
+
+      &__secondary {
+        position: relative;
+
+        .toggle {
+          cursor: pointer;
+
+          > i {
+            color: white;
+            font-size: 32px;
+            line-height: 32px;
+
+            transition: transform 200ms;
+          }
+
+          //&:hover {
+          //    > i {
+          //        color: red;
+          //    }
+          //}
+          &--active {
+            > i {
+              transform: rotate(-90deg);
+            }
+          }
+        }
+
+        .context-menu {
+          margin-top: 48px;
+          margin-right: 4px;
+
+          background: white;
+        }
+      }
+    }
+
+    .thumbnails {
+      margin: 0 0 0 6px;
+
+      .thumbnail {
+        cursor: pointer;
+
+        img {
+          width: 32px;
+          height: 32px;
+        }
+      }
+    }
+  }
+
+</style>

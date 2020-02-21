@@ -27,6 +27,7 @@ import LayzImageLoader from './utils/lazy-image-loader';
 //
 import Player from './components/Player/Player.vue';
 import Scheduler from './components/scheduler/Scheduler.vue';
+import PlaylistEditor from './components/PlaylistEditor/PlaylistEditor.vue';
 //
 import ThumbRating from './components/rating/ThumbRating.vue';
 import ObjectActions from './components/ObjectActions/ObjectActions.vue';
@@ -62,6 +63,7 @@ class AppInitializer {
         //
         scheduler: Scheduler,
         player: Player,
+        'playlist-editor': PlaylistEditor,
         'thumb-rating': ThumbRating,
         'object-actions': ObjectActions,
         'emission-history': EmissionHistory,

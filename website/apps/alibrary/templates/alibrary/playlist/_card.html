@@ -6,11 +6,10 @@
             <visual-with-actions
                 ct="{{ object.get_ct }}"
                 uuid="{{ object.uuid }}"
-                image-url="{% thumbnail object.image 280x280 crop upscale %}"
+                image-url="{% thumbnail object.main_image 280x280 crop upscale %}"
                 :actions="{% get_object_actions_as_json object user %}">
             </visual-with-actions>
         </div>
-
         {% comment %}
         <div class="image">
             {% lazy_image object.main_image 'crop' '270x270' %}
