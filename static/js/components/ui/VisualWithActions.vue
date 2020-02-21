@@ -25,6 +25,10 @@ export default {
       type: String,
       required: true,
     },
+    url: {
+      type: String,
+      default: null,
+    },
     imageUrl: {
       type: String,
       required: false,
@@ -116,6 +120,31 @@ export default {
           }],
         });
       }
+
+      if (action.key === 'queue') {
+        this.playerControls({
+          do: 'load',
+          opts: {
+            mode: 'queue',
+          },
+          items: [{
+            ct: this.ct,
+            uuid: this.uuid,
+          }],
+        });
+      }
+
+      if (action.key === 'schedule') {
+        const co = {
+          name: '...loading...',
+          ct: this.ct,
+          uuid: this.uuid,
+          url: this.url,
+        };
+        this.$store.dispatch('scheduler/addToClipboard', co);
+      }
+
+
     },
     playerControls(action) {
       const _e = new CustomEvent('player:controls', { detail: action });

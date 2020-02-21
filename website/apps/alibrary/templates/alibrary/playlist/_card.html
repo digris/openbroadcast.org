@@ -6,6 +6,7 @@
             <visual-with-actions
                 ct="{{ object.get_ct }}"
                 uuid="{{ object.uuid }}"
+                url="{% url 'api:playlist-detail' object.uuid %}"
                 image-url="{% thumbnail object.main_image 280x280 crop upscale %}"
                 :actions="{% get_object_actions_as_json object user %}">
             </visual-with-actions>
