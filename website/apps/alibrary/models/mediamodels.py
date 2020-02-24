@@ -274,7 +274,9 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
         permissions = (
             ("play_media", "Play Track"),
+            # TODO: fix typo in "downoad"
             ("downoad_media", "Download Track"),
+            ("download_master", "Download Master"),
             ("merge_media", "Merge Tracks"),
             ("reassign_media", "Re-assign Tracks"),
             ("admin_media", "Edit Track (extended)"),
@@ -364,6 +366,11 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
     release_link.allow_tags = True
     release_link.short_description = "Edit"
+
+    @property
+    def master_url(self):
+        return reverse("api:media-download-master", args=(self.uuid,))
+
 
     # TODO: depreciated
     def get_playlink(self):

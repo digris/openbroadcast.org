@@ -197,20 +197,23 @@ flattened_schedule = FlattenedSchedule.as_view()
 class PlayoutSchedule(APIView):
 
     """
-    raw / track-based schedule for playout (pypo)
-    # TODO: check implementation in pypo (currently not used, see pypo-ng)
+    flat / track-based schedule for playout-ng
     """
 
-    def get_content_items(self, emissions, time_start, time_end):
+    @staticmethod
+    def get_content_items(emissions, time_start, time_end):
         for emission in emissions:
             for content_item in emission.get_content_items():
                 if (
                     content_item.time_end >= time_start
                     and content_item.time_start <= time_end
                 ):
+
+                    # add reference to emission instance (needed in PlayoutScheduleSerializer)
+                    content_item.emission = emission
                     yield content_item
 
-    def get(self, request):
+    def get(self, request, channel_uuid=None):
 
         time_start = timezone.now() - datetime.timedelta(seconds=60 * 30)
         time_end = timezone.now() + datetime.timedelta(seconds=60 * 30)
@@ -219,14 +222,11 @@ class PlayoutSchedule(APIView):
             time_end__gte=time_start, time_start__lte=time_end
         )
 
-        print("time_start", time_start)
-        print("time_end", time_end)
+        if channel_uuid:
+            emissions = emissions.filter(channel__uuid=channel_uuid)
 
         content_items = list(self.get_content_items(emissions, time_start, time_end))
-        print("emissions", emissions)
-        print("content_items", content_items)
 
-        # serializer = PlayoutScheduleSerializer(instance=emissions)
         serializer = PlayoutScheduleSerializer(instance=content_items)
         return Response(serializer.data)
 

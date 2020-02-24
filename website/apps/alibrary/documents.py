@@ -281,6 +281,7 @@ class ReleaseDocument(DocType):
     label_type = fields.KeywordField(attr="label.get_type_display")
     barcode = fields.KeywordField()
 
+    releasedate = fields.DateField()
     releasedate_year = fields.IntegerField()
     catalognumber = fields.KeywordField()
 

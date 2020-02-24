@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 
 from rest_framework import serializers
-from api_extra.serializers import ImageSerializer, AbsoluteUURLField
+from api_extra.serializers import ImageSerializer, AbsoluteURLField
 from ..models import Profile
 
 
@@ -15,7 +15,7 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
     )
     user_id = serializers.IntegerField(source="user.id")
     ct = serializers.CharField(source="get_ct")
-    detail_url = AbsoluteUURLField(source="get_absolute_url")
+    detail_url = AbsoluteURLField(source="get_absolute_url")
     display_name = serializers.CharField(source="get_display_name")
     full_name = serializers.CharField(source="get_display_name")
     image = ImageSerializer(source="main_image")

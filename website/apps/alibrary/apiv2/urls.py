@@ -28,4 +28,5 @@ urlpatterns = [
     ),
     url(r"^track/$", views.media_list, name="media-list"),
     url(r"^track/(?P<uuid>[0-9A-Fa-f-]+)/$", views.media_detail, name="media-detail"),
+    url(r"^track/(?P<uuid>[0-9A-Fa-f-]+)/download-master/$", views.media_download_master, name="media-download-master"),
 ]

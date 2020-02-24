@@ -71,7 +71,7 @@ class ReleaseListView(BaseSearchListView):
     order_by = [
         {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
         {
-            "key": "releasedate_year",
+            "key": "releasedate",
             "name": _("Releasedate"),
             "default_direction": "asc",
         },

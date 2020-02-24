@@ -4,10 +4,11 @@ from __future__ import unicode_literals
 from django.conf import settings
 from rest_framework import serializers
 from rest_flex_fields import FlexFieldsModelSerializer
-from api_extra.serializers import ImageSerializer, AbsoluteUURLField
+from api_extra.serializers import ImageSerializer, AbsoluteURLField
 from alibrary.models import Playlist
 from alibrary.apiv2.serializers import PlaylistSerializer
 from profiles.apiv2.serializers import ProfileSerializer
+
 from ..models import Emission
 
 SITE_URL = getattr(settings, "SITE_URL")
@@ -41,7 +42,7 @@ class EmissionSerializer(FlexFieldsModelSerializer):
     series = serializers.CharField(source="content_object.series_display")
     image = ImageSerializer(source="content_object.main_image")
 
-    detail_url = AbsoluteUURLField(source="get_absolute_url")
+    detail_url = AbsoluteURLField(source="get_absolute_url")
 
     user = serializers.SerializerMethodField(source="user")
 
@@ -92,6 +93,22 @@ class EmissionHistorySerializer(serializers.ModelSerializer):
         fields = ["uuid", "time_start", "time_end", "duration"]
 
 
+class PlayoutScheduleEmissionSerializer(serializers.Serializer):
+    uuid = serializers.UUIDField()
+    name = serializers.CharField()
+    time_start = serializers.DateTimeField()
+    time_end = serializers.DateTimeField()
+    duration = serializers.IntegerField()
+
+
+class PlayoutScheduleMasterSerializer(serializers.Serializer):
+    encoding = serializers.CharField(source="master_encoding")
+    sha1 = serializers.CharField(source="master_sha1")
+    url = AbsoluteURLField(source="master_url")
+    filesize = serializers.IntegerField(source="master_filesize")
+    # path = serializers.CharField(source="master")
+
+
 class PlayoutScheduleItemSerializer(serializers.Serializer):
     uuid = serializers.UUIDField()
     time_start = serializers.DateTimeField()
@@ -106,7 +123,12 @@ class PlayoutScheduleItemSerializer(serializers.Serializer):
     obi_ct = serializers.CharField(source="content_object.get_ct")
     obi_uuid = serializers.UUIDField(source="content_object.uuid")
     obj_name = serializers.CharField(source="content_object.name")
-    obj_master = serializers.CharField(source="content_object.master")
+    # obj_master = serializers.CharField(source="content_object.master")
+    # obj_master_sha1 = serializers.CharField(source="content_object.master_sha1")
+    # obj_master_url = serializers.CharField(source="content_object.master_url")
+
+    emission = PlayoutScheduleEmissionSerializer()
+    master = PlayoutScheduleMasterSerializer(source="content_object")
 
 
 class PlayoutScheduleSerializer(serializers.Serializer):

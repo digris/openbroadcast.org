@@ -7,7 +7,6 @@ import logging
 
 from django.views.generic import DetailView, UpdateView
 from django.http import HttpResponseRedirect
-from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 from django.utils import timezone

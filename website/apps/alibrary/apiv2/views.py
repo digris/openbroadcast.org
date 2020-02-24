@@ -1,15 +1,20 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 import logging
 
 from django.apps import apps
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
+from django.http import FileResponse
 
 from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_flex_fields import FlexFieldsModelViewSet
+from rest_framework.views import APIView
+from rest_framework.exceptions import PermissionDenied
+
+from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 
 from .serializers import (
     ArtistSerializer,
@@ -173,3 +178,37 @@ class MediaViewSet(
 
 media_list = MediaViewSet.as_view({"get": "list"})
 media_detail = MediaViewSet.as_view({"get": "retrieve"})
+
+
+class MediaDownloadView(APIView):
+    permission_required = "alibrary.download_master"
+    raise_exception = True
+
+    version = None
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     if not request.user.is_authenticated():
+    #         raise PermissionDenied("no anonymous users allowed")
+    #     return super(MediaDownloadView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, **kwargs):
+
+        if not self.version == 'master':
+            raise NotImplementedError('only master version supported at the moment')
+
+        if not request.user.is_authenticated():
+            raise PermissionDenied("no anonymous users allowed")
+
+        if not request.user.has_perm(self.permission_required):
+            raise PermissionDenied("missing permission: {} for user: {}".format(self.permission_required, request.user))
+
+        obj = get_object_or_404(Media, uuid=kwargs.get("uuid"))
+        filename = "{uuid}.{encoding}".format(uuid=obj.uuid, encoding=obj.master_encoding)
+
+
+        response = FileResponse(open(obj.master.path, 'rb'))
+        response["Content-Disposition"] = 'attachment; filename="{}"'.format(filename)
+
+        return response
+
+media_download_master = MediaDownloadView.as_view(version='master')

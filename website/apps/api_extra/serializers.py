@@ -21,7 +21,7 @@ class ImageSerializer(serializers.ImageField):
         return "{}{}".format(SITE_URL, url)
 
 
-class AbsoluteUURLField(serializers.URLField):
+class AbsoluteURLField(serializers.URLField):
     def to_representation(self, value):
-        value = super(AbsoluteUURLField, self).to_representation(value)
+        value = super(AbsoluteURLField, self).to_representation(value)
         return "{}{}".format(SITE_URL, value)
