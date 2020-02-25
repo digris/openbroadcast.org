@@ -120,8 +120,8 @@ class PlayoutScheduleItemSerializer(serializers.Serializer):
     cue_out = serializers.IntegerField()
     duration = serializers.IntegerField(source="playout_duration")
 
-    obi_ct = serializers.CharField(source="content_object.get_ct")
-    obi_uuid = serializers.UUIDField(source="content_object.uuid")
+    obj_ct = serializers.CharField(source="content_object.get_ct")
+    obj_uuid = serializers.UUIDField(source="content_object.uuid")
     obj_name = serializers.CharField(source="content_object.name")
     # obj_master = serializers.CharField(source="content_object.master")
     # obj_master_sha1 = serializers.CharField(source="content_object.master_sha1")

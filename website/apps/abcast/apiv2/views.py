@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import datetime
 import logging
+import json
 
 from operator import itemgetter
 from django.apps import apps
@@ -23,6 +24,7 @@ from .serializers import (
 )
 from ..models import Emission, Channel
 from ..utils import scheduler
+from ..signals import playout_started
 
 DEFAULT_CHANNEL_ID = 1
 
@@ -229,6 +231,15 @@ class PlayoutSchedule(APIView):
 
         serializer = PlayoutScheduleSerializer(instance=content_items)
         return Response(serializer.data)
+
+    def post(self, request, channel_uuid=None):
+
+        # print(request.data)
+
+        # playout_started.send(sender=self.__class__, obj_ct='obj_ct', obj_uuid='obj_uuid', emission_uuid='emission_uuid')
+        playout_started.send(sender=self.__class__, **request.data)
+
+        return Response({'status': True})
 
 
 playout_schedule = PlayoutSchedule.as_view()
