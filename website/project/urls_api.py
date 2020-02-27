@@ -50,7 +50,7 @@ try:
     api.register(AbcastBaseResource())
     api.register(ChannelResource())
 
-    # scheduler
+    # scheduler (legacy)
     api.register(EmissionResource())
 
     # profiles

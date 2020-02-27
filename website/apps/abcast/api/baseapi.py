@@ -243,7 +243,7 @@ class ChannelResource(ModelResource):
 
         bundle = {"start_next": start_next, "playing": now_playing}
 
-        # hackish hook to integrate mot/dls metadata
+        # hackish way to integrate mot/dls metadata
         if request.method == "GET" and "include-dls" in request.GET:
             dls_generator = DABMetadataGenerator(
                 emission=current_emission, content_object=current_content_object

@@ -78,9 +78,9 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
 
     artist_display = serializers.CharField(source="get_artist_display")
 
-    image = ImageSerializer(source="release.main_image")
-
     release_display = serializers.SerializerMethodField()
+
+    image = ImageSerializer(source="release.main_image")
 
     def get_release_display(self, obj, **kwargs):
         return obj.release.name if obj.release else None
