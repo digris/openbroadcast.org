@@ -163,7 +163,7 @@ class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):
         return "%s" % self.name
 
     def get_absolute_url(self):
-        return reverse("abcast-station-detail", kwargs={"slug": self.station.uuid})
+        return reverse("abcast-station-detail", kwargs={"uuid": self.station.uuid})
 
     def get_api_url(self):
         return (

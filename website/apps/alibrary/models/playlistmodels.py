@@ -238,7 +238,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
 
     def get_absolute_url(self):
-        return reverse("alibrary-playlist-detail", kwargs={"slug": self.slug})
+        return reverse("alibrary-playlist-detail", kwargs={"uuid": self.uuid})
 
     def get_edit_url(self):
         return reverse("alibrary-playlist-edit", args=(self.pk,))

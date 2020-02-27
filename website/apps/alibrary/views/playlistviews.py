@@ -17,6 +17,7 @@ from django.utils import timezone
 from django.views.generic import DetailView, UpdateView, CreateView, DeleteView
 from elasticsearch_dsl import TermsFacet, RangeFacet, DateHistogramFacet
 
+from base.views.detail import UUIDDetailView
 from search.views import BaseFacetedSearch, BaseSearchListView
 
 from ..forms import PlaylistForm, ActionForm
@@ -33,9 +34,9 @@ class PlaylistSearch(BaseFacetedSearch):
     facets = [
         ("tags", TermsFacet(field="tags", size=240)),
         ("type", TermsFacet(field="type", size=100, order={"_key": "asc"})),
-        ("status", TermsFacet(field="status", size=100, order={"_key": "asc"})),
-        ("weather", TermsFacet(field="weather", size=100, order={"_key": "asc"})),
-        ("seasons", TermsFacet(field="seasons", size=100, order={"_key": "asc"})),
+        # ("status", TermsFacet(field="status", size=100, order={"_key": "asc"})),
+        # ("weather", TermsFacet(field="weather", size=100, order={"_key": "asc"})),
+        # ("seasons", TermsFacet(field="seasons", size=100, order={"_key": "asc"})),
         (
             "daypart_days",
             TermsFacet(field="daypart_days", size=100, order={"_key": "asc"}),
@@ -180,19 +181,10 @@ class PlaylistListView(BaseSearchListView):
         return qs
 
 
-class PlaylistDetailView(DetailView):
+class PlaylistDetailView(UUIDDetailView, DetailView):
     context_object_name = "playlist"
     model = Playlist
     template_name = "alibrary/playlist/detail.html"
-
-    def render_to_response(self, context):
-        return super(PlaylistDetailView, self).render_to_response(
-            context, content_type="text/html"
-        )
-
-    def get_context_data(self, **kwargs):
-        context = super(PlaylistDetailView, self).get_context_data(**kwargs)
-        return context
 
 
 class PlaylistCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):

@@ -21,7 +21,7 @@ urlpatterns = [
         name="alibrary-playlist-create",
     ),
     url(
-        r"^(?P<slug>[-\w]+)/$",
+        r"^(?P<uuid>[0-9a-f-]+)/$",
         views.PlaylistDetailView.as_view(),
         name="alibrary-playlist-detail",
     ),
