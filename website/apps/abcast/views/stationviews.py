@@ -9,7 +9,6 @@ from pure_pagination.mixins import PaginationMixin
 
 class StationListView(PaginationMixin, ListView):
 
-    object = Station
     paginate_by = 24
 
     model = Station
@@ -21,31 +20,14 @@ class StationListView(PaginationMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(StationListView, self).get_context_data(**kwargs)
-        self.extra_context["list_style"] = self.request.GET.get("list_style", "s")
-        self.extra_context["get"] = self.request.GET
         context.update(self.extra_context)
 
         return context
 
     def get_queryset(self, **kwargs):
 
-        q = self.request.GET.get("q", None)
+        return self.model.objects.all().order_by('name')
 
-        if q:
-            qs = Station.objects.filter(Q(name__istartswith=q)).distinct()
-        else:
-            qs = Station.objects.all()
-
-        order_by = self.request.GET.get("order_by", None)
-        direction = self.request.GET.get("direction", None)
-
-        if order_by and direction:
-            if direction == "descending":
-                qs = qs.order_by("-%s" % order_by)
-            else:
-                qs = qs.order_by("%s" % order_by)
-
-        return qs
 
 
 class StationDetailView(DetailView):

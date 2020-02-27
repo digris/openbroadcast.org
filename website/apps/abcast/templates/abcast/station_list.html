@@ -1,27 +1,11 @@
 {% extends "layout_base.html" %}
 {% load spurl cache i18n truncate_tags cache %}
 
-{% block heading %}
-<div id="heading">
-	{% include "skeleton/heading.html" %}
-</div>
-{% endblock %}
+{% block heading %}{% endblock %}
 
-{% block tagcloud %}
+{% block tagcloud %}{% endblock %}
 
-{% include "element/_tagcloud.html" %}
-
-{% endblock %}
-
-
-{% block searchbar %}
-
-    {% with object=item ct="artist" %}
-        {% include "alibrary/element/_searchbar.html" %}
-    {% endwith %}
-
-{% endblock %}
-
+{% block searchbar %}{% endblock %}
 
 {% block inner %}
 
@@ -31,7 +15,7 @@
 	</div>
 </div>
 
-<div class="listview container profile m {{ list_style }}">
+<div class="listview container profile m">
 
 	<div class="list_body">
 
@@ -41,32 +25,6 @@
 
 	</div>
 </div>
-
-<div class="listview footer">
-	<div class="right ipp">
-
-		<ul class="unstyled horizontal">
-			{% spurl base=request.get_full_path active_query="ipp=12" as is_active %}
-			<li>
-				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=12" %}">12</a>
-			</li>
-			{% spurl base=request.get_full_path active_query="ipp=24" as is_active %}
-			<li>
-				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=24" %}">24</a>
-			</li>
-			{% spurl base=request.get_full_path active_query="ipp=36" as is_active %}
-			<li>
-				<a class="{% if is_active %}active{% endif %}" href="{% spurl base=request.get_full_path set_query="ipp=36" %}">36</a>
-			</li>
-		</ul>
-
-	</div>
-
-	<div class="clear">&nbsp;</div>
-</div>
-
 {% endblock %}
 
-{% block sidebar %}
-{# include "abcast/station/sidebar/_list.html" #}
-{% endblock %}
+{% block sidebar %}{% endblock %}
