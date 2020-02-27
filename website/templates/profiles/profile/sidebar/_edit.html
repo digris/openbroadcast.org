@@ -1,4 +1,19 @@
-{% load i18n spurl %}
+{% load i18n %}
 
-{% include "profiles/profile/sidebar/context/_edit.html" %}
-
+<div id="menu_context" class="menu-context">
+  <div class="action-group">
+    <ul>
+      <li>
+        <a class="hoverable" href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
+          {% trans "Back to Detail-View" %}
+        </a>
+      </li>
+      <li>
+        <a class="hoverable" href="{% url "profiles-credentials-edit" %}?next={{ object.get_edit_url }}"
+           title="{% trans "Change Login / Password" %}">
+          {% trans "Change Login / Password" %}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,4 +1,58 @@
-{% load i18n spurl %}
+{% load i18n ctype_tags activity_tags mentor_tags %}
 
-{% include "profiles/profile/sidebar/context/_detail.html" %}
+<div class="menu-context">
+  <div class="action-group">
+    <ul class="unstyled">
+      {% if user == object.user %}
+        <li class="link">
+          <a class="hoverable" href="{{ object.get_edit_url }}" title="{% trans "Edit" %}">
+            {% trans "Edit" %}
+          </a>
+        </li>
+      {% endif %}
 
+      {% if user.is_staff %}
+        <li class="link">
+          <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
+             title="{% trans "Administration view" %}">
+            {% trans "Administrative view" %}
+          </a>
+        </li>
+      {% endif %}
+
+      {% if user.is_staff %}
+        <li class="link">
+          <a class="hoverable" href="{% url "loginas-user-login" object.user.pk %}" title="{% trans "Login as user" %}">
+            {% trans "Login as user" %}
+          </a>
+        </li>
+      {% endif %}
+
+      {% if user.is_authenticated and not user == object.user %}
+        <li class="link">
+          <a class="hoverable" href="{% url "postman_write" object.user.username %}" title="{% trans "Send Message" %}">
+            {% trans "Send Message" %}
+          </a>
+        </li>
+      {% endif %}
+
+
+      {% if user.is_authenticated and not user == object.user %}
+        <li class="link">
+          <a class="hoverable" href="{% follow_all_url object.user %}?next={{ request.get_full_path }}"
+             title="{% trans "Follow/unfollow" %}">
+            {% if request.user|is_following:object.user %}
+              {% trans "Stop following" %} {{ object.user|ct_name_by_object }}
+            {% else %}
+              {% trans "Follow" %} {{ object.user|ct_name_by_object }}
+            {% endif %}
+          </a>
+        </li>
+      {% endif %}
+
+      {% mentor_for_user object user %}
+
+    </ul>
+  </div>
+
+</div>
