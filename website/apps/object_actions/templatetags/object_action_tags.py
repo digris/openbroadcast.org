@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 import json
 from django import template
-from django.template.defaultfilters import escapejs, urlencode
 
 from ..utils import get_object_actions_for_user
 

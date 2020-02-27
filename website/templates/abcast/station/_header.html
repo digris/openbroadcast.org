@@ -4,10 +4,12 @@
 
   <div class="title title--primary">
     <h2>{{ object.name }}</h2>
-    <small>
+  </div>
+  <div class="title title--secondary">
+    <h3>
       {% if object.city %}{{ object.city }}{% endif %}{% if object.city and object.country %}, {% endif %}
       {% if object.country %}{{ object.country }}{% endif %}
-    </small>
+    </h3>
   </div>
 
   <div class="meta">
