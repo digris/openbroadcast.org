@@ -1,0 +1,8 @@
+{% load i18n spurl %}
+<div class="list list--grid">
+  {% for member in members %}
+    <div class="list-item">
+      {% include 'profiles/profile/_card.html' with object=member.profile %}
+    </div>
+  {% endfor %}
+</div>

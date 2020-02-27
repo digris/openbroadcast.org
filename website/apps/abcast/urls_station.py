@@ -2,13 +2,18 @@
 from __future__ import unicode_literals
 
 from django.conf.urls import url
-from abcast.views import StationListView, StationDetailView
+from abcast import views
 
 urlpatterns = [
-    url(r"^$", StationListView.as_view(), name="abcast-station-list"),
+    url(r"^$", views.StationListView.as_view(), name="abcast-station-list"),
+    # url(
+    #     r"^(?P<uuid>[0-9A-Fa-f-]+)/$",
+    #     views.StationDetailView.as_view(),
+    #     name="abcast-station-detail",
+    # ),
     url(
-        r"^(?P<slug>[-\w]+)/$",
-        StationDetailView.as_view(),
+        r"^(?P<uuid>[0-9a-f-]+)/(?:(?P<section>[-\w]+)/)?$",
+        views.StationDetailView.as_view(),
         name="abcast-station-detail",
     ),
 ]

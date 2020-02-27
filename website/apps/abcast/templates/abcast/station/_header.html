@@ -1,27 +1,61 @@
-{% load truncate_tags i18n thumbnail arating_tags %}
-<div class="span7 padded-h container_content">
-	<div class="page-header">
-		<h2>{{ object.name|truncate_chars_inner:40 }} <small>{{ object.city }}{% if object.city and object.country %}, {% endif %}{{ object.country }}</small></h2>
-	</div>
-	<dl class="dl-horizontal main">
-		<dt>
-			{% trans "Website" %}:
-		</dt>
-		<dd>
-            <a target="_blank" href="{{ object.website }}">{{ object.website }}</a>
-		</dd>
-	</dl>
-</div>
+{% load truncate_tags i18n thumbnail arating_tags spacify_tags gravatar object_action_tags %}
 
-<div class="span2 padded-h padded-v">
-	<div class="image">
-		{% if object.main_image %}
-		<a href="{% thumbnail object.main_image 1200x1200 crop upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.main_image 172x172 crop upscale %}" alt="Cover" /> </a>
-		{% else %}
-		<img src="/static/img/base/defaults/listview.profile.xl.png" alt="{% trans "No image available" %}" />
-		{% endif %}
-	</div>
-	<div class="rating">
-		{% rating_for_object object %}
-	</div>
+<div class="header__primary">
+
+  <div class="title title--primary">
+    <h2>{{ object.name }}</h2>
+    <small>
+      {% if object.city %}{{ object.city }}{% endif %}{% if object.city and object.country %}, {% endif %}
+      {% if object.country %}{{ object.country }}{% endif %}
+    </small>
+  </div>
+
+  <div class="meta">
+
+    {% if object.address1 %}
+      <div class="meta__item">
+        <div>
+          {% trans "Address" %}:
+        </div>
+        <div>
+          {{ object.address1 }}<br>
+
+          {% if object.address2 %}
+            {{ object.address2 }}<br>
+          {% endif %}
+
+          {% if object.zip or object.city %}
+            {{ object.zip }} {{ object.city }}<br>
+          {% endif %}
+
+          {% if object.country %}
+            {{ object.get_country_display }}<br>
+          {% endif %}
+
+        </div>
+      </div>
+    {% endif %}
+
+    {% if object.website %}
+      <div class="meta__item">
+        <div>
+          {% trans "Website" %}:
+        </div>
+        <div>
+          <a href="{{ object.website }}">{{ object.website }}</a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+</div>
+<div class="header__secondary">
+  <div class="visual">
+    <visual-with-actions
+            ct="{{ object.get_ct }}"
+            uuid="{{ object.uuid }}"
+            image-url="{% thumbnail object.image 280x280 crop upscale %}"
+            large-image-url="{% thumbnail object.image 1200x1200 crop upscale %}">
+    </visual-with-actions>
+  </div>
 </div>

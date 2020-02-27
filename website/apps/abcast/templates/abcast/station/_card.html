@@ -1,0 +1,34 @@
+{% load i18n thumbnail playlist_tags calc_tags lazy_image_tags spacify_tags truncate_tags arating_tags gravatar object_action_tags %}
+
+<div class="card card--station">
+    <div class="card__visual">
+        <div class="image">
+            <visual-with-actions
+                ct="{{ object.get_ct }}"
+                uuid="{{ object.uuid }}"
+                image-url="{% thumbnail object.main_image 280x280 crop upscale %}">
+            </visual-with-actions>
+        </div>
+
+        <div class="card__visual__top">
+            <div class="flags"></div>
+        </div>
+        <div class="tags">
+            {% for tag in object.tags|slice:":4" %}
+                <span class="tag">{{ tag.name|truncate_chars_inner:10 }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card__body">
+        <div class="card__body__primary">
+            {% url 'abcast-station-detail' uuid=object.uuid as station_url %}
+            <a href="{{ station_url }}" title="{{ object.name }}">
+                {{ object.name|truncate_chars_inner:20 }}
+                {% if object.country %}({{ object.country.iso2_code }}){% endif %}
+            </a>
+        </div>
+        <div>
+            {{ object.created|date:"Y" }}
+        </div>
+    </div>
+</div>

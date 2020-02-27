@@ -1,0 +1,9 @@
+{% load i18n markup_tags wiki_tags %}
+
+<div class="station-details station-details--public">
+    {% if object.description %}
+        <div class="markdown markdown--inline">
+            {{ object.description|markdown }}
+        </div>
+    {% endif %}
+</div>

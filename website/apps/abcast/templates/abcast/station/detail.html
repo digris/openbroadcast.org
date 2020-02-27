@@ -1,0 +1,27 @@
+{% extends "layout_base.html" %}
+
+{% load i18n %}
+
+{% block heading %}{% endblock %}
+
+{% block inner %}
+  <div class="item item--detail item--profile">
+    <div class="item--header">
+      {% include "abcast/station/_header.html" %}
+    </div>
+    <nav class="item--section-menu">
+      {% for item in section_menu %}
+        <div class="menu-item{% if item.active %} menu-item--active{% endif %}">
+          <a href="{{ item.url }}">{{ item.title }}</a>
+        </div>
+      {% endfor %}
+    </nav>
+    <div class="item--body">
+      {% include section_template %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block sidebar %}
+  {% include "abcast/station/sidebar/_detail.html" %}
+{% endblock %}
