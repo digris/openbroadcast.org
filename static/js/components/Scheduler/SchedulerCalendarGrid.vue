@@ -263,7 +263,7 @@ export default {
 
             .day-label,
             .day-date {
-              // width: unset;
+              width: 24px;
             }
           }
         }
