@@ -26,7 +26,7 @@
         "nosleep.js": "^0.7.0",
         "nunjucks": "2.5.2",
         "postcss": "^7.0.17",
-        "postcss-cli": "^5.0.0",
+        "postcss-cli": "^7.0.0",
         "postcss-loader": "^2.1.5",
         "sass-loader": "^7.0.1",
         "sass-resources-loader": "^2.0.1",
