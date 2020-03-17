@@ -7,105 +7,94 @@
 
 {% block inner %}
 
-    <div class="list-header">
-        <div class="pagination-container">
-            {% include "element/_pagination.html" %}
-        </div>
+  <div class="list-header">
+    <div class="pagination-container">
+      {% include "element/_pagination.html" %}
     </div>
+  </div>
 
-    <div class="listview container actions">
-        <table class="table table--default">
-            <tbody>
-            {% for action in action_list %}
-                {% ifchanged %}
-                    <tr class="day-separator">
-                        <td colspan="3">{{ action.timestamp|naturalday }}</td>
-                    </tr>
-                {% endifchanged %}
-                <tr>
-                    <td>
-                        {% if action.target %}
-                            {% if action.target.classname == 'Media' %}
-                                Track
-                            {% else %}
-                                {{ action.target|ct_name_by_object|title }}
-                            {% endif %}
-                        {% else %}
-                            &nbsp;
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if action.actor %}
-                            {% if action.actor == user and 1 == 2 %}
-                                {% trans "You" %}
-                            {% else %}
-                                <a href="{{ action.actor.get_absolute_url }}">{{ action.actor.profile.get_display_name }}</a>
-                            {% endif %}
-                        {% endif %}
-                        {% comment %}TODO: sorry - ugly remapping. needs to be refactored{% endcomment %}
-                        {{ action.verb }}
-                        {% if action.target %}
-                            {% if action.target.username %}
-                                <a href="{{ action.target.get_absolute_url }}">"{% firstof action.target.get_full_name|truncate_chars_inner:60 action.target.username|truncate_chars_inner:60 %}"</a>
-                            {% else %}
-                                <a href="{{ action.target.get_absolute_url }}">"{{ action.target.name|truncate_chars_inner:60 }}"</a>
-                            {% endif %}
-                        {% endif %}
-                    </td>
+  <div class="listview container actions">
+    <table class="table table--default">
+      <tbody>
+      {% for action in action_list %}
+        {% ifchanged %}
+          <tr class="day-separator">
+            <td colspan="3">{{ action.timestamp|naturalday }}</td>
+          </tr>
+        {% endifchanged %}
+        <tr>
+          <td>
+            {% if action.target %}
+              {% if action.target.classname == 'Media' %}
+                Track
+              {% else %}
+                {{ action.target|ct_name_by_object|title }}
+              {% endif %}
+            {% else %}
+              &nbsp;
+            {% endif %}
+          </td>
+          <td>
+            <a href="{{ action.actor.get_absolute_url }}">{{ action.actor.profile.get_display_name }}</a>
+            {% comment %}TODO: sorry - ugly remapping. needs to be refactored{% endcomment %}
+            {{ action.verb }}
+            {% if action.target %}
+              <a href="{{ action.target.get_absolute_url }}">"{{ action.target.name|truncate_chars_inner:60 }}"</a>
+            {% endif %}
+          </td>
+          <td>
+            <span class="pull-right">{{ action.timestamp|date:'H:i' }}</span>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
-                    <td>
-                        <span class="pull-right">{{ action.timestamp|date:'H:i' }}</span>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+  <div class="list-footer">
+    <div class="pagination-container">
+      {% include "element/_pagination.html" %}
     </div>
-
-    <div class="list-footer">
-        <div class="pagination-container">
-            {% include "element/_pagination.html" %}
-        </div>
-    </div>
+  </div>
 
 {% endblock %}
 
 {% block sidebar %}
-    <div class="filter-context">
-        <div class="content__sidebar">
-            {% for filter_item in filter.filterlist %}
-            <div class="filter" data-listfilter="{{ filter_item.name }}">
-                <div class="header">
-                    <div class="header-icon">
-                        <span class="uc-icon">►</span>
-                    </div>
-                    <div class="header-title">
-                        Filter: {% firstof filter_item.label filter_item.name %}
-                    </div>
-                </div>
-                <div class="options">
-                    {% for option in filter_item.entries %}
-                        {% if option.0 %}
-                            {% spurl base=request.get_full_path active_mquery="{{ filter_item.name }}={{ option.0 }}" as is_active %}
-                            {% spurl base=request.get_full_path remove_query_param="page" trigger_mquery="{{ filter_item.name }}={{ option.0 }}" as option_url %}
-                            <span class="option {% if is_active %}selected{% endif %}">
+  <div class="filter-context">
+    <div class="content__sidebar">
+      {% for filter_item in filter.filterlist %}
+        <div class="filter" data-listfilter="{{ filter_item.name }}">
+          <div class="header">
+            <div class="header-icon">
+              <span class="uc-icon">►</span>
+            </div>
+            <div class="header-title">
+              Filter: {% firstof filter_item.label filter_item.name %}
+            </div>
+          </div>
+          <div class="options">
+            {% for option in filter_item.entries %}
+              {% if option.0 %}
+                {% spurl base=request.get_full_path active_mquery="{{ filter_item.name }}={{ option.0 }}" as is_active %}
+                {% spurl base=request.get_full_path remove_query_param="page" trigger_mquery="{{ filter_item.name }}={{ option.0 }}" as option_url %}
+                <span class="option {% if is_active %}selected{% endif %}">
                                 <a href="{{ option_url }}" rel="nofollow">
                                     {% if option|length == 2 %}
-                                        <span class="option-name">{{ option.0|title }}</span>
-                                        <span class="option-count">{{ option.1 }}</span>
+                                      <span class="option-name">{{ option.0|title }}</span>
+                                      <span class="option-count">{{ option.1 }}</span>
                                     {% endif %}
-                                    {% if option|length == 3 %}
-                                        <span class="option-name">{{ option.1|title }}</span>
-                                        <span class="option-count">{{ option.2 }}</span>
-                                    {% endif %}
+                                  {% if option|length == 3 %}
+                                    <span class="option-name">{{ option.1|title }}</span>
+                                    <span class="option-count">{{ option.2 }}</span>
+                                  {% endif %}
                                 </a>
                             </span>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
+              {% endif %}
             {% endfor %}
+          </div>
         </div>
+      {% endfor %}
     </div>
+  </div>
 {% endblock %}
 

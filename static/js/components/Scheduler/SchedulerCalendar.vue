@@ -148,7 +148,7 @@ export default {
         const timeStart = emission.timeStartObj;
 
         // TODO: how to better handle DST ??
-        // for now this atleast fixes the display. but maybe this should be handled in general...
+        // for now this at least fixes the display. but maybe this should be handled in general...
         const UTCDiff = this.dayStart.timeStart.utcOffset() - timeStart.utcOffset();
         const timeDiff = timeStart.diff(this.dayStart.timeStart.add(UTCDiff, 'minute'), 'second');
 

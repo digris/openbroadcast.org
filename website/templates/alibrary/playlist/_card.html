@@ -39,38 +39,41 @@
   </div>
   <div class="card__body">
 
-    <div class="card__body__primary">
+    <div class="card__body__primary card__body__row">
       <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">
         {{ object.name|truncate_chars_inner:22 }}
         {% if object.country %}({{ object.country }}){% endif %}
       </a>
-    </div>
-    <div>
       {% if object.is_broadcast %}
         <span class="dim" title="{% trans 'Total num. emissions' %}">
           {{ search_result.num_emissions }}
         </span>
       {% endif %}
     </div>
-    <div>
-      {% if object.series %}
-        {{ object.series.name|truncate_chars_inner:20 }}
-        {% if object.series_number %}
-          #{{ object.series_number }}
+
+    <div class="card__body__row">
+      <div>
+        {% if object.series %}
+          {{ object.series.name|truncate_chars_inner:20 }}
+          {% if object.series_number %}
+            #{{ object.series_number }}
+          {% endif %}
+        {% else %}
+          -
         {% endif %}
-      {% endif %}
+      </div>
     </div>
-    <div>
-      {# object.get_type_display #}
-    </div>
-    <div>
-      <a href="{{ object.user.get_absolute_url }}">{{ object.user.profile.get_display_name }}</a>
-    </div>
-    <div>
-      {% if object.type == 'broadcast' %}
-        {# object.get_status_display #}
-      {% endif %}
-      {{ object.duration|divide:1000|sec_to_time }}
+
+    <div class="card__body__row">
+      <div>
+        <a href="{{ object.user.get_absolute_url }}">{{ object.user.profile.get_display_name }}</a>
+      </div>
+      <div>
+        {% if object.type == 'broadcast' %}
+          {# object.get_status_display #}
+        {% endif %}
+        {{ object.duration|divide:1000|sec_to_time }}
+      </div>
     </div>
   </div>
   <!--

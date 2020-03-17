@@ -1,5 +1,5 @@
 {% extends "layout_base.html" %}
-{% load adv_cache hash_tags i18n static dajaxice_templatetags sekizai_tags dict_tags %}
+{% load adv_cache hash_tags i18n static sekizai_tags dict_tags %}
 
 {% block scope %}alibrary.release{% endblock %}
 
@@ -8,7 +8,6 @@
 {% endblock %}
 
 {% block inner %}
-
     <div class="list-header">
         <div class="controls-container">
             <div class="controls">
@@ -25,16 +24,12 @@
         <div class="list list--grid">
         {% hash_user_groups request.user as group_hash %}
         {% for object in object_list %}
+          {% include 'alibrary/release/_card.html' with search_result=search_results_by_id|get_dict_item:object.pk %}
+           {% comment %}
             <div class="list-item">
-                {% comment %}
-                {% cache 600 "release_list_card" item.pk group_hash item.updated %}
-
-                {% endcache %}
-                {% endcomment %}
-
                 {% include 'alibrary/release/_card.html' with search_result=search_results_by_id|get_dict_item:object.pk %}
-
             </div>
+            {% endcomment %}
         {% endfor %}
         </div>
     </div>

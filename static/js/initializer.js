@@ -26,12 +26,13 @@ import LayzImageLoader from './utils/lazy-image-loader';
 
 //
 import Player from './components/Player/Player.vue';
-import Scheduler from './components/scheduler/Scheduler.vue';
+import Scheduler from './components/Scheduler/Scheduler.vue';
 import PlaylistEditor from './components/PlaylistEditor/PlaylistEditor.vue';
-//
 import ThumbRating from './components/rating/ThumbRating.vue';
 import ObjectActions from './components/ObjectActions/ObjectActions.vue';
 import EmissionHistory from './components/EmissionHistory/EmissionHistory.vue';
+// UI
+import Card from './components/ui/Card.vue';
 import Visual from './components/ui/Visual.vue';
 import LazyImage from './components/ui/LazyImage.vue';
 import VisualWithActions from './components/ui/VisualWithActions.vue';
@@ -53,6 +54,7 @@ class AppInitializer {
       store,
       components: {
         // generic ui components
+        card: Card,
         visual: Visual,
         'lazy-image': LazyImage,
         'visual-with-actions': VisualWithActions,

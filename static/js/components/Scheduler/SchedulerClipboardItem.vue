@@ -27,9 +27,6 @@ export default {
       return new Date(this.item.duration).toISOString().substr(11, 8);
     },
   },
-  // data() {
-  //
-  // },
   methods: {},
 };
 </script>

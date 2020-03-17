@@ -90,7 +90,9 @@ function isInViewport(element) {
 </script>
 <style lang="scss" scoped>
     img {
+      width: 100%;
       max-width: 100%;
+      height: 100%;
       max-height: 100%;
 
       transition: opacity 200ms;
