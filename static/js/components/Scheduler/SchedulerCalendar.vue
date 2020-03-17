@@ -296,12 +296,7 @@ export default {
     },
 
     // drop events
-
-    /**
-             *
-             */
     dragenter(transferData, e) {
-      if (DEBUG) console.debug('dragenter', transferData, e);
       if (transferData.ct === 'abcast.emission') {
         this.draggedEmissionUuid = transferData.uuid;
       }
@@ -310,7 +305,6 @@ export default {
       this.emissionPlaceholder.visible = true;
     },
     dragleave(transferData, e) {
-      if (DEBUG) console.debug('dragleave', transferData, e);
       if (transferData.ct === 'abcast.emission') {
         return;
       }
@@ -332,16 +326,17 @@ export default {
       const position = this.eventToXY({ e, skipUnchanged: false });
       const timeDiff = this.positionToTimeDiff(position);
       const timeStart = this.dayStart.timeStart.add(timeDiff, 'millisecond');
-      const formattedTimeStart = timeStart.format('YYYY-MM-DD HH:mm');
 
-      console.debug('drop', transferData, position, timeDiff, formattedTimeStart, e);
+      // handle DST
+      const UTCDiff = this.dayStart.timeStart.utcOffset() - timeStart.utcOffset();
+      console.debug('UTCDiff', UTCDiff);
+
+      const formattedTimeStart = timeStart.add(UTCDiff, 'minute').format('YYYY-MM-DD HH:mm');
 
       // check if we have to update an existing emission or if
       // it is a copy resp. new item
-
       if (!e.altKey && transferData.ct === 'abcast.emission') {
         console.debug('reschedule emission');
-        // this.updateEmission(transferData, formattedTimeStart);
         this.updateEmission(transferData, { time_start: formattedTimeStart });
       } else if (transferData.ct === 'abcast.emission') {
         console.debug('duplicated emission', transferData.co);
@@ -351,20 +346,6 @@ export default {
         this.createEmission(transferData, formattedTimeStart);
       }
     },
-
-    emissionDrag: throttle((transferData, e) => {
-
-      // if(e.x > 861) {
-      //     console.debug('emissionDrag', 'x', e.x, 'y', e.y, e);
-      //     this.$emit('updateDaysOffset', -1)
-      // }
-      //
-      // if(e.x < 50) {
-      //     console.debug('emissionDrag', 'x', e.x, 'y', e.y, e);
-      //     this.$emit('updateDaysOffset', 1)
-      // }
-
-    }, 260),
 
     // handle changed position
     updateEmission(emission, payload) {
@@ -596,7 +577,6 @@ export default {
           :draggable="(! readOnly && ! emission.obj.hasLock)"
           :transfer-data="emission.obj"
           :style="emission.style"
-          @drag="emissionDrag"
         >
           <template slot="image">
             <div><!-- empty drag handler --></div>
