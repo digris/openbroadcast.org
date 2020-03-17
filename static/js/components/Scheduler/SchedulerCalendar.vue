@@ -327,10 +327,8 @@ export default {
       const timeDiff = this.positionToTimeDiff(position);
       const timeStart = this.dayStart.timeStart.add(timeDiff, 'millisecond');
 
-      // handle DST
+      // handle / calculate DST offset
       const UTCDiff = this.dayStart.timeStart.utcOffset() - timeStart.utcOffset();
-      console.debug('UTCDiff', UTCDiff);
-
       const formattedTimeStart = timeStart.add(UTCDiff, 'minute').format('YYYY-MM-DD HH:mm');
 
       // check if we have to update an existing emission or if
