@@ -225,5 +225,20 @@ body.app--account {
         background: white;
       }
     }
+
+    .auth-social-deezer {
+      display: none;
+
+      color: #5a5a5a;
+
+      background: white;
+      border-color: #5a5a5a;
+
+      &:hover {
+        color: #5a5a5a;
+
+        background: white;
+      }
+    }
   }
 }

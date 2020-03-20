@@ -118,6 +118,7 @@ INSTALLED_APPS = [
     "ac_tagging",
     "actstream",
     "metadata_generator",
+    "streaming_services",
     # legacy & migration
     "obp_legacy",
     # 'navutils',
@@ -166,6 +167,7 @@ ACCOUNT_ACTIVATION_DAYS = 7
 AUTHENTICATION_BACKENDS = (
     "social_core.backends.facebook.FacebookOAuth2",
     "social_core.backends.google.GoogleOAuth2",
+    "account.social_auth_backends.deezer.DeezerOAuth2",
     # "social_core.backends.soundcloud.SoundcloudOAuth2",
     # "social_core.backends.vk.VKOAuth2",
     # 'social_core.backends.twitter.TwitterOAuth',
@@ -214,6 +216,11 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {"fields": "id,name,email"}
 # google oauth2
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ""
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ""
+
+# deezer oauth2
+SOCIAL_AUTH_DEEZER_KEY = ""
+SOCIAL_AUTH_DEEZER_SECRET = ""
+SOCIAL_AUTH_DEEZER_SCOPE = ["manage_library", "delete_library", "offline_access"]
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     "https://www.googleapis.com/auth/plus.me",

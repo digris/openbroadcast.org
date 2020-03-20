@@ -23,8 +23,6 @@ function quantizeNumber(val, quantum, { cover = false } = {}) {
     return 0;
   }
   const remainder = val % quantum;
-  // I'm intentionally not using Math.sign so that no polyfill is
-  // required to use this library in legacy environments.
   const sign = val >= 0 ? 1 : -1;
   const mod = cover && remainder ? quantum : 0;
   return val - remainder + sign * mod;
@@ -195,7 +193,11 @@ export default {
       const currentTime = dayjs();
       const dayStart = currentTime.hour(6).minute(0).second(0).millisecond(0);
       const timeDiff = currentTime.diff(dayStart, 'second');
-      this.currentTimeY = Math.round(this.pixelHeightPerHour * timeDiff / 60 / 60) + 50;
+      let gridOffset = 0;
+      if(currentTime.hour() < 6) {
+        gridOffset = this.pixelHeightPerHour * 24;
+      }
+      this.currentTimeY = Math.round(this.pixelHeightPerHour * timeDiff / 60 / 60) + 50 + gridOffset;
       this.currentTime = currentTime;
     }, 1000);
   },
@@ -402,143 +404,6 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-
-    $border-color: #dadada;
-    $border-dark-color: #a5a5a5;
-
-    .calendar {
-      position: relative;
-
-      .emissions {
-        position: absolute;
-        top: 50px;
-        left: 61px;
-
-        width: calc(100% - 61px);
-        height: 100%;
-
-        .emission-container {
-          position: absolute;
-
-          background: #fff;
-        }
-      }
-
-      .current-time {
-        position: absolute;
-
-        width: 100%;
-
-        &__line {
-          //background: orangered;
-          height: 0;
-
-          border-bottom: 1px dotted rgba(255, 69, 0, 0.5);
-        }
-
-        &__time {
-          position: absolute;
-          top: -5px;
-          // left: -45px;
-          left: -60px;
-
-          color: orangered;
-          font-size: 11px;
-          line-height: 11px;
-        }
-
-        &__marker {
-          position: absolute;
-          top: 0;
-
-          /* height: 10px; */
-
-          /* width: 10px; */
-          width: 0;
-          height: 0;
-
-          border-style: solid;
-          transform: translate(0, -4.5px);
-
-          &--left {
-            left: -10px;
-
-            border-color: transparent transparent transparent orangered;
-            border-width: 5px 0 5px 8px;
-          }
-
-          &--right {
-            right: -10px;
-
-            border-color: transparent orangered transparent transparent;
-            border-width: 5px 8px 5px 0;
-          }
-        }
-      }
-
-      .errors-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1001;
-
-        width: 100%;
-        height: 100%;
-
-        background: rgba(26, 5, 0, 0.66);
-
-        .errors {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-
-          padding: 20px;
-
-          color: white;
-
-          background: orangered;
-          transform: translate(-50%, -50%);
-
-          .error {
-            font-size: 120%;
-            line-height: 180%;
-            white-space: pre-line;
-            text-align: left;
-          }
-        }
-      }
-    }
-
-    .fade-in-out-enter-active {
-      transition: opacity 200ms;
-    }
-
-    .fade-in-out-leave-active {
-      transition: opacity 0.8ms;
-    }
-
-    .fade-in-out-enter,
-    .fade-in-out-leave-to {
-      opacity: 0;
-    }
-
-    .emission-list-leave-active {
-      /* filter: grayscale(100%); */
-
-      /* transition: opacity 2500ms; */
-    }
-
-    .emission-list-enter-active {
-      transition: opacity 200ms;
-    }
-
-    .emission-list-enter,
-    .emission-list-leave-to {
-      opacity: 0;
-    }
-
-</style>
 
 <template>
   <div
@@ -635,21 +500,142 @@ export default {
       </div>
     </transition>
 
-    <h1>** {{ emissionInEditorUuid }} **</h1>
-
     <emission-editor
       :uuid="emissionInEditorUuid"
       @close="closeEmissionEditor"
     />
 
-    <!--
-        <div>
-            bounds: {{ calendarBounds }}<br>
-            ERRORS: {{ errors }}<br>
-            HAS DRAGGING: {{ hasDragging }}<br>
-            HIGHLIGHTED: {{ highlightedObjUuid }}<br>
-            DRAG: {{ draggedEmissionUuid }}<br>
-        </div>
-        -->
   </div>
 </template>
+
+<style lang="scss" scoped>
+
+  $border-color: #dadada;
+  $border-dark-color: #a5a5a5;
+
+  .calendar {
+    position: relative;
+
+    .emissions {
+      position: absolute;
+      top: 50px;
+      left: 61px;
+
+      width: calc(100% - 61px);
+      height: 100%;
+
+      .emission-container {
+        position: absolute;
+
+        background: #fff;
+      }
+    }
+
+    .current-time {
+      position: absolute;
+
+      width: 100%;
+
+      &__line {
+        //background: orangered;
+        height: 0;
+
+        border-bottom: 1px dotted rgba(255, 69, 0, 0.5);
+      }
+
+      &__time {
+        position: absolute;
+        top: -5px;
+        // left: -45px;
+        left: -60px;
+
+        color: orangered;
+        font-size: 11px;
+        line-height: 11px;
+      }
+
+      &__marker {
+        position: absolute;
+        top: 0;
+
+        /* height: 10px; */
+
+        /* width: 10px; */
+        width: 0;
+        height: 0;
+
+        border-style: solid;
+        transform: translate(0, -4.5px);
+
+        &--left {
+          left: -10px;
+
+          border-color: transparent transparent transparent orangered;
+          border-width: 5px 0 5px 8px;
+        }
+
+        &--right {
+          right: -10px;
+
+          border-color: transparent orangered transparent transparent;
+          border-width: 5px 8px 5px 0;
+        }
+      }
+    }
+
+    .errors-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1001;
+
+      width: 100%;
+      height: 100%;
+
+      background: rgba(26, 5, 0, 0.66);
+
+      .errors {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+
+        padding: 20px;
+
+        color: white;
+
+        background: orangered;
+        transform: translate(-50%, -50%);
+
+        .error {
+          font-size: 120%;
+          line-height: 180%;
+          white-space: pre-line;
+          text-align: left;
+        }
+      }
+    }
+  }
+
+  .fade-in-out-enter-active {
+    transition: opacity 200ms;
+  }
+
+  .fade-in-out-leave-active {
+    transition: opacity 0.8ms;
+  }
+
+  .fade-in-out-enter,
+  .fade-in-out-leave-to {
+    opacity: 0;
+  }
+
+  .emission-list-enter-active {
+    transition: opacity 200ms;
+  }
+
+  .emission-list-enter,
+  .emission-list-leave-to {
+    opacity: 0;
+  }
+
+</style>

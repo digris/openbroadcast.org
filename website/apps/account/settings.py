@@ -26,6 +26,11 @@ BACKEND_DETAILS = {
         "icon": "icon-twitter",
         "cta": _("Continue with Twitter"),
     },
+    "deezer": {
+        "name": "Deezer",
+        "icon": "deezer",
+        "cta": _("Continue with Deezer"),
+    },
     "google-oauth2": {
         "name": "Google",
         "icon": "google",

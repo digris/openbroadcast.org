@@ -76,10 +76,12 @@ class Event(models.Model):
         blank=True,
     )
 
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_("Creation date"))
+    created = models.DateTimeField(
+        auto_now_add=True, verbose_name=_("Creation date"), db_index=True
+    )
 
     event_type = models.ForeignKey(
-        EventType, verbose_name=_("Type"), related_name="events"
+        EventType, verbose_name=_("Type"), related_name="events", db_index=True
     )
 
     archived = models.BooleanField(default=False)
