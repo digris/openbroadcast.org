@@ -69,10 +69,13 @@
         <a href="{{ object.user.get_absolute_url }}">{{ object.user.profile.get_display_name }}</a>
       </div>
       <div>
-        {% if object.type == 'broadcast' %}
-          {# object.get_status_display #}
+        <span
+        {% if object.target_duration %}
+          title="Target duration: {{ object.target_duration|sec_to_time }}"
         {% endif %}
+        >
         {{ object.duration|divide:1000|sec_to_time }}
+        </span>
       </div>
     </div>
   </div>
