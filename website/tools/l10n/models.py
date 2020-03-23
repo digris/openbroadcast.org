@@ -73,7 +73,7 @@ class Country(models.Model):
         ordering = ("printable_name",)
 
     def __str__(self):
-        return self.printable_name
+        return "{} ({})".format(self.printable_name, self.iso2_code)
 
 
 @python_2_unicode_compatible
