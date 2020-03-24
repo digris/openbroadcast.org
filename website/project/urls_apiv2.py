@@ -48,6 +48,7 @@ urlpatterns = [
     url("^profiles/", include("profiles.apiv2.urls")),
     url("^collector/", include("collector.apiv2.urls")),
     url("^media-preflight/", include("media_preflight.apiv2.urls")),
+    url("^statistics/", include("statistics.apiv2.urls")),
     # w.i.p.
     url("^atracker/", include("atracker.apiv2.urls")),
     url("^rating/", include("arating.apiv2.urls")),
