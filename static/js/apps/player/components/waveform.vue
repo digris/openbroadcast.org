@@ -175,7 +175,7 @@ export default {
           v-if="(item.content && item.content.assets.waveform)"
           width="100%"
           height="100%"
-          preserve-aspect-ratio="none"
+          preserveAspectRatio="none"
           :xlink:href="item.content.assets.waveform"
         />
 

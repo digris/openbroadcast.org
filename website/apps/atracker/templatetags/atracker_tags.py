@@ -26,7 +26,7 @@ def events_for_object_by_verb(context, obj, verb):
 
     events = Event.objects.by_obj(obj=obj).filter(event_type__title="%s" % verb)
     if events.exists():
-        return {"request": context["request"], "events": events[0:200]}
+        return {"request": context["request"], "events": events[0:100]}
 
     return {}
 

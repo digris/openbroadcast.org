@@ -48,5 +48,3 @@ def monthly_statistics_as_email(channel, year, month, email_addresses):
             )
             email.attach(filename, f.read(), "text/csv")
             email.send(fail_silently=False)
-
-    return
