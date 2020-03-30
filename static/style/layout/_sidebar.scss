@@ -31,9 +31,9 @@
 
       border-top: 1px solid $separator-line-color;
 
-      li {
-        display: inline-block;
-        width: 100%;
+      .action {
+        //display: inline-block;
+        //width: 100%;
 
         border-bottom: 1px solid $separator-line-color;
 
@@ -53,7 +53,7 @@
             padding-right: 3px;
           }
 
-          &.hover {
+          &:hover {
             text-decoration: none;
 
             background: $primary-color-light;
@@ -64,7 +64,7 @@
 
             cursor: wait;
 
-            &.hover {
+            &:hover {
               background: #efefef;
             }
           }

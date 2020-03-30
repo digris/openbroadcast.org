@@ -1,87 +1,76 @@
-{% load i18n thumbnail playlist_tags calc_tags lazy_image_tags truncate_tags arating_tags object_action_tags %}
+{% load i18n thumbnail calc_tags truncate_tags object_action_tags playlist_tags %}
 
-<div class="card card--playlist">
-  <div class="card__visual">
-    <div class="image">
-      <visual-with-actions
-        ct="{{ object.get_ct }}"
-        uuid="{{ object.uuid }}"
-        url="{% url 'api:playlist-detail' object.uuid %}"
-        image-url="{% thumbnail object.main_image 280x280 crop upscale %}"
-        :actions="{% get_object_actions_as_json object user %}">
-      </visual-with-actions>
-    </div>
-    <div class="card__visual__top">
-      <div class="flags">
-        <span class="flag">{{ object.get_type_display }}</span>
-        {% if object.target_duration %}
-          <span class="flag">
+<card
+  ct="{{ object.get_ct }}"
+  uuid="{{ object.uuid }}"
+  url="{% url 'api:playlist-detail' object.uuid %}"
+  image-url="{% thumbnail object.main_image 280x280 crop upscale %}"
+  :actions="{% get_object_actions_as_json object user %}">
+
+  <template #visual-top>
+    <div class="flags">
+      <span class="flag">{{ object.get_type_display }}</span>
+      {% if object.target_duration %}
+        <span class="flag">
             {{ object.target_duration|sec_to_time }}
           </span>
-        {% endif %}
-      </div>
-      {% if object.is_broadcast %}
-        {% nearby_scheduled_as object as is_nearby_scheduled %}
-        <div class="indicators">
-          <emission-history
-            obj-ct="{{ object.get_ct }}"
-            obj-uuid="{{ object.uuid }}"
-            :has-warning="{% if is_nearby_scheduled %}true{% else %}false{% endif %}">
-          </emission-history>
-        </div>
       {% endif %}
     </div>
-    <div class="tags">
-      {% for tag in object.tags|slice:":8" %}
-        <span class="tag">{{ tag.name|truncate_chars_inner:10 }}</span>
-      {% endfor %}
-    </div>
-  </div>
-  <div class="card__body">
+    {% if object.is_broadcast %}
+      {% nearby_scheduled_as object as is_nearby_scheduled %}
+      <div class="indicators">
+        <emission-history
+          obj-ct="{{ object.get_ct }}"
+          obj-uuid="{{ object.uuid }}"
+          :has-warning="{% if is_nearby_scheduled %}true{% else %}false{% endif %}">
+        </emission-history>
+      </div>
+    {% endif %}
+  </template>
 
-    <div class="card__body__primary card__body__row">
-      <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">
-        {{ object.name|truncate_chars_inner:22 }}
-        {% if object.country %}({{ object.country }}){% endif %}
-      </a>
-      {% if object.is_broadcast %}
-        <span class="dim" title="{% trans 'Total num. emissions' %}">
+  {% if object.tags %}
+    <template #visual-bottom>
+      <div class="tags">
+        {% for tag in object.tags|slice:":4" %}
+          <span class="tag">{{ tag.name|truncate_chars_inner:10 }}</span>
+        {% endfor %}
+      </div>
+    </template>
+  {% endif %}
+
+  <div class="card__body__primary">
+    <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">
+      {{ object.name|truncate_chars_inner:22 }}
+    </a>
+    {% if object.is_broadcast %}
+      <span class="dim" title="{% trans 'Total num. emissions' %}">
           {{ search_result.num_emissions }}
         </span>
+    {% endif %}
+  </div>
+
+  <div class="card__body__row">
+    {% if object.series %}
+      {{ object.series.name|truncate_chars_inner:20 }}
+      {% if object.series_number %}
+        #{{ object.series_number }}
       {% endif %}
-    </div>
+    {% else %}
+      -
+    {% endif %}
+  </div>
 
-    <div class="card__body__row">
-      <div>
-        {% if object.series %}
-          {{ object.series.name|truncate_chars_inner:20 }}
-          {% if object.series_number %}
-            #{{ object.series_number }}
-          {% endif %}
-        {% else %}
-          -
-        {% endif %}
-      </div>
+  <template #footer>
+    <div>
+      <a href="{{ object.user.get_absolute_url }}">{{ object.user.profile.get_display_name }}</a>
     </div>
-
-    <div class="card__body__row">
-      <div>
-        <a href="{{ object.user.get_absolute_url }}">{{ object.user.profile.get_display_name }}</a>
-      </div>
-      <div>
+    <div>
         <span
-        {% if object.target_duration %}
-          title="Target duration: {{ object.target_duration|sec_to_time }}"
-        {% endif %}
+          {% if object.target_duration %}title="Target duration: {{ object.target_duration|sec_to_time }}"{% endif %}
         >
         {{ object.duration|divide:1000|sec_to_time }}
         </span>
-      </div>
     </div>
-  </div>
-  <!--
-  <div class="card__footer">
-      (( footer ))
-  </div>
-  -->
-</div>
+  </template>
+
+</card>

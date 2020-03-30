@@ -11,9 +11,11 @@
     <div class="flags">
       {% if object.releasetype or object.release_country or object.releasedate %}
         <span class="flag">
+          {% comment %}
             {% if object.releasetype %}
               {{ object.get_releasetype_display }}
             {% endif %}
+          {% endcomment %}
           {% if object.release_country %}
             {{ object.release_country.iso2_code }}
           {% endif %}

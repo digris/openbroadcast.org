@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import debounce from 'debounce';
 import APIClient from '../../api/client';
-import Modal from '../../components/ui/Modal.vue';
-import Visual from '../../components/ui/Visual.vue';
-import Loader from '../../components/ui/Loader.vue';
+import Modal from '../../components/UI/Modal.vue';
+import Visual from '../../components/UI/Visual.vue';
+import Loader from '../../components/UI/Loader.vue';
 import Playlist from './components/playlist.vue';
 import { templateFilters } from '../../utils/template-filters';
 import { visit_by_resource } from '../../utils/visit-by-resource';
@@ -75,7 +75,7 @@ const CollectorApp = Vue.extend({
     },
     load_playlists: debounce(function () {
       // const url = '/api/v2/collector/playlist/';
-      const url = '/api/v2/library/playlist/collect/';
+      const url = '/api/v2/alibrary/playlist/collect/';
       const payload = {
         q: this.query_string,
         limit: 20,
@@ -153,7 +153,7 @@ const CollectorApp = Vue.extend({
       }
 
 
-      const url = '/api/v2/library/playlist/';
+      const url = '/api/v2/alibrary/playlist/';
       const payload = {
         name: data.name,
         type: data.type,

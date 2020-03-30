@@ -1,8 +1,8 @@
 <script>
 
 import { tween } from 'shifty';
-import Loader from '../../../components/ui/Loader.vue';
-import Visual from '../../../components/ui/Visual.vue';
+import Loader from '../../../components/UI/Loader.vue';
+import Visual from '../../../components/UI/Visual.vue';
 import { templateFilters } from '../../../utils/template-filters';
 
 export default {

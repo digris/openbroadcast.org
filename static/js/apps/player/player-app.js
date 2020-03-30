@@ -10,7 +10,7 @@ import ItemContainer from './components/item-container.vue';
 import Waveform from './components/waveform.vue';
 import Media from './components/media.vue';
 import Playerfooter from './components/playerfooter.vue';
-import Loader from '../../components/ui/Loader.vue';
+import Loader from '../../components/UI/Loader.vue';
 
 const DEBUG = false;
 

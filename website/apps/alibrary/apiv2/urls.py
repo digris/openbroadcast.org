@@ -20,6 +20,10 @@ urlpatterns = [
     url(
         r"^artist/(?P<uuid>[0-9A-Fa-f-]+)/$", views.artist_detail, name="artist-detail"
     ),
+    url(r"^label/$", views.label_list, name="label-list"),
+    url(
+        r"^label/(?P<uuid>[0-9A-Fa-f-]+)/$", views.label_detail, name="label-detail"
+    ),
     url(r"^release/$", views.release_list, name="release-list"),
     url(
         r"^release/(?P<uuid>[0-9A-Fa-f-]+)/$",

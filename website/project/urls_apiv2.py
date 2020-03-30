@@ -17,16 +17,16 @@ def api_root(request, format=None):
             "abcast/emission": reverse(
                 "api:emission-list", request=request, format=format
             ),
-            "library/playlist": reverse(
+            "alibrary/playlist": reverse(
                 "api:playlist-list", request=request, format=format
             ),
-            "library/artist": reverse(
+            "alibrary/artist": reverse(
                 "api:artist-list", request=request, format=format
             ),
-            "library/release": reverse(
+            "alibrary/release": reverse(
                 "api:release-list", request=request, format=format
             ),
-            "library/track": reverse("api:media-list", request=request, format=format),
+            "alibrary/track": reverse("api:media-list", request=request, format=format),
             "search": reverse("api:search-index", request=request, format=format),
             "player": reverse("api:player-index", request=request, format=format),
             "profiles": reverse("api:profile-list", request=request, format=format),
@@ -41,7 +41,7 @@ urlpatterns = [
     url(r"^$", api_root),
     url(r"^api-token-auth/", auth_views.obtain_auth_token, name="obtain-auth-token"),
     url("^abcast/", include("abcast.apiv2.urls")),
-    url("^library/", include("alibrary.apiv2.urls")),
+    url("^alibrary/", include("alibrary.apiv2.urls")),
     url("^search/", include("search.apiv2.urls")),
     url("^tags/", include("tagging_extra.apiv2.urls")),
     url("^player/", include("player.apiv2.urls")),

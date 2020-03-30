@@ -4,7 +4,7 @@ import Vue from 'vue';
 import APIClient from '../api/caseTranslatingClient';
 
 const DEBUG = true;
-const PLAYLIST_ENDPOINT = '/api/v2/library/playlist/';
+const PLAYLIST_ENDPOINT = '/api/v2/alibrary/playlist/';
 
 const generateKey = function (objCt, objUuid) {
   return `${objCt}:${objUuid}`;

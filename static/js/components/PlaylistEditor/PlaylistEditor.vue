@@ -35,7 +35,7 @@
       addMediaToPlaylist(media) {
         console.debug('addMediaToPlaylist', media)
 
-        const url = `/api/v2/library/playlist/${this.uuid}/`;
+        const url = `/api/v2/alibrary/playlist/${this.uuid}/`;
         const itemsToCollect = [{
           content: {
             ct: 'alibrary.media',

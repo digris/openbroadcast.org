@@ -40,6 +40,7 @@ class ReleaseResource(ModelResource):
         filtering = {
             "created": ["exact", "range", "gt", "gte", "lt", "lte"],
             "id": ["exact", "in"],
+            "uuid": ["exact", "in"],
         }
 
     def dehydrate(self, bundle):

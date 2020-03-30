@@ -717,7 +717,7 @@ PlaylistEditorItem = function () {
                         name: self.co.name,
                         uuid: self.co.uuid,
                         ct: 'alibrary.media',
-                        url: '/api/v2/library/track/' + self.co.uuid + '/',
+                        url: '/api/v2/alibrary/track/' + self.co.uuid + '/',
                         image: null,
                     },
                     duration: self.co.duration

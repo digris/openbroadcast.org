@@ -504,7 +504,6 @@ export default {
       :uuid="emissionInEditorUuid"
       @close="closeEmissionEditor"
     />
-
   </div>
 </template>
 

@@ -17,6 +17,7 @@ from profiles.apiv2.serializers import ProfileSerializer
 
 from ..models import (
     Artist,
+    Label,
     Release,
     Media,
     Playlist,
@@ -52,6 +53,26 @@ class ArtistSerializer(
 
     class Meta:
         model = Artist
+        depth = 1
+        fields = ["url", "ct", "detail_url", "uuid", "name", "image"]
+
+
+class LabelSerializer(
+    FlexFieldsModelSerializer, serializers.HyperlinkedModelSerializer
+):
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="api:label-detail", lookup_field="uuid"
+    )
+
+    ct = serializers.CharField(source="get_ct")
+
+    detail_url = serializers.URLField(source="get_absolute_url")
+
+    image = ImageSerializer(source="main_image")
+
+    class Meta:
+        model = Label
         depth = 1
         fields = ["url", "ct", "detail_url", "uuid", "name", "image"]
 
@@ -148,6 +169,16 @@ class ReleaseSerializer(
     releasedate = serializers.CharField(source="releasedate_approx")
     media = MediaSerializer(many=True, read_only=True, source="get_media")
 
+    # label = serializers.HyperlinkedRelatedField(
+    #     many=False,
+    #     read_only=True,
+    #     view_name='api:label-detail', lookup_field="uuid"
+    # )
+
+    label = LabelSerializer(
+        read_only=True,
+    )
+
     # TODO: `items` is used for player only. find a way to unify this.
     items = serializers.SerializerMethodField()
 
@@ -169,14 +200,19 @@ class ReleaseSerializer(
             "url",
             "ct",
             "uuid",
+            "id",
             "detail_url",
             "name",
             "image",
             "releasedate",
             "media",
+            "label",
             # TODO: `items` is used for player only. find a way to unify this.
             "items",
         ]
+        # expandable_fields = {
+        #     'label': (LabelSerializer, {'read_only': True})
+        # }
 
 
 class PlaylistItemField(serializers.RelatedField):

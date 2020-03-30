@@ -96,29 +96,10 @@
 
     }
 
-    //&__body {
-    //  display: grid;
-    //  grid-template-columns: auto auto;
-    //  padding: 0 4px 4px 4px;
-    //
-    //  > *:nth-child(even) {
-    //    text-align: right;
-    //  }
-    //
-    //  &__primary {
-    //    font-size: 110%;
-    //    line-height: 120%;
-    //  }
-    //}
 
     &__body {
-      //display: grid;
-      //grid-template-columns: auto auto;
+
       padding: 0 4px 4px 4px;
-      //
-      //> *:nth-child(even) {
-      //  text-align: right;
-      //}
 
       &__row {
         display: grid;
@@ -155,7 +136,7 @@
 }
 
 @mixin list-item--grid {
-  @include card;
+  // @include card;
 }
 
 @mixin pagination {

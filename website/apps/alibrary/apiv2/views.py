@@ -14,15 +14,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.exceptions import PermissionDenied
 
+from django_filters.rest_framework import DjangoFilterBackend
+
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 
 from .serializers import (
     ArtistSerializer,
+    LabelSerializer,
     ReleaseSerializer,
     MediaSerializer,
     PlaylistSerializer,
 )
-from ..models import Artist, Release, Media, Playlist
+from ..models import Artist, Label, Release, Media, Playlist
 
 log = logging.getLogger(__name__)
 
@@ -154,13 +157,28 @@ artist_list = ArtistViewSet.as_view({"get": "list"})
 artist_detail = ArtistViewSet.as_view({"get": "retrieve"})
 
 
+class LabelViewSet(
+    mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
+):
+
+    queryset = Label.objects.all().order_by("-created")
+    serializer_class = LabelSerializer
+    lookup_field = "uuid"
+
+
+label_list = LabelViewSet.as_view({"get": "list"})
+label_detail = LabelViewSet.as_view({"get": "retrieve"})
+
+
 class ReleaseViewSet(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
 ):
 
+    lookup_field = "uuid"
     queryset = Release.objects.all().order_by("-created")
     serializer_class = ReleaseSerializer
-    lookup_field = "uuid"
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['uuid']  # TODO: filter_fields is depreciated, newer version uses filterset_fields
 
 
 release_list = ReleaseViewSet.as_view({"get": "list"})

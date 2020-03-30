@@ -28,18 +28,20 @@ import LayzImageLoader from './utils/lazy-image-loader';
 import Player from './components/Player/Player.vue';
 import Scheduler from './components/Scheduler/Scheduler.vue';
 import PlaylistEditor from './components/PlaylistEditor/PlaylistEditor.vue';
-import ThumbRating from './components/rating/ThumbRating.vue';
+import ThumbRating from './components/Rating/ThumbRating.vue';
 import ObjectActions from './components/ObjectActions/ObjectActions.vue';
 import EmissionHistory from './components/EmissionHistory/EmissionHistory.vue';
 // UI
-import Card from './components/ui/Card.vue';
-import Visual from './components/ui/Visual.vue';
-import LazyImage from './components/ui/LazyImage.vue';
-import VisualWithActions from './components/ui/VisualWithActions.vue';
+import Card from './components/UI/Card.vue';
+import Visual from './components/UI/Visual.vue';
+import LazyImage from './components/UI/LazyImage.vue';
+import VisualWithActions from './components/UI/VisualWithActions.vue';
+import ObjectSelectionAction from './components/UI/ObjectSelectionAction.vue';
+import ObjectMerge from './components/UI/ObjectMerge/ObjectMerge.vue';
 // forms
-import Formset from './components/form/Formset.vue';
-import InputContainer from './components/form/InputContainer.vue';
-import TagInputContainer from './components/form/TagInputContainer.vue';
+import Formset from './components/Form/Formset.vue';
+import InputContainer from './components/Form/InputContainer.vue';
+import TagInputContainer from './components/Form/TagInputContainer.vue';
 import APIClient from './api/caseTranslatingClient';
 
 const DEBUG = false;
@@ -58,6 +60,8 @@ class AppInitializer {
         visual: Visual,
         'lazy-image': LazyImage,
         'visual-with-actions': VisualWithActions,
+        'object-selection-action': ObjectSelectionAction,
+        'object-merge': ObjectMerge,
         // form ui components
         formset: Formset,
         'input-container': InputContainer,

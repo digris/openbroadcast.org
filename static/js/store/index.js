@@ -4,6 +4,7 @@ import createPersistedState from 'vuex-persistedstate';
 import createMutationsSharer from 'vuex-shared-mutations';
 import scheduler from './_scheduler';
 import objectHistory from './_objectHistory';
+import objectSelection from './_objectSelection';
 import library from './_library';
 import player from './_player';
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
   modules: {
     scheduler,
     objectHistory,
+    objectSelection,
     library,
     player,
   },

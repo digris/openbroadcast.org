@@ -79,6 +79,7 @@ $base-url: '/static/' !default;
 /// Expose variables in native CSS
 :root {
   --text-color: #{$text-color};
+  --text-color-disabled: #{$mid-grey};
   --page-bg-color: #{$page-bg-color};
   --primary-color: #{$primary-color};
   --secondary-color: #{$secondary-color};
