@@ -82,7 +82,7 @@ class ExportItemResource(ModelResource):
             co = Playlist.objects.get(pk=int(item["item_id"]))
 
         """
-        sorry for this hack. verry strange - when crating object directly, for playlist models we always get:
+        sorry for this hack. very strange - when crating object directly, for playlist models we always get:
         'ManyRelatedManager is not Callable'
         just temporary set co to arbitary media object
         """

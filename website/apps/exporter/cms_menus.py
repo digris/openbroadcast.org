@@ -13,19 +13,8 @@ class ExportMenu(CMSAttachMenu):
     def get_nodes(self, request):
         nodes = []
 
-        """"""
         node = NavigationNode(_("My Downloads"), reverse("exporter-export-list"), 191)
         nodes.append(node)
-
-        """
-        node = NavigationNode(
-            _('Settings'),
-            reverse('exporter-export-settings'),
-            192,
-
-        )
-        nodes.append(node)
-        """
 
         return nodes
 

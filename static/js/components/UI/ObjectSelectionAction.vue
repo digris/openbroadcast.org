@@ -66,8 +66,14 @@ export default {
 
       cursor: pointer;
 
+      &:hover {
+        background: var(--primary-color-light);
+      }
+
       &.is-disabled {
         color: var(--text-color-disabled);
+
+        background: transparent;
 
         cursor: not-allowed;
       }

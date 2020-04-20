@@ -6,21 +6,21 @@
         <ul>
             {% if perms.alibrary.change_release %}
               <li class="action">
-                <a class="hoverable" href="{{ object.get_edit_url }}" title="{% trans "Edit" %}">
-                    <span>{% trans "Edit" %}</span>
+                <a href="{{ object.get_edit_url }}" title="{% trans 'Edit' %}">
+                    {% trans "Edit" %}
                 </a>
             </li>
             {% endif %}
             {% if perms.alibrary.change_release and user.is_staff %}
               <li class="action">
-                <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}" title="{% trans "Administration view" %}">
+                <a href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}" title="{% trans "Administration view" %}">
                     <span>{% trans "Administration view" %}</span>
                 </a>
             </li>
             {% endif %}
             {% if user.is_authenticated %}
               <li class="action">
-                    <a class="hoverable" href="{% follow_all_url object %}?next={{ request.get_full_path }}" title="{% trans "Follow/unfollow" %}">
+                    <a href="{% follow_all_url object %}?next={{ request.get_full_path }}" title="{% trans "Follow/unfollow" %}">
                     {% if request.user|is_following:object %}
                         <span>{% trans "Stop following" %} {{ object|ct_name_by_object }}</span>
                     {% else %}
@@ -31,14 +31,14 @@
             {% endif %}
             {% if perms.alibrary.downoad_media %}
                 <li class="action">
-                    <a class="hoverable" href="#" data-action="download" data-ct="release" data-id="{{ object.pk }}"  title="{% trans "Download" %} {{ object|ct_name_by_object }}">
+                    <a href="#" data-action="download" data-ct="release" data-id="{{ object.pk }}"  title="{% trans "Download" %} {{ object|ct_name_by_object }}">
                         <span>{% trans "Download" %} {{ object|ct_name_by_object }}</span>
                     </a>
                 </li>
             {% endif %}
             {% if perms.alibrary.downoad_media %}
                 <li class="action">
-                    <a class="hoverable disabled selection-required selection-any" href="#" data-action="download" data-ct="media"  title="{% trans "Download Selection" %}">
+                    <a class="disabled selection-required selection-any" href="#" data-action="download" data-ct="media"  title="{% trans "Download Selection" %}">
                         <span>{% trans "Download Selection" %}</span>
                         <small class="opt pull-right"></small>
                     </a>
@@ -46,7 +46,7 @@
             {% endif %}
             {% if perms.alibrary.merge_media %}
                 <li class="action">
-                    <a class="hoverable disabled selection-required selection-multiple" href="#" data-action="merge" data-ct="media" title="{% trans "Merge Selection" %}">
+                    <a class="disabled selection-required selection-multiple" href="#" data-action="merge" data-ct="media" title="{% trans "Merge Selection" %}">
                         <span>{% trans "Merge Selection" %}</span>
                         <small class="opt pull-right"></small>
                     </a>

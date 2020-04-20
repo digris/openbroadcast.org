@@ -3,8 +3,11 @@ from __future__ import unicode_literals
 
 from django.conf.urls import url
 from exporter import views
+from exporter import views_ng
 
 urlpatterns = [
+    url(r"^ng/$", views_ng.ExporterIndexView.as_view()),
+
     url(r"^$", views.ExportListView.as_view(), name="exporter-export-list"),
     url(
         r"^delete-all/$",

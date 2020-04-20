@@ -49,10 +49,9 @@ def get_dir_for_object(obj, prefix=None, app_dir=None, object_dir=None):
     return path
 
 
-def safe_filename(str):
-    log.debug("make safe: %s" % str)
-    str = unicodedata.normalize("NFKD", str)
-    return "".join(ch for ch in str if ch not in "/\\'")
+def safe_filename(filename):
+    filename = unicodedata.normalize("NFKD", filename)
+    return "".join(ch for ch in filename if ch not in "/\\'")
 
 
 def get_file_from_url(url):

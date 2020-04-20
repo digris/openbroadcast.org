@@ -14,9 +14,9 @@ EXCLUDE_CHARS = "/\\'"
 log = logging.getLogger(__name__)
 
 
-def safe_filename(str):
+def safe_filename(filename):
 
-    return asciiDammit(str.replace("/", " "))
+    return asciiDammit(filename.replace("/", " "))
 
 
 def sha1_by_file(file):

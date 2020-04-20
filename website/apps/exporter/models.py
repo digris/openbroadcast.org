@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
+
 import os
 import time
 import hashlib
 import datetime
 import shutil
 import logging
+
 from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.core.files import File as DjangoFile
@@ -76,12 +78,6 @@ def create_archive_dir(instance):
 class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
     FORMAT_CHOICES = (("mp3", _("MP3")), ("flac", _("Flac")))
 
-    class Meta:
-        app_label = "exporter"
-        verbose_name = _("Export")
-        verbose_name_plural = _("Exports")
-        ordering = ("created",)
-
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         blank=True,
@@ -115,8 +111,17 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
         help_text=_("Optionally, just add some notes to this export if desired."),
     )
 
+    class Meta:
+        app_label = "exporter"
+        verbose_name = _("Export")
+        verbose_name_plural = _("Exports")
+        ordering = ("created",)
+
     def __str__(self):
         return "%s - %s" % (self.user, self.created)
+
+    def get_ct(self):
+        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
 
     def get_absolute_url(self):
         return None
@@ -323,16 +328,9 @@ def post_delete_exportitem(sender, **kwargs):
 
 # post_delete.connect(post_delete_exportitem, sender=ExportItem)
 
-
-"""
-maintenance tasks
-(called via celerybeat, or management command)
-"""
-
-
 @task
 def cleanup_exports():
-    es = Export.objects.filter(
+    qs = Export.objects.filter(
         created__lte=datetime.datetime.now() - datetime.timedelta(days=7)
     )
-    es.delete()
+    qs.delete()

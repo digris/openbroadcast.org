@@ -4,7 +4,7 @@
   <div class="action-group">
     <ul class="unstyled">
       {% if user == object.user %}
-        <li class="link">
+        <li class="action">
           <a class="hoverable" href="{{ object.get_edit_url }}" title="{% trans "Edit" %}">
             {% trans "Edit" %}
           </a>
@@ -12,7 +12,7 @@
       {% endif %}
 
       {% if user.is_staff %}
-        <li class="link">
+        <li class="action">
           <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
              title="{% trans "Administration view" %}">
             {% trans "Administrative view" %}
@@ -21,7 +21,7 @@
       {% endif %}
 
       {% if user.is_staff %}
-        <li class="link">
+        <li class="action">
           <a class="hoverable" href="{% url "loginas-user-login" object.user.pk %}" title="{% trans "Login as user" %}">
             {% trans "Login as user" %}
           </a>
@@ -29,7 +29,7 @@
       {% endif %}
 
       {% if user.is_authenticated and not user == object.user %}
-        <li class="link">
+        <li class="action">
           <a class="hoverable" href="{% url "postman_write" object.user.username %}" title="{% trans "Send Message" %}">
             {% trans "Send Message" %}
           </a>
@@ -38,7 +38,7 @@
 
 
       {% if user.is_authenticated and not user == object.user %}
-        <li class="link">
+        <li class="action">
           <a class="hoverable" href="{% follow_all_url object.user %}?next={{ request.get_full_path }}"
              title="{% trans "Follow/unfollow" %}">
             {% if request.user|is_following:object.user %}

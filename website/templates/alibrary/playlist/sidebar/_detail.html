@@ -4,43 +4,39 @@
     <div class="action-group">
         <ul>
             {% if perms.alibrary.create_playlist %}
-                <li>
+                <li class="action">
                     <a class="hoverable"
                        href="{% url "alibrary-playlist-create" %}"
                        title="{% trans "Create a playlist" %}">
-                        <i class="icon icon-reorder"></i>
                         <span>{% trans "Create a playlist" %}</span>
                     </a>
                 </li>
             {% endif %}
             {% if user.is_authenticated and user == object.user %}
-                <li>
+                <li class="action">
                     <a class="hoverable" href="{{ object.get_edit_url }}" title="{% trans "Edit" %}">
-                        <i class="icon icon-edit"></i>
                         <span>{% trans "Edit" %}</span>
                     </a>
                 </li>
             {% endif %}
             {% if user.is_authenticated and user == object.user %}
-                <li>
+                <li class="action">
                     <a class="hoverable" href="{{ object.get_delete_url }}" title="{% trans "Delete" %}">
-                        <i class="icon icon-trash"></i>
                         <span>{% trans "Delete" %}</span>
                     </a>
                 </li>
             {% endif %}
             {% if perms.alibrary.change_playlist and user.is_staff %}
-                <li>
+                <li class="action">
                     <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}"
                        title="{% trans "Administration view" %}">
-                        <i class="icon icon-lock"></i>
                         <span>{% trans "Administration view" %}</span>
                     </a>
                 </li>
             {% endif %}
             {% comment %}
             {% if perms.alibrary.schedule_playlist and object.type == "broadcast" and object.broadcast_status == 1 %}
-                <li>
+                <li class="action">
                     <a class="hoverable"
                        href="{% url "abcast-schedule-select-playlist" %}?playlist_id={{ object.pk }}&next={% url "abcast-schedule" %}"
                        title="{% trans "Schedule for Broadcast" %}">
@@ -51,14 +47,12 @@
             {% endif %}
             {% endcomment %}
             {% if user.is_authenticated %}
-                <li>
+                <li class="action">
                     <a class="hoverable" href="{% follow_all_url object %}?next={{ request.get_full_path }}"
                        title="{% trans "Follow/unfollow" %}">
                         {% if request.user|is_following:object %}
-                            <i class="icon icon-unlink"></i>
                             <span>{% trans "Stop following" %} {{ object|ct_name_by_object }}</span>
                         {% else %}
-                            <i class="icon icon-link"></i>
                             <span>{% trans "Follow" %} {{ object|ct_name_by_object }}</span>
                         {% endif %}
                     </a>
@@ -68,7 +62,6 @@
                 <li class="action">
                     <a class="hoverable" href="#" data-action="download" data-ct="playlist" data-id="{{ object.pk }}"
                        title="{% trans "Download" %} {{ object|ct_name_by_object }}">
-                        <i class="icon icon-download-alt"></i>
                         <span>{% trans "Download" %} {{ object|ct_name_by_object }}</span>
                     </a>
                 </li>

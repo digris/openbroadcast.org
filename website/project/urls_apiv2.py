@@ -14,25 +14,26 @@ from rest_framework.authtoken import views as auth_views
 def api_root(request, format=None):
     return Response(
         {
-            "abcast/emission": reverse(
-                "api:emission-list", request=request, format=format
-            ),
-            "alibrary/playlist": reverse(
-                "api:playlist-list", request=request, format=format
-            ),
-            "alibrary/artist": reverse(
-                "api:artist-list", request=request, format=format
-            ),
-            "alibrary/release": reverse(
-                "api:release-list", request=request, format=format
-            ),
-            "alibrary/track": reverse("api:media-list", request=request, format=format),
-            "search": reverse("api:search-index", request=request, format=format),
-            "player": reverse("api:player-index", request=request, format=format),
-            "profiles": reverse("api:profile-list", request=request, format=format),
-            "auth-token": reverse(
-                "api:obtain-auth-token", request=request, format=format
-            ),
+            "version": '0.2.0',
+            # "abcast/emission": reverse(
+            #     "api:emission-list", request=request, format=format
+            # ),
+            # "alibrary/playlist": reverse(
+            #     "api:playlist-list", request=request, format=format
+            # ),
+            # "alibrary/artist": reverse(
+            #     "api:artist-list", request=request, format=format
+            # ),
+            # "alibrary/release": reverse(
+            #     "api:release-list", request=request, format=format
+            # ),
+            # "alibrary/track": reverse("api:media-list", request=request, format=format),
+            # "search": reverse("api:search-index", request=request, format=format),
+            # "player": reverse("api:player-index", request=request, format=format),
+            # "profiles": reverse("api:profile-list", request=request, format=format),
+            # "auth-token": reverse(
+            #     "api:obtain-auth-token", request=request, format=format
+            # ),
         }
     )
 
@@ -49,6 +50,7 @@ urlpatterns = [
     url("^collector/", include("collector.apiv2.urls")),
     url("^media-preflight/", include("media_preflight.apiv2.urls")),
     url("^statistics/", include("statistics.apiv2.urls")),
+    url("^exporter/", include("exporter.apiv2.urls")),
     # w.i.p.
     url("^atracker/", include("atracker.apiv2.urls")),
     url("^rating/", include("arating.apiv2.urls")),

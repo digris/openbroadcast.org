@@ -19,17 +19,17 @@ export default {
       default: false,
     }
   },
-  methods: {
-    select() {
-      this.$emit('selectObject', this.obj);
-    },
-  },
   computed: {
     numMedia() {
       if(! this.obj.media) {
         return 0;
       }
       return this.obj.media.length;
+    },
+  },
+  methods: {
+    select() {
+      this.$emit('selectObject', this.obj);
     },
   }
 };

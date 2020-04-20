@@ -3,16 +3,14 @@
 <div class="menu-context">
     <div class="action-group">
         <ul>
-            <li>
-                <a class="hoverable" href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
-                    <i class="icon icon-angle-left"></i>
+          <li class="action">
+                <a href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
                     <span>{% trans "Back to Detail-View" %}</span>
                 </a>
             </li>
             {% if perms.alibrary.change_release and user.is_staff %}
-            <li>
-                <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}" title="{% trans "Administration view" %}">
-                    <i class="icon icon-lock"></i>
+          <li class="action">
+                <a href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}" title="{% trans "Administration view" %}">
                     <span>{% trans "Administration view" %}</span>
                 </a>
             </li>

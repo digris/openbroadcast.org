@@ -7,6 +7,8 @@ import objectHistory from './_objectHistory';
 import objectSelection from './_objectSelection';
 import library from './_library';
 import player from './_player';
+import exporter from './_exporter';
+import notifications from './_notifications';
 
 Vue.use(Vuex);
 
@@ -18,6 +20,8 @@ export default new Vuex.Store({
     objectSelection,
     library,
     player,
+    exporter,
+    notifications,
   },
   state: {
     settings: {

@@ -4,11 +4,10 @@
     <div class="action-group">
         <ul>
             {% if perms.alibrary.add_playlist %}
-                <li>
-                    <a class="hoverable"
+                <li class="action">
+                    <a
                        href="{% url "alibrary-playlist-create" %}"
                        title="{% trans "Create a playlist" %}">
-                        <i class="icon icon-reorder"></i>
                         <span>{% trans "Create a playlist" %}</span>
                     </a>
                 </li>

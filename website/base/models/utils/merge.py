@@ -181,6 +181,4 @@ def merge_tags(primary_object, alias_objects):
     if primary_object.tags.exists():
         primary_object.d_tags = ", ".join(t.name for t in primary_object.tags.all())
 
-    print(primary_object.d_tags)
-
     return primary_object

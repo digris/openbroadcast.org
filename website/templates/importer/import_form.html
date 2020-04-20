@@ -41,15 +41,13 @@
     <div id="menu_context" class="menu-context">
         <div class="action-group">
             <ul class="unstyled">
-                <li class="link">
-                    <a class="hoverable" href="{% url "importer-import-list" %}" title="{% trans "Back to My Uploads" %}">
-                        <i class="icon icon-angle-left"></i>
+                <li class="action">
+                    <a href="{% url "importer-import-list" %}" title="{% trans "Back to My Uploads" %}">
                         <span>{% trans "Back to My Uploads" %}</span>
                     </a>
                 </li>
-                <li class="link">
-                    <a class="hoverable" href="{% url "importer-import-create" %}" title="{% trans "New Upload Session" %}">
-                        <i class="icon icon-plus"></i>
+                <li class="action">
+                    <a href="{% url "importer-import-create" %}" title="{% trans "New Upload Session" %}">
                         <span>{% trans "New Upload Session" %}</span>
                     </a>
                 </li>

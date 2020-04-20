@@ -35,7 +35,7 @@ try:
 except ImportError:
     # TODO: check for side-effects
     def unidecode(val):
-        return unidecode
+        return val
 
 
 CHARS = {

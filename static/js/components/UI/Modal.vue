@@ -7,6 +7,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
     scope: {
       type: String,
       required: false,
@@ -68,9 +72,24 @@ export default {
         height: 100%;
       }
 
+      &.is-loading {
+        cursor: wait;
+
+        .content-slot {
+          opacity: .5;
+          filter: grayscale(100%);
+
+          pointer-events: none;
+        }
+
+      }
+
       .content-slot {
         flex: 1;
         overflow: auto;
+
+        transition: opacity 250ms;
+
       }
 
       .modal-topbar {
@@ -130,7 +149,7 @@ export default {
     >
       <div
         class="modal-container"
-        :class="scope"
+        :class="{'is-loading': loading, scope}"
         @click.stop
       >
         <div class="content-header">
@@ -146,7 +165,9 @@ export default {
             </div>
           </div>
         </div>
-        <div class="content-slot">
+        <div
+          class="content-slot"
+        >
           <slot name="content" />
         </div>
       </div>

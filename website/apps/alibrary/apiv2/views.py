@@ -1,4 +1,4 @@
- # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 import logging
@@ -10,6 +10,8 @@ from django.http import FileResponse
 
 from rest_framework import mixins
 from rest_framework import viewsets
+
+# from rest_framework.decorators import action # `action` not implemented in used DRF version (3.6.4)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.exceptions import PermissionDenied
@@ -110,7 +112,7 @@ class PlaylistViewSet(
         # items_to_collect = self.request.data.get("items_to_collect", [])
         items_to_collect = self.request.data.get("itemsToCollect", [])
 
-        print('add_items_to_playlist', items_to_collect, playlist)
+        print("add_items_to_playlist", items_to_collect, playlist)
 
         add_items_to_playlist(items_to_collect, playlist)
 
@@ -139,9 +141,9 @@ class PlaylistViewSet(
         return Response(serializer.data)
 
 
-playlist_list = PlaylistViewSet.as_view({"get": "list", "post": "create"})
+# playlist_list = PlaylistViewSet.as_view({"get": "list", "post": "create"})
 playlist_list_collect = PlaylistViewSet.as_view({"get": "list_collect"})
-playlist_detail = PlaylistViewSet.as_view({"get": "retrieve", "put": "add_items"})
+# playlist_detail = PlaylistViewSet.as_view({"get": "retrieve", "put": "add_items"})
 
 
 class ArtistViewSet(
@@ -153,8 +155,8 @@ class ArtistViewSet(
     lookup_field = "uuid"
 
 
-artist_list = ArtistViewSet.as_view({"get": "list"})
-artist_detail = ArtistViewSet.as_view({"get": "retrieve"})
+# artist_list = ArtistViewSet.as_view({"get": "list"})
+# artist_detail = ArtistViewSet.as_view({"get": "retrieve"})
 
 
 class LabelViewSet(
@@ -166,8 +168,8 @@ class LabelViewSet(
     lookup_field = "uuid"
 
 
-label_list = LabelViewSet.as_view({"get": "list"})
-label_detail = LabelViewSet.as_view({"get": "retrieve"})
+# label_list = LabelViewSet.as_view({"get": "list"})
+# label_detail = LabelViewSet.as_view({"get": "retrieve"})
 
 
 class ReleaseViewSet(
@@ -178,11 +180,13 @@ class ReleaseViewSet(
     queryset = Release.objects.all().order_by("-created")
     serializer_class = ReleaseSerializer
     filter_backends = [DjangoFilterBackend]
-    filter_fields = ['uuid']  # TODO: filter_fields is depreciated, newer version uses filterset_fields
+    filter_fields = [
+        "uuid"
+    ]  # TODO: filter_fields is depreciated, newer version uses filterset_fields
 
 
-release_list = ReleaseViewSet.as_view({"get": "list"})
-release_detail = ReleaseViewSet.as_view({"get": "retrieve"})
+# release_list = ReleaseViewSet.as_view({"get": "list"})
+# release_detail = ReleaseViewSet.as_view({"get": "retrieve"})
 
 
 class MediaViewSet(
@@ -194,8 +198,8 @@ class MediaViewSet(
     lookup_field = "uuid"
 
 
-media_list = MediaViewSet.as_view({"get": "list"})
-media_detail = MediaViewSet.as_view({"get": "retrieve"})
+# media_list = MediaViewSet.as_view({"get": "list"})
+# media_detail = MediaViewSet.as_view({"get": "retrieve"})
 
 
 class MediaDownloadView(APIView):
@@ -211,22 +215,60 @@ class MediaDownloadView(APIView):
 
     def get(self, request, **kwargs):
 
-        if not self.version == 'master':
-            raise NotImplementedError('only master version supported at the moment')
+        if not self.version == "master":
+            raise NotImplementedError("only master version supported at the moment")
 
         if not request.user.is_authenticated():
             raise PermissionDenied("no anonymous users allowed")
 
         if not request.user.has_perm(self.permission_required):
-            raise PermissionDenied("missing permission: {} for user: {}".format(self.permission_required, request.user))
+            raise PermissionDenied(
+                "missing permission: {} for user: {}".format(
+                    self.permission_required, request.user
+                )
+            )
 
         obj = get_object_or_404(Media, uuid=kwargs.get("uuid"))
-        filename = "{uuid}.{encoding}".format(uuid=obj.uuid, encoding=obj.master_encoding)
+        filename = "{uuid}.{encoding}".format(
+            uuid=obj.uuid, encoding=obj.master_encoding
+        )
 
-
-        response = FileResponse(open(obj.master.path, 'rb'))
+        response = FileResponse(open(obj.master.path, "rb"))
         response["Content-Disposition"] = 'attachment; filename="{}"'.format(filename)
 
         return response
 
-media_download_master = MediaDownloadView.as_view(version='master')
+
+media_download_master = MediaDownloadView.as_view(version="master")
+
+
+# utility views
+class ObjectMergeView(APIView):
+    permission_required = "alibrary.merge_media"
+
+    def get(self, request, **kwargs):
+        return Response()
+
+    def post(self, request, **kwargs):
+
+        if not request.user.has_perm(self.permission_required):
+            raise PermissionDenied(
+                "missing permission: {} for user: {}".format(
+                    self.permission_required, request.user
+                )
+            )
+
+        from ..util.merge import merge
+
+        def get_obj_by_key(key):
+            ct, uuid = key.split(":")
+            model = apps.get_model(*ct.split("."))
+            obj = model.objects.get(uuid=uuid)
+            return obj
+
+        master = get_obj_by_key(request.data.get("master"))
+        slaves = [get_obj_by_key(k) for k in request.data.get("slaves")]
+
+        master = merge(master, slaves)
+
+        return Response()

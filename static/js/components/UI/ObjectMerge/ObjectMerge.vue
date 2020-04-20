@@ -4,7 +4,8 @@ import APIClient from '../../../api/caseTranslatingClient';
 import Modal from '../Modal.vue';
 import ObjectMergeObject from './ObjectMergeObject.vue';
 
-const DEBUG = true;
+const API_MERGE_URL = '/api/v2/alibrary/utils/merge-objects/';
+const DEBUG = false;
 
 const objectKeyToAPIUrl = function(key) {
   // example: alibrary.release:87a71f94-8f2b-4629-801c-b14bdde06838
@@ -25,10 +26,11 @@ export default {
       objectKeys: [],
       objects: [],
       master: null,
+      isLoading: false,
     };
   },
   mounted() {
-    window.addEventListener('mergeObjects', (e) => {
+    window.addEventListener('alibrary:mergeObjects', (e) => {
       const objectKeys = e.detail;
       if (DEBUG) console.debug('mergeObjects', objectKeys);
       this.objectKeys = objectKeys;
@@ -66,15 +68,24 @@ export default {
         return;
       }
 
-      const url = `${this.master.url}merge/`;
-      const uuids = this.objects.filter((o) => (o.uuid !== this.master.uuid)).map(({ uuid }) => uuid);
+      const url = API_MERGE_URL;
+
+      const slaves = this.objects.filter((o) => (o.uuid !== this.master.uuid)).map(o => `${o.ct}:${o.uuid}`);
       const payload = {
-        slaveUuids: uuids,
+        master: `${this.master.ct}:${this.master.uuid}`,
+        slaves: slaves,
       };
 
       if (DEBUG) console.debug('mergeObjects', url, payload);
-
-
+      this.isLoading = true;
+      APIClient.post(url, payload)
+        .then((response) => {
+          // this.isLoading = false;
+          window.location.reload();
+        }, (error) => {
+          this.isLoading = false;
+          console.error('error posting data', error);
+        });
 
     }
   }
@@ -83,6 +94,7 @@ export default {
 <template>
   <modal
     :show="visible"
+    :loading="isLoading"
     @close="close"
   >
     <div
@@ -95,7 +107,6 @@ export default {
       slot="content"
       class="object-merge"
     >
-
       <div class="object-list">
         <merge-object
           v-for="obj in objects"

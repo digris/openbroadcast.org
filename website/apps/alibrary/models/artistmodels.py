@@ -357,7 +357,7 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         """
         TODO: implement otherwise
         there is a special-case artist called "Various Artists" that should only exist once.
-        in the case we - for whatever unplanned reason - there is a duplicate coming in we
+        in the case - for whatever unplanned reason - there is a duplicate coming in we
         add a counter to the name ensure uniqueness.
         """
 

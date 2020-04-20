@@ -31,6 +31,7 @@ import PlaylistEditor from './components/PlaylistEditor/PlaylistEditor.vue';
 import ThumbRating from './components/Rating/ThumbRating.vue';
 import ObjectActions from './components/ObjectActions/ObjectActions.vue';
 import EmissionHistory from './components/EmissionHistory/EmissionHistory.vue';
+import Exporter from './components/Exporter/Exporter.vue';
 // UI
 import Card from './components/UI/Card.vue';
 import Visual from './components/UI/Visual.vue';
@@ -38,6 +39,7 @@ import LazyImage from './components/UI/LazyImage.vue';
 import VisualWithActions from './components/UI/VisualWithActions.vue';
 import ObjectSelectionAction from './components/UI/ObjectSelectionAction.vue';
 import ObjectMerge from './components/UI/ObjectMerge/ObjectMerge.vue';
+import Notifications from './components/Notifications/Notifications.vue';
 // forms
 import Formset from './components/Form/Formset.vue';
 import InputContainer from './components/Form/InputContainer.vue';
@@ -62,6 +64,7 @@ class AppInitializer {
         'visual-with-actions': VisualWithActions,
         'object-selection-action': ObjectSelectionAction,
         'object-merge': ObjectMerge,
+        notifications: Notifications,
         // form ui components
         formset: Formset,
         'input-container': InputContainer,
@@ -73,6 +76,7 @@ class AppInitializer {
         'thumb-rating': ThumbRating,
         'object-actions': ObjectActions,
         'emission-history': EmissionHistory,
+        'exporter': Exporter,
       },
       mounted() {
         // tell jQuery (legacy) to continue

@@ -54,7 +54,7 @@
             <div class="menu-context">
                 <div class="action-group">
                     <ul class="unstyled">
-                        <li class="link">
+                        <li class="action">
                             <a class="hoverable {% if not transformation.status %} disabled{% endif %}"
                                href="{% url "alibrary-playlist-convert" object.pk "playlist" %}"
                                title="{% trans "Make playlist public" %}">
@@ -110,7 +110,7 @@
             <div class="menu-context">
                 <div class="action-group">
                     <ul class="unstyled">
-                        <li class="link">
+                        <li class="action">
                             <a class="hoverable {% if not transformation.status %} disabled{% endif %}"
                                href="{% url "alibrary-playlist-convert" object.pk "broadcast" %}"
                                title="{% trans "Make playlist broadcastable" %}">

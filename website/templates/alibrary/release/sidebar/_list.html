@@ -1,29 +1,26 @@
 {% load i18n %}
 
 <div class="menu-context">
-    <div class="action-group">
-        <ul>
-            {% if perms.alibrary.downoad_media %}
-                <li class="action">
-                    <a class="disabled selection-required selection-any" href="#" data-action="download" data-ct="media_set"  title="{% trans "Download Selection" %}">
-                        <span>{% trans "Download Selection" %}</span>
-                        <small class="opt pull-right"></small>
-                    </a>
-                </li>
-            {% endif %}
-            {% if perms.alibrary.merge_release %}
-
-                <object-selection-action class="action" :min-selected="2" dispatch-event="mergeObjects">
-                  {% trans "Merge Selection" %}
-                </object-selection-action>
-
-              <li class="action">
-                <a class="hoverable disabled selection-required selection-multiple" href="#" data-action="merge" data-ct="release" title="{% trans "Merge Selection" %}">
-                  <span>{% trans "Merge Selection" %}</span>
-                  <small class="opt pull-right"></small>
-                </a>
-              </li>
-            {% endif %}
-        </ul>
-    </div>
+  <div class="action-group">
+    <ul>
+      {% if perms.alibrary.downoad_media %}
+        <!--
+        <li class="action">
+          <a class="disabled selection-required selection-any" href="#" data-action="download" data-ct="media_set"  title="{% trans "Download Selection" %}">
+            <span>{% trans "Download Selection" %}</span>
+            <small class="opt pull-right"></small>
+          </a>
+        </li>
+        -->
+        <object-selection-action class="action" :min-selected="1" dispatch-event="exporter:exportObjects">
+          {% trans "Download Selection" %}
+        </object-selection-action>
+      {% endif %}
+      {% if perms.alibrary.merge_release %}
+        <object-selection-action class="action" :min-selected="2" dispatch-event="alibrary:mergeObjects">
+          {% trans "Merge Selection" %}
+        </object-selection-action>
+      {% endif %}
+    </ul>
+  </div>
 </div>
