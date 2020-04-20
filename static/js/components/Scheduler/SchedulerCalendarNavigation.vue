@@ -1,7 +1,7 @@
 <script>
 
 import { backgroundColors } from './constants';
-import ColorChooser from '../ui/ColorChooser.vue';
+import ColorChooser from '../UI/ColorChooser.vue';
 
 const DEBUG = false;
 

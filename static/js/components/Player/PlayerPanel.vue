@@ -1,6 +1,6 @@
 <script>
 
-import Visual from '../ui/Visual.vue';
+import Visual from '../UI/Visual.vue';
 
 export default {
   name: 'PlayerPanel',

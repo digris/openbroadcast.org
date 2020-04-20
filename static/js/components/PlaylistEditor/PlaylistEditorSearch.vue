@@ -3,7 +3,7 @@
 // import PlayerListItem from './PlayerListItem.vue';
 import debounce from 'debounce';
 
-import Checkbox from '../form/Checkbox.vue';
+import Checkbox from '../Form/Checkbox.vue';
 import APIClient from "../../api/caseTranslatingClient";
 
 import PlaylistEditorSearchResult from './PlaylistEditorSearchResult.vue';

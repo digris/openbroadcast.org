@@ -1,8 +1,8 @@
 <script>
 
-import Visual from '../ui/Visual.vue';
-import Tags from '../ui/Tags.vue';
-import UserInline from '../ui/UserInline.vue';
+import Visual from '../UI/Visual.vue';
+import Tags from '../UI/Tags.vue';
+import UserInline from '../UI/UserInline.vue';
 import ObjectActions from '../ObjectActions/ObjectActions.vue';
 
 export default {

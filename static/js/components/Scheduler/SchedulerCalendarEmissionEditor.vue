@@ -6,8 +6,8 @@ import { backgroundColors } from './constants';
 import { hexToRGBA } from './utils';
 import { templateFilters } from '../../utils/template-filters';
 import SchedulerCalendarEmissionContent from './SchedulerCalendarEmissionContent.vue';
-import Modal from '../ui/Modal.vue';
-import UserInline from '../ui/UserInline.vue';
+import Modal from '../UI/Modal.vue';
+import UserInline from '../UI/UserInline.vue';
 import EmissionHistoryMatrix from '../EmissionHistory/EmissionHistoryMatrix.vue';
 
 const DEBUG = true;

@@ -1,6 +1,6 @@
 <script>
 
-import Visual from '../ui/Visual.vue';
+import Visual from '../UI/Visual.vue';
 import EmissionHistory from '../EmissionHistory/EmissionHistory.vue';
 import ObjectActions from '../ObjectActions/ObjectActions.vue';
 
