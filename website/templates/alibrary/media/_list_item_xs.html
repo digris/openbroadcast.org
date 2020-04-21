@@ -8,7 +8,6 @@
      data-uuid="{{ item.uuid }}"
      data-ct="media">
 
-    <!-- Play icon -->
     <div class="list_body_item c1 action">
 
         <ul class="unstyled horizontal action">
@@ -55,7 +54,6 @@
 
     </div>
 
-    <!-- Track title -->
     <div class="list_body_item c2">
 
         <ul class="unstyled">
@@ -64,9 +62,6 @@
                 <a href="{{ item.get_absolute_url }}" title="{{ item.name }}">
                     {{ item.name|truncate_chars_inner:32 }}
                     {% if item.country %}({{ item.country }}){% endif %}
-                    {# cache 600 "media_topflop" item.pk #}
-                    {# topflop_for_object item #}
-                    {# endcache #}
                 </a>
 
                 {% if item.tempo %}
@@ -90,7 +85,7 @@
         </ul>
 
     </div>
-    <!-- Artist name -->
+
     <div class="list_body_item c3">
         <ul class="unstyled">
             <li class="bold">
@@ -121,13 +116,21 @@
 
     <div class="list_body_item c4">
         <ul class="unstyled">
-            <li>{{ item.duration_s|sec_to_time }}</li>
-            <li>
-                {% preflight_status_inline item %}
-                {% if item.master_encoding %}{{ item.master_encoding|upper }}{% else %}ERROR{% endif %}
-                {% comment %}{% if item.bitrate %}| {{ item.bitrate }} Kbps{% endif %}{% endcomment %}
-            </li>
-
+          <li>
+            {{ item.duration_s|sec_to_time }} |
+            {% if item.master_encoding %}{{ item.master_encoding|upper }}{% else %}ERROR{% endif %}
+          </li>
+          <li>
+              {% preflight_status_inline item %}
+          </li>
+          {% if item.last_emission %}
+          <li>
+            <span
+              title="{% trans 'Num. emissions' %}: {{ item.emissions.count }}">
+              Last emission: {{ item.last_emission.time_start|date:'SHORT_DATE_FORMAT' }}
+            </span>
+          </li>
+          {% endif %}
         </ul>
 
     </div>
