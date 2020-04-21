@@ -141,9 +141,9 @@ class PlaylistViewSet(
         return Response(serializer.data)
 
 
-# playlist_list = PlaylistViewSet.as_view({"get": "list", "post": "create"})
+playlist_list = PlaylistViewSet.as_view({"get": "list", "post": "create"})
 playlist_list_collect = PlaylistViewSet.as_view({"get": "list_collect"})
-# playlist_detail = PlaylistViewSet.as_view({"get": "retrieve", "put": "add_items"})
+playlist_detail = PlaylistViewSet.as_view({"get": "retrieve", "put": "add_items"})
 
 
 class ArtistViewSet(
