@@ -4,42 +4,37 @@
     <div class="action-group">
         <ul>
             {% if perms.alibrary.change_media %}
-                <li>
-                    <a class="hoverable" href="{{ object.get_edit_url }}" title="{% trans "Edit" %}">
-                        <i class="icon icon-edit"></i>
-                        <span>{% trans "Edit" %}</span>
+                <li class="action">
+                    <a href="{{ object.get_edit_url }}" title="{% trans 'Edit' %}">
+                        {% trans "Edit" %}
                     </a>
                 </li>
             {% endif %}
             {% if perms.alibrary.change_media and user.is_staff %}
-                <li>
+                <li class="action">
                     <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}"
-                       title="{% trans "Administration view" %}">
-                        <i class="icon icon-lock"></i>
-                        <span>{% trans "Administration view" %}</span>
+                       title="{% trans 'Administration view' %}">
+                        {% trans "Administration view" %}
                     </a>
                 </li>
             {% endif %}
             {% if user.is_authenticated %}
-                <li>
-                    <a class="hoverable" href="{% follow_all_url object %}?next={{ request.get_full_path }}"
-                       title="{% trans "Follow/unfollow" %}">
+                <li class="action">
+                    <a href="{% follow_all_url object %}?next={{ request.get_full_path }}"
+                       title="{% trans 'Follow/unfollow' %}">
                         {% if request.user|is_following:object %}
-                            <i class="icon icon-unlink"></i>
-                            <span>{% trans "Stop following" %} {{ object|ct_name_by_object }}</span>
+                            {% trans "Stop following" %} {{ object|ct_name_by_object }}
                         {% else %}
-                            <i class="icon icon-link"></i>
-                            <span>{% trans "Follow" %} {{ object|ct_name_by_object }}</span>
+                            {% trans "Follow" %} {{ object|ct_name_by_object }}
                         {% endif %}
                     </a>
                 </li>
             {% endif %}
             {% if perms.alibrary.downoad_media %}
                 <li class="action">
-                    <a class="hoverable" href="#" data-action="download" data-ct="media" data-id="{{ object.pk }}"
-                       title="{% trans "Download" %} {{ object|ct_name_by_object }}">
-                        <i class="icon icon-download-alt"></i>
-                        <span>{% trans "Download" %} {{ object|ct_name_by_object }}</span>
+                    <a href="#" data-action="download" data-ct="media" data-id="{{ object.pk }}"
+                       title="{% trans 'Download' %} {{ object|ct_name_by_object }}">
+                        {% trans "Download" %} {{ object|ct_name_by_object }}
                     </a>
                 </li>
             {% endif %}

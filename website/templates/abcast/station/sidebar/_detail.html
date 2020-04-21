@@ -4,8 +4,8 @@
   <div class="action-group">
     <ul class="unstyled">
       {% if perms.alibrary.change_station and user.is_staff %}
-        <li class="link">
-          <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}" title="{% trans "Administration view" %}">
+        <li class="action">
+          <a href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}" title="{% trans 'Administration view' %}">
             {% trans "Administrative view" %}
           </a>
         </li>

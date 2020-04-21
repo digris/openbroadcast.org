@@ -4,19 +4,17 @@
     <div class="action-group">
         <ul>
             {% if perms.alibrary.change_artist %}
-                <li>
-                    <a class="hoverable" href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
-                        <i class="icon icon-angle-left"></i>
-                        <span>{% trans "Back to Detail-View" %}</span>
+                <li class="action">
+                    <a href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
+                        {% trans "Back to Detail-View" %}
                     </a>
                 </li>
             {% endif %}
             {% if perms.alibrary.change_artist and user.is_staff %}
-                <li>
-                    <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
-                       title="{% trans "Administration view" %}">
-                        <i class="icon icon-lock"></i>
-                        <span>{% trans "Administration view" %}</span>
+                <li class="action">
+                    <a href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
+                       title="{% trans 'Administration view' %}">
+                        {% trans "Administration view" %}
                     </a>
                 </li>
             {% endif %}

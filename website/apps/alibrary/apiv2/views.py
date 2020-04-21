@@ -11,7 +11,9 @@ from django.http import FileResponse
 from rest_framework import mixins
 from rest_framework import viewsets
 
-# from rest_framework.decorators import action # `action` not implemented in used DRF version (3.6.4)
+# from rest_framework.decorators import action
+# TODO: `action` not implemented in used DRF version (3.6.4) - refactor to 'actions' once
+# it is possible to upgrade DRF.
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.exceptions import PermissionDenied
