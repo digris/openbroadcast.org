@@ -9,6 +9,16 @@
 
   <template #visual-top>
     <div class="flags">
+      {% if object.is_promotional %}
+      <span class="flag flag--promotional">
+        promo
+      </span>
+      {% endif %}
+      {% if object.is_new %}
+      <span class="flag flag--new">
+        new
+      </span>
+      {% endif %}
       {% if object.releasetype or object.release_country or object.releasedate %}
         <span class="flag">
           {% comment %}

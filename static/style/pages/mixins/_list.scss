@@ -60,11 +60,12 @@
           .flag {
             display: inline-block;
             padding: 2px 4px 1px;
-            // margin: 0 2px 0 0;
+
             color: #333;
 
-            // text-transform: uppercase
             white-space: nowrap;
+
+            text-transform: uppercase;
           }
         }
 
