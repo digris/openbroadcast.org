@@ -236,11 +236,37 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
             return False
         if (
             self.releasedate
-            and self.releasedate >= (datetime.now() - timedelta(days=72)).date()
+            and self.releasedate >= (datetime.now() - timedelta(days=60)).date()
         ):
             return True
 
         return False
+
+
+    @property
+    def last_creation_time(self):
+        """
+        take into account creation time of containing tracks
+        """
+        _media = self.media_release.order_by('-created').first()
+        if _media and _media.created > self.created:
+            return _media.created
+
+        return self.created
+
+
+    @property
+    def last_update_time(self):
+        """
+        take into account update time of containing tracks
+        """
+        _media = self.media_release.order_by('-updated').first()
+        if _media and _media.updated > self.updated:
+            return _media.updated
+
+        return self.updated
+
+
 
     def get_lookup_providers(self):
 

@@ -337,7 +337,7 @@ class MediaAdmin(BaseAdmin):
 
     search_fields = ["artist__name", "release__name", "name"]
 
-    list_filter = ("mediatype", "license__name")
+    list_filter = ("mediatype", "preflight_check__status", "license__name")
 
     inlines = [MediaReleaseInline, RelationsInline, MediaExtraartistsInline]
 

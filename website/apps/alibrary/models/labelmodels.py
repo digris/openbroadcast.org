@@ -92,6 +92,14 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         on_delete=models.SET_NULL,
         related_name="labels_publisher",
     )
+    founding_artist = models.ForeignKey(
+        "alibrary.Artist",
+        verbose_name="Founder",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="founded_labels",
+    )
     listed = models.BooleanField(
         verbose_name="Include in listings",
         default=True,

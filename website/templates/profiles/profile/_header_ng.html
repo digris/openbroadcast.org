@@ -35,8 +35,20 @@
         </div>
         <div>
           {% for profile in object.user.godchildren.all %}
-            <a href="{{ profile.user.get_absolute_url }}">{% firstof profile.user.get_full_name profile.user.username %}</a>
-            {% if not forloop.last %}, {% endif %}
+            <a href="{{ profile.user.get_absolute_url }}">{% firstof profile.user.get_full_name profile.user.username %}</a>{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if object.user.station_set.count %}
+      <div class="meta__item">
+        <div>
+          {% trans "Stations" %}:
+        </div>
+        <div>
+          {% for station in object.user.station_set.all %}
+            <a href="{{ station.get_absolute_url }}">{{ station.name }}</a>{% if not forloop.last %}, {% endif %}
           {% endfor %}
         </div>
       </div>

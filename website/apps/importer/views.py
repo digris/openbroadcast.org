@@ -9,7 +9,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.utils.functional import lazy
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView, View
+from django.views.generic import ListView, UpdateView, CreateView, DeleteView, View, RedirectView
 from importer.forms import ImportCreateModelForm
 from importer.models import Import
 from pure_pagination.mixins import PaginationMixin
@@ -110,19 +110,31 @@ class ImportModifyView(
             return HttpResponseForbidden()
 
 
-class ImportCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
-    model = Import
+# class ImportCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+#     model = Import
+#
+#     permission_required = "importer.add_import"
+#     raise_exception = True
+#
+#     template_name = "importer/import_create.html"
+#     form_class = ImportCreateModelForm
+#
+#     # success_url = lazy(reverse, str)("feedback-feedback-list")
+#
+#     def form_valid(self, form):
+#         obj = form.save(commit=False)
+#         obj.user = self.request.user
+#         obj.save()
+#         return HttpResponseRedirect(obj.get_absolute_url())
 
+
+class ImportCreateView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    model = Import
     permission_required = "importer.add_import"
     raise_exception = True
 
-    template_name = "importer/import_create.html"
-    form_class = ImportCreateModelForm
-
-    # success_url = lazy(reverse, str)("feedback-feedback-list")
-
-    def form_valid(self, form):
-        obj = form.save(commit=False)
+    def get(self, request, *args, **kwargs):
+        obj = self.model()
         obj.user = self.request.user
         obj.save()
         return HttpResponseRedirect(obj.get_absolute_url())

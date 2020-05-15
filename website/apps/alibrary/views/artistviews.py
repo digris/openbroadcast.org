@@ -46,7 +46,7 @@ class ArtistListView(BaseSearchListView):
     template_name = "alibrary/artist_list.html"
     search_class = ArtistSearch
     order_by = [
-        {"key": "name", "name": _("Name"), "default_direction": "asc"},
+        {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
         {
             "key": "year_start",
             "name": _("Date of formation / date of birth"),

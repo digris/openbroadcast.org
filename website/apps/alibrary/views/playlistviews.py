@@ -136,7 +136,7 @@ class PlaylistListView(BaseSearchListView):
     search_class = PlaylistSearch
     scope = "public"
     order_by = [
-        {"key": "name", "name": _("Name"), "default_direction": "asc"},
+        {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
         {
             "key": "num_emissions",
             "name": _("Num Emissions"),

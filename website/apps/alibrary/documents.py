@@ -253,8 +253,8 @@ class ReleaseDocument(DocType):
 
     url = fields.KeywordField(attr="get_absolute_url")
     api_url = fields.KeywordField(attr="get_api_url")
-    created = fields.DateField()
-    updated = fields.DateField()
+    created = fields.DateField(attr="last_creation_time")
+    updated = fields.DateField(attr="last_update_time")
 
     # 'fielddata' is needed for sorting on the filed
     name = fields.TextField(fielddata=True, fields={"raw": {"type": "keyword"}})
@@ -532,7 +532,7 @@ class PlaylistDocument(DocType):
     updated = fields.DateField()
 
     # 'fielddata' is needed for sorting on the filed
-    name = fields.TextField(fielddata=True)
+    name = fields.TextField(fielddata=True, fields={"raw": {"type": "keyword"}})
     tags = KeywordField()
 
     user = fields.KeywordField(attr="user.username")
@@ -541,6 +541,7 @@ class PlaylistDocument(DocType):
 
     type = fields.KeywordField(attr="get_type_display")
     status = fields.KeywordField(attr="get_status_display")
+    duration = fields.IntegerField()
     target_duration = fields.KeywordField()
     weather = fields.KeywordField()
     seasons = fields.KeywordField()

@@ -371,7 +371,6 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     def master_url(self):
         return reverse("api:media-download-master", args=(self.uuid,))
 
-
     # TODO: depreciated
     def get_playlink(self):
         return "/api/tracks/%s/#0#replace" % self.uuid
@@ -515,14 +514,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         if units == "s":
             return int(self.master_duration)
 
-    # TODO: check usage.
-    @property
-    def appearances(self):
-        return self.get_appearances()
-
     def get_appearances(self):
-        # better approach:
-        # Playlist.objects.filter(playlist_items__item__object_id=m.pk, playlist_items__item__content_type=ContentType.objects.get_for_model(Media))
         qs = (
             Playlist.objects.filter(
                 playlist_items__item__object_id=self.pk,
@@ -538,14 +530,26 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
         return qs
 
-        # ps = []
-        # try:
-        #     pis = PlaylistItem.objects.filter(object_id=self.pk, content_type=ContentType.objects.get_for_model(self))
-        #     ps = Playlist.objects.exclude(type='other').filter(items__in=pis).order_by('-type', '-created',).nocache().distinct()
-        # except Exception as e:
-        #     pass
-        #
-        # return ps
+    # TODO: check usage.
+    @property
+    def appearances(self):
+        return self.get_appearances()
+
+    @property
+    def broadcast_appearances(self):
+        return self.get_appearances().filter(
+            type=Playlist.TYPE_BROADCAST
+        )
+
+    @property
+    def playlist_appearances(self):
+        return self.get_appearances().filter(
+            type=Playlist.TYPE_PLAYLIST
+        )
+
+    @property
+    def public_appearances(self):
+        return self.broadcast_appearances | self.playlist_appearances
 
     def process_master_info(self, save=False):
 

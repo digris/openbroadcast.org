@@ -117,6 +117,23 @@
         {% endif %}
 
 
+
+
+
+    {% if object.founded_labels.exists %}
+    <dt>
+      {% trans "Founded labels" %}:
+    </dt>
+    <dd>
+      {% for label in object.founded_labels.all %}
+      {% with item=label %}
+      {% include "alibrary/element/_inline_link.html" %}
+      {% if not forloop.last %},{% endif %}
+      {% endwith %}
+      {% endfor %}
+    </dd>
+    {% endif %}
+
         {% if object.ipi_code %}
 		<dt>
 			{% trans "IPI" %}:

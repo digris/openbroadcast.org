@@ -97,6 +97,7 @@
         >
           {{ notification.title }}
         </div>
+        <!-- eslint-disable vue/no-v-html -->
         <div
           v-if="notification.body"
           class="notification__body"

@@ -97,6 +97,19 @@
 		</dd>
 		{% endif %}
 
+		{% if object.founding_artist %}
+		<dt>
+			{% trans "Founder" %}:
+		</dt>
+		<dd>
+			<ul class="unstyled">
+        <li>
+          <a href="{{ object.founding_artist.get_absolute_url }}">{{ object.founding_artist.name }}</a>
+        </li>
+			</ul>
+		</dd>
+		{% endif %}
+
 		{% if object.children.exists %}
 		<dt>
 			{% trans "Sub Labels" %}:

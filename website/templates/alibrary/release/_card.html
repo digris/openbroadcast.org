@@ -104,8 +104,8 @@
       {% endif %}
     </div>
     <div>
-        <span class="dim">
-          {{ object.created|date:"SHORT_DATE_FORMAT" }}
+        <span class="dim" title="Updated: {{ object.last_update_time|date:"SHORT_DATE_FORMAT" }}">
+          {{ object.last_creation_time|date:"SHORT_DATE_FORMAT" }}
         </span>
     </div>
   </template>

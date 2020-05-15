@@ -75,6 +75,7 @@ class LabelForm(ModelForm):
             "type",
             "labelcode",
             "parent",
+            "founding_artist",
             "date_start",
             "date_end",
             "description",
@@ -117,6 +118,7 @@ class LabelForm(ModelForm):
             LookupField("type", css_class="input-xlarge"),
             LookupField("labelcode", css_class="input-xlarge"),
             LookupField("parent", css_class="input-xlarge"),
+            LookupField("founding_artist", css_class="input-xlarge"),
         )
 
         activity_layout = Fieldset(
@@ -157,6 +159,9 @@ class LabelForm(ModelForm):
     description = forms.CharField(widget=forms.Textarea(), required=False)
     parent = search_fields.AutocompleteField(
         "alibrary.label", allow_new=True, required=False, label=_("Parent Label")
+    )
+    founding_artist = search_fields.AutocompleteField(
+        "alibrary.artist", label=_("Founder"), allow_new=True, required=False
     )
 
     def clean(self, *args, **kwargs):

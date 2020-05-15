@@ -100,6 +100,7 @@ DEFAULT_ARTIST_JOIN_PHRASE_CHOICES = (
     ("meets", _("meets")),
     ("with", _("with")),
     ("vs", _("vs.")),
+    ("x", _("X")),
     ("-", _("-")),
 )
 
