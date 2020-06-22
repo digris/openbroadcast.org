@@ -1,0 +1,83 @@
+{% load i18n thumbnail truncate_tags object_action_tags %}
+
+<card
+  ct="{{ object.get_ct }}"
+  uuid="{{ object.uuid }}"
+  url="{% url 'api:label-detail' object.uuid %}"
+  image-url="{% thumbnail object.main_image 280x280 crop upscale %}"
+  :actions="{% get_object_actions_as_json object user %}">
+
+  <template #visual-top>
+    <div class="flags">
+      {% if object.is_new %}
+      <span class="flag flag--new">
+        new
+      </span>
+      {% endif %}
+      {% if object.country or object.type %}
+        <span class="flag">
+          {% if object.country %}
+            {{ object.country.iso2_code }}
+          {% endif %}
+          {% if object.type %}
+            {{ object.get_type_display|capfirst }}
+          {% endif %}
+          </span>
+      {% endif %}
+    </div>
+  </template>
+
+  {% if object.tags %}
+    <template #visual-bottom>
+      <div class="tags">
+        {% for tag in object.tags|slice:":6" %}
+          <span class="tag">{{ tag.name|truncate_chars_inner:10 }}</span>
+        {% endfor %}
+      </div>
+    </template>
+  {% endif %}
+
+  <div class="card__body__primary">
+    <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">
+      {{ object.name|truncate_chars_inner:28 }}
+    </a>
+  </div>
+
+  <div class="card__body__row">
+    <div>
+      {% if object.date_start %}<span class="dim">*</span>{{ object.date_start.year }}{% endif %}
+      {% if object.date_end %}<span class="dim">&#10013;</span>{{ object.date_end.year }}{% endif %}
+    </div>
+    <div>
+        <span class="dim" title="Num. releases">
+          {{ object.release_label.count }}
+        </span>
+    </div>
+  </div>
+
+  <div class="card__body__row">
+    <div>
+      {% if object.get_root %}
+        <span title="Umbrella label">{{ object.get_root.name }}</span>
+      {% else %}
+        &nbsp;
+      {% endif %}
+    </div>
+  </div>
+
+  <template #footer>
+    <div>
+      {% if object.creator %}
+        <a title="{{ object.creator.profile.get_display_name }}"
+           href="{{ object.creator.profile.get_absolute_url }}">
+          {{ object.creator.profile.get_display_name|truncate_chars:16 }}
+        </a>
+      {% endif %}
+    </div>
+    <div>
+        <span class="dim" title="Updated: {{ object.updated|date:"SHORT_DATE_FORMAT" }}">
+          {{ object.created|date:"SHORT_DATE_FORMAT" }}
+        </span>
+    </div>
+  </template>
+</card>

@@ -68,7 +68,8 @@ class LabelSearch(BaseFacetedSearch):
 
 class LabelListView(BaseSearchListView):
     model = Label
-    template_name = "alibrary/label_list.html"
+    # template_name = "alibrary/label_list.html"
+    template_name = "alibrary/label/list.html"
     search_class = LabelSearch
     order_by = [
         {"key": "created", "name": _("Creation date"), "default_direction": "desc"},

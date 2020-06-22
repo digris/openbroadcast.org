@@ -84,7 +84,7 @@
             {% if object.target_duration %}<small>{% trans "target" %}:</small> {{ object.target_duration|sec_to_time }}{% endif %}
         </dd>
 
-
+        {% comment %}
         {% if object.type == 'broadcast' and object.broadcast_status_messages %}
         <dt>
             {% trans "Issues" %}:
@@ -95,6 +95,7 @@
             {% endfor %}
         </dd>
         {% endif %}
+        {% endcomment %}
 
 
 

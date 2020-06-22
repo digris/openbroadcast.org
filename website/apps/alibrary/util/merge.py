@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 
 def merge(master, slaves):
 
-    log.info('merge objects: {} - {}'.format(master, slaves))
+    # log.info('merge objects: {} - {}'.format(master, slaves))
 
     if isinstance(master, Release):
 
@@ -35,3 +35,31 @@ def merge(master, slaves):
             media.save()
 
         return master
+
+    if isinstance(master, Artist):
+
+        merge_votes(master, slaves)
+        merge_relations(master, slaves)
+        merge_tags(master, slaves)
+        master = merge_objects(master, slaves)
+
+        # trigger save to update cache
+        for media in master.media_artist.all():
+            media.save()
+
+        master.save()
+
+        return master
+
+    if isinstance(master, Label):
+
+        merge_votes(master, slaves)
+        merge_relations(master, slaves)
+        merge_tags(master, slaves)
+        master = merge_objects(master, slaves)
+
+        master.save()
+
+        return master
+
+    raise NotImplementedError('merging of "{}" objects not implemented.'.format(type(master)))

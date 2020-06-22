@@ -67,7 +67,6 @@ class ReleaseSearch(BaseFacetedSearch):
 class ReleaseListView(BaseSearchListView):
     model = Release
     template_name = "alibrary/release/list.html"
-    # template_name = "alibrary/release_list.html"
     search_class = ReleaseSearch
     order_by = [
         {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},

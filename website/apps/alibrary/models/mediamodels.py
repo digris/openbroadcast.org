@@ -17,6 +17,7 @@ from django.db.models.signals import post_save, pre_delete, post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.functional import cached_property
 from django_extensions.db.fields import AutoSlugField
 from base.fields.languages import LanguageField
 from base.signals.unsignal import disable_for_loaddata
@@ -399,7 +400,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     def get_soundcloud(self):
         return self.relations.filter(service="soundcloud").first()
 
-    @property
+    @cached_property
     def emissions(self):
         from abcast.models import Emission
 
@@ -417,7 +418,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
         return emission_qs
 
-    @property
+    @cached_property
     def last_emission(self):
         return self.emissions.first()
 
@@ -531,7 +532,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         return qs
 
     # TODO: check usage.
-    @property
+    @cached_property
     def appearances(self):
         return self.get_appearances()
 
@@ -549,6 +550,8 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
     @property
     def public_appearances(self):
+        if self.mediatype == 'jingle':
+            return None
         return self.broadcast_appearances | self.playlist_appearances
 
     def process_master_info(self, save=False):

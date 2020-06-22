@@ -300,6 +300,7 @@ def merge_items(request, *args, **kwargs):
         )
         try:
 
+            # Release merge workflow migrated to API
             if item_type == "release":
 
                 items = Release.objects.filter(pk__in=item_ids).exclude(
@@ -371,6 +372,7 @@ def merge_items(request, *args, **kwargs):
                     data["status"] = False
                     data["error"] = "No selection"
 
+            # Artist merge workflow migrated to API
             if item_type == "artist":
                 items = Artist.objects.filter(pk__in=item_ids).exclude(
                     pk=int(master_id)

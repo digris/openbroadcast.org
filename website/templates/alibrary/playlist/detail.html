@@ -72,10 +72,11 @@
 
                     <div class="listview container medias s">
                         <div class="list_body">
-                            {% for item in object.sorted_items.all %}
+                            {# for item in object.sorted_items.all #}
+                            {% for item in media_set %}
                                 {% if item.content_type.model == "media" %}
                                     {% with item=item.content_object %}
-                                        {% include "alibrary/media/_list_item_foreign_xs.html" %}
+                                        {% include "alibrary/media/_debug_list_item_foreign_xs.html" %}
                                     {% endwith %}
                                 {% endif %}
                             {% endfor %}
@@ -132,6 +133,7 @@
                     {% endfor %}
                 </section>
             </div>
+
 
             {% if object.is_broadcast and object.mixdown %}
             <div class="tab-pane" id="mixdown">

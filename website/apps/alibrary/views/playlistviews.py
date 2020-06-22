@@ -186,6 +186,33 @@ class PlaylistDetailView(UUIDDetailView, DetailView):
     model = Playlist
     template_name = "alibrary/playlist/detail.html"
 
+    def get_queryset(self):
+        return self.model.objects.select_related(
+            'user',
+            'series',
+        ).prefetch_related(
+            'dayparts',
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super(PlaylistDetailView, self).get_context_data(**kwargs)
+
+        media_set = self.object.sorted_items.all()
+        media_set = media_set.select_related(
+            'content_type'
+        ).prefetch_related(
+            'content_object',
+            'content_object__artist',
+            'content_object__media_artists',
+            'content_object__release',
+            'content_object__release__label',
+            'content_object__relations',
+            'content_object__preflight_check',
+        )
+
+        context["media_set"] = media_set
+        return context
+
 
 class PlaylistCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Playlist

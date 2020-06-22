@@ -10,9 +10,14 @@ from collections import namedtuple
 
 from django.conf import settings
 from django.template import loader
-from wand.color import Color
-from wand.drawing import Drawing
-from wand.image import Image
+
+try:
+    from wand.color import Color
+    from wand.drawing import Drawing
+    from wand.image import Image
+except ImportError as e:
+    print('unable to import (magic)wand: {}'.format(e))
+
 
 log = logging.getLogger(__name__)
 

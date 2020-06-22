@@ -43,7 +43,8 @@ class ArtistSearch(BaseFacetedSearch):
 
 class ArtistListView(BaseSearchListView):
     model = Artist
-    template_name = "alibrary/artist_list.html"
+    # template_name = "alibrary/artist_list.html"
+    template_name = "alibrary/artist/list.html"
     search_class = ArtistSearch
     order_by = [
         {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},

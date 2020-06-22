@@ -131,7 +131,7 @@
           .flag {
             padding: 2px 4px;
 
-            text-transform: uppercase;
+            text-transform: capitalize;
 
             background: white;
           }

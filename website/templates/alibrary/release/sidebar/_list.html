@@ -4,14 +4,6 @@
   <div class="action-group">
     <ul>
       {% if perms.alibrary.downoad_media %}
-        <!--
-        <li class="action">
-          <a class="disabled selection-required selection-any" href="#" data-action="download" data-ct="media_set"  title="{% trans "Download Selection" %}">
-            <span>{% trans "Download Selection" %}</span>
-            <small class="opt pull-right"></small>
-          </a>
-        </li>
-        -->
         <object-selection-action class="action" :min-selected="1" dispatch-event="exporter:exportObjects">
           {% trans "Download Selection" %}
         </object-selection-action>
