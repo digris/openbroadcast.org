@@ -15,7 +15,7 @@ export default {
     },
   },
   watch: {
-    fullscreen(a, n) {
+    fullscreen() {
       if (DEBUG) console.debug('fullscreen', this.fullscreen);
       if (this.fullscreen) {
         this.enterFullscreen();

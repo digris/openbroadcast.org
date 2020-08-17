@@ -1,8 +1,8 @@
 <script>
 
+import { templateFilters } from 'src/utils/template-filters';
 import { backgroundColors } from './constants';
 import { hexToRGBA } from './utils';
-import { templateFilters } from '../../utils/template-filters';
 
 const DEBUG = false;
 

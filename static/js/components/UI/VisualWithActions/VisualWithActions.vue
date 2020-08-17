@@ -1,12 +1,10 @@
 <script>
 
-import settings from '../../settings';
-import LazyImage from './LazyImage.vue';
-import Lightbox from './Lightbox.vue';
-import Play from './VisualWithActions/Play.vue';
-import ContextMenu from './VisualWithActions/ContextMenu.vue';
-
-const DEBUG = true;
+import settings from '../../../settings';
+import LazyImage from '../LazyImage.vue';
+import Lightbox from '../Lightbox.vue';
+import Play from './Play.vue';
+import ContextMenu from './ContextMenu.vue';
 
 export default {
   name: 'VisualWithActions',
@@ -59,7 +57,7 @@ export default {
     canPlay() {
       return this.actions.findIndex((action) => action.key === 'play') > -1;
     },
-    primaryAction() {
+    playAction() {
       const index = this.actions.findIndex((action) => action.key === 'play');
       if (index < 0) {
         return null;
@@ -67,10 +65,15 @@ export default {
       return this.actions[index];
       // return this.actions.findIndex((action) => action.key === 'play') > -1;
     },
+    // secondaryActions() {
+    //   // play is considered to be the primary / first action.
+    //   // so return all actions except play.
+    //   return this.actions.filter((action) => action.key !== 'play');
+    // },
     secondaryActions() {
       // play is considered to be the primary / first action.
       // so return all actions except play.
-      return this.actions.filter((action) => action.key !== 'play');
+      return this.actions;
     },
   },
   methods: {
@@ -79,7 +82,8 @@ export default {
     },
     onMouseLeave() {
       this.isHover = false;
-      this.hideSecondaryActions();
+      // this.hideSecondaryActions();
+      this.$refs.contextMenu.closeMenu();
     },
     toggleSecondaryActions() {
       if (this.secondaryActionsVisible) {
@@ -100,55 +104,8 @@ export default {
     hideLightbox() {
       this.lightboxVisible = false;
     },
-    handleAction(action) {
+    handleAction() {
       this.hideSecondaryActions();
-      console.debug('handleAction', action);
-
-      // just redirect to url if present
-      if (action.url) {
-        document.location.href = action.url;
-        return;
-      }
-
-      // TODO: implement in a modular way...
-      if (action.key === 'play') {
-        this.playerControls({
-          do: 'load',
-          items: [{
-            ct: this.ct,
-            uuid: this.uuid,
-          }],
-        });
-      }
-
-      if (action.key === 'queue') {
-        this.playerControls({
-          do: 'load',
-          opts: {
-            mode: 'queue',
-          },
-          items: [{
-            ct: this.ct,
-            uuid: this.uuid,
-          }],
-        });
-      }
-
-      if (action.key === 'schedule') {
-        const co = {
-          name: '...loading...',
-          ct: this.ct,
-          uuid: this.uuid,
-          url: this.url,
-        };
-        this.$store.dispatch('scheduler/addToClipboard', co);
-      }
-
-
-    },
-    playerControls(action) {
-      const _e = new CustomEvent('player:controls', { detail: action });
-      window.dispatchEvent(_e);
     },
   },
 };
@@ -188,22 +145,17 @@ export default {
             class="actions__play"
           >
             <play
-              v-if="primaryAction"
-              @click="handleAction(primaryAction)"
+              v-if="playAction"
+              :action="playAction"
             />
           </div>
           <div
             class="actions__secondary"
           >
-            <div
-              v-if="(secondaryActions && secondaryActions.length)"
-              class="toggle"
-              :class="{ 'toggle--active': secondaryActionsVisible }"
-              @click="toggleSecondaryActions"
-            >
-              <i class="fa fa-ellipsis-h" />
-            </div>
             <context-menu
+              ref="contextMenu"
+              toggle-color="white"
+              :menu-position="{right: 0, top: '54px'}"
               :visible="secondaryActionsVisible"
               :actions="secondaryActions"
               @click="handleAction"
@@ -212,15 +164,14 @@ export default {
         </div>
       </div>
       <div
+        v-if="largeImageUrl"
         class="panel__bottom"
         @click="showLightbox"
       >
         <div
-          v-if="largeImageUrl"
           class="thumbnails"
         >
           <div class="thumbnail">
-            <!--<img :src="imageUrl">-->
             <lazy-image :src="imageUrl" />
           </div>
         </div>
@@ -304,36 +255,6 @@ export default {
 
       &__secondary {
         position: relative;
-
-        .toggle {
-          cursor: pointer;
-
-          > i {
-            color: white;
-            font-size: 32px;
-            line-height: 32px;
-
-            transition: transform 200ms;
-          }
-
-          //&:hover {
-          //    > i {
-          //        color: red;
-          //    }
-          //}
-          &--active {
-            > i {
-              transform: rotate(-90deg);
-            }
-          }
-        }
-
-        .context-menu {
-          margin-top: 48px;
-          margin-right: 4px;
-
-          background: white;
-        }
       }
     }
 

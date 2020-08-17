@@ -1,6 +1,5 @@
 <script>
-
-const DEBUG = true;
+import { EventBus } from 'src/eventBus';
 
 export default {
   name: 'ObjectSelectionAction',
@@ -29,27 +28,28 @@ export default {
       return this.$store.getters['objectSelection/numSelected'];
     },
     isDisabled() {
-      if(this.minSelected && this.numSelected < this.minSelected) {
+      if (this.minSelected && this.numSelected < this.minSelected) {
         return true;
       }
-      if(this.maxSelected && this.numSelected > this.maxSelected) {
+      if (this.maxSelected && this.numSelected > this.maxSelected) {
         return true;
       }
       return false;
     },
     isEnabled() {
       return !this.isDisabled;
-    }
+    },
   },
   methods: {
     click() {
-      if(this.isDisabled) {
+      if (this.isDisabled) {
         return;
       }
-      if(this.selection && this.dispatchEvent) {
+      if (this.selection && this.dispatchEvent) {
+        // TODO: refactor all events to `eventBus`
         const e = new CustomEvent(this.dispatchEvent, { detail: this.selection });
-        if (DEBUG) console.debug('dispatch event', e);
         window.dispatchEvent(e);
+        EventBus.$emit(`${this.dispatchEvent}`, { selection: this.selection });
       }
     },
   },

@@ -103,6 +103,28 @@ def _get_release_actions(obj, user):
     return actions
 
 
+def _get_media_actions(obj, user):
+
+    actions = []
+
+    if user.has_perm("alibrary.play_media"):
+        actions.append({"key": "play", "title": "Play"})
+        actions.append({"key": "queue", "title": "Queue"})
+
+    if user.has_perm("alibrary.downoad_media"):
+        actions.append({"key": "download", "title": "Download"})
+
+    if user.has_perm("alibrary.edit_media"):
+        actions.append({"key": "edit", "title": "Edit", "url": obj.get_edit_url()})
+
+    if user.is_staff:
+        actions.append(
+            {"key": "admin", "title": "Admin view", "url": obj.get_admin_url()}
+        )
+
+    return actions
+
+
 def _get_artist_actions(obj, user):
 
     actions = []
@@ -148,6 +170,7 @@ ACTION_LOOKUP_FUNCTIONS = {
     "profiles.profile": _get_profile_actions,
     "alibrary.playlist": _get_playlist_actions,
     "alibrary.release": _get_release_actions,
+    "alibrary.media": _get_media_actions,
     "alibrary.artist": _get_artist_actions,
     "alibrary.label": _get_label_actions,
 }

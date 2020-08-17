@@ -1,5 +1,5 @@
 <script>
-import { templateFilters } from '../../../utils/template-filters';
+import { templateFilters } from 'src/utils/template-filters';
 
 const DEBUG = false;
 
@@ -252,9 +252,9 @@ export default {
       <div class="time">
         <small v-if="item.is_buffering">buff</small>
         <small v-if="(! item.is_buffering && item.is_playing)">
-          {{ item.playhead_position_ms | ms_to_time }}
+          {{ item.playhead_position_ms | msToTime }}
         </small>
-        {{ item.duration | ms_to_time }}
+        {{ item.duration | msToTime }}
       </div>
       <div class="actions">
         <span @click="remove(item, $event)">

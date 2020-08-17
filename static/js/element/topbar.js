@@ -13,8 +13,7 @@ class Topbar {
       const id = el.data('id');
       this.show_submenu(id);
     });
-    this.container.on('mouseout', '[data-level="0"]', (e) => {
-      const el = $(e.currentTarget);
+    this.container.on('mouseout', '[data-level="0"]', () => {
       this.show_submenu();
     });
   }

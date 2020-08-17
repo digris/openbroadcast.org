@@ -1,55 +1,66 @@
 <script>
 
-  import settings from '../../settings';
-  import VisualWithActions from "./VisualWithActions.vue";
+import VisualWithActions from './VisualWithActions/VisualWithActions.vue';
 
-  export default {
-    name: 'Card',
-    components: {
-      'visual-with-actions': VisualWithActions,
+export default {
+  name: 'Card',
+  components: {
+    'visual-with-actions': VisualWithActions,
+  },
+  props: {
+    ct: {
+      type: String,
+      required: true,
     },
-    props: {
-      ct: {
-        type: String,
-        required: true,
-      },
-      uuid: {
-        type: String,
-        required: true,
-      },
-      url: {
-        type: String,
-        default: null,
-      },
-      imageUrl: {
-        type: String,
-        required: false,
-        default: null,
-      },
-      actions: {
-        type: Array,
-        required: false,
-        default() {
-          return [];
-        },
-      },
+    uuid: {
+      type: String,
+      required: true,
     },
-    // data() {
-    //   return {
-    //     selected: false,
-    //   };
-    // },
-    computed: {
-      selected() {
-        return this.$store.getters['objectSelection/objectSelection'](this.ct, this.uuid);
+    url: {
+      type: String,
+      default: null,
+    },
+    imageUrl: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    actions: {
+      type: Array,
+      required: false,
+      default() {
+        return [];
       },
     },
-    methods: {
-      toggleSelection() {
-        this.$store.dispatch('objectSelection/toggleSelection', { ct: this.ct, uuid: this.uuid });
-      },
+  },
+  // data() {
+  //   return {
+  //     selected: false,
+  //   };
+  // },
+  computed: {
+    selected() {
+      return this.$store.getters['objectSelection/objectSelection'](this.ct, this.uuid);
     },
-  };
+    objectActions() {
+      const objectActions = [];
+      this.actions.forEach((originalAction) => {
+        const action = { ...originalAction };
+        action.uuid = this.uuid;
+        action.ct = this.ct;
+        action.url = action.url || this.url;
+        objectActions.push(action);
+      });
+
+      return objectActions;
+    },
+  },
+  methods: {
+    toggleSelection() {
+      this.$store.dispatch('objectSelection/toggleSelection', { ct: this.ct, uuid: this.uuid });
+    },
+  },
+};
 </script>
 <template>
   <div
@@ -62,7 +73,7 @@
         :uuid="uuid"
         :url="url"
         :image-url="imageUrl"
-        :actions="actions"
+        :actions="objectActions"
       />
       <div class="card__visual__top">
         <slot name="visual-top" />
@@ -188,6 +199,14 @@
       padding: 4px 4px 0 4px;
 
       cursor: pointer;
+
+      &__primary {
+        display: grid;
+        grid-template-columns: auto auto;
+        > *:nth-child(even) {
+          text-align: right;
+        }
+      }
 
       &__row {
         display: grid;

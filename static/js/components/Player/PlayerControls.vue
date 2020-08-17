@@ -17,23 +17,23 @@ export default {
   methods: {
     play() {
       if (DEBUG) console.debug('play');
-        this.$emit('play');
+      this.$emit('play');
     },
     previous() {
       if (DEBUG) console.debug('previous');
-      if(this.hasPrevious) {
+      if (this.hasPrevious) {
         console.debug('has previous - emitting event');
         this.$emit('previous');
       }
     },
     next() {
       if (DEBUG) console.debug('next');
-      if(this.hasNext) {
+      if (this.hasNext) {
         console.debug('has next - emitting event');
         this.$emit('next');
       }
     },
-  }
+  },
 };
 </script>
 <template>

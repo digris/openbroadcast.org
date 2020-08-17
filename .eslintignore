@@ -1,0 +1,18 @@
+# legacy modules. will be refactored anyway
+static/js/element/autocomplete-widget.js
+static/js/apps/*
+
+# temporary excludes
+static/js/components/Scheduler/Scheduler.vue
+static/js/components/UI/ColorChooser.vue
+static/js/components/Scheduler/*
+static/js/components/Player/*
+static/js/components/PlaylistEditor/*
+static/js/components/EmissionHistory/*
+static/js/components/Exporter/*
+static/js/components/Form/*
+static/js/components/Notifications/*
+static/js/components/ObjectActions/*
+static/js/components/Player/*
+
+static/js/components/ObjectSearch/ObjectSearchResult.vue

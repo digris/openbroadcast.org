@@ -40,7 +40,7 @@
 
   <div class="card__body__primary">
     <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">
-      {{ object.name|truncate_chars_inner:32 }}
+      {{ object.name|truncate_chars_inner:26 }}
     </a>
     {% if object.is_broadcast %}
       <span class="dim" title="{% trans 'Total num. emissions' %}">

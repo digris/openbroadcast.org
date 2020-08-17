@@ -1,7 +1,8 @@
 /* eslint no-shadow: ["error", { "allow": ["state", "getters"] }] */
 /* eslint no-param-reassign: ["error", { "ignorePropertyModificationsFor": ["state"] }] */
-import store from '../store';
-import soundmanager from 'soundmanager2/script/soundmanager2-html5';
+// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line import/no-cycle
+import store from '.';
 import APIClient from '../api/caseTranslatingClient';
 
 const DEBUG = false;
@@ -20,23 +21,14 @@ const getters = {
   playerState: (state) => state.playerState,
   currentIndex: (state) => state.currentIndex,
   currentMedia: (state, getters) => {
-    if(state.currentIndex < 0) {
+    if (state.currentIndex < 0) {
       return null;
     }
     return getters.mediaList[state.currentIndex];
   },
-  mediaList: (state) => {
-    const flatMedia = state.items.reduce((f, item) => {
-      return f.concat(item.media);
-    }, []);
-    return flatMedia;
-  },
-  hasNext: (state, getters) => {
-    return (state.currentIndex < (getters.mediaList.length - 1));
-  },
-  hasPrevious: (state) => {
-    return state.currentIndex > 0;
-  },
+  mediaList: (state) => state.items.reduce((f, item) => f.concat(item.media), []),
+  hasNext: (state, getters) => (state.currentIndex < (getters.mediaList.length - 1)),
+  hasPrevious: (state) => state.currentIndex > 0,
 };
 
 const mutations = {
@@ -47,7 +39,7 @@ const mutations = {
   addItems: (state, { payload }) => {
     if (DEBUG) console.debug('mutations - addItems', payload);
     // state.items.push(payload);
-    state.items = [...state.items, ...payload]
+    state.items = [...state.items, ...payload];
   },
   setIndex: (state, { index }) => {
     if (DEBUG) console.debug('mutations - setIndex', index);
@@ -59,8 +51,8 @@ const actions = {
   loadItems: async (context, { items, replace }) => {
     if (DEBUG) console.debug('actions - loadItems', items, replace);
     const url = `${PLAYER_ENDPOINT}`;
-    const response = await APIClient.put(url, { items: items });
-    if(replace) {
+    const response = await APIClient.put(url, { items });
+    if (replace) {
       context.commit('setItems', { payload: response.data.results });
     } else {
       context.commit('addItems', { payload: response.data.results });
@@ -68,24 +60,23 @@ const actions = {
 
     return response;
   },
-  playAtIndex: (context, {index}) => {
+  playAtIndex: (context, { index }) => {
     console.info('backend', backend);
     if (DEBUG) console.debug('actions - playAtIndex', index);
-    context.commit('setIndex', { index: index });
+    context.commit('setIndex', { index });
   },
-  playByMediaObj: (context, {media}) => {
+  playByMediaObj: (context, { media }) => {
     if (DEBUG) console.debug('actions - playByMediaObj', media);
     const index = context.getters.mediaList.findIndex((obj) => obj === media);
     if (index > -1) {
-      context.commit('setIndex', { index: index });
+      context.commit('setIndex', { index });
     }
   },
 };
 
 class PlayerBackend {
-
   // eslint-disable-next-line no-shadow
-  constructor({store}) {
+  constructor({ store }) {
     console.debug('PlayerBackend store', store);
     this.sound = null;
     soundManager.setup({
@@ -104,7 +95,7 @@ class PlayerBackend {
 
 
 setImmediate(() => {
-  backend = new PlayerBackend({store: store});
+  backend = new PlayerBackend({ store });
 });
 
 export default {

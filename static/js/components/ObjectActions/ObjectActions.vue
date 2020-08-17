@@ -5,8 +5,6 @@ import ClickOutside from 'vue-click-outside';
 import ObjectActionsAction from './ObjectActionsAction.vue';
 import ObjectActionsPlay from './ObjectActionsPlay.vue';
 
-const DEBUG = true;
-
 export default {
   name: 'ObjectActions',
   components: {
@@ -111,12 +109,8 @@ export default {
     },
     hideSecondaryActions(e, el) {
       console.debug(el, e, 'click outside...');
-      // if(this.secondaryActionsVisible) {
-      //     this.secondaryActionsVisible = false;
-      // }
     },
     handleAction(key) {
-      console.debug('handleAction', key);
       this.secondaryActionsVisible = false;
 
       // TODO: handle actions...
@@ -159,9 +153,8 @@ export default {
       }
     },
     playerControls(action) {
-      const _e = new CustomEvent('player:controls', { detail: action });
-      if (DEBUG) console.debug('playerControls emit action', _e);
-      window.dispatchEvent(_e);
+      const e = new CustomEvent('player:controls', { detail: action });
+      window.dispatchEvent(e);
     },
   },
 };

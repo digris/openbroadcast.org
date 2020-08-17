@@ -1,9 +1,20 @@
 <script>
 
-const DEBUG = false;
+import { EventBus } from 'src/eventBus';
 
 export default {
   name: 'Play',
+  props: {
+    action: {
+      type: Object,
+      required: true,
+    },
+  },
+  methods: {
+    play() {
+      EventBus.$emit('action', this.action);
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -30,7 +41,7 @@ export default {
 <template>
   <div
     class="play-icon-container"
-    @click="$emit('click')"
+    @click="play"
   >
     <svg
       version="1.1"
@@ -57,7 +68,7 @@ export default {
           id="triangle"
           fill="#fff"
           class="st1"
-          points="21,16.5 41,28 21,39.5 	"
+          points="21,16.5 41,28 21,39.5"
         />
       </g>
     </svg>

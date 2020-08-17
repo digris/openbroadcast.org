@@ -1,18 +1,5 @@
-/** ********************************************************************
- * AppInitializer handles setup (re-)initialization of
- * our mixed app stack. Some apps are global (like search) others
- * 'local' - like chat.
- * so chat has only to be initialized in chat context.
- * further we need to re-initialize apps on document reload -
- * e.g. form POST
- *
- * setup cacle has to run on both document.ready and XHR based
- * navigation via turbolinks
- ********************************************************************* */
-
 import Vue from 'vue';
-import Vuex from 'vuex';
-import settings from './settings';
+// import settings from './settings';
 import store from './store/index';
 import SearchApp from './apps/search-app.vue';
 import PlayerApp from './apps/player/player-app.vue';
@@ -24,6 +11,8 @@ import ListFilter from './element/listfilter';
 import AutocompleteWidgets from './element/autocomplete-widget';
 import LayzImageLoader from './utils/lazy-image-loader';
 
+// import { ActionHandler } from './utils/actionHandler';
+
 //
 import Player from './components/Player/Player.vue';
 import Scheduler from './components/Scheduler/Scheduler.vue';
@@ -32,38 +21,42 @@ import ThumbRating from './components/Rating/ThumbRating.vue';
 import ObjectActions from './components/ObjectActions/ObjectActions.vue';
 import EmissionHistory from './components/EmissionHistory/EmissionHistory.vue';
 import Exporter from './components/Exporter/Exporter.vue';
+import MediaPreflightStatus from './components/MediaPreflightStatus/MediaPreflightStatus.vue';
+import ObjectMerge from './components/ObjectMerge/ObjectMerge.vue';
+import MediaReassign from './components/MediaReassign/MediaReassign.vue';
+import Notifications from './components/Notifications/Notifications.vue';
 // UI
 import Card from './components/UI/Card.vue';
+import ListRow from './components/UI/ListRow.vue';
 import Visual from './components/UI/Visual.vue';
 import LazyImage from './components/UI/LazyImage.vue';
-import VisualWithActions from './components/UI/VisualWithActions.vue';
+import VisualWithActions from './components/UI/VisualWithActions/VisualWithActions.vue';
 import ObjectSelectionAction from './components/UI/ObjectSelectionAction.vue';
-import ObjectMerge from './components/UI/ObjectMerge/ObjectMerge.vue';
-import Notifications from './components/Notifications/Notifications.vue';
 // forms
 import Formset from './components/Form/Formset.vue';
 import InputContainer from './components/Form/InputContainer.vue';
 import TagInputContainer from './components/Form/TagInputContainer.vue';
-import APIClient from './api/caseTranslatingClient';
+// plugins
+import Tooltip from './plugins/tooltip';
 
-const DEBUG = false;
+Vue.use(Tooltip);
 
 class AppInitializer {
-  constructor(opts) {
-    if (DEBUG) console.debug('AppInitializer - constructor');
-
-    // initialize vue root app
+  constructor() {
+    // eslint-disable-next-line no-new
     new Vue({
       el: '#app',
       store,
       components: {
         // generic ui components
         card: Card,
+        'list-row': ListRow,
         visual: Visual,
         'lazy-image': LazyImage,
         'visual-with-actions': VisualWithActions,
         'object-selection-action': ObjectSelectionAction,
         'object-merge': ObjectMerge,
+        'media-reassign': MediaReassign,
         notifications: Notifications,
         // form ui components
         formset: Formset,
@@ -76,7 +69,8 @@ class AppInitializer {
         'thumb-rating': ThumbRating,
         'object-actions': ObjectActions,
         'emission-history': EmissionHistory,
-        'exporter': Exporter,
+        exporter: Exporter,
+        'media-preflight-status': MediaPreflightStatus,
       },
       mounted() {
         // tell jQuery (legacy) to continue
@@ -87,22 +81,16 @@ class AppInitializer {
     });
 
     this.apps = [];
-    this.bindings();
-    this.setup_apps();
+    this.setupApps();
   }
 
-  bindings() {
-
-  }
-
-  setup_apps() {
-    if (DEBUG) console.debug('AppInitializer - setup_apps');
-
+  // eslint-disable-next-line class-methods-use-this
+  setupApps() {
     const search_app_selector = $('#search_app_home').length ? 'search_app_home' : 'search_app';
     const search_app_el = document.getElementById(search_app_selector);
     if (search_app_el) {
-      if (DEBUG) console.debug('initialize SearchApp:', search_app_el);
-      const _SearchApp = new Vue({
+      // eslint-disable-next-line no-new
+      new Vue({
         el: search_app_el,
         render: (h) => h(SearchApp, {
           props: {
@@ -114,8 +102,8 @@ class AppInitializer {
 
     const player_app_el = document.getElementById('player_app');
     if (player_app_el) {
-      if (DEBUG) console.debug('initialize PlayerApp:', player_app_el);
-      const _PlayerApp = new Vue({
+      // eslint-disable-next-line no-new
+      new Vue({
         el: player_app_el,
         render: (h) => h(PlayerApp),
       });
@@ -123,8 +111,8 @@ class AppInitializer {
 
     const player_control_app_el = document.getElementById('player_control_app');
     if (player_control_app_el) {
-      if (DEBUG) console.debug('initialize PlayerControlApp:', player_control_app_el);
-      const _PlayerControlApp = new Vue({
+      // eslint-disable-next-line no-new
+      new Vue({
         el: player_control_app_el,
         render: (h) => h(PlayerControlApp),
       });
@@ -132,18 +120,23 @@ class AppInitializer {
 
     const collector_app_el = document.getElementById('collector_app');
     if (collector_app_el) {
-      if (DEBUG) console.debug('initialize CollectorApp:', collector_app_el);
-      const _CollectorApp = new Vue({
+      // eslint-disable-next-line no-new
+      new Vue({
         el: collector_app_el,
         render: (h) => h(CollectorApp),
       });
     }
 
-    const _Topbar = new Topbar();
-    const _Tagcloud = new Tagcloud();
-    const _ListFilter = new ListFilter();
-    const _AutocompleteWidgets = new AutocompleteWidgets();
-    const _LayzImageLoader = new LayzImageLoader();
+    // eslint-disable-next-line no-new
+    new Topbar();
+    // eslint-disable-next-line no-new
+    new Tagcloud();
+    // eslint-disable-next-line no-new
+    new ListFilter();
+    // eslint-disable-next-line no-new
+    new AutocompleteWidgets();
+    // eslint-disable-next-line no-new
+    new LayzImageLoader();
   }
 }
 

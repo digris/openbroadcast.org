@@ -101,7 +101,7 @@ export default {
     },
     readTagsFromInput() {
       const input = this.$refs.field.querySelector('input');
-      if(input.value) {
+      if (input.value) {
         this.tags = input.value.split(',');
       }
     },

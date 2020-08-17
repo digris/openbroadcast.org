@@ -3,7 +3,6 @@
 
 import dayjs from 'dayjs';
 import Vue from 'vue';
-// import APIClient from '../api/caseTranslatingClient';
 
 import APIClient from '../api/caseTranslatingClient';
 
@@ -15,7 +14,6 @@ const DEFAULT_SCHEDULER_CONFIG = {
   snapMinutes: 15,
   emissionColor: 0,
 };
-// const EMISSION_ENDPOINT = '/api/v2/abcast/emission/?limit=400&time_start_0=2019-06-03+06%3A00&time_start_1=2019-06-04+06%3A00&fields=uuid,co,name';
 const EMISSION_ENDPOINT = '/api/v2/abcast/emission/';
 const DEFAULT_EMISSION_FIELDS = [
   'ct',
@@ -65,7 +63,7 @@ const mutations = {
     // check if exists
     if (state.emissions[uuid] === undefined) {
       Vue.set(state.emissions, uuid, payload);
-    } else if (state.emissions[uuid].updated != payload.updated || forceUpdate) {
+    } else if (state.emissions[uuid].updated !== payload.updated || forceUpdate) {
       if (DEBUG) console.debug('updated', payload.updated);
       Vue.set(state.emissions, uuid, payload);
     }
@@ -118,14 +116,12 @@ const actions = {
 
     if (DEBUG) console.debug('actions - loadSchedule', url, params);
     APIClient.get(url, { params }).then((response) => {
-      for (const obj of response.data.results) {
-        context.commit('setEmission', { uuid: obj.uuid, payload: obj });
-      }
-      // if(response.data.next !== null) {
-      //     console.debug('next:', response.data.next);
-      //     const next = response.data.next;
-      //     context.dispatch('loadSchedule', {timeStart, timeEnd, next});
+      // for (const obj of response.data.results) {
+      //   context.commit('setEmission', { uuid: obj.uuid, payload: obj });
       // }
+      response.data.results.forEach((obj) => {
+        context.commit('setEmission', { uuid: obj.uuid, payload: obj });
+      });
     }).catch(() => {
       console.warn('error');
     });

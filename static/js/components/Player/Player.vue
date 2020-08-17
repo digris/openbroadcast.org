@@ -2,7 +2,7 @@
 
 
 import tabex from 'tabex';
-import canAutoPlay from "can-autoplay";
+import canAutoPlay from 'can-autoplay';
 
 // import APIClient from '../../api/caseTranslatingClient';
 // import PlayerBackend from './backend';
@@ -38,7 +38,7 @@ export default {
       canAutoplay: null,
       isLoading: false,
       controls: [],
-    }
+    };
   },
   computed: {
     items() {
@@ -107,13 +107,12 @@ export default {
         mode: 'replace',
       },
       items: [
-         {
-           ct: "alibrary.release",
-           uuid: "0f7b084c-e89f-4fd2-9d67-e991bdf1ce34"
-         }
-      ]
-    })
-
+        {
+          ct: 'alibrary.release',
+          uuid: '0f7b084c-e89f-4fd2-9d67-e991bdf1ce34',
+        },
+      ],
+    });
   },
   methods: {
     sendHeartbeat(payload) {
@@ -133,20 +132,20 @@ export default {
     onControls(action) {
       if (DEBUG) console.debug('onControl', action);
 
-      if(action.do === 'load') {
+      if (action.do === 'load') {
         this.isLoading = true;
         const payload = {
           items: action.items,
           replace: action.opts.mode === 'replace',
         };
-        this.$store.dispatch('player/loadItems', payload).then(response => {
-            if (DEBUG) console.debug('loaded items', response);
-            this.isLoading = false;
-            console.info('playAtIndex', 0);
-            this.playAtIndex(0);
-        }, error => {
-            console.error("onControls - error", error);
-            this.isLoading = false;
+        this.$store.dispatch('player/loadItems', payload).then((response) => {
+          if (DEBUG) console.debug('loaded items', response);
+          this.isLoading = false;
+          console.info('playAtIndex', 0);
+          this.playAtIndex(0);
+        }, (error) => {
+          console.error('onControls - error', error);
+          this.isLoading = false;
         });
       }
     },
@@ -158,7 +157,7 @@ export default {
     },
     // mapped vuex actions
     playAtIndex(index) {
-      this.$store.dispatch('player/playAtIndex', { index: index });
+      this.$store.dispatch('player/playAtIndex', { index });
     },
 
   },

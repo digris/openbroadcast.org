@@ -4,8 +4,6 @@ import Visual from '../UI/Visual.vue';
 import EmissionHistory from '../EmissionHistory/EmissionHistory.vue';
 import ObjectActions from '../ObjectActions/ObjectActions.vue';
 
-const DEBUG = true;
-
 export default {
   name: 'SchedulerClipboardItem',
   components: {

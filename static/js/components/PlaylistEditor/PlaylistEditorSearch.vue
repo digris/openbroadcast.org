@@ -4,7 +4,7 @@
 import debounce from 'debounce';
 
 import Checkbox from '../Form/Checkbox.vue';
-import APIClient from "../../api/caseTranslatingClient";
+import APIClient from '../../api/caseTranslatingClient';
 
 import PlaylistEditorSearchResult from './PlaylistEditorSearchResult.vue';
 
@@ -12,7 +12,7 @@ export default {
   name: 'PlaylistEditorSearch',
   components: {
     'search-result': PlaylistEditorSearchResult,
-    'checkbox': Checkbox,
+    checkbox: Checkbox,
   },
   props: {
     items: {
@@ -46,13 +46,13 @@ export default {
   },
   methods: {
     onChange() {
-      this.getResults(this.query)
+      this.getResults(this.query);
     },
 
     getResults: debounce(function (q) {
       const url = '/api/v2/search/global/';
-      let params = {
-        q: q,
+      const params = {
+        q,
         fuzzy: 0,
         ct: 'alibrary.media',
         filter_type: this.filterType.join(','),
@@ -76,7 +76,6 @@ export default {
       // this.addMediaToPlaylist(result);
 
       this.$emit('select', result);
-
     },
     onArrowDown(evt) {
       if (this.arrowCounter < this.results.length) {

@@ -6,7 +6,9 @@ import scheduler from './_scheduler';
 import objectHistory from './_objectHistory';
 import objectSelection from './_objectSelection';
 import library from './_library';
+// eslint-disable-next-line import/no-cycle
 import player from './_player';
+// eslint-disable-next-line import/no-cycle
 import exporter from './_exporter';
 import notifications from './_notifications';
 

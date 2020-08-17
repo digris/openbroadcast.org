@@ -1,15 +1,8 @@
 <script>
 
-const DEBUG = false;
+import debounce from 'debounce';
 
-// const ICON_MAP = {
-//   default: 'fa-pencil',
-//   edit: 'fa-pencil',
-//   download: 'fa-download',
-//   message: 'fa-envelope',
-//   admin: 'fa-lock',
-//   loginas: 'fa-key',
-// };
+import { EventBus } from '../../../eventBus';
 
 export default {
   name: 'ContextMenu',
@@ -26,70 +19,144 @@ export default {
         return [];
       },
     },
+    toggleColor: {
+      type: String,
+      default: 'inherit',
+    },
+    toggleSize: {
+      type: Number,
+      default: 32,
+    },
+    menuPosition: {
+      type: Object,
+      default() {
+        return {
+          left: 0,
+          top: 0,
+        };
+      },
+    },
+  },
+  data() {
+    return {
+      menuVisible: false,
+    };
+  },
+  computed: {
+    toggleStyle() {
+      return {
+        color: this.toggleColor,
+        fontSize: `${this.toggleSize}px`,
+        lineHeight: `${this.toggleSize}px`,
+      };
+    },
+    menuStyle() {
+      return this.menuPosition;
+    },
   },
   methods: {
+    toggleMenu() {
+      this.menuVisible = !this.menuVisible;
+    },
+    closeMenu() {
+      this.menuVisible = false;
+    },
+    debounceCloseMenu: debounce(() => {
+      this.closeMenu();
+    }, 100),
     handleAction(action) {
-      this.$emit('click', action);
+      // this.$emit('click', action);
+      EventBus.$emit('action', action);
     },
   },
 };
 </script>
 <template>
-  <transition name="fade">
+  <div class="context-menu">
     <div
-      v-if="visible"
-      class="context-menu"
+      class="context-menu__toggle"
+      :style="toggleStyle"
+      :class="{ 'is-active': menuVisible }"
+      @click="toggleMenu"
     >
-      <div
-        v-for="action in actions"
-        :key="action.key"
-        class="menu-item"
-        @click="handleAction(action)"
-      >
-        {{ action.title }}
-      </div>
+      <i class="fa fa-ellipsis-h" />
     </div>
-  </transition>
+    <transition name="fade">
+      <div
+        v-if="menuVisible"
+        :style="menuStyle"
+        class="context-menu__menu"
+        @mouseleave="debounceCloseMenu"
+      >
+        <a
+          v-for="action in actions"
+          :key="action.key"
+          :href="(action.url || '#')"
+          class="menu-item"
+          @click.prevent="handleAction(action)"
+        >
+          {{ action.title }}
+        </a>
+      </div>
+    </transition>
+  </div>
 </template>
 <style lang="scss" scoped>
   .context-menu {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 999;
 
-    display: flex;
-    flex-direction: column;
-    min-width: 150px;
-
-    filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.1));
-
-    .menu-item {
-      display: flex;
-      width: 100%;
-      padding: 10px 14px;
-
-      white-space: nowrap;
-
+    &__toggle {
       cursor: pointer;
 
-      &:hover {
-        color: #fff;
+      > i {
+        color: inherit;
+        font-size: inherit;
+        line-height: inherit;
 
-        background: #00bb73;
+        transition: transform 200ms;
       }
 
-      /*
-      &__icon {
-        width: 20px;
+      &.is-active {
+        > i {
+          transform: rotate(-90deg);
+        }
       }
 
-      &__name {
-        flex-grow: 1;
+    }
+
+    &__menu {
+
+      position: absolute;
+      z-index: 999;
+
+      display: flex;
+      flex-direction: column;
+      min-width: 150px;
+
+      background: white;
+
+      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.1));
+
+
+      .menu-item {
+        display: flex;
+        width: 100%;
+        padding: 10px 14px;
+
+        color: #333333;
 
         white-space: nowrap;
+
+        text-decoration: none;
+
+        cursor: pointer;
+
+        &:hover {
+          color: #fff;
+
+          background: #00bb73;
+        }
+
       }
-      */
     }
   }
 

@@ -2,9 +2,9 @@
 
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
+import { templateFilters } from 'src/utils/template-filters';
 import { backgroundColors } from './constants';
 import { hexToRGBA } from './utils';
-import { templateFilters } from '../../utils/template-filters';
 import SchedulerCalendarEmissionContent from './SchedulerCalendarEmissionContent.vue';
 import Modal from '../UI/Modal.vue';
 import UserInline from '../UI/UserInline.vue';

@@ -1,62 +1,60 @@
 <script>
 
-  import PlaylistEditorSearch from './PlaylistEditorSearch.vue';
-  import APIClient from "../../api/client";
+import PlaylistEditorSearch from './PlaylistEditorSearch.vue';
+import APIClient from '../../api/client';
 
-  const DEBUG = true;
+const DEBUG = true;
 
-  export default {
-    name: 'PlaylistEditor',
-    components: {
-      'playlist-editor-search': PlaylistEditorSearch,
+export default {
+  name: 'PlaylistEditor',
+  components: {
+    'playlist-editor-search': PlaylistEditorSearch,
+  },
+  props: {
+    uuid: {
+      type: String,
+      required: true,
     },
-    props: {
-      uuid: {
-        type: String,
-        required: true,
-      },
+  },
+  data() {
+    return {
+      masterWindow: null,
+      canAutoplay: null,
+      isLoading: false,
+      controls: [],
+    };
+  },
+  computed: {
+
+  },
+  mounted() {
+    if (DEBUG) console.debug('PlaylistEditor - mounted');
+  },
+  methods: {
+
+    addMediaToPlaylist(media) {
+      console.debug('addMediaToPlaylist', media);
+
+      const url = `/api/v2/alibrary/playlist/${this.uuid}/`;
+      const itemsToCollect = [{
+        content: {
+          ct: 'alibrary.media',
+          uuid: media.uuid,
+          // uuid: '1ce2fcfa-132f-444d-a5ed-6c621500c516',
+        },
+      }];
+
+
+      APIClient.put(url, { itemsToCollect })
+        .then((response) => {
+          console.debug(response);
+        }, (error) => {
+          console.error('error putting data', error);
+          playlist.loading = false;
+        });
     },
-    data() {
-      return {
-        masterWindow: null,
-        canAutoplay: null,
-        isLoading: false,
-        controls: [],
-      }
-    },
-    computed: {
-
-    },
-    mounted() {
-      if (DEBUG) console.debug('PlaylistEditor - mounted');
-    },
-    methods: {
-
-      addMediaToPlaylist(media) {
-        console.debug('addMediaToPlaylist', media)
-
-        const url = `/api/v2/alibrary/playlist/${this.uuid}/`;
-        const itemsToCollect = [{
-          content: {
-            ct: 'alibrary.media',
-            uuid: media.uuid,
-            // uuid: '1ce2fcfa-132f-444d-a5ed-6c621500c516',
-          },
-        }];
-
-
-
-        APIClient.put(url, { itemsToCollect })
-          .then((response) => {
-            console.debug(response);
-          }, (error) => {
-            console.error('error putting data', error);
-            playlist.loading = false;
-          });
-
-      },
-    },
-  };
+  },
+};
 </script>
 
 <template>

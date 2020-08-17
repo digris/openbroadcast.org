@@ -454,7 +454,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
         artists = []
         if self.media_artists.exists():
-            for media_artist in self.media_mediaartist.all():
+            for media_artist in self.media_mediaartist.all().select_related('artist'):
                 artists.append(
                     {
                         "artist": media_artist.artist,

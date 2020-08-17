@@ -10,7 +10,7 @@ router.register(r"artist", views.ArtistViewSet)
 router.register(r"label", views.LabelViewSet)
 router.register(r"release", views.ReleaseViewSet)
 # router.register(r"playlist", views.PlaylistViewSet)
-router.register(r"track", views.MediaViewSet)
+router.register(r"media", views.MediaViewSet)
 
 app_name = "alibrary"
 urlpatterns = [

@@ -1,9 +1,9 @@
 <script>
 
 import { tween } from 'shifty';
+import { templateFilters } from 'src/utils/template-filters';
 import Loader from '../../../components/UI/Loader.vue';
 import Visual from '../../../components/UI/Visual.vue';
-import { templateFilters } from '../../../utils/template-filters';
 
 export default {
   components: {
@@ -211,7 +211,7 @@ export default {
         <span>{{ item.series_display }}</span>
       </div>
       <div class="counts">
-        <span>{{ animated_duration | ms_to_time }}</span>
+        <span>{{ animated_duration | msToTime }}</span>
         &mdash;
         <span>{{ item.num_media }} tracks</span>
       </div>

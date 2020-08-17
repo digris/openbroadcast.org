@@ -3,6 +3,17 @@
 import throttle from 'lodash.throttle';
 import settings from '../../settings';
 
+function isInViewport(element) {
+  const rect = element.getBoundingClientRect();
+  const html = document.documentElement;
+  return (
+    rect.top >= 0
+            && rect.left >= 0
+            && rect.top <= (window.innerHeight || html.clientHeight)
+            && rect.left <= (window.innerWidth || html.clientWidth)
+  );
+}
+
 export default {
   name: 'LazyImage',
   props: {
@@ -52,7 +63,7 @@ export default {
   },
   methods: {
 
-    throttledProcessImage: throttle(function () {
+    throttledProcessImage: throttle(() => {
       this.processImage();
     }, 50),
 
@@ -75,17 +86,6 @@ export default {
     },
   },
 };
-
-function isInViewport(element) {
-  const rect = element.getBoundingClientRect();
-  const html = document.documentElement;
-  return (
-    rect.top >= 0
-            && rect.left >= 0
-            && rect.top <= (window.innerHeight || html.clientHeight)
-            && rect.left <= (window.innerWidth || html.clientWidth)
-  );
-}
 
 </script>
 <style lang="scss" scoped>

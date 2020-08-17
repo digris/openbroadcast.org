@@ -2,22 +2,7 @@
 
 {% load truncate_tags i18n thumbnail arating_tags wiki_tags sekizai_tags alibrary_tags spurl addthis %}
 
-{% block heading %}
-    {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
-    {% addtoblock "js-post" %}
-        <script>
-            var exporter = exporter || {};
-            $(function () {
-                exporter = new ExporterApp();
-                exporter.api_url = '{% url "api_dispatch_list" resource_name='export' api_name='v1' %}';
-                exporter.init();
-            });
-        </script>
-    {% endaddtoblock %}
-    <div id="heading">
-        {% include "skeleton/heading.html" %}
-    </div>
-{% endblock %}
+{% block heading %}{% endblock %}
 
 {% block inner %}
 <div class="item_detail" style="">
@@ -54,26 +39,27 @@
 	<section class="tabbed item_inner">
 		<div class="tab-content">
 			<div class="tab-pane active" id="overview" class="topflop">
-                <section class="top">
-                    {% url "alibrary-release-list" as release_list %}
-                    <h2>
-                        {% trans "Releases" %}
-                        <span class="pull-right">
-                            <a href="{% spurl path=release_list query="search_label_ids={{ object.uuid }}" %}">
-                                <i class="icon-chevron-sign-right"></i>
-                                {% blocktrans with name=object.name %}Show all releases on {{ name }}{% endblocktrans %}
-                            </a>
-                        </span>
-                    </h2>
-                    <div class="listview container releases inner l">
-                        <div class="list_header"></div>
-                        <div class="list_body">
-                            {% for item in releases %}
-                                {% include "alibrary/release/list_item.html" %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                </section>
+        <section class="top">
+            {% url "alibrary-release-list" as release_list %}
+            <h2>
+                {% trans "Releases" %}
+                <span class="pull-right">
+                    <a href="{% spurl path=release_list query="search_label_ids={{ object.uuid }}" %}">
+                        <i class="icon-chevron-sign-right"></i>
+                        {% blocktrans with name=object.name %}Show all releases on {{ name }}{% endblocktrans %}
+                    </a>
+                </span>
+            </h2>
+            <div class="listview container releases inner l">
+                <div class="list_header"></div>
+                <div class="list_body">
+                    {% for item in releases %}
+                        {% include "alibrary/release/list_item.html" %}
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
 			</div>
 
             <div class="tab-pane" id="description">

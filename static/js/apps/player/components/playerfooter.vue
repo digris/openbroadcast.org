@@ -1,7 +1,7 @@
 <script>
 
 import { tween } from 'shifty';
-import { templateFilters } from '../../../utils/template-filters';
+import { templateFilters } from 'src/utils/template-filters';
 
 export default {
   components: {
@@ -118,7 +118,7 @@ export default {
 <template>
   <div class="player-footer">
     <div class="information">
-      Total: <span>{{ animated_duration | ms_to_time }}</span>
+      Total: <span>{{ animated_duration | msToTime }}</span>
     </div>
     <div class="actions">
       <div class="button-group">

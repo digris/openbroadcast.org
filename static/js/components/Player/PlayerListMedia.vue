@@ -1,6 +1,6 @@
 <script>
 
-import { templateFilters } from '../../utils/template-filters';
+import { templateFilters } from 'src/utils/template-filters';
 
 const DEBUG = true;
 
@@ -18,26 +18,26 @@ export default {
       return this.$store.getters['player/currentMedia'];
     },
     isCurrent() {
-      return (this.media === this.currentMedia)
+      return (this.media === this.currentMedia);
     },
     state() {
-      if(!this.isCurrent) {
+      if (!this.isCurrent) {
         return 'stopped';
       }
       return 'playing';
-    }
+    },
   },
   methods: {
     play() {
       if (DEBUG) console.debug('play');
-        this.$emit('play', this.media);
-        this.playByMediaObj(this.media);
+      this.$emit('play', this.media);
+      this.playByMediaObj(this.media);
     },
     // mapped vuex actions
     playByMediaObj(media) {
-      this.$store.dispatch('player/playByMediaObj', { media: media });
+      this.$store.dispatch('player/playByMediaObj', { media });
     },
-  }
+  },
 };
 </script>
 <template>
@@ -70,7 +70,7 @@ export default {
       </span>
     </div>
     <div class="media__time">
-      0:00 - {{ media.duration|s_to_time }}
+      0:00 - {{ media.duration|sToTime }}
     </div>
     <div class="media__secondary-controls">
       <span

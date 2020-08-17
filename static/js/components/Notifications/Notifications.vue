@@ -1,21 +1,21 @@
 <script>
 
-  const DEBUG = true;
+const DEBUG = true;
 
-  export default {
-    name: 'Notifications',
-    computed: {
-      notifications() {
-        return this.$store.getters['notifications/notifications'];
-      },
+export default {
+  name: 'Notifications',
+  computed: {
+    notifications() {
+      return this.$store.getters['notifications/notifications'];
     },
-    methods: {
-      click(notification) {
-        console.debug('notification', notification);
-        this.$store.dispatch('notifications/removeNotification', { uuid: notification.uuid });
-      }
-    }
-  };
+  },
+  methods: {
+    click(notification) {
+      console.debug('notification', notification);
+      this.$store.dispatch('notifications/removeNotification', { uuid: notification.uuid });
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
   .notifications {

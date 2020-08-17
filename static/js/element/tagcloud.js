@@ -15,9 +15,8 @@ class Tagcloud {
   }
 
   bindings() {
-    this.tagcloud_toggle.on('click', (e) => {
+    this.tagcloud_toggle.on('click', () => {
       e.preventDefault();
-      const el = $(e.currentTarget);
       this.toggle(true);
     });
   }
@@ -31,12 +30,14 @@ class Tagcloud {
     }
   }
 
+  // eslint-disable-next-line no-unused-vars
   show(animate = false) {
     store.set(STORE_KEY, true);
     this.container.addClass('tagcloud--expanded');
     this.tagcloud_toggle.addClass('tagcloud-toggle--expanded');
   }
 
+  // eslint-disable-next-line no-unused-vars
   hide(animate = false) {
     store.set(STORE_KEY, false);
     this.container.removeClass('tagcloud--expanded');

@@ -1,10 +1,9 @@
-import store from '../../store';
 import soundmanager from 'soundmanager2/script/soundmanager2-html5';
+import store from '../../store';
 
 const DEBUG = true;
 
 class PlayerBackend {
-
   constructor(opts) {
     this.player = null;
     soundManager.setup({

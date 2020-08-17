@@ -1,7 +1,4 @@
 <script>
-
-const DEBUG = false;
-
 export default {
   name: 'ObjectActionsPlay',
 };
@@ -59,7 +56,7 @@ export default {
           id="triangle"
           fill="#fff"
           class="st1"
-          points="21,16.5 41,28 21,39.5 	"
+          points="21,16.5 41,28 21,39.5"
         />
       </g>
     </svg>

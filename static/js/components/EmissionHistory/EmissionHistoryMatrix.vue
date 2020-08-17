@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import toObject from 'dayjs/plugin/toObject';
 import utc from 'dayjs/plugin/utc';
 import weekday from 'dayjs/plugin/weekday';
-import { templateFilters } from '../../utils/template-filters';
+import { templateFilters } from 'src/utils/template-filters';
 
 const DEBUG = false;
 const NEARBY_HOURS = 48;

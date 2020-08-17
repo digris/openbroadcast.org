@@ -105,8 +105,6 @@ class AutocompleteWidget {
     this.current_id = this.hidden_input.val();
     this.selected_index = -1;
 
-    if (DEBUG) console.debug(`AutocompleteWidget - url: ${this.url} - value: ${this.current_value} -  id: ${this.current_id} `);
-
     this.bindings();
   }
 

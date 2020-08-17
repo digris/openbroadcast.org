@@ -1,8 +1,6 @@
 <script>
 
-
 import Visual from './Visual.vue';
-import Tags from './Tags.vue';
 
 export default {
   name: 'UserInline',

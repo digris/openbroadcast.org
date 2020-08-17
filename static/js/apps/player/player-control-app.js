@@ -24,12 +24,12 @@ const PlayerControlApp = Vue.extend({
     };
   },
   computed: {
-    player_url: function () {
-      if(settings.enableAlphaFeatures) {
+    player_url() {
+      if (settings.enableAlphaFeatures) {
         return '/player/next/';
       }
       return '/player/';
-    }
+    },
   },
   mounted() {
     if (DEBUG) console.group('PlayerControlApp', settings);

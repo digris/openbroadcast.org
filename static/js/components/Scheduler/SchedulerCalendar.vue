@@ -194,7 +194,7 @@ export default {
       const dayStart = currentTime.hour(6).minute(0).second(0).millisecond(0);
       const timeDiff = currentTime.diff(dayStart, 'second');
       let gridOffset = 0;
-      if(currentTime.hour() < 6) {
+      if (currentTime.hour() < 6) {
         gridOffset = this.pixelHeightPerHour * 24;
       }
       this.currentTimeY = Math.round(this.pixelHeightPerHour * timeDiff / 60 / 60) + 50 + gridOffset;

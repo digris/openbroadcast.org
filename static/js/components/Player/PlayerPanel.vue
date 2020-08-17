@@ -5,13 +5,13 @@ import Visual from '../UI/Visual.vue';
 export default {
   name: 'PlayerPanel',
   components: {
-    'visual': Visual,
+    visual: Visual,
   },
   computed: {
     currentMedia() {
       return this.$store.getters['player/currentMedia'];
     },
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

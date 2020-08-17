@@ -1,18 +1,12 @@
 <script>
-
-import APIClient from '../../../api/caseTranslatingClient';
-import Modal from '../Modal.vue';
+import { EventBus } from 'src/eventBus';
+import { objectKeyToAPIUrl } from 'src/utils/urls';
+import APIClient from 'src/api/caseTranslatingClient';
+import Modal from '../UI/Modal.vue';
 import ObjectMergeObject from './ObjectMergeObject.vue';
 
 const API_MERGE_URL = '/api/v2/alibrary/utils/merge-objects/';
 const DEBUG = false;
-
-const objectKeyToAPIUrl = function(key) {
-  // example: alibrary.release:87a71f94-8f2b-4629-801c-b14bdde06838
-  const ct = key.split(':')[0];
-  const uuid = key.split(':')[1];
-  return `/api/v2/${ct.replace('.', '/')}/${uuid}/`;;
-};
 
 export default {
   name: 'ObjectMerge',
@@ -30,10 +24,8 @@ export default {
     };
   },
   mounted() {
-    window.addEventListener('alibrary:mergeObjects', (e) => {
-      const objectKeys = e.detail;
-      if (DEBUG) console.debug('mergeObjects', objectKeys);
-      this.objectKeys = objectKeys;
+    EventBus.$on('alibrary:mergeObjects', ({ selection }) => {
+      this.objectKeys = selection;
       this.show();
       this.loadObjects();
     });
@@ -52,43 +44,41 @@ export default {
     loadObjects() {
       this.master = null;
       this.objects = [];
-      this.objectKeys.forEach((key, i) => {
+      this.objectKeys.forEach((key) => {
         const url = objectKeyToAPIUrl(key);
         const params = {
           // fields: ['name'].join(',')
         };
         if (DEBUG) console.debug('loadObjects - url', url);
-        APIClient.get(url, {params}).then((response) => {
+        APIClient.get(url, { params }).then((response) => {
           this.objects.push(response.data);
-        })
-      })
+        });
+      });
     },
     mergeObjects() {
-      if(! this.master) {
+      if (!this.master) {
         return;
       }
 
       const url = API_MERGE_URL;
 
-      const slaves = this.objects.filter((o) => (o.uuid !== this.master.uuid)).map(o => `${o.ct}:${o.uuid}`);
+      const slaves = this.objects.filter((o) => (o.uuid !== this.master.uuid)).map((o) => `${o.ct}:${o.uuid}`);
       const payload = {
         master: `${this.master.ct}:${this.master.uuid}`,
-        slaves: slaves,
+        slaves,
       };
 
       if (DEBUG) console.debug('mergeObjects', url, payload);
       this.isLoading = true;
       APIClient.post(url, payload)
-        .then((response) => {
-          // this.isLoading = false;
+        .then(() => {
           window.location.reload();
         }, (error) => {
           this.isLoading = false;
           console.error('error posting data', error);
         });
-
-    }
-  }
+    },
+  },
 };
 </script>
 <template>
@@ -102,7 +92,6 @@ export default {
     >
       Merge items
     </div>
-
     <div
       slot="content"
       class="object-merge"
@@ -116,7 +105,6 @@ export default {
           @selectObject="selectObject"
         />
       </div>
-
       <div class="actions">
         <a
           class="button"

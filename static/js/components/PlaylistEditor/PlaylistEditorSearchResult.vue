@@ -1,13 +1,13 @@
 <script>
 
+import { templateFilters } from 'src/utils/template-filters';
 import Visual from '../UI/Visual.vue';
-import { templateFilters } from '../../utils/template-filters';
 
 export default {
   name: 'PlaylistEditorSearchResult',
   filters: templateFilters,
   components: {
-    'visual': Visual,
+    visual: Visual,
   },
   props: {
     media: {
@@ -16,7 +16,7 @@ export default {
     },
     isActive: {
       type: Boolean,
-      default: false
+      default: false,
     },
   },
   data() {
@@ -49,7 +49,7 @@ export default {
       <div class="info--secondary">
         <div class="info__row">
           <span class="label">duration</span>
-          <span class="value">{{ media.duration|s_to_time }}</span>
+          <span class="value">{{ media.duration|sToTime }}</span>
         </div>
 
         <div class="info__row">

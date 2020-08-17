@@ -3,12 +3,7 @@
 import Vue from 'vue';
 import APIClient from '../api/caseTranslatingClient';
 
-const DEBUG = true;
 const PLAYLIST_ENDPOINT = '/api/v2/alibrary/playlist/';
-
-const generateKey = function (objCt, objUuid) {
-  return `${objCt}:${objUuid}`;
-};
 
 const state = {
   playlists: [],
@@ -16,16 +11,11 @@ const state = {
 
 const getters = {
   playlists: (state) => state.playlists,
-  playlistsByUuid: (state) => (uuid) => {
-    if (DEBUG) console.debug('getters - playlistsByUuid', uuid);
-    return state.playlists.find((obj) => obj.uuid === uuid);
-  },
+  playlistsByUuid: (state) => (uuid) => state.playlists.find((obj) => obj.uuid === uuid),
 };
 
 const mutations = {
   setPlaylist: (state, { payload }) => {
-    if (DEBUG) console.debug('mutations - setPlaylist', payload);
-
     const index = state.playlists.findIndex((obj) => obj.uuid === payload.uuid);
     if (index > -1) {
       Vue.set(state.playlists, index, payload);

@@ -4,7 +4,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat';
 
 dayjs.extend(advancedFormat);
 
-const _ms_to_time = function (ms) {
+const msToTime = (ms) => {
   if (ms === undefined) {
     return '';
   }
@@ -15,12 +15,11 @@ const _ms_to_time = function (ms) {
 
   let time = Math.abs(ms);
 
-  const millis = time % 1000;
-  time = parseInt(time / 1000);
+  time = parseInt(time / 1000, 10);
   const seconds = time % 60;
-  time = parseInt(time / 60);
+  time = parseInt(time / 60, 10);
   const minutes = time % 60;
-  time = parseInt(time / 60);
+  time = parseInt(time / 60, 10);
   const hours = time % 24;
   let out = '';
 
@@ -29,8 +28,6 @@ const _ms_to_time = function (ms) {
       out += '0';
     }
     out += `${hours}:`;
-  } else {
-    // out += '0' + ':';
   }
 
   if (minutes && minutes > 0) {
@@ -39,7 +36,7 @@ const _ms_to_time = function (ms) {
     }
     out += `${minutes}:`;
   } else {
-    out += '00' + ':';
+    out += '00:';
   }
 
   if (seconds && seconds > 0) {
@@ -48,32 +45,26 @@ const _ms_to_time = function (ms) {
     }
     out += `${seconds}`;
   } else {
-    out += '00' + '';
+    out += '00';
   }
 
   return out.trim();
 };
 
+const sToTime = (s) => msToTime(s * 1000);
 
-export function s_to_time(s) {
-  return _ms_to_time(s * 1000);
-}
 
-export function ms_to_time(ms) {
-  return _ms_to_time(ms);
-}
-
-export function dayjsFormat(value, format) {
+export function dayjsFormat(value, format = 'MMM. D, YYYY') {
   const datetime = (typeof value === 'string') ? dayjs(value) : value;
   return datetime.format(format);
 }
 
 export const templateFilters = {
-  s_to_time(value) {
-    return s_to_time(value);
+  sToTime(value) {
+    return sToTime(value);
   },
-  ms_to_time(value) {
-    return ms_to_time(value);
+  msToTime(value) {
+    return msToTime(value);
   },
   date(value, format) {
     return dayjsFormat(value, format);

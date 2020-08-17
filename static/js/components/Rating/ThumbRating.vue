@@ -53,6 +53,7 @@ export default {
         return null;
       }
       if (DEBUG) console.debug('vote', value);
+      return true;
       // this.$store.dispatch('rating/update_vote', {key: this.key, value: value});
     },
   },

@@ -1,127 +1,125 @@
 <script>
 
-  export default {
-    name: 'Checkbox',
+export default {
+  name: 'Checkbox',
+  model: {
+    prop: 'model',
+    event: 'change',
+  },
+  props: {
+    id: {
+      type: String,
+      default: undefined,
+    },
     model: {
-      prop: 'model',
-      event: 'change'
+      type: [Boolean, Array],
+      default: undefined,
     },
-    props: {
-      id: {
-        type: String,
-        default: undefined
-      },
-      model: {
-        type: [Boolean, Array],
-        default: undefined
-      },
-      checked: {
-        type: Boolean,
-        default: false
-      },
-      required: {
-        type: Boolean,
-        default: false
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      value: {
-        type: [String, Boolean, Number, Object, Array, Function],
-        default: undefined
-      },
-      name: {
-        type: String,
-        default: undefined,
-      },
-      color: {
-        type: String,
-        default: undefined,
-      },
-      size: {
-        type: Number,
-        default: undefined,
-      },
-      fontSize: {
-        type: Number,
-        default: undefined,
-      },
+    checked: {
+      type: Boolean,
+      default: false,
     },
-    data() {
+    required: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
+    value: {
+      type: [String, Boolean, Number, Object, Array, Function],
+      default: undefined,
+    },
+    name: {
+      type: String,
+      default: undefined,
+    },
+    color: {
+      type: String,
+      default: undefined,
+    },
+    size: {
+      type: Number,
+      default: undefined,
+    },
+    fontSize: {
+      type: Number,
+      default: undefined,
+    },
+  },
+  data() {
+    return {
+      uniqueId: '',
+      lv: this.model,
+    };
+  },
+  computed: {
+    checkboxState() {
+      if (Array.isArray(this.model)) return this.model.indexOf(this.value) !== -1;
+      return this.model || Boolean(this.lv);
+    },
+    classes() {
       return {
-        uniqueId: '',
-        lv: this.model
-      }
+        disabled: this.disabled,
+        active: this.checkboxState,
+      };
     },
-    computed: {
-      checkboxState() {
-        if (Array.isArray(this.model)) return this.model.indexOf(this.value) !== -1
-        return this.model || Boolean(this.lv)
-      },
-      classes() {
-        return {
-          'disabled': this.disabled,
-          'active': this.checkboxState
-        }
-      },
-      mainStyle() {
-        return this.checkboxState
-          ? this.color && `background-color: ${this.color}; border-color: ${this.color};`
-          : ''
-      },
-      sizeStyles() {
-        return this.size
-          ? `width: ${this.size}px; height: ${this.size}px; `
-          : ''
-      },
-      fontSizeStyles() {
-        return this.fontSize
-          ? `font-size: ${this.fontSize}px`
-          : ''
-      }
+    mainStyle() {
+      return this.checkboxState
+        ? this.color && `background-color: ${this.color}; border-color: ${this.color};`
+        : '';
     },
-    watch: {
-      checked(v) {
-        if (v !== this.checkboxState) this.toggle()
-      },
-      model(v) {
-        this.lv = v
-      }
+    sizeStyles() {
+      return this.size
+        ? `width: ${this.size}px; height: ${this.size}px; `
+        : '';
     },
-    mounted() {
-      this.genId()
-
-      if (this.checked && !this.checkboxState) {
-        this.toggle()
-      }
+    fontSizeStyles() {
+      return this.fontSize
+        ? `font-size: ${this.fontSize}px`
+        : '';
     },
-    methods: {
-      toggle() {
-        if(this.disabled) return
+  },
+  watch: {
+    checked(v) {
+      if (v !== this.checkboxState) this.toggle();
+    },
+    model(v) {
+      this.lv = v;
+    },
+  },
+  mounted() {
+    this.genId();
 
-        let v = this.model || this.lv
-
-        if (Array.isArray(v)) {
-          const i = v.indexOf(this.value)
-          if (i === -1) v.push(this.value)
-          else v.splice(i, 1)
-        }
-        else v = !v
-        this.lv = v
-        this.$emit('change', v, this.value)
-      },
-
-      genId() {
-        if (this.id === undefined || typeof String) {
-          this.uniqueId = `m-checkbox--${Math.random().toString(36).substring(2,10)}`
-        }
-        else {
-          this.uniqueId = this.id
-        }
-      }
+    if (this.checked && !this.checkboxState) {
+      this.toggle();
     }
-  }
+  },
+  methods: {
+    toggle() {
+      if (this.disabled) return;
+
+      let v = this.model || this.lv;
+
+      if (Array.isArray(v)) {
+        const i = v.indexOf(this.value);
+        if (i === -1) v.push(this.value);
+        else v.splice(i, 1);
+      } else v = !v;
+      this.lv = v;
+      this.$emit('change', v, this.value);
+    },
+
+    genId() {
+      if (this.id === undefined || typeof String) {
+        this.uniqueId = `m-checkbox--${Math.random().toString(36).substring(2, 10)}`;
+      } else {
+        this.uniqueId = this.id;
+      }
+    },
+  },
+};
 </script>
 
 <template>

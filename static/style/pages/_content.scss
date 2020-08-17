@@ -39,6 +39,13 @@
         @include list-item--grid;
       }
     }
+    &--table {
+      @include table-layout;
+
+      .list-item {
+        @include list-item--table;
+      }
+    }
   }
 
   .list-header,

@@ -3,12 +3,9 @@
 import Vue from 'vue';
 import APIClient from '../api/caseTranslatingClient';
 
-const DEBUG = true;
 const HISTORY_ENDPOINT = '/api/v2/abcast/history-for-object/';
 
-const generateKey = function (objCt, objUuid) {
-  return `${objCt}:${objUuid}`;
-};
+const generateKey = (objCt, objUuid) => `${objCt}:${objUuid}`;
 
 const state = {
   objectHistory: {},
@@ -28,7 +25,6 @@ const getters = {
 
 const mutations = {
   setObjectHistory: (state, { key, payload }) => {
-    if (DEBUG) console.debug('mutations - setObjectHistory', key, payload);
     Vue.set(state.objectHistory, key, payload);
   },
 };
@@ -38,7 +34,6 @@ const actions = {
     const key = generateKey(objCt, objUuid);
     const url = `${HISTORY_ENDPOINT}${key}/`;
     context.commit('setObjectHistory', { key, payload: [] });
-    if (DEBUG) console.debug('actions - loadObjectHistory', url);
     APIClient.get(url).then((response) => {
       context.commit('setObjectHistory', { key, payload: response.data });
     }).catch(() => {

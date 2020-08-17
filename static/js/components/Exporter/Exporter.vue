@@ -17,7 +17,7 @@ export default {
   computed: {
     exports() {
       return this.$store.getters['exporter/exports'];
-    }
+    },
   },
   mounted() {
     this.$store.dispatch('exporter/loadExports');
@@ -25,8 +25,8 @@ export default {
   methods: {
     acceptTerms() {
       this.termsAccepted = true;
-    }
-  }
+    },
+  },
 };
 </script>
 

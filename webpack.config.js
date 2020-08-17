@@ -171,8 +171,10 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
-    }
+      'vue$': 'vue/dist/vue.esm.js', // 'vue/dist/vue.common.js' for webpack 1
+      src: path.resolve(__dirname, 'static/js/'),
+      style: path.resolve(__dirname, 'static/style/'),
+    },
   },
   devServer: {
     hot: true,

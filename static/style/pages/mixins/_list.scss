@@ -7,6 +7,11 @@
   grid-template-columns: repeat(4, 1fr);
 }
 
+@mixin table-layout() {
+  display: flex;
+  flex-direction: column;
+}
+
 @mixin card {
   background: #fff;
 
@@ -138,6 +143,10 @@
 
 @mixin list-item--grid {
   // @include card;
+}
+
+@mixin list-item--table {
+  // @include list-row;
 }
 
 @mixin pagination {

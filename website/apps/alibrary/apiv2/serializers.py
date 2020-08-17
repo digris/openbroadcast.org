@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.core.urlresolvers import reverse_lazy
 from django.conf import settings
 
 from rest_framework import serializers
@@ -10,9 +9,7 @@ from rest_flex_fields import FlexFieldsModelSerializer
 from rest_flex_fields.serializers import FlexFieldsSerializerMixin
 
 from easy_thumbnails.templatetags.thumbnail import thumbnail_url
-from versatileimagefield.serializers import VersatileImageFieldSerializer
 
-from media_asset.models import Format, Waveform
 from profiles.apiv2.serializers import ProfileSerializer
 
 from ..models import (
@@ -139,6 +136,8 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
         fields = [
             "url",
             "ct",
+            "created",
+            "updated",
             "detail_url",
             "uuid",
             "image",
@@ -168,6 +167,8 @@ class ReleaseSerializer(
     detail_url = serializers.URLField(source="get_absolute_url")
     releasedate = serializers.CharField(source="releasedate_approx")
     media = MediaSerializer(many=True, read_only=True, source="get_media")
+
+    artist_display = serializers.CharField(source="get_artist_display")
 
     # label = serializers.HyperlinkedRelatedField(
     #     many=False,
@@ -200,11 +201,14 @@ class ReleaseSerializer(
             "url",
             "ct",
             "uuid",
+            "created",
+            "updated",
             "id",
             "detail_url",
             "name",
             "image",
             "releasedate",
+            "artist_display",
             "media",
             "label",
             # TODO: `items` is used for player only. find a way to unify this.

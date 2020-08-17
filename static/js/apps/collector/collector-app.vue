@@ -307,7 +307,7 @@
               |
               {{ item_to_collect.content.release_display }}
               <br>
-              {{ item_to_collect.duration | ms_to_time }}
+              {{ item_to_collect.duration | msToTime }}
             </div>
           </div>
         </div>

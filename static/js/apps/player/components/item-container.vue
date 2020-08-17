@@ -1,7 +1,7 @@
 <script>
 import Waveform from './waveform.vue';
 
-function ms_to_time(time) {
+function msToTime(time) {
   if (time === undefined) {
     return '';
   }
@@ -53,10 +53,10 @@ export default {
   },
   filters: {
     sec_to_time(value) {
-      return ms_to_time(value * 1000);
+      return msToTime(value * 1000);
     },
-    ms_to_time(value) {
-      return ms_to_time(value);
+    msToTime(value) {
+      return msToTime(value);
     },
   },
   props: {
@@ -161,11 +161,11 @@ export default {
           </div>
 
           <div class="time">
-            <small v-if="item.is_playing">{{ item.playhead_position_ms | ms_to_time }}</small>
-            {{ item.duration | ms_to_time }}
+            <small v-if="item.is_playing">{{ item.playhead_position_ms | msToTime }}</small>
+            {{ item.duration | msToTime }}
             <br>
             <!--
-                        {{ item.from | ms_to_time }} - {{ item.to | ms_to_time }}
+                        {{ item.from | msToTime }} - {{ item.to | msToTime }}
                         -->
             <!--<br>
                         {{ item.fade_to }} - {{ item.fade_from }}-->

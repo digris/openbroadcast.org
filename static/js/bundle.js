@@ -2,20 +2,19 @@
 import '../sass/screen.sass';
 import '../sass/scheduler.sass';
 
-// iconset & fonts
-require('../font/icons.font');
-
 // global stylesheet import
 import '../style/main.scss';
 
 // site apps
 import AppInitializer from './initializer';
 
-const DEBUG = true;
+// icon set & fonts
+require('../font/icons.font');
 
 // $((e) => {
 document.addEventListener('DOMContentLoaded', () => {
   // initializer has to wait for dom ready, as
   // vue apps need container to mount
-  const initializer = new AppInitializer({});
+  // eslint-disable-next-line no-new
+  new AppInitializer();
 });

@@ -1,7 +1,5 @@
 <script>
 
-const DEBUG = false;
-
 export default {
   name: 'ObjectActionsAction',
   props: {

@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import debounce from 'debounce';
+import { templateFilters } from 'src/utils/template-filters';
+import { visit_by_resource } from 'src/utils/visit-by-resource';
 import APIClient from '../../api/client';
 import Modal from '../../components/UI/Modal.vue';
 import Visual from '../../components/UI/Visual.vue';
 import Loader from '../../components/UI/Loader.vue';
 import Playlist from './components/playlist.vue';
-import { templateFilters } from '../../utils/template-filters';
-import { visit_by_resource } from '../../utils/visit-by-resource';
 
 const DEBUG = true;
 

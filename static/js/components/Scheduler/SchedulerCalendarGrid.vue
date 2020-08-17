@@ -1,5 +1,5 @@
 <script>
-import { templateFilters } from '../../utils/template-filters';
+import { templateFilters } from 'src/utils/template-filters';
 
 const DEBUG = false;
 

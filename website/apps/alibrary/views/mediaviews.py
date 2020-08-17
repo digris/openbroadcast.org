@@ -111,7 +111,8 @@ class MediaSearch(BaseFacetedSearch):
 
 class MediaListView(BaseSearchListView):
     model = Media
-    template_name = "alibrary/media_list.html"
+    # template_name = "alibrary/media_list.html"
+    template_name = "alibrary/media/list.html"
     search_class = MediaSearch
     order_by = [
         {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
@@ -148,7 +149,7 @@ class MediaListView(BaseSearchListView):
 
         qs = super(MediaListView, self).get_queryset(limit_ids=limit_ids, **kwargs)
 
-        qs = qs.select_related("release", "artist", "license").prefetch_related(
+        qs = qs.select_related("release", "artist", "license", 'release__label', 'preflight_check').prefetch_related(
             "media_artists", "extra_artists"
         )
 

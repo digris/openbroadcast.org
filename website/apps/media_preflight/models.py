@@ -55,6 +55,11 @@ class PreflightCheck(models.Model):
     def __str__(self):
         return "{}".format(self.pk)
 
+    def get_api_url(self):
+
+        url = reverse("api:preflight-check-detail", kwargs={"uuid": self.uuid})
+        return "{}{}".format(SITE_URL, url)
+
     @property
     def uuid(self):
         """
@@ -63,10 +68,20 @@ class PreflightCheck(models.Model):
         if self.media:
             return self.media.uuid
 
-    def get_api_url(self):
 
-        url = reverse("api:preflight-check-detail", kwargs={"uuid": self.uuid})
-        return "{}{}".format(SITE_URL, url)
+    @property
+    def summary(self):
+        summary = {
+            'passed': self.preflight_ok,
+            'errors': [],
+        }
+
+        if not self.preflight_ok and self.result:
+            summary.update({
+                'errors': json.loads(self.result).get('errors', [])
+            })
+
+        return summary
 
 
 @receiver(pre_save, sender=PreflightCheck)
