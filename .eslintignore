@@ -15,4 +15,4 @@ static/js/components/Notifications/*
 static/js/components/ObjectActions/*
 static/js/components/Player/*
 
-static/js/components/ObjectSearch/ObjectSearchResult.vue
+# static/js/components/ObjectSearch/ObjectSearchResult.vue

@@ -9,8 +9,6 @@ class ActionHandler {
   }
 
   handleAction(action) {
-    // console.debug('handleAction', action);
-
     switch (action.key) {
       case 'play': {
         this.playerControls({
@@ -33,6 +31,11 @@ class ActionHandler {
             uuid: action.uuid,
           }],
         });
+        break;
+      }
+      case 'download': {
+        const objectKeys = [`${action.ct}:${action.uuid}`];
+        store.dispatch('exporter/createExport', { objectKeys });
         break;
       }
       case 'schedule': {

@@ -61,7 +61,7 @@ export default {
     closeMenu() {
       this.menuVisible = false;
     },
-    debounceCloseMenu: debounce(() => {
+    debounceCloseMenu: debounce(function closeMenu() {
       this.closeMenu();
     }, 100),
     handleAction(action) {

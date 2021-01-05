@@ -8,7 +8,7 @@ import Visual from '../../components/UI/Visual.vue';
 import Loader from '../../components/UI/Loader.vue';
 import Playlist from './components/playlist.vue';
 
-const DEBUG = true;
+const DEBUG = false;
 
 const CollectorApp = Vue.extend({
   components: {

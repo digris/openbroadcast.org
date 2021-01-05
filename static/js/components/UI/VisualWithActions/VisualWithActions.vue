@@ -1,15 +1,14 @@
 <script>
 
 import settings from '../../../settings';
+import { EventBus } from '../../../eventBus';
 import LazyImage from '../LazyImage.vue';
-import Lightbox from '../Lightbox.vue';
 import Play from './Play.vue';
 import ContextMenu from './ContextMenu.vue';
 
 export default {
   name: 'VisualWithActions',
   components: {
-    lightbox: Lightbox,
     'lazy-image': LazyImage,
     play: Play,
     'context-menu': ContextMenu,
@@ -49,7 +48,6 @@ export default {
     return {
       placeholderImage: settings.PLACEHOLDER_IMAGE,
       isHover: false,
-      lightboxVisible: false,
       secondaryActionsVisible: false,
     };
   },
@@ -99,10 +97,7 @@ export default {
       this.secondaryActionsVisible = false;
     },
     showLightbox() {
-      this.lightboxVisible = true;
-    },
-    hideLightbox() {
-      this.lightboxVisible = false;
+      EventBus.$emit('lightbox:show-image', this.largeImageUrl);
     },
     handleAction() {
       this.hideSecondaryActions();
@@ -177,13 +172,6 @@ export default {
         </div>
       </div>
     </div>
-
-    <lightbox
-      v-if="largeImageUrl"
-      :visible="lightboxVisible"
-      :image-url="largeImageUrl"
-      @close="hideLightbox"
-    />
   </div>
 </template>
 <style lang="scss" scoped>

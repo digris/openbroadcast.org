@@ -8,39 +8,28 @@
 {% endblock %}
 
 {% block inner %}
-
-    <object-merge></object-merge>
-
-    <div class="list-header">
-        <div class="controls-container">
-            <div class="controls">
-                {% with object=None ct="alibrary.release" %}
-                    {% include "alibrary/element/_list_primary_actions.html" %}
-                {% endwith %}
-            </div>
-        </div>
-        <div class="pagination-container">
-            {% include "search/pagination.html" %}
-        </div>
+<object-merge></object-merge>
+<div class="list-header">
+    <div class="controls-container">
+        <list-actions></list-actions>
     </div>
-    <div class="list-body">
-        <div class="list list--grid">
-        {% hash_user_groups request.user as group_hash %}
-        {% for object in object_list %}
-          {% include 'alibrary/release/_card.html' with search_result=search_results_by_id|get_dict_item:object.pk %}
-           {% comment %}
-            <div class="list-item">
-                {% include 'alibrary/release/_card.html' with search_result=search_results_by_id|get_dict_item:object.pk %}
-            </div>
-            {% endcomment %}
-        {% endfor %}
-        </div>
+    <div class="pagination-container">
+        {% include "search/pagination.html" %}
     </div>
-    <div class="list-footer">
-        <div class="pagination-container">
-            {% include "search/pagination.html" %}
-        </div>
+</div>
+<div class="list-body">
+    <div class="list list--grid">
+    {% hash_user_groups request.user as group_hash %}
+    {% for object in object_list %}
+      {% include 'alibrary/release/_card.html' with search_result=search_results_by_id|get_dict_item:object.pk %}
+    {% endfor %}
     </div>
+</div>
+<div class="list-footer">
+    <div class="pagination-container">
+        {% include "search/pagination.html" %}
+    </div>
+</div>
 {% endblock %}
 
 {% block sidebar %}

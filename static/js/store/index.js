@@ -9,6 +9,8 @@ import library from './_library';
 // eslint-disable-next-line import/no-cycle
 import player from './_player';
 // eslint-disable-next-line import/no-cycle
+import rating from './_rating';
+// eslint-disable-next-line import/no-cycle
 import exporter from './_exporter';
 import notifications from './_notifications';
 
@@ -24,6 +26,7 @@ export default new Vuex.Store({
     player,
     exporter,
     notifications,
+    rating,
   },
   state: {
     settings: {

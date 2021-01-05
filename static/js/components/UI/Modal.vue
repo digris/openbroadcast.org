@@ -1,5 +1,4 @@
 <script>
-const DEBUG = true;
 export default {
   name: 'Modal',
   props: {
@@ -20,7 +19,6 @@ export default {
   mounted() {
     document.addEventListener('keydown', (e) => {
       if (this.show && e.keyCode === 27) {
-        if (DEBUG) console.debug('ESC -> close');
         this.close();
       }
     });

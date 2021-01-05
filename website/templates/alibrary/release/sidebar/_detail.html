@@ -18,17 +18,26 @@
                 </a>
             </li>
             {% endif %}
-            {% if user.is_authenticated %}
-              <li class="action">
-                    <a href="{% follow_all_url object %}?next={{ request.get_full_path }}" title="{% trans "Follow/unfollow" %}">
-                    {% if request.user|is_following:object %}
-                        <span>{% trans "Stop following" %} {{ object|ct_name_by_object }}</span>
-                    {% else %}
-                        <span>{% trans "Follow" %} {{ object|ct_name_by_object }}</span>
-                    {% endif %}
-                </a>
-                </li>
+
+
+            {% if perms.alibrary.downoad_media %}
+              <object-selection-action class="action" :min-selected="1" dispatch-event="exporter:exportObjects">
+                {% trans "Download Selection" %}
+              </object-selection-action>
             {% endif %}
+            {% if perms.alibrary.merge_media %}
+              <object-selection-action class="action" :min-selected="2" dispatch-event="alibrary:mergeObjects">
+                {% trans "Merge Selection" %}
+              </object-selection-action>
+            {% endif %}
+            {% if perms.alibrary.reassign_media %}
+              <object-selection-action class="action" :min-selected="1" dispatch-event="alibrary:reassignMedia">
+                {% trans "Reassign Selection" %}
+              </object-selection-action>
+            {% endif %}
+
+
+            {% comment %}
             {% if perms.alibrary.downoad_media %}
                 <li class="action">
                     <a href="#" data-action="download" data-ct="release" data-id="{{ object.pk }}"  title="{% trans "Download" %} {{ object|ct_name_by_object }}">
@@ -60,6 +69,7 @@
                     </a>
                 </li>
             {% endif %}
+            {% endcomment %}
         </ul>
     </div>
 </div>

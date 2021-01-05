@@ -133,8 +133,8 @@ def _get_artist_actions(obj, user):
         actions.append({"key": "play", "title": "Play"})
         actions.append({"key": "queue", "title": "Queue"})
 
-    if user.has_perm("alibrary.downoad_media"):
-        actions.append({"key": "download", "title": "Download"})
+    # if user.has_perm("alibrary.downoad_media"):
+    #     actions.append({"key": "download", "title": "Download"})
 
     if user.has_perm("alibrary.edit_artist"):
         actions.append({"key": "edit", "title": "Edit", "url": obj.get_edit_url()})
@@ -155,7 +155,7 @@ def _get_label_actions(obj, user):
     #     actions.append({"key": "play", "title": "Play"})
     #     actions.append({"key": "queue", "title": "Queue"})
 
-    if user.has_perm("alibrary.edit_artist"):
+    if user.has_perm("alibrary.edit_label"):
         actions.append({"key": "edit", "title": "Edit", "url": obj.get_edit_url()})
 
     if user.is_staff:

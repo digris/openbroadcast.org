@@ -49,19 +49,12 @@
                         <a href="{{ item.get_absolute_url }}"
                            title="{{ item.name }}"> {{ item.name|truncate_chars_inner:18 }}
                             {% if item.release_country %}({{ item.release_country.iso2_code }}){% endif %}
-
                             {% comment %}
                             {% cache 3600 "topflop_release" item.pk item.updated %}
                             {% topflop_for_object item %}
                             {% endcache %}
                             {% endcomment %}
-
                         </a>
-                        {% comment %}
-                        <thumb-rating
-                            obj-uuid="{{ item.uuid }}"
-                            obj-ct="{{ item.get_ct }}"></thumb-rating>
-                        {% endcomment %}
                     </li>
                     <li>
                         {% for artist in item.get_artists %}

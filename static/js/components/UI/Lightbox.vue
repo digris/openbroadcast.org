@@ -1,91 +1,52 @@
 <script>
-
+import { EventBus } from '../../eventBus';
+import Modal from './Modal.vue';
 import LazyImage from './LazyImage.vue';
 
 export default {
   name: 'Lightbox',
   components: {
+    modal: Modal,
     'lazy-image': LazyImage,
   },
-  props: {
-    visible: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    imageUrl: {
-      type: String,
-      required: true,
-    },
+  data() {
+    return {
+      image: null,
+      visible: false,
+    };
   },
   mounted() {
-    document.addEventListener('keydown', (e) => {
-      if (this.visible && e.keyCode === 27) {
-        this.close();
-      }
+    EventBus.$on('lightbox:show-image', (image) => {
+      this.show(image);
     });
   },
   methods: {
     close() {
-      this.$emit('close');
+      this.visible = false;
+    },
+    show(image) {
+      this.visible = true;
+      this.image = image;
     },
   },
 };
 </script>
-<style lang="scss" scoped>
-
-    .lightbox-mask {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 99;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-
-      background: rgba(#000, 0.9);
-
-      .content {
-        width: 50vw;
-        height: 50vh;
-        max-height: 500px;
-
-        text-align: center;
-
-        img {
-          max-height: 500px;
-        }
-      }
-    }
-
-    // transitions
-    .lightbox-enter-active {
-      transition: all 0.1s;
-    }
-
-    .lightbox-leave-active {
-      transition: all 0.2s;
-    }
-
-    .lightbox-enter,
-    .lightbox-leave-to {
-      opacity: 0;
-    }
-
-</style>
 <template>
-  <transition name="lightbox">
+  <modal
+    :show="visible"
+    @close="close"
+  >
     <div
-      v-if="visible"
-      class="lightbox-mask"
-      @click="close"
+      v-if="image"
+      slot="content"
+      class="lightbox"
     >
-      <div class="content">
-        <lazy-image :src="imageUrl" />
-      </div>
+      <lazy-image :src="image" />
     </div>
-  </transition>
+  </modal>
 </template>
+<style lang="scss" scoped>
+.lightbox {
+  padding: 12px 0px 0px;
+}
+</style>

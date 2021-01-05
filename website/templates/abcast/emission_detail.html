@@ -9,44 +9,20 @@
                 {% include "abcast/emission/_header.html" %}
             </div>
         </section>
-        <div class="item_menu" id="item_menu">
-            <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="#tracklist" data-toggle="tab">{% trans "Tracklist" %}</a>
-                </li>
-            </ul>
-        </div>
         <div class="clear"></div>
         <section class="tabbed item_inner">
             <div class="tab-content">
                 <section class="tracklist">
-                    <h2>{% trans "Airplay date" %}: {{ object.time_start|date:"SHORT_DATETIME_FORMAT" }}</h2>
                     <div class="tab-pane active" id="tracklist">
-                        <div class="listview container medias s">
-                            <div class="list_header"></div>
-                            <div class="list_body">
-                                {% for item in object.get_timestamped_media %}
-                                    {% if item.content_type.model == "media" %}
-                                        {% if item.is_future %}
-                                            <div class="item hidden-future">
-                                                <div class="inner icon">
-                                                    <i class="icon-question"></i>
-                                                </div>
-                                                <div class="inner"></div>
-                                                <div class="inner"></div>
-                                                <div class="inner"></div>
-                                                <div class="inner"></div>
-                                                <div class="inner"></div>
-                                            </div>
-                                        {% else %}
-                                            {% with item=item.content_object timestamp=item.timestamp %}
-                                                {% include "alibrary/media/_list_item_foreign_timestamp.html" %}
-                                            {% endwith %}
-                                        {% endif %}
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
+                      <div class="list-body" style="margin-top: 2rem;">
+                        <div class="list list--table">
+                          {% for item in object.get_timestamped_media %}
+                            {% if not item.is_future %}
+                              {% include 'alibrary/media/_row.html' with object=item.content_object %}
+                            {% endif %}
+                          {% endfor %}
                         </div>
+                      </div>
                     </div>
                 </section>
             </div>
@@ -58,9 +34,10 @@
     <div class="menu-context">
         <div class="action-group">
             <ul>
-                <li>
-                    <a class="hoverable" href="{{ object.content_object.get_absolute_url }}" title="Content Details">
-                        <i class="icon icon-reorder"></i>
+                <li class="action">
+                    <a class="hoverable"
+                       href="{{ object.content_object.get_absolute_url }}"
+                       title="{% trans 'Content Details' %}">
                         <span>{% trans 'Content Details' %}</span>
                     </a>
                 </li>

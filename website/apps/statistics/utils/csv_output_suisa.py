@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
 
 import logging
@@ -7,9 +6,6 @@ import codecs
 import csv
 
 from atracker.models import Event
-
-from django.utils import timezone
-from django.conf import settings
 
 PLAYOUT_EVENT_TYPE_ID = 3
 

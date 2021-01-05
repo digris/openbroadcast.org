@@ -15,7 +15,7 @@ class Tagcloud {
   }
 
   bindings() {
-    this.tagcloud_toggle.on('click', () => {
+    this.tagcloud_toggle.on('click', (e) => {
       e.preventDefault();
       this.toggle(true);
     });

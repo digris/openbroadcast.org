@@ -3,7 +3,7 @@ import tabex from 'tabex';
 
 import settings from '../../settings';
 
-const DEBUG = true;
+const DEBUG = false;
 
 const POPUP_SIZE = { width: 400, height: 800 };
 
@@ -66,6 +66,7 @@ const PlayerControlApp = Vue.extend({
 
     // re-bind legacy action handling
     $(document).on('click', '.playable, [data-playable]', (e) => {
+      console.error('legacy play action - PLEASE REMOVE');
       e.preventDefault();
       // let el = $(e.currentTarget).parents('[data-uuid]');
       const el = $(e.currentTarget);

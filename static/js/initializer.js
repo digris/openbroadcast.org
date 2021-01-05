@@ -11,14 +11,16 @@ import ListFilter from './element/listfilter';
 import AutocompleteWidgets from './element/autocomplete-widget';
 import LayzImageLoader from './utils/lazy-image-loader';
 
-// import { ActionHandler } from './utils/actionHandler';
+// eslint-disable-next-line no-unused-vars
+import { ActionHandler } from './utils/actionHandler';
 
 //
 import Player from './components/Player/Player.vue';
 import Scheduler from './components/Scheduler/Scheduler.vue';
 import PlaylistEditor from './components/PlaylistEditor/PlaylistEditor.vue';
-import ThumbRating from './components/Rating/ThumbRating.vue';
+import ObjectRating from './components/ObjectRating/ObjectRating.vue';
 import ObjectActions from './components/ObjectActions/ObjectActions.vue';
+import ListActions from './components/ListActions/ListActions.vue';
 import EmissionHistory from './components/EmissionHistory/EmissionHistory.vue';
 import Exporter from './components/Exporter/Exporter.vue';
 import MediaPreflightStatus from './components/MediaPreflightStatus/MediaPreflightStatus.vue';
@@ -27,11 +29,13 @@ import MediaReassign from './components/MediaReassign/MediaReassign.vue';
 import Notifications from './components/Notifications/Notifications.vue';
 // UI
 import Card from './components/UI/Card.vue';
-import ListRow from './components/UI/ListRow.vue';
 import Visual from './components/UI/Visual.vue';
 import LazyImage from './components/UI/LazyImage.vue';
+import Lightbox from './components/UI/Lightbox.vue';
 import VisualWithActions from './components/UI/VisualWithActions/VisualWithActions.vue';
 import ObjectSelectionAction from './components/UI/ObjectSelectionAction.vue';
+// Library
+import MediaRow from './components/Library/MediaRow.vue';
 // forms
 import Formset from './components/Form/Formset.vue';
 import InputContainer from './components/Form/InputContainer.vue';
@@ -50,9 +54,10 @@ class AppInitializer {
       components: {
         // generic ui components
         card: Card,
-        'list-row': ListRow,
+        'media-row': MediaRow,
         visual: Visual,
         'lazy-image': LazyImage,
+        lightbox: Lightbox,
         'visual-with-actions': VisualWithActions,
         'object-selection-action': ObjectSelectionAction,
         'object-merge': ObjectMerge,
@@ -66,8 +71,9 @@ class AppInitializer {
         scheduler: Scheduler,
         player: Player,
         'playlist-editor': PlaylistEditor,
-        'thumb-rating': ThumbRating,
+        'object-rating': ObjectRating,
         'object-actions': ObjectActions,
+        'list-actions': ListActions,
         'emission-history': EmissionHistory,
         exporter: Exporter,
         'media-preflight-status': MediaPreflightStatus,

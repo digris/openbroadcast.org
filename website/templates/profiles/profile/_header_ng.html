@@ -66,8 +66,7 @@
         </div>
       </div>
     {% endif %}
-
-    {% if object.get_groups.count %}
+    {% if object.user %}
       <div class="meta__item">
         <div>
           {% trans "History" %}:
@@ -77,18 +76,17 @@
             {% trans 'joined'|title %}:
           </div>
           <div>
-            {{ object.user.date_joined|date:"SHORT_DATE_FORMAT" }}
+            {{ object.user.date_joined|date:'SHORT_DATE_FORMAT' }}
           </div>
           <div>
             {% trans 'last login'|title %}:
           </div>
           <div>
-            {{ object.user.last_login|date:"SHORT_DATE_FORMAT" }}
+            {{ object.user.last_login|date:'SHORT_DATE_FORMAT'|default:'-' }}
           </div>
         </div>
       </div>
     {% endif %}
-
   </div>
 
 
@@ -115,11 +113,8 @@
 
 <div class="header__secondary">
   <div class="rating">
-    {# rating_for_object object #}
-    <!--
-        <thumb-rating
+        <object-rating
             obj-uuid="{{ object.uuid }}"
-            obj-ct="{{ object.get_ct }}"></thumb-rating>
-        -->
+            obj-ct="{{ object.get_ct }}"></object-rating>
   </div>
 </div>

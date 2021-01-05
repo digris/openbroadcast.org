@@ -19,6 +19,9 @@ module.exports = {
     'import/no-unresolved': 'off', // TODO: figure out how to handle webpack `alias` in eslint.
     // 'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    // https://github.com/babel/babel-eslint/issues/815#issuecomment-580670577
+    "template-curly-spacing" : "off",
+    "indent" : "off",
   },
   parserOptions: {
     "parser": "babel-eslint",

@@ -99,7 +99,7 @@ export default {
       class="object-merge"
     >
       <div>
-        <object-search></object-search>
+        <object-search />
       </div>
       <div class="object-list">
         <reassign-target

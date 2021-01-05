@@ -2,7 +2,7 @@
 export default {
   name: 'SearchResult',
   props: {
-    data: {
+    obj: {
       type: Object,
       required: true,
     },
@@ -11,32 +11,34 @@ export default {
       default: 'default',
     },
   },
-  computed: {
-    loader() {
-      return () => import(`./templates/${this.ct}/index.vue`);
-    },
-  },
   data() {
     return {
       component: null,
       foo: 'bar',
     };
   },
+  computed: {
+    loader() {
+      // const component = `./templates/${this.ct}/index.vue`;
+      // return () => import(component);
+      return () => import(`./templates/${this.ct}/index.vue`);
+    },
+  },
   mounted() {
     this.loader()
       .then(() => {
-        this.component = () => this.loader()
+        this.component = () => this.loader();
       })
       .catch(() => {
-        this.component = () => import('./templates/default/index.vue')
-      })
-    // this.component = () => import(`./templates/${this.ct}/index.vue`);
+        this.component = () => import('./templates/default/index.vue');
+      });
   },
 };
 </script>
 <template>
   <component
-    v-if="component"
     :is="component"
-    :data="data"/>
+    v-if="component"
+    :obj="obj"
+  />
 </template>

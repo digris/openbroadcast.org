@@ -8,25 +8,28 @@
 {% endblock %}
 
 {% block inner %}
-    <div class="list-header">
-        <div class="pagination-container">
-            {% include "search/pagination.html" %}
-        </div>
-    </div>
-    <div class="list-body">
-        <div class="list list--grid">
-        {% for object in object_list %}
-            <div class="list-item">
-                {% include 'alibrary/playlist/_card.html' with search_result=search_results_by_id|get_dict_item:object.pk %}
-            </div>
-        {% endfor %}
-        </div>
-    </div>
-    <div class="list-footer">
-        <div class="pagination-container">
-            {% include "search/pagination.html" %}
-        </div>
-    </div>
+<div class="list-header">
+  <div class="controls-container">
+    <list-actions></list-actions>
+  </div>
+  <div class="pagination-container">
+    {% include "search/pagination.html" %}
+  </div>
+</div>
+<div class="list-body">
+  <div class="list list--grid">
+  {% for object in object_list %}
+  <div class="list-item">
+    {% include 'alibrary/playlist/_card.html' with search_result=search_results_by_id|get_dict_item:object.pk %}
+  </div>
+  {% endfor %}
+  </div>
+</div>
+<div class="list-footer">
+  <div class="pagination-container">
+    {% include "search/pagination.html" %}
+  </div>
+</div>
 {% endblock %}
 
 {% block sidebar %}

@@ -9,7 +9,7 @@
   .header {
     &__primary {
       flex-grow: 1;
-      padding: 10px;
+      padding: 1rem;
 
       .title {
         display: flex;
@@ -52,11 +52,13 @@
     }
 
     &__secondary {
-      padding: 10px;
+      padding: 1rem;
 
       .visual {
         max-width: 190px;
         max-height: 190px;
+
+        filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.3));
 
         img {
           width: 100%;
@@ -72,7 +74,7 @@
         display: flex;
         justify-content: center;
         float: none;
-        margin: 5px auto;
+        //margin: 5px auto;
       }
     }
   }
@@ -85,24 +87,6 @@
       text-transform: uppercase;
 
       background: black;
-
-      //&--sub-genre {
-      //  background: #79000b;
-      //}
-
-      //&--mood {
-      //  background: #00aeff;
-      //}
-    }
-
-    .tag__ {
-      padding: 2px 4px 1px;
-
-      color: #999;
-      text-transform: uppercase;
-
-      background: #fff;
-      border: 1px solid #c7c7c7;
     }
   }
 }

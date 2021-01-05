@@ -48,6 +48,12 @@
   // button color / state styles
   &--secondary {
     @include button($color: $secondary-color);
+    &:hover {
+      color: $white;
+
+      background: $primary-color;
+      border-color: $primary-color;
+    }
   }
 
   &--disabled {

@@ -22,7 +22,7 @@ export default {
 
     // padding: 1rem;
 
-    position: absolute;
+    position: fixed;
     top: 32px;
     right: 1rem;
     // top: calc(32px + 1rem);

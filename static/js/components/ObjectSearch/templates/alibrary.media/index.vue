@@ -1,10 +1,16 @@
 <script>
 export default {
-  name: 'defaultResult',
+  name: 'DefaultResult',
+  props: {
+    obj: {
+      type: Object,
+      required: true,
+    },
+  },
 };
 </script>
 <template>
   <div>
-    media template
+    {{ obj.ct }}*{{ obj.name }}
   </div>
 </template>

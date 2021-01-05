@@ -1,5 +1,5 @@
 <script>
-
+import { EventBus } from '../../eventBus';
 import VisualWithActions from './VisualWithActions/VisualWithActions.vue';
 
 export default {
@@ -54,6 +54,9 @@ export default {
 
       return objectActions;
     },
+  },
+  mounted() {
+    EventBus.$emit('list-actions:register', this.objectActions);
   },
   methods: {
     toggleSelection() {

@@ -109,6 +109,7 @@ class ReleaseListView(BaseSearchListView):
 
 class ReleaseDetailView(DetailView):
     model = Release
+    template_name = "alibrary/release/detail.html"
     context_object_name = "release"
     extra_context = {}
 

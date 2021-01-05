@@ -18,7 +18,8 @@
 
     main {
       flex: 1;
-      overflow: auto;
+      overflow-x: hidden;
+      overflow-y: scroll;
     }
 
     footer {
@@ -87,8 +88,8 @@
     position: relative;
     //border-top: 1px solid black;
     //border-bottom: 1px solid black;
-    flex-direction: column; /* stacks them vertically */
-    height: 100%; /* needs to take the parents height, alternative: body {display: flex} */
+    flex-direction: column;
+    height: calc(100% - 10px);
 
     .item-to-play {
       margin: 0 0 10px;
@@ -104,13 +105,6 @@
       }
     }
   }
-
-  /*
-    .player-footer {
-        border-top: 1px solid #eaeaea;
-        padding: 2px 2px 0 5px;
-    }
-    */
 
   .autoplay-container {
     position: fixed;

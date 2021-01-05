@@ -47,7 +47,7 @@ django_cors_headers==2.1.0
 # django modules
 ################################################
 django-absolute
-django-addthis==3.0.0
+# django-addthis==3.0.0 # TODO: not available anymore - moved to 'tools'.
 django-auditlog==0.3.2
 django-avatar==2.0
 django-braces==1.8.1
@@ -89,6 +89,10 @@ django_versatileimagefield==1.7.1
 django-simple-captcha==0.5.1
 
 jsonfield==2.0.2
+
+#
+easy-thumbnails==2.6
+django-appconf==1.0.3
 
 
 ##################################################################

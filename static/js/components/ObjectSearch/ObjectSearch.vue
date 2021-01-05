@@ -65,7 +65,7 @@ export default {
         v-for="result in results"
         :key="`${result.ct}:${result.uuid}`"
         :ct="result.ct"
-        :data="result"
+        :obj="result"
       >
         {{ result.name }}
       </search-result>

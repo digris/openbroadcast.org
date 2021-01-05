@@ -80,30 +80,30 @@ class MediaSearch(BaseFacetedSearch):
                 ],
             ),
         ),
-        (
-            "bitrate",
-            RangeFacet(
-                field="bitrate",
-                ranges=[
-                    ("Low", (0, 100)),
-                    ("Medium", (100, 200)),
-                    ("High", (200, None)),
-                ],
-            ),
-        ),
-        (
-            "samplerate",
-            RangeFacet(
-                field="samplerate",
-                ranges=[
-                    ("Low", (0, 44100)),
-                    ("Medium", (44100, 48000)),
-                    ("High", (48000, None)),
-                ],
-            ),
-        ),
-        ("encoding", TermsFacet(field="encoding", size=100)),
-        ("license", TermsFacet(field="license")),
+        # (
+        #     "bitrate",
+        #     RangeFacet(
+        #         field="bitrate",
+        #         ranges=[
+        #             ("Low", (0, 100)),
+        #             ("Medium", (100, 200)),
+        #             ("High", (200, None)),
+        #         ],
+        #     ),
+        # ),
+        # (
+        #     "samplerate",
+        #     RangeFacet(
+        #         field="samplerate",
+        #         ranges=[
+        #             ("Low", (0, 44100)),
+        #             ("Medium", (44100, 48000)),
+        #             ("High", (48000, None)),
+        #         ],
+        #     ),
+        # ),
+        # ("encoding", TermsFacet(field="encoding", size=100)),
+        # ("license", TermsFacet(field="license")),
         ("lyrics_language", TermsFacet(field="lyrics_language")),
         # ('key', __paste__),
     ]
@@ -149,9 +149,11 @@ class MediaListView(BaseSearchListView):
 
         qs = super(MediaListView, self).get_queryset(limit_ids=limit_ids, **kwargs)
 
-        qs = qs.select_related("release", "artist", "license", 'release__label', 'preflight_check').prefetch_related(
-            "media_artists", "extra_artists"
-        )
+        # qs = qs.select_related("release", "artist", "license", 'release__label', 'preflight_check').prefetch_related(
+        #     "media_artists", "extra_artists"
+        # )
+
+        qs = qs.select_related("release", "artist", 'release__label', 'release__release_country', 'preflight_check')
 
         return qs
 

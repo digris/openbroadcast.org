@@ -54,6 +54,9 @@ class ObjectRatingView(APIView):
 
     def put(self, request, obj_ct, obj_uuid):
 
+        if not request.user.is_authenticated():
+            raise PermissionDenied("anonymous users can not vote.")
+
         data = json.loads(request.body.decode("utf-8", "strict"))
         obj = self.get_object(obj_ct, obj_uuid)
         vote = data.get("vote")

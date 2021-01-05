@@ -8,16 +8,10 @@
 {% endblock %}
 
 {% block inner %}
-
 <object-merge></object-merge>
-
 <div class="list-header">
   <div class="controls-container">
-    <div class="controls">
-      {% with object=None ct="alibrary.release" %}
-      {% include "alibrary/element/_list_primary_actions.html" %}
-      {% endwith %}
-    </div>
+      <list-actions></list-actions>
   </div>
   <div class="pagination-container">
     {% include "search/pagination.html" %}

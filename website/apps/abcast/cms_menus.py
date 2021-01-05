@@ -12,12 +12,6 @@ class SchedulerMenu(CMSAttachMenu):
 
     def get_nodes(self, request):
         nodes = []
-
-        node = NavigationNode(_("Week"), "#", 7202)
-        nodes.append(node)
-        node = NavigationNode(_("Two weeks"), "#", 7203)
-        nodes.append(node)
-
         return nodes
 
 

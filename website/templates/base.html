@@ -48,6 +48,9 @@
 
           document.settings = {
             enableAlphaFeatures: {% if user.is_authenticated and user.profile.enable_alpha_features %}true{% else %}false{% endif %},
+            user: {
+              isAuthenticated: {% if user.is_authenticated %}true{% else %}false{% endif %},
+            },
           }
 
         </script>
@@ -146,6 +149,7 @@
 
             {% comment %}global vue components{% endcomment %}
             <notifications></notifications>
+            <lightbox></lightbox>
 
         </div>
 

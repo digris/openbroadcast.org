@@ -1,12 +1,12 @@
 module.exports = {
-  'files': [
+  files: [
     '../icons/brands/*.svg',
     '../icons/base/*.svg',
   ],
-  'fontName': 'icons',
-  'classPrefix': 'icn-',
-  'baseSelector': '.icn',
-  'embed': true,
-  'types': ['woff', 'ttf', 'svg'],
-  'fileName': '[fontname].[ext]'
+  fontName: 'icons',
+  classPrefix: 'icn-',
+  baseSelector: '.icn',
+  embed: true,
+  types: ['woff', 'ttf', 'svg'],
+  fileName: '[fontname].[ext]',
 };

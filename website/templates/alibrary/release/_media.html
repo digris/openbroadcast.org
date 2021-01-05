@@ -1,0 +1,70 @@
+{% load i18n vuejs_tags calc_tags thumbnail truncate_tags object_action_tags datetime_tags media_preflight_tags %}
+
+
+<media-row
+  ct="{{ object.get_ct }}"
+  uuid="{{ object.uuid }}"
+  url="{% url 'api:media-detail' object.uuid %}"
+  display-style="minimal"
+  :actions="{% get_object_actions_as_json object user %}">
+  <div class="column">
+    <div>
+      <a href="{{ object.get_absolute_url }}" title="{{ object.name }}">
+        {{ object.name|truncate_chars_inner:28 }}
+      </a>
+      {% if object.mediatype != 'song' %}
+        <span class="dim">{{ object.get_mediatype_display }}</span>
+      {% endif %}
+    </div>
+    {% if object.extraartist_media.exists %}
+    <div class="extra-artists small">
+      {% for extra_artist in object.extraartist_media.all|slice:"0:3" %}
+        <div>
+          {{ extra_artist.artist.name }}
+          {% if extra_artist.profession.name %}
+            <span class="dim">{{ extra_artist.profession.name }}</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  <div class="column">
+    <div>
+      <span class="dim">by</span>
+      {%  if object.get_mediaartists %}
+          {% include "alibrary/media/_credited_artists.html" with artist_list=object.get_mediaartists %}
+      {% else %}
+        {% if object.artist %}
+          <a href="{{ object.artist.get_absolute_url|default:'#' }}" title="{{ object.artist.name }}">
+            {{ object.artist.name|truncate_chars_inner:28 }}
+          </a>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+  <template #appendix>
+    <div>
+      {% preflight_status_as object as preflight_status %}
+      <media-preflight-status :preflight-status="({{ preflight_status|as_json }})">
+        {{ object.master_encoding|default:'Unknown' }}
+      </media-preflight-status>
+      {{ object.duration_s|sec_to_time }}
+    </div>
+    {% if object.last_emission %}
+    <div class="small" v-tooltip="'{% trans 'Num. emissions' %}: {{ object.emissions.count }}'">
+      <span class="dim">Last emission:</span>
+      {{ object.last_emission.time_start|date:'SHORT_DATE_FORMAT' }}
+    </div>
+    {% endif %}
+    {% if object.public_appearances.exists %}
+      <div
+        class="small"
+        v-tooltip="'{% trans 'Broadcasts' %}: {{ object.broadcast_appearances.count }}<br>{% trans 'Playlists' %}: {{ object.playlist_appearances.count }}'"
+      >
+        <span class="dim">Appearances:</span>
+        {{ object.broadcast_appearances.count }}/{{ object.playlist_appearances.count }}
+      </div>
+    {% endif %}
+  </template>
+</media-row>
