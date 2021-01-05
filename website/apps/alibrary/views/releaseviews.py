@@ -14,6 +14,7 @@ from elasticsearch_dsl import TermsFacet, RangeFacet
 
 from base.utils.form_errors import merge_form_errors
 from base.models.utils.merge import merge_objects
+from base.views.detail import SectionDetailView
 from search.views import BaseFacetedSearch, BaseSearchListView
 from search.duplicate_detection import get_ids_for_possible_duplicates
 
@@ -109,19 +110,36 @@ class ReleaseListView(BaseSearchListView):
 
 class ReleaseDetailView(DetailView):
     model = Release
-    template_name = "alibrary/release/detail.html"
+    template_name = "alibrary/release_detail.html"
     context_object_name = "release"
     extra_context = {}
 
-    def render_to_response(self, context):
-        return super(ReleaseDetailView, self).render_to_response(
-            context, content_type="text/html"
-        )
 
-    def get_context_data(self, **kwargs):
-        context = super(ReleaseDetailView, self).get_context_data(**kwargs)
-        context.update({"history": []})
-        return context
+class ReleaseDetailViewNG(SectionDetailView):
+    model = Release
+    template_name = "alibrary/release/detail.html"
+    # section_template_prefix = "alibrary/release/_detail"
+    section_template_pattern = "alibrary/release/detail/_{key}.html"
+    context_object_name = "release"
+    url_name = "alibrary-release-detail-ng"
+
+    sections = [
+        {
+            "key": "tracklist",
+            "url": None,
+            "title": _("Tracklist"),
+        },
+        {
+            "key": "description",
+            "url": "description",
+            "title": _("Description"),
+        },
+        {
+            "key": "statistics",
+            "url": "statistics",
+            "title": _("Statistics"),
+        },
+    ]
 
 
 class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):

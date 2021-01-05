@@ -73,8 +73,9 @@
 
   .list-prefix {
     display: flex;
-    justify-content: center;
-    margin: 20px 0;
+    //justify-content: center;
+    justify-content: flex-start;
+    margin: 0 0 1rem;
   }
 
   .list-appendix {

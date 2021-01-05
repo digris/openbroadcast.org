@@ -1,0 +1,17 @@
+<object-merge></object-merge>
+<media-reassign></media-reassign>
+
+<div class="list-prefix">
+    <list-actions
+      obj-ct="{{ object.get_ct }}"
+      obj-uuid="{{ object.uuid }}"
+    ></list-actions>
+</div>
+
+<div class="list list--table">
+  {% for object in object.get_media %}
+  <div class="list-item">
+  {% include 'alibrary/release/_media.html' %}
+  </div>
+  {% endfor %}
+</div>

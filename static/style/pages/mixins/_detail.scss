@@ -14,7 +14,7 @@
       .title {
         display: flex;
         align-items: baseline;
-        margin-bottom: 4px;
+        margin-bottom: 0.5rem;
 
         small {
           margin-left: 10px;
@@ -26,12 +26,18 @@
       }
 
       .meta {
+        margin-bottom: 1rem;
+
         line-height: 150%;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
 
         &__item {
           display: grid;
           grid-template-columns: 120px minmax(auto, 60%);
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.25rem;
 
           &:last-child {
             margin-bottom: 0;
