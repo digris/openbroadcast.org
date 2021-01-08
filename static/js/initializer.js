@@ -19,7 +19,10 @@ import Player from './components/Player/Player.vue';
 import Scheduler from './components/Scheduler/Scheduler.vue';
 import PlaylistEditor from './components/PlaylistEditor/PlaylistEditor.vue';
 import ObjectRating from './components/ObjectRating/ObjectRating.vue';
+import ObjectRatingMini from './components/ObjectRating/ObjectRatingMini.vue';
 import ObjectActions from './components/ObjectActions/ObjectActions.vue';
+import ObjectSingleAction from './components/ObjectActions/ObjectSingleAction.vue';
+import ObjectStatistics from './components/ObjectStatistics/ObjectStatistics.vue';
 import ListActions from './components/ListActions/ListActions.vue';
 import EmissionHistory from './components/EmissionHistory/EmissionHistory.vue';
 import Exporter from './components/Exporter/Exporter.vue';
@@ -27,11 +30,13 @@ import MediaPreflightStatus from './components/MediaPreflightStatus/MediaPreflig
 import ObjectMerge from './components/ObjectMerge/ObjectMerge.vue';
 import MediaReassign from './components/MediaReassign/MediaReassign.vue';
 import Notifications from './components/Notifications/Notifications.vue';
+import TagList from './components/Tags/TagList.vue';
 // UI
 import Card from './components/UI/Card.vue';
 import Visual from './components/UI/Visual.vue';
 import LazyImage from './components/UI/LazyImage.vue';
 import Lightbox from './components/UI/Lightbox.vue';
+import ExpandableList from './components/UI/ExpandableList.vue';
 import VisualWithActions from './components/UI/VisualWithActions/VisualWithActions.vue';
 import ObjectSelectionAction from './components/UI/ObjectSelectionAction.vue';
 // Library
@@ -58,11 +63,13 @@ class AppInitializer {
         visual: Visual,
         'lazy-image': LazyImage,
         lightbox: Lightbox,
+        'expandable-list': ExpandableList,
         'visual-with-actions': VisualWithActions,
         'object-selection-action': ObjectSelectionAction,
         'object-merge': ObjectMerge,
         'media-reassign': MediaReassign,
         notifications: Notifications,
+        'tag-list': TagList,
         // form ui components
         formset: Formset,
         'input-container': InputContainer,
@@ -72,7 +79,10 @@ class AppInitializer {
         player: Player,
         'playlist-editor': PlaylistEditor,
         'object-rating': ObjectRating,
+        'object-rating-mini': ObjectRatingMini,
         'object-actions': ObjectActions,
+        'object-single-action': ObjectSingleAction,
+        'object-statistics': ObjectStatistics,
         'list-actions': ListActions,
         'emission-history': EmissionHistory,
         exporter: Exporter,

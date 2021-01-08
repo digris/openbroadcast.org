@@ -1,0 +1,10 @@
+<div>
+  {% url 'alibrary-label-statistics-download' pk=object.pk as statistics_download_url %}
+  <a href="{{ statistics_download_url }}">
+    Airplay statistics - {{ label }}.xlsx
+  </a>
+</div>
+<object-statistics
+  obj-ct="{{ object.get_ct }}"
+  obj-uuid="{{ object.uuid }}"
+></object-statistics>

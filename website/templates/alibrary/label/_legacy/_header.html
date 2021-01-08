@@ -1,0 +1,206 @@
+{% load truncate_tags i18n thumbnail arating_tags email_obfuscator spurl spacify_tags %}
+<div class="span6 padded-h container_content">
+
+	<div class="page-header">
+		<h2>{{ object.name|truncate_chars_inner:40 }}
+            {% if object.country %}
+                ({{ object.country.iso2_code }})
+            {% endif %}
+            {% if object.type %}
+                <small>{{ object.get_type_display }}</small>
+            {% endif %}
+            <small>
+                {% if object.date_start %}&nbsp;*{{ object.date_start.year }}{% endif %}
+                {% if object.date_end %}&nbsp;&#10013;{{ object.date_end.year }}{% endif %}
+            </small>
+        </h2>
+	</div>
+
+	<dl class="dl-horizontal main">
+    	<dt>
+			{% trans "Appearance" %}:
+		</dt>
+		<dd>
+			<ul class="unstyled horizontal">
+				{% if object.releases.exists %}
+				<li>
+					{% url "alibrary-release-list" as release_list %}
+					<a href="{% spurl path=release_list query="search_label_ids={{ object.uuid }}" %}" title="{% trans "Only show releases on" %} {{ object.name }}">
+					{{ object.releases.count }} {% trans 'Releases' %}
+					</a>
+				</li>
+				{% else %}
+				<li>{{ object.releases.count }} {% trans 'Releases' %}</li>
+				{% endif %}
+			</ul>
+            <div class="clear"></div>
+		</dd>
+
+		{% if object.labelcode %}
+		<dt>
+			{% trans "Labelcode" %}:
+		</dt>
+		<dd>
+			<ul class="unstyled">
+			<li>{{ object.labelcode }}</li>
+			</ul>
+		</dd>
+		{% endif %}
+
+        {% comment "TODO: check distributor url reverses" %}
+		{% if object.distributors.exists %}
+		<dt>
+			{% trans "Distribution" %}:
+		</dt>
+		<dd>
+			<ul class="unstyled">
+			{% for dl in object.distributorlabel_set.all %}
+			<li>
+                <a href="{{ dl.distributor.get_absolute_url }}"
+                   title="{% for country in dl.countries.all %}{{ country.iso2_code }}{% if not forloop.last %}, {% endif %}{% endfor %}">
+                {{ dl.distributor }}</a>
+            </li>
+			{% endfor %}
+			</ul>
+		</dd>
+		{% endif %}
+        {% endcomment %}
+
+
+        {% if object.get_root %}
+		<dt>
+			{% trans "Umbrella Label" %}:
+		</dt>
+		<dd>
+			<ul class="unstyled">
+			<li><a href="{{ object.get_root.get_absolute_url }}">{{ object.get_root.name }}</a>
+            {% if object.get_root.type %}<small>
+			[{{ object.get_root.get_type_display }}]
+            </small>{% endif %}
+            </li>
+			</ul>
+		</dd>
+		{% endif %}
+
+		{% if object.parent %}
+		<dt>
+			{% trans "Parent Label" %}:
+		</dt>
+		<dd>
+			<ul class="unstyled">
+			<li><a href="{{ object.parent.get_absolute_url }}">{{ object.parent.name }}</a>
+            {% if object.parent.type %}<small>
+			[{{ object.parent.get_type_display }}]
+            </small>{% endif %}
+            </li>
+			</ul>
+		</dd>
+		{% endif %}
+
+		{% if object.founding_artist %}
+		<dt>
+			{% trans "Founder" %}:
+		</dt>
+		<dd>
+			<ul class="unstyled">
+        <li>
+          <a href="{{ object.founding_artist.get_absolute_url }}">{{ object.founding_artist.name }}</a>
+        </li>
+			</ul>
+		</dd>
+		{% endif %}
+
+		{% if object.children.exists %}
+		<dt>
+			{% trans "Sub Labels" %}:
+		</dt>
+		<dd class="limit" data-limit="5">
+			<ul class="unstyled">
+			{% for sl in object.children.all %}
+                <li {% if forloop.counter0 > 5 %}style="display: none;" class="limited"{% endif %}><a href="{{ sl.get_absolute_url }}">{{ sl.name }}</a>
+                {% if sl.type %}<small>
+                    [{{ sl.get_type_display }}]
+                    </small>
+                {% endif %}
+                </li>
+			{% endfor %}
+            {% if object.children.count > 5 %}
+                <li><a href="#" class="toggle">{% trans "Show more/less" %}<!--({{ object.label_children.count }})--></a></li>
+            {% endif %}
+			</ul>
+		</dd>
+		{% endif %}
+
+
+		{% if object.address or object.country or object.email or object.phone or object.fax %}
+		<dt>
+			{% trans "Address" %}:
+		</dt>
+		<dd>
+			<ul class="unstyled">
+				{% if object.address %}
+				<li>{{ object.address|linebreaksbr }}</li>
+				{% endif %}
+				{% if object.country %}
+				<li>{{ object.country }}</li>
+				{% endif %}
+				{% if object.phone %}
+				<li>P: {{ object.phone }}</li>
+				{% endif %}
+				{% if object.fax %}
+				<li>F: {{ object.fax }}</li>
+				{% endif %}
+				{% if object.email %}
+				<li>{{ object.email|obfuscate_mailto }}</li>
+				{% endif %}
+			</ul>
+		</dd>
+		{% endif %}
+
+		{% if object.members.exists %}
+		<dt>
+			{% trans "Members" %}:
+		</dt>
+		<dd>
+			{% for artist in object.members.all %}
+			{% with item=artist %}
+			{% include "alibrary/element/_inline_link.html" %}
+			{% if not forloop.last %},{% endif %}
+			{% endwith %}
+			{% endfor %}
+		</dd>
+		{% endif %}
+
+	</dl>
+
+	<dl class="dl-horizontal sub">
+        {% include 'alibrary/element/_edit_timestamps.html' %}
+        {% if object.tags %}
+            <dt>
+                {% trans "Tags" %}:
+            </dt>
+            <dd>
+                {% for tag in object.tags %}
+                    <span class="tag">{{ tag.name|spacify }}</span>
+                {% endfor %}
+            </dd>
+        {% endif %}
+	</dl>
+
+</div>
+
+<div class="span3 padded-h padded-v">
+	<div class="image">
+		{% if object.main_image %}
+        <div class="align">
+		    <a href="{% thumbnail object.main_image 1200x1200 upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.main_image 170x170 upscale %}" alt="Cover" /> </a>
+		</div>
+        {% else %}
+		<img src="/static/img/base/defaults/listview.artist.xl.png" alt="{% trans "No cover available" %}" />
+		{% endif %}
+	</div>
+
+	<div class="rating">
+		{% rating_for_object object %}
+	</div>
+</div>

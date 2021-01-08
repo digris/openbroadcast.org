@@ -42,7 +42,7 @@ class SectionDetailView(UUIDDetailView, DetailView):
         section_url_suffix = kwargs.get("section")
 
         current_section = next(
-            (s for s in self.sections if s["url"] == section_url_suffix), None
+            (s for s in self.get_sections() if s["url"] == section_url_suffix), None
         )
 
         if not current_section:
@@ -53,6 +53,9 @@ class SectionDetailView(UUIDDetailView, DetailView):
 
         return super(SectionDetailView, self).dispatch(request, *args, **kwargs)
 
+    def get_sections(self):
+        return self.sections
+
     def get_default_section(self):
         if self.default_section:
             return self.default_section
@@ -62,7 +65,7 @@ class SectionDetailView(UUIDDetailView, DetailView):
 
     def get_section_menu(self, obj, section_key):
         menu = []
-        for section in self.sections:
+        for section in self.get_sections():
             print(section)
             url_kwargs = {
                 "uuid": obj.uuid,

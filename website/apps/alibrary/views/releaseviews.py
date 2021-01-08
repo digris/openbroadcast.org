@@ -7,6 +7,8 @@ import logging
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from django.conf import settings
 from django.contrib import messages
+from django.shortcuts import redirect
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, UpdateView
@@ -108,20 +110,20 @@ class ReleaseListView(BaseSearchListView):
         return qs
 
 
-class ReleaseDetailView(DetailView):
+class ReleaseDetailViewLegacy(DetailView):
     model = Release
-    template_name = "alibrary/release_detail.html"
-    context_object_name = "release"
-    extra_context = {}
+
+    def get(self, request, *args, **kwargs):
+        obj = self.get_object()
+        return redirect(obj.get_absolute_url())
 
 
-class ReleaseDetailViewNG(SectionDetailView):
+class ReleaseDetailView(SectionDetailView):
     model = Release
     template_name = "alibrary/release/detail.html"
-    # section_template_prefix = "alibrary/release/_detail"
     section_template_pattern = "alibrary/release/detail/_{key}.html"
     context_object_name = "release"
-    url_name = "alibrary-release-detail-ng"
+    url_name = "alibrary-release-detail"
 
     sections = [
         {
@@ -139,7 +141,21 @@ class ReleaseDetailViewNG(SectionDetailView):
             "url": "statistics",
             "title": _("Statistics"),
         },
+        {
+            "key": "license",
+            "url": "license",
+            "title": _("License / Legal"),
+        },
     ]
+
+    def get_sections(self, *args, **kwargs):
+        sections = self.sections
+        obj = self.get_object()
+        if not obj.description:
+            sections = [s for s in sections if not s['key'] == 'description']
+        if not obj.get_license():
+            sections = [s for s in sections if not s['key'] == 'license']
+        return sections
 
 
 class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):

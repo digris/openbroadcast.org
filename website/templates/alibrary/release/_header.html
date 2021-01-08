@@ -1,136 +1,167 @@
-{% load truncate_tags i18n thumbnail arating_tags alibrary_tags spacify_tags atracker_tags %}
+{% load truncate_tags i18n thumbnail arating_tags spacify_tags gravatar object_action_tags tagging_extra_tags %}
 
-<div class="span6 padded-h container_content">
+<div class="header__primary">
 
-    <div class="page-header">
-        <h2>{{ object.name|truncate_chars_inner:40 }}
-            <small>{% if object.releasetype %}{{ object.get_releasetype_display }} {% endif %}{% if object.release_country %} ({{ object.release_country.iso2_code }}){% endif %}</small>
-        </h2>
+  <div class="title title--primary">
+    <h2>{{ object.name|truncate_chars_inner:40 }}</h2>
+    <small>
+      {% if object.releasetype %}{{ object.get_releasetype_display }} {% endif %}
+      {% if object.release_country %}({{ object.release_country.iso2_code }}){% endif %}
+    </small>
+  </div>
+
+  {% comment %}
+  <div class="title title--secondary">
+    <h3>
+
+    </h3>
+  </div>
+  {% endcomment %}
+
+
+  <div class="meta">
+
+    {% if object.get_artists %}
+      <div class="meta__item">
+        <div>
+          {% trans "Artist" %}:
+        </div>
+        <div>
+          {# TODO: refactor artist display logic #}
+          {% for artist in object.get_artists %}
+              {% if "join_phrase" in artist %}
+                  {% with item=artist.artist %}
+                      {% if artist.join_phrase %}{{ artist.join_phrase }}{% endif %}
+                      {% include "alibrary/element/_inline_link.html" %}
+                  {% endwith %}
+              {% else %}
+                  {% with item=artist %}
+                      {% include "alibrary/element/_inline_link.html" %}
+                      {% if not forloop.last %},{% endif %}
+                  {% endwith %}
+              {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if object.label %}
+      <div class="meta__item">
+        <div>
+          {% trans "Label" %}:
+        </div>
+        <div>
+          <a href="{{ object.label.get_absolute_url }}">{{ object.label.name }}</a>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if object.catalognumber %}
+      <div class="meta__item">
+        <div>
+          {% trans "Catalog No." %}:
+        </div>
+        <div>
+          {{ object.catalognumber }}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if object.releasedate_approx or object.is_promotional %}
+      <div class="meta__item">
+        <div>
+          {% trans "Release date" %}:
+        </div>
+        <div>
+          {% if object.is_promotional %}
+            {{ object.releasedate|date:"SHORT_DATE_FORMAT" }} ({% trans "Promo release" %})
+          {% else %}
+            {{ object.releasedate_approx }}
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% comment %}
+    {% if object.get_license %}
+      <div class="meta__item">
+        <div>
+          {% trans "License" %}:
+        </div>
+        <div>
+          {{ object.get_license.name }}
+        </div>
+      </div>
+    {% endif %}
+    {% endcomment %}
+
+  </div>
+
+  <div class="meta">
+    <div class="meta__item">
+      <div>
+        {% trans "Created" %}:
+      </div>
+      <div class="meta__item__grid">
+        <time>
+          {% firstof object.last_creation_time|date:'DATETIME_FORMAT' object.created|date:'DATETIME_FORMAT' %}
+        </time>
+        {% if object.creator %}
+        <div>
+          <a href="{{ object.creator.get_absolute_url }}">{{ object.creator.profile.get_display_name }}</a>
+        </div>
+        {% endif %}
+      </div>
     </div>
 
-    <dl class="dl-horizontal main">
-        <dt>
-            {% trans "Artist" %}:
-        </dt>
-        <dd>
-
-            {% for artist in object.get_artists %}
-
-                {# check if extended artist (with join phrase) #}
-                {% if "join_phrase" in artist %}
-
-                    {% with item=artist.artist %}
-                        {% if artist.join_phrase %}{{ artist.join_phrase }}{% endif %}
-                        {% include "alibrary/element/_inline_link.html" %}
-                    {% endwith %}
-
-                {% else %}
-
-                    {% with item=artist %}
-                        {% include "alibrary/element/_inline_link.html" %}
-                        {% if not forloop.last %},{% endif %}
-                    {% endwith %}
-
-                {% endif %}
-
-
-            {% endfor %}
-            &nbsp;
-        </dd>
-
-        {% if object.label %}
-            <dt>
-                {% trans "Label" %}:
-            </dt>
-            <dd>
-                {% with item=object.label %}
-                    {% include "alibrary/element/_inline_link.html" %}
-                {% endwith %}
-                &nbsp;
-            </dd>
+    <div class="meta__item">
+      <div>
+        {% trans "Updated" %}:
+      </div>
+      <div class="meta__item__grid">
+        <time>
+          {% firstof object.last_update_time|date:'DATETIME_FORMAT' object.updated|date:'DATETIME_FORMAT' %}
+        </time>
+        {% if object.last_editor %}
+        <div>
+          <a href="{{ object.last_editor.get_absolute_url }}">{{ object.last_editor.profile.get_display_name }}</a>
+        </div>
         {% endif %}
+      </div>
+    </div>
 
-        {% if object.catalognumber %}
-            <dt>{% trans "Catalog No." %}:</dt>
-            <dd>{{ object.catalognumber }}</dd>
-        {% endif %}
+  </div>
 
-        <!--
-            {% if object.releasedate %}
-            <dt>{% trans "Releasedate" %}:</dt>
-            <dd>{{ object.releasedate|date:"SHORT_DATE_FORMAT" }}</dd>
-            {% endif %}
-            -->
-
-        {% if object.is_promotional %}
-            <dt>{% trans "Release date" %}:</dt>
-            <dd>{{ object.releasedate|date:"SHORT_DATE_FORMAT" }} ({% trans "Promo release" %})</dd>
-        {% else %}{% if object.releasedate_approx %}
-            <dt>{% trans "Release date" %}:</dt>
-            <dd>{{ object.releasedate_approx }}</dd>
-        {% endif %}{% endif %}
-
-
-    </dl>
-
-    <dl class="dl-horizontal license">
-
-        <dt>
-            {% trans "License" %}:
-        </dt>
-        <dd>
-            {% if object.get_license %}
-                {% if object.get_license.iconset %}
-                    <a href="{{ object.get_license.get_absolute_url }}"
-                       title="{% trans "License details" %} - {{ object.get_license.name }}"
-                       class="iconset iconset-license">
-                           {{ object.get_license.iconset_display }}
-                    </a>
-                {% else %}
-                    <span>{{ object.get_license.name }}</span>
-                {% endif %}
-            {% else %}
-                &nbsp;
-            {% endif %}
-        </dd>
-
-    </dl>
-
-
-    <dl class="dl-horizontal sub">
-
-        {% include 'alibrary/element/_edit_timestamps.html' %}
-
-        {% if object.tags %}
-            <dt>
-                {% trans "Tags" %}:
-            </dt>
-            <dd>
-                {% for tag in object.tags %}
-                    <span class="tag">{{ tag.name|spacify }}</span>
-                {% endfor %}
-            </dd>
-        {% endif %}
-
-    </dl>
 
 </div>
+<div class="header__secondary">
+  <div class="visual">
+    <visual-with-actions
+      ct="{{ object.get_ct }}"
+      uuid="{{ object.uuid }}"
+      url="{% url 'api:release-detail' object.uuid %}"
+      image-url="{% thumbnail object.main_image 280x280 crop upscale %}"
+      large-image-url="{% thumbnail object.main_image 1200x1200 crop upscale %}"
+      :actions="{% get_object_actions_as_json object user %}">
+    </visual-with-actions>
+  </div>
+</div>
 
+<div class="header__primary">
+  {% comment %}
+  <div class="tags">
+    {% for tag in object.tags %}
+      <span class="tag tag--{{ tag.type }}" title="{{ tag.type }}">{{ tag.name|spacify }} ({{ tag.type }})</span>
+    {% endfor %}
+  </div>
+  {% endcomment %}
+  <tag-list :tags="{{ object.tags|tags_as_json }}"></tag-list>
+</div>
 
-<div class="span3 padded-h padded-v">
-
-    <div class="image">
-        {% if object.main_image %}
-            <a href="{% thumbnail object.main_image 1200x1200 crop upscale %}" class="zoomable cboxElement"> <img
-                    src="{% thumbnail object.main_image 170x170 crop upscale %}"
-                    alt="Cover"/> </a>
-        {% else %}
-            <img src="/static/img/base/defaults/listview.release.xl.png" alt="{% trans "No cover available" %}"/>
-        {% endif %}
-    </div>
-
-    <div class="rating">
-        {% rating_for_object object %}
-    </div>
-
+<div class="header__secondary">
+  <div class="rating">
+        <object-rating
+            obj-uuid="{{ object.uuid }}"
+            obj-ct="{{ object.get_ct }}"></object-rating>
+  </div>
 </div>

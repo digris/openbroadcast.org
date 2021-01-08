@@ -13,6 +13,13 @@ export default {
   components: {
     'search-result': ObjectSearchResult,
   },
+  props: {
+    ct: {
+      type: String,
+      required: false,
+      default: null,
+    },
+  },
   data() {
     return {
       searchQuery: '',
@@ -24,6 +31,7 @@ export default {
   methods: {
     updateSearchQuery(e) {
       const q = e.target.value;
+      this.$emit('inputUpdated', q);
       this.searchQuery = q;
       if (q.length < MIN_QUERY_CHARS) {
         this.updateResults({ results: [], total: 0 });
@@ -32,8 +40,10 @@ export default {
       const query = {
         q,
         fuzzy: 0,
-        ct: 'alibrary.media',
       };
+      if (this.ct) {
+        query.ct = this.ct;
+      }
       this.search(query);
     },
     // eslint-disable-next-line func-names
@@ -46,8 +56,9 @@ export default {
       });
     }, INPUT_DEBOUNCE),
     updateResults({ results, total }) {
-      this.results = results;
-      this.total = total;
+      // this.results = results;
+      // this.total = total;
+      this.$emit('resultsUpdated', { results, total });
     },
   },
 };
@@ -57,9 +68,12 @@ export default {
     <input
       v-model="searchQuery"
       class="object-search__input"
+      placeholder="Type here"
       @input="updateSearchQuery"
     >
-    <div>{{ total }}</div>
+    <div v-if="(results.length)">
+      {{ total }}
+    </div>
     <div>
       <search-result
         v-for="result in results"
@@ -74,8 +88,9 @@ export default {
 </template>
 <style lang="scss" scoped>
   .object-search {
-    color: white;
-
-    background: orangered;
+    background: transparent;
+    &__input {
+      padding: 0.5rem;
+    }
   }
 </style>

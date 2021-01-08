@@ -1,0 +1,24 @@
+{% load i18n spurl %}
+{% if releases.exists %}
+<div class="list-prefix">
+    <list-actions></list-actions>
+</div>
+<div class="list list--grid">
+  {% for object in releases.all|slice:'0:8' %}
+  <div class="list-item">
+  {% include 'alibrary/release/_card.html' %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if releases.count > 8 %}
+<div class="list-appendix is-centered">
+  {% url "alibrary-release-list" as release_list_url %}
+  <a
+    class="button button--outlined action"
+    href="{% spurl path=release_list_url query="search_label_ids={{ object.uuid }}" %}">
+    Show more
+  </a>
+</div>
+{% endif %}

@@ -118,7 +118,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         "alibrary.Label",
         blank=True,
         null=True,
-        related_name="release_label",
+        related_name="releases",
         on_delete=models.SET_NULL,
     )
     media = models.ManyToManyField(
@@ -285,15 +285,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
 
     def get_absolute_url(self):
-        try:
-            return reverse(
-                "alibrary-release-detail", kwargs={"pk": self.pk, "slug": self.slug}
-            )
-        except NoReverseMatch:
-            translation.activate("en")
-            return reverse(
-                "alibrary-release-detail", kwargs={"pk": self.pk, "slug": self.slug}
-            )
+        return reverse("alibrary-release-detail", kwargs={"uuid": str(self.uuid)})
 
     def get_edit_url(self):
         return reverse("alibrary-release-edit", args=(self.pk,))

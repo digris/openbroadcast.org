@@ -52,26 +52,31 @@ export default {
     };
   },
   computed: {
+    objectActions() {
+      const objectActions = [];
+      this.actions.forEach((originalAction) => {
+        const action = { ...originalAction };
+        action.uuid = this.uuid;
+        action.ct = this.ct;
+        action.url = action.url || this.url;
+        objectActions.push(action);
+      });
+      return objectActions;
+    },
     canPlay() {
       return this.actions.findIndex((action) => action.key === 'play') > -1;
     },
     playAction() {
-      const index = this.actions.findIndex((action) => action.key === 'play');
+      const index = this.objectActions.findIndex((action) => action.key === 'play');
       if (index < 0) {
         return null;
       }
-      return this.actions[index];
-      // return this.actions.findIndex((action) => action.key === 'play') > -1;
+      return this.objectActions[index];
     },
-    // secondaryActions() {
-    //   // play is considered to be the primary / first action.
-    //   // so return all actions except play.
-    //   return this.actions.filter((action) => action.key !== 'play');
-    // },
     secondaryActions() {
       // play is considered to be the primary / first action.
       // so return all actions except play.
-      return this.actions;
+      return this.objectActions;
     },
   },
   methods: {
@@ -134,7 +139,7 @@ export default {
           <div
             class="actions__rating"
           >
-            <!--R-->
+            <!-- R -->
           </div>
           <div
             class="actions__play"
@@ -151,6 +156,8 @@ export default {
               ref="contextMenu"
               toggle-color="white"
               :menu-position="{right: 0, top: '54px'}"
+              :obj-ct="ct"
+              :obj-uuid="uuid"
               :visible="secondaryActionsVisible"
               :actions="secondaryActions"
               @click="handleAction"

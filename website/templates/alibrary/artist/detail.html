@@ -1,0 +1,42 @@
+{% extends "layout_base.html" %}
+
+{% load i18n alibrary_tags %}
+
+{% block title %}{{ object.name }}
+{% if object.country %}({{ object.country.iso2_code }}){% endif %}
+{% if object.date_start %} *{{ object.date_start.year }}{% endif %}
+{% if object.date_end %} &#10013;{{ object.date_end.year }}{% endif %}{% endblock %}
+{% block meta_description %}{{ object.biography|truncatewords:20 }}{% endblock %}
+{% block meta_keywords %}{% for tag in object.tags %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endblock %}
+{% block meta_opengraph %}{# include "alibrary/opengraph/_artist.html" #}{% endblock %}
+
+{% block heading %}{% endblock %}
+
+{% block inner %}
+<div class="item item--detail item--release">
+    <div class="item--header-container">
+      <div class="item--header">
+          {% include "alibrary/artist/_header.html" %}
+      </div>
+      <nav class="item--section-menu">
+          {% for item in section_menu %}
+              <div class="menu-item{% if item.active %} menu-item--active{% endif %}">
+                  <a href="{{ item.url }}">{{ item.title }}</a>
+              </div>
+          {% endfor %}
+      </nav>
+    </div>
+    <div class="item--body">
+        {% include section_template %}
+    </div>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+    {% include "alibrary/artist/sidebar/_detail.html" %}
+    <div class="listing relations">
+        <div class="item relations">
+            {% all_relations_inline object %}
+        </div>
+    </div>
+{% endblock %}

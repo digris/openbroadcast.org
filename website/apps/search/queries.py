@@ -17,7 +17,7 @@ def format_search_results(results):
     for hit in results["hits"]["hits"]:
 
         source = hit["_source"]
-        item = {"score": hit["_score"], "id": int(hit["_id"]), "ct": hit["_type"], 'uuid': hit['_source'].get('url')}
+        item = {"score": hit["_score"], "id": int(hit["_id"]), "ct": hit["_type"], 'uuid': hit['_source'].get('uuid')}
 
         for k, v in source.items():
             if not k in [ignored_keys]:

@@ -1,0 +1,11 @@
+<div class="list-prefix">
+    <list-actions></list-actions>
+</div>
+
+<div class="list list--table">
+  {% for object in contributions|slice:'0:48' %}
+  <div class="list-item">
+  {% include 'alibrary/release/_media.html' %}
+  </div>
+  {% endfor %}
+</div>

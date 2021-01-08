@@ -129,6 +129,8 @@ export default {
       <context-menu
         v-if="actions.length"
         toggle-color="#a5a5a5"
+        :obj-ct="ct"
+        :obj-uuid="uuid"
         :toggle-size="(24)"
         :menu-position="{top: '48px'}"
         :visible="(false)"
@@ -142,7 +144,7 @@ export default {
       <slot name="default" />
       <div class="tags">
         <div
-          v-for="(tag, index) in tags"
+          v-for="(tag, index) in tags.slice(0, 5)"
           :key="`tag-${index}`"
           class="tag"
         >
@@ -272,7 +274,7 @@ export default {
   }
 
   &__appendix {
-    position: relative;
+    //position: relative;
 
     display: flex;
     flex-direction: column;

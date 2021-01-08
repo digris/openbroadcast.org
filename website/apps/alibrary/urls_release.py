@@ -2,21 +2,21 @@
 from __future__ import unicode_literals
 
 from django.conf.urls import url
-from .views import ReleaseListView, ReleaseDetailView, ReleaseEditView, ReleaseDetailView, ReleaseDetailViewNG
+from . import views
 
 urlpatterns = [
-    url(r"^$", ReleaseListView.as_view(), name="alibrary-release-list"),
+    url(r"^$", views.ReleaseListView.as_view(), name="alibrary-release-list"),
     url(
         r"^(?P<pk>\d+)-(?P<slug>[-\w]+)/$",
-        ReleaseDetailView.as_view(),
-        name="alibrary-release-detail",
+        views.ReleaseDetailViewLegacy.as_view(),
+        name="alibrary-release-detail-legacy",
     ),
     url(
-        r"^(?P<pk>\d+)/edit/$", ReleaseEditView.as_view(), name="alibrary-release-edit"
+        r"^(?P<pk>\d+)/edit/$", views.ReleaseEditView.as_view(), name="alibrary-release-edit"
     ),
     url(
         r"^(?P<uuid>[0-9a-f-]+)/(?:(?P<section>[-\w]+)/)?$",
-        ReleaseDetailViewNG.as_view(),
-        name="alibrary-release-detail-ng",
+        views.ReleaseDetailView.as_view(),
+        name="alibrary-release-detail",
     ),
 ]

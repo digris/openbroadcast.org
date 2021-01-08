@@ -32,55 +32,31 @@
     {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}js/lib/text-diff/diff_match_patch.js"></script>{% endaddtoblock %}
     {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}js/lib/text-diff/jquery.pretty-text-diff.js"></script>{% endaddtoblock %}
     {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/edit.js"></script>{% endaddtoblock %}
-
     {% addtoblock "js-post" %}
         <script>
             $(function () {
-                $('.save-and-publish').click(function () {
-                    $('.form-actions #div_id_publish input').prop('checked', true);
-                });
-
                 $('select[readonly] option[selected]').each(function (i, el) {
                     var val = $(el).text();
                     $(el).parents('.control-group').html('<span>' + val + '</span>');
                 });
-
                 edit.ui.init();
-
-                //
-
-
             });
         </script>
     {% endaddtoblock %}
-
-    {% addtoblock "css" %}
-        <style>
-            .form-actions #div_id_publish {
-                display: none;
-            }
-        </style>
-    {% endaddtoblock %}
-
     <div id="heading">
         {% include "skeleton/heading.html" %}
     </div>
-    <!-- heading / icon (large one) -->
 {% endblock %}
 
 {% block inner %}
     <div class="item_detail" style="">
-
         <section class="shaded">
             <div class="row iteminfo release">
-                {% include "alibrary/artist/_header.html" %}
+                {% include "alibrary/artist/_legacy/_header.html" %}
             </div>
         </section>
-
         <div class="item_menu" id="item_menu"></div>
-
         <div class="clear"></div>
-
     </div>
 {% endblock %}
 
@@ -89,36 +65,23 @@
 {% endblock %}
 
 {% block form %}
-
     {% if form_errors %}
     {% include "element/forms/_merged_form_errors.html" %}
     {% endif %}
-
-
     <div class="item_inner">
-
         <form class="form-horizontal form-compact form-artist" method="post" id="" enctype="multipart/form-data">
-
             {{ form.management_form }}
-		    {{ named_formsets.relation.management_form }}
-		    {{ named_formsets.member.management_form }}
-		    {{ named_formsets.alias.management_form }}
-
+            {{ named_formsets.relation.management_form }}
+            {{ named_formsets.member.management_form }}
+            {{ named_formsets.alias.management_form }}
             {% crispy named_formsets.action %}
-
             {% crispy form %}
-
-
             <fieldset id="alias_container">
                 <legend>
                     {% trans "Aliases" %}<span class="pull-right"></span>
                 </legend>
-
                 {% crispy named_formsets.alias %}
-
             </fieldset>
-
-
             <fieldset id="member_container">
                 <legend>
                     {% trans "Members" %}<span class="pull-right"></span>
@@ -128,32 +91,17 @@
                         {% trans "Allows you to add individual artists as group/band 'members'" %}</br>
                     </p>
                 </div>
-
                 {% crispy named_formsets.member %}
-
             </fieldset>
-
-
-
-
-
             <fieldset class="relations">
                 <legend>
                     Relations<span class="pull-right"></span>
                 </legend>
-
-
                 {% crispy named_formsets.relation %}
-
                 <div class="lookup-container"></div>
-
             </fieldset>
-
             {% crispy named_formsets.action %}
-
-
         </form>
-
     </div>
 {% endblock %}
 
@@ -164,4 +112,3 @@
         {% endwith %}
     </div>
 {% endblock %}
-

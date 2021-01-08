@@ -4,9 +4,24 @@ import debounce from 'debounce';
 
 import { EventBus } from '../../../eventBus';
 
+import ObjectRating from '../../ObjectRating/ObjectRating.vue';
+
 export default {
   name: 'ContextMenu',
+  components: {
+    'object-rating': ObjectRating,
+  },
   props: {
+    objCt: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    objUuid: {
+      type: String,
+      required: false,
+      default: null,
+    },
     visible: {
       type: Boolean,
       required: false,
@@ -65,6 +80,7 @@ export default {
       this.closeMenu();
     }, 100),
     handleAction(action) {
+      console.log('handleAction', action);
       // this.$emit('click', action);
       EventBus.$emit('action', action);
     },
@@ -97,6 +113,11 @@ export default {
         >
           {{ action.title }}
         </a>
+        <object-rating
+          v-if="(objCt && objUuid)"
+          :obj-ct="objCt"
+          :obj-uuid="objUuid"
+        />
       </div>
     </transition>
   </div>
@@ -155,7 +176,13 @@ export default {
 
           background: #00bb73;
         }
+      }
 
+      .object-rating {
+        padding: 14px 0;
+
+        background: #fafafa;
+        border-top: 1px solid #efefef;
       }
     }
   }

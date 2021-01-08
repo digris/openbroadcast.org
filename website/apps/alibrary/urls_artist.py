@@ -2,16 +2,28 @@
 from __future__ import unicode_literals
 
 from django.conf.urls import url
-from .views import ArtistDetailView, ArtistListView, ArtistEditView
+from . import views
 
 
 urlpatterns = [
-    # url(r'^autocomplete/$', artist_autocomplete, name='alibrary-artist-autocomplete'),
-    url(r"^$", ArtistListView.as_view(), name="alibrary-artist-list"),
+    url(
+        r"^$",
+        views.ArtistListView.as_view(),
+        name="alibrary-artist-list",
+    ),
     url(
         r"^(?P<pk>\d+)-(?P<slug>[-\w]+)/$",
-        ArtistDetailView.as_view(),
+        views.ArtistDetailViewLegacy.as_view(),
+        name="alibrary-artist-detail-legacy",
+    ),
+    url(
+        r"^(?P<pk>\d+)/edit/$",
+        views.ArtistEditView.as_view(),
+        name="alibrary-artist-edit",
+    ),
+    url(
+        r"^(?P<uuid>[0-9a-f-]+)/(?:(?P<section>[-\w]+)/)?$",
+        views.ArtistDetailView.as_view(),
         name="alibrary-artist-detail",
     ),
-    url(r"^(?P<pk>\d+)/edit/$", ArtistEditView.as_view(), name="alibrary-artist-edit"),
 ]

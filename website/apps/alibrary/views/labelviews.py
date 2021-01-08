@@ -5,26 +5,22 @@ import actstream
 import logging
 
 from django.views.generic import View, DetailView, UpdateView
-from django.http import (
-    HttpResponse,
-    HttpResponseRedirect,
-    StreamingHttpResponse,
-    FileResponse,
-)
+from django.http import HttpResponseRedirect, StreamingHttpResponse
 from django.contrib import messages
+from django.shortcuts import redirect
 from django.core.cache import cache
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
-from django.utils import timezone
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from elasticsearch_dsl import TermsFacet, RangeFacet
 from wsgiref.util import FileWrapper
 from base.utils.form_errors import merge_form_errors
+from base.views.detail import SectionDetailView
 from search.views import BaseFacetedSearch, BaseSearchListView
 from search.duplicate_detection import get_ids_for_possible_duplicates
 
 from ..forms import LabelForm, LabelActionForm, LabelRelationFormSet
-from ..models import Label, Release
+from ..models import Label
 from ..documents import LabelDocument
 
 try:
@@ -68,7 +64,6 @@ class LabelSearch(BaseFacetedSearch):
 
 class LabelListView(BaseSearchListView):
     model = Label
-    # template_name = "alibrary/label_list.html"
     template_name = "alibrary/label/list.html"
     search_class = LabelSearch
     order_by = [
@@ -90,32 +85,70 @@ class LabelListView(BaseSearchListView):
         qs = super(LabelListView, self).get_queryset(limit_ids=limit_ids, **kwargs)
 
         qs = qs.select_related("country").prefetch_related(
-            "release_label", "creator", "creator__profile"
+            "releases", "creator", "creator__profile"
         )
 
         return qs
 
 
-class LabelDetailView(DetailView):
-    context_object_name = "label"
+class LabelDetailViewLegacy(DetailView):
     model = Label
-    extra_context = {}
+
+    def get(self, request, *args, **kwargs):
+        obj = self.get_object()
+        return redirect(obj.get_absolute_url())
+
+
+class LabelDetailView(SectionDetailView):
+    model = Label
+    template_name = "alibrary/label/detail.html"
+    section_template_pattern = "alibrary/label/detail/_{key}.html"
+    context_object_name = "label"
+    url_name = "alibrary-label-detail"
+
+    sections = [
+        {
+            "key": "overview",
+            "url": None,
+            "title": _("Overview"),
+        },
+        {
+            "key": "description",
+            "url": "description",
+            "title": _("Description"),
+        },
+        {
+            "key": "statistics",
+            "url": "statistics",
+            "title": _("Statistics"),
+        },
+    ]
+
+    def get_sections(self, *args, **kwargs):
+        sections = self.sections
+        obj = self.get_object()
+        if not obj.description:
+            sections = [s for s in sections if not s["key"] == "description"]
+        return sections
 
     def get_context_data(self, **kwargs):
         context = super(LabelDetailView, self).get_context_data(**kwargs)
-        obj = kwargs.get("object", None)
+        obj = self.get_object()
 
-        releases = (
-            Release.objects.filter(label=obj).order_by("-releasedate").distinct()[:8]
+        umbrella_label = obj.get_root()
+        parent_label = obj.parent
+        sub_labels = obj.children
+
+        releases = obj.releases.order_by("-releasedate")
+
+        context.update(
+            {
+                "umbrella_label": umbrella_label,
+                "parent_label": parent_label,
+                "sub_labels": sub_labels,
+                "releases": releases,
+            }
         )
-        self.extra_context["releases"] = releases
-        self.extra_context["history"] = []
-
-        self.extra_context["download_statistics_for_years"] = range(
-            timezone.now().year, obj.created.year - 1, -1
-        )
-
-        context.update(self.extra_context)
 
         return context
 

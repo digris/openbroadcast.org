@@ -64,7 +64,8 @@
         max-width: 190px;
         max-height: 190px;
 
-        filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.3));
+        // filter: drop-shadow(4px 4px 10px rgba(0,0,0,0.3));
+        box-shadow: 1px 2px 10px 2px rgba(0,0,0,0.05);
 
         img {
           width: 100%;
@@ -87,12 +88,17 @@
 
   .tags {
     .tag {
-      padding: 2px 4px 1px;
+      display: inline-flex;
+      margin-bottom: 3px;
+      padding: 2px 6px 1px;
 
-      color: #fff;
+      color: #555;
+      font-size: 90%;
       text-transform: uppercase;
 
-      background: black;
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-left: 2px solid #00bb73;
     }
   }
 }
@@ -100,6 +106,7 @@
 @mixin section-menu {
   $border-color: #ddd;
   $bg-color: #f5f5f5;
+
   display: flex;
 
   background: $white;

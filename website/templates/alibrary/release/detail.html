@@ -2,20 +2,27 @@
 
 {% load i18n alibrary_tags %}
 
+{% block title %}{{ object.name }}{% if object.get_artist_display %} - {{ object.get_artist_display }}{% endif %}{% endblock %}
+{% block meta_description %}{{ object.description|truncatewords:20 }}{% endblock %}
+{% block meta_keywords %}{% for tag in object.tags %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endblock %}
+{% block meta_opengraph %}{% include "alibrary/opengraph/_release.html" %}{% endblock %}
+
 {% block heading %}{% endblock %}
 
 {% block inner %}
 <div class="item item--detail item--release">
-    <div class="item--header">
-        {% include "alibrary/release/_header_ng.html" %}
+    <div class="item--header-container">
+      <div class="item--header">
+          {% include "alibrary/release/_header.html" %}
+      </div>
+      <nav class="item--section-menu">
+          {% for item in section_menu %}
+              <div class="menu-item{% if item.active %} menu-item--active{% endif %}">
+                  <a href="{{ item.url }}">{{ item.title }}</a>
+              </div>
+          {% endfor %}
+      </nav>
     </div>
-    <nav class="item--section-menu">
-        {% for item in section_menu %}
-            <div class="menu-item{% if item.active %} menu-item--active{% endif %}">
-                <a href="{{ item.url }}">{{ item.title }}</a>
-            </div>
-        {% endfor %}
-    </nav>
     <div class="item--body">
         {% include section_template %}
     </div>

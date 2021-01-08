@@ -51,6 +51,11 @@ urlpatterns = [
         views.ObjectMergeView.as_view(),
         name="utils-merge-objects",
     ),
+    url(
+        r"^utils/re-assign-objects/$",
+        views.ObjectReassignView.as_view(),
+        name="utils-re-assign-objects",
+    ),
     # router
     url(r"^", include(router.urls)),
 ]

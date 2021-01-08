@@ -111,7 +111,6 @@ class MediaSearch(BaseFacetedSearch):
 
 class MediaListView(BaseSearchListView):
     model = Media
-    # template_name = "alibrary/media_list.html"
     template_name = "alibrary/media/list.html"
     search_class = MediaSearch
     order_by = [

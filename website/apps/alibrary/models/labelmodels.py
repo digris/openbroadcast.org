@@ -171,15 +171,9 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     def get_absolute_url(self):
         if self.disable_link:
             return None
-        try:
-            return reverse(
-                "alibrary-label-detail", kwargs={"pk": self.pk, "slug": self.slug}
-            )
-        except NoReverseMatch:
-            translation.activate("en")
-            return reverse(
-                "alibrary-label-detail", kwargs={"pk": self.pk, "slug": self.slug}
-            )
+        return reverse(
+            "alibrary-label-detail", kwargs={"uuid": str(self.uuid)}
+        )
 
     def get_edit_url(self):
         return reverse("alibrary-label-edit", args=(self.pk,))

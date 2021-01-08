@@ -1,35 +1,28 @@
-{% load i18n activity_tags ctype_tags %}
+{% load i18n %}
 
 <div class="menu-context">
-    <div class="action-group">
-        <ul>
-            {% if perms.alibrary.change_artist %}
-                <li class="action">
-                    <a href="{{ object.get_edit_url }}" title="{% trans 'Edit' %}">
-                        {% trans "Edit" %}
-                    </a>
-                </li>
-            {% endif %}
-            {% if perms.alibrary.change_artist and user.is_staff %}
-          <li class="action">
-                    <a  href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}"
-                       title="{% trans 'Administration view' %}">
-                        {% trans "Administration view" %}
-                    </a>
-                </li>
-            {% endif %}
-            {% if user.is_authenticated %}
-                <li class="action">
-                    <a href="{% follow_all_url object %}?next={{ request.get_full_path }}"
-                       title="{% trans 'Follow/unfollow' %}">
-                        {% if request.user|is_following:object %}
-                            {% trans "Stop following" %} {{ object|ct_name_by_object }}
-                        {% else %}
-                            {% trans "Follow" %} {{ object|ct_name_by_object }}
-                        {% endif %}
-                    </a>
-                </li>
-            {% endif %}
-        </ul>
-    </div>
+  <div class="action-group">
+    <ul>
+      {% if perms.alibrary.change_artist %}
+      <li class="action">
+        <a href="{{ object.get_edit_url }}" title="{% trans 'Edit' %}">
+          {% trans "Edit" %}
+        </a>
+      </li>
+      {% endif %}
+      {% if perms.alibrary.change_artist and user.is_staff %}
+      <li class="action">
+        <a href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}"
+           title="{% trans 'Administration view' %}">
+          {% trans "Admin view" %}
+        </a>
+      </li>
+      {% endif %}
+      {% if perms.alibrary.downoad_media %}
+        <object-selection-action class="action" :min-selected="1" dispatch-event="exporter:exportObjects">
+          {% trans "Download Selection" %}
+        </object-selection-action>
+      {% endif %}
+    </ul>
+  </div>
 </div>

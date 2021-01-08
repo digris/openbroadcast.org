@@ -151,8 +151,6 @@ export default {
 }
 
 .vote {
-  position: relative;
-
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -202,6 +200,15 @@ export default {
       }
       line {
         stroke: #ffffff;
+      }
+    }
+    &.vote--down {
+      svg {
+        circle,
+        path {
+          fill: #e23602 !important;
+          stroke: #e23602 !important;
+        }
       }
     }
   }

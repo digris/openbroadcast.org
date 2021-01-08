@@ -2,25 +2,32 @@
 from __future__ import unicode_literals
 
 from django.conf.urls import url
-from .views import (
-    LabelDetailView,
-    LabelListView,
-    LabelEditView,
-    LabelStatisticsDownloadView,
-)
+from . import views
 
 urlpatterns = [
-    # url(r'^autocomplete/$', label_autocomplete, name='alibrary-label-autocomplete'),
-    url(r"^$", LabelListView.as_view(), name="alibrary-label-list"),
+    url(
+        r"^$",
+        views.LabelListView.as_view(),
+        name="alibrary-label-list",
+    ),
     url(
         r"^(?P<pk>\d+)-(?P<slug>[-\w]+)/$",
-        LabelDetailView.as_view(),
-        name="alibrary-label-detail",
+        views.LabelDetailViewLegacy.as_view(),
+        name="alibrary-label-detail-legacy",
     ),
-    url(r"^(?P<pk>\d+)/edit/$", LabelEditView.as_view(), name="alibrary-label-edit"),
+    url(
+        r"^(?P<pk>\d+)/edit/$",
+        views.LabelEditView.as_view(),
+        name="alibrary-label-edit",
+    ),
     url(
         r"^(?P<pk>\d+)/statistics-download/$",
-        LabelStatisticsDownloadView.as_view(),
+        views.LabelStatisticsDownloadView.as_view(),
         name="alibrary-label-statistics-download",
+    ),
+    url(
+        r"^(?P<uuid>[0-9a-f-]+)/(?:(?P<section>[-\w]+)/)?$",
+        views.LabelDetailView.as_view(),
+        name="alibrary-label-detail",
     ),
 ]

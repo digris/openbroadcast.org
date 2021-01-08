@@ -1,4 +1,4 @@
-{% load truncate_tags i18n thumbnail arating_tags spacify_tags gravatar object_action_tags %}
+{% load truncate_tags i18n thumbnail arating_tags spacify_tags gravatar object_action_tags tagging_extra_tags %}
 
 <div class="header__primary">
 
@@ -33,11 +33,11 @@
         <div>
           {% trans "Mentoring" %}:
         </div>
-        <div>
+        <expandable-list :limit="(3)">
           {% for profile in object.user.godchildren.all %}
-            <a href="{{ profile.user.get_absolute_url }}">{% firstof profile.user.get_full_name profile.user.username %}</a>{% if not forloop.last %}, {% endif %}
+            <a href="{{ profile.user.get_absolute_url }}">{% firstof profile.user.get_full_name profile.user.username %}</a >
           {% endfor %}
-        </div>
+        </expandable-list>
       </div>
     {% endif %}
 
@@ -66,30 +66,31 @@
         </div>
       </div>
     {% endif %}
+    </div>
     {% if object.user %}
+    <div class="meta">
       <div class="meta__item">
         <div>
-          {% trans "History" %}:
+          {% trans 'joined'|title %}:
         </div>
         <div class="meta__item__grid">
-          <div>
-            {% trans 'joined'|title %}:
-          </div>
-          <div>
+          <time>
             {{ object.user.date_joined|date:'SHORT_DATE_FORMAT' }}
-          </div>
-          <div>
-            {% trans 'last login'|title %}:
-          </div>
-          <div>
-            {{ object.user.last_login|date:'SHORT_DATE_FORMAT'|default:'-' }}
-          </div>
+          </time>
         </div>
       </div>
+      <div class="meta__item">
+        <div>
+          {% trans 'last login'|title %}:
+        </div>
+        <div class="meta__item__grid">
+          <time>
+            {{ object.user.last_login|date:'SHORT_DATE_FORMAT' }}
+          </time>
+        </div>
+      </div>
+    </div>
     {% endif %}
-  </div>
-
-
 </div>
 <div class="header__secondary">
   <div class="visual">
@@ -104,11 +105,7 @@
 </div>
 
 <div class="header__primary">
-  <div class="tags">
-    {% for tag in object.tags %}
-      <span class="tag tag--{{ tag.type }}" title="{{ tag.type }}">{{ tag.name|spacify }}</span>
-    {% endfor %}
-  </div>
+  <tag-list :tags="{{ object.tags|tags_as_json }}"></tag-list>
 </div>
 
 <div class="header__secondary">

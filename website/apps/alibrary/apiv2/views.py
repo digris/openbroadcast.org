@@ -274,3 +274,41 @@ class ObjectMergeView(APIView):
         master = merge(master, slaves)
 
         return Response()
+
+
+class ObjectReassignView(APIView):
+    permission_required = "alibrary.reassign_media"
+
+    def get(self, request, **kwargs):
+        return Response()
+
+    def post(self, request, **kwargs):
+
+        if not request.user.has_perm(self.permission_required):
+            raise PermissionDenied(
+                "missing permission: {} for user: {}".format(
+                    self.permission_required, request.user
+                )
+            )
+
+        from ..util.reassign import reassign_media
+
+        def get_obj_by_key(key):
+            ct, uuid = key.split(":")
+            model = apps.get_model(*ct.split("."))
+            obj = model.objects.get(uuid=uuid)
+            return obj
+
+        print(request.data)
+
+        target = request.data.get("target")
+        if not target.get("create"):
+            release = get_obj_by_key(target.get("key"))
+        else:
+            release = Release.objects.create(name=target.get("name"))
+
+        media_qs = [get_obj_by_key(k) for k in request.data.get("objects")]
+
+        obj = reassign_media(release, media_qs)
+
+        return Response({"location": obj.get_absolute_url()})

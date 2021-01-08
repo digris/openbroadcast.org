@@ -45,8 +45,6 @@ export default {
 </template>
 <style lang="scss" scoped>
   .preflight-status {
-    position: relative;
-
     display: inline-flex;
 
     color: #a5a5a5;
@@ -62,8 +60,6 @@ export default {
     }
 
     .label {
-      position: relative;
-
       text-transform: uppercase;
     }
 

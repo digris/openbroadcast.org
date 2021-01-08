@@ -30,7 +30,7 @@
             {{ object.release_country.iso2_code }}
           {% endif %}
           {% if object.releasedate %}
-            {{ object.releasedate|date:"Y/m/d" }}
+            {{ object.releasedate|date:"SHORT_DATE_FORMAT" }}
           {% endif %}
           </span>
       {% endif %}

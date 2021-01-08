@@ -1,0 +1,59 @@
+{% load i18n spurl %}
+<object-merge></object-merge>
+<media-reassign></media-reassign>
+
+{% if media_top.exists or media_flop.exists %}
+<div class="list-prefix">
+    <list-actions></list-actions>
+</div>
+{% endif %}
+
+{% if media_top.exists %}
+<div class="list-prefix">
+  <h3 class="title">{% trans 'Most loved tracks' %}</h3>
+</div>
+<div class="list list--table">
+  {% for object in media_top|slice:'0:3' %}
+  <div class="list-item">
+  {% include 'alibrary/media/_row.html' %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if media_flop.exists %}
+<div class="list-prefix">
+  <h3 class="title">{% trans 'Most disliked tracks' %}</h3>
+</div>
+<div class="list list--table">
+  {% for object in media_flop|slice:'0:3' %}
+  <div class="list-item">
+  {% include 'alibrary/media/_row.html' %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if releases.exists %}
+<div class="list-prefix">
+  <h3 class="title">{% trans 'Releases' %}</h3>
+</div>
+<div class="list list--grid">
+  {% for object in releases|slice:'0:8' %}
+  <div class="list-item">
+  {% include 'alibrary/release/_card.html' %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if releases.count > 8 %}
+<div class="list-appendix is-centered">
+  {% url "alibrary-release-list" as release_list_url %}
+  <a
+    class="button button--outlined action"
+    href="{% spurl path=release_list_url query="search_artist_ids={{ object.uuid }}" %}">
+    Show more
+  </a>
+</div>
+{% endif %}

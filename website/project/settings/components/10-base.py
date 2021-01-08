@@ -58,6 +58,10 @@ SECRET_KEY = "test_key"
 
 SITE_URL = "http://127.0.0.1:8080"
 
+USE_L10N = False
+DATETIME_FORMAT = "Y-m-d H:i"
+DATE_FORMAT = "Y-m-d"
+SHORT_DATE_FORMAT = "Y-m-d"
 
 ################################################################################
 # database (defaults only, used for tests)

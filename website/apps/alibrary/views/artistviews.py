@@ -6,14 +6,15 @@ import logging
 
 from django.views.generic import DetailView, UpdateView
 from django.http import HttpResponseRedirect
-from django.conf import settings
 from django.contrib import messages
+from django.shortcuts import redirect
 from django.utils.translation import ugettext as _
 from django.db.models import Q
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from elasticsearch_dsl import TermsFacet
 
 from base.utils.form_errors import merge_form_errors
+from base.views.detail import SectionDetailView
 from search.views import BaseFacetedSearch, BaseSearchListView
 from search.duplicate_detection import get_ids_for_possible_duplicates
 
@@ -43,7 +44,6 @@ class ArtistSearch(BaseFacetedSearch):
 
 class ArtistListView(BaseSearchListView):
     model = Artist
-    # template_name = "alibrary/artist_list.html"
     template_name = "alibrary/artist/list.html"
     search_class = ArtistSearch
     order_by = [
@@ -81,62 +81,92 @@ class ArtistListView(BaseSearchListView):
         return qs
 
 
-class ArtistDetailView(DetailView):
-    context_object_name = "artist"
+class ArtistDetailViewLegacy(DetailView):
     model = Artist
-    extra_context = {}
 
-    def render_to_response(self, context):
-        return super(ArtistDetailView, self).render_to_response(
-            context, content_type="text/html"
-        )
+    def get(self, request, *args, **kwargs):
+        obj = self.get_object()
+        return redirect(obj.get_absolute_url())
+
+
+class ArtistDetailView(SectionDetailView):
+    model = Artist
+    template_name = "alibrary/artist/detail.html"
+    section_template_pattern = "alibrary/artist/detail/_{key}.html"
+    context_object_name = "artist"
+    url_name = "alibrary-artist-detail"
+
+    sections = [
+        {
+            "key": "overview",
+            "url": None,
+            "title": _("Overview"),
+        },
+        {
+            "key": "contributions",
+            "url": "contributions",
+            "title": _("Credited"),
+        },
+        {
+            "key": "biography",
+            "url": "biography",
+            "title": _("Biography"),
+        },
+        {
+            "key": "statistics",
+            "url": "statistics",
+            "title": _("Statistics"),
+        },
+    ]
+
+    def get_sections(self, *args, **kwargs):
+        sections = self.sections
+        obj = self.get_object()
+        if not obj.description:
+            sections = [s for s in sections if not s["key"] == "description"]
+        if not Media.objects.filter(extra_artists=obj):
+            sections = [s for s in sections if not s["key"] == "contributions"]
+        if not obj.biography:
+            sections = [s for s in sections if not s["key"] == "biography"]
+        return sections
 
     def get_context_data(self, **kwargs):
         context = super(ArtistDetailView, self).get_context_data(**kwargs)
         obj = self.object
 
-        extra_context = {}
+        context.update(
+            {
+                "appearances": {
+                    "media": obj.get_media(),
+                    "releases": obj.get_releases(),
+                }
+            }
+        )
 
-        extra_context["releases"] = Release.objects.filter(
+        releases = Release.objects.filter(
             Q(media_release__artist=obj) | Q(album_artists=obj)
-        ).distinct()[0:8]
+        ).distinct()
 
-        """
-        top-flop
-        """
-        m_top = []
         media_top = (
             Media.objects.filter(artist=obj, votes__vote__gt=0)
             .order_by("-votes__vote")
             .distinct()
         )
-        if media_top.exists():
-            media_top = media_top[0:10]
-            for media in media_top:
-                m_top.append(media)
 
-        m_flop = []
         media_flop = (
             Media.objects.filter(artist=obj, votes__vote__lt=0)
             .order_by("votes__vote")
             .distinct()
         )
-        if media_flop.exists():
-            media_flop = media_flop[0:10]
-            for media in media_flop:
-                m_flop.append(media)
 
-        extra_context["m_top"] = m_top
-        extra_context["m_flop"] = m_flop
+        contributions = Media.objects.filter(extra_artists=obj)
 
-        extra_context["m_contrib"] = Media.objects.filter(extra_artists=obj)[0:48]
-        extra_context["history"] = []
-        extra_context["appearances"] = {
-            "media": obj.get_media(),
-            "releases": obj.get_releases(),
-        }
-
-        context.update(extra_context)
+        context.update({
+            'releases': releases,
+            'media_top': media_top,
+            'media_flop': media_flop,
+            'contributions': contributions,
+        })
 
         return context
 

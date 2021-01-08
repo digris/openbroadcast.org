@@ -1,11 +1,13 @@
 <script>
 import { EventBus } from '../../eventBus';
 import VisualWithActions from './VisualWithActions/VisualWithActions.vue';
+import ObjectRatingMini from '../ObjectRating/ObjectRatingMini.vue';
 
 export default {
   name: 'Card',
   components: {
     'visual-with-actions': VisualWithActions,
+    'object-rating-mini': ObjectRatingMini,
   },
   props: {
     ct: {
@@ -43,6 +45,7 @@ export default {
       return this.$store.getters['objectSelection/objectSelection'](this.ct, this.uuid);
     },
     objectActions() {
+      // TODO: this is redundant - see 'VisualWithActions'
       const objectActions = [];
       this.actions.forEach((originalAction) => {
         const action = { ...originalAction };
@@ -51,7 +54,6 @@ export default {
         action.url = action.url || this.url;
         objectActions.push(action);
       });
-
       return objectActions;
     },
   },
@@ -79,6 +81,11 @@ export default {
         :actions="objectActions"
       />
       <div class="card__visual__top">
+        <object-rating-mini
+          v-if="(ct && uuid)"
+          :obj-ct="ct"
+          :obj-uuid="uuid"
+        />
         <slot name="visual-top" />
       </div>
       <div

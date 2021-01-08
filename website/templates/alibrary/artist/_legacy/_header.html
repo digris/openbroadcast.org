@@ -1,0 +1,197 @@
+{% load truncate_tags i18n thumbnail arating_tags spurl spacify_tags %}
+<div class="span6 padded-h container_content">
+
+	<div class="page-header">
+		<h2>{{ object.name|truncate_chars_inner:40 }}
+        {% if object.country %}({{ object.country.iso2_code }}){% endif %}
+        {% if object.type %}
+        <small>{{ object.get_type_display }}</small>
+        {% endif %}
+        <small>
+            {% if object.date_start %}&nbsp;*{{ object.date_start.year }}{% endif %}
+            {% if object.date_end %}&nbsp;&#10013;{{ object.date_end.year }}{% endif %}
+        </small>
+
+        </h2>
+	</div>
+
+	<dl class="dl-horizontal main">
+
+        {% if appearances.releases.exists or appearances.media.exists %}
+		<dt>
+			{% trans "Appearance" %}:
+		</dt>
+		<dd>
+			<ul class="unstyled horizontal">
+				{% if appearances.releases.exists %}
+				<li>
+					{% url "alibrary-release-list" as release_list %}
+					<a href="{% spurl path=release_list query="search_artist_ids={{ object.uuid }}" %}" title="{% trans "Only show releases by" %} {{ object.name }}">
+					{{ appearances.releases.count }} {% trans 'Releases' %}
+					</a>
+				</li>
+				{% endif %}
+                {% if appearances.releases.exists and appearances.media.exists %}<li>&nbsp;|&nbsp;</li>{% endif %}
+				{% if appearances.media.exists %}
+				<li>
+					{% url "alibrary-media-list" as media_list %}
+					<a href="{% spurl path=media_list query="search_artist_ids={{ object.uuid }}" %}" title="{% trans "Only show tracks by" %} {{ object.name }}">
+					{{ appearances.media.count }} {% trans 'Tracks' %}
+					</a>
+				</li>
+				{% endif %}
+                <li>&nbsp;</li>
+
+			</ul>
+            <div class="clear"></div>
+		</dd>
+		{% endif %}
+
+
+		{% if object.real_name %}
+		<dt>
+			{% trans "Real name" %}:
+		</dt>
+		<dd>
+			{{ object.real_name }}
+		</dd>
+		{% endif %}
+
+
+		{% if object.namevariations.exists %}
+		<dt>
+			{% trans "Variations" %}:
+		</dt>
+		<dd class="limit" data-limit="5">
+			{% for name in object.namevariations.all %}
+            <span {% if forloop.counter0 > 5 %}style="display: none;" class="limited"{% endif %}>{{ name }}{% if not forloop.last %},{% endif %}</span>
+			{% endfor %}
+            {% if object.namevariations.count > 5%}
+                <a href="#" class="toggle">{% trans "Show more/less" %}<!--({{ object.namevariations.count }})--></a>
+            {% endif %}
+		</dd>
+		{% endif %}
+
+
+        {% if object.get_aliases.exists %}
+		<dt>
+			{% trans "Aliases" %}:
+		</dt>
+		<dd>
+			{% for artist in object.get_aliases %}
+			{% with item=artist %}
+			{% include "alibrary/element/_inline_link.html" %}
+			{% if not forloop.last %},{% endif %}
+			{% endwith %}
+			{% endfor %}
+		</dd>
+		{% endif %}
+
+
+		{% if object.members.exists %}
+		<dt>
+			{% trans "Members" %}:
+		</dt>
+		<dd>
+			{% for artist in object.members.all %}
+			{% with item=artist %}
+			{% include "alibrary/element/_inline_link.html" %}
+			{% if not forloop.last %},{% endif %}
+			{% endwith %}
+			{% endfor %}
+		</dd>
+		{% endif %}
+
+        {% if object.get_membership %}
+		<dt>
+			{% trans "Member of" %}:
+		</dt>
+		<dd>
+			{% for artist in object.get_membership %}
+			{% with item=artist %}
+			{% include "alibrary/element/_inline_link.html" %}
+			{% if not forloop.last %},{% endif %}
+			{% endwith %}
+			{% endfor %}
+		</dd>
+        {% endif %}
+
+
+
+
+
+    {% if object.founded_labels.exists %}
+    <dt>
+      {% trans "Founded labels" %}:
+    </dt>
+    <dd>
+      {% for label in object.founded_labels.all %}
+      {% with item=label %}
+      {% include "alibrary/element/_inline_link.html" %}
+      {% if not forloop.last %},{% endif %}
+      {% endwith %}
+      {% endfor %}
+    </dd>
+    {% endif %}
+
+        {% if object.ipi_code %}
+		<dt>
+			{% trans "IPI" %}:
+		</dt>
+		<dd>
+			{{ object.ipi_code}}
+		</dd>
+		{% endif %}
+
+
+        {% if object.isni_code %}
+		<dt>
+			{% trans "ISNI" %}:
+		</dt>
+		<dd>
+			{{ object.isni_code}}
+		</dd>
+		{% endif %}
+
+
+	</dl>
+
+
+
+
+
+
+	<dl class="dl-horizontal sub">
+
+        {% include 'alibrary/element/_edit_timestamps.html' %}
+
+        {% if object.tags %}
+            <dt>
+                {% trans "Tags" %}:
+            </dt>
+            <dd>
+                {% for tag in object.tags %}
+                    <span class="tag">{{ tag.name|spacify }}</span>
+                {% endfor %}
+            </dd>
+        {% endif %}
+
+	</dl>
+
+</div>
+
+<div class="span3 padded-h padded-v">
+
+	<div class="image">
+		{% if object.main_image %}
+		<a href="{% thumbnail object.main_image 1200x1200 upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.main_image 170x170 crop=",0" %}" alt="Cover" /> </a>
+		{% else %}
+		<img src="/static/img/base/defaults/listview.artist.xl.png" alt="{% trans "No cover available" %}" />
+		{% endif %}
+	</div>
+
+	<div class="rating">
+		{% rating_for_object object %}
+	</div>
+
+</div>

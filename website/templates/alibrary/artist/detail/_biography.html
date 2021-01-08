@@ -1,0 +1,9 @@
+{% load wiki_tags %}
+
+<div>
+    {% if object.biography %}
+        <div class="markdown markdown--inline">
+            {% wikify object.biography %}
+        </div>
+    {% endif %}
+</div>
