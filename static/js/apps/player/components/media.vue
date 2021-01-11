@@ -66,9 +66,7 @@ export default {
 
     .item {
       position: relative;
-
       color: #5a5a5a;
-
       background: #fafafa;
       border-bottom: 1px solid #eaeaea;
 
@@ -100,9 +98,7 @@ export default {
             width: 20px;
             height: 20px;
             padding-top: 2px;
-
             text-align: center;
-
             cursor: pointer;
             opacity: 0.75;
           }
@@ -116,7 +112,6 @@ export default {
         .time {
           padding-top: 8px;
           padding-right: 10px;
-
           font-size: 90%;
 
           small {
@@ -134,9 +129,7 @@ export default {
             width: 20px;
             height: 20px;
             padding-top: 2px;
-
             text-align: center;
-
             cursor: pointer;
             opacity: 0.75;
           }
@@ -147,46 +140,37 @@ export default {
           top: 0;
           right: 0;
           z-index: 20;
-
           width: 20px;
           height: 100%;
-
           background: red;
         }
       }
 
       .errors {
         padding: 0 0 2px 34px;
-
         color: #d47327;
         font-size: 90%;
       }
 
       .playhead {
         position: relative;
-
         height: 10px;
-
         cursor: crosshair;
 
         .progress-container {
           position: absolute;
           top: 5px;
           z-index: 9;
-
           width: 100%;
           height: 2px;
-
           background: white;
 
           .progress-indicator {
             position: absolute;
             top: 0;
             left: 0;
-
             width: 25%;
             height: 2px;
-
             background: $primary-color-a;
           }
         }
@@ -195,11 +179,9 @@ export default {
           position: absolute;
           top: 0;
           z-index: 10;
-
           display: none;
           width: 50%;
           height: 12px;
-
           background: rgba(255, 165, 0, 0.05);
           border-right: 1px solid $primary-color-b;
         }

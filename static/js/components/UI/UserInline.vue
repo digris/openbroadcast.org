@@ -31,7 +31,6 @@ export default {
 <style lang="scss" scoped>
     .user-inline {
       position: relative;
-
       display: inline-block;
 
       a {
@@ -41,12 +40,9 @@ export default {
 
     .user-info {
       position: absolute;
-
       display: flex;
       width: 200px;
-
       color: #222;
-
       background: #fff;
       box-shadow: 2px 2px 2px 2px rgba(#000, 0.1);
 
@@ -60,7 +56,6 @@ export default {
 
       &__details {
         padding: 4px 6px;
-
         white-space: nowrap;
       }
     }

@@ -132,7 +132,6 @@ export default {
         color: inherit;
         font-size: inherit;
         line-height: inherit;
-
         transition: transform 200ms;
       }
 
@@ -148,11 +147,9 @@ export default {
 
       position: absolute;
       z-index: 999;
-
       display: flex;
       flex-direction: column;
       min-width: 150px;
-
       background: white;
 
       filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.1));
@@ -162,25 +159,21 @@ export default {
         display: flex;
         width: 100%;
         padding: 10px 14px;
-
         color: #333333;
 
         white-space: nowrap;
 
         text-decoration: none;
-
         cursor: pointer;
 
         &:hover {
           color: #fff;
-
           background: #00bb73;
         }
       }
 
       .object-rating {
         padding: 14px 0;
-
         background: #fafafa;
         border-top: 1px solid #efefef;
       }

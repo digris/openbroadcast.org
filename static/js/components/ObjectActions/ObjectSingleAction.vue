@@ -45,9 +45,7 @@ export default {
   display: flex;
 
   padding: 3px 0.5rem 3px 0.5rem;
-
   color: var(--primary-color);
-
   cursor: pointer;
 
   &:hover {

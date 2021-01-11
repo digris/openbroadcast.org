@@ -114,7 +114,6 @@ export default {
 <style lang="scss" scoped>
   .play-button {
     position: relative;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -124,12 +123,10 @@ export default {
     .icon {
       &--stopped {
         position: relative;
-
         width: inherit;
         height: inherit;
         svg {
           position: absolute;
-
           width: inherit;
           height: inherit;
         }
@@ -138,10 +135,8 @@ export default {
 
     .touch-area {
       position: absolute;
-
       width: 50px;
       height: 50px;
-
       background: rgba(0, 0, 0, 0);
       border-radius: 50%;
     }

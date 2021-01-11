@@ -61,9 +61,7 @@ export default {
 
       &__dropzone {
         height: 40px;
-
         background: white;
-
         pointer-events: none;
 
         &--is-active {
@@ -81,14 +79,12 @@ export default {
           flex-grow: 1;
           justify-content: center;
           padding: 1px 8px;
-
           background: white;
           border: 1px solid #dadada;
           cursor: pointer;
 
           &:hover {
             color: white;
-
             background: #63c;
             border-color: #63c;
             border-radius: 2px;

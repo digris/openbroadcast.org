@@ -184,7 +184,6 @@ export default {
 <style lang="scss" scoped>
   .visual-with-actions {
     position: relative;
-
     height: 100%;
     margin: 0;
 
@@ -192,13 +191,10 @@ export default {
       position: absolute;
       top: 0;
       left: 0;
-
       width: 100%;
       height: 100%;
-
       background: #000;
       opacity: 0;
-
       transition: opacity 200ms;
 
       &--visible {
@@ -210,7 +206,6 @@ export default {
       position: absolute;
       top: 0;
       left: 0;
-
       display: grid;
       grid-template-rows: 30% auto 30%;
       width: 100%;

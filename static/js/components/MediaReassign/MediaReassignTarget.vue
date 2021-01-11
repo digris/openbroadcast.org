@@ -87,7 +87,6 @@ export default {
     grid-template-columns: 64px auto 160px;
 
     margin-bottom: .5rem;
-
     border-left: 4px solid transparent;
 
     cursor: pointer;

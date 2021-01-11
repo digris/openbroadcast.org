@@ -162,13 +162,11 @@ export default {
 <style lang="scss" scoped>
     .object-actions {
       position: relative;
-
       display: flex;
       flex-direction: column;
       justify-content: center;
       width: 100%;
       height: 100%;
-
       opacity: 0;
 
       &:hover {
@@ -183,10 +181,8 @@ export default {
 
         .action {
           margin: 0 8px;
-
           color: #fff;
           font-size: 32px;
-
           cursor: pointer;
 
           &--primary {
@@ -196,7 +192,6 @@ export default {
               display: block;
               width: 60px;
               height: 60px;
-
               background: black;
               border-radius: 30px;
             }
@@ -213,20 +208,16 @@ export default {
         top: 55%;
         right: 4px;
         z-index: 999;
-
         display: flex;
         flex-direction: column;
-
         filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.1));
 
         &__triangle {
           width: 20px;
           height: 10px;
           margin: 0 auto;
-
           background: white;
           opacity: 0;
-
           clip-path: polygon(50% 0%, 100% 100%, 0 100%);
         }
 

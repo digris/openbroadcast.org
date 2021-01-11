@@ -11,7 +11,6 @@ body.app--account {
         width: 100%;
         max-width: 600px;
         padding: 12px;
-
         background: #fff;
       }
     }
@@ -23,7 +22,6 @@ body.app--account {
 
   .form-appendix {
     padding: 16px 0;
-
     background: #fff;
 
     .alt {
@@ -35,7 +33,6 @@ body.app--account {
   .form-separator {
     margin: 16px 0;
     padding: 4px 0;
-
     border-top: 1px solid #eee;
   }
 
@@ -96,13 +93,10 @@ body.app--account {
         box-sizing: content-box;
         width: 16px;
         height: 16px;
-
         color: transparent;
-
         border: 1px solid #333;
         border-color: $light-grey;
         cursor: pointer;
-
         -webkit-appearance: none;
         -moz-appearance: none;
 
@@ -115,7 +109,6 @@ body.app--account {
 
         &:hover {
           color: $light-grey;
-
           border-color: $mid-grey;
           outline: 0 none;
           box-shadow: none;
@@ -123,7 +116,6 @@ body.app--account {
 
         &:checked {
           color: #000;
-
           border-color: $mid-grey;
         }
 
@@ -133,11 +125,9 @@ body.app--account {
           right: 0;
           bottom: 0;
           left: 0;
-
           font-size: 22px;
           line-height: 24px;
           text-align: center;
-
           content: "╳";
         }
       }
@@ -150,7 +140,6 @@ body.app--account {
 
     .input-container__field-errors {
       padding-left: 36px;
-
       text-align: left;
     }
   }
@@ -166,14 +155,11 @@ body.app--account {
       align-items: center;
       justify-content: center;
       padding: 8px 10px;
-
       color: #222;
       font-size: 14px;
       text-decoration: none;
-
       background: #e5e5e5;
       border: 1px solid transparent;
-
       transition: background 200ms, border-radius 100ms;
 
       &:hover {
@@ -199,7 +185,6 @@ body.app--account {
 
     .auth-social-facebook {
       color: #fff;
-
       background: #1877f2;
 
       .icon-container {
@@ -215,28 +200,23 @@ body.app--account {
 
     .auth-social-google-oauth2 {
       color: #5a5a5a;
-
       background: white;
       border-color: #5a5a5a;
 
       &:hover {
         color: #5a5a5a;
-
         background: white;
       }
     }
 
     .auth-social-deezer {
       display: none;
-
       color: #5a5a5a;
-
       background: white;
       border-color: #5a5a5a;
 
       &:hover {
         color: #5a5a5a;
-
         background: white;
       }
     }

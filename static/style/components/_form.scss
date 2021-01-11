@@ -14,13 +14,11 @@
 
     label {
       margin-right: 12px;
-
       font-weight: 300;
     }
 
     input {
       padding: 4px;
-
       transition-property: none;
     }
 
@@ -32,16 +30,13 @@
   &__field-help {
     display: none;
     width: 100%;
-
     font-size: 80%;
-
     opacity: 0.8;
   }
 
   &__field-errors {
     width: 100%;
     padding-top: 4px;
-
     color: $error-color;
   }
 
@@ -80,13 +75,11 @@
     grid-area: label;
     align-items: flex-start;
     min-height: 2rem;
-
     line-height: 2rem;
 
     &__required {
       display: inline-block;
       padding-left: 0.25rem;
-
       color: red;
     }
   }
@@ -101,10 +94,8 @@
       width: 100%;
       margin: 0;
       padding: 0;
-
       column-count: 4;
       column-gap: 2rem;
-
       list-style: none;
 
       li {
@@ -164,7 +155,6 @@
     height: 28px;
     margin: 0 0 0 1rem;
     padding: 0 20px;
-
     line-height: 28px;
 
     &:hover {
@@ -178,7 +168,6 @@
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-
     column-gap: 2rem;
   }
 
@@ -197,7 +186,6 @@
     width: 100%;
     margin: 0;
     padding: 0;
-
     list-style: none;
 
     li:nth-child(2) {
@@ -258,11 +246,9 @@
       legend {
         width: 100%;
         margin-bottom: 0;
-
         color: inherit;
         font-size: 1.4rem;
         line-height: 2rem;
-
         border-bottom: 1px solid #e5e5e5;
         opacity: 0.75;
       }
@@ -275,7 +261,6 @@
     .fieldset-hint {
       margin: 1rem 0;
       padding: 1rem;
-
       background: #e2d7f9;
     }
 

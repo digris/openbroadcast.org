@@ -76,9 +76,7 @@ export default {
 
     .waveform {
       position: relative;
-
       height: 30px;
-
       cursor: crosshair;
       //background: black;
       .waveform-rubberband {
@@ -86,7 +84,6 @@ export default {
         top: 0;
         left: 0;
         z-index: 3;
-
         width: 100%;
         height: 30px;
       }
@@ -96,7 +93,6 @@ export default {
         top: 0;
         left: 0;
         z-index: 2;
-
         width: 100%;
         height: 30px;
 
@@ -110,7 +106,6 @@ export default {
         position: absolute;
         top: 0;
         z-index: 99;
-
         width: 100%;
         height: 100%;
 
@@ -118,10 +113,8 @@ export default {
           position: absolute;
           top: 0;
           left: 0;
-
           width: 0;
           height: 100%;
-
           border-right: 1px solid $primary-color-a;
         }
       }

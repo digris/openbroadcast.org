@@ -44,7 +44,6 @@ export default {
     justify-content: space-between;
     width: 14px;
     height: 14px;
-
     font-size: 0;
     text-align: center;
   }
@@ -53,9 +52,7 @@ export default {
     display: inline-block;
     width: 2px;
     height: 100%;
-
     background-color: #f0f;
-
     -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
     animation: sk-stretchdelay 1.2s infinite ease-in-out;
   }

@@ -138,7 +138,6 @@ export default {
 <style lang="scss" scoped>
     .autocomplete {
       position: relative;
-
       display: inline-block;
       width: 100%;
 
@@ -146,21 +145,18 @@ export default {
         width: 100%;
         height: 22px;
         padding: 0 0.5rem;
-
         line-height: 22px;
       }
 
       &__results {
         position: absolute;
         z-index: 10;
-
         min-width: 100%;
         min-height: 40px;
         margin: 0;
         padding: 0;
         // border: 1px solid #eeeeee;
         overflow: auto;
-
         background: white;
         border: 1px solid #ededed;
         // border-top: 0;
@@ -169,9 +165,7 @@ export default {
 
       &__result {
         padding: 0.5rem;
-
         text-align: left;
-
         list-style: none;
         cursor: pointer;
 

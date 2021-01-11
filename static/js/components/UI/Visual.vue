@@ -43,7 +43,6 @@ export default {
 
         &.placeholder {
           image-rendering: pixelated;
-
           opacity: 0.5;
         }
       }

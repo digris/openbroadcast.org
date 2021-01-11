@@ -75,9 +75,7 @@ export default {
 <style lang="scss" scoped>
     .color-chooser {
       position: relative;
-
       display: inline-block;
-
       cursor: pointer;
 
       &__options {
@@ -86,7 +84,6 @@ export default {
 
         &__option {
           margin: 4px 0 0 0;
-
           cursor: pointer;
 
           &:hover {

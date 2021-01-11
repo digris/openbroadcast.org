@@ -164,17 +164,13 @@ export default {
 
   .scheduler-grid {
     position: relative;
-
     height: 100%;
-
     background: $background-color;
 
     &__row {
       position: absolute;
-
       width: calc(100% - 61px);
       margin-left: 61px;
-
       border-bottom: 1px solid $border-color;
 
       &:nth-child(even) {
@@ -185,20 +181,16 @@ export default {
 
     &__dayparts {
       position: absolute;
-
       display: flex;
       flex-direction: column;
       width: 100%;
       height: calc(100% - 50px);
       margin-top: 50px;
-
       border: 1px solid $border-color;
 
       &__daypart {
         position: absolute;
-
         width: 100%;
-
         border-bottom: 1px solid $border-dark-color;
 
         &:last-child {
@@ -209,7 +201,6 @@ export default {
           display: inline-block;
           width: 61px;
           padding: 4px 4px 0 0;
-
           color: #333;
           text-align: right;
         }
@@ -225,7 +216,6 @@ export default {
       &__placeholder_hack {
         width: 61px;
         height: 50px;
-
         background: #f5f5f5;
       }
 
@@ -240,13 +230,11 @@ export default {
           justify-content: center;
           height: 50px;
           padding: 6px 0 0 0;
-
           background: #f5f5f5;
 
           .day-label {
             display: inline-block;
             width: 30px;
-
             text-align: center;
           }
 
@@ -254,7 +242,6 @@ export default {
             display: inline-block;
             width: 28px;
             margin-left: 2px;
-
             text-align: center;
           }
 
@@ -270,7 +257,6 @@ export default {
 
         .day-column {
           height: calc(100% - 50px);
-
           background: $background-color;
           border-left: 1px solid $border-color;
         }

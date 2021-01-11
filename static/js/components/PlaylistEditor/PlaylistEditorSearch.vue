@@ -107,7 +107,6 @@ export default {
 <style lang="scss" scoped>
   .playlist-editor-search {
     position: relative;
-
     background: white;
 
     .search-input-container {

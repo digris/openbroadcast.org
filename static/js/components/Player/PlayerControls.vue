@@ -74,7 +74,6 @@ export default {
   }
   .action {
     margin: 0 .25rem;
-
     color: $dark-grey;
     font-size: 36px;
 
@@ -82,7 +81,6 @@ export default {
     border-radius: 50%;
 
     cursor: pointer;
-
     transition: color 120ms, background 60ms, transform 60ms;
     &--disabled {
       cursor: not-allowed;
@@ -91,7 +89,6 @@ export default {
 
     &:hover:not(&--disabled) {
       color: $white;
-
       background: $secondary-color;
       transform: scale(1.1);
     }

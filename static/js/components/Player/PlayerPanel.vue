@@ -21,7 +21,6 @@ export default {
 
     &__visual {
       height: 100px;
-
       background: $white;
       img {
         border: 2px solid red;

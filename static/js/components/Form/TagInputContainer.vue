@@ -217,18 +217,14 @@ export default {
       height: 22px;
       margin: 0 4px 4px 0;
       padding: 0 10px;
-
       color: white;
       line-height: 22px;
       text-transform: uppercase;
-
       background: black;
 
       &__remove {
         padding: 0 0 0 0.5rem;
-
         color: white;
-
         cursor: pointer;
         opacity: 0.5;
 

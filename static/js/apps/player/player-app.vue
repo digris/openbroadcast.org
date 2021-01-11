@@ -61,11 +61,9 @@
     align-items: center;
     justify-content: center;
     min-height: 112px;
-
     color: white;
     font-weight: 300;
     font-size: 150%;
-
     background: $primary-color-b;
   }
 
@@ -78,7 +76,6 @@
 
     .button-panel .fa {
       margin: 0 4px;
-
       color: #a5a5a5;
       font-size: 20px;
     }
@@ -93,12 +90,10 @@
 
     .item-to-play {
       margin: 0 0 10px;
-
       background: #fff;
 
       .header {
         padding: 2px 2px 2px 5px;
-
         background: #fff;
         border-top: 1px solid #eaeaea;
         border-bottom: 1px solid #eaeaea;
@@ -110,14 +105,12 @@
     position: fixed;
     top: 0;
     z-index: 99;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
-
     background: $primary-color-b;
 
     .autoplay-panel {
@@ -132,10 +125,8 @@
       justify-content: center;
       width: 240px;
       height: 240px;
-
       color: $primary-color-b;
       text-align: center;
-
       background: white;
       border-radius: 120px;
       cursor: pointer;
@@ -148,7 +139,6 @@
         max-width: 320px;
         margin-top: 20px;
         padding: 0;
-
         color: white;
         text-align: center;
       }
@@ -159,14 +149,12 @@
     position: absolute;
     top: 0;
     z-index: 99;
-
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
-
     background: rgba(255, 255, 255, 0.9);
   }
 

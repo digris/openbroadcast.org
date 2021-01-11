@@ -33,19 +33,16 @@ export default {
 
       &__visual {
         position: relative;
-
         flex: 0 0 140px;
 
         figure {
           height: 140px;
-
           background: rgba(255, 255, 255, 0.1);
         }
 
         .object-actions {
           position: absolute;
           top: 0;
-
           color: #000;
         }
       }
@@ -58,7 +55,6 @@ export default {
 
         &__title {
           margin-bottom: 4px;
-
           color: inherit;
           font-size: 120%;
         }

@@ -157,7 +157,6 @@ export default {
   align-self: center;
 
   margin: 0 1rem;
-
   cursor: pointer;
 
   svg {
@@ -183,7 +182,6 @@ export default {
       circle,
       path {
         transition: fill-opacity 0ms;
-
         fill: var(--primary-color);
         fill-opacity: 0.6;
       }

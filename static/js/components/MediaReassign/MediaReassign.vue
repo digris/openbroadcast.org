@@ -184,7 +184,6 @@ export default {
         margin-left: 1rem;
         label {
           margin: 0 0 0 0.5rem;
-
           color: white;
         }
       }

@@ -28,7 +28,6 @@ export default {
 
     &__panel {
       padding: 0.5rem;
-
       border-bottom: 1px solid $light-grey;
     }
     &__media {

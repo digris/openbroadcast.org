@@ -38,26 +38,22 @@ export default {
     top: 0;
     left: 0;
     z-index: 99;
-
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100vw;
     height: 100vh;
-
     background: rgba(#222, 0.2);
 
     .modal-container {
       position: fixed;
       z-index: 99;
-
       display: flex;
       flex-direction: column;
       width: 40vw;
       min-width: 800px;
       max-width: 800px;
       min-height: 150px;
-
       background: #222;
       border: 10px solid #222;
       border-top: none;
@@ -76,7 +72,6 @@ export default {
         .content-slot {
           opacity: .5;
           filter: grayscale(100%);
-
           pointer-events: none;
         }
 
@@ -85,7 +80,6 @@ export default {
       .content-slot {
         flex: 1;
         overflow: auto;
-
         transition: opacity 250ms;
 
       }
@@ -93,13 +87,11 @@ export default {
       .modal-topbar {
         display: flex;
         height: 28px;
-
         background: #222;
 
         .modal-topbar-title {
           flex-grow: 1;
           padding: 6px 0 0 0;
-
           color: #fff;
         }
 
@@ -110,10 +102,8 @@ export default {
             //line-height: 28px;
             display: block;
             padding: 6px 10px 0 10px;
-
             color: #fff;
             text-transform: uppercase;
-
             background: $primary-color-b;
             cursor: pointer;
           }

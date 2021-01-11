@@ -51,18 +51,15 @@ export default {
         // background: red;
         .emission {
           position: relative;
-
           display: flex;
           flex-direction: column;
           height: calc(100% - 1px);
           // border: 1px solid rgba(0, 0, 0, 0.25);
           margin: 1px 0 1px 1px;
-
           background: rgba(255, 255, 255, 0.8);
           border-top: 2px solid #fff;
           border-bottom: 2px solid #fff;
           cursor: pointer;
-
           transition: background 100ms;
 
           &:hover {
@@ -75,7 +72,6 @@ export default {
             // background: rgba(0, 0, 0, .025);
             padding: 0 4px;
             overflow: hidden;
-
             white-space: nowrap;
             text-overflow: ellipsis;
           }
@@ -83,9 +79,7 @@ export default {
           &:hover & {
             &__title {
               z-index: 91;
-
               overflow: visible;
-
               white-space: normal;
             }
           }
@@ -105,13 +99,10 @@ export default {
             top: -2px;
             left: calc(100% + 4px);
             z-index: 999;
-
             min-width: 140px;
             padding: 2px 4px 2px;
-
             color: white;
             text-align: center;
-
             background: #000;
 
             &__title {
@@ -121,7 +112,6 @@ export default {
             &__visual {
               max-width: 130px;
               margin-top: 8px;
-
               text-align: center;
 
               img {

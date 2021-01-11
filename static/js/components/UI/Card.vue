@@ -118,7 +118,6 @@ export default {
 
     &__visual {
       position: relative;
-
       display: inline-grid;
       width: 100%;
       height: 0;
@@ -126,7 +125,6 @@ export default {
 
       .visual-with-actions {
         position: absolute;
-
         width: 100%;
 
         img {
@@ -139,7 +137,6 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
-
         display: flex;
         width: 100%;
 
@@ -151,9 +148,7 @@ export default {
 
           .flag {
             padding: 2px 4px;
-
             text-transform: capitalize;
-
             background: white;
           }
 
@@ -165,7 +160,6 @@ export default {
         position: absolute;
         right: 0;
         bottom: 0;
-
         display: flex;
         width: 100%;
 
@@ -187,14 +181,12 @@ export default {
 
             margin: 0 2px 2px 0;
             padding: 0 4px;
-
             color: white;
 
             font-size: 11px;
             line-height: 11px;
 
             text-transform: uppercase;
-
             background: #5a5a5a;
 
           }
@@ -207,7 +199,6 @@ export default {
 
     &__body {
       padding: 4px 4px 0 4px;
-
       cursor: pointer;
 
       &__primary {

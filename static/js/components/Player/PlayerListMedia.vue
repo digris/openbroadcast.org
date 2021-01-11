@@ -111,14 +111,11 @@ export default {
     justify-content: center;
     width: $size;
     height: $size;
-
     font-size: $size;
-
     border-radius: 50%;
     cursor: pointer;
     &:hover {
       color: $white;
-
       background: $hover-bg-color;
       transform: scale(1.1);
 
@@ -137,14 +134,11 @@ export default {
     justify-content: center;
     width: $size;
     height: $size;
-
     font-size: $size;
-
     cursor: pointer;
 
     &:hover {
       color: $hover-color;
-
       transform: scale(1.1);
     }
   }
@@ -154,7 +148,6 @@ export default {
     grid-template-areas: "controls info time secondary-controls" "progress progress progress progress";
     grid-template-rows: 48px 2px;
     grid-template-columns: 60px auto 100px 120px;
-
     transition: background 200ms;
 
     &--is-current {

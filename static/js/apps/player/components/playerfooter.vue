@@ -81,9 +81,7 @@ export default {
     .player-footer {
       display: flex;
       padding: 5px 6px 1px 6px;
-
       color: #fff;
-
       border-top: 1px solid #eaeaea;
 
       .information {
@@ -93,18 +91,14 @@ export default {
       .actions {
         .button {
           padding: 0 12px;
-
           color: $primary-color-b;
           text-transform: uppercase;
-
           border: 1px solid $primary-color-b;
-
           transition: border-radius 0.2s;
 
           &:hover {
             color: #fff;
             text-decoration: none;
-
             background: $primary-color-b;
             border-color: $primary-color-b;
             border-radius: 3px;

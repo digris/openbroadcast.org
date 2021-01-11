@@ -75,7 +75,6 @@ export default {
     grid-template-columns: 64px auto;
 
     padding: 4px;
-
     cursor: pointer;
 
     &:hover,
@@ -104,7 +103,6 @@ export default {
         display: flex;
         .label {
           flex-grow: 1;
-
           opacity: .7;
         }
       }

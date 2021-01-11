@@ -15,12 +15,10 @@ export default {
       display: flex;
       min-width: 120px;
       padding: 8px 12px;
-
       cursor: pointer;
 
       &:hover {
         color: #fff;
-
         background: #00bb73;
       }
 
@@ -30,7 +28,6 @@ export default {
 
       &__name {
         flex-grow: 1;
-
         white-space: nowrap;
       }
     }

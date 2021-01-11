@@ -24,11 +24,9 @@ export default {
         display: inline-flex;
         margin: 0 2px 2px 0;
         padding: 2px 4px;
-
         color: #fff;
         white-space: nowrap;
         text-transform: uppercase;
-
         background: #333;
       }
     }

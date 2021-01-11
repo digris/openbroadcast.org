@@ -17,7 +17,6 @@
 
     > li {
       display: inline-block;
-
       color: #666;
       text-transform: uppercase;
       text-decoration: none;
@@ -25,11 +24,9 @@
       > a {
         display: inline-block;
         padding: 0 7px;
-
         color: inherit;
         letter-spacing: 1px;
         text-decoration: inherit;
-
         border-right: 1px solid #999;
       }
 

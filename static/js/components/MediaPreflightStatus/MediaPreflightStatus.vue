@@ -46,7 +46,6 @@ export default {
 <style lang="scss" scoped>
   .preflight-status {
     display: inline-flex;
-
     color: #a5a5a5;
 
     &.check-failed {
@@ -55,7 +54,6 @@ export default {
 
     &.has-errors {
       color: orangered;
-
       cursor: pointer;
     }
 

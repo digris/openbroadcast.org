@@ -6,7 +6,6 @@ export default {
 <style lang="scss" scoped>
     .play-icon-container {
       cursor: pointer;
-
       transition: transform 100ms;
 
       &:hover {

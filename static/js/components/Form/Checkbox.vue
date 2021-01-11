@@ -169,37 +169,28 @@ export default {
 <style lang="scss">
   .m-chckbox--container {
     position: relative;
-
     display: inline-flex;
     align-items: center;
-
     line-height: 20px;
-
     cursor: pointer;
   }
 
   .m-chckbox--label {
     position: relative;
-
     padding-left: 0.5em;
-
     cursor: pointer;
   }
   .m-chckbox--group {
     position: relative;
-
     box-sizing: border-box;
     width: 20px;
     height: 20px;
-
     border: 2px solid rgba(0,0,0,0.54);
     border-radius: 2px;
-
     transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     input[type=checkbox] {
       position: absolute;
       left: -999rem;
-
       -webkit-appearance: none;
       appearance: none;
     }

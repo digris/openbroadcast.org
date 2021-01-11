@@ -48,7 +48,6 @@ $h2-font-weight: 600;
 
     .background {
       height: 400px;
-
       background: url(/static/img/asset/home.teaser.bg.jpg) no-repeat;
       background-size: 100% 400px;
     }
@@ -56,10 +55,8 @@ $h2-font-weight: 600;
     .text {
       position: absolute;
       top: 0;
-
       width: 100%;
       padding: 68px 0 0 0;
-
       text-align: center;
 
       @extend %typography-teaser;
@@ -82,7 +79,6 @@ $h2-font-weight: 600;
     //background: red
     justify-content: center;
     margin-top: 20px;
-
     text-align: left;
 
     .search-app {
@@ -117,7 +113,6 @@ $h2-font-weight: 600;
     .panel {
       @extend %typography-base;
       padding: 48px 0 40px;
-
       border-bottom: 2px solid #000;
 
       .panel-body {
@@ -161,7 +156,6 @@ $h2-font-weight: 600;
 
         p {
           padding: 0 8px;
-
           font-size: 14px;
           line-height: 20px;
         }
@@ -179,12 +173,10 @@ $h2-font-weight: 600;
           height: 30px;
           margin: 0 auto 20px;
           padding: 1px 0 0 0;
-
           color: #fff;
           font-size: 14px;
           line-height: 30px;
           text-align: center;
-
           background: #000;
           border-radius: 15px;
         }
@@ -195,17 +187,14 @@ $h2-font-weight: 600;
       ul {
         width: 660px;
         margin: 40px auto 20px;
-
         list-style-position: outside;
         list-style-type: none;
 
         li.__variation {
           padding: 20px 10px 40px;
-
           font-size: 18px;
           line-height: 20px;
           text-align: center;
-
           background: url(/static/img/asset/home.bullet-star.png);
           background-repeat: no-repeat;
           background-position: center bottom;
@@ -213,10 +202,8 @@ $h2-font-weight: 600;
 
         li {
           padding: 10px 10px 10px 50px;
-
           font-size: 18px;
           line-height: 20px;
-
           background: url(/static/img/asset/home.bullet-star.png);
           background-repeat: no-repeat;
           background-position: left center;
@@ -227,7 +214,6 @@ $h2-font-weight: 600;
       p {
         width: 660px;
         margin: 0 auto;
-
         font-size: 14px;
         line-height: 20px;
         text-align: center;

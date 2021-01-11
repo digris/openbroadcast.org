@@ -219,7 +219,6 @@ export default {
     &__panel {
       min-height: 100px;
       padding: 10px;
-
       background: $page-bg-color;
     }
 
@@ -232,7 +231,6 @@ export default {
     &__list {
       flex-grow: 1;
       overflow-y: scroll;
-
       background: white;
     }
 

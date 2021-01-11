@@ -186,9 +186,7 @@ export default {
         grid-template-areas: "dayparts header" "dayparts matrix";
         grid-template-rows: 20px auto;
         grid-template-columns: 30px auto;
-
         font-size: 90%;
-
         cursor: pointer;
 
         &__dayparts {
@@ -244,7 +242,6 @@ export default {
           grid-area: matrix;
           grid-template-columns: repeat(28, 1fr);
           width: 100%;
-
           cursor: crosshair;
 
           &__day {
@@ -265,7 +262,6 @@ export default {
 
           &__slot {
             height: var(--slot-height);
-
             border-bottom: 1px solid var(--border-color-light);
 
             &:first-child {
@@ -288,7 +284,6 @@ export default {
             &__emission {
               width: 100%;
               height: 100%;
-
               background: var(--slot-with-emission-color);
             }
           }

@@ -55,22 +55,17 @@ export default {
     .emission-placeholder {
       position: absolute;
       z-index: 999;
-
       height: calc(100% - 1px);
       margin: 1px 0 1px 1px;
-
       background: rgba(#63c, 0.85);
       // font-size: 80%;
       transition: none;
-
       pointer-events: none;
 
       &__title {
         margin-top: 4px;
         padding: 0 4px;
-
         color: #fff;
-
         background: rgba(0, 0, 0, 0.025);
       }
     }

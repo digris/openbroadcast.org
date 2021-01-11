@@ -134,7 +134,6 @@ export default {
       display: flex;
       flex-direction: column;
       height: 100%;
-
       color: white;
 
       .content-object {
@@ -160,7 +159,6 @@ export default {
           .color {
             flex-grow: 1;
             padding: 0;
-
             cursor: pointer;
           }
         }
@@ -170,18 +168,15 @@ export default {
 
           &__confirm {
             padding: 6px;
-
             color: #63c;
             font-size: 120%;
             text-align: center;
-
             background: #fff;
             border: 2px solid #63c;
             cursor: pointer;
 
             &:hover {
               color: #fff;
-
               background: #63c;
               border-radius: 4px;
             }

@@ -28,7 +28,6 @@
     ul {
       margin: 0 0 12px 0;
       padding: 0;
-
       border-top: 1px solid $separator-line-color;
 
       .action {
@@ -55,13 +54,11 @@
 
           &:hover {
             text-decoration: none;
-
             background: $primary-color-light;
           }
 
           &.disabled {
             color: #bbb;
-
             cursor: wait;
 
             &:hover {

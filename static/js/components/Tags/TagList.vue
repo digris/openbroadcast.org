@@ -54,11 +54,9 @@ $c-descriptive: #008cd7;
     display: inline-flex;
     margin: 0 3px 3px 0;
     padding: 2px 6px 1px;
-
     color: #555;
     font-size: 90%;
     text-transform: uppercase;
-
     background: #ffffff;
     border: 1px solid #e0e0e0;
     border-left: 2px solid #a5a5a5;

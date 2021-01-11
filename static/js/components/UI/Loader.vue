@@ -10,7 +10,6 @@ export default {
     width: 50px;
     height: 40px;
     margin: 100px auto;
-
     font-size: 10px;
     text-align: center;
   }
@@ -19,9 +18,7 @@ export default {
     display: inline-block;
     width: 6px;
     height: 100%;
-
     background-color: $primary-color-b;
-
     -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
     animation: sk-stretchdelay 1.2s infinite ease-in-out;
   }

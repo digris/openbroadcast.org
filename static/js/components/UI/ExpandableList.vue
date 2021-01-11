@@ -96,9 +96,7 @@ export default {
   }
   &__toggle {
     display: inline;
-
     color: var(--primary-color);
-
     cursor: pointer;
   }
 }

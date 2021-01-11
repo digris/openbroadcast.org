@@ -31,21 +31,17 @@ export default {
 <style lang="scss" scoped>
     .clipboard-item {
       position: relative;
-
       display: flex;
-
       background: #fff;
       cursor: pointer;
 
       &:hover {
         z-index: 999;
-
         background: rgba(126, 235, 157, 0.85);
       }
 
       &__visual {
         position: relative;
-
         width: 64px;
 
         img {
@@ -80,7 +76,6 @@ export default {
 
         .emission-history {
           z-index: 92;
-
           flex-grow: 1;
         }
       }

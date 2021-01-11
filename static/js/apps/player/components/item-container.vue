@@ -90,9 +90,7 @@ export default {
       .item-to-play-content {
         .item {
           margin-bottom: 4px;
-
           color: #5a5a5a;
-
           background: #fafafa;
           border-bottom: 1px solid #eaeaea;
 

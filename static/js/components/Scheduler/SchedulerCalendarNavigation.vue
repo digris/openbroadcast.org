@@ -60,14 +60,12 @@ export default {
       .action {
         display: inline-flex;
         padding: 1px 8px;
-
         background: white;
         border: 1px solid #dadada;
         cursor: pointer;
 
         &:hover {
           color: white;
-
           background: #63c;
           border-color: #63c;
           border-radius: 2px;

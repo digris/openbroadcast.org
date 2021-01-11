@@ -37,19 +37,15 @@ export default {
       margin-top: 1rem;
 
       padding: 1rem;
-
       color: white;
-
       background: var(--primary-color);
       // background: #333;
 
       cursor: pointer;
-
       transition: all 1s;
 
       ::v-deep a {
         padding: 2px 4px;
-
         color: inherit;
         text-decoration: underline;
 
@@ -60,7 +56,6 @@ export default {
 
       &__title {
         margin-bottom: 0.5rem;
-
         font-size: 150%;
       }
     }

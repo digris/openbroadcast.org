@@ -8,7 +8,6 @@
 .clearfix::after {
   display: table;
   clear: both;
-
   content: '';
 }
 
@@ -35,7 +34,6 @@
 .hide-text {
   padding: 0; /* 1 */
   overflow: hidden;
-
   white-space: nowrap;
   text-indent: 101%;
 }
@@ -47,15 +45,12 @@
  */
 .visually-hidden {
   position: absolute;
-
   width: 1px;
   height: 1px;
   margin: -1px;
   padding: 0;
   overflow: hidden;
-
   border: 0;
-
   clip: rect(0 0 0 0);
 }
 

@@ -8,7 +8,6 @@
     &::-webkit-scrollbar {
       width: 4px;
       height: 10px;
-
       border-radius: 0;
     }
 
@@ -45,7 +44,6 @@
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 6px;
-
     color: #fff;
 
     .item {
@@ -76,7 +74,6 @@
       label {
         margin-top: 4px;
         padding-left: 10px;
-
         color: rgba(255, 255, 255, 0.7);
       }
 
@@ -88,18 +85,15 @@
 
   .tabbed-navigation {
     display: flex;
-
     border-bottom: 1px solid $primary-color-b;
 
     .tab-selector {
       flex-grow: 1;
       margin: 0 6px;
       padding: 2px;
-
       color: #fff;
       text-align: center;
       text-transform: uppercase;
-
       cursor: pointer;
 
       &:not(:last-child) {
@@ -132,9 +126,7 @@
           width: 100%;
           height: 26px;
           padding-left: 6px;
-
           color: #fff;
-
           background: transparent;
           border: 1px solid #444;
         }
@@ -152,7 +144,6 @@
 
   .playlist-create {
     position: relative;
-
     width: 100%;
 
     .playlist-created-container {
@@ -179,33 +170,26 @@
           width: 100%;
           height: 26px;
           padding-left: 6px;
-
           color: #fff;
-
           background: transparent;
           border: 1px solid #444;
         }
 
         &.submit {
           padding: 20px 0 0 0;
-
           text-align: center;
 
           .button {
             padding: 6px 24px;
-
             color: $primary-color-b;
             text-transform: uppercase;
-
             background: #fff;
             border: 2px solid $primary-color-b;
-
             transition: border-radius 0.2s;
 
             &:hover {
               color: #fff;
               text-decoration: none;
-
               background: $primary-color-b;
               border-radius: 4px;
             }
@@ -225,7 +209,6 @@
         label {
           display: flex;
           margin: 0 20px 0 0;
-
           color: rgba(255, 255, 255, 0.7);
         }
 
@@ -245,14 +228,12 @@
     position: absolute;
     top: 0;
     z-index: 99;
-
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
-
     background: rgba(34, 34, 34, 1);
   }
 

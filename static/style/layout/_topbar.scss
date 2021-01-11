@@ -36,21 +36,17 @@ $topbar-height: 32px;
   position: fixed;
   top: 0;
   z-index: 99;
-
   display: flex;
   flex-direction: row;
   width: 100%;
   height: $topbar-height;
-
   letter-spacing: 1px;
-
   background: linear-gradient(to right, white 0%, #63c 80%);
   //background: #63c;
   // main elements
   .branding {
     //background: rgba(255, 69, 0, 0.4)
     padding: 7px 20px;
-
     font-size: 13px;
 
     a {
@@ -66,7 +62,6 @@ $topbar-height: 32px;
     .menu {
       display: flex;
       margin: 0;
-
       list-style-type: none;
       // first level
       > li {
@@ -87,10 +82,8 @@ $topbar-height: 32px;
         position: fixed;
         top: 32px;
         left: 0;
-
         display: none;
         width: 100%;
-
         list-style-type: none;
         background: rgba(245, 245, 245, 0.91);
 
@@ -103,10 +96,8 @@ $topbar-height: 32px;
 
           a {
             padding-right: 20px;
-
             color: black;
             text-decoration: none;
-
             border-right: 1px solid black;
           }
 
@@ -136,7 +127,6 @@ $topbar-height: 32px;
   .account-menu {
     font-size: 13px;
     text-transform: uppercase;
-
     background: black;
 
     &.is-authenticated {
@@ -147,7 +137,6 @@ $topbar-height: 32px;
       display: flex;
       margin: 0;
       padding: 0;
-
       list-style-type: none;
       // first level
       > li {
@@ -161,7 +150,6 @@ $topbar-height: 32px;
 
         a {
           display: block;
-
           color: white;
           text-decoration: none;
         }
@@ -180,11 +168,9 @@ $topbar-height: 32px;
         position: absolute;
         top: 32px;
         right: 0;
-
         display: none;
         min-width: 200px;
         padding: 0;
-
         list-style-type: none;
         background: black;
 
@@ -198,7 +184,6 @@ $topbar-height: 32px;
           a {
             display: block;
             padding-right: 10px;
-
             color: white;
             text-transform: none;
             text-decoration: none;

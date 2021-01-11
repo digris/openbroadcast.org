@@ -163,7 +163,6 @@ export default {
   display: flex;
 
   margin-bottom: 0.5rem;
-
   background: #fff;
 
   &.is-selected {
@@ -172,7 +171,6 @@ export default {
 
   &__visual {
     position: relative;
-
     display: inline-grid;
     width: 64px;
     height: 64px;
@@ -180,12 +178,9 @@ export default {
     .play-button-container {
 
       position: absolute;
-
       width: 100%;
       height: 100%;
-
       opacity: 0;
-
       transition: background 200ms, opacity 200ms;
 
     }
@@ -205,7 +200,6 @@ export default {
 
   &__actions {
     position: relative;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -227,7 +221,6 @@ export default {
     grid-template-columns: 50% 50%;
 
     padding: 2px 4px 2px 4px;
-
     cursor: pointer;
 
     //.is-minimal & {
@@ -262,10 +255,8 @@ export default {
 
         margin: 0 4px 0 0;
         padding: 0 4px;
-
         font-size: 90%;
         text-transform: uppercase;
-
         background: #f8f8f8;
         opacity: 0.7;
       }

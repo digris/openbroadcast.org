@@ -11,23 +11,19 @@
   justify-content: center;
   // align-content: center;
   padding: 2px 10px;
-
   color: $color;
   font-weight: $base-font-weight;
   text-align: center;
   text-transform: uppercase;
   text-decoration: none;
-
   background: $white;
   border: 2px solid $color;
   cursor: pointer;
-
   transition: border-radius 100ms;
 
   &:hover {
     color: get-contrast-color($hover-color);
     text-decoration: none;
-
     background: $hover-color;
     border-radius: 4px;
   }
@@ -36,7 +32,6 @@
     display: inline-flex;
     align-items: center;
     margin-right: 0.5rem;
-
     color: inherit;
     line-height: inherit;
   }
@@ -50,7 +45,6 @@
     @include button($color: $secondary-color);
     &:hover {
       color: $white;
-
       background: $primary-color;
       border-color: $primary-color;
     }
@@ -59,7 +53,6 @@
   &--disabled {
     @include button($color: #A5A5A5);
     cursor: not-allowed;
-
     pointer-events: none;
   }
 
@@ -75,7 +68,6 @@
   &--l {
     height: 24px;
     padding: 0 16px;
-
     line-height: 24px;
 
     &:hover {
@@ -86,7 +78,6 @@
   &--xl {
     height: 32px;
     padding: 0 20px;
-
     font-size: 120%;
     line-height: 32px;
 
