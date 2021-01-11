@@ -18,6 +18,7 @@ from django.views.generic import DetailView, UpdateView, CreateView, DeleteView
 from elasticsearch_dsl import TermsFacet, RangeFacet, DateHistogramFacet
 
 from base.views.detail import UUIDDetailView, SectionDetailView
+from base.views.update import SectionUpdateView
 from search.views import BaseFacetedSearch, BaseSearchListView
 
 from ..forms import PlaylistForm, ActionForm
@@ -295,22 +296,35 @@ class PlaylistDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView
         return context
 
 
-class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, SectionUpdateView):
     model = Playlist
-    template_name = "alibrary/playlist_edit.html"
-    success_url = "#"
     form_class = PlaylistForm
+    # template_name = "alibrary/playlist/_legacy/playlist_edit.html"
+    template_name = "alibrary/playlist/edit.html"
+    section_template_pattern = "alibrary/playlist/edit/_{key}.html"
+    url_name = "alibrary-playlist-edit"
+    success_url = "#"
 
     permission_required = "alibrary.change_playlist"
     raise_exception = True
 
-    def __init__(self, *args, **kwargs):
-        super(PlaylistEditView, self).__init__(*args, **kwargs)
+    sections = [
+        {
+            "key": "metadata",
+            "url": None,
+            "title": _("Metadata"),
+        },
+        {
+            "key": "editor",
+            "url": "editor",
+            "title": _("Playlist Editor"),
+        },
+    ]
 
     def dispatch(self, request, *args, **kwargs):
 
         # TODO: here we could implement permission check for 'shared-editing' playlists
-        obj = Playlist.objects.get(pk=int(kwargs["pk"]))
+        obj = Playlist.objects.get(uuid=str(kwargs["uuid"]))
         if not obj.user == request.user:
             raise PermissionDenied
 

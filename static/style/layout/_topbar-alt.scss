@@ -1,0 +1,228 @@
+// -----------------------------------------------------------------------------
+// Global Top-bar styling
+// -----------------------------------------------------------------------------
+
+$topbar-height: 36px;
+
+// cms edit-mode
+.cms-ready {
+  .topbar {
+    transition: top 200ms;
+  }
+
+  .menu {
+    .children {
+      transition: top 200ms;
+    }
+  }
+}
+
+.cms-toolbar-expanded,
+.cms-toolbar-expanding {
+  .topbar {
+    top: 50px;
+
+    .main-menu {
+      .menu {
+        .children {
+          top: 82px;
+        }
+      }
+    }
+  }
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  z-index: 99;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: $topbar-height;
+  letter-spacing: 1px;
+  background: #63c;
+  box-shadow: 0 2px 6px 4px rgba(0, 0, 0, 0.15);
+
+  .branding {
+    display: flex;
+    align-items: center;
+    height: $topbar-height;
+    padding: 0 2rem;
+    font-size: 13px;
+
+    a {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      color: #fff;
+    }
+  }
+
+  .main-menu {
+    font-size: 13px;
+    text-transform: uppercase;
+
+    //flex-grow: 0
+    .menu {
+      display: flex;
+      margin: 0;
+      list-style-type: none;
+      // first level
+      > li {
+        display: flex;
+        align-items: center;
+        height: $topbar-height;
+        //padding: 7px 20px;
+
+        &:hover,
+        &.selected {
+          background: rgba(0,0,0,0.125);
+        }
+
+        a {
+          display: flex;
+          align-items: center;
+          height: 100%;
+          padding: 0 1rem;
+          color: white;
+          text-decoration: none;
+        }
+      }
+      // second level
+      .children {
+        position: fixed;
+        top: $topbar-height;
+        left: 0;
+        display: none;
+        width: 100%;
+        list-style-type: none;
+        //background: rgba(245, 245, 245, 0.91);
+
+        &.active {
+          display: flex;
+        }
+
+        > li {
+          padding: 7px 10px;
+
+          a {
+            padding-right: 20px;
+            color: black;
+            text-decoration: none;
+            border-right: 1px solid black;
+          }
+
+          &:hover,
+          &.selected {
+            a {
+              color: $secondary-color;
+            }
+          }
+
+          &:last-child {
+            a {
+              border-right: none;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .global-search {
+    // color: green
+    flex-grow: 1;
+    margin-top: 2px;
+    margin-left: auto;
+  }
+
+  .account-menu {
+    font-size: 13px;
+    text-transform: uppercase;
+    background: black;
+
+    &.is-authenticated {
+      min-width: 200px;
+    }
+
+    .menu {
+      display: flex;
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      // first level
+      > li {
+        display: flex;
+        align-items: center;
+        height: $topbar-height;
+        color: white;
+
+        &:hover {
+          background: #333;
+        }
+
+        a {
+          display: flex;
+          align-items: center;
+          height: 100%;
+          padding: 0 1rem;
+          color: white;
+          text-decoration: none;
+        }
+
+        &.account {
+          flex-grow: 1;
+        }
+
+        &.login {
+          padding-right: 20px;
+          padding-left: 20px;
+        }
+      }
+      // second level
+      .children {
+        position: absolute;
+        top: $topbar-height;
+        right: 0;
+        display: none;
+        min-width: 200px;
+        padding: 0;
+        list-style-type: none;
+        background: black;
+
+        > li {
+          padding: 7px 10px;
+
+          &:hover {
+            background: #333;
+          }
+
+          a {
+            display: block;
+            padding-right: 10px;
+            color: white;
+            text-transform: none;
+            text-decoration: none;
+          }
+        }
+      }
+
+      .account:hover {
+        .children {
+          display: block;
+        }
+      }
+
+      .login:hover {
+        .children {
+          display: block;
+        }
+      }
+
+      .message-notification.has-unread {
+        background: $secondary-color !important;
+      }
+    }
+  }
+}

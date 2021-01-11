@@ -149,11 +149,11 @@ class ReleaseDetailView(SectionDetailView):
             "url": "statistics",
             "title": _("Statistics"),
         },
-        {
-            "key": "license",
-            "url": "license",
-            "title": _("License / Legal"),
-        },
+        # {
+        #     "key": "license",
+        #     "url": "license",
+        #     "title": _("License / Legal"),
+        # },
     ]
 
     def get_sections(self, *args, **kwargs):
@@ -161,15 +161,15 @@ class ReleaseDetailView(SectionDetailView):
         obj = self.get_object()
         if not obj.description:
             sections = [s for s in sections if not s["key"] == "description"]
-        if not obj.get_license():
-            sections = [s for s in sections if not s["key"] == "license"]
+        # if not obj.get_license():
+        #     sections = [s for s in sections if not s["key"] == "license"]
         return sections
 
 
 class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Release
     form_class = ReleaseForm
-    template_name = "alibrary/release_edit.html"
+    template_name = "alibrary/release/edit.html"
     permission_required = "alibrary.change_release"
     raise_exception = True
     success_url = "#"

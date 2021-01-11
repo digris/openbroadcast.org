@@ -28,7 +28,7 @@ urlpatterns = [
     url(
         r"^(?P<pk>\d+)/edit/$",
         views.PlaylistEditView.as_view(),
-        name="alibrary-playlist-edit",
+        name="alibrary-playlist-edit-legacy",
     ),
     url(
         r"^(?P<pk>\d+)/delete/$",
@@ -44,5 +44,10 @@ urlpatterns = [
         r"^(?P<uuid>[0-9a-f-]+)/(?:(?P<section>[-\w]+)/)?$",
         views.PlaylistDetailView.as_view(),
         name="alibrary-playlist-detail",
+    ),
+    url(
+        r"^edit/(?P<uuid>[0-9a-f-]+)/(?:(?P<section>[-\w]+)/)?$",
+        views.PlaylistEditView.as_view(),
+        name="alibrary-playlist-edit",
     ),
 ]

@@ -1,0 +1,23 @@
+{% load crispy_forms_tags %}
+
+{% if form_errors %}
+  {% include "element/forms/_merged_form_errors.html" %}
+{% endif %}
+
+{% if form.errors or form.non_field_errors %}
+  {% with ctype='playlist'%}
+    {% include "element/forms/_form_errors.html" %}
+  {% endwith %}
+{% endif %}
+
+<form
+  class="form-horizontal form-compact form-playlist"
+  method="post"
+  id=""
+  enctype="multipart/form-data"
+>
+  {{ form.management_form }}
+  {{ releasemedia_form.management_form }}
+  {% crispy form %}
+  {% crispy action_form %}
+</form>

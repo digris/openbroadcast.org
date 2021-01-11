@@ -8,21 +8,21 @@
 
 {% block inner %}
 <div class="item item--detail item--playlist">
-    <div class="item--header-container">
-      <div class="item--header">
-          {% include "alibrary/playlist/_header.html" %}
-      </div>
-      <nav class="item--section-menu">
-          {% for item in section_menu %}
-              <div class="menu-item{% if item.active %} menu-item--active{% endif %}">
-                  <a href="{{ item.url }}">{{ item.title }}</a>
-              </div>
-          {% endfor %}
-      </nav>
+  <div class="item--header-container">
+    <div class="item--header">
+      {% include "alibrary/playlist/_header.html" %}
     </div>
-    <div class="item--body">
-        {% include section_template %}
-    </div>
+    <nav class="item--section-menu">
+      {% for item in section_menu %}
+        <div class="menu-item{% if item.active %} menu-item--active{% endif %}">
+          <a href="{{ item.url }}">{{ item.title }}</a>
+        </div>
+      {% endfor %}
+    </nav>
+  </div>
+  <div class="item--body">
+    {% include section_template %}
+  </div>
 </div>
 {% endblock %}
 

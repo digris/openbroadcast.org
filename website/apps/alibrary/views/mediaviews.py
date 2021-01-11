@@ -290,7 +290,7 @@ class MediaDetailView(SectionDetailView):
 class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Media
     form_class = MediaForm
-    template_name = "alibrary/media_edit.html"
+    template_name = "alibrary/media/edit.html"
     permission_required = "alibrary.change_media"
     raise_exception = True
     success_url = "#"

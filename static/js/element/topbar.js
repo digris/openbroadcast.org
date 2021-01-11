@@ -4,7 +4,7 @@ class Topbar {
     this.bindings();
     setTimeout(() => {
       this.show_submenu();
-    }, 100);
+    }, 200);
   }
 
   bindings() {

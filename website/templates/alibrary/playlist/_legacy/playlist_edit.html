@@ -1,0 +1,180 @@
+{% extends "layout_edit.html" %}
+
+{% load crispy_forms_tags dajaxice_templatetags sekizai_tags pushy_tags static %}
+{% load thumbnail i18n truncate_tags alibrary_tags %}
+
+{% block heading %}
+  {% addtoblock "js-post" %}
+  <script src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>
+  <script>
+    $(function () {
+      setTimeout(function() {
+        init_jQueryTagit({
+          objectId: 'id_d_tags',
+          sourceUrl: '/ac_tagging/list',
+          fieldName: 'd_tags',
+          minLength: 1,
+          removeConfirmation: true,
+          caseSensitive: false,
+          animate: true,
+          maxLength: 50,
+          maxTags: 9,
+          onTagClicked: null,
+          onMaxTagsExceeded: null,
+        });
+      }, 500);
+    });
+  </script>
+  {% endaddtoblock %}
+  {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
+  {% addtoblock "js-post" %}
+  <script>
+      $(function () {
+          $('.target-duration input:checked').parent().addClass("selected");
+          $('.target-duration input').css('display', 'none');
+          $('.target-duration input').live('change', function (e) {
+              {% if object.type == "broadcast" %}
+                  e.preventDefault();
+                  return;
+              {% else %}
+                  $('.target-duration label').removeClass('selected');
+                  $(this).parents('label').addClass('selected');
+              {% endif %}
+          });
+
+          $('.weather input:checked').parent().addClass("selected");
+          $('.weather input').css('display', 'none');
+          $('.weather input').live('change', function (e) {
+              $(this).parents('label').toggleClass('selected');
+          });
+
+          $('.seasons input:checked').parent().addClass("selected");
+          $('.seasons input').css('display', 'none');
+          $('.seasons input').live('change', function (e) {
+              $(this).parents('label').toggleClass('selected');
+          });
+
+          $('.dayparts input:checked').parents('li').addClass("selected");
+          $('.dayparts input').css('display', 'none');
+          $('.dayparts input').live('click', function (e) {
+              var num_selected = $('.dayparts input:checked').length;
+              if(num_selected > 5 && $(this).is(':checked')) {
+                  alert('Sorry - no more than 5 dayparts please!');
+                  return false;
+              }
+              $(this).parents('li').toggleClass('selected');
+          });
+      });
+  </script>
+  {% endaddtoblock %}
+  {% addtoblock "css" %}
+  <style>
+      #sm2-container {
+          position: fixed;
+          width: 1px;
+          height: 1px;
+       }
+  </style>
+  {% endaddtoblock %}
+{% endblock %}
+
+{% block inner %}
+    <div class="item_detail" style="">
+
+        <section class="shaded">
+            <div class="row iteminfo playlist">
+                {% include "alibrary/playlist/_legacy/_header.html" %}
+            </div>
+        </section>
+
+        <div class="item_menu" id="item_menu"></div>
+
+        <div class="clear"></div>
+
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+  {% include "alibrary/playlist/sidebar/_edit.html" %}
+{% endblock %}
+
+{% block form %}
+
+    <div class="item_inner">
+
+        <div class="item_menu" id="item_menu">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#metadata" data-toggle="tab">{% trans "Medtadata" %}</a>
+                </li>
+                <li>
+                    <a href="#tracklist_editor" data-toggle="tab">{% trans "Playlist Editor" %}</a>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="clear"></div>
+
+        <section class="tabs">
+
+            <div class="tab-content">
+
+                <div class="tab-pane active" id="metadata">
+
+                    {% if form_errors %}
+                    {% include "element/forms/_merged_form_errors.html" %}
+                    {% endif %}
+
+                    {% if form.errors or form.non_field_errors %}
+                        {% with ctype='playlist'%}
+                        {% include "element/forms/_form_errors.html" %}
+                        {% endwith %}
+                    {% endif %}
+
+                    <form class="form-horizontal form-compact form-playlist"
+                          method="post"
+                          id=""
+                          enctype="multipart/form-data">
+
+                        {{ form.management_form }}
+                        {{ releasemedia_form.management_form }}
+                        {% crispy form %}
+                        {% crispy action_form %}
+
+                    </form>
+
+                </div>
+
+                <div class="tab-pane" id="tracklist_editor">
+
+                    {% if object.type == "broadcast" %}
+
+                        <div class="alert alert-info">
+
+                            <h4><i class="icon-lock"></i> {% trans "Playlist editing locked" %}</h4>
+                            {% blocktrans %}
+                                To edit the tracklist you have to revert this playlist from 'broadcast' to 'public'.
+                            {% endblocktrans %}
+                        </div>
+
+                    {% endif %}
+
+                    {% include "alibrary/playlist/_tracklist_editor.html" %}
+
+                </div>
+
+
+
+            </div>
+
+        </section>
+
+
+    </div>
+{% endblock %}
+
+{% block form_sidebar %}
+  {% include "alibrary/playlist/sidebar/_edit_transform.html" %}
+{% endblock %}
+

@@ -241,7 +241,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         return reverse("alibrary-playlist-detail", kwargs={"uuid": self.uuid})
 
     def get_edit_url(self):
-        return reverse("alibrary-playlist-edit", args=(self.pk,))
+        return reverse("alibrary-playlist-edit", kwargs={"uuid": self.uuid})
 
     def get_delete_url(self):
         return reverse("alibrary-playlist-delete", args=(self.pk,))

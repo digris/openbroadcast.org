@@ -134,8 +134,8 @@ class PlaylistForm(ModelForm):
             "rotation_date_start",
             "rotation_date_end",
             "dayparts",
-            "weather",
-            "seasons",
+            # "weather",
+            # "seasons",
             "target_duration",
             "series",
             "series_number",
@@ -178,7 +178,6 @@ class PlaylistForm(ModelForm):
 
         base_layout = Fieldset(
             _("General"),
-            # Div(HTML('<h4>%s</h4><p>%s</p>' % (_('Bulk Edit'), _('Choose Artist name and/or license to apply on every track.'))), css_class='form-help'),
             Field("name", css_class="input-xlarge"),
             Div(Field("target_duration"), css_class="target-duration"),
             Field("description", css_class="input-xlarge"),
@@ -187,7 +186,7 @@ class PlaylistForm(ModelForm):
         )
 
         series_layout = Fieldset(
-            "%s %s" % ('<i class="icon-tags"></i>', _("Series")),
+            _("Series"),
             Div(Field("series", css_class="input-xlarge"), css_class="series"),
             Div(
                 Field("series_number", css_class="input-xlarge"),
@@ -197,19 +196,13 @@ class PlaylistForm(ModelForm):
         )
 
         tagging_layout = Fieldset(
-            "%s %s" % ('<i class="icon-tags"></i>', _("Tags")),
+            _("Tags"),
             "d_tags",
             css_class="tagging",
         )
 
-        playout_mode_layout = Fieldset(
-            "%s %s" % ('<i class="icon-random"></i>', _("Playout Mode")),
-            "playout_mode_random",
-            css_class="playout-mode",
-        )
-
         rotation_layout = Fieldset(
-            "%s %s" % ('<i class="icon-random"></i>', _("Random Rotation")),
+            _("Rotation"),
             "rotation",
             "rotation_date_start",
             "rotation_date_end",
@@ -217,10 +210,10 @@ class PlaylistForm(ModelForm):
         )
 
         daypart_layout = Fieldset(
-            "%s %s" % ('<i class="icon-calendar"></i>', _("Best Broadcast...")),
+            _("Broadcast"),
             Div(Field("dayparts"), css_class="dayparts"),
-            Div(Field("seasons"), css_class="seasons"),
-            Div(Field("weather"), css_class="weather"),
+            # Div(Field("seasons"), css_class="seasons"),
+            # Div(Field("weather"), css_class="weather"),
             css_class="daypart",
         )
 
@@ -228,7 +221,6 @@ class PlaylistForm(ModelForm):
             base_layout,
             tagging_layout,
             series_layout,
-            # playout_mode_layout,
             rotation_layout,
             daypart_layout,
         )
@@ -260,24 +252,24 @@ class PlaylistForm(ModelForm):
         required=False,
     )
     dayparts = forms.ModelMultipleChoiceField(
-        label="...%s" % _("Dayparts"),
+        label=_("Dayparts"),
         widget=DaypartWidget(),
         queryset=Daypart.objects.active(),
         required=False,
     )
 
-    seasons = forms.ModelMultipleChoiceField(
-        label="...%s" % _("Seasons"),
-        queryset=Season.objects.all(),
-        required=False,
-        widget=forms.CheckboxSelectMultiple,
-    )
-    weather = forms.ModelMultipleChoiceField(
-        label="...%s" % _("Weather"),
-        queryset=Weather.objects.all(),
-        required=False,
-        widget=forms.CheckboxSelectMultiple,
-    )
+    # seasons = forms.ModelMultipleChoiceField(
+    #     label="...%s" % _("Seasons"),
+    #     queryset=Season.objects.all(),
+    #     required=False,
+    #     widget=forms.CheckboxSelectMultiple,
+    # )
+    # weather = forms.ModelMultipleChoiceField(
+    #     label="...%s" % _("Weather"),
+    #     queryset=Weather.objects.all(),
+    #     required=False,
+    #     widget=forms.CheckboxSelectMultiple,
+    # )
 
     def clean(self, *args, **kwargs):
         cd = super(PlaylistForm, self).clean()

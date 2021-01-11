@@ -121,6 +121,8 @@
           {% elif object.rotation_date_end %}
             {% trans 'until' %}
             {{ object.rotation_date_end|date:"DATE_FORMAT" }}
+          {% else %}
+            {% trans 'Yes' %}
           {% endif %}
         </div>
       </div>

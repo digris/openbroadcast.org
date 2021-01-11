@@ -1,0 +1,113 @@
+{% extends "layout_edit.html" %}
+
+{% load crispy_forms_tags dajaxice_templatetags sekizai_tags pushy_tags static %}
+{% load thumbnail i18n truncate_tags alibrary_tags %}
+
+{% block title %}Edit: {{ object.name }} - {{ object.get_type_display }}{% endblock %}
+
+{% block heading %}
+  {% addtoblock "js-post" %}
+  <script src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>
+  <script>
+    $(function () {
+      setTimeout(function() {
+        init_jQueryTagit({
+          objectId: 'id_d_tags',
+          sourceUrl: '/ac_tagging/list',
+          fieldName: 'd_tags',
+          minLength: 1,
+          removeConfirmation: true,
+          caseSensitive: false,
+          animate: true,
+          maxLength: 50,
+          maxTags: 9,
+          onTagClicked: null,
+          onMaxTagsExceeded: null,
+        });
+      }, 500);
+    });
+  </script>
+  {% endaddtoblock %}
+  {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
+  {% addtoblock "js-post" %}
+  <script>
+    $(function () {
+      $('.target-duration input:checked').parent().addClass("selected");
+      $('.target-duration input').css('display', 'none');
+      $('.target-duration input').live('change', function (e) {
+        {% if object.type == "broadcast" %}
+          e.preventDefault();
+          return;
+        {% else %}
+          $('.target-duration label').removeClass('selected');
+          $(this).parents('label').addClass('selected');
+        {% endif %}
+      });
+
+      $('.weather input:checked').parent().addClass("selected");
+      $('.weather input').css('display', 'none');
+      $('.weather input').live('change', function (e) {
+        $(this).parents('label').toggleClass('selected');
+      });
+
+      $('.seasons input:checked').parent().addClass("selected");
+      $('.seasons input').css('display', 'none');
+      $('.seasons input').live('change', function (e) {
+        $(this).parents('label').toggleClass('selected');
+      });
+
+      $('.dayparts input:checked').parents('li').addClass("selected");
+      $('.dayparts input').css('display', 'none');
+      $('.dayparts input').live('click', function (e) {
+        var num_selected = $('.dayparts input:checked').length;
+        if(num_selected > 5 && $(this).is(':checked')) {
+            alert('Sorry - no more than 5 dayparts please!');
+            return false;
+        }
+        $(this).parents('li').toggleClass('selected');
+      });
+    });
+  </script>
+  {% endaddtoblock %}
+  {% addtoblock "css" %}
+  <style>
+      #sm2-container {
+          position: fixed;
+          width: 1px;
+          height: 1px;
+       }
+  </style>
+  {% endaddtoblock %}
+{% endblock %}
+
+{% block inner %}
+<div class="item item--detail item--playlist">
+  <div class="item--header-container">
+    <div class="item--header">
+        {% include "alibrary/playlist/_header.html" %}
+    </div>
+    <nav class="item--section-menu">
+      {% for item in section_menu %}
+        <div class="menu-item{% if item.active %} menu-item--active{% endif %}">
+          <a href="{{ item.url }}">{{ item.title }}</a>
+        </div>
+      {% endfor %}
+    </nav>
+  </div>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+  {% include "alibrary/playlist/sidebar/_edit.html" %}
+{% endblock %}
+
+{% block form %}
+  <div class="edit edit--playlist">
+    {% include section_template %}
+  </div>
+{% endblock %}
+
+{% block form_sidebar %}
+  {% include "alibrary/playlist/sidebar/_edit_transform.html" %}
+{% endblock %}
+

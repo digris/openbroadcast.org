@@ -51,65 +51,32 @@
 {% block form %}
   <div class="edit edit--profile">
     <form
-            class="form form--vue form--profile"
-            method="post"
-            enctype="multipart/form-data">
-
+      class="form form--vue form--profile"
+      method="post"
+      enctype="multipart/form-data">
       {% csrf_token %}
       {{ form.management_form }}
       {{ named_formsets.action.management_form }}
       {{ named_formsets.relation.management_form }}
-
-      <div class="actions">
-        <button
-                class="actions__action button button--cancel"
-                type="cancel">
-          {% trans 'Cancel' %}
-        </button>
-        <button
-                class="actions__action button button--primary"
-                type="submit">
-          <!--<i class="icon-save"></i>-->
-          {% trans 'Save' %}
-        </button>
-      </div>
-
+      {% include 'forms_vue/actions/_save_cancel.html' %}
       {% crispy user_form %}
       {% crispy form %}
-
       <fieldset>
-
         <legend>
           {% trans "Personal Links" %}
         </legend>
-
         <div class="fieldset-hint fieldset-hint--info">
           <p>
             {% trans "Example: Your blog, you personal site, etc." %}
           </p>
         </div>
-
         <formset :autogrow="(true)">
           {% for form in named_formsets.relation %}
             {% crispy form %}
           {% endfor %}
         </formset>
-
       </fieldset>
-
-      <div class="actions">
-        <button
-                class="actions__action button button--cancel"
-                type="cancel">
-          {% trans 'Cancel' %}
-        </button>
-        <button
-                class="actions__action button button--primary"
-                type="submit">
-          {% trans 'Save' %}
-        </button>
-      </div>
-
+      {% include 'forms_vue/actions/_save_cancel.html' %}
     </form>
   </div>
 {% endblock %}

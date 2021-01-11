@@ -174,7 +174,7 @@ class ArtistDetailView(SectionDetailView):
 class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Artist
     form_class = ArtistForm
-    template_name = "alibrary/artist_edit.html"
+    template_name = "alibrary/artist/edit.html"
     permission_required = "alibrary.change_artist"
     raise_exception = True
     success_url = "#"
