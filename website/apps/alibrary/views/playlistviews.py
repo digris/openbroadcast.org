@@ -17,7 +17,7 @@ from django.utils import timezone
 from django.views.generic import DetailView, UpdateView, CreateView, DeleteView
 from elasticsearch_dsl import TermsFacet, RangeFacet, DateHistogramFacet
 
-from base.views.detail import UUIDDetailView
+from base.views.detail import UUIDDetailView, SectionDetailView
 from search.views import BaseFacetedSearch, BaseSearchListView
 
 from ..forms import PlaylistForm, ActionForm
@@ -181,10 +181,39 @@ class PlaylistListView(BaseSearchListView):
         return qs
 
 
-class PlaylistDetailView(UUIDDetailView, DetailView):
-    context_object_name = "playlist"
+class PlaylistDetailView(SectionDetailView):
     model = Playlist
     template_name = "alibrary/playlist/detail.html"
+    section_template_pattern = "alibrary/playlist/detail/_{key}.html"
+    context_object_name = "playlist"
+    url_name = "alibrary-playlist-detail"
+
+    sections = [
+        {
+            "key": "tracklist",
+            "url": None,
+            "title": _("Tracklist"),
+        },
+        {
+            "key": "emissions",
+            "url": "emissions",
+            "title": _("Emissions"),
+        },
+        {
+            "key": "mixdown",
+            "url": "mixdown",
+            "title": _("Mixdown"),
+        },
+    ]
+
+    def get_sections(self, *args, **kwargs):
+        sections = self.sections
+        obj = self.get_object()
+        if not obj.get_emissions().exists():
+            sections = [s for s in sections if not s['key'] == 'emissions']
+        if not obj.is_broadcast:
+            sections = [s for s in sections if not s['key'] == 'mixdown']
+        return sections
 
     def get_queryset(self):
         return self.model.objects.select_related(

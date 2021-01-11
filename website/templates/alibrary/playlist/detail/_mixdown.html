@@ -1,0 +1,23 @@
+{% load i18n %}
+
+<section class="mixdown">
+  {% if object.mixdown_file %}
+    <div>
+      <audio id="mixdown_audio" controls style="width: 100%;">
+        <source src="{{ object.mixdown_file.url }}" type="audio/mpeg">
+      </audio>
+    </div>
+  {% elif object.mixdown %}
+    <ul class="status">
+      <li>
+        <span class="label">{% trans 'Status' %}:</span>
+        <span>{{ object.mixdown.status_display }}</span>
+      </li>
+      <li>
+        <span class="label">{% trans 'ETA' %}:</span>
+        <span>{{ object.mixdown.eta|date:"TIME_FORMAT" }}</span>
+        <span>("estimated time of arrival")</span>
+      </li>
+    </ul>
+  {% endif %}
+</section>

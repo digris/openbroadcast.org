@@ -1,0 +1,45 @@
+{% load i18n %}
+
+<table style="width: 100%;">
+  <thead>
+    <tr>
+      <td>
+        {% trans 'date'|title %}
+      </td>
+      <td>
+        {% trans 'channel'|title %}
+      </td>
+      <td>
+        {% trans 'programmed by'|title %}
+      </td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in object.get_emissions %}
+    {% ifchanged %}
+      <tr>
+        <td colspan="3" style="padding: 1rem 0 0.5rem;">
+          {{ item.time_start|date:"F Y" }}
+        </td>
+      </tr>
+    {% endifchanged %}
+    <tr>
+      <td>
+        {{ item.time_start|date:"DATETIME_FORMAT" }}
+      </td>
+      <td>
+        {{ item.channel.name|default:'-' }}
+      </td>
+      <td>
+        {% if item.user and item.user.profile %}
+          <a href="{{ item.user.get_absolute_url }}">
+            {{ item.user.profile.get_display_name }}
+          </a>
+        {% else %}
+          -
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

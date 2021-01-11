@@ -1,22 +1,21 @@
 {% load i18n activity_tags ctype_tags %}
 
-
 <div class="menu-context">
   <div class="action-group">
     <ul>
       {% if perms.alibrary.change_release %}
         <li class="action">
           <a href="{{ object.get_edit_url }}" title="{% trans 'Edit' %}">
-              {% trans "Edit" %}
+            {% trans "Edit" %}
           </a>
-      </li>
+        </li>
       {% endif %}
       {% if perms.alibrary.change_release and user.is_staff %}
         <li class="action">
-          <a href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}" title="{% trans "Administration view" %}">
-              <span>{% trans "Admin view" %}</span>
+          <a href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}">
+            {% trans "Admin view" %}
           </a>
-      </li>
+        </li>
       {% endif %}
       {% if perms.alibrary.downoad_media %}
         <object-single-action class="action" obj-ct="{{ object.get_ct }}" obj-uuid="{{ object.uuid }}" dispatch-event="exporter:exportObjects">

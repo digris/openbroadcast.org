@@ -1,165 +1,29 @@
 {% extends "layout_base.html" %}
 
-{% load truncate_tags i18n thumbnail arating_tags wiki_tags sekizai_tags addthis %}
+{% load i18n alibrary_tags %}
 
-{% block heading %}
+{% block title %}{{ object.name }} - {{ object.get_type_display }}{% endblock %}
 
-    {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}exporter/js/base.js"></script>{% endaddtoblock %}
-    {% addtoblock "js-post" %}
-        <script>
-            var exporter = exporter || {};
-            $(function () {
-                exporter = new ExporterApp();
-                exporter.api_url = '{% url "api_dispatch_list" resource_name='export' api_name='v1' %}';
-                exporter.init();
-            });
-        </script>
-    {% endaddtoblock %}
-
-    <div id="heading">
-        {% include "skeleton/heading.html" %}
-    </div>
-{% endblock %}
+{% block heading %}{% endblock %}
 
 {% block inner %}
-
-    <div class="item_detail">
-
-    <section class="shaded">
-        <div class="row iteminfo release">
-            {% include "alibrary/playlist/_header.html" %}
-        </div>
-    </section>
-
-    <div class="item_menu" id="item_menu">
-        <ul class="nav nav-tabs">
-            <li class="active">
-                <a href="#tracklist" data-toggle="tab">{% trans "Tracklist" %}</a>
-            </li>
-            {% if object.description %}
-                <li>
-                    <a href="#description" data-toggle="tab">{% trans "Description" %}</a>
-                </li>
-            {% endif %}
-            <li>
-                <a href="#emissions" data-toggle="tab">{% trans "Emissions" %} ({{ object.get_emissions.count }})</a>
-            </li>
-            {% if object.is_broadcast and object.mixdown %}
-                <li>
-                    <a href="#mixdown" data-toggle="tab">{% trans "Mixdown" %}</a>
-                </li>
-            {% endif %}
-        </ul>
+<div class="item item--detail item--playlist">
+    <div class="item--header-container">
+      <div class="item--header">
+          {% include "alibrary/playlist/_header.html" %}
+      </div>
+      <nav class="item--section-menu">
+          {% for item in section_menu %}
+              <div class="menu-item{% if item.active %} menu-item--active{% endif %}">
+                  <a href="{{ item.url }}">{{ item.title }}</a>
+              </div>
+          {% endfor %}
+      </nav>
     </div>
-
-    <div class="clear"></div>
-
-    <section class="tabbed item_inner">
-
-        <div class="tab-content">
-
-            <div class="tab-pane active" id="tracklist">
-
-                <section class="tracklist">
-
-                    <div class="controls-container">
-                        <list-actions
-                          obj-ct="{{ object.get_ct }}"
-                          obj-uuid="{{ object.uuid }}"
-                        ></list-actions>
-                    </div>
-
-                    <div class="list-body" style="margin-top: 2rem;">
-                      <div class="list list--table">
-                        {% for item in media_set %}
-                        {% include 'alibrary/media/_row.html' with object=item.content_object %}
-                        {% endfor %}
-                      </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="tab-pane" id="description">
-                <section class="description">
-                    <div class="description markdown padded-h">
-                        {% wikify object.description %}
-                    </div>
-                </section>
-            </div>
-
-            <div class="tab-pane" id="emissions">
-                <section class="emissions">
-                    {% for item in object.get_emissions %}
-                        {% ifchanged %}
-                            <div class="separator">
-                                <h4>{{ item.time_start|date:"F Y" }}</h4>
-                            </div>
-                        {% endifchanged %}
-                        <div class="emission">
-                            <div class="emission__airtime">
-                                <div class="emission__airtime__day">
-                                    {{ item.time_start|date:"D. jS" }}
-                                </div>
-                                <div class="emission__airtime__time">
-                                    {{ item.time_start|date:"H:i" }}
-                                </div>
-                            </div>
-                            {% if item.channel %}
-                            <div class="emission__channel">
-                                {% trans 'Channel' %}:
-                                <a href="{{ item.channel.get_absolute_url }}">
-                                    {{ item.channel.name }}
-                                </a>
-                            </div>
-                            {% endif %}
-                            <div class="emission__user">
-                                {% trans 'Programmed by' %}:
-                                {% if item.user %}
-                                    <a href="{{ item.user.get_absolute_url }}">
-                                        {% firstof item.user.get_full_name item.user.username %}
-                                    </a>
-                                {% else %}
-                                    {% trans "Autopilot" %}
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </section>
-            </div>
-
-
-            {% if object.is_broadcast and object.mixdown %}
-            <div class="tab-pane" id="mixdown">
-                <section class="mixdown">
-                    {% if object.mixdown_file %}
-                        <div>
-                            <audio id="mixdown_audio" controls style="width: 100%;">
-                              <source src="{{ object.mixdown_file.url }}" type="audio/mpeg">
-                            </audio>
-                        </div>
-                    {% elif object.mixdown  %}
-                        <ul class="status">
-                            <li>
-                                <span class="label">{% trans 'Status' %}:</span>
-                                <span>{{ object.mixdown.status_display }}</span>
-                            </li>
-                            <li>
-                                <span class="label">{% trans 'ETA' %}:</span>
-                                <span>{{ object.mixdown.eta|date:"TIME_FORMAT" }}</span>
-                                <span>("estimated time of arrival")</span>
-                            </li>
-                        </ul>
-                    {% endif %}
-                </section>
-            </div>
-            {% endif %}
-        </div>
-    </section>
+    <div class="item--body">
+        {% include section_template %}
     </div>
-
-    {# TODO: how to handle privat/public playlists? #}
-    {# addthis_widget #}
-
+</div>
 {% endblock %}
 
 {% block sidebar %}

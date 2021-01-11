@@ -23,7 +23,7 @@ urlpatterns = [
     url(
         r"^(?P<uuid>[0-9a-f-]+)/$",
         views.PlaylistDetailView.as_view(),
-        name="alibrary-playlist-detail",
+        name="alibrary-playlist-detail-legacy",
     ),
     url(
         r"^(?P<pk>\d+)/edit/$",
@@ -39,5 +39,10 @@ urlpatterns = [
         r"^(?P<pk>\d+)/convert/(?P<playlist_type>[-\w]+)/$",
         views.playlist_convert,
         name="alibrary-playlist-convert",
+    ),
+    url(
+        r"^(?P<uuid>[0-9a-f-]+)/(?:(?P<section>[-\w]+)/)?$",
+        views.PlaylistDetailView.as_view(),
+        name="alibrary-playlist-detail",
     ),
 ]
