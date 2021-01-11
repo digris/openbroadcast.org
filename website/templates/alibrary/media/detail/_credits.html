@@ -1,0 +1,10 @@
+<div>
+{% for credit in object.extraartist_media.all %}
+  <div>
+    <a href="{{ credit.artist.get_absolute_url }}">{{ credit.artist.name }}</a>
+    {% if credit.profession %}
+    <span>- {{ credit.profession|title }}</span>
+    {% endif %}
+  </div>
+{% endfor %}
+</div>

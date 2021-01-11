@@ -69,6 +69,9 @@ export default {
 
 <template>
   <div class="chart">
-    <chart :chart-data="parsedData" />
+    <chart
+      v-if="(parsedData && parsedData.datasets.length)"
+      :chart-data="parsedData"
+    />
   </div>
 </template>

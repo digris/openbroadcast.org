@@ -332,13 +332,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
 
     def get_absolute_url(self):
-        return reverse(
-            "alibrary-media-detail", kwargs={"pk": self.pk, "slug": self.slug}
-        )
-        # return reverse('library:media-detail', kwargs={
-        #     'pk': self.pk,
-        #     'slug': self.slug,
-        # })
+        return reverse("alibrary-media-detail", kwargs={"uuid": str(self.uuid)})
 
     def get_edit_url(self):
         return reverse("alibrary-media-edit", args=(self.pk,))
@@ -383,13 +377,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     def generate_sha1(self):
         return sha1_by_file(self.master)
 
-    # TODO: improve video/soundcloud handling
-    @property
-    def has_video(self):
-        return self.relations.filter(service__in=["youtube", "vimeo"]).exists()
-
-    @property
-    def get_videos(self):
+    def get_videoclips(self):
         return self.relations.filter(service__in=["youtube", "vimeo"])
 
     @property

@@ -1,0 +1,173 @@
+{% load i18n calc_tags truncate_tags thumbnail arating_tags atracker_tags spacify_tags %}
+<div class="span6 padded-h container_content">
+
+  <div class="page-header">
+    <h2>{{ object.name|truncate_chars_inner:40 }}
+      {% if object.mediatype %}
+      <small>{{ object.get_mediatype_display }}</small>
+      {% endif %}
+      {% if object.version %}
+      <small>({{ object.get_version_display }})</small>
+      {% endif %}
+    </h2>
+  </div>
+  <dl class="dl-horizontal main">
+    <dt>
+      {% trans "Artist" %}:
+    </dt>
+    <dd>
+      {% with item=object.artist %}
+      {% include "alibrary/element/_inline_link.html" %}
+      {% endwith %}
+    </dd>
+    {% if object.get_mediaartists %}
+    <dt>
+      {% trans "Track Artists(s)" %}:
+    </dt>
+    <dd>
+      {% include "alibrary/media/_credited_artists.html" with artist_list=object.get_mediaartists %}
+    </dd>
+    {% endif %}
+    {% if object.release %}
+    <dt>
+      {% trans "Release" %}:
+    </dt>
+    <dd>
+      {% with item=object.release %}
+      {% include "alibrary/element/_inline_link.html" %}
+      {% endwith %}
+      &nbsp;
+    </dd>
+    {% endif %}
+
+    {% if object.release and object.release.label %}
+    <dt>
+      {% trans "Label" %}:
+    </dt>
+    <dd>
+      {% with item=object.release.label %}
+      {% include "alibrary/element/_inline_link.html" %}
+      {% endwith %}
+      &nbsp;
+    </dd>
+    {% endif %}
+
+
+    <dt>
+      {% trans "Duration" %}:
+    </dt>
+    <dd>
+      {% if object.master_duration %}
+      {{ object.master_duration|sec_to_time }}
+      {% endif %}
+      &nbsp;
+    </dd>
+
+    {% if object.isrc %}
+    <dt>
+      {% trans "ISRC" %}:
+    </dt>
+    <dd>
+      {{ object.isrc }}
+    </dd>
+    {% endif %}
+
+
+    {% if object.opus_number %}
+    <dt>
+      {% trans "Opus N." %}:
+    </dt>
+    <dd>
+      {{ object.opus_number }}
+    </dd>
+    {% endif %}
+
+    {% if object.release and object.release.releasedate_approx %}
+    <dt>
+      {% trans "Release date" %}:
+    </dt>
+    <dd>
+      {{ object.release.releasedate_approx|date:"SHORT_DATE_FORMAT" }}
+    </dd>
+    {% endif %}
+
+
+  </dl>
+
+  <dl class="dl-horizontal license">
+
+    <dt>
+      {% trans "License" %}:
+    </dt>
+    <dd>
+      {% if object.license %}
+      {% if object.license.iconset %}
+      <a href="{{ object.license.get_absolute_url }}"
+         title="{% trans " License details" %}"
+      class="iconset iconset-license">
+      {{ object.license.iconset_display }}
+      </a>
+      {% else %}
+      <span>{{ object.license.name }}</span>
+      {% endif %}
+      {% else %}
+      &nbsp;
+      {% endif %}
+    </dd>
+
+  </dl>
+
+
+  <dl class="dl-horizontal sub">
+
+
+    {% include 'alibrary/element/_edit_timestamps.html' %}
+
+    <dt>
+      {% trans "Stats" %}:
+    </dt>
+    <dd>
+      <ul class="horizontal unstyled" style="margin: 0">
+        {% stats_for_object object %}
+      </ul>
+      <div class="clear"></div>
+    </dd>
+
+    {% if object.tags %}
+    <dt>
+      {% trans "Tags" %}:
+    </dt>
+    <dd>
+      {% for tag in object.tags %}
+      <span class="tag">{{ tag.name|spacify }}</span>
+      {% endfor %}
+    </dd>
+    {% endif %}
+
+  </dl>
+
+
+</div>
+
+<div class="span3 padded-h padded-v">
+
+  <div class="image">
+    {% if object.release.main_image %}
+    <a href="{% thumbnail object.release.main_image 1200x1200 crop upscale %}" class="zoomable cboxElement"> <img
+      src="{% thumbnail object.release.main_image 170x170 crop upscale %}" alt="Cover"/> </a>
+    {% else %}
+    <img src="/static/img/base/defaults/listview.release.xl.png" alt="{% trans " No cover available" %}" />
+    {% endif %}
+  </div>
+
+
+  <div class="rating">
+    {% rating_for_object object %}
+  </div>
+
+</div>
+
+
+
+
+

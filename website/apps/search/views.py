@@ -122,7 +122,7 @@ class BaseSearchListView(ListView):
         search_query = self.get_search_query()
 
         if limit_ids:
-            search_query["searches"]["ids"] = limit_ids
+            search_query["searches"]["ids"] = list(limit_ids)
 
         # initialize search class
         try:

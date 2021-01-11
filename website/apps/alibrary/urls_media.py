@@ -2,19 +2,24 @@
 from __future__ import unicode_literals
 
 from django.conf.urls import url
-from alibrary import views
+from . import views
 
 
 urlpatterns = [
     url(r"^$", views.MediaListView.as_view(), name="alibrary-media-list"),
     url(
         r"^(?P<pk>\d+)-(?P<slug>[-\w]+)/$",
-        views.MediaDetailView.as_view(),
-        name="alibrary-media-detail",
+        views.MediaDetailViewLegacy.as_view(),
+        name="alibrary-media-detail-legacy",
     ),
     url(
         r"^(?P<pk>\d+)/edit/$",
         views.MediaEditView.as_view(),
         name="alibrary-media-edit",
+    ),
+    url(
+        r"^(?P<uuid>[0-9a-f-]+)/(?:(?P<section>[-\w]+)/)?$",
+        views.MediaDetailView.as_view(),
+        name="alibrary-media-detail",
     ),
 ]

@@ -1,0 +1,58 @@
+{% load i18n spurl %}
+{% if broadcasts.exists %}
+<div class="list-prefix">
+  <h3 class="title">{% trans 'Broadcasts' %}</h3>
+</div>
+<div class="list list--grid">
+  {% for object in broadcasts.all|slice:'0:8' %}
+  <div class="list-item">
+  {% include 'alibrary/playlist/_card.html' %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% if playlists.exists %}
+<div class="list-prefix">
+  <h3 class="title">{% trans 'Public Playlists' %}</h3>
+</div>
+<div class="list list--grid">
+  {% for object in playlists.all|slice:'0:8' %}
+  <div class="list-item">
+  {% include 'alibrary/playlist/_card.html' %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+<div class="list-prefix">
+  <h3 class="title">{% trans 'File info' %}</h3>
+</div>
+<div class="list list--table">
+  <div class="file-info">
+  {% if object.master_encoding %}
+    <div>
+      <div>{% trans "Encoding" %}</div>
+      <div>
+        <span>{{ object.master_encoding|upper }}</span>
+        {% if object.master_bitrate %}
+          <span>- {{ object.master_bitrate}} Kbps</span>
+        {% endif %}
+        {% if object.master_samplerate %}
+          <span>- {{ object.master_samplerate}} Hz</span>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+    {% if object.uuid %}
+    <div>
+      <div>{% trans "UUID" %}</div>
+      <div>{{ object.uuid }}</div>
+    </div>
+    {% endif %}
+    {% if object.original_filename %}
+    <div>
+      <div>{% trans "Original Filename" %}</div>
+      <div>{{ object.original_filename }}</div>
+    </div>
+    {% endif %}
+  </div>
+</div>

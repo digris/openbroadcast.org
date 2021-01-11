@@ -1,0 +1,42 @@
+{% extends "layout_base.html" %}
+
+{% load i18n alibrary_tags %}
+{% block title %}{{ object.name }} - {{ object.get_artist_display }}{% endblock %}
+{% block heading %}{% endblock %}
+
+{% block inner %}
+<div class="item item--detail item--media">
+  <div class="item--header-container">
+    <div class="item--header">
+      {% include "alibrary/media/_header.html" %}
+    </div>
+    {% url 'mediaasset-waveform' type='w' media_uuid=object.uuid as waveform_url %}
+    {% if waveform_url %}
+    <div class="item--waveform">
+      <div class="waveform">
+        <img src="{{ waveform_url }}" />
+      </div>
+    </div>
+    {% endif %}
+    <nav class="item--section-menu">
+      {% for item in section_menu %}
+      <div class="menu-item{% if item.active %} menu-item--active{% endif %}">
+        <a href="{{ item.url }}">{{ item.title }}</a>
+      </div>
+      {% endfor %}
+    </nav>
+  </div>
+  <div class="item--body">
+    {% include section_template %}
+  </div>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+{% include "alibrary/media/sidebar/_detail.html" %}
+<div class="listing relations">
+  <div class="item relations">
+    {% all_relations_inline object %}
+  </div>
+</div>
+{% endblock %}

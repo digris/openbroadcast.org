@@ -14,27 +14,15 @@
                 <li class="action">
                     <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}"
                        title="{% trans 'Administration view' %}">
-                        {% trans "Administration view" %}
-                    </a>
-                </li>
-            {% endif %}
-            {% if user.is_authenticated %}
-                <li class="action">
-                    <a href="{% follow_all_url object %}?next={{ request.get_full_path }}"
-                       title="{% trans 'Follow/unfollow' %}">
-                        {% if request.user|is_following:object %}
-                            {% trans "Stop following" %} {{ object|ct_name_by_object }}
-                        {% else %}
-                            {% trans "Follow" %} {{ object|ct_name_by_object }}
-                        {% endif %}
+                        {% trans "Admin view" %}
                     </a>
                 </li>
             {% endif %}
             {% if perms.alibrary.downoad_media %}
                 <li class="action">
                     <a href="#" data-action="download" data-ct="media" data-id="{{ object.pk }}"
-                       title="{% trans 'Download' %} {{ object|ct_name_by_object }}">
-                        {% trans "Download" %} {{ object|ct_name_by_object }}
+                       title="{% trans 'Download' %}">
+                        {% trans "Download" %}
                     </a>
                 </li>
             {% endif %}

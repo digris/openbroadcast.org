@@ -56,14 +56,13 @@ class ReleaseSearch(BaseFacetedSearch):
                     ("2000's", (2000, 2010)),
                     ("2010's", (2010, 2019)),
                     ("2020's", (2020, 2029)),
-                    ("This Year", (2020, 2021)),
+                    ("This Year", (2021, 2022)),
                 ],
             ),
         ),
         ("type", TermsFacet(field="type", size=20, order={"_key": "asc"})),
         ("country", TermsFacet(field="country", size=500, order={"_key": "asc"})),
         ("label_type", TermsFacet(field="label_type", size=100)),
-        # ('key', __paste__),
     ]
 
 
@@ -92,19 +91,28 @@ class ReleaseListView(BaseSearchListView):
             fields = duplicate_filter.split(":")
             limit_ids = get_ids_for_possible_duplicates("releases", fields)
 
-        # from collection.models import Collection
-        # limit_ids = [i for i in Collection.objects.get(
-        #     pk=3
-        # ).items.filter(
-        #     content_type__id=108
-        # ).values_list('object_id', flat=True)]
+        # just testing rating
+        # from django.contrib.contenttypes.models import ContentType
+        # from arating.models import Vote
+        # limit_ids = Vote.objects.filter(
+        #     vote__gte=1,
+        #     user=self.request.user,
+        #     content_type=ContentType.objects.get_for_model(self.model),
+        # ).values_list('object_id', flat=True)
 
         qs = super(ReleaseListView, self).get_queryset(limit_ids=limit_ids, **kwargs)
 
         qs = qs.select_related(
-            "label", "release_country", "creator", "creator__profile"
+            "label",
+            "release_country",
+            "creator",
+            "creator__profile",
         ).prefetch_related(
-            "media", "media__artist", "media__license", "extra_artists", "album_artists"
+            "media",
+            "media__artist",
+            "media__license",
+            "extra_artists",
+            "album_artists",
         )
 
         return qs
@@ -129,7 +137,7 @@ class ReleaseDetailView(SectionDetailView):
         {
             "key": "tracklist",
             "url": None,
-            "title": _("Tracklist"),
+            "title": _("Tracks"),
         },
         {
             "key": "description",
@@ -152,9 +160,9 @@ class ReleaseDetailView(SectionDetailView):
         sections = self.sections
         obj = self.get_object()
         if not obj.description:
-            sections = [s for s in sections if not s['key'] == 'description']
+            sections = [s for s in sections if not s["key"] == "description"]
         if not obj.get_license():
-            sections = [s for s in sections if not s['key'] == 'license']
+            sections = [s for s in sections if not s["key"] == "license"]
         return sections
 
 

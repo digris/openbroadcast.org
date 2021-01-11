@@ -1,0 +1,6 @@
+{% load video_url_tags %}
+<div>
+  {% for clip in object.get_videoclips %}
+    {% video_by_url video %}
+  {% endfor %}
+</div>

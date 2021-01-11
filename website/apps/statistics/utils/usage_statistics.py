@@ -49,6 +49,8 @@ def get_media_statistics(media_ids, start, end):
 def get_media_ids(obj):
     # TODO: implement this in a more modular way
     ct = obj.get_ct()
+    if ct == "alibrary.media":
+        return [obj.id]
     if ct == "alibrary.label":
         return Media.objects.filter(release__label=obj).values_list('id', flat=True)
     return [m.id for m in obj.get_media()]
