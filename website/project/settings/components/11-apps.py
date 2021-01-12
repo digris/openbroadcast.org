@@ -60,6 +60,9 @@ INSTALLED_APPS = [
     "easy_thumbnails",
     "versatileimagefield",
     "account",
+    # navigation / menu
+    "navutils",
+    "navigation",
     # cms
     "cms",
     "menus",
