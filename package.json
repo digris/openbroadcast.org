@@ -23,7 +23,7 @@
         "lsbridge": "^0.2.0",
         "mini-css-extract-plugin": "^0.4.0",
         "motion-ui": "^1.2.3",
-        "node-sass": "^4.9.0",
+        "node-sass": "^4.14.1",
         "nosleep.js": "^0.7.0",
         "nunjucks": "2.5.2",
         "postcss": "^7.0.17",
