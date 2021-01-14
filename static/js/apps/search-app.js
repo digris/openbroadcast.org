@@ -79,7 +79,6 @@ export default {
     const scope = $('body').data('scope');
 
     if (scope !== undefined && scope !== '') {
-      console.log('scope:', scope);
       this.search_scope = scope;
     }
   },

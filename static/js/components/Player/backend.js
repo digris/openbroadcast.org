@@ -9,7 +9,7 @@ class PlayerBackend {
     soundManager.setup({
       forceUseGlobalHTML5Audio: true,
       html5PollingInterval: 100,
-      debugMode: true,
+      debugMode: false,
       onready: () => {
         this.player = soundManager.createSound({
           multiShot: false,

@@ -13,6 +13,7 @@ from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, UpdateView
 from elasticsearch_dsl import TermsFacet, RangeFacet
+from navutils import MenuMixin
 
 from base.utils.form_errors import merge_form_errors
 from base.models.utils.merge import merge_objects
@@ -66,9 +67,10 @@ class ReleaseSearch(BaseFacetedSearch):
     ]
 
 
-class ReleaseListView(BaseSearchListView):
+class ReleaseListView(MenuMixin, BaseSearchListView):
     model = Release
     template_name = "alibrary/release/list.html"
+    current_menu_item = 'catalog:releases'
     search_class = ReleaseSearch
     order_by = [
         {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
@@ -126,7 +128,7 @@ class ReleaseDetailViewLegacy(DetailView):
         return redirect(obj.get_absolute_url())
 
 
-class ReleaseDetailView(SectionDetailView):
+class ReleaseDetailView(MenuMixin, SectionDetailView):
     model = Release
     template_name = "alibrary/release/detail.html"
     section_template_pattern = "alibrary/release/detail/_{key}.html"

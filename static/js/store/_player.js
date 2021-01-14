@@ -76,13 +76,12 @@ const actions = {
 
 class PlayerBackend {
   // eslint-disable-next-line no-shadow
-  constructor({ store }) {
-    console.debug('PlayerBackend store', store);
+  constructor() {
     this.sound = null;
     soundManager.setup({
       forceUseGlobalHTML5Audio: true,
       html5PollingInterval: 100,
-      debugMode: true,
+      debugMode: false,
       onready: () => {
         this.sound = soundManager.createSound({
           multiShot: false,
