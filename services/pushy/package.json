@@ -27,7 +27,7 @@
     "gateway"
   ],
   "dependencies": {
-    "socket.io": "1.0.x",
+    "socket.io": "2.4.x",
     "redis": "0.8.x",
     "debug": "0.7.x",
     "winston": "0.6.x"
