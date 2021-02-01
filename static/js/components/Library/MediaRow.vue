@@ -34,6 +34,11 @@ export default {
       required: false,
       default: null,
     },
+    tracknumber: {
+      type: String,
+      required: false,
+      default: null,
+    },
     actions: {
       type: Array,
       required: false,
@@ -94,6 +99,11 @@ export default {
     class="media-row"
     :class="{'is-selected': selected, 'is-minimal': isMinimal}"
   >
+    <div
+      class="media-row__tracknumber"
+    >
+      {{ tracknumber }}
+    </div>
     <div
       v-if="hasImage"
       class="media-row__visual"
@@ -169,6 +179,15 @@ export default {
     background: var(--primary-color-light);
   }
 
+  &__tracknumber {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 24px;
+    padding: 0.25rem;
+    opacity: 0.5;
+  }
+
   &__visual {
     position: relative;
     display: inline-grid;
@@ -209,11 +228,9 @@ export default {
     .is-minimal & {
       width: 48px;
     }
-
   }
 
   &__body {
-
 
     display: grid;
     flex-grow: 1;
