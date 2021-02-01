@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="p3 openbroadcast.org - runserver" type="Python.DjangoServer" factoryName="Django server">
-    <module name="openbroadcast.org" />
+    <module name="OBP - Platform" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>

@@ -60,6 +60,18 @@ export default {
       </p>
     </div>
     <div class="meta meta--right">
+      <p
+        v-if="obj.id"
+        class="obj-id"
+      >
+        <span class="label">ID</span>
+        <a
+          class="value"
+          :href="obj.detailUrl"
+          target="_blank"
+          @click.stop=""
+        >{{ obj.id }}</a>
+      </p>
       <p v-if="obj.media">
         <span class="label">num. tracks</span>
         <span class="value">{{ obj.media.length }}</span>
@@ -125,6 +137,15 @@ export default {
             text-align: right;
           }
 
+        }
+        .obj-id {
+          .value {
+            color: var(--secondary-color);
+            text-decoration: none;
+            &:hover {
+              text-decoration: underline;
+            }
+          }
         }
       }
     }

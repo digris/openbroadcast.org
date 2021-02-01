@@ -25,11 +25,11 @@ class Topbar {
       const parent_id = item.data('parent-id');
       if (parent_id === active_parent_id) {
         const offset = item.parents('[data-id]').position();
-        // item.css('padding-left', `${offset.left + 10}px`).addClass('active');
-        item.parent().css('padding-left', `${offset.left + 10}px`).addClass('active');
+        item.css('padding-left', `${offset.left + 10}px`).addClass('active');
+        // item.parent().css('padding-left', `${offset.left + 10}px`).addClass('active');
       } else {
-        // item.removeClass('active');
-        item.parent().removeClass('active');
+        item.removeClass('active');
+        // item.parent().removeClass('active');
       }
     });
   }

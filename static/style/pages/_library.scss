@@ -22,6 +22,9 @@
           background: #9a9a9a;
           border-style: none;
           image-rendering: pixelated;
+          img {
+            width: 100%;
+          }
         }
       }
       // TODO: how to structure info tables?

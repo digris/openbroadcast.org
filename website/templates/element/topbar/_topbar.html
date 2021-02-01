@@ -7,13 +7,13 @@
     </div>
 
     <div class="main-menu">
-        {% comment %}
         <ul class="menu menu-level-1" id="main_menu">
            {% show_menu 0 1 100 100 "element/topbar/_menu.html" %}
         </ul>
-        {% endcomment %}
+        {% comment %}
         {% load navutils_tags %}
         {% render_menu menu=menus.main_menu user=request.user %}
+        {% endcomment %}
     </div>
 
     <div class="global-search">
