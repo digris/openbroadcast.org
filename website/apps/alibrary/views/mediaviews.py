@@ -11,6 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 from django.utils import timezone
 from django.contrib import messages
+from django.shortcuts import redirect
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from elasticsearch_dsl import TermsFacet, RangeFacet
 
@@ -190,29 +191,35 @@ class MediaListView(BaseSearchListView):
 
 class MediaDetailViewLegacy(DetailView):
     model = Media
-    extra_context = {}
 
-    def get_context_data(self, **kwargs):
+    def get(self, request, *args, **kwargs):
+        obj = self.get_object()
+        return redirect(obj.get_absolute_url())
 
-        context = super(MediaDetailViewLegacy, self).get_context_data(**kwargs)
-        obj = kwargs.get("object", None)
 
-        self.extra_context["history"] = []
-
-        # foreign appearance
-        ps = []
-        try:
-            pis = PlaylistItem.objects.filter(
-                object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)
-            )
-            ps = Playlist.objects.exclude(type="basket").filter(items__in=pis)
-        except:
-            pass
-
-        self.extra_context["appearance"] = ps
-        context.update(self.extra_context)
-
-        return context
+    # extra_context = {}
+    #
+    # def get_context_data(self, **kwargs):
+    #
+    #     context = super(MediaDetailViewLegacy, self).get_context_data(**kwargs)
+    #     obj = kwargs.get("object", None)
+    #
+    #     self.extra_context["history"] = []
+    #
+    #     # foreign appearance
+    #     ps = []
+    #     try:
+    #         pis = PlaylistItem.objects.filter(
+    #             object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)
+    #         )
+    #         ps = Playlist.objects.exclude(type="basket").filter(items__in=pis)
+    #     except:
+    #         pass
+    #
+    #     self.extra_context["appearance"] = ps
+    #     context.update(self.extra_context)
+    #
+    #     return context
 
 
 class MediaDetailView(SectionDetailView):
