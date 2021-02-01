@@ -10,9 +10,6 @@
       :class="{ 'has-focus': search_input_has_focus }"
       class="search-input-container"
     >
-      <div class="search-input-icon">
-        <i class="icon icon-search" />
-      </div>
       <div class="controls search-input">
         <input
           type="text"
