@@ -11,6 +11,11 @@ urlpatterns = [
         name="alibrary-playlist-list",
     ),
     url(
+        r"^(?P<uuid>[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12})/$",
+        views.PlaylistDetailView.as_view(),
+        name="alibrary-playlist-detail-legacy",
+    ),
+    url(
         r"^own/$",
         views.PlaylistListView.as_view(scope="own"),
         name="alibrary-playlist-list-own",
@@ -19,11 +24,6 @@ urlpatterns = [
         r"^create/$",
         views.PlaylistCreateView.as_view(),
         name="alibrary-playlist-create",
-    ),
-    url(
-        r"^(?P<uuid>[0-9a-f-]+)/$",
-        views.PlaylistDetailView.as_view(),
-        name="alibrary-playlist-detail-legacy",
     ),
     url(
         r"^(?P<pk>\d+)/edit/$",
@@ -41,12 +41,12 @@ urlpatterns = [
         name="alibrary-playlist-convert",
     ),
     url(
-        r"^(?P<uuid>[0-9a-f-]+)/(?:(?P<section>[-\w]+)/)?$",
+        r"^(?P<uuid>[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12})/(?:(?P<section>[-\w]+)/)?$",
         views.PlaylistDetailView.as_view(),
         name="alibrary-playlist-detail",
     ),
     url(
-        r"^edit/(?P<uuid>[0-9a-f-]+)/(?:(?P<section>[-\w]+)/)?$",
+        r"^edit/(?P<uuid>[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12})/(?:(?P<section>[-\w]+)/)?$",
         views.PlaylistEditView.as_view(),
         name="alibrary-playlist-edit",
     ),
