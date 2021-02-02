@@ -50,7 +50,7 @@ class ExportListView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
 class ExportDeleteView(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
 
     model = Export
-    success_url = lazy(reverse, str)("exporter-export-list")
+    success_url = lazy(reverse, str)("exporter-export-list-legacy")
 
     permission_required = "exporter.delete_export"
     raise_exception = True
@@ -63,7 +63,7 @@ class ExportDeleteView(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
 class ExportDeleteAllView(PermissionRequiredMixin, LoginRequiredMixin, View):
 
     model = Export
-    success_url = lazy(reverse, str)("exporter-export-list")
+    success_url = lazy(reverse, str)("exporter-export-list-legacy")
 
     permission_required = "exporter.delete_export"
     raise_exception = True
@@ -74,7 +74,7 @@ class ExportDeleteAllView(PermissionRequiredMixin, LoginRequiredMixin, View):
 
     def get(self, *args, **kwargs):
         Export.objects.filter(user=self.request.user).delete()
-        return HttpResponseRedirect(reverse("exporter-export-list"))
+        return HttpResponseRedirect(reverse("exporter-export-list-legacy"))
 
 
 @login_required

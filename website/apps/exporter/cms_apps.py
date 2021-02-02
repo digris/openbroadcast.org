@@ -12,4 +12,4 @@ class ExportApp(CMSApp):
     menus = [ExportMenu]
 
     def get_urls(self, page=None, language=None, **kwargs):
-        return ["exporter.urls_export"]
+        return ["exporter.urls"]

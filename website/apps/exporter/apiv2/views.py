@@ -57,13 +57,11 @@ class ExportViewSet(
             )
             e.save()
 
-        print('data', self.request.data)
-        print('_objects', _objects)
-        print('objects', objects)
-
         export.status = 2
         export.save()
 
-
-        print('export', export)
+        # print('data', self.request.data)
+        # print('_objects', _objects)
+        # print('objects', objects)
+        # print('export', export)
 

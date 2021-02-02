@@ -126,9 +126,8 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
     def get_absolute_url(self):
         return None
 
-    @models.permalink
     def get_delete_url(self):
-        return ("exporter-export-delete", [str(self.pk)])
+        return '#'
 
     @models.permalink
     def get_download_url(self):

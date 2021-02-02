@@ -18,8 +18,19 @@ class ExportSerializer(
     ct = serializers.CharField(source="get_ct", read_only=True)
     name = serializers.CharField(source="filename", read_only=True)
     format = serializers.CharField(source="fileformat", read_only=True)
+    download_url = serializers.CharField(source="get_download_url", read_only=True)
 
     class Meta:
         model = Export
         depth = 1
-        fields = ["url", "ct", "uuid", "status", "name", "filesize", "format"]
+        fields = [
+            "url",
+            "ct",
+            "uuid",
+            "created",
+            "status",
+            "name",
+            "filesize",
+            "format",
+            "download_url",
+        ]

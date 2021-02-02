@@ -319,9 +319,10 @@ class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
         if obj.quality == Format.DEFAULT and obj.encoding == obj.media.master_encoding:
             processed = True
             log.info(
-                "identical encodeing for source and target. file will be copied untouched"
+                "identical encoding for source and target. file will be copied untouched"
             )
-            shutil.copy(obj.media.master.path, obj.path)
+            if os.path.exists(obj.media.master.path):
+                shutil.copy(obj.media.master.path, obj.path)
 
         if not processed:
 

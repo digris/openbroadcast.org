@@ -29,6 +29,7 @@
         "postcss": "^7.0.17",
         "postcss-cli": "^5.0.0",
         "postcss-loader": "^2.1.5",
+        "pretty-bytes": "^5.5.0",
         "sass-loader": "^7.0.1",
         "sass-resources-loader": "^2.0.1",
         "shifty": "^2.6.0",

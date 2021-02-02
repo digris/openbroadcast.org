@@ -210,7 +210,8 @@ class PlaylistDetailView(SectionDetailView):
     def get_sections(self, *args, **kwargs):
         sections = self.sections
         obj = self.get_object()
-        if not obj.get_emissions().exists():
+        emission_qs = obj.get_emissions()
+        if not emission_qs.exists():
             sections = [s for s in sections if not s['key'] == 'emissions']
         if not obj.is_broadcast:
             sections = [s for s in sections if not s['key'] == 'mixdown']
