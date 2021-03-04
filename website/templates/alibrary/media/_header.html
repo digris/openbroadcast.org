@@ -1,4 +1,4 @@
-{% load truncate_tags i18n thumbnail spurl object_action_tags tagging_extra_tags %}
+{% load truncate_tags i18n thumbnail spurl calc_tags object_action_tags tagging_extra_tags %}
 <div class="header__primary">
   <div class="title title--primary">
     <h2>{{ object.name|truncate_chars_inner:40 }}</h2>
@@ -57,6 +57,14 @@
         </div>
       </div>
     {% endif %}
+    <div class="meta__item">
+      <div>
+        {% trans "Duration" %}:
+      </div>
+      <div>
+        {{ object.duration_s|sec_to_time }}
+      </div>
+    </div>
     {% if object.opus_number %}
       <div class="meta__item">
         <div>
