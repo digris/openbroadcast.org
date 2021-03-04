@@ -34,6 +34,10 @@ export default {
       required: false,
       default: null,
     },
+    includeTracknumber: {
+      type: Boolean,
+      default: false,
+    },
     tracknumber: {
       type: String,
       required: false,
@@ -100,6 +104,7 @@ export default {
     :class="{'is-selected': selected, 'is-minimal': isMinimal}"
   >
     <div
+      v-if="includeTracknumber"
       class="media-row__tracknumber"
     >
       {{ tracknumber }}

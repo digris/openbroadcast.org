@@ -6,6 +6,7 @@
   uuid="{{ object.uuid }}"
   url="{% url 'api:media-detail' object.uuid %}"
   display-style="minimal"
+  {% if include_tracknumber %}:include-tracknumber="(true)"{% endif %}
   {% if object.tracknumber %}tracknumber="{{ object.tracknumber }}"{% endif %}
   :actions="{% get_object_actions_as_json object user %}">
   <div class="column">

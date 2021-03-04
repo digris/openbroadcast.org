@@ -11,17 +11,10 @@ log = logging.getLogger(__name__)
 class EmissionDetailView(DetailView):
 
     model = Emission
-    extra_context = {}
-
-    def render_to_response(self, context, **kwargs):
-        return super(EmissionDetailView, self).render_to_response(
-            context, content_type="text/html"
-        )
+    template_name = "abcast/emission/detail.html"
 
     def get_context_data(self, **kwargs):
-
         context = super(EmissionDetailView, self).get_context_data(**kwargs)
-        context.update(self.extra_context)
         return context
 
 

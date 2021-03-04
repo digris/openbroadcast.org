@@ -1,47 +1,77 @@
-{% load truncate_tags i18n thumbnail arating_tags spurl %}
-<div class="span7 padded-h container_content">
-  <div class="page-header">
-    <h2>{{ object.name|truncate_chars_inner:40 }}</h2>
+{% load truncate_tags i18n thumbnail calc_tags object_action_tags %}
+
+<div class="header__primary">
+  <div class="title title--primary">
+    <h2>
+      {{ object.time_start|date:'DATETIME_FORMAT' }}
+      /
+      {{ object.name|truncate_chars_inner:40 }}
+    </h2>
   </div>
-  <dl class="dl-horizontal main">
-    <dt>
-      {% trans "Channel" %}:
-    </dt>
-    <dd>
+  {% if object.channel %}
+  <div class="title title--secondary">
+    <h3>
       <a href="{{ object.channel.get_absolute_url }}">
         {{ object.channel.name }}
       </a>
-    </dd>
-    <dt>
-      {% trans "Airplay date" %}:
-    </dt>
-    <dd>
-      <span>{{ object.time_start|date:"SHORT_DATETIME_FORMAT" }}</span>
-    </dd>
-    <dt>
-      {% trans "Scheduled by" %}:
-    </dt>
-    <dd>
-      <a href="{{ object.user.get_absolute_url }}">{% firstof object.user.username object.user %}</a>
-    </dd>
-    {% if object.content_object and object.content_object.user %}
-    <dt>
-      {% trans "Content" %}:
-    </dt>
-    <dd>
-      <a href="{{ object.content_object.get_absolute_url }}">{{ object.content_object.name }}</a>
-    </dd>
+    </h3>
+  </div>
+  {% endif %}
+  <div class="meta">
+    {% if object.user and object.user.profile %}
+      <div class="meta__item">
+        <div>
+          {% trans "Scheduled by" %}:
+        </div>
+        <div>
+          <a href="{{ object.user.get_absolute_url }}">{{ object.user.profile.get_display_name }}</a>
+        </div>
+      </div>
     {% endif %}
-  </dl>
+    {% if object.duration %}
+      <div class="meta__item">
+        <div>
+          {% trans "Content" %}:
+        </div>
+        <div>
+          <a href="{{ object.content_object.get_absolute_url }}">{{ object.content_object.name }}</a>
+        </div>
+      </div>
+    {% endif %}
+    {% if object.duration %}
+      <div class="meta__item">
+        <div>
+          {% trans "Duration" %}:
+        </div>
+        <div>
+          <span>{{ object.duration|msec_to_time }}</span>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+  <div class="meta">
+    <div class="meta__item">
+      <div>
+        {% trans "Airplay date" %}:
+      </div>
+      <div class="meta__item__grid">
+        <time>
+          {{ object.time_start|date:'DATETIME_FORMAT' }}
+        </time>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="span2 padded-h padded-v">
-  <div class="image">
-    {% if object.content_object and object.content_object.main_image %}
-    <a href="{% thumbnail object.content_object.main_image 1200x1200 crop upscale %}" class="zoomable cboxElement"> <img
-      src="{% thumbnail object.content_object.main_image 172x172 crop upscale %}" alt="Cover"/> </a>
-    {% else %}
-    <img src="/static/img/base/defaults/listview.artist.xl.png" alt="{% trans " No cover available" %}" />
-    {% endif %}
+<div class="header__secondary">
+  <div class="visual">
+    <visual-with-actions
+      ct="{{ object.content_object.get_ct }}"
+      uuid="{{ object.content_object.uuid }}"
+      url="{% url 'api:release-detail' object.uuid %}"
+      image-url="{% thumbnail object.main_image 280x280 crop upscale %}"
+      large-image-url="{% thumbnail object.main_image 1200x1200 crop upscale %}"
+      :actions="{% get_object_actions_as_json object.content_object user %}">
+    </visual-with-actions>
   </div>
 </div>

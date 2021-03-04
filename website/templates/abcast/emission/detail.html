@@ -1,0 +1,36 @@
+{% extends "layout_base.html" %}
+
+{% load i18n %}
+
+{% block title %}{{ object.name }} / {{ object.time_start|date:'DATETIME_FORMAT' }}{% endblock %}
+
+{% block inner %}
+<div class="item item--detail item--emission">
+  <div class="item--header-container">
+    <div class="item--header">
+      {% include "abcast/emission/_header.html" %}
+    </div>
+  </div>
+  <div class="item--body">
+    <div class="list-prefix">
+      <list-actions
+        obj-ct="{{ object.content_object.get_ct }}"
+        obj-uuid="{{ object.content_object.uuid }}"
+      ></list-actions>
+    </div>
+    <div class="list list--table">
+      {% for item in object.get_timestamped_media %}
+        {% if not item.is_future %}
+        <div class="list-item">
+          {% include 'alibrary/media/_row.html' with object=item.content_object %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block sidebar %}
+  {% include "abcast/emission/sidebar/_detail.html" %}
+{% endblock %}

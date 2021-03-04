@@ -55,9 +55,16 @@ class Station(TimestampedModelMixin, UUIDModelMixin, models.Model):
     def __str__(self):
         return "%s" % self.name
 
-    @models.permalink
+    # @models.permalink
+    # def get_absolute_url(self):
+    #     return "abcast-station-detail", [self.uuid]
+
     def get_absolute_url(self):
-        return "abcast-station-detail", [self.uuid]
+        try:
+            url = reverse("abcast-station-detail", kwargs={"uuid": str(self.uuid)})
+        except:
+            url = ''
+        return url
 
     def get_admin_url(self):
         return reverse("admin:abcast_station_change", args=(self.pk,))
@@ -163,7 +170,7 @@ class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):
         return "%s" % self.name
 
     def get_absolute_url(self):
-        return reverse("abcast-station-detail", kwargs={"uuid": self.station.uuid})
+        return reverse("abcast-station-detail", kwargs={"uuid": str(self.station.uuid)})
 
     def get_api_url(self):
         return (
