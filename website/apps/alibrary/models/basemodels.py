@@ -305,6 +305,7 @@ class RelationManager(models.Manager):
             "twitter",
             "linkedin",
             "imdb",
+            "ndr",
         ]
 
         objects = {obj.service: obj for obj in qs}
@@ -354,6 +355,7 @@ class Relation(TimestampedModelMixin, models.Model):
         ("official", _("Official website")),
         ("vimeo", _("Vimeo")),
         ("instagram", _("Instagram")),
+        ("ndr", _("NDR")),
     )
 
     ACTION_CHOICES = (("information", _("Information")), ("buy", _("Buy")))
@@ -424,6 +426,9 @@ class Relation(TimestampedModelMixin, models.Model):
 
         if icon == "discogs_master":
             return "discogs"
+
+        if icon == "ndr":
+            return "tag"
 
         return icon
 

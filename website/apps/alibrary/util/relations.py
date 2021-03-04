@@ -54,6 +54,9 @@ def get_service_by_url(url, service=None):
     if url.find("instagram.com") != -1:
         service = "instagram"
 
+    if url.find("ndr.de") != -1:
+        service = "ndr"
+
     if not service:
         service = "generic"
 
