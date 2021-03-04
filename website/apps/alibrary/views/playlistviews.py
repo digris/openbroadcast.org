@@ -201,6 +201,11 @@ class PlaylistDetailView(SectionDetailView):
             "title": _("Emissions"),
         },
         {
+            "key": "description",
+            "url": "description",
+            "title": _("Description"),
+        },
+        {
             "key": "mixdown",
             "url": "mixdown",
             "title": _("Mixdown"),
@@ -213,6 +218,8 @@ class PlaylistDetailView(SectionDetailView):
         emission_qs = obj.get_emissions()
         if not emission_qs.exists():
             sections = [s for s in sections if not s['key'] == 'emissions']
+        if not obj.description:
+            sections = [s for s in sections if not s['key'] == 'description']
         if not obj.is_broadcast:
             sections = [s for s in sections if not s['key'] == 'mixdown']
         return sections
