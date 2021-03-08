@@ -72,14 +72,20 @@ var EditUi = function () {
         });
 
         // move track/release artist inlineformset
+
         // media
         $('#mediaartist_container').detach().appendTo('#artist_relation_container');
         $('#extraartist_container').detach().appendTo('#artist_relation_container');
+
         // release
         $('#albumartist_container').detach().appendTo('#artist_relation_container');
-        // artist alias_container
+
+        // artist
         $('#alias_container').detach().appendTo('#artist_relation_container');
         $('#member_container').detach().appendTo('#artist_relation_container');
+
+        // label
+        $('#founding_artist').detach().appendTo('#founding_artist_container');
 
     };
 

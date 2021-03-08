@@ -20,7 +20,7 @@ from django_extensions.db.fields import AutoSlugField
 from alibrary import settings as alibrary_settings
 from base.fields import extra
 from base.mixins import TimestampedModelMixin, UUIDModelMixin
-from alibrary.models import MigrationMixin
+from alibrary.models import MigrationMixin, Artist
 from alibrary.util.slug import unique_slugify
 from alibrary.util.storage import get_dir_for_object, OverwriteStorage
 
@@ -92,12 +92,11 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         on_delete=models.SET_NULL,
         related_name="labels_publisher",
     )
-    founding_artist = models.ForeignKey(
+    founding_artists = models.ManyToManyField(
         "alibrary.Artist",
+        through="LabelFoundingArtist",
         verbose_name="Founder",
         blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
         related_name="founded_labels",
     )
     listed = models.BooleanField(
@@ -216,6 +215,29 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     def save(self, *args, **kwargs):
         unique_slugify(self, self.name)
         super(Label, self).save(*args, **kwargs)
+
+
+@python_2_unicode_compatible
+class LabelFoundingArtist(models.Model):
+    label = models.ForeignKey(
+        Label, related_name="+", blank=True, null=True,
+    )
+    artist = models.ForeignKey(
+        Artist, related_name="+", blank=True, null=True,
+    )
+
+    class Meta:
+        app_label = "alibrary"
+        verbose_name = _("Founding Artist")
+        verbose_name_plural = _("Founding Artists")
+
+    def __str__(self):
+        return '"%s" <> "%s"' % (self.label.name, self.artist.name)
+
+    def save(self, *args, **kwargs):
+        if not self.label or not self.artist:
+            self.delete()
+        super(LabelFoundingArtist, self).save(*args, **kwargs)
 
 
 tagging_register(Label)

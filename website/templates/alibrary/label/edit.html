@@ -68,9 +68,17 @@
     >
       {{ form.management_form }}
       {{ named_formsets.relation.management_form }}
+      {{ named_formsets.founding_artist.management_form }}
 
       {% crispy named_formsets.action %}
       {% crispy form %}
+
+      <fieldset id="founding_artist">
+        <legend>
+          {% trans "Founding Artists" %}
+        </legend>
+        {% crispy named_formsets.founding_artist %}
+      </fieldset>
 
       <fieldset class="relations">
         <legend>

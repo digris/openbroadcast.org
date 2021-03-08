@@ -16,7 +16,7 @@ from .artistmodels import (
     ArtistMembership,
     ArtistAlias,
 )
-from .labelmodels import Label
+from .labelmodels import Label, LabelFoundingArtist
 from .mediamodels import Media, MediaExtraartists, MediaArtists
 from .playlistmodels import (
     Playlist,

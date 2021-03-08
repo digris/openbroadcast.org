@@ -132,7 +132,6 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
     )
     excerpt = models.TextField(blank=True, null=True)
     biography = models.TextField(blank=True, null=True)
-    # relations
     members = models.ManyToManyField(
         "self", through="ArtistMembership", symmetrical=False
     )

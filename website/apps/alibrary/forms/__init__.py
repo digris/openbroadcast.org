@@ -6,7 +6,7 @@ from alibrary.forms.artistforms import (
     MemberFormSet,
     AliasFormSet,
 )
-from alibrary.forms.labelforms import LabelForm, LabelActionForm, LabelRelationFormSet
+from alibrary.forms.labelforms import LabelForm, LabelActionForm, FoundingArtistFormSet, LabelRelationFormSet
 from alibrary.forms.playlistforms import *
 from alibrary.forms.mediaforms import (
     MediaForm,

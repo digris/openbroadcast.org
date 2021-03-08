@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from ac_tagging.widgets import TagAutocompleteTagIt
-from alibrary.models import Relation, Label
+from alibrary.models import Relation, Label, Artist, LabelFoundingArtist
 from alibrary.util.storage import get_file_from_url
 from base.mixins import StripWhitespaceFormMixin
 from crispy_forms.bootstrap import FormActions
@@ -10,6 +10,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Field, Fieldset, Row, Column
 from crispy_forms_extra.layout import LookupField, LookupImageField
 from django import forms
+from django.forms import ModelForm, Form
+from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from django.contrib.contenttypes.forms import (
     BaseGenericInlineFormSet,
     generic_inlineformset_factory,
@@ -146,7 +148,12 @@ class LabelForm(ModelForm):
         tagging_layout = Fieldset("Tags", LookupField("d_tags"))
 
         layout = Layout(
-            base_layout, activity_layout, contact_layout, meta_layout, tagging_layout
+            base_layout,
+            activity_layout,
+            contact_layout,
+            HTML('<div id="founding_artist_container"></div>'),
+            meta_layout,
+            tagging_layout,
         )
 
         self.helper.add_layout(layout)
@@ -192,6 +199,60 @@ class LabelForm(ModelForm):
 
     def save(self, *args, **kwargs):
         return super(LabelForm, self).save(*args, **kwargs)
+
+
+class BaseFoundingArtistFormSet(BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs["instance"]
+        super(BaseFoundingArtistFormSet, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+        base_layout = Row(
+            Column(Field("artist", css_class="input-xlarge"), css_class="span8"),
+            Column(Field("DELETE", css_class="input-mini"), css_class="span4 delete"),
+            css_class="albumartist-row row-fluid form-autogrow",
+        )
+
+        self.helper.add_layout(base_layout)
+
+
+class BaseFoundingArtistForm(ModelForm):
+    class Meta:
+        model = LabelFoundingArtist
+        parent_model = Artist
+        fields = ["artist"]
+
+    artist = search_fields.AutocompleteField(
+        "alibrary.artist", allow_new=True, required=False, label=_("Artist")
+    )
+
+    def clean_artist(self):
+        artist = self.cleaned_data["artist"]
+        try:
+            if not artist.pk:
+                artist.save()
+                return artist
+        except:
+            return None
+        return artist
+
+    def save(self, *args, **kwargs):
+        instance = super(BaseFoundingArtistForm, self).save(*args, **kwargs)
+        return instance
+
+
+FoundingArtistFormSet = inlineformset_factory(
+    Label,
+    LabelFoundingArtist,
+    form=BaseFoundingArtistForm,
+    formset=BaseFoundingArtistFormSet,
+    fk_name="label",
+    extra=15,
+    can_delete=True,
+    can_order=False,
+)
 
 
 class BaseLabelReleationFormSet(BaseGenericInlineFormSet):

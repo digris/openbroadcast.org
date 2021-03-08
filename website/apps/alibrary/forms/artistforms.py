@@ -197,16 +197,10 @@ Artists members / membership
 
 class BaseMemberFormSet(BaseInlineFormSet):
     def __init__(self, *args, **kwargs):
-
         self.instance = kwargs["instance"]
-
         super(BaseMemberFormSet, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_id = "id_artists_form_%s" % "inline"
-        self.helper.form_class = "form-horizontal"
-        self.helper.form_method = "post"
-        self.helper.form_action = ""
         self.helper.form_tag = False
 
         base_layout = Row(
@@ -265,10 +259,6 @@ class BaseMemberForm(ModelForm):
 """
 Artists alias / "other projects"
 """
-
-""""""
-
-
 class BaseAliasFormSet(BaseInlineFormSet):
     def __init__(self, *args, **kwargs):
 

@@ -65,13 +65,15 @@
         </div>
       </div>
     {% endif %}
-    {% if object.founding_artist %}
+    {% if object.founding_artists.exists %}
       <div class="meta__item">
         <div>
-          {% trans "Founder" %}:
+          {% trans "Founders" %}:
         </div>
         <div>
-          <a href="{{ object.founding_artist.get_absolute_url }}">{{ object.founding_artist.name }}</a>
+          {% for founding_artist in object.founding_artists.all %}
+            <a href="{{ founding_artist.get_absolute_url }}">{{ founding_artist.name }}</a>{% if not forloop.last %}, {% endif %}
+          {% endfor %}
         </div>
       </div>
     {% endif %}

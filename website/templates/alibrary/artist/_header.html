@@ -98,6 +98,18 @@
         </div>
       </div>
     {% endif %}
+    {% if object.founded_labels %}
+      <div class="meta__item">
+        <div>
+          {% trans "Founded labels" %}:
+        </div>
+        <div>
+          {% for label in object.founded_labels.all %}
+            <a href="{{ label.get_absolute_url }}">{{ label.name }}</a>{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
     {% if object.ipi_code %}
       <div class="meta__item">
         <div>
