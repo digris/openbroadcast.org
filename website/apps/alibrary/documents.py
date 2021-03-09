@@ -335,6 +335,10 @@ class ReleaseDocument(DocType):
         ids = []
         for media in instance.get_media():
             ids += [str(media.artist.uuid)]
+            for artist in media.media_artists.all():
+                ids += [str(artist.uuid)]
+            for artist in media.extra_artists.all():
+                ids += [str(artist.uuid)]
         for artist in instance.album_artists.all():
             ids += [str(artist.uuid)]
         for artist in instance.extra_artists.all():
