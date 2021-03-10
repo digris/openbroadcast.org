@@ -28,8 +28,6 @@ def sync_favorites(rating, obj, user):
 @receiver(post_save, sender=Vote)
 def vote_post_save(sender, instance, **kwargs):
     log.debug("vote saved: {}".format(instance))
-    print("saved", instance)
-    print("vote", int(instance.vote))
 
     sync_favorites(
         rating=int(instance.vote), obj=instance.content_object, user=instance.user

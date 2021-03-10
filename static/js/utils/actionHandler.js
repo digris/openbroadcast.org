@@ -1,5 +1,6 @@
 import { EventBus } from '../eventBus';
 import store from '../store';
+import { addNotification } from '../components/Notifications/utils';
 
 class ActionHandler {
   constructor() {
@@ -46,6 +47,11 @@ class ActionHandler {
           url: action.url,
         };
         store.dispatch('scheduler/addToClipboard', co);
+        addNotification({
+          title: 'Added to Clipboard',
+          body: 'You now will fnid this broadcast in the <a href="/program/scheduler/">scheduler</a>.',
+          lifetime: 5000,
+        });
         break;
       }
       default: {

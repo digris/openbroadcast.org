@@ -77,8 +77,12 @@ class PreflightCheck(models.Model):
         }
 
         if not self.preflight_ok and self.result:
+            try:
+                errors = json.loads(self.result).get('errors', [])
+            except TypeError:
+                errors = ['Unable to load preflight data']
             summary.update({
-                'errors': json.loads(self.result).get('errors', [])
+                'errors': errors
             })
 
         return summary

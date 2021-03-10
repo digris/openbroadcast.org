@@ -395,9 +395,8 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         playlist_qs = self.get_appearances()
 
         emission_qs = (
-            Emission.objects.past()
-            .filter(
-                object_id__in=[i.pk for i in playlist_qs.all()],
+            Emission.objects.filter(
+                object_id__in=playlist_qs.values_list("id", flat=True),
                 content_type=ContentType.objects.get_for_model(Playlist),
             )
             .order_by("-time_start")
@@ -442,7 +441,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
         artists = []
         if self.media_artists.exists():
-            for media_artist in self.media_mediaartist.all().select_related('artist'):
+            for media_artist in self.media_mediaartist.all().select_related("artist"):
                 artists.append(
                     {
                         "artist": media_artist.artist,
@@ -519,28 +518,24 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
         return qs
 
-    # TODO: check usage.
-    @cached_property
-    def appearances(self):
-        return self.get_appearances()
-
-    @property
-    def broadcast_appearances(self):
-        return self.get_appearances().filter(
-            type=Playlist.TYPE_BROADCAST
-        )
-
-    @property
-    def playlist_appearances(self):
-        return self.get_appearances().filter(
-            type=Playlist.TYPE_PLAYLIST
-        )
-
-    @property
-    def public_appearances(self):
-        if self.mediatype == 'jingle':
-            return None
-        return self.broadcast_appearances | self.playlist_appearances
+    # # TODO: check usage.
+    # @cached_property
+    # def appearances(self):
+    #     return self.get_appearances()
+    #
+    # @property
+    # def broadcast_appearances(self):
+    #     return self.get_appearances().filter(type=Playlist.TYPE_BROADCAST)
+    #
+    # @property
+    # def playlist_appearances(self):
+    #     return self.get_appearances().filter(type=Playlist.TYPE_PLAYLIST)
+    #
+    # @property
+    # def public_appearances(self):
+    #     if self.mediatype == "jingle":
+    #         return None
+    #     return self.broadcast_appearances | self.playlist_appearances
 
     def process_master_info(self, save=False):
 
@@ -564,8 +559,8 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
         # Assign a default license
         """
-         - not applying default license anymore
-         - applying default license again: #898
+        - not applying default license anymore
+        - applying default license again: #898
         """
         if not self.license:
             try:

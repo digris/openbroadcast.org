@@ -7,6 +7,7 @@ from django.apps import apps
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.http import FileResponse
+from django.utils.cache import patch_response_headers
 
 from rest_framework import mixins
 from rest_framework import viewsets
@@ -312,3 +313,35 @@ class ObjectReassignView(APIView):
         obj = reassign_media(release, media_qs)
 
         return Response({"location": obj.get_absolute_url()})
+
+
+class MediaAppearances(APIView):
+    def get(self, request, uuid):
+
+        obj = get_object_or_404(Media, uuid=uuid)
+
+        qs = obj.get_appearances()
+
+        public_count = qs.filter(type=Playlist.TYPE_PLAYLIST).count()
+        broadcast_count = qs.filter(type=Playlist.TYPE_BROADCAST).count()
+
+        # unpublished broaadcasts: count "private" playlists that have a target duration set.
+        # so we assume they will become broadcastable sooner or later...
+        broadcast_unpublished_count = qs.filter(
+            type=Playlist.TYPE_BASKET,
+            target_duration__gt=0,
+        ).count()
+
+        # if channel_uuid:
+        #     qs = qs.filter(channel__uuid=channel_uuid)
+
+        data = {
+            "public": public_count,
+            "broadcast": broadcast_count,
+            "broadcast_unpublished": broadcast_unpublished_count,
+        }
+
+        response = Response(data)
+        patch_response_headers(response, cache_timeout=600)
+
+        return response

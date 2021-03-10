@@ -88,9 +88,19 @@ class EmissionSerializer(FlexFieldsModelSerializer):
 
 
 class EmissionHistorySerializer(serializers.ModelSerializer):
+    ct = serializers.CharField(source="get_ct")
+    channel_uuid = serializers.CharField(source="channel.uuid")
+
     class Meta:
         model = Emission
-        fields = ["uuid", "time_start", "time_end", "duration"]
+        fields = [
+            "uuid",
+            "ct",
+            "time_start",
+            "time_end",
+            # "duration",
+            "channel_uuid",
+        ]
 
 
 class PlayoutScheduleEmissionSerializer(serializers.Serializer):

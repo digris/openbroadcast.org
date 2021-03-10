@@ -18,14 +18,13 @@ const getters = {
   // }
   objectHistoryByKey: (state) => (objCt, objUuid) => {
     const key = generateKey(objCt, objUuid);
-    console.log('objectHistoryByKey', key);
     return state.objectHistory[key] || null;
   },
 };
 
 const mutations = {
   setObjectHistory: (state, { key, payload }) => {
-    Vue.set(state.objectHistory, key, payload);
+    Vue.set(state.objectHistory, key, payload.results);
   },
 };
 
@@ -33,7 +32,7 @@ const actions = {
   loadObjectHistory: async (context, { objCt, objUuid }) => {
     const key = generateKey(objCt, objUuid);
     const url = `${HISTORY_ENDPOINT}${key}/`;
-    context.commit('setObjectHistory', { key, payload: [] });
+    context.commit('setObjectHistory', { key, payload: { count: 0, results: [] } });
     APIClient.get(url).then((response) => {
       context.commit('setObjectHistory', { key, payload: response.data });
     }).catch(() => {

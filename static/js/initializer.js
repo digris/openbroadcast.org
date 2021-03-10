@@ -25,6 +25,7 @@ import ObjectSingleAction from './components/ObjectActions/ObjectSingleAction.vu
 import ObjectStatistics from './components/ObjectStatistics/ObjectStatistics.vue';
 import ListActions from './components/ListActions/ListActions.vue';
 import EmissionHistory from './components/EmissionHistory/EmissionHistory.vue';
+import EmissionHistoryInline from './components/EmissionHistory/EmissionHistoryInline.vue';
 import Exporter from './components/Exporter/Exporter.vue';
 import MediaPreflightStatus from './components/MediaPreflightStatus/MediaPreflightStatus.vue';
 import ObjectMerge from './components/ObjectMerge/ObjectMerge.vue';
@@ -41,6 +42,7 @@ import VisualWithActions from './components/UI/VisualWithActions/VisualWithActio
 import ObjectSelectionAction from './components/UI/ObjectSelectionAction.vue';
 // Library
 import MediaRow from './components/Library/MediaRow.vue';
+import MediaAppearances from './components/Library/MediaAppearances.vue';
 // forms
 import Formset from './components/Form/Formset.vue';
 import InputContainer from './components/Form/InputContainer.vue';
@@ -60,6 +62,7 @@ class AppInitializer {
         // generic ui components
         card: Card,
         'media-row': MediaRow,
+        'media-appearances': MediaAppearances,
         visual: Visual,
         'lazy-image': LazyImage,
         lightbox: Lightbox,
@@ -85,6 +88,7 @@ class AppInitializer {
         'object-statistics': ObjectStatistics,
         'list-actions': ListActions,
         'emission-history': EmissionHistory,
+        'emission-history-inline': EmissionHistoryInline,
         exporter: Exporter,
         'media-preflight-status': MediaPreflightStatus,
       },

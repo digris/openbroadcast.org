@@ -23,6 +23,14 @@ module.exports = {
     "template-curly-spacing" : "off",
     "indent" : "off",
   },
+  // overrides: [
+  //   {
+  //     files: ["*.vue"],
+  //     rules: {
+  //       'max-len': 120,
+  //     },
+  //   },
+  // ],
   parserOptions: {
     "parser": "babel-eslint",
     "sourceType": "module"

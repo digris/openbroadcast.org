@@ -3,12 +3,11 @@ from __future__ import unicode_literals
 
 import datetime
 import logging
-import json
 
-from operator import itemgetter
 from django.apps import apps
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.utils.cache import patch_response_headers
 from django_filters import rest_framework as filters
 from rest_flex_fields import FlexFieldsModelViewSet
 from rest_framework import permissions
@@ -151,12 +150,30 @@ class EmissionHistory(APIView):
         return get_object_or_404(apps.get_model(*obj_ct.split(".")), uuid=obj_uuid)
 
     def get(self, request, obj_ct, obj_uuid):
+        limit = request.GET.get("limit", 20)
+        channel_uuid = request.GET.get("channel_uuid", None)
+
         obj = self.get_object()
+        qs = obj.emissions.order_by("-time_start")
+        qs = qs.select_related("channel")
+
+        if channel_uuid:
+            qs = qs.filter(channel__uuid=channel_uuid)
+
         serializer = EmissionHistorySerializer(
-            instance=obj.emissions.order_by("-time_start"), many=True
+            instance=qs[0:limit],
+            many=True,
         )
 
-        return Response(serializer.data)
+        data = {
+            "count": qs.count(),
+            "results": serializer.data,
+        }
+
+        response = Response(data)
+        patch_response_headers(response, cache_timeout=600)
+
+        return response
 
 
 emission_history = EmissionHistory.as_view()
@@ -239,7 +256,7 @@ class PlayoutSchedule(APIView):
         # playout_started.send(sender=self.__class__, obj_ct='obj_ct', obj_uuid='obj_uuid', emission_uuid='emission_uuid')
         playout_started.send(sender=self.__class__, **request.data)
 
-        return Response({'status': True})
+        return Response({"status": True})
 
 
 playout_schedule = PlayoutSchedule.as_view()
