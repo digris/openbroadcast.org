@@ -69,7 +69,10 @@ class ProfileForm(ModelForm):
         # self.fields['d_tags'].widget.instance = instance
 
         appearance_layout = Layout(
-            Fieldset(_("Appearance"), InputContainer("pseudonym"),)
+            Fieldset(
+                _("Appearance"),
+                InputContainer("pseudonym"),
+            )
         )
 
         profile_layout = Layout(
@@ -98,8 +101,12 @@ class ProfileForm(ModelForm):
                     ),
                     css_class="fieldset-hint fieldset-hint--info",
                 ),
-                Grid(Cell(InputContainer("address1")),),
-                Grid(Cell(InputContainer("address2")),),
+                Grid(
+                    Cell(InputContainer("address1")),
+                ),
+                Grid(
+                    Cell(InputContainer("address2")),
+                ),
                 Grid(
                     Cell(InputContainer("city")),
                     Cell(InputContainer("zip")),
@@ -121,11 +128,18 @@ class ProfileForm(ModelForm):
                     ),
                     css_class="fieldset-hint fieldset-hint--info",
                 ),
-                Grid(Cell(InputContainer("iban")), Cell(InputContainer("paypal")),),
+                Grid(
+                    Cell(InputContainer("iban")),
+                    Cell(InputContainer("paypal")),
+                ),
             )
         )
         settings_layout = Layout(
-            Fieldset(_("Settings"), InputContainer("enable_alpha_features"),)
+            Fieldset(
+                _("Settings"),
+                InputContainer("enable_alpha_features"),
+                InputContainer("settings_show_appearances"),
+            )
         )
         skills_layout = Layout(
             Fieldset(
@@ -166,8 +180,6 @@ class ProfileForm(ModelForm):
     #     # print('---', tags)
     #     #
     #     # return tags.lower()
-
-
 
 
 class LinkForm(ModelForm):

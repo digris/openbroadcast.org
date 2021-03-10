@@ -121,6 +121,10 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
     # alpha features
     enable_alpha_features = models.BooleanField(default=False)
 
+    settings_show_appearances = models.BooleanField(
+        verbose_name="Show media appearances", default=True
+    )
+
     class Meta:
         app_label = "profiles"
         verbose_name = _("user profile")
@@ -223,7 +227,6 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
 
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)
-
 
 
 tagging_register(Profile)
@@ -414,7 +417,7 @@ class Service(models.Model):
         return "%s" % self.username
 
     def get_url(self):
-        return 'asdadsd'
+        return "asdadsd"
 
     @property
     def service_url(self):
