@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import logging
 
 from django.apps import apps
+from django.core.cache import cache
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.http import FileResponse
@@ -318,30 +319,35 @@ class ObjectReassignView(APIView):
 class MediaAppearances(APIView):
     def get(self, request, uuid):
 
-        obj = get_object_or_404(Media, uuid=uuid)
+        cache_key = "media-appearances-{}".format(uuid)
+        data = cache.get(cache_key)
+        if not data:
+            obj = get_object_or_404(Media, uuid=uuid)
 
-        qs = obj.get_appearances()
+            qs = obj.get_appearances()
 
-        public_count = qs.filter(type=Playlist.TYPE_PLAYLIST).count()
-        broadcast_count = qs.filter(type=Playlist.TYPE_BROADCAST).count()
+            public_count = qs.filter(type=Playlist.TYPE_PLAYLIST).count()
+            broadcast_count = qs.filter(type=Playlist.TYPE_BROADCAST).count()
 
-        # unpublished broaadcasts: count "private" playlists that have a target duration set.
-        # so we assume they will become broadcastable sooner or later...
-        broadcast_unpublished_count = qs.filter(
-            type=Playlist.TYPE_BASKET,
-            target_duration__gt=0,
-        ).count()
+            # unpublished broaadcasts: count "private" playlists that have a target duration set.
+            # so we assume they will become broadcastable sooner or later...
+            broadcast_unpublished_count = qs.filter(
+                type=Playlist.TYPE_BASKET,
+                target_duration__gt=0,
+            ).count()
 
-        # if channel_uuid:
-        #     qs = qs.filter(channel__uuid=channel_uuid)
+            # if channel_uuid:
+            #     qs = qs.filter(channel__uuid=channel_uuid)
 
-        data = {
-            "public": public_count,
-            "broadcast": broadcast_count,
-            "broadcast_unpublished": broadcast_unpublished_count,
-        }
+            data = {
+                "public": public_count,
+                "broadcast": broadcast_count,
+                "broadcast_unpublished": broadcast_unpublished_count,
+            }
+
+            cache.set(cache_key, data, 60 * 60)
 
         response = Response(data)
-        patch_response_headers(response, cache_timeout=600)
+        patch_response_headers(response, cache_timeout=60 * 60)
 
         return response

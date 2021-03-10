@@ -5,6 +5,7 @@ import datetime
 import logging
 
 from django.apps import apps
+from django.core.cache import cache
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.cache import patch_response_headers
@@ -153,25 +154,30 @@ class EmissionHistory(APIView):
         limit = request.GET.get("limit", 20)
         channel_uuid = request.GET.get("channel_uuid", None)
 
-        obj = self.get_object()
-        qs = obj.emissions.order_by("-time_start")
-        qs = qs.select_related("channel")
+        cache_key = "emission-history-{}-{}".format(obj_ct, obj_uuid)
+        data = cache.get(cache_key)
+        if not data:
+            obj = self.get_object()
+            qs = obj.emissions.order_by("-time_start")
+            qs = qs.select_related("channel")
 
-        if channel_uuid:
-            qs = qs.filter(channel__uuid=channel_uuid)
+            if channel_uuid:
+                qs = qs.filter(channel__uuid=channel_uuid)
 
-        serializer = EmissionHistorySerializer(
-            instance=qs[0:limit],
-            many=True,
-        )
+            serializer = EmissionHistorySerializer(
+                instance=qs[0:limit],
+                many=True,
+            )
 
-        data = {
-            "count": qs.count(),
-            "results": serializer.data,
-        }
+            data = {
+                "count": qs.count(),
+                "results": serializer.data,
+            }
+
+            cache.set(cache_key, data, 60 * 60)
 
         response = Response(data)
-        patch_response_headers(response, cache_timeout=600)
+        patch_response_headers(response, cache_timeout=60 * 60)
 
         return response
 
