@@ -5,10 +5,12 @@
   <div class="title title--primary">
     <h2>{{ object.name|truncate_chars_inner:40 }}</h2>
     <small>
-      {{ object.get_type_display }} ({{ object.type }})
-      {% if object.type == 'broadcast' %}
-        ({{ object.get_status_display }})
-      {% endif %}
+      {{ object.get_type_display }}
+      {% comment %}
+        {% if object.type == 'broadcast' %}
+          ({{ object.get_status_display }})
+        {% endif %}
+      {% endcomment %}
     </small>
   </div>
 
