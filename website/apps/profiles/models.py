@@ -121,7 +121,11 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
     # alpha features
     enable_alpha_features = models.BooleanField(default=False)
 
-    settings_show_appearances = models.BooleanField(
+    settings_show_media_history = models.BooleanField(
+        verbose_name="Show media emission history", default=True
+    )
+
+    settings_show_media_appearances = models.BooleanField(
         verbose_name="Show media appearances", default=True
     )
 

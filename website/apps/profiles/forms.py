@@ -138,7 +138,8 @@ class ProfileForm(ModelForm):
             Fieldset(
                 _("Settings"),
                 InputContainer("enable_alpha_features"),
-                InputContainer("settings_show_appearances"),
+                InputContainer("settings_show_media_history"),
+                InputContainer("settings_show_media_appearances"),
             )
         )
         skills_layout = Layout(

@@ -49,13 +49,17 @@
       {{ object.duration_s|sec_to_time }}
     </div>
     {% if not object.is_jingle %}
-      <emission-history-inline
-        obj-ct="{{ object.get_ct }}"
-        obj-uuid="{{ object.uuid }}"
-      ></emission-history-inline>
-      <media-appearances
-        obj-uuid="{{ object.uuid }}"
-      ></media-appearances>
+      {% if user.is_authenticated and user.profile and user.profile.settings_show_media_history %}
+        <emission-history-inline
+          obj-ct="{{ object.get_ct }}"
+          obj-uuid="{{ object.uuid }}"
+        ></emission-history-inline>
+      {%  endif %}
+      {% if user.is_authenticated and user.profile and user.profile.settings_show_media_appearances %}
+        <media-appearances
+          obj-uuid="{{ object.uuid }}"
+        ></media-appearances>
+      {%  endif %}
     {%  endif %}
     {% comment %}
     {% if user.is_authenticated and user.profile and user.profile.settings_show_appearances %}
