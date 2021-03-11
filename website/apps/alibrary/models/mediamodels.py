@@ -315,6 +315,10 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         if self.release:
             return self.release.main_image
 
+    @property
+    def is_jingle(self):
+        return self.mediatype == "jingle"
+
     def get_lookup_providers(self):
 
         providers = []
@@ -512,7 +516,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
             )
             .exclude(type=Playlist.TYPE_OTHER)
             .order_by("-type", "-created")
-            .nocache()
+            # .nocache()  # NOTE: do we need `nocache()` here?
             .distinct()
         )
 
