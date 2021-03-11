@@ -34,6 +34,11 @@ export default {
       required: false,
       default: null,
     },
+    type: {
+      type: String,
+      required: false,
+      default: 'song',
+    },
     includeTracknumber: {
       type: Boolean,
       default: false,
@@ -101,7 +106,7 @@ export default {
 <template>
   <div
     class="media-row"
-    :class="{'is-selected': selected, 'is-minimal': isMinimal}"
+    :class="[{'is-selected': selected, 'is-minimal': isMinimal}, `is-${type}`]"
   >
     <div
       v-if="includeTracknumber"
@@ -182,6 +187,10 @@ export default {
 
   &.is-selected {
     background: var(--primary-color-light);
+  }
+
+  &.is-jingle {
+    background: #eee;
   }
 
   &__tracknumber {

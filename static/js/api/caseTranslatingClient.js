@@ -32,7 +32,6 @@ APIClient.interceptors.request.use((config) => new Promise((resolve) => {
  */
 APIClient.interceptors.response.use((response) => {
   PENDING_REQUESTS = Math.max(0, PENDING_REQUESTS - 1);
-  console.debug('PENDING_REQUESTS', PENDING_REQUESTS);
   return Promise.resolve(response);
 }, (error) => {
   PENDING_REQUESTS = Math.max(0, PENDING_REQUESTS - 1);
