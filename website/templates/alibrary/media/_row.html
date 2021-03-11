@@ -47,7 +47,6 @@
       </media-preflight-status>
       {{ object.duration_s|sec_to_time }}
     </div>
-    {% comment %}
     <emission-history-inline
       obj-ct="{{ object.get_ct }}"
       obj-uuid="{{ object.uuid }}"
@@ -55,7 +54,7 @@
     <media-appearances
       obj-uuid="{{ object.uuid }}"
     ></media-appearances>
-    {% endcomment %}
+    {% comment %}
     {% if user.is_authenticated and user.profile and user.profile.settings_show_appearances %}
       {% if search_result %}
         {% if search_result.last_emission %}
@@ -82,5 +81,6 @@
         </div>
       {% endif %}
     {% endif %}
+    {% endcomment %}
   </template>
 </media-row>
