@@ -127,7 +127,7 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
         return None
 
     def get_delete_url(self):
-        return '#'
+        return "#"
 
     @models.permalink
     def get_download_url(self):
@@ -326,6 +326,7 @@ def post_delete_exportitem(sender, **kwargs):
 
 
 # post_delete.connect(post_delete_exportitem, sender=ExportItem)
+
 
 @task
 def cleanup_exports():

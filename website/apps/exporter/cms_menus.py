@@ -13,10 +13,14 @@ class ExportMenu(CMSAttachMenu):
     def get_nodes(self, request):
         nodes = []
 
-        node = NavigationNode(_("My Downloads"), reverse("exporter-export-list-legacy"), 191)
+        node = NavigationNode(
+            _("My Downloads"), reverse("exporter-export-list-legacy"), 191
+        )
         nodes.append(node)
 
-        node = NavigationNode(_("My Downloads NG"), reverse("exporter-export-index"), 192)
+        node = NavigationNode(
+            _("My Downloads NG"), reverse("exporter-export-index"), 192
+        )
         nodes.append(node)
 
         return nodes

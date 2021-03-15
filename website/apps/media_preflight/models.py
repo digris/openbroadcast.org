@@ -68,22 +68,19 @@ class PreflightCheck(models.Model):
         if self.media:
             return self.media.uuid
 
-
     @property
     def summary(self):
         summary = {
-            'passed': self.preflight_ok,
-            'errors': [],
+            "passed": self.preflight_ok,
+            "errors": [],
         }
 
         if not self.preflight_ok and self.result:
             try:
-                errors = json.loads(self.result).get('errors', [])
+                errors = json.loads(self.result).get("errors", [])
             except TypeError:
-                errors = ['Unable to load preflight data']
-            summary.update({
-                'errors': errors
-            })
+                errors = ["Unable to load preflight data"]
+            summary.update({"errors": errors})
 
         return summary
 

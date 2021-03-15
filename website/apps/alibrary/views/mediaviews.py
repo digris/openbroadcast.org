@@ -196,7 +196,6 @@ class MediaDetailViewLegacy(DetailView):
         obj = self.get_object()
         return redirect(obj.get_absolute_url())
 
-
     # extra_context = {}
     #
     # def get_context_data(self, **kwargs):
@@ -266,13 +265,13 @@ class MediaDetailView(SectionDetailView):
         sections = self.sections
         obj = self.get_object()
         if not obj.description:
-            sections = [s for s in sections if not s['key'] == 'description']
+            sections = [s for s in sections if not s["key"] == "description"]
         if not obj.lyrics:
-            sections = [s for s in sections if not s['key'] == 'lyrics']
+            sections = [s for s in sections if not s["key"] == "lyrics"]
         if not obj.extraartist_media.exists():
-            sections = [s for s in sections if not s['key'] == 'credits']
+            sections = [s for s in sections if not s["key"] == "credits"]
         if not obj.get_videoclips().exists():
-            sections = [s for s in sections if not s['key'] == 'videoclips']
+            sections = [s for s in sections if not s["key"] == "videoclips"]
         return sections
 
     def get_context_data(self, *args, **kwargs):
@@ -282,16 +281,21 @@ class MediaDetailView(SectionDetailView):
         playlist_qs = PlaylistItem.objects.filter(
             object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)
         )
-        broadcasts = Playlist.objects.filter(type=Playlist.TYPE_BROADCAST, items__in=playlist_qs)
-        playlists = Playlist.objects.filter(type=Playlist.TYPE_PLAYLIST, items__in=playlist_qs)
+        broadcasts = Playlist.objects.filter(
+            type=Playlist.TYPE_BROADCAST, items__in=playlist_qs
+        )
+        playlists = Playlist.objects.filter(
+            type=Playlist.TYPE_PLAYLIST, items__in=playlist_qs
+        )
 
-        context.update({
-            "broadcasts": broadcasts,
-            "playlists": playlists,
-        })
+        context.update(
+            {
+                "broadcasts": broadcasts,
+                "playlists": playlists,
+            }
+        )
 
         return context
-
 
 
 class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):

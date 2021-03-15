@@ -170,9 +170,7 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     def get_absolute_url(self):
         if self.disable_link:
             return None
-        return reverse(
-            "alibrary-label-detail", kwargs={"uuid": str(self.uuid)}
-        )
+        return reverse("alibrary-label-detail", kwargs={"uuid": str(self.uuid)})
 
     def get_edit_url(self):
         return reverse("alibrary-label-edit", args=(self.pk,))
@@ -220,10 +218,16 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 @python_2_unicode_compatible
 class LabelFoundingArtist(models.Model):
     label = models.ForeignKey(
-        Label, related_name="+", blank=True, null=True,
+        Label,
+        related_name="+",
+        blank=True,
+        null=True,
     )
     artist = models.ForeignKey(
-        Artist, related_name="+", blank=True, null=True,
+        Artist,
+        related_name="+",
+        blank=True,
+        null=True,
     )
 
     class Meta:

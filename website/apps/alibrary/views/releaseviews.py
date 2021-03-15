@@ -70,7 +70,7 @@ class ReleaseSearch(BaseFacetedSearch):
 class ReleaseListView(MenuMixin, BaseSearchListView):
     model = Release
     template_name = "alibrary/release/list.html"
-    current_menu_item = 'catalog:releases'
+    current_menu_item = "catalog:releases"
     search_class = ReleaseSearch
     order_by = [
         {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},

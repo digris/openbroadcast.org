@@ -259,6 +259,8 @@ class BaseMemberForm(ModelForm):
 """
 Artists alias / "other projects"
 """
+
+
 class BaseAliasFormSet(BaseInlineFormSet):
     def __init__(self, *args, **kwargs):
 

@@ -217,35 +217,30 @@ class PlaylistDetailView(SectionDetailView):
         obj = self.get_object()
         emission_qs = obj.get_emissions()
         if not emission_qs.exists():
-            sections = [s for s in sections if not s['key'] == 'emissions']
+            sections = [s for s in sections if not s["key"] == "emissions"]
         if not obj.description:
-            sections = [s for s in sections if not s['key'] == 'description']
+            sections = [s for s in sections if not s["key"] == "description"]
         if not obj.is_broadcast:
-            sections = [s for s in sections if not s['key'] == 'mixdown']
+            sections = [s for s in sections if not s["key"] == "mixdown"]
         return sections
 
     def get_queryset(self):
-        return self.model.objects.select_related(
-            'user',
-            'series',
-        ).prefetch_related(
-            'dayparts',
+        return self.model.objects.select_related("user", "series",).prefetch_related(
+            "dayparts",
         )
 
     def get_context_data(self, **kwargs):
         context = super(PlaylistDetailView, self).get_context_data(**kwargs)
 
         media_set = self.object.sorted_items.all()
-        media_set = media_set.select_related(
-            'content_type'
-        ).prefetch_related(
-            'content_object',
-            'content_object__artist',
-            'content_object__media_artists',
-            'content_object__release',
-            'content_object__release__label',
-            'content_object__relations',
-            'content_object__preflight_check',
+        media_set = media_set.select_related("content_type").prefetch_related(
+            "content_object",
+            "content_object__artist",
+            "content_object__media_artists",
+            "content_object__release",
+            "content_object__release__label",
+            "content_object__relations",
+            "content_object__preflight_check",
         )
 
         context["media_set"] = media_set

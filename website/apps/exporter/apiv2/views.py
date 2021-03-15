@@ -27,7 +27,11 @@ log = logging.getLogger(__name__)
 
 
 class ExportViewSet(
-    mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
 ):
 
     queryset = Export.objects.all().order_by("-created")
@@ -40,7 +44,7 @@ class ExportViewSet(
     def perform_create(self, serializer):
         export = serializer.save(user=self.request.user)
 
-        _objects = self.request.data.get('objects', [])
+        _objects = self.request.data.get("objects", [])
 
         def get_obj_by_key(key):
             ct, uuid = key.split(":")
@@ -64,4 +68,3 @@ class ExportViewSet(
         # print('_objects', _objects)
         # print('objects', objects)
         # print('export', export)
-

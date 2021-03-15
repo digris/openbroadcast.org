@@ -63,7 +63,7 @@ class Station(TimestampedModelMixin, UUIDModelMixin, models.Model):
         try:
             url = reverse("abcast-station-detail", kwargs={"uuid": str(self.uuid)})
         except:
-            url = ''
+            url = ""
         return url
 
     def get_admin_url(self):

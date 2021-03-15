@@ -19,7 +19,12 @@ from base.views.detail import SectionDetailView
 from search.views import BaseFacetedSearch, BaseSearchListView
 from search.duplicate_detection import get_ids_for_possible_duplicates
 
-from ..forms import LabelForm, LabelActionForm, LabelRelationFormSet, FoundingArtistFormSet
+from ..forms import (
+    LabelForm,
+    LabelActionForm,
+    LabelRelationFormSet,
+    FoundingArtistFormSet,
+)
 from ..models import Label
 from ..documents import LabelDocument
 
@@ -194,7 +199,9 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
                 self.request.POST or None, instance=self.object, prefix="relation"
             ),
             "founding_artist": FoundingArtistFormSet(
-                self.request.POST or None, instance=self.object, prefix="founding_artist"
+                self.request.POST or None,
+                instance=self.object,
+                prefix="founding_artist",
             ),
         }
 
