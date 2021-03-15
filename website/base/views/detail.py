@@ -66,7 +66,6 @@ class SectionDetailView(UUIDDetailView, DetailView):
     def get_section_menu(self, obj, section_key):
         menu = []
         for section in self.get_sections():
-            print(section)
             url_kwargs = {
                 "uuid": obj.uuid,
             }

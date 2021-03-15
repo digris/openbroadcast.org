@@ -27,6 +27,11 @@
                 <a href="{% url "profiles-profile-detail" user.profile.uuid %}">{{ user.profile.get_display_name }}</a>
                 <ul class="children">
                     <li>
+                        <a href="{% url "profiles-profile-edit-ng" user.profile.uuid %}">
+                            {% trans 'Settings' %}
+                        </a>
+                    </li>
+                    <li>
                         <a href="{% url "account:logout" %}">
                             {% trans 'Logout' %}
                         </a>

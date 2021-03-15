@@ -28,6 +28,12 @@ export default {
     class="preflight-status"
     :class="{'check-failed': ! checkPassed, 'has-errors': errors.length}"
   >
+    <!--
+    <pre
+      class="debug"
+      v-text="preflightStatus"
+    />
+    -->
     <span
       v-if="checkPassed"
       class="label"

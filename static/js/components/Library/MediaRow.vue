@@ -3,6 +3,7 @@ import { EventBus } from '../../eventBus';
 import LazyImage from '../UI/LazyImage.vue';
 import ContextMenu from '../UI/VisualWithActions/ContextMenu.vue';
 import PlayButton from '../PlayButton/PlayButton.vue';
+import TagList from '../Tags/TagList.vue';
 
 export default {
   name: 'MediaRow',
@@ -10,6 +11,7 @@ export default {
     'lazy-image': LazyImage,
     'play-button': PlayButton,
     'context-menu': ContextMenu,
+    'tag-list': TagList,
   },
   props: {
     ct: {
@@ -56,6 +58,13 @@ export default {
       },
     },
     tags: {
+      type: Array,
+      required: false,
+      default() {
+        return [];
+      },
+    },
+    tagList: {
       type: Array,
       required: false,
       default() {
@@ -170,6 +179,10 @@ export default {
         >
           {{ tag }}
         </div>
+        <tag-list
+          v-if="tagList"
+          :tags="tagList.slice(0, 5)"
+        />
       </div>
     </div>
     <div class="media-row__appendix">
@@ -292,7 +305,6 @@ export default {
         opacity: 0.7;
       }
     }
-
   }
 
   &__appendix {

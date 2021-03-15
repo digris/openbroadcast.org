@@ -20,14 +20,6 @@ export default {
       return [...primary, ...secondary];
     },
   },
-  // mounted() {
-  //   const observer = new IntersectionObserver((entries) => {
-  //     entries.forEach((entry) => {
-  //       console.debug(entry.isIntersecting);
-  //     });
-  //   });
-  //   observer.observe(this.$el);
-  // },
 };
 </script>
 <template>
