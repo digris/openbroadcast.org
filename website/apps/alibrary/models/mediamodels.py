@@ -527,19 +527,19 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     # def appearances(self):
     #     return self.get_appearances()
     #
-    # @property
-    # def broadcast_appearances(self):
-    #     return self.get_appearances().filter(type=Playlist.TYPE_BROADCAST)
-    #
-    # @property
-    # def playlist_appearances(self):
-    #     return self.get_appearances().filter(type=Playlist.TYPE_PLAYLIST)
-    #
-    # @property
-    # def public_appearances(self):
-    #     if self.mediatype == "jingle":
-    #         return None
-    #     return self.broadcast_appearances | self.playlist_appearances
+    @cached_property
+    def broadcast_appearances(self):
+        return self.get_appearances().filter(type=Playlist.TYPE_BROADCAST)
+
+    @cached_property
+    def playlist_appearances(self):
+        return self.get_appearances().filter(type=Playlist.TYPE_PLAYLIST)
+
+    @cached_property
+    def public_appearances(self):
+        if self.mediatype == "jingle":
+            return None
+        return self.broadcast_appearances | self.playlist_appearances
 
     def process_master_info(self, save=False):
 
