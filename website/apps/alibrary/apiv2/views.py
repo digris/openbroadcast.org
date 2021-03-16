@@ -321,7 +321,7 @@ class MediaAppearances(APIView):
 
         cache_key = "media-appearances-{}".format(uuid)
         data = cache.get(cache_key)
-        if not data:
+        if not data or True:
             obj = get_object_or_404(Media, uuid=uuid)
 
             qs = obj.get_appearances()
