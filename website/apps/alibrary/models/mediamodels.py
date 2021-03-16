@@ -516,7 +516,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
             )
             .exclude(type=Playlist.TYPE_OTHER)
             .order_by("-type", "-created")
-            # .nocache()  # NOTE: do we need `nocache()` here?
+            .nocache()  # NOTE: do we need `nocache()` here?
             .distinct()
         )
 

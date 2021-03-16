@@ -345,9 +345,9 @@ class MediaAppearances(APIView):
                 "broadcast_unpublished": broadcast_unpublished_count,
             }
 
-            cache.set(cache_key, data, 60 * 60)
+            cache.set(cache_key, data, 60)
 
         response = Response(data)
-        patch_response_headers(response, cache_timeout=60 * 60)
+        patch_response_headers(response, cache_timeout=60)
 
         return response
