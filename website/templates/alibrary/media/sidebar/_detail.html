@@ -12,7 +12,7 @@
             {% endif %}
             {% if perms.alibrary.change_media and user.is_staff %}
                 <li class="action">
-                    <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}"
+                    <a href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}"
                        title="{% trans 'Administration view' %}">
                         {% trans "Admin view" %}
                     </a>

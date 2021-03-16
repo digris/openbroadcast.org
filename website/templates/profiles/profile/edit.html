@@ -2,37 +2,12 @@
 
 {% load i18n crispy_forms_tags sekizai_tags %}
 
-{% block heading %}
-  {% comment %}
-  {% addtoblock "js-post" %}
-    <script src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>
-    <script>
-      $(function () {
-        setTimeout(function () {
-          init_jQueryTagit({
-            objectId: 'id_d_tags',
-            sourceUrl: '/ac_tagging/list',
-            fieldName: 'd_tags',
-            minLength: 1,
-            removeConfirmation: true,
-            caseSensitive: false,
-            animate: true,
-            maxLength: 50,
-            maxTags: 9,
-            onTagClicked: null,
-            onMaxTagsExceeded: null,
-          });
-        }, 500);
-      });
-    </script>
-  {% endaddtoblock %}
-  {% endcomment %}
-{% endblock %}
+{% block heading %}{% endblock %}
 
 {% block inner %}
   <div class="item item--edit item--profile">
     <div class="item--header">
-      {% include "profiles/profile/_header_ng.html" %}
+      {% include "profiles/profile/_header.html" %}
     </div>
     <nav class="item--section-menu">
       {% for item in section_menu %}

@@ -48,8 +48,11 @@ log = logging.getLogger(__name__)
 def _get_referer(request):
     """Return the HTTP_REFERER, if existing."""
     if "HTTP_REFERER" in request.META:
-        sr = urlparse.urlsplit(request.META["HTTP_REFERER"])
-        return urlparse.urlunsplit(("", "", sr.path, sr.query, sr.fragment))
+        try:
+            sr = urlparse.urlsplit(request.META["HTTP_REFERER"])
+            return urlparse.urlunsplit(("", "", sr.path, sr.query, sr.fragment))
+        except AttributeError:
+            return None
 
 
 ########

@@ -172,15 +172,18 @@ class ProfileForm(ModelForm):
     def clean_user(self):
         return self.instance.user
 
-    # def clean_tags(self):
-    #     return self.cleaned_data["tags"].lower()
-    #     # tags = self.cleaned_data["tags"]
-    #     # if len(tags) < 3:
-    #     #     return None
-    #     #
-    #     # print('---', tags)
-    #     #
-    #     # return tags.lower()
+    def clean_tags(self):
+        c_tags = self.cleaned_data["tags"]
+        print("c_tags", c_tags)
+        return c_tags
+        # return self.cleaned_data["tags"].lower()
+        # tags = self.cleaned_data["tags"]
+        # if len(tags) < 3:
+        #     return None
+        #
+        # print('---', tags)
+        #
+        # return tags.lower()
 
 
 class LinkForm(ModelForm):

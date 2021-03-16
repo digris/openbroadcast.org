@@ -4,14 +4,14 @@
     <div class="action-group">
         <ul>
             <li class="action">
-                <a class="hoverable" href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
+                <a href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
                     <span>{% trans "Back to Detail-View" %}</span>
                 </a>
             </li>
             {% comment %}
             {% if perms.alibrary.schedule_playlist and object.type == "broadcast" and object.broadcast_status == 1 %}
                 <li>
-                    <a class="hoverable"
+                    <a
                        href="{% url "abcast-schedule-select-playlist" %}?playlist_id={{ object.pk }}&next={% url "abcast-schedule" %}"
                        title="{% trans "Schedule for Broadcast" %}">
                         <i class="icon icon-calendar"></i>
@@ -22,14 +22,14 @@
             {% endcomment %}
             {% if user.is_authenticated and user == object.user %}
               <li class="action">
-                    <a class="hoverable" href="{{ object.get_delete_url }}" title="{% trans "Delete" %}">
+                    <a href="{{ object.get_delete_url }}" title="{% trans "Delete" %}">
                         <span>{% trans "Delete" %}</span>
                     </a>
                 </li>
             {% endif %}
             {% if perms.alibrary.change_playlist and user.is_staff %}
               <li class="action">
-                    <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
+                    <a href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
                        title="{% trans "Administration view" %}">
                         <span>{% trans "Administration view" %}</span>
                     </a>

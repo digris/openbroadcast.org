@@ -12,7 +12,7 @@
                     <form method="post" action="{% url "social:disconnect_individual" backend.provider backend.id %}?next={{ request.get_full_path }}">
                         {% csrf_token %}
                         <a
-                            class="hoverable"
+
                             onclick="$(this).parents('form:first').submit();"
                             href="#"
                             title="Disconnect Account">
@@ -26,7 +26,7 @@
             {% for backend in backends.not_associated %}
                 {% backend_detail_as backend as backend_detail %}
                 <li>
-                    <a class="hoverable" href="{% url "social:begin" backend %}?next={{ request.get_full_path }}" title="Connect Account">
+                    <a href="{% url "social:begin" backend %}?next={{ request.get_full_path }}" title="Connect Account">
                         <!--<i class="icon {{ backend_detail.icon }}"></i>-->
                         <span>{{ backend_detail.name }}</span>
                         <span class="opt pull-right">{% trans "connect" %}</span>

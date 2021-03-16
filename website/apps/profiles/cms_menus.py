@@ -31,7 +31,7 @@ class ProfileMenu(CMSAttachMenu):
                 _("Edit my Profile"),
                 # reverse("profiles-profile-edit"),
                 reverse(
-                    "profiles-profile-edit-ng",
+                    "profiles-profile-edit",
                     kwargs={"uuid": str(request.user.profile.uuid)},
                 ),
                 121,

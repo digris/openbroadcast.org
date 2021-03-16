@@ -1,11 +1,6 @@
 <script>
-import Intersect from 'vue-intersect';
-
 export default {
   name: 'MediaAppearances',
-  components: {
-    intersect: Intersect,
-  },
   props: {
     objUuid: {
       type: String,
@@ -37,15 +32,16 @@ export default {
   },
   methods: {
     onEnter() {
+      this.loadAppearances();
+    },
+    loadAppearances() {
       if (!this.loadingStarted) {
-        this.loadAppearances();
+        this.$store.dispatch('library/loadMediaAppearances', { uuid: this.objUuid });
         this.loadingStarted = true;
       }
     },
-    loadAppearances() {
-      this.$store.dispatch('library/loadMediaAppearances', { uuid: this.objUuid });
-    },
     showDetails() {
+      this.loadAppearances();
       this.detailsVisible = true;
     },
     hideDetails() {
@@ -56,65 +52,62 @@ export default {
 </script>
 
 <template>
-  <intersect
-    @enter="onEnter"
+  <div
+    class="appearances"
   >
     <div
-      class="appearances"
+      class="appearances__summary"
+      @mouseover="showDetails"
+      @mouseleave="hideDetails"
+    >
+      <span
+        class="label"
+      >Appearances:</span>
+      <span
+        v-if="hasAppearances"
+        class="value"
+      >{{ broadcast }}-{{ broadcastUnpublished }}-{{ pub }}</span>
+      <span
+        v-else
+        class="value value--blank"
+      >&nbsp;-&nbsp;-&nbsp;</span>
+    </div>
+    <div
+      v-if="detailsVisible"
+      class="appearances__details"
     >
       <div
-        v-if="hasAppearances"
-        class="appearances__summary"
-        @mouseover="showDetails"
-        @mouseleave="hideDetails"
+        class="appearance"
       >
         <span
           class="label"
-        >Appearances:</span>
+        >Broadcasts:</span>
         <span
           class="value"
-        >{{ broadcast }}-{{ broadcastUnpublished }}-{{ pub }}</span>
-      </div>
-      <div v-else>
-        &nbsp;
+        >{{ broadcast }}</span>
       </div>
       <div
-        v-if="detailsVisible"
-        class="appearances__details"
+        class="appearance"
       >
-        <div
-          class="appearance"
-        >
-          <span
-            class="label"
-          >Broadcasts:</span>
-          <span
-            class="value"
-          >{{ broadcast }}</span>
-        </div>
-        <div
-          class="appearance"
-        >
-          <span
-            class="label"
-          >Planned Broadcasts:</span>
-          <span
-            class="value"
-          >{{ broadcastUnpublished }}</span>
-        </div>
-        <div
-          class="appearance"
-        >
-          <span
-            class="label"
-          >Public Playlists:</span>
-          <span
-            class="value"
-          >{{ pub }}</span>
-        </div>
+        <span
+          class="label"
+        >Planned Broadcasts:</span>
+        <span
+          class="value"
+        >{{ broadcastUnpublished }}</span>
+      </div>
+      <div
+        class="appearance"
+      >
+        <span
+          class="label"
+        >Public Playlists:</span>
+        <span
+          class="value"
+        >{{ pub }}</span>
       </div>
     </div>
-  </intersect>
+  </div>
 </template>
 
 <style lang="scss" scoped>

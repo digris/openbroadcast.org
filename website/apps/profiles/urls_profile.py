@@ -6,7 +6,6 @@ from profiles import views
 
 urlpatterns = [
     url(r"^$", views.ProfileListView.as_view(), name="profiles-profile-list"),
-    url(r"^edit/$", views.profile_edit, name="profiles-profile-edit"),
     url(
         r"^login-credentials/$",
         views.UserCredentialsView.as_view(),
@@ -48,7 +47,7 @@ urlpatterns = [
     url(
         r"^(?P<uuid>[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12})/edit/$",
         views.ProfileEditView.as_view(),
-        name="profiles-profile-edit-ng",
+        name="profiles-profile-edit",
     ),
     url(
         r"^(?P<uuid>[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12})/(?:(?P<section>[-\w]+)/)?$",

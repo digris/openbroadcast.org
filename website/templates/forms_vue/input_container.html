@@ -1,36 +1,5 @@
 {% load crispy_forms_field %}
 
-{% comment %}
-
-{% if field.is_hidden %}
-	{{ field }}
-{% else %}
-    <div id="input_{{ field.auto_id }}" class="input-container{% if field.errors %} errors{% endif %}{% if field.css_classes %} {{ field.css_classes }}{% endif %}">
-        <div class="input-container__field">
-
-            {% if field.label and not field|is_checkbox %}
-                <label for="{{ field.id_for_label }}" class="{% if field.field.required %} required{% endif %}">
-                    {{ field.label|safe }}
-                    {% if field.field.required %}
-                        <span>*</span>
-                    {% endif %}
-                </label>
-            {% endif %}
-
-            {% crispy_field field %}
-
-        <!--
-            <input id="{{ field.auto_id }}"
-                   maxlength="254"
-                   name="username" type="text">-->
-        </div>
-
-        <div class="input-container__appendix">
-            {# include 'forms_ng/layout/_input_container_appendix.html' #}
-        </div>
-    </div>
-{% endif %}{% endcomment %}
-
 <input-container
   id="{{ field.auto_id }}"
   :errors="({{ field.errors.as_json }})"

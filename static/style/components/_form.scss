@@ -68,6 +68,9 @@
     width: 100%;
     min-height: 2rem;
     padding: 0.25rem 0.5rem;
+    &[type=checkbox] {
+      min-height: unset;
+    }
   }
 
   .label {
@@ -108,8 +111,8 @@
           align-items: center;
 
           input {
-            width: 2rem;
-            height: 2rem;
+            width: unset;
+            height: unset;
             margin-right: 1rem;
           }
         }

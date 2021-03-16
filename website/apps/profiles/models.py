@@ -209,7 +209,7 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         return reverse("profiles-profile-detail", kwargs={"uuid": str(self.uuid)})
 
     def get_edit_url(self):
-        return reverse("profiles-profile-edit-ng", kwargs={"uuid": str(self.uuid)})
+        return reverse("profiles-profile-edit", kwargs={"uuid": str(self.uuid)})
 
     # @models.permalink
     # def get_edit_url(self):
@@ -233,7 +233,10 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         super(Profile, self).save(*args, **kwargs)
 
 
-tagging_register(Profile)
+try:
+    tagging_register(Profile)
+except AttributeError:
+    pass
 
 
 arating.enable_voting_on(Profile)

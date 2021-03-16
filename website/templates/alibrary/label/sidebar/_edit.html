@@ -4,13 +4,13 @@
     <div class="action-group">
         <ul>
             <li class="action">
-                <a class="hoverable" href="{{ object.get_absolute_url }}" title="{% trans 'Back to Detail-View' %}">
+                <a href="{{ object.get_absolute_url }}" title="{% trans 'Back to Detail-View' %}">
                     {% trans "Back to Detail-View" %}
                 </a>
             </li>
             {% if perms.alibrary.change_label and user.is_staff %}
                 <li class="action">
-                    <a class="hoverable" href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
+                    <a href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
                        title="{% trans 'Administration view' %}">
                         {% trans "Administration view" %}
                     </a>

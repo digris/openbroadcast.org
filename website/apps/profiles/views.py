@@ -38,6 +38,7 @@ from elasticsearch_dsl import TermsFacet
 from search.views import BaseFacetedSearch, BaseSearchListView
 
 from .documents import ProfileDocument
+from .mentoring import get_mentoring_actions_for_profile
 
 
 class ProfileSearch(BaseFacetedSearch):
@@ -160,6 +161,10 @@ class ProfileDetailView(DetailView):
                 "section": self.section,
                 "section_menu": section_menu,
                 "section_template": self.get_section_template(),
+                "mentoring_actions": get_mentoring_actions_for_profile(
+                    profile=self.object,
+                    mentor=self.request.user,
+                ),
             }
         )
 
@@ -235,8 +240,6 @@ class ProfileDetailView(DetailView):
         return super(ProfileDetailView, self).get(request, *args, **kwargs)
 
 
-
-
 class ProfileEditView(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = ProfileForm
@@ -253,11 +256,15 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(ProfileEditView, self).get_context_data(**kwargs)
-        context.update({
-            'user_form': UserForm(self.request.POST or None, instance=self.request.user),
-            'named_formsets': self.get_named_formsets(),
-            'form_errors': self.get_form_errors(form=context['form']),
-        })
+        context.update(
+            {
+                "user_form": UserForm(
+                    self.request.POST or None, instance=self.request.user
+                ),
+                "named_formsets": self.get_named_formsets(),
+                "form_errors": self.get_form_errors(form=context["form"]),
+            }
+        )
 
         return context
 
@@ -269,9 +276,7 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
     def get_named_formsets(self):
 
         return {
-            "action": ActionForm(
-                self.request.POST or None, prefix="action"
-            ),
+            "action": ActionForm(self.request.POST or None, prefix="action"),
             "relation": LinkFormSet(
                 self.request.POST or None, instance=self.object, prefix="relation"
             ),
@@ -300,7 +305,8 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         self.user_object = user_form.save()
 
         self.object = form.save(commit=False)
-        self.object.tags = form.cleaned_data.get("tags")
+        print("////", form.cleaned_data.get("tags"))
+        self.object.d_tags = form.cleaned_data.get("tags")
         self.object = form.save()
 
         for name, formset in named_formsets.items():
@@ -308,83 +314,19 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
 
             if formset_save_func is not None:
                 formset_save_func(formset)
-            elif hasattr(formset, 'save'):
+            elif hasattr(formset, "save"):
                 formset.save()
 
         messages.add_message(self.request, messages.INFO, "Profile updated")
 
         return HttpResponseRedirect(self.get_success_url())
-        # return HttpResponseRedirect(self.object.get_edit_url())
-
-
-
-
-# TODO: refactor to CBV
-@login_required
-def profile_edit(request, template_name="profiles/profile_form.html"):
-    """Edit profile."""
-
-    if request.POST:
-        profile = Profile.objects.get(user=request.user)
-        user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
-        service_formset = ServiceFormSet(request.POST, instance=profile)
-        link_formset = LinkFormSet(request.POST, instance=profile)
-
-        if (
-            profile_form.is_valid()
-            and user_form.is_valid()
-            and service_formset.is_valid()
-            and link_formset.is_valid()
-        ):
-            profile_form.save()
-            user_form.save()
-            link_formset.save()
-            service_formset.save()
-            return HttpResponseRedirect(reverse("profiles-profile-edit"))
-        else:
-
-            from base.utils.form_errors import merge_form_errors
-
-            form_errors = merge_form_errors(
-                [user_form, profile_form, service_formset, link_formset]
-            )
-
-            context = {
-                "object": profile,
-                "action_form": ActionForm(),
-                "profile_form": profile_form,
-                "user_form": user_form,
-                "service_formset": service_formset,
-                "link_formset": link_formset,
-                "form_errors": form_errors,
-            }
-
-    else:
-        profile = Profile.objects.get(user=request.user)
-        link_formset = LinkFormSet(instance=profile)
-        service_formset = ServiceFormSet(instance=profile)
-
-        context = {
-            "object": profile,
-            "action_form": ActionForm(),
-            "profile_form": ProfileForm(instance=profile),
-            "user_form": UserForm(instance=request.user),
-            "service_formset": service_formset,
-            "link_formset": link_formset,
-        }
-    return render_to_response(
-        template_name, context, context_instance=RequestContext(request)
-    )
 
 
 class UserCredentialsView(LoginRequiredMixin, UpdateView):
 
     model = get_user_model()
     form_class = UserCredentialsForm
-    # template_name = "profiles/credentials_form.html"
     template_name = "profiles/profile/edit_credentials.html"
-    # success_url = "/network/users/edit/"
 
     def get_object(self):
         return self.request.user
@@ -395,7 +337,7 @@ class UserCredentialsView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse(
-            "profiles-profile-edit-ng",
+            "profiles-profile-edit",
             kwargs={"uuid": str(self.request.user.profile.uuid)},
         )
 
