@@ -9,7 +9,7 @@ Django==1.8.19
 ################################################
 BeautifulSoup==3.2.1
 Markdown==2.4
-Pillow==2.9.0
+Pillow==8.1.1
 URLObject==2.3.4
 discogs-client==1.1.1
 mailchimp==2.0.9
