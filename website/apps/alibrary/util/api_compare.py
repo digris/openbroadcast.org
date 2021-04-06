@@ -463,7 +463,8 @@ class MusicbrainzAPILookup(APILookup):
 
 class DiscogsAPILookup(APILookup):
     """
-    Musicbrainz API implementation
+    Discogs API implementation
+    https://www.discogs.com/developers
     """
 
     def get_data(self, uri=None):

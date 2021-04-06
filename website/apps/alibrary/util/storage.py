@@ -5,12 +5,7 @@ import logging
 import ntpath
 import os
 import unicodedata
-
-try:
-    from urllib2 import urlopen
-except ImportError:
-    from urllib.request import urlopen
-
+import urllib2
 
 from django.conf import settings
 from django.core.files import File
@@ -60,7 +55,9 @@ def get_file_from_url(url):
 
     try:
         try:
-            response = urlopen(url)
+            opener = urllib2.build_opener()
+            opener.addheaders = [("User-Agent", "Mozilla/5.0")]
+            response = opener.open(url)
             temp_file = NamedTemporaryFile(delete=True)
             temp_file.write(response.read())
             temp_file.flush()
