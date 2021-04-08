@@ -51,7 +51,17 @@ class ArtistSerializer(
     class Meta:
         model = Artist
         depth = 1
-        fields = ["url", "ct", "created", "updated", "id", "detail_url", "uuid", "name", "image"]
+        fields = [
+            "url",
+            "ct",
+            "created",
+            "updated",
+            "id",
+            "detail_url",
+            "uuid",
+            "name",
+            "image",
+        ]
 
 
 class LabelSerializer(
@@ -71,7 +81,17 @@ class LabelSerializer(
     class Meta:
         model = Label
         depth = 1
-        fields = ["url", "ct", "created", "updated", "id", "detail_url", "uuid", "name", "image"]
+        fields = [
+            "url",
+            "ct",
+            "created",
+            "updated",
+            "id",
+            "detail_url",
+            "uuid",
+            "name",
+            "image",
+        ]
 
 
 class MediaSerializer(serializers.HyperlinkedModelSerializer):
@@ -340,6 +360,8 @@ class PlaylistSerializer(FlexFieldsModelSerializer):
             "url",
             "ct",
             "uuid",
+            "created",
+            "updated",
             "id",
             "detail_url",
             "name",

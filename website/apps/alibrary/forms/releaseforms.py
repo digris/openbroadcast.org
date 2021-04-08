@@ -29,12 +29,17 @@ from ..util.storage import get_file_from_url
 
 log = logging.getLogger(__name__)
 
+
 ACTION_LAYOUT = FormActions(
     HTML(
-        '<button type="submit" name="save" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-save icon-white"></i> Save</button>'
+        """<button type="submit" name="save" value="save" class="btn btn-primary pull-right" id="submit-id-save">
+        Save
+        </button>"""
     ),
     HTML(
-        '<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'
+        """<button type="reset" name="reset" value="reset" class="btn btn-abort pull-right" id="reset-id-reset">
+        Cancel
+        </button>"""
     ),
 )
 
