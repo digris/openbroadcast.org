@@ -2,12 +2,10 @@
 from __future__ import unicode_literals
 
 import re
-import datetime
 import os
 import tagging
 import arating
 
-from dateutil import relativedelta
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
@@ -57,21 +55,33 @@ def filename_by_uuid(instance, filename):
 @python_2_unicode_compatible
 class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
 
-    GENDER_CHOICES = ((0, _("Male")), (1, _("Female")), (2, _("Other")))
+    GENDER_CHOICES = (
+        (0, _("Male")),
+        (1, _("Female")),
+        (2, _("Other")),
+    )
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, unique=True, on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL,
+        unique=True,
+        on_delete=models.CASCADE,
     )
-
     mentor = models.ForeignKey(
-        settings.AUTH_USER_MODEL, blank=True, null=True, related_name="godchildren"
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        related_name="godchildren",
     )
-
-    # Personal
     gender = models.PositiveSmallIntegerField(
-        _("gender"), choices=GENDER_CHOICES, blank=True, null=True
+        _("gender"),
+        choices=GENDER_CHOICES,
+        blank=True,
+        null=True,
     )
     birth_date = models.DateField(
-        _("Date of birth"), blank=True, null=True, help_text=_("Format: YYYY-MM-DD")
+        _("Date of birth"),
+        blank=True,
+        null=True,
+        help_text=_("Format: YYYY-MM-DD"),
     )
     pseudonym = models.CharField(
         blank=True,
@@ -80,53 +90,107 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         help_text=_("Will appear instead of your first- & last name"),
     )
     description = models.CharField(
-        _("Disambiguation"), blank=True, null=True, max_length=250
+        _("Disambiguation"),
+        blank=True,
+        null=True,
+        max_length=250,
     )
-    biography = extra.MarkdownTextField(blank=True, null=True)
-
+    biography = extra.MarkdownTextField(
+        blank=True,
+        null=True,
+    )
     image = models.ImageField(
         verbose_name=_("Profile Image"),
         upload_to=filename_by_uuid,
         null=True,
         blank=True,
     )
-
-    # Contact (personal)
-    mobile = PhoneNumberField(_("mobile"), blank=True, null=True)
-    phone = PhoneNumberField(_("phone"), blank=True, null=True)
-    fax = PhoneNumberField(_("fax"), blank=True, null=True)
-    skype = models.CharField(_("Skype"), blank=True, null=True, max_length=100)
-
-    address1 = models.CharField(_("address"), null=True, blank=True, max_length=100)
+    mobile = PhoneNumberField(
+        _("mobile"),
+        blank=True,
+        null=True,
+    )
+    phone = PhoneNumberField(
+        _("phone"),
+        blank=True,
+        null=True,
+    )
+    fax = PhoneNumberField(
+        _("fax"),
+        blank=True,
+        null=True,
+    )
+    skype = models.CharField(
+        _("Skype"),
+        blank=True,
+        null=True,
+        max_length=100,
+    )
+    address1 = models.CharField(
+        _("address"),
+        null=True,
+        blank=True,
+        max_length=100,
+    )
     address2 = models.CharField(
-        _("address (secondary)"), null=True, blank=True, max_length=100
+        _("address (secondary)"),
+        null=True,
+        blank=True,
+        max_length=100,
     )
-    city = models.CharField(_("city"), null=True, blank=True, max_length=100)
-    zip = models.CharField(_("zip"), null=True, blank=True, max_length=10)
-    country = models.ForeignKey(Country, blank=True, null=True)
-
-    iban = models.CharField(_("IBAN"), null=True, blank=True, max_length=120)
-    paypal = models.EmailField(_("Paypal"), null=True, blank=True, max_length=200)
-
-    # relations
+    city = models.CharField(
+        _("city"),
+        null=True,
+        blank=True,
+        max_length=100,
+    )
+    zip = models.CharField(
+        _("zip"),
+        null=True,
+        blank=True,
+        max_length=10,
+    )
+    country = models.ForeignKey(
+        Country,
+        blank=True,
+        null=True,
+    )
+    iban = models.CharField(
+        _("IBAN"),
+        null=True,
+        blank=True,
+        max_length=120,
+    )
+    paypal = models.EmailField(
+        _("Paypal"),
+        null=True,
+        blank=True,
+        max_length=200,
+    )
     expertise = models.ManyToManyField(
-        "Expertise", verbose_name=_("Fields of expertise"), blank=True
+        "Expertise",
+        verbose_name=_("Fields of expertise"),
+        blank=True,
     )
-
-    # tagging (d_tags = "display tags")
     d_tags = tagging.fields.TagField(
-        max_length=1024, verbose_name="Tags", blank=True, null=True
+        max_length=1024,
+        verbose_name="Tags",
+        blank=True,
+        null=True,
     )
 
-    # alpha features
-    enable_alpha_features = models.BooleanField(default=False)
-
+    # alpha features / settings
+    enable_alpha_features = models.BooleanField(
+        verbose_name="Enable experimental features",
+        default=False,
+    )
     settings_show_media_history = models.BooleanField(
-        verbose_name="Show media emission history", default=True
+        verbose_name="Show media emission history",
+        default=False,
     )
-
     settings_show_media_appearances = models.BooleanField(
-        verbose_name="Show media appearances", default=True
+        verbose_name="Show media appearances",
+        default=False,
     )
 
     class Meta:
@@ -190,18 +254,6 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
 
         self.user.groups.remove(Group.objects.get(name=DEFAULT_GROUP))
 
-    @property
-    def age(self):
-        if self.birth_date:
-            return (
-                "%s"
-                % relativedelta.relativedelta(
-                    datetime.date.today(), self.birth_date
-                ).years
-            )
-        else:
-            return None
-
     def get_ct(self):
         return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
 
@@ -245,71 +297,113 @@ arating.enable_voting_on(Profile)
 @python_2_unicode_compatible
 class Community(UUIDModelMixin, MigrationMixin):
 
-    name = models.CharField(max_length=200, db_index=True)
+    name = models.CharField(
+        max_length=200,
+        db_index=True,
+    )
     slug = AutoSlugField(
-        populate_from="name", editable=True, blank=True, overwrite=True
+        populate_from="name",
+        editable=True,
+        blank=True,
+        overwrite=True,
+    )
+    group = models.OneToOneField(
+        Group,
+        unique=True,
+        null=True,
+        blank=True,
+    )
+    members = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+    )
+    created = models.DateTimeField(
+        auto_now_add=True,
+        editable=False,
+    )
+    updated = models.DateTimeField(
+        auto_now=True,
+        editable=False,
     )
 
-    group = models.OneToOneField(Group, unique=True, null=True, blank=True)
-    members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
-
-    # auto-update
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    updated = models.DateTimeField(auto_now=True, editable=False)
-
-    # Profile
-    description = extra.MarkdownTextField(blank=True, null=True)
+    description = extra.MarkdownTextField(
+        blank=True,
+        null=True,
+    )
     image = models.ImageField(
         verbose_name=_("Profile Image"),
         upload_to=filename_by_uuid,
         null=True,
         blank=True,
     )
-
-    # Contact
-    mobile = PhoneNumberField(_("mobile"), blank=True, null=True)
-    phone = PhoneNumberField(_("phone"), blank=True, null=True)
-    fax = PhoneNumberField(_("fax"), blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-
-    address1 = models.CharField(_("address"), null=True, blank=True, max_length=100)
+    mobile = PhoneNumberField(
+        _("mobile"),
+        blank=True,
+        null=True,
+    )
+    phone = PhoneNumberField(
+        _("phone"),
+        blank=True,
+        null=True,
+    )
+    fax = PhoneNumberField(
+        _("fax"),
+        blank=True,
+        null=True,
+    )
+    email = models.EmailField(
+        blank=True,
+        null=True,
+    )
+    address1 = models.CharField(
+        _("address"),
+        null=True,
+        blank=True,
+        max_length=100,
+    )
     address2 = models.CharField(
-        _("address (secondary)"), null=True, blank=True, max_length=100
+        _("address (secondary)"),
+        null=True,
+        blank=True,
+        max_length=100,
     )
-    city = models.CharField(_("city"), null=True, blank=True, max_length=100)
-    zip = models.CharField(_("zip"), null=True, blank=True, max_length=10)
-    # country = CountryField(blank=True, null=True)
-    country = models.ForeignKey(Country, blank=True, null=True)
-    # relations
+    city = models.CharField(
+        _("city"),
+        null=True,
+        blank=True,
+        max_length=100,
+    )
+    zip = models.CharField(
+        _("zip"),
+        null=True,
+        blank=True,
+        max_length=10,
+    )
+    country = models.ForeignKey(
+        Country,
+        blank=True,
+        null=True,
+    )
     expertise = models.ManyToManyField(
-        "Expertise", verbose_name=_("Fields of expertise"), blank=True
+        "Expertise",
+        verbose_name=_("Fields of expertise"),
+        blank=True,
     )
-
-    # tagging (d_tags = "display tags")
-    # d_tags = tagging.fields.TagField(verbose_name="Tags", blank=True, null=True)
-    tags = tagging.fields.TagField(verbose_name="Tags", blank=True, null=True)
+    tags = tagging.fields.TagField(
+        verbose_name="Tags",
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         app_label = "profiles"
         verbose_name = _("Community")
         verbose_name_plural = _("Communities")
-        """
-        permissions = (
-            ('mentor_profiles', 'Mentoring profiles'),
-        )
-        """
 
     def __str__(self):
         return "%s" % self.name
 
     def save(self, *args, **kwargs):
-        # t_tags = ""
-        # """"""
-        # for tag in self.tags:
-        #     t_tags += "%s, " % tag
-        #
-        # self.tags = t_tags
-        # self.d_tags = t_tags[:245]
 
         super(Community, self).save(*args, **kwargs)
 
@@ -335,8 +429,7 @@ def create_profile(sender, instance, created, **kwargs):
         instance.save()
 
 
-# TODO: implement signal
-# post_save.connect(create_profile, sender=get_user_model())
+# TODO: implement in signals.py
 post_save.connect(create_profile, sender=settings.AUTH_USER_MODEL)
 
 
