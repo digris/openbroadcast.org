@@ -94,7 +94,9 @@ class LabelSerializer(
         ]
 
 
-class MediaSerializer(serializers.HyperlinkedModelSerializer):
+class MediaSerializer(
+    FlexFieldsSerializerMixin, serializers.HyperlinkedModelSerializer
+):
 
     url = serializers.HyperlinkedIdentityField(
         view_name="api:media-detail", lookup_field="uuid"
@@ -150,6 +152,23 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
 
         return assets
 
+    media_artists = serializers.SerializerMethodField()
+
+    def get_media_artists(self, obj, **kwargs):
+        # TODO: eventually there is a better way to handle this...
+        for position, media_artist in enumerate(
+            obj.media_mediaartist.exclude(artist__isnull=True).select_related("artist")[
+                1:
+            ],
+            1,
+        ):
+            yield {
+                "name": str(media_artist.artist.name),
+                "uuid": str(media_artist.artist.uuid),
+                "join_phrase": media_artist.join_phrase,
+                "position": position,
+            }
+
     class Meta:
         model = Media
         depth = 1
@@ -175,6 +194,7 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
             "release_display",
             "artist",
             "release",
+            "media_artists",
         ]
 
 
