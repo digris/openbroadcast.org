@@ -166,6 +166,11 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
             "duration",
             "assets",
             "isrc",
+            "tracknumber",
+            "medianumber",
+            "opus_number",
+            "mediatype",
+            "version",
             "artist_display",
             "release_display",
             "artist",
@@ -187,6 +192,7 @@ class ReleaseSerializer(
 
     detail_url = serializers.URLField(source="get_absolute_url")
     releasedate = serializers.CharField(source="releasedate_approx")
+    releasedate_iso = serializers.DateField(source="releasedate")
     media = MediaSerializer(many=True, read_only=True, source="get_media")
 
     artist_display = serializers.CharField(source="get_artist_display")
@@ -229,6 +235,9 @@ class ReleaseSerializer(
             "name",
             "image",
             "releasedate",
+            "releasedate_iso",
+            "catalognumber",
+            "releasetype",
             "artist_display",
             "media",
             "label",
