@@ -1,8 +1,10 @@
 <div class="list-prefix">
+  {% if perms.alibrary.play_media %}
     <list-actions
       obj-ct="{{ object.get_ct }}"
       obj-uuid="{{ object.uuid }}"
     ></list-actions>
+  {% endif %}
 </div>
 
 <div class="list list--table">
