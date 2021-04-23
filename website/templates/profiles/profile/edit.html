@@ -31,7 +31,6 @@
       enctype="multipart/form-data">
       {% csrf_token %}
       {{ form.management_form }}
-      {{ named_formsets.action.management_form }}
       {{ named_formsets.relation.management_form }}
       {% include 'forms_vue/actions/_save_cancel.html' %}
       {% crispy user_form %}

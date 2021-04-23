@@ -27,7 +27,6 @@ from profiles.forms import (
     ProfileForm,
     ServiceFormSet,
     LinkFormSet,
-    ActionForm,
     UserCredentialsForm,
 )
 from profiles.models import Profile
@@ -276,7 +275,6 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
     def get_named_formsets(self):
 
         return {
-            "action": ActionForm(self.request.POST or None, prefix="action"),
             "relation": LinkFormSet(
                 self.request.POST or None, instance=self.object, prefix="relation"
             ),

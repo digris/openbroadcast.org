@@ -129,22 +129,39 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         (TYPE_OTHER, _("Other")),
     )
 
-    name = models.CharField(max_length=200)
-    slug = AutoSlugField(
-        populate_from="name", editable=True, blank=True, overwrite=True
+    name = models.CharField(
+        max_length=200,
     )
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    slug = AutoSlugField(
+        populate_from="name",
+        editable=True,
+        blank=True,
+        overwrite=True,
+    )
+    uuid = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+    )
 
     status = models.PositiveIntegerField(
-        default=0, choices=alibrary_settings.PLAYLIST_STATUS_CHOICES
+        default=0,
+        choices=alibrary_settings.PLAYLIST_STATUS_CHOICES,
     )
     type = models.CharField(
-        max_length=12, default="basket", null=True, choices=TYPE_CHOICES
+        max_length=12,
+        default="basket",
+        null=True,
+        choices=TYPE_CHOICES,
     )
     broadcast_status = models.PositiveIntegerField(
-        default=0, choices=alibrary_settings.PLAYLIST_BROADCAST_STATUS_CHOICES
+        default=0,
+        choices=alibrary_settings.PLAYLIST_BROADCAST_STATUS_CHOICES,
     )
-    broadcast_status_messages = JSONField(blank=True, null=True, default=None)
+    broadcast_status_messages = JSONField(
+        blank=True,
+        null=True,
+        default=None,
+    )
 
     playout_mode_random = models.BooleanField(
         verbose_name=_("Shuffle Playlist"),
@@ -154,12 +171,18 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         ),
     )
 
-    rotation = models.BooleanField(default=True)
+    rotation = models.BooleanField(
+        default=True,
+    )
     rotation_date_start = models.DateField(
-        verbose_name=_("Rotate from"), blank=True, null=True
+        verbose_name=_("Rotate from"),
+        blank=True,
+        null=True,
     )
     rotation_date_end = models.DateField(
-        verbose_name=_("Rotate until"), blank=True, null=True
+        verbose_name=_("Rotate until"),
+        blank=True,
+        null=True,
     )
 
     main_image = models.ImageField(
@@ -179,41 +202,75 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         related_name="playlists",
     )
     items = models.ManyToManyField(
-        "PlaylistItem", through="PlaylistItemPlaylist", blank=True
+        "PlaylistItem",
+        through="PlaylistItemPlaylist",
+        blank=True,
     )
 
     # tagging (d_tags = "display tags")
     d_tags = tagging.fields.TagField(
-        max_length=1024, verbose_name="Tags", blank=True, null=True
+        max_length=1024,
+        verbose_name="Tags",
+        blank=True,
+        null=True,
     )
 
     # updated/calculated on save
-    duration = models.IntegerField(null=True, default=0)
+    duration = models.IntegerField(
+        null=True,
+        default=0,
+    )
 
     target_duration = models.PositiveIntegerField(
-        default=0, null=True, choices=alibrary_settings.PLAYLIST_TARGET_DURATION_CHOICES
+        default=0,
+        null=True,
+        choices=alibrary_settings.PLAYLIST_TARGET_DURATION_CHOICES,
     )
 
     dayparts = models.ManyToManyField(
-        Daypart, blank=True, related_name="daypart_plalists"
+        Daypart,
+        blank=True,
+        related_name="daypart_plalists",
     )
     seasons = models.ManyToManyField(
-        "Season", blank=True, related_name="season_plalists"
+        "Season",
+        blank=True,
+        related_name="season_plalists",
     )
     weather = models.ManyToManyField(
-        "Weather", blank=True, related_name="weather_plalists"
+        "Weather",
+        blank=True,
+        related_name="weather_plalists",
     )
 
     # series
-    series = models.ForeignKey(Series, null=True, blank=True, on_delete=models.SET_NULL)
-    series_number = models.PositiveIntegerField(null=True, blank=True)
+    series = models.ForeignKey(
+        Series,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    series_number = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
 
     # is currently selected as default?
-    is_current = models.BooleanField(_("Currently selected?"), default=False)
+    is_current = models.BooleanField(
+        _("Currently selected?"),
+        default=False,
+    )
 
-    description = extra.MarkdownTextField(blank=True, null=True)
+    description = extra.MarkdownTextField(
+        blank=True,
+        null=True,
+    )
 
-    mixdown_file = models.FileField(null=True, blank=True, upload_to=upload_mixdown_to)
+    mixdown_file = models.FileField(
+        null=True,
+        blank=True,
+        upload_to=upload_mixdown_to,
+    )
 
     emissions = GenericRelation("abcast.Emission")
 

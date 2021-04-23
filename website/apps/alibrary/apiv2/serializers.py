@@ -163,7 +163,7 @@ class MediaSerializer(
             1,
         ):
             yield {
-                "name": str(media_artist.artist.name),
+                "name": media_artist.artist.name,
                 "uuid": str(media_artist.artist.uuid),
                 "join_phrase": media_artist.join_phrase,
                 "position": position,

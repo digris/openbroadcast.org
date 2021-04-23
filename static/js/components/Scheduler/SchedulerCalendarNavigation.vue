@@ -1,15 +1,9 @@
 <script>
 
-import { backgroundColors } from './constants';
-import ColorChooser from '../UI/ColorChooser.vue';
-
 const DEBUG = false;
 
 export default {
   name: 'SchedulerCalendarNavigation',
-  components: {
-    'color-chooser': ColorChooser,
-  },
   props: {
     settings: {
       type: Object,
@@ -23,11 +17,6 @@ export default {
       default: false,
     },
   },
-  data() {
-    return {
-      emissionColors: backgroundColors,
-    };
-  },
   computed: {
     numDays() {
       if (this.settings && this.settings.numDays) {
@@ -38,12 +27,6 @@ export default {
     snapMinutes() {
       if (this.settings && this.settings.snapMinutes) {
         return this.settings.snapMinutes;
-      }
-      return null;
-    },
-    emissionColor() {
-      if (this.settings && this.settings.emissionColor != undefined) {
-        return this.settings.emissionColor;
       }
       return null;
     },
@@ -172,13 +155,6 @@ export default {
       >
         30
       </span>
-      <color-chooser
-        :width="(48)"
-        :height="(22)"
-        :colors="emissionColors"
-        :selected-color="emissionColor"
-        @select="$emit('setColor', $event)"
-      />
       <span
         :class="{ 'is-current': isFullscreen }"
         class="action"

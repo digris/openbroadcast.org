@@ -196,14 +196,12 @@ class EmissionResource(ModelResource):
         data = json.loads(request.body)
 
         locked = data.get("locked", 0)
-        color = data.get("color", 0)
 
         if int(locked) == 1:
             e.locked = True
         else:
             e.locked = False
 
-        e.color = int(color)
         data = {}
 
         e.save()

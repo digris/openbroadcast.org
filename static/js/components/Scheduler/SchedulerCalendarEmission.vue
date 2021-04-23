@@ -1,7 +1,6 @@
 <script>
 
 import { templateFilters } from 'src/utils/template-filters';
-import { backgroundColors } from './constants';
 import { hexToRGBA } from './utils';
 
 const DEBUG = false;
@@ -22,7 +21,7 @@ export default {
   },
   computed: {
     style() {
-      const color = backgroundColors[this.emission.obj.color];
+      const color = this.emission.obj.color;
       return {
         backgroundColor: (this.isHover) ? hexToRGBA(color, 1) : hexToRGBA(color, 0.50),
         borderColor: hexToRGBA(color, 1),

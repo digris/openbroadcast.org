@@ -12,6 +12,7 @@ from profiles.apiv2.serializers import ProfileSerializer
 from ..models import Emission
 
 SITE_URL = getattr(settings, "SITE_URL")
+EMISSION_DEFAULT_COLOR = "#1ae2a5"
 
 
 class EmissionContentObjectSerializer(serializers.ModelSerializer):
@@ -45,6 +46,7 @@ class EmissionSerializer(FlexFieldsModelSerializer):
     detail_url = AbsoluteURLField(source="get_absolute_url")
 
     user = serializers.SerializerMethodField(source="user")
+    color = serializers.SerializerMethodField()
 
     is_playing = serializers.BooleanField()
     is_history = serializers.BooleanField()
@@ -60,6 +62,18 @@ class EmissionSerializer(FlexFieldsModelSerializer):
         if not (obj.user and getattr(obj.user, "profile")):
             return
         return ProfileSerializer(obj.user.profile, context=self.context).data
+
+    def get_color(self, obj):
+        if not (
+            obj.content_object
+            and obj.content_object.user
+            and getattr(obj.content_object.user, "profile")
+        ):
+            return EMISSION_DEFAULT_COLOR
+        return (
+            obj.content_object.user.profile.settings_scheduler_color
+            or EMISSION_DEFAULT_COLOR
+        )
 
     class Meta:
         model = Emission

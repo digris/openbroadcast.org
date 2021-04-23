@@ -34,21 +34,26 @@ class EmissionManager(models.Manager):
 @python_2_unicode_compatible
 class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
-    name = models.CharField(max_length=200, db_index=True)
+    name = models.CharField(
+        max_length=200,
+        db_index=True,
+    )
     slug = AutoSlugField(
-        populate_from="name", editable=True, blank=True, overwrite=True
+        populate_from="name",
+        editable=True,
+        blank=True,
+        overwrite=True,
     )
 
-    STATUS_CHOICES = ((0, _("Waiting")), (1, _("Done")), (2, _("Error")))
-    status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
-
-    COLOR_CHOICES = (
-        (0, _("Theme 1")),
-        (1, _("Theme 2")),
-        (2, _("Theme 3")),
-        (3, _("Theme 4")),
+    STATUS_CHOICES = (
+        (0, _("Waiting")),
+        (1, _("Done")),
+        (2, _("Error")),
     )
-    color = models.PositiveIntegerField(default=0, choices=COLOR_CHOICES)
+    status = models.PositiveIntegerField(
+        default=0,
+        choices=STATUS_CHOICES,
+    )
 
     TYPE_CHOICES = (
         ("studio", _("Studio")),
@@ -56,19 +61,37 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
         ("couchcast", _("Couchcast")),
     )
     type = models.CharField(
-        verbose_name=_("Type"), max_length=12, default="playlist", choices=TYPE_CHOICES
+        verbose_name=_("Type"),
+        max_length=12,
+        default="playlist",
+        choices=TYPE_CHOICES,
     )
 
-    SOURCE_CHOICES = (("user", _("User")), ("autopilot", _("Autopilot")))
+    SOURCE_CHOICES = (
+        ("user", _("User")),
+        ("autopilot", _("Autopilot")),
+    )
     source = models.CharField(
-        verbose_name=_("Source"), max_length=12, default="user", choices=SOURCE_CHOICES
+        verbose_name=_("Source"),
+        max_length=12,
+        default="user",
+        choices=SOURCE_CHOICES,
     )
 
-    time_start = models.DateTimeField(blank=True, null=True)
-    time_end = models.DateTimeField(blank=True, null=True)
+    time_start = models.DateTimeField(
+        blank=True,
+        null=True,
+    )
+    time_end = models.DateTimeField(
+        blank=True,
+        null=True,
+    )
 
     duration = models.PositiveIntegerField(
-        verbose_name="Duration (in ms)", blank=True, null=True, editable=False
+        verbose_name="Duration (in ms)",
+        blank=True,
+        null=True,
+        editable=False,
     )
 
     user = models.ForeignKey(
@@ -92,14 +115,17 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
      - get_duration()
      - t.b.d.
     """
-    ct_limit = models.Q(app_label="alibrary", model="playlist") | models.Q(
-        app_label="alibrary", model="release"
+    ct_limit = models.Q(app_label="alibrary", model="playlist")
+    content_type = models.ForeignKey(
+        ContentType,
+        limit_choices_to=ct_limit,
     )
-    content_type = models.ForeignKey(ContentType, limit_choices_to=ct_limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")
 
-    locked = models.BooleanField(default=False)
+    locked = models.BooleanField(
+        default=False,
+    )
 
     objects = EmissionManager()
 
@@ -215,8 +241,8 @@ def post_save_emission(sender, **kwargs):
 def post_save_emission_task(obj):
 
     """
-        check if emission is in a critical range (eg it should start soon)
-        """
+    check if emission is in a critical range (eg it should start soon)
+    """
     SCHEDULE_AHEAD = 60 * 60 * 3  # seconds
     range_start = datetime.datetime.now()
     range_end = datetime.datetime.now() + datetime.timedelta(seconds=SCHEDULE_AHEAD)

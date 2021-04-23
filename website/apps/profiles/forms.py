@@ -21,52 +21,32 @@ from ac_tagging.widgets import TagAutocompleteTagIt
 from base.fields.extra import AdvancedFileInput
 from profiles.models import Profile, Link, Service
 
-ACTION_LAYOUT = action_layout = FormActions(
-    HTML(
-        '<button type="submit" name="save-i-classicon-arrow-upi" value="save" class="btn btn-primary pull-right ajax_submit" id="submit-id-save-i-classicon-arrow-upi"><i class="icon-ok icon-white"></i> Save</button>'
-    ),
-    HTML(
-        '<button type="reset" name="reset" value="reset" class="reset resetButton btn btn-abort pull-right" id="reset-id-reset"><i class="icon-trash"></i> Cancel</button>'
-    ),
-)
-
-
-class ActionForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super(ActionForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_class = "form-horizontal"
-        self.helper.form_tag = False
-        self.helper.add_layout(ACTION_LAYOUT)
-
 
 class ProfileForm(ModelForm):
     class Meta:
         model = Profile
-        exclude = ("user", "mentor", "description", "fax", "d_tags")
+        exclude = (
+            "user",
+            "mentor",
+            "description",
+            "fax",
+            "d_tags",
+            "settings_scheduler_color",
+        )
 
         widgets = {
             "image": AdvancedFileInput(image_width=100),
             "expertise": forms.CheckboxSelectMultiple(),
-            # "birth_date": forms.TextInput(attrs={"type": "date"}),
-            # "tags": TagAutocompleteWidget(required=False, label=_("Tags"), options={'max_tags': 9}),
         }
-
-    # d_tags = TagField(
-    #     # widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_("Tags"),
-    #     # NOTE: see `instance` in `__init__` below.
-    #     widget=TagAutocompleteWidget(required=False, label=_("Tags"), options={'max_tags': 9})
-    # )
 
     tags = TagField(required=False, label=_("Tags"))
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
-        instance = getattr(self, "instance", None)
+        # instance = getattr(self, "instance", None)
 
         self.helper = FormHelper()
         self.helper.form_tag = False
-        # self.fields['d_tags'].widget.instance = instance
 
         appearance_layout = Layout(
             Fieldset(

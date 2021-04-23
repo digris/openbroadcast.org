@@ -3,7 +3,6 @@
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import { templateFilters } from 'src/utils/template-filters';
-import { backgroundColors } from './constants';
 import { hexToRGBA } from './utils';
 import SchedulerCalendarEmissionContent from './SchedulerCalendarEmissionContent.vue';
 import Modal from '../UI/Modal.vue';
@@ -30,12 +29,6 @@ export default {
       default: null,
     },
   },
-  data() {
-    return {
-      // visible: true,
-      backgroundColors,
-    };
-  },
   computed: {
     visible() {
       return this.uuid != null;
@@ -56,7 +49,7 @@ export default {
       if (!this.contentObj) {
         return null;
       }
-      const color = backgroundColors[this.emission.color];
+      const color = this.emission.color;
       return {
         backgroundColor: hexToRGBA(color, 0.2),
         // backgroundColor: `rgba(${color}, .2)`,
@@ -231,19 +224,6 @@ export default {
       <div
         class="emission-editor__actions"
       >
-        <div
-          class="background-colors"
-        >
-          <div
-            v-for="(color, index) in backgroundColors"
-            :key="(`${color}`)"
-            :style="{'background-color': color}"
-            class="color"
-            @click="setColor(index)"
-          >
-            <span>#</span>
-          </div>
-        </div>
         <div
           v-if="(contentObj && !emission.hasLock)"
           class="delete"

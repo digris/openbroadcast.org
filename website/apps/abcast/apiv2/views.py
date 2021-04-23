@@ -61,7 +61,15 @@ class EmissionViewSet(FlexFieldsModelViewSet):
 
     def get_queryset(self):
         qs = super(EmissionViewSet, self).get_queryset()
-        qs = qs.prefetch_related("content_object")
+        qs = qs.prefetch_related(
+            "user",
+            "user__profile",
+            "user__groups",
+            "content_object",
+            "content_object__user",
+            "content_object__user__profile",
+            "content_object__user__groups",
+        )
         return qs
 
     def create(self, request, *args, **kwargs):
@@ -71,7 +79,6 @@ class EmissionViewSet(FlexFieldsModelViewSet):
         time_start = datetime.datetime.strptime(
             request.data.get("time_start"), "%Y-%m-%d %H:%M"
         )
-        color = request.data.get("color", 0)
 
         # raise ValidationError('you cannot schedule in the past...')
         content_object = get_object_or_404(
@@ -94,7 +101,6 @@ class EmissionViewSet(FlexFieldsModelViewSet):
             time_start=time_start,
             user=request.user,
             channel=channel,
-            color=color,
         )
 
         emission.save()

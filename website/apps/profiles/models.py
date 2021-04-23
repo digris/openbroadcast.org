@@ -192,6 +192,11 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         verbose_name="Show media appearances",
         default=False,
     )
+    settings_scheduler_color = models.CharField(
+        max_length=7,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         app_label = "profiles"
