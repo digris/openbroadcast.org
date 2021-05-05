@@ -160,8 +160,9 @@ class EmissionHistory(APIView):
         limit = request.GET.get("limit", 20)
         channel_uuid = request.GET.get("channel_uuid", None)
 
-        cache_key = "emission-history-{}-{}".format(obj_ct, obj_uuid)
-        data = cache.get(cache_key)
+        # cache_key = "emission-history-{}-{}".format(obj_ct, obj_uuid)
+        # data = cache.get(cache_key)
+        data = None
         if not data:
             obj = self.get_object()
             qs = obj.emissions.order_by("-time_start")
@@ -180,7 +181,7 @@ class EmissionHistory(APIView):
                 "results": serializer.data,
             }
 
-            cache.set(cache_key, data, 60 * 60)
+            # cache.set(cache_key, data, 60 * 60)
 
         response = Response(data)
         patch_response_headers(response, cache_timeout=60 * 60)

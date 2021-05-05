@@ -84,8 +84,8 @@ export default {
           }
 
           &.is-highlighted {
-            background: rgba(235, 193, 64, 0.85) !important;
-            border-color: rgba(235, 193, 64, 0.85) !important;
+            background: rgba(255, 0, 21, 0.85) !important;
+            border-color: rgba(255, 0, 21, 0.85) !important;
           }
 
           &.is-dragged {

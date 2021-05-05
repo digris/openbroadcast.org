@@ -53,7 +53,6 @@
       </media-preflight-status>
       {{ object.duration_s|sec_to_time }}
     </div>
-    {% comment %}
     {% if not object.is_jingle %}
       {% if user.is_authenticated and user.profile and user.profile.settings_show_media_history %}
         <emission-history-inline
@@ -67,7 +66,7 @@
         ></media-appearances>
       {%  endif %}
     {%  endif %}
-    {% endcomment %}
+    {% comment %}
     {% if not object.is_jingle %}
       {% if user.is_authenticated and user.profile and user.profile.settings_show_media_history %}
         {% if object.last_emission %}
@@ -89,5 +88,6 @@
         {% endif %}
       {%  endif %}
     {%  endif %}
+    {% endcomment %}
   </template>
 </media-row>

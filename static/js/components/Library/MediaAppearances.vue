@@ -31,9 +31,6 @@ export default {
     },
   },
   methods: {
-    onEnter() {
-      this.loadAppearances();
-    },
     loadAppearances() {
       if (!this.loadingStarted) {
         this.$store.dispatch('library/loadMediaAppearances', { uuid: this.objUuid });
@@ -70,7 +67,7 @@ export default {
       <span
         v-else
         class="value value--blank"
-      >&nbsp;-&nbsp;-&nbsp;</span>
+      >-</span>
     </div>
     <div
       v-if="detailsVisible"
@@ -115,6 +112,7 @@ export default {
   position: relative;
   &__summary {
     font-size: 90%;
+    cursor: pointer;
     .label {
       color: #a3a3a3;
     }

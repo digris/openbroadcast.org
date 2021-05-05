@@ -1,7 +1,6 @@
 <script>
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import Intersect from 'vue-intersect';
 
 dayjs.extend(relativeTime);
 
@@ -9,7 +8,6 @@ export default {
   name: 'EmissionHistoryInline',
   components: {
     // date: Date,
-    intersect: Intersect,
   },
   filters: {
     date(value) {
@@ -62,20 +60,15 @@ export default {
       return null;
     },
   },
-  mounted() {
-    // this.loadHistory();
-  },
   methods: {
-    onEnter() {
+    loadHistory() {
       if (!this.loadingStarted) {
-        this.loadHistory();
+        this.$store.dispatch('objectHistory/loadObjectHistory', { objCt: this.objCt, objUuid: this.objUuid });
         this.loadingStarted = true;
       }
     },
-    loadHistory() {
-      this.$store.dispatch('objectHistory/loadObjectHistory', { objCt: this.objCt, objUuid: this.objUuid });
-    },
     showDetails() {
+      this.loadHistory();
       this.detailsVisible = true;
     },
     hideDetails() {
@@ -86,79 +79,76 @@ export default {
 </script>
 
 <template>
-  <intersect
-    @enter="onEnter"
+  <div
+    class="emissions"
   >
     <div
-      class="emissions"
+      class="emissions__summary"
+      @mouseover="showDetails"
+      @mouseleave="hideDetails"
+    >
+      <span
+        class="label"
+      >History:</span>
+      <span
+        v-if="lastEmission"
+        class="value"
+      >{{ lastEmission.timeStart|date }}</span>
+      <span
+        v-else
+        class="value value--blank"
+      >-</span>
+    </div>
+    <div
+      v-if="detailsVisible"
+      class="emissions__details"
     >
       <div
-        v-if="lastEmission"
-        class="emissions__summary"
-        @mouseover="showDetails"
-        @mouseleave="hideDetails"
-      >
-        <span
-          class="label"
-        >Emissions:</span>
-        <span
-          class="value"
-        >{{ lastEmission.timeStart|date }}</span>
-      </div>
-      <div v-else>
-        &nbsp;
-      </div>
-      <div
-        v-if="detailsVisible"
-        class="emissions__details"
+        v-if="upcomingEmissions.length"
+        class="emission-list emission-list--upcoming"
       >
         <div
-          v-if="upcomingEmissions.length"
-          class="emission-list emission-list--upcoming"
+          class="emission-list__title"
         >
-          <div
-            class="emission-list__title"
-          >
-            <span>Upcoming</span>
-          </div>
-          <div
-            v-for="(emission, index) in upcomingEmissions"
-            :key="`history-item-upcoming-${index}`"
-            class="emission"
-          >
-            <span
-              class="date--rel"
-            >{{ emission.timeStart|relativeDateTime }}</span>
-            <span
-              class="date--abs"
-            >{{ emission.timeStart|date }}</span>
-          </div>
+          <span>Upcoming</span>
         </div>
         <div
-          v-if="pastEmissions.length"
-          class="emission-list emission-list--past"
+          v-for="(emission, index) in upcomingEmissions"
+          :key="`history-item-upcoming-${index}`"
+          class="emission"
         >
-          <div
-            class="emission-list__title"
-          >
-            <span>Past</span>
-          </div>
-          <div
-            v-for="(emission, index) in pastEmissions"
-            :key="`history-item-upcoming-${index}`"
-            class="emission"
-          >
-            <span
-              class="date--rel"
-            >{{ emission.timeStart|relativeDateTime }}</span>
-            <span
-              class="date--abs"
-            >{{ emission.timeStart|date }}</span>
-          </div>
+          <span
+            class="date--rel"
+          >{{ emission.timeStart|relativeDateTime }}</span>
+          <span
+            class="date--abs"
+          >{{ emission.timeStart|date }}</span>
+        </div>
+      </div>
+      <div
+        v-if="pastEmissions.length"
+        class="emission-list emission-list--past"
+      >
+        <div
+          class="emission-list__title"
+        >
+          <span>Past</span>
+        </div>
+        <div
+          v-for="(emission, index) in pastEmissions"
+          :key="`history-item-upcoming-${index}`"
+          class="emission"
+        >
+          <span
+            class="date--rel"
+          >{{ emission.timeStart|relativeDateTime }}</span>
+          <span
+            class="date--abs"
+          >{{ emission.timeStart|date }}</span>
         </div>
       </div>
     </div>
-  </intersect>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -166,6 +156,7 @@ export default {
   position: relative;
   &__summary {
     font-size: 90%;
+    cursor: pointer;
     .label {
       color: #a3a3a3;
     }

@@ -48,54 +48,18 @@
       </media-preflight-status>
       {{ object.duration_s|sec_to_time }}
     </div>
-
     {% if not object.is_jingle %}
-      {% comment %}
       {% if user.is_authenticated and user.profile and user.profile.settings_show_media_history %}
         <emission-history-inline
           obj-ct="{{ object.get_ct }}"
           obj-uuid="{{ object.uuid }}"
         ></emission-history-inline>
       {%  endif %}
-      {% endcomment %}
       {% if user.is_authenticated and user.profile and user.profile.settings_show_media_appearances %}
         <media-appearances
           obj-uuid="{{ object.uuid }}"
         ></media-appearances>
       {%  endif %}
-    {%  endif %}
-    {% comment %}{% endcomment %}
-    {% if not object.is_jingle %}
-      {% if user.is_authenticated and user.profile and user.profile.settings_show_media_history %}
-        {% if search_result %}
-          {% if search_result.last_emission %}
-          <div class="small">
-            <span class="dim">Last emission:</span>
-            {{ search_result.last_emission|parse_datetime|date:'SHORT_DATE_FORMAT' }}
-          </div>
-          {% endif %}
-        {% else %}
-          {% if object.last_emission %}
-          <div class="small" v-tooltip="'{% trans 'Num. emissions' %}: {{ object.emissions.count }}'">
-            <span class="dim">Last emission:</span>
-            {{ object.last_emission.time_start|date:'SHORT_DATE_FORMAT' }}
-          </div>
-          {% endif %}
-        {% endif %}
-      {%  endif %}
-      {% comment %}
-      {% if user.is_authenticated and user.profile and user.profile.settings_show_media_appearances %}
-        {% if object.public_appearances.exists %}
-          <div
-            class="small"
-            v-tooltip="'{% trans 'Broadcasts' %}: {{ object.broadcast_appearances.count }}<br>{% trans 'Playlists' %}: {{ object.playlist_appearances.count }}'"
-          >
-            <span class="dim">Appearances:</span>
-            {{ object.broadcast_appearances.count }}/{{ object.playlist_appearances.count }}
-          </div>
-        {% endif %}
-      {%  endif %}
-      {% endcomment %}
     {%  endif %}
   </template>
 </media-row>
