@@ -11,7 +11,7 @@
 </div>
 
 <div class="list list--table">
-  {% for object in object.get_media %}
+  {% for object in object.media_release.all %}
   <div class="list-item">
   {% include 'alibrary/release/_media.html' with include_tracknumber=True %}
   </div>

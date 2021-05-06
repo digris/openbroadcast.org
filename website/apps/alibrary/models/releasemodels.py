@@ -59,14 +59,27 @@ def upload_cover_to(instance, filename):
 class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     # core fields
-    name = models.CharField(max_length=200, db_index=True)
+    name = models.CharField(
+        max_length=200,
+        db_index=True,
+    )
     slug = AutoSlugField(
-        populate_from="name", editable=True, blank=True, overwrite=True
+        populate_from="name",
+        editable=True,
+        blank=True,
+        overwrite=True,
     )
     license = models.ForeignKey(
-        License, blank=True, null=True, related_name="release_license"
+        License,
+        blank=True,
+        null=True,
+        related_name="release_license",
     )
-    release_country = models.ForeignKey(Country, blank=True, null=True)
+    release_country = models.ForeignKey(
+        Country,
+        blank=True,
+        null=True,
+    )
 
     main_image = models.ImageField(
         verbose_name=_("Cover"),
@@ -75,17 +88,28 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         null=True,
         blank=True,
     )
-    catalognumber = models.CharField(max_length=50, blank=True, null=True)
+    catalognumber = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+    )
 
     """
     releasedate stores the 'real' time, approx is for inputs
     lik 2012-12 etc.
     """
-    releasedate = models.DateField(blank=True, null=True)
-    releasedate_approx = ApproximateDateField(
-        verbose_name="Releasedate", blank=True, null=True
+    releasedate = models.DateField(
+        blank=True,
+        null=True,
     )
-    pressings = models.PositiveIntegerField(default=0)
+    releasedate_approx = ApproximateDateField(
+        verbose_name="Releasedate",
+        blank=True,
+        null=True,
+    )
+    pressings = models.PositiveIntegerField(
+        default=0,
+    )
     TOTALTRACKS_CHOICES = ((x, x) for x in range(1, 301))
     totaltracks = models.IntegerField(
         verbose_name=_("Total Tracks"),
@@ -93,7 +117,10 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         null=True,
         choices=TOTALTRACKS_CHOICES,
     )
-    asin = models.CharField(max_length=150, blank=True)
+    asin = models.CharField(
+        max_length=150,
+        blank=True,
+    )
     RELEASESTATUS_CHOICES = (
         (None, _("Not set")),
         ("official", _("Official")),
@@ -103,10 +130,18 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
     )
 
     releasestatus = models.CharField(
-        max_length=60, blank=True, choices=RELEASESTATUS_CHOICES
+        max_length=60,
+        blank=True,
+        choices=RELEASESTATUS_CHOICES,
     )
-    excerpt = models.TextField(blank=True, null=True)
-    description = extra.MarkdownTextField(blank=True, null=True)
+    excerpt = models.TextField(
+        blank=True,
+        null=True,
+    )
+    description = extra.MarkdownTextField(
+        blank=True,
+        null=True,
+    )
     releasetype = models.CharField(
         verbose_name="Release type",
         max_length=24,
@@ -122,9 +157,11 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         on_delete=models.SET_NULL,
     )
     media = models.ManyToManyField(
-        "alibrary.Media", through="ReleaseMedia", blank=True, related_name="releases"
+        "alibrary.Media",
+        through="ReleaseMedia",
+        blank=True,
+        related_name="releases",
     )
-
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         blank=True,
@@ -154,10 +191,16 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         on_delete=models.SET_NULL,
     )
 
-    barcode = models.CharField(max_length=32, blank=True, null=True)
+    barcode = models.CharField(
+        max_length=32,
+        blank=True,
+        null=True,
+    )
 
     extra_artists = models.ManyToManyField(
-        "alibrary.Artist", through="ReleaseExtraartists", blank=True
+        "alibrary.Artist",
+        through="ReleaseExtraartists",
+        blank=True,
     )
     album_artists = models.ManyToManyField(
         "alibrary.Artist",
@@ -168,7 +211,10 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
 
     relations = GenericRelation(Relation)
     d_tags = tagging.fields.TagField(
-        max_length=1024, verbose_name="Tags", blank=True, null=True
+        max_length=1024,
+        verbose_name="Tags",
+        blank=True,
+        null=True,
     )
 
     objects = ReleaseManager()
@@ -242,31 +288,27 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
 
         return False
 
-
     @property
     def last_creation_time(self):
         """
         take into account creation time of containing tracks
         """
-        _media = self.media_release.order_by('-created').first()
+        _media = self.media_release.order_by("-created").first()
         if _media and _media.created > self.created:
             return _media.created
 
         return self.created
-
 
     @property
     def last_update_time(self):
         """
         take into account update time of containing tracks
         """
-        _media = self.media_release.order_by('-updated').first()
+        _media = self.media_release.order_by("-updated").first()
         if _media and _media.updated > self.updated:
             return _media.updated
 
         return self.updated
-
-
 
     def get_lookup_providers(self):
 
@@ -323,7 +365,8 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         from alibrary.models import Media
 
         return Media.objects.filter(release=self).select_related(
-            "artist", "preflight_check"
+            "artist",
+            "preflight_check",
         )
 
     def get_products(self):

@@ -640,7 +640,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                 pass
 
         # TODO: remove! just for testing!
-        # self._master_changed = True
+        self._master_changed = True
 
         super(Media, self).save(*args, **kwargs)
 

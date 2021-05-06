@@ -1,4 +1,4 @@
-{% load i18n spurl %}
+{% load i18n vuejs_tags media_preflight_tags %}
 {% if broadcasts.exists %}
 <div class="list-prefix">
   <h3 class="title">{% trans 'Broadcasts' %}</h3>
@@ -32,7 +32,10 @@
     <div>
       <div>{% trans "Encoding" %}</div>
       <div>
-        <span>{{ object.master_encoding|upper }}</span>
+        {% preflight_status_as object as preflight_status %}
+        <media-preflight-status :preflight-status="({{ preflight_status|as_json }})">
+          {{ object.master_encoding|default:'Unknown' }}
+        </media-preflight-status>
         {% if object.master_bitrate %}
           <span>- {{ object.master_bitrate}} Kbps</span>
         {% endif %}

@@ -7,28 +7,52 @@ from django.utils.translation import ugettext_lazy as _
 from .models import PreflightCheck
 
 
-def preflight_check_set_init(modeladmin, request, queryset):
-    for item in queryset:
-        item.status = PreflightCheck.STATUS_INIT
-        item.result = None
-        item.preflight_ok = False
-        item.save()
+def preflight_check_set_pending(modeladmin, request, queryset):
+    for preflight_check in queryset:
+        preflight_check.status = PreflightCheck.STATUS_PENDING
+        preflight_check.checks = {}
+        preflight_check.warnings = []
+        preflight_check.errors = []
+        preflight_check.save()
 
 
-preflight_check_set_init.short_description = "Reprocess selected"
+preflight_check_set_pending.short_description = "Reprocess selected"
 
 
 @admin.register(PreflightCheck)
 class PreflightCheckAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "media_display", "result", "status", "preflight_ok"]
-    list_filter = ["status", "preflight_ok"]
-    readonly_fields = ["result"]
+    list_display = [
+        "__str__",
+        "media_display",
+        "checks",
+        "warnings",
+        "errors",
+        "created",
+        "updated",
+        "status",
+        "has_warnings",
+        "has_errors",
+    ]
+    list_filter = [
+        "status",
+    ]
+    readonly_fields = [
+        "checks",
+        "warnings",
+        "errors",
+    ]
 
-    search_fields = ["media__id", "media__uuid", "media__name"]
+    search_fields = [
+        "media__id",
+        "media__uuid",
+        "media__name",
+    ]
 
-    # date_hierarchy = 'created'
+    date_hierarchy = "created"
     raw_id_fields = ("media",)
-    actions = [preflight_check_set_init]
+    actions = [
+        preflight_check_set_pending,
+    ]
 
     def media_display(self, obj):
         if obj.media:

@@ -66,28 +66,5 @@
         ></media-appearances>
       {%  endif %}
     {%  endif %}
-    {% comment %}
-    {% if not object.is_jingle %}
-      {% if user.is_authenticated and user.profile and user.profile.settings_show_media_history %}
-        {% if object.last_emission %}
-        <div class="small" v-tooltip="'{% trans 'Num. emissions' %}: {{ object.emissions.count }}'">
-          <span class="dim">Last emission:</span>
-          {{ object.last_emission.time_start|date:'SHORT_DATE_FORMAT' }}
-        </div>
-        {% endif %}
-      {%  endif %}
-      {% if user.is_authenticated and user.profile and user.profile.settings_show_media_appearances %}
-        {% if object.public_appearances.exists %}
-          <div
-            class="small"
-            v-tooltip="'{% trans 'Broadcasts' %}: {{ object.broadcast_appearances.count }}<br>{% trans 'Playlists' %}: {{ object.playlist_appearances.count }}'"
-          >
-            <span class="dim">Appearances:</span>
-            {{ object.broadcast_appearances.count }}/{{ object.playlist_appearances.count }}
-          </div>
-        {% endif %}
-      {%  endif %}
-    {%  endif %}
-    {% endcomment %}
   </template>
 </media-row>

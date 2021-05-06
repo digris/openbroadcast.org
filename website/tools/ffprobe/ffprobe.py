@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# Filename: ffprobe.py
 """
 Python wrapper for ffprobe command line tool.
 """
@@ -19,9 +18,9 @@ FFPROBE_BINARY = getattr(settings, "FFPROBE_BINARY")
 
 class FFProbe:
     """
-	FFProbe wraps the ffprobe command and pulls the data into an object form::
-		metadata=FFProbe('multimedia-file.mov')
-	"""
+    FFProbe wraps the ffprobe command and pulls the data into an object form::
+            metadata=FFProbe('multimedia-file.mov')
+    """
 
     def __init__(self, video_file):
         self.video_file = video_file
@@ -82,8 +81,8 @@ class FFProbe:
 
 class FFStream:
     """
-	An object representation of an individual stream in a multimedia file.
-	"""
+    An object representation of an individual stream in a multimedia file.
+    """
 
     def __init__(self, datalines):
         for a in datalines:
@@ -95,8 +94,8 @@ class FFStream:
 
     def isAudio(self):
         """
-		Is this stream labelled as an audio stream?
-		"""
+        Is this stream labelled as an audio stream?
+        """
         val = False
         if self.__dict__["codec_type"]:
             if str(self.__dict__["codec_type"]) == "audio":
@@ -105,8 +104,8 @@ class FFStream:
 
     def isVideo(self):
         """
-		Is the stream labelled as a video stream.
-		"""
+        Is the stream labelled as a video stream.
+        """
         val = False
         if self.__dict__["codec_type"]:
             if self.codec_type == "video":
@@ -115,8 +114,8 @@ class FFStream:
 
     def isSubtitle(self):
         """
-		Is the stream labelled as a subtitle stream.
-		"""
+        Is the stream labelled as a subtitle stream.
+        """
         val = False
         if self.__dict__["codec_type"]:
             if str(self.codec_type) == "subtitle":
@@ -125,9 +124,9 @@ class FFStream:
 
     def frameSize(self):
         """
-		Returns the pixel frame size as an integer tuple (width,height) if the stream is a video stream.
-		Returns None if it is not a video stream.
-		"""
+        Returns the pixel frame size as an integer tuple (width,height) if the stream is a video stream.
+        Returns None if it is not a video stream.
+        """
         size = None
         if self.isVideo():
             if self.__dict__["width"] and self.__dict__["height"]:
@@ -140,9 +139,9 @@ class FFStream:
 
     def pixelFormat(self):
         """
-		Returns a string representing the pixel format of the video stream. e.g. yuv420p.
-		Returns none is it is not a video stream.
-		"""
+        Returns a string representing the pixel format of the video stream. e.g. yuv420p.
+        Returns none is it is not a video stream.
+        """
         f = None
         if self.isVideo():
             if self.__dict__["pix_fmt"]:
@@ -151,8 +150,8 @@ class FFStream:
 
     def frames(self):
         """
-		Returns the length of a video stream in frames. Returns 0 if not a video stream.
-		"""
+        Returns the length of a video stream in frames. Returns 0 if not a video stream.
+        """
         f = 0
         if self.isVideo() or self.isAudio():
             if self.__dict__["nb_frames"]:
@@ -164,9 +163,9 @@ class FFStream:
 
     def durationSeconds(self):
         """
-		Returns the runtime duration of the video stream as a floating point number of seconds.
-		Returns 0.0 if not a video stream.
-		"""
+        Returns the runtime duration of the video stream as a floating point number of seconds.
+        Returns 0.0 if not a video stream.
+        """
         f = 0.0
         if self.isVideo() or self.isAudio():
             if self.__dict__["duration"]:
@@ -178,8 +177,8 @@ class FFStream:
 
     def language(self):
         """
-		Returns language tag of stream. e.g. eng
-		"""
+        Returns language tag of stream. e.g. eng
+        """
         lang = None
         if self.__dict__["TAG:language"]:
             lang = self.__dict__["TAG:language"]
@@ -187,8 +186,8 @@ class FFStream:
 
     def codec(self):
         """
-		Returns a string representation of the stream codec.
-		"""
+        Returns a string representation of the stream codec.
+        """
         codec_name = None
         if self.__dict__["codec_name"]:
             codec_name = self.__dict__["codec_name"]
@@ -196,8 +195,8 @@ class FFStream:
 
     def codecDescription(self):
         """
-		Returns a long representation of the stream codec.
-		"""
+        Returns a long representation of the stream codec.
+        """
         codec_d = None
         if self.__dict__["codec_long_name"]:
             codec_d = self.__dict__["codec_long_name"]
@@ -205,8 +204,8 @@ class FFStream:
 
     def codecTag(self):
         """
-		Returns a short representative tag of the stream codec.
-		"""
+        Returns a short representative tag of the stream codec.
+        """
         codec_t = None
         if self.__dict__["codec_tag_string"]:
             codec_t = self.__dict__["codec_tag_string"]
@@ -214,8 +213,8 @@ class FFStream:
 
     def bitrate(self):
         """
-		Returns bitrate as an integer in bps
-		"""
+        Returns bitrate as an integer in bps
+        """
         b = 0
         if self.__dict__["bit_rate"]:
             try:

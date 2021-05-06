@@ -14,7 +14,7 @@ from rest_framework.authtoken import views as auth_views
 def api_root(request, format=None):
     return Response(
         {
-            "version": '0.2.0',
+            "version": "0.2.0",
             # "abcast/emission": reverse(
             #     "api:emission-list", request=request, format=format
             # ),
@@ -48,7 +48,6 @@ urlpatterns = [
     url("^player/", include("player.apiv2.urls")),
     url("^profiles/", include("profiles.apiv2.urls")),
     url("^collector/", include("collector.apiv2.urls")),
-    url("^media-preflight/", include("media_preflight.apiv2.urls")),
     url("^statistics/", include("statistics.apiv2.urls")),
     url("^exporter/", include("exporter.apiv2.urls")),
     # w.i.p.

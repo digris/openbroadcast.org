@@ -167,6 +167,20 @@ class ReleaseDetailView(MenuMixin, SectionDetailView):
         #     sections = [s for s in sections if not s["key"] == "license"]
         return sections
 
+    def get_queryset(self):
+        return self.model.objects.select_related(
+            "release_country",
+            "label",
+            "creator",
+            "last_editor",
+        ).prefetch_related(
+            "extra_artists",
+            "album_artists",
+            "media_release",
+            "media_release__artist",
+            "media_release__preflight_check",
+        )
+
 
 class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Release

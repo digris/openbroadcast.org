@@ -10,7 +10,7 @@ export default {
           tooltip.setAttribute('id', 'v-tooltip');
           tooltip.innerHTML = binding.value;
           tooltip.style.left = `${tooltipDimension.left + (tooltipDimension.width / 2)}px`;
-          tooltip.style.top = `${window.scrollY + tooltipDimension.top + 22}px`;
+          tooltip.style.top = `${window.scrollY + tooltipDimension.top + 18}px`;
           document.body.appendChild(tooltip);
         });
         el.addEventListener('mouseleave', () => {

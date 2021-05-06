@@ -1,1 +1,0 @@
-import djclick as click

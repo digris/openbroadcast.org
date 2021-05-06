@@ -5,20 +5,45 @@ export default {
     preflightStatus: {
       type: Object,
       required: true,
+      default: () => ({ status: 'pending', warnings: [], errors: [] }),
     },
   },
   computed: {
-    checkPassed() {
-      return (this.preflightStatus.passed) ? this.preflightStatus.passed : false;
+    status() {
+      return this.preflightStatus.status;
+    },
+    warnings() {
+      return this.preflightStatus.warnings;
     },
     errors() {
       return this.preflightStatus.errors;
     },
-    errorDisplay() {
-      if (this.errors.length) {
-        return this.errors.join(', ');
+    checkPassed() {
+      if (this.status !== 'completed') {
+        return false;
       }
-      return 'Check still running';
+      if (this.warnings.length) {
+        return false;
+      }
+      if (this.errors.length) {
+        return false;
+      }
+      return true;
+    },
+    tooltipText() {
+      if (this.status === 'pending') {
+        return 'Preflight check pending';
+      }
+      if (this.status === 'running') {
+        return 'Preflight check running';
+      }
+      if (this.errors.length) {
+        return this.errors.join('<br>');
+      }
+      if (this.warnings.length) {
+        return this.warnings.join('<br>');
+      }
+      return '';
     },
   },
 };
@@ -26,7 +51,11 @@ export default {
 <template>
   <div
     class="preflight-status"
-    :class="{'check-failed': ! checkPassed, 'has-errors': errors.length}"
+    :class="{
+      'is-pending': status === 'pending',
+      'has-warnings': warnings.length,
+      'has-errors': errors.length,
+    }"
   >
     <!--
     <pre
@@ -42,7 +71,7 @@ export default {
     </span>
     <span
       v-else
-      v-tooltip="errorDisplay"
+      v-tooltip="tooltipText"
       class="label"
     >
       <slot name="default" />
@@ -54,8 +83,14 @@ export default {
     display: inline-flex;
     color: #a5a5a5;
 
-    &.check-failed {
-      color: #fcc761;
+    &.is-pending {
+      cursor: wait;
+      opacity: 0.5;
+    }
+
+    &.has-warnings {
+      color: #ffaa00;
+      cursor: pointer;
     }
 
     &.has-errors {
@@ -66,6 +101,5 @@ export default {
     .label {
       text-transform: uppercase;
     }
-
   }
 </style>

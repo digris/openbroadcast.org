@@ -4,38 +4,57 @@ from __future__ import absolute_import
 
 import logging
 
+from cacheops import invalidate_obj
 from celery import shared_task
 
-from .api_client import MediaPreflightAPIClient
-
-log = logging.getLogger(__name__)
+from . import service_client
 
 
-@shared_task
-def request_check_for_media(media_id):
-
-    from alibrary.models import Media
-
-    obj = Media.objects.get(pk=media_id)
-
-    client = MediaPreflightAPIClient()
-    result = client.request_check_for_media(obj)
-
-    if result:
-        log.info("Media id: {} - requested preflight check".format(obj.pk))
-    else:
-        log.warning("Media id: {} - unable to request preflight check".format(obj.pk))
+logger = logging.getLogger(__name__)
 
 
 @shared_task
-def delete_check_for_media(media_uuid):
+def run_preflight_check_task(preflight_check_id):
 
-    client = MediaPreflightAPIClient()
-    result = client.delete_check_for_media(media_uuid)
+    from .models import PreflightCheck
 
-    if result:
-        log.info("Media id: {} - deleted preflight check".format(media_uuid))
-    else:
-        log.warning(
-            "Media id: {} - unable to delete preflight check".format(media_uuid)
-        )
+    preflight_check = PreflightCheck.objects.get(id=preflight_check_id)
+
+    logger.info("Media id: {} - run preflight check".format(preflight_check.media.id))
+
+    try:
+        result = service_client.run_check(media=preflight_check.media)
+        checks = result.get("checks", {})
+        warnings = []
+        errors = result.get("errors", [])
+
+        decoded_duration = checks.get("decoded_duration", None)
+        master_duration = preflight_check.media.master_duration
+
+        if decoded_duration and master_duration:
+            diff = abs(decoded_duration - master_duration)
+            if diff > 5.0:
+                errors.append(
+                    "duration mismatch: {:.2f}s".format(diff),
+                )
+            elif diff > 2.0:
+                warnings.append(
+                    "duration mismatch: {:.2f}s".format(diff),
+                )
+
+        preflight_check.status = PreflightCheck.STATUS_COMPLETED
+        preflight_check.checks = checks
+        preflight_check.warnings = warnings
+        preflight_check.errors = errors
+        preflight_check.save()
+
+    except service_client.PreflightServiceException as e:
+        logger.warning("error running preflight check: {}".format(e))
+
+        preflight_check.status = PreflightCheck.STATUS_ERROR
+        preflight_check.checks = {}
+        preflight_check.warnings = []
+        preflight_check.errors = ["{}".format(e)]
+        preflight_check.save()
+
+    invalidate_obj(preflight_check)

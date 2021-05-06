@@ -13,7 +13,11 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from jsonfield import JSONField
 
-from .tasks import request_check_for_media, delete_check_for_media
+from base.mixins import TimestampedModelMixin
+
+from .tasks import (
+    run_preflight_check_task,
+)
 
 SITE_URL = getattr(settings, "SITE_URL")
 
@@ -21,134 +25,75 @@ log = logging.getLogger(__name__)
 
 
 @python_2_unicode_compatible
-class PreflightCheck(models.Model):
+class PreflightCheck(TimestampedModelMixin, models.Model):
 
-    STATUS_INIT = 0
-    STATUS_PROCESSING = 1
-    STATUS_DONE = 2
-    STATUS_ERROR = 99
+    STATUS_PENDING = "pending"
+    STATUS_RUNNING = "running"
+    STATUS_COMPLETED = "completed"
+    STATUS_ERROR = "error"
 
     STATUS_CHOICES = (
-        (STATUS_INIT, "Initialized"),
-        (STATUS_PROCESSING, "Processing"),
-        (STATUS_DONE, "Done"),
+        (STATUS_PENDING, "Pending"),
+        (STATUS_RUNNING, "Running"),
+        (STATUS_COMPLETED, "Completed"),
         (STATUS_ERROR, "Error"),
     )
 
-    status = models.PositiveSmallIntegerField(
+    status = models.CharField(
         _("Status"),
         choices=STATUS_CHOICES,
-        default=STATUS_INIT,
+        default=STATUS_PENDING,
+        max_length=16,
         blank=False,
         null=False,
         db_index=True,
     )
 
     media = models.OneToOneField(
-        "alibrary.Media", related_name="preflight_check", null=True, blank=False
+        "alibrary.Media",
+        related_name="preflight_check",
+        null=True,
+        blank=False,
+        on_delete=models.CASCADE,
     )
 
-    result = JSONField(null=True, blank=True)
+    checks = JSONField(
+        default={},
+        editable=False,
+    )
 
-    preflight_ok = models.BooleanField(default=False)
+    warnings = JSONField(
+        default=[],
+        editable=False,
+    )
+
+    errors = JSONField(
+        default=[],
+        editable=False,
+    )
 
     def __str__(self):
         return "{}".format(self.pk)
 
-    def get_api_url(self):
-
-        url = reverse("api:preflight-check-detail", kwargs={"uuid": self.uuid})
-        return "{}{}".format(SITE_URL, url)
+    @property
+    def has_warnings(self):
+        return bool(self.warnings)
 
     @property
-    def uuid(self):
-        """
-        no independent uuid needed/wished here. mapps to media uuis
-        """
-        if self.media:
-            return self.media.uuid
-
-    @property
-    def summary(self):
-        summary = {
-            "passed": self.preflight_ok,
-            "errors": [],
-        }
-
-        if not self.preflight_ok and self.result:
-            try:
-                errors = json.loads(self.result).get("errors", [])
-            except TypeError:
-                errors = ["Unable to load preflight data"]
-            summary.update({"errors": errors})
-
-        return summary
-
-
-@receiver(pre_save, sender=PreflightCheck)
-def preflight_check_pre_save(sender, instance, **kwargs):
-    """
-    initiate preflight check (intermediate step here to handle async)
-    """
-
-    log.debug("pre-save - status: {}".format(instance.get_status_display()))
-
-    if instance.result:
-
-        result = json.loads(instance.result)
-
-        instance.status = PreflightCheck.STATUS_DONE
-
-        if result["errors"]:
-            instance.preflight_ok = False
-
-        if result["checks"]:
-
-            duration_preflight = result["checks"].get("duration_preflight")
-            duration_master = instance.media.master_duration
-
-            # print('diff: {}'.format(abs(duration_preflight - duration_master)))
-
-            if (
-                duration_preflight
-                and duration_master
-                and (abs(duration_preflight - duration_master) < 2.0)
-            ):
-                instance.preflight_ok = True
-
-            else:
-                instance.preflight_ok = False
-                result["errors"][
-                    "duration"
-                ] = "duration mismatch - master: {} preflight: {}".format(
-                    duration_master, duration_preflight
-                )
+    def has_errors(self):
+        return bool(self.errors)
 
 
 @receiver(post_save, sender=PreflightCheck)
 def preflight_check_post_save(sender, instance, created, **kwargs):
     """
-    initiate preflight check (intermediate step here to handle async)
+    run preflight check (intermediate step here to handle async / celery)
     """
 
-    log.debug("post-save - status: {}".format(instance.get_status_display()))
-
-    if instance.status < PreflightCheck.STATUS_PROCESSING:
+    if instance.status == PreflightCheck.STATUS_PENDING:
         PreflightCheck.objects.filter(pk=instance.pk).update(
-            status=PreflightCheck.STATUS_PROCESSING
+            status=PreflightCheck.STATUS_RUNNING
         )
-        request_check_for_media.apply_async((instance.media.pk,))
-        # request_check_for_media(instance.media)
 
-
-@receiver(post_delete, sender=PreflightCheck)
-def preflight_check_post_delete(sender, instance, **kwargs):
-    """
-    delete remote resource.
-    """
-    try:
-        if instance.media:
-            delete_check_for_media.apply_async((instance.media.uuid,))
-            # delete_check_for_media(instance.media)
-    except:
-        pass
+        # run_preflight_check_task.apply_async((instance.id,))
+        run_preflight_check_task(instance.id)
