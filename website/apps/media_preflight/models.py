@@ -95,5 +95,5 @@ def preflight_check_post_save(sender, instance, created, **kwargs):
             status=PreflightCheck.STATUS_RUNNING
         )
 
-        # run_preflight_check_task.apply_async((instance.id,))
-        run_preflight_check_task(instance.id)
+        run_preflight_check_task.apply_async((instance.id,))
+        # run_preflight_check_task(instance.id)
