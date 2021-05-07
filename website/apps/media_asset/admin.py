@@ -12,14 +12,34 @@ def waveform_set_init(modeladmin, request, queryset):
         item.save()
 
 
+def format_set_init(modeladmin, request, queryset):
+    for item in queryset:
+        item.status = Format.INIT
+        item.save()
+
+
 waveform_set_init.short_description = "Reprocess selected"
+format_set_init.short_description = "Reprocess selected"
 
 
+@admin.register(Waveform)
 class WaveformAdmin(admin.ModelAdmin):
-    list_display = ("__str__", "media_display", "type", "created", "accessed", "status")
-    list_filter = ("type", "status")
+    list_display = [
+        "__str__",
+        "media_display",
+        "type",
+        "created",
+        "accessed",
+        "status",
+    ]
+    list_filter = [
+        "type",
+        "status",
+    ]
     date_hierarchy = "created"
-    raw_id_fields = ("media",)
+    raw_id_fields = [
+        "media",
+    ]
     actions = [waveform_set_init]
 
     def media_display(self, obj):
@@ -35,20 +55,9 @@ class WaveformAdmin(admin.ModelAdmin):
     media_display.allow_tags = True
 
 
-admin.site.register(Waveform, WaveformAdmin)
-
-
-def format_set_init(modeladmin, request, queryset):
-    for item in queryset:
-        item.status = Format.INIT
-        item.save()
-
-
-format_set_init.short_description = "Reprocess selected"
-
-
+@admin.register(Format)
 class FormatAdmin(admin.ModelAdmin):
-    list_display = (
+    list_display = [
         "__str__",
         "media_display",
         "encoding",
@@ -57,10 +66,16 @@ class FormatAdmin(admin.ModelAdmin):
         "created",
         "accessed",
         "status",
-    )
-    list_filter = ("encoding", "quality", "status")
+    ]
+    list_filter = [
+        "encoding",
+        "quality",
+        "status",
+    ]
     date_hierarchy = "created"
-    raw_id_fields = ("media",)
+    raw_id_fields = [
+        "media",
+    ]
     actions = [format_set_init]
 
     def media_display(self, obj):
@@ -74,6 +89,3 @@ class FormatAdmin(admin.ModelAdmin):
 
     media_display.short_description = _("Media")
     media_display.allow_tags = True
-
-
-admin.site.register(Format, FormatAdmin)

@@ -6,7 +6,7 @@ from media_asset.models import Format
 
 log = logging.getLogger(__name__)
 
-# shortcuts
+
 def get_format(media, quality=Format.DEFAULT, encoding=Format.MP3, wait=False):
 
     if isinstance(media, str):

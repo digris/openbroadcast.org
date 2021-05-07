@@ -110,7 +110,10 @@ class Waveform(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def process_waveform(self):
 
-        from .util.audiowaveform_client import waveform_as_png, AudioWaveformException
+        from .util.waveform_service_client import (
+            waveform_as_png,
+            AudioWaveformException,
+        )
 
         if not os.path.isdir(self.directory):
             os.makedirs(self.directory)
@@ -127,44 +130,6 @@ class Waveform(UUIDModelMixin, TimestampedModelMixin, models.Model):
             self.status = Waveform.ERROR
 
         self.save()
-
-    # def __local__numpy_based__process_waveform(self):
-    #
-    #     from .util.conversion import any_to_wav
-    #     from .util.grapher import create_waveform_image, create_spectrogram_image
-    #
-    #     # e.v. refactor later, so obj instead of self...
-    #     obj = self
-    #     file_created = False
-    #
-    #     log.debug("processing waveform for media with pk: %s" % obj.media.pk)
-    #     tmp_directory = tempfile.mkdtemp()
-    #     tmp_path = os.path.join(tmp_directory, "tmp.wav")
-    #     wav_path = any_to_wav(src=obj.media.master.path, dst=tmp_path)
-    #
-    #     if not os.path.isdir(obj.directory):
-    #         try:
-    #             os.makedirs(obj.directory)
-    #         except:
-    #             pass
-    #
-    #     if obj.type == "w":
-    #         create_waveform_image(wav_path, obj.path)
-    #
-    #     elif obj.type == "s":
-    #         create_spectrogram_image(wav_path, obj.path)
-    #
-    #     else:
-    #         raise NotImplementedError("type %s not implemented" % obj.type)
-    #
-    #     shutil.rmtree(tmp_directory)
-    #
-    #     if os.path.isfile(obj.path):
-    #         obj.status = Waveform.DONE
-    #     else:
-    #         obj.status = Waveform.ERROR
-    #
-    #     obj.save()
 
     def save(self, *args, **kwargs):
 
@@ -370,23 +335,6 @@ class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
             self.media_uuid = self.media.uuid
 
         super(Format, self).save(*args, **kwargs)
-
-
-# @receiver(post_save, sender=Format)
-# def format_post_save(sender, instance, created, **kwargs):
-#
-#     do_process = getattr(instance, 'do_process', False)
-#     log.debug('format_post_save - processing required: %s' % do_process)
-#
-#     if do_process:
-#         if USE_CELERYD:
-#             log.debug('sending job to task queue')
-#             process_format_task.apply_async((instance.media.pk,))
-#             #obj.process_format.apply_async(queue='convert')
-#         else:
-#             log.debug('processing task in foreground')
-#             process_format_task(media_pk=instance.media.pk)
-#             #obj.process_format()
 
 
 @receiver(pre_delete, sender=Format)

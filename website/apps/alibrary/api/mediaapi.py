@@ -220,7 +220,7 @@ class MediaResource(ModelResource):
     def stream_file(self, request, **kwargs):
         """
         provides the default stream file as download.
-        method is only used by API clients (radio website) at the moment
+        method is only used by API clients (radio website) at the moment.
         """
 
         self.method_check(request, allowed=["get"])
