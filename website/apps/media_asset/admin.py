@@ -37,6 +37,11 @@ class WaveformAdmin(admin.ModelAdmin):
         "status",
     ]
     date_hierarchy = "created"
+    search_fields = [
+        "media__id",
+        "media__name",
+        "media__uuid",
+    ]
     raw_id_fields = [
         "media",
     ]
@@ -73,6 +78,11 @@ class FormatAdmin(admin.ModelAdmin):
         "status",
     ]
     date_hierarchy = "created"
+    search_fields = [
+        "media__id",
+        "media__name",
+        "media__uuid",
+    ]
     raw_id_fields = [
         "media",
     ]
