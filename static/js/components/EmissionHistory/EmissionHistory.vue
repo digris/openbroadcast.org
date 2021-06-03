@@ -241,7 +241,7 @@ export default {
           <li
             v-else
           >
-            No emission schduled
+            No emission scheduled
           </li>
         </ul>
       </div>

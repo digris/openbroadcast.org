@@ -42,7 +42,12 @@ class MigrationMixin(models.Model):
 
 
 @python_2_unicode_compatible
-class Distributor(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
+class Distributor(
+    MigrationMixin,
+    UUIDModelMixin,
+    TimestampedModelMixin,
+    models.Model,
+):
     """
     TODO: suggest to remove 'distributor' implementation.
     it is not used at the moment (90 entries, last 2014...)
@@ -332,7 +337,11 @@ class RelationManager(models.Manager):
 
 
 @python_2_unicode_compatible
-class Relation(TimestampedModelMixin, models.Model):
+class Relation(
+    UUIDModelMixin,
+    TimestampedModelMixin,
+    models.Model,
+):
 
     SERVICE_CHOICES = (
         ("", _("Not specified")),

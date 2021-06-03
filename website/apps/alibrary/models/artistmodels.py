@@ -133,7 +133,9 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
     excerpt = models.TextField(blank=True, null=True)
     biography = models.TextField(blank=True, null=True)
     members = models.ManyToManyField(
-        "self", through="ArtistMembership", symmetrical=False
+        "self",
+        through="ArtistMembership",
+        symmetrical=False,
     )
     aliases = models.ManyToManyField(
         "self",
@@ -147,9 +149,15 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     # tagging (d_tags = "display tags")
     d_tags = tagging.fields.TagField(
-        max_length=1024, verbose_name="Tags", blank=True, null=True
+        max_length=1024,
+        verbose_name="Tags",
+        blank=True,
+        null=True,
     )
-    professions = models.ManyToManyField(Profession, through="ArtistProfessions")
+    professions = models.ManyToManyField(
+        Profession,
+        through="ArtistProfessions",
+    )
 
     # user relations
     owner = models.ForeignKey(

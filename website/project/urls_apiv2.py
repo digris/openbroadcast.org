@@ -53,4 +53,5 @@ urlpatterns = [
     # w.i.p.
     url("^atracker/", include("atracker.apiv2.urls")),
     url("^rating/", include("arating.apiv2.urls")),
+    url("^obr-sync/", include("obr_sync_api.urls", namespace="obr-sync")),
 ]
