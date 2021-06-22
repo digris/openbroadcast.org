@@ -114,7 +114,6 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
             #
             "type",
             "name",
-            "tracknumber",
             "duration",
             "release",
             "artists",
@@ -132,6 +131,7 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
 
     ct = serializers.CharField(source="get_ct")
 
+    country_code = serializers.CharField(source="country.iso2_code")
     description = serializers.CharField(source="biography")
     image = ImageSerializer(source="main_image")
     tags = TagSerializer(many=True)
@@ -150,6 +150,7 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
             #
             "type",
             "name",
+            "country_code",
             "date_start",
             "date_end",
             "description",
