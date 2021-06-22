@@ -5,7 +5,7 @@ from rest_framework import mixins, viewsets
 from rest_framework.exceptions import ParseError
 
 from . import serializers
-from alibrary.models import Media, Artist, Release
+from alibrary.models import Media, Artist, Release, Playlist
 
 
 class MediaViewSet(
@@ -67,6 +67,26 @@ class ReleaseViewSet(
             "release_country",
             "label",
         )
+        return qs
+
+    def get_object(self):
+        return get_object_or_404(
+            self.get_queryset(),
+            uuid=self.kwargs["uuid"],
+        )
+
+
+class PlaylistViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Playlist.objects.all().order_by("-updated")
+    serializer_class = serializers.PlaylistSerializer
+    lookup_field = "uuid"
+
+    def get_queryset(self):
+        qs = self.queryset
         return qs
 
     def get_object(self):

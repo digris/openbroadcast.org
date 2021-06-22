@@ -4,7 +4,14 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse_lazy
 from django.conf import settings
 from rest_framework import serializers
-from alibrary.models import Artist, Media, Release, Relation
+from alibrary.models import (
+    Artist,
+    Media,
+    Release,
+    Relation,
+    Playlist,
+    PlaylistItemPlaylist,
+)
 from tagging.models import Tag
 
 SITE_URL = getattr(settings, "SITE_URL")
@@ -87,6 +94,7 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
         if obj.artist:
             yield {
                 "name": obj.artist.name,
+                "ct": obj.artist.get_ct(),
                 "uuid": str(obj.artist.uuid),
                 "join_phrase": None,
                 "position": 0,
@@ -99,6 +107,7 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
         ):
             yield {
                 "name": media_artist.artist.name,
+                "ct": media_artist.artist.get_ct(),
                 "uuid": str(media_artist.artist.uuid),
                 "join_phrase": media_artist.join_phrase,
                 "position": position,
@@ -163,7 +172,7 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
 class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
 
     url = serializers.HyperlinkedIdentityField(
-        view_name="api:obr-sync:artist-detail",
+        view_name="api:obr-sync:release-detail",
         lookup_field="uuid",
     )
 
@@ -191,5 +200,104 @@ class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
             "description",
             "image",
             "tags",
-            "relations",
+        ]
+
+
+class PlaylistMediaSerializer(serializers.ModelSerializer):
+
+    ct = serializers.CharField(source="get_ct")
+    duration = serializers.FloatField(source="master_duration")
+
+    class Meta:
+        model = Media
+        fields = [
+            "ct",
+            "uuid",
+            "name",
+            "duration",
+        ]
+
+
+class PlaylistItemsSerializer(serializers.ModelSerializer):
+    # item = PlaylistItemSerializer(read_only=True)
+
+    content = serializers.SerializerMethodField()
+
+    def get_content(self, obj, **kwargs):
+        if isinstance(obj.item.content_object, Media):
+            serializer = PlaylistMediaSerializer(
+                instance=Media.objects.get(pk=obj.item.content_object.pk),
+                many=False,
+                context={"request": self.context["request"]},
+            )
+        else:
+            raise Exception("Unexpected type of tagged object")
+
+        return serializer.data
+
+    class Meta:
+        model = PlaylistItemPlaylist
+        depth = 1
+        fields = [
+            "content",
+            "position",
+            "cue_in",
+            "cue_out",
+            "fade_in",
+            "fade_out",
+            "fade_cross",
+        ]
+
+
+class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="api:obr-sync:playlist-detail",
+        lookup_field="uuid",
+    )
+
+    ct = serializers.CharField(source="get_ct")
+
+    image = ImageSerializer(source="main_image")
+
+    items = PlaylistItemsSerializer(source="playlist_items", many=True)
+    tags = TagSerializer(many=True)
+    series = serializers.SerializerMethodField()
+    editor = serializers.SerializerMethodField()
+
+    def get_series(self, obj, **kwargs):
+        if obj.series:
+            return {
+                "name": obj.series.name,
+                "ct": obj.series.get_ct(),
+                "uuid": str(obj.series.uuid),
+                "episode": obj.series_number,
+            }
+        return None
+
+    def get_editor(self, obj, **kwargs):
+        if not (obj.user and getattr(obj.user, "profile")):
+            return None
+        profile = obj.user.profile
+        return {
+            "name": profile.name,
+            "ct": profile.get_ct(),
+            "uuid": str(profile.uuid),
+        }
+
+    class Meta:
+        model = Playlist
+        fields = [
+            "url",
+            "ct",
+            "uuid",
+            "updated",
+            #
+            "name",
+            "type",
+            "image",
+            "items",
+            "series",
+            "editor",
+            "tags",
         ]

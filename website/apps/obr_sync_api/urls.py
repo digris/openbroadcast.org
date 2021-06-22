@@ -10,6 +10,7 @@ router = routers.DefaultRouter(schema_title="OBR Sync API")
 router.register(r"media", views.MediaViewSet)
 router.register(r"artists", views.ArtistViewSet)
 router.register(r"releases", views.ReleaseViewSet)
+router.register(r"playlists", views.PlaylistViewSet)
 
 app_name = "obr-sync"
 urlpatterns = [

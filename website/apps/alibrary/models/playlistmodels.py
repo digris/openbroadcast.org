@@ -113,6 +113,9 @@ class Series(models.Model):
     def __str__(self):
         return "{}".format(self.name)
 
+    def get_ct(self):
+        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
+
 
 @python_2_unicode_compatible
 class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
