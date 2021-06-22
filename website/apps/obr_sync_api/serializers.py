@@ -10,6 +10,17 @@ from tagging.models import Tag
 SITE_URL = getattr(settings, "SITE_URL")
 
 
+class ApproximateDateSerializer(serializers.Serializer):
+    def to_representation(self, instance):
+        if not instance:
+            return None
+        return "{year:04d}-{month:02d}-{day:02d}".format(
+            year=instance.year,
+            month=instance.month or 1,
+            day=instance.day or 1,
+        )
+
+
 class ImageSerializer(serializers.ImageField):
     def to_representation(self, instance):
         if not instance:
@@ -52,9 +63,13 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
 
     # detail_url = serializers.URLField(source="get_absolute_url")
 
+    description = serializers.CharField(source="biography")
     image = ImageSerializer(source="main_image")
     tags = TagSerializer(many=True)
     relations = RelationSerializer(many=True)
+
+    date_start = ApproximateDateSerializer()
+    date_end = ApproximateDateSerializer()
 
     # image = serializers.SerializerMethodField()
     #
@@ -72,7 +87,11 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
             "uuid",
             "updated",
             #
+            "type",
             "name",
+            "date_start",
+            "date_end",
+            "description",
             "image",
             "tags",
             "relations",
