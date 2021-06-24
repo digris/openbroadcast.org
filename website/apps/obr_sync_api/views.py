@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
+from django.http import FileResponse
 from rest_framework import mixins, viewsets, permissions
+from rest_framework.views import APIView
 from rest_framework.exceptions import ParseError
 
 from . import serializers
@@ -41,6 +43,22 @@ class MediaViewSet(
             self.get_queryset(),
             uuid=self.kwargs["uuid"],
         )
+
+
+class MediaMasterDwonloadView(APIView):
+    permission_required = "alibrary.download_master"
+    permission_classes = (SyncPermissions,)
+    raise_exception = True
+
+    def get(self, request, uuid):
+        media = get_object_or_404(Media, uuid=uuid)
+        filename = "{uuid}.{encoding}".format(
+            uuid=media.uuid, encoding=media.master_encoding
+        )
+        response = FileResponse(open(media.master.path, "rb"))
+        response["Content-Disposition"] = 'attachment; filename="{}"'.format(filename)
+
+        return response
 
 
 class ArtistViewSet(

@@ -20,4 +20,8 @@ router.register(r"emissions", views.EmissionViewSet)
 app_name = "obr-sync"
 urlpatterns = [
     url(r"^", include(router.urls)),
+    url(
+        r"^media/(?P<uuid>[0-9A-Fa-f-]+)/download-master/$",
+        views.MediaMasterDwonloadView.as_view(),
+    ),
 ]
