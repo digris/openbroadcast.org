@@ -11,6 +11,7 @@ router.register(r"media", views.MediaViewSet)
 router.register(r"artists", views.ArtistViewSet)
 router.register(r"releases", views.ReleaseViewSet)
 router.register(r"playlists", views.PlaylistViewSet)
+router.register(r"profiles", views.ProfileViewSet)
 
 app_name = "obr-sync"
 urlpatterns = [

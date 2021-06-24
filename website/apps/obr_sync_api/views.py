@@ -6,6 +6,7 @@ from rest_framework.exceptions import ParseError
 
 from . import serializers
 from alibrary.models import Media, Artist, Release, Playlist
+from profiles.models import Profile
 
 
 class MediaViewSet(
@@ -88,6 +89,22 @@ class PlaylistViewSet(
     def get_queryset(self):
         qs = self.queryset
         return qs
+
+    def get_object(self):
+        return get_object_or_404(
+            self.get_queryset(),
+            uuid=self.kwargs["uuid"],
+        )
+
+
+class ProfileViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Profile.objects.all().order_by("-updated")
+    serializer_class = serializers.ProfileSerializer
+    lookup_field = "uuid"
 
     def get_object(self):
         return get_object_or_404(

@@ -12,6 +12,7 @@ from alibrary.models import (
     Playlist,
     PlaylistItemPlaylist,
 )
+from profiles.models import Profile
 from tagging.models import Tag
 
 SITE_URL = getattr(settings, "SITE_URL")
@@ -200,6 +201,7 @@ class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
             "description",
             "image",
             "tags",
+            "relations",
         ]
 
 
@@ -300,4 +302,34 @@ class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
             "series",
             "editor",
             "tags",
+        ]
+
+
+class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="api:obr-sync:profile-detail",
+        lookup_field="uuid",
+    )
+
+    ct = serializers.CharField(source="get_ct")
+
+    description = serializers.CharField()
+    image = ImageSerializer(source="main_image")
+    tags = TagSerializer(many=True)
+    links = RelationSerializer(many=True, source="link_set")
+
+    class Meta:
+        model = Profile
+        fields = [
+            "url",
+            "ct",
+            "uuid",
+            "updated",
+            #
+            "name",
+            "description",
+            "image",
+            "tags",
+            "links",
         ]
