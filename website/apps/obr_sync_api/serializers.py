@@ -13,6 +13,7 @@ from alibrary.models import (
     PlaylistItemPlaylist,
 )
 from profiles.models import Profile
+from abcast.models import Emission
 from tagging.models import Tag
 
 SITE_URL = getattr(settings, "SITE_URL")
@@ -332,4 +333,32 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
             "image",
             "tags",
             "links",
+        ]
+
+
+class EmissionSerializer(serializers.ModelSerializer):
+
+    ct = serializers.CharField(source="get_ct")
+    co = serializers.SerializerMethodField(source="content_object")
+
+    def get_co(self, obj):
+        co = obj.content_object
+        if not co:
+            return None
+        return {
+            "ct": co.get_ct(),
+            "uuid": str(co.uuid),
+            "name": co.name,
+        }
+
+    class Meta:
+        model = Emission
+        fields = [
+            "ct",
+            "uuid",
+            "updated",
+            "time_start",
+            "time_end",
+            "duration",
+            "co",
         ]

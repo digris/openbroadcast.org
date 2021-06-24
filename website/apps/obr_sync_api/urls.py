@@ -7,11 +7,15 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaultRouter(schema_title="OBR Sync API")
+# alibrary
 router.register(r"media", views.MediaViewSet)
 router.register(r"artists", views.ArtistViewSet)
 router.register(r"releases", views.ReleaseViewSet)
 router.register(r"playlists", views.PlaylistViewSet)
+# profiles
 router.register(r"profiles", views.ProfileViewSet)
+# abcast
+router.register(r"emissions", views.EmissionViewSet)
 
 app_name = "obr-sync"
 urlpatterns = [
