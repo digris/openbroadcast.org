@@ -8,13 +8,13 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext as _
 from django.utils.encoding import python_2_unicode_compatible
-from base.mixins import TimestampedModelMixin
+from base.mixins import TimestampedModelMixin, UUIDModelMixin
 
 VOTE_CHOICES = ((+1, "+1"), (-1, "-1"))
 
 
 @python_2_unicode_compatible
-class Vote(TimestampedModelMixin, models.Model):
+class Vote(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     vote = models.SmallIntegerField(choices=VOTE_CHOICES, db_index=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="votes")
@@ -38,6 +38,9 @@ class Vote(TimestampedModelMixin, models.Model):
             self.user,
             self.content_object,
         )
+
+    def get_ct(self):
+        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
 
 
 def post_save_vote(sender, **kwargs):

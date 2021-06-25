@@ -15,6 +15,7 @@ from alibrary.models import (
 from profiles.models import Profile
 from abcast.models import Emission
 from tagging.models import Tag
+from arating.models import Vote
 
 SITE_URL = getattr(settings, "SITE_URL")
 
@@ -360,5 +361,32 @@ class EmissionSerializer(serializers.ModelSerializer):
             "time_start",
             "time_end",
             "duration",
+            "co",
+        ]
+
+
+class VoteSerializer(serializers.ModelSerializer):
+
+    ct = serializers.CharField(source="get_ct")
+    co = serializers.SerializerMethodField(source="content_object")
+    user = serializers.CharField(source="user.email")
+    value = serializers.IntegerField(source="vote")
+
+    def get_co(self, obj):
+        co = obj.content_object
+        if not co or not hasattr(co, "get_ct"):
+            return None
+        return {
+            "ct": co.get_ct(),
+            "uuid": str(co.uuid),
+        }
+
+    class Meta:
+        model = Vote
+        fields = [
+            "ct",
+            "uuid",
+            "user",
+            "value",
             "co",
         ]

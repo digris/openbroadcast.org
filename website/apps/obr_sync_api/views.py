@@ -10,6 +10,7 @@ from . import serializers
 from alibrary.models import Media, Artist, Release, Playlist
 from profiles.models import Profile
 from abcast.models import Emission
+from arating.models import Vote
 
 
 class SyncPermissions(permissions.BasePermission):
@@ -175,3 +176,30 @@ class EmissionViewSet(
     #         self.get_queryset(),
     #         uuid=self.kwargs["uuid"],
     #     )
+
+
+class VoteFilter(filters.FilterSet):
+    # query:
+    # /api/v2/obr-sync/votes/?email=user@example.com
+    email = filters.CharFilter(field_name="user__email")
+
+    class Meta:
+        model = Vote
+        fields = ["user__email"]
+
+
+class VoteViewSet(
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Vote.objects.all().order_by("-updated")
+    permission_classes = (SyncPermissions,)
+    serializer_class = serializers.VoteSerializer
+    filter_class = VoteFilter
+
+    def get_queryset(self):
+        qs = self.queryset
+        qs = qs.select_related("content_type", "user",).prefetch_related(
+            "content_object",
+        )
+        return qs

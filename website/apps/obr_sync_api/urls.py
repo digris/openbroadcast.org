@@ -16,6 +16,8 @@ router.register(r"playlists", views.PlaylistViewSet)
 router.register(r"profiles", views.ProfileViewSet)
 # abcast
 router.register(r"emissions", views.EmissionViewSet)
+# arating
+router.register(r"votes", views.VoteViewSet)
 
 app_name = "obr-sync"
 urlpatterns = [
