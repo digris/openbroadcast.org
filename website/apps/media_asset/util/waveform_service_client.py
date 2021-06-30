@@ -15,7 +15,7 @@ SERVICE_ENDPOINT = getattr(
     "http://10.10.8.202:2001/",
 )
 
-TIMEOUT = (10, 600)
+TIMEOUT = (10, 1200)
 
 logger = logging.getLogger(__name__)
 
