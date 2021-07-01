@@ -124,6 +124,10 @@ export default {
       shape-rendering: geometricPrecision;
     }
 
+    svg image {
+      image-rendering: pixelated;
+    }
+
 </style>
 
 <template>
