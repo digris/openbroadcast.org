@@ -1,0 +1,22 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.21.5
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-567746:
+    - '@vue/cli-service > html-webpack-plugin > lodash':
+        patched: '2021-07-06T02:06:45.311Z'
+    - '@vue/cli-service > webpack-bundle-analyzer > lodash':
+        patched: '2021-07-06T02:06:45.311Z'
+    - '@vue/cli-service > webpack-merge > lodash':
+        patched: '2021-07-06T02:06:45.311Z'
+    - '@vue/cli-service > portfinder > async > lodash':
+        patched: '2021-07-06T02:06:45.311Z'
+    - '@vue/cli-service > webpack-dev-server > http-proxy-middleware > lodash':
+        patched: '2021-07-06T02:06:45.311Z'
+    - '@vue/cli-service > @vue/cli-shared-utils > request-promise-native > request-promise-core > lodash':
+        patched: '2021-07-06T02:06:45.311Z'
+    - '@vue/cli-service > webpack-dev-server > portfinder > async > lodash':
+        patched: '2021-07-06T02:06:45.311Z'
+    - '@vue/cli-service > @vue/cli-plugin-router > @vue/cli-shared-utils > request-promise-native > request-promise-core > lodash':
+        patched: '2021-07-06T02:06:45.311Z'
