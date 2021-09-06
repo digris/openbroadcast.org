@@ -278,6 +278,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
             # TODO: fix typo in "downoad"
             ("downoad_media", "Download Track"),
             ("download_master", "Download Master"),
+            ("edit_media", "Edit Track"),
             ("merge_media", "Merge Tracks"),
             ("reassign_media", "Re-assign Tracks"),
             ("admin_media", "Edit Track (extended)"),

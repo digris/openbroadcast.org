@@ -143,7 +143,10 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         verbose_name_plural = _("Labels")
         ordering = ("name",)
 
-        permissions = (("merge_label", "Merge Labels"),)
+        permissions = (
+            ("edit_label", "Edit Label"),
+            ("merge_label", "Merge Labels"),
+        )
 
     def __str__(self):
         return self.name

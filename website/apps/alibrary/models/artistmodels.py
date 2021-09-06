@@ -205,6 +205,11 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         verbose_name_plural = _("Artists")
         ordering = ("name",)
 
+        permissions = (
+            ("edit_artist", "Edit Artist"),
+            ("merge_artist", "Merge Artists"),
+        )
+
     def __str__(self):
         return self.name
 

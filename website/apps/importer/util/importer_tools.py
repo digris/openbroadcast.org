@@ -423,7 +423,7 @@ class Importer(object):
             a = self.mb_complete_artist(a, mb_artist_id)
 
         # try to complete media metadata
-        # comes after artist creation ,to prevent duplicates!
+        # comes after artist creation to prevent duplicates!
         if m_created:
             if self.user:
                 m.creator = self.user
