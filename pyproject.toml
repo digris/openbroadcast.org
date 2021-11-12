@@ -1,0 +1,130 @@
+[tool.poetry]
+name = "openbroadcast.org"
+version = "0.0.1"
+description = "openbroadcast.org"
+authors = ["Jonas Ohrstrom <jonas.ohrstrom@digris.ch>"]
+license = "MIT"
+
+packages = [{include="website", from="."}]
+
+[tool.poetry.dependencies]
+python = "^2.7"
+Django = "1.8.19"
+BeautifulSoup = "3.2.1"
+Markdown = "2.4"
+Pillow = "2.9.0"
+URLObject = "2.3.4"
+discogs-client = "1.1.1"
+mailchimp = "2.0.9"
+mimeparse = "0.1.3"
+python-Levenshtein = "0.11.2"
+python-dateutil = "1.5"
+python-magic = "0.4.6"
+python-stdnum = "1.0"
+requests = "2.9.1"
+urllib3 = "1.23"
+xmltodict = "0.9.2"
+tqdm = "3.8.0"
+Wand = "0.4.4"
+scandir = "1.2"
+semver = "2.7.7"
+phonenumbers = "8.8.10"
+django-phonenumber-field = "1.3.0"
+gunicorn = "19.7.1"
+futures = "3.2.0"
+uWSGI = "2.0.15"
+celery = "3.1.25"
+raven = "5.33"
+django-cors-headers = "2.1.0"
+django-absolute = "^0.3"
+django-auditlog = "0.3.2"
+django-avatar = "2.0"
+django-braces = "1.8.1"
+django-cacheops = "4.0.7"
+django-celery-email = "1.1.5"
+django-click = "1.2.0"
+django-compressor = "1.6"
+django-countries = "3.3"
+django-dajax = "0.9.2"
+django-dajaxice = "0.7"
+django-date-extensions = "3.0"
+django-el-pagination = "3.0.1"
+django-extensions = "1.7.9"
+django-filter = "1.1.0"
+django-floppyforms = "1.7.0"
+django-formtools = "1.0"
+django-gravatar2 = "1.4.0"
+django-guardian = "1.3"
+django-hvad = "1.8.0"
+django-mailer = "0.1.0"
+django-missing = "0.1.11"
+django-model-utils = "2.3.1"
+django-mptt = "0.8.7"
+django-navutils = "0.7"
+django-oauth2-provider = "0.2.6.1"
+django-polymorphic = "1.2"
+django-redis = "4.2.0"
+redis = "2.10.5"
+django-sekizai = "0.10.0"
+django-settings-export = "1.2.1"
+django-split-settings = "0.1.2"
+django-versatileimagefield = "1.7.1"
+django-simple-captcha = "0.5.1"
+jsonfield = "2.0.2"
+easy-thumbnails = "2.6"
+django-appconf = "1.0.3"
+django-classy-tags = "0.7.2"
+social-auth-app-django = "3.1.0"
+social-auth-core = "3.1.0"
+elasticsearch-dsl = "6.1.0"
+django-elasticsearch-dsl = "0.5.0"
+coreapi = "2.3.1"
+djangorestframework = "3.6.4"
+drf-flex-fields = "0.3.4"
+django-cms = "3.4.6"
+django-treebeard = "4.2.1"
+djangocms-admin-style = "1.2.8"
+djangocms-column = "1.6.0"
+djangocms-file = "0.1"
+djangocms-link = "1.7.2"
+djangocms-snippet = "1.7.1"
+djangocms-text-ckeditor = "3.3.1"
+djangocms-video = "0.1"
+audioread = "1.0.1"
+"scikits.audiolab" = "0.10.2"
+django-adv-cache-tag = "0.3.0"
+XlsxWriter = "1.1.2"
+django-qsstats-magic = "1.0.0"
+python-audio-tools = {git = "https://github.com/hzlf/python-audio-tools.git", rev = "master"}
+graypy = {git = "https://github.com/hzlf/graypy.git", rev = "master"}
+pyacoustid = {git = "https://ohrstrom@lab.hazelfire.com/hazelfire/obp/pyacoustid.git", rev = "deploy"}
+djangocms-panel = {git = "https://github.com/hzlf/djangocms-panel", rev = "master"}
+uritemplate = "3.0.1"
+
+
+[tool.poetry.dev-dependencies]
+pylint = "*"
+PyMySQL = "0.10.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--ds project.settings.test"  # term:skip-covered / term-missing
+python_files = ["test_*.py"]
+markers = [
+    "integration: marks tests as slow (deselect with '-m \"not integration\"')",
+    "e2e: marks tests as slow (deselect with '-m \"not e2e\"')",
+]
+filterwarnings = [
+    "ignore:::standard_library",
+    "ignore:::cms",
+    "ignore:::html5lib",
+    "ignore:::djangocms_attributes_field",
+    "ignore::django.utils.deprecation.RemovedInDjango40Warning:django",
+    "ignore::django.utils.deprecation.RemovedInDjango41Warning:django",
+    "ignore::DeprecationWarning:future",
+]
+

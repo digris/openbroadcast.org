@@ -1,0 +1,14 @@
+.DS_Store
+*.pyc
+*.bak
+.idea
+.project
+.tox
+.git
+*__pycache__*
+node_modules
+db.sqlite3
+core/settings/local_development.py
+build/*
+dist/*
+website/media/

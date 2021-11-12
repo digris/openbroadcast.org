@@ -1,0 +1,81 @@
+{
+    "rabbit_version": "3.9.9",
+    "rabbitmq_version": "3.9.9",
+    "product_name": "RabbitMQ",
+    "product_version": "3.9.9",
+    "users": [
+        {
+            "name": "admin",
+            "password_hash": "WJiIwt9P4nGCh8vW6u1uuOQdOvnxTkesahbXXShwTQ0hrzJo",
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
+            "tags": [
+                "administrator"
+            ],
+            "limits": {}
+        },
+        {
+            "name": "obp",
+            "password_hash": "V/8f6zi/1YHHQ9SWJFAq7fIqBAGJSJa4mJp93fCA5J7kjFuv",
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
+            "tags": [
+                "obp"
+            ],
+            "limits": {}
+        }
+    ],
+    "vhosts": [
+        {
+            "name": "/"
+        },
+        {
+            "name": "obp/playout"
+        },
+        {
+            "name": "obp"
+        }
+    ],
+    "permissions": [
+        {
+            "user": "obp",
+            "vhost": "obp/playout",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+        },
+        {
+            "user": "admin",
+            "vhost": "obp",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+        },
+        {
+            "user": "obp",
+            "vhost": "obp",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+        },
+        {
+            "user": "admin",
+            "vhost": "obp/playout",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+        },
+        {
+            "user": "admin",
+            "vhost": "/",
+            "configure": ".*",
+            "write": ".*",
+            "read": ".*"
+        }
+    ],
+    "topic_permissions": [],
+    "parameters": [],
+    "global_parameters": [],
+    "policies": [],
+    "queues": [],
+    "exchanges": [],
+    "bindings": []
+}

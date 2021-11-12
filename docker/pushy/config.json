@@ -1,0 +1,9 @@
+{
+    "port" : 8000,
+    "pattern" : "org_openbroadcast_dev_*",
+    "saveLiveEdit" : false,
+    "redis": {
+        "host": "redis",
+        "port": 6379
+    }
+}

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+
 from split_settings.tools import optional, include
 
 TESTING = sys.argv[1:2] == ["test"]

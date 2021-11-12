@@ -75,7 +75,6 @@ INSTALLED_APPS = [
     "djangocms_column",
     "dajaxice",
     "dajax",
-    "email_obfuscator",
     # users / auth
     # 'avatar',
     "registration",

@@ -106,8 +106,7 @@
             <p>F: {{ object.fax }}</p>
 				  {% endif %}
           {% if object.email %}
-            {% load email_obfuscator %}
-            <p>{{ object.email|obfuscate_mailto }}</p>
+            <p>{{ object.email }}</p>
 				  {% endif %}
         </div>
       </div>
