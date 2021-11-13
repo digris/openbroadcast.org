@@ -4,10 +4,7 @@
 
 .tmp
 .tox
-
-# shared run configurations
 .idea/*
-!.idea/runConfigurations/
 
 src
 dev/
@@ -18,6 +15,7 @@ logs/
 notes/
 
 .ipynb_checkpoints
+.python-version
 db_dumps/
 
 *node_modules*
