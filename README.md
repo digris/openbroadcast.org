@@ -6,29 +6,9 @@
 ## Development Installation
 
 ```shell
-
+cd ~/code
+git clone git@github.com:digris/openbroadcast.org.git openbroadcast.org
 ```
-
-
-### Tooling
-
-#### Ptyhon
-
-```shell
-pyenv install 2.7.18
-pyenv local 2.7.18
-
-poetry env use python2.7
-poetry install
-```
-
-
-#### Node
-
-```shell
-nvm use v14
-```
-
 
 ### Dependencies
 
@@ -49,10 +29,24 @@ sudo dnf install \
   libsndfile-devel
 ```
 
+
+### Tooling
+
+#### Ptyhon
+
 ```shell
-pip install numpy==1.8.0
-pip install MySQL-python==1.2.5
-pip install -r requirements.txt
+pyenv install 2.7.18
+pyenv local 2.7.18
+
+poetry env use python2.7
+poetry install
+```
+
+
+#### Node
+
+```shell
+nvm use v14
 
 yarn install
 ```

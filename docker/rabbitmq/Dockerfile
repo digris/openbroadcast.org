@@ -1,14 +1,4 @@
-FROM node:14-slim
+FROM rabbitmq:3.9-management
 
-WORKDIR /root/
-
-ADD ./services/pushy/package.json .
-ADD ./services/pushy/package-lock.json .
-ADD ./services/pushy/pushy.js .
-
-RUN yarn install
-
-ADD ./docker/pushy/config.json .
-
-
-CMD ["node", "pushy.js"]
+ADD rabbitmq.conf /etc/rabbitmq/rabbitmq.conf
+ADD definitions.json /etc/rabbitmq/definitions.json

@@ -1,16 +1,26 @@
 version: "3"
 services:
+#  rabbitmq:
+#    image: rabbitmq:3.9-management
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
+#    environment:
+#      - RABBITMQ_DEFAULT_USER=admin
+#      - RABBITMQ_DEFAULT_PASS=admin
+#    volumes:
+#      - ${PWD}/docker/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+#      - ${PWD}/docker/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
+#    restart: always
+#    networks:
+#      - obp
   rabbitmq:
-    image: rabbitmq:3.9-management
+    build:
+      context: docker/rabbitmq/
+      dockerfile: Dockerfile
     ports:
       - "5672:5672"
       - "15672:15672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=admin
-    volumes:
-      - ${PWD}/docker/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
-      - ${PWD}/docker/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
     restart: always
     networks:
       - obp

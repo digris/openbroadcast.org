@@ -10,5 +10,6 @@ RUN yarn install
 
 ADD ./docker/pushy/config.json .
 
+EXPOSE 8000
 
 CMD ["node", "pushy.js"]
