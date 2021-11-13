@@ -1,9 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="run development services" type="CompoundRunConfigurationType">
-    <toRun name="celery worker" type="PythonConfigurationType" />
-    <toRun name="pushy" type="ShConfigurationType" />
-    <toRun name="npm watch" type="js.build_tools.npm" />
-    <toRun name="openbroadcast.org - runserver" type="Python.DjangoServer" />
-    <method v="2" />
-  </configuration>
-</component>
