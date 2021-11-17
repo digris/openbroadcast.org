@@ -1,4 +1,10 @@
-GCP_PROJECT = org-openbroadcast
+SHELL := bash
+.ONESHELL:
+.SHELLFLAGS := -eu -o pipefail -c
+.DELETE_ON_ERROR:
+MAKEFLAGS += --warn-undefined-variables
+MAKEFLAGS += --no-builtin-rules
+
 DOCKER_TAG = openbroadcast.org
 PORT = 8080
 
@@ -20,3 +26,11 @@ fix:
 
 test:
 	pytest --ds app.settings.test --cov=app
+
+compose-up:
+	docker-compose -f ./docker/docker-compose.yml up --build
+	docker-compose -f ./docker/docker-compose.yml down
+
+build:
+	poetry export -f requirements.txt -o requirements.txt
+	yarn dist

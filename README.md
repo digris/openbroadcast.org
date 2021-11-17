@@ -57,11 +57,11 @@ yarn install
 Backing services can be run using `docker-compose`:
 
 ```shell
-docker-compose up --build
+docker-compose -f ./docker/docker-compose.yml up --build
 ```
 
 
-## Release
+## Build Release
 
 ```shell
 # requirements
@@ -71,4 +71,19 @@ poetry export \
 
 # build assets
 yarn dist
+```
+
+```shell
+# or via make
+make build
+```
+
+
+## Deploy
+
+Deployment is handled via ansible: [obp-infrastructure](https://github.com/digris/obp-infrastructure)
+
+```shell
+cd obp-infrastructure/ansible
+./deploy.sh
 ```

@@ -14,9 +14,38 @@ services:
 #    restart: always
 #    networks:
 #      - obp
-  rabbitmq:
+  nginx:
+    container_name: nginx
     build:
-      context: docker/rabbitmq/
+      context: ${PWD}/docker/nginx/
+      dockerfile: ${PWD}/docker/nginx/Dockerfile
+    ports:
+      - "8888:80"
+    volumes:
+      - ${PWD}/website/media:/data/media
+    restart: always
+    networks:
+      - obp
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: 'obp'
+      MYSQL_PASS: 'obp'
+    volumes:
+      - obp-mariadb:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    networks:
+      - obp
+  rabbitmq:
+    container_name: rabbitmq
+    build:
+      context: ${PWD}/docker/rabbitmq/
       dockerfile: Dockerfile
     ports:
       - "5672:5672"
@@ -25,32 +54,34 @@ services:
     networks:
       - obp
   redis:
+    container_name: redis
     image: redis:5.0.5
     ports:
-      - "6379:6379"
+      - "6380:6379"
     restart: always
     networks:
       - obp
   elasticsearch:
+    container_name: elasticsearch
     image: elasticsearch:6.8.20
     environment:
       - cluster.name=obp
       - bootstrap.memory_lock=true
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-#    ulimits:
-#      memlock:
-#        soft: -1
-#        hard: -1
+    volumes:
+#      - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
+      - obp-elasticsearch:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
     restart: always
     networks:
       - obp
   pushy:
+    container_name: pushy
     build:
-      context: .
-      dockerfile: ./docker/pushy/Dockerfile
+      context: ${PWD}
+      dockerfile: ${PWD}/docker/pushy/Dockerfile
     ports:
       - "8180:8000"
     restart: always
@@ -59,6 +90,8 @@ services:
 
 volumes:
   obp:
+  obp-mariadb:
+  obp-elasticsearch:
 
 networks:
   obp:
