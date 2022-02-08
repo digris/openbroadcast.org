@@ -16,7 +16,7 @@ try:
     from wand.drawing import Drawing
     from wand.image import Image
 except ImportError as e:
-    print('unable to import (magic)wand: {}'.format(e))
+    print("unable to import (magic)wand: {}".format(e))
 
 
 log = logging.getLogger(__name__)
@@ -45,7 +45,7 @@ SLIDE_BASE_FONT = getattr(
 SLIDE_DEFAULT_IMAGE = getattr(
     settings,
     "DAB_SLIDE_DEFAULT_IMAGE",
-    os.path.join(os.path.dirname(os.path.dirname(__file__)), "asset", "default.png"),
+    os.path.join(os.path.dirname(os.path.dirname(__file__)), "asset", "default.jpg"),
 )
 
 SLIDE_BASE_DIR = os.path.join(MEDIA_ROOT, "metadata", "dab")
