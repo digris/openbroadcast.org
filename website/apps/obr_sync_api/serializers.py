@@ -122,6 +122,7 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
             "url",
             "ct",
             "uuid",
+            "isrc",
             "updated",
             #
             "type",
