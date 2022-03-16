@@ -353,6 +353,8 @@ class AccountSerializer(serializers.HyperlinkedModelSerializer):
     def get_address(self, obj):
         if not obj.profile:
             return {}
+        if not obj.profile.city or obj.profile.country:
+            return {}
         return {
             'line_1': obj.profile.address1 or None,
             'line_2': obj.profile.address2 or None,
