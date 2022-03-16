@@ -5,6 +5,7 @@ from django.http import FileResponse
 from rest_framework import mixins, viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.exceptions import ParseError
+from django.contrib.auth import get_user_model
 
 from . import serializers
 from alibrary.models import Media, Artist, Release, Playlist
@@ -12,6 +13,7 @@ from profiles.models import Profile
 from abcast.models import Emission
 from arating.models import Vote
 
+User = get_user_model()
 
 class SyncPermissions(permissions.BasePermission):
     message = "Insufficient permissions"
@@ -127,6 +129,28 @@ class PlaylistViewSet(
         return get_object_or_404(
             self.get_queryset(),
             uuid=self.kwargs["uuid"],
+        )
+
+
+class AccountViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = User.objects.filter(is_active=True).exclude(profile__isnull=True).order_by("id")
+    permission_classes = (SyncPermissions,)
+    serializer_class = serializers.AccountSerializer
+    lookup_field = "id"
+
+    def get_queryset(self):
+        qs = self.queryset
+        qs = qs.select_related('profile')
+        return qs
+
+    def get_object(self):
+        return get_object_or_404(
+            self.get_queryset(),
+            id=self.kwargs["id"],
         )
 
 

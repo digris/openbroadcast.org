@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse_lazy
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from alibrary.models import (
     Artist,
@@ -16,6 +17,8 @@ from profiles.models import Profile
 from abcast.models import Emission
 from tagging.models import Tag
 from arating.models import Vote
+
+User = get_user_model()
 
 SITE_URL = getattr(settings, "SITE_URL")
 
@@ -306,6 +309,57 @@ class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
             "editor",
             "tags",
         ]
+
+
+class AccountSerializer(serializers.HyperlinkedModelSerializer):
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="api:obr-sync:user-detail",
+        lookup_field="id",
+    )
+
+    gender = serializers.SerializerMethodField()
+    birth_date = serializers.DateField(source='profile.birth_date')
+    phone_mobile = serializers.CharField(source='profile.mobile')
+    phone_landline = serializers.CharField(source='profile.phone')
+    address = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = [
+            "url",
+            "id",
+            "date_joined",
+            "last_login",
+            "gender",
+            "first_name",
+            "last_name",
+            "username",
+            "email",
+            "birth_date",
+            "phone_mobile",
+            "phone_landline",
+            "address",
+        ]
+
+    def get_gender(self, obj):
+        if not obj.profile:
+            return None
+        try:
+            return obj.profile.get_gender_display().lower()
+        except AttributeError:
+            return None
+
+    def get_address(self, obj):
+        if not obj.profile:
+            return {}
+        return {
+            'line_1': obj.profile.address1 or None,
+            'line_2': obj.profile.address2 or None,
+            'city': obj.profile.city or None,
+            'postal_code': obj.profile.zip or None,
+            'country': obj.profile.country.iso2_code if obj.profile.country else None,
+        }
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):

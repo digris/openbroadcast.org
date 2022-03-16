@@ -12,7 +12,8 @@ router.register(r"media", views.MediaViewSet)
 router.register(r"artists", views.ArtistViewSet)
 router.register(r"releases", views.ReleaseViewSet)
 router.register(r"playlists", views.PlaylistViewSet)
-# profiles
+# accounts / user / profiles
+router.register(r"accounts", views.AccountViewSet)
 router.register(r"profiles", views.ProfileViewSet)
 # abcast
 router.register(r"emissions", views.EmissionViewSet)
