@@ -56,7 +56,7 @@ def get_file_from_url(url):
     try:
         try:
             opener = urllib2.build_opener()
-            opener.addheaders = [("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36")]
+            opener.addheaders = [("User-Agent", "OBPDiscogsClient/1.0 +https://openbroadcast.org")]
             response = opener.open(url)
             temp_file = NamedTemporaryFile(delete=True)
             temp_file.write(response.read())
