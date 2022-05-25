@@ -350,9 +350,9 @@ pillow==2.9.0 \
     --hash=sha256:3165d5274c037f8cecef80742758a9acfe6830ea90545434ee5b65a4d307237a \
     --hash=sha256:d1db8dfed77547076037d589b598e04f2cbc1a7835d3d3f137bf20c8994854d5
 pyacoustid @ git+https://ohrstrom@lab.hazelfire.com/hazelfire/obp/pyacoustid.git@deploy
-pyjwt==1.7.1 \
-    --hash=sha256:5c6eca3c2940464d106b99ba83b00c6add741c9becaec087fb7ccdefea71350e \
-    --hash=sha256:8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96
+pyjwt==2.4.0 \
+    --hash=sha256:72d1d253f32dbd4f5c88eaf1fdc62f3a19f676ccbadb9dbc5d07e951b2b26daf \
+    --hash=sha256:d42908208c699b3b973cbeb01a969ba6a96c821eefb1c5bfe4c390c01d67abba
 python-audio-tools @ git+https://github.com/hzlf/python-audio-tools.git@master
 python-dateutil==1.5 \
     --hash=sha256:6f197348b46fb8cdf9f3fcfc2a7d5a97da95db3e2e8667cf657216274fe1b009
