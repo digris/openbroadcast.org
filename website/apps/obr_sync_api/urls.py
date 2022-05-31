@@ -19,6 +19,9 @@ router.register(r"profiles", views.ProfileViewSet)
 router.register(r"emissions", views.EmissionViewSet)
 # arating
 router.register(r"votes", views.VoteViewSet)
+# tagging
+router.register(r"tags", views.TagViewSet)
+
 
 app_name = "obr-sync"
 urlpatterns = [

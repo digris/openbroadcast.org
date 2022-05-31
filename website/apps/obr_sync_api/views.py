@@ -12,6 +12,7 @@ from alibrary.models import Media, Artist, Release, Playlist
 from profiles.models import Profile
 from abcast.models import Emission
 from arating.models import Vote
+from tagging.models import Tag
 
 User = get_user_model()
 
@@ -227,3 +228,20 @@ class VoteViewSet(
             "content_object",
         )
         return qs
+
+
+class TagViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Tag.objects.all()
+    permission_classes = (SyncPermissions,)
+    serializer_class = serializers.TagSerializer
+    lookup_field = "uuid"
+
+    def get_object(self):
+        return get_object_or_404(
+            self.queryset,
+            uuid=self.kwargs["uuid"],
+        )

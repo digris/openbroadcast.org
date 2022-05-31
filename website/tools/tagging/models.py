@@ -1,6 +1,3 @@
-"""
-Models and managers for tagging.
-"""
 from django.db import models
 from django.db import connection
 from django.utils.encoding import smart_text
@@ -20,11 +17,6 @@ from base.mixins import TimestampedModelMixin, UUIDModelMixin
 
 
 qn = connection.ops.quote_name
-
-
-############
-# Managers #
-############
 
 
 class TagManager(models.Manager):
@@ -489,17 +481,21 @@ class Tag(
     TYPE_GENRE = "genre"
     TYPE_MOOD = "mood"
     TYPE_DESCRIPTIVE = "descriptive"
+    TYPE_ACTIVITY = "activity"
     TYPE_EVENT = "event"
     TYPE_INSTRUMENT = "instrument"
     TYPE_PROFESSION = "profession"
+    TYPE_TIME = "time"
 
     TYPE_CHOICES = (
         (TYPE_GENRE, "Genre"),
         (TYPE_MOOD, "Mood"),
         (TYPE_DESCRIPTIVE, "Descriptive"),
+        (TYPE_ACTIVITY, "Activity"),
         (TYPE_EVENT, "Event"),
         (TYPE_INSTRUMENT, "Instrument"),
         (TYPE_PROFESSION, "Profession"),
+        (TYPE_TIME, "Time"),
     )
 
     name = models.CharField(
