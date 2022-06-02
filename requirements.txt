@@ -197,8 +197,8 @@ graypy @ git+https://github.com/hzlf/graypy.git@master
 gunicorn==19.7.1 \
     --hash=sha256:75af03c99389535f218cc596c7de74df4763803f7b63eb09d77e92b3956b36c6 \
     --hash=sha256:eee1169f0ca667be05db3351a0960765620dad53f53434262ff8901b68a1b622
-html5lib==0.9999999 \
-    --hash=sha256:2612a191a8d5842bfa057e41ba50bbb9dcb722419d2408c78cff4758d0754868
+html5lib==0.99999999 \
+    --hash=sha256:7e793bb51f74c07cf15f4de2fb4fdf0dcc191d644a20d18bd90d82c3c2bccf35
 ipaddress==1.0.23 \
     --hash=sha256:6e0f4a39e66cb5bb9a137b00276a2eff74f93b71dcbdad6f10ff7df9d3557fcc \
     --hash=sha256:b7f8e0369580bb4a24d5ba1d7cc29660a4a6987763faf1d8a8046830e020e7e2
