@@ -444,6 +444,7 @@ class VoteSerializer(serializers.ModelSerializer):
         fields = [
             "ct",
             "uuid",
+            "updated",
             "user",
             "value",
             "co",
