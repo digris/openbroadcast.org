@@ -23,14 +23,14 @@
         "lsbridge": "^0.2.0",
         "mini-css-extract-plugin": "^0.4.0",
         "motion-ui": "^1.2.3",
-        "node-sass": "^4.9.0",
+        "node-sass": "^6.0.1",
         "nosleep.js": "^0.7.0",
         "nunjucks": "2.5.2",
         "postcss": "^7.0.17",
         "postcss-cli": "^5.0.0",
         "postcss-loader": "^2.1.5",
         "pretty-bytes": "^5.5.0",
-        "sass-loader": "^7.0.1",
+        "sass-loader": "^8.0.1",
         "sass-resources-loader": "^2.0.1",
         "shifty": "^2.6.0",
         "soundmanager2": "https://github.com/scottschiller/SoundManager2#sm2-html5only",
@@ -48,9 +48,9 @@
         "vuex": "^3.1.1",
         "vuex-persistedstate": "^2.5.4",
         "vuex-shared-mutations": "^1.0.2",
-        "webfonts-loader": "^5.1.1",
+        "webfonts-loader": "^7.2.0",
         "webpack": "^4.8.1",
-        "webpack-cli": "^3.3.10"
+        "webpack-cli": "^4.0.0"
     },
     "scripts": {
         "watch": "NODE_ENV=development webpack-dev-server --mode development",
