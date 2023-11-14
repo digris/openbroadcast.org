@@ -11,7 +11,7 @@
         "babel-preset-env": "^1.7.0",
         "can-autoplay": "^3.0.0",
         "chart.js": "^2.9.4",
-        "copy-webpack-plugin": "^4.5.1",
+        "copy-webpack-plugin": "^5.0.5",
         "css-loader": "^0.28.11",
         "dayjs": "^1.8.14",
         "debounce": "^1.1.0",
