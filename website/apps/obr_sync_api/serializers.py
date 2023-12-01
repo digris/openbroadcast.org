@@ -74,16 +74,13 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
     )
     ct = serializers.CharField(source="get_ct")
 
-    # artist = serializers.HyperlinkedRelatedField(
-    #     many=False,
-    #     read_only=True,
-    #     view_name="api:obr-sync:artist-detail",
-    #     lookup_field="uuid",
-    # )
     release = serializers.SerializerMethodField()
     artists = serializers.SerializerMethodField()
     type = serializers.CharField(source="mediatype")
+    version = serializers.CharField()
     duration = serializers.FloatField(source="master_duration")
+    lyrics_language = serializers.CharField()
+    lyrics = serializers.CharField()
     tags = TagSerializer(many=True)
     relations = RelationSerializer(many=True)
 
@@ -132,6 +129,9 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
             "type",
             "name",
             "duration",
+            "version",
+            "lyrics",
+            "lyrics_language",
             "release",
             "artists",
             "tags",
