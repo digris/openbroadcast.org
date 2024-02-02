@@ -6,7 +6,7 @@
         "autoprefixer": "^8.4.1",
         "axios": "^0.18.0",
         "axios-case-converter": "^0.3.0",
-        "babel-eslint": "^10.0.3",
+        "babel-eslint": "^10.1.0",
         "babel-loader": "^8.0.6",
         "babel-preset-env": "^1.7.0",
         "can-autoplay": "^3.0.0",
