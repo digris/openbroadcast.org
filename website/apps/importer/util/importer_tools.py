@@ -853,25 +853,18 @@ def mb_complete_media_task(
             rel.save()
 
     # acousticbrainz musical analysis
-    if mb_id:
-        url = "http://acousticbrainz.org/{mb_id}/low-level".format(mb_id=mb_id)
-        log.debug("API request for: %s" % url)
-        r = requests.get(url, timeout=5)
-        if r.status_code == 200:
-            result = r.json()
-            try:
-                bpm = result["rhythm"]["bpm"]
-                log.debug("aquired tempo - {}bpm".format(bpm))
-                obj.tempo = float(bpm)
-            except Exception as e:
-                pass
-
-                # try:
-                #     key = result['tonal']['key_key']
-                #     scale = result['tonal']['key_scale']
-                #     obj.tempo = bpm
-                # except:
-                #     pass
+    # if mb_id:
+    #     url = "http://acousticbrainz.org/{mb_id}/low-level".format(mb_id=mb_id)
+    #     log.debug("API request for: %s" % url)
+    #     r = requests.get(url, timeout=5)
+    #     if r.status_code == 200:
+    #         result = r.json()
+    #         try:
+    #             bpm = result["rhythm"]["bpm"]
+    #             log.debug("aquired tempo - {}bpm".format(bpm))
+    #             obj.tempo = float(bpm)
+    #         except Exception as e:
+    #             pass
 
     return obj
 

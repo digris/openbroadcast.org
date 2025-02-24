@@ -17,12 +17,19 @@ SERVE_MEDIA = False
 COMPRESS_OFFLINE = False
 COMPRESS_ENABLED = True
 
+################################################################################
+# hacks
+################################################################################
+# os is outdated, manual download of cacert.pem is required
+# wget https://curl.se/ca/cacert.pem -O /etc/ca-manually/cacert.pem
+CA_CERT_PATH = "/etc/ca-manually/cacert.pem"
+if os.path.exists(CA_CERT_PATH):
+    os.environ["REQUESTS_CA_BUNDLE"] = CA_CERT_PATH
+
 
 ################################################################################
 # language settings
 ################################################################################
-
-
 DEFAULT_LANGUAGE = 0
 LANGUAGE_CODE = "en"
 
