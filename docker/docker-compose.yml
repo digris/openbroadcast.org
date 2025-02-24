@@ -1,19 +1,5 @@
 version: "3"
 services:
-#  rabbitmq:
-#    image: rabbitmq:3.9-management
-#    ports:
-#      - "5672:5672"
-#      - "15672:15672"
-#    environment:
-#      - RABBITMQ_DEFAULT_USER=admin
-#      - RABBITMQ_DEFAULT_PASS=admin
-#    volumes:
-#      - ${PWD}/docker/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
-#      - ${PWD}/docker/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
-#    restart: always
-#    networks:
-#      - obp
   nginx:
     container_name: nginx
     build:
@@ -70,7 +56,6 @@ services:
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
-#      - ${PWD}/data/elasticsearch:/usr/share/elasticsearch/data
       - obp-elasticsearch:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"

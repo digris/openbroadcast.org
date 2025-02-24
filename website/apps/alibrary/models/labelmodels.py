@@ -203,6 +203,10 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
             return None
 
         parent = self.parent
+
+        if parent == self:
+            return None
+
         last_parent = None
         i = 0
         while parent and i < 10:

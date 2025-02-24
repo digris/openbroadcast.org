@@ -8,7 +8,7 @@ from rest_framework.exceptions import ParseError
 from django.contrib.auth import get_user_model
 
 from . import serializers
-from alibrary.models import Media, Artist, Release, Playlist
+from alibrary.models import Media, Artist, Release, Label, Playlist
 from profiles.models import Profile
 from abcast.models import Emission
 from arating.models import Vote
@@ -102,6 +102,29 @@ class ReleaseViewSet(
         qs = self.queryset.prefetch_related("relations",).select_related(
             "release_country",
             "label",
+        )
+        return qs
+
+    def get_object(self):
+        return get_object_or_404(
+            self.get_queryset(),
+            uuid=self.kwargs["uuid"],
+        )
+
+
+class LabelViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Label.objects.all().order_by("-updated")
+    permission_classes = (SyncPermissions,)
+    serializer_class = serializers.LabelSerializer
+    lookup_field = "uuid"
+
+    def get_queryset(self):
+        qs = self.queryset.prefetch_related("relations",).select_related(
+            "parent",
         )
         return qs
 

@@ -32,7 +32,7 @@ sudo dnf install \
 
 ### Tooling
 
-#### Ptyhon
+#### Python
 
 ```shell
 pyenv install 2.7.18
@@ -79,7 +79,7 @@ make build
 ```
 
 
-## Deploy
+## Deploy (DEPRECIATED)
 
 Deployment is handled via ansible: [obp-infrastructure](https://github.com/digris/obp-infrastructure)
 
@@ -87,3 +87,9 @@ Deployment is handled via ansible: [obp-infrastructure](https://github.com/digri
 cd obp-infrastructure/ansible
 ./deploy.sh
 ```
+
+
+## Deploy (HACK)
+
+Due to the situation of a completely outdated environment ansible cannot be used anymore.
+For now deployment has to be done "manually" directly on the server(s).

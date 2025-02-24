@@ -9,6 +9,7 @@ from alibrary.models import (
     Artist,
     Media,
     Release,
+    Label,
     Relation,
     Playlist,
     PlaylistItemPlaylist,
@@ -177,6 +178,52 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
+class LabelSerializer(serializers.HyperlinkedModelSerializer):
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="api:obr-sync:label-detail",
+        lookup_field="uuid",
+    )
+
+    ct = serializers.CharField(source="get_ct")
+
+    type = serializers.CharField()
+    description = serializers.CharField()
+    image = ImageSerializer(source="main_image")
+    tags = TagSerializer(many=True)
+    relations = RelationSerializer(many=True)
+
+    date_start = ApproximateDateSerializer()
+    date_end = ApproximateDateSerializer()
+
+    root_uuid = serializers.SerializerMethodField()
+
+    def get_root_uuid(self, obj):
+        root_label = obj.get_root()
+        return root_label.uuid if root_label else None
+
+
+    class Meta:
+        model = Label
+        fields = [
+            "url",
+            "ct",
+            "uuid",
+            "updated",
+            #
+            "type",
+            "name",
+            "date_start",
+            "date_end",
+            "description",
+            "image",
+            "tags",
+            "relations",
+            #
+            "root_uuid",
+        ]
+
+
 class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
 
     url = serializers.HyperlinkedIdentityField(
@@ -185,14 +232,14 @@ class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     ct = serializers.CharField(source="get_ct")
-
     type = serializers.CharField(source="releasetype")
     description = serializers.CharField()
     image = ImageSerializer(source="main_image")
     tags = TagSerializer(many=True)
     relations = RelationSerializer(many=True)
-
     releasedate = ApproximateDateSerializer()
+    label = LabelSerializer()
+
 
     class Meta:
         model = Release
@@ -209,6 +256,7 @@ class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
             "image",
             "tags",
             "relations",
+            "label",
         ]
 
 

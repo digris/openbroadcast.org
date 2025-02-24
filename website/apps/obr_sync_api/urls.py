@@ -6,24 +6,29 @@ from rest_framework import routers
 
 from . import views
 
+app_name = "obr-sync"
+
 router = routers.DefaultRouter(schema_title="OBR Sync API")
+
 # alibrary
 router.register(r"media", views.MediaViewSet)
 router.register(r"artists", views.ArtistViewSet)
 router.register(r"releases", views.ReleaseViewSet)
 router.register(r"playlists", views.PlaylistViewSet)
+router.register(r"labels", views.LabelViewSet)
+
 # accounts / user / profiles
 router.register(r"accounts", views.AccountViewSet)
 router.register(r"profiles", views.ProfileViewSet)
+
 # abcast
 router.register(r"emissions", views.EmissionViewSet)
+
 # arating
 router.register(r"votes", views.VoteViewSet)
+
 # tagging
 router.register(r"tags", views.TagViewSet)
-
-
-app_name = "obr-sync"
 urlpatterns = [
     url(r"^", include(router.urls)),
     url(
