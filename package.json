@@ -1,6 +1,6 @@
 {
     "dependencies": {
-        "@babel/core": "^7.8.7",
+        "@babel/core": "^7.26.10",
         "@babel/polyfill": "^7.8.7",
         "@babel/preset-env": "^7.8.7",
         "autoprefixer": "^8.4.1",
@@ -27,7 +27,7 @@
         "nosleep.js": "^0.7.0",
         "nunjucks": "2.5.2",
         "postcss": "^7.0.17",
-        "postcss-cli": "^5.0.0",
+        "postcss-cli": "^11.0.1",
         "postcss-loader": "^2.1.5",
         "pretty-bytes": "^5.5.0",
         "sass-loader": "^7.0.1",
