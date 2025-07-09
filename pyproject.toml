@@ -8,7 +8,7 @@ license = "MIT"
 packages = [{include="website", from="."}]
 
 [tool.poetry.dependencies]
-python = "^2.7"
+#python = "^2.7"
 Django = "1.8.19"
 BeautifulSoup = "3.2.1"
 Markdown = "2.4"

@@ -7,7 +7,10 @@ import time
 import unicodedata
 import string
 import ntpath
-import magic
+try:
+    import magic
+except ImportError:
+    magic = None
 from alibrary.models import Media, Artist, Release
 from celery.task import task
 from django.conf import settings

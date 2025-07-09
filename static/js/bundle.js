@@ -1,7 +1,7 @@
 // legacy stylesheet imports
 // TODO: check if we can remove legacy-legacy-legacy styles ;)
 import '../sass/screen.sass';
-// import '../sass/scheduler.sass';
+import '../sass/scheduler.sass';
 
 // global stylesheet import
 import '../style/main.scss';

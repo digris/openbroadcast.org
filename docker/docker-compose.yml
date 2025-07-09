@@ -1,7 +1,7 @@
 version: "3"
 services:
   nginx:
-    container_name: nginx
+    # container_name: nginx
     build:
       context: ${PWD}/docker/nginx/
       dockerfile: ${PWD}/docker/nginx/Dockerfile
@@ -15,7 +15,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
   mariadb:
-    container_name: mariadb
+    # container_name: mariadb
     image: mariadb
     restart: always
     environment:
@@ -29,7 +29,7 @@ services:
     networks:
       - obp
   rabbitmq:
-    container_name: rabbitmq
+    # container_name: rabbitmq
     build:
       context: ${PWD}/docker/rabbitmq/
       dockerfile: Dockerfile
@@ -40,7 +40,7 @@ services:
     networks:
       - obp
   redis:
-    container_name: redis
+    # container_name: redis
     image: redis:5.0.5
     ports:
       - "6379:6379"
@@ -50,6 +50,7 @@ services:
   elasticsearch:
     container_name: elasticsearch
     image: elasticsearch:6.8.20
+    platform: linux/amd64   # force amd64 - no arm image for elasticsearch 6.8
     environment:
       - cluster.name=obp
       - bootstrap.memory_lock=true
@@ -63,7 +64,7 @@ services:
     networks:
       - obp
   pushy:
-    container_name: pushy
+    # container_name: pushy
     build:
       context: ${PWD}
       dockerfile: ${PWD}/docker/pushy/Dockerfile
