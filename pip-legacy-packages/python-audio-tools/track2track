@@ -1,0 +1,377 @@
+#!/usr/bin/python
+
+#Audio Tools, a module and set of tools for manipulating audio data
+#Copyright (C) 2007-2012  Brian Langenberger
+
+#This program is free software; you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation; either version 2 of the License, or
+#(at your option) any later version.
+
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, write to the Free Software
+#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+import audiotools
+import sys
+import os
+import os.path
+import select
+import gettext
+import cPickle
+
+gettext.install("audiotools", unicode=True)
+
+MAX_CPUS = audiotools.MAX_JOBS
+
+
+def convert(progress, source_audiofile, destination_filename,
+            destination_class, compression,
+            metadata, thumbnail_images):
+    destination_audiofile = source_audiofile.convert(
+        destination_filename,
+        destination_class,
+        compression,
+        progress)
+
+    if (metadata is not None):
+        if (thumbnail_images):
+            for img in metadata.images():
+                metadata.delete_image(img)
+                metadata.add_image(img.thumbnail(
+                        audiotools.THUMBNAIL_SIZE,
+                        audiotools.THUMBNAIL_SIZE,
+                        audiotools.THUMBNAIL_FORMAT))
+
+        destination_audiofile.set_metadata(metadata)
+    else:
+        destination_audiofile.set_metadata(audiotools.MetaData(
+                track_number=source_audiofile.track_number(),
+                album_number=source_audiofile.album_number()))
+
+    existing_cuesheet = source_audiofile.get_cuesheet()
+    if (existing_cuesheet is not None):
+        destination_audiofile.set_cuesheet(existing_cuesheet)
+
+    return destination_filename
+
+
+if (__name__ == '__main__'):
+    parser = audiotools.OptionParser(
+        usage=_(u'%prog [options] <track 1> [track 2] ...'),
+        version="Python Audio Tools %s" % (audiotools.VERSION))
+
+    conversion = audiotools.OptionGroup(parser, _(u"Conversion Options"))
+
+    conversion.add_option(
+        '-t', '--type',
+        action='store',
+        dest='type',
+        choices=audiotools.TYPE_MAP.keys(),
+        help=_(u'the type of audio track to convert to'))
+
+    conversion.add_option(
+        '-q', '--quality',
+        action='store',
+        type='string',
+        dest='quality',
+        help=_(u'the quality to store audio tracks at'))
+
+    conversion.add_option(
+        '-d', '--dir',
+        action='store',
+        type='string',
+        dest='dir',
+        default='.',
+        help=_(u'the directory to store converted audio tracks'))
+
+    conversion.add_option(
+        '--format',
+        action='store',
+        type='string',
+        default=None,
+        dest='format',
+        help=_(u'the format string for new filenames'))
+
+    conversion.add_option(
+        '-o', '--output',
+        action='store',
+        dest='output',
+        help=_(u'output filename to use, overriding default and -d'))
+
+    conversion.add_option(
+        '-j', '--joint',
+        action='store',
+        type='int',
+        default=MAX_CPUS,
+        dest='max_processes',
+        help=_(u'the maximum number of processes to run at a time'))
+
+    parser.add_option_group(conversion)
+
+    metadata = audiotools.OptionGroup(parser, _(u"Metadata Options"))
+
+    metadata.add_option(
+        '-T', '--thumbnail',
+        action='store_true',
+        default=False,
+        dest='thumbnail',
+        help=_(u'convert embedded images to smaller thumbnails ' +
+               u'during conversion'))
+
+    #if adding ReplayGain is a lossless process
+    #(i.e. added as tags rather than modifying track data)
+    #add_replay_gain should default to True
+    #if not, add_replay_gain should default to False
+    #which is which depends on the track type
+    metadata.add_option(
+        '--replay-gain',
+        action='store_true',
+        dest='add_replay_gain',
+        help=_(u'add ReplayGain metadata to newly created tracks'))
+
+    metadata.add_option(
+        '--no-replay-gain',
+        action='store_false',
+        dest='add_replay_gain',
+        help=_(u'do not add ReplayGain metadata to newly created tracks'))
+
+    parser.add_option_group(metadata)
+
+    parser.add_option(
+        '-V', '--verbose',
+        action='store',
+        dest='verbosity',
+        choices=audiotools.VERBOSITY_LEVELS,
+        default=audiotools.DEFAULT_VERBOSITY,
+        help=_(u'the verbosity level to execute at'))
+
+    (options, args) = parser.parse_args()
+    msg = audiotools.Messenger("track2track", options)
+
+    #if one specifies incompatible output options,
+    #complain about it right away
+    if (options.output is not None):
+        if (options.dir != "."):
+            msg.error(_(u"-o and -d options are not compatible"))
+            msg.info(_(u"Please specify either -o or -d but not both"))
+            sys.exit(1)
+
+        if (options.format is not None):
+            msg.warning(_(u"--format has no effect when used with -o"))
+
+    #get the AudioFile class we are converted to
+    if (options.output is None):
+        if (options.type is not None):
+            AudioType = audiotools.TYPE_MAP[options.type]
+        else:
+            AudioType = audiotools.TYPE_MAP[audiotools.DEFAULT_TYPE]
+    else:
+        if (options.type is not None):
+            AudioType = audiotools.TYPE_MAP[options.type]
+        else:
+            try:
+                AudioType = audiotools.filename_to_type(options.output)
+            except audiotools.UnknownAudioType, exp:
+                exp.error_msg(msg)
+                sys.exit(1)
+
+    #ensure the selected compression is compatible with that class
+    if (options.quality == 'help'):
+        if (len(AudioType.COMPRESSION_MODES) > 1):
+            msg.info(_(u"Available compression types for %s:") % \
+                           (AudioType.NAME))
+            for mode in AudioType.COMPRESSION_MODES:
+                msg.new_row()
+                if (mode == audiotools.__default_quality__(AudioType.NAME)):
+                    msg.output_column(msg.ansi(mode.decode('ascii'),
+                                               [msg.BOLD,
+                                                msg.UNDERLINE]), True)
+                else:
+                    msg.output_column(mode.decode('ascii'), True)
+                if (mode in AudioType.COMPRESSION_DESCRIPTIONS):
+                    msg.output_column(u" : ")
+                else:
+                    msg.output_column(u"   ")
+                msg.output_column(
+                    AudioType.COMPRESSION_DESCRIPTIONS.get(mode, u""))
+            msg.info_rows()
+        else:
+            msg.error(_(u"Audio type %s has no compression modes") % \
+                            (AudioType.NAME))
+        sys.exit(0)
+    elif (options.quality is None):
+        options.quality = audiotools.__default_quality__(AudioType.NAME)
+    elif (options.quality not in AudioType.COMPRESSION_MODES):
+        msg.error(
+            _(u"\"%(quality)s\" is not a supported " +
+              u"compression mode for type \"%(type)s\"") %
+            {"quality": options.quality,
+             "type": AudioType.NAME})
+        sys.exit(1)
+
+    #grab the list of AudioFile objects we are converting from
+    audiofiles = audiotools.open_files(args, messenger=msg)
+    if (len(audiofiles) < 1):
+        msg.error(_(u"You must specify at least 1 supported audio file"))
+        sys.exit(1)
+
+    if (options.max_processes < 1):
+        msg.error(_(u'You must run at least 1 process at a time'))
+        sys.exit(1)
+
+    if ((options.output is not None) and
+        (len(audiofiles) != 1)):
+        msg.error(_(u'You may specify only 1 input file for use with -o'))
+        sys.exit(1)
+
+    #determine whether to add ReplayGain by default
+    if (options.add_replay_gain is None):
+        options.add_replay_gain = (
+            AudioType.lossless_replay_gain() and
+            audiotools.applicable_replay_gain(audiofiles))
+
+    if (options.thumbnail):
+        if (not audiotools.can_thumbnail()):
+            msg.error(_(u"Unable to generate thumbnails"))
+            msg.info(
+                _(u"Please install the Python Imaging Library"))
+            msg.info(
+                _(u"available at http://www.pythonware.com/products/pil/"))
+            msg.info(_(u"to enable image resizing"))
+            sys.exit(1)
+
+        if (audiotools.THUMBNAIL_FORMAT.upper() not in
+            audiotools.thumbnail_formats()):
+            msg.error(_(u"Unsupported thumbnail format \"%s\"") %
+                      (audiotools.THUMBNAIL_FORMAT))
+            msg.info(_(u"Available formats are: %s") %
+                     (", ".join(audiotools.thumbnail_formats())))
+            sys.exit(1)
+
+    quality = options.quality
+    max_processes = options.max_processes
+
+    if (options.output is None):
+        #the default encoding method, without an output file
+
+        base_directory = options.dir
+
+        queue = audiotools.ExecProgressQueue(audiotools.ProgressDisplay(msg))
+
+        for audiofile in audiofiles:
+            track_metadata = audiofile.get_metadata()
+
+            #use old track's metadata for new track, if any
+            track_metadata = audiofile.get_metadata()
+
+            try:
+                filename = os.path.join(
+                    base_directory,
+                    AudioType.track_name(file_path=audiofile.filename,
+                                         track_metadata=track_metadata,
+                                         format=options.format))
+            except audiotools.UnsupportedTracknameField, err:
+                err.error_msg(msg)
+                sys.exit(1)
+
+            #try to create subdirectories in advance
+            #so as to bail out as early as possible
+            try:
+                audiotools.make_dirs(filename)
+            except OSError:
+                msg.error(_(u"Unable to write \"%s\"") % \
+                              (filename))
+                sys.exit(1)
+
+            #queue up conversion job
+            queue.execute(function=convert,
+                          progress_text=msg.filename(filename),
+                          completion_output=u"%s -> %s" % \
+                              (msg.filename(audiofile.filename),
+                               msg.filename(filename)),
+                          source_audiofile=audiofile,
+                          destination_filename=filename,
+                          destination_class=AudioType,
+                          compression=quality,
+                          metadata=track_metadata,
+                          thumbnail_images=options.thumbnail)
+
+        #perform all queued conversion jobs
+        try:
+            queue.run(max_processes)
+        except audiotools.EncodingError, err:
+            msg.error(unicode(err))
+            sys.exit(1)
+
+        #add ReplayGain to converted files, if necessary
+        if (options.add_replay_gain and AudioType.can_add_replay_gain()):
+            try:
+                #separate encoded files by album_name and album_number
+                for album in audiotools.group_tracks(
+                    audiotools.open_files(queue.results.values())):
+                    #add ReplayGain to groups of files
+                    #belonging to the same album
+
+                    album_number = set([a.album_number() for a in album]).pop()
+
+                    if (album_number == 0):
+                        if (AudioType.lossless_replay_gain()):
+                            progress_text = _(u"Adding ReplayGain")
+                            completion_output = _(u"ReplayGain added")
+                        else:
+                            progress_text = _(u"Applying ReplayGain")
+                            completion_output = _(u"ReplayGain applied")
+                    else:
+                        if (AudioType.lossless_replay_gain()):
+                            progress_text = (
+                                _(u"Adding ReplayGain to album %d") %
+                                (album_number))
+                            completion_output = (
+                                _(u"ReplayGain added to album %d") %
+                                (album_number))
+                        else:
+                            progress_text = (
+                                _(u"Applying ReplayGain to album %d") %
+                                (album_number))
+                            completion_output = (
+                                _(u"ReplayGain applied to album %d") %
+                                (album_number))
+
+                    queue.execute(AudioType.add_replay_gain,
+                                  progress_text,
+                                  completion_output,
+                                  [a.filename for a in album])
+
+                queue.run(max_processes)
+            except ValueError, err:
+                msg.error(unicode(err))
+                sys.exit(1)
+    else:
+        #encoding only a single file
+        audiofile = audiofiles[0]
+        track_metadata = audiofile.get_metadata()
+
+        queue = audiotools.ExecProgressQueue(
+            audiotools.ProgressDisplay(
+                audiotools.SilentMessenger("track2track")))
+
+        queue.execute(function=convert,
+                      source_audiofile=audiofile,
+                      destination_filename=options.output,
+                      destination_class=AudioType,
+                      compression=quality,
+                      metadata=track_metadata,
+                      thumbnail_images=options.thumbnail)
+
+        try:
+            queue.run(1)
+        except audiotools.EncodingError, err:
+            msg.error(unicode(err))
+            sys.exit(1)

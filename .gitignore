@@ -22,6 +22,8 @@ db_dumps/
 
 *node_modules*
 
+.venv*
+
 
 
 util/remote_to_local.conf

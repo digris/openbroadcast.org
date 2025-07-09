@@ -1,0 +1,218 @@
+#!/usr/bin/python
+
+#Audio Tools, a module and set of tools for manipulating audio data
+#Copyright (C) 2007-2012  Brian Langenberger
+
+#This program is free software; you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation; either version 2 of the License, or
+#(at your option) any later version.
+
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, write to the Free Software
+#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys
+import os.path
+import audiotools
+import gettext
+
+gettext.install("audiotools", unicode=True)
+
+MAX_CPUS = audiotools.MAX_JOBS
+
+
+class Counter:
+    def __init__(self):
+        self.value = 0
+
+    def __int__(self):
+        return self.value
+
+    def increment(self):
+        self.value += 1
+
+
+class FailedAudioFile:
+    def __init__(self, class_name, path, err):
+        self.NAME = class_name
+        self.filename = path
+        self.err = err
+
+    def verify(self):
+        raise self.err
+
+
+def open_file(filename):
+    f = open(filename, "rb")
+    try:
+        for audioclass in audiotools.TYPE_MAP.values():
+            f.seek(0, 0)
+            if (audioclass.is_type(f)):
+                class_name = audioclass.NAME
+                try:
+                    return audioclass(filename)
+                except audiotools.InvalidFile, err:
+                    return FailedAudioFile(class_name, filename, err)
+        else:
+            raise audiotools.UnsupportedFile(filename)
+    finally:
+        f.close()
+
+
+def get_tracks(args, accept_list):
+    if (accept_list is not None):
+        accept_list = set(accept_list)
+
+    for path in args:
+        if (os.path.isfile(path)):
+            try:
+                track = open_file(path)
+                if not ((accept_list is not None) and
+                        (track.NAME not in accept_list)):
+                    yield track
+            except (audiotools.UnsupportedFile, IOError):
+                continue
+        elif (os.path.isdir(path)):
+            for (d, ds, fs) in os.walk(path):
+                for f in fs:
+                    try:
+                        track = open_file(os.path.join(d, f))
+                        if not ((accept_list is not None) and
+                                (track.NAME not in accept_list)):
+                            yield track
+                    except (audiotools.UnsupportedFile, IOError):
+                        continue
+
+
+def verify(progress, track):
+    try:
+        track.verify(progress)
+        return (track.filename, track.NAME, None)
+    except audiotools.InvalidFile, err:
+        return (track.filename, track.NAME, unicode(err))
+
+
+class Results:
+    def __init__(self, messenger):
+        self.msg = messenger
+        self.summary_success = {}
+        self.summary_failure = {}
+
+    def display(self, result):
+        (path, track_type, error) = result
+        if (error is None):
+            self.summary_success.setdefault(track_type, Counter()).increment()
+            return _(u"%(path)s : %(result)s") % {
+                "path": self.msg.filename(path),
+                "result": self.msg.ansi(_(u"OK"), [self.msg.FG_GREEN])}
+        else:
+            self.summary_failure.setdefault(track_type, Counter()).increment()
+            return _(u"%(path)s : %(result)s") % {
+                "path": self.msg.filename(path),
+                "result": self.msg.ansi(error, [self.msg.FG_RED])}
+
+
+gettext.install("audiotools", unicode=True)
+
+if (__name__ == '__main__'):
+    parser = audiotools.OptionParser(
+        usage=_(u"%prog <track 1> [track 2] ..."),
+        version="Python Audio Tools %s" % (audiotools.VERSION))
+
+    parser.add_option('-t', '--type',
+                      action='append',
+                      dest='accept_list',
+                      metavar='type',
+                      choices=audiotools.TYPE_MAP.keys(),
+                      help=_(u'a type of audio to accept'))
+
+    parser.add_option('-R', '--no-summary',
+                      action='store_true',
+                      dest='no_summary',
+                      help=_(u'suppress summary output'))
+
+    parser.add_option('-j', '--joint',
+        action='store',
+        type='int',
+        default=MAX_CPUS,
+        dest='max_processes',
+        help=_(u'the maximum number of processes to run at a time'))
+
+    parser.add_option('-V', '--verbose',
+                      action='store',
+                      dest='verbosity',
+                      choices=audiotools.VERBOSITY_LEVELS,
+                      default=audiotools.DEFAULT_VERBOSITY,
+                      help=_(u'the verbosity level to execute at'))
+
+    (options, args) = parser.parse_args()
+    msg = audiotools.Messenger("trackverify", options)
+
+    results = Results(msg)
+    queue = audiotools.ExecProgressQueue(audiotools.ProgressDisplay(msg))
+    for track in get_tracks(args, options.accept_list):
+        # if (i == 0):
+        #     pass
+        # elif ((i % 100) == 0):
+        #     msg.ansi_clearline()
+        #     msg.partial_output(_(u"Finding tracks (%d)") % (i))
+        queue.execute(function=verify,
+                      progress_text=msg.filename(track.filename),
+                      completion_output=results.display,
+                      track=track)
+    msg.ansi_clearline()
+
+    queue.run(options.max_processes)
+
+    summary_success = results.summary_success
+    summary_failure = results.summary_failure
+    formats = sorted(list(set(summary_success.keys()) |
+                          set(summary_failure.keys())))
+    success_total = sum(map(int, summary_success.values()))
+    failure_total = sum(map(int, summary_failure.values()))
+
+    if ((len(formats) > 0) and (not options.no_summary)):
+        msg.output(_(u"Results:"))
+        msg.output(u"")
+        msg.new_row()
+        msg.output_column(_(u"format"), True)
+        msg.output_column(u" ")
+        msg.output_column(_(u"success"), True)
+        msg.output_column(u" ")
+        msg.output_column(_(u"failure"), True)
+        msg.output_column(u" ")
+        msg.output_column(_(u"total"), True)
+        msg.divider_row([u"-", u" ", u"-", u" ", u"-", u" ", u"-"])
+
+        for format in formats:
+            success = int(summary_success.get(format, 0))
+            failure = int(summary_failure.get(format, 0))
+            msg.new_row()
+            msg.output_column(format.decode('ascii'), True)
+            msg.output_column(u" ")
+            msg.output_column(unicode(success), True)
+            msg.output_column(u" ")
+            msg.output_column(unicode(failure), True)
+            msg.output_column(u" ")
+            msg.output_column(unicode(success + failure), True)
+
+        msg.divider_row([u"-", u" ", u"-", u" ", u"-", u" ", u"-"])
+        msg.new_row()
+        msg.output_column(u"summary", True)
+        msg.output_column(u" ")
+        msg.output_column(unicode(success_total), True)
+        msg.output_column(u" ")
+        msg.output_column(unicode(failure_total), True)
+        msg.output_column(u" ")
+        msg.output_column(unicode(success_total + failure_total), True)
+
+        msg.output_rows()
+
+    if (failure_total > 0):
+        sys.exit(1)

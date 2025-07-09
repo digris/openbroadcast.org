@@ -1,0 +1,10 @@
+# General files to ignore
+*~
+*.bak
+*.log
+*.pot
+*.pyc
+
+# PyPI packaging leftovers
+/dist
+/djangocms_panel.egg-info

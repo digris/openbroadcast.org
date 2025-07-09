@@ -1,0 +1,133 @@
+#!/usr/bin/python
+
+#Audio Tools, a module and set of tools for manipulating audio data
+#Copyright (C) 2007-2012  Brian Langenberger
+
+#This program is free software; you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation; either version 2 of the License, or
+#(at your option) any later version.
+
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, write to the Free Software
+#Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+import sys
+import audiotools
+import gettext
+import os.path
+
+gettext.install("audiotools", unicode=True)
+
+if (__name__ == '__main__'):
+    parser = audiotools.OptionParser(
+        usage=_(u"%prog [options]"),
+        version="Python Audio Tools %s" % (audiotools.VERSION))
+
+    parser.add_option('-A', '--audio-ts', action='store', default=None,
+                      type='string', dest='audio_ts', metavar='DIR',
+                      help='location of AUDIO_TS directory')
+
+    (options, args) = parser.parse_args()
+
+    msg = audiotools.Messenger("dvdainfo", options)
+
+    if (options.audio_ts is None):
+        msg.error(
+            _(u"You must specify the DVD-Audio's AUDIO_TS directory with -A"))
+        sys.exit(1)
+
+    try:
+        dvda = audiotools.DVDAudio(options.audio_ts)
+    except audiotools.InvalidDVDA, err:
+        msg.error(unicode(err))
+        sys.exit(1)
+    except OSError, err:
+        msg.os_error(err)
+        sys.exit(1)
+
+    titleset = dvda[0]
+    for (title_num, title) in enumerate(titleset):
+        (sample_rate,
+         channels,
+         channel_mask,
+         bits_per_sample,
+         stream_type) = title.info()
+
+        msg.new_row()
+        msg.output_column(_(u"Title %d") % (title_num + 1), True)
+        msg.output_column(_(u" (%d tracks)" % (len(title.tracks))), True)
+        msg.output_column(_(u" : "))
+        msg.output_column(_(u"%(minutes)2.2d:%(seconds)2.2d " +
+                            u"%(channels)dch %(rate)dHz %(bits)d-bit " +
+                            u"%(type)s") %
+                          {"minutes": title.pts_length / 90000 / 60,
+                           "seconds": title.pts_length / 90000 % 60,
+                           "channels": channels,
+                           "rate": sample_rate,
+                           "bits": bits_per_sample,
+                           "type": {0xA0: u"PCM",
+                                    0xA1: u"MLP"}.get(stream_type,
+                                                      u"UNKNOWN")})
+    msg.blank_row()
+    msg.output_rows()
+
+    msg.new_row()
+    msg.output_column(_(u"Title"))
+    msg.output_column(u" ")
+    msg.output_column(_(u"Track"))
+    msg.output_column(u" ")
+    msg.output_column(_(u"Length"))
+    msg.output_column(u"   ")
+    msg.output_column(_(u"Filename"))
+    msg.output_column(u" ")
+    msg.output_column(_(u"Start Sector"))
+    msg.output_column(u" ")
+    msg.output_column(_(u"End Sector"))
+    msg.output_column(u" ")
+    msg.output_column(_(u"PTS Ticks"))
+
+    msg.divider_row([u"-", u" ", u"-", u" ", u"-", u" ", u"-",
+                     u" ", u"-", u" ", u"-", u" ", u"-"])
+
+    for (title_num, title) in enumerate(titleset):
+        for (track_num, track) in enumerate(title.tracks):
+            for (i, (aob_file,
+                     start_sector,
+                     end_sector)) in enumerate(track.sectors()):
+                msg.new_row()
+                if (i == 0):
+                    msg.output_column(unicode(title_num + 1), True)
+                    msg.output_column(u" ")
+                    msg.output_column(unicode(track_num + 1), True)
+                    msg.output_column(u" ")
+                    msg.output_column(u"%d:%2.2d" % \
+                                          (track.pts_length / 90000 / 60,
+                                           track.pts_length / 90000 % 60),
+                                      True)
+                else:
+                    msg.output_column(u"")
+                    msg.output_column(u" ")
+                    msg.output_column(u"")
+                    msg.output_column(u" ")
+                    msg.output_column(u"")
+                msg.output_column(u"   ")
+                msg.output_column(msg.filename(os.path.basename(aob_file)),
+                                  True)
+                msg.output_column(u" ")
+                msg.output_column(unicode(start_sector), True)
+                msg.output_column(u" ")
+                msg.output_column(unicode(end_sector - 1), True)
+                msg.output_column(u" ")
+                if (i == 0):
+                    msg.output_column(unicode(track.pts_length), True)
+                else:
+                    msg.output_column(u" ")
+
+    msg.output_rows()

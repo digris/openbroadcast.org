@@ -1,0 +1,5 @@
+# Documentation.
+include README.rst
+# Example scripts.
+include aidmatch.py
+include fpcalc.py
