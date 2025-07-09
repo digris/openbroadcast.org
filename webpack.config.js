@@ -40,21 +40,17 @@ module.exports = {
       {
         enforce: 'pre',
         test: /\.(js|vue)$/,
-        loader: 'eslint-loader',
+        // loader: 'eslint-loader',
         exclude: [
           /node_modules/,
         ]
       },
+      /**/
       {
         test: /\.js$/,
         exclude: [/node_modules/],
         use: {
           loader: 'babel-loader',
-          // options: {
-          //     presets: [
-          //         'env'
-          //     ]
-          // }
         }
       },
       {
@@ -68,6 +64,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
+        // test: /\.(scss|sass)$/,
         use: [
           DEV_MODE ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
           // 'vue-style-loader',
@@ -90,6 +87,7 @@ module.exports = {
           'css-loader'
         ]
       },
+      
       {
         test: /\.sass$/,
         use: [
@@ -103,16 +101,18 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
+              // sassOptions: {
+              //   indentedSyntax: true,
+              // },
               sourceMap: DEV_MODE,
-              includePaths: ['./node_modules'],
-              query: {
-                includePaths: [
-                  path.resolve(__dirname, 'node_modules')
-                ]
-              }
+              // includePaths: ['./node_modules'],
+              // query: {
+              //   includePaths: [
+              //     path.resolve(__dirname, 'node_modules')
+              //   ]
+              // }
             },
           },
-
           {
             loader: 'postcss-loader',
           }

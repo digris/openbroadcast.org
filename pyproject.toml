@@ -91,15 +91,20 @@ djangocms-snippet = "1.7.1"
 djangocms-text-ckeditor = "3.3.1"
 djangocms-video = "0.1"
 audioread = "1.0.1"
-"scikits.audiolab" = "0.10.2"
+#"scikits.audiolab" = "0.10.2"
 django-adv-cache-tag = "0.3.0"
 XlsxWriter = "1.1.2"
 django-qsstats-magic = "1.0.0"
-python-audio-tools = {git = "https://github.com/hzlf/python-audio-tools.git", rev = "master"}
-graypy = {git = "https://github.com/hzlf/graypy.git", rev = "master"}
-pyacoustid = {git = "https://ohrstrom@lab.hazelfire.com/hazelfire/obp/pyacoustid.git", rev = "deploy"}
-djangocms-panel = {git = "https://github.com/hzlf/djangocms-panel", rev = "master"}
+#python-audio-tools = {git = "https://github.com/hzlf/python-audio-tools.git", rev = "master"}
+#graypy = {git = "https://github.com/hzlf/graypy.git", rev = "master"}
+#pyacoustid = {git = "https://ohrstrom@lab.hazelfire.com/hazelfire/obp/pyacoustid.git", rev = "deploy"}
+#djangocms-panel = {git = "https://github.com/hzlf/djangocms-panel", rev = "master"}
 uritemplate = "3.0.1"
+persisting-theory = "=0.2.1"
+python-audio-tools = {path = "pip-legacy-packages/python-audio-tools"}
+graypy = {path = "pip-legacy-packages/graypy"}
+pyacoustid = {path = "pip-legacy-packages/pyacoustid"}
+elasticsearch = "=6.3.1"
 
 
 [tool.poetry.dev-dependencies]

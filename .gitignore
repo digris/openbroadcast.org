@@ -2,6 +2,8 @@
 *.pyc
 .pydev*
 
+.nvmrc
+
 .tmp
 .tox
 .idea/*

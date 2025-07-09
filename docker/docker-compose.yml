@@ -43,7 +43,7 @@ services:
     container_name: redis
     image: redis:5.0.5
     ports:
-      - "6380:6379"
+      - "6379:6379"
     restart: always
     networks:
       - obp
