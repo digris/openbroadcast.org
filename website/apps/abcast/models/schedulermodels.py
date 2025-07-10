@@ -12,7 +12,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django_extensions.db.fields import AutoSlugField
 from django.conf import settings
-from celery.task import task
+from celery import shared_task
 from base.mixins import TimestampedModelMixin, UUIDModelMixin
 from abcast.models import Channel
 
@@ -237,7 +237,7 @@ def post_save_emission(sender, **kwargs):
         post_save_emission_task(obj)
 
 
-@task
+@shared_task
 def post_save_emission_task(obj):
 
     """

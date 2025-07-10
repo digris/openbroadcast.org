@@ -72,11 +72,11 @@ class PlaylistResource(ModelResource):
         or bundle.obj.items,
         null=True,
         full=True,
-        max_depth=5,
+        # max_depth=5,
     )
 
     dayparts = fields.ToManyField(
-        "alibrary.api.DaypartResource", "dayparts", null=True, full=True, max_depth=3
+        "alibrary.api.DaypartResource", "dayparts", null=True, full=True
     )
 
     class Meta:

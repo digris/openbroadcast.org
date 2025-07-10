@@ -17,7 +17,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.urlresolvers import reverse
 from django.conf import settings
-from celery.task import task
+from celery import shared_task
 from .util.process import Process
 
 from base.mixins import TimestampedModelMixin, UUIDModelMixin
@@ -164,7 +164,7 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
         else:
             self.process_task(self)
 
-    @task
+    @shared_task
     def process_task(obj):
 
         target = "download"
@@ -292,7 +292,7 @@ class ExportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
         else:
             self.process_task(self)
 
-    @task
+    @shared_task
     def process_task(obj):
         pass
 
@@ -328,7 +328,7 @@ def post_delete_exportitem(sender, **kwargs):
 # post_delete.connect(post_delete_exportitem, sender=ExportItem)
 
 
-@task
+@shared_task
 def cleanup_exports():
     qs = Export.objects.filter(
         created__lte=datetime.datetime.now() - datetime.timedelta(days=7)

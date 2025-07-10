@@ -29,7 +29,7 @@ class SectionDetailView(UUIDDetailView, DetailView):
             raise ImproperlyConfigured('please provide "section_template_pattern"')
         try:
             tpl = self.section_template_pattern.format(key="test")
-            assert type(tpl) == unicode
+            assert type(tpl) == str
         except (KeyError, IndexError, AttributeError, AssertionError):
             raise ImproperlyConfigured(
                 "invalid template pattern: {}".format(self.section_template_pattern)

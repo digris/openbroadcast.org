@@ -5,7 +5,6 @@ import logging
 import ntpath
 import os
 import unicodedata
-import urllib2
 
 from django.conf import settings
 from django.core.files import File
@@ -50,6 +49,7 @@ def safe_filename(filename):
 
 
 def get_file_from_url(url):
+    import urllib2
     log.info("try to get file from url: %s" % url)
     file_obj = None
 

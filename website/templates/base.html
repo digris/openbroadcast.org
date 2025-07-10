@@ -1,4 +1,4 @@
-{% load compress i18n cms_tags sekizai_tags raven staticfiles loginas_tags nunjucks_tags %}<!DOCTYPE html>
+{% load compress i18n cms_tags sekizai_tags staticfiles loginas_tags nunjucks_tags %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
         <title>{% block title %}{{ request.current_page.get_title }}{% endblock %}</title>
@@ -295,9 +295,6 @@
             ga('set', '&uid', {{ user.id }});
             {% endif %}
         </script>
-
-        <script src="https://cdn.ravenjs.com/3.7.0/raven.min.js"></script>
-        <script>Raven.config('{% sentry_public_dsn 'https' %}').install()</script>
 
         <script>(function(d, s, id) {
           var js, fjs = d.getElementsByTagName(s)[0];

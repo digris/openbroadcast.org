@@ -2,7 +2,7 @@
 import json
 import logging
 from kombu import Connection
-from celery.task import task
+from celery import shared_task
 from django.conf import settings
 
 log = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ class PypoGateway(object):
         else:
             self.send_task(self, message)
 
-    @task
+    @shared_task
     def send_task(obj, message):
         log.info("send message: %s" % message["event_type"])
         try:

@@ -1,5 +1,4 @@
 {% extends "error_base.html" %}
-{% load i18n raven %}
 
 {% block title %}You've encountered an error, oh noes!{% endblock %}
 
@@ -9,61 +8,23 @@
 
     <h1>You've encountered an error, oh noes!</h1>
 
-
     <p style="margin: 20px 0;">Sorry about that. Please try refreshing and contact us if the problem persists.</p>
-
 
     {% if request.sentry.id %}
         <div class="sentry">
-
             <!--<p>If you need assistance, you may reference this error as
                 <strong>{{ request.sentry.id }}</strong>.
             </p>-->
-
             <p>
                 Our team has been notified.<br>
                 <strong>If you'd like to help, please tell us what happened!</strong><br>
                 To do so click the button below and describe - with a few words - what lead to this error.
             </p>
-
             <p style="margin: 20px 0;">
                 <a href="#" class="btn" onclick="report()">Add Crash Report</a>
             </p>
-
-            <!--<p>
-                <a href="mailto:lab@hazelfire.com?body=%0D%0A%0D%0Aerror-reference:%20{{ request.sentry.id }}%0D%0AProject: openbroadcast-org">Click
-                    here</a> to create an issue email including references to the occurred problem.
-            </p>-->
         </div>
-
-      <script src="https://cdn.ravenjs.com/3.7.0/raven.min.js"></script>
-      <script>
-
-            var user = null;
-
-          {% if request.user %}
-              user = {
-                  email: '{{ request.user.email }}',
-                  name: '{{ request.user.get_full_name }}'
-              };
-          {% endif %}
-
-
-            var report = function() {
-                Raven.showReportDialog({
-                  eventId: '{{ request.sentry.id }}',
-                  dsn: '{% sentry_public_dsn 'https' %}',
-                  user: user
-                });
-            }
-
-
-      </script>
-
     {% endif %}
-
-
-
     {{ block.super }}
 {% endblock %}
 

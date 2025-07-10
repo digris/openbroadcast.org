@@ -23,10 +23,10 @@ THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
 class MediaResource(ModelResource):
 
     release = fields.ForeignKey(
-        "alibrary.api.ReleaseResource", "release", null=True, full=True, max_depth=2
+        "alibrary.api.ReleaseResource", "release", null=True, full=True
     )
     artist = fields.ForeignKey(
-        "alibrary.api.ArtistResource", "artist", null=True, full=True, max_depth=2
+        "alibrary.api.ArtistResource", "artist", null=True, full=True
     )
     message = fields.CharField(attribute="message", null=True)
 

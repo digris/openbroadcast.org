@@ -36,7 +36,7 @@ class CelerySignalProcessor(BaseSignalProcessor):
         pk = instance.pk
         app_label = instance._meta.app_label
         model_name = instance._meta.concrete_model.__name__
-        self.handle_save_task.delay(pk, app_label, model_name)
+        # self.handle_save_task.delay(pk, app_label, model_name)
 
     @shared_task()
     def handle_save_task(pk, app_label, model_name):

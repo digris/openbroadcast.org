@@ -12,7 +12,7 @@ router.register(r"release", views.ReleaseViewSet)
 # router.register(r"playlist", views.PlaylistViewSet)
 router.register(r"media", views.MediaViewSet)
 
-app_name = "alibrary"
+# app_name = "alibrary"
 urlpatterns = [
     url(r"^playlist/$", views.playlist_list, name="playlist-list"),
     url(

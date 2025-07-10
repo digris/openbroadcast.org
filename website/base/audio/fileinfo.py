@@ -2,35 +2,8 @@
 from __future__ import unicode_literals
 
 import os
-import audiotools
 from ffprobe import FFProbe
 
-
-def encoding_for_path(path):
-    basename, ext = os.path.splitext(path)
-    return ext[1:].lower()
-
-
-def filesize_for_path(path):
-    if os.path.isfile(path):
-        return os.path.getsize(path)
-
-
-def bitrate_for_path(path):
-    if os.path.isfile(path):
-        pass
-
-
-def samplerate_for_path(path):
-    if os.path.isfile(path):
-        audiofile = audiotools.open(path)
-        return audiofile.sample_rate()
-
-
-def duration_for_path(path):
-    if os.path.isfile(path):
-        audiofile = audiotools.open(path)
-        return audiofile.seconds_length()
 
 
 class FileInfoProcessor(object):

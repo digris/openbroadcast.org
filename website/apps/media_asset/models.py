@@ -7,7 +7,7 @@ import shutil
 import subprocess
 import tempfile
 
-from celery.task import task
+from celery import shared_task
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_delete
@@ -345,7 +345,7 @@ def format_pre_delete(sender, instance, **kwargs):
         clean_directory_tree_reverse(obj.path)
 
 
-@task
+@shared_task
 def clean_assets(days_to_keep=MEDIA_ASSET_KEEP_DAYS):
     from datetime import datetime, timedelta
 

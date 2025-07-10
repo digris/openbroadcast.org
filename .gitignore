@@ -8,7 +8,6 @@
 .tox
 .idea/*
 
-src
 dev/
 local/
 

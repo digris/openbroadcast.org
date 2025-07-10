@@ -192,7 +192,8 @@ class BaseInput(object):
         self.id = kwargs.get("css_id", "")
         self.attrs = {}
 
-        if kwargs.has_key("css_class"):
+        # if kwargs.has_key("css_class"):
+        if "css_class" in kwargs:
             self.field_classes += " %s" % kwargs.pop("css_class")
 
         self.template = kwargs.pop("template", self.template)

@@ -25,7 +25,7 @@ from alibrary.models import (
 )
 from alibrary.util import lookup
 from alibrary.util.storage import get_file_from_url
-from celery.task import task
+from celery import shared_task
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
@@ -667,7 +667,7 @@ task definitions
 """
 
 
-@task
+@shared_task
 def mb_complete_media_task(
     obj, mb_id, mb_release_id, mb_artist_combo_ids=None, excludes=(), user=None
 ):
@@ -869,7 +869,7 @@ def mb_complete_media_task(
     return obj
 
 
-@task
+@shared_task
 def mb_complete_release_task(obj, mb_id, user=None):
     log.info("complete release, r: %s | mb_id: %s" % (obj.name, mb_id))
 
@@ -1266,7 +1266,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
     return obj
 
 
-@task
+@shared_task
 def mb_complete_artist_task(obj, mb_id, user=None):
     log.info("complete artist, a: %s %s | mb_id: %s" % (obj.name, obj.pk, mb_id))
 
@@ -1586,7 +1586,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
     return obj
 
 
-@task
+@shared_task
 def mb_complete_label_task(obj, mb_id, user=None):
     log.info("complete label, mb_id: %s" % mb_id)
 

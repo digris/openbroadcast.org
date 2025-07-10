@@ -90,7 +90,6 @@ DATABASES = {
 MIDDLEWARE_CLASSES = [
     "corsheaders.middleware.CorsMiddleware",
     "webpack.middleware.WebpackDevserverMiddleware",
-    "raven.contrib.django.raven_compat.middleware.SentryResponseErrorIdMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -116,6 +115,11 @@ SESSION_SERIALIZER = "django.contrib.sessions.serializers.PickleSerializer"
 ABSOLUTE_URL_OVERRIDES = {
     "auth.user": lambda u: "/network/users/%s/" % u.profile.uuid
 }
+
+##################################################################
+# API v1
+##################################################################
+TASTYPIE_DEFAULT_FORMATS = ['json']
 
 ##################################################################
 # API v2

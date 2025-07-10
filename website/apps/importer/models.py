@@ -12,7 +12,7 @@ try:
 except ImportError:
     magic = None
 from alibrary.models import Media, Artist, Release
-from celery.task import task
+from celery import shared_task
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -370,7 +370,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
         else:
             self.identify_task(self)
 
-    @task
+    @shared_task
     def identify_task(obj):
 
         pre_sleep = 1
@@ -596,7 +596,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
         else:
             self.import_task(self)
 
-    @task
+    @shared_task
     def import_task(obj):
 
         log.debug("Starting import task for:  %s" % (obj.pk))
@@ -760,7 +760,7 @@ def importitem_post_save(sender, instance, created, **kwargs):
         )
 
 
-@task
+@shared_task
 def reset_hanging_files(age=600):
     from datetime import datetime, timedelta
 
