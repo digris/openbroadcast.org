@@ -81,15 +81,7 @@ django-elasticsearch-dsl = "0.5.0"
 coreapi = "2.3.1"
 djangorestframework = "3.6.4"
 drf-flex-fields = "0.3.4"
-django-cms = "3.4.6"
 django-treebeard = "4.2.1"
-djangocms-admin-style = "1.2.8"
-djangocms-column = "1.6.0"
-djangocms-file = "0.1"
-djangocms-link = "1.7.2"
-djangocms-snippet = "1.7.1"
-djangocms-text-ckeditor = "3.3.1"
-djangocms-video = "0.1"
 audioread = "1.0.1"
 # django-adv-cache-tag = "0.3.0"  # check py3
 XlsxWriter = "1.1.2"
@@ -125,11 +117,8 @@ markers = [
 ]
 filterwarnings = [
     "ignore:::standard_library",
-    "ignore:::cms",
     "ignore:::html5lib",
-    "ignore:::djangocms_attributes_field",
     "ignore::django.utils.deprecation.RemovedInDjango40Warning:django",
     "ignore::django.utils.deprecation.RemovedInDjango41Warning:django",
-    "ignore::DeprecationWarning:future",
 ]
 

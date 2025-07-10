@@ -38,24 +38,6 @@ LANGUAGES = [
     # ('de', _(u'Deutsch')),
 ]
 
-CMS_LANGUAGES = {
-    1: [
-        {"code": "en", "name": _("Englisch"), "public": True},
-        # {
-        #     'code': 'de',
-        #     'name': _(u'Deutsch'),
-        #     'public': True,
-        # }
-    ],
-    "default": {
-        "fallbacks": ["en"],
-        "redirect_on_fallback": False,
-        "public": True,
-        "hide_untranslated": True,
-    },
-}
-
-
 TIME_ZONE = "Europe/Zurich"
 SITE_ID = 1
 USE_I18N = False
@@ -97,11 +79,6 @@ MIDDLEWARE_CLASSES = [
     "account.middleware.SocialAuthExceptionMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.locale.LocaleMiddleware",
-    # cms
-    "cms.middleware.page.CurrentPageMiddleware",
-    "cms.middleware.user.CurrentUserMiddleware",
-    "cms.middleware.language.LanguageCookieMiddleware",
-    "cms.middleware.toolbar.ToolbarMiddleware",
     "base.middleware.xs_sharing.XsSharingMiddleware",
     "arating.middleware.AratingIpMiddleware",
 ]
@@ -140,15 +117,6 @@ REST_FRAMEWORK = {
 # notebook / shell plus
 ##################################################################
 NOTEBOOK_ARGUMENTS = ["--allow-root", "--ip", "0.0.0.0", "--port", "7777"]
-
-
-MIGRATION_MODULES = {
-    # cms base plugins
-    # 'djangocms_snippet': 'djangocms_snippet.migrations_django',
-    # 'djangocms_link': 'djangocms_link.migrations_django',
-    # self maintained modules
-    "cms_redirects": "cms_redirects.migrations_django"
-}
 
 
 ##################################################################

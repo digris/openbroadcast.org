@@ -3,7 +3,6 @@ from django.conf.urls import include, url
 from django.conf import settings
 from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 from django.contrib import admin
-from cms.sitemaps import CMSSitemap
 from django.contrib.sitemaps.views import sitemap
 from alibrary.sitemap import ReleaseSitemap
 
@@ -23,7 +22,7 @@ def handler500(request):
     return HttpResponseServerError(t.render(Context({"request": request})))
 
 
-sitemaps = {"releases": ReleaseSitemap, "pages": CMSSitemap}
+sitemaps = {"releases": ReleaseSitemap}
 
 admin.autodiscover()
 admin.site.site_header = "open broadcast"
@@ -32,7 +31,7 @@ admin.site.site_title = "open broadcast"
 dajaxice_autodiscover()
 
 urlpatterns = [
-    # url(r"^", include("home.urls")),
+    url(r"^", include("home.urls")),
     url(r"^admin/", include(admin.site.urls)),
     url(r"^vote/", include("arating.urls")),
     url(r"^ac_tagging/", include("ac_tagging.urls")),
@@ -76,4 +75,3 @@ if DEBUG:
         url(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT})
     ]
 
-urlpatterns += [url(r"^", include("cms.urls"))]

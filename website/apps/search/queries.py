@@ -17,7 +17,7 @@ def format_search_results(results):
         item = {"score": hit["_score"], "id": int(hit["_id"]), "ct": hit["_type"], 'uuid': hit['_source'].get('uuid')}
 
         for k, v in source.items():
-            if not k in [ignored_keys]:
+            if k not in ignored_keys:
                 item[k] = v
 
         _results.append(item)
@@ -53,7 +53,7 @@ def autocomplete_search(q, doc_type=None, fuzzy_mode=False, **kwargs):
 
     # TODO: implement in a generic way
     # add filters like: `&filter_status=Ready&filter_type=Broadcasts`
-    for key, value in filters.iteritems():
+    for key, value in filters.items():
         s = s.query("term", **{key: value[0]})
 
     s = s[offset : limit + offset]

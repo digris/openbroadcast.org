@@ -460,26 +460,6 @@ dev = ["Fabric", "Sphinx", "check-manifest", "flake8", "flake8-todo", "livereloa
 test = ["pytest", "pytest-cov", "pytest-django", "pytest-flake8"]
 
 [[package]]
-name = "django-cms"
-version = "3.4.6"
-description = "An Advanced Django CMS"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "django-cms-3.4.6.tar.gz", hash = "sha256:4ecae6b70cf01778465e74284cea906f83d3954a7c90672be9df059d1cb18f28"},
-    {file = "django_cms-3.4.6-py2.py3-none-any.whl", hash = "sha256:89697f4315c081663337602a603fa1053ecb120e2531024529258ba37dd09f79"},
-]
-
-[package.dependencies]
-Django = ">=1.8,<2.0"
-django-classy-tags = ">=0.7.2"
-django-formtools = ">=1.0"
-django-sekizai = ">=0.7"
-django-treebeard = ">=4.0.1"
-djangocms-admin-style = ">=1.0"
-
-[[package]]
 name = "django-compressor"
 version = "1.6"
 description = "Compresses linked and inline JavaScript or CSS into single cached files."
@@ -834,17 +814,6 @@ files = [
 django-classy-tags = ">=0.3.1"
 
 [[package]]
-name = "django-select2"
-version = "4.3.2"
-description = "Select2 option fields for Django"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "Django-Select2-4.3.2.tar.gz", hash = "sha256:6a1abc180b3928c9c961ffaa2e932cbe2fd565517805bd57560c7a0c0f4eecfa"},
-]
-
-[[package]]
 name = "django-settings-export"
 version = "1.2.1"
 description = "This Django app allows you to export certain settings to your templates."
@@ -950,97 +919,6 @@ files = [
 
 [package.dependencies]
 Pillow = ">=2.4.0,<=4.0.0"
-
-[[package]]
-name = "djangocms-admin-style"
-version = "1.2.8"
-description = "Adds pretty CSS styles for the django CMS admin interface."
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "djangocms-admin-style-1.2.8.tar.gz", hash = "sha256:7f7452f0d6b9d45f99949e8dd2f7a0fcc242d2134d6cec088ed2b3457e2c7954"},
-    {file = "djangocms_admin_style-1.2.8-py2.py3-none-any.whl", hash = "sha256:7c802e9b9e9b1cf9e36b2d1368faaae6bbd6cefaf6a55f069ec373a91338fae8"},
-]
-
-[[package]]
-name = "djangocms-column"
-version = "1.6.0"
-description = "Column Plugin for django CMS"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "djangocms-column-1.6.0.tar.gz", hash = "sha256:fa736e9fe1a3bed6575223cab0c0ff5485b7909d9dbc98ec266f66f22cfa22e4"},
-    {file = "djangocms_column-1.6.0-py2-none-any.whl", hash = "sha256:548359037c28a29e6d5661f570e800b32b0dcbf1bc8aa7c8cc45af8e70dd3b13"},
-]
-
-[[package]]
-name = "djangocms-file"
-version = "0.1"
-description = "File plugin for django CMS"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "djangocms-file-0.1.tar.gz", hash = "sha256:4e947a67782745be0454601cdb8a43311815bfb38aefd542470d989655a203d8"},
-    {file = "djangocms_file-0.1-py2-none-any.whl", hash = "sha256:3dac35d05a7f62d30a8b3a20ddca9e095272299cb4697a46cf77b474c5983291"},
-]
-
-[[package]]
-name = "djangocms-link"
-version = "1.7.2"
-description = "Link Plugin for django CMS"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "djangocms-link-1.7.2.tar.gz", hash = "sha256:119981c6b5090eeb3a4c9337a5846e86c2709387f9ad9335f26beccbf64c4212"},
-]
-
-[package.dependencies]
-django-select2 = ">=4.3,<5.0"
-
-[[package]]
-name = "djangocms-snippet"
-version = "1.7.1"
-description = "HTML snippet plugin for django CMS"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "djangocms-snippet-1.7.1.tar.gz", hash = "sha256:e8e83597f40f325bdecbe6ec79488fe42b5f15ca19de4de5f00ad229ae15de23"},
-    {file = "djangocms_snippet-1.7.1-py2-none-any.whl", hash = "sha256:b349b4bb95465256163685a2ed3b96e5f1e68510defdc69edaf5cb0350c4c17b"},
-]
-
-[[package]]
-name = "djangocms-text-ckeditor"
-version = "3.3.1"
-description = "Text Plugin for django CMS with CKEditor support"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "djangocms-text-ckeditor-3.3.1.tar.gz", hash = "sha256:6c7bb0332734784afc5cfb75d63fb41c857dae567e9bcd5de71827633c1a3dc7"},
-    {file = "djangocms_text_ckeditor-3.3.1-py2.py3-none-any.whl", hash = "sha256:a952b2d5f657be18b5903101787226e3d9929e12cfe08a967f28580e10474b30"},
-]
-
-[package.dependencies]
-django-cms = ">=3.3.0"
-html5lib = ">=0.90,<0.9999 || >0.9999,<0.99999 || >0.99999,<0.99999999"
-Pillow = "*"
-
-[[package]]
-name = "djangocms-video"
-version = "0.1"
-description = "Video plugin for django CMS"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "djangocms-video-0.1.tar.gz", hash = "sha256:f9448651f4fad2136a03eafe5f64bf5d43a0ff96477d10287b35ecdb68187214"},
-    {file = "djangocms_video-0.1-py2-none-any.whl", hash = "sha256:855731fbf69c966dcbeecc0ab9df14c5d3bcb4db8f047690a3b514f300378db7"},
-]
 
 [[package]]
 name = "djangorestframework"
@@ -1171,20 +1049,6 @@ files = [
     {file = "gunicorn-19.7.1-py2.py3-none-any.whl", hash = "sha256:75af03c99389535f218cc596c7de74df4763803f7b63eb09d77e92b3956b36c6"},
     {file = "gunicorn-19.7.1.tar.gz", hash = "sha256:eee1169f0ca667be05db3351a0960765620dad53f53434262ff8901b68a1b622"},
 ]
-
-[[package]]
-name = "html5lib"
-version = "0.9999999"
-description = "HTML parser based on the WHATWG HTML specification"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "html5lib-0.9999999.tar.gz", hash = "sha256:2612a191a8d5842bfa057e41ba50bbb9dcb722419d2408c78cff4758d0754868"},
-]
-
-[package.dependencies]
-six = "*"
 
 [[package]]
 name = "ipaddress"
@@ -1956,4 +1820,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.8,<=3.13"
-content-hash = "cc9e0fab31ad74ee4de02d3d77ea593085f3d17fecd965fa568f24e82068e8c5"
+content-hash = "05f978e73bf6c374160162931b0ba174d4392ffdecd007e16ca6a421adcde8f6"

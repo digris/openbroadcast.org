@@ -1,4 +1,4 @@
-{% load compress i18n cms_tags sekizai_tags staticfiles loginas_tags nunjucks_tags %}<!DOCTYPE html>
+{% load compress i18n sekizai_tags staticfiles loginas_tags nunjucks_tags %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
         <title>{% block title %}{{ request.current_page.get_title }}{% endblock %}</title>
@@ -78,8 +78,6 @@
           data-spy="scroll"
           data-target=".subnav"
           data-offset="50">
-
-        {% cms_toolbar %}
 
         <div id="app" class="app-container">
 

@@ -9,8 +9,6 @@ DEBUG = getattr(settings, "DEBUG")
 ################################################################################
 
 INSTALLED_APPS = [
-    #'djangocms_admin_style',
-    #'django_slick_admin',
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -61,29 +59,15 @@ INSTALLED_APPS = [
     "navigation",
     # simple-menu (to replace cms)
     "menu",
-    # cms
-    "cms",
-    "menus",
-    "treebeard",
-    # cms plugins
-    "djangocms_link",
-    "djangocms_snippet",
-    "djangocms_text_ckeditor",
-    "djangocms_panel",
-    "djangocms_column",
     "dajaxice",
     "dajax",
     # users / auth
     # 'avatar',
     "registration",
-    #'social_auth',
     "social_django",
     "captcha",
     "django_gravatar",
     "loginas",
-    #'dropbox',
-    #'provider',
-    #'provider.oauth2',
     # api
     "tastypie",
     # api v2
@@ -121,7 +105,6 @@ INSTALLED_APPS = [
     "streaming_services",
     # legacy & migration
     "obp_legacy",
-    # 'navutils',
     # platform tools
     "pushy",
     "nunjucks",

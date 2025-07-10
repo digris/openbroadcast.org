@@ -30,7 +30,7 @@ include(
     "components/14-binaries.py",
     "components/20-media.py",
     "components/21-messaging.py",
-    "components/30-template_cms.py",
+    "components/30-template.py",
     "components/99-depreciated.py",
     # via local_settings.py
     optional(site_settings),

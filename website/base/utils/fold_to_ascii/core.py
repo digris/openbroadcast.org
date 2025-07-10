@@ -22,15 +22,15 @@ def fold(unicode_string, replacement=""):
     if unicode_string is None:
         return ""
 
-    if type(unicode_string) != unicode:
+    if not isinstance(unicode_string, str):
         raise TypeError("cannot fold bytestring")
 
-    if type(replacement) != unicode:
+    if not isinstance(replacement, str):
         raise TypeError("cannot replace using bytestring")
 
     try:
         # If string contains only ASCII characters, just return it.
-        unicode_string.decode("ascii")
+        unicode_string.encode("ascii")
         return unicode_string
     except (UnicodeDecodeError, UnicodeEncodeError) as ex:
         pass
