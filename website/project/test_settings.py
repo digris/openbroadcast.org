@@ -24,12 +24,4 @@ DATABASES = {
             #'autocommit': True,
         },
     },
-    "legacy": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "legacy.sqlite3"),
-    },
-    "legacy_legacy": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "legacy_legacy.sqlite3"),
-    },
 }
