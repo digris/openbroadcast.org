@@ -168,7 +168,7 @@ class PlaylistResource(ModelResource):
         try:
             for item in bundle.data['media']:
                 #item[u'media'] = self.get_resource_uri(bundle.obj)
-                print item
+                print(item)
         except:
             pass
 

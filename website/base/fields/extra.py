@@ -46,7 +46,7 @@ try:
 except ImportError:
 
     def force_unicode(val):
-        return val
+        return str(val)
 
 
 class AdvancedFileInput(ClearableFileInput):

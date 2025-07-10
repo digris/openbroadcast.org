@@ -413,9 +413,9 @@ def _check_filter_and_make_params(entity, includes, release_status=[], release_t
     the filters can be used with the given includes. Return a params
     dict that can be passed to _do_mb_query.
     """
-    if isinstance(release_status, compat.basestring):
+    if isinstance(release_status, (str, bytes)):
         release_status = [release_status]
-    if isinstance(release_type, compat.basestring):
+    if isinstance(release_type, (str, bytes)):
         release_type = [release_type]
     _check_filter(release_status, VALID_RELEASE_STATUSES)
     _check_filter(release_type, VALID_RELEASE_TYPES)
@@ -842,7 +842,7 @@ def _do_mb_search(entity, query="", fields={}, limit=None, offset=None, strict=F
     # Encode the query terms as a Lucene query string.
     query_parts = []
     if query:
-        clean_query = util._unicode(query)
+        clean_query = str(query)
         if fields:
             clean_query = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\])', r"\\\1", clean_query)
             if strict:
@@ -859,7 +859,7 @@ def _do_mb_search(entity, query="", fields={}, limit=None, offset=None, strict=F
             )
 
         # Escape Lucene's special characters.
-        value = util._unicode(value)
+        value = str(value)
         value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\\/])', r"\\\1", value)
         if value:
             if strict:

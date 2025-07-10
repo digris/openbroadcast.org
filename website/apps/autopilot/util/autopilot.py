@@ -411,7 +411,7 @@ class Autopilot:
 
         print("Got %s entries marked for deletion" % delete_qs.count())
 
-        if raw_input("are you sure? [y/N]: ").lower() == "y":
+        if input("are you sure? [y/N]: ").lower() == "y":
             delete_qs.delete()
 
 

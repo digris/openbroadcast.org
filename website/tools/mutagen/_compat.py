@@ -52,7 +52,7 @@ if PY2:
     builtins
 
 elif PY3:
-    from io import StringIO
+    from io import StringIO, BytesIO
 
     StringIO = StringIO
     from io import BytesIO

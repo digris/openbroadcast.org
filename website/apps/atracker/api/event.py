@@ -81,12 +81,12 @@ class EventResource(ModelResource):
             % (content_type, object_uuid, action, user_id)
         )
 
-        if isinstance(content_type, basestring) and "." in content_type:
+        if isinstance(content_type, str) and "." in content_type:
             app, modelname = content_type.split(".")
             content_type = ContentType.objects.get(
                 app_label=app, model__iexact=modelname
             )
-        elif isinstance(content_type, basestring):
+        elif isinstance(content_type, str):
             content_type = ContentType.objects.get(id=int(content_type))
         else:
             raise ValueError('content_type must a ct id or "app.modelname" string')

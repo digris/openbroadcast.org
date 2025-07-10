@@ -545,7 +545,7 @@ class DictProxy(DictMixin):
         del self.__dict[key]
 
     def keys(self):
-        return self.__dict.keys()
+        return list(self.__dict.keys())
 
 
 def _fill_cdata(cls):

@@ -16,7 +16,7 @@ from django.template import RequestContext
 from django.utils.translation import ugettext as _
 
 try:
-    from urlparse import urlparse
+    from urllib.parse import urlparse
 except ImportError:
     from urllib.parse import urlparse
 

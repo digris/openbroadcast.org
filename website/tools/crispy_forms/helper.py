@@ -54,7 +54,7 @@ class DynamicLayoutHandler:
         and not a copy.
         """
         # when key is a string containing the field name
-        if isinstance(key, basestring):
+        if isinstance(key, str):
 
             # Django templates access FormHelper attribute using dictionary [] operator
             # This could be a helper['form_id'] access, not looking for a field

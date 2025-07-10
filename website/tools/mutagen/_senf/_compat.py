@@ -27,7 +27,7 @@ PY3 = not PY2
 
 
 if PY2:
-    from urlparse import urlparse, urlunparse
+    from urllib.parse import urlparse, urlunparse
 
     urlparse, urlunparse
     from urllib import quote, unquote

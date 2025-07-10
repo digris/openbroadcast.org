@@ -65,7 +65,7 @@ class GFKQuerySet(QuerySet):
                 if getattr(item, ct_id_field) is None:
                     continue
                 ct_map.setdefault(getattr(item, ct_id_field), {})[
-                    smart_unicode(getattr(item, gfk.fk_field))
+                    str(getattr(item, gfk.fk_field))
                 ] = (gfk.name, item.pk)
 
         ctypes = ContentType.objects.using(self.db).in_bulk(ct_map.keys())
@@ -78,8 +78,8 @@ class GFKQuerySet(QuerySet):
                     depth=actstream_settings.GFK_FETCH_DEPTH
                 )
                 for o in objects.filter(pk__in=items_.keys()):
-                    (gfk_name, item_id) = items_[smart_unicode(o.pk)]
-                    data_map[(ct_id, smart_unicode(o.pk))] = o
+                    (gfk_name, item_id) = items_[str(o.pk)]
+                    data_map[(ct_id, str(o.pk))] = o
 
         for item in qs:
             for gfk in gfk_fields:
@@ -91,7 +91,7 @@ class GFKQuerySet(QuerySet):
                         data_map[
                             (
                                 getattr(item, ct_id_field),
-                                smart_unicode(getattr(item, gfk.fk_field)),
+                                str(getattr(item, gfk.fk_field)),
                             )
                         ],
                     )

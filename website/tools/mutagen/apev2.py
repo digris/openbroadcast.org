@@ -279,7 +279,7 @@ class _CIDictProxy(DictMixin):
         del self.__dict[lower]
 
     def keys(self):
-        return [self.__casemap.get(key, key) for key in self.__dict.keys()]
+        return [self.__casemap.get(key, key) for key in list(self.__dict.keys())]
 
 
 class APEv2(_CIDictProxy, Metadata):

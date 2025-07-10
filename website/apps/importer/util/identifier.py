@@ -656,7 +656,7 @@ class Identifier:
                                         named_releases[t_rel["title"]].append(t_rel)
                                         # log.debug('appending to existing: "%s"' % t_rel['title'])
 
-                                for k, v in named_releases.iteritems():
+                                for k, v in named_releases.items():
                                     # log.debug('got %s releases for "%s"' % (len(v), k))
                                     selected_releases += v[0:LIMIT_EQUAL_NAMES]
 

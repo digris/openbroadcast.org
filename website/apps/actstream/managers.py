@@ -84,11 +84,11 @@ class ActionManager(GFKManager):
             if not actor_only:
                 others_by_content_type[content_type_id].append(object_id)
 
-        for content_type_id, object_ids in actors_by_content_type.iteritems():
+        for content_type_id, object_ids in actors_by_content_type.items():
             q = q | Q(
                 actor_content_type=content_type_id, actor_object_id__in=object_ids
             )
-        for content_type_id, object_ids in others_by_content_type.iteritems():
+        for content_type_id, object_ids in others_by_content_type.items():
             q = (
                 q
                 | Q(

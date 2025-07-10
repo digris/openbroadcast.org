@@ -345,7 +345,7 @@ class DateField(ApiField):
         if value is None:
             return None
 
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             match = DATE_REGEX.search(value)
 
             if match:
@@ -389,7 +389,7 @@ class DateTimeField(ApiField):
         if value is None:
             return None
 
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             match = DATETIME_REGEX.search(value)
 
             if match:
@@ -553,7 +553,7 @@ class RelatedField(ApiField):
         if self._to_class:
             return self._to_class
 
-        if not isinstance(self.to, basestring):
+        if not isinstance(self.to, str):
             self._to_class = self.to
             return self._to_class
 
@@ -644,7 +644,7 @@ class RelatedField(ApiField):
                 # Attempt lookup by primary key
                 lookup_kwargs = {
                     k: v
-                    for k, v in data.iteritems()
+                    for k, v in data.items()
                     if getattr(fk_resource, k).unique
                 }
 
@@ -687,7 +687,7 @@ class RelatedField(ApiField):
             "related_name": related_name,
         }
 
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             # We got a URI. Load the object and assign it.
             return self.resource_from_uri(self.fk_resource, value, **kwargs)
         elif isinstance(value, Bundle):
@@ -751,7 +751,7 @@ class ToOneField(RelatedField):
     def dehydrate(self, bundle):
         foreign_obj = None
 
-        if isinstance(self.attribute, basestring):
+        if isinstance(self.attribute, str):
             attrs = self.attribute.split("__")
             foreign_obj = bundle.obj
 
@@ -864,7 +864,7 @@ class ToManyField(RelatedField):
         previous_obj = bundle.obj
         attr = self.attribute
 
-        if isinstance(self.attribute, basestring):
+        if isinstance(self.attribute, str):
             attrs = self.attribute.split("__")
             the_m2ms = bundle.obj
 
@@ -967,7 +967,7 @@ class TimeField(ApiField):
         return self.convert(super().dehydrate(obj))
 
     def convert(self, value):
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             return self.to_time(value)
         return value
 

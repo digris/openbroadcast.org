@@ -206,7 +206,7 @@ class ID3Tags(DictProxy, Tags):
         # hash to get a stable result
         order = ["TIT2", "TPE1", "TRCK", "TALB", "TPOS", "TDRC", "TCON"]
 
-        framedata = [(f, save_frame(f, config=config)) for f in itervalues(self)]
+        framedata = [(f, save_frame(f, config=config)) for f in self.values()]
 
         def get_prio(frame):
             try:

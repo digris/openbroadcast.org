@@ -33,7 +33,7 @@ def bytes_to_elementtree(bytes_or_file):
     """Given a bytestring or a file-like object that will produce them,
 	parse and return an ElementTree.
 	"""
-    if isinstance(bytes_or_file, compat.basestring):
+    if isinstance(bytes_or_file, (str, bytes)):
         s = bytes_or_file
     else:
         s = bytes_or_file.read()

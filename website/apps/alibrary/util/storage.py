@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.files import File
 from django.core.files.storage import FileSystemStorage
 from django.core.files.temp import NamedTemporaryFile
+import urllib.request
 
 log = logging.getLogger(__name__)
 
@@ -46,13 +47,12 @@ def safe_filename(filename):
 
 
 def get_file_from_url(url):
-    import urllib2
     log.info("try to get file from url: %s" % url)
     file_obj = None
 
     try:
         try:
-            opener = urllib2.build_opener()
+            opener = urllib.request.build_opener()
             opener.addheaders = [("User-Agent", "OBPDiscogsClient/1.0 +https://openbroadcast.org")]
             response = opener.open(url)
             temp_file = NamedTemporaryFile(delete=True)

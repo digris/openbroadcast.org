@@ -45,11 +45,11 @@ class LayoutObject:
 
         # The layout object contains other layout objects
         if not all(
-            [isinstance(layout_object, basestring) for layout_object in self.fields]
+            [isinstance(layout_object, str) for layout_object in self.fields]
         ):
             for i, layout_object in enumerate(self.fields):
                 # If it's a layout object, we recursive call
-                if not isinstance(layout_object, basestring):
+                if not isinstance(layout_object, str):
                     if hasattr(layout_object, "get_field_names"):
                         field_names.append(layout_object.get_field_names(index + [i]))
                 # If it's a string, then it's a basic case

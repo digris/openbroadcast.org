@@ -1,10 +1,7 @@
 from django import template
 from django.template.defaultfilters import stringfilter
 
-try:
-    from urlparse import urlparse
-except ImportError:
-    from urllib.parse import urlparse
+from urllib.parse import urlparse
 
 register = template.Library()
 

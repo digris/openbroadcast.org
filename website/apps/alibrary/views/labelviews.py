@@ -26,7 +26,7 @@ from ..models import Label
 from ..documents import LabelDocument
 
 try:
-    from StringIO import StringIO as BytesIO
+    from io import BytesIO
 except ImportError:
     from io import BytesIO
 
