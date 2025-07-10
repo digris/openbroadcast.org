@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 import re
 import os
@@ -36,7 +33,7 @@ CRAWLER_HEADERS = {"User-Agent": "Open Broadcast Coverart Crawler 0.0.1"}
 #######################################################################
 
 
-class ArtworkCrawler(object):
+class ArtworkCrawler:
     """
     artwork crawler
     """
@@ -63,7 +60,7 @@ class ArtworkCrawler(object):
             preserved
         )
 
-        log.debug("crawling artwork: {} - id:{}".format(obj, obj.pk))
+        log.debug(f"crawling artwork: {obj} - id:{obj.pk}")
 
     ###################################################################
     # direct field mappings
@@ -76,16 +73,16 @@ class ArtworkCrawler(object):
         for relation in self.relations:
 
             log.debug(
-                "crawling artwork on {} - {}".format(relation.service, relation.url)
+                f"crawling artwork on {relation.service} - {relation.url}"
             )
 
             _crawl_func = getattr(
-                self, "crawl_for_{service}_image".format(service=relation.service)
+                self, f"crawl_for_{relation.service}_image"
             )
 
             image_url = _crawl_func(relation.url)
             if image_url:
-                log.info("found image on {}: {}".format(relation.service, image_url))
+                log.info(f"found image on {relation.service}: {image_url}")
                 break
 
         return image_url
@@ -113,7 +110,7 @@ class ArtworkCrawler(object):
             image_name = data["claims"]["P18"][0]["mainsnak"]["datavalue"]["value"]
             image_name = image_name.replace(" ", "_")
         except KeyError as e:
-            log.debug("no image data found: {}".format(e))
+            log.debug(f"no image data found: {e}")
             return
 
         # https://stackoverflow.com/a/34402875/469111
@@ -147,7 +144,7 @@ class ArtworkCrawler(object):
             return self.crawl_for_discogs_image(url)
 
         if not r.status_code == 200:
-            log.warning("unable to load data: {} - {}".format(r.status_code, url))
+            log.warning(f"unable to load data: {r.status_code} - {url}")
             return
 
         data = r.json()
@@ -220,7 +217,7 @@ class ArtworkCrawler(object):
                 image_url = "https:" + image_url
             return image_url
         except (KeyError, IndexError, TypeError) as e:
-            log.debug("no image data found: {}".format(e))
+            log.debug(f"no image data found: {e}")
             return
 
     def download_and_save_image(self, image_url):
@@ -240,11 +237,11 @@ class ArtworkCrawler(object):
 
         # 2. create directory if absent
         if not os.path.isdir(_dir_abs):
-            log.debug("create directory: {}".format(_dir_abs))
+            log.debug(f"create directory: {_dir_abs}")
             os.makedirs(_dir_abs)
 
         # 3. download image
-        log.debug("save {} to {}".format(image_url, _path_abs))
+        log.debug(f"save {image_url} to {_path_abs}")
         _f = urllib.URLopener()
         _f.retrieve(image_url, _path_abs)
         _f.close()

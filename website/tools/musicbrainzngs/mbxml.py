@@ -28,7 +28,7 @@ except:
                 xmlns = ("xmlns:%s" % prefix, namespace_uri)
         else:
             xmlns = None
-        return "%s:%s" % (prefix, tag), xmlns
+        return "{}:{}".format(prefix, tag), xmlns
 
 
 NS_MAP = {

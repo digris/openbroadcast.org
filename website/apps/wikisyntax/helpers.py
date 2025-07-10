@@ -71,7 +71,7 @@ def wikify(match):  # Excepts a regexp match
         name = token.split("=", 1)[1].rstrip()
 
         if name.isdigit():
-            return "{} ".format(name)
+            return f"{name} "
 
         for wiki in wikis:
             if prefix == wiki.name:
@@ -133,7 +133,7 @@ def wikify(match):  # Excepts a regexp match
     raise WikiException("No item found for '%s'" % (token))
 
 
-class wikify_string(object):
+class wikify_string:
     def __call__(self, string, fail_silently=True):
         self.fail_silently = fail_silently
         self.cache = {}
@@ -142,7 +142,7 @@ class wikify_string(object):
         from wikisyntax import fix_unicode
 
         # WIKIBRACKETS = '\[\[([^\]]+?)\]\]'
-        WIKIBRACKETS = "\[([^\]]+?)\]"
+        WIKIBRACKETS = r"\[([^\]]+?)\]"
         if not string:
             return ""
 
@@ -159,7 +159,7 @@ class wikify_string(object):
         return content
 
     def __new__(cls, string, **kwargs):
-        obj = super(wikify_string, cls).__new__(cls)
+        obj = super().__new__(cls)
         return obj(string, **kwargs)
 
     def markup_to_links(self, match):

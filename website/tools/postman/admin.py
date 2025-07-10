@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 from django import forms
 from django.contrib import admin
 from django.db import transaction
@@ -18,7 +16,7 @@ class MessageAdminForm(forms.ModelForm):
 
     def clean(self):
         """Check data validity and coherence."""
-        cleaned_data = super(MessageAdminForm, self).clean()
+        cleaned_data = super().clean()
         sender = cleaned_data.get("sender")
         recipient = cleaned_data.get("recipient")
         email = cleaned_data.get("email")
@@ -146,7 +144,7 @@ class MessageAdmin(admin.ModelAdmin):
 
         """
         return (
-            super(MessageAdmin, self)
+            super()
             .queryset(request)
             .select_related("sender", "recipient")
         )
@@ -162,7 +160,7 @@ class MessageAdmin(admin.ModelAdmin):
         """
         obj.clean_moderation(form.initial_status, request.user)
         obj.clean_for_visitor()
-        super(MessageAdmin, self).save_model(request, obj, form, change)
+        super().save_model(request, obj, form, change)
         obj.update_parent(form.initial_status)
         obj.notify_users(form.initial_status, is_auto_moderated=False)
 
@@ -177,7 +175,7 @@ class PendingMessageAdminForm(forms.ModelForm):
 
     def clean(self):
         """Set status according to the button used to submit."""
-        cleaned_data = super(PendingMessageAdminForm, self).clean()
+        cleaned_data = super().clean()
         obj = self.instance
         self.initial_status = obj.moderation_status
         # look for for button names provided by custom admin/postman/pendingmessage/change_form.html

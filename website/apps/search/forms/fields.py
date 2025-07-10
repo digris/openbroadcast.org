@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import EMPTY_VALUES
@@ -33,7 +30,7 @@ class AutocompleteField(forms.Field):
             lookup_model=self.lookup_model, allow_new=self.allow_new
         )
 
-        super(AutocompleteField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def to_python(self, value):
         if value in EMPTY_VALUES:

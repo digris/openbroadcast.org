@@ -2,8 +2,8 @@ import logging
 import sys
 
 from django.conf import settings
-from django.forms.forms import BoundField
 from django.template import Context
+from django.forms.forms import BoundField
 from django.template.loader import get_template
 from django.utils.html import conditional_escape
 from django.utils.functional import SimpleLazyObject
@@ -54,12 +54,12 @@ def render_field(
     else:
         # This allows fields to be unicode strings, always they don't use non ASCII
         try:
-            if isinstance(field, unicode):
+            if isinstance(field, str):
                 field = str(field)
             # If `field` is not unicode then we turn it into a unicode string, otherwise doing
             # str(field) would give no error and the field would not be resolved, causing confusion
             else:
-                field = str(unicode(field))
+                field = str(field)
 
         except (UnicodeEncodeError, UnicodeDecodeError):
             raise Exception("Field '%s' is using forbidden unicode characters" % field)
@@ -132,6 +132,10 @@ def render_field(
                 "flat_attrs": flatatt(attrs if isinstance(attrs, dict) else {}),
             }
         )
+
+        if isinstance(context, Context):
+            context = dict(context.flatten())
+
         html = template.render(context)
 
     return html
@@ -145,9 +149,9 @@ def flatatt(attrs):
     XML-style pairs.  It is assumed that the keys do not need to be XML-escaped.
     If the passed dictionary is empty, then return an empty string.
     """
-    return u"".join(
+    return "".join(
         [
-            u' %s="%s"' % (k.replace("_", "-"), conditional_escape(v))
+            ' {}="{}"'.format(k.replace("_", "-"), conditional_escape(v))
             for k, v in attrs.items()
         ]
     )
@@ -166,7 +170,7 @@ def render_crispy_form(form, helper=None, context=None):
     else:
         node = CrispyFormNode("form", None)
 
-    node_context = Context({"form": form, "helper": helper})
+    node_context = {"form": form, "helper": helper}
 
     if context is not None:
         node_context.update(context)

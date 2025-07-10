@@ -41,7 +41,7 @@ class ActionListView(PaginationMixin, ListView):
         return self.filter.qs
 
     def get_context_data(self, **kwargs):
-        context = super(ActionListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context.update({"filter": self.filter})
         context["filter"] = self.filter
         return context

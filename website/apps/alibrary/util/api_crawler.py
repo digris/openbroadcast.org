@@ -1,3 +1,3 @@
-class MBCeawler(object):
+class MBCeawler:
 
     pass

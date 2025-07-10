@@ -1,7 +1,6 @@
 """
 Custom fields.
 """
-from __future__ import unicode_literals
 
 from django.conf import settings
 
@@ -44,7 +43,7 @@ class BasicCommaSeparatedUserField(CharField):
         if isinstance(label, tuple):
             self.pluralized_labels = label
             kwargs.update(label=label[max == 1])
-        super(BasicCommaSeparatedUserField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def set_max(self, max):
         """Supersede the max value and ajust accordingly the label."""
@@ -55,22 +54,20 @@ class BasicCommaSeparatedUserField(CharField):
 
     def to_python(self, value):
         """Normalize data to an unordered list of distinct, non empty, whitespace-stripped strings."""
-        value = super(BasicCommaSeparatedUserField, self).to_python(value)
+        value = super().to_python(value)
         if value in EMPTY_VALUES:  # Return an empty list if no useful input was given.
             return []
         return list(
-            set(
-                [
+            {
                     name.strip()
                     for name in value.split(",")
                     if name and not name.isspace()
-                ]
-            )
+            }
         )
 
     def validate(self, value):
         """Check the limits."""
-        super(BasicCommaSeparatedUserField, self).validate(value)
+        super().validate(value)
         if value in EMPTY_VALUES:
             return
         count = len(value)
@@ -89,16 +86,16 @@ class BasicCommaSeparatedUserField(CharField):
 
     def clean(self, value):
         """Check names are valid and filter them."""
-        names = super(BasicCommaSeparatedUserField, self).clean(value)
+        names = super().clean(value)
         if not names:
             return []
         user_model = get_user_model()
         users = list(
             user_model.objects.filter(
-                is_active=True, **{"{0}__in".format(user_model.USERNAME_FIELD): names}
+                is_active=True, **{f"{user_model.USERNAME_FIELD}__in": names}
             )
         )
-        unknown_names = set(names) ^ set([u.get_username() for u in users])
+        unknown_names = set(names) ^ {u.get_username() for u in users}
         errors = []
         if unknown_names:
             errors.append(
@@ -143,7 +140,7 @@ if app_name in settings.INSTALLED_APPS and arg_default:
     autocompleter_app["is_active"] = True
     autocompleter_app["name"] = app_name
     autocompleter_app["version"] = getattr(
-        __import__(app_name, globals(), locals(), [str("__version__")]),
+        __import__(app_name, globals(), locals(), ["__version__"]),
         "__version__",
         None,
     )
@@ -157,7 +154,7 @@ if app_name in settings.INSTALLED_APPS and arg_default:
         def __init__(self, *args, **kwargs):
             if not args and arg_name not in kwargs:
                 kwargs.update([(arg_name, arg_default)])
-            super(CommaSeparatedUserField, self).__init__(*args, **kwargs)
+            super().__init__(*args, **kwargs)
 
         def set_arg(self, value):
             """Same as it is done in ajax_select.fields.py for Fields and Widgets."""

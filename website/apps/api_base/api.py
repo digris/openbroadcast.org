@@ -90,7 +90,7 @@ class BaseResource(Resource):
                     "admin_user": "admin",
                     "admin_pass": "donthackme",
                     "mount": "airtime_128",
-                    "url": "http:\/\/airtime.sourcefabric.org",
+                    "url": r"http:\/\/airtime.sourcefabric.org",
                     "description": "Airtime Radio! Stream #1",
                     "genre": "genre",
                     "name": "Airtime!",

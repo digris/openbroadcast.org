@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
 from django.conf import settings
 from django.forms.formsets import BaseFormSet
-from django.template import Context
 from django.template.loader import get_template
 from django import template
 
@@ -14,7 +12,7 @@ from crispy_forms_filters import *
 TEMPLATE_PACK = getattr(settings, "CRISPY_TEMPLATE_PACK", "bootstrap")
 
 
-class ForLoopSimulator(object):
+class ForLoopSimulator:
     """
     Simulates a forloop tag, precisely::
 
@@ -139,7 +137,7 @@ class BasicNode(template.Node):
             response_dict.update({"form": actual_form})
 
         # print "get-render: done - > return"
-        return Context(response_dict)
+        return response_dict
 
     def get_response_dict(self, helper, context, is_formset):
         """
@@ -183,7 +181,7 @@ class BasicNode(template.Node):
             if attribute_name not in response_dict:
                 response_dict[attribute_name] = value
 
-        if context.has_key("csrf_token"):
+        if "csrf_token" in context:
             response_dict["csrf_token"] = context["csrf_token"]
 
         return response_dict

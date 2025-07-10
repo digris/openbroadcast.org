@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.template import RequestContext
@@ -109,7 +106,7 @@ def register(
     template_name="registration/registration_form.html",
     extra_context=None,
 ):
-    """
+    r"""
     Allow a new user to register via invitation.
 
     Send invitation email and then redirect to success URL if the
@@ -209,11 +206,11 @@ def reward(request):
     rewarded_users, invitations_given = InvitationStats.objects.reward()
     if rewarded_users:
         message = ugettext(
-            u"%(users)s users are given a total of " u"%(invitations)s invitations."
+            "%(users)s users are given a total of " "%(invitations)s invitations."
         ) % {"users": rewarded_users, "invitations": invitations_given}
     else:
         message = ugettext(
-            u"No user has performance above " u"threshold, no invitations awarded."
+            "No user has performance above " "threshold, no invitations awarded."
         )
     request.user.message_set.create(message=message)
     return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))

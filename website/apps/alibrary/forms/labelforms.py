@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from ac_tagging.widgets import TagAutocompleteTagIt
 from alibrary.models import Relation, Label, Artist, LabelFoundingArtist
 from alibrary.util.storage import get_file_from_url
@@ -49,7 +46,7 @@ ACTION_LAYOUT_EXTENDED = action_layout = FormActions(
 class LabelActionForm(Form):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("instance", False)
-        super(LabelActionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
@@ -96,7 +93,7 @@ class LabelForm(ModelForm):
 
         self.label = kwargs.pop("label", None)
 
-        super(LabelForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         """
         Prototype function, set some fields to readonly depending on permissions
@@ -167,7 +164,7 @@ class LabelForm(ModelForm):
     )
 
     def clean(self, *args, **kwargs):
-        cd = super(LabelForm, self).clean()
+        cd = super().clean()
 
         try:
             parent = cd["parent"]
@@ -193,13 +190,13 @@ class LabelForm(ModelForm):
         return cd
 
     def save(self, *args, **kwargs):
-        return super(LabelForm, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
 
 class BaseFoundingArtistFormSet(BaseInlineFormSet):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs["instance"]
-        super(BaseFoundingArtistFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -234,7 +231,7 @@ class BaseFoundingArtistForm(ModelForm):
         return artist
 
     def save(self, *args, **kwargs):
-        instance = super(BaseFoundingArtistForm, self).save(*args, **kwargs)
+        instance = super().save(*args, **kwargs)
         return instance
 
 
@@ -253,7 +250,7 @@ FoundingArtistFormSet = inlineformset_factory(
 class BaseLabelReleationFormSet(BaseGenericInlineFormSet):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs["instance"]
-        super(BaseLabelReleationFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_id = "id_releasemediainline_form_%s" % "asdfds"
@@ -282,7 +279,7 @@ class BaseLabelReleationForm(StripWhitespaceFormMixin, ModelForm):
         fields = ("url", "service")
 
     def __init__(self, *args, **kwargs):
-        super(BaseLabelReleationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         instance = getattr(self, "instance", None)
         self.fields["service"].widget.instance = instance
         if instance and instance.id:

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import datetime
 import logging
 
@@ -47,7 +44,7 @@ def map_emission(emission, time_start):
                 item.cue_in + item.cue_out + item.fade_cross
             )
         except Exception as e:
-            log.warning("unable to get duration {}".format(e))
+            log.warning(f"unable to get duration {e}")
             continue
 
         # get absolute times
@@ -71,7 +68,7 @@ def map_emission(emission, time_start):
 
 def get_playout_schedule(time_start, time_end):
 
-    log.info("get schedule for {} {}".format(time_start, time_end))
+    log.info(f"get schedule for {time_start} {time_end}")
 
     qs = Emission.objects.filter(time_end__gte=time_start, time_start__lte=time_end)
 

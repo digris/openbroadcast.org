@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 
 from django.core.urlresolvers import reverse
@@ -183,7 +180,7 @@ def get_object_actions_for_user(obj, user=None):
     # log.debug("getting object permissions for {}".format(ct))
 
     if not ct in ACTION_LOOKUP_FUNCTIONS:
-        raise Exception("no lookup function for {}".format(ct))
+        raise Exception(f"no lookup function for {ct}")
 
     return ACTION_LOOKUP_FUNCTIONS[ct](obj, user)
 

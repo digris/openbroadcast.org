@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2005  Michael Urman
 #               2013  Christoph Reiter
 #               2014  Ben Ockmore
@@ -16,7 +15,7 @@ def is_valid_frame_id(frame_id):
     return frame_id.isalnum() and frame_id.isupper()
 
 
-class ID3SaveConfig(object):
+class ID3SaveConfig:
     def __init__(self, v2_version=4, v23_separator=None):
         assert v2_version in (3, 4)
         self.v2_version = v2_version
@@ -43,7 +42,7 @@ class ID3JunkFrameError(error):
     pass
 
 
-class unsynch(object):
+class unsynch:
     @staticmethod
     def decode(value):
         fragments = bytearray(value).split(b"\xff")
@@ -68,7 +67,7 @@ class unsynch(object):
         return bytes(bytearray(b"\xff").join(fragments))
 
 
-class _BitPaddedMixin(object):
+class _BitPaddedMixin:
     def as_str(self, width=4, minwidth=4):
         return self.to_str(self, self.bits, self.bigendian, width, minwidth)
 

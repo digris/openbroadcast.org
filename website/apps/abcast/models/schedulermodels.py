@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 import datetime
 from django.db import models
@@ -141,7 +138,7 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
         return "%s" % self.name
 
     def get_ct(self):
-        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
+        return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
     @models.permalink
     def get_absolute_url(self):
@@ -225,7 +222,7 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
                 milliseconds=self.duration
             )
 
-        super(Emission, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 def post_save_emission(sender, **kwargs):
@@ -394,7 +391,7 @@ class Daypart(models.Model):
         ordering = ("position", "time_start")
 
     def __str__(self):
-        return "%s - %s" % (self.time_start, self.time_end)
+        return "{} - {}".format(self.time_start, self.time_end)
 
     @property
     def duration(self):

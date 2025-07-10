@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 
 from ac_tagging.widgets import TagAutocompleteTagIt
@@ -40,7 +37,7 @@ ACTION_LAYOUT = action_layout = FormActions(
 class MediaActionForm(Form):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("instance", False)
-        super(MediaActionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
@@ -88,7 +85,7 @@ class MediaForm(ModelForm):
 
         self.label = kwargs.pop("label", None)
 
-        super(MediaForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         """
         Prototype function, set some fields to readonly depending on permissions
@@ -180,7 +177,7 @@ class MediaForm(ModelForm):
 
     def clean(self, *args, **kwargs):
 
-        cd = super(MediaForm, self).clean()
+        cd = super().clean()
 
         # hack. allow_new in AutoCompleteSelectField does _not_ automatically create new objects???
         try:
@@ -204,7 +201,7 @@ class MediaForm(ModelForm):
 
     # TODO: take a look at save
     def save(self, *args, **kwargs):
-        return super(MediaForm, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
 
 """
@@ -217,7 +214,7 @@ class BaseExtraartistFormSet(BaseInlineFormSet):
 
         self.instance = kwargs["instance"]
 
-        super(BaseExtraartistFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_id = "id_artists_form_%s" % "inline"
@@ -237,7 +234,7 @@ class BaseExtraartistFormSet(BaseInlineFormSet):
 
     def add_fields(self, form, index):
         # allow the super class to create the fields as usual
-        super(BaseExtraartistFormSet, self).add_fields(form, index)
+        super().add_fields(form, index)
 
         # created the nested formset
         try:
@@ -257,7 +254,7 @@ class BaseExtraartistForm(ModelForm):
         labels = {"profession": _("Credited as")}
 
     def __init__(self, *args, **kwargs):
-        super(BaseExtraartistForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         instance = getattr(self, "instance", None)
 
         self.fields["profession"].label = _("Credited as")
@@ -288,7 +285,7 @@ class BaseMediaartistFormSet(BaseInlineFormSet):
 
         self.instance = kwargs["instance"]
 
-        super(BaseMediaartistFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_id = "id_artists_form_%s" % "inline"
@@ -308,7 +305,7 @@ class BaseMediaartistFormSet(BaseInlineFormSet):
 
     def add_fields(self, form, index):
         # allow the super class to create the fields as usual
-        super(BaseMediaartistFormSet, self).add_fields(form, index)
+        super().add_fields(form, index)
 
         # created the nested formset
         try:
@@ -326,7 +323,7 @@ class BaseMediaartistForm(ModelForm):
         fields = ("artist", "join_phrase", "position")
 
     def __init__(self, *args, **kwargs):
-        super(BaseMediaartistForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         instance = getattr(self, "instance", None)
 
     def clean_artist(self):
@@ -344,7 +341,7 @@ class BaseMediaartistForm(ModelForm):
 class BaseMediaReleationFormSet(BaseGenericInlineFormSet):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs["instance"]
-        super(BaseMediaReleationFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_id = "id_releasemediainline_form_%s" % "asdfds"
@@ -373,7 +370,7 @@ class BaseMediaReleationForm(StripWhitespaceFormMixin, ModelForm):
         fields = ("url", "service")
 
     def __init__(self, *args, **kwargs):
-        super(BaseMediaReleationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         instance = getattr(self, "instance", None)
         self.fields["service"].widget.instance = instance
         if instance and instance.id:

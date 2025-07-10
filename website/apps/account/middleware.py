@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import six
 from django.contrib import messages
 
@@ -19,13 +16,13 @@ class SocialAuthExceptionMiddleware(BaseSocialAuthExceptionMiddleware):
         redirect_to = request.GET.get("next")
         if redirect_to:
             return redirect_to
-        return super(SocialAuthExceptionMiddleware, self).get_redirect_uri(
+        return super().get_redirect_uri(
             request, exception
         )
 
     def get_message(self, request, exception):
-        message = six.text_type(exception)
+        message = str(exception)
         if message == "":
-            message = "{}".format(exception.__class__)
+            message = f"{exception.__class__}"
 
         return message

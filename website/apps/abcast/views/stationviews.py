@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 from abcast.models import Station
 from django.core.urlresolvers import reverse
 from django.views.generic import DetailView, ListView
@@ -39,7 +36,7 @@ class StationDetailView(DetailView):
         else:
             self.section = kwargs.get("section")
 
-        return super(StationDetailView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_section_menu(self, object, section):
         menu = []
@@ -65,7 +62,7 @@ class StationDetailView(DetailView):
         return template
 
     def get_context_data(self, **kwargs):
-        context = super(StationDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         section_menu = self.get_section_menu(object=self.object, section=self.section)
 

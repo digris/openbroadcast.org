@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 # from elasticsearch_dsl import DocType, Date, Search
 # from elasticsearch_dsl.query import MultiMatch, Match, Fuzzy, Term, Q
 
@@ -63,7 +60,7 @@ def parse_query_string(q):
     query = {"scope": None, "q": q.strip()}
 
     for ct in CT_MAP:
-        if q.startswith("{}:".format(ct[0])):
+        if q.startswith(f"{ct[0]}:"):
             query.update({"scope": ct[1], "q": q[2:].strip()})
             return query
 

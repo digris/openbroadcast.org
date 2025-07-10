@@ -12,7 +12,6 @@ Examples of customization:
     exchange_filter = staticmethod(my_exchange_filter)
 
 """
-from __future__ import unicode_literals
 
 from django import forms
 from django.conf import settings
@@ -45,7 +44,7 @@ class BaseWriteForm(forms.ModelForm):
         user_filter = kwargs.pop("user_filter", None)
         max = kwargs.pop("max", None)
         channel = kwargs.pop("channel", None)
-        super(BaseWriteForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.fields["body"].label = _("Message")
 
@@ -160,7 +159,7 @@ class BaseWriteForm(forms.ModelForm):
             self.instance.auto_moderate(auto_moderators)
             self.instance.clean_moderation(initial_status)
             self.instance.clean_for_visitor()
-            m = super(BaseWriteForm, self).save()
+            m = super().save()
             if self.instance.is_rejected():
                 is_successful = False
             self.instance.update_parent(initial_status)
@@ -204,17 +203,17 @@ class BaseReplyForm(BaseWriteForm):
 
     def __init__(self, *args, **kwargs):
         recipient = kwargs.pop("recipient", None)
-        super(BaseReplyForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.recipient = recipient
 
     def clean(self):
         """Check that the recipient is correctly initialized."""
         if not self.recipient:
             raise forms.ValidationError(ugettext("Undefined recipient."))
-        return super(BaseReplyForm, self).clean()
+        return super().clean()
 
     def save(self, *args, **kwargs):
-        return super(BaseReplyForm, self).save(self.recipient, *args, **kwargs)
+        return super().save(self.recipient, *args, **kwargs)
 
 
 class QuickReplyForm(BaseReplyForm):

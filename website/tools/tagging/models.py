@@ -90,7 +90,7 @@ class TagManager(models.Manager):
             counts = True
 
         model_table = qn(model._meta.db_table)
-        model_pk = "%s.%s" % (model_table, qn(model._meta.pk.column))
+        model_pk = "{}.{}".format(model_table, qn(model._meta.pk.column))
         query = """
         SELECT DISTINCT %(tag)s.id, %(tag)s.name%(count_sql)s
         FROM
@@ -202,34 +202,34 @@ class TagManager(models.Manager):
         tag_count = len(tags)
         tagged_item_table = qn(TaggedItem._meta.db_table)
         query = """
-        SELECT %(tag)s.id, %(tag)s.name%(count_sql)s
-        FROM %(tagged_item)s INNER JOIN %(tag)s ON
-             %(tagged_item)s.tag_id = %(tag)s.id
-        WHERE %(tagged_item)s.content_type_id = %(content_type_id)s
-          AND %(tagged_item)s.object_id IN
+        SELECT {tag}.id, {tag}.name{count_sql}
+        FROM {tagged_item} INNER JOIN {tag} ON
+             {tagged_item}.tag_id = {tag}.id
+        WHERE {tagged_item}.content_type_id = {content_type_id}
+          AND {tagged_item}.object_id IN
           (
-              SELECT %(tagged_item)s.object_id
-              FROM %(tagged_item)s, %(tag)s
-              WHERE %(tagged_item)s.content_type_id = %(content_type_id)s
-                AND %(tag)s.id = %(tagged_item)s.tag_id
-                AND %(tag)s.id IN (%(tag_id_placeholders)s)
-              GROUP BY %(tagged_item)s.object_id
-              HAVING COUNT(%(tagged_item)s.object_id) = %(tag_count)s
+              SELECT {tagged_item}.object_id
+              FROM {tagged_item}, {tag}
+              WHERE {tagged_item}.content_type_id = {content_type_id}
+                AND {tag}.id = {tagged_item}.tag_id
+                AND {tag}.id IN ({tag_id_placeholders})
+              GROUP BY {tagged_item}.object_id
+              HAVING COUNT({tagged_item}.object_id) = {tag_count}
           )
-          AND %(tag)s.id NOT IN (%(tag_id_placeholders)s)
-        GROUP BY %(tag)s.id, %(tag)s.name
-        %(min_count_sql)s
-        ORDER BY %(tag)s.name ASC""" % {
-            "tag": qn(self.model._meta.db_table),
-            "count_sql": counts and ", COUNT(%s.object_id)" % tagged_item_table or "",
-            "tagged_item": tagged_item_table,
-            "content_type_id": ContentType.objects.get_for_model(model).pk,
-            "tag_id_placeholders": ",".join(["%s"] * tag_count),
-            "tag_count": tag_count,
-            "min_count_sql": min_count is not None
+          AND {tag}.id NOT IN ({tag_id_placeholders})
+        GROUP BY {tag}.id, {tag}.name
+        {min_count_sql}
+        ORDER BY {tag}.name ASC""".format(
+            tag=qn(self.model._meta.db_table),
+            count_sql=counts and ", COUNT(%s.object_id)" % tagged_item_table or "",
+            tagged_item=tagged_item_table,
+            content_type_id=ContentType.objects.get_for_model(model).pk,
+            tag_id_placeholders=",".join(["%s"] * tag_count),
+            tag_count=tag_count,
+            min_count_sql=min_count is not None
             and ("HAVING COUNT(%s.object_id) >= %%s" % tagged_item_table)
             or "",
-        }
+        )
 
         params = [tag.pk for tag in tags] * 2
         if min_count is not None:
@@ -347,20 +347,20 @@ class TaggedItemManager(models.Manager):
         # This query selects the ids of all objects which have all the
         # given tags.
         query = """
-        SELECT %(model_pk)s
-        FROM %(model)s, %(tagged_item)s
-        WHERE %(tagged_item)s.content_type_id = %(content_type_id)s
-          AND %(tagged_item)s.tag_id IN (%(tag_id_placeholders)s)
-          AND %(model_pk)s = %(tagged_item)s.object_id
-        GROUP BY %(model_pk)s
-        HAVING COUNT(%(model_pk)s) = %(tag_count)s""" % {
-            "model_pk": "%s.%s" % (model_table, qn(model._meta.pk.column)),
-            "model": model_table,
-            "tagged_item": qn(self.model._meta.db_table),
-            "content_type_id": ContentType.objects.get_for_model(model).pk,
-            "tag_id_placeholders": ",".join(["%s"] * tag_count),
-            "tag_count": tag_count,
-        }
+        SELECT {model_pk}
+        FROM {model}, {tagged_item}
+        WHERE {tagged_item}.content_type_id = {content_type_id}
+          AND {tagged_item}.tag_id IN ({tag_id_placeholders})
+          AND {model_pk} = {tagged_item}.object_id
+        GROUP BY {model_pk}
+        HAVING COUNT({model_pk}) = {tag_count}""".format(
+            model_pk="{}.{}".format(model_table, qn(model._meta.pk.column)),
+            model=model_table,
+            tagged_item=qn(self.model._meta.db_table),
+            content_type_id=ContentType.objects.get_for_model(model).pk,
+            tag_id_placeholders=",".join(["%s"] * tag_count),
+            tag_count=tag_count,
+        )
 
         cursor = connection.cursor()
         cursor.execute(query, [tag.pk for tag in tags])
@@ -386,18 +386,18 @@ class TaggedItemManager(models.Manager):
         # This query selects the ids of all objects which have any of
         # the given tags.
         query = """
-        SELECT %(model_pk)s
-        FROM %(model)s, %(tagged_item)s
-        WHERE %(tagged_item)s.content_type_id = %(content_type_id)s
-          AND %(tagged_item)s.tag_id IN (%(tag_id_placeholders)s)
-          AND %(model_pk)s = %(tagged_item)s.object_id
-        GROUP BY %(model_pk)s""" % {
-            "model_pk": "%s.%s" % (model_table, qn(model._meta.pk.column)),
-            "model": model_table,
-            "tagged_item": qn(self.model._meta.db_table),
-            "content_type_id": ContentType.objects.get_for_model(model).pk,
-            "tag_id_placeholders": ",".join(["%s"] * tag_count),
-        }
+        SELECT {model_pk}
+        FROM {model}, {tagged_item}
+        WHERE {tagged_item}.content_type_id = {content_type_id}
+          AND {tagged_item}.tag_id IN ({tag_id_placeholders})
+          AND {model_pk} = {tagged_item}.object_id
+        GROUP BY {model_pk}""".format(
+            model_pk="{}.{}".format(model_table, qn(model._meta.pk.column)),
+            model=model_table,
+            tagged_item=qn(self.model._meta.db_table),
+            content_type_id=ContentType.objects.get_for_model(model).pk,
+            tag_id_placeholders=",".join(["%s"] * tag_count),
+        )
 
         cursor = connection.cursor()
         cursor.execute(query, [tag.pk for tag in tags])
@@ -440,7 +440,7 @@ class TaggedItemManager(models.Manager):
         ORDER BY %(count)s DESC
         %(limit_offset)s"""
         query = query % {
-            "model_pk": "%s.%s" % (model_table, qn(model._meta.pk.column)),
+            "model_pk": "{}.{}".format(model_table, qn(model._meta.pk.column)),
             "count": qn("count"),
             "model": model_table,
             "tagged_item": qn(self.model._meta.db_table),
@@ -545,4 +545,4 @@ class TaggedItem(TimestampedModelMixin, models.Model):
         verbose_name_plural = _("tagged items")
 
     def __str__(self):
-        return "%s [%s]" % (smart_text(self.object), smart_text(self.tag))
+        return "{} [{}]".format(smart_text(self.object), smart_text(self.tag))

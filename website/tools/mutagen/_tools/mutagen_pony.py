@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2005 Joe Wreschnig, Michael Urman
 #
 # This program is free software; you can redistribute it and/or modify
@@ -15,7 +14,7 @@ from mutagen._senf import print_, argv
 from ._util import SignalHandler
 
 
-class Report(object):
+class Report:
     def __init__(self, pathname):
         self.name = pathname
         self.files = 0
@@ -86,7 +85,7 @@ def check_dir(path):
     from mutagen.mp3 import MP3
 
     rep = Report(path)
-    print_(u"Scanning", path)
+    print_("Scanning", path)
     for path, dirs, files in os.walk(path):
         files.sort()
         for fn in files:
@@ -108,7 +107,7 @@ def check_dir(path):
 
 def main(argv):
     if len(argv) == 1:
-        print_(u"Usage:", argv[0], u"directory ...")
+        print_("Usage:", argv[0], "directory ...")
     else:
         for path in argv[1:]:
             check_dir(path)

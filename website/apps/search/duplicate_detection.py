@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import requests
 from elasticsearch import Elasticsearch
 from django.conf import settings
@@ -19,7 +16,7 @@ def get_ids_for_possible_duplicates(index=None, fields=[]):
 
     _script = ""
     for field in fields:
-        _script += "doc['{}.raw'].value + ".format(field)
+        _script += f"doc['{field}.raw'].value + "
 
     response = client.search(
         index=index,

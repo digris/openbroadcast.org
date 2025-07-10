@@ -1,6 +1,3 @@
-from __future__ import unicode_literals
-
-
 import logging
 import json
 from braces.views import AnonymousRequiredMixin, LoginRequiredMixin
@@ -50,11 +47,11 @@ class SetPickupCookieMixin(View):
         else:
             self.pickup_cookie_dict = None
 
-        return super(SetPickupCookieMixin, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def render_to_response(self, context, **response_kwargs):
 
-        response = super(SetPickupCookieMixin, self).render_to_response(
+        response = super().render_to_response(
             context, **response_kwargs
         )
 
@@ -102,7 +99,7 @@ class LoginView(AnonymousRequiredMixin, SetPickupCookieMixin, FormView):
         # Sets a test cookie to make sure the user has cookies enabled
         request.session.set_test_cookie()
 
-        return super(LoginView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         auth_login(self.request, form.get_user())
@@ -112,7 +109,7 @@ class LoginView(AnonymousRequiredMixin, SetPickupCookieMixin, FormView):
         if self.request.session.test_cookie_worked():
             self.request.session.delete_test_cookie()
 
-        return super(LoginView, self).form_valid(form)
+        return super().form_valid(form)
 
 
 class RegistrationView(AnonymousRequiredMixin, FormView):
@@ -132,7 +129,7 @@ class RegistrationView(AnonymousRequiredMixin, FormView):
         # Sets a test cookie to make sure the user has cookies enabled
         request.session.set_test_cookie()
 
-        return super(RegistrationView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
 
@@ -150,7 +147,7 @@ class RegistrationView(AnonymousRequiredMixin, FormView):
         if self.request.session.test_cookie_worked():
             self.request.session.delete_test_cookie()
 
-        return super(RegistrationView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_success_url(self):
         redirect_to = self.request.REQUEST.get(self.redirect_field_name)
@@ -176,7 +173,7 @@ class PasswordRecoverView(AnonymousRequiredMixin, FormView):
             subject_template_name="account/password_recover_email_subject.txt",
             email_template_name="account/password_recover_email.txt",
         )
-        return super(PasswordRecoverView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse("account:password-recover-sent")
@@ -209,7 +206,7 @@ class PasswordRecoverResetView(AnonymousRequiredMixin, FormView):
             return self.invalid_token()
 
         self.user = user
-        return super(PasswordRecoverResetView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def invalid_token(self):
         return self.render_to_response(self.get_context_data(invalid_token=True))
@@ -228,12 +225,12 @@ class PasswordRecoverResetView(AnonymousRequiredMixin, FormView):
     #     pass
 
     def get_form_kwargs(self):
-        kwargs = super(PasswordRecoverResetView, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs["user"] = self.user
         return kwargs
 
     def get_context_data(self, **kwargs):
-        ctx = super(PasswordRecoverResetView, self).get_context_data(**kwargs)
+        ctx = super().get_context_data(**kwargs)
 
         if "invalid_token" not in ctx:
 
@@ -273,7 +270,7 @@ class LoginPickupView(LoginRequiredMixin, View):
                 url = cookie.get("location", "/")
 
             except Exception as e:
-                log.warning("unable to decode login-pickup cookie: {}".format(e))
+                log.warning(f"unable to decode login-pickup cookie: {e}")
 
         if request.user and request.user.is_staff:
             url += "?toolbar_off"

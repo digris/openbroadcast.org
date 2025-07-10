@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2005  Michael Urman
 #               2006  Lukas Lalinsky
 #               2013  Christoph Reiter
@@ -266,7 +265,7 @@ WCP, WFED, WOAF, WOAR, WOAS, WORS, WPAY, WPB, WPUB, WXX, WXXX
 
 
 # Workaround for http://tickets.musicbrainz.org/browse/PICARD-833
-class _DummySpecForPicard(object):
+class _DummySpecForPicard:
     write = None
 
 

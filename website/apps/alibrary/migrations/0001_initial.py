@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import migrations, models
 import alibrary.models.mediamodels
 import alibrary.models.playlistmodels
@@ -2937,6 +2934,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name="licensetranslation",
-            unique_together=set([("language_code", "master")]),
+            unique_together={("language_code", "master")},
         ),
     ]

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import tagging
 import logging
 
@@ -117,7 +114,7 @@ class Distributor(
         self.tags = t_tags
         self.d_tags = t_tags
 
-        super(Distributor, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 try:
@@ -196,14 +193,14 @@ class License(
 
     def __str__(self):
         if self.parent:
-            return "%s - %s" % (self.parent.name, self.name)
+            return "{} - {}".format(self.parent.name, self.name)
         else:
             return "%s" % (self.name)
 
     @property
     def title(self):
         if self.parent:
-            return "{} - {}".format(self.parent.name, self.name)
+            return f"{self.parent.name} - {self.name}"
         return self.name
 
     def get_absolute_url(self):
@@ -281,7 +278,7 @@ class Daypart(models.Model):
         ordering = ("day", "time_start")
 
     def __str__(self):
-        return "%s | %s - %s" % (self.get_day_display(), self.time_start, self.time_end)
+        return "{} | {} - {}".format(self.get_day_display(), self.time_start, self.time_end)
 
     def playlist_count(self):
         return self.daypart_plalists.count()
@@ -421,7 +418,7 @@ class Relation(
                 object_id=self.object_id,
             ).delete()
 
-        super(Relation, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     @property
     def service_icon(self):

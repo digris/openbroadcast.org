@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 import codecs
 import csv
@@ -43,7 +40,7 @@ def parse_record(event, next_event=None):
         duration = media.duration
 
     record = {
-        "title": "{}".format(media.name),
+        "title": f"{media.name}",
         "broadcaster": event.event_content_object,
         "broadcast_date": event.created.date(),
         "time_of_broadcast": event.created.time(),
@@ -90,7 +87,7 @@ def statistics_as_csv(channel, start, end, output=None):
 
     # output = output or '{}_{}_{:02d}.csv'.format(channel.name, year, month)
 
-    log.debug("output to: {}".format(output))
+    log.debug(f"output to: {output}")
 
     with codecs.open(output, mode="wb", encoding="utf-8") as csv_file:
 

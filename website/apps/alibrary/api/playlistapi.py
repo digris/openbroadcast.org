@@ -105,7 +105,7 @@ class PlaylistResource(ModelResource):
             return object_list.filter(user=request.user)
 
     def obj_create(self, bundle, request=None, **kwargs):
-        bundle = super(PlaylistResource, self).obj_create(
+        bundle = super().obj_create(
             bundle, request, user=request.user
         )
 
@@ -115,7 +115,7 @@ class PlaylistResource(ModelResource):
         return bundle
 
     def obj_delete(self, request=None, **kwargs):
-        ret = super(PlaylistResource, self).obj_delete(request, **kwargs)
+        ret = super().obj_delete(request, **kwargs)
 
         try:
             p = Playlist.objects.filter(user=request.user)[0]
@@ -336,7 +336,7 @@ class PlaylistResource(ModelResource):
             p.download_mixdown()
             bundle = {"status": True}
         except Exception as e:
-            bundle = {"status": False, "error": "{}".format(e)}
+            bundle = {"status": False, "error": f"{e}"}
 
         self.log_throttled_access(request)
         return self.create_response(request, bundle)

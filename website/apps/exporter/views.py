@@ -19,7 +19,7 @@ from exporter.models import Export
 log = logging.getLogger(__name__)
 
 
-class JSONResponseMixin(object):
+class JSONResponseMixin:
     def render_to_response(self, context):
         "Returns a JSON response containing 'context' as payload"
         return self.get_json_response(self.convert_context_to_json(context))
@@ -93,7 +93,7 @@ def export_download(request, uuid, token):
     if not download_permission:
         return HttpResponseForbidden("forbidden")
 
-    filename = "%s.%s" % (export.filename, "zip")
+    filename = "{}.{}".format(export.filename, "zip")
 
     export.set_downloaded()
 

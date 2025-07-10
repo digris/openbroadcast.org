@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django import template
 from django.template.defaultfilters import stringfilter
 
@@ -28,5 +25,5 @@ dehttp.is_safe = True
 @stringfilter
 def domain_for_url(value):
     parsed_uri = urlparse(value)
-    domain = "{uri.netloc}".format(uri=parsed_uri)
+    domain = f"{parsed_uri.netloc}"
     return domain

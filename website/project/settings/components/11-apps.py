@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import os
 from django.conf import settings
 
@@ -60,6 +59,8 @@ INSTALLED_APPS = [
     # navigation / menu
     "navutils",
     "navigation",
+    # simple-menu (to replace cms)
+    "menu",
     # cms
     "cms",
     "menus",

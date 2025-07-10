@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 
 from django.conf import settings
@@ -10,7 +9,7 @@ DEVSERVER_HEADER = "HTTP_" + getattr(
 log = logging.getLogger(__name__)
 
 
-class WebpackDevserverMiddleware(object):
+class WebpackDevserverMiddleware:
     def process_request(self, request):
 
         if request.META.get(DEVSERVER_HEADER, False):

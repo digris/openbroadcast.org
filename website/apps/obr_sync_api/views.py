@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from django.shortcuts import get_object_or_404
 from django_filters import rest_framework as filters
 from django.http import FileResponse
@@ -60,7 +59,7 @@ class MediaMasterDwonloadView(APIView):
             uuid=media.uuid, encoding=media.master_encoding
         )
         response = FileResponse(open(media.master.path, "rb"))
-        response["Content-Disposition"] = 'attachment; filename="{}"'.format(filename)
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
 
         return response
 

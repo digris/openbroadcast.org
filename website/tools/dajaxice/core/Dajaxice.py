@@ -5,7 +5,7 @@ from importlib import import_module
 log = logging.getLogger("dajaxice")
 
 
-class DajaxiceFunction(object):
+class DajaxiceFunction:
     """ Basic representation of a dajaxice ajax function."""
 
     def __init__(self, function, name, method):
@@ -18,7 +18,7 @@ class DajaxiceFunction(object):
         return self.function(*args, **kwargs)
 
 
-class DajaxiceModule(object):
+class DajaxiceModule:
     """ Basic representation of a dajaxice module. """
 
     def __init__(self, name=None):
@@ -42,7 +42,7 @@ class DajaxiceModule(object):
             self.functions[name] = function
 
 
-class Dajaxice(object):
+class Dajaxice:
     def __init__(self):
         self._registry = {}
         self._modules = None

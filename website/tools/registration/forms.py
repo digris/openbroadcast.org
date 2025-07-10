@@ -86,7 +86,7 @@ class RegistrationFormTermsOfService(RegistrationForm):
     """
 
     captcha = CaptchaField(
-        label=_(u"Code"),
+        label=_("Code"),
         id_prefix="alsjkdha",
         # help_text=_('Enter the 6 digit code in the field above'),
         error_messages={"required": _("Code empty or invalid")},
@@ -94,7 +94,7 @@ class RegistrationFormTermsOfService(RegistrationForm):
 
     tos = forms.BooleanField(
         widget=forms.CheckboxInput,
-        label=_(u"I have read and agree to the Terms of Service"),
+        label=_("I have read and agree to the Terms of Service"),
         error_messages={"required": _("You must agree to the terms to register")},
     )
 

@@ -30,17 +30,17 @@ def roundint(value):
 
 @register.filter
 def squaretuple(value):
-    return "%sx%s" % (value, value)
+    return "{}x{}".format(value, value)
 
 
 @register.filter
 def halftuple(value):
-    return "%sx%s" % (value, int(value) / 2)
+    return "{}x{}".format(value, int(value) / 2)
 
 
 @register.filter
 def widetuple(value):
-    return "%sx%s" % (value, int(value) / 16 * 9)
+    return "{}x{}".format(value, int(value) / 16 * 9)
 
 
 @register.filter

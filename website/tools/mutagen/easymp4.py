@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2009  Joe Wreschnig
 #
 # This program is free software; you can redistribute it and/or modify
@@ -124,7 +123,7 @@ class EasyMP4Tags(DictMixin, Tags):
             ret = []
             for (track, total) in tags[atomid]:
                 if total:
-                    ret.append(u"%d/%d" % (track, total))
+                    ret.append("%d/%d" % (track, total))
                 else:
                     ret.append(text_type(track))
             return ret
@@ -226,7 +225,7 @@ class EasyMP4Tags(DictMixin, Tags):
         for key in sorted(self.keys()):
             values = self[key]
             for value in values:
-                strings.append("%s=%s" % (key, value))
+                strings.append("{}={}".format(key, value))
         return "\n".join(strings)
 
 

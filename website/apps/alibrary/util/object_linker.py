@@ -2,7 +2,7 @@ from django.db.models import Q
 from alibrary.models import Release, Artist, Label
 
 
-class WikiRelease(object):
+class WikiRelease:
 
     """
     'listen' for an [[r:***]] to explicitly render
@@ -21,12 +21,12 @@ class WikiRelease(object):
 
     def render(self, token, trail=None, **kwargs):
         if self.obj:
-            return "<a href='%s'>%s</a>" % (self.obj.get_absolute_url(), self.obj.name)
+            return "<a href='{}'>{}</a>".format(self.obj.get_absolute_url(), self.obj.name)
         else:
             return "linker error"
 
 
-class WikiArtist(object):
+class WikiArtist:
 
     """
     'listen' for an [[r:***]] to explicitly render
@@ -48,12 +48,12 @@ class WikiArtist(object):
 
     def render(self, token, trail=None, **kwargs):
         if self.obj:
-            return "<a href='%s'>%s</a>" % (self.obj.get_absolute_url(), self.obj.name)
+            return "<a href='{}'>{}</a>".format(self.obj.get_absolute_url(), self.obj.name)
         else:
             return "linker error"
 
 
-class WikiLabel(object):
+class WikiLabel:
 
     """
     'listen' for an [[a:***]] to explicitly render
@@ -75,6 +75,6 @@ class WikiLabel(object):
 
     def render(self, token, trail=None, **kwargs):
         if self.obj:
-            return "<a href='%s'>%s</a>" % (self.obj.get_absolute_url(), self.obj.name)
+            return "<a href='{}'>{}</a>".format(self.obj.get_absolute_url(), self.obj.name)
         else:
             return "linker error"

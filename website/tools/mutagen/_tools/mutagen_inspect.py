@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2005 Joe Wreschnig
 #
 # This program is free software; you can redistribute it and/or modify
@@ -30,14 +29,14 @@ def main(argv):
         raise SystemExit(parser.print_help() or 1)
 
     for filename in args:
-        print_(u"--", filename)
+        print_("--", filename)
         try:
-            print_(u"-", File(filename).pprint())
+            print_("-", File(filename).pprint())
         except AttributeError:
-            print_(u"- Unknown file type")
+            print_("- Unknown file type")
         except Exception as err:
             print_(text_type(err))
-        print_(u"")
+        print_("")
 
 
 def entry_point():

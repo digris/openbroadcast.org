@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import re
 import os
 import tagging
@@ -260,7 +257,7 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         self.user.groups.remove(Group.objects.get(name=DEFAULT_GROUP))
 
     def get_ct(self):
-        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
+        return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
     def get_absolute_url(self):
         return reverse("profiles-profile-detail", kwargs={"uuid": str(self.uuid)})
@@ -287,7 +284,7 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         return self.user.groups
 
     def save(self, *args, **kwargs):
-        super(Profile, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 try:
@@ -410,7 +407,7 @@ class Community(UUIDModelMixin, MigrationMixin):
 
     def save(self, *args, **kwargs):
 
-        super(Community, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 try:
@@ -459,7 +456,7 @@ def add_mentor(sender, **kwargs):
             sender=user,
             recipient=mentor,
             subject=_(
-                "%(username)s accepted your invitation" % {"username": user.username}
+                "{username} accepted your invitation".format(username=user.username)
             ),
             body="",
         )

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 
 from django.db.models.signals import post_save
@@ -27,7 +26,7 @@ def sync_favorites(rating, obj, user):
 
 @receiver(post_save, sender=Vote)
 def vote_post_save(sender, instance, **kwargs):
-    log.debug("vote saved: {}".format(instance))
+    log.debug(f"vote saved: {instance}")
 
     sync_favorites(
         rating=int(instance.vote), obj=instance.content_object, user=instance.user

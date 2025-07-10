@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
 import datetime
 
 from django.core.management.base import NoArgsCommand
@@ -89,7 +87,7 @@ class Command(NoArgsCommand):
             self.stdout.write(
                 datetime.datetime.now().strftime("%H:%M:%S ")
                 + (
-                    "Number of inconsistencies found: {0}. See details on the error stream.\n".format(
+                    "Number of inconsistencies found: {}. See details on the error stream.\n".format(
                         count
                     )
                     if count
@@ -100,7 +98,7 @@ class Command(NoArgsCommand):
     def report_errors(self, reason, msgs):
         self.stderr.write(reason + "\n")
         self.stderr.write(
-            "  {0:6} {1:5} {2:5} {3:10} {4:6} {5:6} {6:16} {7:16} {8:16}\n".format(
+            "  {:6} {:5} {:5} {:10} {:6} {:6} {:16} {:16} {:16}\n".format(
                 "Id",
                 "From",
                 "To",

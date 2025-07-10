@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2005  Joe Wreschnig
 #
 # This program is free software; you can redistribute it and/or modify
@@ -38,7 +37,7 @@ try:
     from collections.abc import MutableSequence
 except ImportError:
     # Python 2.7
-    from collections import MutableSequence
+    from collections.abc import MutableSequence
 
 from ._compat import cBytesIO, PY3, text_type, PY2, reraise, swap_to_string, xrange
 from mutagen import Metadata, FileType, StreamInfo
@@ -68,9 +67,9 @@ def is_valid_apev2_key(key):
     # PY26 - Change to set literal syntax (since set is faster than list here)
     return (
         (2 <= len(key) <= 255)
-        and (min(key) >= u" ")
-        and (max(key) <= u"~")
-        and (key not in [u"OggS", u"TAG", u"ID3", u"MP+"])
+        and (min(key) >= " ")
+        and (max(key) <= "~")
+        and (key not in ["OggS", "TAG", "ID3", "MP+"])
     )
 
 
@@ -102,7 +101,7 @@ class APEBadItemError(error):
     pass
 
 
-class _APEv2Data(object):
+class _APEv2Data:
     # Store offsets of the important parts of the file.
     start = header = data = footer = end = None
     # Footer or header; seek here and read 32 to get version/size/items/flags
@@ -147,7 +146,7 @@ class _APEv2Data(object):
         # Check for a simple footer.
         try:
             fileobj.seek(-32, 2)
-        except IOError:
+        except OSError:
             fileobj.seek(0, 2)
             return
         if fileobj.read(8) == b"APETAGEX":
@@ -158,7 +157,7 @@ class _APEv2Data(object):
         # Check for an APEv2 tag followed by an ID3v1 tag at the end.
         try:
             if get_size(fileobj) < 128:
-                raise IOError
+                raise OSError
             fileobj.seek(-128, 2)
             if fileobj.read(3) == b"TAG":
 
@@ -177,7 +176,7 @@ class _APEv2Data(object):
                     try:
                         offset = int(fileobj.read(6))
                     except ValueError:
-                        raise IOError
+                        raise OSError
 
                     fileobj.seek(-32 - offset - 6, 1)
                     if fileobj.read(8) == b"APETAGEX":
@@ -185,7 +184,7 @@ class _APEv2Data(object):
                         self.footer = fileobj.tell()
                         return
 
-        except IOError:
+        except OSError:
             pass
 
         # Check for a tag at the start.
@@ -243,7 +242,7 @@ class _APEv2Data(object):
             # It didn't remove the first 24 bytes of header.
             try:
                 fileobj.seek(-24, 1)
-            except IOError:
+            except OSError:
                 break
             else:
                 if fileobj.read(8) == b"APETAGEX":
@@ -258,7 +257,7 @@ class _CIDictProxy(DictMixin):
     def __init__(self, *args, **kwargs):
         self.__casemap = {}
         self.__dict = {}
-        super(_CIDictProxy, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # Internally all names are stored as lowercase, but the case
         # they were set with is remembered and used when saving.  This
         # is roughly in line with the standard, which says that keys
@@ -297,7 +296,7 @@ class APEv2(_CIDictProxy, Metadata):
         """Return tag key=value pairs in a human-readable format."""
 
         items = sorted(self.items())
-        return u"\n".join(u"%s=%s" % (k, v.pprint()) for k, v in items)
+        return "\n".join("{}={}".format(k, v.pprint()) for k, v in items)
 
     @convert_error(IOError, error)
     @loadfile()
@@ -366,7 +365,7 @@ class APEv2(_CIDictProxy, Metadata):
         if PY2:
             key = key.encode("ascii")
 
-        return super(APEv2, self).__getitem__(key)
+        return super().__getitem__(key)
 
     def __delitem__(self, key):
         if not is_valid_apev2_key(key):
@@ -374,7 +373,7 @@ class APEv2(_CIDictProxy, Metadata):
         if PY2:
             key = key.encode("ascii")
 
-        super(APEv2, self).__delitem__(key)
+        super().__delitem__(key)
 
     def __setitem__(self, key, value):
         """'Magic' value setter.
@@ -418,7 +417,7 @@ class APEv2(_CIDictProxy, Metadata):
                     items.append(v)
 
                 # list? text.
-                value = APEValue(u"\0".join(items), TEXT)
+                value = APEValue("\0".join(items), TEXT)
             else:
                 if PY3:
                     value = APEValue(value, BINARY)
@@ -432,7 +431,7 @@ class APEv2(_CIDictProxy, Metadata):
                         # valid UTF8, probably text
                         value = APEValue(value, TEXT)
 
-        super(APEv2, self).__setitem__(key, value)
+        super().__setitem__(key, value)
 
     @convert_error(IOError, error)
     @loadfile(writable=True, create=True)
@@ -559,7 +558,7 @@ def APEValue(value, kind):
         return type_(value)
 
 
-class _APEValue(object):
+class _APEValue:
 
     kind = None
     value = None
@@ -643,13 +642,13 @@ class APETextValue(_APEUtf8Value, MutableSequence):
     def __iter__(self):
         """Iterate over the strings of the value (not the characters)"""
 
-        return iter(self.value.split(u"\0"))
+        return iter(self.value.split("\0"))
 
     def __getitem__(self, index):
-        return self.value.split(u"\0")[index]
+        return self.value.split("\0")[index]
 
     def __len__(self):
-        return self.value.count(u"\0") + 1
+        return self.value.count("\0") + 1
 
     def __setitem__(self, index, value):
         if not isinstance(value, text_type):
@@ -660,7 +659,7 @@ class APETextValue(_APEUtf8Value, MutableSequence):
 
         values = list(self)
         values[index] = value
-        self.value = u"\0".join(values)
+        self.value = "\0".join(values)
 
     def insert(self, index, value):
         if not isinstance(value, text_type):
@@ -671,15 +670,15 @@ class APETextValue(_APEUtf8Value, MutableSequence):
 
         values = list(self)
         values.insert(index, value)
-        self.value = u"\0".join(values)
+        self.value = "\0".join(values)
 
     def __delitem__(self, index):
         values = list(self)
         del values[index]
-        self.value = u"\0".join(values)
+        self.value = "\0".join(values)
 
     def pprint(self):
-        return u" / ".join(self)
+        return " / ".join(self)
 
 
 @swap_to_string
@@ -713,7 +712,7 @@ class APEBinaryValue(_APEValue):
         return self.value < other
 
     def pprint(self):
-        return u"[%d bytes]" % len(self)
+        return "[%d bytes]" % len(self)
 
 
 class APEExtValue(_APEUtf8Value):
@@ -725,7 +724,7 @@ class APEExtValue(_APEUtf8Value):
     kind = EXTERNAL
 
     def pprint(self):
-        return u"[External] %s" % self.value
+        return "[External] %s" % self.value
 
 
 class APEv2File(FileType):
@@ -747,7 +746,7 @@ class APEv2File(FileType):
 
         @staticmethod
         def pprint():
-            return u"Unknown format with APEv2 tag."
+            return "Unknown format with APEv2 tag."
 
     @loadfile()
     def load(self, filething):
@@ -756,7 +755,7 @@ class APEv2File(FileType):
         self.info = self._Info(fileobj)
         try:
             fileobj.seek(0, 0)
-        except IOError as e:
+        except OSError as e:
             raise error(e)
 
         try:
@@ -768,13 +767,13 @@ class APEv2File(FileType):
         if self.tags is None:
             self.tags = APEv2()
         else:
-            raise error("%r already has tags: %r" % (self, self.tags))
+            raise error("{!r} already has tags: {!r}".format(self, self.tags))
 
     @staticmethod
     def score(filename, fileobj, header):
         try:
             seek_end(fileobj, 160)
             footer = fileobj.read()
-        except IOError:
+        except OSError:
             return -1
         return (b"APETAGEX" in footer) - header.startswith(b"ID3")

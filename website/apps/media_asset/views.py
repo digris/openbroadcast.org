@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-
 import logging
 
 from alibrary.models import Media
@@ -43,7 +40,7 @@ class WaveformView(View):
         try:
             waveform_data = open(waveform.path, "rb").read()
         except Exception as e:
-            return HttpResponseBadRequest("{}".format(e))
+            return HttpResponseBadRequest(f"{e}")
         return HttpResponse(waveform_data, content_type="image/png")
 
 
@@ -90,14 +87,14 @@ class FormatView(View):
 
         if NGINX_X_ACCEL_REDIRECT:
 
-            x_path = "/protected/{}".format(format.relative_path)
+            x_path = f"/protected/{format.relative_path}"
 
             # TODO: improve handling of initial / range
             requested_range = self.request.META.get("HTTP_RANGE", None)
             if requested_range:
                 requested_range = requested_range.split("=")[1].split("-")
 
-                log.debug(u"requested range %s" % (requested_range))
+                log.debug("requested range %s" % (requested_range))
                 if requested_range and requested_range[0] == "0":
                     try:
                         from atracker.util import create_event
@@ -107,7 +104,7 @@ class FormatView(View):
                         pass
 
                 else:
-                    log.debug(u"seek play")
+                    log.debug("seek play")
 
             # serving through nginx
             response = HttpResponse(content_type="audio/mpeg")

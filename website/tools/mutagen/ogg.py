@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2006  Joe Wreschnig
 #
 # This program is free software; you can redistribute it and/or modify
@@ -31,7 +30,7 @@ class error(MutagenError):
     pass
 
 
-class OggPage(object):
+class OggPage:
     """A single Ogg page (not necessarily a single encoded packet).
 
     A page is a header of 26 bytes, followed by the length of the
@@ -97,7 +96,7 @@ class OggPage(object):
 
         if oggs != b"OggS":
             raise error(
-                "read %r, expected %r, at 0x%x" % (oggs, b"OggS", fileobj.tell() - 27)
+                "read {!r}, expected {!r}, at 0x{:x}".format(oggs, b"OggS", fileobj.tell() - 27)
             )
 
         if self.version != 0:
@@ -142,7 +141,7 @@ class OggPage(object):
             "first",
             "last",
         ]
-        values = ["%s=%r" % (attr, getattr(self, attr)) for attr in attrs]
+        values = ["{}={!r}".format(attr, getattr(self, attr)) for attr in attrs]
         return "<%s %s, %d bytes in %d packets>" % (
             type(self).__name__,
             " ".join(values),
@@ -558,7 +557,7 @@ class OggFileType(FileType):
             self.info = self._Info(fileobj)
             self.tags = self._Tags(fileobj, self.info)
             self.info._post_tags(fileobj)
-        except (error, IOError) as e:
+        except (error, OSError) as e:
             reraise(self._Error, e, sys.exc_info()[2])
         except EOFError:
             raise self._Error("no appropriate stream found")
@@ -589,7 +588,7 @@ class OggFileType(FileType):
                 reraise(self._Error, e, sys.exc_info()[2])
             except EOFError:
                 raise self._Error("no appropriate stream found")
-        except IOError as e:
+        except OSError as e:
             reraise(self._Error, e, sys.exc_info()[2])
 
     def add_tags(self):
@@ -612,7 +611,7 @@ class OggFileType(FileType):
 
         try:
             self.tags._inject(filething.fileobj, padding)
-        except (IOError, error) as e:
+        except (OSError, error) as e:
             reraise(self._Error, e, sys.exc_info()[2])
         except EOFError:
             raise self._Error("no appropriate stream found")

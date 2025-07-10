@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 from django.db.models import Avg
 from rest_framework import serializers
 
@@ -11,7 +8,7 @@ class ObjectRatingSerializer(serializers.Serializer):
 
     def __init__(self, **kwargs):
         self.user = kwargs.pop("user", None)
-        super(ObjectRatingSerializer, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     ct = serializers.CharField(read_only=True, source="get_ct")
     uuid = serializers.UUIDField(read_only=True)
@@ -34,4 +31,4 @@ class ObjectRatingSerializer(serializers.Serializer):
             return vote_qs.first().vote
 
     def get_avg_vote(self, obj):
-        return obj.votes.aggregate(Avg("vote")).values()[0]
+        return obj.votes.aggregate(avg_vote=Avg("vote"))['avg_vote']

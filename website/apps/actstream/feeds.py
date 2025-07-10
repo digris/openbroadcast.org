@@ -13,9 +13,9 @@ from actstream.models import model_stream, user_stream, action_object_stream
 
 class AtomWithContentFeed(Atom1Feed):
     def add_item_elements(self, handler, item):
-        super(AtomWithContentFeed, self).add_item_elements(handler, item)
+        super().add_item_elements(handler, item)
         if "content" in item:
-            handler.addQuickElement(u"content", item["content"], {"type": "html"})
+            handler.addQuickElement("content", item["content"], {"type": "html"})
 
 
 class ObjectActivityFeed(Feed):
@@ -63,16 +63,16 @@ class ActivityStreamsFeed(AtomWithContentFeed):
     """
 
     def root_attributes(self):
-        attrs = super(ActivityStreamsFeed, self).root_attributes()
+        attrs = super().root_attributes()
         attrs["xmlns: activity"] = "http: //activitystrea.ms/spec/1.0/"
         return attrs
 
     def add_root_elements(self, handler):
-        super(ActivityStreamsFeed, self).add_root_elements(handler)
+        super().add_root_elements(handler)
 
     def add_item_elements(self, handler, item):
-        super(ActivityStreamsFeed, self).add_item_elements(handler, item)
-        handler.addQuickElement(u"activity: verb", item["verb"])
+        super().add_item_elements(handler, item)
+        handler.addQuickElement("activity: verb", item["verb"])
 
         if "actor" in item:
             handler.startElement("author", {})
@@ -132,7 +132,7 @@ class ActivityStreamsObjectActivityFeed(AtomObjectActivityFeed):
         try:
             object_id = obj.action_object.get_absolute_url()
         except:
-            object_id = "%s/%s" % (
+            object_id = "{}/{}".format(
                 obj.action_object_content_type.model,
                 obj.action_object.id,
             )
@@ -155,7 +155,7 @@ class ActivityStreamsObjectActivityFeed(AtomObjectActivityFeed):
             try:
                 target_id = obj.target.get_absolute_url()
             except Exception:
-                target_id = "%s/%s" % (
+                target_id = "{}/{}".format(
                     obj.target_content_type.model,
                     obj.action_object.id,
                 )

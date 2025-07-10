@@ -31,7 +31,7 @@ log = logging.getLogger(__name__)
 validate_url = URLValidator()
 
 
-class Migrator(object):
+class Migrator:
     pass
 
 
@@ -117,7 +117,7 @@ class ReleaseMigrator(Migrator):
                 elif len(date) == 10:
                     date = "%s" % (date)
 
-                re_date = re.compile("^\d{4}-\d{2}-\d{2}$")
+                re_date = re.compile(r"^\d{4}-\d{2}-\d{2}$")
                 if re_date.match(date) and date != "0000-00-00":
                     try:
                         import time
@@ -216,7 +216,7 @@ class ReleaseMigrator(Migrator):
                 try:
                     t = Ntags.objects.using("legacy").get(id=nt.ntag_id)
                     log.debug("tag for object: %s" % t.name)
-                    Tag.objects.add_tag(obj, u'"%s"' % t.name[:30])
+                    Tag.objects.add_tag(obj, '"%s"' % t.name[:30])
                 except Exception as e:
                     print(e)
 
@@ -239,7 +239,7 @@ class ReleaseMigrator(Migrator):
                     log.debug("image does not exist at: %s" % img_path)
 
             except Exception as e:
-                log.warning("unable to get image: %s - %s" % (img_path, e))
+                log.warning("unable to get image: {} - {}".format(img_path, e))
 
             obj.save()
 
@@ -264,7 +264,7 @@ class MediaMigrator(Migrator):
         if created:
             log.info("object created: %s" % obj.pk)
         else:
-            log.info("object %s found by legacy_id: %s" % (obj.pk, obj.legacy_id))
+            log.info("object {} found by legacy_id: {}".format(obj.pk, obj.legacy_id))
 
         if created or force:
             """
@@ -353,7 +353,7 @@ class MediaMigrator(Migrator):
                 try:
                     t = Ntags.objects.using("legacy").get(id=nt.ntag_id)
                     log.debug("tag for object: %s" % t.name)
-                    Tag.objects.add_tag(obj, u'"%s"' % t.name[:30])
+                    Tag.objects.add_tag(obj, '"%s"' % t.name[:30])
                 except Exception as e:
                     print(e)
 
@@ -610,7 +610,7 @@ class ArtistMigrator(Migrator):
                 try:
                     t = Ntags.objects.using("legacy").get(id=nt.ntag_id)
                     log.debug("tag for object: %s" % t.name)
-                    Tag.objects.add_tag(obj, u'"%s"' % t.name[:30])
+                    Tag.objects.add_tag(obj, '"%s"' % t.name[:30])
                 except Exception as e:
                     print(e)
 
@@ -633,7 +633,7 @@ class ArtistMigrator(Migrator):
                     log.debug("image does not exist at: %s" % img_path)
 
             except Exception as e:
-                log.warning("unable to get image: %s - %s" % (img_path, e))
+                log.warning("unable to get image: {} - {}".format(img_path, e))
 
             obj.save()
 
@@ -681,7 +681,7 @@ class LabelMigrator(Migrator):
 
             if legacy_obj.profile:
                 if legacy_obj.notes:
-                    obj.description = "%s\n\n%s" % (
+                    obj.description = "{}\n\n{}".format(
                         legacy_obj.profile,
                         legacy_obj.notes,
                     )
@@ -799,7 +799,7 @@ class LabelMigrator(Migrator):
                 try:
                     t = Ntags.objects.using("legacy").get(id=nt.ntag_id)
                     log.debug("tag for object: %s" % t.name)
-                    Tag.objects.add_tag(obj, u'"%s"' % t.name[:30])
+                    Tag.objects.add_tag(obj, '"%s"' % t.name[:30])
                 except Exception as e:
                     print(e)
 
@@ -822,7 +822,7 @@ class LabelMigrator(Migrator):
                     log.debug("image does not exist at: %s" % img_path)
 
             except Exception as e:
-                log.warning("unable to get image: %s - %s" % (img_path, e))
+                log.warning("unable to get image: {} - {}".format(img_path, e))
 
             obj.save()
 
@@ -1001,7 +1001,7 @@ class LegacyUserMigrator(Migrator):
                             log.debug("image does not exist at: %s" % img_path)
 
                     except Exception as e:
-                        log.warning("unable to get image: %s - %s" % (img_path, e))
+                        log.warning("unable to get image: {} - {}".format(img_path, e))
 
             """
             try to get communities
@@ -1076,7 +1076,7 @@ class LegacyUserMigrator(Migrator):
                         tag = tag.rstrip(" ").lstrip(" ")
                         if len(tag) > 2:
                             try:
-                                Tag.objects.add_tag(obj, u'"%s"' % tag[:30])
+                                Tag.objects.add_tag(obj, '"%s"' % tag[:30])
                             except Exception as e:
                                 print(e)
 
@@ -1087,7 +1087,7 @@ class LegacyUserMigrator(Migrator):
                         tag = tag.rstrip(" ").lstrip(" ")
                         if len(tag) > 2:
                             try:
-                                Tag.objects.add_tag(obj, u'"%s"' % tag[:30])
+                                Tag.objects.add_tag(obj, '"%s"' % tag[:30])
                             except Exception as e:
                                 print(e)
 
@@ -1227,7 +1227,7 @@ class LegacyUserMigrator(Migrator):
                     for expertise in expertises:
                         expertise = expertise.rstrip(" ").lstrip(" ")
                         db_expertise, c = Expertise.objects.get_or_create(
-                            name=u"%s" % expertise.title()
+                            name="%s" % expertise.title()
                         )
                         obj.expertise.add(db_expertise)
 
@@ -1299,7 +1299,7 @@ class CommunityMigrator(Migrator):
                     tag = tag.rstrip(" ").lstrip(" ")
                     if len(tag) > 2:
                         try:
-                            Tag.objects.add_tag(obj, u'"%s"' % tag[:30])
+                            Tag.objects.add_tag(obj, '"%s"' % tag[:30])
                         except Exception as e:
                             print(e)
 
@@ -1426,7 +1426,7 @@ class PlaylistMigrator(Migrator):
             for nt in nts:
                 try:
                     log.debug("tag for object: %s" % nt.tag)
-                    Tag.objects.add_tag(obj, u'"%s"' % nt.tag[:30])
+                    Tag.objects.add_tag(obj, '"%s"' % nt.tag[:30])
                 except Exception as e:
                     print(e)
 

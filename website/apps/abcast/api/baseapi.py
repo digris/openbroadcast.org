@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import datetime
 import json
 import logging
@@ -65,7 +64,7 @@ class ChannelResource(ModelResource):
             stream = {
                 "file": "%s.stream" % bundle.obj.rtmp_path,
                 "rtmp_app": "%s" % bundle.obj.rtmp_app,
-                "rtmp_host": "rtmp://%s:%s/" % (settings.RTMP_HOST, settings.RTMP_PORT),
+                "rtmp_host": "rtmp://{}:{}/".format(settings.RTMP_HOST, settings.RTMP_PORT),
                 # 'uri': 'http://pypo:8000/obp-dev-256.mp3',
                 "uri": bundle.obj.stream_url,
                 "uuid": bundle.obj.uuid,
@@ -494,7 +493,7 @@ class BaseResource(Resource):
                     "admin_user": "admin",
                     "admin_pass": "donthackme",
                     "mount": "airtime_128",
-                    "url": "http:\/\/airtime.sourcefabric.org",
+                    "url": r"http:\/\/airtime.sourcefabric.org",
                     "description": "Airtime Radio! Stream #1",
                     "genre": "genre",
                     "name": "Airtime!",
@@ -578,7 +577,7 @@ class BaseResource(Resource):
                     "admin_user": "admin",
                     "admin_pass": "donthackme",
                     "mount": "airtime_128",
-                    "url": "http:\/\/airtime.sourcefabric.org",
+                    "url": r"http:\/\/airtime.sourcefabric.org",
                     "description": "Airtime Radio! Stream #1",
                     "genre": "genre",
                     "name": "Airtime!",
@@ -642,7 +641,7 @@ class BaseResource(Resource):
 
         media_uuid = request.GET.get("media_id", None)
         channel_uuid = request.GET.get("channel_id", None)
-        log.debug("start play: %s - %s" % (media_uuid, channel_uuid))
+        log.debug("start play: {} - {}".format(media_uuid, channel_uuid))
 
         if media_uuid and channel_uuid:
 
@@ -678,8 +677,8 @@ class BaseResource(Resource):
                 "master_dj": "off",
                 "scheduled_play": "on",
             },
-            "station_name": u"%s" % channel.name,
-            "stream_label": u"%s" % channel.teaser,
+            "station_name": "%s" % channel.name,
+            "stream_label": "%s" % channel.teaser,
             "transition_fade": "00.000000",
         }
         return self.json_response(request, data)
@@ -689,7 +688,7 @@ class BaseResource(Resource):
         data = {
             "shows": [],
             "is_recording": False,
-            "server_timezone": "America\/Los_Angeles",
+            "server_timezone": r"America\/Los_Angeles",
         }
         return self.json_response(request, data)
 

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 import os
 import uuid
@@ -218,7 +215,7 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         return self.__class__.__name__
 
     def get_ct(self):
-        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
+        return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
     def get_absolute_url(self):
         if self.disable_link:
@@ -370,10 +367,10 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
             original_name = self.name
             i = 1
             while Artist.objects.filter(name=self.name).count() > 0:
-                self.name = "%s %s" % (original_name, i)
+                self.name = "{} {}".format(original_name, i)
                 i += 1
 
-        super(Artist, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 tagging_register(Artist)
@@ -413,14 +410,14 @@ class ArtistMembership(models.Model):
         verbose_name_plural = _("Membersips")
 
     def __str__(self):
-        return '"%s" <> "%s"' % (self.parent.name, self.child.name)
+        return '"{}" <> "{}"'.format(self.parent.name, self.child.name)
 
     def save(self, *args, **kwargs):
 
         if not self.child or not self.parent:
             self.delete()
 
-        super(ArtistMembership, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 @python_2_unicode_compatible
@@ -434,7 +431,7 @@ class ArtistAlias(models.Model):
         verbose_name_plural = _("Aliases")
 
     def __str__(self):
-        return '"%s" <> "%s"' % (self.parent.name, self.child.name)
+        return '"{}" <> "{}"'.format(self.parent.name, self.child.name)
 
 
 @python_2_unicode_compatible
@@ -448,4 +445,4 @@ class ArtistProfessions(models.Model):
         verbose_name_plural = _("Professions")
 
     def __str__(self):
-        return '"%s" : "%s"' % (self.artist.name, self.profession.name)
+        return '"{}" : "{}"'.format(self.artist.name, self.profession.name)

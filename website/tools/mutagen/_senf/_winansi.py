@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 Christoph Reiter
 #
 # Permission is hereby granted, free of charge, to any person obtaining
@@ -33,7 +32,7 @@ def ansi_parse(code):
     return code[-1:], tuple([int(v or "0") for v in code[2:-1].split(";")])
 
 
-def ansi_split(text, _re=re.compile(u"(\x1b\\[(\\d*;?)*\\S)")):
+def ansi_split(text, _re=re.compile("(\x1b\\[(\\d*;?)*\\S)")):
     """Yields (is_ansi, text)"""
 
     for part in _re.split(text):
@@ -41,7 +40,7 @@ def ansi_split(text, _re=re.compile(u"(\x1b\\[(\\d*;?)*\\S)")):
             yield (bool(_re.match(part)), part)
 
 
-class AnsiCommand(object):
+class AnsiCommand:
     TEXT = "m"
 
     MOVE_UP = "A"
@@ -56,7 +55,7 @@ class AnsiCommand(object):
     RESTORE_POS = "u"
 
 
-class TextAction(object):
+class TextAction:
     RESET_ALL = 0
 
     SET_BOLD = 1
@@ -118,7 +117,7 @@ class TextAction(object):
     BG_LIGHT_WHITE = 107
 
 
-class AnsiState(object):
+class AnsiState:
     def __init__(self):
         self.default_attrs = None
 

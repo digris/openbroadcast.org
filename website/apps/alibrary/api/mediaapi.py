@@ -145,7 +145,7 @@ class MediaResource(ModelResource):
         if filters is None:
             filters = {}
 
-        orm_filters = super(MediaResource, self).build_filters(filters)
+        orm_filters = super().build_filters(filters)
 
         if "code" in filters:
             # re-implement fprint based lookups

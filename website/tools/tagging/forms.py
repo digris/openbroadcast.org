@@ -29,7 +29,7 @@ class TagField(forms.CharField):
     """
 
     def clean(self, value):
-        value = super(TagField, self).clean(value)
+        value = super().clean(value)
         for tag_name in parse_tag_input(value):
             if len(tag_name) > settings.MAX_TAG_LENGTH:
                 raise forms.ValidationError(

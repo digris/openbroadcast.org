@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 import hashlib
 
 from django.conf import settings
@@ -359,7 +358,7 @@ class Message(models.Model):
         ordering = ["-sent_at", "-id"]
 
     def __str__(self):
-        return "{0}>{1}:{2}".format(
+        return "{}>{}:{}".format(
             self.obfuscated_sender,
             self.obfuscated_recipient,
             Truncator(self.subject).words(5),
@@ -423,7 +422,7 @@ class Message(models.Model):
         if self.sender:
             return str(self.sender)
         else:
-            return "<{0}>".format(self.email)
+            return f"<{self.email}>"
 
     admin_sender.short_description = _("sender")
     admin_sender.admin_order_field = "sender"
@@ -448,7 +447,7 @@ class Message(models.Model):
         if self.recipient:
             return str(self.recipient)
         else:
-            return "<{0}>".format(self.email)
+            return f"<{self.email}>"
 
     admin_recipient.short_description = _("recipient")
     admin_recipient.admin_order_field = "recipient"
@@ -639,7 +638,7 @@ class PendingMessageManager(models.Manager):
     def get_queryset(self):
         """Filter to get only pending objects."""
         return (
-            super(PendingMessageManager, self)
+            super()
             .get_queryset()
             .filter(moderation_status=STATUS_PENDING)
         )

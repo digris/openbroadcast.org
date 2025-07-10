@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-
-from django.template import Context
 from django.template.loader import render_to_string
 from django.forms.utils import flatatt
 
@@ -18,7 +14,7 @@ class AppendedText(Field):
         if "active" in kwargs:
             self.active = kwargs.pop("active")
 
-        super(AppendedText, self).__init__(field, *args, **kwargs)
+        super().__init__(field, *args, **kwargs)
 
     def render(self, form, form_style, context):
         context.update(
@@ -67,7 +63,7 @@ class AppendedPrependedText(Field):
         if "active" in kwargs:
             self.active = kwargs.pop("active")
 
-        super(AppendedPrependedText, self).__init__(field, *args, **kwargs)
+        super().__init__(field, *args, **kwargs)
 
     def render(self, form, form_style, context):
         context.update(
@@ -109,12 +105,12 @@ class FormActions(LayoutObject):
             self.attrs["class"] = self.attrs.pop("css_class")
 
     def render(self, form, form_style, context):
-        html = u""
+        html = ""
         for field in self.fields:
             html += render_field(field, form, form_style, context)
 
         return render_to_string(
-            self.template, Context({"formactions": self, "fields_output": html})
+            self.template, {"formactions": self, "fields_output": html}
         )
 
     def flat_attrs(self):

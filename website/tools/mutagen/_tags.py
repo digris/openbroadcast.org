@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2005  Michael Urman
 #
 # This program is free software; you can redistribute it and/or modify
@@ -9,7 +8,7 @@
 from ._util import loadfile
 
 
-class PaddingInfo(object):
+class PaddingInfo:
     """PaddingInfo()
 
     Abstract padding information object.
@@ -77,7 +76,7 @@ class PaddingInfo(object):
         )
 
 
-class Tags(object):
+class Tags:
     """`Tags` is the base class for many of the tag objects in Mutagen.
 
     In many cases it has a dict like interface.

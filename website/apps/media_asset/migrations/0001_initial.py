@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import migrations, models
 import uuid
 
@@ -132,9 +129,9 @@ class Migration(migrations.Migration):
             options={"verbose_name": "Waveform"},
         ),
         migrations.AlterUniqueTogether(
-            name="waveform", unique_together=set([("media", "type")])
+            name="waveform", unique_together={("media", "type")}
         ),
         migrations.AlterUniqueTogether(
-            name="format", unique_together=set([("media", "encoding", "quality")])
+            name="format", unique_together={("media", "encoding", "quality")}
         ),
     ]

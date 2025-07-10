@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import requests
 import subprocess
 import json
@@ -43,7 +41,7 @@ def update_index(force):
 
     if force:
         _count = Media.objects.all().update(fprint_ingested=None)
-        click.secho("Resetting all fingerprints. ({})".format(_count), fg="cyan")
+        click.secho(f"Resetting all fingerprints. ({_count})", fg="cyan")
 
     id_list = (
         Media.objects.exclude(master__isnull=True, master_duration__lte=20)
@@ -52,7 +50,7 @@ def update_index(force):
         .values_list("id", flat=True)
     )
 
-    click.secho("{} media items to process".format(id_list.count()), fg="cyan")
+    click.secho(f"{id_list.count()} media items to process", fg="cyan")
 
     for id in id_list:
         m = Media.objects.get(pk=id)
@@ -76,7 +74,7 @@ def _ingest_fingerprint(media):
             Media.objects.filter(pk=media.pk).update(fprint_ingested=timezone.now())
 
     except Exception as e:
-        click.secho("unable to ingest fprint for media: {} - {}".format(media.pk, e))
+        click.secho(f"unable to ingest fprint for media: {media.pk} - {e}")
 
 
 @cli.command()
@@ -92,7 +90,7 @@ def test_media(limit, offset):
 
     for item in qs[offset : (offset + limit)]:
 
-        click.secho(u"testing fprint: {} - {}".format(item.uuid, item.name), fg="cyan")
+        click.secho(f"testing fprint: {item.uuid} - {item.name}", fg="cyan")
 
         command = [ECHOPRINT_CODEGEN_BINARY, item.master.path]
 
@@ -100,7 +98,7 @@ def test_media(limit, offset):
 
         data = json.loads(p.stdout.read())[0]
 
-        url = "{}/api/v1/fprint/identify/".format(FPRINT_API_URL)
+        url = f"{FPRINT_API_URL}/api/v1/fprint/identify/"
 
         r = requests.post(url, json=data)
 
@@ -112,8 +110,8 @@ def test_media(limit, offset):
             score = top_match["score"]
 
             if str(uuid) == str(item.uuid):
-                click.secho(u"score: {}".format(score), fg="green")
+                click.secho(f"score: {score}", fg="green")
             else:
-                click.secho(u"score: {}".format(score), fg="yellow")
+                click.secho(f"score: {score}", fg="yellow")
         else:
-            click.secho(u"no results for: {}".format(item.uuid), fg="red")
+            click.secho(f"no results for: {item.uuid}", fg="red")

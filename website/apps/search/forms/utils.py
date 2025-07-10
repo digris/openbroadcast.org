@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import sys
 
 from collections import namedtuple
@@ -38,7 +35,7 @@ def get_model_data(ctype):
 
     url = reverse(
         "api:search-by-ctype",
-        kwargs={"ct": "{}.{}".format(model_ct.app_label, model_ct.model)},
+        kwargs={"ct": f"{model_ct.app_label}.{model_ct.model}"},
     )
 
     d = ModelData(model_class=model_class, url=url)

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import os
 import djclick as click
 from django.contrib.auth import get_user_model
@@ -70,7 +68,7 @@ def status(id, details):
             massimport = Massimport.objects.get(pk=id)
         except Massimport.DoesNotExist as e:
             click.secho(
-                "Massimport session with id: {} does not exist.".format(id),
+                f"Massimport session with id: {id} does not exist.",
                 bold=True,
                 fg="red",
             )
@@ -86,7 +84,7 @@ def status(id, details):
                 "--------------------------------------------------------------------",
                 bold=True,
             )
-            click.secho("Status ({})\tcount".format(id), bold=True)
+            click.secho(f"Status ({id})\tcount", bold=True)
             click.secho(
                 "--------------------------------------------------------------------",
                 bold=True,
@@ -102,7 +100,7 @@ def status(id, details):
                 bold=True,
             )
             click.secho(
-                ("Total:    \t{}".format(massimport.files.all().count())), bold=True
+                (f"Total:    \t{massimport.files.all().count()}"), bold=True
             )
             click.echo("")
 
@@ -112,7 +110,7 @@ def status(id, details):
 
             from importer.models import ImportFile
 
-            status_id = getattr(ImportFile, "STATUS_{}".format(details.upper()), 0)
+            status_id = getattr(ImportFile, f"STATUS_{details.upper()}", 0)
             qs = massimport.files.filter(status=status_id)
 
             tpl = """{}:    \t{}"""
@@ -121,7 +119,7 @@ def status(id, details):
                 "--------------------------------------------------------------------",
                 bold=True,
             )
-            click.secho("{} ({})\tcount".format(details, id), bold=True)
+            click.secho(f"{details} ({id})\tcount", bold=True)
             click.secho(
                 "--------------------------------------------------------------------",
                 bold=True,
@@ -134,7 +132,7 @@ def status(id, details):
                 "--------------------------------------------------------------------",
                 bold=True,
             )
-            click.secho(("Total:    \t{}".format(qs.count())), bold=True)
+            click.secho((f"Total:    \t{qs.count()}"), bold=True)
             click.echo("")
 
 
@@ -146,13 +144,13 @@ def delete(id):
         massimport = Massimport.objects.get(pk=id)
     except Massimport.DoesNotExist as e:
         click.secho(
-            "Massimport session with id: {} does not exist.".format(id),
+            f"Massimport session with id: {id} does not exist.",
             bold=True,
             fg="red",
         )
         return
 
-    if click.confirm("Do you want to delete session id: {} ?".format(id), default="Y"):
+    if click.confirm(f"Do you want to delete session id: {id} ?", default="Y"):
         massimport.delete()
 
 
@@ -164,7 +162,7 @@ def scan(id):
         massimport = Massimport.objects.get(pk=id)
     except Massimport.DoesNotExist as e:
         click.secho(
-            "Massimport session with id: {} does not exist.".format(id),
+            f"Massimport session with id: {id} does not exist.",
             bold=True,
             fg="red",
         )
@@ -181,7 +179,7 @@ def update(id):
         massimport = Massimport.objects.get(pk=id)
     except Massimport.DoesNotExist as e:
         click.secho(
-            "Massimport session with id: {} does not exist.".format(id),
+            f"Massimport session with id: {id} does not exist.",
             bold=True,
             fg="red",
         )
@@ -199,14 +197,14 @@ def enqueue(id, limit):
         massimport = Massimport.objects.get(pk=id)
     except Massimport.DoesNotExist as e:
         click.secho(
-            "Massimport session with id: {} does not exist.".format(id),
+            f"Massimport session with id: {id} does not exist.",
             bold=True,
             fg="red",
         )
         return
 
     qs = massimport.files.filter(status=0)
-    click.secho("Files total: {} - limit: {}".format(qs.count(), limit), bold=True)
+    click.secho(f"Files total: {qs.count()} - limit: {limit}", bold=True)
     for item in massimport.files.filter(status=0)[0:limit]:
         item.enqueue()
 
@@ -223,10 +221,10 @@ def start(path, limit, username, collection):
         "--------------------------------------------------------------------",
         bold=True,
     )
-    click.echo("Username:\t {}".format(username))
-    click.echo("Collection:\t {}".format(collection))
-    click.echo("Limit:\t\t {}".format(limit))
-    click.echo("Path:\t\t {}".format(path))
+    click.echo(f"Username:\t {username}")
+    click.echo(f"Collection:\t {collection}")
+    click.echo(f"Limit:\t\t {limit}")
+    click.echo(f"Path:\t\t {path}")
     click.secho(
         "--------------------------------------------------------------------",
         bold=True,
@@ -234,19 +232,19 @@ def start(path, limit, username, collection):
     click.echo("")
 
     if not os.path.isdir(path):
-        click.secho("Directory does not exist: {}".format(path), bold=True, fg="red")
+        click.secho(f"Directory does not exist: {path}", bold=True, fg="red")
         return
 
     if not path.endswith("/"):
         path += "/"
 
     if not get_user_model().objects.filter(username=username).exists():
-        click.secho("User does not exist: {}".format(username), bold=True, fg="red")
+        click.secho(f"User does not exist: {username}", bold=True, fg="red")
         return
 
     if Massimport.objects.filter(directory=path).exists():
         click.secho(
-            "Import session already exists: {}".format(path), bold=True, fg="red"
+            f"Import session already exists: {path}", bold=True, fg="red"
         )
         return
 

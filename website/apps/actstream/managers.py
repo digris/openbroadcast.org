@@ -67,8 +67,8 @@ class ActionManager(GFKManager):
         """
         q = Q()
         qs = self.filter(public=True)
-        actors_by_content_type = defaultdict(lambda: [])
-        others_by_content_type = defaultdict(lambda: [])
+        actors_by_content_type = defaultdict(list)
+        others_by_content_type = defaultdict(list)
 
         follow_gfks = (
             apps.get_model("actstream", "follow")

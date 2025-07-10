@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
@@ -33,7 +30,7 @@ class InvitationForm(forms.Form):
     message = forms.CharField(widget=forms.Textarea())
 
     def __init__(self, *args, **kwargs):
-        super(InvitationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
         self.helper.form_method = "post"
@@ -68,7 +65,7 @@ class RegistrationFormInvitation(RegistrationForm):
     """
 
     def __init__(self, email, *args, **kwargs):
-        super(RegistrationFormInvitation, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._make_email_immutable(email)
 
     def _make_email_immutable(self, email):

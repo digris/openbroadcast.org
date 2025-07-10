@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
 import logging
 
 from django.core.cache import cache
@@ -16,7 +13,7 @@ log = logging.getLogger(__name__)
 
 
 def start_play(item, channel=None, user=None):
-    log.debug("item: %s - channel: %s - user: %s" % (item, channel, user))
+    log.debug("item: {} - channel: {} - user: {}".format(item, channel, user))
 
     # Set current values to cache
     cache.set("abcast_on_air_%s" % channel.pk, item, 30)
@@ -27,20 +24,20 @@ def start_play(item, channel=None, user=None):
     if item.release and not "jingle" in item.release.name.lower():
 
         try:
-            text = "%s by %s - %s" % (item.name, item.artist.name, item.release.name)
+            text = "{} by {} - {}".format(item.name, item.artist.name, item.release.name)
             set_stream_metadata(channel, text)
         except Exception as e:
-            log.warning("unable to set stream metadata: {}".format(e))
+            log.warning(f"unable to set stream metadata: {e}")
 
         try:
             set_tunein_metadata(channel, item)
         except Exception as e:
-            log.warning("unable to set tunein metadata: {}".format(e))
+            log.warning(f"unable to set tunein metadata: {e}")
 
         try:
             set_radioplayer_metadata(item)
         except Exception as e:
-            log.warning("unable to set radioplayer metadata: {}".format(e))
+            log.warning(f"unable to set radioplayer metadata: {e}")
 
     try:
         from atracker.util import create_event

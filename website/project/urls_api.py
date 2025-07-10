@@ -64,4 +64,4 @@ try:
     api.register(EventResource())
 
 except Exception as e:
-    print("unable to register API (v1) resources: {}".format(e))
+    print(f"unable to register API (v1) resources: {e}")

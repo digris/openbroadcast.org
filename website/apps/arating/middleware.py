@@ -4,7 +4,7 @@ except ImportError:
     from md5 import md5
 
 
-class AratingMiddleware(object):
+class AratingMiddleware:
     def process_request(self, request):
         request.arating_token = self.generate_token(request)
 

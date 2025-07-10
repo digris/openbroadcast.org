@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-
 import os
 import time
 import hashlib
@@ -45,18 +42,18 @@ def create_download_path(instance, filename):
     import string
 
     filename, extension = os.path.splitext(filename)
-    valid_chars = "-_.%s%s" % (string.ascii_letters, string.digits)
+    valid_chars = "-_.{}{}".format(string.ascii_letters, string.digits)
     cleaned_filename = unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore")
-    folder = "export/processed/%s-%s/" % (
+    folder = "export/processed/{}-{}/".format(
         time.strftime("%Y%m%d%H%M%S", time.gmtime()),
         instance.uuid,
     )
-    return os.path.join(folder, "%s%s" % (cleaned_filename.lower(), extension.lower()))
+    return os.path.join(folder, "{}{}".format(cleaned_filename.lower(), extension.lower()))
 
 
 def create_archive_dir(instance):
 
-    path = "export/cache/%s-%s/" % (
+    path = "export/cache/{}-{}/".format(
         time.strftime("%Y%m%d%H%M%S", time.gmtime()),
         instance.uuid,
     )
@@ -118,10 +115,10 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
         ordering = ("created",)
 
     def __str__(self):
-        return "%s - %s" % (self.user, self.created)
+        return "{} - {}".format(self.user, self.created)
 
     def get_ct(self):
-        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
+        return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
     def get_absolute_url(self):
         return None
@@ -141,7 +138,7 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
         url = reverse(
             "api_dispatch_list", kwargs={"resource_name": "export", "api_name": "v1"}
         )
-        return "%s%s/" % (url, self.pk)
+        return "{}{}/".format(url, self.pk)
 
     # @models.permalink
     def get_delete_url(self):
@@ -179,7 +176,7 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
             if result:
 
                 obj.filesize = os.path.getsize(result)
-                obj.file = DjangoFile(open(result), u"archive")
+                obj.file = DjangoFile(open(result), "archive")
 
                 # update status
                 obj.status = 1
@@ -198,7 +195,7 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
         if not self.token:
             self.token = hashlib.sha1("TX%s" % self.uuid).hexdigest()
 
-        super(Export, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 def post_save_export(sender, **kwargs):
@@ -273,9 +270,9 @@ class ExportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def __str__(self):
         try:
-            return "%s - %s" % (self.content_object, self.get_status_display())
+            return "{} - {}".format(self.content_object, self.get_status_display())
         except:
-            return "%s - %s" % (self.pk, self.status)
+            return "{} - {}".format(self.pk, self.status)
 
     # @models.permalink
     def get_delete_url(self):
@@ -301,7 +298,7 @@ class ExportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
         # if not self.filename:
         #    self.filename = self.file.name
 
-        super(ExportItem, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 def post_save_exportitem(sender, **kwargs):

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import migrations, models
 import jsonfield.fields
 import django.utils.timezone
@@ -94,6 +91,6 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.AlterUniqueTogether(
-            name="follow", unique_together=set([("user", "content_type", "object_id")])
+            name="follow", unique_together={("user", "content_type", "object_id")}
         ),
     ]

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import collections
 import logging
 import os
@@ -49,7 +46,7 @@ def clean_filename(filename):
     import unicodedata
     import string
 
-    valid_chars = "-_.%s%s" % (string.ascii_letters, string.digits)
+    valid_chars = "-_.{}{}".format(string.ascii_letters, string.digits)
     cleaned = unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore")
     return "".join(c for c in cleaned if c in valid_chars)
 
@@ -59,11 +56,11 @@ def masterpath_by_uuid(instance, filename):
     folder = "private/%s/" % (str(instance.uuid).replace("-", "/")[5:])
     filename = "master"
     return os.path.join(
-        folder, "%s%s" % (clean_filename(filename).lower(), extension.lower())
+        folder, "{}{}".format(clean_filename(filename).lower(), extension.lower())
     )
 
 
-class Importer(object):
+class Importer:
     def __init__(self, user=None):
 
         self.mb_completed = []
@@ -139,9 +136,9 @@ class Importer(object):
 
             # there can be multiple ids split by '/' here
             if "/" in mb_artist_id:
-                log.debug("got multiple mb artist ids: {}".format(mb_artist_id))
+                log.debug(f"got multiple mb artist ids: {mb_artist_id}")
 
-                url = "http://%s/ws/2/artist/%s/?fmt=json" % (
+                url = "http://{}/ws/2/artist/{}/?fmt=json".format(
                     MUSICBRAINZ_HOST,
                     mb_artist_id.split("/")[0],
                 )
@@ -279,7 +276,7 @@ class Importer(object):
                 lrs = lookup.release_by_mb_id(mb_release_id)
                 r = lrs[0]
                 log.debug(
-                    "got local release: %s by mb_release_id: %s" % (r.pk, mb_release_id)
+                    "got local release: {} by mb_release_id: {}".format(r.pk, mb_release_id)
                 )
             except Exception as e:
                 log.debug(
@@ -356,7 +353,7 @@ class Importer(object):
                 las = lookup.artist_by_mb_id(mb_artist_id)
                 a = las[0]
                 log.debug(
-                    "got local artist: %s by mb_artist_id: %s" % (a.pk, mb_artist_id)
+                    "got local artist: {} by mb_artist_id: {}".format(a.pk, mb_artist_id)
                 )
             except Exception as e:
                 # print e
@@ -453,10 +450,10 @@ class Importer(object):
             log.debug("os.makedirs: %s" % os.path.join(MEDIA_ROOT, folder))
             os.makedirs(os.path.join(MEDIA_ROOT, folder))
 
-            log.debug("os.shutil.copy: %s - %s" % (src, os.path.join(MEDIA_ROOT, dst)))
+            log.debug("os.shutil.copy: {} - {}".format(src, os.path.join(MEDIA_ROOT, dst)))
             shutil.copy(src, os.path.join(MEDIA_ROOT, dst))
 
-            log.debug("set master for pk: %s to %s" % (m.pk, dst))
+            log.debug("set master for pk: {} to {}".format(m.pk, dst))
             m.master = dst
             m.original_filename = obj.filename
 
@@ -671,7 +668,7 @@ task definitions
 def mb_complete_media_task(
     obj, mb_id, mb_release_id, mb_artist_combo_ids=None, excludes=(), user=None
 ):
-    log.info("complete media, m: %s | mb_id: %s" % (obj.name, mb_id))
+    log.info("complete media, m: {} | mb_id: {}".format(obj.name, mb_id))
 
     time.sleep(1.1)
 
@@ -685,7 +682,7 @@ def mb_complete_media_task(
         "work-level-rels",
         "artist-credits",
     )
-    url = "http://%s/ws/2/recording/%s/?fmt=json&inc=%s" % (
+    url = "http://{}/ws/2/recording/{}/?fmt=json&inc={}".format(
         MUSICBRAINZ_HOST,
         mb_id,
         "+".join(inc),
@@ -696,7 +693,7 @@ def mb_complete_media_task(
 
     # get release based information (to map track- and disc-number)
     inc = ("recordings",)
-    url = "http://%s/ws/2/release/%s/?fmt=json&inc=%s" % (
+    url = "http://{}/ws/2/release/{}/?fmt=json&inc={}".format(
         MUSICBRAINZ_HOST,
         mb_release_id,
         "+".join(inc),
@@ -871,7 +868,7 @@ def mb_complete_media_task(
 
 @shared_task
 def mb_complete_release_task(obj, mb_id, user=None):
-    log.info("complete release, r: %s | mb_id: %s" % (obj.name, mb_id))
+    log.info("complete release, r: {} | mb_id: {}".format(obj.name, mb_id))
 
     inc = (
         "artists",
@@ -887,7 +884,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
         "label-rels",
         "release-groups",
     )
-    url = "http://%s/ws/2/release/%s/?fmt=json&inc=%s" % (
+    url = "http://{}/ws/2/release/{}/?fmt=json&inc={}".format(
         MUSICBRAINZ_HOST,
         mb_id,
         "+".join(inc),
@@ -937,7 +934,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
     if rg_id:
         # try to get discogs master url
         inc = ("url-rels",)
-        url = "http://%s/ws/2/release-group/%s/?fmt=json&inc=%s" % (
+        url = "http://{}/ws/2/release-group/{}/?fmt=json&inc={}".format(
             MUSICBRAINZ_HOST,
             rg_id,
             "+".join(inc),
@@ -1081,7 +1078,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
             pass
 
         if discogs_id:
-            url = "http://%s/releases/%s" % (DISCOGS_HOST, discogs_id)
+            url = "http://{}/releases/{}".format(DISCOGS_HOST, discogs_id)
             r = requests.get(url, timeout=5)
 
             try:
@@ -1114,7 +1111,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
             pass
 
         if discogs_id:
-            url = "http://%s/masters/%s" % (DISCOGS_HOST, discogs_id)
+            url = "http://{}/masters/{}".format(DISCOGS_HOST, discogs_id)
             r = requests.get(url, timeout=5)
 
             try:
@@ -1167,7 +1164,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
         elif len(date) == 10:
             date = "%s" % date
 
-        re_date = re.compile("^\d{4}-\d{2}-\d{2}$")
+        re_date = re.compile(r"^\d{4}-\d{2}-\d{2}$")
         if re_date.match(date) and date != "0000-00-00":
             obj.releasedate_approx = "%s" % date
 
@@ -1237,7 +1234,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
             try:
                 lls = lookup.label_by_mb_id(mb_label_id)
                 l = lls[0]
-                log.debug("got label: %s by mb_label_id: %s" % (l.pk, mb_label_id))
+                log.debug("got label: {} by mb_label_id: {}".format(l.pk, mb_label_id))
             except Exception as e:
                 log.debug("could not get label by mb_label_id: %s" % mb_label_id)
                 log.info("create label with mb_id: %s" % mb_label_id)
@@ -1268,20 +1265,20 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
 @shared_task
 def mb_complete_artist_task(obj, mb_id, user=None):
-    log.info("complete artist, a: %s %s | mb_id: %s" % (obj.name, obj.pk, mb_id))
+    log.info("complete artist, a: {} {} | mb_id: {}".format(obj.name, obj.pk, mb_id))
 
-    lock_key = "complete-{}".format(mb_id)
+    lock_key = f"complete-{mb_id}"
 
     if cache.get(lock_key) is not None:
 
-        log.warning("completeion locked for id: {}".format(mb_id))
+        log.warning(f"completeion locked for id: {mb_id}")
 
     else:
 
         cache.set(lock_key, "lock", 60)
 
         inc = ("artist-rels", "url-rels", "tags")
-        url = "http://%s/ws/2/artist/%s/?fmt=json&inc=%s" % (
+        url = "http://{}/ws/2/artist/{}/?fmt=json&inc={}".format(
             MUSICBRAINZ_HOST,
             mb_id,
             "+".join(inc),
@@ -1316,7 +1313,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
         if life_span:
             date_start = life_span.get("begin", None)
             date_end = life_span.get("end", None)
-            log.debug("got lifespan: %s to %s" % (date_start, date_end))
+            log.debug("got lifespan: {} to {}".format(date_start, date_end))
             if date_start:
                 if len(date_start) == 4:
                     date_start = "%s-00-00" % date_start
@@ -1324,7 +1321,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                     date_start = "%s-00" % date_start
                 elif len(date_start) == 10:
                     date_start = "%s" % date_start
-                re_date_start = re.compile("^\d{4}-\d{2}-\d{2}$")
+                re_date_start = re.compile(r"^\d{4}-\d{2}-\d{2}$")
                 if re_date_start.match(date_start) and date_start != "0000-00-00":
                     obj.date_start = "%s" % date_start
 
@@ -1335,7 +1332,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                     date_end = "%s-00" % date_end
                 elif len(date_end) == 10:
                     date_end = "%s" % date_end
-                re_date_end = re.compile("^\d{4}-\d{2}-\d{2}$")
+                re_date_end = re.compile(r"^\d{4}-\d{2}-\d{2}$")
                 if re_date_end.match(date_end) and date_end != "0000-00-00":
                     obj.date_end = "%s" % date_end
 
@@ -1365,7 +1362,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
 
             if relation["type"] in valid_relations:
                 log.debug(
-                    "got %s url for artist: %s" % (relation["type"], relation["url"])
+                    "got {} url for artist: {}".format(relation["type"], relation["url"])
                 )
 
                 try:
@@ -1453,7 +1450,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                 pass
 
             if discogs_id:
-                url = "http://%s/artists/%s" % (DISCOGS_HOST, discogs_id)
+                url = "http://{}/artists/{}".format(DISCOGS_HOST, discogs_id)
                 r = requests.get(url, timeout=5)
 
                 try:
@@ -1591,7 +1588,7 @@ def mb_complete_label_task(obj, mb_id, user=None):
     log.info("complete label, mb_id: %s" % mb_id)
 
     inc = ("url-rels", "tags", "aliases")
-    url = "http://%s/ws/2/label/%s/?fmt=json&inc=%s" % (
+    url = "http://{}/ws/2/label/{}/?fmt=json&inc={}".format(
         MUSICBRAINZ_HOST,
         mb_id,
         "+".join(inc),
@@ -1680,7 +1677,7 @@ def mb_complete_label_task(obj, mb_id, user=None):
             pass
 
         if discogs_id:
-            url = "http://%s/labels/%s" % (DISCOGS_HOST, discogs_id)
+            url = "http://{}/labels/{}".format(DISCOGS_HOST, discogs_id)
 
             log.debug("url: %s" % url)
             r = requests.get(url, timeout=5)
@@ -1719,7 +1716,7 @@ def mb_complete_label_task(obj, mb_id, user=None):
             elif len(date_start) == 10:
                 date = "%s" % date_start
 
-            re_date = re.compile("^\d{4}-\d{2}-\d{2}$")
+            re_date = re.compile(r"^\d{4}-\d{2}-\d{2}$")
             if re_date.match(date) and date != "0000-00-00":
                 obj.date_start = "%s" % date
 
@@ -1731,7 +1728,7 @@ def mb_complete_label_task(obj, mb_id, user=None):
             elif len(date_end) == 10:
                 date = "%s" % date_end
 
-            re_date = re.compile("^\d{4}-\d{2}-\d{2}$")
+            re_date = re.compile(r"^\d{4}-\d{2}-\d{2}$")
             if re_date.match(date) and date != "0000-00-00":
                 obj.date_end = "%s" % date
 

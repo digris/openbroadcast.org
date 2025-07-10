@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 import os
 import time
@@ -72,10 +69,10 @@ class UnuspiciousStorage(FileSystemStorage):
 def clean_upload_path(instance, filename):
 
     filename, extension = os.path.splitext(filename)
-    valid_chars = "-_.%s%s" % (string.ascii_letters, string.digits)
+    valid_chars = "-_.{}{}".format(string.ascii_letters, string.digits)
     cleaned_filename = unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore")
     folder = "import/%s/" % time.strftime("%Y%m%d%H%M%S", time.gmtime())
-    return os.path.join(folder, "%s%s" % (cleaned_filename.lower(), extension.lower()))
+    return os.path.join(folder, "{}{}".format(cleaned_filename.lower(), extension.lower()))
 
 
 @python_2_unicode_compatible
@@ -129,7 +126,7 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
         ordering = ("-created",)
 
     def __str__(self):
-        return "%s | %s" % (self.created, self.user)
+        return "{} | {}".format(self.created, self.user)
 
     @models.permalink
     def get_absolute_url(self):
@@ -180,7 +177,7 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
         url = reverse(
             "api_dispatch_list", kwargs={"resource_name": "import", "api_name": "v1"}
         )
-        return "%s%s/" % (url, self.pk)
+        return "{}{}/".format(url, self.pk)
 
     def apply_import_tag(self, importfile, **kwargs):
 
@@ -215,7 +212,7 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def add_importitem(self, item):
 
-        log.debug("add importitem: {}".format(item))
+        log.debug(f"add importitem: {item}")
         ctype = ContentType.objects.get_for_model(item)
 
         created = False
@@ -224,7 +221,7 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
                 object_id=item.pk, content_type=ctype, import_session=self
             )
         except Exception as e:
-            log.warning("unable to create importitem: {} - {}".format(item, e))
+            log.warning(f"unable to create importitem: {item} - {e}")
             pass
 
         try:
@@ -249,11 +246,11 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
         importitems = {}
         for obj in [i for i in qs if i.content_object and i.content_type.model in cts]:
-            ct = "{}".format(obj.content_type.model)
+            ct = f"{obj.content_type.model}"
             if not ct in importitems:
                 importitems[ct] = {
                     "name": obj.content_object._meta.verbose_name_plural,
-                    "url": reverse("alibrary-{}-list".format(ct)),
+                    "url": reverse(f"alibrary-{ct}-list"),
                     "items": [],
                 }
 
@@ -268,7 +265,7 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
         return ii_ids
 
     def save(self, *args, **kwargs):
-        super(Import, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 @python_2_unicode_compatible
@@ -357,13 +354,13 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
             "api_dispatch_list",
             kwargs={"resource_name": "importfile", "api_name": "v1"},
         )
-        return "%s%s/" % (url, self.pk)
+        return "{}{}/".format(url, self.pk)
 
     def get_delete_url(self):
         return ""
 
     def identify(self):
-        log.info("Start processing ImportFile: %s at %s" % (self.pk, self.file.path))
+        log.info("Start processing ImportFile: {} at {}".format(self.pk, self.file.path))
 
         if USE_CELERYD:
             self.identify_task.delay(self)
@@ -390,7 +387,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
         # get import settings
         reimport_duplicate = obj.settings.get("reimport_duplicate", False)
         if reimport_duplicate:
-            log.debug("duplicate reimport forced for pk: {}".format(obj.pk))
+            log.debug(f"duplicate reimport forced for pk: {obj.pk}")
 
         media_id = None
 
@@ -404,23 +401,23 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
             # duplicate check by sha1
             try:
                 media_id = identifier.id_by_sha1(obj.file)
-                log.debug("duplicate by SHA1: {}".format(media_id))
+                log.debug(f"duplicate by SHA1: {media_id}")
             except:
-                log.warning("unable to identify by sha1: {}".format(media_id))
+                log.warning(f"unable to identify by sha1: {media_id}")
 
             # duplicate check by name matching
             if not media_id:
                 try:
                     media_id = identifier.id_by_metadata(obj.file)
-                    log.debug("duplicate by metadata: : {}".format(media_id))
+                    log.debug(f"duplicate by metadata: : {media_id}")
                 except:
-                    log.warning("unable to identify by metadata: {}".format(media_id))
+                    log.warning(f"unable to identify by metadata: {media_id}")
 
             # duplicate check by fprint
             if not media_id:
                 try:
                     media_id = identifier.id_by_fprint(obj.file)
-                    log.debug("possible duplicate by fprint: {}".format(media_id))
+                    log.debug(f"possible duplicate by fprint: {media_id}")
 
                     # if possible duplicate and to be imported file have
                     # both a musicbrainz recording id then ignore
@@ -445,7 +442,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
                         pass
 
                 except:
-                    log.warning("unable to identify by fprint: {}".format(media_id))
+                    log.warning(f"unable to identify by fprint: {media_id}")
 
         try:
             metadata = identifier.extract_metadata(obj.file)
@@ -589,7 +586,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def do_import(self):
 
-        log.debug("Start importing ImportFile: %s at %s" % (self.pk, self.file.path))
+        log.debug("Start importing ImportFile: {} at {}".format(self.pk, self.file.path))
 
         if USE_CELERYD:
             self.import_task.delay(self)
@@ -615,7 +612,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
         else:
             obj.status = 99
 
-        log.info("Ending import task with status: %s for: %s" % (obj.status, obj.pk))
+        log.info("Ending import task with status: {} for: {}".format(obj.status, obj.pk))
 
         obj.save()
 
@@ -667,7 +664,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
             num_release_matches = None
         self.import_tag["alibrary_release_matches"] = num_release_matches
 
-        super(ImportFile, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 @disable_for_loaddata
@@ -732,7 +729,7 @@ class ImportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def __str__(self):
         try:
-            return "%s | %s" % (
+            return "{} | {}".format(
                 ContentType.objects.get_for_model(self.content_object),
                 self.content_object.name,
             )
@@ -740,7 +737,7 @@ class ImportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
             return "%s" % (self.pk)
 
     def save(self, *args, **kwargs):
-        super(ImportItem, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 @receiver(post_save, sender=ImportItem)

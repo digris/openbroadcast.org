@@ -52,13 +52,11 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
         ):
             generic_fields.append(field)
 
-    blank_local_fields = set(
-        [
+    blank_local_fields = {
             field.attname
             for field in primary_object._meta.local_fields
             if getattr(primary_object, field.attname) in [None, ""]
-        ]
-    )
+    }
 
     # Loop through all alias objects and migrate their data to the primary object.
     for alias_object in alias_objects:
@@ -75,7 +73,7 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
                     setattr(obj, obj_varname, primary_object)
                     obj.save()
             except AttributeError as e:
-                log.warning('unable to handle "related_objects": {}'.format(e))
+                log.warning(f'unable to handle "related_objects": {e}')
                 pass
 
         # Migrate all many to many references from alias object to primary object.
@@ -171,10 +169,10 @@ def merge_tags(primary_object, alias_objects):
     """
     print("merging tags")
     for obj in alias_objects:
-        print("slave {}".format(obj))
+        print(f"slave {obj}")
         for tag in obj.tags.all():
-            print("tag {}".format(tag))
-            Tag.objects.add_tag(primary_object, '"{}"'.format(tag.name))
+            print(f"tag {tag}")
+            Tag.objects.add_tag(primary_object, f'"{tag.name}"')
 
     print("tags after save", primary_object.tags.all())
 

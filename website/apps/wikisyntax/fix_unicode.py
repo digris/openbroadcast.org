@@ -32,76 +32,76 @@ xlate = XLate(
         # NLM's conversion from its legacy extended EBCDIC character set
         # to UNICODE UTF-8."  I do not use it but leave it here for
         # completeness.
-        ord(u"\N{INVERTED QUESTION MARK}"): None,
-        ord(u"\N{LATIN CAPITAL LETTER O WITH STROKE}"): u"O",
-        ord(u"\N{LATIN SMALL LETTER A WITH GRAVE}"): u"a",
-        ord(u"\N{LATIN SMALL LETTER A WITH ACUTE}"): u"a",
-        ord(u"\N{LATIN SMALL LETTER A WITH CIRCUMFLEX}"): u"a",
-        ord(u"\N{LATIN SMALL LETTER A WITH TILDE}"): u"a",
-        ord(u"\N{LATIN SMALL LETTER A WITH DIAERESIS}"): u"a",
-        ord(u"\N{LATIN SMALL LETTER A WITH RING ABOVE}"): u"a",
-        ord(u"\N{LATIN SMALL LETTER C WITH CEDILLA}"): u"c",
-        ord(u"\N{LATIN SMALL LETTER E WITH GRAVE}"): u"e",
-        ord(u"\N{LATIN SMALL LETTER E WITH ACUTE}"): u"e",
-        ord(u"\N{LATIN SMALL LETTER E WITH CIRCUMFLEX}"): u"e",
-        ord(u"\N{LATIN SMALL LETTER E WITH DIAERESIS}"): u"e",
-        ord(u"\N{LATIN SMALL LETTER I WITH GRAVE}"): u"i",
-        ord(u"\N{LATIN SMALL LETTER I WITH ACUTE}"): u"i",
-        ord(u"\N{LATIN SMALL LETTER I WITH CIRCUMFLEX}"): u"i",
-        ord(u"\N{LATIN SMALL LETTER I WITH DIAERESIS}"): u"i",
-        ord(u"\N{LATIN SMALL LETTER N WITH TILDE}"): u"n",
-        ord(u"\N{LATIN SMALL LETTER O WITH GRAVE}"): u"o",
-        ord(u"\N{LATIN SMALL LETTER O WITH ACUTE}"): u"o",
-        ord(u"\N{LATIN SMALL LETTER O WITH CIRCUMFLEX}"): u"o",
-        ord(u"\N{LATIN SMALL LETTER O WITH TILDE}"): u"o",
-        ord(u"\N{LATIN SMALL LETTER O WITH DIAERESIS}"): u"o",
-        ord(u"\N{LATIN SMALL LETTER O WITH STROKE}"): u"o",
-        ord(u"\N{LATIN SMALL LETTER U WITH GRAVE}"): u"u",
-        ord(u"\N{LATIN SMALL LETTER U WITH ACUTE}"): u"u",
-        ord(u"\N{LATIN SMALL LETTER U WITH CIRCUMFLEX}"): u"u",
-        ord(u"\N{LATIN SMALL LETTER U WITH DIAERESIS}"): u"u",
-        ord(u"\N{LATIN SMALL LETTER Y WITH ACUTE}"): u"y",
-        ord(u"\N{LATIN SMALL LETTER Y WITH DIAERESIS}"): u"y",
-        ord(u"\N{LATIN SMALL LETTER A WITH MACRON}"): u"a",
-        ord(u"\N{LATIN SMALL LETTER A WITH BREVE}"): u"a",
-        ord(u"\N{LATIN SMALL LETTER C WITH ACUTE}"): u"c",
-        ord(u"\N{LATIN SMALL LETTER C WITH CIRCUMFLEX}"): u"c",
-        ord(u"\N{LATIN SMALL LETTER E WITH MACRON}"): u"e",
-        ord(u"\N{LATIN SMALL LETTER E WITH BREVE}"): u"e",
-        ord(u"\N{LATIN SMALL LETTER G WITH CIRCUMFLEX}"): u"g",
-        ord(u"\N{LATIN SMALL LETTER G WITH BREVE}"): u"g",
-        ord(u"\N{LATIN SMALL LETTER G WITH CEDILLA}"): u"g",
-        ord(u"\N{LATIN SMALL LETTER H WITH CIRCUMFLEX}"): u"h",
-        ord(u"\N{LATIN SMALL LETTER I WITH TILDE}"): u"i",
-        ord(u"\N{LATIN SMALL LETTER I WITH MACRON}"): u"i",
-        ord(u"\N{LATIN SMALL LETTER I WITH BREVE}"): u"i",
-        ord(u"\N{LATIN SMALL LETTER J WITH CIRCUMFLEX}"): u"j",
-        ord(u"\N{LATIN SMALL LETTER K WITH CEDILLA}"): u"k",
-        ord(u"\N{LATIN SMALL LETTER L WITH ACUTE}"): u"l",
-        ord(u"\N{LATIN SMALL LETTER L WITH CEDILLA}"): u"l",
-        ord(u"\N{LATIN CAPITAL LETTER L WITH STROKE}"): u"L",
-        ord(u"\N{LATIN SMALL LETTER L WITH STROKE}"): u"l",
-        ord(u"\N{LATIN SMALL LETTER N WITH ACUTE}"): u"n",
-        ord(u"\N{LATIN SMALL LETTER N WITH CEDILLA}"): u"n",
-        ord(u"\N{LATIN SMALL LETTER O WITH MACRON}"): u"o",
-        ord(u"\N{LATIN SMALL LETTER O WITH BREVE}"): u"o",
-        ord(u"\N{LATIN SMALL LETTER R WITH ACUTE}"): u"r",
-        ord(u"\N{LATIN SMALL LETTER R WITH CEDILLA}"): u"r",
-        ord(u"\N{LATIN SMALL LETTER S WITH ACUTE}"): u"s",
-        ord(u"\N{LATIN SMALL LETTER S WITH CIRCUMFLEX}"): u"s",
-        ord(u"\N{LATIN SMALL LETTER S WITH CEDILLA}"): u"s",
-        ord(u"\N{LATIN SMALL LETTER T WITH CEDILLA}"): u"t",
-        ord(u"\N{LATIN SMALL LETTER U WITH TILDE}"): u"u",
-        ord(u"\N{LATIN SMALL LETTER U WITH MACRON}"): u"u",
-        ord(u"\N{LATIN SMALL LETTER U WITH BREVE}"): u"u",
-        ord(u"\N{LATIN SMALL LETTER U WITH RING ABOVE}"): u"u",
-        ord(u"\N{LATIN SMALL LETTER W WITH CIRCUMFLEX}"): u"w",
-        ord(u"\N{LATIN SMALL LETTER Y WITH CIRCUMFLEX}"): u"y",
-        ord(u"\N{LATIN SMALL LETTER Z WITH ACUTE}"): u"z",
-        ord(u"\N{LATIN SMALL LETTER W WITH GRAVE}"): u"w",
-        ord(u"\N{LATIN SMALL LETTER W WITH ACUTE}"): u"w",
-        ord(u"\N{LATIN SMALL LETTER W WITH DIAERESIS}"): u"w",
-        ord(u"\N{LATIN SMALL LETTER Y WITH GRAVE}"): u"y",
+        ord("\N{INVERTED QUESTION MARK}"): None,
+        ord("\N{LATIN CAPITAL LETTER O WITH STROKE}"): "O",
+        ord("\N{LATIN SMALL LETTER A WITH GRAVE}"): "a",
+        ord("\N{LATIN SMALL LETTER A WITH ACUTE}"): "a",
+        ord("\N{LATIN SMALL LETTER A WITH CIRCUMFLEX}"): "a",
+        ord("\N{LATIN SMALL LETTER A WITH TILDE}"): "a",
+        ord("\N{LATIN SMALL LETTER A WITH DIAERESIS}"): "a",
+        ord("\N{LATIN SMALL LETTER A WITH RING ABOVE}"): "a",
+        ord("\N{LATIN SMALL LETTER C WITH CEDILLA}"): "c",
+        ord("\N{LATIN SMALL LETTER E WITH GRAVE}"): "e",
+        ord("\N{LATIN SMALL LETTER E WITH ACUTE}"): "e",
+        ord("\N{LATIN SMALL LETTER E WITH CIRCUMFLEX}"): "e",
+        ord("\N{LATIN SMALL LETTER E WITH DIAERESIS}"): "e",
+        ord("\N{LATIN SMALL LETTER I WITH GRAVE}"): "i",
+        ord("\N{LATIN SMALL LETTER I WITH ACUTE}"): "i",
+        ord("\N{LATIN SMALL LETTER I WITH CIRCUMFLEX}"): "i",
+        ord("\N{LATIN SMALL LETTER I WITH DIAERESIS}"): "i",
+        ord("\N{LATIN SMALL LETTER N WITH TILDE}"): "n",
+        ord("\N{LATIN SMALL LETTER O WITH GRAVE}"): "o",
+        ord("\N{LATIN SMALL LETTER O WITH ACUTE}"): "o",
+        ord("\N{LATIN SMALL LETTER O WITH CIRCUMFLEX}"): "o",
+        ord("\N{LATIN SMALL LETTER O WITH TILDE}"): "o",
+        ord("\N{LATIN SMALL LETTER O WITH DIAERESIS}"): "o",
+        ord("\N{LATIN SMALL LETTER O WITH STROKE}"): "o",
+        ord("\N{LATIN SMALL LETTER U WITH GRAVE}"): "u",
+        ord("\N{LATIN SMALL LETTER U WITH ACUTE}"): "u",
+        ord("\N{LATIN SMALL LETTER U WITH CIRCUMFLEX}"): "u",
+        ord("\N{LATIN SMALL LETTER U WITH DIAERESIS}"): "u",
+        ord("\N{LATIN SMALL LETTER Y WITH ACUTE}"): "y",
+        ord("\N{LATIN SMALL LETTER Y WITH DIAERESIS}"): "y",
+        ord("\N{LATIN SMALL LETTER A WITH MACRON}"): "a",
+        ord("\N{LATIN SMALL LETTER A WITH BREVE}"): "a",
+        ord("\N{LATIN SMALL LETTER C WITH ACUTE}"): "c",
+        ord("\N{LATIN SMALL LETTER C WITH CIRCUMFLEX}"): "c",
+        ord("\N{LATIN SMALL LETTER E WITH MACRON}"): "e",
+        ord("\N{LATIN SMALL LETTER E WITH BREVE}"): "e",
+        ord("\N{LATIN SMALL LETTER G WITH CIRCUMFLEX}"): "g",
+        ord("\N{LATIN SMALL LETTER G WITH BREVE}"): "g",
+        ord("\N{LATIN SMALL LETTER G WITH CEDILLA}"): "g",
+        ord("\N{LATIN SMALL LETTER H WITH CIRCUMFLEX}"): "h",
+        ord("\N{LATIN SMALL LETTER I WITH TILDE}"): "i",
+        ord("\N{LATIN SMALL LETTER I WITH MACRON}"): "i",
+        ord("\N{LATIN SMALL LETTER I WITH BREVE}"): "i",
+        ord("\N{LATIN SMALL LETTER J WITH CIRCUMFLEX}"): "j",
+        ord("\N{LATIN SMALL LETTER K WITH CEDILLA}"): "k",
+        ord("\N{LATIN SMALL LETTER L WITH ACUTE}"): "l",
+        ord("\N{LATIN SMALL LETTER L WITH CEDILLA}"): "l",
+        ord("\N{LATIN CAPITAL LETTER L WITH STROKE}"): "L",
+        ord("\N{LATIN SMALL LETTER L WITH STROKE}"): "l",
+        ord("\N{LATIN SMALL LETTER N WITH ACUTE}"): "n",
+        ord("\N{LATIN SMALL LETTER N WITH CEDILLA}"): "n",
+        ord("\N{LATIN SMALL LETTER O WITH MACRON}"): "o",
+        ord("\N{LATIN SMALL LETTER O WITH BREVE}"): "o",
+        ord("\N{LATIN SMALL LETTER R WITH ACUTE}"): "r",
+        ord("\N{LATIN SMALL LETTER R WITH CEDILLA}"): "r",
+        ord("\N{LATIN SMALL LETTER S WITH ACUTE}"): "s",
+        ord("\N{LATIN SMALL LETTER S WITH CIRCUMFLEX}"): "s",
+        ord("\N{LATIN SMALL LETTER S WITH CEDILLA}"): "s",
+        ord("\N{LATIN SMALL LETTER T WITH CEDILLA}"): "t",
+        ord("\N{LATIN SMALL LETTER U WITH TILDE}"): "u",
+        ord("\N{LATIN SMALL LETTER U WITH MACRON}"): "u",
+        ord("\N{LATIN SMALL LETTER U WITH BREVE}"): "u",
+        ord("\N{LATIN SMALL LETTER U WITH RING ABOVE}"): "u",
+        ord("\N{LATIN SMALL LETTER W WITH CIRCUMFLEX}"): "w",
+        ord("\N{LATIN SMALL LETTER Y WITH CIRCUMFLEX}"): "y",
+        ord("\N{LATIN SMALL LETTER Z WITH ACUTE}"): "z",
+        ord("\N{LATIN SMALL LETTER W WITH GRAVE}"): "w",
+        ord("\N{LATIN SMALL LETTER W WITH ACUTE}"): "w",
+        ord("\N{LATIN SMALL LETTER W WITH DIAERESIS}"): "w",
+        ord("\N{LATIN SMALL LETTER Y WITH GRAVE}"): "y",
     }
 )
 
@@ -109,97 +109,97 @@ xlate = XLate(
 # building one unicode string here, and not a tuple of unicode
 # characters.
 for c in (
-    u"\N{SPACE}"
-    u"\N{EXCLAMATION MARK}"
-    u"\N{QUOTATION MARK}"
-    u"\N{NUMBER SIGN}"
-    u"\N{DOLLAR SIGN}"
-    u"\N{PERCENT SIGN}"
-    u"\N{AMPERSAND}"
-    u"\N{APOSTROPHE}"
-    u"\N{LEFT PARENTHESIS}"
-    u"\N{RIGHT PARENTHESIS}"
-    u"\N{ASTERISK}"
-    u"\N{PLUS SIGN}"
-    u"\N{COMMA}"
-    u"\N{HYPHEN-MINUS}"
-    u"\N{FULL STOP}"
-    u"\N{SOLIDUS}"
-    u"\N{DIGIT ZERO}"
-    u"\N{DIGIT ONE}"
-    u"\N{DIGIT TWO}"
-    u"\N{DIGIT THREE}"
-    u"\N{DIGIT FOUR}"
-    u"\N{DIGIT FIVE}"
-    u"\N{DIGIT SIX}"
-    u"\N{DIGIT SEVEN}"
-    u"\N{DIGIT EIGHT}"
-    u"\N{DIGIT NINE}"
-    u"\N{COLON}"
-    u"\N{SEMICOLON}"
-    u"\N{LESS-THAN SIGN}"
-    u"\N{EQUALS SIGN}"
-    u"\N{GREATER-THAN SIGN}"
-    u"\N{QUESTION MARK}"
-    u"\N{COMMERCIAL AT}"
-    u"\N{LATIN CAPITAL LETTER A}"
-    u"\N{LATIN CAPITAL LETTER B}"
-    u"\N{LATIN CAPITAL LETTER C}"
-    u"\N{LATIN CAPITAL LETTER D}"
-    u"\N{LATIN CAPITAL LETTER E}"
-    u"\N{LATIN CAPITAL LETTER F}"
-    u"\N{LATIN CAPITAL LETTER G}"
-    u"\N{LATIN CAPITAL LETTER H}"
-    u"\N{LATIN CAPITAL LETTER I}"
-    u"\N{LATIN CAPITAL LETTER J}"
-    u"\N{LATIN CAPITAL LETTER K}"
-    u"\N{LATIN CAPITAL LETTER L}"
-    u"\N{LATIN CAPITAL LETTER M}"
-    u"\N{LATIN CAPITAL LETTER N}"
-    u"\N{LATIN CAPITAL LETTER O}"
-    u"\N{LATIN CAPITAL LETTER P}"
-    u"\N{LATIN CAPITAL LETTER Q}"
-    u"\N{LATIN CAPITAL LETTER R}"
-    u"\N{LATIN CAPITAL LETTER S}"
-    u"\N{LATIN CAPITAL LETTER T}"
-    u"\N{LATIN CAPITAL LETTER U}"
-    u"\N{LATIN CAPITAL LETTER V}"
-    u"\N{LATIN CAPITAL LETTER W}"
-    u"\N{LATIN CAPITAL LETTER X}"
-    u"\N{LATIN CAPITAL LETTER Y}"
-    u"\N{LATIN CAPITAL LETTER Z}"
-    u"\N{LEFT SQUARE BRACKET}"
-    u"\N{REVERSE SOLIDUS}"
-    u"\N{RIGHT SQUARE BRACKET}"
-    u"\N{LOW LINE}"
-    u"\N{LATIN SMALL LETTER A}"
-    u"\N{LATIN SMALL LETTER B}"
-    u"\N{LATIN SMALL LETTER C}"
-    u"\N{LATIN SMALL LETTER D}"
-    u"\N{LATIN SMALL LETTER E}"
-    u"\N{LATIN SMALL LETTER F}"
-    u"\N{LATIN SMALL LETTER G}"
-    u"\N{LATIN SMALL LETTER H}"
-    u"\N{LATIN SMALL LETTER I}"
-    u"\N{LATIN SMALL LETTER J}"
-    u"\N{LATIN SMALL LETTER K}"
-    u"\N{LATIN SMALL LETTER L}"
-    u"\N{LATIN SMALL LETTER M}"
-    u"\N{LATIN SMALL LETTER N}"
-    u"\N{LATIN SMALL LETTER O}"
-    u"\N{LATIN SMALL LETTER P}"
-    u"\N{LATIN SMALL LETTER Q}"
-    u"\N{LATIN SMALL LETTER R}"
-    u"\N{LATIN SMALL LETTER S}"
-    u"\N{LATIN SMALL LETTER T}"
-    u"\N{LATIN SMALL LETTER U}"
-    u"\N{LATIN SMALL LETTER V}"
-    u"\N{LATIN SMALL LETTER W}"
-    u"\N{LATIN SMALL LETTER X}"
-    u"\N{LATIN SMALL LETTER Y}"
-    u"\N{LATIN SMALL LETTER Z}"
-    u"\N{VERTICAL LINE}"
-    u"\N{TILDE}"
+    "\N{SPACE}"
+    "\N{EXCLAMATION MARK}"
+    "\N{QUOTATION MARK}"
+    "\N{NUMBER SIGN}"
+    "\N{DOLLAR SIGN}"
+    "\N{PERCENT SIGN}"
+    "\N{AMPERSAND}"
+    "\N{APOSTROPHE}"
+    "\N{LEFT PARENTHESIS}"
+    "\N{RIGHT PARENTHESIS}"
+    "\N{ASTERISK}"
+    "\N{PLUS SIGN}"
+    "\N{COMMA}"
+    "\N{HYPHEN-MINUS}"
+    "\N{FULL STOP}"
+    "\N{SOLIDUS}"
+    "\N{DIGIT ZERO}"
+    "\N{DIGIT ONE}"
+    "\N{DIGIT TWO}"
+    "\N{DIGIT THREE}"
+    "\N{DIGIT FOUR}"
+    "\N{DIGIT FIVE}"
+    "\N{DIGIT SIX}"
+    "\N{DIGIT SEVEN}"
+    "\N{DIGIT EIGHT}"
+    "\N{DIGIT NINE}"
+    "\N{COLON}"
+    "\N{SEMICOLON}"
+    "\N{LESS-THAN SIGN}"
+    "\N{EQUALS SIGN}"
+    "\N{GREATER-THAN SIGN}"
+    "\N{QUESTION MARK}"
+    "\N{COMMERCIAL AT}"
+    "\N{LATIN CAPITAL LETTER A}"
+    "\N{LATIN CAPITAL LETTER B}"
+    "\N{LATIN CAPITAL LETTER C}"
+    "\N{LATIN CAPITAL LETTER D}"
+    "\N{LATIN CAPITAL LETTER E}"
+    "\N{LATIN CAPITAL LETTER F}"
+    "\N{LATIN CAPITAL LETTER G}"
+    "\N{LATIN CAPITAL LETTER H}"
+    "\N{LATIN CAPITAL LETTER I}"
+    "\N{LATIN CAPITAL LETTER J}"
+    "\N{LATIN CAPITAL LETTER K}"
+    "\N{LATIN CAPITAL LETTER L}"
+    "\N{LATIN CAPITAL LETTER M}"
+    "\N{LATIN CAPITAL LETTER N}"
+    "\N{LATIN CAPITAL LETTER O}"
+    "\N{LATIN CAPITAL LETTER P}"
+    "\N{LATIN CAPITAL LETTER Q}"
+    "\N{LATIN CAPITAL LETTER R}"
+    "\N{LATIN CAPITAL LETTER S}"
+    "\N{LATIN CAPITAL LETTER T}"
+    "\N{LATIN CAPITAL LETTER U}"
+    "\N{LATIN CAPITAL LETTER V}"
+    "\N{LATIN CAPITAL LETTER W}"
+    "\N{LATIN CAPITAL LETTER X}"
+    "\N{LATIN CAPITAL LETTER Y}"
+    "\N{LATIN CAPITAL LETTER Z}"
+    "\N{LEFT SQUARE BRACKET}"
+    "\N{REVERSE SOLIDUS}"
+    "\N{RIGHT SQUARE BRACKET}"
+    "\N{LOW LINE}"
+    "\N{LATIN SMALL LETTER A}"
+    "\N{LATIN SMALL LETTER B}"
+    "\N{LATIN SMALL LETTER C}"
+    "\N{LATIN SMALL LETTER D}"
+    "\N{LATIN SMALL LETTER E}"
+    "\N{LATIN SMALL LETTER F}"
+    "\N{LATIN SMALL LETTER G}"
+    "\N{LATIN SMALL LETTER H}"
+    "\N{LATIN SMALL LETTER I}"
+    "\N{LATIN SMALL LETTER J}"
+    "\N{LATIN SMALL LETTER K}"
+    "\N{LATIN SMALL LETTER L}"
+    "\N{LATIN SMALL LETTER M}"
+    "\N{LATIN SMALL LETTER N}"
+    "\N{LATIN SMALL LETTER O}"
+    "\N{LATIN SMALL LETTER P}"
+    "\N{LATIN SMALL LETTER Q}"
+    "\N{LATIN SMALL LETTER R}"
+    "\N{LATIN SMALL LETTER S}"
+    "\N{LATIN SMALL LETTER T}"
+    "\N{LATIN SMALL LETTER U}"
+    "\N{LATIN SMALL LETTER V}"
+    "\N{LATIN SMALL LETTER W}"
+    "\N{LATIN SMALL LETTER X}"
+    "\N{LATIN SMALL LETTER Y}"
+    "\N{LATIN SMALL LETTER Z}"
+    "\N{VERTICAL LINE}"
+    "\N{TILDE}"
 ):
     xlate[ord(c)] = c
 

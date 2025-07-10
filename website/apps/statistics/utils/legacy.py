@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import time
 import datetime
 from dateutil.relativedelta import relativedelta
@@ -15,7 +14,7 @@ def last_day_of_month(date):
     return date.replace(month=date.month + 1, day=1) - datetime.timedelta(days=1)
 
 
-class ObjectStatistics(object):
+class ObjectStatistics:
     def __init__(self, obj=None, user=None, artist=None, release=None):
         self.obj = obj
         self.user = user
@@ -143,7 +142,7 @@ class ObjectStatistics(object):
 
         data = []
         for el in month_map:
-            ts = int((time.mktime(el["date"].timetuple()))) * 1000
+            ts = int(time.mktime(el["date"].timetuple())) * 1000
             data.append([ts, el["count"]])
 
         return data

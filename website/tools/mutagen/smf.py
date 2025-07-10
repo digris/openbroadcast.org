@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015 Christoph Reiter
 #
 # This program is free software; you can redistribute it and/or modify
@@ -178,7 +177,7 @@ class SMFInfo(StreamInfo):
         self.length = _read_midi_length(fileobj)
 
     def pprint(self):
-        return u"SMF, %.2f seconds" % self.length
+        return "SMF, %.2f seconds" % self.length
 
 
 class SMF(FileType):
@@ -197,7 +196,7 @@ class SMF(FileType):
     def load(self, filething):
         try:
             self.info = SMFInfo(filething.fileobj)
-        except IOError as e:
+        except OSError as e:
             raise SMFError(e)
 
     def add_tags(self):

@@ -30,14 +30,14 @@ class FFProbe:
                     [FFPROBE_BINARY, "-h"], stdout=tempf, stderr=tempf
                 )
         except:
-            raise IOError("ffprobe not found.")
+            raise OSError("ffprobe not found.")
 
         if os.path.isfile(video_file):
             if str(platform.system()) == "Windows":
                 cmd = [FFPROBE_BINARY, "-show_streams", self.video_file]
             else:
                 cmd = [
-                    FFPROBE_BINARY + " -show_streams " + '"{}"'.format(self.video_file)
+                    FFPROBE_BINARY + " -show_streams " + f'"{self.video_file}"'
                 ]
 
             p = subprocess.Popen(
@@ -53,17 +53,17 @@ class FFProbe:
             self.audio = []
             datalines = []
             for a in iter(p.stdout.readline, b""):
-                if re.match("\[STREAM\]", a):
+                if re.match(r"\[STREAM\]", a):
                     datalines = []
-                elif re.match("\[\/STREAM\]", a):
+                elif re.match(r"\[\/STREAM\]", a):
                     self.streams.append(FFStream(datalines))
                     datalines = []
                 else:
                     datalines.append(a)
             for a in iter(p.stderr.readline, b""):
-                if re.match("\[STREAM\]", a):
+                if re.match(r"\[STREAM\]", a):
                     datalines = []
-                elif re.match("\[\/STREAM\]", a):
+                elif re.match(r"\[\/STREAM\]", a):
                     self.streams.append(FFStream(datalines))
                     datalines = []
                 else:
@@ -76,7 +76,7 @@ class FFProbe:
                 if a.isVideo():
                     self.video.append(a)
         else:
-            raise IOError("No such media file " + video_file)
+            raise OSError("No such media file " + video_file)
 
 
 class FFStream:

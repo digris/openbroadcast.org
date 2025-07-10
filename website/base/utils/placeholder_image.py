@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import base64
 import hashlib
 
@@ -26,7 +24,7 @@ def generate_placeholder_image(size=None):
     img_base64 = cache.get(cache_key)
 
     if img_base64:
-        return "data:image/png;base64,{}".format(img_base64)
+        return f"data:image/png;base64,{img_base64}"
 
     buffer = BytesIO()
     img = Image.new("RGBA", (size[0], size[1]), (255, 0, 0, 100))
@@ -35,4 +33,4 @@ def generate_placeholder_image(size=None):
     img_base64 = base64.b64encode(buffer.getvalue()).decode()
     cache.set(cache_key, img_base64, 60 * 60 * 24)
 
-    return "data:image/png;base64,{}".format(img_base64)
+    return f"data:image/png;base64,{img_base64}"

@@ -22,7 +22,7 @@ class EmptyPage(InvalidPage):
     pass
 
 
-class Paginator(object):
+class Paginator:
     def __init__(
         self,
         object_list,
@@ -137,7 +137,7 @@ def add_page_querystring(func):
     return wrapper
 
 
-class Page(object):
+class Page:
     def __init__(self, object_list, number, paginator, query_param_prefix=None):
         self.object_list = object_list
         self.paginator = paginator
@@ -159,7 +159,7 @@ class Page(object):
         self.number = PageRepresentation(number, self._other_page_querystring(number))
 
     def __repr__(self):
-        return "<Page %s of %s>" % (self.number, self.paginator.num_pages)
+        return "<Page {} of {}>".format(self.number, self.paginator.num_pages)
 
     def has_next(self):
         return self.number < self.paginator.num_pages

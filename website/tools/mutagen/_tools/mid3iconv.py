@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2006 Emfox Zhou <EmfoxZhou@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -48,7 +47,7 @@ class ID3OptionParser(OptionParser):
     def __init__(self):
         mutagen_version = ".".join(map(str, mutagen.version))
         my_version = ".".join(map(str, VERSION))
-        version = "mid3iconv %s\nUses Mutagen %s" % (my_version, mutagen_version)
+        version = "mid3iconv {}\nUses Mutagen {}".format(my_version, mutagen_version)
         return OptionParser.__init__(
             self,
             version=version,
@@ -78,7 +77,7 @@ def update(options, filenames):
     for filename in filenames:
         with _sig.block():
             if verbose != "quiet":
-                print_(u"Updating", filename)
+                print_("Updating", filename)
 
             if has_id3v1(filename) and not noupdate and force_v1:
                 mutagen.id3.delete(filename, False, True)
@@ -87,7 +86,7 @@ def update(options, filenames):
                 id3 = mutagen.id3.ID3(filename)
             except mutagen.id3.ID3NoHeaderError:
                 if verbose != "quiet":
-                    print_(u"No ID3 header found; skipping...")
+                    print_("No ID3 header found; skipping...")
                 continue
             except Exception as err:
                 print_(text_type(err), file=sys.stderr)
@@ -128,7 +127,7 @@ def has_id3v1(filename):
         with open(filename, "rb") as f:
             f.seek(-128, 2)
             return f.read(3) == b"TAG"
-    except IOError:
+    except OSError:
         return False
 
 
@@ -183,9 +182,9 @@ def main(argv):
 
     for i, arg in enumerate(argv):
         if arg == "-v1":
-            argv[i] = fsnative(u"--force-v1")
+            argv[i] = fsnative("--force-v1")
         elif arg == "-removev1":
-            argv[i] = fsnative(u"--remove-v1")
+            argv[i] = fsnative("--remove-v1")
 
     (options, args) = parser.parse_args(argv[1:])
 

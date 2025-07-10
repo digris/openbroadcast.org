@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.core.urlresolvers import reverse_lazy
 from django.conf import settings
 
@@ -140,8 +137,8 @@ class MediaSerializer(
         )
 
         assets = {
-            "stream": "{}{}".format(SITE_URL, stream_url),
-            "waveform": "{}{}".format(SITE_URL, waveform_url),
+            "stream": f"{SITE_URL}{stream_url}",
+            "waveform": f"{SITE_URL}{waveform_url}",
         }
 
         # TODO: check if this is a good idea...
@@ -284,7 +281,7 @@ class PlaylistItemField(serializers.RelatedField):
                 value, context={"request": self.context["request"]}
             )
         elif isinstance(value, Media):
-            return "Jingle: {}".format(value.pk)
+            return f"Jingle: {value.pk}"
         else:
             raise Exception("Unexpected type of tagged object")
 
@@ -370,7 +367,7 @@ class PlaylistSerializer(FlexFieldsModelSerializer):
 
     def get_item_appearances(self, obj, **kwargs):
         items = [
-            "{}:{}".format(co.content_object.get_ct(), co.content_object.uuid)
+            f"{co.content_object.get_ct()}:{co.content_object.uuid}"
             for co in obj.get_items()
         ]
         return items

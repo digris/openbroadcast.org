@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 import datetime
 
 from django import VERSION
@@ -152,12 +151,12 @@ def postman_order_by(parser, token):
         field_code = ORDER_BY_MAPPER[field_name.lower()]
     except ValueError:
         raise TemplateSyntaxError(
-            "'{0}' tag requires a single argument".format(token.contents.split()[0])
+            f"'{token.contents.split()[0]}' tag requires a single argument"
         )
     except KeyError:
         raise TemplateSyntaxError(
-            "'{0}' is not a valid argument to '{1}' tag."
-            " Must be one of: {2}".format(field_name, tag_name, ORDER_BY_MAPPER.keys())
+            "'{}' is not a valid argument to '{}' tag."
+            " Must be one of: {}".format(field_name, tag_name, ORDER_BY_MAPPER.keys())
         )
     return OrderByNode(field_code)
 
@@ -180,11 +179,11 @@ def postman_unread(parser, token):
     if len(bits) > 1:
         if len(bits) != 3:
             raise TemplateSyntaxError(
-                "'{0}' tag takes no argument or exactly two arguments".format(bits[0])
+                f"'{bits[0]}' tag takes no argument or exactly two arguments"
             )
         if bits[1] != "as":
             raise TemplateSyntaxError(
-                "First argument to '{0}' tag must be 'as'".format(bits[0])
+                f"First argument to '{bits[0]}' tag must be 'as'"
             )
         return InboxCountNode(bits[2])
     else:

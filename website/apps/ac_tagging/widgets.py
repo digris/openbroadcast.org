@@ -11,7 +11,7 @@ class TagAutocompleteTagIt(TextInput):
             if max_tags
             else getattr(settings, "TAGGING_AUTOCOMPLETE_MAX_TAGS", 20)
         )
-        super(TagAutocompleteTagIt, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
         """ Render HTML code """
@@ -36,7 +36,7 @@ class TagAutocompleteTagIt(TextInput):
         )
 
         list_view = reverse("ac_tagging-list")
-        html = super(TagAutocompleteTagIt, self).render(name, value, attrs)
+        html = super().render(name, value, attrs)
         # Subclass this field in case you need to add some custom behaviour like custom callbacks
         # js = u"""<script type="text/javascript">
         #         $(document).ready(function() {
@@ -80,7 +80,7 @@ class TagAutocompleteTagIt(TextInput):
         # if a custom jquery ui file has been specified
         if jqueryui_file != jqueryui_default:
             # determine path
-            jqueryui_file = "%s%s" % (js_base_url, jqueryui_file)
+            jqueryui_file = "{}{}".format(js_base_url, jqueryui_file)
 
         # load js
         js = (
@@ -106,7 +106,7 @@ class TagAutocompleteTagIt(TextInput):
     def value_from_datadict(self, data, files, name):
         current_value = data.get(name, None)
         if current_value and current_value[-1] != ",":
-            current_value = u"%s," % current_value
+            current_value = "%s," % current_value
             # current_value = u'"%s"' % current_value
             # current_value = u'%s' % current_value
         return current_value

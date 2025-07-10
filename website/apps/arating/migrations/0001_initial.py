@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import migrations, models
 from django.conf import settings
 
@@ -44,6 +41,6 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.AlterUniqueTogether(
-            name="vote", unique_together=set([("user", "content_type", "object_id")])
+            name="vote", unique_together={("user", "content_type", "object_id")}
         ),
     ]

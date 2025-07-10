@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2005  Michael Urman
 # Copyright 2016  Christoph Reiter
 #
@@ -42,7 +41,7 @@ from ._frames import (
 )
 
 
-class ID3Header(object):
+class ID3Header:
 
     _V24 = (2, 4, 0)
     _V23 = (2, 3, 0)
@@ -94,9 +93,9 @@ class ID3Header(object):
             raise error("Header size not synchsafe")
 
         if (self.version >= self._V24) and (flags & 0x0F):
-            raise error("%r has invalid flags %#02x" % (fn, flags))
+            raise error("{!r} has invalid flags {:#02x}".format(fn, flags))
         elif (self._V23 <= self.version < self._V24) and (flags & 0x1F):
-            raise error("%r has invalid flags %#02x" % (fn, flags))
+            raise error("{!r} has invalid flags {:#02x}".format(fn, flags))
 
         if self.f_extended:
             extsize_data = read_full(fileobj, 4)
@@ -192,7 +191,7 @@ class ID3Tags(DictProxy, Tags):
     def __init__(self, *args, **kwargs):
         self.unknown_frames = []
         self._unknown_v2_version = 4
-        super(ID3Tags, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _read(self, header, data):
         frames, unknown_frames, data = read_frames(header, data, header.known_frames)
@@ -355,7 +354,7 @@ class ID3Tags(DictProxy, Tags):
     def __setitem__(self, key, tag):
         if not isinstance(tag, Frame):
             raise TypeError("%r not a Frame instance" % tag)
-        super(ID3Tags, self).__setitem__(key, tag)
+        super().__setitem__(key, tag)
 
     def __update_common(self):
         """Updates done by both v23 and v24 update"""
@@ -389,17 +388,17 @@ class ID3Tags(DictProxy, Tags):
         # TDAT, TYER, and TIME have been turned into TDRC.
         timestamps = []
         old_frames = [self.pop(n, []) for n in ["TYER", "TDAT", "TIME"]]
-        for y, d, t in izip_longest(*old_frames, fillvalue=u""):
+        for y, d, t in izip_longest(*old_frames, fillvalue=""):
             ym = re.match(r"([0-9]+)\Z", y)
             dm = re.match(r"([0-9]{2})([0-9]{2})\Z", d)
             tm = re.match(r"([0-9]{2})([0-9]{2})\Z", t)
             timestamp = ""
             if ym:
-                timestamp += u"%s" % ym.groups()
+                timestamp += "%s" % ym.groups()
                 if dm:
-                    timestamp += u"-%s-%s" % dm.groups()[::-1]
+                    timestamp += "-%s-%s" % dm.groups()[::-1]
                     if tm:
-                        timestamp += u"T%s:%s:00" % tm.groups()
+                        timestamp += "T%s:%s:00" % tm.groups()
             if timestamp:
                 timestamps.append(timestamp)
         if timestamps and "TDRC" not in self:

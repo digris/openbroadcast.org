@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015 Christoph Reiter
 #
 # This program is free software; you can redistribute it and/or modify
@@ -56,7 +55,7 @@ def split_escape(string, sep, maxsplit=None, escape_char="\\"):
     return result
 
 
-class SignalHandler(object):
+class SignalHandler:
     def __init__(self):
         self._interrupted = False
         self._nosig = False

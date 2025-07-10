@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import requests
 import logging
 
@@ -29,13 +26,13 @@ class IcecastAPIClient:
             r = requests.get(url, auth=auth, params=params, timeout=2.0)
 
             if not r.status_code == 200:
-                log.warning("API: %s - status: %s" % (r.url, r.status_code))
+                log.warning("API: {} - status: {}".format(r.url, r.status_code))
             else:
-                log.debug("API: %s - status: %s" % (r.url, r.status_code))
+                log.debug("API: {} - status: {}".format(r.url, r.status_code))
 
 
 def set_stream_metadata(channel, text):
-    log.info("channel: %s - metadata-text: %s" % (channel, text))
+    log.info("channel: {} - metadata-text: {}".format(channel, text))
     try:
         api = IcecastAPIClient(
             server=channel.icecast2_server,

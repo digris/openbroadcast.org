@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import migrations, models
 from cacheops import invalidate_model
 
@@ -37,11 +34,11 @@ def forwards_func(apps, schema_editor):
                 diff = abs(decoded_duration - master_duration)
                 if diff > 5.0:
                     errors.append(
-                        "duration mismatch: {:.2f}s".format(diff),
+                        f"duration mismatch: {diff:.2f}s",
                     )
                 elif diff > 2.0:
                     warnings.append(
-                        "duration mismatch: {:.2f}s".format(diff),
+                        f"duration mismatch: {diff:.2f}s",
                     )
         except:
             print("unable to check durations")

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 from django.contrib.contenttypes.models import ContentType
 from alibrary.models import Media, Release, Relation, Artist, Label
@@ -11,7 +8,7 @@ log = logging.getLogger(__name__)
 def object_by_mb_id(mb_id, type):
 
     log = logging.getLogger("alibrary.util.lookup.object_by_mb_id")
-    log.debug("Looking for %s with mb_id: %s" % (type, mb_id))
+    log.debug("Looking for {} with mb_id: {}".format(type, mb_id))
 
     rel_type = ContentType.objects.get(app_label="alibrary", model=type)
 
@@ -61,7 +58,7 @@ def label_by_mb_id(mb_id):
 def object_by_relation_url(relation_url, type):
 
     log = logging.getLogger("alibrary.util.lookup.object_by_relation_url")
-    log.debug("Looking for %s with relation_url: %s" % (type, relation_url))
+    log.debug("Looking for {} with relation_url: {}".format(type, relation_url))
 
     rel_type = ContentType.objects.get(app_label="alibrary", model=type)
 

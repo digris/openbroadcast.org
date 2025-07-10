@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.conf import settings
 from rest_framework import serializers
 from rest_flex_fields import FlexFieldsModelSerializer
@@ -161,7 +158,7 @@ class PlayoutScheduleSerializer(serializers.Serializer):
     """
 
     def __init__(self, **kwargs):
-        super(PlayoutScheduleSerializer, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     count = serializers.SerializerMethodField()
     results = serializers.SerializerMethodField()

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
@@ -34,7 +31,7 @@ merge_tags.short_description = _("Merge selected tags")
 
 class TagMergeForm(forms.Form):
     def __init__(self, queryset, *args, **kwargs):
-        super(TagMergeForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["master"].queryset = queryset
 
     master = forms.ModelChoiceField(queryset=None, required=True)
@@ -56,7 +53,7 @@ class CustomTagAdmin(admin.ModelAdmin):
     actions = [merge_tags]
 
     def usage_info(self, obj):
-        return "{}".format(obj.items.nocache().count())
+        return f"{obj.items.nocache().count()}"
 
     usage_info.short_description = _("Usage")
     usage_info.allow_tags = True

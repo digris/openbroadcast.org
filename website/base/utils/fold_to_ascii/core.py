@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import print_function
 from collections import defaultdict
 from . import mapping
 
@@ -11,7 +9,7 @@ def none_factory():
 default_translate_table = defaultdict(none_factory, mapping.translate_table)
 
 
-def fold(unicode_string, replacement=u""):
+def fold(unicode_string, replacement=""):
     """Fold unicode_string to ASCII.
 
     Unmapped characters should be replaced with empty string by default, or other
@@ -22,7 +20,7 @@ def fold(unicode_string, replacement=u""):
     """
 
     if unicode_string is None:
-        return u""
+        return ""
 
     if type(unicode_string) != unicode:
         raise TypeError("cannot fold bytestring")

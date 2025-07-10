@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import json
 import logging
 
@@ -47,7 +44,7 @@ class ObjectRatingView(APIView):
         else:
             user = request.user
 
-        log.debug("vote GET obj: {} - user: {}".format(obj, user))
+        log.debug(f"vote GET obj: {obj} - user: {user}")
 
         serializer = ObjectRatingSerializer(instance=obj, user=user)
         return Response(serializer.data)

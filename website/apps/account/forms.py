@@ -1,6 +1,3 @@
-from __future__ import unicode_literals
-from __future__ import absolute_import
-
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
@@ -17,12 +14,12 @@ from django.contrib.auth.forms import (
 
 class AuthenticationForm(BaseAuthenticationForm):
     def __init__(self, *args, **kwargs):
-        super(AuthenticationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class RegisterForm(BaseUserCreationForm):
     def __init__(self, *args, **kwargs):
-        super(RegisterForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class RegistrationForm(BaseUserCreationForm):
@@ -69,7 +66,7 @@ class RegistrationForm(BaseUserCreationForm):
         fields = ("email", "username")
 
     def __init__(self, *args, **kwargs):
-        super(RegistrationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     # TODO: implement own loqic without password repeat
     def clean_password2(self):
@@ -85,7 +82,7 @@ class RegistrationForm(BaseUserCreationForm):
 
 class PasswordRequestResetForm(BasePasswordResetForm):
     def __init__(self, *args, **kwargs):
-        super(PasswordRequestResetForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean_email(self):
         email = self.cleaned_data["email"]
@@ -118,7 +115,7 @@ class PasswordResetForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
-        super(PasswordResetForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1", "")

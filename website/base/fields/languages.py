@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 # seen at: https://github.com/exalted/djangomissing
 
 import os
@@ -234,7 +232,7 @@ class LanguageField(models.CharField):
         kwargs.setdefault("max_length", 5)
         kwargs.setdefault("choices", LANGUAGES)
 
-        super(LanguageField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def get_internal_type(self):
         return "CharField"

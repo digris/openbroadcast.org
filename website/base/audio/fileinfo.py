@@ -1,15 +1,12 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import os
 from ffprobe import FFProbe
 
 
 
-class FileInfoProcessor(object):
+class FileInfoProcessor:
     def __init__(self, path):
         if not os.path.isfile(path):
-            raise IOError("unable to read file at: %s" % path)
+            raise OSError("unable to read file at: %s" % path)
         self.path = path
         self.audio_stream = None
 

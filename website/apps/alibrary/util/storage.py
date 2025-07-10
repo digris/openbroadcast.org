@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 import ntpath
 import os
@@ -77,7 +74,7 @@ def get_file_from_path(path, filename=None):
     file_obj = None
 
     try:
-        f = open(path, "r")
+        f = open(path)
         temp_file = NamedTemporaryFile(delete=True)
         temp_file.write(f.read())
         temp_file.flush()

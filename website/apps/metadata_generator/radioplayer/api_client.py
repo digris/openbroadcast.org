@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import logging
 import requests
 import semver
@@ -28,7 +24,7 @@ logging.getLogger("urllib3").setLevel(logging.WARNING)
 log = logging.getLogger(__name__)
 
 
-class IngestAPIClient(object):
+class IngestAPIClient:
     """
     API client for fprint service.
     Handles lookups by code or media object as well as fingerprint ingestion to the service
@@ -47,13 +43,13 @@ class IngestAPIClient(object):
         if url.startswith("http://") or url.startswith("https://"):
             return url
 
-        return "{}{}".format(self.base_url, url)
+        return f"{self.base_url}{url}"
 
     def get(self, url, params=None):
 
         _url = self.compose_url(url)
 
-        log.info("API GET request: {} - {}".format(_url, params))
+        log.info(f"API GET request: {_url} - {params}")
 
         r = requests.get(
             self.compose_url(_url), params, auth=self.auth, headers=self.headers
@@ -66,7 +62,7 @@ class IngestAPIClient(object):
         _url = self.compose_url(url)
         payload.update({"rpId": self.station_id})
 
-        log.info("API POST request: {} - {}".format(_url, payload))
+        log.info(f"API POST request: {_url} - {payload}")
 
         r = requests.post(
             self.compose_url(_url), data=payload, auth=self.auth, headers=self.headers

@@ -5,13 +5,12 @@ Implements some features of Django 1.4 when the application is run with a lower 
 - text truncating
 """
 
-from __future__ import unicode_literals
 
 from django.utils.functional import allow_lazy
 from django.utils.text import truncate_words
 
 
-class Truncator(object):
+class Truncator:
     "A simplified version of django.utils.text.Truncator"
 
     def __init__(self, text):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2006  Lukas Lalinsky
 # Copyright (C) 2012  Christoph Reiter
 #
@@ -251,12 +250,12 @@ class MusepackInfo(StreamInfo):
     def pprint(self):
         rg_data = []
         if hasattr(self, "title_gain"):
-            rg_data.append(u"%+0.2f (title)" % self.title_gain)
+            rg_data.append("%+0.2f (title)" % self.title_gain)
         if hasattr(self, "album_gain"):
-            rg_data.append(u"%+0.2f (album)" % self.album_gain)
+            rg_data.append("%+0.2f (album)" % self.album_gain)
         rg_data = (rg_data and ", Gain: " + ", ".join(rg_data)) or ""
 
-        return u"Musepack SV%d, %.2f seconds, %d Hz, %d bps%s" % (
+        return "Musepack SV%d, %.2f seconds, %d Hz, %d bps%s" % (
             self.version,
             self.length,
             self.sample_rate,

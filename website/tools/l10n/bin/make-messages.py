@@ -89,7 +89,7 @@ def make_messages():
         for dirpath, file in all_files:
             if domain == "djangojs" and file.endswith(".js"):
                 if verbose:
-                    sys.stdout.write("processing file %s in %s\n" % (file, dirpath))
+                    sys.stdout.write("processing file {} in {}\n".format(file, dirpath))
                 src = open(os.path.join(dirpath, file), "rb").read()
                 src = pythonize_re.sub("\n#", src)
                 open(os.path.join(dirpath, "%s.py" % file), "wb").write(src)
@@ -131,7 +131,7 @@ def make_messages():
                     thefile = "%s.py" % file
                     open(os.path.join(dirpath, thefile), "wb").write(templatize(src))
                 if verbose:
-                    sys.stdout.write("processing file %s in %s\n" % (file, dirpath))
+                    sys.stdout.write("processing file {} in {}\n".format(file, dirpath))
                 cmd = (
                     'xgettext -d %s -L Python --keyword=gettext_noop --keyword=gettext_lazy --keyword=ngettext_lazy:1,2 --keyword=ugettext_noop --keyword=ugettext_lazy --keyword=ungettext_lazy:1,2 --from-code UTF-8 -o - "%s"'
                     % (domain, os.path.join(dirpath, thefile))
@@ -170,7 +170,7 @@ def make_messages():
             open(potfile, "w").write(msgs)
             if os.path.exists(pofile):
                 (stdin, stdout, stderr) = os.popen3(
-                    'msgmerge -q "%s" "%s"' % (pofile, potfile), "b"
+                    'msgmerge -q "{}" "{}"'.format(pofile, potfile), "b"
                 )
                 msgs = stdout.read()
                 errors = stderr.read()

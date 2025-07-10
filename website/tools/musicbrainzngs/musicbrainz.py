@@ -334,7 +334,7 @@ class InvalidSearchFieldError(UsageError):
 
 class InvalidIncludeError(UsageError):
     def __init__(self, msg="Invalid Includes", reason=None):
-        super(InvalidIncludeError, self).__init__(self)
+        super().__init__(self)
         self.msg = msg
         self.reason = reason
 
@@ -344,7 +344,7 @@ class InvalidIncludeError(UsageError):
 
 class InvalidFilterError(UsageError):
     def __init__(self, msg="Invalid Includes", reason=None):
-        super(InvalidFilterError, self).__init__(self)
+        super().__init__(self)
         self.msg = msg
         self.reason = reason
 
@@ -480,15 +480,15 @@ def set_useragent(app, version, contact=None):
     if not app or not version:
         raise ValueError("App and version can not be empty")
     if contact is not None:
-        _useragent = "%s/%s python-musicbrainz-ngs/%s ( %s )" % (
+        _useragent = "{}/{} python-musicbrainz-ngs/{} ( {} )".format(
             app,
             version,
             _version,
             contact,
         )
     else:
-        _useragent = "%s/%s python-musicbrainz-ngs/%s" % (app, version, _version)
-    _client = "%s-%s" % (app, version)
+        _useragent = "{}/{} python-musicbrainz-ngs/{}".format(app, version, _version)
+    _client = "{}-{}".format(app, version)
     _log.debug("set user-agent to %s" % _useragent)
 
 
@@ -529,7 +529,7 @@ def set_rate_limit(limit_or_interval=1.0, new_requests=1):
         limit_requests = new_requests
 
 
-class _rate_limit(object):
+class _rate_limit:
     """A decorator that limits the rate at which the function may be
     called. The rate is controlled by the `limit_interval` and
     `limit_requests` global variables.  The limiting is thread-safe;
@@ -627,7 +627,7 @@ class _DigestAuthHandler(compat.HTTPDigestAuthHandler):
         elif algorithm == "SHA":
             H = lambda x: hashlib.sha1(self._encode_utf8(x)).hexdigest()
             # XXX MD5-sess
-        KD = lambda s, d: H("%s:%s" % (s, d))
+        KD = lambda s, d: H("{}:{}".format(s, d))
         return H, KD
 
 
@@ -696,11 +696,11 @@ def _safe_read(opener, req, body=None, max_retries=8, retry_delay_delta=2.0):
         except socket.timeout as exc:
             _log.debug("socket timeout")
             last_exc = exc
-        except socket.error as exc:
+        except OSError as exc:
             if exc.errno == 104:
                 continue
             raise NetworkError(cause=exc)
-        except IOError as exc:
+        except OSError as exc:
             raise NetworkError(cause=exc)
 
     # Out of retries!
@@ -755,7 +755,7 @@ def _mb_request(
     url = compat.urlunparse(
         ("http", hostname, "/ws/2/%s" % path, "", compat.urlencode(args), "")
     )
-    _log.debug("%s request for %s" % (method, url))
+    _log.debug("{} request for {}".format(method, url))
 
     # Set up HTTP request handler and URL opener.
     httpHandler = compat.HTTPHandler(debuglevel=0)
@@ -828,7 +828,7 @@ def _do_mb_query(entity, id, includes=[], params={}):
         args["inc"] = inc
 
     # Build the endpoint components.
-    path = "%s/%s" % (entity, id)
+    path = "{}/{}".format(entity, id)
     return _mb_request(path, "GET", auth_required, args=args)
 
 
@@ -855,7 +855,7 @@ def _do_mb_search(entity, query="", fields={}, limit=None, offset=None, strict=F
         # Ensure this is a valid search field.
         if key not in VALID_SEARCH_FIELDS[entity]:
             raise InvalidSearchFieldError(
-                "%s is not a valid search field for %s" % (key, entity)
+                "{} is not a valid search field for {}".format(key, entity)
             )
 
         # Escape Lucene's special characters.
@@ -863,11 +863,11 @@ def _do_mb_search(entity, query="", fields={}, limit=None, offset=None, strict=F
         value = re.sub(r'([+\-&|!(){}\[\]\^"~*?:\\\/])', r"\\\1", value)
         if value:
             if strict:
-                query_parts.append('%s:"%s"' % (key, value))
+                query_parts.append('{}:"{}"'.format(key, value))
                 # query_parts.append('%s:(%s)' % (key, value))
             else:
                 value = value.lower()  # avoid AND / OR
-                query_parts.append("%s:(%s)" % (key, value))
+                query_parts.append("{}:({})".format(key, value))
     if strict:
         full_query = " AND ".join(query_parts).strip()
     else:
@@ -1349,7 +1349,7 @@ def add_releases_to_collection(collection, releases=[]):
     """
     # XXX: Maximum URI length of 16kb means we should only allow ~400 releases
     releaselist = ";".join(releases)
-    _do_mb_put("collection/%s/releases/%s" % (collection, releaselist))
+    _do_mb_put("collection/{}/releases/{}".format(collection, releaselist))
 
 
 def remove_releases_from_collection(collection, releases=[]):
@@ -1357,4 +1357,4 @@ def remove_releases_from_collection(collection, releases=[]):
     Collection and releases should be identified by their MBIDs
     """
     releaselist = ";".join(releases)
-    _do_mb_delete("collection/%s/releases/%s" % (collection, releaselist))
+    _do_mb_delete("collection/{}/releases/{}".format(collection, releaselist))

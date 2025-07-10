@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 import os
 import random
@@ -16,7 +13,7 @@ try:
     from wand.drawing import Drawing
     from wand.image import Image
 except ImportError as e:
-    print("unable to import (magic)wand: {}".format(e))
+    print(f"unable to import (magic)wand: {e}")
 
 
 log = logging.getLogger(__name__)
@@ -63,7 +60,7 @@ NEWLINE = "\n"
 DLPlusTag = namedtuple("DLPlusTag", ["id", "start", "length"])
 
 
-class DABMetadataGenerator(object):
+class DABMetadataGenerator:
     """
     generates metadata to be transmitted over DAB+ (via `ODR-PadEnc`)
     contents generated are DLS(plus) text and slide images.
@@ -97,14 +94,14 @@ class DABMetadataGenerator(object):
         author_text = None
 
         if self.playlist.series and self.playlist.series_number:
-            series_text = "{0} #{1}".format(
+            series_text = "{} #{}".format(
                 self.playlist.series.name, self.playlist.series_number
             )
         elif self.playlist.series:
-            series_text = "{0}".format(self.playlist.series.name)
+            series_text = f"{self.playlist.series.name}"
 
         if self.playlist:
-            playlist_text = "{0}".format(self.playlist.name)
+            playlist_text = f"{self.playlist.name}"
 
         if self.content_object.name:
             item_text = '"{title}" by {artist} - {release}'.format(
@@ -114,14 +111,14 @@ class DABMetadataGenerator(object):
             )
 
         if self.playlist.user:
-            author_text = "curated by {0}".format(
+            author_text = "curated by {}".format(
                 self.playlist.user.profile.get_display_name()
             )
 
         if playlist_text:
 
             if series_text:
-                items.append("{} - {}".format(playlist_text, series_text))
+                items.append(f"{playlist_text} - {series_text}")
             else:
                 items.append(playlist_text)
 
@@ -150,7 +147,7 @@ class DABMetadataGenerator(object):
         )
         for t in tags[0:4]:
             tag += (
-                "DL_PLUS_TAG={0}".format(" ".join(["{}".format(b) for b in t]))
+                "DL_PLUS_TAG={}".format(" ".join([f"{b}" for b in t]))
                 + NEWLINE
             )
 
@@ -183,21 +180,21 @@ class DABMetadataGenerator(object):
         author_text = None
 
         if self.playlist.series and self.playlist.series_number:
-            text = "{0} #{1}".format(
+            text = "{} #{}".format(
                 self.playlist.series.name, self.playlist.series_number
             )
             tags = [DLPlusTag(33, 0, len(text) - 1)]
-            series_text = "{tag}{text}".format(tag=self.dl_plus_tag(tags), text=text)
+            series_text = f"{self.dl_plus_tag(tags)}{text}"
 
         elif self.playlist.series:
-            text = "{0}".format(self.playlist.series.name)
+            text = f"{self.playlist.series.name}"
             tags = [DLPlusTag(33, 0, len(text) - 1)]
-            series_text = "{tag}{text}".format(tag=self.dl_plus_tag(tags), text=text)
+            series_text = f"{self.dl_plus_tag(tags)}{text}"
 
         if self.playlist:
-            text = "{0}".format(self.playlist.name)
+            text = f"{self.playlist.name}"
             tags = [DLPlusTag(35, 0, len(text) - 1)]
-            playlist_text = "{tag}{text}".format(tag=self.dl_plus_tag(tags), text=text)
+            playlist_text = f"{self.dl_plus_tag(tags)}{text}"
 
         if (
             self.content_object
@@ -215,13 +212,13 @@ class DABMetadataGenerator(object):
                 DLPlusTag(4, text.find(artist), len(artist) - 1),
                 DLPlusTag(2, text.find(album), len(album) - 1),
             ]
-            item_text = "{tag}{text}".format(tag=self.dl_plus_tag(tags), text=text)
+            item_text = f"{self.dl_plus_tag(tags)}{text}"
 
         if self.playlist.user:
             author = self.playlist.user.profile.get_display_name()
-            text = "curated by {0}".format(author)
+            text = f"curated by {author}"
             tags = [DLPlusTag(37, text.find(author), len(author) - 1)]
-            author_text = "{tag}{text}".format(tag=self.dl_plus_tag(tags), text=text)
+            author_text = f"{self.dl_plus_tag(tags)}{text}"
 
         if series_text:
             items.append(series_text)
@@ -324,8 +321,8 @@ class DABMetadataGenerator(object):
                 self.content_object.uuid,
                 slide_id,
             )
-            path = os.path.join(SLIDE_BASE_DIR, key + ".{}".format(IMAGE_OUTPUT_FORMAT))
-            url = SLIDE_BASE_URL + key + ".{}".format(IMAGE_OUTPUT_FORMAT)
+            path = os.path.join(SLIDE_BASE_DIR, key + f".{IMAGE_OUTPUT_FORMAT}")
+            url = SLIDE_BASE_URL + key + f".{IMAGE_OUTPUT_FORMAT}"
         else:
             # TODO: not used anymore
             overlay_image_path = SLIDE_DEFAULT_IMAGE
@@ -377,7 +374,7 @@ class DABMetadataGenerator(object):
                 image.save(
                     filename=os.path.join(
                         SLIDE_BASE_DIR,
-                        "debug-{}.{}".format(slide_id, IMAGE_OUTPUT_FORMAT),
+                        f"debug-{slide_id}.{IMAGE_OUTPUT_FORMAT}",
                     )
                 )
 
@@ -385,7 +382,7 @@ class DABMetadataGenerator(object):
             overlay_image.close()
         except Exception as e:
             # TODO: use narrowed exception(s)
-            log.warning("unable to close magick/wand overlay image - {}".format(e))
+            log.warning(f"unable to close magick/wand overlay image - {e}")
 
         return url
 
@@ -394,8 +391,8 @@ class DABMetadataGenerator(object):
         image_display_size = (300, 190)
 
         key = "%s-%s-%03d" % (self.emission.uuid, self.content_object.uuid, slide_id)
-        path = os.path.join(SLIDE_BASE_DIR, key + ".{}".format(IMAGE_OUTPUT_FORMAT))
-        url = SLIDE_BASE_URL + key + ".{}".format(IMAGE_OUTPUT_FORMAT)
+        path = os.path.join(SLIDE_BASE_DIR, key + f".{IMAGE_OUTPUT_FORMAT}")
+        url = SLIDE_BASE_URL + key + f".{IMAGE_OUTPUT_FORMAT}"
 
         overlay_image = Image(filename=image_path)
 
@@ -450,7 +447,7 @@ class DABMetadataGenerator(object):
                 image.save(
                     filename=os.path.join(
                         SLIDE_BASE_DIR,
-                        "debug-{}.{}".format(slide_id, IMAGE_OUTPUT_FORMAT),
+                        f"debug-{slide_id}.{IMAGE_OUTPUT_FORMAT}",
                     )
                 )
 
@@ -458,7 +455,7 @@ class DABMetadataGenerator(object):
             overlay_image.close()
         except Exception as e:
             # TODO: use narrowed exception(s)
-            log.warning("unable to close magick/wand overlay image - {}".format(e))
+            log.warning(f"unable to close magick/wand overlay image - {e}")
 
         return url
 
@@ -475,5 +472,5 @@ class DABMetadataGenerator(object):
                     len(file) == filename_length
                     and fstat.st_mtime < time.time() - max_age
                 ):
-                    log.info("file age: %s -> delete: %s" % (fstat.st_mtime, file))
+                    log.info("file age: {} -> delete: {}".format(fstat.st_mtime, file))
                     os.unlink(path)

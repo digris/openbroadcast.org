@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-
 from django.conf import settings
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.utils.safestring import mark_safe
@@ -18,7 +15,7 @@ class FormHelpersException(Exception):
     pass
 
 
-class DynamicLayoutHandler(object):
+class DynamicLayoutHandler:
     def all(self):
         """
         Returns all layout objects of first level of depth

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 from actstream.models import Action, Follow, actor_stream
 from alibrary.models import Playlist, Release, Media
 from django.conf import settings
@@ -65,7 +62,7 @@ class ProfileListView(BaseSearchListView):
     ]
 
     def get_queryset(self, **kwargs):
-        qs = super(ProfileListView, self).get_queryset(**kwargs)
+        qs = super().get_queryset(**kwargs)
 
         qs = qs.select_related("user", "country", "mentor").prefetch_related(
             "user", "user__groups"
@@ -101,9 +98,9 @@ class ProfileDetailView(DetailView):
 
         self.section = kwargs.get("section")
         if not self.section in [s[0] for s in self.sections]:
-            return HttpResponseBadRequest('invalid section "{}"'.format(self.section))
+            return HttpResponseBadRequest(f'invalid section "{self.section}"')
 
-        return super(ProfileDetailView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
         obj = get_object_or_404(self.model, uuid=self.kwargs["uuid"])
@@ -148,7 +145,7 @@ class ProfileDetailView(DetailView):
         return template
 
     def get_context_data(self, **kwargs):
-        context = super(ProfileDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         section_menu = self.get_section_menu(object=self.object, section=self.section)
 
@@ -236,7 +233,7 @@ class ProfileDetailView(DetailView):
         return context
 
     def get(self, request, *args, **kwargs):
-        return super(ProfileDetailView, self).get(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
 
 class ProfileEditView(LoginRequiredMixin, UpdateView):
@@ -254,7 +251,7 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         return obj
 
     def get_context_data(self, **kwargs):
-        context = super(ProfileEditView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context.update(
             {
                 "user_form": UserForm(
@@ -268,7 +265,7 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         return context
 
     def get_initial(self):
-        initial = super(ProfileEditView, self).get_initial()
+        initial = super().get_initial()
         initial.update({"tags": ",".join(t.name for t in self.object.tags.all())})
         return initial
 
@@ -293,7 +290,7 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
 
         named_formsets = self.get_named_formsets()
-        if not all((x.is_valid() for x in named_formsets.values())):
+        if not all(x.is_valid() for x in named_formsets.values()):
             return self.render_to_response(self.get_context_data(form=form))
 
         user_form = UserForm(self.request.POST, instance=self.request.user)
@@ -308,7 +305,7 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         self.object = form.save()
 
         for name, formset in named_formsets.items():
-            formset_save_func = getattr(self, "formset_{0}_valid".format(name), None)
+            formset_save_func = getattr(self, f"formset_{name}_valid", None)
 
             if formset_save_func is not None:
                 formset_save_func(formset)
@@ -407,7 +404,7 @@ class InvitationListView(PaginationMixin, ListView):
 
     def get_context_data(self, **kwargs):
 
-        context = super(InvitationListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         # context.update(self.extra_context)
         return context
 

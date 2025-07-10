@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import logging
 
 from django.dispatch.dispatcher import receiver
@@ -34,4 +31,4 @@ def add_importitem_to_collection(sender, **kwargs):
         add_to_collection(object=content_object, user=user, collection=collection)
 
     except Exception as e:
-        log.debug("unable to add to collection. {}".format(e))
+        log.debug(f"unable to add to collection. {e}")

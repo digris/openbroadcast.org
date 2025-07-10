@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2006 Joe Wreschnig
 #           2014 Christoph Reiter
 #
@@ -47,7 +46,7 @@ RATES = [
 ]
 
 
-class _WavPackHeader(object):
+class _WavPackHeader:
     def __init__(
         self,
         block_size,
@@ -143,7 +142,7 @@ class WavPackInfo(StreamInfo):
         self.length = float(samples) / self.sample_rate
 
     def pprint(self):
-        return u"WavPack, %.2f seconds, %d Hz" % (self.length, self.sample_rate)
+        return "WavPack, %.2f seconds, %d Hz" % (self.length, self.sample_rate)
 
 
 class WavPack(APEv2File):

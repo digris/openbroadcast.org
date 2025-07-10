@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 
 from django.views.generic import DetailView
@@ -30,7 +27,7 @@ class CollectionListView(AjaxListView):
         return qs
 
     def get_context_data(self, **kwargs):
-        context = super(CollectionListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         context.update({"tagcloud": self._tagcloud})
 
@@ -46,7 +43,7 @@ class CollectionDetailView(DetailView, AjaxListView):
     page_template = "collection/collection_item_list_page.html"
 
     def get_context_data(self, **kwargs):
-        context = super(CollectionDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         context.update(
             {

@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-
 from django.conf import settings
 
 from .Dajaxice import Dajaxice, dajaxice_autodiscover
 
 
-class DajaxiceConfig(object):
+class DajaxiceConfig:
     """ Provide an easy to use way to read the dajaxice configuration and
     return the default values if no configuration is present."""
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2006  Joe Wreschnig
 #
 # This program is free software; you can redistribute it and/or modify
@@ -92,7 +91,7 @@ class OggFLACStreamInfo(StreamInfo):
         self.length = page.position / float(self.sample_rate)
 
     def pprint(self):
-        return u"Ogg FLAC, %.2f seconds, %d Hz" % (self.length, self.sample_rate)
+        return "Ogg FLAC, %.2f seconds, %d Hz" % (self.length, self.sample_rate)
 
 
 class OggFLACVComment(VCommentDict):
@@ -107,7 +106,7 @@ class OggFLACVComment(VCommentDict):
                 pages.append(page)
                 complete = page.complete or (len(page.packets) > 1)
         comment = cBytesIO(OggPage.to_packets(pages)[0][4:])
-        super(OggFLACVComment, self).__init__(comment, framing=False)
+        super().__init__(comment, framing=False)
 
     def _inject(self, fileobj, padding_func):
         """Write tag data into the FLAC Vorbis comment packet/page."""

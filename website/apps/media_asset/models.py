@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import logging
 import os
 import shutil
@@ -121,11 +118,11 @@ class Waveform(UUIDModelMixin, TimestampedModelMixin, models.Model):
         try:
             png_path = waveform_as_png(self.media.master.path)
             shutil.move(png_path, self.path)
-            log.info("created waveform image for: {}".format(self.media))
+            log.info(f"created waveform image for: {self.media}")
             self.status = Waveform.DONE
         except AudioWaveformException as e:
             log.warning(
-                "error creating waveform image for: {} - {}".format(self.media, e)
+                f"error creating waveform image for: {self.media} - {e}"
             )
             self.status = Waveform.ERROR
 
@@ -141,7 +138,7 @@ class Waveform(UUIDModelMixin, TimestampedModelMixin, models.Model):
         if not self.media_uuid:
             self.media_uuid = self.media.uuid
 
-        super(Waveform, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 @receiver(pre_delete, sender=Waveform)
@@ -230,7 +227,7 @@ class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
         unique_together = ("media", "encoding", "quality")
 
     def __str__(self):
-        return "%s - %s" % (self.get_encoding_display(), self.get_quality_display())
+        return "{} - {}".format(self.get_encoding_display(), self.get_quality_display())
 
     @property
     def directory(self):
@@ -334,7 +331,7 @@ class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
         if not self.media_uuid:
             self.media_uuid = self.media.uuid
 
-        super(Format, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 @receiver(pre_delete, sender=Format)
@@ -357,7 +354,7 @@ def clean_assets(days_to_keep=MEDIA_ASSET_KEEP_DAYS):
     ).nocache()
 
     log.info(
-        "cleaning assets. {0} formats and {1} waveforms".format(
+        "cleaning assets. {} formats and {} waveforms".format(
             format_qs.count(), waveform_qs.count()
         )
     )

@@ -38,24 +38,24 @@ class _RequestPassingFormView(FormView):
             return self.form_invalid(form)
 
     def get_form_class(self, request=None):
-        return super(_RequestPassingFormView, self).get_form_class()
+        return super().get_form_class()
 
     def get_form_kwargs(self, request=None, form_class=None):
-        return super(_RequestPassingFormView, self).get_form_kwargs()
+        return super().get_form_kwargs()
 
     def get_initial(self, request=None):
-        return super(_RequestPassingFormView, self).get_initial()
+        return super().get_initial()
 
     def get_success_url(self, request=None, user=None):
         # We need to be able to use the request and the new user when
         # constructing success_url.
-        return super(_RequestPassingFormView, self).get_success_url()
+        return super().get_success_url()
 
     def form_valid(self, form, request=None):
-        return super(_RequestPassingFormView, self).form_valid(form)
+        return super().form_valid(form)
 
     def form_invalid(self, form, request=None):
-        return super(_RequestPassingFormView, self).form_invalid(form)
+        return super().form_invalid(form)
 
 
 class RegistrationView(_RequestPassingFormView):
@@ -78,7 +78,7 @@ class RegistrationView(_RequestPassingFormView):
         """
         if not self.registration_allowed(request):
             return redirect(self.disallowed_url)
-        return super(RegistrationView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, request, form):
         new_user = self.register(request, **form.cleaned_data)
@@ -132,7 +132,7 @@ class ActivationView(TemplateView):
                 return redirect(to, *args, **kwargs)
             except ValueError:
                 return redirect(success_url)
-        return super(ActivationView, self).get(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def activate(self, request, *args, **kwargs):
         """

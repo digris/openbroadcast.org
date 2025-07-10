@@ -164,18 +164,18 @@ def get_tag_list(tags):
         return [tags]
     elif isinstance(tags, QuerySet) and tags.model is Tag:
         return tags
-    elif isinstance(tags, six.string_types):
+    elif isinstance(tags, str):
         return Tag.objects.filter(name__in=parse_tag_input(tags))
     elif isinstance(tags, (list, tuple)):
         if len(tags) == 0:
             return tags
         contents = set()
         for item in tags:
-            if isinstance(item, six.string_types):
+            if isinstance(item, str):
                 contents.add("string")
             elif isinstance(item, Tag):
                 contents.add("tag")
-            elif isinstance(item, six.integer_types):
+            elif isinstance(item, int):
                 contents.add("int")
         if len(contents) == 1:
             if "string" in contents:
@@ -212,9 +212,9 @@ def get_tag(tag):
         return tag
 
     try:
-        if isinstance(tag, six.string_types):
+        if isinstance(tag, str):
             return Tag.objects.get(name=tag)
-        elif isinstance(tag, six.integer_types):
+        elif isinstance(tag, int):
             return Tag.objects.get(id=tag)
     except Tag.DoesNotExist:
         pass

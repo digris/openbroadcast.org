@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
 import os
 import time
 import shutil
@@ -40,7 +38,7 @@ LAME_BINARY = getattr(settings, "LAME_BINARY")
 log = logging.getLogger(__name__)
 
 
-class Process(object):
+class Process:
     def __init__(self):
 
         self.debug = EXPORTER_DEBUG
@@ -143,7 +141,7 @@ class Process(object):
 
     def process_item(self, item):
 
-        log.info("export ctype: %s | id: %s" % (item.content_type, item.object_id))
+        log.info("export ctype: {} | id: {}".format(item.content_type, item.object_id))
 
         media_set = None
         content_object = item.content_object
@@ -181,7 +179,7 @@ class Process(object):
                 media_set.append(m.content_object)
 
             if content_object.user and content_object.user.get_full_name():
-                item_rel_dir = "%s (%s)" % (
+                item_rel_dir = "{} ({})".format(
                     safe_filename(content_object.name),
                     safe_filename(content_object.user.get_full_name()),
                 )
@@ -211,7 +209,7 @@ class Process(object):
                     image.path, os.path.join(item_cache_dir, IMAGE_FILENAME)
                 )
             except Exception as e:
-                log.warning("unable to copy image: {}".format(image.path))
+                log.warning(f"unable to copy image: {image.path}")
 
         if INCLUDE_README:
             self.process_readme(instance=content_object, cache_dir=item_cache_dir)
@@ -373,7 +371,7 @@ class Process(object):
         template = "exporter/m3u/playlist.m3u"
 
         # filename 'playlist.m3u'
-        filename = "{0}.m3u".format(safe_filename(instance.name))
+        filename = f"{safe_filename(instance.name)}.m3u"
 
         with open(os.path.join(cache_dir, filename), "w") as txt:
             str = render_to_string(
@@ -392,7 +390,7 @@ class Process(object):
 
         from mutagen import version_string as mutagen_version
 
-        log.debug("mutagen {} - injecting id3 metadata".format(mutagen_version))
+        log.debug(f"mutagen {mutagen_version} - injecting id3 metadata")
 
         from mutagen.mp3 import MP3
         from mutagen.id3 import (
@@ -448,7 +446,7 @@ class Process(object):
             TXXX(
                 encoding=3,
                 desc="open broadcast API",
-                text="https://%s%s" % (self.current_site.domain, media.get_api_url()),
+                text="https://{}{}".format(self.current_site.domain, media.get_api_url()),
             )
         )
         # remove genre
@@ -493,7 +491,7 @@ class Process(object):
                 tags.add(
                     TRCK(
                         encoding=3,
-                        text="%s/%s" % (media.tracknumber, media.release.totaltracks),
+                        text="{}/{}".format(media.tracknumber, media.release.totaltracks),
                     )
                 )
             if media.release.releasedate:

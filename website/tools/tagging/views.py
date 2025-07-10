@@ -67,7 +67,7 @@ class TaggedObjectList(ListView):
         )
 
     def get_context_data(self, **kwargs):
-        context = super(TaggedObjectList, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["tag"] = self.tag_instance
 
         if self.related_tags:

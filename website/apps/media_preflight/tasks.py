@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from __future__ import absolute_import
-
 import logging
 
 from cacheops import invalidate_obj
@@ -20,7 +16,7 @@ def run_preflight_check_task(preflight_check_id):
 
     preflight_check = PreflightCheck.objects.get(id=preflight_check_id)
 
-    logger.info("Media id: {} - run preflight check".format(preflight_check.media.id))
+    logger.info(f"Media id: {preflight_check.media.id} - run preflight check")
 
     try:
         result = service_client.run_check(media=preflight_check.media)
@@ -35,11 +31,11 @@ def run_preflight_check_task(preflight_check_id):
             diff = abs(decoded_duration - master_duration)
             if diff > 5.0:
                 errors.append(
-                    "duration mismatch: {:.2f}s".format(diff),
+                    f"duration mismatch: {diff:.2f}s",
                 )
             elif diff > 2.0:
                 warnings.append(
-                    "duration mismatch: {:.2f}s".format(diff),
+                    f"duration mismatch: {diff:.2f}s",
                 )
 
         preflight_check.status = PreflightCheck.STATUS_COMPLETED
@@ -49,12 +45,12 @@ def run_preflight_check_task(preflight_check_id):
         preflight_check.save()
 
     except service_client.PreflightServiceException as e:
-        logger.warning("error running preflight check: {}".format(e))
+        logger.warning(f"error running preflight check: {e}")
 
         preflight_check.status = PreflightCheck.STATUS_ERROR
         preflight_check.checks = {}
         preflight_check.warnings = []
-        preflight_check.errors = ["{}".format(e)]
+        preflight_check.errors = [f"{e}"]
         preflight_check.save()
 
     invalidate_obj(preflight_check)

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 from collections import OrderedDict
 from django.views.generic import ListView
 from django.db.models import Case, When
@@ -42,7 +39,7 @@ class BaseFacetedSearch(FacetedSearch):
             )
 
         self.facets = OrderedDict(self.facets)
-        super(BaseFacetedSearch, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def query(self, search, query):
 
@@ -110,9 +107,9 @@ class BaseSearchListView(ListView):
 
     def get(self, request, *args, **kwargs):
         try:
-            return super(BaseSearchListView, self).get(request, *args, **kwargs)
+            return super().get(request, *args, **kwargs)
         except (SearchFacetException, SearchQueryException) as e:
-            return HttpResponseBadRequest("{}".format(e))
+            return HttpResponseBadRequest(f"{e}")
 
     def get_search_query(self, **kwargs):
         return utils.parse_search_query(request=self.request)
@@ -142,7 +139,7 @@ class BaseSearchListView(ListView):
         try:
             result = s.execute()
         except Exception as e:
-            raise SearchQueryException("Unable to execute search query: {}".format(e))
+            raise SearchQueryException(f"Unable to execute search query: {e}")
 
         formatted_result = format_search_results(result)
 
@@ -159,7 +156,7 @@ class BaseSearchListView(ListView):
         return qs
 
     def get_context_data(self, **kwargs):
-        context = super(BaseSearchListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         search_result = self._search_result
         formatted_search_result = self._formatted_search_result

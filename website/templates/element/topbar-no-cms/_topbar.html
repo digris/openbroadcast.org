@@ -1,0 +1,21 @@
+{# load menu #}
+{# generate_menu #}
+
+{% load navutils_tags %}
+
+
+<div class="topbar">
+
+    <div class="branding">
+        <a href="/" title="open broadcast platform - Home">open broadcast</a>
+    </div>
+
+    <div>
+        (( NO CMS ))
+    </div>
+
+    <div>
+        {# render_menu menu=menus.main user=request.user #}
+    </div>
+
+</div>

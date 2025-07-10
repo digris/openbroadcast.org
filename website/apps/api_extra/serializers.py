@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.conf import settings
 from rest_framework import serializers
 from easy_thumbnails.templatetags.thumbnail import thumbnail_url
@@ -18,10 +15,10 @@ class ImageSerializer(serializers.ImageField):
         if not url:
             return None
 
-        return "{}{}".format(SITE_URL, url)
+        return f"{SITE_URL}{url}"
 
 
 class AbsoluteURLField(serializers.URLField):
     def to_representation(self, value):
-        value = super(AbsoluteURLField, self).to_representation(value)
-        return "{}{}".format(SITE_URL, value)
+        value = super().to_representation(value)
+        return f"{SITE_URL}{value}"

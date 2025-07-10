@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
@@ -73,7 +70,7 @@ class Country(models.Model):
         ordering = ("printable_name",)
 
     def __str__(self):
-        return "{} ({})".format(self.printable_name, self.iso2_code)
+        return f"{self.printable_name} ({self.iso2_code})"
 
 
 @python_2_unicode_compatible
@@ -148,28 +145,26 @@ class Address(models.Model):
     email = models.EmailField(_("EMail"), max_length=255)
     # company = models.CharField(_('Company'), max_length=255, null=True, blank=True)
 
-    class Meta(object):
+    class Meta:
         abstract = True
         verbose_name = _("Address")
         verbose_name_plural = _("Addresses")
 
     def __str__(self):
-        return "%s (%s, %s)" % (self.name, self.zip_code, self.city)
+        return "{} ({}, {})".format(self.name, self.zip_code, self.city)
 
     def clone(self):
-        new_kwargs = dict(
-            [
-                (fld.name, getattr(self, fld.name))
+        new_kwargs = {
+                fld.name: getattr(self, fld.name)
                 for fld in self._meta.fields
                 if fld.name != "id"
-            ]
-        )
+        }
         return self.__class__.objects.create(**new_kwargs)
 
     def as_text(self):
         return ADDRESS_TEMPLATE % {
             "name": self.name,
-            "address": "%s\n%s" % (self.address, self.address2),
+            "address": "{}\n{}".format(self.address, self.address2),
             "zipcode": self.zip_code,
             "city": self.city,
             "country": self.country,

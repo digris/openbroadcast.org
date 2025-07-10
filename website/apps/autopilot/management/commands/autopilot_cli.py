@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 import logging
 import argparse
 import textwrap
@@ -45,7 +43,7 @@ class Command(BaseCommand):
             type=int,
             dest="channel_id",
             default=DEFAULT_CHANNEL_ID,
-            help="Channel ID [{:}]".format(DEFAULT_CHANNEL_ID),
+            help=f"Channel ID [{DEFAULT_CHANNEL_ID}]",
         )
 
         parser.add_argument(
@@ -54,7 +52,7 @@ class Command(BaseCommand):
             action="store",
             dest="username",
             default=DEFAULT_USERNAME,
-            help="Username to schedule in name of [{:}]".format(DEFAULT_USERNAME),
+            help=f"Username to schedule in name of [{DEFAULT_USERNAME}]",
         )
 
         parser.add_argument(
@@ -64,7 +62,7 @@ class Command(BaseCommand):
             type=int,
             dest="days_offset",
             default=NUM_DAYS_OFFSET,
-            help='Days in future to start. 0 = "today" [{:}]'.format(NUM_DAYS_OFFSET),
+            help=f'Days in future to start. 0 = "today" [{NUM_DAYS_OFFSET}]',
         )
 
         parser.add_argument(
@@ -74,7 +72,7 @@ class Command(BaseCommand):
             type=int,
             dest="days_fill",
             default=NUM_DAYS,
-            help="Number of days to schedule ahead [{:}]".format(NUM_DAYS),
+            help=f"Number of days to schedule ahead [{NUM_DAYS}]",
         )
 
         parser.add_argument(

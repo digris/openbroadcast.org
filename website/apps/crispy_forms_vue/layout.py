@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from crispy_forms.layout import LayoutObject, Div, Field
 
 TEMPLATE_PACK = "forms_vue"
@@ -15,11 +13,11 @@ class Cell(Div):
 
 class InputContainer(Field):
 
-    template = "{}/input_container.html".format(TEMPLATE_PACK)
+    template = f"{TEMPLATE_PACK}/input_container.html"
     css_class = "input-container"
 
 
 class TagInputContainer(Field):
 
-    template = "{}/tag_input_container.html".format(TEMPLATE_PACK)
+    template = f"{TEMPLATE_PACK}/tag_input_container.html"
     css_class = "input-container input-container--tag"

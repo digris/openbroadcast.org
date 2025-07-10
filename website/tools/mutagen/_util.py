@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2006  Joe Wreschnig
 #
 # This program is free software; you can redistribute it and/or modify
@@ -114,7 +113,7 @@ def fileobj_name(fileobj):
             path type, but might be empty or non-existent.
     """
 
-    value = getattr(fileobj, "name", u"")
+    value = getattr(fileobj, "name", "")
     if not isinstance(value, (text_type, bytes)):
         value = text_type(value)
     return value
@@ -237,7 +236,7 @@ def _openfile(instance, filething, filename, fileobj, writable, create):
         inmemory_fileobj = False
         try:
             fileobj = open(filename, "rb+" if writable else "rb")
-        except IOError as e:
+        except OSError as e:
             if writable and e.errno == errno.EOPNOTSUPP:
                 # Some file systems (gvfs over fuse) don't support opening
                 # files read/write. To make things still work read the whole
@@ -247,14 +246,14 @@ def _openfile(instance, filething, filename, fileobj, writable, create):
                 try:
                     with open(filename, "rb") as fileobj:
                         fileobj = BytesIO(fileobj.read())
-                except IOError as e2:
+                except OSError as e2:
                     raise MutagenError(e2)
                 inmemory_fileobj = True
             elif create and e.errno == errno.ENOENT:
                 assert writable
                 try:
                     fileobj = open(filename, "wb+")
-                except IOError as e2:
+                except OSError as e2:
                     raise MutagenError(e2)
             else:
                 raise MutagenError(e)
@@ -268,7 +267,7 @@ def _openfile(instance, filething, filename, fileobj, writable, create):
                 try:
                     with open(filename, "wb") as fileobj:
                         fileobj.write(data)
-                except IOError as e:
+                except OSError as e:
                     raise MutagenError(e)
     else:
         raise TypeError("Missing filename or fileobj argument")
@@ -352,7 +351,7 @@ def enum(cls):
 
     def str_(self):
         if self in map_:
-            return "%s.%s" % (type(self).__name__, map_[self])
+            return "{}.{}".format(type(self).__name__, map_[self])
         return "%d" % int(self)
 
     def repr_(self):
@@ -404,7 +403,7 @@ def flags(cls):
         matches = []
         for k, v in map_.items():
             if value & k:
-                matches.append("%s.%s" % (type(self).__name__, v))
+                matches.append("{}.{}".format(type(self).__name__, v))
                 value &= ~k
         if value != 0 or not matches:
             matches.append(text_type(value))
@@ -421,7 +420,7 @@ def flags(cls):
 
 
 @total_ordering
-class DictMixin(object):
+class DictMixin:
     """Implement the dict API using keys() and __*item__ methods.
 
     Similar to UserDict.DictMixin, this takes a class that defines
@@ -534,7 +533,7 @@ class DictMixin(object):
 class DictProxy(DictMixin):
     def __init__(self, *args, **kwargs):
         self.__dict = {}
-        super(DictProxy, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def __getitem__(self, key):
         return self.__dict[key]
@@ -583,23 +582,23 @@ def _fill_cdata(cls):
                     max_ = 2 ** (s.size * 8 - 1) - 1
                     min_ = -2 ** (s.size * 8 - 1)
 
-                funcs["%s%s_min" % (prefix, name)] = min_
-                funcs["%s%s_max" % (prefix, name)] = max_
-                funcs["%sint%s_min" % (prefix, bits)] = min_
-                funcs["%sint%s_max" % (prefix, bits)] = max_
+                funcs["{}{}_min".format(prefix, name)] = min_
+                funcs["{}{}_max".format(prefix, name)] = max_
+                funcs["{}int{}_min".format(prefix, bits)] = min_
+                funcs["{}int{}_max".format(prefix, bits)] = max_
 
-                funcs["%s%s%s" % (prefix, name, esuffix)] = unpack
-                funcs["%sint%s%s" % (prefix, bits, esuffix)] = unpack
-                funcs["%s%s%s_from" % (prefix, name, esuffix)] = unpack_from
-                funcs["%sint%s%s_from" % (prefix, bits, esuffix)] = unpack_from
-                funcs["to_%s%s%s" % (prefix, name, esuffix)] = pack
-                funcs["to_%sint%s%s" % (prefix, bits, esuffix)] = pack
+                funcs["{}{}{}".format(prefix, name, esuffix)] = unpack
+                funcs["{}int{}{}".format(prefix, bits, esuffix)] = unpack
+                funcs["{}{}{}_from".format(prefix, name, esuffix)] = unpack_from
+                funcs["{}int{}{}_from".format(prefix, bits, esuffix)] = unpack_from
+                funcs["to_{}{}{}".format(prefix, name, esuffix)] = pack
+                funcs["to_{}int{}{}".format(prefix, bits, esuffix)] = pack
 
     for key, func in iteritems(funcs):
         setattr(cls, key, staticmethod(func))
 
 
-class cdata(object):
+class cdata:
     """C character buffer to Python numeric type conversions.
 
     For each size/sign/endianness:
@@ -659,7 +658,7 @@ def read_full(fileobj, size):
 
     data = fileobj.read(size)
     if len(data) != size:
-        raise IOError
+        raise OSError
     return data
 
 
@@ -713,8 +712,8 @@ def mmap_move(fileobj, dest, src, count):
 
     try:
         fileno = fileobj.fileno()
-    except (AttributeError, IOError):
-        raise mmap.error("File object does not expose/support a file descriptor")
+    except (AttributeError, OSError):
+        raise OSError("File object does not expose/support a file descriptor")
 
     fileobj.seek(0, 2)
     filesize = fileobj.tell()
@@ -771,7 +770,7 @@ def resize_file(fobj, diff, BUFFER_SIZE=2 ** 16):
                 fobj.write(b"\x00" * addsize)
                 diff -= addsize
             fobj.flush()
-        except IOError as e:
+        except OSError as e:
             if e.errno == errno.ENOSPC:
                 # To reduce the chance of corrupt files in case of missing
                 # space try to revert the file expansion back. Of course
@@ -854,7 +853,7 @@ def insert_bytes(fobj, size, offset, BUFFER_SIZE=2 ** 16):
     if mmap is not None:
         try:
             mmap_move(fobj, offset + size, offset, movesize)
-        except mmap.error:
+        except OSError:
             fallback_move(fobj, offset + size, offset, movesize, BUFFER_SIZE)
     else:
         fallback_move(fobj, offset + size, offset, movesize, BUFFER_SIZE)
@@ -888,7 +887,7 @@ def delete_bytes(fobj, size, offset, BUFFER_SIZE=2 ** 16):
     if mmap is not None:
         try:
             mmap_move(fobj, offset, offset + size, movesize)
-        except mmap.error:
+        except OSError:
             fallback_move(fobj, offset, offset + size, movesize, BUFFER_SIZE)
     else:
         fallback_move(fobj, offset, offset + size, movesize, BUFFER_SIZE)
@@ -1017,22 +1016,22 @@ def decode_terminated(data, encoding, strict=True):
     r = []
     for i, b in enumerate(iterbytes(data)):
         c = decoder.decode(b)
-        if c == u"\x00":
-            return u"".join(r), data[i + 1 :]
+        if c == "\x00":
+            return "".join(r), data[i + 1 :]
         r.append(c)
     else:
         # make sure the decoder is finished
         r.append(decoder.decode(b"", True))
         if strict:
             raise ValueError("not null terminated")
-        return u"".join(r), b""
+        return "".join(r), b""
 
 
 class BitReaderError(Exception):
     pass
 
 
-class BitReader(object):
+class BitReader:
     def __init__(self, fileobj):
         self._fileobj = fileobj
         self._buffer = 0

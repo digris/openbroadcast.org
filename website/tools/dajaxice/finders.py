@@ -12,7 +12,7 @@ class VirtualStorage(finders.FileSystemStorage):
 
     def __init__(self, *args, **kwargs):
         self._files_cache = {}
-        super(VirtualStorage, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def get_or_create_file(self, path):
         if path not in self.files:

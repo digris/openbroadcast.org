@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 
 from base.models.utils.merge import (
@@ -103,4 +100,4 @@ def merge(master, slaves):
 
         return master
 
-    raise NotImplementedError('merging of "{}" objects not implemented.'.format(type(master)))
+    raise NotImplementedError(f'merging of "{type(master)}" objects not implemented.')

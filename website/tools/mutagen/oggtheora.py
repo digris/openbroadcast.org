@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2006 Joe Wreschnig
 #
 # This program is free software; you can redistribute it and/or modify
@@ -76,7 +75,7 @@ class OggTheoraInfo(StreamInfo):
         self.length = frames / float(self.fps)
 
     def pprint(self):
-        return u"Ogg Theora, %.2f seconds, %d bps" % (self.length, self.bitrate)
+        return "Ogg Theora, %.2f seconds, %d bps" % (self.length, self.bitrate)
 
 
 class OggTheoraCommentDict(VCommentDict):
@@ -91,7 +90,7 @@ class OggTheoraCommentDict(VCommentDict):
                 pages.append(page)
                 complete = page.complete or (len(page.packets) > 1)
         data = OggPage.to_packets(pages)[0][7:]
-        super(OggTheoraCommentDict, self).__init__(data, framing=False)
+        super().__init__(data, framing=False)
         self._padding = len(data) - self._size
 
     def _inject(self, fileobj, padding_func):

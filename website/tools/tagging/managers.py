@@ -51,7 +51,7 @@ class ModelTaggedItemManager(models.Manager):
             return TaggedItem.objects.get_union_by_model(queryset, tags)
 
 
-class TagDescriptor(object):
+class TagDescriptor:
     """
     A descriptor which provides access to a ``ModelTagManager`` for
     model classes and simple retrieval, updating and deletion of tags

@@ -53,7 +53,7 @@ class Artists(models.Model):
     total_plays = models.IntegerField()
 
     class Meta:
-        db_table = u"artists"
+        db_table = "artists"
         managed = False
 
 
@@ -104,7 +104,7 @@ class Labels(models.Model):
     migrated = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        db_table = u"labels"
+        db_table = "labels"
         managed = False
 
 
@@ -118,7 +118,7 @@ class Licenses(models.Model):
     lock = models.IntegerField()
 
     class Meta:
-        db_table = u"licenses"
+        db_table = "licenses"
         managed = False
 
 
@@ -225,7 +225,7 @@ class Medias(models.Model):
     total_plays = models.IntegerField()
 
     class Meta:
-        db_table = u"medias"
+        db_table = "medias"
         managed = False
 
 
@@ -243,7 +243,7 @@ class Ntags(models.Model):
     playlist_count = models.IntegerField()
 
     class Meta:
-        db_table = u"ntags"
+        db_table = "ntags"
         managed = False
 
 
@@ -279,7 +279,7 @@ class Playlists(models.Model):
     legacy_id = models.IntegerField()
 
     class Meta:
-        db_table = u"playlists"
+        db_table = "playlists"
         managed = False
 
 
@@ -346,7 +346,7 @@ class Releases(models.Model):
     status_viral = models.IntegerField(blank=True)
 
     class Meta:
-        db_table = u"releases"
+        db_table = "releases"
         managed = False
 
 
@@ -366,7 +366,7 @@ class Users(models.Model):
     client_ip = models.CharField(max_length=45, blank=True)
 
     class Meta:
-        db_table = u"users"
+        db_table = "users"
         managed = False
 
 
@@ -377,7 +377,7 @@ class ArtistsMedias(models.Model):
     created = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        db_table = u"artists_medias"
+        db_table = "artists_medias"
         managed = False
 
 
@@ -388,7 +388,7 @@ class ArtistsReleases(models.Model):
     created = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        db_table = u"artists_releases"
+        db_table = "artists_releases"
         managed = False
 
 
@@ -399,7 +399,7 @@ class NtagsArtists(models.Model):
     created = models.DateTimeField()
 
     class Meta:
-        db_table = u"ntags_artists"
+        db_table = "ntags_artists"
         managed = False
 
 
@@ -410,7 +410,7 @@ class NtagsLabels(models.Model):
     created = models.DateTimeField()
 
     class Meta:
-        db_table = u"ntags_labels"
+        db_table = "ntags_labels"
         managed = False
 
 
@@ -421,7 +421,7 @@ class NtagsMedias(models.Model):
     created = models.DateTimeField()
 
     class Meta:
-        db_table = u"ntags_medias"
+        db_table = "ntags_medias"
         managed = False
 
 
@@ -432,7 +432,7 @@ class NtagsPlaylists(models.Model):
     created = models.DateTimeField()
 
     class Meta:
-        db_table = u"ntags_playlists"
+        db_table = "ntags_playlists"
         managed = False
 
 
@@ -443,7 +443,7 @@ class NtagsReleases(models.Model):
     created = models.DateTimeField()
 
     class Meta:
-        db_table = u"ntags_releases"
+        db_table = "ntags_releases"
         managed = False
 
 
@@ -454,7 +454,7 @@ class NtagsTransmissions(models.Model):
     created = models.DateTimeField()
 
     class Meta:
-        db_table = u"ntags_transmissions"
+        db_table = "ntags_transmissions"
         managed = False
 
 
@@ -471,7 +471,7 @@ class MediasPlaylists(models.Model):
     cue_out = models.IntegerField()
 
     class Meta:
-        db_table = u"medias_playlists"
+        db_table = "medias_playlists"
         managed = False
 
 
@@ -482,7 +482,7 @@ class MediasReleases(models.Model):
     created = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        db_table = u"medias_releases"
+        db_table = "medias_releases"
         managed = False
 
 
@@ -493,5 +493,5 @@ class LabelsReleases(models.Model):
     created = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        db_table = u"labels_releases"
+        db_table = "labels_releases"
         managed = False

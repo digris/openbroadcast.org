@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2006  Lukas Lalinsky
 #
 # This program is free software; you can redistribute it and/or modify
@@ -69,7 +68,7 @@ class OptimFROGInfo(StreamInfo):
             self.length = 0.0
 
     def pprint(self):
-        return u"OptimFROG, %.2f seconds, %d Hz" % (self.length, self.sample_rate)
+        return "OptimFROG, %.2f seconds, %d Hz" % (self.length, self.sample_rate)
 
 
 class OptimFROG(APEv2File):

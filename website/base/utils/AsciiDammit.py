@@ -1,5 +1,4 @@
 #!/usr/bin/python2
-# coding=utf-8
 """ASCII, Dammit
 
 Stupid library to turn MS chars (like smart quotes) and ISO-Latin
@@ -212,7 +211,7 @@ def _dammit(t, html=0, fixWindowsOnly=0):
 
 def asciiDammit(t, fixWindowsOnly=0):
     "Turns ISO-Latin-1 into a plain ASCII approximation, dammit."
-    return unidecode(u"%s" % t)
+    return unidecode("%s" % t)
 
 
 def __asciiDammit(t, fixWindowsOnly=0):

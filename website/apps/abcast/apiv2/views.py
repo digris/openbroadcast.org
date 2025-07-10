@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import datetime
 import logging
 
@@ -60,7 +57,7 @@ class EmissionViewSet(FlexFieldsModelViewSet):
     filter_class = EmissionFilter
 
     def get_queryset(self):
-        qs = super(EmissionViewSet, self).get_queryset()
+        qs = super().get_queryset()
         qs = qs.prefetch_related(
             "user",
             "user__profile",
@@ -131,7 +128,7 @@ class EmissionViewSet(FlexFieldsModelViewSet):
             if not available:
                 raise ValidationError(message)
 
-        return super(EmissionViewSet, self).partial_update(request, *args, **kwargs)
+        return super().partial_update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -139,7 +136,7 @@ class EmissionViewSet(FlexFieldsModelViewSet):
         if instance.has_lock:
             raise ValidationError("Emission is locked.")
 
-        return super(EmissionViewSet, self).destroy(request, *args, **kwargs)
+        return super().destroy(request, *args, **kwargs)
 
 
 emission_list = EmissionViewSet.as_view({"get": "list", "post": "create"})

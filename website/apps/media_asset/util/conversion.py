@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 import os
 import shutil
 import subprocess
@@ -18,11 +16,11 @@ FFMPEG_BINARY = getattr(settings, "FFMPEG_BINARY")
 
 def any_to_wav(src, dst=None):
 
-    log.info("any to wav: %s > %s" % (src, dst))
+    log.info("any to wav: {} > {}".format(src, dst))
 
     if not os.path.isfile(src):
         log.error("unable to access %s" % src)
-        raise IOError("unable to access %s" % src)
+        raise OSError("unable to access %s" % src)
 
     src_path, src_ext = os.path.splitext(src)
     if src_ext.lower() == ".wav":
@@ -48,9 +46,9 @@ def any_to_wav(src, dst=None):
         if ext.lower() in [".flac"]:
             ffmpeg_to_wav(src, dst)
 
-    log.debug("to wav: %s > %s" % (src, dst))
+    log.debug("to wav: {} > {}".format(src, dst))
     if not os.path.exists(dst):
-        log.warning("unable to convert {} to wav.".format(src))
+        log.warning(f"unable to convert {src} to wav.")
         return
 
     return dst

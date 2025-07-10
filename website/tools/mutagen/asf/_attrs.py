@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2005-2006  Joe Wreschnig
 # Copyright (C) 2006-2007  Lukas Lalinsky
 #
@@ -16,7 +15,7 @@ from mutagen._util import total_ordering
 from ._util import ASFError
 
 
-class ASFBaseAttribute(object):
+class ASFBaseAttribute:
     """Generic attribute."""
 
     TYPE = None
@@ -67,7 +66,7 @@ class ASFBaseAttribute(object):
         raise NotImplementedError
 
     def __repr__(self):
-        name = "%s(%r" % (type(self).__name__, self.value)
+        name = "{}({!r}".format(type(self).__name__, self.value)
         if self.language:
             name += ", language=%d" % self.language
         if self.stream:

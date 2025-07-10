@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 
 from django.apps import apps
@@ -44,7 +41,7 @@ def add_items_to_playlist(items, playlist):
         obj_ct = item["content"].get("ct")
         obj_uuid = item["content"].get("uuid")
 
-        log.debug("item requested to collect: {} {}".format(obj_ct, obj_uuid))
+        log.debug(f"item requested to collect: {obj_ct} {obj_uuid}")
         obj = apps.get_model(*obj_ct.split(".")).objects.get(uuid=obj_uuid)
 
         cue_and_fade = {
@@ -238,7 +235,7 @@ class MediaDownloadView(APIView):
         )
 
         response = FileResponse(open(obj.master.path, "rb"))
-        response["Content-Disposition"] = 'attachment; filename="{}"'.format(filename)
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
 
         return response
 
@@ -319,7 +316,7 @@ class ObjectReassignView(APIView):
 class MediaAppearances(APIView):
     def get(self, request, uuid):
 
-        cache_key = "media-appearances-{}".format(uuid)
+        cache_key = f"media-appearances-{uuid}"
         data = cache.get(cache_key)
         if not data or True:
             obj = get_object_or_404(Media, uuid=uuid)

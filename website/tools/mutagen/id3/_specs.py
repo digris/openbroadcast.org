@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2005  Michael Urman
 #
 # This program is free software; you can redistribute it and/or modify
@@ -25,7 +24,7 @@ from ._util import BitPaddedInt, is_valid_frame_id
 
 
 @enum
-class PictureType(object):
+class PictureType:
     """Enumeration of image types defined by the ID3 standard for the APIC
     frame, but also reused in WMA/FLAC/VorbisComment.
     """
@@ -98,7 +97,7 @@ class PictureType(object):
 
 
 @flags
-class CTOCFlags(object):
+class CTOCFlags:
 
     TOP_LEVEL = 0x2
     """Identifies the CTOC root frame"""
@@ -111,7 +110,7 @@ class SpecError(Exception):
     pass
 
 
-class Spec(object):
+class Spec:
 
     handle_nodata = False
     """If reading empty data is possible and writing it back will again
@@ -165,7 +164,7 @@ class Spec(object):
 
 class ByteSpec(Spec):
     def __init__(self, name, default=0):
-        super(ByteSpec, self).__init__(name, default)
+        super().__init__(name, default)
 
     def read(self, header, frame, data):
         return bytearray(data)[0], data[1:]
@@ -181,7 +180,7 @@ class ByteSpec(Spec):
 
 class PictureTypeSpec(ByteSpec):
     def __init__(self, name, default=PictureType.COVER_FRONT):
-        super(PictureTypeSpec, self).__init__(name, default)
+        super().__init__(name, default)
 
     def read(self, header, frame, data):
         value, data = ByteSpec.read(self, header, frame, data)
@@ -233,7 +232,7 @@ class SizedIntegerSpec(Spec):
 
 
 @enum
-class Encoding(object):
+class Encoding:
     """Text Encoding"""
 
     LATIN1 = 0
@@ -251,10 +250,10 @@ class Encoding(object):
 
 class EncodingSpec(ByteSpec):
     def __init__(self, name, default=Encoding.UTF16):
-        super(EncodingSpec, self).__init__(name, default)
+        super().__init__(name, default)
 
     def read(self, header, frame, data):
-        enc, data = super(EncodingSpec, self).read(header, frame, data)
+        enc, data = super().read(header, frame, data)
         if enc not in (
             Encoding.LATIN1,
             Encoding.UTF16,
@@ -288,8 +287,8 @@ class StringSpec(Spec):
 
     def __init__(self, name, length, default=None):
         if default is None:
-            default = u" " * length
-        super(StringSpec, self).__init__(name, default)
+            default = " " * length
+        super().__init__(name, default)
         self.len = length
 
     def read(s, header, frame, data):
@@ -329,7 +328,7 @@ class StringSpec(Spec):
 class RVASpec(Spec):
     def __init__(self, name, stereo_only, default=[0, 0]):
         # two_chan: RVA has only 2 channels, while RVAD has 6 channels
-        super(RVASpec, self).__init__(name, default)
+        super().__init__(name, default)
         self._max_values = 4 if stereo_only else 12
 
     def read(self, header, frame, data):
@@ -410,10 +409,10 @@ class RVASpec(Spec):
 
 class FrameIDSpec(StringSpec):
     def __init__(self, name, length):
-        super(FrameIDSpec, self).__init__(name, length, u"X" * length)
+        super().__init__(name, length, "X" * length)
 
     def validate(self, frame, value):
-        value = super(FrameIDSpec, self).validate(frame, value)
+        value = super().validate(frame, value)
         if not is_valid_frame_id(value):
             raise ValueError("Invalid frame ID")
         return value
@@ -424,7 +423,7 @@ class BinaryDataSpec(Spec):
     handle_nodata = True
 
     def __init__(self, name, default=b""):
-        super(BinaryDataSpec, self).__init__(name, default)
+        super().__init__(name, default)
 
     def read(self, header, frame, data):
         return data, b""
@@ -472,8 +471,8 @@ class EncodedTextSpec(Spec):
         Encoding.UTF8: ("utf8", b"\x00"),
     }
 
-    def __init__(self, name, default=u""):
-        super(EncodedTextSpec, self).__init__(name, default)
+    def __init__(self, name, default=""):
+        super().__init__(name, default)
 
     def read(self, header, frame, data):
         enc, term = self._encodings[frame.encoding]
@@ -506,7 +505,7 @@ class EncodedTextSpec(Spec):
 
 class MultiSpec(Spec):
     def __init__(self, name, *specs, **kw):
-        super(MultiSpec, self).__init__(name, default=kw.get("default"))
+        super().__init__(name, default=kw.get("default"))
         self.specs = specs
         self.sep = kw.get("sep")
 
@@ -576,8 +575,8 @@ class EncodedNumericPartTextSpec(EncodedTextSpec):
 
 
 class Latin1TextSpec(Spec):
-    def __init__(self, name, default=u""):
-        super(Latin1TextSpec, self).__init__(name, default)
+    def __init__(self, name, default=""):
+        super().__init__(name, default)
 
     def read(self, header, frame, data):
         if b"\x00" in data:
@@ -598,7 +597,7 @@ class ID3FramesSpec(Spec):
     handle_nodata = True
 
     def __init__(self, name, default=[]):
-        super(ID3FramesSpec, self).__init__(name, default)
+        super().__init__(name, default)
 
     def read(self, header, frame, data):
         from ._tags import ID3Tags
@@ -632,7 +631,7 @@ class ID3FramesSpec(Spec):
 
 class Latin1TextListSpec(Spec):
     def __init__(self, name, default=[]):
-        super(Latin1TextListSpec, self).__init__(name, default)
+        super().__init__(name, default)
         self._bspec = ByteSpec("entry_count", default=0)
         self._lspec = Latin1TextSpec("child_element_id")
 
@@ -656,7 +655,7 @@ class Latin1TextListSpec(Spec):
 
 @swap_to_string
 @total_ordering
-class ID3TimeStamp(object):
+class ID3TimeStamp:
     """A time stamp in ID3v2 format.
 
     This is a restricted form of the ISO 8601 standard; time stamps
@@ -689,7 +688,7 @@ class ID3TimeStamp(object):
             if part is None:
                 break
             pieces.append(self.__formats[i] % part + self.__seps[i])
-        return u"".join(pieces)[:-1]
+        return "".join(pieces)[:-1]
 
     def set_text(self, text, splitre=re.compile("[-T:/.]|\\s+")):
         year, month, day, hour, minute, second = splitre.split(text + ":::::")[:6]
@@ -725,11 +724,11 @@ class ID3TimeStamp(object):
 
 class TimeStampSpec(EncodedTextSpec):
     def read(self, header, frame, data):
-        value, data = super(TimeStampSpec, self).read(header, frame, data)
+        value, data = super().read(header, frame, data)
         return self.validate(frame, value), data
 
     def write(self, config, frame, data):
-        return super(TimeStampSpec, self).write(
+        return super().write(
             config, frame, data.text.replace(" ", "T")
         )
 

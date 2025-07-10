@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import os
 import re
 import locale
@@ -65,7 +64,7 @@ METADATA_SET = {
 }
 
 
-class Identifier(object):
+class Identifier:
 
     """
     Identifying media files by file
@@ -91,16 +90,16 @@ class Identifier(object):
     def id_by_sha1(self, file):
 
         sha1 = sha1_by_file(file)
-        log.debug(u"generated SHA1 %s for %s" % (sha1, file))
+        log.debug("generated SHA1 {} for {}".format(sha1, file))
 
         from alibrary.models import Media
 
         duplicates = Media.objects.filter(master_sha1=sha1)
         if duplicates.exists():
-            log.info(u"detected duplicate by SHA1 hash. pk is: %s" % duplicates[0].pk)
+            log.info("detected duplicate by SHA1 hash. pk is: %s" % duplicates[0].pk)
             return duplicates[0].pk
         else:
-            log.debug(u"no duplicate by SHA1 hash.")
+            log.debug("no duplicate by SHA1 hash.")
             return None
 
     """
@@ -114,7 +113,7 @@ class Identifier(object):
         try:
             metadata = self.extract_metadata(file)
         except:
-            log.warning("unable to extract metadata for: {}".format(file.path))
+            log.warning(f"unable to extract metadata for: {file.path}")
             metadata = None
 
         if not metadata:
@@ -186,11 +185,11 @@ class Identifier(object):
         )
 
         if results:
-            log.info("got {} result(s) from fprint api".format(len(results)))
+            log.info(f"got {len(results)} result(s) from fprint api")
             try:
                 return Media.objects.get(uuid=results[0]["uuid"]).pk
             except:
-                log.warning("unable to get media by uuid: {}".format(results))
+                log.warning(f"unable to get media by uuid: {results}")
                 return
 
     def extract_metadata(self, file):
@@ -234,7 +233,7 @@ class Identifier(object):
         try:
             fileinfo = FileInfoProcessor(file.path)
         except:
-            log.warning("unable to extract fileinfo for: {}".format(file.path))
+            log.warning(f"unable to extract fileinfo for: {file.path}")
             fileinfo = None
 
         if fileinfo and fileinfo.audio_stream:
@@ -294,7 +293,7 @@ class Identifier(object):
             path, filename = os.path.split(file.path)
             log.info("Looking for number in filename: %s" % filename)
 
-            match = re.search("\A\d+", filename)
+            match = re.search(r"\A\d+", filename)
 
             try:
                 if match:
@@ -550,13 +549,13 @@ class Identifier(object):
                 http://www.musicbrainz.org/ws/2/recording/?query=rid:1e701b4e-2b6e-4509-af29-b8df2cdc8225%20AND%20number:3&fmt=json
                 """
 
-                url = "http://%s/ws/2/recording/?fmt=json&query=rid:%s" % (
+                url = "http://{}/ws/2/recording/?fmt=json&query=rid:{}".format(
                     MUSICBRAINZ_HOST,
                     recording_id,
                 )
 
                 if tracknumber and not skip_tracknumber:
-                    url = "%s%s%s" % (url, "%20AND%20number:", tracknumber)
+                    url = "{}{}{}".format(url, "%20AND%20number:", tracknumber)
 
                 # mdata = MutagenFile(obj.file.path)
                 # qdur = (float(mdata.info.length * 1000) / 2000.0)
@@ -719,7 +718,7 @@ class Identifier(object):
                 get release details
                 """
                 inc = ("labels", "artists", "url-rels", "label-rels")
-                url = "http://%s/ws/2/release/%s/?fmt=json&inc=%s" % (
+                url = "http://{}/ws/2/release/{}/?fmt=json&inc={}".format(
                     MUSICBRAINZ_HOST,
                     r_id,
                     "+".join(inc),
@@ -750,7 +749,7 @@ class Identifier(object):
                 get release-group details
                 """
                 inc = ("url-rels",)
-                url = "http://%s/ws/2/release-group/%s/?fmt=json&inc=%s" % (
+                url = "http://{}/ws/2/release-group/{}/?fmt=json&inc={}".format(
                     MUSICBRAINZ_HOST,
                     rg_id,
                     "+".join(inc),

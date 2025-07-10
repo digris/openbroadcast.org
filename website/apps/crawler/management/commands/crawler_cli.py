@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import requests
 import djclick as click
 from django.db.models import Q
@@ -54,7 +52,7 @@ def crawl_releases_for_media_mbid(id):
 
         qs = qs.filter(media_release__pk__in=_m_ids).distinct()
 
-    click.secho("Num. objects to process: {}".format(qs.count()), fg="green")
+    click.secho(f"Num. objects to process: {qs.count()}", fg="green")
 
     total_mb_ids_added = []
     for obj in qs.nocache():
@@ -62,7 +60,7 @@ def crawl_releases_for_media_mbid(id):
         if mb_ids_added:
             total_mb_ids_added += mb_ids_added
 
-    click.secho("Total mb ids added:    {}".format(len(total_mb_ids_added)), fg="green")
+    click.secho(f"Total mb ids added:    {len(total_mb_ids_added)}", fg="green")
 
 
 @cli.command()
@@ -93,13 +91,13 @@ def crawl_musicbrainz(ct, cache_for):
         qs = Media.objects.filter(relations__service="musicbrainz").distinct()
         _crawl_func = media_crawl_musicbrainz
 
-    click.secho("Num. {} objects to process: {}".format(ct, qs.count()), fg="green")
+    click.secho(f"Num. {ct} objects to process: {qs.count()}", fg="green")
 
     for obj in qs.nocache():
-        cache_key = "musicbrainz-{}-{}".format(ct, obj.pk)
+        cache_key = f"musicbrainz-{ct}-{obj.pk}"
         if cache.get(cache_key):
             click.secho(
-                "object recently crawled: {}".format(obj), bg="yellow", fg="black"
+                f"object recently crawled: {obj}", bg="yellow", fg="black"
             )
         else:
             _changes = _crawl_func(obj=obj)
@@ -112,10 +110,10 @@ def crawl_musicbrainz(ct, cache_for):
     ###################################################################
     click.secho("#" * 72, fg="green")
 
-    click.secho("Total updated objects:    {}".format(len(changes)), fg="green")
+    click.secho(f"Total updated objects:    {len(changes)}", fg="green")
 
     click.secho(
-        "Total updated properties: {}".format(sum([len(c) for c in changes])),
+        f"Total updated properties: {sum([len(c) for c in changes])}",
         fg="green",
     )
 
@@ -148,13 +146,13 @@ def crawl_discogs(ct, cache_for):
     #     qs = Media.objects.filter(relations__service='musicbrainz').distinct()
     #     _crawl_func = media_crawl_musicbrainz
 
-    click.secho("Num. {} objects to process: {}".format(ct, qs.count()), fg="green")
+    click.secho(f"Num. {ct} objects to process: {qs.count()}", fg="green")
 
     for obj in qs.nocache()[0:600]:
-        cache_key = "discogs-meta-{}-{}".format(ct, obj.pk)
+        cache_key = f"discogs-meta-{ct}-{obj.pk}"
         if cache.get(cache_key):
             click.secho(
-                "object recently crawled: {}".format(obj), bg="yellow", fg="black"
+                f"object recently crawled: {obj}", bg="yellow", fg="black"
             )
         else:
             _changes = _crawl_func(obj=obj)
@@ -167,10 +165,10 @@ def crawl_discogs(ct, cache_for):
     ###################################################################
     click.secho("#" * 72, fg="green")
 
-    click.secho("Total updated objects:    {}".format(len(changes)), fg="green")
+    click.secho(f"Total updated objects:    {len(changes)}", fg="green")
 
     click.secho(
-        "Total updated properties: {}".format(sum([len(c) for c in changes])),
+        f"Total updated properties: {sum([len(c) for c in changes])}",
         fg="green",
     )
 
@@ -215,12 +213,12 @@ def crawl_artwork(ct, id, cache_for):
             relations__service__in=services,
         ).distinct()
 
-    click.secho("Num. {} objects to process: {}".format(ct, qs.count()), fg="green")
+    click.secho(f"Num. {ct} objects to process: {qs.count()}", fg="green")
     for obj in qs.nocache():
-        cache_key = "artwork-{}-{}".format(ct, obj.pk)
+        cache_key = f"artwork-{ct}-{obj.pk}"
         if cache.get(cache_key):
             click.secho(
-                "object recently crawled: {}".format(obj), bg="yellow", fg="black"
+                f"object recently crawled: {obj}", bg="yellow", fg="black"
             )
         else:
             image = obj_crawl_artwork(obj=obj, services=services, save=True)
@@ -230,7 +228,7 @@ def crawl_artwork(ct, id, cache_for):
 
     click.secho("#" * 72, fg="green")
 
-    click.secho("Total images added:    {}".format(len(images_added)), fg="green")
+    click.secho(f"Total images added:    {len(images_added)}", fg="green")
 
 
 @cli.command()
@@ -250,7 +248,7 @@ def crawl_viaf_isni(cache_for):
 
         if cache.get(cache_key):
             click.secho(
-                "object recently crawled: {}".format(obj), bg="yellow", fg="black"
+                f"object recently crawled: {obj}", bg="yellow", fg="black"
             )
 
         else:
@@ -261,10 +259,10 @@ def crawl_viaf_isni(cache_for):
                 try:
                     data = r.json()
                     isni = data["ISNI"][0]
-                    click.secho("got ISNI {} for {}".format(isni, obj), fg="green")
+                    click.secho(f"got ISNI {isni} for {obj}", fg="green")
                     type(obj).objects.filter(pk=obj.pk).update(isni_code=isni)
                 except Exception as e:
-                    click.secho("unable to get ISNI for {}".format(obj), fg="red")
+                    click.secho(f"unable to get ISNI for {obj}", fg="red")
                     pass
 
         cache.set(cache_key, 1, cache_for)

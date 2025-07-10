@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -140,12 +137,12 @@ class Event(models.Model):
         return obj
 
     def __str__(self):
-        return "{0}".format(self.content_object)
+        return f"{self.content_object}"
 
     def get_timesince(self):
         delta = now() - self.created
         if delta.days <= 1:
-            return "{0} ago".format(timesince(self.created, now()))
+            return f"{timesince(self.created, now())} ago"
         if self.created.year != now().year:
             return date(self.created, "d F Y")
         return date(self.created, "d F")

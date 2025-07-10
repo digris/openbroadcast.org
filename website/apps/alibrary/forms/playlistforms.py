@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from datetime import date
 from ac_tagging.widgets import TagAutocompleteTagIt
 from alibrary import settings as alibrary_settings
@@ -42,7 +39,7 @@ ROTATION_YEAR_CHOICES = [y for y in range(current_year + 10, current_year - 11, 
 
 class ActionForm(Form):
     def __init__(self, *args, **kwargs):
-        super(ActionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
         self.helper.form_tag = False
@@ -83,14 +80,23 @@ class DaypartWidget(SelectMultiple):
         if value is None:
             value = []
         has_id = attrs and "id" in attrs
-        final_attrs = self.build_attrs(attrs, name=name)
+
+
+        # final_attrs = self.build_attrs(attrs, name=name)
+
+        base_attrs = self.attrs
+        extra_attrs = attrs or {}
+        extra_attrs["name"] = name
+        final_attrs = self.build_attrs(base_attrs, extra_attrs)
+
+
         output = ['<ul class="unstyled" style="float: left;">']
-        str_values = set([force_text(v) for v in value])
+        str_values = {force_text(v) for v in value}
         for i, (option_value, option_label, row_title) in enumerate(
             chain(self.choices, choices)
         ):
             if has_id:
-                final_attrs = dict(final_attrs, id="%s_%s" % (attrs["id"], i))
+                final_attrs = dict(final_attrs, id="{}_{}".format(attrs["id"], i))
                 label_for = ' for="%s"' % final_attrs["id"]
             else:
                 label_for = ""
@@ -160,7 +166,7 @@ class PlaylistForm(ModelForm):
         except:
             pass
 
-        super(PlaylistForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -272,7 +278,7 @@ class PlaylistForm(ModelForm):
     # )
 
     def clean(self, *args, **kwargs):
-        cd = super(PlaylistForm, self).clean()
+        cd = super().clean()
         series = cd["series"]
         try:
             if not series.pk:
@@ -291,4 +297,4 @@ class PlaylistForm(ModelForm):
             return None
 
     def save(self, *args, **kwargs):
-        return super(PlaylistForm, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)

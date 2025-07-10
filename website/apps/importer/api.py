@@ -39,7 +39,7 @@ class ImportFileResource(ModelResource):
 
     def obj_update(self, bundle, request, **kwargs):
 
-        return super(ImportFileResource, self).obj_update(bundle, request, **kwargs)
+        return super().obj_update(bundle, request, **kwargs)
 
     def obj_create(self, bundle, request, **kwargs):
         """
@@ -68,12 +68,12 @@ class ImportFileResource(ModelResource):
             print("---")
             print(request.FILES)
 
-            bundle.data["file"] = request.FILES[u"files[]"]
+            bundle.data["file"] = request.FILES["files[]"]
 
         except Exception as e:
             print(e)
 
-        return super(ImportFileResource, self).obj_create(bundle, request, **kwargs)
+        return super().obj_create(bundle, request, **kwargs)
 
 
 class ImportResource(ModelResource):

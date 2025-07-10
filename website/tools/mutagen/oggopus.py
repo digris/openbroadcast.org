@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2012, 2013  Christoph Reiter
 #
 # This program is free software; you can redistribute it and/or modify
@@ -80,7 +79,7 @@ class OggOpusInfo(StreamInfo):
         self.length = (page.position - self.__pre_skip) / float(48000)
 
     def pprint(self):
-        return u"Ogg Opus, %.2f seconds" % (self.length)
+        return "Ogg Opus, %.2f seconds" % (self.length)
 
 
 class OggOpusVComment(VCommentDict):
@@ -107,7 +106,7 @@ class OggOpusVComment(VCommentDict):
         pages = self.__get_comment_pages(fileobj, info)
         data = OggPage.to_packets(pages)[0][8:]  # Strip OpusTags
         fileobj = BytesIO(data)
-        super(OggOpusVComment, self).__init__(fileobj, framing=False)
+        super().__init__(fileobj, framing=False)
         self._padding = len(data) - self._size
 
         # in case the LSB of the first byte after v-comment is 1, preserve the

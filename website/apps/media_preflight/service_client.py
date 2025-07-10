@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 import logging
 import requests
 from django.conf import settings
@@ -29,7 +27,7 @@ def run_check(media):
     url = SERVICE_ENDPOINT + "preflight/"
     headers = {
         "user-agent": "openbroadcast.org - preflight client/0.0.1",
-        "Authentication": "Bearer {}".format(SERVICE_TOKEN),
+        "Authentication": f"Bearer {SERVICE_TOKEN}",
     }
     files = {
         "data": open(media.master.path, "rb"),
@@ -43,15 +41,15 @@ def run_check(media):
             headers=headers,
         )
     except RequestException as e:
-        logger.warning("error: {}".format(e))
-        raise PreflightServiceException("request error: {}".format(e))
+        logger.warning(f"error: {e}")
+        raise PreflightServiceException(f"request error: {e}")
 
     if not r.status_code == 200:
-        raise PreflightServiceException("invalid status code: {}".format(r.status_code))
+        raise PreflightServiceException(f"invalid status code: {r.status_code}")
 
     try:
         result = r.json()
     except Exception as e:
-        raise PreflightServiceException("unable to decode response: {}".format(e))
+        raise PreflightServiceException(f"unable to decode response: {e}")
 
     return result

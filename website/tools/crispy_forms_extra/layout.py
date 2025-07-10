@@ -45,7 +45,7 @@ class LookupField(LayoutObject):
         if not hasattr(self, "attrs"):
             self.attrs = {}
 
-        if kwargs.has_key("css_class"):
+        if "css_class" in kwargs:
             if "class" in self.attrs:
                 self.attrs["class"] += " %s" % kwargs.pop("css_class")
             else:
@@ -55,12 +55,10 @@ class LookupField(LayoutObject):
 
         # We use kwargs as HTML attributes, turning data_id='test' into data-id='test'
         self.attrs.update(
-            dict(
-                [
-                    (k.replace("_", "-"), conditional_escape(v))
+            {
+                    k.replace("_", "-"): conditional_escape(v)
                     for k, v in kwargs.items()
-                ]
-            )
+            }
         )
 
     def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
@@ -95,7 +93,7 @@ class LookupImageField(LayoutObject):
         if not hasattr(self, "attrs"):
             self.attrs = {}
 
-        if kwargs.has_key("css_class"):
+        if "css_class" in kwargs:
             if "class" in self.attrs:
                 self.attrs["class"] += " %s" % kwargs.pop("css_class")
             else:
@@ -105,12 +103,10 @@ class LookupImageField(LayoutObject):
 
         # We use kwargs as HTML attributes, turning data_id='test' into data-id='test'
         self.attrs.update(
-            dict(
-                [
-                    (k.replace("_", "-"), conditional_escape(v))
+            {
+                    k.replace("_", "-"): conditional_escape(v)
                     for k, v in kwargs.items()
-                ]
-            )
+            }
         )
 
     def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 import os
 import string
@@ -8,7 +5,7 @@ import hashlib
 
 from base.utils.AsciiDammit import asciiDammit
 
-VALID_CHARS = "-_.()[] %s%s" % (string.ascii_letters, string.digits)
+VALID_CHARS = "-_.()[] {}{}".format(string.ascii_letters, string.digits)
 EXCLUDE_CHARS = "/\\'"
 
 log = logging.getLogger(__name__)
@@ -31,7 +28,7 @@ def sha1_by_file(file):
         return sha1
 
     except Exception as e:
-        log.warning("unable to create sha1 hash: {}".format(e))
+        log.warning(f"unable to create sha1 hash: {e}")
 
 
 def clean_directory_tree_reverse(path):
@@ -43,7 +40,7 @@ def clean_directory_tree_reverse(path):
         path = os.path.dirname(path)
 
     if not os.path.isdir(path):
-        raise IOError("Path does not seem to be a directory: {0}".format(path))
+        raise OSError(f"Path does not seem to be a directory: {path}")
 
     if path.endswith("/"):
         path = path[:-1]

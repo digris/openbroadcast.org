@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import datetime
 import logging
 import time
@@ -24,7 +21,7 @@ ALLOW_IGNORE_DUPLICATES = getattr(settings, "AUTOPILOT_ALLOW_IGNORE_DUPLICATES",
 ALLOW_IGNORE_DAYPARTS = getattr(settings, "AUTOPILOT_ALLOW_IGNORE_DAYPARTS", False)
 
 
-class Autopilot(object):
+class Autopilot:
     def __init__(self, channel_id, username):
 
         self.channel = Channel.objects.get(pk=channel_id)
@@ -72,7 +69,7 @@ class Autopilot(object):
 
     def schedule_day(self, day):
 
-        log.info('Scheduling day: {:}"'.format(day))
+        log.info(f'Scheduling day: {day}"')
 
         dayparts_to_fill = []
 
@@ -122,7 +119,7 @@ class Autopilot(object):
         )
 
         daypart_duration = daypart["abs_time_end"] - daypart["abs_time_start"]
-        log.debug("Slot duration: {:} seconds".format(daypart_duration.seconds))
+        log.debug(f"Slot duration: {daypart_duration.seconds} seconds")
 
         theme = 3
 
@@ -147,7 +144,7 @@ class Autopilot(object):
         while next_start and next_start < daypart["abs_time_end"]:
 
             if num_tries > 20:
-                raise IOError("io 10??")
+                raise OSError("io 10??")
 
             # needs to be re-fetched in every loop
             playlists_qs = self.get_playlist_qs(dayparts=daypart_qs)
@@ -247,7 +244,7 @@ class Autopilot(object):
         else:
             # print 'NEXT: %s' % time_start
             next_start = time_start
-            log.debug("no ending emission in range, next start: {:}".format(next_start))
+            log.debug(f"no ending emission in range, next start: {next_start}")
 
         # get next starting emission in slot
         starting_emissions = (
@@ -289,7 +286,7 @@ class Autopilot(object):
         else:
             # print 'NEXT: %s' % time_start
             next_end = time_end
-            log.debug("no starting emission in range, next end: {:}".format(next_end))
+            log.debug(f"no starting emission in range, next end: {next_end}")
 
             slot_duration = (next_end - next_start).seconds
 
@@ -398,7 +395,7 @@ class Autopilot(object):
     def reset(self, *args, **kwargs):
 
         log.info(
-            'Resetting: user "{:}" for channel "{:}"'.format(self.user, self.channel)
+            f'Resetting: user "{self.user}" for channel "{self.channel}"'
         )
 
         # TODO: don't affect past

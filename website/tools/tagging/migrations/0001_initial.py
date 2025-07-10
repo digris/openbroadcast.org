@@ -70,6 +70,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name="taggeditem",
-            unique_together=set([("tag", "content_type", "object_id")]),
+            unique_together={("tag", "content_type", "object_id")},
         ),
     ]

@@ -88,7 +88,7 @@ class ExportItemResource(ModelResource):
         """
         bundle.data["content_object"] = Media.objects.all()[0]
 
-        res = super(ExportItemResource, self).obj_create(bundle, request, **kwargs)
+        res = super().obj_create(bundle, request, **kwargs)
 
         bundle.obj.content_object = co
         bundle.obj.save()
@@ -121,7 +121,7 @@ class ExportResource(ModelResource):
         }
 
     def obj_create(self, bundle, request=None, **kwargs):
-        return super(ExportResource, self).obj_create(
+        return super().obj_create(
             bundle, request, user=request.user
         )
 

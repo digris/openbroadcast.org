@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-
 import itertools
 
 from django.conf import settings
-from django.template import Context, Template
+from django.template import Template
 from django.template.loader import render_to_string
 from django.utils.html import conditional_escape
 
@@ -13,7 +10,7 @@ from .utils import render_field, flatatt
 TEMPLATE_PACK = getattr(settings, "CRISPY_TEMPLATE_PACK", "bootstrap")
 
 
-class LayoutObject(object):
+class LayoutObject:
     def __getitem__(self, slice):
         return self.fields[slice]
 
@@ -115,7 +112,7 @@ class Layout(LayoutObject):
         return html
 
 
-class LayoutSlice(object):
+class LayoutSlice:
     def __init__(self, layout, key):
         self.layout = layout
         if isinstance(key, (int, long)):
@@ -170,16 +167,16 @@ class ButtonHolder(LayoutObject):
         self.template = kwargs.get("template", self.template)
 
     def render(self, form, form_style, context):
-        html = u""
+        html = ""
         for field in self.fields:
             html += render_field(field, form, form_style, context)
 
         return render_to_string(
-            self.template, Context({"buttonholder": self, "fields_output": html})
+            self.template, {"buttonholder": self, "fields_output": html}
         )
 
 
-class BaseInput(object):
+class BaseInput:
     """
     A base class to reduce the amount of code in the Input classes.
     """
@@ -192,7 +189,6 @@ class BaseInput(object):
         self.id = kwargs.get("css_id", "")
         self.attrs = {}
 
-        # if kwargs.has_key("css_class"):
         if "css_class" in kwargs:
             self.field_classes += " %s" % kwargs.pop("css_class")
 
@@ -203,7 +199,7 @@ class BaseInput(object):
         """
         Renders an `<input />` if container is used as a Layout object
         """
-        return render_to_string(self.template, Context({"input": self}))
+        return render_to_string(self.template, {"input": self})
 
 
 class Submit(BaseInput):
@@ -292,17 +288,16 @@ class Fieldset(LayoutObject):
 
         legend = ""
         if self.legend:
-            legend = u"%s" % Template(unicode(self.legend)).render(context)
+            legend = "%s" % Template(str(self.legend)).render(context)
         return render_to_string(
             self.template,
-            Context(
                 {
                     "fieldset": self,
                     "legend": legend,
                     "fields": fields,
                     "form_style": form_style,
                 }
-            ),
+            ,
         )
 
 
@@ -315,8 +310,8 @@ class MultiField(LayoutObject):
         # TODO: Decide on how to support css classes for both container divs
         self.fields = list(fields)
         self.label_html = label
-        self.label_class = kwargs.pop("label_class", u"blockLabel")
-        self.css_class = kwargs.pop("css_class", u"ctrlHolder")
+        self.label_class = kwargs.pop("label_class", "blockLabel")
+        self.css_class = kwargs.pop("css_class", "ctrlHolder")
         self.css_id = kwargs.pop("css_id", None)
         self.template = kwargs.pop("template", self.template)
         self.flat_attrs = flatatt(kwargs)
@@ -327,7 +322,7 @@ class MultiField(LayoutObject):
 
         # We need to render fields using django-uni-form render_field so that MultiField can
         # hold other Layout objects inside itself
-        fields_output = u""
+        fields_output = ""
         self.bound_fields = []
         for field in self.fields:
             fields_output += render_field(
@@ -341,7 +336,7 @@ class MultiField(LayoutObject):
             )
 
         return render_to_string(
-            self.template, Context({"multifield": self, "fields_output": fields_output})
+            self.template, {"multifield": self, "fields_output": fields_output}
         )
 
 
@@ -359,7 +354,7 @@ class Div(LayoutObject):
     def __init__(self, *fields, **kwargs):
         self.fields = list(fields)
 
-        if hasattr(self, "css_class") and kwargs.has_key("css_class"):
+        if hasattr(self, "css_class") and "css_class" in kwargs:
             self.css_class += " %s" % kwargs.pop("css_class")
         if not hasattr(self, "css_class"):
             self.css_class = kwargs.pop("css_class", None)
@@ -373,7 +368,7 @@ class Div(LayoutObject):
         for field in self.fields:
             fields += render_field(field, form, form_style, context)
 
-        return render_to_string(self.template, Context({"div": self, "fields": fields}))
+        return render_to_string(self.template, {"div": self, "fields": fields})
 
 
 class Row(Div):
@@ -396,7 +391,7 @@ class Column(Div):
     css_class = "form-column"
 
 
-class HTML(object):
+class HTML:
     """
     Layout object. It can contain pure HTML and it has access to the whole
     context of the page where the form is being rendered.
@@ -411,7 +406,7 @@ class HTML(object):
         self.html = html
 
     def render(self, form, form_style, context):
-        return Template(unicode(self.html)).render(context)
+        return Template(str(self.html)).render(context)
 
 
 class Field(LayoutObject):
@@ -432,7 +427,6 @@ class Field(LayoutObject):
         if not hasattr(self, "attrs"):
             self.attrs = {}
 
-        # if kwargs.has_key('css_class'):
         if "css_class" in kwargs:
             if "class" in self.attrs:
                 self.attrs["class"] += " %s" % kwargs.pop("css_class")
@@ -443,12 +437,10 @@ class Field(LayoutObject):
 
         # We use kwargs as HTML attributes, turning data_id='test' into data-id='test'
         self.attrs.update(
-            dict(
-                [
-                    (k.replace("_", "-"), conditional_escape(v))
+            {
+                    k.replace("_", "-"): conditional_escape(v)
                     for k, v in kwargs.items()
-                ]
-            )
+            }
         )
 
     def render(self, form, form_style, context):
@@ -483,7 +475,7 @@ class LookupField(LayoutObject):
         if not hasattr(self, "attrs"):
             self.attrs = {}
 
-        if kwargs.has_key("css_class"):
+        if "css_class" in kwargs:
             if "class" in self.attrs:
                 self.attrs["class"] += " %s" % kwargs.pop("css_class")
             else:
@@ -493,12 +485,10 @@ class LookupField(LayoutObject):
 
         # We use kwargs as HTML attributes, turning data_id='test' into data-id='test'
         self.attrs.update(
-            dict(
-                [
-                    (k.replace("_", "-"), conditional_escape(v))
+            {
+                    k.replace("_", "-"): conditional_escape(v)
                     for k, v in kwargs.items()
-                ]
-            )
+            }
         )
 
     def render(self, form, form_style, context):
@@ -533,7 +523,7 @@ class LookupImageField(LayoutObject):
         if not hasattr(self, "attrs"):
             self.attrs = {}
 
-        if kwargs.has_key("css_class"):
+        if "css_class" in kwargs:
             if "class" in self.attrs:
                 self.attrs["class"] += " %s" % kwargs.pop("css_class")
             else:
@@ -543,12 +533,10 @@ class LookupImageField(LayoutObject):
 
         # We use kwargs as HTML attributes, turning data_id='test' into data-id='test'
         self.attrs.update(
-            dict(
-                [
-                    (k.replace("_", "-"), conditional_escape(v))
+            {
+                    k.replace("_", "-"): conditional_escape(v)
                     for k, v in kwargs.items()
-                ]
-            )
+            }
         )
 
     def render(self, form, form_style, context):
@@ -602,4 +590,4 @@ class UneditableField(Field):
 
     def __init__(self, field, *args, **kwargs):
         self.attrs = {"class": "uneditable-input"}
-        super(UneditableField, self).__init__(field, *args, **kwargs)
+        super().__init__(field, *args, **kwargs)

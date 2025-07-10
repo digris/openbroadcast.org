@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2006 Joe Wreschnig
 #
 # This program is free software; you can redistribute it and/or modify
@@ -69,7 +68,7 @@ class OggSpeexInfo(StreamInfo):
         self.length = page.position / float(self.sample_rate)
 
     def pprint(self):
-        return u"Ogg Speex, %.2f seconds" % self.length
+        return "Ogg Speex, %.2f seconds" % self.length
 
 
 class OggSpeexVComment(VCommentDict):
@@ -84,7 +83,7 @@ class OggSpeexVComment(VCommentDict):
                 pages.append(page)
                 complete = page.complete or (len(page.packets) > 1)
         data = OggPage.to_packets(pages)[0]
-        super(OggSpeexVComment, self).__init__(data, framing=False)
+        super().__init__(data, framing=False)
         self._padding = len(data) - self._size
 
     def _inject(self, fileobj, padding_func):

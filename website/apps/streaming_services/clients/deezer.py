@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 import requests
 
 BASE_URL = "https://api.deezer.com"
 
 
-class DeezerAPIClient(object):
+class DeezerAPIClient:
     def __init__(self, user_id, access_token):
         self.user_id = user_id
         self.access_token = access_token
@@ -12,9 +11,9 @@ class DeezerAPIClient(object):
 
     def _search_media(self, media):
 
-        url = "{base_url}/search".format(base_url=self.base_url)
+        url = f"{self.base_url}/search"
 
-        q = u'track:"{track}" artist:"{artist}" album:"{album}"'.format(
+        q = 'track:"{track}" artist:"{artist}" album:"{album}"'.format(
             track=media.name, artist=media.artist.name, album=media.release.name,
         )
 

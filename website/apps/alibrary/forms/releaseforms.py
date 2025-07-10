@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import logging
 
 from ac_tagging.widgets import TagAutocompleteTagIt
@@ -53,7 +50,7 @@ class ReleaseActionForm(Form):
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("instance", False)
-        super(ReleaseActionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -61,7 +58,7 @@ class ReleaseActionForm(Form):
 
     def clean(self, *args, **kwargs):
 
-        cd = super(ReleaseActionForm, self).clean()
+        cd = super().clean()
         publish = cd.get("publish", False)
 
         if publish:
@@ -96,7 +93,7 @@ class ReleaseBulkeditForm(Form):
         if self.instance and self.instance.publish_date:
             self.disable_license = True
         """
-        super(ReleaseBulkeditForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
@@ -184,7 +181,7 @@ class ReleaseForm(ModelForm):
         self.instance = kwargs["instance"]
         self.label = kwargs.pop("label", None)
 
-        super(ReleaseForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         """
         Prototype function, set some fields to readonly depending on permissions
@@ -281,7 +278,7 @@ class ReleaseForm(ModelForm):
     # TODO: rework clean function
     def clean(self, *args, **kwargs):
 
-        cd = super(ReleaseForm, self).clean()
+        cd = super().clean()
 
         try:
             label = cd["label"]
@@ -299,13 +296,13 @@ class ReleaseForm(ModelForm):
         return cd
 
     def save(self, *args, **kwargs):
-        return super(ReleaseForm, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
 
 class BaseReleaseMediaFormSet(BaseInlineFormSet):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs["instance"]
-        super(BaseReleaseMediaFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class BaseReleaseMediaForm(ModelForm):
@@ -316,7 +313,7 @@ class BaseReleaseMediaForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs["instance"]
-        super(BaseReleaseMediaForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -350,13 +347,13 @@ class BaseReleaseMediaForm(ModelForm):
     artist = search_fields.AutocompleteField(
         "alibrary.artist", allow_new=True, required=False
     )
-    TRACKNUMBER_CHOICES = [("", "---")] + list(((str(x), x) for x in range(1, 301)))
+    TRACKNUMBER_CHOICES = [("", "---")] + list((str(x), x) for x in range(1, 301))
     tracknumber = forms.ChoiceField(
         label=_("No."), required=False, choices=TRACKNUMBER_CHOICES
     )
 
     def clean(self, *args, **kwargs):
-        cd = super(BaseReleaseMediaForm, self).clean()
+        cd = super().clean()
 
         try:
             cd["tracknumber"] = int(cd["tracknumber"])
@@ -369,7 +366,7 @@ class BaseReleaseMediaForm(ModelForm):
 class BaseAlbumartistFormSet(BaseInlineFormSet):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs["instance"]
-        super(BaseAlbumartistFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class BaseAlbumartistForm(ModelForm):
@@ -380,7 +377,7 @@ class BaseAlbumartistForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         instance = getattr(self, "instance", None)
-        super(BaseAlbumartistForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
 
@@ -408,7 +405,7 @@ class BaseAlbumartistForm(ModelForm):
 class BaseReleaseReleationFormSet(BaseGenericInlineFormSet):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs["instance"]
-        super(BaseReleaseReleationFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class BaseReleaseReleationForm(StripWhitespaceFormMixin, ModelForm):
@@ -418,7 +415,7 @@ class BaseReleaseReleationForm(StripWhitespaceFormMixin, ModelForm):
         fields = ("url", "service")
 
     def __init__(self, *args, **kwargs):
-        super(BaseReleaseReleationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         instance = getattr(self, "instance", None)
         self.fields["service"].widget.instance = instance
         if instance and instance.id:

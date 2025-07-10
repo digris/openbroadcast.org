@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import djclick as click
 from datetime import datetime
 from alibrary.models import Label

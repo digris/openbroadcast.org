@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 
 from django.apps import apps
@@ -50,12 +47,12 @@ def play(request, **kwargs):
         obj_ct = item.get("ct")
         obj_uuid = item.get("uuid")
 
-        log.debug("item requested to play: {} {}".format(obj_ct, obj_uuid))
+        log.debug(f"item requested to play: {obj_ct} {obj_uuid}")
 
         serializer_class = SERIALIZER_MAP.get(obj_ct)
         if not serializer_class:
-            log.warning("no serializer defined for {}".format(obj_ct))
-            return HttpResponseBadRequest("no serializer defined for {}".format(obj_ct))
+            log.warning(f"no serializer defined for {obj_ct}")
+            return HttpResponseBadRequest(f"no serializer defined for {obj_ct}")
 
         try:
             obj = apps.get_model(*obj_ct.split(".")).objects.get(uuid=obj_uuid)

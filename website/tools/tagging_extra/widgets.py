@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.forms.widgets import TextInput
 from django.template import loader
 from django.utils.safestring import mark_safe
@@ -12,7 +9,7 @@ class TagAutocompleteWidget(TextInput):
     instance = None
 
     def __init__(self, attrs=None, options={}, *args, **kwargs):
-        super(TagAutocompleteWidget, self).__init__(attrs)
+        super().__init__(attrs)
         print(self.__dict__)
 
         self.options = options

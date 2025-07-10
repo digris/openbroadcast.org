@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -10,7 +8,7 @@ class User(AbstractUser):
         db_table = "auth_user"
 
     def get_ct(self):
-        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
+        return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
 
 class GlobalPermission(models.Model):

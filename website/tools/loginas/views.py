@@ -28,7 +28,7 @@ def _load_module(path):
         can_login_as = getattr(mod, attr)
     except AttributeError:
         raise ImproperlyConfigured(
-            "Module {0} does not define a {1} " "function.".format(module, attr)
+            "Module {} does not define a {} " "function.".format(module, attr)
         )
     return can_login_as
 
@@ -38,7 +38,7 @@ def user_login(request, user_id):
     user_id = int(user_id)
 
     CAN_LOGIN_AS = getattr(settings, "CAN_LOGIN_AS", lambda r, y: r.user.is_superuser)
-    if isinstance(CAN_LOGIN_AS, six.string_types):
+    if isinstance(CAN_LOGIN_AS, str):
         can_login_as = _load_module(CAN_LOGIN_AS)
     elif hasattr(CAN_LOGIN_AS, "__call__"):
         can_login_as = CAN_LOGIN_AS

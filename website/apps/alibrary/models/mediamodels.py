@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 import os
 import uuid
@@ -334,7 +331,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         return providers
 
     def get_ct(self):
-        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
+        return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
     def get_absolute_url(self):
         return reverse("alibrary-media-detail", kwargs={"uuid": str(self.uuid)})
@@ -358,7 +355,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     # TODO: refactor to admin module
     def release_link(self):
         if self.release:
-            return '<a href="%s">%s</a>' % (
+            return '<a href="{}">{}</a>'.format(
                 reverse("admin:alibrary_release_change", args=(self.release.id,)),
                 self.release.name,
             )
@@ -473,7 +470,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
         else:
             log.warning(
-                "unable to get directory path for: %s - %s" % (self.pk, self.name)
+                "unable to get directory path for: {} - {}".format(self.pk, self.name)
             )
             return None
 
@@ -573,7 +570,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                 self.license = license
                 log.debug("applied default license: %s" % license.name)
             except Exception as e:
-                log.warning("unable to apply default license: {}".format(e))
+                log.warning(f"unable to apply default license: {e}")
 
         self.master_changed = False
         if self.uuid is not None:
@@ -616,7 +613,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                             )
 
             except Exception as e:
-                log.warning("unable to update master: {}".format(e))
+                log.warning(f"unable to update master: {e}")
 
         if self.version:
             self.version = self.version.lower()
@@ -643,7 +640,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         # TODO: remove! just for testing!
         # self._master_changed = True
 
-        super(Media, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 # media post save
@@ -670,7 +667,7 @@ def media_post_save(sender, **kwargs):
             log.debug("creating directory: %s" % abs_directory)
 
         except Exception as e:
-            log.warning("unable to create directory: %s - %s" % (abs_directory, e))
+            log.warning("unable to create directory: {} - {}".format(abs_directory, e))
             obj.folder = None
             obj.status = 99
 
@@ -735,7 +732,7 @@ class MediaExtraartists(models.Model):
 
     def __str__(self):
         if self.artist and self.profession:
-            return 'Credited "%s" as "%s"' % (self.artist.name, self.profession.name)
+            return 'Credited "{}" as "{}"'.format(self.artist.name, self.profession.name)
         elif self.artist:
             return 'Credited "%s"' % (self.artist.name)
         else:
@@ -779,13 +776,13 @@ class MediaArtists(models.Model):
     def __str__(self):
 
         if self.join_phrase:
-            return '%s credited with "%s" on %s' % (
+            return '{} credited with "{}" on {}'.format(
                 self.artist,
                 self.join_phrase,
                 self.media,
             )
         else:
-            return "%s on %s" % (self.artist, self.media)
+            return "{} on {}".format(self.artist, self.media)
 
 
 @receiver(post_delete, sender=MediaArtists)

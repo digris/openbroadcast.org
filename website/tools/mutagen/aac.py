@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Christoph Reiter
 #
 # This program is free software; you can redistribute it and/or modify
@@ -42,7 +41,7 @@ _FREQS = [
 ]
 
 
-class _ADTSStream(object):
+class _ADTSStream:
     """Represents a series of frames belonging to the same stream"""
 
     parsed_frames = 0
@@ -228,7 +227,7 @@ class _ADTSStream(object):
         return True
 
 
-class ProgramConfigElement(object):
+class ProgramConfigElement:
 
     element_instance_tag = None
     object_type = None
@@ -401,7 +400,7 @@ class AACInfo(StreamInfo):
         self.length = float(s.samples * stream_size) / (s.size * s.frequency)
 
     def pprint(self):
-        return u"AAC (%s), %d Hz, %.2f seconds, %d channel(s), %d bps" % (
+        return "AAC (%s), %d Hz, %.2f seconds, %d channel(s), %d bps" % (
             self._type,
             self.sample_rate,
             self.length,

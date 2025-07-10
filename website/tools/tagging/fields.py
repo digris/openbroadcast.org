@@ -21,10 +21,10 @@ class TagField(CharField):
     def __init__(self, *args, **kwargs):
         kwargs["max_length"] = kwargs.get("max_length", 255)
         kwargs["blank"] = kwargs.get("blank", True)
-        super(TagField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def contribute_to_class(self, cls, name):
-        super(TagField, self).contribute_to_class(cls, name)
+        super().contribute_to_class(cls, name)
 
         # Make this object the descriptor for field access.
         setattr(cls, self.name, self)
@@ -107,4 +107,4 @@ class TagField(CharField):
     def formfield(self, **kwargs):
         defaults = {"form_class": TagFormField}
         defaults.update(kwargs)
-        return super(TagField, self).formfield(**defaults)
+        return super().formfield(**defaults)

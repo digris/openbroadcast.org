@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
 import logging
 
 from celery import shared_task
@@ -15,7 +12,7 @@ def process_assets_for_media(media_pk):
 
     media = Media.objects.get(pk=media_pk)
 
-    log.info("process assets for media id: {}".format(media.pk))
+    log.info(f"process assets for media id: {media.pk}")
 
     if not media.master:
         return

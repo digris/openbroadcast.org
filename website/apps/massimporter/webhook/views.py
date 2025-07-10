@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 import json
 import urllib
@@ -23,7 +22,7 @@ https://raw.githubusercontent.com/sheppard/django-github-hook/master/github_hook
 class WebookView(View):
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
-        return super(WebookView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
 
@@ -49,7 +48,7 @@ class WebookView(View):
             for key in PAYLOAD_KEYS:
                 if key in request.POST:
                     payload = json.loads(request.POST["payload"])[0]
-                    log.debug('payload by key "{}"'.format(key))
+                    log.debug(f'payload by key "{key}"')
                     break
 
         if not payload:
@@ -61,7 +60,7 @@ class WebookView(View):
         webhook_signal.send(
             WebookView, request=request, name=name, token=token, payload=payload
         )
-        log.debug("Signal {} sent".format(webhook_signal))
+        log.debug(f"Signal {webhook_signal} sent")
 
         return HttpResponse(token)
 

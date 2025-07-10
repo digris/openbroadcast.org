@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ImproperlyConfigured
 from django.views.generic import DetailView, ListView
@@ -32,10 +29,10 @@ class SectionDetailView(UUIDDetailView, DetailView):
             assert type(tpl) == str
         except (KeyError, IndexError, AttributeError, AssertionError):
             raise ImproperlyConfigured(
-                "invalid template pattern: {}".format(self.section_template_pattern)
+                f"invalid template pattern: {self.section_template_pattern}"
             )
 
-        super(SectionDetailView, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def dispatch(self, request, *args, **kwargs):
 
@@ -46,12 +43,12 @@ class SectionDetailView(UUIDDetailView, DetailView):
         )
 
         if not current_section:
-            raise Http404('invalid section "{}"'.format(section_url_suffix))
+            raise Http404(f'invalid section "{section_url_suffix}"')
 
         self.section = current_section
         self.section_key = current_section["key"]
 
-        return super(SectionDetailView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_sections(self):
         return self.sections
@@ -89,7 +86,7 @@ class SectionDetailView(UUIDDetailView, DetailView):
         return menu
 
     def get_context_data(self, **kwargs):
-        context = super(SectionDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         section_menu = self.get_section_menu(
             obj=self.object, section_key=self.section_key

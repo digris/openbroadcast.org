@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 """
 elasticsearch index documents
 """
@@ -120,7 +117,7 @@ class LabelDocument(DocType):
     ###################################################################
     def get_queryset(self):
         return (
-            super(LabelDocument, self)
+            super()
             .get_queryset()
             .select_related("country", "parent")
         )
@@ -232,7 +229,7 @@ class ArtistDocument(DocType):
     ###################################################################
     def get_queryset(self):
         return (
-            super(ArtistDocument, self)
+            super()
             .get_queryset()
             .filter(listed=True)
             .select_related("country")
@@ -361,7 +358,7 @@ class ReleaseDocument(DocType):
     ###################################################################
     def get_queryset(self):
         return (
-            super(ReleaseDocument, self)
+            super()
             .get_queryset()
             .all()
             .select_related("release_country")
@@ -511,7 +508,7 @@ class MediaDocument(DocType):
     ###################################################################
     def get_queryset(self):
         return (
-            super(MediaDocument, self)
+            super()
             .get_queryset()
             .all()
             .select_related("release", "artist", "license")
@@ -572,7 +569,7 @@ class PlaylistDocument(DocType):
         #     return
         text = [instance.name.strip()]
         if instance.series and instance.series_number:
-            text += ["{} #{}".format(instance.series, instance.series_number)]
+            text += [f"{instance.series} #{instance.series_number}"]
         elif instance.series:
             text += [instance.series.name]
         return text
@@ -597,12 +594,12 @@ class PlaylistDocument(DocType):
 
     def prepare_target_duration(self, instance):
         if instance.target_duration:
-            return "{} Minutes".format(instance.get_target_duration_display())
+            return f"{instance.get_target_duration_display()} Minutes"
         return
 
     def prepare_series(self, instance):
         if instance.series and instance.series_number:
-            return "{} #{}".format(instance.series, instance.series_number)
+            return f"{instance.series} #{instance.series_number}"
         elif instance.series:
             return instance.series.name
         return
@@ -629,7 +626,7 @@ class PlaylistDocument(DocType):
 
     def prepare_daypart_slots(self, instance):
         return [
-            "{:%H} - {:%H}h".format(d.time_start, d.time_end)
+            f"{d.time_start:%H} - {d.time_end:%H}h"
             for d in instance.dayparts.all()
         ]
 

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -69,7 +66,7 @@ class CollectionMember(TimestampedModelMixin, models.Model):
         unique_together = ("collection", "item")
 
     def __str__(self):
-        return "{} - {}".format(self.collection.name, self.item.content_object)
+        return f"{self.collection.name} - {self.item.content_object}"
 
 
 @python_2_unicode_compatible
@@ -91,10 +88,10 @@ class CollectionItem(UUIDModelMixin, models.Model):
     content_object = GenericForeignKey("content_type", "object_id")
 
     def __str__(self):
-        return "<{}> {}".format(self.content_type, self.content_object)
+        return f"<{self.content_type}> {self.content_object}"
 
     def save(self, *args, **kwargs):
-        super(CollectionItem, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 class CollectionMaintainer(models.Model):

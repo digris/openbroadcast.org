@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import datetime
 import arating
 from django.conf import settings
@@ -115,7 +112,7 @@ class OnAirItem(TimestampedModelMixin, UUIDModelMixin, models.Model):
         unique_together = ("content_type", "object_id")
 
     def __str__(self):
-        return "%s : %s" % (self.channel.pk, self.channel.pk)
+        return "{} : {}".format(self.channel.pk, self.channel.pk)
 
 
 @python_2_unicode_compatible

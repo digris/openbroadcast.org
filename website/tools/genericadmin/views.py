@@ -45,8 +45,8 @@ def get_generic_rel_list(request, blacklist=(), whitelist=(), url_params={}):
     if request.method == "GET":
         obj_dict = {}
         for c in ContentType.objects.all().order_by("id"):
-            val = u"%s/%s" % (c.app_label, c.model)
-            params = url_params.get("%s.%s" % (c.app_label, c.model), {})
+            val = "{}/{}".format(c.app_label, c.model)
+            params = url_params.get("{}.{}".format(c.app_label, c.model), {})
             params = url_params_from_lookup_dict(params)
             if whitelist:
                 if val in whitelist:

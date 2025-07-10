@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2006  Joe Wreschnig
 #
 # This program is free software; you can redistribute it and/or modify
@@ -54,7 +53,7 @@ class TrueAudioInfo(StreamInfo):
         self.length = float(samples) / self.sample_rate
 
     def pprint(self):
-        return u"True Audio, %.2f seconds, %d Hz." % (self.length, self.sample_rate)
+        return "True Audio, %.2f seconds, %d Hz." % (self.length, self.sample_rate)
 
 
 class TrueAudio(ID3FileType):

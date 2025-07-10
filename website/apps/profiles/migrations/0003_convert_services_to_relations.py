@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import migrations, models
 
 
@@ -24,7 +21,7 @@ def forwards_func(apps, schema_editor):
 
             elif service.service.title == 'Twitter':
                 title = "Twitter"
-                url = 'https://twitter.com/{}'.format(service.username)
+                url = f'https://twitter.com/{service.username}'
 
             elif service.service.title == 'Facebook':
                 title = "Facebook"
@@ -35,7 +32,7 @@ def forwards_func(apps, schema_editor):
 
             elif service.service.title == 'GitHub':
                 title = "GitHub"
-                url = 'https://github.com/{}'.format(service.username)
+                url = f'https://github.com/{service.username}'
 
             if url:
                 l, c = Link.objects.get_or_create(

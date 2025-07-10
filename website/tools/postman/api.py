@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 try:
     from django.utils.timezone import now  # Django 1.4 aware datetimes
 except ImportError:

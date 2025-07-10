@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import math
 from django.conf import settings
 
@@ -237,7 +234,7 @@ def get_filter_data(facets, facets_definition=None):
                     "name": option[0],
                     "num": option[1],
                     "selected": option[2],
-                    "query_key": "filter_{}".format(key),
+                    "query_key": f"filter_{key}",
                     "query_value": _query,
                 }
             )

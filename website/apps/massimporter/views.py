@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import json
 import ntpath
 import os
@@ -45,7 +42,7 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
 
     def get_context_data(self, **kwargs):
 
-        context = super(MassimportDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         ###############################################################
         # gather summary of import

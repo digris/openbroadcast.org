@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import json
 import logging
 from kombu import Connection
@@ -13,7 +12,7 @@ PLAYOUT_BROKER_URL = getattr(settings, "PLAYOUT_BROKER_URL", False)
 BROKER_QUEUE = "pypo-fetch"
 
 
-class PypoGateway(object):
+class PypoGateway:
     def __init__(self):
         pass
 

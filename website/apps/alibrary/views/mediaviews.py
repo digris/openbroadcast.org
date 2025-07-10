@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import actstream
 import datetime
 import logging
@@ -168,7 +165,7 @@ class MediaListView(BaseSearchListView):
             fields = duplicate_filter.split(":")
             limit_ids = get_ids_for_possible_duplicates("media", fields)
 
-        qs = super(MediaListView, self).get_queryset(limit_ids=limit_ids, **kwargs)
+        qs = super().get_queryset(limit_ids=limit_ids, **kwargs)
 
         # qs = qs.select_related("release", "artist", "license", 'release__label', 'preflight_check').prefetch_related(
         #     "media_artists", "extra_artists"
@@ -185,7 +182,7 @@ class MediaListView(BaseSearchListView):
         return qs
 
     def get_context_data(self, **kwargs):
-        context = super(MediaListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         return context
 
 
@@ -275,7 +272,7 @@ class MediaDetailView(SectionDetailView):
         return sections
 
     def get_context_data(self, *args, **kwargs):
-        context = super(MediaDetailView, self).get_context_data(*args, **kwargs)
+        context = super().get_context_data(*args, **kwargs)
         obj = self.get_object()
 
         playlist_qs = PlaylistItem.objects.filter(
@@ -308,7 +305,7 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
     def __init__(self, *args, **kwargs):
         self.created_artists = {}
-        super(MediaEditView, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def get_initial(self):
         self.initial.update(
@@ -320,7 +317,7 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         return self.initial
 
     def get_context_data(self, **kwargs):
-        ctx = super(MediaEditView, self).get_context_data(**kwargs)
+        ctx = super().get_context_data(**kwargs)
         ctx["named_formsets"] = self.get_named_formsets()
         # TODO: is this a good way to pass the instance main form?
         ctx["form_errors"] = self.get_form_errors(form=ctx["form"])
@@ -356,13 +353,13 @@ class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
         named_formsets = self.get_named_formsets()
 
-        if not all((x.is_valid() for x in named_formsets.values())):
+        if not all(x.is_valid() for x in named_formsets.values()):
             return self.render_to_response(self.get_context_data(form=form))
 
         self.object = form.save(commit=False)
 
         for name, formset in named_formsets.items():
-            formset_save_func = getattr(self, "formset_{0}_valid".format(name), None)
+            formset_save_func = getattr(self, f"formset_{name}_valid", None)
             if formset_save_func is not None:
                 formset_save_func(formset)
             else:

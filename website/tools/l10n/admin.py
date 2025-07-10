@@ -53,7 +53,7 @@ class CountryAreaAdmin(admin.ModelAdmin):
     area_field_required = "true"
 
     def get_urls(self):
-        urls = super(CountryAreaAdmin, self).get_urls()
+        urls = super().get_urls()
         from l10n.urls import urlpatterns
 
         return urlpatterns + urls
@@ -73,12 +73,12 @@ class CountryAreaAdmin(admin.ModelAdmin):
     def add_view(self, *args, **kwargs):
         extra_context = kwargs.get("extra_context", {})
         kwargs["extra_context"] = self.extra_context(extra_context)
-        return super(CountryAreaAdmin, self).add_view(*args, **kwargs)
+        return super().add_view(*args, **kwargs)
 
     def change_view(self, *args, **kwargs):
         extra_context = kwargs.get("extra_context", {})
         kwargs["extra_context"] = self.extra_context(extra_context)
-        return super(CountryAreaAdmin, self).change_view(*args, **kwargs)
+        return super().change_view(*args, **kwargs)
 
     class Media:
         js = ("l10n/js/country.area.js",)

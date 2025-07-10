@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import logging
 import datetime
 
@@ -159,7 +156,7 @@ class PlaylistListView(BaseSearchListView):
     ]
 
     def get_search_query(self, **kwargs):
-        serach_query = super(PlaylistListView, self).get_search_query(**kwargs)
+        serach_query = super().get_search_query(**kwargs)
 
         if self.scope == "own":
             serach_query["searches"].update({"user": [self.request.user.username]})
@@ -169,7 +166,7 @@ class PlaylistListView(BaseSearchListView):
         return serach_query
 
     def get_queryset(self, **kwargs):
-        qs = super(PlaylistListView, self).get_queryset(**kwargs)
+        qs = super().get_queryset(**kwargs)
 
         qs = qs.select_related("series", "user", "user__profile").prefetch_related(
             "items", "dayparts", "seasons", "weather", "emissions"
@@ -230,7 +227,7 @@ class PlaylistDetailView(SectionDetailView):
         )
 
     def get_context_data(self, **kwargs):
-        context = super(PlaylistDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         media_set = self.object.sorted_items.all()
         media_set = media_set.select_related("content_type").prefetch_related(
@@ -257,7 +254,7 @@ class PlaylistCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
     raise_exception = True
 
     def get_context_data(self, **kwargs):
-        context = super(PlaylistCreateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["action_form"] = ActionForm()
         return context
 
@@ -291,10 +288,10 @@ class PlaylistDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView
             messages.add_message(request, messages.ERROR, reason)
             return HttpResponseRedirect(obj.get_edit_url())
 
-        return super(PlaylistDeleteView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(PlaylistDeleteView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         return context
 
@@ -331,7 +328,7 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, SectionUpdat
         if not obj.user == request.user:
             raise PermissionDenied
 
-        return super(PlaylistEditView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_initial(self):
         self.initial.update(
@@ -344,7 +341,7 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, SectionUpdat
 
     def get_context_data(self, **kwargs):
 
-        context = super(PlaylistEditView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         context["action_form"] = ActionForm()
         context["user"] = self.request.user

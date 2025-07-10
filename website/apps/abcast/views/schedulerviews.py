@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 
 from abcast.models import Emission, Channel
@@ -14,7 +13,7 @@ class EmissionDetailView(DetailView):
     template_name = "abcast/emission/detail.html"
 
     def get_context_data(self, **kwargs):
-        context = super(EmissionDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         return context
 
 
@@ -23,7 +22,7 @@ class SchedulerIndex(TemplateView):
     template_name = "abcast/scheduler.html"
 
     def get_context_data(self, **kwargs):
-        context = super(SchedulerIndex, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         channel_id = 1
         read_only = (

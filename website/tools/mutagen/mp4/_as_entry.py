@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2014 Christoph Reiter
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,7 +17,7 @@ class ASEntryError(Exception):
     pass
 
 
-class AudioSampleEntry(object):
+class AudioSampleEntry:
     """Parses an AudioSampleEntry atom.
 
     Private API.
@@ -220,7 +219,7 @@ class DescriptorError(Exception):
     pass
 
 
-class BaseDescriptor(object):
+class BaseDescriptor:
 
     TAG = None
 
@@ -336,10 +335,10 @@ class DecoderConfigDescriptor(BaseDescriptor):
     def codec_param(self):
         """string"""
 
-        param = u".%X" % self.objectTypeIndication
+        param = ".%X" % self.objectTypeIndication
         info = self.decSpecificInfo
         if info is not None:
-            param += u".%d" % info.audioObjectType
+            param += ".%d" % info.audioObjectType
         return param
 
     @property

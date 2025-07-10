@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # TODO: remove profile API
 
 
@@ -74,7 +72,7 @@ class ProfileResource(ModelResource):
         return bundle
 
     def obj_update(self, bundle, request, **kwargs):
-        return super(ProfileResource, self).obj_update(bundle, request, **kwargs)
+        return super().obj_update(bundle, request, **kwargs)
 
     def prepend_urls(self):
 

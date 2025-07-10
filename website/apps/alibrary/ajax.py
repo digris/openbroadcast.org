@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 import json
 import re
 
@@ -45,7 +43,7 @@ def api_lookup(request, *args, **kwargs):
     # alternatively, in case we already know the uri, this value is used for the query
     api_url = kwargs.get("api_url", None)
 
-    log.debug("api_lookup: %s - id: %s - provider: %s" % (item_type, item_id, provider))
+    log.debug("api_lookup: {} - id: {} - provider: {}".format(item_type, item_id, provider))
 
     try:
         log.debug(provider)
@@ -64,7 +62,7 @@ def provider_search_query(request, *args, **kwargs):
     item_id = kwargs.get("item_id", None)
     provider = kwargs.get("provider", None)
 
-    log.debug("type: %s - id: %s - provider: %s" % (item_type, item_id, provider))
+    log.debug("type: {} - id: {} - provider: {}".format(item_type, item_id, provider))
 
     data = {}
     try:
@@ -74,12 +72,12 @@ def provider_search_query(request, *args, **kwargs):
             if artist_display == "Various Artists":
                 artist_display = "Various"
 
-            data = {"query": "%s - %s" % (artist_display, item.name)}
+            data = {"query": "{} - {}".format(artist_display, item.name)}
 
         if item_type == "release" and provider == "musicbrainz":
             item = Release.objects.get(pk=item_id)
             data = {
-                "query": "%s AND artist:%s" % (item.name, item.get_artist_display())
+                "query": "{} AND artist:{}".format(item.name, item.get_artist_display())
             }
             # TODO: reason? https://lab.hazelfire.com/issues/1791
             # data = {'query': '%s artist:%s' % (item.name, item.get_artist_display())}
@@ -98,7 +96,7 @@ def provider_search_query(request, *args, **kwargs):
 
         if item_type == "media" and provider == "musicbrainz":
             item = Media.objects.get(pk=item_id)
-            data = {"query": "%s AND artist:%s" % (item.name, item.artist.name)}
+            data = {"query": "{} AND artist:{}".format(item.name, item.artist.name)}
 
         if item_type == "label" and provider == "discogs":
             item = Label.objects.get(pk=item_id)
@@ -150,7 +148,7 @@ def provider_search(request, *args, **kwargs):
         if ean.is_valid(query):
             log.debug("ean barcode detected. switching url composition")
             t_query = query.replace("-", "")
-            url = "http://%s/ws/2/%s?query=barcode:%s&fmt=json" % (
+            url = "http://{}/ws/2/{}?query=barcode:{}&fmt=json".format(
                 MUSICBRAINZ_HOST,
                 _type,
                 t_query,
@@ -164,25 +162,25 @@ def provider_search(request, *args, **kwargs):
             https://lucene.apache.org/core/4_3_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description
             """
             t_query = (
-                t_query.replace("!", "\!")
-                .replace("+", "\+")
-                .replace("-", "\-")
-                .replace("~", "\~")
-                .replace("*", "\*")
-                .replace("?", "\?")
+                t_query.replace("!", r"\!")
+                .replace("+", r"\+")
+                .replace("-", r"\-")
+                .replace("~", r"\~")
+                .replace("*", r"\*")
+                .replace("?", r"\?")
                 .replace('"', '\\"')
-                .replace("/", "\/")
-                .replace("(", "\(")
-                .replace(")", "\)")
-                .replace("[", "\[")
-                .replace("]", "\]")
-                .replace(":", "\:")
-                .replace("artist\:", "artist:")
+                .replace("/", r"\/")
+                .replace("(", r"\(")
+                .replace(")", r"\)")
+                .replace("[", r"\[")
+                .replace("]", r"\]")
+                .replace(":", r"\:")
+                .replace(r"artist\:", "artist:")
             )
 
             t_query = urllib.quote(t_query)
 
-            url = "http://%s/ws/2/%s?query=%s&fmt=json" % (
+            url = "http://{}/ws/2/{}?query={}&fmt=json".format(
                 MUSICBRAINZ_HOST,
                 _type,
                 t_query,
@@ -190,19 +188,19 @@ def provider_search(request, *args, **kwargs):
 
             query = urllib.unquote(t_query)
             query = (
-                query.replace("\!", "!")
-                .replace("\+", "+")
-                .replace("\-", "-")
-                .replace("\~", "~")
-                .replace("\*", "*")
-                .replace("\?", "?")
+                query.replace(r"\!", "!")
+                .replace(r"\+", "+")
+                .replace(r"\-", "-")
+                .replace(r"\~", "~")
+                .replace(r"\*", "*")
+                .replace(r"\?", "?")
                 .replace('\\"', "")
-                .replace("\/", "/")
-                .replace("\(", "(")
-                .replace("\)", ")")
-                .replace("\[", "[")
-                .replace("\]", "]")
-                .replace("\:", ":")
+                .replace(r"\/", "/")
+                .replace(r"\(", "(")
+                .replace(r"\)", ")")
+                .replace(r"\[", "[")
+                .replace(r"\]", "]")
+                .replace(r"\:", ":")
             )
 
         log.debug("query url: %s" % (url))
@@ -212,7 +210,7 @@ def provider_search(request, *args, **kwargs):
             results = json.loads(r.text)["releases"]
             for result in results:
                 result["uri"] = "http://musicbrainz.org/release/%s" % result["id"]
-                result["thumb"] = "http://coverartarchive.org/%s/%s" % (
+                result["thumb"] = "http://coverartarchive.org/{}/{}".format(
                     item_type,
                     result["id"],
                 )
@@ -221,7 +219,7 @@ def provider_search(request, *args, **kwargs):
             results = json.loads(r.text)["artists"]
             for result in results:
                 result["uri"] = "http://musicbrainz.org/artist/%s" % result["id"]
-                result["thumb"] = "http://coverartarchive.org/%s/%s" % (
+                result["thumb"] = "http://coverartarchive.org/{}/{}".format(
                     item_type,
                     result["id"],
                 )
@@ -230,7 +228,7 @@ def provider_search(request, *args, **kwargs):
             results = json.loads(r.text)["labels"]
             for result in results:
                 result["uri"] = "http://musicbrainz.org/label/%s" % result["id"]
-                result["thumb"] = "http://coverartarchive.org/%s/%s" % (
+                result["thumb"] = "http://coverartarchive.org/{}/{}".format(
                     item_type,
                     result["id"],
                 )
@@ -442,7 +440,7 @@ def reassign_items(request, *args, **kwargs):
 
     if media_ids and (release_id or name):
 
-        log.debug("reassigning items: %s to %s" % ((",").join(media_ids), release_id))
+        log.debug("reassigning items: {} to {}".format((",").join(media_ids), release_id))
 
         if release_id:
             r = Release.objects.get(pk=int(release_id))

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2006  Joe Wreschnig
 #
 # This program is free software; you can redistribute it and/or modify
@@ -32,7 +31,7 @@ class AtomError(Exception):
     pass
 
 
-class Atom(object):
+class Atom:
     """An individual atom.
 
     Attributes:
@@ -112,8 +111,7 @@ class Atom(object):
                 if child.name == name:
                     yield child
                 if recursive:
-                    for atom in child.findall(name, True):
-                        yield atom
+                    yield from child.findall(name, True)
 
     def __getitem__(self, remaining):
         """Look up a child atom, potentially recursively.
@@ -133,7 +131,7 @@ class Atom(object):
     def __repr__(self):
         cls = self.__class__.__name__
         if self.children is None:
-            return "<%s name=%r length=%r offset=%r>" % (
+            return "<{} name={!r} length={!r} offset={!r}>".format(
                 cls,
                 self.name,
                 self.length,
@@ -147,7 +145,7 @@ class Atom(object):
                     for line in repr(child).splitlines()
                 ]
             )
-            return "<%s name=%r length=%r offset=%r\n%s>" % (
+            return "<{} name={!r} length={!r} offset={!r}\n{}>".format(
                 cls,
                 self.name,
                 self.length,
@@ -156,7 +154,7 @@ class Atom(object):
             )
 
 
-class Atoms(object):
+class Atoms:
     """Root atoms in a given file.
 
     Attributes:

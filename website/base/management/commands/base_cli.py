@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from datetime import datetime, timedelta
 import djclick as click
 from django.conf import settings
@@ -29,14 +27,14 @@ def delete_orphaned_tags():
     tagged_items = TaggedItem.objects.all().nocache()
 
     with click.progressbar(
-        tagged_items, label="Scanning {} tagged items".format(tagged_items.count())
+        tagged_items, label=f"Scanning {tagged_items.count()} tagged items"
     ) as bar:
         for ti in bar:
             if not ti.object:
                 to_delete.append(ti.pk)
 
-    click.echo("Total tagged items:    {}".format(tagged_items.count()))
-    click.echo("Orphaned tagged items: {}".format(len(to_delete)))
+    click.echo(f"Total tagged items:    {tagged_items.count()}")
+    click.echo(f"Orphaned tagged items: {len(to_delete)}")
 
     TaggedItem.objects.filter(pk__in=to_delete).delete()
 
@@ -47,7 +45,7 @@ def delete_orphaned_tags():
     "-a",
     type=int,
     default=MEDIA_ASSET_KEEP_DAYS,
-    help="Clean media assets not accessed for the last {0} days".format(
+    help="Clean media assets not accessed for the last {} days".format(
         MEDIA_ASSET_KEEP_DAYS
     ),
 )
@@ -66,13 +64,13 @@ def clean_assets(age):
     ).nocache()
 
     with click.progressbar(
-        format_qs, label="Deleting {} media format versions".format(format_qs.count())
+        format_qs, label=f"Deleting {format_qs.count()} media format versions"
     ) as bar:
         for item in bar:
             item.delete()
 
     with click.progressbar(
-        waveform_qs, label="Deleting {} waveforms".format(waveform_qs.count())
+        waveform_qs, label=f"Deleting {waveform_qs.count()} waveforms"
     ) as bar:
         for item in bar:
             item.delete()
@@ -102,7 +100,7 @@ def warm_cache(content_types):
         artist_qs = Artist.objects.order_by("-updated").all()
 
         with click.progressbar(
-            artist_qs, label="Warming cache for {} items".format(artist_qs.count())
+            artist_qs, label=f"Warming cache for {artist_qs.count()} items"
         ) as bar:
             for item in bar:
                 item.get_releases()

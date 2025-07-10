@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 import re
 import requests
@@ -65,22 +62,22 @@ def strip_query_params(url):
 def format_approx_date(approx_date):
 
     if len(approx_date) == 4:
-        approx_date = "{}-00-00".format(approx_date)
+        approx_date = f"{approx_date}-00-00"
     elif len(approx_date) == 7:
-        approx_date = "{}-00".format(approx_date)
+        approx_date = f"{approx_date}-00"
     elif len(approx_date) == 10:
-        approx_date = "{}".format(approx_date)
+        approx_date = f"{approx_date}"
 
-    re_date_start = re.compile("^\d{4}-\d{2}-\d{2}$")
+    re_date_start = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
     if re_date_start.match(approx_date) and approx_date != "0000-00-00":
-        return "{}".format(approx_date)
+        return f"{approx_date}"
 
 
 #######################################################################
 # discogs crawling
 #######################################################################
-class DiscogsCrawler(object):
+class DiscogsCrawler:
     """
     generic musicbrainz crawler
      - implements loading data from api
@@ -119,12 +116,12 @@ class DiscogsCrawler(object):
             discogs_ctype=self.discogs_ctype,
         )
 
-        log.debug("load data from: {}".format(url))
+        log.debug(f"load data from: {url}")
 
         try:
             r = requests.get(url)
         except Exception as e:
-            log.warning("unable to load data - {}".format(url))
+            log.warning(f"unable to load data - {url}")
             return
 
         if r.status_code == 429:
@@ -133,7 +130,7 @@ class DiscogsCrawler(object):
             self.load_data_from_api()
 
         if not r.status_code == 200:
-            log.warning("unable to load data: {} - {}".format(r.status_code, url))
+            log.warning(f"unable to load data: {r.status_code} - {url}")
             return
 
         return r.json()
@@ -190,10 +187,10 @@ class DiscogsCrawler(object):
         self.update_relations()
 
         if self._changes:
-            log.info("apply changes on {}: {}".format(self.obj, self._changes))
+            log.info(f"apply changes on {self.obj}: {self._changes}")
             return self._changes
         else:
-            log.debug("no changes for {}".format(self.obj))
+            log.debug(f"no changes for {self.obj}")
 
 
 class DiscogsLabelCrawler(DiscogsCrawler):

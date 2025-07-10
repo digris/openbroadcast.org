@@ -8,7 +8,7 @@ from obp_legacy.models_legacy import ElggUsers as LegacyUser
 log = logging.getLogger(__name__)
 
 
-class LegacyBackend(object):
+class LegacyBackend:
     """
     Authenticate against the 'legacy_legacy database'
     fortunately passwords there are stored md5-hashed
@@ -17,8 +17,8 @@ class LegacyBackend(object):
 
     def authenticate(self, username=None, password=None):
 
-        log = logging.getLogger("%s.%s" % (__name__, "authenticate"))
-        log.info("legacy login: %s | %s" % (username, "*******************"))
+        log = logging.getLogger("{}.{}".format(__name__, "authenticate"))
+        log.info("legacy login: {} | {}".format(username, "*******************"))
 
         return self.legacy_auth(username, password)
 
@@ -30,7 +30,7 @@ class LegacyBackend(object):
 
     def legacy_auth(self, username=None, password=None):
 
-        log = logging.getLogger("%s.%s" % (__name__, "legacy_auth"))
+        log = logging.getLogger("{}.{}".format(__name__, "legacy_auth"))
 
         user = None
         try:

@@ -6,7 +6,7 @@ class ReadOnlyField(Widget):
     def render(self, name, value, attrs=None):
 
         return mark_safe(
-            '<div  class="form-extra readonly %s"><span>%s</span></div>' % (name, value)
+            '<div  class="form-extra readonly {}"><span>{}</span></div>'.format(name, value)
         )
         # return mark_safe('<ul class="links external"><li class="icon external %s"></li></ul>' % value)
 
@@ -14,7 +14,7 @@ class ReadOnlyField(Widget):
 class ReadOnlyIconField(Widget):
     def __init__(self, *args, **kwargs):
         self.url = kwargs.pop("url", None)
-        super(ReadOnlyIconField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
 
@@ -40,7 +40,7 @@ class AdvancedFileInput(ClearableFileInput):
         self.url_length = kwargs.pop("url_length", 30)
         self.preview = kwargs.pop("preview", True)
         self.image_width = kwargs.pop("image_width", 100)
-        super(AdvancedFileInput, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
 
@@ -50,7 +50,7 @@ class AdvancedFileInput(ClearableFileInput):
             "clear_template": "",
             "clear_checkbox_label": "",
         }
-        template = u"%(input)s"
+        template = "%(input)s"
 
         substitutions["input"] = super(ClearableFileInput, self).render(
             name, value, attrs

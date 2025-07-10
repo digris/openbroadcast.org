@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
@@ -48,7 +45,7 @@ class Follow(models.Model):
         unique_together = ("user", "content_type", "object_id")
 
     def __str__(self):
-        return "%s -> %s" % (self.user, self.follow_object)
+        return "{} -> {}".format(self.user, self.follow_object)
 
 
 @python_2_unicode_compatible

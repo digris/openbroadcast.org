@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import actstream
 import logging
 
@@ -87,7 +84,7 @@ class LabelListView(BaseSearchListView):
             fields = duplicate_filter.split(":")
             limit_ids = get_ids_for_possible_duplicates("labels", fields)
 
-        qs = super(LabelListView, self).get_queryset(limit_ids=limit_ids, **kwargs)
+        qs = super().get_queryset(limit_ids=limit_ids, **kwargs)
 
         qs = qs.select_related("country").prefetch_related(
             "releases", "creator", "creator__profile"
@@ -137,7 +134,7 @@ class LabelDetailView(SectionDetailView):
         return sections
 
     def get_context_data(self, **kwargs):
-        context = super(LabelDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         obj = self.get_object()
 
         umbrella_label = obj.get_root()
@@ -167,7 +164,7 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     success_url = "#"
 
     def __init__(self, *args, **kwargs):
-        super(LabelEditView, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def get_initial(self):
         self.initial.update(
@@ -184,7 +181,7 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         if self.object.disable_editing:
             raise Exception("Editing is locked on that object!")
 
-        ctx = super(LabelEditView, self).get_context_data(**kwargs)
+        ctx = super().get_context_data(**kwargs)
         ctx["named_formsets"] = self.get_named_formsets()
         # TODO: is this a good way to pass the instance main form?
         ctx["form_errors"] = self.get_form_errors(form=ctx["form"])
@@ -219,13 +216,13 @@ class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
         named_formsets = self.get_named_formsets()
 
-        if not all((x.is_valid() for x in named_formsets.values())):
+        if not all(x.is_valid() for x in named_formsets.values()):
             return self.render_to_response(self.get_context_data(form=form))
 
         self.object = form.save(commit=False)
 
         for name, formset in named_formsets.items():
-            formset_save_func = getattr(self, "formset_{0}_valid".format(name), None)
+            formset_save_func = getattr(self, f"formset_{name}_valid", None)
             if formset_save_func is not None:
                 formset_save_func(formset)
             else:
@@ -251,9 +248,9 @@ class LabelStatisticsDownloadView(View):
 
         obj = get_object_or_404(Label, pk=kwargs.get("pk"))
 
-        filename = "Airplay statistics - {label}.xlsx".format(label=obj.name)
+        filename = f"Airplay statistics - {obj.name}.xlsx"
 
-        cache_key = "label-statistics-{0}".format(obj.pk)
+        cache_key = f"label-statistics-{obj.pk}"
         statistics = cache.get(cache_key)
 
         if not statistics:
@@ -265,6 +262,6 @@ class LabelStatisticsDownloadView(View):
 
         wrapper = FileWrapper(BytesIO(statistics))
         response = StreamingHttpResponse(wrapper, content_type="application/ms-excel")
-        response["Content-Disposition"] = 'attachment; filename="{}"'.format(filename)
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
 
         return response

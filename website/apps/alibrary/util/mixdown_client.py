@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import requests
 import logging
 import dateutil.parser
@@ -23,7 +19,7 @@ logging.getLogger("urllib3").setLevel(logging.WARNING)
 log = logging.getLogger(__name__)
 
 
-class MixdownAPIClient(object):
+class MixdownAPIClient:
     """
     API client for mixdown service.
     """
@@ -32,7 +28,7 @@ class MixdownAPIClient(object):
 
         self.headers = {
             "user-agent": "openbroadcast.org - mixdown client/0.0.1",
-            "Authorization": "Token {}".format(AUTH_TOKEN),
+            "Authorization": f"Token {AUTH_TOKEN}",
         }
 
     def get_for_playlist(self, obj):
@@ -41,12 +37,12 @@ class MixdownAPIClient(object):
             api_base_url=API_BASE_URL, uuid=obj.uuid
         )
 
-        log.debug("loading mixdown from: {}".format(url))
+        log.debug(f"loading mixdown from: {url}")
 
         try:
             r = requests.get(url, timeout=REQUEST_TIMEOUT, headers=self.headers)
         except ConnectionError as e:
-            log.warning("unable to get data from mixdown api: {}".format(e))
+            log.warning(f"unable to get data from mixdown api: {e}")
             return
 
         if not r.status_code == 200:
@@ -63,9 +59,9 @@ class MixdownAPIClient(object):
             api_base_url=API_BASE_URL, uuid=obj.uuid
         )
 
-        log.debug("requesting mixdown: {}".format(url))
+        log.debug(f"requesting mixdown: {url}")
 
-        data = {"remote_uri": "{}{}".format(SITE_URL, obj.get_api_url())}
+        data = {"remote_uri": f"{SITE_URL}{obj.get_api_url()}"}
 
         try:
             r = requests.put(
@@ -78,11 +74,11 @@ class MixdownAPIClient(object):
                 )
 
         except ConnectionError as e:
-            log.warning("unable to post data to mixdown api: {}".format(e))
+            log.warning(f"unable to post data to mixdown api: {e}")
             return
 
         if not r.status_code in [200, 201]:
-            log.warning("{}".format(r.text))
+            log.warning(f"{r.text}")
             return
 
         return self.parse_mixdown_data(r.json())

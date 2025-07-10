@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
 import re
 import logging
 import codecs
@@ -70,7 +68,7 @@ class Command(NoArgsCommand):
                         storage.path(path)
                     )
                     compiled_template = re.sub(
-                        "/Users/ohrstrom/Documents/Code/openbroadcast.org/website/apps/(\w*)/static/",
+                        r"/Users/ohrstrom/Documents/Code/openbroadcast.org/website/apps/(\w*)/static/",
                         "",
                         compiled_template,
                     )

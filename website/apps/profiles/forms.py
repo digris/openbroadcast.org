@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
@@ -42,7 +39,7 @@ class ProfileForm(ModelForm):
     tags = TagField(required=False, label=_("Tags"))
 
     def __init__(self, *args, **kwargs):
-        super(ProfileForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # instance = getattr(self, "instance", None)
 
         self.helper = FormHelper()
@@ -173,7 +170,7 @@ class LinkForm(ModelForm):
         exclude = []
 
     def __init__(self, *args, **kwargs):
-        super(LinkForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -194,7 +191,7 @@ class ServiceForm(ModelForm):
         exclude = []
 
     def __init__(self, *args, **kwargs):
-        super(ServiceForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -233,7 +230,7 @@ class UserForm(ModelForm):
                 ),
             )
         )
-        super(UserForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean_email(self):
         email = self.cleaned_data["email"]
@@ -286,7 +283,7 @@ class UserCredentialsForm(ModelForm):
                 ),
             ),
         )
-        super(UserCredentialsForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean_email(self):
         email = self.cleaned_data["email"]

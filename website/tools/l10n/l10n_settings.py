@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 A central mechanism for settings which have defaults.
 Repurposed from Sphene Community Tools: http://sct.sphene.net
@@ -15,15 +14,15 @@ l10n_settings_defaults = {
     # the add_setting_defaults method !
     "currency_formats": {
         "USD": {
-            "symbol": u"$",
-            "positive": u"$%(val)0.2f",
-            "negative": u"-$%(val)0.2f",
+            "symbol": "$",
+            "positive": "$%(val)0.2f",
+            "negative": "-$%(val)0.2f",
             "decimal": ".",
         },
         "GBP": {
-            "symbol": u"£",
-            "positive": u"£%(val)0.2f",
-            "negative": u"-£%(val)0.2f",
+            "symbol": "£",
+            "positive": "£%(val)0.2f",
+            "negative": "-£%(val)0.2f",
             "decimal": ".",
         },
     },

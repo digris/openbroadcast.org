@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import models
 import tagging
 import os
@@ -168,7 +165,7 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         return providers
 
     def get_ct(self):
-        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
+        return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
     def get_absolute_url(self):
         if self.disable_link:
@@ -219,7 +216,7 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
     def save(self, *args, **kwargs):
         unique_slugify(self, self.name)
-        super(Label, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 @python_2_unicode_compatible
@@ -243,12 +240,12 @@ class LabelFoundingArtist(models.Model):
         verbose_name_plural = _("Founding Artists")
 
     def __str__(self):
-        return '"%s" <> "%s"' % (self.label.name, self.artist.name)
+        return '"{}" <> "{}"'.format(self.label.name, self.artist.name)
 
     def save(self, *args, **kwargs):
         if not self.label or not self.artist:
             self.delete()
-        super(LabelFoundingArtist, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 tagging_register(Label)

@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 # import urlparse
 import logging
 from django.conf import settings
@@ -215,7 +213,7 @@ def write(
                 .filter(
                     is_active=True,
                     **{
-                        "{0}__in".format(user_model.USERNAME_FIELD): [
+                        f"{user_model.USERNAME_FIELD}__in": [
                             r.strip()
                             for r in recipients.split(":")
                             if r and not r.isspace()
@@ -228,7 +226,7 @@ def write(
             users = user_model.objects.filter(
                 is_active=True,
                 **{
-                    "{0}__in".format(user_model.USERNAME_FIELD): [
+                    f"{user_model.USERNAME_FIELD}__in": [
                         r.strip()
                         for r in recipients.split(":")
                         if r and not r.isspace()
@@ -423,10 +421,10 @@ def _update(request, field_bit, success_msg, field_value=None, success_url=None)
         user = request.user
         filter = Q(pk__in=pks) | Q(thread__in=tpks)
         recipient_rows = Message.objects.as_recipient(user, filter).update(
-            **{"recipient_{0}".format(field_bit): field_value}
+            **{f"recipient_{field_bit}": field_value}
         )
         sender_rows = Message.objects.as_sender(user, filter).update(
-            **{"sender_{0}".format(field_bit): field_value}
+            **{f"sender_{field_bit}": field_value}
         )
         if not (recipient_rows or sender_rows):
             raise Http404  # abnormal enough, like forged ids

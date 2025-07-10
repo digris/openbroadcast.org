@@ -67,7 +67,7 @@ class InvitationManager(models.Manager):
             pass
         if invitation is None:
             user.invitation_stats.use()
-            key = "%s%0.16f%s%s" % (
+            key = "{}{:0.16f}{}{}".format(
                 settings.SECRET_KEY,
                 random.random(),
                 user.email,
@@ -116,18 +116,18 @@ class InvitationManager(models.Manager):
 @python_2_unicode_compatible
 class Invitation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="invitations")
-    email = models.EmailField(_(u"e-mail"))
+    email = models.EmailField(_("e-mail"))
     message = models.TextField(null=True)
-    key = models.CharField(_(u"invitation key"), max_length=40, unique=True)
+    key = models.CharField(_("invitation key"), max_length=40, unique=True)
     date_invited = models.DateTimeField(
-        _(u"date invited"), default=datetime.datetime.now
+        _("date invited"), default=datetime.datetime.now
     )
 
     objects = InvitationManager()
 
     class Meta:
-        verbose_name = _(u"invitation")
-        verbose_name_plural = _(u"invitations")
+        verbose_name = _("invitation")
+        verbose_name_plural = _("invitations")
         ordering = ("-date_invited",)
 
     def __str__(self):
@@ -156,7 +156,7 @@ class Invitation(models.Model):
         """
         return self._expires_at.date()
 
-    expiration_date.short_description = _(u"expiration date")
+    expiration_date.short_description = _("expiration date")
     expiration_date.admin_order_field = "date_invited"
 
     def send_email(self, email=None, site=None, request=None):
@@ -272,19 +272,19 @@ class InvitationStats(models.Model):
         settings.AUTH_USER_MODEL, related_name="invitation_stats"
     )
     available = models.IntegerField(
-        _(u"available invitations"), default=app_settings.INITIAL_INVITATIONS
+        _("available invitations"), default=app_settings.INITIAL_INVITATIONS
     )
-    sent = models.IntegerField(_(u"invitations sent"), default=0)
-    accepted = models.IntegerField(_(u"invitations accepted"), default=0)
+    sent = models.IntegerField(_("invitations sent"), default=0)
+    accepted = models.IntegerField(_("invitations accepted"), default=0)
 
     objects = InvitationStatsManager()
 
     class Meta:
-        verbose_name = verbose_name_plural = _(u"invitation stats")
+        verbose_name = verbose_name_plural = _("invitation stats")
         ordering = ("-user",)
 
     def __str__(self):
-        return _(u"invitation stats for %(username)s") % {
+        return _("invitation stats for %(username)s") % {
             "username": self.user.username
         }
 

@@ -23,7 +23,7 @@ def sort_results_by_distance(items):
 
 
 def get_index(title):
-    name_pattern = " \([0-9]+\)"
+    name_pattern = r" \([0-9]+\)"
     m = re.findall(name_pattern, title)
     if m:
         return int(m[0].strip(" ()"))
@@ -53,7 +53,7 @@ def populate_results(results):
 
         except Exception as e:
 
-            log.debug("unable to populate data for {0} - {1}".format(url, e))
+            log.debug(f"unable to populate data for {url} - {e}")
 
             pass
 
@@ -62,7 +62,7 @@ def populate_results(results):
 
 def discogs_ordered_search(query, item_type, limit=100):
 
-    name_pattern = " \([0-9]+\)"
+    name_pattern = r" \([0-9]+\)"
     q_stripped = query.strip("'\"")
 
     # special case when searching directly by id
@@ -74,7 +74,7 @@ def discogs_ordered_search(query, item_type, limit=100):
             item_type=item_type,
         )
 
-        log.debug("search by id: {0}".format(url))
+        log.debug(f"search by id: {url}")
         r = requests.get(url)
 
         if not r.status_code == 200:

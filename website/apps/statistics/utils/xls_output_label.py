@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import logging
 import calendar
 import xlsxwriter
@@ -20,9 +16,9 @@ def label_statistics_as_xls(label, years, title=None, output=None):
     ROW_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXZY"
 
     title = title or "Airplay Statistics: open broadcast radio"
-    output = output or "Airplay statistics - {}.xlsx".format(label.name)
+    output = output or f"Airplay statistics - {label.name}.xlsx"
 
-    log.info("output to: {}".format(output))
+    log.info(f"output to: {output}")
 
     ###################################################################
     # workbook preparation
@@ -65,7 +61,7 @@ def label_statistics_as_xls(label, years, title=None, output=None):
         last_row = len(objects) - 1 + first_row
         total_events = sum([i.num_events for i in objects])
 
-        worksheet = workbook.add_worksheet("{}".format(start.year))
+        worksheet = workbook.add_worksheet(f"{start.year}")
 
         # Widen the first columns
         worksheet.set_column("A:C", 32)
@@ -73,19 +69,19 @@ def label_statistics_as_xls(label, years, title=None, output=None):
         worksheet.set_row("1:1", 200)
 
         worksheet.merge_range(
-            "A1:C1", "{} - {:%Y-%m-%d} - {:%Y-%m-%d}".format(title, start, end), bold
+            "A1:C1", f"{title} - {start:%Y-%m-%d} - {end:%Y-%m-%d}", bold
         )
-        worksheet.merge_range("A2:C2", "Label: {}".format(label.name), bold)
-        worksheet.merge_range("A3:C3", "Total: {}".format(total_events), bold)
+        worksheet.merge_range("A2:C2", f"Label: {label.name}", bold)
+        worksheet.merge_range("A3:C3", f"Total: {total_events}", bold)
 
-        worksheet.merge_range("A4:C4", "{}".format(ISRC_HINT_TEXT), isrc_hint)
+        worksheet.merge_range("A4:C4", f"{ISRC_HINT_TEXT}", isrc_hint)
 
-        worksheet.merge_range("A5:C5", "File created: {}".format(timezone.now()), small)
+        worksheet.merge_range("A5:C5", f"File created: {timezone.now()}", small)
 
-        worksheet.write("A{}".format(first_row), "Title", border_bottom)
-        worksheet.write("B{}".format(first_row), "Artist", border_bottom)
-        worksheet.write("C{}".format(first_row), "Release", border_bottom)
-        worksheet.write("D{}".format(first_row), "ISRC", border_bottom)
+        worksheet.write(f"A{first_row}", "Title", border_bottom)
+        worksheet.write(f"B{first_row}", "Artist", border_bottom)
+        worksheet.write(f"C{first_row}", "Release", border_bottom)
+        worksheet.write(f"D{first_row}", "ISRC", border_bottom)
 
         try:
             header = [
@@ -113,7 +109,7 @@ def label_statistics_as_xls(label, years, title=None, output=None):
                 worksheet.write_url(
                     index,
                     3,
-                    "{}{}".format(SITE_URL, item.get_edit_url()),
+                    f"{SITE_URL}{item.get_edit_url()}",
                     string="Add ISRC",
                 )
 
@@ -125,7 +121,7 @@ def label_statistics_as_xls(label, years, title=None, output=None):
 
         # add summs / formula
         worksheet.merge_range(
-            "A{}:D{}".format(last_row + 2, last_row + 2), "Total", border_top
+            f"A{last_row + 2}:D{last_row + 2}", "Total", border_top
         )
 
         for index, item in enumerate(header, start=4):

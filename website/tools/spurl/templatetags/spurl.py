@@ -27,7 +27,7 @@ def convert_to_boolean(string_or_boolean):
         return bool(TRUE_RE.match(string_or_boolean))
 
 
-class SpurlURLBuilder(object):
+class SpurlURLBuilder:
     def __init__(self, args, context, tags, filters):
         self.args = args
         self.context = context
@@ -305,9 +305,9 @@ class SpurlURLBuilder(object):
         return value
 
     def unescape_tags(self, template_string):
-        """Spurl allows the use of templatetags inside templatetags, if
+        r"""Spurl allows the use of templatetags inside templatetags, if
         the inner templatetags are escaped - {\% and %\}"""
-        return template_string.replace("{\%", "{%").replace("%\}", "%}")
+        return template_string.replace(r"{\%", "{%").replace(r"%\}", "%}")
 
     def compile_string(self, template_string, origin):
         """Re-implementation of django.template.base.compile_string

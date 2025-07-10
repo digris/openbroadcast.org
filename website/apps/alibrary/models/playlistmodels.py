@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 import os
 import uuid
@@ -54,14 +51,14 @@ def filename_by_uuid(instance, filename):
 def upload_image_to(instance, filename):
     filename, extension = os.path.splitext(filename)
     return os.path.join(
-        get_dir_for_object(instance), "playlists{}".format(extension.lower())
+        get_dir_for_object(instance), f"playlists{extension.lower()}"
     )
 
 
 def upload_mixdown_to(instance, filename):
     filename, extension = os.path.splitext(filename)
     return os.path.join(
-        get_dir_for_object(instance), "mixdown{}".format(extension.lower())
+        get_dir_for_object(instance), f"mixdown{extension.lower()}"
     )
 
 
@@ -111,10 +108,10 @@ class Series(models.Model):
         ordering = ("-name",)
 
     def __str__(self):
-        return "{}".format(self.name)
+        return f"{self.name}"
 
     def get_ct(self):
-        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
+        return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
 
 @python_2_unicode_compatible
@@ -295,7 +292,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         return self.name
 
     def get_ct(self):
-        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
+        return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
     def get_absolute_url(self):
         return reverse("alibrary-playlist-detail", kwargs={"uuid": self.uuid})
@@ -536,7 +533,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     ###################################################################
     def add_item(self, item, cue_and_fade=None, commit=True):
 
-        log.debug("add item to playlist: {}".format(item))
+        log.debug(f"add item to playlist: {item}")
 
         playlist_item = PlaylistItem(content_object=item)
         playlist_item.save()
@@ -618,7 +615,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                     - item.fade_cross
                 )
             except Exception as e:
-                log.warning("unable to get duration: {}".format(e))
+                log.warning(f"unable to get duration: {e}")
                 item.playout_duration = 0
 
             items.append(item)
@@ -647,7 +644,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                 try:
                     with open(item.content_object.master.path):
                         pass
-                except IOError as e:
+                except OSError as e:
                     log.warning(
                         _("File does not exists: %s | %s")
                         % (e, item.content_object.master.path)
@@ -722,7 +719,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         url = self.mixdown["mixdown_file"]
 
-        log.debug("download mixdown from api: {} > {}".format(url, self.name))
+        log.debug(f"download mixdown from api: {url} > {self.name}")
 
         f_temp = NamedTemporaryFile(delete=True)
         f_temp.write(urlopen(url).read())
@@ -731,7 +728,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         # wipe existing file
         try:
             self.mixdown_file.delete(False)
-        except IOError:
+        except OSError:
             pass
 
         self.mixdown_file.save(url.split("/")[-1], File(f_temp))
@@ -781,7 +778,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         if not self.series:
             return
         if self.series_number:
-            return "{} #{}".format(self.series.name, self.series_number)
+            return f"{self.series.name} #{self.series_number}"
         return self.series.name
 
     @cached_property
@@ -840,7 +837,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         # handle series numbering
 
-        super(Playlist, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 try:
@@ -863,7 +860,7 @@ def playlist_post_save(sender, instance, **kwargs):
     if instance.mixdown:
         return
 
-    log.debug("no mixdown yet for {} - request to generate".format(instance.name))
+    log.debug(f"no mixdown yet for {instance.name} - request to generate")
     instance.request_mixdown()
 
 
@@ -910,7 +907,7 @@ class PlaylistItemPlaylist(TimestampedModelMixin, models.Model):
         if int(self.fade_out) < 0:
             self.fade_out = 0
 
-        super(PlaylistItemPlaylist, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 @python_2_unicode_compatible
@@ -936,4 +933,4 @@ class PlaylistItem(models.Model):
         return "%s" % (self.pk)
 
     def save(self, *args, **kwargs):
-        super(PlaylistItem, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)

@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import requests
 import logging
 from django.conf import settings
@@ -17,7 +13,7 @@ logging.getLogger("urllib3").setLevel(logging.WARNING)
 log = logging.getLogger(__name__)
 
 
-class FprintAPIClient(object):
+class FprintAPIClient:
     """
     API client for fprint service.
     Handles lookups by code or media object as well as fingerprint ingestion to the service
@@ -29,9 +25,9 @@ class FprintAPIClient(object):
     @staticmethod
     def identify(fprint, min_score=0.2, duration_tolerance=5.0):
 
-        url = "{api_base_url}fprint/identify/".format(api_base_url=API_BASE_URL)
+        url = f"{API_BASE_URL}fprint/identify/"
 
-        log.debug("loading fprint entry from: {}".format(url))
+        log.debug(f"loading fprint entry from: {url}")
 
         fprint.update(
             {"min_score": min_score, "duration_tolerance": duration_tolerance}
@@ -54,7 +50,7 @@ class FprintAPIClient(object):
             api_base_url=API_BASE_URL, uuid=obj.uuid
         )
 
-        log.debug("ingest fprint entry to: {}".format(url))
+        log.debug(f"ingest fprint entry to: {url}")
 
         # TODO: implement exception handling
         try:
@@ -63,7 +59,7 @@ class FprintAPIClient(object):
             return
 
         if not code:
-            log.warning("unable to generate echoprint code: {}".format(obj.master.path))
+            log.warning(f"unable to generate echoprint code: {obj.master.path}")
             return
 
         data = {
@@ -78,7 +74,7 @@ class FprintAPIClient(object):
         try:
             r = requests.put(url, json=data, timeout=2.0)
         except requests.exceptions.ConnectionError as e:
-            log.warning("unable to process request: {}".format(e))
+            log.warning(f"unable to process request: {e}")
             return
 
         if not r.status_code in [200, 201]:
@@ -100,7 +96,7 @@ class FprintAPIClient(object):
             api_base_url=API_BASE_URL, uuid=media_uuid
         )
 
-        log.debug("delete fprint entry: {}".format(url))
+        log.debug(f"delete fprint entry: {url}")
 
         r = requests.delete(url, timeout=2.0)
 

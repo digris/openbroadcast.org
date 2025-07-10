@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 
 from ac_tagging.widgets import TagAutocompleteTagIt
@@ -52,7 +49,7 @@ ACTION_LAYOUT_EXTENDED = FormActions(
 class ArtistActionForm(Form):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("instance", False)
-        super(ArtistActionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_class = "form-horizontal"
@@ -96,7 +93,7 @@ class ArtistForm(ModelForm):
         self.user = kwargs["initial"]["user"]
         self.instance = kwargs["instance"]
 
-        super(ArtistForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         """
         Prototype function, set some fields to readonly depending on permissions
@@ -177,7 +174,7 @@ class ArtistForm(ModelForm):
 
     def clean(self, *args, **kwargs):
 
-        cd = super(ArtistForm, self).clean()
+        cd = super().clean()
 
         if cd.get("remote_image", None):
             remote_file = get_file_from_url(cd["remote_image"])
@@ -187,7 +184,7 @@ class ArtistForm(ModelForm):
         return cd
 
     def save(self, *args, **kwargs):
-        return super(ArtistForm, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
 
 """
@@ -198,7 +195,7 @@ Artists members / membership
 class BaseMemberFormSet(BaseInlineFormSet):
     def __init__(self, *args, **kwargs):
         self.instance = kwargs["instance"]
-        super(BaseMemberFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -213,7 +210,7 @@ class BaseMemberFormSet(BaseInlineFormSet):
 
     def add_fields(self, form, index):
         # allow the super class to create the fields as usual
-        super(BaseMemberFormSet, self).add_fields(form, index)
+        super().add_fields(form, index)
 
         # created the nested formset
         try:
@@ -231,7 +228,7 @@ class BaseMemberForm(ModelForm):
         fields = ("child",)
 
     def __init__(self, *args, **kwargs):
-        super(BaseMemberForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         instance = getattr(self, "instance", None)
 
     child = search_fields.AutocompleteField(
@@ -252,7 +249,7 @@ class BaseMemberForm(ModelForm):
         return child
 
     def save(self, *args, **kwargs):
-        instance = super(BaseMemberForm, self).save(*args, **kwargs)
+        instance = super().save(*args, **kwargs)
         return instance
 
 
@@ -266,7 +263,7 @@ class BaseAliasFormSet(BaseInlineFormSet):
 
         self.instance = kwargs["instance"]
 
-        super(BaseAliasFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_id = "id_artists_form_%s" % "inline"
@@ -285,7 +282,7 @@ class BaseAliasFormSet(BaseInlineFormSet):
 
     def add_fields(self, form, index):
         # allow the super class to create the fields as usual
-        super(BaseAliasFormSet, self).add_fields(form, index)
+        super().add_fields(form, index)
 
         # created the nested formset
         try:
@@ -304,7 +301,7 @@ class BaseAliasForm(ModelForm):
         exclude = []
 
     def __init__(self, *args, **kwargs):
-        super(BaseAliasForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         instance = getattr(self, "instance", None)
 
     child = search_fields.AutocompleteField(
@@ -321,11 +318,11 @@ class BaseAliasForm(ModelForm):
 
     def clean(self, *args, **kwargs):
 
-        cd = super(BaseAliasForm, self).clean()
+        cd = super().clean()
         return cd
 
     def save(self, *args, **kwargs):
-        instance = super(BaseAliasForm, self).save(*args, **kwargs)
+        instance = super().save(*args, **kwargs)
         return instance
 
 
@@ -333,7 +330,7 @@ class BaseArtistReleationFormSet(BaseGenericInlineFormSet):
     def __init__(self, *args, **kwargs):
 
         self.instance = kwargs["instance"]
-        super(BaseArtistReleationFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_id = "id_releasemediainline_form_%s" % "asdfds"
@@ -362,7 +359,7 @@ class BaseArtistReleationForm(StripWhitespaceFormMixin, ModelForm):
         fields = ("url", "service")
 
     def __init__(self, *args, **kwargs):
-        super(BaseArtistReleationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         instance = getattr(self, "instance", None)
 
         self.fields["service"].widget.instance = instance

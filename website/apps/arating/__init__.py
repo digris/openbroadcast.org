@@ -80,7 +80,7 @@ def enable_voting_on(
                 % (VOTE_TABLE, db_table, pk_name, content_type)
             )
 
-            return super(VotableManager, self).get_queryset()
+            return super().get_queryset()
 
             # # TODO: this is highly inefficient on large querysets!!!
             # return super(VotableManager, self).get_queryset().extra(

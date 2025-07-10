@@ -1,5 +1,3 @@
-from __future__ import absolute_import, unicode_literals
-
 import logging
 import requests
 
@@ -14,7 +12,7 @@ SITE_URL = getattr(settings, "SITE_URL")
 log = logging.getLogger(__name__)
 
 
-class RadioplayerMetadataGenerator(object):
+class RadioplayerMetadataGenerator:
     """
     generates metadata for swissradioplayer
     """
@@ -32,7 +30,7 @@ class RadioplayerMetadataGenerator(object):
             -X POST "https://ingest.swissradioplayer.ch/ingestor/metadata/v1/np/"
         """
 
-        log.info("set now playing: {}".format(media))
+        log.info(f"set now playing: {media}")
 
         start = (
             (timezone.now() - timezone.timedelta(hours=2))
@@ -51,22 +49,22 @@ class RadioplayerMetadataGenerator(object):
             # generate thumbnail image
             opts = {"crop": True, "quality": 80, "size": (86, 48)}
             thumbnailer = get_thumbnailer(media.release.main_image).get_thumbnail(opts)
-            thumbnail_url = "{}{}".format(SITE_URL, thumbnailer.url)
+            thumbnail_url = f"{SITE_URL}{thumbnailer.url}"
 
             payload.update({"imageUrl": thumbnail_url})
 
         except Exception as e:
-            log.warning("unable to generate thumbnail image: {}".format(e))
+            log.warning(f"unable to generate thumbnail image: {e}")
 
         r = self.client.post("/ingestor/metadata/v1/np/", payload=payload)
-        log.info("returned status code: {}".format(r.status_code))
+        log.info(f"returned status code: {r.status_code}")
 
     def __set_now_playing(self, media, start, duration):
         """
         curl -u ing_ob:Swissradio1 -v --data "rpId=155&startTime=2018-08-29T13:55:00&duration=3600&title=Love Power&artist=Nicola Conte" -X POST "https://ingest.swissradioplayer.ch/ingestor/metadata/v1/np/"
         """
 
-        log.info("set now playing: {} {} {}".format(media, start, duration))
+        log.info(f"set now playing: {media} {start} {duration}")
 
         # r = self.client.get('/ingestor/metadata/v1/18884470')
 
@@ -133,7 +131,7 @@ def set_radioplayer_metadata(content_object):
     so can be used in the same way as updates to icecast / tunein.
     """
 
-    log.info("set now playing: {}".format(content_object))
+    log.info(f"set now playing: {content_object}")
 
     rpc = RadioplayerMetadataGenerator()
     rpc.ingest_now_playing(media=content_object)

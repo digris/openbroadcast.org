@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import actstream
 import logging
 
@@ -102,7 +99,7 @@ class ReleaseListView(MenuMixin, BaseSearchListView):
         #     content_type=ContentType.objects.get_for_model(self.model),
         # ).values_list('object_id', flat=True)
 
-        qs = super(ReleaseListView, self).get_queryset(limit_ids=limit_ids, **kwargs)
+        qs = super().get_queryset(limit_ids=limit_ids, **kwargs)
 
         qs = qs.select_related(
             "label",
@@ -192,7 +189,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
     def __init__(self, *args, **kwargs):
         self.created_artists = {}
-        super(ReleaseEditView, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def get_initial(self):
         self.initial.update(
@@ -204,7 +201,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         return self.initial
 
     def get_context_data(self, **kwargs):
-        ctx = super(ReleaseEditView, self).get_context_data(**kwargs)
+        ctx = super().get_context_data(**kwargs)
         ctx["named_formsets"] = self.get_named_formsets()
         # TODO: is this a good way to pass the instance main form?
         ctx["form_errors"] = self.get_form_errors(form=ctx["form"])
@@ -245,7 +242,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
         named_formsets = self.get_named_formsets()
 
-        if not all((x.is_valid() for x in named_formsets.values())):
+        if not all(x.is_valid() for x in named_formsets.values()):
             return self.render_to_response(self.get_context_data(form=form))
 
         self.object = form.save(commit=False)
@@ -280,7 +277,7 @@ class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         self.formset_media_valid(named_formsets["media"])
 
         for name, formset in named_formsets.items():
-            formset_save_func = getattr(self, "formset_{0}_valid".format(name), None)
+            formset_save_func = getattr(self, f"formset_{name}_valid", None)
             if name != "media":
                 if formset_save_func is not None:
                     formset_save_func(formset)

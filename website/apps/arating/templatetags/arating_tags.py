@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from django import template
 from django.contrib.contenttypes.models import ContentType
 from cacheops import cached_as
@@ -28,7 +27,7 @@ def rating_for_object(context, object):
     data["choices"] = choices
     data["request"] = request
     data["object"] = object
-    data["ct"] = "%s.%s" % (
+    data["ct"] = "{}.{}".format(
         ContentType.objects.get_for_model(object).app_label,
         object.__class__.__name__.lower(),
     )

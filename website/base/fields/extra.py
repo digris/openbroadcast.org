@@ -63,7 +63,7 @@ class AdvancedFileInput(ClearableFileInput):
         self.url_length = kwargs.pop("url_length", 30)
         self.preview = kwargs.pop("preview", True)
         self.image_width = kwargs.pop("image_width", 125)
-        super(AdvancedFileInput, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
 
@@ -73,7 +73,7 @@ class AdvancedFileInput(ClearableFileInput):
             "clear_template": "",
             "clear_checkbox_label": self.clear_checkbox_label,
         }
-        template = u"%(input)s"
+        template = "%(input)s"
 
         substitutions["input"] = super(ClearableFileInput, self).render(
             name, value, attrs
@@ -87,11 +87,11 @@ class AdvancedFileInput(ClearableFileInput):
                 #    (escape(value.url), self.image_width))
                 substitutions[
                     "initial"
-                ] = u'<div data-image_url="{0}"><img class="placeholder" src="{0}" width="{1}"></div>'.format(
+                ] = '<div data-image_url="{0}"><img class="placeholder" src="{0}" width="{1}"></div>'.format(
                     escape(value.url), self.image_width
                 )
             else:
-                substitutions["initial"] = u'<a href="{0}">{1}</a>'.format(
+                substitutions["initial"] = '<a href="{}">{}</a>'.format(
                     escape(value.url),
                     "..." + escape(force_unicode(value))[-self.url_length :],
                 )
@@ -134,12 +134,12 @@ class MarkdownTextField(TextField):
     def __init__(self, *args, **kwargs):
         self._markdown_safe = not kwargs.pop("allow_html", True)
         self._html_field_suffix = kwargs.pop("html_field_suffix", "_html")
-        super(MarkdownTextField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def contribute_to_class(self, cls, name):
-        self._html_field = "%s%s" % (name, self._html_field_suffix)
+        self._html_field = "{}{}".format(name, self._html_field_suffix)
         # TextField(blank=True, null=True, editable=False).contribute_to_class(cls, self._html_field)
-        super(MarkdownTextField, self).contribute_to_class(cls, name)
+        super().contribute_to_class(cls, name)
 
     def pre_save(self, model_instance, add):
         try:
@@ -176,10 +176,10 @@ class ContentTypeRestrictedFileField(FileField):
         )
         self.max_upload_size = max_upload_size
 
-        super(ContentTypeRestrictedFileField, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def clean(self, *args, **kwargs):
-        data = super(ContentTypeRestrictedFileField, self).clean(*args, **kwargs)
+        data = super().clean(*args, **kwargs)
 
         file = data.file
         try:

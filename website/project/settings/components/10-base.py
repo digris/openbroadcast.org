@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import os
 import sys
 from django.core.urlresolvers import reverse_lazy
@@ -35,13 +34,13 @@ DEFAULT_LANGUAGE = 0
 LANGUAGE_CODE = "en"
 
 LANGUAGES = [
-    ("en", _(u"Englisch")),
+    ("en", _("Englisch")),
     # ('de', _(u'Deutsch')),
 ]
 
 CMS_LANGUAGES = {
     1: [
-        {"code": "en", "name": _(u"Englisch"), "public": True},
+        {"code": "en", "name": _("Englisch"), "public": True},
         # {
         #     'code': 'de',
         #     'name': _(u'Deutsch'),

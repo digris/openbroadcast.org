@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import re
 
 from django import template
@@ -22,7 +21,7 @@ def transform_status(context, obj, target_type):
 @register.filter
 def parse_cuepoints(text):
 
-    p = re.compile("(?P<time>[\d]{1,2}:[\d]{2})")
+    p = re.compile(r"(?P<time>[\d]{1,2}:[\d]{2})")
     text = re.sub(p, format_cuelinks, text)
 
     return mark_safe(text)
@@ -33,7 +32,7 @@ def format_cuelinks(m):
     t = m.group(0)
     s = sum(int(x) * 60 ** i for i, x in enumerate(reversed(t.split(":"))))
 
-    str = '<a class="cuepoint" href="#%s">%s</a>' % (s, t)
+    str = '<a class="cuepoint" href="#{}">{}</a>'.format(s, t)
     return str
 
 

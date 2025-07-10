@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import datetime
 import logging
 
@@ -19,12 +18,12 @@ log = logging.getLogger(__name__)
 
 def yearly_summary_for_label_as_xls(year, label, event_type_id, output=None):
 
-    log.debug("generating {} statistics for {} - {}".format(event_type_id, label, year))
+    log.debug(f"generating {event_type_id} statistics for {label} - {year}")
 
     year = int(year)
     event_type = EventType.objects.get(pk=event_type_id)
 
-    title = "{}: open broadcast radio".format(TITLE_MAP.get(event_type.title))
+    title = f"{TITLE_MAP.get(event_type.title)}: open broadcast radio"
 
     start = datetime.datetime.combine(datetime.date(year, 1, 1), datetime.time.min)
 
@@ -44,12 +43,12 @@ def yearly_summary_for_label_as_xls(year, label, event_type_id, output=None):
 def summary_for_label_as_xls(label, event_type_id, output=None):
 
     log.debug(
-        "generating {} statistics for {} - since created".format(event_type_id, label)
+        f"generating {event_type_id} statistics for {label} - since created"
     )
 
     event_type = EventType.objects.get(pk=event_type_id)
 
-    title = "{}: open broadcast radio".format(TITLE_MAP.get(event_type.title))
+    title = f"{TITLE_MAP.get(event_type.title)}: open broadcast radio"
 
     years = []
     year_start = label.created.year if label.created.year >= 2014 else 2014

@@ -141,10 +141,10 @@ def moneyfmt(val, currency_code=None, wrapcents="", places=None):
     else:
         start_fmt = currency[key]
         fmt_parts = re.split(decimal_fmt, start_fmt)
-        new_decimal = u".%sf" % places
+        new_decimal = ".%sf" % places
         # We need to keep track of all 3 parts because we might want to use
         # () to denote a negative value and don't want to lose the trailing )
-        fmt = u"".join([fmt_parts[0], new_decimal, fmt_parts[2]])
+        fmt = "".join([fmt_parts[0], new_decimal, fmt_parts[2]])
     formatted = fmt % {"val": val}
 
     sep = currency.get("decimal", ".")
@@ -155,7 +155,7 @@ def moneyfmt(val, currency_code=None, wrapcents="", places=None):
         pos = formatted.rfind(sep)
         if pos > -1:
             pos += 1
-            formatted = u"%s<%s>%s</%s>" % (
+            formatted = "{}<{}>{}</{}>".format(
                 formatted[:pos],
                 wrapcents,
                 formatted[pos:],

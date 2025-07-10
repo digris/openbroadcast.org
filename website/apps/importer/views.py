@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import json
 
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
@@ -15,7 +12,7 @@ from importer.models import Import
 from pure_pagination.mixins import PaginationMixin
 
 
-class JSONResponseMixin(object):
+class JSONResponseMixin:
     def render_to_response(self, context):
         "Returns a JSON response containing 'context' as payload"
         return self.get_json_response(self.convert_context_to_json(context))
@@ -60,7 +57,7 @@ class ImportDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
         if not obj.user == request.user:
             raise PermissionDenied
 
-        return super(ImportDeleteView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         kwargs = {}
@@ -163,7 +160,7 @@ class ImportUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         if not obj.user == request.user:
             raise PermissionDenied
 
-        return super(ImportUpdateView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         kwargs = {}

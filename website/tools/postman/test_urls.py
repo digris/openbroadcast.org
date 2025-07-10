@@ -2,7 +2,6 @@
 URLconf for tests.py usage.
 
 """
-from __future__ import unicode_literals
 
 from django.conf import settings
 
@@ -40,7 +39,7 @@ def user_filter_exception(user):
         raise ValidationError(
             [
                 "first good reason",
-                "anyway, I don't like {0}".format(user.get_username()),
+                f"anyway, I don't like {user.get_username()}",
             ]
         )
     return None
@@ -66,7 +65,7 @@ def exch_filter_exception(sender, recipient, recipients_list):
         raise ValidationError(
             [
                 "first good reason",
-                "anyway, I don't like {0}".format(recipient.get_username()),
+                f"anyway, I don't like {recipient.get_username()}",
             ]
         )
     return None
@@ -89,7 +88,7 @@ def format_subject(subject):
 
 
 def format_body(sender, body):
-    return "{0} _ {1}".format(sender, body)
+    return f"{sender} _ {body}"
 
 
 postman_patterns = patterns(

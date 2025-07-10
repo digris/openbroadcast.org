@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import os
 import logging
 import requests
@@ -35,7 +33,7 @@ def check_binaries(app_configs, **kwargs):
             errors.append(
                 Error(
                     "binary missing",
-                    hint="binary location {} not specified in settings".format(key),
+                    hint=f"binary location {key} not specified in settings",
                     obj=key,
                     id="base.E001",
                 )
@@ -86,7 +84,7 @@ def check_directories(app_configs, **kwargs):
             errors.append(
                 Error(
                     "path does not exist",
-                    hint="location for {} does not exist at {}".format(key, path),
+                    hint=f"location for {key} does not exist at {path}",
                     obj=key,
                     id="base.E002",
                 )
@@ -140,7 +138,7 @@ def check_apis(app_configs, **kwargs):
 
             errors.append(
                 Error(
-                    "connection error ({})".format(status_code),
+                    f"connection error ({status_code})",
                     hint="unable to connect to: {}".format(service["url"]),
                     obj=service["name"],
                     id="base.E003",

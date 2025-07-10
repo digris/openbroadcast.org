@@ -15,7 +15,7 @@ class ImportCreateModelForm(forms.ModelForm):
         widgets = {"notes": forms.Textarea(attrs={"rows": 2, "cols": 30})}
 
     def __init__(self, *args, **kwargs):
-        super(ImportCreateModelForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_id = "bulk_edit%s" % "asd"

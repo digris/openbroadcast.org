@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
 import subprocess
 import logging
 
@@ -8,14 +6,14 @@ from nunjucks import settings as nunjucks_settings
 log = logging.getLogger(__name__)
 
 
-class NunjucksCompiler(object):
+class NunjucksCompiler:
     def __init__(self):
         pass
 
     def compile_template(self, path):
 
         template = ""
-        command = "%s %s" % (nunjucks_settings.NUNJUCKS_BIN, path)
+        command = "{} {}".format(nunjucks_settings.NUNJUCKS_BIN, path)
 
         p = subprocess.Popen(
             command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT

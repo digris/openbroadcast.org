@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 import qsstats
 from django.contrib.contenttypes.models import ContentType
@@ -57,7 +54,7 @@ def get_media_ids(obj):
 
 
 def get_usage_statistics(obj, start, end):
-    logger.debug('usage statistics for "{}", {} - {}'.format(obj, start, end))
+    logger.debug(f'usage statistics for "{obj}", {start} - {end}')
 
     # TODO: implement this in a more modular way
     media_ids = get_media_ids(obj)

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import requests
 import logging
 import tempfile
@@ -26,7 +23,7 @@ class AudioWaveformException(Exception):
 
 def waveform_as_png(path):
 
-    logger.debug("generate waveform (as PNG) for: {}".format(path))
+    logger.debug(f"generate waveform (as PNG) for: {path}")
 
     url = SERVICE_ENDPOINT + "png/1800/301"
     headers = {
@@ -45,12 +42,12 @@ def waveform_as_png(path):
             headers=headers,
         )
     except RequestException as e:
-        logger.warning("error: {}".format(e))
-        raise AudioWaveformException("request error: {}".format(e))
+        logger.warning(f"error: {e}")
+        raise AudioWaveformException(f"request error: {e}")
 
     if not r.status_code == 200:
         raise AudioWaveformException(
-            "Unable to process file: {} - {}".format(r.status_code, r.text)
+            f"Unable to process file: {r.status_code} - {r.text}"
         )
 
     png_path = tempfile.mkstemp(suffix=".png")[1]

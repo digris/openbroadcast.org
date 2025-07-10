@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2005-2006  Joe Wreschnig
 # Copyright (C) 2006-2007  Lukas Lalinsky
 #
@@ -64,26 +63,26 @@ class ASFInfo(StreamInfo):
     sample_rate = 0
     bitrate = 0
     channels = 0
-    codec_type = u""
-    codec_name = u""
-    codec_description = u""
+    codec_type = ""
+    codec_name = ""
+    codec_description = ""
 
     def __init__(self):
         self.length = 0.0
         self.sample_rate = 0
         self.bitrate = 0
         self.channels = 0
-        self.codec_type = u""
-        self.codec_name = u""
-        self.codec_description = u""
+        self.codec_type = ""
+        self.codec_name = ""
+        self.codec_description = ""
 
     def pprint(self):
         """Returns:
             text: a stream information text summary
         """
 
-        s = u"ASF (%s) %d bps, %s Hz, %d channels, %.2f seconds" % (
-            self.codec_type or self.codec_name or u"???",
+        s = "ASF (%s) %d bps, %s Hz, %d channels, %.2f seconds" % (
+            self.codec_type or self.codec_name or "???",
             self.bitrate,
             self.sample_rate,
             self.channels,
@@ -196,7 +195,7 @@ class ASFTags(list, DictMixin, Tags):
         :rtype: text
         """
 
-        return "\n".join("%s=%s" % (k, v) for k, v in self)
+        return "\n".join("{}={}".format(k, v) for k, v in self)
 
 
 UNICODE = ASFUnicodeAttribute.TYPE

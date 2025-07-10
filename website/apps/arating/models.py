@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -33,14 +30,14 @@ class Vote(TimestampedModelMixin, UUIDModelMixin, models.Model):
         permissions = (("vote_for_user", "Can vote in behalf of other user"),)
 
     def __str__(self):
-        return "%s from %s on %s" % (
+        return "{} from {} on {}".format(
             self.get_vote_display(),
             self.user,
             self.content_object,
         )
 
     def get_ct(self):
-        return "{}.{}".format(self._meta.app_label, self.__class__.__name__).lower()
+        return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
 
 def post_save_vote(sender, **kwargs):

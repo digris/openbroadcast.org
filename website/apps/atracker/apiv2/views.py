@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, absolute_import
-
 import json
 import logging
 
@@ -52,7 +49,7 @@ class ObjectEventView(APIView):
 
         _ct = ContentType.objects.get_for_model(obj)
 
-        log.debug("event PUT ct: {} - id: {} - user: {}".format(_ct, obj.pk, user))
+        log.debug(f"event PUT ct: {_ct} - id: {obj.pk} - user: {user}")
 
         event = Event.create_event(user, obj, event_type=event_type)
         serializer = ObjectEventSerializer(event)

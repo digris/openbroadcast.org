@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
 from django.conf import settings
 from django.forms.formsets import BaseFormSet
-from django.template import Context
 from django.template.loader import get_template
 from django import template
 
@@ -26,11 +24,11 @@ def as_crispy_form(form):
     """
     if isinstance(form, BaseFormSet):
         template = get_template("%s/uni_formset.html" % TEMPLATE_PACK)
-        c = Context({"formset": form, "form_show_errors": True})
+        c = {"formset": form, "form_show_errors": True}
     else:
         template = get_template("%s/uni_form.html" % TEMPLATE_PACK)
 
-        c = Context({"form": form, "form_show_errors": True})
+        c = {"form": form, "form_show_errors": True}
     return template.render(c)
 
 
@@ -45,10 +43,10 @@ def as_crispy_errors(form):
     """
     if isinstance(form, BaseFormSet):
         template = get_template("%s/errors_formset.html" % TEMPLATE_PACK)
-        c = Context({"formset": form})
+        c = {"formset": form}
     else:
         template = get_template("%s/errors.html" % TEMPLATE_PACK)
-        c = Context({"form": form})
+        c = {"form": form}
     return template.render(c)
 
 
@@ -62,5 +60,5 @@ def as_crispy_field(field):
         {{ form.field|as_crispy_field }}
     """
     template = get_template("%s/field.html" % TEMPLATE_PACK)
-    c = Context({"field": field, "form_show_errors": True})
+    c = {"field": field, "form_show_errors": True}
     return template.render(c)

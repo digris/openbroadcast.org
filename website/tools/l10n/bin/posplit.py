@@ -24,7 +24,7 @@ def posplit(fname, rules):
 
 def make_sections(fname):
     sections = []
-    f = open(fname, "r")
+    f = open(fname)
     section = Section()
     for line in f.xreadlines():
         if line and line.endswith("\n"):
@@ -41,7 +41,7 @@ def make_sections(fname):
     return sections
 
 
-class RuleSet(object):
+class RuleSet:
     def __init__(self, fname):
         self.rules = []
         self.fname = fname
@@ -63,7 +63,7 @@ class RuleSet(object):
         giftcertificate=apps/payment/modules/giftcertificate
         local_settings-customize.py=nostrip:projects/template/
         """
-        f = open(self.fname, "r")
+        f = open(self.fname)
         for line in f.xreadlines():
             if line and line.endswith("\n"):
                 line = line[:-1]
@@ -109,7 +109,7 @@ class RuleSet(object):
         self.pofile = fname
 
 
-class Rule(object):
+class Rule:
     def __init__(self, line):
         try:
             k, v = line.split("=")
@@ -148,10 +148,10 @@ class Rule(object):
             f.write("\n\n")
 
     def __str__(self):
-        return "Rule: %s=(%s) %s" % (self.key, self.option, self.dest)
+        return "Rule: {}=({}) {}".format(self.key, self.option, self.dest)
 
 
-class Section(object):
+class Section:
     def __init__(self):
         self.targets = []
         self.decisions = {}
@@ -185,7 +185,7 @@ class Section(object):
         out.extend(self.targets)
         out.append("DECISIONS: ")
         for k, v in self.decisions.items():
-            out.append("%s = %s" % (k.key, ", ".join(v)))
+            out.append("{} = {}".format(k.key, ", ".join(v)))
 
         out.append("LINES:")
         out.extend(self.lines)

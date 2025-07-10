@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.db import migrations, models
 import phonenumber_field.modelfields
 import django_extensions.db.fields
@@ -519,9 +516,9 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AlterUniqueTogether(
-            name="onairitem", unique_together=set([("content_type", "object_id")])
+            name="onairitem", unique_together={("content_type", "object_id")}
         ),
         migrations.AlterUniqueTogether(
-            name="channel", unique_together=set([("on_air_type", "on_air_id")])
+            name="channel", unique_together={("on_air_type", "on_air_id")}
         ),
     ]

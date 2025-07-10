@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import logging
 import os
 import uuid
@@ -64,14 +61,14 @@ class Massimport(BaseModel):
         permissions = (("massimport_manage", "Manage Massimporter Sessions"),)
 
     def __str__(self):
-        return "{} - {}".format(self.pk, self.directory)
+        return f"{self.pk} - {self.directory}"
 
     def get_absolute_url(self):
         return reverse("massimporter-import-detail", kwargs={"uuid": self.uuid})
 
     @property
     def cache_directory(self):
-        return os.path.join("massimporter", "cache", "{}".format(self.uuid))
+        return os.path.join("massimporter", "cache", f"{self.uuid}")
 
     @property
     def abs_cache_directory(self):
@@ -117,9 +114,9 @@ class Massimport(BaseModel):
         stats = {"added": 0, "ignored": 0, "missing": 0}
 
         if not os.path.isdir(self.directory):
-            raise IOError('directory "%s" does not exist' % self.directory)
+            raise OSError('directory "%s" does not exist' % self.directory)
 
-        print("scanning {}".format(self.directory))
+        print(f"scanning {self.directory}")
 
         for root, dirs, files in os.walk(self.directory):
 
@@ -142,21 +139,21 @@ class Massimport(BaseModel):
                             stats["added"] += 1
 
                         else:
-                            print(" - {}".format(rel_path))
+                            print(f" - {rel_path}")
                             stats["ignored"] += 1
 
                     else:
-                        print(" ! {}".format(rel_path))
+                        print(f" ! {rel_path}")
                         stats["missing"] += 1
 
                 except Exception as e:
-                    print("{}".format(e))
+                    print(f"{e}")
                     print(root.decode("ascii", "ignore"))
                     print(file.decode("ascii", "ignore"))
                     stats["missing"] += 1
 
         print("----------------------------------------------------------")
-        print("ID: {}".format(self.pk))
+        print(f"ID: {self.pk}")
         print("----------------------------------------------------------")
         print("Files added:      {}".format(stats["added"]))
         print("Files ignored:    {}".format(stats["ignored"]))

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import json
 import os
 import subprocess
@@ -42,7 +39,7 @@ def fprint_from_path(path, quiet=False):
     if not os.path.isfile(path):
         if quiet:
             return
-        raise IOError("file does not exist: {}".format(path))
+        raise OSError(f"file does not exist: {path}")
 
     command = [ECHOPRINT_CODEGEN_BINARY, path]
 

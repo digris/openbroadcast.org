@@ -35,7 +35,7 @@ def truncate_chars_inner(value, max_length):
         if value[0:8] == "https://":
             offset = 8
 
-        truncd_str = "%s...%s" % (
+        truncd_str = "{}...{}".format(
             value[offset : int(max_length / 2) + offset],
             value[-int(max_length / 2) :],
         )

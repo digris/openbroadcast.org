@@ -9,7 +9,7 @@ from genericadmin.views import generic_lookup, get_generic_rel_list
 JS_PATH = getattr(settings, "GENERICADMIN_JS", "genericadmin/js/")
 
 
-class BaseGenericModelAdmin(object):
+class BaseGenericModelAdmin:
     class Media:
         js = ()
 
@@ -27,10 +27,10 @@ class BaseGenericModelAdmin(object):
         # if not self.grappelli:
         media.append(JS_PATH + "genericadmin.js")
         self.Media.js = tuple(media)
-        super(BaseGenericModelAdmin, self).__init__(model, admin_site)
+        super().__init__(model, admin_site)
 
     def get_urls(self):
-        base_urls = super(BaseGenericModelAdmin, self).get_urls()
+        base_urls = super().get_urls()
         opts = self.get_generic_relation_options()
         custom_urls = [
             url(

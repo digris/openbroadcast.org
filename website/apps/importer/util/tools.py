@@ -18,7 +18,7 @@ def discogs_image_by_url(url, type="uri"):
         id = url.split("/")
         id = id[-1]
     except Exception as e:
-        log.debug("unable to extract id: url: {} - {}".format(url, e))
+        log.debug(f"unable to extract id: url: {url} - {e}")
         return
 
     if id:
@@ -41,13 +41,13 @@ def discogs_image_by_url(url, type="uri"):
 
         if type:
 
-            url = "http://%s/%s/%s" % (DISCOGS_HOST, type, id)
+            url = "http://{}/{}/{}".format(DISCOGS_HOST, type, id)
             log.debug('constructed API url "%s"' % url)
 
             r = requests.get(url, timeout=5)
 
             if not r.status_code == 200:
-                log.warning("server error: %s %s" % (r.status_code, r.text))
+                log.warning("server error: {} {}".format(r.status_code, r.text))
                 return
 
             try:

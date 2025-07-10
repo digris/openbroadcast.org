@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 """
 elasticsearch index documents
 """
@@ -127,5 +124,5 @@ class ProfileDocument(DocType):
     ###################################################################
     def get_queryset(self):
         return (
-            super(ProfileDocument, self).get_queryset().select_related("user", "mentor")
+            super().get_queryset().select_related("user", "mentor")
         )

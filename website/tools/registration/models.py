@@ -175,7 +175,7 @@ class RegistrationProfile(models.Model):
 
     """
 
-    ACTIVATED = u"ALREADY_ACTIVATED"
+    ACTIVATED = "ALREADY_ACTIVATED"
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, unique=True, verbose_name=_("user")
@@ -189,7 +189,7 @@ class RegistrationProfile(models.Model):
         verbose_name_plural = _("registration profiles")
 
     def __str__(self):
-        return u"Registration information for %s" % self.user
+        return "Registration information for %s" % self.user
 
     def activation_key_expired(self):
         """
