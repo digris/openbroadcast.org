@@ -6,7 +6,7 @@ print("simple_menu -----")
 
 library_children = (
     MenuItem("Edit Profile",
-        reverse("accounts.views.editprofile"),
+        reverse("alibrary:release-list"),
         weight=10,
         icon="user"
     ),
@@ -16,7 +16,7 @@ library_children = (
 Menu.add_item(
     "library", 
     MenuItem("My Account",
-        reverse("accounts.views.myaccount"),
+        reverse("alibrary:artist-list"),
         weight=10,
         children=library_children
     )

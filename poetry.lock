@@ -846,22 +846,6 @@ setuptools = "*"
 six = ">=1.2.0"
 
 [[package]]
-name = "django-simple-menu"
-version = "1.2.1"
-description = "Simple, yet powerful, code-based menus for Django applications"
-optional = false
-python-versions = "*"
-groups = ["main"]
-files = [
-    {file = "django-simple-menu-1.2.1.tar.gz", hash = "sha256:9bf5b87d1ead1ac6d4588c623be276fc87a4382424bbe564a574d8959d1f03bd"},
-    {file = "django_simple_menu-1.2.1-py2-none-any.whl", hash = "sha256:55358f10cc24cb990411819f43a0ab84007a1ea5b2c8ad22ace51aa88183e579"},
-]
-
-[package.dependencies]
-Django = "*"
-setuptools = "*"
-
-[[package]]
 name = "django-split-settings"
 version = "0.1.2"
 description = "Organize Django settings into multiple files and directories. Easily override and modify settings. Use wildcards and optional settings files."
@@ -1820,4 +1804,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.8,<=3.13"
-content-hash = "05f978e73bf6c374160162931b0ba174d4392ffdecd007e16ca6a421adcde8f6"
+content-hash = "4af0d1ec028205ffd480c1ec105a5bd0e2ad8f55815b3970b312d8a615d5537c"

@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     "versatileimagefield",
     "account",
     # simple-menu (to replace cms)
-    "menu",
+    # "menu",
     #
     "dajaxice",
     "dajax",
