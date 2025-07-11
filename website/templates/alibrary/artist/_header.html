@@ -18,8 +18,8 @@
     </small>
   </div>
   {% if appearances.releases.exists or appearances.media.exists %}
-  {% url "alibrary-release-list" as release_list_url %}
-  {% url "alibrary-media-list" as media_list_url %}
+  {% url "alibrary:release-list" as release_list_url %}
+  {% url "alibrary:media-list" as media_list_url %}
   <div class="title title--secondary">
     <h3>
       {% if appearances.releases.exists %}

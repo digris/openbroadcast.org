@@ -130,7 +130,7 @@ class ReleaseDetailView(MenuMixin, SectionDetailView):
     template_name = "alibrary/release/detail.html"
     section_template_pattern = "alibrary/release/detail/_{key}.html"
     context_object_name = "release"
-    url_name = "alibrary-release-detail"
+    url_name = "alibrary:release-detail"
 
     sections = [
         {

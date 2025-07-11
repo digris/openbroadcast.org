@@ -324,10 +324,10 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
     def get_absolute_url(self):
-        return reverse("alibrary-release-detail", kwargs={"uuid": str(self.uuid)})
+        return reverse("alibrary:release-detail", kwargs={"uuid": str(self.uuid)})
 
     def get_edit_url(self):
-        return reverse("alibrary-release-edit", args=(self.pk,))
+        return reverse("alibrary:release-edit", args=(self.pk,))
 
     def get_admin_url(self):
         return reverse("admin:alibrary_release_change", args=(self.pk,))

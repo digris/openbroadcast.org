@@ -1,6 +1,8 @@
 from django.core.urlresolvers import reverse
 from simple_menu import Menu, MenuItem
 
+print("simple_menu -----")
+
 
 library_children = (
     MenuItem("Edit Profile",

@@ -32,6 +32,12 @@ dajaxice_autodiscover()
 
 urlpatterns = [
     url(r"^", include("home.urls")),
+    # migrated from cms
+    url(r"^catalog/", include("alibrary.urls", namespace="alibrary")),
+    url(r"^network/users/", include("profiles.urls", namespace="profiles")),
+    #
+    url(r"^network/invitation/", include("invitation.urls", namespace="invitation")),
+    #
     url(r"^admin/", include(admin.site.urls)),
     url(r"^vote/", include("arating.urls")),
     url(r"^ac_tagging/", include("ac_tagging.urls")),

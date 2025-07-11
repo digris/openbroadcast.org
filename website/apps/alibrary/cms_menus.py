@@ -74,12 +74,12 @@ class PlaylistMenu(CMSAttachMenu):
         nodes = []
 
         node = NavigationNode(
-            _("Public Playlists"), reverse("alibrary-playlist-list"), 301
+            _("Public Playlists"), reverse("alibrary:playlist-list"), 301
         )
         nodes.append(node)
 
         node = NavigationNode(
-            _("My Playlists"), reverse("alibrary-playlist-list-own"), 302
+            _("My Playlists"), reverse("alibrary:playlist-list-own"), 302
         )
         nodes.append(node)
 

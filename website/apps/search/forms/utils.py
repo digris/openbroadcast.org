@@ -3,7 +3,7 @@ import sys
 from collections import namedtuple
 from django.apps import apps
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 
 
 if sys.version_info[0] == 3:
@@ -30,10 +30,12 @@ def get_model_class(ctype):
 
 def get_model_data(ctype):
 
+
     model_class = get_model_class(ctype)
     model_ct = ContentType.objects.get_for_model(model_class)
 
-    url = reverse(
+
+    url = reverse_lazy(
         "api:search-by-ctype",
         kwargs={"ct": f"{model_ct.app_label}.{model_ct.model}"},
     )

@@ -7,7 +7,7 @@
 {% endfor %}
 </div>
 <div class="list-appendix">
-    {% url "alibrary-playlist-list" as playlist_list %}
+    {% url "alibrary:playlist-list" as playlist_list %}
     <div class="action action--show-all">
         <a rel="nofollow" href="{% spurl path=playlist_list query="search_user={{ object.user.username }}" %}">
             {% blocktrans with user=object %}Show all playlists by {{ user }}{% endblocktrans %}

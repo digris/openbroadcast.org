@@ -13,14 +13,14 @@ class ProfileMenu(CMSAttachMenu):
     def get_nodes(self, request):
         nodes = []
 
-        node = NavigationNode(_("All Users"), reverse("profiles-profile-list"), 110)
+        node = NavigationNode(_("All Users"), reverse("profiles:profile-list"), 110)
         nodes.append(node)
 
         if request.user.is_active:
             node = NavigationNode(
                 _("My Profile"),
                 reverse(
-                    "profiles-profile-detail",
+                    "profiles:profile-detail",
                     kwargs={"uuid": str(request.user.profile.uuid)},
                 ),
                 111,
@@ -29,9 +29,8 @@ class ProfileMenu(CMSAttachMenu):
 
             node = NavigationNode(
                 _("Edit my Profile"),
-                # reverse("profiles-profile-edit"),
                 reverse(
-                    "profiles-profile-edit",
+                    "profiles:profile-edit",
                     kwargs={"uuid": str(request.user.profile.uuid)},
                 ),
                 121,

@@ -334,10 +334,10 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
     def get_absolute_url(self):
-        return reverse("alibrary-media-detail", kwargs={"uuid": str(self.uuid)})
+        return reverse("alibrary:media-detail", kwargs={"uuid": str(self.uuid)})
 
     def get_edit_url(self):
-        return reverse("alibrary-media-edit", args=(self.pk,))
+        return reverse("alibrary:media-edit", args=(self.pk,))
 
     def get_admin_url(self):
         return reverse("admin:alibrary_media_change", args=(self.pk,))

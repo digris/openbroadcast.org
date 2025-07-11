@@ -6,7 +6,7 @@
       {% if user.is_authenticated %}
         <li class="action">
           <a class="{% if not perms.invitation.add_invitation %} disabled{% endif %}"
-             href="{% url "invitation_invite" %}?next={{ request.get_full_path }}"
+             href="{% url "invitation:invitation_invite" %}?next={{ request.get_full_path }}"
              title="{% trans "Invite user" %}">
             {% trans "Invite user" %}
           </a>

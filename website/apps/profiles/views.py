@@ -92,7 +92,7 @@ class ProfileDetailView(DetailView):
             obj = self.get_object()
             section = self.get_default_section(obj)
             redirect_to = reverse_lazy(
-                "profiles-profile-detail", kwargs={"uuid": obj.uuid, "section": section}
+                "profiles:profile-detail", kwargs={"uuid": obj.uuid, "section": section}
             )
             return redirect(redirect_to)
 
@@ -130,7 +130,7 @@ class ProfileDetailView(DetailView):
                     "active": key == section,
                     "title": title,
                     "url": reverse(
-                        "profiles-profile-detail",
+                        "profiles:profile-detail",
                         kwargs={"uuid": object.uuid, "section": key},
                     ),
                 }
@@ -332,7 +332,7 @@ class UserCredentialsView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse(
-            "profiles-profile-edit",
+            "profiles:profile-edit",
             kwargs={"uuid": str(self.request.user.profile.uuid)},
         )
 

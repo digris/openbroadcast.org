@@ -184,7 +184,7 @@ class PlaylistDetailView(SectionDetailView):
     template_name = "alibrary/playlist/detail.html"
     section_template_pattern = "alibrary/playlist/detail/_{key}.html"
     context_object_name = "playlist"
-    url_name = "alibrary-playlist-detail"
+    url_name = "alibrary:playlist-detail"
 
     sections = [
         {
@@ -273,7 +273,7 @@ class PlaylistDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView
 
     # TODO: this is a hack/bug/issue
     # http://stackoverflow.com/questions/7039839/how-do-i-use-reverse-or-an-equivalent-to-refer-to-urls-that-are-hooked-into-dj
-    success_url = reverse_lazy("alibrary-playlist-list")
+    success_url = reverse_lazy("alibrary:playlist-list")
 
     def dispatch(self, request, *args, **kwargs):
 
@@ -302,7 +302,7 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, SectionUpdat
     # template_name = "alibrary/playlist/_legacy/playlist_edit.html"
     template_name = "alibrary/playlist/edit.html"
     section_template_pattern = "alibrary/playlist/edit/_{key}.html"
-    url_name = "alibrary-playlist-edit"
+    url_name = "alibrary:playlist-edit"
     success_url = "#"
 
     permission_required = "alibrary.change_playlist"

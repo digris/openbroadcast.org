@@ -48,5 +48,5 @@ class RegistrationView(BaseRegistrationView):
         return getattr(settings, "REGISTRATION_OPEN", True)
 
     def get_success_url(self, request, user):
-        return reverse("profiles-profile-edit")
+        return reverse("profiles:profile-edit")
         # return (user.get_absolute_url(), (), {})

@@ -260,14 +260,14 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
     def get_absolute_url(self):
-        return reverse("profiles-profile-detail", kwargs={"uuid": str(self.uuid)})
+        return reverse("profiles:profile-detail", kwargs={"uuid": str(self.uuid)})
 
     def get_edit_url(self):
-        return reverse("profiles-profile-edit", kwargs={"uuid": str(self.uuid)})
+        return reverse("profiles:profile-edit", kwargs={"uuid": str(self.uuid)})
 
     # @models.permalink
     # def get_edit_url(self):
-    #     return ("profiles-profile-edit",)
+    #     return ("profiles:profile-edit",)
 
     def get_admin_url(self):
         return reverse("admin:profiles_profile_change", args=(self.pk,))

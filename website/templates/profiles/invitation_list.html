@@ -82,7 +82,7 @@
       <ul>
         {% if user.is_authenticated %}
           <li class="action">
-            <a href="{% url "invitation_invite" %}?next={{ request.get_full_path }}" title="{% trans "Invite user" %}">
+            <a href="{% url "invitation:invitation_invite" %}?next={{ request.get_full_path }}" title="{% trans "Invite user" %}">
               {% trans "Invite new users" %}
             </a>
           </li>

@@ -17,21 +17,21 @@ def get_mentoring_actions_for_profile(profile, mentor):
             {
                 "name": _("Approve as MUSIC PROFESSIONAL"),
                 "url": reverse(
-                    "profiles-profile-mentor-approve",
+                    "profiles:profile-mentor-approve",
                     kwargs={"pk": profile.pk, "level": "music_pro"},
                 ),
             },
             {
                 "name": _("Approve as RADIO PROFESSIONAL"),
                 "url": reverse(
-                    "profiles-profile-mentor-approve",
+                    "profiles:profile-mentor-approve",
                     kwargs={"pk": profile.pk, "level": "radio_pro"},
                 ),
             },
             {
                 "name": _("Cancel mentorship"),
                 "url": reverse(
-                    "profiles-profile-mentor-cancel", kwargs={"pk": profile.pk}
+                    "profiles:profile-mentor-cancel", kwargs={"pk": profile.pk}
                 ),
             },
         ]
@@ -42,7 +42,7 @@ def get_mentoring_actions_for_profile(profile, mentor):
             {
                 "name": _("Become the mentor"),
                 "url": reverse(
-                    "profiles-profile-mentor-become", kwargs={"pk": profile.pk}
+                    "profiles:profile-mentor-become", kwargs={"pk": profile.pk}
                 ),
             },
         ]

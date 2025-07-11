@@ -1,7 +1,4 @@
-{# load menu #}
-{# generate_menu #}
-
-{% load navutils_tags %}
+{% load menu %}{% generate_menu %}
 
 
 <div class="topbar">
@@ -15,8 +12,7 @@
     </div>
 
     <div>
-        //{{ menus.main }}//
-        {# render_menu menu=menus.main user=request.user #}
+        //*{{ menu.library }}*//
     </div>
 
 </div>

@@ -5,6 +5,8 @@ from invitation import views
 
 TemplateView.as_view(template_name="invitation/invitation_home.html")
 
+app_name = "invitation"
+
 urlpatterns = [
     url(
         r"^invitation/$",

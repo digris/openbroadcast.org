@@ -81,7 +81,7 @@ class ProfileResource(ModelResource):
                 r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/stats%s$"
                 % (self._meta.resource_name, trailing_slash()),
                 self.wrap_view("stats"),
-                name="profiles-profile_api-stats",
+                name="profiles:profile_api-stats",
             )
         ]
 

@@ -24,7 +24,7 @@
 			<ul class="unstyled horizontal">
 				{% if object.releases.exists %}
 				<li>
-					{% url "alibrary-release-list" as release_list %}
+					{% url "alibrary:release-list" as release_list %}
 					<a href="{% spurl path=release_list query="search_label_ids={{ object.uuid }}" %}" title="{% trans "Only show releases on" %} {{ object.name }}">
 					{{ object.releases.count }} {% trans 'Releases' %}
 					</a>

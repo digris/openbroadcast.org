@@ -1,6 +1,0 @@
-{% load navutils_tags %}
-<ul id="{{ menu.id }}" class="{% block menu_class %}{% if menu.css_class %} {% render_nested menu.css_class %}{% endif %}{% endblock %}">
-    {% for menu_node in viewable_nodes %}
-        {% render_node node=menu_node user=user %}
-    {% endfor %}
-</ul>

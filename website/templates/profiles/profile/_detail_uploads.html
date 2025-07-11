@@ -9,7 +9,7 @@
 </div>
 {% endcomment %}
 <div class="list-appendix">
-    {% url "alibrary-release-list" as release_list %}
+    {% url "alibrary:release-list" as release_list %}
     <div class="action action--show-all">
         <a rel="nofollow" href="{% spurl path=release_list query="search_creator={{ object.user.username }}" %}">
             {% blocktrans with user=object %}Show all releases uploaded by {{ user }}{% endblocktrans %}
@@ -17,7 +17,7 @@
     </div>
 </div>
 <div class="list-appendix">
-    {% url "alibrary-media-list" as media_list %}
+    {% url "alibrary:media-list" as media_list %}
     <div class="action action--show-all">
         <a rel="nofollow" href="{% spurl path=media_list query="search_creator={{ object.user.username }}" %}">
             {% blocktrans with user=object %}Show all tracks uploaded by {{ user }}{% endblocktrans %}

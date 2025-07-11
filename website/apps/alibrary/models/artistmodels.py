@@ -220,10 +220,10 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
     def get_absolute_url(self):
         if self.disable_link:
             return None
-        return reverse("alibrary-artist-detail", kwargs={"uuid": str(self.uuid)})
+        return reverse("alibrary:artist-detail", kwargs={"uuid": str(self.uuid)})
 
     def get_edit_url(self):
-        return reverse("alibrary-artist-edit", args=(self.pk,))
+        return reverse("alibrary:artist-edit", args=(self.pk,))
 
     def get_admin_url(self):
         return reverse("admin:alibrary_artist_change", args=(self.pk,))

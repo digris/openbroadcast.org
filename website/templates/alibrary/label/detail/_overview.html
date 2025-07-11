@@ -14,7 +14,7 @@
 
 {% if releases.count > 8 %}
 <div class="list-appendix is-centered">
-  {% url "alibrary-release-list" as release_list_url %}
+  {% url "alibrary:release-list" as release_list_url %}
   <a
     class="button button--outlined action"
     href="{% spurl path=release_list_url query="search_label_ids={{ object.uuid }}" %}">

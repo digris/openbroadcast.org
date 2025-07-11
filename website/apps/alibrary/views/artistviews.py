@@ -91,7 +91,7 @@ class ArtistDetailView(SectionDetailView):
     template_name = "alibrary/artist/detail.html"
     section_template_pattern = "alibrary/artist/detail/_{key}.html"
     context_object_name = "artist"
-    url_name = "alibrary-artist-detail"
+    url_name = "alibrary:artist-detail"
 
     sections = [
         {

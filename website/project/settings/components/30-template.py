@@ -35,8 +35,6 @@ TEMPLATES = [
                 "sekizai.context_processors.sekizai",
                 # messaging
                 "postman.context_processors.inbox",
-                # menu / navigation
-                "navutils.context_processors.menus",
                 # settings
                 "django_settings_export.settings_export",
                 # authentication

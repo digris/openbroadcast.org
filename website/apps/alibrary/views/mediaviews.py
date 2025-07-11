@@ -223,7 +223,7 @@ class MediaDetailView(SectionDetailView):
     template_name = "alibrary/media/detail.html"
     section_template_pattern = "alibrary/media/detail/_{key}.html"
     context_object_name = "media"
-    url_name = "alibrary-media-detail"
+    url_name = "alibrary:media-detail"
 
     sections = [
         {

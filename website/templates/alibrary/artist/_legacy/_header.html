@@ -25,7 +25,7 @@
 			<ul class="unstyled horizontal">
 				{% if appearances.releases.exists %}
 				<li>
-					{% url "alibrary-release-list" as release_list %}
+					{% url "alibrary:release-list" as release_list %}
 					<a href="{% spurl path=release_list query="search_artist_ids={{ object.uuid }}" %}" title="{% trans "Only show releases by" %} {{ object.name }}">
 					{{ appearances.releases.count }} {% trans 'Releases' %}
 					</a>
@@ -34,7 +34,7 @@
                 {% if appearances.releases.exists and appearances.media.exists %}<li>&nbsp;|&nbsp;</li>{% endif %}
 				{% if appearances.media.exists %}
 				<li>
-					{% url "alibrary-media-list" as media_list %}
+					{% url "alibrary:media-list" as media_list %}
 					<a href="{% spurl path=media_list query="search_artist_ids={{ object.uuid }}" %}" title="{% trans "Only show tracks by" %} {{ object.name }}">
 					{{ appearances.media.count }} {% trans 'Tracks' %}
 					</a>

@@ -54,11 +54,9 @@ INSTALLED_APPS = [
     "easy_thumbnails",
     "versatileimagefield",
     "account",
-    # navigation / menu
-    "navutils",
-    "navigation",
     # simple-menu (to replace cms)
     "menu",
+    #
     "dajaxice",
     "dajax",
     # users / auth
