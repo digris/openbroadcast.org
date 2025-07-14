@@ -4,9 +4,11 @@ from django.conf import settings
 BASE_DIR = getattr(settings, "BASE_DIR")
 
 
-################################################################################
-# templates
-################################################################################
+NAVUTILS_MENU_CONFIG = {
+    'CURRENT_MENU_ITEM_CLASS': 'active selected',
+    'CURRENT_MENU_ITEM_PARENT_CLASS': 'active selected has-current',
+}
+
 
 TEMPLATES = [
     {
@@ -17,6 +19,7 @@ TEMPLATES = [
         ),
         "APP_DIRS": False,
         "OPTIONS": {
+            "string_if_invalid": "INVALID: %s",
             "context_processors": (
                 "django.contrib.auth.context_processors.auth",
                 # social auth
@@ -33,6 +36,7 @@ TEMPLATES = [
                 "django.template.context_processors.debug",
                 #
                 "sekizai.context_processors.sekizai",
+                "navutils.context_processors.menus",
                 # messaging
                 "postman.context_processors.inbox",
                 # settings

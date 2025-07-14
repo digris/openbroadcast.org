@@ -13,6 +13,7 @@ from django.utils.translation import ugettext as _
 from django.utils import timezone
 from django.views.generic import DetailView, UpdateView, CreateView, DeleteView
 from elasticsearch_dsl import TermsFacet, RangeFacet, DateHistogramFacet
+from navutils import MenuMixin
 
 from base.views.detail import UUIDDetailView, SectionDetailView
 from base.views.update import SectionUpdateView
@@ -128,11 +129,12 @@ class PlaylistSearch(BaseFacetedSearch):
     ]
 
 
-class PlaylistListView(BaseSearchListView):
+class PlaylistListView(MenuMixin, BaseSearchListView):
     model = Playlist
     template_name = "alibrary/playlist/list.html"
     search_class = PlaylistSearch
     scope = "public"
+    current_menu_item = 'catalog-playlists'
     order_by = [
         {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
         {

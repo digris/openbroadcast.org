@@ -11,8 +11,7 @@ except ImportError:
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import render_to_response, get_object_or_404, redirect
-from django.template import RequestContext
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import ugettext as _
 
 try:
@@ -68,7 +67,8 @@ def _folder(request, folder_name, view_name, option, template_name):
     kwargs.update(option="m")
 
     msgs = getattr(Message.objects, folder_name)(request.user, **kwargs)
-    return render_to_response(
+    return render(
+        request,
         template_name,
         {
             "pm_messages": msgs,  # avoid 'messages', already used by contrib.messages
@@ -79,7 +79,6 @@ def _folder(request, folder_name, view_name, option, template_name):
             "current_url": request.get_full_path(),
             "gets": request.GET,  # useful to postman_order_by template tag
         },
-        context_instance=RequestContext(request),
     )
 
 
@@ -237,7 +236,8 @@ def write(
             if usernames:
                 initial.update(recipients=", ".join(usernames))
         form = form_class(initial=initial, channel=channel)
-    return render_to_response(
+    return render(
+        request,
         template_name,
         {
             "form": form,
@@ -245,7 +245,6 @@ def write(
             "autocompleter_app": autocompleter_app,
             "next_url": request.GET.get("next", next_url),
         },
-        context_instance=RequestContext(request),
     )
 
 
@@ -323,7 +322,8 @@ def reply(
             request.GET.items()
         )  # allow overwriting of the defaults by query string
         form = form_class(initial=initial, channel=autocomplete_channel)
-    return render_to_response(
+    return render(
+        request,
         template_name,
         {
             "form": form,
@@ -331,7 +331,6 @@ def reply(
             "autocompleter_app": autocompleter_app,
             "next_url": request.GET.get("next", next_url),
         },
-        context_instance=RequestContext(request),
     )
 
 
@@ -372,7 +371,8 @@ def _view(
                 break
         else:
             received = None
-        return render_to_response(
+        return render(
+            request,
             template_name,
             {
                 "pm_messages": msgs,
@@ -383,7 +383,6 @@ def _view(
                 else None,
                 "next_url": request.GET.get("next", reverse("postman_inbox")),
             },
-            context_instance=RequestContext(request),
         )
     raise Http404
 

@@ -3,6 +3,10 @@
 
 {% block scope %}alibrary.release{% endblock %}
 
+{% block menubar %}
+{{ block.super }}
+{% endblock %}
+
 {% block tagcloud %}
     {% include "search/tagcloud.html" %}
 {% endblock %}

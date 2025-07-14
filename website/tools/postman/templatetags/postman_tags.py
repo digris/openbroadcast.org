@@ -47,12 +47,12 @@ def or_me(value, arg):
 
     """
     user_model = get_user_model()
-    if not isinstance(value, (unicode, str)):
-        value = (get_user_representation if isinstance(value, user_model) else unicode)(
+    if not isinstance(value, str):
+        value = (get_user_representation if isinstance(value, user_model) else str)(
             value
         )
-    if not isinstance(arg, (unicode, str)):
-        arg = (get_user_representation if isinstance(arg, user_model) else unicode)(arg)
+    if not isinstance(arg, str):
+        arg = (get_user_representation if isinstance(arg, user_model) else str)(arg)
     return _("<me>") if value == arg else value
 
 

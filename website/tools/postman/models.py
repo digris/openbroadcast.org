@@ -1,7 +1,6 @@
 import hashlib
 
 from django.conf import settings
-from django.utils.encoding import python_2_unicode_compatible
 
 try:
     from django.contrib.auth import get_user_model  # Django 1.5
@@ -80,18 +79,18 @@ def get_user_representation(user):
     Return a User representation for display, configurable through an optional setting.
     """
     show_user_as = getattr(settings, "POSTMAN_SHOW_USER_AS", None)
-    if isinstance(show_user_as, (unicode, str)):
+    if isinstance(show_user_as, str):
         attr = getattr(user, show_user_as, None)
         if callable(attr):
             attr = attr()
         if attr:
-            return unicode(attr)
+            return str(attr)
     elif callable(show_user_as):
         try:
-            return unicode(show_user_as(user))
+            return str(show_user_as(user))
         except:
             pass
-    return unicode(user)  # default value, or in case of empty attribute or exception
+    return str(user)  # default value, or in case of empty attribute or exception
 
 
 class MessageManager(models.Manager):
@@ -282,7 +281,6 @@ class MessageManager(models.Manager):
         return qs
 
 
-@python_2_unicode_compatible
 class Message(models.Model):
     """
     A message between a User and another User or an AnonymousUser.

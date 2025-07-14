@@ -4,7 +4,7 @@ class Topbar {
     this.bindings();
     setTimeout(() => {
       this.show_submenu();
-    }, 500);
+    }, 100);
   }
 
   bindings() {
@@ -19,17 +19,15 @@ class Topbar {
   }
 
   show_submenu(id = null) {
-    const active_parent_id = id || $('[data-level="0"].selected', this.container).data('id');
+    const active_parent_id = id || $('[data-level="0"].active', this.container).data('id');
     $('[data-parent-id]', this.container).each((i, el) => {
       const item = $(el);
       const parent_id = item.data('parent-id');
       if (parent_id === active_parent_id) {
         const offset = item.parents('[data-id]').position();
         item.css('padding-left', `${offset.left + 10}px`).addClass('active');
-        // item.parent().css('padding-left', `${offset.left + 10}px`).addClass('active');
       } else {
         item.removeClass('active');
-        // item.parent().removeClass('active');
       }
     });
   }

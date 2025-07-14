@@ -5,7 +5,7 @@
     data-level="{{ child.level }}">
 	<a href="{{ child.attr.redirect_url|default:child.get_absolute_url }}">{{ child.get_menu_title }}</a>
 	{% if child.children %}
-    <ul class="children hide_" data-parent-id="{{ child.id }}">
+    <ul class="children hide_" data-parent-idx="{{ child.id }}">
         {% show_menu from_level to_level extra_inactive extra_active template "" "" child %}
     </ul>
     {% endif %}

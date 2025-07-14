@@ -142,7 +142,7 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return "abcast-emission-detail", [self.pk]
+        return "abcast:emission-detail", [self.pk]
 
     def get_api_url(self):
         return reverse(

@@ -34,6 +34,7 @@ urlpatterns = [
     url(r"^", include("home.urls")),
     # migrated from cms
     url(r"^catalog/", include("alibrary.urls", namespace="alibrary")),
+    url(r"^scheduler/", include("abcast.urls", namespace="abcast")),
     url(r"^network/users/", include("profiles.urls", namespace="profiles")),
     #
     url(r"^network/invitation/", include("invitation.urls", namespace="invitation")),
