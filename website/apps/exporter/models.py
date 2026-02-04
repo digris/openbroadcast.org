@@ -9,7 +9,6 @@ from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.core.files import File as DjangoFile
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.urlresolvers import reverse
@@ -71,7 +70,6 @@ def create_archive_dir(instance):
     return path_full
 
 
-@python_2_unicode_compatible
 class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
     FORMAT_CHOICES = (("mp3", _("MP3")), ("flac", _("Flac")))
 
@@ -251,7 +249,6 @@ def generate_export_filename(qs):
     return filename
 
 
-@python_2_unicode_compatible
 class ExportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
     class Meta:
         app_label = "exporter"

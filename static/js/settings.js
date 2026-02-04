@@ -1,7 +1,7 @@
 const getWebsocketHost = (window) => {
   // TODO: this does not seem to be too generic...
   if (parseInt(window.location.port, 10) === 3000) {
-    return 'local.openbroadcast.org:8080';
+    return 'local.openbroadcast.org:5000';
   }
   return window.location.host;
 };

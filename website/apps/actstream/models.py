@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
@@ -23,7 +22,6 @@ from actstream.managers import FollowManager
 __all__ = ("Action", "Follow", "actor_stream")
 
 
-@python_2_unicode_compatible
 class Follow(models.Model):
     """
     Lets a user follow the activities of any specific actor
@@ -48,7 +46,6 @@ class Follow(models.Model):
         return "{} -> {}".format(self.user, self.follow_object)
 
 
-@python_2_unicode_compatible
 class Action(models.Model):
     """
     Action model describing the actor acting out a verb (on an optional

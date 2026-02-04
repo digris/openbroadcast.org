@@ -1,4 +1,3 @@
-from django.utils.encoding import python_2_unicode_compatible
 
 import json
 import logging
@@ -22,7 +21,6 @@ SITE_URL = getattr(settings, "SITE_URL")
 log = logging.getLogger(__name__)
 
 
-@python_2_unicode_compatible
 class PreflightCheck(TimestampedModelMixin, models.Model):
 
     STATUS_PENDING = "pending"

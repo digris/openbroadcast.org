@@ -4,13 +4,11 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from base.mixins import TimestampedModelMixin, UUIDModelMixin
 
 VOTE_CHOICES = ((+1, "+1"), (-1, "-1"))
 
 
-@python_2_unicode_compatible
 class Vote(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     vote = models.SmallIntegerField(choices=VOTE_CHOICES, db_index=True)

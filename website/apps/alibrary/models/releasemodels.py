@@ -18,7 +18,6 @@ from django.db.models import Q
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
 from l10n.models import Country
@@ -52,7 +51,6 @@ def upload_cover_to(instance, filename):
     return os.path.join(get_dir_for_object(instance), "cover%s" % extension.lower())
 
 
-@python_2_unicode_compatible
 class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     # core fields
@@ -656,7 +654,6 @@ class ReleaseExtraartists(models.Model):
         verbose_name_plural = _("Roles")
 
 
-@python_2_unicode_compatible
 class ReleaseAlbumartists(models.Model):
     artist = models.ForeignKey(
         "alibrary.Artist", related_name="release_albumartist_artist"

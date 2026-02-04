@@ -6,7 +6,6 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from phonenumber_field.modelfields import PhoneNumberField
@@ -38,7 +37,6 @@ class MigrationMixin(models.Model):
         ordering = ("pk",)
 
 
-@python_2_unicode_compatible
 class Distributor(
     MigrationMixin,
     UUIDModelMixin,
@@ -136,7 +134,6 @@ class DistributorLabel(models.Model):
         verbose_name_plural = _("Labels in catalog")
 
 
-@python_2_unicode_compatible
 class License(
     TranslatableModel,
     MigrationMixin,
@@ -227,7 +224,6 @@ class ProfessionManager(models.Manager):
         return self.get_queryset().filter(in_listing=True)
 
 
-@python_2_unicode_compatible
 class Profession(models.Model):
 
     name = models.CharField(max_length=200)
@@ -251,7 +247,6 @@ class DaypartManager(models.Manager):
         return self.get_queryset().filter(active=True)
 
 
-@python_2_unicode_compatible
 class Daypart(models.Model):
 
     DAY_CHOICES = (
@@ -333,7 +328,6 @@ class RelationManager(models.Manager):
         return sorted
 
 
-@python_2_unicode_compatible
 class Relation(
     UUIDModelMixin,
     TimestampedModelMixin,

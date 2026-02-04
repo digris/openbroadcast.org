@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from elasticsearch_dsl import TermsFacet, RangeFacet
+from navutils import MenuMixin
 
 from base.utils.form_errors import merge_form_errors
 from base.views.detail import SectionDetailView
@@ -108,10 +109,11 @@ class MediaSearch(BaseFacetedSearch):
     ]
 
 
-class MediaListView(BaseSearchListView):
+class MediaListView(MenuMixin, BaseSearchListView):
     model = Media
     template_name = "alibrary/media/list.html"
     search_class = MediaSearch
+    current_menu_item = "catalog:media-list"
     order_by = [
         {
             "key": "name.raw",
@@ -218,12 +220,13 @@ class MediaDetailViewLegacy(DetailView):
     #     return context
 
 
-class MediaDetailView(SectionDetailView):
+class MediaDetailView(MenuMixin, SectionDetailView):
     model = Media
     template_name = "alibrary/media/detail.html"
     section_template_pattern = "alibrary/media/detail/_{key}.html"
     context_object_name = "media"
     url_name = "alibrary:media-detail"
+    current_menu_item = "catalog:media-list"
 
     sections = [
         {

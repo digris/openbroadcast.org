@@ -3,7 +3,6 @@ import time
 
 from django.conf import settings
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from tastypie.utils import now
 
 try:
@@ -14,7 +13,6 @@ except ImportError:
     sha1 = sha.sha
 
 
-@python_2_unicode_compatible
 class ApiAccess(models.Model):
     """A simple model for use with the ``CacheDBThrottle`` behaviors."""
 
@@ -35,8 +33,7 @@ if "django.contrib.auth" in settings.INSTALLED_APPS:
     import uuid
     from django.conf import settings
 
-    @python_2_unicode_compatible
-    class ApiKey(models.Model):
+        class ApiKey(models.Model):
         user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="api_key")
         key = models.CharField(max_length=256, blank=True, default="")
         created = models.DateTimeField(default=now)

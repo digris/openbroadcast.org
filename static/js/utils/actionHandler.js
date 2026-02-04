@@ -49,7 +49,7 @@ class ActionHandler {
         store.dispatch('scheduler/addToClipboard', co);
         addNotification({
           title: 'Added to Clipboard',
-          body: 'You now will fnid this broadcast in the <a href="/program/scheduler/">scheduler</a>.',
+          body: 'You now will fnid this broadcast in the <a href="/scheduler/">scheduler</a>.',
           lifetime: 5000,
         });
         break;

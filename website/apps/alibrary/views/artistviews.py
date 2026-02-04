@@ -9,6 +9,7 @@ from django.utils.translation import ugettext as _
 from django.db.models import Q
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from elasticsearch_dsl import TermsFacet
+from navutils import MenuMixin
 
 from base.utils.form_errors import merge_form_errors
 from base.views.detail import SectionDetailView
@@ -39,10 +40,11 @@ class ArtistSearch(BaseFacetedSearch):
     ]
 
 
-class ArtistListView(BaseSearchListView):
+class ArtistListView(MenuMixin, BaseSearchListView):
     model = Artist
     template_name = "alibrary/artist/list.html"
     search_class = ArtistSearch
+    current_menu_item = "catalog:artist-list"
     order_by = [
         {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
         {
@@ -86,12 +88,13 @@ class ArtistDetailViewLegacy(DetailView):
         return redirect(obj.get_absolute_url())
 
 
-class ArtistDetailView(SectionDetailView):
+class ArtistDetailView(MenuMixin, SectionDetailView):
     model = Artist
     template_name = "alibrary/artist/detail.html"
     section_template_pattern = "alibrary/artist/detail/_{key}.html"
     context_object_name = "artist"
     url_name = "alibrary:artist-detail"
+    current_menu_item = "catalog:artist-detail"
 
     sections = [
         {

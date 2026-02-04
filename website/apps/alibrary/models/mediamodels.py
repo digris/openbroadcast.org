@@ -13,7 +13,6 @@ from django.db import models
 from django.db.models.signals import post_save, pre_delete, post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.functional import cached_property
 from django_extensions.db.fields import AutoSlugField
 from base.fields.languages import LanguageField
@@ -90,7 +89,6 @@ def upload_master_to(instance, filename):
     return os.path.join(get_dir_for_object(instance), "master%s" % extension.lower())
 
 
-@python_2_unicode_compatible
 class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     STATUS_CHOICES = (
@@ -701,7 +699,6 @@ except Exception as e:
     pass
 
 
-@python_2_unicode_compatible
 class MediaExtraartists(models.Model):
 
     artist = models.ForeignKey(
@@ -748,7 +745,6 @@ def media_extraartists_post_delete(sender, instance, **kwargs):
     Artist.get_media.invalidate(instance.artist)
 
 
-@python_2_unicode_compatible
 class MediaArtists(models.Model):
 
     artist = models.ForeignKey(

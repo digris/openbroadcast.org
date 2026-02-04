@@ -56,7 +56,7 @@ class EventResource(ModelResource):
     curl -i \
         -H "Accept: application/json" \
         -H "Authorization: ApiKey remote:d65b075c593f27a42c26e65be74c047e5b50d215" \
-        http://local.openbroadcast.org:8080/api/v1/atracker/event/alibrary.media/4faa159c-87f4-43eb-b2b7-a4de124a05e5/stream/1/?format=json
+        http://local.openbroadcast.org:5000/api/v1/atracker/event/alibrary.media/4faa159c-87f4-43eb-b2b7-a4de124a05e5/stream/1/?format=json
 
 
     """

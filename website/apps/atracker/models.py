@@ -8,12 +8,10 @@ from django.template.defaultfilters import date
 from django.utils.timesince import timesince
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import python_2_unicode_compatible
 
 log = logging.getLogger(__name__)
 
 
-@python_2_unicode_compatible
 class EventType(models.Model):
     """
     Masterdata table containing event types.
@@ -46,7 +44,6 @@ class EventManager(models.Manager):
         return self.get_queryset().filter(object_id=obj.pk, content_type=ctype)
 
 
-@python_2_unicode_compatible
 class Event(models.Model):
     """
     An event created by a user related to any object.

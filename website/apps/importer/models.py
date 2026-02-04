@@ -75,7 +75,6 @@ def clean_upload_path(instance, filename):
     return os.path.join(folder, "{}{}".format(cleaned_filename.lower(), extension.lower()))
 
 
-@python_2_unicode_compatible
 class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     STATUS_INIT = 0
@@ -268,7 +267,6 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
         super().save(*args, **kwargs)
 
 
-@python_2_unicode_compatible
 class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     STATUS_INIT = 0
@@ -699,7 +697,6 @@ def post_delete_importfile(sender, **kwargs):
 post_delete.connect(post_delete_importfile, sender=ImportFile)
 
 
-@python_2_unicode_compatible
 class ImportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     """

@@ -8,7 +8,6 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
 from importer.models import Import as ImportSession
 from importer.models import ImportFile
@@ -29,7 +28,6 @@ class BaseModel(models.Model):
         abstract = True
 
 
-@python_2_unicode_compatible
 class Massimport(BaseModel):
 
     STATUS_INIT = 0
@@ -178,7 +176,6 @@ def massimport_post_save(sender, instance, created, **kwargs):
         pass
 
 
-@python_2_unicode_compatible
 class MassimportFile(BaseModel):
 
     # TODO: hackish - linked states to ImportFile model$

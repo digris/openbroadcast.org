@@ -16,7 +16,6 @@ from django.db import models
 from django.db.models import Q
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils import translation
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
@@ -36,7 +35,6 @@ def upload_image_to(instance, filename):
     return os.path.join(get_dir_for_object(instance), "image%s" % extension.lower())
 
 
-@python_2_unicode_compatible
 class NameVariation(models.Model):
     name = models.CharField(max_length=250, db_index=True)
     artist = models.ForeignKey(
@@ -62,7 +60,6 @@ class ArtistManager(models.Manager):
         return self.get_queryset().filter(listed=True, priority__gt=0)
 
 
-@python_2_unicode_compatible
 class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=250, db_index=True)
@@ -392,7 +389,6 @@ arating.enable_voting_on(Artist)
 #         action.send(instance.last_editor, verb=_('updated'), target=instance)
 
 
-@python_2_unicode_compatible
 class ArtistMembership(models.Model):
     parent = models.ForeignKey(
         Artist, related_name="artist_parent", blank=True, null=True
@@ -420,7 +416,6 @@ class ArtistMembership(models.Model):
         super().save(*args, **kwargs)
 
 
-@python_2_unicode_compatible
 class ArtistAlias(models.Model):
     parent = models.ForeignKey(Artist, related_name="alias_parent")
     child = models.ForeignKey(Artist, related_name="alias_child")
@@ -434,7 +429,6 @@ class ArtistAlias(models.Model):
         return '"{}" <> "{}"'.format(self.parent.name, self.child.name)
 
 
-@python_2_unicode_compatible
 class ArtistProfessions(models.Model):
     artist = models.ForeignKey("Artist")
     profession = models.ForeignKey("Profession")

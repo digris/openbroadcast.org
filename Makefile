@@ -6,7 +6,7 @@ MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
 
 DOCKER_TAG = openbroadcast.org
-PORT = 8080
+PORT = 5000
 
 run:
 	poetry run ./manage.py runserver 0.0.0.0:$(PORT)
@@ -33,4 +33,4 @@ compose-up:
 
 build:
 	poetry export -f requirements.txt -o requirements.txt
-	yarn dist
+	yarn build

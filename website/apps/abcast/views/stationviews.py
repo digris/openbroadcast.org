@@ -30,7 +30,7 @@ class StationDetailView(DetailView):
         # get default section if none provided
         if not kwargs.get("section"):
             redirect_to = reverse(
-                "abcast-station-detail", kwargs={"uuid": kwargs.get("uuid"), "section": self.sections[0][0]}
+                "abcast-network:station-detail", kwargs={"uuid": kwargs.get("uuid"), "section": self.sections[0][0]}
             )
             return redirect(redirect_to)
         else:
@@ -47,7 +47,7 @@ class StationDetailView(DetailView):
                     "active": key == section,
                     "title": title,
                     "url": reverse(
-                        "abcast-station-detail",
+                        "abcast-network:station-detail",
                         kwargs={"uuid": object.uuid, "section": key},
                     ),
                 }

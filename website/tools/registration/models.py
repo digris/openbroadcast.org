@@ -9,7 +9,6 @@ from django.db import models
 from django.db import transaction
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import python_2_unicode_compatible
 
 try:
     from django.utils.timezone import now as datetime_now
@@ -157,7 +156,6 @@ class RegistrationManager(models.Manager):
                 profile.delete()
 
 
-@python_2_unicode_compatible
 class RegistrationProfile(models.Model):
     """
     A simple profile which stores an activation key for use during

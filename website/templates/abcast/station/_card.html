@@ -21,12 +21,9 @@
     </div>
     <div class="card__body">
         <div class="card__body__primary">
-            {% url 'abcast-station-detail' uuid=object.uuid as station_url %}
+            {% url 'abcast-network:station-detail' uuid=object.uuid as station_url %}
             <a href="{{ station_url }}" title="{{ object.name }}">
                 {{ object.name|truncate_chars_inner:20 }}
-                {% comment %}
-                {% if object.country %}({{ object.country.iso2_code }}){% endif %}
-                {% endcomment %}
             </a>
         </div>
         <div>

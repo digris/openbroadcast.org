@@ -37,6 +37,24 @@ catalog_menu.add(
     )
 )
 
+catalog_menu.add(
+    menu.Node(
+        id='media-list',
+        template='element/topbar/_menu-node.html',
+        label='Tracks',
+        pattern_name='alibrary:media-list'
+    )
+)
+
+catalog_menu.add(
+    menu.Node(
+        id='label-list',
+        template='element/topbar/_menu-node.html',
+        label='Labels',
+        pattern_name='alibrary:label-list'
+    )
+)
+
 
 #######################################################################
 # catalog playlists
@@ -103,10 +121,19 @@ network_menu.add(
 
 network_menu.add(
     menu.Node(
+        id='station-list',
+        template='element/topbar/_menu-node.html',
+        label='Stations',
+        pattern_name='abcast-network:station-list'
+    )
+)
+
+network_menu.add(
+    menu.Node(
         id='activity-list',
         template='element/topbar/_menu-node.html',
         label='Activities',
-        pattern_name='profiles:profile-list'
+        pattern_name='actstream:action-list'
     )
 )
 

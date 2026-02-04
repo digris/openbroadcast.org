@@ -338,7 +338,7 @@ const PlayerApp = Vue.extend({
           this.player_current_media = item;
 
           const opts = {
-            // url: 'http://local.openbroadcast.org:8080/media-asset/format/427d5dbc-6997-40a8-bebd-faa9a056ec7f/default.mp3',
+            // url: 'http://local.openbroadcast.org:5000/media-asset/format/427d5dbc-6997-40a8-bebd-faa9a056ec7f/default.mp3',
             // url: 'https://www.openbroadcast.org/media-asset/format/b92f4fc9-24e6-41e2-af9e-ac1fc8dbab84/default.mp3',
             url: item.content.assets.stream,
             whileplaying: () => {

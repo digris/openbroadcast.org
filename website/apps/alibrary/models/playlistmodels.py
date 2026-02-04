@@ -16,7 +16,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
 from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.fields.json import JSONField
@@ -62,7 +61,6 @@ def upload_mixdown_to(instance, filename):
     )
 
 
-@python_2_unicode_compatible
 class Season(models.Model):
     name = models.CharField(max_length=200)
     date_start = models.DateField(null=True, blank=True)
@@ -78,7 +76,6 @@ class Season(models.Model):
         return "%s" % (self.name)
 
 
-@python_2_unicode_compatible
 class Weather(models.Model):
     name = models.CharField(max_length=200)
 
@@ -92,7 +89,6 @@ class Weather(models.Model):
         return "%s" % (self.name)
 
 
-@python_2_unicode_compatible
 class Series(models.Model):
     name = models.CharField(max_length=200)
     slug = AutoSlugField(
@@ -114,7 +110,6 @@ class Series(models.Model):
         return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
 
-@python_2_unicode_compatible
 class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     TYPE_BASKET = "basket"
@@ -910,7 +905,6 @@ class PlaylistItemPlaylist(TimestampedModelMixin, models.Model):
         super().save(*args, **kwargs)
 
 
-@python_2_unicode_compatible
 class PlaylistItem(models.Model):
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)

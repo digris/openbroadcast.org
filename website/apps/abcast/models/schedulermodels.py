@@ -3,7 +3,6 @@ import datetime
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -28,7 +27,6 @@ class EmissionManager(models.Manager):
         return self.get_queryset().filter(time_end__lt=now)
 
 
-@python_2_unicode_compatible
 class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     name = models.CharField(
@@ -140,9 +138,9 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
     def get_ct(self):
         return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
 
-    @models.permalink
-    def get_absolute_url(self):
-        return "abcast:emission-detail", [self.pk]
+    # @models.permalink
+    # def get_absolute_url(self):
+    #     return "abcast:emission-detail", [self.pk]
 
     def get_api_url(self):
         return reverse(
@@ -304,7 +302,6 @@ def pre_delete_emission(sender, **kwargs):
 pre_delete.connect(pre_delete_emission, sender=Emission)
 
 
-@python_2_unicode_compatible
 class DaypartSet(models.Model):
 
     channel = models.ForeignKey(
@@ -328,7 +325,6 @@ class DaypartSet(models.Model):
         return "%s" % self.time_start
 
 
-@python_2_unicode_compatible
 class Weekday(models.Model):
 
     DAY_CHOICES = (
@@ -352,7 +348,6 @@ class Weekday(models.Model):
         return "%s" % self.get_day_display()
 
 
-@python_2_unicode_compatible
 class Daypart(models.Model):
 
     DAY_CHOICES = (

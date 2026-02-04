@@ -87,7 +87,7 @@ module.exports = {
           'css-loader'
         ]
       },
-      
+
       {
         test: /\.sass$/,
         use: [
@@ -189,7 +189,7 @@ module.exports = {
     },
     proxy: {
       '/': {
-        target: 'http://127.0.0.1:8080',
+        target: 'http://127.0.0.1:5000',
         onProxyReq: proxyReq => {
           proxyReq.setHeader(DEVSERVER_HEADER, 'on');
         }

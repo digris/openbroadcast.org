@@ -59,8 +59,8 @@ class VoteResource(ModelResource):
      - user:       how to handle? request?
 
      default url schema:
-     http://local.openbroadcast.org:8080/en/vote/alibrary.release/2202/-1/
-     http://local.openbroadcast.org:8080/en/vote/alibrary.media/13530/1/
+     http://local.openbroadcast.org:5000/en/vote/alibrary.release/2202/-1/
+     http://local.openbroadcast.org:5000/en/vote/alibrary.media/13530/1/
 
 
 

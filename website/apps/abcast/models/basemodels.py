@@ -5,7 +5,6 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
 from l10n.models import Country
@@ -14,7 +13,6 @@ from base.mixins import TimestampedModelMixin, UUIDModelMixin
 from phonenumber_field.modelfields import PhoneNumberField
 
 
-@python_2_unicode_compatible
 class Station(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     TYPE_CHOICES = (("stream", _("Stream")), ("djmon", _("DJ-Monitor")))
@@ -54,11 +52,11 @@ class Station(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     # @models.permalink
     # def get_absolute_url(self):
-    #     return "abcast-station-detail", [self.uuid]
+    #     return "abcast-network:station-detail", [self.uuid]
 
     def get_absolute_url(self):
         try:
-            url = reverse("abcast-station-detail", kwargs={"uuid": str(self.uuid)})
+            url = reverse("abcast-network:station-detail", kwargs={"uuid": str(self.uuid)})
         except:
             url = ""
         return url
@@ -70,7 +68,6 @@ class Station(TimestampedModelMixin, UUIDModelMixin, models.Model):
 arating.enable_voting_on(Station)
 
 
-@python_2_unicode_compatible
 class Role(models.Model):
 
     name = models.CharField(max_length=200)
@@ -98,7 +95,6 @@ class StationMembers(models.Model):
         verbose_name_plural = _("Roles")
 
 
-@python_2_unicode_compatible
 class OnAirItem(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     content_type = models.ForeignKey(ContentType)
@@ -115,7 +111,6 @@ class OnAirItem(TimestampedModelMixin, UUIDModelMixin, models.Model):
         return "{} : {}".format(self.channel.pk, self.channel.pk)
 
 
-@python_2_unicode_compatible
 class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     name = models.CharField(max_length=256, null=True, blank=True)
@@ -167,7 +162,7 @@ class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):
         return "%s" % self.name
 
     def get_absolute_url(self):
-        return reverse("abcast-station-detail", kwargs={"uuid": str(self.station.uuid)})
+        return reverse("abcast-network:station-detail", kwargs={"uuid": str(self.station.uuid)})
 
     def get_api_url(self):
         return (

@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from elasticsearch_dsl import TermsFacet, RangeFacet
+from navutils import MenuMixin
 from wsgiref.util import FileWrapper
 from base.utils.form_errors import merge_form_errors
 from base.views.detail import SectionDetailView
@@ -64,10 +65,11 @@ class LabelSearch(BaseFacetedSearch):
     ]
 
 
-class LabelListView(BaseSearchListView):
+class LabelListView(MenuMixin, BaseSearchListView):
     model = Label
     template_name = "alibrary/label/list.html"
     search_class = LabelSearch
+    current_menu_item = "catalog:label-list"
     order_by = [
         {"key": "created", "name": _("Creation date"), "default_direction": "desc"},
         {"key": "updated", "name": _("Modification date"), "default_direction": "asc"},
@@ -101,12 +103,13 @@ class LabelDetailViewLegacy(DetailView):
         return redirect(obj.get_absolute_url())
 
 
-class LabelDetailView(SectionDetailView):
+class LabelDetailView(MenuMixin, SectionDetailView):
     model = Label
     template_name = "alibrary/label/detail.html"
     section_template_pattern = "alibrary/label/detail/_{key}.html"
     context_object_name = "label"
-    url_name = "alibrary-label-detail"
+    url_name = "alibrary:label-detail"
+    current_menu_item = "catalog:label-list"
 
     sections = [
         {

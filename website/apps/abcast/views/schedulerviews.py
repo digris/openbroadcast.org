@@ -3,6 +3,7 @@ import logging
 from abcast.models import Emission, Channel
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, TemplateView
+from navutils import MenuMixin
 
 log = logging.getLogger(__name__)
 
@@ -17,9 +18,10 @@ class EmissionDetailView(DetailView):
         return context
 
 
-class SchedulerIndex(TemplateView):
+class SchedulerIndex(MenuMixin, TemplateView):
 
     template_name = "abcast/scheduler.html"
+    current_menu_item = "scheduler"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

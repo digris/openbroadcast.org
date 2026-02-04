@@ -8,7 +8,6 @@ from markdown import markdown
 from django.forms import forms
 from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import python_2_unicode_compatible
 
 
 # from django.utils.html import conditional_escape, format_html, format_html_join
@@ -110,7 +109,6 @@ class AdvancedFileInput(ClearableFileInput):
         return mark_safe(template % substitutions)
 
 
-@python_2_unicode_compatible
 class MarkdownTextField(TextField):
     """
     A TextField that automatically implements DB-cached Markdown translation.

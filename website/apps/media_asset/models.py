@@ -10,7 +10,6 @@ from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.template import defaultfilters
 from base.mixins import TimestampedModelMixin, UUIDModelMixin
 from base.fs.utils import clean_directory_tree_reverse
@@ -51,7 +50,6 @@ class WaveformManager(models.Manager):
         return waveform
 
 
-@python_2_unicode_compatible
 class Waveform(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     INIT = 0
@@ -170,7 +168,6 @@ class FormatManager(models.Manager):
         return format
 
 
-@python_2_unicode_compatible
 class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     INIT = 0

@@ -163,7 +163,7 @@ class PlaylistResource(ModelResource):
         print "hydrate m2m"
 
 
-        #curl --dump-header - -H "Content-Type: application/json" -X PUT --data '{"media": [{"media": "/api/v1/library/track/16587/"}]}' "http://localhost:8080/de/api/v1/library/playlist/58/?username=root&api_key=APIKEY"
+        #curl --dump-header - -H "Content-Type: application/json" -X PUT --data '{"media": [{"media": "/api/v1/library/track/16587/"}]}' "http://localhost:5000/de/api/v1/library/playlist/58/?username=root&api_key=APIKEY"
 
         try:
             for item in bundle.data['media']:

@@ -31,6 +31,7 @@ from django.contrib.auth import get_user_model
 from pure_pagination.mixins import PaginationMixin
 
 from elasticsearch_dsl import TermsFacet
+from navutils import MenuMixin
 from search.views import BaseFacetedSearch, BaseSearchListView
 
 from .documents import ProfileDocument
@@ -49,10 +50,11 @@ class ProfileSearch(BaseFacetedSearch):
     ]
 
 
-class ProfileListView(BaseSearchListView):
+class ProfileListView(MenuMixin, BaseSearchListView):
     model = Profile
     template_name = "profiles/profile/list.html"
     search_class = ProfileSearch
+    current_menu_item = "network:profile-list"
     order_by = [
         {"key": "created", "name": _("Creation date"), "default_direction": "desc"},
         {"key": "updated", "name": _("Modification date"), "default_direction": "asc"},
@@ -71,11 +73,12 @@ class ProfileListView(BaseSearchListView):
         return qs
 
 
-class ProfileDetailView(DetailView):
+class ProfileDetailView(MenuMixin, DetailView):
 
     model = Profile
     template_name = "profiles/profile/detail.html"
     section_template_base = "profiles/profile/_detail"
+    current_menu_item = "network:profile-list"
     section = None
     sections = [
         ("playlists", _("Playlists")),

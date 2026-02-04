@@ -5,7 +5,6 @@ import arating
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import Group
 from django.conf import settings
 from django.db.models.signals import post_save
@@ -49,7 +48,6 @@ def filename_by_uuid(instance, filename):
     return os.path.join(path, filename)
 
 
-@python_2_unicode_compatible
 class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
 
     GENDER_CHOICES = (
@@ -296,7 +294,6 @@ except AttributeError:
 arating.enable_voting_on(Profile)
 
 
-@python_2_unicode_compatible
 class Community(UUIDModelMixin, MigrationMixin):
 
     name = models.CharField(
@@ -465,7 +462,6 @@ def add_mentor(sender, **kwargs):
 invitation_accepted.connect(add_mentor)
 
 
-@python_2_unicode_compatible
 class MobileProvider(models.Model):
     """MobileProvider model"""
 
@@ -481,7 +477,6 @@ class MobileProvider(models.Model):
         return "%s" % self.title
 
 
-@python_2_unicode_compatible
 class ServiceType(models.Model):
     """Service type model"""
 
@@ -501,7 +496,6 @@ class ServiceType(models.Model):
         return "%s" % self.title
 
 
-@python_2_unicode_compatible
 class Service(models.Model):
 
     service = models.ForeignKey(ServiceType)
@@ -530,7 +524,6 @@ class Service(models.Model):
         return "%s" % self.service.title
 
 
-@python_2_unicode_compatible
 class Link(models.Model):
 
     profile = models.ForeignKey(Profile)
@@ -546,7 +539,6 @@ class Link(models.Model):
         return "%s" % self.title
 
 
-@python_2_unicode_compatible
 class Expertise(models.Model):
 
     name = models.CharField(max_length=512)

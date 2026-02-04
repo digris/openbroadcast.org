@@ -38,6 +38,8 @@ urlpatterns = [
     url(r"^network/users/", include("profiles.urls", namespace="profiles")),
     #
     url(r"^network/invitation/", include("invitation.urls", namespace="invitation")),
+    url(r"^network/actstream/", include("actstream.urls", namespace="actstream")),
+    url(r"^network/stations/", include("abcast.urls_station", namespace="abcast-network")),
     #
     url(r"^admin/", include(admin.site.urls)),
     url(r"^vote/", include("arating.urls")),

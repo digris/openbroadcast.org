@@ -134,7 +134,6 @@ class PlaylistListView(MenuMixin, BaseSearchListView):
     template_name = "alibrary/playlist/list.html"
     search_class = PlaylistSearch
     scope = "public"
-    current_menu_item = 'catalog-playlists'
     order_by = [
         {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
         {
@@ -157,15 +156,20 @@ class PlaylistListView(MenuMixin, BaseSearchListView):
         {"key": "created", "name": _("Creation date"), "default_direction": "desc"},
     ]
 
+    def get_current_menu_item(self):
+        if self.scope == "own":
+            return "catalog-playlists:playlist-list-own"
+        return "catalog-playlists:playlist-list"
+
     def get_search_query(self, **kwargs):
-        serach_query = super().get_search_query(**kwargs)
+        search_query = super().get_search_query(**kwargs)
 
         if self.scope == "own":
-            serach_query["searches"].update({"user": [self.request.user.username]})
+            search_query["searches"].update({"user": [self.request.user.username]})
         else:
-            serach_query["searches"].update({"type": ["-Private Playlist"]})
+            search_query["searches"].update({"type": ["-Private Playlist"]})
 
-        return serach_query
+        return search_query
 
     def get_queryset(self, **kwargs):
         qs = super().get_queryset(**kwargs)
@@ -175,7 +179,7 @@ class PlaylistListView(MenuMixin, BaseSearchListView):
         )
 
         # TODO: refactor enumerations
-        if not self.scope == "own":
+        if self.scope != "own":
             qs = qs.exclude(type="basket")
 
         return qs

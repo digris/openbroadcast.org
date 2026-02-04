@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.conf import settings
 
 CONTINENTS = (
@@ -47,7 +46,6 @@ AREAS = (
 )
 
 
-@python_2_unicode_compatible
 class Country(models.Model):
     """
     International Organization for Standardization (ISO) 3166-1 Country list
@@ -73,7 +71,6 @@ class Country(models.Model):
         return f"{self.printable_name} ({self.iso2_code})"
 
 
-@python_2_unicode_compatible
 class AdminArea(models.Model):
     """
     Administrative Area level 1 for a country.  For the US, this would be the
@@ -122,7 +119,6 @@ Email: %(email)s"""
 ADDRESS_TEMPLATE = getattr(settings, "SHOP_ADDRESS_TEMPLATE", BASE_ADDRESS_TEMPLATE)
 
 
-@python_2_unicode_compatible
 class Address(models.Model):
     user_shipping = models.OneToOneField(
         settings.AUTH_USER_MODEL, related_name="shipping_address", blank=True, null=True

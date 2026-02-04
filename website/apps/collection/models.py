@@ -6,7 +6,6 @@ from django.core.urlresolvers import reverse_lazy
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from base.mixins import TimestampedModelMixin, UUIDModelMixin
 
 log = logging.getLogger(__name__)
@@ -15,7 +14,6 @@ log = logging.getLogger(__name__)
 USER_MODEL = getattr(settings, "AUTH_USER_MODEL")
 
 
-@python_2_unicode_compatible
 class Collection(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     PRIVATE = 0
@@ -50,7 +48,6 @@ class Collection(TimestampedModelMixin, UUIDModelMixin, models.Model):
         return reverse_lazy("collection:collection-detail", kwargs={"slug": self.slug})
 
 
-@python_2_unicode_compatible
 class CollectionMember(TimestampedModelMixin, models.Model):
 
     collection = models.ForeignKey(
@@ -69,7 +66,6 @@ class CollectionMember(TimestampedModelMixin, models.Model):
         return f"{self.collection.name} - {self.item.content_object}"
 
 
-@python_2_unicode_compatible
 class CollectionItem(UUIDModelMixin, models.Model):
     class Meta:
         app_label = "collection"

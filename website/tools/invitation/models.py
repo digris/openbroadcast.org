@@ -7,7 +7,6 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.sites.models import Site
 from django.contrib.sites.requests import RequestSite
 from django.contrib import messages
@@ -73,7 +72,7 @@ class InvitationManager(models.Manager):
                 user.email,
                 email,
             )
-            key = hashlib.sha1(key).hexdigest()
+            key = hashlib.sha1(key.encode("utf-8")).hexdigest()
             invitation = self.create(user=user, email=email, key=key, message=message)
         return invitation
 
@@ -113,7 +112,6 @@ class InvitationManager(models.Manager):
         return self.get_queryset().filter(date_invited__le=expiration)
 
 
-@python_2_unicode_compatible
 class Invitation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="invitations")
     email = models.EmailField(_("e-mail"))
@@ -139,7 +137,7 @@ class Invitation(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ("invitation_register", (), {"invitation_key": self.key})
+        return ("invitation:register", (), {"invitation_key": self.key})
 
     @property
     def _expires_at(self):
@@ -263,7 +261,6 @@ class InvitationStatsManager(models.Manager):
         return self.give_invitations(user, count)
 
 
-@python_2_unicode_compatible
 class InvitationStats(models.Model):
     """Store invitation statistics for ``user``.
     """

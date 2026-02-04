@@ -5,7 +5,6 @@ import logging
 import arating
 from django.conf import settings
 from django.utils.translation import ugettext as _
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils import translation
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.contrib.contenttypes.fields import GenericRelation
@@ -36,7 +35,6 @@ class LabelManager(models.Manager):
         return self.get_queryset().exclude(listed=False)
 
 
-@python_2_unicode_compatible
 class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     name = models.CharField(max_length=400)
@@ -219,7 +217,6 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         super().save(*args, **kwargs)
 
 
-@python_2_unicode_compatible
 class LabelFoundingArtist(models.Model):
     label = models.ForeignKey(
         Label,

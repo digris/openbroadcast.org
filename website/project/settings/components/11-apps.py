@@ -144,7 +144,7 @@ LOGOUT_URL = "/account/logout/"
 LOGIN_REDIRECT_URL = "/"
 ACCOUNT_ACTIVATION_DAYS = 7
 AUTHENTICATION_BACKENDS = (
-    "social_core.backends.facebook.FacebookOAuth2",
+    # "social_core.backends.facebook.FacebookOAuth2",
     "social_core.backends.google.GoogleOAuth2",
     "account.social_auth_backends.deezer.DeezerOAuth2",
     # "social_core.backends.soundcloud.SoundcloudOAuth2",
