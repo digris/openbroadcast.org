@@ -284,7 +284,7 @@ class Process(object):
         from media_asset.models import Format
 
         requested_format = Format.objects.get_or_create_for_media(
-            media=media, wait=True
+            media=media, quality="hi", wait=True
         )
 
         cache_file = requested_format.path

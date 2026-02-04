@@ -11,7 +11,6 @@ TEMP_DIR = os.path.join(BASE_DIR, "temp")
 sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
 sys.path.insert(0, os.path.join(BASE_DIR, "tools"))
 sys.path.insert(0, os.path.join(BASE_DIR, "legacy"))
-sys.path.insert(0, os.path.join(BASE_DIR, "legacy-packages"))
 
 DEBUG = False
 SERVE_MEDIA = False
@@ -21,16 +20,15 @@ COMPRESS_ENABLED = True
 ################################################################################
 # hacks
 ################################################################################
-# os is outdated, manual download of cacert.pem is required
 # wget https://curl.se/ca/cacert.pem -O /etc/ca-manually/cacert.pem
-CA_CERT_PATH = "/etc/ca-manually/cacert.pem"
-if os.path.exists(CA_CERT_PATH):
-    os.environ["REQUESTS_CA_BUNDLE"] = CA_CERT_PATH
+os.environ["REQUESTS_CA_BUNDLE"] = "/etc/ca-manually/cacert.pem"
 
 
 ################################################################################
 # language settings
 ################################################################################
+
+
 DEFAULT_LANGUAGE = 0
 LANGUAGE_CODE = "en"
 
