@@ -33,4 +33,4 @@ compose-up:
 
 build:
 	poetry export -f requirements.txt -o requirements.txt
-	yarn dist
+	yarn build
