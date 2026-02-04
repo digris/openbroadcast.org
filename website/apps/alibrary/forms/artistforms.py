@@ -143,7 +143,11 @@ class ArtistForm(ModelForm):
             LookupField("remote_image"),
         )
 
-        tagging_layout = Fieldset("Tags", LookupField("d_tags"))
+        tagging_layout = Fieldset(
+            "Tags",
+            LookupField("d_tags"),
+            HTML("<tag-editor></tag-editor>"),
+        )
 
         layout = Layout(
             base_layout,

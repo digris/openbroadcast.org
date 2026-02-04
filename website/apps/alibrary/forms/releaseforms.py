@@ -248,7 +248,11 @@ class ReleaseForm(ModelForm):
             LookupField("remote_image"),
         )
 
-        tagging_layout = Fieldset("Tags", LookupField("d_tags"))
+        tagging_layout = Fieldset(
+            "Tags",
+            LookupField("d_tags"),
+            HTML("<tag-editor></tag-editor>"),
+        )
 
         identifiers_layout = Fieldset(
             _("Identifiers"), LookupField("barcode", css_class="input-xlarge")

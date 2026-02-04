@@ -140,7 +140,11 @@ class MediaForm(ModelForm):
             LookupField("lyrics", css_class="input-xlarge"),
         )
 
-        tagging_layout = Fieldset("Tags", LookupField("d_tags"))
+        tagging_layout = Fieldset(
+            "Tags",
+            LookupField("d_tags"),
+            HTML("<tag-editor></tag-editor>"),
+        )
 
         layout = Layout(
             base_layout,
