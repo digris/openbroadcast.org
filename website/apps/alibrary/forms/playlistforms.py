@@ -198,6 +198,7 @@ class PlaylistForm(ModelForm):
         tagging_layout = Fieldset(
             _("Tags"),
             "d_tags",
+            HTML("<tag-editor></tag-editor>"),
             css_class="tagging",
         )
 

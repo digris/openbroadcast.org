@@ -23,7 +23,7 @@ db_dumps/
 
 .venv*
 
-
+docker/docker-compose.override.yml
 
 util/remote_to_local.conf
 tools/*/env

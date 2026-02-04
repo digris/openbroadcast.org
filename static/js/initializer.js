@@ -32,6 +32,7 @@ import ObjectMerge from './components/ObjectMerge/ObjectMerge.vue';
 import MediaReassign from './components/MediaReassign/MediaReassign.vue';
 import Notifications from './components/Notifications/Notifications.vue';
 import TagList from './components/Tags/TagList.vue';
+import TagEditor from './components/Tagger/TagEditor.vue';
 // UI
 import Card from './components/UI/Card.vue';
 import Visual from './components/UI/Visual.vue';
@@ -73,6 +74,7 @@ class AppInitializer {
         'media-reassign': MediaReassign,
         notifications: Notifications,
         'tag-list': TagList,
+        'tag-editor': TagEditor,
         // form ui components
         formset: Formset,
         'input-container': InputContainer,
