@@ -2,36 +2,37 @@ import os
 import tempfile
 
 from django.contrib.staticfiles import finders
-from django.template import Context
+from django.core.files.storage import FileSystemStorage
 from django.template.loader import get_template
 from django.core.exceptions import SuspiciousOperation
 
 
-class VirtualStorage(finders.FileSystemStorage):
-    """" Mock a FileSystemStorage to build tmp files on demand."""
+class VirtualStorage(FileSystemStorage):
+    """
+    Mock a FileSystemStorage to build temporary files on demand.
+    """
 
     def __init__(self, *args, **kwargs):
+        super(VirtualStorage, self).__init__(*args, **kwargs)
         self._files_cache = {}
-        super().__init__(*args, **kwargs)
 
     def get_or_create_file(self, path):
         if path not in self.files:
             return ""
 
-        data = getattr(self, self.files[path])()
+        generator = getattr(self, self.files[path])
+        data = generator()
 
         try:
-            current_file = open(self._files_cache[path])
-            current_data = current_file.read()
-            current_file.close()
+            cached_path = self._files_cache[path]
+            with open(cached_path, "r") as f:
+                current_data = f.read()
             if current_data != data:
-                os.remove(path)
-                raise Exception("Invalid data")
+                raise ValueError("Cached data mismatch")
         except Exception:
-            handle, tmp_path = tempfile.mkstemp()
-            tmp_file = open(tmp_path, "w")
-            tmp_file.write(data)
-            tmp_file.close()
+            fd, tmp_path = tempfile.mkstemp()
+            with os.fdopen(fd, "w") as tmp_file:
+                tmp_file.write(data)
             self._files_cache[path] = tmp_path
 
         return self._files_cache[path]
@@ -43,33 +44,49 @@ class VirtualStorage(finders.FileSystemStorage):
         folders, files = [], []
         for f in self.files:
             if f.startswith(path):
-                f = f.replace(path, "", 1)
-                if os.sep in f:
-                    folders.append(f.split(os.sep, 1)[0])
+                remainder = f[len(path):].lstrip(os.sep)
+                if os.sep in remainder:
+                    folders.append(remainder.split(os.sep, 1)[0])
                 else:
-                    files.append(f)
+                    files.append(remainder)
         return folders, files
 
     def path(self, name):
         try:
             path = self.get_or_create_file(name)
-        except ValueError:
-            raise SuspiciousOperation("Attempted access to '%s' denied." % name)
+        except Exception:
+            raise SuspiciousOperation(
+                "Attempted access to '%s' denied." % name
+            )
         return os.path.normpath(path)
 
 
 class DajaxiceStorage(VirtualStorage):
+    """
+    Dynamic storage for dajaxice-generated JS.
+    """
 
-    files = {os.path.join("dajaxice", "dajaxice.core.js"): "dajaxice_core_js"}
+    files = {
+        os.path.join("dajaxice", "dajaxice.core.js"): "dajaxice_core_js",
+    }
 
     def dajaxice_core_js(self):
         from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 
         dajaxice_autodiscover()
 
-        c = Context({"dajaxice_config": dajaxice_config})
-        return get_template(os.path.join("dajaxice", "dajaxice.core.js")).render(c)
+        return get_template(
+            os.path.join("dajaxice", "dajaxice.core.js")
+        ).render(
+            {
+                "dajaxice_config": dajaxice_config,
+            }
+        )
 
 
 class DajaxiceFinder(finders.BaseStorageFinder):
+    """
+    Staticfiles finder for dynamically generated dajaxice assets.
+    """
+
     storage = DajaxiceStorage()

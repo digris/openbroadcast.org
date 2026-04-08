@@ -4,6 +4,7 @@ from django.db import transaction
 from django.db import IntegrityError
 from django.apps import apps
 from django.db.models import Model
+from django.db.models.fields.related import ManyToManyRel
 from django.contrib.contenttypes.fields import GenericForeignKey
 from tagging.models import Tag
 
@@ -61,7 +62,15 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
     # Loop through all alias objects and migrate their data to the primary object.
     for alias_object in alias_objects:
         # Migrate all foreign key references from alias object to primary object.
-        for related_object in alias_object._meta.get_all_related_objects():
+
+        related_objects = [
+            f for f in alias_object._meta.get_fields()
+            if (f.one_to_many or f.one_to_one)
+            and f.auto_created and not f.concrete
+        ]
+
+        # for related_object in alias_object._meta.get_all_related_objects():
+        for related_object in related_objects:
             # The variable name on the alias_object model.
             alias_varname = related_object.get_accessor_name()
             # The variable name on the related model.
@@ -77,9 +86,16 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
                 pass
 
         # Migrate all many to many references from alias object to primary object.
+
+        related_many_objects = [
+            rel for rel in alias_object._meta.related_objects
+            if isinstance(rel, ManyToManyRel)
+        ]
+
         for (
             related_many_object
-        ) in alias_object._meta.get_all_related_many_to_many_objects():
+        # ) in alias_object._meta.get_all_related_many_to_many_objects():
+        ) in related_many_objects:
             alias_varname = related_many_object.get_accessor_name()
             obj_varname = related_many_object.field.name
 

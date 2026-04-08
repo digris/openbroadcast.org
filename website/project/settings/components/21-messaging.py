@@ -25,8 +25,15 @@ CELERY_ACCEPT_CONTENT = ["pickle", "json"]
 
 
 # base broker url - used for task servers
-BROKER_URL = "amqp://obp:obp@127.0.0.1:5672/openbroadcast.org"
-PLAYOUT_BROKER_URL = "amqp://obp:obp@127.0.0.1:5672/openbroadcast.org/playout"
+# BROKER_URL = "amqp://obp:obp@127.0.0.1:5672/openbroadcast.org"
+# PLAYOUT_BROKER_URL = "amqp://obp:obp@127.0.0.1:5672/openbroadcast.org/playout"
+
+
+CELERY_BROKER_URL = "amqp://obp:obp@127.0.0.1:5672/obp"
+CELERY_RESULT_BACKEND = None
+
+PLAYOUT_BROKER_URL = "amqp://obp:obp@127.0.0.1:5672/obp/playout"
+
 
 CELERY_IMPORTS = (
     "importer.util.importer_tools",
@@ -56,7 +63,7 @@ CELERY_ROUTES = {
     "media_asset.tasks.process_format": {"queue": "convert"},
     "exporter.models.process_task": {"queue": "export"},
     "search.signals.handle_save_task": {"queue": "index"},
-    #'search.tasks.update_index': {'queue': 'index'},
+    'search.tasks.update_index': {'queue': 'index'},
 }
 
 CELERYBEAT_SCHEDULE = {

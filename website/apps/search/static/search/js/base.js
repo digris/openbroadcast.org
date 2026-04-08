@@ -35,7 +35,7 @@ var SearchApp = function () {
     this.ctype_map = {
         'alibrary.release': {
             display_name: 'Release',
-            search_url: '/content/library/releases/',
+            search_url: '/catalog/releases/',
             keys: [
                 [['p'], 'play'],
                 [['q'], 'queue'],
@@ -45,7 +45,7 @@ var SearchApp = function () {
         },
         'alibrary.artist': {
             display_name: 'Artist',
-            search_url: '/content/library/artists/',
+            search_url: '/catalog/artists/',
             keys: [
                 [['p'], 'play'],
                 [['e'], 'edit view'],
@@ -54,7 +54,7 @@ var SearchApp = function () {
         },
         'alibrary.media': {
             display_name: 'Track',
-            search_url: '/content/library/tracks/',
+            search_url: '/catalog/tracks/',
             keys: [
                 [['p'], 'play'],
                 [['q'], 'queue'],
@@ -65,7 +65,7 @@ var SearchApp = function () {
         },
         'alibrary.label': {
             display_name: 'Label',
-            search_url: '/content/library/labels/',
+            search_url: '/catalog/labels/',
             keys: [
                 [['e'], 'edit view'],
                 [['Enter'], 'detail view']
