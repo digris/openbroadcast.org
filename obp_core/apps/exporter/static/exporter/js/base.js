@@ -373,7 +373,7 @@ ExporterApp = (function () {
 
                 var message = '<strong>Download queued</strong><br>'
                 message += '<p>The files are now being processed in the background and will then be added to your download queue.</p>'
-                message += '<p>To view your queue and download the files, go to <a href="/content/download/">Download</a> in the navigation menu.</p>'
+                message += '<p>To view your queue and download the files, go to <a href="/exporter/">Download</a> in the navigation menu.</p>'
 
 
                 base.ui.ui_message(message, 10000);

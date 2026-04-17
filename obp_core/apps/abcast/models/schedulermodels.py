@@ -142,6 +142,10 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
     # def get_absolute_url(self):
     #     return "abcast:emission-detail", [self.pk]
 
+    # @models.permalink
+    def get_absolute_url(self):
+        return "#"  # NOTE: do we need this?
+
     def get_api_url(self):
         return reverse(
             "api_dispatch_detail",

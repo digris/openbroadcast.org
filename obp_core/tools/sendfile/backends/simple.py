@@ -6,7 +6,7 @@ from django.core.files.base import File
 from django.http import HttpResponse, HttpResponseNotModified
 from django.utils.http import http_date
 
-from email.Utils import parsedate_tz, mktime_tz
+from email.utils import parsedate_tz, mktime_tz
 
 
 def sendfile(request, filename, **kwargs):
@@ -20,7 +20,7 @@ def sendfile(request, filename, **kwargs):
     ):
         return HttpResponseNotModified()
 
-    response = HttpResponse(File(file(filename, "rb")))
+    response = HttpResponse(File(open(filename, "rb")))
 
     response["Last-Modified"] = http_date(statobj[stat.ST_MTIME])
     return response

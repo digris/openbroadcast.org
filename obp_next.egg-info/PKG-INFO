@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: obp-next
-Version: 0.1.1.dev293+gbda867299.d20260416
+Version: 0.1.1.dev294+gcd7105aec.d20260417
 Summary: openbroadcast.org - Music Platform
 Author-email: Jonas Ohrstrom <jonas.ohrstrom@digris.ch>
 License-Expression: MIT
@@ -79,8 +79,8 @@ Requires-Dist: celery==5.2.7
 Requires-Dist: django-adv-cache-tag==1.1.3
 Requires-Dist: markdown==3.1.1
 Requires-Dist: django-tastypie==0.13.3
-Requires-Dist: graypy
-Requires-Dist: pyacoustid
 Requires-Dist: django-environ>=0.11.2
 Requires-Dist: setuptools<82,>=75.3.4
+Requires-Dist: graypy
+Requires-Dist: pyacoustid
 Dynamic: license-file

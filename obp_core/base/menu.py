@@ -80,7 +80,7 @@ data_menu.add(
     menu.Node(
         id='exporter',
         template='element/topbar/_menu-node.html',
-        label='Export',
+        label='Download',
         pattern_name='exporter:export-index'
     )
 )

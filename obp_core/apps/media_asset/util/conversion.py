@@ -2,98 +2,49 @@ import os
 import shutil
 import subprocess
 import logging
-import audiotools
 
 from django.conf import settings
 
 log = logging.getLogger(__name__)
 
-LAME_BINARY = getattr(settings, "LAME_BINARY")
-SOX_BINARY = getattr(settings, "SOX_BINARY")
-FAAD_BINARY = getattr(settings, "FAAD_BINARY")
 FFMPEG_BINARY = getattr(settings, "FFMPEG_BINARY")
 
 
-def any_to_wav(src, dst=None):
-
-    log.info("any to wav: {} > {}".format(src, dst))
+def any_to_wav(src, dst):
+    log.info("ffmpeg to wav: %s -> %s", src, dst)
 
     if not os.path.isfile(src):
-        log.error("unable to access %s" % src)
-        raise OSError("unable to access %s" % src)
+        raise OSError(f"unable to access {src}")
 
-    src_path, src_ext = os.path.splitext(src)
-    if src_ext.lower() == ".wav":
-        shutil.copyfile(src, dst)
-        return dst
+    command = [
+        FFMPEG_BINARY,
+        "-y",
+        "-v", "error",
+        "-i", src,
+        "-vn",
+        "-acodec", "pcm_s16le",
+        "-ar", "44100",
+        "-ac", "2",
+        dst,
+    ]
 
-    try:
-        audiotools.open(src).convert(dst, audiotools.WaveAudio)
+    log.debug("running: %s", " ".join(command))
 
-    except Exception as e:
+    p = subprocess.run(
+        command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
 
-        log.info("file %s not supported by audiotools" % src)
+    if p.returncode != 0:
+        log.error("ffmpeg failed: %s", p.stderr.decode("utf-8", "ignore"))
+        raise RuntimeError(f"ffmpeg failed for {src}")
 
-        name, ext = os.path.splitext(src)
-
-        if ext.lower() in [".mp3"]:
-            mp3_to_wav(src, dst)
-
-        if ext.lower() in [".m4a", ".mp4"]:
-            m4a_to_wav(src, dst)
-
-        # fallback version via ffmpeg
-        if ext.lower() in [".flac"]:
-            ffmpeg_to_wav(src, dst)
-
-    log.debug("to wav: {} > {}".format(src, dst))
     if not os.path.exists(dst):
-        log.warning(f"unable to convert {src} to wav.")
-        return
+        log.warning("output not created: %s", dst)
+        return None
 
     return dst
 
 
-def mp3_to_wav(src, dst):
 
-    log.debug("mp3-to-wav converter: %s" % src)
-
-    command = [SOX_BINARY, src, "-c 2", "-r 44100", dst]
-
-    log.debug("running: %s" % " ".join(command))
-
-    p = subprocess.Popen(command, stdout=subprocess.PIPE)
-    stdout = p.communicate()
-
-    if stdout:
-        log.debug(stdout)
-
-
-def m4a_to_wav(src, dst):
-
-    log.debug("m4a-to-wav converter: %s" % src)
-
-    command = [FAAD_BINARY, src, "-d", "-q", "-o", dst]
-
-    log.debug("running: %s" % " ".join(command))
-
-    p = subprocess.Popen(command, stdout=subprocess.PIPE)
-    stdout = p.communicate()
-
-    if stdout:
-        log.debug(stdout)
-
-
-def ffmpeg_to_wav(src, dst):
-
-    log.debug("ssmpeg-to-wav converter: %s" % src)
-
-    command = [FFMPEG_BINARY, "-i", src, dst, "-y", "-v", "0"]
-
-    log.debug("running: %s" % " ".join(command))
-
-    p = subprocess.Popen(command, stdout=subprocess.PIPE)
-    stdout = p.communicate()
-
-    if stdout:
-        log.debug(stdout)

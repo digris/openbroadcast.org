@@ -325,7 +325,7 @@ class Process:
 
         with open(os.path.join(cache_dir, "readme.txt"), "w") as txt:
             str = render_to_string(template, {"object": instance, "base_url": SITE_URL})
-            txt.write(str.encode("utf8"))
+            txt.write(str)
 
     def process_html_readme(self, instance, cache_dir):
 

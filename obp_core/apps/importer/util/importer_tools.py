@@ -287,7 +287,7 @@ class Importer:
         if not r:
             log.info("no release yet, so create it: %s" % release)
             r = Release(name=release)
-            r.creator = self.user
+            r.creator_id = self.user.id if self.user else None
             r.save()
             r_created = True
 

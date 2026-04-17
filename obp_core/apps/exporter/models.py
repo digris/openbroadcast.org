@@ -174,7 +174,7 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
             if result:
 
                 obj.filesize = os.path.getsize(result)
-                obj.file = DjangoFile(open(result), "archive")
+                obj.file = DjangoFile(open(result, "rb"), "archive")
 
                 # update status
                 obj.status = 1
@@ -191,7 +191,8 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
         self.filename = generate_export_filename(self.export_items)
 
         if not self.token:
-            self.token = hashlib.sha1("TX%s" % self.uuid).hexdigest()
+            # self.token = hashlib.sha1("TX%s" % self.uuid).hexdigest()
+            self.token = hashlib.sha1(f"TX{self.uuid}".encode()).hexdigest()
 
         super().save(*args, **kwargs)
 

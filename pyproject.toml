@@ -83,10 +83,12 @@ dependencies = [
     "django-tastypie==0.13.3",
     # "graypy @ pip-legacy-packages/graypy",
     # "pyacoustid @ pip-legacy-packages/pyacoustid",
-    "graypy",
-    "pyacoustid",
     "django-environ>=0.11.2",
     "setuptools>=75.3.4,<82",
+    # legacy packages - see below [tool.uv.sources]
+    "graypy",
+    "pyacoustid",
+    # "python-audio-tools",
 ]
 
 [build-system]
@@ -105,6 +107,7 @@ package = true
 [tool.uv.sources]
 graypy = { path = "pip-legacy-packages/graypy" }
 pyacoustid = { path = "pip-legacy-packages/pyacoustid" }
+python-audio-tools = { path = "pip-legacy-packages/python-audio-tools" }
 
 [dependency-groups]
 dev = [

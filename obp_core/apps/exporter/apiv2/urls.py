@@ -6,7 +6,7 @@ from . import views
 router = routers.DefaultRouter(schema_title='Exporter API')
 router.register(r"export", views.ExportViewSet)
 
-app_name = "exporter"
+# app_name = "exporter"
 urlpatterns = [
     url(r"^", include(router.urls)),
 ]

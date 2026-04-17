@@ -17,9 +17,7 @@ def check_binaries(app_configs, **kwargs):
     """
 
     BINARIES_TO_CHECK = [
-        "LAME_BINARY",
-        "SOX_BINARY",
-        "FAAD_BINARY",
+        "FFMPEG_BINARY",
         "FFPROBE_BINARY",
         "ECHOPRINT_CODEGEN_BINARY",
     ]

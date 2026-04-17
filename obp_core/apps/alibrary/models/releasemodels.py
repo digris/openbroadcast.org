@@ -574,7 +574,6 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
 
     def save(self, *args, **kwargs):
 
-        self.clear_cache_file()
         unique_slugify(self, self.name)
 
         # convert approx date to real one
@@ -593,17 +592,13 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         except:
             self.releasedate = None
 
-        if hasattr(self, "_last_editor") and getattr(self, "_last_editor"):
+        
+        if self.pk is not None and hasattr(self, "_last_editor") and getattr(self, "_last_editor"):
             last_editor = getattr(self, "_last_editor")
             self.last_editor = last_editor
-        else:
-            last_editor = None
 
-        logger.debug(
-            "saved release id: {} - user: {} - caller: {}".format(
-                self.pk, last_editor, inspect.stack()[1][3]
-            )
-        )
+        if self.pk is not None:
+            self.clear_cache_file()
 
         super().save(*args, **kwargs)
 

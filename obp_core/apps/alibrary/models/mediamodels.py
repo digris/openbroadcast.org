@@ -32,9 +32,6 @@ from alibrary.tasks import ingest_fprint_for_media, delete_fprint_for_media
 USE_CELERYD = getattr(settings, "ALIBRARY_USE_CELERYD", False)
 AUTOCREATE_FPRINT = getattr(settings, "ALIBRARY_AUTOCREATE_FPRINT", True)
 
-LAME_BINARY = getattr(settings, "LAME_BINARY")
-SOX_BINARY = getattr(settings, "SOX_BINARY")
-FAAD_BINARY = getattr(settings, "FAAD_BINARY")
 
 LOOKUP_PROVIDERS = (("musicbrainz", _("Musicbrainz")),)
 
@@ -570,7 +567,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         - not applying default license anymore
         - applying default license again: #898
         """
-        if not self.license:
+        if self.pk is not None and not self.license:
             try:
                 license = License.objects.filter(is_default=True)[0]
                 self.license = license
@@ -637,12 +634,13 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         unique_slugify(self, self.name)
 
         # pretty of ugly, clean empty relations
-        for ea in MediaExtraartists.objects.filter(media__pk=self.pk):
-            try:
-                if not ea.artist:
-                    ea.delete()
-            except:
-                pass
+        if self.pk is not None:
+            for ea in MediaExtraartists.objects.filter(media__pk=self.pk):
+                try:
+                    if not ea.artist:
+                        ea.delete()
+                except:
+                    pass
 
         # TODO: remove! just for testing!
         # self._master_changed = True

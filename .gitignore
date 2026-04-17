@@ -49,12 +49,13 @@ website/static-src/img
 website/data.db
 website/static/CACHE
 website/cache/*
-website/celerybeat*
 util/nginx-dev/*
 
 website/fixtures
 
 *.sass-cache*
+
+celerybeat-schedule.*
 
 .omx/
 .codex/

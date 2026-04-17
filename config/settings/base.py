@@ -20,11 +20,9 @@ env = environ.Env(
     MEDIA_ROOT=(str, str(PROJECT_ROOT / "data" / "media")),
     ELASTICSEARCH_URL=(str, "localhost:9200"),
     # binaries
-    LAME_BINARY=(str, "/usr/bin/lame"),
-    SOX_BINARY=(str, "/usr/bin/sox"),
-    FAAD_BINARY=(str, "/usr/bin/faad"),
     FFPROBE_BINARY=(str, "/usr/bin/ffprobe"),
     FFMPEG_BINARY=(str, "/usr/bin/ffmpeg"),
+    LAME_BINARY=(str, "/usr/bin/lame"),
     ECHOPRINT_CODEGEN_BINARY=(str, "/usr/local/bin/echoprint-codegen"),
 )
 
@@ -299,11 +297,9 @@ NAVUTILS_MENU_CONFIG = {
 #######################################################################
 # binaries
 #######################################################################
-LAME_BINARY = env.str("LAME_BINARY")
-SOX_BINARY = env.str("SOX_BINARY")
-FAAD_BINARY = env.str("FAAD_BINARY")
 FFPROBE_BINARY = env.str("FFPROBE_BINARY")
 FFMPEG_BINARY = env.str("FFMPEG_BINARY")
+LAME_BINARY = env.str("LAME_BINARY")
 ECHOPRINT_CODEGEN_BINARY = env.str("ECHOPRINT_CODEGEN_BINARY")
 
 ########################################################################
@@ -586,7 +582,6 @@ WIKISYNTAX_DISABLE_CACHE = False
 # actstream
 ACTSTREAM_SETTINGS = {
     "MODELS": (
-        # 'account.user',
         "auth.user",
         "auth.group",
         "alibrary.release",
