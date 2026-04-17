@@ -5,32 +5,35 @@ SHELL := bash
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
 
-DOCKER_TAG = openbroadcast.org
-PORT = 5000
+DOCKER_TAG = obp-next
 
-run:
-	poetry run ./manage.py runserver 0.0.0.0:$(PORT)
+PORT_BE = 5000
+PORT_FE = 3000
 
-shell:
-	poetry run ./manage.py shell
-
+.PHONY: lint
 lint:
-	npx stylelint "./static/**/*.(scss|js|vue)"
-	npx eslint ./static/ --ext .js --ext .vue
-	#black ./website/ --check
-	#poetry run prospector -p ./website/
+	npx stylelint "./obp_ui/**/*.(scss|js|vue)"
+	npx eslint ./obp_ui/ --ext .js --ext .vue
 
+.PHONY: fix
 fix:
-	npx stylelint "./static/**/*.(scss|js|vue)" --fix
-	npx eslint ./static/ --ext .js --ext .vue --fix
+	npx stylelint "./obp_ui/**/*.(scss|js|vue)" --fix
+	npx eslint ./obp_ui/ --ext .js --ext .vue --fix
 
-test:
-	pytest --ds app.settings.test --cov=app
 
+.PHONY: run-be
+run-be:
+	uv run ./manage.py runserver 0.0.0.0:${PORT_BE}
+
+.PHONY: run-fe
+run-fe:
+	bun run dev --port ${PORT_FE}
+
+.PHONY: run-celery
+run-celery:
+	uv run ./manage.py celery worker -l info
+
+.PHONY: compose-up
 compose-up:
-	docker-compose -f ./docker/docker-compose.yml up --build
-	docker-compose -f ./docker/docker-compose.yml down
-
-build:
-	poetry export -f requirements.txt -o requirements.txt
-	yarn build
+	docker compose -f ./devsupport/docker-compose.yml up --build
+	docker compose -f ./devsupport/docker-compose.yml down

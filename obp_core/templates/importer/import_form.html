@@ -1,0 +1,250 @@
+{% extends "layout_edit.html" %}
+
+{% load i18n sekizai_tags dajaxice_templatetags pushy_tags %}
+
+{% block object_type %}import{% endblock %}
+
+{% block heading %}
+
+    {% addtoblock "js-ext" %}{% pushy_scripts %}{% endaddtoblock %}
+
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/tmpl.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.iframe-transport.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload-fp.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/jquery.fileupload-ui.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/locale.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/lib/fileupload/main.js"></script>{% endaddtoblock %}
+
+    <div id="heading">
+        {% include "skeleton/heading.html" %}
+    </div>
+
+{% endblock %}
+
+{% block inner %}
+    <div class="alert alert-info">
+        <strong>{% trans "Please note!" %}</strong>
+        <p>
+            {% blocktrans %}Do not upload more than maximum 30 tracks per "Upload Session"{% endblocktrans %}
+        </p>
+        <p>
+            {% blocktrans %}You don't have to wait until the import is complete.{% endblocktrans %}<br>
+            {% url 'importer:import-create' as new_upload_url %}
+            {% blocktrans %}As soon as the files are queued you can continue uploading with starting a <a href="{{ new_upload_url }}">new upload session</a>.{% endblocktrans %}
+        </p>
+    </div>
+{% endblock %}
+
+
+{% block sidebar %}
+    <div id="menu_context" class="menu-context">
+        <div class="action-group">
+            <ul class="unstyled">
+                <li class="action">
+                    <a href="{% url "importer:import-list" %}" title="{% trans "Back to My Uploads" %}">
+                        <span>{% trans "Back to My Uploads" %}</span>
+                    </a>
+                </li>
+                <li class="action">
+                    <a href="{% url "importer:import-create" %}" title="{% trans "New Upload Session" %}">
+                        <span>{% trans "New Upload Session" %}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block form %}
+
+    {% addtoblock "js-head" %}
+    <script type="text/javascript">
+        IMPORTFILE_API = "{% url "api_dispatch_list" api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}";
+        {% if data %}
+        app = {loaded: true};
+        {% endif %}
+    </script>
+    {% endaddtoblock %}
+
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/importfile.js"></script>{% endaddtoblock %}
+    {% addtoblock "js-post" %}<script type="text/javascript" src="{{ STATIC_URL }}importer/js/base.js"></script>{% endaddtoblock %}
+
+    {% addtoblock "js-post" %}
+    <script type="text/javascript">
+        $(function () {
+            setTimeout(function(){
+                importer.ui = new ImporterUi();
+                importer.ui.api_url = "{% url "api_dispatch_list" resource_name='import' api_name='v1'%}{{ object.id }}/";
+                importer.ui.init();
+            }, 500)
+        });
+
+    </script>
+    {% endaddtoblock %}
+
+    {% if request.user.is_staff %}
+
+        {% addtoblock "js-post" %}
+            <script>
+                $(function () {
+                    $(document).on('mouseover', '.item .admin-info a', function(e){
+                        e.preventDefault();
+                        var id = $(this).data('importfile_id');
+                        var url = '/admin/importer/importfile/' + id + '/';
+                        $(this).attr('href', url);
+                    })
+                });
+            </script>
+        {% endaddtoblock %}
+
+        {% addtoblock "css" %}
+            <style>
+                .item .admin-info {
+                    display: inline !important;
+                }
+            </style>
+        {% endaddtoblock %}
+
+    {% endif %}
+
+
+
+    <div class="item_inner">
+
+        <section class="importer-upload">
+
+
+
+            <div class="uploader">
+
+                <form id="fileupload" action="{% url "api_dispatch_list" api_name="v1" resource_name="importfile" %}?import_session={{ object.pk }}" method="POST" enctype="multipart/form-data">
+
+                    <input type="hidden" id="import_api_url"  value="{% url "api_dispatch_list" resource_name='import' api_name='v1'%}{{ object.id }}" />
+
+                    <div class="fileupload-buttonbar">
+
+                            <span class="btn btn-primary fileinput-button">
+                                <i class="icon-plus icon-white"></i>
+                                <span> Add Files</span>
+                                <input type="file" name="files[]" multiple>
+                            </span>&nbsp;&nbsp;
+                            <!--
+                            <button type="submit" class="btn btn-primary start">
+                                <i class="icon-upload icon-white"></i>
+                                <span> Start upload</span>
+                            </button>&nbsp;&nbsp;
+                            -->
+                    </div>
+
+                    <table role="presentation" class="table"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+                </form>
+
+            </div>
+
+        </section>
+
+        <section class="importer-importfiles">
+
+            <div class="listing">
+                <div id="result_holder">
+                    <div id="loading_message">
+                        <p>{% trans "Loading your import - please be patient!" %}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="drag_n_drop_area" style="display: none;">
+                <p>
+                    {% trans "Either use the 'Add Files' button - or Drag and Drop files here" %}
+                </p>
+            </div>
+
+        </section>
+
+        <div id="importer_ui_lock" style="display: none;">
+            <div class="inner">
+                <p style="text-align: center; padding-top: 50px; color: white;">
+                    <i class="icon icon-spin icon-spinner icon-4x"></i>
+                </p>
+                <p style="text-align: center; padding-top: 5px; color: white;">
+                    Processing
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script id="template-upload" type="text/x-tmpl">
+    {% verbatim %}
+    {% for (var i=0, file; file=o.files[i]; i++) { %}
+        <tr class="template-upload fade">
+            <td class="preview"><span class="fade"></span></td>
+            <td class="name"><span>{%=file.name%}</span></td>
+            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            {% if (file.error) { %}
+                <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+            {% } else if (o.files.valid && !i) { %}
+                <td class="progress-holder">
+                    <div class="progress progress-success active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
+                </td>
+                <td class="start">{% if (!o.options.autoUpload) { %}
+                    <button class="btn btn-mini btn-primary icon">
+                        <i class="icon-upload"></i>&nbsp;
+                        <span>{%=locale.fileupload.start%}</span>
+                    </button>
+                {% } %}</td>
+            {% } else { %}
+                <td colspan="2"></td>
+            {% } %}
+            <td class="cancel">{% if (!i) { %}
+                <button class="btn btn-mini btn-abort icon">
+                    <i class="icon-ban-circle"></i>&nbsp;
+                    <span>{%=locale.fileupload.cancel%}</span>
+                </button>
+            {% } %}</td>
+        </tr>
+    {% } %}
+    {% endverbatim %}
+    </script>
+
+    <script id="template-download" type="text/x-tmpl">
+    {% verbatim %}
+    {% for (var i=0, file; file=o.files[i]; i++) { %}
+        <tr class="template-download fade" style="display: none;">
+            {% if (file.error) { %}
+                <td></td>
+                <td class="name"><span>{%=file.name%}</span></td>
+                <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+                <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+            {% } else { %}
+                <td class="preview">{% if (file.thumbnail_url) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" rel="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
+                {% } %}</td>
+                <td class="name">
+                    <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
+                </td>
+                <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+                <td colspan="2"></td>
+            {% } %}
+            <td class="delete">
+                <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
+                    <i class="icon-trash icon-white"></i>
+                    <span>{%=locale.fileupload.destroy%}</span>
+                </button>
+                <input type="checkbox" name="delete" value="1">
+            </td>
+        </tr>
+    {% } %}
+    {% endverbatim %}
+    </script>
+
+{% endblock %}
+
+{% block form_sidebar %}
+    {% include "importer/_import_list_sidebar.html" %}
+    <div class="sidebar form-sidebar holder">
+        {% include "importer/form_import/_form_sidebar.html" %}
+    </div>
+{% endblock %}

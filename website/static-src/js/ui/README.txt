@@ -1,1 +1,0 @@
-All js from global ui.base.js should be refactored here

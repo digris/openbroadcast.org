@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[2],{745:function(t,s,e){"use strict";e.r(s);var n={name:"DefaultResult",props:{obj:{type:Object,required:!0}}},i=e(0),u=Object(i.a)(n,(function(){return(0,this._self._c)("div",[this._v("\n  "+this._s(this.obj.ct)+"*"+this._s(this.obj.name)+"\n")])}),[],!1,null,null,null);s.default=u.exports}}]);
+//# sourceMappingURL=2.js.map

@@ -1,0 +1,330 @@
+import os
+import time
+import hashlib
+import datetime
+import shutil
+import logging
+
+from django.db import models
+from django.db.models.signals import post_save, post_delete
+from django.core.files import File as DjangoFile
+from django.utils.translation import ugettext as _
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.core.urlresolvers import reverse
+from django.conf import settings
+from celery import shared_task
+from .util.process import Process
+
+from base.mixins import TimestampedModelMixin, UUIDModelMixin
+
+
+log = logging.getLogger(__name__)
+
+BASE_DIR = getattr(settings, "BASE_DIR", None)
+MEDIA_ROOT = getattr(settings, "MEDIA_ROOT", None)
+USE_CELERYD = getattr(settings, "EXPORTER_USE_CELERYD", False)
+
+GENERIC_STATUS_CHOICES = (
+    (0, _("Init")),
+    (1, _("Done")),
+    (2, _("Ready")),  # a.k.a. 'queued'
+    (3, _("Progress")),
+    (4, _("Downloaded")),
+    (99, _("Error")),
+    (11, _("Other")),
+)
+
+
+def create_download_path(instance, filename):
+    import unicodedata
+    import string
+
+    filename, extension = os.path.splitext(filename)
+    valid_chars = "-_.{}{}".format(string.ascii_letters, string.digits)
+    cleaned_filename = unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore")
+    folder = "export/processed/{}-{}/".format(
+        time.strftime("%Y%m%d%H%M%S", time.gmtime()),
+        instance.uuid,
+    )
+    return os.path.join(folder, "{}{}".format(cleaned_filename.lower(), extension.lower()))
+
+
+def create_archive_dir(instance):
+
+    path = "export/cache/{}-{}/".format(
+        time.strftime("%Y%m%d%H%M%S", time.gmtime()),
+        instance.uuid,
+    )
+
+    path_full = os.path.join(MEDIA_ROOT, path)
+
+    # debug - set to persistent directory for easier testing:
+    # path_full = os.path.join(BASE_DIR, 'media' , 'export/debug/')
+
+    try:
+        os.makedirs(os.path.join(path_full, "cache/"))
+    except OSError as e:
+        pass  # file exists
+
+    return path_full
+
+
+class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
+    FORMAT_CHOICES = (("mp3", _("MP3")), ("flac", _("Flac")))
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        null=True,
+        related_name="exports",
+        on_delete=models.SET_NULL,
+    )
+    status = models.PositiveIntegerField(default=0, choices=GENERIC_STATUS_CHOICES)
+
+    status_msg = models.CharField(max_length=512, blank=True, null=True)
+
+    filesize = models.IntegerField(default=0, blank=True, null=True)
+
+    filename = models.CharField(max_length=256, blank=True, null=True)
+    file = models.FileField(upload_to=create_download_path, blank=True, null=True)
+    fileformat = models.CharField(max_length=4, default="mp3", choices=FORMAT_CHOICES)
+
+    token = models.CharField(max_length=256, blank=True, null=True)
+
+    downloaded = models.DateTimeField(blank=True, null=True)
+
+    TYPE_CHOICES = (
+        ("web", _("Web Interface")),
+        ("api", _("API")),
+        ("fs", _("Filesystem")),
+    )
+    type = models.CharField(max_length=10, default="web", choices=TYPE_CHOICES)
+    notes = models.TextField(
+        blank=True,
+        null=True,
+        help_text=_("Optionally, just add some notes to this export if desired."),
+    )
+
+    class Meta:
+        app_label = "exporter"
+        verbose_name = _("Export")
+        verbose_name_plural = _("Exports")
+        ordering = ("created",)
+
+    def __str__(self):
+        return "{} - {}".format(self.user, self.created)
+
+    def get_ct(self):
+        return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
+
+    def get_absolute_url(self):
+        return None
+
+    def get_delete_url(self):
+        return "#"
+
+    @models.permalink
+    def get_download_url(self):
+        return (
+            "exporter:export-download",
+            (),
+            {"uuid": self.uuid, "token": self.token},
+        )
+
+    def get_api_url(self):
+        url = reverse(
+            "api_dispatch_list", kwargs={"resource_name": "export", "api_name": "v1"}
+        )
+        return "{}{}/".format(url, self.pk)
+
+    # @models.permalink
+    def get_delete_url(self):
+        # return ('exporter-upload-delete', [str(self.pk)])
+        return ""
+
+    def set_downloaded(self):
+        self.downloaded = datetime.datetime.now()
+        self.status = 4
+        self.save()
+
+        return None
+
+    def process(self):
+        log = logging.getLogger("exporter.models.process")
+        log.info("Start process Export: %s" % (self.pk))
+
+        if USE_CELERYD:
+            self.process_task.delay(self)
+        else:
+            self.process_task(self)
+
+    @shared_task
+    def process_task(obj):
+
+        target = "download"
+
+        from atracker.util import create_event
+
+        process = Process()
+        status, result, messages = process.run(instance=obj, format=obj.fileformat)
+
+        if target == "download":
+
+            if result:
+
+                obj.filesize = os.path.getsize(result)
+                obj.file = DjangoFile(open(result), "archive")
+
+                # update status
+                obj.status = 1
+                obj.save()
+                process.clear_cache()
+            else:
+                obj.status = 99
+                obj.status_msg = messages
+                obj.save()
+                process.clear_cache()
+
+    def save(self, *args, **kwargs):
+
+        self.filename = generate_export_filename(self.export_items)
+
+        if not self.token:
+            self.token = hashlib.sha1("TX%s" % self.uuid).hexdigest()
+
+        super().save(*args, **kwargs)
+
+
+def post_save_export(sender, **kwargs):
+    obj = kwargs["instance"]
+
+    # if status is 'ready' > run exporter
+    if obj.status == 2:
+        obj.process()
+
+    # emmit update message via pushy
+    if kwargs["created"]:
+        if obj.user and obj.user.profile:
+            from pushy.util import pushy_custom
+
+            pushy_custom(str(obj.user.profile.uuid))
+
+    obj.export_items.update(status=1)
+
+
+post_save.connect(post_save_export, sender=Export)
+
+
+def post_delete_export(sender, **kwargs):
+    obj = kwargs["instance"]
+
+    if obj.file:
+        log.debug("Post delete action, remove file: %s" % obj.file.path)
+
+        directory = os.path.split(obj.file.path)[0]
+        try:
+            shutil.rmtree(directory, True)
+        except:
+            obj.file.delete(False)
+
+
+post_delete.connect(post_delete_export, sender=Export)
+
+
+def generate_export_filename(qs):
+    filename = _("initializing export")
+    if qs.count() == 1:
+        item = qs.all()[0]
+        if item.content_type.name.lower() == "release":
+            filename = item.content_object.name.encode("ascii", "ignore")
+        if item.content_type.name.lower() == "track":
+            filename = item.content_object.name.encode("ascii", "ignore")
+        if item.content_type.name.lower() == "playlist":
+            filename = item.content_object.name.encode("ascii", "ignore")
+
+    if qs.count() > 1:
+        filename = _("Multiple items")
+
+    return filename
+
+
+class ExportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
+    class Meta:
+        app_label = "exporter"
+        verbose_name = _("Export Item")
+        verbose_name_plural = _("Export Items")
+        ordering = ("-created",)
+
+    export_session = models.ForeignKey(
+        Export, verbose_name=_("Export"), null=True, related_name="export_items"
+    )
+    status = models.PositiveIntegerField(default=0, choices=GENERIC_STATUS_CHOICES)
+
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey("content_type", "object_id")
+
+    def __str__(self):
+        try:
+            return "{} - {}".format(self.content_object, self.get_status_display())
+        except:
+            return "{} - {}".format(self.pk, self.status)
+
+    # @models.permalink
+    def get_delete_url(self):
+        # return ('exporter-upload-delete', [str(self.pk)])
+        return ""
+
+    def process(self):
+        log = logging.getLogger("exporter.models.process")
+        log.info("Start processing ExportItem: %s" % (self.pk))
+        log.info("Path: %s" % (self.file.path))
+
+        if USE_CELERYD:
+            self.process_task.delay(self)
+        else:
+            self.process_task(self)
+
+    @shared_task
+    def process_task(obj):
+        pass
+
+    def save(self, *args, **kwargs):
+
+        # if not self.filename:
+        #    self.filename = self.file.name
+
+        super().save(*args, **kwargs)
+
+
+def post_save_exportitem(sender, **kwargs):
+    obj = kwargs["instance"]
+
+    """
+    if obj.status == 0:
+        obj.process()
+    """
+
+
+# post_save.connect(post_save_exportitem, sender=ExportItem)
+
+
+def post_delete_exportitem(sender, **kwargs):
+    # import shutil
+    obj = kwargs["instance"]
+    try:
+        os.remove(obj.file.path)
+    except:
+        pass
+
+
+# post_delete.connect(post_delete_exportitem, sender=ExportItem)
+
+
+@shared_task
+def cleanup_exports():
+    qs = Export.objects.filter(
+        created__lte=datetime.datetime.now() - datetime.timedelta(days=7)
+    )
+    qs.delete()

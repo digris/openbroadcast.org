@@ -13,7 +13,7 @@ const DEV_MODE = process.env.NODE_ENV !== 'production';
 const STATIC_ROOT = path.resolve(__dirname, 'website', 'static-src');
 
 // pints to static source folder, un project root
-const STATIC_SRC = path.resolve(__dirname, 'static');
+const STATIC_SRC = path.resolve(__dirname, 'obp_ui');
 
 // must be the same as WEBPACK_DEVSERVER_HEADER
 const DEVSERVER_HEADER = 'X-WEBPACK-DEVSERVER';
@@ -22,13 +22,11 @@ module.exports = {
   entry: {
     'bundle': [
       "@babel/polyfill",
-      "./static/js/bundle.js"
+      "./obp_ui/js/bundle.js"
     ],
-    // 'legacy': [
-    //   "./static/js/legacy.js"
-    // ],
+
   },
-  // entry: './static/js/bundle.js',
+  // entry: './obp_ui/js/bundle.js',
   output: {
     path: DEV_MODE ? path.resolve(STATIC_ROOT, 'js') : path.resolve(STATIC_ROOT, 'dist', 'js'),
     filename: "[name].js",
@@ -58,7 +56,7 @@ module.exports = {
         use: {
           loader: 'vue-loader',
           options: {
-            includePaths: ['./static/js/'],
+            includePaths: ['./obp_ui/js/'],
           },
         }
       },
@@ -74,7 +72,7 @@ module.exports = {
             loader: 'sass-resources-loader',
             options: {
               resources: [
-                './static/style/abstracts/*.scss',
+                './obp_ui/style/abstracts/*.scss',
               ]
             },
           },
@@ -164,16 +162,16 @@ module.exports = {
     new VueLoaderPlugin(),
     new StyleLintPlugin({
       files: [
-        './static/js/**/*.vue',
-        './static/style/**/*.scss',
+        './obp_ui/js/**/*.vue',
+        './obp_ui/style/**/*.scss',
       ],
     })
   ],
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js', // 'vue/dist/vue.common.js' for webpack 1
-      src: path.resolve(__dirname, 'static/js/'),
-      style: path.resolve(__dirname, 'static/style/'),
+      src: path.resolve(__dirname, 'obp_ui/js/'),
+      style: path.resolve(__dirname, 'obp_ui/style/'),
     },
   },
   devServer: {

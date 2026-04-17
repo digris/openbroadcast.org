@@ -77,7 +77,7 @@
     },
     "name": "openbroadcast.org",
     "version": "0.0.1",
-    "main": "./static/js/bundle.js",
+    "main": "./obp_ui/js/bundle.js",
     "author": "digris AG - Jonas Ohrstrom",
     "license": "GPL V3",
     "optionalDependencies": {

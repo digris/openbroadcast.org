@@ -1,0 +1,224 @@
+@charset "UTF-8";
+
+body.app--account {
+  main {
+    // reset grid
+    > .content {
+      display: flex;
+      justify-content: center;
+
+      .content__primary {
+        width: 100%;
+        max-width: 600px;
+        padding: 12px;
+        background: #fff;
+      }
+    }
+  }
+
+  .form-prefix {
+    padding: 16px 0;
+  }
+
+  .form-appendix {
+    padding: 16px 0;
+    background: #fff;
+
+    .alt {
+      display: block;
+      padding: 2px 0;
+    }
+  }
+
+  .form-separator {
+    margin: 16px 0;
+    padding: 4px 0;
+    border-top: 1px solid #eee;
+  }
+
+  .form--account {
+    padding: 10px 0;
+
+    .input-container {
+      @include input-container-flex;
+
+      label {
+        min-width: 140px;
+      }
+
+      input {
+        width: 100%;
+        height: 28px;
+      }
+
+      &__field-errors {
+        text-align: right;
+      }
+    }
+
+    .actions {
+      // TODO: refactor to generic form mixin
+      @include form-default-actions;
+    }
+
+    .captcha-container {
+      display: flex;
+      width: 100%;
+
+      .captcha-text {
+        flex-grow: 1;
+
+        // margin-right: 12px
+      }
+
+      .captcha-image {
+        overflow: hidden;
+      }
+    }
+  }
+
+  // TODO: check for more generic solution to handle checkbox inputs
+  #input_id_tos {
+    margin-left: 152px;
+
+    .input-container__field {
+      display: flex;
+      align-items: center;
+
+      input[type="checkbox"] {
+        position: relative;
+
+        // transition: all 240ms
+        flex: 0 0 16px;
+        box-sizing: content-box;
+        width: 16px;
+        height: 16px;
+        color: transparent;
+        border: 1px solid #333;
+        border-color: $light-grey;
+        cursor: pointer;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+        &:focus {
+          background: $white;
+          border-color: $light-grey;
+          outline: 0 none;
+          box-shadow: none;
+        }
+
+        &:hover {
+          color: $light-grey;
+          border-color: $mid-grey;
+          outline: 0 none;
+          box-shadow: none;
+        }
+
+        &:checked {
+          color: #000;
+          border-color: $mid-grey;
+        }
+
+        &::after {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          font-size: 22px;
+          line-height: 24px;
+          text-align: center;
+          content: "╳";
+        }
+      }
+
+      label {
+        order: 2;
+        padding-left: 12px;
+      }
+    }
+
+    .input-container__field-errors {
+      padding-left: 36px;
+      text-align: left;
+    }
+  }
+
+  .social-login-container {
+    display: grid;
+    grid-gap: 12px;
+    grid-template-columns: auto;
+    margin: 20px 0 10px;
+
+    .auth-social {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 10px;
+      color: #222;
+      font-size: 14px;
+      text-decoration: none;
+      background: #e5e5e5;
+      border: 1px solid transparent;
+      transition: background 200ms, border-radius 100ms;
+
+      &:hover {
+        border-radius: 6px;
+      }
+
+      .icon {
+        height: 20px;
+      }
+
+      .icon-container {
+        display: block;
+        float: left;
+        margin-right: 14px;
+      }
+
+      .text-container {
+        display: block;
+        float: left;
+        padding-top: 2px;
+      }
+    }
+
+    .auth-social-facebook {
+      color: #fff;
+      background: #1877f2;
+
+      .icon-container {
+        img.icon {
+          height: 24px;
+        }
+      }
+
+      &:hover {
+        background: #1877f2;
+      }
+    }
+
+    .auth-social-google-oauth2 {
+      color: #5a5a5a;
+      background: white;
+      border-color: #5a5a5a;
+
+      &:hover {
+        color: #5a5a5a;
+        background: white;
+      }
+    }
+
+    .auth-social-deezer {
+      display: none;
+      color: #5a5a5a;
+      background: white;
+      border-color: #5a5a5a;
+
+      &:hover {
+        color: #5a5a5a;
+        background: white;
+      }
+    }
+  }
+}

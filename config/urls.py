@@ -1,0 +1,84 @@
+from django.conf.urls import include, url
+
+from django.conf import settings
+from dajaxice.core import dajaxice_autodiscover, dajaxice_config
+from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
+from alibrary.sitemap import ReleaseSitemap
+
+from .urls_api import api
+
+from loginas.views import user_login as loginas_user
+
+DEBUG = settings.DEBUG
+
+
+def handler500(request):
+
+    from django.template import Context, loader
+    from django.http import HttpResponseServerError
+
+    t = loader.get_template("500.html")
+    return HttpResponseServerError(t.render(Context({"request": request})))
+
+
+sitemaps = {"releases": ReleaseSitemap}
+
+admin.autodiscover()
+admin.site.site_header = "open broadcast"
+admin.site.site_title = "open broadcast"
+
+dajaxice_autodiscover()
+
+urlpatterns = [
+    url(r"^", include("home.urls")),
+    # migrated from cms
+    url(r"^catalog/", include("alibrary.urls", namespace="alibrary")),
+    url(r"^scheduler/", include("abcast.urls", namespace="abcast")),
+    url(r"^network/users/", include("profiles.urls", namespace="profiles")),
+    url(r"^importer/", include("importer.urls", namespace="importer")),
+    url(r"^exporter/", include("exporter.urls", namespace="exporter")),
+    #
+    url(r"^network/invitation/", include("invitation.urls", namespace="invitation")),
+    url(r"^network/actstream/", include("actstream.urls", namespace="actstream")),
+    url(r"^network/stations/", include("abcast.urls_station", namespace="abcast-network")),
+    #
+    url(r"^admin/", include(admin.site.urls)),
+    url(r"^vote/", include("arating.urls")),
+    url(r"^ac_tagging/", include("ac_tagging.urls")),
+    # api v1
+    url(r"^api/", include(api.urls)),
+    # api v2
+    url(r"^api/v2/", include("config.urls_apiv2", namespace="api")),
+    url(r"^postman/", include("postman.urls")),
+    url(dajaxice_config.dajaxice_url, include("dajaxice.urls")),
+    url(r"^accounts/", include("registration.backends.simple.urls")),
+    url("^account/", include("account.urls", namespace="account")),
+    url(r"^s/", include("social_django.urls", namespace="social")),
+    url(
+        r"^accounts/login_as/(?P<user_id>.+)/$", loginas_user, name="loginas-user-login"
+    ),
+    url(r"^captcha/", include("captcha.urls")),
+    url(r"^admin-extra/", include("massimporter.urls")),
+    url(r"^collection/", include("collection.urls", namespace="collection")),
+    url(r"^sitemap.xml$", sitemap, {"sitemaps": sitemaps}),
+    url(r"^player/", include("player.urls", namespace="player")),
+    url(r"^media-asset/", include("media_asset.urls")),
+    url(r"^webhooks/import/", include("massimporter.webhook.urls")),
+]
+
+if DEBUG:
+
+    try:
+        import debug_toolbar
+
+        urlpatterns += [url(r"^__debug__/", include(debug_toolbar.urls))]
+    except Exception as e:
+        pass
+
+    from django.views.static import serve
+
+    urlpatterns += [
+        url(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT})
+    ]
+

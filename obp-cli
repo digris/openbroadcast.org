@@ -1,0 +1,10 @@
+#! /bin/bash
+
+PORT=${PORT:-5000}
+export PATH="$(pwd)/.venv/bin:$PATH"
+
+if [[ $1 == "run" ]]; then
+    ./manage.py runserver 0.0.0.0:${PORT}
+else
+    ./manage.py "${@:1}"
+fi

@@ -60,15 +60,21 @@ brew install \
 ## Post Install
 
 ```shell
-./manage.py search_index --create
+./obp-cli search_index --create
 ```
 
 ```shell
 # search indexes
-./manage.py search_index --populate --models alibrary.playlist
+./obp-cli search_index --populate --models alibrary.playlist
 ```
 
 
 ```shell
-./manage.py runserver 0.0.0.0:5000
+./obp-cli run
+```
+
+
+
+```shell
+celery -A config worker -B -c 1 -Q celery -n queue.import -l INFO
 ```

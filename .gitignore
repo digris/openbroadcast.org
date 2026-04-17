@@ -55,3 +55,11 @@ util/nginx-dev/*
 website/fixtures
 
 *.sass-cache*
+
+.omx/
+.codex/
+
+data/
+__ref/
+
+dist/CACHE/
