@@ -99,6 +99,7 @@ class TagField(CharField):
         """
         Helper: set an instance's tag cache.
         """
+        instance.__dict__[self.attname] = tags  # NOTE: investigate side effects ;)
         setattr(instance, "_%s_cache" % self.attname, tags)
 
     def get_internal_type(self):
