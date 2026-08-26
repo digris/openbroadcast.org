@@ -372,6 +372,11 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = "auth.User"
 AUTH_PROFILE_MODULE = "profiles.Profile"
 ANONYMOUS_USER_ID = -1
+ABSOLUTE_URL_OVERRIDES = {
+    "auth.user": lambda u: (
+        "/network/users/%s/" % u.profile.uuid if hasattr(u, "profile") else ""
+    ),
+}
 LOGIN_URL = "/account/login/"
 LOGOUT_URL = "/account/logout/"
 LOGIN_REDIRECT_URL = "/"

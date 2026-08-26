@@ -9,6 +9,8 @@
 .idea/*
 .pytest_cache/
 
+.omc
+
 dev/
 local/
 
