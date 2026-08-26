@@ -1,6 +1,5 @@
 <script>
 
-
 import tabex from 'tabex';
 import canAutoPlay from 'can-autoplay';
 
@@ -96,7 +95,6 @@ export default {
         signal: 'destroyed',
       });
     });
-
 
     if (DEBUG) console.groupEnd();
 

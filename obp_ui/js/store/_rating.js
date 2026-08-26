@@ -3,7 +3,6 @@
 import Vue from 'vue';
 import APIClient from '../api/caseTranslatingClient';
 
-
 const RATING_ENDPOINT = '/api/v2/rating/rating/';
 
 const parseResponse = (response) => {

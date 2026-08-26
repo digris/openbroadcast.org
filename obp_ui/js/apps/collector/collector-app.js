@@ -152,7 +152,6 @@ const CollectorApp = Vue.extend({
         return;
       }
 
-
       const url = '/api/v2/alibrary/playlist/';
       const payload = {
         name: data.name,

@@ -13,16 +13,16 @@ const STATUS_MAP = {
 
 export default {
   name: 'ExporterItem',
+  components: {
+    date: Date,
+    filesize: Filesize,
+  },
   props: {
     item: {
       type: Object,
       required: true,
       default: () => {},
     },
-  },
-  components: {
-    'date': Date,
-    'filesize': Filesize,
   },
   computed: {
     status() {

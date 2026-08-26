@@ -232,7 +232,6 @@
         </div>
       </div>
 
-
       <div class="player-controls">
         <div class="button-panel">
           <a @click.prevent="player_play_offset(-1, player_current_media)">
@@ -283,7 +282,6 @@
             </transition>
           </div>
         </div>
-
 
         <transition name="fade">
           <div

@@ -1,4 +1,3 @@
-
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 
@@ -52,7 +51,6 @@ const msToTime = (ms) => {
 };
 
 const sToTime = (s) => msToTime(s * 1000);
-
 
 export function dayjsFormat(value, format = 'MMM. D, YYYY') {
   const datetime = (typeof value === 'string') ? dayjs(value) : value;

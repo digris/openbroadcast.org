@@ -185,7 +185,6 @@ export default {
         item = this.search_results[this.selected_search_result];
       }
 
-
       if (item !== undefined) {
         this.search_results = [];
         this.search_query_string = '';
@@ -244,7 +243,6 @@ export default {
       this.load_search_results();
     },
 
-
     // /////////////////////////////////////////////////////////////
     // data handling / ajax loading
     // /////////////////////////////////////////////////////////////
@@ -297,7 +295,6 @@ export default {
     //         })
     // },
 
-
     // /////////////////////////////////////////////////////////////
     // data handling / ajax loading
     // /////////////////////////////////////////////////////////////
@@ -316,7 +313,6 @@ export default {
       // add search options
       query.fuzzy = (this.settings.search_fuzzy_match_mode ? 1 : 0);
       query.ct = this.search_scope;
-
 
       console.debug('query', query);
       this.loading = true;

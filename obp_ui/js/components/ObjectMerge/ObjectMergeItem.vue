@@ -97,11 +97,9 @@ export default {
 
     cursor: pointer;
 
-
     &:hover {
       background: rgba(#fff, 0.08);
     }
-
 
     &.is-selected {
       background: rgba(#fff, 0.12);

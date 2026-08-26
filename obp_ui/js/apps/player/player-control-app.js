@@ -7,7 +7,6 @@ const DEBUG = false;
 
 const POPUP_SIZE = { width: 400, height: 800 };
 
-
 const exchange = tabex.client();
 
 // const PlayerApp = new Vue({
@@ -37,7 +36,6 @@ const PlayerControlApp = Vue.extend({
     exchange.on('player.heartbeat', this.heartbeat_receive);
     // exchange.on('player.controls', this.controls_receive);
 
-
     /** ********************************************************
          * in 'slave' mode the only action needed during
          * pageload is to send a 'ping' to the 'master'.
@@ -54,7 +52,6 @@ const PlayerControlApp = Vue.extend({
     });
 
     if (DEBUG) console.groupEnd();
-
 
     /** ********************************************************
          * temporary for parallel legacy / ng situation

@@ -44,7 +44,6 @@ export default {
         },
       }];
 
-
       APIClient.put(url, { itemsToCollect })
         .then((response) => {
           console.debug(response);

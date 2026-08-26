@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     style() {
-      const color = this.emission.obj.color;
+      const { color } = this.emission.obj;
       return {
         backgroundColor: (this.isHover) ? hexToRGBA(color, 1) : hexToRGBA(color, 0.50),
         borderColor: hexToRGBA(color, 1),

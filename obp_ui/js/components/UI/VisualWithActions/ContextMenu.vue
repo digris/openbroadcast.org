@@ -154,7 +154,6 @@ export default {
 
       filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.1));
 
-
       .menu-item {
         display: flex;
         width: 100%;

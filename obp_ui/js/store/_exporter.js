@@ -98,7 +98,6 @@ export default {
   actions,
 };
 
-
 // event listeners (currently used in legacy / non-vuejs context)
 window.addEventListener('exporter:exportObjects', (e) => {
   const objectKeys = e.detail;

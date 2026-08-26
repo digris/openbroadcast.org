@@ -269,7 +269,6 @@ export default {
       rawPosition.x = e.clientX;
       rawPosition.y = e.clientY;
 
-
       // TODO: not s nice to always have to get the container/dimensions from DOM.
       // however, performance impact is close to zero...
       const container = this.$refs.calendar;
@@ -313,7 +312,6 @@ export default {
       this.hasDragging = false;
       this.emissionPlaceholder.visible = false;
     },
-
 
     dragover(transferData, e) {
       const position = this.eventToXY({ e });

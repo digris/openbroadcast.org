@@ -171,7 +171,6 @@ export default {
 
           width: 100%;
 
-
           .tag {
 
             display: inline-flex;
@@ -192,7 +191,6 @@ export default {
           }
 
         }
-
 
       }
     }

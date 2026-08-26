@@ -23,7 +23,7 @@ export default {
   methods: {
     click() {
       // TODO: refactor all events to `eventBus`
-      const e = new CustomEvent(this.dispatchEvent, {detail: [this.key]});
+      const e = new CustomEvent(this.dispatchEvent, { detail: [this.key] });
       window.dispatchEvent(e);
       // EventBus.$emit(`${this.dispatchEvent}`, {selection: this.selection});
     },

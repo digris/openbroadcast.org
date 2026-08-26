@@ -18,7 +18,6 @@ dayjs.extend(toObject);
 dayjs.extend(utc);
 dayjs.extend(weekday);
 
-
 const getDayRange = function () {
   const days = [];
   const today = dayjs(new Date()).hour(DAY_START_HOUR).minute(0).second(0)

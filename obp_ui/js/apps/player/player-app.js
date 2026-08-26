@@ -28,7 +28,6 @@ const pre_process_loaded_items = (results) => {
   return results;
 };
 
-
 const pre_process_item = (item) => {
   // set properties needed for display
   item.errors = [];
@@ -97,7 +96,6 @@ const audio_level_for_position = (item, position) => {
   return level;
 };
 
-
 // const PlayerApp = new Vue({
 const PlayerApp = Vue.extend({
   /** ************************************************************
@@ -158,7 +156,6 @@ const PlayerApp = Vue.extend({
     exchange.on('player.heartbeat', this.heartbeat_receive);
     exchange.on('player.controls', this.controls_receive);
 
-
     /** ********************************************************
          * in 'master' mode the player sends a pingback / 'ready'
          * status to the slave(s).
@@ -193,7 +190,6 @@ const PlayerApp = Vue.extend({
         signal: 'destroyed',
       });
     });
-
 
     if (DEBUG) console.groupEnd();
   },
@@ -254,7 +250,6 @@ const PlayerApp = Vue.extend({
       this.handle_action(payload.action);
     },
 
-
     /** ********************************************************
          * send action to player (from 'local' or 'remote' source)
          ********************************************************* */
@@ -286,7 +281,6 @@ const PlayerApp = Vue.extend({
 
             this.loading = false;
             const results = pre_process_loaded_items(response.data.results);
-
 
             if (mode === 'replace') {
               this.itemsToPlay = results;
@@ -338,7 +332,7 @@ const PlayerApp = Vue.extend({
           this.player_current_media = item;
 
           const opts = {
-            // url: 'http://local.openbroadcast.org:5000/media-asset/format/427d5dbc-6997-40a8-bebd-faa9a056ec7f/default.mp3',
+            // url: 'http://obp-next.local:5000/media-asset/format/427d5dbc-6997-40a8-bebd-faa9a056ec7f/default.mp3',
             // url: 'https://www.openbroadcast.org/media-asset/format/b92f4fc9-24e6-41e2-af9e-ac1fc8dbab84/default.mp3',
             url: item.content.assets.stream,
             whileplaying: () => {
@@ -465,14 +459,12 @@ const PlayerApp = Vue.extend({
 
       console.log('player_get_next_sound', index);
 
-
       this.send_action({
         do: 'play',
         value: null,
         item: all_media[index],
       });
     },
-
 
     /** ********************************************************
          * initialize player backend
@@ -492,7 +484,6 @@ const PlayerApp = Vue.extend({
       });
     },
 
-
     /** ********************************************************
          * testing / debug....
          ********************************************************* */
@@ -506,7 +497,6 @@ const PlayerApp = Vue.extend({
         item,
       });
     },
-
 
     /** ********************************************************
          * visit item detail
@@ -563,7 +553,6 @@ const PlayerApp = Vue.extend({
       // this.player.setPosition(10000);
       this.player.stop().setPosition(10000).play();
     },
-
 
   },
 });

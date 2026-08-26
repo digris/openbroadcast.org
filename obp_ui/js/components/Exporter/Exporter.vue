@@ -57,9 +57,11 @@ export default {
             <h2>Download</h2>
           </div>
           <div class="meta">
-            <p>By clicking "Accept Terms & Conditions", you agree to our "<a href="/about/terms-and-conditions/">Terms
-              and Conditions</a>"&nbsp;and that you have read our documentation&nbsp;and understand how downloading
-              works.</p>
+            <p>
+              By clicking "Accept Terms & Conditions", you agree to our "<a href="/about/terms-and-conditions/">Terms
+                and Conditions</a>"&nbsp;and that you have read our documentation&nbsp;and understand how downloading
+              works.
+            </p>
           </div>
           <div class="actions">
             <a
@@ -76,8 +78,8 @@ export default {
       >
         <exporter-item
           v-for="item in exports"
-          :item="item"
           :key="item.uuid"
+          :item="item"
         />
       </div>
     </div>

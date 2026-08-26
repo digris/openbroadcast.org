@@ -1,6 +1,5 @@
 import APIClient from '../api/client';
 
-
 export const visit_by_resource = (item, scope) => {
   const url = (scope === undefined) ? item.url : item[scope];
   APIClient.get(url)

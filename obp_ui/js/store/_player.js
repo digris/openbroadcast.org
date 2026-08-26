@@ -92,7 +92,6 @@ class PlayerBackend {
   }
 }
 
-
 setImmediate(() => {
   backend = new PlayerBackend({ store });
 });

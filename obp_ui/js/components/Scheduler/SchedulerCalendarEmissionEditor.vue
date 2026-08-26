@@ -49,7 +49,7 @@ export default {
       if (!this.contentObj) {
         return null;
       }
-      const color = this.emission.color;
+      const { color } = this.emission;
       return {
         backgroundColor: hexToRGBA(color, 0.2),
         // backgroundColor: `rgba(${color}, .2)`,
