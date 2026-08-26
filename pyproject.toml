@@ -1,5 +1,5 @@
 [project]
-name = "obp-next"
+name = "obp-web"
 dynamic = ["version"]
 description = "openbroadcast.org - Music Platform"
 authors = [{ name = "Jonas Ohrstrom", email = "jonas.ohrstrom@digris.ch" }]

@@ -19,8 +19,9 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: 'obp'
-      MYSQL_PASS: 'obp'
+      MYSQL_USER: obp
+      MYSQL_PASSWORD: obp
+      MYSQL_DATABASE: obp
     volumes:
       - obp-mariadb:/var/lib/mysql
     ports:

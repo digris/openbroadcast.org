@@ -50,8 +50,7 @@
         "vuex-shared-mutations": "^1.0.2",
         "webfonts-loader": "^5.1.1",
         "webpack": "^4.8.1",
-        "webpack-cli": "^3.3.10",
-        "yarn": "^1.22.22"
+        "webpack-cli": "^3.3.10"
     },
     "scripts": {
         "dev": "NODE_ENV=development webpack-dev-server --mode development",
@@ -75,7 +74,7 @@
         "vue-eslint-parser": "^7.0.0",
         "webpack-dev-server": "^3.1.4"
     },
-    "name": "openbroadcast.org",
+    "name": "obp-web",
     "version": "0.0.1",
     "main": "./obp_ui/js/bundle.js",
     "author": "digris AG - Jonas Ohrstrom",

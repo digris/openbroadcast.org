@@ -1059,7 +1059,7 @@ wheels = [
 ]
 
 [[package]]
-name = "obp-next"
+name = "obp-web"
 source = { editable = "." }
 dependencies = [
     { name = "audioread" },

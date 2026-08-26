@@ -5,6 +5,8 @@ SHELL := bash
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
 
+
+PYTHON_VERSION = 3.9
 DOCKER_TAG = obp-next
 
 PORT_BE = 5000
@@ -17,7 +19,7 @@ PORT_FE = 3000
 .PHONY: setup
 setup:
 	mkdir -p data/db && mkdir -p data/media
-	uv sync
+	uv sync --python ${PYTHON_VERSION}
 	bun install
 	@if [ ! -f .env ]; then \
 		echo "adding .env"; \
@@ -83,7 +85,7 @@ run-be:
 
 .PHONY: run-celery
 run-celery:
-	uv run celery -A config.celery_app worker -l info
+	uv run celery -A config.celery_app worker -B -l info
 
 .PHONY: run-fe
 run-fe:

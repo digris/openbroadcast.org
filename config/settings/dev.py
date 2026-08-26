@@ -4,7 +4,7 @@ from .base import *  # noqa
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "obp-local",
+        "NAME": "obp",
         "HOST": "127.0.0.1",
         "PORT": 3307,
         "USER": "obp",
