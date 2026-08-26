@@ -1,6 +1,6 @@
 {
     "port" : 8000,
-    "pattern" : "org_openbroadcast_dev_*",
+    "pattern" : "pushy_*",
     "saveLiveEdit" : false,
     "redis": {
         "host": "redis",

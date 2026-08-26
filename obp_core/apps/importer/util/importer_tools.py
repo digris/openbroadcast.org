@@ -243,7 +243,7 @@ class Importer:
         except:
             ir = None
 
-        if ir and ir.count > 0:
+        if ir and ir.count() > 0:
             r = ir[0]
 
         # create release if forced
@@ -319,7 +319,7 @@ class Importer:
         except:
             ia = None
 
-        if ia and ia.count > 0:
+        if ia and ia.count() > 0:
             a = ia[0]
 
         # create artist if forced

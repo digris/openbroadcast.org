@@ -19,11 +19,22 @@ env = environ.Env(
     DATABASE_URL=(str, "sqlite:///dev/null"),
     MEDIA_ROOT=(str, str(PROJECT_ROOT / "data" / "media")),
     ELASTICSEARCH_URL=(str, "localhost:9200"),
+    #
+    SITE_URL=(str, "http://obp-next.local:5000"),
+    ALLOWED_HOSTS=(list, ["*"]),
     # binaries
     FFPROBE_BINARY=(str, "/usr/bin/ffprobe"),
     FFMPEG_BINARY=(str, "/usr/bin/ffmpeg"),
     LAME_BINARY=(str, "/usr/bin/lame"),
     ECHOPRINT_CODEGEN_BINARY=(str, "/usr/local/bin/echoprint-codegen"),
+    # services
+    MUSICBRAINZ_HOST=(str, "musicbrainz.org"),
+    DISCOGS_HOST=(str, "api.discogs.com"),
+    #
+    MEDIA_PREFLIGHT_SERVICE_ENDPOINT=(str, "https://media-preflight-service-888119763922.europe-west6.run.app/"),
+    MEDIA_PREFLIGHT_SERVICE_TOKEN=(str, ""),
+    #
+    WAVEFORM_SERVICE_ENDPOINT=(str, "http://10.10.8.202:2001/"),
 )
 
 env.read_env(env.str("ENV_PATH", ".env"))
@@ -40,7 +51,9 @@ SECRET_KEY = env(
 
 SITE_ID = 1
 
-SITE_URL = "http://127.0.0.1:5000"
+SITE_URL = env("SITE_URL")
+
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 LANGUAGE_CODE = "en"
 LANGUAGES = [
@@ -197,12 +210,12 @@ STATICFILES_FINDERS = (
 
 # `build` -> bundler output
 STATICFILES_DIRS = [
-    PROJECT_ROOT / "build",
+    PROJECT_ROOT / "build" / "static",
     APP_ROOT / "static",
 ]
 
 # 'dist' -> ./manage.py collectstatic output
-STATIC_ROOT = PROJECT_ROOT / "dist"
+STATIC_ROOT = PROJECT_ROOT / "dist" / "static"
 
 STATIC_URL = "/static/"
 
@@ -301,6 +314,18 @@ FFPROBE_BINARY = env.str("FFPROBE_BINARY")
 FFMPEG_BINARY = env.str("FFMPEG_BINARY")
 LAME_BINARY = env.str("LAME_BINARY")
 ECHOPRINT_CODEGEN_BINARY = env.str("ECHOPRINT_CODEGEN_BINARY")
+
+
+#######################################################################
+# services
+#######################################################################
+MUSICBRAINZ_HOST = env.str("MUSICBRAINZ_HOST")
+DISCOGS_HOST = env.str("DISCOGS_HOST")
+
+MEDIA_PREFLIGHT_SERVICE_ENDPOINT = env.str("MEDIA_PREFLIGHT_SERVICE_ENDPOINT")
+MEDIA_PREFLIGHT_SERVICE_TOKEN = env.str("MEDIA_PREFLIGHT_SERVICE_TOKEN")
+
+WAVEFORM_SERVICE_ENDPOINT = env.str("WAVEFORM_SERVICE_ENDPOINT")
 
 ########################################################################
 # search
@@ -508,7 +533,7 @@ PUSHY_SETTINGS = {
         "exporter.export",
         "abcast.channel",
     ),
-    "SOCKET_SERVER": "//localhost:8888/",
+    "SOCKET_SERVER": "//localhost:5001/",
     "CHANNEL_PREFIX": "pushy_",
     "DEBUG": DEBUG,
 }
@@ -646,3 +671,87 @@ ACCOUNT_USERNAME_REQUIRED = True
 SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_AUTO_SIGNUP = True
 EMAIL_CONFIRMATION_DAYS = 5
+
+
+#######################################################################
+# logging
+#######################################################################
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {"format": "%(lineno)-4s%(name)-24s %(levelname)-8s %(message)s"}
+    },
+    "handlers": {
+        "default": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
+    },
+    "loggers": {
+        "": {"level": "WARNING", "handlers": ["default"], "propagate": True},
+        "django.db.backends": {
+            "level": "INFO",
+            "handlers": ["default"],
+            "propagate": False,
+        },
+        "urllib3": {"level": "WARNING", "handlers": ["default"], "propagate": False},
+        "elasticsearch": {"level": "INFO", "handlers": ["default"], "propagate": False},
+        "social_django": {
+            "level": "DEBUG",
+            "handlers": ["default"],
+            "propagate": False,
+        },
+        "django_elasticsearch_dsl": {
+            "level": "DEBUG",
+            "handlers": ["default"],
+            "propagate": False,
+        },
+        # platform applications
+        "abcast": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "alibrary": {
+            "level": "DEBUG",
+            "handlers": ["default"],
+            "propagate": False,
+        },
+        "arating": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "autopilot": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "collection": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "crawler": {"level": "INFO", "handlers": ["default"], "propagate": False},
+        "exporter": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "fprint_client": {
+            "level": "DEBUG",
+            "handlers": ["default"],
+            "propagate": False,
+        },
+        "importer": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "massimporter": {"level": "DEBUG", "handlers": ["default"], "propagate": True},
+        "media_asset": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "media_preflight": {
+            "level": "DEBUG",
+            "handlers": ["default"],
+            "propagate": False,
+        },
+        "metadata_generator": {
+            "level": "DEBUG",
+            "handlers": ["default"],
+            "propagate": False,
+        },
+        "object_actions": {
+            "level": "DEBUG",
+            "handlers": ["default"],
+            "propagate": False,
+        },
+        "profiles": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "search": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "lib.icecast": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "pushy": {"level": "INFO", "handlers": ["default"], "propagate": False},
+        "statistics": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "postman": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "base.audio": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "base.tunein": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "base.icecast": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+        "base.pypo": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
+    },
+}

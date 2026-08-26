@@ -9,28 +9,28 @@ const path = require('path');
 
 const DEV_MODE = process.env.NODE_ENV !== 'production';
 
-// points to STATIC_ROOT configured in django
-const STATIC_ROOT = path.resolve(__dirname, 'website', 'static-src');
-
 // pints to static source folder, un project root
 const STATIC_SRC = path.resolve(__dirname, 'obp_ui');
+
+// points to STATIC_ROOT configured in django
+const STATIC_ROOT = path.resolve(__dirname, 'build', 'static');
 
 // must be the same as WEBPACK_DEVSERVER_HEADER
 const DEVSERVER_HEADER = 'X-WEBPACK-DEVSERVER';
 
 module.exports = {
   entry: {
-    'bundle': [
-      "@babel/polyfill",
-      "./obp_ui/js/bundle.js"
+    bundle: [
+      '@babel/polyfill',
+      './obp_ui/js/bundle.js',
     ],
 
   },
   // entry: './obp_ui/js/bundle.js',
   output: {
     path: DEV_MODE ? path.resolve(STATIC_ROOT, 'js') : path.resolve(STATIC_ROOT, 'dist', 'js'),
-    filename: "[name].js",
-    publicPath: 'http://localhost:3000/static/js/'
+    filename: '[name].js',
+    publicPath: 'http://localhost:3000/static/js/',
   },
   devtool: 'source-map',
   module: {
@@ -180,7 +180,7 @@ module.exports = {
     port: 3000,
     compress: true,
     disableHostCheck: true,
-    //host: 'local.openbroadcast.org',
+    //host: 'obp-next.local',
     host: '0.0.0.0',
     headers: {
       'Access-Control-Allow-Origin': '*'

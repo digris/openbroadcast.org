@@ -56,7 +56,7 @@ base.ui.iface = function () {
         var href = $('a.link-main', this).attr('href');
         window.location.href = href;
     });
-    //$('.autocomplete.result').load('http://local.openbroadcast.org:8000/en/content/library/releases/autocomplete/?q=second');
+    //$('.autocomplete.result').load('http://obp-next.local:8000/en/content/library/releases/autocomplete/?q=second');
 
 
     // translate link to post (eg delete items)

@@ -1,3 +1,7 @@
+#######################################################################
+# NOTE: FILE NOT USED - JUST FOR REFERENCE
+#######################################################################
+
 import os
 import sys
 from django.conf import settings
@@ -12,7 +16,7 @@ INTERNAL_IPS = ("127.0.0.11",)
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
-SITE_URL = "http://local.openbroadcast.org:8888"
+SITE_URL = "http://obp-next.local:8888"
 # SITE_URL = 'http://ohrstrom-local.anorg.net'
 
 EXPORTER_DEBUG = False
@@ -282,7 +286,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 POSTMAN_MAILER_APP = "debug"
 
 # streaming settings
-RTMP_HOST = "local.openbroadcast.org"
+RTMP_HOST = "obp-next.local"
 RTMP_APP = "alibrary"
 RTMP_PORT = "1935"
 
@@ -296,7 +300,7 @@ PUSHY_SETTINGS = {
         "exporter.export",
         "abcast.channel",
     ),
-    # "SOCKET_SERVER": "//local.openbroadcast.org:8180/",  # running on localhost
+    # "SOCKET_SERVER": "//obp-next.local:8180/",  # running on localhost
     "SOCKET_SERVER": "/",  # running via docker compose
     "CHANNEL_PREFIX": "org_openbroadcast_dev_",
     "REDIS_HOST": "127.0.0.1",
@@ -499,7 +503,7 @@ LOGGING = {
             "host": "gojo.hazelfire.com",
             "port": 12201,
             "localname": "doga.obp-local-dev",
-            "hostname": "local.openbroadcast.org",
+            "hostname": "obp-next.local",
         },
         "default": {
             "level": "DEBUG",

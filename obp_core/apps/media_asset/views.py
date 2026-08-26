@@ -20,7 +20,7 @@ NGINX_X_ACCEL_REDIRECT = getattr(settings, "NGINX_X_ACCEL_REDIRECT", True)
 class WaveformView(View):
     """
     test with:
-    http://local.openbroadcast.org:5000/media-asset/waveform/s/a9de1c5a-c1ca-4786-b5be-fdb5046ef212.png
+    http://obp-next.local:5000/media-asset/waveform/s/a9de1c5a-c1ca-4786-b5be-fdb5046ef212.png
     """
 
     def get(self, request, *args, **kwargs):
@@ -47,8 +47,8 @@ class WaveformView(View):
 class FormatView(View):
     """
     test with:
-    http://local.openbroadcast.org:5000/media-asset/format/10240118-cb99-40f6-92f9-e964dd3372e4/default.mp3
-    http://local.openbroadcast.org:5000/media-asset/format/10240118-cb99-40f6-92f9-e964dd3372e4/lo.mp3
+    http://obp-next.local:5000/media-asset/format/10240118-cb99-40f6-92f9-e964dd3372e4/default.mp3
+    http://obp-next.local:5000/media-asset/format/10240118-cb99-40f6-92f9-e964dd3372e4/lo.mp3
     """
 
     def get(self, request, *args, **kwargs):

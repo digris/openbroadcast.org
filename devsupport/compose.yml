@@ -2,8 +2,8 @@ services:
   nginx:
     # container_name: nginx
     build:
-      context: ${PWD}/devsupport/nginx/
-      dockerfile: ${PWD}/devsupport/nginx/Dockerfile
+      context: ${PWD}/nginx/
+      # dockerfile: ${PWD}/nginx/Dockerfile
     ports:
       - "8888:80"
     volumes:
@@ -30,8 +30,8 @@ services:
   rabbitmq:
     # container_name: rabbitmq
     build:
-      context: ${PWD}/devsupport/rabbitmq/
-      dockerfile: Dockerfile
+      context: ${PWD}/rabbitmq/
+      # dockerfile: Dockerfile
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -65,10 +65,20 @@ services:
   pushy:
     # container_name: pushy
     build:
-      context: ${PWD}
-      dockerfile: ${PWD}/devsupport/pushy/Dockerfile
+      context: ${PWD}/../
+      dockerfile: ${PWD}/pushy/Dockerfile
     ports:
-      - "8180:8000"
+      - "5001:8000"
+    restart: always
+    networks:
+      - obp
+  waveform:
+    # container_name: waveform
+    build:
+      context: ${PWD}/../
+      dockerfile: ${PWD}/waveform/Dockerfile
+    ports:
+      - "5002:8000"
     restart: always
     networks:
       - obp

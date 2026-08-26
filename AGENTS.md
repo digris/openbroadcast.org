@@ -56,6 +56,26 @@ Keep runtime marker contracts stable and non-destructive when overlays are appli
 - Run lint, typecheck, tests, and static analysis after changes.
 - Final reports must include changed files, simplifications made, and remaining risks.
 
+## Project migration context
+
+This codebase is in a staged legacy migration.
+
+Current enforced objective:
+- Get the application running on Python 3.9 and Django 1.11.
+- Treat this as a compatibility/stabilization phase, not a full modernization phase.
+
+Execution implications:
+- Prefer changes that preserve behavior while removing Python 2 / old Django incompatibilities.
+- Do not introduce refactors that increase migration surface area unless required for compatibility, safety, or testability.
+- Prefer shims, isolating adapters, and incremental cleanup over broad rewrites.
+- When choosing between "modern best practice" and "safe bridge toward Django 1.11", prefer the bridge unless the user explicitly requests broader modernization.
+- Record compatibility assumptions and deferred follow-up work clearly so later migration phases do not re-open already-resolved decisions.
+
+Near-term success criteria:
+- App runs under Python 3.9 and Django 1.11.
+- Existing behavior is preserved or intentionally documented.
+- Refactors should make later migration to newer LTS easier, not harder.
+
 <lore_commit_protocol>
 ## Lore Commit Protocol
 

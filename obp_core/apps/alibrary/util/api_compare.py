@@ -526,6 +526,8 @@ class DiscogsAPILookup(APILookup):
 
         provider_id = uri.split("/")[-1]
 
+        provider_id = provider_id.split("-")[0]  # strip the name part if present
+
         if "/release/" in uri:
             api_url = "http://{}/releases/{}".format(DISCOGS_HOST, provider_id)
 

@@ -25,6 +25,8 @@ MEDIA_ASSET_KEEP_DAYS = getattr(settings, "MEDIA_ASSET_KEEP_DAYS", 60)
 MEDIA_ROOT = getattr(settings, "MEDIA_ROOT", None)
 ASSET_DIR = os.path.join(MEDIA_ROOT, "media_asset")
 
+LAME_BINARY = settings.LAME_BINARY
+
 FORMAT_LOCK_EXPIRE = 60 * 1
 
 

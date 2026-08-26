@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{744:function(n,t,e){"use strict";e.r(t);var u={name:"DefaultResult"},l=e(0),s=Object(l.a)(u,(function(){return(0,this._self._c)("div",[this._v("\n  template not found..\n")])}),[],!1,null,null,null);t.default=s.exports}}]);
-//# sourceMappingURL=0.js.map

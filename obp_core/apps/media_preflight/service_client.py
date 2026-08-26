@@ -4,13 +4,9 @@ from django.conf import settings
 
 from requests.exceptions import RequestException
 
-SERVICE_ENDPOINT = getattr(
-    settings,
-    "MEDIA_PREFLIGHT_SERVICE_ENDPOINT",
-    "https://media-preflight-service-kcek2ea7xq-oa.a.run.app/",
-)
+SERVICE_ENDPOINT = settings.MEDIA_PREFLIGHT_SERVICE_ENDPOINT
 
-SERVICE_TOKEN = getattr(settings, "MEDIA_PREFLIGHT_SERVICE_TOKEN", None)
+SERVICE_TOKEN = settings.MEDIA_PREFLIGHT_SERVICE_TOKEN
 
 TIMEOUT = (10, 600)
 

@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import permission_required
 import requests
 from stdnum import ean
 from django.utils.translation import ugettext as _
-import urllib
+from urllib.parse import quote, unquote
 from alibrary.models import Release, Relation, Label, Artist, Media
 from base.models.utils.merge import (
     merge_objects,
@@ -48,11 +48,11 @@ def api_lookup(request, *args, **kwargs):
     try:
         log.debug(provider)
         data = get_from_provider(item_type, item_id, provider, api_url)
-        return json.dumps(data, encoding="utf-8")
+        return json.dumps(data)
     except Exception as e:
         log.warning("api_lookup error: %s", e)
         error_message = "Unable to process search request. \r\nPlease check again if the provided URLs are correct."
-        return json.dumps({"error": "%s" % error_message}, encoding="utf-8")
+        return json.dumps({"error": "%s" % error_message})
 
 
 @dajaxice_register
@@ -157,6 +157,9 @@ def provider_search(request, *args, **kwargs):
             # query = re.sub('[^A-Za-z0-9 :]+', '', query)
             t_query = asciiDammit(query)
 
+            if isinstance(t_query, bytes):
+                t_query = t_query.decode("utf-8")
+
             """
             escape lucene special characters:
             https://lucene.apache.org/core/4_3_0/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description
@@ -178,7 +181,7 @@ def provider_search(request, *args, **kwargs):
                 .replace(r"artist\:", "artist:")
             )
 
-            t_query = urllib.quote(t_query)
+            t_query = quote(t_query)
 
             url = "http://{}/ws/2/{}?query={}&fmt=json".format(
                 MUSICBRAINZ_HOST,
@@ -186,7 +189,7 @@ def provider_search(request, *args, **kwargs):
                 t_query,
             )
 
-            query = urllib.unquote(t_query)
+            query = unquote(t_query)
             query = (
                 query.replace(r"\!", "!")
                 .replace(r"\+", "+")

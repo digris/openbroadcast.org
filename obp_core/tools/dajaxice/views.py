@@ -11,19 +11,6 @@ from dajaxice.core import dajaxice_functions, dajaxice_config
 log = logging.getLogger("dajaxice")
 
 
-def safe_dict(d):
-    """
-    Recursively clone json structure with UTF-8 dictionary keys
-    http://www.gossamer-threads.com/lists/python/bugs/684379
-    """
-    if isinstance(d, dict):
-        return {k.encode("utf-8"): safe_dict(v) for k, v in d.items()}
-    elif isinstance(d, list):
-        return [safe_dict(x) for x in d]
-    else:
-        return d
-
-
 class DajaxiceRequest(View):
     """ Handle all the dajaxice xhr requests. """
 
@@ -41,7 +28,7 @@ class DajaxiceRequest(View):
             # Clean the argv
             if data != "undefined":
                 try:
-                    data = safe_dict(json.loads(data))
+                    data = json.loads(data)
                 except Exception:
                     data = {}
             else:
@@ -54,9 +41,8 @@ class DajaxiceRequest(View):
                 if settings.DEBUG:
                     raise
                 response = dajaxice_config.DAJAXICE_EXCEPTION
-            if django.get_version() >= "1.7":
-                return HttpResponse(response, content_type="application/x-json")
-            else:
-                return HttpResponse(response, mimetype="application/x-json")
+
+            return HttpResponse(response, content_type="application/x-json")
+
         else:
             raise FunctionNotCallableError(name)

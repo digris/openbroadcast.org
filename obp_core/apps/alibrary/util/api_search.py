@@ -1,7 +1,7 @@
 import requests
 import json
 import re
-import urllib
+from urllib.parse import quote_plus
 from django.conf import settings
 import logging
 from Levenshtein import distance, jaro_winkler, jaro, ratio
@@ -70,7 +70,7 @@ def discogs_ordered_search(query, item_type, limit=100):
 
         url = "http://{host}/{item_type}s/{query}".format(
             host=DISCOGS_HOST,
-            query=urllib.quote_plus(query.lower()),
+            query=quote_plus(query.lower()),
             item_type=item_type,
         )
 
@@ -131,7 +131,7 @@ def discogs_ordered_search(query, item_type, limit=100):
 
     url = "http://{host}/database/search?q={query}&type={item_type}&per_page=100".format(
         host=DISCOGS_HOST,
-        query=urllib.quote_plus(query.encode("utf8").lower()),
+        query=quote_plus(query.lower()),
         item_type=item_type,
     )
 
@@ -152,7 +152,7 @@ def discogs_ordered_search(query, item_type, limit=100):
 
         data = json.loads(r.text.replace("api.discogs.com", DISCOGS_HOST))
 
-        url = reduce(dict.get, ["pagination", "urls", "next"], data)
+        url = data.get("pagination", {}).get("urls", {}).get("next")
 
         for r in data["results"]:
             if "title" in r:

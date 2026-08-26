@@ -6,11 +6,7 @@ from django.conf import settings
 from requests.exceptions import RequestException
 
 
-SERVICE_ENDPOINT = getattr(
-    settings,
-    "WAVEFORM_SERVICE_ENDPOINT",
-    "http://10.10.8.202:2001/",
-)
+SERVICE_ENDPOINT = settings.WAVEFORM_SERVICE_ENDPOINT
 
 TIMEOUT = (10, 1200)
 

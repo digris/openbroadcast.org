@@ -1,0 +1,2 @@
+class AudioWaveformException(Exception):
+    pass
