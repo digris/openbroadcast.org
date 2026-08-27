@@ -1,53 +1,40 @@
+# OS / editor
 .DS_Store
+.idea/
+
+# Python
 *.pyc
-.pydev*
-
-.nvmrc
-
-.tmp
-.tox
-.idea/*
 .pytest_cache/
-
-.omc
-
-dev/
-local/
-
-temp/
-logs/
-notes/
-
-build/
-
-.python-version
-
-.idea
-db_dumps/
-
-*node_modules*
-
+.ruff_cache/
+.tox/
+.venv*/
 .env
-.venv*
+.envrc
 
-
-
-util/remote_to_local.conf
-tools/*/env
-env
-docs/
-
-util/nginx-dev/*
-
-
+# JS
+node_modules/
 *.sass-cache*
 
+# Generated / runtime
+.tmp/
+logs/
+build/
+dist/
 celerybeat-schedule.*
+db_dumps/
 
+# Local tooling state
 .omx/
-.codex/
 
+# Project-local data
 data/
-ref/
 
-dist/*
+# Codex local state, while preserving shared config
+.codex/*
+!.codex/agents/
+!.codex/agents/**
+!.codex/skills/
+!.codex/skills/**
+.codex/skills/.system/**
+!.codex/prompts/
+!.codex/prompts/**
