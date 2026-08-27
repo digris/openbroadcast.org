@@ -1,21 +1,21 @@
-# OS / editor
+# os / editor
 .DS_Store
 .idea/
 
-# Python
+# python
 *.pyc
 .pytest_cache/
 .ruff_cache/
 .tox/
 .venv*/
 .env
-.envrc
+# .envrc
 
-# JS
+# js
 node_modules/
 *.sass-cache*
 
-# Generated / runtime
+# generated / runtime
 .tmp/
 logs/
 build/
@@ -23,13 +23,13 @@ dist/
 celerybeat-schedule.*
 db_dumps/
 
-# Local tooling state
+# local tooling state
 .omx/
 
-# Project-local data
+# project-local data
 data/
 
-# Codex local state, while preserving shared config
+# codex local state, while preserving shared config
 .codex/*
 !.codex/agents/
 !.codex/agents/**
