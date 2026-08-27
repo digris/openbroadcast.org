@@ -1,3 +1,0 @@
-include README.md
-recursive-include djangocms_panel/templates *
-recursive-exclude * *.py[co]

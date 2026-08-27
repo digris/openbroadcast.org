@@ -1,9 +1,0 @@
-{% load cms_tags %}
-
-<div class="panel {{ instance.get_extra_classes }}">
-	<div class="panel-body">
-		{% for plugin in instance.child_plugin_instances %}
-			{% render_plugin plugin %}
-		{% endfor %}
-	</div>
-</div>
