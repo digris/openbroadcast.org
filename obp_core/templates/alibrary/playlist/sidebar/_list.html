@@ -1,17 +1,17 @@
 {% load i18n %}
 
 <div class="menu-context">
-    <div class="action-group">
-        <ul>
-            {% if perms.alibrary.add_playlist %}
-                <li class="action">
-                    <a
-                       href="{% url "alibrary:playlist-create" %}"
-                       title="{% trans "Create a playlist" %}">
-                        <span>{% trans "Create a playlist" %}</span>
-                    </a>
-                </li>
-            {% endif %}
-        </ul>
-    </div>
+  <div class="action-group">
+    <ul>
+      {% if perms.alibrary.add_playlist %}
+        <li class="action">
+          <a
+            href="{% url "alibrary:playlist-create" %}"
+            title="{% trans "Create a playlist" %}">
+            <span>{% trans "Create a playlist" %}</span>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
 </div>

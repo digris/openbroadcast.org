@@ -9,8 +9,8 @@
 
 <div class="list list--table">
   {% for item in media_set %}
-  <div class="list-item">
-    {% include 'alibrary/media/_row.html' with object=item.content_object %}
-  </div>
+    <div class="list-item">
+      {% include 'alibrary/media/_row.html' with object=item.content_object %}
+    </div>
   {% endfor %}
 </div>

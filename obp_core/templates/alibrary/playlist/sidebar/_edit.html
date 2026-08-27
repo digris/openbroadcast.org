@@ -1,13 +1,13 @@
 {% load i18n %}
 
 <div class="menu-context">
-    <div class="action-group">
-        <ul>
-            <li class="action">
-                <a href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
-                    <span>{% trans "Back to Detail-View" %}</span>
-                </a>
-            </li>
+  <div class="action-group">
+    <ul>
+      <li class="action">
+        <a href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
+          <span>{% trans "Back to Detail-View" %}</span>
+        </a>
+      </li>
             {% comment %}
             {% if perms.alibrary.schedule_playlist and object.type == "broadcast" and object.broadcast_status == 1 %}
                 <li>
@@ -20,21 +20,21 @@
                 </li>
             {% endif %}
             {% endcomment %}
-            {% if user.is_authenticated and user == object.user %}
-              <li class="action">
-                    <a href="{{ object.get_delete_url }}" title="{% trans "Delete" %}">
-                        <span>{% trans "Delete" %}</span>
-                    </a>
-                </li>
-            {% endif %}
-            {% if perms.alibrary.change_playlist and user.is_staff %}
-              <li class="action">
-                    <a href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
-                       title="{% trans "Administration view" %}">
-                        <span>{% trans "Administration view" %}</span>
-                    </a>
-                </li>
-            {% endif %}
-        </ul>
-    </div>
+      {% if user.is_authenticated and user == object.user %}
+        <li class="action">
+          <a href="{{ object.get_delete_url }}" title="{% trans "Delete" %}">
+            <span>{% trans "Delete" %}</span>
+          </a>
+        </li>
+      {% endif %}
+      {% if perms.alibrary.change_playlist and user.is_staff %}
+        <li class="action">
+          <a href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
+             title="{% trans "Administration view" %}">
+            <span>{% trans "Administration view" %}</span>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
 </div>

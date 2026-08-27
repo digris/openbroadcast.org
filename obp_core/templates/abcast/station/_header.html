@@ -54,10 +54,10 @@
 <div class="header__secondary">
   <div class="visual">
     <visual-with-actions
-            ct="{{ object.get_ct }}"
-            uuid="{{ object.uuid }}"
-            image-url="{% thumbnail object.image 280x280 crop upscale %}"
-            large-image-url="{% thumbnail object.image 1200x1200 crop upscale %}">
+      ct="{{ object.get_ct }}"
+      uuid="{{ object.uuid }}"
+      image-url="{% thumbnail object.image 280x280 crop upscale %}"
+      large-image-url="{% thumbnail object.image 1200x1200 crop upscale %}">
     </visual-with-actions>
   </div>
 </div>

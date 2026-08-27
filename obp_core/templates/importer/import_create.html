@@ -5,20 +5,20 @@
 {% block object_type %}import{% endblock %}
 
 {% block heading %}
-    <div id="heading">
-        {% include "skeleton/heading.html" %}
-    </div>
+  <div id="heading">
+    {% include "skeleton/heading.html" %}
+  </div>
 {% endblock %}
 
 {% block inner %}
-    <section>
-        <div class="uploader">
-            {% crispy form %}
-        </div>
-    </section>
+  <section>
+    <div class="uploader">
+      {% crispy form %}
+    </div>
+  </section>
 {% endblock %}
 
 
 {% block sidebar %}
-    {% include "importer/_import_list_sidebar.html" %}
+  {% include "importer/_import_list_sidebar.html" %}
 {% endblock %}

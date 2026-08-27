@@ -2,18 +2,18 @@
 
 {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/playlist.js"></script>{% endaddtoblock %}
 {% addtoblock "js-post" %}
-<script>
+  <script>
 
-	var alibrary = alibrary || {};
+    var alibrary = alibrary || {};
 
-	$(function(){
+    $(function(){
 
-		alibrary.playlist = new PlaylistUi();
-		alibrary.playlist.api_url = "{% url "api_dispatch_list" resource_name='library/playlist' api_name='v1'%}";
-		alibrary.playlist.api_url_simple = "{% url "api_dispatch_list" resource_name='library/simpleplaylist' api_name='v1'%}";
-		alibrary.playlist.current_playlist_id = "{{ current_playlist.pk }}";
+      alibrary.playlist = new PlaylistUi();
+      alibrary.playlist.api_url = "{% url "api_dispatch_list" resource_name='library/playlist' api_name='v1'%}";
+      alibrary.playlist.api_url_simple = "{% url "api_dispatch_list" resource_name='library/simpleplaylist' api_name='v1'%}";
+      alibrary.playlist.current_playlist_id = "{{ current_playlist.pk }}";
 		//alibrary.playlist.init();
 
-	});
-</script>
+    });
+  </script>
 {% endaddtoblock %}

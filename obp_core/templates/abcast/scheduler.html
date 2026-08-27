@@ -7,7 +7,7 @@
 {% block menubar %}{% endblock %}
 
 {% block main-content %}
-    <scheduler
-        :read-only="({% if read_only %}true{% else %}false{% endif %})"
-        channel-uuid="{{ channel.uuid }}"></scheduler>
+  <scheduler
+    :read-only="({% if read_only %}true{% else %}false{% endif %})"
+    channel-uuid="{{ channel.uuid }}"></scheduler>
 {% endblock %}

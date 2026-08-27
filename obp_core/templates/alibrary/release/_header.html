@@ -29,17 +29,17 @@
         <div>
           {# TODO: refactor artist display logic #}
           {% for artist in object.get_artists %}
-              {% if "join_phrase" in artist %}
-                  {% with item=artist.artist %}
-                      {% if artist.join_phrase %}{{ artist.join_phrase }}{% endif %}
-                      {% include "alibrary/element/_inline_link.html" %}
-                  {% endwith %}
-              {% else %}
-                  {% with item=artist %}
-                      {% include "alibrary/element/_inline_link.html" %}
-                      {% if not forloop.last %},{% endif %}
-                  {% endwith %}
-              {% endif %}
+            {% if "join_phrase" in artist %}
+              {% with item=artist.artist %}
+                {% if artist.join_phrase %}{{ artist.join_phrase }}{% endif %}
+                {% include "alibrary/element/_inline_link.html" %}
+              {% endwith %}
+            {% else %}
+              {% with item=artist %}
+                {% include "alibrary/element/_inline_link.html" %}
+                {% if not forloop.last %},{% endif %}
+              {% endwith %}
+            {% endif %}
           {% endfor %}
         </div>
       </div>
@@ -107,9 +107,9 @@
           {% firstof object.last_creation_time|date:'DATETIME_FORMAT' object.created|date:'DATETIME_FORMAT' %}
         </time>
         {% if object.creator %}
-        <div>
-          <a href="{{ object.creator.get_absolute_url }}">{{ object.creator.profile.get_display_name }}</a>
-        </div>
+          <div>
+            <a href="{{ object.creator.get_absolute_url }}">{{ object.creator.profile.get_display_name }}</a>
+          </div>
         {% endif %}
       </div>
     </div>
@@ -123,9 +123,9 @@
           {% firstof object.last_update_time|date:'DATETIME_FORMAT' object.updated|date:'DATETIME_FORMAT' %}
         </time>
         {% if object.last_editor %}
-        <div>
-          <a href="{{ object.last_editor.get_absolute_url }}">{{ object.last_editor.profile.get_display_name }}</a>
-        </div>
+          <div>
+            <a href="{{ object.last_editor.get_absolute_url }}">{{ object.last_editor.profile.get_display_name }}</a>
+          </div>
         {% endif %}
       </div>
     </div>
@@ -160,8 +160,8 @@
 
 <div class="header__secondary">
   <div class="rating">
-        <object-rating
-            obj-uuid="{{ object.uuid }}"
-            obj-ct="{{ object.get_ct }}"></object-rating>
+    <object-rating
+      obj-uuid="{{ object.uuid }}"
+      obj-ct="{{ object.get_ct }}"></object-rating>
   </div>
 </div>

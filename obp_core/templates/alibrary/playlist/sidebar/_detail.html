@@ -4,11 +4,11 @@
   <div class="action-group">
     <ul>
       {% if perms.alibrary.create_playlist %}
-      <li class="action">
-        <a href="{% url "alibrary:playlist-create" %}">
-          {% trans "Create a playlist" %}
-        </a>
-      </li>
+        <li class="action">
+          <a href="{% url "alibrary:playlist-create" %}">
+            {% trans "Create a playlist" %}
+          </a>
+        </li>
       {% endif %}
       {% if user.is_authenticated and user == object.user %}
         <li class="action">

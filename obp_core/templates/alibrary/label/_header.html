@@ -18,14 +18,14 @@
     </small>
   </div>
   {% if object.releases.exists %}
-  {% url "alibrary:release-list" as release_list_url %}
-  <div class="title title--secondary">
-    <h3>
-      <a href="{% spurl path=release_list_url query="search_label_ids={{ object.uuid }}" %}">
-        {{ object.releases.count }} {% trans 'Releases' %}
-      </a>
-    </h3>
-  </div>
+    {% url "alibrary:release-list" as release_list_url %}
+    <div class="title title--secondary">
+      <h3>
+        <a href="{% spurl path=release_list_url query="search_label_ids={{ object.uuid }}" %}">
+          {{ object.releases.count }} {% trans 'Releases' %}
+        </a>
+      </h3>
+    </div>
   {% endif %}
   <div class="meta">
     {% if umbrella_label %}
@@ -95,19 +95,19 @@
         <div>
           {% if object.address %}
             <p>{{ object.address|linebreaksbr }}</p>
-				  {% endif %}
+          {% endif %}
           {% if object.country %}
             <p>{{ object.country.printable_name }}</p>
-				  {% endif %}
+          {% endif %}
           {% if object.phone %}
             <p>P: {{ object.phone }}</p>
-				  {% endif %}
+          {% endif %}
           {% if object.fax %}
             <p>F: {{ object.fax }}</p>
-				  {% endif %}
+          {% endif %}
           {% if object.email %}
             <p>{{ object.email }}</p>
-				  {% endif %}
+          {% endif %}
         </div>
       </div>
     {% endif %}
@@ -122,9 +122,9 @@
           {% firstof object.last_creation_time|date:'DATETIME_FORMAT' object.created|date:'DATETIME_FORMAT' %}
         </time>
         {% if object.creator %}
-        <div>
-          <a href="{{ object.creator.get_absolute_url }}">{{ object.creator.profile.get_display_name }}</a>
-        </div>
+          <div>
+            <a href="{{ object.creator.get_absolute_url }}">{{ object.creator.profile.get_display_name }}</a>
+          </div>
         {% endif %}
       </div>
     </div>
@@ -137,9 +137,9 @@
           {% firstof object.last_update_time|date:'DATETIME_FORMAT' object.updated|date:'DATETIME_FORMAT' %}
         </time>
         {% if object.last_editor %}
-        <div>
-          <a href="{{ object.last_editor.get_absolute_url }}">{{ object.last_editor.profile.get_display_name }}</a>
-        </div>
+          <div>
+            <a href="{{ object.last_editor.get_absolute_url }}">{{ object.last_editor.profile.get_display_name }}</a>
+          </div>
         {% endif %}
       </div>
     </div>
@@ -162,7 +162,7 @@
 <div class="header__secondary">
   <div class="rating">
     <object-rating
-        obj-uuid="{{ object.uuid }}"
-        obj-ct="{{ object.get_ct }}"></object-rating>
+      obj-uuid="{{ object.uuid }}"
+      obj-ct="{{ object.get_ct }}"></object-rating>
   </div>
 </div>

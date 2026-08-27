@@ -1,91 +1,91 @@
 {% load compress i18n sekizai_tags staticfiles loginas_tags nunjucks_tags %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
-    <head>
-        <title>{% block title %}{{ request.current_page.get_title }}{% endblock %}</title>
+  <head>
+    <title>{% block title %}{{ request.current_page.get_title }}{% endblock %}</title>
 
-        <meta charset="utf-8">
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-        <meta name="description" content="{% block meta_description %}{% endblock %}" />
-        <meta name="keywords" content="{% block meta_keywords %}{% endblock %}" />
-        <meta name="author" content="digris AG" />
+    <meta charset="utf-8">
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <meta name="description" content="{% block meta_description %}{% endblock %}" />
+    <meta name="keywords" content="{% block meta_keywords %}{% endblock %}" />
+    <meta name="author" content="digris AG" />
 
-        <meta property="fb:app_id" content="{{ settings.FACEBOOK_APP_ID }}"/>
-        {% block meta_opengraph %}{% endblock %}
+    <meta property="fb:app_id" content="{{ settings.FACEBOOK_APP_ID }}"/>
+    {% block meta_opengraph %}{% endblock %}
 
-        <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/base/favicon.png" />
-        <link rel="shortcut icon" type="image/x-icon" href="{{ STATIC_URL }}img/base/favicon.png">
+    <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/base/favicon.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ STATIC_URL }}img/base/favicon.png">
 
         <!-- start: legacy css assets -->
         <!-- start: icon fonts -->
-        <link type="text/css" href="{% static 'css/iconset/fontcustom.css' %}" rel="stylesheet" />
-        <link type="text/css" href="{% static 'css/fontawesome-3.2.1/font-awesome.css' %}" rel="stylesheet" />
+    <link type="text/css" href="{% static 'css/iconset/fontcustom.css' %}" rel="stylesheet" />
+    <link type="text/css" href="{% static 'css/fontawesome-3.2.1/font-awesome.css' %}" rel="stylesheet" />
         <!-- end: icon fonts -->
         <!-- end: legacy css assets -->
 
         <!-- start: icon fonts -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <!-- end: icon fonts -->
 
 
         <!-- start: css elements added by sub-templates -->
-        {% render_block "css" %}
+    {% render_block "css" %}
         <!-- end: css elements added by sub-templates -->
 
         <!-- start: legacy jquery -->
-        <script src="{% static 'js/lib/jquery-1.8.3.js' %}"></script>
-        <script src="{% static 'js/lib/jquery-ui-1.9.2.custom.min.js' %}"></script>
+    <script src="{% static 'js/lib/jquery-1.8.3.js' %}"></script>
+    <script src="{% static 'js/lib/jquery-ui-1.9.2.custom.min.js' %}"></script>
         <!-- end: legacy jquery -->
-        <script>
+    <script>
             {% comment %}
             we need to delay jQuery (legacy) ready function until vuejs app is ready
             'hold ready' will be released once the main app is mounted.
             see `initializer.AppInitializer`
             {% endcomment %}
-            window.jQuery.holdReady(true);
-        </script>
+      window.jQuery.holdReady(true);
+    </script>
 
-        <script>
-          document.settings = {
-            enableAlphaFeatures: {% if user.is_authenticated and user.profile.enable_alpha_features %}true{% else %}false{% endif %},
-            user: {
-              isAuthenticated: {% if user.is_authenticated %}true{% else %}false{% endif %},
-            },
-          }
-        </script>
+    <script>
+      document.settings = {
+        enableAlphaFeatures: {% if user.is_authenticated and user.profile.enable_alpha_features %}true{% else %}false{% endif %},
+        user: {
+          isAuthenticated: {% if user.is_authenticated %}true{% else %}false{% endif %},
+        },
+      }
+    </script>
 
         <!-- start: js-head elements added by sub-templates -->
-        {% render_block "js-head" %}
+    {% render_block "js-head" %}
         <!-- end: js-head elements added by sub-templates -->
 
         <!-- start: webpack bundle handling -->
-        {% if not webpack_devserver %}
-            <link rel="stylesheet" href="{% static 'dist/css/bundle.css' %}"/>
+    {% if not webpack_devserver %}
+      <link rel="stylesheet" href="{% static 'dist/css/bundle.css' %}"/>
             <!--<link rel="stylesheet" href="{% static 'dist/css/legacy.css' %}"/>-->
-            <script src="{% static 'dist/js/bundle.js' %}"></script>
-        {% else %}
-            <script src="{% static 'js/bundle.js' %}"></script>
+      <script src="{% static 'dist/js/bundle.js' %}"></script>
+    {% else %}
+      <script src="{% static 'js/bundle.js' %}"></script>
             <!--<script src="{% static 'js/legacy.js' %}"></script>-->
-        {% endif %}
+    {% endif %}
         <!-- end: webpack bundle handling -->
 
-    </head>
+  </head>
 
-    {% loginas_is_active as loginas_active %}
+  {% loginas_is_active as loginas_active %}
 
-    <body id="body"
-          class="base {% block body_class %}{% endblock %}{% if user.is_authenticated %} authenticated{% endif %} {% if loginas_active %}loginas-active{% endif %}"
-          data-scope="{% block scope %}{% endblock %}"
-          data-spy="scroll"
-          data-target=".subnav"
-          data-offset="50">
+  <body id="body"
+        class="base {% block body_class %}{% endblock %}{% if user.is_authenticated %} authenticated{% endif %} {% if loginas_active %}loginas-active{% endif %}"
+        data-scope="{% block scope %}{% endblock %}"
+        data-spy="scroll"
+        data-target=".subnav"
+        data-offset="50">
 
-        <div id="app" class="app-container">
+    <div id="app" class="app-container">
 
-            {% include "element/topbar/_topbar.html" %}
+      {% include "element/topbar/_topbar.html" %}
 
-            {% block teaser %}{% endblock %}
+      {% block teaser %}{% endblock %}
 
-            <main class="main">
+      <main class="main">
                 <!--
                 {% block messages %}
                     {% if messages %}
@@ -97,210 +97,210 @@
                     {% endif %}
                 {% endblock %}
                 -->
-                <div class="heading">
-                    {% block heading %}{% endblock %}
-                    <div>
-                    <nav class="menubar">
-                        {% block menubar %}
-                            {% include "skeleton/_menubar.html" %}
-                        {% endblock %}
-                    </nav>
-                    <div id="tagcloud" class="tagcloud">
-                        {% block tagcloud %}{% endblock %}
-                    </div>
-                    </div>
-                </div>
-                {% block main-content %}
+        <div class="heading">
+          {% block heading %}{% endblock %}
+          <div>
+            <nav class="menubar">
+              {% block menubar %}
+                {% include "skeleton/_menubar.html" %}
+              {% endblock %}
+            </nav>
+            <div id="tagcloud" class="tagcloud">
+              {% block tagcloud %}{% endblock %}
+            </div>
+          </div>
+        </div>
+        {% block main-content %}
                     {% comment %}
                     the 'main-content' block is used to mount full-area vuejs components
                     see scheduler component for example.
                     {% endcomment %}
-                    <div class="content">
+          <div class="content">
                         {% comment %}{% endcomment %}
-                        {% block main %}{% endblock %}
-                    </div>
-                {% endblock %}
-            </main>
+            {% block main %}{% endblock %}
+          </div>
+        {% endblock %}
+      </main>
 
-            <footer>
-                {% include "skeleton/footer.html" %}
-            </footer>
+      <footer>
+        {% include "skeleton/footer.html" %}
+      </footer>
 
-            {% block user_panels %}
-            {% if not user.is_authenticated %}
-                {% include "element/_private_site_panel.html" %}
-            {% endif %}
-            {% endblock %}
+      {% block user_panels %}
+        {% if not user.is_authenticated %}
+          {% include "element/_private_site_panel.html" %}
+        {% endif %}
+      {% endblock %}
 
-            {% if loginas_active %}
-            <section id="loginas_message">
-                <div>
-                    <h2>WARNING: Currently logged in as user "{{ user }}"!</h2>
-                    <p>
-                        <a href="{% url "loginas-user-login" loginas_active %}" class="btn btn-primary">Back to own account</a>
-                    </p>
-                </div>
-            </section>
-            {% endif %}
+      {% if loginas_active %}
+        <section id="loginas_message">
+          <div>
+            <h2>WARNING: Currently logged in as user "{{ user }}"!</h2>
+            <p>
+              <a href="{% url "loginas-user-login" loginas_active %}" class="btn btn-primary">Back to own account</a>
+            </p>
+          </div>
+        </section>
+      {% endif %}
 
             {% comment %}global vue components{% endcomment %}
-            <notifications></notifications>
-            <lightbox></lightbox>
+      <notifications></notifications>
+      <lightbox></lightbox>
 
-        </div>
+    </div>
 
         <!-- TODO: just temporary... -->
-        <div id="player_control_app">(( loading player app ))</div>
-        <div id="collector_app">(( loading collector app ))</div>
+    <div id="player_control_app">(( loading player app ))</div>
+    <div id="collector_app">(( loading collector app ))</div>
 
-        <div id="refresh"></div>
-        <div class="dialog window" id="dialog_alert" style="display: none;"><!-- dynamic content --></div>
-        <div id="fb-root"></div>
+    <div id="refresh"></div>
+    <div class="dialog window" id="dialog_alert" style="display: none;"><!-- dynamic content --></div>
+    <div id="fb-root"></div>
 
-        {% render_block "js" %}
-        {% render_block "js-ext" %}
+    {% render_block "js" %}
+    {% render_block "js-ext" %}
 
-        {% compress js %}
-        <script src="{{ STATIC_URL }}js/lib/lazysizes.js"></script>
-        {% endcompress %}
+    {% compress js %}
+      <script src="{{ STATIC_URL }}js/lib/lazysizes.js"></script>
+    {% endcompress %}
 
         <!-- start: compressor js-post -->
-        {% compress js %}
-        <script src="{{ STATIC_URL }}js/lib/jquery.timers-1.1.2.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.cookie.min.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.jgrowl.min.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.ajax-queue.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/ba-debug.js"></script>
+    {% compress js %}
+      <script src="{{ STATIC_URL }}js/lib/jquery.timers-1.1.2.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.cookie.min.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.jgrowl.min.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.ajax-queue.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/ba-debug.js"></script>
         <!--<script src="{{ STATIC_URL }}js/lib/nunjucks/filters.js"></script>-->
-        <script src="{{ STATIC_URL }}js/lib/jquery.daterangepicker.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.daterangepicker.js"></script>
         <!--<script src="{{ STATIC_URL }}js/lib/jquery.countdown.js"></script>-->
-        <script src="{{ STATIC_URL }}js/lib/jquery.smartupdater.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.taconite.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.colorbox.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.raty.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.popup.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.log.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.marquee.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.shorten.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.boxy.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.autogrow.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.qtip.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.tools.min.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.purl.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.scrollfollow.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.nanoscroller-0.8.7.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.tmpl.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jsrender.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.nouislider.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.history.js"></script>
-        <script src="{{ STATIC_URL }}js/history.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.smartupdater.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.taconite.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.colorbox.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.raty.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.popup.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.log.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.marquee.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.shorten.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.boxy.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.autogrow.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.qtip.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.tools.min.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.purl.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.scrollfollow.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.nanoscroller-0.8.7.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.tmpl.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jsrender.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.nouislider.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/jquery.history.js"></script>
+      <script src="{{ STATIC_URL }}js/history.js"></script>
 
-        <script src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-tab.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-tooltip.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-popover.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-button.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-tab.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-tooltip.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-popover.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/bootstrap/bootstrap-button.js"></script>
 
-        <script src="{{ STATIC_URL }}js/lib/ICanHaz.js"></script>
+      <script src="{{ STATIC_URL }}js/lib/ICanHaz.js"></script>
         {% comment %}
         <script src="{{ STATIC_URL }}js/lib/pagedown/Markdown.Converter.js"></script>
         <script src="{{ STATIC_URL }}js/lib/pagedown/Markdown.Sanitizer.js"></script>
         <script src="{{ STATIC_URL }}js/lib/pagedown/Markdown.Editor.js"></script>
         {% endcomment %}
-        <script src="{{ STATIC_URL }}ac_tagging/js/ac_tagging.js"></script>
-        <script src="{{ STATIC_URL }}arating/js/base.js"></script>
+      <script src="{{ STATIC_URL }}ac_tagging/js/ac_tagging.js"></script>
+      <script src="{{ STATIC_URL }}arating/js/base.js"></script>
 
         <!-- refactored modules, coffeescript versions -->
-        <script src="{{ STATIC_URL }}js/element/navigation.js"></script>
-        <script src="{{ STATIC_URL }}js/ui/base.js"></script>
-        <script src="{{ STATIC_URL }}js/ui/dialog.js"></script>
-        <script src="{{ STATIC_URL }}js/ui/edit.base.js"></script>
+      <script src="{{ STATIC_URL }}js/element/navigation.js"></script>
+      <script src="{{ STATIC_URL }}js/ui/base.js"></script>
+      <script src="{{ STATIC_URL }}js/ui/dialog.js"></script>
+      <script src="{{ STATIC_URL }}js/ui/edit.base.js"></script>
 
-        {% nunjucks_scripts %}
+      {% nunjucks_scripts %}
 
-        {% endcompress %}
+    {% endcompress %}
         <!-- end: compressor js-post -->
 
         <!-- start: js-post elements added by sub-templates -->
-        {% render_block "js-post" %}
+    {% render_block "js-post" %}
         <!-- end: js-post elements added by sub-templates -->
 
         <!-- start: js-uncompressed -->
-        <script src="{{ STATIC_URL }}js/lib/jquery.pulse.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.highlight.js"></script>
-        <script src="{{ STATIC_URL }}js/lib/jquery.watch.js"></script>
-        <script src="{{ STATIC_URL }}js/ui.base.js"></script>
-        <script src="{{ STATIC_URL }}js/util.base.js"></script>
-        <script src="{{ STATIC_URL }}js/util/util.base.js"></script>
-        <script src="{{ STATIC_URL }}js/util/util.notify.js"></script>
-        <script src="{{ STATIC_URL }}js/util/util.dialog.js"></script>
-        <script src="{{ STATIC_URL }}js/util/util.site-panel.js"></script>
+    <script src="{{ STATIC_URL }}js/lib/jquery.pulse.js"></script>
+    <script src="{{ STATIC_URL }}js/lib/jquery.highlight.js"></script>
+    <script src="{{ STATIC_URL }}js/lib/jquery.watch.js"></script>
+    <script src="{{ STATIC_URL }}js/ui.base.js"></script>
+    <script src="{{ STATIC_URL }}js/util.base.js"></script>
+    <script src="{{ STATIC_URL }}js/util/util.base.js"></script>
+    <script src="{{ STATIC_URL }}js/util/util.notify.js"></script>
+    <script src="{{ STATIC_URL }}js/util/util.dialog.js"></script>
+    <script src="{{ STATIC_URL }}js/util/util.site-panel.js"></script>
         <!-- end: js-uncompressed -->
 
         <!-- start: js-uncompressed elements added by sub-templates -->
-        {% render_block "js-uncompressed" %}
+    {% render_block "js-uncompressed" %}
         <!-- end: js-uncompressed elements added by sub-templates -->
 
-        <script>
-            $(document).ready(function () {
-                debug.setLevel(2);
-                base.ui.init();
-                base.ui.skeleton();
-                base.ui.iface();
-                base.ui.searchbar();
-                base.ui.tagcloud();
-                base.ui.sidebar();
-                base.ui.listview();
-                base.ui.itemview();
-                base.ui.tracklist();
-                base.ui.dialog();
-            });
+    <script>
+      $(document).ready(function () {
+        debug.setLevel(2);
+        base.ui.init();
+        base.ui.skeleton();
+        base.ui.iface();
+        base.ui.searchbar();
+        base.ui.tagcloud();
+        base.ui.sidebar();
+        base.ui.listview();
+        base.ui.itemview();
+        base.ui.tracklist();
+        base.ui.dialog();
+      });
 
-            $(window).unload(function () {
-                base.ui.unload();
-            });
-        </script>
+      $(window).unload(function () {
+        base.ui.unload();
+      });
+    </script>
 
-        <script>
+    <script>
 
-            var base = base || {};
+      var base = base || {};
 
-            base.vars = base.vars || {};
-            base.vars.context = 'content';
-            base.vars.section = 'library';
-            base.vars.subset = 'releases';
-            base.vars.action = '';
-            base.vars.base_url = '/';
-            base.vars.legacy_url = 'https://www.openbroadcast.org/';
-            base.vars.js_path = '/media/js/';
-            base.vars.irc_chat_url = 'http://webchat.freenode.net/?channels=openbroadcast';
-            base.vars.ga_track_events = false;
-            base.vars.user_id = '5';
-            base.vars.username = 'jonas';
-            base.vars.list_highlight = false;
+      base.vars = base.vars || {};
+      base.vars.context = 'content';
+      base.vars.section = 'library';
+      base.vars.subset = 'releases';
+      base.vars.action = '';
+      base.vars.base_url = '/';
+      base.vars.legacy_url = 'https://www.openbroadcast.org/';
+      base.vars.js_path = '/media/js/';
+      base.vars.irc_chat_url = 'http://webchat.freenode.net/?channels=openbroadcast';
+      base.vars.ga_track_events = false;
+      base.vars.user_id = '5';
+      base.vars.username = 'jonas';
+      base.vars.list_highlight = false;
 
-        </script>
+    </script>
 
-        <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-            ga('create', 'UA-51593170-1', 'openbroadcast.org');
-            ga('send', 'pageview');
+      ga('create', 'UA-51593170-1', 'openbroadcast.org');
+      ga('send', 'pageview');
 
-            {% if user.is_authenticated %}
-            ga('set', '&uid', {{ user.id }});
-            {% endif %}
-        </script>
+      {% if user.is_authenticated %}
+        ga('set', '&uid', {{ user.id }});
+      {% endif %}
+    </script>
 
-        <script>(function(d, s, id) {
-          var js, fjs = d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) return;
-          js = d.createElement(s); js.id = id;
-          js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId={{ settings.FACEBOOK_APP_ID }}";
-          fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));</script>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId={{ settings.FACEBOOK_APP_ID }}";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 
-    </body>
+  </body>
 </html>

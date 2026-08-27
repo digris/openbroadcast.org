@@ -10,9 +10,9 @@
   <template #visual-top>
     <div class="flags">
       {% if object.is_new %}
-      <span class="flag flag--new">
-        new
-      </span>
+        <span class="flag flag--new">
+          new
+        </span>
       {% endif %}
       {% if object.country or object.type %}
         <span class="flag">
@@ -22,7 +22,7 @@
           {% if object.type %}
             {{ object.get_type_display|capfirst }}
           {% endif %}
-          </span>
+        </span>
       {% endif %}
     </div>
   </template>
@@ -49,9 +49,9 @@
       {% if object.date_end %}<span class="dim">&#10013;</span>{{ object.date_end.year }}{% endif %}
     </div>
     <div>
-        <span class="dim" title="Num. releases">
-          {{ object.releases.count }}
-        </span>
+      <span class="dim" title="Num. releases">
+        {{ object.releases.count }}
+      </span>
     </div>
   </div>
 
@@ -75,9 +75,9 @@
       {% endif %}
     </div>
     <div>
-        <span class="dim" title="Updated: {{ object.updated|date:"SHORT_DATE_FORMAT" }}">
-          {{ object.created|date:"SHORT_DATE_FORMAT" }}
-        </span>
+      <span class="dim" title="Updated: {{ object.updated|date:"SHORT_DATE_FORMAT" }}">
+        {{ object.created|date:"SHORT_DATE_FORMAT" }}
+      </span>
     </div>
   </template>
 </card>

@@ -11,118 +11,118 @@
      data-resource_uri="{{ item.get_api_url }}"
      data-absolute_url="{{ item.get_absolute_url }}">
 
-    <div class="wrapper_icon">
-        {% with object=item ct="playlist" %}
-            {% include "alibrary/element/_item_primary_actions.html" %}
-        {% endwith %}
-    </div>
+  <div class="wrapper_icon">
+    {% with object=item ct="playlist" %}
+      {% include "alibrary/element/_item_primary_actions.html" %}
+    {% endwith %}
+  </div>
 
-    <div class="spacer tag-cloud">
+  <div class="spacer tag-cloud">
 
-        {% if item.main_image %}
-        <div class="image-container centered">
-            <div class="padder"></div>
-            <img src="/static/img/base/defaults/listview.release.xl.png" data-src="{% thumbnail item.main_image 197x197 crop upscale %}" class="lazyload" />
-        </div>
-        {% endif %}
-
-        <ul class="tags unstyled horizontal">
-            {% for tag in item.tags|slice:":8" %}
-                <li data-id="{{ tag.pk }}">{{ tag.name|truncate_chars_inner:10 }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <div class="wrapper_properties">
-        <!-- property icons-->
-        <ul class="unstyled properties">
-            {% if item.rotation and item.type == 'broadcast' %}
-                <li><i class="icon-refresh" title="{% trans 'In Rotation' %}"></i></li>
-            {% endif %}
-        </ul>
-    </div>
-
-    {% if item.is_archived %}
-    <div class="marker">
-        <span>{% trans 'Archived' %}</span>
-    </div>
-    {% elif item.is_upcoming %}
-    <div class="marker">
-        <span>{% trans 'Upcoming' %}</span>
-    </div>
+    {% if item.main_image %}
+      <div class="image-container centered">
+        <div class="padder"></div>
+        <img src="/static/img/base/defaults/listview.release.xl.png" data-src="{% thumbnail item.main_image 197x197 crop upscale %}" class="lazyload" />
+      </div>
     {% endif %}
 
-    <div class="wrapper_info">
-        <div class="wrapper_inner">
-            <div class="list_body_item">
-                <ul class="title">
-                    <li class="bold">
-                        <a href="{{ item.get_absolute_url }}" title="{{ item.name }}">
-                            {{ item.name|truncate_chars_inner:24 }}
-                            {% if item.country %}({{ item.country }}){% endif %}
-                            {% topflop_for_object item %} </a>
-                    </li>
-                    <li>
+    <ul class="tags unstyled horizontal">
+      {% for tag in item.tags|slice:":8" %}
+        <li data-id="{{ tag.pk }}">{{ tag.name|truncate_chars_inner:10 }}</li>
+      {% endfor %}
+    </ul>
+  </div>
 
-                        {% if item.series %}
-                            <span>{{ item.series.name|truncate_chars_inner:24 }} </span>
-                            {% if item.series_number %}
-                                <small>#{{ item.series_number }}</small>
-                            {% endif %}
-                        {% else %}
-                            <span>&nbsp;</span>
-                        {% endif %}
+  <div class="wrapper_properties">
+        <!-- property icons-->
+    <ul class="unstyled properties">
+      {% if item.rotation and item.type == 'broadcast' %}
+        <li><i class="icon-refresh" title="{% trans 'In Rotation' %}"></i></li>
+      {% endif %}
+    </ul>
+  </div>
 
-                        <span class="pull-right">
-                            <span class="small">{{ item.get_type_display }}</span>
-                        </span>
-                    </li>
-                </ul>
-                <ul class="unstyled">
-                    <li>
-                        <a href="{{ item.user.get_absolute_url }}">{{ item.user.profile.get_display_name }}</a>
+  {% if item.is_archived %}
+    <div class="marker">
+      <span>{% trans 'Archived' %}</span>
+    </div>
+  {% elif item.is_upcoming %}
+    <div class="marker">
+      <span>{% trans 'Upcoming' %}</span>
+    </div>
+  {% endif %}
 
-                        {% url "alibrary:playlist-list" as playlist_list %}
-                        <a href="{% spurl path=playlist_list query="search_user={{ item.user.username }}" %}"
-                           title="{% trans "Only show playlists by" %} {{ item.user.profile.get_display_name }}"
-                           style="vertical-align: top;"><span class="filter icon"></span></a>
+  <div class="wrapper_info">
+    <div class="wrapper_inner">
+      <div class="list_body_item">
+        <ul class="title">
+          <li class="bold">
+            <a href="{{ item.get_absolute_url }}" title="{{ item.name }}">
+              {{ item.name|truncate_chars_inner:24 }}
+              {% if item.country %}({{ item.country }}){% endif %}
+              {% topflop_for_object item %} </a>
+          </li>
+          <li>
+
+            {% if item.series %}
+              <span>{{ item.series.name|truncate_chars_inner:24 }} </span>
+              {% if item.series_number %}
+                <small>#{{ item.series_number }}</small>
+              {% endif %}
+            {% else %}
+              <span>&nbsp;</span>
+            {% endif %}
+
+            <span class="pull-right">
+              <span class="small">{{ item.get_type_display }}</span>
+            </span>
+          </li>
+        </ul>
+        <ul class="unstyled">
+          <li>
+            <a href="{{ item.user.get_absolute_url }}">{{ item.user.profile.get_display_name }}</a>
+
+            {% url "alibrary:playlist-list" as playlist_list %}
+            <a href="{% spurl path=playlist_list query="search_user={{ item.user.username }}" %}"
+               title="{% trans "Only show playlists by" %} {{ item.user.profile.get_display_name }}"
+               style="vertical-align: top;"><span class="filter icon"></span></a>
 
                         {% comment %}
                         <span class="small">{{ item.items.count }} {% trans "Tracks" %}</span>
                         {% endcomment %}
 
-                        {% if item.type == 'broadcast' %}
-                        <span class="pull-right">
-                            <span class="small">{{ item.get_status_display }}</span>
-                        </span>
-                        {% endif %}
+            {% if item.type == 'broadcast' %}
+              <span class="pull-right">
+                <span class="small">{{ item.get_status_display }}</span>
+              </span>
+            {% endif %}
 
-                    </li>
-                </ul>
-            </div>
-        </div>
+          </li>
+        </ul>
+      </div>
     </div>
+  </div>
 
 
-    <div class="wrapper_action">
-        <ul class="unstyled action secondary horizontal clearfix">
-            <li>
-                <a href="#"
-                   class="{% if not perms.alibrary.downoad_media %} disabled{% endif %}"
-                   data-ct="playlist"
-                   data-id="{{ item.pk }}"
-                   data-action="download"
-                   title="{% trans "Download" %}">
-                    <i class="icon icon-download-alt"></i>
-                </a>
-            </li>
-            <li>
-                <a href="{{ item.get_edit_url }}"
-                   class="{% if user.is_authenticated and user == item.user %}{% else %} disabled{% endif %}"
-                   title="{% trans "Edit" %}">
-                    <i class="icon icon-edit"></i>
-                </a>
-            </li>
+  <div class="wrapper_action">
+    <ul class="unstyled action secondary horizontal clearfix">
+      <li>
+        <a href="#"
+           class="{% if not perms.alibrary.downoad_media %} disabled{% endif %}"
+           data-ct="playlist"
+           data-id="{{ item.pk }}"
+           data-action="download"
+           title="{% trans "Download" %}">
+          <i class="icon icon-download-alt"></i>
+        </a>
+      </li>
+      <li>
+        <a href="{{ item.get_edit_url }}"
+           class="{% if user.is_authenticated and user == item.user %}{% else %} disabled{% endif %}"
+           title="{% trans "Edit" %}">
+          <i class="icon icon-edit"></i>
+        </a>
+      </li>
             {% comment %}
             {% if perms.alibrary.schedule_playlist and item.type == "broadcast" and item.broadcast_status == 1 %}
             <li>
@@ -138,32 +138,32 @@
             </li>
             {% endif %}
             {% endcomment %}
-        </ul>
-    </div>
+    </ul>
+  </div>
 
-    <div class="durations" style="position: absolute; bottom: 0; left: 5px; color: #999;">
-        {{ item.duration|divide:1000|sec_to_time }}
+  <div class="durations" style="position: absolute; bottom: 0; left: 5px; color: #999;">
+    {{ item.duration|divide:1000|sec_to_time }}
 
-        {% if item.is_broadcast %}
-            {% if item.last_emission or item.next_emission %}
-                {% nearby_scheduled_as item as is_nearby_scheduled %}
-                &mdash;
-                <span
-                    class="small"
-                    {% if is_nearby_scheduled %}style="font-weight: bold;"{% endif %}
-                    title="{% trans 'Last' %}: {{ item.last_emission.time_start|date:"SHORT_DATE_FORMAT"|default:'-' }} | {% trans 'Next' %}: {{ item.next_emission.time_start|date:"SHORT_DATE_FORMAT"|default:'-' }} | {% trans 'Num. emissions' %}: {{ search_result.num_emissions }}"
+    {% if item.is_broadcast %}
+      {% if item.last_emission or item.next_emission %}
+        {% nearby_scheduled_as item as is_nearby_scheduled %}
+        &mdash;
+        <span
+          class="small"
+          {% if is_nearby_scheduled %}style="font-weight: bold;"{% endif %}
+          title="{% trans 'Last' %}: {{ item.last_emission.time_start|date:"SHORT_DATE_FORMAT"|default:'-' }} | {% trans 'Next' %}: {{ item.next_emission.time_start|date:"SHORT_DATE_FORMAT"|default:'-' }} | {% trans 'Num. emissions' %}: {{ search_result.num_emissions }}"
                     {% comment %}title="{% trans 'Last emission' %}: {{ item.last_emission.time_start|timesince|safe }} {% trans 'ago' %} - {% trans 'Num. emissions' %}: {{ search_result.num_emissions }}"{% endcomment %}>
-                    {% firstof item.next_emission.time_start|date:'SHORT_DATE_FORMAT' item.last_emission.time_start|date:'SHORT_DATE_FORMAT' %}
-                </span>
+          {% firstof item.next_emission.time_start|date:'SHORT_DATE_FORMAT' item.last_emission.time_start|date:'SHORT_DATE_FORMAT' %}
+        </span>
 
-            {% endif %}
+      {% endif %}
 
-        {% else %}
-            {% if item.target_duration %}
-                <span class="small">{% trans "of" %} {{ item.target_duration|sec_to_time }}</span>
-            {% endif %}
-        {% endif %}
+    {% else %}
+      {% if item.target_duration %}
+        <span class="small">{% trans "of" %} {{ item.target_duration|sec_to_time }}</span>
+      {% endif %}
+    {% endif %}
 
-    </div>
+  </div>
 
 </div>

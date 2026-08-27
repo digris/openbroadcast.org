@@ -3,55 +3,55 @@
 {% load truncate_tags i18n thumbnail arating_tags markup_tags %}
 
 {% block heading %}
-    <div id="heading">
-        {% include "skeleton/heading.html" %}
-    </div>
+  <div id="heading">
+    {% include "skeleton/heading.html" %}
+  </div>
 
 {% endblock %}
 
 {% block inner %}
-    <div class="item_detail" style="">
+  <div class="item_detail" style="">
 
 
-        <section class="shaded">
-            <div class="row iteminfo release">
-                {% include "alibrary/license/_detail_info.html" %}
-            </div>
-        </section>
+    <section class="shaded">
+      <div class="row iteminfo release">
+        {% include "alibrary/license/_detail_info.html" %}
+      </div>
+    </section>
 
 
-        <div class="item_menu" id="item_menu">
-        </div>
-        <div class="clear"></div>
-
-
-        <section id="license">
-
-            {% if object.excerpt %}
-            <div class="markdown page-content padded">
-                {{ object.excerpt|markdown|safe }}
-            </div>
-            {% endif %}
-
-            {% if object.license_text %}
-            <div class="page-header padded">
-                <h3>{% trans "License Text" %}
-                    <small>{% trans "From a lawyer point of view" %}</small>
-                </h3>
-            </div>
-
-            <div class="markdown page-content padded">
-                {{ object.license_text|markdown|safe }}
-            </div>
-            {% endif %}
-
-        </section>
-
-
+    <div class="item_menu" id="item_menu">
     </div>
+    <div class="clear"></div>
+
+
+    <section id="license">
+
+      {% if object.excerpt %}
+        <div class="markdown page-content padded">
+          {{ object.excerpt|markdown|safe }}
+        </div>
+      {% endif %}
+
+      {% if object.license_text %}
+        <div class="page-header padded">
+          <h3>{% trans "License Text" %}
+            <small>{% trans "From a lawyer point of view" %}</small>
+          </h3>
+        </div>
+
+        <div class="markdown page-content padded">
+          {{ object.license_text|markdown|safe }}
+        </div>
+      {% endif %}
+
+    </section>
+
+
+  </div>
 
 {% endblock %}
 
 {% block sidebar %}
-    {% include "alibrary/license/sidebar/_detail.html" %}
+  {% include "alibrary/license/sidebar/_detail.html" %}
 {% endblock %}

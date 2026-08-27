@@ -4,36 +4,36 @@
 
 {% block heading %}
     <!-- view specific scripts -->
-    <div id="heading">
-        {% include "skeleton/heading.html" %}
-    </div>
+  <div id="heading">
+    {% include "skeleton/heading.html" %}
+  </div>
 {% endblock %}
 
 {% block inner %}
 
-    <div class="alert alert-warning">
-        <strong>{% trans "Confirm delete" %}</strong>
-        <p>
-            {% trans "Are you sure you want do telete" %}"{{ object }}"?
-            <br>
-            {% trans "This action cannot be reverted once confirmed." %}
+  <div class="alert alert-warning">
+    <strong>{% trans "Confirm delete" %}</strong>
+    <p>
+      {% trans "Are you sure you want do telete" %}"{{ object }}"?
+      <br>
+      {% trans "This action cannot be reverted once confirmed." %}
 
-        </p>
-        <form method="post">{% csrf_token %}
-            <button type="submit" class="btn btn-danger">
-                <i class="icon icon-trash"></i> {% trans "Delete" %} {{ object }}</button>
-        </form>
-    </div>
+    </p>
+    <form method="post">{% csrf_token %}
+      <button type="submit" class="btn btn-danger">
+        <i class="icon icon-trash"></i> {% trans "Delete" %} {{ object }}</button>
+    </form>
+  </div>
 
-    <div class="item_detail">
-        <section class="shaded">
-            <div class="row iteminfo release">
-                {% include "alibrary/playlist/_legacy/_header.html" %}
-            </div>
-        </section>
-    </div>
+  <div class="item_detail">
+    <section class="shaded">
+      <div class="row iteminfo release">
+        {% include "alibrary/playlist/_legacy/_header.html" %}
+      </div>
+    </section>
+  </div>
 {% endblock %}
 
 {% block sidebar %}
-    {% include "alibrary/playlist/sidebar/_delete.html" %}
+  {% include "alibrary/playlist/sidebar/_delete.html" %}
 {% endblock %}

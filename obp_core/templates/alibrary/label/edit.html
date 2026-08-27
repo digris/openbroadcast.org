@@ -7,26 +7,26 @@
 
 {% block heading %}
   {% addtoblock "js-post" %}
-  <script src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>
-  <script>
-    $(function () {
-      setTimeout(function() {
-        init_jQueryTagit({
-          objectId: 'id_d_tags',
-          sourceUrl: '/ac_tagging/list',
-          fieldName: 'd_tags',
-          minLength: 1,
-          removeConfirmation: true,
-          caseSensitive: false,
-          animate: true,
-          maxLength: 50,
-          maxTags: 9,
-          onTagClicked: null,
-          onMaxTagsExceeded: null,
-        });
-      }, 500);
-    });
-  </script>
+    <script src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>
+    <script>
+      $(function () {
+        setTimeout(function() {
+          init_jQueryTagit({
+            objectId: 'id_d_tags',
+            sourceUrl: '/ac_tagging/list',
+            fieldName: 'd_tags',
+            minLength: 1,
+            removeConfirmation: true,
+            caseSensitive: false,
+            animate: true,
+            maxLength: 50,
+            maxTags: 9,
+            onTagClicked: null,
+            onMaxTagsExceeded: null,
+          });
+        }, 500);
+      });
+    </script>
   {% endaddtoblock %}
   {% addtoblock "js-post" %}{% dajaxice_js_import %}{% endaddtoblock %}
   {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>{% endaddtoblock %}
@@ -35,11 +35,11 @@
   {% addtoblock "js-post" %} <script src="{{ STATIC_URL }}alibrary/js/edit.js"></script>{% endaddtoblock %}
 
   {% addtoblock "js-post" %}
-  <script>
-    $(function(){
-      edit.ui.init();
-    });
-  </script>
+    <script>
+      $(function(){
+        edit.ui.init();
+      });
+    </script>
   {% endaddtoblock %}
 
 {% endblock %}
@@ -53,7 +53,7 @@
 {% endblock %}
 
 {% block sidebar %}
-{% include "alibrary/label/sidebar/_edit.html" %}
+  {% include "alibrary/label/sidebar/_edit.html" %}
 {% endblock %}
 
 {% block form %}
@@ -94,8 +94,8 @@
 {% endblock %}
 
 {% block form_sidebar %}
-	{% with providers=object.get_lookup_providers ct="label"%}
-	  {% include "alibrary/form_lookup/_providers.html" %}
-	{% endwith %}
+  {% with providers=object.get_lookup_providers ct="label"%}
+    {% include "alibrary/form_lookup/_providers.html" %}
+  {% endwith %}
 {% endblock %}
 

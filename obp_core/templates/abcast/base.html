@@ -2,33 +2,33 @@
 {% load spurl cache i18n truncate_tags cache sekizai_tags spurl %}
 
 {% block heading %}
-<div id="heading">
-	{% include "skeleton/heading.html" %}
-</div>
+  <div id="heading">
+    {% include "skeleton/heading.html" %}
+  </div>
 {% endblock %}
 
 {% block menubar %}
-    <ul class="unstyled">
-        <li class="descendant"><a href="{% url 'abcast:scheduler' %}" rel="nofollow">{% trans "Scheduler NG" %}</a></li>
-    </ul>
+  <ul class="unstyled">
+    <li class="descendant"><a href="{% url 'abcast:scheduler' %}" rel="nofollow">{% trans "Scheduler NG" %}</a></li>
+  </ul>
 {% endblock %}
 
 {% block body_class %}scheduler{% endblock %}
 
 {% block inner %}
 
-<div class="gridview scheduler {{ list_style }}">
-{% block content %}
-{% endblock %}
-</div>
+  <div class="gridview scheduler {{ list_style }}">
+    {% block content %}
+    {% endblock %}
+  </div>
 
-<div class="listview footer">
+  <div class="listview footer">
 
-</div>
+  </div>
 
 {% endblock %}
 
 {% block sidebar %}
-{% include "abcast/scheduler/sidebar/_list.html" %}
+  {% include "abcast/scheduler/sidebar/_list.html" %}
 {% endblock %}
 

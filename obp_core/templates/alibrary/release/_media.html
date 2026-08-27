@@ -19,23 +19,23 @@
       {% endif %}
     </div>
     {% if object.extraartist_media.exists %}
-    <div class="extra-artists small">
-      {% for extra_artist in object.extraartist_media.all|slice:"0:3" %}
-        <div>
-          {{ extra_artist.artist.name }}
-          {% if extra_artist.profession.name %}
-            <span class="dim">{{ extra_artist.profession.name }}</span>
-          {% endif %}
-        </div>
-      {% endfor %}
-    </div>
+      <div class="extra-artists small">
+        {% for extra_artist in object.extraartist_media.all|slice:"0:3" %}
+          <div>
+            {{ extra_artist.artist.name }}
+            {% if extra_artist.profession.name %}
+              <span class="dim">{{ extra_artist.profession.name }}</span>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
     {% endif %}
   </div>
   <div class="column">
     <div>
       <span class="dim">by</span>
       {%  if object.get_mediaartists %}
-          {% include "alibrary/media/_credited_artists.html" with artist_list=object.get_mediaartists %}
+        {% include "alibrary/media/_credited_artists.html" with artist_list=object.get_mediaartists %}
       {% else %}
         {% if object.artist %}
           <a href="{{ object.artist.get_absolute_url|default:'#' }}" title="{{ object.artist.name }}">

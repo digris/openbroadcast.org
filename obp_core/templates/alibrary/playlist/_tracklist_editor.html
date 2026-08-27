@@ -8,32 +8,32 @@
 {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/lib/jquery.inputmask.numeric.extensions.js"></script>{% endaddtoblock %}
 {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/playlist.editor.js"></script>{% endaddtoblock %}
 {% addtoblock "js-post" %}
-    <script>
-        var alibrary = alibrary || {};
-        $(function () {
-            alibrary.playlist_editor = new PlaylistEditor();
-            alibrary.playlist_editor.readonly = {% if object.type == "broadcast" %}true{% else %}false{% endif %};
-            alibrary.playlist_editor.api_url = "{{ object.get_api_url }}";
-            alibrary.playlist_editor.enable_drag_n_drop = true;
-            alibrary.playlist_editor.enable_crossfades = false;
+  <script>
+    var alibrary = alibrary || {};
+    $(function () {
+      alibrary.playlist_editor = new PlaylistEditor();
+      alibrary.playlist_editor.readonly = {% if object.type == "broadcast" %}true{% else %}false{% endif %};
+      alibrary.playlist_editor.api_url = "{{ object.get_api_url }}";
+      alibrary.playlist_editor.enable_drag_n_drop = true;
+      alibrary.playlist_editor.enable_crossfades = false;
 
-            soundManager.setup({
-                url: '{{ STATIC_URL }}alibrary/js/lib/soundmanager2/swf/',
-                flashVersion: 9,
-                useHTML5Audio: true,
-                preferFlash: false,
-                debugFlash: false,
-                debugMode: true,
-                flashLoadTimeout: 0,
-                useHighPerformance: false,
-                flashPollingInterval: 200,
-                html5PollingInterval: 200,
-                onready: function () {
-                    alibrary.playlist_editor.init();
-                }
-            });
-        });
-    </script>
+      soundManager.setup({
+        url: '{{ STATIC_URL }}alibrary/js/lib/soundmanager2/swf/',
+        flashVersion: 9,
+        useHTML5Audio: true,
+        preferFlash: false,
+        debugFlash: false,
+        debugMode: true,
+        flashLoadTimeout: 0,
+        useHighPerformance: false,
+        flashPollingInterval: 200,
+        html5PollingInterval: 200,
+        onready: function () {
+          alibrary.playlist_editor.init();
+        }
+      });
+    });
+  </script>
 {% endaddtoblock %}
 
 
@@ -41,51 +41,51 @@
 
 <div id="playlist_editor" class="listview editable container media inner s">
 
-    <div class="list_header">
+  <div class="list_header">
 
-        <div class="row-fluid">
+    <div class="row-fluid">
 
-            <div class="span12">
+      <div class="span12">
 
-                <ul class="unstyled horizontal" id="editor_mode_switch">
-                    <li>{% trans "Display" %}</li>
-                    <li><a data-mode="extended" href="#"><i class="icon-th-list"></i></a></li>
-                    <li><a data-mode="condensed" href="#"><i class="icon-list"></i></a></li>
-                </ul>
+        <ul class="unstyled horizontal" id="editor_mode_switch">
+          <li>{% trans "Display" %}</li>
+          <li><a data-mode="extended" href="#"><i class="icon-th-list"></i></a></li>
+          <li><a data-mode="condensed" href="#"><i class="icon-list"></i></a></li>
+        </ul>
 
-            </div>
-        </div>
+      </div>
+    </div>
 
-        <div class="row-fluid">
+    <div class="row-fluid">
 
-            <div class="span1">
-                {% trans "Pos" %}
-            </div>
+      <div class="span1">
+        {% trans "Pos" %}
+      </div>
 
-            <div class="span3">
-                {% trans "Track" %}
-            </div>
+      <div class="span3">
+        {% trans "Track" %}
+      </div>
 
-            <div class="span1">
-                <span class="pull-right">{% trans "Crossfade" %}</span>
-            </div>
+      <div class="span1">
+        <span class="pull-right">{% trans "Crossfade" %}</span>
+      </div>
 
-            <div class="span3 fade-cue">
-                <span class="pull-right">{% trans "Fade-In / -Out" %}</span>
-            </div>
+      <div class="span3 fade-cue">
+        <span class="pull-right">{% trans "Fade-In / -Out" %}</span>
+      </div>
 
-            <div class="span3 fade-cue">
-                <span class="pull-right">{% trans "Cue-In / -Out" %}</span>
-            </div>
-
-        </div>
+      <div class="span3 fade-cue">
+        <span class="pull-right">{% trans "Cue-In / -Out" %}</span>
+      </div>
 
     </div>
 
+  </div>
 
-    <div id="playlist_editor_list" class="list_body">
+
+  <div id="playlist_editor_list" class="list_body">
         <!-- loaded via nj -->
-    </div>
+  </div>
 
 </div>
 

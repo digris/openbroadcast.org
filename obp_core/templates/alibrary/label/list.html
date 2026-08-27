@@ -4,32 +4,32 @@
 {% block scope %}alibrary.label{% endblock %}
 
 {% block tagcloud %}
-    {% include "search/tagcloud.html" %}
+  {% include "search/tagcloud.html" %}
 {% endblock %}
 
 {% block inner %}
-<object-merge></object-merge>
-<div class="list-header">
-  <div class="pagination-container">
-    {% include "search/pagination.html" %}
+  <object-merge></object-merge>
+  <div class="list-header">
+    <div class="pagination-container">
+      {% include "search/pagination.html" %}
+    </div>
   </div>
-</div>
-<div class="list-body">
-  <div class="list list--grid">
-    {% for object in object_list %}
-    {% include 'alibrary/label/_card.html' with search_result=search_results_by_id|get_dict_item:object.pk %}
-    {% endfor %}
+  <div class="list-body">
+    <div class="list list--grid">
+      {% for object in object_list %}
+        {% include 'alibrary/label/_card.html' with search_result=search_results_by_id|get_dict_item:object.pk %}
+      {% endfor %}
+    </div>
   </div>
-</div>
-<div class="list-footer">
-  <div class="pagination-container">
-    {% include "search/pagination.html" %}
+  <div class="list-footer">
+    <div class="pagination-container">
+      {% include "search/pagination.html" %}
+    </div>
   </div>
-</div>
 {% endblock %}
 
 {% block sidebar %}
-    {% include "alibrary/label/sidebar/_list.html" %}
-    {% include "search/_partials/_list_ordering.html" with ordering=ordering %}
-    {% include "search/_partials/_list_filter.html" with filters=filters %}
+  {% include "alibrary/label/sidebar/_list.html" %}
+  {% include "search/_partials/_list_ordering.html" with ordering=ordering %}
+  {% include "search/_partials/_list_filter.html" with filters=filters %}
 {% endblock %}

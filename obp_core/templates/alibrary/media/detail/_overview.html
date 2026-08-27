@@ -1,61 +1,61 @@
 {% load i18n vuejs_tags media_preflight_tags %}
 {% if broadcasts.exists %}
-<div class="list-prefix">
-  <h3 class="title">{% trans 'Broadcasts' %}</h3>
-</div>
-<div class="list list--grid">
-  {% for object in broadcasts.all|slice:'0:8' %}
-  <div class="list-item">
-  {% include 'alibrary/playlist/_card.html' %}
+  <div class="list-prefix">
+    <h3 class="title">{% trans 'Broadcasts' %}</h3>
   </div>
-  {% endfor %}
-</div>
+  <div class="list list--grid">
+    {% for object in broadcasts.all|slice:'0:8' %}
+      <div class="list-item">
+        {% include 'alibrary/playlist/_card.html' %}
+      </div>
+    {% endfor %}
+  </div>
 {% endif %}
 {% if playlists.exists %}
-<div class="list-prefix">
-  <h3 class="title">{% trans 'Public Playlists' %}</h3>
-</div>
-<div class="list list--grid">
-  {% for object in playlists.all|slice:'0:8' %}
-  <div class="list-item">
-  {% include 'alibrary/playlist/_card.html' %}
+  <div class="list-prefix">
+    <h3 class="title">{% trans 'Public Playlists' %}</h3>
   </div>
-  {% endfor %}
-</div>
+  <div class="list list--grid">
+    {% for object in playlists.all|slice:'0:8' %}
+      <div class="list-item">
+        {% include 'alibrary/playlist/_card.html' %}
+      </div>
+    {% endfor %}
+  </div>
 {% endif %}
 <div class="list-prefix">
   <h3 class="title">{% trans 'File info' %}</h3>
 </div>
 <div class="list list--table">
   <div class="file-info">
-  {% if object.master_encoding %}
-    <div>
-      <div>{% trans "Encoding" %}</div>
+    {% if object.master_encoding %}
       <div>
-        {% preflight_status_as object as preflight_status %}
-        <media-preflight-status :preflight-status="({{ preflight_status|as_json }})">
-          {{ object.master_encoding|default:'Unknown' }}
-        </media-preflight-status>
-        {% if object.master_bitrate %}
-          <span>- {{ object.master_bitrate}} Kbps</span>
-        {% endif %}
-        {% if object.master_samplerate %}
-          <span>- {{ object.master_samplerate}} Hz</span>
-        {% endif %}
+        <div>{% trans "Encoding" %}</div>
+        <div>
+          {% preflight_status_as object as preflight_status %}
+          <media-preflight-status :preflight-status="({{ preflight_status|as_json }})">
+            {{ object.master_encoding|default:'Unknown' }}
+          </media-preflight-status>
+          {% if object.master_bitrate %}
+            <span>- {{ object.master_bitrate}} Kbps</span>
+          {% endif %}
+          {% if object.master_samplerate %}
+            <span>- {{ object.master_samplerate}} Hz</span>
+          {% endif %}
+        </div>
       </div>
-    </div>
     {% endif %}
     {% if object.uuid %}
-    <div>
-      <div>{% trans "UUID" %}</div>
-      <div>{{ object.uuid }}</div>
-    </div>
+      <div>
+        <div>{% trans "UUID" %}</div>
+        <div>{{ object.uuid }}</div>
+      </div>
     {% endif %}
     {% if object.original_filename %}
-    <div>
-      <div>{% trans "Original Filename" %}</div>
-      <div>{{ object.original_filename }}</div>
-    </div>
+      <div>
+        <div>{% trans "Original Filename" %}</div>
+        <div>{{ object.original_filename }}</div>
+      </div>
     {% endif %}
   </div>
 </div>

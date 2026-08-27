@@ -10,14 +10,14 @@
   <template #visual-top>
     <div class="flags">
       {% if object.is_promotional %}
-      <span class="flag flag--promotional">
-        promo
-      </span>
+        <span class="flag flag--promotional">
+          promo
+        </span>
       {% endif %}
       {% if object.is_new %}
-      <span class="flag flag--new">
-        new
-      </span>
+        <span class="flag flag--new">
+          new
+        </span>
       {% endif %}
       {% if object.releasetype or object.release_country or object.releasedate %}
         <span class="flag">
@@ -32,7 +32,7 @@
           {% if object.releasedate %}
             {{ object.releasedate|date:"SHORT_DATE_FORMAT" }}
           {% endif %}
-          </span>
+        </span>
       {% endif %}
     </div>
   </template>
@@ -70,16 +70,16 @@
             {% if not forloop.last %},{% endif %}
           {% else %}
             <span>{{ artist.name|truncate_chars_inner:32 }}</span>{% if not forloop.last %},
-          {% endif %}
+            {% endif %}
           {% endif %}
         {% endif %}
       {% endfor %}
     </div>
     <div>
-        <span class="dim">
-          {{ object.get_media.count }}
-          {% if object.totaltracks %} of {{ object.totaltracks }}{% endif %}
-        </span>
+      <span class="dim">
+        {{ object.get_media.count }}
+        {% if object.totaltracks %} of {{ object.totaltracks }}{% endif %}
+      </span>
     </div>
   </div>
 
@@ -104,9 +104,9 @@
       {% endif %}
     </div>
     <div>
-        <span class="dim" title="Updated: {{ object.last_update_time|date:"SHORT_DATE_FORMAT" }}">
-          {{ object.last_creation_time|date:"SHORT_DATE_FORMAT" }}
-        </span>
+      <span class="dim" title="Updated: {{ object.last_update_time|date:"SHORT_DATE_FORMAT" }}">
+        {{ object.last_creation_time|date:"SHORT_DATE_FORMAT" }}
+      </span>
     </div>
   </template>
 </card>

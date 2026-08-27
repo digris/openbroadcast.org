@@ -3,19 +3,19 @@
 {% block title %}Register for an account{% endblock %}
 {% block content %}
 
-    <h4 style="margin-bottom: 20px;">{% trans "Register" %}</h4>
+  <h4 style="margin-bottom: 20px;">{% trans "Register" %}</h4>
 
-    {% include 'registration/form_errors.html' %}
-    <form method='post' class="form-horizontal" action=''>{% csrf_token %}
-        {% include 'registration/form_fields.html' %}
+  {% include 'registration/form_errors.html' %}
+  <form method='post' class="form-horizontal" action=''>{% csrf_token %}
+    {% include 'registration/form_fields.html' %}
 
 
-        <button type="submit" class="btn btn-primary icon pull-right"><i class="icon-double-angle-right"></i> {% trans "Register Account" %}</button>
+    <button type="submit" class="btn btn-primary icon pull-right"><i class="icon-double-angle-right"></i> {% trans "Register Account" %}</button>
 
-        <a style="margin-right: 20px;" href="{% url "auth_login" %}?next=/" class="btn icon pull-right"><i class="icon-user"></i> {% trans "Login" %}</a>
+    <a style="margin-right: 20px;" href="{% url "auth_login" %}?next=/" class="btn icon pull-right"><i class="icon-user"></i> {% trans "Login" %}</a>
 
-        <div class="clear"></div>
+    <div class="clear"></div>
 
-    </form>
+  </form>
 
 {% endblock %}

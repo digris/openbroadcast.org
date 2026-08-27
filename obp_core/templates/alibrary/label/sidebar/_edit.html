@@ -1,21 +1,21 @@
 {% load i18n %}
 
 <div class="menu-context">
-    <div class="action-group">
-        <ul>
-            <li class="action">
-                <a href="{{ object.get_absolute_url }}" title="{% trans 'Back to Detail-View' %}">
-                    {% trans "Back to Detail-View" %}
-                </a>
-            </li>
-            {% if perms.alibrary.change_label and user.is_staff %}
-                <li class="action">
-                    <a href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
-                       title="{% trans 'Administration view' %}">
-                        {% trans "Administration view" %}
-                    </a>
-                </li>
-            {% endif %}
-        </ul>
-    </div>
+  <div class="action-group">
+    <ul>
+      <li class="action">
+        <a href="{{ object.get_absolute_url }}" title="{% trans 'Back to Detail-View' %}">
+          {% trans "Back to Detail-View" %}
+        </a>
+      </li>
+      {% if perms.alibrary.change_label and user.is_staff %}
+        <li class="action">
+          <a href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
+             title="{% trans 'Administration view' %}">
+            {% trans "Administration view" %}
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
 </div>

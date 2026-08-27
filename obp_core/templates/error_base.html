@@ -1,120 +1,120 @@
 {% load i18n %}<!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>{% block title %}{% endblock %}</title>
     <style type="text/css" media="screen">
-    body {
-      margin: 0;
+      body {
+        margin: 0;
 
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-      background-color: #fff;
-    }
+        background-color: #fff;
+      }
 
-    .container {
-      max-width: 800px;
-      margin: 50px auto 40px auto;
+      .container {
+        max-width: 800px;
+        margin: 50px auto 40px auto;
 
-      text-align: center;
-    }
+        text-align: center;
+      }
 
-    a {
-      color: #0B0;
-      text-decoration: none;
-    }
+      a {
+        color: #0B0;
+        text-decoration: none;
+      }
 
-    a:hover {
-      text-decoration: underline;
-    }
+      a:hover {
+        text-decoration: underline;
+      }
 
-    h1 {
-      margin: 0px;
+      h1 {
+        margin: 0px;
 
-      color: #0B0;
-      font-weight: 200;
-      font-size: 32px;
-      font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
-      line-height: 60px;
-      letter-spacing: -1px;
-      text-shadow: 0 1px 0 #fff;
-    }
+        color: #0B0;
+        font-weight: 200;
+        font-size: 32px;
+        font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
+        line-height: 60px;
+        letter-spacing: -1px;
+        text-shadow: 0 1px 0 #fff;
+      }
 
-    p {
-      margin: 10px 0 10px;
+      p {
+        margin: 10px 0 10px;
 
-      color: rgba(0, 0, 0, 0.5);
-      font-weight: 200;
-      font-size: 18px;
-      line-height: 1.6em;
-    }
+        color: rgba(0, 0, 0, 0.5);
+        font-weight: 200;
+        font-size: 18px;
+        line-height: 1.6em;
+      }
 
-    ul {
-      margin: 25px 0;
-      padding: 0;
+      ul {
+        margin: 25px 0;
+        padding: 0;
 
-      list-style: none;
-    }
+        list-style: none;
+      }
 
-    li {
-      display: table-cell;
-      width: 1%;
+      li {
+        display: table-cell;
+        width: 1%;
 
-      font-weight: bold;
-    }
+        font-weight: bold;
+      }
 
-    .logo {
-      display: inline-block;
-      margin-top: 35px;
-    }
-
-    .logo-img-2x {
-      display: none;
-    }
-
-    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (   min--moz-device-pixel-ratio: 2), only screen and (     -o-min-device-pixel-ratio: 2/1), only screen and (        min-device-pixel-ratio: 2), only screen and (                min-resolution: 192dpi), only screen and (                min-resolution: 2dppx) {
-      .logo-img-1x {
-        display: none;
+      .logo {
+        display: inline-block;
+        margin-top: 35px;
       }
 
       .logo-img-2x {
-        display: inline-block;
+        display: none;
       }
-    }
 
-    #suggestions {
-      margin-top: 35px;
+      @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (   min--moz-device-pixel-ratio: 2), only screen and (     -o-min-device-pixel-ratio: 2/1), only screen and (        min-device-pixel-ratio: 2), only screen and (                min-resolution: 192dpi), only screen and (                min-resolution: 2dppx) {
+        .logo-img-1x {
+          display: none;
+        }
 
-      color: #ccc;
-    }
+        .logo-img-2x {
+          display: inline-block;
+        }
+      }
 
-    #suggestions a {
-      margin: 0 10px;
+      #suggestions {
+        margin-top: 35px;
 
-      color: #666666;
-      font-weight: 200;
-      font-size: 14px;
-    }
+        color: #ccc;
+      }
 
-    .btn {
-      padding: 6px 50px;
+      #suggestions a {
+        margin: 0 10px;
 
-      color: #0B0;
+        color: #666666;
+        font-weight: 200;
+        font-size: 14px;
+      }
 
-      background-color: #fff;
-      border: 1px solid #0b0;
-      border-radius: 2px;
-      box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.25);
-    }
+      .btn {
+        padding: 6px 50px;
+
+        color: #0B0;
+
+        background-color: #fff;
+        border: 1px solid #0b0;
+        border-radius: 2px;
+        box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.25);
+      }
     </style>
-</head>
-<body class="{% block body-class %}{% endblock %}">
-<div class="container">
-    {% block content %}{% endblock %}
-    <div id="suggestions">
+  </head>
+  <body class="{% block body-class %}{% endblock %}">
+    <div class="container">
+      {% block content %}{% endblock %}
+      <div id="suggestions">
         <a href="mailto:support@openbroadcast.org">Contact Support</a> &mdash;
         <a href="https://lab.hazelfire.com/projects/openbroadcast-org/issues/new">Issue Tracker</a>
+      </div>
     </div>
-</div>
-</body>
+  </body>
 </html>

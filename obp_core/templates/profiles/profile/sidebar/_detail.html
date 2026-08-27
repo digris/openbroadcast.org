@@ -57,12 +57,12 @@
         {% endif %}
         {% for action in mentoring_actions %}
           <li class="action">
-              <a
-                href="{{ action.url }}?next={{ object.get_absolute_url }}"
-                title="{{ action.name }}"
-              >
-                  {{ action.name }}
-              </a>
+            <a
+              href="{{ action.url }}?next={{ object.get_absolute_url }}"
+              title="{{ action.name }}"
+            >
+              {{ action.name }}
+            </a>
           </li>
         {% endfor %}
       {% endif %}

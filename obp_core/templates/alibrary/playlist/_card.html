@@ -12,8 +12,8 @@
       <span class="flag">{{ object.get_type_display }}</span>
       {% if object.target_duration %}
         <span class="flag">
-            {{ object.target_duration|sec_to_time }}
-          </span>
+          {{ object.target_duration|sec_to_time }}
+        </span>
       {% endif %}
     </div>
     {% if object.is_broadcast %}
@@ -44,8 +44,8 @@
     </a>
     {% if object.is_broadcast %}
       <span class="dim" title="{% trans 'Total num. emissions' %}">
-          {% firstof search_result.num_emissions object.emissions.count %}
-        </span>
+        {% firstof search_result.num_emissions object.emissions.count %}
+      </span>
     {% endif %}
   </div>
 
@@ -65,11 +65,11 @@
       <a href="{{ object.user.get_absolute_url }}">{{ object.user.profile.get_display_name }}</a>
     </div>
     <div>
-        <span
-          {% if object.target_duration %}title="Target duration: {{ object.target_duration|sec_to_time }}"{% endif %}
-        >
+      <span
+        {% if object.target_duration %}title="Target duration: {{ object.target_duration|sec_to_time }}"{% endif %}
+      >
         {{ object.duration|divide:1000|sec_to_time }}
-        </span>
+      </span>
     </div>
   </template>
 

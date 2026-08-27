@@ -11,12 +11,12 @@
       <h3 style="margin-top: 20px;">{% trans "Pending invitations" %}</h3>
       <table class="table table--default">
         <thead>
-        <tr>
-          <th style="text-align: left; width: 320px;">{% trans "E-Mail" %}</th>
-          <th style="text-align: left;">{% trans "Date sent" %}</th>
-          <th style="text-align: left; width: 140px;">{% trans "Expires" %}</th>
-          <th style="width: 60px;">&nbsp;</th>
-        </tr>
+          <tr>
+            <th style="text-align: left; width: 320px;">{% trans "E-Mail" %}</th>
+            <th style="text-align: left;">{% trans "Date sent" %}</th>
+            <th style="text-align: left; width: 140px;">{% trans "Expires" %}</th>
+            <th style="width: 60px;">&nbsp;</th>
+          </tr>
         </thead>
         {% for item in object_list %}
           <tr>
@@ -32,12 +32,12 @@
       <h3 style="margin-top: 20px;">{% trans "Accepted invitations & mentored users" %}</h3>
       <table class="table table--default">
         <thead>
-        <tr>
-          <th style="text-align: left; width: 320px;">{% trans "E-Mail" %}</th>
-          <th style="text-align: left;">{% trans "User" %}</th>
-          <th style="text-align: left; width: 140px;;">{% trans "Date joined" %}</th>
-          <th style="width: 60px;">&nbsp;</th>
-        </tr>
+          <tr>
+            <th style="text-align: left; width: 320px;">{% trans "E-Mail" %}</th>
+            <th style="text-align: left;">{% trans "User" %}</th>
+            <th style="text-align: left; width: 140px;;">{% trans "Date joined" %}</th>
+            <th style="width: 60px;">&nbsp;</th>
+          </tr>
         </thead>
         {% for profile in request.user.godchildren.all %}
           <tr>

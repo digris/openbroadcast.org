@@ -7,9 +7,9 @@
   image-url="{% thumbnail object.main_image 280x280 crop upscale %}"
   type="{{ object.mediatype }}"
   {% if search_result %}
-  :tags="{{ search_result.tags|as_json }}"
+    :tags="{{ search_result.tags|as_json }}"
   {% else %}
-  :tags="{{ object.tags|tag_names_as_json }}"
+    :tags="{{ object.tags|tag_names_as_json }}"
   {% endif %}
   :actions="{% get_object_actions_as_json object user %}">
   <div class="column">
@@ -35,9 +35,9 @@
       <span class="dim">{{ object.release.releasedate.year }}</span>
     </div>
     {% if object.release and object.release.label %}
-    <div>
-      <span class="dim">on</span> {{ object.release.label.name|truncate_chars_inner:28 }}
-    </div>
+      <div>
+        <span class="dim">on</span> {{ object.release.label.name|truncate_chars_inner:28 }}
+      </div>
     {% endif %}
   </div>
   <template #appendix>

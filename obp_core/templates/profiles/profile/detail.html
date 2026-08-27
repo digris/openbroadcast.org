@@ -5,24 +5,24 @@
 {% block heading %}{% endblock %}
 
 {% block inner %}
-<div class="item item--detail item--profile">
+  <div class="item item--detail item--profile">
     <div class="item--header">
-        {% include "profiles/profile/_header.html" %}
+      {% include "profiles/profile/_header.html" %}
     </div>
     <nav class="item--section-menu">
-        {% for item in section_menu %}
-            <div class="menu-item{% if item.active %} menu-item--active{% endif %}">
-                <a href="{{ item.url }}">{{ item.title }}</a>
-            </div>
-        {% endfor %}
+      {% for item in section_menu %}
+        <div class="menu-item{% if item.active %} menu-item--active{% endif %}">
+          <a href="{{ item.url }}">{{ item.title }}</a>
+        </div>
+      {% endfor %}
     </nav>
     <div class="item--body">
-        {% include section_template %}
+      {% include section_template %}
     </div>
-</div>
+  </div>
 {% endblock %}
 
 {% block sidebar %}
-    {% include "profiles/profile/sidebar/_detail.html" %}
-	{% include "profiles/profile/sidebar/_mentoring.html" %}
+  {% include "profiles/profile/sidebar/_detail.html" %}
+  {% include "profiles/profile/sidebar/_mentoring.html" %}
 {% endblock %}

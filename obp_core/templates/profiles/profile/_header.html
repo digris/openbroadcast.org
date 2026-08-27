@@ -66,8 +66,8 @@
         </div>
       </div>
     {% endif %}
-    </div>
-    {% if object.user %}
+  </div>
+  {% if object.user %}
     <div class="meta">
       <div class="meta__item">
         <div>
@@ -90,16 +90,16 @@
         </div>
       </div>
     </div>
-    {% endif %}
+  {% endif %}
 </div>
 <div class="header__secondary">
   <div class="visual">
     <visual-with-actions
-            ct="{{ object.get_ct }}"
-            uuid="{{ object.uuid }}"
-            image-url="{% thumbnail object.image 280x280 crop upscale %}"
-            large-image-url="{% thumbnail object.image 1200x1200 crop upscale %}"
-            :actions="{% get_object_actions_as_json object user %}">
+      ct="{{ object.get_ct }}"
+      uuid="{{ object.uuid }}"
+      image-url="{% thumbnail object.image 280x280 crop upscale %}"
+      large-image-url="{% thumbnail object.image 1200x1200 crop upscale %}"
+      :actions="{% get_object_actions_as_json object user %}">
     </visual-with-actions>
   </div>
 </div>
@@ -110,8 +110,8 @@
 
 <div class="header__secondary">
   <div class="rating">
-        <object-rating
-            obj-uuid="{{ object.uuid }}"
-            obj-ct="{{ object.get_ct }}"></object-rating>
+    <object-rating
+      obj-uuid="{{ object.uuid }}"
+      obj-ct="{{ object.get_ct }}"></object-rating>
   </div>
 </div>

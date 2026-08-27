@@ -2,37 +2,37 @@
 
 <div class="atracker event-list">
 
-    {% for event in events %}
+  {% for event in events %}
 
         <!--{% ifchanged %}<h3>{{ event.created|date:"Y" }}</h3>{% endifchanged %}-->
 
-        {% ifchanged %}<h4>{{ event.created|date:"F Y" }}</h4>{% endifchanged %}
+    {% ifchanged %}<h4>{{ event.created|date:"F Y" }}</h4>{% endifchanged %}
 
         <!-- actual entry -->
 
-        <ul class="event unstyled horizontal clearfix">
+    <ul class="event unstyled horizontal clearfix">
 
-            <li class="date">{{ event.created|date:"D m - H:i:s" }}</li>
+      <li class="date">{{ event.created|date:"D m - H:i:s" }}</li>
 
-            <li class="type">{{ event.event_type.title }}</li>
+      <li class="type">{{ event.event_type.title }}</li>
 
-            <li class="user">
-            {% if request.user == event.user %}
-                {% trans "You" %}
-            {% else %}
-                <a href="{{ event.user.get_absolute_url }}">
-                {% firstof event.user.get_full_name event.user.username %}
-                </a>
-                {% endif %}
-            </li>
+      <li class="user">
+        {% if request.user == event.user %}
+          {% trans "You" %}
+        {% else %}
+          <a href="{{ event.user.get_absolute_url }}">
+            {% firstof event.user.get_full_name event.user.username %}
+          </a>
+        {% endif %}
+      </li>
 
-            <li class="co"><a href="{{ event.content_object.get_absolute_url }}">{{ event.content_object.name }}</a></li>
-            <li class="eco"><a href="{{ event.content_object.get_absolute_url }}">{{ event.event_content_object.name }}</a></li>
+      <li class="co"><a href="{{ event.content_object.get_absolute_url }}">{{ event.content_object.name }}</a></li>
+      <li class="eco"><a href="{{ event.content_object.get_absolute_url }}">{{ event.event_content_object.name }}</a></li>
 
-        </ul>
+    </ul>
 
 
-    {% endfor %}
+  {% endfor %}
 
 
 

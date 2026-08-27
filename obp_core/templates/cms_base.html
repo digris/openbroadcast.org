@@ -2,21 +2,21 @@
 
 
 {% block heading %}
-<div id="heading">
+  <div id="heading">
     {% include "skeleton/heading.html" %}
-</div>
+  </div>
 {% endblock %}
 
 
 {% block inner %}
-<div class="content cms">
+  <div class="content cms">
     {% block cms_main %}{% endblock %}
-</div>
+  </div>
 {% endblock %}
 
 
 {% block sidebar %}
-<div class="content cms">
+  <div class="content cms">
     {% block cms_sidebar %}{% endblock %}
-</div>
+  </div>
 {% endblock %}

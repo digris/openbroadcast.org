@@ -1,29 +1,29 @@
 {% load i18n adv_cache %}
 
 {% cache 600 "footer" request.get_full_path %}
-    <div class="footer">
-        <div class="footer__primary">
-            <div class="footer__address">
-                <p>
-                    open broadcast<br>
-                    Lessingstrasse 33<br>
-                    8002 Zürich<br>
-                    A plattform by <a href="http://www.digris.ch/" target="_blank">digris AG</a>
-                </p>
-            </div>
-            <div class="footer__links">
-                <p>
-                    <span>General contact:</span>
-                    <a href="mailto:info@openbroadcast.org">info@openbroadcast.org</a>
-                </p>
-                <p>
-                    <span>Support:</span>
-                    <a href="mailto:support@openbroadcast.org">support@openbroadcast.org</a>
-                </p>
-            </div>
-        </div>
-        <div class="footer__appendix">
-            <p>developed by <a href="http://hazelfire.com" target="_blank">hazelfire GmbH</a></p>
-        </div>
+  <div class="footer">
+    <div class="footer__primary">
+      <div class="footer__address">
+        <p>
+          open broadcast<br>
+          Lessingstrasse 33<br>
+          8002 Zürich<br>
+          A plattform by <a href="http://www.digris.ch/" target="_blank">digris AG</a>
+        </p>
+      </div>
+      <div class="footer__links">
+        <p>
+          <span>General contact:</span>
+          <a href="mailto:info@openbroadcast.org">info@openbroadcast.org</a>
+        </p>
+        <p>
+          <span>Support:</span>
+          <a href="mailto:support@openbroadcast.org">support@openbroadcast.org</a>
+        </p>
+      </div>
     </div>
+    <div class="footer__appendix">
+      <p>developed by <a href="http://hazelfire.com" target="_blank">hazelfire GmbH</a></p>
+    </div>
+  </div>
 {% endcache %}

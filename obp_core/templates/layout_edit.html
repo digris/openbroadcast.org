@@ -3,16 +3,16 @@
 {% block body_class %}{{ super }} edit edit--base{% endblock %}
 
 {% block main %}
-    <div class="content__primary">
-        {% block inner %}{% endblock %}
-    </div>
-    <div class="content__sidebar">
-        {% block sidebar %}{% endblock %}
-    </div>
-    <div class="content__primary">
-        {% block form %}{% endblock %}
-    </div>
-    <div class="content__sidebar">
-        {% block form_sidebar %}{% endblock %}
-    </div>
+  <div class="content__primary">
+    {% block inner %}{% endblock %}
+  </div>
+  <div class="content__sidebar">
+    {% block sidebar %}{% endblock %}
+  </div>
+  <div class="content__primary">
+    {% block form %}{% endblock %}
+  </div>
+  <div class="content__sidebar">
+    {% block form_sidebar %}{% endblock %}
+  </div>
 {% endblock %}

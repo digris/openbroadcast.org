@@ -15,14 +15,14 @@
   </div>
 
   {% if object.series %}
-  <div class="title title--secondary">
-    <h3>
-      {{ object.series }}
-      {% if object.series_number %}
-      #{{ object.series_number }}
-      {% endif %}
-    </h3>
-  </div>
+    <div class="title title--secondary">
+      <h3>
+        {{ object.series }}
+        {% if object.series_number %}
+          #{{ object.series_number }}
+        {% endif %}
+      </h3>
+    </div>
   {% endif %}
 
   <div class="meta">
@@ -46,13 +46,13 @@
         </div>
         <div>
           {% if object.duration %}
-          <span>{{ object.duration|msec_to_time }}</span>
+            <span>{{ object.duration|msec_to_time }}</span>
           {% endif %}
           {% if object.duration and object.target_duration %}
-          <br>
+            <br>
           {% endif %}
           {% if object.target_duration %}
-          <span>{{ object.target_duration|sec_to_time }} (target)</span>
+            <span>{{ object.target_duration|sec_to_time }} (target)</span>
           {% endif %}
         </div>
       </div>
@@ -69,9 +69,9 @@
           {% firstof object.last_creation_time|date:'DATETIME_FORMAT' object.created|date:'DATETIME_FORMAT' %}
         </time>
         {% if object.creator %}
-        <div>
-          <a href="{{ object.creator.get_absolute_url }}">{{ object.creator.profile.get_display_name }}</a>
-        </div>
+          <div>
+            <a href="{{ object.creator.get_absolute_url }}">{{ object.creator.profile.get_display_name }}</a>
+          </div>
         {% endif %}
       </div>
     </div>
@@ -85,9 +85,9 @@
           {% firstof object.last_update_time|date:'DATETIME_FORMAT' object.updated|date:'DATETIME_FORMAT' %}
         </time>
         {% if object.last_editor %}
-        <div>
-          <a href="{{ object.last_editor.get_absolute_url }}">{{ object.last_editor.profile.get_display_name }}</a>
-        </div>
+          <div>
+            <a href="{{ object.last_editor.get_absolute_url }}">{{ object.last_editor.profile.get_display_name }}</a>
+          </div>
         {% endif %}
       </div>
     </div>
@@ -159,7 +159,7 @@
 <div class="header__secondary">
   <div class="rating">
     <object-rating
-        obj-uuid="{{ object.uuid }}"
-        obj-ct="{{ object.get_ct }}"></object-rating>
+      obj-uuid="{{ object.uuid }}"
+      obj-ct="{{ object.get_ct }}"></object-rating>
   </div>
 </div>

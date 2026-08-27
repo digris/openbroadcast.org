@@ -16,37 +16,37 @@
   <div class="listview container actions">
     <table class="table table--default">
       <tbody>
-      {% for action in action_list %}
-        {% ifchanged %}
-          <tr class="day-separator">
-            <td colspan="3">{{ action.timestamp|naturalday }}</td>
-          </tr>
-        {% endifchanged %}
-        <tr>
-          <td>
-            {% if action.target %}
-              {% if action.target.classname == 'Media' %}
-                Track
+        {% for action in action_list %}
+          {% ifchanged %}
+            <tr class="day-separator">
+              <td colspan="3">{{ action.timestamp|naturalday }}</td>
+            </tr>
+          {% endifchanged %}
+          <tr>
+            <td>
+              {% if action.target %}
+                {% if action.target.classname == 'Media' %}
+                  Track
+                {% else %}
+                  {{ action.target|ct_name_by_object|title }}
+                {% endif %}
               {% else %}
-                {{ action.target|ct_name_by_object|title }}
+                &nbsp;
               {% endif %}
-            {% else %}
-              &nbsp;
-            {% endif %}
-          </td>
-          <td>
-            <a href="{{ action.actor.get_absolute_url }}">{{ action.actor.profile.get_display_name }}</a>
+            </td>
+            <td>
+              <a href="{{ action.actor.get_absolute_url }}">{{ action.actor.profile.get_display_name }}</a>
             {% comment %}TODO: sorry - ugly remapping. needs to be refactored{% endcomment %}
-            {{ action.verb }}
-            {% if action.target %}
-              <a href="{{ action.target.get_absolute_url }}">"{{ action.target.name|truncate_chars_inner:60 }}"</a>
-            {% endif %}
-          </td>
-          <td>
-            <span class="pull-right">{{ action.timestamp|date:'H:i' }}</span>
-          </td>
-        </tr>
-      {% endfor %}
+              {{ action.verb }}
+              {% if action.target %}
+                <a href="{{ action.target.get_absolute_url }}">"{{ action.target.name|truncate_chars_inner:60 }}"</a>
+              {% endif %}
+            </td>
+            <td>
+              <span class="pull-right">{{ action.timestamp|date:'H:i' }}</span>
+            </td>
+          </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
@@ -78,17 +78,17 @@
                 {% spurl base=request.get_full_path active_mquery="{{ filter_item.name }}={{ option.0 }}" as is_active %}
                 {% spurl base=request.get_full_path remove_query_param="page" trigger_mquery="{{ filter_item.name }}={{ option.0 }}" as option_url %}
                 <span class="option {% if is_active %}selected{% endif %}">
-                                <a href="{{ option_url }}" rel="nofollow">
-                                    {% if option|length == 2 %}
-                                      <span class="option-name">{{ option.0|title }}</span>
-                                      <span class="option-count">{{ option.1 }}</span>
-                                    {% endif %}
-                                  {% if option|length == 3 %}
-                                    <span class="option-name">{{ option.1|title }}</span>
-                                    <span class="option-count">{{ option.2 }}</span>
-                                  {% endif %}
-                                </a>
-                            </span>
+                  <a href="{{ option_url }}" rel="nofollow">
+                    {% if option|length == 2 %}
+                      <span class="option-name">{{ option.0|title }}</span>
+                      <span class="option-count">{{ option.1 }}</span>
+                    {% endif %}
+                    {% if option|length == 3 %}
+                      <span class="option-name">{{ option.1|title }}</span>
+                      <span class="option-count">{{ option.2 }}</span>
+                    {% endif %}
+                  </a>
+                </span>
               {% endif %}
             {% endfor %}
           </div>

@@ -5,66 +5,66 @@
 {% load thumbnail i18n truncate_tags %}
 
 {% block heading %} <!-- heading / icon (large one) -->
-    {% addtoblock "js-post" %}
-        <script src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>{% endaddtoblock %}
-    {% addtoblock "js-post" %}{% dajaxice_js_import %}{% endaddtoblock %}
-    {% addtoblock "js-post" %}
-        <script src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>{% endaddtoblock %}
+  {% addtoblock "js-post" %}
+    <script src="{{ STATIC_URL }}ac_tagging/js/jquery.tag-it.js"></script>{% endaddtoblock %}
+  {% addtoblock "js-post" %}{% dajaxice_js_import %}{% endaddtoblock %}
+  {% addtoblock "js-post" %}
+    <script src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>{% endaddtoblock %}
 
 
-    {% addtoblock "js-post" %}
-        <script>
-            $(function () {
+  {% addtoblock "js-post" %}
+    <script>
+      $(function () {
 
-                $('.target-duration input:checked').parent().addClass("selected");
-                $('.target-duration input').css('display', 'none');
-                $('.target-duration input').live('change', function (e) {
-                    $('.target-duration label').removeClass('selected');
-                    $(this).parents('label').addClass('selected');
-                });
+        $('.target-duration input:checked').parent().addClass("selected");
+        $('.target-duration input').css('display', 'none');
+        $('.target-duration input').live('change', function (e) {
+          $('.target-duration label').removeClass('selected');
+          $(this).parents('label').addClass('selected');
+        });
 
 
-                $('.weather input:checked').parent().addClass("selected");
-                $('.weather input').css('display', 'none');
-                $('.weather input').live('change', function (e) {
+        $('.weather input:checked').parent().addClass("selected");
+        $('.weather input').css('display', 'none');
+        $('.weather input').live('change', function (e) {
                     //$('.weather label').removeClass('selected');
-                    $(this).parents('label').toggleClass('selected');
-                });
+          $(this).parents('label').toggleClass('selected');
+        });
 
 
-                $('.seasons input:checked').parent().addClass("selected");
-                $('.seasons input').css('display', 'none');
-                $('.seasons input').live('change', function (e) {
+        $('.seasons input:checked').parent().addClass("selected");
+        $('.seasons input').css('display', 'none');
+        $('.seasons input').live('change', function (e) {
                     //$('.seasons label').removeClass('selected');
-                    $(this).parents('label').toggleClass('selected');
-                });
+          $(this).parents('label').toggleClass('selected');
+        });
 
 
-                $('.dayparts input:checked').parents('li').addClass("selected");
-                $('.dayparts input').css('display', 'none');
+        $('.dayparts input:checked').parents('li').addClass("selected");
+        $('.dayparts input').css('display', 'none');
 
-                $('.dayparts input').live('click', function (e) {
-                    $(this).parents('li').toggleClass('selected');
-                });
+        $('.dayparts input').live('click', function (e) {
+          $(this).parents('li').toggleClass('selected');
+        });
 
-            });
-        </script>
-    {% endaddtoblock %}
+      });
+    </script>
+  {% endaddtoblock %}
 
 
-    {% addtoblock "css" %}
-        <style>
-            fieldset.daypart,
-            fieldset.series,
-            fieldset.tagging {
-                display: none;
-            }
-        </style>
-    {% endaddtoblock %}
+  {% addtoblock "css" %}
+    <style>
+      fieldset.daypart,
+      fieldset.series,
+      fieldset.tagging {
+        display: none;
+      }
+    </style>
+  {% endaddtoblock %}
 
-    <div id="heading">
-        {% include "skeleton/heading.html" %}
-    </div>
+  <div id="heading">
+    {% include "skeleton/heading.html" %}
+  </div>
 {% endblock %}
 
 {% block inner %}{% endblock %}
@@ -72,18 +72,18 @@
 {% block sidebar %}{% endblock %}
 
 {% block form %}
-    <div class="item_inner">
+  <div class="item_inner">
 
-        <form class="form-horizontal form-compact form-playlist" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal form-compact form-playlist" method="post" enctype="multipart/form-data">
 
-            {{ form.management_form }}
+      {{ form.management_form }}
 
-            {% crispy form %}
-            {% crispy action_form %}
+      {% crispy form %}
+      {% crispy action_form %}
 
-        </form>
+    </form>
 
-    </div>
+  </div>
 {% endblock %}
 
 {% block form_sidebar %}{% endblock %}

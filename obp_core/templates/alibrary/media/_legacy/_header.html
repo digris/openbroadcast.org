@@ -4,10 +4,10 @@
   <div class="page-header">
     <h2>{{ object.name|truncate_chars_inner:40 }}
       {% if object.mediatype %}
-      <small>{{ object.get_mediatype_display }}</small>
+        <small>{{ object.get_mediatype_display }}</small>
       {% endif %}
       {% if object.version %}
-      <small>({{ object.get_version_display }})</small>
+        <small>({{ object.get_version_display }})</small>
       {% endif %}
     </h2>
   </div>
@@ -17,39 +17,39 @@
     </dt>
     <dd>
       {% with item=object.artist %}
-      {% include "alibrary/element/_inline_link.html" %}
+        {% include "alibrary/element/_inline_link.html" %}
       {% endwith %}
     </dd>
     {% if object.get_mediaartists %}
-    <dt>
-      {% trans "Track Artists(s)" %}:
-    </dt>
-    <dd>
-      {% include "alibrary/media/_credited_artists.html" with artist_list=object.get_mediaartists %}
-    </dd>
+      <dt>
+        {% trans "Track Artists(s)" %}:
+      </dt>
+      <dd>
+        {% include "alibrary/media/_credited_artists.html" with artist_list=object.get_mediaartists %}
+      </dd>
     {% endif %}
     {% if object.release %}
-    <dt>
-      {% trans "Release" %}:
-    </dt>
-    <dd>
-      {% with item=object.release %}
-      {% include "alibrary/element/_inline_link.html" %}
-      {% endwith %}
-      &nbsp;
-    </dd>
+      <dt>
+        {% trans "Release" %}:
+      </dt>
+      <dd>
+        {% with item=object.release %}
+          {% include "alibrary/element/_inline_link.html" %}
+        {% endwith %}
+        &nbsp;
+      </dd>
     {% endif %}
 
     {% if object.release and object.release.label %}
-    <dt>
-      {% trans "Label" %}:
-    </dt>
-    <dd>
-      {% with item=object.release.label %}
-      {% include "alibrary/element/_inline_link.html" %}
-      {% endwith %}
-      &nbsp;
-    </dd>
+      <dt>
+        {% trans "Label" %}:
+      </dt>
+      <dd>
+        {% with item=object.release.label %}
+          {% include "alibrary/element/_inline_link.html" %}
+        {% endwith %}
+        &nbsp;
+      </dd>
     {% endif %}
 
 
@@ -58,37 +58,37 @@
     </dt>
     <dd>
       {% if object.master_duration %}
-      {{ object.master_duration|sec_to_time }}
+        {{ object.master_duration|sec_to_time }}
       {% endif %}
       &nbsp;
     </dd>
 
     {% if object.isrc %}
-    <dt>
-      {% trans "ISRC" %}:
-    </dt>
-    <dd>
-      {{ object.isrc }}
-    </dd>
+      <dt>
+        {% trans "ISRC" %}:
+      </dt>
+      <dd>
+        {{ object.isrc }}
+      </dd>
     {% endif %}
 
 
     {% if object.opus_number %}
-    <dt>
-      {% trans "Opus N." %}:
-    </dt>
-    <dd>
-      {{ object.opus_number }}
-    </dd>
+      <dt>
+        {% trans "Opus N." %}:
+      </dt>
+      <dd>
+        {{ object.opus_number }}
+      </dd>
     {% endif %}
 
     {% if object.release and object.release.releasedate_approx %}
-    <dt>
-      {% trans "Release date" %}:
-    </dt>
-    <dd>
-      {{ object.release.releasedate_approx|date:"SHORT_DATE_FORMAT" }}
-    </dd>
+      <dt>
+        {% trans "Release date" %}:
+      </dt>
+      <dd>
+        {{ object.release.releasedate_approx|date:"SHORT_DATE_FORMAT" }}
+      </dd>
     {% endif %}
 
 
@@ -101,17 +101,17 @@
     </dt>
     <dd>
       {% if object.license %}
-      {% if object.license.iconset %}
-      <a href="{{ object.license.get_absolute_url }}"
-         title="{% trans " License details" %}"
-      class="iconset iconset-license">
-      {{ object.license.iconset_display }}
-      </a>
+        {% if object.license.iconset %}
+          <a href="{{ object.license.get_absolute_url }}"
+             title="{% trans " License details" %}"
+             class="iconset iconset-license">
+            {{ object.license.iconset_display }}
+          </a>
+        {% else %}
+          <span>{{ object.license.name }}</span>
+        {% endif %}
       {% else %}
-      <span>{{ object.license.name }}</span>
-      {% endif %}
-      {% else %}
-      &nbsp;
+        &nbsp;
       {% endif %}
     </dd>
 
@@ -134,14 +134,14 @@
     </dd>
 
     {% if object.tags %}
-    <dt>
-      {% trans "Tags" %}:
-    </dt>
-    <dd>
-      {% for tag in object.tags %}
-      <span class="tag">{{ tag.name|spacify }}</span>
-      {% endfor %}
-    </dd>
+      <dt>
+        {% trans "Tags" %}:
+      </dt>
+      <dd>
+        {% for tag in object.tags %}
+          <span class="tag">{{ tag.name|spacify }}</span>
+        {% endfor %}
+      </dd>
     {% endif %}
 
   </dl>
@@ -153,10 +153,10 @@
 
   <div class="image">
     {% if object.release.main_image %}
-    <a href="{% thumbnail object.release.main_image 1200x1200 crop upscale %}" class="zoomable cboxElement"> <img
-      src="{% thumbnail object.release.main_image 170x170 crop upscale %}" alt="Cover"/> </a>
+      <a href="{% thumbnail object.release.main_image 1200x1200 crop upscale %}" class="zoomable cboxElement"> <img
+        src="{% thumbnail object.release.main_image 170x170 crop upscale %}" alt="Cover"/> </a>
     {% else %}
-    <img src="/static/img/base/defaults/listview.release.xl.png" alt="{% trans " No cover available" %}" />
+      <img src="/static/img/base/defaults/listview.release.xl.png" alt="{% trans " No cover available" %}" />
     {% endif %}
   </div>
 

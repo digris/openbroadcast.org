@@ -1,80 +1,80 @@
 {% load i18n markup_tags wiki_tags %}
 
 <div class="profile-details profile-details--public">
-    {% if object.biography %}
-        <div class="markdown markdown--inline">
-            {{ object.biography|markdown }}
-        </div>
-    {% endif %}
+  {% if object.biography %}
+    <div class="markdown markdown--inline">
+      {{ object.biography|markdown }}
+    </div>
+  {% endif %}
 </div>
 
 {% if user == object.user or perms.profiles.view_profiles_private or user == object.mentor %}
-<div class="profile-details profile-details--grid profile-details--grid--2 profile-details--private">
+  <div class="profile-details profile-details--grid profile-details--grid--2 profile-details--private">
 
     <div class="profile-details__contact">
-        <h3>{% trans 'Contact' %}</h3>
+      <h3>{% trans 'Contact' %}</h3>
 
-        <p>
-            {% trans 'Address' %}
-            <br>
-            {% if object.address1 %}
-                {{ object.address1 }}
-                <br>
-            {% endif %}
+      <p>
+        {% trans 'Address' %}
+        <br>
+        {% if object.address1 %}
+          {{ object.address1 }}
+          <br>
+        {% endif %}
 
-            {% if object.address2 %}
-                {{ object.address2 }}
-                <br>
-            {% endif %}
+        {% if object.address2 %}
+          {{ object.address2 }}
+          <br>
+        {% endif %}
 
-            {% if object.zip or object.city %}
-                {{ object.zip }} {{ object.city }}
-                <br>
-            {% endif %}
+        {% if object.zip or object.city %}
+          {{ object.zip }} {{ object.city }}
+          <br>
+        {% endif %}
 
-            {% if object.country %}
-                {{ object.country.name }}
-                <br>
-            {% endif %}
-        </p>
+        {% if object.country %}
+          {{ object.country.name }}
+          <br>
+        {% endif %}
+      </p>
     </div>
 
     <div class="profile-details__personal">
-        <h3>{% trans 'Details' %}</h3>
+      <h3>{% trans 'Details' %}</h3>
 
 
-        {% if object.user.email %}
-            <p>
-                <a href="mailto:{{ object.user.email }}">{{ object.user.email }}</a>
-            </p>
-        {% endif %}
+      {% if object.user.email %}
+        <p>
+          <a href="mailto:{{ object.user.email }}">{{ object.user.email }}</a>
+        </p>
+      {% endif %}
 
-        {% if object.phone %}
-            <p>
-                {{ object.phone }}
-            </p>
-        {% endif %}
+      {% if object.phone %}
+        <p>
+          {{ object.phone }}
+        </p>
+      {% endif %}
     </div>
 
-</div>
+  </div>
 {% endif %}
 
 <div class="profile-details profile-details--grid profile-details--grid--2 profile-details--public">
 
-    {% if object.link_set.exists %}
-        <div class="profile-details__generic">
-            <h3>{% trans "Links" %}</h3>
-            {% for link in object.link_set.all %}
-                <p>
-                    <span>{% if link.title %}{{ link.title }}{% endif %}</span>
-                    <br>
-                    <span>
-                        <a target="_blank" href="{{ link.url }}">{{ link.url }}</a>
-                    </span>
-                </p>
-            {% endfor %}
-        </div>
-    {% endif %}
+  {% if object.link_set.exists %}
+    <div class="profile-details__generic">
+      <h3>{% trans "Links" %}</h3>
+      {% for link in object.link_set.all %}
+        <p>
+          <span>{% if link.title %}{{ link.title }}{% endif %}</span>
+          <br>
+          <span>
+            <a target="_blank" href="{{ link.url }}">{{ link.url }}</a>
+          </span>
+        </p>
+      {% endfor %}
+    </div>
+  {% endif %}
 
     {% comment %}
     {% if object.service_set.exists %}

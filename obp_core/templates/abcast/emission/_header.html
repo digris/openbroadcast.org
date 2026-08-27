@@ -9,13 +9,13 @@
     </h2>
   </div>
   {% if object.channel %}
-  <div class="title title--secondary">
-    <h3>
-      <a href="{{ object.channel.get_absolute_url }}">
-        {{ object.channel.name }}
-      </a>
-    </h3>
-  </div>
+    <div class="title title--secondary">
+      <h3>
+        <a href="{{ object.channel.get_absolute_url }}">
+          {{ object.channel.name }}
+        </a>
+      </h3>
+    </div>
   {% endif %}
   <div class="meta">
     {% if object.user and object.user.profile %}
