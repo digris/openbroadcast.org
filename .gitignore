@@ -21,7 +21,6 @@ logs/
 build/
 dist/
 celerybeat-schedule.*
-db_dumps/
 
 # local tooling state
 .omx/
