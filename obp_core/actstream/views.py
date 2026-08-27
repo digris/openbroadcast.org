@@ -17,7 +17,6 @@ PAGINATE_BY_DEFAULT = getattr(settings, "ACTSTREAM_PAGINATE_BY_DEFAULT", 120)
 
 
 class ActionListView(PaginationMixin, ListView):
-
     context_object_name = "action_list"
     paginate_by = 120
 

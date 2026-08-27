@@ -7,7 +7,6 @@ from .cms_menus import ExportMenu
 
 @apphook_pool.register
 class ExportApp(CMSApp):
-
     name = _("Export App")
     menus = [ExportMenu]
 

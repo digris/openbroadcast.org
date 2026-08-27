@@ -208,6 +208,7 @@ DATABASES = {
 }
 
 import pymysql
+
 pymysql.version_info = (1, 2, 5)
 pymysql.install_as_MySQLdb()
 
@@ -464,7 +465,7 @@ CACHES = {
 #######################################################################
 ELASTICSEARCH_DSL = {
     "default": {
-        'hosts': 'localhost:9200',
+        "hosts": "localhost:9200",
         # "hosts": "10.35.30.231:9200"
         # 'hosts': '10.10.8.107:9200' # !! WARNING: this is the production instance !!
     }
@@ -514,7 +515,9 @@ LOGGING = {
             "level": "DEBUG",
             "class": "logging.FileHandler",
             "formatter": "standard",
-            "filename": os.path.join(os.path.dirname(BASE_DIR), "logs", "app-debug.log"),
+            "filename": os.path.join(
+                os.path.dirname(BASE_DIR), "logs", "app-debug.log"
+            ),
         },
     },
     "loggers": {

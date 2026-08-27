@@ -14,7 +14,6 @@ log = logging.getLogger(__name__)
 class ProfileViewSet(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
 ):
-
     queryset = Profile.objects.all().order_by("-created")
     serializer_class = ProfileSerializer
     lookup_field = "uuid"

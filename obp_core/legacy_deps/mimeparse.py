@@ -86,9 +86,7 @@ def fitness_and_quality_parsed(mime_type: str, parsed_ranges):
     target_type, target_subtype, target_params = parse_media_range(mime_type)
 
     for main_type, subtype, params in parsed_ranges:
-        type_match = (
-            main_type == target_type or main_type == "*" or target_type == "*"
-        )
+        type_match = main_type == target_type or main_type == "*" or target_type == "*"
         subtype_match = (
             subtype == target_subtype or subtype == "*" or target_subtype == "*"
         )
@@ -149,7 +147,11 @@ def best_match(supported, header: str):
         )
 
     weighted_matches.sort()
-    return weighted_matches[-1][2] if weighted_matches and weighted_matches[-1][0][1] else ""
+    return (
+        weighted_matches[-1][2]
+        if weighted_matches and weighted_matches[-1][0][1]
+        else ""
+    )
 
 
 def _filter_blank(items):

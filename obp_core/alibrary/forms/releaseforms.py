@@ -45,7 +45,6 @@ MAX_TRACKNUMBER = 100 + 1
 
 
 class ReleaseActionForm(Form):
-
     publish = forms.BooleanField(label=_("Save & Publish"), required=False)
 
     def __init__(self, *args, **kwargs):

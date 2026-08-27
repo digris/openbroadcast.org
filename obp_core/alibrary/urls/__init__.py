@@ -8,24 +8,9 @@ from . import releases as urls_release
 
 app_name = "alibrary"
 urlpatterns = [
-    url(
-        r"^releases/",
-        include(urls_release)
-    ),
-    url(
-        r"^artists/",
-        include(urls_artist)
-    ),
-    url(
-        r"^tracks/",
-        include(urls_media)
-    ),
-    url(
-        r"^labels/",
-        include(urls_label)
-    ),
-    url(
-        r"^playlists/",
-        include(urls_playlist)
-    ),
+    url(r"^releases/", include(urls_release)),
+    url(r"^artists/", include(urls_artist)),
+    url(r"^tracks/", include(urls_media)),
+    url(r"^labels/", include(urls_label)),
+    url(r"^playlists/", include(urls_playlist)),
 ]

@@ -7,7 +7,6 @@ from cms.menu_bases import CMSAttachMenu
 
 
 class ExportMenu(CMSAttachMenu):
-
     name = _("Export Menu")
 
     def get_nodes(self, request):

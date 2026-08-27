@@ -7,7 +7,6 @@ from .cms_menus import ImportMenu
 
 @apphook_pool.register
 class ImportApp(CMSApp):
-
     name = _("Import App")
     menus = [ImportMenu]
 

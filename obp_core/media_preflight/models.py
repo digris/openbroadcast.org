@@ -1,4 +1,3 @@
-
 import json
 import logging
 
@@ -22,7 +21,6 @@ log = logging.getLogger(__name__)
 
 
 class PreflightCheck(TimestampedModelMixin, models.Model):
-
     STATUS_PENDING = "pending"
     STATUS_RUNNING = "running"
     STATUS_COMPLETED = "completed"

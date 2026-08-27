@@ -30,7 +30,10 @@ env = environ.Env(
     MUSICBRAINZ_HOST=(str, "musicbrainz.org"),
     DISCOGS_HOST=(str, "api.discogs.com"),
     #
-    MEDIA_PREFLIGHT_SERVICE_ENDPOINT=(str, "https://media-preflight-service-888119763922.europe-west6.run.app/"),
+    MEDIA_PREFLIGHT_SERVICE_ENDPOINT=(
+        str,
+        "https://media-preflight-service-888119763922.europe-west6.run.app/",
+    ),
     MEDIA_PREFLIGHT_SERVICE_TOKEN=(str, ""),
     #
     WAVEFORM_SERVICE_ENDPOINT=(str, "http://10.10.8.202:2001/"),
@@ -178,10 +181,7 @@ INSTALLED_APPS = [
 # db
 #######################################################################
 DATABASES = {
-    "default": {
-        **env.db("DATABASE_URL"),
-        "CONN_HEALTH_CHECKS": True
-    },
+    "default": {**env.db("DATABASE_URL"), "CONN_HEALTH_CHECKS": True},
     # "sync": env.db("DATABASE_URL_SYNC"),
 }
 
@@ -289,20 +289,25 @@ TEMPLATES = [
                 "django.template.loaders.filesystem.Loader",
                 "django.template.loaders.app_directories.Loader",
                 "django.template.loaders.eggs.Loader",
-            ] if DEBUG else [
-                ('django.template.loaders.cached.Loader', [
-                    "django.template.loaders.filesystem.Loader",
-                    "django.template.loaders.app_directories.Loader",
-                    "django.template.loaders.eggs.Loader",
-                ])
+            ]
+            if DEBUG
+            else [
+                (
+                    "django.template.loaders.cached.Loader",
+                    [
+                        "django.template.loaders.filesystem.Loader",
+                        "django.template.loaders.app_directories.Loader",
+                        "django.template.loaders.eggs.Loader",
+                    ],
+                )
             ],
         },
     }
 ]
 
 NAVUTILS_MENU_CONFIG = {
-    'CURRENT_MENU_ITEM_CLASS': 'active selected',
-    'CURRENT_MENU_ITEM_PARENT_CLASS': 'active selected has-current',
+    "CURRENT_MENU_ITEM_CLASS": "active selected",
+    "CURRENT_MENU_ITEM_PARENT_CLASS": "active selected has-current",
 }
 
 
@@ -348,7 +353,7 @@ SETTINGS_EXPORT = ["FACEBOOK_APP_ID", "SITE_URL"]
 #######################################################################
 # API v1 (to be removed)
 #######################################################################
-TASTYPIE_DEFAULT_FORMATS = ['json']
+TASTYPIE_DEFAULT_FORMATS = ["json"]
 
 
 #######################################################################
@@ -503,7 +508,7 @@ CELERY_ROUTES = {
     "media_asset.tasks.process_format": {"queue": "convert"},
     "exporter.models.process_task": {"queue": "export"},
     "search.signals.handle_save_task": {"queue": "index"},
-    'search.tasks.update_index': {'queue': 'index'},
+    "search.tasks.update_index": {"queue": "index"},
 }
 
 CELERYBEAT_SCHEDULE = {
@@ -547,8 +552,8 @@ PUSHY_SETTINGS = {
 # 3rd party keys, ids etc
 #######################################################################
 RADIOPLAYER_API_STATION_ID = "obp"  # to be removed
-RADIOPLAYER_API_USER = "obp"        # to be removed
-RADIOPLAYER_API_PASSWORD = "obp"    # to be removed
+RADIOPLAYER_API_USER = "obp"  # to be removed
+RADIOPLAYER_API_PASSWORD = "obp"  # to be removed
 
 # google related
 GOOGLE_MAPS_API_KEY = "ABQIAAAAOHPJc2-0TzaYgfOquRJgtRR2_LvdznTgfqpGEUf18uq-dm_lmhSjdzKrt5n5UfFjwviK9F39LyXJng"

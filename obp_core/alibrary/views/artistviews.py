@@ -161,12 +161,14 @@ class ArtistDetailView(MenuMixin, SectionDetailView):
 
         contributions = Media.objects.filter(extra_artists=obj)
 
-        context.update({
-            'releases': releases,
-            'media_top': media_top,
-            'media_flop': media_flop,
-            'contributions': contributions,
-        })
+        context.update(
+            {
+                "releases": releases,
+                "media_top": media_top,
+                "media_flop": media_flop,
+                "contributions": contributions,
+            }
+        )
 
         return context
 

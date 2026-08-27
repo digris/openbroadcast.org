@@ -11,7 +11,6 @@ from .. import views
 
 
 class TestAccountViews(TestCase):
-
     # pytestmark = pytest.mark.django_db
     def test_anonymous(self):
 

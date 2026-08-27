@@ -12,9 +12,13 @@ def format_search_results(results):
     _results_by_id = {}
 
     for hit in results["hits"]["hits"]:
-
         source = hit["_source"]
-        item = {"score": hit["_score"], "id": int(hit["_id"]), "ct": hit["_type"], 'uuid': hit['_source'].get('uuid')}
+        item = {
+            "score": hit["_score"],
+            "id": int(hit["_id"]),
+            "ct": hit["_type"],
+            "uuid": hit["_source"].get("uuid"),
+        }
 
         for k, v in source.items():
             if k not in ignored_keys:

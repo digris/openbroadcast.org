@@ -7,7 +7,6 @@ from cms.menu_bases import CMSAttachMenu
 
 
 class ImportMenu(CMSAttachMenu):
-
     name = _("Import Menu")
 
     def get_nodes(self, request):

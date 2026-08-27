@@ -3,7 +3,6 @@ from alibrary.models import Release, Artist, Label
 
 
 class WikiRelease:
-
     """
     'listen' for an [[r:***]] to explicitly render
     """
@@ -21,13 +20,14 @@ class WikiRelease:
 
     def render(self, token, trail=None, **kwargs):
         if self.obj:
-            return "<a href='{}'>{}</a>".format(self.obj.get_absolute_url(), self.obj.name)
+            return "<a href='{}'>{}</a>".format(
+                self.obj.get_absolute_url(), self.obj.name
+            )
         else:
             return "linker error"
 
 
 class WikiArtist:
-
     """
     'listen' for an [[r:***]] to explicitly render
     """
@@ -48,13 +48,14 @@ class WikiArtist:
 
     def render(self, token, trail=None, **kwargs):
         if self.obj:
-            return "<a href='{}'>{}</a>".format(self.obj.get_absolute_url(), self.obj.name)
+            return "<a href='{}'>{}</a>".format(
+                self.obj.get_absolute_url(), self.obj.name
+            )
         else:
             return "linker error"
 
 
 class WikiLabel:
-
     """
     'listen' for an [[a:***]] to explicitly render
     """
@@ -75,6 +76,8 @@ class WikiLabel:
 
     def render(self, token, trail=None, **kwargs):
         if self.obj:
-            return "<a href='{}'>{}</a>".format(self.obj.get_absolute_url(), self.obj.name)
+            return "<a href='{}'>{}</a>".format(
+                self.obj.get_absolute_url(), self.obj.name
+            )
         else:
             return "linker error"

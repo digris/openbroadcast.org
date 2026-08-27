@@ -6,7 +6,14 @@ from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.utils.functional import lazy
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView, View, RedirectView
+from django.views.generic import (
+    ListView,
+    UpdateView,
+    CreateView,
+    DeleteView,
+    View,
+    RedirectView,
+)
 from importer.forms import ImportCreateModelForm
 from importer.models import Import
 from pure_pagination.mixins import PaginationMixin

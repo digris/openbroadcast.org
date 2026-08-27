@@ -90,7 +90,6 @@ def statistics_as_csv(channel, start, end, output=None):
     log.debug(f"output to: {output}")
 
     with codecs.open(output, mode="wb", encoding="utf-8") as csv_file:
-
         writer = csv.DictWriter(csv_file, fieldnames=FIELDNAMES, quoting=csv.QUOTE_ALL)
 
         writer.writeheader()

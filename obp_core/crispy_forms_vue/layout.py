@@ -12,12 +12,10 @@ class Cell(Div):
 
 
 class InputContainer(Field):
-
     template = f"{TEMPLATE_PACK}/input_container.html"
     css_class = "input-container"
 
 
 class TagInputContainer(Field):
-
     template = f"{TEMPLATE_PACK}/tag_input_container.html"
     css_class = "input-container input-container--tag"

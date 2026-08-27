@@ -26,7 +26,6 @@ class PypoGateway:
     def send_task(obj, message):
         log.info("send message: %s" % message["event_type"])
         try:
-
             connection = Connection(PLAYOUT_BROKER_URL)
 
             simple_queue = connection.SimpleQueue(BROKER_QUEUE)

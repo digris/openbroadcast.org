@@ -125,7 +125,6 @@ def release_fetch_media_mb_ids(obj):
                     )
 
         for m in qs_media:
-
             log.debug(f"looking up results for #{m.tracknumber} - {m}")
 
             try:
@@ -181,9 +180,7 @@ class MBCrawler:
         self.obj = obj
         self.mb_id = uuid_by_object(obj, service="musicbrainz")
 
-        log.debug(
-            f"crawling metadata: {obj} - id:{obj.pk} - mb_id:{self.mb_id}"
-        )
+        log.debug(f"crawling metadata: {obj} - id:{obj.pk} - mb_id:{self.mb_id}")
 
         self._data = None
         self._changes = {}
@@ -232,7 +229,6 @@ class MBCrawler:
 
         relations = self._data.get("relations")
         if relations:
-
             _relation_qs = self.obj.relations.all()
             _relation_urls = [strip_http(r.url) for r in _relation_qs]
 

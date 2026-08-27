@@ -38,7 +38,6 @@ def populate_results(results):
         log.debug(url)
 
         try:
-
             req = requests.get(url)
             res = req.json()
 
@@ -52,7 +51,6 @@ def populate_results(results):
                 r["members"] = ", ".join([m["name"] for m in res["members"]])
 
         except Exception as e:
-
             log.debug(f"unable to populate data for {url} - {e}")
 
             pass
@@ -67,7 +65,6 @@ def discogs_ordered_search(query, item_type, limit=100):
 
     # special case when searching directly by id
     if q_stripped.isdigit():
-
         url = "http://{host}/{item_type}s/{query}".format(
             host=DISCOGS_HOST,
             query=quote_plus(query.lower()),
@@ -84,7 +81,6 @@ def discogs_ordered_search(query, item_type, limit=100):
 
         # TODO: not very nice - remap some fields
         if item_type == "release":
-
             if "title" in data:
                 data["title"] = re.sub(name_pattern, "", data["title"])
 
@@ -101,7 +97,6 @@ def discogs_ordered_search(query, item_type, limit=100):
                     pass
 
         if item_type == "artist":
-
             if "name" in data:
                 data["title"] = re.sub(name_pattern, "", data["name"])
 
@@ -118,7 +113,6 @@ def discogs_ordered_search(query, item_type, limit=100):
                 data["members"] = members
 
             if "images" in data:
-
                 for image in [
                     i["uri150"]
                     for i in data["images"]
@@ -129,10 +123,12 @@ def discogs_ordered_search(query, item_type, limit=100):
 
         return [data]
 
-    url = "http://{host}/database/search?q={query}&type={item_type}&per_page=100".format(
-        host=DISCOGS_HOST,
-        query=quote_plus(query.lower()),
-        item_type=item_type,
+    url = (
+        "http://{host}/database/search?q={query}&type={item_type}&per_page=100".format(
+            host=DISCOGS_HOST,
+            query=quote_plus(query.lower()),
+            item_type=item_type,
+        )
     )
 
     results = []
@@ -143,7 +139,6 @@ def discogs_ordered_search(query, item_type, limit=100):
 
     x = 0
     while url and x < API_MAX_REQUESTS:
-
         log.debug(url)
         r = requests.get(url)
 

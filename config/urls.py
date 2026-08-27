@@ -41,7 +41,10 @@ urlpatterns = [
     #
     url(r"^network/invitation/", include("invitation.urls", namespace="invitation")),
     url(r"^network/actstream/", include("actstream.urls", namespace="actstream")),
-    url(r"^network/stations/", include("abcast.urls_station", namespace="abcast-network")),
+    url(
+        r"^network/stations/",
+        include("abcast.urls_station", namespace="abcast-network"),
+    ),
     #
     url(r"^admin/", include(admin.site.urls)),
     url(r"^vote/", include("arating.urls")),
@@ -68,7 +71,6 @@ urlpatterns = [
 ]
 
 if DEBUG:
-
     try:
         import debug_toolbar
 
@@ -81,4 +83,3 @@ if DEBUG:
     urlpatterns += [
         url(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT})
     ]
-

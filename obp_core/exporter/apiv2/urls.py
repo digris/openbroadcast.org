@@ -3,7 +3,7 @@ from rest_framework import routers
 
 from . import views
 
-router = routers.DefaultRouter(schema_title='Exporter API')
+router = routers.DefaultRouter(schema_title="Exporter API")
 router.register(r"export", views.ExportViewSet)
 
 # app_name = "exporter"

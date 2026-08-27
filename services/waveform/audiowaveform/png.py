@@ -57,7 +57,6 @@ def _convert_to_wav(path):
 
 
 def _get_duration(path):
-
     """
     ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 /data/data/sample.mp3
     """
@@ -89,7 +88,6 @@ def _get_duration(path):
 
 
 def _generate_png(path, duration, width=500, height=100, fg="000000", bg="ffffff"):
-
     """
     audiowaveform --no-axis-labels --background-color ffffff --waveform-color ffffff00 -w 1800 -h 301 -b 8 -e 292 -i ./data/Always.mp3 -o ./data/wfa.png
     """

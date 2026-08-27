@@ -11,7 +11,6 @@ class UUIDDetailView(DetailView):
 
 
 class SectionDetailView(UUIDDetailView, DetailView):
-
     # model
     # template_name
     url_name = None

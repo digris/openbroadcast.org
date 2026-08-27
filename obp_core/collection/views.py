@@ -7,9 +7,9 @@ from .models import Collection
 
 log = logging.getLogger(__name__)
 
+
 # Create your views here.
 class CollectionListView(AjaxListView):
-
     model = Collection
 
     template_name = "collection/collection_list.html"

@@ -35,7 +35,6 @@ PICKUP_COOKIE_NAME = "login-pickup"
 
 
 class SetPickupCookieMixin(View):
-
     pickup_cookie_name = PICKUP_COOKIE_NAME
     pickup_cookie_dict = None
 
@@ -51,9 +50,7 @@ class SetPickupCookieMixin(View):
 
     def render_to_response(self, context, **response_kwargs):
 
-        response = super().render_to_response(
-            context, **response_kwargs
-        )
+        response = super().render_to_response(context, **response_kwargs)
 
         if self.pickup_cookie_dict:
             response.set_cookie(PICKUP_COOKIE_NAME, json.dumps(self.pickup_cookie_dict))
@@ -161,7 +158,6 @@ class RegistrationView(AnonymousRequiredMixin, FormView):
 
 
 class PasswordRecoverView(AnonymousRequiredMixin, FormView):
-
     form_class = PasswordRequestResetForm
     template_name = "account/password_recover_form.html"
 
@@ -180,7 +176,6 @@ class PasswordRecoverView(AnonymousRequiredMixin, FormView):
 
 
 class PasswordRecoverSentView(AnonymousRequiredMixin, TemplateView):
-
     template_name = "account/password_recover_sent.html"
 
 
@@ -233,7 +228,6 @@ class PasswordRecoverResetView(AnonymousRequiredMixin, FormView):
         ctx = super().get_context_data(**kwargs)
 
         if "invalid_token" not in ctx:
-
             uidb64 = self.kwargs.get("uidb64")
             token = self.kwargs.get("token")
 
@@ -256,7 +250,6 @@ class PasswordRecoverResetView(AnonymousRequiredMixin, FormView):
 
 
 class LoginPickupView(LoginRequiredMixin, View):
-
     pickup_cookie_name = PICKUP_COOKIE_NAME
 
     def get(self, request, *args, **kwargs):

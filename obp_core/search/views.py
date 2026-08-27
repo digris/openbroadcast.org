@@ -99,7 +99,6 @@ class BaseFacetedSearch(FacetedSearch):
 
 
 class BaseSearchListView(ListView):
-
     search_class = None
     order_by = []
     _search_result = None

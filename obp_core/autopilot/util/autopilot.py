@@ -56,7 +56,6 @@ class Autopilot:
         )
 
         for item in exclude_qs:
-
             if item.content_type.model == "playlist":
                 self.add_playlist_exclude(item.object_id)
 
@@ -74,7 +73,6 @@ class Autopilot:
         dayparts_to_fill = []
 
         for daypart in self.dayparts:
-
             rel_time_start = daypart.time_start
             rel_time_end = (
                 daypart.time_end.max if daypart.time_end.hour == 0 else daypart.time_end
@@ -96,7 +94,6 @@ class Autopilot:
                 dayparts_to_fill.append(slot)
 
         for dp in dayparts_to_fill:
-
             self.schedule_daypart(daypart=dp)
 
             # try:
@@ -142,7 +139,6 @@ class Autopilot:
         next_start = daypart["abs_time_start"]
         num_tries = 0
         while next_start and next_start < daypart["abs_time_end"]:
-
             if num_tries > 20:
                 raise OSError("io 10??")
 
@@ -153,7 +149,6 @@ class Autopilot:
                 next_start = None
 
             else:
-
                 max_min_durations = playlists_qs.values("target_duration").aggregate(
                     max=Max("target_duration"), min=Min("target_duration")
                 )
@@ -168,7 +163,6 @@ class Autopilot:
                 qs = playlists_qs.filter(target_duration__lte=slot_duration)
 
                 if qs.exists():
-
                     playlists = list(qs.order_by("?"))
                     shuffle(playlists)
 
@@ -394,9 +388,7 @@ class Autopilot:
 
     def reset(self, *args, **kwargs):
 
-        log.info(
-            f'Resetting: user "{self.user}" for channel "{self.channel}"'
-        )
+        log.info(f'Resetting: user "{self.user}" for channel "{self.channel}"')
 
         # TODO: don't affect past
         delete_qs = Emission.objects.filter(channel=self.channel).exclude(

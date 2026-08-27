@@ -56,7 +56,7 @@ class ActionManager(GFKManager):
                 | Q(action_object_content_type=ctype)
                 | Q(actor_content_type=ctype)
             ),
-            **kwargs
+            **kwargs,
         )
 
     @stream

@@ -60,7 +60,6 @@ class Command(NoArgsCommand):
         templates = []
         for finder in finders.get_finders():
             for path, storage in finder.list([]):
-
                 # TOTO: find a correct way to get nj-paths
                 if "/nj/" in path:
                     print(path)

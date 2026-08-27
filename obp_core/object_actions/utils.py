@@ -24,7 +24,11 @@ def _get_profile_actions(obj, user):
 
     if user == obj.user:
         actions.append(
-            {"key": "edit", "title": "Edit", "url": obj.get_edit_url(),}
+            {
+                "key": "edit",
+                "title": "Edit",
+                "url": obj.get_edit_url(),
+            }
         )
 
     if user.is_authenticated() and not user == obj.user:
@@ -40,7 +44,11 @@ def _get_profile_actions(obj, user):
 
     if user.is_staff:
         actions.append(
-            {"key": "admin", "title": "Admin view", "url": obj.get_admin_url(),}
+            {
+                "key": "admin",
+                "title": "Admin view",
+                "url": obj.get_admin_url(),
+            }
         )
         actions.append(
             {

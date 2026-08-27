@@ -86,7 +86,6 @@ class FormatView(View):
         Format.objects.filter(pk=format.pk).update(accessed=timezone.now())
 
         if NGINX_X_ACCEL_REDIRECT:
-
             x_path = f"/protected/{format.relative_path}"
 
             # TODO: improve handling of initial / range

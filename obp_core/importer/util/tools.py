@@ -40,7 +40,6 @@ def discogs_image_by_url(url, type="uri"):
         log.debug('Type is "%s"' % type)
 
         if type:
-
             url = "http://{}/{}/{}".format(DISCOGS_HOST, type, id)
             log.debug('constructed API url "%s"' % url)
 
@@ -89,7 +88,6 @@ def discogs_id_by_url(url, type="uri"):
             return "%s" % int(id)
 
         except:
-
             item = None
 
             if "/master/" in url:

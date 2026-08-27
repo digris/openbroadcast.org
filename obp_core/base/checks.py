@@ -27,7 +27,6 @@ def check_binaries(app_configs, **kwargs):
     for key in BINARIES_TO_CHECK:
         path = getattr(settings, key, None)
         if not path:
-
             errors.append(
                 Error(
                     "binary missing",
@@ -38,7 +37,6 @@ def check_binaries(app_configs, **kwargs):
             )
 
         elif not os.path.isfile(path):
-
             errors.append(
                 Error(
                     "path does not exist",
@@ -78,7 +76,6 @@ def check_directories(app_configs, **kwargs):
         path = getattr(settings, key, None)
 
         if not os.path.isdir(path):
-
             errors.append(
                 Error(
                     "path does not exist",
@@ -125,7 +122,6 @@ def check_apis(app_configs, **kwargs):
     errors = []
 
     for service in SERVICES_TO_CHECK:
-
         try:
             r = requests.get(service["url"], timeout=REMOTE_API_TIMEOUT)
             status_code = r.status_code
@@ -133,7 +129,6 @@ def check_apis(app_configs, **kwargs):
             status_code = 999
 
         if not status_code == 200:
-
             errors.append(
                 Error(
                     f"connection error ({status_code})",

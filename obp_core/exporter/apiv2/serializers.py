@@ -7,7 +7,6 @@ from ..models import Export
 class ExportSerializer(
     FlexFieldsSerializerMixin, serializers.HyperlinkedModelSerializer
 ):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:export-detail", lookup_field="uuid"
     )

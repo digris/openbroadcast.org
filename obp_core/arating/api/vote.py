@@ -125,7 +125,6 @@ class VoteResource(ModelResource):
             user = None
 
         if vote and vote != 0:
-
             if not user:
                 return HttpUnauthorized("No permission to update this resource.")
 
@@ -145,7 +144,6 @@ class VoteResource(ModelResource):
                 vote_object.save()
 
         elif vote == 0:
-
             if not user:
                 return HttpUnauthorized("No permission to update this resource.")
 

@@ -13,7 +13,6 @@ log = logging.getLogger(__name__)
 def add_importitem_to_collection(sender, **kwargs):
 
     try:
-
         content_object = kwargs.get("content_object")
         user = kwargs.get("user")
         collection_name = kwargs.get("collection_name", "Contributions")

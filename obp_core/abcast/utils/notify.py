@@ -22,9 +22,10 @@ def start_play(item, channel=None, user=None):
     pushy_custom("%son-air/" % channel.get_api_url())
 
     if item.release and not "jingle" in item.release.name.lower():
-
         try:
-            text = "{} by {} - {}".format(item.name, item.artist.name, item.release.name)
+            text = "{} by {} - {}".format(
+                item.name, item.artist.name, item.release.name
+            )
             set_stream_metadata(channel, text)
         except Exception as e:
             log.warning(f"unable to set stream metadata: {e}")

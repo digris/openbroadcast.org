@@ -49,7 +49,7 @@ def get_media_ids(obj):
     if ct == "alibrary.media":
         return [obj.id]
     if ct == "alibrary.label":
-        return Media.objects.filter(release__label=obj).values_list('id', flat=True)
+        return Media.objects.filter(release__label=obj).values_list("id", flat=True)
     return [m.id for m in obj.get_media()]
 
 

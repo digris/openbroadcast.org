@@ -6,7 +6,9 @@ class ReadOnlyField(Widget):
     def render(self, name, value, attrs=None):
 
         return mark_safe(
-            '<div  class="form-extra readonly {}"><span>{}</span></div>'.format(name, value)
+            '<div  class="form-extra readonly {}"><span>{}</span></div>'.format(
+                name, value
+            )
         )
         # return mark_safe('<ul class="links external"><li class="icon external %s"></li></ul>' % value)
 

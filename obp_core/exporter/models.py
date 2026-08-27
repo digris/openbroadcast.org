@@ -47,7 +47,9 @@ def create_download_path(instance, filename):
         time.strftime("%Y%m%d%H%M%S", time.gmtime()),
         instance.uuid,
     )
-    return os.path.join(folder, "{}{}".format(cleaned_filename.lower(), extension.lower()))
+    return os.path.join(
+        folder, "{}{}".format(cleaned_filename.lower(), extension.lower())
+    )
 
 
 def create_archive_dir(instance):
@@ -170,9 +172,7 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
         status, result, messages = process.run(instance=obj, format=obj.fileformat)
 
         if target == "download":
-
             if result:
-
                 obj.filesize = os.path.getsize(result)
                 obj.file = DjangoFile(open(result, "rb"), "archive")
 

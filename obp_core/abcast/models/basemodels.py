@@ -14,7 +14,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Station(TimestampedModelMixin, UUIDModelMixin, models.Model):
-
     TYPE_CHOICES = (("stream", _("Stream")), ("djmon", _("DJ-Monitor")))
     type = models.CharField(
         verbose_name=_("Type"), max_length=12, default="stream", choices=TYPE_CHOICES
@@ -56,7 +55,9 @@ class Station(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     def get_absolute_url(self):
         try:
-            url = reverse("abcast-network:station-detail", kwargs={"uuid": str(self.uuid)})
+            url = reverse(
+                "abcast-network:station-detail", kwargs={"uuid": str(self.uuid)}
+            )
         except:
             url = ""
         return url
@@ -69,7 +70,6 @@ arating.enable_voting_on(Station)
 
 
 class Role(models.Model):
-
     name = models.CharField(max_length=200)
 
     class Meta:
@@ -96,7 +96,6 @@ class StationMembers(models.Model):
 
 
 class OnAirItem(TimestampedModelMixin, UUIDModelMixin, models.Model):
-
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")
@@ -112,7 +111,6 @@ class OnAirItem(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
 
 class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):
-
     name = models.CharField(max_length=256, null=True, blank=True)
     teaser = models.CharField(max_length=512, null=True, blank=True)
     slug = AutoSlugField(populate_from="name")
@@ -162,7 +160,9 @@ class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):
         return "%s" % self.name
 
     def get_absolute_url(self):
-        return reverse("abcast-network:station-detail", kwargs={"uuid": str(self.station.uuid)})
+        return reverse(
+            "abcast-network:station-detail", kwargs={"uuid": str(self.station.uuid)}
+        )
 
     def get_api_url(self):
         return (
@@ -201,7 +201,6 @@ class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):
             channel__pk=self.pk, time_start__lte=now, time_end__gte=now
         )
         if emissions.count() > 0:
-
             emission_url = emissions.first().get_api_url()
 
             emission_items = []

@@ -36,7 +36,6 @@ class LabelManager(models.Manager):
 
 
 class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
-
     name = models.CharField(max_length=400)
     slug = AutoSlugField(
         populate_from="name", editable=True, blank=True, overwrite=True

@@ -42,9 +42,7 @@ def yearly_summary_for_label_as_xls(year, label, event_type_id, output=None):
 
 def summary_for_label_as_xls(label, event_type_id, output=None):
 
-    log.debug(
-        f"generating {event_type_id} statistics for {label} - since created"
-    )
+    log.debug(f"generating {event_type_id} statistics for {label} - since created")
 
     event_type = EventType.objects.get(pk=event_type_id)
 
@@ -55,7 +53,6 @@ def summary_for_label_as_xls(label, event_type_id, output=None):
     year_end = timezone.now().year
 
     for year in range(year_end, year_start - 1, -1):
-
         start = datetime.datetime.combine(datetime.date(year, 1, 1), datetime.time.min)
 
         end = datetime.datetime.combine(datetime.date(year, 12, 31), datetime.time.max)

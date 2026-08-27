@@ -71,14 +71,9 @@ class ArtworkCrawler:
         image_url = None
 
         for relation in self.relations:
+            log.debug(f"crawling artwork on {relation.service} - {relation.url}")
 
-            log.debug(
-                f"crawling artwork on {relation.service} - {relation.url}"
-            )
-
-            _crawl_func = getattr(
-                self, f"crawl_for_{relation.service}_image"
-            )
+            _crawl_func = getattr(self, f"crawl_for_{relation.service}_image")
 
             image_url = _crawl_func(relation.url)
             if image_url:

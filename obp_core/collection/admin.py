@@ -11,7 +11,6 @@ admin.site.register(CollectionItem)
 
 @admin.register(CollectionMember)
 class CollectionMemberAdmin(admin.ModelAdmin):
-
     list_display = ["item", "collection", "added_by"]
 
 
@@ -30,7 +29,6 @@ class CollectionMaintainerInline(admin.TabularInline):
 
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
-
     list_display = ["name", "owner", "visibility"]
 
     raw_id_fields = ["owner"]

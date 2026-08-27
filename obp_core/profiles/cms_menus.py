@@ -7,7 +7,6 @@ from cms.menu_bases import CMSAttachMenu
 
 
 class ProfileMenu(CMSAttachMenu):
-
     name = _("Profile Menu")
 
     def get_nodes(self, request):
@@ -39,7 +38,6 @@ class ProfileMenu(CMSAttachMenu):
             nodes.append(node)
 
         if request.user.has_perm("invitation.change_invitation"):
-
             node = NavigationNode(
                 _("My Invitations"), reverse("profiles-invitations"), 123
             )

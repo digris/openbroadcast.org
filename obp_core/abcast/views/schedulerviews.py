@@ -9,7 +9,6 @@ log = logging.getLogger(__name__)
 
 
 class EmissionDetailView(DetailView):
-
     model = Emission
     template_name = "abcast/emission/detail.html"
 
@@ -19,7 +18,6 @@ class EmissionDetailView(DetailView):
 
 
 class SchedulerIndex(MenuMixin, TemplateView):
-
     template_name = "abcast/scheduler.html"
     current_menu_item = "scheduler"
 

@@ -96,9 +96,7 @@ def crawl_musicbrainz(ct, cache_for):
     for obj in qs.nocache():
         cache_key = f"musicbrainz-{ct}-{obj.pk}"
         if cache.get(cache_key):
-            click.secho(
-                f"object recently crawled: {obj}", bg="yellow", fg="black"
-            )
+            click.secho(f"object recently crawled: {obj}", bg="yellow", fg="black")
         else:
             _changes = _crawl_func(obj=obj)
             if _changes:
@@ -151,9 +149,7 @@ def crawl_discogs(ct, cache_for):
     for obj in qs.nocache()[0:600]:
         cache_key = f"discogs-meta-{ct}-{obj.pk}"
         if cache.get(cache_key):
-            click.secho(
-                f"object recently crawled: {obj}", bg="yellow", fg="black"
-            )
+            click.secho(f"object recently crawled: {obj}", bg="yellow", fg="black")
         else:
             _changes = _crawl_func(obj=obj)
             if _changes:
@@ -187,7 +183,6 @@ def crawl_artwork(ct, id, cache_for):
     images_added = []
 
     if ct == "artist":
-
         services = ["wikidata", "discogs"]
 
         qs = Artist.objects.filter(
@@ -196,7 +191,6 @@ def crawl_artwork(ct, id, cache_for):
         ).distinct()
 
     if ct == "release":
-
         services = ["musicbrainz", "wikidata", "discogs", "wikipedia"]
 
         qs = Release.objects.filter(
@@ -205,7 +199,6 @@ def crawl_artwork(ct, id, cache_for):
         ).distinct()
 
     if ct == "label":
-
         services = ["wikidata", "discogs"]
 
         qs = Label.objects.filter(
@@ -217,9 +210,7 @@ def crawl_artwork(ct, id, cache_for):
     for obj in qs.nocache():
         cache_key = f"artwork-{ct}-{obj.pk}"
         if cache.get(cache_key):
-            click.secho(
-                f"object recently crawled: {obj}", bg="yellow", fg="black"
-            )
+            click.secho(f"object recently crawled: {obj}", bg="yellow", fg="black")
         else:
             image = obj_crawl_artwork(obj=obj, services=services, save=True)
             if image:
@@ -243,16 +234,12 @@ def crawl_viaf_isni(cache_for):
     ).distinct()
 
     for obj in qs.nocache():
-
         cache_key = "viaf-isni-{}-{}".format("artist", obj.pk)
 
         if cache.get(cache_key):
-            click.secho(
-                f"object recently crawled: {obj}", bg="yellow", fg="black"
-            )
+            click.secho(f"object recently crawled: {obj}", bg="yellow", fg="black")
 
         else:
-
             url = obj.relations.filter(service="viaf").first().url + "/justlinks.json"
             r = requests.get(url)
             if r.status_code == 200:

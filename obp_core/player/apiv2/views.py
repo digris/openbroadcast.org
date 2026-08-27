@@ -28,7 +28,6 @@ SERIALIZER_MAP = {
     "alibrary.artist": ArtistObjSerializer,
     # user
     "profiles.profile": ProfileObjSerializer,
-
 }
 
 log = logging.getLogger(__name__)

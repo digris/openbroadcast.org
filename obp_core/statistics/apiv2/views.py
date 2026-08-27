@@ -9,7 +9,6 @@ from ..utils.usage_statistics import get_usage_statistics
 
 
 class UsageStatisticsView(GenericAPIView):
-
     def get_object(self, obj_ct, obj_uuid):
         try:
             obj = apps.get_model(*obj_ct.split(".")).objects.get(uuid=obj_uuid)
@@ -23,7 +22,9 @@ class UsageStatisticsView(GenericAPIView):
 
         # for the moment the range defaults to the last 12 months (including current)
         today = datetime.now()
-        end = date(today.year + today.month // 12, today.month % 12 + 1, 1) - timedelta(1)
+        end = date(today.year + today.month // 12, today.month % 12 + 1, 1) - timedelta(
+            1
+        )
         start = end - relativedelta(years=1, days=-1)
 
         usage_statistics = get_usage_statistics(obj=obj, start=start, end=end)

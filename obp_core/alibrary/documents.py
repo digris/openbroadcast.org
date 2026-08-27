@@ -116,11 +116,7 @@ class LabelDocument(DocType):
     # custom queryset
     ###################################################################
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .select_related("country", "parent")
-        )
+        return super().get_queryset().select_related("country", "parent")
 
 
 @artist_index.doc_type
@@ -626,8 +622,7 @@ class PlaylistDocument(DocType):
 
     def prepare_daypart_slots(self, instance):
         return [
-            f"{d.time_start:%H} - {d.time_end:%H}h"
-            for d in instance.dayparts.all()
+            f"{d.time_start:%H} - {d.time_end:%H}h" for d in instance.dayparts.all()
         ]
 
     def prepare_state_flags(self, instance):

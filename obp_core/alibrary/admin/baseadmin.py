@@ -242,7 +242,6 @@ class NameVariationInline(admin.TabularInline):
 
 
 class ArtistAdmin(BaseAdmin):
-
     list_display = ["name", "type", "disambiguation", "listed"]
     search_fields = ["name", "media__name"]
     list_filter = ["listed"]
@@ -425,7 +424,6 @@ admin.site.register(Label, LabelAdmin)
 
 
 class DistributorAdmin(BaseAdmin):
-
     list_display = ["name", "email", "country", "address", "created"]
 
     readonly_fields = ["slug", "d_tags"]

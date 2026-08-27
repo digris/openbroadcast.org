@@ -19,12 +19,17 @@ def any_to_wav(src, dst):
     command = [
         FFMPEG_BINARY,
         "-y",
-        "-v", "error",
-        "-i", src,
+        "-v",
+        "error",
+        "-i",
+        src,
         "-vn",
-        "-acodec", "pcm_s16le",
-        "-ar", "44100",
-        "-ac", "2",
+        "-acodec",
+        "pcm_s16le",
+        "-ar",
+        "44100",
+        "-ac",
+        "2",
         dst,
     ]
 
@@ -45,6 +50,3 @@ def any_to_wav(src, dst):
         return None
 
     return dst
-
-
-

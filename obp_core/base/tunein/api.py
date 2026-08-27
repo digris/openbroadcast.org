@@ -12,7 +12,6 @@ class TuneinAPIClient:
         self.partner_key = partner_key
 
     def set_metadata(self, content_object):
-
         """
         http://air.radiotime.com/Playing.ashx?partnerId=<id>&partnerKey=<key>&id=<stationid>&title=Bad+Romance&artist=Lady+Gaga
         """

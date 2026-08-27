@@ -25,7 +25,6 @@ log = logging.getLogger(__name__)
 
 
 class MigrationMixin(models.Model):
-
     legacy_id = models.IntegerField(null=True, blank=True, editable=False)
     migrated = models.DateField(null=True, blank=True, editable=False)
 
@@ -122,7 +121,6 @@ except Exception as e:
 
 
 class DistributorLabel(models.Model):
-
     distributor = models.ForeignKey("Distributor")
     label = models.ForeignKey("Label")
     exclusive = models.BooleanField(default=False)
@@ -141,7 +139,6 @@ class License(
     TimestampedModelMixin,
     models.Model,
 ):
-
     slug = models.SlugField(max_length=100, unique=False)
     name = models.CharField(max_length=200)
     key = models.CharField(
@@ -225,7 +222,6 @@ class ProfessionManager(models.Manager):
 
 
 class Profession(models.Model):
-
     name = models.CharField(max_length=200)
     in_listing = models.BooleanField(verbose_name="Include in listings", default=True)
     excerpt = models.TextField(blank=True, null=True)
@@ -248,7 +244,6 @@ class DaypartManager(models.Manager):
 
 
 class Daypart(models.Model):
-
     DAY_CHOICES = (
         (0, _("Mon")),
         (1, _("Tue")),
@@ -273,7 +268,9 @@ class Daypart(models.Model):
         ordering = ("day", "time_start")
 
     def __str__(self):
-        return "{} | {} - {}".format(self.get_day_display(), self.time_start, self.time_end)
+        return "{} | {} - {}".format(
+            self.get_day_display(), self.time_start, self.time_end
+        )
 
     def playlist_count(self):
         return self.daypart_plalists.count()
@@ -333,7 +330,6 @@ class Relation(
     TimestampedModelMixin,
     models.Model,
 ):
-
     SERVICE_CHOICES = (
         ("", _("Not specified")),
         ("generic", _("Generic")),

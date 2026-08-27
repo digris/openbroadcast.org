@@ -10,7 +10,6 @@ __all__ = ("AutocompleteField",)
 
 
 class AutocompleteField(forms.Field):
-
     widget = AutocompleteWidget
 
     default_error_messages = {

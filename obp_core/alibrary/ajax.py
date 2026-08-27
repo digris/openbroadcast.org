@@ -43,7 +43,9 @@ def api_lookup(request, *args, **kwargs):
     # alternatively, in case we already know the uri, this value is used for the query
     api_url = kwargs.get("api_url", None)
 
-    log.debug("api_lookup: {} - id: {} - provider: {}".format(item_type, item_id, provider))
+    log.debug(
+        "api_lookup: {} - id: {} - provider: {}".format(item_type, item_id, provider)
+    )
 
     try:
         log.debug(provider)
@@ -130,7 +132,6 @@ def provider_search(request, *args, **kwargs):
     error = None
 
     if provider == "discogs":
-
         # query = re.sub('[^A-Za-z0-9 :]+', '', query)
         query = query.replace("(", "")
         query = query.replace(")", "")
@@ -140,7 +141,6 @@ def provider_search(request, *args, **kwargs):
         query = query.replace('"', "&quot;")
 
     if provider == "musicbrainz":
-
         _type = item_type
         if item_type == "media":
             _type = "recording"
@@ -300,10 +300,8 @@ def merge_items(request, *args, **kwargs):
             % (item_type, ", ".join(item_ids), master_id)
         )
         try:
-
             # Release merge workflow migrated to API
             if item_type == "release":
-
                 items = Release.objects.filter(pk__in=item_ids).exclude(
                     pk=int(master_id)
                 )
@@ -326,7 +324,6 @@ def merge_items(request, *args, **kwargs):
                     data["error"] = "No selection"
 
             if item_type == "media":
-
                 from alibrary.models import MediaExtraartists
 
                 items = Media.objects.filter(pk__in=item_ids).exclude(pk=int(master_id))
@@ -442,8 +439,9 @@ def reassign_items(request, *args, **kwargs):
     release_id = kwargs.get("release_id", None)
 
     if media_ids and (release_id or name):
-
-        log.debug("reassigning items: {} to {}".format((",").join(media_ids), release_id))
+        log.debug(
+            "reassigning items: {} to {}".format((",").join(media_ids), release_id)
+        )
 
         if release_id:
             r = Release.objects.get(pk=int(release_id))
@@ -460,7 +458,6 @@ def reassign_items(request, *args, **kwargs):
         data = {"status": True, "error": None, "next": r.get_absolute_url()}
 
     else:
-
         data = {"status": False, "error": "missing data"}
 
     return json.dumps(data)

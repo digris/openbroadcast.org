@@ -224,7 +224,6 @@ flattened_schedule = FlattenedSchedule.as_view()
 
 
 class PlayoutSchedule(APIView):
-
     """
     flat / track-based schedule for playout-ng
     """
@@ -237,7 +236,6 @@ class PlayoutSchedule(APIView):
                     content_item.time_end >= time_start
                     and content_item.time_start <= time_end
                 ):
-
                     # add reference to emission instance (needed in PlayoutScheduleSerializer)
                     content_item.emission = emission
                     yield content_item

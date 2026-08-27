@@ -30,7 +30,6 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
     """
 
     for e in es:
-
         e_start = e.time_start
         offset = 0
         items = e.content_object.get_items()
@@ -60,7 +59,6 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
             if i_end < range_start:
                 pass
             else:
-
                 uri = None
 
                 if EXCHANGE == "http":
@@ -123,12 +121,10 @@ def get_history(range, channel=None):
     """
 
     for emission in emissions:
-
         for emission_item in emission.get_timestamped_media():
             emission_item.emission = emission
 
             if range_start < emission_item.timestamp < now:
-
                 # print '////////////////////////////////'
                 # print 'is %s > %s ?' % (emission_item.timestamp, range_start)
                 # print 'is %s < %s ?' % (emission_item.timestamp, now)
@@ -186,9 +182,7 @@ def get_schedule(range_start=0, range_end=0, channel=None):
     """
 
     for emission in emissions:
-
         for emission_item in emission.get_timestamped_media():
-
             # map timestamps
             emission_item.time_start = emission_item.timestamp
             emission_item.time_end = emission_item.timestamp + datetime.timedelta(
@@ -200,7 +194,6 @@ def get_schedule(range_start=0, range_end=0, channel=None):
                 emission_item.time_end >= range_start
                 and emission_item.time_start <= range_end
             ):
-
                 objects.append(
                     {
                         "emission": emission.get_api_url(),

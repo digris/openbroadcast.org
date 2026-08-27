@@ -12,7 +12,9 @@ class ModelNotActionable(ImproperlyConfigured):
     def __str__(self):
         model = self.args[0]
         if not is_model(model):
-            return "Object {!r} must be a Django Model not {}".format(model, type(model))
+            return "Object {!r} must be a Django Model not {}".format(
+                model, type(model)
+            )
         opts = model._meta
         return (
             'Model %s not recognized, add "%s.%s" to the ACTSTREAM_SETTINGS["MODELS"] settings'

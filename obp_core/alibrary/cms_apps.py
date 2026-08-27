@@ -15,7 +15,6 @@ from .cms_menus import (
 
 @apphook_pool.register
 class ReleaseApp(CMSApp):
-
     name = _("Release App")
     menus = [ReleaseMenu]
 
@@ -25,7 +24,6 @@ class ReleaseApp(CMSApp):
 
 @apphook_pool.register
 class ArtistApp(CMSApp):
-
     name = _("Artist App")
     menus = [ArtistMenu]
 
@@ -57,7 +55,6 @@ class MediaApp(CMSApp):
 
 @apphook_pool.register
 class PlaylistApp(CMSApp):
-
     name = _("Playlist App")
     menus = [PlaylistMenu]
 
@@ -67,7 +64,6 @@ class PlaylistApp(CMSApp):
 
 @apphook_pool.register
 class LicenseApp(CMSApp):
-
     name = _("License App")
     menus = [LicenseMenu]
 

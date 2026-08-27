@@ -42,9 +42,9 @@ class WikiFormat(template.Node):
 class WikiBlockFormat(WikiFormat):
     def process_string(self, string):
         """
-		Its not generally safe to use markdown on a whole blocktag because the block
-		may contain html already and there's no telling how nice it will play.
-		"""
+        Its not generally safe to use markdown on a whole blocktag because the block
+        may contain html already and there's no telling how nice it will play.
+        """
         string = wikify_string(string)
         return string
 

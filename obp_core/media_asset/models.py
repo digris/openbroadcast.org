@@ -50,7 +50,6 @@ class WaveformManager(models.Manager):
 
 
 class Waveform(UUIDModelMixin, TimestampedModelMixin, models.Model):
-
     INIT = 0
     DONE = 1
     PROCESSING = 2
@@ -118,9 +117,7 @@ class Waveform(UUIDModelMixin, TimestampedModelMixin, models.Model):
             log.info(f"created waveform image for: {self.media}")
             self.status = Waveform.DONE
         except AudioWaveformException as e:
-            log.warning(
-                f"error creating waveform image for: {self.media} - {e}"
-            )
+            log.warning(f"error creating waveform image for: {self.media} - {e}")
             self.status = Waveform.ERROR
 
         self.save()
@@ -168,7 +165,6 @@ class FormatManager(models.Manager):
 
 
 class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
-
     INIT = 0
     DONE = 1
     PROCESSING = 2
@@ -283,13 +279,11 @@ class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
                 shutil.copy(obj.media.master.path, obj.path)
 
         if not processed:
-
             tmp_directory = tempfile.mkdtemp()
             tmp_path = os.path.join(tmp_directory, "tmp.wav")
             wav_path = any_to_wav(src=obj.media.master.path, dst=tmp_path)
 
             if obj.encoding == "mp3":
-
                 log.info("%s encoded version requested." % obj.encoding)
 
                 command = [

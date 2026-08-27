@@ -47,7 +47,6 @@ def vote(
 
     # do the action
     if vote:
-
         # 404 if object to be voted upon doesn't exist
         if content_type.model_class().objects.filter(pk=object_id).count() == 0:
             raise Http404
@@ -88,7 +87,6 @@ def vote(
         t = template_loader.get_template(template_name)
         body = t.render(c)
     else:
-
         object = content_type.model_class().objects.filter(pk=object_id)[0]
 
         try:

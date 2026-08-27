@@ -245,11 +245,11 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     @cached_property
     def get_membership(self):
-        """ get artists group/band membership """
+        """get artists group/band membership"""
         return [m.parent for m in ArtistMembership.objects.filter(child=self)]
 
     def get_alias_ids(self, exclude=None):
-        """ get ids of artists aliases """
+        """get ids of artists aliases"""
         exclude = exclude or []
         alias_ids = []
         parent_alias_ids = (
@@ -276,7 +276,7 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         return alias_ids
 
     def get_aliases(self):
-        """ get artists aliases """
+        """get artists aliases"""
         return (
             Artist.objects.filter(pk__in=self.get_alias_ids([]))
             .exclude(pk=self.pk)
@@ -288,7 +288,7 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
     ###################################################################
     @cached_uuid_aware(timeout=60 * 60 * 24)
     def get_releases(self):
-        """ get releases where artist appears """
+        """get releases where artist appears"""
 
         media_ids = []
 
@@ -304,7 +304,7 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     @cached_uuid_aware(timeout=60 * 60 * 24)
     def get_media(self):
-        """ get tracks where artist appears """
+        """get tracks where artist appears"""
 
         media_ids = []
 
@@ -319,7 +319,7 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         return Media.objects.filter(pk__in=list(set(media_ids)))
 
     def appearances(self):
-        """ get artists appearances (releases/tracks) """
+        """get artists appearances (releases/tracks)"""
         try:
             num_releases = self.get_releases().count()
         except:

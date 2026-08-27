@@ -15,7 +15,6 @@ USER_MODEL = getattr(settings, "AUTH_USER_MODEL")
 
 
 class Collection(TimestampedModelMixin, UUIDModelMixin, models.Model):
-
     PRIVATE = 0
     PUBLIC = 1
     VISIBILITY_CHOICES = ((PRIVATE, _("private")), (PUBLIC, _("public")))
@@ -49,7 +48,6 @@ class Collection(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
 
 class CollectionMember(TimestampedModelMixin, models.Model):
-
     collection = models.ForeignKey(
         "Collection", on_delete=models.CASCADE, related_name="members"
     )

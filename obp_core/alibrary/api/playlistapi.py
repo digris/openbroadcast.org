@@ -66,10 +66,12 @@ class DaypartResource(ModelResource):
 class PlaylistResource(ModelResource):
     items = fields.ToManyField(
         "alibrary.api.PlaylistItemPlaylistResource",
-        attribute=lambda bundle: bundle.obj.items.through.objects.filter(
-            playlist=bundle.obj
-        ).order_by("position")
-        or bundle.obj.items,
+        attribute=lambda bundle: (
+            bundle.obj.items.through.objects.filter(playlist=bundle.obj).order_by(
+                "position"
+            )
+            or bundle.obj.items
+        ),
         null=True,
         full=True,
         # max_depth=5,
@@ -105,9 +107,7 @@ class PlaylistResource(ModelResource):
             return object_list.filter(user=request.user)
 
     def obj_create(self, bundle, request=None, **kwargs):
-        bundle = super().obj_create(
-            bundle, request, user=request.user
-        )
+        bundle = super().obj_create(bundle, request, user=request.user)
 
         Playlist.objects.filter(user=request.user).update(is_current=False)
         bundle.obj.is_current = True

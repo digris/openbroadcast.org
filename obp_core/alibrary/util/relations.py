@@ -94,7 +94,6 @@ def relations_for_object(obj):
 
     relations = []
     for relation in obj.relations.all():
-
         relations.append(
             {
                 "url": relation.url,

@@ -16,7 +16,13 @@ class ImportFileResource(ModelResource):
 
     media = fields.ForeignKey(
         # "alibrary.api.MediaResource", "media", null=True, full=True
-        "alibrary.api.MediaResource", "media", null=True, full=False, readonly=True, full_detail=True, full_list=True
+        "alibrary.api.MediaResource",
+        "media",
+        null=True,
+        full=False,
+        readonly=True,
+        full_detail=True,
+        full_list=True,
     )
 
     class Meta:
@@ -37,7 +43,7 @@ class ImportFileResource(ModelResource):
     def dehydrate(self, bundle):
         bundle.data["status"] = bundle.obj.get_status_display().lower()
         return bundle
-    
+
     def deserialize(self, request, data, format=None):
         content_type = request.META.get("CONTENT_TYPE", "")
         if content_type.startswith("multipart/form-data"):

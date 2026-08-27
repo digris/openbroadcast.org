@@ -52,7 +52,6 @@ def label_statistics_as_xls(label, years, title=None, output=None):
     # add statistics as sheet per year
     ###################################################################
     for year in years:
-
         start = year.get("start")
         end = year.get("end")
         objects = year.get("objects")
@@ -120,9 +119,7 @@ def label_statistics_as_xls(label, years, title=None, output=None):
                 worksheet.write(index, ts_index, ts_item)
 
         # add summs / formula
-        worksheet.merge_range(
-            f"A{last_row + 2}:D{last_row + 2}", "Total", border_top
-        )
+        worksheet.merge_range(f"A{last_row + 2}:D{last_row + 2}", "Total", border_top)
 
         for index, item in enumerate(header, start=4):
             letter = ROW_LETTERS[index]

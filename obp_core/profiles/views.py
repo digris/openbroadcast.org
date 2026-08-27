@@ -74,7 +74,6 @@ class ProfileListView(MenuMixin, BaseSearchListView):
 
 
 class ProfileDetailView(MenuMixin, DetailView):
-
     model = Profile
     template_name = "profiles/profile/detail.html"
     section_template_base = "profiles/profile/_detail"
@@ -321,7 +320,6 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
 
 
 class UserCredentialsView(LoginRequiredMixin, UpdateView):
-
     model = get_user_model()
     form_class = UserCredentialsForm
     template_name = "profiles/profile/edit_credentials.html"
@@ -400,7 +398,6 @@ def respond(request, code):
 # invitation module..
 #######################################################################
 class InvitationListView(PaginationMixin, ListView):
-
     template_name = "profiles/invitation_list.html"
     paginate_by = 36
     extra_context = {}

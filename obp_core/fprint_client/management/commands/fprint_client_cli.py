@@ -69,7 +69,6 @@ def _ingest_fingerprint(media):
     client = FprintAPIClient()
 
     try:
-
         if client.ingest_for_media(obj=media):
             Media.objects.filter(pk=media.pk).update(fprint_ingested=timezone.now())
 
@@ -89,7 +88,6 @@ def test_media(limit, offset):
     )
 
     for item in qs[offset : (offset + limit)]:
-
         click.secho(f"testing fprint: {item.uuid} - {item.name}", fg="cyan")
 
         command = [ECHOPRINT_CODEGEN_BINARY, item.master.path]

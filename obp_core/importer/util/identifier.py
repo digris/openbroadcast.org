@@ -65,7 +65,6 @@ METADATA_SET = {
 
 
 class Identifier:
-
     """
     Identifying media files by file
      - by sha1
@@ -120,7 +119,6 @@ class Identifier:
             return
 
         try:
-
             if "media_mb_id" in metadata and metadata["media_mb_id"]:
                 # check for duplicates my musicbrainz id
                 qs = Media.objects.filter(
@@ -141,7 +139,6 @@ class Identifier:
                 and "media_name" in metadata
                 and "release_name" in metadata
             ):
-
                 # TODO: make this matching more inteligent!
                 qs = Media.objects.filter(
                     name__istartswith=metadata["media_name"][0:16],
@@ -262,7 +259,6 @@ class Identifier:
             log.debug('metadata missing "media_mb_id": %s' % (e))
 
         try:
-
             try:
                 dataset["media_tracknumber"] = int(meta["tracknumber"][0])
             except Exception as e:
@@ -287,7 +283,6 @@ class Identifier:
 
         # try to extract tracknumber from filename
         if "media_tracknumber" in dataset and not dataset["media_tracknumber"]:
-
             t_num = None
 
             path, filename = os.path.split(file.path)
@@ -406,9 +401,7 @@ class Identifier:
          - https://dev.sourcefabric.org/browse/CC-6035
         """
         if meta:
-
             for k in meta:
-
                 if k == "replaygain_SeratoGain_gain":
                     del meta[k]
 
@@ -432,7 +425,6 @@ class Identifier:
         log.info("lookup acoustid for: %s" % (file.path))
 
         try:
-
             data = acoustid.match(AC_API_KEY, file.path)
 
             res = []
@@ -572,12 +564,9 @@ class Identifier:
                 result = r.json()
 
                 if "recordings" in result:
-
                     log.info("recording on API mb_id: %s" % recording_id)
                     if len(result["recordings"]) > 0:
-
                         if "releases" in result["recordings"][0]:
-
                             log.info(
                                 "got releases on api: %s"
                                 % len(result["recordings"][0]["releases"])
@@ -666,7 +655,6 @@ class Identifier:
                                 selected_releases.append(sorted_releases[0])
 
                             for selected_release in selected_releases:
-
                                 selected_release["artist"] = result["recordings"][0][
                                     "artist-credit"
                                 ][0]["artist"]
@@ -814,12 +802,10 @@ class Identifier:
         completed_releases = []
 
         for release in releases:
-
             if release["id"] in completed_releases:
                 log.debug("already formated release with id: %s" % release["id"])
 
             else:
-
                 log.debug("formating release with id: %s" % release["id"])
                 completed_releases.append(release["id"])
 
@@ -859,7 +845,6 @@ class Identifier:
                 m["duration"] = None
 
                 if "recording" in release and release["recording"]:
-
                     if "title" in release["recording"]:
                         m["name"] = release["recording"]["title"]
 
@@ -875,7 +860,6 @@ class Identifier:
                 a["name"] = None
 
                 if "artist" in release and release["artist"]:
-
                     if "name" in release["artist"]:
                         a["name"] = release["artist"]["name"]
 
@@ -889,7 +873,6 @@ class Identifier:
                 l["code"] = None
 
                 if "label" in release and release["label"]:
-
                     if "name" in release["label"]:
                         l["name"] = release["label"]["name"]
 
@@ -933,13 +916,11 @@ class Identifier:
         # get all release-group-ids
         i = 0
         for r in results:
-
             if i > 3:
                 break
             i += 1
 
             for release in r["recording"]["release-list"]:
-
                 # TODO: refactor to plain API call (requests)
                 mb_release = musicbrainzngs.get_release_by_id(
                     id=release["id"], includes=["release-groups"]
@@ -958,7 +939,6 @@ class Identifier:
 
         # for id in release_group_ids:
         for rg in rgs:
-
             id = rg["release_group_id"]
             r = rg["recording"]
 
@@ -1007,7 +987,6 @@ class Identifier:
         releases = []
 
         for re in master_releases:
-
             release = re["release"]
             recording = re["recording"]
             relations = re["relations"]

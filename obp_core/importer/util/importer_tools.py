@@ -276,7 +276,9 @@ class Importer:
                 lrs = lookup.release_by_mb_id(mb_release_id)
                 r = lrs[0]
                 log.debug(
-                    "got local release: {} by mb_release_id: {}".format(r.pk, mb_release_id)
+                    "got local release: {} by mb_release_id: {}".format(
+                        r.pk, mb_release_id
+                    )
                 )
             except Exception as e:
                 log.debug(
@@ -353,7 +355,9 @@ class Importer:
                 las = lookup.artist_by_mb_id(mb_artist_id)
                 a = las[0]
                 log.debug(
-                    "got local artist: {} by mb_artist_id: {}".format(a.pk, mb_artist_id)
+                    "got local artist: {} by mb_artist_id: {}".format(
+                        a.pk, mb_artist_id
+                    )
                 )
             except Exception as e:
                 # print e
@@ -450,7 +454,9 @@ class Importer:
             log.debug("os.makedirs: %s" % os.path.join(MEDIA_ROOT, folder))
             os.makedirs(os.path.join(MEDIA_ROOT, folder))
 
-            log.debug("os.shutil.copy: {} - {}".format(src, os.path.join(MEDIA_ROOT, dst)))
+            log.debug(
+                "os.shutil.copy: {} - {}".format(src, os.path.join(MEDIA_ROOT, dst))
+            )
             shutil.copy(src, os.path.join(MEDIA_ROOT, dst))
 
             log.debug("set master for pk: {} to {}".format(m.pk, dst))
@@ -608,27 +614,22 @@ class Importer:
         pop_artist = False
         pop_media = False
         if results_musicbrainz:
-
             if "mb_release_id" in import_tag:
                 for result in results_musicbrainz:
-
                     if (
                         "mb_id" in result
                         and result["mb_id"] == import_tag["mb_release_id"]
                     ):
-
                         if not result["name"] == import_tag["release"]:
                             pop_release = True
 
             if "mb_artist_id" in import_tag:
                 for result in results_musicbrainz:
-
                     if (
                         "artist" in result
                         and "mb_id" in result["artist"]
                         and result["artist"]["mb_id"] == import_tag["mb_artist_id"]
                     ):
-
                         if not result["artist"]["name"] == import_tag["artist"]:
                             pop_artist = True
 
@@ -708,14 +709,11 @@ def mb_complete_media_task(
         media_index = 0
         media_offset = 0
         for disc in result_release["media"]:
-
             for m in disc["tracks"]:
-
                 x_mb_id = m["recording"]["id"]
                 x_pos = m["number"]
 
                 if x_mb_id == mb_id:
-
                     try:
                         obj.tracknumber = int(media_offset) + int(x_pos)
                     except:
@@ -733,13 +731,11 @@ def mb_complete_media_task(
 
     # if mb_artist_combo_ids and 'artist-credit' in result:
     if "artist-credit" in result and len(result["artist-credit"]) > 1:
-
         artist_credits = result["artist-credit"]
         last_join_phrase = None
         position = 0
         for credit in artist_credits:
             if "artist" in credit:
-
                 log.info("got creditet artist: {}".format(credit["artist"]))
 
                 time.sleep(0.5)
@@ -787,10 +783,8 @@ def mb_complete_media_task(
 
     if "relations" in result:
         for relation in result["relations"]:
-
             # map artists
             if "artist" in relation:
-
                 time.sleep(0.5)
                 l_as = lookup.artist_by_mb_id(relation["artist"]["id"])
                 l_a = None
@@ -909,7 +903,6 @@ def mb_complete_release_task(obj, mb_id, user=None):
     # try to get relations
     if "relations" in result:
         for relation in result["relations"]:
-
             if relation["type"] == "discogs":
                 log.debug(
                     "got discogs url for release: %s" % relation["url"]["resource"]
@@ -946,7 +939,6 @@ def mb_complete_release_task(obj, mb_id, user=None):
         # try to get relations from master
         if "relations" in rg_result:
             for relation in rg_result["relations"]:
-
                 if relation["type"] == "discogs":
                     log.debug(
                         "got discogs master-url for release: %s"
@@ -1016,7 +1008,6 @@ def mb_complete_release_task(obj, mb_id, user=None):
                         rel.save()
 
     if discogs_url:
-
         try:
             Relation.objects.get(object_id=obj.pk, url=discogs_url)
         except:
@@ -1031,7 +1022,6 @@ def mb_complete_release_task(obj, mb_id, user=None):
             pass
 
     if discogs_master_url:
-
         try:
             Relation.objects.get(object_id=obj.pk, url=discogs_master_url)
         except:
@@ -1270,11 +1260,9 @@ def mb_complete_artist_task(obj, mb_id, user=None):
     lock_key = f"complete-{mb_id}"
 
     if cache.get(lock_key) is not None:
-
         log.warning(f"completeion locked for id: {mb_id}")
 
     else:
-
         cache.set(lock_key, "lock", 60)
 
         inc = ("artist-rels", "url-rels", "tags")
@@ -1355,14 +1343,15 @@ def mb_complete_artist_task(obj, mb_id, user=None):
         relations = result.get("relations", ())
 
         for relation in relations:
-
             if relation["type"] == "discogs":
                 log.debug("got discogs url for artist: %s" % relation["url"])
                 discogs_url = relation["url"]["resource"]
 
             if relation["type"] in valid_relations:
                 log.debug(
-                    "got {} url for artist: {}".format(relation["type"], relation["url"])
+                    "got {} url for artist: {}".format(
+                        relation["type"], relation["url"]
+                    )
                 )
 
                 try:
@@ -1381,7 +1370,6 @@ def mb_complete_artist_task(obj, mb_id, user=None):
 
         # loop artist based relations ('band member')
         for relation in relations:
-
             if (
                 relation["type"] == "member of band"
                 and relation["direction"] == "backward"
@@ -1416,7 +1404,6 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                         ArtistMembership.objects.get_or_create(parent=l_a, child=obj)
 
         if discogs_url:
-
             try:
                 Relation.objects.get(object_id=obj.pk, url=discogs_url)
             except:
@@ -1440,7 +1427,6 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                 log.info("unable to assign discogs image")
 
         if discogs_url:
-
             discogs_id = None
             try:
                 # TODO: not sure if always working
@@ -1487,7 +1473,6 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                             aa_name = aa_result.get("name", None)
                             aa_profile = aa_result.get("profile", None)
                             if aa_discogs_url and aa_name:
-
                                 l_as = lookup.artist_by_relation_url(aa_discogs_url)
                                 l_a = None
 
@@ -1527,7 +1512,6 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                             ma_name = ma_result.get("name", None)
                             ma_profile = ma_result.get("profile", None)
                             if ma_discogs_url and ma_name:
-
                                 l_as = lookup.artist_by_relation_url(ma_discogs_url)
                                 l_a = None
 
@@ -1617,13 +1601,11 @@ def mb_complete_label_task(obj, mb_id, user=None):
     relations = result.get("relations", ())
 
     for relation in relations:
-
         if relation["type"] == "discogs":
             log.debug("got discogs url for label: %s" % relation["url"]["resource"])
             discogs_url = relation["url"]["resource"]
 
         if relation["type"] in valid_relations:
-
             log.debug(
                 "got %s url for label: %s"
                 % (relation["type"], relation["url"]["resource"])
@@ -1643,7 +1625,6 @@ def mb_complete_label_task(obj, mb_id, user=None):
             log.debug("ignore relation type: %s" % relation["type"])
 
     if discogs_url:
-
         try:
             Relation.objects.get(object_id=obj.pk, url=discogs_url)
         except:
@@ -1667,7 +1648,6 @@ def mb_complete_label_task(obj, mb_id, user=None):
             log.info("unable to assign discogs image")
 
     if discogs_url:
-
         discogs_id = None
         try:
             # TODO: not sure if always working

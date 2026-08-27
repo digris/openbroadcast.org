@@ -19,9 +19,7 @@ log = logging.getLogger(__name__)
 
 
 class UserResource(ModelResource):
-    """
-
-    """
+    """ """
 
     profile = fields.ForeignKey(
         "profiles.api.ProfileResource", "profile", null=True, full=True
@@ -94,7 +92,6 @@ class UserResource(ModelResource):
             data = json.loads(request.body)
 
         except ValueError as e:
-
             if request.GET:
                 data = request.GET
             if request.POST:
@@ -188,7 +185,6 @@ class UserResource(ModelResource):
             data = json.loads(request.body)
 
         except ValueError as e:
-
             if request.POST:
                 data = request.POST
 
@@ -227,7 +223,6 @@ class UserResource(ModelResource):
             data = json.loads(request.body)
 
         except ValueError as e:
-
             if request.GET:
                 data = request.GET
 

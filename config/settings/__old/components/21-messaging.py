@@ -63,7 +63,7 @@ CELERY_ROUTES = {
     "media_asset.tasks.process_format": {"queue": "convert"},
     "exporter.models.process_task": {"queue": "export"},
     "search.signals.handle_save_task": {"queue": "index"},
-    'search.tasks.update_index': {'queue': 'index'},
+    "search.tasks.update_index": {"queue": "index"},
 }
 
 CELERYBEAT_SCHEDULE = {

@@ -65,7 +65,6 @@ class RelationSerializer(serializers.ModelSerializer):
 
 
 class MediaSerializer(serializers.HyperlinkedModelSerializer):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:obr-sync:media-detail",
         lookup_field="uuid",
@@ -138,7 +137,6 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ArtistSerializer(serializers.HyperlinkedModelSerializer):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:obr-sync:artist-detail",
         lookup_field="uuid",
@@ -176,7 +174,6 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class LabelSerializer(serializers.HyperlinkedModelSerializer):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:obr-sync:label-detail",
         lookup_field="uuid",
@@ -198,7 +195,6 @@ class LabelSerializer(serializers.HyperlinkedModelSerializer):
     def get_root_uuid(self, obj):
         root_label = obj.get_root()
         return root_label.uuid if root_label else None
-
 
     class Meta:
         model = Label
@@ -222,7 +218,6 @@ class LabelSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:obr-sync:release-detail",
         lookup_field="uuid",
@@ -236,7 +231,6 @@ class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
     relations = RelationSerializer(many=True)
     releasedate = ApproximateDateSerializer()
     label = LabelSerializer()
-
 
     class Meta:
         model = Release
@@ -258,7 +252,6 @@ class ReleaseSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PlaylistMediaSerializer(serializers.ModelSerializer):
-
     ct = serializers.CharField(source="get_ct")
     duration = serializers.FloatField(source="master_duration")
 
@@ -304,7 +297,6 @@ class PlaylistItemsSerializer(serializers.ModelSerializer):
 
 
 class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:obr-sync:playlist-detail",
         lookup_field="uuid",
@@ -358,16 +350,15 @@ class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class AccountSerializer(serializers.HyperlinkedModelSerializer):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:obr-sync:user-detail",
         lookup_field="id",
     )
 
     gender = serializers.SerializerMethodField()
-    birth_date = serializers.DateField(source='profile.birth_date')
-    phone_mobile = serializers.CharField(source='profile.mobile')
-    phone_landline = serializers.CharField(source='profile.phone')
+    birth_date = serializers.DateField(source="profile.birth_date")
+    phone_mobile = serializers.CharField(source="profile.mobile")
+    phone_landline = serializers.CharField(source="profile.phone")
     address = serializers.SerializerMethodField()
 
     class Meta:
@@ -402,16 +393,15 @@ class AccountSerializer(serializers.HyperlinkedModelSerializer):
         if not obj.profile.city or obj.profile.country:
             return {}
         return {
-            'line_1': obj.profile.address1 or None,
-            'line_2': obj.profile.address2 or None,
-            'city': obj.profile.city or None,
-            'postal_code': obj.profile.zip or None,
-            'country': obj.profile.country.iso2_code if obj.profile.country else None,
+            "line_1": obj.profile.address1 or None,
+            "line_2": obj.profile.address2 or None,
+            "city": obj.profile.city or None,
+            "postal_code": obj.profile.zip or None,
+            "country": obj.profile.country.iso2_code if obj.profile.country else None,
         }
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:obr-sync:profile-detail",
         lookup_field="uuid",
@@ -441,7 +431,6 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EmissionSerializer(serializers.ModelSerializer):
-
     ct = serializers.CharField(source="get_ct")
     co = serializers.SerializerMethodField(source="content_object")
 
@@ -469,7 +458,6 @@ class EmissionSerializer(serializers.ModelSerializer):
 
 
 class VoteSerializer(serializers.ModelSerializer):
-
     ct = serializers.CharField(source="get_ct")
     co = serializers.SerializerMethodField(source="content_object")
     user = serializers.CharField(source="user.email")
@@ -498,7 +486,6 @@ class VoteSerializer(serializers.ModelSerializer):
 
 
 class TagSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Tag
         fields = [

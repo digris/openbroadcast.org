@@ -7,7 +7,6 @@ from .cms_menus import SchedulerMenu
 
 @apphook_pool.register
 class SchedulerApp(CMSApp):
-
     name = _("Scheduler App")
     menus = [SchedulerMenu]
 
@@ -17,7 +16,6 @@ class SchedulerApp(CMSApp):
 
 @apphook_pool.register
 class StationApp(CMSApp):
-
     name = _("Station App")
 
     def get_urls(self, page=None, language=None, **kwargs):

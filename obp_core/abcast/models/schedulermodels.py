@@ -28,7 +28,6 @@ class EmissionManager(models.Manager):
 
 
 class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
-
     name = models.CharField(
         max_length=200,
         db_index=True,
@@ -238,7 +237,6 @@ def post_save_emission(sender, **kwargs):
 
 @shared_task
 def post_save_emission_task(obj):
-
     """
     check if emission is in a critical range (eg it should start soon)
     """
@@ -307,7 +305,6 @@ pre_delete.connect(pre_delete_emission, sender=Emission)
 
 
 class DaypartSet(models.Model):
-
     channel = models.ForeignKey(
         Channel,
         blank=False,
@@ -330,7 +327,6 @@ class DaypartSet(models.Model):
 
 
 class Weekday(models.Model):
-
     DAY_CHOICES = (
         (6, _("Sun")),
         (0, _("Mon")),
@@ -353,7 +349,6 @@ class Weekday(models.Model):
 
 
 class Daypart(models.Model):
-
     DAY_CHOICES = (
         (0, _("Mon")),
         (1, _("Tue")),

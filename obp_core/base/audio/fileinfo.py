@@ -2,7 +2,6 @@ import os
 from ffprobe import FFProbe
 
 
-
 class FileInfoProcessor:
     def __init__(self, path):
         if not os.path.isfile(path):

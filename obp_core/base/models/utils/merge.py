@@ -10,10 +10,10 @@ from tagging.models import Tag
 
 log = logging.getLogger(__name__)
 
+
 # TODO: investigate if non-atomic transactions here are a problem
 # @transaction.atomic
 def merge_objects(primary_object, alias_objects=None, keep_old=False):
-
     """
     Use this function to merge model objects (i.e. Users, Organizations, Polls,
     etc.) and migrate all of the related fields from the alias objects to the
@@ -54,9 +54,9 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
             generic_fields.append(field)
 
     blank_local_fields = {
-            field.attname
-            for field in primary_object._meta.local_fields
-            if getattr(primary_object, field.attname) in [None, ""]
+        field.attname
+        for field in primary_object._meta.local_fields
+        if getattr(primary_object, field.attname) in [None, ""]
     }
 
     # Loop through all alias objects and migrate their data to the primary object.
@@ -64,9 +64,9 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
         # Migrate all foreign key references from alias object to primary object.
 
         related_objects = [
-            f for f in alias_object._meta.get_fields()
-            if (f.one_to_many or f.one_to_one)
-            and f.auto_created and not f.concrete
+            f
+            for f in alias_object._meta.get_fields()
+            if (f.one_to_many or f.one_to_one) and f.auto_created and not f.concrete
         ]
 
         # for related_object in alias_object._meta.get_all_related_objects():
@@ -88,13 +88,14 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
         # Migrate all many to many references from alias object to primary object.
 
         related_many_objects = [
-            rel for rel in alias_object._meta.related_objects
+            rel
+            for rel in alias_object._meta.related_objects
             if isinstance(rel, ManyToManyRel)
         ]
 
         for (
             related_many_object
-        # ) in alias_object._meta.get_all_related_many_to_many_objects():
+            # ) in alias_object._meta.get_all_related_many_to_many_objects():
         ) in related_many_objects:
             alias_varname = related_many_object.get_accessor_name()
             obj_varname = related_many_object.field.name
@@ -168,7 +169,6 @@ def merge_relations(primary_object, alias_objects):
     for obj in alias_objects:
         # only take specific services into account that are not defined on master
         for r in obj.relations.exclude(service__in=master_services):
-
             # move to the master object
             r.object_id = primary_object.pk
             r.save()

@@ -126,7 +126,7 @@ pyacoustid = { path = "pip-legacy-packages/pyacoustid" }
 line-length = 88
 target-version = "py39"
 exclude = [
-    "cconfig/*",
+    "config/*",
     "tests/*",
     "pip-legacy-packages/*",
     "obp_core/legacy_apps/*",

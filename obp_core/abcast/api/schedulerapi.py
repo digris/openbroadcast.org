@@ -68,7 +68,6 @@ class PlaylistResource(ModelResource):
 
 
 class EmissionResource(ModelResource):
-
     co_to = {Playlist: PlaylistResource}
 
     content_object = GenericForeignKeyField(
@@ -101,9 +100,7 @@ class EmissionResource(ModelResource):
         return data
 
     def apply_filters(self, request, applicable_filters):
-        base_object_list = super().apply_filters(
-            request, applicable_filters
-        )
+        base_object_list = super().apply_filters(request, applicable_filters)
 
         channel_id = request.GET.get("channel_id", None)
         if channel_id:

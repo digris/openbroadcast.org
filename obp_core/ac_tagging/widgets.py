@@ -14,7 +14,7 @@ class TagAutocompleteTagIt(TextInput):
         super().__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
-        """ Render HTML code """
+        """Render HTML code"""
         # django-tagging
         case_sensitive = (
             "false" if not getattr(settings, "FORCE_LOWERCASE_TAGS", False) else "false"

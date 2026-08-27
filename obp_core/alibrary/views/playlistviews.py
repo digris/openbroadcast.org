@@ -228,7 +228,10 @@ class PlaylistDetailView(SectionDetailView):
         return sections
 
     def get_queryset(self):
-        return self.model.objects.select_related("user", "series",).prefetch_related(
+        return self.model.objects.select_related(
+            "user",
+            "series",
+        ).prefetch_related(
             "dayparts",
         )
 
@@ -378,7 +381,6 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, SectionUpdat
 
             return HttpResponseRedirect("#")
         else:
-
             from base.utils.form_errors import merge_form_errors
 
             form_errors = merge_form_errors([form])

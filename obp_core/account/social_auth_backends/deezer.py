@@ -39,5 +39,8 @@ class DeezerOAuth2(BaseOAuth2):
         """Return user data from Deezer API"""
 
         return self.get_json(
-            "https://api.deezer.com/user/me", params={"access_token": access_token,},
+            "https://api.deezer.com/user/me",
+            params={
+                "access_token": access_token,
+            },
         )

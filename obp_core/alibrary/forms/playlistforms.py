@@ -81,14 +81,12 @@ class DaypartWidget(SelectMultiple):
             value = []
         has_id = attrs and "id" in attrs
 
-
         # final_attrs = self.build_attrs(attrs, name=name)
 
         base_attrs = self.attrs
         extra_attrs = attrs or {}
         extra_attrs["name"] = name
         final_attrs = self.build_attrs(base_attrs, extra_attrs)
-
 
         output = ['<ul class="unstyled" style="float: left;">']
         str_values = {force_text(v) for v in value}

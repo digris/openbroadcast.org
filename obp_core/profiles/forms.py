@@ -246,7 +246,6 @@ class UserForm(ModelForm):
 
 
 class UserCredentialsForm(ModelForm):
-
     error_messages = {"password_mismatch": _("The two password fields didn't match.")}
     new_password1 = forms.CharField(
         label=_("New password"),

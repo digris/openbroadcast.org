@@ -81,7 +81,6 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
 
             # append data to all results and 'false positive' list if name mismatch
             if not (m_name.lower() in m_orig.lower()):
-
                 # try:
                 #     identifier = Identifier()
                 #     metadata = identifier.extract_metadata(item.file)
@@ -96,7 +95,6 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
         # check for possible unrecognized duplicates
         possible_duplicates = []
         for item in qs_done:
-
             if not (
                 hasattr(item, "media")
                 and item.media

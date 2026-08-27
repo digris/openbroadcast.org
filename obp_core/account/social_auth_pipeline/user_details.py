@@ -115,7 +115,6 @@ def get_details(backend, strategy, details, response, user=None, *args, **kwargs
     #             pass
 
     if backend.name == "google-oauth2":
-
         print(response)
 
         if not user.first_name and "given_name" in response:

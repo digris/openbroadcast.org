@@ -21,7 +21,6 @@ THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
 
 
 class MediaResource(ModelResource):
-
     release = fields.ForeignKey(
         "alibrary.api.ReleaseResource", "release", null=True, full=True
     )
@@ -141,7 +140,7 @@ class MediaResource(ModelResource):
         return bundle
 
     def build_filters(self, filters=None):
-        """ Enable querying by fingerprint """
+        """Enable querying by fingerprint"""
         if filters is None:
             filters = {}
 

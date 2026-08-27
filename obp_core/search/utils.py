@@ -169,7 +169,6 @@ def get_ordering_data(order_options, search_query, request):
         )
 
     for option in order_options:
-
         if selected_key == option["key"]:
             selected = True
             if selected_direction == "asc":
@@ -210,7 +209,6 @@ def get_filter_data(facets, facets_definition=None):
         keys = [k for k in dir(facets) if k in _ignore_keys]
 
     for key in keys:
-
         # if key in _ignore_keys:
         #     continue
 
@@ -220,7 +218,6 @@ def get_filter_data(facets, facets_definition=None):
         _options = []
 
         for option in getattr(facets, key):
-
             if option[2]:
                 _q = [o for o in selected_options if not o == option[0]]
             else:
@@ -310,7 +307,6 @@ def get_tagcloud_data(tags, request, steps=6, distribution=LOGARITHMIC, group_by
             weight_set = False
             tag_weight = _calculate_tag_weight(tag["count"], max_weight, distribution)
             for i in range(steps):
-
                 if not weight_set and tag_weight <= thresholds[i]:
                     tag["weight"] = i + 1
                     groups[i] += 1

@@ -24,6 +24,4 @@ class JsonResponse(HttpResponse):
 
         print("data", data)
 
-        super().__init__(
-            content=json.dumps(data), content_type="application/json"
-        )
+        super().__init__(content=json.dumps(data), content_type="application/json")

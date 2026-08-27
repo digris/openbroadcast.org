@@ -67,7 +67,6 @@ def _get_peaks(data, new_size):
     max_array = []
 
     for d in data:
-
         if count < ratio:
             count = count + 1
             if abs(d) > maximum_item:

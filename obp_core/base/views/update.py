@@ -11,7 +11,6 @@ class UUIDUpdateView(UpdateView):
 
 
 class SectionUpdateView(UUIDUpdateView, UpdateView):
-
     # model
     # template_name
     url_name = None

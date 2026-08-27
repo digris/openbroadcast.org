@@ -36,7 +36,6 @@ class JSONResponseMixin:
 
 
 class ExportListView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
-
     model = Export
 
     permission_required = "exporter.add_export"
@@ -48,7 +47,6 @@ class ExportListView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
 
 
 class ExportDeleteView(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
-
     model = Export
     success_url = lazy(reverse, str)("exporter:export-list-legacy")
 
@@ -61,7 +59,6 @@ class ExportDeleteView(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
 
 
 class ExportDeleteAllView(PermissionRequiredMixin, LoginRequiredMixin, View):
-
     model = Export
     success_url = lazy(reverse, str)("exporter:export-list-legacy")
 

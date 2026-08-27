@@ -30,7 +30,6 @@ class ExportViewSet(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
-
     queryset = Export.objects.all().order_by("-created")
     serializer_class = ExportSerializer
     lookup_field = "uuid"

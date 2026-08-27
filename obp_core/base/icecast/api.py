@@ -15,7 +15,6 @@ class IcecastAPIClient:
     def set_text(self, text):
 
         if self.server and self.admin_user and self.admin_pass:
-
             url = "%sadmin/metadata" % self.server
             auth = (self.admin_user, self.admin_pass)
             params = {

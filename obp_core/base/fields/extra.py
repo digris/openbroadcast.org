@@ -2,7 +2,6 @@
 TODO: heavy mess. field here need refactoring.
 """
 
-
 from django.db.models import TextField, FileField
 from markdown import markdown
 from django.forms import forms
@@ -49,7 +48,7 @@ except ImportError:
 
 
 class AdvancedFileInput(ClearableFileInput):
-    input_text = ''
+    input_text = ""
 
     # template_with_initial = '<ul class="unstyled"><li>%(initial)s</li><li>%(clear_template)s</li><li>%(input_text)s: %(input)s</li></ul>'
     template_with_initial = '<ul class="advancedfileinput unstyled fileinput--inline"><li>%(initial)s</li><li>%(input_text)s %(input)s</li></ul>'
@@ -79,15 +78,14 @@ class AdvancedFileInput(ClearableFileInput):
         )
 
         if value and hasattr(value, "url"):
-
             template = self.template_with_initial
             if self.preview:
                 # substitutions['initial'] = (u'<a href="{0}" target="_blank"><img src="{0}" width="{1}"></a><br>'.format
                 #    (escape(value.url), self.image_width))
-                substitutions[
-                    "initial"
-                ] = '<div data-image_url="{0}"><img class="placeholder" src="{0}" width="{1}"></div>'.format(
-                    escape(value.url), self.image_width
+                substitutions["initial"] = (
+                    '<div data-image_url="{0}"><img class="placeholder" src="{0}" width="{1}"></div>'.format(
+                        escape(value.url), self.image_width
+                    )
                 )
             else:
                 substitutions["initial"] = '<a href="{}">{}</a>'.format(

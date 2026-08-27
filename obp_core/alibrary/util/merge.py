@@ -17,7 +17,6 @@ def merge(master, slaves):
     # log.info('merge objects: {} - {}'.format(master, slaves))
 
     if isinstance(master, Release):
-
         # clear relations to prevent duplicates
         for r in slaves:
             r.album_artists.clear()
@@ -34,7 +33,6 @@ def merge(master, slaves):
         return master
 
     if isinstance(master, Artist):
-
         merge_votes(master, slaves)
         merge_relations(master, slaves)
         merge_tags(master, slaves)
@@ -49,7 +47,6 @@ def merge(master, slaves):
         return master
 
     if isinstance(master, Label):
-
         merge_votes(master, slaves)
         merge_relations(master, slaves)
         merge_tags(master, slaves)
@@ -60,7 +57,6 @@ def merge(master, slaves):
         return master
 
     if isinstance(master, Media):
-
         from alibrary.models import MediaExtraartists
 
         extra_artists = []

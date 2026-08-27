@@ -3,7 +3,6 @@ from rest_framework import serializers
 
 
 class ObjectRatingSerializer(serializers.Serializer):
-
     user = None
 
     def __init__(self, **kwargs):
@@ -31,4 +30,4 @@ class ObjectRatingSerializer(serializers.Serializer):
             return vote_qs.first().vote
 
     def get_avg_vote(self, obj):
-        return obj.votes.aggregate(avg_vote=Avg("vote"))['avg_vote']
+        return obj.votes.aggregate(avg_vote=Avg("vote"))["avg_vote"]

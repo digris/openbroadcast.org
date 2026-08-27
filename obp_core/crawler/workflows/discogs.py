@@ -152,14 +152,12 @@ class DiscogsCrawler:
 
         relations = self._data.get("urls")
         if relations:
-
             _relation_qs = self.obj.relations.all()
             _relation_urls = [
                 strip_http(strip_query_params(r.url)) for r in _relation_qs
             ]
 
             for url in relations:
-
                 _service = get_service_by_url(url)
                 # log.debug('{}: {}'.format(_service, url))
 

@@ -52,7 +52,6 @@ def upload_cover_to(instance, filename):
 
 
 class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
-
     # core fields
     name = models.CharField(
         max_length=200,
@@ -592,8 +591,11 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         except:
             self.releasedate = None
 
-        
-        if self.pk is not None and hasattr(self, "_last_editor") and getattr(self, "_last_editor"):
+        if (
+            self.pk is not None
+            and hasattr(self, "_last_editor")
+            and getattr(self, "_last_editor")
+        ):
             last_editor = getattr(self, "_last_editor")
             self.last_editor = last_editor
 

@@ -7,7 +7,6 @@ from cms.menu_bases import CMSAttachMenu
 
 
 class LibraryMenu(CMSAttachMenu):
-
     name = _("Library Menu")
 
     def get_nodes(self, request):
@@ -19,7 +18,6 @@ menu_pool.register_menu(LibraryMenu)
 
 
 class ReleaseMenu(CMSAttachMenu):
-
     name = _("Release Menu")
 
     def get_nodes(self, request):
@@ -31,7 +29,6 @@ menu_pool.register_menu(ReleaseMenu)
 
 
 class MediaMenu(CMSAttachMenu):
-
     name = _("Media/Track Menu")
 
     def get_nodes(self, request):
@@ -43,7 +40,6 @@ menu_pool.register_menu(MediaMenu)
 
 
 class ArtistMenu(CMSAttachMenu):
-
     name = _("Artist Menu")
 
     def get_nodes(self, request):
@@ -55,7 +51,6 @@ menu_pool.register_menu(ArtistMenu)
 
 
 class LabelMenu(CMSAttachMenu):
-
     name = _("Label Menu")
 
     def get_nodes(self, request):
@@ -67,7 +62,6 @@ menu_pool.register_menu(LabelMenu)
 
 
 class PlaylistMenu(CMSAttachMenu):
-
     name = _("Playlist Menu")
 
     def get_nodes(self, request):
@@ -90,7 +84,6 @@ menu_pool.register_menu(PlaylistMenu)
 
 
 class LicenseMenu(CMSAttachMenu):
-
     name = _("License Menu")
 
     def get_nodes(self, request):
@@ -122,7 +115,6 @@ class Level(Modifier):
 
     def mark_levels(self, node, post_cut):
         for child in node.children:
-
             # print child
 
             if post_cut:

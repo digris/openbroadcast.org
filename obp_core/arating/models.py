@@ -10,7 +10,6 @@ VOTE_CHOICES = ((+1, "+1"), (-1, "-1"))
 
 
 class Vote(TimestampedModelMixin, UUIDModelMixin, models.Model):
-
     vote = models.SmallIntegerField(choices=VOTE_CHOICES, db_index=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="votes")
 

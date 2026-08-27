@@ -20,7 +20,6 @@ ALLOWED_EXTENSIONS = [".mp3", ".m4a", ".flac"]
 
 
 class BaseModel(models.Model):
-
     created = CreationDateTimeField()
     updated = ModificationDateTimeField()
 
@@ -29,7 +28,6 @@ class BaseModel(models.Model):
 
 
 class Massimport(BaseModel):
-
     STATUS_INIT = 0
     STATUS_DONE = 1
     STATUS_QUEUED = 2
@@ -117,17 +115,13 @@ class Massimport(BaseModel):
         print(f"scanning {self.directory}")
 
         for root, dirs, files in os.walk(self.directory):
-
             for file in files:
-
                 try:
-
                     path = os.path.join(root.decode("utf-8"), file.decode("utf-8"))
 
                     rel_path = path.replace(self.directory, "")
 
                     if os.path.isfile(path):
-
                         filename, ext = os.path.splitext(path)
                         if ext in ALLOWED_EXTENSIONS:
                             MassimportFile.objects.get_or_create(
@@ -177,7 +171,6 @@ def massimport_post_save(sender, instance, created, **kwargs):
 
 
 class MassimportFile(BaseModel):
-
     # TODO: hackish - linked states to ImportFile model$
 
     STATUS_CHOICES = ImportFile.STATUS_CHOICES

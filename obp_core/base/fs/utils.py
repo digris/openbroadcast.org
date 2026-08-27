@@ -50,7 +50,6 @@ def clean_directory_tree_reverse(path):
     empty = True
     while empty:
         for dirpath, dirs, files in os.walk(path):
-
             if files or dirs:
                 empty = False
                 # log.debug('breaking at non-empty directory: {0}'.format(path))

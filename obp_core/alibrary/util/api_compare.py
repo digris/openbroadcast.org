@@ -320,7 +320,6 @@ class MusicbrainzAPILookup(APILookup):
         res = {}
         d_tags = []
         for k in data:
-
             mk = k
             if k == "label-code":
                 mk = "labelcode"
@@ -516,7 +515,6 @@ class DiscogsAPILookup(APILookup):
         return name.strip()
 
     def get_release(self, uri):
-
         """
         discogs API releases url schema:
          - url: http://www.discogs.com/Miami-Nights-1984-Early-Summer/release/5015407
@@ -544,7 +542,6 @@ class DiscogsAPILookup(APILookup):
         relations = []
 
         for k in data:
-
             mk = k
 
             # if k == 'title':
@@ -638,7 +635,6 @@ class DiscogsAPILookup(APILookup):
         # reformat tracklist
         res["tracklist"] = []
         for track in data["tracklist"]:
-
             if "artists" in track:
                 try:
                     track["artists"][0]["name"] = self.reformat_name(
@@ -660,7 +656,6 @@ class DiscogsAPILookup(APILookup):
         return res
 
     def get_artist(self, uri):
-
         """
         discogs API artists url schema:
          - url: http://www.discogs.com/artist/2693332-Miami-Nights-1984
@@ -681,7 +676,6 @@ class DiscogsAPILookup(APILookup):
         relations = []
 
         for k in data:
-
             if k == "profile":
                 mk = "biography"
 
@@ -717,7 +711,6 @@ class DiscogsAPILookup(APILookup):
         return res
 
     def get_label(self, uri):
-
         """
         discogs API labels url schema:
          - url: http://www.discogs.com/label/234260-Rosso-Corsa-Records
@@ -738,7 +731,6 @@ class DiscogsAPILookup(APILookup):
         relations = []
 
         for k in data:
-
             if k == "name":
                 res[k] = self.reformat_name(data[k])
 

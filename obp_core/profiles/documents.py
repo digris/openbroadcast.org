@@ -1,6 +1,7 @@
 """
 elasticsearch index documents
 """
+
 from actstream.models import actor_stream
 from django.utils import timezone
 from datetime import timedelta
@@ -123,6 +124,4 @@ class ProfileDocument(DocType):
     # custom queryset
     ###################################################################
     def get_queryset(self):
-        return (
-            super().get_queryset().select_related("user", "mentor")
-        )
+        return super().get_queryset().select_related("user", "mentor")

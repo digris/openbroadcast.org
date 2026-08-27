@@ -34,7 +34,6 @@ class ImageSerializer(serializers.ImageField):
 class ArtistSerializer(
     FlexFieldsModelSerializer, serializers.HyperlinkedModelSerializer
 ):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:artist-detail", lookup_field="uuid"
     )
@@ -64,7 +63,6 @@ class ArtistSerializer(
 class LabelSerializer(
     FlexFieldsModelSerializer, serializers.HyperlinkedModelSerializer
 ):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:label-detail", lookup_field="uuid"
     )
@@ -94,7 +92,6 @@ class LabelSerializer(
 class MediaSerializer(
     FlexFieldsSerializerMixin, serializers.HyperlinkedModelSerializer
 ):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:media-detail", lookup_field="uuid"
     )
@@ -198,7 +195,6 @@ class MediaSerializer(
 class ReleaseSerializer(
     FlexFieldsSerializerMixin, serializers.HyperlinkedModelSerializer
 ):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:release-detail", lookup_field="uuid"
     )
@@ -230,7 +226,6 @@ class ReleaseSerializer(
     def get_items(self, obj, **kwargs):
         items = []
         for media in obj.get_media():
-
             serializer = MediaSerializer(
                 media, context={"request": self.context["request"]}
             )

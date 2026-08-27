@@ -16,9 +16,7 @@ class SocialAuthExceptionMiddleware(BaseSocialAuthExceptionMiddleware):
         redirect_to = request.GET.get("next")
         if redirect_to:
             return redirect_to
-        return super().get_redirect_uri(
-            request, exception
-        )
+        return super().get_redirect_uri(request, exception)
 
     def get_message(self, request, exception):
         message = str(exception)

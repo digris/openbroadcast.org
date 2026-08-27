@@ -6,7 +6,6 @@ from ..models import Profile
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:profile-detail", lookup_field="uuid"
     )

@@ -8,7 +8,7 @@ register = template.Library()
 @register.filter
 def text_replace(value, arg):
     """
-        {% text_replace:"foo:bar" %}
+    {% text_replace:"foo:bar" %}
     """
     try:
         return value.replace(*arg.split(":"))

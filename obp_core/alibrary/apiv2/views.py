@@ -37,7 +37,6 @@ log = logging.getLogger(__name__)
 def add_items_to_playlist(items, playlist):
 
     for item in items:
-
         obj_ct = item["content"].get("ct")
         obj_uuid = item["content"].get("uuid")
 
@@ -57,7 +56,6 @@ def add_items_to_playlist(items, playlist):
 class PlaylistViewSet(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
 ):
-
     queryset = Playlist.objects.all().order_by("-created")
     serializer_class = PlaylistSerializer
     lookup_field = "uuid"
@@ -150,7 +148,6 @@ playlist_detail = PlaylistViewSet.as_view({"get": "retrieve", "put": "add_items"
 class ArtistViewSet(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
 ):
-
     queryset = Artist.objects.all().order_by("-created")
     serializer_class = ArtistSerializer
     lookup_field = "uuid"
@@ -163,7 +160,6 @@ class ArtistViewSet(
 class LabelViewSet(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
 ):
-
     queryset = Label.objects.all().order_by("-created")
     serializer_class = LabelSerializer
     lookup_field = "uuid"
@@ -176,7 +172,6 @@ class LabelViewSet(
 class ReleaseViewSet(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
 ):
-
     lookup_field = "uuid"
     queryset = Release.objects.all().order_by("-created")
     serializer_class = ReleaseSerializer
@@ -193,7 +188,6 @@ class ReleaseViewSet(
 class MediaViewSet(
     mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
 ):
-
     queryset = Media.objects.all().order_by("-created")
     serializer_class = MediaSerializer
     lookup_field = "uuid"

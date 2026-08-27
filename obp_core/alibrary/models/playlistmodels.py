@@ -49,16 +49,12 @@ def filename_by_uuid(instance, filename):
 
 def upload_image_to(instance, filename):
     filename, extension = os.path.splitext(filename)
-    return os.path.join(
-        get_dir_for_object(instance), f"playlists{extension.lower()}"
-    )
+    return os.path.join(get_dir_for_object(instance), f"playlists{extension.lower()}")
 
 
 def upload_mixdown_to(instance, filename):
     filename, extension = os.path.splitext(filename)
-    return os.path.join(
-        get_dir_for_object(instance), f"mixdown{extension.lower()}"
-    )
+    return os.path.join(get_dir_for_object(instance), f"mixdown{extension.lower()}")
 
 
 class Season(models.Model):
@@ -111,7 +107,6 @@ class Series(models.Model):
 
 
 class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
-
     TYPE_BASKET = "basket"
     TYPE_PLAYLIST = "playlist"
     TYPE_BROADCAST = "broadcast"
@@ -499,7 +494,6 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                 co = Media.objects.get(pk=id)
 
             if co:
-
                 i = PlaylistItem(content_object=co)
                 i.save()
                 """
@@ -860,7 +854,6 @@ def playlist_post_save(sender, instance, **kwargs):
 
 
 class PlaylistItemPlaylist(TimestampedModelMixin, models.Model):
-
     playlist = models.ForeignKey(
         "Playlist", on_delete=models.CASCADE, related_name="playlist_items"
     )
@@ -906,7 +899,6 @@ class PlaylistItemPlaylist(TimestampedModelMixin, models.Model):
 
 
 class PlaylistItem(models.Model):
-
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     class Meta:

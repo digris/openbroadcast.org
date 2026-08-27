@@ -3,7 +3,6 @@ A convenient way to attach django-elasticsearch-dsl to Django's signals and
 cause things to index.
 """
 
-
 from django.db import models
 from django.apps import apps
 

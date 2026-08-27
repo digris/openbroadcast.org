@@ -33,7 +33,7 @@ class Follow(models.Model):
     object_id = models.CharField(max_length=255)
     follow_object = GenericForeignKey()
     actor_only = models.BooleanField(
-        "Only follow actions where the object is " "the target.", default=True
+        "Only follow actions where the object is the target.", default=True
     )
     started = models.DateTimeField(default=now)
     objects = FollowManager()

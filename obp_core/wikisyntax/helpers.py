@@ -47,7 +47,6 @@ def wikify(match):  # Excepts a regexp match
     wikis = []  # Here we store our wiki model info
 
     for i in settings.WIKISYNTAX:
-
         name = i[0]
 
         modstring = i[1]
@@ -66,7 +65,6 @@ def wikify(match):  # Excepts a regexp match
     )  # we track the 'trail' because it may be a plural 's' or something useful
 
     if "=" in token:
-
         prefix = token.split("=", 1)[0].lower().rstrip()
         name = token.split("=", 1)[1].rstrip()
 
@@ -83,7 +81,6 @@ def wikify(match):  # Excepts a regexp match
 					"""
                     return wiki.render(name, trail=trail, explicit=True)
                 else:
-
                     if prefix == "a":
                         return (
                             '<a href="https://www.discogs.com/search?q=%s&type=artist">%s</a>'

@@ -6,18 +6,16 @@ from django.utils.translation import ugettext as _
 
 
 class StationListView(ListView):
-
-    queryset = Station.objects.all().order_by('name')
+    queryset = Station.objects.all().order_by("name")
     template_name = "abcast/station/list.html"
 
 
 class StationDetailView(DetailView):
-
     model = Station
     template_name = "abcast/station/detail.html"
     section_template_base = "abcast/station/_detail"
     slug_field = "uuid"
-    slug_url_kwarg = 'uuid'
+    slug_url_kwarg = "uuid"
 
     section = None
     sections = [
@@ -30,7 +28,8 @@ class StationDetailView(DetailView):
         # get default section if none provided
         if not kwargs.get("section"):
             redirect_to = reverse(
-                "abcast-network:station-detail", kwargs={"uuid": kwargs.get("uuid"), "section": self.sections[0][0]}
+                "abcast-network:station-detail",
+                kwargs={"uuid": kwargs.get("uuid"), "section": self.sections[0][0]},
             )
             return redirect(redirect_to)
         else:
@@ -41,7 +40,6 @@ class StationDetailView(DetailView):
     def get_section_menu(self, object, section):
         menu = []
         for key, title in self.sections:
-
             menu.append(
                 {
                     "active": key == section,
@@ -79,8 +77,6 @@ class StationDetailView(DetailView):
 
         if self.section == "members":
             obj = self.get_object()
-            context.update({
-                'members': obj.members.all()
-            })
+            context.update({"members": obj.members.all()})
 
         return context

@@ -4,6 +4,7 @@ import time
 import unicodedata
 import string
 import ntpath
+
 try:
     import magic
 except ImportError:
@@ -72,11 +73,12 @@ def clean_upload_path(instance, filename):
     valid_chars = "-_.{}{}".format(string.ascii_letters, string.digits)
     cleaned_filename = unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore")
     folder = "import/%s/" % time.strftime("%Y%m%d%H%M%S", time.gmtime())
-    return os.path.join(folder, "{}{}".format(cleaned_filename.lower(), extension.lower()))
+    return os.path.join(
+        folder, "{}{}".format(cleaned_filename.lower(), extension.lower())
+    )
 
 
 class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
-
     STATUS_INIT = 0
     STATUS_DONE = 1
     STATUS_READY = 2
@@ -181,16 +183,13 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
     def apply_import_tag(self, importfile, **kwargs):
 
         if "mb_release_id" in importfile.import_tag:
-
             mb_release_id = importfile.import_tag["mb_release_id"]
 
             qs = self.files.exclude(pk=importfile.pk)
             importfiles = qs.filter(status=ImportFile.STATUS_READY)
             for file in importfiles:
                 for mb in file.results_musicbrainz:
-
                     if "mb_id" in mb and mb["mb_id"] == mb_release_id:
-
                         file.import_tag["mb_release_id"] = mb_release_id
                         file.import_tag["release"] = mb["name"]
                         file.import_tag["artist"] = mb["artist"]["name"]
@@ -268,7 +267,6 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
 
 class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
-
     STATUS_INIT = 0
     STATUS_DONE = 1
     STATUS_READY = 2
@@ -358,7 +356,9 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
         return ""
 
     def identify(self):
-        log.info("Start processing ImportFile: {} at {}".format(self.pk, self.file.path))
+        log.info(
+            "Start processing ImportFile: {} at {}".format(self.pk, self.file.path)
+        )
 
         if USE_CELERYD:
             self.identify_task.delay(self)
@@ -393,7 +393,6 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
         media_id = None
 
         if not reimport_duplicate:
-
             metadata = identifier.extract_metadata(obj.file)
 
             if not metadata:
@@ -430,7 +429,6 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
                             and "media_mb_id" in metadata
                             and metadata["media_mb_id"]
                         ):
-
                             if (
                                 Media.objects.get(pk=media_id)
                                 .relations.filter(
@@ -456,7 +454,6 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
             )
 
             if obp_media_uuid:
-
                 try:
                     obj.status = ImportFile.STATUS_DUPLICATE
                     obj.media = Media.objects.get(uuid=obp_media_uuid)
@@ -486,7 +483,6 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
             )
 
             if AUTOIMPORT_MB and media_mb_id and artist_mb_id and release_mb_id:
-
                 # print
                 # print '******************************************************************'
                 # print 'got musicbrainz match'
@@ -501,7 +497,6 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
                 # print
 
                 if not media_id:
-
                     log.debug("directly applying mb-data and send to import-queue")
 
                     # build import tag
@@ -587,7 +582,9 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def do_import(self):
 
-        log.debug("Start importing ImportFile: {} at {}".format(self.pk, self.file.path))
+        log.debug(
+            "Start importing ImportFile: {} at {}".format(self.pk, self.file.path)
+        )
 
         if USE_CELERYD:
             self.import_task.delay(self)
@@ -613,7 +610,9 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
         else:
             obj.status = 99
 
-        log.info("Ending import task with status: {} for: {}".format(obj.status, obj.pk))
+        log.info(
+            "Ending import task with status: {} for: {}".format(obj.status, obj.pk)
+        )
 
         obj.save()
 
@@ -701,7 +700,6 @@ post_delete.connect(post_delete_importfile, sender=ImportFile)
 
 
 class ImportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
-
     """
     stores relations to objects created/assigned during the specific import
     """

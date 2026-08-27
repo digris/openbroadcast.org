@@ -414,7 +414,6 @@ class Process:
             tags = ID3(path)
             # log.debug("existing tags: {}".format(tags))
         except Exception as e:
-
             # log.debug("no existing tags: {}".format(e))
 
             """
@@ -446,7 +445,9 @@ class Process:
             TXXX(
                 encoding=3,
                 desc="open broadcast API",
-                text="https://{}{}".format(self.current_site.domain, media.get_api_url()),
+                text="https://{}{}".format(
+                    self.current_site.domain, media.get_api_url()
+                ),
             )
         )
         # remove genre
@@ -491,7 +492,9 @@ class Process:
                 tags.add(
                     TRCK(
                         encoding=3,
-                        text="{}/{}".format(media.tracknumber, media.release.totaltracks),
+                        text="{}/{}".format(
+                            media.tracknumber, media.release.totaltracks
+                        ),
                     )
                 )
             if media.release.releasedate:
@@ -510,7 +513,6 @@ class Process:
                 and media.release.main_image
                 and os.path.exists(media.release.main_image.path)
             ):
-
                 opt = dict(size=(300, 300), crop=True, bw=False, quality=80)
 
                 try:

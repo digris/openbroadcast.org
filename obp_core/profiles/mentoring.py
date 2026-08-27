@@ -12,7 +12,6 @@ def get_mentoring_actions_for_profile(profile, mentor):
         return []
 
     if profile.mentor == mentor and not profile.is_approved:
-
         return [
             {
                 "name": _("Approve as MUSIC PROFESSIONAL"),
@@ -37,7 +36,6 @@ def get_mentoring_actions_for_profile(profile, mentor):
         ]
 
     elif not profile.mentor:
-
         return [
             {
                 "name": _("Become the mentor"),

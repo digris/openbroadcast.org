@@ -116,7 +116,6 @@ class DABMetadataGenerator:
             )
 
         if playlist_text:
-
             if series_text:
                 items.append(f"{playlist_text} - {series_text}")
             else:
@@ -146,10 +145,7 @@ class DABMetadataGenerator:
             + NEWLINE
         )
         for t in tags[0:4]:
-            tag += (
-                "DL_PLUS_TAG={}".format(" ".join([f"{b}" for b in t]))
-                + NEWLINE
-            )
+            tag += "DL_PLUS_TAG={}".format(" ".join([f"{b}" for b in t])) + NEWLINE
 
         tag += "##### parameters } #####" + NEWLINE
 
@@ -333,7 +329,6 @@ class DABMetadataGenerator:
         overlay_image = Image(filename=overlay_image_path)
 
         with Drawing() as draw:
-
             # add overlay image
             draw.composite(
                 "over", left=210, top=10, width=100, height=100, image=overlay_image
@@ -397,7 +392,6 @@ class DABMetadataGenerator:
         overlay_image = Image(filename=image_path)
 
         with Drawing() as draw:
-
             size = overlay_image.size
 
             if size[0] > size[1]:

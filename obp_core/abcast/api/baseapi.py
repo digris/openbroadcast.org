@@ -64,7 +64,9 @@ class ChannelResource(ModelResource):
             stream = {
                 "file": "%s.stream" % bundle.obj.rtmp_path,
                 "rtmp_app": "%s" % bundle.obj.rtmp_app,
-                "rtmp_host": "rtmp://{}:{}/".format(settings.RTMP_HOST, settings.RTMP_PORT),
+                "rtmp_host": "rtmp://{}:{}/".format(
+                    settings.RTMP_HOST, settings.RTMP_PORT
+                ),
                 # 'uri': 'http://pypo:8000/obp-dev-256.mp3',
                 "uri": bundle.obj.stream_url,
                 "uuid": bundle.obj.uuid,
@@ -274,7 +276,6 @@ class ChannelResource(ModelResource):
         now = datetime.datetime.now()
 
         for daypart in dayparts:
-
             time_start = datetime.datetime.combine(now.date(), daypart.time_start)
             time_end = datetime.datetime.combine(now.date(), daypart.time_end)
 
@@ -318,7 +319,6 @@ class ChannelResource(ModelResource):
         now = datetime.datetime.now()
 
         for daypart in dayparts:
-
             time_start = datetime.datetime.combine(now.date(), daypart.time_start)
             time_end = datetime.datetime.combine(now.date(), daypart.time_end)
 
@@ -368,7 +368,6 @@ class ChannelResource(ModelResource):
 # api mapping for airtime / pypo
 ####################################################################
 class BaseResource(Resource):
-
     base_url = Site.objects.get_current().domain
     # base_url = 'foo'
 
@@ -541,8 +540,7 @@ class BaseResource(Resource):
         return self.json_response(request, data)
 
     def rabbitmq_do_push(self, request, **kwargs):
-
-        """ airtime
+        """airtime
         /* This action is for use by our dev scripts, that make
          * a change to the database and we want rabbitmq to send
          * out a message to pypo that a potential change has been made. */
@@ -644,7 +642,6 @@ class BaseResource(Resource):
         log.debug("start play: {} - {}".format(media_uuid, channel_uuid))
 
         if media_uuid and channel_uuid:
-
             from alibrary.models import Media
 
             item = Media.objects.get(uuid=media_uuid)

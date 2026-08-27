@@ -30,10 +30,8 @@ def get_model_class(ctype):
 
 def get_model_data(ctype):
 
-
     model_class = get_model_class(ctype)
     model_ct = ContentType.objects.get_for_model(model_class)
-
 
     url = reverse_lazy(
         "api:search-by-ctype",

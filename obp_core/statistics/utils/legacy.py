@@ -26,7 +26,6 @@ class ObjectStatistics:
         stats = []
         # TODO: maybe modularize!
         for action in actions:
-
             if action == "playout":
                 stats.append({"label": _("Airplays"), "data": self.get_stats(action)})
 

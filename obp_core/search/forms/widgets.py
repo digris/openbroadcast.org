@@ -22,7 +22,6 @@ class AutocompleteInputWidget(forms.TextInput):
         return attrs
 
 
-
 class AutocompleteWidget(forms.MultiWidget):
     """
     combo widget to render representation text and hidden id field

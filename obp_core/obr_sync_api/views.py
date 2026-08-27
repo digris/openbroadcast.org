@@ -15,6 +15,7 @@ from tagging.models import Tag
 
 User = get_user_model()
 
+
 class SyncPermissions(permissions.BasePermission):
     message = "Insufficient permissions"
 
@@ -75,7 +76,9 @@ class ArtistViewSet(
     lookup_field = "uuid"
 
     def get_queryset(self):
-        qs = self.queryset.prefetch_related("relations",).select_related(
+        qs = self.queryset.prefetch_related(
+            "relations",
+        ).select_related(
             "country",
         )
         return qs
@@ -98,7 +101,9 @@ class ReleaseViewSet(
     lookup_field = "uuid"
 
     def get_queryset(self):
-        qs = self.queryset.prefetch_related("relations",).select_related(
+        qs = self.queryset.prefetch_related(
+            "relations",
+        ).select_related(
             "release_country",
             "label",
         )
@@ -122,7 +127,9 @@ class LabelViewSet(
     lookup_field = "uuid"
 
     def get_queryset(self):
-        qs = self.queryset.prefetch_related("relations",).select_related(
+        qs = self.queryset.prefetch_related(
+            "relations",
+        ).select_related(
             "parent",
         )
         return qs
@@ -160,14 +167,16 @@ class AccountViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet,
 ):
-    queryset = User.objects.filter(is_active=True).exclude(profile__isnull=True).order_by("id")
+    queryset = (
+        User.objects.filter(is_active=True).exclude(profile__isnull=True).order_by("id")
+    )
     permission_classes = (SyncPermissions,)
     serializer_class = serializers.AccountSerializer
     lookup_field = "id"
 
     def get_queryset(self):
         qs = self.queryset
-        qs = qs.select_related('profile')
+        qs = qs.select_related("profile")
         return qs
 
     def get_object(self):
@@ -246,7 +255,10 @@ class VoteViewSet(
 
     def get_queryset(self):
         qs = self.queryset
-        qs = qs.select_related("content_type", "user",).prefetch_related(
+        qs = qs.select_related(
+            "content_type",
+            "user",
+        ).prefetch_related(
             "content_object",
         )
         return qs

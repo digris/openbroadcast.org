@@ -32,10 +32,14 @@ def monthly_statistics_as_email(channel, year, month, email_addresses):
         tpl = get_template("statistics/email/_report_suisa.txt")
         channel_slug = channel.name.replace(" ", "-").lower()
         filename = "{year}-{month}-{channel_slug}.csv".format(
-            year=year, month=month, channel_slug=channel_slug,
+            year=year,
+            month=month,
+            channel_slug=channel_slug,
         )
         subject = "Playout report {channel_name} | {month}-{year}".format(
-            channel_name=channel.name, year=year, month=month,
+            channel_name=channel.name,
+            year=year,
+            month=month,
         )
         body = tpl.render(
             {"channel": channel, "month": month, "year": year, "filename": filename}
@@ -43,7 +47,10 @@ def monthly_statistics_as_email(channel, year, month, email_addresses):
 
         for email_address in email_addresses:
             email = EmailMessage(
-                subject, body, "no-reply@openbroadcast.org", [email_address],
+                subject,
+                body,
+                "no-reply@openbroadcast.org",
+                [email_address],
             )
             email.attach(filename, f.read(), "text/csv")
             email.send(fail_silently=False)

@@ -23,7 +23,6 @@ api = Api()
 
 
 try:
-
     # base
     api.register(BaseResource())
 

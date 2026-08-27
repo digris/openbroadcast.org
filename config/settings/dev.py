@@ -14,5 +14,6 @@ DATABASES = {
 }
 
 import pymysql
+
 pymysql.version_info = (1, 2, 5)
 pymysql.install_as_MySQLdb()

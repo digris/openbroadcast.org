@@ -121,9 +121,7 @@ class ExportResource(ModelResource):
         }
 
     def obj_create(self, bundle, request=None, **kwargs):
-        return super().obj_create(
-            bundle, request, user=request.user
-        )
+        return super().obj_create(bundle, request, user=request.user)
 
     def dehydrate(self, bundle):
         bundle.data["download_url"] = bundle.obj.get_download_url()

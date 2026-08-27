@@ -7,7 +7,6 @@ log = logging.getLogger(__name__)
 
 
 class PlayerIndexView(TemplateView):
-
     template_name = "player/index.html"
 
     def dispatch(self, request, *args, **kwargs):
@@ -22,7 +21,6 @@ class PlayerIndexView(TemplateView):
 
 
 class PlayerNextIndexView(TemplateView):
-
     template_name = "player/index_next.html"
 
     def get_context_data(self, **kwargs):

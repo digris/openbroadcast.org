@@ -27,7 +27,6 @@ DEFAULT_GROUP = "Listener"
 
 
 class MigrationMixin(models.Model):
-
     legacy_id = models.IntegerField(null=True, blank=True, editable=False)
     # to find way back to last-last database
     legacy_legacy_id = models.IntegerField(null=True, blank=True, editable=False)
@@ -49,7 +48,6 @@ def filename_by_uuid(instance, filename):
 
 
 class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
-
     GENDER_CHOICES = (
         (0, _("Male")),
         (1, _("Female")),
@@ -295,7 +293,6 @@ arating.enable_voting_on(Profile)
 
 
 class Community(UUIDModelMixin, MigrationMixin):
-
     name = models.CharField(
         max_length=200,
         db_index=True,
@@ -497,7 +494,6 @@ class ServiceType(models.Model):
 
 
 class Service(models.Model):
-
     service = models.ForeignKey(ServiceType)
     profile = models.ForeignKey(Profile)
     username = models.CharField(_("Userame / ID"), max_length=100)
@@ -525,7 +521,6 @@ class Service(models.Model):
 
 
 class Link(models.Model):
-
     profile = models.ForeignKey(Profile)
     title = models.CharField(_("title"), max_length=100, null=True, blank=True)
     url = models.URLField(_("url"))
@@ -540,7 +535,6 @@ class Link(models.Model):
 
 
 class Expertise(models.Model):
-
     name = models.CharField(max_length=512)
 
     class Meta:

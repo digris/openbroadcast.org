@@ -12,7 +12,6 @@ def media_post_save(sender, instance, created, **kwargs):
         and hasattr(instance, "_master_changed")
         and instance._master_changed
     ):
-
         try:
             preflight_check = PreflightCheck.objects.get(media=instance)
             preflight_check.status = PreflightCheck.STATUS_PENDING

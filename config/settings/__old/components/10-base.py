@@ -86,14 +86,12 @@ SESSION_SERIALIZER = "django.contrib.sessions.serializers.PickleSerializer"
 
 # profiles & co
 # ABSOLUTE_URL_OVERRIDES = {"auth.user": lambda o: "/network/users/%s/" % o.username}
-ABSOLUTE_URL_OVERRIDES = {
-    "auth.user": lambda u: "/network/users/%s/" % u.profile.uuid
-}
+ABSOLUTE_URL_OVERRIDES = {"auth.user": lambda u: "/network/users/%s/" % u.profile.uuid}
 
 ##################################################################
 # API v1
 ##################################################################
-TASTYPIE_DEFAULT_FORMATS = ['json']
+TASTYPIE_DEFAULT_FORMATS = ["json"]
 
 ##################################################################
 # API v2
@@ -129,7 +127,6 @@ ALIBRARY_USE_CELERYD = True
 ABCAST_USE_CELERYD = True
 MEDIA_ASSET_USE_CELERYD = True
 PYPO_USE_CELERYD = True
-
 
 
 ##################################################################

@@ -5,8 +5,8 @@ BASE_DIR = getattr(settings, "BASE_DIR")
 
 
 NAVUTILS_MENU_CONFIG = {
-    'CURRENT_MENU_ITEM_CLASS': 'active selected',
-    'CURRENT_MENU_ITEM_PARENT_CLASS': 'active selected has-current',
+    "CURRENT_MENU_ITEM_CLASS": "active selected",
+    "CURRENT_MENU_ITEM_PARENT_CLASS": "active selected has-current",
 }
 
 

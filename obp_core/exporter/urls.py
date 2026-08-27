@@ -5,9 +5,7 @@ from exporter import views_ng
 app_name = "exporter"
 urlpatterns = [
     url(r"^$", views_ng.ExporterIndexView.as_view(), name="export-index"),
-    url(
-        r"^legacy/$", views.ExportListView.as_view(), name="export-list-legacy"
-    ),
+    url(r"^legacy/$", views.ExportListView.as_view(), name="export-list-legacy"),
     url(
         r"^delete-all/$",
         views.ExportDeleteAllView.as_view(),

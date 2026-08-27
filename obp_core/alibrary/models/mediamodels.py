@@ -87,7 +87,6 @@ def upload_master_to(instance, filename):
 
 
 class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
-
     STATUS_CHOICES = (
         (0, _("Init")),
         (1, _("Ready")),
@@ -426,7 +425,6 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
             try:
                 artist_str = artists[0].name
             except:
-
                 try:
                     artist_str = self.artist.name
                 except:
@@ -589,7 +587,6 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
         # check if master changed. if yes we need to reprocess the cached files
         if self.pk is not None:
-
             try:
                 orig = Media.objects.filter(pk=self.pk)[0]
                 if orig.master != self.master:
@@ -659,7 +656,6 @@ def media_post_save(sender, **kwargs):
         ingest_fprint_for_media.apply_async((obj.pk,))
 
     if not obj.folder:
-
         log.debug("no directory for media %s - create it." % obj.pk)
         directory = get_dir_for_object(obj)
         abs_directory = os.path.join(settings.MEDIA_ROOT, directory)
@@ -707,7 +703,6 @@ except Exception as e:
 
 
 class MediaExtraartists(models.Model):
-
     artist = models.ForeignKey(
         "alibrary.Artist",
         related_name="extraartist_artist",
@@ -736,7 +731,9 @@ class MediaExtraartists(models.Model):
 
     def __str__(self):
         if self.artist and self.profession:
-            return 'Credited "{}" as "{}"'.format(self.artist.name, self.profession.name)
+            return 'Credited "{}" as "{}"'.format(
+                self.artist.name, self.profession.name
+            )
         elif self.artist:
             return 'Credited "%s"' % (self.artist.name)
         else:
@@ -753,7 +750,6 @@ def media_extraartists_post_delete(sender, instance, **kwargs):
 
 
 class MediaArtists(models.Model):
-
     artist = models.ForeignKey(
         "alibrary.Artist", related_name="artist_mediaartist", on_delete=models.CASCADE
     )

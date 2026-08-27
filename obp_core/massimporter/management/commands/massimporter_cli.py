@@ -31,10 +31,8 @@ def cli():
 @click.argument("id", type=int, required=False)
 @click.option("--details", "-d", type=unicode, required=False)
 def status(id, details):
-
     """Show (current) import session(s) info"""
     if not id:
-
         massimports = Massimport.objects.order_by("status").all()
 
         tpl = """{id}\t{status}\t{num_files}\t{username}\t{directory}"""
@@ -63,7 +61,6 @@ def status(id, details):
         click.echo("")
 
     else:
-
         try:
             massimport = Massimport.objects.get(pk=id)
         except Massimport.DoesNotExist as e:
@@ -77,7 +74,6 @@ def status(id, details):
         massimport.update()
 
         if not details:
-
             tpl = """{}:    \t{}"""
 
             click.secho(
@@ -99,15 +95,12 @@ def status(id, details):
                 "--------------------------------------------------------------------",
                 bold=True,
             )
-            click.secho(
-                (f"Total:    \t{massimport.files.all().count()}"), bold=True
-            )
+            click.secho((f"Total:    \t{massimport.files.all().count()}"), bold=True)
             click.echo("")
 
             return
 
         if details:
-
             from importer.models import ImportFile
 
             status_id = getattr(ImportFile, f"STATUS_{details.upper()}", 0)
@@ -243,9 +236,7 @@ def start(path, limit, username, collection):
         return
 
     if Massimport.objects.filter(directory=path).exists():
-        click.secho(
-            f"Import session already exists: {path}", bold=True, fg="red"
-        )
+        click.secho(f"Import session already exists: {path}", bold=True, fg="red")
         return
 
     massimport = Massimport(
@@ -260,6 +251,5 @@ def start(path, limit, username, collection):
         massimport.scan()
 
     if click.confirm("Continue with enqueuing files?"):
-
         for item in massimport.files.filter(status=0)[0:limit]:
             item.enqueue()

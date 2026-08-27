@@ -7,7 +7,6 @@ from cms.menu_bases import CMSAttachMenu
 
 
 class SchedulerMenu(CMSAttachMenu):
-
     name = _("Scheduler Menu")
 
     def get_nodes(self, request):

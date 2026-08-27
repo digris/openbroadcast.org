@@ -6,6 +6,7 @@ ssh needs to be configured.
 Example:
     $ ./download_master.py 74ada867-5419-475c-9a8e-9a3042db4b9e .
 """
+
 import argparse
 import os
 import subprocess
@@ -93,7 +94,6 @@ def parse_args():
 
 
 if __name__ == "__main__":
-
     args = parse_args()
     uuid = args.uuid
     path = os.path.abspath(args.dst)

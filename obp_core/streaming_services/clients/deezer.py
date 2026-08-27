@@ -14,7 +14,9 @@ class DeezerAPIClient:
         url = f"{self.base_url}/search"
 
         q = 'track:"{track}" artist:"{artist}" album:"{album}"'.format(
-            track=media.name, artist=media.artist.name, album=media.release.name,
+            track=media.name,
+            artist=media.artist.name,
+            album=media.release.name,
         )
 
         params = {

@@ -15,9 +15,9 @@ SITE_URL = getattr(settings, "SITE_URL")
 
 log = logging.getLogger(__name__)
 
+
 # for consistency - player expects list/items
 class MediaObjSerializer(serializers.ModelSerializer):
-
     url = serializers.HyperlinkedIdentityField(
         view_name="api:media-detail", lookup_field="uuid"
     )
@@ -41,13 +41,11 @@ class MediaObjSerializer(serializers.ModelSerializer):
 
 
 class ArtistObjSerializer(ArtistSerializer):
-
     items = serializers.SerializerMethodField()
 
     def get_items(self, obj, **kwargs):
         items = []
         for media in obj.get_media()[0:20]:
-
             serializer = MediaSerializer(
                 media, context={"request": self.context["request"]}
             )
@@ -60,20 +58,20 @@ class ArtistObjSerializer(ArtistSerializer):
 
 
 class ProfileObjSerializer(ArtistSerializer):
-
     items = serializers.SerializerMethodField()
 
     def get_items(self, obj, **kwargs):
         items = []
 
         # TODO: highly experimental... play user's recent "likes"
-        qs = obj.user.votes.filter(vote__gt=0, content_type_id=104).order_by("-created").prefetch_related(
-            "content_object"
+        qs = (
+            obj.user.votes.filter(vote__gt=0, content_type_id=104)
+            .order_by("-created")
+            .prefetch_related("content_object")
         )
 
         # for media in qs.all()[0:30]:
         for media in [r.content_object for r in qs.all()[0:30]]:
-
             serializer = MediaSerializer(
                 media, context={"request": self.context["request"]}
             )
