@@ -95,6 +95,7 @@ dev = [
     "djhtml>=3.0.11",
     "PyMySQL==0.10.1",
     "pytest>=8.3.5",
+    "pytest-django>=4.11.1",
     "ruff>=0.16.4",
 ]
 
@@ -165,7 +166,40 @@ ignore = [
 
 
 #######################################################################
-# type checking
+# tests
+#######################################################################
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "--ds config.settings.test"  # term:skip-covered / term-missing
+python_files = ["test_*.py"]
+markers = [
+    "integration: marks tests as slow (deselect with '-m \"not integration\"')",
+    "e2e: marks tests as slow (deselect with '-m \"not e2e\"')",
+]
+filterwarnings = [
+    # django 1.11 -> 2.x migration warnings: deal with later
+    "ignore::django.utils.deprecation.RemovedInDjango20Warning",
+    "ignore::django.utils.deprecation.RemovedInDjango21Warning",
+
+    # known legacy dependency warnings
+    "ignore::DeprecationWarning:PIL",
+    "ignore::DeprecationWarning:django",
+    "ignore::DeprecationWarning:django_filters",
+    "ignore::DeprecationWarning:persisting_theory",
+    "ignore::DeprecationWarning:django_elasticsearch_dsl",
+
+    # specific UserWarnings from legacy packages
+    "ignore:pkg_resources is deprecated as an API.*:UserWarning:adv_cache_tag",
+    "ignore:Unable to import floppyforms.gis.*:UserWarning:floppyforms",
+
+    # "ignore::DeprecationWarning:pkg_resources",
+    # "ignore::DeprecationWarning:html5lib",
+    # "ignore::DeprecationWarning:future",
+]
+
+
+#######################################################################
+# type checking (ty)
 #######################################################################
 [tool.ty.environment]
 python-version = "3.9"

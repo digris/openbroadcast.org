@@ -15,14 +15,13 @@ class ImportFileResource(ModelResource):
     )
 
     media = fields.ForeignKey(
-        # "alibrary.api.MediaResource", "media", null=True, full=True
         "alibrary.api.MediaResource",
         "media",
         null=True,
         full=False,
         readonly=True,
-        full_detail=True,
-        full_list=True,
+        full_detail=False,
+        full_list=False,
     )
 
     class Meta:
@@ -42,7 +41,66 @@ class ImportFileResource(ModelResource):
 
     def dehydrate(self, bundle):
         bundle.data["status"] = bundle.obj.get_status_display().lower()
+        bundle.data["media"] = self._dehydrate_media(bundle.obj.media)
         return bundle
+
+    def _dehydrate_media(self, media):
+        if not media:
+            return None
+
+        return {
+            "id": media.pk,
+            "uuid": str(media.uuid),
+            "resource_uri": self._safe_api_url(media),
+            "absolute_url": self._safe_absolute_url(media),
+            "name": media.name,
+            "created": media.created,
+            "artist": self._dehydrate_artist(media.artist),
+            "release": self._dehydrate_release(media.release),
+        }
+
+    def _dehydrate_artist(self, artist):
+        if not artist:
+            return None
+
+        return {
+            "id": artist.pk,
+            "uuid": str(artist.uuid),
+            "absolute_url": self._safe_absolute_url(artist),
+            "name": artist.name,
+        }
+
+    def _dehydrate_release(self, release):
+        if not release:
+            return None
+
+        return {
+            "id": release.pk,
+            "uuid": str(release.uuid),
+            "absolute_url": self._safe_absolute_url(release),
+            "name": release.name,
+            "main_image": self._safe_file_url(release.main_image),
+        }
+
+    def _safe_absolute_url(self, obj):
+        try:
+            return obj.get_absolute_url()
+        except Exception:
+            return None
+
+    def _safe_api_url(self, obj):
+        try:
+            return obj.get_api_url()
+        except Exception:
+            return None
+
+    def _safe_file_url(self, file_field):
+        try:
+            if file_field:
+                return file_field.url
+        except Exception:
+            pass
+        return None
 
     def deserialize(self, request, data, format=None):
         content_type = request.META.get("CONTENT_TYPE", "")
