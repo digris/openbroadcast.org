@@ -34,12 +34,13 @@ setup:
 lint-be:
 	uv run ruff format --check .
 	uv run ruff check --output-format concise .
+	uv run djhtml --check --tabwidth 2 obp_core/templates/
 
 .PHONY: format-be
 format-be:
 	uv run ruff format .
 	uv run ruff check --fix .
-	uv run djhtml --tabwidth 2 core/templates/
+	uv run djhtml --tabwidth 2 obp_core/templates/
 
 .PHONY: lint-fe
 lint-fe:

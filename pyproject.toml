@@ -130,12 +130,38 @@ exclude = [
     "tests/*",
     "pip-legacy-packages/*",
     "obp_core/legacy_apps/*",
+    "*/migrations/*",
 ]
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 line-ending = "lf"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "B",   # bugbear
+    "C4",  # comprehensions
+    "SIM", # simplifications
+    "UP",  # pyupgrade
+    "DJ",  # django
+]
+
+ignore = [
+    "E501",   # formatter is the source of truth for line length
+
+    # legacy django: don't force these yet
+    "DJ008",  # model missing __str__
+    "DJ012",  # model member ordering
+
+    # potentially noisy - ignore during migration phase
+    "B904",   # raise ... from err
+    "SIM105", # contextlib.suppress instead of try/except/pass
+    "SIM108", # ternary conversion
+]
 
 
 #######################################################################
