@@ -1,0 +1,10 @@
+{
+  "agents": {
+    "oracle": {
+      "model": "openai/gpt-5.6-sol"
+    },
+    "explore": {
+      "model": "openai/gpt-5.6-sol-fast"
+    }
+  }
+}
