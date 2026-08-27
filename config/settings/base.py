@@ -9,9 +9,8 @@ APP_ROOT = PROJECT_ROOT / "obp_core"
 
 sys.path.insert(0, str(APP_ROOT))
 
-sys.path.insert(0, str(APP_ROOT / "apps"))
 sys.path.insert(0, str(APP_ROOT / "base"))
-sys.path.insert(0, str(APP_ROOT / "tools"))
+sys.path.insert(0, str(APP_ROOT / "legacy_apps"))
 sys.path.insert(0, str(APP_ROOT / "legacy_deps"))
 
 env = environ.Env(
