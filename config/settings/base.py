@@ -1,4 +1,5 @@
 import sys
+import warnings
 from datetime import timedelta
 from pathlib import Path
 
@@ -764,3 +765,22 @@ LOGGING = {
         "base.pypo": {"level": "DEBUG", "handlers": ["default"], "propagate": False},
     },
 }
+
+
+#######################################################################
+# silence known warnings
+# see: pyproject.toml
+#######################################################################
+warnings.filterwarnings(
+    "ignore",
+    message=r"pkg_resources is deprecated as an API.*",
+    category=UserWarning,
+    module=r"adv_cache_tag",
+)
+
+warnings.filterwarnings(
+    "ignore",
+    message=r"Unable to import floppyforms\.gis.*",
+    category=UserWarning,
+    module=r"floppyforms",
+)

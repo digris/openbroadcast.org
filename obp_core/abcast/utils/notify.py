@@ -4,12 +4,12 @@ from django.core.cache import cache
 from pushy.util import pushy_custom
 from base.icecast.api import set_stream_metadata
 from base.tunein.api import set_tunein_metadata
-from metadata_generator.radioplayer.generator import set_radioplayer_metadata
 
 
 log = logging.getLogger(__name__)
 
 # TODO: metadata related updates should be moved to open broadcast "radio"
+#       which is partially done. review and remove once the migration is complete.
 
 
 def start_play(item, channel=None, user=None):
@@ -34,11 +34,6 @@ def start_play(item, channel=None, user=None):
             set_tunein_metadata(channel, item)
         except Exception as e:
             log.warning(f"unable to set tunein metadata: {e}")
-
-        try:
-            set_radioplayer_metadata(item)
-        except Exception as e:
-            log.warning(f"unable to set radioplayer metadata: {e}")
 
     try:
         from atracker.util import create_event

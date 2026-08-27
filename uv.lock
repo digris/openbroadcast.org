@@ -1220,7 +1220,7 @@ requires-dist = [
     { name = "uritemplate", specifier = "==3.0.1" },
     { name = "urlobject", specifier = "==2.3.4" },
     { name = "uwsgi", specifier = "==2.0.15" },
-    { name = "wand", specifier = "==0.4.4" },
+    { name = "wand", specifier = "==0.5.9" },
     { name = "xlsxwriter", specifier = "==1.1.2" },
     { name = "xmltodict", specifier = "==0.9.2" },
 ]
@@ -1859,9 +1859,12 @@ wheels = [
 
 [[package]]
 name = "wand"
-version = "0.4.4"
+version = "0.5.9"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/c5/0e/4c7846ffac7a478578ff77c93d6aff3da2c181972d9447c74bfe1e87ac06/Wand-0.4.4.tar.gz", hash = "sha256:28e0454c9d16d69c5d5034918d96320d8f9f1377b4fdaf4944eec2f938c74704", size = 65559, upload-time = "2016-10-22T10:52:35.637Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a3/ff/22a74061e56888c8813c4c86274e166f71a1305ea76dd4c75fcd14e51dd3/Wand-0.5.9.tar.gz", hash = "sha256:6eaca78e53fbe329b163f0f0b28f104de98edbd69a847268cc5d6a6e392b9b28", size = 118311, upload-time = "2020-02-11T02:01:57.962Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2e/06/5845baa21b3190248d571400cdeeb2de84f3c8757b2046c5ee1eadf59d7a/Wand-0.5.9-py2.py3-none-any.whl", hash = "sha256:598e13e46779e48fcecba7b37fd9d61fcdd1e70007ccba5d5b2e731186a2ec2e", size = 129721, upload-time = "2020-02-11T02:01:56.291Z" },
+]
 
 [[package]]
 name = "wcwidth"
