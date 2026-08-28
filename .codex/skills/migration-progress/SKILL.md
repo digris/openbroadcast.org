@@ -71,6 +71,15 @@ For each theme include:
 - important files,
 - which roadmap goal it advances, if any.
 
+### Interpretation rules
+
+- Distinguish roadmap facts from inferred migration themes.
+- If a roadmap checkbox is already marked complete, report it as "marked complete in the roadmap" unless Git evidence independently verifies completion.
+- Do not invent roadmap items. Put inferred or missing themes under "Roadmap gaps".
+- Treat large vendored/generated/mechanical diffs separately from semantic migration progress.
+- Do not equate line-count reduction with migration completion.
+- Prefer evidence from code/config/tests over commit-message wording.
+
 ### Roadmap status
 
 Compare observed work with `docs/migration/README.md`.
@@ -81,6 +90,6 @@ Do not mark roadmap items complete merely because related work exists. Only desc
 
 Briefly mention significant changes in the range that are unrelated to migration.
 
-### Gaps / next steps
+### Roadmap gaps and next steps
 
 Call out migration work visible in Git that is missing from the roadmap, unfinished work, or obvious next steps supported by the repository evidence.
