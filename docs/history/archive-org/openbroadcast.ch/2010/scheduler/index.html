@@ -1,0 +1,795 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" style=""><head>
+
+
+
+
+
+
+
+
+<!-- End Wayback Rewrite JS Include -->
+
+	<title>Open Broadcast Platform - Scheduler - </title>
+	<link rel="icon" type="image/png" href="https://web.archive.org/web/20100208222143im_/http://openbroadcast.ch/mod/template/templates/bbk/images/obp.16.png">
+	
+	<link href="https://web.archive.org/web/20100208222143cs_/http://openbroadcast.ch/_templates/css/bbk" rel="stylesheet" type="text/css">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<script type="text/javascript" src="https://web.archive.org/web/20100208222143js_/http://openbroadcast.ch/mod/commentwall/commentwall.js"><!-- commentwall js --></script>
+	<script type="text/javascript" src="https://web.archive.org/web/20100208222143js_/http://openbroadcast.ch/mod/generic_comments/generic_comments.js"><!-- generic_comments js --></script>
+	<link rel="stylesheet" href="https://web.archive.org/web/20100208222143cs_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/plugins/expandable-0.5rc1/ui.expandable.css" type="text/css">
+	<link rel="stylesheet" href="https://web.archive.org/web/20100208222143cs_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/ui1.7.2/css/theme-obp/jquery-ui-1.7.2.custom.css" type="text/css">
+	<script type="text/javascript" src="https://web.archive.org/web/20100208222143js_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/jquery-1.3.2.min.js"><!-- jquery JS library--></script>
+	<script type="text/javascript" src="https://web.archive.org/web/20100208222143js_/http://openbroadcast.ch/mod/js/obp.lib.min.js"><!-- obp:lib JS library--></script>
+	<script type="text/javascript" src="https://web.archive.org/web/20100208222143js_/http://openbroadcast.ch/mod/js/obp.dynamic.js.php"><!-- obp:dynamic-data JS library--></script><link href="/web/20100208222143cs_/http://openbroadcast.ch/mod/template/templates/bbk/css_scheduler.css" rel="stylesheet" type="text/css"><link href="https://web.archive.org/web/20100208222143cs_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/plugins/jquery.timeentry-1.4.6/jquery.timeentry.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="https://web.archive.org/web/20100208222143js_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/plugins/jquery.timeentry-1.4.6/jquery.timeentry.js"><!-- jquery:plugin:timeentry JS library--></script>
+	<script type="text/javascript">var ELGG_WWWROOT = "https://web.archive.org/web/20100208222143/http://openbroadcast.ch/";</script>
+</head>
+
+<body><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+
+
+
+<!-- END WAYBACK TOOLBAR INSERT -->
+ 
+
+	<div id="elggtoolbar"><!-- start toolbar -->
+	<div id="topbar" class="menu">
+
+		<div id="globalmenu">
+			<ul class="globalmenu">
+				
+				<li>
+					<form action="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/login/index.php" method="post">
+						<label>Username<input class="login" type="text" name="username" id="username"></label>
+						<label>Password<input class="login" type="password" name="password" id="password"></label>
+						<input type="hidden" name="remember" id="toolbarcheckbox" value="true">
+						<input type="submit" value="Login">
+					</form>
+				</li>
+			</ul>
+		</div>
+			
+		<div id="globalsearch" style="visibility:hidden;"><!-- open search-header div -->
+			<form id="toolbar_form_loggedin" action="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/search/index.php" method="get">
+				<input class="toolbar_input_loggedin" type="text" name="tag">
+				<input class="toolbar_submit_loggedin" type="submit" value="Search">
+			</form>
+		</div><!-- close search-header div -->
+
+		<div id="mainmenu">
+			<ul id="topmenu">
+				<li class="home"><a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/"><img src="https://web.archive.org/web/20100208222143im_/http://openbroadcast.ch/mod/template/templates/bbk/images/obp.16.png" width="16" height="16" alt="Home" title="Home"></a></li><li>Network</li><li>Content</li><li>Program</li><li><a class="chatlink" onclick="dig.openChat(event); return false;" href="https://web.archive.org/web/20100208222143/http://webchat.freenode.net/?nick=guest&amp;channels=openbroadcast" target="_blank" title="Open a chat window">Chat</a></li>
+			</ul>
+		</div>
+		
+		<div class="clear" style="border-bottom:1px solid #666"></div><!-- der hier ist doof aber wichtig für ie 6 bug fix -->
+
+		<div id="submenu">
+			<div>
+				<ul>
+					
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<li><a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/mod/browser/index.php">Browse</a></li>
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<li><a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/mod/medialibrary/">Music Library</a><span class="menu-delimiter">|</span></li><a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/guest/preprod/">Playlists</a>
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/mod/scheduler/scheduleMain.php" class="selected">Scheduler</a>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div><!-- end toolbar div -->
+<div style="clear:both;"></div>
+
+	<div id="container"><!-- wraps the header, maincontent and sidebar -->
+		<div id="header">
+			<div id="header-inner" class="fixed">
+				
+        		<div class="logo-holder">
+			    	<div class="logo" style="background-image: url(https://web.archive.org/web/20100208222143im_/http://openbroadcast.ch/mod/template/templates/bbk/images/scheduler/mod_programmscheduler.png);">
+			    		<h1>Scheduler</h1>
+			    	</div>
+			    </div>
+
+			</div>
+		</div><!-- end div#header -->
+
+
+		<div id="content-holder">
+
+			<div class="modmenu menu">
+				<ul>
+					<li><a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/mod/scheduler/scheduleMain.php?view=day">Day</a><span class="menu-delimiter">|</span></li><li><a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/mod/scheduler/scheduleMain.php?view=week">Week</a><span class="menu-delimiter">|</span></li><li><a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/mod/scheduler/scheduleMain.php?view=month">Month</a><span class="menu-delimiter">|</span></li><li class="help-link"><a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/content/de/manual-scheduler">Help</a></li>
+				</ul>
+			</div><!-- end div#modmenu -->
+
+			<div id="content-holder-inner" class="fixed">
+				<div id="splitpane-content">
+					<div id="splitpane-content-inner">
+						
+							<table id="scheduler-head" width="730"><tbody><tr><th align="left"><br><a href="scheduleMain.php?view=day&amp;date=07-02-2010"><img src="https://web.archive.org/web/20100208222143im_/http://openbroadcast.ch/mod/template/templates/bbk/images/scheduler/calendar_prev.png"></a></th><th align="center"><br><h3>Monday 08. February 2010</h3></th><th align="right"><br><a href="scheduleMain.php?view=day&amp;date=09-02-2010"><img src="https://web.archive.org/web/20100208222143im_/http://openbroadcast.ch/mod/template/templates/bbk/images/scheduler/calendar_next.png"></a></th></tr></tbody></table><table id="scheduler" width="730" border="0"><tbody><tr><td class="ps-header"></td><td class="ps-header   "><div>Monday</div></td><td class="ps-header"></td></tr><tr><td class="ps-header"></td><td class="ps-header  "><div><div style="float:right;margin:0px 0px 2px -1px"><img src="https://web.archive.org/web/20100208222143im_/http://openbroadcast.ch/mod/template/templates/bbk/images/scheduler/scheduler_freeze.png"></div><b>This day has no Editor in chief</b>&nbsp;&nbsp;&nbsp;&nbsp; <a style="cursor:pointer;" id="showredaktionsstatuten">(info)</a></div></td><td class="ps-header"></td></tr><tr><td class="ps-content bg-num"></td><td class="ps-content freeze" id="1265605200" width="669"><div class="ps-content-inner bg freeze"><div id="1536" p_id="418" s_edit_ident="1536" class="item  item_bg  " style="position:absolute;width:669px;top:0px;height:23px" title="sphärische frühmusik - 01:00:00"><table><tbody><tr><td id="ident-1-media" class="mp" width="10"></td><td><a href="#demo"><b>sphärische frühmusik</b></a></td><td width="200" align="right"><a href="#demo">Name</a></td><td align="right" width="50">01:00:00</td></tr></tbody></table></div><div id="1545" p_id="422" s_edit_ident="1545" class="item  item_bg  " style="position:absolute;width:669px;top:96px;height:47px" title="Gipfeltreffen mit Speedy Gonzalez, The Queen, The Godfather and The Pink Panther - 02:00:00"><table><tbody><tr><td id="ident-1-media" class="mp" width="10"></td><td><a href="#demo"><b>Gipfeltreffen mit Speedy Gonzalez, The Queen, The Godfather and The Pink Panther</b></a></td><td width="200" align="right"><a href="#demo">Name</a></td><td align="right" width="50">02:00:00</td></tr></tbody></table></div><div id="1541" p_id="421" s_edit_ident="1541" class="item  item_bg  " style="position:absolute;width:669px;top:264px;height:23px" title="Sanfte Jungs - 01:00:00"><table><tbody><tr><td id="ident-1-media" class="mp" width="10"></td><td><a href="#demo"><b>Sanfte Jungs</b></a></td><td width="200" align="right"><a href="#demo">Name</a></td><td align="right" width="50">01:00:00</td></tr></tbody></table></div><div id="1532" p_id="417" s_edit_ident="1532" class="item  item_bg  " style="position:absolute;width:669px;top:288px;height:23px" title="HeidiLand(1) - 01:00:00"><table><tbody><tr><td id="ident-1-media" class="mp" width="10"></td><td><a href="#demo"><b>HeidiLand(1)</b></a></td><td width="200" align="right"><a href="#demo">Name</a></td><td align="right" width="50">01:00:00</td></tr></tbody></table></div><div id="1265608800" class="missing " style="position:absolute;width:671px;top:25px;height:71px" title="03:00:00"><div>07:00:00</div></div><div id="1265626800" class="missing " style="position:absolute;width:671px;top:145px;height:119px" title="05:00:00"><div></div></div><div id="1265652000" class="missing " style="position:absolute;width:671px;top:313px;height:263px" title="11:00:00"><div></div></div></div></td><td class="ps-content bg-right"></td></tr><tr><td class="ps-footer corner"></td><td class="ps-footer"><div></div></td><td class="ps-footer corner"></td></tr></tbody></table><br>
+		<div id="infobox" title="" style="display:none;"><div class="content">
+		Title: <a class="title" id="playlist_title" target="_NEW">Titel of Playlist</a>
+		<div id="playlist_description">Recording of DJ-Sets / Liveacts</div>
+		Created by: <a id="playlist_createdby" target="_NEW" href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/">admin</a>
+		<br><br>
+		<div id="playlist_abstract">
+		Maybe some abstrct information limited to 250 Characters could go here.
+		</div>
+		<br><br>
+		<div class="subtitle">Tags:</div>
+		<div id="playlist_tags">audia, Music, Techno, electronica, top playlists, monday, morning</div>
+		<br><br>
+		<div class="subtitle">Scheduling:</div>
+		<table width="100%" class="border" style="margin-top:3px">
+		<tbody><tr><th>Day</th><th>Start</th><th>End</th><th>Duration</th></tr>
+		<tr>
+		<td id="playlist_date">Fr 21.01.09</td>
+		<td id="playlist_starttime">14:00:00</td>
+		<td id="playlist_endtime">14:30:00</td>
+		<td id="playlist_dur">XX</td>
+		</tr>
+		</tbody></table>
+		<br><br></div></div><div id="editdialog" style="display:none" title="Schedule Playlist"><form><table width="100%" border="0"><tbody><tr><th width="30%">Duration</th><td width="120" id="sedit_dur">00:00:00</td><td width="30%"></td></tr><tr><th>Date</th><td><input class="input" type="text" id="sedit_date"></td><td class="info"><a id="find_next_slot">Find next free Slot</a></td></tr><tr><th>Time Start</th><td><input class="input" type="text" id="sedit_starttime"></td><td class="info"><a id="snap_to_previous">Snap to previous</a></td></tr><tr><th>Time End<br><br></th><td width="120" id="sedit_endtime"></td><td class="info"><a id="snap_to_next">Snap to next</a></td></tr><tr><td class="buttons" colspan="3"><div class="right"><a class="button nomargin" id="saveschedule">Save Scheduling</a></div><a class="button off" id="saveschedule_cancel">Cancel</a></td></tr></tbody></table></form></div><div id="removedialog" style="display:none" title="Remove this playlist"><div class="dialog-content"><form>
+		<table width="100%" border="0"><tbody><tr><td width="120">You have to leave a note:<br><textarea id="remove_note" style="width:100%"></textarea><br><br></td></tr>
+		<tr><td class="buttons"><div class="right"><a class="button nomargin" id="remove_button">Remove</a></div><a class="button off cancel-dialog" id="remove_cancel">Cancel</a></td></tr>
+		</tbody></table></form></div></div><div id="errorbox" style="errorbox" title="Schedule Error"> <div class="errorc">Sorry, an error occured.</div><br>-------------------------------------------------------------------------<br><div id="errorbox_msg" class="errorc"> </div></div><div id="redaktionsinfobox" title="Redaktionsstatuten" style="display:none;"><h1>Journalistische Richtlinien</h1>
+
+<p>Im diesem Dokument sind die wichtigsten Richtlinien aufgezeigt, nach denen journalistische Inhalte auf Open Broadcast produziert werden.</p>
+
+<p>Die Kaptitel entsprechen in leicht redigierter Form einer Auswahl der Richtlinien des schweizerischen Presserates (<a href="https://web.archive.org/web/20100208222143/http://www.presserat.ch/" title="Schweizer Presserat - Conseil suisse de la presse - Consiglio svizzera della stampa">www.presserat.ch</a>), wobei wir uns darauf beschränken, die fürs Broadcasting wichtigsten Richtlinien aufzuführen.</p>
+
+<h2>Wahrheitssuche</h2>
+
+<p>Die Wahrheitssuche stellt den Ausgangspunkt der Informationstätigkeit dar. Sie setzt die Beachtung verfügbarer und zugänglicher Daten, die Achtung der Integrität von Dokumenten (Text, Ton und Bild), die Überprüfung und die allfällige Berichtigung voraus. Diese Aspekte werden nachfolgend unter den Ziffern 3, 4 und 5 der "Erklärung der Pflichten" behandelt.</p>
+
+<h2>Informationsfreiheit</h2>
+
+<p>Die Informationsfreiheit ist die wichtigste Voraussetzung der Wahrheitssuche. Es obliegt allen Journalistinnen und Journalisten, dieses Grundprinzip allgemein und individuell zu verteidigen.</p>
+
+<h2>Meinungspluralismus</h2>
+
+<p>Der Meinungspluralismus trägt zur Verteidigung der Informationsfreiheit bei. Er ist notwendig, wenn sich ein Medium in einer Monopolsituation befindet.</p>
+
+<h2>Trennung von Fakten und Kommentar</h2>
+
+<p>Journalistinnen und Journalisten achten darauf, dass das Publikum zwischen Fakten und kommentierenden, kritisierenden Einschätzungen unterscheiden kann.</p>
+
+<h2>Öffentliche Funktionen</h2>
+
+<p>Die Ausübung des Berufs der Journalistin, des Journalisten ist grundsätzlich nicht mit der Ausübung einer öffentlichen Funktion vereinbar. Wird eine politische Tätigkeit aufgrund besonderer Umstände ausnahmsweise wahrgenommen, ist auf eine strikte Trennung der Funktionen zu achten. Zudem muss die politische Funktion dem Publikum zur Kenntnis gebracht werden.</p>
+
+<h2>Exklusivverträge</h2>
+
+<p>Exklusivverträge mit Trägerinnen und Trägern von Informationen dürfen nicht Vorgänge oder Ereignisse zum Gegenstand haben, die für die Information der Öffentlichkeit und die Meinungsbildung von erheblicher Bedeutung sind. Wenn solche Verträge ein Informationsmonopol etablieren, indem sie andere Medien vom Zugang zu Informationen ausschliessen, beeinträchtigen sie die Pressefreiheit.</p>
+
+<h2>Quellenbearbeitung</h2>
+
+<p>Ausgangspunkt der journalistischen Sorgfaltspflichten bildet die Überprüfung der Quelle einer Information und ihrer Glaubwürdigkeit. Eine genaue Bezeichnung der Quelle eines Beitrags liegt im Interesse des Publikums, sie ist vorbehältlich eines überwiegenden Interesses an der Geheimhaltung einer Quelle unerlässlich, wenn dies zum Verständnis der Information wichtig ist.</p>
+
+<h2>Archivdokumente</h2>
+
+<p>Archivdokumente sind ausdrücklich als solche zu kennzeichnen, allenfalls mit Angabe des Datums der Erstveröffentlichung.</p>
+
+<h2>Anhörung bei schweren Vorwürfen</h2>
+
+<p>Aus dem Fairnessprinzip und dem ethischen Gebot der Anhörung beider Seiten ("Audiatur et altera pars") leitet sich die Pflicht der Journalistinnen und Journalisten ab, Betroffene vor der Publikation schwerer Vorwürfe anzuhören. Deren Stellungnahme ist im gleichen Medienbericht kurz und fair wiederzugeben. Ausnahmsweise kann auf die Anhörung verzichtet werden, wenn dies durch ein überwiegendes öffentliches Interesse gerechtfertigt ist.</p>
+
+<h2>Verschleierung des Berufs</h2>
+
+<p>Es ist unlauter, bei der Beschaffung von Informationen, Tönen, Bildern und Dokumenten, die zur Veröffentlichung vorgesehen sind, den Beruf als Journalistin / Journalist zu verschleiern.</p>
+
+<h2>Verdeckte Recherchen</h2>
+
+<p>Verdeckte Recherchen sind ausnahmsweise zulässig, wenn ein überwiegendes öffentliches Interesse an den damit recherchierten Informationen besteht und wenn diese Informationen nicht auf andere Weise beschafft werden können. Sie sind weiter zulässig, wenn Ton- oder Bildaufnahmen Journalistinnen und Journalisten gefährden würden, immer ein überwiegendes öffentliches Interesse an diesen Aufnahmen vorausgesetzt.</p>
+
+<h2>Interview</h2>
+
+<p>Das Interview basiert auf einer Vereinbarung zwischen zwei Partnerinnen / Partnern, welche die dafür geltenden Regeln festlegen. Besondere Bedingungen vor der Aufzeichnung (Beispiel: Verbot, gewisse Fragen zu stellen) sind bei der Publikation öffentlich zu machen. Im Normalfall müssen Interviews autorisiert werden. Ohne ausdrückliches Einverständnis des Gesprächspartners sind Medienschaffende nicht befugt, aus einem Gespräch nachträglich ein Interview zu konstruieren.</p>
+
+<p>Die interviewte Person darf bei der Autorisierung keine wesentlichen Änderungen vornehmen (Veränderungen des Sinnes, Streichung oder Hinzufügung von Fragen). Sie kann aber offensichtliche Irrtümer korrigieren. Auch bei starken Kürzungen soll die interviewte Person ihre Äusserungen im Text wiedererkennen können. Ist keine Einigung zu erzielen, haben Medienschaffende das Recht, auf eine Publikation zu verzichten oder den Vorgang transparent zu machen. Wenn beide Seiten mit einer Fassung einverstanden sind, kann hinterher nicht mehr auf frühere Fassungen zurückgegriffen werden.</p>
+
+<h2>Plagiat</h2>
+
+<p>Wer ein Plagiat begeht, d.h. wer Informationen, Präzisierungen, Kommentare, Analysen und sämtliche anderen Informationsformen von einer Berufskollegin, einem Berufskollegen ohne Quellenangabe in identischer oder anlehnender Weise übernimmt, handelt unlauter gegenüber seinesgleichen.</p>
+
+<h2>Berichtigungspflicht</h2>
+
+<p>Die Berichtigungspflicht wird von den Medienschaffenden unverzüglich von sich aus wahrgenommen und ist Teil der Wahrheitssuche. Die materielle Unrichtigkeit betrifft die Fakten und nicht die sich auf erwiesene Fakten abstützenden Werturteile.</p>
+
+<h2>Privatsphäre</h2>
+
+<p>Jede Person hat Anspruch auf den Schutz ihres Privatlebens. Journalistinnen und Journalisten dürfen im Privatbereich niemanden ohne Einwilligung aufnehmen.</p>
+
+<h2>Diskriminierungsverbot</h2>
+
+<p>Bei Berichten über Straftaten dürfen Angaben über ethnische Zugehörigkeit, Religion, sexuelle Orientierung, Krankheiten, körperliche oder geistige Behinderung gemacht werden, sofern sie für das Verständnis notwendig sind. Die Nennung der Nationalität darf keine Diskriminierung zur Folge haben.</p>
+
+<h2>Unabhängigkeit</h2>
+
+<p>Die Wahrung der Unabhängigkeit der Journalistinnen und Journalisten ist für die Verteidigung der Pressefreiheit unabdingbar. Die Wahrung der Unabhängigkeit erfordert ständige Wachsamkeit. Die Annahme von individuellen Einladungen und Geschenken ist zulässig, sofern diese das übliche Mass nicht übersteigen.</p>
+
+<h2>Sponsoring, Koppelung von redaktionellen Berichten und Werbung</h2>
+
+<p>Bei gesponserten Medienberichten sind der Name des Sponsors transparent zu machen und die freie Themenauswahl und -bearbeitung durch die Redaktion zu gewährleisten.</p>
+
+<h2>Public Relations</h2>
+
+<p>Journalistinnen und Journalisten redigieren keine interessengebundenen Texte (Werbung und Public Relations), die ihre journalistische Unabhängigkeit beeinträchtigen. Heikel sind insbesondere Themen, die sie auch publizistisch bearbeiten. Sie berichten nicht anders als sonst über Anlässe, bei denen das eigene Medienhaus Sponsor/in oder "Medienpartner/in" ist.</p>
+
+<h2>Indiskretionen</h2>
+
+<p>Medien dürfen Informationen veröffentlichen, die ihnen durch Indiskretionen bekanntgeworden sind, sofern bestimme Voraussetzungen erfüllt sind:</p>
+
+<ul>
+	<li>die Informationsquelle muss dem Medium bekannt sein;</li>
+	<li>das Thema muss von öffentlicher Relevanz sein;</li>
+	<li>es muss gute Gründe dafür geben, dass die Information jetzt und nicht erst viel später publik werden soll; der Vorteil im publizistischen Wettbewerb genügt nicht als Rechtfertigung;</li>
+	<li>es muss erwiesen sein, dass das Thema oder Dokument dauerhaft als geheim klassifiziert oder als vertraulich deklariert wird und es nicht bloss einer kurze Sperrfrist von einigen Stunden oder Tagen unterliegt;</li>
+	<li>die Indiskretion durch die Informantin / den Informanten muss absichtlich und freiwillig erfolgt sein, die Information darf nicht durch unlautere Methoden (Bestechung, Erpressung, Wanzen, Einbruch oder Diebstahl) erworben worden sein;</li>
+	<li>die Veröffentlichung darf keine äusserst wichtigen Interessen wie z.B. schützenswerte Rechte, Geheimnisse usw. tangieren.</li>
+</ul></div>   		<script type="text/javascript"><!--
+
+		// var msg_action= '<img src='.self::img_path.'alert_arrow.png">Select a free spot to schedule playlist: <div class="item"><b>Title of playlist</b>&nbsp;&nbsp;duration:01:29:30</div>';
+		var msg_action= '';
+		var this_url = 'scheduleMain.php?view=day';
+		var this_url_date = 'scheduleMain.php?view=day&date=08-02-2010';
+		var this_day = '8';
+		var this_month = '2';
+		var this_year = '2010';
+
+		var add_ident = '0';
+		var scheduleURI = 'https://web.archive.org/web/20100208222143/http://openbroadcast.ch/mod/scheduler/scheduleAjax.php';
+		var edit_ident = 0;
+		var edit_time = 0;
+		
+		if (add_ident > 0)
+		{
+			$('#splitpane-content').prepend('<div class="js-msg msg-action"><div class="deletebut black" style="float:right;margin-top:-2px"></div>'+msg_action+'</div>');
+		}
+
+		function showDate(dateText){
+			var url = this_url+'&date='+dateText + '&pl_ident=0';
+			document.location.href=url;
+		}
+		function addEditor($date){
+			url = this_url_date+'&action=add_editor&editor_date='+$date;
+			document.location.href=url;
+		}
+
+		function getScheduleData(ident)
+		{
+			var request = {
+		           "action": "browse_content",
+		           "keyword": 'blabla',
+		           "p_ident": 12
+		       };
+			//var query = "?json=" + JSON.stringify(request);
+			var query = "?id=" + ident;
+			//alert (query);
+			jQuery.getJSON( scheduleURI + query, { }, getScheduleData_success );
+		};
+
+		function getScheduleData_success (json)
+		{
+			//alert ('hhahaeer');
+			//alert (json);
+
+		};
+
+		function getDataInfobox(ident)
+		{
+			var request = {
+		           "action": "getDataInfobox",
+		           "p_ident": ident
+		       };
+			var query = "?json=" + JSON.stringify(request);
+			// alert (scheduleURI +query);
+			jQuery.getJSON( scheduleURI + query, { }, getDataInfobox_success );
+		};
+
+		function getDataInfobox_success (json)
+		{
+			if ( json.result == "success" )
+			{
+				//alert (json.data);
+				jQuery("#playlist_title").text(json.data.playlist_title);
+				jQuery("#playlist_description").text(json.data.playlist_description);
+				jQuery("#playlist_createdby").text(json.data.playlist_createdby);
+				jQuery("#playlist_abstract").html(json.data.playlist_abstract);
+				jQuery("#playlist_date").text(json.data.playlist_date);
+				jQuery("#playlist_description").text(json.data.playlist_description);
+				jQuery("#playlist_tags").text(json.data.playlist_tags);
+				jQuery("#playlist_starttime").text(json.data.playlist_starttime);
+				jQuery("#playlist_endtime").text(json.data.playlist_endtime);
+				jQuery("#playlist_dur").text(json.data.playlist_duration);
+				jQuery("#sedit_dur").text(json.data.playlist_duration);
+				jQuery("#sedit_date").val(json.data.playlist_date);
+				jQuery("#sedit_starttime").val(json.data.playlist_starttime);
+				jQuery("#sedit_endtime").val(json.data.playlist_endtime);
+				jQuery("#playlist_createdby").attr ("href",json.data.pl_userlink);
+				jQuery("#playlist_title").attr ("href",json.data.pl_link);
+				
+				edit_ident = json.ident;
+				if (json.data.allow_edit == 1)
+				{
+					$("#infobox_editbuttons").show();
+				}
+				else
+				{
+					$("#infobox_editbuttons").hide();
+				}
+				$("#infobox").dialog('open');
+
+			}
+			else
+			{
+				alert ("getDataInfobox error: " + json.desc);
+			}
+		};
+
+		function getDataScheduleEdit (ident)
+		{
+			var request = {
+		           "action": "getDataScheduleEdit",
+		           "p_ident": ident
+		       };
+			var query = "?json=" + JSON.stringify(request);
+			// alert (scheduleURI +query);
+			jQuery.getJSON( scheduleURI + query, { }, getDataScheduleEdit_success );
+
+		};
+		function getDataScheduleEdit_success (json)
+		{
+
+
+		};
+
+
+		$('#showredaktionsstatuten').click(function(e){
+			$("#redaktionsinfobox").dialog('open');
+		});
+
+		$('.remove').click(function(e){
+			$("#infobox").dialog('close');
+			$("#removedialog").dialog('open');
+		});
+
+
+		$('.item').click(function()
+		{
+			pos = this.id;
+			//alert (pos);
+			getDataInfobox(pos);
+		});
+
+		$('.newschedule').click(function()
+		{
+			pos = this.id;
+			// alert (pos);
+			var request = {
+		           "action": "getFirstTimeslot",
+		           "time": pos,
+		           "playlist_ident": add_ident
+		       };
+		    edit_time = pos;
+		    edit_ident = 0;
+			var query = "?json=" + JSON.stringify(request);
+			// alert (scheduleURI +query);
+			jQuery.getJSON( scheduleURI + query, { }, newschedule_sucess );
+
+		});
+
+
+		function newschedule_sucess (json)
+		{
+			if ( json.result == "success" )
+			{
+				//alert (json.data);
+				// alert (json.data.s_edit_ident);
+				jQuery("#sedit_starttime").val(json.data.time);
+				jQuery("#sedit_endtime").text(json.data.endtime);
+
+				jQuery("#sedit_dur").text(json.data.duration);
+				jQuery("#sedit_date").val(json.data.date);
+
+				add_ident = json.data.playlist_ident;
+				//alert ('add ident:' + add_ident);
+				if (json.data.edit_ident===undefined)
+				{
+				}
+				else
+				{
+					edit_ident = json.data.edit_ident;
+				}
+				edit_time = json.data.times;
+				// alert ('edit ident' + edit_ident);
+				$("#editdialog").dialog('open');
+			}
+
+		};
+		
+		$('#saveschedule_cancel').click(function()
+		{
+			$("#editdialog").dialog('close');
+			
+		});
+
+		$('#saveschedule').click(function(event)
+		{
+			// alert (pos);
+			var do_copy = 0; 
+			var evt = event || window.event;
+			if (evt.altKey)
+			{
+				// alert ("shift down!");
+				do_copy=1;
+			}
+			
+			var request = {
+		           "action": "saveSchedule",
+		           "starttime": jQuery("#sedit_starttime").val() ,
+		           "start_timestamp" : 0 ,
+		           "date": jQuery("#sedit_date").val() ,
+		           "p_ident": edit_ident ,
+		           "playlist_ident": add_ident,
+		           "do_copy": do_copy
+		       };
+			var query = "?json=" + JSON.stringify(request);
+			// alert (scheduleURI +query);
+			jQuery.getJSON( scheduleURI + query, { }, saveschedule_sucess );
+			// $("#editdialog").dialog('open');
+
+		});
+
+		function saveschedule_sucess (json)
+		{
+			// 	alert (json.data);
+			if ( json.result == "success" )
+			{
+				$("#editdialog").dialog('close');
+				// location.reload();
+				var newHREF = "scheduleMain.php";
+				location.href = newHREF;
+			}
+			else
+			{
+				// alert ('!ERROR! \n ' + json.desc);
+				jQuery("#errorbox_msg").text(json.desc);
+				$("#errorbox").dialog('open');
+			}
+
+		};
+ 		$('#find_next_slot').click(function()
+		{
+			// alert (pos);
+			var request = {
+		           "action": "getNextTimeslot",
+		           "time": edit_time,
+		           "playlist_ident": add_ident,
+		           "p_ident": edit_ident
+		       };
+			var query = "?json=" + JSON.stringify(request);
+			// alert (scheduleURI +query);
+			jQuery.getJSON( scheduleURI + query, { }, newschedule_sucess );
+
+		});
+		$('#snap_to_next').click(function()
+		{
+			// alert (pos);
+			var request = {
+		           "action": "snapToNext",
+		           "time": edit_time ,
+		           "playlist_ident": add_ident,
+		           "p_ident": edit_ident
+		       };
+			var query = "?json=" + JSON.stringify(request);
+			// alert (scheduleURI +query);
+			jQuery.getJSON( scheduleURI + query, { }, newschedule_sucess );
+
+		});
+		$('#snap_to_previous').click(function()
+		{
+			// alert (pos);
+			var request = {
+		           "action": "snapToPrevious",
+		           "time": edit_time ,
+		           "playlist_ident": add_ident,
+		           "p_ident": edit_ident
+
+		       };
+			var query = "?json=" + JSON.stringify(request);
+			// alert (scheduleURI +query);
+			jQuery.getJSON( scheduleURI + query, { }, newschedule_sucess );
+
+		});
+
+		function find_next_slot_sucess (json)
+		{
+			// alert (json.data);
+			if ( json.result == "success" )
+			{
+				$("#editdialog").dialog('close');
+				location.reload();
+			}
+
+		};
+
+		$('#remove_button').click
+		(
+			function()
+			{
+				var r_note = jQuery("#remove_note").val();
+
+				if (r_note.length >= 2)
+				{
+					var request = {
+				           "action": "removeFromSchedule",
+				           "remove_note": r_note,
+				           "p_ident": edit_ident
+				       };
+					var query = "?json=" + JSON.stringify(request);
+					// alert (scheduleURI +query);
+					jQuery.getJSON( scheduleURI + query, { }, removeFromSchedule_success );
+				}
+				else
+				{
+					alert ('You have to enter a note');
+				}
+			}
+		);
+		function removeFromSchedule_success (json)
+		{
+			if ( json.result == "success" )
+			{
+				$("#removedialog").dialog('close');
+				location.reload();
+			}
+			else
+			{
+				alert (json.desc);
+			}
+
+		};
+		$('#remove_cancel').click
+		(
+			function()
+			{
+				$("#removedialog").dialog('close');
+			}
+		);
+
+		$('#edit_schedule').click
+		(
+			function()
+			{
+				$("#infobox").dialog('close');
+				var request = {
+			           "action": "editSchedule",
+			           "p_ident": edit_ident
+			       };
+				var query = "?json=" + JSON.stringify(request);
+				// alert (scheduleURI +query);
+				jQuery.getJSON( scheduleURI + query, { }, newschedule_sucess );
+			}
+		);
+
+		$(document).ready(function(){
+
+			// DATE PICKER
+			$(function() {
+				$("#datepicker").datepicker({
+					firstDay: 1,
+					dateFormat: 'dd-mm-yy',
+					defaultDate: new Date(this_year,(this_month)-1,this_day), // ?? -1 month
+					onSelect: function(dateText, inst) {
+						showDate(dateText)
+					}
+				});
+			});
+
+			/// Timepicker
+			/*
+			$(function(){
+			    $('#sedit_starttime').timepickr({
+			      //  handle: '#trigger-test' 
+			       // handle: false
+			       });
+			});
+			*/
+			
+			$(function () {
+				$('#sedit_starttime').timeEntry({showSeconds: false, timeSteps: [1, 15,], show24Hours: true,spinnerImage: 'https://web.archive.org/web/20100208222143/http://openbroadcast.ch/mod/aaa_libjquery/jquery/plugins/jquery.timeentry-1.4.6/spinnerDefault.png'});
+			});
+			
+			$(".draggable_playlist").draggable({
+
+             helper: 'clone',
+            //  snap: '.droppable',
+              // snapMode: 'inner',
+            //  revert: true,
+              cursor: "move",
+              opacity: 0.6,
+              //cursorAt: { top: 0}
+			});
+			$(".draggable_playlist_s").draggable({
+
+             helper: 'clone',
+            //  snap: '.droppable',
+              // snapMode: 'inner',
+            //  revert: true,
+              cursor: "move",
+              opacity: 0.6,
+              //cursorAt: { top: 0}
+			});
+
+			$(".droppable").droppable({
+						drop: function(event, ui) {
+							
+ 							var theId = $(this).attr("id"); // this is the time-startpos of the droppable element
+ 							var time_startpos = parseInt (theId);
+							
+							var divname = ".ps-content-inner" ;
+							
+							var mainpos = $(divname).position();  
+							//alert ("mainpos:"+mainpos.top);
+							
+							var divpos = $(this).position();
+							//alert ("divpos:"+divpos.top);
+							
+							//alert ("ui absolute top:"+ui.absolutePosition.top);
+							
+							var relTop = ui.absolutePosition.top - (divpos.top + mainpos.top);
+							//alert ("inner top:"+relTop);
+							// calc offset! .. 6 pix = 15 minutes
+							var offset_15 = Math.round (relTop / 6); // ofset in num 15-min-segments
+							//alert (offset_15);
+							var offset_sec = offset_15 * 900;
+							//alert (offset_sec);
+							var offset_sec_i = parseInt (offset_sec);
+							var the_time = time_startpos + offset_sec_i;
+							var dragId = $(ui.draggable).attr('p_id');
+							var s_edit_ident = $(ui.draggable).attr('s_edit_ident');
+							var do_copy = 0; 
+							var evt = event || window.event;
+							if (evt.altKey)
+							{
+								// alert ("shift down!");
+								do_copy=1;
+							}
+							if (evt.shiftKey)
+							{
+								// risky expert mode! skip the form, try saving directly...
+								var request = {
+							           "action": "saveSchedule",
+							           "start_timestamp": the_time ,
+							           "date": 0,
+							           "p_ident": s_edit_ident,
+							           "playlist_ident": dragId,
+							           "do_copy": do_copy
+							       };
+								var query = "?json=" + JSON.stringify(request);
+								//alert (scheduleURI +query);
+								jQuery.getJSON( scheduleURI + query, { }, saveschedule_sucess );
+								
+							
+							}
+							else
+							{
+								var request = {
+							           "action": "getFirstTimeslot",
+							           "time": the_time,
+							           "playlist_ident": dragId ,
+							           "s_edit_ident": s_edit_ident ,
+							           "do_copy": do_copy
+							       };
+							    edit_time = theId;
+							    edit_ident = 0;
+								var query = "?json=" + JSON.stringify(request);
+								// alert (scheduleURI +query);
+								jQuery.getJSON( scheduleURI + query, { }, newschedule_sucess );
+							}
+						}
+					});
+
+			$(".droppable").droppable('option', 'accept', '.draggable_playlist, .draggable_playlist_s');
+	        
+			
+			// DIALOG
+			$("#editdialog").dialog({
+				modal: true,
+				autoOpen: false,
+				width: 400,
+
+			});
+			$("#removedialog").dialog({
+				modal: true,
+				autoOpen: false,
+				width: 400,
+
+			});
+			$("#playlistbrowser").dialog({
+				modal: false,
+				autoOpen: false,
+				width: 300,
+
+			});
+
+			$("#infobox").dialog({
+				modal: false,
+				autoOpen: false,
+				width: 350,
+
+			});
+			$("#errorbox").dialog({
+				modal: false,
+				autoOpen: false,
+				width: 400,
+				height: 600,
+
+			});
+			$("#redaktionsinfobox").dialog({
+				modal: false,
+				autoOpen: false,
+				width: 400,
+				height: 900,
+
+			});
+
+		});
+
+		--></script>
+		
+
+					</div><!-- end div#splitpane-content-inner -->
+				</div><!-- end div#splitpane-content -->
+				<div id="splitpane-sidebar">
+					<div id="splitpane-sidebar-inner">
+						
+<div id="sidebar-holder">
+    
+<div id="pfilter" class="sidebar-block dig-state dig-state-expandable ">
+        <div class="ui-expandable-title">
+        Calendar
+    </div>
+
+    <div class="sidebar-body">
+        <div class="box" style="width:100%;"><div id="datepicker"></div></div>
+    </div>
+</div>
+</div>
+					</div><!-- end div#splitpane-sidebar-inner -->
+				</div><!-- end div#splitpane-sidebar -->
+			</div><!-- end div#content-holder-inner -->
+		</div><!-- end div#content-holder -->
+
+
+		<div id="footer-holder">
+			<div id="footer" class="menu fixed">
+				
+				<a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/content/de/about">About</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/content/de/faq">FAQ</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/content/de/nutzungsbedingungen">Terms of Use</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/content/de/privatsphaere">Privacy Policy</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20100208222143/https://lab.digris.ch/projects/openbroadcast">Development</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20100208222143/http://openbroadcast.ch/content/de/contact">Contact</a>&nbsp;&nbsp;
+
+				
+			</div><!-- end div#footer -->
+			<div id="footer-splitpane-fake"></div>
+		</div><!-- end div#footer-holder -->
+	</div><!-- end div#container -->
+
+
+
+</body></html>

@@ -1,0 +1,2243 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: https://web.archive.org/web/20100208222143/http://openbroadcast.ch/mod/scheduler/scheduleMain.php
+Subject: Open Broadcast Platform - Scheduler -
+Date: Fri, 28 Aug 2026 12:16:21 +0200
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--yaGWGepLPNwEvOGo1PQRWIOtI84cYG2qBeSVglAJdb----"
+
+
+------MultipartBoundary--yaGWGepLPNwEvOGo1PQRWIOtI84cYG2qBeSVglAJdb----
+Content-Type: text/html
+Content-ID: <frame-73FA9EDE08BFB9A81FFD9E13C1420DD4@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://web.archive.org/web/20100208222143/http://openbroadcast.ch/mod/scheduler/scheduleMain.php
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns=3D"http://www.w3.=
+org/1999/xhtml" style=3D""><head><meta http-equiv=3D"Content-Type" content=
+=3D"text/html; charset=3DUTF-8">
+
+
+
+
+
+
+
+
+<!-- End Wayback Rewrite JS Include -->
+
+	<title>Open Broadcast Platform - Scheduler - </title>
+	<link rel=3D"icon" type=3D"image/png" href=3D"https://web.archive.org/web/=
+20100208222143im_/http://openbroadcast.ch/mod/template/templates/bbk/images=
+/obp.16.png">
+=09
+	<link href=3D"https://web.archive.org/web/20100208222143cs_/http://openbro=
+adcast.ch/_templates/css/bbk" rel=3D"stylesheet" type=3D"text/css">
+=09
+
+=09
+=09
+	<link rel=3D"stylesheet" href=3D"https://web.archive.org/web/2010020822214=
+3cs_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/plugins/expandable-0.=
+5rc1/ui.expandable.css" type=3D"text/css">
+	<link rel=3D"stylesheet" href=3D"https://web.archive.org/web/2010020822214=
+3cs_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/ui1.7.2/css/theme-obp=
+/jquery-ui-1.7.2.custom.css" type=3D"text/css">
+=09
+=09
+	<link href=3D"https://web.archive.org/web/20100208222143cs_/http://openbro=
+adcast.ch/mod/template/templates/bbk/css_scheduler.css" rel=3D"stylesheet" =
+type=3D"text/css"><link href=3D"https://web.archive.org/web/20100208222143c=
+s_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/plugins/jquery.timeentr=
+y-1.4.6/jquery.timeentry.css" rel=3D"stylesheet" type=3D"text/css">
+=09
+=09
+</head>
+
+<body><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+
+
+
+<!-- END WAYBACK TOOLBAR INSERT -->
+=20
+
+	<div id=3D"elggtoolbar"><!-- start toolbar -->
+	<div id=3D"topbar" class=3D"menu">
+
+		<div id=3D"globalmenu">
+			<ul class=3D"globalmenu">
+			=09
+				<li>
+					<form action=3D"https://web.archive.org/web/20100208222143/http://open=
+broadcast.ch/login/index.php" method=3D"post">
+						<label>Username<input class=3D"login" type=3D"text" name=3D"username"=
+ id=3D"username" style=3D""></label>
+						<label>Password<input class=3D"login" type=3D"password" name=3D"passw=
+ord" id=3D"password" style=3D""></label>
+					=09
+						<input type=3D"submit" value=3D"Login" style=3D"">
+					</form>
+				</li>
+			</ul>
+		</div>
+		=09
+		<div id=3D"globalsearch" style=3D"visibility:hidden;"><!-- open search-he=
+ader div -->
+			<form id=3D"toolbar_form_loggedin" action=3D"https://web.archive.org/web=
+/20100208222143/http://openbroadcast.ch/search/index.php" method=3D"get">
+				<input class=3D"toolbar_input_loggedin" type=3D"text" name=3D"tag" styl=
+e=3D"">
+				<input class=3D"toolbar_submit_loggedin" type=3D"submit" value=3D"Searc=
+h" style=3D"">
+			</form>
+		</div><!-- close search-header div -->
+
+		<div id=3D"mainmenu">
+			<ul id=3D"topmenu">
+				<li class=3D"home"><a href=3D"https://web.archive.org/web/2010020822214=
+3/http://openbroadcast.ch/"><img src=3D"https://web.archive.org/web/2010020=
+8222143im_/http://openbroadcast.ch/mod/template/templates/bbk/images/obp.16=
+.png" width=3D"16" height=3D"16" alt=3D"Home" title=3D"Home"></a></li><li>N=
+etwork</li><li>Content</li><li>Program</li><li><a class=3D"chatlink" href=
+=3D"https://web.archive.org/web/20100208222143/http://webchat.freenode.net/=
+?nick=3Dguest&amp;channels=3Dopenbroadcast" target=3D"_blank" title=3D"Open=
+ a chat window">Chat</a></li>
+			</ul>
+		</div>
+	=09
+		<div class=3D"clear" style=3D"border-bottom:1px solid #666"></div><!-- de=
+r hier ist doof aber wichtig f=C3=BCr ie 6 bug fix -->
+
+		<div id=3D"submenu">
+			<div>
+				<ul>
+				=09
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<li><a href=3D"https://web.archive.org/web/20100208222143/http://openb=
+roadcast.ch/mod/browser/index.php">Browse</a></li>
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<li><a href=3D"https://web.archive.org/web/20100208222143/http://openb=
+roadcast.ch/mod/medialibrary/">Music Library</a><span class=3D"menu-delimit=
+er">|</span></li><a href=3D"https://web.archive.org/web/20100208222143/http=
+://openbroadcast.ch/guest/preprod/">Playlists</a>
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<a href=3D"https://web.archive.org/web/20100208222143/http://openbroad=
+cast.ch/mod/scheduler/scheduleMain.php" class=3D"selected">Scheduler</a>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div><!-- end toolbar div -->
+<div style=3D"clear:both;"></div>
+
+	<div id=3D"container"><!-- wraps the header, maincontent and sidebar -->
+		<div id=3D"header">
+			<div id=3D"header-inner" class=3D"fixed">
+			=09
+        		<div class=3D"logo-holder">
+			    	<div class=3D"logo" style=3D"background-image: url(https://web.arch=
+ive.org/web/20100208222143im_/http://openbroadcast.ch/mod/template/template=
+s/bbk/images/scheduler/mod_programmscheduler.png);">
+			    		<h1>Scheduler</h1>
+			    	</div>
+			    </div>
+
+			</div>
+		</div><!-- end div#header -->
+
+
+		<div id=3D"content-holder">
+
+			<div class=3D"modmenu menu">
+				<ul>
+					<li><a href=3D"https://web.archive.org/web/20100208222143/http://openb=
+roadcast.ch/mod/scheduler/scheduleMain.php?view=3Dday">Day</a><span class=
+=3D"menu-delimiter">|</span></li><li><a href=3D"https://web.archive.org/web=
+/20100208222143/http://openbroadcast.ch/mod/scheduler/scheduleMain.php?view=
+=3Dweek">Week</a><span class=3D"menu-delimiter">|</span></li><li><a href=3D=
+"https://web.archive.org/web/20100208222143/http://openbroadcast.ch/mod/sch=
+eduler/scheduleMain.php?view=3Dmonth">Month</a><span class=3D"menu-delimite=
+r">|</span></li><li class=3D"help-link"><a href=3D"https://web.archive.org/=
+web/20100208222143/http://openbroadcast.ch/content/de/manual-scheduler">Hel=
+p</a></li>
+				</ul>
+			</div><!-- end div#modmenu -->
+
+			<div id=3D"content-holder-inner" class=3D"fixed">
+				<div id=3D"splitpane-content">
+					<div id=3D"splitpane-content-inner">
+					=09
+							<table id=3D"scheduler-head" width=3D"730"><tbody><tr><th align=3D"l=
+eft"><br><a href=3D"https://web.archive.org/web/20100208222143/http://openb=
+roadcast.ch/mod/scheduler/scheduleMain.php?view=3Dday&amp;date=3D07-02-2010=
+"><img src=3D"https://web.archive.org/web/20100208222143im_/http://openbroa=
+dcast.ch/mod/template/templates/bbk/images/scheduler/calendar_prev.png"></a=
+></th><th align=3D"center"><br><h3>Monday 08. February 2010</h3></th><th al=
+ign=3D"right"><br><a href=3D"https://web.archive.org/web/20100208222143/htt=
+p://openbroadcast.ch/mod/scheduler/scheduleMain.php?view=3Dday&amp;date=3D0=
+9-02-2010"><img src=3D"https://web.archive.org/web/20100208222143im_/http:/=
+/openbroadcast.ch/mod/template/templates/bbk/images/scheduler/calendar_next=
+.png"></a></th></tr></tbody></table><table id=3D"scheduler" width=3D"730" b=
+order=3D"0"><tbody><tr><td class=3D"ps-header"></td><td class=3D"ps-header =
+  "><div>Monday</div></td><td class=3D"ps-header"></td></tr><tr><td class=
+=3D"ps-header"></td><td class=3D"ps-header  "><div><div style=3D"float:righ=
+t;margin:0px 0px 2px -1px"><img src=3D"https://web.archive.org/web/20100208=
+222143im_/http://openbroadcast.ch/mod/template/templates/bbk/images/schedul=
+er/scheduler_freeze.png"></div><b>This day has no Editor in chief</b>&nbsp;=
+&nbsp;&nbsp;&nbsp; <a style=3D"cursor:pointer;" id=3D"showredaktionsstatute=
+n">(info)</a></div></td><td class=3D"ps-header"></td></tr><tr><td class=3D"=
+ps-content bg-num"></td><td class=3D"ps-content freeze" id=3D"1265605200" w=
+idth=3D"669"><div class=3D"ps-content-inner bg freeze"><div id=3D"1536" p_i=
+d=3D"418" s_edit_ident=3D"1536" class=3D"item  item_bg  " style=3D"position=
+:absolute;width:669px;top:0px;height:23px" title=3D"sph=C3=A4rische fr=C3=
+=BChmusik - 01:00:00"><table><tbody><tr><td id=3D"ident-1-media" class=3D"m=
+p" width=3D"10"></td><td><a href=3D"https://web.archive.org/web/20100208222=
+143/http://openbroadcast.ch/mod/scheduler/scheduleMain.php#demo"><b>sph=C3=
+=A4rische fr=C3=BChmusik</b></a></td><td width=3D"200" align=3D"right"><a h=
+ref=3D"https://web.archive.org/web/20100208222143/http://openbroadcast.ch/m=
+od/scheduler/scheduleMain.php#demo">Name</a></td><td align=3D"right" width=
+=3D"50">01:00:00</td></tr></tbody></table></div><div id=3D"1545" p_id=3D"42=
+2" s_edit_ident=3D"1545" class=3D"item  item_bg  " style=3D"position:absolu=
+te;width:669px;top:96px;height:47px" title=3D"Gipfeltreffen mit Speedy Gonz=
+alez, The Queen, The Godfather and The Pink Panther - 02:00:00"><table><tbo=
+dy><tr><td id=3D"ident-1-media" class=3D"mp" width=3D"10"></td><td><a href=
+=3D"https://web.archive.org/web/20100208222143/http://openbroadcast.ch/mod/=
+scheduler/scheduleMain.php#demo"><b>Gipfeltreffen mit Speedy Gonzalez, The =
+Queen, The Godfather and The Pink Panther</b></a></td><td width=3D"200" ali=
+gn=3D"right"><a href=3D"https://web.archive.org/web/20100208222143/http://o=
+penbroadcast.ch/mod/scheduler/scheduleMain.php#demo">Name</a></td><td align=
+=3D"right" width=3D"50">02:00:00</td></tr></tbody></table></div><div id=3D"=
+1541" p_id=3D"421" s_edit_ident=3D"1541" class=3D"item  item_bg  " style=3D=
+"position:absolute;width:669px;top:264px;height:23px" title=3D"Sanfte Jungs=
+ - 01:00:00"><table><tbody><tr><td id=3D"ident-1-media" class=3D"mp" width=
+=3D"10"></td><td><a href=3D"https://web.archive.org/web/20100208222143/http=
+://openbroadcast.ch/mod/scheduler/scheduleMain.php#demo"><b>Sanfte Jungs</b=
+></a></td><td width=3D"200" align=3D"right"><a href=3D"https://web.archive.=
+org/web/20100208222143/http://openbroadcast.ch/mod/scheduler/scheduleMain.p=
+hp#demo">Name</a></td><td align=3D"right" width=3D"50">01:00:00</td></tr></=
+tbody></table></div><div id=3D"1532" p_id=3D"417" s_edit_ident=3D"1532" cla=
+ss=3D"item  item_bg  " style=3D"position:absolute;width:669px;top:288px;hei=
+ght:23px" title=3D"HeidiLand(1) - 01:00:00"><table><tbody><tr><td id=3D"ide=
+nt-1-media" class=3D"mp" width=3D"10"></td><td><a href=3D"https://web.archi=
+ve.org/web/20100208222143/http://openbroadcast.ch/mod/scheduler/scheduleMai=
+n.php#demo"><b>HeidiLand(1)</b></a></td><td width=3D"200" align=3D"right"><=
+a href=3D"https://web.archive.org/web/20100208222143/http://openbroadcast.c=
+h/mod/scheduler/scheduleMain.php#demo">Name</a></td><td align=3D"right" wid=
+th=3D"50">01:00:00</td></tr></tbody></table></div><div id=3D"1265608800" cl=
+ass=3D"missing " style=3D"position:absolute;width:671px;top:25px;height:71p=
+x" title=3D"03:00:00"><div>07:00:00</div></div><div id=3D"1265626800" class=
+=3D"missing " style=3D"position:absolute;width:671px;top:145px;height:119px=
+" title=3D"05:00:00"><div></div></div><div id=3D"1265652000" class=3D"missi=
+ng " style=3D"position:absolute;width:671px;top:313px;height:263px" title=
+=3D"11:00:00"><div></div></div></div></td><td class=3D"ps-content bg-right"=
+></td></tr><tr><td class=3D"ps-footer corner"></td><td class=3D"ps-footer">=
+<div></div></td><td class=3D"ps-footer corner"></td></tr></tbody></table><b=
+r>
+		<div id=3D"infobox" title=3D"" style=3D"display:none;"><div class=3D"cont=
+ent">
+		Title: <a class=3D"title" id=3D"playlist_title" target=3D"_NEW">Titel of =
+Playlist</a>
+		<div id=3D"playlist_description">Recording of DJ-Sets / Liveacts</div>
+		Created by: <a id=3D"playlist_createdby" target=3D"_NEW" href=3D"https://=
+web.archive.org/web/20100208222143/http://openbroadcast.ch/">admin</a>
+		<br><br>
+		<div id=3D"playlist_abstract">
+		Maybe some abstrct information limited to 250 Characters could go here.
+		</div>
+		<br><br>
+		<div class=3D"subtitle">Tags:</div>
+		<div id=3D"playlist_tags">audia, Music, Techno, electronica, top playlist=
+s, monday, morning</div>
+		<br><br>
+		<div class=3D"subtitle">Scheduling:</div>
+		<table width=3D"100%" class=3D"border" style=3D"margin-top:3px">
+		<tbody><tr><th>Day</th><th>Start</th><th>End</th><th>Duration</th></tr>
+		<tr>
+		<td id=3D"playlist_date">Fr 21.01.09</td>
+		<td id=3D"playlist_starttime">14:00:00</td>
+		<td id=3D"playlist_endtime">14:30:00</td>
+		<td id=3D"playlist_dur">XX</td>
+		</tr>
+		</tbody></table>
+		<br><br></div></div><div id=3D"editdialog" style=3D"display:none" title=
+=3D"Schedule Playlist"><form><table width=3D"100%" border=3D"0"><tbody><tr>=
+<th width=3D"30%">Duration</th><td width=3D"120" id=3D"sedit_dur">00:00:00<=
+/td><td width=3D"30%"></td></tr><tr><th>Date</th><td><input class=3D"input"=
+ type=3D"text" id=3D"sedit_date" style=3D""></td><td class=3D"info"><a id=
+=3D"find_next_slot">Find next free Slot</a></td></tr><tr><th>Time Start</th=
+><td><input class=3D"input" type=3D"text" id=3D"sedit_starttime" style=3D""=
+></td><td class=3D"info"><a id=3D"snap_to_previous">Snap to previous</a></t=
+d></tr><tr><th>Time End<br><br></th><td width=3D"120" id=3D"sedit_endtime">=
+</td><td class=3D"info"><a id=3D"snap_to_next">Snap to next</a></td></tr><t=
+r><td class=3D"buttons" colspan=3D"3"><div class=3D"right"><a class=3D"butt=
+on nomargin" id=3D"saveschedule">Save Scheduling</a></div><a class=3D"butto=
+n off" id=3D"saveschedule_cancel">Cancel</a></td></tr></tbody></table></for=
+m></div><div id=3D"removedialog" style=3D"display:none" title=3D"Remove thi=
+s playlist"><div class=3D"dialog-content"><form>
+		<table width=3D"100%" border=3D"0"><tbody><tr><td width=3D"120">You have =
+to leave a note:<br><textarea id=3D"remove_note" style=3D"width: 100%;"></t=
+extarea><br><br></td></tr>
+		<tr><td class=3D"buttons"><div class=3D"right"><a class=3D"button nomargi=
+n" id=3D"remove_button">Remove</a></div><a class=3D"button off cancel-dialo=
+g" id=3D"remove_cancel">Cancel</a></td></tr>
+		</tbody></table></form></div></div><div id=3D"errorbox" style=3D"errorbox=
+" title=3D"Schedule Error"> <div class=3D"errorc">Sorry, an error occured.<=
+/div><br>------------------------------------------------------------------=
+-------<br><div id=3D"errorbox_msg" class=3D"errorc"> </div></div><div id=
+=3D"redaktionsinfobox" title=3D"Redaktionsstatuten" style=3D"display:none;"=
+><h1>Journalistische Richtlinien</h1>
+
+<p>Im diesem Dokument sind die wichtigsten Richtlinien aufgezeigt, nach den=
+en journalistische Inhalte auf Open Broadcast produziert werden.</p>
+
+<p>Die Kaptitel entsprechen in leicht redigierter Form einer Auswahl der Ri=
+chtlinien des schweizerischen Presserates (<a href=3D"https://web.archive.o=
+rg/web/20100208222143/http://www.presserat.ch/" title=3D"Schweizer Pressera=
+t - Conseil suisse de la presse - Consiglio svizzera della stampa">www.pres=
+serat.ch</a>), wobei wir uns darauf beschr=C3=A4nken, die f=C3=BCrs Broadca=
+sting wichtigsten Richtlinien aufzuf=C3=BChren.</p>
+
+<h2>Wahrheitssuche</h2>
+
+<p>Die Wahrheitssuche stellt den Ausgangspunkt der Informationst=C3=A4tigke=
+it dar. Sie setzt die Beachtung verf=C3=BCgbarer und zug=C3=A4nglicher Date=
+n, die Achtung der Integrit=C3=A4t von Dokumenten (Text, Ton und Bild), die=
+ =C3=9Cberpr=C3=BCfung und die allf=C3=A4llige Berichtigung voraus. Diese A=
+spekte werden nachfolgend unter den Ziffern 3, 4 und 5 der "Erkl=C3=A4rung =
+der Pflichten" behandelt.</p>
+
+<h2>Informationsfreiheit</h2>
+
+<p>Die Informationsfreiheit ist die wichtigste Voraussetzung der Wahrheitss=
+uche. Es obliegt allen Journalistinnen und Journalisten, dieses Grundprinzi=
+p allgemein und individuell zu verteidigen.</p>
+
+<h2>Meinungspluralismus</h2>
+
+<p>Der Meinungspluralismus tr=C3=A4gt zur Verteidigung der Informationsfrei=
+heit bei. Er ist notwendig, wenn sich ein Medium in einer Monopolsituation =
+befindet.</p>
+
+<h2>Trennung von Fakten und Kommentar</h2>
+
+<p>Journalistinnen und Journalisten achten darauf, dass das Publikum zwisch=
+en Fakten und kommentierenden, kritisierenden Einsch=C3=A4tzungen untersche=
+iden kann.</p>
+
+<h2>=C3=96ffentliche Funktionen</h2>
+
+<p>Die Aus=C3=BCbung des Berufs der Journalistin, des Journalisten ist grun=
+ds=C3=A4tzlich nicht mit der Aus=C3=BCbung einer =C3=B6ffentlichen Funktion=
+ vereinbar. Wird eine politische T=C3=A4tigkeit aufgrund besonderer Umst=C3=
+=A4nde ausnahmsweise wahrgenommen, ist auf eine strikte Trennung der Funkti=
+onen zu achten. Zudem muss die politische Funktion dem Publikum zur Kenntni=
+s gebracht werden.</p>
+
+<h2>Exklusivvertr=C3=A4ge</h2>
+
+<p>Exklusivvertr=C3=A4ge mit Tr=C3=A4gerinnen und Tr=C3=A4gern von Informat=
+ionen d=C3=BCrfen nicht Vorg=C3=A4nge oder Ereignisse zum Gegenstand haben,=
+ die f=C3=BCr die Information der =C3=96ffentlichkeit und die Meinungsbildu=
+ng von erheblicher Bedeutung sind. Wenn solche Vertr=C3=A4ge ein Informatio=
+nsmonopol etablieren, indem sie andere Medien vom Zugang zu Informationen a=
+usschliessen, beeintr=C3=A4chtigen sie die Pressefreiheit.</p>
+
+<h2>Quellenbearbeitung</h2>
+
+<p>Ausgangspunkt der journalistischen Sorgfaltspflichten bildet die =C3=9Cb=
+erpr=C3=BCfung der Quelle einer Information und ihrer Glaubw=C3=BCrdigkeit.=
+ Eine genaue Bezeichnung der Quelle eines Beitrags liegt im Interesse des P=
+ublikums, sie ist vorbeh=C3=A4ltlich eines =C3=BCberwiegenden Interesses an=
+ der Geheimhaltung einer Quelle unerl=C3=A4sslich, wenn dies zum Verst=C3=
+=A4ndnis der Information wichtig ist.</p>
+
+<h2>Archivdokumente</h2>
+
+<p>Archivdokumente sind ausdr=C3=BCcklich als solche zu kennzeichnen, allen=
+falls mit Angabe des Datums der Erstver=C3=B6ffentlichung.</p>
+
+<h2>Anh=C3=B6rung bei schweren Vorw=C3=BCrfen</h2>
+
+<p>Aus dem Fairnessprinzip und dem ethischen Gebot der Anh=C3=B6rung beider=
+ Seiten ("Audiatur et altera pars") leitet sich die Pflicht der Journalisti=
+nnen und Journalisten ab, Betroffene vor der Publikation schwerer Vorw=C3=
+=BCrfe anzuh=C3=B6ren. Deren Stellungnahme ist im gleichen Medienbericht ku=
+rz und fair wiederzugeben. Ausnahmsweise kann auf die Anh=C3=B6rung verzich=
+tet werden, wenn dies durch ein =C3=BCberwiegendes =C3=B6ffentliches Intere=
+sse gerechtfertigt ist.</p>
+
+<h2>Verschleierung des Berufs</h2>
+
+<p>Es ist unlauter, bei der Beschaffung von Informationen, T=C3=B6nen, Bild=
+ern und Dokumenten, die zur Ver=C3=B6ffentlichung vorgesehen sind, den Beru=
+f als Journalistin / Journalist zu verschleiern.</p>
+
+<h2>Verdeckte Recherchen</h2>
+
+<p>Verdeckte Recherchen sind ausnahmsweise zul=C3=A4ssig, wenn ein =C3=BCbe=
+rwiegendes =C3=B6ffentliches Interesse an den damit recherchierten Informat=
+ionen besteht und wenn diese Informationen nicht auf andere Weise beschafft=
+ werden k=C3=B6nnen. Sie sind weiter zul=C3=A4ssig, wenn Ton- oder Bildaufn=
+ahmen Journalistinnen und Journalisten gef=C3=A4hrden w=C3=BCrden, immer ei=
+n =C3=BCberwiegendes =C3=B6ffentliches Interesse an diesen Aufnahmen voraus=
+gesetzt.</p>
+
+<h2>Interview</h2>
+
+<p>Das Interview basiert auf einer Vereinbarung zwischen zwei Partnerinnen =
+/ Partnern, welche die daf=C3=BCr geltenden Regeln festlegen. Besondere Bed=
+ingungen vor der Aufzeichnung (Beispiel: Verbot, gewisse Fragen zu stellen)=
+ sind bei der Publikation =C3=B6ffentlich zu machen. Im Normalfall m=C3=BCs=
+sen Interviews autorisiert werden. Ohne ausdr=C3=BCckliches Einverst=C3=A4n=
+dnis des Gespr=C3=A4chspartners sind Medienschaffende nicht befugt, aus ein=
+em Gespr=C3=A4ch nachtr=C3=A4glich ein Interview zu konstruieren.</p>
+
+<p>Die interviewte Person darf bei der Autorisierung keine wesentlichen =C3=
+=84nderungen vornehmen (Ver=C3=A4nderungen des Sinnes, Streichung oder Hinz=
+uf=C3=BCgung von Fragen). Sie kann aber offensichtliche Irrt=C3=BCmer korri=
+gieren. Auch bei starken K=C3=BCrzungen soll die interviewte Person ihre =
+=C3=84usserungen im Text wiedererkennen k=C3=B6nnen. Ist keine Einigung zu =
+erzielen, haben Medienschaffende das Recht, auf eine Publikation zu verzich=
+ten oder den Vorgang transparent zu machen. Wenn beide Seiten mit einer Fas=
+sung einverstanden sind, kann hinterher nicht mehr auf fr=C3=BChere Fassung=
+en zur=C3=BCckgegriffen werden.</p>
+
+<h2>Plagiat</h2>
+
+<p>Wer ein Plagiat begeht, d.h. wer Informationen, Pr=C3=A4zisierungen, Kom=
+mentare, Analysen und s=C3=A4mtliche anderen Informationsformen von einer B=
+erufskollegin, einem Berufskollegen ohne Quellenangabe in identischer oder =
+anlehnender Weise =C3=BCbernimmt, handelt unlauter gegen=C3=BCber seinesgle=
+ichen.</p>
+
+<h2>Berichtigungspflicht</h2>
+
+<p>Die Berichtigungspflicht wird von den Medienschaffenden unverz=C3=BCglic=
+h von sich aus wahrgenommen und ist Teil der Wahrheitssuche. Die materielle=
+ Unrichtigkeit betrifft die Fakten und nicht die sich auf erwiesene Fakten =
+abst=C3=BCtzenden Werturteile.</p>
+
+<h2>Privatsph=C3=A4re</h2>
+
+<p>Jede Person hat Anspruch auf den Schutz ihres Privatlebens. Journalistin=
+nen und Journalisten d=C3=BCrfen im Privatbereich niemanden ohne Einwilligu=
+ng aufnehmen.</p>
+
+<h2>Diskriminierungsverbot</h2>
+
+<p>Bei Berichten =C3=BCber Straftaten d=C3=BCrfen Angaben =C3=BCber ethnisc=
+he Zugeh=C3=B6rigkeit, Religion, sexuelle Orientierung, Krankheiten, k=C3=
+=B6rperliche oder geistige Behinderung gemacht werden, sofern sie f=C3=BCr =
+das Verst=C3=A4ndnis notwendig sind. Die Nennung der Nationalit=C3=A4t darf=
+ keine Diskriminierung zur Folge haben.</p>
+
+<h2>Unabh=C3=A4ngigkeit</h2>
+
+<p>Die Wahrung der Unabh=C3=A4ngigkeit der Journalistinnen und Journalisten=
+ ist f=C3=BCr die Verteidigung der Pressefreiheit unabdingbar. Die Wahrung =
+der Unabh=C3=A4ngigkeit erfordert st=C3=A4ndige Wachsamkeit. Die Annahme vo=
+n individuellen Einladungen und Geschenken ist zul=C3=A4ssig, sofern diese =
+das =C3=BCbliche Mass nicht =C3=BCbersteigen.</p>
+
+<h2>Sponsoring, Koppelung von redaktionellen Berichten und Werbung</h2>
+
+<p>Bei gesponserten Medienberichten sind der Name des Sponsors transparent =
+zu machen und die freie Themenauswahl und -bearbeitung durch die Redaktion =
+zu gew=C3=A4hrleisten.</p>
+
+<h2>Public Relations</h2>
+
+<p>Journalistinnen und Journalisten redigieren keine interessengebundenen T=
+exte (Werbung und Public Relations), die ihre journalistische Unabh=C3=A4ng=
+igkeit beeintr=C3=A4chtigen. Heikel sind insbesondere Themen, die sie auch =
+publizistisch bearbeiten. Sie berichten nicht anders als sonst =C3=BCber An=
+l=C3=A4sse, bei denen das eigene Medienhaus Sponsor/in oder "Medienpartner/=
+in" ist.</p>
+
+<h2>Indiskretionen</h2>
+
+<p>Medien d=C3=BCrfen Informationen ver=C3=B6ffentlichen, die ihnen durch I=
+ndiskretionen bekanntgeworden sind, sofern bestimme Voraussetzungen erf=C3=
+=BCllt sind:</p>
+
+<ul>
+	<li>die Informationsquelle muss dem Medium bekannt sein;</li>
+	<li>das Thema muss von =C3=B6ffentlicher Relevanz sein;</li>
+	<li>es muss gute Gr=C3=BCnde daf=C3=BCr geben, dass die Information jetzt =
+und nicht erst viel sp=C3=A4ter publik werden soll; der Vorteil im publizis=
+tischen Wettbewerb gen=C3=BCgt nicht als Rechtfertigung;</li>
+	<li>es muss erwiesen sein, dass das Thema oder Dokument dauerhaft als gehe=
+im klassifiziert oder als vertraulich deklariert wird und es nicht bloss ei=
+ner kurze Sperrfrist von einigen Stunden oder Tagen unterliegt;</li>
+	<li>die Indiskretion durch die Informantin / den Informanten muss absichtl=
+ich und freiwillig erfolgt sein, die Information darf nicht durch unlautere=
+ Methoden (Bestechung, Erpressung, Wanzen, Einbruch oder Diebstahl) erworbe=
+n worden sein;</li>
+	<li>die Ver=C3=B6ffentlichung darf keine =C3=A4usserst wichtigen Interesse=
+n wie z.B. sch=C3=BCtzenswerte Rechte, Geheimnisse usw. tangieren.</li>
+</ul></div>   	=09
+	=09
+
+					</div><!-- end div#splitpane-content-inner -->
+				</div><!-- end div#splitpane-content -->
+				<div id=3D"splitpane-sidebar">
+					<div id=3D"splitpane-sidebar-inner">
+					=09
+<div id=3D"sidebar-holder">
+   =20
+<div id=3D"pfilter" class=3D"sidebar-block dig-state dig-state-expandable "=
+>
+        <div class=3D"ui-expandable-title">
+        Calendar
+    </div>
+
+    <div class=3D"sidebar-body">
+        <div class=3D"box" style=3D"width:100%;"><div id=3D"datepicker"></d=
+iv></div>
+    </div>
+</div>
+</div>
+					</div><!-- end div#splitpane-sidebar-inner -->
+				</div><!-- end div#splitpane-sidebar -->
+			</div><!-- end div#content-holder-inner -->
+		</div><!-- end div#content-holder -->
+
+
+		<div id=3D"footer-holder">
+			<div id=3D"footer" class=3D"menu fixed">
+			=09
+				<a href=3D"https://web.archive.org/web/20100208222143/http://openbroadc=
+ast.ch/content/de/about">About</a>&nbsp;&nbsp;
+				<a href=3D"https://web.archive.org/web/20100208222143/http://openbroadc=
+ast.ch/content/de/faq">FAQ</a>&nbsp;&nbsp;
+				<a href=3D"https://web.archive.org/web/20100208222143/http://openbroadc=
+ast.ch/content/de/nutzungsbedingungen">Terms of Use</a>&nbsp;&nbsp;
+				<a href=3D"https://web.archive.org/web/20100208222143/http://openbroadc=
+ast.ch/content/de/privatsphaere">Privacy Policy</a>&nbsp;&nbsp;
+				<a href=3D"https://web.archive.org/web/20100208222143/https://lab.digri=
+s.ch/projects/openbroadcast">Development</a>&nbsp;&nbsp;
+				<a href=3D"https://web.archive.org/web/20100208222143/http://openbroadc=
+ast.ch/content/de/contact">Contact</a>&nbsp;&nbsp;
+
+			=09
+			</div><!-- end div#footer -->
+			<div id=3D"footer-splitpane-fake"></div>
+		</div><!-- end div#footer-holder -->
+	</div><!-- end div#container -->
+
+
+
+</body></html><!--
+     FILE ARCHIVED ON 22:21:43 Feb 08, 2010 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 10:16:07 Aug 28, 2026.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+--><!--
+playback timings (ms):
+  captures_list: 0.419
+  exclusion.robots: 0.047
+  exclusion.robots.policy: 0.039
+  esindex: 0.006
+  cdx.remote: 12.774
+  LoadShardBlock: 195.04 (3)
+  PetaboxLoader3.datanode: 93.627 (4)
+  PetaboxLoader3.resolve: 224.446 (3)
+  load_resource: 150.78
+  nav: 0.166 (6)
+-->
+------MultipartBoundary--yaGWGepLPNwEvOGo1PQRWIOtI84cYG2qBeSVglAJdb----
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: https://web.archive.org/web/20100208222143im_/http://openbroadcast.ch/mod/template/templates/bbk/images/obp.16.png
+
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAADhJREFUOMtj
+YBgQcIThP8MRhv8MDAwMTJSaRSUDkJw0QC6giwE4vDkYvUBijNDYC0S4ZuADkWIAABqREbku0CIO
+AAAAAElFTkSuQmCC
+
+------MultipartBoundary--yaGWGepLPNwEvOGo1PQRWIOtI84cYG2qBeSVglAJdb----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://web.archive.org/web/20100208222143cs_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/plugins/jquery.timeentry-1.4.6/jquery.timeentry.css
+
+@charset "utf-8";
+=0A
+------MultipartBoundary--yaGWGepLPNwEvOGo1PQRWIOtI84cYG2qBeSVglAJdb----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://web.archive.org/web/20100208222143cs_/http://openbroadcast.ch/mod/template/templates/bbk/css_scheduler.css
+
+@charset "utf-8";
+=0A
+------MultipartBoundary--yaGWGepLPNwEvOGo1PQRWIOtI84cYG2qBeSVglAJdb----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://web.archive.org/web/20100208222143cs_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/ui1.7.2/css/theme-obp/jquery-ui-1.7.2.custom.css
+
+@charset "utf-8";
+=0A
+------MultipartBoundary--yaGWGepLPNwEvOGo1PQRWIOtI84cYG2qBeSVglAJdb----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://web.archive.org/web/20100208222143cs_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/plugins/expandable-0.5rc1/ui.expandable.css
+
+@charset "utf-8";
+
+.ui-expandable .ui-widget-header { overflow: hidden; }
+
+.ui-expandable-icon, .ui-expandable .ui-expandable-title { float: left; }
+
+.ui-expandable-icon + .ui-expandable-title { margin-left: 2px; }
+
+.ui-expandable .ui-widget-header .ui-icon.icon-closed { background-image: u=
+rl("/web/20100624043011im_/http://openbroadcast.ch/mod/aaa_libjquery/jquery=
+/plugins/expandable-0.5rc1/expandable-closed.png"); }
+
+.ui-expandable .ui-widget-header .ui-icon.icon-open { background-image: url=
+("/web/20100624043011im_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/p=
+lugins/expandable-0.5rc1/expandable-open.png"); }
+
+.ui-expandable-extraicon { float: right; border-width: 0px 0px 0px 1px; bor=
+der-color: transparent; border-style: solid; }
+
+.ui-expandable-extraicon.ui-state-hover, .ui-expandable-extraicon.ui-state-=
+focus { border-width: 0px 0px 0px 1px; border-color: inherit; }
+
+.ui-expandable .ui-widget-content { padding: 11px 18px 13px; border-top-wid=
+th: 0px; }
+------MultipartBoundary--yaGWGepLPNwEvOGo1PQRWIOtI84cYG2qBeSVglAJdb----
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: https://web.archive.org/web/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/topbut_bg.gif
+
+R0lGODlhBAAeAMQAAF9fX4iIiImJiYaGhouLi2lpaYGBgY2NjWZmZmtqa4ODg2RkZH9+f39/f2Ji
+Ym1sbYqKimBfYF9eX15eXm5tbmFhYYSEhGxrbICAgGNjY2VlZX59fgAAAAAAAAAAAAAAACH5BAAA
+AAAALAAAAAAEAB4AAAU74CEeREkIECQEQhu8wSAPimIpRm40PMb8m4eQkrgkEoVkAcHULBaZhWNa
+iUgkkQkAoN16v+CweEz2hgAAOw==
+
+------MultipartBoundary--yaGWGepLPNwEvOGo1PQRWIOtI84cYG2qBeSVglAJdb----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://web.archive.org/web/20100208222143cs_/http://openbroadcast.ch/_templates/css/bbk
+
+@charset "utf-8";
+
+ul, ol, li, table, form, h1, h2, h3, h4 blockquote { margin: 0px; padding: =
+0px; text-indent: 0px; }
+
+table { border-collapse: collapse; empty-cells: show; }
+
+table td { vertical-align: top; }
+
+img { border-width: medium; border-style: none; border-color: currentcolor;=
+ border-image: none; }
+
+input:focus, textarea:focus { outline: none; background: rgb(238, 238, 238)=
+; }
+
+input.input:focus, textarea.input:focus { background: rgb(238, 238, 238); b=
+order-top: 1px solid rgb(102, 102, 102); border-left: 1px solid rgb(102, 10=
+2, 102); }
+
+a:focus { outline: none; }
+
+* { font-size: 12px; font-family: Arial, Helvetica, sans-serif; line-height=
+: 18px; }
+
+body { margin: 0px; color: rgb(51, 51, 51); background-color: rgb(255, 255,=
+ 255); }
+
+h1, h2, h3, h4, h5, h6 { line-height: 20px; }
+
+h1 { font-size: 26px; margin-bottom: 20px; }
+
+h2 { font-size: 16px; font-weight: normal; }
+
+h3 { font-size: 12px; font-weight: bold; text-transform: uppercase; }
+
+h4 { font-size: 12px; font-weight: normal; text-transform: uppercase; }
+
+h3 + p { margin-top: 0px; }
+
+a { color: rgb(102, 51, 204); text-decoration: none; }
+
+a:hover { text-decoration: underline; }
+
+a.action { background-image: url("https://web.archive.org/web/2010062404293=
+0im_/http://openbroadcast.ch/mod/template/templates/bbk/images/action.gif")=
+; background-repeat: no-repeat; background-position: -2px center; padding-l=
+eft: 13px; }
+
+.disabled, a.disabled, li.disabled a { color: rgb(187, 187, 187); }
+
+em, .em { font-weight: bold; }
+
+.term { font-style: italic; }
+
+.interface { font-style: italic; font-weight: bold; color: rgb(102, 102, 10=
+2); }
+
+.info { font-size: 11px; color: rgb(102, 102, 102); }
+
+.info.box { padding-left: 22px; }
+
+.info.box .ui-icon { margin: 1px 0px 0px -18px; float: left; }
+
+.ui-state-highlight a { text-decoration: underline; }
+
+.descheduled { color: rgb(255, 0, 0); }
+
+.clear { clear: both; }
+
+.nowrap { white-space: nowrap; }
+
+.truncate { overflow: hidden; display: block; max-height: 1.5em; }
+
+.closed { background: rgb(228, 243, 229); border-left: 6px solid rgb(0, 187=
+, 51); }
+
+.inprocess { background: rgb(255, 255, 225); border: 1px solid rgb(252, 240=
+, 33); }
+
+.discussed { background: rgb(255, 255, 230); border-left: 6px solid rgb(255=
+, 240, 0); }
+
+.proposed { background: rgb(254, 238, 227); border: 6px solid rgb(247, 136,=
+ 25); }
+
+.buttons2 { float: right; }
+
+.input.requiredfield { background-color: rgb(235, 231, 250); border-color: =
+rgb(151, 116, 215) rgb(215, 197, 232) rgb(215, 197, 232) rgb(151, 116, 215)=
+; border-style: solid; border-width: 1px; }
+
+.input.requiredfield:focus { background: rgb(235, 231, 250); }
+
+.input.field.errorfield .input.requiredfield { background: none 0px 0px rep=
+eat scroll rgb(251, 231, 231); border-color: rgb(249, 85, 85) rgb(251, 192,=
+ 192) rgb(251, 192, 192) rgb(249, 85, 85); border-style: solid; border-widt=
+h: 1px; }
+
+.input.requiredfield.errorfield .input.requiredfield:focus { background: rg=
+b(251, 231, 231); }
+
+.input.desc { font-size: 11px; }
+
+form { margin: 0px; padding: 0px; text-indent: 0px; }
+
+form input[type=3D"text"] { background: url("https://web.archive.org/web/20=
+100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/f=
+orminput_bg.png") 0pt center repeat scroll transparent; border-width: 1px; =
+border-style: solid; border-image: none; border-color: rgb(153, 153, 153) r=
+gb(204, 204, 204) rgb(204, 204, 204) rgb(153, 153, 153); color: rgb(102, 10=
+2, 102); }
+
+form select { border-width: 1px; border-style: solid; border-image: none; b=
+order-color: rgb(153, 153, 153) rgb(204, 204, 204) rgb(204, 204, 204) rgb(1=
+53, 153, 153); }
+
+form textarea:focus { background: rgb(238, 238, 238); }
+
+form textarea { background: url("https://web.archive.org/web/20100624042930=
+im_/http://openbroadcast.ch/mod/template/templates/bbk/images/forminput_bg.=
+png") 0px 0px repeat scroll transparent; border-width: 1px; border-style: s=
+olid; border-image: none; border-color: rgb(153, 153, 153) rgb(204, 204, 20=
+4) rgb(204, 204, 204) rgb(153, 153, 153); }
+
+._section { margin: 20px 0px 10px; }
+
+._section + ._section { margin-top: 0px; }
+
+._section select + button { margin-left: 15px; }
+
+button, input[type=3D"submit"], input[type=3D"reset"], input[type=3D"button=
+"] { padding: 3px 10px 2px; position: relative; overflow: visible; border-w=
+idth: medium 1px 1px medium; border-style: none solid solid none; border-co=
+lor: currentcolor rgb(102, 102, 102) rgb(102, 102, 102) currentcolor; borde=
+r-image: none; color: rgb(255, 255, 255); background: url("https://web.arch=
+ive.org/web/20100624042930im_/http://openbroadcast.ch/mod/template/template=
+s/bbk/images/formbut_bg.png") 0px 0px repeat scroll transparent; cursor: po=
+inter; }
+
+button { padding: 1px 5px; }
+
+.btn-text { border-width: medium 1px 1px medium; border-style: none solid s=
+olid none; border-color: currentcolor rgb(102, 102, 102) rgb(102, 102, 102)=
+ currentcolor; border-image: none; background: url("https://web.archive.org=
+/web/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/i=
+mages/formbut_bg.png") 0px 0px repeat scroll transparent; color: rgb(255, 2=
+55, 255); }
+
+.btng-text { border-width: medium 1px 1px medium; border-style: none solid =
+solid none; border-color: currentcolor rgb(102, 102, 102) rgb(102, 102, 102=
+) currentcolor; border-image: none; color: rgb(255, 255, 255); background: =
+url("https://web.archive.org/web/20100624042930im_/http://openbroadcast.ch/=
+mod/template/templates/bbk/images/formbut_bg_a_on.png") 0px 0px repeat scro=
+ll transparent !important; }
+
+input.btn-1, button.btn-1 { background-image: url("https://web.archive.org/=
+web/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/im=
+ages/formbut_bg_a.png"); }
+
+.btn-img { background: none transparent; padding: 0px; border-width: medium=
+; border-style: none; border-color: currentcolor; border-image: none; }
+
+.btn-text:hover, input[type=3D"submit"]:hover, input[type=3D"reset"]:hover,=
+ input[type=3D"button"]:hover { background: url("https://web.archive.org/we=
+b/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/imag=
+es/formbut_bg_a_on.png") 0px 0px repeat scroll transparent !important; }
+
+button span { position: relative; display: block; white-space: nowrap; back=
+ground: 0px center no-repeat scroll transparent; }
+
+button + button, input + button, button + input, input + input { margin-lef=
+t: 10px; }
+
+.btn-play-list span { padding-left: 15px; background-image: url("https://we=
+b.archive.org/web/20100624042930im_/http://openbroadcast.ch/mod/template/te=
+mplates/bbk/images/button_play.png"); }
+
+.btn-play-item span { background-image: url("https://web.archive.org/web/20=
+100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/l=
+ist_play_button2_s.png"); width: 17px; height: 17px; }
+
+.btn-rm-item span { background-image: url("https://web.archive.org/web/2010=
+0624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/del=
+ete.png"); width: 19px; height: 19px; margin-left: -4px; }
+
+.btn-rm-item:hover span { background-image: url("https://web.archive.org/we=
+b/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/imag=
+es/delete_hover.png"); }
+
+.form.input.hidden { display: none; }
+
+.menu-delimiter { padding: 0px 8px; }
+
+.menu a:hover { text-decoration: none; }
+
+#mainmenu li, #submenu li, #globalmenu li, .modmenu li { display: inline; l=
+ist-style-type: none; }
+
+#topbar { background-color: rgb(102, 102, 102); border-top: 1px solid rgb(8=
+5, 85, 85); padding-top: 6px; color: rgb(204, 204, 204); }
+
+#topbar a { color: rgb(204, 204, 204); }
+
+#topbar a:hover, #topmenu li:hover, #topbar label { color: rgb(255, 255, 25=
+5); }
+
+#topbar input { margin-left: 9px; color: rgb(34, 34, 34); border-style: sol=
+id; border-width: 1px; }
+
+#topbar input[type=3D"text"], #topbar input[type=3D"password"] { background=
+: none rgb(136, 136, 136); border-color: rgb(85, 85, 85) rgb(170, 170, 170)=
+ rgb(170, 170, 170) rgb(85, 85, 85); }
+
+#topbar input[type=3D"text"]:focus, #topbar input[type=3D"password"]:focus =
+{ background-color: rgb(238, 238, 238); }
+
+#topbar input[type=3D"submit"] { padding: 1px 5px 2px; background: url("htt=
+ps://web.archive.org/web/20100624042930im_/http://openbroadcast.ch/mod/temp=
+late/templates/bbk/images/topbut_bg.gif") 0pt center repeat scroll transpar=
+ent; border-color: rgb(153, 153, 153) rgb(68, 68, 68) rgb(68, 68, 68) rgb(1=
+53, 153, 153); color: rgb(255, 255, 255); }
+
+#username, #password { width: 135px; }
+
+#globalmenu { margin: 0px 15px 2px 30px; float: right; }
+
+#globalmenu li a, #globalmenu li label { padding: 0px 0px 4px 8px; }
+
+#globalmenu li a { line-height: 19px; }
+
+#mainmenu { float: left; margin: -2px 0px 5px; }
+
+#mainmenu li { float: left; padding: 3px 8px 2px; cursor: pointer; }
+
+#mainmenu li.selected { padding: 2px 7px 1px; border: 1px solid rgb(170, 17=
+0, 170); color: rgb(255, 255, 255); }
+
+#mainmenu li.home { padding: 2px 10px 0px; position: relative; top: 1px; }
+
+#submenu div { display: none; }
+
+#topbar #submenu { position: absolute; background: rgb(255, 255, 255); padd=
+ing: 8px 0px 0px 44px; color: rgb(153, 153, 153); }
+
+#topbar #submenu a { color: rgb(102, 102, 102); text-decoration: none; }
+
+#topbar #submenu a:hover { color: rgb(153, 153, 153); }
+
+#topbar #submenu a.selected, .help-toc a.selected, .modmenu.menu a.selected=
+, .help-toc a.selected { color: rgb(0, 187, 0); text-decoration: none; }
+
+.modmenu { float: left; margin: 0px 250px 6px 0px; padding: 0px; width: 100=
+%; color: rgb(153, 153, 153); }
+
+.modmenu a:link, .modmenu a:visited, .help-toc a { color: rgb(102, 102, 102=
+); }
+
+#globalsearch { float: right; }
+
+#elggtoolbar .obp-version { float: left; margin-top: 1px; margin-left: 25px=
+; }
+
+#container { padding: 45px 20px 0px; }
+
+#header { width: 100%; height: 80px; margin: 0px; position: relative; paddi=
+ng: 0px; }
+
+.logo-holder { width: 980px; height: 70px; margin: 0px auto; }
+
+.logo-splitpane-fake { float: right; width: 238px; }
+
+.logo { padding: 0px; margin: 0px; width: 730px; height: 100%; background-r=
+epeat: no-repeat; background-attachment: scroll; background-position: 0px 5=
+px; }
+
+.logo h1 { color: rgb(0, 187, 0); font-weight: normal; font-size: 26px; lin=
+e-height: 30px; padding: 22px 0px 18px 75px; text-transform: none; }
+
+.logo h2 { font-family: Helvetica, sans-serif; font-size: 12px; }
+
+.logo a { text-decoration: none; font-family: Helvetica, sans-serif; font-w=
+eight: bold; font-size: 25px; line-height: 28px; }
+
+.logo-title { float: left; }
+
+.modsearch { float: right; margin-top: 15px; }
+
+.ui-expandable { border-style: solid; border-color: rgb(204, 204, 204); bor=
+der-image: none; border-width: 1px 0px; font: inherit; }
+
+.ui-expandable .ui-widget-header { border-width: medium; border-style: none=
+; border-color: currentcolor; border-image: none; color: rgb(51, 51, 51); }
+
+.ui-expandable .ui-expandable-title { line-height: 20px; }
+
+.ui-expandable .ui-widget-header.ui-state-default { background: none; borde=
+r-width: medium; border-style: none; border-color: currentcolor; border-ima=
+ge: none; }
+
+.ui-expandable .ui-widget-content { border-width: medium; border-style: non=
+e; border-color: currentcolor; border-image: none; }
+
+#splitpane-content .ui-expandable { margin-top: 15px; }
+
+#splitpane-sidebar .ui-expandable .ui-expandable-extraicon .ui-icon { margi=
+n-left: 1px; margin-right: 1px; }
+
+#splitpane-sidebar .ui-expandable > .ui-widget-header:hover .ui-expandable-=
+icon { background-image: url("https://web.archive.org/web/20100624042930im_=
+/http://openbroadcast.ch/mod/aaa_libjquery/jquery/ui1.8/css/theme-obp/image=
+s/ui-icons_222222_256x240.png") !important; }
+
+#content-holder { width: 980px; margin: 0px auto; }
+
+#splitpane-content { float: left; width: 730px; border-top: 1px solid rgb(1=
+70, 170, 170); }
+
+#splitpane-content-inner h1, #splitpane-content-inner h2, #splitpane-conten=
+t-inner h3, #splitpane-content-inner h4 { margin: 18px 0px 0px; }
+
+#splitpane-content-inner h1 { margin: 18px 0px 30px; }
+
+#splitpane-content-inner ul, #splitpane-content-inner ol { padding-left: 15=
+px; }
+
+.section { border-top: 1px solid rgb(204, 204, 204); }
+
+.sectiontitle { color: rgb(51, 51, 51); padding: 3px 0px 2px 19px; backgrou=
+nd-image: url("https://web.archive.org/web/20100624042930im_/http://openbro=
+adcast.ch/mod/template/templates/bbk/images/box_handler.gif"); background-r=
+epeat: no-repeat; background-color: rgb(255, 255, 255); }
+
+.sectiontitle span { font-weight: bold; }
+
+.sectiontitle:hover { cursor: pointer; }
+
+.sectioncontent { padding: 0px 0px 0px 20px; display: none; }
+
+.sectiontitle.sectionon { color: rgb(0, 0, 0); background-image: url("https=
+://web.archive.org/web/20100624042930im_/http://openbroadcast.ch/mod/templa=
+te/templates/bbk/images/box_handler_on.gif"); border-bottom: 1px dotted rgb=
+(204, 204, 204); }
+
+.content-line { border-top: 1px solid rgb(204, 204, 204); padding: 3px 0px =
+2px; }
+
+.listhead { padding: 4px 2px 3px 5px; border-bottom: 1px solid rgb(221, 221=
+, 221); }
+
+#splitpane-sidebar { float: right; width: 225px; }
+
+#splitpane-sidebar h2 { font-size: 12px; font-weight: normal; }
+
+#sidebar-holder:first-child { border-top: 1px solid rgb(170, 170, 170); }
+
+.sidebar-block li { list-style-type: none; }
+
+.ui-expandable { border-width: 1px; border-style: solid; border-image: none=
+; border-color: rgb(221, 221, 221) transparent; }
+
+.ui-expandable .ui-widget-content { padding: 0px; background: transparent; =
+}
+
+#splitpane-sidebar .ui-expandable-title { font-weight: bold; }
+
+#splitpane-sidebar .ui-expandable .ui-widget-content { padding: 0px; backgr=
+ound: transparent; }
+
+.ui-expandable-open { background-color: rgb(245, 245, 245); border-color: r=
+gb(221, 221, 221); }
+
+.sidebar-block.ui-expandable-open * { background-color: rgb(245, 245, 245);=
+ }
+
+.sidebar-block.ui-expandable .ui-widget-header:hover, .sidebar-block.ui-exp=
+andable .ui-widget-header:hover * { background-color: rgb(238, 230, 255); }
+
+.sidebar-block a, .sidebar-block .sidebar-body a { color: rgb(120, 51, 204)=
+; }
+
+.sidebar-block.ui-expandable-open .ui-expandable-title { color: rgb(0, 0, 0=
+) !important; }
+
+.sidebar-body { margin-left: 15px; }
+
+.ui-expandable .ui-widget-content ul, .ui-expandable .ui-widget-content ol,=
+ .ui-expandable .ui-widget-content dl { padding-left: 0px; }
+
+.sidebar-block li li { margin-left: 15px; }
+
+#splitpane-sidebar .ui-expandable + .ui-expandable { border-top-width: medi=
+um; border-top-style: none; border-top-color: currentcolor; }
+
+#obpSideMenu { margin-bottom: 23px; }
+
+#obpSideMenu a { display: block; background-image: url("https://web.archive=
+.org/web/20100624042930im_/http://openbroadcast.ch/mod/template/templates/b=
+bk/images/action.gif"); background-repeat: no-repeat; background-position: =
+0pt 1pt; border-bottom: 1px solid rgb(204, 204, 204); padding: 2pt 0pt 2pt =
+19px; }
+
+#obpSideMenu a:hover { background-color: rgb(238, 230, 255); }
+
+#me #icon { float: left; margin: 5px 5px 5px 0px; }
+
+p.loggedin { color: rgb(255, 255, 255); }
+
+#frontpageLoggedout #claims { margin-top: 60px; }
+
+#frontpageLoggedout #sidebar-holder:first-child { border-width: medium; bor=
+der-style: none; border-color: currentcolor; border-image: none; }
+
+#frontpageLoggedout #compatStatement { border-color: rgb(170, 170, 170) tra=
+nsparent; }
+
+#frontpageLoggedout #compatStatement ul { padding: 0.8em 0px 0.8em 25px; }
+
+.loggedout-sidebar-block { margin: 0px 5px; }
+
+.hboxtitle { border-bottom: 1px solid rgb(170, 170, 170); font-size: 15px; =
+font-weight: bold; line-height: 20px; }
+
+div#footer-holder { position: relative; width: 980px; margin: 0px auto; }
+
+div#footer-splitpane-fake { float: right; width: 238px; }
+
+div#footer { z-index: 100; float: left; margin: 40px 0px 20px; padding: 10p=
+x 0px; width: 730px; border-top: 1px solid rgb(170, 170, 170); }
+
+div#footer p { margin: 0px; padding: 10px 0px 0px; text-align: left; }
+
+.obp-help { height: 100%; padding: 20px 10px; background-color: rgb(240, 24=
+0, 240); }
+
+.obp-help h1 { font-weight: normal; font-size: 20px; }
+
+.obp-help ul { margin: 0px 0px 20px 15px; }
+
+.obp-help ul.menu li { list-style-type: none; }
+
+.obp-help ul.menu li > ul { margin-bottom: 0px; }
+
+#loggedout { padding: 20px 0px 0px; }
+
+#loggedout div#o_b_p a { text-decoration: none; padding: 0px; font-size: 10=
+0px; font-weight: bold; line-height: 1em; display: block; color: rgb(120, 5=
+1, 204); }
+
+#loggedout div#o_b_p a:hover { color: rgb(0, 187, 0); }
+
+#loggedout #claims > div { border-top: 1px solid rgb(170, 170, 170); margin=
+: 20px 0px 0px; padding: 20px 0px; }
+
+table.table { width: 100%; }
+
+tr.marked { background-color: rgb(240, 240, 240); }
+
+td { border-width: medium; border-style: none; border-color: currentcolor; =
+border-image: none; padding: 3px; margin: 0px; }
+
+td.table { border-bottom: 1px solid rgb(221, 221, 221); }
+
+.table .title { color: rgb(34, 34, 34); font-weight: normal; background-col=
+or: rgb(229, 229, 229); border-top: 1px solid rgb(187, 187, 187); border-bo=
+ttom: 1px solid rgb(187, 187, 187); text-decoration: none; text-align: left=
+; padding: 2px 0px 1px 6px; }
+
+.obp-list { width: 100%; text-align: left; }
+
+.obp-list th { color: rgb(34, 34, 34); font-weight: normal; background-colo=
+r: rgb(229, 229, 229); border-style: solid; border-color: rgb(187, 187, 187=
+); border-image: none; border-width: 1px 0px; }
+
+.obp-list th { padding: 2px 6px 0px; }
+
+.obp-list td { border-bottom: 1px solid rgb(221, 221, 221); padding: 4px 6p=
+x 3px; }
+
+.table th a { color: rgb(34, 34, 34); display: block; text-decoration: none=
+; text-align: left; background-repeat: no-repeat; background-position: righ=
+t center; margin: -2px 0px -1px -6px; padding: 2px 0px 1px 6px; }
+
+.table th.colon { text-decoration: underline; color: rgb(0, 0, 0); }
+
+.table td { border-bottom: 1px solid rgb(221, 221, 221); padding: 6px 6px 5=
+px; }
+
+.profile tr:last-child td { border-bottom-width: medium; border-bottom-styl=
+e: none; border-bottom-color: currentcolor; padding-top: 20px; }
+
+.list a { text-decoration: none; }
+
+.filetable table { width: 100%; border-top: 1px solid rgb(170, 170, 170) !i=
+mportant; }
+
+.filetable table td { width: 50%; }
+
+.infoholder table tr { border-top: 1px solid rgb(170, 170, 170) !important;=
+ }
+
+.infoholder table td { border-width: medium !important; border-style: none =
+!important; border-color: currentcolor !important; border-image: none !impo=
+rtant; }
+
+.table_order:hover { background-color: rgb(204, 204, 204); background-image=
+: url("https://web.archive.org/web/20100624042930im_/http://openbroadcast.c=
+h/mod/template/templates/bbk/images/table_order.gif"); }
+
+.table_order_a { background-color: rgb(204, 204, 204); background-image: ur=
+l("https://web.archive.org/web/20100624042930im_/http://openbroadcast.ch/mo=
+d/template/templates/bbk/images/table_order.gif"); }
+
+.table_order_a:hover { background-color: rgb(204, 204, 204); background-ima=
+ge: url("https://web.archive.org/web/20100624042930im_/http://openbroadcast=
+.ch/mod/template/templates/bbk/images/table_order_up.gif"); }
+
+.table_order_d { background-color: rgb(204, 204, 204); background-image: ur=
+l("https://web.archive.org/web/20100624042930im_/http://openbroadcast.ch/mo=
+d/template/templates/bbk/images/table_order_up.gif"); }
+
+.table_order_d:hover { background-color: rgb(204, 204, 204); background-ima=
+ge: url("https://web.archive.org/web/20100624042930im_/http://openbroadcast=
+.ch/mod/template/templates/bbk/images/table_order.gif"); }
+
+.table_order_no_img { background-color: rgb(204, 204, 204); }
+
+.table_order_no_img:hover { }
+
+.table_order_no_img_off { }
+
+.table_order_no_img_off:hover { background-color: rgb(204, 204, 204); }
+
+.table.invite { width: 100%; }
+
+.table.invite img { float: right; }
+
+.table.invite a { color: rgb(102, 51, 204); float: right; }
+
+.table.contact-request { width: 100%; }
+
+.table.contact-request a { color: rgb(102, 51, 204); }
+
+.table.group-request-table { width: 100%; }
+
+.table.group-request-table a { color: rgb(102, 51, 204); }
+
+.weblog-post { margin: 20px 0px 10px; border-bottom: 1px solid rgb(221, 221=
+, 221); }
+
+.weblog-splitpanel-left { float: left; }
+
+.weblog-splitpanel-right { margin: 10px 0px 15px 105px; }
+
+.weblog.tags { float: right; margin: 25px 0px 5px; }
+
+.weblog-title { margin: 10px 0px; }
+
+.weblog-title a { text-decoration: none; }
+
+.weblog-date { background-color: rgb(245, 245, 245); border: 1px solid rgb(=
+221, 221, 221); font-size: 10px; padding: 3px; text-align: center; }
+
+.weblog-date b { font-size: 15px; }
+
+.info { }
+
+.info-name { float: left; }
+
+.info-links { float: right; }
+
+.weblog-pagelinks-holder { border-bottom: 1px solid rgb(221, 221, 221); }
+
+.weblog-pagelinks { text-align: right; }
+
+.weblog-comment { margin-top: 35px; }
+
+#comments-divide { height: 1px; }
+
+.current-blogs { background: transparent; }
+
+div#commentwall { margin-bottom: 20px; }
+
+div#commentwall_form_-1 { margin: 10px 0px; }
+
+div#commentwall_form_-1 textarea { width: 100%; height: 100px; }
+
+.commentwall_comment { margin-bottom: 5px; }
+
+div#sub-menu p { border-bottom: 1px solid rgb(170, 170, 170); margin: 10px =
+0px; padding: 3px; }
+
+div#sub-menu img { padding: 0px; margin: 0px; float: left; }
+
+.profile_main { margin-top: 10px; }
+
+.profile_content { float: left; }
+
+img.profile-photo { border-width: medium; border-style: none; border-color:=
+ currentcolor; border-image: none; }
+
+.profile_primary { float: left; margin-left: 0px; margin-top: 0px; width: 2=
+50px; }
+
+.profile_secondary { float: right; margin-top: 0px; width: 350px; }
+
+.profile_main_bottom { clear: both; }
+
+.table.icons_album-container .icons-tview .tr-selected { background-color: =
+rgb(238, 230, 255); }
+
+table.profile col.label { width: 25%; }
+
+table.profile col.input { width: 45%; }
+
+table.profile col.access { width: 30%; }
+
+table.profile input[type=3D"text"], table.profile input[type=3D"password"],=
+ table.profile select, table.profile textarea { width: 95%; }
+
+table.profile select.profile_date_dmy, table.profile select.profile_date_md=
+y { width: auto; }
+
+table.profile checkbox, table.profile input[type=3D"checkbox"] { position: =
+relative; top: 3px; background: none; border-width: medium; border-style: n=
+one; border-color: currentcolor; border-image: none; }
+
+table.profile textarea { height: 100px; }
+
+#profiledetails__biography__ { height: 200px; }
+
+.termsbox { float: left; }
+
+.termsinfo { float: left; padding: 3pt 0px 3pt 3pt; }
+
+#profile_widget { position: relative; padding: 10px 0px 0px 10px; }
+
+.widgets_even { float: left; width: 330px; }
+
+.widgets_odd { float: right; width: 330px; }
+
+.widget { border: 1px solid rgb(170, 170, 170); margin-bottom: 5px; padding=
+: 0px; }
+
+.widget h2 { border-width: 0px 0px 1px; border-style: none none solid; bord=
+er-color: currentcolor currentcolor rgb(187, 220, 233); border-image: none;=
+ padding: 0px; margin: 0px 0px 10px; color: rgb(102, 102, 102); background-=
+color: rgb(226, 240, 246); }
+
+.widget .widget_title { border-bottom: 1px solid rgb(170, 170, 170) !import=
+ant; }
+
+.widget .widget_content { border-bottom: 1px solid rgb(170, 170, 170); padd=
+ing: 10px; }
+
+.widget .widget_content h2 { border-top: 1px solid rgb(170, 170, 170); bord=
+er-bottom: 1px solid rgb(170, 170, 170); }
+
+.widget .widget_content h3 { padding: 0px; margin: 0px; }
+
+.widget .widget_bottom { border-width: medium !important; border-style: non=
+e !important; border-color: currentcolor !important; border-image: none !im=
+portant; }
+
+.widget .widget_menu { display: block; border-top: 1px solid rgb(187, 220, =
+233); border-bottom: 1px solid rgb(170, 170, 170); background-color: rgb(22=
+6, 240, 246); margin: 0px; padding-left: 10px; }
+
+.system-message { margin: 20px 0px 30px; }
+
+.system-message > div { padding: 10px 15px; }
+
+.system-message > div + div { padding-top: 0px; }
+
+.system-message ul { padding-left: 25px; }
+
+fieldset { border-width: medium; border-style: none; border-color: currentc=
+olor; border-image: none; text-align: left; }
+
+fieldset.no-border { border-width: medium; border-style: none; border-color=
+: currentcolor; border-image: none; }
+
+fieldset.hidden { display: none; }
+
+div#box { width: 730px; height: 50px; }
+
+div#box .addJob a.add { background: url("https://web.archive.org/web/201006=
+24042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/formb=
+ut_bg_a.gif") 0px 0px repeat scroll transparent; margin: 0px; padding: 5px;=
+ text-decoration: none; color: rgb(255, 255, 255) !important; border: 0px s=
+olid rgb(0, 0, 0) !important; }
+
+div#box .addJob a.add:hover { background-color: rgb(164, 175, 189); color: =
+rgb(37, 45, 55); }
+
+div#request-job a { font-weight: bold; text-align: right; }
+
+#content { width: 730px; padding-right: 10px; }
+
+#content p { margin: 0px 0px 10px; padding: 0px; }
+
+#content a { padding: 2px; }
+
+#content a:hover { padding: 2px; }
+
+#content ol { margin: 0px 0px 0px 17px; }
+
+#content ul { list-style-type: disc; margin-left: 17px; }
+
+div#categs-nav { float: left; padding-bottom: 6px; margin-top: 25px; }
+
+table#job-posts, table#job-posts2, table#job-posts3 { width: 100%; }
+
+table#job-posts td, table#job-posts2 td, table#job-posts3 td { border-width=
+: medium medium 1px; border-style: none none solid; border-color: currentco=
+lor currentcolor rgb(59, 73, 90); border-image: none; }
+
+.search_results_label { color: rgb(136, 136, 136); background-color: transp=
+arent; font-size: 1.1em; }
+
+table#textile-suggestions { margin-top: 5px; width: 80%; font-size: 12px; }
+
+table#textile-suggestions th { font-weight: bold; }
+
+.validation-error { color: red; }
+
+input.error, textarea.error { border: 1px solid red !important; }
+
+.validation-failure { color: red; background-color: rgb(255, 208, 214); pad=
+ding: 5px; }
+
+div.icon-fulltime { margin-top: 3px; background: url("/web/20100624042930im=
+_/http://openbroadcast.ch/_templates/img/icon-fulltime.png") no-repeat; hei=
+ght: 11px; width: 47px; display: inline; }
+
+div.icon-parttime { margin-top: 3px; background: url("/web/20100624042930im=
+_/http://openbroadcast.ch/_templates/img/icon-parttime.png") no-repeat; hei=
+ght: 11px; width: 47px; display: inline; }
+
+div.icon-freelance { margin-top: 3px; background: url("/web/20100624042930i=
+m_/http://openbroadcast.ch/_templates/img/icon-freelance.png") no-repeat; h=
+eight: 11px; width: 47px; display: inline; }
+
+year { border-style: outset; border-width: 1px; text-align: center; }
+
+.month { text-align: center; width: 100%; vertical-align: top; font-size: 1=
+2px !important; }
+
+.month a { text-decoration: none; padding-left: 2px; font-weight: normal; }
+
+.yearname { text-align: center; font-weight: bold; background-color: rgb(25=
+5, 255, 255); }
+
+.monthname { text-align: center; font-weight: bold; background-color: rgb(2=
+55, 255, 255); padding-top: 19px; }
+
+.dayname { padding-left: 5px; text-align: left; color: rgb(102, 102, 102); =
+font-weight: normal; background-color: rgb(255, 255, 255); border: 1px soli=
+d rgb(204, 204, 204) !important; }
+
+.weeknumtitle { text-align: center; font-weight: normal; border: 1px solid =
+rgb(170, 170, 170); }
+
+.weeknum { text-align: center; font-size: 10px; height: 90px; width: 90px; =
+}
+
+.week { border-style: none; text-align: center; }
+
+.monthweek { text-align: center; font-weight: bold; border-style: solid; bo=
+rder-width: 1px; }
+
+.yearnavigation { }
+
+.datepicker { }
+
+.datepickerform { margin: 0px; }
+
+.monthnavigation { background-color: rgb(255, 255, 255); padding: 17px 0px =
+3px; }
+
+.monthnavigation_prev, .monthnavigation_next { text-align: left; padding: 1=
+7px 0px 3px; }
+
+.monthnavigation_next { text-align: right; padding: 17px 0px 3px; }
+
+.monthpicker { }
+
+.yearpicker { }
+
+.pickerbutton { border-style: solid; border-color: rgb(170, 170, 170); bord=
+er-width: 1px; }
+
+.nomonthday { text-align: left; height: 90px; width: 90px; background-image=
+: url("https://web.archive.org/web/20100624042930im_/http://openbroadcast.c=
+h/mod/template/templates/bbk/images/calendar_off.gif"); background-color: r=
+gb(238, 238, 238); border: 1px solid rgb(204, 204, 204) !important; }
+
+.monthday { text-align: left; height: 90px; width: 90px; font-size: 12px; b=
+order: 1px solid rgb(204, 204, 204); }
+
+.monthday:hover { background-color: rgb(245, 245, 245); }
+
+.today { color: rgb(0, 187, 0); text-align: left; height: 90px; width: 90px=
+; font-size: 12px; border: 2px solid rgb(0, 187, 0) !important; }
+
+.today:hover { color: rgb(0, 187, 0); text-align: left; height: 90px; width=
+: 90px; font-size: 12px; background-color: rgb(245, 245, 245); border: 2px =
+solid rgb(0, 187, 0) !important; }
+
+.today a { color: rgb(0, 0, 0); }
+
+.selectedday { text-align: left; height: 90px; width: 90px; font-size: 12px=
+; background-color: rgb(0, 187, 0); }
+
+.sunday { text-align: left; height: 90px; width: 90px; font-size: 12px; bac=
+kground-color: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); }
+
+.sunday:hover { background-color: rgb(245, 245, 245); }
+
+.saturday { text-align: left; height: 90px; width: 90px; font-size: 12px; b=
+ackground-color: rgb(238, 238, 238); border: 1px solid rgb(204, 204, 204); =
+}
+
+.saturday:hover { background-color: rgb(245, 245, 245); }
+
+.event { text-align: center; vertical-align: top; font-weight: bold; color:=
+ red; background-color: rgb(255, 255, 153); height: 90px; width: 90px; }
+
+.event a { background-color: rgb(255, 255, 153); color: red; }
+
+.selectedevent { text-align: center; vertical-align: top; font-weight: bold=
+; color: red; background-color: rgb(255, 255, 153); height: 90px; width: 90=
+px; }
+
+.selectedevent a { background-color: rgb(255, 255, 153); color: red; }
+
+.todayevent { text-align: center; vertical-align: top; font-weight: bold; c=
+olor: red; background-color: rgb(255, 255, 153); height: 90px; width: 90px;=
+ }
+
+.todayevent a { background-color: rgb(255, 255, 153); color: red; }
+
+.eventcontent { border-style: outset; border-width: 1px; width: 100%; }
+
+.defaultevent td { border-width: medium !important; border-style: none !imp=
+ortant; border-color: currentcolor !important; border-image: none !importan=
+t; }
+
+.publicevent { width: 100% !important; }
+
+.publicevent td { padding: 0px 2px; margin-bottom: 2px; background-color: r=
+gb(232, 246, 231); color: rgb(32, 163, 17); border: 1px solid rgb(177, 223,=
+ 172) !important; }
+
+.publicevent a { color: rgb(32, 163, 17) !important; }
+
+.publicaccess { width: 15px; height: 15px; margin-bottom: 2px; background-c=
+olor: rgb(232, 246, 231); border: 1px solid rgb(32, 163, 17) !important; co=
+lor: rgb(32, 163, 17) !important; }
+
+.privateevent { width: 100% !important; }
+
+.privateevent td { padding: 0px 2px; margin-bottom: 2px; background-color: =
+rgb(254, 229, 231); border: 1px solid rgb(252, 166, 173) !important; color:=
+ rgb(255, 0, 0) !important; }
+
+.privateevent a { color: rgb(255, 0, 0) !important; }
+
+.privateaccess { width: 15px; height: 15px; margin-bottom: 2px; background-=
+color: rgb(254, 229, 231); border: 1px solid rgb(255, 0, 0) !important; col=
+or: rgb(255, 0, 0) !important; }
+
+.loggedinevent { width: 100% !important; }
+
+.loggedinevent td { padding: 0px 2px; margin-bottom: 2px; background-color:=
+ rgb(234, 242, 255); color: rgb(46, 132, 252); border: 1px solid rgb(182, 2=
+12, 254) !important; }
+
+.loggedinevent a { color: rgb(46, 132, 252); }
+
+.loggedinaccess { width: 15px; height: 15px; margin-bottom: 2px; border: 1p=
+x solid rgb(46, 132, 252); background-color: rgb(234, 242, 255); color: rgb=
+(46, 132, 252); }
+
+.defaulteventlegend { width: 25px; }
+
+.publiceventlegend { color: rgb(102, 204, 51); width: 20px; }
+
+.privateeventlegend { background-color: rgb(204, 51, 0); width: 20px; }
+
+.loggedineventlegend { background-color: rgb(51, 102, 255); width: 20px; }
+
+#content_order a, #content_order a:visited { display: block; color: rgb(102=
+, 102, 102); text-decoration: none; text-align: left; padding: 5px 2px; }
+
+#content_order_activ a, #content_order_activ a:visited { display: block; co=
+lor: rgb(102, 102, 102); background-color: rgb(204, 204, 204); text-decorat=
+ion: none; text-align: left; padding: 5px 2px; background-repeat: no-repeat=
+; background-position: right center; background-image: url("https://web.arc=
+hive.org/web/20100624042930im_/http://openbroadcast.ch/mod/template/templat=
+es/bbk/images/table_order.gif"); }
+
+#content_order a:hover { background-repeat: no-repeat; background-position:=
+ right center; background-color: rgb(204, 204, 204); text-decoration: none;=
+ background-image: url("https://web.archive.org/web/20100624042930im_/http:=
+//openbroadcast.ch/mod/template/templates/bbk/images/table_order.gif"); }
+
+#content_order_activ a:hover { background-repeat: no-repeat; background-pos=
+ition: right center; background-color: rgb(204, 204, 204); text-decoration:=
+ none; background-image: url("https://web.archive.org/web/20100624042930im_=
+/http://openbroadcast.ch/mod/template/templates/bbk/images/table_order_up.g=
+if"); }
+
+#content_order_up_activ a, #content_order_up a:visited { display: block; co=
+lor: rgb(102, 102, 102); text-decoration: none; background-color: rgb(204, =
+204, 204); text-align: left; padding: 5px 2px; background-repeat: no-repeat=
+; background-position: right center; background-image: url("https://web.arc=
+hive.org/web/20100624042930im_/http://openbroadcast.ch/mod/template/templat=
+es/bbk/images/table_order_up.gif"); }
+
+#content_order_up a:hover { background-repeat: no-repeat; background-positi=
+on: right center; background-color: rgb(204, 204, 204); text-decoration: no=
+ne; background-image: url("https://web.archive.org/web/20100624042930im_/ht=
+tp://openbroadcast.ch/mod/template/templates/bbk/images/table_order.gif"); =
+}
+
+#content_order_up_activ a:hover { background-repeat: no-repeat; background-=
+position: right center; background-color: rgb(204, 204, 204); text-decorati=
+on: none; background-image: url("https://web.archive.org/web/20100624042930=
+im_/http://openbroadcast.ch/mod/template/templates/bbk/images/table_order.g=
+if"); }
+
+.contenthead { background-color: rgb(245, 245, 245); margin-bottom: 17px; o=
+verflow: hidden; }
+
+.contenthead h1 { font-weight: normal; font-size: 20px; }
+
+.contenthead .text { margin: 8px 0px; line-height: 15px; color: rgb(102, 10=
+2, 102); }
+
+.contenthead .em { color: rgb(51, 51, 51); }
+
+.contenthead .innerleft { padding: 15px 10px 0px 15px; }
+
+.contenthead .innerright { float: right; padding: 15px 10px 0px 15px; }
+
+#contentview ul { margin: 16px 0px 0px; border-bottom: 1px solid rgb(170, 1=
+70, 170); list-style-type: none; padding: 4px 10px; }
+
+#contentview li { display: inline; }
+
+#contentview li a { padding: 5px 7px; border-width: 1px 1px medium; border-=
+style: solid solid none; border-color: rgb(187, 187, 187) rgb(187, 187, 187=
+) currentcolor; border-image: none; background-color: rgb(225, 225, 225); c=
+olor: rgb(102, 102, 102); margin-right: 5px; text-decoration: none; }
+
+#contentview li a.on { border-width: 1px 1px medium; border-style: solid so=
+lid none; border-color: rgb(170, 170, 170) rgb(170, 170, 170) currentcolor;=
+ border-image: none; padding: 5px 7px 6px; background-color: rgb(255, 255, =
+255); color: rgb(0, 187, 0); }
+
+#upload_form .input { width: 485px; }
+
+#content_keywords { width: 385px !important; }
+
+td.widget_river_type { padding: 0px; }
+
+.widget_river_time { color: rgb(119, 119, 119); margin: 0px 5px; font-size:=
+ 0.8em; text-align: right; }
+
+.widget_river_type_mediastream__media { border-bottom: 1px solid rgb(239, 2=
+39, 239); margin: 5px 0px; }
+
+.widget_river_type_mediastream { border-bottom: 1px solid rgb(239, 239, 239=
+); margin: 5px 0px; }
+
+td.widget_river_text { padding: 9px; }
+
+p.widget_river_date { font-weight: bold; margin: 20px 0px 10px; padding: 0p=
+x; border-bottom: 1px solid rgb(192, 192, 192); }
+
+._activity_river_entry_time { font-weight: bold; margin: 5px 0px 10px; padd=
+ing: 0px 0px 0px 20px; background: url("https://web.archive.org/web/2010062=
+4042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/mod_ca=
+lendar_s.gif") left center no-repeat; }
+
+._activity_river_entry { border-bottom: 1px solid rgb(239, 239, 239); margi=
+n: 5px 0px; }
+
+._activity_river_entry_txt { padding: 0px 0px 0px 20px; background: url("ht=
+tps://web.archive.org/web/20100624042930im_/http://openbroadcast.ch/mod/tem=
+plate/templates/bbk/images/mod_blog_s.gif") left center no-repeat; }
+
+._activity_river_entry ._activity_river_entry_time { color: rgb(119, 119, 1=
+19); margin: 0px 5px; font-size: 0.8em; background: rgb(255, 255, 255); pad=
+ding: 0px; }
+
+#widget_river_type_preprod { background: url("https://web.archive.org/web/2=
+0100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/=
+mod_preproduction_s.gif") left center no-repeat; }
+
+#widget_river_type_scheduler { background: url("https://web.archive.org/web=
+/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/image=
+s/mod_preproduction_s.gif") left center no-repeat; }
+
+#widget_river_type_commentwall__post { background: url("https://web.archive=
+.org/web/20100624042930im_/http://openbroadcast.ch/mod/template/templates/b=
+bk/images/mod_blog_s.gif") left center no-repeat; }
+
+#widget_river_type_weblog_post { background: url("https://web.archive.org/w=
+eb/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/ima=
+ges/mod_blog_s.gif") left center no-repeat; }
+
+#widget_river_type_weblog_post__post { background: url("https://web.archive=
+.org/web/20100624042930im_/http://openbroadcast.ch/mod/template/templates/b=
+bk/images/mod_blog_s.gif") left center no-repeat; }
+
+#widget_river_type_file { background: url("https://web.archive.org/web/2010=
+0624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/mod=
+_othercontent_s.gif") left center no-repeat; }
+
+#widget_river_type_community { background: url("https://web.archive.org/web=
+/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/image=
+s/mod_groups_s.gif") left center no-repeat; }
+
+#widget_river_type_community_member { background: url("https://web.archive.=
+org/web/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bb=
+k/images/mod_groups_s.gif") left center no-repeat; }
+
+#widget_river_type_project { background: url("https://web.archive.org/web/2=
+0100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/=
+mod_projectplaner_s.gif") left center no-repeat; }
+
+#widget_river_type_project_member { background: url("https://web.archive.or=
+g/web/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/=
+images/mod_projectplaner_s.gif") left center no-repeat; }
+
+#widget_river_type_friends { background: url("https://web.archive.org/web/2=
+0100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/=
+mod_contacts_s.gif") left center no-repeat; }
+
+#widget_river_type_ml_release { background: url("https://web.archive.org/we=
+b/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/imag=
+es/mod_othercontent_s.gif") left center no-repeat; }
+
+#widget_river_type_ml_artist { background: url("https://web.archive.org/web=
+/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/image=
+s/mod_othercontent_s.gif") left center no-repeat; }
+
+#widget_river_type_ml_label { background: url("https://web.archive.org/web/=
+20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images=
+/mod_othercontent_s.gif") left center no-repeat; }
+
+#widget_river_type_ml_media { background: url("https://web.archive.org/web/=
+20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images=
+/mod_othercontent_s.gif") left center no-repeat; }
+
+.post_messages { margin: 10px 0px; }
+
+.info_messages { border-top: 1px solid rgb(170, 170, 170); margin: 10px 0px=
+; clear: both; }
+
+#messages tbody td { border-bottom: 1px solid rgb(221, 221, 221); }
+
+#messages tbody tr:hover { background: rgb(245, 245, 245); }
+
+.table.network { width: 100%; border: 0px; }
+
+.table.network tr { border-bottom: 1px solid rgb(204, 204, 204); }
+
+.table.network td { padding: 6px; border-width: medium !important; border-s=
+tyle: none !important; border-color: currentcolor !important; border-image:=
+ none !important; }
+
+.table.network .member_icon { width: 60px; text-align: left; }
+
+.table.network .member_info { }
+
+.role_field { width: 100%; border: 1px double rgb(192, 192, 192); font-size=
+: 75%; }
+
+.acl_select { width: 100%; }
+
+.licence-class ul { padding-left: 25px; }
+
+.content-browser { border: 1px solid rgb(187, 187, 187); background: rgb(24=
+0, 240, 240); padding: 4px 5px 5px; margin: -1px 0px 23px; }
+
+.content-browser .search { border-width: 1px; border-style: solid; border-c=
+olor: rgb(153, 153, 153) rgb(204, 204, 204) rgb(204, 204, 204) rgb(153, 153=
+, 153); border-image: none; background: rgb(255, 255, 255); padding: 3px 5p=
+x 2px; margin-top: 4px; }
+
+.content-browser .search input { border: 0px; width: 100%; }
+
+.content-browser .searchi { background: rgb(247, 247, 247); border-width: 0=
+px 1px 1px; border-style: none solid solid; border-color: currentcolor rgb(=
+204, 204, 204) rgb(204, 204, 204); border-image: none; padding: 1px 5px; co=
+lor: rgb(102, 51, 204); }
+
+.content-browser .searchi:hover { background: rgb(233, 255, 220); color: rg=
+b(0, 153, 0); }
+
+.searchbar { border-top: 1px solid rgb(255, 255, 255); margin-top: -1px; }
+
+.iconbut { background: url("https://web.archive.org/web/20100624042930im_/h=
+ttp://openbroadcast.ch/mod/template/templates/bbk/images/formbut_bg.gif") 0=
+px 0px repeat scroll transparent; border-color: rgb(187, 187, 187) rgb(102,=
+ 102, 102) rgb(102, 102, 102) rgb(187, 187, 187); border-style: solid; bord=
+er-width: 1px; color: rgb(255, 255, 255); cursor: pointer; height: inherit;=
+ }
+
+.iconbut:hover { background: url("https://web.archive.org/web/2010062404293=
+0im_/http://openbroadcast.ch/mod/template/templates/bbk/images/formbut_bg_a=
+.gif") 0px 0px repeat scroll transparent; }
+
+.iconbut img { margin: 4px 5px 3px; }
+
+.tagbar { background: url("https://web.archive.org/web/20100624042930im_/ht=
+tp://openbroadcast.ch/mod/template/templates/bbk/images/forminput_bg.png") =
+0px 0px repeat scroll transparent; border-color: rgb(153, 153, 153) rgb(204=
+, 204, 204) rgb(204, 204, 204) rgb(153, 153, 153); border-style: solid; bor=
+der-width: 1px; min-height: 22px; }
+
+.tagbar a { background-image: url("https://web.archive.org/web/201006240429=
+30im_/http://openbroadcast.ch/mod/template/templates/bbk/images/tag_bg_s.gi=
+f"); background-position: right bottom; background-repeat: no-repeat; borde=
+r-left: 1px solid rgb(255, 255, 255); border-top: 1px solid rgb(255, 255, 2=
+55); color: rgb(0, 187, 0); float: left; margin: 1px 0px 1px 1px; padding: =
+0px 6px 1px 5px; }
+
+.tagbar a.tbsearch { background-image: url("/web/20100624042930im_/http://o=
+penbroadcast.ch/_templates/img/search_bg_s.gif"); background-position: righ=
+t bottom; background-repeat: no-repeat; border-left: 1px solid rgb(255, 255=
+, 255); border-top: 1px solid rgb(255, 255, 255); color: rgb(0, 187, 0); fl=
+oat: left; margin: 1px 0px 1px 1px; padding: 0px 6px 1px 5px; }
+
+.tagbar a.tbgenre { background-image: url("/web/20100624042930im_/http://op=
+enbroadcast.ch/_templates/img/genre_bg_s.gif"); background-position: right =
+bottom; background-repeat: no-repeat; border-left: 1px solid rgb(255, 255, =
+255); border-top: 1px solid rgb(255, 255, 255); color: rgb(0, 187, 0); floa=
+t: left; margin: 1px 0px 1px 1px; padding: 0px 6px 1px 5px; }
+
+.tagbar a.tbfilter { background-image: url("/web/20100624042930im_/http://o=
+penbroadcast.ch/_templates/img/filter_bg_s.gif"); background-position: righ=
+t bottom; background-repeat: no-repeat; border-left: 1px solid rgb(255, 255=
+, 255); border-top: 1px solid rgb(255, 255, 255); color: rgb(0, 187, 0); fl=
+oat: left; margin: 1px 0px 1px 1px; padding: 0px 6px 1px 5px; }
+
+.tagbar a:hover { text-decoration: none; }
+
+.tagbar form input { border: 0px; color: rgb(77, 77, 77); padding: 0px !imp=
+ortant; }
+
+.tagbarclearsearch { padding: 4px 3px 0px; float: right; }
+
+#pp table select { width: 50%; }
+
+#pp table .input { width: 100%; }
+
+#pl-sortable-head { background-color: rgb(229, 229, 229); padding: 2px 0px =
+0px 27px; border-top: 1px solid rgb(187, 187, 187); color: rgb(102, 102, 10=
+2); }
+
+#pl-sortable { border: 1px solid rgb(187, 187, 187); padding: 2px 2px 0px; =
+min-height: 32px; }
+
+.pl-item { background-color: rgb(248, 243, 255); border: 1px solid rgb(187,=
+ 187, 187); margin-bottom: 2px; padding: 3px 2px; white-space: nowrap; over=
+flow: hidden; }
+
+.pl-item.jingle { background-color: rgb(216, 216, 255); }
+
+.pl-item.nofile { background-color: rgb(255, 240, 240); }
+
+#pl-sortable-head div, .pl-item .i div { float: left; }
+
+#pl-sortable-widget .t { width: 230px; margin-left: 5px; margin-right: 10px=
+; overflow: hidden; }
+
+#pl-sortable-widget a.name { font-weight: bolder; color: rgb(51, 51, 51); }
+
+#pl-sortable-widget .artist { line-height: 14px; color: rgb(136, 136, 136);=
+ }
+
+#pl-sortable-widget .bitrate { width: 40px; margin-right: 10px; text-align:=
+ right; }
+
+#pl-sortable-widget .playtime, #pl-sortable-widget .length { width: 60px; t=
+ext-align: right; }
+
+#pl-sortable-widget .playtime { margin-right: 5px; }
+
+#pl-sortable-widget .length { margin-right: 20px; }
+
+#pl-sortable-widget .clip { width: 120px; text-align: center; }
+
+#pl-sortable-widget .fade { width: 120px; text-align: center; }
+
+#pl-sortable input { max-width: 53px; height: 16px; margin-right: 4px; back=
+ground-color: transparent; border: 1px dotted rgb(187, 187, 187); text-alig=
+n: right; padding: 1px 2px; }
+
+#pl-sortable input + input { margin-left: auto; }
+
+#pl-sortable input[disabled] { color: inherit; border-color: transparent; }
+
+#pl-sortable input.info[disabled] { color: rgb(102, 102, 102); }
+
+#pl-sortable input.ph_length { max-width: none; width: 58px; margin-right: =
+auto; position: relative; left: 3px; }
+
+#pl-sortable input:focus { background-color: rgb(255, 255, 255); border: 1p=
+x inset rgb(187, 187, 187); }
+
+.btn-play-item-pp { float: left; min-width: 21px; min-height: 17px; }
+
+.btn-play-item-pp span { background-image: url("https://web.archive.org/web=
+/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/image=
+s/list_play_button2_s.png"); width: 17px; height: 17px; }
+
+.btn-play-item-pp.nofile span { background-image: url("https://web.archive.=
+org/web/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bb=
+k/images/file.music_no_file.png"); }
+
+.subseconds { opacity: 0.6; }
+
+.good { color: green; }
+
+.bad { color: red; }
+
+.ui-widget { font-family: inherit; font-size: inherit; }
+
+.selectable-widget table { border-collapse: separate; border-spacing: 2px; =
+}
+
+.selectable-widget td { width: 12%; height: 15px; padding: 0px; border: 1px=
+ solid rgb(217, 204, 240); overflow: hidden; white-space: nowrap; backgroun=
+d-color: rgb(241, 241, 241); color: rgb(102, 51, 204); text-align: center; =
+cursor: pointer; }
+
+.selectable-widget #tr-days td:nth-last-child(-n+2) { background-color: rgb=
+(187, 187, 187); }
+
+.selectable-widget .pp-dp-01 { background-color: rgb(251, 209, 255); }
+
+.selectable-widget .pp-dp-02 { background-color: rgb(255, 216, 191); }
+
+.selectable-widget .pp-dp-03 { background-color: rgb(255, 249, 191); }
+
+.selectable-widget .pp-dp-04 { background-color: rgb(204, 255, 191); }
+
+.selectable-widget .pp-dp-05 { background-color: rgb(191, 255, 235); }
+
+.selectable-widget .pp-dp-06 { background-color: rgb(191, 233, 255); }
+
+.selectable-widget .pp-dp-07 { background-color: rgb(191, 199, 255); }
+
+.selectable-widget td.selected { background-color: rgb(212, 243, 218); colo=
+r: rgb(51, 51, 51); border: 1px solid rgb(102, 102, 102); }
+
+.selectable-widget div + .selectable-widget div { margin-left: 2px; }
+
+.selectable-widget #tr-days td { background-color: transparent; cursor: aut=
+o; color: inherit; }
+
+div.throbber { width: 15px; height: 15px; background-image: none; }
+
+div.throbber.on { background-image: url("https://web.archive.org/web/201006=
+24042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/throb=
+ber.gif"); background-repeat: no-repeat; }
+
+#pl-sortable .ui-sortable-placeholder { min-height: 65px; max-height: 65px;=
+ }
+
+._ui-sortable-placeholder { outline: rgb(204, 204, 204) dotted 1px; }
+
+.ui-sortable-helper { right: 8px; }
+
+div#pp-lowerpane { padding: 15px 0px 0px; }
+
+div#pp-lowerpane > * { float: left; }
+
+table#pp-timeinfo { font-size: 14px; font-weight: bold; margin-right: 58px;=
+ }
+
+#pp-timeinfo td { padding: 0px; }
+
+#pp-timeinfo td.display { text-align: right; padding-left: 12px; }
+
+div#splitpane-sidebar #basketHolder { margin-top: 25px; }
+
+#basketNameInput { padding: 0px 0px 2px 15px; }
+
+#basketNameInput input { width: 180px; }
+
+.dropActive { background-color: rgb(204, 255, 204) !important; }
+
+.dropHover { background-color: rgb(136, 255, 136) !important; color: rgb(25=
+5, 255, 255); }
+
+#basketHolder.ui-expandable .ui-widget-header:hover, #basketHolder .ui-expa=
+ndable .ui-widget-header:hover { background-color: rgb(238, 230, 255); }
+
+.ui-widget-header .count { color: rgb(136, 136, 136); padding-left: 8px; fo=
+nt-weight: normal; }
+
+.basket, .jingle-release { margin: 0px 2px 5px; background-color: rgb(221, =
+221, 221); border: 1px solid rgb(187, 187, 187); }
+
+#splitpane-sidebar .basket .ui-expandable-title { font-weight: normal; colo=
+r: rgb(46, 46, 46); max-width: 170px; overflow: hidden; }
+
+.basket.ui-expandable-open, #pp-placeholders.ui-expandable-open, .jingle-re=
+lease.ui-expandable-open { padding-bottom: 3px; }
+
+#basketHolder > .ui-widget-header .ui-expandable-icon, #basketHolder > .ui-=
+widget-header .ui-expandable-title { position: relative; left: 3px; }
+
+.sidebar-item { border: 1px solid rgb(204, 204, 204); margin: 0px 2px; back=
+ground-color: rgb(238, 238, 238); }
+
+.sidebar-item:hover { background-color: rgb(228, 228, 228); }
+
+.sidebar-item .pre-title { width: 16px; height: 18px; float: left; opacity:=
+ 0.5; }
+
+.sidebar-item .pre-title.cm { background-color: rgb(255, 250, 174); }
+
+.sidebar-item .pre-title.ml { background-color: rgb(191, 207, 255); }
+
+.sidebar-item .name { float: left; margin-left: 5px; overflow: hidden; max-=
+width: 190px; white-space: nowrap; }
+
+.sidebar-item.basket-content .name { max-width: 170px; }
+
+.sidebar-item .btn-basket-item-rm { float: right; padding: 1px 3px 1px 0px;=
+ }
+
+.sidebar-item .btn-basket-item-rm .ui-icon { background-image: url("https:/=
+/web.archive.org/web/20100624042930im_/http://openbroadcast.ch/mod/template=
+/templates/bbk/images/boxsub_item_remove.png"); }
+
+.sidebar-item .btn-basket-item-rm .ui-icon:hover { background-image: url("h=
+ttps://web.archive.org/web/20100624042930im_/http://openbroadcast.ch/mod/te=
+mplate/templates/bbk/images/boxsub_remove_on.png"); }
+
+.ui-draggable-dragging { opacity: 0.8; min-width: 217px; }
+
+.ui-expandable-extraicon .ui-icon.btn-basket-del { padding-right: 5px; back=
+ground-image: url("https://web.archive.org/web/20100624042930im_/http://ope=
+nbroadcast.ch/mod/template/templates/bbk/images/basket_remove.png"); }
+
+.ui-expandable-extraicon .ui-icon.btn-basket-del-hover { padding-right: 5px=
+; background-image: url("https://web.archive.org/web/20100624042930im_/http=
+://openbroadcast.ch/mod/template/templates/bbk/images/boxsub_remove_on.png"=
+); }
+
+div .ui-icon.basket-2-pl-btn { background-image: url("https://web.archive.o=
+rg/web/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk=
+/images/basket_to_pl.png"); }
+
+div.obp-miniplayer .ui-icon { margin-top: 5px; }
+
+.treeview, .treeview ul { padding: 0px; margin: 0px; list-style: none; }
+
+.treeview ul { background-color: white; margin-top: 4px; }
+
+.treeview .hitarea { background: url("https://web.archive.org/web/201006240=
+42930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/treeview=
+-default.gif") -64px -25px no-repeat; height: 16px; width: 16px; margin-lef=
+t: -16px; float: left; cursor: pointer; }
+
+* html .hitarea { display: inline; float: none; }
+
+.treeview li { margin: 0px; padding: 3px 0pt 3px 16px; }
+
+.treeview a.selected { background-color: rgb(238, 238, 238); }
+
+#treecontrol { margin: 1em 0px; display: none; }
+
+.treeview .hover { color: red; cursor: pointer; }
+
+.treeview li { background: url("https://web.archive.org/web/20100624042930i=
+m_/http://openbroadcast.ch/mod/template/templates/bbk/images/treeview-defau=
+lt-line.gif") 0px 0px no-repeat; }
+
+.treeview li.collapsable, .treeview li.expandable { background-position: 0p=
+x -176px; }
+
+.treeview .expandable-hitarea { background-position: -80px -3px; }
+
+.treeview li.last { background-position: 0px -1766px; }
+
+.treeview li.lastCollapsable, .treeview li.lastExpandable { background-imag=
+e: url("https://web.archive.org/web/20100624042930im_/http://openbroadcast.=
+ch/mod/template/templates/bbk/images/treeview-default.gif"); }
+
+.treeview li.lastCollapsable { background-position: 0px -111px; }
+
+.treeview li.lastExpandable { background-position: -32px -67px; }
+
+.treeview div.lastCollapsable-hitarea, .treeview div.lastExpandable-hitarea=
+ { background-position: 0px center; }
+
+.treeview-red li { background-image: url("https://web.archive.org/web/20100=
+624042930im_/http://openbroadcast.ch/mod/images/treeview-red-line.gif"); }
+
+.treeview-red .hitarea, .treeview-red li.lastCollapsable, .treeview-red li.=
+lastExpandable { background-image: url("https://web.archive.org/web/2010062=
+4042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/treevi=
+ew-red.gif"); }
+
+.treeview-black li { background-image: url("/web/20100624042930im_/http://o=
+penbroadcast.ch/_templates/css/images/treeview-black-line.gif"); }
+
+.treeview-black .hitarea, .treeview-black li.lastCollapsable, .treeview-bla=
+ck li.lastExpandable { background-image: url("https://web.archive.org/web/2=
+0100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/=
+treeview-black.gif"); }
+
+.treeview-gray li { background-image: url("/web/20100624042930im_/http://op=
+enbroadcast.ch/_templates/css/images/treeview-gray-line.gif"); }
+
+.treeview-gray .hitarea, .treeview-gray li.lastCollapsable, .treeview-gray =
+li.lastExpandable { background-image: url("https://web.archive.org/web/2010=
+0624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/tre=
+eview-gray.gif"); }
+
+.treeview-famfamfam li { background-image: url("/web/20100624042930im_/http=
+://openbroadcast.ch/_templates/css/images/treeview-famfamfam-line.gif"); }
+
+.treeview-famfamfam .hitarea, .treeview-famfamfam li.lastCollapsable, .tree=
+view-famfamfam li.lastExpandable { background-image: url("https://web.archi=
+ve.org/web/20100624042930im_/http://openbroadcast.ch/mod/template/templates=
+/bbk/images/treeview-famfamfam.gif"); }
+
+.filetree li { padding: 3px 0px 2px 16px; }
+
+.filetree span.folder, .filetree span.file { padding: 1px 0px 1px 16px; dis=
+play: block; }
+
+.filetree span.folder { background: url("https://web.archive.org/web/201006=
+24042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/folde=
+r.gif") 0px 0px no-repeat; }
+
+.filetree li.expandable span.folder { background: url("https://web.archive.=
+org/web/20100624042930im_/http://openbroadcast.ch/mod/template/templates/bb=
+k/images/folder-closed.gif") 0px 0px no-repeat; }
+
+.filetree span.file { background: url("https://web.archive.org/web/20100624=
+042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/file.gi=
+f") 0px 0px no-repeat; }
+
+div.ml_exp { margin-bottom: 14px; border: 1px solid rgb(153, 153, 153); bac=
+kground-color: rgb(239, 239, 239); }
+
+#juploadframe { height: 399px; width: 678px; }
+
+#filebrowserframe { height: 399px; width: 678px; }
+
+.ajaxbrowser { background-color: rgb(255, 255, 255); }
+
+body#ajaxbrowserbody { background-color: rgb(242, 242, 242); color: rgb(102=
+, 102, 102); font-family: sans-serif; font-size: 11px; font-weight: normal;=
+ }
+
+table.browse { background-color: rgb(255, 255, 255); width: 100%; }
+
+table.browse tr.directory { background-color: rgb(244, 244, 244); border-to=
+p: 1px solid rgb(171, 171, 171); border-bottom: 1px solid rgb(171, 171, 171=
+); height: 16px; line-height: 14px; }
+
+table.browse tr.file { border-bottom: 1px solid rgb(222, 222, 222); height:=
+ 16px; line-height: 14px; }
+
+.ml-tracks { float: left; margin-right: 20px; }
+
+.ml-availabletracks { float: left; }
+
+.ml-indicator { float: left; width: 4px; height: 10px; margin: 2px 2px 1px =
+0px; }
+
+.ml-available { background-color: rgb(0, 187, 0); }
+
+.ml-unavailable { background-color: rgb(153, 153, 153); }
+
+.ml-compression_indicator_vertical { background-color: rgb(240, 178, 0); }
+
+.ml-format { float: left; margin-right: 20px !important; }
+
+div.ml-compression { float: left; width: 40px; margin-top: 6px !important; =
+}
+
+div.ml-compression_holder { width: 100%; background-color: rgb(240, 178, 0)=
+; height: 6px; }
+
+div.ml-compression_indicator { background-color: rgb(0, 255, 0); height: 6p=
+x; }
+
+#media_information div.row { display: block; clear: both; }
+
+#media_information div.label { display: table; float: left; width: 150px; t=
+ext-transform: capitalize; }
+
+#media_information div.value { display: table; }
+
+td.ml-edit_col1 { width: 16%; }
+
+td.ml-edit_col2l { width: 6%; }
+
+td.ml-edit_col2r { }
+
+td.ml-edit_col3 { width: 24%; }
+
+#ml .infoholder table tr { border-top: 1px solid rgb(205, 205, 205) !import=
+ant; }
+
+#ml .infoholder .ml-no_border { border-width: medium !important; border-sty=
+le: none !important; border-color: currentcolor !important; border-image: n=
+one !important; }
+
+#ml .infoholder .ml-no_top { border-top-width: medium !important; border-to=
+p-style: none !important; border-top-color: currentcolor !important; }
+
+#ml .infoholder .ml-no_bottom { border-bottom-width: medium !important; bor=
+der-bottom-style: none !important; border-bottom-color: currentcolor !impor=
+tant; }
+
+#ml .infoholder .ml-formactions td { text-align: right; padding-top: 10px; =
+padding-bottom: 10px; }
+
+#ml input[type=3D"button"] { background: url("https://web.archive.org/web/2=
+0100624042930im_/http://openbroadcast.ch/mod/template/templates/bbk/images/=
+formbut_bg.gif") 0pt center repeat scroll transparent; border: 0pt solid rg=
+b(0, 0, 0); color: rgb(255, 255, 255); margin: 0pt; padding: 2px 5px; }
+
+#ml input[type=3D"button"]:hover { border: 0pt solid rgb(0, 0, 0); color: r=
+gb(255, 255, 255); margin: 0pt; padding: 2px 5px; background: url("https://=
+web.archive.org/web/20100624042930im_/http://openbroadcast.ch/mod/template/=
+templates/bbk/images/formbut_bg_a_on.png") 0px 0px repeat scroll transparen=
+t !important; }
+
+.ml-button { display: inline; padding: 3px 10px; margin: 0px 8px 0px 0px; c=
+olor: rgb(244, 235, 253); background: url("/web/20100624042930im_/http://op=
+enbroadcast.ch/mod/template/templates/bbk/images/formbut_bg_a.gif"); border=
+-width: 1px; border-style: solid; border-color: rgb(138, 99, 217) rgb(119, =
+68, 136) rgb(119, 68, 136); border-image: none; }
+
+a.ml-button { }
+
+a.ml-button:hover { background: url("/web/20100624042930im_/http://openbroa=
+dcast.ch/mod/template/templates/bbk/images/formbut_bg_a_on.png"); border-wi=
+dth: 1px; border-style: solid; border-color: rgb(61, 181, 2) rgb(102, 153, =
+102) rgb(102, 153, 102); border-image: none; color: rgb(221, 254, 221); tex=
+t-decoration: none; }
+
+.ml-button.off { background: url("/web/20100624042930im_/http://openbroadca=
+st.ch/mod/template/templates/bbk/images/formbut_bg.gif"); border-width: 1px=
+; border-style: solid; border-color: rgb(153, 153, 153) rgb(136, 136, 136) =
+rgb(136, 136, 136); border-image: none; color: rgb(255, 255, 255); }
+
+.ml-button.off:hover { background: url("/web/20100624042930im_/http://openb=
+roadcast.ch/mod/template/templates/bbk/images/formbut_bg_off.gif"); border-=
+width: 1px; border-style: solid; border-color: rgb(136, 136, 136) rgb(102, =
+102, 102) rgb(102, 102, 102); border-image: none; color: rgb(255, 255, 255)=
+; }
+
+a.ml-arrowlink_action { background-image: url("/web/20100624042930im_/http:=
+//openbroadcast.ch/mod/template/templates/bbk/images/action.gif"); backgrou=
+nd-position: 0px 1pt; background-repeat: no-repeat; padding: 3pt 12px 2pt 1=
+9px; }
+
+a.ml-arrowlink_action:hover { color: rgb(119, 51, 204); text-decoration: no=
+ne; cursor: pointer; background-color: rgb(238, 230, 255); }
+
+span.ml-date_published { font-weight: bold; }
+
+.ml-noline table { border-width: medium !important; border-style: none !imp=
+ortant; border-color: currentcolor !important; border-image: none !importan=
+t; }
+
+.ml-noline table tr { border-width: medium !important; border-style: none !=
+important; border-color: currentcolor !important; border-image: none !impor=
+tant; }
+
+.ml-noline table tr td { border-width: medium !important; border-style: non=
+e !important; border-color: currentcolor !important; border-image: none !im=
+portant; }
+
+td.ml-no_border, tr.ml-no_border { border-width: medium !important; border-=
+style: none !important; border-color: currentcolor !important; border-image=
+: none !important; }
+
+td.ml-top_border, tr.ml-top_border { border-top: 1px solid rgb(205, 205, 20=
+5) !important; }
+
+.ml-tracklist td, .ml-editform td { vertical-align: middle; }
+
+div.ml-tracklist { background-color: rgb(250, 250, 250) !important; padding=
+-bottom: 1px; }
+
+.ml-status_scanned { }
+
+.ml-lock { background-color: rgb(255, 204, 204); }
+
+.ml-empty { background-color: rgb(250, 250, 250); }
+
+.ml-bview img { margin: 5px 0px 10px; }
+------MultipartBoundary--yaGWGepLPNwEvOGo1PQRWIOtI84cYG2qBeSVglAJdb------

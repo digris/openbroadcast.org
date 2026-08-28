@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" style=""><head>
+
+
+
+
+
+
+
+
+<!-- End Wayback Rewrite JS Include -->
+
+	<title>Open Broadcast Platform</title>
+	<link rel="icon" type="image/png" href="https://web.archive.org/web/20100131141215im_/http://openbroadcast.ch/mod/template/templates/bbk/images/obp.16.png">
+	
+	<link href="https://web.archive.org/web/20100131141215cs_/http://openbroadcast.ch/_templates/css/bbk" rel="stylesheet" type="text/css">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<script type="text/javascript" src="https://web.archive.org/web/20100131141215js_/http://openbroadcast.ch/mod/commentwall/commentwall.js"><!-- commentwall js --></script>
+	<script type="text/javascript" src="https://web.archive.org/web/20100131141215js_/http://openbroadcast.ch/mod/generic_comments/generic_comments.js"><!-- generic_comments js --></script>
+	<link rel="stylesheet" href="https://web.archive.org/web/20100131141215cs_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/plugins/expandable-0.5rc1/ui.expandable.css" type="text/css">
+	<link rel="stylesheet" href="https://web.archive.org/web/20100131141215cs_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/ui1.7.2/css/theme-obp/jquery-ui-1.7.2.custom.css" type="text/css">
+	<script type="text/javascript" src="https://web.archive.org/web/20100131141215js_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/jquery-1.3.2.min.js"><!-- jquery JS library--></script>
+	<script type="text/javascript" src="https://web.archive.org/web/20100131141215js_/http://openbroadcast.ch/mod/js/obp.lib.min.js"><!-- obp:lib JS library--></script>
+	<script type="text/javascript" src="https://web.archive.org/web/20100131141215js_/http://openbroadcast.ch/mod/js/obp.dynamic.js.php"><!-- obp:dynamic-data JS library--></script>
+	<!--used to be: if lte IE 6-->
+	<!--[if IE]>
+	<script type="text/javascript">
+
+		jQuery(function($)
+		{
+			$('<div id="ie-disclaimer" style="border:1px solid #ff0000; background-color:#ffcccc; margin-bottom:20px;"></div>')
+			.load("http://openbroadcast.ch/mod/template/templates/bbk/ie-disclaimer.html")
+			//.load("http://openbroadcast.ch/mod/template/templates/bbk/ie6-disclaimer.html")
+			.prependTo("#sidebar-holder");
+
+			$("#compatStatement").expandable("open", { duration: 0 });
+		});
+
+	</script>
+	<![endif]-->
+
+	<script type="text/javascript">
+
+		jQuery(function($)
+		{
+			$("a", "#o_b_p").click(function() {
+				var clickindex = $("a", "#o_b_p").index(this);
+
+				$("#claims div").hide();
+				$("#claims div").eq(clickindex).fadeIn();
+
+				return false;
+			});
+
+		});
+
+	</script>
+		
+	<script type="text/javascript">var ELGG_WWWROOT = "https://web.archive.org/web/20100131141215/http://openbroadcast.ch/";</script>
+</head>
+
+<body id="frontpageLoggedout"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+
+
+
+<!-- END WAYBACK TOOLBAR INSERT -->
+ 
+
+	<div id="elggtoolbar"><!-- start toolbar -->
+	<div id="topbar" class="menu">
+
+		<div id="globalmenu">
+			<ul class="globalmenu">
+				
+				<li>
+					<form action="https://web.archive.org/web/20100131141215/http://openbroadcast.ch/login/index.php" method="post">
+						<label>Username<input class="login" type="text" name="username" id="username"></label>
+						<label>Password<input class="login" type="password" name="password" id="password"></label>
+						<input type="hidden" name="remember" id="toolbarcheckbox" value="true">
+						<input type="submit" value="Login">
+					</form>
+				</li>
+			</ul>
+		</div>
+			
+		<div id="globalsearch" style="visibility:hidden;"><!-- open search-header div -->
+			<form id="toolbar_form_loggedin" action="https://web.archive.org/web/20100131141215/http://openbroadcast.ch/search/index.php" method="get">
+				<input class="toolbar_input_loggedin" type="text" name="tag">
+				<input class="toolbar_submit_loggedin" type="submit" value="Search">
+			</form>
+		</div><!-- close search-header div -->
+
+		<div id="mainmenu">
+			<ul id="topmenu">
+				<li class="home"><a href="https://web.archive.org/web/20100131141215/http://openbroadcast.ch/"><img src="https://web.archive.org/web/20100131141215im_/http://openbroadcast.ch/mod/template/templates/bbk/images/obp.16.png" width="16" height="16" alt="Home" title="Home"></a></li><li>Network</li><li>Content</li><li>Program</li><li><a class="chatlink" onclick="dig.openChat(event); return false;" href="https://web.archive.org/web/20100131141215/http://webchat.freenode.net/?nick=guest&amp;channels=openbroadcast" target="_blank" title="Open a chat window">Chat</a></li>
+			</ul>
+		</div>
+		
+		<div class="clear" style="border-bottom:1px solid #666"></div><!-- der hier ist doof aber wichtig für ie 6 bug fix -->
+
+		<div id="submenu">
+			<div>
+				<ul>
+					
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<li><a href="https://web.archive.org/web/20100131141215/http://openbroadcast.ch/mod/browser/index.php">Browse</a></li>
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<li><a href="https://web.archive.org/web/20100131141215/http://openbroadcast.ch/mod/medialibrary/">Music Library</a><span class="menu-delimiter">|</span></li><a href="https://web.archive.org/web/20100131141215/http://openbroadcast.ch/guest/preprod/">Playlists</a>
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<a href="https://web.archive.org/web/20100131141215/http://openbroadcast.ch/mod/scheduler/scheduleMain.php">Scheduler</a>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div><!-- end toolbar div -->
+<div style="clear:both;"></div>
+
+	<div id="container"><!-- wraps the header, maincontent and sidebar -->
+		<div id="header">
+			<div id="header-inner" class="fixed">
+				
+			</div>
+		</div><!-- end div#header -->
+
+
+		<div id="content-holder">
+
+			<div class="modmenu menu">
+				<ul>
+					
+				</ul>
+			</div><!-- end div#modmenu -->
+
+			<div id="content-holder-inner" class="fixed">
+				<div id="splitpane-content">
+					<div id="splitpane-content-inner">
+						
+	<div class="system-message ui-state-highlight">
+	<div>
+		You need to log in to see this page.
+	</div>
+</div>
+
+						<!-- SCRIPT IS IN template/lib.php -->
+
+<div id="loggedout">
+
+	<div id="o_b_p">
+		<a href="#">open</a>
+		<a href="#">broadcast</a>
+	</div>
+
+	<div id="claims">
+
+		<!-- <div class="claim"> -->
+
+			<h3>...ist on air</h3>
+
+			<p>
+				Seit 1. Januar 2010 senden wir ein vollständig user-generiertes Musikprogramm – unser erster Schritt auf dem Weg zu einem umfassenden Kultur- und Wissensradio, wie in der <a href="https://web.archive.org/web/20100131141215/http://www.bakom.ch/rtv_files/293_2.pdf" title="Konzession Open Broadcast">Konzession vom BAKOM</a> festgehalten.
+			</p>
+
+			<p>
+				In einem redaktionellen "<a href="/web/20100131141215/http://openbroadcast.ch/content/de/baustellenreport">Baustellenreport</a>" (von Franziska Oliver) berichten wir laufend über die Entwicklung von Open Broadcast, dem ersten vollständig "user-generierten Radio" der Schweiz. Im Unterschied zu anderen Radios, ist bei uns nicht nur der Content, sondern auch der Prozess der Programmgestaltung user-gesteuert. Unsere <a href="/web/20100131141215/http://openbroadcast.ch/content/de/screencasts">Screencasts</a> erklären, wie Open Broadcast funktioniert.
+			</p>
+			
+			<p>Zu hören ist Open Broadcast in der gesamten Deutschschweiz <a href="/web/20100131141215/http://openbroadcast.ch/content/de/listen">über DAB+</a> und weltweit über unseren <a href="/web/20100131141215/http://openbroadcast.ch/content/de/listen">Webstream</a>.</p>
+
+			<p>
+				Mehr über Open Broadcast erfährst du in unserem <a href="/web/20100131141215/http://openbroadcast.ch/content/de/about">About</a>, in unseren <a href="/web/20100131141215/http://openbroadcast.ch/content/de/faq">FAQs</a> und in unserem <a href="/web/20100131141215/http://openbroadcast.ch/content/de/program" title="Open Broadcast Platform - Programm">Programmentwurf</a>.</p>
+
+			<p>Für aktuelle Informationen, trage dich ein in unseren <a href="https://web.archive.org/web/20100131141215/http://office.digris.ch/phplist/lists/?p=subscribe&amp;id=1&amp;id=1">Newsletter</a>.</p>
+			
+			<h3 style="margin-top: 40px;">... @ Club Transmediale 10, Berlin</h3>
+			
+			<p style="float:left;margin-right:20px;margin-top: 5px;"><a href="https://web.archive.org/web/20100131141215/http://www.clubtransmediale.de/ctm-festival/theme-overlap.html" title="DISK/club transmediale: Theme: Overlap"><img src="https://web.archive.org/web/20100131141215im_/http://www.clubtransmediale.de/uploads/pics/banner_CTM10.gif" alt="Club Transmediale Banner" width="400"></a></p>
+
+			<p style="margin-top:0px;margin-top: 5px;">Die 11. Ausgabe vom Club Transmediale – Festival for Adventurous Music and Related Visual Arts, findet 2010 unter dem Motto "OVERLAP – Sound &amp; Other Media" statt. Thematisiert werden die Situation und Zukunftsaussichten selbstbestimmten Musikschaffens, experimenteller audiovisueller Kulturen, Kunst und Medientechnologien sowie die Auflösung bewährter Strukturen und Grenzen in der Musikwirtschaft. Im Rahmen des Tagesprogramms von Dienstag, 2.2., präsentiert Thomas Gilgen, Mitinitiator von Open Broadcast, die Idee des user-generierten Radios und nimmt an der Diskussionsrunde zum Thema "Change of Use – The Evolution of Online Music Services" teil. Open Broadcast ist zudem am 5. und 6. Februar mit einem Stand am "Creative Independents Network Market" präsent. Mehr Informationen zu den einzelnen Veranstaltungen unten.</p>
+			
+			<p><strong>Club Transmediale: Sound in the Data Sphere – 
+			How Statistics and Social Technologies Change the Music World</strong><br>
+			2. Feb. @ .HBC, Karl-Liebknecht-Strasse 9, Berlin-Mitte, <a href="https://web.archive.org/web/20100131141215/http://www.hbc-berlin.de/" title=".HBC">www.hbc-berlin.de</a></p>
+			
+			<p>++ 15:30 h – PRÄSENTATION: <a href="https://web.archive.org/web/20100131141215/http://www.clubtransmediale.de/ctm-festival/day-program/day-schedule/02/presentation-how-to-open-broadcast." title="DISK/club transmediale: Presentation: How to... Open Broadcast">"How to... Open Broadcast"</a></p>
+			
+			<p>++ 18:00 h – DISKUSSION: <a href="https://web.archive.org/web/20100131141215/http://www.clubtransmediale.de/ctm-festival/day-program/day-schedule/02/discussion-change-of-use-the-evolution-of-online-music-services.html">"Change of Use – The Evolution of Online Music Services"</a>
+			</p>
+			
+			<p>Die Palette der Online-Musik-Services entwickelt sich rasant. Das Netz bietet derzeit genug Platz für die Parallelexistenz einer Vielzahl unterschiedlicher Konzepte. Jedes Projekt entwickelt dabei seinen individuellen Fokus durch die unterschiedliche Gewichtung von Metaphern (digitaler Recordstore, Radio, Magazin, Archiv, Bibliothek oder Community), Strategien (Crowdsourcing, Personalisierung, Redaktion), durch den Einsatz von Technologien (Empfehlungsdienste, Trackerkennung, Meta-Search-Engines) sowie durch verschiedene Monetarisierungsmodelle (Werbefinanziert, Pay-per-download, Abonnement, Flatrate etc.). Jede Plattform zielt dabei auch auf bestimmte Zielgruppen und impliziert eine unterschiedliche Nutzungsweise der Musik. Hinter jedem Konzept steht daher auch eine eigenständige Sicht auf die kulturelle Rolle und den Alltagsgebrauch von Musik sowie auf die Motivationen ihrer Autoren, Produzenten und Hörer, die sich letztlich in Inhalten und Nutzerstatistiken niederschlagen. Doch wie nahe liegen Konzept und reale Nutzung beieinander? Was machen die User aus den Angeboten? Das Panel bringt Experten aus dem Bereich der strategischen und konzeptuellen Entwicklung von Online-Musik-Services zusammen. Was sind die Prognosen, Perspektiven und Visionen für die Entwicklungen der kommenden Jahre?</p>
+
+			<p>Mit: Thomas Gilgen, Mitinitiant Open Broadcast, Basel; Caspar von Gwinner, Freelance Strategic Consultant in Marketing, Berlin; David Noël, Community Manager SoundCloud, Berlin; Stefan Possert, Managing Director Design &amp; Technology zero-inch, Wien; Moderation: Ji-Hun Kim, Journalist De:Bug, Berlin</p>
+			
+			<p><strong>Creative Independents Network Market</strong><br>
+			5. – 6. Feb. @ .HBC, Karl-Liebknecht-Strasse 9, Berlin-Mitte, <a href="https://web.archive.org/web/20100131141215/http://www.hbc-berlin.de/" title=".HBC">www.hbc-berlin.de</a></p>
+			
+			<p>++ jeweils 15:00-20:00 h, <a href="https://web.archive.org/web/20100131141215/http://www.clubtransmediale.de/ctm-festival/day-program/market.html" title="DISK/club transmediale: Market">Open Broadcast und weitere Aussteller</a></p>
+
+		<!-- </div> -->
+
+	</div>
+</div>
+					</div><!-- end div#splitpane-content-inner -->
+				</div><!-- end div#splitpane-content -->
+				<div id="splitpane-sidebar">
+					<div id="splitpane-sidebar-inner">
+						
+<div id="sidebar-holder">
+    
+<div id="compatStatement" class="sidebar-block dig-state dig-state-expandable ">
+    
+	<div id="compatBox">
+		<div class="ui-expandable-title">Browser Compatibility</div>
+		<div class="sidebar-body">
+			Openbroadcast has been tested to work with the following browsers:
+
+			<ul>
+				<li><a href="https://web.archive.org/web/20100131141215/http://getfirefox.com/">Firefox 3+</a></li>
+				<li><a href="https://web.archive.org/web/20100131141215/http://www.apple.com/safari/download/">Safari 3+</a></li>
+				<!--<li>Internet Explorer 7+</li>-->
+			</ul>
+
+			(Tip: We recommend <a href="https://web.archive.org/web/20100131141215/http://getfirefox.com/">Firefox</a>.
+			<a href="https://web.archive.org/web/20100131141215/http://www.google.com/chrome/">Chrome</a> and
+			<a href="https://web.archive.org/web/20100131141215/http://www.opera.com/">Opera</a> should also work.<br>
+			Use of Internet Explorer is generally discouraged.)
+		</div>
+	</div>
+	
+</div>
+<div id="betaStatement" class="sidebar-block dig-state dig-state-expandable static">
+    
+	<div id="betaBox" class="static">
+		<h4>This is Beta Software</h4>
+	
+</div>
+</div>
+					</div><!-- end div#splitpane-sidebar-inner -->
+				</div><!-- end div#splitpane-sidebar -->
+			</div><!-- end div#content-holder-inner -->
+		</div><!-- end div#content-holder -->
+
+
+		<div id="footer-holder">
+			<div id="footer" class="menu fixed">
+				
+				<a href="https://web.archive.org/web/20100131141215/http://openbroadcast.ch/content/de/about">About</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20100131141215/http://openbroadcast.ch/content/de/faq">FAQ</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20100131141215/http://openbroadcast.ch/content/de/nutzungsbedingungen">Terms of Use</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20100131141215/http://openbroadcast.ch/content/de/privatsphaere">Privacy Policy</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20100131141215/https://lab.digris.ch/projects/openbroadcast">Development</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20100131141215/http://openbroadcast.ch/content/de/contact">Contact</a>&nbsp;&nbsp;
+
+				
+			</div><!-- end div#footer -->
+			<div id="footer-splitpane-fake"></div>
+		</div><!-- end div#footer-holder -->
+	</div><!-- end div#container -->
+
+
+
+</div></body></html>

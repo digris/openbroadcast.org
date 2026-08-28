@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" style=""><head>
+
+
+
+
+
+
+
+
+<!-- End Wayback Rewrite JS Include -->
+
+	<title>Open Broadcast Platform</title>
+	<link rel="icon" type="image/png" href="https://web.archive.org/web/20091025165155im_/http://openbroadcast.ch/mod/template/templates/bbk/images/obp.16.png">
+	
+	<link href="https://web.archive.org/web/20091025165155cs_/http://openbroadcast.ch/_templates/css/bbk" rel="stylesheet" type="text/css">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	<script type="text/javascript" src="https://web.archive.org/web/20091025165155js_/http://openbroadcast.ch/mod/commentwall/commentwall.js"><!-- commentwall js --></script>
+	<script type="text/javascript" src="https://web.archive.org/web/20091025165155js_/http://openbroadcast.ch/mod/generic_comments/generic_comments.js"><!-- generic_comments js --></script>
+	<link rel="stylesheet" href="https://web.archive.org/web/20091025165155cs_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/plugins/expandable-0.5rc1/ui.expandable.css" type="text/css">
+	<link rel="stylesheet" href="https://web.archive.org/web/20091025165155cs_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/ui1.7.2/css/theme-obp/jquery-ui-1.7.2.custom.css" type="text/css">
+	<script type="text/javascript" src="https://web.archive.org/web/20091025165155js_/http://openbroadcast.ch/mod/aaa_libjquery/jquery/jquery-1.3.2.min.js"><!-- jquery JS library--></script>
+	<script type="text/javascript" src="https://web.archive.org/web/20091025165155js_/http://openbroadcast.ch/mod/js/obp.lib.min.js"><!-- obp:lib JS library--></script>
+	<script type="text/javascript" src="https://web.archive.org/web/20091025165155js_/http://openbroadcast.ch/mod/js/obp.dynamic.js.php"><!-- obp:dynamic-data JS library--></script>
+	<!--used to be: if lte IE 6-->
+	<!--[if IE]>
+	<script type="text/javascript">
+
+		jQuery(function($)
+		{
+			$('<div id="ie-disclaimer" style="border:1px solid #ff0000; background-color:#ffcccc; margin-bottom:20px;"></div>')
+			.load("http://openbroadcast.ch/mod/template/templates/bbk/ie-disclaimer.html")
+			//.load("http://openbroadcast.ch/mod/template/templates/bbk/ie6-disclaimer.html")
+			.prependTo("#sidebar-holder");
+
+			$("#compatStatement").expandable("open", { duration: 0 });
+		});
+
+	</script>
+	<![endif]-->
+
+	<script type="text/javascript">
+
+		jQuery(function($)
+		{
+			$("a", "#o_b_p").click(function() {
+				var clickindex = $("a", "#o_b_p").index(this);
+
+				$("#claims div").hide();
+				$("#claims div").eq(clickindex).fadeIn();
+
+				return false;
+			});
+
+		});
+
+	</script>
+		
+	<script type="text/javascript">var ELGG_WWWROOT = "https://web.archive.org/web/20091025165155/http://openbroadcast.ch/";</script>
+</head>
+
+<body id="frontpageLoggedout"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+
+
+
+<!-- END WAYBACK TOOLBAR INSERT -->
+ 
+
+	<div id="elggtoolbar"><!-- start toolbar -->
+	<div id="topbar" class="menu">
+
+		<div id="globalmenu">
+			<ul class="globalmenu">
+				
+				<li>
+					<form action="https://web.archive.org/web/20091025165155/http://openbroadcast.ch/login/index.php" method="post">
+						<label>Username<input class="login" type="text" name="username" id="username"></label>
+						<label>Password<input class="login" type="password" name="password" id="password"></label>
+						<input type="hidden" name="remember" id="toolbarcheckbox" value="true">
+						<input type="submit" value="Login">
+					</form>
+				</li>
+			</ul>
+		</div>
+			
+		<div id="globalsearch" style="visibility:hidden;"><!-- open search-header div -->
+			<form id="toolbar_form_loggedin" action="https://web.archive.org/web/20091025165155/http://openbroadcast.ch/search/index.php" method="get">
+				<input class="toolbar_input_loggedin" type="text" name="tag">
+				<input class="toolbar_submit_loggedin" type="submit" value="Search">
+			</form>
+		</div><!-- close search-header div -->
+
+		<div id="mainmenu">
+			<ul id="topmenu">
+				<li class="home"><a href="https://web.archive.org/web/20091025165155/http://openbroadcast.ch/"><img src="https://web.archive.org/web/20091025165155im_/http://openbroadcast.ch/mod/template/templates/bbk/images/obp.16.png" width="16" height="16" alt="Home" title="Home"></a></li><li>Network</li><li>Content</li><li>Program</li>
+			</ul>
+		</div>
+		
+		<div class="clear" style="border-bottom:1px solid #666"></div><!-- der hier ist doof aber wichtig für ie 6 bug fix -->
+
+		<div id="submenu">
+			<div>
+				<ul>
+					
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<li><a href="https://web.archive.org/web/20091025165155/http://openbroadcast.ch/mod/browser/index.php">Browse</a></li>
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<li><a href="https://web.archive.org/web/20091025165155/http://openbroadcast.ch/mod/medialibrary/">Music Library</a><span class="menu-delimiter">|</span></li><a href="https://web.archive.org/web/20091025165155/http://openbroadcast.ch/guest/preprod/">Playlists</a>
+				</ul>
+			</div>
+			<div>
+				<ul>
+					<li class="disabled">Scheduler</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div><!-- end toolbar div -->
+<div style="clear:both;"></div>
+
+	<div id="container"><!-- wraps the header, maincontent and sidebar -->
+		<div id="header">
+			<div id="header-inner" class="fixed">
+				
+			</div>
+		</div><!-- end div#header -->
+
+
+		<div id="content-holder">
+
+			<div class="modmenu menu">
+				<ul>
+					
+				</ul>
+			</div><!-- end div#modmenu -->
+
+			<div id="content-holder-inner" class="fixed">
+				<div id="splitpane-content">
+					<div id="splitpane-content-inner">
+						
+	<div class="system-message ui-state-highlight">
+	<div>
+		You need to log in to see this page.
+	</div>
+</div>
+
+						<!-- SCRIPT IS IN template/lib.php -->
+
+<div id="loggedout">
+
+	<div id="o_b_p">
+		<a href="#">open</a>
+		<a href="#">broadcast</a>
+	</div>
+
+	<div id="claims">
+
+		<!-- <div class="claim"> -->
+
+			<h3>...bringt sich in Startposition</h3>
+
+			<p>
+				Ab dem 15. November berichten wir in einem redaktionellen "Baustellenreport" (von Franziska Oliver) auf DAB+ laufend über die Entwicklung von Open Broadcast, dem ersten vollständig "user-generierten Radio" der Schweiz. Im Unterschied zu anderen Radios, ist bei uns nicht nur der Content, sondern auch der Prozess der Programmgestaltung user-gesteuert.
+			</p>
+			
+			<h3>...startet in Etappen</h3>
+			
+			<p>
+				Ab 15. November senden wir ein musikalisches Testprogramm.
+				Am 1. Januar 2010 beginnen wir mit einem vollständig user-generierten Musikprogramm – unser erster Schritt auf dem Weg zu einem umfassenden Kultur- und Wissensradio, wie in der <a href="https://web.archive.org/web/20091025165155/http://www.bakom.ch/rtv_files/293_2.pdf" title="Konzession Open Broadcast">Konzession vom BAKOM</a> festgehalten.
+			</p>
+			
+			<p>
+				Mehr über Open Broadcast erfährst du in unserem <a href="/web/20091025165155/http://openbroadcast.ch/content/de/about">About</a> und in unseren <a href="/web/20091025165155/http://openbroadcast.ch/content/de/faq">FAQs</a>.
+			</p>
+
+		<!-- </div> -->
+
+	</div>
+</div>
+					</div><!-- end div#splitpane-content-inner -->
+				</div><!-- end div#splitpane-content -->
+				<div id="splitpane-sidebar">
+					<div id="splitpane-sidebar-inner">
+						
+<div id="sidebar-holder">
+    
+<div id="compatStatement" class="sidebar-block dig-state dig-state-expandable ">
+    
+	<div id="compatBox">
+		<div class="ui-expandable-title">Browser Compatibility</div>
+		<div class="sidebar-body">
+			Openbroadcast has been tested to work with the following browsers:
+
+			<ul>
+				<li><a href="https://web.archive.org/web/20091025165155/http://getfirefox.com/">Firefox 3+</a></li>
+				<li><a href="https://web.archive.org/web/20091025165155/http://www.apple.com/safari/download/">Safari 3+</a></li>
+				<!--<li>Internet Explorer 7+</li>-->
+			</ul>
+
+			(Tip: We recommend <a href="https://web.archive.org/web/20091025165155/http://getfirefox.com/">Firefox</a>.
+			<a href="https://web.archive.org/web/20091025165155/http://www.google.com/chrome/">Chrome</a> and
+			<a href="https://web.archive.org/web/20091025165155/http://www.opera.com/">Opera</a> should also work.<br>
+			Use of Internet Explorer is generally discouraged.)
+		</div>
+	</div>
+	
+</div>
+</div>
+					</div><!-- end div#splitpane-sidebar-inner -->
+				</div><!-- end div#splitpane-sidebar -->
+			</div><!-- end div#content-holder-inner -->
+		</div><!-- end div#content-holder -->
+
+
+		<div id="footer-holder">
+			<div id="footer" class="menu fixed">
+				
+				<a href="https://web.archive.org/web/20091025165155/http://openbroadcast.ch/content/de/about">About</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20091025165155/http://openbroadcast.ch/content/de/faq">FAQ</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20091025165155/http://openbroadcast.ch/content/de/nutzungsbedingungen">Terms of Use</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20091025165155/http://openbroadcast.ch/content/de/privatsphaere">Privacy Policy</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20091025165155/https://lab.digris.ch/projects/openbroadcast">Development</a>&nbsp;&nbsp;
+				<a href="https://web.archive.org/web/20091025165155/http://openbroadcast.ch/content/de/contact">Contact</a>&nbsp;&nbsp;
+
+				<div class="performanceinfo"><span class="timeused">0.208881 secs</span> <span class="memoryused">RAM: 11.6MB</span> <span class="included">Included 101 files</span> <span class="dbqueries">DB queries 8</span> </div>
+			</div><!-- end div#footer -->
+			<div id="footer-splitpane-fake"></div>
+		</div><!-- end div#footer-holder -->
+	</div><!-- end div#container -->
+
+
+
+</body></html>
