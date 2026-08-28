@@ -24,12 +24,11 @@
 
 ## Browser-assisted validation
 
-When frontend or integration behavior is involved, browser automation may be used
-against the local development server to inspect rendered output, console errors,
-network requests, and user interactions.
-
-Do not use browser automation against production or external authenticated systems
-unless explicitly requested.
+* Use the Playwright MCP for browser-assisted validation against the local development server.
+* Use the `playwright` MCP browser tools directly; do not use the Codex/ChatGPT browser backend for local application testing.
+* Browser validation may include rendered output, user interactions, console errors, and network requests.
+* Close the Playwright browser when browser-assisted validation is complete.
+* Do not use browser automation against production or external authenticated systems unless explicitly requested.
 
 ## Repository structure
 

@@ -1,6 +1,7 @@
 # os / editor
 .DS_Store
 .idea/
+.vscode/
 
 # python
 *.pyc
@@ -24,6 +25,7 @@ celerybeat-schedule.*
 
 # local tooling state
 .omx/
+.playwright-mcp/
 
 # project-local data
 data/
