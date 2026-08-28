@@ -25,39 +25,30 @@ The project has been around for a long time and has gone through several major r
 
 Only some of the more or less relevant technical information is included here.
 
-* **2008** - PHP / [Elgg ~v1.8](https://github.com/Elgg/Elgg/blob/4.3/CHANGELOG.md#v181b-october-11-2011)
-
+* **2008** - PHP / [Elgg ~v1.8](https://github.com/Elgg/Elgg/blob/4.3/CHANGELOG.md#v181b-october-11-2011)  
   Manual CSS, copy-pasted jQuery, all the way.
 
-* **2009** - Added [CodeIgniter](https://www.codeigniter.com/)
-
+* **2009** - Added [CodeIgniter](https://www.codeigniter.com/)  
   Used for the music management parts of the platform.
 
-* **2011** - Replaced the frontend with [Kohana](https://kohanaframework.org/)
-
-  Adopted LESS and Bootstrap 2 for styling.
-
+* **2011** - Replaced the frontend with [Kohana](https://kohanaframework.org/)  
+  Adopted LESS and Bootstrap 2 for styling.  
   Still kept CodeIgniter and Elgg for editing functionality.
 
-* **2013** - Migrated the backend to [Django](https://www.djangoproject.com/)
-
-  Removed all PHP code, while temporarily running against legacy databases in parallel for authentication.
-
+* **2013** - Migrated the backend to [Django](https://www.djangoproject.com/)  
+  Removed all PHP code, while temporarily running against legacy databases in parallel for authentication.  
   Frontend/templates were still based on the Kohana version.
 
-* **2014** - Moved the primary UI to SASS / [Foundation](https://get.foundation/)
-
-  jQuery remained the primary JavaScript library, with partial enhancements using
+* **2014** - Moved the primary UI to SASS / [Foundation](https://get.foundation/)  
+  jQuery remained the primary JavaScript library, with partial enhancements using  
   [dajax](https://github.com/jorgebastida/django-dajax) /
   [dajaxice](https://github.com/jorgebastida/django-dajaxice)
   and [Nunjucks](https://mozilla.github.io/nunjucks/).
 
 * **2015** - Added a [Tastypie](https://github.com/django-tastypie/django-tastypie)-based REST API.
 
-* **2016** - Started porting the primary UI to Vue
-
-  Introduced package management with npm.
-
+* **2016** - Started porting the primary UI to Vue  
+  Introduced package management with npm.  
   Still had copy-pasted jQuery and manual CSS scattered throughout the codebase, combined with legacy jQuery version(s).
 
 * **2018** - Introduced Vue Single-File Components (SFCs), along with improved frontend tooling.
