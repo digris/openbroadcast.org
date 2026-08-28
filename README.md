@@ -4,9 +4,18 @@ Music library, playlist management, and broadcast scheduling platform.
 
 ## Project
 
+Open Broadcast began as an ambitious community-driven media platform built around music and radio. The original vision went far beyond playlist management and broadcast scheduling: the platform was intended as a shared digital hub for music discovery and archiving, collaborative editorial and journalistic work, radio and audio production, community programming, events, studios, and other forms of participation.
 
-STILL TO BE WRITTEN
+Much of this vision was implemented or experimented with over the project's history, but many parts ultimately proved too complex, did not attract sufficient community participation, or were not sustainable in practice. The scope gradually narrowed to the parts that remained useful and operational.
 
+Today, the surviving platform is primarily an internal tool for managing a music library, creating and curating playlists, and scheduling music for broadcast.
+
+The codebase still carries traces of the broader original vision. Concepts such as fine-grained permissions, different user roles (including the historical "mentor" role), and multi-tenancy were designed for a much larger and more diverse community and organizational model than the platform serves today. Some of these structures remain even though the workflows that originally required them have disappeared or been greatly simplified.
+
+For a detailed account of the original vision and how the project evolved, see [Project History](docs/history/README.md).
+
+
+(PLACEHOLDER))
 
 ## History (Technical)
 
