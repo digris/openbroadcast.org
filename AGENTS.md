@@ -7,6 +7,7 @@
 * Prefer existing `Makefile`, `package.json`, and project scripts over ad-hoc commands.
 * Follow existing repository patterns before introducing new abstractions or dependencies.
 * Keep changes small, scoped, and reviewable.
+* Prefer direct implementation over agent orchestration; use specialized or multi-agent workflows only when they provide a clear benefit.
 
 ## Safety
 
@@ -21,6 +22,15 @@
 * For frontend changes, use the existing package scripts and checks defined by the project.
 * Do not claim completion without fresh validation evidence; if validation cannot be run, state the gap clearly.
 
+## Browser-assisted validation
+
+When frontend or integration behavior is involved, browser automation may be used
+against the local development server to inspect rendered output, console errors,
+network requests, and user interactions.
+
+Do not use browser automation against production or external authenticated systems
+unless explicitly requested.
+
 ## Repository structure
 
 * `obp_core/` — core backend application code.
@@ -28,6 +38,7 @@
 * `config/` — project configuration.
 * `services/` — service-related code.
 * `devsupport/` — development support tooling and helpers.
+* `obp_core/legacy_apps/` - vendored and locally patched legacy dependencies that are unavailable or incompatible in their upstream versions.
 
 <!-- OMX:AGENTS:START -->
 <!-- AUTONOMY DIRECTIVE — DO NOT REMOVE -->
@@ -116,6 +127,7 @@ Rules: max 6 concurrent child agents; child prompts remain under AGENTS.md autho
 - `$name` — invoke a workflow skill.
 - `/skills` — browse available skills.
 - Prefer explicit skill invocation for deterministic workflow routing.
+- Prefer direct implementation over agent orchestration; use specialized or multi-agent workflows only when they provide a clear benefit.
 </invocation_conventions>
 
 <model_routing>
