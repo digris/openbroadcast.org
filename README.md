@@ -82,7 +82,7 @@ Nevertheless, the platform continues to be used daily by the radio [editorial te
 
 ### Plan (as of 2026)
 
-T.B.D.
+ * [Migration Roadmap](docs/migration/README.md)
 
 ## Development Setup
 
