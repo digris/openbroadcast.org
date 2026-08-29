@@ -80,14 +80,6 @@ class ArtistListView(MenuMixin, BaseSearchListView):
         return qs
 
 
-class ArtistDetailViewLegacy(DetailView):
-    model = Artist
-
-    def get(self, request, *args, **kwargs):
-        obj = self.get_object()
-        return redirect(obj.get_absolute_url())
-
-
 class ArtistDetailView(MenuMixin, SectionDetailView):
     model = Artist
     template_name = "alibrary/artist/detail.html"

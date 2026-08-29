@@ -13,11 +13,6 @@ urlpatterns = [
         name="release-detail",
     ),
     url(
-        r"^(?P<pk>\d+)-(?P<slug>[-\w]+)/$",
-        views.ReleaseDetailViewLegacy.as_view(),
-        name="release-detail-legacy",
-    ),
-    url(
         r"^(?P<pk>\d+)/edit/$",
         views.ReleaseEditView.as_view(),
         name="release-edit",

@@ -13,11 +13,6 @@ urlpatterns = [
         name="label-detail",
     ),
     url(
-        r"^(?P<pk>\d+)-(?P<slug>[-\w]+)/$",
-        views.LabelDetailViewLegacy.as_view(),
-        name="label-detail-legacy",
-    ),
-    url(
         r"^(?P<pk>\d+)/edit/$",
         views.LabelEditView.as_view(),
         name="label-edit",

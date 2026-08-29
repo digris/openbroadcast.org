@@ -188,38 +188,6 @@ class MediaListView(MenuMixin, BaseSearchListView):
         return context
 
 
-class MediaDetailViewLegacy(DetailView):
-    model = Media
-
-    def get(self, request, *args, **kwargs):
-        obj = self.get_object()
-        return redirect(obj.get_absolute_url())
-
-    # extra_context = {}
-    #
-    # def get_context_data(self, **kwargs):
-    #
-    #     context = super(MediaDetailViewLegacy, self).get_context_data(**kwargs)
-    #     obj = kwargs.get("object", None)
-    #
-    #     self.extra_context["history"] = []
-    #
-    #     # foreign appearance
-    #     ps = []
-    #     try:
-    #         pis = PlaylistItem.objects.filter(
-    #             object_id=obj.id, content_type=ContentType.objects.get_for_model(obj)
-    #         )
-    #         ps = Playlist.objects.exclude(type="basket").filter(items__in=pis)
-    #     except:
-    #         pass
-    #
-    #     self.extra_context["appearance"] = ps
-    #     context.update(self.extra_context)
-    #
-    #     return context
-
-
 class MediaDetailView(MenuMixin, SectionDetailView):
     model = Media
     template_name = "alibrary/media/detail.html"

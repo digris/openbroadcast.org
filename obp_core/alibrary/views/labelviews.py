@@ -96,14 +96,6 @@ class LabelListView(MenuMixin, BaseSearchListView):
         return qs
 
 
-class LabelDetailViewLegacy(DetailView):
-    model = Label
-
-    def get(self, request, *args, **kwargs):
-        obj = self.get_object()
-        return redirect(obj.get_absolute_url())
-
-
 class LabelDetailView(MenuMixin, SectionDetailView):
     model = Label
     template_name = "alibrary/label/detail.html"

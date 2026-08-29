@@ -14,11 +14,6 @@ urlpatterns = [
         name="media-detail",
     ),
     url(
-        r"^(?P<pk>\d+)-(?P<slug>[-\w]+)/$",
-        views.MediaDetailViewLegacy.as_view(),
-        name="media-detail-legacy",
-    ),
-    url(
         r"^(?P<pk>\d+)/edit/$",
         views.MediaEditView.as_view(),
         name="media-edit",

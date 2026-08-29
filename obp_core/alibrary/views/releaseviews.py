@@ -117,14 +117,6 @@ class ReleaseListView(MenuMixin, BaseSearchListView):
         return qs
 
 
-class ReleaseDetailViewLegacy(DetailView):
-    model = Release
-
-    def get(self, request, *args, **kwargs):
-        obj = self.get_object()
-        return redirect(obj.get_absolute_url())
-
-
 class ReleaseDetailView(MenuMixin, SectionDetailView):
     model = Release
     template_name = "alibrary/release/detail.html"

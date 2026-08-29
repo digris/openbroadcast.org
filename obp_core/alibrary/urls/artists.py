@@ -14,11 +14,6 @@ urlpatterns = [
         name="artist-detail",
     ),
     url(
-        r"^(?P<pk>\d+)-(?P<slug>[-\w]+)/$",
-        views.ArtistDetailViewLegacy.as_view(),
-        name="artist-detail-legacy",
-    ),
-    url(
         r"^(?P<pk>\d+)/edit/$",
         views.ArtistEditView.as_view(),
         name="artist-edit",
