@@ -8,6 +8,9 @@
 * Follow existing repository patterns before introducing new abstractions or dependencies.
 * Keep changes small, scoped, and reviewable.
 * Prefer direct implementation over agent orchestration; use specialized or multi-agent workflows only when they provide a clear benefit.
+* For straightforward maintenance tasks, inspect the relevant existing code and implement directly rather than producing an elaborate plan.
+* Do not expand the requested scope unless necessary to complete the task safely.
+* Prefer adapting existing patterns over inventing replacement architecture.
 
 ## Safety
 
