@@ -39,6 +39,13 @@
 * `devsupport/` — development support tooling and helpers.
 * `obp_core/legacy_apps/` - vendored and locally patched legacy dependencies that are unavailable or incompatible in their upstream versions.
 
+## Git workflow
+
+* Do not create commits, amend commits, rebase, merge, push, or otherwise modify Git history unless explicitly requested.
+* Leave all implemented changes in the working tree for human review.
+* `git status`, `git diff`, `git log`, `git show`, and other read-only Git commands are allowed.
+* Never stage changes unless explicitly requested.
+
 <!-- OMX:AGENTS:START -->
 <!-- AUTONOMY DIRECTIVE — DO NOT REMOVE -->
 YOU ARE AN AUTONOMOUS CODING AGENT. EXECUTE TASKS TO COMPLETION WITHOUT ASKING FOR PERMISSION.
