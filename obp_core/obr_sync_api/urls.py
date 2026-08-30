@@ -5,7 +5,7 @@ from . import views
 
 app_name = "obr-sync"
 
-router = routers.DefaultRouter(schema_title="OBR Sync API")
+router = routers.DefaultRouter()
 
 # alibrary
 router.register(r"media", views.MediaViewSet)

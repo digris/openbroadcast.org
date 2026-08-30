@@ -188,13 +188,16 @@ filterwarnings = [
     "ignore::DeprecationWarning:persisting_theory",
     "ignore::DeprecationWarning:django_elasticsearch_dsl",
 
+    # legacy third-party dependencies
+    "ignore::DeprecationWarning:rest_framework",
+    "ignore::DeprecationWarning:classytags",
+    "ignore::DeprecationWarning:sekizai",
+    "ignore::DeprecationWarning:openid",
+    "ignore::DeprecationWarning:social_core",
+
     # specific UserWarnings from legacy packages
     "ignore:pkg_resources is deprecated as an API.*:UserWarning:adv_cache_tag",
     "ignore:Unable to import floppyforms.gis.*:UserWarning:floppyforms",
-
-    # "ignore::DeprecationWarning:pkg_resources",
-    # "ignore::DeprecationWarning:html5lib",
-    # "ignore::DeprecationWarning:future",
 ]
 
 

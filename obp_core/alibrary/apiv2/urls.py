@@ -3,11 +3,11 @@ from rest_framework import routers
 
 from . import views
 
-router = routers.DefaultRouter(schema_title="Library API")
+router = routers.DefaultRouter()
+
 router.register(r"artist", views.ArtistViewSet)
 router.register(r"label", views.LabelViewSet)
 router.register(r"release", views.ReleaseViewSet)
-# router.register(r"playlist", views.PlaylistViewSet)
 router.register(r"media", views.MediaViewSet)
 
 # app_name = "alibrary"
@@ -23,22 +23,6 @@ urlpatterns = [
         views.playlist_detail,
         name="playlist-detail",
     ),
-    # url(r"^artist/$", views.artist_list, name="artist-list"),
-    # url(
-    #     r"^artist/(?P<uuid>[0-9A-Fa-f-]+)/$", views.artist_detail, name="artist-detail"
-    # ),
-    # url(r"^label/$", views.label_list, name="label-list"),
-    # url(
-    #     r"^label/(?P<uuid>[0-9A-Fa-f-]+)/$", views.label_detail, name="label-detail"
-    # ),
-    # url(r"^release/$", views.release_list, name="release-list"),
-    # url(
-    #     r"^release/(?P<uuid>[0-9A-Fa-f-]+)/$",
-    #     views.release_detail,
-    #     name="release-detail",
-    # ),
-    # url(r"^track/$", views.media_list, name="media-list"),
-    # url(r"^track/(?P<uuid>[0-9A-Fa-f-]+)/$", views.media_detail, name="media-detail"),
     url(
         r"^media/(?P<uuid>[0-9A-Fa-f-]+)/download-master/$",
         views.media_download_master,

@@ -66,6 +66,10 @@ format: format-be format-fe
 test-be:
 	uv run pytest -m "not e2e" -s obp_core/tests/
 
+.PHONY: test-be-fast
+test-be-fast:
+	uv run pytest --nomigrations -m "not e2e" obp_core/tests/
+
 .PHONY: test
 test: test-be
 
