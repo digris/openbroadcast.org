@@ -10,15 +10,17 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
+from navutils import MenuMixin
 from pure_pagination.mixins import PaginationMixin
 
 PAGINATE_BY = getattr(settings, "ACTSTREAM_PAGINATE_BY", (30, 60, 120))
 PAGINATE_BY_DEFAULT = getattr(settings, "ACTSTREAM_PAGINATE_BY_DEFAULT", 120)
 
 
-class ActionListView(PaginationMixin, ListView):
+class ActionListView(MenuMixin, PaginationMixin, ListView):
     context_object_name = "action_list"
     paginate_by = 120
+    current_menu_item = "network:activity-list"
 
     def get_queryset(self):
 

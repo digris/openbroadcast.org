@@ -179,9 +179,7 @@ def capture(
         # Keep useful logging small: failed browser requests only.
         page.on(
             "requestfailed",
-            lambda request: print(
-                f"fail   {request.resource_type:10s} {request.url}"
-            ),
+            lambda request: print(f"fail   {request.resource_type:10s} {request.url}"),
         )
 
         print(f"page   {url}")
@@ -308,7 +306,10 @@ def main() -> int:
         ap.error(str(exc))
     except PlaywrightError as exc:
         message = str(exc)
-        if "Executable doesn't exist" in message or "playwright install" in message.lower():
+        if (
+            "Executable doesn't exist" in message
+            or "playwright install" in message.lower()
+        ):
             print(
                 "error  Playwright Chromium is not installed.\n"
                 "       Run:\n"

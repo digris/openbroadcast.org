@@ -238,12 +238,13 @@ class ProfileDetailView(MenuMixin, DetailView):
         return super().get(request, *args, **kwargs)
 
 
-class ProfileEditView(LoginRequiredMixin, UpdateView):
+class ProfileEditView(MenuMixin, LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = ProfileForm
     template_name = "profiles/profile/edit.html"
     raise_exception = True
     success_url = "#"
+    current_menu_item = "network:profile-list"
 
     def get_object(self, queryset=None):
         obj = get_object_or_404(self.model, uuid=self.kwargs["uuid"])
@@ -319,10 +320,11 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class UserCredentialsView(LoginRequiredMixin, UpdateView):
+class UserCredentialsView(MenuMixin, LoginRequiredMixin, UpdateView):
     model = get_user_model()
     form_class = UserCredentialsForm
     template_name = "profiles/profile/edit_credentials.html"
+    current_menu_item = "network:profile-list"
 
     def get_object(self):
         return self.request.user

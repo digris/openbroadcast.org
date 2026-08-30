@@ -151,13 +151,14 @@ class LabelDetailView(MenuMixin, SectionDetailView):
         return context
 
 
-class LabelEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class LabelEditView(MenuMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Label
     form_class = LabelForm
     template_name = "alibrary/label/edit.html"
     permission_required = "alibrary.change_label"
     raise_exception = True
     success_url = "#"
+    current_menu_item = "catalog:label-list"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

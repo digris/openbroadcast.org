@@ -266,13 +266,14 @@ class MediaDetailView(MenuMixin, SectionDetailView):
         return context
 
 
-class MediaEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class MediaEditView(MenuMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Media
     form_class = MediaForm
     template_name = "alibrary/media/edit.html"
     permission_required = "alibrary.change_media"
     raise_exception = True
     success_url = "#"
+    current_menu_item = "catalog:media-list"
 
     def __init__(self, *args, **kwargs):
         self.created_artists = {}

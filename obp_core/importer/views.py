@@ -14,6 +14,8 @@ from django.views.generic import (
     View,
     RedirectView,
 )
+from navutils import MenuMixin
+
 from importer.forms import ImportCreateModelForm
 from importer.models import Import
 from pure_pagination.mixins import PaginationMixin
@@ -35,12 +37,13 @@ class JSONResponseMixin:
 
 
 class ImportListView(
-    LoginRequiredMixin, PermissionRequiredMixin, PaginationMixin, ListView
+    MenuMixin, LoginRequiredMixin, PermissionRequiredMixin, PaginationMixin, ListView
 ):
     model = Import
     paginate_by = 12
     permission_required = "importer.add_import"
     raise_exception = True
+    current_menu_item = "data:importer"
 
     def get_queryset(self):
         kwargs = {}
@@ -144,7 +147,9 @@ class ImportCreateView(LoginRequiredMixin, PermissionRequiredMixin, View):
         return HttpResponseRedirect(obj.get_absolute_url())
 
 
-class ImportUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ImportUpdateView(
+    MenuMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView
+):
     model = Import
     # template_name = 'importer/import_form.html'
 
@@ -152,6 +157,7 @@ class ImportUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
     permission_required = "importer.change_import"
     raise_exception = True
+    current_menu_item = "data:importer"
 
     def get_template_names(self):
 

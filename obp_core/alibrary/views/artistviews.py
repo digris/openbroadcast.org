@@ -86,7 +86,7 @@ class ArtistDetailView(MenuMixin, SectionDetailView):
     section_template_pattern = "alibrary/artist/detail/_{key}.html"
     context_object_name = "artist"
     url_name = "alibrary:artist-detail"
-    current_menu_item = "catalog:artist-detail"
+    current_menu_item = "catalog:artist-list"
 
     sections = [
         {
@@ -165,13 +165,16 @@ class ArtistDetailView(MenuMixin, SectionDetailView):
         return context
 
 
-class ArtistEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ArtistEditView(
+    MenuMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView
+):
     model = Artist
     form_class = ArtistForm
     template_name = "alibrary/artist/edit.html"
     permission_required = "alibrary.change_artist"
     raise_exception = True
     success_url = "#"
+    current_menu_item = "catalog:artist-list"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

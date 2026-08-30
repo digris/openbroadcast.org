@@ -172,13 +172,16 @@ class ReleaseDetailView(MenuMixin, SectionDetailView):
         )
 
 
-class ReleaseEditView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class ReleaseEditView(
+    MenuMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView
+):
     model = Release
     form_class = ReleaseForm
     template_name = "alibrary/release/edit.html"
     permission_required = "alibrary.change_release"
     raise_exception = True
     success_url = "#"
+    current_menu_item = "catalog:release-list"
 
     def __init__(self, *args, **kwargs):
         self.created_artists = {}

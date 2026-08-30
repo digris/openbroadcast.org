@@ -3,19 +3,22 @@ from django.core.urlresolvers import reverse
 from django.views.generic import DetailView, ListView
 from django.shortcuts import redirect
 from django.utils.translation import ugettext as _
+from navutils import MenuMixin
 
 
-class StationListView(ListView):
+class StationListView(MenuMixin, ListView):
     queryset = Station.objects.all().order_by("name")
     template_name = "abcast/station/list.html"
+    current_menu_item = "network:station-list"
 
 
-class StationDetailView(DetailView):
+class StationDetailView(MenuMixin, DetailView):
     model = Station
     template_name = "abcast/station/detail.html"
     section_template_base = "abcast/station/_detail"
     slug_field = "uuid"
     slug_url_kwarg = "uuid"
+    current_menu_item = "network:station-list"
 
     section = None
     sections = [

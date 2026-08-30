@@ -185,12 +185,17 @@ class PlaylistListView(MenuMixin, BaseSearchListView):
         return qs
 
 
-class PlaylistDetailView(SectionDetailView):
+class PlaylistDetailView(MenuMixin, SectionDetailView):
     model = Playlist
     template_name = "alibrary/playlist/detail.html"
     section_template_pattern = "alibrary/playlist/detail/_{key}.html"
     context_object_name = "playlist"
     url_name = "alibrary:playlist-detail"
+
+    def get_current_menu_item(self):
+        if self.object.user == self.request.user:
+            return "catalog-playlists:playlist-list-own"
+        return "catalog-playlists:playlist-list"
 
     sections = [
         {
@@ -253,7 +258,9 @@ class PlaylistDetailView(SectionDetailView):
         return context
 
 
-class PlaylistCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class PlaylistCreateView(
+    MenuMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView
+):
     model = Playlist
 
     template_name = "alibrary/playlist_create.html"
@@ -261,6 +268,10 @@ class PlaylistCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
 
     permission_required = "alibrary.add_playlist"
     raise_exception = True
+
+    # created playlists are always owned by the requesting user,
+    # so this always corresponds to "My Playlists"
+    current_menu_item = "catalog-playlists:playlist-list-own"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -274,11 +285,17 @@ class PlaylistCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView
         return HttpResponseRedirect(obj.get_edit_url())
 
 
-class PlaylistDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class PlaylistDeleteView(
+    MenuMixin, LoginRequiredMixin, PermissionRequiredMixin, DeleteView
+):
     model = Playlist
     template_name = "alibrary/playlist_delete.html"
     permission_required = "alibrary.delete_playlist"
     raise_exception = True
+
+    # deletion is only allowed for the playlist's own user (see dispatch below),
+    # so this always corresponds to "My Playlists"
+    current_menu_item = "catalog-playlists:playlist-list-own"
 
     # TODO: this is a hack/bug/issue
     # http://stackoverflow.com/questions/7039839/how-do-i-use-reverse-or-an-equivalent-to-refer-to-urls-that-are-hooked-into-dj
@@ -305,7 +322,9 @@ class PlaylistDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView
         return context
 
 
-class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, SectionUpdateView):
+class PlaylistEditView(
+    MenuMixin, LoginRequiredMixin, PermissionRequiredMixin, SectionUpdateView
+):
     model = Playlist
     form_class = PlaylistForm
     # template_name = "alibrary/playlist/_legacy/playlist_edit.html"
@@ -316,6 +335,10 @@ class PlaylistEditView(LoginRequiredMixin, PermissionRequiredMixin, SectionUpdat
 
     permission_required = "alibrary.change_playlist"
     raise_exception = True
+
+    # editing is only allowed for the playlist's own user (see dispatch below),
+    # so this always corresponds to "My Playlists"
+    current_menu_item = "catalog-playlists:playlist-list-own"
 
     sections = [
         {
