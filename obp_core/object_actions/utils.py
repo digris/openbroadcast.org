@@ -187,7 +187,7 @@ def get_object_actions_for_user(obj, user=None):
 
     # log.debug("getting object permissions for {}".format(ct))
 
-    if not ct in ACTION_LOOKUP_FUNCTIONS:
+    if ct not in ACTION_LOOKUP_FUNCTIONS:
         raise Exception(f"no lookup function for {ct}")
 
     return ACTION_LOOKUP_FUNCTIONS[ct](obj, user)

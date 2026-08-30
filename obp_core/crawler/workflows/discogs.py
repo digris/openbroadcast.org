@@ -120,7 +120,7 @@ class DiscogsCrawler:
 
         try:
             r = requests.get(url)
-        except Exception as e:
+        except Exception:
             log.warning(f"unable to load data - {url}")
             return
 
@@ -163,7 +163,7 @@ class DiscogsCrawler:
 
                 if (
                     _service in DISCOGS_RELATION_USE_SERVICES
-                    and not strip_http(strip_query_params(url)) in _relation_urls
+                    and strip_http(strip_query_params(url)) not in _relation_urls
                 ):
                     rel = Relation(
                         content_object=self.obj,
@@ -172,7 +172,7 @@ class DiscogsCrawler:
                     )
                     rel.save()
 
-                    if not "relations" in self._changes:
+                    if "relations" not in self._changes:
                         self._changes["relations"] = []
 
                     self._changes["relations"].append(url)

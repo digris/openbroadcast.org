@@ -77,7 +77,7 @@ class FprintAPIClient:
             log.warning(f"unable to process request: {e}")
             return
 
-        if not r.status_code in [200, 201]:
+        if r.status_code not in [200, 201]:
             log.warning(
                 "unable to ingest code for {} - status: {} - response: {}".format(
                     obj.master.path, r.status_code, r.text
@@ -100,7 +100,7 @@ class FprintAPIClient:
 
         r = requests.delete(url, timeout=2.0)
 
-        if not r.status_code in [200, 202, 204]:
+        if r.status_code not in [200, 202, 204]:
             log.warning(
                 "unable to delete code - status: {} - response: {}".format(
                     r.status_code, r.text

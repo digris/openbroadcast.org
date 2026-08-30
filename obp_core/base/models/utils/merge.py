@@ -119,7 +119,7 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
                 setattr(generic_related_object, field.name, primary_object)
                 try:
                     generic_related_object.save()
-                except Exception as e:
+                except Exception:
                     pass
 
         # Try to fill all missing values in primary object by values of duplicates
@@ -148,7 +148,7 @@ def merge_votes(primary_object, alias_objects):
             try:
                 v.object_id = primary_object.pk
                 v.save()
-            except IntegrityError as e:
+            except IntegrityError:
                 v.delete()
 
     return primary_object

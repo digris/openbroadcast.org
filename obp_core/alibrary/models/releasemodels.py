@@ -378,7 +378,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
             for m in media:
                 try:
                     indicator[m.tracknumber - 1] = 3
-                except Exception as e:
+                except Exception:
                     pass
 
         else:
@@ -493,7 +493,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
             for version in versions:
                 os.remove(version)
 
-        except Exception as e:
+        except Exception:
             pass
 
     def get_cache_file(self, format, version):
@@ -516,7 +516,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         try:
             os.remove(cache_file_path)
 
-        except Exception as e:
+        except Exception:
             pass
 
         archive_file = ZipFile(cache_file_path, "w")
@@ -614,7 +614,7 @@ def release_post_save(sender, instance, **kwargs):
     to_delete = []
     for aa in qs:
         t = (aa.join_phrase, aa.artist)
-        if not t in to_keep:
+        if t not in to_keep:
             to_keep.append(t)
         else:
             to_delete.append(aa.pk)
@@ -625,7 +625,7 @@ def release_post_save(sender, instance, **kwargs):
 
 try:
     tagging_register(Release)
-except Exception as e:
+except Exception:
     pass
 
 

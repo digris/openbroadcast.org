@@ -94,7 +94,7 @@ class MediaResource(ModelResource):
         # votes
         try:
             user_vote = obj.votes.filter(user=bundle.request.user)[0].vote
-        except (TypeError, IndexError) as e:
+        except (TypeError, IndexError):
             user_vote = None
 
         try:
@@ -104,7 +104,7 @@ class MediaResource(ModelResource):
                 "total": obj.vote_total,
                 "user": user_vote,
             }
-        except AttributeError as e:
+        except AttributeError:
             votes = None
         bundle.data["votes"] = votes
 
@@ -187,7 +187,7 @@ class MediaResource(ModelResource):
         # votes
         try:
             user_vote = obj.votes.filter(user=request.user)[0].vote
-        except (TypeError, IndexError) as e:
+        except (TypeError, IndexError):
             user_vote = None
 
         votes = {

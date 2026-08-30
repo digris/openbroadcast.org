@@ -263,7 +263,7 @@ class Importer:
                     "got release: %s by alibrary_release_id: %s"
                     % (r.pk, alibrary_release_id)
                 )
-            except Exception as e:
+            except Exception:
                 log.debug(
                     "could not get release by alibrary_release_id: %s"
                     % alibrary_release_id
@@ -280,7 +280,7 @@ class Importer:
                         r.pk, mb_release_id
                     )
                 )
-            except Exception as e:
+            except Exception:
                 log.debug(
                     "could not find local release by mb_release_id: %s" % mb_release_id
                 )
@@ -341,7 +341,7 @@ class Importer:
                     "got artist: %s by alibrary_artist_id: %s"
                     % (a.pk, alibrary_artist_id)
                 )
-            except Exception as e:
+            except Exception:
                 # print e
                 log.debug(
                     "could not get artist by alibrary_artist_id: %s"
@@ -359,7 +359,7 @@ class Importer:
                         a.pk, mb_artist_id
                     )
                 )
-            except Exception as e:
+            except Exception:
                 # print e
                 log.debug(
                     "could not find local artist by mb_artist_id: %s" % mb_artist_id
@@ -552,24 +552,24 @@ class Importer:
                 mb = results_musicbrainz[0]
 
             # media
-            if not "name" in import_tag or not import_tag["name"]:
+            if "name" not in import_tag or not import_tag["name"]:
                 import_tag["name"] = mb["media"]["name"]
 
-            if not "mb_track_id" in import_tag or not import_tag["mb_track_id"]:
+            if "mb_track_id" not in import_tag or not import_tag["mb_track_id"]:
                 import_tag["mb_track_id"] = mb["media"]["mb_id"]
 
             # release
-            if not "release" in import_tag or not import_tag["release"]:
+            if "release" not in import_tag or not import_tag["release"]:
                 import_tag["release"] = mb["name"]
 
-            if not "mb_release_id" in import_tag or not import_tag["mb_release_id"]:
+            if "mb_release_id" not in import_tag or not import_tag["mb_release_id"]:
                 import_tag["mb_release_id"] = mb["mb_id"]
 
             # artist
-            if not "artist" in import_tag or not import_tag["artist"]:
+            if "artist" not in import_tag or not import_tag["artist"]:
                 import_tag["artist"] = mb["artist"]["name"]
 
-            if not "mb_artist_id" in import_tag or not import_tag["mb_artist_id"]:
+            if "mb_artist_id" not in import_tag or not import_tag["mb_artist_id"]:
                 import_tag["mb_artist_id"] = mb["artist"]["mb_id"]
 
         if "artist" in import_tag:
@@ -596,16 +596,16 @@ class Importer:
 
         # remove musicbrainz & discogs ids in case that assigned by ID3
         if selected_import_tag:
-            if not "mb_release_id" in selected_import_tag:
+            if "mb_release_id" not in selected_import_tag:
                 import_tag.pop("mb_release_id", None)
 
-            if not "mb_artist_id" in selected_import_tag:
+            if "mb_artist_id" not in selected_import_tag:
                 import_tag.pop("mb_artist_id", None)
 
-            if not "mb_track_id" in selected_import_tag:
+            if "mb_track_id" not in selected_import_tag:
                 import_tag.pop("mb_track_id", None)
 
-            if not "mb_label_id" in selected_import_tag:
+            if "mb_label_id" not in selected_import_tag:
                 import_tag.pop("mb_label_id", None)
 
         # clean 'wrong' relations
@@ -752,7 +752,7 @@ def mb_complete_media_task(
                     rel = Relation(content_object=c_a, url=url)
                     rel.save()
 
-                    if not credit["artist"]["id"] in excludes:
+                    if credit["artist"]["id"] not in excludes:
                         if USE_CELERYD:
                             mb_complete_artist_task.delay(
                                 c_a, credit["artist"]["id"], user=user
@@ -1055,7 +1055,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
             img = get_file_from_url(ca_url)
             obj.main_image = img
             obj.save()
-        except Exception as e:
+        except Exception:
             pass
 
     # try to get some additional information from discogs
@@ -1077,13 +1077,13 @@ def mb_complete_release_task(obj, mb_id, user=None):
                 styles = dgs_result.get("styles", [])
                 for style in styles:
                     log.debug("got style: %s" % style)
-                    if not "%s" % style in discogs_tags:
+                    if "%s" % style not in discogs_tags:
                         discogs_tags.append("%s" % style)
 
                 genres = dgs_result.get("genres", [])
                 for genre in genres:
                     log.debug("got genre: %s" % genre)
-                    if not "%s" % genre in discogs_tags:
+                    if "%s" % genre not in discogs_tags:
                         discogs_tags.append("%s" % genre)
 
                 notes = dgs_result.get("notes", None)
@@ -1110,13 +1110,13 @@ def mb_complete_release_task(obj, mb_id, user=None):
                 styles = dgs_result.get("styles", [])
                 for style in styles:
                     log.debug("got style: %s" % style)
-                    if not "%s" % style in discogs_tags:
+                    if "%s" % style not in discogs_tags:
                         discogs_tags.append("%s" % style)
 
                 genres = dgs_result.get("genres", [])
                 for genre in genres:
                     log.debug("got genre: %s" % genre)
-                    if not "%s" % genre in discogs_tags:
+                    if "%s" % genre not in discogs_tags:
                         discogs_tags.append("%s" % genre)
 
                 notes = dgs_result.get("notes", None)
@@ -1225,7 +1225,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
                 lls = lookup.label_by_mb_id(mb_label_id)
                 l = lls[0]
                 log.debug("got label: {} by mb_label_id: {}".format(l.pk, mb_label_id))
-            except Exception as e:
+            except Exception:
                 log.debug("could not get label by mb_label_id: %s" % mb_label_id)
                 log.info("create label with mb_id: %s" % mb_label_id)
                 from alibrary.models.labelmodels import Label
@@ -1326,7 +1326,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
 
         try:
             obj.country = Country.objects.filter(name=result["area"]["name"])[0]
-        except Exception as e:
+        except Exception:
             pass
 
         # retrieve exact name

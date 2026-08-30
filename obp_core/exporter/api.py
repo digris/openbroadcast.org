@@ -61,7 +61,7 @@ class ExportItemResource(ModelResource):
         try:
             # sorry for this, but else relations get blanked out???
             export_session_id = json.loads(request.body)["export_session_id"]
-        except Exception as e:
+        except Exception:
             export_session_id = None
 
         if export_session_id:

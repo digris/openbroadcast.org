@@ -99,7 +99,7 @@ class ProfileDetailView(MenuMixin, DetailView):
             return redirect(redirect_to)
 
         self.section = kwargs.get("section")
-        if not self.section in [s[0] for s in self.sections]:
+        if self.section not in [s[0] for s in self.sections]:
             return HttpResponseBadRequest(f'invalid section "{self.section}"')
 
         return super().dispatch(request, *args, **kwargs)

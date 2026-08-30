@@ -299,7 +299,7 @@ class ReleaseEditView(
                 key = hashlib.md5(m.artist.name.encode("ascii", "ignore")).hexdigest()
                 try:
                     artist = self.created_artists[key]
-                except KeyError as e:
+                except KeyError:
                     m.artist.save()
                     artist = m.artist
                     self.created_artists[key] = artist
@@ -337,7 +337,7 @@ class ReleaseEditView(
             ).hexdigest()
             try:
                 artist = self.created_artists[key]
-            except KeyError as e:
+            except KeyError:
                 pass
             else:
                 delete_pk = albumartist.artist.pk

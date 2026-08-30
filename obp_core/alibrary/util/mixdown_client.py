@@ -77,7 +77,7 @@ class MixdownAPIClient:
             log.warning(f"unable to post data to mixdown api: {e}")
             return
 
-        if not r.status_code in [200, 201]:
+        if r.status_code not in [200, 201]:
             log.warning(f"{r.text}")
             return
 

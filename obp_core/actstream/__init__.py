@@ -1,7 +1,7 @@
 try:
     from actstream.signals import action
 
-except ImportError as e:
+except ImportError:
     pass
 
 default_app_config = "actstream.apps.ActstreamConfig"

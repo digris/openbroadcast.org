@@ -21,7 +21,7 @@ def start_play(item, channel=None, user=None):
     # Broadcast to pushy clients
     pushy_custom("%son-air/" % channel.get_api_url())
 
-    if item.release and not "jingle" in item.release.name.lower():
+    if item.release and "jingle" not in item.release.name.lower():
         try:
             text = "{} by {} - {}".format(
                 item.name, item.artist.name, item.release.name

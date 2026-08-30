@@ -314,7 +314,7 @@ class Autopilot:
 
     def add_playlist_exclude(self, id):
 
-        if not id in self.playlist_ids_to_exclude:
+        if id not in self.playlist_ids_to_exclude:
             self.playlist_ids_to_exclude.append(id)
         return self.playlist_ids_to_exclude
 

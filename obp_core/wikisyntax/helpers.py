@@ -30,7 +30,7 @@ def wikisafe_markdown(value):
             .replace("LBRACK666", "[[")
             .replace("RBRACK666", "]]")
         )
-    except Exception as e:
+    except Exception:
         html = value
 
     return html

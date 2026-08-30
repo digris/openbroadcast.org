@@ -204,7 +204,7 @@ def get_filter_data(facets, facets_definition=None):
     _filters = []
 
     if facets_definition:
-        keys = [f[0] for f in facets_definition if not f[0] in _ignore_keys]
+        keys = [f[0] for f in facets_definition if f[0] not in _ignore_keys]
     else:
         keys = [k for k in dir(facets) if k in _ignore_keys]
 
@@ -326,7 +326,7 @@ def get_tagcloud_data(tags, request, steps=6, distribution=LOGARITHMIC, group_by
         for tag in tags:
             try:
                 tag["hide_level"] = hidden[tag["weight"] - 1]
-            except Exception as e:
+            except Exception:
                 pass
 
             if tag["name"] in current_tags:

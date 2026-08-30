@@ -63,10 +63,10 @@ class Process:
         self.target = target
         self.archive_format = str(archive_format)
 
-        if not self.format in AVAILABLE_FORMATS:
+        if self.format not in AVAILABLE_FORMATS:
             raise Exception("Format not available.")
 
-        if not self.archive_format in AVAILABLE_ARCHIVE_FORMATS:
+        if self.archive_format not in AVAILABLE_ARCHIVE_FORMATS:
             raise Exception("Archive format not available.")
 
         log.info(
@@ -136,7 +136,7 @@ class Process:
         try:
             if not EXPORTER_DEBUG:
                 shutil.rmtree(self.archive_dir, True)
-        except Exception as e:
+        except Exception:
             pass
 
     def process_item(self, item):
@@ -208,7 +208,7 @@ class Process:
                 shutil.copyfile(
                     image.path, os.path.join(item_cache_dir, IMAGE_FILENAME)
                 )
-            except Exception as e:
+            except Exception:
                 log.warning(f"unable to copy image: {image.path}")
 
         if INCLUDE_README:
@@ -251,7 +251,7 @@ class Process:
                         ),
                     )
                     log.debug("include mixdown file for playlist")
-                except Exception as e:
+                except Exception:
                     log.warning(
                         "unable to copy mixdown file: {}".format(
                             content_object.mixdown_file.path
@@ -395,7 +395,6 @@ class Process:
         from mutagen.mp3 import MP3
         from mutagen.id3 import (
             ID3,
-            TRCK,
             TIT2,
             TPE1,
             TALB,
@@ -413,7 +412,7 @@ class Process:
         try:
             tags = ID3(path)
             # log.debug("existing tags: {}".format(tags))
-        except Exception as e:
+        except Exception:
             # log.debug("no existing tags: {}".format(e))
 
             """

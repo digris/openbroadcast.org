@@ -63,7 +63,7 @@ def status(id, details):
     else:
         try:
             massimport = Massimport.objects.get(pk=id)
-        except Massimport.DoesNotExist as e:
+        except Massimport.DoesNotExist:
             click.secho(
                 f"Massimport session with id: {id} does not exist.",
                 bold=True,
@@ -135,7 +135,7 @@ def delete(id):
     """Delete session"""
     try:
         massimport = Massimport.objects.get(pk=id)
-    except Massimport.DoesNotExist as e:
+    except Massimport.DoesNotExist:
         click.secho(
             f"Massimport session with id: {id} does not exist.",
             bold=True,
@@ -153,7 +153,7 @@ def scan(id):
     """(Re-)scan directory"""
     try:
         massimport = Massimport.objects.get(pk=id)
-    except Massimport.DoesNotExist as e:
+    except Massimport.DoesNotExist:
         click.secho(
             f"Massimport session with id: {id} does not exist.",
             bold=True,
@@ -170,7 +170,7 @@ def update(id):
     """Update/poll status"""
     try:
         massimport = Massimport.objects.get(pk=id)
-    except Massimport.DoesNotExist as e:
+    except Massimport.DoesNotExist:
         click.secho(
             f"Massimport session with id: {id} does not exist.",
             bold=True,
@@ -188,7 +188,7 @@ def enqueue(id, limit):
     """Send files to import queue"""
     try:
         massimport = Massimport.objects.get(pk=id)
-    except Massimport.DoesNotExist as e:
+    except Massimport.DoesNotExist:
         click.secho(
             f"Massimport session with id: {id} does not exist.",
             bold=True,

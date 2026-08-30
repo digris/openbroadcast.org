@@ -97,5 +97,5 @@ def statistics_as_csv(channel, start, end, output=None):
         for record in get_records(channel, start, end):
             try:
                 writer.writerow(record)
-            except UnicodeEncodeError as e:
+            except UnicodeEncodeError:
                 pass

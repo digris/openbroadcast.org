@@ -176,8 +176,7 @@ class ArtworkCrawler:
         ctype = _bits[-2].strip()
 
         image_url = "http://coverartarchive.org/{ctype}/{id}/front".format(
-            id=id, ctype=ctype, host=DISCOGS_HOST
-        )
+            id=id, ctype=ctype, )
 
         r = requests.get(image_url, allow_redirects=False)
 

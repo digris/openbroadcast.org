@@ -14,7 +14,7 @@ def rating_for_object(context, object):
 
     try:
         user_vote = object.votes.filter(user=request.user)[0].vote
-    except (TypeError, IndexError) as e:
+    except (TypeError, IndexError):
         user_vote = None
 
     choices = []

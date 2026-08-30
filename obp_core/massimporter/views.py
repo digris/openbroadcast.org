@@ -80,7 +80,7 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
             }
 
             # append data to all results and 'false positive' list if name mismatch
-            if not (m_name.lower() in m_orig.lower()):
+            if m_name.lower() not in m_orig.lower():
                 # try:
                 #     identifier = Identifier()
                 #     metadata = identifier.extract_metadata(item.file)

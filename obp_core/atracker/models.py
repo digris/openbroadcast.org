@@ -155,7 +155,7 @@ def actstream_link(sender, instance, created, **kwargs):
                 verb=instance.event_type.title,
                 target=instance.content_object,
             )
-    except Exception as e:
+    except Exception:
         log.info("unable to send action to stream")
 
 

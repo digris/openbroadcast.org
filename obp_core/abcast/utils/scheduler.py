@@ -62,7 +62,7 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
                 uri = None
 
                 if EXCHANGE == "http":
-                    raise NotImplemented("http transport not implemented anymore")
+                    raise NotImplementedError("http transport not implemented anymore")
 
                 if EXCHANGE == "fs":
                     uri = co.get_playout_file(absolute=True)

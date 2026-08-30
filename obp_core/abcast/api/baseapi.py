@@ -332,7 +332,7 @@ class ChannelResource(ModelResource):
                     "display_name": emission.user.profile.get_display_name(),
                     "absolute_url": emission.user.get_absolute_url(),
                 }
-                if not item in content_programmers:
+                if item not in content_programmers:
                     content_programmers.append(item)
 
             content_creators = []
@@ -341,7 +341,7 @@ class ChannelResource(ModelResource):
                     "display_name": emission.content_object.user.profile.get_display_name(),
                     "absolute_url": emission.content_object.user.get_absolute_url(),
                 }
-                if not item in content_creators:
+                if item not in content_creators:
                     content_creators.append(item)
 
             objects.append(

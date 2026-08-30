@@ -648,7 +648,7 @@ class DiscogsAPILookup(APILookup):
             """
             try:
                 track["title"] = track["title"].replace("\x92", "'").strip()
-            except Exception as e:
+            except Exception:
                 pass
 
             res["tracklist"].append(track)
@@ -700,7 +700,7 @@ class DiscogsAPILookup(APILookup):
                 res["remote_image"] = res["main_image"] = self.map_image(data[k])
 
             try:
-                if not mk in res:
+                if mk not in res:
                     res[mk] = data[k]
             except:
                 pass
@@ -754,7 +754,7 @@ class DiscogsAPILookup(APILookup):
                 res["remote_image"] = res["main_image"] = self.map_image(data[k])
 
             try:
-                if not mk in res:
+                if mk not in res:
                     res[mk] = data[k]
             except:
                 pass

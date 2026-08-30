@@ -10,7 +10,7 @@ def invalidate_artist_cache(sender, instance, created, **kwargs):
     try:
         Artist.get_releases.invalidate(instance)
         Artist.get_media.invalidate(instance)
-    except Exception as e:
+    except Exception:
         pass
 
 
@@ -20,5 +20,5 @@ def invalidate_related_artist_cache(sender, instance, created, **kwargs):
         if instance.artist:
             Artist.get_releases.invalidate(instance.artist)
             Artist.get_media.invalidate(instance.artist)
-    except Exception as e:
+    except Exception:
         pass

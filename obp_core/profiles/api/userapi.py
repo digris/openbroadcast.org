@@ -91,7 +91,7 @@ class UserResource(ModelResource):
         try:
             data = json.loads(request.body)
 
-        except ValueError as e:
+        except ValueError:
             if request.GET:
                 data = request.GET
             if request.POST:
@@ -144,7 +144,7 @@ class UserResource(ModelResource):
         try:
             data = json.loads(request.body)
 
-        except ValueError as e:
+        except ValueError:
             if request.POST:
                 data = request.POST
 
@@ -184,7 +184,7 @@ class UserResource(ModelResource):
         try:
             data = json.loads(request.body)
 
-        except ValueError as e:
+        except ValueError:
             if request.POST:
                 data = request.POST
 
@@ -222,7 +222,7 @@ class UserResource(ModelResource):
         try:
             data = json.loads(request.body)
 
-        except ValueError as e:
+        except ValueError:
             if request.GET:
                 data = request.GET
 

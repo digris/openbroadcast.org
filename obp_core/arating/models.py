@@ -43,7 +43,7 @@ def post_save_vote(sender, **kwargs):
         from pushy.util import pushy_custom
 
         pushy_custom(obj.content_object.get_api_url(), type="update")
-    except Exception as e:
+    except Exception:
         pass
 
 

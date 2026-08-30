@@ -32,7 +32,7 @@ def fold(unicode_string, replacement=""):
         # If string contains only ASCII characters, just return it.
         unicode_string.encode("ascii")
         return unicode_string
-    except (UnicodeDecodeError, UnicodeEncodeError) as ex:
+    except (UnicodeDecodeError, UnicodeEncodeError):
         pass
 
     if replacement:

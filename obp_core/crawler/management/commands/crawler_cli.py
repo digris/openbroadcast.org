@@ -248,7 +248,7 @@ def crawl_viaf_isni(cache_for):
                     isni = data["ISNI"][0]
                     click.secho(f"got ISNI {isni} for {obj}", fg="green")
                     type(obj).objects.filter(pk=obj.pk).update(isni_code=isni)
-                except Exception as e:
+                except Exception:
                     click.secho(f"unable to get ISNI for {obj}", fg="red")
                     pass
 

@@ -208,13 +208,13 @@ class Identifier:
         if ext == ".mp3":
             try:
                 meta = EasyID3(file.path)
-            except Exception as e:
+            except Exception:
                 log.debug("unable to process MP3")
 
         if ext in [".mp4", ".m4a"]:
             try:
                 meta = EasyMP4(file.path)
-            except Exception as e:
+            except Exception:
                 log.debug("unable to process M4A")
 
         if not meta:
@@ -266,7 +266,7 @@ class Identifier:
                     dataset["media_tracknumber"] = int(
                         meta["tracknumber"][0].split("/")[0]
                     )
-                except Exception as e:
+                except Exception:
                     pass
                 log.debug('metadata missing "media_tracknumber": %s' % (e))
 
@@ -275,10 +275,10 @@ class Identifier:
                 dataset["media_tracknumber"] = int(tn[0])
                 dataset["media_totaltracks"] = int(tn[1])
 
-            except Exception as e:
+            except Exception:
                 pass
 
-        except Exception as e:
+        except Exception:
             log.debug("unable to extract tracknumber from metadata")
 
         # try to extract tracknumber from filename
@@ -303,7 +303,7 @@ class Identifier:
         # Artist
         try:
             dataset["artist_name"] = meta["artist"][0]
-        except Exception as e:
+        except Exception:
             pass
 
         try:
@@ -313,42 +313,42 @@ class Identifier:
             # so a TODO: fix this at some point of time...
             dataset["artist_mb_id"] = "/".join(meta["musicbrainz_artistid"])
 
-        except Exception as e:
+        except Exception:
             pass
 
         try:
             dataset["performer_name"] = meta["performer"][0]
-        except Exception as e:
+        except Exception:
             pass
 
         # Release
         try:
             dataset["release_name"] = meta["album"][0]
-        except Exception as e:
+        except Exception:
             # print e
             pass
 
         try:
             dataset["release_mb_id"] = meta["musicbrainz_albumid"][0]
-        except Exception as e:
+        except Exception:
             # print e
             pass
 
         try:
             dataset["release_date"] = meta["date"][0]
-        except Exception as e:
+        except Exception:
             # print e
             pass
 
         try:
             dataset["release_releasecountry"] = meta["releasecountry"][0]
-        except Exception as e:
+        except Exception:
             # print e
             pass
 
         try:
             dataset["release_status"] = meta["musicbrainz_albumstatus"][0]
-        except Exception as e:
+        except Exception:
             # print e
             pass
 
@@ -356,42 +356,42 @@ class Identifier:
         try:
             try:
                 dataset["label_name"] = meta["organization"][0]
-            except Exception as e:
+            except Exception:
                 # print e
                 pass
 
             try:
                 dataset["label_name"] = meta["label"][0]
-            except Exception as e:
+            except Exception:
                 # print e
                 pass
 
-        except Exception as e:
+        except Exception:
             # print e
             pass
 
         try:
             dataset["label_code"] = meta["labelno"][0]
-        except Exception as e:
+        except Exception:
             # print e
             pass
 
         # Misc
         try:
             dataset["media_copyright"] = meta["copyright"][0]
-        except Exception as e:
+        except Exception:
             # print e
             pass
 
         try:
             dataset["media_comment"] = meta["comment"][0]
-        except Exception as e:
+        except Exception:
             # print e
             pass
 
         try:
             dataset["media_bpm"] = meta["bpm"][0]
-        except Exception as e:
+        except Exception:
             # print e
             pass
 
@@ -482,13 +482,13 @@ class Identifier:
         try:
             tracknumber = obj.results_tag["media_tracknumber"]
             log.debug("tracknumber from metadata: %s" % tracknumber)
-        except Exception as e:
+        except Exception:
             log.debug("no tracknumber in metadata")
 
         try:
             releasedate = obj.results_tag["release_date"]
             log.debug("releasedate from metadata: %s" % releasedate)
-        except Exception as e:
+        except Exception:
             log.debug("no releasedate in metadata")
 
         """
@@ -637,7 +637,7 @@ class Identifier:
                             if len(sorted_releases) > 1:
                                 named_releases = {}
                                 for t_rel in sorted_releases:
-                                    if not t_rel["title"] in named_releases:
+                                    if t_rel["title"] not in named_releases:
                                         named_releases[t_rel["title"]] = []
                                         named_releases[t_rel["title"]].append(t_rel)
                                         # log.debug('adding new release name: "%s"' % t_rel['title'])
@@ -661,7 +661,7 @@ class Identifier:
                                 selected_release["recording"] = result["recordings"][0]
                                 try:
                                     selected_release["recordings"]["releases"] = None
-                                except Exception as e:
+                                except Exception:
                                     pass
                                     # print e
 
@@ -956,7 +956,7 @@ class Identifier:
 
             try:
                 sorted_releases = sorted(releases, key=lambda k: k["date"])
-            except Exception as e:
+            except Exception:
                 sorted_releases = releases
 
             # sorted_releases.reverse()
@@ -1111,7 +1111,7 @@ class Identifier:
                 except:
                     pass
 
-            except Exception as e:
+            except Exception:
                 pass
 
             r["label"] = l
@@ -1130,10 +1130,10 @@ class Identifier:
                                 relation["target"], "uri150"
                             )
 
-                except Exception as e:
+                except Exception:
                     pass
 
-            except Exception as e:
+            except Exception:
                 pass
 
             r["relations"] = rel

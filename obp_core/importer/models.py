@@ -161,15 +161,15 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
         for file in self.files.filter(status=2):
             it = file.import_tag
             if "mb_track_id" in it:
-                if not it["mb_track_id"] in inserts["media_mb"]:
+                if it["mb_track_id"] not in inserts["media_mb"]:
                     inserts["media_mb"].append(it["mb_track_id"])
 
             if "mb_artist_id" in it:
-                if not it["mb_artist_id"] in inserts["artist_mb"]:
+                if it["mb_artist_id"] not in inserts["artist_mb"]:
                     inserts["artist_mb"].append(it["mb_artist_id"])
 
             if "mb_release_id" in it:
-                if not it["mb_release_id"] in inserts["release_mb"]:
+                if it["mb_release_id"] not in inserts["release_mb"]:
                     inserts["release_mb"].append(it["mb_release_id"])
 
         return inserts
@@ -227,7 +227,7 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
                 object_id=item.pk, content_type=ctype, import_session=self
             )[0]
             created = False
-        except Exception as e:
+        except Exception:
             # log.warning('unable to add importitem: {} - {}'.format(item, e))
             pass
 
@@ -245,7 +245,7 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
         importitems = {}
         for obj in [i for i in qs if i.content_object and i.content_type.model in cts]:
             ct = f"{obj.content_type.model}"
-            if not ct in importitems:
+            if ct not in importitems:
                 importitems[ct] = {
                     "name": obj.content_object._meta.verbose_name_plural,
                     "url": reverse(f"alibrary:{ct}-list"),
@@ -459,7 +459,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
                     obj.media = Media.objects.get(uuid=obp_media_uuid)
                     obj.save()
                     return
-                except Media.DoesNotExist as e:
+                except Media.DoesNotExist:
                     pass
 
             # check if we have musicbrainz-data available

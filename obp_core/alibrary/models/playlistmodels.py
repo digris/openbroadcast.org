@@ -800,7 +800,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         try:
             self.duration = self.get_duration()
-        except Exception as e:
+        except Exception:
             self.duration = 0
 
         # auto-add incremented series number
@@ -831,7 +831,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
 try:
     tagging_register(Playlist)
-except Exception as e:
+except Exception:
     pass
 
 arating.enable_voting_on(Playlist)

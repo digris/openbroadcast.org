@@ -15,7 +15,6 @@ from profiles.models import Profile
 from abcast.models import Emission
 from tagging.models import Tag
 from arating.models import Vote
-from tagging.models import Tag
 
 User = get_user_model()
 

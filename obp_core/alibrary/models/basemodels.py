@@ -116,7 +116,7 @@ class Distributor(
 
 try:
     tagging_register(Distributor)
-except Exception as e:
+except Exception:
     pass
 
 

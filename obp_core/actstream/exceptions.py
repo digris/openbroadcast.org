@@ -45,5 +45,5 @@ def check_actionable_model(model):
     ``ModelNotActionable`` exception.
     """
     model = model if hasattr(model, "objects") else model.__class__
-    if not model in get_models().values():
+    if model not in get_models().values():
         raise ModelNotActionable(model)

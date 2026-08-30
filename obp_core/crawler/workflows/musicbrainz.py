@@ -93,11 +93,11 @@ def release_fetch_media_mb_ids(obj):
             r = requests.get(url)
             _data = r.json()
             log.debug(f"successfully loaded data from {url}")
-        except Exception as e:
+        except Exception:
             log.warning(f"unable to load data from {url}")
             return
 
-        if not "media" in _data:
+        if "media" not in _data:
             log.warning(f"unable to load media {url}")
             return
 
@@ -129,7 +129,7 @@ def release_fetch_media_mb_ids(obj):
 
             try:
                 _track = _tracks[m.tracknumber]
-            except KeyError as e:
+            except KeyError:
                 return
 
             log.debug(
@@ -147,7 +147,7 @@ def release_fetch_media_mb_ids(obj):
                     )
                     try:
                         rel = Relation.objects.get(object_id=m.pk, url=mb_url)
-                    except Relation.DoesNotExist as e:
+                    except Relation.DoesNotExist:
                         log.debug(f"relation not here yet, so add it: {mb_url}")
                         rel = Relation(content_object=m, url=mb_url)
                         rel.save()
@@ -205,7 +205,7 @@ class MBCrawler:
 
         try:
             r = requests.get(url)
-        except Exception as e:
+        except Exception:
             log.warning(f"unable to load data from {url}")
             return {}
 
@@ -241,12 +241,12 @@ class MBCrawler:
 
                 if (
                     relation["type"] in MB_RELATION_USE_SERVICES
-                    and not strip_http(_url) in _relation_urls
+                    and strip_http(_url) not in _relation_urls
                 ):
                     rel = Relation(content_object=self.obj, url=_url, service=_service)
                     rel.save()
 
-                    if not "relations" in self._changes:
+                    if "relations" not in self._changes:
                         self._changes["relations"] = []
 
                     self._changes["relations"].append(_url)

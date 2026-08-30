@@ -166,7 +166,7 @@ def massimport_post_save(sender, instance, created, **kwargs):
 
     try:
         os.makedirs(instance.abs_cache_directory)
-    except OSError as e:
+    except OSError:
         pass
 
 

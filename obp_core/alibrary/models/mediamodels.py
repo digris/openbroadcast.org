@@ -450,7 +450,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     def get_master_path(self):
         try:
             return self.master.path
-        except Exception as e:
+        except Exception:
             log.warning("unable to get master path for: %s" % self.name)
 
     def get_directory(self, absolute=False):
@@ -605,7 +605,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                     if not self.original_filename and self.master.name:
                         try:
                             self.original_filename = self.master.name[0:250]
-                        except Exception as e:
+                        except Exception:
                             log.warning(
                                 "unable to update original_filename on media: {}".format(
                                     self.pk
@@ -698,7 +698,7 @@ arating.enable_voting_on(Media)
 
 try:
     tagging_register(Media)
-except Exception as e:
+except Exception:
     pass
 
 

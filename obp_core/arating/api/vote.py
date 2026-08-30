@@ -128,7 +128,7 @@ class VoteResource(ModelResource):
             if not user:
                 return HttpUnauthorized("No permission to update this resource.")
 
-            if not vote in (-1, 1):
+            if vote not in (-1, 1):
                 return HttpUnauthorized("Bad vote value.")
 
             vote_object, created = Vote.objects.get_or_create(

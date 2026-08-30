@@ -104,7 +104,7 @@ class ProfileDocument(DocType):
                     .get_thumbnail(THUMBNAIL_OPT)
                     .url
                 )
-            except InvalidImageFormatError as e:
+            except InvalidImageFormatError:
                 pass
 
     # def prepare_recent_activity(self, instance):

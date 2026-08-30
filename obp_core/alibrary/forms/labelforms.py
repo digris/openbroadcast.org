@@ -13,7 +13,6 @@ from django.contrib.contenttypes.forms import (
     BaseGenericInlineFormSet,
     generic_inlineformset_factory,
 )
-from django.forms import ModelForm, Form
 from django.forms.widgets import FileInput
 from django.utils.translation import ugettext as _
 from base.fields.widgets import ReadOnlyIconField

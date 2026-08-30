@@ -143,7 +143,7 @@ class MarkdownTextField(TextField):
             html = markdown(value, safe_mode=self._markdown_safe)
             setattr(model_instance, self._html_field, html)
             return value
-        except Exception as e:
+        except Exception:
             # print e
             return ""
 
