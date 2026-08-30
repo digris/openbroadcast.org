@@ -159,9 +159,7 @@ class Massimport(BaseModel):
 def massimport_post_save(sender, instance, created, **kwargs):
 
     ImportSession.objects.filter(pk=instance.import_session.pk).update(
-        notes="Massimport ID: {} - Files: {}".format(
-            instance.id, instance.files.count()
-        )
+        notes=f"Massimport ID: {instance.id} - Files: {instance.files.count()}"
     )
 
     try:

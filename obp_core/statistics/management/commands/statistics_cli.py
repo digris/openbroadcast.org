@@ -26,9 +26,7 @@ def cli():
 def label_statistics(scope, id, year, path):
 
     print(
-        "generate label statistics: scope: {} - id: {} - year: {} - output: {}".format(
-            scope, id, year, path
-        )
+        f"generate label statistics: scope: {scope} - id: {id} - year: {year} - output: {path}"
     )
 
     event_type_id = EventType.objects.get(title=scope).pk

@@ -18,24 +18,19 @@ RESAMPLE_RATE = 8000
 
 
 def _validate_file(path):
-    ca.logger.debug("validate file: {}".format(path))
+    ca.logger.debug(f"validate file: {path}")
     pass
 
 
 def _convert_to_wav(path):
 
-    ca.logger.debug("convert to wav: {}".format(path))
+    ca.logger.debug(f"convert to wav: {path}")
 
     wav_path = tempfile.mkstemp(suffix=".wav")[1]
 
-    command = "{binary} -y -v error -i {input} -ar {sample_rate} {output}".format(
-        binary=FFMPEG_BINARY,
-        input=path,
-        sample_rate=RESAMPLE_RATE,
-        output=wav_path,
-    )
+    command = f"{FFMPEG_BINARY} -y -v error -i {path} -ar {RESAMPLE_RATE} {wav_path}"
 
-    ca.logger.info("command: {}".format(command))
+    ca.logger.info(f"command: {command}")
 
     with subprocess.Popen(
         command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True
@@ -46,12 +41,10 @@ def _convert_to_wav(path):
     if not exit_code == 0 or errors:
         os.unlink(wav_path)
         raise AudioWaveformException(
-            "unable to process file (ffmpeg). exit code {} \n{}".format(
-                exit_code, output
-            )
+            f"unable to process file (ffmpeg). exit code {exit_code} \n{output}"
         )
 
-    ca.logger.debug("command output: \n{}".format(output))
+    ca.logger.debug(f"command output: \n{output}")
 
     return wav_path
 
@@ -61,13 +54,11 @@ def _get_duration(path):
     ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 /data/data/sample.mp3
     """
 
-    ca.logger.debug("get duration for: {}".format(path))
+    ca.logger.debug(f"get duration for: {path}")
 
-    command = "{binary} -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 {input}".format(
-        binary=FFPROBE_BINARY, input=path
-    )
+    command = f"{FFPROBE_BINARY} -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 {path}"
 
-    ca.logger.info("command: {}".format(command))
+    ca.logger.info(f"command: {command}")
 
     with subprocess.Popen(
         command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True
@@ -77,12 +68,10 @@ def _get_duration(path):
 
     if not exit_code == 0 or errors:
         raise AudioWaveformException(
-            "unable to process file (ffprobe). exit code {} \n{}".format(
-                exit_code, output
-            )
+            f"unable to process file (ffprobe). exit code {exit_code} \n{output}"
         )
 
-    ca.logger.debug("command output: \n{}".format(output))
+    ca.logger.debug(f"command output: \n{output}")
 
     return int(float(output.strip()))
 
@@ -92,22 +81,13 @@ def _generate_png(path, duration, width=500, height=100, fg="000000", bg="ffffff
     audiowaveform --no-axis-labels --background-color ffffff --waveform-color ffffff00 -w 1800 -h 301 -b 8 -e 292 -i ./data/Always.mp3 -o ./data/wfa.png
     """
 
-    ca.logger.debug("convert to wav: {}".format(path))
+    ca.logger.debug(f"convert to wav: {path}")
 
     png_path = tempfile.mkstemp(suffix=".png")[1]
 
-    command = "{binary} --no-axis-labels --background-color {bg} --waveform-color {fg} -w {width} -h {height} -b 8 -e {duration} -i {input} -o {output}".format(
-        binary=AUDIOWAVEFORM_BINARY,
-        duration=duration,
-        fg=fg,
-        bg=bg,
-        height=height,
-        width=width,
-        input=path,
-        output=png_path,
-    )
+    command = f"{AUDIOWAVEFORM_BINARY} --no-axis-labels --background-color {bg} --waveform-color {fg} -w {width} -h {height} -b 8 -e {duration} -i {path} -o {png_path}"
 
-    ca.logger.info("command: {}".format(command))
+    ca.logger.info(f"command: {command}")
 
     with subprocess.Popen(
         command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True
@@ -117,12 +97,10 @@ def _generate_png(path, duration, width=500, height=100, fg="000000", bg="ffffff
 
     if not exit_code == 0 or errors:
         raise AudioWaveformException(
-            "unable to process file (ffprobe). exit code {} \n{}".format(
-                exit_code, output
-            )
+            f"unable to process file (ffprobe). exit code {exit_code} \n{output}"
         )
 
-    ca.logger.debug("command output: \n{}".format(output))
+    ca.logger.debug(f"command output: \n{output}")
 
     # just mocking...
     # import shutil
@@ -133,8 +111,8 @@ def _generate_png(path, duration, width=500, height=100, fg="000000", bg="ffffff
 
 
 def waveform_as_png(path, width, height, fg, bg, delete_after_processing=False):
-    ca.logger.info("info bla: {}".format(path))
-    ca.logger.warning("warning bla: {}".format(path))
+    ca.logger.info(f"info bla: {path}")
+    ca.logger.warning(f"warning bla: {path}")
 
     wav_path = _convert_to_wav(path)
     duration = _get_duration(wav_path)

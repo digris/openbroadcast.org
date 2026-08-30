@@ -89,7 +89,7 @@ class Identifier:
     def id_by_sha1(self, file):
 
         sha1 = sha1_by_file(file)
-        log.debug("generated SHA1 {} for {}".format(sha1, file))
+        log.debug(f"generated SHA1 {sha1} for {file}")
 
         from alibrary.models import Media
 
@@ -541,10 +541,7 @@ class Identifier:
                 http://www.musicbrainz.org/ws/2/recording/?query=rid:1e701b4e-2b6e-4509-af29-b8df2cdc8225%20AND%20number:3&fmt=json
                 """
 
-                url = "http://{}/ws/2/recording/?fmt=json&query=rid:{}".format(
-                    MUSICBRAINZ_HOST,
-                    recording_id,
-                )
+                url = f"http://{MUSICBRAINZ_HOST}/ws/2/recording/?fmt=json&query=rid:{recording_id}"
 
                 if tracknumber and not skip_tracknumber:
                     url = "{}{}{}".format(url, "%20AND%20number:", tracknumber)

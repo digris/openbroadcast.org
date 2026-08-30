@@ -249,9 +249,7 @@ def post_save_emission_task(obj):
     if obj.time_end > range_start and obj.time_start < range_end:
         # notify pypy
         log.debug(
-            "Emission in critical range ({:} - {:}) - will notify pypo".format(
-                range_start, range_end
-            )
+            f"Emission in critical range ({range_start} - {range_end}) - will notify pypo"
         )
         from base.pypo.gateway import send as pypo_send
         from abcast.utils import scheduler
@@ -385,7 +383,7 @@ class Daypart(models.Model):
         ordering = ("position", "time_start")
 
     def __str__(self):
-        return "{} - {}".format(self.time_start, self.time_end)
+        return f"{self.time_start} - {self.time_end}"
 
     @property
     def duration(self):

@@ -25,11 +25,7 @@ class ApproximateDateSerializer(serializers.Serializer):
     def to_representation(self, instance):
         if not instance:
             return None
-        return "{year:04d}-{month:02d}-{day:02d}".format(
-            year=instance.year,
-            month=instance.month or 1,
-            day=instance.day or 1,
-        )
+        return f"{instance.year:04d}-{instance.month or 1:02d}-{instance.day or 1:02d}"
 
 
 class ImageSerializer(serializers.ImageField):

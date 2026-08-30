@@ -43,9 +43,7 @@ def api_lookup(request, *args, **kwargs):
     # alternatively, in case we already know the uri, this value is used for the query
     api_url = kwargs.get("api_url", None)
 
-    log.debug(
-        "api_lookup: {} - id: {} - provider: {}".format(item_type, item_id, provider)
-    )
+    log.debug(f"api_lookup: {item_type} - id: {item_id} - provider: {provider}")
 
     try:
         log.debug(provider)
@@ -64,7 +62,7 @@ def provider_search_query(request, *args, **kwargs):
     item_id = kwargs.get("item_id", None)
     provider = kwargs.get("provider", None)
 
-    log.debug("type: {} - id: {} - provider: {}".format(item_type, item_id, provider))
+    log.debug(f"type: {item_type} - id: {item_id} - provider: {provider}")
 
     data = {}
     try:
@@ -74,13 +72,11 @@ def provider_search_query(request, *args, **kwargs):
             if artist_display == "Various Artists":
                 artist_display = "Various"
 
-            data = {"query": "{} - {}".format(artist_display, item.name)}
+            data = {"query": f"{artist_display} - {item.name}"}
 
         if item_type == "release" and provider == "musicbrainz":
             item = Release.objects.get(pk=item_id)
-            data = {
-                "query": "{} AND artist:{}".format(item.name, item.get_artist_display())
-            }
+            data = {"query": f"{item.name} AND artist:{item.get_artist_display()}"}
             # TODO: reason? https://lab.hazelfire.com/issues/1791
             # data = {'query': '%s artist:%s' % (item.name, item.get_artist_display())}
 
@@ -98,7 +94,7 @@ def provider_search_query(request, *args, **kwargs):
 
         if item_type == "media" and provider == "musicbrainz":
             item = Media.objects.get(pk=item_id)
-            data = {"query": "{} AND artist:{}".format(item.name, item.artist.name)}
+            data = {"query": f"{item.name} AND artist:{item.artist.name}"}
 
         if item_type == "label" and provider == "discogs":
             item = Label.objects.get(pk=item_id)
@@ -148,11 +144,7 @@ def provider_search(request, *args, **kwargs):
         if ean.is_valid(query):
             log.debug("ean barcode detected. switching url composition")
             t_query = query.replace("-", "")
-            url = "http://{}/ws/2/{}?query=barcode:{}&fmt=json".format(
-                MUSICBRAINZ_HOST,
-                _type,
-                t_query,
-            )
+            url = f"http://{MUSICBRAINZ_HOST}/ws/2/{_type}?query=barcode:{t_query}&fmt=json"
         else:
             # query = re.sub('[^A-Za-z0-9 :]+', '', query)
             t_query = asciiDammit(query)
@@ -183,11 +175,7 @@ def provider_search(request, *args, **kwargs):
 
             t_query = quote(t_query)
 
-            url = "http://{}/ws/2/{}?query={}&fmt=json".format(
-                MUSICBRAINZ_HOST,
-                _type,
-                t_query,
-            )
+            url = f"http://{MUSICBRAINZ_HOST}/ws/2/{_type}?query={t_query}&fmt=json"
 
             query = unquote(t_query)
             query = (

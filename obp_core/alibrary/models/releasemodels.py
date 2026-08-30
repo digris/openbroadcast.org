@@ -473,13 +473,13 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
 
     def get_download_url(self, format, version):
 
-        return "{}download/{}/{}/".format(self.get_absolute_url(), format, version)
+        return f"{self.get_absolute_url()}download/{format}/{version}/"
 
     def get_cache_file_path(self, format, version):
 
         tmp_directory = TEMP_DIR
         file_name = "{}_{}_{}.{}".format(format, version, str(self.uuid), "zip")
-        tmp_path = "{}/{}".format(tmp_directory, file_name)
+        tmp_path = f"{tmp_directory}/{file_name}"
 
         return tmp_path
 
@@ -487,7 +487,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
 
         tmp_directory = TEMP_DIR
         pattern = "*%s.zip" % (str(self.uuid))
-        versions = glob.glob("{}/{}".format(tmp_directory, pattern))
+        versions = glob.glob(f"{tmp_directory}/{pattern}")
 
         try:
             for version in versions:
@@ -548,7 +548,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         obj = self
 
         log = logging.getLogger("alibrary.release.complete_by_mb_id")
-        log.info("complete release, r: {} | mb_id: {}".format(obj.name, mb_id))
+        log.info(f"complete release, r: {obj.name} | mb_id: {mb_id}")
 
         inc = (
             "artists",
@@ -586,7 +586,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
             if ad_d == 0:
                 ad_d = 1
 
-            rd = datetime.strptime("{}/{}/{}".format(ad_y, ad_m, ad_d), "%Y/%m/%d")
+            rd = datetime.strptime(f"{ad_y}/{ad_m}/{ad_d}", "%Y/%m/%d")
             self.releasedate = rd
         except:
             self.releasedate = None

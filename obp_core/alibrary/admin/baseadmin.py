@@ -180,15 +180,11 @@ class ReleaseAdmin(BaseAdmin):
 
     def meta_display(self, obj):
 
-        tpl = """<p>
-        <strong>{releasedate}</strong><br>
-        {type}<br>
-        {num_tracks} Tracks<br>
-        </p>""".format(
-            releasedate=obj.releasedate_approx,
-            type=obj.get_releasetype_display(),
-            num_tracks=obj.get_media().count(),
-        )
+        tpl = f"""<p>
+        <strong>{obj.releasedate_approx}</strong><br>
+        {obj.get_releasetype_display()}<br>
+        {obj.get_media().count()} Tracks<br>
+        </p>"""
         return tpl
 
     meta_display.short_description = _("Metadata")

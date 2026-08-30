@@ -40,13 +40,13 @@ def discogs_image_by_url(url, type="uri"):
         log.debug('Type is "%s"' % type)
 
         if type:
-            url = "http://{}/{}/{}".format(DISCOGS_HOST, type, id)
+            url = f"http://{DISCOGS_HOST}/{type}/{id}"
             log.debug('constructed API url "%s"' % url)
 
             r = requests.get(url, timeout=5)
 
             if not r.status_code == 200:
-                log.warning("server error: {} {}".format(r.status_code, r.text))
+                log.warning(f"server error: {r.status_code} {r.text}")
                 return
 
             try:

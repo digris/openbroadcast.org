@@ -462,9 +462,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
             return self.folder
 
         else:
-            log.warning(
-                "unable to get directory path for: {} - {}".format(self.pk, self.name)
-            )
+            log.warning(f"unable to get directory path for: {self.pk} - {self.name}")
             return None
 
     def get_file(self, source, version):
@@ -607,9 +605,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                             self.original_filename = self.master.name[0:250]
                         except Exception:
                             log.warning(
-                                "unable to update original_filename on media: {}".format(
-                                    self.pk
-                                )
+                                f"unable to update original_filename on media: {self.pk}"
                             )
 
             except Exception as e:
@@ -668,7 +664,7 @@ def media_post_save(sender, **kwargs):
             log.debug("creating directory: %s" % abs_directory)
 
         except Exception as e:
-            log.warning("unable to create directory: {} - {}".format(abs_directory, e))
+            log.warning(f"unable to create directory: {abs_directory} - {e}")
             obj.folder = None
             obj.status = 99
 
@@ -731,9 +727,7 @@ class MediaExtraartists(models.Model):
 
     def __str__(self):
         if self.artist and self.profession:
-            return 'Credited "{}" as "{}"'.format(
-                self.artist.name, self.profession.name
-            )
+            return f'Credited "{self.artist.name}" as "{self.profession.name}"'
         elif self.artist:
             return 'Credited "%s"' % (self.artist.name)
         else:
@@ -775,13 +769,9 @@ class MediaArtists(models.Model):
     def __str__(self):
 
         if self.join_phrase:
-            return '{} credited with "{}" on {}'.format(
-                self.artist,
-                self.join_phrase,
-                self.media,
-            )
+            return f'{self.artist} credited with "{self.join_phrase}" on {self.media}'
         else:
-            return "{} on {}".format(self.artist, self.media)
+            return f"{self.artist} on {self.media}"
 
 
 @receiver(post_delete, sender=MediaArtists)

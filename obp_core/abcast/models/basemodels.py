@@ -107,7 +107,7 @@ class OnAirItem(TimestampedModelMixin, UUIDModelMixin, models.Model):
         unique_together = ("content_type", "object_id")
 
     def __str__(self):
-        return "{} : {}".format(self.channel.pk, self.channel.pk)
+        return f"{self.channel.pk} : {self.channel.pk}"
 
 
 class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):

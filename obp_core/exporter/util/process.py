@@ -141,7 +141,7 @@ class Process:
 
     def process_item(self, item):
 
-        log.info("export ctype: {} | id: {}".format(item.content_type, item.object_id))
+        log.info(f"export ctype: {item.content_type} | id: {item.object_id}")
 
         media_set = None
         content_object = item.content_object
@@ -179,10 +179,7 @@ class Process:
                 media_set.append(m.content_object)
 
             if content_object.user and content_object.user.get_full_name():
-                item_rel_dir = "{} ({})".format(
-                    safe_filename(content_object.name),
-                    safe_filename(content_object.user.get_full_name()),
-                )
+                item_rel_dir = f"{safe_filename(content_object.name)} ({safe_filename(content_object.user.get_full_name())})"
             else:
                 item_rel_dir = safe_filename(content_object.name)
 
@@ -253,9 +250,7 @@ class Process:
                     log.debug("include mixdown file for playlist")
                 except Exception:
                     log.warning(
-                        "unable to copy mixdown file: {}".format(
-                            content_object.mixdown_file.path
-                        )
+                        f"unable to copy mixdown file: {content_object.mixdown_file.path}"
                     )
             else:
                 log.debug("mixdown file not available")
@@ -444,9 +439,7 @@ class Process:
             TXXX(
                 encoding=3,
                 desc="open broadcast API",
-                text="https://{}{}".format(
-                    self.current_site.domain, media.get_api_url()
-                ),
+                text=f"https://{self.current_site.domain}{media.get_api_url()}",
             )
         )
         # remove genre
@@ -491,9 +484,7 @@ class Process:
                 tags.add(
                     TRCK(
                         encoding=3,
-                        text="{}/{}".format(
-                            media.tracknumber, media.release.totaltracks
-                        ),
+                        text=f"{media.tracknumber}/{media.release.totaltracks}",
                     )
                 )
             if media.release.releasedate:

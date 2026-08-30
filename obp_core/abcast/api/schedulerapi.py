@@ -279,17 +279,9 @@ class EmissionResource(ModelResource):
         if es.count() > 0:
             message = _("The desired time slot does not seem to be available.")
             try:
-                message += '<br>Emission schedule "{}" - from {} to {}'.format(
-                    e.name,
-                    time_start.time(),
-                    time_end.time(),
-                )
+                message += f'<br>Emission schedule "{e.name}" - from {time_start.time()} to {time_end.time()}'
                 for conflicting_emission in es:
-                    message += '<br> - overlaps "{}" - from {} to {}'.format(
-                        conflicting_emission.name,
-                        conflicting_emission.time_start.time(),
-                        conflicting_emission.time_end.time(),
-                    )
+                    message += f'<br> - overlaps "{conflicting_emission.name}" - from {conflicting_emission.time_start.time()} to {conflicting_emission.time_end.time()}'
 
             except:
                 pass

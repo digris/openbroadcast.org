@@ -56,9 +56,7 @@ class MediaMasterDwonloadView(APIView):
 
     def get(self, request, uuid):
         media = get_object_or_404(Media, uuid=uuid)
-        filename = "{uuid}.{encoding}".format(
-            uuid=media.uuid, encoding=media.master_encoding
-        )
+        filename = f"{media.uuid}.{media.master_encoding}"
         response = FileResponse(open(media.master.path, "rb"))
         response["Content-Disposition"] = f'attachment; filename="{filename}"'
 

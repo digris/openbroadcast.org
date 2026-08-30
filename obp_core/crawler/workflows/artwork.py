@@ -90,9 +90,7 @@ class ArtworkCrawler:
         id = url.split("/")[-1].strip()
         # id = 'Q35694'
 
-        api_url = "https://www.wikidata.org/w/api.php?action=wbgetclaims&entity={id}&property=P18&format=json".format(
-            id=id
-        )
+        api_url = f"https://www.wikidata.org/w/api.php?action=wbgetclaims&entity={id}&property=P18&format=json"
         r = requests.get(api_url)
 
         if not r.status_code == 200:
@@ -128,9 +126,7 @@ class ArtworkCrawler:
         id = _bits[-1].strip().split("-")[0]
         ctype = _bits[-2].strip()
 
-        api_url = "http://{host}/{ctype}s/{id}".format(
-            id=id, ctype=ctype, host=DISCOGS_HOST
-        )
+        api_url = f"http://{DISCOGS_HOST}/{ctype}s/{id}"
         r = requests.get(api_url)
 
         if r.status_code == 429:
@@ -175,8 +171,7 @@ class ArtworkCrawler:
         id = _bits[-1].strip()
         ctype = _bits[-2].strip()
 
-        image_url = "http://coverartarchive.org/{ctype}/{id}/front".format(
-            id=id, ctype=ctype, )
+        image_url = f"http://coverartarchive.org/{ctype}/{id}/front"
 
         r = requests.get(image_url, allow_redirects=False)
 

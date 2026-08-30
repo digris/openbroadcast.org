@@ -33,9 +33,7 @@ class MixdownAPIClient:
 
     def get_for_playlist(self, obj):
 
-        url = "{api_base_url}mixdown/playlist/{uuid}/".format(
-            api_base_url=API_BASE_URL, uuid=obj.uuid
-        )
+        url = f"{API_BASE_URL}mixdown/playlist/{obj.uuid}/"
 
         log.debug(f"loading mixdown from: {url}")
 
@@ -55,9 +53,7 @@ class MixdownAPIClient:
         request mixdown-rendering for a playlist
         """
 
-        url = "{api_base_url}mixdown/playlist/{uuid}/".format(
-            api_base_url=API_BASE_URL, uuid=obj.uuid
-        )
+        url = f"{API_BASE_URL}mixdown/playlist/{obj.uuid}/"
 
         log.debug(f"requesting mixdown: {url}")
 

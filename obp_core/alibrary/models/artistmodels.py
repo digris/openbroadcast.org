@@ -364,7 +364,7 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
             original_name = self.name
             i = 1
             while Artist.objects.filter(name=self.name).count() > 0:
-                self.name = "{} {}".format(original_name, i)
+                self.name = f"{original_name} {i}"
                 i += 1
 
         super().save(*args, **kwargs)
@@ -406,7 +406,7 @@ class ArtistMembership(models.Model):
         verbose_name_plural = _("Membersips")
 
     def __str__(self):
-        return '"{}" <> "{}"'.format(self.parent.name, self.child.name)
+        return f'"{self.parent.name}" <> "{self.child.name}"'
 
     def save(self, *args, **kwargs):
 
@@ -426,7 +426,7 @@ class ArtistAlias(models.Model):
         verbose_name_plural = _("Aliases")
 
     def __str__(self):
-        return '"{}" <> "{}"'.format(self.parent.name, self.child.name)
+        return f'"{self.parent.name}" <> "{self.child.name}"'
 
 
 class ArtistProfessions(models.Model):
@@ -439,4 +439,4 @@ class ArtistProfessions(models.Model):
         verbose_name_plural = _("Professions")
 
     def __str__(self):
-        return '"{}" : "{}"'.format(self.artist.name, self.profession.name)
+        return f'"{self.artist.name}" : "{self.profession.name}"'

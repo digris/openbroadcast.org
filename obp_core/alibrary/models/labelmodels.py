@@ -236,7 +236,7 @@ class LabelFoundingArtist(models.Model):
         verbose_name_plural = _("Founding Artists")
 
     def __str__(self):
-        return '"{}" <> "{}"'.format(self.label.name, self.artist.name)
+        return f'"{self.label.name}" <> "{self.artist.name}"'
 
     def save(self, *args, **kwargs):
         if not self.label or not self.artist:

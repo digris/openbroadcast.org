@@ -191,11 +191,7 @@ class UserResource(ModelResource):
         REQUIRED_FIELDS = ("username", "email", "password")
         for field in REQUIRED_FIELDS:
             if field not in data:
-                log.warning(
-                    'missing key "{missing_key}" when creating a user.'.format(
-                        missing_key=field
-                    )
-                )
+                log.warning(f'missing key "{field}" when creating a user.')
                 raise APIBadRequest(
                     code="missing_key",
                     message=_(

@@ -16,7 +16,7 @@ pool = Pool(processes=10)
 def pushy_publish(channel, key, message):
     rs = redis.StrictRedis(host=pushy_settings.get_redis_host())
     time.sleep(0.005)
-    return rs.publish("{}{}".format(channel, key), json.dumps(message))
+    return rs.publish(f"{channel}{key}", json.dumps(message))
 
 
 def pushy_post_save(sender, **kwargs):

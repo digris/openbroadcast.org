@@ -40,9 +40,7 @@ def check_binaries(app_configs, **kwargs):
             errors.append(
                 Error(
                     "path does not exist",
-                    hint="binary location for {} does not exist at {}".format(
-                        key, path
-                    ),
+                    hint=f"binary location for {key} does not exist at {path}",
                     obj=key,
                     id="base.E001",
                 )

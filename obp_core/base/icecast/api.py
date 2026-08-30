@@ -25,13 +25,13 @@ class IcecastAPIClient:
             r = requests.get(url, auth=auth, params=params, timeout=2.0)
 
             if not r.status_code == 200:
-                log.warning("API: {} - status: {}".format(r.url, r.status_code))
+                log.warning(f"API: {r.url} - status: {r.status_code}")
             else:
-                log.debug("API: {} - status: {}".format(r.url, r.status_code))
+                log.debug(f"API: {r.url} - status: {r.status_code}")
 
 
 def set_stream_metadata(channel, text):
-    log.info("channel: {} - metadata-text: {}".format(channel, text))
+    log.info(f"channel: {channel} - metadata-text: {text}")
     try:
         api = IcecastAPIClient(
             server=channel.icecast2_server,

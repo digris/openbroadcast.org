@@ -27,11 +27,7 @@ class Vote(TimestampedModelMixin, UUIDModelMixin, models.Model):
         permissions = (("vote_for_user", "Can vote in behalf of other user"),)
 
     def __str__(self):
-        return "{} from {} on {}".format(
-            self.get_vote_display(),
-            self.user,
-            self.content_object,
-        )
+        return f"{self.get_vote_display()} from {self.user} on {self.content_object}"
 
     def get_ct(self):
         return f"{self._meta.app_label}.{self.__class__.__name__}".lower()

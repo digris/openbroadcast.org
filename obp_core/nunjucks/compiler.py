@@ -13,7 +13,7 @@ class NunjucksCompiler:
     def compile_template(self, path):
 
         template = ""
-        command = "{} {}".format(nunjucks_settings.NUNJUCKS_BIN, path)
+        command = f"{nunjucks_settings.NUNJUCKS_BIN} {path}"
 
         p = subprocess.Popen(
             command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT

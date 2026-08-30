@@ -70,12 +70,10 @@ class UnuspiciousStorage(FileSystemStorage):
 def clean_upload_path(instance, filename):
 
     filename, extension = os.path.splitext(filename)
-    valid_chars = "-_.{}{}".format(string.ascii_letters, string.digits)
+    valid_chars = f"-_.{string.ascii_letters}{string.digits}"
     cleaned_filename = unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore")
     folder = "import/%s/" % time.strftime("%Y%m%d%H%M%S", time.gmtime())
-    return os.path.join(
-        folder, "{}{}".format(cleaned_filename.lower(), extension.lower())
-    )
+    return os.path.join(folder, f"{cleaned_filename.lower()}{extension.lower()}")
 
 
 class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
@@ -127,7 +125,7 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
         ordering = ("-created",)
 
     def __str__(self):
-        return "{} | {}".format(self.created, self.user)
+        return f"{self.created} | {self.user}"
 
     @models.permalink
     def get_absolute_url(self):
@@ -178,7 +176,7 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
         url = reverse(
             "api_dispatch_list", kwargs={"resource_name": "import", "api_name": "v1"}
         )
-        return "{}{}/".format(url, self.pk)
+        return f"{url}{self.pk}/"
 
     def apply_import_tag(self, importfile, **kwargs):
 
@@ -350,15 +348,13 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
             "api_dispatch_list",
             kwargs={"resource_name": "importfile", "api_name": "v1"},
         )
-        return "{}{}/".format(url, self.pk)
+        return f"{url}{self.pk}/"
 
     def get_delete_url(self):
         return ""
 
     def identify(self):
-        log.info(
-            "Start processing ImportFile: {} at {}".format(self.pk, self.file.path)
-        )
+        log.info(f"Start processing ImportFile: {self.pk} at {self.file.path}")
 
         if USE_CELERYD:
             self.identify_task.delay(self)
@@ -582,9 +578,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def do_import(self):
 
-        log.debug(
-            "Start importing ImportFile: {} at {}".format(self.pk, self.file.path)
-        )
+        log.debug(f"Start importing ImportFile: {self.pk} at {self.file.path}")
 
         if USE_CELERYD:
             self.import_task.delay(self)
@@ -610,9 +604,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
         else:
             obj.status = 99
 
-        log.info(
-            "Ending import task with status: {} for: {}".format(obj.status, obj.pk)
-        )
+        log.info(f"Ending import task with status: {obj.status} for: {obj.pk}")
 
         obj.save()
 
@@ -727,10 +719,7 @@ class ImportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def __str__(self):
         try:
-            return "{} | {}".format(
-                ContentType.objects.get_for_model(self.content_object),
-                self.content_object.name,
-            )
+            return f"{ContentType.objects.get_for_model(self.content_object)} | {self.content_object.name}"
         except:
             return "%s" % (self.pk)
 

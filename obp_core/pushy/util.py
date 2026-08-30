@@ -9,6 +9,6 @@ def pushy_custom(route, body=None, type="update"):
 
     message = {"route": route, "type": type, "body": body}
 
-    log.debug("push custom {}-message to {} - {}".format(type, route, message))
+    log.debug(f"push custom {type}-message to {route} - {message}")
 
     pushy_publish(pushy_settings.get_channel(), type, message)

@@ -64,9 +64,7 @@ class ChannelResource(ModelResource):
             stream = {
                 "file": "%s.stream" % bundle.obj.rtmp_path,
                 "rtmp_app": "%s" % bundle.obj.rtmp_app,
-                "rtmp_host": "rtmp://{}:{}/".format(
-                    settings.RTMP_HOST, settings.RTMP_PORT
-                ),
+                "rtmp_host": f"rtmp://{settings.RTMP_HOST}:{settings.RTMP_PORT}/",
                 # 'uri': 'http://pypo:8000/obp-dev-256.mp3',
                 "uri": bundle.obj.stream_url,
                 "uuid": bundle.obj.uuid,
@@ -639,7 +637,7 @@ class BaseResource(Resource):
 
         media_uuid = request.GET.get("media_id", None)
         channel_uuid = request.GET.get("channel_id", None)
-        log.debug("start play: {} - {}".format(media_uuid, channel_uuid))
+        log.debug(f"start play: {media_uuid} - {channel_uuid}")
 
         if media_uuid and channel_uuid:
             from alibrary.models import Media

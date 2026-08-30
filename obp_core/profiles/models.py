@@ -449,9 +449,7 @@ def add_mentor(sender, **kwargs):
         pm_write(
             sender=user,
             recipient=mentor,
-            subject=_(
-                "{username} accepted your invitation".format(username=user.username)
-            ),
+            subject=_(f"{user.username} accepted your invitation"),
             body="",
         )
 

@@ -187,7 +187,7 @@ class License(
 
     def __str__(self):
         if self.parent:
-            return "{} - {}".format(self.parent.name, self.name)
+            return f"{self.parent.name} - {self.name}"
         else:
             return "%s" % (self.name)
 
@@ -268,9 +268,7 @@ class Daypart(models.Model):
         ordering = ("day", "time_start")
 
     def __str__(self):
-        return "{} | {} - {}".format(
-            self.get_day_display(), self.time_start, self.time_end
-        )
+        return f"{self.get_day_display()} | {self.time_start} - {self.time_end}"
 
     def playlist_count(self):
         return self.daypart_plalists.count()

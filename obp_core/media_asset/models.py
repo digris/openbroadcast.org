@@ -219,7 +219,7 @@ class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
         unique_together = ("media", "encoding", "quality")
 
     def __str__(self):
-        return "{} - {}".format(self.get_encoding_display(), self.get_quality_display())
+        return f"{self.get_encoding_display()} - {self.get_quality_display()}"
 
     @property
     def directory(self):
@@ -344,9 +344,7 @@ def clean_assets(days_to_keep=MEDIA_ASSET_KEEP_DAYS):
     ).nocache()
 
     log.info(
-        "cleaning assets. {} formats and {} waveforms".format(
-            format_qs.count(), waveform_qs.count()
-        )
+        f"cleaning assets. {format_qs.count()} formats and {waveform_qs.count()} waveforms"
     )
 
     # delete must be called on each item, to not skip post_delete actions.

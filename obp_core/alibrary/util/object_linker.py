@@ -20,9 +20,7 @@ class WikiRelease:
 
     def render(self, token, trail=None, **kwargs):
         if self.obj:
-            return "<a href='{}'>{}</a>".format(
-                self.obj.get_absolute_url(), self.obj.name
-            )
+            return f"<a href='{self.obj.get_absolute_url()}'>{self.obj.name}</a>"
         else:
             return "linker error"
 
@@ -48,9 +46,7 @@ class WikiArtist:
 
     def render(self, token, trail=None, **kwargs):
         if self.obj:
-            return "<a href='{}'>{}</a>".format(
-                self.obj.get_absolute_url(), self.obj.name
-            )
+            return f"<a href='{self.obj.get_absolute_url()}'>{self.obj.name}</a>"
         else:
             return "linker error"
 
@@ -76,8 +72,6 @@ class WikiLabel:
 
     def render(self, token, trail=None, **kwargs):
         if self.obj:
-            return "<a href='{}'>{}</a>".format(
-                self.obj.get_absolute_url(), self.obj.name
-            )
+            return f"<a href='{self.obj.get_absolute_url()}'>{self.obj.name}</a>"
         else:
             return "linker error"

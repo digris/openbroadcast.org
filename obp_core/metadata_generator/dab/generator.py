@@ -94,9 +94,7 @@ class DABMetadataGenerator:
         author_text = None
 
         if self.playlist.series and self.playlist.series_number:
-            series_text = "{} #{}".format(
-                self.playlist.series.name, self.playlist.series_number
-            )
+            series_text = f"{self.playlist.series.name} #{self.playlist.series_number}"
         elif self.playlist.series:
             series_text = f"{self.playlist.series.name}"
 
@@ -104,16 +102,10 @@ class DABMetadataGenerator:
             playlist_text = f"{self.playlist.name}"
 
         if self.content_object.name:
-            item_text = '"{title}" by {artist} - {release}'.format(
-                title=self.content_object.name,
-                artist=self.content_object.artist.name,
-                release=self.content_object.release.name,
-            )
+            item_text = f'"{self.content_object.name}" by {self.content_object.artist.name} - {self.content_object.release.name}'
 
         if self.playlist.user:
-            author_text = "curated by {}".format(
-                self.playlist.user.profile.get_display_name()
-            )
+            author_text = f"curated by {self.playlist.user.profile.get_display_name()}"
 
         if playlist_text:
             if series_text:
@@ -176,9 +168,7 @@ class DABMetadataGenerator:
         author_text = None
 
         if self.playlist.series and self.playlist.series_number:
-            text = "{} #{}".format(
-                self.playlist.series.name, self.playlist.series_number
-            )
+            text = f"{self.playlist.series.name} #{self.playlist.series_number}"
             tags = [DLPlusTag(33, 0, len(text) - 1)]
             series_text = f"{self.dl_plus_tag(tags)}{text}"
 
@@ -200,9 +190,7 @@ class DABMetadataGenerator:
             title = self.content_object.name
             artist = self.content_object.artist.name
             album = self.content_object.release.name
-            text = '"{title}" by {artist} - {release}'.format(
-                title=title, artist=artist, release=album
-            )
+            text = f'"{title}" by {artist} - {album}'
             tags = [
                 DLPlusTag(1, text.find(title), len(title) - 1),
                 DLPlusTag(4, text.find(artist), len(artist) - 1),
@@ -466,5 +454,5 @@ class DABMetadataGenerator:
                     len(file) == filename_length
                     and fstat.st_mtime < time.time() - max_age
                 ):
-                    log.info("file age: {} -> delete: {}".format(fstat.st_mtime, file))
+                    log.info(f"file age: {fstat.st_mtime} -> delete: {file}")
                     os.unlink(path)

@@ -85,9 +85,7 @@ class ObjectRatingView(APIView):
             raise ValidationError("invalid value")
 
         log.debug(
-            "vote PUT ct: {} - id: {} - user: {} - user id: {} - vote: {}".format(
-                _ct, obj.pk, user, user.pk, vote
-            )
+            f"vote PUT ct: {_ct} - id: {obj.pk} - user: {user} - user id: {user.pk} - vote: {vote}"
         )
 
         obj.refresh_from_db()

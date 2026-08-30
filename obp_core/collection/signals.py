@@ -18,9 +18,7 @@ def add_importitem_to_collection(sender, **kwargs):
         collection_name = kwargs.get("collection_name", "Contributions")
 
         log.debug(
-            'adding "{}" to collection "{}" (by {})'.format(
-                content_object, collection_name, user
-            )
+            f'adding "{content_object}" to collection "{collection_name}" (by {user})'
         )
 
         collection, collection_created = Collection.objects.get_or_create(

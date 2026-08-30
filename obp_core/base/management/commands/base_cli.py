@@ -45,9 +45,7 @@ def delete_orphaned_tags():
     "-a",
     type=int,
     default=MEDIA_ASSET_KEEP_DAYS,
-    help="Clean media assets not accessed for the last {} days".format(
-        MEDIA_ASSET_KEEP_DAYS
-    ),
+    help=f"Clean media assets not accessed for the last {MEDIA_ASSET_KEEP_DAYS} days",
 )
 def clean_assets(age):
     """Delete (cached) media assets (encoded versions, waveforms) that have nt been accessed for x days."""

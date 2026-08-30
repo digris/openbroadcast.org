@@ -14,23 +14,19 @@ log = logging.getLogger("audiowaveform")
 def _extract_waveform_data(path):
 
     if not os.path.exists(path):
-        raise ("file does not exist: {}".format(path))
+        raise (f"file does not exist: {path}")
 
     # TODO: do we need configurable bitrate?
     bitrate = 8
 
     if bitrate not in [8, 16]:
-        raise AudioWaveformException(
-            "invalid bitrate: {} (use 8 or 16)".format(bitrate)
-        )
+        raise AudioWaveformException(f"invalid bitrate: {bitrate} (use 8 or 16)")
 
     out_path = tempfile.mkstemp(suffix=".json")[1]
 
-    command = "{binary} -b {bitrate} -i {input} -o {output}".format(
-        binary=AUDIOWAVEFORM_BINARY, bitrate=bitrate, input=path, output=out_path
-    )
+    command = f"{AUDIOWAVEFORM_BINARY} -b {bitrate} -i {path} -o {out_path}"
 
-    log.info("command: {}".format(command))
+    log.info(f"command: {command}")
 
     with subprocess.Popen(
         command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True
@@ -41,18 +37,16 @@ def _extract_waveform_data(path):
     if not exit_code == 0 or errors:
         os.unlink(out_path)
         raise AudioWaveformException(
-            "unable to process file (aodiowaveform). exit code {} \n{}".format(
-                exit_code, output
-            )
+            f"unable to process file (aodiowaveform). exit code {exit_code} \n{output}"
         )
 
-    log.debug("command output: \n{}".format(output))
+    log.debug(f"command output: \n{output}")
 
     with open(out_path) as json_file:
         try:
             raw_data = json.load(json_file)
         except json.decoder.JSONDecodeError as e:
-            raise AudioWaveformException("unable to process file (JSON) {}".format(e))
+            raise AudioWaveformException(f"unable to process file (JSON) {e}")
         finally:
             os.unlink(out_path)
 

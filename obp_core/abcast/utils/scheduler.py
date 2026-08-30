@@ -211,11 +211,7 @@ def get_schedule(range_start=0, range_end=0, channel=None):
 
 def check_slot_availability(time_start, time_end, excluded_emission=None, channel=None):
 
-    log.debug(
-        "checking for slot availability: {} - {} ({})".format(
-            time_start, time_end, channel
-        )
-    )
+    log.debug(f"checking for slot availability: {time_start} - {time_end} ({channel})")
     now = timezone.now()
 
     if time_start < now:
@@ -242,9 +238,7 @@ def check_slot_availability(time_start, time_end, excluded_emission=None, channe
     if overlapping_qs.exists():
         message = "The desired time slot does not seem to be available."
         for emission in overlapping_qs:
-            message += "\n{:%H:%M:%S} to {:%H:%M:%S}: {}".format(
-                emission.time_start, emission.time_end, emission.name
-            )
+            message += f"\n{emission.time_start:%H:%M:%S} to {emission.time_end:%H:%M:%S}: {emission.name}"
         return False, message
 
     return True, None

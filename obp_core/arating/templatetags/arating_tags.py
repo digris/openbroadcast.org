@@ -27,9 +27,8 @@ def rating_for_object(context, object):
     data["choices"] = choices
     data["request"] = request
     data["object"] = object
-    data["ct"] = "{}.{}".format(
-        ContentType.objects.get_for_model(object).app_label,
-        object.__class__.__name__.lower(),
+    data["ct"] = (
+        f"{ContentType.objects.get_for_model(object).app_label}.{object.__class__.__name__.lower()}"
     )
 
     return data

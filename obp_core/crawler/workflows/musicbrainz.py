@@ -85,9 +85,7 @@ def release_fetch_media_mb_ids(obj):
         log.debug(f"{qs_media.count()} media objects without mb relation")
 
         # load release + relations from mb api
-        url = "http://{host}/ws/2/release/{mb_id}/?fmt=json&inc=recordings".format(
-            host=MUSICBRAINZ_HOST, mb_id=mb_id
-        )
+        url = f"http://{MUSICBRAINZ_HOST}/ws/2/release/{mb_id}/?fmt=json&inc=recordings"
 
         try:
             r = requests.get(url)
@@ -142,9 +140,7 @@ def release_fetch_media_mb_ids(obj):
                 mb_recording_id = _track["recording"]["id"]
                 # add mb relation
                 if mb_recording_id:
-                    mb_url = "http://musicbrainz.org/recording/{mb_id}".format(
-                        mb_id=mb_recording_id
-                    )
+                    mb_url = f"http://musicbrainz.org/recording/{mb_recording_id}"
                     try:
                         rel = Relation.objects.get(object_id=m.pk, url=mb_url)
                     except Relation.DoesNotExist:

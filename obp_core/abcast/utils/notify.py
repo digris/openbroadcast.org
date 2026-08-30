@@ -13,7 +13,7 @@ log = logging.getLogger(__name__)
 
 
 def start_play(item, channel=None, user=None):
-    log.debug("item: {} - channel: {} - user: {}".format(item, channel, user))
+    log.debug(f"item: {item} - channel: {channel} - user: {user}")
 
     # Set current values to cache
     cache.set("abcast_on_air_%s" % channel.pk, item, 30)
@@ -23,9 +23,7 @@ def start_play(item, channel=None, user=None):
 
     if item.release and "jingle" not in item.release.name.lower():
         try:
-            text = "{} by {} - {}".format(
-                item.name, item.artist.name, item.release.name
-            )
+            text = f"{item.name} by {item.artist.name} - {item.release.name}"
             set_stream_metadata(channel, text)
         except Exception as e:
             log.warning(f"unable to set stream metadata: {e}")

@@ -13,11 +13,7 @@ class DeezerAPIClient:
 
         url = f"{self.base_url}/search"
 
-        q = 'track:"{track}" artist:"{artist}" album:"{album}"'.format(
-            track=media.name,
-            artist=media.artist.name,
-            album=media.release.name,
-        )
+        q = f'track:"{media.name}" artist:"{media.artist.name}" album:"{media.release.name}"'
 
         params = {
             "order": "RANKING",
@@ -35,9 +31,7 @@ class DeezerAPIClient:
 
     def _add_media_to_favorites(self, deezer_id):
 
-        url = "{base_url}/user/{user_id}/tracks".format(
-            base_url=self.base_url, user_id=self.user_id
-        )
+        url = f"{self.base_url}/user/{self.user_id}/tracks"
 
         params = {
             "access_token": self.access_token,
@@ -49,9 +43,7 @@ class DeezerAPIClient:
 
     def _remove_media_from_favorites(self, deezer_id):
 
-        url = "{base_url}/user/{user_id}/tracks".format(
-            base_url=self.base_url, user_id=self.user_id
-        )
+        url = f"{self.base_url}/user/{self.user_id}/tracks"
 
         params = {"access_token": self.access_token, "track_id": deezer_id}
 

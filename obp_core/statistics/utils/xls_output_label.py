@@ -123,9 +123,7 @@ def label_statistics_as_xls(label, years, title=None, output=None):
 
         for index, item in enumerate(header, start=4):
             letter = ROW_LETTERS[index]
-            formula = "=SUM({}{}:{}{})".format(
-                letter, first_row + 1, letter, last_row + 1
-            )
+            formula = f"=SUM({letter}{first_row + 1}:{letter}{last_row + 1})"
             worksheet.write_formula(last_row + 1, index, formula, border_top)
 
         # worksheet.merge_range('A{}:C{}'.format(last_row + 4, last_row + 4), '{}'.format(timezone.now()), small)

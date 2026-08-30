@@ -32,7 +32,7 @@ class MusicbrainzAPILookup(APILookup):
     """
 
     def get_data(self, uri=None):
-        log.debug("run musicbrainz lookup for {} - {}".format(self.obj, self.type))
+        log.debug(f"run musicbrainz lookup for {self.obj} - {self.type}")
 
         if not uri:
             uri = self.obj.relations.filter(service="musicbrainz")[0].url
@@ -145,7 +145,7 @@ class MusicbrainzAPILookup(APILookup):
                         mapped_media.append(
                             {
                                 "number": "%s" % (pos),
-                                "position": "{}-{}".format(disc_no, pos),
+                                "position": f"{disc_no}-{pos}",
                                 "duration": m["length"],
                                 "title": m["title"],
                                 "artists": track_artists,
@@ -464,7 +464,7 @@ class DiscogsAPILookup(APILookup):
     """
 
     def get_data(self, uri=None):
-        log.debug("run discogs lookup for {} - {}".format(self.obj, self.type))
+        log.debug(f"run discogs lookup for {self.obj} - {self.type}")
 
         if not uri:
             uri = self.obj.relations.filter(service="discogs")[0].url
@@ -527,10 +527,10 @@ class DiscogsAPILookup(APILookup):
         provider_id = provider_id.split("-")[0]  # strip the name part if present
 
         if "/release/" in uri:
-            api_url = "http://{}/releases/{}".format(DISCOGS_HOST, provider_id)
+            api_url = f"http://{DISCOGS_HOST}/releases/{provider_id}"
 
         if "/master/" in uri:
-            api_url = "http://{}/masters/{}".format(DISCOGS_HOST, provider_id)
+            api_url = f"http://{DISCOGS_HOST}/masters/{provider_id}"
 
         log.info("composed api url: %s" % api_url)
 
@@ -664,7 +664,7 @@ class DiscogsAPILookup(APILookup):
         """
 
         provider_id = uri.split("/")[-1].split("-")[0]
-        api_url = "http://{}/artists/{}".format(DISCOGS_HOST, provider_id)
+        api_url = f"http://{DISCOGS_HOST}/artists/{provider_id}"
 
         log.info("composed api url: %s" % api_url)
 
@@ -719,7 +719,7 @@ class DiscogsAPILookup(APILookup):
         """
 
         provider_id = uri.split("/")[-1].split("-")[0]
-        api_url = "http://{}/labels/{}".format(DISCOGS_HOST, provider_id)
+        api_url = f"http://{DISCOGS_HOST}/labels/{provider_id}"
 
         log.info("composed api url: %s" % api_url)
 
@@ -794,6 +794,6 @@ def get_from_provider(item_type, item_id, provider, api_url=None):
         lookup = DiscogsAPILookup(obj=obj)
         return lookup.get_data(uri=api_url)
 
-    log.debug("item to process: {} - {}".format(obj.pk, obj))
+    log.debug(f"item to process: {obj.pk} - {obj}")
 
     return {}

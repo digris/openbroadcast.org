@@ -43,7 +43,7 @@ class Follow(models.Model):
         unique_together = ("user", "content_type", "object_id")
 
     def __str__(self):
-        return "{} -> {}".format(self.user, self.follow_object)
+        return f"{self.user} -> {self.follow_object}"
 
 
 class Action(models.Model):

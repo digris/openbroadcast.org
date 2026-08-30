@@ -41,15 +41,13 @@ def create_download_path(instance, filename):
     import string
 
     filename, extension = os.path.splitext(filename)
-    valid_chars = "-_.{}{}".format(string.ascii_letters, string.digits)
+    valid_chars = f"-_.{string.ascii_letters}{string.digits}"
     cleaned_filename = unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore")
     folder = "export/processed/{}-{}/".format(
         time.strftime("%Y%m%d%H%M%S", time.gmtime()),
         instance.uuid,
     )
-    return os.path.join(
-        folder, "{}{}".format(cleaned_filename.lower(), extension.lower())
-    )
+    return os.path.join(folder, f"{cleaned_filename.lower()}{extension.lower()}")
 
 
 def create_archive_dir(instance):
@@ -115,7 +113,7 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
         ordering = ("created",)
 
     def __str__(self):
-        return "{} - {}".format(self.user, self.created)
+        return f"{self.user} - {self.created}"
 
     def get_ct(self):
         return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
@@ -138,7 +136,7 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
         url = reverse(
             "api_dispatch_list", kwargs={"resource_name": "export", "api_name": "v1"}
         )
-        return "{}{}/".format(url, self.pk)
+        return f"{url}{self.pk}/"
 
     # @models.permalink
     def get_delete_url(self):
@@ -268,9 +266,9 @@ class ExportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def __str__(self):
         try:
-            return "{} - {}".format(self.content_object, self.get_status_display())
+            return f"{self.content_object} - {self.get_status_display()}"
         except:
-            return "{} - {}".format(self.pk, self.status)
+            return f"{self.pk} - {self.status}"
 
     # @models.permalink
     def get_delete_url(self):

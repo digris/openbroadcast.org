@@ -57,9 +57,7 @@ class StationDetailView(MenuMixin, DetailView):
         return menu
 
     def get_section_template(self):
-        template = "{base}_{section}.html".format(
-            base=self.section_template_base, section=self.section
-        )
+        template = f"{self.section_template_base}_{self.section}.html"
         return template
 
     def get_context_data(self, **kwargs):

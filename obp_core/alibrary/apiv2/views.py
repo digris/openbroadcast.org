@@ -218,15 +218,11 @@ class MediaDownloadView(APIView):
 
         if not request.user.has_perm(self.permission_required):
             raise PermissionDenied(
-                "missing permission: {} for user: {}".format(
-                    self.permission_required, request.user
-                )
+                f"missing permission: {self.permission_required} for user: {request.user}"
             )
 
         obj = get_object_or_404(Media, uuid=kwargs.get("uuid"))
-        filename = "{uuid}.{encoding}".format(
-            uuid=obj.uuid, encoding=obj.master_encoding
-        )
+        filename = f"{obj.uuid}.{obj.master_encoding}"
 
         response = FileResponse(open(obj.master.path, "rb"))
         response["Content-Disposition"] = f'attachment; filename="{filename}"'
@@ -248,9 +244,7 @@ class ObjectMergeView(APIView):
 
         if not request.user.has_perm(self.permission_required):
             raise PermissionDenied(
-                "missing permission: {} for user: {}".format(
-                    self.permission_required, request.user
-                )
+                f"missing permission: {self.permission_required} for user: {request.user}"
             )
 
         from ..util.merge import merge
@@ -279,9 +273,7 @@ class ObjectReassignView(APIView):
 
         if not request.user.has_perm(self.permission_required):
             raise PermissionDenied(
-                "missing permission: {} for user: {}".format(
-                    self.permission_required, request.user
-                )
+                f"missing permission: {self.permission_required} for user: {request.user}"
             )
 
         from ..util.reassign import reassign_media

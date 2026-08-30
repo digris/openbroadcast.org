@@ -65,11 +65,7 @@ def discogs_ordered_search(query, item_type, limit=100):
 
     # special case when searching directly by id
     if q_stripped.isdigit():
-        url = "http://{host}/{item_type}s/{query}".format(
-            host=DISCOGS_HOST,
-            query=quote_plus(query.lower()),
-            item_type=item_type,
-        )
+        url = f"http://{DISCOGS_HOST}/{item_type}s/{quote_plus(query.lower())}"
 
         log.debug(f"search by id: {url}")
         r = requests.get(url)
@@ -123,13 +119,7 @@ def discogs_ordered_search(query, item_type, limit=100):
 
         return [data]
 
-    url = (
-        "http://{host}/database/search?q={query}&type={item_type}&per_page=100".format(
-            host=DISCOGS_HOST,
-            query=quote_plus(query.lower()),
-            item_type=item_type,
-        )
-    )
+    url = f"http://{DISCOGS_HOST}/database/search?q={quote_plus(query.lower())}&type={item_type}&per_page=100"
 
     results = []
     results_unsorted = []

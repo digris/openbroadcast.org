@@ -31,16 +31,8 @@ def monthly_statistics_as_email(channel, year, month, email_addresses):
 
         tpl = get_template("statistics/email/_report_suisa.txt")
         channel_slug = channel.name.replace(" ", "-").lower()
-        filename = "{year}-{month}-{channel_slug}.csv".format(
-            year=year,
-            month=month,
-            channel_slug=channel_slug,
-        )
-        subject = "Playout report {channel_name} | {month}-{year}".format(
-            channel_name=channel.name,
-            year=year,
-            month=month,
-        )
+        filename = f"{year}-{month}-{channel_slug}.csv"
+        subject = f"Playout report {channel.name} | {month}-{year}"
         body = tpl.render(
             {"channel": channel, "month": month, "year": year, "filename": filename}
         )

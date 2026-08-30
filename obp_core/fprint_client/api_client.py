@@ -46,9 +46,7 @@ class FprintAPIClient:
         sends code to fprint api
         """
 
-        url = "{api_base_url}fprint/entry/{uuid}/".format(
-            api_base_url=API_BASE_URL, uuid=obj.uuid
-        )
+        url = f"{API_BASE_URL}fprint/entry/{obj.uuid}/"
 
         log.debug(f"ingest fprint entry to: {url}")
 
@@ -79,9 +77,7 @@ class FprintAPIClient:
 
         if r.status_code not in [200, 201]:
             log.warning(
-                "unable to ingest code for {} - status: {} - response: {}".format(
-                    obj.master.path, r.status_code, r.text
-                )
+                f"unable to ingest code for {obj.master.path} - status: {r.status_code} - response: {r.text}"
             )
             return
 
@@ -92,9 +88,7 @@ class FprintAPIClient:
         sends code to fprint api
         """
 
-        url = "{api_base_url}fprint/entry/{uuid}/".format(
-            api_base_url=API_BASE_URL, uuid=media_uuid
-        )
+        url = f"{API_BASE_URL}fprint/entry/{media_uuid}/"
 
         log.debug(f"delete fprint entry: {url}")
 
@@ -102,9 +96,7 @@ class FprintAPIClient:
 
         if r.status_code not in [200, 202, 204]:
             log.warning(
-                "unable to delete code - status: {} - response: {}".format(
-                    r.status_code, r.text
-                )
+                f"unable to delete code - status: {r.status_code} - response: {r.text}"
             )
 
         return r.status_code

@@ -99,9 +99,7 @@ class DiscogsCrawler:
         self.discogs_ctype = _bits[-2].strip()
 
         log.debug(
-            "crawling metadata: {} - id:{} - discogs_id:{}".format(
-                obj, obj.pk, self.discogs_id
-            )
+            f"crawling metadata: {obj} - id:{obj.pk} - discogs_id:{self.discogs_id}"
         )
 
         self._data = None
@@ -110,11 +108,7 @@ class DiscogsCrawler:
 
     def load_data_from_api(self):
 
-        url = "http://{host}/{discogs_ctype}s/{discogs_id}".format(
-            host=DISCOGS_HOST,
-            discogs_id=self.discogs_id,
-            discogs_ctype=self.discogs_ctype,
-        )
+        url = f"http://{DISCOGS_HOST}/{self.discogs_ctype}s/{self.discogs_id}"
 
         log.debug(f"load data from: {url}")
 

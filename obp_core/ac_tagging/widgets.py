@@ -80,7 +80,7 @@ class TagAutocompleteTagIt(TextInput):
         # if a custom jquery ui file has been specified
         if jqueryui_file != jqueryui_default:
             # determine path
-            jqueryui_file = "{}{}".format(js_base_url, jqueryui_file)
+            jqueryui_file = f"{js_base_url}{jqueryui_file}"
 
         # load js
         js = (

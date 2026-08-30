@@ -5,7 +5,7 @@ import hashlib
 
 from base.utils.AsciiDammit import asciiDammit
 
-VALID_CHARS = "-_.()[] {}{}".format(string.ascii_letters, string.digits)
+VALID_CHARS = f"-_.()[] {string.ascii_letters}{string.digits}"
 EXCLUDE_CHARS = "/\\'"
 
 log = logging.getLogger(__name__)

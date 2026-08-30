@@ -39,9 +39,7 @@ class Autopilot:
         days_fill = kwargs.get("days_fill", 1)
 
         log.info(
-            'Scheduling: {:} days with offset {:} - on behalf of "{:}" on channel "{:}"'.format(
-                days_fill, days_offset, self.user, self.channel
-            )
+            f'Scheduling: {days_fill} days with offset {days_offset} - on behalf of "{self.user}" on channel "{self.channel}"'
         )
 
         now = datetime.datetime.now()
@@ -102,9 +100,7 @@ class Autopilot:
             #     print '*** %s ***' % e
 
         log.info(
-            "Added {:} emissions to scheduler on {:}".format(
-                len(self.scheduled_emissions), self.channel.name
-            )
+            f"Added {len(self.scheduled_emissions)} emissions to scheduler on {self.channel.name}"
         )
 
     def schedule_daypart(self, daypart):
@@ -170,9 +166,7 @@ class Autopilot:
                     # playlist = qs.order_by('?')[0]
 
                     log.info(
-                        'Scheduling at {:} - pk: {:} "{:}"'.format(
-                            next_start, playlist.pk, playlist.name
-                        )
+                        f'Scheduling at {next_start} - pk: {playlist.pk} "{playlist.name}"'
                     )
 
                     emission = Emission(
@@ -199,9 +193,7 @@ class Autopilot:
     def get_next_slot(self, time_start, time_end, min_duration=None, max_duration=None):
 
         log.debug(
-            "Look for slot: {:} - {:} with durations min: {:} max: {:}".format(
-                time_start.time(), time_end.time(), min_duration, max_duration
-            )
+            f"Look for slot: {time_start.time()} - {time_end.time()} with durations min: {min_duration} max: {max_duration}"
         )
 
         if (time_end - time_start).seconds < min_duration:
@@ -227,12 +219,7 @@ class Autopilot:
             # print ending_emissions[0].pk
 
             log.debug(
-                'ending emission "{:}" in range {:}-{:}, next start: {:}'.format(
-                    ending_emission.name,
-                    ending_emission.time_start.time(),
-                    ending_emission.time_end.time(),
-                    next_start,
-                )
+                f'ending emission "{ending_emission.name}" in range {ending_emission.time_start.time()}-{ending_emission.time_end.time()}, next start: {next_start}'
             )
 
         else:
@@ -269,12 +256,7 @@ class Autopilot:
                 slot_duration = (next_end - next_start).seconds
 
             log.debug(
-                'starting emission "{:}" in range {:}-{:}, next end: {:}'.format(
-                    starting_emission.name,
-                    starting_emission.time_start.time(),
-                    starting_emission.time_end.time(),
-                    next_end,
-                )
+                f'starting emission "{starting_emission.name}" in range {starting_emission.time_start.time()}-{starting_emission.time_end.time()}, next end: {next_end}'
             )
 
         else:
@@ -286,9 +268,7 @@ class Autopilot:
 
         while next_start and not slot_duration >= min_duration:
             log.debug(
-                "slot duration of {:} is too short - requested: {:}".format(
-                    slot_duration, min_duration
-                )
+                f"slot duration of {slot_duration} is too short - requested: {min_duration}"
             )
 
             if not starting_emissions.exists():

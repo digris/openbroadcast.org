@@ -46,7 +46,7 @@ def clean_filename(filename):
     import unicodedata
     import string
 
-    valid_chars = "-_.{}{}".format(string.ascii_letters, string.digits)
+    valid_chars = f"-_.{string.ascii_letters}{string.digits}"
     cleaned = unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore")
     return "".join(c for c in cleaned if c in valid_chars)
 
@@ -56,7 +56,7 @@ def masterpath_by_uuid(instance, filename):
     folder = "private/%s/" % (str(instance.uuid).replace("-", "/")[5:])
     filename = "master"
     return os.path.join(
-        folder, "{}{}".format(clean_filename(filename).lower(), extension.lower())
+        folder, f"{clean_filename(filename).lower()}{extension.lower()}"
     )
 
 
@@ -276,9 +276,7 @@ class Importer:
                 lrs = lookup.release_by_mb_id(mb_release_id)
                 r = lrs[0]
                 log.debug(
-                    "got local release: {} by mb_release_id: {}".format(
-                        r.pk, mb_release_id
-                    )
+                    f"got local release: {r.pk} by mb_release_id: {mb_release_id}"
                 )
             except Exception:
                 log.debug(
@@ -354,11 +352,7 @@ class Importer:
             try:
                 las = lookup.artist_by_mb_id(mb_artist_id)
                 a = las[0]
-                log.debug(
-                    "got local artist: {} by mb_artist_id: {}".format(
-                        a.pk, mb_artist_id
-                    )
-                )
+                log.debug(f"got local artist: {a.pk} by mb_artist_id: {mb_artist_id}")
             except Exception:
                 # print e
                 log.debug(
@@ -454,12 +448,10 @@ class Importer:
             log.debug("os.makedirs: %s" % os.path.join(MEDIA_ROOT, folder))
             os.makedirs(os.path.join(MEDIA_ROOT, folder))
 
-            log.debug(
-                "os.shutil.copy: {} - {}".format(src, os.path.join(MEDIA_ROOT, dst))
-            )
+            log.debug(f"os.shutil.copy: {src} - {os.path.join(MEDIA_ROOT, dst)}")
             shutil.copy(src, os.path.join(MEDIA_ROOT, dst))
 
-            log.debug("set master for pk: {} to {}".format(m.pk, dst))
+            log.debug(f"set master for pk: {m.pk} to {dst}")
             m.master = dst
             m.original_filename = obj.filename
 
@@ -669,7 +661,7 @@ task definitions
 def mb_complete_media_task(
     obj, mb_id, mb_release_id, mb_artist_combo_ids=None, excludes=(), user=None
 ):
-    log.info("complete media, m: {} | mb_id: {}".format(obj.name, mb_id))
+    log.info(f"complete media, m: {obj.name} | mb_id: {mb_id}")
 
     time.sleep(1.1)
 
@@ -862,7 +854,7 @@ def mb_complete_media_task(
 
 @shared_task
 def mb_complete_release_task(obj, mb_id, user=None):
-    log.info("complete release, r: {} | mb_id: {}".format(obj.name, mb_id))
+    log.info(f"complete release, r: {obj.name} | mb_id: {mb_id}")
 
     inc = (
         "artists",
@@ -1068,7 +1060,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
             pass
 
         if discogs_id:
-            url = "http://{}/releases/{}".format(DISCOGS_HOST, discogs_id)
+            url = f"http://{DISCOGS_HOST}/releases/{discogs_id}"
             r = requests.get(url, timeout=5)
 
             try:
@@ -1101,7 +1093,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
             pass
 
         if discogs_id:
-            url = "http://{}/masters/{}".format(DISCOGS_HOST, discogs_id)
+            url = f"http://{DISCOGS_HOST}/masters/{discogs_id}"
             r = requests.get(url, timeout=5)
 
             try:
@@ -1224,7 +1216,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
             try:
                 lls = lookup.label_by_mb_id(mb_label_id)
                 l = lls[0]
-                log.debug("got label: {} by mb_label_id: {}".format(l.pk, mb_label_id))
+                log.debug(f"got label: {l.pk} by mb_label_id: {mb_label_id}")
             except Exception:
                 log.debug("could not get label by mb_label_id: %s" % mb_label_id)
                 log.info("create label with mb_id: %s" % mb_label_id)
@@ -1255,7 +1247,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
 @shared_task
 def mb_complete_artist_task(obj, mb_id, user=None):
-    log.info("complete artist, a: {} {} | mb_id: {}".format(obj.name, obj.pk, mb_id))
+    log.info(f"complete artist, a: {obj.name} {obj.pk} | mb_id: {mb_id}")
 
     lock_key = f"complete-{mb_id}"
 
@@ -1301,7 +1293,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
         if life_span:
             date_start = life_span.get("begin", None)
             date_end = life_span.get("end", None)
-            log.debug("got lifespan: {} to {}".format(date_start, date_end))
+            log.debug(f"got lifespan: {date_start} to {date_end}")
             if date_start:
                 if len(date_start) == 4:
                     date_start = "%s-00-00" % date_start
@@ -1436,7 +1428,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                 pass
 
             if discogs_id:
-                url = "http://{}/artists/{}".format(DISCOGS_HOST, discogs_id)
+                url = f"http://{DISCOGS_HOST}/artists/{discogs_id}"
                 r = requests.get(url, timeout=5)
 
                 try:
@@ -1657,7 +1649,7 @@ def mb_complete_label_task(obj, mb_id, user=None):
             pass
 
         if discogs_id:
-            url = "http://{}/labels/{}".format(DISCOGS_HOST, discogs_id)
+            url = f"http://{DISCOGS_HOST}/labels/{discogs_id}"
 
             log.debug("url: %s" % url)
             r = requests.get(url, timeout=5)

@@ -133,7 +133,7 @@ class MarkdownTextField(TextField):
         super().__init__(*args, **kwargs)
 
     def contribute_to_class(self, cls, name):
-        self._html_field = "{}{}".format(name, self._html_field_suffix)
+        self._html_field = f"{name}{self._html_field_suffix}"
         # TextField(blank=True, null=True, editable=False).contribute_to_class(cls, self._html_field)
         super().contribute_to_class(cls, name)
 

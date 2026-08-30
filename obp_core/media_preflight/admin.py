@@ -53,12 +53,7 @@ class PreflightCheckAdmin(admin.ModelAdmin):
 
     def media_display(self, obj):
         if obj.media:
-            return """<p><a href="{admin_url}">{name}</a><br><a href="{public_url}">View on site</a><br>{uuid}</p>""".format(
-                admin_url=obj.media.get_admin_url(),
-                name=obj.media.name[0:48],
-                public_url=obj.media.get_absolute_url(),
-                uuid=obj.media.uuid,
-            )
+            return f"""<p><a href="{obj.media.get_admin_url()}">{obj.media.name[0:48]}</a><br><a href="{obj.media.get_absolute_url()}">View on site</a><br>{obj.media.uuid}</p>"""
         return "-"
 
     media_display.short_description = _("Media")

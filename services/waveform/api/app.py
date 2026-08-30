@@ -50,14 +50,14 @@ curl \
 
 
 def cleanup_data_directory(directory=DATA_DIRECTORY):
-    app.logger.debug("cleanup data directory: {}".format(directory))
+    app.logger.debug(f"cleanup data directory: {directory}")
     time_in_secs = time.time() - 60
     for root, dirs, files in os.walk(directory, topdown=False):
         for _file in files:
             full_path = os.path.join(root, _file)
             stat = os.stat(full_path)
             if stat.st_mtime <= time_in_secs:
-                app.logger.info("unlink old file: {}".format(full_path))
+                app.logger.info(f"unlink old file: {full_path}")
                 os.unlink(full_path)
 
 
@@ -65,7 +65,7 @@ def cleanup_data_directory(directory=DATA_DIRECTORY):
 def index():
     return jsonify(
         {
-            "version": "{}".format(__version__),
+            "version": f"{__version__}",
             "routes": [
                 {
                     "route": "/png(/<int:width(1800)>)(/<int:height(300)>)",
@@ -73,9 +73,7 @@ def index():
                     "description": "generates audiowaveform as PNG image",
                 },
                 {
-                    "route": "/json(/<int:samples({samples})>)(/<int:steps({steps})>)".format(
-                        samples=JSON_NUM_SAMPLES, steps=JSON_NUM_STEPS
-                    ),
+                    "route": f"/json(/<int:samples({JSON_NUM_SAMPLES})>)(/<int:steps({JSON_NUM_STEPS})>)",
                     "methods": ["POST"],
                     "description": "generates processed waveform data as JSON",
                 },
@@ -87,28 +85,23 @@ def index():
 @app.route("/upload")
 def upload():
     # just for minimal testing/ demonstration
-    return """
+    return f"""
         <!doctype html>
         <title>Upload</title>
         <h1>Upload Audiofile</h1>
         <h2>Generate JSON</h2>
-        <p>defaults to {samples} samples, {steps} steps</p>
-        <form method=post enctype=multipart/form-data action=/json/{samples}>
+        <p>defaults to {JSON_NUM_SAMPLES} samples, {JSON_NUM_STEPS} steps</p>
+        <form method=post enctype=multipart/form-data action=/json/{JSON_NUM_SAMPLES}>
           <input type=file name=file>
           <input type=submit value=Upload>
         </form>
         <h2>Generate PNG</h2>
-        <p>defaults to {width}x{height}px</p>
-        <form method=post enctype=multipart/form-data action=/png/{width}/{height}>
+        <p>defaults to {PNG_WIDTH}x{PNG_HEIGHT}px</p>
+        <form method=post enctype=multipart/form-data action=/png/{PNG_WIDTH}/{PNG_HEIGHT}>
           <input type=file name=file>
           <input type=submit value=Upload>
         </form>
-    """.format(
-        samples=JSON_NUM_SAMPLES,
-        steps=JSON_NUM_STEPS,
-        width=PNG_WIDTH,
-        height=PNG_HEIGHT,
-    )
+    """
 
 
 @app.route("/json", methods=["POST"], endpoint="json")
@@ -126,12 +119,10 @@ def process_as_json(**kwargs):
 
     # run waveform data generation
     try:
-        app.logger.debug("generate waveform data for: {}".format(path))
+        app.logger.debug(f"generate waveform data for: {path}")
         _waveform = audiowaveform.waveform_as_json(path)
     except audiowaveform.AudioWaveformException as e:
-        app.logger.warning(
-            "error generating waveform data for: {} - {}".format(path, e)
-        )
+        app.logger.warning(f"error generating waveform data for: {path} - {e}")
         return make_response(jsonify({"errors": [str(e)]}), 400)
     finally:
         os.unlink(path)
@@ -139,15 +130,13 @@ def process_as_json(**kwargs):
     num_samples = kwargs.get("num_samples", JSON_NUM_SAMPLES)
     num_steps = kwargs.get("num_steps", JSON_NUM_STEPS)
     try:
-        app.logger.debug("processing waveform data for: {}".format(path))
+        app.logger.debug(f"processing waveform data for: {path}")
         _waveform = audiowaveform.process_waveform_data(
             _waveform, num_samples, num_steps
         )
         return jsonify({"data": _waveform})
     except audiowaveform.AudioWaveformException as e:
-        app.logger.warning(
-            "error processing waveform data for: {} - {}".format(path, e)
-        )
+        app.logger.warning(f"error processing waveform data for: {path} - {e}")
         return make_response(jsonify({"errors": [str(e)]}), 400)
 
 
@@ -174,12 +163,12 @@ def process_as_png(**kwargs):
 
     # run waveform image generation
     try:
-        app.logger.debug("generate waveform data for: {}".format(path))
+        app.logger.debug(f"generate waveform data for: {path}")
         png_temp_path = audiowaveform.waveform_as_png(
             path, width=width, height=height, fg=fg, bg=bg, delete_after_processing=True
         )
 
-        png_filename = "{uuid}.png".format(uuid=uuid.uuid1())
+        png_filename = f"{uuid.uuid1()}.png"
 
         png_path = os.path.join(DATA_DIRECTORY, png_filename)
 
@@ -190,15 +179,13 @@ def process_as_png(**kwargs):
         # return make_response(jsonify({'png_path': png_path, 'location': location, 'kwargs': kwargs}), 201)
 
     except audiowaveform.AudioWaveformException as e:
-        app.logger.warning(
-            "error generating waveform data for: {} - {}".format(path, e)
-        )
+        app.logger.warning(f"error generating waveform data for: {path} - {e}")
         return make_response(jsonify({"errors": [str(e)]}), 400)
 
 
 @app.route("/data/<path:filename>", methods=["GET"])
 def download_file(filename):
-    app.logger.info("serving {} from {}".format(filename, DATA_DIRECTORY))
+    app.logger.info(f"serving {filename} from {DATA_DIRECTORY}")
 
     return send_from_directory(directory=DATA_DIRECTORY, filename=filename)
 
