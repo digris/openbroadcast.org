@@ -6,4 +6,4 @@ class CollectionConfig(AppConfig):
     verbose_name = "Collection App"
 
     def ready(self):
-        import collection.signals
+        import collection.signals  # noqa: F401

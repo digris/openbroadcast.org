@@ -6,10 +6,7 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, HttpResponseBadRequest
 
-try:
-    from django.urls import reverse
-except ImportError:
-    from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse
 
 from rest_framework import mixins
 from rest_framework import viewsets

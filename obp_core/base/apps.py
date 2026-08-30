@@ -6,4 +6,4 @@ class BaseConfig(AppConfig):
     verbose_name = "Base"
 
     def ready(self):
-        import base.checks
+        import base.checks  # noqa: F401
