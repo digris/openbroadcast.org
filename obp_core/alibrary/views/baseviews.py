@@ -1,5 +1,4 @@
-from django.conf import settings
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView
 
 from ..models import License
 

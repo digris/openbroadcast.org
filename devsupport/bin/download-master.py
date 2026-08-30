@@ -58,14 +58,14 @@ def rsync_file(remote_path, local_path):
             stderr=subprocess.STDOUT,
         )
         return local_path
-    except subprocess.CalledProcessError as e:
+    except subprocess.CalledProcessError:
         raise DownloaderException("unable to download file")
 
 
 def download_file(uuid, path):
 
     if not os.path.isdir(path):
-        raise IOError(f"path is not a directory: {path}")
+        raise OSError(f"path is not a directory: {path}")
 
     remote_path = get_remote_path(uuid=uuid)
     filename, ext = os.path.splitext(os.path.basename(remote_path))

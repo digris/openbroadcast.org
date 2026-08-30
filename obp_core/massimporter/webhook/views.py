@@ -1,6 +1,5 @@
 import logging
 import json
-import urllib
 from django.views.generic.base import View
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
@@ -26,14 +25,14 @@ class WebookView(View):
 
     def get(self, request, *args, **kwargs):
 
-        name = kwargs.get("name", None)
+        name = kwargs.get("name")
         token = request.GET.get(SECURITY_TOKEN_KEY, None)
 
         return HttpResponse(token)
 
     def post(self, request, *args, **kwargs):
 
-        name = kwargs.get("name", None)
+        name = kwargs.get("name")
         token = request.GET.get(SECURITY_TOKEN_KEY, None)
 
         print("****************************")

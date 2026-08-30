@@ -21,7 +21,7 @@ from tagging.forms import TagField
 
 from search.forms import fields as search_fields
 
-from ..models import Daypart, Season, Weather
+from ..models import Daypart
 
 ACTION_LAYOUT = action_layout = FormActions(
     HTML(

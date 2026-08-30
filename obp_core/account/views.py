@@ -3,7 +3,7 @@ import json
 from braces.views import AnonymousRequiredMixin, LoginRequiredMixin
 from django.utils.http import is_safe_url
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.views.generic import View, FormView, RedirectView, TemplateView
+from django.views.generic import View, FormView, TemplateView
 from django.contrib.auth import (
     REDIRECT_FIELD_NAME,
     authenticate,
@@ -132,7 +132,7 @@ class RegistrationView(AnonymousRequiredMixin, FormView):
 
         new_user = form.save()
         new_user = authenticate(
-            username=getattr(new_user, "username"),
+            username=new_user.username,
             password=form.cleaned_data["password1"],
         )
         auth_login(self.request, new_user)

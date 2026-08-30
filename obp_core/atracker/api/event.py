@@ -67,12 +67,12 @@ class EventResource(ModelResource):
         self.is_authenticated(request)
         self.throttle_check(request)
 
-        object_uuid = kwargs.get("object_uuid", None)
+        object_uuid = kwargs.get("object_uuid")
 
-        content_type = kwargs.get("content_type", None)
+        content_type = kwargs.get("content_type")
         orig_ct = content_type
-        action = kwargs.get("action", None)
-        user_id = kwargs.get("user_id", None)
+        action = kwargs.get("action")
+        user_id = kwargs.get("user_id")
         if user_id:
             user_id = int(user_id)
 

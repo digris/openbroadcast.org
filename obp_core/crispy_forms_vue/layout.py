@@ -1,4 +1,4 @@
-from crispy_forms.layout import LayoutObject, Div, Field
+from crispy_forms.layout import Div, Field
 
 TEMPLATE_PACK = "forms_vue"
 

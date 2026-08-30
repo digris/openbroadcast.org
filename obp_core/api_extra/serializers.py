@@ -2,7 +2,7 @@ from django.conf import settings
 from rest_framework import serializers
 from easy_thumbnails.templatetags.thumbnail import thumbnail_url
 
-SITE_URL = getattr(settings, "SITE_URL")
+SITE_URL = settings.SITE_URL
 
 
 class ImageSerializer(serializers.ImageField):

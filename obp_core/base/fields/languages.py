@@ -1,10 +1,8 @@
 # seen at: https://github.com/exalted/djangomissing
 
-import os
 
 from django.utils.translation import ugettext as _
 from django.db import models
-from django.conf import settings
 
 
 # Codes for the Representation of Names of Languages

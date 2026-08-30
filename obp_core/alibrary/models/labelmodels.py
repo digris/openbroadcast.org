@@ -5,8 +5,7 @@ import logging
 import arating
 from django.conf import settings
 from django.utils.translation import ugettext as _
-from django.utils import translation
-from django.core.urlresolvers import reverse, NoReverseMatch
+from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.fields import GenericRelation
 from phonenumber_field.modelfields import PhoneNumberField
 from l10n.models import Country

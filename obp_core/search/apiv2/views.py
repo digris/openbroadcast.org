@@ -2,13 +2,11 @@
 # from elasticsearch_dsl.query import MultiMatch, Match, Fuzzy, Term, Q
 
 # from elasticsearch_dsl import Search
-from django_elasticsearch_dsl.search import Search
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from django.apps import apps
 
-from ..queries import autocomplete_search, format_search_results
+from ..queries import autocomplete_search
 from .. import utils
 
 
@@ -20,7 +18,7 @@ def search_global(request, **kwargs):
     limit = int(request.GET.get("limit", 20))
     offset = int(request.GET.get("offset", 0))
     # get ct from either GET or kwargs
-    doc_type = request.GET.get("ct", kwargs.get("ct", None))
+    doc_type = request.GET.get("ct", kwargs.get("ct"))
 
     if q:
         q = q.strip().lower()

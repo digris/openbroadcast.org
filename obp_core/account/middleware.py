@@ -1,6 +1,3 @@
-import six
-from django.contrib import messages
-
 from social_django.middleware import (
     SocialAuthExceptionMiddleware as BaseSocialAuthExceptionMiddleware,
 )

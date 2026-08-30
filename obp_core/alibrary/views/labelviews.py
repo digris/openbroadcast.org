@@ -1,10 +1,9 @@
 import actstream
 import logging
 
-from django.views.generic import View, DetailView, UpdateView
+from django.views.generic import View, UpdateView
 from django.http import HttpResponseRedirect, StreamingHttpResponse
 from django.contrib import messages
-from django.shortcuts import redirect
 from django.core.cache import cache
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _

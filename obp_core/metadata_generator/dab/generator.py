@@ -18,8 +18,8 @@ except ImportError as e:
 
 log = logging.getLogger(__name__)
 
-MEDIA_ROOT = getattr(settings, "MEDIA_ROOT")
-MEDIA_URL = getattr(settings, "MEDIA_URL")
+MEDIA_ROOT = settings.MEDIA_ROOT
+MEDIA_URL = settings.MEDIA_URL
 
 DEFAULT_DLS_TEXT = ["open broadcast"]
 

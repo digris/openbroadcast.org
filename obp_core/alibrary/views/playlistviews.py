@@ -2,7 +2,6 @@ import logging
 import datetime
 
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -11,11 +10,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.utils import timezone
-from django.views.generic import DetailView, UpdateView, CreateView, DeleteView
-from elasticsearch_dsl import TermsFacet, RangeFacet, DateHistogramFacet
+from django.views.generic import CreateView, DeleteView
+from elasticsearch_dsl import TermsFacet, RangeFacet
 from navutils import MenuMixin
 
-from base.views.detail import UUIDDetailView, SectionDetailView
+from base.views.detail import SectionDetailView
 from base.views.update import SectionUpdateView
 from search.views import BaseFacetedSearch, BaseSearchListView
 

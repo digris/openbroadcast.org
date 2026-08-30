@@ -19,7 +19,6 @@ from rest_framework.exceptions import PermissionDenied
 
 from django_filters.rest_framework import DjangoFilterBackend
 
-from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 
 from .serializers import (
     ArtistSerializer,

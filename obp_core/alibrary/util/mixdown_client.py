@@ -5,7 +5,7 @@ import dateutil.parser
 from requests.exceptions import ConnectionError
 from django.conf import settings
 
-SITE_URL = getattr(settings, "SITE_URL")
+SITE_URL = settings.SITE_URL
 API_BASE_URL = getattr(
     settings, "MIXDOWN_API_BASE_URL", "http://127.0.0.1:7778/api/v1/"
 )

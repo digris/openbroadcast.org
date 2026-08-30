@@ -2,13 +2,10 @@ import actstream
 import logging
 
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
-from django.conf import settings
 from django.contrib import messages
-from django.shortcuts import redirect
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
-from django.views.generic import DetailView, ListView, UpdateView
+from django.views.generic import UpdateView
 from elasticsearch_dsl import TermsFacet, RangeFacet
 from navutils import MenuMixin
 

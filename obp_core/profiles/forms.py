@@ -6,14 +6,11 @@ from django.forms.models import inlineformset_factory
 from django.utils.translation import ugettext as _
 
 
-from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Fieldset, Div, Field, Row, Column
 from crispy_forms_vue.layout import Cell, Grid, InputContainer, TagInputContainer
 
 from tagging.forms import TagField
-from tagging_extra.widgets import TagAutocompleteWidget
-from ac_tagging.widgets import TagAutocompleteTagIt
 
 from base.fields.extra import AdvancedFileInput
 from profiles.models import Profile, Link, Service

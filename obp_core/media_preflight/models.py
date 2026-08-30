@@ -1,10 +1,8 @@
-import json
 import logging
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import pre_save, post_save, post_delete
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from jsonfield import JSONField
@@ -15,7 +13,7 @@ from .tasks import (
     run_preflight_check_task,
 )
 
-SITE_URL = getattr(settings, "SITE_URL")
+SITE_URL = settings.SITE_URL
 
 log = logging.getLogger(__name__)
 

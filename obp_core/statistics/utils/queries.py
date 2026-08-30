@@ -1,7 +1,6 @@
 import logging
 import qsstats
 
-from time import time
 from django.db.models import Count, Prefetch
 from alibrary.models import Media
 from atracker.models import Event

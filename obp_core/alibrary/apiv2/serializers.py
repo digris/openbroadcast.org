@@ -19,7 +19,7 @@ from ..models import (
     PlaylistItemPlaylist,
 )
 
-SITE_URL = getattr(settings, "SITE_URL")
+SITE_URL = settings.SITE_URL
 
 
 class ImageSerializer(serializers.ImageField):
@@ -302,13 +302,9 @@ class PlaylistItemPlaylistSerializer(serializers.ModelSerializer):
     def get_content(self, obj, **kwargs):
 
         # TODO: implement for `Jingle`
-        if isinstance(obj.item.content_object, Media):
-            serializer = MediaSerializer(
-                instance=Media.objects.get(pk=obj.item.content_object.pk),
-                many=False,
-                context={"request": self.context["request"]},
-            )
-        elif isinstance(obj.item.content_object, Media):
+        if isinstance(obj.item.content_object, Media) or isinstance(
+            obj.item.content_object, Media
+        ):
             serializer = MediaSerializer(
                 instance=Media.objects.get(pk=obj.item.content_object.pk),
                 many=False,
@@ -356,7 +352,7 @@ class PlaylistSerializer(FlexFieldsModelSerializer):
     dayparts = serializers.SerializerMethodField()
 
     def get_user(self, obj):
-        if not (obj.user and getattr(obj.user, "profile")):
+        if not (obj.user and obj.user.profile):
             return
         return ProfileSerializer(obj.user.profile, context=self.context).data
 

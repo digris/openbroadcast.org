@@ -1,11 +1,8 @@
 import logging
 
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView, View
-from django.views.generic.detail import TemplateResponseMixin
-from django.views.generic.edit import FormMixin, ProcessFormView
+from django.views.generic import ListView, DeleteView, View
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
-from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.utils.functional import lazy

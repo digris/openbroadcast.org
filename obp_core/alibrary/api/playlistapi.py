@@ -1,10 +1,9 @@
 import json
 
-from alibrary.api import ReleaseResource, MediaResource, SimpleMediaResource
+from alibrary.api import ReleaseResource, SimpleMediaResource
 from alibrary.models import Playlist, Media, PlaylistItemPlaylist, PlaylistItem, Daypart
 from alibrary.models import Release
 from django.conf.urls import url
-from django.db.models import Q
 from easy_thumbnails.files import get_thumbnailer
 from tastypie import fields
 from tastypie.authentication import (

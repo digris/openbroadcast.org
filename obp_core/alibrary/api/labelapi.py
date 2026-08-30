@@ -1,5 +1,4 @@
 from alibrary.models import Label
-from django.conf.urls import url
 from easy_thumbnails.files import get_thumbnailer
 from tastypie.authentication import (
     MultiAuthentication,
@@ -9,7 +8,6 @@ from tastypie.authentication import (
 from tastypie.authorization import Authorization
 from tastypie.cache import SimpleCache
 from tastypie.resources import ModelResource
-from tastypie.utils import trailing_slash
 
 
 THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)

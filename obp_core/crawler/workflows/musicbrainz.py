@@ -5,11 +5,11 @@ from django.conf import settings
 
 from l10n.models import Country
 from alibrary.models import Relation
-from alibrary.util.relations import uuid_by_url, uuid_by_object, get_service_by_url
+from alibrary.util.relations import uuid_by_object, get_service_by_url
 
 log = logging.getLogger(__name__)
 
-MUSICBRAINZ_HOST = getattr(settings, "MUSICBRAINZ_HOST")
+MUSICBRAINZ_HOST = settings.MUSICBRAINZ_HOST
 
 
 MB_RELATION_USE_SERVICES = [

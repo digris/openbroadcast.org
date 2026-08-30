@@ -1,28 +1,24 @@
-from actstream.models import Action, Follow, actor_stream
-from alibrary.models import Playlist, Release, Media
-from django.conf import settings
+from actstream.models import actor_stream
+from alibrary.models import Release, Media
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.core.exceptions import PermissionDenied
 from base.utils.form_errors import merge_form_errors
 from django.http import (
-    Http404,
     HttpResponseRedirect,
     HttpResponseForbidden,
     HttpResponseBadRequest,
 )
 from django.http import HttpResponse
-from django.shortcuts import render_to_response, get_object_or_404, redirect
-from django.template import RequestContext
+from django.shortcuts import get_object_or_404, redirect
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, View, UpdateView
-from braces.views import LoginRequiredMixin, PermissionRequiredMixin
+from braces.views import LoginRequiredMixin
 from invitation.models import Invitation
 from profiles.forms import (
     UserForm,
     ProfileForm,
-    ServiceFormSet,
     LinkFormSet,
     UserCredentialsForm,
 )

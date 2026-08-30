@@ -2,7 +2,6 @@ from collections import OrderedDict
 from django.views.generic import ListView
 from django.db.models import Case, When
 from django.http import HttpResponseBadRequest
-from django.core.exceptions import SuspiciousOperation
 
 from elasticsearch_dsl import FacetedSearch
 from elasticsearch_dsl import Q as ESQ

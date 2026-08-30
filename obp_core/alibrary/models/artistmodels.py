@@ -11,12 +11,11 @@ from base.cacheops_extra import cached_uuid_aware
 from base.mixins import TimestampedModelMixin
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
-from django.core.urlresolvers import reverse, NoReverseMatch
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
-from django.utils import translation
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
 from l10n.models import Country

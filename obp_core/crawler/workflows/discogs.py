@@ -4,13 +4,12 @@ import requests
 import time
 from django.conf import settings
 
-from l10n.models import Country
 from alibrary.models import Relation
-from alibrary.util.relations import uuid_by_url, uuid_by_object, get_service_by_url
+from alibrary.util.relations import get_service_by_url
 
 log = logging.getLogger(__name__)
 
-DISCOGS_HOST = getattr(settings, "DISCOGS_HOST")
+DISCOGS_HOST = settings.DISCOGS_HOST
 DISCOGS_HOST = "api.discogs.com"
 
 SLEEP_ON_429 = 30

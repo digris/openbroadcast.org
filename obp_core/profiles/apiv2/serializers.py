@@ -1,5 +1,3 @@
-from django.conf import settings
-
 from rest_framework import serializers
 from api_extra.serializers import ImageSerializer, AbsoluteURLField
 from ..models import Profile

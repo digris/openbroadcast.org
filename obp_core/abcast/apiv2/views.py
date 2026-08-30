@@ -2,7 +2,6 @@ import datetime
 import logging
 
 from django.apps import apps
-from django.core.cache import cache
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.cache import patch_response_headers

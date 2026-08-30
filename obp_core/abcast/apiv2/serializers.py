@@ -8,7 +8,7 @@ from profiles.apiv2.serializers import ProfileSerializer
 
 from ..models import Emission
 
-SITE_URL = getattr(settings, "SITE_URL")
+SITE_URL = settings.SITE_URL
 EMISSION_DEFAULT_COLOR = "#1ae2a5"
 
 
@@ -56,7 +56,7 @@ class EmissionSerializer(FlexFieldsModelSerializer):
         ).data
 
     def get_user(self, obj):
-        if not (obj.user and getattr(obj.user, "profile")):
+        if not (obj.user and obj.user.profile):
             return
         return ProfileSerializer(obj.user.profile, context=self.context).data
 
@@ -64,7 +64,7 @@ class EmissionSerializer(FlexFieldsModelSerializer):
         if not (
             obj.content_object
             and obj.content_object.user
-            and getattr(obj.content_object.user, "profile")
+            and obj.content_object.user.profile
         ):
             return EMISSION_DEFAULT_COLOR
         return (

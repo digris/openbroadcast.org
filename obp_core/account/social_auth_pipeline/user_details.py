@@ -1,13 +1,9 @@
-from django.core.files import File
-from django.core.files.temp import NamedTemporaryFile
-
-
 try:
     # For Python 3.0 and later
     from urllib.request import urlopen
 except ImportError:
     # Fall back to Python 2's urllib2
-    from urllib2 import urlopen
+    pass
 
 
 def get_details(backend, strategy, details, response, user=None, *args, **kwargs):

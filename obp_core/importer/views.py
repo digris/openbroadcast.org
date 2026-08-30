@@ -9,14 +9,11 @@ from django.utils.functional import lazy
 from django.views.generic import (
     ListView,
     UpdateView,
-    CreateView,
     DeleteView,
     View,
-    RedirectView,
 )
 from navutils import MenuMixin
 
-from importer.forms import ImportCreateModelForm
 from importer.models import Import
 from pure_pagination.mixins import PaginationMixin
 

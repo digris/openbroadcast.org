@@ -2,7 +2,6 @@
 
 from alibrary.models import Artist
 from django.conf.urls import url
-from django.db.models import Q
 from easy_thumbnails.files import get_thumbnailer
 from tastypie.authentication import (
     MultiAuthentication,

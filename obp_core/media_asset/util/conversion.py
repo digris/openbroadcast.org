@@ -1,5 +1,4 @@
 import os
-import shutil
 import subprocess
 import logging
 
@@ -7,7 +6,7 @@ from django.conf import settings
 
 log = logging.getLogger(__name__)
 
-FFMPEG_BINARY = getattr(settings, "FFMPEG_BINARY")
+FFMPEG_BINARY = settings.FFMPEG_BINARY
 
 
 def any_to_wav(src, dst):

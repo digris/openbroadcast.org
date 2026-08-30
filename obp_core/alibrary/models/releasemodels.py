@@ -1,8 +1,6 @@
 import glob
 import logging
 import os
-import inspect
-import uuid
 from datetime import datetime, date, timedelta
 from zipfile import ZipFile
 
@@ -11,8 +9,7 @@ import requests
 import tagging
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
-from django.core.urlresolvers import reverse, NoReverseMatch
-from django.utils import translation
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save, post_delete
@@ -591,12 +588,8 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         except:
             self.releasedate = None
 
-        if (
-            self.pk is not None
-            and hasattr(self, "_last_editor")
-            and getattr(self, "_last_editor")
-        ):
-            last_editor = getattr(self, "_last_editor")
+        if self.pk is not None and hasattr(self, "_last_editor") and self._last_editor:
+            last_editor = self._last_editor
             self.last_editor = last_editor
 
         if self.pk is not None:

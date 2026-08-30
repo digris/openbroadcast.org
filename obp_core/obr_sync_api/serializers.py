@@ -1,4 +1,3 @@
-from django.core.urlresolvers import reverse_lazy
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
@@ -18,7 +17,7 @@ from arating.models import Vote
 
 User = get_user_model()
 
-SITE_URL = getattr(settings, "SITE_URL")
+SITE_URL = settings.SITE_URL
 
 
 class ApproximateDateSerializer(serializers.Serializer):
@@ -317,7 +316,7 @@ class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
         return None
 
     def get_editor(self, obj, **kwargs):
-        if not (obj.user and getattr(obj.user, "profile")):
+        if not (obj.user and obj.user.profile):
             return None
         profile = obj.user.profile
         return {

@@ -1,26 +1,21 @@
 import logging
-import re
 import os
 import urllib
 import time
-import contextlib
 import hashlib
 import requests
 from BeautifulSoup import BeautifulSoup
 from django.conf import settings
 from django.db.models import Case, When
 
-from l10n.models import Country
-from alibrary.models import Relation
-from alibrary.util.relations import uuid_by_url, uuid_by_object, get_service_by_url
-from alibrary.util.storage import get_file_from_url, get_dir_for_object
+from alibrary.util.storage import get_dir_for_object
 
 
 log = logging.getLogger(__name__)
 
-MUSICBRAINZ_HOST = getattr(settings, "MUSICBRAINZ_HOST")
-DISCOGS_HOST = getattr(settings, "DISCOGS_HOST")
-MEDIA_ROOT = getattr(settings, "MEDIA_ROOT")
+MUSICBRAINZ_HOST = settings.MUSICBRAINZ_HOST
+DISCOGS_HOST = settings.DISCOGS_HOST
+MEDIA_ROOT = settings.MEDIA_ROOT
 
 SLEEP_ON_429 = 30
 

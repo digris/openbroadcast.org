@@ -2,7 +2,7 @@ import logging
 
 from alibrary.models import Media
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse, Http404, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.conf import settings
@@ -25,8 +25,8 @@ class WaveformView(View):
 
     def get(self, request, *args, **kwargs):
 
-        media_uuid = kwargs.get("media_uuid", None)
-        type = kwargs.get("type", None)
+        media_uuid = kwargs.get("media_uuid")
+        type = kwargs.get("type")
         media = get_object_or_404(Media, uuid=media_uuid)
 
         # request a default waveform  of the 'master'
@@ -53,9 +53,9 @@ class FormatView(View):
 
     def get(self, request, *args, **kwargs):
 
-        media_uuid = kwargs.get("media_uuid", None)
-        quality = kwargs.get("quality", None)
-        encoding = kwargs.get("encoding", None)
+        media_uuid = kwargs.get("media_uuid")
+        quality = kwargs.get("quality")
+        encoding = kwargs.get("encoding")
         media = get_object_or_404(Media, uuid=media_uuid)
 
         stream_permission = False

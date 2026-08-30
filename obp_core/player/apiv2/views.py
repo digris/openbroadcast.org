@@ -5,15 +5,13 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, HttpResponseBadRequest
 
-from rest_framework import mixins
-from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .serializers import MediaObjSerializer, ArtistObjSerializer, ProfileObjSerializer
 from alibrary.apiv2.serializers import ReleaseSerializer, PlaylistSerializer
 
-SITE_URL = getattr(settings, "SITE_URL")
+SITE_URL = settings.SITE_URL
 
 SERIALIZER_MAP = {
     # library

@@ -74,15 +74,15 @@ class VoteResource(ModelResource):
 
         # v = Vote.objects.get(**self.remove_api_resource_names(kwargs))
 
-        object_id = kwargs.get("object_id", None)
+        object_id = kwargs.get("object_id")
         if object_id:
             object_id = int(object_id)
-        content_type = kwargs.get("content_type", None)
+        content_type = kwargs.get("content_type")
         orig_ct = content_type
-        vote = kwargs.get("vote", None)
+        vote = kwargs.get("vote")
         if vote:
             vote = int(vote)
-        user_id = kwargs.get("user_id", None)
+        user_id = kwargs.get("user_id")
         if user_id:
             user_id = int(user_id)
 

@@ -11,7 +11,7 @@ from base.mixins import TimestampedModelMixin, UUIDModelMixin
 log = logging.getLogger(__name__)
 
 
-USER_MODEL = getattr(settings, "AUTH_USER_MODEL")
+USER_MODEL = settings.AUTH_USER_MODEL
 
 
 class Collection(TimestampedModelMixin, UUIDModelMixin, models.Model):

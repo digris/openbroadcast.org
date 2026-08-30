@@ -1,17 +1,15 @@
 import logging
-import random
 
 # from catalog.models import Media
 from django.conf import settings
 from rest_framework import serializers
-from easy_thumbnails.templatetags.thumbnail import thumbnail_url
 
 # from ..models import PlayerItem
 
 from alibrary.models import Media
 from alibrary.apiv2.serializers import MediaSerializer, ArtistSerializer
 
-SITE_URL = getattr(settings, "SITE_URL")
+SITE_URL = settings.SITE_URL
 
 log = logging.getLogger(__name__)
 

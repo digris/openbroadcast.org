@@ -5,7 +5,6 @@ from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from django.db.models import Avg
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model

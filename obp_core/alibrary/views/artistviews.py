@@ -1,10 +1,9 @@
 import actstream
 import logging
 
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import UpdateView
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from django.shortcuts import redirect
 from django.utils.translation import ugettext as _
 from django.db.models import Q
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin

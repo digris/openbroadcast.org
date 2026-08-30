@@ -2,13 +2,12 @@ import actstream
 import datetime
 import logging
 
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import UpdateView
 from django.http import HttpResponseRedirect
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 from django.utils import timezone
 from django.contrib import messages
-from django.shortcuts import redirect
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from elasticsearch_dsl import TermsFacet, RangeFacet
 from navutils import MenuMixin

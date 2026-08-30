@@ -29,10 +29,10 @@ DEFAULT_PLAYLIST_FORMAT = "m3u"
 AVAILABLE_FORMATS = ["mp3"]
 AVAILABLE_ARCHIVE_FORMATS = ["zip"]
 
-SITE_URL = getattr(settings, "SITE_URL")
+SITE_URL = settings.SITE_URL
 
 
-LAME_BINARY = getattr(settings, "LAME_BINARY")
+LAME_BINARY = settings.LAME_BINARY
 
 
 log = logging.getLogger(__name__)

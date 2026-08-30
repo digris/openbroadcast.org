@@ -164,8 +164,6 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
         target = "download"
 
-        from atracker.util import create_event
-
         process = Process()
         status, result, messages = process.run(instance=obj, format=obj.fileformat)
 

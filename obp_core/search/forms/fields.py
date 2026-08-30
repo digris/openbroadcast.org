@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import EMPTY_VALUES
 from django.utils.translation import ugettext_lazy as _
 
-from .utils import get_model_class, get_model_data
+from .utils import get_model_data
 from .widgets import AutocompleteWidget
 
 __all__ = ("AutocompleteField",)

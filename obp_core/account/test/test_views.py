@@ -1,6 +1,3 @@
-import pytest
-
-
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import RequestFactory, TestCase
 from .. import views

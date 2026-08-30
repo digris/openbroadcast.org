@@ -19,7 +19,7 @@ from django.core.files.storage import FileSystemStorage
 from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from django.utils.encoding import force_text, python_2_unicode_compatible
+from django.utils.encoding import force_text
 from django.utils.translation import ugettext as _
 from django_extensions.db.fields.json import JSONField
 from base.signals.unsignal import disable_for_loaddata
@@ -31,7 +31,7 @@ log = logging.getLogger(__name__)
 
 USE_CELERYD = getattr(settings, "IMORTER_USE_CELERYD", False)
 AUTOIMPORT_MB = getattr(settings, "IMORTER_AUTOIMPORT_MB", True)
-MEDIA_ROOT = getattr(settings, "MEDIA_ROOT")
+MEDIA_ROOT = settings.MEDIA_ROOT
 
 
 GENERIC_STATUS_CHOICES = (

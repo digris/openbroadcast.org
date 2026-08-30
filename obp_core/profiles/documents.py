@@ -2,9 +2,6 @@
 elasticsearch index documents
 """
 
-from actstream.models import actor_stream
-from django.utils import timezone
-from datetime import timedelta
 from django_elasticsearch_dsl import DocType, Index, KeywordField, fields
 from easy_thumbnails.files import get_thumbnailer
 from easy_thumbnails.exceptions import InvalidImageFormatError

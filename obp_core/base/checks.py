@@ -2,7 +2,7 @@ import os
 import logging
 import requests
 from requests.exceptions import ConnectionError
-from django.core.checks import register, Tags, Error, Warning, Info, Debug, Critical
+from django.core.checks import register, Error
 from django.conf import settings
 
 REMOTE_API_TIMEOUT = 5.0
@@ -106,15 +106,13 @@ def check_apis(app_configs, **kwargs):
     SERVICES_TO_CHECK = [
         {
             "name": "Musicbrainz API",
-            "url": "http://{}/ws/2/artist/1582a5b8-538e-45e7-9ae4-4099439a0e79".format(
-                getattr(settings, "MUSICBRAINZ_HOST")
-            ),
+            "url": f"http://{settings.MUSICBRAINZ_HOST}/ws/2/artist/1582a5b8-538e-45e7-9ae4-4099439a0e79",
         },
         {
             "name": "Discogs API",
-            "url": "http://{}/labels/1".format(getattr(settings, "DISCOGS_HOST")),
+            "url": f"http://{settings.DISCOGS_HOST}/labels/1",
         },
-        {"name": "Fingerprinting API", "url": getattr(settings, "FPRINT_API_BASE_URL")},
+        {"name": "Fingerprinting API", "url": settings.FPRINT_API_BASE_URL},
     ]
 
     errors = []

@@ -1,10 +1,7 @@
 import json
-import re
 
 import actstream
-from django.db import transaction
 from django.conf import settings
-from django.contrib.contenttypes.models import ContentType
 from dajaxice.decorators import dajaxice_register
 from django.contrib.auth.decorators import permission_required
 import requests
@@ -36,12 +33,12 @@ DISCOGS_HOST = getattr(settings, "DISCOGS_HOST", None)
 def api_lookup(request, *args, **kwargs):
 
     # compose lookup by known objects
-    item_type = kwargs.get("item_type", None)
-    item_id = kwargs.get("item_id", None)
-    provider = kwargs.get("provider", None)
+    item_type = kwargs.get("item_type")
+    item_id = kwargs.get("item_id")
+    provider = kwargs.get("provider")
 
     # alternatively, in case we already know the uri, this value is used for the query
-    api_url = kwargs.get("api_url", None)
+    api_url = kwargs.get("api_url")
 
     log.debug(f"api_lookup: {item_type} - id: {item_id} - provider: {provider}")
 
@@ -58,9 +55,9 @@ def api_lookup(request, *args, **kwargs):
 @dajaxice_register
 def provider_search_query(request, *args, **kwargs):
 
-    item_type = kwargs.get("item_type", None)
-    item_id = kwargs.get("item_id", None)
-    provider = kwargs.get("provider", None)
+    item_type = kwargs.get("item_type")
+    item_id = kwargs.get("item_id")
+    provider = kwargs.get("provider")
 
     log.debug(f"type: {item_type} - id: {item_id} - provider: {provider}")
 
@@ -117,10 +114,10 @@ def provider_search_query(request, *args, **kwargs):
 @dajaxice_register
 def provider_search(request, *args, **kwargs):
 
-    item_type = kwargs.get("item_type", None)
-    item_id = kwargs.get("item_id", None)
-    provider = kwargs.get("provider", None)
-    query = kwargs.get("query", None)
+    item_type = kwargs.get("item_type")
+    item_id = kwargs.get("item_id")
+    provider = kwargs.get("provider")
+    query = kwargs.get("query")
 
     # log.debug('query: %s' % (query))
 
@@ -235,10 +232,10 @@ def provider_search(request, *args, **kwargs):
 @dajaxice_register
 def provider_update(request, *args, **kwargs):
 
-    item_type = kwargs.get("item_type", None)
-    item_id = kwargs.get("item_id", None)
-    provider = kwargs.get("provider", None)
-    uri = kwargs.get("uri", None)
+    item_type = kwargs.get("item_type")
+    item_id = kwargs.get("item_id")
+    provider = kwargs.get("provider")
+    uri = kwargs.get("uri")
 
     log.debug("uri: %s" % (uri))
 
@@ -274,9 +271,9 @@ def provider_update(request, *args, **kwargs):
 @permission_required("alibrary.merge_media")
 def merge_items(request, *args, **kwargs):
 
-    item_type = kwargs.get("item_type", None)
+    item_type = kwargs.get("item_type")
     item_ids = kwargs.get("item_ids", [])
-    master_id = kwargs.get("master_id", None)
+    master_id = kwargs.get("master_id")
 
     slave_items = []
     master_item = None
@@ -423,8 +420,8 @@ def merge_items(request, *args, **kwargs):
 def reassign_items(request, *args, **kwargs):
 
     media_ids = kwargs.get("media_ids", [])
-    name = kwargs.get("name", None)
-    release_id = kwargs.get("release_id", None)
+    name = kwargs.get("name")
+    release_id = kwargs.get("release_id")
 
     if media_ids and (release_id or name):
         log.debug(

@@ -1,15 +1,9 @@
 import logging
 
-from django.apps import apps
 from django.conf import settings
 from django.db.models import Q
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404, HttpResponseBadRequest
 
-from django.core.urlresolvers import reverse
 
-from rest_framework import mixins
-from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -17,7 +11,7 @@ from rest_framework.response import Response
 from alibrary.apiv2.serializers import PlaylistSerializer
 from alibrary.models.playlistmodels import Playlist
 
-SITE_URL = getattr(settings, "SITE_URL")
+SITE_URL = settings.SITE_URL
 
 SERIALIZER_MAP = {"alibrary.playlist": PlaylistSerializer}
 

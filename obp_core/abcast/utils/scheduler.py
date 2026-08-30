@@ -2,7 +2,7 @@ import datetime
 import logging
 
 from django.utils import timezone
-from abcast.models import Emission, Channel
+from abcast.models import Emission
 
 EXCHANGE = "fs"  # 'fs' or 'http'
 

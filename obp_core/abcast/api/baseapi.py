@@ -2,7 +2,7 @@ import datetime
 import json
 import logging
 
-from abcast.models import Station, Channel, Emission
+from abcast.models import Channel, Emission
 from abcast.utils import scheduler
 from django.conf import settings
 from django.conf.urls import url
@@ -13,7 +13,6 @@ from django.shortcuts import get_object_or_404
 from easy_thumbnails.files import get_thumbnailer
 from base.pypo.gateway import send as pypo_send
 from metadata_generator.dab import DABMetadataGenerator
-from tastypie import fields
 from tastypie.authentication import (
     MultiAuthentication,
     SessionAuthentication,

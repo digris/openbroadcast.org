@@ -1,6 +1,5 @@
 import logging
 import os
-import uuid
 import arating
 import tagging
 from base.audio.fileinfo import FileInfoProcessor

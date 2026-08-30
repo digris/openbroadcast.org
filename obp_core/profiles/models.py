@@ -165,7 +165,7 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         verbose_name=_("Fields of expertise"),
         blank=True,
     )
-    d_tags = tagging.fields.TagField(
+    d_tags = TagField(
         max_length=1024,
         verbose_name="Tags",
         blank=True,
@@ -385,7 +385,7 @@ class Community(UUIDModelMixin, MigrationMixin):
         verbose_name=_("Fields of expertise"),
         blank=True,
     )
-    tags = tagging.fields.TagField(
+    tags = TagField(
         verbose_name="Tags",
         blank=True,
         null=True,
@@ -439,8 +439,8 @@ def add_to_group(sender, instance, **kwargs):
 
 def add_mentor(sender, **kwargs):
 
-    user = kwargs.get("new_user", None)
-    mentor = kwargs.get("inviting_user", None)
+    user = kwargs.get("new_user")
+    mentor = kwargs.get("inviting_user")
     if user and mentor:
         mentor.godchildren.add(user.profile)
         # send notification to mentor

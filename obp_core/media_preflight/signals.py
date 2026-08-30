@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
 
 from media_preflight.models import PreflightCheck

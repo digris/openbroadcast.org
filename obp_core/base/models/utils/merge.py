@@ -1,6 +1,5 @@
 import logging
 
-from django.db import transaction
 from django.db import IntegrityError
 from django.apps import apps
 from django.db.models import Model

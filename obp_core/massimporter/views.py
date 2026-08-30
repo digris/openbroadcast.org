@@ -1,19 +1,12 @@
-import json
 import ntpath
 import os
 
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
-from django import http
-from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.utils.functional import lazy
 from django.views.generic import ListView, DetailView
 from .models import Massimport
 from alibrary.models import Media
 from alibrary.util.relations import uuid_by_object
 from importer.models import ImportFile
-from importer.util.identifier import Identifier
 
 from pure_pagination.mixins import PaginationMixin
 

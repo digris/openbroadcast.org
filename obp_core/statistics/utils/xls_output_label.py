@@ -5,7 +5,7 @@ import xlsxwriter
 from django.utils import timezone
 from django.conf import settings
 
-SITE_URL = getattr(settings, "SITE_URL")
+SITE_URL = settings.SITE_URL
 ISRC_HINT_TEXT = """Please be aware that collecting societies only will distribute the earnings properly if an ISRC code is present."""
 
 log = logging.getLogger(__name__)

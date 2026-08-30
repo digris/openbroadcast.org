@@ -3,7 +3,6 @@ from django_filters import rest_framework as filters
 from django.http import FileResponse
 from rest_framework import mixins, viewsets, permissions
 from rest_framework.views import APIView
-from rest_framework.exceptions import ParseError
 from django.contrib.auth import get_user_model
 
 from . import serializers

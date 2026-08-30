@@ -1,7 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ImproperlyConfigured
-from django.views.generic import DetailView, ListView, UpdateView
-from django.shortcuts import redirect
+from django.views.generic import UpdateView
 from django.http import Http404
 
 
