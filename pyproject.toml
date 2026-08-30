@@ -144,6 +144,7 @@ select = [
     "E",   # pycodestyle errors
     "W",   # pycodestyle warnings
     "F",   # pyflakes
+    # "I",   # import-related checks
     "B",   # bugbear
     "C4",  # comprehensions
     "SIM", # simplifications
@@ -162,6 +163,8 @@ ignore = [
     "B904",   # raise ... from err
     "SIM105", # contextlib.suppress instead of try/except/pass
     "SIM108", # ternary conversion
+
+    "DJ001",  # null for str fields. cleanup after production database is migrated
 ]
 
 
