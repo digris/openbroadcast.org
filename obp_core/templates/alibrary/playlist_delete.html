@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate_tags i18n thumbnail arating_tags wiki_tags sekizai_tags %}
+{% load truncate_tags thumbnail arating_tags wiki_tags sekizai_tags %}
 
 {% block heading %}
     <!-- view specific scripts -->
@@ -12,16 +12,16 @@
 {% block inner %}
 
   <div class="alert alert-warning">
-    <strong>{% trans "Confirm delete" %}</strong>
+    <strong>Confirm delete</strong>
     <p>
-      {% trans "Are you sure you want do telete" %}"{{ object }}"?
+      Are you sure you want do telete"{{ object }}"?
       <br>
-      {% trans "This action cannot be reverted once confirmed." %}
+      This action cannot be reverted once confirmed.
 
     </p>
     <form method="post">{% csrf_token %}
       <button type="submit" class="btn btn-danger">
-        <i class="icon icon-trash"></i> {% trans "Delete" %} {{ object }}</button>
+        <i class="icon icon-trash"></i> Delete {{ object }}</button>
     </form>
   </div>
 

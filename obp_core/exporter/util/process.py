@@ -4,7 +4,6 @@ import shutil
 import logging
 
 from django.conf import settings
-from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
 from django.contrib.sites.models import Site
 from easy_thumbnails.files import get_thumbnailer
@@ -290,7 +289,7 @@ class Process:
         # log.debug('cache file: %s' % cache_file)
 
         if not cache_file:
-            self.messages.append((media, _("The file seems to be missing. Sorry.")))
+            self.messages.append((media, "The file seems to be missing. Sorry."))
             return
 
         try:

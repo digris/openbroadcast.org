@@ -7,7 +7,6 @@ from django.db.models.signals import post_save
 from django.template.defaultfilters import date
 from django.utils.timesince import timesince
 from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _
 
 log = logging.getLogger(__name__)
 
@@ -24,14 +23,14 @@ class EventType(models.Model):
     title = models.SlugField(
         max_length=255,
         unique=True,
-        verbose_name=_("Title"),
-        help_text=_('Please use a slugified name, e.g. "student-news".'),
+        verbose_name="Title",
+        help_text='Please use a slugified name, e.g. "student-news".',
     )
 
     class Meta:
         app_label = "atracker"
-        verbose_name = _("Event Type")
-        verbose_name_plural = _("Event Types")
+        verbose_name = "Event Type"
+        verbose_name_plural = "Event Types"
         ordering = ("title",)
 
     def __str__(self):
@@ -64,18 +63,18 @@ class Event(models.Model):
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name=_("User"),
+        verbose_name="User",
         related_name="atracker_events",
         null=True,
         blank=True,
     )
 
     created = models.DateTimeField(
-        auto_now_add=True, verbose_name=_("Creation date"), db_index=True
+        auto_now_add=True, verbose_name="Creation date", db_index=True
     )
 
     event_type = models.ForeignKey(
-        EventType, verbose_name=_("Type"), related_name="events", db_index=True
+        EventType, verbose_name="Type", related_name="events", db_index=True
     )
 
     archived = models.BooleanField(default=False)
@@ -99,8 +98,8 @@ class Event(models.Model):
 
     class Meta:
         app_label = "atracker"
-        verbose_name = _("Event")
-        verbose_name_plural = _("Events")
+        verbose_name = "Event"
+        verbose_name_plural = "Events"
         ordering = ("-created",)
 
         permissions = (("track_for_user", "Can create events in behalf of other user"),)

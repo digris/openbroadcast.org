@@ -1,5 +1,5 @@
 {% extends "layout_base.html" %}
-{% load spurl cache i18n truncate_tags cache sekizai_tags spurl %}
+{% load spurl cache truncate_tags cache sekizai_tags spurl %}
 
 {% block heading %}
   <div id="heading">
@@ -9,7 +9,7 @@
 
 {% block menubar %}
   <ul class="unstyled">
-    <li class="descendant"><a href="{% url 'abcast:scheduler' %}" rel="nofollow">{% trans "Scheduler NG" %}</a></li>
+    <li class="descendant"><a href="{% url 'abcast:scheduler' %}" rel="nofollow">Scheduler NG</a></li>
   </ul>
 {% endblock %}
 

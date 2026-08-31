@@ -1,7 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import EMPTY_VALUES
-from django.utils.translation import ugettext_lazy as _
 
 from .utils import get_model_data
 from .widgets import AutocompleteWidget
@@ -13,9 +12,7 @@ class AutocompleteField(forms.Field):
     widget = AutocompleteWidget
 
     default_error_messages = {
-        "invalid_choice": _(
-            "Select a valid choice. That choice is not one of the available choices."
-        )
+        "invalid_choice": "Select a valid choice. That choice is not one of the available choices."
     }
 
     def __init__(self, lookup_ctype, *args, **kwargs):

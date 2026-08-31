@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load i18n calc_tags sekizai_tags dajaxice_templatetags pushy_tags %}
+{% load calc_tags sekizai_tags dajaxice_templatetags pushy_tags %}
 
 {% block object_type %}massimport{% endblock %}
 
@@ -42,12 +42,12 @@
             </li>
 
             <li>
-              <span>{% trans 'User' %}:</span>
+              <span>User:</span>
               <a href="{{ object.user.get_absolute_url }}">{% firstof object.user.profile.get_display_name object.user %}</a>
             </li>
 
             <li>
-              <span>{% trans 'Collection' %}:</span>
+              <span>Collection:</span>
               <strong>{{ object.collection_name }}</strong>
             </li>
 
@@ -60,12 +60,12 @@
           <ul>
 
             <li>
-              <span>{% trans 'Status' %}:</span>
+              <span>Status:</span>
               {{ object.get_status_display }}
             </li>
 
             <li>
-              <span>{% trans 'Date' %}:</span>
+              <span>Date:</span>
               {{ object.created|date:'DATETIME_FORMAT' }}
             </li>
 
@@ -83,7 +83,7 @@
           <ul>
 
             <li>
-              <span>{% trans 'Directory' %}:</span>
+              <span>Directory:</span>
               {{ object.directory }}
 
             </li>
@@ -102,22 +102,22 @@
 
         <div class="span12">
 
-          <h2>{% trans 'Summary' %}</h2>
+          <h2>Summary</h2>
 
           <ul>
 
             <li>
-              <span>{% trans 'Num. Files Total' %}:</span>
+              <span>Num. Files Total:</span>
               {{ qs_all.count }}
             </li>
 
             <li>
-              <span>{% trans 'Num. Files Imported' %}:</span>
+              <span>Num. Files Imported:</span>
               {{ qs_done.count }}
             </li>
 
             <li>
-              <span>{% trans 'Num. Files Duplicates' %}:</span>
+              <span>Num. Files Duplicates:</span>
               {{ qs_duplicate.count }}
             </li>
           </ul>

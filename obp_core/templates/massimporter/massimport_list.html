@@ -1,6 +1,6 @@
 {% extends "base/listing.html" %}
 
-{% load i18n sekizai_tags humanize %}
+{% load sekizai_tags humanize %}
 
 {% block object_type %}massimport{% endblock %}
 
@@ -56,12 +56,12 @@
               </li>
 
               <li>
-                <span>{% trans 'User' %}:</span>
+                <span>User:</span>
                 <a href="{{ object.user.get_absolute_url }}">{% firstof object.user.profile.get_display_name object.user %}</a>
               </li>
 
               <li>
-                                <!--<span>{% trans 'Created' %}:</span>-->
+                                <!--<span>Created:</span>-->
                 {{ object.created|date:'DATETIME_FORMAT' }}
               </li>
 
@@ -74,12 +74,12 @@
             <ul>
 
               <li>
-                <span>{% trans 'Status' %}:</span>
+                <span>Status:</span>
                 {{ object.get_status_display }}
               </li>
 
               <li>
-                <span>{% trans 'Collection' %}:</span>
+                <span>Collection:</span>
                 {{ object.collection_name }}
               </li>
 
@@ -103,7 +103,7 @@
             <ul>
 
               <li>
-                <span>{% trans 'Num. Files' %}:</span>
+                <span>Num. Files:</span>
                 {{ object.files.count }}
               </li>
             </ul>
@@ -120,7 +120,7 @@
             <ul>
 
               <li>
-                <span>{% trans 'Directory' %}:</span>
+                <span>Directory:</span>
                 {{ object.directory }}
 
               </li>

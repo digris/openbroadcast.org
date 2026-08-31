@@ -1,14 +1,14 @@
 {% extends "collection/base.html" %}
-{% load i18n el_pagination_tags %}
-{% block title %}{% trans "Artists" %}{% endblock %}
+{% load el_pagination_tags %}
+{% block title %}Artists{% endblock %}
 {% block body_extra_class %}list-view catalog artist artist-list{% endblock %}
 {% block app_nav %}
   <nav id="app-nav" class="app-nav">
     <div class="pullout">
       <div class="row">
         <div class="column">
-          <a href="/">{% trans 'Home' %}</a>
-          &rsaquo; {% trans 'C' %}
+          <a href="/">Home</a>
+          &rsaquo; C
         </div>
       </div>
     </div>

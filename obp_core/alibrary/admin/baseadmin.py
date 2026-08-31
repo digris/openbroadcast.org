@@ -2,7 +2,6 @@ import os
 from django.core import urlresolvers
 from hvad.admin import TranslatableAdmin
 from genericadmin.admin import GenericAdminModelAdmin, GenericTabularInline
-from django.utils.translation import ugettext as _
 from easy_thumbnails.files import get_thumbnailer
 
 from django.contrib import admin
@@ -175,7 +174,7 @@ class ReleaseAdmin(BaseAdmin):
         )
         return tpl
 
-    info_display.short_description = _("Release")
+    info_display.short_description = "Release"
     info_display.allow_tags = True
 
     def meta_display(self, obj):
@@ -187,7 +186,7 @@ class ReleaseAdmin(BaseAdmin):
         </p>"""
         return tpl
 
-    meta_display.short_description = _("Metadata")
+    meta_display.short_description = "Metadata"
     meta_display.allow_tags = True
 
     def image_display(self, obj):
@@ -198,7 +197,7 @@ class ReleaseAdmin(BaseAdmin):
                 pass
         return "-"
 
-    image_display.short_description = _("Cover")
+    image_display.short_description = "Cover"
     image_display.allow_tags = True
 
 
@@ -450,16 +449,14 @@ def playlists_enable_rotation(modeladmin, request, queryset):
     queryset.update(rotation=True)
 
 
-playlists_enable_rotation.short_description = _(
-    "Include selected playlists in rotation"
-)
+playlists_enable_rotation.short_description = "Include selected playlists in rotation"
 
 
 def playlists_disable_rotation(modeladmin, request, queryset):
     queryset.update(rotation=False)
 
 
-playlists_disable_rotation.short_description = _(
+playlists_disable_rotation.short_description = (
     "Exclude selected playlists from rotation"
 )
 

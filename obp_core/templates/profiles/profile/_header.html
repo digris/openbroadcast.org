@@ -1,4 +1,4 @@
-{% load truncate_tags i18n thumbnail arating_tags spacify_tags gravatar object_action_tags tagging_extra_tags %}
+{% load truncate_tags thumbnail arating_tags spacify_tags gravatar object_action_tags tagging_extra_tags %}
 
 <div class="header__primary">
 
@@ -20,7 +20,7 @@
     {% if object.mentor %}
       <div class="meta__item">
         <div>
-          {% trans "Mentor" %}:
+          Mentor:
         </div>
         <div>
           <a href="{{ object.mentor.get_absolute_url }}">{% firstof object.mentor.get_full_name object.mentor.username %}</a>
@@ -31,7 +31,7 @@
     {% if object.user.godchildren.count %}
       <div class="meta__item">
         <div>
-          {% trans "Mentoring" %}:
+          Mentoring:
         </div>
         <expandable-list :limit="(3)">
           {% for profile in object.user.godchildren.all %}
@@ -44,7 +44,7 @@
     {% if object.user.station_set.count %}
       <div class="meta__item">
         <div>
-          {% trans "Stations" %}:
+          Stations:
         </div>
         <div>
           {% for station in object.user.station_set.all %}
@@ -57,7 +57,7 @@
     {% if object.get_groups.count %}
       <div class="meta__item">
         <div>
-          {% trans "Access level" %}:
+          Access level:
         </div>
         <div>
           {% for group in object.get_groups.all %}
@@ -71,7 +71,7 @@
     <div class="meta">
       <div class="meta__item">
         <div>
-          {% trans 'joined'|title %}:
+          {{ 'joined'|title }}:
         </div>
         <div class="meta__item__grid">
           <time>
@@ -81,7 +81,7 @@
       </div>
       <div class="meta__item">
         <div>
-          {% trans 'last login'|title %}:
+          {{ 'last login'|title }}:
         </div>
         <div class="meta__item__grid">
           <time>

@@ -1,4 +1,4 @@
-{% load truncate_tags i18n thumbnail calc_tags object_action_tags %}
+{% load truncate_tags thumbnail calc_tags object_action_tags %}
 
 <div class="header__primary">
   <div class="title title--primary">
@@ -21,7 +21,7 @@
     {% if object.user and object.user.profile %}
       <div class="meta__item">
         <div>
-          {% trans "Scheduled by" %}:
+          Scheduled by:
         </div>
         <div>
           <a href="{{ object.user.get_absolute_url }}">{{ object.user.profile.get_display_name }}</a>
@@ -31,7 +31,7 @@
     {% if object.duration %}
       <div class="meta__item">
         <div>
-          {% trans "Content" %}:
+          Content:
         </div>
         <div>
           <a href="{{ object.content_object.get_absolute_url }}">{{ object.content_object.name }}</a>
@@ -41,7 +41,7 @@
     {% if object.duration %}
       <div class="meta__item">
         <div>
-          {% trans "Duration" %}:
+          Duration:
         </div>
         <div>
           <span>{{ object.duration|msec_to_time }}</span>
@@ -52,7 +52,7 @@
   <div class="meta">
     <div class="meta__item">
       <div>
-        {% trans "Airplay date" %}:
+        Airplay date:
       </div>
       <div class="meta__item__grid">
         <time>

@@ -1,4 +1,3 @@
-{% load i18n  %}
 <ul class="unstyled action">
   <li class="square">
     <a href="#"
@@ -9,7 +8,7 @@
        data-resource_uri="{{ object.get_api_url }}"
        data-offset=0
        data-mode="replace"
-       title="{% trans "Play" %}">
+       title="Play">
       <i class="icon icon-play"></i>
     </a>
   </li>
@@ -22,7 +21,7 @@
        data-resource_uri="{{ object.get_api_url }}"
        data-offset=0
        data-mode="queue"
-       title="{% trans "Queue" %}">
+       title="Queue">
       <i class="icon icon-reorder"></i>
     </a>
   </li>

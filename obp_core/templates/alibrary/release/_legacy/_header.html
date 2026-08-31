@@ -1,4 +1,4 @@
-{% load truncate_tags i18n thumbnail arating_tags alibrary_tags spacify_tags atracker_tags %}
+{% load truncate_tags thumbnail arating_tags alibrary_tags spacify_tags atracker_tags %}
 
 <div class="span6 padded-h container_content">
 
@@ -10,7 +10,7 @@
 
   <dl class="dl-horizontal main">
     <dt>
-      {% trans "Artist" %}:
+      Artist:
     </dt>
     <dd>
 
@@ -40,7 +40,7 @@
 
     {% if object.label %}
       <dt>
-        {% trans "Label" %}:
+        Label:
       </dt>
       <dd>
         {% with item=object.label %}
@@ -51,22 +51,22 @@
     {% endif %}
 
     {% if object.catalognumber %}
-      <dt>{% trans "Catalog No." %}:</dt>
+      <dt>Catalog No.:</dt>
       <dd>{{ object.catalognumber }}</dd>
     {% endif %}
 
         <!--
             {% if object.releasedate %}
-            <dt>{% trans "Releasedate" %}:</dt>
+            <dt>Releasedate:</dt>
             <dd>{{ object.releasedate|date:"SHORT_DATE_FORMAT" }}</dd>
             {% endif %}
             -->
 
     {% if object.is_promotional %}
-      <dt>{% trans "Release date" %}:</dt>
-      <dd>{{ object.releasedate|date:"SHORT_DATE_FORMAT" }} ({% trans "Promo release" %})</dd>
+      <dt>Release date:</dt>
+      <dd>{{ object.releasedate|date:"SHORT_DATE_FORMAT" }} (Promo release)</dd>
     {% else %}{% if object.releasedate_approx %}
-      <dt>{% trans "Release date" %}:</dt>
+      <dt>Release date:</dt>
       <dd>{{ object.releasedate_approx }}</dd>
     {% endif %}{% endif %}
 
@@ -76,13 +76,13 @@
   <dl class="dl-horizontal license">
 
     <dt>
-      {% trans "License" %}:
+      License:
     </dt>
     <dd>
       {% if object.get_license %}
         {% if object.get_license.iconset %}
           <a href="{{ object.get_license.get_absolute_url }}"
-             title="{% trans "License details" %} - {{ object.get_license.name }}"
+             title="License details - {{ object.get_license.name }}"
              class="iconset iconset-license">
             {{ object.get_license.iconset_display }}
           </a>
@@ -103,7 +103,7 @@
 
     {% if object.tags %}
       <dt>
-        {% trans "Tags" %}:
+        Tags:
       </dt>
       <dd>
         {% for tag in object.tags %}
@@ -125,7 +125,7 @@
         src="{% thumbnail object.main_image 170x170 crop upscale %}"
         alt="Cover"/> </a>
     {% else %}
-      <img src="/static/img/base/defaults/listview.release.xl.png" alt="{% trans "No cover available" %}"/>
+      <img src="/static/img/base/defaults/listview.release.xl.png" alt="No cover available"/>
     {% endif %}
   </div>
 

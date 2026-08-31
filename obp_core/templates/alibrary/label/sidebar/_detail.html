@@ -1,31 +1,31 @@
-{% load i18n activity_tags ctype_tags %}
+{% load activity_tags ctype_tags %}
 
 <div class="menu-context">
   <div class="action-group">
     <ul>
       {% if perms.alibrary.change_label %}
         <li class="action">
-          <a href="{{ object.get_edit_url }}" title="{% trans 'Edit' %}">
-            {% trans "Edit" %}
+          <a href="{{ object.get_edit_url }}" title="Edit">
+            Edit
           </a>
         </li>
       {% endif %}
       {% if perms.alibrary.change_label and user.is_staff %}
         <li class="action">
           <a href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}"
-             title="{% trans 'Administration view' %}">
-            {% trans "Administration view" %}
+             title="Administration view">
+            Administration view
           </a>
         </li>
       {% endif %}
       {% if user.is_authenticated %}
         <li class="action">
           <a href="{% follow_all_url object %}?next={{ request.get_full_path }}"
-             title="{% trans 'Follow/unfollow' %}">
+             title="Follow/unfollow">
             {% if request.user|is_following:object %}
-              {% trans "Stop following" %} {{ object|ct_name_by_object }}
+              Stop following {{ object|ct_name_by_object }}
             {% else %}
-              {% trans "Follow" %} {{ object|ct_name_by_object }}
+              Follow {{ object|ct_name_by_object }}
             {% endif %}
           </a>
         </li>

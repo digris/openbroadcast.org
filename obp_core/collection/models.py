@@ -5,7 +5,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse_lazy
 from django.db import models
 from django.conf import settings
-from django.utils.translation import ugettext as _
 from base.mixins import TimestampedModelMixin, UUIDModelMixin
 
 log = logging.getLogger(__name__)
@@ -17,7 +16,7 @@ USER_MODEL = settings.AUTH_USER_MODEL
 class Collection(TimestampedModelMixin, UUIDModelMixin, models.Model):
     PRIVATE = 0
     PUBLIC = 1
-    VISIBILITY_CHOICES = ((PRIVATE, _("private")), (PUBLIC, _("public")))
+    VISIBILITY_CHOICES = ((PRIVATE, "private"), (PUBLIC, "public"))
 
     name = models.CharField(max_length=250, db_index=True)
     slug = models.SlugField(editable=False, blank=True)
@@ -36,15 +35,17 @@ class Collection(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     class Meta:
         app_label = "collection"
-        verbose_name = _("Collection")
-        verbose_name_plural = _("Collections")
+        verbose_name = "Collection"
+        verbose_name_plural = "Collections"
         ordering = ("name",)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse_lazy("collection:collection-detail", kwargs={"slug": self.slug})
+        return reverse_lazy(
+            "collection:collection-detail", kwargs={"slug": self.slug or self.pk}
+        )
 
 
 class CollectionMember(TimestampedModelMixin, models.Model):
@@ -67,8 +68,8 @@ class CollectionMember(TimestampedModelMixin, models.Model):
 class CollectionItem(UUIDModelMixin, models.Model):
     class Meta:
         app_label = "collection"
-        verbose_name = _("Collection Item")
-        verbose_name_plural = _("Collection Items")
+        verbose_name = "Collection Item"
+        verbose_name_plural = "Collection Items"
 
     ct_limit = (
         models.Q(app_label="alibrary", model="media")

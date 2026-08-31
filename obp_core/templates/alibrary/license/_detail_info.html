@@ -1,9 +1,9 @@
-{% load truncate_tags i18n thumbnail arating_tags spurl %}
+{% load truncate_tags thumbnail arating_tags spurl %}
 <div class="span12 padded-h container_content">
 
   <div class="page-header">
     <h2>{{ object.name|truncate_chars_inner:40 }}
-      <small>{% trans "License" %}</small>
+      <small>License</small>
     </h2>
   </div>
 
@@ -12,7 +12,7 @@
 
     {% if object.version %}
       <dt>
-        {% trans "Version" %}:
+        Version:
       </dt>
       <dd>
         {{ object.version }}
@@ -21,7 +21,7 @@
 
     {% if object.link %}
       <dt>
-        {% trans "URL" %}:
+        URL:
       </dt>
       <dd>
         <a href="{{ object.link }}">{{ object.link }}</a>
@@ -29,14 +29,14 @@
     {% endif %}
 
     <dt>
-      {% trans "Created" %}:
+      Created:
     </dt>
     <dd>
       {{ object.created|date:"SHORT_DATE_FORMAT" }}
     </dd>
 
     <dt>
-      {% trans "Last Update" %}:
+      Last Update:
     </dt>
     <dd>
       {{ object.updated|date:"SHORT_DATE_FORMAT" }}
@@ -49,7 +49,7 @@
 
 
     <dt>
-      {% trans "Icon" %}:
+      Icon:
     </dt>
     <dd>
 

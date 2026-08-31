@@ -8,7 +8,6 @@ from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext as _
 from django.utils import timezone
 from django.views.generic import CreateView, DeleteView
 from elasticsearch_dsl import TermsFacet, RangeFacet
@@ -134,25 +133,25 @@ class PlaylistListView(MenuMixin, BaseSearchListView):
     search_class = PlaylistSearch
     scope = "public"
     order_by = [
-        {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
+        {"key": "name.raw", "name": "Name", "default_direction": "asc"},
         {
             "key": "num_emissions",
-            "name": _("Num Emissions"),
+            "name": "Num Emissions",
             "default_direction": "desc",
         },
         {
             "key": "last_emission",
-            "name": _("Last Emission"),
+            "name": "Last Emission",
             "default_direction": "desc",
         },
         {
             "key": "next_emission",
-            "name": _("Next Emission"),
+            "name": "Next Emission",
             "default_direction": "asc",
         },
-        {"key": "duration", "name": _("Duration"), "default_direction": "asc"},
-        {"key": "updated", "name": _("Last modified"), "default_direction": "desc"},
-        {"key": "created", "name": _("Creation date"), "default_direction": "desc"},
+        {"key": "duration", "name": "Duration", "default_direction": "asc"},
+        {"key": "updated", "name": "Last modified", "default_direction": "desc"},
+        {"key": "created", "name": "Creation date", "default_direction": "desc"},
     ]
 
     def get_current_menu_item(self):
@@ -200,22 +199,22 @@ class PlaylistDetailView(MenuMixin, SectionDetailView):
         {
             "key": "tracklist",
             "url": None,
-            "title": _("Tracklist"),
+            "title": "Tracklist",
         },
         {
             "key": "emissions",
             "url": "emissions",
-            "title": _("Emissions"),
+            "title": "Emissions",
         },
         {
             "key": "description",
             "url": "description",
-            "title": _("Description"),
+            "title": "Description",
         },
         {
             "key": "mixdown",
             "url": "mixdown",
-            "title": _("Mixdown"),
+            "title": "Mixdown",
         },
     ]
 
@@ -343,12 +342,12 @@ class PlaylistEditView(
         {
             "key": "metadata",
             "url": None,
-            "title": _("Metadata"),
+            "title": "Metadata",
         },
         {
             "key": "editor",
             "url": "editor",
-            "title": _("Playlist Editor"),
+            "title": "Playlist Editor",
         },
     ]
 
@@ -421,15 +420,13 @@ def playlist_convert(request, pk, playlist_type):
         messages.add_message(
             request,
             messages.INFO,
-            _(
-                f'Successfully converted "{playlist.name}" to "{playlist.get_type_display()}"'
-            ),
+            f'Successfully converted "{playlist.name}" to "{playlist.get_type_display()}"',
         )
     else:
         messages.add_message(
             request,
             messages.ERROR,
-            _(f'There occured an error while converting "{playlist.name}"'),
+            f'There occured an error while converting "{playlist.name}"',
         )
 
     return HttpResponseRedirect(playlist.get_edit_url())

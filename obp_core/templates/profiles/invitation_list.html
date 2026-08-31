@@ -1,5 +1,5 @@
 {% extends "layout_base.html" %}
-{% load sekizai_tags spurl cache i18n truncate_tags humanize cache %}
+{% load sekizai_tags spurl cache truncate_tags humanize cache %}
 
 {% block heading %}{% endblock %}
 {% block tagcloud %}{% endblock %}
@@ -8,13 +8,13 @@
 {% block inner %}
   <div class="listview container profile invitations __m {{ list_style }}">
     <div class="list_body">
-      <h3 style="margin-top: 20px;">{% trans "Pending invitations" %}</h3>
+      <h3 style="margin-top: 20px;">Pending invitations</h3>
       <table class="table table--default">
         <thead>
           <tr>
-            <th style="text-align: left; width: 320px;">{% trans "E-Mail" %}</th>
-            <th style="text-align: left;">{% trans "Date sent" %}</th>
-            <th style="text-align: left; width: 140px;">{% trans "Expires" %}</th>
+            <th style="text-align: left; width: 320px;">E-Mail</th>
+            <th style="text-align: left;">Date sent</th>
+            <th style="text-align: left; width: 140px;">Expires</th>
             <th style="width: 60px;">&nbsp;</th>
           </tr>
         </thead>
@@ -22,20 +22,20 @@
           <tr>
             <td>{{ item.email }}</td>
             <td>{{ item.date_invited }}</td>
-            <td>{{ item.expiration_date }}{% if not item.is_valid %} ({% trans "Expired" %}){% endif %}</td>
-            <td><a href="{% url "profiles-invitation-delete" pk=item.pk %}">{% trans "Delete" %}</a></td>
+            <td>{{ item.expiration_date }}{% if not item.is_valid %} (Expired){% endif %}</td>
+            <td><a href="{% url "profiles-invitation-delete" pk=item.pk %}">Delete</a></td>
           </tr>
         {% endfor %}
       </table>
     </div>
     <div class="list_body">
-      <h3 style="margin-top: 20px;">{% trans "Accepted invitations & mentored users" %}</h3>
+      <h3 style="margin-top: 20px;">Accepted invitations & mentored users</h3>
       <table class="table table--default">
         <thead>
           <tr>
-            <th style="text-align: left; width: 320px;">{% trans "E-Mail" %}</th>
-            <th style="text-align: left;">{% trans "User" %}</th>
-            <th style="text-align: left; width: 140px;;">{% trans "Date joined" %}</th>
+            <th style="text-align: left; width: 320px;">E-Mail</th>
+            <th style="text-align: left;">User</th>
+            <th style="text-align: left; width: 140px;;">Date joined</th>
             <th style="width: 60px;">&nbsp;</th>
           </tr>
         </thead>
@@ -82,8 +82,8 @@
       <ul>
         {% if user.is_authenticated %}
           <li class="action">
-            <a href="{% url "invitation:invitation_invite" %}?next={{ request.get_full_path }}" title="{% trans "Invite user" %}">
-              {% trans "Invite new users" %}
+            <a href="{% url "invitation:invitation_invite" %}?next={{ request.get_full_path }}" title="Invite user">
+              Invite new users
             </a>
           </li>
         {% endif %}

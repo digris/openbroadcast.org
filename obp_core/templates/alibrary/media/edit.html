@@ -1,8 +1,8 @@
 {% extends "layout_edit.html" %}
 
-{% load crispy_forms_tags dajaxice_templatetags sekizai_tags static thumbnail i18n truncate_tags %}
+{% load crispy_forms_tags dajaxice_templatetags sekizai_tags static thumbnail truncate_tags %}
 
-{% block title %}{% trans 'Edit' %}: {{ object.name }} - {{ object.get_artist_display }}{% endblock %}
+{% block title %}Edit: {{ object.name }} - {{ object.get_artist_display }}{% endblock %}
 
 {% block heading %} <!-- heading / icon (large one) -->
   {% addtoblock "js-post" %}
@@ -77,19 +77,19 @@
       {% crispy form %}
       <fieldset id="mediaartist_container">
         <legend>
-          {% trans "Track Artists" %}<span class="pull-right"></span>
+          Track Artists<span class="pull-right"></span>
         </legend>
         <div class="notes-form notes-inline notes-info">
           <p>
-            {% trans "Allows you to customize artist-credits." %}</br>
-            {% trans "Use this to generate 'composite' names, like:" %} <strong>'Soviet France feat. Beck & Madonna'</strong>
+            Allows you to customize artist-credits.</br>
+            Use this to generate 'composite' names, like: <strong>'Soviet France feat. Beck & Madonna'</strong>
           </p>
         </div>
         {% crispy named_formsets.mediaartists %}
       </fieldset>
       <fieldset id="extraartist_container">
         <legend>
-          {% trans "Credits & Credited Artists" %}<span class="pull-right"></span>
+          Credits & Credited Artists<span class="pull-right"></span>
         </legend>
         {% crispy named_formsets.extraartist %}
       </fieldset>

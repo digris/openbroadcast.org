@@ -7,7 +7,6 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
-from django.utils.translation import ugettext as _
 from django_extensions.db.fields import CreationDateTimeField, ModificationDateTimeField
 from importer.models import Import as ImportSession
 from importer.models import ImportFile
@@ -33,10 +32,10 @@ class Massimport(BaseModel):
     STATUS_QUEUED = 2
     STATUS_ERROR = 99
     STATUS_CHOICES = (
-        (STATUS_INIT, _("Init")),
-        (STATUS_DONE, _("Done")),
-        (STATUS_QUEUED, _("Queued")),
-        (STATUS_ERROR, _("Error")),
+        (STATUS_INIT, "Init"),
+        (STATUS_DONE, "Done"),
+        (STATUS_QUEUED, "Queued"),
+        (STATUS_ERROR, "Error"),
     )
 
     user = models.ForeignKey(
@@ -50,8 +49,8 @@ class Massimport(BaseModel):
 
     class Meta:
         app_label = "massimporter"
-        verbose_name = _("Import")
-        verbose_name_plural = _("Imports")
+        verbose_name = "Import"
+        verbose_name_plural = "Imports"
         ordering = ("-created",)
 
         permissions = (("massimport_manage", "Manage Massimporter Sessions"),)
@@ -183,8 +182,8 @@ class MassimportFile(BaseModel):
 
     class Meta:
         app_label = "massimporter"
-        verbose_name = _("File")
-        verbose_name_plural = _("Files")
+        verbose_name = "File"
+        verbose_name_plural = "Files"
         ordering = ("-created",)
 
     def __str__(self):

@@ -1,17 +1,16 @@
-{% load i18n %}
 
 <div id="menu_context" class="menu-context">
   <div class="action-group">
     <ul>
       <li class="action">
-        <a href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
-          {% trans "Back to Detail-View" %}
+        <a href="{{ object.get_absolute_url }}" title="Back to Detail-View">
+          Back to Detail-View
         </a>
       </li>
       <li class="action">
         <a href="{% url "profiles:credentials-edit" %}?next={{ object.get_edit_url }}"
-           title="{% trans "Change Login / Password" %}">
-          {% trans "Change Login / Password" %}
+           title="Change Login / Password">
+          Change Login / Password
         </a>
       </li>
     </ul>

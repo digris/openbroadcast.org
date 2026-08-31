@@ -1,4 +1,4 @@
-{% load i18n spurl %}
+{% load spurl %}
 <object-merge></object-merge>
 <media-reassign></media-reassign>
 
@@ -10,7 +10,7 @@
 
 {% if media_top.exists %}
   <div class="list-prefix">
-    <h3 class="title">{% trans 'Most loved tracks' %}</h3>
+    <h3 class="title">Most loved tracks</h3>
   </div>
   <div class="list list--table">
     {% for object in media_top|slice:'0:3' %}
@@ -23,7 +23,7 @@
 
 {% if media_flop.exists %}
   <div class="list-prefix">
-    <h3 class="title">{% trans 'Most disliked tracks' %}</h3>
+    <h3 class="title">Most disliked tracks</h3>
   </div>
   <div class="list list--table">
     {% for object in media_flop|slice:'0:3' %}
@@ -36,7 +36,7 @@
 
 {% if releases.exists %}
   <div class="list-prefix">
-    <h3 class="title">{% trans 'Releases' %}</h3>
+    <h3 class="title">Releases</h3>
   </div>
   <div class="list list--grid">
     {% for object in releases|slice:'0:8' %}

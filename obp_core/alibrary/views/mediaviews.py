@@ -5,7 +5,6 @@ import logging
 from django.views.generic import UpdateView
 from django.http import HttpResponseRedirect
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext as _
 from django.utils import timezone
 from django.contrib import messages
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
@@ -116,42 +115,42 @@ class MediaListView(MenuMixin, BaseSearchListView):
     order_by = [
         {
             "key": "name.raw",
-            "name": _("Name"),
+            "name": "Name",
             "default_direction": "asc",
         },
         {
             "key": "artist_display.raw",
-            "name": _("Artist name"),
+            "name": "Artist name",
             "default_direction": "asc",
         },
         {
             "key": "duration",
-            "name": _("Duration"),
+            "name": "Duration",
             "default_direction": "asc",
         },
         # {
         #     'key': 'tempo',
-        #     'name': _('BPM'),
+        #     'name': 'BPM',
         #     'default_direction': 'asc',
         # },
         {
             "key": "num_emissions",
-            "name": _("Num Emissions"),
+            "name": "Num Emissions",
             "default_direction": "desc",
         },
         {
             "key": "last_emission",
-            "name": _("Last Emission"),
+            "name": "Last Emission",
             "default_direction": "desc",
         },
         {
             "key": "updated",
-            "name": _("Last modified"),
+            "name": "Last modified",
             "default_direction": "desc",
         },
         {
             "key": "created",
-            "name": _("Creation date"),
+            "name": "Creation date",
             "default_direction": "desc",
         },
     ]
@@ -199,32 +198,32 @@ class MediaDetailView(MenuMixin, SectionDetailView):
         {
             "key": "overview",
             "url": None,
-            "title": _("Overview"),
+            "title": "Overview",
         },
         {
             "key": "credits",
             "url": "credits",
-            "title": _("Credits"),
+            "title": "Credits",
         },
         {
             "key": "description",
             "url": "description",
-            "title": _("Description"),
+            "title": "Description",
         },
         {
             "key": "videoclips",
             "url": "videoclips",
-            "title": _("Video clips"),
+            "title": "Video clips",
         },
         {
             "key": "lyrics",
             "url": "lyrics",
-            "title": _("Lyrics"),
+            "title": "Lyrics",
         },
         {
             "key": "statistics",
             "url": "statistics",
-            "title": _("Statistics"),
+            "title": "Statistics",
         },
     ]
 
@@ -341,7 +340,7 @@ class MediaEditView(MenuMixin, LoginRequiredMixin, PermissionRequiredMixin, Upda
             self.object.tags = d_tags
 
         self.object.last_editor = self.request.user
-        actstream.action.send(self.request.user, verb=_("updated"), target=self.object)
+        actstream.action.send(self.request.user, verb="updated", target=self.object)
 
         # revisions disabled -> needs refactoring
         self.object = form.save()

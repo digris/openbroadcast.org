@@ -4,7 +4,6 @@ from uuid import uuid4
 import pytest
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import resolve, reverse
-from django.template.loader import render_to_string
 from elasticsearch_dsl import FacetedSearch
 
 from abcast.models import Channel
@@ -84,12 +83,6 @@ def test_legacy_exporter_page_renders_without_cms_placeholder_tag(client, admin_
         b"accept the terms and conditions before downloading exports"
         in response.content
     )
-
-
-def test_alternate_heading_uses_normal_template_context():
-    html = render_to_string("skeleton/heading_alt.html", {"page_title": "Test section"})
-
-    assert "Test section" in html
 
 
 @pytest.mark.parametrize(

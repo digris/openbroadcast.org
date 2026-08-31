@@ -1,26 +1,25 @@
-{% load i18n %}
 
 <div class="menu-context">
   <div class="action-group">
     <ul>
       {% if perms.alibrary.change_artist %}
         <li class="action">
-          <a href="{{ object.get_edit_url }}" title="{% trans 'Edit' %}">
-            {% trans "Edit" %}
+          <a href="{{ object.get_edit_url }}" title="Edit">
+            Edit
           </a>
         </li>
       {% endif %}
       {% if perms.alibrary.change_artist and user.is_staff %}
         <li class="action">
           <a href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}"
-             title="{% trans 'Administration view' %}">
-            {% trans "Admin view" %}
+             title="Administration view">
+            Admin view
           </a>
         </li>
       {% endif %}
       {% if perms.alibrary.downoad_media %}
         <object-selection-action class="action" :min-selected="1" dispatch-event="exporter:exportObjects">
-          {% trans "Download Selection" %}
+          Download Selection
         </object-selection-action>
       {% endif %}
     </ul>

@@ -6,7 +6,6 @@ from django.http import HttpResponseRedirect, StreamingHttpResponse
 from django.contrib import messages
 from django.core.cache import cache
 from django.shortcuts import get_object_or_404
-from django.utils.translation import ugettext as _
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from elasticsearch_dsl import TermsFacet, RangeFacet
 from navutils import MenuMixin
@@ -71,9 +70,9 @@ class LabelListView(MenuMixin, BaseSearchListView):
     search_class = LabelSearch
     current_menu_item = "catalog:label-list"
     order_by = [
-        {"key": "created", "name": _("Creation date"), "default_direction": "desc"},
-        {"key": "updated", "name": _("Modification date"), "default_direction": "asc"},
-        {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
+        {"key": "created", "name": "Creation date", "default_direction": "desc"},
+        {"key": "updated", "name": "Modification date", "default_direction": "asc"},
+        {"key": "name.raw", "name": "Name", "default_direction": "asc"},
     ]
 
     def get_queryset(self, **kwargs):
@@ -107,17 +106,17 @@ class LabelDetailView(MenuMixin, SectionDetailView):
         {
             "key": "overview",
             "url": None,
-            "title": _("Overview"),
+            "title": "Overview",
         },
         {
             "key": "description",
             "url": "description",
-            "title": _("Description"),
+            "title": "Description",
         },
         {
             "key": "statistics",
             "url": "statistics",
-            "title": _("Statistics"),
+            "title": "Statistics",
         },
     ]
 
@@ -229,7 +228,7 @@ class LabelEditView(MenuMixin, LoginRequiredMixin, PermissionRequiredMixin, Upda
             self.object.tags = d_tags
 
         self.object.last_editor = self.request.user
-        actstream.action.send(self.request.user, verb=_("updated"), target=self.object)
+        actstream.action.send(self.request.user, verb="updated", target=self.object)
 
         self.object = form.save()
         messages.add_message(self.request, messages.INFO, "Object updated")

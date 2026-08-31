@@ -6,7 +6,6 @@ from dajaxice.decorators import dajaxice_register
 from django.contrib.auth.decorators import permission_required
 import requests
 from stdnum import ean
-from django.utils.translation import ugettext as _
 from urllib.parse import quote, unquote
 from alibrary.models import Release, Relation, Label, Artist, Media
 from base.models.utils.merge import (
@@ -403,7 +402,7 @@ def merge_items(request, *args, **kwargs):
 
             if master_item and data["status"]:
                 actstream.action.send(
-                    request.user, verb=_("merged to"), target=master_item
+                    request.user, verb="merged to", target=master_item
                 )
                 pass
 

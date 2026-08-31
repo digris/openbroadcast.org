@@ -1,4 +1,4 @@
-{% load i18n navutils_tags account_tags %}
+{% load navutils_tags account_tags %}
 
 <div class="topbar">
 
@@ -16,32 +16,32 @@
         <ul class="menu menu-level-1" id="main_menu">
            <li>
                 <a href="{% url "alibrary:release-list" %}">
-                    {% trans 'Catalog' %}
+                    Catalog
                 </a>
            </li>
            <li>
                 <a href="{% url "alibrary:playlist-list" %}">
-                    {% trans 'Playlists' %}
+                    Playlists
                 </a>
            </li>
            <li>
                 <a href="{% url "abcast:scheduler" %}">
-                    {% trans 'Scheduler' %}
+                    Scheduler
                 </a>
            </li>
            <li>
                 <a href="{% url "profiles:profile-list" %}">
-                    {% trans 'Newtork' %}
+                    Newtork
                 </a>
            </li>
            <li>
                 <a href="{% url "home:index" %}">
-                    {% trans 'About' %}
+                    About
                 </a>
            </li>
            <li>
                 <a href="{% url "home:index" %}">
-                    {% trans 'Docs' %}
+                    Docs
                 </a>
            </li>
         </ul>
@@ -61,18 +61,18 @@
           <ul class="children">
             <li>
               <a href="{% url "profiles:profile-edit" user.profile.uuid %}">
-                {% trans 'Settings' %}
+                Settings
               </a>
             </li>
             <li>
               <a href="{% url "account:logout" %}">
-                {% trans 'Logout' %}
+                Logout
               </a>
             </li>
             {% if user.is_staff %}
               <li>
                 <a href="/admin/">
-                  {% trans 'Administration' %}
+                  Administration
                 </a>
               </li>
             {% endif %}
@@ -87,17 +87,17 @@
       {% else %}
         <li class="login">
           <a rel="nofollow" title="Login" href="{% url "account:login" %}?next={{ request.get_full_path }}" rel="modal:open">
-            {% trans 'Login' %}
+            Login
           </a>
           <ul class="children">
             <li>
               <a rel="nofollow" href="{% url "account:login" %}?next={{ request.get_full_path }}">
-                {% trans 'Login' %}
+                Login
               </a>
             </li>
             <li>
               <a rel="nofollow" href="{% url "account:register" %}?next={{ request.get_full_path }}">
-                {% trans 'Create Account' %}
+                Create Account
               </a>
             </li>
             {% for backend in backends.backends %}

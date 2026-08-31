@@ -1,6 +1,6 @@
 {% extends "layout_edit.html" %}
 
-{% load i18n sekizai_tags dajaxice_templatetags pushy_tags %}
+{% load sekizai_tags dajaxice_templatetags pushy_tags %}
 
 {% block object_type %}import{% endblock %}
 
@@ -24,14 +24,14 @@
 
 {% block inner %}
   <div class="alert alert-info">
-    <strong>{% trans "Please note!" %}</strong>
+    <strong>Please note!</strong>
     <p>
-      {% blocktrans %}Do not upload more than maximum 30 tracks per "Upload Session"{% endblocktrans %}
+      Do not upload more than maximum 30 tracks per "Upload Session"
     </p>
     <p>
-      {% blocktrans %}You don't have to wait until the import is complete.{% endblocktrans %}<br>
+      You don't have to wait until the import is complete.<br>
       {% url 'importer:import-create' as new_upload_url %}
-      {% blocktrans %}As soon as the files are queued you can continue uploading with starting a <a href="{{ new_upload_url }}">new upload session</a>.{% endblocktrans %}
+      As soon as the files are queued you can continue uploading with starting a <a href="{{ new_upload_url }}">new upload session</a>.
     </p>
   </div>
 {% endblock %}
@@ -42,13 +42,13 @@
     <div class="action-group">
       <ul class="unstyled">
         <li class="action">
-          <a href="{% url "importer:import-list" %}" title="{% trans "Back to My Uploads" %}">
-            <span>{% trans "Back to My Uploads" %}</span>
+          <a href="{% url "importer:import-list" %}" title="Back to My Uploads">
+            <span>Back to My Uploads</span>
           </a>
         </li>
         <li class="action">
-          <a href="{% url "importer:import-create" %}" title="{% trans "New Upload Session" %}">
-            <span>{% trans "New Upload Session" %}</span>
+          <a href="{% url "importer:import-create" %}" title="New Upload Session">
+            <span>New Upload Session</span>
           </a>
         </li>
       </ul>
@@ -150,14 +150,14 @@
       <div class="listing">
         <div id="result_holder">
           <div id="loading_message">
-            <p>{% trans "Loading your import - please be patient!" %}</p>
+            <p>Loading your import - please be patient!</p>
           </div>
         </div>
       </div>
 
       <div id="drag_n_drop_area" style="display: none;">
         <p>
-          {% trans "Either use the 'Add Files' button - or Drag and Drop files here" %}
+          Either use the 'Add Files' button - or Drag and Drop files here
         </p>
       </div>
 

@@ -1,11 +1,10 @@
-{% load i18n %}
 
 <div class="menu-context">
   <div class="action-group">
     <ul>
       <li class="action">
-        <a href="{{ object.get_absolute_url }}" title="{% trans "Back to Detail-View" %}">
-          <span>{% trans "Back to Detail-View" %}</span>
+        <a href="{{ object.get_absolute_url }}" title="Back to Detail-View">
+          <span>Back to Detail-View</span>
         </a>
       </li>
             {% comment %}
@@ -13,25 +12,25 @@
                 <li>
                     <a
                        href="{% url "abcast-schedule-select-playlist" %}?playlist_id={{ object.pk }}&next={% url "abcast-schedule" %}"
-                       title="{% trans "Schedule for Broadcast" %}">
+                       title="Schedule for Broadcast">
                         <i class="icon icon-calendar"></i>
-                        <span>{% trans "Schedule for Broadcast" %}</span>
+                        <span>Schedule for Broadcast</span>
                     </a>
                 </li>
             {% endif %}
             {% endcomment %}
       {% if user.is_authenticated and user == object.user %}
         <li class="action">
-          <a href="{{ object.get_delete_url }}" title="{% trans "Delete" %}">
-            <span>{% trans "Delete" %}</span>
+          <a href="{{ object.get_delete_url }}" title="Delete">
+            <span>Delete</span>
           </a>
         </li>
       {% endif %}
       {% if perms.alibrary.change_playlist and user.is_staff %}
         <li class="action">
           <a href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
-             title="{% trans "Administration view" %}">
-            <span>{% trans "Administration view" %}</span>
+             title="Administration view">
+            <span>Administration view</span>
           </a>
         </li>
       {% endif %}

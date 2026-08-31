@@ -1,4 +1,4 @@
-{% load truncate_tags i18n thumbnail spurl object_action_tags tagging_extra_tags %}
+{% load truncate_tags thumbnail spurl object_action_tags tagging_extra_tags %}
 <div class="header__primary">
   <div class="title title--primary">
     <h2>{{ object.name|truncate_chars_inner:40 }}</h2>
@@ -24,7 +24,7 @@
       <h3>
         {% if appearances.releases.exists %}
           <a href="{% spurl path=release_list_url query="search_artist_ids={{ object.uuid }}" %}">
-            {{ appearances.releases.count }} {% trans 'Releases' %}
+            {{ appearances.releases.count }} Releases
           </a>
         {% endif %}
         {% if appearances.releases.exists and appearances.media.exists %}
@@ -32,7 +32,7 @@
         {% endif %}
         {% if appearances.media.exists %}
           <a href="{% spurl path=media_list_url query="search_artist_ids={{ object.uuid }}" %}">
-            {{ appearances.media.count }} {% trans 'Tracks' %}
+            {{ appearances.media.count }} Tracks
           </a>
         {% endif %}
       </h3>
@@ -42,7 +42,7 @@
     {% if object.members.exists %}
       <div class="meta__item">
         <div>
-          {% trans "Members" %}:
+          Members:
         </div>
         <div>
           {% for artist in object.members.all %}
@@ -54,7 +54,7 @@
     {% if object.get_membership %}
       <div class="meta__item">
         <div>
-          {% trans "Member of" %}:
+          Member of:
         </div>
         <div>
           {% for artist in object.get_membership %}
@@ -66,7 +66,7 @@
     {% if object.get_aliases.exists %}
       <div class="meta__item">
         <div>
-          {% trans "Aliases" %}:
+          Aliases:
         </div>
         <div>
           {% for artist in object.get_aliases %}
@@ -79,7 +79,7 @@
     {% if object.namevariations.exists %}
       <div class="meta__item">
         <div>
-          {% trans "Variations" %}:
+          Variations:
         </div>
         <expandable-list :limit="(5)">
           {% for name in object.namevariations.all %}
@@ -91,7 +91,7 @@
     {% if object.real_name %}
       <div class="meta__item">
         <div>
-          {% trans "Real name" %}:
+          Real name:
         </div>
         <div>
           {{ object.real_name }}
@@ -101,7 +101,7 @@
     {% if object.founded_labels %}
       <div class="meta__item">
         <div>
-          {% trans "Founded labels" %}:
+          Founded labels:
         </div>
         <div>
           {% for label in object.founded_labels.all %}
@@ -113,7 +113,7 @@
     {% if object.ipi_code %}
       <div class="meta__item">
         <div>
-          {% trans "IPI" %}:
+          IPI:
         </div>
         <div>
           {{ object.ipi_code}}
@@ -123,7 +123,7 @@
     {% if object.isni_code %}
       <div class="meta__item">
         <div>
-          {% trans "ISNI" %}:
+          ISNI:
         </div>
         <div>
           {{ object.isni_code}}
@@ -134,7 +134,7 @@
   <div class="meta">
     <div class="meta__item">
       <div>
-        {% trans "Created" %}:
+        Created:
       </div>
       <div class="meta__item__grid">
         <time>
@@ -149,7 +149,7 @@
     </div>
     <div class="meta__item">
       <div>
-        {% trans "Updated" %}:
+        Updated:
       </div>
       <div class="meta__item__grid">
         <time>

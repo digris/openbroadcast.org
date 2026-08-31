@@ -1,5 +1,4 @@
 from django import forms
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
@@ -24,34 +23,28 @@ class RegisterForm(BaseUserCreationForm):
 
 class RegistrationForm(BaseUserCreationForm):
     username = forms.RegexField(
-        label=_("Username"),
+        label="Username",
         max_length=30,
         regex=r"^[\w.@+-]+$",
         error_messages={
-            "invalid": _(
-                "This value may contain only letters, numbers and @/./+/-/_ characters."
-            )
+            "invalid": "This value may contain only letters, numbers and @/./+/-/_ characters."
         },
     )
 
-    email = forms.EmailField(label=_("Email"))
+    email = forms.EmailField(label="Email")
 
     captcha = CaptchaField(
-        label=_("Security Code"),
-        help_text=_("Please enter the characters shown beside."),
+        label="Security Code",
+        help_text="Please enter the characters shown beside.",
     )
 
     tos = forms.BooleanField(
         widget=forms.CheckboxInput,
         label=mark_safe(
-            _(
-                'I have read and agree to the <a target="_blank" href="/about/terms-and-conditions/">terms and conditions</a> and <a target="_blank" href="/about/data-use-policy/">data use policy</a>'
-            )
+            'I have read and agree to the <a target="_blank" href="/about/terms-and-conditions/">terms and conditions</a> and <a target="_blank" href="/about/data-use-policy/">data use policy</a>'
         ),
         error_messages={
-            "required": _(
-                "You must agree to the terms and conditions and data use policy to register."
-            )
+            "required": "You must agree to the terms and conditions and data use policy to register."
         },
     )
     # TODO: implement own loqic without password repeat
@@ -104,12 +97,12 @@ class PasswordRequestResetForm(BasePasswordResetForm):
 
 
 class PasswordResetForm(forms.Form):
-    password1 = forms.CharField(label=_("New password"), widget=forms.PasswordInput)
+    password1 = forms.CharField(label="New password", widget=forms.PasswordInput)
     password2 = forms.CharField(
-        label=_("New password (confirm)"), widget=forms.PasswordInput
+        label="New password (confirm)", widget=forms.PasswordInput
     )
 
-    error_messages = {"password_mismatch": _("The two passwords didn't match.")}
+    error_messages = {"password_mismatch": "The two passwords didn't match."}
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")

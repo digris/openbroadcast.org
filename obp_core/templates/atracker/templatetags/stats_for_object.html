@@ -1,14 +1,13 @@
-{% load i18n %}
 {% for type in statistics %}
   <li>
     <span class="value">{{ type.count }}</span>
     <span class="label_">
       {% if type.title == "download" %}
-        {% trans "Downloads" %}
+        Downloads
       {% else %}{% if type.title == "stream" %}
-        {% trans "Plays" %}
+        Plays
       {% else %}{% if type.title == "playout" %}
-        {% trans "Airplays" %}
+        Airplays
       {% else %}
         {{ type.title }}
       {% endif %}{% endif %}{% endif %}

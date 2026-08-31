@@ -1,6 +1,6 @@
 {% extends "layout_edit.html" %}
 
-{% load i18n crispy_forms_tags sekizai_tags %}
+{% load crispy_forms_tags sekizai_tags %}
 
 {% block heading %}{% endblock %}
 
@@ -37,11 +37,11 @@
       {% crispy form %}
       <fieldset>
         <legend>
-          {% trans "Personal Links" %}
+          Personal Links
         </legend>
         <div class="fieldset-hint fieldset-hint--info">
           <p>
-            {% trans "Example: Your blog, you personal site, etc." %}
+            Example: Your blog, you personal site, etc.
           </p>
         </div>
         <formset :autogrow="(true)">

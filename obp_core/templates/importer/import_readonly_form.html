@@ -1,6 +1,6 @@
 {% extends "layout_edit.html" %}
 
-{% load i18n sekizai_tags dajaxice_templatetags pushy_tags %}
+{% load sekizai_tags dajaxice_templatetags pushy_tags %}
 
 {% block object_type %}import{% endblock %}
 
@@ -31,12 +31,12 @@
     <div class="set">
       <ul class="unstyled">
         <li class="link ">
-          <span class="left icon"> <a href="{% url "importer:import-list" %}" title="{% trans "Back to My Uploads" %}">{% trans "Back to My Uploads" %}</a></span>
+          <span class="left icon"> <a href="{% url "importer:import-list" %}" title="Back to My Uploads">Back to My Uploads</a></span>
           <span class="opt"></span>
           <span class="clear"></span>
         </li>
         <li class="link ">
-          <span class="left icon"> <a href="{% url "importer:import-create" %}" title="{% trans "New Upload Session" %}">{% trans "New Upload Session" %}</a></span>
+          <span class="left icon"> <a href="{% url "importer:import-create" %}" title="New Upload Session">New Upload Session</a></span>
           <span class="opt"></span>
           <span class="clear"></span>
         </li>

@@ -1,4 +1,4 @@
-{% load i18n calc_tags thumbnail truncate_tags arating_tags alibrary_tags spurl %}
+{% load calc_tags thumbnail truncate_tags arating_tags alibrary_tags spurl %}
 
 
 <!-- list item s -->
@@ -42,7 +42,7 @@
         <a href="{{ item.user.get_absolute_url }}">{{ item.user.profile.get_display_name|truncate_chars_inner:16 }}</a>
         {% url "alibrary:playlist-list" as playlist_list %}
         <a href="{% spurl path=playlist_list query="user={{ item.user.username }}" %}"
-           title="{% trans "Only show playlists by" %} {{ item.user.profile.get_display_name }}"
+           title="Only show playlists by {{ item.user.profile.get_display_name }}"
            style="vertical-align: top;"><span class="filter icon"></span></a>
       </li>
 
@@ -53,11 +53,11 @@
       <li>
         {{ item.get_duration|divide:1000|sec_to_time }}
         {% if item.target_duration %}
-          <span class="small">{% trans "of" %} {{ item.target_duration|sec_to_time }}</span>
+          <span class="small">of {{ item.target_duration|sec_to_time }}</span>
         {% endif %}
       </li>
       <li class="small">
-        {{ item.items.count }} {% trans "Tracks" %}
+        {{ item.items.count }} Tracks
       </li>
     </ul>
   </div>
@@ -102,7 +102,7 @@
            data-ct="playlist"
            data-id="{{ item.pk }}"
            data-action="download"
-           title="{% trans "Download" %}">
+           title="Download">
           <i class="icon icon-download-alt"></i>
         </a>
       </li>
@@ -110,7 +110,7 @@
       <li>
         <a href="{{ item.get_edit_url }}"
            class="{% if user.is_authenticated and user == item.user %}{% else %} disabled{% endif %}"
-           title="{% trans "Edit" %}">
+           title="Edit">
           <i class="icon icon-edit"></i>
         </a>
       </li>
@@ -122,7 +122,7 @@
            data-ct="playlist"
            data-id="{{ item.id }}"
            data-uuid="{{ item.uuid }}"
-           title="{% trans "Schedule" %}">
+           title="Schedule">
           <i class="icon icon-calendar"></i>
         </a>
       </li>

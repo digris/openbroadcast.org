@@ -1,4 +1,3 @@
-{% load i18n  %}
 <div class="actions actions--list">
   <div
     class="action action--primary{% if not perms.alibrary.play_media %} action--disabled{% endif %}"
@@ -11,7 +10,7 @@
     data-offset=0
     data-mode="replace">
     <i class="icon icon-play"></i>
-    <span>{% trans "Play all" %}</span>
+    <span>Play all</span>
   </div>
   <div
     class="action action--primary{% if not perms.alibrary.play_media %} action--disabled{% endif %}"
@@ -24,6 +23,6 @@
     data-offset=0
     data-mode="queue">
     <i class="icon icon-reorder"></i>
-    <span>{% trans "Queue all" %}</span>
+    <span>Queue all</span>
   </div>
 </div>

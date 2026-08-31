@@ -14,7 +14,6 @@ from django.contrib.contenttypes.forms import (
 )
 from django.forms import ModelForm, Form
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
-from django.utils.translation import ugettext as _
 from base.fields.widgets import ReadOnlyIconField
 from tagging.forms import TagField
 
@@ -99,12 +98,12 @@ class MediaForm(ModelForm):
         self.helper.form_tag = False
 
         # rewrite labels
-        self.fields["medianumber"].label = _("Disc number")
-        self.fields["opus_number"].label = _("Opus N.")
-        # self.fields['filename'].label = _('Orig. Filename')
+        self.fields["medianumber"].label = "Disc number"
+        self.fields["opus_number"].label = "Opus N."
+        # self.fields['filename'].label = 'Orig. Filename'
 
         base_layout = Fieldset(
-            _("General"),
+            "General",
             LookupField("name", css_class="input-xlarge"),
             LookupField("release", css_class="input-xlarge"),
             LookupField("artist", css_class="input-xlarge"),
@@ -119,11 +118,11 @@ class MediaForm(ModelForm):
         )
 
         identifiers_layout = Fieldset(
-            _("Identifiers"), LookupField("isrc", css_class="input-xlarge")
+            "Identifiers", LookupField("isrc", css_class="input-xlarge")
         )
 
         license_layout = Fieldset(
-            _("License/Source"), Field("license", css_class="input-xlarge")
+            "License/Source", Field("license", css_class="input-xlarge")
         )
 
         meta_layout = Fieldset(
@@ -151,15 +150,15 @@ class MediaForm(ModelForm):
         self.helper.add_layout(layout)
 
     d_tags = TagField(
-        widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_("Tags")
+        widget=TagAutocompleteTagIt(max_tags=9), required=False, label="Tags"
     )
     release = search_fields.AutocompleteField(
-        "alibrary.release", allow_new=True, required=False, label=_("Release")
+        "alibrary.release", allow_new=True, required=False, label="Release"
     )
 
     name = forms.CharField(required=True, label="Title")
     artist = search_fields.AutocompleteField(
-        "alibrary.artist", allow_new=True, required=False, label=_("Artist")
+        "alibrary.artist", allow_new=True, required=False, label="Artist"
     )
     description = forms.CharField(widget=forms.Textarea(), required=False)
 
@@ -238,16 +237,16 @@ class BaseExtraartistForm(ModelForm):
         parent_model = Media
         fields = ("artist", "profession")
         # labels in django 1.6 only... leave them here for the future...
-        labels = {"profession": _("Credited as")}
+        labels = {"profession": "Credited as"}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         _unused = getattr(self, "instance", None)
 
-        self.fields["profession"].label = _("Credited as")
+        self.fields["profession"].label = "Credited as"
 
     artist = search_fields.AutocompleteField(
-        "alibrary.artist", allow_new=True, required=False, label=_("Artist")
+        "alibrary.artist", allow_new=True, required=False, label="Artist"
     )
 
     def clean_artist(self):
@@ -351,7 +350,7 @@ class BaseMediaReleationForm(StripWhitespaceFormMixin, ModelForm):
         return self.instance.service
 
     service = forms.CharField(label="", widget=ReadOnlyIconField(), required=False)
-    url = forms.URLField(label=_("Website / URL"), required=False)
+    url = forms.URLField(label="Website / URL", required=False)
 
 
 # Compose Formsets

@@ -18,7 +18,6 @@ from django.forms import SelectMultiple, CheckboxInput
 from django.utils.html import conditional_escape
 from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext as _
 from base.fields.extra import AdvancedFileInput
 from tagging.forms import TagField
 
@@ -144,11 +143,11 @@ class PlaylistForm(ModelForm):
         widgets = {
             "rotation_date_start": SelectDateWidget(
                 years=ROTATION_YEAR_CHOICES,
-                empty_label=(_("Year"), _("Month"), _("Day")),
+                empty_label=("Year", "Month", "Day"),
             ),
             "rotation_date_end": SelectDateWidget(
                 years=ROTATION_YEAR_CHOICES,
-                empty_label=(_("Year"), _("Month"), _("Day")),
+                empty_label=("Year", "Month", "Day"),
             ),
         }
 
@@ -165,7 +164,7 @@ class PlaylistForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
 
-        self.fields["name"].label = _("Title")
+        self.fields["name"].label = "Title"
 
         if self.instance.type == "broadcast":
             self.fields["d_tags"].required = True
@@ -177,7 +176,7 @@ class PlaylistForm(ModelForm):
             self.fields["d_tags"].required = True
 
         base_layout = Fieldset(
-            _("General"),
+            "General",
             Field("name", css_class="input-xlarge"),
             Div(Field("target_duration"), css_class="target-duration"),
             Field("description", css_class="input-xlarge"),
@@ -186,7 +185,7 @@ class PlaylistForm(ModelForm):
         )
 
         series_layout = Fieldset(
-            _("Series"),
+            "Series",
             Div(Field("series", css_class="input-xlarge"), css_class="series"),
             Div(
                 Field("series_number", css_class="input-xlarge"),
@@ -196,13 +195,13 @@ class PlaylistForm(ModelForm):
         )
 
         tagging_layout = Fieldset(
-            _("Tags"),
+            "Tags",
             "d_tags",
             css_class="tagging",
         )
 
         rotation_layout = Fieldset(
-            _("Rotation"),
+            "Rotation",
             "rotation",
             "rotation_date_start",
             "rotation_date_end",
@@ -210,7 +209,7 @@ class PlaylistForm(ModelForm):
         )
 
         daypart_layout = Fieldset(
-            _("Broadcast"),
+            "Broadcast",
             Div(Field("dayparts"), css_class="dayparts"),
             # Div(Field("seasons"), css_class="seasons"),
             # Div(Field("weather"), css_class="weather"),
@@ -230,16 +229,14 @@ class PlaylistForm(ModelForm):
     # main_image = forms.Field(widget=FileInput(), required=False)
     main_image = forms.Field(widget=AdvancedFileInput(), required=False)
     d_tags = TagField(
-        widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_("Tags")
+        widget=TagAutocompleteTagIt(max_tags=9), required=False, label="Tags"
     )
     description = forms.CharField(widget=forms.Textarea(), required=False)
 
     rotation = forms.BooleanField(
         required=False,
-        label=_("Include in rotation"),
-        help_text=_(
-            "Allow this broadcast to be aired at random time if nothing else is scheduled."
-        ),
+        label="Include in rotation",
+        help_text="Allow this broadcast to be aired at random time if nothing else is scheduled.",
     )
 
     series = search_fields.AutocompleteField(
@@ -252,20 +249,20 @@ class PlaylistForm(ModelForm):
         required=False,
     )
     dayparts = forms.ModelMultipleChoiceField(
-        label=_("Dayparts"),
+        label="Dayparts",
         widget=DaypartWidget(),
         queryset=Daypart.objects.active(),
         required=False,
     )
 
     # seasons = forms.ModelMultipleChoiceField(
-    #     label="...%s" % _("Seasons"),
+    #     label="...%s" % "Seasons",
     #     queryset=Season.objects.all(),
     #     required=False,
     #     widget=forms.CheckboxSelectMultiple,
     # )
     # weather = forms.ModelMultipleChoiceField(
-    #     label="...%s" % _("Weather"),
+    #     label="...%s" % "Weather",
     #     queryset=Weather.objects.all(),
     #     required=False,
     #     widget=forms.CheckboxSelectMultiple,

@@ -1,4 +1,4 @@
-{% load adv_cache spurl i18n %}
+{% load adv_cache spurl %}
 
 {% cache 600 "tagcloud" request.get_full_path %}{% endcache %}
 
@@ -11,6 +11,6 @@
   {% spurl base=tag_url remove_query_param="page" as tag_url %}
   <a rel="nofollow" href="{{ tag_url }}"
      class="tag tag--weight-{{ tag.weight }}{% if tag.selected %} selected{% endif %}"
-     title="{% trans 'Usage' %}: {{ tag.count }}"
+     title="Usage: {{ tag.count }}"
      style="">{{ tag.name }}</a>
 {% endfor %}

@@ -1,46 +1,45 @@
 from django.conf import settings
-from django.utils.translation import ugettext as _
 
 """
 Release choices
 """
 DEFAULT_RELEASETYPE_CHOICES = (
     (
-        _("General"),
+        "General",
         (
-            ("album", _("Album")),
-            ("single", _("Single")),
-            ("ep", _("EP")),
-            ("compilation", _("Compilation")),
-            ("soundtrack", _("Soundtrack")),
-            ("audiobook", _("Audiobook")),
-            ("spokenword", _("Spokenword")),
-            ("interview", _("Interview")),
-            ("jingle", _("Jingle")),
-            ("live", _("Live")),
-            ("remix", _("Remix")),
-            ("broadcast", _("Broadcast")),
-            ("djmix", _("DJ-Mix")),
-            ("mixtape", _("Mixtape")),
+            ("album", "Album"),
+            ("single", "Single"),
+            ("ep", "EP"),
+            ("compilation", "Compilation"),
+            ("soundtrack", "Soundtrack"),
+            ("audiobook", "Audiobook"),
+            ("spokenword", "Spokenword"),
+            ("interview", "Interview"),
+            ("jingle", "Jingle"),
+            ("live", "Live"),
+            ("remix", "Remix"),
+            ("broadcast", "Broadcast"),
+            ("djmix", "DJ-Mix"),
+            ("mixtape", "Mixtape"),
         ),
     ),
-    # (_('Recording'), (
-    #        ('remix', _('Remix')),
-    #        ('live', _('Live')),
+    # ('Recording', (
+    #        ('remix', 'Remix'),
+    #        ('live', 'Live'),
     #    )
     # ),
-    ("other", _("Other")),
+    ("other", "Other"),
 )
 
 """
 Label choices
 """
 DEFAULT_LABELTYPE_CHOICES = (
-    ("unknown", _("Unknown")),
-    ("major", _("Major Label")),
-    ("indy", _("Independent Label")),
-    ("net", _("Netlabel")),
-    ("event", _("Event Label")),
+    ("unknown", "Unknown"),
+    ("major", "Major Label"),
+    ("indy", "Independent Label"),
+    ("net", "Netlabel"),
+    ("event", "Event Label"),
 )
 
 
@@ -66,41 +65,41 @@ DEFAULT_PLAYLIST_TARGET_DURATION_CHOICES = (
     (14400, "240"),
 )
 DEFAULT_PLAYLIST_STATUS_CHOICES = (
-    (0, _("Init")),
-    (1, _("Ready")),
-    (2, _("In progress")),
-    (3, _("Scheduled")),
-    (4, _("Descheduled")),
-    (99, _("Error")),
-    (11, _("Other")),
+    (0, "Init"),
+    (1, "Ready"),
+    (2, "In progress"),
+    (3, "Scheduled"),
+    (4, "Descheduled"),
+    (99, "Error"),
+    (11, "Other"),
 )
 
 # DEFAULT_PLAYLIST_TYPE_CHOICES = (
-#     ('basket', _('Private Playlist')),
-#     ('playlist', _('Public Playlist')),
-#     ('broadcast', _('Broadcasts')),
-#     ('other', _('Other')),
+#     ('basket', 'Private Playlist'),
+#     ('playlist', 'Public Playlist'),
+#     ('broadcast', 'Broadcasts'),
+#     ('other', 'Other'),
 # )
 
 DEFAULT_PLAYLIST_BROADCAST_STATUS_CHOICES = (
-    (0, _("Undefined")),
-    (1, _("OK")),
-    (2, _("Warning")),
-    (99, _("Error")),
+    (0, "Undefined"),
+    (1, "OK"),
+    (2, "Warning"),
+    (99, "Error"),
 )
 
 DEFAULT_ARTIST_JOIN_PHRASE_CHOICES = (
-    ("&", _("&")),
-    (",", _(",")),
-    ("and", _("and")),
-    ("feat", _("feat.")),
-    ("feat.", _("feat.")),
-    ("presents", _("presents")),
-    ("meets", _("meets")),
-    ("with", _("with")),
-    ("vs", _("vs.")),
-    ("x", _("X")),
-    ("-", _("-")),
+    ("&", "&"),
+    (",", ","),
+    ("and", "and"),
+    ("feat", "feat."),
+    ("feat.", "feat."),
+    ("presents", "presents"),
+    ("meets", "meets"),
+    ("with", "with"),
+    ("vs", "vs."),
+    ("x", "X"),
+    ("-", "-"),
 )
 
 

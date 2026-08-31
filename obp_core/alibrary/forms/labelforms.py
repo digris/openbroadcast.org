@@ -14,7 +14,6 @@ from django.contrib.contenttypes.forms import (
     generic_inlineformset_factory,
 )
 from django.forms.widgets import FileInput
-from django.utils.translation import ugettext as _
 from base.fields.widgets import ReadOnlyIconField
 from tagging.forms import TagField
 
@@ -110,7 +109,7 @@ class LabelForm(ModelForm):
         self.helper.form_tag = False
 
         base_layout = Fieldset(
-            _("General"),
+            "General",
             LookupField("name", css_class="input-xlarge"),
             LookupField("type", css_class="input-xlarge"),
             LookupField("labelcode", css_class="input-xlarge"),
@@ -118,13 +117,13 @@ class LabelForm(ModelForm):
         )
 
         activity_layout = Fieldset(
-            _("Activity"),
+            "Activity",
             LookupField("date_start", css_class="input-xlarge"),
             LookupField("date_end", css_class="input-xlarge"),
         )
 
         contact_layout = Fieldset(
-            _("Contact"),
+            "Contact",
             LookupField("address", css_class="input-xlarge"),
             LookupField("country", css_class="input-xlarge"),
             LookupField("phone", css_class="input-xlarge"),
@@ -155,11 +154,11 @@ class LabelForm(ModelForm):
     main_image = forms.Field(widget=FileInput(), required=False)
     remote_image = forms.URLField(required=False)
     d_tags = TagField(
-        widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_("Tags")
+        widget=TagAutocompleteTagIt(max_tags=9), required=False, label="Tags"
     )
     description = forms.CharField(widget=forms.Textarea(), required=False)
     parent = search_fields.AutocompleteField(
-        "alibrary.label", allow_new=True, required=False, label=_("Parent Label")
+        "alibrary.label", allow_new=True, required=False, label="Parent Label"
     )
 
     def clean(self, *args, **kwargs):
@@ -176,7 +175,7 @@ class LabelForm(ModelForm):
         try:
             if parent.pk == self.instance.pk:
                 self._errors["parent"] = self.error_class(
-                    [_("The parent label can not be itself!")]
+                    ["The parent label can not be itself!"]
                 )
         except BaseException:
             pass
@@ -216,7 +215,7 @@ class BaseFoundingArtistForm(ModelForm):
         fields = ["artist"]
 
     artist = search_fields.AutocompleteField(
-        "alibrary.artist", allow_new=True, required=False, label=_("Artist")
+        "alibrary.artist", allow_new=True, required=False, label="Artist"
     )
 
     def clean_artist(self):
@@ -288,7 +287,7 @@ class BaseLabelReleationForm(StripWhitespaceFormMixin, ModelForm):
         return self.instance.service
 
     service = forms.CharField(label="", widget=ReadOnlyIconField(), required=False)
-    url = forms.URLField(label=_("Website / URL"), required=False)
+    url = forms.URLField(label="Website / URL", required=False)
 
 
 LabelRelationFormSet = generic_inlineformset_factory(

@@ -1,4 +1,4 @@
-{% load truncate_tags i18n thumbnail calc_tags arating_tags spacify_tags gravatar object_action_tags tagging_extra_tags %}
+{% load truncate_tags thumbnail calc_tags arating_tags spacify_tags gravatar object_action_tags tagging_extra_tags %}
 
 <div class="header__primary">
 
@@ -29,7 +29,7 @@
     {% if object.user and object.user.profile %}
       <div class="meta__item">
         <div>
-          {% trans "Author" %}:
+          Author:
         </div>
         <div>
           <a href="{{ object.user.get_absolute_url }}">{{ object.user.profile.get_display_name }}</a>
@@ -42,7 +42,7 @@
     {% if object.duration or object.target_duration %}
       <div class="meta__item">
         <div>
-          {% trans "Duration" %}:
+          Duration:
         </div>
         <div>
           {% if object.duration %}
@@ -62,7 +62,7 @@
   <div class="meta">
     <div class="meta__item">
       <div>
-        {% trans "Created" %}:
+        Created:
       </div>
       <div class="meta__item__grid">
         <time>
@@ -78,7 +78,7 @@
 
     <div class="meta__item">
       <div>
-        {% trans "Updated" %}:
+        Updated:
       </div>
       <div class="meta__item__grid">
         <time>
@@ -97,7 +97,7 @@
     {% if object.dayparts.exists %}
       <div class="meta__item">
         <div>
-          {% trans "Dayparts" %}:
+          Dayparts:
         </div>
         <div>
           {% load alibrary_tags %}
@@ -110,7 +110,7 @@
     {% if object.rotation %}
       <div class="meta__item">
         <div>
-          {% trans "Rotation" %}:
+          Rotation:
         </div>
         <div>
           {% if object.rotation_date_start and object.rotation_date_end %}
@@ -118,13 +118,13 @@
             -
             {{ object.rotation_date_end|date:"DATE_FORMAT" }}
           {% elif object.rotation_date_start %}
-            {% trans 'from' %}
+            from
             {{ object.rotation_date_start|date:"DATE_FORMAT" }}
           {% elif object.rotation_date_end %}
-            {% trans 'until' %}
+            until
             {{ object.rotation_date_end|date:"DATE_FORMAT" }}
           {% else %}
-            {% trans 'Yes' %}
+            Yes
           {% endif %}
         </div>
       </div>

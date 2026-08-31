@@ -4,7 +4,6 @@ import logging
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.utils.translation import ugettext as _
 from django.views.generic import UpdateView
 from elasticsearch_dsl import TermsFacet, RangeFacet
 from navutils import MenuMixin
@@ -67,14 +66,14 @@ class ReleaseListView(MenuMixin, BaseSearchListView):
     search_class = ReleaseSearch
     current_menu_item = "catalog:release-list"
     order_by = [
-        {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
+        {"key": "name.raw", "name": "Name", "default_direction": "asc"},
         {
             "key": "releasedate",
-            "name": _("Releasedate"),
+            "name": "Releasedate",
             "default_direction": "asc",
         },
-        {"key": "updated", "name": _("Last modified"), "default_direction": "desc"},
-        {"key": "created", "name": _("Creation date"), "default_direction": "desc"},
+        {"key": "updated", "name": "Last modified", "default_direction": "desc"},
+        {"key": "created", "name": "Creation date", "default_direction": "desc"},
     ]
 
     def get_queryset(self, **kwargs):
@@ -126,22 +125,22 @@ class ReleaseDetailView(MenuMixin, SectionDetailView):
         {
             "key": "tracklist",
             "url": None,
-            "title": _("Tracks"),
+            "title": "Tracks",
         },
         {
             "key": "description",
             "url": "description",
-            "title": _("Description"),
+            "title": "Description",
         },
         {
             "key": "statistics",
             "url": "statistics",
-            "title": _("Statistics"),
+            "title": "Statistics",
         },
         # {
         #     "key": "license",
         #     "url": "license",
-        #     "title": _("License / Legal"),
+        #     "title": "License / Legal",
         # },
     ]
 
@@ -259,7 +258,7 @@ class ReleaseEditView(
             self.object.save()
         """
 
-        actstream.action.send(self.request.user, verb=_("updated"), target=self.object)
+        actstream.action.send(self.request.user, verb="updated", target=self.object)
 
         # self.object.last_editor = self.request.user
         # we pass last editor as attribut (not to field directly) and handle information in save()
@@ -313,7 +312,7 @@ class ReleaseEditView(
 
             if formset.has_changed():
                 # set actstream (e.v. atracker?)
-                actstream.action.send(self.request.user, verb=_("updated"), target=m)
+                actstream.action.send(self.request.user, verb="updated", target=m)
 
     def formset_albumartist_valid(self, formset):
 

@@ -1,7 +1,7 @@
 {% extends "layout_edit.html" %}
 
 {% load crispy_forms_tags dajaxice_templatetags sekizai_tags static %}
-{% load thumbnail i18n truncate_tags %}
+{% load thumbnail truncate_tags %}
 
 {% block title %}Edit: {{ object.name }}{% endblock %}
 
@@ -75,14 +75,14 @@
 
       <fieldset id="founding_artist">
         <legend>
-          {% trans "Founding Artists" %}
+          Founding Artists
         </legend>
         {% crispy named_formsets.founding_artist %}
       </fieldset>
 
       <fieldset class="relations">
         <legend>
-          {% trans "Relations" %}
+          Relations
         </legend>
         {% crispy named_formsets.relation %}
         <div class="lookup-container"></div>

@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.forms.models import inlineformset_factory
-from django.utils.translation import ugettext as _
 
 
 from crispy_forms.helper import FormHelper
@@ -33,7 +32,7 @@ class ProfileForm(ModelForm):
             "expertise": forms.CheckboxSelectMultiple(),
         }
 
-    tags = TagField(required=False, label=_("Tags"))
+    tags = TagField(required=False, label="Tags")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -44,14 +43,14 @@ class ProfileForm(ModelForm):
 
         appearance_layout = Layout(
             Fieldset(
-                _("Appearance"),
+                "Appearance",
                 InputContainer("pseudonym"),
             )
         )
 
         profile_layout = Layout(
             Fieldset(
-                _("Personal Information"),
+                "Personal Information",
                 Div(
                     HTML(
                         "Your birth date is only visible to your mentor, and to team-members with administrative rights."
@@ -68,7 +67,7 @@ class ProfileForm(ModelForm):
         )
         contact_layout = Layout(
             Fieldset(
-                _("Contact"),
+                "Contact",
                 Div(
                     HTML(
                         'Except for "City" and "Country", this information is only visible to your mentor, and to team-members with administrative rights.'
@@ -95,7 +94,7 @@ class ProfileForm(ModelForm):
         )
         account_layout = Layout(
             Fieldset(
-                _("Accounts"),
+                "Accounts",
                 Div(
                     HTML(
                         "In case you see a reason to recieve some money from us :) This information is not visible on the plattform."
@@ -110,25 +109,23 @@ class ProfileForm(ModelForm):
         )
         settings_layout = Layout(
             Fieldset(
-                _("Settings"),
+                "Settings",
                 InputContainer("enable_alpha_features"),
                 InputContainer("settings_show_media_history"),
                 InputContainer("settings_show_media_appearances"),
             )
         )
         skills_layout = Layout(
-            Fieldset(
-                _("Skills & Knowledge"), InputContainer("expertise", hide_label=True)
-            )
+            Fieldset("Skills & Knowledge", InputContainer("expertise", hide_label=True))
         )
 
         # tagging_layout = Fieldset("Tags", "d_tags")
         tagging_layout = Layout(
             # Fieldset(
-            #     _("Tags"),
+            #     "Tags",
             #     InputContainer("d_tags", hide_label=True)
             # ),
-            Fieldset(_("Tags"), TagInputContainer("tags", hide_label=True))
+            Fieldset("Tags", TagInputContainer("tags", hide_label=True))
         )
 
         layout = Layout(
@@ -192,7 +189,7 @@ class ServiceForm(ModelForm):
 
         self.helper = FormHelper()
         self.helper.form_tag = False
-        _layout_profile = Layout(Fieldset(_("Link"), "url", "title", "DELETE"))
+        _layout_profile = Layout(Fieldset("Link", "url", "title", "DELETE"))
 
         base_layout = Row(
             Column(Field("username", css_class="input-medium"), css_class="span5"),
@@ -212,14 +209,14 @@ class UserForm(ModelForm):
     class Meta:
         model = get_user_model()
         fields = ("first_name", "last_name", "email")
-        help_texts = {"username": _("Letters, digits and @/./+/-/_ only")}
+        help_texts = {"username": "Letters, digits and @/./+/-/_ only"}
 
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
             Fieldset(
-                _("User Details"),
+                "User Details",
                 InputContainer("email"),
                 Grid(
                     Cell(InputContainer("first_name")),
@@ -243,36 +240,36 @@ class UserForm(ModelForm):
 
 
 class UserCredentialsForm(ModelForm):
-    error_messages = {"password_mismatch": _("The two password fields didn't match.")}
+    error_messages = {"password_mismatch": "The two password fields didn't match."}
     new_password1 = forms.CharField(
-        label=_("New password"),
+        label="New password",
         widget=forms.PasswordInput,
         required=False,
-        # help_text=_("Please make sure to use a 'not so easy to guess' password!"),
+        # help_text="Please make sure to use a 'not so easy to guess' password!",
     )
     new_password2 = forms.CharField(
-        label=_("Confirmation"),
+        label="Confirmation",
         widget=forms.PasswordInput,
         required=False,
-        # help_text=_("Verify your new password"),
+        # help_text="Verify your new password",
     )
 
     class Meta:
         model = get_user_model()
         fields = ("username", "email")
-        help_texts = {"username": _("Letters, digits and @/./+/-/_ only")}
+        help_texts = {"username": "Letters, digits and @/./+/-/_ only"}
 
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
             Fieldset(
-                _('Email & Username/"Login Name"'),
+                'Email & Username/"Login Name"',
                 InputContainer("email"),
                 InputContainer("username"),
             ),
             Fieldset(
-                _("Update Password"),
+                "Update Password",
                 Grid(
                     Cell(InputContainer("new_password1")),
                     Cell(InputContainer("new_password2")),

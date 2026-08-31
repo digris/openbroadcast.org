@@ -6,7 +6,6 @@ from django.conf.urls import url
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseForbidden
-from django.utils.translation import ugettext as _
 from profiles.exceptions import APIBadRequest
 from tastypie import fields
 from tastypie.authentication import MultiAuthentication, Authentication
@@ -98,9 +97,7 @@ class UserResource(ModelResource):
             if field not in data:
                 raise APIBadRequest(
                     code="missing_key",
-                    message=_("Must provide {missing_key} when logging in.").format(
-                        missing_key=field
-                    ),
+                    message=f"Must provide {field} when logging in.",
                 )
 
         username = data.get("username", None)
@@ -115,7 +112,7 @@ class UserResource(ModelResource):
                     {
                         "error": {
                             "code": "unauthorized",
-                            "message": _("Invalid login data."),
+                            "message": "Invalid login data.",
                         }
                     }
                 )
@@ -149,9 +146,7 @@ class UserResource(ModelResource):
             if field not in data:
                 raise APIBadRequest(
                     code="missing_key",
-                    message=_("Must provide {missing_key} when logging in.").format(
-                        missing_key=field
-                    ),
+                    message=f"Must provide {field} when logging in.",
                 )
 
         key = data.get("key", None)
@@ -160,13 +155,13 @@ class UserResource(ModelResource):
         error = None
 
         if key == "email" and get_user_model().objects.filter(email=value).exists():
-            error = _("That email is already used.")
+            error = "That email is already used."
 
         if (
             key == "username"
             and get_user_model().objects.filter(username=value).exists()
         ):
-            error = _("That username is already used.")
+            error = "That username is already used."
 
         bundle = {"error": error, "key": key, "value": value}
 
@@ -191,9 +186,7 @@ class UserResource(ModelResource):
                 log.warning('missing key "%s" when creating a user.', field)
                 raise APIBadRequest(
                     code="missing_key",
-                    message=_(
-                        "Must provide {missing_key} when creating a user."
-                    ).format(missing_key=field),
+                    message=f"Must provide {field} when creating a user.",
                 )
 
         user = get_user_model().objects.create_user(
@@ -227,9 +220,7 @@ class UserResource(ModelResource):
             if field not in data:
                 raise APIBadRequest(
                     code="missing_key",
-                    message=_(
-                        "Must provide {missing_key} when looking up a social user."
-                    ).format(missing_key=field),
+                    message=f"Must provide {field} when looking up a social user.",
                 )
 
         provider = data["provider"]

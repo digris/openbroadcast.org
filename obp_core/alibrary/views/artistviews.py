@@ -4,7 +4,6 @@ import logging
 from django.views.generic import UpdateView
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from django.utils.translation import ugettext as _
 from django.db.models import Q
 from braces.views import PermissionRequiredMixin, LoginRequiredMixin
 from elasticsearch_dsl import TermsFacet
@@ -45,19 +44,19 @@ class ArtistListView(MenuMixin, BaseSearchListView):
     search_class = ArtistSearch
     current_menu_item = "catalog:artist-list"
     order_by = [
-        {"key": "name.raw", "name": _("Name"), "default_direction": "asc"},
+        {"key": "name.raw", "name": "Name", "default_direction": "asc"},
         {
             "key": "year_start",
-            "name": _("Date of formation / date of birth"),
+            "name": "Date of formation / date of birth",
             "default_direction": "desc",
         },
         {
             "key": "year_end",
-            "name": _("Date of breakup / date of death"),
+            "name": "Date of breakup / date of death",
             "default_direction": "desc",
         },
-        {"key": "updated", "name": _("Last modified"), "default_direction": "desc"},
-        {"key": "created", "name": _("Creation date"), "default_direction": "desc"},
+        {"key": "updated", "name": "Last modified", "default_direction": "desc"},
+        {"key": "created", "name": "Creation date", "default_direction": "desc"},
     ]
 
     def get_queryset(self, **kwargs):
@@ -91,22 +90,22 @@ class ArtistDetailView(MenuMixin, SectionDetailView):
         {
             "key": "overview",
             "url": None,
-            "title": _("Overview"),
+            "title": "Overview",
         },
         {
             "key": "contributions",
             "url": "contributions",
-            "title": _("Credited"),
+            "title": "Credited",
         },
         {
             "key": "biography",
             "url": "biography",
-            "title": _("Biography"),
+            "title": "Biography",
         },
         {
             "key": "statistics",
             "url": "statistics",
-            "title": _("Statistics"),
+            "title": "Statistics",
         },
     ]
 
@@ -260,7 +259,7 @@ class ArtistEditView(
             self.object.tags = d_tags
 
         self.object.last_editor = self.request.user
-        actstream.action.send(self.request.user, verb=_("updated"), target=self.object)
+        actstream.action.send(self.request.user, verb="updated", target=self.object)
 
         self.object = form.save()
         messages.add_message(self.request, messages.INFO, "Object updated")

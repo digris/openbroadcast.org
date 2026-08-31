@@ -1,4 +1,4 @@
-{% load i18n spurl %}
+{% load spurl %}
 {% comment %}
 <div class="list list--grid">
 {% for release in uploads.releases|slice:"0:8" %}
@@ -12,7 +12,7 @@
   {% url "alibrary:release-list" as release_list %}
   <div class="action action--show-all">
     <a rel="nofollow" href="{% spurl path=release_list query="search_creator={{ object.user.username }}" %}">
-      {% blocktrans with user=object %}Show all releases uploaded by {{ user }}{% endblocktrans %}
+      Show all releases uploaded by {{ object }}
     </a>
   </div>
 </div>
@@ -20,7 +20,7 @@
   {% url "alibrary:media-list" as media_list %}
   <div class="action action--show-all">
     <a rel="nofollow" href="{% spurl path=media_list query="search_creator={{ object.user.username }}" %}">
-      {% blocktrans with user=object %}Show all tracks uploaded by {{ user }}{% endblocktrans %}
+      Show all tracks uploaded by {{ object }}
     </a>
   </div>
 </div>

@@ -3,7 +3,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.conf import settings
 from django.db.models.signals import post_save
-from django.utils.translation import ugettext as _
 from base.mixins import TimestampedModelMixin, UUIDModelMixin
 
 VOTE_CHOICES = ((+1, "+1"), (-1, "-1"))
@@ -20,8 +19,8 @@ class Vote(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     class Meta:
         app_label = "arating"
-        verbose_name = _("Vote")
-        verbose_name_plural = _("Votes")
+        verbose_name = "Vote"
+        verbose_name_plural = "Votes"
         unique_together = (("user", "content_type", "object_id"),)
 
         permissions = (("vote_for_user", "Can vote in behalf of other user"),)

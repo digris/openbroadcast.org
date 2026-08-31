@@ -9,7 +9,6 @@ from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
-from django.utils.translation import ugettext as _
 from django.template import defaultfilters
 from base.mixins import TimestampedModelMixin, UUIDModelMixin
 from base.fs.utils import clean_directory_tree_reverse
@@ -58,15 +57,15 @@ class Waveform(UUIDModelMixin, TimestampedModelMixin, models.Model):
     PROCESSING = 2
     ERROR = 99
     STATUS_CHOICES = (
-        (INIT, _("initial")),
-        (DONE, _("completed")),
-        (PROCESSING, _("processing")),
-        (ERROR, _("error")),
+        (INIT, "initial"),
+        (DONE, "completed"),
+        (PROCESSING, "processing"),
+        (ERROR, "error"),
     )
 
     WAVEFORM = "w"
     SPECTROGRAM = "s"
-    TYPE_CHOICES = ((WAVEFORM, _("Waveform")), (SPECTROGRAM, _("Spectrogram")))
+    TYPE_CHOICES = ((WAVEFORM, "Waveform"), (SPECTROGRAM, "Spectrogram"))
 
     status = models.PositiveIntegerField(default=INIT, choices=STATUS_CHOICES)
     type = models.CharField(
@@ -82,7 +81,7 @@ class Waveform(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     class Meta:
         app_label = "media_asset"
-        verbose_name = _("Waveform")
+        verbose_name = "Waveform"
         unique_together = ("media", "type")
 
     def __str__(self):
@@ -177,25 +176,25 @@ class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
     PROCESSING = 2
     ERROR = 99
     STATUS_CHOICES = (
-        (INIT, _("initial")),
-        (DONE, _("completed")),
-        (PROCESSING, _("processing")),
-        (ERROR, _("error")),
+        (INIT, "initial"),
+        (DONE, "completed"),
+        (PROCESSING, "processing"),
+        (ERROR, "error"),
     )
 
     MP3 = "mp3"
     AAC = "aac"
-    ENCODING_CHOICES = ((MP3, _("MP3")), (AAC, _("AAC")))
+    ENCODING_CHOICES = ((MP3, "MP3"), (AAC, "AAC"))
 
     DEFAULT = "default"
     LOFI = "lo"
     HIFI = "hi"
     PREVIEW = "preview"
     QUALITY_CHOICES = (
-        (DEFAULT, _("Default")),
-        (LOFI, _("Lo-Fi")),
-        (HIFI, _("Hi-Fi")),
-        (PREVIEW, _("Preview")),
+        (DEFAULT, "Default"),
+        (LOFI, "Lo-Fi"),
+        (HIFI, "Hi-Fi"),
+        (PREVIEW, "Preview"),
     )
 
     LAME_OPTIONS = {DEFAULT: "-b 256", LOFI: "-b 96", HIFI: "-b 320", PREVIEW: "-b 24"}
@@ -210,7 +209,7 @@ class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
         max_length=16, default=DEFAULT, choices=QUALITY_CHOICES, db_index=True
     )
     filesize = models.PositiveIntegerField(
-        verbose_name=_("Filesize"), blank=True, null=True
+        verbose_name="Filesize", blank=True, null=True
     )
     accessed = models.DateTimeField(auto_now_add=True)
     media = models.ForeignKey(
@@ -222,7 +221,7 @@ class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     class Meta:
         app_label = "media_asset"
-        verbose_name = _("Format")
+        verbose_name = "Format"
         unique_together = ("media", "encoding", "quality")
 
     def __str__(self):

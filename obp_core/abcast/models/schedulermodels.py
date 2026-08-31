@@ -2,7 +2,6 @@ import logging
 import datetime
 from django.db import models
 from django.db.models.signals import post_save, pre_delete
-from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -40,9 +39,9 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
     )
 
     STATUS_CHOICES = (
-        (0, _("Waiting")),
-        (1, _("Done")),
-        (2, _("Error")),
+        (0, "Waiting"),
+        (1, "Done"),
+        (2, "Error"),
     )
     status = models.PositiveIntegerField(
         default=0,
@@ -50,23 +49,23 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
     )
 
     TYPE_CHOICES = (
-        ("studio", _("Studio")),
-        ("playlist", _("Playlist")),
-        ("couchcast", _("Couchcast")),
+        ("studio", "Studio"),
+        ("playlist", "Playlist"),
+        ("couchcast", "Couchcast"),
     )
     type = models.CharField(
-        verbose_name=_("Type"),
+        verbose_name="Type",
         max_length=12,
         default="playlist",
         choices=TYPE_CHOICES,
     )
 
     SOURCE_CHOICES = (
-        ("user", _("User")),
-        ("autopilot", _("Autopilot")),
+        ("user", "User"),
+        ("autopilot", "Autopilot"),
     )
     source = models.CharField(
-        verbose_name=_("Source"),
+        verbose_name="Source",
         max_length=12,
         default="user",
         choices=SOURCE_CHOICES,
@@ -125,8 +124,8 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     class Meta:
         app_label = "abcast"
-        verbose_name = _("Emission")
-        verbose_name_plural = _("Emissions")
+        verbose_name = "Emission"
+        verbose_name_plural = "Emissions"
         ordering = ("-time_start",)
 
         permissions = (("schedule_emission", "Schedule Emission"),)
@@ -318,8 +317,8 @@ class DaypartSet(models.Model):
 
     class Meta:
         app_label = "abcast"
-        verbose_name = _("Daypart set")
-        verbose_name_plural = _("Daypart sets")
+        verbose_name = "Daypart set"
+        verbose_name_plural = "Daypart sets"
         ordering = ("time_start",)
 
     def __str__(self):
@@ -328,20 +327,20 @@ class DaypartSet(models.Model):
 
 class Weekday(models.Model):
     DAY_CHOICES = (
-        (6, _("Sun")),
-        (0, _("Mon")),
-        (1, _("Tue")),
-        (2, _("Wed")),
-        (3, _("Thu")),
-        (4, _("Fri")),
-        (5, _("Sat")),
+        (6, "Sun"),
+        (0, "Mon"),
+        (1, "Tue"),
+        (2, "Wed"),
+        (3, "Thu"),
+        (4, "Fri"),
+        (5, "Sat"),
     )
     day = models.PositiveIntegerField(default=0, null=False, choices=DAY_CHOICES)
 
     class Meta:
         app_label = "abcast"
-        verbose_name = _("Weekay")
-        verbose_name_plural = _("Weekays")
+        verbose_name = "Weekay"
+        verbose_name_plural = "Weekays"
         ordering = ("day",)
 
     def __str__(self):
@@ -350,13 +349,13 @@ class Weekday(models.Model):
 
 class Daypart(models.Model):
     DAY_CHOICES = (
-        (0, _("Mon")),
-        (1, _("Tue")),
-        (2, _("Wed")),
-        (3, _("Thu")),
-        (4, _("Fri")),
-        (5, _("Sat")),
-        (6, _("Sun")),
+        (0, "Mon"),
+        (1, "Tue"),
+        (2, "Wed"),
+        (3, "Thu"),
+        (4, "Fri"),
+        (5, "Sat"),
+        (6, "Sun"),
     )
     daypartset = models.ForeignKey(
         DaypartSet, blank=False, null=True, on_delete=models.SET_NULL
@@ -380,8 +379,8 @@ class Daypart(models.Model):
 
     class Meta:
         app_label = "abcast"
-        verbose_name = _("Daypart")
-        verbose_name_plural = _("Dayparts")
+        verbose_name = "Daypart"
+        verbose_name_plural = "Dayparts"
         ordering = ("position", "time_start")
 
     def __str__(self):

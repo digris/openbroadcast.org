@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _
 
 from .models import PreflightCheck
 
@@ -56,5 +55,5 @@ class PreflightCheckAdmin(admin.ModelAdmin):
             return f"""<p><a href="{obj.media.get_admin_url()}">{obj.media.name[0:48]}</a><br><a href="{obj.media.get_absolute_url()}">View on site</a><br>{obj.media.uuid}</p>"""
         return "-"
 
-    media_display.short_description = _("Media")
+    media_display.short_description = "Media"
     media_display.allow_tags = True

@@ -2,7 +2,6 @@ from abcast.models import Station
 from django.core.urlresolvers import reverse
 from django.views.generic import DetailView, ListView
 from django.shortcuts import redirect
-from django.utils.translation import ugettext as _
 from navutils import MenuMixin
 
 
@@ -22,8 +21,8 @@ class StationDetailView(MenuMixin, DetailView):
 
     section = None
     sections = [
-        ("profile", _("Profile")),
-        ("members", _("Members")),
+        ("profile", "Profile"),
+        ("members", "Members"),
     ]
 
     def dispatch(self, request, *args, **kwargs):

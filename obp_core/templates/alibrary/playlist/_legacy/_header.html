@@ -1,4 +1,4 @@
-{% load i18n calc_tags truncate_tags thumbnail arating_tags alibrary_tags spacify_tags %}
+{% load calc_tags truncate_tags thumbnail arating_tags alibrary_tags spacify_tags %}
 <div class="span7 padded-h container_content">
 
   <div class="page-header">
@@ -19,7 +19,7 @@
 
     {% if object.series %}
       <dt>
-        {% trans "Series" %}:
+        Series:
       </dt>
       <dd>
         {{ object.series }}{% if object.series_number %} #{{ object.series_number }}{% endif %}
@@ -28,35 +28,35 @@
 
 
     <dt>
-      {% trans "Author" %}:
+      Author:
     </dt>
     <dd>
       <a href="{{ object.user.get_absolute_url }}">{% firstof object.user.username object.user %}</a>
     </dd>
 
     <dt>
-      {% trans "Date Created" %}:
+      Date Created:
     </dt>
     <dd>
       {{ object.created|date:"DATETIME_FORMAT" }}
     </dd>
 
     <dt>
-      {% trans "Last Updated" %}:
+      Last Updated:
     </dt>
     <dd>
       {{ object.updated|date:"DATETIME_FORMAT" }}
     </dd>
 
     <dt>
-      {% trans "Type" %}:
+      Type:
     </dt>
     <dd>
       {{ object.get_type_display }}
     </dd>
 
     <dt>
-      {% trans "Rotation" %}:
+      Rotation:
     </dt>
     <dd>
       {{ object.rotation|yesno:',No' }}
@@ -65,10 +65,10 @@
         -
         {{ object.rotation_date_end|date:"DATE_FORMAT" }}
       {% elif object.rotation_date_start %}
-        {% trans 'from' %}
+        from
         {{ object.rotation_date_start|date:"DATE_FORMAT" }}
       {% elif object.rotation_date_end %}
-        {% trans 'until' %}
+        until
         {{ object.rotation_date_end|date:"DATE_FORMAT" }}
       {% endif %}
     </dd>
@@ -78,10 +78,10 @@
   <dl class="dl-horizontal sub">
 
 
-    <dt>{% trans "Duration" %}:</dt>
+    <dt>Duration:</dt>
     <dd>
-      {% if object.duration %}<small>{% trans "actual" %}:</small> {{ object.duration|msec_to_time }}{% endif %}
-      {% if object.target_duration %}<small>{% trans "target" %}:</small> {{ object.target_duration|sec_to_time }}{% endif %}
+      {% if object.duration %}<small>actual:</small> {{ object.duration|msec_to_time }}{% endif %}
+      {% if object.target_duration %}<small>target:</small> {{ object.target_duration|sec_to_time }}{% endif %}
     </dd>
 
 
@@ -89,18 +89,18 @@
 
 
     {% if object.seasons.exists %}
-      <dt>{% trans "Broadcast Seasons" %}:</dt>
+      <dt>Broadcast Seasons:</dt>
       <dd>{% m2m_inline object.seasons.all %}</dd>
     {% endif %}
 
     {% if object.weather.exists %}
-      <dt>{% trans "Broadcast Weather" %}:</dt>
+      <dt>Broadcast Weather:</dt>
       <dd>{% m2m_inline object.weather.all %}</dd>
     {% endif %}
 
 
     {% if object.dayparts.exists %}
-      <dt>{% trans "Broadcast Dayparts" %}:</dt>
+      <dt>Broadcast Dayparts:</dt>
       <dd>
             {# dayparts_inline object #}
         <div class="daypart-grid">
@@ -113,7 +113,7 @@
 
     {% if object.tags %}
       <dt>
-        {% trans "Tags" %}:
+        Tags:
       </dt>
       <dd>
         {% for tag in object.tags %}
@@ -136,7 +136,7 @@
     {% if object.main_image %}
       <a href="{% thumbnail object.main_image 1200x1200 upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.main_image 172x172 crop upscale %}" alt="Cover" /> </a>
     {% else %}
-      <img src="/static/img/base/defaults/listview.playlist.xl.png" alt="{% trans "No cover available" %}" />
+      <img src="/static/img/base/defaults/listview.playlist.xl.png" alt="No cover available" />
     {% endif %}
   </div>
 

@@ -15,7 +15,6 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.utils.functional import cached_property
-from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
 from l10n.models import Country
@@ -26,7 +25,7 @@ from .releasemodels import Release
 
 log = logging.getLogger(__name__)
 
-LOOKUP_PROVIDERS = (("discogs", _("Discogs")), ("musicbrainz", _("Musicbrainz")))
+LOOKUP_PROVIDERS = (("discogs", "Discogs"), ("musicbrainz", "Musicbrainz"))
 
 
 def upload_image_to(instance, filename):
@@ -46,8 +45,8 @@ class NameVariation(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Name variation")
-        verbose_name_plural = _("Name variation")
+        verbose_name = "Name variation"
+        verbose_name_plural = "Name variation"
         ordering = ("name",)
 
     def __str__(self):
@@ -67,10 +66,10 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
     )
 
     TYPE_CHOICES = (
-        ("person", _("Person")),
-        ("group", _("Group")),
-        ("orchestra", _("Orchestra")),
-        ("other", _("Other")),
+        ("person", "Person"),
+        ("group", "Group"),
+        ("orchestra", "Orchestra"),
+        ("other", "Other"),
     )
     type = models.CharField(
         verbose_name="Artist type",
@@ -80,7 +79,7 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
         choices=TYPE_CHOICES,
     )
     main_image = models.ImageField(
-        verbose_name=_("Image"),
+        verbose_name="Image",
         upload_to=upload_image_to,
         storage=OverwriteStorage(),
         null=True,
@@ -90,38 +89,38 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
     disambiguation = models.CharField(max_length=256, blank=True, null=True)
     country = models.ForeignKey(Country, blank=True, null=True)
     booking_contact = models.CharField(
-        verbose_name=_("Booking"), max_length=256, blank=True, null=True
+        verbose_name="Booking", max_length=256, blank=True, null=True
     )
     email = models.EmailField(
-        verbose_name=_("E-Mail"), max_length=256, blank=True, null=True
+        verbose_name="E-Mail", max_length=256, blank=True, null=True
     )
     date_start = ApproximateDateField(
-        verbose_name=_("Begin"),
+        verbose_name="Begin",
         blank=True,
         null=True,
-        help_text=_("date of formation / date of birth"),
+        help_text="date of formation / date of birth",
     )
     date_end = ApproximateDateField(
-        verbose_name=_("End"),
+        verbose_name="End",
         blank=True,
         null=True,
-        help_text=_("date of breakup / date of death"),
+        help_text="date of breakup / date of death",
     )
     # properties to create 'special' objects. (like 'Unknown')
     listed = models.BooleanField(
         verbose_name="Include in listings",
         default=True,
-        help_text=_("Should this Artist be shown on the default Artist-list?"),
+        help_text="Should this Artist be shown on the default Artist-list?",
     )
     disable_link = models.BooleanField(
         verbose_name="Disable Link",
         default=False,
-        help_text=_('Disable Linking. Useful e.g. for "Varius Artists"'),
+        help_text='Disable Linking. Useful e.g. for "Varius Artists"',
     )
     disable_editing = models.BooleanField(
         verbose_name="Disable Editing",
         default=False,
-        help_text=_('Disable Editing. Useful e.g. for "Unknown Artist"'),
+        help_text='Disable Editing. Useful e.g. for "Unknown Artist"',
     )
     excerpt = models.TextField(blank=True, null=True)
     biography = models.TextField(blank=True, null=True)
@@ -184,18 +183,18 @@ class Artist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     # identifiers
     ipi_code = models.CharField(
-        verbose_name=_("IPI Code"), max_length=32, blank=True, null=True
+        verbose_name="IPI Code", max_length=32, blank=True, null=True
     )
     isni_code = models.CharField(
-        verbose_name=_("ISNI Code"), max_length=32, blank=True, null=True
+        verbose_name="ISNI Code", max_length=32, blank=True, null=True
     )
 
     objects = ArtistManager()
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Artist")
-        verbose_name_plural = _("Artists")
+        verbose_name = "Artist"
+        verbose_name_plural = "Artists"
         ordering = ("name",)
 
         permissions = (
@@ -382,10 +381,10 @@ arating.enable_voting_on(Artist)
 # @task
 # def action_handler_task(instance, created):
 #     if created and instance.creator:
-#         action.send(instance.creator, verb=_('created'), target=instance)
+#         action.send(instance.creator, verb='created', target=instance)
 #
 #     elif instance.last_editor:
-#         action.send(instance.last_editor, verb=_('updated'), target=instance)
+#         action.send(instance.last_editor, verb='updated', target=instance)
 
 
 class ArtistMembership(models.Model):
@@ -401,8 +400,8 @@ class ArtistMembership(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Membersip")
-        verbose_name_plural = _("Membersips")
+        verbose_name = "Membersip"
+        verbose_name_plural = "Membersips"
 
     def __str__(self):
         return f'"{self.parent.name}" <> "{self.child.name}"'
@@ -421,8 +420,8 @@ class ArtistAlias(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Alias")
-        verbose_name_plural = _("Aliases")
+        verbose_name = "Alias"
+        verbose_name_plural = "Aliases"
 
     def __str__(self):
         return f'"{self.parent.name}" <> "{self.child.name}"'
@@ -434,8 +433,8 @@ class ArtistProfessions(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Profession")
-        verbose_name_plural = _("Professions")
+        verbose_name = "Profession"
+        verbose_name_plural = "Professions"
 
     def __str__(self):
         return f'"{self.artist.name}" : "{self.profession.name}"'

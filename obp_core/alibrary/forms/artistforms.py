@@ -15,7 +15,6 @@ from django.contrib.contenttypes.forms import (
 )
 from django.forms import ModelForm, Form
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
-from django.utils.translation import ugettext as _
 from base.fields.extra import AdvancedFileInput
 from base.fields.widgets import ReadOnlyIconField
 from tagging.forms import TagField
@@ -111,7 +110,7 @@ class ArtistForm(ModelForm):
         self.helper.form_tag = False
 
         base_layout = Fieldset(
-            _("General"),
+            "General",
             LookupField("name", css_class="input-xlarge"),
             LookupField("namevariations", css_class="input-xlarge"),
             LookupField("real_name", css_class="input-xlarge"),
@@ -122,19 +121,19 @@ class ArtistForm(ModelForm):
         )
 
         identifiers_layout = Fieldset(
-            _("Identifiers"),
+            "Identifiers",
             LookupField("ipi_code", css_class="input-xlarge"),
             LookupField("isni_code", css_class="input-xlarge"),
         )
 
         activity_layout = Fieldset(
-            _("Activity"),
+            "Activity",
             LookupField("date_start", css_class="input-xlarge"),
             LookupField("date_end", css_class="input-xlarge"),
         )
 
         meta_layout = Fieldset(
-            _("Meta information"),
+            "Meta information",
             LookupField("biography", css_class="input-xxlarge"),
             LookupImageField("main_image"),
             LookupField("remote_image"),
@@ -159,16 +158,16 @@ class ArtistForm(ModelForm):
             )
 
     main_image = forms.Field(
-        label=_("Artist / Band picture"), widget=AdvancedFileInput(), required=False
+        label="Artist / Band picture", widget=AdvancedFileInput(), required=False
     )
     remote_image = forms.URLField(required=False)
     d_tags = TagField(
-        widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_("Tags")
+        widget=TagAutocompleteTagIt(max_tags=9), required=False, label="Tags"
     )
     namevariations = forms.CharField(
         widget=forms.Textarea(attrs={"rows": "2"}),
         required=False,
-        label=_("Variations"),
+        label="Variations",
     )
     biography = forms.CharField(widget=forms.Textarea(), required=False)
 
@@ -219,7 +218,7 @@ class BaseMemberForm(ModelForm):
         super().__init__(*args, **kwargs)
 
     child = search_fields.AutocompleteField(
-        "alibrary.artist", allow_new=True, required=False, label=_("Member")
+        "alibrary.artist", allow_new=True, required=False, label="Member"
     )
 
     def clean_child(self):
@@ -272,7 +271,7 @@ class BaseAliasForm(ModelForm):
         exclude = []
 
     child = search_fields.AutocompleteField(
-        "alibrary.artist", allow_new=True, required=False, label=_("Alias")
+        "alibrary.artist", allow_new=True, required=False, label="Alias"
     )
 
     def clean_child(self):
@@ -331,7 +330,7 @@ class BaseArtistReleationForm(StripWhitespaceFormMixin, ModelForm):
     service = forms.CharField(
         label="Service", widget=ReadOnlyIconField(), required=False
     )
-    url = forms.URLField(label=_("Website / URL"), required=False)
+    url = forms.URLField(label="Website / URL", required=False)
 
 
 # Compose Formsets

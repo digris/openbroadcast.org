@@ -1,4 +1,4 @@
-{% load i18n spurl %}
+{% load spurl %}
 
 <div class="pagination">
   {% if pagination.num_pages > 1 %}
@@ -7,9 +7,9 @@
       {% if pagination.previous_page == 1 %}
         {% spurl base=previous_page_url remove_query_param="page" as previous_page_url %}
       {% endif %}
-      <a rel="nofollow" href="{{ previous_page_url }}" class="prev">&lsaquo;&lsaquo; {% trans "previous" %}</a>
+      <a rel="nofollow" href="{{ previous_page_url }}" class="prev">&lsaquo;&lsaquo; previous</a>
     {% else %}
-      <span class="disabled prev">&lsaquo;&lsaquo; {% trans "previous" %}</span>
+      <span class="disabled prev">&lsaquo;&lsaquo; previous</span>
     {% endif %}
     {% for page_number in pagination.pages %}
       {% if page_number %}
@@ -28,9 +28,9 @@
     {% endfor %}
     {% if pagination.next_page %}
       {% spurl base=request.get_full_path set_query="page={{ pagination.next_page }}" as next_page_url %}
-      <a rel="nofollow" href="{{ next_page_url }}" class="next">{% trans "next" %} &rsaquo;&rsaquo;</a>
+      <a rel="nofollow" href="{{ next_page_url }}" class="next">next &rsaquo;&rsaquo;</a>
     {% else %}
-      <span class="disabled next">{% trans "next" %} &rsaquo;&rsaquo;</span>
+      <span class="disabled next">next &rsaquo;&rsaquo;</span>
     {% endif %}
   {% endif %}
 </div>

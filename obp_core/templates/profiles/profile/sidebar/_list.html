@@ -1,4 +1,3 @@
-{% load i18n %}
 
 <div class="menu-context">
   <div class="action-group">
@@ -7,8 +6,8 @@
         <li class="action">
           <a class="{% if not perms.invitation.add_invitation %} disabled{% endif %}"
              href="{% url "invitation:invitation_invite" %}?next={{ request.get_full_path }}"
-             title="{% trans "Invite user" %}">
-            {% trans "Invite user" %}
+             title="Invite user">
+            Invite user
           </a>
         </li>
       {% endif %}

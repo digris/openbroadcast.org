@@ -1,13 +1,12 @@
-{% load i18n %}
 
 {% if object.user == request.user %}
   <div class="menu-context mentoring-panel">
     {% if not object.is_approved %}
       <div class="menu-context--prefix">
-        <span class="title">{% trans "Get reviewed" %}</span>
-        <p>{% trans "In order to gain full access to the platform your profile needs to be reviewed by a mentor." %}</p>
+        <span class="title">Get reviewed</span>
+        <p>In order to gain full access to the platform your profile needs to be reviewed by a mentor.</p>
         {% if object.mentor %}
-          <p>{% trans "Your mentor is" %}
+          <p>Your mentor is
             <a
               href="{{ object.mentor.get_absolute_url }}">{% firstof object.mentor.get_full_name object.mentor.username %}</a>.
           </p>
@@ -17,9 +16,9 @@
         <div class="action-group">
           <ul>
             <li class="action">
-              <a href="{% url "postman_write" object.mentor.username %}?subject={% trans "Please review my profile" %}"
-                 title="{% trans "Request a profile-review" %}">
-                {% trans "Request a profile-review" %}
+              <a href="{% url "postman_write" object.mentor.username %}?subject=Please review my profile"
+                 title="Request a profile-review">
+                Request a profile-review
               </a>
             </li>
           </ul>
@@ -28,19 +27,19 @@
       <div class="menu-context--appendix">
         {% if object.mentor %}
           <p>
-            {% trans "Please complete your profile adequately* before asking for a review." %}<br/>
-            {% trans "Consider to add at least" %}:
+            Please complete your profile adequately* before asking for a review.<br/>
+            Consider to add at least:
           </p>
           <ul>
-            <li>{% trans "Full name" %}</li>
-            <li>{% trans "A description" %}</li>
-            <li>{% trans "usefull contact information" %}</li>
+            <li>Full name</li>
+            <li>A description</li>
+            <li>usefull contact information</li>
           </ul>
         {% else %}
-          <p>{% blocktrans with url='/network/users/' %}
-            You don't have a mentor yet, please  <a href="{{ url }}">look out</a> for one if you'd like to
+          <p>
+            You don't have a mentor yet, please  <a href="/network/users/">look out</a> for one if you'd like to
             get additional privileges.
-          {% endblocktrans %}</p>
+          </p>
         {% endif %}
       </div>
     {% endif %}

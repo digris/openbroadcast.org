@@ -1,7 +1,7 @@
 {% extends "layout_edit.html" %}
 
 {% load crispy_forms_tags dajaxice_templatetags sekizai_tags pushy_tags static %}
-{% load thumbnail i18n truncate_tags alibrary_tags %}
+{% load thumbnail truncate_tags alibrary_tags %}
 
 {% block heading %}
   {% addtoblock "js-post" %}
@@ -105,10 +105,10 @@
     <div class="item_menu" id="item_menu">
       <ul class="nav nav-tabs">
         <li class="active">
-          <a href="#metadata" data-toggle="tab">{% trans "Medtadata" %}</a>
+          <a href="#metadata" data-toggle="tab">Medtadata</a>
         </li>
         <li>
-          <a href="#tracklist_editor" data-toggle="tab">{% trans "Playlist Editor" %}</a>
+          <a href="#tracklist_editor" data-toggle="tab">Playlist Editor</a>
         </li>
 
       </ul>
@@ -152,10 +152,9 @@
 
             <div class="alert alert-info">
 
-              <h4><i class="icon-lock"></i> {% trans "Playlist editing locked" %}</h4>
-              {% blocktrans %}
-                To edit the tracklist you have to revert this playlist from 'broadcast' to 'public'.
-              {% endblocktrans %}
+              <h4><i class="icon-lock"></i> Playlist editing locked</h4>
+              To edit the tracklist you have to revert this playlist from 'broadcast' to 'public'.
+
             </div>
 
           {% endif %}

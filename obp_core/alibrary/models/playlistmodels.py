@@ -15,7 +15,6 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.functional import cached_property
-from django.utils.translation import ugettext as _
 from django.utils import timezone
 from django_extensions.db.fields import AutoSlugField
 from django_extensions.db.fields.json import JSONField
@@ -64,8 +63,8 @@ class Season(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Season")
-        verbose_name_plural = _("Seasons")
+        verbose_name = "Season"
+        verbose_name_plural = "Seasons"
         ordering = ("-name",)
 
     def __str__(self):
@@ -77,8 +76,8 @@ class Weather(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Weather")
-        verbose_name_plural = _("Weather")
+        verbose_name = "Weather"
+        verbose_name_plural = "Weather"
         ordering = ("-name",)
 
     def __str__(self):
@@ -95,8 +94,8 @@ class Series(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Series")
-        verbose_name_plural = _("Series")
+        verbose_name = "Series"
+        verbose_name_plural = "Series"
         ordering = ("-name",)
 
     def __str__(self):
@@ -113,10 +112,10 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     TYPE_OTHER = "other"
 
     TYPE_CHOICES = (
-        (TYPE_BASKET, _("Private Playlist")),
-        (TYPE_PLAYLIST, _("Public Playlist")),
-        (TYPE_BROADCAST, _("Broadcast")),
-        (TYPE_OTHER, _("Other")),
+        (TYPE_BASKET, "Private Playlist"),
+        (TYPE_PLAYLIST, "Public Playlist"),
+        (TYPE_BROADCAST, "Broadcast"),
+        (TYPE_OTHER, "Other"),
     )
 
     name = models.CharField(
@@ -154,29 +153,27 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     )
 
     playout_mode_random = models.BooleanField(
-        verbose_name=_("Shuffle Playlist"),
+        verbose_name="Shuffle Playlist",
         default=False,
-        help_text=_(
-            "If enabled the order of the tracks will be randomized for playout"
-        ),
+        help_text="If enabled the order of the tracks will be randomized for playout",
     )
 
     rotation = models.BooleanField(
         default=True,
     )
     rotation_date_start = models.DateField(
-        verbose_name=_("Rotate from"),
+        verbose_name="Rotate from",
         blank=True,
         null=True,
     )
     rotation_date_end = models.DateField(
-        verbose_name=_("Rotate until"),
+        verbose_name="Rotate until",
         blank=True,
         null=True,
     )
 
     main_image = models.ImageField(
-        verbose_name=_("Image"),
+        verbose_name="Image",
         upload_to=upload_image_to,
         storage=OverwriteStorage(),
         null=True,
@@ -247,7 +244,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     # is currently selected as default?
     is_current = models.BooleanField(
-        _("Currently selected?"),
+        "Currently selected?",
         default=False,
     )
 
@@ -267,8 +264,8 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     # meta
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Playlist")
-        verbose_name_plural = _("Playlists")
+        verbose_name = "Playlist"
+        verbose_name_plural = "Playlists"
         ordering = ("-updated",)
 
         permissions = (
@@ -349,7 +346,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     def can_be_deleted(self):
 
         can_delete = False
-        reason = _("This playlist cannot be deleted.")
+        reason = "This playlist cannot be deleted."
 
         if self.type == "basket":
             can_delete = True
@@ -357,15 +354,11 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         if self.type == "playlist":
             can_delete = False
-            reason = _(
-                f'Playlist "{self.name}" is public. It cannot be deleted anymore.'
-            )
+            reason = f'Playlist "{self.name}" is public. It cannot be deleted anymore.'
 
         if self.type == "broadcast":
             can_delete = False
-            reason = _(
-                f'Playlist "{self.name}" published for broadcast. It cannot be deleted anymore.'
-            )
+            reason = f'Playlist "{self.name}" published for broadcast. It cannot be deleted anymore.'
 
         return can_delete, reason
 
@@ -409,9 +402,9 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                 status = False
             criteria = {
                 "key": "tags",
-                "name": _("Tags"),
+                "name": "Tags",
                 "status": tag_count > 0,
-                "warning": _("Please add some tags"),
+                "warning": "Please add some tags",
             }
             criterias.append(criteria)
             # scheduled
@@ -421,13 +414,11 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                     status = False
                 criteria = {
                     "key": "scheduled",
-                    "name": _("Playlist already scheduled")
+                    "name": "Playlist already scheduled"
                     if schedule_count > 0
-                    else _("Playlist not scheduled"),
+                    else "Playlist not scheduled",
                     "status": schedule_count < 1,
-                    "warning": _(
-                        f'This playlist has already ben scheduled {schedule_count} times. Remove all scheduler entries to "un-broadcast" this playlist.'
-                    ),
+                    "warning": f'This playlist has already ben scheduled {schedule_count} times. Remove all scheduler entries to "un-broadcast" this playlist.',
                 }
                 if schedule_count > 0:
                     criterias.append(criteria)
@@ -440,9 +431,9 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                 status = False
             criteria = {
                 "key": "tags",
-                "name": _("Tags"),
+                "name": "Tags",
                 "status": tag_count > 0,
-                "warning": _("Please add some tags"),
+                "warning": "Please add some tags",
             }
             criterias.append(criteria)
 
@@ -452,9 +443,9 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                 status = False
             criteria = {
                 "key": "dayparts",
-                "name": _("Dayparts"),
+                "name": "Dayparts",
                 "status": dp_count > 0,
-                "warning": _("Please specify the dayparts"),
+                "warning": "Please specify the dayparts",
             }
             criterias.append(criteria)
 
@@ -463,9 +454,9 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                 status = False
             criteria = {
                 "key": "duration",
-                "name": _("Duration"),
+                "name": "Duration",
                 "status": self.broadcast_status == 1,
-                "warning": _("Durations do not match"),
+                "warning": "Durations do not match",
                 # 'warning': ', '.join(self.broadcast_status_messages),
             }
             criterias.append(criteria)
@@ -631,14 +622,13 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                         pass
                 except OSError as e:
                     log.warning(
-                        _("File does not exists: %s | %s"),
+                        "File does not exists: %s | %s",
                         e,
                         item.content_object.master.path,
                     )
                     status = 99
                     messages.append(
-                        _("File does not exists: %s | %s")
-                        % (e, item.content_object.master.path)
+                        f"File does not exists: {e} | {item.content_object.master.path}"
                     )
 
                 """
@@ -655,9 +645,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
             diff = self.get_duration() - self.target_duration * 1000
             if abs(diff) > DURATION_MAX_DIFF:
                 messages.append(
-                    _(
-                        f"durations do not match. difference is: {int(diff / 1000)} seconds"
-                    )
+                    f"durations do not match. difference is: {int(diff / 1000)} seconds"
                 )
                 log.warning(
                     "durations do not match. difference is: %s seconds",
@@ -666,7 +654,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                 status = 2
 
         except Exception as e:
-            messages.append(_(f"Validation error: {e} "))
+            messages.append(f"Validation error: {e} ")
             log.warning("validation error: %s ", e)
             status = 99
 
@@ -899,8 +887,8 @@ class PlaylistItem(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Playlist Item")
-        verbose_name_plural = _("Playlist Items")
+        verbose_name = "Playlist Item"
+        verbose_name_plural = "Playlist Items"
         # ordering = ('-created', )
 
     ct_limit = models.Q(app_label="alibrary", model="media") | models.Q(

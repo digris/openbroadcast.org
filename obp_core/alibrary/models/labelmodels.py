@@ -4,7 +4,6 @@ import os
 import logging
 import arating
 from django.conf import settings
-from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.fields import GenericRelation
 from phonenumber_field.modelfields import PhoneNumberField
@@ -21,7 +20,7 @@ from alibrary.util.storage import get_dir_for_object, OverwriteStorage
 
 logger = logging.getLogger(__name__)
 
-LOOKUP_PROVIDERS = (("discogs", _("Discogs")), ("musicbrainz", _("Musicbrainz")))
+LOOKUP_PROVIDERS = (("discogs", "Discogs"), ("musicbrainz", "Musicbrainz"))
 
 
 def upload_image_to(instance, filename):
@@ -46,7 +45,7 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     phone = PhoneNumberField(blank=True, null=True)
     fax = PhoneNumberField(blank=True, null=True)
     main_image = models.ImageField(
-        verbose_name=_("Logo Image"),
+        verbose_name="Logo Image",
         upload_to=upload_image_to,
         storage=OverwriteStorage(),
         null=True,
@@ -95,17 +94,17 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     listed = models.BooleanField(
         verbose_name="Include in listings",
         default=True,
-        help_text=_("Should this Label be shown on the default Label-list?"),
+        help_text="Should this Label be shown on the default Label-list?",
     )
     disable_link = models.BooleanField(
         verbose_name="Disable Link",
         default=False,
-        help_text=_('Disable Linking. Useful e.g. for "Unknown Label"'),
+        help_text='Disable Linking. Useful e.g. for "Unknown Label"',
     )
     disable_editing = models.BooleanField(
         verbose_name="Disable Editing",
         default=False,
-        help_text=_('Disable Editing. Useful e.g. for "Unknown Label"'),
+        help_text='Disable Editing. Useful e.g. for "Unknown Label"',
     )
     type = models.CharField(
         verbose_name="Label type",
@@ -122,18 +121,18 @@ class Label(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     parent = models.ForeignKey("self", null=True, blank=True, related_name="children")
     # identifiers
     ipi_code = models.CharField(
-        verbose_name=_("IPI Code"), max_length=32, blank=True, null=True
+        verbose_name="IPI Code", max_length=32, blank=True, null=True
     )
     isni_code = models.CharField(
-        verbose_name=_("ISNI Code"), max_length=32, blank=True, null=True
+        verbose_name="ISNI Code", max_length=32, blank=True, null=True
     )
 
     objects = LabelManager()
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Label")
-        verbose_name_plural = _("Labels")
+        verbose_name = "Label"
+        verbose_name_plural = "Labels"
         ordering = ("name",)
 
         permissions = (
@@ -231,8 +230,8 @@ class LabelFoundingArtist(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Founding Artist")
-        verbose_name_plural = _("Founding Artists")
+        verbose_name = "Founding Artist"
+        verbose_name_plural = "Founding Artists"
 
     def __str__(self):
         return f'"{self.label.name}" <> "{self.artist.name}"'

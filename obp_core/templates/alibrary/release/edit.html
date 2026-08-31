@@ -1,7 +1,7 @@
 {% extends "layout_edit.html" %}
 
 {% load crispy_forms_tags dajaxice_templatetags sekizai_tags static %}
-{% load thumbnail i18n truncate_tags %}
+{% load thumbnail truncate_tags %}
 
 {% block title %}Edit: {{ object.name }}{% if object.get_artist_display %} - {{ object.get_artist_display }}{% endif %}{% endblock %}
 
@@ -84,12 +84,12 @@
       {% crispy form %}
       <fieldset id="albumartist_container">
         <legend>
-          {% trans "Albumartists" %}<span class="pull-right"></span>
+          Albumartists<span class="pull-right"></span>
         </legend>
         <div class="notes-form notes-inline notes-info">
           <p>
-            {% trans "Allows you to customize artist-credits an the appearance of the 'Albumartist'" %}</br>
-            {% trans "Use this to generate 'composite' names, like:" %} <strong>'Soviet France feat. Beck & Madonna'</strong>
+            Allows you to customize artist-credits an the appearance of the 'Albumartist'</br>
+            Use this to generate 'composite' names, like: <strong>'Soviet France feat. Beck & Madonna'</strong>
           </p>
         </div>
         {% for form in named_formsets.albumartist %}
@@ -98,7 +98,7 @@
       </fieldset>
       <fieldset class="relations">
         <legend>
-          {% trans "Relations" %}
+          Relations
         </legend>
         {% for form in named_formsets.relation %}
           {% crispy form %}
@@ -108,7 +108,7 @@
       {% crispy named_formsets.action %}
       <fieldset>
         <legend>
-          {% trans "Tracklist" %}
+          Tracklist
         </legend>
       </fieldset>
       <div class="bulk-edit-container">

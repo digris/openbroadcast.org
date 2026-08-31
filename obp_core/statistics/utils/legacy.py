@@ -2,7 +2,6 @@ import time
 import datetime
 from dateutil.relativedelta import relativedelta
 from django.db.models import Count
-from django.utils.translation import ugettext as _
 from atracker.models import Event
 
 DEFAULT_ACTIONS = ["playout", "stream", "download"]
@@ -27,16 +26,16 @@ class ObjectStatistics:
         # TODO: maybe modularize!
         for action in actions:
             if action == "playout":
-                stats.append({"label": _("Airplays"), "data": self.get_stats(action)})
+                stats.append({"label": "Airplays", "data": self.get_stats(action)})
 
             if action == "stream":
-                stats.append({"label": _("Plays"), "data": self.get_stats(action)})
+                stats.append({"label": "Plays", "data": self.get_stats(action)})
 
             if action == "download":
-                stats.append({"label": _("Downloads"), "data": self.get_stats(action)})
+                stats.append({"label": "Downloads", "data": self.get_stats(action)})
 
             if action == "update":
-                stats.append({"label": _("Updates"), "data": self.get_stats(action)})
+                stats.append({"label": "Updates", "data": self.get_stats(action)})
 
         return stats
 

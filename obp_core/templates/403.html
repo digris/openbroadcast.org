@@ -1,9 +1,8 @@
 {% extends "layout_base.html" %}
-{% load i18n %}
 
 {% block body_class %}error error-403{% endblock %}
 
-{% block title %}{% trans "Permission denied" %} | {% endblock %}
+{% block title %}Permission denied | {% endblock %}
 
 {% block main %}
 
@@ -12,7 +11,7 @@
       <div id="heading" class="heading heading-alt">
         <div class="heading-container">
           <div class="page-title">
-            <h1>{% trans "Permission denied" %}</h1>
+            <h1>Permission denied</h1>
           </div>
           <div class="clear"></div>
         </div>
@@ -21,10 +20,10 @@
 
     <section>
       <p class="reason">
-        {% trans "Sorry but you don't have the permission to access this page." %}
+        Sorry but you don't have the permission to access this page.
       </p>
       <p class="solution">
-        {% trans "If you believe thatyou should be able to access this page please contact our support" %}
+        If you believe thatyou should be able to access this page please contact our support
         <br>
         <a href="mailto:support@openbroadcast.org">support@openbroadcast.org</a>
       </p>

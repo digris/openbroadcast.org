@@ -11,7 +11,6 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save, pre_delete, post_delete
 from django.dispatch import receiver
-from django.utils.translation import ugettext as _
 from django.utils.functional import cached_property
 from django_extensions.db.fields import AutoSlugField
 from base.fields.languages import LanguageField
@@ -32,44 +31,44 @@ USE_CELERYD = getattr(settings, "ALIBRARY_USE_CELERYD", False)
 AUTOCREATE_FPRINT = getattr(settings, "ALIBRARY_AUTOCREATE_FPRINT", True)
 
 
-LOOKUP_PROVIDERS = (("musicbrainz", _("Musicbrainz")),)
+LOOKUP_PROVIDERS = (("musicbrainz", "Musicbrainz"),)
 
 VERSION_CHOICES = (
-    ("original", _("Original")),
-    ("track", _("Track")),
-    ("remix", _("Remix")),
-    ("cover", _("Cover")),
-    ("live", _("Live Version")),
-    ("studio", _("Studio Version")),
-    ("radio", _("Radio Version")),
-    ("demo", _("Demo Version")),
-    ("other", _("Other")),
+    ("original", "Original"),
+    ("track", "Track"),
+    ("remix", "Remix"),
+    ("cover", "Cover"),
+    ("live", "Live Version"),
+    ("studio", "Studio Version"),
+    ("radio", "Radio Version"),
+    ("demo", "Demo Version"),
+    ("other", "Other"),
 )
 
 MEDIATYPE_CHOICES = (
     (
-        _("Single content recording"),
+        "Single content recording",
         (
-            ("song", _("Song")),
-            ("acappella", _("A cappella")),
-            ("soundeffects", _("Sound effects")),
-            ("soundtrack", _("Soundtrack")),
-            ("spokenword", _("Spokenword")),
-            ("interview", _("Interview")),
-            ("jingle", _("Jingle")),
+            ("song", "Song"),
+            ("acappella", "A cappella"),
+            ("soundeffects", "Sound effects"),
+            ("soundtrack", "Soundtrack"),
+            ("spokenword", "Spokenword"),
+            ("interview", "Interview"),
+            ("jingle", "Jingle"),
         ),
     ),
     (
-        _("Multiple content recording"),
+        "Multiple content recording",
         (
-            ("djmix", _("DJ-Mix")),
-            ("concert", _("Concert")),
-            ("liveact", _("Live Act (PA)")),
-            ("radioshow", _("Radio show")),
+            ("djmix", "DJ-Mix"),
+            ("concert", "Concert"),
+            ("liveact", "Live Act (PA)"),
+            ("radioshow", "Radio show"),
         ),
     ),
-    ("other", _("Other")),
-    (None, _("Unknown")),
+    ("other", "Other"),
+    (None, "Unknown"),
 )
 
 
@@ -87,12 +86,12 @@ def upload_master_to(instance, filename):
 
 class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
     STATUS_CHOICES = (
-        (0, _("Init")),
-        (1, _("Ready")),
-        (3, _("Working")),
-        (4, _("File missing")),
-        (5, _("File error")),
-        (99, _("Error")),
+        (0, "Init"),
+        (1, "Ready"),
+        (3, "Working"),
+        (4, "File missing"),
+        (5, "File error"),
+        (99, "Error"),
     )
 
     TRACKNUMBER_CHOICES = ((x, x) for x in range(1, 301))
@@ -106,20 +105,20 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     status = models.PositiveIntegerField(default=0, choices=STATUS_CHOICES)
     publish_date = models.DateTimeField(blank=True, null=True)
     tracknumber = models.PositiveIntegerField(
-        verbose_name=_("Track Number"),
+        verbose_name="Track Number",
         blank=True,
         null=True,
         choices=TRACKNUMBER_CHOICES,
     )
     opus_number = models.CharField(max_length=200, blank=True, null=True)
     medianumber = models.PositiveIntegerField(
-        verbose_name=_('a.k.a. "Disc number'),
+        verbose_name='a.k.a. "Disc number',
         blank=True,
         null=True,
         choices=MEDIANUMBER_CHOICES,
     )
     mediatype = models.CharField(
-        verbose_name=_("Type"),
+        verbose_name="Type",
         max_length=128,
         default="song",
         choices=MEDIATYPE_CHOICES,
@@ -214,10 +213,10 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     )
 
     filename = models.CharField(
-        verbose_name=_("Filename"), max_length=256, blank=True, null=True
+        verbose_name="Filename", max_length=256, blank=True, null=True
     )
     original_filename = models.CharField(
-        verbose_name=_("Original filename"), max_length=256, blank=True, null=True
+        verbose_name="Original filename", max_length=256, blank=True, null=True
     )
 
     folder = models.CharField(max_length=1024, null=True, blank=True, editable=False)
@@ -233,17 +232,15 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
     master_sha1 = models.CharField(max_length=64, db_index=True, blank=True, null=True)
     master_encoding = models.CharField(max_length=16, blank=True, null=True)
     master_bitrate = models.PositiveIntegerField(
-        verbose_name=_("Bitrate"), blank=True, null=True
+        verbose_name="Bitrate", blank=True, null=True
     )
     master_filesize = models.PositiveIntegerField(
-        verbose_name=_("Filesize"), blank=True, null=True
+        verbose_name="Filesize", blank=True, null=True
     )
     master_samplerate = models.PositiveIntegerField(
-        verbose_name=_("Samplerate"), blank=True, null=True
+        verbose_name="Samplerate", blank=True, null=True
     )
-    master_duration = models.FloatField(
-        verbose_name=_("Duration"), blank=True, null=True
-    )
+    master_duration = models.FloatField(verbose_name="Duration", blank=True, null=True)
 
     #######################################################################
     # audio properties
@@ -259,8 +256,8 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Track")
-        verbose_name_plural = _("Tracks")
+        verbose_name = "Track"
+        verbose_name_plural = "Tracks"
         ordering = ("medianumber", "tracknumber", "name")
 
         permissions = (
@@ -427,7 +424,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                 try:
                     artist_str = self.artist.name
                 except BaseException:
-                    artist_str = _("Unknown Artist")
+                    artist_str = "Unknown Artist"
 
         return artist_str
 
@@ -764,8 +761,8 @@ class MediaArtists(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Artist (title credited)")
-        verbose_name_plural = _("Artists (title credited)")
+        verbose_name = "Artist (title credited)"
+        verbose_name_plural = "Artists (title credited)"
         ordering = ("position",)
 
     def __str__(self):

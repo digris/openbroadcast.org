@@ -1,4 +1,4 @@
-{% load i18n thumbnail calc_tags truncate_tags object_action_tags playlist_tags %}
+{% load thumbnail calc_tags truncate_tags object_action_tags playlist_tags %}
 
 <card
   ct="{{ object.get_ct }}"
@@ -43,7 +43,7 @@
       {{ object.name|truncate_chars_inner:26 }}
     </a>
     {% if object.is_broadcast %}
-      <span class="dim" title="{% trans 'Total num. emissions' %}">
+      <span class="dim" title="Total num. emissions">
         {% firstof search_result.num_emissions object.emissions.count %}
       </span>
     {% endif %}

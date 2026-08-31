@@ -1,17 +1,16 @@
 {% extends "account/base.html" %}
-{% load i18n %}
 
-{% block title %}{% trans "Register account"|title %}{% endblock %}
+{% block title %}{{ "Register account"|title }}{% endblock %}
 
 {% block app_content %}
   <div class="title">
-    <h2>{% trans "Register account"|title %}</h2>
+    <h2>{{ "Register account"|title }}</h2>
   </div>
 
   {% include 'account/partials/_social_auth_login.html' %}
 
   <div class="form-separator">
-    {% trans 'Or continue with' %}
+    Or continue with
   </div>
 
   <div class="form-container">
@@ -20,11 +19,11 @@
   <div class="form-appendix">
     <span class="alt">
       <i class="icon icon-double-angle-right"></i>
-      <a href="{% url 'account:login' %}">{% trans 'Login with your existing account' %}</a>
+      <a href="{% url 'account:login' %}">Login with your existing account</a>
     </span>
     <span class="alt">
       <i class="icon icon-double-angle-right"></i>
-      <a href="{% url 'account:password-recover' %}">{% trans 'Reset password' %}</a>
+      <a href="{% url 'account:password-recover' %}">Reset password</a>
     </span>
   </div>
 {% endblock %}

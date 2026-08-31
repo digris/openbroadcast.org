@@ -1,7 +1,7 @@
 {% extends "layout_edit.html" %}
 
 {% load crispy_forms_tags dajaxice_templatetags sekizai_tags static %}
-{% load thumbnail i18n truncate_tags %}
+{% load thumbnail truncate_tags %}
 
 {% block title %}Edit: {{ object.name }}{% endblock %}
 
@@ -76,17 +76,17 @@
       {% crispy form %}
       <fieldset id="alias_container">
         <legend>
-          {% trans "Aliases" %}<span class="pull-right"></span>
+          Aliases<span class="pull-right"></span>
         </legend>
         {% crispy named_formsets.alias %}
       </fieldset>
       <fieldset id="member_container">
         <legend>
-          {% trans "Members" %}<span class="pull-right"></span>
+          Members<span class="pull-right"></span>
         </legend>
         <div class="notes-form notes-inline notes-info">
           <p>
-            {% trans "Allows you to add individual artists as group/band 'members'" %}</br>
+            Allows you to add individual artists as group/band 'members'</br>
           </p>
         </div>
         {% crispy named_formsets.member %}

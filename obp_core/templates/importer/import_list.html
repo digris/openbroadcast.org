@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load i18n sekizai_tags humanize %}
+{% load sekizai_tags humanize %}
 
 {% block inner %}
   <section class="page-disclaimer page-disclaimer--import">
@@ -9,7 +9,7 @@
     <div class="page-disclaimer__appendix">
       <div class="btn-group">
         <a class="btn btn-primary btn pull-right" href="{% url "importer:import-create" %}">
-          <span> {% trans "Accept Terms & Upload Music" %}</span>
+          <span> Accept Terms & Upload Music</span>
         </a>
       </div>
     </div>
@@ -47,7 +47,7 @@
 
                     <li class="completed">
                       <a href="{{ object.get_absolute_url }}">
-                        <span>{% trans "Imported" %}:
+                        <span>Imported:
                           {% if object.files.count > 0 %}
                             <span class="{% if stats.done.count == object.files.count%}done{% endif %}">{{ stats.done.count }} of {{ object.files.count }}</span>
                           {% else %}
@@ -59,25 +59,25 @@
 
                     {% if stats.queued.count > 0 %}
                       <li class="queued">
-                        <span>{% trans 'queued' %}: {{ stats.queued.count }}</span>
+                        <span>queued: {{ stats.queued.count }}</span>
                       </li>
                     {% endif %}
 
                     {% if stats.duplicate.count > 0 %}
                       <li class="duplicates">
-                        <span>{% trans 'duplicates' %}: {{ stats.duplicate.count }}</span>
+                        <span>duplicates: {{ stats.duplicate.count }}</span>
                       </li>
                     {% endif %}
 
                     {% if stats.warning.count > 0 %}
                       <li class="warnings">
-                        <span>{% trans 'warnings' %}: {{ stats.warning.count }}</span>
+                        <span>warnings: {{ stats.warning.count }}</span>
                       </li>
                     {% endif %}
 
                     {% if stats.error.count > 0 %}
                       <li class="errors">
-                        <span>{% trans 'errors' %}: {{ stats.error.count }}</span>
+                        <span>errors: {{ stats.error.count }}</span>
                       </li>
                     {% endif %}
 
@@ -88,7 +88,7 @@
                 {% endwith %}
 
                 <p>
-                  <span>{% trans 'Created items' %}:</span>
+                  <span>Created items:</span>
 
                   {% for key, ct in object.get_importitems.items %}
 
@@ -101,7 +101,7 @@
                     {% if not forloop.last %}<span>&mdash;</span>{% endif %}
 
                   {% empty %}
-                    <span>({% trans 'no items created so far' %})</span>
+                    <span>(no items created so far)</span>
                   {% endfor %}
                 </p>
 
@@ -136,7 +136,7 @@
       <div>
         <form action="{% url "importer:import-delete-all" %}" method="post">
           {% csrf_token %}
-          <button type="submit" class="btn btn-primary btn-small pull-right icon">{% trans "Archive all imports" %}</button>
+          <button type="submit" class="btn btn-primary btn-small pull-right icon">Archive all imports</button>
         </form>
       </div>
     {% endif %}

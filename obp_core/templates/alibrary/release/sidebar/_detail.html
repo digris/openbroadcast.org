@@ -1,40 +1,40 @@
-{% load i18n activity_tags ctype_tags %}
+{% load activity_tags ctype_tags %}
 
 <div class="menu-context">
   <div class="action-group">
     <ul>
       {% if perms.alibrary.change_release %}
         <li class="action">
-          <a href="{{ object.get_edit_url }}" title="{% trans 'Edit' %}">
-            {% trans "Edit" %}
+          <a href="{{ object.get_edit_url }}" title="Edit">
+            Edit
           </a>
         </li>
       {% endif %}
       {% if perms.alibrary.change_release and user.is_staff %}
         <li class="action">
           <a href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}">
-            {% trans "Admin view" %}
+            Admin view
           </a>
         </li>
       {% endif %}
       {% if perms.alibrary.downoad_media %}
         <object-single-action class="action" obj-ct="{{ object.get_ct }}" obj-uuid="{{ object.uuid }}" dispatch-event="exporter:exportObjects">
-          {% trans "Download" %}
+          Download
         </object-single-action>
       {% endif %}
       {% if perms.alibrary.downoad_media %}
         <object-selection-action class="action" :min-selected="1" dispatch-event="exporter:exportObjects">
-          {% trans "Download Selection" %}
+          Download Selection
         </object-selection-action>
       {% endif %}
       {% if perms.alibrary.merge_media %}
         <object-selection-action class="action" :min-selected="2" dispatch-event="alibrary:mergeObjects">
-          {% trans "Merge Selection" %}
+          Merge Selection
         </object-selection-action>
       {% endif %}
       {% if perms.alibrary.reassign_media %}
         <object-selection-action class="action" :min-selected="1" dispatch-event="alibrary:reassignMedia">
-          {% trans "Reassign Selection" %}
+          Reassign Selection
         </object-selection-action>
       {% endif %}
     </ul>

@@ -1,12 +1,12 @@
-{% load i18n ctype_tags activity_tags %}
+{% load ctype_tags activity_tags %}
 
 <div class="menu-context">
   <div class="action-group">
     <ul class="unstyled">
       {% if user == object.user %}
         <li class="action">
-          <a href="{{ object.get_edit_url }}" title="{% trans "Edit" %}">
-            {% trans "Edit" %}
+          <a href="{{ object.get_edit_url }}" title="Edit">
+            Edit
           </a>
         </li>
       {% endif %}
@@ -14,24 +14,24 @@
       {% if user.is_staff %}
         <li class="action">
           <a href="{{ object.get_admin_url }}?next={{ object.get_admin_url }}"
-             title="{% trans "Administration view" %}">
-            {% trans "Administrative view" %}
+             title="Administration view">
+            Administrative view
           </a>
         </li>
       {% endif %}
 
       {% if user.is_staff %}
         <li class="action">
-          <a href="{% url "loginas-user-login" object.user.pk %}" title="{% trans "Login as user" %}">
-            {% trans "Login as user" %}
+          <a href="{% url "loginas-user-login" object.user.pk %}" title="Login as user">
+            Login as user
           </a>
         </li>
       {% endif %}
 
       {% if user.is_authenticated and not user == object.user %}
         <li class="action">
-          <a href="{% url "postman_write" object.user.username %}" title="{% trans "Send Message" %}">
-            {% trans "Send Message" %}
+          <a href="{% url "postman_write" object.user.username %}" title="Send Message">
+            Send Message
           </a>
         </li>
       {% endif %}
@@ -40,11 +40,11 @@
       {% if user.is_authenticated and not user == object.user %}
         <li class="action">
           <a href="{% follow_all_url object.user %}?next={{ request.get_full_path }}"
-             title="{% trans "Follow/unfollow" %}">
+             title="Follow/unfollow">
             {% if request.user|is_following:object.user %}
-              {% trans "Stop following" %} {{ object.user|ct_name_by_object }}
+              Stop following {{ object.user|ct_name_by_object }}
             {% else %}
-              {% trans "Follow" %} {{ object.user|ct_name_by_object }}
+              Follow {{ object.user|ct_name_by_object }}
             {% endif %}
           </a>
         </li>
@@ -52,7 +52,7 @@
       {% if mentoring_actions %}
         {% if not object.is_approved %}
           <p style="padding: 20px 6px 20px 6px;">
-            {% trans 'Please remember, only professionals (radio or music business) should be given access to the platform!' %}
+            Please remember, only professionals (radio or music business) should be given access to the platform!
           </p>
         {% endif %}
         {% for action in mentoring_actions %}

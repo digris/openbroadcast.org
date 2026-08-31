@@ -5,7 +5,6 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.translation import ugettext as _
 from django_extensions.db.fields import AutoSlugField
 from l10n.models import Country
 from base.fields import extra
@@ -14,36 +13,36 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Station(TimestampedModelMixin, UUIDModelMixin, models.Model):
-    TYPE_CHOICES = (("stream", _("Stream")), ("djmon", _("DJ-Monitor")))
+    TYPE_CHOICES = (("stream", "Stream"), ("djmon", "DJ-Monitor"))
     type = models.CharField(
-        verbose_name=_("Type"), max_length=12, default="stream", choices=TYPE_CHOICES
+        verbose_name="Type", max_length=12, default="stream", choices=TYPE_CHOICES
     )
 
     name = models.CharField(max_length=256, null=True, blank=True)
     slug = AutoSlugField(populate_from="name")
     teaser = models.CharField(max_length=512, null=True, blank=True)
     main_image = models.ImageField(
-        verbose_name=_("Image"), upload_to="abcast/station", null=True, blank=True
+        verbose_name="Image", upload_to="abcast/station", null=True, blank=True
     )
     description = extra.MarkdownTextField(blank=True, null=True)
     members = models.ManyToManyField(
         settings.AUTH_USER_MODEL, through="StationMembers", blank=True
     )
     website = models.URLField(max_length=256, null=True, blank=True)
-    phone = PhoneNumberField(_("phone"), blank=True, null=True)
-    fax = PhoneNumberField(_("fax"), blank=True, null=True)
-    address1 = models.CharField(_("address"), null=True, blank=True, max_length=100)
+    phone = PhoneNumberField("phone", blank=True, null=True)
+    fax = PhoneNumberField("fax", blank=True, null=True)
+    address1 = models.CharField("address", null=True, blank=True, max_length=100)
     address2 = models.CharField(
-        _("address (secondary)"), null=True, blank=True, max_length=100
+        "address (secondary)", null=True, blank=True, max_length=100
     )
-    city = models.CharField(_("city"), null=True, blank=True, max_length=100)
-    zip = models.CharField(_("zip"), null=True, blank=True, max_length=10)
+    city = models.CharField("city", null=True, blank=True, max_length=100)
+    zip = models.CharField("zip", null=True, blank=True, max_length=10)
     country = models.ForeignKey(Country, blank=True, null=True)
 
     class Meta:
         app_label = "abcast"
-        verbose_name = _("Station")
-        verbose_name_plural = _("Stations")
+        verbose_name = "Station"
+        verbose_name_plural = "Stations"
         ordering = ("name",)
 
     def __str__(self):
@@ -74,8 +73,8 @@ class Role(models.Model):
 
     class Meta:
         app_label = "abcast"
-        verbose_name = _("Role")
-        verbose_name_plural = _("Roles")
+        verbose_name = "Role"
+        verbose_name_plural = "Roles"
         ordering = ("name",)
 
     def __str__(self):
@@ -91,8 +90,8 @@ class StationMembers(models.Model):
 
     class Meta:
         app_label = "abcast"
-        verbose_name = _("Role")
-        verbose_name_plural = _("Roles")
+        verbose_name = "Role"
+        verbose_name_plural = "Roles"
 
 
 class OnAirItem(TimestampedModelMixin, UUIDModelMixin, models.Model):
@@ -102,8 +101,8 @@ class OnAirItem(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     class Meta:
         app_label = "abcast"
-        verbose_name = _("On Air")
-        verbose_name_plural = _("On Air")
+        verbose_name = "On Air"
+        verbose_name_plural = "On Air"
         unique_together = ("content_type", "object_id")
 
     def __str__(self):
@@ -115,15 +114,15 @@ class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):
     teaser = models.CharField(max_length=512, null=True, blank=True)
     slug = AutoSlugField(populate_from="name")
 
-    TYPE_CHOICES = (("stream", _("Stream")), ("djmon", _("DJ-Monitor")))
+    TYPE_CHOICES = (("stream", "Stream"), ("djmon", "DJ-Monitor"))
     type = models.CharField(
-        verbose_name=_("Type"), max_length=12, default="stream", choices=TYPE_CHOICES
+        verbose_name="Type", max_length=12, default="stream", choices=TYPE_CHOICES
     )
     stream_url = models.CharField(
         max_length=256,
         null=True,
         blank=True,
-        help_text=_("setting the stream-url overrides server settings"),
+        help_text="setting the stream-url overrides server settings",
     )
     description = extra.MarkdownTextField(blank=True, null=True)
     station = models.ForeignKey(
@@ -151,8 +150,8 @@ class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
     class Meta:
         app_label = "abcast"
-        verbose_name = _("Channel")
-        verbose_name_plural = _("Channels")
+        verbose_name = "Channel"
+        verbose_name_plural = "Channels"
         ordering = ("name",)
         unique_together = ("on_air_type", "on_air_id")
 

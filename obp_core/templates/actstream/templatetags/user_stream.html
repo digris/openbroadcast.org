@@ -1,4 +1,4 @@
-{% load i18n sekizai_tags %}
+{% load sekizai_tags %}
 
 {% addtoblock "js-post" %}
   <script>
@@ -23,7 +23,7 @@
           {% if item.actor %}
 
             {% if item.actor == user %}
-              {% trans "You" %}
+              You
             {% else %}
               <a href="{{ item.actor.get_profile.get_absolute_url }}">{% firstof item.actor.get_full_name item.actor %}</a>
             {% endif %}

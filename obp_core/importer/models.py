@@ -19,7 +19,6 @@ from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils.encoding import force_text
-from django.utils.translation import ugettext as _
 from django_extensions.db.fields.json import JSONField
 from base.signals.unsignal import disable_for_loaddata
 
@@ -34,12 +33,12 @@ MEDIA_ROOT = settings.MEDIA_ROOT
 
 
 GENERIC_STATUS_CHOICES = (
-    (0, _("Init")),
-    (1, _("Done")),
-    (2, _("Ready")),
-    (3, _("Progress")),
-    (99, _("Error")),
-    (11, _("Other")),
+    (0, "Init"),
+    (1, "Done"),
+    (2, "Ready"),
+    (3, "Progress"),
+    (99, "Error"),
+    (11, "Other"),
 )
 
 
@@ -82,21 +81,21 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
     STATUS_ERROR = 99
     STATUS_OTHER = 11
     STATUS_CHOICES = (
-        (STATUS_INIT, _("Init")),
-        (STATUS_DONE, _("Done")),
-        (STATUS_READY, _("Ready")),
-        (STATUS_PROGRESS, _("Progress")),
-        (STATUS_ERROR, _("Error")),
-        (STATUS_OTHER, _("Other")),
+        (STATUS_INIT, "Init"),
+        (STATUS_DONE, "Done"),
+        (STATUS_READY, "Ready"),
+        (STATUS_PROGRESS, "Progress"),
+        (STATUS_ERROR, "Error"),
+        (STATUS_OTHER, "Other"),
     )
 
     TYPE_WEB = "web"
     TYPE_API = "api"
     TYPE_FS = "fs"
     TYPE_CHOICES = (
-        (TYPE_WEB, _("Web Interface")),
-        (TYPE_API, _("API")),
-        (TYPE_FS, _("Filesystem")),
+        (TYPE_WEB, "Web Interface"),
+        (TYPE_API, "API"),
+        (TYPE_FS, "Filesystem"),
     )
 
     user = models.ForeignKey(
@@ -118,8 +117,8 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     class Meta:
         app_label = "importer"
-        verbose_name = _("Import")
-        verbose_name_plural = _("Imports")
+        verbose_name = "Import"
+        verbose_name_plural = "Imports"
         ordering = ("-created",)
 
     def __str__(self):
@@ -274,16 +273,16 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
     STATUS_ERROR = 99
     STATUS_OTHER = 11
     STATUS_CHOICES = (
-        (STATUS_INIT, _("Init")),
-        (STATUS_DONE, _("Done")),
-        (STATUS_READY, _("Ready")),
-        (STATUS_PROGRESS, _("Working")),
-        (STATUS_WARNING, _("Warning")),
-        (STATUS_DUPLICATE, _("Duplicate")),
-        (STATUS_QUEUED, _("Queued")),
-        (STATUS_IMPORTING, _("Importing")),
-        (STATUS_ERROR, _("Error")),
-        (STATUS_OTHER, _("Other")),
+        (STATUS_INIT, "Init"),
+        (STATUS_DONE, "Done"),
+        (STATUS_READY, "Ready"),
+        (STATUS_PROGRESS, "Working"),
+        (STATUS_WARNING, "Warning"),
+        (STATUS_DUPLICATE, "Duplicate"),
+        (STATUS_QUEUED, "Queued"),
+        (STATUS_IMPORTING, "Importing"),
+        (STATUS_ERROR, "Error"),
+        (STATUS_OTHER, "Other"),
     )
 
     status = models.PositiveIntegerField(default=STATUS_INIT, choices=STATUS_CHOICES)
@@ -292,7 +291,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
         max_length=1024, upload_to=clean_upload_path, storage=UnuspiciousStorage()
     )
     import_session = models.ForeignKey(
-        Import, verbose_name=_("Import"), null=True, related_name="files"
+        Import, verbose_name="Import", null=True, related_name="files"
     )
     mimetype = models.CharField(max_length=100, blank=True, null=True)
     messages = JSONField(blank=True, null=True, default=None)
@@ -301,17 +300,17 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
     settings = JSONField(blank=True, null=True)
     results_tag = JSONField(blank=True, null=True)
     results_tag_status = models.PositiveIntegerField(
-        verbose_name=_("Result Tags (ID3 & co)"),
+        verbose_name="Result Tags (ID3 & co)",
         default=0,
         choices=GENERIC_STATUS_CHOICES,
     )
     results_acoustid = JSONField(blank=True, null=True)
     results_acoustid_status = models.PositiveIntegerField(
-        verbose_name=_("Result Musicbrainz"), default=0, choices=GENERIC_STATUS_CHOICES
+        verbose_name="Result Musicbrainz", default=0, choices=GENERIC_STATUS_CHOICES
     )
     results_musicbrainz = JSONField(blank=True, null=True)
     results_discogs_status = models.PositiveIntegerField(
-        verbose_name=_("Result Musicbrainz"), default=0, choices=GENERIC_STATUS_CHOICES
+        verbose_name="Result Musicbrainz", default=0, choices=GENERIC_STATUS_CHOICES
     )
     results_discogs = JSONField(blank=True, null=True)
     import_tag = JSONField(blank=True, null=True)
@@ -330,8 +329,8 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     class Meta:
         app_label = "importer"
-        verbose_name = _("Import File")
-        verbose_name_plural = _("Import Files")
+        verbose_name = "Import File"
+        verbose_name_plural = "Import Files"
         ordering = ("created",)
 
     def __str__(self):
@@ -693,7 +692,7 @@ class ImportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
     )
 
     import_session = models.ForeignKey(
-        Import, verbose_name=_("Import"), null=True, related_name="importitem_set"
+        Import, verbose_name="Import", null=True, related_name="importitem_set"
     )
 
     content_type = models.ForeignKey(ContentType, limit_choices_to=ct_limit)
@@ -702,8 +701,8 @@ class ImportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     class Meta:
         app_label = "importer"
-        verbose_name = _("Import Item")
-        verbose_name_plural = _("Import Items")
+        verbose_name = "Import Item"
+        verbose_name_plural = "Import Items"
 
     def __str__(self):
         try:

@@ -1,4 +1,4 @@
-{% load i18n markup_tags wiki_tags %}
+{% load markup_tags wiki_tags %}
 
 <div class="profile-details profile-details--public">
   {% if object.biography %}
@@ -12,10 +12,10 @@
   <div class="profile-details profile-details--grid profile-details--grid--2 profile-details--private">
 
     <div class="profile-details__contact">
-      <h3>{% trans 'Contact' %}</h3>
+      <h3>Contact</h3>
 
       <p>
-        {% trans 'Address' %}
+        Address
         <br>
         {% if object.address1 %}
           {{ object.address1 }}
@@ -40,7 +40,7 @@
     </div>
 
     <div class="profile-details__personal">
-      <h3>{% trans 'Details' %}</h3>
+      <h3>Details</h3>
 
 
       {% if object.user.email %}
@@ -63,7 +63,7 @@
 
   {% if object.link_set.exists %}
     <div class="profile-details__generic">
-      <h3>{% trans "Links" %}</h3>
+      <h3>Links</h3>
       {% for link in object.link_set.all %}
         <p>
           <span>{% if link.title %}{{ link.title }}{% endif %}</span>
@@ -79,14 +79,14 @@
     {% comment %}
     {% if object.service_set.exists %}
         <div class="profile-details__generic">
-            <h3>{% trans "Communication" %}</h3>
+            <h3>Communication</h3>
             {% for service in object.service_set.all %}
                 <p>
                     <span>{{ service.service }}</span>
                     <br>
                     <span>
                         <a href="{{ service.service_url }}">{{ service.service_url }}</a>
-                        <!--<span>{% trans "User" %}: {{ service.username }}</span>-->
+                        <!--<span>User: {{ service.username }}</span>-->
                     </span>
                 </p>
             {% endfor %}

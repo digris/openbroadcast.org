@@ -1,11 +1,10 @@
-{% load i18n %}
 
 
 
 <div id="lookup_providers" class="lookup provider listing">
 
   <div class="page-header">
-    <h3>{% trans "Compare" %}</h3>
+    <h3>Compare</h3>
   </div>
 
 
@@ -23,11 +22,11 @@
           <ul class="unstyled">
             {% if provider.relation %}
               <li class="pull-right" style="float: right !important;">
-                <a class="action" title="{% trans "Reselect on" %} {{ provider.name }}" href="#">{% trans "Change" %} <i class="icon-exchange icon-white"></i></a>
+                <a class="action" title="Reselect on {{ provider.name }}" href="#">Change <i class="icon-exchange icon-white"></i></a>
               </li>
             {% else %}
               <li class="pull-right" style="float: right !important;">
-                <a class="action" title="{% trans "Search on" %} {{ provider.name }}"  href="#">{% trans "Search" %} <i class="icon-search icon-white"></i></a>
+                <a class="action" title="Search on {{ provider.name }}"  href="#">Search <i class="icon-search icon-white"></i></a>
               </li>
             {% endif %}
           </ul>
@@ -43,7 +42,7 @@
     <div class="toggle-diff">
 
       <label data-action="toggle-diff">
-        {% trans 'highlight differences' %}
+        highlight differences
         <input type="checkbox">
       </label>
 

@@ -1,6 +1,5 @@
 import datetime
 
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 
 from actstream.exceptions import check_actionable_model
@@ -42,7 +41,7 @@ def follow(user, obj, send_action=True, actor_only=True):
         actor_only=actor_only,
     )
     if send_action and created:
-        action.send(user, verb=_("started following"), target=obj)
+        action.send(user, verb="started following", target=obj)
     return follow
 
 
@@ -64,7 +63,7 @@ def unfollow(user, obj, send_action=False):
         user=user, object_id=obj.pk, content_type=ContentType.objects.get_for_model(obj)
     ).delete()
     if send_action:
-        action.send(user, verb=_("stopped following"), target=obj)
+        action.send(user, verb="stopped following", target=obj)
 
 
 def is_following(user, obj):

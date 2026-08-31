@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate_tags i18n thumbnail arating_tags wiki_tags sekizai_tags addthis %}
+{% load truncate_tags thumbnail arating_tags wiki_tags sekizai_tags addthis %}
 
 {% block heading %}
 
@@ -34,19 +34,19 @@
     <div class="item_menu" id="item_menu">
       <ul class="nav nav-tabs">
         <li class="active">
-          <a href="#tracklist" data-toggle="tab">{% trans "Tracklist" %}</a>
+          <a href="#tracklist" data-toggle="tab">Tracklist</a>
         </li>
         {% if object.description %}
           <li>
-            <a href="#description" data-toggle="tab">{% trans "Description" %}</a>
+            <a href="#description" data-toggle="tab">Description</a>
           </li>
         {% endif %}
         <li>
-          <a href="#emissions" data-toggle="tab">{% trans "Emissions" %} ({{ object.get_emissions.count }})</a>
+          <a href="#emissions" data-toggle="tab">Emissions ({{ object.get_emissions.count }})</a>
         </li>
         {% if object.is_broadcast and object.mixdown %}
           <li>
-            <a href="#mixdown" data-toggle="tab">{% trans "Mixdown" %}</a>
+            <a href="#mixdown" data-toggle="tab">Mixdown</a>
           </li>
         {% endif %}
       </ul>
@@ -106,20 +106,20 @@
                 </div>
                 {% if item.channel %}
                   <div class="emission__channel">
-                    {% trans 'Channel' %}:
+                    Channel:
                     <a href="{{ item.channel.get_absolute_url }}">
                       {{ item.channel.name }}
                     </a>
                   </div>
                 {% endif %}
                 <div class="emission__user">
-                  {% trans 'Programmed by' %}:
+                  Programmed by:
                   {% if item.user %}
                     <a href="{{ item.user.get_absolute_url }}">
                       {% firstof item.user.get_full_name item.user.username %}
                     </a>
                   {% else %}
-                    {% trans "Autopilot" %}
+                    Autopilot
                   {% endif %}
                 </div>
               </div>
@@ -140,11 +140,11 @@
               {% elif object.mixdown  %}
                 <ul class="status">
                   <li>
-                    <span class="label">{% trans 'Status' %}:</span>
+                    <span class="label">Status:</span>
                     <span>{{ object.mixdown.status_display }}</span>
                   </li>
                   <li>
-                    <span class="label">{% trans 'ETA' %}:</span>
+                    <span class="label">ETA:</span>
                     <span>{{ object.mixdown.eta|date:"TIME_FORMAT" }}</span>
                     <span>("estimated time of arrival")</span>
                   </li>

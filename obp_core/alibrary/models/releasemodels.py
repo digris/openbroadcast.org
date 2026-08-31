@@ -13,7 +13,6 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateField
 from django_extensions.db.fields import AutoSlugField
 from l10n.models import Country
@@ -31,7 +30,7 @@ logger = logging.getLogger(__name__)
 MUSICBRAINZ_HOST = getattr(settings, "MUSICBRAINZ_HOST", "musicbrainz.org")
 
 TEMP_DIR = getattr(settings, "TEMP_DIR", None)
-LOOKUP_PROVIDERS = (("discogs", _("Discogs")), ("musicbrainz", _("Musicbrainz")))
+LOOKUP_PROVIDERS = (("discogs", "Discogs"), ("musicbrainz", "Musicbrainz"))
 
 
 class ReleaseManager(models.Manager):
@@ -72,7 +71,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
     )
 
     main_image = models.ImageField(
-        verbose_name=_("Cover"),
+        verbose_name="Cover",
         upload_to=upload_cover_to,
         storage=OverwriteStorage(),
         null=True,
@@ -102,7 +101,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
     )
     TOTALTRACKS_CHOICES = ((x, x) for x in range(1, 301))
     totaltracks = models.IntegerField(
-        verbose_name=_("Total Tracks"),
+        verbose_name="Total Tracks",
         blank=True,
         null=True,
         choices=TOTALTRACKS_CHOICES,
@@ -112,11 +111,11 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         blank=True,
     )
     RELEASESTATUS_CHOICES = (
-        (None, _("Not set")),
-        ("official", _("Official")),
-        ("promo", _("Promo")),
-        ("bootleg", _("Bootleg")),
-        ("other", _("Other")),
+        (None, "Not set"),
+        ("official", "Official"),
+        ("promo", "Promo"),
+        ("bootleg", "Bootleg"),
+        ("other", "Other"),
     )
 
     releasestatus = models.CharField(
@@ -211,8 +210,8 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Release")
-        verbose_name_plural = _("Releases")
+        verbose_name = "Release"
+        verbose_name_plural = "Releases"
         ordering = ("-created",)
 
         permissions = (
@@ -380,7 +379,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
 
         licenses = License.objects.filter(media_license__in=self.get_media()).distinct()
         if not licenses.exists():
-            return {"name": _("Not Defined")}
+            return {"name": "Not Defined"}
 
         if licenses.count() > 1:
             license, created = License.objects.get_or_create(name="Multiple")
@@ -412,7 +411,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
                 try:
                     artist_str = artists[0].name
                 except BaseException:
-                    artist_str = _("Unknown Artist")
+                    artist_str = "Unknown Artist"
 
         return artist_str
 
@@ -599,8 +598,8 @@ class ReleaseExtraartists(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Role")
-        verbose_name_plural = _("Roles")
+        verbose_name = "Role"
+        verbose_name_plural = "Roles"
 
 
 class ReleaseAlbumartists(models.Model):
@@ -621,8 +620,8 @@ class ReleaseAlbumartists(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Albumartist")
-        verbose_name_plural = _("Albumartists")
+        verbose_name = "Albumartist"
+        verbose_name_plural = "Albumartists"
         ordering = ("position",)
 
     def __str__(self):
@@ -644,8 +643,8 @@ class ReleaseRelations(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Relation")
-        verbose_name_plural = _("Relations")
+        verbose_name = "Relation"
+        verbose_name_plural = "Relations"
 
 
 class ReleaseMedia(models.Model):

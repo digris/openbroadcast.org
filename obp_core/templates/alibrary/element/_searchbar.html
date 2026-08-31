@@ -1,4 +1,4 @@
-{% load spurl i18n truncate_tags adv_cache hash_tags %}
+{% load spurl truncate_tags adv_cache hash_tags %}
 {% cache 600 "searchbar" request.get_full_path %}
 
   <div id="searchbar" class="searchbar hoverable" data-ct="{{ ct }}">
@@ -6,9 +6,9 @@
     <div style="float: left;" class="search-input{% if get.q %} active{% endif %}">
 
       <div class="inner">
-        <span>{% trans "Search" %}:</span>
+        <span>Search:</span>
         <input type="text" id="searchbar_input"
-               name="searchbar_input" placeholder="{% trans "Type to search" %}"
+               name="searchbar_input" placeholder="Type to search"
                value="{% if get.q %}{{ get.q }}{% endif %}" class="blur"/>
         <a href="{% spurl base=request.get_full_path remove_query_param="q" %}"><i class="_icon icon-delete">&nbsp;</i></a>
       </div>
@@ -17,7 +17,7 @@
 
     <div style="padding: 4px 3px 0px;" class="search-clear pull-right">
       {% if request.path != request.get_full_path %}
-        <a class="pull-right clear-search" href="{{ request.path }}" title="{% trans "Clear Search" %}">
+        <a class="pull-right clear-search" href="{{ request.path }}" title="Clear Search">
           <i class="icon icon-large icon-remove-sign"></i>
 
         </a>

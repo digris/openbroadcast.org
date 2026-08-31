@@ -1,4 +1,4 @@
-{% load truncate_tags i18n thumbnail arating_tags spacify_tags gravatar object_action_tags tagging_extra_tags %}
+{% load truncate_tags thumbnail arating_tags spacify_tags gravatar object_action_tags tagging_extra_tags %}
 
 <div class="header__primary">
 
@@ -24,7 +24,7 @@
     {% if object.get_artists %}
       <div class="meta__item">
         <div>
-          {% trans "Artist" %}:
+          Artist:
         </div>
         <div>
           {# TODO: refactor artist display logic #}
@@ -48,7 +48,7 @@
     {% if object.label %}
       <div class="meta__item">
         <div>
-          {% trans "Label" %}:
+          Label:
         </div>
         <div>
           <a href="{{ object.label.get_absolute_url }}">{{ object.label.name }}</a>
@@ -59,7 +59,7 @@
     {% if object.catalognumber %}
       <div class="meta__item">
         <div>
-          {% trans "Catalog No." %}:
+          Catalog No.:
         </div>
         <div>
           {{ object.catalognumber }}
@@ -70,11 +70,11 @@
     {% if object.releasedate_approx or object.is_promotional %}
       <div class="meta__item">
         <div>
-          {% trans "Release date" %}:
+          Release date:
         </div>
         <div>
           {% if object.is_promotional %}
-            {{ object.releasedate|date:"SHORT_DATE_FORMAT" }} ({% trans "Promo release" %})
+            {{ object.releasedate|date:"SHORT_DATE_FORMAT" }} (Promo release)
           {% else %}
             {{ object.releasedate_approx }}
           {% endif %}
@@ -86,7 +86,7 @@
     {% if object.get_license %}
       <div class="meta__item">
         <div>
-          {% trans "License" %}:
+          License:
         </div>
         <div>
           {{ object.get_license.name }}
@@ -100,7 +100,7 @@
   <div class="meta">
     <div class="meta__item">
       <div>
-        {% trans "Created" %}:
+        Created:
       </div>
       <div class="meta__item__grid">
         <time>
@@ -116,7 +116,7 @@
 
     <div class="meta__item">
       <div>
-        {% trans "Updated" %}:
+        Updated:
       </div>
       <div class="meta__item__grid">
         <time>

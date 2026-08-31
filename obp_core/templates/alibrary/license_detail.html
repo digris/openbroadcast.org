@@ -1,6 +1,6 @@
 {% extends "layout_base.html" %}
 
-{% load truncate_tags i18n thumbnail arating_tags markup_tags %}
+{% load truncate_tags thumbnail arating_tags markup_tags %}
 
 {% block heading %}
   <div id="heading">
@@ -35,8 +35,8 @@
 
       {% if object.license_text %}
         <div class="page-header padded">
-          <h3>{% trans "License Text" %}
-            <small>{% trans "From a lawyer point of view" %}</small>
+          <h3>License Text
+            <small>From a lawyer point of view</small>
           </h3>
         </div>
 

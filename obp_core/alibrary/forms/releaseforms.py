@@ -13,7 +13,6 @@ from django.contrib.contenttypes.forms import (
 )
 from django.forms import ModelForm, Form
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
-from django.utils.translation import ugettext as _
 from django_date_extensions.fields import ApproximateDateFormField
 from base.fields.extra import AdvancedFileInput
 from base.fields.widgets import ReadOnlyIconField
@@ -45,7 +44,7 @@ MAX_TRACKNUMBER = 100 + 1
 
 
 class ReleaseActionForm(Form):
-    publish = forms.BooleanField(label=_("Save & Publish"), required=False)
+    publish = forms.BooleanField(label="Save & Publish", required=False)
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("instance", False)
@@ -64,7 +63,7 @@ class ReleaseActionForm(Form):
             missing_licenses = []
             for media in self.instance.get_media():
                 if not media.license:
-                    missing_licenses.append(_(f'No license set for "{media.name}"'))
+                    missing_licenses.append(f'No license set for "{media.name}"')
 
             if len(missing_licenses) > 0:
                 self._errors["publish"] = self.error_class(missing_licenses)
@@ -108,8 +107,8 @@ class ReleaseBulkeditForm(Form):
             Div(
                 HTML(
                     '<p>"{!s}": {!s}</p>'.format(
-                        _("Bulk Edit"),
-                        _("Choose Artist name and/or license to apply on each track."),
+                        "Bulk Edit",
+                        "Choose Artist name and/or license to apply on each track.",
                     )
                 )
             ),
@@ -120,7 +119,7 @@ class ReleaseBulkeditForm(Form):
                 ),
                 Column(
                     HTML(
-                        f"""<button type="button" id="bulk_apply_artist_name" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> {_("Apply Artist to all tracks")}</button>"""
+                        """<button type="button" id="bulk_apply_artist_name" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> Apply Artist to all tracks</button>"""
                     ),
                     css_class="side",
                 ),
@@ -130,7 +129,7 @@ class ReleaseBulkeditForm(Form):
                 Column(Field("bulk_license", css_class=form_class), css_class="main"),
                 Column(
                     HTML(
-                        f"""<button type="button" id="bulk_apply_license" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> {_("Apply License to all tracks")}</button>"""
+                        """<button type="button" id="bulk_apply_license" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> Apply License to all tracks</button>"""
                     ),
                     css_class="side",
                 ),
@@ -142,12 +141,12 @@ class ReleaseBulkeditForm(Form):
         self.helper.add_layout(base_layout)
 
     bulk_artist_name = search_fields.AutocompleteField(
-        "alibrary.artist", allow_new=True, required=False, label=_("Artist")
+        "alibrary.artist", allow_new=True, required=False, label="Artist"
     )
     bulk_license = forms.ModelChoiceField(
         queryset=License.objects.filter(selectable=True),
         required=False,
-        label=_("License"),
+        label="License",
     )
 
     def save(self, *args, **kwargs):
@@ -206,14 +205,14 @@ class ReleaseForm(ModelForm):
             )
 
         base_layout = Fieldset(
-            _("General"),
+            "General",
             LookupField("name", css_class="input-xlarge"),
             LookupField("releasetype", css_class="input-xlarge"),
             LookupField("totaltracks", css_class="input-xlarge"),
         )
 
         catalog_layout = Fieldset(
-            _("Label/Catalog"),
+            "Label/Catalog",
             LookupField("label", css_class="input-xlarge"),
             HTML(
                 f'<ul class="horizontal unstyled clearfix action label-select">\n                <li><a data-label="{unknown_label.name}" data-label_id="{unknown_label.pk}" href="#"><i class="icon-double-angle-right"></i> {unknown_label.name}</a></li>\n                <li><a data-label="{noton_label.name}" data-label_id="{noton_label.pk}" href="#"><i class="icon-double-angle-right"></i> {noton_label.name}</a></li>\n            </ul>'
@@ -233,7 +232,7 @@ class ReleaseForm(ModelForm):
         tagging_layout = Fieldset("Tags", LookupField("d_tags"))
 
         identifiers_layout = Fieldset(
-            _("Identifiers"), LookupField("barcode", css_class="input-xlarge")
+            "Identifiers", LookupField("barcode", css_class="input-xlarge")
         )
 
         layout = Layout(
@@ -251,7 +250,7 @@ class ReleaseForm(ModelForm):
     remote_image = forms.URLField(required=False)
     releasedate_approx = ApproximateDateFormField(label="Releasedate", required=False)
     d_tags = TagField(
-        widget=TagAutocompleteTagIt(max_tags=9), required=False, label=_("Tags")
+        widget=TagAutocompleteTagIt(max_tags=9), required=False, label="Tags"
     )
 
     label = search_fields.AutocompleteField(
@@ -332,7 +331,7 @@ class BaseReleaseMediaForm(ModelForm):
     )
     TRACKNUMBER_CHOICES = [("", "---")] + [(str(x), x) for x in range(1, 301)]
     tracknumber = forms.ChoiceField(
-        label=_("No."), required=False, choices=TRACKNUMBER_CHOICES
+        label="No.", required=False, choices=TRACKNUMBER_CHOICES
     )
 
     def clean(self, *args, **kwargs):
@@ -423,7 +422,7 @@ class BaseReleaseReleationForm(StripWhitespaceFormMixin, ModelForm):
     service = forms.CharField(
         label="", widget=ReadOnlyIconField(**{"url": "whatever"}), required=False
     )
-    url = forms.URLField(label=_("Website / URL"), required=False)
+    url = forms.URLField(label="Website / URL", required=False)
 
 
 # Compose Formsets

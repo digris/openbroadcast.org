@@ -1,4 +1,4 @@
-{% load thumbnail i18n truncate_tags arating_tags spurl spacify_tags humanize gravatar %}
+{% load thumbnail truncate_tags arating_tags spurl spacify_tags humanize gravatar %}
 
 
 
@@ -17,7 +17,7 @@
     <ul class="unstyled properties">
       <li>
         {% if item.is_approved %}
-          <i class="icon-star" title="{% trans 'Approved user' %}"></i>
+          <i class="icon-star" title="Approved user"></i>
         {% else %}{% if item.mentor.username %}
           <i class="icon-star-empty"></i>
         {% else %}
@@ -79,7 +79,7 @@
 
       {% if user.is_authenticated%}
         <li>
-          <a href="{% url "postman_write" item.user.username %}" title="{% trans "Send Message" %}"><i class="icon-envelope"></i></a>
+          <a href="{% url "postman_write" item.user.username %}" title="Send Message"><i class="icon-envelope"></i></a>
         </li>
       {% endif %}
 
@@ -89,7 +89,7 @@
 
 
   <div class="by" style="position: absolute; bottom: 0; left: 5px; color: #999;">
-    {% trans "Joined" %}:</span> <span class="value">{{ item.user.date_joined|date:"SHORT_DATE_FORMAT" }}
+    Joined:</span> <span class="value">{{ item.user.date_joined|date:"SHORT_DATE_FORMAT" }}
     </div>
 
 </div>

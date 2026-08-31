@@ -1,11 +1,10 @@
-{% load i18n %}
 
 <div class="menu-context">
   <div class="action-group">
     <ul>
       {% if perms.alibrary.merge_media %}
         <object-selection-action class="action" :min-selected="2" dispatch-event="alibrary:mergeObjects">
-          {% trans "Merge Selection" %}
+          Merge Selection
         </object-selection-action>
       {% endif %}
     </ul>

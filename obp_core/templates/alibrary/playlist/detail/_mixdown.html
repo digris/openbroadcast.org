@@ -1,4 +1,3 @@
-{% load i18n %}
 
 <section class="mixdown">
   {% if object.mixdown_file %}
@@ -10,11 +9,11 @@
   {% elif object.mixdown %}
     <ul class="status">
       <li>
-        <span class="label">{% trans 'Status' %}:</span>
+        <span class="label">Status:</span>
         <span>{{ object.mixdown.status_display }}</span>
       </li>
       <li>
-        <span class="label">{% trans 'ETA' %}:</span>
+        <span class="label">ETA:</span>
         <span>{{ object.mixdown.eta|date:"TIME_FORMAT" }}</span>
         <span>("estimated time of arrival")</span>
       </li>

@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.utils.translation import ugettext_lazy as _
 from jsonfield import JSONField
 
 from base.mixins import TimestampedModelMixin
@@ -32,7 +31,7 @@ class PreflightCheck(TimestampedModelMixin, models.Model):
     )
 
     status = models.CharField(
-        _("Status"),
+        "Status",
         choices=STATUS_CHOICES,
         default=STATUS_PENDING,
         max_length=16,

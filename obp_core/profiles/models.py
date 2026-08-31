@@ -4,7 +4,6 @@ import tagging
 import arating
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import Group
 from django.conf import settings
 from django.db.models.signals import post_save
@@ -35,8 +34,8 @@ class MigrationMixin(models.Model):
     class Meta:
         abstract = True
         app_label = "profiles"
-        verbose_name = _("MigrationMixin")
-        verbose_name_plural = _("MigrationMixins")
+        verbose_name = "MigrationMixin"
+        verbose_name_plural = "MigrationMixins"
         ordering = ("pk",)
 
 
@@ -49,9 +48,9 @@ def filename_by_uuid(instance, filename):
 
 class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
     GENDER_CHOICES = (
-        (0, _("Male")),
-        (1, _("Female")),
-        (2, _("Other")),
+        (0, "Male"),
+        (1, "Female"),
+        (2, "Other"),
     )
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -65,25 +64,25 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         related_name="godchildren",
     )
     gender = models.PositiveSmallIntegerField(
-        _("gender"),
+        "gender",
         choices=GENDER_CHOICES,
         blank=True,
         null=True,
     )
     birth_date = models.DateField(
-        _("Date of birth"),
+        "Date of birth",
         blank=True,
         null=True,
-        help_text=_("Format: YYYY-MM-DD"),
+        help_text="Format: YYYY-MM-DD",
     )
     pseudonym = models.CharField(
         blank=True,
         null=True,
         max_length=250,
-        help_text=_("Will appear instead of your first- & last name"),
+        help_text="Will appear instead of your first- & last name",
     )
     description = models.CharField(
-        _("Disambiguation"),
+        "Disambiguation",
         blank=True,
         null=True,
         max_length=250,
@@ -93,52 +92,52 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         null=True,
     )
     image = models.ImageField(
-        verbose_name=_("Profile Image"),
+        verbose_name="Profile Image",
         upload_to=filename_by_uuid,
         null=True,
         blank=True,
     )
     mobile = PhoneNumberField(
-        _("mobile"),
+        "mobile",
         blank=True,
         null=True,
     )
     phone = PhoneNumberField(
-        _("phone"),
+        "phone",
         blank=True,
         null=True,
     )
     fax = PhoneNumberField(
-        _("fax"),
+        "fax",
         blank=True,
         null=True,
     )
     skype = models.CharField(
-        _("Skype"),
+        "Skype",
         blank=True,
         null=True,
         max_length=100,
     )
     address1 = models.CharField(
-        _("address"),
+        "address",
         null=True,
         blank=True,
         max_length=100,
     )
     address2 = models.CharField(
-        _("address (secondary)"),
+        "address (secondary)",
         null=True,
         blank=True,
         max_length=100,
     )
     city = models.CharField(
-        _("city"),
+        "city",
         null=True,
         blank=True,
         max_length=100,
     )
     zip = models.CharField(
-        _("zip"),
+        "zip",
         null=True,
         blank=True,
         max_length=10,
@@ -149,20 +148,20 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         null=True,
     )
     iban = models.CharField(
-        _("IBAN"),
+        "IBAN",
         null=True,
         blank=True,
         max_length=120,
     )
     paypal = models.EmailField(
-        _("Paypal"),
+        "Paypal",
         null=True,
         blank=True,
         max_length=200,
     )
     expertise = models.ManyToManyField(
         "Expertise",
-        verbose_name=_("Fields of expertise"),
+        verbose_name="Fields of expertise",
         blank=True,
     )
     d_tags = TagField(
@@ -193,14 +192,14 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
 
     class Meta:
         app_label = "profiles"
-        verbose_name = _("user profile")
-        verbose_name_plural = _("user profiles")
+        verbose_name = "user profile"
+        verbose_name_plural = "user profiles"
         db_table = "user_profiles"
         ordering = ("-user__last_login",)
 
         permissions = (
-            ("mentor_profiles", _("Mentoring profiles")),
-            ("view_profiles_private", _("View private profile-data.")),
+            ("mentor_profiles", "Mentoring profiles"),
+            ("view_profiles_private", "View private profile-data."),
         )
 
     def __str__(self):
@@ -327,23 +326,23 @@ class Community(UUIDModelMixin, MigrationMixin):
         null=True,
     )
     image = models.ImageField(
-        verbose_name=_("Profile Image"),
+        verbose_name="Profile Image",
         upload_to=filename_by_uuid,
         null=True,
         blank=True,
     )
     mobile = PhoneNumberField(
-        _("mobile"),
+        "mobile",
         blank=True,
         null=True,
     )
     phone = PhoneNumberField(
-        _("phone"),
+        "phone",
         blank=True,
         null=True,
     )
     fax = PhoneNumberField(
-        _("fax"),
+        "fax",
         blank=True,
         null=True,
     )
@@ -352,25 +351,25 @@ class Community(UUIDModelMixin, MigrationMixin):
         null=True,
     )
     address1 = models.CharField(
-        _("address"),
+        "address",
         null=True,
         blank=True,
         max_length=100,
     )
     address2 = models.CharField(
-        _("address (secondary)"),
+        "address (secondary)",
         null=True,
         blank=True,
         max_length=100,
     )
     city = models.CharField(
-        _("city"),
+        "city",
         null=True,
         blank=True,
         max_length=100,
     )
     zip = models.CharField(
-        _("zip"),
+        "zip",
         null=True,
         blank=True,
         max_length=10,
@@ -382,7 +381,7 @@ class Community(UUIDModelMixin, MigrationMixin):
     )
     expertise = models.ManyToManyField(
         "Expertise",
-        verbose_name=_("Fields of expertise"),
+        verbose_name="Fields of expertise",
         blank=True,
     )
     tags = TagField(
@@ -393,8 +392,8 @@ class Community(UUIDModelMixin, MigrationMixin):
 
     class Meta:
         app_label = "profiles"
-        verbose_name = _("Community")
-        verbose_name_plural = _("Communities")
+        verbose_name = "Community"
+        verbose_name_plural = "Communities"
 
     def __str__(self):
         return str(self.name)
@@ -449,7 +448,7 @@ def add_mentor(sender, **kwargs):
         pm_write(
             sender=user,
             recipient=mentor,
-            subject=_(f"{user.username} accepted your invitation"),
+            subject=f"{user.username} accepted your invitation",
             body="",
         )
 
@@ -460,12 +459,12 @@ invitation_accepted.connect(add_mentor)
 class MobileProvider(models.Model):
     """MobileProvider model"""
 
-    title = models.CharField(_("title"), max_length=25)
-    domain = models.CharField(_("domain"), max_length=50, unique=True)
+    title = models.CharField("title", max_length=25)
+    domain = models.CharField("domain", max_length=50, unique=True)
 
     class Meta:
-        verbose_name = _("mobile provider")
-        verbose_name_plural = _("mobile providers")
+        verbose_name = "mobile provider"
+        verbose_name_plural = "mobile providers"
         db_table = "user_mobile_providers"
 
     def __str__(self):
@@ -475,16 +474,16 @@ class MobileProvider(models.Model):
 class ServiceType(models.Model):
     """Service type model"""
 
-    title = models.CharField(_("title"), blank=True, max_length=100)
+    title = models.CharField("title", blank=True, max_length=100)
     url = models.URLField(
-        _("url"),
+        "url",
         blank=True,
         help_text="URL with a single '{user}' placeholder to turn a username into a service URL.",
     )
 
     class Meta:
-        verbose_name = _("service type")
-        verbose_name_plural = _("service types")
+        verbose_name = "service type"
+        verbose_name_plural = "service types"
         db_table = "user_service_types"
 
     def __str__(self):
@@ -494,13 +493,13 @@ class ServiceType(models.Model):
 class Service(models.Model):
     service = models.ForeignKey(ServiceType)
     profile = models.ForeignKey(Profile)
-    username = models.CharField(_("Userame / ID"), max_length=100)
+    username = models.CharField("Userame / ID", max_length=100)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = _("service")
-        verbose_name_plural = _("services")
+        verbose_name = "service"
+        verbose_name_plural = "services"
         db_table = "user_services"
 
     def __str__(self):
@@ -520,12 +519,12 @@ class Service(models.Model):
 
 class Link(models.Model):
     profile = models.ForeignKey(Profile)
-    title = models.CharField(_("title"), max_length=100, null=True, blank=True)
-    url = models.URLField(_("url"))
+    title = models.CharField("title", max_length=100, null=True, blank=True)
+    url = models.URLField("url")
 
     class Meta:
-        verbose_name = _("link")
-        verbose_name_plural = _("links")
+        verbose_name = "link"
+        verbose_name_plural = "links"
         db_table = "user_links"
 
     def __str__(self):
@@ -537,8 +536,8 @@ class Expertise(models.Model):
 
     class Meta:
         app_label = "profiles"
-        verbose_name = _("Expertise")
-        verbose_name_plural = _("Expertise")
+        verbose_name = "Expertise"
+        verbose_name_plural = "Expertise"
         ordering = ("name",)
 
     def __str__(self):

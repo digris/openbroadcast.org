@@ -1,4 +1,4 @@
-{% load truncate_tags i18n thumbnail arating_tags spurl spacify_tags %}
+{% load truncate_tags thumbnail arating_tags spurl spacify_tags %}
 <div class="span6 padded-h container_content">
 
   <div class="page-header">
@@ -19,15 +19,15 @@
 
     {% if appearances.releases.exists or appearances.media.exists %}
       <dt>
-        {% trans "Appearance" %}:
+        Appearance:
       </dt>
       <dd>
         <ul class="unstyled horizontal">
           {% if appearances.releases.exists %}
             <li>
               {% url "alibrary:release-list" as release_list %}
-              <a href="{% spurl path=release_list query="search_artist_ids={{ object.uuid }}" %}" title="{% trans "Only show releases by" %} {{ object.name }}">
-                {{ appearances.releases.count }} {% trans 'Releases' %}
+              <a href="{% spurl path=release_list query="search_artist_ids={{ object.uuid }}" %}" title="Only show releases by {{ object.name }}">
+                {{ appearances.releases.count }} Releases
               </a>
             </li>
           {% endif %}
@@ -35,8 +35,8 @@
           {% if appearances.media.exists %}
             <li>
               {% url "alibrary:media-list" as media_list %}
-              <a href="{% spurl path=media_list query="search_artist_ids={{ object.uuid }}" %}" title="{% trans "Only show tracks by" %} {{ object.name }}">
-                {{ appearances.media.count }} {% trans 'Tracks' %}
+              <a href="{% spurl path=media_list query="search_artist_ids={{ object.uuid }}" %}" title="Only show tracks by {{ object.name }}">
+                {{ appearances.media.count }} Tracks
               </a>
             </li>
           {% endif %}
@@ -50,7 +50,7 @@
 
     {% if object.real_name %}
       <dt>
-        {% trans "Real name" %}:
+        Real name:
       </dt>
       <dd>
         {{ object.real_name }}
@@ -60,14 +60,14 @@
 
     {% if object.namevariations.exists %}
       <dt>
-        {% trans "Variations" %}:
+        Variations:
       </dt>
       <dd class="limit" data-limit="5">
         {% for name in object.namevariations.all %}
           <span {% if forloop.counter0 > 5 %}style="display: none;" class="limited"{% endif %}>{{ name }}{% if not forloop.last %},{% endif %}</span>
         {% endfor %}
         {% if object.namevariations.count > 5%}
-          <a href="#" class="toggle">{% trans "Show more/less" %}<!--({{ object.namevariations.count }})--></a>
+          <a href="#" class="toggle">Show more/less<!--({{ object.namevariations.count }})--></a>
         {% endif %}
       </dd>
     {% endif %}
@@ -75,7 +75,7 @@
 
     {% if object.get_aliases.exists %}
       <dt>
-        {% trans "Aliases" %}:
+        Aliases:
       </dt>
       <dd>
         {% for artist in object.get_aliases %}
@@ -90,7 +90,7 @@
 
     {% if object.members.exists %}
       <dt>
-        {% trans "Members" %}:
+        Members:
       </dt>
       <dd>
         {% for artist in object.members.all %}
@@ -104,7 +104,7 @@
 
     {% if object.get_membership %}
       <dt>
-        {% trans "Member of" %}:
+        Member of:
       </dt>
       <dd>
         {% for artist in object.get_membership %}
@@ -122,7 +122,7 @@
 
     {% if object.founded_labels.exists %}
       <dt>
-        {% trans "Founded labels" %}:
+        Founded labels:
       </dt>
       <dd>
         {% for label in object.founded_labels.all %}
@@ -136,7 +136,7 @@
 
     {% if object.ipi_code %}
       <dt>
-        {% trans "IPI" %}:
+        IPI:
       </dt>
       <dd>
         {{ object.ipi_code}}
@@ -146,7 +146,7 @@
 
     {% if object.isni_code %}
       <dt>
-        {% trans "ISNI" %}:
+        ISNI:
       </dt>
       <dd>
         {{ object.isni_code}}
@@ -167,7 +167,7 @@
 
     {% if object.tags %}
       <dt>
-        {% trans "Tags" %}:
+        Tags:
       </dt>
       <dd>
         {% for tag in object.tags %}
@@ -186,7 +186,7 @@
     {% if object.main_image %}
       <a href="{% thumbnail object.main_image 1200x1200 upscale %}" class="zoomable cboxElement"> <img src="{% thumbnail object.main_image 170x170 crop=",0" %}" alt="Cover" /> </a>
     {% else %}
-      <img src="/static/img/base/defaults/listview.artist.xl.png" alt="{% trans "No cover available" %}" />
+      <img src="/static/img/base/defaults/listview.artist.xl.png" alt="No cover available" />
     {% endif %}
   </div>
 

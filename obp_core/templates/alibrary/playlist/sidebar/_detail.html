@@ -1,4 +1,4 @@
-{% load i18n activity_tags ctype_tags %}
+{% load activity_tags ctype_tags %}
 
 <div class="menu-context">
   <div class="action-group">
@@ -6,34 +6,34 @@
       {% if perms.alibrary.create_playlist %}
         <li class="action">
           <a href="{% url "alibrary:playlist-create" %}">
-            {% trans "Create a playlist" %}
+            Create a playlist
           </a>
         </li>
       {% endif %}
       {% if user.is_authenticated and user == object.user %}
         <li class="action">
-          <a href="{{ object.get_edit_url }}" title="{% trans 'Edit' %}">
-            {% trans "Edit" %}
+          <a href="{{ object.get_edit_url }}" title="Edit">
+            Edit
           </a>
         </li>
       {% endif %}
       {% if user.is_authenticated and user == object.user %}
         <li class="action">
           <a href="{{ object.get_delete_url }}">
-            {% trans "Delete" %}
+            Delete
           </a>
         </li>
       {% endif %}
       {% if perms.alibrary.change_playlist and user.is_staff %}
         <li class="action">
           <a href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}">
-            {% trans "Admin view" %}
+            Admin view
           </a>
         </li>
       {% endif %}
       {% if perms.alibrary.downoad_media %}
         <object-single-action class="action" obj-ct="{{ object.get_ct }}" obj-uuid="{{ object.uuid }}" dispatch-event="exporter:exportObjects">
-          {% trans "Download" %}
+          Download
         </object-single-action>
       {% endif %}
     </ul>

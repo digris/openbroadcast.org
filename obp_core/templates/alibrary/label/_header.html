@@ -1,4 +1,4 @@
-{% load truncate_tags i18n thumbnail spurl object_action_tags tagging_extra_tags %}
+{% load truncate_tags thumbnail spurl object_action_tags tagging_extra_tags %}
 <div class="header__primary">
   <div class="title title--primary">
     <h2>{{ object.name|truncate_chars_inner:40 }}</h2>
@@ -22,7 +22,7 @@
     <div class="title title--secondary">
       <h3>
         <a href="{% spurl path=release_list_url query="search_label_ids={{ object.uuid }}" %}">
-          {{ object.releases.count }} {% trans 'Releases' %}
+          {{ object.releases.count }} Releases
         </a>
       </h3>
     </div>
@@ -31,7 +31,7 @@
     {% if umbrella_label %}
       <div class="meta__item">
         <div>
-          {% trans "Umbrella Label" %}:
+          Umbrella Label:
         </div>
         <div>
           <a href="{{ umbrella_label.get_absolute_url }}">{{ umbrella_label.name }}</a>
@@ -41,7 +41,7 @@
     {% if parent_label %}
       <div class="meta__item">
         <div>
-          {% trans "Parent Label" %}:
+          Parent Label:
         </div>
         <div>
           <a href="{{ parent_label.get_absolute_url }}">{{ parent_label.name }}</a>
@@ -51,7 +51,7 @@
     {% if sub_labels.exists %}
       <div class="meta__item">
         <div>
-          {% trans "Sub Labels" %}:
+          Sub Labels:
         </div>
         <div>
           <expandable-list
@@ -68,7 +68,7 @@
     {% if object.founding_artists.exists %}
       <div class="meta__item">
         <div>
-          {% trans "Founders" %}:
+          Founders:
         </div>
         <div>
           {% for founding_artist in object.founding_artists.all %}
@@ -80,7 +80,7 @@
     {% if object.labelcode %}
       <div class="meta__item">
         <div>
-          {% trans "Labelcode" %}:
+          Labelcode:
         </div>
         <div>
           {{ object.labelcode }}
@@ -90,7 +90,7 @@
     {% if object.address or object.country or object.email %}
       <div class="meta__item">
         <div>
-          {% trans "Contact" %}:
+          Contact:
         </div>
         <div>
           {% if object.address %}
@@ -115,7 +115,7 @@
   <div class="meta">
     <div class="meta__item">
       <div>
-        {% trans "Created" %}:
+        Created:
       </div>
       <div class="meta__item__grid">
         <time>
@@ -130,7 +130,7 @@
     </div>
     <div class="meta__item">
       <div>
-        {% trans "Updated" %}:
+        Updated:
       </div>
       <div class="meta__item__grid">
         <time>

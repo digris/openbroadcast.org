@@ -1,5 +1,5 @@
 {% extends "exporter/assets/base.html" %}
-{% load truncate_tags i18n spacify_tags alibrary_tags wiki_tags %}
+{% load truncate_tags spacify_tags alibrary_tags wiki_tags %}
 
 {% block title %}{{ object.name }}{% endblock %}
 
@@ -34,7 +34,7 @@
       {% endfor %}</h2>
       <dl>
         {% if object.label %}
-          <dt>{% trans "Label" %}</dt>
+          <dt>Label</dt>
           <dd>
             {% if object.label.get_absolute_url %}
               <a href="{{ base_url }}{{ object.label.get_absolute_url }}">{{ object.label.name }}</a>
@@ -44,18 +44,18 @@
           </dd>
         {% endif %}
         {% if object.catalognumber %}
-          <dt>{% trans "Catalog No." %}</dt>
+          <dt>Catalog No.</dt>
           <dd>{{ object.catalognumber }}</dd>
         {% endif %}
         {% if object.is_promotional %}
-          <dt>{% trans "Release date" %}:</dt>
-          <dd>{{ object.releasedate|date:"SHORT_DATE_FORMAT" }} ({% trans "Promo release" %})</dd>
+          <dt>Release date:</dt>
+          <dd>{{ object.releasedate|date:"SHORT_DATE_FORMAT" }} (Promo release)</dd>
         {% else %}{% if object.releasedate_approx %}
-          <dt>{% trans "Release date" %}:</dt>
+          <dt>Release date:</dt>
           <dd>{{ object.releasedate_approx }}</dd>
         {% endif %}{% endif %}
         {% if object.tags %}
-          <dt>{% trans "Tags" %}:</dt>
+          <dt>Tags:</dt>
           <dd>
             {% for tag in object.tags %}
               <span class="tag">{{ tag.name|spacify }}</span>{% if not forloop.last %}, {% endif %}

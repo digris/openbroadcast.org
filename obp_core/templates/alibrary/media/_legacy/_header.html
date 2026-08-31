@@ -1,4 +1,4 @@
-{% load i18n calc_tags truncate_tags thumbnail arating_tags atracker_tags spacify_tags %}
+{% load calc_tags truncate_tags thumbnail arating_tags atracker_tags spacify_tags %}
 <div class="span6 padded-h container_content">
 
   <div class="page-header">
@@ -13,7 +13,7 @@
   </div>
   <dl class="dl-horizontal main">
     <dt>
-      {% trans "Artist" %}:
+      Artist:
     </dt>
     <dd>
       {% with item=object.artist %}
@@ -22,7 +22,7 @@
     </dd>
     {% if object.get_mediaartists %}
       <dt>
-        {% trans "Track Artists(s)" %}:
+        Track Artists(s):
       </dt>
       <dd>
         {% include "alibrary/media/_credited_artists.html" with artist_list=object.get_mediaartists %}
@@ -30,7 +30,7 @@
     {% endif %}
     {% if object.release %}
       <dt>
-        {% trans "Release" %}:
+        Release:
       </dt>
       <dd>
         {% with item=object.release %}
@@ -42,7 +42,7 @@
 
     {% if object.release and object.release.label %}
       <dt>
-        {% trans "Label" %}:
+        Label:
       </dt>
       <dd>
         {% with item=object.release.label %}
@@ -54,7 +54,7 @@
 
 
     <dt>
-      {% trans "Duration" %}:
+      Duration:
     </dt>
     <dd>
       {% if object.master_duration %}
@@ -65,7 +65,7 @@
 
     {% if object.isrc %}
       <dt>
-        {% trans "ISRC" %}:
+        ISRC:
       </dt>
       <dd>
         {{ object.isrc }}
@@ -75,7 +75,7 @@
 
     {% if object.opus_number %}
       <dt>
-        {% trans "Opus N." %}:
+        Opus N.:
       </dt>
       <dd>
         {{ object.opus_number }}
@@ -84,7 +84,7 @@
 
     {% if object.release and object.release.releasedate_approx %}
       <dt>
-        {% trans "Release date" %}:
+        Release date:
       </dt>
       <dd>
         {{ object.release.releasedate_approx|date:"SHORT_DATE_FORMAT" }}
@@ -97,13 +97,13 @@
   <dl class="dl-horizontal license">
 
     <dt>
-      {% trans "License" %}:
+      License:
     </dt>
     <dd>
       {% if object.license %}
         {% if object.license.iconset %}
           <a href="{{ object.license.get_absolute_url }}"
-             title="{% trans " License details" %}"
+             title=" License details"
              class="iconset iconset-license">
             {{ object.license.iconset_display }}
           </a>
@@ -124,7 +124,7 @@
     {% include 'alibrary/element/_edit_timestamps.html' %}
 
     <dt>
-      {% trans "Stats" %}:
+      Stats:
     </dt>
     <dd>
       <ul class="horizontal unstyled" style="margin: 0">
@@ -135,7 +135,7 @@
 
     {% if object.tags %}
       <dt>
-        {% trans "Tags" %}:
+        Tags:
       </dt>
       <dd>
         {% for tag in object.tags %}
@@ -156,7 +156,7 @@
       <a href="{% thumbnail object.release.main_image 1200x1200 crop upscale %}" class="zoomable cboxElement"> <img
         src="{% thumbnail object.release.main_image 170x170 crop upscale %}" alt="Cover"/> </a>
     {% else %}
-      <img src="/static/img/base/defaults/listview.release.xl.png" alt="{% trans " No cover available" %}" />
+      <img src="/static/img/base/defaults/listview.release.xl.png" alt=" No cover available" />
     {% endif %}
   </div>
 

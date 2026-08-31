@@ -1,4 +1,4 @@
-{% load i18n calc_tags thumbnail playlist_tags truncate_tags arating_tags spurl %}
+{% load calc_tags thumbnail playlist_tags truncate_tags arating_tags spurl %}
 
 {% comment %}
 <span>{{ search_result.last_emission|slice:'0:10' }}</span>
@@ -37,18 +37,18 @@
         <!-- property icons-->
     <ul class="unstyled properties">
       {% if item.rotation and item.type == 'broadcast' %}
-        <li><i class="icon-refresh" title="{% trans 'In Rotation' %}"></i></li>
+        <li><i class="icon-refresh" title="In Rotation"></i></li>
       {% endif %}
     </ul>
   </div>
 
   {% if item.is_archived %}
     <div class="marker">
-      <span>{% trans 'Archived' %}</span>
+      <span>Archived</span>
     </div>
   {% elif item.is_upcoming %}
     <div class="marker">
-      <span>{% trans 'Upcoming' %}</span>
+      <span>Upcoming</span>
     </div>
   {% endif %}
 
@@ -84,11 +84,11 @@
 
             {% url "alibrary:playlist-list" as playlist_list %}
             <a href="{% spurl path=playlist_list query="search_user={{ item.user.username }}" %}"
-               title="{% trans "Only show playlists by" %} {{ item.user.profile.get_display_name }}"
+               title="Only show playlists by {{ item.user.profile.get_display_name }}"
                style="vertical-align: top;"><span class="filter icon"></span></a>
 
                         {% comment %}
-                        <span class="small">{{ item.items.count }} {% trans "Tracks" %}</span>
+                        <span class="small">{{ item.items.count }} Tracks</span>
                         {% endcomment %}
 
             {% if item.type == 'broadcast' %}
@@ -112,14 +112,14 @@
            data-ct="playlist"
            data-id="{{ item.pk }}"
            data-action="download"
-           title="{% trans "Download" %}">
+           title="Download">
           <i class="icon icon-download-alt"></i>
         </a>
       </li>
       <li>
         <a href="{{ item.get_edit_url }}"
            class="{% if user.is_authenticated and user == item.user %}{% else %} disabled{% endif %}"
-           title="{% trans "Edit" %}">
+           title="Edit">
           <i class="icon icon-edit"></i>
         </a>
       </li>
@@ -132,7 +132,7 @@
                    data-ct="playlist"
                    data-id="{{ item.id }}"
                    data-uuid="{{ item.uuid }}"
-                   title="{% trans "Schedule" %}">
+                   title="Schedule">
                     <i class="icon icon-calendar"></i>
                 </a>
             </li>
@@ -151,8 +151,8 @@
         <span
           class="small"
           {% if is_nearby_scheduled %}style="font-weight: bold;"{% endif %}
-          title="{% trans 'Last' %}: {{ item.last_emission.time_start|date:"SHORT_DATE_FORMAT"|default:'-' }} | {% trans 'Next' %}: {{ item.next_emission.time_start|date:"SHORT_DATE_FORMAT"|default:'-' }} | {% trans 'Num. emissions' %}: {{ search_result.num_emissions }}"
-                    {% comment %}title="{% trans 'Last emission' %}: {{ item.last_emission.time_start|timesince|safe }} {% trans 'ago' %} - {% trans 'Num. emissions' %}: {{ search_result.num_emissions }}"{% endcomment %}>
+          title="Last: {{ item.last_emission.time_start|date:"SHORT_DATE_FORMAT"|default:'-' }} | Next: {{ item.next_emission.time_start|date:"SHORT_DATE_FORMAT"|default:'-' }} | Num. emissions: {{ search_result.num_emissions }}"
+                    {% comment %}title="Last emission: {{ item.last_emission.time_start|timesince|safe }} ago - Num. emissions: {{ search_result.num_emissions }}"{% endcomment %}>
           {% firstof item.next_emission.time_start|date:'SHORT_DATE_FORMAT' item.last_emission.time_start|date:'SHORT_DATE_FORMAT' %}
         </span>
 
@@ -160,7 +160,7 @@
 
     {% else %}
       {% if item.target_duration %}
-        <span class="small">{% trans "of" %} {{ item.target_duration|sec_to_time }}</span>
+        <span class="small">of {{ item.target_duration|sec_to_time }}</span>
       {% endif %}
     {% endif %}
 

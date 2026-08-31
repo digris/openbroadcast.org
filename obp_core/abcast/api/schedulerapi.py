@@ -7,7 +7,6 @@ from alibrary.models import Playlist
 from django.conf import settings
 from django.conf.urls import url
 from django.http import HttpResponse
-from django.utils.translation import ugettext as _
 from tastypie.authentication import (
     MultiAuthentication,
     SessionAuthentication,
@@ -265,7 +264,7 @@ class EmissionResource(ModelResource):
         now = datetime.datetime.now()
         lock_end = now + datetime.timedelta(seconds=SCHEDULER_LOCK_AHEAD)
         if lock_end > time_start:
-            data = {"message": _("You cannot schedule emissions in the past.")}
+            data = {"message": "You cannot schedule emissions in the past."}
             success = False
 
         # check if slot is free
@@ -275,7 +274,7 @@ class EmissionResource(ModelResource):
             channel=channel,
         ).exclude(pk=e.pk)
         if es.count() > 0:
-            message = _("The desired time slot does not seem to be available.")
+            message = "The desired time slot does not seem to be available."
             try:
                 message += f'<br>Emission schedule "{e.name}" - from {time_start.time()} to {time_end.time()}'
                 for conflicting_emission in es:
@@ -292,7 +291,7 @@ class EmissionResource(ModelResource):
         if time_start.hour <= (SCHEDULER_OFFSET - 1) and (
             time_end.hour >= SCHEDULER_OFFSET and time_end.minute > 0
         ):
-            data = {"message": _("Emissions must not overlap days.")}
+            data = {"message": "Emissions must not overlap days."}
             success = False
 
         if success:

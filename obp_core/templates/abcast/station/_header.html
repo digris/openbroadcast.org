@@ -1,4 +1,4 @@
-{% load truncate_tags i18n thumbnail arating_tags spacify_tags gravatar object_action_tags %}
+{% load truncate_tags thumbnail arating_tags spacify_tags gravatar object_action_tags %}
 
 <div class="header__primary">
 
@@ -17,7 +17,7 @@
     {% if object.address1 %}
       <div class="meta__item">
         <div>
-          {% trans "Address" %}:
+          Address:
         </div>
         <div>
           {{ object.address1 }}<br>
@@ -41,7 +41,7 @@
     {% if object.website %}
       <div class="meta__item">
         <div>
-          {% trans "Website" %}:
+          Website:
         </div>
         <div>
           <a href="{{ object.website }}">{{ object.website }}</a>

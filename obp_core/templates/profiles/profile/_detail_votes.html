@@ -1,7 +1,6 @@
-{% load i18n %}
 
 <div class="list-prefix">
-  <h2>{% trans 'Upvotes' %}</h2>
+  <h2>Upvotes</h2>
 </div>
 <div class="list list--grid">
   {% for vote in upvotes|slice:"0:96" %}
@@ -11,7 +10,7 @@
   {% endfor %}
 </div>
 <div class="list-prefix">
-  <h2>{% trans 'Downvotes' %}</h2>
+  <h2>Downvotes</h2>
 </div>
 <div class="list list--grid">
   {% for vote in downvotes|slice:"0:96" %}

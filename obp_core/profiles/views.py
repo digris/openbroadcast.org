@@ -12,7 +12,6 @@ from django.http import (
 )
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.utils.translation import ugettext as _
 from django.views.generic import DetailView, ListView, View, UpdateView
 from braces.views import LoginRequiredMixin
 from invitation.models import Invitation
@@ -52,11 +51,11 @@ class ProfileListView(MenuMixin, BaseSearchListView):
     search_class = ProfileSearch
     current_menu_item = "network:profile-list"
     order_by = [
-        {"key": "created", "name": _("Creation date"), "default_direction": "desc"},
-        {"key": "updated", "name": _("Modification date"), "default_direction": "asc"},
-        {"key": "date_joined", "name": _("Date joined"), "default_direction": "desc"},
-        {"key": "last_login", "name": _("Last Login"), "default_direction": "desc"},
-        {"key": "name", "name": _("Name"), "default_direction": "asc"},
+        {"key": "created", "name": "Creation date", "default_direction": "desc"},
+        {"key": "updated", "name": "Modification date", "default_direction": "asc"},
+        {"key": "date_joined", "name": "Date joined", "default_direction": "desc"},
+        {"key": "last_login", "name": "Last Login", "default_direction": "desc"},
+        {"key": "name", "name": "Name", "default_direction": "asc"},
     ]
 
     def get_queryset(self, **kwargs):
@@ -76,11 +75,11 @@ class ProfileDetailView(MenuMixin, DetailView):
     current_menu_item = "network:profile-list"
     section = None
     sections = [
-        ("playlists", _("Playlists")),
-        ("profile", _("Profile")),
-        ("votes", _("Up- & Downvotes")),
-        ("uploads", _("Uploads")),
-        ("activities", _("Activities")),
+        ("playlists", "Playlists"),
+        ("profile", "Profile"),
+        ("votes", "Up- & Downvotes"),
+        ("uploads", "Uploads"),
+        ("activities", "Activities"),
     ]
 
     def dispatch(self, request, *args, **kwargs):
@@ -425,7 +424,7 @@ class InvitationDeleteView(View):
 
         if i.delete():
             messages.add_message(
-                self.request, messages.INFO, _(f"Deleted invitation for {i.email}")
+                self.request, messages.INFO, f"Deleted invitation for {i.email}"
             )
 
         return HttpResponseRedirect(reverse("profiles-invitations"))

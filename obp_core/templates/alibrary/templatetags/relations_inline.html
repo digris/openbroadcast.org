@@ -1,4 +1,4 @@
-{% load i18n truncate_tags permission_tags anchor_tags %}
+{% load truncate_tags permission_tags anchor_tags %}
 
 {% if relations.specific %}
   <ul class="unstyled">
@@ -35,7 +35,7 @@
            title="Go to {{ relation.url }}">{{ relation.url|domain_for_url }}</a>
 
         {% if relation.service == "official" %}
-          <small class="pull-right">{% trans "official" %}</small>
+          <small class="pull-right">official</small>
         {% endif %}
 
       </li>

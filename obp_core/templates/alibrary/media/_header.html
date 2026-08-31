@@ -1,4 +1,4 @@
-{% load truncate_tags i18n thumbnail spurl calc_tags object_action_tags tagging_extra_tags %}
+{% load truncate_tags thumbnail spurl calc_tags object_action_tags tagging_extra_tags %}
 <div class="header__primary">
   <div class="title title--primary">
     <h2>{{ object.name|truncate_chars_inner:40 }}</h2>
@@ -17,7 +17,7 @@
     {% if object.get_mediaartists %}
       <div class="meta__item">
         <div>
-          {% trans "Track Artists" %}:
+          Track Artists:
         </div>
         <div>
           {# TODO: refactor artist display logic #}
@@ -40,7 +40,7 @@
     {% if object.release %}
       <div class="meta__item">
         <div>
-          {% trans "Release" %}:
+          Release:
         </div>
         <div>
           <a href="{{ object.release.get_absolute_url }}">{{ object.release.name }}</a>
@@ -50,7 +50,7 @@
     {% if object.release and object.release.label %}
       <div class="meta__item">
         <div>
-          {% trans "Label" %}:
+          Label:
         </div>
         <div>
           <a href="{{ object.release.label.get_absolute_url }}">{{ object.release.label.name }}</a>
@@ -59,7 +59,7 @@
     {% endif %}
     <div class="meta__item">
       <div>
-        {% trans "Duration" %}:
+        Duration:
       </div>
       <div>
         {{ object.duration_s|sec_to_time }}
@@ -68,7 +68,7 @@
     {% if object.opus_number %}
       <div class="meta__item">
         <div>
-          {% trans "Opus N." %}:
+          Opus N.:
         </div>
         <div>
           {{ object.opus_number }}
@@ -78,7 +78,7 @@
     {% if object.release and object.release.releasedate_approx %}
       <div class="meta__item">
         <div>
-          {% trans "Release date" %}:
+          Release date:
         </div>
         <div>
           {{ object.release.releasedate_approx|date:"SHORT_DATE_FORMAT" }}
@@ -88,7 +88,7 @@
     {% if object.isrc %}
       <div class="meta__item">
         <div>
-          {% trans "ISRC" %}:
+          ISRC:
         </div>
         <div>
           {{ object.isrc }}
@@ -98,7 +98,7 @@
     {% if object.license %}
       <div class="meta__item">
         <div>
-          {% trans "License" %}:
+          License:
         </div>
         <div>
           {{ object.license.name }}
@@ -109,7 +109,7 @@
   <div class="meta">
     <div class="meta__item">
       <div>
-        {% trans "Created" %}:
+        Created:
       </div>
       <div class="meta__item__grid">
         <time>
@@ -124,7 +124,7 @@
     </div>
     <div class="meta__item">
       <div>
-        {% trans "Updated" %}:
+        Updated:
       </div>
       <div class="meta__item__grid">
         <time>

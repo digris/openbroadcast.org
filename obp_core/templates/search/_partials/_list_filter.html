@@ -1,4 +1,4 @@
-{% load spurl i18n text_tags %}
+{% load spurl text_tags %}
 
 {% for filter in filters %}
   <div class="filter {% if filter.num_selected %} has-selection{% endif %}" data-listfilter="{{ filter.key }}">
@@ -7,7 +7,7 @@
         <span class="uc-icon">&#9658;</span>
       </div>
       <div class="header-title">
-        {% trans "Filter" %}: {{ filter.title|text_replace:"_: "|title }}
+        Filter: {{ filter.title|text_replace:"_: "|title }}
       </div>
       <div class="header-count">
         <span>{{ filter.num_selected }}</span>/<span>{{ filter.options|length }}</span>

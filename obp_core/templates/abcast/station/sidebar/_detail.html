@@ -1,12 +1,12 @@
-{% load i18n activity_tags ctype_tags %}
+{% load activity_tags ctype_tags %}
 
 <div class="menu-context">
   <div class="action-group">
     <ul class="unstyled">
       {% if perms.alibrary.change_station and user.is_staff %}
         <li class="action">
-          <a href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}" title="{% trans 'Administration view' %}">
-            {% trans "Administrative view" %}
+          <a href="{{ object.get_admin_url }}?next={{ object.get_absolute_url }}" title="Administration view">
+            Administrative view
           </a>
         </li>
       {% endif %}

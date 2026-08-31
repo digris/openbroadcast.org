@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
-from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from phonenumber_field.modelfields import PhoneNumberField
@@ -31,8 +30,8 @@ class MigrationMixin(models.Model):
     class Meta:
         abstract = True
         app_label = "alibrary"
-        verbose_name = _("MigrationMixin")
-        verbose_name_plural = _("MigrationMixins")
+        verbose_name = "MigrationMixin"
+        verbose_name_plural = "MigrationMixins"
         ordering = ("pk",)
 
 
@@ -48,10 +47,10 @@ class Distributor(
     """
 
     TYPE_CHOICES = (
-        ("unknown", _("Unknown")),
-        ("major", _("Major")),
-        ("indy", _("Independent")),
-        ("other", _("Other")),
+        ("unknown", "Unknown"),
+        ("major", "Major"),
+        ("indy", "Independent"),
+        ("other", "Other"),
     )
 
     type = models.CharField(
@@ -86,8 +85,8 @@ class Distributor(
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Distributor")
-        verbose_name_plural = _("Distributors")
+        verbose_name = "Distributor"
+        verbose_name_plural = "Distributors"
         ordering = ("name",)
 
     def __str__(self):
@@ -128,8 +127,8 @@ class DistributorLabel(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Labels in catalog")
-        verbose_name_plural = _("Labels in catalog")
+        verbose_name = "Labels in catalog"
+        verbose_name_plural = "Labels in catalog"
 
 
 class License(
@@ -142,26 +141,26 @@ class License(
     slug = models.SlugField(max_length=100, unique=False)
     name = models.CharField(max_length=200)
     key = models.CharField(
-        verbose_name=_("License key"),
+        verbose_name="License key",
         max_length=36,
         blank=True,
         null=True,
-        help_text=_("used e.g. for the icon-names"),
+        help_text="used e.g. for the icon-names",
     )
     restricted = models.NullBooleanField(null=True, blank=True)
     version = models.CharField(
-        verbose_name=_("License version"),
+        verbose_name="License version",
         max_length=36,
         blank=True,
         null=True,
-        help_text=_("e.g. 2.5 CH"),
+        help_text="e.g. 2.5 CH",
     )
     iconset = models.CharField(
-        verbose_name=_("Iconset"),
+        verbose_name="Iconset",
         max_length=36,
         blank=True,
         null=True,
-        help_text=_("e.g. cc-by, cc-nc, cc-sa"),
+        help_text="e.g. cc-by, cc-nc, cc-sa",
     )
     link = models.URLField(null=True, blank=True)
     parent = models.ForeignKey(
@@ -181,8 +180,8 @@ class License(
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("License")
-        verbose_name_plural = _("Licenses")
+        verbose_name = "License"
+        verbose_name_plural = "Licenses"
         ordering = ("parent__name", "name")
 
     def __str__(self):
@@ -230,8 +229,8 @@ class Profession(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Role/Profession")
-        verbose_name_plural = _("Roles/Profession")
+        verbose_name = "Role/Profession"
+        verbose_name_plural = "Roles/Profession"
         ordering = ("name",)
 
     def __str__(self):
@@ -245,13 +244,13 @@ class DaypartManager(models.Manager):
 
 class Daypart(models.Model):
     DAY_CHOICES = (
-        (0, _("Mon")),
-        (1, _("Tue")),
-        (2, _("Wed")),
-        (3, _("Thu")),
-        (4, _("Fri")),
-        (5, _("Sat")),
-        (6, _("Sun")),
+        (0, "Mon"),
+        (1, "Tue"),
+        (2, "Wed"),
+        (3, "Thu"),
+        (4, "Fri"),
+        (5, "Sat"),
+        (6, "Sun"),
     )
 
     day = models.PositiveIntegerField(default=0, null=True, choices=DAY_CHOICES)
@@ -263,8 +262,8 @@ class Daypart(models.Model):
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Daypart")
-        verbose_name_plural = _("Dayparts")
+        verbose_name = "Daypart"
+        verbose_name_plural = "Dayparts"
         ordering = ("day", "time_start")
 
     def __str__(self):
@@ -329,30 +328,30 @@ class Relation(
     models.Model,
 ):
     SERVICE_CHOICES = (
-        ("", _("Not specified")),
-        ("generic", _("Generic")),
-        ("facebook", _("Facebook")),
-        ("youtube", _("YouTube")),
-        ("discogs", _("Discogs")),
-        ("lastfm", _("Last.fm")),
-        ("linkedin", _("Linked In")),
-        ("soundcloud", _("Soundcloud")),
-        ("twitter", _("Twitter")),
-        ("discogs_master", _("Discogs | master-release")),
-        ("wikipedia", _("Wikipedia")),
-        ("musicbrainz", _("Musicbrainz")),
-        ("bandcamp", _("Bandcamp")),
-        ("itunes", _("iTunes")),
-        ("imdb", _("IMDb")),
-        ("wikidata", _("wikidata")),
-        ("viaf", _("VIAF")),
-        ("official", _("Official website")),
-        ("vimeo", _("Vimeo")),
-        ("instagram", _("Instagram")),
-        ("ndr", _("NDR")),
+        ("", "Not specified"),
+        ("generic", "Generic"),
+        ("facebook", "Facebook"),
+        ("youtube", "YouTube"),
+        ("discogs", "Discogs"),
+        ("lastfm", "Last.fm"),
+        ("linkedin", "Linked In"),
+        ("soundcloud", "Soundcloud"),
+        ("twitter", "Twitter"),
+        ("discogs_master", "Discogs | master-release"),
+        ("wikipedia", "Wikipedia"),
+        ("musicbrainz", "Musicbrainz"),
+        ("bandcamp", "Bandcamp"),
+        ("itunes", "iTunes"),
+        ("imdb", "IMDb"),
+        ("wikidata", "wikidata"),
+        ("viaf", "VIAF"),
+        ("official", "Official website"),
+        ("vimeo", "Vimeo"),
+        ("instagram", "Instagram"),
+        ("ndr", "NDR"),
     )
 
-    ACTION_CHOICES = (("information", _("Information")), ("buy", _("Buy")))
+    ACTION_CHOICES = (("information", "Information"), ("buy", "Buy"))
 
     service = models.CharField(
         max_length=50,
@@ -370,7 +369,7 @@ class Relation(
         max_length=200,
         blank=True,
         null=True,
-        help_text=_("Additionally override the name."),
+        help_text="Additionally override the name.",
     )
     url = models.URLField(max_length=512)
     content_type = models.ForeignKey(ContentType)
@@ -385,8 +384,8 @@ class Relation(
 
     class Meta:
         app_label = "alibrary"
-        verbose_name = _("Relation")
-        verbose_name_plural = _("Relations")
+        verbose_name = "Relation"
+        verbose_name_plural = "Relations"
         ordering = ("url",)
 
     def __str__(self):

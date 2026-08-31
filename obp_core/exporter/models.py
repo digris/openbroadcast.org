@@ -9,7 +9,6 @@ import unicodedata
 from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.core.files import File as DjangoFile
-from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.urlresolvers import reverse
@@ -27,13 +26,13 @@ MEDIA_ROOT = getattr(settings, "MEDIA_ROOT", None)
 USE_CELERYD = getattr(settings, "EXPORTER_USE_CELERYD", False)
 
 GENERIC_STATUS_CHOICES = (
-    (0, _("Init")),
-    (1, _("Done")),
-    (2, _("Ready")),  # a.k.a. 'queued'
-    (3, _("Progress")),
-    (4, _("Downloaded")),
-    (99, _("Error")),
-    (11, _("Other")),
+    (0, "Init"),
+    (1, "Done"),
+    (2, "Ready"),  # a.k.a. 'queued'
+    (3, "Progress"),
+    (4, "Downloaded"),
+    (99, "Error"),
+    (11, "Other"),
 )
 
 
@@ -68,7 +67,7 @@ def create_archive_dir(instance):
 
 
 class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
-    FORMAT_CHOICES = (("mp3", _("MP3")), ("flac", _("Flac")))
+    FORMAT_CHOICES = (("mp3", "MP3"), ("flac", "Flac"))
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -92,21 +91,21 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
     downloaded = models.DateTimeField(blank=True, null=True)
 
     TYPE_CHOICES = (
-        ("web", _("Web Interface")),
-        ("api", _("API")),
-        ("fs", _("Filesystem")),
+        ("web", "Web Interface"),
+        ("api", "API"),
+        ("fs", "Filesystem"),
     )
     type = models.CharField(max_length=10, default="web", choices=TYPE_CHOICES)
     notes = models.TextField(
         blank=True,
         null=True,
-        help_text=_("Optionally, just add some notes to this export if desired."),
+        help_text="Optionally, just add some notes to this export if desired.",
     )
 
     class Meta:
         app_label = "exporter"
-        verbose_name = _("Export")
-        verbose_name_plural = _("Exports")
+        verbose_name = "Export"
+        verbose_name_plural = "Exports"
         ordering = ("created",)
 
     def __str__(self):
@@ -222,7 +221,7 @@ post_delete.connect(post_delete_export, sender=Export)
 
 
 def generate_export_filename(qs):
-    filename = _("initializing export")
+    filename = "initializing export"
     if qs.count() == 1:
         item = qs.all()[0]
         if item.content_type.name.lower() == "release":
@@ -233,7 +232,7 @@ def generate_export_filename(qs):
             filename = item.content_object.name.encode("ascii", "ignore")
 
     if qs.count() > 1:
-        filename = _("Multiple items")
+        filename = "Multiple items"
 
     return filename
 
@@ -241,12 +240,12 @@ def generate_export_filename(qs):
 class ExportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
     class Meta:
         app_label = "exporter"
-        verbose_name = _("Export Item")
-        verbose_name_plural = _("Export Items")
+        verbose_name = "Export Item"
+        verbose_name_plural = "Export Items"
         ordering = ("-created",)
 
     export_session = models.ForeignKey(
-        Export, verbose_name=_("Export"), null=True, related_name="export_items"
+        Export, verbose_name="Export", null=True, related_name="export_items"
     )
     status = models.PositiveIntegerField(default=0, choices=GENERIC_STATUS_CHOICES)
 

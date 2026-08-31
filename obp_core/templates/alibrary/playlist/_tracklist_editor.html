@@ -1,4 +1,4 @@
-{% load sekizai_tags thumbnail i18n truncate_tags %}
+{% load sekizai_tags thumbnail truncate_tags %}
 
 
 {% addtoblock "js-post" %}<script src="{{ STATIC_URL }}alibrary/js/lib/raphael-min.js"></script>{% endaddtoblock %}
@@ -48,7 +48,7 @@
       <div class="span12">
 
         <ul class="unstyled horizontal" id="editor_mode_switch">
-          <li>{% trans "Display" %}</li>
+          <li>Display</li>
           <li><a data-mode="extended" href="#"><i class="icon-th-list"></i></a></li>
           <li><a data-mode="condensed" href="#"><i class="icon-list"></i></a></li>
         </ul>
@@ -59,23 +59,23 @@
     <div class="row-fluid">
 
       <div class="span1">
-        {% trans "Pos" %}
+        Pos
       </div>
 
       <div class="span3">
-        {% trans "Track" %}
+        Track
       </div>
 
       <div class="span1">
-        <span class="pull-right">{% trans "Crossfade" %}</span>
+        <span class="pull-right">Crossfade</span>
       </div>
 
       <div class="span3 fade-cue">
-        <span class="pull-right">{% trans "Fade-In / -Out" %}</span>
+        <span class="pull-right">Fade-In / -Out</span>
       </div>
 
       <div class="span3 fade-cue">
-        <span class="pull-right">{% trans "Cue-In / -Out" %}</span>
+        <span class="pull-right">Cue-In / -Out</span>
       </div>
 
     </div>

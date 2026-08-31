@@ -9,14 +9,13 @@ from django.forms.widgets import CheckboxInput, ClearableFileInput
 from django.template.defaultfilters import filesizeformat
 from django.utils.html import conditional_escape, escape
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
 
 
 # from django.utils.html import conditional_escape, format_html, format_html_join
 class ExtraClearableFileInput(ClearableFileInput):
-    initial_text = _("Currently")
-    input_text = _("Change")
-    clear_checkbox_label = _("Clear")
+    initial_text = "Currently"
+    input_text = "Change"
+    clear_checkbox_label = "Clear"
 
     template_with_initial = "<ul><li>%(initial)s</li><li>%(clear_template)s</li><li>%(input_text)s: %(input)s</li></ul>"
     template_with_clear = (
@@ -25,9 +24,9 @@ class ExtraClearableFileInput(ClearableFileInput):
 
 
 class PreviewImageInput(ClearableFileInput):
-    initial_text = _("Currently")
-    input_text = _("Change")
-    clear_checkbox_label = _("Clear")
+    initial_text = "Currently"
+    input_text = "Change"
+    clear_checkbox_label = "Clear"
 
     template_with_initial = "<h1>%(initial)s</h1><ul><li>%(initial)s</li><li>%(clear_template)s</li><li>%(input_text)s: %(input)s</li></ul>"
     template_with_clear = (
@@ -179,14 +178,11 @@ class ContentTypeRestrictedFileField(FileField):
             if content_type in self.content_types:
                 if file._size > self.max_upload_size:
                     raise forms.ValidationError(
-                        _("Please keep filesize under %s. Current filesize %s")
-                        % (
-                            filesizeformat(self.max_upload_size),
-                            filesizeformat(file._size),
-                        )
+                        f"Please keep filesize under {filesizeformat(self.max_upload_size)}. "
+                        f"Current filesize {filesizeformat(file._size)}"
                     )
             else:
-                raise forms.ValidationError(_("Filetype not supported."))
+                raise forms.ValidationError("Filetype not supported.")
         except AttributeError:
             pass
 
