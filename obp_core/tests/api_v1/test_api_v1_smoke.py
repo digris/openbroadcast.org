@@ -5,7 +5,6 @@ import pytest
 @pytest.mark.parametrize(
     "url",
     [
-        # "/api/v1/abcast/base/",
         "/api/v1/abcast/emission/",
         "/api/v1/library/artist/",
         "/api/v1/library/release/",
