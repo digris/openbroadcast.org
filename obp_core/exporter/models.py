@@ -135,11 +135,6 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
         )
         return f"{url}{self.pk}/"
 
-    # @models.permalink
-    def get_delete_url(self):
-        # return ('exporter-upload-delete', [str(self.pk)])
-        return ""
-
     def set_downloaded(self):
         self.downloaded = datetime.datetime.now()
         self.status = 4
@@ -149,7 +144,7 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def process(self):
         log = logging.getLogger("exporter.models.process")
-        log.info("Start process Export: %s" % (self.pk))
+        log.info("Start process Export: %s", self.pk)
 
         if USE_CELERYD:
             self.process_task.delay(self)
@@ -214,7 +209,7 @@ def post_delete_export(sender, **kwargs):
     obj = kwargs["instance"]
 
     if obj.file:
-        log.debug("Post delete action, remove file: %s" % obj.file.path)
+        log.debug("Post delete action, remove file: %s", obj.file.path)
 
         directory = os.path.split(obj.file.path)[0]
         try:
@@ -272,8 +267,8 @@ class ExportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def process(self):
         log = logging.getLogger("exporter.models.process")
-        log.info("Start processing ExportItem: %s" % (self.pk))
-        log.info("Path: %s" % (self.file.path))
+        log.info("Start processing ExportItem: %s", self.pk)
+        log.info("Path: %s", self.file.path)
 
         if USE_CELERYD:
             self.process_task.delay(self)

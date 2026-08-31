@@ -55,7 +55,7 @@ class ArtworkCrawler:
             preserved
         )
 
-        log.debug(f"crawling artwork: {obj} - id:{obj.pk}")
+        log.debug("crawling artwork: %s - id:%s", obj, obj.pk)
 
     ###################################################################
     # direct field mappings
@@ -66,13 +66,13 @@ class ArtworkCrawler:
         image_url = None
 
         for relation in self.relations:
-            log.debug(f"crawling artwork on {relation.service} - {relation.url}")
+            log.debug("crawling artwork on %s - %s", relation.service, relation.url)
 
             _crawl_func = getattr(self, f"crawl_for_{relation.service}_image")
 
             image_url = _crawl_func(relation.url)
             if image_url:
-                log.info(f"found image on {relation.service}: {image_url}")
+                log.info("found image on %s: %s", relation.service, image_url)
                 break
 
         return image_url
@@ -98,7 +98,7 @@ class ArtworkCrawler:
             image_name = data["claims"]["P18"][0]["mainsnak"]["datavalue"]["value"]
             image_name = image_name.replace(" ", "_")
         except KeyError as e:
-            log.debug(f"no image data found: {e}")
+            log.debug("no image data found: %s", e)
             return
 
         # https://stackoverflow.com/a/34402875/469111
@@ -130,7 +130,7 @@ class ArtworkCrawler:
             return self.crawl_for_discogs_image(url)
 
         if r.status_code != 200:
-            log.warning(f"unable to load data: {r.status_code} - {url}")
+            log.warning("unable to load data: %s - %s", r.status_code, url)
             return
 
         data = r.json()
@@ -201,7 +201,7 @@ class ArtworkCrawler:
                 image_url = "https:" + image_url
             return image_url
         except (KeyError, IndexError, TypeError) as e:
-            log.debug(f"no image data found: {e}")
+            log.debug("no image data found: %s", e)
             return
 
     def download_and_save_image(self, image_url):
@@ -221,11 +221,11 @@ class ArtworkCrawler:
 
         # 2. create directory if absent
         if not os.path.isdir(_dir_abs):
-            log.debug(f"create directory: {_dir_abs}")
+            log.debug("create directory: %s", _dir_abs)
             os.makedirs(_dir_abs)
 
         # 3. download image
-        log.debug(f"save {image_url} to {_path_abs}")
+        log.debug("save %s to %s", image_url, _path_abs)
         _f = urllib.URLopener()
         _f.retrieve(image_url, _path_abs)
         _f.close()

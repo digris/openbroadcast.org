@@ -16,7 +16,7 @@ def run_preflight_check_task(preflight_check_id):
 
     preflight_check = PreflightCheck.objects.get(id=preflight_check_id)
 
-    logger.info(f"Media id: {preflight_check.media.id} - run preflight check")
+    logger.info("Media id: %s - run preflight check", preflight_check.media.id)
 
     try:
         result = service_client.run_check(media=preflight_check.media)
@@ -45,7 +45,7 @@ def run_preflight_check_task(preflight_check_id):
         preflight_check.save()
 
     except service_client.PreflightServiceException as e:
-        logger.warning(f"error running preflight check: {e}")
+        logger.warning("error running preflight check: %s", e)
 
         preflight_check.status = PreflightCheck.STATUS_ERROR
         preflight_check.checks = {}

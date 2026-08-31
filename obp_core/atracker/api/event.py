@@ -42,8 +42,7 @@ class EventResource(ModelResource):
 
         return [
             url(
-                r"^(?P<resource_name>%s)/(?P<content_type>[\w.]+)/(?P<object_uuid>[\w.-]+)(?:/(?P<action>[\w-]+))?(?:/(?P<user_id>-?[0-9]+))?%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<content_type>[\\w.]+)/(?P<object_uuid>[\\w.-]+)(?:/(?P<action>[\\w-]+))?(?:/(?P<user_id>-?[0-9]+))?{trailing_slash()}$",
                 self.wrap_view("create_event_for_user"),
                 name="atracker-create-event-for-user",
             )
@@ -77,8 +76,11 @@ class EventResource(ModelResource):
             user_id = int(user_id)
 
         log.debug(
-            "create_event_for_user - content_type: %s - object_uuid: %s - action: %s - user_id: %s"
-            % (content_type, object_uuid, action, user_id)
+            "create_event_for_user - content_type: %s - object_uuid: %s - action: %s - user_id: %s",
+            content_type,
+            object_uuid,
+            action,
+            user_id,
         )
 
         if isinstance(content_type, str) and "." in content_type:
@@ -92,21 +94,22 @@ class EventResource(ModelResource):
             raise ValueError('content_type must a ct id or "app.modelname" string')
 
         if user_id:
-            log.debug("creating event on _behalf_ of user with id: %s" % user_id)
+            log.debug("creating event on _behalf_ of user with id: %s", user_id)
 
             if request.user.has_perm("atracker.track_for_user"):
                 user = get_user_model().objects.get(pk=user_id)
-                log.info("voting for user by id: %s" % user.username)
+                log.info("voting for user by id: %s", user.username)
             else:
                 log.warning(
-                    "no permission for %s to vote in behalf of %s"
-                    % (request.user, user_id)
+                    "no permission for %s to vote in behalf of %s",
+                    request.user,
+                    user_id,
                 )
                 user = None
 
         elif request.user and request.user.is_authenticated():
             user = request.user
-            log.info("creating event for user by request: %s" % user.username)
+            log.info("creating event for user by request: %s", user.username)
 
         else:
             log.debug("no authenticated user")

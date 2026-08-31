@@ -35,12 +35,12 @@ class MixdownAPIClient:
 
         url = f"{API_BASE_URL}mixdown/playlist/{obj.uuid}/"
 
-        log.debug(f"loading mixdown from: {url}")
+        log.debug("loading mixdown from: %s", url)
 
         try:
             r = requests.get(url, timeout=REQUEST_TIMEOUT, headers=self.headers)
         except ConnectionError as e:
-            log.warning(f"unable to get data from mixdown api: {e}")
+            log.warning("unable to get data from mixdown api: %s", e)
             return
 
         if r.status_code != 200:
@@ -55,7 +55,7 @@ class MixdownAPIClient:
 
         url = f"{API_BASE_URL}mixdown/playlist/{obj.uuid}/"
 
-        log.debug(f"requesting mixdown: {url}")
+        log.debug("requesting mixdown: %s", url)
 
         data = {"remote_uri": f"{SITE_URL}{obj.get_api_url()}"}
 
@@ -70,11 +70,11 @@ class MixdownAPIClient:
                 )
 
         except ConnectionError as e:
-            log.warning(f"unable to post data to mixdown api: {e}")
+            log.warning("unable to post data to mixdown api: %s", e)
             return
 
         if r.status_code not in [200, 201]:
-            log.warning(f"{r.text}")
+            log.warning("%s", r.text)
             return
 
         return self.parse_mixdown_data(r.json())

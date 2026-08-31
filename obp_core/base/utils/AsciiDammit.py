@@ -164,7 +164,7 @@ CHARS = {
 def _makeRE(limit):
     """Returns a regular expression object that will match special characters
     up to the given limit."""
-    return re.compile("([\x80-\\x%s])" % limit, re.M)
+    return re.compile(f"([\x80-\\x{limit}])", re.M)
 
 
 ALL = _makeRE("ff")
@@ -203,7 +203,7 @@ def _dammit(t, html=0, fixWindowsOnly=0):
 
 def asciiDammit(t, fixWindowsOnly=0):
     "Turns ISO-Latin-1 into a plain ASCII approximation, dammit."
-    return unidecode("%s" % t)
+    return unidecode(str(t))
 
 
 def __asciiDammit(t, fixWindowsOnly=0):

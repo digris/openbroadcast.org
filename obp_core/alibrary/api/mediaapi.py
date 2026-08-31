@@ -21,7 +21,12 @@ THUMBNAIL_OPT = {"size": (70, 70), "crop": True, "bw": False, "quality": 80}
 
 class MediaResource(ModelResource):
     release = fields.ForeignKey(
-        "alibrary.api.ReleaseResource", "release", null=True, full=True
+        "alibrary.api.ReleaseResource",
+        "release",
+        null=True,
+        # NOTE: changed to false due to regression issue. check if we even
+        #       need full resource, as tastipie anyway has to be removed.
+        full=False,
     )
     artist = fields.ForeignKey(
         "alibrary.api.ArtistResource", "artist", null=True, full=True
@@ -156,20 +161,17 @@ class MediaResource(ModelResource):
         return [
             # url(r"^(?P<resource_name>%s)/autocomplete%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('autocomplete'), name="alibrary-media_api-autocomplete"),
             url(
-                r"^(?P<resource_name>%s)/(?P<uuid>\w[\w/-]*)/vote%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<uuid>\\w[\\w/-]*)/vote{trailing_slash()}$",
                 self.wrap_view("vote"),
                 name="alibrary-media_api-vote",
             ),
             url(
-                r"^(?P<resource_name>%s)/(?P<uuid>\w[\w/-]*)/stats%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<uuid>\\w[\\w/-]*)/stats{trailing_slash()}$",
                 self.wrap_view("stats"),
                 name="alibrary-media_api-stats",
             ),
             url(
-                r"^(?P<resource_name>%s)/(?P<uuid>\w[\w/-]*)/stream.mp3$"
-                % self._meta.resource_name,
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<uuid>\\w[\\w/-]*)/stream.mp3$",
                 self.wrap_view("stream_file"),
                 name="alibrary-media_api-stream",
             ),

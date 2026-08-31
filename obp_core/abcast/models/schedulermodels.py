@@ -132,7 +132,7 @@ class Emission(TimestampedModelMixin, UUIDModelMixin, models.Model):
         permissions = (("schedule_emission", "Schedule Emission"),)
 
     def __str__(self):
-        return "%s" % self.name
+        return str(self.name)
 
     def get_ct(self):
         return f"{self._meta.app_label}.{self.__class__.__name__}".lower()
@@ -249,7 +249,9 @@ def post_save_emission_task(obj):
     if obj.time_end > range_start and obj.time_start < range_end:
         # notify pypy
         log.debug(
-            f"Emission in critical range ({range_start} - {range_end}) - will notify pypo"
+            "Emission in critical range (%s - %s) - will notify pypo",
+            range_start,
+            range_end,
         )
         from base.pypo.gateway import send as pypo_send
         from abcast.utils import scheduler
@@ -321,7 +323,7 @@ class DaypartSet(models.Model):
         ordering = ("time_start",)
 
     def __str__(self):
-        return "%s" % self.time_start
+        return str(self.time_start)
 
 
 class Weekday(models.Model):
@@ -343,7 +345,7 @@ class Weekday(models.Model):
         ordering = ("day",)
 
     def __str__(self):
-        return "%s" % self.get_day_display()
+        return str(self.get_day_display())
 
 
 class Daypart(models.Model):

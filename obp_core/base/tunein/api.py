@@ -43,4 +43,4 @@ def set_tunein_metadata(channel, content_object):
         )
         api.set_metadata(content_object)
     except Exception as e:
-        log.warning("unable to set tunein metadata text: %s" % e)
+        log.warning("unable to set tunein metadata text: %s", e)

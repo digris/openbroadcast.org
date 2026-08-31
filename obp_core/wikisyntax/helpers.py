@@ -81,24 +81,15 @@ def wikify(match):  # Excepts a regexp match
                     return wiki.render(name, trail=trail, explicit=True)
                 else:
                     if prefix == "a":
-                        return (
-                            '<a href="https://www.discogs.com/search?q=%s&type=artist">%s</a>'
-                            % (name, name)
-                        )
+                        return f'<a href="https://www.discogs.com/search?q={name}&type=artist">{name}</a>'
 
                     if prefix == "r":
-                        return (
-                            '<a href="https://www.discogs.com/search?q=%s&type=release">%s</a>'
-                            % (name, name)
-                        )
+                        return f'<a href="https://www.discogs.com/search?q={name}&type=release">{name}</a>'
 
                     if prefix == "l":
-                        return (
-                            '<a href="https://www.discogs.com/search?q=%s&type=label">%s</a>'
-                            % (name, name)
-                        )
+                        return f'<a href="https://www.discogs.com/search?q={name}&type=label">{name}</a>'
 
-                    return "* %s *" % name
+                    return f"* {name} *"
 
     """
 	Now we're going to try a generic match across all our wiki objects.
@@ -126,7 +117,7 @@ def wikify(match):  # Excepts a regexp match
 	We tried everything we could and didn't find anything.
 	"""
 
-    raise WikiException("No item found for '%s'" % (token))
+    raise WikiException(f"No item found for '{token}'")
 
 
 class wikify_string:
@@ -150,7 +141,7 @@ class wikify_string:
                 [k.replace(" ", "-").lower() for k in keys if len(k) < 251]
             )
 
-        content = re.sub("%s(.*?)" % WIKIBRACKETS, self.markup_to_links, string)
+        content = re.sub(f"{WIKIBRACKETS}(.*?)", self.markup_to_links, string)
         cache.set_many(self.set_cache)
         return content
 

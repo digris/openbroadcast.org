@@ -72,7 +72,7 @@ class ExportDeleteAllView(PermissionRequiredMixin, LoginRequiredMixin, View):
 def export_download(request, uuid, token):
 
     log = logging.getLogger("exporter.views.export_download")
-    log.info("Download Request by: %s" % (request.user.username))
+    log.info("Download Request by: %s", request.user.username)
 
     export = get_object_or_404(Export, uuid=uuid)
 

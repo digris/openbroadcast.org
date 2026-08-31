@@ -20,16 +20,16 @@ def ingest_fprint_for_media(media_id):
     result = client.ingest_for_media(obj)
 
     if result:
-        log.info(f"Media id: {obj.pk} - ingested fprint")
+        log.info("Media id: %s - ingested fprint", obj.pk)
         type(obj).objects.filter(pk=obj.pk).update(fprint_ingested=timezone.now())
     else:
-        log.warning(f"Media id: {obj.pk} - unable to ingest fprint")
+        log.warning("Media id: %s - unable to ingest fprint", obj.pk)
 
 
 @shared_task
 def delete_fprint_for_media(media_uuid):
 
-    log.info(f"Media id: {media_uuid} - delete fprint")
+    log.info("Media id: %s - delete fprint", media_uuid)
     client = FprintAPIClient()
 
     client.delete_for_media(media_uuid)

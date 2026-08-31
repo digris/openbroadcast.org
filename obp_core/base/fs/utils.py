@@ -28,7 +28,7 @@ def sha1_by_file(file):
         return sha1
 
     except Exception as e:
-        log.warning(f"unable to create sha1 hash: {e}")
+        log.warning("unable to create sha1 hash: %s", e)
 
 
 def clean_directory_tree_reverse(path):

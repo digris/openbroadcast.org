@@ -18,7 +18,7 @@ def label_statistics_as_xls(label, years, title=None, output=None):
     title = title or "Airplay Statistics: open broadcast radio"
     output = output or f"Airplay statistics - {label.name}.xlsx"
 
-    log.info(f"output to: {output}")
+    log.info("output to: %s", output)
 
     ###################################################################
     # workbook preparation

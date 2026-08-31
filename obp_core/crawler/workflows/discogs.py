@@ -98,7 +98,10 @@ class DiscogsCrawler:
         self.discogs_ctype = _bits[-2].strip()
 
         log.debug(
-            f"crawling metadata: {obj} - id:{obj.pk} - discogs_id:{self.discogs_id}"
+            "crawling metadata: %s - id:%s - discogs_id:%s",
+            obj,
+            obj.pk,
+            self.discogs_id,
         )
 
         self._data = None
@@ -109,12 +112,12 @@ class DiscogsCrawler:
 
         url = f"http://{DISCOGS_HOST}/{self.discogs_ctype}s/{self.discogs_id}"
 
-        log.debug(f"load data from: {url}")
+        log.debug("load data from: %s", url)
 
         try:
             r = requests.get(url)
         except Exception:
-            log.warning(f"unable to load data - {url}")
+            log.warning("unable to load data - %s", url)
             return
 
         if r.status_code == 429:
@@ -123,7 +126,7 @@ class DiscogsCrawler:
             self.load_data_from_api()
 
         if r.status_code != 200:
-            log.warning(f"unable to load data: {r.status_code} - {url}")
+            log.warning("unable to load data: %s - %s", r.status_code, url)
             return
 
         return r.json()
@@ -178,10 +181,10 @@ class DiscogsCrawler:
         self.update_relations()
 
         if self._changes:
-            log.info(f"apply changes on {self.obj}: {self._changes}")
+            log.info("apply changes on %s: %s", self.obj, self._changes)
             return self._changes
         else:
-            log.debug(f"no changes for {self.obj}")
+            log.debug("no changes for %s", self.obj)
 
 
 class DiscogsLabelCrawler(DiscogsCrawler):

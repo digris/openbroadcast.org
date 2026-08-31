@@ -12,7 +12,7 @@ def process_assets_for_media(media_pk):
 
     media = Media.objects.get(pk=media_pk)
 
-    log.info(f"process assets for media id: {media.pk}")
+    log.info("process assets for media id: %s", media.pk)
 
     if not media.master:
         return

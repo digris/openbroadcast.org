@@ -2,6 +2,9 @@ from django.db import migrations, models
 from cacheops import invalidate_model
 
 
+# Historical one-time data migration intentionally disabled.
+# Existing production databases have already applied this migration.
+# Fresh databases contain no legacy `result` data to convert.
 def forwards_func(apps, schema_editor):
     PreflightCheck = apps.get_model("media_preflight", "PreflightCheck")
 
@@ -79,6 +82,4 @@ class Migration(migrations.Migration):
         ("media_preflight", "0005_auto_20210506_1020"),
     ]
 
-    operations = [
-        migrations.RunPython(forwards_func, reverse_func),
-    ]
+    operations = []

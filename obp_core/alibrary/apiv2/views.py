@@ -39,7 +39,7 @@ def add_items_to_playlist(items, playlist):
         obj_ct = item["content"].get("ct")
         obj_uuid = item["content"].get("uuid")
 
-        log.debug(f"item requested to collect: {obj_ct} {obj_uuid}")
+        log.debug("item requested to collect: %s %s", obj_ct, obj_uuid)
         obj = apps.get_model(*obj_ct.split(".")).objects.get(uuid=obj_uuid)
 
         cue_and_fade = {

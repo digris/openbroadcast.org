@@ -38,8 +38,11 @@ class WaveformManager(models.Manager):
         )
 
         log.debug(
-            "waveform - get or create for media: %s %s wait: %s (created: %s)"
-            % (media.uuid, type, wait, created)
+            "waveform - get or create for media: %s %s wait: %s (created: %s)",
+            media.uuid,
+            type,
+            wait,
+            created,
         )
 
         if wait and (created or waveform.status < Waveform.DONE):
@@ -83,11 +86,11 @@ class Waveform(UUIDModelMixin, TimestampedModelMixin, models.Model):
         unique_together = ("media", "type")
 
     def __str__(self):
-        return "%s" % (self.get_type_display())
+        return str(self.get_type_display())
 
     @property
     def directory(self):
-        uuid = "%s" % self.media_uuid
+        uuid = str(self.media_uuid)
 
         """
         we need to insert an attitional directory here - as else 32000 fs limit (ext3) could make problems
@@ -114,10 +117,10 @@ class Waveform(UUIDModelMixin, TimestampedModelMixin, models.Model):
         try:
             png_path = waveform_as_png(self.media.master.path)
             shutil.move(png_path, self.path)
-            log.info(f"created waveform image for: {self.media}")
+            log.info("created waveform image for: %s", self.media)
             self.status = Waveform.DONE
         except AudioWaveformException as e:
-            log.warning(f"error creating waveform image for: {self.media} - {e}")
+            log.warning("error creating waveform image for: %s - %s", self.media, e)
             self.status = Waveform.ERROR
 
         self.save()
@@ -153,8 +156,12 @@ class FormatManager(models.Manager):
         )
 
         log.debug(
-            "version - get or create for media: %s %s %s wait: %s (created: %s)"
-            % (media.uuid, encoding, quality, wait, created)
+            "version - get or create for media: %s %s %s wait: %s (created: %s)",
+            media.uuid,
+            encoding,
+            quality,
+            wait,
+            created,
         )
 
         if wait and (created or format.status < Waveform.DONE):
@@ -261,7 +268,7 @@ class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
         obj = self
         processed = False
 
-        log.debug("processing format for media with pk: %s" % obj.media.pk)
+        log.debug("processing format for media with pk: %s", obj.media.pk)
 
         Format.objects.filter(pk=obj.pk).update(status=Format.PROCESSING)
 
@@ -284,7 +291,7 @@ class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
             wav_path = any_to_wav(src=obj.media.master.path, dst=tmp_path)
 
             if obj.encoding == "mp3":
-                log.info("%s encoded version requested." % obj.encoding)
+                log.info("%s encoded version requested.", obj.encoding)
 
                 command = [
                     LAME_BINARY,
@@ -294,7 +301,7 @@ class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
                     obj.path,
                 ]
 
-                log.debug("running: %s" % " ".join(command))
+                log.debug("running: %s", " ".join(command))
 
                 p = subprocess.Popen(command, stdout=subprocess.PIPE)
                 p.communicate()
@@ -344,7 +351,9 @@ def clean_assets(days_to_keep=MEDIA_ASSET_KEEP_DAYS):
     ).nocache()
 
     log.info(
-        f"cleaning assets. {format_qs.count()} formats and {waveform_qs.count()} waveforms"
+        "cleaning assets. %s formats and %s waveforms",
+        format_qs.count(),
+        waveform_qs.count(),
     )
 
     # delete must be called on each item, to not skip post_delete actions.

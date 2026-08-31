@@ -2,7 +2,6 @@ from django.db import migrations, models
 
 
 def forwards_func(apps, schema_editor):
-    print("forwards_func")
     Profile = apps.get_model("profiles", "Profile")
     Service = apps.get_model("profiles", "Service")
     Link = apps.get_model("profiles", "Link")

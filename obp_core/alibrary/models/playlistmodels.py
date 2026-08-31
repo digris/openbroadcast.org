@@ -69,7 +69,7 @@ class Season(models.Model):
         ordering = ("-name",)
 
     def __str__(self):
-        return "%s" % (self.name)
+        return str(self.name)
 
 
 class Weather(models.Model):
@@ -82,7 +82,7 @@ class Weather(models.Model):
         ordering = ("-name",)
 
     def __str__(self):
-        return "%s" % (self.name)
+        return str(self.name)
 
 
 class Series(models.Model):
@@ -358,14 +358,13 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         if self.type == "playlist":
             can_delete = False
             reason = _(
-                'Playlist "%s" is public. It cannot be deleted anymore.' % self.name
+                f'Playlist "{self.name}" is public. It cannot be deleted anymore.'
             )
 
         if self.type == "broadcast":
             can_delete = False
             reason = _(
-                'Playlist "%s" published for broadcast. It cannot be deleted anymore.'
-                % self.name
+                f'Playlist "{self.name}" published for broadcast. It cannot be deleted anymore.'
             )
 
         return can_delete, reason
@@ -427,8 +426,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                     else _("Playlist not scheduled"),
                     "status": schedule_count < 1,
                     "warning": _(
-                        'This playlist has already ben scheduled %s times. Remove all scheduler entries to "un-broadcast" this playlist.'
-                        % schedule_count
+                        f'This playlist has already ben scheduled {schedule_count} times. Remove all scheduler entries to "un-broadcast" this playlist.'
                     ),
                 }
                 if schedule_count > 0:
@@ -483,7 +481,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         from alibrary.models.mediamodels import Media
 
-        log.debug("add media to playlist: {}".format(", ".join(ids)))
+        log.debug("add media to playlist: %s", ", ".join(ids))
 
         for id in ids:
             id = int(id)
@@ -522,7 +520,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     ###################################################################
     def add_item(self, item, cue_and_fade=None, commit=True):
 
-        log.debug(f"add item to playlist: {item}")
+        log.debug("add item to playlist: %s", item)
 
         playlist_item = PlaylistItem(content_object=item)
         playlist_item.save()
@@ -554,8 +552,10 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
     def convert_to(self, playlist_type):
 
         log.debug(
-            'requested to convert "%s" from %s to %s'
-            % (self.name, self.type, playlist_type)
+            'requested to convert "%s" from %s to %s',
+            self.name,
+            self.type,
+            playlist_type,
         )
 
         if playlist_type == "broadcast":
@@ -600,7 +600,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                     - item.fade_cross
                 )
             except Exception as e:
-                log.warning(f"unable to get duration: {e}")
+                log.warning("unable to get duration: %s", e)
                 item.playout_duration = 0
 
             items.append(item)
@@ -611,7 +611,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
         check if everything is fine to be 'scheduled'
         """
 
-        log.info("Self check requested for: %s" % self.name)
+        log.info("Self check requested for: %s", self.name)
 
         status = 1  # set to 'OK'
         messages = []
@@ -631,8 +631,9 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                         pass
                 except OSError as e:
                     log.warning(
-                        _("File does not exists: %s | %s")
-                        % (e, item.content_object.master.path)
+                        _("File does not exists: %s | %s"),
+                        e,
+                        item.content_object.master.path,
                     )
                     status = 99
                     messages.append(
@@ -659,17 +660,18 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                     )
                 )
                 log.warning(
-                    f"durations do not match. difference is: {int(diff / 1000)} seconds"
+                    "durations do not match. difference is: %s seconds",
+                    int(diff / 1000),
                 )
                 status = 2
 
         except Exception as e:
-            messages.append(_("Validation error: %s " % e))
-            log.warning("validation error: %s " % e)
+            messages.append(_(f"Validation error: {e} "))
+            log.warning("validation error: %s ", e)
             status = 99
 
         if status == 1:
-            log.info('Playlist "%s" checked - all fine!' % (self.name))
+            log.info('Playlist "%s" checked - all fine!', self.name)
 
         return status, messages
 
@@ -702,7 +704,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
         url = self.mixdown["mixdown_file"]
 
-        log.debug(f"download mixdown from api: {url} > {self.name}")
+        log.debug("download mixdown from api: %s > %s", url, self.name)
 
         f_temp = NamedTemporaryFile(delete=True)
         f_temp.write(urlopen(url).read())
@@ -843,7 +845,7 @@ def playlist_post_save(sender, instance, **kwargs):
     if instance.mixdown:
         return
 
-    log.debug(f"no mixdown yet for {instance.name} - request to generate")
+    log.debug("no mixdown yet for %s - request to generate", instance.name)
     instance.request_mixdown()
 
 
@@ -910,7 +912,7 @@ class PlaylistItem(models.Model):
     content_object = GenericForeignKey("content_type", "object_id")
 
     def __str__(self):
-        return "%s" % (self.pk)
+        return str(self.pk)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

@@ -169,14 +169,12 @@ class EmissionResource(ModelResource):
 
         return [
             url(
-                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/reschedule%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<pk>\\w[\\w/-]*)/reschedule{trailing_slash()}$",
                 self.wrap_view("reschedule"),
                 name="scheduler_api_reschedule",
             ),
             url(
-                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/update%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<pk>\\w[\\w/-]*)/update{trailing_slash()}$",
                 self.wrap_view("emission_update"),
                 name="scheduler_api_emission_update",
             ),
@@ -238,8 +236,8 @@ class EmissionResource(ModelResource):
         left = float(left) / ppd
         offset_d = int(round(float(left)))
 
-        log.debug("minutes (offset): %s" % offset_min)
-        log.debug("days (offset): %s" % offset_d)
+        log.debug("minutes (offset): %s", offset_min)
+        log.debug("days (offset): %s", offset_d)
 
         # add offsets
         time_start = datetime.datetime.combine(e.time_start.date(), datetime.time(0))
@@ -258,8 +256,8 @@ class EmissionResource(ModelResource):
             seconds=e.content_object.target_duration
         )
 
-        log.debug("time_start: %s" % time_start)
-        log.debug("time_end: %s" % time_end)
+        log.debug("time_start: %s", time_start)
+        log.debug("time_end: %s", time_end)
 
         success = True
 

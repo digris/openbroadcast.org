@@ -55,7 +55,7 @@ def respond(request, code):
     """
     if "next" in request.GET:
         return HttpResponseRedirect(request.GET["next"])
-    return type("Response%d" % code, (HttpResponse,), {"status_code": code})()
+    return type(f"Response{int(code):d}", (HttpResponse,), {"status_code": code})()
 
 
 @login_required

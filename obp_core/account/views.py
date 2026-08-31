@@ -263,7 +263,7 @@ class LoginPickupView(LoginRequiredMixin, View):
                 url = cookie.get("location", "/")
 
             except Exception as e:
-                log.warning(f"unable to decode login-pickup cookie: {e}")
+                log.warning("unable to decode login-pickup cookie: %s", e)
 
         if request.user and request.user.is_staff:
             url += "?toolbar_off"

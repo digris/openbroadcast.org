@@ -42,8 +42,7 @@ class ImportCreateModelForm(forms.ModelForm):
 
     agree_terms = forms.BooleanField(
         label=mark_safe(
-            '%s <a href="%s">%s</a>'
-            % (
+            '{!s} <a href="{!s}">{!s}</a>'.format(
                 _("I agree to the"),
                 "/legal/terms-and-conditions/",
                 _("Terms & Conditions"),
@@ -55,8 +54,7 @@ class ImportCreateModelForm(forms.ModelForm):
 
     agree_documentation = forms.BooleanField(
         label=mark_safe(
-            '%s <a href="%s">%s</a> %s'
-            % (
+            '{!s} <a href="{!s}">{!s}</a> {!s}'.format(
                 _("I did read the"),
                 "/documentation/plattform/",
                 _("ducumentation"),

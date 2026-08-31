@@ -46,8 +46,8 @@ def pushy_post_save(sender, **kwargs):
         route = obj.get_api_url()
 
     message = {"route": route, "type": action}
-    log.debug("Routing message to: %s" % pushy_settings.get_channel())
-    log.debug("route: %s" % route)
+    log.debug("Routing message to: %s", pushy_settings.get_channel())
+    log.debug("route: %s", route)
 
     # pushy_publish(pushy_settings.get_channel(), 'update', message)
     pool.apply_async(pushy_publish(pushy_settings.get_channel(), action, message))
@@ -57,8 +57,8 @@ def pushy_post_delete(sender, **kwargs):
     obj = kwargs["instance"]
 
     message = {"route": obj.get_api_url(), "type": "delete"}
-    log.debug("Routing message to: %s" % pushy_settings.get_channel())
-    log.debug("route: %s" % obj.get_api_url())
+    log.debug("Routing message to: %s", pushy_settings.get_channel())
+    log.debug("route: %s", obj.get_api_url())
 
     pool.apply_async(pushy_publish(pushy_settings.get_channel(), "delete", message))
 
@@ -67,7 +67,7 @@ def setup_signals():
 
     for model in pushy_settings.get_models().values():
         if not model:
-            log.error("Unable to register model %s" % model)
+            log.error("Unable to register model %s", model)
             continue
         else:
             post_save.connect(pushy_post_save, sender=model)

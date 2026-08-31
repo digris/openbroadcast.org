@@ -52,7 +52,7 @@ def clean_filename(filename):
 
 def masterpath_by_uuid(instance, filename):
     filename, extension = os.path.splitext(filename)
-    folder = "private/%s/" % (str(instance.uuid).replace("-", "/")[5:])
+    folder = f"private/{str(instance.uuid).replace('-', '/')[5:]}/"
     filename = "master"
     return os.path.join(
         folder, f"{clean_filename(filename).lower()}{extension.lower()}"
@@ -134,19 +134,17 @@ class Importer:
 
             # there can be multiple ids split by '/' here
             if "/" in mb_artist_id:
-                log.debug(f"got multiple mb artist ids: {mb_artist_id}")
+                log.debug("got multiple mb artist ids: %s", mb_artist_id)
 
                 url = "http://{}/ws/2/artist/{}/?fmt=json".format(
                     MUSICBRAINZ_HOST,
                     mb_artist_id.split("/")[0],
                 )
-                log.info("url: %s" % url)
+                log.info("url: %s", url)
                 r = requests.get(url, timeout=5)
                 result = r.json()
                 log.info(
-                    "aquired name for split-artist: {} > {}".format(
-                        artist, result["name"]
-                    )
+                    "aquired name for split-artist: %s > %s", artist, result["name"]
                 )
                 artist = result["name"]
 
@@ -209,7 +207,7 @@ class Importer:
         """
         m = None
         m_created = False
-        log.info("creating media: %s" % name)
+        log.info("creating media: %s", name)
         m = Media(name=name)
         m.filename = filename
         if tracknumber:
@@ -246,7 +244,7 @@ class Importer:
 
         # create release if forced
         if force_release and not r:
-            log.info("release, force creation: %s" % release)
+            log.info("release, force creation: %s", release)
 
             r = Release(name=release)
             r.save()
@@ -258,32 +256,33 @@ class Importer:
             try:
                 r = Release.objects.get(pk=alibrary_release_id)
                 log.debug(
-                    "got release: %s by alibrary_release_id: %s"
-                    % (r.pk, alibrary_release_id)
+                    "got release: %s by alibrary_release_id: %s",
+                    r.pk,
+                    alibrary_release_id,
                 )
             except Exception:
                 log.debug(
-                    "could not get release by alibrary_release_id: %s"
-                    % alibrary_release_id
+                    "could not get release by alibrary_release_id: %s",
+                    alibrary_release_id,
                 )
 
         # try to get release by mb_id
         if mb_release_id and not r:
-            log.debug("release, local lookup by mb_release_id: %s" % mb_release_id)
+            log.debug("release, local lookup by mb_release_id: %s", mb_release_id)
             try:
                 lrs = lookup.release_by_mb_id(mb_release_id)
                 r = lrs[0]
                 log.debug(
-                    f"got local release: {r.pk} by mb_release_id: {mb_release_id}"
+                    "got local release: %s by mb_release_id: %s", r.pk, mb_release_id
                 )
             except Exception:
                 log.debug(
-                    "could not find local release by mb_release_id: %s" % mb_release_id
+                    "could not find local release by mb_release_id: %s", mb_release_id
                 )
 
         # no luck yet, so create the release
         if not r:
-            log.info("no release yet, so create it: %s" % release)
+            log.info("no release yet, so create it: %s", release)
             r = Release(name=release)
             r.creator_id = self.user.id if self.user else None
             r.save()
@@ -291,11 +290,11 @@ class Importer:
 
         # attach item to current import
         if r:
-            log.info("release here, add it to importitems: %s" % r)
+            log.info("release here, add it to importitems: %s", r)
             if obj.import_session:
                 try:
                     ii = obj.import_session.add_importitem(r)
-                    log.info("importitem created: %s" % ii)
+                    log.info("importitem created: %s", ii)
                 except BaseException:
                     pass
 
@@ -322,7 +321,7 @@ class Importer:
 
         # create artist if forced
         if force_artist and not a:
-            log.info("artist, force creation: %s" % artist)
+            log.info("artist, force creation: %s", artist)
 
             a = Artist(name=artist)
             a.save()
@@ -334,42 +333,42 @@ class Importer:
             try:
                 a = Artist.objects.get(pk=alibrary_artist_id)
                 log.debug(
-                    "got artist: %s by alibrary_artist_id: %s"
-                    % (a.pk, alibrary_artist_id)
+                    "got artist: %s by alibrary_artist_id: %s", a.pk, alibrary_artist_id
                 )
             except Exception:
                 # print e
                 log.debug(
-                    "could not get artist by alibrary_artist_id: %s"
-                    % alibrary_artist_id
+                    "could not get artist by alibrary_artist_id: %s", alibrary_artist_id
                 )
 
         # try to get artist by mb_id
         if mb_artist_id and not a:
-            log.debug("artist, local lookup by mb_artist_id: %s" % mb_artist_id)
+            log.debug("artist, local lookup by mb_artist_id: %s", mb_artist_id)
             try:
                 las = lookup.artist_by_mb_id(mb_artist_id)
                 a = las[0]
-                log.debug(f"got local artist: {a.pk} by mb_artist_id: {mb_artist_id}")
+                log.debug(
+                    "got local artist: %s by mb_artist_id: %s", a.pk, mb_artist_id
+                )
             except Exception:
                 # print e
                 log.debug(
-                    "could not find local artist by mb_artist_id: %s" % mb_artist_id
+                    "could not find local artist by mb_artist_id: %s", mb_artist_id
                 )
 
         # no luck yet, so create the artist
         if not a:
-            log.info("no artist yet, so create it: %s" % artist)
+            log.info("no artist yet, so create it: %s", artist)
             a = Artist(name=artist)
             a.save()
             a_created = True
 
         # attach item to current import
         if a:
-            log.info("artist here, add it to importitems: %s" % a)
+            log.info("artist here, add it to importitems: %s", a)
             if obj.import_session:
                 ii = obj.import_session.add_importitem(a)
-                log.info("importitem created: %s" % ii)
+                log.info("importitem created: %s", ii)
 
             # assign
             m.artist = a
@@ -385,12 +384,12 @@ class Importer:
 
             # create mb reference immediately - to avoid db inconsistencies
             if mb_release_id:
-                mb_url = "http://musicbrainz.org/release/%s" % mb_release_id
+                mb_url = f"http://musicbrainz.org/release/{mb_release_id}"
 
                 try:
                     Relation.objects.get(object_id=r.pk, url=mb_url)
                 except Relation.DoesNotExist:
-                    log.debug("relation not here yet, add it: %s" % mb_url)
+                    log.debug("relation not here yet, add it: %s", mb_url)
                     rel = Relation(content_object=r, url=mb_url)
                     rel.save()
 
@@ -404,12 +403,12 @@ class Importer:
 
             # create mb reference immediately - to avoid db inconsistencies
             if mb_artist_id:
-                mb_url = "http://musicbrainz.org/artist/%s" % mb_artist_id
+                mb_url = f"http://musicbrainz.org/artist/{mb_artist_id}"
 
                 try:
                     Relation.objects.get(object_id=a.pk, url=mb_url)
                 except Relation.DoesNotExist:
-                    log.debug("relation not here yet, add it: %s" % mb_url)
+                    log.debug("relation not here yet, add it: %s", mb_url)
                     rel = Relation(content_object=a, url=mb_url)
                     rel.save()
 
@@ -436,20 +435,20 @@ class Importer:
             obj.import_session.add_importitem(m)
 
         # add file
-        folder = "private/%s/" % (str(m.uuid).replace("-", "/"))
+        folder = f"private/{str(m.uuid).replace('-', '/')}/"
         src = obj.file.path
         filename, extension = os.path.splitext(obj.file.path)
-        dst = os.path.join(folder, "master%s" % extension.lower())
-        log.debug("source path: %s" % src)
-        log.debug("destination path: %s" % dst)
+        dst = os.path.join(folder, f"master{extension.lower()}")
+        log.debug("source path: %s", src)
+        log.debug("destination path: %s", dst)
         try:
-            log.debug("os.makedirs: %s" % os.path.join(MEDIA_ROOT, folder))
+            log.debug("os.makedirs: %s", os.path.join(MEDIA_ROOT, folder))
             os.makedirs(os.path.join(MEDIA_ROOT, folder))
 
-            log.debug(f"os.shutil.copy: {src} - {os.path.join(MEDIA_ROOT, dst)}")
+            log.debug("os.shutil.copy: %s - %s", src, os.path.join(MEDIA_ROOT, dst))
             shutil.copy(src, os.path.join(MEDIA_ROOT, dst))
 
-            log.debug(f"set master for pk: {m.pk} to {dst}")
+            log.debug("set master for pk: %s to %s", m.pk, dst)
             m.master = dst
             m.original_filename = obj.filename
 
@@ -457,8 +456,9 @@ class Importer:
 
         except Exception as e:
             log.warning(
-                'unable to create directory "%s": %s'
-                % (os.path.join(MEDIA_ROOT, folder), e)
+                'unable to create directory "%s": %s',
+                os.path.join(MEDIA_ROOT, folder),
+                e,
             )
 
         return m, 1
@@ -656,7 +656,7 @@ task definitions
 def mb_complete_media_task(
     obj, mb_id, mb_release_id, mb_artist_combo_ids=None, excludes=(), user=None
 ):
-    log.info(f"complete media, m: {obj.name} | mb_id: {mb_id}")
+    log.info("complete media, m: %s | mb_id: %s", obj.name, mb_id)
 
     time.sleep(1.1)
 
@@ -675,7 +675,7 @@ def mb_complete_media_task(
         mb_id,
         "+".join(inc),
     )
-    log.debug("API request for: %s" % url)
+    log.debug("API request for: %s", url)
     r = requests.get(url, timeout=5)
     result = r.json()
 
@@ -686,7 +686,7 @@ def mb_complete_media_task(
         mb_release_id,
         "+".join(inc),
     )
-    log.debug("API request for: %s" % url)
+    log.debug("API request for: %s", url)
     r = requests.get(url, timeout=5)
     result_release = r.json()
 
@@ -718,7 +718,7 @@ def mb_complete_media_task(
         position = 0
         for credit in artist_credits:
             if "artist" in credit:
-                log.info("got creditet artist: {}".format(credit["artist"]))
+                log.info("got creditet artist: %s", credit["artist"])
 
                 time.sleep(0.5)
                 c_as = lookup.artist_by_mb_id(credit["artist"]["id"])
@@ -730,7 +730,7 @@ def mb_complete_media_task(
                     c_a.creator = user
                     c_a.save()
 
-                    url = "http://musicbrainz.org/artist/%s" % credit["artist"]["id"]
+                    url = f"http://musicbrainz.org/artist/{credit['artist']['id']}"
                     rel = Relation(content_object=c_a, url=url)
                     rel.save()
 
@@ -777,7 +777,7 @@ def mb_complete_media_task(
                     l_a.creator = user
                     l_a.save()
 
-                    url = "http://musicbrainz.org/artist/%s" % relation["artist"]["id"]
+                    url = f"http://musicbrainz.org/artist/{relation['artist']['id']}"
                     rel = Relation(content_object=l_a, url=url)
                     rel.save()
 
@@ -817,11 +817,11 @@ def mb_complete_media_task(
 
     # add mb relation
     if mb_id:
-        mb_url = "http://musicbrainz.org/recording/%s" % mb_id
+        mb_url = f"http://musicbrainz.org/recording/{mb_id}"
         try:
             Relation.objects.get(object_id=obj.pk, url=mb_url)
         except BaseException:
-            log.debug("relation not here yet, add it: %s" % mb_url)
+            log.debug("relation not here yet, add it: %s", mb_url)
             rel = Relation(content_object=obj, url=mb_url)
             rel.save()
 
@@ -844,7 +844,7 @@ def mb_complete_media_task(
 
 @shared_task
 def mb_complete_release_task(obj, mb_id, user=None):
-    log.info(f"complete release, r: {obj.name} | mb_id: {mb_id}")
+    log.info("complete release, r: %s | mb_id: %s", obj.name, mb_id)
 
     inc = (
         "artists",
@@ -866,7 +866,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
         "+".join(inc),
     )
 
-    log.debug("query url: %s" % url)
+    log.debug("query url: %s", url)
 
     r = requests.get(url, timeout=5)
     result = r.json()
@@ -876,7 +876,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
     if release_group:
         rg_id = release_group.get("id", None)
 
-    log.debug("release-group id: %s" % rg_id)
+    log.debug("release-group id: %s", rg_id)
 
     discogs_url = None
     discogs_master_url = None
@@ -887,7 +887,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
         for relation in result["relations"]:
             if relation["type"] == "discogs":
                 log.debug(
-                    "got discogs url for release: %s" % relation["url"]["resource"]
+                    "got discogs url for release: %s", relation["url"]["resource"]
                 )
                 discogs_url = relation["url"]["resource"]
 
@@ -895,7 +895,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
             if relation["type"] == "purchase for download":
                 log.debug(
-                    "got purchase url for release: %s" % relation["url"]["resource"]
+                    "got purchase url for release: %s", relation["url"]["resource"]
                 )
 
                 try:
@@ -923,15 +923,14 @@ def mb_complete_release_task(obj, mb_id, user=None):
             for relation in rg_result["relations"]:
                 if relation["type"] == "discogs":
                     log.debug(
-                        "got discogs master-url for release: %s"
-                        % relation["url"]["resource"]
+                        "got discogs master-url for release: %s",
+                        relation["url"]["resource"],
                     )
                     discogs_master_url = relation["url"]["resource"]
 
                 if relation["type"] == "wikipedia":
                     log.debug(
-                        "got wikipedia url for release: %s"
-                        % relation["url"]["resource"]
+                        "got wikipedia url for release: %s", relation["url"]["resource"]
                     )
 
                     try:
@@ -946,7 +945,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
                 if relation["type"] == "lyrics":
                     log.debug(
-                        "got lyrics url for release: %s" % relation["url"]["resource"]
+                        "got lyrics url for release: %s", relation["url"]["resource"]
                     )
 
                     try:
@@ -961,7 +960,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
                 if relation["type"] == "allmusic":
                     log.debug(
-                        "got allmusic url for release: %s" % relation["url"]["resource"]
+                        "got allmusic url for release: %s", relation["url"]["resource"]
                     )
 
                     try:
@@ -976,7 +975,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
                 if relation["type"] == "review":
                     log.debug(
-                        "got review url for release: %s" % relation["url"]["resource"]
+                        "got review url for release: %s", relation["url"]["resource"]
                     )
 
                     try:
@@ -999,7 +998,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
         # try to get image
         try:
             discogs_image = discogs_image_by_url(discogs_url, "resource_url")
-            log.debug("discogs image located at: %s" % discogs_image)
+            log.debug("discogs image located at: %s", discogs_image)
         except BaseException:
             pass
 
@@ -1014,7 +1013,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
         if not discogs_image:
             try:
                 discogs_image = discogs_image_by_url(discogs_master_url, "resource_url")
-                log.debug("discogs image located at: %s" % discogs_master_url)
+                log.debug("discogs image located at: %s", discogs_master_url)
             except BaseException:
                 pass
 
@@ -1029,7 +1028,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
     else:
         # try at coverartarchive...
-        url = "http://coverartarchive.org/release/%s" % mb_id
+        url = f"http://coverartarchive.org/release/{mb_id}"
         try:
             r = requests.get(url, timeout=5)
             ca_result = r.json()
@@ -1045,7 +1044,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
         discogs_id = None
         try:
             discogs_id = re.findall(r"\d+", discogs_url)[0]
-            log.info("extracted discogs id (release): %s" % discogs_id)
+            log.info("extracted discogs id (release): %s", discogs_id)
         except BaseException:
             pass
 
@@ -1058,27 +1057,27 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
                 styles = dgs_result.get("styles", [])
                 for style in styles:
-                    log.debug("got style: %s" % style)
-                    if "%s" % style not in discogs_tags:
-                        discogs_tags.append("%s" % style)
+                    log.debug("got style: %s", style)
+                    if str(style) not in discogs_tags:
+                        discogs_tags.append(str(style))
 
                 genres = dgs_result.get("genres", [])
                 for genre in genres:
-                    log.debug("got genre: %s" % genre)
-                    if "%s" % genre not in discogs_tags:
-                        discogs_tags.append("%s" % genre)
+                    log.debug("got genre: %s", genre)
+                    if str(genre) not in discogs_tags:
+                        discogs_tags.append(str(genre))
 
                 notes = dgs_result.get("notes", None)
                 if notes:
                     obj.description = notes
             except Exception as e:
-                log.warning("unable to get data from discogs: %s" % e)
+                log.warning("unable to get data from discogs: %s", e)
 
     if discogs_master_url:
         discogs_id = None
         try:
             discogs_id = re.findall(r"\d+", discogs_master_url)[0]
-            log.info("extracted discogs id (master-release): %s" % discogs_id)
+            log.info("extracted discogs id (master-release): %s", discogs_id)
         except BaseException:
             pass
 
@@ -1091,34 +1090,34 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
                 styles = dgs_result.get("styles", [])
                 for style in styles:
-                    log.debug("got style: %s" % style)
-                    if "%s" % style not in discogs_tags:
-                        discogs_tags.append("%s" % style)
+                    log.debug("got style: %s", style)
+                    if str(style) not in discogs_tags:
+                        discogs_tags.append(str(style))
 
                 genres = dgs_result.get("genres", [])
                 for genre in genres:
-                    log.debug("got genre: %s" % genre)
-                    if "%s" % genre not in discogs_tags:
-                        discogs_tags.append("%s" % genre)
+                    log.debug("got genre: %s", genre)
+                    if str(genre) not in discogs_tags:
+                        discogs_tags.append(str(genre))
 
                 notes = dgs_result.get("notes", None)
                 if notes:
                     obj.description = notes
 
             except Exception as e:
-                log.warning("unable to get data from discogs: %s" % e)
+                log.warning("unable to get data from discogs: %s", e)
 
     # adding discogs tags
     obj.d_tags = ",".join(discogs_tags)
 
     status = result.get("status", None)
     if status:
-        log.debug("got status: %s" % status)
+        log.debug("got status: %s", status)
         obj.releasestatus = status
 
     country = result.get("country", None)
     if country:
-        log.debug("got country: %s" % country)
+        log.debug("got country: %s", country)
         try:
             release_country = Country.objects.filter(iso2_code=country)[0]
             obj.release_country = release_country
@@ -1127,37 +1126,37 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
     date = result.get("date", None)
     if date:
-        log.debug("got date: %s" % date)
+        log.debug("got date: %s", date)
         # TODO: rework field
         if len(date) == 4:
-            date = "%s-00-00" % date
+            date = f"{date}-00-00"
         elif len(date) == 7:
-            date = "%s-00" % date
+            date = f"{date}-00"
         elif len(date) == 10:
-            date = "%s" % date
+            date = str(date)
 
         re_date = re.compile(r"^\d{4}-\d{2}-\d{2}$")
         if re_date.match(date) and date != "0000-00-00":
-            obj.releasedate_approx = "%s" % date
+            obj.releasedate_approx = str(date)
 
     asin = result.get("asin", None)
     if asin:
-        log.debug("got asin: %s" % asin)
+        log.debug("got asin: %s", asin)
         obj.asin = asin
 
     barcode = result.get("barcode", None)
     if barcode:
-        log.debug("got barcode: %s" % barcode)
+        log.debug("got barcode: %s", barcode)
         obj.barcode = barcode
 
     # add mb relation
     # moved to be completed before running mb_complete_* so could be redundant here
     if mb_id:
-        mb_url = "http://musicbrainz.org/release/%s" % mb_id
+        mb_url = f"http://musicbrainz.org/release/{mb_id}"
         try:
             Relation.objects.get(object_id=obj.pk, url=mb_url)
         except BaseException:
-            log.debug("relation not here yet, add it: %s" % mb_url)
+            log.debug("relation not here yet, add it: %s", mb_url)
             rel = Relation(content_object=obj, url=mb_url)
             rel.save()
 
@@ -1165,7 +1164,7 @@ def mb_complete_release_task(obj, mb_id, user=None):
     try:
         obj.releasetype = result["release-group"]["primary-type"].lower()
     except Exception as e:
-        log.debug("unable to get releasetype: %s" % e)
+        log.debug("unable to get releasetype: %s", e)
 
     # try to get total tracks
     media_list = result.get("media", None)
@@ -1202,14 +1201,14 @@ def mb_complete_release_task(obj, mb_id, user=None):
         label_obj = obj.label
         l_created = False
         if label_name and mb_label_id and not label_obj:
-            log.debug("label, lookup by mb_label_id: %s" % mb_label_id)
+            log.debug("label, lookup by mb_label_id: %s", mb_label_id)
             try:
                 lls = lookup.label_by_mb_id(mb_label_id)
                 label_obj = lls[0]
-                log.debug(f"got label: {label_obj.pk} by mb_label_id: {mb_label_id}")
+                log.debug("got label: %s by mb_label_id: %s", label_obj.pk, mb_label_id)
             except Exception:
-                log.debug("could not get label by mb_label_id: %s" % mb_label_id)
-                log.info("create label with mb_id: %s" % mb_label_id)
+                log.debug("could not get label by mb_label_id: %s", mb_label_id)
+                log.info("create label with mb_id: %s", mb_label_id)
                 from alibrary.models.labelmodels import Label
 
                 label_obj = Label(name=label_name)
@@ -1237,12 +1236,12 @@ def mb_complete_release_task(obj, mb_id, user=None):
 
 @shared_task
 def mb_complete_artist_task(obj, mb_id, user=None):
-    log.info(f"complete artist, a: {obj.name} {obj.pk} | mb_id: {mb_id}")
+    log.info("complete artist, a: %s %s | mb_id: %s", obj.name, obj.pk, mb_id)
 
     lock_key = f"complete-{mb_id}"
 
     if cache.get(lock_key) is not None:
-        log.warning(f"completeion locked for id: {mb_id}")
+        log.warning("completeion locked for id: %s", mb_id)
 
     else:
         cache.set(lock_key, "lock", 60)
@@ -1254,7 +1253,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
             "+".join(inc),
         )
 
-        log.info("url: %s" % url)
+        log.info("url: %s", url)
 
         r = requests.get(url, timeout=5)
         result = r.json()
@@ -1283,28 +1282,28 @@ def mb_complete_artist_task(obj, mb_id, user=None):
         if life_span:
             date_start = life_span.get("begin", None)
             date_end = life_span.get("end", None)
-            log.debug(f"got lifespan: {date_start} to {date_end}")
+            log.debug("got lifespan: %s to %s", date_start, date_end)
             if date_start:
                 if len(date_start) == 4:
-                    date_start = "%s-00-00" % date_start
+                    date_start = f"{date_start}-00-00"
                 elif len(date_start) == 7:
-                    date_start = "%s-00" % date_start
+                    date_start = f"{date_start}-00"
                 elif len(date_start) == 10:
-                    date_start = "%s" % date_start
+                    date_start = str(date_start)
                 re_date_start = re.compile(r"^\d{4}-\d{2}-\d{2}$")
                 if re_date_start.match(date_start) and date_start != "0000-00-00":
-                    obj.date_start = "%s" % date_start
+                    obj.date_start = str(date_start)
 
             if date_end:
                 if len(date_end) == 4:
-                    date_end = "%s-00-00" % date_end
+                    date_end = f"{date_end}-00-00"
                 elif len(date_end) == 7:
-                    date_end = "%s-00" % date_end
+                    date_end = f"{date_end}-00"
                 elif len(date_end) == 10:
-                    date_end = "%s" % date_end
+                    date_end = str(date_end)
                 re_date_end = re.compile(r"^\d{4}-\d{2}-\d{2}$")
                 if re_date_end.match(date_end) and date_end != "0000-00-00":
-                    obj.date_end = "%s" % date_end
+                    obj.date_end = str(date_end)
 
         try:
             obj.country = Country.objects.filter(name=result["area"]["name"])[0]
@@ -1326,14 +1325,12 @@ def mb_complete_artist_task(obj, mb_id, user=None):
 
         for relation in relations:
             if relation["type"] == "discogs":
-                log.debug("got discogs url for artist: %s" % relation["url"])
+                log.debug("got discogs url for artist: %s", relation["url"])
                 discogs_url = relation["url"]["resource"]
 
             if relation["type"] in valid_relations:
                 log.debug(
-                    "got {} url for artist: {}".format(
-                        relation["type"], relation["url"]
-                    )
+                    "got %s url for artist: %s", relation["type"], relation["url"]
                 )
 
                 try:
@@ -1348,7 +1345,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                     rel.save()
 
             else:
-                log.debug("ignore relation type: %s" % relation["type"])
+                log.debug("ignore relation type: %s", relation["type"])
 
         # loop artist based relations ('band member')
         for relation in relations:
@@ -1372,7 +1369,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                     else:
                         mb_complete_artist_task(l_a, rel_mb_id, user=user)
 
-                    mb_url = "http://musicbrainz.org/artist/%s" % rel_mb_id
+                    mb_url = f"http://musicbrainz.org/artist/{rel_mb_id}"
                     rel = Relation(content_object=l_a, url=mb_url)
                     rel.save()
 
@@ -1395,7 +1392,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
             # try to get image
             try:
                 discogs_image = discogs_image_by_url(discogs_url, "resource_url")
-                log.debug("discogs image located at: %s" % discogs_image)
+                log.debug("discogs image located at: %s", discogs_image)
             except BaseException:
                 pass
 
@@ -1413,7 +1410,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
             try:
                 # TODO: not sure if always working
                 discogs_id = discogs_id_by_url(discogs_url)
-                log.info("extracted discogs id: %s" % discogs_id)
+                log.info("extracted discogs id: %s", discogs_id)
             except BaseException:
                 pass
 
@@ -1446,7 +1443,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                     aliases = []
                     for alias in aliases:
                         try:
-                            log.debug("got alias: %s" % alias["name"])
+                            log.debug("got alias: %s", alias["name"])
                             # TODO: improve! handle duplicates!
                             time.sleep(1.1)
                             r = requests.get(alias["resource_url"], timeout=5)
@@ -1485,7 +1482,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
                     members = []  # just temporary disabled
                     for member in members:
                         try:
-                            log.debug("got member: %s" % member["name"])
+                            log.debug("got member: %s", member["name"])
                             # TODO: improve! handle duplicates!
                             time.sleep(1.1)
                             r = requests.get(member["resource_url"], timeout=5)
@@ -1534,11 +1531,11 @@ def mb_complete_artist_task(obj, mb_id, user=None):
         # add mb relation
         # moved to be completed before running mb_complete_* so could be redundant here
         if mb_id:
-            mb_url = "http://musicbrainz.org/artist/%s" % mb_id
+            mb_url = f"http://musicbrainz.org/artist/{mb_id}"
             try:
                 Relation.objects.get(object_id=obj.pk, url=mb_url)
             except BaseException:
-                log.debug("relation not here yet, add it: %s" % mb_url)
+                log.debug("relation not here yet, add it: %s", mb_url)
                 rel = Relation(content_object=obj, url=mb_url)
                 rel.save()
 
@@ -1551,7 +1548,7 @@ def mb_complete_artist_task(obj, mb_id, user=None):
 
 @shared_task
 def mb_complete_label_task(obj, mb_id, user=None):
-    log.info("complete label, mb_id: %s" % mb_id)
+    log.info("complete label, mb_id: %s", mb_id)
 
     inc = ("url-rels", "tags", "aliases")
     url = "http://{}/ws/2/label/{}/?fmt=json&inc={}".format(
@@ -1560,7 +1557,7 @@ def mb_complete_label_task(obj, mb_id, user=None):
         "+".join(inc),
     )
 
-    log.info("url: %s" % url)
+    log.info("url: %s", url)
 
     r = requests.get(url, timeout=5)
     result = r.json()
@@ -1584,13 +1581,14 @@ def mb_complete_label_task(obj, mb_id, user=None):
 
     for relation in relations:
         if relation["type"] == "discogs":
-            log.debug("got discogs url for label: %s" % relation["url"]["resource"])
+            log.debug("got discogs url for label: %s", relation["url"]["resource"])
             discogs_url = relation["url"]["resource"]
 
         if relation["type"] in valid_relations:
             log.debug(
-                "got %s url for label: %s"
-                % (relation["type"], relation["url"]["resource"])
+                "got %s url for label: %s",
+                relation["type"],
+                relation["url"]["resource"],
             )
 
             try:
@@ -1604,7 +1602,7 @@ def mb_complete_label_task(obj, mb_id, user=None):
                 rel.save()
 
         else:
-            log.debug("ignore relation type: %s" % relation["type"])
+            log.debug("ignore relation type: %s", relation["type"])
 
     if discogs_url:
         try:
@@ -1616,7 +1614,7 @@ def mb_complete_label_task(obj, mb_id, user=None):
         # try to get image
         try:
             discogs_image = discogs_image_by_url(discogs_url, "resource_url")
-            log.debug("discogs image located at: %s" % discogs_image)
+            log.debug("discogs image located at: %s", discogs_image)
         except BaseException:
             pass
 
@@ -1634,14 +1632,14 @@ def mb_complete_label_task(obj, mb_id, user=None):
         try:
             # TODO: not sure if always working
             discogs_id = discogs_id_by_url(discogs_url)
-            log.info("extracted discogs id: %s" % discogs_id)
+            log.info("extracted discogs id: %s", discogs_id)
         except BaseException:
             pass
 
         if discogs_id:
             url = f"http://{DISCOGS_HOST}/labels/{discogs_id}"
 
-            log.debug("url: %s" % url)
+            log.debug("url: %s", url)
             r = requests.get(url, timeout=5)
 
             try:
@@ -1654,7 +1652,7 @@ def mb_complete_label_task(obj, mb_id, user=None):
                     obj.address = contact_info
 
             except Exception as e:
-                log.info("unable to get discogs data: %s" % e)
+                log.info("unable to get discogs data: %s", e)
 
     # https://lab.hazelfire.com/issues/927
     # type = result.get('type', None)
@@ -1664,49 +1662,49 @@ def mb_complete_label_task(obj, mb_id, user=None):
 
     times = result.get("life-span", None)
     if times:
-        log.debug("got times: %s" % times)
+        log.debug("got times: %s", times)
         date_start = times.get("begin", None)
         date_end = times["end"] if "begin" in times else None
-        log.debug("date_start: %s" % date_start)
-        log.debug("date_end: %s" % date_end)
+        log.debug("date_start: %s", date_start)
+        log.debug("date_end: %s", date_end)
 
         if date_start:
             if len(date_start) == 4:
-                date = "%s-00-00" % date_start
+                date = f"{date_start}-00-00"
             elif len(date_start) == 7:
-                date = "%s-00" % date_start
+                date = f"{date_start}-00"
             elif len(date_start) == 10:
-                date = "%s" % date_start
+                date = str(date_start)
 
             re_date = re.compile(r"^\d{4}-\d{2}-\d{2}$")
             if re_date.match(date) and date != "0000-00-00":
-                obj.date_start = "%s" % date
+                obj.date_start = str(date)
 
         if date_end:
             if len(date_end) == 4:
-                date = "%s-00-00" % date_end
+                date = f"{date_end}-00-00"
             elif len(date_end) == 7:
-                date = "%s-00" % date_end
+                date = f"{date_end}-00"
             elif len(date_end) == 10:
-                date = "%s" % date_end
+                date = str(date_end)
 
             re_date = re.compile(r"^\d{4}-\d{2}-\d{2}$")
             if re_date.match(date) and date != "0000-00-00":
-                obj.date_end = "%s" % date
+                obj.date_end = str(date)
 
     labelcode = result.get("label-code", None)
     if labelcode:
-        log.debug("got labelcode: %s" % labelcode)
+        log.debug("got labelcode: %s", labelcode)
         obj.labelcode = labelcode
 
     disambiguation = result.get("disambiguation", None)
     if disambiguation:
-        log.debug("got disambiguation: %s" % disambiguation)
+        log.debug("got disambiguation: %s", disambiguation)
         obj.disambiguation = disambiguation
 
     country = result.get("country", None)
     if country:
-        log.debug("got country: %s" % country)
+        log.debug("got country: %s", country)
         try:
             country = Country.objects.filter(iso2_code=country)[0]
             obj.country = country
@@ -1714,11 +1712,11 @@ def mb_complete_label_task(obj, mb_id, user=None):
             pass
 
     if mb_id:
-        mb_url = "http://musicbrainz.org/label/%s" % mb_id
+        mb_url = f"http://musicbrainz.org/label/{mb_id}"
         try:
             Relation.objects.get(object_id=obj.pk, url=mb_url)
         except BaseException:
-            log.debug("relation not here yet, add it: %s" % mb_url)
+            log.debug("relation not here yet, add it: %s", mb_url)
             rel = Relation(content_object=obj, url=mb_url)
             rel.save()
 

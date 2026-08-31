@@ -11,7 +11,7 @@ def video_by_url(context, url):
 
 
 def extract_video_id(video_url):
-    m = re.search(r"youtube\.com/.*v=([^&]*)", "%s" % video_url)
+    m = re.search(r"youtube\.com/.*v=([^&]*)", str(video_url))
     try:
         video_id = m.group(1)
     except Exception:

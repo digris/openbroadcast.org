@@ -31,14 +31,14 @@ class MusicbrainzAPILookup(APILookup):
     """
 
     def get_data(self, uri=None):
-        log.debug(f"run musicbrainz lookup for {self.obj} - {self.type}")
+        log.debug("run musicbrainz lookup for %s - %s", self.obj, self.type)
 
         if not uri:
             uri = self.obj.relations.filter(service="musicbrainz")[0].url
-        log.debug("musicbrainz uri: %s" % uri)
+        log.debug("musicbrainz uri: %s", uri)
 
         # for consistency uri is handled in resp. method
-        return getattr(self, "get_%s" % self.type)(uri)
+        return getattr(self, f"get_{self.type}")(uri)
 
     def get_release(self, uri):
 
@@ -62,7 +62,7 @@ class MusicbrainzAPILookup(APILookup):
             "+".join(inc),
         )
 
-        log.info("composed api url: %s" % api_url)
+        log.info("composed api url: %s", api_url)
 
         r = requests.get(api_url)
 
@@ -140,7 +140,7 @@ class MusicbrainzAPILookup(APILookup):
 
                         mapped_media.append(
                             {
-                                "number": "%s" % (pos),
+                                "number": str(pos),
                                 "position": f"{disc_no}-{pos}",
                                 "duration": m["length"],
                                 "title": m["title"],
@@ -160,7 +160,7 @@ class MusicbrainzAPILookup(APILookup):
             res[mk] = data[k]
 
         try:
-            url = "http://coverartarchive.org/release/%s" % id
+            url = f"http://coverartarchive.org/release/{id}"
             r = requests.get(url)
             if r.ok:
                 res["main_image"] = r.json()["images"][0]["image"]
@@ -195,7 +195,7 @@ class MusicbrainzAPILookup(APILookup):
             "+".join(inc),
         )
 
-        log.info("composed api url: %s" % api_url)
+        log.info("composed api url: %s", api_url)
 
         r = requests.get(api_url)
 
@@ -268,7 +268,7 @@ class MusicbrainzAPILookup(APILookup):
             provider_id,
             "+".join(inc),
         )
-        log.info("composed api url: %s" % api_url)
+        log.info("composed api url: %s", api_url)
         r = requests.get(api_url)
         if r.status_code == 200:
             import xmltodict
@@ -297,7 +297,7 @@ class MusicbrainzAPILookup(APILookup):
             "+".join(inc),
         )
 
-        log.info("composed api url: %s" % api_url)
+        log.info("composed api url: %s", api_url)
 
         r = requests.get(api_url)
 
@@ -382,7 +382,7 @@ class MusicbrainzAPILookup(APILookup):
             "+".join(inc),
         )
 
-        log.info("composed api url: %s" % api_url)
+        log.info("composed api url: %s", api_url)
 
         r = requests.get(api_url)
 
@@ -447,14 +447,14 @@ class DiscogsAPILookup(APILookup):
     """
 
     def get_data(self, uri=None):
-        log.debug(f"run discogs lookup for {self.obj} - {self.type}")
+        log.debug("run discogs lookup for %s - %s", self.obj, self.type)
 
         if not uri:
             uri = self.obj.relations.filter(service="discogs")[0].url
-        log.debug("discogs uri: %s" % uri)
+        log.debug("discogs uri: %s", uri)
 
         # for consistency uri is handled in resp. method
-        return getattr(self, "get_%s" % self.type)(uri)
+        return getattr(self, f"get_{self.type}")(uri)
 
     def map_image(self, d):
         """
@@ -491,9 +491,9 @@ class DiscogsAPILookup(APILookup):
         name = re.sub(p, "", name)
 
         if name[-5:] == ", The":
-            name = "The %s" % name[:-5]
+            name = f"The {name[:-5]}"
         if name[-4:] == ",The":
-            name = "The %s" % name[:-4]
+            name = f"The {name[:-4]}"
 
         return name.strip()
 
@@ -515,7 +515,7 @@ class DiscogsAPILookup(APILookup):
         if "/master/" in uri:
             api_url = f"http://{DISCOGS_HOST}/masters/{provider_id}"
 
-        log.info("composed api url: %s" % api_url)
+        log.info("composed api url: %s", api_url)
 
         r = requests.get(api_url)
         data = r.json()
@@ -648,7 +648,7 @@ class DiscogsAPILookup(APILookup):
         provider_id = uri.split("/")[-1].split("-")[0]
         api_url = f"http://{DISCOGS_HOST}/artists/{provider_id}"
 
-        log.info("composed api url: %s" % api_url)
+        log.info("composed api url: %s", api_url)
 
         r = requests.get(api_url)
         data = r.json()
@@ -702,7 +702,7 @@ class DiscogsAPILookup(APILookup):
         provider_id = uri.split("/")[-1].split("-")[0]
         api_url = f"http://{DISCOGS_HOST}/labels/{provider_id}"
 
-        log.info("composed api url: %s" % api_url)
+        log.info("composed api url: %s", api_url)
 
         r = requests.get(api_url)
         data = r.json()
@@ -748,8 +748,11 @@ class DiscogsAPILookup(APILookup):
 def get_from_provider(item_type, item_id, provider, api_url=None):
 
     log.debug(
-        "get_from_provider: %s - id: %s - provider: %s - %s"
-        % (item_type, item_id, provider, api_url)
+        "get_from_provider: %s - id: %s - provider: %s - %s",
+        item_type,
+        item_id,
+        provider,
+        api_url,
     )
 
     # get source object
@@ -774,6 +777,6 @@ def get_from_provider(item_type, item_id, provider, api_url=None):
         lookup = DiscogsAPILookup(obj=obj)
         return lookup.get_data(uri=api_url)
 
-    log.debug(f"item to process: {obj.pk} - {obj}")
+    log.debug("item to process: %s - %s", obj.pk, obj)
 
     return {}

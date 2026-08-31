@@ -13,29 +13,29 @@ log = logging.getLogger(__name__)
 
 
 def start_play(item, channel=None, user=None):
-    log.debug(f"item: {item} - channel: {channel} - user: {user}")
+    log.debug("item: %s - channel: %s - user: %s", item, channel, user)
 
     # Set current values to cache
-    cache.set("abcast_on_air_%s" % channel.pk, item, 30)
+    cache.set(f"abcast_on_air_{channel.pk}", item, 30)
 
     # Broadcast to pushy clients
-    pushy_custom("%son-air/" % channel.get_api_url())
+    pushy_custom(f"{channel.get_api_url()}on-air/")
 
     if item.release and "jingle" not in item.release.name.lower():
         try:
             text = f"{item.name} by {item.artist.name} - {item.release.name}"
             set_stream_metadata(channel, text)
         except Exception as e:
-            log.warning(f"unable to set stream metadata: {e}")
+            log.warning("unable to set stream metadata: %s", e)
 
         try:
             set_tunein_metadata(channel, item)
         except Exception as e:
-            log.warning(f"unable to set tunein metadata: {e}")
+            log.warning("unable to set tunein metadata: %s", e)
 
     try:
         from atracker.util import create_event
 
         create_event(user, item, channel, "playout")
     except Exception as e:
-        log.warning("exception: %s" % e)
+        log.warning("exception: %s", e)

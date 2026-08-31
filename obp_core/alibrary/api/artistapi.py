@@ -58,8 +58,7 @@ class ArtistResource(ModelResource):
 
         return [
             url(
-                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/stats%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<pk>\\w[\\w/-]*)/stats{trailing_slash()}$",
                 self.wrap_view("stats"),
                 name="alibrary-artist_api-stats",
             )

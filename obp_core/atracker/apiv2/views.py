@@ -49,7 +49,7 @@ class ObjectEventView(APIView):
 
         _ct = ContentType.objects.get_for_model(obj)
 
-        log.debug(f"event PUT ct: {_ct} - id: {obj.pk} - user: {user}")
+        log.debug("event PUT ct: %s - id: %s - user: %s", _ct, obj.pk, user)
 
         event = Event.create_event(user, obj, event_type=event_type)
         serializer = ObjectEventSerializer(event)

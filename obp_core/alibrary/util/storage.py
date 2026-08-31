@@ -47,7 +47,7 @@ def safe_filename(filename):
 
 
 def get_file_from_url(url):
-    log.info("try to get file from url: %s" % url)
+    log.info("try to get file from url: %s", url)
     file_obj = None
 
     try:
@@ -63,16 +63,16 @@ def get_file_from_url(url):
 
             file_obj = File(temp_file)
         except Exception as e:
-            log.warning("%s" % e)
+            log.warning("%s", e)
 
     except Exception as e:
-        log.warning("%s" % e)
+        log.warning("%s", e)
 
     return file_obj
 
 
 def get_file_from_path(path, filename=None):
-    log.info("try to get file from path: %s" % path)
+    log.info("try to get file from path: %s", path)
     file_obj = None
 
     try:
@@ -90,7 +90,7 @@ def get_file_from_path(path, filename=None):
         file_obj = File(temp_file, filename)
 
     except Exception as e:
-        log.warning("%s" % e)
+        log.warning("%s", e)
         pass
 
     return file_obj

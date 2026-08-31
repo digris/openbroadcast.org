@@ -27,7 +27,7 @@ class FprintAPIClient:
 
         url = f"{API_BASE_URL}fprint/identify/"
 
-        log.debug(f"loading fprint entry from: {url}")
+        log.debug("loading fprint entry from: %s", url)
 
         fprint.update(
             {"min_score": min_score, "duration_tolerance": duration_tolerance}
@@ -48,7 +48,7 @@ class FprintAPIClient:
 
         url = f"{API_BASE_URL}fprint/entry/{obj.uuid}/"
 
-        log.debug(f"ingest fprint entry to: {url}")
+        log.debug("ingest fprint entry to: %s", url)
 
         # TODO: implement exception handling
         try:
@@ -57,7 +57,7 @@ class FprintAPIClient:
             return
 
         if not code:
-            log.warning(f"unable to generate echoprint code: {obj.master.path}")
+            log.warning("unable to generate echoprint code: %s", obj.master.path)
             return
 
         data = {
@@ -72,12 +72,15 @@ class FprintAPIClient:
         try:
             r = requests.put(url, json=data, timeout=2.0)
         except requests.exceptions.ConnectionError as e:
-            log.warning(f"unable to process request: {e}")
+            log.warning("unable to process request: %s", e)
             return
 
         if r.status_code not in [200, 201]:
             log.warning(
-                f"unable to ingest code for {obj.master.path} - status: {r.status_code} - response: {r.text}"
+                "unable to ingest code for %s - status: %s - response: %s",
+                obj.master.path,
+                r.status_code,
+                r.text,
             )
             return
 
@@ -90,13 +93,15 @@ class FprintAPIClient:
 
         url = f"{API_BASE_URL}fprint/entry/{media_uuid}/"
 
-        log.debug(f"delete fprint entry: {url}")
+        log.debug("delete fprint entry: %s", url)
 
         r = requests.delete(url, timeout=2.0)
 
         if r.status_code not in [200, 202, 204]:
             log.warning(
-                f"unable to delete code - status: {r.status_code} - response: {r.text}"
+                "unable to delete code - status: %s - response: %s",
+                r.status_code,
+                r.text,
             )
 
         return r.status_code

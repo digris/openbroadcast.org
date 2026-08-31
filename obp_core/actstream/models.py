@@ -196,16 +196,14 @@ def setup_generic_relations():
         for field in ("actor", "target", "action_object"):
             GenericRelation(
                 Action,
-                content_type_field="%s_content_type" % field,
-                object_id_field="%s_object_id" % field,
-                related_query_name="actions_with_%s_%s_as_%s"
-                % (model._meta.app_label, model._meta.model_name, field),
-            ).contribute_to_class(model, "%s_actions" % field)
+                content_type_field=f"{field}_content_type",
+                object_id_field=f"{field}_object_id",
+                related_query_name=f"actions_with_{model._meta.app_label}_{model._meta.model_name}_as_{field}",
+            ).contribute_to_class(model, f"{field}_actions")
 
             setattr(
                 Action,
-                "actions_with_%s_%s_as_%s"
-                % (model._meta.app_label, model._meta.model_name, field),
+                f"actions_with_{model._meta.app_label}_{model._meta.model_name}_as_{field}",
                 None,
             )
 

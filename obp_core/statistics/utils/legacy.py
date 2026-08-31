@@ -59,7 +59,7 @@ class ObjectStatistics:
             events = (
                 Event.objects.by_obj(obj=self.obj)
                 .filter(
-                    event_type__title="%s" % action,
+                    event_type__title=str(action),
                     created__gte=range_start,
                     created__lte=range_end,
                 )
@@ -72,7 +72,7 @@ class ObjectStatistics:
             events = (
                 Event.objects.filter(
                     user=self.user,
-                    event_type__title="%s" % action,
+                    event_type__title=str(action),
                     created__gte=range_start,
                     created__lte=range_end,
                 )
@@ -90,7 +90,7 @@ class ObjectStatistics:
                         "pk", flat=True
                     ).distinct(),
                     content_type=ctype,
-                    event_type__title="%s" % action,
+                    event_type__title=str(action),
                     created__gte=range_start,
                     created__lte=range_end,
                 )
@@ -108,7 +108,7 @@ class ObjectStatistics:
                         "pk", flat=True
                     ).distinct(),
                     content_type=ctype,
-                    event_type__title="%s" % action,
+                    event_type__title=str(action),
                     created__gte=range_start,
                     created__lte=range_end,
                 )
@@ -119,7 +119,7 @@ class ObjectStatistics:
         else:
             events = (
                 Event.objects.filter(
-                    event_type__title="%s" % action,
+                    event_type__title=str(action),
                     created__gte=range_start,
                     created__lte=range_end,
                 )

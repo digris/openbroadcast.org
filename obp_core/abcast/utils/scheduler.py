@@ -79,17 +79,17 @@ def get_schedule_for_pypo(range_start, range_end, exclude=None, channel=None):
                     #'fade_cross': 0,
                     "replay_gain": 0,
                     "independent_event": False,
-                    "start": "%s" % i_start_str,
-                    "end": "%s" % i_end_str,
+                    "start": str(i_start_str),
+                    "end": str(i_end_str),
                     "artist": "artsi",
                     "title": "fartsi",
-                    "show_name": "%s" % e.name,
+                    "show_name": str(e.name),
                     "uri": uri,
                     "row_id": str(co.uuid),
                     "type": "file",
                 }
 
-                media["%s" % i_start_str] = data
+                media[str(i_start_str)] = data
 
             offset += co.get_duration() - (item.cue_in + item.cue_out + item.fade_cross)
 
@@ -211,7 +211,9 @@ def get_schedule(range_start=0, range_end=0, channel=None):
 
 def check_slot_availability(time_start, time_end, excluded_emission=None, channel=None):
 
-    log.debug(f"checking for slot availability: {time_start} - {time_end} ({channel})")
+    log.debug(
+        "checking for slot availability: %s - %s (%s)", time_start, time_end, channel
+    )
     now = timezone.now()
 
     if time_start < now:

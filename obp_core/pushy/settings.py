@@ -7,11 +7,11 @@ PUSHY_SETTINGS = getattr(settings, "PUSHY_SETTINGS", {})
 
 
 def get_channel():
-    return "%s" % PUSHY_SETTINGS.get("CHANNEL_PREFIX", "pushy_")
+    return str(PUSHY_SETTINGS.get("CHANNEL_PREFIX", "pushy_"))
 
 
 def get_redis_host():
-    return "%s" % PUSHY_SETTINGS.get("REDIS_HOST", "127.0.0.1")
+    return str(PUSHY_SETTINGS.get("REDIS_HOST", "127.0.0.1"))
 
 
 def get_models():
@@ -21,6 +21,6 @@ def get_models():
         for model in PUSHY_SETTINGS.get("MODELS", None):
             models[model.lower()] = apps.get_model(*model.lower().split("."))
     except Exception as e:
-        log.warning("Unable to register models: %s" % e)
+        log.warning("Unable to register models: %s", e)
 
     return models

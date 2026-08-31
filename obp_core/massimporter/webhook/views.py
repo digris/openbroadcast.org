@@ -45,7 +45,7 @@ class WebookView(View):
             for key in PAYLOAD_KEYS:
                 if key in request.POST:
                     payload = json.loads(request.POST["payload"])[0]
-                    log.debug(f'payload by key "{key}"')
+                    log.debug('payload by key "%s"', key)
                     break
 
         if not payload:
@@ -57,7 +57,7 @@ class WebookView(View):
         webhook_signal.send(
             WebookView, request=request, name=name, token=token, payload=payload
         )
-        log.debug(f"Signal {webhook_signal} sent")
+        log.debug("Signal %s sent", webhook_signal)
 
         return HttpResponse(token)
 

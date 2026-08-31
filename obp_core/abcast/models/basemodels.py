@@ -47,7 +47,7 @@ class Station(TimestampedModelMixin, UUIDModelMixin, models.Model):
         ordering = ("name",)
 
     def __str__(self):
-        return "%s" % self.name
+        return str(self.name)
 
     # @models.permalink
     # def get_absolute_url(self):
@@ -157,7 +157,7 @@ class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):
         unique_together = ("on_air_type", "on_air_id")
 
     def __str__(self):
-        return "%s" % self.name
+        return str(self.name)
 
     def get_absolute_url(self):
         return reverse(

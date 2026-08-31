@@ -30,7 +30,7 @@ class ObjectActivityFeed(Feed):
         ).get_object_for_this_type(pk=object_id)
 
     def title(self, obj):
-        return "Activity for %s" % obj
+        return f"Activity for {obj}"
 
     def link(self, obj):
         if hasattr(obj, "get_absolute_url"):
@@ -40,7 +40,7 @@ class ObjectActivityFeed(Feed):
         )
 
     def description(self, obj):
-        return "Activity for %s" % obj
+        return f"Activity for {obj}"
 
     def items(self, obj):
         i = action_object_stream(obj)
@@ -169,7 +169,7 @@ class ModelActivityFeed(Feed):
         return get_object_or_404(ContentType, pk=content_type_id).model_class()
 
     def title(self, model):
-        return "Activity feed from %s" % model
+        return f"Activity feed from {model}"
 
     def link(self, model):
         return reverse(
@@ -177,7 +177,7 @@ class ModelActivityFeed(Feed):
         )
 
     def description(self, model):
-        return "Public activities of %s" % model
+        return f"Public activities of {model}"
 
     def items(self, model):
         i = model_stream(model)

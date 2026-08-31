@@ -88,7 +88,7 @@ class Command(NoArgsCommand):
         # Warn before doing anything more.
         if isinstance(self.storage, FileSystemStorage) and self.storage.location:
             destination_path = self.storage.location
-            _unused = ":\n\n    %s" % destination_path
+            _unused = f":\n\n    {destination_path}"
         else:
             destination_path = None
             _unused = "."

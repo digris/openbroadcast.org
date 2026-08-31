@@ -386,7 +386,7 @@ def respond(request, code):
     """
     if "next" in request.GET:
         return HttpResponseRedirect(request.GET["next"])
-    return type("Response%d" % code, (HttpResponse,), {"status_code": code})()
+    return type(f"Response{int(code):d}", (HttpResponse,), {"status_code": code})()
 
 
 #######################################################################
@@ -425,7 +425,7 @@ class InvitationDeleteView(View):
 
         if i.delete():
             messages.add_message(
-                self.request, messages.INFO, _("Deleted invitation for %s" % i.email)
+                self.request, messages.INFO, _(f"Deleted invitation for {i.email}")
             )
 
         return HttpResponseRedirect(reverse("profiles-invitations"))

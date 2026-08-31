@@ -14,10 +14,7 @@ class ModelNotActionable(ImproperlyConfigured):
         if not is_model(model):
             return f"Object {model!r} must be a Django Model not {type(model)}"
         opts = model._meta
-        return (
-            'Model %s not recognized, add "%s.%s" to the ACTSTREAM_SETTINGS["MODELS"] settings'
-            % (model.__name__, opts.app_label, opts.module_name)
-        )
+        return f'Model {model.__name__} not recognized, add "{opts.app_label}.{opts.module_name}" to the ACTSTREAM_SETTINGS["MODELS"] settings'
 
 
 class BadQuerySet(ValueError):

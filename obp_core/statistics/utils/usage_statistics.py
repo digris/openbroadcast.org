@@ -54,7 +54,7 @@ def get_media_ids(obj):
 
 
 def get_usage_statistics(obj, start, end):
-    logger.debug(f'usage statistics for "{obj}", {start} - {end}')
+    logger.debug('usage statistics for "%s", %s - %s', obj, start, end)
 
     # TODO: implement this in a more modular way
     media_ids = get_media_ids(obj)

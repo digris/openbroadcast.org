@@ -42,8 +42,7 @@ class VoteResource(ModelResource):
 
         return [
             url(
-                r"^(?P<resource_name>%s)/(?P<content_type>[\w.]+)/(?P<object_id>\d+)(?:/(?P<vote>-?\d{1}))?(?:/(?P<user_id>-?[0-9]+))?%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<content_type>[\\w.]+)/(?P<object_id>\\d+)(?:/(?P<vote>-?\\d{{1}}))?(?:/(?P<user_id>-?[0-9]+))?{trailing_slash()}$",
                 self.wrap_view("vote_by_ct"),
                 name="arating-vote_api-by-ct",
             )
@@ -87,8 +86,11 @@ class VoteResource(ModelResource):
             user_id = int(user_id)
 
         log.debug(
-            "vote_by_ct - content_type: %s - object_id: %s - vote: %s - user_id: %s"
-            % (content_type, object_id, vote, user_id)
+            "vote_by_ct - content_type: %s - object_id: %s - vote: %s - user_id: %s",
+            content_type,
+            object_id,
+            vote,
+            user_id,
         )
 
         if isinstance(content_type, str) and "." in content_type:
@@ -104,21 +106,22 @@ class VoteResource(ModelResource):
         # no vot & no user_id: get the current vote(s)
 
         if user_id:
-            log.debug("voting in _behalf_ of user with id: %s" % user_id)
+            log.debug("voting in _behalf_ of user with id: %s", user_id)
 
             if request.user.has_perm("arating.vote_for_user"):
                 user = get_user_model().objects.get(pk=user_id)
-                log.info("voting for user by id: %s" % user.username)
+                log.info("voting for user by id: %s", user.username)
             else:
                 log.warning(
-                    "no permission for %s to vote in behalf of %s"
-                    % (request.user, user_id)
+                    "no permission for %s to vote in behalf of %s",
+                    request.user,
+                    user_id,
                 )
                 user = None
 
         elif request.user and request.user.is_authenticated():
             user = request.user
-            log.info("voting for user by request: %s" % user.username)
+            log.info("voting for user by request: %s", user.username)
 
         else:
             log.debug("no authenticated user")

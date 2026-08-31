@@ -39,11 +39,11 @@ def play(request, **kwargs):
         obj_ct = item.get("ct")
         obj_uuid = item.get("uuid")
 
-        log.debug(f"item requested to play: {obj_ct} {obj_uuid}")
+        log.debug("item requested to play: %s %s", obj_ct, obj_uuid)
 
         serializer_class = SERIALIZER_MAP.get(obj_ct)
         if not serializer_class:
-            log.warning(f"no serializer defined for {obj_ct}")
+            log.warning("no serializer defined for %s", obj_ct)
             return HttpResponseBadRequest(f"no serializer defined for {obj_ct}")
 
         try:

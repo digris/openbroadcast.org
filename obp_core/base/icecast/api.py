@@ -15,23 +15,23 @@ class IcecastAPIClient:
     def set_text(self, text):
 
         if self.server and self.admin_user and self.admin_pass:
-            url = "%sadmin/metadata" % self.server
+            url = f"{self.server}admin/metadata"
             auth = (self.admin_user, self.admin_pass)
             params = {
-                "mount": "/%s" % self.mountpoint,
+                "mount": f"/{self.mountpoint}",
                 "mode": "updinfo",
-                "song": "%s" % text,
+                "song": str(text),
             }
             r = requests.get(url, auth=auth, params=params, timeout=2.0)
 
             if r.status_code != 200:
-                log.warning(f"API: {r.url} - status: {r.status_code}")
+                log.warning("API: %s - status: %s", r.url, r.status_code)
             else:
-                log.debug(f"API: {r.url} - status: {r.status_code}")
+                log.debug("API: %s - status: %s", r.url, r.status_code)
 
 
 def set_stream_metadata(channel, text):
-    log.info(f"channel: {channel} - metadata-text: {text}")
+    log.info("channel: %s - metadata-text: %s", channel, text)
     try:
         api = IcecastAPIClient(
             server=channel.icecast2_server,
@@ -41,4 +41,4 @@ def set_stream_metadata(channel, text):
         )
         api.set_text(text)
     except Exception as e:
-        log.warning("unable to set stream metadata text: %s" % e)
+        log.warning("unable to set stream metadata text: %s", e)

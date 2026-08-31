@@ -70,8 +70,10 @@ class Process:
             raise Exception("Archive format not available.")
 
         log.info(
-            'running export for "%s": %s - %s'
-            % (self.user.username, self.format, self.target)
+            'running export for "%s": %s - %s',
+            self.user.username,
+            self.format,
+            self.target,
         )
 
         if not self.prepare_directories():
@@ -80,7 +82,7 @@ class Process:
             return self.status
 
         export_items = self.instance.export_items.all()
-        log.debug(f"{len(export_items)} item(s) to export")
+        log.debug("%s item(s) to export", len(export_items))
 
         for item in export_items:
             status, message = self.process_item(item)
@@ -96,8 +98,8 @@ class Process:
                 verbose=True,
             )
 
-            if os.path.isfile(self.archive_path + ".%s" % self.archive_format):
-                return 1, self.archive_path + ".%s" % self.archive_format, self.messages
+            if os.path.isfile(self.archive_path + f".{self.archive_format}"):
+                return 1, self.archive_path + f".{self.archive_format}", self.messages
             else:
                 return 99, None, self.messages
 
@@ -111,8 +113,9 @@ class Process:
             path = os.path.join(
                 "export",
                 "cache",
-                "%s-%s"
-                % (time.strftime("%Y%m%d%H%M%S", time.gmtime()), self.instance.uuid),
+                "{!s}-{!s}".format(
+                    time.strftime("%Y%m%d%H%M%S", time.gmtime()), self.instance.uuid
+                ),
             )
 
         self.archive_dir = os.path.join(MEDIA_ROOT, path)
@@ -124,15 +127,15 @@ class Process:
         if not os.path.isdir(self.archive_cache_dir):
             os.makedirs(self.archive_cache_dir)
 
-        log.debug("archive directory: %s" % self.archive_dir)
-        log.debug("archive cache-directory: %s" % self.archive_cache_dir)
-        log.debug("archive path: %s" % self.archive_path)
+        log.debug("archive directory: %s", self.archive_dir)
+        log.debug("archive cache-directory: %s", self.archive_cache_dir)
+        log.debug("archive path: %s", self.archive_path)
 
         return os.path.isdir(self.archive_cache_dir)
 
     def clear_cache(self):
 
-        log.debug("cleaning cache: %s" % self.archive_dir)
+        log.debug("cleaning cache: %s", self.archive_dir)
         try:
             if not EXPORTER_DEBUG:
                 shutil.rmtree(self.archive_dir, True)
@@ -141,7 +144,7 @@ class Process:
 
     def process_item(self, item):
 
-        log.info(f"export ctype: {item.content_type} | id: {item.object_id}")
+        log.info("export ctype: %s | id: %s", item.content_type, item.object_id)
 
         media_set = None
         content_object = item.content_object
@@ -189,7 +192,7 @@ class Process:
         if not os.path.exists(item_cache_dir):
             os.makedirs(item_cache_dir)
 
-        log.debug(f"{len(media_set)} tracks to export")
+        log.debug("%s tracks to export", len(media_set))
 
         # process tracks
         for media in media_set:
@@ -206,7 +209,7 @@ class Process:
                     image.path, os.path.join(item_cache_dir, IMAGE_FILENAME)
                 )
             except Exception:
-                log.warning(f"unable to copy image: {image.path}")
+                log.warning("unable to copy image: %s", image.path)
 
         if INCLUDE_README:
             self.process_readme(instance=content_object, cache_dir=item_cache_dir)
@@ -250,7 +253,8 @@ class Process:
                     log.debug("include mixdown file for playlist")
                 except Exception:
                     log.warning(
-                        f"unable to copy mixdown file: {content_object.mixdown_file.path}"
+                        "unable to copy mixdown file: %s",
+                        content_object.mixdown_file.path,
                     )
             else:
                 log.debug("mixdown file not available")
@@ -282,7 +286,7 @@ class Process:
 
         cache_file = requested_format.path
 
-        log.info("processing media: pk %s" % media.pk)
+        log.info("processing media: pk %s", media.pk)
         # log.debug('cache file: %s' % cache_file)
 
         if not cache_file:
@@ -334,7 +338,7 @@ class Process:
 
         # TODO: modularize
         if ct in ["release"]:
-            template = "exporter/assets/%s.html" % ct
+            template = f"exporter/assets/{ct}.html"
             with open(os.path.join(cache_dir, "readme.html"), "w") as txt:
                 str = render_to_string(
                     template, {"object": instance, "base_url": SITE_URL}
@@ -385,7 +389,7 @@ class Process:
 
         from mutagen import version_string as mutagen_version
 
-        log.debug(f"mutagen {mutagen_version} - injecting id3 metadata")
+        log.debug("mutagen %s - injecting id3 metadata", mutagen_version)
 
         from mutagen.mp3 import MP3
         from mutagen.id3 import (
@@ -424,15 +428,13 @@ class Process:
         # user data
         if INCLUDE_USER and self.user:
             tags.add(
-                TXXX(
-                    encoding=3, desc="open broadcast user", text="%s" % self.user.email
-                )
+                TXXX(encoding=3, desc="open broadcast user", text=str(self.user.email))
             )
 
         # track-level metadata
-        tags.add(TIT2(encoding=3, text="%s" % media.name))
+        tags.add(TIT2(encoding=3, text=str(media.name)))
         tags.add(
-            UFID(encoding=3, owner="https://openbroadcast.org", data="%s" % media.uuid)
+            UFID(encoding=3, owner="https://openbroadcast.org", data=str(media.uuid))
         )
 
         tags.add(
@@ -446,38 +448,38 @@ class Process:
         tags.add(TCON(encoding=3, text=""))
         tags.add(TMED(encoding=3, text="Digital Media"))
         if media.tracknumber:
-            tags.add(TRCK(encoding=3, text="%s" % media.tracknumber))
+            tags.add(TRCK(encoding=3, text=str(media.tracknumber)))
         if media.isrc:
-            tags.add(TSRC(encoding=3, text="%s" % media.isrc))
+            tags.add(TSRC(encoding=3, text=str(media.isrc)))
 
         if uuid_by_object(media, "musicbrainz"):
             tags.add(
                 UFID(
                     encoding=3,
                     owner="http://musicbrainz.org",
-                    data="%s" % uuid_by_object(media, "musicbrainz"),
+                    data=str(uuid_by_object(media, "musicbrainz")),
                 )
             )
 
         # release-level metadata
         if media.release:
-            tags.add(TALB(encoding=3, text="%s" % media.release.name))
+            tags.add(TALB(encoding=3, text=str(media.release.name)))
             if media.release.catalognumber:
                 tags.add(
                     TXXX(
                         encoding=3,
                         desc="CATALOGNUMBER",
-                        text="%s" % media.release.catalognumber,
+                        text=str(media.release.catalognumber),
                     )
                 )
             if media.release.releasedate:
-                tags.add(TDRC(encoding=3, text="%s" % media.release.releasedate.year))
+                tags.add(TDRC(encoding=3, text=str(media.release.releasedate.year)))
             if media.release.release_country:
                 tags.add(
                     TXXX(
                         encoding=3,
                         desc="MusicBrainz Album Release Country",
-                        text="%s" % media.release.release_country.iso2_code,
+                        text=str(media.release.release_country.iso2_code),
                     )
                 )
             if media.release.totaltracks and media.tracknumber:
@@ -488,13 +490,13 @@ class Process:
                     )
                 )
             if media.release.releasedate:
-                tags.add(TDRC(encoding=3, text="%s" % media.release.releasedate.year))
+                tags.add(TDRC(encoding=3, text=str(media.release.releasedate.year)))
             if uuid_by_object(media.release, "musicbrainz"):
                 tags.add(
                     TXXX(
                         encoding=3,
                         desc="MusicBrainz Album Id",
-                        text="%s" % uuid_by_object(media.release, "musicbrainz"),
+                        text=str(uuid_by_object(media.release, "musicbrainz")),
                     )
                 )
 
@@ -522,19 +524,19 @@ class Process:
 
         # artist-level metadata
         if media.artist:
-            tags.add(TPE1(encoding=3, text="%s" % media.artist.name))
+            tags.add(TPE1(encoding=3, text=str(media.artist.name)))
             if uuid_by_object(media.artist, "musicbrainz"):
                 tags.add(
                     TXXX(
                         encoding=3,
                         desc="MusicBrainz Artist Id",
-                        text="%s" % uuid_by_object(media.artist, "musicbrainz"),
+                        text=str(uuid_by_object(media.artist, "musicbrainz")),
                     )
                 )
 
         # label-level metadata
         if media.release and media.release.label:
-            tags.add(TPUB(encoding=3, text="%s" % media.release.label.name))
+            tags.add(TPUB(encoding=3, text=str(media.release.label.name)))
 
         tags.save(v1=0)
 

@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 
 def yearly_summary_for_label_as_xls(year, label, event_type_id, output=None):
 
-    log.debug(f"generating {event_type_id} statistics for {label} - {year}")
+    log.debug("generating %s statistics for %s - %s", event_type_id, label, year)
 
     year = int(year)
     event_type = EventType.objects.get(pk=event_type_id)
@@ -42,7 +42,7 @@ def yearly_summary_for_label_as_xls(year, label, event_type_id, output=None):
 
 def summary_for_label_as_xls(label, event_type_id, output=None):
 
-    log.debug(f"generating {event_type_id} statistics for {label} - since created")
+    log.debug("generating %s statistics for %s - since created", event_type_id, label)
 
     event_type = EventType.objects.get(pk=event_type_id)
 

@@ -27,8 +27,7 @@ class ReadOnlyIconField(Widget):
 
         if self.instance and self.instance.url:
             return mark_safe(
-                '<ul class="relations external %s unstyled"><li><a class="skip-external" href="%s"><i class="icon-%s"></i></a></li></ul>'
-                % (value, self.instance.url, value)
+                f'<ul class="relations external {value} unstyled"><li><a class="skip-external" href="{self.instance.url}"><i class="icon-{value}"></i></a></li></ul>'
             )
         else:
             return mark_safe("")

@@ -227,7 +227,7 @@ class BaseMemberForm(ModelForm):
         child = self.cleaned_data["child"]
         try:
             if not child.pk:
-                log.debug("saving not existant child: %s" % child.name)
+                log.debug("saving not existant child: %s", child.name)
                 child.save()
                 return child
         except BaseException:
@@ -279,7 +279,7 @@ class BaseAliasForm(ModelForm):
 
         child = self.cleaned_data["child"]
         if not child.pk:
-            log.debug("saving not existant child: %s" % child.name)
+            log.debug("saving not existant child: %s", child.name)
             child.save()
         return child
 

@@ -114,8 +114,7 @@ class MediaForm(ModelForm):
             Field("opus_number", css_class="input-xlarge"),
             Field("version", css_class="input-xlarge"),
             HTML(
-                '<div style="opacity: 0.5;"><span style="padding: 0 44px 0 0;">Orig. Filename:</span>%s</div>'
-                % self.instance.original_filename
+                f'<div style="opacity: 0.5;"><span style="padding: 0 44px 0 0;">Orig. Filename:</span>{self.instance.original_filename}</div>'
             ),
         )
 
@@ -256,7 +255,7 @@ class BaseExtraartistForm(ModelForm):
         artist = self.cleaned_data["artist"]
         try:
             if not artist.pk:
-                log.debug("saving not existant artist: %s" % artist.name)
+                log.debug("saving not existant artist: %s", artist.name)
                 artist.save()
             return artist
         except BaseException:

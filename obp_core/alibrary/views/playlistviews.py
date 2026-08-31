@@ -422,15 +422,14 @@ def playlist_convert(request, pk, playlist_type):
             request,
             messages.INFO,
             _(
-                'Successfully converted "%s" to "%s"'
-                % (playlist.name, playlist.get_type_display())
+                f'Successfully converted "{playlist.name}" to "{playlist.get_type_display()}"'
             ),
         )
     else:
         messages.add_message(
             request,
             messages.ERROR,
-            _('There occured an error while converting "%s"' % (playlist.name)),
+            _(f'There occured an error while converting "{playlist.name}"'),
         )
 
     return HttpResponseRedirect(playlist.get_edit_url())

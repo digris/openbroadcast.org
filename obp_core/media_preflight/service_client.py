@@ -34,7 +34,7 @@ def run_check(media):
                 headers=headers,
             )
     except RequestException as e:
-        logger.warning(f"error: {e}")
+        logger.warning("error: %s", e)
         raise PreflightServiceException(f"request error: {e}")
 
     if not r.status_code == 200:

@@ -68,7 +68,7 @@ class DaypartWidget(SelectMultiple):
 
             c = [
                 dp.pk,
-                "%02d - %02d" % (dp.time_start.hour, dp.time_end.hour),
+                f"{dp.time_start.hour:02d} - {dp.time_end.hour:02d}",
                 row_title,
             ]
             cs.append(c)
@@ -93,7 +93,7 @@ class DaypartWidget(SelectMultiple):
         ):
             if has_id:
                 final_attrs = dict(final_attrs, id="{}_{}".format(attrs["id"], i))
-                label_for = ' for="%s"' % final_attrs["id"]
+                label_for = f''' for="{final_attrs["id"]}"'''
             else:
                 label_for = ""
 
@@ -106,13 +106,11 @@ class DaypartWidget(SelectMultiple):
 
             if row_title:
                 output.append(
-                    '</ul><ul class="unstyled" style="float: left;"><li class="title">%s</li>'
-                    % row_title
+                    f'</ul><ul class="unstyled" style="float: left;"><li class="title">{row_title}</li>'
                 )
 
             output.append(
-                "<li><label%s>%s %s</label></li>"
-                % (label_for, rendered_cb, option_label)
+                f"<li><label{label_for}>{rendered_cb} {option_label}</label></li>"
             )
 
         return mark_safe("\n".join(output))

@@ -9,7 +9,7 @@ def hash_user_groups(user):
     if not user.is_authenticated():
         return "anonymous"
 
-    groups = ["%s" % x.pk for x in user.groups.order_by("pk").all()]
+    groups = [str(x.pk) for x in user.groups.order_by("pk").all()]
     groups_hash = "_".join(groups)
 
     return groups_hash

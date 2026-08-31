@@ -44,7 +44,7 @@ class ReleaseManager(models.Manager):
 
 def upload_cover_to(instance, filename):
     filename, extension = os.path.splitext(filename)
-    return os.path.join(get_dir_for_object(instance), "cover%s" % extension.lower())
+    return os.path.join(get_dir_for_object(instance), f"cover{extension.lower()}")
 
 
 class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
@@ -401,7 +401,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
             try:
                 for artist in artists:
                     if artist["join_phrase"]:
-                        artist_str += " %s " % artist["join_phrase"]
+                        artist_str += f" {artist['join_phrase']} "
                     artist_str += artist["artist"].name
             except BaseException:
                 artist_str = artists[0]["artist"].name
@@ -490,7 +490,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         cache_file_path = self.get_cache_file_path(format, version)
 
         if os.path.isfile(cache_file_path):
-            logger.info("serving from cache: %s" % (cache_file_path))
+            logger.info("serving from cache: %s", cache_file_path)
             return cache_file_path
 
         else:
@@ -500,7 +500,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
 
         cache_file_path = self.get_cache_file_path(format, version)
 
-        logger.info("building cache for: %s" % (cache_file_path))
+        logger.info("building cache for: %s", cache_file_path)
 
         try:
             os.remove(cache_file_path)
@@ -517,11 +517,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
             media_cache_file = media.inject_metadata(format, version)
 
             # filename for the file archive
-            file_name = "%02d - %s - %s" % (
-                media.tracknumber,
-                media.artist.name,
-                media.name,
-            )
+            file_name = f"{media.tracknumber:02d} - {media.artist.name} - {media.name}"
             file_name = "{}.{}".format(file_name.encode("ascii", "ignore"), format)
 
             archive_file.write(media_cache_file.path, file_name)

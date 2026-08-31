@@ -50,14 +50,14 @@ curl \
 
 
 def cleanup_data_directory(directory=DATA_DIRECTORY):
-    app.logger.debug(f"cleanup data directory: {directory}")
+    app.logger.debug("cleanup data directory: %s", directory)
     time_in_secs = time.time() - 60
     for root, _dirs, files in os.walk(directory, topdown=False):
         for _file in files:
             full_path = os.path.join(root, _file)
             stat = os.stat(full_path)
             if stat.st_mtime <= time_in_secs:
-                app.logger.info(f"unlink old file: {full_path}")
+                app.logger.info("unlink old file: %s", full_path)
                 os.unlink(full_path)
 
 
@@ -119,10 +119,10 @@ def process_as_json(**kwargs):
 
     # run waveform data generation
     try:
-        app.logger.debug(f"generate waveform data for: {path}")
+        app.logger.debug("generate waveform data for: %s", path)
         _waveform = audiowaveform.waveform_as_json(path)
     except audiowaveform.AudioWaveformException as e:
-        app.logger.warning(f"error generating waveform data for: {path} - {e}")
+        app.logger.warning("error generating waveform data for: %s - %s", path, e)
         return make_response(jsonify({"errors": [str(e)]}), 400)
     finally:
         os.unlink(path)
@@ -130,13 +130,13 @@ def process_as_json(**kwargs):
     num_samples = kwargs.get("num_samples", JSON_NUM_SAMPLES)
     num_steps = kwargs.get("num_steps", JSON_NUM_STEPS)
     try:
-        app.logger.debug(f"processing waveform data for: {path}")
+        app.logger.debug("processing waveform data for: %s", path)
         _waveform = audiowaveform.process_waveform_data(
             _waveform, num_samples, num_steps
         )
         return jsonify({"data": _waveform})
     except audiowaveform.AudioWaveformException as e:
-        app.logger.warning(f"error processing waveform data for: {path} - {e}")
+        app.logger.warning("error processing waveform data for: %s - %s", path, e)
         return make_response(jsonify({"errors": [str(e)]}), 400)
 
 
@@ -163,7 +163,7 @@ def process_as_png(**kwargs):
 
     # run waveform image generation
     try:
-        app.logger.debug(f"generate waveform data for: {path}")
+        app.logger.debug("generate waveform data for: %s", path)
         png_temp_path = audiowaveform.waveform_as_png(
             path, width=width, height=height, fg=fg, bg=bg, delete_after_processing=True
         )
@@ -179,13 +179,13 @@ def process_as_png(**kwargs):
         # return make_response(jsonify({'png_path': png_path, 'location': location, 'kwargs': kwargs}), 201)
 
     except audiowaveform.AudioWaveformException as e:
-        app.logger.warning(f"error generating waveform data for: {path} - {e}")
+        app.logger.warning("error generating waveform data for: %s - %s", path, e)
         return make_response(jsonify({"errors": [str(e)]}), 400)
 
 
 @app.route("/data/<path:filename>", methods=["GET"])
 def download_file(filename):
-    app.logger.info(f"serving {filename} from {DATA_DIRECTORY}")
+    app.logger.info("serving %s from %s", filename, DATA_DIRECTORY)
 
     return send_from_directory(directory=DATA_DIRECTORY, filename=filename)
 

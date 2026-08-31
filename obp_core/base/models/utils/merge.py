@@ -81,7 +81,7 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
                     setattr(obj, obj_varname, primary_object)
                     obj.save()
             except AttributeError as e:
-                log.warning(f'unable to handle "related_objects": {e}')
+                log.warning('unable to handle "related_objects": %s', e)
                 pass
 
         # Migrate all many to many references from alias object to primary object.

@@ -193,9 +193,7 @@ class ReleaseAdmin(BaseAdmin):
     def image_display(self, obj):
         if obj.main_image:
             try:
-                return '<img src="%s" />' % (
-                    get_thumbnailer(obj.main_image).get_thumbnail(THUMBNAIL_OPT).url
-                )
+                return f'<img src="{get_thumbnailer(obj.main_image).get_thumbnail(THUMBNAIL_OPT).url}" />'
             except Exception:
                 pass
         return "-"

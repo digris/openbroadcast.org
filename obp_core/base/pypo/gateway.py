@@ -24,7 +24,7 @@ class PypoGateway:
 
     @shared_task
     def send_task(obj, message):
-        log.info("send message: %s" % message["event_type"])
+        log.info("send message: %s", message["event_type"])
         try:
             connection = Connection(PLAYOUT_BROKER_URL)
 
@@ -34,7 +34,7 @@ class PypoGateway:
             connection.close()
 
         except Exception as e:
-            log.error("error sending message: %s" % e)
+            log.error("error sending message: %s", e)
 
 
 def send(message):

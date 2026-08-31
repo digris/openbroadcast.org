@@ -40,7 +40,7 @@ def api_lookup(request, *args, **kwargs):
     # alternatively, in case we already know the uri, this value is used for the query
     api_url = kwargs.get("api_url")
 
-    log.debug(f"api_lookup: {item_type} - id: {item_id} - provider: {provider}")
+    log.debug("api_lookup: %s - id: %s - provider: %s", item_type, item_id, provider)
 
     try:
         log.debug(provider)
@@ -49,7 +49,7 @@ def api_lookup(request, *args, **kwargs):
     except Exception as e:
         log.warning("api_lookup error: %s", e)
         error_message = "Unable to process search request. \r\nPlease check again if the provided URLs are correct."
-        return json.dumps({"error": "%s" % error_message})
+        return json.dumps({"error": str(error_message)})
 
 
 @dajaxice_register
@@ -59,7 +59,7 @@ def provider_search_query(request, *args, **kwargs):
     item_id = kwargs.get("item_id")
     provider = kwargs.get("provider")
 
-    log.debug(f"type: {item_type} - id: {item_id} - provider: {provider}")
+    log.debug("type: %s - id: %s - provider: %s", item_type, item_id, provider)
 
     data = {}
     try:
@@ -79,15 +79,15 @@ def provider_search_query(request, *args, **kwargs):
 
         if item_type == "artist" and provider == "discogs":
             item = Artist.objects.get(pk=item_id)
-            data = {"query": "%s" % (item.name)}
+            data = {"query": str(item.name)}
 
         if item_type == "artist" and provider == "musicbrainz":
             item = Artist.objects.get(pk=item_id)
-            data = {"query": "%s" % (item.name)}
+            data = {"query": str(item.name)}
 
         if item_type == "media" and provider == "discogs":
             item = Media.objects.get(pk=item_id)
-            data = {"query": "%s" % (item.name)}
+            data = {"query": str(item.name)}
 
         if item_type == "media" and provider == "musicbrainz":
             item = Media.objects.get(pk=item_id)
@@ -96,18 +96,18 @@ def provider_search_query(request, *args, **kwargs):
         if item_type == "label" and provider == "discogs":
             item = Label.objects.get(pk=item_id)
             if " " in item.name:
-                data = {"query": '"%s"' % (item.name)}
+                data = {"query": f'"{item.name}"'}
             else:
-                data = {"query": "%s" % (item.name)}
+                data = {"query": str(item.name)}
 
         if item_type == "label" and provider == "musicbrainz":
             item = Label.objects.get(pk=item_id)
-            data = {"query": "%s" % (item.name)}
+            data = {"query": str(item.name)}
 
         return json.dumps(data)
 
     except Exception as e:
-        log.warning("%s" % e)
+        log.warning("%s", e)
         return None
 
 
@@ -190,13 +190,13 @@ def provider_search(request, *args, **kwargs):
                 .replace(r"\:", ":")
             )
 
-        log.debug("query url: %s" % (url))
+        log.debug("query url: %s", url)
         r = requests.get(url)
 
         if item_type == "release":
             results = json.loads(r.text)["releases"]
             for result in results:
-                result["uri"] = "http://musicbrainz.org/release/%s" % result["id"]
+                result["uri"] = f"http://musicbrainz.org/release/{result['id']}"
                 result["thumb"] = "http://coverartarchive.org/{}/{}".format(
                     item_type,
                     result["id"],
@@ -205,7 +205,7 @@ def provider_search(request, *args, **kwargs):
         if item_type == "artist":
             results = json.loads(r.text)["artists"]
             for result in results:
-                result["uri"] = "http://musicbrainz.org/artist/%s" % result["id"]
+                result["uri"] = f"http://musicbrainz.org/artist/{result['id']}"
                 result["thumb"] = "http://coverartarchive.org/{}/{}".format(
                     item_type,
                     result["id"],
@@ -214,7 +214,7 @@ def provider_search(request, *args, **kwargs):
         if item_type == "label":
             results = json.loads(r.text)["labels"]
             for result in results:
-                result["uri"] = "http://musicbrainz.org/label/%s" % result["id"]
+                result["uri"] = f"http://musicbrainz.org/label/{result['id']}"
                 result["thumb"] = "http://coverartarchive.org/{}/{}".format(
                     item_type,
                     result["id"],
@@ -223,7 +223,7 @@ def provider_search(request, *args, **kwargs):
         if item_type == "media":
             results = json.loads(r.text)["recordings"]
             for result in results:
-                result["uri"] = "http://musicbrainz.org/recording/%s" % result["id"]
+                result["uri"] = f"http://musicbrainz.org/recording/{result['id']}"
 
     return json.dumps({"query": query, "results": results, "error": error})
 
@@ -235,7 +235,7 @@ def provider_update(request, *args, **kwargs):
     item_id = kwargs.get("item_id")
     uri = kwargs.get("uri")
 
-    log.debug("uri: %s" % (uri))
+    log.debug("uri: %s", uri)
 
     item = None
     data = {}
@@ -257,10 +257,10 @@ def provider_update(request, *args, **kwargs):
             # disabled save, as this involves heavy issues!
             # rel.save()
 
-        data = {"service": "%s" % rel.service, "url": "%s" % rel.url}
+        data = {"service": str(rel.service), "url": str(rel.url)}
 
     except Exception as e:
-        log.warning("%s" % e)
+        log.warning("%s", e)
 
     return json.dumps(data)
 
@@ -279,8 +279,10 @@ def merge_items(request, *args, **kwargs):
 
     if item_type and item_ids and master_id:
         log.debug(
-            "merge items - type: %s - ids: %s - master: %s"
-            % (item_type, ", ".join(item_ids), master_id)
+            "merge items - type: %s - ids: %s - master: %s",
+            item_type,
+            ", ".join(item_ids),
+            master_id,
         )
         try:
             # Release merge workflow migrated to API
@@ -406,9 +408,9 @@ def merge_items(request, *args, **kwargs):
                 pass
 
         except Exception as e:
-            log.warning("%s" % e)
+            log.warning("%s", e)
             data["status"] = False
-            data["error"] = "%s" % e
+            data["error"] = str(e)
 
     return json.dumps(data)
 
@@ -422,9 +424,7 @@ def reassign_items(request, *args, **kwargs):
     release_id = kwargs.get("release_id")
 
     if media_ids and (release_id or name):
-        log.debug(
-            "reassigning items: {} to {}".format((",").join(media_ids), release_id)
-        )
+        log.debug("reassigning items: %s to %s", (",").join(media_ids), release_id)
 
         if release_id:
             r = Release.objects.get(pk=int(release_id))

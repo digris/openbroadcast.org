@@ -26,7 +26,7 @@ def _extract_waveform_data(path):
 
     command = f"{AUDIOWAVEFORM_BINARY} -b {bitrate} -i {path} -o {out_path}"
 
-    log.info(f"command: {command}")
+    log.info("command: %s", command)
 
     with subprocess.Popen(
         command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True
@@ -40,7 +40,7 @@ def _extract_waveform_data(path):
             f"unable to process file (aodiowaveform). exit code {exit_code} \n{output}"
         )
 
-    log.debug(f"command output: \n{output}")
+    log.debug("command output: \n%s", output)
 
     with open(out_path) as json_file:
         try:

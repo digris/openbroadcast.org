@@ -62,8 +62,8 @@ class ChannelResource(ModelResource):
         """
         if (bundle.obj.rtmp_app and bundle.obj.rtmp_path) or bundle.obj.stream_url:
             stream = {
-                "file": "%s.stream" % bundle.obj.rtmp_path,
-                "rtmp_app": "%s" % bundle.obj.rtmp_app,
+                "file": f"{bundle.obj.rtmp_path}.stream",
+                "rtmp_app": str(bundle.obj.rtmp_app),
                 "rtmp_host": f"rtmp://{settings.RTMP_HOST}:{settings.RTMP_PORT}/",
                 # 'uri': 'http://pypo:8000/obp-dev-256.mp3',
                 "uri": bundle.obj.stream_url,
@@ -83,26 +83,22 @@ class ChannelResource(ModelResource):
 
         return [
             url(
-                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/schedule%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<pk>\\w[\\w/-]*)/schedule{trailing_slash()}$",
                 self.wrap_view("get_schedule"),
                 name="playlist_api_schedule",
             ),
             url(
-                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/history%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<pk>\\w[\\w/-]*)/history{trailing_slash()}$",
                 self.wrap_view("get_history"),
                 name="playlist_api_history",
             ),
             url(
-                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/on-air%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<pk>\\w[\\w/-]*)/on-air{trailing_slash()}$",
                 self.wrap_view("get_now_playing"),
                 name="playlist_api_on_air",
             ),
             url(
-                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/program%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<pk>\\w[\\w/-]*)/program{trailing_slash()}$",
                 self.wrap_view("get_program"),
                 name="channel_api_program",
             ),
@@ -166,7 +162,7 @@ class ChannelResource(ModelResource):
 
         # check if in cache
         try:
-            cached_item = cache.get("abcast_on_air_%s" % channel.pk)
+            cached_item = cache.get(f"abcast_on_air_{channel.pk}")
         except BaseException:
             cached_item = None
 
@@ -391,74 +387,62 @@ class BaseResource(Resource):
 
         return [
             url(
-                r"^(?P<resource_name>%s)/version%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/version{trailing_slash()}$",
                 self.wrap_view("api_version"),
                 name="base_api_version",
             ),
             url(
-                r"^(?P<resource_name>%s)/register-component%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/register-component{trailing_slash()}$",
                 self.wrap_view("register_component"),
                 name="base_api_register_component",
             ),
             url(
-                r"^(?P<resource_name>%s)/get-stream-parameters%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/get-stream-parameters{trailing_slash()}$",
                 self.wrap_view("get_stream_parameters"),
                 name="base_api_get_stream_parameters",
             ),
             url(
-                r"^(?P<resource_name>%s)/rabbitmq-do-push%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/rabbitmq-do-push{trailing_slash()}$",
                 self.wrap_view("rabbitmq_do_push"),
                 name="base_api_rabbitmq_do_push",
             ),
             url(
-                r"^(?P<resource_name>%s)/get-stream-settings%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/get-stream-settings{trailing_slash()}$",
                 self.wrap_view("get_stream_settings"),
                 name="base_api_get_stream_settings",
             ),
             url(
-                r"^(?P<resource_name>%s)/update-stream-settings%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/update-stream-settings{trailing_slash()}$",
                 self.wrap_view("update_stream_settings"),
                 name="base_api_update_stream_settings",
             ),
             url(
-                r"^(?P<resource_name>%s)/update-liquidsoap-status%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/update-liquidsoap-status{trailing_slash()}$",
                 self.wrap_view("update_liquidsoap_status"),
                 name="base_api_update_liquidsoap_status",
             ),
             url(
-                r"^(?P<resource_name>%s)/notify-media-item-start-play%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/notify-media-item-start-play{trailing_slash()}$",
                 self.wrap_view("notify_start_play"),
                 name="base_api_notify_start_play",
             ),
             url(
-                r"^(?P<resource_name>%s)/get-bootstrap-info%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/get-bootstrap-info{trailing_slash()}$",
                 self.wrap_view("get_bootstrap_info"),
                 name="base_api_get_bootstrap_info",
             ),
             url(
-                r"^(?P<resource_name>%s)/recorded-shows%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/recorded-shows{trailing_slash()}$",
                 self.wrap_view("recorded_shows"),
                 name="base_api_recorded_shows",
             ),
             url(
-                r"^(?P<resource_name>%s)/get-schedule%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/get-schedule{trailing_slash()}$",
                 self.wrap_view("get_schedule"),
                 name="base_api_get_schedule",
             ),
             url(
-                r"^(?P<resource_name>%s)/on-air%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/on-air{trailing_slash()}$",
                 self.wrap_view("get_now_playing"),
                 name="base_api_get_now_playing'",
             ),
@@ -637,7 +621,7 @@ class BaseResource(Resource):
 
         media_uuid = request.GET.get("media_id", None)
         channel_uuid = request.GET.get("channel_id", None)
-        log.debug(f"start play: {media_uuid} - {channel_uuid}")
+        log.debug("start play: %s - %s", media_uuid, channel_uuid)
 
         if media_uuid and channel_uuid:
             from alibrary.models import Media
@@ -654,8 +638,8 @@ class BaseResource(Resource):
 
         data = {
             "status": True,
-            "item": "%s" % item.name,
-            "channel": "%s" % channel.name,
+            "item": str(item.name),
+            "channel": str(channel.name),
         }
         return self.json_response(request, data)
 
@@ -672,8 +656,8 @@ class BaseResource(Resource):
                 "master_dj": "off",
                 "scheduled_play": "on",
             },
-            "station_name": "%s" % channel.name,
-            "stream_label": "%s" % channel.teaser,
+            "station_name": str(channel.name),
+            "stream_label": str(channel.teaser),
             "transition_fade": "00.000000",
         }
         return self.json_response(request, data)

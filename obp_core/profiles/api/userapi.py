@@ -58,26 +58,22 @@ class UserResource(ModelResource):
 
         return [
             url(
-                r"^(?P<resource_name>%s)/login%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/login{trailing_slash()}$",
                 self.wrap_view("login"),
                 name="profile-api-login",
             ),
             url(
-                r"^(?P<resource_name>%s)/register%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/register{trailing_slash()}$",
                 self.wrap_view("register"),
                 name="profile-api-register",
             ),
             url(
-                r"^(?P<resource_name>%s)/validate-registration%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/validate-registration{trailing_slash()}$",
                 self.wrap_view("validate_registration"),
                 name="profile-api-validate-registration",
             ),
             url(
-                r"^(?P<resource_name>%s)/get-or-create-social-user%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/get-or-create-social-user{trailing_slash()}$",
                 self.wrap_view("get_or_create_social_user"),
                 name="profile-api-get-or-create-social-user",
             ),
@@ -113,7 +109,7 @@ class UserResource(ModelResource):
         user = authenticate(username=username, password=password)
 
         if not user:
-            log.info("login failed for %s" % username)
+            log.info("login failed for %s", username)
             return HttpResponseForbidden(
                 json.dumps(
                     {
@@ -125,7 +121,7 @@ class UserResource(ModelResource):
                 )
             )
 
-        log.info("successfully login for %s" % username)
+        log.info("successfully login for %s", username)
 
         bundle = self.build_bundle(obj=user, request=request)
         bundle = self.full_dehydrate(bundle)
@@ -192,7 +188,7 @@ class UserResource(ModelResource):
         REQUIRED_FIELDS = ("username", "email", "password")
         for field in REQUIRED_FIELDS:
             if field not in data:
-                log.warning(f'missing key "{field}" when creating a user.')
+                log.warning('missing key "%s" when creating a user.', field)
                 raise APIBadRequest(
                     code="missing_key",
                     message=_(

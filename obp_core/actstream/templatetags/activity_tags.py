@@ -93,9 +93,10 @@ class AsNode(Node):
         if args_count != cls.args_count:
             arg_list = " ".join(["[arg]" * cls.args_count])
             raise TemplateSyntaxError(
-                "Accepted formats {%% %(tagname)s "
-                "%(args)s %%} or {%% %(tagname)s %(args)s as [var] %%}"
-                % {"tagname": bits[0], "args": arg_list}
+                "Accepted formats {{% {tagname!s} {args!s} %}} or "
+                "{{% {tagname!s} {args!s} as [var] %}}".format_map(
+                    {"tagname": bits[0], "args": arg_list}
+                )
             )
         args = [parser.compile_filter(token) for token in bits[1 : args_count + 1]]
         return cls(args, varname=as_var)
@@ -119,9 +120,9 @@ class DisplayAction(AsNode):
     def render_result(self, context, timestamped=False):
         action_instance = self.args[0].resolve(context)
         templates = [
-            "actstream/%s/action.html" % action_instance.verb.replace(" ", "_"),
+            f"actstream/{action_instance.verb.replace(' ', '_')}/action.html",
             "actstream/action.html",
-            "activity/%s/action.html" % action_instance.verb.replace(" ", "_"),
+            f"activity/{action_instance.verb.replace(' ', '_')}/action.html",
             "activity/action.html",
         ]
         return render_to_string(

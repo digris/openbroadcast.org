@@ -29,7 +29,11 @@ def get_events(obj, event_type_id, start, end):
 def get_media_for_label(label, start, end, event_type_id):
 
     log.debug(
-        f'get_media_for_label: "{label}" - range: {start} - {end}, type: {event_type_id}'
+        'get_media_for_label: "%s" - range: %s - %s, type: %s',
+        label,
+        start,
+        end,
+        event_type_id,
     )
 
     qs = Media.objects.all()

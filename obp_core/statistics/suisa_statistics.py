@@ -13,9 +13,11 @@ log = logging.getLogger(__name__)
 def monthly_statistics_as_email(channel, year, month, email_addresses):
 
     log.info(
-        'generating statistics for "{}" - year: {} - month: {} - to: {}'.format(
-            channel, year, month, ", ".join(email_addresses)
-        )
+        'generating statistics for "%s" - year: %s - month: %s - to: %s',
+        channel,
+        year,
+        month,
+        ", ".join(email_addresses),
     )
 
     start = datetime.datetime.combine(datetime.date(year, month, 1), datetime.time.min)

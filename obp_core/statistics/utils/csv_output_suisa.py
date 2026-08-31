@@ -87,7 +87,7 @@ def statistics_as_csv(channel, start, end, output=None):
 
     # output = output or '{}_{}_{:02d}.csv'.format(channel.name, year, month)
 
-    log.debug(f"output to: {output}")
+    log.debug("output to: %s", output)
 
     with codecs.open(output, mode="wb", encoding="utf-8") as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=FIELDNAMES, quoting=csv.QUOTE_ALL)

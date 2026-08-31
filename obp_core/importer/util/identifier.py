@@ -88,13 +88,13 @@ class Identifier:
     def id_by_sha1(self, file):
 
         sha1 = sha1_by_file(file)
-        log.debug(f"generated SHA1 {sha1} for {file}")
+        log.debug("generated SHA1 %s for %s", sha1, file)
 
         from alibrary.models import Media
 
         duplicates = Media.objects.filter(master_sha1=sha1)
         if duplicates.exists():
-            log.info("detected duplicate by SHA1 hash. pk is: %s" % duplicates[0].pk)
+            log.info("detected duplicate by SHA1 hash. pk is: %s", duplicates[0].pk)
             return duplicates[0].pk
         else:
             log.debug("no duplicate by SHA1 hash.")
@@ -111,7 +111,7 @@ class Identifier:
         try:
             metadata = self.extract_metadata(file)
         except BaseException:
-            log.warning(f"unable to extract metadata for: {file.path}")
+            log.warning("unable to extract metadata for: %s", file.path)
             metadata = None
 
         if not metadata:
@@ -127,9 +127,7 @@ class Identifier:
                 )
                 if qs.exists():
                     log.info(
-                        "found existing media by mb id: {}".format(
-                            metadata["media_mb_id"]
-                        )
+                        "found existing media by mb id: %s", metadata["media_mb_id"]
                     )
                     return qs[0].pk
 
@@ -146,9 +144,9 @@ class Identifier:
 
                 if qs.exists():
                     log.info(
-                        "found existing media by title/artist: {} - {}".format(
-                            metadata["media_name"][0:16], metadata["artist_name"][0:16]
-                        )
+                        "found existing media by title/artist: %s - %s",
+                        metadata["media_name"][0:16],
+                        metadata["artist_name"][0:16],
                     )
 
                 else:
@@ -159,10 +157,9 @@ class Identifier:
 
                     if qs.exists():
                         log.info(
-                            "found existing media by title/release: {} - {}".format(
-                                metadata["media_name"][0:16],
-                                metadata["release_name"][0:16],
-                            )
+                            "found existing media by title/release: %s - %s",
+                            metadata["media_name"][0:16],
+                            metadata["release_name"][0:16],
                         )
 
                 if qs.exists():
@@ -181,11 +178,11 @@ class Identifier:
         )
 
         if results:
-            log.info(f"got {len(results)} result(s) from fprint api")
+            log.info("got %s result(s) from fprint api", len(results))
             try:
                 return Media.objects.get(uuid=results[0]["uuid"]).pk
             except BaseException:
-                log.warning(f"unable to get media by uuid: {results}")
+                log.warning("unable to get media by uuid: %s", results)
                 return
 
     def extract_metadata(self, file):
@@ -193,11 +190,11 @@ class Identifier:
         if self.file_metadata:
             return self.file_metadata
 
-        log.info("Extracting metadata for: %s" % (file.path))
+        log.info("Extracting metadata for: %s", file.path)
 
         meta = None
         ext = os.path.splitext(file.path)[1]
-        log.debug("detected %s as extension" % ext)
+        log.debug("detected %s as extension", ext)
 
         if ext:
             ext = ext.lower()
@@ -219,7 +216,7 @@ class Identifier:
                 meta = MutagenFile(file.path)
                 log.debug("using MutagenFile")
             except Exception as e:
-                log.warning("even unable to open file with straight mutagen: %s" % e)
+                log.warning("even unable to open file with straight mutagen: %s", e)
 
         dataset = dict(METADATA_SET)
 
@@ -227,7 +224,7 @@ class Identifier:
         try:
             fileinfo = FileInfoProcessor(file.path)
         except BaseException:
-            log.warning(f"unable to extract fileinfo for: {file.path}")
+            log.warning("unable to extract fileinfo for: %s", file.path)
             fileinfo = None
 
         if fileinfo and fileinfo.audio_stream:
@@ -248,12 +245,12 @@ class Identifier:
         try:
             dataset["media_name"] = meta["title"][0]
         except Exception as e:
-            log.info('metadata missing "media_name": %s' % (e))
+            log.info('metadata missing "media_name": %s', e)
 
         try:
             dataset["media_mb_id"] = meta["musicbrainz_trackid"][0]
         except Exception as e:
-            log.debug('metadata missing "media_mb_id": %s' % (e))
+            log.debug('metadata missing "media_mb_id": %s', e)
 
         try:
             try:
@@ -265,7 +262,7 @@ class Identifier:
                     )
                 except Exception:
                     pass
-                log.debug('metadata missing "media_tracknumber": %s' % (e))
+                log.debug('metadata missing "media_tracknumber": %s', e)
 
             try:
                 tn = meta["tracknumber"][0].split("/")
@@ -283,7 +280,7 @@ class Identifier:
             t_num = None
 
             path, filename = os.path.split(file.path)
-            log.info("Looking for number in filename: %s" % filename)
+            log.info("Looking for number in filename: %s", filename)
 
             match = re.search(r"\A\d+", filename)
 
@@ -419,7 +416,7 @@ class Identifier:
 
     def get_aid(self, file):
 
-        log.info("lookup acoustid for: %s" % (file.path))
+        log.info("lookup acoustid for: %s", file.path)
 
         try:
             data = acoustid.match(AC_API_KEY, file.path)
@@ -433,8 +430,10 @@ class Identifier:
 
                 if i < LIMIT_AID_RESULTS:
                     log.debug(
-                        "acoustid: got result (loop: %s) - score: %s | mb id: %s"
-                        % (i, d[0], d[1])
+                        "acoustid: got result (loop: %s) - score: %s | mb id: %s",
+                        i,
+                        d[0],
+                        d[1],
                     )
                     if i < 1:
                         res.append(t)
@@ -444,15 +443,16 @@ class Identifier:
                             res.append(t)
                         else:
                             log.debug(
-                                "skipping acoustid, score %s < %s (AID_MIN_SCORE)"
-                                % (float(d[0]), AID_MIN_SCORE)
+                                "skipping acoustid, score %s < %s (AID_MIN_SCORE)",
+                                float(d[0]),
+                                AID_MIN_SCORE,
                             )
 
                 else:
                     pass
                     # log.debug('skipping acoustid, we have %s of them' % i)
 
-            log.info(f"got {len(res)} possible matches via acoustid")
+            log.info("got %s possible matches via acoustid", len(res))
 
             return res
 
@@ -461,7 +461,7 @@ class Identifier:
 
     def get_musicbrainz(self, obj):
 
-        log.info("Lookup musicbrainz for importfile id: %s" % obj.pk)
+        log.info("Lookup musicbrainz for importfile id: %s", obj.pk)
 
         """
         trying to get the tracknumber
@@ -476,13 +476,13 @@ class Identifier:
 
         try:
             tracknumber = obj.results_tag["media_tracknumber"]
-            log.debug("tracknumber from metadata: %s" % tracknumber)
+            log.debug("tracknumber from metadata: %s", tracknumber)
         except Exception:
             log.debug("no tracknumber in metadata")
 
         try:
             releasedate = obj.results_tag["release_date"]
-            log.debug("releasedate from metadata: %s" % releasedate)
+            log.debug("releasedate from metadata: %s", releasedate)
         except Exception:
             log.debug("no releasedate in metadata")
 
@@ -529,7 +529,7 @@ class Identifier:
         if obj.results_acoustid:
             for e in obj.results_acoustid:
                 recording_id = e["id"]
-                log.info("recording mb_id: %s" % recording_id)
+                log.info("recording mb_id: %s", recording_id)
 
                 """
                 search query e.g.:
@@ -551,18 +551,17 @@ class Identifier:
                     url = '%s%s%s' % (url, '%20AND%20date:', releasedate)
                 """
 
-                log.debug("API url for request: %s" % url)
+                log.debug("API url for request: %s", url)
                 r = requests.get(url, timeout=5)
                 result = r.json()
 
                 if "recordings" in result:  # noqa: SIM102 - keep staged API checks
-                    log.info("recording on API mb_id: %s" % recording_id)
+                    log.info("recording on API mb_id: %s", recording_id)
                     if len(result["recordings"]) > 0:  # noqa: SIM102
                         if "releases" in result["recordings"][0]:
                             log.info(
-                                "got releases on api: {}".format(
-                                    len(result["recordings"][0]["releases"])
-                                )
+                                "got releases on api: %s",
+                                len(result["recordings"][0]["releases"]),
                             )
 
                             """
@@ -586,10 +585,10 @@ class Identifier:
                                 # reset dummy-date
                                 if release["date"] == "9999":
                                     release["date"] = None
-                                log.info("First Date: %s" % release["date"])
+                                log.info("First Date: %s", release["date"])
 
                             except Exception as e:
-                                log.warning("Unable to sort by date: %s" % e)
+                                log.warning("Unable to sort by date: %s", e)
                                 sorted_releases = result["recordings"][0]["releases"]
 
                             # sorted_releases = result['recording'][0]['releases']
@@ -671,17 +670,17 @@ class Identifier:
 
     def complete_releases(self, releases):
 
-        log.info(f"got {len(releases)} releases to complete")
+        log.info("got %s releases to complete", len(releases))
 
         completed_releases = []
 
         for release in releases:
             if release["id"] in completed_releases:
-                log.debug("already completed release with id: %s" % release["id"])
+                log.debug("already completed release with id: %s", release["id"])
                 releases.remove(release)
 
             else:
-                log.debug("complete release with id: %s" % release["id"])
+                log.debug("complete release with id: %s", release["id"])
 
                 r_id = release["id"]
                 rg_id = release["release-group"]["id"]
@@ -722,7 +721,7 @@ class Identifier:
                     for relation in result["relations"]:
                         if relation["type"] == "discogs":
                             log.debug(
-                                "got discogs url from release: %s" % relation["url"]
+                                "got discogs url from release: %s", relation["url"]
                             )
                             release["discogs_url"] = relation["url"]["resource"]
 
@@ -744,7 +743,7 @@ class Identifier:
                     for relation in result["relations"]:
                         if relation["type"] == "discogs":
                             log.debug(
-                                "got discogs url from release: %s" % relation["url"]
+                                "got discogs url from release: %s", relation["url"]
                             )
                             release["discogs_master_url"] = relation["url"]["resource"]
 
@@ -770,7 +769,7 @@ class Identifier:
                 finally try to get image from coverartarchive.org
                 """
                 if not release["discogs_image"]:
-                    url = "http://coverartarchive.org/release/%s" % r_id
+                    url = f"http://coverartarchive.org/release/{r_id}"
                     try:
                         r = requests.get(url, timeout=5)
                         result = r.json()
@@ -788,7 +787,7 @@ class Identifier:
 
     def format_releases(self, releases):
 
-        log.info(f"got {len(releases)} releases to format")
+        log.info("got %s releases to format", len(releases))
 
         formatted_releases = []
 
@@ -796,10 +795,10 @@ class Identifier:
 
         for release in releases:
             if release["id"] in completed_releases:
-                log.debug("already formated release with id: %s" % release["id"])
+                log.debug("already formated release with id: %s", release["id"])
 
             else:
-                log.debug("formating release with id: %s" % release["id"])
+                log.debug("formating release with id: %s", release["id"])
                 completed_releases.append(release["id"])
 
                 # release

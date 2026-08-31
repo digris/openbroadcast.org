@@ -69,12 +69,10 @@ class FormatView(View):
 
         if not stream_permission:
             log.warning(
-                'unauthorized attempt by "%s" to download: %s - "%s"'
-                % (
-                    request.user.username if request.user else "unknown",
-                    media.pk,
-                    media.name,
-                )
+                'unauthorized attempt by "%s" to download: %s - "%s"',
+                request.user.username if request.user else "unknown",
+                media.pk,
+                media.name,
             )
             raise PermissionDenied
 
@@ -94,7 +92,7 @@ class FormatView(View):
             if requested_range:
                 requested_range = requested_range.split("=")[1].split("-")
 
-                log.debug("requested range %s" % (requested_range))
+                log.debug("requested range %s", requested_range)
                 if requested_range and requested_range[0] == "0":
                     try:
                         from atracker.util import create_event

@@ -20,9 +20,11 @@ def get_version(release_level=True):
     """
     Return the formatted version information
     """
-    vers = ["%(major)i.%(minor)i.%(micro)i" % __version_info__]
+    vers = [
+        f"{__version_info__['major']:d}.{__version_info__['minor']:d}.{__version_info__['micro']:d}"
+    ]
     if release_level and __version_info__["releaselevel"] != "final":
-        vers.append("%(releaselevel)s%(serial)i" % __version_info__)
+        vers.append(f"{__version_info__['releaselevel']}{__version_info__['serial']:d}")
     return "".join(vers)
 
 

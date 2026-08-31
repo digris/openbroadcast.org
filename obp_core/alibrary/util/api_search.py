@@ -51,7 +51,7 @@ def populate_results(results):
                 r["members"] = ", ".join([m["name"] for m in res["members"]])
 
         except Exception as e:
-            log.debug(f"unable to populate data for {url} - {e}")
+            log.debug("unable to populate data for %s - %s", url, e)
 
             pass
 
@@ -67,7 +67,7 @@ def discogs_ordered_search(query, item_type, limit=100):
     if q_stripped.isdigit():
         url = f"http://{DISCOGS_HOST}/{item_type}s/{quote_plus(query.lower())}"
 
-        log.debug(f"search by id: {url}")
+        log.debug("search by id: %s", url)
         r = requests.get(url)
 
         if r.status_code != 200:
@@ -145,7 +145,7 @@ def discogs_ordered_search(query, item_type, limit=100):
                 formatted_title = re.sub(name_pattern, "", title)
                 r["index"] = get_index(title)
                 r["formatted_title"] = formatted_title
-                r["uri"] = "https://www.discogs.com%s" % r["uri"]
+                r["uri"] = f"https://www.discogs.com{r['uri']}"
 
                 r["dist"] = distance(formatted_title.lower(), q_stripped.lower())
                 r["dist1"] = jaro(formatted_title.lower(), q_stripped.lower())

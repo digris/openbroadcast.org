@@ -70,14 +70,8 @@ def enable_voting_on(
             db_table = self.model._meta.db_table
             pk_name = self.model._meta.pk.attname
             content_type = ContentType.objects.get_for_model(self.model).id
-            _downvote_query = (
-                "(SELECT COUNT(*) from %s WHERE vote=-1 AND object_id=%s.%s AND content_type_id=%s)"
-                % (VOTE_TABLE, db_table, pk_name, content_type)
-            )
-            _upvote_query = (
-                "(SELECT COUNT(*) from %s WHERE vote=1 AND object_id=%s.%s AND content_type_id=%s)"
-                % (VOTE_TABLE, db_table, pk_name, content_type)
-            )
+            _downvote_query = f"(SELECT COUNT(*) from {VOTE_TABLE} WHERE vote=-1 AND object_id={db_table}.{pk_name} AND content_type_id={content_type})"
+            _upvote_query = f"(SELECT COUNT(*) from {VOTE_TABLE} WHERE vote=1 AND object_id={db_table}.{pk_name} AND content_type_id={content_type})"
 
             return super().get_queryset()
 
@@ -92,10 +86,7 @@ def enable_voting_on(
             db_table = self.model._meta.db_table
             pk_name = self.model._meta.pk.attname
             content_type = ContentType.objects.get_for_model(self.model).id
-            query = (
-                "(SELECT vote from %s WHERE token=%%s AND object_id=%s.%s AND content_type_id=%s)"
-                % (VOTE_TABLE, db_table, pk_name, content_type)
-            )
+            query = f"(SELECT vote from {VOTE_TABLE} WHERE token=%s AND object_id={db_table}.{pk_name} AND content_type_id={content_type})"
             return self.get_queryset().extra(
                 select={"user_vote": query}, select_params=(token,)
             )

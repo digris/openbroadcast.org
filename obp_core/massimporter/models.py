@@ -110,7 +110,7 @@ class Massimport(BaseModel):
         stats = {"added": 0, "ignored": 0, "missing": 0}
 
         if not os.path.isdir(self.directory):
-            raise OSError('directory "%s" does not exist' % self.directory)
+            raise OSError(f'directory "{self.directory}" does not exist')
 
         print(f"scanning {self.directory}")
 

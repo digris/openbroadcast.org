@@ -70,7 +70,7 @@ def clean_upload_path(instance, filename):
 
     filename, extension = os.path.splitext(filename)
     cleaned_filename = unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore")
-    folder = "import/%s/" % time.strftime("%Y%m%d%H%M%S", time.gmtime())
+    folder = f"import/{time.strftime('%Y%m%d%H%M%S', time.gmtime())}/"
     return os.path.join(folder, f"{cleaned_filename.lower()}{extension.lower()}")
 
 
@@ -206,7 +206,7 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def add_importitem(self, item):
 
-        log.debug(f"add importitem: {item}")
+        log.debug("add importitem: %s", item)
         ctype = ContentType.objects.get_for_model(item)
 
         created = False
@@ -215,7 +215,7 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
                 object_id=item.pk, content_type=ctype, import_session=self
             )
         except Exception as e:
-            log.warning(f"unable to create importitem: {item} - {e}")
+            log.warning("unable to create importitem: %s - %s", item, e)
             pass
 
         try:
@@ -352,7 +352,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
         return ""
 
     def identify(self):
-        log.info(f"Start processing ImportFile: {self.pk} at {self.file.path}")
+        log.info("Start processing ImportFile: %s at %s", self.pk, self.file.path)
 
         if USE_CELERYD:
             self.identify_task.delay(self)
@@ -373,7 +373,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
                     mimetype = mimetype.decode("utf-8", "replace")
                 obj.mimetype = mimetype
             except Exception as e:
-                log.warning("Unable to determine mimetype: %s" % e)
+                log.warning("Unable to determine mimetype: %s", e)
 
         from importer.util.identifier import Identifier
 
@@ -382,7 +382,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
         # get import settings
         reimport_duplicate = obj.settings.get("reimport_duplicate", False)
         if reimport_duplicate:
-            log.debug(f"duplicate reimport forced for pk: {obj.pk}")
+            log.debug("duplicate reimport forced for pk: %s", obj.pk)
 
         media_id = None
 
@@ -395,23 +395,23 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
             # duplicate check by sha1
             try:
                 media_id = identifier.id_by_sha1(obj.file)
-                log.debug(f"duplicate by SHA1: {media_id}")
+                log.debug("duplicate by SHA1: %s", media_id)
             except BaseException:
-                log.warning(f"unable to identify by sha1: {media_id}")
+                log.warning("unable to identify by sha1: %s", media_id)
 
             # duplicate check by name matching
             if not media_id:
                 try:
                     media_id = identifier.id_by_metadata(obj.file)
-                    log.debug(f"duplicate by metadata: : {media_id}")
+                    log.debug("duplicate by metadata: : %s", media_id)
                 except BaseException:
-                    log.warning(f"unable to identify by metadata: {media_id}")
+                    log.warning("unable to identify by metadata: %s", media_id)
 
             # duplicate check by fprint
             if not media_id:
                 try:
                     media_id = identifier.id_by_fprint(obj.file)
-                    log.debug(f"possible duplicate by fprint: {media_id}")
+                    log.debug("possible duplicate by fprint: %s", media_id)
 
                     # if possible duplicate and to be imported file have
                     # both a musicbrainz recording id then ignore
@@ -434,7 +434,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
                         pass
 
                 except BaseException:
-                    log.warning(f"unable to identify by fprint: {media_id}")
+                    log.warning("unable to identify by fprint: %s", media_id)
 
         try:
             metadata = identifier.extract_metadata(obj.file)
@@ -499,8 +499,8 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
                     return
 
         except Exception as e:
-            log.warning("unable to process metadata: %s" % e)
-            obj.error = "%s" % e
+            log.warning("unable to process metadata: %s", e)
+            obj.error = str(e)
             obj.status = ImportFile.STATUS_ERROR
             obj.save()
             return
@@ -565,7 +565,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def do_import(self):
 
-        log.debug(f"Start importing ImportFile: {self.pk} at {self.file.path}")
+        log.debug("Start importing ImportFile: %s at %s", self.pk, self.file.path)
 
         if USE_CELERYD:
             self.import_task.delay(self)
@@ -575,7 +575,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
     @shared_task
     def import_task(obj):
 
-        log.debug("Starting import task for:  %s" % (obj.pk))
+        log.debug("Starting import task for:  %s", obj.pk)
         time.sleep(1)
 
         # to prevent circular import errors
@@ -591,7 +591,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
         else:
             obj.status = 99
 
-        log.info(f"Ending import task with status: {obj.status} for: {obj.pk}")
+        log.info("Ending import task with status: %s for: %s", obj.status, obj.pk)
 
         obj.save()
 
@@ -709,7 +709,7 @@ class ImportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
         try:
             return f"{ContentType.objects.get_for_model(self.content_object)} | {self.content_object.name}"
         except BaseException:
-            return "%s" % (self.pk)
+            return str(self.pk)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -740,6 +740,6 @@ def reset_hanging_files(age=600):
         status__in=[ImportFile.STATUS_PROGRESS, ImportFile.STATUS_QUEUED],
         updated__lte=(datetime.now() - timedelta(seconds=age)),
     ):
-        log.info('releasing "working" lock for %s' % importfile.pk)
+        log.info('releasing "working" lock for %s', importfile.pk)
         importfile.status = 4
         importfile.save()

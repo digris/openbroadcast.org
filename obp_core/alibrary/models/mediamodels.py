@@ -82,7 +82,7 @@ log = logging.getLogger(__name__)
 
 def upload_master_to(instance, filename):
     filename, extension = os.path.splitext(filename)
-    return os.path.join(get_dir_for_object(instance), "master%s" % extension.lower())
+    return os.path.join(get_dir_for_object(instance), f"master{extension.lower()}")
 
 
 class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model):
@@ -363,7 +363,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
 
     # TODO: depreciated
     def get_playlink(self):
-        return "/api/tracks/%s/#0#replace" % self.uuid
+        return f"/api/tracks/{self.uuid}/#0#replace"
 
     # TODO: depreciated
     def get_download_permissions(self):
@@ -415,7 +415,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                     if artist["join_phrase"]:
                         if artist["join_phrase"] != ",":
                             artist_str += " "
-                        artist_str += "%s " % artist["join_phrase"]
+                        artist_str += f"{artist['join_phrase']} "
 
                     artist_str += artist["artist"].name
             except BaseException:
@@ -450,7 +450,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
         try:
             return self.master.path
         except Exception:
-            log.warning("unable to get master path for: %s" % self.name)
+            log.warning("unable to get master path for: %s", self.name)
 
     def get_directory(self, absolute=False):
 
@@ -461,7 +461,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
             return self.folder
 
         else:
-            log.warning(f"unable to get directory path for: {self.pk} - {self.name}")
+            log.warning("unable to get directory path for: %s - %s", self.pk, self.name)
             return None
 
     def get_file(self, source, version):
@@ -566,9 +566,9 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
             try:
                 license = License.objects.filter(is_default=True)[0]
                 self.license = license
-                log.debug("applied default license: %s" % license.name)
+                log.debug("applied default license: %s", license.name)
             except Exception as e:
-                log.warning(f"unable to apply default license: {e}")
+                log.warning("unable to apply default license: %s", e)
 
         self.master_changed = False
         if self.uuid is not None:
@@ -588,8 +588,10 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                 orig = Media.objects.filter(pk=self.pk)[0]
                 if orig.master != self.master:
                     log.info(
-                        'Media id: %s - Master changed from "%s" to "%s"'
-                        % (self.pk, orig.master, self.master)
+                        'Media id: %s - Master changed from "%s" to "%s"',
+                        self.pk,
+                        orig.master,
+                        self.master,
                     )
 
                     # `_master_changed` can be / is used in signal listeners
@@ -604,11 +606,12 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                             self.original_filename = self.master.name[0:250]
                         except Exception:
                             log.warning(
-                                f"unable to update original_filename on media: {self.pk}"
+                                "unable to update original_filename on media: %s",
+                                self.pk,
                             )
 
             except Exception as e:
-                log.warning(f"unable to update master: {e}")
+                log.warning("unable to update master: %s", e)
 
         if self.version:
             self.version = self.version.lower()
@@ -651,7 +654,7 @@ def media_post_save(sender, **kwargs):
         ingest_fprint_for_media.apply_async((obj.pk,))
 
     if not obj.folder:
-        log.debug("no directory for media %s - create it." % obj.pk)
+        log.debug("no directory for media %s - create it.", obj.pk)
         directory = get_dir_for_object(obj)
         abs_directory = os.path.join(settings.MEDIA_ROOT, directory)
 
@@ -660,10 +663,10 @@ def media_post_save(sender, **kwargs):
                 os.makedirs(abs_directory, 0o755)
 
             obj.folder = directory
-            log.debug("creating directory: %s" % abs_directory)
+            log.debug("creating directory: %s", abs_directory)
 
         except Exception as e:
-            log.warning(f"unable to create directory: {abs_directory} - {e}")
+            log.warning("unable to create directory: %s - %s", abs_directory, e)
             obj.folder = None
             obj.status = 99
 
@@ -728,9 +731,9 @@ class MediaExtraartists(models.Model):
         if self.artist and self.profession:
             return f'Credited "{self.artist.name}" as "{self.profession.name}"'
         elif self.artist:
-            return 'Credited "%s"' % (self.artist.name)
+            return f'Credited "{self.artist.name}"'
         else:
-            return 'Credited "%s"' % self.pk
+            return f'Credited "{self.pk}"'
 
 
 @receiver(post_delete, sender=MediaExtraartists)

@@ -18,7 +18,10 @@ def add_importitem_to_collection(sender, **kwargs):
         collection_name = kwargs.get("collection_name", "Contributions")
 
         log.debug(
-            f'adding "{content_object}" to collection "{collection_name}" (by {user})'
+            'adding "%s" to collection "%s" (by %s)',
+            content_object,
+            collection_name,
+            user,
         )
 
         collection, collection_created = Collection.objects.get_or_create(
@@ -28,4 +31,4 @@ def add_importitem_to_collection(sender, **kwargs):
         add_to_collection(object=content_object, user=user, collection=collection)
 
     except Exception as e:
-        log.debug(f"unable to add to collection. {e}")
+        log.debug("unable to add to collection. %s", e)

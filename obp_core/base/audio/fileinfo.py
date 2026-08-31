@@ -5,7 +5,7 @@ from ffprobe import FFProbe
 class FileInfoProcessor:
     def __init__(self, path):
         if not os.path.isfile(path):
-            raise OSError("unable to read file at: %s" % path)
+            raise OSError(f"unable to read file at: {path}")
         self.path = path
         self.audio_stream = None
 

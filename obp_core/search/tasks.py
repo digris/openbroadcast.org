@@ -12,5 +12,5 @@ def update_index():
     models = registry.get_models()
     for doc in registry.get_documents(models):
         qs = doc().get_queryset()
-        log.info(f'indexing {qs.count()} "{doc._doc_type.model.__name__}" objects')
+        log.info('indexing %s "%s" objects', qs.count(), doc._doc_type.model.__name__)
         doc().update(qs)

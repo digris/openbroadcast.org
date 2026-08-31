@@ -12,17 +12,17 @@ log = logging.getLogger(__name__)
 def discogs_image_by_url(url, type="uri"):
 
     image = None
-    log.debug("search image for %s" % url)
+    log.debug("search image for %s", url)
 
     try:
         id = url.split("/")
         id = id[-1]
     except Exception as e:
-        log.debug(f"unable to extract id: url: {url} - {e}")
+        log.debug("unable to extract id: url: %s - %s", url, e)
         return
 
     if id:
-        log.debug("Lookup image for discog id: %s" % (id))
+        log.debug("Lookup image for discog id: %s", id)
 
         type = None
         if "/master/" in url:
@@ -37,16 +37,16 @@ def discogs_image_by_url(url, type="uri"):
         if "/label/" in url:
             type = "labels"
 
-        log.debug('Type is "%s"' % type)
+        log.debug('Type is "%s"', type)
 
         if type:
             url = f"http://{DISCOGS_HOST}/{type}/{id}"
-            log.debug('constructed API url "%s"' % url)
+            log.debug('constructed API url "%s"', url)
 
             r = requests.get(url, timeout=5)
 
             if r.status_code != 200:
-                log.warning(f"server error: {r.status_code} {r.text}")
+                log.warning("server error: %s %s", r.status_code, r.text)
                 return
 
             try:

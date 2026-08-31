@@ -4,7 +4,7 @@ logger = logging.getLogger(__name__)
 
 
 def reassign_media(release, media_qs):
-    logger.debug(f"re-assign media {media_qs} to {release}")
+    logger.debug("re-assign media %s to %s", media_qs, release)
 
     for media in media_qs:
         media.release = release

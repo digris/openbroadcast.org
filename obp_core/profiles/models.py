@@ -204,7 +204,7 @@ class Profile(TimestampedModelMixin, UUIDModelMixin, MigrationMixin):
         )
 
     def __str__(self):
-        return "%s" % self.get_display_name()
+        return str(self.get_display_name())
 
     def get_full_name(self):
         if self.user:
@@ -397,7 +397,7 @@ class Community(UUIDModelMixin, MigrationMixin):
         verbose_name_plural = _("Communities")
 
     def __str__(self):
-        return "%s" % self.name
+        return str(self.name)
 
     def save(self, *args, **kwargs):
 
@@ -469,7 +469,7 @@ class MobileProvider(models.Model):
         db_table = "user_mobile_providers"
 
     def __str__(self):
-        return "%s" % self.title
+        return str(self.title)
 
 
 class ServiceType(models.Model):
@@ -488,7 +488,7 @@ class ServiceType(models.Model):
         db_table = "user_service_types"
 
     def __str__(self):
-        return "%s" % self.title
+        return str(self.title)
 
 
 class Service(models.Model):
@@ -504,7 +504,7 @@ class Service(models.Model):
         db_table = "user_services"
 
     def __str__(self):
-        return "%s" % self.username
+        return str(self.username)
 
     def get_url(self):
         return "asdadsd"
@@ -515,7 +515,7 @@ class Service(models.Model):
 
     @property
     def title(self):
-        return "%s" % self.service.title
+        return str(self.service.title)
 
 
 class Link(models.Model):
@@ -529,7 +529,7 @@ class Link(models.Model):
         db_table = "user_links"
 
     def __str__(self):
-        return "%s" % self.title
+        return str(self.title)
 
 
 class Expertise(models.Model):
@@ -542,4 +542,4 @@ class Expertise(models.Model):
         ordering = ("name",)
 
     def __str__(self):
-        return "%s" % self.name
+        return str(self.name)

@@ -73,7 +73,7 @@ def release_fetch_media_mb_ids(obj):
 
     mb_ids_added = []
 
-    log.debug(f"processing: {obj} - id:{obj.pk} - mb_id:{mb_id}")
+    log.debug("processing: %s - id:%s - mb_id:%s", obj, obj.pk, mb_id)
 
     # get media objects without musicbrainz relation
     qs_media = obj.media_release.exclude(relations__service="musicbrainz")
@@ -82,7 +82,7 @@ def release_fetch_media_mb_ids(obj):
         log.debug("no media objects without mb relation")
         return
     else:
-        log.debug(f"{qs_media.count()} media objects without mb relation")
+        log.debug("%s media objects without mb relation", qs_media.count())
 
         # load release + relations from mb api
         url = f"http://{MUSICBRAINZ_HOST}/ws/2/release/{mb_id}/?fmt=json&inc=recordings"
@@ -90,13 +90,13 @@ def release_fetch_media_mb_ids(obj):
         try:
             r = requests.get(url)
             _data = r.json()
-            log.debug(f"successfully loaded data from {url}")
+            log.debug("successfully loaded data from %s", url)
         except Exception:
-            log.warning(f"unable to load data from {url}")
+            log.warning("unable to load data from %s", url)
             return
 
         if "media" not in _data:
-            log.warning(f"unable to load media {url}")
+            log.warning("unable to load media %s", url)
             return
 
         # map tracknumbers from lp format A1, A2, B1, B2 etc to 1, 2, 3, 4 ...
@@ -118,25 +118,21 @@ def release_fetch_media_mb_ids(obj):
                     t_no = int(t["number"]) + m["track-offset"]
                     _tracks[t_no] = t
                 except ValueError as e:
-                    log.warning(
-                        'unable to map tracknumber "{}" - {}'.format(t["number"], e)
-                    )
+                    log.warning('unable to map tracknumber "%s" - %s', t["number"], e)
 
         for m in qs_media:
-            log.debug(f"looking up results for #{m.tracknumber} - {m}")
+            log.debug("looking up results for #%s - %s", m.tracknumber, m)
 
             try:
                 _track = _tracks[m.tracknumber]
             except KeyError:
                 return
 
-            log.debug(
-                "track from results #{} - {}".format(m.tracknumber, _track["title"])
-            )
+            log.debug("track from results #%s - %s", m.tracknumber, _track["title"])
 
             # check if titles match
             if unify_name(m.name).lower() == unify_name(_track["title"]).lower():
-                log.info("got id for match: {}".format(_track["recording"]["id"]))
+                log.info("got id for match: %s", _track["recording"]["id"])
                 mb_recording_id = _track["recording"]["id"]
                 # add mb relation
                 if mb_recording_id:
@@ -144,14 +140,14 @@ def release_fetch_media_mb_ids(obj):
                     try:
                         rel = Relation.objects.get(object_id=m.pk, url=mb_url)
                     except Relation.DoesNotExist:
-                        log.debug(f"relation not here yet, so add it: {mb_url}")
+                        log.debug("relation not here yet, so add it: %s", mb_url)
                         rel = Relation(content_object=m, url=mb_url)
                         rel.save()
 
                     mb_ids_added.append(mb_recording_id)
 
             else:
-                log.info('no match: "{}" <> "{}"'.format(m.name, _track["title"]))
+                log.info('no match: "%s" <> "%s"', m.name, _track["title"])
 
     return mb_ids_added
 
@@ -176,7 +172,7 @@ class MBCrawler:
         self.obj = obj
         self.mb_id = uuid_by_object(obj, service="musicbrainz")
 
-        log.debug(f"crawling metadata: {obj} - id:{obj.pk} - mb_id:{self.mb_id}")
+        log.debug("crawling metadata: %s - id:%s - mb_id:%s", obj, obj.pk, self.mb_id)
 
         self._data = None
         self._changes = {}
@@ -197,16 +193,16 @@ class MBCrawler:
             inc="+".join(self.api_inc),
         )
 
-        log.debug(f"load data from: {url}")
+        log.debug("load data from: %s", url)
 
         try:
             r = requests.get(url)
         except Exception:
-            log.warning(f"unable to load data from {url}")
+            log.warning("unable to load data from %s", url)
             return {}
 
         if r.status_code != 200:
-            log.warning(f"unable to load data: {r.status_code} - {url}")
+            log.warning("unable to load data: %s - %s", r.status_code, url)
             return {}
 
         return r.json()
@@ -256,10 +252,10 @@ class MBCrawler:
         self.update_relations()
 
         if self._changes:
-            log.info(f"apply changes on {self.obj}: {self._changes}")
+            log.info("apply changes on %s: %s", self.obj, self._changes)
             return self._changes
         else:
-            log.debug(f"no changes for {self.obj}")
+            log.debug("no changes for %s", self.obj)
 
 
 class MBArtistCrawler(MBCrawler):

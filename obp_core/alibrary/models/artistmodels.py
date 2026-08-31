@@ -31,7 +31,7 @@ LOOKUP_PROVIDERS = (("discogs", _("Discogs")), ("musicbrainz", _("Musicbrainz"))
 
 def upload_image_to(instance, filename):
     filename, extension = os.path.splitext(filename)
-    return os.path.join(get_dir_for_object(instance), "image%s" % extension.lower())
+    return os.path.join(get_dir_for_object(instance), f"image{extension.lower()}")
 
 
 class NameVariation(models.Model):

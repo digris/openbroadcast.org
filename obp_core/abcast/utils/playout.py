@@ -22,8 +22,8 @@ def map_item(item, uuid, duration, time_start, time_end):
         # TODO: just enabling crossfade to test new ls version
         # 'fade_cross': float(co.get_duration() - item.cue_out - item.fade_cross) / 1000,
         # 'fade_cross': 0,
-        "start": "%s" % time_start,
-        "end": "%s" % time_end,
+        "start": str(time_start),
+        "end": str(time_end),
         "uri": uri,
         "uri_abs": uri_abs,
         "type": "file",
@@ -44,7 +44,7 @@ def map_emission(emission, time_start):
                 item.cue_in + item.cue_out + item.fade_cross
             )
         except Exception as e:
-            log.warning(f"unable to get duration {e}")
+            log.warning("unable to get duration %s", e)
             continue
 
         # get absolute times
@@ -68,7 +68,7 @@ def map_emission(emission, time_start):
 
 def get_playout_schedule(time_start, time_end):
 
-    log.info(f"get schedule for {time_start} {time_end}")
+    log.info("get schedule for %s %s", time_start, time_end)
 
     qs = Emission.objects.filter(time_end__gte=time_start, time_start__lte=time_end)
 

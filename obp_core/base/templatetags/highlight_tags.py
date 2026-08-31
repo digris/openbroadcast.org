@@ -10,4 +10,4 @@ register = template.Library()
 def highlight(text, word):
 
     pattern = re.compile(word, re.IGNORECASE)
-    return mark_safe(pattern.sub("<em class='highlight'>%s</em>" % word, text))
+    return mark_safe(pattern.sub(f"<em class='highlight'>{word}</em>", text))

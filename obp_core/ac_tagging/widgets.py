@@ -1,5 +1,4 @@
 from django.forms.widgets import TextInput
-from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils.safestring import mark_safe
 
@@ -14,72 +13,17 @@ class TagAutocompleteTagIt(TextInput):
         super().__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
-        """Render HTML code"""
-        # django-tagging
-        case_sensitive = (
-            "false" if not getattr(settings, "FORCE_LOWERCASE_TAGS", False) else "false"
-        )
-        max_tag_lentgh = getattr(settings, "MAX_TAG_LENGTH", 50)
-        # django-tagging-autocomplete-tagit
-        autocomplete_min_length = getattr(
-            settings, "TAGGING_AUTOCOMPLETE_MIN_LENGTH", 1
-        )
-        remove_confirmation = (
-            "true"
-            if getattr(settings, "TAGGING_AUTOCOMPLETE_REMOVE_CONFIRMATION", True)
-            else "false"
-        )
-        animate = (
-            "true"
-            if getattr(settings, "TAGGING_AUTOCOMPLETE_ANIMATE", True)
-            else "false"
-        )
 
-        list_view = reverse("ac_tagging-list")
         html = super().render(name, value, attrs)
 
-        # Subclass this field in case you need to add some custom behaviour like custom callbacks
-        # does not seem to be used, kept for reference only
-        _js = """<script type="text/javascript">
-                $(document).ready(function() {
-                init_jQueryTagit({
-                objectId: '%s',
-                sourceUrl: '%s',
-                fieldName: '%s',
-                minLength: %s,
-                removeConfirmation: %s,
-                caseSensitive: %s,
-                animate: %s,
-                maxLength: %s,
-                maxTags: %s,
-                //onTagAdded  : ac_tagginc_clean,
-                //onTagRemoved: ac_tagginc_clean,
-                onTagClicked: null,
-                onMaxTagsExceeded: null,
-                })
-            });
-            </script>""" % (
-            attrs["id"],
-            list_view,
-            name,
-            autocomplete_min_length,
-            remove_confirmation,
-            case_sensitive,
-            animate,
-            max_tag_lentgh,
-            self.max_tags,
-        )
-
-        js = ""
-
-        return mark_safe("\n".join([html, js]))
+        return mark_safe(html)
 
     class Media:
         # JS Base url defaults to STATIC_URL/jquery-autocomplete/
         js_base_url = getattr(
             settings,
             "TAGGING_AUTOCOMPLETE_JS_BASE_URL",
-            "%sjs/jquery-tag-it/" % settings.STATIC_URL,
+            f"{settings.STATIC_URL}js/jquery-tag-it/",
         )
         # jQuery ui is loaded from google's CDN by default
         jqueryui_default = (
@@ -95,16 +39,16 @@ class TagAutocompleteTagIt(TextInput):
 
         # load js
         js = (
-            "%sac_tagging.js" % js_base_url,
+            f"{js_base_url}ac_tagging.js",
             jqueryui_file,
-            "%sjquery.tag-it.js" % js_base_url,
+            f"{js_base_url}jquery.tag-it.js",
         )
 
         # custom css can also be overriden in settings
         css_list = getattr(
             settings,
             "TAGGING_AUTOCOMPLETE_CSS",
-            ["%scss/ui-autocomplete-tag-it.css" % js_base_url],
+            [f"{js_base_url}css/ui-autocomplete-tag-it.css"],
         )
         # check is a list, if is a string convert it to a list
         if type(css_list) is str:
@@ -117,7 +61,7 @@ class TagAutocompleteTagIt(TextInput):
     def value_from_datadict(self, data, files, name):
         current_value = data.get(name, None)
         if current_value and current_value[-1] != ",":
-            current_value = "%s," % current_value
+            current_value = f"{current_value},"
             # current_value = u'"%s"' % current_value
             # current_value = u'%s' % current_value
         return current_value

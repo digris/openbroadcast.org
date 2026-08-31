@@ -111,10 +111,10 @@ def action_handler(verb, **kwargs):
         obj = kwargs.pop(opt, None)
         if obj is not None:
             check_actionable_model(obj)
-            setattr(newaction, "%s_object_id" % opt, obj.pk)
+            setattr(newaction, f"{opt}_object_id", obj.pk)
             setattr(
                 newaction,
-                "%s_content_type" % opt,
+                f"{opt}_content_type",
                 ContentType.objects.get_for_model(obj),
             )
     if len(kwargs):

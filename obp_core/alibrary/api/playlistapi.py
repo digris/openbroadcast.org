@@ -32,10 +32,10 @@ class PlaylistItemResource(ModelResource):
         excludes = ["id"]
 
     def dehydrate(self, bundle):
-        bundle.data["content_type"] = (
-            "%s" % bundle.obj.content_object.__class__.__name__.lower()
+        bundle.data["content_type"] = str(
+            bundle.obj.content_object.__class__.__name__.lower()
         )
-        bundle.data["resource_uri"] = "%s" % bundle.obj.content_object.get_api_url()
+        bundle.data["resource_uri"] = str(bundle.obj.content_object.get_api_url())
         return bundle
 
 
@@ -181,34 +181,29 @@ class PlaylistResource(ModelResource):
 
         return [
             url(
-                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/set-current%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<pk>\\w[\\w/-]*)/set-current{trailing_slash()}$",
                 self.wrap_view("set_current"),
                 name="playlist_api_set_current",
             ),
             url(
-                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/reorder%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<pk>\\w[\\w/-]*)/reorder{trailing_slash()}$",
                 self.wrap_view("reorder"),
                 name="playlist_api_reorder",
             ),
             # collecting
             url(
-                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/collect%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<pk>\\w[\\w/-]*)/collect{trailing_slash()}$",
                 self.wrap_view("collect_specific"),
                 name="playlist_api_collect_specific",
             ),
             url(
-                r"^(?P<resource_name>%s)/collect%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/collect{trailing_slash()}$",
                 self.wrap_view("collect"),
                 name="playlist_api_collect",
             ),
             # services & hooks
             url(
-                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/mixdown-complete%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<pk>\\w[\\w/-]*)/mixdown-complete{trailing_slash()}$",
                 self.wrap_view("mixdown_complete"),
                 name="alibrary-playlist_api-mixdown_complete",
             ),
@@ -386,8 +381,7 @@ class SimplePlaylistResource(ModelResource):
     def prepend_urls(self):
         return [
             url(
-                r"^(?P<resource_name>%s)/(?P<pk>\w[\w/-]*)/set-current%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/(?P<pk>\\w[\\w/-]*)/set-current{trailing_slash()}$",
                 self.wrap_view("set_current"),
                 name="playlist_api_set_current",
             )

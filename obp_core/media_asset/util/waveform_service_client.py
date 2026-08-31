@@ -19,7 +19,7 @@ class AudioWaveformException(Exception):
 
 def waveform_as_png(path):
 
-    logger.debug(f"generate waveform (as PNG) for: {path}")
+    logger.debug("generate waveform (as PNG) for: %s", path)
 
     url = SERVICE_ENDPOINT + "png/1800/301"
     headers = {
@@ -35,7 +35,7 @@ def waveform_as_png(path):
                 headers=headers,
             )
     except RequestException as e:
-        logger.warning(f"error: {e}")
+        logger.warning("error: %s", e)
         raise AudioWaveformException(f"request error: {e}")
 
     if not r.status_code == 200:

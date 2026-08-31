@@ -64,7 +64,7 @@ class ReleaseActionForm(Form):
             missing_licenses = []
             for media in self.instance.get_media():
                 if not media.license:
-                    missing_licenses.append(_('No license set for "%s"' % media.name))
+                    missing_licenses.append(_(f'No license set for "{media.name}"'))
 
             if len(missing_licenses) > 0:
                 self._errors["publish"] = self.error_class(missing_licenses)
@@ -107,8 +107,7 @@ class ReleaseBulkeditForm(Form):
         base_layout = Div(
             Div(
                 HTML(
-                    '<p>"%s": %s</p>'
-                    % (
+                    '<p>"{!s}": {!s}</p>'.format(
                         _("Bulk Edit"),
                         _("Choose Artist name and/or license to apply on each track."),
                     )
@@ -121,8 +120,7 @@ class ReleaseBulkeditForm(Form):
                 ),
                 Column(
                     HTML(
-                        '<button type="button" id="bulk_apply_artist_name" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> %s</button>'
-                        % _("Apply Artist to all tracks")
+                        f"""<button type="button" id="bulk_apply_artist_name" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> {_("Apply Artist to all tracks")}</button>"""
                     ),
                     css_class="side",
                 ),
@@ -132,8 +130,7 @@ class ReleaseBulkeditForm(Form):
                 Column(Field("bulk_license", css_class=form_class), css_class="main"),
                 Column(
                     HTML(
-                        '<button type="button" id="bulk_apply_license" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> %s</button>'
-                        % _("Apply License to all tracks")
+                        f"""<button type="button" id="bulk_apply_license" value="apply" class="btn btn-mini pull-right bulk_apply" id="submit-"><i class="icon-plus"></i> {_("Apply License to all tracks")}</button>"""
                     ),
                     css_class="side",
                 ),
@@ -219,18 +216,7 @@ class ReleaseForm(ModelForm):
             _("Label/Catalog"),
             LookupField("label", css_class="input-xlarge"),
             HTML(
-                """<ul class="horizontal unstyled clearfix action label-select">
-                <li><a data-label="%s" data-label_id="%s" href="#"><i class="icon-double-angle-right"></i> %s</a></li>
-                <li><a data-label="%s" data-label_id="%s" href="#"><i class="icon-double-angle-right"></i> %s</a></li>
-            </ul>"""
-                % (
-                    unknown_label.name,
-                    unknown_label.pk,
-                    unknown_label.name,
-                    noton_label.name,
-                    noton_label.pk,
-                    noton_label.name,
-                )
+                f'<ul class="horizontal unstyled clearfix action label-select">\n                <li><a data-label="{unknown_label.name}" data-label_id="{unknown_label.pk}" href="#"><i class="icon-double-angle-right"></i> {unknown_label.name}</a></li>\n                <li><a data-label="{noton_label.name}" data-label_id="{noton_label.pk}" href="#"><i class="icon-double-angle-right"></i> {noton_label.name}</a></li>\n            </ul>'
             ),
             LookupField("catalognumber", css_class="input-xlarge"),
             LookupField("release_country", css_class="input-xlarge"),
@@ -323,8 +309,7 @@ class BaseReleaseMediaForm(ModelForm):
                 Field("mediatype", css_class="input-small"),
                 Field("license", css_class="input-small"),
                 HTML(
-                    '<div><span style="padding-right: 68px;">&nbsp;</span><a href="%s"><i class="icon icon-edit"></i> Edit Track</a></div>'
-                    % self.instance.get_edit_url()
+                    f'<div><span style="padding-right: 68px;">&nbsp;</span><a href="{self.instance.get_edit_url()}"><i class="icon icon-edit"></i> Edit Track</a></div>'
                 ),
                 css_class="span3",
             ),
@@ -333,8 +318,7 @@ class BaseReleaseMediaForm(ModelForm):
                 LookupField("artist", css_class="input-large"),
                 LookupField("isrc", css_class="input-large"),
                 HTML(
-                    '<div style="opacity: 0.5;"><span style="padding-right: 48px;">File:</span>%s</div>'
-                    % self.instance.filename
+                    f'<div style="opacity: 0.5;"><span style="padding-right: 48px;">File:</span>{self.instance.filename}</div>'
                 ),
                 css_class="span9",
             ),
@@ -391,7 +375,7 @@ class BaseAlbumartistForm(ModelForm):
     def clean_artist(self):
         artist = self.cleaned_data["artist"]
         if artist and not artist.pk:
-            log.debug("saving not existant artist: %s" % artist.name)
+            log.debug("saving not existant artist: %s", artist.name)
             artist.save()
         return artist
 

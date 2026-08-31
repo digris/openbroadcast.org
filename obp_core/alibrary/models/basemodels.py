@@ -106,7 +106,7 @@ class Distributor(
 
         t_tags = ""
         for tag in self.tags:
-            t_tags += "%s, " % tag
+            t_tags += f"{tag}, "
 
         self.tags = t_tags
         self.d_tags = t_tags
@@ -189,7 +189,7 @@ class License(
         if self.parent:
             return f"{self.parent.name} - {self.name}"
         else:
-            return "%s" % (self.name)
+            return str(self.name)
 
     @property
     def title(self):
@@ -211,7 +211,7 @@ class License(
         if self.iconset:
             icons = self.iconset.split(",")
             for icon in icons:
-                html += '<i class="icon icon-license-%s"></i>' % icon.strip(" ")
+                html += f"""<i class="icon icon-license-{icon.strip(" ")}"></i>"""
 
         return mark_safe(html)
 

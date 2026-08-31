@@ -30,20 +30,17 @@ class BaseResource(Resource):
     def prepend_urls(self):
         return [
             url(
-                r"^(?P<resource_name>%s)/version%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/version{trailing_slash()}$",
                 self.wrap_view("api_version"),
                 name="base_api_version",
             ),
             url(
-                r"^(?P<resource_name>%s)/register-component%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/register-component{trailing_slash()}$",
                 self.wrap_view("register_component"),
                 name="base_api_register_component",
             ),
             url(
-                r"^(?P<resource_name>%s)/get-stream-parameters%s$"
-                % (self._meta.resource_name, trailing_slash()),
+                f"^(?P<resource_name>{self._meta.resource_name})/get-stream-parameters{trailing_slash()}$",
                 self.wrap_view("get_stream_parameters"),
                 name="base_api_get_stream_parameters",
             ),

@@ -74,8 +74,9 @@ class DABMetadataGenerator:
         self.content_object = content_object
 
         log.debug(
-            "generate dab metadata for emission: %s - content_object: %s"
-            % (self.emission, self.content_object)
+            "generate dab metadata for emission: %s - content_object: %s",
+            self.emission,
+            self.content_object,
         )
 
         if not os.path.isdir(SLIDE_BASE_DIR):
@@ -300,11 +301,7 @@ class DABMetadataGenerator:
     ):
 
         if overlay_image_path and os.path.isfile(overlay_image_path):
-            key = "%s-%s-%03d" % (
-                self.emission.uuid,
-                self.content_object.uuid,
-                slide_id,
-            )
+            key = f"{self.emission.uuid}-{self.content_object.uuid}-{slide_id:03d}"
             path = os.path.join(SLIDE_BASE_DIR, key + f".{IMAGE_OUTPUT_FORMAT}")
             url = SLIDE_BASE_URL + key + f".{IMAGE_OUTPUT_FORMAT}"
         else:
@@ -365,7 +362,7 @@ class DABMetadataGenerator:
             overlay_image.close()
         except Exception as e:
             # TODO: use narrowed exception(s)
-            log.warning(f"unable to close magick/wand overlay image - {e}")
+            log.warning("unable to close magick/wand overlay image - %s", e)
 
         return url
 
@@ -373,7 +370,7 @@ class DABMetadataGenerator:
 
         image_display_size = (300, 190)
 
-        key = "%s-%s-%03d" % (self.emission.uuid, self.content_object.uuid, slide_id)
+        key = f"{self.emission.uuid}-{self.content_object.uuid}-{slide_id:03d}"
         path = os.path.join(SLIDE_BASE_DIR, key + f".{IMAGE_OUTPUT_FORMAT}")
         url = SLIDE_BASE_URL + key + f".{IMAGE_OUTPUT_FORMAT}"
 
@@ -435,7 +432,7 @@ class DABMetadataGenerator:
             overlay_image.close()
         except Exception as e:
             # TODO: use narrowed exception(s)
-            log.warning(f"unable to close magick/wand overlay image - {e}")
+            log.warning("unable to close magick/wand overlay image - %s", e)
 
         return url
 
@@ -452,5 +449,5 @@ class DABMetadataGenerator:
                     len(file) == filename_length
                     and fstat.st_mtime < time.time() - max_age
                 ):
-                    log.info(f"file age: {fstat.st_mtime} -> delete: {file}")
+                    log.info("file age: %s -> delete: %s", fstat.st_mtime, file)
                     os.unlink(path)
