@@ -5,7 +5,6 @@ from datetime import datetime, date, timedelta
 from zipfile import ZipFile
 
 import arating
-import requests
 import tagging
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
@@ -244,7 +243,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
             if self.releasedate <= now:
                 return True
 
-        except:
+        except BaseException:
             pass
 
         return False
@@ -252,32 +251,25 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
     @property
     def is_promotional(self):
         # TODO: refactor query to reduce db hits
-        if self.releasedate:
-            if self.releasedate > datetime.now().date():
-                return True
+        if self.releasedate and self.releasedate > datetime.now().date():
+            return True
 
-        if (
+        return (
             License.objects.filter(
                 media_license__in=self.get_media(), is_promotional=True
             )
             .distinct()
             .exists()
-        ):
-            return True
-
-        return False
+        )
 
     @property
     def is_new(self):
         if self.is_promotional:
             return False
-        if (
+        return bool(
             self.releasedate
             and self.releasedate >= (datetime.now() - timedelta(days=60)).date()
-        ):
-            return True
-
-        return False
+        )
 
     @property
     def last_creation_time(self):
@@ -369,7 +361,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
         indicator = []
 
         if self.totaltracks:
-            for i in range(self.totaltracks):
+            for _i in range(self.totaltracks):
                 indicator.append(0)
 
             for m in media:
@@ -379,7 +371,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
                     pass
 
         else:
-            for m in media:
+            for _m in media:
                 indicator.append(2)
 
         return indicator
@@ -411,15 +403,15 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
                     if artist["join_phrase"]:
                         artist_str += " %s " % artist["join_phrase"]
                     artist_str += artist["artist"].name
-            except:
+            except BaseException:
                 artist_str = artists[0]["artist"].name
         else:
             try:
                 artist_str = artists[0]["artist"].name
-            except:
+            except BaseException:
                 try:
                     artist_str = artists[0].name
-                except:
+                except BaseException:
                     artist_str = _("Unknown Artist")
 
         return artist_str
@@ -460,7 +452,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
             try:
                 role.artist.profession = role.profession.name
                 artists.append(role.artist)
-            except:
+            except BaseException:
                 pass
 
         return artists
@@ -483,7 +475,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
     def clear_cache_file(self):
 
         tmp_directory = TEMP_DIR
-        pattern = "*%s.zip" % (str(self.uuid))
+        pattern = f"*{str(self.uuid)}.zip"
         versions = glob.glob(f"{tmp_directory}/{pattern}")
 
         try:
@@ -539,35 +531,6 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
     def get_extraimages(self):
         return None
 
-    # OBSOLETE
-    def complete_by_mb_id(self, mb_id):
-
-        obj = self
-
-        log = logging.getLogger("alibrary.release.complete_by_mb_id")
-        log.info(f"complete release, r: {obj.name} | mb_id: {mb_id}")
-
-        inc = (
-            "artists",
-            "url-rels",
-            "aliases",
-            "tags",
-            "recording-rels",
-            "work-rels",
-            "work-level-rels",
-            "artist-credits",
-        )
-        url = "http://{}/ws/2/release/{}/?fmt=json&inc={}".format(
-            MUSICBRAINZ_HOST,
-            mb_id,
-            "+".join(inc),
-        )
-
-        r = requests.get(url)
-        result = r.json()
-
-        return obj
-
     def save(self, *args, **kwargs):
 
         unique_slugify(self, self.name)
@@ -585,7 +548,7 @@ class Release(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Mode
 
             rd = datetime.strptime(f"{ad_y}/{ad_m}/{ad_d}", "%Y/%m/%d")
             self.releasedate = rd
-        except:
+        except BaseException:
             self.releasedate = None
 
         if self.pk is not None and hasattr(self, "_last_editor") and self._last_editor:

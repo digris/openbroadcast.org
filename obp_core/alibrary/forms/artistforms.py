@@ -104,7 +104,7 @@ class ArtistForm(ModelForm):
         """
 
         self.helper = FormHelper()
-        self.helper.form_id = "id_feedback_form_%s" % "asd"
+        self.helper.form_id = "id_feedback_form_{}".format("asd")
         self.helper.form_class = "form-horizontal"
         self.helper.form_method = "post"
         self.helper.form_action = ""
@@ -208,18 +208,6 @@ class BaseMemberFormSet(BaseInlineFormSet):
 
         self.helper.add_layout(base_layout)
 
-    def add_fields(self, form, index):
-        # allow the super class to create the fields as usual
-        super().add_fields(form, index)
-
-        # created the nested formset
-        try:
-            instance = self.get_queryset()[index]
-            pk_value = instance.pk
-        except IndexError:
-            instance = None
-            pk_value = hash(form.prefix)
-
 
 class BaseMemberForm(ModelForm):
     class Meta:
@@ -229,7 +217,6 @@ class BaseMemberForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        instance = getattr(self, "instance", None)
 
     child = search_fields.AutocompleteField(
         "alibrary.artist", allow_new=True, required=False, label=_("Member")
@@ -243,14 +230,10 @@ class BaseMemberForm(ModelForm):
                 log.debug("saving not existant child: %s" % child.name)
                 child.save()
                 return child
-        except:
+        except BaseException:
             return None
 
         return child
-
-    def save(self, *args, **kwargs):
-        instance = super().save(*args, **kwargs)
-        return instance
 
 
 """
@@ -266,7 +249,7 @@ class BaseAliasFormSet(BaseInlineFormSet):
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_id = "id_artists_form_%s" % "inline"
+        self.helper.form_id = "id_artists_form_{}".format("inline")
         self.helper.form_class = "form-horizontal"
         self.helper.form_method = "post"
         self.helper.form_action = ""
@@ -280,18 +263,6 @@ class BaseAliasFormSet(BaseInlineFormSet):
 
         self.helper.add_layout(base_layout)
 
-    def add_fields(self, form, index):
-        # allow the super class to create the fields as usual
-        super().add_fields(form, index)
-
-        # created the nested formset
-        try:
-            instance = self.get_queryset()[index]
-            pk_value = instance.pk
-        except IndexError:
-            instance = None
-            pk_value = hash(form.prefix)
-
 
 class BaseAliasForm(ModelForm):
     class Meta:
@@ -299,10 +270,6 @@ class BaseAliasForm(ModelForm):
         parent_model = Artist
         # fields = ('child',)
         exclude = []
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        instance = getattr(self, "instance", None)
 
     child = search_fields.AutocompleteField(
         "alibrary.artist", allow_new=True, required=False, label=_("Alias")
@@ -317,13 +284,7 @@ class BaseAliasForm(ModelForm):
         return child
 
     def clean(self, *args, **kwargs):
-
-        cd = super().clean()
-        return cd
-
-    def save(self, *args, **kwargs):
-        instance = super().save(*args, **kwargs)
-        return instance
+        return super().clean()
 
 
 class BaseArtistReleationFormSet(BaseGenericInlineFormSet):
@@ -333,7 +294,7 @@ class BaseArtistReleationFormSet(BaseGenericInlineFormSet):
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_id = "id_releasemediainline_form_%s" % "asdfds"
+        self.helper.form_id = "id_releasemediainline_form_{}".format("asdfds")
         self.helper.form_class = "form-horizontal"
         self.helper.form_method = "post"
         self.helper.form_action = ""

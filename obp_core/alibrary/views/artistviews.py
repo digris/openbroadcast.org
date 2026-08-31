@@ -114,11 +114,11 @@ class ArtistDetailView(MenuMixin, SectionDetailView):
         sections = self.sections
         obj = self.get_object()
         if not obj.description:
-            sections = [s for s in sections if not s["key"] == "description"]
+            sections = [s for s in sections if s["key"] != "description"]
         if not Media.objects.filter(extra_artists=obj):
-            sections = [s for s in sections if not s["key"] == "contributions"]
+            sections = [s for s in sections if s["key"] != "contributions"]
         if not obj.biography:
-            sections = [s for s in sections if not s["key"] == "biography"]
+            sections = [s for s in sections if s["key"] != "biography"]
         return sections
 
     def get_context_data(self, **kwargs):

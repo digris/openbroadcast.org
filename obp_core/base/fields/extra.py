@@ -5,14 +5,14 @@ TODO: heavy mess. field here need refactoring.
 from django.db.models import TextField, FileField
 from markdown import markdown
 from django.forms import forms
+from django.forms.widgets import CheckboxInput, ClearableFileInput
 from django.template.defaultfilters import filesizeformat
+from django.utils.html import conditional_escape, escape
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 
 # from django.utils.html import conditional_escape, format_html, format_html_join
-from django.forms.widgets import ClearableFileInput
-
-
 class ExtraClearableFileInput(ClearableFileInput):
     initial_text = _("Currently")
     input_text = _("Change")
@@ -34,10 +34,6 @@ class PreviewImageInput(ClearableFileInput):
         '%(clear)s <label for="%(clear_checkbox_id)s">%(clear_checkbox_label)s</label>'
     )
 
-
-from django.utils.html import escape, conditional_escape
-from django.utils.safestring import mark_safe
-from django.forms.widgets import CheckboxInput
 
 try:
     from django.utils.encoding import force_unicode

@@ -185,7 +185,7 @@ class MediaForm(ModelForm):
             if not artist.pk:
                 artist.creator = self.user
                 artist.save()
-        except:
+        except BaseException:
             pass
 
         try:
@@ -194,7 +194,7 @@ class MediaForm(ModelForm):
                 release.creator = self.user
                 release.save()
 
-        except:
+        except BaseException:
             pass
 
         return cd
@@ -217,7 +217,7 @@ class BaseExtraartistFormSet(BaseInlineFormSet):
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_id = "id_artists_form_%s" % "inline"
+        self.helper.form_id = "id_artists_form_{}".format("inline")
         self.helper.form_class = "form-horizontal"
         self.helper.form_method = "post"
         self.helper.form_action = ""
@@ -232,18 +232,6 @@ class BaseExtraartistFormSet(BaseInlineFormSet):
 
         self.helper.add_layout(base_layout)
 
-    def add_fields(self, form, index):
-        # allow the super class to create the fields as usual
-        super().add_fields(form, index)
-
-        # created the nested formset
-        try:
-            instance = self.get_queryset()[index]
-            pk_value = instance.pk
-        except IndexError:
-            instance = None
-            pk_value = hash(form.prefix)
-
 
 class BaseExtraartistForm(ModelForm):
     class Meta:
@@ -255,7 +243,7 @@ class BaseExtraartistForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        instance = getattr(self, "instance", None)
+        _unused = getattr(self, "instance", None)
 
         self.fields["profession"].label = _("Credited as")
 
@@ -271,7 +259,7 @@ class BaseExtraartistForm(ModelForm):
                 log.debug("saving not existant artist: %s" % artist.name)
                 artist.save()
             return artist
-        except:
+        except BaseException:
             return None
 
 
@@ -288,7 +276,7 @@ class BaseMediaartistFormSet(BaseInlineFormSet):
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_id = "id_artists_form_%s" % "inline"
+        self.helper.form_id = "id_artists_form_{}".format("inline")
         self.helper.form_class = "form-horizontal"
         self.helper.form_method = "post"
         self.helper.form_action = ""
@@ -303,28 +291,12 @@ class BaseMediaartistFormSet(BaseInlineFormSet):
 
         self.helper.add_layout(base_layout)
 
-    def add_fields(self, form, index):
-        # allow the super class to create the fields as usual
-        super().add_fields(form, index)
-
-        # created the nested formset
-        try:
-            instance = self.get_queryset()[index]
-            pk_value = instance.pk
-        except IndexError:
-            instance = None
-            pk_value = hash(form.prefix)
-
 
 class BaseMediaartistForm(ModelForm):
     class Meta:
         model = MediaArtists
         parent_model = Media
         fields = ("artist", "join_phrase", "position")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        instance = getattr(self, "instance", None)
 
     def clean_artist(self):
         artist = self.cleaned_data["artist"]
@@ -344,7 +316,7 @@ class BaseMediaReleationFormSet(BaseGenericInlineFormSet):
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_id = "id_releasemediainline_form_%s" % "asdfds"
+        self.helper.form_id = "id_releasemediainline_form_{}".format("asdfds")
         self.helper.form_class = "form-horizontal"
         self.helper.form_method = "post"
         self.helper.form_action = ""

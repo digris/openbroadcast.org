@@ -38,7 +38,8 @@ class WaveformView(View):
         Waveform.objects.filter(pk=waveform.pk).update(accessed=timezone.now())
 
         try:
-            waveform_data = open(waveform.path, "rb").read()
+            with open(waveform.path, "rb") as waveform_file:
+                waveform_data = waveform_file.read()
         except Exception as e:
             return HttpResponseBadRequest(f"{e}")
         return HttpResponse(waveform_data, content_type="image/png")
@@ -99,7 +100,7 @@ class FormatView(View):
                         from atracker.util import create_event
 
                         create_event(request.user, media, None, "stream")
-                    except:
+                    except BaseException:
                         pass
 
                 else:
@@ -113,7 +114,8 @@ class FormatView(View):
 
         else:
             # # original part - serving through django
-            data = open(format.path, "rb").read()
+            with open(format.path, "rb") as format_file:
+                data = format_file.read()
             response = HttpResponse(data, content_type="audio/mpeg")
             response["Content-Length"] = format.filesize
 
@@ -121,7 +123,7 @@ class FormatView(View):
                 from atracker.util import create_event
 
                 create_event(request.user, media, None, "stream")
-            except:
+            except BaseException:
                 pass
 
             return response

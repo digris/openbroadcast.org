@@ -18,7 +18,7 @@ def truncate_chars(value, max_length):
 
         return truncd_val + "..."
 
-    except:
+    except BaseException:
         return ""
 
 
@@ -39,5 +39,5 @@ def truncate_chars_inner(value, max_length):
 
         return truncd_str
 
-    except:
+    except BaseException:
         return ""

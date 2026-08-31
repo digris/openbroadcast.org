@@ -26,17 +26,14 @@ def waveform_as_png(path):
         "user-agent": "openbroadcast.org - waveform client/0.0.1",
     }
 
-    files = {
-        "file": open(path, "rb"),
-    }
-
     try:
-        r = requests.post(
-            url,
-            files=files,
-            timeout=TIMEOUT,
-            headers=headers,
-        )
+        with open(path, "rb") as waveform_file:
+            r = requests.post(
+                url,
+                files={"file": waveform_file},
+                timeout=TIMEOUT,
+                headers=headers,
+            )
     except RequestException as e:
         logger.warning(f"error: {e}")
         raise AudioWaveformException(f"request error: {e}")

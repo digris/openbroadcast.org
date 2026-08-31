@@ -70,7 +70,7 @@ def discogs_ordered_search(query, item_type, limit=100):
         log.debug(f"search by id: {url}")
         r = requests.get(url)
 
-        if not r.status_code == 200:
+        if r.status_code != 200:
             return []
 
         data = json.loads(r.text.replace("api.discogs.com", DISCOGS_HOST))
@@ -132,7 +132,7 @@ def discogs_ordered_search(query, item_type, limit=100):
         log.debug(url)
         r = requests.get(url)
 
-        if not r.status_code == 200:
+        if r.status_code != 200:
             return []
 
         data = json.loads(r.text.replace("api.discogs.com", DISCOGS_HOST))

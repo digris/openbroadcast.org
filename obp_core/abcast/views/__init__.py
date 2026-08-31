@@ -1,2 +1,2 @@
-from abcast.views.schedulerviews import *
-from abcast.views.stationviews import *
+from abcast.views.schedulerviews import *  # noqa: F403
+from abcast.views.stationviews import *  # noqa: F403

@@ -37,7 +37,7 @@ def _convert_to_wav(path):
         output, errors = p.communicate()
         exit_code = p.returncode
 
-    if not exit_code == 0 or errors:
+    if exit_code != 0 or errors:
         os.unlink(wav_path)
         raise AudioWaveformException(
             f"unable to process file (ffmpeg). exit code {exit_code} \n{output}"

@@ -46,7 +46,7 @@ def playlists_inline(context):
     playlist = None
     try:
         playlist = Playlist.objects.filter(user=request.user, is_current=True)[0]
-    except:
+    except BaseException:
         pass
     context.update({"current_playlist": playlist})
 

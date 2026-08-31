@@ -370,7 +370,7 @@ def profile_mentor(request, pk, cancel=False):
 def profile_approve(request, pk, level):
     profile = get_object_or_404(Profile, pk=pk)
 
-    if not profile.mentor == request.user:
+    if profile.mentor != request.user:
         return respond(request, 403)
 
     # assign groups
@@ -406,7 +406,6 @@ class InvitationListView(PaginationMixin, ListView):
 
     def get_queryset(self, **kwargs):
 
-        kwargs = {}
         from invitation.models import Invitation
 
         qs = Invitation.objects.filter(user=self.request.user)
@@ -421,7 +420,7 @@ class InvitationDeleteView(View):
 
         i = get_object_or_404(Invitation, pk=kwargs["pk"])
 
-        if not i.user == self.request.user:
+        if i.user != self.request.user:
             return HttpResponseForbidden("permission denied")
 
         if i.delete():

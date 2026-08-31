@@ -223,7 +223,7 @@ class MediaDownloadView(APIView):
         obj = get_object_or_404(Media, uuid=kwargs.get("uuid"))
         filename = f"{obj.uuid}.{obj.master_encoding}"
 
-        response = FileResponse(open(obj.master.path, "rb"))
+        response = FileResponse(open(obj.master.path, "rb"))  # noqa: SIM115
         response["Content-Disposition"] = f'attachment; filename="{filename}"'
 
         return response
@@ -303,7 +303,7 @@ class MediaAppearances(APIView):
 
         cache_key = f"media-appearances-{uuid}"
         data = cache.get(cache_key)
-        if not data or True:
+        if not data or True:  # noqa: SIM222 - cache is intentionally bypassed
             obj = get_object_or_404(Media, uuid=uuid)
 
             qs = obj.get_appearances()

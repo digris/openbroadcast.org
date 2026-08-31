@@ -31,7 +31,7 @@ def _get_profile_actions(obj, user):
             }
         )
 
-    if user.is_authenticated() and not user == obj.user:
+    if user.is_authenticated() and user != obj.user:
         actions.append(
             {
                 "key": "message",

@@ -1,10 +1,9 @@
 import django_filters
 from actstream.models import Action
 from django.contrib.contenttypes.models import ContentType
+from django.db import models
 
 ORDER_BY_FIELD = "o"
-
-from django.db import models
 
 
 class ActionFilter(django_filters.FilterSet):

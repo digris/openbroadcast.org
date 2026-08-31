@@ -88,8 +88,8 @@ class DiscogsCrawler:
         self.obj = obj
 
         """
-        url format: 
-        https://www.discogs.com/label/401445-Zzyzx-Music or 
+        url format:
+        https://www.discogs.com/label/401445-Zzyzx-Music or
         https://www.discogs.com/label/401445
         """
         _url = obj.relations.filter(service="discogs").first().url
@@ -122,7 +122,7 @@ class DiscogsCrawler:
             time.sleep(SLEEP_ON_429)
             self.load_data_from_api()
 
-        if not r.status_code == 200:
+        if r.status_code != 200:
             log.warning(f"unable to load data: {r.status_code} - {url}")
             return
 

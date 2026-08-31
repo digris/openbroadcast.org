@@ -32,9 +32,7 @@ def is_model(obj):
     """
     if not hasattr(obj, "_meta"):
         return False
-    if not hasattr(obj._meta, "db_table"):
-        return False
-    return True
+    return hasattr(obj._meta, "db_table")
 
 
 def check_actionable_model(model):

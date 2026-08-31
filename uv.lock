@@ -1125,6 +1125,7 @@ dependencies = [
     { name = "social-auth-app-django" },
     { name = "social-auth-core" },
     { name = "tqdm" },
+    { name = "unidecode" },
     { name = "uritemplate" },
     { name = "urlobject" },
     { name = "uwsgi" },
@@ -1217,6 +1218,7 @@ requires-dist = [
     { name = "social-auth-app-django", specifier = "==3.1.0" },
     { name = "social-auth-core", specifier = "==3.1.0" },
     { name = "tqdm", specifier = "==3.8.0" },
+    { name = "unidecode", specifier = ">=1.4.0" },
     { name = "uritemplate", specifier = "==3.0.1" },
     { name = "urlobject", specifier = "==2.3.4" },
     { name = "uwsgi", specifier = "==2.0.15" },
@@ -1788,6 +1790,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/92/ff/5a28bdfd8c3ebec42564ac7d0e54ca3db65044a9314a97f9564fa7a1e926/tzdata-2026.3.tar.gz", hash = "sha256:4a1518b8993086a7982523e071643f3c0e5f213e75b21318e78bcabfff9d1415", size = 198674, upload-time = "2026-07-10T08:50:37.887Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e5/6d/b53b99a9f2766d095985947a5782f1702cabb129a34f7a802d7197af832f/tzdata-2026.3-py2.py3-none-any.whl", hash = "sha256:dc096730c87af6cab1b171c9d532be840741ff5d459015e7f6947bd7d7e54931", size = 348168, upload-time = "2026-07-10T08:50:36.46Z" },
+]
+
+[[package]]
+name = "unidecode"
+version = "1.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/94/7d/a8a765761bbc0c836e397a2e48d498305a865b70a8600fd7a942e85dcf63/Unidecode-1.4.0.tar.gz", hash = "sha256:ce35985008338b676573023acc382d62c264f307c8f7963733405add37ea2b23", size = 200149, upload-time = "2025-04-24T08:45:03.798Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8f/b7/559f59d57d18b44c6d1250d2eeaa676e028b9c527431f5d0736478a73ba1/Unidecode-1.4.0-py3-none-any.whl", hash = "sha256:c3c7606c27503ad8d501270406e345ddb480a7b5f38827eafe4fa82a137f0021", size = 235837, upload-time = "2025-04-24T08:45:01.609Z" },
 ]
 
 [[package]]

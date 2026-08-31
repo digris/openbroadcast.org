@@ -13,7 +13,13 @@ from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
 
-THUMBNAIL_OPT = dict(size=(480, 480), crop=True, bw=False, upscale=True, quality=80)
+THUMBNAIL_OPT = {
+    "size": (480, 480),
+    "crop": True,
+    "bw": False,
+    "upscale": True,
+    "quality": 80,
+}
 
 
 class ReleaseResource(ModelResource):
@@ -50,7 +56,7 @@ class ReleaseResource(ModelResource):
                 opt = THUMBNAIL_OPT
                 main_image = get_thumbnailer(bundle.obj.main_image).get_thumbnail(opt)
                 bundle.data["main_image"] = main_image.url
-            except:
+            except BaseException:
                 pass
 
         bundle.data["artist"] = bundle.obj.get_artists()

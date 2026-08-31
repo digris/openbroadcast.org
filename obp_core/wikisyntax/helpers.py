@@ -110,7 +110,7 @@ def wikify(match):  # Excepts a regexp match
 	[[Studio 54]]
 	[[Beverly Hills: 90210]] <-- notice ':' was confused earlier as a wiki prefix name
 
-	[[Cat]]s <-- will try to match 'Cat' but will include the plural 
+	[[Cat]]s <-- will try to match 'Cat' but will include the plural
 
 	[[Cats]] <-- will try to match 'Cats' then 'Cat'
 
@@ -144,7 +144,7 @@ class wikify_string:
 
         string = fix_unicode.fix_unicode(string)
 
-        if getattr(settings, "WIKISYNTAX_DISABLE_CACHE", False) == False:
+        if not getattr(settings, "WIKISYNTAX_DISABLE_CACHE", False):
             keys = re.findall(WIKIBRACKETS, string)
             self.cache = cache.get_many(
                 [k.replace(" ", "-").lower() for k in keys if len(k) < 251]
@@ -161,7 +161,7 @@ class wikify_string:
     def markup_to_links(self, match):
         string = match.groups()[0].lower().replace(" ", "-")
 
-        if getattr(settings, "WIKISYNTAX_DISABLE_CACHE", False) == False:
+        if not getattr(settings, "WIKISYNTAX_DISABLE_CACHE", False):
             if string in self.cache:
                 return self.cache[string]
 
@@ -171,7 +171,7 @@ class wikify_string:
         try:
             new_val = wikify(match)
 
-            if getattr(settings, "WIKISYNTAX_DISABLE_CACHE", False) == False:
+            if not getattr(settings, "WIKISYNTAX_DISABLE_CACHE", False):
                 self.set_cache[string] = new_val
 
             return new_val

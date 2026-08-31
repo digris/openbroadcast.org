@@ -2,7 +2,6 @@ import logging
 import os
 import time
 import unicodedata
-import string
 import ntpath
 
 try:
@@ -70,7 +69,6 @@ class UnuspiciousStorage(FileSystemStorage):
 def clean_upload_path(instance, filename):
 
     filename, extension = os.path.splitext(filename)
-    valid_chars = f"-_.{string.ascii_letters}{string.digits}"
     cleaned_filename = unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore")
     folder = "import/%s/" % time.strftime("%Y%m%d%H%M%S", time.gmtime())
     return os.path.join(folder, f"{cleaned_filename.lower()}{extension.lower()}")
@@ -158,17 +156,17 @@ class Import(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
         for file in self.files.filter(status=2):
             it = file.import_tag
-            if "mb_track_id" in it:
-                if it["mb_track_id"] not in inserts["media_mb"]:
-                    inserts["media_mb"].append(it["mb_track_id"])
+            if "mb_track_id" in it and it["mb_track_id"] not in inserts["media_mb"]:
+                inserts["media_mb"].append(it["mb_track_id"])
 
-            if "mb_artist_id" in it:
-                if it["mb_artist_id"] not in inserts["artist_mb"]:
-                    inserts["artist_mb"].append(it["mb_artist_id"])
+            if "mb_artist_id" in it and it["mb_artist_id"] not in inserts["artist_mb"]:
+                inserts["artist_mb"].append(it["mb_artist_id"])
 
-            if "mb_release_id" in it:
-                if it["mb_release_id"] not in inserts["release_mb"]:
-                    inserts["release_mb"].append(it["mb_release_id"])
+            if (
+                "mb_release_id" in it
+                and it["mb_release_id"] not in inserts["release_mb"]
+            ):
+                inserts["release_mb"].append(it["mb_release_id"])
 
         return inserts
 
@@ -398,7 +396,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
             try:
                 media_id = identifier.id_by_sha1(obj.file)
                 log.debug(f"duplicate by SHA1: {media_id}")
-            except:
+            except BaseException:
                 log.warning(f"unable to identify by sha1: {media_id}")
 
             # duplicate check by name matching
@@ -406,7 +404,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
                 try:
                     media_id = identifier.id_by_metadata(obj.file)
                     log.debug(f"duplicate by metadata: : {media_id}")
-                except:
+                except BaseException:
                     log.warning(f"unable to identify by metadata: {media_id}")
 
             # duplicate check by fprint
@@ -424,19 +422,18 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
                             metadata
                             and "media_mb_id" in metadata
                             and metadata["media_mb_id"]
+                        ) and (
+                            Media.objects.get(pk=media_id)
+                            .relations.filter(
+                                url__contains="musicbrainz.org/recording/"
+                            )
+                            .exists()
                         ):
-                            if (
-                                Media.objects.get(pk=media_id)
-                                .relations.filter(
-                                    url__contains="musicbrainz.org/recording/"
-                                )
-                                .exists()
-                            ):
-                                media_id = None
-                    except:
+                            media_id = None
+                    except BaseException:
                         pass
 
-                except:
+                except BaseException:
                     log.warning(f"unable to identify by fprint: {media_id}")
 
         try:
@@ -445,9 +442,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
                 log.warning("unable to extracted metadata")
 
             # check if we have obp-data available in files meta
-            obp_media_uuid = (
-                metadata["obp_media_uuid"] if "obp_media_uuid" in metadata else None
-            )
+            obp_media_uuid = metadata.get("obp_media_uuid", None)
 
             if obp_media_uuid:
                 try:
@@ -459,26 +454,18 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
                     pass
 
             # check if we have musicbrainz-data available
-            media_mb_id = metadata["media_mb_id"] if "media_mb_id" in metadata else None
-            artist_mb_id = (
-                metadata["artist_mb_id"] if "artist_mb_id" in metadata else None
-            )
-            release_mb_id = (
-                metadata["release_mb_id"] if "release_mb_id" in metadata else None
-            )
+            media_mb_id = metadata.get("media_mb_id", None)
+            artist_mb_id = metadata.get("artist_mb_id", None)
+            release_mb_id = metadata.get("release_mb_id", None)
 
-            media_name = metadata["media_name"] if "media_name" in metadata else None
-            artist_name = metadata["artist_name"] if "artist_name" in metadata else None
-            release_name = (
-                metadata["release_name"] if "release_name" in metadata else None
-            )
-            media_tracknumber = (
-                metadata["media_tracknumber"]
-                if "media_tracknumber" in metadata
-                else None
-            )
+            media_name = metadata.get("media_name", None)
+            artist_name = metadata.get("artist_name", None)
+            release_name = metadata.get("release_name", None)
+            media_tracknumber = metadata.get("media_tracknumber", None)
 
-            if AUTOIMPORT_MB and media_mb_id and artist_mb_id and release_mb_id:
+            if (  # noqa: SIM102 - preserve the comment-heavy legacy branch
+                AUTOIMPORT_MB and media_mb_id and artist_mb_id and release_mb_id
+            ):  # noqa: SIM102 - preserve the comment-heavy legacy branch
                 # print
                 # print '******************************************************************'
                 # print 'got musicbrainz match'
@@ -537,7 +524,7 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
                     obj.save()
 
                     return
-            except:
+            except BaseException:
                 pass
 
         if media:
@@ -610,8 +597,6 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
 
     def save(self, skip_apply_import_tag=False, *args, **kwargs):
 
-        msg = {"key": "save", "content": "object saved"}
-
         if not self.filename:
             self.filename = self.file.name
 
@@ -623,12 +608,15 @@ class ImportFile(UUIDModelMixin, TimestampedModelMixin, models.Model):
             _importer = Importer(user=self.import_session.user)
             self.import_tag = _importer.complete_import_tag(self)
 
-        if self.status == ImportFile.STATUS_READY:
-            # try to apply import_tag to other files of this import session
-            if not skip_apply_import_tag and self.import_session:
-                # TODO: this breaks the interface, as nearly infinite loop arises
-                # print 'skipping import_session.apply_import_tag'
-                self.import_session.apply_import_tag(self)
+        # try to apply import_tag to other files of this import session
+        if (
+            self.status == ImportFile.STATUS_READY
+            and not skip_apply_import_tag
+            and self.import_session
+        ):
+            # TODO: this breaks the interface, as nearly infinite loop arises
+            # print 'skipping import_session.apply_import_tag'
+            self.import_session.apply_import_tag(self)
 
         # check import_tag for completeness
         if self.status in [ImportFile.STATUS_READY, ImportFile.STATUS_WARNING]:
@@ -684,7 +672,7 @@ def post_delete_importfile(sender, **kwargs):
         # so "unsafe" files via `UnuspiciousStorage` are not affected
         if obj.file.path.startswith(MEDIA_ROOT):
             os.remove(obj.file.path)
-    except:
+    except BaseException:
         pass
 
 
@@ -720,7 +708,7 @@ class ImportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
     def __str__(self):
         try:
             return f"{ContentType.objects.get_for_model(self.content_object)} | {self.content_object.name}"
-        except:
+        except BaseException:
             return "%s" % (self.pk)
 
     def save(self, *args, **kwargs):

@@ -224,11 +224,11 @@ class PlaylistDetailView(MenuMixin, SectionDetailView):
         obj = self.get_object()
         emission_qs = obj.get_emissions()
         if not emission_qs.exists():
-            sections = [s for s in sections if not s["key"] == "emissions"]
+            sections = [s for s in sections if s["key"] != "emissions"]
         if not obj.description:
-            sections = [s for s in sections if not s["key"] == "description"]
+            sections = [s for s in sections if s["key"] != "description"]
         if not obj.is_broadcast:
-            sections = [s for s in sections if not s["key"] == "mixdown"]
+            sections = [s for s in sections if s["key"] != "mixdown"]
         return sections
 
     def get_queryset(self):
@@ -380,7 +380,7 @@ class PlaylistEditView(
 
         if (
             self.request.user.has_perm("importer.add_import")
-            and not self.object.type == "broadcast"
+            and self.object.type != "broadcast"
         ):
             context["can_upload_media"] = True
         else:
@@ -389,14 +389,14 @@ class PlaylistEditView(
         return context
 
     def form_valid(self, form):
-        context = self.get_context_data()
+        _unused = self.get_context_data()
 
         # validation
         if form.is_valid():
             self.object.tags = form.cleaned_data["d_tags"]
 
             # temporary instance to validate inline forms against
-            tmp = form.save(commit=False)
+            _unused = form.save(commit=False)
 
             form.save()
             form.save_m2m()

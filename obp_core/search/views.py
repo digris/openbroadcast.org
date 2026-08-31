@@ -84,7 +84,7 @@ class BaseFacetedSearch(FacetedSearch):
                     _musts.append(ESQ("term", tags=tag))
             else:
                 for v in value:
-                    if not v[0:1] == "-":
+                    if v[0:1] != "-":
                         # print('must', v)
                         _musts.append(ESQ("term", **{key: v}))
                     else:
@@ -167,7 +167,7 @@ class BaseSearchListView(ListView):
             tagcloud = utils.get_tagcloud_data(
                 tags=search_result.facets.tags, request=self.request
             )
-        except:
+        except BaseException:
             tagcloud = []
 
         filters = utils.get_filter_data(

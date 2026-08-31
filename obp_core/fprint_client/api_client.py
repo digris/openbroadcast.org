@@ -36,7 +36,7 @@ class FprintAPIClient:
         try:
             r = requests.post(url, json=fprint)
             data = r.json()
-        except:
+        except BaseException:
             data = []
 
         return data
@@ -53,7 +53,7 @@ class FprintAPIClient:
         # TODO: implement exception handling
         try:
             code = code_from_path(obj.master.path)
-        except:
+        except BaseException:
             return
 
         if not code:

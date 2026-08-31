@@ -103,7 +103,7 @@ class LabelForm(ModelForm):
         """
 
         self.helper = FormHelper()
-        self.helper.form_id = "id_feedback_form_%s" % "asd"
+        self.helper.form_id = "id_feedback_form_{}".format("asd")
         self.helper.form_class = "form-horizontal"
         self.helper.form_method = "post"
         self.helper.form_action = ""
@@ -170,7 +170,7 @@ class LabelForm(ModelForm):
             if not parent.pk:
                 parent.creator = self.user
                 parent.save()
-        except:
+        except BaseException:
             pass
 
         try:
@@ -178,7 +178,7 @@ class LabelForm(ModelForm):
                 self._errors["parent"] = self.error_class(
                     [_("The parent label can not be itself!")]
                 )
-        except:
+        except BaseException:
             pass
 
         if cd.get("remote_image", None):
@@ -225,7 +225,7 @@ class BaseFoundingArtistForm(ModelForm):
             if not artist.pk:
                 artist.save()
                 return artist
-        except:
+        except BaseException:
             return None
         return artist
 
@@ -252,7 +252,7 @@ class BaseLabelReleationFormSet(BaseGenericInlineFormSet):
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_id = "id_releasemediainline_form_%s" % "asdfds"
+        self.helper.form_id = "id_releasemediainline_form_{}".format("asdfds")
         self.helper.form_class = "form-horizontal"
         self.helper.form_method = "post"
         self.helper.form_action = ""

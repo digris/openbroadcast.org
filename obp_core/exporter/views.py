@@ -39,7 +39,6 @@ class ExportListView(PermissionRequiredMixin, LoginRequiredMixin, ListView):
     raise_exception = True
 
     def get_queryset(self):
-        kwargs = {}
         return Export.objects.filter(user=self.request.user)
 
 
@@ -51,7 +50,6 @@ class ExportDeleteView(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     raise_exception = True
 
     def get_queryset(self):
-        kwargs = {}
         return Export.objects.filter(user=self.request.user)
 
 
@@ -63,7 +61,6 @@ class ExportDeleteAllView(PermissionRequiredMixin, LoginRequiredMixin, View):
     raise_exception = True
 
     def get_queryset(self):
-        kwargs = {}
         return Export.objects.filter(user=self.request.user)
 
     def get(self, *args, **kwargs):

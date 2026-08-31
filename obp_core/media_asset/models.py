@@ -297,7 +297,7 @@ class Format(UUIDModelMixin, TimestampedModelMixin, models.Model):
                 log.debug("running: %s" % " ".join(command))
 
                 p = subprocess.Popen(command, stdout=subprocess.PIPE)
-                stdout = p.communicate()
+                p.communicate()
 
         if tmp_directory and os.path.isdir(tmp_directory):
             shutil.rmtree(tmp_directory)

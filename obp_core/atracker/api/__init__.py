@@ -1,1 +1,1 @@
-from atracker.api.event import EventResource
+from atracker.api.event import EventResource  # noqa: F401

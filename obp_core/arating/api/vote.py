@@ -159,7 +159,7 @@ class VoteResource(ModelResource):
 
         try:
             uuid = obj.uuid
-        except:
+        except BaseException:
             uuid = None
 
         bundle = {

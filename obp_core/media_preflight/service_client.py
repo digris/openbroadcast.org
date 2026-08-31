@@ -25,17 +25,14 @@ def run_check(media):
         "user-agent": "openbroadcast.org - preflight client/0.0.1",
         "Authentication": f"Bearer {SERVICE_TOKEN}",
     }
-    files = {
-        "data": open(media.master.path, "rb"),
-    }
-
     try:
-        r = requests.post(
-            url,
-            files=files,
-            timeout=TIMEOUT,
-            headers=headers,
-        )
+        with open(media.master.path, "rb") as media_file:
+            r = requests.post(
+                url,
+                files={"data": media_file},
+                timeout=TIMEOUT,
+                headers=headers,
+            )
     except RequestException as e:
         logger.warning(f"error: {e}")
         raise PreflightServiceException(f"request error: {e}")

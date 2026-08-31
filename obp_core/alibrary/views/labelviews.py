@@ -125,7 +125,7 @@ class LabelDetailView(MenuMixin, SectionDetailView):
         sections = self.sections
         obj = self.get_object()
         if not obj.description:
-            sections = [s for s in sections if not s["key"] == "description"]
+            sections = [s for s in sections if s["key"] != "description"]
         return sections
 
     def get_context_data(self, **kwargs):

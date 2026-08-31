@@ -8,7 +8,7 @@ from easy_thumbnails.exceptions import InvalidImageFormatError
 from search.elasticsearch_utils import edge_ngram_analyzer, edge_ngram_search_analyzer
 from .models import Profile
 
-THUMBNAIL_OPT = dict(size=(197, 197), crop=True, upscale=True)
+THUMBNAIL_OPT = {"size": (197, 197), "crop": True, "upscale": True}
 
 profile_index = Index("profiles")
 

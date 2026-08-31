@@ -36,8 +36,7 @@ def any_to_wav(src, dst):
 
     p = subprocess.run(
         command,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
     )
 
     if p.returncode != 0:

@@ -32,4 +32,4 @@ def delete_fprint_for_media(media_uuid):
     log.info(f"Media id: {media_uuid} - delete fprint")
     client = FprintAPIClient()
 
-    result = client.delete_for_media(media_uuid)
+    client.delete_for_media(media_uuid)

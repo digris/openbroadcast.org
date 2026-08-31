@@ -12,7 +12,7 @@ def list_tags(request):
     except MultiValueDictKeyError:
         tags = []
 
-    return JsonResponse([x for x in tags])
+    return JsonResponse(list(tags))
 
 
 class JsonResponse(HttpResponse):

@@ -24,8 +24,6 @@ class WebookView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-
-        name = kwargs.get("name")
         token = request.GET.get(SECURITY_TOKEN_KEY, None)
 
         return HttpResponse(token)

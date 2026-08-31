@@ -16,7 +16,7 @@ from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
 
-THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
+THUMBNAIL_OPT = {"size": (70, 70), "crop": True, "bw": False, "quality": 80}
 
 
 class MediaResource(ModelResource):
@@ -52,7 +52,7 @@ class MediaResource(ModelResource):
         if not sorting:
             return obj_list
 
-        obj_list_sorted = list()
+        obj_list_sorted = []
         for pk in sorting.split(","):
             obj_list_sorted.append(obj_list.get(pk=int(pk)))
 
@@ -131,7 +131,7 @@ class MediaResource(ModelResource):
                         obj=label, request=bundle.request
                     )
                     label_resource = LabelResource().full_dehydrate(label_bundle)
-                except:
+                except BaseException:
                     label_resource = None
 
                 bundle.data["label"] = label_resource
@@ -260,7 +260,7 @@ class SimpleMediaResource(ModelResource):
         if not sorting:
             return obj_list
 
-        obj_list_sorted = list()
+        obj_list_sorted = []
         for pk in sorting.split(","):
             obj_list_sorted.append(obj_list.get(pk=int(pk)))
 

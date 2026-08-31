@@ -1,4 +1,4 @@
-from django.conf.urls import *
+from django.conf.urls import url
 from django.http import HttpResponse
 from importer.models import Import, ImportFile
 from tastypie import fields
@@ -245,7 +245,7 @@ class ImportResource(ModelResource):
 
         try:
             source = source[0]
-        except:
+        except BaseException:
             source = None
 
         if source:

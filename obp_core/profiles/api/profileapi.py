@@ -13,7 +13,7 @@ from tastypie.utils import trailing_slash
 
 log = logging.getLogger(__name__)
 
-THUMBNAIL_OPT = dict(size=(240, 240), crop=True, bw=False, quality=80)
+THUMBNAIL_OPT = {"size": (240, 240), "crop": True, "bw": False, "quality": 80}
 
 
 class ProfileResource(ModelResource):
@@ -64,7 +64,7 @@ class ProfileResource(ModelResource):
             bundle.data["image"] = (
                 get_thumbnailer(bundle.obj.image).get_thumbnail(THUMBNAIL_OPT).url
             )
-        except:
+        except BaseException:
             pass
 
         bundle.data["tags"] = [tag.name for tag in bundle.obj.tags]

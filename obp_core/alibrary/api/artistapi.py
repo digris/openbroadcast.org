@@ -12,7 +12,7 @@ from tastypie.authorization import Authorization
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
-THUMBNAIL_OPT = dict(size=(240, 240), crop=True, bw=False, quality=80)
+THUMBNAIL_OPT = {"size": (240, 240), "crop": True, "bw": False, "quality": 80}
 
 
 class ArtistResource(ModelResource):
@@ -40,7 +40,7 @@ class ArtistResource(ModelResource):
                 opt = THUMBNAIL_OPT
                 main_image = get_thumbnailer(bundle.obj.main_image).get_thumbnail(opt)
                 bundle.data["main_image"] = main_image.url
-            except:
+            except BaseException:
                 pass
 
         bundle.data["media_count"] = len(bundle.obj.get_media())

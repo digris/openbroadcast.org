@@ -24,13 +24,12 @@ def pushy_post_save(sender, **kwargs):
     if kwargs.get("raw"):
         return
 
-    rs = redis.StrictRedis(host=pushy_settings.get_redis_host())
     obj = kwargs["instance"]
     created = kwargs["created"]
 
     try:
         pushy_ignore = obj._pushy_ignore
-    except:
+    except BaseException:
         pushy_ignore = False
 
     if pushy_ignore:
@@ -40,7 +39,7 @@ def pushy_post_save(sender, **kwargs):
         action = "create"
         try:
             route = obj.get_api_list_url()
-        except:
+        except BaseException:
             route = obj.get_api_url()
     else:
         action = "update"
@@ -55,7 +54,6 @@ def pushy_post_save(sender, **kwargs):
 
 
 def pushy_post_delete(sender, **kwargs):
-    rs = redis.StrictRedis(host=pushy_settings.get_redis_host())
     obj = kwargs["instance"]
 
     message = {"route": obj.get_api_url(), "type": "delete"}

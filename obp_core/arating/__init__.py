@@ -5,13 +5,12 @@ __license__ = "BSD"
 
 
 # -*- coding: utf-8 -*-
+from django.core.exceptions import ImproperlyConfigured
+from django.db.models import Manager
+
 __version__ = "0.0.1"
 
 default_app_config = "arating.apps.AratingConfig"
-
-
-from django.core.exceptions import ImproperlyConfigured
-from django.db.models import Manager
 
 
 def limit_total_votes(num):
@@ -71,11 +70,11 @@ def enable_voting_on(
             db_table = self.model._meta.db_table
             pk_name = self.model._meta.pk.attname
             content_type = ContentType.objects.get_for_model(self.model).id
-            downvote_query = (
+            _downvote_query = (
                 "(SELECT COUNT(*) from %s WHERE vote=-1 AND object_id=%s.%s AND content_type_id=%s)"
                 % (VOTE_TABLE, db_table, pk_name, content_type)
             )
-            upvote_query = (
+            _upvote_query = (
                 "(SELECT COUNT(*) from %s WHERE vote=1 AND object_id=%s.%s AND content_type_id=%s)"
                 % (VOTE_TABLE, db_table, pk_name, content_type)
             )

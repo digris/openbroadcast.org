@@ -1,31 +1,31 @@
 from .basemodels import (
-    MigrationMixin,
-    Relation,
-    Profession,
-    License,
-    Distributor,
-    Daypart,
-)
+    MigrationMixin,  # noqa: F401
+    Relation,  # noqa: F401
+    Profession,  # noqa: F401
+    License,  # noqa: F401
+    Distributor,  # noqa: F401
+    Daypart,  # noqa: F401
+)  # noqa: F401
 from .artistmodels import (
-    Artist,
-    ArtistProfessions,
-    NameVariation,
-    ArtistMembership,
-    ArtistAlias,
-)
-from .labelmodels import Label, LabelFoundingArtist
-from .mediamodels import Media, MediaExtraartists, MediaArtists
+    Artist,  # noqa: F401
+    ArtistProfessions,  # noqa: F401
+    NameVariation,  # noqa: F401
+    ArtistMembership,  # noqa: F401
+    ArtistAlias,  # noqa: F401
+)  # noqa: F401
+from .labelmodels import Label, LabelFoundingArtist  # noqa: F401
+from .mediamodels import Media, MediaExtraartists, MediaArtists  # noqa: F401
 from .playlistmodels import (
-    Playlist,
-    PlaylistItem,
-    PlaylistItemPlaylist,
-    Season,
-    Weather,
-    Series,
-)
+    Playlist,  # noqa: F401
+    PlaylistItem,  # noqa: F401
+    PlaylistItemPlaylist,  # noqa: F401
+    Season,  # noqa: F401
+    Weather,  # noqa: F401
+    Series,  # noqa: F401
+)  # noqa: F401
 from .releasemodels import (
-    Release,
-    ReleaseExtraartists,
-    ReleaseAlbumartists,
-    ReleaseMedia,
-)
+    Release,  # noqa: F401
+    ReleaseExtraartists,  # noqa: F401
+    ReleaseAlbumartists,  # noqa: F401
+    ReleaseMedia,  # noqa: F401
+)  # noqa: F401

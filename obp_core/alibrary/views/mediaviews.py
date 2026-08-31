@@ -232,13 +232,13 @@ class MediaDetailView(MenuMixin, SectionDetailView):
         sections = self.sections
         obj = self.get_object()
         if not obj.description:
-            sections = [s for s in sections if not s["key"] == "description"]
+            sections = [s for s in sections if s["key"] != "description"]
         if not obj.lyrics:
-            sections = [s for s in sections if not s["key"] == "lyrics"]
+            sections = [s for s in sections if s["key"] != "lyrics"]
         if not obj.extraartist_media.exists():
-            sections = [s for s in sections if not s["key"] == "credits"]
+            sections = [s for s in sections if s["key"] != "credits"]
         if not obj.get_videoclips().exists():
-            sections = [s for s in sections if not s["key"] == "videoclips"]
+            sections = [s for s in sections if s["key"] != "videoclips"]
         return sections
 
     def get_context_data(self, *args, **kwargs):

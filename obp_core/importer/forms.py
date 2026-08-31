@@ -18,7 +18,7 @@ class ImportCreateModelForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.form_id = "bulk_edit%s" % "asd"
+        self.helper.form_id = "bulk_edit{}".format("asd")
         self.helper.form_class = "form-horizontal form-compact"
         self.helper.form_method = "post"
         self.helper.form_action = ""

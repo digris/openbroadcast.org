@@ -406,7 +406,7 @@ class Community(UUIDModelMixin, MigrationMixin):
 
 try:
     tagging.register(Community)
-except:
+except BaseException:
     pass
 
 arating.enable_voting_on(Community)

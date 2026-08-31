@@ -418,15 +418,15 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                         artist_str += "%s " % artist["join_phrase"]
 
                     artist_str += artist["artist"].name
-            except:
+            except BaseException:
                 artist_str = artists[0].name
         else:
             try:
                 artist_str = artists[0].name
-            except:
+            except BaseException:
                 try:
                     artist_str = self.artist.name
-                except:
+                except BaseException:
                     artist_str = _("Unknown Artist")
 
         return artist_str
@@ -576,7 +576,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                 orig = Media.objects.filter(uuid=self.uuid)[0]
                 if orig.master != self.master:
                     self.master_changed = True
-            except:
+            except BaseException:
                 pass
 
         if self.master_changed:
@@ -631,7 +631,7 @@ class Media(MigrationMixin, UUIDModelMixin, TimestampedModelMixin, models.Model)
                 try:
                     if not ea.artist:
                         ea.delete()
-                except:
+                except BaseException:
                     pass
 
         # TODO: remove! just for testing!

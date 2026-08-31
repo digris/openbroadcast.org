@@ -75,7 +75,7 @@ def uuid_by_url(url):
     )
     try:
         return re_uuid[0]
-    except:
+    except BaseException:
         return None
 
 
@@ -86,7 +86,7 @@ def uuid_by_object(obj, service="musicbrainz"):
         if relations.count() > 0:
             return uuid_by_url(relations[0].url)
 
-    except:
+    except BaseException:
         pass
 
 

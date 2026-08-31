@@ -52,7 +52,7 @@ curl \
 def cleanup_data_directory(directory=DATA_DIRECTORY):
     app.logger.debug(f"cleanup data directory: {directory}")
     time_in_secs = time.time() - 60
-    for root, dirs, files in os.walk(directory, topdown=False):
+    for root, _dirs, files in os.walk(directory, topdown=False):
         for _file in files:
             full_path = os.path.join(root, _file)
             stat = os.stat(full_path)

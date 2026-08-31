@@ -17,7 +17,7 @@ from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
 
 
-THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
+THUMBNAIL_OPT = {"size": (70, 70), "crop": True, "bw": False, "quality": 80}
 
 
 class PlaylistItemResource(ModelResource):
@@ -120,7 +120,7 @@ class PlaylistResource(ModelResource):
             p = Playlist.objects.filter(user=request.user)[0]
             p.is_current = True
             p.save()
-        except:
+        except BaseException:
             pass
 
         return ret
@@ -145,7 +145,7 @@ class PlaylistResource(ModelResource):
             opt = THUMBNAIL_OPT
             main_image = get_thumbnailer(bundle.obj.main_image).get_thumbnail(opt)
             bundle.data["main_image"] = main_image.url
-        except:
+        except BaseException:
             pass
 
         bundle.data["series"] = None
@@ -168,7 +168,7 @@ class PlaylistResource(ModelResource):
             for item in bundle.data['media']:
                 #item[u'media'] = self.get_resource_uri(bundle.obj)
                 print(item)
-        except:
+        except BaseException:
             pass
 
     """
@@ -279,7 +279,7 @@ class PlaylistResource(ModelResource):
 
         try:
             p = Playlist.objects.filter(user=request.user, is_current=True)[0]
-        except:
+        except BaseException:
             p = Playlist(user=request.user, is_current=True, name="New Playlist")
             p.save()
 

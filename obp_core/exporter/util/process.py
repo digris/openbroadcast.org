@@ -80,7 +80,7 @@ class Process:
             return self.status
 
         export_items = self.instance.export_items.all()
-        log.debug("%s item(s) to export" % len(export_items))
+        log.debug(f"{len(export_items)} item(s) to export")
 
         for item in export_items:
             status, message = self.process_item(item)
@@ -189,7 +189,7 @@ class Process:
         if not os.path.exists(item_cache_dir):
             os.makedirs(item_cache_dir)
 
-        log.debug("%s tracks to export" % len(media_set))
+        log.debug(f"{len(media_set)} tracks to export")
 
         # process tracks
         for media in media_set:
@@ -216,7 +216,7 @@ class Process:
                 self.process_html_readme(
                     instance=content_object, cache_dir=item_cache_dir
                 )
-            except:
+            except BaseException:
                 pass
 
         if INCLUDE_LICENSE:
@@ -503,20 +503,21 @@ class Process:
                 and media.release.main_image
                 and os.path.exists(media.release.main_image.path)
             ):
-                opt = dict(size=(300, 300), crop=True, bw=False, quality=80)
+                opt = {"size": (300, 300), "crop": True, "bw": False, "quality": 80}
 
                 try:
                     image = get_thumbnailer(media.release.main_image).get_thumbnail(opt)
-                    tags.add(
-                        APIC(
-                            encoding=3,
-                            mime="image/jpeg",
-                            type=3,
-                            desc="Cover",
-                            data=open(image.path).read(),
+                    with open(image.path, "rb") as image_file:
+                        tags.add(
+                            APIC(
+                                encoding=3,
+                                mime="image/jpeg",
+                                type=3,
+                                desc="Cover",
+                                data=image_file.read(),
+                            )
                         )
-                    )
-                except:
+                except BaseException:
                     pass
 
         # artist-level metadata

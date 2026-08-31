@@ -43,8 +43,6 @@ class ImportListView(
     current_menu_item = "data:importer"
 
     def get_queryset(self):
-        kwargs = {}
-
         qs = self.model.objects.filter(user=self.request.user)
 
         qs = qs.select_related("user").prefetch_related("files", "importitem_set")
@@ -67,7 +65,6 @@ class ImportDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        kwargs = {}
         return Import.objects.filter(user=self.request.user)
 
 
@@ -91,7 +88,6 @@ class ImportModifyView(
     model = Import
 
     def get_queryset(self):
-        kwargs = {}
         return Import.objects.filter(user=self.request.user)
 
     def get(self, cls, **kwargs):
@@ -148,7 +144,6 @@ class ImportUpdateView(
     MenuMixin, LoginRequiredMixin, PermissionRequiredMixin, UpdateView
 ):
     model = Import
-    # template_name = 'importer/import_form.html'
 
     fields = "__all__"
 
@@ -173,7 +168,6 @@ class ImportUpdateView(
         return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        kwargs = {}
         return Import.objects.filter(user=self.request.user).prefetch_related(
             "files", "files__media"
         )

@@ -44,7 +44,10 @@ class StripWhitespaceFormMixin:
         # self.data can be dict (usually empty) or QueryDict here.
         self.data = self.data.copy()
         is_querydict = hasattr(self.data, "setlist")
-        strip = lambda val: val.strip()
+
+        def strip(val):
+            return val.strip()
+
         for k in list(self.data.keys()):
             if is_querydict:
                 self.data.setlist(k, map(strip, self.data.getlist(k)))

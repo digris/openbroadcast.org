@@ -34,7 +34,7 @@ def _extract_waveform_data(path):
         output, errors = p.communicate()
         exit_code = p.returncode
 
-    if not exit_code == 0 or errors:
+    if exit_code != 0 or errors:
         os.unlink(out_path)
         raise AudioWaveformException(
             f"unable to process file (aodiowaveform). exit code {exit_code} \n{output}"

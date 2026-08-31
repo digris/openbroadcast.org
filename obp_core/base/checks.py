@@ -124,7 +124,7 @@ def check_apis(app_configs, **kwargs):
         except ConnectionError:
             status_code = 999
 
-        if not status_code == 200:
+        if status_code != 200:
             errors.append(
                 Error(
                     f"connection error ({status_code})",

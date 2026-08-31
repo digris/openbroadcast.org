@@ -24,7 +24,7 @@ def get_action_manager():
     Returns the class of the action manager to use from ACTSTREAM_SETTINGS['MANAGER']
     """
     mod = SETTINGS.get("MANAGER", "actstream.managers.ActionManager")
-    a, j = mod.split("."), lambda l: ".".join(l)
+    a, j = mod.split("."), lambda parts: ".".join(parts)
     return getattr(__import__(j(a[:-1]), {}, {}, [a[-1]]), a[-1])()
 
 

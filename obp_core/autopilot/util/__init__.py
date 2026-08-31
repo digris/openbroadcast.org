@@ -1,1 +1,1 @@
-from autopilot import Autopilot
+from autopilot import Autopilot  # noqa: F401

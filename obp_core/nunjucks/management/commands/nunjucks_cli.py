@@ -58,12 +58,12 @@ class Command(NoArgsCommand):
         target = "apps/nunjucks/static/nunjucks/js/compiled-templates.js"
         templates = []
         for finder in finders.get_finders():
-            for path, storage in finder.list([]):
+            for path, template_storage in finder.list([]):
                 # TOTO: find a correct way to get nj-paths
                 if "/nj/" in path:
                     print(path)
                     compiled_template = self.compiler.compile_template(
-                        storage.path(path)
+                        template_storage.path(path)
                     )
                     compiled_template = re.sub(
                         r"/Users/ohrstrom/Documents/Code/openbroadcast.org/website/apps/(\w*)/static/",
@@ -78,9 +78,8 @@ class Command(NoArgsCommand):
             "nunjucks/compile/templates.js", {"templates": templates}
         )
 
-        file = codecs.open(target, "w", "utf-8")
-        file.write(tpl)
-        file.close()
+        with codecs.open(target, "w", "utf-8") as file:
+            file.write(tpl)
 
         return
 
@@ -89,9 +88,9 @@ class Command(NoArgsCommand):
         # Warn before doing anything more.
         if isinstance(self.storage, FileSystemStorage) and self.storage.location:
             destination_path = self.storage.location
-            destination_display = ":\n\n    %s" % destination_path
+            _unused = ":\n\n    %s" % destination_path
         else:
             destination_path = None
-            destination_display = "."
+            _unused = "."
 
-        collected = self.collect()
+        _unused = self.collect()

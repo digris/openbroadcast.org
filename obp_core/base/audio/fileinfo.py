@@ -39,7 +39,7 @@ class FileInfoProcessor:
                 bitrate = self.audio_stream.bitrate()
                 if bitrate:
                     return int(bitrate / 1000)
-            except:
+            except BaseException:
                 pass
 
     @property
@@ -52,5 +52,5 @@ class FileInfoProcessor:
         if self.audio_stream:
             try:
                 return int(self.audio_stream.sample_rate)
-            except:
+            except BaseException:
                 pass

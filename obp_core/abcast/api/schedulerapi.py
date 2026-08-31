@@ -159,7 +159,7 @@ class EmissionResource(ModelResource):
             )
             profile_resource = ProfileResource().full_dehydrate(profile_bundle)
             bundle.data["user_co_profile"] = profile_resource
-        except:
+        except BaseException:
             bundle.data["user_co_profile"] = None
 
         return bundle
@@ -283,7 +283,7 @@ class EmissionResource(ModelResource):
                 for conflicting_emission in es:
                     message += f'<br> - overlaps "{conflicting_emission.name}" - from {conflicting_emission.time_start.time()} to {conflicting_emission.time_end.time()}'
 
-            except:
+            except BaseException:
                 pass
 
             data = {"message": message}

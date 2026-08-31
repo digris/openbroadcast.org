@@ -5,13 +5,13 @@ ELASTICSEARCH_DSL = getattr(settings, "ELASTICSEARCH_DSL", {})
 
 try:
     host = ELASTICSEARCH_DSL.get("default").get("hosts")
-except:
+except BaseException:
     host = "localhost:9200"
 
 client = Elasticsearch(host)
 
 
-def get_ids_for_possible_duplicates(index=None, fields=[]):
+def get_ids_for_possible_duplicates(index=None, fields=()):
 
     _script = ""
     for field in fields:

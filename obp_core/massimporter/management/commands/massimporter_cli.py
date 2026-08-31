@@ -29,7 +29,7 @@ def cli():
 
 @cli.command()
 @click.argument("id", type=int, required=False)
-@click.option("--details", "-d", type=unicode, required=False)
+@click.option("--details", "-d", type=str, required=False)
 def status(id, details):
     """Show (current) import session(s) info"""
     if not id:
@@ -204,8 +204,8 @@ def enqueue(id, limit):
 
 @cli.command()
 @click.option("--path", "-p", type=click.Path(), required=True)
-@click.option("--username", "-u", type=unicode, required=True)
-@click.option("--collection", "-c", type=unicode)
+@click.option("--username", "-u", type=str, required=True)
+@click.option("--collection", "-c", type=str)
 @click.option("--limit", "-l", type=click.IntRange(1, 50000, clamp=True), default=100)
 def start(path, limit, username, collection):
     """Start an import session"""

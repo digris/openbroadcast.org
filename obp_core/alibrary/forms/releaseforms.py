@@ -189,7 +189,7 @@ class ReleaseForm(ModelForm):
             self.fields["catalognumber"].widget.attrs["readonly"] = "readonly"
 
         self.helper = FormHelper()
-        self.helper.form_id = "id_feedback_form_%s" % "asd"
+        self.helper.form_id = "id_feedback_form_{}".format("asd")
         self.helper.form_class = "form-horizontal"
         self.helper.form_method = "post"
         self.helper.form_action = ""
@@ -284,7 +284,7 @@ class ReleaseForm(ModelForm):
             if not label.pk:
                 label.creator = self.user
                 label.save()
-        except:
+        except BaseException:
             pass
 
         if cd.get("remote_image", None):
@@ -346,7 +346,7 @@ class BaseReleaseMediaForm(ModelForm):
     artist = search_fields.AutocompleteField(
         "alibrary.artist", allow_new=True, required=False
     )
-    TRACKNUMBER_CHOICES = [("", "---")] + list((str(x), x) for x in range(1, 301))
+    TRACKNUMBER_CHOICES = [("", "---")] + [(str(x), x) for x in range(1, 301)]
     tracknumber = forms.ChoiceField(
         label=_("No."), required=False, choices=TRACKNUMBER_CHOICES
     )
@@ -356,7 +356,7 @@ class BaseReleaseMediaForm(ModelForm):
 
         try:
             cd["tracknumber"] = int(cd["tracknumber"])
-        except:
+        except BaseException:
             cd["tracknumber"] = None
 
         return cd
@@ -375,7 +375,6 @@ class BaseAlbumartistForm(ModelForm):
         fields = ("artist", "join_phrase", "position")
 
     def __init__(self, *args, **kwargs):
-        instance = getattr(self, "instance", None)
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False

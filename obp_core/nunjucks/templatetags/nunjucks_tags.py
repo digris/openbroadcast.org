@@ -1,8 +1,7 @@
 from django import template
+from nunjucks import settings as nunjucks_settings
 
 register = template.Library()
-
-from nunjucks import settings as nunjucks_settings
 
 
 @register.inclusion_tag(

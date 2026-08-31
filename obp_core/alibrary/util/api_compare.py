@@ -7,7 +7,6 @@ import requests
 from alibrary.models import Release, Label, Artist, Media
 from alibrary.util.relations import get_service_by_url
 from django.conf import settings
-from l10n.models import Country
 
 log = logging.getLogger(__name__)
 
@@ -98,14 +97,14 @@ class MusicbrainzAPILookup(APILookup):
                     if "catalog-number" in data[k][0]:
                         res["catalognumber"] = data[k][0]["catalog-number"]
 
-                except:
+                except BaseException:
                     pass
 
             if k == "release-group":
                 try:
                     res["releasetype"] = data[k]["primary-type"]
 
-                except:
+                except BaseException:
                     pass
 
             if k == "relations":
@@ -125,10 +124,7 @@ class MusicbrainzAPILookup(APILookup):
             if k == "media":
                 mapped_media = []
                 pos = 0
-                disc_no = 0
-
-                for disc in data[k]:
-                    disc_no += 1
+                for disc_no, disc in enumerate(data[k], start=1):
                     for m in disc["tracks"]:
                         pos += 1
 
@@ -158,17 +154,10 @@ class MusicbrainzAPILookup(APILookup):
                     d = data[k]
                     for v in d:
                         d_tags.append(v["name"])
-                except:
+                except BaseException:
                     pass
 
             res[mk] = data[k]
-
-        # try to remap country
-        if "release_country" in res:
-            try:
-                c = Country.objects.get(iso2_code=res["release_country"])
-            except:
-                pass
 
         try:
             url = "http://coverartarchive.org/release/%s" % id
@@ -176,7 +165,7 @@ class MusicbrainzAPILookup(APILookup):
             if r.ok:
                 res["main_image"] = r.json()["images"][0]["image"]
                 res["remote_image"] = r.json()["images"][0]["image"]
-        except:
+        except BaseException:
             pass
 
         try:
@@ -184,7 +173,7 @@ class MusicbrainzAPILookup(APILookup):
             for x in data["media"]:
                 num_tracks += int(x["track-count"])
             res["totaltracks"] = num_tracks if num_tracks > 0 else None
-        except:
+        except BaseException:
             pass
 
         res["d_tags"] = ", ".join(d_tags)
@@ -247,14 +236,14 @@ class MusicbrainzAPILookup(APILookup):
                 try:
                     d = data[k]
                     res["ipi_code"] = d[0]
-                except:
+                except BaseException:
                     pass
 
             if k == "isni":
                 try:
                     d = data[k]
                     res["isni_code"] = d
-                except:
+                except BaseException:
                     pass
 
             if k == "tags":
@@ -262,7 +251,7 @@ class MusicbrainzAPILookup(APILookup):
                     d = data[k]
                     for v in d:
                         d_tags.append(v["name"])
-                except:
+                except BaseException:
                     pass
 
             res[mk] = data[k]
@@ -293,7 +282,7 @@ class MusicbrainzAPILookup(APILookup):
                     res["isni_code"] = isni_code[0]
                 else:
                     res["isni_code"] = isni_code
-            except:
+            except BaseException:
                 pass
 
         return res
@@ -360,16 +349,10 @@ class MusicbrainzAPILookup(APILookup):
                     d = data[k]
                     for v in d:
                         d_tags.append(v["name"])
-                except:
+                except BaseException:
                     pass
 
             res[mk] = data[k]
-
-        if "country" in res:
-            try:
-                c = Country.objects.get(iso2_code=res["country"])
-            except:
-                pass
 
         res["d_tags"] = ", ".join(d_tags)
 
@@ -441,7 +424,7 @@ class MusicbrainzAPILookup(APILookup):
                     d = data[k]
                     for v in d:
                         d_tags.append(v["name"])
-                except:
+                except BaseException:
                     pass
 
             res[mk] = data[k]
@@ -482,7 +465,7 @@ class DiscogsAPILookup(APILookup):
             for v in d:
                 if v["type"] == "primary":
                     image = v["resource_url"]
-        except:
+        except BaseException:
             pass
 
         # sorry, kind of ugly...
@@ -491,7 +474,7 @@ class DiscogsAPILookup(APILookup):
                 for v in d:
                     if v["type"] == "secondary":
                         image = v["resource_url"]
-            except:
+            except BaseException:
                 pass
 
         return image
@@ -573,7 +556,7 @@ class DiscogsAPILookup(APILookup):
                     else:
                         res["releasetype"] = d[0]["descriptions"][0]
 
-                except:
+                except BaseException:
                     pass
 
             if k == "country":
@@ -584,7 +567,7 @@ class DiscogsAPILookup(APILookup):
                     d = data[k][0]
                     res["label_0"] = self.reformat_name(d["name"])
                     res["catalognumber"] = d["catno"]
-                except:
+                except BaseException:
                     pass
 
             # tagging
@@ -593,7 +576,7 @@ class DiscogsAPILookup(APILookup):
                     d = data[k]
                     for v in d:
                         d_tags.append(v)
-                except:
+                except BaseException:
                     pass
 
             if k == "genres":
@@ -601,11 +584,10 @@ class DiscogsAPILookup(APILookup):
                     d = data[k]
                     for v in d:
                         d_tags.append(v)
-                except:
+                except BaseException:
                     pass
 
             if k == "urls":
-                mapped = []
                 for rel in data[k]:
                     relations.append(
                         {"uri": rel, "service": get_service_by_url(rel, None)}
@@ -619,7 +601,7 @@ class DiscogsAPILookup(APILookup):
 
         try:
             res["totaltracks"] = len(data["tracklist"])
-        except:
+        except BaseException:
             pass
 
         res["d_tags"] = ", ".join(d_tags)
@@ -629,7 +611,7 @@ class DiscogsAPILookup(APILookup):
         try:
             if res["release_country"].upper() == "UK":
                 res["release_country"] = "GB"
-        except:
+        except BaseException:
             pass
 
         # reformat tracklist
@@ -640,7 +622,7 @@ class DiscogsAPILookup(APILookup):
                     track["artists"][0]["name"] = self.reformat_name(
                         track["artists"][0]["name"]
                     )
-                except:
+                except BaseException:
                     pass
             """
             TODO: this is an ugly & temporary hack to address discogs API issue:
@@ -690,7 +672,6 @@ class DiscogsAPILookup(APILookup):
                 res[k] = self.reformat_name(data[k])
 
             if k == "urls":
-                mapped = []
                 for rel in data[k]:
                     relations.append(
                         {"uri": rel, "service": get_service_by_url(rel, None)}
@@ -702,7 +683,7 @@ class DiscogsAPILookup(APILookup):
             try:
                 if mk not in res:
                     res[mk] = data[k]
-            except:
+            except BaseException:
                 pass
 
         res["d_tags"] = ", ".join(d_tags)
@@ -744,7 +725,6 @@ class DiscogsAPILookup(APILookup):
                 res["parent_0"] = self.reformat_name(data[k]["name"])
 
             if k == "urls":
-                mapped = []
                 for rel in data[k]:
                     relations.append(
                         {"uri": rel, "service": get_service_by_url(rel, None)}
@@ -756,7 +736,7 @@ class DiscogsAPILookup(APILookup):
             try:
                 if mk not in res:
                     res[mk] = data[k]
-            except:
+            except BaseException:
                 pass
 
         res["d_tags"] = ", ".join(d_tags)

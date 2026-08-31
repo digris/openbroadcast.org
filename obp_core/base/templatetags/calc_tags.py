@@ -14,7 +14,7 @@ def multiply(value, arg):
 def divide(value, arg):
     try:
         return int(float(value) / float(arg))
-    except:
+    except BaseException:
         return None
 
 

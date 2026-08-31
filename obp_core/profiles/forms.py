@@ -192,7 +192,7 @@ class ServiceForm(ModelForm):
 
         self.helper = FormHelper()
         self.helper.form_tag = False
-        layout_profile = Layout(Fieldset(_("Link"), "url", "title", "DELETE"))
+        _layout_profile = Layout(Fieldset(_("Link"), "url", "title", "DELETE"))
 
         base_layout = Row(
             Column(Field("username", css_class="input-medium"), css_class="span5"),
@@ -296,9 +296,8 @@ class UserCredentialsForm(ModelForm):
     def clean_new_password2(self):
         password1 = self.cleaned_data.get("new_password1")
         password2 = self.cleaned_data.get("new_password2")
-        if password1 and password2:
-            if password1 != password2:
-                raise forms.ValidationError(
-                    self.error_messages["password_mismatch"], code="password_mismatch"
-                )
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError(
+                self.error_messages["password_mismatch"], code="password_mismatch"
+            )
         return password2

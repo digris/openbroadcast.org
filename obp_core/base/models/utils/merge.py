@@ -47,7 +47,7 @@ def merge_objects(primary_object, alias_objects=None, keep_old=False):
     # method to the ForeignKey field for accessing the generic related fields.
     generic_fields = []
     for model in apps.get_models():
-        for field_name, field in filter(
+        for _field_name, field in filter(
             lambda x: isinstance(x[1], GenericForeignKey), model.__dict__.items()
         ):
             generic_fields.append(field)

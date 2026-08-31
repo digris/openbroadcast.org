@@ -1,15 +1,3 @@
-# If the character doesn't exist in the dictionary, add it as None
-# and also return None.  This tells the translate to delete the character
-# and makes the next lookup for that character faster.
-class XLate(dict):
-    def __getitem__(self, c):
-        try:
-            return dict.__getitem__(self, c)
-        except KeyError:
-            self[c] = None
-            return None
-
-
 # Define the translation table.  I needed to hammer unicode going to
 # NCBI's web services (for Biopython's EUtils package) so I used the
 # table defined at

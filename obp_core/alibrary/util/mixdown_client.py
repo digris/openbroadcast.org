@@ -43,7 +43,7 @@ class MixdownAPIClient:
             log.warning(f"unable to get data from mixdown api: {e}")
             return
 
-        if not r.status_code == 200:
+        if r.status_code != 200:
             return
 
         return self.parse_mixdown_data(r.json())

@@ -27,7 +27,7 @@ def get_dir_for_object(obj, prefix=None, app_dir=None, object_dir=None):
     if not app_dir:
         try:
             app_dir = obj._meta.app_label.lower()
-        except:
+        except BaseException:
             app_dir = None
 
     path = os.path.join(object_dir, str(obj.uuid).replace("-", "/")[5:])
@@ -76,11 +76,10 @@ def get_file_from_path(path, filename=None):
     file_obj = None
 
     try:
-        f = open(path)
         temp_file = NamedTemporaryFile(delete=True)
-        temp_file.write(f.read())
+        with open(path) as f:
+            temp_file.write(f.read())
         temp_file.flush()
-        f.close()
 
         if not filename:
             filename = ntpath.basename(path)

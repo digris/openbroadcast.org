@@ -2,7 +2,7 @@ import json
 import logging
 from uuid import uuid4
 
-from django.conf.urls import *
+from django.conf.urls import url
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseForbidden
@@ -10,7 +10,7 @@ from django.utils.translation import ugettext as _
 from profiles.exceptions import APIBadRequest
 from tastypie import fields
 from tastypie.authentication import MultiAuthentication, Authentication
-from tastypie.authorization import *
+from tastypie.authorization import Authorization
 from tastypie.http import HttpCreated
 from tastypie.resources import ModelResource
 from tastypie.utils import trailing_slash
@@ -44,7 +44,7 @@ class UserResource(ModelResource):
 
         try:
             bundle.data["full_name"] = bundle.obj.get_full_name()
-        except:
+        except BaseException:
             bundle.data["full_name"] = None
 
         bundle.data["groups"] = ",".join(
@@ -163,13 +163,14 @@ class UserResource(ModelResource):
 
         error = None
 
-        if key == "email":
-            if get_user_model().objects.filter(email=value).exists():
-                error = _("That email is already used.")
+        if key == "email" and get_user_model().objects.filter(email=value).exists():
+            error = _("That email is already used.")
 
-        if key == "username":
-            if get_user_model().objects.filter(username=value).exists():
-                error = _("That username is already used.")
+        if (
+            key == "username"
+            and get_user_model().objects.filter(username=value).exists()
+        ):
+            error = _("That username is already used.")
 
         bundle = {"error": error, "key": key, "value": value}
 

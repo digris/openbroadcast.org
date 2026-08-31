@@ -1,6 +1,5 @@
 import os
 import re
-import locale
 import logging
 import acoustid
 import requests
@@ -111,7 +110,7 @@ class Identifier:
 
         try:
             metadata = self.extract_metadata(file)
-        except:
+        except BaseException:
             log.warning(f"unable to extract metadata for: {file.path}")
             metadata = None
 
@@ -169,7 +168,7 @@ class Identifier:
                 if qs.exists():
                     return qs[0].pk
 
-        except:
+        except BaseException:
             pass
 
     def id_by_fprint(self, file):
@@ -185,7 +184,7 @@ class Identifier:
             log.info(f"got {len(results)} result(s) from fprint api")
             try:
                 return Media.objects.get(uuid=results[0]["uuid"]).pk
-            except:
+            except BaseException:
                 log.warning(f"unable to get media by uuid: {results}")
                 return
 
@@ -195,8 +194,6 @@ class Identifier:
             return self.file_metadata
 
         log.info("Extracting metadata for: %s" % (file.path))
-
-        enc = locale.getpreferredencoding()
 
         meta = None
         ext = os.path.splitext(file.path)[1]
@@ -229,7 +226,7 @@ class Identifier:
         # get file info
         try:
             fileinfo = FileInfoProcessor(file.path)
-        except:
+        except BaseException:
             log.warning(f"unable to extract fileinfo for: {file.path}")
             fileinfo = None
 
@@ -244,7 +241,7 @@ class Identifier:
             obp_media_uuid = id3["UFID:http://openbroadcast.org"].data.decode("ascii")
             if obp_media_uuid:
                 dataset["obp_media_uuid"] = obp_media_uuid
-        except:
+        except BaseException:
             pass
 
         # Media
@@ -295,7 +292,7 @@ class Identifier:
                     t_num = int(match.group(0))
                     if t_num > 99:
                         t_num = None
-            except:
+            except BaseException:
                 pass
 
             dataset["media_tracknumber"] = t_num
@@ -428,8 +425,7 @@ class Identifier:
             data = acoustid.match(AC_API_KEY, file.path)
 
             res = []
-            i = 0
-            for d in data:
+            for i, d in enumerate(data):
                 selected = False
                 if i == 0:
                     selected = True
@@ -455,13 +451,12 @@ class Identifier:
                 else:
                     pass
                     # log.debug('skipping acoustid, we have %s of them' % i)
-                i += 1
 
-            log.info("got %s possible matches via acoustid" % len(res))
+            log.info(f"got {len(res)} possible matches via acoustid")
 
             return res
 
-        except:
+        except BaseException:
             return None
 
     def get_musicbrainz(self, obj):
@@ -495,9 +490,9 @@ class Identifier:
          - loop recording ids
          - query by it and tracknumber (if available)
          - sort releases by date
-         
+
         release entry looks as following:
-         
+
         {
             id: "12a0eabc-28ee-3ac6-834d-390861f0f20c",
             title: "Live!",
@@ -528,7 +523,7 @@ class Identifier:
                 }
             ]
         }
-        
+
         """
         releases = []
         if obj.results_acoustid:
@@ -551,7 +546,7 @@ class Identifier:
                 # print 'QDUR: %s' % qdur
                 # url = '%s%s%s' % (url, '%20AND%20qdur:', qdur)
 
-                """    
+                """
                 if releasedate:
                     url = '%s%s%s' % (url, '%20AND%20date:', releasedate)
                 """
@@ -560,13 +555,14 @@ class Identifier:
                 r = requests.get(url, timeout=5)
                 result = r.json()
 
-                if "recordings" in result:
+                if "recordings" in result:  # noqa: SIM102 - keep staged API checks
                     log.info("recording on API mb_id: %s" % recording_id)
-                    if len(result["recordings"]) > 0:
+                    if len(result["recordings"]) > 0:  # noqa: SIM102
                         if "releases" in result["recordings"][0]:
                             log.info(
-                                "got releases on api: %s"
-                                % len(result["recordings"][0]["releases"])
+                                "got releases on api: {}".format(
+                                    len(result["recordings"][0]["releases"])
+                                )
                             )
 
                             """
@@ -619,7 +615,7 @@ class Identifier:
                                     else:
                                         pass
                                         #log.debug('release name already in results: %s' % t_rel['title'])
-    
+
                             else:
                                 selected_releases.append(sorted_releases[0])
                             """
@@ -642,7 +638,7 @@ class Identifier:
                                         named_releases[t_rel["title"]].append(t_rel)
                                         # log.debug('appending to existing: "%s"' % t_rel['title'])
 
-                                for k, v in named_releases.items():
+                                for _k, v in named_releases.items():
                                     # log.debug('got %s releases for "%s"' % (len(v), k))
                                     selected_releases += v[0:LIMIT_EQUAL_NAMES]
 
@@ -675,7 +671,7 @@ class Identifier:
 
     def complete_releases(self, releases):
 
-        log.info("got %s releases to complete" % len(releases))
+        log.info(f"got {len(releases)} releases to complete")
 
         completed_releases = []
 
@@ -760,7 +756,7 @@ class Identifier:
                         release["discogs_image"] = discogs_image_by_url(
                             release["discogs_url"], "uri150"
                         )
-                    except:
+                    except BaseException:
                         pass
 
                 if not release["discogs_image"]:
@@ -768,7 +764,7 @@ class Identifier:
                         release["discogs_image"] = discogs_image_by_url(
                             release["discogs_master_url"], "uri150"
                         )
-                    except:
+                    except BaseException:
                         pass
                 """
                 finally try to get image from coverartarchive.org
@@ -779,7 +775,7 @@ class Identifier:
                         r = requests.get(url, timeout=5)
                         result = r.json()
                         release["discogs_image"] = result["images"][0]["image"]
-                    except:
+                    except BaseException:
                         pass
 
                 completed_releases.append(release["id"])
@@ -792,7 +788,7 @@ class Identifier:
 
     def format_releases(self, releases):
 
-        log.info("got %s releases to format" % len(releases))
+        log.info(f"got {len(releases)} releases to format")
 
         formatted_releases = []
 
@@ -864,20 +860,20 @@ class Identifier:
                         a["mb_id"] = release["artist"]["id"]
 
                 # label
-                l = {}
-                l["mb_id"] = None
-                l["name"] = None
-                l["code"] = None
+                label_data = {}
+                label_data["mb_id"] = None
+                label_data["name"] = None
+                label_data["code"] = None
 
                 if "label" in release and release["label"]:
                     if "name" in release["label"]:
-                        l["name"] = release["label"]["name"]
+                        label_data["name"] = release["label"]["name"]
 
                     if "id" in release["label"]:
-                        l["mb_id"] = release["label"]["id"]
+                        label_data["mb_id"] = release["label"]["id"]
 
                     if "label-code" in release["label"]:
-                        l["code"] = release["label"]["label-code"]
+                        label_data["code"] = release["label"]["label-code"]
 
                 # relation mapping
                 rel = {}
@@ -895,7 +891,7 @@ class Identifier:
 
                 r["media"] = m
                 r["artist"] = a
-                r["label"] = l
+                r["label"] = label_data
                 r["relations"] = rel
 
                 formatted_releases.append(r)
@@ -911,11 +907,9 @@ class Identifier:
         master_releases = []
 
         # get all release-group-ids
-        i = 0
-        for r in results:
+        for i, r in enumerate(results):
             if i > 3:
                 break
-            i += 1
 
             for release in r["recording"]["release-list"]:
                 # TODO: refactor to plain API call (requests)
@@ -948,7 +942,7 @@ class Identifier:
 
             try:
                 relations = result["release-group"]["url-relation-list"]
-            except:
+            except BaseException:
                 relations = None
 
             try:
@@ -983,10 +977,10 @@ class Identifier:
 
         releases = []
 
-        for re in master_releases:
-            release = re["release"]
-            recording = re["recording"]
-            relations = re["relations"]
+        for release_entry in master_releases:
+            release = release_entry["release"]
+            recording = release_entry["recording"]
+            relations = release_entry["relations"]
 
             r = {}
 
@@ -1001,37 +995,37 @@ class Identifier:
             # mapping
             try:
                 r["mb_id"] = release["id"]
-            except:
+            except BaseException:
                 pass
 
             try:
                 r["name"] = release["title"]
-            except:
+            except BaseException:
                 pass
 
             try:
                 r["releasedate"] = release["date"]
-            except:
+            except BaseException:
                 pass
 
             try:
                 r["asin"] = release["asin"]
-            except:
+            except BaseException:
                 pass
 
             try:
                 r["barcode"] = release["barcode"]
-            except:
+            except BaseException:
                 pass
 
             try:
                 r["status"] = release["status"]
-            except:
+            except BaseException:
                 pass
 
             try:
                 r["country"] = release["country"]
-            except:
+            except BaseException:
                 pass
 
             # track mapping
@@ -1042,17 +1036,17 @@ class Identifier:
 
             try:
                 m["mb_id"] = recording["recording"]["id"]
-            except:
+            except BaseException:
                 pass
 
             try:
                 m["name"] = recording["recording"]["title"]
-            except:
+            except BaseException:
                 pass
 
             try:
                 m["duration"] = recording["recording"]["length"]
-            except:
+            except BaseException:
                 pass
 
             r["media"] = m
@@ -1067,51 +1061,53 @@ class Identifier:
 
                 try:
                     a["mb_id"] = artist["id"]
-                except:
+                except BaseException:
                     pass
 
                 try:
                     a["name"] = artist["name"]
-                except:
+                except BaseException:
                     pass
-            except:
+            except BaseException:
                 pass
 
             r["artist"] = a
 
             # label related mapping
-            l = {}
-            l["mb_id"] = None
-            l["name"] = "Unknown"
-            l["code"] = None
-            l["catalognumber"] = None
+            label_data = {}
+            label_data["mb_id"] = None
+            label_data["name"] = "Unknown"
+            label_data["code"] = None
+            label_data["catalognumber"] = None
 
             try:
                 label = release["label-info-list"][0]["label"]
                 try:
-                    l["mb_id"] = label["id"]
-                except:
+                    label_data["mb_id"] = label["id"]
+                except BaseException:
                     pass
 
                 try:
-                    l["name"] = label["name"]
-                except:
+                    label_data["name"] = label["name"]
+                except BaseException:
                     pass
 
                 try:
-                    l["code"] = label["label-code"]
-                except:
+                    label_data["code"] = label["label-code"]
+                except BaseException:
                     pass
 
                 try:
-                    l["catalognumber"] = release["label-info-list"][0]["catalog-number"]
-                except:
+                    label_data["catalognumber"] = release["label-info-list"][0][
+                        "catalog-number"
+                    ]
+                except BaseException:
                     pass
 
             except Exception:
                 pass
 
-            r["label"] = l
+            r["label"] = label_data
 
             # relation mapping
             rel = {}

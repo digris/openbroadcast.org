@@ -1,1 +1,1 @@
-from .generator import DABMetadataGenerator
+from .generator import DABMetadataGenerator  # noqa: F401

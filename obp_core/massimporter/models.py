@@ -114,7 +114,7 @@ class Massimport(BaseModel):
 
         print(f"scanning {self.directory}")
 
-        for root, dirs, files in os.walk(self.directory):
+        for root, _dirs, files in os.walk(self.directory):
             for file in files:
                 try:
                     path = os.path.join(root.decode("utf-8"), file.decode("utf-8"))

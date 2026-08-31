@@ -121,7 +121,7 @@ def label_statistics_as_xls(label, years, title=None, output=None):
         # add summs / formula
         worksheet.merge_range(f"A{last_row + 2}:D{last_row + 2}", "Total", border_top)
 
-        for index, item in enumerate(header, start=4):
+        for index, _item in enumerate(header, start=4):
             letter = ROW_LETTERS[index]
             formula = f"=SUM({letter}{first_row + 1}:{letter}{last_row + 1})"
             worksheet.write_formula(last_row + 1, index, formula, border_top)

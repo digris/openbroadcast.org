@@ -21,8 +21,6 @@ log = logging.getLogger(__name__)
 @api_view(["GET"])
 def playlist_list(request, **kwargs):
 
-    results = []
-
     q = request.GET.get("q", "").strip()
 
     qs = Playlist.objects.filter(

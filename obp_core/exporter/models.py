@@ -4,6 +4,7 @@ import hashlib
 import datetime
 import shutil
 import logging
+import unicodedata
 
 from django.db import models
 from django.db.models.signals import post_save, post_delete
@@ -37,11 +38,7 @@ GENERIC_STATUS_CHOICES = (
 
 
 def create_download_path(instance, filename):
-    import unicodedata
-    import string
-
     filename, extension = os.path.splitext(filename)
-    valid_chars = f"-_.{string.ascii_letters}{string.digits}"
     cleaned_filename = unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore")
     folder = "export/processed/{}-{}/".format(
         time.strftime("%Y%m%d%H%M%S", time.gmtime()),
@@ -170,11 +167,12 @@ class Export(UUIDModelMixin, TimestampedModelMixin, models.Model):
         if target == "download":
             if result:
                 obj.filesize = os.path.getsize(result)
-                obj.file = DjangoFile(open(result, "rb"), "archive")
+                with open(result, "rb") as result_file:
+                    obj.file = DjangoFile(result_file, "archive")
 
-                # update status
-                obj.status = 1
-                obj.save()
+                    # update status
+                    obj.status = 1
+                    obj.save()
                 process.clear_cache()
             else:
                 obj.status = 99
@@ -201,11 +199,10 @@ def post_save_export(sender, **kwargs):
         obj.process()
 
     # emmit update message via pushy
-    if kwargs["created"]:
-        if obj.user and obj.user.profile:
-            from pushy.util import pushy_custom
+    if kwargs["created"] and obj.user and obj.user.profile:
+        from pushy.util import pushy_custom
 
-            pushy_custom(str(obj.user.profile.uuid))
+        pushy_custom(str(obj.user.profile.uuid))
 
     obj.export_items.update(status=1)
 
@@ -222,7 +219,7 @@ def post_delete_export(sender, **kwargs):
         directory = os.path.split(obj.file.path)[0]
         try:
             shutil.rmtree(directory, True)
-        except:
+        except BaseException:
             obj.file.delete(False)
 
 
@@ -265,7 +262,7 @@ class ExportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
     def __str__(self):
         try:
             return f"{self.content_object} - {self.get_status_display()}"
-        except:
+        except BaseException:
             return f"{self.pk} - {self.status}"
 
     # @models.permalink
@@ -286,37 +283,6 @@ class ExportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
     @shared_task
     def process_task(obj):
         pass
-
-    def save(self, *args, **kwargs):
-
-        # if not self.filename:
-        #    self.filename = self.file.name
-
-        super().save(*args, **kwargs)
-
-
-def post_save_exportitem(sender, **kwargs):
-    obj = kwargs["instance"]
-
-    """
-    if obj.status == 0:
-        obj.process()
-    """
-
-
-# post_save.connect(post_save_exportitem, sender=ExportItem)
-
-
-def post_delete_exportitem(sender, **kwargs):
-    # import shutil
-    obj = kwargs["instance"]
-    try:
-        os.remove(obj.file.path)
-    except:
-        pass
-
-
-# post_delete.connect(post_delete_exportitem, sender=ExportItem)
 
 
 @shared_task

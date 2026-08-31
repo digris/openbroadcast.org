@@ -34,8 +34,6 @@ class AutocompleteField(forms.Field):
     def to_python(self, value):
         if value in EMPTY_VALUES:
             return None
-        # lookup = self.lookup_class()
-        lookup = self.lookup_model
 
         if len(value) != 2:
             raise ValidationError(self.error_messages["invalid_choice"])

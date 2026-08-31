@@ -10,6 +10,7 @@ from django.contrib.sites.models import Site
 from django.core.cache import cache
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.utils.translation import ugettext as _
 from easy_thumbnails.files import get_thumbnailer
 from base.pypo.gateway import send as pypo_send
 from metadata_generator.dab import DABMetadataGenerator
@@ -42,13 +43,13 @@ class ChannelResource(ModelResource):
     def dehydrate(self, bundle):
 
         if bundle.obj.station and bundle.obj.station.main_image:
-            opt = dict(size=(70, 70), crop=True, bw=False, quality=80)
+            opt = {"size": (70, 70), "crop": True, "bw": False, "quality": 80}
             try:
                 main_image = get_thumbnailer(
                     bundle.obj.station.main_image
                 ).get_thumbnail(opt)
                 bundle.data["main_image"] = main_image.url
-            except:
+            except BaseException:
                 bundle.data["main_image"] = None
         else:
             bundle.data["main_image"] = None
@@ -166,7 +167,7 @@ class ChannelResource(ModelResource):
         # check if in cache
         try:
             cached_item = cache.get("abcast_on_air_%s" % channel.pk)
-        except:
+        except BaseException:
             cached_item = None
 
         now_playing = []

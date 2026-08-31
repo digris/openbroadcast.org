@@ -1,5 +1,5 @@
 try:
-    from actstream.signals import action
+    from actstream.signals import action  # noqa: F401 - signal registration
 
 except ImportError:
     pass

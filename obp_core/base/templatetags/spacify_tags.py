@@ -14,7 +14,10 @@ def spacify(value, autoescape=None):
     if autoescape:
         esc = conditional_escape
     else:
-        esc = lambda x: x
+
+        def esc(x):
+            return x
+
     return mark_safe(re.sub(r"\s", "&" + "nbsp;", esc(value)))
 
 

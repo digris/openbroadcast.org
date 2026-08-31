@@ -164,7 +164,7 @@ def get_ordering_data(order_options, search_query, request):
                 "query_key": "order_by",
                 "query_value": None,
                 "direction": None,
-                "selected": selected_key == None,
+                "selected": selected_key is None,
             }
         )
 
@@ -213,13 +213,13 @@ def get_filter_data(facets, facets_definition=None):
         #     continue
 
         options = getattr(facets, key)
-        selected_options = [o[0] for o in options if o[2] == True]
+        selected_options = [o[0] for o in options if o[2]]
 
         _options = []
 
         for option in getattr(facets, key):
             if option[2]:
-                _q = [o for o in selected_options if not o == option[0]]
+                _q = [o for o in selected_options if o != option[0]]
             else:
                 _q = selected_options + [option[0]]
 
@@ -296,11 +296,11 @@ def get_tagcloud_data(tags, request, steps=6, distribution=LOGARITHMIC, group_by
         # print('thresholds', thresholds)
 
         groups = []
-        for i in range(steps):
+        for _i in range(steps):
             groups.append(0)
 
         hidden = []
-        for i in range(steps):
+        for _i in range(steps):
             hidden.append(0)
 
         for tag in tags:
@@ -332,7 +332,7 @@ def get_tagcloud_data(tags, request, steps=6, distribution=LOGARITHMIC, group_by
             if tag["name"] in current_tags:
                 tag["selected"] = True
                 tag["query"] = ":".join(
-                    sorted([t for t in current_tags if not t == tag["name"]])
+                    sorted([t for t in current_tags if t != tag["name"]])
                 )
             else:
                 tag["query"] = ":".join(sorted([tag["name"]] + current_tags))

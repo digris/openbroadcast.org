@@ -383,10 +383,8 @@ class DABMetadataGenerator:
             size = overlay_image.size
 
             if size[0] > size[1]:
-                orientation = "landscape"
                 scale = float(image_display_size[1]) / float(size[1])
             else:
-                orientation = "portrait"
                 scale = float(image_display_size[1]) / float(size[0])
 
             overlay_image.resize(int(size[0] * scale), int(size[1] * scale))

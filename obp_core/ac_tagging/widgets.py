@@ -37,27 +37,38 @@ class TagAutocompleteTagIt(TextInput):
 
         list_view = reverse("ac_tagging-list")
         html = super().render(name, value, attrs)
+
         # Subclass this field in case you need to add some custom behaviour like custom callbacks
-        # js = u"""<script type="text/javascript">
-        #         $(document).ready(function() {
-        #         init_jQueryTagit({
-        #         objectId: '%s',
-        #         sourceUrl: '%s',
-        #         fieldName: '%s',
-        #         minLength: %s,
-        #         removeConfirmation: %s,
-        #         caseSensitive: %s,
-        #         animate: %s,
-        #         maxLength: %s,
-        #         maxTags: %s,
-        #         //onTagAdded  : ac_tagginc_clean,
-        #         //onTagRemoved: ac_tagginc_clean,
-        #         onTagClicked: null,
-        #         onMaxTagsExceeded: null,
-        #         })
-        #     });
-        #     </script>""" % (attrs['id'], list_view, name, autocomplete_min_length, remove_confirmation, case_sensitive,
-        #                     animate, max_tag_lentgh, self.max_tags)
+        # does not seem to be used, kept for reference only
+        _js = """<script type="text/javascript">
+                $(document).ready(function() {
+                init_jQueryTagit({
+                objectId: '%s',
+                sourceUrl: '%s',
+                fieldName: '%s',
+                minLength: %s,
+                removeConfirmation: %s,
+                caseSensitive: %s,
+                animate: %s,
+                maxLength: %s,
+                maxTags: %s,
+                //onTagAdded  : ac_tagginc_clean,
+                //onTagRemoved: ac_tagginc_clean,
+                onTagClicked: null,
+                onMaxTagsExceeded: null,
+                })
+            });
+            </script>""" % (
+            attrs["id"],
+            list_view,
+            name,
+            autocomplete_min_length,
+            remove_confirmation,
+            case_sensitive,
+            animate,
+            max_tag_lentgh,
+            self.max_tags,
+        )
 
         js = ""
 
@@ -96,7 +107,7 @@ class TagAutocompleteTagIt(TextInput):
             ["%scss/ui-autocomplete-tag-it.css" % js_base_url],
         )
         # check is a list, if is a string convert it to a list
-        if type(css_list) != list and type(css_list) == str:
+        if type(css_list) is str:
             css_list = [css_list]
         css = {"screen": css_list}
 

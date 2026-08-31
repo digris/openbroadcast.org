@@ -24,7 +24,7 @@ class IcecastAPIClient:
             }
             r = requests.get(url, auth=auth, params=params, timeout=2.0)
 
-            if not r.status_code == 200:
+            if r.status_code != 200:
                 log.warning(f"API: {r.url} - status: {r.status_code}")
             else:
                 log.debug(f"API: {r.url} - status: {r.status_code}")

@@ -53,7 +53,7 @@ class DisplayActivityFollowUrl(Node):
                     "object_id": actor_instance.pk,
                 },
             )
-        except:
+        except BaseException:
             pass
 
 
@@ -165,7 +165,7 @@ def is_following(user, actor):
 
     try:
         return Follow.objects.is_following(user, actor)
-    except:
+    except BaseException:
         pass
 
 

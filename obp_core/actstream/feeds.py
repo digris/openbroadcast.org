@@ -131,7 +131,7 @@ class ActivityStreamsObjectActivityFeed(AtomObjectActivityFeed):
         """
         try:
             object_id = obj.action_object.get_absolute_url()
-        except:
+        except BaseException:
             object_id = f"{obj.action_object_content_type.model}/{obj.action_object.id}"
 
         object_id = get_tag_uri(object_id, None)

@@ -302,9 +302,7 @@ class PlaylistItemPlaylistSerializer(serializers.ModelSerializer):
     def get_content(self, obj, **kwargs):
 
         # TODO: implement for `Jingle`
-        if isinstance(obj.item.content_object, Media) or isinstance(
-            obj.item.content_object, Media
-        ):
+        if isinstance(obj.item.content_object, (Media, Media)):
             serializer = MediaSerializer(
                 instance=Media.objects.get(pk=obj.item.content_object.pk),
                 many=False,

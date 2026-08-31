@@ -30,7 +30,7 @@ from alibrary.models import (
     Series,
 )
 
-THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
+THUMBNAIL_OPT = {"size": (70, 70), "crop": True, "bw": False, "quality": 80}
 
 
 # from guardian.admin import GuardedModelAdmin

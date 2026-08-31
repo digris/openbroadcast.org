@@ -19,7 +19,8 @@ class NunjucksCompiler:
             command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
         )
         for line in p.stdout.readlines():
-            template += line
-        retval = p.wait()
+            template += line.decode("utf-8")
+
+        p.wait()
 
         return template

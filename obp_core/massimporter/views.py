@@ -20,7 +20,6 @@ class MassimportListView(
     raise_exception = True
 
     def get_queryset(self):
-        kwargs = {}
         # return Massimport.objects.filter(user=self.request.user)
         return Massimport.objects.all()
 
@@ -58,7 +57,7 @@ class MassimportDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailVi
 
             try:
                 directory = item.filename.split(os.sep)[-2]
-            except:
+            except BaseException:
                 directory = None
 
             media_mb_uuid = uuid_by_object(item.media)

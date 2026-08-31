@@ -11,7 +11,7 @@ from importer.util.importitem import get_import_sessions_for_obj
 
 from .models import Artist, Label, Release, Media, Playlist, Series
 
-THUMBNAIL_OPT = dict(size=(197, 197), crop=True, upscale=True)
+THUMBNAIL_OPT = {"size": (197, 197), "crop": True, "upscale": True}
 
 library_index = Index("library")
 artist_index = Index("artists")

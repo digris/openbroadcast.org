@@ -10,7 +10,7 @@ from tastypie.cache import SimpleCache
 from tastypie.resources import ModelResource
 
 
-THUMBNAIL_OPT = dict(size=(70, 70), crop=True, bw=False, quality=80)
+THUMBNAIL_OPT = {"size": (70, 70), "crop": True, "bw": False, "quality": 80}
 
 
 class LabelResource(ModelResource):
@@ -39,7 +39,7 @@ class LabelResource(ModelResource):
                 opt = THUMBNAIL_OPT
                 main_image = get_thumbnailer(bundle.obj.main_image).get_thumbnail(opt)
                 bundle.data["main_image"] = main_image.url
-            except:
+            except BaseException:
                 pass
 
         bundle.data["release_count"] = bundle.obj.releases.count()

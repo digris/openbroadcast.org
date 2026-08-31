@@ -115,7 +115,6 @@ def provider_search_query(request, *args, **kwargs):
 def provider_search(request, *args, **kwargs):
 
     item_type = kwargs.get("item_type")
-    item_id = kwargs.get("item_id")
     provider = kwargs.get("provider")
     query = kwargs.get("query")
 
@@ -234,7 +233,6 @@ def provider_update(request, *args, **kwargs):
 
     item_type = kwargs.get("item_type")
     item_id = kwargs.get("item_id")
-    provider = kwargs.get("provider")
     uri = kwargs.get("uri")
 
     log.debug("uri: %s" % (uri))

@@ -26,14 +26,7 @@ __date__ = "$Date: 2009/04/28 10:45:03 $"
 __license__ = "Public domain"
 
 import re
-import types
-
-try:
-    from unidecode import unidecode
-except ImportError:
-    # TODO: check for side-effects
-    def unidecode(val):
-        return val
+from unidecode import unidecode
 
 
 CHARS = {
@@ -187,7 +180,7 @@ def _repl(match, html=0):
     "Replace the matched character with its HTML or ASCII equivalent."
     g = match.group(0)
     a = CHARS.get(g, g)
-    if type(a) == types.TupleType:
+    if isinstance(a, tuple):
         a = a[html]
         if html:
             a = "&" + a + ";"
@@ -196,7 +189,7 @@ def _repl(match, html=0):
 
 def _dammit(t, html=0, fixWindowsOnly=0):
     "Turns ISO-Latin-1 into an ASCII representation, dammit."
-    if type(t) == unicode:
+    if isinstance(t, str):
         t = t.encode("raw_unicode_escape")
     r = ALL
     if fixWindowsOnly:

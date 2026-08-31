@@ -12,7 +12,7 @@ register = template.Library()
 def ct_pk_by_object(obj):
     try:
         return ContentType.objects.get_for_model(obj).pk
-    except:
+    except BaseException:
         return None
 
 
@@ -20,5 +20,5 @@ def ct_pk_by_object(obj):
 def ct_name_by_object(obj):
     try:
         return "%s".capitalize() % ContentType.objects.get_for_model(obj)
-    except:
+    except BaseException:
         return None

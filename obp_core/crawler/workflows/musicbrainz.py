@@ -205,7 +205,7 @@ class MBCrawler:
             log.warning(f"unable to load data from {url}")
             return {}
 
-        if not r.status_code == 200:
+        if r.status_code != 200:
             log.warning(f"unable to load data: {r.status_code} - {url}")
             return {}
 

@@ -305,7 +305,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                 duration -= pip.cue_in
                 duration -= pip.cue_out
                 duration -= pip.fade_cross
-        except:
+        except BaseException:
             pass
 
         return duration
@@ -461,12 +461,12 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
             criterias.append(criteria)
 
             # duration
-            if not self.broadcast_status == 1:
+            if self.broadcast_status != 1:
                 status = False
             criteria = {
                 "key": "duration",
                 "name": _("Duration"),
-                "status": True if self.broadcast_status == 1 else False,
+                "status": self.broadcast_status == 1,
                 "warning": _("Durations do not match"),
                 # 'warning': ', '.join(self.broadcast_status_messages),
             }
@@ -512,7 +512,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
                         pi.cue_in = timing["cue_in"]
                         pi.cue_out = timing["cue_out"]
                         pi.save()
-                    except:
+                    except BaseException:
                         pass
 
         self.save()
@@ -544,14 +544,10 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     def reorder_items_by_uuids(self, uuids):
 
-        i = 0
-
-        for uuid in uuids:
-            pi = PlaylistItemPlaylist.objects.get(uuid=uuid)
+        for i, item_uuid in enumerate(uuids):
+            pi = PlaylistItemPlaylist.objects.get(uuid=item_uuid)
             pi.position = i
             pi.save()
-
-            i += 1
 
         self.save()
 
@@ -659,13 +655,11 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
             if abs(diff) > DURATION_MAX_DIFF:
                 messages.append(
                     _(
-                        "durations do not match. difference is: %s seconds"
-                        % int(diff / 1000)
+                        f"durations do not match. difference is: {int(diff / 1000)} seconds"
                     )
                 )
                 log.warning(
-                    "durations do not match. difference is: %s seconds"
-                    % int(diff / 1000)
+                    f"durations do not match. difference is: {int(diff / 1000)} seconds"
                 )
                 status = 2
 
@@ -702,7 +696,7 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
             log.info("mixdown not available on api")
             return
 
-        if not self.mixdown["status"] == 3:
+        if self.mixdown["status"] != 3:
             log.info("mixdown not ready on api")
             return
 
@@ -747,14 +741,14 @@ class Playlist(MigrationMixin, TimestampedModelMixin, models.Model):
 
     @cached_property
     def is_archived(self):
-        if not self.type == Playlist.TYPE_BROADCAST:
+        if self.type != Playlist.TYPE_BROADCAST:
             return
         if self.rotation_date_end and self.rotation_date_end < timezone.now().date():
             return True
 
     @cached_property
     def is_upcoming(self):
-        if not self.type == Playlist.TYPE_BROADCAST:
+        if self.type != Playlist.TYPE_BROADCAST:
             return
         if (
             self.rotation_date_start
@@ -840,7 +834,7 @@ arating.enable_voting_on(Playlist)
 @receiver(post_save, sender=Playlist)
 def playlist_post_save(sender, instance, **kwargs):
 
-    if not instance.type == "broadcast":
+    if instance.type != "broadcast":
         return
 
     if instance.mixdown_file:

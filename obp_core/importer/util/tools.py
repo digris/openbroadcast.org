@@ -45,7 +45,7 @@ def discogs_image_by_url(url, type="uri"):
 
             r = requests.get(url, timeout=5)
 
-            if not r.status_code == 200:
+            if r.status_code != 200:
                 log.warning(f"server error: {r.status_code} {r.text}")
                 return
 
@@ -68,7 +68,7 @@ def discogs_image_by_url(url, type="uri"):
                     if image:
                         return image
 
-            except:
+            except BaseException:
                 pass
 
 
@@ -77,7 +77,7 @@ def discogs_id_by_url(url, type="uri"):
     # TODO: refactor id extraction to get rid of `discogs_client`
     # TODO: `discogs_client` v1.1.1 does not work anyway, as API changed.
 
-    discogs_id = None
+    _unused = None
     discogs_client.user_agent = "NRG Processor 0.0.1 http://anorg.net/"
 
     try:
@@ -85,9 +85,9 @@ def discogs_id_by_url(url, type="uri"):
         id = id[-1]
 
         try:
-            return "%s" % int(id)
+            return f"{int(id)}"
 
-        except:
+        except BaseException:
             item = None
 
             if "/master/" in url:

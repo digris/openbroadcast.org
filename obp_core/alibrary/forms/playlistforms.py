@@ -1,4 +1,5 @@
 from datetime import date
+from itertools import chain
 from ac_tagging.widgets import TagAutocompleteTagIt
 from alibrary import settings as alibrary_settings
 from alibrary.models import Playlist
@@ -13,7 +14,9 @@ except ImportError:
     from django.forms.extras.widgets import SelectDateWidget
 
 from django.forms import ModelForm, Form
+from django.forms import SelectMultiple, CheckboxInput
 from django.utils.html import conditional_escape
+from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 from base.fields.extra import AdvancedFileInput
@@ -34,7 +37,7 @@ ACTION_LAYOUT = action_layout = FormActions(
 
 
 current_year = date.today().year
-ROTATION_YEAR_CHOICES = [y for y in range(current_year + 10, current_year - 11, -1)]
+ROTATION_YEAR_CHOICES = list(range(current_year + 10, current_year - 11, -1))
 
 
 class ActionForm(Form):
@@ -44,11 +47,6 @@ class ActionForm(Form):
         self.helper.form_class = "form-horizontal"
         self.helper.form_tag = False
         self.helper.add_layout(ACTION_LAYOUT)
-
-
-from django.forms import SelectMultiple, CheckboxInput
-from django.utils.encoding import force_text
-from itertools import chain
 
 
 class DaypartWidget(SelectMultiple):
@@ -64,7 +62,7 @@ class DaypartWidget(SelectMultiple):
         t_dp_day = None
         for dp in dps:
             row_title = False
-            if not t_dp_day == dp.get_day_display():
+            if t_dp_day != dp.get_day_display():
                 row_title = dp.get_day_display()
                 t_dp_day = dp.get_day_display()
 
@@ -161,7 +159,7 @@ class PlaylistForm(ModelForm):
         try:
             self.user = kwargs["initial"]["user"]
             self.instance = kwargs["instance"]
-        except:
+        except BaseException:
             pass
 
         super().__init__(*args, **kwargs)
@@ -281,7 +279,7 @@ class PlaylistForm(ModelForm):
         try:
             if not series.pk:
                 series.save()
-        except:
+        except BaseException:
             pass
 
         return cd
@@ -291,7 +289,7 @@ class PlaylistForm(ModelForm):
 
         try:
             return int(target_duration)
-        except:
+        except BaseException:
             return None
 
     def save(self, *args, **kwargs):

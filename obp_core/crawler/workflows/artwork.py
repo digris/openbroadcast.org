@@ -88,7 +88,7 @@ class ArtworkCrawler:
         api_url = f"https://www.wikidata.org/w/api.php?action=wbgetclaims&entity={id}&property=P18&format=json"
         r = requests.get(api_url)
 
-        if not r.status_code == 200:
+        if r.status_code != 200:
             return
 
         data = r.json()
@@ -129,7 +129,7 @@ class ArtworkCrawler:
             time.sleep(SLEEP_ON_429)
             return self.crawl_for_discogs_image(url)
 
-        if not r.status_code == 200:
+        if r.status_code != 200:
             log.warning(f"unable to load data: {r.status_code} - {url}")
             return
 
@@ -188,7 +188,7 @@ class ArtworkCrawler:
         #
         r = requests.get(page_url, headers=CRAWLER_HEADERS)
 
-        if not r.status_code == 200:
+        if r.status_code != 200:
             return
 
         soup = BeautifulSoup(r.text)

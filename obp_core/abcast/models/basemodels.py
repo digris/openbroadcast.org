@@ -58,7 +58,7 @@ class Station(TimestampedModelMixin, UUIDModelMixin, models.Model):
             url = reverse(
                 "abcast-network:station-detail", kwargs={"uuid": str(self.uuid)}
             )
-        except:
+        except BaseException:
             url = ""
         return url
 
@@ -220,7 +220,7 @@ class Channel(TimestampedModelMixin, UUIDModelMixin, models.Model):
 
         try:
             item_url = self.on_air.get_api_url()
-        except:
+        except BaseException:
             item_url = None
 
         on_air = {
