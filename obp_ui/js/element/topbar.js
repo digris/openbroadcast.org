@@ -2,9 +2,7 @@ class Topbar {
   constructor() {
     this.container = $('#main_menu');
     this.bindings();
-    setTimeout(() => {
-      this.show_submenu();
-    }, 100);
+    this.show_submenu();
   }
 
   bindings() {
