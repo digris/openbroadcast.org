@@ -1,9 +1,10 @@
-{% load i18n image_placeholder_tags %}
+{% load i18n %}
 
 <div class="card artist" data-uuid="{{ object.uuid }}" data-absolute-url='{# object.get_absolute_url #}'>
 
   <div class="visual">
 
+    {% comment %}
     <figure>
       {% if object.key_image %}
         <img class="lazyload" src="{% image_placeholder size='580x580' %}" data-src="{{ object.key_image.file.crop.580x580 }}" alt="{% trans 'Community Image' %} - {{ object.name }}" />
@@ -11,6 +12,7 @@
         <img class="image-placeholder" src="{% image_placeholder size='580x580' %}" alt="{% trans 'image placeholder' %}" />
       {% endif %}
     </figure>
+    {% endcomment %
 
     <div class="tags">
 
