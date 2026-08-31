@@ -151,6 +151,7 @@ select = [
     "SIM", # simplifications
     "UP",  # pyupgrade
     "DJ",  # django
+    "G",   # flake8-logging-format
 ]
 
 ignore = [
