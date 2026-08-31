@@ -4,6 +4,7 @@ from uuid import uuid4
 import pytest
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import resolve, reverse
+from django.template.loader import render_to_string
 from elasticsearch_dsl import FacetedSearch
 
 from abcast.models import Channel
@@ -63,6 +64,32 @@ def assert_page(client, url_name, expected_menu_item, *, kwargs=None):
     assert response.context["current_menu_item"] == expected_menu_item
 
     return response
+
+
+def test_home_uses_non_cms_default_title(client):
+    response = client.get(reverse("home:index"))
+
+    assert response.status_code == 200
+    assert b"<title>open broadcast</title>" in response.content
+    assert b"request.current_page" not in response.content
+
+
+def test_legacy_exporter_page_renders_without_cms_placeholder_tag(client, admin_user):
+    client.force_login(admin_user)
+
+    response = client.get(reverse("exporter:export-list-legacy"))
+
+    assert response.status_code == 200
+    assert (
+        b"accept the terms and conditions before downloading exports"
+        in response.content
+    )
+
+
+def test_alternate_heading_uses_normal_template_context():
+    html = render_to_string("skeleton/heading_alt.html", {"page_title": "Test section"})
+
+    assert "Test section" in html
 
 
 @pytest.mark.parametrize(
