@@ -18,6 +18,14 @@ const STATIC_ROOT = path.resolve(__dirname, 'build', 'static');
 // must be the same as WEBPACK_DEVSERVER_HEADER
 const DEVSERVER_HEADER = 'X-WEBPACK-DEVSERVER';
 
+// dev-server behind a proxy (devsupport/compose.yml): bundle & hmr socket are
+// reached through the proxy's port instead of directly on :3000
+const PUBLIC_PATH = process.env.WEBPACK_PUBLIC_PATH || 'http://localhost:3000/static/js/';
+const SOCK_PORT = process.env.WEBPACK_SOCK_PORT;
+const PROXY_TARGET = process.env.WEBPACK_PROXY_TARGET || 'http://127.0.0.1:5000';
+// polling - file events from bind mounts are not reliable everywhere
+const WATCH_POLL = process.env.WEBPACK_WATCH_POLL ? parseInt(process.env.WEBPACK_WATCH_POLL, 10) : false;
+
 module.exports = {
   entry: {
     bundle: [
@@ -30,7 +38,7 @@ module.exports = {
   output: {
     path: DEV_MODE ? path.resolve(STATIC_ROOT, 'js') : path.resolve(STATIC_ROOT, 'dist', 'js'),
     filename: '[name].js',
-    publicPath: 'http://localhost:3000/static/js/',
+    publicPath: PUBLIC_PATH,
   },
   devtool: 'source-map',
   module: {
@@ -182,12 +190,14 @@ module.exports = {
     disableHostCheck: true,
     //host: 'obp-next.local',
     host: '0.0.0.0',
+    ...(SOCK_PORT ? {sockPort: SOCK_PORT} : {}),
+    ...(WATCH_POLL ? {watchOptions: {poll: WATCH_POLL}} : {}),
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
     proxy: {
       '/': {
-        target: 'http://127.0.0.1:5000',
+        target: PROXY_TARGET,
         onProxyReq: proxyReq => {
           proxyReq.setHeader(DEVSERVER_HEADER, 'on');
         }

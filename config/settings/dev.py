@@ -1,14 +1,11 @@
 from .base import *  # noqa
 
 
+# NOTE: defaults target the published ports of devsupport/compose.yml, the
+#       containers get their in-network urls from the compose environment.
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "obp",
-        "HOST": "127.0.0.1",
-        "PORT": 3307,
-        "USER": "obp",
-        "PASSWORD": "obp",
+        **env.db("DATABASE_URL", default="mysql://obp:obp@127.0.0.1:3307/obp"),
         "CONN_MAX_AGE": 600,
     },
 }

@@ -30,6 +30,8 @@ celerybeat-schedule.*
 # project-local data
 data/
 
+ref/
+
 # codex local state, while preserving shared config
 .codex/*
 !.codex/agents/

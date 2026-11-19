@@ -1,0 +1,15 @@
+.venv
+node_modules
+ref
+.git
+.claude
+.codex
+.omc
+.omx
+.opencode
+.playwright-mcp
+.env
+.envrc
+data
+build
+dist

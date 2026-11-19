@@ -1,18 +1,25 @@
+# name: obp
+
 services:
-  nginx:
-    # container_name: nginx
-    build:
-      context: ${PWD}/nginx/
-      # dockerfile: ${PWD}/nginx/Dockerfile
+  #####################################################################
+  # proxy: the only http entry point. routing: devsupport/proxy/Caddyfile
+  #####################################################################
+  proxy:
+    image: caddy:2-alpine
     ports:
-      - "8888:80"
+      - "5000:5000"
     volumes:
-      - ${PWD}/website/media:/data/media
-    restart: always
+      - ./proxy/Caddyfile:/etc/caddy/Caddyfile:ro
     networks:
       - obp
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    depends_on:
+      - core
+      - ui
+      - pushy
+
+  #####################################################################
+  # services
+  #####################################################################
   mariadb:
     # container_name: mariadb
     image: mariadb
@@ -28,6 +35,11 @@ services:
       - "3307:3306"
     networks:
       - obp
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "127.0.0.1", "-uobp", "-pobp"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
   rabbitmq:
     # container_name: rabbitmq
     build:
@@ -81,6 +93,56 @@ services:
     ports:
       - "5002:8000"
     restart: always
+    networks:
+      - obp
+
+  #####################################################################
+  # app
+  #####################################################################
+  core:
+    build:
+      context: ${PWD}/../
+      dockerfile: ${PWD}/core/Dockerfile
+    image: obp/core:latest
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DEBUG: true
+      SITE_URL: http://obp-next.local:5000
+      DATABASE_URL: mysql://obp:obp@mariadb:3306/obp
+      CELERY_BROKER_URL: amqp://obp:obp@rabbitmq:5672/obp
+      PLAYOUT_BROKER_URL: amqp://obp:obp@rabbitmq:5672/obp/playout
+      ELASTICSEARCH_URL: elasticsearch:9200
+      WAVEFORM_SERVICE_ENDPOINT: http://waveform:8000/
+      PUSHY_REDIS_HOST: redis
+      # as seen from the browser: socket.io is routed through the proxy
+      PUSHY_SOCKET_SERVER: //obp-next.local:5000/
+    volumes:
+      # db dumps, media files (MEDIA_ROOT, config.settings.base), tmp
+      - ../data:/app/data
+    networks:
+      - obp
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+      redis:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
+
+  ui:
+    build:
+      context: ${PWD}/../
+      dockerfile: ${PWD}/ui/Dockerfile
+    image: obp/ui:latest
+    environment:
+      # bundle & hmr socket are reached through the proxy (same origin)
+      WEBPACK_PUBLIC_PATH: /static/js/
+      WEBPACK_SOCK_PORT: location
+      WEBPACK_PROXY_TARGET: http://core:5000
     networks:
       - obp
 

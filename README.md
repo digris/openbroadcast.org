@@ -134,17 +134,6 @@ uv
 bun
 ```
 
-### Backing Services
-
-See `devsupport/`
-
-```shell
-cd devsupport
-
-docker compose build
-docker compose up
-```
-
 ### Project
 
 ```shell
@@ -169,33 +158,28 @@ gunzip -c data/db/dump.sql.gz \
 
 ### Run
 
-NOTE: Separate terminals or whatever you like to run the following commands in parallel.
+The whole stack (backing services, `core`, `ui`) runs in docker compose, on a
+single port: <http://obp-next.local:5000>. See [devsupport/](devsupport/README.md).
 
 ```shell
-make run-be
-
-make run-fe
-
-make run-celery
+make up
+make logs
+make down
 ```
 
 ## Post Setup
 
 ```shell
 # initialize search indexes
-./obp-cli search_index --create
+make cli ARGS="search_index --create"
 ```
 
 ```shell
 # populate some data (feeel free to kill the process after some batches)
-./obp-cli search_index --populate --models alibrary.release
-./obp-cli search_index --populate --models alibrary.playlist
+make cli ARGS="search_index --populate --models alibrary.release"
+make cli ARGS="search_index --populate --models alibrary.playlist"
 
-./obp-cli search_index --populate --models profiles.profile
-```
-
-```shell
-./obp-cli run
+make cli ARGS="search_index --populate --models profiles.profile"
 ```
 
 ## Commands

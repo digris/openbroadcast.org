@@ -1,0 +1,21 @@
+services:
+
+  #####################################################################
+  # volume mounts for local development
+  #####################################################################
+  core:
+    volumes:
+      - ${PWD}/../obp_core:/app/obp_core
+      - ${PWD}/../config:/app/config
+      # un-bundled ui assets, served by django (STATICFILES_DIRS: build/static)
+      - ${PWD}/../obp_ui/font:/app/build/static/font:ro
+      - ${PWD}/../obp_ui/img:/app/build/static/img:ro
+      - ${PWD}/../obp_ui/icons:/app/build/static/icons:ro
+
+  ui:
+    volumes:
+      - ${PWD}/../obp_ui:/app/obp_ui
+      - ${PWD}/../webpack.config.js:/app/webpack.config.js
+    environment:
+      # NOTE: polling (ms) - file events from bind mounts are not reliable everywhere
+      WEBPACK_WATCH_POLL: "1000"

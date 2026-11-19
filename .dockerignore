@@ -5,10 +5,12 @@
 .project
 .tox
 .git
+.venv
+.git
+.claude
+.next
+ref
 *__pycache__*
 node_modules
 db.sqlite3
-core/settings/local_development.py
 build/*
-
-website/media/

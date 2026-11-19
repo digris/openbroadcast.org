@@ -9,8 +9,9 @@ MAKEFLAGS += --no-builtin-rules
 PYTHON_VERSION = 3.9
 DOCKER_TAG = obp-next
 
-PORT_BE = 5000
-PORT_FE = 3000
+# runtime runs in docker (devsupport/, single entry point: http://obp-next.local:5000);
+# lint, format, tests and lockfiles run on the host
+COMPOSE = cd devsupport && docker compose -f compose.yml -f compose.override.yml
 
 
 #######################################################################
@@ -82,21 +83,27 @@ build-fe:
 	bun run build
 
 #######################################################################
-# run
+# run (docker compose - see devsupport/README.md)
 #######################################################################
-.PHONY: run-be
-run-be:
-	uv run ./manage.py runserver 0.0.0.0:${PORT_BE}
+.PHONY: up
+up:
+	$(COMPOSE) up -d --build
 
-.PHONY: run-celery
-run-celery:
-	uv run celery -A config.celery_app worker -B -l info
+.PHONY: down
+down:
+	$(COMPOSE) down
 
-.PHONY: run-fe
-run-fe:
-	bun run dev --port ${PORT_FE}
+.PHONY: logs
+logs:
+	$(COMPOSE) logs -f
 
-.PHONY: compose-up
-compose-up:
-	docker compose -f ./devsupport/compose.yml up --build
-	docker compose -f ./devsupport/compose.yml down
+.PHONY: ps
+ps:
+	$(COMPOSE) ps
+
+# usage: make cli ARGS="search_index --create"
+ARGS ?=
+
+.PHONY: cli
+cli:
+	$(COMPOSE) exec core ./obp-cli $(ARGS)

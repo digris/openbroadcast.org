@@ -478,10 +478,14 @@ CELERY_ACCEPT_CONTENT = ["pickle", "json"]
 CELERY_TASK_SERIALIZER = "pickle"
 
 
-CELERY_BROKER_URL = "amqp://obp:obp@127.0.0.1:5672/obp"
+CELERY_BROKER_URL = env.str(
+    "CELERY_BROKER_URL", default="amqp://obp:obp@127.0.0.1:5672/obp"
+)
 CELERY_RESULT_BACKEND = None
 
-PLAYOUT_BROKER_URL = "amqp://obp:obp@127.0.0.1:5672/obp/playout"
+PLAYOUT_BROKER_URL = env.str(
+    "PLAYOUT_BROKER_URL", default="amqp://obp:obp@127.0.0.1:5672/obp/playout"
+)
 
 
 CELERY_IMPORTS = (
@@ -543,7 +547,8 @@ PUSHY_SETTINGS = {
         "exporter.export",
         "abcast.channel",
     ),
-    "SOCKET_SERVER": "//localhost:5001/",
+    "SOCKET_SERVER": env.str("PUSHY_SOCKET_SERVER", default="//localhost:5001/"),
+    "REDIS_HOST": env.str("PUSHY_REDIS_HOST", default="127.0.0.1"),
     "CHANNEL_PREFIX": "pushy_",
     "DEBUG": DEBUG,
 }

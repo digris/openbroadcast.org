@@ -1,0 +1,31 @@
+# The only http entry point of the dev stack.
+# Plain HTTP on :5000, any hostname (obp-next.local, localhost, ...).
+{
+    auto_https off
+    admin off
+}
+
+:5000 {
+    # pushy: socket.io gateway (websocket)
+    handle /socket.io/* {
+        reverse_proxy pushy:8000
+    }
+
+    # ui: webpack-dev-server - hmr socket and the dev bundle. Paths under
+    # /static/js/ that are not part of the bundle fall through to core
+    # (see devServer.proxy in webpack.config.js)
+    handle /sockjs-node/* {
+        reverse_proxy ui:3000
+    }
+    handle /static/js/* {
+        reverse_proxy ui:3000
+    }
+
+    # Everything else goes to core. The header makes the templates load the
+    # dev bundle (see obp_core/legacy_apps/webpack)
+    handle {
+        reverse_proxy core:5000 {
+            header_up X-WEBPACK-DEVSERVER on
+        }
+    }
+}
