@@ -535,6 +535,11 @@ CELERY_EMAIL_TASK_CONFIG = {"queue": "celery", "rate_limit": "50/m"}
 
 
 #######################################################################
+# cacheops
+#######################################################################
+CACHEOPS_REDIS = env.str("CACHEOPS_REDIS", default="redis://127.0.0.1:6379/0")
+
+#######################################################################
 # pushy
 #######################################################################
 PUSHY_SETTINGS = {
@@ -662,6 +667,8 @@ CAPTCHA_NOISE_FUNCTIONS = ("captcha.helpers.noise_dots",)
 CAPTCHA_FILTER_FUNCTIONS = ()
 CAPTCHA_PUNCTUATION = """_"',.;:-"""
 CAPTCHA_LENGTH = 8
+# render through our own markup (templates/captcha/field.html)
+CAPTCHA_FIELD_TEMPLATE = "captcha/field.html"
 CAPTCHA_IMAGE_SIZE = (160, 28)
 CAPTCHA_FIELD_TEMPLATE = "captcha/field.html"
 

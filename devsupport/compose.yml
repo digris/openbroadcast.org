@@ -115,6 +115,7 @@ services:
       PLAYOUT_BROKER_URL: amqp://obp:obp@rabbitmq:5672/obp/playout
       ELASTICSEARCH_URL: elasticsearch:9200
       WAVEFORM_SERVICE_ENDPOINT: http://waveform:8000/
+      CACHEOPS_REDIS: redis://redis:6379/0
       PUSHY_REDIS_HOST: redis
       # as seen from the browser: socket.io is routed through the proxy
       PUSHY_SOCKET_SERVER: //obp-next.local:5000/

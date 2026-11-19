@@ -600,6 +600,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/24/d7/e1059a73ed4958e0f55536e8c9701ceeff8780d6818edacdfe23eccfc213/django-qsstats-magic-1.0.0.tar.gz", hash = "sha256:b26cbd320b6303778d95ed333d3f18bc24dacd9d97a27e20973d038b5b565805", size = 9090, upload-time = "2017-08-08T11:31:51.424Z" }
 
 [[package]]
+name = "django-ranged-response"
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/70/e3/9372fcdca8e9c3205e7979528ccd1a14354a9a24d38efff11c1846ff8bf1/django-ranged-response-0.2.0.tar.gz", hash = "sha256:f71fff352a37316b9bead717fc76e4ddd6c9b99c4680cdf4783b9755af1cf985", size = 3021, upload-time = "2017-07-18T09:20:27.603Z" }
+
+[[package]]
 name = "django-redis"
 version = "4.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -632,16 +641,15 @@ sdist = { url = "https://files.pythonhosted.org/packages/d6/72/9848a2d631dad70d7
 
 [[package]]
 name = "django-simple-captcha"
-version = "0.5.1"
+version = "0.5.12"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
+    { name = "django-ranged-response" },
     { name = "pillow" },
-    { name = "setuptools", version = "75.3.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
-    { name = "setuptools", version = "81.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
     { name = "six" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c8/f5/a760593d9b38f69c094d7ab83ab895858607333a51ada18a8bcd00f94dba/django-simple-captcha-0.5.1.tar.gz", hash = "sha256:1837449c91a5934c0959bbd18cdadd2b8b23b5e6391a519d8f94d3178f5f5d20", size = 107458, upload-time = "2015-12-05T12:51:09.656Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1d/84/82da15830a77ce3e667fc834e2e451864c24c78def86fa09caa934f17df5/django-simple-captcha-0.5.12.zip", hash = "sha256:fc25f0425e282aa82d2a65013049a8dc7c0682f8e05d32681c39a0c55ed322bd", size = 245034, upload-time = "2019-07-28T12:49:09.239Z" }
 
 [[package]]
 name = "django-split-settings"
@@ -1189,7 +1197,7 @@ requires-dist = [
     { name = "django-redis", specifier = "==4.2.0" },
     { name = "django-sekizai", specifier = "==0.10.0" },
     { name = "django-settings-export", specifier = "==1.2.1" },
-    { name = "django-simple-captcha", specifier = "==0.5.1" },
+    { name = "django-simple-captcha", specifier = "==0.5.12" },
     { name = "django-split-settings", specifier = "==0.1.2" },
     { name = "django-tastypie", specifier = "==0.13.3" },
     { name = "django-treebeard", specifier = "==4.2.1" },
