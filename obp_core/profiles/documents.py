@@ -121,4 +121,9 @@ class ProfileDocument(DocType):
     # custom queryset
     ###################################################################
     def get_queryset(self):
-        return super().get_queryset().select_related("user", "mentor")
+        return (
+            super()
+            .get_queryset()
+            .select_related("user", "mentor", "country")
+            .prefetch_related("expertise", "user__groups")
+        )

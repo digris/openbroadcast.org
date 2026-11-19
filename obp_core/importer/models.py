@@ -703,6 +703,8 @@ class ImportItem(UUIDModelMixin, TimestampedModelMixin, models.Model):
         app_label = "importer"
         verbose_name = "Import Item"
         verbose_name_plural = "Import Items"
+        # lookups by object (e.g. `get_import_sessions_for_obj`, search index)
+        index_together = [("content_type", "object_id")]
 
     def __str__(self):
         try:

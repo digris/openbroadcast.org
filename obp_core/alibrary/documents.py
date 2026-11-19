@@ -125,7 +125,7 @@ class LabelDocument(DocType):
     # custom queryset
     ###################################################################
     def get_queryset(self):
-        return super().get_queryset().select_related("country", "parent")
+        return super().get_queryset().select_related("country", "parent", "creator")
 
 
 @artist_index.doc_type
@@ -193,14 +193,14 @@ class ArtistDocument(DocType):
     ###################################################################
     def prepare_autocomplete(self, instance):
         text = [instance.name.strip()]
-        text += [i.name.strip() for i in instance.namevariations.nocache().all()]
+        text += [i.name.strip() for i in instance.namevariations.all()]
         return text
 
     def prepare_name(self, instance):
         return instance.name.strip()
 
     def prepare_namevariations(self, instance):
-        return [i.name.strip() for i in instance.namevariations.nocache().all()]
+        return [i.name.strip() for i in instance.namevariations.all()]
 
     def prepare_tags(self, instance):
         return [i.strip() for i in instance.d_tags.split(",") if len(i) > 2]
@@ -237,8 +237,8 @@ class ArtistDocument(DocType):
             super()
             .get_queryset()
             .filter(listed=True)
-            .select_related("country")
-            .prefetch_related("aliases", "members")
+            .select_related("country", "creator")
+            .prefetch_related("aliases", "members", "namevariations")
         )
 
 
@@ -326,7 +326,7 @@ class ReleaseDocument(DocType):
                 pass
 
     def prepare_num_media(self, instance):
-        return instance.media_release.count()
+        return len(instance.media_release.all())
 
     def prepare_releasedate_year(self, instance):
         if instance.releasedate:
@@ -335,8 +335,10 @@ class ReleaseDocument(DocType):
     # add all related (appearing artist, extra artist) (uu)ids to the document
     def prepare_artist_ids(self, instance):
         ids = []
-        for media in instance.get_media():
-            ids += [str(media.artist.uuid)]
+        # NOTE: prefetched, see `get_queryset`
+        for media in instance.media_release.all():
+            if media.artist:
+                ids += [str(media.artist.uuid)]
             for artist in media.media_artists.all():
                 ids += [str(artist.uuid)]
             for artist in media.extra_artists.all():
@@ -366,8 +368,14 @@ class ReleaseDocument(DocType):
             super()
             .get_queryset()
             .all()
-            .select_related("release_country")
-            .prefetch_related("media_release", "extra_artists", "album_artists")
+            .select_related("release_country", "label", "creator")
+            .prefetch_related(
+                "media_release__artist",
+                "media_release__media_artists",
+                "media_release__extra_artists",
+                "extra_artists",
+                "album_artists",
+            )
         )
 
 
@@ -516,7 +524,7 @@ class MediaDocument(DocType):
             super()
             .get_queryset()
             .all()
-            .select_related("release", "artist", "license")
+            .select_related("release", "artist", "license", "creator")
             .prefetch_related("media_artists", "extra_artists")
         )
 
@@ -647,11 +655,16 @@ class PlaylistDocument(DocType):
 
         return flags
 
-    # ###################################################################
-    # # custom queryset
-    # ###################################################################
-    # def get_queryset(self):
-    #     return super(PlaylistDocument, self).get_queryset().exclude(type='basket')
+    ###################################################################
+    # custom queryset
+    ###################################################################
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .select_related("user", "series")
+            .prefetch_related("weather", "seasons", "dayparts")
+        )
 
 
 series_index = Index("series")
