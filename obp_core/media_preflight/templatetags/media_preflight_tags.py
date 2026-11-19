@@ -13,7 +13,6 @@ def preflight_status_as(obj):
             "warnings": obj.preflight_check.warnings,
             "errors": obj.preflight_check.errors,
         }
-        print("PFC", data)
 
         return data
 

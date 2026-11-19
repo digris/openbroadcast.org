@@ -52,7 +52,6 @@ def map_emission(emission, time_start):
         item_end = item_start + datetime.timedelta(milliseconds=playout_duration)
 
         if item_end < time_start:
-            print(item_end, "<", time_start)
             continue
 
         offset += playout_duration

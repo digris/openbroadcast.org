@@ -1,3 +1,5 @@
+import logging
+
 from django.conf.urls import url
 from django.http import HttpResponse
 from importer.models import Import, ImportFile
@@ -7,6 +9,8 @@ from tastypie.authorization import Authorization
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.resources import ModelResource, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
+
+log = logging.getLogger(__name__)
 
 
 class ImportFileResource(ModelResource):
@@ -116,9 +120,6 @@ class ImportFileResource(ModelResource):
         """
         ugly hack to play with jquery fileupload
         """
-        print(request)
-        # print(request.__dict__)
-        print("obj_create")
         try:
             import_id = request.GET.get("import_session", None)
             uuid_key = request.GET.get("import_session__uuid_key", None)
@@ -136,13 +137,10 @@ class ImportFileResource(ModelResource):
             else:
                 bundle.data["import_session"] = None
 
-            print("---")
-            # print(request.FILES)
-
             bundle.data["file"] = request.FILES["files[]"]
 
         except Exception as e:
-            print(e)
+            log.warning("unable to prepare import file: %s", e)
 
         return super().obj_create(bundle, **kwargs)
 

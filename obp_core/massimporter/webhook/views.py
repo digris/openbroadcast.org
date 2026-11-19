@@ -33,11 +33,6 @@ class WebookView(View):
         name = kwargs.get("name")
         token = request.GET.get(SECURITY_TOKEN_KEY, None)
 
-        print("****************************")
-        print(request.POST)
-        print(request.body)
-        print("----------------------------")
-
         if request.META.get("CONTENT_TYPE") == "application/json":
             payload = json.loads(request.body)
         else:
@@ -64,8 +59,7 @@ class WebookView(View):
 
 def process_user(account):
 
-    print("process_user")
-    print(account)
+    pass
 
     # # OAuth token for the user
     # token = redis_client.hget('tokens', account)

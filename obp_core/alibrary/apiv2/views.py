@@ -110,8 +110,6 @@ class PlaylistViewSet(
         # items_to_collect = self.request.data.get("items_to_collect", [])
         items_to_collect = self.request.data.get("itemsToCollect", [])
 
-        print("add_items_to_playlist", items_to_collect, playlist)
-
         add_items_to_playlist(items_to_collect, playlist)
 
         playlist.save()
@@ -282,8 +280,6 @@ class ObjectReassignView(APIView):
             model = apps.get_model(*ct.split("."))
             obj = model.objects.get(uuid=uuid)
             return obj
-
-        print(request.data)
 
         target = request.data.get("target")
         if not target.get("create"):

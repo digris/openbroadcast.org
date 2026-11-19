@@ -182,7 +182,6 @@ class ArtworkCrawler:
         parses id url for id & tries to find valid image on coverartarchive
         """
         page_url = url
-        print(url)
 
         # image_url = 'http://coverartarchive.org/{ctype}/{id}/front'.format(id=id, ctype=ctype, host=DISCOGS_HOST)
         #
