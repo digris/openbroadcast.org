@@ -143,12 +143,14 @@ class MediaResource(ModelResource):
 
         return bundle
 
-    def build_filters(self, filters=None):
+    def build_filters(self, filters=None, ignore_bad_filters=False):
         """Enable querying by fingerprint"""
         if filters is None:
             filters = {}
 
-        orm_filters = super().build_filters(filters)
+        orm_filters = super().build_filters(
+            filters, ignore_bad_filters=ignore_bad_filters
+        )
 
         if "code" in filters:
             # re-implement fprint based lookups

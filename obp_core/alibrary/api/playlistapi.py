@@ -55,6 +55,14 @@ class PlaylistItemPlaylistResource(ModelResource):
         )
         authorization = Authorization()
 
+    def hydrate_item(self, bundle):
+        # updates (fades / cues) never change the item. the nested data sent back
+        # by the editor carries the `resource_uri` of the content object (see
+        # PlaylistItemResource.dehydrate), which tastypie can not resolve.
+        if bundle.obj and bundle.obj.pk:
+            bundle.data["item"] = bundle.obj.item
+        return bundle
+
 
 class DaypartResource(ModelResource):
     class Meta:

@@ -38,7 +38,9 @@ GENERIC_STATUS_CHOICES = (
 
 def create_download_path(instance, filename):
     filename, extension = os.path.splitext(filename)
-    cleaned_filename = unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore")
+    cleaned_filename = (
+        unicodedata.normalize("NFKD", filename).encode("ASCII", "ignore").decode()
+    )
     folder = "export/processed/{}-{}/".format(
         time.strftime("%Y%m%d%H%M%S", time.gmtime()),
         instance.uuid,

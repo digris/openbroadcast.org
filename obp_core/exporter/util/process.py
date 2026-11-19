@@ -321,7 +321,7 @@ class Process:
         log.debug("processing readme")
         template = "exporter/txt/readme.txt"
 
-        with open(os.path.join(cache_dir, "readme.txt"), "w") as txt:
+        with open(os.path.join(cache_dir, "readme.txt"), "w", encoding="utf8") as txt:
             str = render_to_string(template, {"object": instance, "base_url": SITE_URL})
             txt.write(str)
 
@@ -338,11 +338,13 @@ class Process:
         # TODO: modularize
         if ct in ["release"]:
             template = f"exporter/assets/{ct}.html"
-            with open(os.path.join(cache_dir, "readme.html"), "w") as txt:
+            with open(
+                os.path.join(cache_dir, "readme.html"), "w", encoding="utf8"
+            ) as txt:
                 str = render_to_string(
                     template, {"object": instance, "base_url": SITE_URL}
                 )
-                txt.write(str.encode("utf8"))
+                txt.write(str)
 
     def process_license(self, instance, cache_dir, file_list=None):
 
@@ -355,11 +357,11 @@ class Process:
         log.debug("processing license")
         template = "exporter/txt/LICENSE.TXT"
 
-        with open(os.path.join(cache_dir, "LICENSE.TXT"), "w") as txt:
+        with open(os.path.join(cache_dir, "LICENSE.TXT"), "w", encoding="utf8") as txt:
             str = render_to_string(
                 template, {"object": instance, "file_list": file_list}
             )
-            txt.write(str.encode("utf8"))
+            txt.write(str)
 
     def process_playlist(self, instance, cache_dir, file_list=None):
 
@@ -371,11 +373,11 @@ class Process:
         # filename 'playlist.m3u'
         filename = f"{safe_filename(instance.name)}.m3u"
 
-        with open(os.path.join(cache_dir, filename), "w") as txt:
+        with open(os.path.join(cache_dir, filename), "w", encoding="utf8") as txt:
             str = render_to_string(
                 template, {"object": instance, "file_list": file_list}
             )
-            txt.write(str.encode("utf8"))
+            txt.write(str)
 
     def inject_metadata(self, path, media):
 
@@ -433,7 +435,11 @@ class Process:
         # track-level metadata
         tags.add(TIT2(encoding=3, text=str(media.name)))
         tags.add(
-            UFID(encoding=3, owner="https://openbroadcast.org", data=str(media.uuid))
+            UFID(
+                encoding=3,
+                owner="https://openbroadcast.org",
+                data=str(media.uuid).encode(),
+            )
         )
 
         tags.add(
@@ -456,7 +462,7 @@ class Process:
                 UFID(
                     encoding=3,
                     owner="http://musicbrainz.org",
-                    data=str(uuid_by_object(media, "musicbrainz")),
+                    data=str(uuid_by_object(media, "musicbrainz")).encode(),
                 )
             )
 

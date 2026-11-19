@@ -66,7 +66,7 @@ const actions = {
     APIClient.post(url, payload).then(() => {
       addNotification({
         title: 'Download queued',
-        body: 'The files are now being processed in the background and will then be added to your <a href="/content/download/">download queue</a>.',
+        body: 'The files are now being processed in the background and will then be added to your <a href="/exporter/">download queue</a>.',
         lifetime: 5000,
       });
     }).catch((e) => {

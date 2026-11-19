@@ -19,6 +19,15 @@ label_index = Index("labels")
 release_index = Index("releases")
 media_index = Index("media")
 
+# the list views paginate with from / size. the elasticsearch default (10000)
+# is too low for deep pages (the error surfaces as an unrelated "For input string").
+# NOTE: applies on index creation. existing indices:
+# curl -XPUT 'localhost:9200/artists,labels,releases,media/_settings' \
+#   -H 'Content-Type: application/json' -d '{"index": {"max_result_window": 1000000}}'
+MAX_RESULT_WINDOW = 1000000
+for _index in (artist_index, label_index, release_index, media_index):
+    _index.settings(max_result_window=MAX_RESULT_WINDOW)
+
 
 @label_index.doc_type
 class LabelDocument(DocType):

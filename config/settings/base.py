@@ -693,6 +693,9 @@ ACCOUNT_USERNAME_REQUIRED = True
 SOCIALACCOUNT_QUERY_EMAIL = ACCOUNT_EMAIL_REQUIRED
 SOCIALACCOUNT_AUTO_SIGNUP = True
 EMAIL_CONFIRMATION_DAYS = 5
+# legacy rtmp stream info, still exposed by the channel api (abcast.api.baseapi)
+RTMP_HOST = env.str("RTMP_HOST", default="127.0.0.1")
+RTMP_PORT = env.str("RTMP_PORT", default="1935")
 
 
 #######################################################################
@@ -795,4 +798,13 @@ warnings.filterwarnings(
     message=r"Unable to import floppyforms\.gis.*",
     category=UserWarning,
     module=r"floppyforms",
+)
+
+# compile-time warnings from legacy dependencies (python-magic, djangorestframework).
+# NOTE: for these the "module" is the file path without the extension.
+warnings.filterwarnings(
+    "ignore",
+    message=r'"is" with a literal',
+    category=SyntaxWarning,
+    module=r".*/site-packages/",
 )
