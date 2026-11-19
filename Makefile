@@ -106,4 +106,4 @@ ARGS ?=
 
 .PHONY: cli
 cli:
-	$(COMPOSE) exec core ./obp-cli $(ARGS)
+	$(COMPOSE) exec core ./cli $(ARGS)

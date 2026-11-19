@@ -45,7 +45,7 @@ COPY obp_ui/font/ ./build/static/font/
 COPY obp_ui/img/ ./build/static/img/
 COPY obp_ui/icons/ ./build/static/icons/
 COPY devsupport/bin/mock-echoprint-codegen.py /usr/local/bin/echoprint-codegen
-COPY devsupport/core/start.sh manage.py obp-cli ./
+COPY devsupport/core/start.sh manage.py cli ./
 
 ENV PATH="/app/.venv/bin:$PATH"
 

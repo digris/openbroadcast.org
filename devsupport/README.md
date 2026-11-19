@@ -16,7 +16,7 @@ make up      # build & start (detached)
 make logs    # follow logs
 make ps
 make down
-make cli ARGS="search_index --create"   # ./obp-cli (manage.py) in the core container
+make cli ARGS="search_index --create"   # ./cli (manage.py) in the core container
 ```
 
 Optional: `cp devsupport/.env.example devsupport/.env` for secrets passed to `core`.
