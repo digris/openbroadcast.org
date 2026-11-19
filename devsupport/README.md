@@ -72,8 +72,8 @@ Webpack: `WEBPACK_PUBLIC_PATH`, `WEBPACK_SOCK_PORT`, `WEBPACK_PROXY_TARGET`,
 
 ## Notes / open ends
 
-- the compose project name is still `devsupport` (not `obp`): renaming it would
-  orphan the existing `devsupport_obp-mariadb` / `devsupport_obp-elasticsearch` volumes.
+- the compose project name is `obp` (`name:` in `compose.yml`): containers are
+  `obp-<service>-1`, volumes `obp_obp-mariadb` / `obp_obp-elasticsearch`.
 - no automatic `migrate` on start: the database comes from a dump (see root README).
 - `nginx/` is not used anymore (replaced by `proxy/`).
 - `obp_core/search/duplicate_detection.py` has a hardcoded `localhost:9200`.

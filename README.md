@@ -176,10 +176,15 @@ make cli ARGS="search_index --create"
 
 ```shell
 # populate some data (feeel free to kill the process after some batches)
-make cli ARGS="search_index --populate --models alibrary.release"
-make cli ARGS="search_index --populate --models alibrary.playlist"
-
 make cli ARGS="search_index --populate --models profiles.profile"
+
+make cli ARGS="search_index --populate --models alibrary.playlist"
+make cli ARGS="search_index --populate --models alibrary.label"
+make cli ARGS="search_index --populate --models alibrary.release"
+
+# likely too large to index all. just abort after some batches.
+make cli ARGS="search_index --populate --models alibrary.artist"
+make cli ARGS="search_index --populate --models alibrary.media"
 ```
 
 ## Commands
@@ -187,7 +192,9 @@ make cli ARGS="search_index --populate --models profiles.profile"
 Some possibly useful commands for development.
 
 ```shell
-celery -A config worker -B -c 1 -Q celery -n queue.import -l INFO
+make cli ARGS="check"
+make cli ARGS="shell"
+make cli ARGS="migrate"
 ```
 
 

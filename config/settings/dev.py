@@ -6,7 +6,10 @@ from .base import *  # noqa
 DATABASES = {
     "default": {
         **env.db("DATABASE_URL", default="mysql://obp:obp@127.0.0.1:3307/obp"),
-        "CONN_MAX_AGE": 600,
+        # NOTE: no persistent connections. runserver handles every request in a new
+        #       thread, kept connections are dropped (not closed) when it ends:
+        #       mariadb logs "Aborted connection ..." for each of them.
+        "CONN_MAX_AGE": 0,
     },
 }
 
