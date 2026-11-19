@@ -11,16 +11,18 @@ decided design, gates, report format.
 
 - Read the brief, then everything under "read-first". Don't re-investigate decisions the brief
   already made.
-- `ref/` doesn't exist in your worktree: run `scripts/refs.sh link` first. Refs are read-only:
-  you may run `scripts/refs.sh pull`, but never edit, commit or switch branches in them. If a ref
-  is missing, report it.
+- `ref/` (read-only reference projects) is git-ignored and doesn't exist in your worktree. If
+  the brief needs it, read it from the main checkout. Never edit anything in there.
+- The docker dev stack (`make up`, `devsupport/`) mounts the main checkout, not your worktree:
+  it doesn't run your changes. Don't start or restart it - use the host gates (`make lint`,
+  `make test-be-fast`) unless the brief says otherwise.
 
 ## While working
 
 - Change only the files the brief says you own. If you need to touch anything else, stop and
   report it instead.
 - One command per Bash call: no `;`, `&&`, `|` chains. Put multi-step sequences in a script.
-- Commit after each coherent step on your branch, never on main. Use conventional commit
+- Commit after each coherent step on your branch, never on `next` or `main`. Use conventional commit
   messages (`feat:`, `fix:`, `chore:`, …). Never push.
 - If a permission is denied, don't work around it (no alternative commands, no copying files
   elsewhere). Record it and continue with what you can, or stop.

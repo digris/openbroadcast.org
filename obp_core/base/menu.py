@@ -62,8 +62,9 @@ catalog_menu.add(
 data_menu = menu.Node(
     id="data",
     template="element/topbar/_menu-node.html",
-    label="Data",
-    url="#",
+    label="Exchange",
+    # url="#",
+    pattern_name="importer:import-list",
 )
 main_menu.register(data_menu)
 

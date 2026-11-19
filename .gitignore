@@ -24,20 +24,9 @@ dist/
 celerybeat-schedule.*
 
 # local tooling state
-.omx/
 .playwright-mcp/
 
 # project-local data
 data/
 
 ref/
-
-# codex local state, while preserving shared config
-.codex/*
-!.codex/agents/
-!.codex/agents/**
-!.codex/skills/
-!.codex/skills/**
-.codex/skills/.system/**
-!.codex/prompts/
-!.codex/prompts/**
